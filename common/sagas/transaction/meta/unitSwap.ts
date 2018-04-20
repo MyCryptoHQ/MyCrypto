@@ -21,6 +21,7 @@ import { encodeTransfer } from 'libs/transaction';
 import { AppState } from 'reducers';
 import { bufferToHex } from 'ethereumjs-util';
 import { validateInput, rebaseUserInput, IInput } from 'sagas/transaction/validationHelpers';
+import { setSchedulingToggle } from 'actions/schedule';
 
 export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
   const previousUnit: string = yield select(getPreviousUnit);
@@ -84,6 +85,12 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
     };
     // need to set meta fields for tokenTo and tokenValue
     if (etherToToken) {
+      yield put(
+        setSchedulingToggle({
+          value: false
+        })
+      );
+
       return yield put(
         swapEtherToToken({
           ...basePayload,

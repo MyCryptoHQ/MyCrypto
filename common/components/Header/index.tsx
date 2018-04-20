@@ -21,8 +21,8 @@ import { Link } from 'react-router-dom';
 import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
-import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
+import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import { NodeConfig } from 'types/node';
 import './index.scss';
@@ -41,7 +41,7 @@ import {
 } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
-import { stripWeb3Network } from 'libs/nodes';
+import translate from 'translations';
 
 interface OwnProps {
   networkParam: string | null;
@@ -138,7 +138,7 @@ class Header extends Component<Props, State> {
           ...rest,
           name: (
             <span>
-              {stripWeb3Network(label.network)} <small>({label.service})</small>
+              {label.network} <small>({label.service})</small>
             </span>
           )
         };
@@ -194,7 +194,7 @@ class Header extends Component<Props, State> {
                   value={nodeSelection || ''}
                   extra={
                     <li>
-                      <a onClick={this.openCustomNodeModal}>Add Custom Node</a>
+                      <a onClick={this.openCustomNodeModal}>{translate('NODE_ADD')}</a>
                     </li>
                   }
                   disabled={nodeSelection === 'web3'}

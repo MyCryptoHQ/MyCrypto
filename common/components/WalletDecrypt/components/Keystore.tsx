@@ -4,6 +4,7 @@ import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { TShowNotification } from 'actions/notifications';
 import { Input } from 'components/ui';
+import DeprecationWarning from './DeprecationWarning';
 
 export interface KeystoreValue {
   file: string;
@@ -43,7 +44,8 @@ export class KeystoreDecrypt extends PureComponent {
     const unlockDisabled = !file || (passReq && !password);
 
     return (
-      <form id="selectedUploadKey" onSubmit={this.unlock}>
+      <form onSubmit={this.unlock}>
+        <DeprecationWarning />
         <div className="form-group">
           <input
             className="hidden"

@@ -1,0 +1,30 @@
+@import 'common/sass/variables';
+
+.NetworkStatus {
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+    border-radius: 100%;
+
+    &.is-online {
+      background: $brand-success;
+    }
+
+    &.is-offline {
+      background: $brand-danger;
+    }
+
+    &.is-connecting {
+      background: $brand-warning;
+    }
+  }
+
+  &-text {
+    color: $gray-dark;
+    font-size: 9px;
+  }
+}

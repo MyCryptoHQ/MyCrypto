@@ -1,0 +1,110 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.SupportPage {
+  padding: 0;
+  max-width: 920px;
+  margin: 0 auto;
+
+  &-mycrypto {
+    text-align: center;
+
+    &-logo {
+      display: block;
+      margin: 0 auto $space;
+      max-width: 360px;
+    }
+
+    &-about {
+      max-width: 700px;
+      margin: 0 auto $space;
+    }
+
+    &-social {
+      margin-bottom: $space-sm;
+
+      &-link {
+        margin: 0 .45rem;
+        color: $text-color;
+        opacity: 0.3;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        .sm-icon {
+          font-size: 1.3rem;
+        }
+      }
+    }
+
+    &-legal {
+      display: flex;
+      justify-content: center;
+
+      &-text {
+        margin: 0 $space-sm;
+        color: $gray-light;
+        font-size: $font-size-xs-bump;
+
+        a {
+          color: $gray-light;
+
+          &:hover {
+            color: $gray-darker;
+          }
+        }
+      }
+    }
+  }
+
+  &-affiliates-title,
+  &-products-title,
+  &-donate-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: $space;
+  }
+
+  &-donate {
+    text-align: center;
+
+    &-type {
+      &-currency {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: $font-size-small;
+        margin-bottom: $space-xs;
+
+        &-icon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin-right: $space-xs;
+          background-size: 100%;
+
+          &.is-ETH {
+            background-image: url('~assets/images/ether.png');
+          }
+
+          &.is-BTC {
+            background-image: url('~assets/images/bitcoin.png');
+          }
+        }
+      }
+
+      &-address {
+        display: block;
+        padding: $space-xs $space-sm;
+        background: $gray-lightest;
+        border: 1px solid $gray-lighter;
+        font-size: $font-size-xs;
+        border-radius: 4px;
+        word-wrap: break-word;
+        @include mono;
+      }
+    }
+  }
+}

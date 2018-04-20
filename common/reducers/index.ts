@@ -12,6 +12,7 @@ import { State as TransactionState, transaction } from './transaction';
 import { State as GasState, gas } from './gas';
 import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 import { State as TransactionsState, transactions } from './transactions';
+import { schedule, State as ScheduleState } from './schedule';
 import { State as ParitySignerState, paritySigner } from './paritySigner';
 import { State as AddressBookState, addressBook } from './addressBook';
 
@@ -31,6 +32,7 @@ export interface AppState {
   paritySigner: ParitySignerState;
   addressBook: AddressBookState;
   gas: GasState;
+  schedule: ScheduleState;
   // Third party reducers (TODO: Fill these out)
   routing: any;
 }
@@ -50,5 +52,6 @@ export default combineReducers<AppState>({
   paritySigner,
   addressBook,
   gas,
+  schedule,
   routing: routerReducer
 });
