@@ -141,11 +141,7 @@ describe('handleChangeNodeRequested*', () => {
   data.gen = cloneableGenerator(handleChangeNodeRequested)(changeNodeRequestedAction);
 
   function shouldBailOut(gen: SagaIterator, nextVal: any, errMsg: string) {
-    expect(gen.next(nextVal).value).toEqual(select(getNodeId));
-    expect(gen.next(defaultNodeId).value).toEqual(put(showNotification('danger', errMsg, 5000)));
-    expect(gen.next().value).toEqual(
-      put(changeNodeSucceeded({ networkId: defaultNodeConfig.network, nodeId: defaultNodeId }))
-    );
+    expect(gen.next(nextVal).value).toEqual(put(showNotification('danger', errMsg, 5000)));
     expect(gen.next().done).toEqual(true);
   }
 
@@ -174,15 +170,11 @@ describe('handleChangeNodeRequested*', () => {
     expect(data.gen.next(newNodeConfig).value).toMatchSnapshot();
   });
 
-  it('should show error and revert to previous node if check times out', () => {
+  it('should show error if check times out', () => {
     data.clone1 = data.gen.clone();
     data.clone1.next(true);
-    expect(data.clone1.throw('err').value).toEqual(select(getNodeId));
-    expect(data.clone1.next(defaultNodeId).value).toEqual(
+    expect(data.clone1.throw('err').value).toEqual(
       put(showNotification('danger', translateRaw('ERROR_32'), 5000))
-    );
-    expect(data.clone1.next().value).toEqual(
-      put(changeNodeSucceeded({ networkId: defaultNodeConfig.network, nodeId: defaultNodeId }))
     );
     expect(data.clone1.next().done).toEqual(true);
   });
@@ -240,13 +232,13 @@ describe('handleChangeNodeRequested*', () => {
     data.customNodeNotFound.next(false);
   });
 
-  it('should blah', () => {
+  it('should select getCustomNodeFromId', () => {
     expect(data.customNodeNotFound.next(defaultNodeConfig).value).toEqual(
       select(getCustomNodeFromId, customNodeIdNotFound)
     );
   });
 
-  it('should blahah', () => {
+  it('should show an error if was an unknown custom node', () => {
     shouldBailOut(
       data.customNodeNotFound,
       null,
