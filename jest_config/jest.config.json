@@ -10,7 +10,12 @@
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",
-    "\\.worker.ts": "<rootDir>/jest_config/__mocks__/workerMock.js"
+    "\\.worker.ts": "<rootDir>/jest_config/__mocks__/workerMock.js",
+    "_sharedKeyCodesComment1":
+      "hardcoded, we can use captured regex groups using numbered backreferences for a generic version as needed later on",
+    "_sharedKeyCodesComment2":
+      " https://facebook.github.io/jest/docs/en/configuration.html#modulenamemapper-object-string-string",
+    "shared/keycodes": "<rootDir>/shared/keycodes"
   },
   "testPathIgnorePatterns": [],
   "setupFiles": [
