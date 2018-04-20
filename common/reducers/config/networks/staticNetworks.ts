@@ -56,7 +56,7 @@ export const INITIAL_STATE: State = {
   },
   Ropsten: {
     id: 'Ropsten',
-    name: 'Ropsten Testnet',
+    name: 'Ropsten',
     unit: 'ETH',
     chainId: 3,
     isCustom: false,
@@ -77,7 +77,7 @@ export const INITIAL_STATE: State = {
   },
   Kovan: {
     id: 'Kovan',
-    name: 'Kovan Testnet',
+    name: 'Kovan',
     unit: 'ETH',
     chainId: 42,
     isCustom: false,
@@ -98,7 +98,7 @@ export const INITIAL_STATE: State = {
   },
   Rinkeby: {
     id: 'Rinkeby',
-    name: 'Rinkeby Testnet',
+    name: 'Rinkeby',
     unit: 'ETH',
     chainId: 4,
     isCustom: false,

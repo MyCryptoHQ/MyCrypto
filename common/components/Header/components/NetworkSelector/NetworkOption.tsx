@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import classnames from 'classnames';
 import { isAutoNode, isAutoNodeConfig } from 'libs/nodes';
 import { NodeConfig } from 'types/node';
@@ -38,6 +38,9 @@ export default class NetworkOption extends React.PureComponent<Props> {
             onClick={this.handleSelect}
           >
             {network.name}
+            {network.isTestnet && (
+              <small className="NetworkOption-label-name-badge">({translate('TESTNET')})</small>
+            )}
           </div>
           <button
             className={classnames('NetworkOption-label-expand', isExpanded && 'is-expanded')}
