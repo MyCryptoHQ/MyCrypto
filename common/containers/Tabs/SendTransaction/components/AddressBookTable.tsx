@@ -4,7 +4,7 @@ import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
 import { isValidETHAddress } from 'libs/validators';
 import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
-import { getAddressToLabels } from 'selectors/addressBook';
+import { getAddressLabelPairs } from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
@@ -167,7 +167,7 @@ class AddressBookTable extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  rows: getAddressToLabels(state)
+  rows: getAddressLabelPairs(state)
 });
 
 const mapDispatchToProps = { addLabelForAddress, removeLabelForAddress };

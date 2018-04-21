@@ -10,6 +10,10 @@ import {
 } from 'reducers/transactions';
 import { State as SwapState, INITIAL_STATE as initialSwapState } from 'reducers/swap';
 import { State as WalletState, INITIAL_STATE as initialWalletState } from 'reducers/wallet';
+import {
+  State as AddressBookState,
+  INITIAL_STATE as initialAddressBookState
+} from 'reducers/addressBook';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
@@ -51,9 +55,8 @@ const configureStore = () => {
 
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
+  const savedAddressBook = loadStatePropertyOrEmptyObject<AddressBookState>('addressBook');
   const savedWalletState = loadStatePropertyOrEmptyObject<WalletState>('wallet');
-
-  const localAddressBook = loadStatePropertyOrEmptyObject('addressBook');
 
   const persistedInitialState: Partial<AppState> = {
     transaction: {
@@ -74,7 +77,10 @@ const configureStore = () => {
       ...initialTransactionsState,
       ...savedTransactionsState
     },
-    addressBook: localAddressBook,
+    addressBook: {
+      ...initialAddressBookState,
+      ...savedAddressBook
+    },
     wallet: {
       ...initialWalletState,
       ...savedWalletState

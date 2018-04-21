@@ -1,11 +1,23 @@
 import { AppState } from 'reducers';
 import { getCurrentTo } from './transaction';
 
-export function getLabels(state: AppState, options = {}) {
+interface GetLabelOptions {
+  reversed?: boolean;
+}
+
+interface AddressToLabel {
+  [address: string]: string;
+}
+
+interface ReversedAddressToLabel {
+  [label: string]: string;
+}
+
+export function getLabels(state: AppState, options: GetLabelOptions = {}) {
   const { addressBook: { labels } } = state;
-  const finalLabels = options.reversed
+  const finalLabels: AddressToLabel | ReversedAddressToLabel = options.reversed
     ? // Label: Address
-      Object.keys(labels).reduce((prev, next) => {
+      Object.keys(labels).reduce((prev: ReversedAddressToLabel, next: string) => {
         prev[labels[next]] = next;
 
         return prev;
@@ -16,7 +28,7 @@ export function getLabels(state: AppState, options = {}) {
   return finalLabels;
 }
 
-export function getAddressToLabels(state: AppState) {
+export function getAddressLabelPairs(state: AppState) {
   const { addressBook: { labels } } = state;
 
   const collection = Object.keys(labels).map(address => ({
