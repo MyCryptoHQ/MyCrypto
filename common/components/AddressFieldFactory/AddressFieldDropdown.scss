@@ -1,12 +1,13 @@
 @import 'common/sass/variables';
 @import 'common/sass/variables/colors';
+@import 'common/sass/variables/spacing';
 
 .AddressFieldDropdown {
   position: absolute;
   top: calc(100% - 16px);
   border: 1px solid $gray-lighter;
   border-top: none;
-  background: white;
+  background: $body-bg;
   z-index: 1;
   list-style-type: none;
   margin: 0;
@@ -14,7 +15,7 @@
 
   &-dropdown-item {
     margin: 0;
-    padding: 0.75rem 1rem;
+    padding: $space-md $space;
     display: flex;
     align-items: center;
 
@@ -24,7 +25,7 @@
     }
 
     strong:first-of-type {
-      width: 12rem;
+      width: $space-xl * 6;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

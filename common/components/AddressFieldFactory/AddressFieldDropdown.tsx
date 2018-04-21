@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import KeyCodes from 'shared/keycodes';
+import { AppState } from 'reducers';
+import translate from 'translations';
 import { setCurrentTo } from 'actions/transaction';
+import { AddressLabelPair } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
 import { getTransactionToRaw } from 'selectors/transactions';
 import { Address, Identicon } from 'components/ui';
@@ -44,7 +47,7 @@ class AddressFieldDropdown extends React.Component<Props> {
   }
 
   private renderDropdownItems = () =>
-    this.getFilteredLabels().map((filteredLabel, index) => {
+    this.getFilteredLabels().map((filteredLabel: AddressLabelPair, index: number) => {
       const { setCurrentTo } = this.props;
       const { activeIndex } = this.state;
       const { address, label } = filteredLabel;
@@ -52,6 +55,7 @@ class AddressFieldDropdown extends React.Component<Props> {
       const className = `AddressFieldDropdown-dropdown-item ${
         isActive ? 'AddressFieldDropdown-dropdown-item--active' : ''
       }`;
+      const title = `${translate('SEND_TO')}${label}`;
 
       return (
         <li
@@ -59,7 +63,7 @@ class AddressFieldDropdown extends React.Component<Props> {
           className={className}
           onClick={() => setCurrentTo(address)}
           role="option"
-          title={`Send to ${label}`}
+          title={title}
         >
           <strong>{label}</strong>
           <Identicon address={address} size="2rem" />
@@ -146,7 +150,7 @@ class AddressFieldDropdown extends React.Component<Props> {
 }
 
 export default connect(
-  state => ({
+  (state: AppState) => ({
     labels: getLabels(state, { reversed: true }),
     currentTo: getTransactionToRaw(state)
   }),

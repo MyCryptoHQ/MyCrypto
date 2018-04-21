@@ -1,11 +1,11 @@
-interface AddressToLabel {
+export interface AddressLabelPair {
   address: string;
   label: string;
 }
 
 export interface AddLabelForAddressAction {
   type: 'ADD_LABEL_FOR_ADDRESS';
-  payload: AddressToLabel;
+  payload: AddressLabelPair;
 }
 
 export interface RemoveLabelForAddressAction {
