@@ -1,14 +1,7 @@
 import React from 'react';
-import { IWallet } from 'libs/wallet';
-import { AddressField } from 'components';
-import { Input } from 'components/ui';
-import AddressBookTable from './AddressBookTable';
+import { AddressBookTable } from 'components';
 
-interface Props {
-  wallet: IWallet;
-}
-
-export default class AddressBook extends React.Component<Props> {
+export default class AddressBook extends React.Component {
   public render() {
     return (
       <div className="AddressBook">
