@@ -1,12 +1,12 @@
 import { AddressBookAction } from 'actions/addressBook';
 import { TypeKeys } from 'actions/addressBook/constants';
 
-interface AddressesToLabels {
+interface AddressToLabelDictionary {
   [address: string]: string;
 }
 
 export interface State {
-  labels: AddressesToLabels;
+  labels: AddressToLabelDictionary;
 }
 
 export const INITIAL_STATE: State = {

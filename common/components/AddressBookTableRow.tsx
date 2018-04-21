@@ -9,7 +9,7 @@ interface Props {
   label: string;
   address: string;
   isEditing: boolean;
-  onSave(thing: any): void;
+  onSave(label: string): void;
   onEditClick(): void;
   onRemoveClick(): void;
 }
