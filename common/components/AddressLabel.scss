@@ -1,8 +1,9 @@
-@import 'common/sass/variables/spacing.scss';
-@import 'common/sass/variables/colors.scss';
+@import 'common/sass/variables/spacing';
+@import 'common/sass/variables/colors';
+@import 'common/sass/variables/typography';
 
 .AddressLabel {
-  font-family: Lato, sans-serif;
+  font-family: $font-family-sans-serif;
 
   button {
     margin-bottom: $space-sm;

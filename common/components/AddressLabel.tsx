@@ -1,15 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import translate from 'translations';
 import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
-import { addLabelForAddress } from 'actions/addressBook';
+import { addLabelForAddress, AddressLabelPair } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
 import { Input } from 'components/ui';
 import './AddressLabel.scss';
 
+interface AddressToLabelDictionary {
+  [address: string]: string;
+}
+
 interface Props {
   address: string;
-  addLabelForAddress(addressToLabel): void;
+  labels: AddressToLabelDictionary;
+  addLabelForAddress(addressLabelPair: AddressLabelPair): void;
 }
 
 interface State {
@@ -20,6 +26,10 @@ enum AddressLabelModes {
   Button,
   Label,
   Input
+}
+
+interface RenderMethods {
+  [mode: string]: () => JSX.Element;
 }
 
 class AddressLabel extends React.Component<Props> {
@@ -43,7 +53,7 @@ class AddressLabel extends React.Component<Props> {
 
   public render() {
     const { mode } = this.state;
-    const renderers = {
+    const renderers: RenderMethods = {
       [AddressLabelModes.Button]: this.renderButton,
       [AddressLabelModes.Label]: this.renderLabel,
       [AddressLabelModes.Input]: this.renderInput
@@ -57,7 +67,7 @@ class AddressLabel extends React.Component<Props> {
     return (
       <button onClick={this.switchToInputMode} className="btn btn-default btn-smr">
         <span>
-          <span className="AddressLabel-button-label hidden-xs">Add Label </span>
+          <span className="AddressLabel-button-label hidden-xs">{translate('ADD_LABEL')}</span>
           <i className="fa fa-pencil" />
         </span>
       </button>
@@ -69,7 +79,7 @@ class AddressLabel extends React.Component<Props> {
     const label = labels[address];
 
     return (
-      <label title="Edit your account label" onClick={this.switchToInputMode}>
+      <label onClick={this.switchToInputMode}>
         <i className="fa fa-pencil" /> {label}
       </label>
     );
@@ -92,6 +102,8 @@ class AddressLabel extends React.Component<Props> {
     );
   };
 
+  private input: HTMLInputElement | null = null;
+
   private switchToButtonMode = () => this.setState({ mode: AddressLabelModes.Button });
 
   private switchToLabelMode = () => this.setState({ mode: AddressLabelModes.Label });
@@ -99,7 +111,8 @@ class AddressLabel extends React.Component<Props> {
   private switchToInputMode = () =>
     this.setState(
       { mode: AddressLabelModes.Input },
-      () => this.input.focus() || this.input.select()
+      // Focus and highlight the label when switching.
+      () => this.input && (this.input.focus() || this.input.select())
     );
 
   private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

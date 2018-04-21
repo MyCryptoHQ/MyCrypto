@@ -74,6 +74,7 @@
     "ADD_RADIO_2": "Select Your Wallet File (Keystore / JSON) ",
     "ADD_RADIO_2_ALT": "Select Your Wallet File ",
     "ADD_RADIO_2_SHORT": "SELECT WALLET FILE",
+    "ADD_LABEL": "Add Label ",
     "ADD_LABEL_3": "Your wallet is encrypted. Please enter the password. ",
     "ADD_LABEL_5": "Enter the Address ",
     "ADD_LABEL_6": "Unlock your Wallet ",

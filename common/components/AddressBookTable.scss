@@ -1,4 +1,5 @@
 @import 'common/sass/variables/colors';
+@import 'common/sass/variables/spacing';
 
 .AddressBookTable {
   input {
@@ -8,10 +9,51 @@
   &-cell {
     display: flex;
     align-items: center;
-    height: 4rem;
+    height: $space-xl * 2;
 
     .Identicon {
-      margin-left: 0.66rem;
+      margin-left: $space-md;
+    }
+  }
+
+  & th:first-of-type {
+    width: 50%;
+  }
+
+  &-row {
+    td {
+      position: relative;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background: $gray-lighter;
+    }
+
+    &--active {
+      background: $gray-lighter;
+
+      &:hover {
+        cursor: auto;
+      }
+    }
+
+    &-remove {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: $brand-danger;
+      border-radius: 100%;
+      color: white;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }
