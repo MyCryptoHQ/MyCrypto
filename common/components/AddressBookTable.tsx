@@ -2,21 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
+import translate from 'translations';
 import { isValidETHAddress } from 'libs/validators';
-import { addLabelForAddress, removeLabelForAddress } from 'actions/addressBook';
+import { addLabelForAddress, removeLabelForAddress, AddressLabelPair } from 'actions/addressBook';
 import { getAddressLabelPairs } from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
 
-interface AddressToLabel {
-  address: string;
-  label: string;
-}
-
 interface Props {
-  rows: AddressToLabel[];
-  addLabelForAddress(addressToLabel: AddressToLabel): void;
+  rows: AddressLabelPair[];
+  addLabelForAddress(addressLabelPair: AddressLabelPair): void;
   removeLabelForAddress(address: string): void;
 }
 
@@ -33,6 +29,10 @@ class AddressBookTable extends React.Component<Props> {
     temporaryAddress: ''
   };
 
+  private addressInput: HTMLInputElement | null = null;
+
+  private labelInput: HTMLInputElement | null = null;
+
   public render() {
     const { rows } = this.props;
     const { temporaryLabel, temporaryAddress } = this.state;
@@ -41,9 +41,9 @@ class AddressBookTable extends React.Component<Props> {
       <table className="AddressBookTable table" onKeyDown={this.handleKeyDown}>
         <thead>
           <tr>
-            <th scope="col">Address</th>
-            <th scope="col">Label</th>
-            <th scope="col">Actions</th>
+            <th scope="col">{translate('ADDRESS')}</th>
+            <th scope="col">{translate('LABEL')}</th>
+            <th scope="col">{translate('ACTIONS')}</th>
           </tr>
         </thead>
         <tbody>
@@ -71,11 +71,7 @@ class AddressBookTable extends React.Component<Props> {
             </td>
             <td>
               <div className="AddressBookTable-cell">
-                <button
-                  title="Add an entry"
-                  className="btn btn-sm btn-default"
-                  onClick={this.handleAddEntry}
-                >
+                <button className="btn btn-sm btn-default" onClick={this.handleAddEntry}>
                   <i className="fa fa-plus" />
                 </button>
               </div>
@@ -87,11 +83,7 @@ class AddressBookTable extends React.Component<Props> {
     );
   }
 
-  private addressInput: HTMLInputElement | null = null;
-
-  private labelInput: HTMLInputElement | null = null;
-
-  private handleSave = (addressToLabel: AddressToLabel) => {
+  private handleSave = (addressToLabel: AddressLabelPair) => {
     const { label, address } = addressToLabel;
 
     this.props.addLabelForAddress({ label, address });
@@ -126,7 +118,7 @@ class AddressBookTable extends React.Component<Props> {
 
   private removeEntry = (address: string) => this.props.removeLabelForAddress(address);
 
-  private makeLabelRow = (addressToLabel: AddressToLabel, index: number) => {
+  private makeLabelRow = (addressToLabel: AddressLabelPair, index: number) => {
     const { editingRow } = this.state;
     const isEditingRow = index === editingRow;
 

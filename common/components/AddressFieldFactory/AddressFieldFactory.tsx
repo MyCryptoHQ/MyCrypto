@@ -38,6 +38,8 @@ class AddressFieldFactoryClass extends React.Component<Props> {
     isFocused: false
   };
 
+  private goingToBlur: number | null = null;
+
   public componentDidMount() {
     // this 'to' parameter can be either token or actual field related
     const { to } = this.props;
@@ -71,8 +73,6 @@ class AddressFieldFactoryClass extends React.Component<Props> {
       </div>
     );
   }
-
-  private goingToBlur: number;
 
   private focus = () => this.setState({ isFocused: true });
 

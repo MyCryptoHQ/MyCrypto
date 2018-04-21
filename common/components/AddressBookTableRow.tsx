@@ -23,6 +23,8 @@ class AddressBookTableRow extends React.Component<Props> {
     label: this.props.label
   };
 
+  private labelInput: HTMLInputElement | null = null;
+
   public handleClickOutside = () => this.props.isEditing && this.handleSave();
 
   public componentWillReceiveProps(nextProps: Props) {
@@ -67,14 +69,15 @@ class AddressBookTableRow extends React.Component<Props> {
     );
   }
 
-  private labelInput: HTMLInputElement | null = null;
-
   private handleSave = () => this.props.onSave(this.state.label);
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
     if (e.keyCode === KeyCodes.ENTER) {
       this.handleSave();
-      this.labelInput && this.labelInput.blur();
+
+      if (this.labelInput) {
+        this.labelInput.blur();
+      }
     }
   };
 

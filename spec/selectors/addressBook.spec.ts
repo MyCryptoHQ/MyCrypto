@@ -22,8 +22,8 @@ describe('addressBook selectors', () => {
     it('should retrieve the labels, but with the key/values reversed <Address: Label> when the "reversed" option is passed', () => {
       const reversedLabels = getLabels(state, { reversed: true });
 
-      expect(reversedLabels['Foo']).toEqual('0x0');
-      expect(reversedLabels['Bar']).toEqual('0x1');
+      expect(reversedLabels.Foo).toEqual('0x0');
+      expect(reversedLabels.Bar).toEqual('0x1');
     });
   });
 

@@ -37,6 +37,8 @@ class AddressLabel extends React.Component<Props> {
     mode: this.props.labels[this.props.address] ? AddressLabelModes.Label : AddressLabelModes.Button
   };
 
+  private input: HTMLInputElement | null = null;
+
   public componentWillReceiveProps(nextProps: Props) {
     const { mode } = this.state;
     const { labels, address } = nextProps;
@@ -102,8 +104,6 @@ class AddressLabel extends React.Component<Props> {
     );
   };
 
-  private input: HTMLInputElement | null = null;
-
   private switchToButtonMode = () => this.setState({ mode: AddressLabelModes.Button });
 
   private switchToLabelMode = () => this.setState({ mode: AddressLabelModes.Label });
@@ -116,10 +116,10 @@ class AddressLabel extends React.Component<Props> {
     );
 
   private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { address, addLabelForAddress } = this.props;
+    const { address } = this.props;
     const { target: { value: label } } = e;
 
-    addLabelForAddress({
+    this.props.addLabelForAddress({
       address,
       label
     });

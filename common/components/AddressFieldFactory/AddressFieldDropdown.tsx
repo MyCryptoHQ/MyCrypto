@@ -48,7 +48,6 @@ class AddressFieldDropdown extends React.Component<Props> {
 
   private renderDropdownItems = () =>
     this.getFilteredLabels().map((filteredLabel: AddressLabelPair, index: number) => {
-      const { setCurrentTo } = this.props;
       const { activeIndex } = this.state;
       const { address, label } = filteredLabel;
       const isActive = activeIndex === index;
@@ -61,7 +60,7 @@ class AddressFieldDropdown extends React.Component<Props> {
         <li
           key={address}
           className={className}
-          onClick={() => setCurrentTo(address)}
+          onClick={() => this.props.setCurrentTo(address)}
           role="option"
           title={title}
         >
@@ -99,7 +98,6 @@ class AddressFieldDropdown extends React.Component<Props> {
   };
 
   private handleEnterKeyDown = () => {
-    const { setCurrentTo } = this.props;
     const { activeIndex } = this.state;
 
     if (activeIndex !== null) {
@@ -107,7 +105,7 @@ class AddressFieldDropdown extends React.Component<Props> {
 
       filteredLabels.forEach(({ address }, index) => {
         if (activeIndex === index) {
-          setCurrentTo(address);
+          this.props.setCurrentTo(address);
         }
       });
 

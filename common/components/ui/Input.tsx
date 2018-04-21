@@ -2,7 +2,7 @@ import React, { HTMLProps } from 'react';
 import './Input.scss';
 
 interface OwnProps extends HTMLProps<HTMLInputElement> {
-  setInnerRef?: (ref: HTMLInputElement | null) => void;
+  setInnerRef(ref: HTMLInputElement | null): void;
 }
 
 interface State {
