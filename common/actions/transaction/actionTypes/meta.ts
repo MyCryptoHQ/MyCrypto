@@ -23,6 +23,26 @@ interface SetTokenValueMetaAction {
   };
 }
 
-type MetaAction = SetUnitMetaAction | SetTokenValueMetaAction | SetTokenToMetaAction;
+interface SetAsContractInteractionAction {
+  type: TypeKeys.IS_CONTRACT_INTERACTION;
+}
 
-export { MetaAction, SetUnitMetaAction, SetTokenToMetaAction, SetTokenValueMetaAction };
+interface SetAsViewAndSendAction {
+  type: TypeKeys.IS_VIEW_AND_SEND;
+}
+
+type TransactionMetaAction = SetUnitMetaAction | SetTokenValueMetaAction | SetTokenToMetaAction;
+type TransactionTypeMetaAction = SetAsContractInteractionAction | SetAsViewAndSendAction;
+
+type MetaAction = TransactionMetaAction | TransactionTypeMetaAction;
+
+export {
+  TransactionMetaAction,
+  TransactionTypeMetaAction,
+  MetaAction,
+  SetUnitMetaAction,
+  SetTokenToMetaAction,
+  SetTokenValueMetaAction,
+  SetAsContractInteractionAction,
+  SetAsViewAndSendAction
+};

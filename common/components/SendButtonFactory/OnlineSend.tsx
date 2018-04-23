@@ -11,12 +11,7 @@ import {
 } from 'selectors/transaction';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { ITransactionStatus } from 'reducers/transaction/broadcast';
-import {
-  reset,
-  TReset,
-  TSignTransactionRequested,
-  signTransactionRequested
-} from 'actions/transaction';
+import { TSignTransactionRequested, signTransactionRequested } from 'actions/transaction';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {
@@ -33,7 +28,7 @@ interface State {
 
 interface DispatchProps {
   showNotification: TShowNotification;
-  reset: TReset;
+
   signTransactionRequested: TSignTransactionRequested;
 }
 
@@ -100,5 +95,5 @@ export const OnlineSend = connect(
     signaturePending: signaturePending(state).isSignaturePending,
     signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
   }),
-  { showNotification, reset, signTransactionRequested }
+  { showNotification, signTransactionRequested }
 )(OnlineSendClass);
