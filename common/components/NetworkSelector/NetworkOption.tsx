@@ -47,6 +47,7 @@ export default class NetworkOption extends React.PureComponent<Props> {
           <button
             className={classnames('NetworkOption-label-expand', isExpanded && 'is-expanded')}
             onClick={this.handleToggleExpand}
+            title={translateRaw('NETWORKS_EXPAND_NODES', { $network: network.name })}
           >
             <i className="fa fa-chevron-down" />
           </button>
