@@ -2,17 +2,17 @@ import { configuredStore } from 'store';
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import {
   handleNodeChangeForce,
-  handleNetworkChangeIntent,
+  handleChangeNetworkRequested,
   handleRemoveCustomNode
 } from 'sagas/config/node';
 import { put, select } from 'redux-saga/effects';
 import { isStaticNodeId, getStaticNodeFromId, getNodeId, getAllNodes } from 'selectors/config';
 import {
   TypeKeys,
-  changeNode,
-  changeNodeIntent,
+  changeNodeSucceeded,
+  changeNodeRequested,
   changeNodeForce,
-  ChangeNetworkIntentAction,
+  ChangeNetworkRequestedAction,
   RemoveCustomNodeAction
 } from 'actions/config';
 import { makeAutoNodeName } from 'libs/nodes';
@@ -44,7 +44,7 @@ describe('handleNodeChangeForce*', () => {
   it('should force the node change', () => {
     expect(gen.next(nodeConfig).value).toEqual(
       put(
-        changeNode({
+        changeNodeSucceeded({
           networkId: nodeConfig.network,
           nodeId: payload
         })
@@ -53,7 +53,7 @@ describe('handleNodeChangeForce*', () => {
   });
 
   it('should put a change node intent', () => {
-    expect(gen.next().value).toEqual(put(changeNodeIntent(payload)));
+    expect(gen.next().value).toEqual(put(changeNodeRequested(payload)));
   });
 
   it('should be done', () => {
@@ -61,10 +61,10 @@ describe('handleNodeChangeForce*', () => {
   });
 });
 
-describe('handleNetworkChangeIntent*', () => {
-  const action: ChangeNetworkIntentAction = {
+describe('handleChangeNetworkRequested*', () => {
+  const action: ChangeNetworkRequestedAction = {
     payload: 'ETH',
-    type: TypeKeys.CONFIG_NETWORK_CHANGE_INTENT
+    type: TypeKeys.CONFIG_CHANGE_NETWORK_REQUESTED
   };
   const nextNodeName = makeAutoNodeName(action.payload);
   const customNode: CustomNodeConfig = {
@@ -75,7 +75,7 @@ describe('handleNetworkChangeIntent*', () => {
     network: action.payload,
     isCustom: true
   };
-  const gen = cloneableGenerator(handleNetworkChangeIntent);
+  const gen = cloneableGenerator(handleChangeNetworkRequested);
   const staticCase = gen(action);
   let customCase: SagaIteratorClone;
   let failureCase: SagaIteratorClone;
@@ -84,9 +84,9 @@ describe('handleNetworkChangeIntent*', () => {
     expect(staticCase.next().value).toEqual(select(isStaticNodeId, nextNodeName));
   });
 
-  it('should put changeNodeIntent for auto node if static network', () => {
+  it('should put changeNodeRequested for auto node if static network', () => {
     customCase = staticCase.clone();
-    expect(staticCase.next(true).value).toEqual(put(changeNodeIntent(nextNodeName)));
+    expect(staticCase.next(true).value).toEqual(put(changeNodeRequested(nextNodeName)));
     expect(staticCase.next().done).toBeTruthy();
   });
 
@@ -94,9 +94,9 @@ describe('handleNetworkChangeIntent*', () => {
     expect(customCase.next(false).value).toEqual(select(getAllNodes));
   });
 
-  it('should put changeNodeIntent on the first custom node if found', () => {
+  it('should put changeNodeRequested on the first custom node if found', () => {
     failureCase = customCase.clone();
-    expect(customCase.next([customNode]).value).toEqual(put(changeNodeIntent(customNode.id)));
+    expect(customCase.next([customNode]).value).toEqual(put(changeNodeRequested(customNode.id)));
   });
 
   it('should put showNotification if not a valid network', () => {

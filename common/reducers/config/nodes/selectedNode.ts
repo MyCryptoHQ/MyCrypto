@@ -1,6 +1,6 @@
 import {
-  ChangeNodeAction,
-  ChangeNodeIntentAction,
+  ChangeNodeRequestedAction,
+  ChangeNodeSucceededAction,
   NodeAction,
   TypeKeys,
   CustomNodeAction
@@ -14,16 +14,16 @@ export const INITIAL_STATE: State = {
   pending: false
 };
 
-const changeNode = (state: State, { payload }: ChangeNodeAction): State => ({
+const changeNodeRequested = (state: State, _: ChangeNodeRequestedAction): State => ({
+  ...state,
+  pending: true
+});
+
+const changeNodeSucceeded = (state: State, { payload }: ChangeNodeSucceededAction): State => ({
   nodeId: payload.nodeId,
   // make sure we dont accidentally switch back to a web3 node
   prevNode: state.nodeId === 'web3' ? state.prevNode : state.nodeId,
   pending: false
-});
-
-const changeNodeIntent = (state: State, _: ChangeNodeIntentAction): State => ({
-  ...state,
-  pending: true
 });
 
 export const selectedNode = (
@@ -31,10 +31,10 @@ export const selectedNode = (
   action: NodeAction | CustomNodeAction
 ) => {
   switch (action.type) {
-    case TypeKeys.CONFIG_NODE_CHANGE:
-      return changeNode(state, action);
-    case TypeKeys.CONFIG_NODE_CHANGE_INTENT:
-      return changeNodeIntent(state, action);
+    case TypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED:
+      return changeNodeSucceeded(state, action);
+    case TypeKeys.CONFIG_CHANGE_NODE_REQUESTED:
+      return changeNodeRequested(state, action);
     default:
       return state;
   }
