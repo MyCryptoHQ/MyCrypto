@@ -53,6 +53,7 @@ class NetworkSelect extends React.Component<Props, State> {
   private addCustomNode = (payload: AddCustomNodeAction['payload']) => {
     this.closeCustomNodeModal();
     this.props.addCustomNode(payload);
+    this.props.closePanel();
   };
 }
 
