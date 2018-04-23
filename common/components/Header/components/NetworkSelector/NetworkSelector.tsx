@@ -4,10 +4,10 @@ import translate, { translateRaw } from 'translations';
 import { DropdownShell } from 'components/ui';
 import NetworkOption from './NetworkOption';
 import {
-  TChangeNodeIntent,
-  changeNodeIntent,
-  TChangeNetworkIntent,
-  changeNetworkIntent
+  TChangeNodeRequested,
+  changeNodeRequested,
+  TChangeNetworkRequested,
+  changeNetworkRequested
 } from 'actions/config';
 import {
   getNodeId,
@@ -37,8 +37,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  changeNodeIntent: TChangeNodeIntent;
-  changeNetworkIntent: TChangeNetworkIntent;
+  changeNodeRequested: TChangeNodeRequested;
+  changeNetworkRequested: TChangeNetworkRequested;
 }
 
 interface State {
@@ -180,14 +180,14 @@ class NetworkSelector extends React.Component<Props> {
   };
 
   private selectNetwork = (net: NetworkConfig) => {
-    this.props.changeNetworkIntent(net.id);
+    this.props.changeNetworkRequested(net.id);
     if (this.dropdown) {
       this.dropdown.close();
     }
   };
 
   private selectNode = (node: NodeConfig) => {
-    this.props.changeNodeIntent(node.id);
+    this.props.changeNodeRequested(node.id);
     if (this.dropdown) {
       this.dropdown.close();
     }
@@ -220,7 +220,7 @@ export default connect(
     allNetworks: getAllNetworkConfigs(state)
   }),
   {
-    changeNodeIntent,
-    changeNetworkIntent
+    changeNodeRequested,
+    changeNetworkRequested
   }
 )(NetworkSelector);

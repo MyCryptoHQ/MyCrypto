@@ -24,15 +24,15 @@ import { TypeKeys } from 'actions/config/constants';
 import {
   setOnline,
   setOffline,
-  changeNode,
-  changeNodeIntent,
+  changeNodeRequested,
+  changeNodeSucceeded,
   changeNodeForce,
   setLatestBlock,
   AddCustomNodeAction,
   ChangeNodeForceAction,
-  ChangeNodeIntentAction,
-  ChangeNodeIntentOneTimeAction,
-  ChangeNetworkIntentAction,
+  ChangeNodeRequestedAction,
+  ChangeNodeRequestedOneTimeAction,
+  ChangeNetworkRequestedAction,
   RemoveCustomNodeAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
@@ -117,25 +117,23 @@ export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 1150);
 }
 
-export function* handleNodeChangeIntentOneTime(): SagaIterator {
-  const action: ChangeNodeIntentOneTimeAction = yield take(
-    TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME
+export function* handleChangeNodeRequestedOneTime(): SagaIterator {
+  const action: ChangeNodeRequestedOneTimeAction = yield take(
+    TypeKeys.CONFIG_CHANGE_NODE_REQUESTED_ONETIME
   );
   // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
   yield call(delay, 100);
-  yield put(changeNodeIntent(action.payload));
+  yield put(changeNodeRequested(action.payload));
 }
 
-export function* handleNodeChangeIntent({
+export function* handleChangeNodeRequested({
   payload: nodeIdToSwitchTo
-}: ChangeNodeIntentAction): SagaIterator {
+}: ChangeNodeRequestedAction): SagaIterator {
   const isStaticNode: boolean = yield select(isStaticNodeId, nodeIdToSwitchTo);
   const currentConfig: NodeConfig = yield select(getNodeConfig);
 
   function* bailOut(message: string) {
-    const currentNodeId: string = yield select(getNodeId);
     yield put(showNotification('danger', message, 5000));
-    yield put(changeNode({ networkId: currentConfig.network, nodeId: currentNodeId }));
   }
 
   let nextNodeConfig: CustomNodeConfig | StaticNodeConfig;
@@ -189,7 +187,7 @@ export function* handleNodeChangeIntent({
   }
 
   yield put(setLatestBlock(currentBlock));
-  yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
+  yield put(changeNodeSucceeded({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
 
   if (currentConfig.network !== nextNodeConfig.network) {
     yield fork(handleNewNetwork);
@@ -204,7 +202,7 @@ export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator 
     makeProviderConfig({ network: config.network }),
     config
   );
-  yield put(changeNodeIntent(config.id));
+  yield put(changeNodeRequested(config.id));
 }
 
 export function* handleNewNetwork() {
@@ -225,14 +223,14 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
   const nodeConfig = yield select(getStaticNodeFromId, staticNodeIdToSwitchTo);
 
   // force the node change
-  yield put(changeNode({ networkId: nodeConfig.network, nodeId: staticNodeIdToSwitchTo }));
+  yield put(changeNodeSucceeded({ networkId: nodeConfig.network, nodeId: staticNodeIdToSwitchTo }));
 
   // also put the change through as usual so status check and
   // error messages occur if the node is unavailable
-  yield put(changeNodeIntent(staticNodeIdToSwitchTo));
+  yield put(changeNodeRequested(staticNodeIdToSwitchTo));
 }
 
-export function* handleNetworkChangeIntent({ payload: network }: ChangeNetworkIntentAction) {
+export function* handleChangeNetworkRequested({ payload: network }: ChangeNetworkRequestedAction) {
   let desiredNode = '';
   const autoNodeName = makeAutoNodeName(network);
   const isStaticNode: boolean = yield select(isStaticNodeId, autoNodeName);
@@ -248,7 +246,7 @@ export function* handleNetworkChangeIntent({ payload: network }: ChangeNetworkIn
   }
 
   if (desiredNode) {
-    yield put(changeNodeIntent(desiredNode));
+    yield put(changeNodeRequested(desiredNode));
   } else {
     yield put(
       showNotification(
@@ -271,10 +269,10 @@ export function* handleRemoveCustomNode({ payload: nodeId }: RemoveCustomNodeAct
 }
 
 export const node = [
-  fork(handleNodeChangeIntentOneTime),
-  takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
-  takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
-  takeEvery(TypeKeys.CONFIG_NETWORK_CHANGE_INTENT, handleNetworkChangeIntent),
+  fork(handleChangeNodeRequestedOneTime),
+  takeEvery(TypeKeys.CONFIG_CHANGE_NODE_REQUESTED, handleChangeNodeRequested),
+  takeEvery(TypeKeys.CONFIG_CHANGE_NODE_FORCE, handleNodeChangeForce),
+  takeEvery(TypeKeys.CONFIG_CHANGE_NETWORK_REQUESTED, handleChangeNetworkRequested),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
   takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode),

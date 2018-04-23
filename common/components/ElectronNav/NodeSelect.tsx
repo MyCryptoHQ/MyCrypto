@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import CustomNodeModal from 'components/CustomNodeModal';
 import {
-  TChangeNodeIntent,
+  TChangeNodeRequested,
   TAddCustomNode,
   TRemoveCustomNode,
-  changeNodeIntent,
+  changeNodeRequested,
   addCustomNode,
   removeCustomNode,
   AddCustomNodeAction
@@ -33,7 +33,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  changeNodeIntent: TChangeNodeIntent;
+  changeNodeRequested: TChangeNodeRequested;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
 }
@@ -82,7 +82,7 @@ class NodeSelect extends React.Component<Props, State> {
   }
 
   private handleNodeSelect = (node: string) => {
-    this.props.changeNodeIntent(node);
+    this.props.changeNodeRequested(node);
     this.props.closePanel();
   };
 
@@ -119,7 +119,7 @@ export default connect(
     nodeOptions: getNodeOptions(state)
   }),
   {
-    changeNodeIntent,
+    changeNodeRequested,
     addCustomNode,
     removeCustomNode
   }

@@ -1,12 +1,12 @@
 import {
   TChangeLanguage,
-  TChangeNodeIntentOneTime,
+  TChangeNodeRequestedOneTime,
   TAddCustomNode,
   TRemoveCustomNode,
   TAddCustomNetwork,
   AddCustomNodeAction,
   changeLanguage,
-  changeNodeIntentOneTime,
+  changeNodeRequestedOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
@@ -41,7 +41,7 @@ interface OwnProps {
 
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
-  changeNodeIntentOneTime: TChangeNodeIntentOneTime;
+  changeNodeRequestedOneTime: TChangeNodeRequestedOneTime;
   setGasPriceField: TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
@@ -70,7 +70,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
 const mapDispatchToProps: DispatchProps = {
   setGasPriceField,
   changeLanguage,
-  changeNodeIntentOneTime,
+  changeNodeRequestedOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
@@ -177,7 +177,7 @@ class Header extends Component<Props, State> {
   private attemptSetNodeFromQueryParameter() {
     const { shouldSetNodeFromQS, networkParam } = this.props;
     if (shouldSetNodeFromQS) {
-      this.props.changeNodeIntentOneTime(networkParam!);
+      this.props.changeNodeRequestedOneTime(networkParam!);
     }
   }
 }
