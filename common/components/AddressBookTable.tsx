@@ -1,20 +1,31 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, MapStateToProps } from 'react-redux';
 import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
 import translate from 'translations';
 import { isValidETHAddress } from 'libs/validators';
-import { addLabelForAddress, removeLabelForAddress, AddressLabelPair } from 'actions/addressBook';
+import {
+  TAddLabelForAddress,
+  TRemoveLabelForAddress,
+  addLabelForAddress,
+  removeLabelForAddress,
+  AddressLabelPair
+} from 'actions/addressBook';
 import { getAddressLabelPairs } from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
 
-interface Props {
-  rows: AddressLabelPair[];
-  addLabelForAddress(addressLabelPair: AddressLabelPair): void;
-  removeLabelForAddress(address: string): void;
+interface DispatchProps {
+  addLabelForAddress: TAddLabelForAddress;
+  removeLabelForAddress: TRemoveLabelForAddress;
 }
+
+interface StateProps {
+  rows: ReturnType<typeof getAddressLabelPairs>;
+}
+
+type Props = DispatchProps & StateProps;
 
 interface State {
   editingRow: number | null;
@@ -22,7 +33,7 @@ interface State {
   temporaryAddress: string;
 }
 
-class AddressBookTable extends React.Component<Props> {
+class AddressBookTable extends React.Component<Props, State> {
   public state: State = {
     editingRow: null,
     temporaryLabel: '',
@@ -158,10 +169,10 @@ class AddressBookTable extends React.Component<Props> {
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   rows: getAddressLabelPairs(state)
 });
 
-const mapDispatchToProps = { addLabelForAddress, removeLabelForAddress };
+const mapDispatchToProps: DispatchProps = { addLabelForAddress, removeLabelForAddress };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);

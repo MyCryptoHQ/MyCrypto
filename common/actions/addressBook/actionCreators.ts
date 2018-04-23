@@ -1,22 +1,22 @@
-import * as interfaces from './actionTypes';
+import { AddLabelForAddressAction, RemoveLabelForAddressAction } from './actionTypes';
 import { TypeKeys } from './constants';
 
-export function addLabelForAddress({
-  address,
-  label
-}: interfaces.AddressLabelPair): interfaces.AddLabelForAddressAction {
+export type TAddLabelForAddress = typeof addLabelForAddress;
+export function addLabelForAddress(
+  payload: AddLabelForAddressAction['payload']
+): AddLabelForAddressAction {
   return {
     type: TypeKeys.ADD_LABEL_FOR_ADDRESS,
-    payload: {
-      address,
-      label
-    }
+    payload
   };
 }
 
-export function removeLabelForAddress(address: string): interfaces.RemoveLabelForAddressAction {
+export type TRemoveLabelForAddress = typeof removeLabelForAddress;
+export function removeLabelForAddress(
+  payload: RemoveLabelForAddressAction['payload']
+): RemoveLabelForAddressAction {
   return {
     type: TypeKeys.REMOVE_LABEL_FOR_ADDRESS,
-    payload: address
+    payload
   };
 }

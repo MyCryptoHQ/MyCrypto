@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
 import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
-import { addLabelForAddress, AddressLabelPair } from 'actions/addressBook';
+import { addLabelForAddress, TAddLabelForAddress } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
 import { Input } from 'components/ui';
 import './AddressLabel.scss';
 
-interface AddressToLabelDictionary {
-  [address: string]: string;
+interface StateProps {
+  labels: ReturnType<typeof getLabels>;
 }
 
-interface Props {
-  address: string;
-  labels: AddressToLabelDictionary;
-  addLabelForAddress(addressLabelPair: AddressLabelPair): void;
+interface DispatchProps {
+  addLabelForAddress: TAddLabelForAddress;
 }
+
+interface OwnProps {
+  address: string;
+}
+
+type Props = StateProps & DispatchProps & OwnProps;
 
 interface State {
   mode: number;
@@ -29,7 +33,7 @@ enum AddressLabelModes {
 }
 
 interface RenderMethods {
-  [mode: string]: () => JSX.Element;
+  [mode: string]: () => ReactNode;
 }
 
 class AddressLabel extends React.Component<Props> {

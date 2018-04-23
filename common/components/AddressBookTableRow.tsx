@@ -71,7 +71,7 @@ class AddressBookTableRow extends React.Component<Props> {
 
   private handleSave = () => this.props.onSave(this.state.label);
 
-  private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
+  private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === KeyCodes.ENTER) {
       this.handleSave();
 

@@ -3,26 +3,26 @@ import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
-import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
+import { IWallet, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
-import { getLabels } from 'selectors/addressBook';
 import { AppState } from 'reducers';
-import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
 import AddressLabel from '../AddressLabel';
 import './AccountInfo.scss';
+import { getEtherBalance, isEtherBalancePending } from 'selectors/wallet';
 
 interface OwnProps {
   wallet: IWallet;
 }
 
 interface StateProps {
-  balance: Balance;
-  network: NetworkConfig;
-  isOffline: boolean;
+  etherBalance: ReturnType<typeof getEtherBalance>;
+  etherBalancePending: ReturnType<typeof isEtherBalancePending>;
+  network: ReturnType<typeof getNetworkConfig>;
+  isOffline: ReturnType<typeof getOffline>;
 }
 
 interface State {
@@ -88,9 +88,8 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, balance, isOffline, labels } = this.props;
+    const { network, etherBalance, isOffline, etherBalancePending } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
-    const label = labels[address] || null;
 
     let blockExplorer;
     let tokenExplorer;
@@ -161,16 +160,16 @@ class AccountInfo extends React.Component<Props, State> {
                 onClick={this.toggleShowLongBalance}
               >
                 <UnitDisplay
-                  value={balance.wei}
+                  value={etherBalance}
                   unit={'ether'}
                   displayShortBalance={!showLongBalance}
                   checkOffline={true}
-                  symbol={balance.wei ? network.name : null}
+                  symbol={etherBalance ? network.name : null}
                 />
               </span>
-              {balance.wei && (
+              {etherBalance && (
                 <React.Fragment>
-                  {balance.isPending ? (
+                  {etherBalancePending ? (
                     <Spinner />
                   ) : (
                     !isOffline && (
@@ -220,12 +219,13 @@ class AccountInfo extends React.Component<Props, State> {
     );
   }
 }
+
 function mapStateToProps(state: AppState): StateProps {
   return {
-    balance: state.wallet.balance,
+    etherBalancePending: isEtherBalancePending(state),
+    etherBalance: getEtherBalance(state),
     network: getNetworkConfig(state),
-    isOffline: getOffline(state),
-    labels: getLabels(state)
+    isOffline: getOffline(state)
   };
 }
 const mapDispatchToProps: DispatchProps = { refreshAccountBalance };

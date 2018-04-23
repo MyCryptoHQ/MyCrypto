@@ -109,7 +109,7 @@ class SendTransaction extends React.Component<Props> {
                   <Route
                     path={`${currentPath}/address-book`}
                     exact={true}
-                    render={() => <AddressBook wallet={wallet} />}
+                    render={() => <AddressBook />}
                   />
                   <RouteNotFound />
                 </Switch>

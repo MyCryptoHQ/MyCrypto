@@ -14,37 +14,39 @@ import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
 import { getNetworkConfig } from 'selectors/config';
-import { getTokens, MergedToken } from 'selectors/wallet';
+import { getTokens } from 'selectors/wallet';
 import { getLabels } from 'selectors/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
-import { StaticNetworkConfig } from 'types/network';
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
 
-interface Props {
-  // Passed props
+interface OwnProps {
   isOpen?: boolean;
   dPath: string;
   dPaths: DPath[];
   publicKey?: string;
   chainCode?: string;
   seed?: string;
+}
 
-  // Redux state
+interface StateProps {
+  labels: ReturnType<typeof getLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
   desiredToken: AppState['deterministicWallets']['desiredToken'];
-  network: StaticNetworkConfig;
-  tokens: MergedToken[];
+  network: ReturnType<typeof getNetworkConfig>;
+  tokens: ReturnType<typeof getTokens>;
+}
 
-  // Redux actions
+interface DispatchProps {
   getDeterministicWallets(args: GetDeterministicWalletsArgs): GetDeterministicWalletsAction;
   setDesiredToken(tkn: string | undefined): SetDesiredTokenAction;
-
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
   onPathChange(path: string): void;
 }
+
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   currentLabel: string;
@@ -339,7 +341,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState): StateProps {
   return {
     labels: getLabels(state),
     wallets: state.deterministicWallets.wallets,

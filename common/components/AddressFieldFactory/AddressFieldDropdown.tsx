@@ -3,23 +3,27 @@ import { connect } from 'react-redux';
 import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
 import translate from 'translations';
-import { setCurrentTo } from 'actions/transaction';
+import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressLabelPair } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
 import { getTransactionToRaw } from 'selectors/transactions';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
-interface ReversedAddressToLabelDictionary {
-  [label: string]: string;
+interface StateProps {
+  labels: ReturnType<typeof getLabels>;
+  currentTo: ReturnType<typeof getTransactionToRaw>;
 }
 
-interface Props {
-  labels: ReversedAddressToLabelDictionary;
-  currentTo: string;
-  setCurrentTo(to: string): void;
-  onSelect(e: React.ChangeEvent<HTMLInputElement>): void;
+interface DispatchProps {
+  setCurrentTo: TSetCurrentTo;
 }
+
+interface OwnProps {
+  onSelect(e: React.FormEvent<HTMLInputElement>): void;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   activeIndex: number | null;
