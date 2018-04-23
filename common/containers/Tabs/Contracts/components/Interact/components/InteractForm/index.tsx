@@ -63,6 +63,13 @@ class InteractForm extends Component<Props, State> {
     };
   }
 
+  public componentWillReceiveProps(nextProps: Props) {
+    const prevProps = this.props;
+    if (nextProps.currentTo.raw !== prevProps.currentTo.raw) {
+      nextProps.resetState();
+    }
+  }
+
   public isContractsValid = () => {
     const { contracts } = this.props;
     return contracts && contracts.length;
