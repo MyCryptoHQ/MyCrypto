@@ -4,13 +4,17 @@ import { takeEvery, put, take, race, fork, select } from 'redux-saga/effects';
 import {
   setUnitMeta,
   TypeKeys as TransactionTypeKeys,
-  reset as resetActionCreator,
-  ResetAction
+  resetTransactionRequested,
+  resetTransactionSuccessful
 } from 'actions/transaction';
 import { getNetworkUnit } from 'selectors/config';
+import { isContractInteraction } from 'selectors/transaction';
 
 export function* resetTransactionState(): SagaIterator {
-  yield put(resetActionCreator());
+  const contractInteraction: ReturnType<typeof isContractInteraction> = yield select(
+    isContractInteraction
+  );
+  yield put(resetTransactionSuccessful({ isContractInteraction: contractInteraction }));
 }
 
 /**
@@ -26,11 +30,7 @@ export function* watchTransactionState(): SagaIterator {
     ]);
 
     const { bail } = yield race({
-      bail: take([
-        TransactionTypeKeys.RESET,
-        WalletTypeKeys.WALLET_RESET,
-        WalletTypeKeys.WALLET_RESET
-      ]), // bail on actions that would wipe state
+      bail: take([TransactionTypeKeys.RESET_REQUESTED, WalletTypeKeys.WALLET_RESET]), // bail on actions that would wipe state
       wipeState: take([
         TransactionTypeKeys.CURRENT_TO_SET,
         TransactionTypeKeys.CURRENT_VALUE_SET,
@@ -50,31 +50,18 @@ export function* watchTransactionState(): SagaIterator {
       continue;
     }
 
-    yield put(
-      resetActionCreator({
-        exclude: {
-          fields: ['data', 'gasLimit', 'gasPrice', 'nonce', 'to', 'value'],
-          meta: ['decimal', 'from', 'previousUnit', 'tokenTo', 'tokenValue', 'unit']
-        },
-        include: {}
-      })
-    );
+    yield put(resetTransactionRequested());
   }
 }
 
-export function* setNetworkUnit({ payload: { exclude, include } }: ResetAction): SagaIterator {
-  if (exclude.meta && exclude.meta.includes('unit')) {
-    return;
-  }
-  if (include.meta && !include.meta.includes('unit')) {
-    return;
-  }
+export function* setNetworkUnit(): SagaIterator {
   const networkUnit = yield select(getNetworkUnit);
   yield put(setUnitMeta(networkUnit));
 }
 
 export const reset = [
   takeEvery([WalletTypeKeys.WALLET_RESET], resetTransactionState),
+  takeEvery(TransactionTypeKeys.RESET_REQUESTED, resetTransactionState),
   fork(watchTransactionState),
-  takeEvery(TransactionTypeKeys.RESET, setNetworkUnit)
+  takeEvery(TransactionTypeKeys.RESET_SUCCESSFUL, setNetworkUnit)
 ];
