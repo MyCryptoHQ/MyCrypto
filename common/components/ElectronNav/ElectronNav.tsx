@@ -5,7 +5,6 @@ import { navigationLinks } from 'config';
 import NavigationLink from 'components/NavigationLink';
 import NetworkSelector from 'components/NetworkSelector';
 import LanguageSelect from './LanguageSelect';
-import NodeSelect from './NodeSelect';
 import NetworkStatus from './NetworkStatus';
 import './ElectronNav.scss';
 
