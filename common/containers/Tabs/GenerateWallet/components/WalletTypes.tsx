@@ -39,7 +39,7 @@ const WalletTypes: React.SFC<{}> = () => {
           $metamask_link: 'https://metamask.io/',
           $ledger_link: ledgerReferralURL,
           $trezor_link: trezorReferralURL
-        })}
+        })}{' '}
         <HelpLink article={HELP_ARTICLE.DIFFERENCE_BETWEEN_PKEY_AND_KEYSTORE}>
           {translate('GENERATE_WALLET_HELPLINK_1')}
         </HelpLink>

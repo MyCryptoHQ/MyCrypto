@@ -53,7 +53,9 @@ class AddressesClass extends Component<StateProps> {
                   </div>
                   <div className="tx-modal-address-tkn-contract-content">
                     <p className="tx-modal-address-tkn-contract-title">
-                      {translate('CONFIRM_TX_VIA_CONTRACT', { unit })}
+                      {translate('CONFIRM_TX_VIA_CONTRACT', {
+                        $unit: unit
+                      })}
                     </p>
                     <a
                       className="small tx-modal-address-tkn-contract-link"

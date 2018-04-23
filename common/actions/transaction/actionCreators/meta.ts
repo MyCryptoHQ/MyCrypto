@@ -2,7 +2,9 @@ import {
   TypeKeys,
   SetUnitMetaAction,
   SetTokenValueMetaAction,
-  SetTokenToMetaAction
+  SetTokenToMetaAction,
+  SetAsContractInteractionAction,
+  SetAsViewAndSendAction
 } from 'actions/transaction';
 
 export type TSetTokenTo = typeof setTokenTo;
@@ -24,3 +26,11 @@ export const setUnitMeta = (payload: SetUnitMetaAction['payload']): SetUnitMetaA
   type: TypeKeys.UNIT_META_SET,
   payload
 });
+
+export type TSetAsContractInteraction = typeof setAsContractInteraction;
+export const setAsContractInteraction = (): SetAsContractInteractionAction => ({
+  type: TypeKeys.IS_CONTRACT_INTERACTION
+});
+
+export type TSetAsViewAndSend = typeof setAsViewAndSend;
+export const setAsViewAndSend = (): SetAsViewAndSendAction => ({ type: TypeKeys.IS_VIEW_AND_SEND });
