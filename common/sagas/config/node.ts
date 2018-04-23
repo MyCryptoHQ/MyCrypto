@@ -132,6 +132,11 @@ export function* handleChangeNodeRequested({
   const isStaticNode: boolean = yield select(isStaticNodeId, nodeIdToSwitchTo);
   const currentConfig: NodeConfig = yield select(getNodeConfig);
 
+  // Bail out if they're switching to the same node
+  if (currentConfig.id === nodeIdToSwitchTo) {
+    return;
+  }
+
   function* bailOut(message: string) {
     yield put(showNotification('danger', message, 5000));
   }

@@ -9,7 +9,6 @@ import {
   changeNetworkRequested
 } from 'actions/config';
 import {
-  getNodeId,
   getNodeConfig,
   getNetworkConfig,
   getAllNodes,
@@ -29,7 +28,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  nodeSelection: string;
   node: NodeConfig;
   network: NetworkConfig;
   allNodes: { [key: string]: NodeConfig };
@@ -55,8 +53,7 @@ class NetworkSelector extends React.Component<Props> {
   };
 
   public componentDidMount() {
-    const { allNodes, nodeSelection } = this.props;
-    const node = allNodes[nodeSelection];
+    const { node } = this.props;
     const newState = { ...this.state };
     // Expand alt networks by default if they're on one
     if (!CORE_NETWORKS.includes(node.network)) {
@@ -70,18 +67,17 @@ class NetworkSelector extends React.Component<Props> {
   }
 
   public render() {
-    const { allNodes, allNetworks, nodeSelection } = this.props;
+    const { allNodes, allNetworks, node } = this.props;
     const { expandedNetwork, isShowingAltNetworks } = this.state;
-    const selectedNode = allNodes[nodeSelection];
 
     const nodesByNetwork = {} as {
       [network: string]: NodeConfig[];
     };
-    Object.values(allNodes).forEach((node: NodeConfig) => {
-      if (!nodesByNetwork[node.network]) {
-        nodesByNetwork[node.network] = [];
+    Object.values(allNodes).forEach((n: NodeConfig) => {
+      if (!nodesByNetwork[n.network]) {
+        nodesByNetwork[n.network] = [];
       }
-      nodesByNetwork[node.network].push(node);
+      nodesByNetwork[n.network].push(n);
     }, {});
 
     const options = {
@@ -103,8 +99,8 @@ class NetworkSelector extends React.Component<Props> {
             key={netKey}
             network={allNetworks[netKey]}
             nodes={nodesByNetwork[netKey]}
-            nodeSelection={nodeSelection}
-            isNetworkSelected={selectedNode.network === netKey}
+            nodeSelection={node.id}
+            isNetworkSelected={node.network === netKey}
             isExpanded={expandedNetwork === allNetworks[netKey]}
             selectNetwork={this.selectNetwork}
             selectNode={this.selectNode}
@@ -132,6 +128,11 @@ class NetworkSelector extends React.Component<Props> {
   }
 
   private selectNetwork = (net: NetworkConfig) => {
+    const { node } = this.props;
+    if (net.id === node.network && node.isAuto) {
+      return;
+    }
+
     this.props.changeNetworkRequested(net.id);
     if (this.props.onSelectNetwork) {
       this.props.onSelectNetwork(net);
@@ -139,6 +140,10 @@ class NetworkSelector extends React.Component<Props> {
   };
 
   private selectNode = (node: NodeConfig) => {
+    if (node.id === this.props.node.id) {
+      return;
+    }
+
     this.props.changeNodeRequested(node.id);
     if (this.props.onSelectNode) {
       this.props.onSelectNode(node);
@@ -158,7 +163,6 @@ class NetworkSelector extends React.Component<Props> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    nodeSelection: getNodeId(state),
     node: getNodeConfig(state),
     network: getNetworkConfig(state),
     allNodes: getAllNodes(state),

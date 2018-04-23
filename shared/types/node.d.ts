@@ -4,6 +4,7 @@ import { StaticNodesState, CustomNodesState } from 'reducers/config/nodes';
 interface CustomNodeConfig {
   id: string;
   isCustom: true;
+  isAuto: undefined;
   name: string;
   service: 'your custom node';
   url: string;
