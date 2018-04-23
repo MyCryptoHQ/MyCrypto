@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import translate from 'translations';
 import { navigationLinks } from 'config';
 import NavigationLink from 'components/NavigationLink';
+import NetworkSelector from 'components/NetworkSelector';
 import LanguageSelect from './LanguageSelect';
 import NodeSelect from './NodeSelect';
 import NetworkStatus from './NetworkStatus';
@@ -80,7 +81,13 @@ export default class ElectronNav extends React.Component<{}, State> {
   };
 
   private openNodeSelect = () => {
-    const panelContent = <NodeSelect closePanel={this.closePanel} />;
+    const panelContent = (
+      <NetworkSelector
+        onSelectNetwork={this.closePanel}
+        onSelectNode={this.closePanel}
+        openCustomNodeModal={this.closePanel}
+      />
+    );
     this.setState({
       panelContent,
       isPanelOpen: true

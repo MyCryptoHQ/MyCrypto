@@ -523,7 +523,7 @@
     "CUSTOM_NETWORK_CHAIN_ID": "Chain ID",
     "CUSTOM_NETWORK_URL": "URL",
     "CUSTOM_NETWORK_HTTP_AUTH": "HTTP Basic Authentication",
-    "NETWORKS_SWITCH": "Switch the the $network network",
+    "NETWORKS_SWITCH": "Switch to the $network network",
     "NETWORKS_ALTERNATIVE": "Other Networks",
     "NETWORK_UNKNOWN_ERROR": "Unknown network '$network', try adding a custom node or connecting to a different one",
     "BROADCAST_TX_TITLE": "Broadcast Signed Transaction",
