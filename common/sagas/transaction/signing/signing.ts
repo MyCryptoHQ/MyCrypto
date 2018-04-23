@@ -6,7 +6,7 @@ import {
   signLocalTransactionSucceeded,
   signWeb3TransactionSucceeded,
   TypeKeys,
-  reset,
+  resetTransactionRequested,
   SignWeb3TransactionSucceededAction,
   SignLocalTransactionSucceededAction,
   SignTransactionRequestedAction
@@ -89,7 +89,7 @@ function* verifyTransaction({
     yield put(
       showNotification('danger', 'Something went wrong signing your transaction, please try again')
     );
-    yield put(reset());
+    yield put(resetTransactionRequested());
   }
 }
 

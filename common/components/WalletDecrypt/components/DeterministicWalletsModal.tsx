@@ -119,7 +119,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             <div className="DWModal-path-select">
               <Select
                 name="fieldDPath"
-                className=""
                 value={this.state.currentLabel || this.findDPath('value', dPath).value}
                 onChange={this.handleChangePath}
                 options={dPaths.concat([customDPath])}
