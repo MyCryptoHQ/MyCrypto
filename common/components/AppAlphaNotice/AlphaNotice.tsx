@@ -8,10 +8,13 @@ interface State {
   isFading: boolean;
   isClosed: boolean;
 }
+
+let hasAcknowledged = false;
+
 export default class AppAlphaNotice extends React.PureComponent<{}, State> {
   public state = {
     isFading: false,
-    isClosed: false
+    isClosed: hasAcknowledged
   };
 
   public render() {
@@ -54,6 +57,7 @@ export default class AppAlphaNotice extends React.PureComponent<{}, State> {
   }
 
   private doContinue = () => {
+    hasAcknowledged = true;
     this.setState({ isFading: true });
     setTimeout(() => {
       this.setState({ isClosed: true });
