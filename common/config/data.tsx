@@ -9,7 +9,8 @@ export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
-export const VERSION = `${packageJson.version} (Release Candidate)`;
+export const VERSION_RAW = packageJson.version;
+export const VERSION = `${VERSION_RAW} (Release Candidate)`;
 export const N_FACTOR = 8192;
 
 // Displays at the top of the site, make message empty string to remove.
