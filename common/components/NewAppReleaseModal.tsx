@@ -1,8 +1,8 @@
 import React from 'react';
-import semver from 'semver';
 import translate, { translateRaw } from 'translations';
 import Modal, { IButton } from 'components/ui/Modal';
-import { VERSION_RAW } from 'config';
+import { VERSION_RC } from 'config';
+import { isNewerVersion } from 'utils/helpers';
 
 interface IGitHubRelease {
   tag_name: string;
@@ -32,7 +32,8 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
   public async componentDidMount() {
     try {
       const release = await getLatestGitHubRelease();
-      if (semver.lt(VERSION_RAW, release.tag_name)) {
+      // TODO: Use VERSION once done with release candidates
+      if (isNewerVersion(VERSION_RC, release.tag_name)) {
         this.setState({ isOpen: true });
       }
     } catch (err) {

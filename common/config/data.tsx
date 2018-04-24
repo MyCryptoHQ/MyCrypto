@@ -13,10 +13,12 @@ export const VERSION_RAW = packageJson.version;
 export const VERSION = `${VERSION_RAW} (Release Candidate)`;
 export const N_FACTOR = 8192;
 
-// Bricks the app once this date has been exceeded. Remember to update this
-// for one month out whenever making a new app release.
+// Bricks the app once this date has been exceeded. Remember to update these 2
+// whenever making a new app release.
 // It is currently set to: 05/25/2018 @ 12:00am (UTC)
+// TODO: Remove me once app alpha / release candidates are done
 export const APP_ALPHA_EXPIRATION = 1527206400000;
+export const VERSION_RC = `${packageJson.version}-RC.0`;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, info, or blank for grey.
