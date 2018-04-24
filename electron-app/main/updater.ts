@@ -1,4 +1,4 @@
-import { app, dialog, BrowserWindow } from 'electron';
+import { app, dialog, BrowserWindow, shell } from 'electron';
 import { autoUpdater, UpdateInfo } from 'electron-updater';
 import { APP_TITLE, REPOSITORY } from '../constants';
 import TEST_RELEASE from './testrelease.json';
@@ -28,20 +28,28 @@ export default function(mainWindow: BrowserWindow) {
     dialog.showMessageBox(
       {
         type: 'question',
-        buttons: ['Yes, start downloading', 'Maybe later'],
-        title: `An Update is Available (v${info.version})`,
-        message: `An Update is Available (v${info.version})`,
+        title: `A New Version is Available (v${info.version})`,
+        message: `A New Version is Available (v${info.version})`,
         detail:
-          'A new version has been released. Would you like to start downloading the update? You will be notified when the download is finished.'
+          'A new version of MyCrypto has been released. You can update it by visiting GitHub and downloading the latest version.',
+        buttons: ['Yes, take me to GitHub', 'Maybe later']
+        // TODO: Temporarily disabled auto-update while in alpha
+        // detail:
+        //   'A new version has been released. Would you like to start downloading the update? You will be notified when the download is finished.'
+        // buttons: ['Yes, start downloading', 'Maybe later'],
       },
       response => {
         if (response === 0) {
-          if (shouldMockUpdate) {
-            mockDownload();
-          } else {
-            autoUpdater.downloadUpdate();
-          }
+          shell.openExternal('https://github.com/MyCryptoHQ/MyCrypto/releases/latest');
         }
+        // TODO: Temporarily disabled auto-update while in alpha
+        // if (response === 0) {
+        //   if (shouldMockUpdate) {
+        //     mockDownload();
+        //   } else {
+        //     autoUpdater.downloadUpdate();
+        //   }
+        // }
       }
     );
     hasStartedUpdating = true;
@@ -115,6 +123,7 @@ function mockUpdateCheck() {
   }, 3000);
 }
 
+// @ts-ignore unused until
 function mockDownload() {
   for (let i = 0; i < 11; i++) {
     setTimeout(() => {
