@@ -554,6 +554,7 @@
     "NO_CONTRACTS_AVAILABLE": "No contracts available",
     "NETWORK_STATUS_ONLINE": "Connected to $network network",
     "NETWORK_STATUS_OFFLINE": "Disconnected from $network network",
-    "NETWORK_STATUS_CONNECTING": "Connecting..."
+    "NETWORK_STATUS_CONNECTING": "Connecting...",
+    "WELCOME_MODAL_TITLE": "Welcome to the all new MyCrypto"
   }
 }
