@@ -16,8 +16,9 @@ interface PropsClosed {
 
 interface PropsOpen {
   isOpen: true;
-  rlp: string;
+  isMessage: boolean;
   from: string;
+  data: string;
 }
 
 interface ActionProps {
@@ -40,7 +41,7 @@ class QrSignerModal extends React.Component<Props, State> {
     }
 
     const { scan } = this.state;
-    const { from, rlp } = this.props;
+    const { from, data, isMessage } = this.props;
 
     const buttons: IButton[] = [
       {
@@ -60,7 +61,7 @@ class QrSignerModal extends React.Component<Props, State> {
     return (
       <div className="QrSignerModal">
         <Modal
-          title={translateRaw('DEP_SIGNTX')}
+          title={translateRaw(isMessage ? 'NAV_SIGNMSG' : 'DEP_SIGNTX')}
           isOpen={true}
           buttons={buttons}
           handleClose={this.onClose}
@@ -68,8 +69,10 @@ class QrSignerModal extends React.Component<Props, State> {
           <div className="QrSignerModal-qr-bounds">
             {scan ? (
               <ParityQrSigner scan={true} onScan={this.onScan} />
+            ) : isMessage ? (
+              <ParityQrSigner scan={false} account={from} data={data} />
             ) : (
-              <ParityQrSigner scan={false} account={from} rlp={rlp} />
+              <ParityQrSigner scan={false} account={from} rlp={data} />
             )}
           </div>
         </Modal>
@@ -103,12 +106,9 @@ function mapStateToProps(state: AppState): PropsClosed | PropsOpen {
     return { isOpen: false };
   }
 
-  const { from, rlp } = requested;
-
   return {
     isOpen: true,
-    from,
-    rlp
+    ...requested
   };
 }
 

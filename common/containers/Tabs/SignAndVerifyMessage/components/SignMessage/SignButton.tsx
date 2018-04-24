@@ -1,14 +1,10 @@
 import React from 'react';
 import translate from 'translations';
-import { ISignedMessage } from 'libs/signing';
-import { IFullWallet } from 'libs/wallet';
-import { TShowNotification } from 'actions/notifications';
+import { TSignMessageRequested } from 'actions/message';
 
 interface Props {
-  wallet: IFullWallet;
   message: string;
-  showNotification: TShowNotification;
-  onSignMessage(msg: ISignedMessage): any;
+  signMessageRequested: TSignMessageRequested;
 }
 
 export default class SignMessageButton extends React.Component<Props, {}> {
@@ -20,24 +16,9 @@ export default class SignMessageButton extends React.Component<Props, {}> {
     );
   }
 
-  private handleSignMessage = async () => {
-    const { wallet, message, showNotification, onSignMessage } = this.props;
+  private handleSignMessage = () => {
+    const { signMessageRequested, message } = this.props;
 
-    try {
-      const signedMessage: ISignedMessage = {
-        address: wallet.getAddressString(),
-        msg: message,
-        sig: await wallet.signMessage(message),
-        version: '2'
-      };
-
-      onSignMessage(signedMessage);
-      showNotification(
-        'success',
-        translate('SIGN_MSG_SUCCESS', { $address: signedMessage.address })
-      );
-    } catch (err) {
-      showNotification('danger', translate('SIGN_MSG_FAIL', { $err: err.message }));
-    }
+    signMessageRequested(message);
   };
 }

@@ -9,6 +9,7 @@ import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
 import { State as TransactionState, transaction } from './transaction';
+import { State as MessageState, message } from './message';
 import { State as GasState, gas } from './gas';
 import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 import { State as TransactionsState, transactions } from './transactions';
@@ -28,6 +29,7 @@ export interface AppState {
   swap: SwapState;
   transaction: TransactionState;
   transactions: TransactionsState;
+  message: MessageState;
   paritySigner: ParitySignerState;
   gas: GasState;
   schedule: ScheduleState;
@@ -47,6 +49,7 @@ export default combineReducers<AppState>({
   deterministicWallets,
   transaction,
   transactions,
+  message,
   paritySigner,
   gas,
   schedule,
