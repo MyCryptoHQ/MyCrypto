@@ -7,6 +7,13 @@ import {
 import { createClientRpcHandler } from './client-utils';
 import EventEmitter from 'events';
 
+/**
+ * This is what the web facing side would use as a package to interact with the enclave
+ * It contains logic to differentiate between electron and browser / node enviroments
+ * And then its functions communicate with the "server" to perform RPC calls
+ * This file is the equivalent to a Provider for shepherd / INode implementation
+ */
+
 const eventEmitter = new EventEmitter();
 function isElectronEnv() {
   return process.env.BUILD_ELECTRON;

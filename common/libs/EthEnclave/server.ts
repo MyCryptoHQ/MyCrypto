@@ -10,6 +10,12 @@ import {
 import { ipcMain } from 'electron';
 import { createServerRpcHandler } from './server-utils';
 
+/**
+ * Contains the "server" implementation, currently only for electron
+ * this should be run in ipcMain process to have access to node-hid
+ * to perform signing actions for hardware wallets
+ */
+
 // mock
 // this hard codes electron specific sending atm (ev.sender.send)
 export const signRawTransactionRequest: RpcEventHandler<
