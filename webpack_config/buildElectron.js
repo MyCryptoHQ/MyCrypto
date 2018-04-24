@@ -61,14 +61,8 @@ async function build() {
           icon: path.join(config.path.electron, 'icons/icon.png'),
           compression
         },
-        publish: {
-          // IMPORTANT: Prevents GH publish attempts in CI
-          publish: 'never',
-          provider: 'github',
-          owner: 'MyCryptoHQ',
-          repo: 'MyCrypto',
-          vPrefixedTagName: false
-        },
+        // IMPORTANT: Prevents from auto publishing to GitHub in CI environments
+        publish: null,
         // IMPORTANT: Prevents extending configs in node_modules
         extends: null
       }
