@@ -35,12 +35,12 @@ const clientRecieve = receiveOnChannelFactory((res, rej, id) =>
   matchOnId(id, handleServerResponse(res, rej))
 );
 
-export const createClientRpcHandler = <T = any, R = any>(
+export const createClientRpcHandler = <Payload = any, Ret = any>(
   target: any,
   channel: EnclaveEvents,
   sender: any,
   receiver: any
-) => (payload: T): Promise<R> => {
+) => (payload: Payload): Promise<Ret> => {
   const id = genId();
   const sendingChannel = createRpcRequestedEv(channel);
   const receivingChannel = createRpcProcessedEv(channel);

@@ -15,15 +15,15 @@ export const createRpcProcessedEv = (e: EnclaveEvents) => `${e}-processed`;
 type Resolve<T = any> = (value?: T | PromiseLike<T>) => void;
 type Reject<T = any> = (reason?: T) => void;
 
-export type ReceiveCb<Arguments = any, Ret = any> = (
+export type ReceiveCb<Arguments, Ret> = (
   res: Resolve,
   rej: Reject,
   id?: number
 ) => RpcEventHandler<Arguments, Ret>;
 
-export const receiveOnChannelFactory = <Arguments = any, Ret = any, K = any>(
-  cb: ReceiveCb<Arguments, Ret>
-) => (channel: string, target: any, on: any, id?: number): Promise<K> =>
+export const receiveOnChannelFactory = <CbArgs = any, CbRet = any, Ret = any>(
+  cb: ReceiveCb<CbArgs, CbRet>
+) => (channel: string, target: any, on: any, id?: number): Promise<Ret> =>
   new Promise((res, rej) => on.call(target, channel, cb(res, rej, id)));
 
 export const sendOnChannel = (

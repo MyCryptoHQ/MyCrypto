@@ -1,8 +1,13 @@
-import { SignRawTransactionParams, ElectronInjectedGlobals, EnclaveEvents } from './types';
+import {
+  SignRawTransactionParams,
+  ElectronInjectedGlobals,
+  EnclaveEvents,
+  SignRawTransaction
+} from './types';
 import { createClientRpcHandler } from './client-utils';
 import EventEmitter from 'events';
 
-const myEE = new EventEmitter();
+const eventEmitter = new EventEmitter();
 function isElectronEnv() {
   return process.env.BUILD_ELECTRON;
 }
@@ -18,6 +23,11 @@ export function signRawTransaction(params: SignRawTransactionParams) {
     w.signRawTransaction(params);
   } else {
     // otherwise create an rpc event handler based on "events" package
-    createClientRpcHandler(myEE, EnclaveEvents.SIGN_RAW_TRANSACTION, myEE.emit, myEE.on);
+    createClientRpcHandler<SignRawTransactionParams, SignRawTransaction>(
+      eventEmitter,
+      EnclaveEvents.SIGN_RAW_TRANSACTION,
+      eventEmitter.emit,
+      eventEmitter.on
+    );
   }
 }
