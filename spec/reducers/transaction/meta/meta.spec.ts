@@ -105,6 +105,6 @@ describe('meta reducer', () => {
       ...INITIAL_STATE,
       unit: 'modified'
     };
-    expect(meta(modifiedState, resetAction)).toEqual(INITIAL_STATE);
+    expect(meta(modifiedState, resetAction)).toEqual(modifiedState);
   });
 });
