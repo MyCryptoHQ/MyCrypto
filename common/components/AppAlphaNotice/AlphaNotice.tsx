@@ -47,6 +47,12 @@ export default class AppAlphaNotice extends React.PureComponent<{}, State> {
             or join our <NewTabLink href={discordURL}>Discord server</NewTabLink> to discuss the
             app.
           </p>
+          <p>
+            <b>
+              For critical reports & vulnerabilities, please use{' '}
+              <NewTabLink href="https://hackerone.com/MyCrypto">HackerOne</NewTabLink>.
+            </b>
+          </p>
 
           <button className="AppAlpha-content-btn is-continue" onClick={this.doContinue}>
             Continue to the Alpha

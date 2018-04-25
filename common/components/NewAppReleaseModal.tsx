@@ -64,7 +64,7 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
         handleClose={this.close}
         maxWidth={520}
       >
-        {translate('APP_UPDATE_BODY')}
+        <h5>{translateRaw('APP_UPDATE_BODY')}</h5>
       </Modal>
     );
   }

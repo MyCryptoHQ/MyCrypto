@@ -557,7 +557,7 @@
     "NETWORK_STATUS_CONNECTING": "Connecting...",
     "APP_UPDATE_TITLE": "New App Version Available",
     "APP_UPDATE_BODY": "An updated version of the MyCrypto app has just been released! You can upgrade to the new version by downloading it from our GitHub release page.",
-    "APP_UPDATE_CONFIRM": "Get the new version",
-    "APP_UPDATE_CANCEL": "Maybe later"
+    "APP_UPDATE_CONFIRM": "Get the New Version",
+    "APP_UPDATE_CANCEL": "Maybe Later"
   }
 }
