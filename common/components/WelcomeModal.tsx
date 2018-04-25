@@ -29,39 +29,26 @@ export default class WelcomeModal extends React.Component<{}, State> {
           <img className="WelcomeModal-logo" src={Logo} />
           {isBetaUser() && (
             <p className="WelcomeModal-beta alert alert-success">
-              💖 Thank you for testing the beta! People like you made this launch possible 🚀
+              💖 {translate('WELCOME_MODAL_BETA')} 🚀
             </p>
           )}
-          <p>
-            Welcome to the all new MyCrypto! We've made some cool new changes to the site that we're
-            excited to show you. Beyond the new and improved look and feel of the site, we've also
-            added a ton of new features:
-          </p>
+          <p>{translate('WELCOME_MODAL_INTRO')}</p>
           <ul>
-            <li>Token balance scanner</li>
-            <li>Combined Send, Info, and Send Offline tabs</li>
-            <li>Parity Signer app integration</li>
-            <li>Recent transactions history</li>
+            <li>{translate('WELCOME_MODAL_FEATURE_1')}</li>
+            <li>{translate('WELCOME_MODAL_FEATURE_2')}</li>
+            <li>{translate('WELCOME_MODAL_FEATURE_3')}</li>
+            <li>{translate('WELCOME_MODAL_FEATURE_4')}</li>
             <li>
               <NewTabLink href="https://download.mycrypto.com/">
-                A downloadable desktop app
+                {translate('WELCOME_MODAL_FEATURE_5')}
               </NewTabLink>
             </li>
-            <li>...and much, much more!</li>
+            <li>{translate('WELCOME_MODAL_FEATURE_MORE')}</li>
           </ul>
-          <p>
-            You can read more about the new release on{' '}
-            <NewTabLink href="https://google.com">our blog post</NewTabLink>. Help out with any
-            issues you find by{' '}
-            <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">
-              reporting bugs on GitHub
-            </NewTabLink>. Need something from the old site, or just miss that clunky feel? We've
-            kept it up at{' '}
-            <NewTabLink href="https://classic.mycrypto.com">classic.mycrypto.com</NewTabLink>.
-          </p>
+          <p>{translate('WELCOME_MODAL_LINKS')}</p>
 
           <button className="WelcomeModal-continue btn btn-lg btn-primary" onClick={this.close}>
-            Show me the new site!
+            {translate('WELCOME_MODAL_CONTINUE')}
           </button>
         </div>
       </Modal>

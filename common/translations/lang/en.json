@@ -556,6 +556,15 @@
     "NETWORK_STATUS_ONLINE": "Connected to $network network",
     "NETWORK_STATUS_OFFLINE": "Disconnected from $network network",
     "NETWORK_STATUS_CONNECTING": "Connecting...",
-    "WELCOME_MODAL_TITLE": "Welcome to the all new MyCrypto"
+    "WELCOME_MODAL_BETA": "Thank you for testing the beta! People like you made this launch possible",
+    "WELCOME_MODAL_INTRO": "Welcome to the all new MyCrypto! We've made some cool new changes to the site that we're excited to show you. Beyond the new and improved look and feel of the site, we've also added a ton of new features:",
+    "WELCOME_MODAL_FEATURE_1": "Token balance scanner",
+    "WELCOME_MODAL_FEATURE_2": "Combined Send, Info, and Send Offline tabs",
+    "WELCOME_MODAL_FEATURE_3": "Parity Signer app integration",
+    "WELCOME_MODAL_FEATURE_4": "Recent transactions history",
+    "WELCOME_MODAL_FEATURE_5": "A downloadable desktop app",
+    "WELCOME_MODAL_FEATURE_MORE": "...and much, much more!",
+    "WELCOME_MODAL_LINKS": "You can read more about the new release on [our blog post](https://google.com). Help out with any issues you find by [reporting bugs on GitHub](https://github.com/MyCryptoHQ/MyCrypto/issues). Need something from the old site, or just miss that clunky feel? We've kept it up as [MyCrypto Classic](https://classic.mycrypto.com).",
+    "WELCOME_MODAL_CONTINUE": "Show me the new site!"
   }
 }
