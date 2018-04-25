@@ -5,10 +5,26 @@ import { isLegacyUser, isBetaUser } from 'utils/localStorage';
 import Logo from 'assets/images/logo-mycrypto-transparent.svg';
 import './WelcomeModal.scss';
 
-export default class WelcomeModal extends React.Component<{}> {
+const LS_KEY = 'acknowledged-welcome';
+
+interface State {
+  isOpen: boolean;
+}
+
+export default class WelcomeModal extends React.Component<{}, State> {
+  public state: State = {
+    isOpen: false
+  };
+
+  public componentDidMount() {
+    if (isLegacyUser() && !localStorage.getItem(LS_KEY)) {
+      this.setState({ isOpen: true });
+    }
+  }
+
   public render() {
     return (
-      <Modal isOpen={true} handleClose={this.close} maxWidth={660}>
+      <Modal isOpen={this.state.isOpen} handleClose={this.close} maxWidth={660}>
         <div className="WelcomeModal">
           <img className="WelcomeModal-logo" src={Logo} />
           {isBetaUser() && (
@@ -52,5 +68,8 @@ export default class WelcomeModal extends React.Component<{}> {
     );
   }
 
-  private close = () => console.log('close');
+  private close = () => {
+    this.setState({ isOpen: false });
+    localStorage.setItem(LS_KEY, 'true');
+  };
 }

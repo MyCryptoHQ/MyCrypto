@@ -65,10 +65,11 @@ function getWalletConfigKey(wallet: IWallet): string {
 }
 
 export function isLegacyUser() {
-  const oldLSValue = localStorage.getItem('gasPrice');
+  // All devs are legacy users!
+  const oldLSValue = localStorage.getItem('gasPrice') || process.env.NODE_ENV !== 'production';
   const onboardProgress = localStorage.getItem(ONBOARD_LOCAL_STORAGE_KEY);
 
-  if (oldLSValue && onboardProgress && parseInt(onboardProgress, 10) > NUMBER_OF_ONBOARD_SLIDES) {
+  if (oldLSValue && onboardProgress && parseInt(onboardProgress, 10) >= NUMBER_OF_ONBOARD_SLIDES) {
     return true;
   }
   return false;
