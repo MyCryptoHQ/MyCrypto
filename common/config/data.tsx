@@ -1,5 +1,4 @@
-import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
-import NewTabLink from 'components/ui/NewTabLink';
+// import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 import { getValues } from '../utils/helpers';
 import packageJson from '../../package.json';
 import { GasPriceSetting } from 'types/network';
@@ -16,14 +15,7 @@ export const N_FACTOR = 8192;
 // Type can be primary, warning, danger, success, info, or blank for grey.
 // Message must be a JSX element if you want to use HTML.
 export const ANNOUNCEMENT_TYPE = '';
-export const ANNOUNCEMENT_MESSAGE = (
-  <React.Fragment>
-    This is a Beta Release Candidate of the new MyCrypto. Please submit any bug reports to our{' '}
-    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink> and use{' '}
-    <NewTabLink href="https://hackerone.com/mycrypto">HackerOne</NewTabLink> for critical
-    vulnerabilities. Join the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
-  </React.Fragment>
-);
+export const ANNOUNCEMENT_MESSAGE = '';
 
 const etherScan = 'https://etherscan.io';
 const blockChainInfo = 'https://blockchain.info';
