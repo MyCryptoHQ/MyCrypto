@@ -5,7 +5,7 @@
     "X_CANCELREPLACETX": "Cancel or Replace Transaction",
     "X_CANCELTX": "Cancel Transaction",
     "X_PASSWORDDESC":
-      "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**",
+      "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your keystore file to unlock your wallet.**",
     "X_READMORE": "Read More",
     "X_REPLACETX": "Replace Transaction",
     "X_TRANSHASH": "Transaction Hash",
@@ -303,7 +303,7 @@
     "NODE_TITLE": "Set Up Your Custom Node",
     "NODE_SUBTITLE": "To connect to a local node...",
     "NODE_WARNING":
-      "Your node must be HTTPS in order to connect to it via MyCrypto.com. You can [download the MyCrypto repo & run it locally](https://github.com/MyCryptoHQ/MyCrypto/releases/latest) to connect to any node. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)",
+      "Your node must be HTTPS in order to connect to it via MyCrypto.com. You can [download the MyCrypto repo & run it locally](https://download.mycrypto.com/) to connect to any node. Or, get free SSL certificate via [LetsEncrypt](https://letsencrypt.org/)",
     "NODE_NAME": "Node Name",
     "NODE_PORT": "Node Port",
     "NODE_CTA": "Save & Use Custom Node",
@@ -479,7 +479,7 @@
       "Keep in mind, you must prevent loss of the keys and password due to loss or failure of you hard drive failure, or USB drive, or piece of paper. You also must keep in mind physical loss / damage of an entire area (think fire or flood). ",
     "HELP_2B_TITLE": "2b) How do I safely / offline / cold storage with MyCrypto? ",
     "HELP_2B_DESC_1":
-      "Go to [https://github.com/MyCryptoHQ/MyCrypto/releases/latest](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). ",
+      "Go to [https://download.mycrypto.com/](https://download.mycrypto.com/). ",
     "HELP_2B_DESC_2": "Click on `etherwallet-vX.X.X.X.zip`. ",
     "HELP_2B_DESC_3": "Move zip to an airgapped computer. ",
     "HELP_2B_DESC_4": "Unzip it and double-click `index.html`. ",
@@ -722,7 +722,7 @@
     "HELP_SEC_DESC_4":
       "Check the URL -- This site is being served through GitHub and you can see the source code here: [https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages](https://github.com/MyCryptoHQ/MyCrypto/tree/gh-pages) to [https://www.mycrypto.com](https://www.mycrypto.com). ",
     "HELP_SEC_DESC_5":
-      "For generating wallets, you can download the [source code and run it locally](https://github.com/MyCryptoHQ/MyCrypto/releases/latest). See #5 above. ",
+      "For generating wallets, you can download the [source code and run it locally](https://download.mycrypto.com/). See #5 above. ",
     "HELP_SEC_DESC_6":
       "Generate a test wallet and check and see what network activity is happening. The easiest way for you to do this is to right click on the page and click \"inspect element\". Go to the \"Network\" tab. Generate a test wallet. You will see there is no network activity. You may see something happening that looks like data:image/gif and data:image/png. Those are the QR codes being generated...on your computer...by your computer. No bytes were transferred. ",
     "HELP_SEC_DESC_8":

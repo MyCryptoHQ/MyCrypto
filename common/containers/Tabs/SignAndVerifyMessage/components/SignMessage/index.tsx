@@ -71,7 +71,7 @@ export class SignMessage extends Component<Props, State> {
               signMessageRequested={this.props.signMessageRequested}
             />
 
-            {!!signedMessage && (
+            {signedMessage && (
               <div className="input-group-wrapper SignMessage-inputBox">
                 <label className="input-group">
                   <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>

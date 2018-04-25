@@ -47,14 +47,14 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
   // modeled after
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/controllers/signMsgCtrl.js#L53
   public async signMessage(msg: string): Promise<string> {
-    const msgHex = Buffer.from(msg).toString('hex');
-    try {
-      const signed = await this.ethApp.signPersonalMessage_async(this.getPath(), msgHex);
-      const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
-      return combined;
-    } catch (error) {
-      throw (this.ethApp as any).getError(error);
+    if (!msg) {
+      throw Error('No message to sign');
     }
+    const msgHex = Buffer.from(msg).toString('hex');
+
+    const signed = await this.ethApp.signPersonalMessage_async(this.getPath(), msgHex);
+    const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
+    return combined;
   }
 
   public displayAddress = (
