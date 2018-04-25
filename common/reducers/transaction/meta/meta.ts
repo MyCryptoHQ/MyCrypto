@@ -60,7 +60,8 @@ const tokenToToken = (
 
 const reset = (state: State): State => ({
   ...INITIAL_STATE,
-  isContractInteraction: state.isContractInteraction
+  isContractInteraction: state.isContractInteraction,
+  unit: state.unit
 });
 
 const unitMeta = (state: State, { payload }: SetUnitMetaAction): State => ({
