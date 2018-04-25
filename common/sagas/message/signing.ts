@@ -1,6 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { put, take, apply, takeEvery, call, select } from 'redux-saga/effects';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { showNotification } from 'actions/notifications';
 import { verifySignedMessage } from 'libs/signing';
 import {
@@ -44,7 +44,7 @@ function* signParitySignerMessage(wallet: IFullWallet, msg: string): SagaIterato
   );
 
   if (!sig) {
-    throw new Error(translate('ERROR_38'));
+    throw new Error(translateRaw('ERROR_38'));
   }
 
   yield put(
