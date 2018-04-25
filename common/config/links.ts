@@ -13,13 +13,15 @@ interface Link {
   text: string;
 }
 
+export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com/';
+
 export const socialMediaLinks: Link[] = [
   {
     link: 'https://twitter.com/mycrypto',
     text: 'twitter'
   },
   {
-    link: 'https://www.facebook.com/MyCrypto/',
+    link: 'https://www.facebook.com/mycryptoHQ/',
     text: 'facebook'
   },
   {

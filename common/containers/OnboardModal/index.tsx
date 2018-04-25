@@ -117,12 +117,7 @@ class OnboardModal extends React.Component<Props, State> {
 
     return (
       <div className="OnboardModal">
-        <Modal
-          isOpen={isOpen}
-          buttons={buttons}
-          maxWidth={800}
-          handleClose={() => (slideNumber === NUMBER_OF_ONBOARD_SLIDES ? this.closeModal : null)}
-        >
+        <Modal isOpen={isOpen} buttons={buttons} maxWidth={800} handleClose={this.closeModal}>
           <div className="OnboardModal-stepper">
             <Stepper
               steps={steps}

@@ -18,19 +18,13 @@ export class Fields extends Component<OwnProps> {
           initialState="advanced"
           disableToggle={true}
           advancedGasOptions={{ dataField: false }}
-          resetIncludeExcludeProperties={{ exclude: { fields: ['to'] }, include: {} }}
         />
         {this.props.button}
         <SendButton />
       </React.Fragment>
     );
 
-    const makeDecrypt = () => (
-      <WalletDecrypt
-        disabledWallets={DISABLE_WALLETS.READ_ONLY}
-        resetIncludeExcludeProperties={{ exclude: { fields: ['to'] }, include: {} }}
-      />
-    );
+    const makeDecrypt = () => <WalletDecrypt disabledWallets={DISABLE_WALLETS.READ_ONLY} />;
 
     return <FullWalletOnly withFullWallet={makeContent} withoutFullWallet={makeDecrypt} />;
   }

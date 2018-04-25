@@ -13,11 +13,9 @@ import {
   unlockPrivateKey,
   TUnlockPrivateKey,
   unlockWeb3,
-  TUnlockWeb3,
-  resetWallet,
-  TResetWallet
+  TUnlockWeb3
 } from 'actions/wallet';
-import { reset, TReset, ResetAction } from 'actions/transaction';
+import { resetTransactionRequested, TResetTransactionRequested } from 'actions/transaction';
 import translate, { translateRaw } from 'translations';
 import {
   KeystoreDecrypt,
@@ -59,7 +57,6 @@ interface OwnProps {
   hidden?: boolean;
   disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
-  resetIncludeExcludeProperties?: ResetAction['payload'];
 }
 
 interface DispatchProps {
@@ -68,8 +65,7 @@ interface DispatchProps {
   unlockPrivateKey: TUnlockPrivateKey;
   unlockWeb3: TUnlockWeb3;
   setWallet: TSetWallet;
-  resetWallet: TResetWallet;
-  resetTransactionState: TReset;
+  resetTransactionRequested: TResetTransactionRequested;
   showNotification: TShowNotification;
 }
 
@@ -258,7 +254,7 @@ const WalletDecrypt = withRouter<Props>(
         return (
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
-              walletType={translate(selectedWallet.lid)}
+              walletType={translateRaw(selectedWallet.lid)}
               onContinue={this.handleAcknowledgeInsecure}
               onCancel={this.clearWalletChoice}
             />
@@ -452,7 +448,7 @@ const WalletDecrypt = withRouter<Props>(
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
       this.WALLETS[selectedWalletKey].unlock(unlockValue);
-      this.props.resetTransactionState(this.props.resetIncludeExcludeProperties);
+      this.props.resetTransactionRequested();
     };
 
     private isWalletDisabled = (walletKey: WalletName) => {
@@ -488,7 +484,6 @@ export default connect(mapStateToProps, {
   unlockPrivateKey,
   unlockWeb3,
   setWallet,
-  resetWallet,
-  resetTransactionState: reset,
+  resetTransactionRequested,
   showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;

@@ -23,7 +23,8 @@ describe('meta tests', () => {
       raw: '',
       value: null
     },
-    from: 'fromAddress'
+    from: 'fromAddress',
+    isContractInteraction: false
   }),
     (state.customTokens = [
       {

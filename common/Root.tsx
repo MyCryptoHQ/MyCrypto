@@ -17,6 +17,7 @@ import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
 import OnboardModal from 'containers/OnboardModal';
 import WelcomeModal from 'components/WelcomeModal';
+import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import { Store } from 'redux';
 import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
@@ -108,6 +109,7 @@ class RootClass extends Component<Props, State> {
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
+              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
               {!process.env.DOWNLOADABLE_BUILD && (
                 <React.Fragment>
                   <OnboardModal />
