@@ -24,11 +24,8 @@ class UnitInput extends Component<Props> {
     );
   }
 
-  // add delay to namehash computation / getting the availability
   private onChange = (event: any) => {
-    let nextValue;
-
-    nextValue = event.currentTarget.value === undefined ? '' : event.currentTarget.value;
+    const nextValue = event.currentTarget.value === undefined ? '' : event.currentTarget.value;
     this.props.onUnitChange(this.props.displayUnit, nextValue);
   };
 }

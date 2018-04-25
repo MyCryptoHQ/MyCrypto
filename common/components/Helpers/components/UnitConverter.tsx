@@ -1,6 +1,7 @@
 import React from 'react';
 import UnitInput from './UnitInput';
 import { UnitKey, unitToUnit } from 'libs/units';
+import ETHReferenceGuide from './ETHReferenceGuide';
 
 const unitNames: UnitKey[] = [
   'wei',
@@ -61,6 +62,7 @@ export default class UnitConverter extends React.Component<{}, State> {
         <UnitInput displayUnit="mether" unitValue={units.mether} onUnitChange={this.convertUnit} />
         <UnitInput displayUnit="gether" unitValue={units.gether} onUnitChange={this.convertUnit} />
         <UnitInput displayUnit="tether" unitValue={units.tether} onUnitChange={this.convertUnit} />
+        <ETHReferenceGuide />
       </div>
     );
   }

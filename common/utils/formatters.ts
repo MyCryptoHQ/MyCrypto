@@ -1,4 +1,5 @@
 import BN from 'bn.js';
+import { sha3 } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
 import { stripHexPrefix } from 'libs/values';
 
@@ -118,4 +119,25 @@ export function ensV3Url(name: string) {
 
 export function hexToNumber(hex: string) {
   return new BN(stripHexPrefix(hex)).toNumber();
+}
+
+export function hexToDecimal(hex: string) {
+  return new BN(stripHexPrefix(hex)).toString();
+}
+
+export function decimalToHex(decimal: any) {
+  return new BN(decimal).toString(16);
+}
+
+export function padLeft(n: any, width: number, z?: any) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+export function toKeccak(input: string) {
+  // sha3 is deprecated should be replaced with keccak when the library exports it
+  const output = input !== '' ? sha3(input).toString('hex') : '';
+
+  return output;
 }

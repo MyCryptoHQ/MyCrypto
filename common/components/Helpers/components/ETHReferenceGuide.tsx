@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ETHReferenceGuide.scss';
 
-export default class ETHReferenceGuid extends Component {
+export default class ETHReferenceGuide extends Component {
   public render() {
     return (
       <div>
