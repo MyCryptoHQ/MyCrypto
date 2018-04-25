@@ -266,6 +266,7 @@
     "ERROR_34": "The name you are attempting to reveal does not match the name you have entered. ",
     "ERROR_36": "Enter valid TX hash",
     "ERROR_37": "Enter valid hex string (0-9, a-f)",
+    "ERROR_38": "Invalid signed message. ",
     "SUCCESS_1": "Valid address ",
     "SUCCESS_2": "Wallet successfully decrypted ",
     "SUCCESS_3": "Your TX has been broadcast to the network. It is waiting to be mined & confirmed. During ICOs, it may take 3+ hours to confirm. Use the Verify & Check buttons below to see. TX Hash:  ",

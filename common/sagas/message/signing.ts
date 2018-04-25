@@ -2,11 +2,13 @@ import { SagaIterator } from 'redux-saga';
 import { put, take, apply, takeEvery, call, select } from 'redux-saga/effects';
 import translate from 'translations';
 import { showNotification } from 'actions/notifications';
+import { verifySignedMessage } from 'libs/signing';
 import {
   TypeKeys,
+  SignMessageRequestedAction,
   signLocalMessageSucceeded,
   SignLocalMessageSucceededAction,
-  SignMessageRequestedAction
+  signMessageFailed
 } from 'actions/message';
 import {
   requestMessageSignature,
@@ -42,7 +44,7 @@ function* signParitySignerMessage(wallet: IFullWallet, msg: string): SagaIterato
   );
 
   if (!sig) {
-    throw new Error('Missing signature!');
+    throw new Error(translate('ERROR_38'));
   }
 
   yield put(
@@ -65,15 +67,23 @@ function* handleMessageRequest(action: SignMessageRequestedAction): SagaIterator
   return yield call(signingWrapper, signingHandler, action);
 }
 
-function* notifySuccess(action: SignLocalMessageSucceededAction): SagaIterator {
-  yield put(
-    showNotification('success', translate('SIGN_MSG_SUCCESS', { $address: action.payload.address }))
-  );
+function* verifySignature(action: SignLocalMessageSucceededAction): SagaIterator {
+  const success = yield call(verifySignedMessage, action.payload);
+
+  if (success) {
+    yield put(
+      showNotification(
+        'success',
+        translate('SIGN_MSG_SUCCESS', { $address: action.payload.address })
+      )
+    );
+  } else {
+    yield put(signMessageFailed());
+    yield put(showNotification('danger', translate('ERROR_38')));
+  }
 }
 
 export const signing = [
   takeEvery(TypeKeys.SIGN_MESSAGE_REQUESTED, handleMessageRequest),
-  takeEvery(TypeKeys.SIGN_LOCAL_MESSAGE_SUCCEEDED, notifySuccess)
-  // TODO:
-  // takeEvery(TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED, verifySignature)
+  takeEvery(TypeKeys.SIGN_LOCAL_MESSAGE_SUCCEEDED, verifySignature)
 ];

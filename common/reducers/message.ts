@@ -16,10 +16,19 @@ function signLocalMessageSucceeded(state: State, action: SignLocalMessageSucceed
   };
 }
 
+function signMessageFailed(state: State): State {
+  return {
+    ...state,
+    signed: null
+  };
+}
+
 export function message(state: State = INITIAL_STATE, action: MessageAction): State {
   switch (action.type) {
     case TypeKeys.SIGN_LOCAL_MESSAGE_SUCCEEDED:
       return signLocalMessageSucceeded(state, action);
+    case TypeKeys.SIGN_MESSAGE_FAILED:
+      return signMessageFailed(state);
     default:
       return state;
   }
