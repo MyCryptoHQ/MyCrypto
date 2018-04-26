@@ -1,7 +1,7 @@
 import { State, RequestStatus } from './typings';
 import {
   TypeKeys as TK,
-  ResetAction,
+  ResetTransactionSuccessfulAction,
   NetworkAction,
   InputGasPriceAction,
   InputGasPriceIntentAction
@@ -34,7 +34,11 @@ const reset = () => INITIAL_STATE;
 
 export const network = (
   state: State = INITIAL_STATE,
-  action: NetworkAction | ResetAction | InputGasPriceAction | InputGasPriceIntentAction
+  action:
+    | NetworkAction
+    | ResetTransactionSuccessfulAction
+    | InputGasPriceAction
+    | InputGasPriceIntentAction
 ) => {
   switch (action.type) {
     case TK.ESTIMATE_GAS_REQUESTED:
@@ -65,7 +69,7 @@ export const network = (
     case TK.GAS_PRICE_INPUT:
       return setGasPriceStatus(state, RequestStatus.SUCCEEDED);
 
-    case TK.RESET:
+    case TK.RESET_SUCCESSFUL:
       return reset();
     default:
       return state;

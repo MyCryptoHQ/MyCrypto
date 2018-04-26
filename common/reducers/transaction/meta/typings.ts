@@ -12,4 +12,5 @@ export interface State {
   tokenValue: { raw: string; value: TokenValue | null }; // TODO: fix this workaround since some of the payload is optional
   tokenTo: SetTokenToMetaAction['payload'];
   from: GetFromSucceededAction['payload'] | null;
+  isContractInteraction: boolean;
 }

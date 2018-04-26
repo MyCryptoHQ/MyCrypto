@@ -109,9 +109,9 @@ describe('fields reducer', () => {
   });
 
   it('should reset', () => {
-    const resetAction: txActions.ResetAction = {
-      type: TypeKeys.RESET,
-      payload: { include: {}, exclude: {} }
+    const resetAction: txActions.ResetTransactionSuccessfulAction = {
+      type: TypeKeys.RESET_SUCCESSFUL,
+      payload: { isContractInteraction: false }
     };
     const modifiedState: State = {
       ...INITIAL_STATE,
