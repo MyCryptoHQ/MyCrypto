@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import translate, { translateRaw } from 'translations';
-import { showNotification, TShowNotification } from 'actions/notifications';
+import { signMessageRequested, TSignMessageRequested } from 'actions/message';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
@@ -15,18 +15,17 @@ import { TextArea, CodeBlock } from 'components/ui';
 interface Props {
   wallet: IFullWallet;
   unlocked: boolean;
-  showNotification: TShowNotification;
+  signMessageRequested: TSignMessageRequested;
+  signedMessage: ISignedMessage | null;
   resetWallet: TResetWallet;
 }
 
 interface State {
   message: string;
-  signedMessage: ISignedMessage | null;
 }
 
 const initialState: State = {
-  message: '',
-  signedMessage: null
+  message: ''
 };
 
 const messagePlaceholder = translateRaw('SIGN_MSG_PLACEHOLDER');
@@ -39,8 +38,8 @@ export class SignMessage extends Component<Props, State> {
   }
 
   public render() {
-    const { wallet, unlocked } = this.props;
-    const { message, signedMessage } = this.state;
+    const { unlocked, signedMessage } = this.props;
+    const { message } = this.state;
 
     return (
       <div>
@@ -68,10 +67,8 @@ export class SignMessage extends Component<Props, State> {
             </div>
 
             <SignButton
-              wallet={wallet}
               message={this.state.message}
-              showNotification={this.props.showNotification}
-              onSignMessage={this.onSignMessage}
+              signMessageRequested={this.props.signMessageRequested}
             />
 
             {signedMessage && (
@@ -97,21 +94,17 @@ export class SignMessage extends Component<Props, State> {
     this.setState({ message });
   };
 
-  private onSignMessage = (signedMessage: ISignedMessage) => {
-    this.setState({ signedMessage });
-  };
-
   private changeWallet = () => {
     this.props.resetWallet();
   };
 }
 
 const mapStateToProps = (state: AppState) => ({
-  wallet: state.wallet.inst,
+  signedMessage: state.message.signed,
   unlocked: isWalletFullyUnlocked(state)
 });
 
 export default connect(mapStateToProps, {
-  showNotification,
+  signMessageRequested,
   resetWallet
 })(SignMessage);

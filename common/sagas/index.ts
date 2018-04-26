@@ -8,6 +8,7 @@ import swapRates from './swap/rates';
 import wallet from './wallet';
 import { ens } from './ens';
 import { transaction } from './transaction';
+import { message } from './message';
 import transactions from './transactions';
 import gas from './gas';
 import { schedule } from './schedule';
@@ -21,6 +22,7 @@ export default {
   notifications,
   wallet,
   transaction,
+  message,
   deterministicWallets,
   rates,
   transactions,
