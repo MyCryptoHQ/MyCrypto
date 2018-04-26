@@ -1,11 +1,11 @@
 import React from 'react';
-import { HELP_ARTICLE } from 'config';
+import { HELP_ARTICLE, DOWNLOAD_MYCRYPTO_LINK } from 'config';
 import './InsecureWalletWarning.scss';
 import translate from 'translations';
 import { knowledgeBaseURL } from 'config/data';
 
 interface Props {
-  walletType: string | React.ReactElement<string>;
+  walletType: string;
   onContinue(): void;
   onCancel(): void;
 }
@@ -64,7 +64,7 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
       <div className="WalletWarning">
         <h2 className="WalletWarning-title">{translate('INSECURE_WALLET_TYPE_TITLE')}</h2>
         <p className="WalletWarning-desc">
-          {translate('INSECURE_WALLET_TYPE_DESC', { $wallet_type: walletType as string })}
+          {translate('INSECURE_WALLET_TYPE_DESC', { $wallet_type: walletType })}
         </p>
         <ul className="WalletWarning-bullets">
           <li>
@@ -76,7 +76,7 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
           </li>
           <li>
             {translate('INSECURE_WALLET_RECOMMEND_2', {
-              $run_local_article: knowledgeBaseURL + '/' + HELP_ARTICLE.RUNNING_LOCALLY
+              $download_mycrypto: DOWNLOAD_MYCRYPTO_LINK
             })}
           </li>
           <li>
@@ -86,7 +86,7 @@ export class InsecureWalletWarning extends React.Component<Props, State> {
           </li>
         </ul>
         <p className="WalletWarning-check">
-          {translate('WALLET_WARNING_CHECK', { $wallet_type: walletType as string })}
+          {translate('WALLET_WARNING_CHECK', { $wallet_type: walletType })}
         </p>
         <div className="WalletWarning-checkboxes">{checkboxes.map(this.makeCheckbox)}</div>
 
