@@ -11,7 +11,7 @@ interface OwnProps {
    * Optional callback handler when an error is encountered and this component
    * should catch it
    */
-  onError?: () => void;
+  onError?(): void;
   /**
    * Optional custom error message to display when a error is caught, otherwise the
    * actual error message is displayed to the user
