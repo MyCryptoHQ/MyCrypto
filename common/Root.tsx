@@ -15,6 +15,7 @@ import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
+import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
@@ -108,6 +109,7 @@ class RootClass extends Component<Props, State> {
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
+              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
             </React.Fragment>
           </Router>
         </Provider>

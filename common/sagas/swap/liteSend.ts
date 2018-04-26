@@ -6,7 +6,7 @@ import {
   setCurrentTo,
   setCurrentValue,
   TypeKeys as TransactionTK,
-  reset
+  resetTransactionRequested
 } from 'actions/transaction';
 import { TypeKeys as WalletTK, setTokenBalancePending } from 'actions/wallet';
 import { AppState } from 'reducers';
@@ -63,7 +63,7 @@ export function* handleConfigureLiteSend(): SagaIterator {
   while (true) {
     const liteSendProc = yield fork(configureLiteSendSaga);
     const result = yield race({
-      transactionReset: take(TransactionTK.RESET),
+      transactionReset: take(TransactionTK.RESET_REQUESTED),
       userNavigatedAway: take(WalletTK.WALLET_RESET),
       bityPollingFinished: take(SwapTK.SWAP_STOP_POLL_BITY_ORDER_STATUS),
       shapeshiftPollingFinished: take(SwapTK.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS)
@@ -74,7 +74,7 @@ export function* handleConfigureLiteSend(): SagaIterator {
       //clear transaction state and cancel saga
       yield cancel(liteSendProc);
       yield put(showLiteSend(false));
-      return yield put(reset());
+      return yield put(resetTransactionRequested());
     }
     if (result.transactionReset) {
       yield cancel(liteSendProc);

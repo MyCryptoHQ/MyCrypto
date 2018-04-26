@@ -6,7 +6,7 @@ import {
   broadcastTransactionSucceeded,
   broadcastTransactionQueued,
   TypeKeys as TK,
-  reset
+  resetTransactionRequested
 } from 'actions/transaction';
 import { bufferToHex } from 'ethereumjs-util';
 import {
@@ -39,7 +39,7 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
             'TxHash identical: This transaction has already been broadcasted or is broadcasting'
           )
         );
-        yield put(reset());
+        yield put(resetTransactionRequested());
         return;
       }
       const queueAction = broadcastTransactionQueued({
