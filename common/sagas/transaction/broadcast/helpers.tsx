@@ -6,7 +6,7 @@ import {
   broadcastTransactionSucceeded,
   broadcastTransactionQueued,
   TypeKeys as TK,
-  reset
+  resetTransactionRequested
 } from 'actions/transaction';
 import { bufferToHex } from 'ethereumjs-util';
 import {
@@ -21,6 +21,7 @@ import { getNetworkConfig } from 'selectors/config';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { computeIndexingHash } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
+import { isSchedulingEnabled } from 'selectors/schedule/fields';
 
 export const broadcastTransactionWrapper = (func: (serializedTx: string) => SagaIterator) =>
   function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
@@ -38,7 +39,7 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
             'TxHash identical: This transaction has already been broadcasted or is broadcasting'
           )
         );
-        yield put(reset());
+        yield put(resetTransactionRequested());
         return;
       }
       const queueAction = broadcastTransactionQueued({
@@ -52,12 +53,14 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
 
       const network: NetworkConfig = yield select(getNetworkConfig);
 
+      const scheduling: boolean = yield select(isSchedulingEnabled);
       yield put(
         showNotification(
           'success',
           <TransactionSucceeded
             txHash={broadcastedHash}
             blockExplorer={network.isCustom ? undefined : network.blockExplorer}
+            scheduling={scheduling}
           />,
           Infinity
         )

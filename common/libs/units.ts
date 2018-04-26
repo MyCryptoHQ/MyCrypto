@@ -112,7 +112,7 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
   return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
 };
 
-const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
+const gasPriceToBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 const getValueOfUnit = (unit: UnitKey) => {
   const unitValue = Units[unit];
@@ -140,6 +140,6 @@ export {
   UnitKey,
   Nonce,
   handleValues,
-  gasPricetoBase,
+  gasPriceToBase,
   unitToUnit
 };

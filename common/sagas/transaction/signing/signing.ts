@@ -6,7 +6,7 @@ import {
   signLocalTransactionSucceeded,
   signWeb3TransactionSucceeded,
   TypeKeys,
-  reset,
+  resetTransactionRequested,
   SignWeb3TransactionSucceededAction,
   SignLocalTransactionSucceededAction,
   SignTransactionRequestedAction
@@ -15,7 +15,7 @@ import { computeIndexingHash } from 'libs/transaction';
 import { serializedAndTransactionFieldsMatch } from 'selectors/transaction';
 import { showNotification } from 'actions/notifications';
 import {
-  requestSignature,
+  requestTransactionSignature,
   FinalizeSignatureAction,
   TypeKeys as ParityKeys
 } from 'actions/paritySigner';
@@ -53,7 +53,7 @@ export function* signParitySignerTransactionHandler({
   const from = yield apply(wallet, wallet.getAddressString);
   const rlp = yield call(transactionToRLP, tx);
 
-  yield put(requestSignature(from, rlp));
+  yield put(requestTransactionSignature(from, rlp));
 
   const { payload }: FinalizeSignatureAction = yield take(
     ParityKeys.PARITY_SIGNER_FINALIZE_SIGNATURE
@@ -89,7 +89,7 @@ function* verifyTransaction({
     yield put(
       showNotification('danger', 'Something went wrong signing your transaction, please try again')
     );
-    yield put(reset());
+    yield put(resetTransactionRequested());
   }
 }
 

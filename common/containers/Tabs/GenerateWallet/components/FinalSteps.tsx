@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import translate from 'translations';
 import { WalletType } from '../GenerateWallet';
-import SiteImage from 'assets/images/unlock-guide/site.png';
-import TabImage from 'assets/images/unlock-guide/tab.png';
+import OpenAppImage from 'assets/images/unlock-guide/open-app.png';
+import OpenWebImage from 'assets/images/unlock-guide/open-web.png';
+import TabAppImage from 'assets/images/unlock-guide/tab-app.png';
+import TabWebImage from 'assets/images/unlock-guide/tab-web.png';
 import SelectKeystoreImage from 'assets/images/unlock-guide/select-keystore.png';
 import ProvideKeystoreImage from 'assets/images/unlock-guide/provide-keystore.png';
 import SelectMnemonicImage from 'assets/images/unlock-guide/select-mnemonic.png';
@@ -17,31 +19,31 @@ interface Props {
 const FinalSteps: React.SFC<Props> = ({ walletType }) => {
   const steps = [
     {
-      name: translate('MNEMONIC_FINAL_STEP_1'),
-      image: SiteImage
+      name: translate('CREATE_FINAL_STEP_1'),
+      image: process.env.BUILD_ELECTRON ? OpenAppImage : OpenWebImage
     },
     {
-      name: translate('MNEMONIC_FINAL_STEP_2'),
-      image: TabImage
+      name: translate('CREATE_FINAL_STEP_2'),
+      image: process.env.BUILD_ELECTRON ? TabAppImage : TabWebImage
     }
   ];
 
   if (walletType === WalletType.Keystore) {
     steps.push({
-      name: translate('MNEMONIC_FINAL_STEP_3'),
+      name: translate('CREATE_FINAL_STEP_3'),
       image: SelectKeystoreImage
     });
     steps.push({
-      name: translate('MNEMONIC_FINAL_STEP_5'),
+      name: translate('CREATE_FINAL_STEP_4_KEYSTORE'),
       image: ProvideKeystoreImage
     });
   } else if (walletType === WalletType.Mnemonic) {
     steps.push({
-      name: translate('MNEMONIC_FINAL_STEP_3'),
+      name: translate('CREATE_FINAL_STEP_3'),
       image: SelectMnemonicImage
     });
     steps.push({
-      name: translate('MNEMONIC_FINAL_STEP_4'),
+      name: translate('CREATE_FINAL_STEP_4_MNEMONIC'),
       image: ProvideMnemonicImage
     });
   }

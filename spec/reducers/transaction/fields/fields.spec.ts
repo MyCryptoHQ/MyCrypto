@@ -1,5 +1,5 @@
 import { TypeKeys } from 'actions/transaction/constants';
-import { gasPricetoBase } from 'libs/units';
+import { gasPriceToBase } from 'libs/units';
 import { fields, State } from 'reducers/transaction/fields';
 import * as txActions from 'actions/transaction';
 import BN from 'bn.js';
@@ -11,7 +11,7 @@ describe('fields reducer', () => {
     nonce: { raw: '', value: null },
     value: { raw: '', value: null },
     gasLimit: { raw: '21000', value: new BN(21000) },
-    gasPrice: { raw: '20', value: gasPricetoBase(20) }
+    gasPrice: { raw: '20', value: gasPriceToBase(20) }
   };
   const testPayload = { raw: 'test', value: null };
 
@@ -109,9 +109,9 @@ describe('fields reducer', () => {
   });
 
   it('should reset', () => {
-    const resetAction: txActions.ResetAction = {
-      type: TypeKeys.RESET,
-      payload: { include: {}, exclude: {} }
+    const resetAction: txActions.ResetTransactionSuccessfulAction = {
+      type: TypeKeys.RESET_SUCCESSFUL,
+      payload: { isContractInteraction: false }
     };
     const modifiedState: State = {
       ...INITIAL_STATE,

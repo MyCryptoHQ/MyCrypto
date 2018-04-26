@@ -106,6 +106,13 @@ export const INITIAL_STATE: StaticNodesState = {
     lib: shepherdProvider,
     estimateGas: false
   },
+  etc_commonwealth: {
+    network: 'ETC',
+    isCustom: false,
+    service: 'Ethereum Commonwealth',
+    lib: shepherdProvider,
+    estimateGas: false
+  },
 
   ubq_auto: {
     network: 'UBQ',

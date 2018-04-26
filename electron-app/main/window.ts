@@ -1,7 +1,6 @@
 import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
 import MENU from './menu';
-import updater from './updater';
 import { APP_TITLE } from '../constants';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -18,12 +17,10 @@ export default function getWindow() {
     title: APP_TITLE,
     backgroundColor: '#fbfbfb',
     width: 1220,
-    height: 800,
-    minWidth: 320,
+    height: process.platform === 'darwin' ? 680 : 720,
+    minWidth: 480,
     minHeight: 400,
-    // TODO - Implement styles for custom title bar in components/ui/TitleBar.scss
-    // frame: false,
-    // titleBarStyle: 'hidden',
+    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
@@ -31,8 +28,7 @@ export default function getWindow() {
     }
   });
 
-  const port = process.env.HTTPS ? '3443' : '3000';
-  const appUrl = isDevelopment ? `http://localhost:${port}` : `file://${__dirname}/index.html`;
+  const appUrl = isDevelopment ? `http://localhost:3000` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {
@@ -52,9 +48,10 @@ export default function getWindow() {
     }
   });
 
-  window.webContents.on('did-finish-load', () => {
-    updater(window!);
-  });
+  // TODO: Figure out updater release process
+  // window.webContents.on('did-finish-load', () => {
+  //   updater(window!);
+  // });
 
   window.webContents.on('devtools-opened', () => {
     window!.focus();

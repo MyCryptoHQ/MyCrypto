@@ -38,16 +38,6 @@ body {
   height: 100%;
 }
 
-.page-layout {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  > .flex-spacer {
-    flex-grow: 2;
-  }
-}
-
 input,
 button,
 select,
@@ -76,6 +66,10 @@ hr {
   margin-bottom: $space;
   border: 0;
   border-top: 1px solid $hr-border;
+}
+
+a {
+  text-decoration-skip-ink: none;
 }
 
 #app {

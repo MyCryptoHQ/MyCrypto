@@ -119,7 +119,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             <div className="DWModal-path-select">
               <Select
                 name="fieldDPath"
-                className=""
                 value={this.state.currentLabel || this.findDPath('value', dPath).value}
                 onChange={this.handleChangePath}
                 options={dPaths.concat([customDPath])}
@@ -199,15 +198,19 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private getAddresses(props: Props = this.props) {
     const { dPath, publicKey, chainCode, seed } = props;
 
-    if (dPath && ((publicKey && chainCode) || seed) && isValidPath(dPath)) {
-      this.props.getDeterministicWallets({
-        seed,
-        dPath,
-        publicKey,
-        chainCode,
-        limit: WALLETS_PER_PAGE,
-        offset: WALLETS_PER_PAGE * this.state.page
-      });
+    if (dPath && ((publicKey && chainCode) || seed)) {
+      if (isValidPath(dPath)) {
+        this.props.getDeterministicWallets({
+          seed,
+          dPath,
+          publicKey,
+          chainCode,
+          limit: WALLETS_PER_PAGE,
+          offset: WALLETS_PER_PAGE * this.state.page
+        });
+      } else {
+        console.error('Invalid dPath provided', dPath);
+      }
     }
   }
 

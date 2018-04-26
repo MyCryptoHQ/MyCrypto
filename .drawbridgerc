@@ -1,0 +1,13 @@
+{
+    "environments": {
+        "develop": {
+            "gitUrl": "git@github.com:MyCryptoHQ/MyCrypto.git",
+            "distFolder": "dist/prod",
+            "buildCommand": "yarn && npm run build"
+        },
+        "beta": {
+            "gitUrl": "git@github.com:MyCryptoHQ/MyCrypto-Beta.git",
+            "distFolder": "docs"
+        }
+    }
+}

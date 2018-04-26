@@ -70,7 +70,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
     element = (
       <span>
         {formattedValue}
-        <span>{symbol ? ` ${symbol}` : ''}</span>
+        <span>{symbol ? <>&nbsp;{symbol}</> : ''}</span>
       </span>
     );
   }

@@ -2,21 +2,20 @@ import classnames from 'classnames';
 import React from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
-import { TabLink } from './Navigation';
-import './NavigationLink.scss';
+import { NavigationLink } from 'config';
 
 interface Props extends RouteComponentProps<{}> {
-  link: TabLink;
+  link: NavigationLink;
   isHomepage: boolean;
+  className: string;
 }
 
-class NavigationLink extends React.PureComponent<Props, {}> {
+class NavigationLinkClass extends React.PureComponent<Props, {}> {
   public render() {
-    const { link, location, isHomepage } = this.props;
-    const isExternalLink = link.to.includes('http');
+    const { link, location, isHomepage, className } = this.props;
     let isActive = false;
 
-    if (!isExternalLink) {
+    if (!link.external) {
       // isActive if
       // 1) Current path is the same as link
       // 2) the first path is the same for both links (/account and /account/send)
@@ -27,7 +26,7 @@ class NavigationLink extends React.PureComponent<Props, {}> {
     }
 
     const linkClasses = classnames({
-      'NavigationLink-link': true,
+      [`${className}-link`]: true,
       'is-disabled': !link.to,
       'is-active': isActive
     });
@@ -43,6 +42,7 @@ class NavigationLink extends React.PureComponent<Props, {}> {
           rel="noopener noreferrer"
         >
           {translate(link.name)}
+          <i className={`${className}-link-icon fa fa-external-link`} />
         </a>
       ) : (
         <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>
@@ -51,7 +51,7 @@ class NavigationLink extends React.PureComponent<Props, {}> {
       );
 
     return (
-      <li id={link.name} className="NavigationLink">
+      <li id={link.name} className={className}>
         {linkEl}
       </li>
     );
@@ -59,4 +59,4 @@ class NavigationLink extends React.PureComponent<Props, {}> {
 }
 
 // withRouter is a HOC which provides NavigationLink with a react-router location prop
-export default withRouter<Props>(NavigationLink);
+export default withRouter<Props>(NavigationLinkClass);

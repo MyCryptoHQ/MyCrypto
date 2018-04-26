@@ -31,11 +31,16 @@ const getFrom = (state: AppState) => {
 const getDecimal = (state: AppState) => getMetaState(state).decimal;
 
 const getTokenTo = (state: AppState) => getMetaState(state).tokenTo;
+
 const getTokenValue = (state: AppState) => getMetaState(state).tokenValue;
+
+const isContractInteraction = (state: AppState) => getMetaState(state).isContractInteraction;
+
 const getUnit = (state: AppState) => {
   const serializedTransaction = getSerializedTransaction(state);
+  const contractInteraction = isContractInteraction(state);
   // attempt to get the to address from the transaction
-  if (serializedTransaction) {
+  if (serializedTransaction && !contractInteraction) {
     const transactionInstance = new EthTx(serializedTransaction);
     const { to } = transactionInstance;
     if (to) {
@@ -77,5 +82,6 @@ export {
   getTokenTo,
   getUnit,
   getPreviousUnit,
-  getDecimalFromUnit
+  getDecimalFromUnit,
+  isContractInteraction
 };

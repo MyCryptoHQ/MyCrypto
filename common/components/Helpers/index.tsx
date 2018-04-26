@@ -1,5 +1,5 @@
 import React from 'react';
-import { UnitConverter, HexConverter, KeccakConverter } from './components';
+import { UnitConverter, HexConverter, KeccakConverter, ENSDebugger } from './components';
 import TabSection from 'containers/TabSection';
 import { RouteComponentProps, Switch, Route, Redirect } from 'react-router';
 import SubTabs from 'components/SubTabs';
@@ -30,6 +30,10 @@ export default class Helpers extends React.Component<RouteComponentProps<{}>, St
       {
         path: 'keccak-converter',
         name: 'SHA3'
+      },
+      {
+        path: 'ens-debugger',
+        name: 'ENS Debugger'
       }
     ];
 
@@ -59,6 +63,8 @@ export default class Helpers extends React.Component<RouteComponentProps<{}>, St
                 path={`${currentPath}/keccak-converter`}
                 component={KeccakConverter}
               />
+
+              <Route exact={true} path={`${currentPath}/ens-debugger`} component={ENSDebugger} />
               <RouteNotFound />
             </Switch>
           </section>

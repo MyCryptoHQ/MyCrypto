@@ -10,7 +10,8 @@ describe('meta reducer', () => {
     decimal: getDecimalFromEtherUnit('ether'),
     tokenValue: { raw: '', value: null },
     tokenTo: { raw: '', value: null },
-    from: null
+    from: null,
+    isContractInteraction: false
   };
 
   const testPayload = { raw: 'test', value: null };
@@ -96,14 +97,14 @@ describe('meta reducer', () => {
   });
 
   it('should reset', () => {
-    const resetAction: txActions.ResetAction = {
-      type: TypeKeys.RESET,
-      payload: { include: {}, exclude: {} }
+    const resetAction: txActions.ResetTransactionSuccessfulAction = {
+      type: TypeKeys.RESET_SUCCESSFUL,
+      payload: { isContractInteraction: false }
     };
     const modifiedState: State = {
       ...INITIAL_STATE,
       unit: 'modified'
     };
-    expect(meta(modifiedState, resetAction)).toEqual(INITIAL_STATE);
+    expect(meta(modifiedState, resetAction)).toEqual(modifiedState);
   });
 });

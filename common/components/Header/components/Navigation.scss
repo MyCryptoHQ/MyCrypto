@@ -78,3 +78,69 @@
     }
   }
 }
+
+// Styling for common/components/NavigationLink.tsx, with custom class
+.NavigationLink {
+  display: inline-block;
+
+  &-link {
+    color: darken($link-color, 15%);
+    display: block;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 10px;
+    white-space: nowrap;
+    position: relative;
+    min-height: 2.75rem;
+
+    &-icon {
+      font-size: 0.7rem;
+      margin-left: 2px;
+      opacity: 0.8;
+    }
+
+    &:after {
+      content: '';
+      background: $brand-primary;
+      height: 2px;
+      width: 100%;
+      left: 0px;
+      position: absolute;
+      bottom: -1px;
+      transition: all 250ms ease 0s;
+      transform: scaleX(0);
+    }
+
+    &.is-active,
+    &:hover,
+    &:focus {
+      color: $brand-primary;
+      text-decoration: none;
+      transition: all 250ms ease 0s;
+
+      &:after {
+        transform: scaleX(1);
+        transition: all 250ms ease 0s;
+      }
+    }
+
+    &.is-disabled {
+      pointer-events: none;
+      opacity: 0.3;
+    }
+  }
+}
+
+#NAV_SWAP.NavigationLink-link:before {
+  content: '';
+  display: inline-block;
+  margin-top: -0.1rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  background-image: url('~assets/images/logo-shapeshift-no-text.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: middle;
+  margin-right: 4px;
+}
