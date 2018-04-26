@@ -27,7 +27,7 @@ export default class ENSDebugger extends React.Component<{}, State> {
         <section className="row">
           <div className="form-group col-sm-12">
             <label>Address you Bid From</label>
-            <input
+            <Input
               className="form-control"
               type="text"
               ng-model="ensAddress"
@@ -38,7 +38,7 @@ export default class ENSDebugger extends React.Component<{}, State> {
         <section className="row">
           <div className="form-group col-sm-6">
             <label>ENS Name you Bid On (no '.eth' at the end!)</label>
-            <input
+            <Input
               className="form-control"
               type="text"
               ng-model="ensLabel"
@@ -47,23 +47,23 @@ export default class ENSDebugger extends React.Component<{}, State> {
           </div>
           <div className="form-group col-sm-6">
             <label>Hashed ENS Name (Label Hash)</label>
-            <input className="form-control" type="text" ng-model="ensLabelHash" />
+            <Input className="form-control" type="text" ng-model="ensLabelHash" />
           </div>
         </section>
         <section className="row">
           <div className="form-group col-sm-6">
             <label>Amount you Bid (ETH)</label>
-            <input className="form-control" type="text" ng-model="bidEth" ng-change="toBidWei()" />
+            <Input className="form-control" type="text" ng-model="bidEth" ng-change="toBidWei()" />
           </div>
           <div className="form-group col-sm-6">
             <label>Amount you Bid (WEI)</label>
-            <input className="form-control" type="text" ng-model="bidWei" ng-change="toBidEth()" />
+            <Input className="form-control" type="text" ng-model="bidWei" ng-change="toBidEth()" />
           </div>
         </section>
         <section className="row">
           <div className="form-group col-sm-6">
             <label>Your Secret</label>
-            <input
+            <Input
               className="form-control"
               type="text"
               ng-model="ensSecret"
@@ -72,13 +72,18 @@ export default class ENSDebugger extends React.Component<{}, State> {
           </div>
           <div className="form-group col-sm-6">
             <label>Your Secret (Hashed)</label>
-            <input className="form-control" type="text" ng-model="ensSecretHash" />
+            <Input className="form-control" type="text" ng-model="ensSecretHash" />
           </div>
         </section>
         <section className="row">
           <div className="form-group col-xs-12">
             <label>Start Auction Data</label>
-            <input className="form-control" type="text" ng-model="startAuctionData" readonly />
+            <Input
+              className="form-control"
+              type="text"
+              ng-model="startAuctionData"
+              readOnly={true}
+            />
             <p>
               To:
               <code>0x6090a6e47849629b7245dfa1ca21d94cd15878ef</code>
@@ -94,11 +99,11 @@ export default class ENSDebugger extends React.Component<{}, State> {
         <section className="row">
           <div className="form-group col-xs-12">
             <label>Start Auction And Bid Data</label>
-            <input
+            <Input
               className="form-control"
               type="text"
               ng-model="startAndBidAuctionData"
-              readonly
+              readOnly={true}
             />
             <p>
               To:
@@ -121,7 +126,7 @@ export default class ENSDebugger extends React.Component<{}, State> {
                 on Etherscan)
               </small>
             </label>
-            <input className="form-control" type="text" ng-model="shaBid" readonly />
+            <Input className="form-control" type="text" ng-model="shaBid" readOnly={true} />
             <p>
               To: <code>0x6090a6e47849629b7245dfa1ca21d94cd15878ef</code>
               &nbsp;&middot;&nbsp; Amount: <code>[A NUMBER >= BID AMOUNT]</code>
@@ -135,7 +140,7 @@ export default class ENSDebugger extends React.Component<{}, State> {
             <label>
               Reveal Data <small> This is for manually revealing if you need to do so.</small>
             </label>
-            <input className="form-control" type="text" ng-model="revealBidData" readonly />
+            <Input className="form-control" type="text" ng-model="revealBidData" readOnly={true} />
             <p>
               To: <code>0x6090a6e47849629b7245dfa1ca21d94cd15878ef</code>
               &nbsp;&middot;&nbsp; Amount: <code>0</code>
@@ -147,7 +152,12 @@ export default class ENSDebugger extends React.Component<{}, State> {
         <section className="row">
           <div className="form-group col-xs-12">
             <label>Finalize Auction Data</label>
-            <input className="form-control" type="text" ng-model="finalizeAuctionData" readonly />
+            <Input
+              className="form-control"
+              type="text"
+              ng-model="finalizeAuctionData"
+              readOnly={true}
+            />
             <p>
               To: <code>0x6090a6e47849629b7245dfa1ca21d94cd15878ef</code>
               &nbsp;&middot;&nbsp; Amount: <code>0</code>
