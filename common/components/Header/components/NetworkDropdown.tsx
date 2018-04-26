@@ -40,8 +40,7 @@ class NetworkDropdown extends React.Component<Props> {
     const { nodeLabel } = this.props;
     return (
       <span>
-        {nodeLabel.network}
-        <small>{nodeLabel.info}</small>
+        {nodeLabel.network} <small>({nodeLabel.info})</small>
       </span>
     );
   };
