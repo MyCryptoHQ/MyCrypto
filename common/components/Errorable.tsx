@@ -8,11 +8,6 @@ interface DispatchProps {
 
 interface OwnProps {
   /**
-   * Optional callback handler when an error is encountered and this component
-   * should catch it
-   */
-  onError?(): void;
-  /**
    * Optional custom error message to display when a error is caught, otherwise the
    * actual error message is displayed to the user
    */
@@ -23,6 +18,12 @@ interface OwnProps {
    * the component will catch errors
    */
   shouldCatch?: boolean;
+
+  /**
+   * Optional callback handler when an error is encountered and this component
+   * should catch it
+   */
+  onError?(): void;
 }
 
 type Props = DispatchProps & OwnProps;
