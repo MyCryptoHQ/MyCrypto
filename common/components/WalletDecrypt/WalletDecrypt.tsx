@@ -52,6 +52,7 @@ import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import './WalletDecrypt.scss';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { Errorable } from 'components';
 
 interface OwnProps {
   hidden?: boolean;
@@ -271,27 +272,35 @@ const WalletDecrypt = withRouter<Props>(
             {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
-            <selectedWallet.component
-              value={this.state.value}
-              onChange={this.onChange}
-              onUnlock={(value: any) => {
-                if (selectedWallet.redirect) {
-                  this.props.history.push(selectedWallet.redirect);
+            <Errorable
+              errorMessage={`Oops, looks like ${translateRaw(
+                selectedWallet.lid
+              )} is not supported by your browser`}
+              onError={this.clearWalletChoice}
+              shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
+            >
+              <selectedWallet.component
+                value={this.state.value}
+                onChange={this.onChange}
+                onUnlock={(value: any) => {
+                  if (selectedWallet.redirect) {
+                    this.props.history.push(selectedWallet.redirect);
+                  }
+                  this.onUnlock(value);
+                }}
+                showNotification={this.props.showNotification}
+                isWalletPending={
+                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                    ? this.props.isWalletPending
+                    : undefined
                 }
-                this.onUnlock(value);
-              }}
-              showNotification={this.props.showNotification}
-              isWalletPending={
-                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                  ? this.props.isWalletPending
-                  : undefined
-              }
-              isPasswordPending={
-                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                  ? this.props.isPasswordPending
-                  : undefined
-              }
-            />
+                isPasswordPending={
+                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                    ? this.props.isPasswordPending
+                    : undefined
+                }
+              />
+            </Errorable>
           </section>
         </div>
       );
