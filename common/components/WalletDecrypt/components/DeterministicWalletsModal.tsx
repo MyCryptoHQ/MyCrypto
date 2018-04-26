@@ -305,16 +305,16 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
           />
         </td>
         <td>
-          {token ? (
+          {desiredToken ? (
             <UnitDisplay
-              decimal={token.decimal}
-              value={token.value}
+              decimal={token ? token.decimal : 0}
+              value={token ? token.value : null}
               symbol={desiredToken}
               displayShortBalance={true}
               checkOffline={true}
             />
           ) : (
-            '???'
+            <span className="DWModal-addresses-table-na">N/A</span>
           )}
         </td>
         <td>
