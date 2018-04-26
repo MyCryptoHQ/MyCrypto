@@ -1,8 +1,13 @@
 import translate from 'translations';
 import { Interact } from './components/Interact';
 import { Deploy } from './components/Deploy';
-import { reset, TReset } from 'actions/transaction';
-import { resetWallet, TResetWallet } from 'actions/wallet';
+import {
+  setAsContractInteraction,
+  TSetAsContractInteraction,
+  setAsViewAndSend,
+  TSetAsViewAndSend
+} from 'actions/transaction';
+
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -10,9 +15,9 @@ import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 
-interface Props {
-  reset: TReset;
-  resetWallet: TResetWallet;
+interface DispatchProps {
+  setAsContractInteraction: TSetAsContractInteraction;
+  setAsViewAndSend: TSetAsViewAndSend;
 }
 
 const tabs = [
@@ -26,7 +31,14 @@ const tabs = [
   }
 ];
 
-class Contracts extends Component<Props & RouteComponentProps<{}>> {
+class Contracts extends Component<DispatchProps & RouteComponentProps<{}>> {
+  public componentDidMount() {
+    this.props.setAsContractInteraction();
+  }
+  public componentWillUnmount() {
+    this.props.setAsViewAndSend();
+  }
+
   public render() {
     const { match, location, history } = this.props;
     const currentPath = match.url;
@@ -53,4 +65,4 @@ class Contracts extends Component<Props & RouteComponentProps<{}>> {
   }
 }
 
-export default connect(null, { reset, resetWallet })(Contracts);
+export default connect(null, { setAsContractInteraction, setAsViewAndSend })(Contracts);

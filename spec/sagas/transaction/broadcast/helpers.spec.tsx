@@ -4,7 +4,7 @@ import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
   broadcastTransactionQueued,
-  reset
+  resetTransactionRequested
 } from 'actions/transaction';
 import { bufferToHex } from 'ethereumjs-util';
 import { showNotification } from 'actions/notifications';
@@ -85,7 +85,7 @@ describe('broadcastTransactionWrapper*', () => {
         )
       )
     );
-    expect(gens.clone2.next().value).toEqual(put(reset()));
+    expect(gens.clone2.next().value).toEqual(put(resetTransactionRequested()));
     expect(gens.clone2.next(!shouldBroadcast).done).toEqual(true);
   });
 

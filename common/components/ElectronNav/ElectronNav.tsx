@@ -31,7 +31,7 @@ export default class ElectronNav extends React.Component<{}, State> {
       >
         <div className="ElectronNav-branding">
           <div className="ElectronNav-branding-logo" />
-          <div className="ElectronNav-branding-beta">Beta Release</div>
+          <div className="ElectronNav-branding-beta">Alpha Release</div>
         </div>
 
         <ul className="ElectronNav-links">
