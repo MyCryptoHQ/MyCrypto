@@ -127,7 +127,8 @@ class InteractExplorerClass extends Component<Props, State> {
             {selectedFunction.contract.outputs.map((output: any, index: number) => {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
-              const rawFieldValue = outputs[parsedName] || '';
+              const o = outputs[parsedName];
+              const rawFieldValue = o === null || o === undefined ? '' : o;
               const decodedFieldValue = Buffer.isBuffer(rawFieldValue)
                 ? bufferToHex(rawFieldValue)
                 : rawFieldValue;
