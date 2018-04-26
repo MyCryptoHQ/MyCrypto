@@ -390,12 +390,14 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       let timeout = 0;
-      const web3Available = await isWeb3NodeAvailable();
-      if (wallet.attemptUnlock && web3Available) {
-        // timeout is only the maximum wait time before secondary view is shown
-        // send view will be shown immediately on web3 resolve
-        timeout = 1000;
-        wallet.unlock();
+      if (wallet.attemptUnlock) {
+        const web3Available = await isWeb3NodeAvailable();
+        if (web3Available) {
+          // timeout is only the maximum wait time before secondary view is shown
+          // send view will be shown immediately on web3 resolve
+          timeout = 1500;
+          wallet.unlock();
+        }
       }
 
       window.setTimeout(() => {
