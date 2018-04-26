@@ -65,7 +65,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     selectedAddrIndex: 0,
     isCustomPath: false,
     customPath: '',
-    currentDPath: this.props.dPaths[0],
+    currentDPath: this.props.dPath,
     page: 0
   };
 
@@ -234,7 +234,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     if (currentDPath.value === customDPath.value && isValidPath(customPath)) {
       this.props.onPathChange({
         label: customDPath.label,
-        value: customDPath.value
+        value: customPath
       });
     }
   };
