@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import NetworkSelector from 'components/NetworkSelector';
 import CustomNodeModal from 'components/CustomNodeModal';
 import { TAddCustomNode, AddCustomNodeAction, addCustomNode } from 'actions/config';
-import { AppState } from 'reducers';
 
 interface OwnProps {
   closePanel(): void;
