@@ -1,19 +1,35 @@
-import { ParitySignerAction, RequestSignatureAction, TypeKeys } from 'actions/paritySigner';
+import {
+  ParitySignerAction,
+  RequestTransactionSignatureAction,
+  RequestMessageSignatureAction,
+  TypeKeys
+} from 'actions/paritySigner';
 
 export interface State {
   requested?: QrSignatureState | null;
 }
 
 interface QrSignatureState {
+  isMessage: boolean;
   from: string;
-  rlp: string;
+  data: string;
 }
 
 export const INITIAL_STATE: State = {
   requested: null
 };
 
-function requestSignature(state: State, action: RequestSignatureAction): State {
+function requestTransactionSignature(
+  state: State,
+  action: RequestTransactionSignatureAction
+): State {
+  return {
+    ...state,
+    requested: action.payload
+  };
+}
+
+function requestMessageSignature(state: State, action: RequestMessageSignatureAction): State {
   return {
     ...state,
     requested: action.payload
@@ -29,8 +45,10 @@ function finalizeSignature(state: State): State {
 
 export function paritySigner(state: State = INITIAL_STATE, action: ParitySignerAction): State {
   switch (action.type) {
-    case TypeKeys.PARITY_SIGNER_REQUEST_SIGNATURE:
-      return requestSignature(state, action);
+    case TypeKeys.PARITY_SIGNER_REQUEST_TX_SIGNATURE:
+      return requestTransactionSignature(state, action);
+    case TypeKeys.PARITY_SIGNER_REQUEST_MSG_SIGNATURE:
+      return requestMessageSignature(state, action);
     case TypeKeys.PARITY_SIGNER_FINALIZE_SIGNATURE:
       return finalizeSignature(state);
     default:
