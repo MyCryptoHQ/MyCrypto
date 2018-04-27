@@ -1,38 +1,27 @@
-@import 'common/sass/variables/colors';
 @import 'common/sass/variables/spacing';
 
 .AddressBookTable {
-  input {
-    margin-bottom: 0;
-  }
-
-  &-cell {
+  &-row {
     display: flex;
     align-items: center;
-    height: $space-xl * 2;
 
-    &-identicon {
-      width: 70px;
-      margin-right: $space-md;
-    }
-
-    &-action {
-      justify-content: flex-end;
+    &-first {
+      margin-bottom: $space-xl * 1.5;
     }
   }
 
-  &-spacer {
-    height: $space-lg;
+  &-identicon {
+    width: 80px;
+    height: 60px;
+    margin-right: $space-md;
   }
 
-  &-row {
-    td {
-      padding: 0 $space-sm 0 0 !important;
-    }
+  .btn {
+    height: $space-lg * 2;
+  }
 
-    .btn {
-      height: $space-xl * 1.5;
-      width: $space-xl * 1.75;
-    }
+  input {
+    margin-right: $space-sm;
+    margin-bottom: 0;
   }
 }

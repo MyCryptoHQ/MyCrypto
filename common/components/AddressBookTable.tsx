@@ -49,44 +49,33 @@ class AddressBookTable extends React.Component<Props, State> {
     const { temporaryLabel, temporaryAddress } = this.state;
 
     return (
-      <table className="AddressBookTable table" onKeyDown={this.handleKeyDown}>
-        <tbody>
-          <tr className="AddressBookTable-row">
-            <td>
-              <div className="AddressBookTable-cell">
-                <div className="AddressBookTable-cell-identicon">
-                  <Identicon address={temporaryAddress} size="100%" />
-                </div>
-                <Input
-                  placeholder={translateRaw('NEW_ADDRESS')}
-                  value={temporaryAddress}
-                  onChange={this.setTemporaryAddress}
-                  setInnerRef={this.setAddressInputRef}
-                />
-              </div>
-            </td>
-            <td>
-              <div className="AddressBookTable-cell">
-                <Input
-                  placeholder={translateRaw('NEW_LABEL')}
-                  value={temporaryLabel}
-                  onChange={this.setTemporaryLabel}
-                  setInnerRef={this.setLabelInputRef}
-                />
-              </div>
-            </td>
-            <td>
-              <div className="AddressBookTable-cell AddressBookTable-cell-action">
-                <button className="btn btn-sm btn-success" onClick={this.handleAddEntry}>
-                  <i className="fa fa-plus" />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr className="AddressBookTable-spacer" />
-          {rows.map(this.makeLabelRow)}
-        </tbody>
-      </table>
+      <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
+        <div className="AddressBookTable-row AddressBookTable-row-first">
+          <div className="AddressBookTable-identicon">
+            <Identicon address={temporaryAddress} />
+          </div>
+          <Input
+            placeholder={translateRaw('NEW_ADDRESS')}
+            value={temporaryAddress}
+            onChange={this.setTemporaryAddress}
+            setInnerRef={this.setAddressInputRef}
+          />
+          <Input
+            placeholder={translateRaw('NEW_LABEL')}
+            value={temporaryLabel}
+            onChange={this.setTemporaryLabel}
+            setInnerRef={this.setLabelInputRef}
+          />
+          <button
+            title={translateRaw('ADD_LABEL')}
+            className="btn btn-sm btn-success"
+            onClick={this.handleAddEntry}
+          >
+            <i className="fa fa-plus" />
+          </button>
+        </div>
+        {rows.map(this.makeLabelRow)}
+      </section>
     );
   }
 

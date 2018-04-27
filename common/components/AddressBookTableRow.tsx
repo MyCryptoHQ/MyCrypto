@@ -1,5 +1,6 @@
 import React from 'react';
 import KeyCodes from 'shared/keycodes';
+import { translateRaw } from 'translations';
 import noop from 'lodash/noop';
 import { Input, Identicon } from 'components/ui';
 import onClickOutside from 'react-onclickoutside';
@@ -37,37 +38,25 @@ class AddressBookTableRow extends React.Component<Props> {
     const trOnClick = isEditing ? noop : onEditClick;
 
     return (
-      <tr className="AddressBookTable-row" onClick={trOnClick}>
-        <td>
-          <div className="AddressBookTable-cell">
-            <div className="AddressBookTable-cell-identicon">
-              <Identicon address={address} size="100%" />
-            </div>
-            <Input value={address} readOnly={true} />
-          </div>
-        </td>
-        <td>
-          <div className="AddressBookTable-cell">
-            <Input
-              value={label}
-              onChange={this.setLabel}
-              onKeyDown={this.handleKeyDown}
-              setInnerRef={this.setLabelInputRef}
-            />
-          </div>
-        </td>
-        <td>
-          <div className="AddressBookTable-cell AddressBookTable-cell-action">
-            <button
-              title="Remove this entry"
-              className="btn btn-sm  btn-danger"
-              onClick={onRemoveClick}
-            >
-              <i className="fa fa-close" />
-            </button>
-          </div>
-        </td>
-      </tr>
+      <div className="AddressBookTable-row" onClick={trOnClick}>
+        <div className="AddressBookTable-identicon">
+          <Identicon address={address} />
+        </div>
+        <Input value={address} readOnly={true} />
+        <Input
+          value={label}
+          onChange={this.setLabel}
+          onKeyDown={this.handleKeyDown}
+          setInnerRef={this.setLabelInputRef}
+        />
+        <button
+          title={translateRaw('REMOVE_LABEL')}
+          className="btn btn-sm btn-danger"
+          onClick={onRemoveClick}
+        >
+          <i className="fa fa-close" />
+        </button>
+      </div>
     );
   }
 
