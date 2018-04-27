@@ -95,10 +95,7 @@ class AddressBookTable extends React.Component<Props, State> {
   }
 
   private handleSave = (addressToLabel: AddressLabelPair) => {
-    const { label, address } = addressToLabel;
-
-    this.props.addLabelForAddress({ label, address });
-
+    this.props.addLabelForAddress(addressToLabel);
     this.setEditingRow(null);
   };
 
@@ -130,6 +127,7 @@ class AddressBookTable extends React.Component<Props, State> {
   private removeEntry = (address: string) => this.props.removeLabelForAddress(address);
 
   private makeLabelRow = (addressToLabel: AddressLabelPair, index: number) => {
+    const { removeLabelForAddress } = this.props;
     const { editingRow } = this.state;
     const isEditingRow = index === editingRow;
 
@@ -147,7 +145,7 @@ class AddressBookTable extends React.Component<Props, State> {
           })
         }
         onEditClick={() => this.setEditingRow(index)}
-        onRemoveClick={() => this.removeEntry(addressToLabel.address)}
+        onRemoveClick={() => removeLabelForAddress(addressToLabel.address)}
       />
     );
   };

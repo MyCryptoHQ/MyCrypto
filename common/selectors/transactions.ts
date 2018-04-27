@@ -28,7 +28,3 @@ export function getRecentWalletTransactions(state: AppState): SavedTransaction[]
     return [];
   }
 }
-
-export function getTransactionToRaw(state: AppState) {
-  return state.transaction.fields.to.raw;
-}

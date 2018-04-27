@@ -6,13 +6,13 @@ import translate from 'translations';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressLabelPair } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
-import { getTransactionToRaw } from 'selectors/transactions';
+import { getToRaw } from 'selectors/transaction/fields';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
 interface StateProps {
   labels: ReturnType<typeof getLabels>;
-  currentTo: ReturnType<typeof getTransactionToRaw>;
+  currentTo: ReturnType<typeof getToRaw>;
 }
 
 interface DispatchProps {
@@ -154,7 +154,7 @@ class AddressFieldDropdown extends React.Component<Props> {
 export default connect(
   (state: AppState) => ({
     labels: getLabels(state, { reversed: true }),
-    currentTo: getTransactionToRaw(state)
+    currentTo: getToRaw(state)
   }),
   { setCurrentTo }
 )(AddressFieldDropdown);
