@@ -124,8 +124,6 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private setEditingRow = (editingRow: number | null) => this.setState({ editingRow });
 
-  private removeEntry = (address: string) => this.props.removeLabelForAddress(address);
-
   private makeLabelRow = (addressToLabel: AddressLabelPair, index: number) => {
     const { editingRow } = this.state;
     const isEditingRow = index === editingRow;
