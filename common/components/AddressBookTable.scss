@@ -11,49 +11,28 @@
     align-items: center;
     height: $space-xl * 2;
 
-    .Identicon {
-      margin-left: $space-md;
+    &-identicon {
+      width: 70px;
+      margin-right: $space-md;
+    }
+
+    &-action {
+      justify-content: flex-end;
     }
   }
 
-  & th:first-of-type {
-    width: 50%;
+  &-spacer {
+    height: $space-lg;
   }
 
   &-row {
     td {
-      position: relative;
+      padding: 0 $space-sm 0 0 !important;
     }
 
-    &:hover {
-      cursor: pointer;
-      background: $gray-lighter;
-    }
-
-    &--active {
-      background: $gray-lighter;
-
-      &:hover {
-        cursor: auto;
-      }
-    }
-
-    &-remove {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: $brand-danger;
-      border-radius: 100%;
-      color: white;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:hover {
-        cursor: pointer;
-      }
+    .btn {
+      height: $space-xl * 1.5;
+      width: $space-xl * 1.75;
     }
   }
 }

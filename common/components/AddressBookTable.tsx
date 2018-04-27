@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { isValidETHAddress } from 'libs/validators';
 import {
   TAddLabelForAddress,
@@ -50,30 +50,25 @@ class AddressBookTable extends React.Component<Props, State> {
 
     return (
       <table className="AddressBookTable table" onKeyDown={this.handleKeyDown}>
-        <thead>
-          <tr>
-            <th scope="col">{translate('ADDRESS')}</th>
-            <th scope="col">{translate('LABEL')}</th>
-            <th scope="col">{translate('ACTIONS')}</th>
-          </tr>
-        </thead>
         <tbody>
-          <tr>
+          <tr className="AddressBookTable-row">
             <td>
               <div className="AddressBookTable-cell">
+                <div className="AddressBookTable-cell-identicon">
+                  <Identicon address={temporaryAddress} size="100%" />
+                </div>
                 <Input
-                  placeholder="New address"
+                  placeholder={translateRaw('NEW_ADDRESS')}
                   value={temporaryAddress}
                   onChange={this.setTemporaryAddress}
                   setInnerRef={this.setAddressInputRef}
                 />
-                <Identicon address={temporaryAddress} />
               </div>
             </td>
             <td>
               <div className="AddressBookTable-cell">
                 <Input
-                  placeholder="New label"
+                  placeholder={translateRaw('NEW_LABEL')}
                   value={temporaryLabel}
                   onChange={this.setTemporaryLabel}
                   setInnerRef={this.setLabelInputRef}
@@ -81,13 +76,14 @@ class AddressBookTable extends React.Component<Props, State> {
               </div>
             </td>
             <td>
-              <div className="AddressBookTable-cell">
-                <button className="btn btn-sm btn-default" onClick={this.handleAddEntry}>
+              <div className="AddressBookTable-cell AddressBookTable-cell-action">
+                <button className="btn btn-sm btn-success" onClick={this.handleAddEntry}>
                   <i className="fa fa-plus" />
                 </button>
               </div>
             </td>
           </tr>
+          <tr className="AddressBookTable-spacer" />
           {rows.map(this.makeLabelRow)}
         </tbody>
       </table>

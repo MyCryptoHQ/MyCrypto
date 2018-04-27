@@ -4,6 +4,8 @@
     "ADDRESS": "Address",
     "LABEL": "Label",
     "ACTIONS": "Actions",
+    "NEW_ADDRESS": "New address",
+    "NEW_LABEL": "New label",
     "X_TXHASH": "TX Hash",
     "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your private key to unlock your wallet.**",
     "NAV_CHECKTXSTATUS": "Check TX Status",

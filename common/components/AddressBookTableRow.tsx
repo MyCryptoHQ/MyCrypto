@@ -37,11 +37,13 @@ class AddressBookTableRow extends React.Component<Props> {
     const trOnClick = isEditing ? noop : onEditClick;
 
     return (
-      <tr onClick={trOnClick}>
+      <tr className="AddressBookTable-row" onClick={trOnClick}>
         <td>
           <div className="AddressBookTable-cell">
+            <div className="AddressBookTable-cell-identicon">
+              <Identicon address={address} size="100%" />
+            </div>
             <Input value={address} readOnly={true} />
-            <Identicon address={address} />
           </div>
         </td>
         <td>
@@ -55,7 +57,7 @@ class AddressBookTableRow extends React.Component<Props> {
           </div>
         </td>
         <td>
-          <div className="AddressBookTable-cell">
+          <div className="AddressBookTable-cell AddressBookTable-cell-action">
             <button
               title="Remove this entry"
               className="btn btn-sm  btn-danger"
