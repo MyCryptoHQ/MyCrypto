@@ -11167,6 +11167,10 @@ u2f-api@0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/u2f-api/-/u2f-api-0.2.7.tgz#17bf196b242f6bf72353d9858e6a7566cc192720"
 
+u2f-api@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/u2f-api/-/u2f-api-1.0.6.tgz#fdde2a0788fcf7d8d273aa8688b217625961f866"
+
 ua-parser-js@^0.7.9:
   version "0.7.17"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
