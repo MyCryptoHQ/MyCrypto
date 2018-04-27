@@ -57,16 +57,13 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   public render() {
     const { isFocused } = this.state;
 
-    // Allow the click event on a dropdown item to process before hiding the dropdown.
-    const onBlur = () => (this.goingToBlur = window.setTimeout(this.blur, 150));
-
     return (
       <div className="AddressField">
         <AddressInputFactory
           isSelfAddress={this.props.isSelfAddress}
           onChange={this.setAddress}
           onFocus={this.focus}
-          onBlur={onBlur}
+          onBlur={this.setBlurTimeout}
           withProps={this.props.withProps}
         />
         {isFocused && <AddressFieldDropdown onSelect={this.setAddress} />}
@@ -82,6 +79,8 @@ class AddressFieldFactoryClass extends React.Component<Props> {
     const { value } = ev.currentTarget;
     this.props.setCurrentTo(value);
   };
+
+  private setBlurTimeout = () => (this.goingToBlur = window.setTimeout(this.blur, 150));
 }
 
 const AddressFieldFactory = connect(null, { setCurrentTo })(AddressFieldFactoryClass);
