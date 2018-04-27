@@ -8,6 +8,7 @@ import { render } from 'react-dom';
 import Root from './Root';
 import { configuredStore } from './store';
 import consoleAdvertisement from './utils/consoleAdvertisement';
+import { registerClient } from 'shared/enclave/client';
 
 const appEl = document.getElementById('app');
 
@@ -23,4 +24,8 @@ if (module.hot) {
 
 if (process.env.NODE_ENV === 'production') {
   consoleAdvertisement();
+}
+
+if (process.env.BUILD_ELECTRON) {
+  registerClient();
 }

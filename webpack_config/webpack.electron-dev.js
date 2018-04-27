@@ -9,13 +9,15 @@ const electronConfig = {
   target: 'electron-main',
   mode: 'development',
   entry: {
-    main: path.join(config.path.electron, 'main/index.ts')
+    main: path.join(config.path.electron, 'main/index.ts'),
+    preload: path.join(config.path.electron, 'preload/index.ts')
   },
   module: {
     rules: [config.typescriptRule]
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json'],
+    modules: config.resolve.modules
   },
   output: {
     filename: '[name].js',
