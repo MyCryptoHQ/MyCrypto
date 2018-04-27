@@ -74,6 +74,7 @@ export function* unlockWeb3(): SagaIterator {
     if (!web3Node) {
       throw Error('Web3 node config not found!');
     }
+    const { networkId } = yield call(setupWeb3Node);
     const network = web3Node.network;
 
     if (!isWeb3Node(nodeLib)) {
@@ -86,7 +87,7 @@ export function* unlockWeb3(): SagaIterator {
     if (!address) {
       throw new Error('No accounts found in MetaMask / Mist.');
     }
-    const wallet = new Web3Wallet(address, stripWeb3Network(network));
+    const wallet = new Web3Wallet(address, stripWeb3Network(network), networkId);
     yield put(setWallet(wallet));
   } catch (err) {
     console.error(err);
