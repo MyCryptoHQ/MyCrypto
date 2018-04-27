@@ -285,6 +285,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     const { desiredToken, network, labels } = this.props;
     const { selectedAddress } = this.state;
     const label = labels[wallet.address.toLowerCase()];
+    const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     // Get renderable values, but keep 'em short
     const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
@@ -296,14 +297,16 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
       >
         <td>{wallet.index + 1}</td>
         <td className="DWModal-addresses-table-address">
-          {label && <label>{label}</label>}
           <input
             type="radio"
             name="selectedAddress"
             checked={selectedAddress === wallet.address}
             value={wallet.address}
           />
-          {wallet.address}
+          <div>
+            {label && <label>{label}</label>}
+            <span className={spanClassName}>{wallet.address}</span>
+          </div>
         </td>
         <td>
           <UnitDisplay
