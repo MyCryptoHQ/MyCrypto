@@ -88,15 +88,14 @@ class AddressFieldDropdown extends React.Component<Props> {
 
   private handleKeyDown = (e: KeyboardEvent) => {
     if (this.getIsVisible()) {
+      e.preventDefault();
+
       switch (e.keyCode) {
         case KeyCodes.ENTER:
-          e.preventDefault();
           return this.handleEnterKeyDown();
         case KeyCodes.UP_ARROW:
-          e.preventDefault();
           return this.handleUpArrowKeyDown();
         case KeyCodes.DOWN_ARROW:
-          e.preventDefault();
           return this.handleDownArrowKeyDown();
         default:
           return;
