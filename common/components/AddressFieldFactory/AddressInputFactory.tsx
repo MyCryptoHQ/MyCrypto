@@ -11,6 +11,7 @@ import { getWalletInst } from 'selectors/wallet';
 import { getResolvingDomain } from 'selectors/ens';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
+import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 
 interface StateProps {
@@ -22,6 +23,7 @@ interface StateProps {
 
 interface OwnProps {
   isSelfAddress?: boolean;
+  isFocused?: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   onFocus(ev: React.FormEvent<HTMLInputElement>): void;
   onBlur(ev: React.FormEvent<HTMLInputElement>): void;
@@ -59,7 +61,8 @@ class AddressInputFactoryClass extends Component<Props> {
       isValid,
       withProps,
       isSelfAddress,
-      isResolving
+      isResolving,
+      isFocused
     } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
@@ -82,6 +85,7 @@ class AddressInputFactoryClass extends Component<Props> {
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
+          {isFocused && <AddressFieldDropdown />}
         </div>
         <div className="AddressInput-identicon">
           <Identicon address={addr} />

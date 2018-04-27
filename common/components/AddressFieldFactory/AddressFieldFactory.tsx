@@ -1,7 +1,6 @@
 import { Query } from 'components/renderCbs';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressInputFactory } from './AddressInputFactory';
-import AddressFieldDropdown from './AddressFieldDropdown';
 import React from 'react';
 import { connect } from 'react-redux';
 import { ICurrentTo } from 'selectors/transaction';
@@ -61,12 +60,12 @@ class AddressFieldFactoryClass extends React.Component<Props> {
       <div className="AddressField">
         <AddressInputFactory
           isSelfAddress={this.props.isSelfAddress}
+          isFocused={isFocused}
           onChange={this.setAddress}
           onFocus={this.focus}
           onBlur={this.setBlurTimeout}
           withProps={this.props.withProps}
         />
-        {isFocused && <AddressFieldDropdown onSelect={this.setAddress} />}
       </div>
     );
   }

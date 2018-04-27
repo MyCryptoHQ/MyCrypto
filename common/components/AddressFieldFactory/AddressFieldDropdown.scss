@@ -4,7 +4,8 @@
 
 .AddressFieldDropdown {
   position: absolute;
-  top: calc(100% - 16px);
+  top: calc(100% - #{$space});
+  width: 100%;
   border: 1px solid $gray-lighter;
   border-top: none;
   background: $component-active-color;

@@ -18,11 +18,7 @@ interface DispatchProps {
   setCurrentTo: TSetCurrentTo;
 }
 
-interface OwnProps {
-  onSelect(e: React.FormEvent<HTMLInputElement>): void;
-}
-
-type Props = OwnProps & StateProps & DispatchProps;
+type Props = StateProps & DispatchProps;
 
 interface State {
   activeIndex: number | null;
@@ -87,14 +83,15 @@ class AddressFieldDropdown extends React.Component<Props> {
 
   private handleKeyDown = (e: KeyboardEvent) => {
     if (this.getIsVisible()) {
-      e.preventDefault();
-
       switch (e.key) {
         case 'Enter':
+          e.preventDefault();
           return this.handleEnterKeyDown();
         case 'ArrowUp':
+          e.preventDefault();
           return this.handleUpArrowKeyDown();
         case 'ArrowDown':
+          e.preventDefault();
           return this.handleDownArrowKeyDown();
         default:
           return;
