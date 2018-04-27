@@ -1,5 +1,6 @@
 @import 'common/sass/variables';
 @import 'common/sass/variables/spacing';
+@import 'common/sass/variables/colors';
 
 .AddressInput {
   display: flex;
@@ -23,5 +24,9 @@
         height: 3.4rem !important;
       }
     }
+  }
+
+  &-label {
+    color: darken($brand-success, 15%);
   }
 }

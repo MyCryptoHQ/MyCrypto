@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
+import translate from 'translations';
 import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
 import { getCurrentLabel } from 'selectors/addressBook';
 import { connect } from 'react-redux';
@@ -16,7 +17,7 @@ import './AddressInputFactory.scss';
 
 interface StateProps {
   currentTo: ICurrentTo;
-  currentLabel: string | null;
+  label: string | null;
   isValid: boolean;
   isResolving: boolean;
 }
@@ -53,7 +54,7 @@ type Props = OwnProps & StateProps;
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
     const {
-      currentLabel,
+      label,
       currentTo,
       onChange,
       onFocus,
@@ -75,7 +76,6 @@ class AddressInputFactoryClass extends Component<Props> {
             withQuery={({ readOnly }) =>
               withProps({
                 currentTo,
-                currentLabel,
                 isValid,
                 onChange,
                 onFocus,
@@ -85,6 +85,11 @@ class AddressInputFactoryClass extends Component<Props> {
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
+          {label && (
+            <span className="AddressInput-label">
+              <i className="fa fa-check" /> {translate('SENDING_TO')} {label}
+            </span>
+          )}
           {isFocused && <AddressFieldDropdown />}
         </div>
         <div className="AddressInput-identicon">
@@ -110,7 +115,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
 
   return {
     currentTo,
-    currentLabel: getCurrentLabel(state),
+    label: getCurrentLabel(state),
     isResolving: getResolvingDomain(state),
     isValid: isValidCurrentTo(state)
   };

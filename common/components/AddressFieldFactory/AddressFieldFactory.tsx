@@ -24,7 +24,6 @@ export interface CallbackProps {
   isValid: boolean;
   readOnly: boolean;
   currentTo: ICurrentTo;
-  currentLabel: string | null;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   onFocus(ev: React.FormEvent<HTMLInputElement>): void;
   onBlur(ev: React.FormEvent<HTMLInputElement>): void;
