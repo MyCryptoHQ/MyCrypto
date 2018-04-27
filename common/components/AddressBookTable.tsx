@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { AppState } from 'reducers';
 import { translateRaw } from 'translations';
-import { isValidETHAddress } from 'libs/validators';
+import { isValidETHAddress, isValidLabelLength } from 'libs/validators';
 import {
   TAddLabelForAddress,
   TRemoveLabelForAddress,
@@ -10,6 +10,7 @@ import {
   removeLabelForAddress,
   AddressLabelPair
 } from 'actions/addressBook';
+import { showNotification, TShowNotification } from 'actions/notifications';
 import { getAddressLabelPairs } from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
@@ -18,6 +19,7 @@ import './AddressBookTable.scss';
 interface DispatchProps {
   addLabelForAddress: TAddLabelForAddress;
   removeLabelForAddress: TRemoveLabelForAddress;
+  showNotification: TShowNotification;
 }
 
 interface StateProps {
@@ -30,13 +32,17 @@ interface State {
   editingRow: number | null;
   temporaryLabel: string;
   temporaryAddress: string;
+  labelInputError: boolean;
 }
+
+export const ERROR_DURATION: number = 4000;
 
 class AddressBookTable extends React.Component<Props, State> {
   public state: State = {
     editingRow: null,
     temporaryLabel: '',
-    temporaryAddress: ''
+    temporaryAddress: '',
+    labelInputError: false
   };
 
   private addressInput: HTMLInputElement | null = null;
@@ -45,7 +51,8 @@ class AddressBookTable extends React.Component<Props, State> {
 
   public render() {
     const { rows } = this.props;
-    const { temporaryLabel, temporaryAddress } = this.state;
+    const { temporaryLabel, temporaryAddress, labelInputError } = this.state;
+    const labelInputClassName = labelInputError ? 'AddressBookTable-row-input-error' : '';
 
     return (
       <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
@@ -60,6 +67,7 @@ class AddressBookTable extends React.Component<Props, State> {
             setInnerRef={this.setAddressInputRef}
           />
           <Input
+            className={labelInputClassName}
             placeholder={translateRaw('NEW_LABEL')}
             value={temporaryLabel}
             onChange={this.setTemporaryLabel}
@@ -86,15 +94,21 @@ class AddressBookTable extends React.Component<Props, State> {
   private handleAddEntry = () => {
     const { temporaryLabel: label, temporaryAddress: address } = this.state;
 
-    if (!isValidETHAddress(address) && this.addressInput) {
-      return this.addressInput.focus();
+    if (!isValidETHAddress(address)) {
+      return this.addressInput && this.addressInput.focus();
     }
 
-    if (!label && this.labelInput) {
-      return this.labelInput.focus();
+    if (!label) {
+      return this.labelInput && this.labelInput.focus();
     }
 
-    if (label && isValidETHAddress(address)) {
+    if (!isValidLabelLength(label)) {
+      this.displayInvalidLabelLengthNotification();
+      this.flashLabelInputError();
+      return this.labelInput && this.labelInput.focus();
+    }
+
+    if (isValidETHAddress(address)) {
       this.handleSave({ label, address });
       this.clearTemporaryFields();
     }
@@ -127,6 +141,7 @@ class AddressBookTable extends React.Component<Props, State> {
         }
         onEditClick={() => this.setEditingRow(index)}
         onRemoveClick={() => this.props.removeLabelForAddress(addressToLabel.address)}
+        displayInvalidLabelLengthNotification={this.displayInvalidLabelLengthNotification}
       />
     );
   };
@@ -146,12 +161,34 @@ class AddressBookTable extends React.Component<Props, State> {
   private setAddressInputRef = (node: HTMLInputElement) => (this.addressInput = node);
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
+
+  private displayInvalidLabelLengthNotification = () =>
+    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
+
+  private flashLabelInputError = () =>
+    this.setState(
+      {
+        labelInputError: true
+      },
+      () =>
+        setTimeout(
+          () =>
+            this.setState({
+              labelInputError: false
+            }),
+          ERROR_DURATION
+        )
+    );
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   rows: getAddressLabelPairs(state)
 });
 
-const mapDispatchToProps: DispatchProps = { addLabelForAddress, removeLabelForAddress };
+const mapDispatchToProps: DispatchProps = {
+  addLabelForAddress,
+  removeLabelForAddress,
+  showNotification
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);

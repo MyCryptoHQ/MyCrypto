@@ -1,12 +1,18 @@
 @import 'common/sass/variables/spacing';
+@import 'common/sass/variables/colors';
 
 .AddressBookTable {
   &-row {
     display: flex;
     align-items: center;
+    margin-bottom: $space-md;
 
     &-first {
       margin-bottom: $space-xl * 1.5;
+    }
+
+    &-input-error {
+      border: 2px solid $brand-danger !important;
     }
   }
 

@@ -305,3 +305,7 @@ export const isValidGetNetVersion = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
+
+export function isValidLabelLength(label: string): boolean {
+  return label.length >= 2 && label.length <= 20;
+}

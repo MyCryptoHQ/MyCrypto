@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressLabelPair } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
@@ -53,7 +53,6 @@ class AddressFieldDropdown extends React.Component<Props> {
       const className = `AddressFieldDropdown-dropdown-item ${
         isActive ? 'AddressFieldDropdown-dropdown-item--active' : ''
       }`;
-      const title = `${translate('SEND_TO')}${label}`;
 
       return (
         <li
@@ -61,10 +60,10 @@ class AddressFieldDropdown extends React.Component<Props> {
           className={className}
           onClick={() => this.props.setCurrentTo(address)}
           role="option"
-          title={title}
+          title={`${translateRaw('SEND_TO')}${label}`}
         >
-          <strong>{label}</strong>
           <Identicon address={address} size="2rem" />
+          <strong className="AddressFieldDropdown-dropdown-item-label">{label}</strong>
           <strong>
             <Address address={address} />
           </strong>

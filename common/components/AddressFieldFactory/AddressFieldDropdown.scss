@@ -25,7 +25,7 @@
       background: $gray-lightest;
     }
 
-    strong:first-of-type {
+    &-label {
       width: $space-xl * 6;
       white-space: nowrap;
       overflow: hidden;
@@ -33,7 +33,7 @@
     }
 
     .Identicon {
-      margin: 0 1rem 0 2rem;
+      margin-right: $space-md;
     }
 
     &--active {

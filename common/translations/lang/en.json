@@ -4,6 +4,7 @@
     "ADDRESS": "Address",
     "LABEL": "Label",
     "ACTIONS": "Actions",
+    "INVALID_LABEL_LENGTH": "An address label must be between 2 and 20 characters.",
     "NEW_ADDRESS": "New address",
     "NEW_LABEL": "New label",    
     "X_TXHASH": "TX Hash",
