@@ -4,17 +4,20 @@ import noop from 'lodash/noop';
 import { isValidLabelLength } from 'libs/validators';
 import { Input, Identicon } from 'components/ui';
 import onClickOutside from 'react-onclickoutside';
+import { getLabels } from 'selectors/addressBook';
 import { ERROR_DURATION } from './AddressBookTable';
 
 interface Props {
   index: number;
   label: string;
+  labels: ReturnType<typeof getLabels>;
   address: string;
   isEditing: boolean;
   onSave(label: string): void;
   onEditClick(): void;
   onRemoveClick(): void;
   displayInvalidLabelLengthNotification(): void;
+  displayLabelAlreadyExistsNotification(): void;
 }
 
 interface State {
@@ -32,10 +35,18 @@ class AddressBookTableRow extends React.Component<Props> {
 
   private labelInput: HTMLInputElement | null = null;
 
+  private goingToClearError: number | null = null;
+
   public handleClickOutside = () => this.props.isEditing && this.handleSave();
 
   public componentWillReceiveProps(nextProps: Props) {
     this.setState({ label: nextProps.label, mostRecentValidLabel: nextProps.label });
+  }
+
+  public componentWillUnmount() {
+    if (this.goingToClearError) {
+      window.clearTimeout(this.goingToClearError);
+    }
   }
 
   public render() {
@@ -69,13 +80,22 @@ class AddressBookTableRow extends React.Component<Props> {
   }
 
   private handleSave = () => {
+    const { labels } = this.props;
     const { label, mostRecentValidLabel } = this.state;
+    const labelAlreadyExists = !!labels[label];
+
+    if (label === mostRecentValidLabel) {
+      return;
+    }
 
     if (!isValidLabelLength(label)) {
       this.props.displayInvalidLabelLengthNotification();
-      this.flashLabelInputError();
-      this.setState({ label: mostRecentValidLabel });
-      return this.labelInput && this.labelInput.focus();
+      return this.flashLabelInputError();
+    }
+
+    if (labelAlreadyExists) {
+      this.props.displayLabelAlreadyExistsNotification();
+      return this.flashLabelInputError();
     }
 
     this.props.onSave(this.state.label);
@@ -98,20 +118,28 @@ class AddressBookTableRow extends React.Component<Props> {
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private flashLabelInputError = () =>
+  private flashLabelInputError = () => {
+    const { mostRecentValidLabel } = this.state;
+
     this.setState(
       {
+        label: mostRecentValidLabel,
         labelInputError: true
       },
       () =>
-        setTimeout(
+        (this.goingToClearError = window.setTimeout(
           () =>
             this.setState({
               labelInputError: false
             }),
           ERROR_DURATION
-        )
+        ))
     );
+
+    if (this.labelInput) {
+      this.labelInput.focus();
+    }
+  };
 }
 
 export default onClickOutside(AddressBookTableRow);

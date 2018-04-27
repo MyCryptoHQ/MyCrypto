@@ -11,7 +11,7 @@ import {
   AddressLabelPair
 } from 'actions/addressBook';
 import { showNotification, TShowNotification } from 'actions/notifications';
-import { getAddressLabelPairs } from 'selectors/addressBook';
+import { getAddressLabelPairs, getLabels } from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
@@ -24,6 +24,7 @@ interface DispatchProps {
 
 interface StateProps {
   rows: ReturnType<typeof getAddressLabelPairs>;
+  labels: ReturnType<typeof getLabels>;
 }
 
 type Props = DispatchProps & StateProps;
@@ -48,6 +49,14 @@ class AddressBookTable extends React.Component<Props, State> {
   private addressInput: HTMLInputElement | null = null;
 
   private labelInput: HTMLInputElement | null = null;
+
+  private goingToClearError: number | null = null;
+
+  public componentWillUnmount() {
+    if (this.goingToClearError) {
+      window.clearTimeout(this.goingToClearError);
+    }
+  }
 
   public render() {
     const { rows } = this.props;
@@ -92,7 +101,9 @@ class AddressBookTable extends React.Component<Props, State> {
   };
 
   private handleAddEntry = () => {
+    const { labels } = this.props;
     const { temporaryLabel: label, temporaryAddress: address } = this.state;
+    const labelAlreadyExists = !!labels[label];
 
     if (!isValidETHAddress(address)) {
       return this.addressInput && this.addressInput.focus();
@@ -104,14 +115,16 @@ class AddressBookTable extends React.Component<Props, State> {
 
     if (!isValidLabelLength(label)) {
       this.displayInvalidLabelLengthNotification();
-      this.flashLabelInputError();
-      return this.labelInput && this.labelInput.focus();
+      return this.flashLabelInputError();
     }
 
-    if (isValidETHAddress(address)) {
-      this.handleSave({ label, address });
-      this.clearTemporaryFields();
+    if (labelAlreadyExists) {
+      this.displayLabelAlreadyExistsNotification();
+      return this.flashLabelInputError();
     }
+
+    this.handleSave({ label, address });
+    this.clearTemporaryFields();
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
@@ -132,6 +145,7 @@ class AddressBookTable extends React.Component<Props, State> {
         index={index}
         address={addressToLabel.address}
         label={addressToLabel.label}
+        labels={this.props.labels}
         isEditing={isEditingRow}
         onSave={(labelToSave: string) =>
           this.handleSave({
@@ -142,6 +156,7 @@ class AddressBookTable extends React.Component<Props, State> {
         onEditClick={() => this.setEditingRow(index)}
         onRemoveClick={() => this.props.removeLabelForAddress(addressToLabel.address)}
         displayInvalidLabelLengthNotification={this.displayInvalidLabelLengthNotification}
+        displayLabelAlreadyExistsNotification={this.displayLabelAlreadyExistsNotification}
       />
     );
   };
@@ -165,24 +180,33 @@ class AddressBookTable extends React.Component<Props, State> {
   private displayInvalidLabelLengthNotification = () =>
     this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
 
-  private flashLabelInputError = () =>
+  private displayLabelAlreadyExistsNotification = () =>
+    this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
+
+  private flashLabelInputError = () => {
     this.setState(
       {
         labelInputError: true
       },
       () =>
-        setTimeout(
+        (this.goingToClearError = window.setTimeout(
           () =>
             this.setState({
               labelInputError: false
             }),
           ERROR_DURATION
-        )
+        ))
     );
+
+    if (this.labelInput) {
+      this.labelInput.focus();
+    }
+  };
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
-  rows: getAddressLabelPairs(state)
+  rows: getAddressLabelPairs(state),
+  labels: getLabels(state, { reversed: true })
 });
 
 const mapDispatchToProps: DispatchProps = {

@@ -1,7 +1,7 @@
 import { AddressBookAction } from 'actions/addressBook';
 import { TypeKeys } from 'actions/addressBook/constants';
 
-interface AddressToLabelDictionary {
+export interface AddressToLabelDictionary {
   [address: string]: string;
 }
 
