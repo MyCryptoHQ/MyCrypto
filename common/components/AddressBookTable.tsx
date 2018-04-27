@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
-import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
 import { translateRaw } from 'translations';
 import { isValidETHAddress } from 'libs/validators';
@@ -102,7 +101,7 @@ class AddressBookTable extends React.Component<Props, State> {
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
-    if (e.keyCode === KeyCodes.ENTER) {
+    if (e.key === 'Enter') {
       this.handleAddEntry();
     }
   };

@@ -1,5 +1,4 @@
 import React from 'react';
-import KeyCodes from 'shared/keycodes';
 import { translateRaw } from 'translations';
 import noop from 'lodash/noop';
 import { Input, Identicon } from 'components/ui';
@@ -63,7 +62,7 @@ class AddressBookTableRow extends React.Component<Props> {
   private handleSave = () => this.props.onSave(this.state.label);
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === KeyCodes.ENTER) {
+    if (e.key === 'Enter') {
       this.handleSave();
 
       if (this.labelInput) {

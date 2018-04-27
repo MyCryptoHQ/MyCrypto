@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
 import translate from 'translations';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
@@ -90,12 +89,12 @@ class AddressFieldDropdown extends React.Component<Props> {
     if (this.getIsVisible()) {
       e.preventDefault();
 
-      switch (e.keyCode) {
-        case KeyCodes.ENTER:
+      switch (e.key) {
+        case 'Enter':
           return this.handleEnterKeyDown();
-        case KeyCodes.UP_ARROW:
+        case 'ArrowUp':
           return this.handleUpArrowKeyDown();
-        case KeyCodes.DOWN_ARROW:
+        case 'ArrowDown':
           return this.handleDownArrowKeyDown();
         default:
           return;

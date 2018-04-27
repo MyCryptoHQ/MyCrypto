@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import KeyCodes from 'shared/keycodes';
 import { AppState } from 'reducers';
 import { addLabelForAddress, TAddLabelForAddress } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
@@ -130,8 +129,8 @@ class AddressLabel extends React.Component<Props> {
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    switch (e.keyCode) {
-      case KeyCodes.ENTER:
+    switch (e.key) {
+      case 'Enter':
         return this.handleEnterKeyDown();
       default:
         return;
