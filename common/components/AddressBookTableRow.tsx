@@ -53,7 +53,7 @@ class AddressBookTableRow extends React.Component<Props> {
     const { address, isEditing, onEditClick, onRemoveClick } = this.props;
     const { label, labelInputError } = this.state;
     const trOnClick = isEditing ? noop : onEditClick;
-    const labelInputClassName = labelInputError ? 'AddressBookTable-row-input-error' : '';
+    const labelInputClassName = labelInputError ? 'invalid' : '';
 
     return (
       <div className="AddressBookTable-row" onClick={trOnClick}>
@@ -66,6 +66,7 @@ class AddressBookTableRow extends React.Component<Props> {
           value={label}
           onChange={this.setLabel}
           onKeyDown={this.handleKeyDown}
+          onBlur={this.handleClickOutside}
           setInnerRef={this.setLabelInputRef}
         />
         <button

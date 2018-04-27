@@ -61,7 +61,7 @@ class AddressBookTable extends React.Component<Props, State> {
   public render() {
     const { rows } = this.props;
     const { temporaryLabel, temporaryAddress, labelInputError } = this.state;
-    const labelInputClassName = labelInputError ? 'AddressBookTable-row-input-error' : '';
+    const labelInputClassName = labelInputError ? 'invalid' : '';
 
     return (
       <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
