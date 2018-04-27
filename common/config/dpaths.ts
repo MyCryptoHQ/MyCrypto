@@ -53,6 +53,11 @@ export const ELLA_DEFAULT: DPath = {
   value: "m/44'/163'/0'/0"
 };
 
+export const EGEM_DEFAULT: DPath = {
+  label: 'Default (EGEM)',
+  value: "m/44'/1987'/0'/0"
+};
+
 export const ETH_SINGULAR: DPath = {
   label: 'SingularDTV',
   value: "m/0'/0'/0'"

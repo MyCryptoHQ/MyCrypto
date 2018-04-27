@@ -184,6 +184,20 @@ export const INITIAL_STATE: StaticNodesState = {
     service: 'ellaism.org',
     lib: shepherdProvider,
     estimateGas: true
+  },
+  egem_auto: {
+    network: 'EGEM',
+    isCustom: false,
+    service: 'AUTO',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  egem: {
+    network: 'EGEM',
+    isCustom: false,
+    service: 'egem.io',
+    lib: shepherdProvider,
+    estimateGas: true
   }
 };
 
