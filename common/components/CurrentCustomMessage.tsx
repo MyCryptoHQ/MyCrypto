@@ -6,8 +6,7 @@ import { getAllTokens, getNetworkConfig } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getAddressMessage } from 'config';
 import { Address } from 'components/ui';
-import { Token } from 'types/network';
-import { NetworkConfig } from 'types/network';
+import { Token, NetworkConfig } from 'types/network';
 
 interface ReduxProps {
   currentTo: ICurrentTo;

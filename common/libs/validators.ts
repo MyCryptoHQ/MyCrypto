@@ -17,7 +17,7 @@ import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import BN from 'bn.js';
 
 export function isValidAddress(address: string, chainId: number) {
-  if (chainId === 30 || chainId == 31) {
+  if (chainId === 30 || chainId === 31) {
     return isValidRSKAddress(address, chainId);
   } else {
     return isValidETHAddress(address);

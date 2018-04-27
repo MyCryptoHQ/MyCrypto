@@ -2,8 +2,7 @@ import React from 'react';
 import { toChecksumAddressByChainId } from 'libs/checksum';
 import NewTabLink from './NewTabLink';
 import { IWallet } from 'libs/wallet';
-import { BlockExplorerConfig } from 'types/network';
-import { NetworkConfig } from 'types/network';
+import { BlockExplorerConfig, NetworkConfig } from 'types/network';
 
 interface BaseProps {
   explorer?: BlockExplorerConfig | null;

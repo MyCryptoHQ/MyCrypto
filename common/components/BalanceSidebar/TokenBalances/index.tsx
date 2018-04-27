@@ -20,9 +20,8 @@ import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from '
 import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';
-import { Token } from 'types/network';
+import { Token, NetworkConfig } from 'types/network';
 import './index.scss';
-import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];

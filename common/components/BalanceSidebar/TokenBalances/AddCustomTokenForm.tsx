@@ -4,9 +4,8 @@ import { isPositiveIntegerOrZero, isValidAddress } from 'libs/validators';
 import translate, { translateRaw } from 'translations';
 import { HelpLink, Input } from 'components/ui';
 import './AddCustomTokenForm.scss';
-import { Token } from 'types/network';
+import { Token, NetworkConfig } from 'types/network';
 import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 

@@ -11,8 +11,8 @@ import { NetworkConfig } from 'types/network';
 interface Props {
   keystore: IV3Wallet;
   privateKey: string;
-  continue(): void;
   network: NetworkConfig;
+  continue(): void;
 }
 
 const PaperWallet: React.SFC<Props> = props => (
