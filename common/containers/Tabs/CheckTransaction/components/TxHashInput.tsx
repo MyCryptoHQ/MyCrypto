@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import moment from 'moment';
 import translate from 'translations';
-import { isValidTxHash, isValidETHAddress } from 'libs/validators';
+import { isValidTxHash, isValidAddress } from 'libs/validators';
 import { getRecentNetworkTransactions } from 'selectors/transactions';
 import { AppState } from 'reducers';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface OwnProps {
   hash?: string;
@@ -15,6 +17,7 @@ interface OwnProps {
 }
 interface ReduxProps {
   recentTxs: AppState['transactions']['recent'];
+  network: NetworkConfig;
 }
 type Props = OwnProps & ReduxProps;
 
@@ -80,7 +83,7 @@ class TxHashInput extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        {isValidETHAddress(hash) && (
+        {isValidAddress(hash, this.props.network.chainId) && (
           <p className="TxHashInput-message help-block is-invalid">
             {translate('SELECT_RECENT_TX_BY_TXHASH')}
           </p>
@@ -115,5 +118,6 @@ class TxHashInput extends React.Component<Props, State> {
 }
 
 export default connect((state: AppState): ReduxProps => ({
-  recentTxs: getRecentNetworkTransactions(state)
+  recentTxs: getRecentNetworkTransactions(state),
+  network: getNetworkConfig(state)
 }))(TxHashInput);

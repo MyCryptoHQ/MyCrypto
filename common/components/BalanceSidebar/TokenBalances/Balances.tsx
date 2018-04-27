@@ -4,6 +4,10 @@ import { TokenBalance } from 'selectors/wallet';
 import AddCustomTokenForm from './AddCustomTokenForm';
 import TokenRow from './TokenRow';
 import { Token } from 'types/network';
+import { NetworkConfig } from 'types/network';
+import { connect } from 'react-redux';
+import { getNetworkConfig } from 'selectors/config';
+import { AppState } from 'reducers';
 
 interface Props {
   allTokens: Token[];
@@ -15,6 +19,12 @@ interface Props {
   onRemoveCustomToken(symbol: string): any;
 }
 
+interface StateProps {
+  network: NetworkConfig;
+}
+
+type AllProps = Props & StateProps;
+
 interface TrackedTokens {
   [symbol: string]: boolean;
 }
@@ -23,7 +33,7 @@ interface State {
   trackedTokens: { [symbol: string]: boolean };
   showCustomTokenForm: boolean;
 }
-export default class TokenBalances extends React.PureComponent<Props, State> {
+export default class TokenBalances extends React.PureComponent<AllProps, State> {
   public state: State = {
     trackedTokens: {},
     showCustomTokenForm: false
@@ -65,6 +75,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
             allTokens={allTokens}
             onSave={this.addCustomToken}
             toggleForm={this.toggleShowCustomTokenForm}
+            network={this.props.network}
           />
         </div>
       );
@@ -145,3 +156,11 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     this.props.setWalletTokens(desiredTokens);
   };
 }
+
+const mapStateToProps = (state: AppState): StateProps => {
+  return {
+    network: getNetworkConfig(state)
+  };
+};
+
+export const balance = connect<StateProps>(mapStateToProps)(TokenBalances);

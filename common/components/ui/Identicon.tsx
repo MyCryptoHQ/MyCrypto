@@ -1,18 +1,20 @@
-import { isValidETHAddress } from 'libs/validators';
+import { isValidAddress } from 'libs/validators';
 import React from 'react';
 import makeBlockie from 'ethereum-blockies-base64';
+import { NetworkConfig } from 'types/network';
 
 interface Props {
   address: string;
   className?: string;
   size?: string;
+  network: NetworkConfig;
 }
 
 export default function Identicon(props: Props) {
   const size = props.size || '4rem';
-  const { address, className } = props;
+  const { address, className, network } = props;
   // FIXME breaks on failed checksums
-  const identiconDataUrl = isValidETHAddress(address) ? makeBlockie(address) : '';
+  const identiconDataUrl = isValidAddress(address, network.chainId) ? makeBlockie(address) : '';
   return (
     // Use inline styles for printable wallets
     <div

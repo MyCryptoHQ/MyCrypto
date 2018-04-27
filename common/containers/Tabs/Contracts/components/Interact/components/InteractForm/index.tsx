@@ -3,7 +3,7 @@ import translate, { translateRaw } from 'translations';
 import { getNetworkContracts } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
+import { isValidAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
 import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
@@ -12,6 +12,8 @@ import { AddressFieldFactory } from 'components/AddressFieldFactory';
 import { getCurrentTo } from 'selectors/transaction';
 import { addHexPrefix } from 'ethereumjs-util';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
+import { NetworkConfig } from 'types/network';
+import { getNetworkConfig } from 'selectors/config';
 
 interface ContractOption {
   name: string;
@@ -21,6 +23,7 @@ interface ContractOption {
 interface StateProps {
   currentTo: ReturnType<typeof getCurrentTo>;
   contracts: NetworkContract[];
+  network: NetworkConfig;
 }
 
 interface OwnProps {
@@ -78,8 +81,9 @@ class InteractForm extends Component<Props, State> {
   public render() {
     const { contracts, accessContract, currentTo } = this.props;
     const { abiJson, contract } = this.state;
-    const validEthAddress = isValidETHAddress(
-      currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : ''
+    const validEthAddress = isValidAddress(
+      currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : '',
+      this.props.network.chainId
     );
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
@@ -203,7 +207,8 @@ class InteractForm extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => ({
   contracts: getNetworkContracts(state) || [],
-  currentTo: getCurrentTo(state)
+  currentTo: getCurrentTo(state),
+  network: getNetworkConfig(state)
 });
 
 export default connect(mapStateToProps, { setCurrentTo })(InteractForm);

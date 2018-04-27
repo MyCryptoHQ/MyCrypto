@@ -2,16 +2,18 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { getCurrentTo, ICurrentTo } from 'selectors/transaction';
-import { getAllTokens } from 'selectors/config';
+import { getAllTokens, getNetworkConfig } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { getAddressMessage } from 'config';
 import { Address } from 'components/ui';
 import { Token } from 'types/network';
+import { NetworkConfig } from 'types/network';
 
 interface ReduxProps {
   currentTo: ICurrentTo;
   tokens: Token[];
   wallet: AppState['wallet']['inst'];
+  network: NetworkConfig;
 }
 
 type Props = ReduxProps;
@@ -58,7 +60,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
   }
 
   private getMessage() {
-    const { currentTo, tokens } = this.props;
+    const { currentTo, tokens, network } = this.props;
     const { walletAddress } = this.state;
     // Make sure all comparisons are lower-cased.
     const address = currentTo.raw.toLowerCase();
@@ -75,7 +77,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
             <small>
               A message regarding{' '}
               <strong>
-                <Address address={address} />
+                <Address address={address} network={network} />
               </strong>:
             </small>
           </p>
@@ -118,5 +120,6 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
 export const CurrentCustomMessage = connect((state: AppState): ReduxProps => ({
   currentTo: getCurrentTo(state),
   tokens: getAllTokens(state),
-  wallet: getWalletInst(state)
+  wallet: getWalletInst(state),
+  network: getNetworkConfig(state)
 }))(CurrentCustomMessageClass);

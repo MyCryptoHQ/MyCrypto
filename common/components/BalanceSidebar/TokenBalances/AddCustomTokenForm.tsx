@@ -1,16 +1,26 @@
 import React from 'react';
 import { HELP_ARTICLE } from 'config';
-import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
+import { isPositiveIntegerOrZero, isValidAddress } from 'libs/validators';
 import translate, { translateRaw } from 'translations';
 import { HelpLink, Input } from 'components/ui';
 import './AddCustomTokenForm.scss';
 import { Token } from 'types/network';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
 
 interface Props {
   allTokens: Token[];
   onSave(params: Token): void;
   toggleForm(): void;
 }
+
+interface StateProps {
+  network: NetworkConfig;
+}
+
+type AllProps = Props & StateProps;
 
 interface IGenerateSymbolLookup {
   [tokenSymbol: string]: boolean;
@@ -23,7 +33,7 @@ interface State {
   decimal: string;
 }
 
-export default class AddCustomTokenForm extends React.PureComponent<Props, State> {
+export default class AddCustomTokenForm extends React.PureComponent<AllProps, State> {
   public state: State = {
     tokenSymbolLookup: {},
     address: '',
@@ -31,7 +41,7 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
     decimal: ''
   };
 
-  constructor(props: Props) {
+  constructor(props: AllProps) {
     super(props);
     this.state = {
       ...this.state,
@@ -112,7 +122,7 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
     if (decimal && !isPositiveIntegerOrZero(parseInt(decimal, 10))) {
       errors.decimal = true;
     }
-    if (address && !isValidETHAddress(address)) {
+    if (address && !isValidAddress(address, this.props.network.chainId)) {
       errors.address = true;
     }
 
@@ -156,3 +166,9 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
     );
   }
 }
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  network: getNetworkConfig(state)
+});
+
+export const addCustomTokenForm = connect(mapStateToProps)(AddCustomTokenForm);

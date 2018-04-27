@@ -16,7 +16,8 @@ import {
   EXP_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  RSK_TESTNET
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
@@ -252,6 +253,30 @@ export const INITIAL_STATE: State = {
       min: 1,
       max: 60,
       initial: 20
+    }
+  },
+  RSK_TESTNET: {
+    name: 'RSK_TESTNET',
+    unit: 'SBTC',
+    chainId: 31,
+    color: '#58A052',
+    isCustom: false,
+    blockExplorer: makeExplorer({
+      name: 'RSK Testnet Explorer',
+      origin: 'https://explorer.testnet.rsk.co'
+    }),
+    tokens: require('config/tokens/rsk.json'),
+    contracts: require('config/contracts/rsk.json'),
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: RSK_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: RSK_TESTNET,
+      [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
+    },
+    gasPriceSettings: {
+      min: 0.38,
+      max: 1.5,
+      initial: 0.38
     }
   }
 };

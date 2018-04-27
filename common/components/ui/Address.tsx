@@ -1,8 +1,9 @@
 import React from 'react';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 import NewTabLink from './NewTabLink';
 import { IWallet } from 'libs/wallet';
 import { BlockExplorerConfig } from 'types/network';
+import { NetworkConfig } from 'types/network';
 
 interface BaseProps {
   explorer?: BlockExplorerConfig | null;
@@ -10,6 +11,7 @@ interface BaseProps {
 
 interface AddressProps extends BaseProps {
   address: string;
+  network?: NetworkConfig;
 }
 
 interface WalletProps extends BaseProps {
@@ -23,12 +25,16 @@ const isAddressProps = (props: Props): props is AddressProps =>
 
 const Address: React.SFC<Props> = props => {
   let addr = '';
+  let chainId = 0;
   if (isAddressProps(props)) {
     addr = props.address;
+    if (props.network) {
+      chainId = props.network.chainId;
+    }
   } else {
     addr = props.wallet.getAddressString();
   }
-  addr = toChecksumAddress(addr);
+  addr = toChecksumAddressByChainId(addr, chainId);
 
   if (props.explorer) {
     return <NewTabLink href={props.explorer.addressUrl(addr)}>{addr}</NewTabLink>;

@@ -14,7 +14,7 @@ const paths = {
 
 module.exports = {
   // Configuration
-  port: process.env.HTTPS ? 3443 : 3000,
+  port: process.env.HTTPS ? 3443 : 3021,
   title: 'MyCrypto',
   path: paths,
 

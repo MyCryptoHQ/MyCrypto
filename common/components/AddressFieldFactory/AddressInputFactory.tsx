@@ -11,11 +11,14 @@ import { getResolvingDomain } from 'selectors/ens';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import './AddressInputFactory.scss';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   currentTo: ICurrentTo;
   isValid: boolean;
   isResolving: boolean;
+  network: NetworkConfig;
 }
 
 interface OwnProps {
@@ -46,7 +49,15 @@ type Props = OwnProps & StateProps;
 
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentTo, onChange, isValid, withProps, isSelfAddress, isResolving } = this.props;
+    const {
+      currentTo,
+      onChange,
+      isValid,
+      withProps,
+      isSelfAddress,
+      isResolving,
+      network
+    } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     return (
@@ -66,7 +77,7 @@ class AddressInputFactoryClass extends Component<Props> {
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
         </div>
         <div className="AddressInput-identicon">
-          <Identicon address={addr} />
+          <Identicon address={addr} network={network} />
         </div>
       </div>
     );
@@ -89,6 +100,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
   return {
     currentTo,
     isResolving: getResolvingDomain(state),
-    isValid: isValidCurrentTo(state)
+    isValid: isValidCurrentTo(state),
+    network: getNetworkConfig(state)
   };
 })(AddressInputFactoryClass);
