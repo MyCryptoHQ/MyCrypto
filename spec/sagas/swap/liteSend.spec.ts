@@ -23,7 +23,7 @@ describe('Testing handle configure lite send', () => {
   it('races between three conditions, either the transaction state is reset, the user navigated away from the page, or bitty/shapeshift polling as finished', () => {
     const mockedTask = createMockTask();
     const expectedYield = race({
-      transactionReset: take(TransactionTK.RESET),
+      transactionReset: take(TransactionTK.RESET_REQUESTED),
       userNavigatedAway: take(WalletTK.WALLET_RESET),
       bityPollingFinished: take(SwapTK.SWAP_STOP_POLL_BITY_ORDER_STATUS),
       shapeshiftPollingFinished: take(SwapTK.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS)

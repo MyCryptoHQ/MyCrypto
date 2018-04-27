@@ -6,12 +6,11 @@ import {
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapAction,
-  ResetAction
+  ResetTransactionSuccessfulAction
 } from 'actions/transaction';
 import { Reducer } from 'redux';
 import { State } from './typings';
 import { gasPriceToBase } from 'libs/units';
-import { resetHOF } from 'reducers/transaction/shared';
 
 const INITIAL_STATE: State = {
   to: { raw: '', value: null },
@@ -50,11 +49,17 @@ const tokenToToken = (
   { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
 ): State => ({ ...state, ...rest });
 
-const reset = resetHOF('fields', INITIAL_STATE);
+const reset = (
+  state: State,
+  { payload: { isContractInteraction } }: ResetTransactionSuccessfulAction
+): State => ({
+  ...INITIAL_STATE,
+  ...(isContractInteraction ? { to: state.to } : {})
+});
 
 export const fields = (
   state: State = INITIAL_STATE,
-  action: FieldAction | SwapAction | ResetAction
+  action: FieldAction | SwapAction | ResetTransactionSuccessfulAction
 ) => {
   switch (action.type) {
     case TK.TO_FIELD_SET:
@@ -75,7 +80,8 @@ export const fields = (
       return etherToToken(state, action);
     case TK.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
-    case TK.RESET:
+
+    case TK.RESET_SUCCESSFUL:
       return reset(state, action);
     default:
       return state;

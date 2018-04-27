@@ -8,9 +8,8 @@ import {
   TInputGasPriceIntent,
   getNonceRequested,
   TGetNonceRequested,
-  reset,
-  TReset,
-  ResetAction
+  resetTransactionRequested,
+  TResetTransactionRequested
 } from 'actions/transaction';
 import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
@@ -36,7 +35,7 @@ interface DispatchProps {
   inputGasPriceIntent: TInputGasPriceIntent;
   fetchCCRates: TFetchCCRatesRequested;
   getNonceRequested: TGetNonceRequested;
-  reset: TReset;
+  resetTransactionRequested: TResetTransactionRequested;
 }
 
 // Set default props for props that can't be truthy or falsy
@@ -45,7 +44,6 @@ interface DefaultProps {
 }
 
 interface OwnProps {
-  resetIncludeExcludeProperties?: ResetAction['payload'];
   initialState?: SliderStates;
   disableToggle?: boolean;
   advancedGasOptions?: AdvancedOptions;
@@ -72,7 +70,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 
   public componentDidMount() {
     if (!this.props.offline) {
-      this.props.reset(this.props.resetIncludeExcludeProperties);
+      this.props.resetTransactionRequested();
       this.props.fetchCCRates([this.props.network.unit]);
       this.props.getNonceRequested();
     }
@@ -156,5 +154,5 @@ export default connect(mapStateToProps, {
   inputGasPriceIntent,
   fetchCCRates: fetchCCRatesRequested,
   getNonceRequested,
-  reset
+  resetTransactionRequested
 })(TXMetaDataPanel);
