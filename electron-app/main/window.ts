@@ -4,6 +4,7 @@ import path from 'path';
 import MENU from './menu';
 import updater from './updater';
 import { APP_TITLE } from '../constants';
+import ledger from 'shared/enclave/server/wallets/ledger';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Cached reference, preventing recreations

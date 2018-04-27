@@ -3,6 +3,8 @@ import {
   EnclaveEvents,
   GetAddressesParams,
   GetAddressesResponse,
+  GetChainCodeParams,
+  GetChainCodeResponse,
   SignTransactionParams,
   SignTransactionResponse
 } from 'shared/enclave/types';
@@ -14,6 +16,10 @@ export function registerClient() {
 const api = {
   getAddresses(params: GetAddressesParams) {
     return makeRequestExpectingResponse<GetAddressesResponse>(EnclaveEvents.GET_ADDRESSES, params);
+  },
+
+  getChainCode(params: GetChainCodeParams) {
+    return makeRequestExpectingResponse<GetChainCodeResponse>(EnclaveEvents.GET_CHAIN_CODE, params);
   },
 
   signTransaction(params: SignTransactionParams) {

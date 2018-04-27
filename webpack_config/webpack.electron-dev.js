@@ -29,10 +29,15 @@ const electronConfig = {
       'process.env.NODE_ENV': JSON.stringify('development')
     }),
   ],
+  externals: {
+    'node-hid': 'commonjs node-hid',
+    '@ledger/hw-transport-hid': 'commonjs @ledger/hw-transport-hid'
+  },
   node: {
     __dirname: false,
     __filename: false
-  }
+  },
+  devtool: 'eval'
 };
 
 module.exports = electronConfig;

@@ -1,16 +1,34 @@
-// All enclave event types
+// Enclave enums
 export enum EnclaveEvents {
   GET_ADDRESSES = 'get-addresses',
+  GET_CHAIN_CODE = 'get-chain-code',
   SIGN_TRANSACTION = 'sign-transaction'
+}
+
+export enum WalletTypes {
+  LEDGER = 'ledger',
+  TREZOR = 'trezor',
+  KEEPKEY = 'keepkey'
 }
 
 // Get Addresses Request
 export interface GetAddressesParams {
-  walletType: string;
+  walletType: WalletTypes;
 }
 
 export interface GetAddressesResponse {
   addresses: string[];
+}
+
+// Get chain code request
+export interface GetChainCodeParams {
+  walletType: WalletTypes;
+  dpath: string;
+}
+
+export interface GetChainCodeResponse {
+  publicKey: string;
+  chainCode: string;
 }
 
 // Sign Transaction Request
@@ -26,8 +44,8 @@ export interface SignTransactionResponse {
 }
 
 // All Requests & Responses
-export type EventParams = GetAddressesParams | SignTransactionParams;
-export type EventResponse = GetAddressesResponse | SignTransactionResponse;
+export type EventParams = GetAddressesParams | GetChainCodeParams | SignTransactionParams;
+export type EventResponse = GetAddressesResponse | GetChainCodeResponse | SignTransactionResponse;
 
 // RPC requests, responses & failures
 export interface RpcRequest {
@@ -53,10 +71,7 @@ export interface RpcEventFailure {
 
 export type RpcEvent<T = any> = RpcEventFailure | RpcEventSuccess<T>;
 
-// No clue
-export interface RpcEventServer<T = any> {
-  payload: T;
-  id: number;
+// Wallet lib
+export interface WalletLib {
+  getChainCode(dpath: string): Promise<GetChainCodeResponse>;
 }
-export type RpcEventHandler<A = any, R = any> = (event: EnclaveEvents, args: A) => R;
-export type MatchingIdHandler<A = any> = (event: string, args: A) => void;

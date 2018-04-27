@@ -2,13 +2,14 @@ import handlers from './handlers';
 import { isValidEventType } from 'shared/enclave/utils';
 import { RpcRequest, RpcEventSuccess, RpcEventFailure, EventResponse } from 'shared/enclave/types';
 
-function processRequest(req: RpcRequest) {
+async function processRequest(req: RpcRequest) {
   try {
-    const data = handlers[req.type](req.params);
+    const data = await handlers[req.type](req.params);
     if (data) {
       respondWithPayload(req, data);
     }
   } catch (err) {
+    console.error('Request', req.type, 'failed with error:', err);
     respondWithError(req, err.toString());
   }
 }
