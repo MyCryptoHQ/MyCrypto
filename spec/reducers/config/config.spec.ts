@@ -133,7 +133,7 @@ describe('handleNodeChangeIntent*', () => {
         : acc
   );
   const newNodeConfig: StaticNodeConfig = (staticNodesExpectedState as any).initialState[newNodeId];
-
+  const isOffline = false;
   const changeNodeIntentAction = changeNodeIntent(newNodeId);
   const latestBlock = '0xa';
 
@@ -174,21 +174,25 @@ describe('handleNodeChangeIntent*', () => {
     expect(data.gen.next(newNodeConfig).value).toMatchSnapshot();
   });
 
-  it('should show error and revert to previous node if check times out', () => {
-    data.clone1 = data.gen.clone();
-    data.clone1.next(true);
-    expect(data.clone1.throw('err').value).toEqual(select(getNodeId));
-    expect(data.clone1.next(defaultNodeId).value).toEqual(
+  it('should select isOffline', () => {
+    expect(data.gen.next(true).value).toEqual(select(getOffline));
+  });
+
+  it('should show error and revert to previous node if online check times out', () => {
+    data.nodeError = data.gen.clone();
+    data.nodeError.next(isOffline);
+    expect(data.nodeError.throw('err').value).toEqual(select(getNodeId));
+    expect(data.nodeError.next(defaultNodeId).value).toEqual(
       put(showNotification('danger', translateRaw('ERROR_32'), 5000))
     );
-    expect(data.clone1.next().value).toEqual(
+    expect(data.nodeError.next().value).toEqual(
       put(changeNode({ networkId: defaultNodeConfig.network, nodeId: defaultNodeId }))
     );
-    expect(data.clone1.next().done).toEqual(true);
+    expect(data.nodeError.next().done).toEqual(true);
   });
 
   it('should sucessfully switch to the manual node', () => {
-    expect(data.gen.next(latestBlock).value).toEqual(
+    expect(data.gen.next(isOffline).value).toEqual(
       apply(shepherd, shepherd.manual, [newNodeId, false])
     );
   });

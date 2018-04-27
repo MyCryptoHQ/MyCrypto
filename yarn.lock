@@ -7422,9 +7422,9 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-mycrypto-shepherd@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.1.0.tgz#6d61fdd88186c6b7ce925293f1b52759405ac7fe"
+mycrypto-shepherd@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.2.0.tgz#856a7b250f187dc90508cd7b98ed2dba95c6ea0b"
   dependencies:
     "@types/jest" "^22.2.2"
     "@types/node" "^9.6.2"

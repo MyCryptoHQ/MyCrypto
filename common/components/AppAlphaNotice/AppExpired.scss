@@ -1,0 +1,44 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.AppExpired {
+  @include cover-message;
+  background: $brand-danger;
+  display: flex;
+  align-items: center;
+
+  &-content {
+    padding-bottom: 60px;
+
+    h2 {
+      text-align: center;
+    }
+
+    p {
+      text-align: justify;
+    }
+
+    &-btn {
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      margin: 40px auto 0;
+      text-align: center;
+      border: none;
+      padding: 0;
+      transition: $transition;
+      height: 60px;
+      line-height: 60px;
+      font-size: 22px;
+      background: rgba(#fff, 0.96);
+      color: $gray-dark;
+      border-radius: 4px;
+      text-shadow: none;
+
+      &:hover {
+        background: #fff;
+        color: $gray-darker;
+      }
+    }
+  }
+}
