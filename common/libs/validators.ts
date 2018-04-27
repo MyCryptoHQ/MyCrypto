@@ -1,5 +1,5 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
-import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rsk-util';
+import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';

@@ -9,12 +9,12 @@ interface KeystorePayload {
 
 export default function generateKeystore(
   password: string,
-  n_factor: number,
+  N_FACTOR: number,
   chainId: number
 ): Promise<KeystorePayload> {
   return new Promise(resolve => {
     const worker = new Worker();
-    worker.postMessage({ password, n_factor, chainId });
+    worker.postMessage({ password, N_FACTOR, chainId });
     worker.onmessage = (ev: MessageEvent) => {
       const filename: string = ev.data.filename;
       const privateKey: string = ev.data.privateKey;
