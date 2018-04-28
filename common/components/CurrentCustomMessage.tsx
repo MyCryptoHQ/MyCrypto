@@ -76,7 +76,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
             <small>
               A message regarding{' '}
               <strong>
-                <Address address={address} network={network} />
+                <Address address={address} />
               </strong>:
             </small>
           </p>
