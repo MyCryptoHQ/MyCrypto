@@ -13,7 +13,7 @@ export function getDeterministicWallets(
       chainCode,
       limit: limit || 5,
       offset: offset || 0,
-      chainId: chainId
+      chainId
     }
   };
 }

@@ -30,7 +30,7 @@ class AddressFieldFactoryClass extends React.Component<Props> {
     // this 'to' parameter can be either token or actual field related
     const { to, chainId } = this.props;
     if (to) {
-      this.props.setCurrentTo({ raw: to, chainId: chainId });
+      this.props.setCurrentTo({ raw: to, chainId });
     }
   }
 

@@ -12,7 +12,6 @@ import { resolveDomainRequested, TypeKeys as ENSTypekeys } from 'actions/ens';
 import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
 
 export function* setCurrentTo(action: SetCurrentToAction): SagaIterator {
-  debugger;
   const validAddress: boolean = yield call(
     isValidAddress,
     action.payload.raw,
@@ -21,7 +20,7 @@ export function* setCurrentTo(action: SetCurrentToAction): SagaIterator {
   const validEns: boolean = yield call(isValidENSAddress, action.payload.raw);
 
   let value: Buffer | null = null;
-  let raw: string = action.payload.raw;
+  const raw: string = action.payload.raw;
   if (validAddress) {
     value = Address(raw);
   } else if (validEns) {

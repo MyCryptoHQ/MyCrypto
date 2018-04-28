@@ -207,7 +207,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
           chainCode,
           limit: WALLETS_PER_PAGE,
           offset: WALLETS_PER_PAGE * this.state.page,
-          chainId: chainId
+          chainId
         });
       } else {
         console.error('Invalid dPath provided', dPath);

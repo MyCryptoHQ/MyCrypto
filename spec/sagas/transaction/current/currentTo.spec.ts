@@ -18,7 +18,7 @@ describe('setCurrentTo*', () => {
       value: Address(raw)
     };
     const ethAddrAction: any = {
-      payload: { raw: raw, chainId: 1 }
+      payload: { raw, chainId: 1 }
     };
 
     data.validEthGen = setCurrentTo(ethAddrAction);
@@ -44,7 +44,7 @@ describe('setCurrentTo*', () => {
       value: null
     };
     const ensAddrAction: any = {
-      payload: { raw: raw, chainId: 1 }
+      payload: { raw, chainId: 1 }
     };
     data.validEnsGen = setCurrentTo(ensAddrAction);
 
