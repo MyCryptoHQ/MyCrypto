@@ -15,12 +15,12 @@ import {
   refreshTokenBalances,
   TRefreshTokenBalances
 } from 'actions/wallet';
-import { getAllTokens, getOffline, getNetworkConfig } from 'selectors/config';
+import { getAllTokens, getOffline } from 'selectors/config';
 import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
 import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';
-import { Token, NetworkConfig } from 'types/network';
+import { Token } from 'types/network';
 import './index.scss';
 
 interface StateProps {
@@ -32,7 +32,6 @@ interface StateProps {
   isTokensLoading: AppState['wallet']['isTokensLoading'];
   hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
   isOffline: AppState['config']['meta']['offline'];
-  network: NetworkConfig;
 }
 interface ActionProps {
   addCustomToken: TAddCustomToken;
@@ -89,7 +88,6 @@ class TokenBalances extends React.Component<Props> {
       );
     } else {
       const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
-
       content = (
         <Balances
           allTokens={tokens}
@@ -99,7 +97,6 @@ class TokenBalances extends React.Component<Props> {
           setWalletTokens={this.props.setWalletTokens}
           onAddCustomToken={this.props.addCustomToken}
           onRemoveCustomToken={this.props.removeCustomToken}
-          network={this.props.network}
         />
       );
     }
@@ -129,8 +126,7 @@ function mapStateToProps(state: AppState): StateProps {
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
     hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
-    isOffline: getOffline(state),
-    network: getNetworkConfig(state)
+    isOffline: getOffline(state)
   };
 }
 
