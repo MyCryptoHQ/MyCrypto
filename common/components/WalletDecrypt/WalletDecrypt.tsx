@@ -219,8 +219,7 @@ const WalletDecrypt = withRouter<Props>(
         unlock: this.props.setWallet,
         helpLink: '',
         isReadOnly: true,
-        redirect: '/account/info',
-        network: this.props.network
+        redirect: '/account/info'
       }
     };
 

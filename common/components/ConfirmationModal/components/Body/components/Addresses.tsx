@@ -25,7 +25,6 @@ const size = '3rem';
 class AddressesClass extends Component<StateProps> {
   public render() {
     const { from, isToken, unit, network } = this.props;
-
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {
@@ -41,7 +40,7 @@ class AddressesClass extends Component<StateProps> {
                     <Identicon
                       className="tx-modal-address-from-icon"
                       size={size}
-                      address={toChecksumAddressByChainId(from, network.chainId)}
+                      address={from}
                       network={network}
                     />
                     <div className="tx-modal-address-from-content">

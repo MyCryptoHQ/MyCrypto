@@ -4,7 +4,6 @@ import { Wei } from 'libs/units';
 import { Identicon, Address, UnitDisplay } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import { SavedTransaction } from 'types/transactions';
-import { toChecksumAddressByChainId } from 'libs/checksum';
 import './RecentTransaction.scss';
 
 interface Props {
@@ -20,10 +19,7 @@ export default class RecentTransaction extends React.Component<Props> {
     return (
       <tr className="RecentTx" key={tx.time} onClick={this.handleClick}>
         <td className="RecentTx-to">
-          <Identicon
-            address={toChecksumAddressByChainId(tx.to, network.chainId)}
-            network={network}
-          />
+          <Identicon address={tx.to} network={network} />
           <Address address={tx.to} network={network} />
         </td>
         <td className="RecentTx-value">

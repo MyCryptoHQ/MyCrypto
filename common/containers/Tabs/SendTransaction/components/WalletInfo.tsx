@@ -7,6 +7,9 @@ import { GenerateKeystoreModal, TogglablePassword, AddressField } from 'componen
 import { NetworkConfig } from 'types/network';
 import './WalletInfo.scss';
 import { toChecksumAddressByChainId } from 'libs/checksum';
+import { getNetworkConfig } from 'selectors/config';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
 
 interface Props {
   wallet: IWallet;
@@ -20,7 +23,7 @@ interface State {
   isKeystoreModalOpen: boolean;
 }
 
-export default class WalletInfo extends React.PureComponent<Props, State> {
+class WalletInfo extends React.PureComponent<Props, State> {
   public state = {
     address: '',
     privateKey: '',
@@ -126,3 +129,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     this.setState({ isKeystoreModalOpen: !this.state.isKeystoreModalOpen });
   };
 }
+
+export default connect((state: AppState) => ({
+  network: getNetworkConfig(state)
+}))(WalletInfo);

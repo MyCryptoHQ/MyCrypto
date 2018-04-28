@@ -2,6 +2,7 @@ import { isValidAddress } from 'libs/validators';
 import React from 'react';
 import makeBlockie from 'ethereum-blockies-base64';
 import { NetworkConfig } from 'types/network';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 
 interface Props {
   address: string;
@@ -14,7 +15,10 @@ export default function Identicon(props: Props) {
   const size = props.size || '4rem';
   const { address, className, network } = props;
   // FIXME breaks on failed checksums
-  const identiconDataUrl = isValidAddress(address, network.chainId) ? makeBlockie(address) : '';
+  const checksummedAddress = toChecksumAddressByChainId(address, network.chainId);
+  const identiconDataUrl = isValidAddress(checksummedAddress, network.chainId)
+    ? makeBlockie(checksummedAddress)
+    : '';
   return (
     // Use inline styles for printable wallets
     <div

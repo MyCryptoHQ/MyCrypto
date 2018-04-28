@@ -99,7 +99,6 @@ interface Props {
 export default class PaperWallet extends React.Component<Props, {}> {
   public render() {
     const { privateKey, address } = this.props;
-
     return (
       <div style={styles.container}>
         <img src={sidebarImg} style={styles.sidebar} alt="MyCrypto Logo" />

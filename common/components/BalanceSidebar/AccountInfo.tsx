@@ -102,11 +102,7 @@ class AccountInfo extends React.Component<Props, State> {
         <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">
-            <Identicon
-              address={toChecksumAddressByChainId(address, network.chainId)}
-              size="100%"
-              network={network}
-            />
+            <Identicon address={address} size="100%" network={network} />
           </div>
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">

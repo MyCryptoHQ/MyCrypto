@@ -355,6 +355,10 @@ describe('unlockWeb3*', () => {
     expect(data.clone.next().done).toEqual(true);
   });
 
+  it('should apply nodeLib.getNetVersion', () => {
+    expect(data.gen.next({ lib: nodeLib }).value).toEqual(apply(nodeLib, nodeLib.getNetVersion));
+  });
+
   it('should apply nodeLib.getAccounts', () => {
     expect(data.gen.next({ lib: nodeLib }).value).toEqual(apply(nodeLib, nodeLib.getAccounts));
   });
