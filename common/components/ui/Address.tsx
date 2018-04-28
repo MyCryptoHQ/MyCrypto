@@ -24,7 +24,6 @@ type Props = BaseProps & StateProps;
 
 export class Address extends React.PureComponent<Props> {
   public render() {
-    debugger;
     let addr = '';
     let chainId = 0;
     if (this.props.address != null) {
