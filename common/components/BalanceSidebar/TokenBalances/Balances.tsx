@@ -74,7 +74,6 @@ export default class TokenBalances extends React.PureComponent<AllProps, State> 
             allTokens={allTokens}
             onSave={this.addCustomToken}
             toggleForm={this.toggleShowCustomTokenForm}
-            network={this.props.network}
           />
         </div>
       );

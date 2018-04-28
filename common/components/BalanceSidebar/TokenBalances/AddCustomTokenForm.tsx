@@ -11,15 +11,10 @@ import { connect } from 'react-redux';
 
 interface Props {
   allTokens: Token[];
+  network: NetworkConfig;
   onSave(params: Token): void;
   toggleForm(): void;
 }
-
-interface StateProps {
-  network: NetworkConfig;
-}
-
-type AllProps = Props & StateProps;
 
 interface IGenerateSymbolLookup {
   [tokenSymbol: string]: boolean;
@@ -32,7 +27,7 @@ interface State {
   decimal: string;
 }
 
-export default class AddCustomTokenForm extends React.PureComponent<AllProps, State> {
+export class AddCustomTokenForm extends React.PureComponent<Props, State> {
   public state: State = {
     tokenSymbolLookup: {},
     address: '',
@@ -40,7 +35,7 @@ export default class AddCustomTokenForm extends React.PureComponent<AllProps, St
     decimal: ''
   };
 
-  constructor(props: AllProps) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       ...this.state,
@@ -166,8 +161,6 @@ export default class AddCustomTokenForm extends React.PureComponent<AllProps, St
   }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
+export default connect((state: AppState) => ({
   network: getNetworkConfig(state)
-});
-
-export const addCustomTokenForm = connect(mapStateToProps)(AddCustomTokenForm);
+}))(AddCustomTokenForm);
