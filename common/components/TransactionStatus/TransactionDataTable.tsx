@@ -98,7 +98,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: (
         <MaybeLink href={explorer.from}>
           <Identicon address={data.from} size="26px" network={network} />
-          <Address address={data.from} network={network} />
+          <Address address={data.from} />
         </MaybeLink>
       )
     },
@@ -107,7 +107,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: (
         <MaybeLink href={explorer.to}>
           <Identicon address={data.to} size="26px" network={network} />
-          <Address address={data.to} network={network} />
+          <Address address={data.to} />
         </MaybeLink>
       )
     },
@@ -142,7 +142,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       data: receipt &&
         receipt.contractAddress && (
           <MaybeLink href={explorer.contract}>
-            <Address address={receipt.contractAddress} network={network} />
+            <Address address={receipt.contractAddress} />
           </MaybeLink>
         )
     },

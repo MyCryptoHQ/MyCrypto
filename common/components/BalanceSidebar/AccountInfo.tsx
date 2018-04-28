@@ -106,10 +106,7 @@ class AccountInfo extends React.Component<Props, State> {
           </div>
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">
-              <Address
-                address={toChecksumAddressByChainId(address, network.chainId)}
-                network={network}
-              />
+              <Address address={toChecksumAddressByChainId(address, network.chainId)} />
             </div>
             <CopyToClipboard
               onCopy={this.onCopy}

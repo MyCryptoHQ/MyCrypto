@@ -20,7 +20,7 @@ export default class RecentTransaction extends React.Component<Props> {
       <tr className="RecentTx" key={tx.time} onClick={this.handleClick}>
         <td className="RecentTx-to">
           <Identicon address={tx.to} network={network} />
-          <Address address={tx.to} network={network} />
+          <Address address={tx.to} />
         </td>
         <td className="RecentTx-value">
           <UnitDisplay
