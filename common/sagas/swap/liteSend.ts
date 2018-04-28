@@ -11,10 +11,11 @@ import {
 import { TypeKeys as WalletTK, setTokenBalancePending } from 'actions/wallet';
 import { AppState } from 'reducers';
 import { showNotification } from 'actions/notifications';
-import { isSupportedUnit, isNetworkUnit } from 'selectors/config';
+import { isSupportedUnit, isNetworkUnit, getNetworkConfig } from 'selectors/config';
 import { showLiteSend, configureLiteSend } from 'actions/swap';
 import { TypeKeys as SwapTK } from 'actions/swap/constants';
 import { isUnlocked, isEtherBalancePending } from 'selectors/wallet';
+import { NetworkConfig } from 'types/network';
 
 type SwapState = AppState['swap'];
 
@@ -56,7 +57,8 @@ export function* configureLiteSendSaga(): SagaIterator {
 
   yield put(setUnitMeta(label));
   yield put(setCurrentValue(amount.toString()));
-  yield put(setCurrentTo(paymentAddress));
+  const network: NetworkConfig = yield select(getNetworkConfig);
+  yield put(setCurrentTo({ raw: paymentAddress, chainId: network.chainId }));
 }
 
 export function* handleConfigureLiteSend(): SagaIterator {
