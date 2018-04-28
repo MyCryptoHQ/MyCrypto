@@ -3,7 +3,7 @@ import { TypeKeys } from './constants';
 export function getDeterministicWallets(
   args: interfaces.GetDeterministicWalletsArgs
 ): interfaces.GetDeterministicWalletsAction {
-  const { seed, dPath, publicKey, chainCode, limit, offset } = args;
+  const { seed, dPath, publicKey, chainCode, limit, offset, chainId } = args;
   return {
     type: TypeKeys.DW_GET_WALLETS,
     payload: {
@@ -12,7 +12,8 @@ export function getDeterministicWallets(
       publicKey,
       chainCode,
       limit: limit || 5,
-      offset: offset || 0
+      offset: offset || 0,
+      chainId: chainId
     }
   };
 }

@@ -147,7 +147,10 @@ class RequestPayment extends React.Component<Props, {}> {
   }
 
   private setWalletAsyncState(wallet: IWallet) {
-    this.props.setCurrentTo(wallet.getAddressString());
+    this.props.setCurrentTo({
+      raw: wallet.getAddressString(),
+      chainId: this.props.networkConfig.chainId
+    });
   }
 
   private generateEIP681String(

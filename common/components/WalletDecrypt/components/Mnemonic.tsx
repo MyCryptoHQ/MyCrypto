@@ -10,6 +10,8 @@ import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeprecationWarning from './DeprecationWarning';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -18,6 +20,7 @@ interface OwnProps {
 interface StateProps {
   dPath: DPath;
   dPaths: DPath[];
+  network: NetworkConfig;
 }
 
 type Props = OwnProps & StateProps;
@@ -93,6 +96,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
+          chainId={this.props.network.chainId}
         />
       </React.Fragment>
     );
@@ -158,7 +162,8 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     // Mnemonic dPath is guaranteed to always be provided
     dPath: getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE) as DPath,
-    dPaths: getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
+    dPaths: getPaths(state, InsecureWalletName.MNEMONIC_PHRASE),
+    network: getNetworkConfig(state)
   };
 }
 

@@ -10,15 +10,18 @@ import { TypeKeys } from 'actions/transaction/constants';
 import { getResolvedAddress } from 'selectors/ens';
 import { resolveDomainRequested, TypeKeys as ENSTypekeys } from 'actions/ens';
 import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
-import { NetworkConfig } from 'types/network';
-import { getNetworkConfig } from 'selectors/config';
 
-export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
-  const network: NetworkConfig = yield select(getNetworkConfig);
-  const validAddress: boolean = yield call(isValidAddress, raw, network.chainId);
-  const validEns: boolean = yield call(isValidENSAddress, raw);
+export function* setCurrentTo(action: SetCurrentToAction): SagaIterator {
+  debugger;
+  const validAddress: boolean = yield call(
+    isValidAddress,
+    action.payload.raw,
+    action.payload.chainId
+  );
+  const validEns: boolean = yield call(isValidENSAddress, action.payload.raw);
 
   let value: Buffer | null = null;
+  let raw: string = action.payload.raw;
   if (validAddress) {
     value = Address(raw);
   } else if (validEns) {

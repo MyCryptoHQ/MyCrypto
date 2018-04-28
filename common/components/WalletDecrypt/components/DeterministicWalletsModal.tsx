@@ -29,6 +29,7 @@ interface Props {
   publicKey?: string;
   chainCode?: string;
   seed?: string;
+  chainId: number;
 
   // Redux state
   wallets: AppState['deterministicWallets']['wallets'];
@@ -196,8 +197,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private getAddresses(props: Props = this.props) {
-    const { dPath, publicKey, chainCode, seed } = props;
-
+    const { dPath, publicKey, chainCode, seed, chainId } = props;
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath)) {
         this.props.getDeterministicWallets({
@@ -206,7 +206,8 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
           publicKey,
           chainCode,
           limit: WALLETS_PER_PAGE,
-          offset: WALLETS_PER_PAGE * this.state.page
+          offset: WALLETS_PER_PAGE * this.state.page,
+          chainId: chainId
         });
       } else {
         console.error('Invalid dPath provided', dPath);

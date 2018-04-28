@@ -12,6 +12,7 @@ interface DispatchProps {
 interface OwnProps {
   to: string | null;
   isSelfAddress?: boolean;
+  chainId: number;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -27,9 +28,9 @@ type Props = DispatchProps & OwnProps;
 class AddressFieldFactoryClass extends React.Component<Props> {
   public componentDidMount() {
     // this 'to' parameter can be either token or actual field related
-    const { to } = this.props;
+    const { to, chainId } = this.props;
     if (to) {
-      this.props.setCurrentTo(to);
+      this.props.setCurrentTo({ raw: to, chainId: chainId });
     }
   }
 
@@ -45,7 +46,8 @@ class AddressFieldFactoryClass extends React.Component<Props> {
 
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    this.props.setCurrentTo(value);
+
+    this.props.setCurrentTo({ raw: value, chainId: this.props.chainId });
   };
 }
 
@@ -53,14 +55,24 @@ const AddressFieldFactory = connect(null, { setCurrentTo })(AddressFieldFactoryC
 
 interface DefaultAddressFieldProps {
   isSelfAddress?: boolean;
+  chainId: number;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({ isSelfAddress, withProps }) => (
+const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
+  isSelfAddress,
+  chainId,
+  withProps
+}) => (
   <Query
     params={['to']}
     withQuery={({ to }) => (
-      <AddressFieldFactory to={to} isSelfAddress={isSelfAddress} withProps={withProps} />
+      <AddressFieldFactory
+        to={to}
+        isSelfAddress={isSelfAddress}
+        withProps={withProps}
+        chainId={chainId}
+      />
     )}
   />
 );

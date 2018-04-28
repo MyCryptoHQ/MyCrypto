@@ -1,7 +1,7 @@
 import { getResolvedAddress } from 'selectors/ens';
 import { Address } from 'libs/units';
 import { call, select, put, take } from 'redux-saga/effects';
-import { isValidETHAddress, isValidENSAddress } from 'libs/validators';
+import { isValidAddress, isValidENSAddress } from 'libs/validators';
 import { setCurrentTo, setField } from 'sagas/transaction/current/currentTo';
 import { isEtherTransaction } from 'selectors/transaction';
 import { cloneableGenerator } from 'redux-saga/utils';
@@ -18,12 +18,12 @@ describe('setCurrentTo*', () => {
       value: Address(raw)
     };
     const ethAddrAction: any = {
-      payload: raw
+      payload: { raw: raw, chainId: 1 }
     };
 
     data.validEthGen = setCurrentTo(ethAddrAction);
     it('should call isValidETHAddress', () => {
-      expect(data.validEthGen.next().value).toEqual(call(isValidETHAddress, raw));
+      expect(data.validEthGen.next().value).toEqual(call(isValidAddress, raw, 1));
     });
 
     it('should call isValidENSAddress', () => {
@@ -44,12 +44,12 @@ describe('setCurrentTo*', () => {
       value: null
     };
     const ensAddrAction: any = {
-      payload: raw
+      payload: { raw: raw, chainId: 1 }
     };
     data.validEnsGen = setCurrentTo(ensAddrAction);
 
     it('should call isValidETHAddress', () => {
-      expect(data.validEnsGen.next().value).toEqual(call(isValidETHAddress, raw));
+      expect(data.validEnsGen.next().value).toEqual(call(isValidAddress, raw, 1));
     });
 
     it('should call isValidENSAddress', () => {

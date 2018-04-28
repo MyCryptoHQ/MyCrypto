@@ -136,6 +136,7 @@ class InteractForm extends Component<Props, State> {
                   />
                 </label>
               )}
+              chainId={this.props.network.chainId}
             />
           </div>
         </div>
@@ -190,7 +191,10 @@ class InteractForm extends Component<Props, State> {
     });
 
     if (fullContract) {
-      this.props.setCurrentTo(fullContract.address || '');
+      this.props.setCurrentTo({
+        raw: fullContract.address || '',
+        chainId: this.props.network.chainId
+      });
       this.setState({
         abiJson: fullContract.abi || '',
         contract
