@@ -18,8 +18,6 @@ import {
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
-import { NetworkConfig } from 'types/network';
-import { getNetworkConfig } from 'selectors/config';
 
 const Send = () => (
   <React.Fragment>
