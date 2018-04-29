@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import ledger from 'ledgerco';
 import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import UnsupportedNetwork from './UnsupportedNetwork';
@@ -44,12 +43,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     showTip: false
   };
 
-  public showTip = () => {
-    this.setState({
-      showTip: true
-    });
-  };
-
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
       this.setState({ dPath: nextProps.dPath ? nextProps.dPath.value : '' });
@@ -65,7 +58,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
     }
 
-    if (window.location.protocol !== 'https:') {
+    if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
       return (
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
@@ -134,47 +127,21 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       showTip: false
     });
 
-    ledger.comm_u2f.create_async().then((comm: any) => {
-      new ledger.eth(comm)
-        .getAddress_async(dPath, false, true)
-        .then(res => {
-          this.setState({
-            publicKey: res.publicKey,
-            chainCode: res.chainCode,
-            isLoading: false
-          });
-        })
-        .catch((err: any) => {
-          let showTip;
-          let errMsg;
-          // Timeout
-          if (err && err.metaData && err.metaData.code === 5) {
-            showTip = true;
-            errMsg = translateRaw('LEDGER_TIMEOUT');
-          }
-          // Wrong app logged into
-          if (err && err.includes && err.includes('6804')) {
-            showTip = true;
-            errMsg = translateRaw('LEDGER_WRONG_APP');
-          }
-          // Ledger locked
-          if (err && err.includes && err.includes('6801')) {
-            errMsg = translateRaw('LEDGER_LOCKED');
-          }
-          // Other
-          if (!errMsg) {
-            errMsg = err && err.metaData ? err.metaData.type : err.toString();
-          }
-
-          this.setState({
-            error: errMsg,
-            isLoading: false
-          });
-          if (showTip) {
-            this.showTip();
-          }
+    LedgerWallet.getChainCode(dPath)
+      .then(res => {
+        this.setState({
+          publicKey: res.publicKey,
+          chainCode: res.chainCode,
+          isLoading: false
         });
-    });
+      })
+      .catch(err => {
+        this.setState({
+          error: err.message,
+          isLoading: false,
+          showTip: true
+        });
+      });
   };
 
   private handleCancel = () => {

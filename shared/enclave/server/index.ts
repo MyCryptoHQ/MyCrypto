@@ -1,28 +1,32 @@
 import { protocol, App } from 'electron';
 import handlers from './handlers';
 import { PROTOCOL_NAME, isValidEventType } from 'shared/enclave/utils';
-import { EnclaveMethods, EnclaveMethodParams } from 'shared/enclave/types';
+import { EnclaveMethods, EnclaveMethodParams, EnclaveResponse } from 'shared/enclave/types';
 
 export function registerServer(app: App) {
   protocol.registerStandardSchemes([PROTOCOL_NAME]);
 
   app.on('ready', () => {
     protocol.registerStringProtocol(PROTOCOL_NAME, async (req, cb) => {
+      let res: EnclaveResponse;
+
       try {
         const method = getMethod(req);
         const params = getParams(method, req);
-        const response = await processRequest(method, params);
-        return cb(JSON.stringify({ data: response }));
+        const data = await handlers[method](params);
+        res = { data };
       } catch (err) {
         console.error(`Request to '${req.url}' failed with error:`, err);
-        return cb(
-          JSON.stringify({
+        res = {
+          error: {
             code: 500,
             type: err.name,
             message: err.message
-          })
-        );
+          }
+        };
       }
+
+      cb(JSON.stringify(res));
     });
   });
 }
@@ -55,19 +59,8 @@ function getParams(
   try {
     // TODO: Validate params based on provided method
     const params = JSON.parse(data.bytes.toString());
-    return params.params as EnclaveMethodParams;
+    return params as EnclaveMethodParams;
   } catch (err) {
     throw new Error(`Invalid JSON blob provided for '${method}'`);
-  }
-}
-
-async function processRequest(method: EnclaveMethods, params: EnclaveMethodParams) {
-  try {
-    const data = await handlers[method](params);
-    if (data) {
-      return data;
-    }
-  } catch (err) {
-    throw new Error(err);
   }
 }

@@ -24,3 +24,4 @@ const api = {
 };
 
 export default api;
+export * from 'shared/enclave/types';

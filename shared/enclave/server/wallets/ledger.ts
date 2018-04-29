@@ -11,15 +11,14 @@ const Ledger: WalletLib = {
   async getChainCode(dpath: string) {
     const app = await getEthApp();
     try {
-      const res = await app.getAddress(dpath);
-      console.log(res);
+      const res = await app.getAddress(dpath, false, true);
       return {
         publicKey: res.publicKey,
         chainCode: res.chainCode
       };
     } catch (err) {
       console.log('wtf', err);
-      throw new Error('test');
+      throw new Error('Failed to connect to Ledger');
     }
   }
 };

@@ -1,19 +1,39 @@
 import ledger from 'ledgerco';
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
-import { DeterministicWallet } from './deterministic';
+import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { getTransactionFields } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
+import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 
-export class LedgerWallet extends DeterministicWallet implements IFullWallet {
+export class LedgerWallet extends HardwareWallet implements IFullWallet {
+  public static async getChainCode(dpath: string): Promise<ChainCodeResponse> {
+    if (process.env.BUILD_ELECTRON) {
+      return EnclaveAPI.getChainCode({
+        walletType: WalletTypes.LEDGER,
+        dpath
+      });
+    }
+
+    return makeApp()
+      .then(app => app.getAddress_async(dpath, false, true))
+      .then(res => {
+        return {
+          publicKey: res.publicKey,
+          chainCode: res.chainCode
+        };
+      })
+      .catch((err: any) => {
+        throw new Error(ledgerErrToMessage(err));
+      });
+  }
+
   private ethApp: ledger.eth;
 
   constructor(address: string, dPath: string, index: number) {
     super(address, dPath, index);
-    ledger.comm_u2f.create_async().then((comm: any) => {
-      this.ethApp = new ledger.eth(comm);
-    });
+    makeApp().then(app => (this.ethApp = app));
   }
 
   // modeled after
@@ -57,24 +77,35 @@ export class LedgerWallet extends DeterministicWallet implements IFullWallet {
     }
   }
 
-  public displayAddress = (
-    dPath?: string,
-    index?: number
-  ): Promise<{
-    publicKey: string;
-    address: string;
-    chainCode?: string;
-  }> => {
-    if (!dPath) {
-      dPath = this.dPath;
-    }
-    if (!index) {
-      index = this.index;
-    }
-    return this.ethApp.getAddress_async(dPath + '/' + index, true, false);
-  };
+  public displayAddress() {
+    return this.ethApp
+      .getAddress_async(this.dPath + '/' + this.index, true, false)
+      .then(() => true)
+      .catch(() => false);
+  }
 
   public getWalletType(): string {
     return translateRaw('X_LEDGER');
   }
+}
+
+function makeApp(): Promise<ledger.eth> {
+  return ledger.comm_u2f.create_async().then((comm: any) => new ledger.eth(comm));
+}
+
+function ledgerErrToMessage(err: any) {
+  // Timeout
+  if (err && err.metaData && err.metaData.code === 5) {
+    return translateRaw('LEDGER_TIMEOUT');
+  }
+  // Wrong app logged into
+  if (err && err.includes && err.includes('6804')) {
+    return translateRaw('LEDGER_WRONG_APP');
+  }
+  // Ledger locked
+  if (err && err.includes && err.includes('6801')) {
+    return translateRaw('LEDGER_LOCKED');
+  }
+  // Other
+  return err && err.metaData ? err.metaData.type : err.toString();
 }

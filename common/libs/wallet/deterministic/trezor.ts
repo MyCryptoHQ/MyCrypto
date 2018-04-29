@@ -2,24 +2,51 @@ import BN from 'bn.js';
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
-import TrezorConnect from 'vendor/trezor-connect';
-import { DeterministicWallet } from './deterministic';
+import TC from 'vendor/trezor-connect';
+import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
-
 import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
+import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 
 export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
+const TrezorConnect = TC as any;
 
-export class TrezorWallet extends DeterministicWallet implements IFullWallet {
+export class TrezorWallet extends HardwareWallet implements IFullWallet {
+  public static getChainCode(dpath: string): Promise<ChainCodeResponse> {
+    if (process.env.BUILD_ELECTRON) {
+      return EnclaveAPI.getChainCode({
+        walletType: WalletTypes.TREZOR,
+        dpath
+      });
+    }
+
+    return new Promise(resolve => {
+      TrezorConnect.getXPubKey(
+        dpath,
+        (res: any) => {
+          if (res.success) {
+            resolve({
+              publicKey: res.publicKey,
+              chainCode: res.chainCode
+            });
+          } else {
+            throw new Error(res.error);
+          }
+        },
+        TREZOR_MINIMUM_FIRMWARE
+      );
+    });
+  }
+
   public signRawTransaction(tx: EthTx): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const { chainId, ...strTx } = getTransactionFields(tx);
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
       const cleanedTx = mapValues(mapValues(strTx, stripHexPrefixAndLower), padLeftEven);
 
-      (TrezorConnect as any).ethereumSignTx(
+      TrezorConnect.ethereumSignTx(
         // Args
         this.getPath(),
         cleanedTx.nonce,
@@ -53,28 +80,21 @@ export class TrezorWallet extends DeterministicWallet implements IFullWallet {
 
   public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
 
-  public displayAddress = (dPath?: string, index?: number): Promise<any> => {
-    if (!dPath) {
-      dPath = this.dPath;
-    }
-    if (!index) {
-      index = this.index;
-    }
-
-    return new Promise((resolve, reject) => {
-      (TrezorConnect as any).ethereumGetAddress(
-        dPath + '/' + index,
+  public displayAddress(): Promise<any> {
+    return new Promise(resolve => {
+      TrezorConnect.ethereumGetAddress(
+        this.dPath + '/' + this.index,
         (res: any) => {
           if (res.error) {
-            reject(res.error);
+            resolve(false);
           } else {
-            resolve(res);
+            resolve(true);
           }
         },
         TREZOR_MINIMUM_FIRMWARE
       );
     });
-  };
+  }
 
   public getWalletType(): string {
     return translateRaw('X_TREZOR');
