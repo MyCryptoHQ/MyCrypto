@@ -1,5 +1,5 @@
 // Enclave enums
-export enum EnclaveEvents {
+export enum EnclaveMethods {
   GET_ADDRESSES = 'get-addresses',
   GET_CHAIN_CODE = 'get-chain-code',
   SIGN_TRANSACTION = 'sign-transaction'
@@ -44,32 +44,30 @@ export interface SignTransactionResponse {
 }
 
 // All Requests & Responses
-export type EventParams = GetAddressesParams | GetChainCodeParams | SignTransactionParams;
-export type EventResponse = GetAddressesResponse | GetChainCodeResponse | SignTransactionResponse;
+export type EnclaveMethodParams = GetAddressesParams | GetChainCodeParams | SignTransactionParams;
+export type EnclaveMethodResponse =
+  | GetAddressesResponse
+  | GetChainCodeResponse
+  | SignTransactionResponse;
 
 // RPC requests, responses & failures
-export interface RpcRequest {
-  isRequest: true;
-  params: EventParams;
-  type: EnclaveEvents;
-  id: number;
+export interface EnclaveSuccessResponse<T = EnclaveMethodResponse> {
+  data: T;
+  error?: undefined;
 }
 
-export interface RpcEventSuccess<T = any> {
-  isResponse: true;
-  payload: T;
-  errMsg: undefined;
-  id: number;
+export interface EnclaveErrorResponse {
+  data?: undefined;
+  error: {
+    code: number;
+    type: string;
+    message: string;
+  };
 }
 
-export interface RpcEventFailure {
-  isResponse: true;
-  errMsg: string;
-  payload: undefined;
-  id: number;
-}
-
-export type RpcEvent<T = any> = RpcEventFailure | RpcEventSuccess<T>;
+export type EnclaveResponse<T = EnclaveMethodResponse> =
+  | EnclaveSuccessResponse<T>
+  | EnclaveErrorResponse;
 
 // Wallet lib
 export interface WalletLib {

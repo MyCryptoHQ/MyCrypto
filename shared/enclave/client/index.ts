@@ -1,6 +1,6 @@
-import { listenForResponses, makeRequestExpectingResponse } from './requests';
+import { makeRequest } from './requests';
 import {
-  EnclaveEvents,
+  EnclaveMethods,
   GetAddressesParams,
   GetAddressesResponse,
   GetChainCodeParams,
@@ -9,24 +9,17 @@ import {
   SignTransactionResponse
 } from 'shared/enclave/types';
 
-export function registerClient() {
-  listenForResponses();
-}
-
 const api = {
   getAddresses(params: GetAddressesParams) {
-    return makeRequestExpectingResponse<GetAddressesResponse>(EnclaveEvents.GET_ADDRESSES, params);
+    return makeRequest<GetAddressesResponse>(EnclaveMethods.GET_ADDRESSES, params);
   },
 
   getChainCode(params: GetChainCodeParams) {
-    return makeRequestExpectingResponse<GetChainCodeResponse>(EnclaveEvents.GET_CHAIN_CODE, params);
+    return makeRequest<GetChainCodeResponse>(EnclaveMethods.GET_CHAIN_CODE, params);
   },
 
   signTransaction(params: SignTransactionParams) {
-    return makeRequestExpectingResponse<SignTransactionResponse>(
-      EnclaveEvents.SIGN_TRANSACTION,
-      params
-    );
+    return makeRequest<SignTransactionResponse>(EnclaveMethods.SIGN_TRANSACTION, params);
   }
 };
 

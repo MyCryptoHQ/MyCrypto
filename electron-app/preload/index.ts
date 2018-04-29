@@ -1,2 +1,2 @@
-import { registerServer } from 'shared/enclave/server';
-registerServer();
+import { setupClient } from 'shared/enclave/client/preload';
+setupClient();

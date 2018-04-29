@@ -1,53 +1,73 @@
+import { protocol, App } from 'electron';
 import handlers from './handlers';
-import { isValidEventType } from 'shared/enclave/utils';
-import { RpcRequest, RpcEventSuccess, RpcEventFailure, EventResponse } from 'shared/enclave/types';
+import { PROTOCOL_NAME, isValidEventType } from 'shared/enclave/utils';
+import { EnclaveMethods, EnclaveMethodParams } from 'shared/enclave/types';
 
-async function processRequest(req: RpcRequest) {
+export function registerServer(app: App) {
+  protocol.registerStandardSchemes([PROTOCOL_NAME]);
+
+  app.on('ready', () => {
+    protocol.registerStringProtocol(PROTOCOL_NAME, async (req, cb) => {
+      try {
+        const method = getMethod(req);
+        const params = getParams(method, req);
+        const response = await processRequest(method, params);
+        return cb(JSON.stringify({ data: response }));
+      } catch (err) {
+        console.error(`Request to '${req.url}' failed with error:`, err);
+        return cb(
+          JSON.stringify({
+            code: 500,
+            type: err.name,
+            message: err.message
+          })
+        );
+      }
+    });
+  });
+}
+
+function getMethod(req: Electron.RegisterStringProtocolRequest): EnclaveMethods {
+  const urlSplit = req.url.split(`${PROTOCOL_NAME}://`);
+
+  if (!urlSplit[1]) {
+    throw new Error('No method provided');
+  }
+
+  const method = urlSplit[1].replace('/', '');
+  if (!isValidEventType(method)) {
+    throw new Error(`Invalid or unknown method '${method}'`);
+  }
+
+  return method as EnclaveMethods;
+}
+
+function getParams(
+  method: EnclaveMethods,
+  req: Electron.RegisterStringProtocolRequest
+): EnclaveMethodParams {
+  const data = req.uploadData.find(d => !!d.bytes);
+
+  if (!data) {
+    throw new Error(`No data provided for '${method}'`);
+  }
+
   try {
-    const data = await handlers[req.type](req.params);
-    if (data) {
-      respondWithPayload(req, data);
-    }
+    // TODO: Validate params based on provided method
+    const params = JSON.parse(data.bytes.toString());
+    return params.params as EnclaveMethodParams;
   } catch (err) {
-    console.error('Request', req.type, 'failed with error:', err);
-    respondWithError(req, err.toString());
+    throw new Error(`Invalid JSON blob provided for '${method}'`);
   }
 }
 
-function respondWithPayload(req: RpcRequest, payload: EventResponse) {
-  const response: RpcEventSuccess = {
-    id: req.id,
-    isResponse: true,
-    errMsg: undefined,
-    payload
-  };
-  window.postMessage(JSON.stringify(response), window.location.origin);
-}
-
-function respondWithError(req: RpcRequest, errMsg: string) {
-  const response: RpcEventFailure = {
-    id: req.id,
-    isResponse: true,
-    payload: undefined,
-    errMsg
-  };
-  window.postMessage(JSON.stringify(response), window.location.origin);
-}
-
-export function registerServer() {
-  window.addEventListener('message', (ev: MessageEvent) => {
-    // Only take in messages from the webview
-    if (ev.origin !== window.location.origin) {
-      return;
+async function processRequest(method: EnclaveMethods, params: EnclaveMethodParams) {
+  try {
+    const data = await handlers[method](params);
+    if (data) {
+      return data;
     }
-
-    try {
-      const request = JSON.parse(ev.data);
-      if (request && request.isRequest && isValidEventType(request.type)) {
-        processRequest(request as RpcRequest);
-      }
-    } catch (err) {
-      // no-op, not meant for us
-    }
-  });
+  } catch (err) {
+    throw new Error(err);
+  }
 }

@@ -8,7 +8,7 @@ import { render } from 'react-dom';
 import Root from './Root';
 import { configuredStore } from './store';
 import consoleAdvertisement from './utils/consoleAdvertisement';
-import EnclaveAPI, { registerClient } from 'shared/enclave/client';
+import EnclaveAPI from 'shared/enclave/client';
 
 const appEl = document.getElementById('app');
 
@@ -27,6 +27,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (process.env.BUILD_ELECTRON) {
-  registerClient();
   (window as any).EnclaveAPI = EnclaveAPI;
 }
