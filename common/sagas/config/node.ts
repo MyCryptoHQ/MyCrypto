@@ -160,6 +160,7 @@ export function* handleNodeChangeIntent({
     );
   }
 
+  const isOffline = yield select(getOffline);
   if (isAutoNode(nodeIdToSwitchTo)) {
     shepherd.auto();
     if (getShepherdNetwork() !== nextNodeConfig.network) {
@@ -167,19 +168,21 @@ export function* handleNodeChangeIntent({
     }
   } else {
     try {
-      yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, false]);
+      yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, isOffline]);
     } catch (err) {
       console.error(err);
       return yield* bailOut(translateRaw('ERROR_32'));
     }
   }
 
-  let currentBlock;
+  let currentBlock = '???';
   try {
     currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);
   } catch (err) {
-    console.error(err);
-    return yield* bailOut(translateRaw('ERROR_32'));
+    if (!isOffline) {
+      console.error(err);
+      return yield* bailOut(translateRaw('ERROR_32'));
+    }
   }
 
   yield put(setLatestBlock(currentBlock));
