@@ -101,6 +101,10 @@
       margin-top: -$space-xs;
       word-wrap: break-word;
       @include mono;
+
+      &--small {
+        font-size: 0.8rem;
+      }
     }
 
     &-confirm {
