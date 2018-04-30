@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toChecksumAddress } from 'ethereumjs-util';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
+import { UnitDisplay, NewTabLink } from 'components/ui';
 import { IWallet, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
@@ -10,9 +8,9 @@ import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
-import AddressLabel from '../AddressLabel';
 import './AccountInfo.scss';
 import { getEtherBalance, isEtherBalancePending } from 'selectors/wallet';
+import AccountAddress from './AccountAddress';
 
 interface OwnProps {
   wallet: IWallet;
@@ -76,17 +74,6 @@ class AccountInfo extends React.Component<Props, State> {
     });
   };
 
-  public onCopy = () => {
-    this.setState(state => {
-      return {
-        copied: !state.copied
-      };
-    });
-    setTimeout(() => {
-      this.setState({ copied: false });
-    }, 2000);
-  };
-
   public render() {
     const { network, etherBalance, isOffline, etherBalancePending } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
@@ -101,28 +88,8 @@ class AccountInfo extends React.Component<Props, State> {
 
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
-      <div className="AccountInfo">
-        <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
-        <AddressLabel address={address} />
-        <div className="AccountInfo-section AccountInfo-address-section">
-          <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
-          </div>
-          <div className="AccountInfo-address-wrapper">
-            <div className="AccountInfo-address-addr">
-              <Address address={address} />
-            </div>
-            <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>
-              <div
-                className={`AccountInfo-copy ${this.state.copied ? 'is-copied' : ''}`}
-                title="Copy To clipboard"
-              >
-                <i className="fa fa-copy" />
-                <span>{this.state.copied ? 'copied!' : 'copy address'}</span>
-              </div>
-            </CopyToClipboard>
-          </div>
-        </div>
+      <div>
+        <AccountAddress address={address} />
 
         {typeof wallet.displayAddress === 'function' && (
           <div className="AccountInfo-section">
