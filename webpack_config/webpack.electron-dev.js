@@ -31,7 +31,7 @@ const electronConfig = {
   ],
   externals: {
     'node-hid': 'commonjs node-hid',
-    '@ledger/hw-transport-hid': 'commonjs @ledger/hw-transport-hid'
+    'trezor.js-node': 'require("trezor.js-node")'
   },
   node: {
     __dirname: false,

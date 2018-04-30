@@ -54,6 +54,7 @@
     "redux-logger": "3.0.6",
     "redux-saga": "0.16.0",
     "scryptsy": "2.0.0",
+    "trezor.js-node": "6.11.3",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.1.6",
     "whatwg-fetch": "2.0.3",

@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import { app } from 'electron';
 import { registerServer } from 'shared/enclave/server';
 import getWindow from './window';

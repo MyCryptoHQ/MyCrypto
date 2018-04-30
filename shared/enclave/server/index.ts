@@ -4,9 +4,11 @@ import { PROTOCOL_NAME, isValidEventType } from 'shared/enclave/utils';
 import { EnclaveMethods, EnclaveMethodParams, EnclaveResponse } from 'shared/enclave/types';
 
 export function registerServer(app: App) {
+  // Register protocol scheme
   protocol.registerStandardSchemes([PROTOCOL_NAME]);
 
   app.on('ready', () => {
+    // Register custom protocol behavior
     protocol.registerStringProtocol(PROTOCOL_NAME, async (req, cb) => {
       let res: EnclaveResponse;
 
@@ -27,6 +29,23 @@ export function registerServer(app: App) {
       }
 
       cb(JSON.stringify(res));
+    });
+  });
+
+  // Fix trezord requests for every new browser window
+  app.on('web-contents-created', (_, webContents) => {
+    const { session } = webContents;
+    if (!session.webRequest) {
+      return;
+    }
+    session.webRequest.onBeforeSendHeaders((details: any, callback: any) => {
+      const url = details.url;
+      if (url.startsWith('https://localback.net:21324')) {
+        if (details.requestHeaders.Origin === 'null') {
+          delete details.requestHeaders.Origin;
+        }
+      }
+      callback({ cancel: false, requestHeaders: details.requestHeaders });
     });
   });
 }
