@@ -94,6 +94,8 @@
     "ADD_HARDWAREDESC": "Connect & sign via your hardware wallet",
     "MYWAL_NICK": "Wallet Nickname ",
     "MYWAL_ADDRESS": "Wallet Address ",
+    "EDIT_LABEL": "edit label",
+    "SAVE_LABEL": "save label",
     "MYWAL_BAL": "Balance ",
     "MYWAL_EDIT": "Edit ",
     "MYWAL_VIEW": "View ",

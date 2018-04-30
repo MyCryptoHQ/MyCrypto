@@ -27,7 +27,6 @@ interface State {
   showLongBalance: boolean;
   address: string;
   confirmAddr: boolean;
-  copied: boolean;
 }
 
 interface DispatchProps {
@@ -40,8 +39,7 @@ class AccountInfo extends React.Component<Props, State> {
   public state = {
     showLongBalance: false,
     address: '',
-    confirmAddr: false,
-    copied: false
+    confirmAddr: false
   };
 
   public setAddressFromWallet() {

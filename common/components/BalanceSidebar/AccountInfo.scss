@@ -24,6 +24,18 @@
     }
   }
 
+  &-label {
+    display: inline-block;
+    cursor: pointer;
+    color: $text-color;
+    font-size: $font-size-xs;
+    opacity: 0.5;
+
+    .fa {
+      margin: 0 $space-xs 0 $space-sm;
+    }
+  }
+
   &-section {
     margin: $space 0;
 
@@ -97,6 +109,11 @@
       .Spinner {
         margin-right: 16px;
       }
+    }
+
+    &-label {
+      font-weight: bolder;
+      font-size: 1.3rem;
     }
   }
 
