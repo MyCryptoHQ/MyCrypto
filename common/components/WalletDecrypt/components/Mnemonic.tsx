@@ -27,7 +27,7 @@ interface State {
   formattedPhrase: string;
   pass: string;
   seed: string;
-  dPath: string;
+  dPath: DPath;
 }
 
 class MnemonicDecryptClass extends PureComponent<Props, State> {
@@ -36,12 +36,12 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     formattedPhrase: '',
     pass: '',
     seed: '',
-    dPath: this.props.dPath.value
+    dPath: this.props.dPath
   };
 
   public componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath.value });
+      this.setState({ dPath: nextProps.dPath });
     }
   }
 
@@ -131,7 +131,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     this.setState({ seed: '' });
   };
 
-  private handlePathChange = (dPath: string) => {
+  private handlePathChange = (dPath: DPath) => {
     this.setState({ dPath });
   };
 
@@ -139,7 +139,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     const { formattedPhrase, pass, dPath } = this.state;
 
     this.props.onUnlock({
-      path: `${dPath}/${index}`,
+      path: `${dPath.value}/${index}`,
       pass,
       phrase: formattedPhrase,
       address
