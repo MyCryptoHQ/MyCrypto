@@ -58,15 +58,20 @@ class AddressBookTableRow extends React.Component<Props> {
     return (
       <div className="AddressBookTable-row" onClick={trOnClick}>
         <div className="AddressBookTable-row-input">
-          <div className="AddressBookTable-row-identicon">
+          <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
             <Identicon address={address} />
           </div>
           <div className="AddressBookTable-row-input-wrapper">
+            <label className="AddressBookTable-haxx-label">Address</label>
             <Input title={address} value={address} readOnly={true} />
+          </div>
+          <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
+            <Identicon address={address} size="3rem" />
           </div>
         </div>
         <div className="AddressBookTable-row-input">
           <div className="AddressBookTable-row-input-wrapper">
+            <label className="AddressBookTable-haxx-label">Label</label>
             <Input
               title={`${translateRaw('EDIT_LABEL_FOR')}${address}`}
               className={labelInputClassName}

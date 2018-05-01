@@ -40,6 +40,8 @@ interface State {
 
 export const ERROR_DURATION: number = 4000;
 
+export const WINDOW_RESIZE_DEBOUNCE_RATE: number = 50;
+
 class AddressBookTable extends React.Component<Props, State> {
   public state: State = {
     editingRow: null,
@@ -73,7 +75,7 @@ class AddressBookTable extends React.Component<Props, State> {
       <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
         <div className="AddressBookTable-row AddressBookTable-row-inputs">
           <div className="AddressBookTable-row-input">
-            <div className="AddressBookTable-row-identicon">
+            <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
               <Identicon address={temporaryAddress} />
             </div>
             <div className="AddressBookTable-row-input-wrapper">
@@ -86,6 +88,9 @@ class AddressBookTable extends React.Component<Props, State> {
                 onChange={this.setTemporaryAddress}
                 setInnerRef={this.setAddressInputRef}
               />
+            </div>
+            <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
+              <Identicon address={temporaryAddress} size="3rem" />
             </div>
           </div>
           <div className="AddressBookTable-row-input">
