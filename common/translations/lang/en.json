@@ -6,6 +6,8 @@
     "ACTIONS": "Actions",
     "INVALID_LABEL_LENGTH": "An address label must be between 2 and 20 characters.",
     "LABEL_ALREADY_EXISTS": "An address is already associated with that label.",
+    "ADDRESS_ALREADY_EXISTS": "That address is already associated with a label.",
+    "INVALID_ADDRESS": "Please enter a valid ETH address.",
     "SENDING_TO": "Sending to",
     "NEW_ADDRESS": "New address",
     "NEW_LABEL": "New label",    

@@ -25,6 +25,7 @@ interface DispatchProps {
 interface StateProps {
   rows: ReturnType<typeof getAddressLabelPairs>;
   labels: ReturnType<typeof getLabels>;
+  reversedLabels: ReturnType<typeof getLabels>;
 }
 
 type Props = DispatchProps & StateProps;
@@ -33,6 +34,7 @@ interface State {
   editingRow: number | null;
   temporaryLabel: string;
   temporaryAddress: string;
+  addressInputError: boolean;
   labelInputError: boolean;
 }
 
@@ -43,6 +45,7 @@ class AddressBookTable extends React.Component<Props, State> {
     editingRow: null,
     temporaryLabel: '',
     temporaryAddress: '',
+    addressInputError: false,
     labelInputError: false
   };
 
@@ -50,17 +53,20 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private labelInput: HTMLInputElement | null = null;
 
-  private goingToClearError: number | null = null;
+  private goingToClearAddressError: number | null = null;
+
+  private goingToClearLabelError: number | null = null;
 
   public componentWillUnmount() {
-    if (this.goingToClearError) {
-      window.clearTimeout(this.goingToClearError);
+    if (this.goingToClearLabelError) {
+      window.clearTimeout(this.goingToClearLabelError);
     }
   }
 
   public render() {
     const { rows } = this.props;
-    const { temporaryLabel, temporaryAddress, labelInputError } = this.state;
+    const { temporaryLabel, temporaryAddress, addressInputError, labelInputError } = this.state;
+    const addressInputClassName = addressInputError ? 'invalid' : '';
     const labelInputClassName = labelInputError ? 'invalid' : '';
 
     return (
@@ -70,6 +76,7 @@ class AddressBookTable extends React.Component<Props, State> {
             <Identicon address={temporaryAddress} />
           </div>
           <Input
+            className={addressInputClassName}
             placeholder={translateRaw('NEW_ADDRESS')}
             value={temporaryAddress}
             onChange={this.setTemporaryAddress}
@@ -101,12 +108,19 @@ class AddressBookTable extends React.Component<Props, State> {
   };
 
   private handleAddEntry = () => {
-    const { labels } = this.props;
+    const { labels, reversedLabels } = this.props;
     const { temporaryLabel: label, temporaryAddress: address } = this.state;
-    const labelAlreadyExists = !!labels[label];
+    const addressAlreadyExists = !!labels[address];
+    const labelAlreadyExists = !!reversedLabels[label];
 
     if (!isValidETHAddress(address)) {
-      return this.addressInput && this.addressInput.focus();
+      this.displayInvalidETHAddressNotification();
+      return this.flashAddressInputError();
+    }
+
+    if (addressAlreadyExists) {
+      this.displayAddressAlreadyExistsNotification();
+      return this.flashAddressInputError();
     }
 
     if (!label) {
@@ -145,7 +159,7 @@ class AddressBookTable extends React.Component<Props, State> {
         index={index}
         address={addressToLabel.address}
         label={addressToLabel.label}
-        labels={this.props.labels}
+        labels={this.props.reversedLabels}
         isEditing={isEditingRow}
         onSave={(labelToSave: string) =>
           this.handleSave({
@@ -180,6 +194,33 @@ class AddressBookTable extends React.Component<Props, State> {
   private displayInvalidLabelLengthNotification = () =>
     this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
 
+  private displayAddressAlreadyExistsNotification = () =>
+    this.props.showNotification('danger', translateRaw('ADDRESS_ALREADY_EXISTS'), ERROR_DURATION);
+
+  private flashAddressInputError = () => {
+    this.setState(
+      {
+        addressInputError: true
+      },
+      () =>
+        (this.goingToClearAddressError = window.setTimeout(
+          () =>
+            this.setState({
+              addressInputError: false
+            }),
+          ERROR_DURATION
+        ))
+    );
+
+    if (this.addressInput) {
+      this.addressInput.focus();
+      this.addressInput.select();
+    }
+  };
+
+  private displayInvalidETHAddressNotification = () =>
+    this.props.showNotification('danger', translateRaw('INVALID_ADDRESS'), ERROR_DURATION);
+
   private displayLabelAlreadyExistsNotification = () =>
     this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
 
@@ -189,7 +230,7 @@ class AddressBookTable extends React.Component<Props, State> {
         labelInputError: true
       },
       () =>
-        (this.goingToClearError = window.setTimeout(
+        (this.goingToClearLabelError = window.setTimeout(
           () =>
             this.setState({
               labelInputError: false
@@ -207,7 +248,8 @@ class AddressBookTable extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   rows: getAddressLabelPairs(state),
-  labels: getLabels(state, { reversed: true })
+  labels: getLabels(state),
+  reversedLabels: getLabels(state, { reversed: true })
 });
 
 const mapDispatchToProps: DispatchProps = {
