@@ -42,8 +42,6 @@ interface State {
 
 export const ERROR_DURATION: number = 4000;
 
-export const WINDOW_RESIZE_DEBOUNCE_RATE: number = 50;
-
 class AddressBookTable extends React.Component<Props, State> {
   public state: State = {
     editingRow: null,
@@ -134,11 +132,13 @@ class AddressBookTable extends React.Component<Props, State> {
     const labelAlreadyExists = !!reversedLabels[label];
 
     if (!isValidETHAddress(address)) {
-      return this.displayInvalidETHAddressNotification();
+      this.displayInvalidETHAddressNotification();
+      return this.focusAndSelectAddressInput();
     }
 
     if (addressAlreadyExists) {
-      return this.displayAddressAlreadyExistsNotification();
+      this.displayAddressAlreadyExistsNotification();
+      return this.focusAndSelectAddressInput();
     }
 
     if (!label) {
@@ -146,11 +146,13 @@ class AddressBookTable extends React.Component<Props, State> {
     }
 
     if (!isValidLabelLength(label)) {
-      return this.displayInvalidLabelLengthNotification();
+      this.displayInvalidLabelLengthNotification();
+      return this.focusAndSelectLabelInput();
     }
 
     if (labelAlreadyExists) {
-      return this.displayLabelAlreadyExistsNotification();
+      this.displayLabelAlreadyExistsNotification();
+      return this.focusAndSelectLabelInput();
     }
 
     this.handleSave({ label, address });
@@ -251,31 +253,23 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private displayInvalidETHAddressNotification = () => {
+  private displayInvalidETHAddressNotification = () =>
     this.props.showNotification('danger', translateRaw('INVALID_ADDRESS'), ERROR_DURATION);
-    this.focusAndSelectAddressInput();
-  };
 
-  private displayAddressAlreadyExistsNotification = () => {
+  private displayAddressAlreadyExistsNotification = () =>
     this.props.showNotification('danger', translateRaw('ADDRESS_ALREADY_EXISTS'), ERROR_DURATION);
-    this.focusAndSelectAddressInput();
-  };
+
+  private displayInvalidLabelLengthNotification = () =>
+    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
+
+  private displayLabelAlreadyExistsNotification = () =>
+    this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
 
   private focusAndSelectAddressInput = () => {
     if (this.addressInput) {
       this.addressInput.focus();
       this.addressInput.select();
     }
-  };
-
-  private displayInvalidLabelLengthNotification = () => {
-    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
-    this.focusAndSelectLabelInput();
-  };
-
-  private displayLabelAlreadyExistsNotification = () => {
-    this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
-    this.focusAndSelectLabelInput();
   };
 
   private focusAndSelectLabelInput = () => {

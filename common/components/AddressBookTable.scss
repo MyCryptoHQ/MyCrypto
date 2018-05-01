@@ -44,7 +44,7 @@
       display: flex;
       align-items: center;
       flex-direction: row;
-      flex: 1 0 auto;
+      flex: 1;
       margin-right: $space-sm;
 
       @media (max-width: 480px) {
@@ -77,5 +77,9 @@
   // makes it so all of the inputs line up neatly. I'm open to other suggestions.
   &-haxx-label {
     visibility: hidden;
+
+    @media (min-width: 480px) {
+      display: none;
+    }
   }
 }

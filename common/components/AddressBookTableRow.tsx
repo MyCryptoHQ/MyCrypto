@@ -5,7 +5,6 @@ import { isValidLabelLength } from 'libs/validators';
 import { Input, Identicon } from 'components/ui';
 import onClickOutside from 'react-onclickoutside';
 import { getLabels } from 'selectors/addressBook';
-import { ERROR_DURATION } from './AddressBookTable';
 
 interface Props {
   index: number;
@@ -23,6 +22,7 @@ interface Props {
 interface State {
   label: string;
   mostRecentValidLabel: string;
+  labelInputTouched: boolean;
   labelInputError: boolean;
 }
 
@@ -30,30 +30,27 @@ class AddressBookTableRow extends React.Component<Props> {
   public state: State = {
     label: this.props.label,
     mostRecentValidLabel: this.props.label,
+    labelInputTouched: false,
     labelInputError: false
   };
 
   private labelInput: HTMLInputElement | null = null;
 
-  private goingToClearError: number | null = null;
-
-  public handleClickOutside = () => this.props.isEditing && this.handleSave();
+  public handleClickOutside = () => this.props.isEditing && this.handleSave({ skipBlur: true });
 
   public componentWillReceiveProps(nextProps: Props) {
-    this.setState({ label: nextProps.label, mostRecentValidLabel: nextProps.label });
-  }
+    const { label } = this.state;
 
-  public componentWillUnmount() {
-    if (this.goingToClearError) {
-      window.clearTimeout(this.goingToClearError);
+    if (nextProps.label !== label) {
+      this.setState({ label: nextProps.label, mostRecentValidLabel: nextProps.label });
     }
   }
 
   public render() {
     const { address, isEditing, onEditClick, onRemoveClick } = this.props;
-    const { label, labelInputError } = this.state;
+    const { label, labelInputTouched, labelInputError } = this.state;
     const trOnClick = isEditing ? noop : onEditClick;
-    const labelInputClassName = labelInputError ? 'invalid' : '';
+    const labelInputClassName = labelInputTouched && labelInputError ? 'invalid' : '';
 
     return (
       <div className="AddressBookTable-row" onClick={trOnClick}>
@@ -78,6 +75,8 @@ class AddressBookTableRow extends React.Component<Props> {
               value={label}
               onChange={this.setLabel}
               onKeyDown={this.handleKeyDown}
+              onFocus={this.setLabelTouched}
+              onClick={this.setLabelTouched}
               onBlur={this.handleClickOutside}
               setInnerRef={this.setLabelInputRef}
             />
@@ -94,7 +93,7 @@ class AddressBookTableRow extends React.Component<Props> {
     );
   }
 
-  private handleSave = () => {
+  private handleSave = (options: { skipBlur?: boolean } = {}) => {
     const { labels } = this.props;
     const { label, mostRecentValidLabel } = this.state;
     const labelAlreadyExists = !!labels[label];
@@ -105,17 +104,17 @@ class AddressBookTableRow extends React.Component<Props> {
 
     if (!isValidLabelLength(label)) {
       this.props.displayInvalidLabelLengthNotification();
-      return this.flashLabelInputError();
+      return this.focusAndSelectLabelInput();
     }
 
     if (labelAlreadyExists) {
       this.props.displayLabelAlreadyExistsNotification();
-      return this.flashLabelInputError();
+      return this.focusAndSelectLabelInput();
     }
 
     this.props.onSave(this.state.label);
 
-    if (this.labelInput) {
+    if (this.labelInput && !options.skipBlur) {
       this.labelInput.blur();
     }
   };
@@ -123,34 +122,38 @@ class AddressBookTableRow extends React.Component<Props> {
   private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.stopPropagation();
 
-    if (e.key === 'Enter') {
-      this.handleSave();
+    if (e.key === 'Enter' && this.labelInput) {
+      this.labelInput.blur();
     }
   };
 
   private setLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ label: e.target.value });
+    this.setState({ label: e.target.value }, this.checkLabelValidation);
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private flashLabelInputError = () => {
-    const { mostRecentValidLabel } = this.state;
+  private setLabelTouched = () => {
+    const { labelInputTouched } = this.state;
 
-    this.setState(
-      {
-        label: mostRecentValidLabel,
-        labelInputError: true
-      },
-      () =>
-        (this.goingToClearError = window.setTimeout(
-          () =>
-            this.setState({
-              labelInputError: false
-            }),
-          ERROR_DURATION
-        ))
-    );
+    if (!labelInputTouched) {
+      this.setState({ labelInputTouched: true });
+    }
+  };
 
+  private checkLabelValidation = () => {
+    const { labels } = this.props;
+    const { label, labelInputError } = this.state;
+    const labelAlreadyExists = !!labels[label];
+    const isValid = !labelAlreadyExists && isValidLabelLength(label);
+
+    if (isValid && labelInputError) {
+      this.setState({ labelInputError: false });
+    } else if (!isValid && !labelInputError) {
+      this.setState({ labelInputError: true });
+    }
+  };
+
+  private focusAndSelectLabelInput = () => {
     if (this.labelInput) {
       this.labelInput.focus();
     }
