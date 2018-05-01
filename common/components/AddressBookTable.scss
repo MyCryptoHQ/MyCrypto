@@ -7,23 +7,38 @@
     align-items: center;
     margin-bottom: $space-md;
 
-    &-first {
+    &-identicon {
+      width: 80px;
+      height: 60px;
+    }
+
+    &-inputs {
       margin-bottom: $space-xl * 1.5;
+    }
+
+    &-input {
+      display: flex;
+      align-items: center;
+      flex: 1 0;
+      margin-right: $space-sm;
+
+      label {
+        margin-bottom: $space-sm;
+      }
+
+      .btn {
+        align-self: flex-end;
+        margin-left: $space-sm;
+        height: $space-lg * 2;
+      }
+
+      &-wrapper {
+        flex: 1 0;
+      }
     }
   }
 
-  &-identicon {
-    width: 80px;
-    height: 60px;
-    margin-right: $space-md;
-  }
-
-  .btn {
-    height: $space-lg * 2;
-  }
-
   input {
-    margin-right: $space-sm;
     margin-bottom: 0;
   }
 }

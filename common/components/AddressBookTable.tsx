@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { AppState } from 'reducers';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { isValidETHAddress, isValidLabelLength } from 'libs/validators';
 import {
   TAddLabelForAddress,
@@ -71,31 +71,43 @@ class AddressBookTable extends React.Component<Props, State> {
 
     return (
       <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
-        <div className="AddressBookTable-row AddressBookTable-row-first">
-          <div className="AddressBookTable-identicon">
-            <Identicon address={temporaryAddress} />
+        <div className="AddressBookTable-row AddressBookTable-row-inputs">
+          <div className="AddressBookTable-row-input">
+            <div className="AddressBookTable-row-identicon">
+              <Identicon address={temporaryAddress} />
+            </div>
+            <div className="AddressBookTable-row-input-wrapper">
+              <label htmlFor="temporaryAddress">{translate('ADDRESS')}</label>
+              <Input
+                name="temporaryAddress"
+                className={addressInputClassName}
+                placeholder={translateRaw('NEW_ADDRESS')}
+                value={temporaryAddress}
+                onChange={this.setTemporaryAddress}
+                setInnerRef={this.setAddressInputRef}
+              />
+            </div>
           </div>
-          <Input
-            className={addressInputClassName}
-            placeholder={translateRaw('NEW_ADDRESS')}
-            value={temporaryAddress}
-            onChange={this.setTemporaryAddress}
-            setInnerRef={this.setAddressInputRef}
-          />
-          <Input
-            className={labelInputClassName}
-            placeholder={translateRaw('NEW_LABEL')}
-            value={temporaryLabel}
-            onChange={this.setTemporaryLabel}
-            setInnerRef={this.setLabelInputRef}
-          />
-          <button
-            title={translateRaw('ADD_LABEL')}
-            className="btn btn-sm btn-success"
-            onClick={this.handleAddEntry}
-          >
-            <i className="fa fa-plus" />
-          </button>
+          <div className="AddressBookTable-row-input">
+            <div className="AddressBookTable-row-input-wrapper">
+              <label htmlFor="temporaryLabel">{translate('LABEL')}</label>
+              <Input
+                name="temporaryLabel"
+                className={labelInputClassName}
+                placeholder={translateRaw('NEW_LABEL')}
+                value={temporaryLabel}
+                onChange={this.setTemporaryLabel}
+                setInnerRef={this.setLabelInputRef}
+              />
+            </div>
+            <button
+              title={translateRaw('ADD_LABEL')}
+              className="btn btn-sm btn-success"
+              onClick={this.handleAddEntry}
+            >
+              <i className="fa fa-plus" />
+            </button>
+          </div>
         </div>
         {rows.map(this.makeLabelRow)}
       </section>

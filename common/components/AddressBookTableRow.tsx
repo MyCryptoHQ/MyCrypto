@@ -57,25 +57,34 @@ class AddressBookTableRow extends React.Component<Props> {
 
     return (
       <div className="AddressBookTable-row" onClick={trOnClick}>
-        <div className="AddressBookTable-identicon">
-          <Identicon address={address} />
+        <div className="AddressBookTable-row-input">
+          <div className="AddressBookTable-row-identicon">
+            <Identicon address={address} />
+          </div>
+          <div className="AddressBookTable-row-input-wrapper">
+            <Input title={address} value={address} readOnly={true} />
+          </div>
         </div>
-        <Input value={address} readOnly={true} />
-        <Input
-          className={labelInputClassName}
-          value={label}
-          onChange={this.setLabel}
-          onKeyDown={this.handleKeyDown}
-          onBlur={this.handleClickOutside}
-          setInnerRef={this.setLabelInputRef}
-        />
-        <button
-          title={translateRaw('REMOVE_LABEL')}
-          className="btn btn-sm btn-danger"
-          onClick={onRemoveClick}
-        >
-          <i className="fa fa-close" />
-        </button>
+        <div className="AddressBookTable-row-input">
+          <div className="AddressBookTable-row-input-wrapper">
+            <Input
+              title={`${translateRaw('EDIT_LABEL_FOR')}${address}`}
+              className={labelInputClassName}
+              value={label}
+              onChange={this.setLabel}
+              onKeyDown={this.handleKeyDown}
+              onBlur={this.handleClickOutside}
+              setInnerRef={this.setLabelInputRef}
+            />
+          </div>
+          <button
+            title={translateRaw('REMOVE_LABEL')}
+            className="btn btn-sm btn-danger"
+            onClick={onRemoveClick}
+          >
+            <i className="fa fa-close" />
+          </button>
+        </div>
       </div>
     );
   }
