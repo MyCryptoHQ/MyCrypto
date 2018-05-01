@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
-import onClickOutside from 'react-onclickoutside';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { AppState } from 'reducers';
 import {
   addLabelForAddress,
@@ -11,16 +10,21 @@ import {
   removeLabelForAddress,
   TRemoveLabelForAddress
 } from 'actions/addressBook';
+import { showNotification, TShowNotification } from 'actions/notifications';
 import { Address, Identicon, Input } from 'components/ui';
 import { getLabels } from 'selectors/addressBook';
+import { isValidLabelLength } from 'libs/validators';
+import { ERROR_DURATION } from 'components/AddressBookTable';
 
 interface StateProps {
   labels: ReturnType<typeof getLabels>;
+  reversedLabels: ReturnType<typeof getLabels>;
 }
 
 interface DispatchProps {
   addLabelForAddress: TAddLabelForAddress;
   removeLabelForAddress: TRemoveLabelForAddress;
+  showNotification: TShowNotification;
 }
 
 interface OwnProps {
@@ -32,12 +36,14 @@ type Props = StateProps & DispatchProps & OwnProps;
 interface State {
   copied: boolean;
   editingLabel: boolean;
+  labelInputError: boolean;
 }
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {
     copied: false,
-    editingLabel: false
+    editingLabel: false,
+    labelInputError: false
   };
 
   private goingToClearCopied: number | null = null;
@@ -113,23 +119,40 @@ class AccountAddress extends React.Component<Props, State> {
 
   private stopEditingLabel = () => this.setState({ editingLabel: false });
 
+  private updateAccountLabel = (label: string) => {
+    const { address, labels } = this.props;
+    const currentLabel = labels[address.toLowerCase()];
+
+    this.stopEditingLabel();
+
+    if (label === currentLabel) {
+      return;
+    }
+
+    if (this.isValidLabel(label)) {
+      label.length > 0
+        ? this.props.addLabelForAddress({
+            address,
+            label
+          })
+        : this.props.removeLabelForAddress(address);
+    }
+  };
+
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { address } = this.props;
+  private handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { value: label } } = e;
 
-    label.length > 0
-      ? this.props.addLabelForAddress({
-          address,
-          label
-        })
-      : this.props.removeLabelForAddress(address);
+    this.updateAccountLabel(label);
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      this.stopEditingLabel();
+    switch (e.key) {
+      case 'Enter':
+        return this.labelInput && this.updateAccountLabel(this.labelInput.value);
+      case 'Escape':
+        return this.stopEditingLabel();
     }
   };
 
@@ -143,9 +166,11 @@ class AccountAddress extends React.Component<Props, State> {
     if (editingLabel) {
       labelContent = (
         <Input
-          value={label}
-          onChange={this.handleChange}
+          title={translateRaw('ADD_LABEL')}
+          placeholder={translateRaw('NEW_LABEL')}
+          defaultValue={label}
           onKeyDown={this.handleKeyDown}
+          onBlur={this.handleBlur}
           setInnerRef={this.setLabelInputRef}
         />
       );
@@ -163,12 +188,14 @@ class AccountAddress extends React.Component<Props, State> {
     const labelButton = editingLabel ? (
       <React.Fragment>
         <i className="fa fa-save" />
-        <span onClick={this.stopEditingLabel}>{translate('SAVE_LABEL')}</span>
+        <span role="button" title={translateRaw('SAVE_LABEL')} onClick={this.stopEditingLabel}>
+          {translate('SAVE_LABEL')}
+        </span>
       </React.Fragment>
     ) : (
       <React.Fragment>
         <i className="fa fa-pencil" />
-        <span onClick={this.startEditingLabel}>
+        <span role="button" title={translateRaw('SAVE_LABEL')} onClick={this.startEditingLabel}>
           {label ? translate('EDIT_LABEL') : translate('ADD_LABEL_9')}
         </span>
       </React.Fragment>
@@ -176,12 +203,48 @@ class AccountAddress extends React.Component<Props, State> {
 
     return labelButton;
   };
+
+  private isValidLabel = (label: string) => {
+    const { reversedLabels } = this.props;
+    const isValidLength = isValidLabelLength(label, {
+      allowEmpty: true
+    });
+    const isUnique = !reversedLabels[label];
+
+    if (!isValidLength) {
+      this.displayInvalidLabelLengthNotification();
+
+      return false;
+    }
+
+    if (!isUnique) {
+      this.displayLabelAlreadyExistsNotification();
+
+      return false;
+    }
+
+    return true;
+  };
+
+  private displayInvalidLabelLengthNotification = () =>
+    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
+
+  private displayLabelAlreadyExistsNotification = () =>
+    this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
-  labels: getLabels(state)
+  labels: getLabels(state),
+  reversedLabels: getLabels(state, { reversed: true })
 });
 
-export default connect(mapStateToProps, { addLabelForAddress, removeLabelForAddress })(
-  onClickOutside(AccountAddress)
-);
+const mapDispatchToProps: DispatchProps = {
+  addLabelForAddress,
+  removeLabelForAddress,
+  showNotification
+};
+
+export default connect<StateProps, DispatchProps, OwnProps, AppState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccountAddress);

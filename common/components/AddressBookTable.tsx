@@ -200,6 +200,7 @@ class AddressBookTable extends React.Component<Props, State> {
 
     if (this.labelInput) {
       this.labelInput.focus();
+      this.labelInput.select();
     }
   };
 }

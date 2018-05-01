@@ -306,6 +306,13 @@ export const isValidGetNetVersion = (response: JsonRpcResponse) =>
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
 
-export function isValidLabelLength(label: string): boolean {
-  return label.length >= 2 && label.length <= 20;
+export function isValidLabelLength(label: string, options: { allowEmpty?: boolean } = {}): boolean {
+  const meetsMinimumLengthRequirement = label.length >= 2;
+  const meetsMaximumLengthRequirement = label.length <= 20;
+
+  if (options.allowEmpty && label.length === 0) {
+    return true;
+  }
+
+  return meetsMinimumLengthRequirement && meetsMaximumLengthRequirement;
 }
