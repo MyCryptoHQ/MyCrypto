@@ -43,8 +43,8 @@
     &-input {
       display: flex;
       align-items: center;
-      justify-content: center;
       flex-direction: row;
+      flex: 1 0 auto;
       margin-right: $space-sm;
 
       @media (max-width: 480px) {
@@ -60,6 +60,10 @@
         align-self: flex-end;
         margin-left: $space-sm;
         height: $space-lg * 2;
+      }
+
+      &-wrapper {
+        flex: 1 0 auto;
       }
     }
   }

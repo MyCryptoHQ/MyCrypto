@@ -309,9 +309,14 @@ export const isValidTxHash = (hash: string) =>
 export function isValidLabelLength(label: string, options: { allowEmpty?: boolean } = {}): boolean {
   const meetsMinimumLengthRequirement = label.length >= 2;
   const meetsMaximumLengthRequirement = label.length <= 20;
+  const labelOnlyContainsSpaces = !label.trim();
 
   if (options.allowEmpty && label.length === 0) {
     return true;
+  }
+
+  if (!options.allowEmpty && labelOnlyContainsSpaces) {
+    return false;
   }
 
   return meetsMinimumLengthRequirement && meetsMaximumLengthRequirement;
