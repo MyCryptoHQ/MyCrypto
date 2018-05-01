@@ -195,7 +195,11 @@ class AccountAddress extends React.Component<Props, State> {
     ) : (
       <React.Fragment>
         <i className="fa fa-pencil" />
-        <span role="button" title={translateRaw('SAVE_LABEL')} onClick={this.startEditingLabel}>
+        <span
+          role="button"
+          title={label ? translateRaw('EDIT_LABEL') : translateRaw('ADD_LABEL_9')}
+          onClick={this.startEditingLabel}
+        >
           {label ? translate('EDIT_LABEL') : translate('ADD_LABEL_9')}
         </span>
       </React.Fragment>

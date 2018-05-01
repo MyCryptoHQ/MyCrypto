@@ -191,8 +191,8 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private displayInvalidLabelLengthNotification = () =>
-    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
+  private displayInvalidETHAddressNotification = () =>
+    this.props.showNotification('danger', translateRaw('INVALID_ADDRESS'), ERROR_DURATION);
 
   private displayAddressAlreadyExistsNotification = () =>
     this.props.showNotification('danger', translateRaw('ADDRESS_ALREADY_EXISTS'), ERROR_DURATION);
@@ -218,8 +218,8 @@ class AddressBookTable extends React.Component<Props, State> {
     }
   };
 
-  private displayInvalidETHAddressNotification = () =>
-    this.props.showNotification('danger', translateRaw('INVALID_ADDRESS'), ERROR_DURATION);
+  private displayInvalidLabelLengthNotification = () =>
+    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
 
   private displayLabelAlreadyExistsNotification = () =>
     this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
