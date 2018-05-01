@@ -293,7 +293,7 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
     takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
     takeEvery(TypeKeys.WALLET_REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
-    takeEvery(TypeKeys.WALLET_REFRESH_TOKEN_BALANCES, updateTokenBalances),
+    takeEvery(TypeKeys.WALLET_REFRESH_TOKEN_BALANCES, retryTokenBalances),
     // Foreign actions
     takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
     takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
