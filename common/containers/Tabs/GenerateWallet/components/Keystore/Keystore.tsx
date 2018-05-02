@@ -98,10 +98,10 @@ export class GenerateKeystore extends Component<StateProps, State> {
     return content;
   }
 
-  private generateWalletAndContinue = (password: string, network: NetworkConfig) => {
+  private generateWalletAndContinue = (password: string) => {
     this.setState({ isGenerating: true });
 
-    generateKeystore(password, N_FACTOR, network.chainId).then(res => {
+    generateKeystore(password, N_FACTOR).then(res => {
       this.setState({
         password,
         activeStep: Steps.Download,
