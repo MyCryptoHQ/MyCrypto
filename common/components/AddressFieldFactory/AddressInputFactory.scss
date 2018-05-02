@@ -24,6 +24,10 @@
         height: 3.4rem !important;
       }
     }
+
+    @media (max-width: 380px) {
+      display: none;
+    }
   }
 
   &-label {

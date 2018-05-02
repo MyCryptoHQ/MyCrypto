@@ -14,7 +14,6 @@
   margin: 0;
   padding: 0;
   box-shadow: $tab-box-shadow;
-  overflow: auto;
 
   &-dropdown-item {
     margin: 0;
@@ -36,10 +35,19 @@
         width: 40px !important;
         height: 40px !important;
       }
+
+      @media (max-width: 380px) {
+        display: none;
+      }
     }
 
     &-label {
       margin-right: $space-sm;
+    }
+
+    &-address {
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &--active {
