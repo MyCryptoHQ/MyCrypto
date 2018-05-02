@@ -3,7 +3,7 @@
   "data": {
     "ADDRESS": "Address",
     "LABEL": "Label",
-    "INVALID_LABEL_LENGTH": "An address label must be between 2 and 20 characters.",
+    "INVALID_LABEL_LENGTH": "An address label must be between 2 and 50 characters.",
     "LABEL_ALREADY_EXISTS": "An address is already associated with that label.",
     "ADDRESS_ALREADY_EXISTS": "That address is already associated with a label.",
     "INVALID_ADDRESS": "Please enter a valid ETH address.",

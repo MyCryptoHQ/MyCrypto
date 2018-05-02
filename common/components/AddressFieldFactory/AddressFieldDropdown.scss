@@ -41,11 +41,9 @@
       }
     }
 
-    &-label {
-      margin-right: $space-sm;
-    }
-
+    &-label,
     &-address {
+      flex: 1 0 0;
       overflow: hidden;
       text-overflow: ellipsis;
     }

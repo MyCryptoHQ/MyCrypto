@@ -10,6 +10,19 @@
   &-input {
     position: relative;
     flex-grow: 1;
+
+    &-with-label {
+      margin-bottom: $space-lg;
+    }
+
+    &-label {
+      position: absolute;
+      width: 100%;
+      color: darken($brand-success, 15%);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &-identicon {
@@ -28,9 +41,5 @@
     @media (max-width: 380px) {
       display: none;
     }
-  }
-
-  &-label {
-    color: darken($brand-success, 15%);
   }
 }

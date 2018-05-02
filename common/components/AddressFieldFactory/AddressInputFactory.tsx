@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
 import { getCurrentLabel } from 'selectors/addressBook';
 import { connect } from 'react-redux';
@@ -67,10 +67,12 @@ class AddressInputFactoryClass extends Component<Props> {
     } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
+    const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
+    const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
 
     return (
       <div className="AddressInput form-group">
-        <div className="AddressInput-input">
+        <div className={inputClassName}>
           <Query
             params={['readOnly']}
             withQuery={({ readOnly }) =>
@@ -86,9 +88,9 @@ class AddressInputFactoryClass extends Component<Props> {
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
           {label && (
-            <span className="AddressInput-label">
-              <i className="fa fa-check" /> {translate('SENDING_TO')} {label}
-            </span>
+            <div title={sendingTo} className="AddressInput-input-label">
+              <i className="fa fa-check" /> {sendingTo}
+            </div>
           )}
           {isFocused && <AddressFieldDropdown />}
         </div>
