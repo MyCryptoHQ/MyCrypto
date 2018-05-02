@@ -14,6 +14,7 @@
   margin: 0;
   padding: 0;
   box-shadow: $tab-box-shadow;
+  overflow: auto;
 
   &-dropdown-item {
     margin: 0;
@@ -26,15 +27,19 @@
       background: $gray-lightest;
     }
 
-    &-label {
-      width: $space-xl * 6;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    &-identicon {
+      width: 40px;
+      height: 40px;
+      margin-right: $space-sm;
+
+      .Identicon {
+        width: 40px !important;
+        height: 40px !important;
+      }
     }
 
-    .Identicon {
-      margin-right: $space-md;
+    &-label {
+      margin-right: $space-sm;
     }
 
     &--active {

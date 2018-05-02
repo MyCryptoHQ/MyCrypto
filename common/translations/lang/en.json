@@ -159,7 +159,7 @@
     "SEND_RAW": "Raw Transaction ",
     "SEND_SIGNED": "Signed Transaction ",
     "SEND_TRANS": "Send Transaction ",
-    "SEND_TO": "Send to  ",
+    "SEND_TO": "Send to ",
     "SENDMODAL_TITLE": "Warning! ",
     "SENDMODAL_CONTENT_1": "You are about to send ",
     "SENDMODAL_CONTENT_2": "to address ",

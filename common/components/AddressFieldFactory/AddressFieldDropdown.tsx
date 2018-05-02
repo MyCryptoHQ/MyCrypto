@@ -62,7 +62,9 @@ class AddressFieldDropdown extends React.Component<Props> {
           role="option"
           title={`${translateRaw('SEND_TO')}${label}`}
         >
-          <Identicon address={address} size="2rem" />
+          <div className="AddressFieldDropdown-dropdown-item-identicon">
+            <Identicon address={address} />
+          </div>
           <strong className="AddressFieldDropdown-dropdown-item-label">{label}</strong>
           <em>
             <Address address={address} />
