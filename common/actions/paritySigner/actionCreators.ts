@@ -1,13 +1,32 @@
 import * as types from './actionTypes';
 import { TypeKeys } from './constants';
 
-export type TRequestSignature = typeof requestSignature;
-export function requestSignature(from: string, rlp: string): types.RequestSignatureAction {
+export type TRequestTransactionSignature = typeof requestTransactionSignature;
+export function requestTransactionSignature(
+  from: string,
+  data: string
+): types.RequestTransactionSignatureAction {
   return {
-    type: TypeKeys.PARITY_SIGNER_REQUEST_SIGNATURE,
+    type: TypeKeys.PARITY_SIGNER_REQUEST_TX_SIGNATURE,
     payload: {
+      isMessage: false,
       from,
-      rlp
+      data
+    }
+  };
+}
+
+export type TRequestMessageSignature = typeof requestMessageSignature;
+export function requestMessageSignature(
+  from: string,
+  data: string
+): types.RequestMessageSignatureAction {
+  return {
+    type: TypeKeys.PARITY_SIGNER_REQUEST_MSG_SIGNATURE,
+    payload: {
+      isMessage: true,
+      from,
+      data
     }
   };
 }

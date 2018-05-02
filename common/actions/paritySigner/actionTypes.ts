@@ -1,9 +1,19 @@
 import { TypeKeys } from './constants';
 
-export interface RequestSignatureAction {
-  type: TypeKeys.PARITY_SIGNER_REQUEST_SIGNATURE;
+export interface RequestTransactionSignatureAction {
+  type: TypeKeys.PARITY_SIGNER_REQUEST_TX_SIGNATURE;
   payload: {
-    rlp: string;
+    isMessage: false;
+    data: string;
+    from: string;
+  };
+}
+
+export interface RequestMessageSignatureAction {
+  type: TypeKeys.PARITY_SIGNER_REQUEST_MSG_SIGNATURE;
+  payload: {
+    isMessage: true;
+    data: string;
     from: string;
   };
 }
@@ -14,4 +24,7 @@ export interface FinalizeSignatureAction {
 }
 
 /*** Union Type ***/
-export type ParitySignerAction = RequestSignatureAction | FinalizeSignatureAction;
+export type ParitySignerAction =
+  | RequestTransactionSignatureAction
+  | RequestMessageSignatureAction
+  | FinalizeSignatureAction;

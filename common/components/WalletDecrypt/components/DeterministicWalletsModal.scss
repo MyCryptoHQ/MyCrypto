@@ -46,7 +46,7 @@
   }
 
   &-addresses {
-    overflow-y: scroll;
+    overflow-y: auto;
     &-table {
       width: 732px;
       text-align: center;
@@ -74,13 +74,19 @@
         background-image: url('~assets/images/icon-external-link.svg');
       }
 
+      &-na {
+        font-size: $font-size-xs;
+        opacity: 0.3;
+      }
+
+      // Specific selectors to override bootstrap
       tbody {
         tr {
           cursor: pointer;
-        }
 
-        td {
-          vertical-align: middle;
+          td {
+            vertical-align: middle;
+          }
         }
       }
     }

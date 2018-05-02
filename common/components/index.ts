@@ -22,3 +22,5 @@ export { default as GenerateKeystoreModal } from './GenerateKeystoreModal';
 export { default as TransactionStatus } from './TransactionStatus';
 export { default as ParityQrSigner } from './ParityQrSigner';
 export { default as ElectronNav } from './ElectronNav';
+export { default as Errorable } from './Errorable';
+export { default as AppAlphaNotice } from './AppAlphaNotice';
