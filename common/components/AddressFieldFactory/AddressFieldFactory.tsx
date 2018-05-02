@@ -28,7 +28,6 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   public componentDidMount() {
     // this 'to' parameter can be either token or actual field related
     const { to } = this.props;
-    debugger;
     if (to) {
       this.props.setCurrentTo({ raw: to });
     }
