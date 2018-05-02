@@ -13,5 +13,6 @@ worker.onmessage = (event: MessageEvent) => {
   const filename = wallet.getV3Filename();
   const privateKey = wallet.getPrivateKeyString();
   const keystore = wallet.toV3(info.password, { n: info.N_FACTOR });
+
   worker.postMessage({ keystore, filename, privateKey });
 };
