@@ -24,7 +24,7 @@ interface StateProps {
 type Props = StateProps;
 class FieldsClass extends Component<Props> {
   public render() {
-    const { currentBalance, network } = this.props;
+    const { currentBalance } = this.props;
     return (
       <div className="Tab-content-pane">
         <div className="row form-group">
@@ -42,7 +42,6 @@ class FieldsClass extends Component<Props> {
               withProps={({ currentTo }) => (
                 <Input type="text" value={currentTo.raw} readOnly={true} />
               )}
-              chainId={network.chainId}
             />
           </div>
           <div className="col-xs-1" />

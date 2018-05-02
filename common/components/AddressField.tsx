@@ -43,6 +43,5 @@ export const AddressField: React.SFC<Props> = ({
         </label>
       </div>
     )}
-    chainId={network.chainId}
   />
 );

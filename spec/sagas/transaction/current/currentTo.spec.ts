@@ -7,6 +7,7 @@ import { isEtherTransaction } from 'selectors/transaction';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { setToField, setTokenTo } from 'actions/transaction';
 import { resolveDomainRequested, TypeKeys as ENSTypekeys } from 'actions/ens';
+import { getNetworkConfig } from 'selectors/config';
 
 describe('setCurrentTo*', () => {
   const data = {} as any;
@@ -18,12 +19,18 @@ describe('setCurrentTo*', () => {
       value: Address(raw)
     };
     const ethAddrAction: any = {
-      payload: { raw, chainId: 1 }
+      payload: { raw }
     };
 
-    data.validEthGen = setCurrentTo(ethAddrAction);
+    const gen = cloneableGenerator(setCurrentTo)(ethAddrAction);
+
+    data.validEthGen = gen;
+    it('should call getNetworkConfig', () => {
+      expect(data.validEthGen.next().value).toEqual(select(getNetworkConfig));
+    });
+
     it('should call isValidETHAddress', () => {
-      expect(data.validEthGen.next().value).toEqual(call(isValidAddress, raw, 1));
+      expect(data.validEthGen.next().value).toEqual(call(isValidAddress, raw, 0));
     });
 
     it('should call isValidENSAddress', () => {
@@ -44,12 +51,18 @@ describe('setCurrentTo*', () => {
       value: null
     };
     const ensAddrAction: any = {
-      payload: { raw, chainId: 1 }
+      payload: { raw, chainId: 0 }
     };
-    data.validEnsGen = setCurrentTo(ensAddrAction);
+
+    const gen = cloneableGenerator(setCurrentTo)(ensAddrAction);
+
+    data.validEnsGen = gen;
+    it('should call getNetworkConfig', () => {
+      expect(data.validEnsGen.next().value).toEqual(select(getNetworkConfig));
+    });
 
     it('should call isValidETHAddress', () => {
-      expect(data.validEnsGen.next().value).toEqual(call(isValidAddress, raw, 1));
+      expect(data.validEnsGen.next().value).toEqual(call(isValidAddress, raw, 0));
     });
 
     it('should call isValidENSAddress', () => {

@@ -11,7 +11,6 @@ interface SetCurrentToAction {
   type: TypeKeys.CURRENT_TO_SET;
   payload: {
     raw: string;
-    chainId: number;
   };
 }
 
