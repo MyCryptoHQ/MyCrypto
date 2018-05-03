@@ -72,13 +72,26 @@ class AddressBookTable extends React.Component<Props, State> {
 
     return (
       <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
+        <div className="AddressBookTable-row AddressBookTable-row-labels">
+          <label className="AddressBookTable-row-label" htmlFor="temporaryAddress">
+            {translate('ADDRESS')}
+          </label>
+          <label className="AddressBookTable-row-label" htmlFor="temporaryLabel">
+            {translate('LABEL')}
+          </label>
+        </div>
         <div className="AddressBookTable-row AddressBookTable-row-inputs">
           <div className="AddressBookTable-row-input">
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
               <Identicon address={temporaryAddress} />
             </div>
             <div className="AddressBookTable-row-input-wrapper">
-              <label htmlFor="temporaryAddress">{translate('ADDRESS')}</label>
+              <label
+                className="AddressBookTable-row-input-wrapper-label"
+                htmlFor="temporaryAddress"
+              >
+                {translate('ADDRESS')}
+              </label>
               <Input
                 name="temporaryAddress"
                 className={addressInputClassName}
@@ -95,7 +108,9 @@ class AddressBookTable extends React.Component<Props, State> {
           </div>
           <div className="AddressBookTable-row-input">
             <div className="AddressBookTable-row-input-wrapper">
-              <label htmlFor="temporaryLabel">{translate('LABEL')}</label>
+              <label className="AddressBookTable-row-input-wrapper-label" htmlFor="temporaryLabel">
+                {translate('LABEL')}
+              </label>
               <Input
                 name="temporaryLabel"
                 className={labelInputClassName}

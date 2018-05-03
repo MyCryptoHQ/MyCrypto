@@ -59,7 +59,7 @@ class AddressBookTableRow extends React.Component<Props> {
             <Identicon address={address} />
           </div>
           <div className="AddressBookTable-row-input-wrapper">
-            <label className="AddressBookTable-haxx-label">Address</label>
+            <label className="AddressBookTable-row-input-wrapper-label">Address</label>
             <Input title={address} value={address} readOnly={true} />
           </div>
           <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
@@ -68,7 +68,7 @@ class AddressBookTableRow extends React.Component<Props> {
         </div>
         <div className="AddressBookTable-row-input">
           <div className="AddressBookTable-row-input-wrapper">
-            <label className="AddressBookTable-haxx-label">Label</label>
+            <label className="AddressBookTable-row-input-wrapper-label">Label</label>
             <Input
               title={`${translateRaw('EDIT_LABEL_FOR')}${address}`}
               className={labelInputClassName}
