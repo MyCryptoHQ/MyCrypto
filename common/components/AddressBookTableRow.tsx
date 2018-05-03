@@ -3,7 +3,6 @@ import translate, { translateRaw } from 'translations';
 import noop from 'lodash/noop';
 import { isValidLabelLength } from 'libs/validators';
 import { Input, Identicon } from 'components/ui';
-import onClickOutside from 'react-onclickoutside';
 import { getLabels } from 'selectors/addressBook';
 
 interface Props {
@@ -27,32 +26,18 @@ interface State {
   labelInputError: string | null;
 }
 
-const getInitialState = (props: Props): State => ({
-  label: props.label,
-  mostRecentValidLabel: props.label,
-  labelInputTouched: false,
-  labelInputError: null
-});
-
 class AddressBookTableRow extends React.Component<Props> {
-  public state: State = getInitialState(this.props);
+  public state: State = {
+    label: this.props.label,
+    mostRecentValidLabel: this.props.label,
+    labelInputTouched: false,
+    labelInputError: null
+  };
 
   private labelInput: HTMLInputElement | null = null;
 
-  public handleClickOutside = () => {
-    if (this.labelInput) {
-      this.labelInput.blur();
-    }
-
-    this.handleBlur();
-  };
-
   public componentWillReceiveProps(nextProps: Props) {
-    const { label } = this.state;
-
-    if (nextProps.label !== label) {
-      this.setState({ label: nextProps.label, mostRecentValidLabel: nextProps.label });
-    }
+    this.setState({ label: nextProps.label, mostRecentValidLabel: nextProps.label });
   }
 
   public render() {
@@ -93,7 +78,7 @@ class AddressBookTableRow extends React.Component<Props> {
                 onChange={this.setLabel}
                 onKeyDown={this.handleKeyDown}
                 onFocus={this.setLabelTouched}
-                onBlur={this.handleClickOutside}
+                onBlur={this.handleBlur}
                 setInnerRef={this.setLabelInputRef}
               />
             </div>
@@ -105,26 +90,24 @@ class AddressBookTableRow extends React.Component<Props> {
               <i className="fa fa-close" />
             </button>
           </div>
-          {isEditing &&
-            labelInputError && (
-              <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
-                <label className="AddressBookTable-row-input-wrapper-error">
-                  {labelInputError}
-                </label>
-              </div>
-            )}
-        </div>
-        {isEditing &&
-          labelInputError && (
-            <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--non-mobile">
-              <label className="AddressBookTable-row-input-wrapper-error">{labelInputError}</label>
+          {labelInputError && (
+            <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
+              <label className="AddressBookTable-row-input-wrapper-error">
+                <div />
+                {labelInputError}
+              </label>
             </div>
           )}
+        </div>
+        {labelInputError && (
+          <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--non-mobile">
+            <div />
+            <label className="AddressBookTable-row-input-wrapper-error">{labelInputError}</label>
+          </div>
+        )}
       </React.Fragment>
     );
   }
-
-  private resetState = () => this.setState(getInitialState(this.props));
 
   private handleSave = () => {
     const { labels } = this.props;
@@ -149,17 +132,21 @@ class AddressBookTableRow extends React.Component<Props> {
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { labelInputTouched } = this.state;
+
     e.stopPropagation();
 
     if (e.key === 'Enter' && this.labelInput) {
       this.labelInput.blur();
+    } else if (!labelInputTouched) {
+      this.setLabelTouched();
     }
   };
 
   private handleBlur = () => {
-    this.props.onLabelInputBlur();
     this.handleSave();
-    this.resetState();
+    this.clearLabelTouched();
+    this.props.onLabelInputBlur();
   };
 
   private setLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -168,17 +155,24 @@ class AddressBookTableRow extends React.Component<Props> {
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
   private setLabelTouched = () => {
-    const { labelInputTouched } = this.state;
+    const { label, labelInputTouched } = this.state;
 
     if (!labelInputTouched) {
       this.setState({ labelInputTouched: true });
     }
+
+    if (label.length > 0) {
+      this.checkLabelValidation();
+    }
   };
+
+  private clearLabelTouched = () =>
+    this.setState({ labelInputTouched: false, labelInputError: null });
 
   private checkLabelValidation = () => {
     const { labels } = this.props;
-    const { label, labelInputError } = this.state;
-    const labelAlreadyExists = !!labels[label];
+    const { label, labelInputError, mostRecentValidLabel } = this.state;
+    const labelAlreadyExists = !!labels[label] && label !== mostRecentValidLabel;
     const hadErrorPreviously = labelInputError !== null;
 
     if (labelAlreadyExists) {
@@ -208,4 +202,4 @@ class AddressBookTableRow extends React.Component<Props> {
   };
 }
 
-export default onClickOutside(AddressBookTableRow);
+export default AddressBookTableRow;

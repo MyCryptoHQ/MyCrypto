@@ -36,8 +36,8 @@ interface State {
   temporaryLabelTouched: boolean;
   temporaryAddress: string;
   temporaryAddressTouched: boolean;
-  addressInputError: boolean;
-  labelInputError: boolean;
+  addressInputError: string | null;
+  labelInputError: string | null;
 }
 
 export const ERROR_DURATION: number = 4000;
@@ -49,8 +49,8 @@ class AddressBookTable extends React.Component<Props, State> {
     temporaryLabelTouched: false,
     temporaryAddress: '',
     temporaryAddressTouched: false,
-    addressInputError: false,
-    labelInputError: false
+    addressInputError: null,
+    labelInputError: null
   };
 
   private addressInput: HTMLInputElement | null = null;
@@ -67,8 +67,21 @@ class AddressBookTable extends React.Component<Props, State> {
       temporaryLabelTouched,
       labelInputError
     } = this.state;
-    const addressInputClassName = temporaryAddressTouched && addressInputError ? 'invalid' : '';
-    const labelInputClassName = temporaryLabelTouched && labelInputError ? 'invalid' : '';
+    const addressTouchedWithError = temporaryAddressTouched && addressInputError;
+    const addressInputClassName = addressTouchedWithError ? 'invalid' : '';
+
+    const labelTouchedWithError = temporaryLabelTouched && labelInputError;
+    const labelInputClassName = labelTouchedWithError ? 'invalid' : '';
+
+    const nonMobileTemporaryInputErrorClassName =
+      'AddressBookTable-row-error-temporary-input--non-mobile';
+    const nonMobileVisibleErrorClassName = `${nonMobileTemporaryInputErrorClassName}--visible`;
+    const nonMobileTemporaryAddressErrorClassName = `${nonMobileTemporaryInputErrorClassName} ${nonMobileTemporaryInputErrorClassName}-address ${
+      addressTouchedWithError ? nonMobileVisibleErrorClassName : ''
+    }`;
+    const nonMobileTemporaryLabelErrorClassName = `${nonMobileTemporaryInputErrorClassName} ${nonMobileTemporaryInputErrorClassName}-label ${
+      labelTouchedWithError ? nonMobileVisibleErrorClassName : ''
+    }`;
 
     return (
       <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
@@ -96,6 +109,7 @@ class AddressBookTable extends React.Component<Props, State> {
                 value={temporaryAddress}
                 onChange={this.setTemporaryAddress}
                 onFocus={this.setTemporaryAddressTouched}
+                onBlur={this.clearTemporaryAddressTouched}
                 setInnerRef={this.setAddressInputRef}
               />
             </div>
@@ -105,6 +119,9 @@ class AddressBookTable extends React.Component<Props, State> {
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
               <Identicon address={temporaryAddress} size="3rem" />
             </div>
+          </div>
+          <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
+            <label className="AddressBookTable-row-input-wrapper-error">{addressInputError}</label>
           </div>
           <div className="AddressBookTable-row-input">
             <div className="AddressBookTable-row-input-wrapper">
@@ -118,6 +135,7 @@ class AddressBookTable extends React.Component<Props, State> {
                 value={temporaryLabel}
                 onChange={this.setTemporaryLabel}
                 onFocus={this.setTemporaryLabelTouched}
+                onBlur={this.clearTemporaryLabelTouched}
                 setInnerRef={this.setLabelInputRef}
               />
             </div>
@@ -129,6 +147,13 @@ class AddressBookTable extends React.Component<Props, State> {
               <i className="fa fa-plus" />
             </button>
           </div>
+          <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
+            <label className="AddressBookTable-row-input-wrapper-error">{labelInputError}</label>
+          </div>
+        </div>
+        <div className="AddressBookTable-row AddressBookTable-row-error">
+          <label className={nonMobileTemporaryAddressErrorClassName}>{addressInputError}</label>
+          <label className={nonMobileTemporaryLabelErrorClassName}>{labelInputError}</label>
         </div>
         {rows.map(this.makeLabelRow)}
       </section>
@@ -215,23 +240,42 @@ class AddressBookTable extends React.Component<Props, State> {
     this.setState({ temporaryLabel: e.target.value }, this.checkTemporaryLabelValidation);
 
   private setTemporaryLabelTouched = () => {
-    const { temporaryLabelTouched } = this.state;
+    const { temporaryLabel, temporaryLabelTouched } = this.state;
 
     if (!temporaryLabelTouched) {
       this.setState({ temporaryLabelTouched: true });
     }
+
+    if (temporaryLabel.length > 0) {
+      this.checkTemporaryLabelValidation();
+    }
   };
+
+  private clearTemporaryLabelTouched = () =>
+    this.setState({ temporaryLabelTouched: false, labelInputError: null });
 
   private checkTemporaryLabelValidation = () => {
     const { reversedLabels } = this.props;
     const { temporaryLabel, labelInputError } = this.state;
     const labelAlreadyExists = !!reversedLabels[temporaryLabel];
-    const isValid = !labelAlreadyExists && isValidLabelLength(temporaryLabel);
+    const hadErrorPreviously = labelInputError !== null;
 
-    if (isValid && labelInputError) {
-      this.setState({ labelInputError: false });
-    } else if (!isValid && !labelInputError) {
-      this.setState({ labelInputError: true });
+    if (labelAlreadyExists) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_ALREADY_EXISTS')
+      });
+    }
+
+    if (!isValidLabelLength(temporaryLabel)) {
+      return this.setState({
+        labelInputError: translateRaw('INVALID_LABEL_LENGTH')
+      });
+    }
+
+    if (hadErrorPreviously) {
+      return this.setState({
+        labelInputError: null
+      });
     }
   };
 
@@ -239,23 +283,42 @@ class AddressBookTable extends React.Component<Props, State> {
     this.setState({ temporaryAddress: e.target.value }, this.checkTemporaryAddressValidation);
 
   private setTemporaryAddressTouched = () => {
-    const { temporaryAddressTouched } = this.state;
+    const { temporaryAddress, temporaryAddressTouched } = this.state;
 
     if (!temporaryAddressTouched) {
       this.setState({ temporaryAddressTouched: true });
     }
+
+    if (temporaryAddress.length > 0) {
+      this.checkTemporaryAddressValidation();
+    }
   };
+
+  private clearTemporaryAddressTouched = () =>
+    this.setState({ temporaryAddressTouched: false, addressInputError: null });
 
   private checkTemporaryAddressValidation = () => {
     const { labels } = this.props;
     const { temporaryAddress, addressInputError } = this.state;
     const addressAlreadyExists = !!labels[temporaryAddress];
-    const isValid = isValidETHAddress(temporaryAddress) && !addressAlreadyExists;
+    const hadErrorPreviously = addressInputError !== null;
 
-    if (isValid && addressInputError) {
-      this.setState({ addressInputError: false });
-    } else if (!isValid && !addressInputError) {
-      this.setState({ addressInputError: true });
+    if (addressAlreadyExists) {
+      return this.setState({
+        addressInputError: translateRaw('ADDRESS_ALREADY_EXISTS')
+      });
+    }
+
+    if (!isValidETHAddress(temporaryAddress)) {
+      return this.setState({
+        addressInputError: translateRaw('INVALID_ADDRESS')
+      });
+    }
+
+    if (hadErrorPreviously) {
+      return this.setState({
+        addressInputError: null
+      });
     }
   };
 

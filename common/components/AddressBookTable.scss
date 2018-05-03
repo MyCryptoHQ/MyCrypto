@@ -23,6 +23,28 @@
       align-self: stretch;
       padding: 0;
       box-shadow: none;
+      color: $brand-danger;
+
+      &-temporary-input--non-mobile {
+        flex: 1;
+        visibility: hidden;
+
+        &-address {
+          align-self: flex-start;
+        }
+
+        &-label {
+          align-self: flex-end;
+        }
+
+        &--visible {
+          visibility: visible;
+        }
+
+        @media (max-width: 650px) {
+          display: none;
+        }
+      }
 
       &--non-mobile {
         justify-content: flex-end;
@@ -68,9 +90,9 @@
       }
     }
 
-    &-inputs {
-      margin-bottom: $space-xl * 1.5;
-    }
+    // &-inputs {
+    //   margin-bottom: $space-xl * 1.5;
+    // }
 
     &-input {
       display: flex;
