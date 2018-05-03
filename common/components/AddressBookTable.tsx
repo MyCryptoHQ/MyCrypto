@@ -182,6 +182,8 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private setEditingRow = (editingRow: number | null) => this.setState({ editingRow });
 
+  private clearEditingRow = () => this.setEditingRow(null);
+
   private makeLabelRow = (addressToLabel: AddressLabelPair, index: number) => {
     const { editingRow } = this.state;
     const isEditingRow = index === editingRow;
@@ -200,6 +202,7 @@ class AddressBookTable extends React.Component<Props, State> {
             address: addressToLabel.address
           })
         }
+        onLabelInputBlur={this.clearEditingRow}
         onEditClick={() => this.setEditingRow(index)}
         onRemoveClick={() => this.props.removeLabelForAddress(addressToLabel.address)}
         displayInvalidLabelLengthNotification={this.displayInvalidLabelLengthNotification}

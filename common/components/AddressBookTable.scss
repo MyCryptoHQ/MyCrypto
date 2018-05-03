@@ -18,6 +18,27 @@
       flex: 1 0;
     }
 
+    &-error {
+      align-items: flex-end;
+      align-self: stretch;
+      padding: 0;
+      box-shadow: none;
+
+      &--non-mobile {
+        justify-content: flex-end;
+
+        @media (max-width: 650px) {
+          display: none;
+        }
+      }
+
+      &--mobile {
+        @media (min-width: 650px) {
+          display: none;
+        }
+      }
+    }
+
     &-identicon {
       margin-left: $space-sm;
 
@@ -84,6 +105,11 @@
           @media (min-width: 651px) {
             display: none;
           }
+        }
+
+        &-error {
+          color: $brand-danger;
+          align-self: end;
         }
       }
     }

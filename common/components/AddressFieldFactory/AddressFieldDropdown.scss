@@ -43,9 +43,16 @@
 
     &-label,
     &-address {
-      flex: 1 0 0;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    &-label {
+      flex: 1 0 0;
+    }
+
+    &-address {
+      flex: 2 0 0;
     }
 
     &-no-match {
