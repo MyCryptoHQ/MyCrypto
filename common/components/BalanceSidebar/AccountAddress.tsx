@@ -36,14 +36,20 @@ type Props = StateProps & DispatchProps & OwnProps;
 interface State {
   copied: boolean;
   editingLabel: boolean;
-  labelInputError: boolean;
+  temporaryLabel: string;
+  mostRecentValidLabel: string;
+  labelInputTouched: boolean;
+  labelInputError: string | null;
 }
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {
     copied: false,
     editingLabel: false,
-    labelInputError: false
+    temporaryLabel: this.props.labels[this.props.address.toLowerCase()] || '',
+    mostRecentValidLabel: this.props.labels[this.props.address.toLowerCase()] || '',
+    labelInputTouched: false,
+    labelInputError: null
   };
 
   private goingToClearCopied: number | null = null;
@@ -58,7 +64,11 @@ class AccountAddress extends React.Component<Props, State> {
       this.clearCopied
     );
 
-  public handleClickOutside = () => this.state.editingLabel && this.stopEditingLabel();
+  public componentWillReceiveProps(nextProps: Props) {
+    const temporaryLabel = nextProps.labels[nextProps.address.toLowerCase()] || '';
+
+    this.setState({ temporaryLabel, mostRecentValidLabel: temporaryLabel });
+  }
 
   public componentWillUnmount() {
     if (this.goingToClearCopied) {
@@ -141,16 +151,17 @@ class AccountAddress extends React.Component<Props, State> {
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { target: { value: label } } = e;
+  private handleBlur = () => {
+    const { temporaryLabel } = this.state;
 
-    this.updateAccountLabel(label);
+    this.updateAccountLabel(temporaryLabel);
+    this.clearTemporaryLabelTouched();
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case 'Enter':
-        return this.labelInput && this.updateAccountLabel(this.labelInput.value);
+        return this.handleBlur();
       case 'Escape':
         return this.stopEditingLabel();
     }
@@ -158,21 +169,29 @@ class AccountAddress extends React.Component<Props, State> {
 
   private generateLabelContent = () => {
     const { address, labels } = this.props;
-    const { editingLabel } = this.state;
+    const { editingLabel, temporaryLabel, labelInputTouched, labelInputError } = this.state;
     const label = labels[address.toLowerCase()];
 
     let labelContent = null;
 
     if (editingLabel) {
       labelContent = (
-        <Input
-          title={translateRaw('ADD_LABEL')}
-          placeholder={translateRaw('NEW_LABEL')}
-          defaultValue={label}
-          onKeyDown={this.handleKeyDown}
-          onBlur={this.handleBlur}
-          setInnerRef={this.setLabelInputRef}
-        />
+        <React.Fragment>
+          <Input
+            title={translateRaw('ADD_LABEL')}
+            placeholder={translateRaw('NEW_LABEL')}
+            value={temporaryLabel}
+            onChange={this.setTemporaryLabel}
+            onKeyDown={this.handleKeyDown}
+            onFocus={this.setTemporaryLabelTouched}
+            onBlur={this.handleBlur}
+            setInnerRef={this.setLabelInputRef}
+          />
+          {labelInputTouched &&
+            labelInputError && (
+              <label className="AccountInfo-address-wrapper-error">{labelInputError}</label>
+            )}
+        </React.Fragment>
       );
     } else if (label && !editingLabel) {
       labelContent = (
@@ -210,6 +229,59 @@ class AccountAddress extends React.Component<Props, State> {
     );
 
     return labelButton;
+  };
+
+  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
+    this.setState({ temporaryLabel: e.target.value }, this.checkTemporaryLabelValidation);
+
+  private setTemporaryLabelTouched = () => {
+    const { temporaryLabel, labelInputTouched } = this.state;
+
+    if (!labelInputTouched) {
+      this.setState({ labelInputTouched: true });
+    }
+
+    if (temporaryLabel.length > 0) {
+      this.checkTemporaryLabelValidation();
+    }
+  };
+
+  private clearTemporaryLabelTouched = () =>
+    this.setState({ labelInputTouched: false, labelInputError: null });
+
+  private checkTemporaryLabelValidation = () => {
+    const { reversedLabels } = this.props;
+    const { temporaryLabel, mostRecentValidLabel, labelInputError } = this.state;
+    const labelAlreadyExists = !!reversedLabels[temporaryLabel];
+    const hadErrorPreviously = labelInputError !== null;
+
+    if (temporaryLabel === mostRecentValidLabel) {
+      return;
+    }
+
+    if (temporaryLabel.length === 0) {
+      return this.setState({
+        labelInputError: null
+      });
+    }
+
+    if (labelAlreadyExists) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_ALREADY_EXISTS')
+      });
+    }
+
+    if (!isValidLabelLength(temporaryLabel)) {
+      return this.setState({
+        labelInputError: translateRaw('INVALID_LABEL_LENGTH')
+      });
+    }
+
+    if (hadErrorPreviously) {
+      return this.setState({
+        labelInputError: null
+      });
+    }
   };
 
   private isValidLabel = (label: string) => {

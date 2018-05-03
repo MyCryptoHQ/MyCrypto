@@ -89,6 +89,11 @@
 
     &-wrapper {
       max-width: calc(100% - 44px - 24px);
+
+      &-error {
+        color: $brand-danger;
+        margin-bottom: $space-md;
+      }
     }
 
     &-icon {
