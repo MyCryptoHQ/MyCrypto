@@ -22,6 +22,7 @@ interface State {
 
 export interface CallbackProps {
   isValid: boolean;
+  isLabelEntry: boolean;
   readOnly: boolean;
   currentTo: ICurrentTo;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;

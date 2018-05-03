@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { translateRaw } from 'translations';
-import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
+import {
+  ICurrentTo,
+  getCurrentTo,
+  isValidCurrentTo,
+  isCurrentToLabelEntry
+} from 'selectors/transaction';
 import { getCurrentLabel } from 'selectors/addressBook';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
@@ -19,6 +24,7 @@ interface StateProps {
   currentTo: ICurrentTo;
   label: string | null;
   isValid: boolean;
+  isLabelEntry: boolean;
   isResolving: boolean;
 }
 
@@ -60,6 +66,7 @@ class AddressInputFactoryClass extends Component<Props> {
       onFocus,
       onBlur,
       isValid,
+      isLabelEntry,
       withProps,
       isSelfAddress,
       isResolving,
@@ -79,6 +86,7 @@ class AddressInputFactoryClass extends Component<Props> {
               withProps({
                 currentTo,
                 isValid,
+                isLabelEntry,
                 onChange,
                 onFocus,
                 onBlur,
@@ -119,6 +127,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
     currentTo,
     label: getCurrentLabel(state),
     isResolving: getResolvingDomain(state),
-    isValid: isValidCurrentTo(state)
+    isValid: isValidCurrentTo(state),
+    isLabelEntry: isCurrentToLabelEntry(state)
   };
 })(AddressInputFactoryClass);
