@@ -3,7 +3,8 @@ import {
   isValidBTCAddress,
   isValidETHAddress,
   isValidPath,
-  isValidPrivKey
+  isValidPrivKey,
+  isValidAddress
 } from '../../common/libs/validators';
 import { DPaths } from 'config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
@@ -11,10 +12,14 @@ configuredStore.getState();
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
+const VALID_RSK_TESTNET_ADDRESS = '0xeDB3481062678B76DDC03ab4B13D9Bba64b58763';
 const VALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
 const INVALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5ZZZZ';
 const VALID_ETH_PRIVATE_BUFFER = Buffer.from(VALID_ETH_PRIVATE_KEY, 'hex');
 const VALID_ETH_PRIVATE_0X = '0x3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
+const RSK_TESTNET_CHAIN_ID = 31;
+const RSK_MAINNET_CHAIN_ID = 30;
+const ETH_CHAIN_ID = 1;
 
 describe('Validator', () => {
   it('should validate correct BTC address as true', () => {
@@ -29,6 +34,18 @@ describe('Validator', () => {
   });
   it('should validate incorrect ETH address as false', () => {
     expect(isValidETHAddress('nonsense' + VALID_ETH_ADDRESS + 'nonsense')).toBeFalsy();
+  });
+  it('should validate correct ETH address in RSK network as false', () => {
+    expect(isValidAddress(VALID_ETH_ADDRESS, RSK_TESTNET_CHAIN_ID)).toBeFalsy();
+  });
+  it('should validate correct RSK address in ETH network as false', () => {
+    expect(isValidAddress(VALID_RSK_TESTNET_ADDRESS, ETH_CHAIN_ID)).toBeFalsy();
+  });
+  it('should validate correct RSK address in RSK testnet network as true', () => {
+    expect(isValidAddress(VALID_RSK_TESTNET_ADDRESS, RSK_TESTNET_CHAIN_ID)).toBeTruthy();
+  });
+  it('should validate correct RSK address in RSK mainnet network as false', () => {
+    expect(isValidAddress(VALID_RSK_TESTNET_ADDRESS, RSK_MAINNET_CHAIN_ID)).toBeFalsy();
   });
   it('should validate an incorrect DPath as false', () => {
     expect(isValidPath('m/44/60/0/0')).toBeFalsy();
