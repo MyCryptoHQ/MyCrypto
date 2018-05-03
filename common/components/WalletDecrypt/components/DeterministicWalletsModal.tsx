@@ -303,7 +303,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             value={wallet.address}
           />
           <div>
-            {label && <label>{label}</label>}
+            {label && <label className="DWModal-addresses-table-address-label">{label}</label>}
             <span className={spanClassName}>{wallet.address}</span>
           </div>
         </td>
