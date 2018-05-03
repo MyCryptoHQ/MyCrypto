@@ -82,9 +82,6 @@ class AddressBookTable extends React.Component<Props, State> {
         </div>
         <div className="AddressBookTable-row AddressBookTable-row-inputs">
           <div className="AddressBookTable-row-input">
-            <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
-              <Identicon address={temporaryAddress} />
-            </div>
             <div className="AddressBookTable-row-input-wrapper">
               <label
                 className="AddressBookTable-row-input-wrapper-label"
@@ -101,6 +98,9 @@ class AddressBookTable extends React.Component<Props, State> {
                 onFocus={this.setTemporaryAddressTouched}
                 setInnerRef={this.setAddressInputRef}
               />
+            </div>
+            <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
+              <Identicon address={temporaryAddress} />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
               <Identicon address={temporaryAddress} size="3rem" />

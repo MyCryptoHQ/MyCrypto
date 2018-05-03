@@ -175,7 +175,11 @@ class AccountAddress extends React.Component<Props, State> {
         />
       );
     } else if (label && !editingLabel) {
-      labelContent = <label className="AccountInfo-address-label">{label}</label>;
+      labelContent = (
+        <label title={label} className="AccountInfo-address-label">
+          {label}
+        </label>
+      );
     }
 
     return labelContent;

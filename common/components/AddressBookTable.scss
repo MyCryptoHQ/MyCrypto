@@ -19,10 +19,11 @@
     }
 
     &-identicon {
+      margin-left: $space-sm;
+
       &-mobile {
         width: 30px;
         height: 20px;
-        margin-left: $space-sm;
         margin-right: $space-md;
 
         @media (min-width: 650px) {

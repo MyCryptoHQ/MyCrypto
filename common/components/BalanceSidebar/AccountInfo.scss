@@ -118,6 +118,9 @@
     &-label {
       font-weight: bolder;
       font-size: 1.3rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
     }
   }
 
