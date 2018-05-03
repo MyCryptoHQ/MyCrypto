@@ -7,6 +7,7 @@
     "LABEL_ALREADY_EXISTS": "An address is already associated with that label.",
     "ADDRESS_ALREADY_EXISTS": "That address is already associated with a label.",
     "INVALID_ADDRESS": "Please enter a valid ETH address.",
+    "NO_LABEL_FOUND_CONTAINING": "No labels found containing ",
     "SENDING_TO": "Sending to",
     "NEW_ADDRESS": "New address",
     "NEW_LABEL": "New label",    

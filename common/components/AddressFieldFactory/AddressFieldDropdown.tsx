@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressLabelPair } from 'actions/addressBook';
 import { getLabels } from 'selectors/addressBook';
@@ -38,9 +38,16 @@ class AddressFieldDropdown extends React.Component<Props> {
   }
 
   public render() {
-    return this.getIsVisible() ? (
+    const { currentTo } = this.props;
+    const noMatchContent = currentTo.startsWith('0x') ? null : (
+      <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
+        <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')}"{currentTo}".
+      </li>
+    );
+
+    return this.props.currentTo.length > 1 ? (
       <ul className="AddressFieldDropdown" role="listbox">
-        {this.renderDropdownItems()}
+        {this.getFilteredLabels().length > 0 ? this.renderDropdownItems() : noMatchContent}
       </ul>
     ) : null;
   }

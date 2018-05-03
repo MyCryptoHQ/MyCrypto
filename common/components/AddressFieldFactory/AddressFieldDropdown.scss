@@ -48,6 +48,19 @@
       text-overflow: ellipsis;
     }
 
+    &-no-match {
+      word-break: break-word;
+
+      &:hover {
+        cursor: not-allowed;
+        background: inherit;
+      }
+
+      i {
+        margin-right: $space-sm;
+      }
+    }
+
     &--active {
       background: $gray-lighter;
     }
