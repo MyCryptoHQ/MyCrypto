@@ -1,18 +1,21 @@
 import React from 'react';
-import { decimalToHex, hexToDecimal, padLeft } from 'utils/formatters';
 import { Input } from 'components/ui';
 
 interface State {
-  decimalInput: string | number;
-  hexInput: string;
-  hexPaddedInput: string;
+  ensBidAddress: string;
+  ensLabelHash: string;
+  bidEth: number | string;
+  bidWei: number | string;
+  ensSecret: string;
 }
 
 export default class ENSDebugger extends React.Component<{}, State> {
   public state: State = {
-    decimalInput: 10,
-    hexInput: decimalToHex(10),
-    hexPaddedInput: padLeft(decimalToHex(10), 64, '0')
+    ensBidAddress: '',
+    ensLabelHash: '',
+    bidEth: 0.01,
+    bidWei: 0.01,
+    ensSecret: ''
   };
 
   public render() {
@@ -30,8 +33,8 @@ export default class ENSDebugger extends React.Component<{}, State> {
             <Input
               className="form-control"
               type="text"
-              ng-model="ensAddress"
-              ng-change="allTheThings()"
+              value={this.state.ensBidAddress}
+              onChange={this.handleEnsFlow}
             />
           </div>
         </section>
@@ -41,23 +44,33 @@ export default class ENSDebugger extends React.Component<{}, State> {
             <Input
               className="form-control"
               type="text"
-              ng-model="ensLabel"
-              ng-change="toEnsLabelHash()"
+              value="ensLabel"
+              onChange={this.toEnsLabelHash}
             />
           </div>
           <div className="form-group col-sm-6">
             <label>Hashed ENS Name (Label Hash)</label>
-            <Input className="form-control" type="text" ng-model="ensLabelHash" />
+            <Input className="form-control" type="text" value={this.state.ensLabelHash} />
           </div>
         </section>
         <section className="row">
           <div className="form-group col-sm-6">
             <label>Amount you Bid (ETH)</label>
-            <Input className="form-control" type="text" ng-model="bidEth" ng-change="toBidWei()" />
+            <Input
+              className="form-control"
+              type="text"
+              value={this.state.bidEth}
+              onChange={this.toBidWei}
+            />
           </div>
           <div className="form-group col-sm-6">
             <label>Amount you Bid (WEI)</label>
-            <Input className="form-control" type="text" ng-model="bidWei" ng-change="toBidEth()" />
+            <Input
+              className="form-control"
+              type="text"
+              value={this.state.bidWei}
+              onChange={this.toBidEth}
+            />
           </div>
         </section>
         <section className="row">
@@ -66,13 +79,13 @@ export default class ENSDebugger extends React.Component<{}, State> {
             <Input
               className="form-control"
               type="text"
-              ng-model="ensSecret"
-              ng-change="toEnsSecretHash()"
+              value={this.state.ensSecret}
+              onChange={this.toEnsSecretHash}
             />
           </div>
           <div className="form-group col-sm-6">
             <label>Your Secret (Hashed)</label>
-            <Input className="form-control" type="text" ng-model="ensSecretHash" />
+            <Input className="form-control" type="text" value={this.state.ensSecretHash} />
           </div>
         </section>
         <section className="row">
@@ -81,7 +94,7 @@ export default class ENSDebugger extends React.Component<{}, State> {
             <Input
               className="form-control"
               type="text"
-              ng-model="startAuctionData"
+              value={this.state.startAuctionData}
               readOnly={true}
             />
             <p>
@@ -102,7 +115,7 @@ export default class ENSDebugger extends React.Component<{}, State> {
             <Input
               className="form-control"
               type="text"
-              ng-model="startAndBidAuctionData"
+              value={this.state.startAndBidAuctionData}
               readOnly={true}
             />
             <p>
@@ -155,7 +168,7 @@ export default class ENSDebugger extends React.Component<{}, State> {
             <Input
               className="form-control"
               type="text"
-              ng-model="finalizeAuctionData"
+              value={this.state.finalizeAuctionData}
               readOnly={true}
             />
             <p>
@@ -170,26 +183,13 @@ export default class ENSDebugger extends React.Component<{}, State> {
     );
   }
 
-  private onDecimalChange = (event: any) => {
-    const nextValue = event.currentTarget.value === undefined ? '' : event.currentTarget.value;
-    const nextHexValue = decimalToHex(nextValue);
+  private handleEnsFlow = () => {};
 
-    this.setState({
-      decimalInput: nextValue,
-      hexInput: nextHexValue,
-      hexPaddedInput: padLeft(nextHexValue, 64, '0')
-    });
-  };
+  private toEnsLabelHash = () => {};
 
-  private onHexChange = (event: any) => {
-    let nextValue;
+  private toSecretEnsHash = () => {};
 
-    nextValue = event.currentTarget.value === undefined ? '' : event.currentTarget.value;
+  private toBidWei = () => {};
 
-    this.setState({
-      decimalInput: hexToDecimal(nextValue),
-      hexInput: nextValue,
-      hexPaddedInput: padLeft(nextValue, 64, '0')
-    });
-  };
+  private toEthWei = () => {};
 }
