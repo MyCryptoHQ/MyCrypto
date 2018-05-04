@@ -1,7 +1,7 @@
-import LedgerTransport, { Observer, DescriptorEvent, Subscription } from 'ledgerhq__hw-transport';
-import { HID, Device } from 'node-hid';
+declare module '@ledgerhq/hw-transport-node-hid' {
+  import LedgerTransport, { Observer, DescriptorEvent, Subscription } from '@ledgerhq/hw-transport';
+  import { HID, Device } from 'node-hid';
 
-declare module 'ledgerhq__hw-transport-node-hid' {
   export default class TransportNodeHid extends LedgerTransport<string> {
     /**
      * @description Creates an instance of TransportNodeHid.

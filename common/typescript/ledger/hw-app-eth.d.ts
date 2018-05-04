@@ -1,6 +1,6 @@
-import LedgerTransport from 'ledgerhq__hw-transport';
+declare module '@ledgerhq/hw-app-eth' {
+  import LedgerTransport from '@ledgerhq/hw-transport';
 
-declare module 'ledgerhq__hw-app-eth' {
   export default class Eth<T extends LedgerTransport<any>> {
     constructor(transport: T);
 
