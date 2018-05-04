@@ -1,7 +1,7 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import noop from 'lodash/noop';
-import { isValidLabelLength } from 'libs/validators';
+import { isValidLabelLength, isLabelWithoutENS } from 'libs/validators';
 import { Input, Identicon } from 'components/ui';
 import { getLabels } from 'selectors/addressBook';
 
@@ -181,9 +181,6 @@ class AddressBookTableRow extends React.Component<Props> {
     const { label, labelInputError, mostRecentValidLabel } = this.state;
     const labelAlreadyExists = !!labels[label] && label !== mostRecentValidLabel;
     const hadErrorPreviously = labelInputError !== null;
-    const labelBeginsWith0x = label.startsWith('0x');
-    const labelContainsENSSuffix =
-      label.includes('.eth') || label.includes('.test') || label.includes('.reverse');
 
     if (labelAlreadyExists) {
       return this.setState({
@@ -197,13 +194,13 @@ class AddressBookTableRow extends React.Component<Props> {
       });
     }
 
-    if (labelBeginsWith0x) {
+    if (label.startsWith('0x')) {
       return this.setState({
         labelInputError: translateRaw('LABEL_CANNOT_BEGIN_WITH_0X')
       });
     }
 
-    if (labelContainsENSSuffix) {
+    if (!isLabelWithoutENS(label)) {
       return this.setState({
         labelInputError: translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX')
       });

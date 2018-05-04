@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { AppState } from 'reducers';
 import translate, { translateRaw } from 'translations';
-import { isValidETHAddress, isValidLabelLength } from 'libs/validators';
+import { isValidETHAddress, isValidLabelLength, isLabelWithoutENS } from 'libs/validators';
 import {
   TAddLabelForAddress,
   TRemoveLabelForAddress,
@@ -336,11 +336,6 @@ class AddressBookTable extends React.Component<Props, State> {
     const { temporaryLabel, labelInputError } = this.state;
     const labelAlreadyExists = !!reversedLabels[temporaryLabel];
     const hadErrorPreviously = labelInputError !== null;
-    const labelBeginsWith0x = temporaryLabel.startsWith('0x');
-    const labelContainsENSSuffix =
-      temporaryLabel.includes('.eth') ||
-      temporaryLabel.includes('.test') ||
-      temporaryLabel.includes('.reverse');
 
     if (labelAlreadyExists) {
       return this.setState({
@@ -354,13 +349,13 @@ class AddressBookTable extends React.Component<Props, State> {
       });
     }
 
-    if (labelBeginsWith0x) {
+    if (temporaryLabel.startsWith('0x')) {
       return this.setState({
         labelInputError: translateRaw('LABEL_CANNOT_BEGIN_WITH_0X')
       });
     }
 
-    if (labelContainsENSSuffix) {
+    if (!isLabelWithoutENS(temporaryLabel)) {
       return this.setState({
         labelInputError: translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX')
       });

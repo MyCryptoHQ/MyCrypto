@@ -12,7 +12,7 @@ import {
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { Address, Identicon, Input } from 'components/ui';
 import { getLabels } from 'selectors/addressBook';
-import { isValidLabelLength } from 'libs/validators';
+import { isValidLabelLength, isLabelWithoutENS } from 'libs/validators';
 import { ERROR_DURATION } from 'components/AddressBookTable';
 
 interface StateProps {
@@ -266,11 +266,6 @@ class AccountAddress extends React.Component<Props, State> {
     const { reversedLabels } = this.props;
     const { temporaryLabel, mostRecentValidLabel, labelInputError } = this.state;
     const labelAlreadyExists = !!reversedLabels[temporaryLabel];
-    const labelBeginsWith0x = temporaryLabel.startsWith('0x');
-    const labelContainsENSSuffix =
-      temporaryLabel.includes('.eth') ||
-      temporaryLabel.includes('.test') ||
-      temporaryLabel.includes('.reverse');
     const hadErrorPreviously = labelInputError !== null;
 
     if (temporaryLabel === mostRecentValidLabel) {
@@ -295,13 +290,13 @@ class AccountAddress extends React.Component<Props, State> {
       });
     }
 
-    if (labelBeginsWith0x) {
+    if (temporaryLabel.startsWith('0x')) {
       return this.setState({
         labelInputError: translateRaw('LABEL_CANNOT_BEGIN_WITH_0X')
       });
     }
 
-    if (labelContainsENSSuffix) {
+    if (!isLabelWithoutENS(temporaryLabel)) {
       return this.setState({
         labelInputError: translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX')
       });

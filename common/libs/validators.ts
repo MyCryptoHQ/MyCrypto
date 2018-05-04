@@ -321,3 +321,15 @@ export function isValidLabelLength(label: string, options: { allowEmpty?: boolea
 
   return meetsMinimumLengthRequirement && meetsMaximumLengthRequirement;
 }
+
+export function isLabelWithoutENS(label: string): boolean {
+  const ensTlds = ['.eth', '.test', '.reverse'];
+
+  for (const tld of ensTlds) {
+    if (label.includes(tld)) {
+      return false;
+    }
+  }
+
+  return true;
+}
