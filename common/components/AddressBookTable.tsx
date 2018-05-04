@@ -32,11 +32,13 @@ type Props = DispatchProps & StateProps;
 
 interface State {
   editingRow: number | null;
-  temporaryLabel: string;
-  temporaryLabelTouched: boolean;
   temporaryAddress: string;
   temporaryAddressTouched: boolean;
+  temporaryAddressBlurred: boolean;
   addressInputError: string | null;
+  temporaryLabel: string;
+  temporaryLabelTouched: boolean;
+  temporaryLabelBlurred: boolean;
   labelInputError: string | null;
 }
 
@@ -45,11 +47,13 @@ export const ERROR_DURATION: number = 4000;
 class AddressBookTable extends React.Component<Props, State> {
   public state: State = {
     editingRow: null,
-    temporaryLabel: '',
-    temporaryLabelTouched: false,
     temporaryAddress: '',
     temporaryAddressTouched: false,
+    temporaryAddressBlurred: false,
     addressInputError: null,
+    temporaryLabel: '',
+    temporaryLabelTouched: false,
+    temporaryLabelBlurred: false,
     labelInputError: null
   };
 
@@ -62,9 +66,11 @@ class AddressBookTable extends React.Component<Props, State> {
     const {
       temporaryAddress,
       temporaryAddressTouched,
+      temporaryAddressBlurred,
       addressInputError,
       temporaryLabel,
       temporaryLabelTouched,
+      temporaryLabelBlurred,
       labelInputError
     } = this.state;
     const addressTouchedWithError = temporaryAddressTouched && addressInputError;
@@ -109,6 +115,7 @@ class AddressBookTable extends React.Component<Props, State> {
                 value={temporaryAddress}
                 onChange={this.setTemporaryAddress}
                 onFocus={this.setTemporaryAddressTouched}
+                onBlur={this.setTemporaryAddressBlurred}
                 setInnerRef={this.setAddressInputRef}
               />
             </div>
@@ -120,7 +127,9 @@ class AddressBookTable extends React.Component<Props, State> {
             </div>
           </div>
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
-            <label className="AddressBookTable-row-input-wrapper-error">{addressInputError}</label>
+            <label className="AddressBookTable-row-input-wrapper-error">
+              {temporaryAddressBlurred && addressInputError}
+            </label>
           </div>
           <div className="AddressBookTable-row-input">
             <div className="AddressBookTable-row-input-wrapper">
@@ -134,6 +143,7 @@ class AddressBookTable extends React.Component<Props, State> {
                 value={temporaryLabel}
                 onChange={this.setTemporaryLabel}
                 onFocus={this.setTemporaryLabelTouched}
+                onBlur={this.setTemporaryLabelBlurred}
                 setInnerRef={this.setLabelInputRef}
               />
             </div>
@@ -146,12 +156,18 @@ class AddressBookTable extends React.Component<Props, State> {
             </button>
           </div>
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
-            <label className="AddressBookTable-row-input-wrapper-error">{labelInputError}</label>
+            <label className="AddressBookTable-row-input-wrapper-error">
+              {temporaryLabelBlurred && labelInputError}
+            </label>
           </div>
         </div>
         <div className="AddressBookTable-row AddressBookTable-row-error">
-          <label className={nonMobileTemporaryAddressErrorClassName}>{addressInputError}</label>
-          <label className={nonMobileTemporaryLabelErrorClassName}>{labelInputError}</label>
+          <label className={nonMobileTemporaryAddressErrorClassName}>
+            {temporaryAddressBlurred && addressInputError}
+          </label>
+          <label className={nonMobileTemporaryLabelErrorClassName}>
+            {temporaryLabelBlurred && labelInputError}
+          </label>
         </div>
         {rows.map(this.makeLabelRow)}
       </section>
@@ -260,6 +276,8 @@ class AddressBookTable extends React.Component<Props, State> {
   private clearTemporaryAddressTouched = () =>
     this.setState({ temporaryAddressTouched: false, addressInputError: null });
 
+  private setTemporaryAddressBlurred = () => this.setState({ temporaryAddressBlurred: true });
+
   private checkTemporaryAddressValidation = () => {
     const { labels } = this.props;
     const { temporaryAddress, addressInputError } = this.state;
@@ -310,6 +328,8 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private clearTemporaryLabelTouched = () =>
     this.setState({ temporaryLabelTouched: false, labelInputError: null });
+
+  private setTemporaryLabelBlurred = () => this.setState({ temporaryLabelBlurred: true });
 
   private checkTemporaryLabelValidation = () => {
     const { reversedLabels } = this.props;

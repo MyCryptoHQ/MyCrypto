@@ -187,6 +187,7 @@ class AccountAddress extends React.Component<Props, State> {
             onKeyDown={this.handleKeyDown}
             onFocus={this.setTemporaryLabelTouched}
             onBlur={this.handleBlur}
+            showInvalidBeforeBlur={true}
             setInnerRef={this.setLabelInputRef}
           />
           {labelInputTouchedWithError && (

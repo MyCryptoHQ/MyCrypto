@@ -79,6 +79,7 @@ class AddressBookTableRow extends React.Component<Props> {
                 onKeyDown={this.handleKeyDown}
                 onFocus={this.setLabelTouched}
                 onBlur={this.handleBlur}
+                showInvalidBeforeBlur={true}
                 setInnerRef={this.setLabelInputRef}
               />
             </div>
