@@ -13,7 +13,7 @@ import { State as WalletState, INITIAL_STATE as initialWalletState } from 'reduc
 import {
   State as AddressBookState,
   INITIAL_STATE as initialAddressBookState
-} from 'ducks/addressBook';
+} from 'redux/addressBook';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';

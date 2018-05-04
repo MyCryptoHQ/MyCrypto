@@ -13,12 +13,12 @@ import { State as TransactionsState, transactions } from './transactions';
 import { schedule, State as ScheduleState } from './schedule';
 import { State as ParitySignerState, paritySigner } from './paritySigner';
 
-import addressBook, { State as AddressBookState } from 'ducks/addressBook';
-import notifications, { State as NotificationsState } from 'ducks/notifications';
-import customTokens, { State as CustomTokensState } from 'ducks/customTokens';
+import addressBook, { State as AddressBookState } from 'redux/addressBook';
+import notifications, { State as NotificationsState } from 'redux/notifications';
+import customTokens, { State as CustomTokensState } from 'redux/customTokens';
 import deterministicWallets, {
   State as DeterministicWalletsState
-} from 'ducks/deterministicWallets';
+} from 'redux/deterministicWallets';
 
 export interface AppState {
   // Custom reducers
