@@ -10,7 +10,7 @@ export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
 export const VERSION_RAW = packageJson.version;
-export const VERSION = `${VERSION_RAW} (Release Candidate)`;
+export const VERSION = `${VERSION_RAW} (Release Candidate 2)`;
 export const N_FACTOR = 8192;
 
 // Bricks the app once this date has been exceeded. Remember to update these 2

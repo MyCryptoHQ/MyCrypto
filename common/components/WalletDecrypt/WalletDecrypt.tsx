@@ -166,7 +166,8 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+        helpLink:
+          'https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html'
       },
       [SecureWalletName.PARITY_SIGNER]: {
         lid: 'X_PARITYSIGNER',

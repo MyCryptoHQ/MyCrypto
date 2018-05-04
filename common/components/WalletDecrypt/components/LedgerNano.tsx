@@ -26,7 +26,7 @@ interface StateProps {
 interface State {
   publicKey: string;
   chainCode: string;
-  dPath: string;
+  dPath: DPath;
   error: string | null;
   isLoading: boolean;
   showTip: boolean;
@@ -38,7 +38,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath ? this.props.dPath.value : '',
+    dPath: this.props.dPath || this.props.dPaths[0],
     error: null,
     isLoading: false,
     showTip: false
@@ -51,8 +51,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   public componentWillReceiveProps(nextProps: Props) {
-    if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath ? nextProps.dPath.value : '' });
+    if (this.props.dPath !== nextProps.dPath && nextProps.dPath) {
+      this.setState({ dPath: nextProps.dPath });
     }
   }
 
@@ -123,11 +123,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     );
   }
 
-  private handlePathChange = (dPath: string) => {
+  private handlePathChange = (dPath: DPath) => {
     this.handleConnect(dPath);
   };
 
-  private handleConnect = (dPath: string = this.state.dPath) => {
+  private handleConnect = (dPath: DPath) => {
     this.setState({
       isLoading: true,
       error: null,
@@ -136,7 +136,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     ledger.comm_u2f.create_async().then((comm: any) => {
       new ledger.eth(comm)
-        .getAddress_async(dPath, false, true)
+        .getAddress_async(dPath.value, false, true)
         .then(res => {
           this.setState({
             publicKey: res.publicKey,
@@ -182,19 +182,19 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new LedgerWallet(address, this.state.dPath, index));
+    this.props.onUnlock(new LedgerWallet(address, this.state.dPath.value, index));
     this.reset();
   };
 
   private handleNullConnect = (): void => {
-    return this.handleConnect();
+    return this.handleConnect(this.state.dPath);
   };
 
   private reset() {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath ? this.props.dPath.value : ''
+      dPath: this.props.dPath || this.props.dPaths[0]
     });
   }
 }
