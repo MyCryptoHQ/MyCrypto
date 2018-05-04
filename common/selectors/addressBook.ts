@@ -28,6 +28,20 @@ export function getLabels(state: AppState, options: GetLabelOptions = {}) {
   return finalLabels;
 }
 
+export function getReversedLabels(state: AppState) {
+  const { addressBook: { labels } } = state;
+  const reversedLabels = Object.keys(labels).reduce(
+    (prev: ReversedAddressToLabel, next: string) => {
+      prev[labels[next]] = next;
+
+      return prev;
+    },
+    {}
+  );
+
+  return reversedLabels;
+}
+
 export function getAddressLabelPairs(state: AppState) {
   const { addressBook: { labels } } = state;
 
