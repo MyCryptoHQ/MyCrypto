@@ -18,6 +18,10 @@ const Trezor: WalletLib = {
 
   async signTransaction() {
     throw new Error('Not yet implemented');
+  },
+
+  async signMessage() {
+    throw new Error('Not yet implemented');
   }
 };
 

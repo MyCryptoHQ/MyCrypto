@@ -1,4 +1,3 @@
-import EthTx from 'ethereumjs-tx';
 import { makeRequest } from './requests';
 import {
   EnclaveMethods,
@@ -7,7 +6,9 @@ import {
   GetChainCodeParams,
   GetChainCodeResponse,
   SignTransactionParams,
-  SignTransactionResponse
+  SignTransactionResponse,
+  SignMessageParams,
+  SignMessageResponse
 } from 'shared/enclave/types';
 
 const api = {
@@ -19,8 +20,12 @@ const api = {
     return makeRequest<GetChainCodeResponse>(EnclaveMethods.GET_CHAIN_CODE, params);
   },
 
-  async signTransaction(params: SignTransactionParams) {
+  signTransaction(params: SignTransactionParams) {
     return makeRequest<SignTransactionResponse>(EnclaveMethods.SIGN_TRANSACTION, params);
+  },
+
+  signMessage(params: SignMessageParams) {
+    return makeRequest<SignMessageResponse>(EnclaveMethods.SIGN_MESSAGE, params);
   }
 };
 

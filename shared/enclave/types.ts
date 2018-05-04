@@ -2,7 +2,8 @@
 export enum EnclaveMethods {
   GET_ADDRESSES = 'get-addresses',
   GET_CHAIN_CODE = 'get-chain-code',
-  SIGN_TRANSACTION = 'sign-transaction'
+  SIGN_TRANSACTION = 'sign-transaction',
+  SIGN_MESSAGE = 'sign-message'
 }
 
 export enum WalletTypes {
@@ -52,12 +53,28 @@ export interface SignTransactionResponse {
   signedTransaction: string;
 }
 
+// Sign Message Request
+export interface SignMessageParams {
+  walletType: WalletTypes;
+  message: string;
+  path: string;
+}
+
+export interface SignMessageResponse {
+  signedMessage: string;
+}
+
 // All Requests & Responses
-export type EnclaveMethodParams = GetAddressesParams | GetChainCodeParams | SignTransactionParams;
+export type EnclaveMethodParams =
+  | GetAddressesParams
+  | GetChainCodeParams
+  | SignTransactionParams
+  | SignMessageParams;
 export type EnclaveMethodResponse =
   | GetAddressesResponse
   | GetChainCodeResponse
-  | SignTransactionResponse;
+  | SignTransactionResponse
+  | SignMessageResponse;
 
 // RPC requests, responses & failures
 export interface EnclaveSuccessResponse<T = EnclaveMethodResponse> {
@@ -82,4 +99,5 @@ export type EnclaveResponse<T = EnclaveMethodResponse> =
 export interface WalletLib {
   getChainCode(dpath: string): Promise<GetChainCodeResponse>;
   signTransaction(transaction: RawTransaction, path: string): Promise<SignTransactionResponse>;
+  signMessage(msg: string, path: string): Promise<SignMessageResponse>;
 }

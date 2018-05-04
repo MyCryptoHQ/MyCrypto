@@ -76,6 +76,15 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
   // modeled after
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/controllers/signMsgCtrl.js#L53
   public async signMessage(msg: string): Promise<string> {
+    if (process.env.BUILD_ELECTRON) {
+      const res = await EnclaveAPI.signMessage({
+        walletType: WalletTypes.LEDGER,
+        message: msg,
+        path: this.getPath()
+      });
+      return res.signedMessage;
+    }
+
     const msgHex = Buffer.from(msg).toString('hex');
     try {
       const signed = await this.ethApp.signPersonalMessage_async(this.getPath(), msgHex);

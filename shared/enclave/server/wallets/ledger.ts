@@ -1,6 +1,6 @@
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
-import { WalletLib, RawTransaction } from 'shared/enclave/types';
+import { WalletLib } from 'shared/enclave/types';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
@@ -20,7 +20,7 @@ async function getEthApp() {
 }
 
 const Ledger: WalletLib = {
-  async getChainCode(dpath: string) {
+  async getChainCode(dpath) {
     const app = await getEthApp();
     try {
       const res = await app.getAddress(dpath, false, true);
@@ -33,7 +33,7 @@ const Ledger: WalletLib = {
     }
   },
 
-  async signTransaction(tx: RawTransaction, path: string) {
+  async signTransaction(tx, path) {
     const app = await getEthApp();
     const ethTx = new EthTx({
       ...tx,
@@ -51,6 +51,16 @@ const Ledger: WalletLib = {
     });
     return {
       signedTransaction: signedTx.serialize().toString('hex')
+    };
+  },
+
+  async signMessage(msg: string, path: string) {
+    const app = await getEthApp();
+    const msgHex = Buffer.from(msg).toString('hex');
+    const signed = await app.signPersonalMessage(path, msgHex);
+    const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
+    return {
+      signedMessage: combined
     };
   }
 };
