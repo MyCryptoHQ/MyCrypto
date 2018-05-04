@@ -1,7 +1,6 @@
 import { routerReducer } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import { config, State as ConfigState } from './config';
-import { customTokens, State as CustomTokensState } from './customTokens';
 import { deterministicWallets, State as DeterministicWalletsState } from './deterministicWallets';
 import { ens, State as EnsState } from './ens';
 import { rates, State as RatesState } from './rates';
@@ -17,6 +16,7 @@ import { State as ParitySignerState, paritySigner } from './paritySigner';
 
 import addressBook, { State as AddressBookState } from 'ducks/addressBook';
 import notifications, { State as NotificationsState } from 'ducks/notifications';
+import customTokens, { State as CustomTokensState } from 'ducks/customTokens';
 
 export interface AppState {
   // Custom reducers

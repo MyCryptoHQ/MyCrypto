@@ -3,7 +3,7 @@ import { dedupeCustomTokens } from 'utils/tokens';
 import {
   State as CustomTokenState,
   INITIAL_STATE as customTokensInitialState
-} from 'reducers/customTokens';
+} from 'ducks/customTokens';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import {
   isStaticNodeId,
