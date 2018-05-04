@@ -8,11 +8,11 @@ import {
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapAction,
-  ResetAction,
-  NetworkAction
+  ResetTransactionSuccessfulAction,
+  NetworkAction,
+  TransactionMetaAction
 } from 'actions/transaction';
 import { Reducer } from 'redux';
-import { resetHOF } from 'reducers/transaction/shared';
 
 const INITIAL_STATE: State = {
   unit: '',
@@ -20,11 +20,15 @@ const INITIAL_STATE: State = {
   decimal: getDecimalFromEtherUnit('ether'),
   tokenValue: { raw: '', value: null },
   tokenTo: { raw: '', value: null },
-  from: null
+  from: null,
+  isContractInteraction: false
 };
 
 //TODO: generic-ize updateField to reuse
-const updateField = (key: keyof State): Reducer<State> => (state: State, action: MetaAction) => {
+const updateField = (key: keyof State): Reducer<State> => (
+  state: State,
+  action: TransactionMetaAction
+) => {
   if (typeof action.payload === 'object') {
     // we do this to update just 'raw' or 'value' param of tokenValue
     return {
@@ -54,7 +58,11 @@ const tokenToToken = (
   { payload: { data: _, to: __, ...rest } }: SwapTokenToTokenAction
 ): State => ({ ...state, ...rest });
 
-const reset = resetHOF('meta', INITIAL_STATE);
+const reset = (state: State): State => ({
+  ...INITIAL_STATE,
+  isContractInteraction: state.isContractInteraction,
+  unit: state.unit
+});
 
 const unitMeta = (state: State, { payload }: SetUnitMetaAction): State => ({
   ...state,
@@ -64,8 +72,8 @@ const unitMeta = (state: State, { payload }: SetUnitMetaAction): State => ({
 
 export const meta = (
   state: State = INITIAL_STATE,
-  action: MetaAction | SwapAction | ResetAction | NetworkAction
-) => {
+  action: MetaAction | SwapAction | ResetTransactionSuccessfulAction | NetworkAction
+): State => {
   switch (action.type) {
     case TK.UNIT_META_SET:
       return unitMeta(state, action);
@@ -81,8 +89,17 @@ export const meta = (
       return etherToToken(state, action);
     case TK.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
-    case TK.RESET:
-      return reset(state, action);
+
+    case TK.IS_VIEW_AND_SEND: {
+      const nextState: State = { ...state, isContractInteraction: false };
+      return nextState;
+    }
+    case TK.IS_CONTRACT_INTERACTION: {
+      const nextState: State = { ...state, isContractInteraction: true };
+      return nextState;
+    }
+    case TK.RESET_SUCCESSFUL:
+      return reset(state);
     default:
       return state;
   }
