@@ -13,6 +13,7 @@ interface DispatchProps {
 interface OwnProps {
   to: string | null;
   isSelfAddress?: boolean;
+  showLabelMatch?: boolean;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -54,13 +55,12 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   }
 
   public render() {
-    const { isFocused } = this.state;
-
     return (
       <div className="AddressField">
         <AddressInputFactory
           isSelfAddress={this.props.isSelfAddress}
-          isFocused={isFocused}
+          showLabelMatch={this.props.showLabelMatch}
+          isFocused={this.state.isFocused}
           onChange={this.setAddress}
           onFocus={this.focus}
           onBlur={this.setBlurTimeout}
@@ -86,14 +86,24 @@ const AddressFieldFactory = connect(null, { setCurrentTo })(AddressFieldFactoryC
 
 interface DefaultAddressFieldProps {
   isSelfAddress?: boolean;
+  showLabelMatch?: boolean;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({ isSelfAddress, withProps }) => (
+const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
+  isSelfAddress,
+  showLabelMatch,
+  withProps
+}) => (
   <Query
     params={['to']}
     withQuery={({ to }) => (
-      <AddressFieldFactory to={to} isSelfAddress={isSelfAddress} withProps={withProps} />
+      <AddressFieldFactory
+        to={to}
+        isSelfAddress={isSelfAddress}
+        showLabelMatch={showLabelMatch}
+        withProps={withProps}
+      />
     )}
   />
 );

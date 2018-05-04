@@ -66,7 +66,7 @@
 
       &-mobile {
         width: 30px;
-        height: 20px;
+        height: 30px;
         margin-right: $space-md;
 
         @media (min-width: 650px) {
@@ -76,7 +76,7 @@
 
       &-non-mobile {
         width: 80px;
-        height: 60px;
+        height: 80px;
 
         @media (max-width: 650px) {
           display: none;

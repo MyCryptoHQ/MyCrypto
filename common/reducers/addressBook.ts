@@ -1,3 +1,4 @@
+import { toChecksumAddress } from 'ethereumjs-util';
 import { AddressBookAction } from 'actions/addressBook';
 import { TypeKeys } from 'actions/addressBook/constants';
 
@@ -22,7 +23,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
         ...state,
         labels: {
           ...state.labels,
-          [address.toLowerCase()]: label
+          [toChecksumAddress(address)]: label
         }
       };
     }
@@ -32,7 +33,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
       const { labels: previousLabels } = state;
       const labels = { ...previousLabels };
 
-      delete labels[address.toLowerCase()];
+      delete labels[toChecksumAddress(address)];
 
       return {
         ...state,

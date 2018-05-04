@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'reducers';
@@ -46,8 +45,8 @@ class AccountAddress extends React.Component<Props, State> {
   public state = {
     copied: false,
     editingLabel: false,
-    temporaryLabel: this.props.labels[this.props.address.toLowerCase()] || '',
-    mostRecentValidLabel: this.props.labels[this.props.address.toLowerCase()] || '',
+    temporaryLabel: this.props.labels[this.props.address] || '',
+    mostRecentValidLabel: this.props.labels[this.props.address] || '',
     labelInputTouched: false,
     labelInputError: null
   };
@@ -65,7 +64,7 @@ class AccountAddress extends React.Component<Props, State> {
     );
 
   public componentWillReceiveProps(nextProps: Props) {
-    const temporaryLabel = nextProps.labels[nextProps.address.toLowerCase()] || '';
+    const temporaryLabel = nextProps.labels[nextProps.address] || '';
 
     this.setState({ temporaryLabel, mostRecentValidLabel: temporaryLabel });
   }
@@ -79,7 +78,7 @@ class AccountAddress extends React.Component<Props, State> {
   public render() {
     const { address, labels } = this.props;
     const { copied } = this.state;
-    const label = labels[address.toLowerCase()];
+    const label = labels[address];
     const labelContent = this.generateLabelContent();
     const labelButton = this.generateLabelButton();
     const addressClassName = `AccountInfo-address-addr ${
@@ -98,7 +97,7 @@ class AccountAddress extends React.Component<Props, State> {
             <div className={addressClassName}>
               <Address address={address} />
             </div>
-            <CopyToClipboard onCopy={this.handleCopy} text={toChecksumAddress(address)}>
+            <CopyToClipboard onCopy={this.handleCopy} text={address}>
               <div
                 className={`AccountInfo-copy ${copied ? 'is-copied' : ''}`}
                 title="Copy To clipboard"
@@ -131,7 +130,7 @@ class AccountAddress extends React.Component<Props, State> {
 
   private updateAccountLabel = (label: string) => {
     const { address, labels } = this.props;
-    const currentLabel = labels[address.toLowerCase()];
+    const currentLabel = labels[address];
 
     this.stopEditingLabel();
 
@@ -170,7 +169,9 @@ class AccountAddress extends React.Component<Props, State> {
   private generateLabelContent = () => {
     const { address, labels } = this.props;
     const { editingLabel, temporaryLabel, labelInputTouched, labelInputError } = this.state;
-    const label = labels[address.toLowerCase()];
+    const label = labels[address];
+    const labelInputTouchedWithError = labelInputTouched && labelInputError;
+    const inputClassName = labelInputTouchedWithError ? 'invalid' : '';
 
     let labelContent = null;
 
@@ -179,6 +180,7 @@ class AccountAddress extends React.Component<Props, State> {
         <React.Fragment>
           <Input
             title={translateRaw('ADD_LABEL')}
+            className={inputClassName}
             placeholder={translateRaw('NEW_LABEL')}
             value={temporaryLabel}
             onChange={this.setTemporaryLabel}
@@ -187,10 +189,9 @@ class AccountAddress extends React.Component<Props, State> {
             onBlur={this.handleBlur}
             setInnerRef={this.setLabelInputRef}
           />
-          {labelInputTouched &&
-            labelInputError && (
-              <label className="AccountInfo-address-wrapper-error">{labelInputError}</label>
-            )}
+          {labelInputTouchedWithError && (
+            <label className="AccountInfo-address-wrapper-error">{labelInputError}</label>
+          )}
         </React.Fragment>
       );
     } else if (label && !editingLabel) {
@@ -207,7 +208,7 @@ class AccountAddress extends React.Component<Props, State> {
   private generateLabelButton = () => {
     const { address, labels } = this.props;
     const { editingLabel } = this.state;
-    const label = labels[address.toLowerCase()];
+    const label = labels[address];
     const labelButton = editingLabel ? (
       <React.Fragment>
         <i className="fa fa-save" />

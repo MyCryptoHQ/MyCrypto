@@ -9,11 +9,18 @@ interface Props {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
   isCheckSummed?: boolean;
+  showLabelMatch?: boolean;
 }
 
-export const AddressField: React.SFC<Props> = ({ isReadOnly, isSelfAddress, isCheckSummed }) => (
+export const AddressField: React.SFC<Props> = ({
+  isReadOnly,
+  isSelfAddress,
+  isCheckSummed,
+  showLabelMatch
+}) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
+    showLabelMatch={showLabelMatch}
     withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">

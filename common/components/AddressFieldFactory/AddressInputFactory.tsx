@@ -30,6 +30,7 @@ interface StateProps {
 
 interface OwnProps {
   isSelfAddress?: boolean;
+  showLabelMatch?: boolean;
   isFocused?: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   onFocus(ev: React.FormEvent<HTMLInputElement>): void;
@@ -68,6 +69,7 @@ class AddressInputFactoryClass extends Component<Props> {
       isValid,
       isLabelEntry,
       withProps,
+      showLabelMatch,
       isSelfAddress,
       isResolving,
       isFocused
@@ -95,12 +97,13 @@ class AddressInputFactoryClass extends Component<Props> {
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
-          {label && (
-            <div title={sendingTo} className="AddressInput-input-label">
-              <i className="fa fa-check" /> {sendingTo}
-            </div>
-          )}
           {isFocused && <AddressFieldDropdown />}
+          {showLabelMatch &&
+            label && (
+              <div title={sendingTo} className="AddressInput-input-label">
+                <i className="fa fa-check" /> {sendingTo}
+              </div>
+            )}
         </div>
         <div className="AddressInput-identicon">
           <Identicon address={addr} />
