@@ -3,15 +3,19 @@ import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { WalletLib } from 'shared/enclave/types';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import LedgerEth from '@ledgerhq/hw-app-eth';
+let transport: any;
 
 async function getEthApp() {
   try {
-    const transport = await TransportNodeHid.create();
+    if (!transport) {
+      transport = await TransportNodeHid.create();
+      transport.on('disconnect', () => (transport = null));
+    }
     return new LedgerEth(transport);
   } catch (err) {
     if (err && err.message && err.message.includes('cannot open device with path')) {
       throw new Error(
-        'Failed to connect with your Ledger. It may be in use with another application. Try plugging the device back in.'
+        'Your Ledger is currently in use with another application. Please wait, or close other wallet applications before trying again.'
       );
     }
     throw err;
