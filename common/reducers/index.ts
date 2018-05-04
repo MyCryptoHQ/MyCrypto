@@ -4,7 +4,6 @@ import { config, State as ConfigState } from './config';
 import { customTokens, State as CustomTokensState } from './customTokens';
 import { deterministicWallets, State as DeterministicWalletsState } from './deterministicWallets';
 import { ens, State as EnsState } from './ens';
-import { notifications, State as NotificationsState } from './notifications';
 import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
@@ -15,7 +14,9 @@ import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 import { State as TransactionsState, transactions } from './transactions';
 import { schedule, State as ScheduleState } from './schedule';
 import { State as ParitySignerState, paritySigner } from './paritySigner';
+
 import addressBook, { State as AddressBookState } from 'ducks/addressBook';
+import notifications, { State as NotificationsState } from 'ducks/notifications';
 
 export interface AppState {
   // Custom reducers
