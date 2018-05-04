@@ -78,6 +78,7 @@ class AddressInputFactoryClass extends Component<Props> {
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
     const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
+    const isENSAddress = currentTo.raw.includes('.eth');
 
     return (
       <div className="AddressInput form-group">
@@ -97,7 +98,7 @@ class AddressInputFactoryClass extends Component<Props> {
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
-          {isFocused && <AddressFieldDropdown />}
+          {isFocused && !isENSAddress && <AddressFieldDropdown />}
           {showLabelMatch &&
             label && (
               <div title={sendingTo} className="AddressInput-input-label">

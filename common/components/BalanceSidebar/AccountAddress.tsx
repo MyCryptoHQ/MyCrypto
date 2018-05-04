@@ -233,8 +233,19 @@ class AccountAddress extends React.Component<Props, State> {
     return labelButton;
   };
 
-  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ temporaryLabel: e.target.value }, this.checkTemporaryLabelValidation);
+  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const temporaryLabel = e.target.value;
+
+    this.setState(
+      {
+        temporaryLabel,
+        labelInputTouched: true
+      },
+      temporaryLabel.length > 0
+        ? this.checkTemporaryLabelValidation
+        : this.clearTemporaryLabelTouched
+    );
+  };
 
   private setTemporaryLabelTouched = () => {
     const { temporaryLabel, labelInputTouched } = this.state;
@@ -255,6 +266,11 @@ class AccountAddress extends React.Component<Props, State> {
     const { reversedLabels } = this.props;
     const { temporaryLabel, mostRecentValidLabel, labelInputError } = this.state;
     const labelAlreadyExists = !!reversedLabels[temporaryLabel];
+    const labelBeginsWith0x = temporaryLabel.startsWith('0x');
+    const labelContainsENSSuffix =
+      temporaryLabel.includes('.eth') ||
+      temporaryLabel.includes('.test') ||
+      temporaryLabel.includes('.reverse');
     const hadErrorPreviously = labelInputError !== null;
 
     if (temporaryLabel === mostRecentValidLabel) {
@@ -276,6 +292,18 @@ class AccountAddress extends React.Component<Props, State> {
     if (!isValidLabelLength(temporaryLabel)) {
       return this.setState({
         labelInputError: translateRaw('INVALID_LABEL_LENGTH')
+      });
+    }
+
+    if (labelBeginsWith0x) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_CANNOT_BEGIN_WITH_0X')
+      });
+    }
+
+    if (labelContainsENSSuffix) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX')
       });
     }
 

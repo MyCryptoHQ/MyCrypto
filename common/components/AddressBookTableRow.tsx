@@ -150,8 +150,14 @@ class AddressBookTableRow extends React.Component<Props> {
     this.props.onLabelInputBlur();
   };
 
-  private setLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ label: e.target.value }, this.checkLabelValidation);
+  private setLabel = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const label = e.target.value;
+
+    this.setState(
+      { label, labelInputTouched: true },
+      label.length > 0 ? this.checkLabelValidation : this.clearLabelTouched
+    );
+  };
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
@@ -175,6 +181,9 @@ class AddressBookTableRow extends React.Component<Props> {
     const { label, labelInputError, mostRecentValidLabel } = this.state;
     const labelAlreadyExists = !!labels[label] && label !== mostRecentValidLabel;
     const hadErrorPreviously = labelInputError !== null;
+    const labelBeginsWith0x = label.startsWith('0x');
+    const labelContainsENSSuffix =
+      label.includes('.eth') || label.includes('.test') || label.includes('.reverse');
 
     if (labelAlreadyExists) {
       return this.setState({
@@ -185,6 +194,18 @@ class AddressBookTableRow extends React.Component<Props> {
     if (!isValidLabelLength(label)) {
       return this.setState({
         labelInputError: translateRaw('INVALID_LABEL_LENGTH')
+      });
+    }
+
+    if (labelBeginsWith0x) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_CANNOT_BEGIN_WITH_0X')
+      });
+    }
+
+    if (labelContainsENSSuffix) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX')
       });
     }
 

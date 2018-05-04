@@ -336,6 +336,11 @@ class AddressBookTable extends React.Component<Props, State> {
     const { temporaryLabel, labelInputError } = this.state;
     const labelAlreadyExists = !!reversedLabels[temporaryLabel];
     const hadErrorPreviously = labelInputError !== null;
+    const labelBeginsWith0x = temporaryLabel.startsWith('0x');
+    const labelContainsENSSuffix =
+      temporaryLabel.includes('.eth') ||
+      temporaryLabel.includes('.test') ||
+      temporaryLabel.includes('.reverse');
 
     if (labelAlreadyExists) {
       return this.setState({
@@ -349,6 +354,18 @@ class AddressBookTable extends React.Component<Props, State> {
       });
     }
 
+    if (labelBeginsWith0x) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_CANNOT_BEGIN_WITH_0X')
+      });
+    }
+
+    if (labelContainsENSSuffix) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX')
+      });
+    }
+
     if (hadErrorPreviously) {
       return this.setState({
         labelInputError: null
@@ -358,10 +375,14 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private clearTemporaryFields = () =>
     this.setState({
+      temporaryAddress: '',
+      temporaryAddressTouched: false,
+      temporaryAddressBlurred: false,
+      addressInputError: null,
       temporaryLabel: '',
       temporaryLabelTouched: false,
-      temporaryAddress: '',
-      temporaryAddressTouched: false
+      temporaryLabelBlurred: false,
+      labelInputError: null
     });
 
   private setAddressInputRef = (node: HTMLInputElement) => (this.addressInput = node);
