@@ -1,4 +1,4 @@
-import customTokens, { customTokensActions } from '../';
+import customTokens, { customTokensActions } from './';
 import { Token } from 'types/network';
 
 describe('customTokens reducer', () => {

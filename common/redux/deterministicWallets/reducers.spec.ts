@@ -1,6 +1,6 @@
 import { configuredStore } from 'store';
-import deterministicWallets, { INITIAL_STATE, deterministicWalletsActions } from '../';
-import { ITokenValues, DeterministicWalletData } from '../types';
+import deterministicWallets, { INITIAL_STATE, deterministicWalletsActions } from './';
+import { ITokenValues, DeterministicWalletData } from './types';
 import { TokenValue } from 'libs/units';
 
 configuredStore.getState();

@@ -1,5 +1,13 @@
-import throttle from 'lodash/throttle';
+import { applyMiddleware, createStore, Store } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'react-router-redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { createLogger } from 'redux-logger';
+import throttle from 'lodash/throttle';
+import RootReducer, { AppState } from 'reducers';
+import sagas from 'sagas';
+import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
+import { gasPriceToBase } from 'libs/units';
 import {
   INITIAL_STATE as transactionInitialState,
   State as TransactionState
@@ -14,14 +22,6 @@ import {
   State as AddressBookState,
   INITIAL_STATE as initialAddressBookState
 } from 'redux/addressBook';
-import { applyMiddleware, createStore, Store } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { createLogger } from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
-import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
-import RootReducer, { AppState } from 'reducers';
-import sagas from 'sagas';
-import { gasPriceToBase } from 'libs/units';
 import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe

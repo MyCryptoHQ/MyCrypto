@@ -1,4 +1,4 @@
-import notifications, { notificationsActions } from '../';
+import notifications, { notificationsActions } from './';
 
 describe('customTokens reducer', () => {
   const notification1 = notificationsActions.showNotification('success', 'msg');

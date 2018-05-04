@@ -1,6 +1,6 @@
 import { configuredStore } from 'store';
 import { addressBook, INITIAL_STATE } from 'reducers/addressBook';
-import { addressBookActions } from '../';
+import { addressBookActions } from './';
 
 configuredStore.getState();
 
