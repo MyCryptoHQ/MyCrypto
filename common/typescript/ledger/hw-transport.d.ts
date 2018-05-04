@@ -1,4 +1,4 @@
-declare module 'ledgerhq__hw-transport' {
+declare module '@ledgerhq/hw-transport' {
   /**
    * @description all possible status codes.
    * @see https://github.com/LedgerHQ/blue-app-btc/blob/d8a03d10f77ca5ef8b22a5d062678eef788b824a/include/btchip_apdu_constants.h#L85-L115

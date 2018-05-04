@@ -1,12 +1,12 @@
-import LedgerTransport, {
-  Observer,
-  DescriptorEvent,
-  Subscription,
-  TransportError
-} from 'ledgerhq__hw-transport';
-import { isSupported, sign } from 'u2f-api';
+declare module '@ledgerhq/hw-transport-u2f' {
+  import LedgerTransport, {
+    Observer,
+    DescriptorEvent,
+    Subscription,
+    TransportError
+  } from '@ledgerhq/hw-transport';
+  import { isSupported, sign } from 'u2f-api';
 
-declare module 'ledgerhq__hw-transport-u2f' {
   export default class TransportU2F extends LedgerTransport<null> {
     public static isSupported: typeof isSupported;
 
