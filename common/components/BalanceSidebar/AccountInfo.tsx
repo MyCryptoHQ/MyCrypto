@@ -160,7 +160,7 @@ class AccountInfo extends React.Component<Props, State> {
                   unit={'ether'}
                   displayShortBalance={!showLongBalance}
                   checkOffline={true}
-                  symbol={balance.wei ? network.name : null}
+                  symbol={balance.wei ? network.unit + ' (' + network.name + ')' : null}
                 />
               </span>
               {balance.wei && (
