@@ -1,6 +1,5 @@
 // Enclave enums
 export enum EnclaveMethods {
-  GET_ADDRESSES = 'get-addresses',
   GET_CHAIN_CODE = 'get-chain-code',
   SIGN_TRANSACTION = 'sign-transaction',
   SIGN_MESSAGE = 'sign-message',
@@ -21,15 +20,6 @@ export interface RawTransaction {
   nonce: string;
   data: string;
   value: string;
-}
-
-// Get Addresses Request
-export interface GetAddressesParams {
-  walletType: WalletTypes;
-}
-
-export interface GetAddressesResponse {
-  addresses: string[];
 }
 
 // Get chain code request
@@ -77,13 +67,11 @@ export interface DisplayAddressResponse {
 
 // All Requests & Responses
 export type EnclaveMethodParams =
-  | GetAddressesParams
   | GetChainCodeParams
   | SignTransactionParams
   | SignMessageParams
   | DisplayAddressParams;
 export type EnclaveMethodResponse =
-  | GetAddressesResponse
   | GetChainCodeResponse
   | SignTransactionResponse
   | SignMessageResponse
