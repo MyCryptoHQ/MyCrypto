@@ -15,7 +15,7 @@ import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 import { State as TransactionsState, transactions } from './transactions';
 import { schedule, State as ScheduleState } from './schedule';
 import { State as ParitySignerState, paritySigner } from './paritySigner';
-import { State as AddressBookState, addressBook } from './addressBook';
+import addressBook, { State as AddressBookState } from 'ducks/addressBook';
 
 export interface AppState {
   // Custom reducers
