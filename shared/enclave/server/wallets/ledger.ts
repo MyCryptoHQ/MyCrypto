@@ -29,7 +29,7 @@ const Ledger: WalletLib = {
       const res = await app.getAddress(dpath, false, true);
       return {
         publicKey: res.publicKey,
-        chainCode: res.chainCode
+        chainCode: res.chainCode as string
       };
     } catch (err) {
       throw new Error('Failed to connect to Ledger');
