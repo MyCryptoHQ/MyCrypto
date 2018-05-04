@@ -31,23 +31,6 @@ export function registerServer(app: App) {
       cb(JSON.stringify(res));
     });
   });
-
-  // Fix trezord requests for every new browser window
-  app.on('web-contents-created', (_, webContents) => {
-    const { session } = webContents;
-    if (!session.webRequest) {
-      return;
-    }
-    session.webRequest.onBeforeSendHeaders((details: any, callback: any) => {
-      const url = details.url;
-      if (url.startsWith('https://localback.net:21324')) {
-        if (details.requestHeaders.Origin === 'null') {
-          delete details.requestHeaders.Origin;
-        }
-      }
-      callback({ cancel: false, requestHeaders: details.requestHeaders });
-    });
-  });
 }
 
 function getMethod(req: Electron.RegisterStringProtocolRequest): EnclaveMethods {

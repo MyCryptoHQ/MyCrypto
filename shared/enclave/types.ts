@@ -11,6 +11,16 @@ export enum WalletTypes {
   KEEPKEY = 'keepkey'
 }
 
+export interface RawTransaction {
+  chainId: number;
+  gasLimit: string;
+  gasPrice: string;
+  to: string;
+  nonce: string;
+  data: string;
+  value: string;
+}
+
 // Get Addresses Request
 export interface GetAddressesParams {
   walletType: WalletTypes;
@@ -33,14 +43,13 @@ export interface GetChainCodeResponse {
 
 // Sign Transaction Request
 export interface SignTransactionParams {
+  walletType: WalletTypes;
+  transaction: RawTransaction;
   path: string;
-  rawTxHex: string;
 }
 
 export interface SignTransactionResponse {
-  s: string;
-  v: string;
-  r: string;
+  signedTransaction: string;
 }
 
 // All Requests & Responses
@@ -72,4 +81,5 @@ export type EnclaveResponse<T = EnclaveMethodResponse> =
 // Wallet lib
 export interface WalletLib {
   getChainCode(dpath: string): Promise<GetChainCodeResponse>;
+  signTransaction(transaction: RawTransaction, path: string): Promise<SignTransactionResponse>;
 }

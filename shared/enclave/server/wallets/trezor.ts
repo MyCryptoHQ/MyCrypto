@@ -14,6 +14,10 @@ const Trezor: WalletLib = {
     // });
     //
     // return { chainCode: 'test', publicKey: 'test' };
+  },
+
+  async signTransaction() {
+    throw new Error('Not yet implemented');
   }
 };
 

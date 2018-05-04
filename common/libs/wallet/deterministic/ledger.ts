@@ -38,30 +38,39 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
 
   // modeled after
   // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/uiFuncs.js#L58
-  public signRawTransaction(t: EthTx): Promise<Buffer> {
+  public async signRawTransaction(t: EthTx): Promise<Buffer> {
+    const txFields = getTransactionFields(t);
+
+    if (process.env.BUILD_ELECTRON) {
+      const res = await EnclaveAPI.signTransaction({
+        walletType: WalletTypes.LEDGER,
+        transaction: txFields,
+        path: this.getPath()
+      });
+      return new EthTx(res.signedTransaction).serialize();
+    }
+
     t.v = Buffer.from([t._chainId]);
     t.r = toBuffer(0);
     t.s = toBuffer(0);
 
-    return new Promise((resolve, reject) => {
-      this.ethApp
-        .signTransaction_async(this.getPath(), t.serialize().toString('hex'))
-        .then(result => {
-          const strTx = getTransactionFields(t);
-          const txToSerialize: TxObj = {
-            ...strTx,
-            v: addHexPrefix(result.v),
-            r: addHexPrefix(result.r),
-            s: addHexPrefix(result.s)
-          };
+    try {
+      const result = await this.ethApp.signTransaction_async(
+        this.getPath(),
+        t.serialize().toString('hex')
+      );
 
-          const serializedTx = new EthTx(txToSerialize).serialize();
-          resolve(serializedTx);
-        })
-        .catch(err => {
-          return reject(Error(err + '. Check to make sure contract data is on'));
-        });
-    });
+      const txToSerialize: TxObj = {
+        ...txFields,
+        v: addHexPrefix(result.v),
+        r: addHexPrefix(result.r),
+        s: addHexPrefix(result.s)
+      };
+
+      return new EthTx(txToSerialize).serialize();
+    } catch (err) {
+      throw Error(err + '. Check to make sure contract data is on');
+    }
   }
 
   // modeled after
