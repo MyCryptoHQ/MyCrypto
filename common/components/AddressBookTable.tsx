@@ -109,7 +109,6 @@ class AddressBookTable extends React.Component<Props, State> {
                 value={temporaryAddress}
                 onChange={this.setTemporaryAddress}
                 onFocus={this.setTemporaryAddressTouched}
-                onBlur={this.clearTemporaryAddressTouched}
                 setInnerRef={this.setAddressInputRef}
               />
             </div>
@@ -135,7 +134,6 @@ class AddressBookTable extends React.Component<Props, State> {
                 value={temporaryLabel}
                 onChange={this.setTemporaryLabel}
                 onFocus={this.setTemporaryLabelTouched}
-                onBlur={this.clearTemporaryLabelTouched}
                 setInnerRef={this.setLabelInputRef}
               />
             </div>
@@ -236,51 +234,16 @@ class AddressBookTable extends React.Component<Props, State> {
     );
   };
 
-  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ temporaryLabel: e.target.value }, this.checkTemporaryLabelValidation);
+  private setTemporaryAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const temporaryAddress = e.target.value;
 
-  private setTemporaryLabelTouched = () => {
-    const { temporaryLabel, temporaryLabelTouched } = this.state;
-
-    if (!temporaryLabelTouched) {
-      this.setState({ temporaryLabelTouched: true });
-    }
-
-    if (temporaryLabel.length > 0) {
-      this.checkTemporaryLabelValidation();
-    }
+    this.setState(
+      { temporaryAddress, temporaryAddressTouched: true },
+      temporaryAddress.length > 0
+        ? this.checkTemporaryAddressValidation
+        : this.clearTemporaryAddressTouched
+    );
   };
-
-  private clearTemporaryLabelTouched = () =>
-    this.setState({ temporaryLabelTouched: false, labelInputError: null });
-
-  private checkTemporaryLabelValidation = () => {
-    const { reversedLabels } = this.props;
-    const { temporaryLabel, labelInputError } = this.state;
-    const labelAlreadyExists = !!reversedLabels[temporaryLabel];
-    const hadErrorPreviously = labelInputError !== null;
-
-    if (labelAlreadyExists) {
-      return this.setState({
-        labelInputError: translateRaw('LABEL_ALREADY_EXISTS')
-      });
-    }
-
-    if (!isValidLabelLength(temporaryLabel)) {
-      return this.setState({
-        labelInputError: translateRaw('INVALID_LABEL_LENGTH')
-      });
-    }
-
-    if (hadErrorPreviously) {
-      return this.setState({
-        labelInputError: null
-      });
-    }
-  };
-
-  private setTemporaryAddress = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ temporaryAddress: e.target.value }, this.checkTemporaryAddressValidation);
 
   private setTemporaryAddressTouched = () => {
     const { temporaryAddress, temporaryAddressTouched } = this.state;
@@ -318,6 +281,57 @@ class AddressBookTable extends React.Component<Props, State> {
     if (hadErrorPreviously) {
       return this.setState({
         addressInputError: null
+      });
+    }
+  };
+
+  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const temporaryLabel = e.target.value;
+
+    this.setState(
+      { temporaryLabel, temporaryLabelTouched: true },
+      temporaryLabel.length > 0
+        ? this.checkTemporaryLabelValidation
+        : this.clearTemporaryLabelTouched
+    );
+  };
+
+  private setTemporaryLabelTouched = () => {
+    const { temporaryLabel, temporaryLabelTouched } = this.state;
+
+    if (!temporaryLabelTouched) {
+      this.setState({ temporaryLabelTouched: true });
+    }
+
+    if (temporaryLabel.length > 0) {
+      this.checkTemporaryLabelValidation();
+    }
+  };
+
+  private clearTemporaryLabelTouched = () =>
+    this.setState({ temporaryLabelTouched: false, labelInputError: null });
+
+  private checkTemporaryLabelValidation = () => {
+    const { reversedLabels } = this.props;
+    const { temporaryLabel, labelInputError } = this.state;
+    const labelAlreadyExists = !!reversedLabels[temporaryLabel];
+    const hadErrorPreviously = labelInputError !== null;
+
+    if (labelAlreadyExists) {
+      return this.setState({
+        labelInputError: translateRaw('LABEL_ALREADY_EXISTS')
+      });
+    }
+
+    if (!isValidLabelLength(temporaryLabel)) {
+      return this.setState({
+        labelInputError: translateRaw('INVALID_LABEL_LENGTH')
+      });
+    }
+
+    if (hadErrorPreviously) {
+      return this.setState({
+        labelInputError: null
       });
     }
   };
