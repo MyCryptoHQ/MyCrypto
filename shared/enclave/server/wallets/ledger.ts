@@ -9,7 +9,6 @@ async function getEthApp() {
     const transport = await TransportNodeHid.create();
     return new LedgerEth(transport);
   } catch (err) {
-    console.log(err.message);
     if (err && err.message && err.message.includes('cannot open device with path')) {
       throw new Error(
         'Failed to connect with your Ledger. It may be in use with another application. Try plugging the device back in.'
@@ -54,7 +53,7 @@ const Ledger: WalletLib = {
     };
   },
 
-  async signMessage(msg: string, path: string) {
+  async signMessage(msg, path) {
     const app = await getEthApp();
     const msgHex = Buffer.from(msg).toString('hex');
     const signed = await app.signPersonalMessage(path, msgHex);
@@ -62,6 +61,20 @@ const Ledger: WalletLib = {
     return {
       signedMessage: combined
     };
+  },
+
+  async displayAddress(path) {
+    try {
+      const app = await getEthApp();
+      await app.getAddress(path, true, false);
+      return {
+        success: true
+      };
+    } catch (err) {
+      return {
+        success: false
+      };
+    }
   }
 };
 

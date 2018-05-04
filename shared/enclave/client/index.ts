@@ -8,7 +8,9 @@ import {
   SignTransactionParams,
   SignTransactionResponse,
   SignMessageParams,
-  SignMessageResponse
+  SignMessageResponse,
+  DisplayAddressParams,
+  DisplayAddressResponse
 } from 'shared/enclave/types';
 
 const api = {
@@ -26,6 +28,10 @@ const api = {
 
   signMessage(params: SignMessageParams) {
     return makeRequest<SignMessageResponse>(EnclaveMethods.SIGN_MESSAGE, params);
+  },
+
+  displayAddress(params: DisplayAddressParams) {
+    return makeRequest<DisplayAddressResponse>(EnclaveMethods.DISPLAY_ADDRESS, params);
   }
 };
 

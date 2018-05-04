@@ -96,8 +96,19 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
   }
 
   public displayAddress() {
+    const path = this.dPath + '/' + this.index;
+
+    if (process.env.BUILD_ELECTRON) {
+      return EnclaveAPI.displayAddress({
+        walletType: WalletTypes.LEDGER,
+        path
+      })
+        .then(res => res.success)
+        .catch(() => false);
+    }
+
     return this.ethApp
-      .getAddress_async(this.dPath + '/' + this.index, true, false)
+      .getAddress_async(path, true, false)
       .then(() => true)
       .catch(() => false);
   }
