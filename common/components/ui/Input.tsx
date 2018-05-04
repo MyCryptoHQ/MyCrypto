@@ -2,6 +2,7 @@ import React, { HTMLProps } from 'react';
 import './Input.scss';
 
 interface OwnProps extends HTMLProps<HTMLInputElement> {
+  showInvalidBeforeBlur?: boolean;
   setInnerRef?(ref: HTMLInputElement | null): void;
 }
 
@@ -15,7 +16,7 @@ class Input extends React.Component<OwnProps, State> {
   };
 
   public render() {
-    const { setInnerRef, ...props } = this.props;
+    const { setInnerRef, showInvalidBeforeBlur, ...props } = this.props;
 
     return (
       <input
@@ -29,7 +30,7 @@ class Input extends React.Component<OwnProps, State> {
         }}
         onWheel={this.props.type === 'number' ? this.preventNumberScroll : undefined}
         className={`input-group-input  ${this.props.className} ${
-          this.state.hasBlurred ? 'has-blurred' : ''
+          showInvalidBeforeBlur || this.state.hasBlurred ? 'has-blurred' : ''
         } ${!!this.props.value && this.props.value.toString().length > 0 ? 'has-value' : ''}`}
       />
     );
