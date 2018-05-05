@@ -8,7 +8,7 @@ import {
   isValidCurrentTo,
   isCurrentToLabelEntry
 } from 'selectors/transaction';
-import { getCurrentLabel } from 'selectors/addressBook';
+import { getCurrentToLabel } from 'selectors/addressBook';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
@@ -129,7 +129,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
 
   return {
     currentTo,
-    label: getCurrentLabel(state),
+    label: getCurrentToLabel(state),
     isResolving: getResolvingDomain(state),
     isValid: isValidCurrentTo(state),
     isLabelEntry: isCurrentToLabelEntry(state)

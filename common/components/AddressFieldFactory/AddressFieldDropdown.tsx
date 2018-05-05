@@ -4,13 +4,13 @@ import { AppState } from 'reducers';
 import translate, { translateRaw } from 'translations';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressLabelPair } from 'actions/addressBook';
-import { getLabels } from 'selectors/addressBook';
+import { getLabelAddresses } from 'selectors/addressBook';
 import { getToRaw } from 'selectors/transaction/fields';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
 interface StateProps {
-  labels: ReturnType<typeof getLabels>;
+  labelAddresses: ReturnType<typeof getLabelAddresses>;
   currentTo: ReturnType<typeof getToRaw>;
 }
 
@@ -81,9 +81,9 @@ class AddressFieldDropdown extends React.Component<Props> {
     });
 
   private getFilteredLabels = () =>
-    Object.keys(this.props.labels)
+    Object.keys(this.props.labelAddresses)
       .filter(label => label.toLowerCase().includes(this.props.currentTo.toLowerCase()))
-      .map(label => ({ address: this.props.labels[label], label }))
+      .map(label => ({ address: this.props.labelAddresses[label], label }))
       .slice(0, 5);
 
   private getIsVisible = () =>
@@ -159,7 +159,7 @@ class AddressFieldDropdown extends React.Component<Props> {
 
 export default connect(
   (state: AppState) => ({
-    labels: getLabels(state, { reversed: true }),
+    labelAddresses: getLabelAddresses(state),
     currentTo: getToRaw(state)
   }),
   { setCurrentTo }
