@@ -85,6 +85,13 @@ class AccountInfo extends React.Component<Props, State> {
     }, 2000);
   };
 
+  private setSymbol(network: NetworkConfig) {
+    if (network.isTestnet) {
+      return network.unit + ' (' + network.name + ')';
+    }
+    return network.unit;
+  }
+
   public render() {
     const { network, balance, isOffline } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
@@ -160,7 +167,7 @@ class AccountInfo extends React.Component<Props, State> {
                   unit={'ether'}
                   displayShortBalance={!showLongBalance}
                   checkOffline={true}
-                  symbol={balance.wei ? network.unit + ' (' + network.name + ')' : null}
+                  symbol={balance.wei ? this.setSymbol(network) : null}
                 />
               </span>
               {balance.wei && (
