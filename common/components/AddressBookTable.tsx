@@ -6,7 +6,6 @@ import { isValidETHAddress, isValidLabelLength, isLabelWithoutENS } from 'libs/v
 import {
   TAddLabelForAddress,
   TRemoveLabelForAddress,
-  addLabelForAddress,
   removeLabelForAddress,
   AddressLabelPair
 } from 'actions/addressBook';
@@ -174,43 +173,24 @@ class AddressBookTable extends React.Component<Props, State> {
     );
   }
 
-  private handleSave = (addressToLabel: AddressLabelPair) => {
-    this.props.addLabelForAddress(addressToLabel);
-    this.setEditingRow(null);
-  };
-
   private handleAddEntry = () => {
-    const { labels, reversedLabels } = this.props;
+    const { labels, reversedLabels, addLabelForAddress } = this.props;
     const { temporaryLabel: label, temporaryAddress: address } = this.state;
     const addressAlreadyExists = !!labels[address];
     const labelAlreadyExists = !!reversedLabels[label];
 
-    if (!isValidETHAddress(address)) {
-      this.displayInvalidETHAddressNotification();
+    addLabelForAddress({ label, address });
+
+    if (!isValidETHAddress(address) || addressAlreadyExists) {
       return this.focusAndSelectAddressInput();
     }
 
-    if (addressAlreadyExists) {
-      this.displayAddressAlreadyExistsNotification();
-      return this.focusAndSelectAddressInput();
-    }
-
-    if (!label) {
+    if (!label || !isValidLabelLength(label) || labelAlreadyExists) {
       return this.focusAndSelectLabelInput();
     }
 
-    if (!isValidLabelLength(label)) {
-      this.displayInvalidLabelLengthNotification();
-      return this.focusAndSelectLabelInput();
-    }
-
-    if (labelAlreadyExists) {
-      this.displayLabelAlreadyExistsNotification();
-      return this.focusAndSelectLabelInput();
-    }
-
-    this.handleSave({ label, address });
     this.clearTemporaryFields();
+    this.setEditingRow(null);
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
@@ -224,8 +204,13 @@ class AddressBookTable extends React.Component<Props, State> {
   private clearEditingRow = () => this.setEditingRow(null);
 
   private makeLabelRow = (addressToLabel: AddressLabelPair, index: number) => {
+    const { addLabelForAddress, removeLabelForAddress } = this.props;
     const { editingRow } = this.state;
     const isEditingRow = index === editingRow;
+    const onSave = (label: string) => {
+      addLabelForAddress({ label, address: addressToLabel.address });
+      this.setEditingRow(null);
+    };
 
     return (
       <AddressBookTableRow
@@ -235,15 +220,10 @@ class AddressBookTable extends React.Component<Props, State> {
         label={addressToLabel.label}
         labels={this.props.reversedLabels}
         isEditing={isEditingRow}
-        onSave={(labelToSave: string) =>
-          this.handleSave({
-            label: labelToSave,
-            address: addressToLabel.address
-          })
-        }
+        onSave={onSave}
         onLabelInputBlur={this.clearEditingRow}
         onEditClick={() => this.setEditingRow(index)}
-        onRemoveClick={() => this.props.removeLabelForAddress(addressToLabel.address)}
+        onRemoveClick={() => removeLabelForAddress(addressToLabel.address)}
         displayInvalidLabelLengthNotification={this.displayInvalidLabelLengthNotification}
         displayLabelAlreadyExistsNotification={this.displayLabelAlreadyExistsNotification}
       />

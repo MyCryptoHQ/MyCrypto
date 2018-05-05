@@ -1,55 +1,48 @@
 import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery } from 'redux-saga/effects';
-import { translateRaw } from 'translations';
-import { isValidETHAddress, isValidLabelLength, isLabelWithoutENS } from 'libs/validators';
+import { isValidAddressLabel } from 'libs/validators';
 import {
   TypeKeys,
-  AddLabelForAddressAction,
-  addLabelForAddress as addLabelForAddressAction
+  AddAddressLabelRequested,
+  addAddressLabelSucceeded,
+  addAddressLabelFailed
 } from 'actions/addressBook';
+import { getAddressLabels, getLabelAddresses } from 'selectors/addressBook';
 import { showNotification } from 'actions/notifications';
-import { getLabels, getReversedLabels } from 'selectors/addressBook';
 
 export const ERROR_DURATION: number = 4000;
 
-export function* addLabelForAddress(action: AddLabelForAddressAction): SagaIterator {
-  const { address, label } = action.payload;
-  const labels = yield select(getLabels);
-  const reversedLabels = yield select(getReversedLabels);
-  const addressAlreadyExists = !!labels[address];
-  const labelAlreadyExists = !!reversedLabels[label];
+export function* handleAddAddressLabelRequest(action: AddAddressLabelRequested): SagaIterator {
+  const { index, address, label } = action.payload;
+  const addresses = yield select(getAddressLabels);
+  const labels = yield select(getLabelAddresses);
+  const flashError = (error: string) => put(showNotification('danger', error, ERROR_DURATION));
+  const { isValid, addressError, labelError } = isValidAddressLabel(
+    address,
+    label,
+    addresses,
+    labels
+  );
 
-  if (!isValidETHAddress(address)) {
-    return yield put(showNotification('danger', translateRaw('INVALID_ADDRESS'), ERROR_DURATION));
+  if (addressError) {
+    yield flashError(addressError);
   }
 
-  if (addressAlreadyExists) {
-    return yield put(
-      showNotification('danger', translateRaw('ADDRESS_ALREADY_EXISTS'), ERROR_DURATION)
-    );
+  if (labelError) {
+    yield flashError(labelError);
   }
 
-  if (!isValidLabelLength(label)) {
-    return yield put(
-      showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION)
-    );
-  }
-
-  if (!isLabelWithoutENS(label)) {
-    return yield put(
-      showNotification('danger', translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'), ERROR_DURATION)
-    );
-  }
-
-  if (labelAlreadyExists) {
-    return yield put(
-      showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION)
-    );
-  }
-
-  return yield put(addLabelForAddressAction(action.payload));
+  return isValid
+    ? yield put(addAddressLabelSucceeded(action.payload))
+    : yield put(
+        addAddressLabelFailed({
+          index,
+          addressError,
+          labelError
+        })
+      );
 }
 
 export default function* addressBookSaga(): SagaIterator {
-  yield takeEvery(TypeKeys.ADD_LABEL_FOR_ADDRESS, addLabelForAddress);
+  yield takeEvery(TypeKeys.ADD_ADDRESS_LABEL_REQUESTED, handleAddAddressLabelRequest);
 }

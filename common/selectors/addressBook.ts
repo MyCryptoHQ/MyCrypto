@@ -1,61 +1,35 @@
 import { AppState } from 'reducers';
 import { getCurrentTo } from './transaction';
 
-interface GetLabelOptions {
-  reversed?: boolean;
+export function getAddressLabels(state: AppState) {
+  return state.addressBook.addresses;
 }
 
-interface AddressToLabel {
-  [address: string]: string;
+export function getLabelAddresses(state: AppState) {
+  return state.addressBook.labels;
 }
 
-interface ReversedAddressToLabel {
-  [label: string]: string;
+export function getAddressErrors(state: AppState) {
+  return state.addressBook.addressErrors;
 }
 
-export function getLabels(state: AppState, options: GetLabelOptions = {}) {
-  const { addressBook: { labels } } = state;
-  const finalLabels: AddressToLabel | ReversedAddressToLabel = options.reversed
-    ? // Label: Address
-      Object.keys(labels).reduce((prev: ReversedAddressToLabel, next: string) => {
-        prev[labels[next]] = next;
-
-        return prev;
-      }, {})
-    : // Address: Label
-      labels;
-
-  return finalLabels;
-}
-
-export function getReversedLabels(state: AppState) {
-  const { addressBook: { labels } } = state;
-  const reversedLabels = Object.keys(labels).reduce(
-    (prev: ReversedAddressToLabel, next: string) => {
-      prev[labels[next]] = next;
-
-      return prev;
-    },
-    {}
-  );
-
-  return reversedLabels;
+export function getLabelErrors(state: AppState) {
+  return state.addressBook.labelErrors;
 }
 
 export function getAddressLabelPairs(state: AppState) {
-  const { addressBook: { labels } } = state;
-
-  const collection = Object.keys(labels).map(address => ({
-    label: labels[address],
-    address
+  const addresses = getAddressLabels(state);
+  const pairs = Object.keys(addresses).map(address => ({
+    address,
+    label: addresses[address]
   }));
 
-  return collection;
+  return pairs;
 }
 
-export function getCurrentLabel(state: AppState) {
-  const labels = getLabels(state);
+export function getCurrentToLabel(state: AppState) {
+  const addresses = getAddressLabels(state);
   const currentTo = getCurrentTo(state);
 
-  return labels[currentTo.raw] || null;
+  return addresses[currentTo.raw] || null;
 }

@@ -1,42 +1,85 @@
 import { toChecksumAddress } from 'ethereumjs-util';
-import { AddressBookAction } from 'actions/addressBook';
-import { TypeKeys } from 'actions/addressBook/constants';
-
-export interface AddressToLabelDictionary {
-  [address: string]: string;
-}
+import { TypeKeys, AddressBookAction } from 'actions/addressBook';
 
 export interface State {
-  labels: AddressToLabelDictionary;
+  addresses: {
+    [address: string]: string;
+  };
+  labels: {
+    [labels: string]: string;
+  };
+  addressErrors: {
+    [index: number]: string | undefined;
+  };
+  labelErrors: {
+    [index: number]: string | undefined;
+  };
 }
 
 export const INITIAL_STATE: State = {
-  labels: {}
+  addresses: {},
+  labels: {},
+  addressErrors: {},
+  labelErrors: {}
 };
 
 export function addressBook(state: State = INITIAL_STATE, action: AddressBookAction): State {
   switch (action.type) {
-    case TypeKeys.ADD_LABEL_FOR_ADDRESS: {
-      const { address, label } = action.payload;
+    case TypeKeys.ADD_ADDRESS_LABEL_SUCCEEDED: {
+      const { index, address, label } = action.payload;
+      const addressErrors = { ...state.addressErrors };
+      const labelErrors = { ...state.labelErrors };
+
+      delete addressErrors[index];
+      delete labelErrors[index];
 
       return {
         ...state,
+        addresses: {
+          ...state.addresses,
+          [toChecksumAddress(address)]: label
+        },
         labels: {
           ...state.labels,
-          [toChecksumAddress(address)]: label
-        }
+          [label]: toChecksumAddress(address)
+        },
+        addressErrors,
+        labelErrors
       };
     }
 
-    case TypeKeys.REMOVE_LABEL_FOR_ADDRESS: {
-      const address = action.payload;
-      const { labels: previousLabels } = state;
-      const labels = { ...previousLabels };
+    case TypeKeys.ADD_ADDRESS_LABEL_FAILED: {
+      const { index, addressError, labelError } = action.payload;
+      const addressErrors = { ...state.addressErrors };
+      const labelErrors = { ...state.labelErrors };
 
-      delete labels[toChecksumAddress(address)];
+      if (addressError) {
+        addressErrors[index] = addressError;
+      }
+
+      if (labelError) {
+        labelErrors[index] = labelError;
+      }
 
       return {
         ...state,
+        addressErrors,
+        labelErrors
+      };
+    }
+
+    case TypeKeys.REMOVE_ADDRESS_LABEL: {
+      const address = action.payload;
+      const addresses = { ...state.addresses };
+      const labels = { ...state.labels };
+      const label = addresses[address];
+
+      delete addresses[toChecksumAddress(address)];
+      delete labels[label];
+
+      return {
+        ...state,
+        addresses,
         labels
       };
     }

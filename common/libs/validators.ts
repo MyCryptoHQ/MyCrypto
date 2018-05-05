@@ -4,6 +4,7 @@ import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
+import { translateRaw } from 'translations';
 import { isPositiveInteger } from 'utils/helpers';
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -332,4 +333,39 @@ export function isLabelWithoutENS(label: string): boolean {
   }
 
   return true;
+}
+
+export function isValidAddressLabel(
+  address: string,
+  label: string,
+  addresses: { [address: string]: string },
+  labels: { [label: string]: string }
+): { isValid: boolean; addressError?: string; labelError?: string } {
+  const invalidAddress = (addressError: string) => ({ isValid: false, addressError });
+  const invalidLabel = (labelError: string) => ({ isValid: false, labelError });
+  const valid = () => ({ isValid: true });
+  const addressAlreadyExists = !!addresses[address];
+  const labelAlreadyExists = !!labels[label];
+
+  if (!isValidETHAddress(address)) {
+    return invalidAddress(translateRaw('INVALID_ADDRESS'));
+  }
+
+  if (addressAlreadyExists) {
+    return invalidAddress(translateRaw('ADDRESS_ALREADY_EXISTS'));
+  }
+
+  if (!isValidLabelLength(label)) {
+    return invalidLabel(translateRaw('INVALID_LABEL_LENGTH'));
+  }
+
+  if (!isLabelWithoutENS(label)) {
+    return invalidLabel(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));
+  }
+
+  if (labelAlreadyExists) {
+    return invalidLabel(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));
+  }
+
+  return valid();
 }
