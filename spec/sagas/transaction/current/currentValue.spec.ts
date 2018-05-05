@@ -12,6 +12,8 @@ import {
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { SagaIterator } from 'redux-saga';
 
+import BN from 'bn.js';
+
 const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
@@ -38,13 +40,6 @@ describe('valueHandler', () => {
     }
   };
 
-  const successPathCases = {
-    noLeadingZeroisValid: {
-      decimal: 18,
-      action: { payload: '.1' }
-    }
-  };
-
   gen.pass = cloneableGenerator(valueHandler)(action, setter);
   gen.zeroPass = cloneableGenerator(valueHandler)(zeroAction, setter);
   gen.invalidNumber = cloneableGenerator(valueHandler)(
@@ -52,11 +47,6 @@ describe('valueHandler', () => {
     setter
   );
   gen.invalidZeroToken = cloneableGenerator(valueHandler)(zeroAction, setTokenValue);
-
-  gen.noLeadingZeroisValid = cloneableGenerator(valueHandler)(
-    successPathCases.noLeadingZeroisValid.action as any,
-    setter
-  );
 
   const value = toTokenBase(action.payload, decimal);
   const zeroValue = toTokenBase(zeroAction.payload, decimal);
@@ -90,19 +80,20 @@ describe('valueHandler', () => {
     );
   });
 
-  const noLeadingZeroValue = toTokenBase(
-    successPathCases.noLeadingZeroisValid.action.payload,
-    successPathCases.noLeadingZeroisValid.decimal
-  );
+  it('handles floats without lead zero', () => {
+    const value = {
+      decimal: 18,
+      action: {
+        payload: '.1'
+      }
+    };
+    const g = cloneableGenerator(valueHandler)(value.action as any, setter);
 
-  it('should handle floats without lead zero', () => {
-    expect(gen.noLeadingZeroisValid.next(isEth).value).toEqual(
-      put(
-        setter({
-          raw: successPathCases.noLeadingZeroisValid.action.payload,
-          value: noLeadingZeroValue
-        })
-      )
+    expect(g.next().value).toEqual(select(getDecimal));
+    expect(g.next(value.decimal).value).toEqual(select(getUnit));
+    expect(g.next(unit).value).toEqual(select(isEtherTransaction));
+    expect(g.next(isEth).value).not.toEqual(
+      put(setter({ raw: value.action.payload, value: null }))
     );
   });
 
