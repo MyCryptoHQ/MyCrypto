@@ -6,10 +6,12 @@ import {
   addAddressLabelRequested,
   TAddAddressLabelRequested,
   removeAddressLabel,
-  TRemoveAddressLabel
+  TRemoveAddressLabel,
+  AddressLabelPair
 } from 'actions/addressBook';
 import {
   getAddressLabels,
+  getLabelAddresses,
   getAddressErrors,
   getLabelErrors,
   getAddressLabelPairs
@@ -26,6 +28,7 @@ interface DispatchProps {
 interface StateProps {
   rows: ReturnType<typeof getAddressLabelPairs>;
   addressLabels: ReturnType<typeof getAddressLabels>;
+  labelAddresses: ReturnType<typeof getLabelAddresses>;
   addressErrors: ReturnType<typeof getAddressErrors>;
   labelErrors: ReturnType<typeof getLabelErrors>;
 }
@@ -174,10 +177,9 @@ class AddressBookTable extends React.Component<Props, State> {
   }
 
   private handleAddEntry = () => {
-    const { addAddressLabelRequested } = this.props;
     const { temporaryLabel: label, temporaryAddress: address } = this.state;
 
-    addAddressLabelRequested({
+    this.props.addAddressLabelRequested({
       index: ADDRESS_BOOK_TABLE_INDEX,
       address,
       label
@@ -197,27 +199,30 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private clearEditingRow = () => this.setEditingRow(null);
 
-  private makeLabelRow = (addressToLabel: AddressLabelPair, index: number) => {
-    // const { addLabelForAddress, removeLabelForAddress } = this.props;
-    // const { editingRow } = this.state;
-    // const isEditingRow = index === editingRow;
-    // const onSave = (label: string) => {
-    //   addLabelForAddress({ label, address: addressToLabel.address });
-    //   this.setEditingRow(null);
-    // };
+  private makeLabelRow = (addressLabelPair: AddressLabelPair, index: number) => {
+    const { labelAddresses, labelErrors } = this.props;
+    const { editingRow } = this.state;
+    const isEditing = index === editingRow;
+    const onSave = (label: string) => {
+      this.props.addAddressLabelRequested({ index, address: addressLabelPair.address, label });
+      this.setEditingRow(null);
+    };
 
-    return null;
-    // <AddressBookTableRow
-    //   key={index}
-    //   index={index}
-    //   address={addressToLabel.address}
-    //   label={addressToLabel.label}
-    //   isEditing={isEditingRow}
-    //   onSave={onSave}
-    //   onLabelInputBlur={this.clearEditingRow}
-    //   onEditClick={() => this.setEditingRow(index)}
-    //   onRemoveClick={() => removeLabelForAddress(addressToLabel.address)}
-    // />
+    return (
+      <AddressBookTableRow
+        key={addressLabelPair.address}
+        index={index}
+        address={addressLabelPair.address}
+        label={addressLabelPair.label}
+        labelAddresses={labelAddresses}
+        labelErrors={labelErrors}
+        isEditing={isEditing}
+        onSave={onSave}
+        onLabelInputBlur={this.clearEditingRow}
+        onEditClick={() => this.setEditingRow(index)}
+        onRemoveClick={() => this.props.removeAddressLabel(addressLabelPair.address)}
+      />
+    );
   };
 
   private setTemporaryAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -275,25 +280,12 @@ class AddressBookTable extends React.Component<Props, State> {
   private setAddressInputRef = (node: HTMLInputElement) => (this.addressInput = node);
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
-
-  private focusAndSelectAddressInput = () => {
-    if (this.addressInput) {
-      this.addressInput.focus();
-      this.addressInput.select();
-    }
-  };
-
-  private focusAndSelectLabelInput = () => {
-    if (this.labelInput) {
-      this.labelInput.focus();
-      this.labelInput.select();
-    }
-  };
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   rows: getAddressLabelPairs(state),
   addressLabels: getAddressLabels(state),
+  labelAddresses: getLabelAddresses(state),
   addressErrors: getAddressErrors(state),
   labelErrors: getLabelErrors(state)
 });

@@ -125,7 +125,7 @@ class AccountAddress extends React.Component<Props, State> {
   private stopEditingLabel = () => this.setState({ editingLabel: false });
 
   private updateAccountLabel = (label: string) => {
-    const { address, addressLabels, addAddressLabelRequested, removeAddressLabel } = this.props;
+    const { address, addressLabels } = this.props;
     const currentLabel = addressLabels[address];
 
     this.stopEditingLabel();
@@ -135,12 +135,12 @@ class AccountAddress extends React.Component<Props, State> {
     }
 
     label.length > 0
-      ? addAddressLabelRequested({
+      ? this.props.addAddressLabelRequested({
           index: ACCOUNT_ADDRESS_INDEX,
           address,
           label
         })
-      : removeAddressLabel(address);
+      : this.props.removeAddressLabel(address);
   };
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);

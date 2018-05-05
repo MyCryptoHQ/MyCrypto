@@ -34,7 +34,7 @@ describe('addressBook: Selectors', () => {
 
   describe('getLabelAddresses', () => {
     it('should return a hash of labels to addresses', () => {
-      expect(getLabelAddresses(state)['Foo']).toEqual('0x0');
+      expect(getLabelAddresses(state).Foo).toEqual('0x0');
     });
   });
 
@@ -43,7 +43,7 @@ describe('addressBook: Selectors', () => {
       expect(getAddressErrors(state)[1337]).toEqual('Foo bar baz.');
     });
     it('should return undefined if the index does not exist', () => {
-      expect(getAddressErrors(state)[1000]).toBeUndefined;
+      expect(getAddressErrors(state)[1000]).toEqual(undefined);
     });
   });
 
@@ -52,7 +52,7 @@ describe('addressBook: Selectors', () => {
       expect(getLabelErrors(state)[1337]).toEqual('Baz bar foo.');
     });
     it('should return undefined if the index does not exist', () => {
-      expect(getLabelErrors(state)[1000]).toBeUndefined;
+      expect(getLabelErrors(state)[1000]).toEqual(undefined);
     });
   });
 

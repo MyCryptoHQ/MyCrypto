@@ -32,7 +32,7 @@ describe('addressBook: Sagas', () => {
 
       await runSaga(
         {
-          dispatch: (action: string) => dispatched.push(action),
+          dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => getState()
         },
         handleAddAddressLabelRequest,
@@ -61,7 +61,7 @@ describe('addressBook: Sagas', () => {
 
       await runSaga(
         {
-          dispatch: (action: string) => dispatched.push(action),
+          dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => getState()
         },
         handleAddAddressLabelRequest,
@@ -88,7 +88,7 @@ describe('addressBook: Sagas', () => {
 
       await runSaga(
         {
-          dispatch: (action: string) => dispatched.push(action),
+          dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => getState()
         },
         handleAddAddressLabelRequest,
