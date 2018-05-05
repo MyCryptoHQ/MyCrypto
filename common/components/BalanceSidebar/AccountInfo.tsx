@@ -37,13 +37,6 @@ interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 class AccountInfo extends React.Component<Props, State> {
-  private setSymbol(network: NetworkConfig) {
-    if (network.isTestnet) {
-      return network.unit + ' (' + network.name + ')';
-    }
-    return network.unit;
-  }
-
   public state = {
     showLongBalance: false,
     address: '',
@@ -220,6 +213,13 @@ class AccountInfo extends React.Component<Props, State> {
         )}
       </div>
     );
+  }
+
+  private setSymbol(network: NetworkConfig) {
+    if (network.isTestnet) {
+      return network.unit + ' (' + network.name + ')';
+    }
+    return network.unit;
   }
 }
 function mapStateToProps(state: AppState): StateProps {
