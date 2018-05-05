@@ -340,32 +340,36 @@ export function isValidAddressLabel(
   label: string,
   addresses: { [address: string]: string },
   labels: { [label: string]: string }
-): { isValid: boolean; addressError?: string; labelError?: string } {
-  const invalidAddress = (addressError: string) => ({ isValid: false, addressError });
-  const invalidLabel = (labelError: string) => ({ isValid: false, labelError });
-  const valid = () => ({ isValid: true });
+) {
   const addressAlreadyExists = !!addresses[address];
   const labelAlreadyExists = !!labels[label];
+  const result: { isValid: boolean; addressError?: string; labelError?: string } = {
+    isValid: true
+  };
 
   if (!isValidETHAddress(address)) {
-    return invalidAddress(translateRaw('INVALID_ADDRESS'));
+    result.addressError = translateRaw('INVALID_ADDRESS');
   }
 
   if (addressAlreadyExists) {
-    return invalidAddress(translateRaw('ADDRESS_ALREADY_EXISTS'));
+    result.addressError = translateRaw('ADDRESS_ALREADY_EXISTS');
   }
 
   if (!isValidLabelLength(label)) {
-    return invalidLabel(translateRaw('INVALID_LABEL_LENGTH'));
+    result.labelError = translateRaw('INVALID_LABEL_LENGTH');
   }
 
   if (!isLabelWithoutENS(label)) {
-    return invalidLabel(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));
+    result.labelError = translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
   }
 
   if (labelAlreadyExists) {
-    return invalidLabel(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));
+    result.labelError = translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
   }
 
-  return valid();
+  if (result.addressError || result.labelError) {
+    result.isValid = false;
+  }
+
+  return result;
 }

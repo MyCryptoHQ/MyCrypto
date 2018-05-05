@@ -1,10 +1,11 @@
 import { runSaga } from 'redux-saga';
-import { translateRaw } from 'translations';
-import { handleAddAddressLabelRequest } from 'sagas/addressBook';
+import { handleChangeAddressLabelEntry, handleSaveAddressLabelEntry } from 'sagas/addressBook';
 import {
-  addAddressLabelRequested,
-  addAddressLabelSucceeded,
-  addAddressLabelFailed
+  addAddressLabel,
+  setAddressLabelEntry,
+  changeAddressLabelEntry,
+  saveAddressLabelEntry,
+  clearAddressLabelEntry
 } from 'actions/addressBook';
 import { getInitialState } from '../selectors/helpers';
 
@@ -15,15 +16,16 @@ describe('addressBook: Sagas', () => {
     addressBook: {
       ...initialState.addressBook,
       addresses: {},
-      labels: {}
+      labels: {},
+      entries: {}
     }
   });
   const address = '0x081f37708032d0a7b3622591a8959b213fb47d6f';
 
-  describe('Happy path', () => {
-    it('should put addAddressLabelSucceeded on the happy path', async () => {
-      const action = addAddressLabelRequested({
-        index: '0',
+  describe('handleChangeAddressLabelEntry', () => {
+    it('should successfully change an address label entry with no errors', async () => {
+      const action = changeAddressLabelEntry({
+        id: '0',
         address,
         label: 'Foo'
       });
@@ -34,74 +36,54 @@ describe('addressBook: Sagas', () => {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => getState()
         },
-        handleAddAddressLabelRequest,
+        handleChangeAddressLabelEntry,
         action
       );
 
       expect(dispatched).toEqual([
-        addAddressLabelSucceeded({
-          index: '0',
+        setAddressLabelEntry({
+          id: '0',
           address,
-          label: 'Foo'
+          addressError: undefined,
+          label: 'Foo',
+          labelError: undefined
         })
       ]);
     });
   });
-
-  describe('Failure cases', () => {
-    it('should put addAddressLabelFailed when an addressError occurs', async () => {
-      const action = addAddressLabelRequested({
-        index: '0',
-        address: 'Bar', // Invalid ETH address
-        label: 'Foo'
-      });
-      const addressError = translateRaw('INVALID_ADDRESS');
+  describe('handleSaveAddressLabelEntry', () => {
+    it('should successfully save an address label entry with no errors', async () => {
+      const state = {
+        ...getState(),
+        addressBook: {
+          ...getState().addressBook,
+          entries: {
+            '0': {
+              address,
+              label: 'Foo'
+            }
+          }
+        }
+      };
+      const action = saveAddressLabelEntry('0');
       const dispatched: string[] = [];
 
       await runSaga(
         {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
-          getState: () => getState()
+          getState: () => state
         },
-        handleAddAddressLabelRequest,
+        handleSaveAddressLabelEntry,
         action
       );
 
-      expect(dispatched.length).toEqual(2);
-      expect(dispatched[1]).toEqual(
-        addAddressLabelFailed({
-          index: '0',
-          addressError,
-          labelError: undefined
-        })
-      );
-    });
-    it('should put addAddressLabelFailed when a labelError occurs', async () => {
-      const action = addAddressLabelRequested({
-        index: '0',
-        address,
-        label: 'X' // Invalid label length
-      });
-      const labelError = translateRaw('INVALID_LABEL_LENGTH');
-      const dispatched: string[] = [];
-
-      await runSaga(
-        {
-          dispatch: (dispatching: string) => dispatched.push(dispatching),
-          getState: () => getState()
-        },
-        handleAddAddressLabelRequest,
-        action
-      );
-
-      expect(dispatched.length).toEqual(2);
-      expect(dispatched[1]).toEqual(
-        addAddressLabelFailed({
-          index: '0',
-          addressError: undefined,
-          labelError
-        })
-      );
+      expect(dispatched).toEqual([
+        addAddressLabel({
+          address,
+          label: 'Foo'
+        }),
+        clearAddressLabelEntry('0')
+      ]);
     });
   });
 });

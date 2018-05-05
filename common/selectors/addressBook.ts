@@ -9,12 +9,8 @@ export function getLabelAddresses(state: AppState) {
   return state.addressBook.labels;
 }
 
-export function getAddressErrors(state: AppState) {
-  return state.addressBook.addressErrors;
-}
-
-export function getLabelErrors(state: AppState) {
-  return state.addressBook.labelErrors;
+export function getAddressLabelEntry(state: AppState, id: string) {
+  return state.addressBook.entries[id];
 }
 
 export function getAddressLabelPairs(state: AppState) {

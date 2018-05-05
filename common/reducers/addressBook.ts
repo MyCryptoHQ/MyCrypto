@@ -8,30 +8,26 @@ export interface State {
   labels: {
     [labels: string]: string;
   };
-  addressErrors: {
-    [id: string]: string | undefined;
-  };
-  labelErrors: {
-    [index: string]: string | undefined;
+  entries: {
+    [id: string]: {
+      address: string;
+      addressError: string | undefined;
+      label: string;
+      labelError: string | undefined;
+    };
   };
 }
 
 export const INITIAL_STATE: State = {
   addresses: {},
   labels: {},
-  addressErrors: {},
-  labelErrors: {}
+  entries: {}
 };
 
 export function addressBook(state: State = INITIAL_STATE, action: AddressBookAction): State {
   switch (action.type) {
-    case TypeKeys.ADD_ADDRESS_LABEL_SUCCEEDED: {
-      const { index, address, label } = action.payload;
-      const addressErrors = { ...state.addressErrors };
-      const labelErrors = { ...state.labelErrors };
-
-      delete addressErrors[index];
-      delete labelErrors[index];
+    case TypeKeys.ADD_ADDRESS_LABEL: {
+      const { address, label } = action.payload;
 
       return {
         ...state,
@@ -42,29 +38,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
         labels: {
           ...state.labels,
           [label]: toChecksumAddress(address)
-        },
-        addressErrors,
-        labelErrors
-      };
-    }
-
-    case TypeKeys.ADD_ADDRESS_LABEL_FAILED: {
-      const { index, addressError, labelError } = action.payload;
-      const addressErrors = { ...state.addressErrors };
-      const labelErrors = { ...state.labelErrors };
-
-      if (addressError) {
-        addressErrors[index] = addressError;
-      }
-
-      if (labelError) {
-        labelErrors[index] = labelError;
-      }
-
-      return {
-        ...state,
-        addressErrors,
-        labelErrors
+        }
       };
     }
 
@@ -81,6 +55,36 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
         ...state,
         addresses,
         labels
+      };
+    }
+
+    case TypeKeys.SET_ADDRESS_LABEL_ENTRY: {
+      const { id, address, addressError, label, labelError } = action.payload;
+      const entries = {
+        ...state.entries,
+        [id]: {
+          address,
+          addressError,
+          label,
+          labelError
+        }
+      };
+
+      return {
+        ...state,
+        entries
+      };
+    }
+
+    case TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY: {
+      const id = action.payload;
+      const entries = { ...state.entries };
+
+      delete entries[id];
+
+      return {
+        ...state,
+        entries
       };
     }
 

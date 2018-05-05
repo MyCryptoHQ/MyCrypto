@@ -3,46 +3,65 @@ import { select, put, takeEvery } from 'redux-saga/effects';
 import { isValidAddressLabel } from 'libs/validators';
 import {
   TypeKeys,
-  AddAddressLabelRequested,
-  addAddressLabelSucceeded,
-  addAddressLabelFailed
+  ChangeAddressLabelEntry,
+  SaveAddressLabelEntry,
+  addAddressLabel,
+  setAddressLabelEntry,
+  clearAddressLabelEntry
 } from 'actions/addressBook';
-import { getAddressLabels, getLabelAddresses } from 'selectors/addressBook';
+import { getAddressLabels, getLabelAddresses, getAddressLabelEntry } from 'selectors/addressBook';
 import { showNotification } from 'actions/notifications';
 
 export const ERROR_DURATION: number = 4000;
 
-export function* handleAddAddressLabelRequest(action: AddAddressLabelRequested): SagaIterator {
-  const { index, address, label } = action.payload;
+export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry): SagaIterator {
+  const { id, address, label } = action.payload;
+  const addresses = yield select(getAddressLabels);
+  const labels = yield select(getLabelAddresses);
+  const { addressError, labelError } = isValidAddressLabel(address, label, addresses, labels);
+  const updatedEntry = {
+    id,
+    address,
+    addressError,
+    label,
+    labelError
+  };
+
+  return yield put(setAddressLabelEntry(updatedEntry));
+}
+
+export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): SagaIterator {
+  const id = action.payload;
+  const entry = yield select(getAddressLabelEntry, id);
   const addresses = yield select(getAddressLabels);
   const labels = yield select(getLabelAddresses);
   const flashError = (error: string) => put(showNotification('danger', error, ERROR_DURATION));
-  const { isValid, addressError, labelError } = isValidAddressLabel(
-    address,
-    label,
+  const { addressError, labelError } = isValidAddressLabel(
+    entry.address,
+    entry.label,
     addresses,
     labels
   );
 
   if (addressError) {
-    yield flashError(addressError);
+    return yield flashError(addressError);
   }
 
   if (labelError) {
-    yield flashError(labelError);
+    return yield flashError(labelError);
   }
 
-  return isValid
-    ? yield put(addAddressLabelSucceeded(action.payload))
-    : yield put(
-        addAddressLabelFailed({
-          index,
-          addressError,
-          labelError
-        })
-      );
+  yield put(
+    addAddressLabel({
+      address: entry.address,
+      label: entry.label
+    })
+  );
+
+  return yield put(clearAddressLabelEntry(id));
 }
 
 export default function* addressBookSaga(): SagaIterator {
-  yield takeEvery(TypeKeys.ADD_ADDRESS_LABEL_REQUESTED, handleAddAddressLabelRequest);
+  yield takeEvery(TypeKeys.CHANGE_ADDRESS_LABEL_ENTRY, handleChangeAddressLabelEntry);
+  yield takeEvery(TypeKeys.SAVE_ADDRESS_LABEL_ENTRY, handleSaveAddressLabelEntry);
 }

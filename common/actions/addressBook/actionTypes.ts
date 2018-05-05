@@ -1,30 +1,21 @@
 import { TypeKeys } from './constants';
 
-export interface AddressLabelPair {
-  index: string;
+export interface AddressLabel {
   address: string;
   label: string;
 }
 
-export interface AddAddressLabelError {
-  index: string;
+export interface AddressLabelEntry {
+  id: string;
+  address: string;
   addressError?: string;
+  label: string;
   labelError?: string;
 }
 
-export interface AddAddressLabelRequested {
-  type: TypeKeys.ADD_ADDRESS_LABEL_REQUESTED;
-  payload: AddressLabelPair;
-}
-
-export interface AddAddressLabelSucceeded {
-  type: TypeKeys.ADD_ADDRESS_LABEL_SUCCEEDED;
-  payload: AddressLabelPair;
-}
-
-export interface AddAddressLabelFailed {
-  type: TypeKeys.ADD_ADDRESS_LABEL_FAILED;
-  payload: AddAddressLabelError;
+export interface AddAddressLabel {
+  type: TypeKeys.ADD_ADDRESS_LABEL;
+  payload: AddressLabel;
 }
 
 export interface RemoveAddressLabel {
@@ -32,8 +23,30 @@ export interface RemoveAddressLabel {
   payload: string;
 }
 
+export interface SetAddressLabelEntry {
+  type: TypeKeys.SET_ADDRESS_LABEL_ENTRY;
+  payload: AddressLabelEntry;
+}
+
+export interface ChangeAddressLabelEntry {
+  type: TypeKeys.CHANGE_ADDRESS_LABEL_ENTRY;
+  payload: AddressLabelEntry;
+}
+
+export interface SaveAddressLabelEntry {
+  type: TypeKeys.SAVE_ADDRESS_LABEL_ENTRY;
+  payload: string;
+}
+
+export interface ClearAddressLabelEntry {
+  type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY;
+  payload: string;
+}
+
 export type AddressBookAction =
-  | AddAddressLabelRequested
-  | AddAddressLabelSucceeded
-  | AddAddressLabelFailed
-  | RemoveAddressLabel;
+  | AddAddressLabel
+  | RemoveAddressLabel
+  | SetAddressLabelEntry
+  | ChangeAddressLabelEntry
+  | SaveAddressLabelEntry
+  | ClearAddressLabelEntry;

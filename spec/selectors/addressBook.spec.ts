@@ -1,8 +1,7 @@
 import {
   getAddressLabels,
   getLabelAddresses,
-  getAddressErrors,
-  getLabelErrors,
+  getAddressLabelEntry,
   getAddressLabelPairs
 } from 'selectors/addressBook';
 import { getInitialState } from './helpers';
@@ -17,11 +16,13 @@ describe('addressBook: Selectors', () => {
       labels: {
         Foo: '0x0'
       },
-      addressErrors: {
-        1337: 'Foo bar baz.'
-      },
-      labelErrors: {
-        1337: 'Baz bar foo.'
+      entries: {
+        0: {
+          address: '0x0',
+          addressError: 'Derp',
+          label: 'Foo',
+          labelError: 'Derp'
+        }
       }
     }
   };
@@ -38,21 +39,14 @@ describe('addressBook: Selectors', () => {
     });
   });
 
-  describe('getAddressErrors', () => {
-    it('should return an error if the index exists', () => {
-      expect(getAddressErrors(state)[1337]).toEqual('Foo bar baz.');
-    });
-    it('should return undefined if the index does not exist', () => {
-      expect(getAddressErrors(state)[1000]).toEqual(undefined);
-    });
-  });
-
-  describe('getLabelErrors', () => {
-    it('should return an error if the index exists', () => {
-      expect(getLabelErrors(state)[1337]).toEqual('Baz bar foo.');
-    });
-    it('should return undefined if the index does not exist', () => {
-      expect(getLabelErrors(state)[1000]).toEqual(undefined);
+  describe('getAddressLabelEntry', () => {
+    it('should return an address label entry', () => {
+      expect(getAddressLabelEntry(state, '0')).toEqual({
+        address: '0x0',
+        addressError: 'Derp',
+        label: 'Foo',
+        labelError: 'Derp'
+      });
     });
   });
 
