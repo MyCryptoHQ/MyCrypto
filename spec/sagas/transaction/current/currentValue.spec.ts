@@ -12,8 +12,6 @@ import {
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { SagaIterator } from 'redux-saga';
 
-import BN from 'bn.js';
-
 const itShouldBeDone = (gen: SagaIterator) => {
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
@@ -81,19 +79,19 @@ describe('valueHandler', () => {
   });
 
   it('handles floats without lead zero', () => {
-    const value = {
+    const leadZeroValue = {
       decimal: 18,
       action: {
         payload: '.1'
       }
     };
-    const g = cloneableGenerator(valueHandler)(value.action as any, setter);
+    const g = cloneableGenerator(valueHandler)(leadZeroValue.action as any, setter);
 
     expect(g.next().value).toEqual(select(getDecimal));
-    expect(g.next(value.decimal).value).toEqual(select(getUnit));
+    expect(g.next(leadZeroValue.decimal).value).toEqual(select(getUnit));
     expect(g.next(unit).value).toEqual(select(isEtherTransaction));
     expect(g.next(isEth).value).not.toEqual(
-      put(setter({ raw: value.action.payload, value: null }))
+      put(setter({ raw: leadZeroValue.action.payload, value: null }))
     );
   });
 
