@@ -9,18 +9,12 @@ export function getLabelAddresses(state: AppState) {
   return state.addressBook.labels;
 }
 
-export function getAddressLabelEntry(state: AppState, id: string) {
-  return state.addressBook.entries[id];
+export function getAddressLabelEntries(state: AppState) {
+  return state.addressBook.entries;
 }
 
-export function getAddressLabelPairs(state: AppState) {
-  const addresses = getAddressLabels(state);
-  const pairs = Object.keys(addresses).map(address => ({
-    address,
-    label: addresses[address]
-  }));
-
-  return pairs;
+export function getAddressLabelEntry(state: AppState, id: string) {
+  return state.addressBook.entries[id];
 }
 
 export function getCurrentToLabel(state: AppState) {

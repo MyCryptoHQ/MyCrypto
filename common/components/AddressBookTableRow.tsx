@@ -2,31 +2,26 @@ import React from 'react';
 import translate, { translateRaw } from 'translations';
 import noop from 'lodash/noop';
 import { Input, Identicon } from 'components/ui';
-import { getLabelAddresses, getLabelErrors } from 'selectors/addressBook';
 
 interface Props {
   index: number;
   address: string;
   label: string;
-  labelAddresses: ReturnType<typeof getLabelAddresses>;
-  labelErrors: ReturnType<typeof getLabelErrors>;
+  labelError?: string;
   isEditing: boolean;
-  onSave(label: string): void;
+  onChange(label: string): void;
+  onSave(): void;
   onLabelInputBlur(): void;
   onEditClick(): void;
   onRemoveClick(): void;
 }
 
 interface State {
-  label: string;
-  mostRecentValidLabel: string;
   labelInputTouched: boolean;
 }
 
 class AddressBookTableRow extends React.Component<Props> {
   public state: State = {
-    label: this.props.label,
-    mostRecentValidLabel: this.props.label,
     labelInputTouched: false
   };
 
@@ -37,11 +32,10 @@ class AddressBookTableRow extends React.Component<Props> {
   }
 
   public render() {
-    const { index, address, labelErrors, isEditing, onEditClick, onRemoveClick } = this.props;
-    const { label, labelInputTouched } = this.state;
-    const labelInputError = labelErrors[index];
+    const { address, label, labelError, isEditing, onEditClick, onRemoveClick } = this.props;
+    const { labelInputTouched } = this.state;
     const trOnClick = isEditing ? noop : onEditClick;
-    const labelInputClassName = labelInputTouched && labelInputError ? 'invalid' : '';
+    const labelInputClassName = labelInputTouched && labelError ? 'invalid' : '';
     const hashName = `${address}-hash`;
     const labelName = `${address}-label`;
 
@@ -72,7 +66,7 @@ class AddressBookTableRow extends React.Component<Props> {
                 title={`${translateRaw('EDIT_LABEL_FOR')}${address}`}
                 className={labelInputClassName}
                 value={label}
-                onChange={this.setLabel}
+                onChange={this.handleLabelChange}
                 onKeyDown={this.handleKeyDown}
                 onFocus={this.setLabelTouched}
                 onBlur={this.handleBlur}
@@ -88,19 +82,19 @@ class AddressBookTableRow extends React.Component<Props> {
               <i className="fa fa-close" />
             </button>
           </div>
-          {labelInputError && (
+          {labelError && (
             <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
               <label className="AddressBookTable-row-input-wrapper-error">
                 <div />
-                {labelInputError}
+                {labelError}
               </label>
             </div>
           )}
         </div>
-        {labelInputError && (
+        {labelError && (
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--non-mobile">
             <div />
-            <label className="AddressBookTable-row-input-wrapper-error">{labelInputError}</label>
+            <label className="AddressBookTable-row-input-wrapper-error">{labelError}</label>
           </div>
         )}
       </React.Fragment>
@@ -120,39 +114,28 @@ class AddressBookTableRow extends React.Component<Props> {
   };
 
   private handleBlur = () => {
-    const { onSave, onLabelInputBlur } = this.props;
-    const { label, mostRecentValidLabel } = this.state;
-
-    if (label === mostRecentValidLabel) {
-      return;
-    }
-
     this.clearLabelTouched();
-
-    onSave(label);
-    onLabelInputBlur();
-  };
-
-  private setLabel = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const label = e.target.value;
-
-    this.setState(
-      { label, labelInputTouched: true },
-      () => label.length === 0 && this.clearLabelTouched()
-    );
+    this.props.onSave();
+    this.props.onLabelInputBlur();
   };
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private setLabelTouched = () => {
-    const { labelInputTouched } = this.state;
-
-    if (!labelInputTouched) {
-      this.setState({ labelInputTouched: true });
-    }
-  };
+  private setLabelTouched = () =>
+    !this.state.labelInputTouched && this.setState({ labelInputTouched: true });
 
   private clearLabelTouched = () => this.setState({ labelInputTouched: false });
+
+  private handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const label = e.target.value;
+
+    this.props.onChange(label);
+
+    this.setState(
+      { labelInputTouched: true },
+      () => label.length === 0 && this.clearLabelTouched()
+    );
+  };
 }
 
 export default AddressBookTableRow;

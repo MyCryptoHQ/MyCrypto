@@ -51,14 +51,26 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
     return yield flashError(labelError);
   }
 
-  yield put(
+  // When entering a new label, create a new entry.
+  if (id === 'ADDRESS_BOOK_TABLE_ID') {
+    yield put(
+      setAddressLabelEntry({
+        id: '0',
+        address: entry.address,
+        addressError: undefined,
+        label: entry.label,
+        labelError: undefined
+      })
+    );
+    yield put(clearAddressLabelEntry(id));
+  }
+
+  return yield put(
     addAddressLabel({
       address: entry.address,
       label: entry.label
     })
   );
-
-  return yield put(clearAddressLabelEntry(id));
 }
 
 export default function* addressBookSaga(): SagaIterator {

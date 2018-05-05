@@ -1,9 +1,4 @@
-import {
-  getAddressLabels,
-  getLabelAddresses,
-  getAddressLabelEntry,
-  getAddressLabelPairs
-} from 'selectors/addressBook';
+import { getAddressLabels, getLabelAddresses, getAddressLabelEntry } from 'selectors/addressBook';
 import { getInitialState } from './helpers';
 
 describe('addressBook: Selectors', () => {
@@ -46,15 +41,6 @@ describe('addressBook: Selectors', () => {
         addressError: 'Derp',
         label: 'Foo',
         labelError: 'Derp'
-      });
-    });
-  });
-
-  describe('getAddressLabelPairs', () => {
-    it('should return an array of objects that contain an address and a label', () => {
-      expect(getAddressLabelPairs(state)[0]).toEqual({
-        address: '0x0',
-        label: 'Foo'
       });
     });
   });

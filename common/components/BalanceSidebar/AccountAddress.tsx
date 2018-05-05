@@ -4,21 +4,24 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'reducers';
 import {
-  addAddressLabelRequested,
-  TAddAddressLabelRequested,
+  changeAddressLabelEntry,
+  TChangeAddressLabelEntry,
+  saveAddressLabelEntry,
+  TSaveAddressLabelEntry,
   removeAddressLabel,
   TRemoveAddressLabel
 } from 'actions/addressBook';
-import { getAddressLabels, getLabelErrors } from 'selectors/addressBook';
+import { getAddressLabels, getAddressLabelEntries } from 'selectors/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {
   addressLabels: ReturnType<typeof getAddressLabels>;
-  labelErrors: ReturnType<typeof getLabelErrors>;
+  addressLabelEntries: ReturnType<typeof getAddressLabelEntries>;
 }
 
 interface DispatchProps {
-  addAddressLabelRequested: TAddAddressLabelRequested;
+  changeAddressLabelEntry: TChangeAddressLabelEntry;
+  saveAddressLabelEntry: TSaveAddressLabelEntry;
   removeAddressLabel: TRemoveAddressLabel;
 }
 
@@ -36,7 +39,7 @@ interface State {
   labelInputTouched: boolean;
 }
 
-export const ACCOUNT_ADDRESS_INDEX: string = 'ACCOUNT_ADDRESS_INDEX';
+export const ACCOUNT_ADDRESS_ID: string = 'ACCOUNT_ADDRESS_ID';
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {
@@ -134,13 +137,13 @@ class AccountAddress extends React.Component<Props, State> {
       return;
     }
 
-    label.length > 0
-      ? this.props.addAddressLabelRequested({
-          index: ACCOUNT_ADDRESS_INDEX,
-          address,
-          label
-        })
-      : this.props.removeAddressLabel(address);
+    // label.length > 0
+    //   ? this.props.addAddressLabelRequested({
+    //       index: ACCOUNT_ADDRESS_INDEX,
+    //       address,
+    //       label
+    //     })
+    //   : this.props.removeAddressLabel(address);
   };
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
@@ -162,10 +165,10 @@ class AccountAddress extends React.Component<Props, State> {
   };
 
   private generateLabelContent = () => {
-    const { address, addressLabels, labelErrors } = this.props;
+    const { address, addressLabels } = this.props;
     const { editingLabel, temporaryLabel, labelInputTouched } = this.state;
     const label = addressLabels[address];
-    const labelInputError = labelErrors[ACCOUNT_ADDRESS_INDEX];
+    const labelInputError = null;
     const labelInputTouchedWithError = labelInputTouched && labelInputError;
     const inputClassName = labelInputTouchedWithError ? 'invalid' : '';
 
@@ -253,12 +256,10 @@ class AccountAddress extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (state: AppState) => ({
-  addressLabels: getAddressLabels(state),
-  labelErrors: getLabelErrors(state)
+  addressLabels: getAddressLabels(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
-  addAddressLabelRequested,
   removeAddressLabel
 };
 
