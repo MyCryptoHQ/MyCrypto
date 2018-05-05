@@ -1,12 +1,11 @@
 import { runSaga } from 'redux-saga';
 import { translateRaw } from 'translations';
-import { handleAddAddressLabelRequest, ERROR_DURATION } from 'sagas/addressBook';
+import { handleAddAddressLabelRequest } from 'sagas/addressBook';
 import {
   addAddressLabelRequested,
   addAddressLabelSucceeded,
   addAddressLabelFailed
 } from 'actions/addressBook';
-import { showNotification } from 'actions/notifications';
 import { getInitialState } from '../selectors/helpers';
 
 describe('addressBook: Sagas', () => {
@@ -24,7 +23,7 @@ describe('addressBook: Sagas', () => {
   describe('Happy path', () => {
     it('should put addAddressLabelSucceeded on the happy path', async () => {
       const action = addAddressLabelRequested({
-        index: 0,
+        index: '0',
         address,
         label: 'Foo'
       });
@@ -41,7 +40,7 @@ describe('addressBook: Sagas', () => {
 
       expect(dispatched).toEqual([
         addAddressLabelSucceeded({
-          index: 0,
+          index: '0',
           address,
           label: 'Foo'
         })
@@ -52,7 +51,7 @@ describe('addressBook: Sagas', () => {
   describe('Failure cases', () => {
     it('should put addAddressLabelFailed when an addressError occurs', async () => {
       const action = addAddressLabelRequested({
-        index: 0,
+        index: '0',
         address: 'Bar', // Invalid ETH address
         label: 'Foo'
       });
@@ -68,18 +67,18 @@ describe('addressBook: Sagas', () => {
         action
       );
 
-      expect(dispatched).toEqual([
-        showNotification('danger', addressError, ERROR_DURATION),
+      expect(dispatched.length).toEqual(2);
+      expect(dispatched[1]).toEqual(
         addAddressLabelFailed({
-          index: 0,
+          index: '0',
           addressError,
           labelError: undefined
         })
-      ]);
+      );
     });
     it('should put addAddressLabelFailed when a labelError occurs', async () => {
       const action = addAddressLabelRequested({
-        index: 0,
+        index: '0',
         address,
         label: 'X' // Invalid label length
       });
@@ -95,14 +94,14 @@ describe('addressBook: Sagas', () => {
         action
       );
 
-      expect(dispatched).toEqual([
-        showNotification('danger', labelError, ERROR_DURATION),
+      expect(dispatched.length).toEqual(2);
+      expect(dispatched[1]).toEqual(
         addAddressLabelFailed({
-          index: 0,
+          index: '0',
           addressError: undefined,
           labelError
         })
-      ]);
+      );
     });
   });
 });

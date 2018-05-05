@@ -8,7 +8,7 @@ describe('addressBook: Reducer', () => {
         addressBook(
           undefined,
           addressBookActions.addAddressLabelSucceeded({
-            index: 1337,
+            index: '1337',
             address: '0x0',
             label: 'Foo'
           })
@@ -36,7 +36,7 @@ describe('addressBook: Reducer', () => {
         addressBook(
           undefined,
           addressBookActions.addAddressLabelFailed({
-            index: 1337,
+            index: '1337',
             addressError: 'Foo bar baz.'
           })
         )
@@ -45,7 +45,7 @@ describe('addressBook: Reducer', () => {
         addresses: {},
         labels: {},
         addressErrors: {
-          1337: 'Foo bar baz.'
+          '1337': 'Foo bar baz.'
         },
         labelErrors: {}
       });
@@ -55,7 +55,7 @@ describe('addressBook: Reducer', () => {
         addressBook(
           undefined,
           addressBookActions.addAddressLabelFailed({
-            index: 1337,
+            index: '1337',
             labelError: 'Foo bar baz.'
           })
         )
@@ -65,7 +65,7 @@ describe('addressBook: Reducer', () => {
         labels: {},
         addressErrors: {},
         labelErrors: {
-          1337: 'Foo bar baz.'
+          '1337': 'Foo bar baz.'
         }
       });
     });

@@ -4,6 +4,7 @@ import {
   isValidETHAddress,
   isValidPath,
   isValidPrivKey,
+  isLabelWithoutENS,
   isValidAddressLabel
 } from '../../common/libs/validators';
 import { translateRaw } from '../../common/translations';
@@ -68,8 +69,20 @@ describe('Validator', () => {
   });
 });
 
+describe('isLabelWithoutENS', () => {
+  it('should return false if the label contains an ENS TLD', () => {
+    expect(isLabelWithoutENS('Foo.eth')).toEqual(false);
+    expect(isLabelWithoutENS('Foo.test')).toEqual(false);
+    expect(isLabelWithoutENS('Foo.reverse')).toEqual(false);
+  });
+  it('should return true if a label does not contain an ENS TLD', () => {
+    expect(isLabelWithoutENS('Foo')).toEqual(true);
+  });
+});
+
 describe('isValidAddressLabel', () => {
   const validAddress = '0x081f37708032d0a7b3622591a8959b213fb47d6f';
+  const otherValidAddress = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
   const addresses = {
     [validAddress]: 'Foo'
   };
@@ -112,7 +125,12 @@ describe('isValidAddressLabel', () => {
     });
 
     it('should return invalid if the label already exists', () => {
-      const { isValid, labelError } = isValidAddressLabel(validAddress, 'Foo', addresses, labels);
+      const { isValid, labelError } = isValidAddressLabel(
+        otherValidAddress,
+        'Foo',
+        addresses,
+        labels
+      );
 
       expect(isValid).toEqual(false);
       expect(labelError).toEqual(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));

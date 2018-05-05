@@ -9,10 +9,10 @@ export interface State {
     [labels: string]: string;
   };
   addressErrors: {
-    [index: number]: string | undefined;
+    [id: string]: string | undefined;
   };
   labelErrors: {
-    [index: number]: string | undefined;
+    [index: string]: string | undefined;
   };
 }
 

@@ -36,7 +36,7 @@ interface State {
   labelInputTouched: boolean;
 }
 
-export const ACCOUNT_ADDRESS_INDEX: number = -10;
+export const ACCOUNT_ADDRESS_INDEX: string = 'ACCOUNT_ADDRESS_INDEX';
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {

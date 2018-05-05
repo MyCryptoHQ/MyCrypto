@@ -10,7 +10,7 @@ describe('addressBook: Actions', () => {
   describe('addAddressLabelRequested', () => {
     it('should generate the correct action', () => {
       const payload = {
-        index: 0,
+        index: '0',
         address: '0x0',
         label: 'Foo'
       };
@@ -24,7 +24,7 @@ describe('addressBook: Actions', () => {
   describe('addAddressLabelSucceeded', () => {
     it('should generate the correct action', () => {
       const payload = {
-        index: 0,
+        index: '0',
         address: '0x0',
         label: 'Foo'
       };
@@ -38,7 +38,7 @@ describe('addressBook: Actions', () => {
   describe('addAddressLabelFailed', () => {
     it('should generate the correct action', () => {
       const payload = {
-        index: 0,
+        index: '0',
         addressError: 'Foo bar baz.'
       };
 

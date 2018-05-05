@@ -45,7 +45,7 @@ interface State {
   temporaryLabelBlurred: boolean;
 }
 
-export const ADDRESS_BOOK_TABLE_INDEX: number = -5;
+export const ADDRESS_BOOK_TABLE_INDEX: string = 'ADDRESS_BOOK_TABLE_INDEX';
 
 class AddressBookTable extends React.Component<Props, State> {
   public state: State = {
@@ -73,8 +73,8 @@ class AddressBookTable extends React.Component<Props, State> {
       temporaryLabelBlurred
     } = this.state;
 
-    const addressInputError = addressErrors[ADDRESS_BOOK_TABLE_INDEX];
-    const labelInputError = labelErrors[ADDRESS_BOOK_TABLE_INDEX];
+    const addressInputError = addressErrors.ADDRESS_BOOK_TABLE_INDEX;
+    const labelInputError = labelErrors.ADDRESS_BOOK_TABLE_INDEX;
     const addressTouchedWithError = temporaryAddressTouched && addressInputError;
     const labelTouchedWithError = temporaryLabelTouched && labelInputError;
 
@@ -204,7 +204,11 @@ class AddressBookTable extends React.Component<Props, State> {
     const { editingRow } = this.state;
     const isEditing = index === editingRow;
     const onSave = (label: string) => {
-      this.props.addAddressLabelRequested({ index, address: addressLabelPair.address, label });
+      this.props.addAddressLabelRequested({
+        index: index.toString(),
+        address: addressLabelPair.address,
+        label
+      });
       this.setEditingRow(null);
     };
 

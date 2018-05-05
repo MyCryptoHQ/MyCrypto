@@ -1,13 +1,13 @@
 import { TypeKeys } from './constants';
 
 export interface AddressLabelPair {
-  index: number;
+  index: string;
   address: string;
   label: string;
 }
 
 export interface AddAddressLabelError {
-  index: number;
+  index: string;
   addressError?: string;
   labelError?: string;
 }
