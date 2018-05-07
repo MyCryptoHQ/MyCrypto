@@ -11,6 +11,8 @@ export interface AddressLabelEntry extends AddressLabel {
   addressError?: string;
   temporaryLabel?: string;
   labelError?: string;
+  isEditing?: boolean;
+  overrideValidation?: boolean;
 }
 
 export interface SetAddressLabel {

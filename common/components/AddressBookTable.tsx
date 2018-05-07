@@ -7,10 +7,15 @@ import {
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
-  clearAddressLabelEntry,
-  TClearAddressLabelEntry
+  removeAddressLabelEntry,
+  TRemoveAddressLabelEntry
 } from 'actions/addressBook';
-import { getAddressLabels, getLabelAddresses, getAddressLabelEntries } from 'selectors/addressBook';
+import {
+  getAddressLabels,
+  getLabelAddresses,
+  getAddressLabelRows,
+  getAddressBookTableEntry
+} from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
@@ -18,11 +23,12 @@ import './AddressBookTable.scss';
 interface DispatchProps {
   changeAddressLabelEntry: TChangeAddressLabelEntry;
   saveAddressLabelEntry: TSaveAddressLabelEntry;
-  clearAddressLabelEntry: TClearAddressLabelEntry;
+  removeAddressLabelEntry: TRemoveAddressLabelEntry;
 }
 
 interface StateProps {
-  entries: ReturnType<typeof getAddressLabelEntries>;
+  rows: ReturnType<typeof getAddressLabelRows>;
+  entry: ReturnType<typeof getAddressBookTableEntry>;
   addressLabels: ReturnType<typeof getAddressLabels>;
   labelAddresses: ReturnType<typeof getLabelAddresses>;
 }
@@ -53,23 +59,15 @@ class AddressBookTable extends React.Component<Props, State> {
   private labelInput: HTMLInputElement | null = null;
 
   public render() {
-    const { entries } = this.props;
+    const {
+      entry: { temporaryAddress = '', addressError = '', temporaryLabel = '', labelError = '' },
+      rows
+    } = this.props;
     const { addressTouched, addressBlurred, labelTouched, labelBlurred } = this.state;
 
-    const newEntry = entries.ADDRESS_BOOK_TABLE_ID || {};
-    const { address = '', addressError = '', label = '', labelError = '' } = newEntry;
+    // Classnames
     const addressTouchedWithError = addressTouched && addressError;
     const labelTouchedWithError = labelTouched && labelError;
-    const { ADDRESS_BOOK_TABLE_ID, ...rowEntries } = entries;
-
-    const rows = Object.keys(rowEntries).map(entry => ({
-      id: rowEntries[entry].id,
-      address: rowEntries[entry].address,
-      label: rowEntries[entry].label,
-      labelError: rowEntries[entry].labelError
-    }));
-
-    // Classnames
     const addressInputClassName = addressTouchedWithError ? 'invalid' : '';
     const labelInputClassName = labelTouchedWithError ? 'invalid' : '';
     const nonMobileTemporaryInputErrorClassName =
@@ -105,7 +103,7 @@ class AddressBookTable extends React.Component<Props, State> {
                 name="temporaryAddress"
                 className={addressInputClassName}
                 placeholder={translateRaw('NEW_ADDRESS')}
-                value={address}
+                value={temporaryAddress}
                 onChange={this.handleAddressChange}
                 onFocus={this.setAddressTouched}
                 onBlur={this.setAddressBlurred}
@@ -113,10 +111,10 @@ class AddressBookTable extends React.Component<Props, State> {
               />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
-              <Identicon address={address} />
+              <Identicon address={temporaryAddress} />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
-              <Identicon address={address} size="3rem" />
+              <Identicon address={temporaryAddress} size="3rem" />
             </div>
           </div>
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
@@ -133,7 +131,7 @@ class AddressBookTable extends React.Component<Props, State> {
                 name="temporaryLabel"
                 className={labelInputClassName}
                 placeholder={translateRaw('NEW_LABEL')}
-                value={label}
+                value={temporaryLabel}
                 onChange={this.handleLabelChange}
                 onFocus={this.setLabelTouched}
                 onBlur={this.setLabelBlurred}
@@ -185,17 +183,33 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private makeLabelRow = (row: any, index: number) => {
     const { editingRow } = this.state;
-    const { id, address, label, labelError } = row;
+    const { id, address, label, temporaryLabel, labelError } = row;
     const isEditing = index === editingRow;
     const onChange = (newLabel: string) =>
       this.props.changeAddressLabelEntry({
         id,
         address,
-        label: newLabel
+        label: newLabel,
+        isEditing: true
       });
     const onSave = () => {
       this.props.saveAddressLabelEntry(id);
       this.setEditingRow(null);
+    };
+    const onLabelInputBlur = () => {
+      // If the new changes aren't valid, undo them.
+      if (labelError) {
+        this.props.changeAddressLabelEntry({
+          id,
+          address,
+          temporaryAddress: address,
+          label,
+          temporaryLabel: label,
+          overrideValidation: true
+        });
+      }
+
+      this.clearEditingRow();
     };
 
     return (
@@ -204,13 +218,14 @@ class AddressBookTable extends React.Component<Props, State> {
         index={index}
         address={address}
         label={label}
+        temporaryLabel={temporaryLabel}
         labelError={labelError}
         isEditing={isEditing}
         onChange={onChange}
         onSave={onSave}
-        onLabelInputBlur={this.clearEditingRow}
+        onLabelInputBlur={onLabelInputBlur}
         onEditClick={() => this.setEditingRow(index)}
-        onRemoveClick={() => this.props.clearAddressLabelEntry(id)}
+        onRemoveClick={() => this.props.removeAddressLabelEntry(id)}
       />
     );
   };
@@ -225,9 +240,9 @@ class AddressBookTable extends React.Component<Props, State> {
   private setAddressBlurred = () => this.setState({ addressBlurred: true });
 
   private handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { entries } = this.props;
-    const label = (entries[ADDRESS_BOOK_TABLE_ID] || {}).label || '';
+    const { entry } = this.props;
     const address = e.target.value;
+    const label = entry.temporaryLabel || '';
 
     this.props.changeAddressLabelEntry({
       id: ADDRESS_BOOK_TABLE_ID,
@@ -250,8 +265,8 @@ class AddressBookTable extends React.Component<Props, State> {
   private setLabelBlurred = () => this.setState({ labelBlurred: true });
 
   private handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { entries } = this.props;
-    const address = (entries[ADDRESS_BOOK_TABLE_ID] || {}).address || '';
+    const { entry } = this.props;
+    const address = entry.temporaryAddress || '';
     const label = e.target.value;
 
     this.props.changeAddressLabelEntry({
@@ -273,7 +288,8 @@ class AddressBookTable extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
-  entries: getAddressLabelEntries(state),
+  rows: getAddressLabelRows(state),
+  entry: getAddressBookTableEntry(state),
   addressLabels: getAddressLabels(state),
   labelAddresses: getLabelAddresses(state)
 });
@@ -281,7 +297,7 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
 const mapDispatchToProps: DispatchProps = {
   changeAddressLabelEntry,
   saveAddressLabelEntry,
-  clearAddressLabelEntry
+  removeAddressLabelEntry
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);

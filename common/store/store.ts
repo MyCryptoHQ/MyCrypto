@@ -26,6 +26,7 @@ import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
 } from './configAndTokens';
+import fixAddressBookErrors from 'utils/fixAddressBookErrors';
 
 const configureStore = () => {
   const logger = createLogger({
@@ -79,7 +80,7 @@ const configureStore = () => {
     },
     addressBook: {
       ...initialAddressBookState,
-      ...savedAddressBook
+      ...fixAddressBookErrors(savedAddressBook)
     },
     wallet: {
       ...initialWalletState,

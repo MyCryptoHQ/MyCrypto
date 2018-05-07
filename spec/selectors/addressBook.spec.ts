@@ -2,8 +2,9 @@ import { getAddressLabels, getLabelAddresses, getAddressLabelEntry } from 'selec
 import { getInitialState } from './helpers';
 
 describe('addressBook: Selectors', () => {
-  const state = {
-    ...getInitialState(),
+  const initialState = getInitialState();
+  const state: any = {
+    ...initialState,
     addressBook: {
       addresses: {
         '0x0': 'Foo'

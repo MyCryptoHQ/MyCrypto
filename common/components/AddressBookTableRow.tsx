@@ -7,6 +7,7 @@ interface Props {
   index: number;
   address: string;
   label: string;
+  temporaryLabel: string;
   labelError?: string;
   isEditing: boolean;
   onChange(label: string): void;
@@ -32,7 +33,14 @@ class AddressBookTableRow extends React.Component<Props> {
   }
 
   public render() {
-    const { address, label, labelError, isEditing, onEditClick, onRemoveClick } = this.props;
+    const {
+      address,
+      temporaryLabel,
+      labelError,
+      isEditing,
+      onEditClick,
+      onRemoveClick
+    } = this.props;
     const { labelInputTouched } = this.state;
     const trOnClick = isEditing ? noop : onEditClick;
     const labelInputClassName = labelInputTouched && labelError ? 'invalid' : '';
@@ -65,7 +73,7 @@ class AddressBookTableRow extends React.Component<Props> {
                 name={labelName}
                 title={`${translateRaw('EDIT_LABEL_FOR')}${address}`}
                 className={labelInputClassName}
-                value={label}
+                value={temporaryLabel}
                 onChange={this.handleLabelChange}
                 onKeyDown={this.handleKeyDown}
                 onFocus={this.setLabelTouched}

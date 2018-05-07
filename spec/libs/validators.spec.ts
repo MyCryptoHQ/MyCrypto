@@ -133,7 +133,7 @@ describe('isValidAddressLabel', () => {
       );
 
       expect(isValid).toEqual(false);
-      expect(labelError).toEqual(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));
+      expect(labelError).toEqual(translateRaw('LABEL_ALREADY_EXISTS'));
     });
   });
 });

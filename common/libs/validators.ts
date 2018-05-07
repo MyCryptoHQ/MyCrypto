@@ -364,7 +364,7 @@ export function isValidAddressLabel(
   }
 
   if (labelAlreadyExists) {
-    result.labelError = translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
+    result.labelError = translateRaw('LABEL_ALREADY_EXISTS');
   }
 
   if (result.addressError || result.labelError) {

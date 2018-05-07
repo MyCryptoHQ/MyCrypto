@@ -23,7 +23,13 @@ import { showNotification } from 'actions/notifications';
 export const ERROR_DURATION: number = 4000;
 
 export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry): SagaIterator {
-  const { id, address: temporaryAddress, label: temporaryLabel } = action.payload;
+  const {
+    id,
+    address: temporaryAddress,
+    label: temporaryLabel,
+    isEditing,
+    overrideValidation
+  } = action.payload;
   const addresses = yield select(getAddressLabels);
   const labels = yield select(getLabelAddresses);
   const priorEntry = yield select(getAddressLabelEntry, id);
@@ -37,10 +43,10 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
     id,
     address: addressError ? priorEntry.address || '' : temporaryAddress,
     temporaryAddress,
-    addressError,
+    addressError: isEditing || overrideValidation ? undefined : addressError,
     label: labelError ? priorEntry.label || '' : temporaryLabel,
     temporaryLabel,
-    labelError
+    labelError: overrideValidation ? undefined : labelError
   };
 
   return yield put(setAddressLabelEntry(updatedEntry));
@@ -60,6 +66,7 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
     return yield flashError(labelError);
   }
 
+  yield put(clearAddressLabel(address));
   yield put(
     setAddressLabel({
       address,

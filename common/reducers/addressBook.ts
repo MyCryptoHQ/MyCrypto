@@ -47,7 +47,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
       const updatedAddresses = { ...addresses };
       const updatedLabels = { ...labels };
 
-      delete updatedAddresses[address];
+      delete updatedAddresses[toChecksumAddress(address)];
       delete updatedLabels[label];
 
       return {
