@@ -7,8 +7,8 @@ import {
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
-  removeAddressLabel,
-  TRemoveAddressLabel
+  clearAddressLabelEntry,
+  TClearAddressLabelEntry
 } from 'actions/addressBook';
 import { getAddressLabels, getLabelAddresses, getAddressLabelEntries } from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
@@ -18,7 +18,7 @@ import './AddressBookTable.scss';
 interface DispatchProps {
   changeAddressLabelEntry: TChangeAddressLabelEntry;
   saveAddressLabelEntry: TSaveAddressLabelEntry;
-  removeAddressLabel: TRemoveAddressLabel;
+  clearAddressLabelEntry: TClearAddressLabelEntry;
 }
 
 interface StateProps {
@@ -210,7 +210,7 @@ class AddressBookTable extends React.Component<Props, State> {
         onSave={onSave}
         onLabelInputBlur={this.clearEditingRow}
         onEditClick={() => this.setEditingRow(index)}
-        onRemoveClick={() => this.props.removeAddressLabel(address)}
+        onRemoveClick={() => this.props.clearAddressLabelEntry(id)}
       />
     );
   };
@@ -281,7 +281,7 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
 const mapDispatchToProps: DispatchProps = {
   changeAddressLabelEntry,
   saveAddressLabelEntry,
-  removeAddressLabel
+  clearAddressLabelEntry
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);

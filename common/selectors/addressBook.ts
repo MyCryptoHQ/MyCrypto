@@ -14,7 +14,7 @@ export function getAddressLabelEntries(state: AppState) {
 }
 
 export function getAddressLabelEntry(state: AppState, id: string) {
-  return state.addressBook.entries[id];
+  return state.addressBook.entries[id] || {};
 }
 
 export function getCurrentToLabel(state: AppState) {

@@ -8,8 +8,8 @@ import {
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
-  removeAddressLabel,
-  TRemoveAddressLabel
+  clearAddressLabelEntry,
+  TClearAddressLabelEntry
 } from 'actions/addressBook';
 import { getAddressLabels, getAddressLabelEntries } from 'selectors/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
@@ -22,7 +22,7 @@ interface StateProps {
 interface DispatchProps {
   changeAddressLabelEntry: TChangeAddressLabelEntry;
   saveAddressLabelEntry: TSaveAddressLabelEntry;
-  removeAddressLabel: TRemoveAddressLabel;
+  clearAddressLabelEntry: TClearAddressLabelEntry;
 }
 
 interface OwnProps {
@@ -256,11 +256,14 @@ class AccountAddress extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (state: AppState) => ({
-  addressLabels: getAddressLabels(state)
+  addressLabels: getAddressLabels(state),
+  addressLabelEntries: getAddressLabelEntries(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
-  removeAddressLabel
+  changeAddressLabelEntry,
+  saveAddressLabelEntry,
+  clearAddressLabelEntry
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(

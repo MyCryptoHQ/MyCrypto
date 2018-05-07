@@ -8,19 +8,11 @@ export interface AddressLabel {
 export interface AddressLabelEntry {
   id: string;
   address: string;
+  temporaryAddress?: string;
   addressError?: string;
   label: string;
+  temporaryLabel?: string;
   labelError?: string;
-}
-
-export interface AddAddressLabel {
-  type: TypeKeys.ADD_ADDRESS_LABEL;
-  payload: AddressLabel;
-}
-
-export interface RemoveAddressLabel {
-  type: TypeKeys.REMOVE_ADDRESS_LABEL;
-  payload: string;
 }
 
 export interface SetAddressLabelEntry {
@@ -44,8 +36,6 @@ export interface ClearAddressLabelEntry {
 }
 
 export type AddressBookAction =
-  | AddAddressLabel
-  | RemoveAddressLabel
   | SetAddressLabelEntry
   | ChangeAddressLabelEntry
   | SaveAddressLabelEntry

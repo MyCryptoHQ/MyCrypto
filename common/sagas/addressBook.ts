@@ -5,25 +5,36 @@ import {
   TypeKeys,
   ChangeAddressLabelEntry,
   SaveAddressLabelEntry,
-  addAddressLabel,
-  setAddressLabelEntry,
-  clearAddressLabelEntry
+  setAddressLabelEntry
 } from 'actions/addressBook';
-import { getAddressLabels, getLabelAddresses, getAddressLabelEntry } from 'selectors/addressBook';
+import {
+  getAddressLabels,
+  getLabelAddresses,
+  getAddressLabelEntries,
+  getAddressLabelEntry
+} from 'selectors/addressBook';
 import { showNotification } from 'actions/notifications';
 
 export const ERROR_DURATION: number = 4000;
 
 export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry): SagaIterator {
-  const { id, address, label } = action.payload;
+  const { id, address: temporaryAddress, label: temporaryLabel } = action.payload;
   const addresses = yield select(getAddressLabels);
   const labels = yield select(getLabelAddresses);
-  const { addressError, labelError } = isValidAddressLabel(address, label, addresses, labels);
+  const priorEntry = yield select(getAddressLabelEntry, id);
+  const { addressError, labelError } = isValidAddressLabel(
+    temporaryAddress,
+    temporaryLabel,
+    addresses,
+    labels
+  );
   const updatedEntry = {
     id,
-    address,
+    address: addressError ? priorEntry.address || '' : temporaryAddress,
+    temporaryAddress,
     addressError,
-    label,
+    label: labelError ? priorEntry.label || '' : temporaryLabel,
+    temporaryLabel,
     labelError
   };
 
@@ -32,16 +43,9 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
 
 export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): SagaIterator {
   const id = action.payload;
-  const entry = yield select(getAddressLabelEntry, id);
-  const addresses = yield select(getAddressLabels);
-  const labels = yield select(getLabelAddresses);
+  const entries = yield select(getAddressLabelEntries);
+  const { address, addressError, label, labelError } = yield select(getAddressLabelEntry, id);
   const flashError = (error: string) => put(showNotification('danger', error, ERROR_DURATION));
-  const { addressError, labelError } = isValidAddressLabel(
-    entry.address,
-    entry.label,
-    addresses,
-    labels
-  );
 
   if (addressError) {
     return yield flashError(addressError);
@@ -51,26 +55,46 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
     return yield flashError(labelError);
   }
 
-  // When entering a new label, create a new entry.
   if (id === 'ADDRESS_BOOK_TABLE_ID') {
+    // When entering a new label, create a new entry.
+    const currentEntryCount = Object.keys(entries).length - 1; // Subtract temporary entries.
+
     yield put(
       setAddressLabelEntry({
-        id: '0',
-        address: entry.address,
+        id: (currentEntryCount + 1).toString(),
+        address: address,
+        temporaryAddress: address,
         addressError: undefined,
-        label: entry.label,
+        label,
+        temporaryLabel: label,
         labelError: undefined
       })
     );
-    yield put(clearAddressLabelEntry(id));
+    yield put(
+      setAddressLabelEntry({
+        id: 'ADDRESS_BOOK_TABLE_ID',
+        address: '',
+        temporaryAddress: '',
+        addressError: undefined,
+        label: '',
+        temporaryLabel: '',
+        labelError: undefined
+      })
+    );
+  } else {
+    // When editing a label, overwrite the previous entry.
+    yield put(
+      setAddressLabelEntry({
+        id: '0',
+        address: address,
+        temporaryAddress: address,
+        addressError: undefined,
+        label,
+        temporaryLabel: label,
+        labelError: undefined
+      })
+    );
   }
-
-  return yield put(
-    addAddressLabel({
-      address: entry.address,
-      label: entry.label
-    })
-  );
 }
 
 export default function* addressBookSaga(): SagaIterator {

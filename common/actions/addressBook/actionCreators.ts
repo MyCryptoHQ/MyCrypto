@@ -1,30 +1,11 @@
 import { TypeKeys } from './constants';
 import {
-  AddressLabel,
   AddressLabelEntry,
-  AddAddressLabel,
-  RemoveAddressLabel,
   SetAddressLabelEntry,
   ChangeAddressLabelEntry,
   SaveAddressLabelEntry,
   ClearAddressLabelEntry
 } from './actionTypes';
-
-export type TAddAddressLabel = typeof addAddressLabel;
-export function addAddressLabel(payload: AddressLabel): AddAddressLabel {
-  return {
-    type: TypeKeys.ADD_ADDRESS_LABEL,
-    payload
-  };
-}
-
-export type TRemoveAddressLabel = typeof removeAddressLabel;
-export function removeAddressLabel(payload: string): RemoveAddressLabel {
-  return {
-    type: TypeKeys.REMOVE_ADDRESS_LABEL,
-    payload
-  };
-}
 
 export type TSetAddressLabelEntry = typeof setAddressLabelEntry;
 export function setAddressLabelEntry(payload: AddressLabelEntry): SetAddressLabelEntry {

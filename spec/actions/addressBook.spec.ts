@@ -1,7 +1,5 @@
 import {
   TypeKeys,
-  addAddressLabel,
-  removeAddressLabel,
   setAddressLabelEntry,
   changeAddressLabelEntry,
   saveAddressLabelEntry,
@@ -9,29 +7,6 @@ import {
 } from '../../common/actions/addressBook';
 
 describe('addressBook: Actions', () => {
-  describe('removeAddressLabel', () => {
-    it('should generate the correct action', () => {
-      const payload = {
-        address: '0x0',
-        label: 'Foo'
-      };
-
-      expect(addAddressLabel(payload)).toEqual({
-        type: TypeKeys.ADD_ADDRESS_LABEL,
-        payload
-      });
-    });
-  });
-  describe('removeAddressLabel', () => {
-    it('should generate the correct action', () => {
-      const payload = 'Foo';
-
-      expect(removeAddressLabel(payload)).toEqual({
-        type: TypeKeys.REMOVE_ADDRESS_LABEL,
-        payload
-      });
-    });
-  });
   describe('setAddressLabelEntry', () => {
     it('should generate the correct action', () => {
       const payload = {
