@@ -5,14 +5,22 @@ export interface AddressLabel {
   label: string;
 }
 
-export interface AddressLabelEntry {
+export interface AddressLabelEntry extends AddressLabel {
   id: string;
-  address: string;
   temporaryAddress?: string;
   addressError?: string;
-  label: string;
   temporaryLabel?: string;
   labelError?: string;
+}
+
+export interface SetAddressLabel {
+  type: TypeKeys.SET_ADDRESS_LABEL;
+  payload: AddressLabel;
+}
+
+export interface ClearAddressLabel {
+  type: TypeKeys.CLEAR_ADDRESS_LABEL;
+  payload: string;
 }
 
 export interface SetAddressLabelEntry {
@@ -35,8 +43,16 @@ export interface ClearAddressLabelEntry {
   payload: string;
 }
 
+export interface RemoveAddressLabelEntry {
+  type: TypeKeys.REMOVE_ADDRESS_LABEL_ENTRY;
+  payload: string;
+}
+
 export type AddressBookAction =
+  | SetAddressLabel
+  | ClearAddressLabel
   | SetAddressLabelEntry
   | ChangeAddressLabelEntry
   | SaveAddressLabelEntry
-  | ClearAddressLabelEntry;
+  | ClearAddressLabelEntry
+  | RemoveAddressLabelEntry;

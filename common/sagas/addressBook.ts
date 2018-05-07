@@ -1,11 +1,16 @@
 import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery } from 'redux-saga/effects';
 import { isValidAddressLabel } from 'libs/validators';
+import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
 import {
   TypeKeys,
   ChangeAddressLabelEntry,
   SaveAddressLabelEntry,
-  setAddressLabelEntry
+  RemoveAddressLabelEntry,
+  setAddressLabelEntry,
+  setAddressLabel,
+  clearAddressLabel,
+  clearAddressLabelEntry
 } from 'actions/addressBook';
 import {
   getAddressLabels,
@@ -55,7 +60,14 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
     return yield flashError(labelError);
   }
 
-  if (id === 'ADDRESS_BOOK_TABLE_ID') {
+  yield put(
+    setAddressLabel({
+      address,
+      label
+    })
+  );
+
+  if (id === ADDRESS_BOOK_TABLE_ID) {
     // When entering a new label, create a new entry.
     const currentEntryCount = Object.keys(entries).length - 1; // Subtract temporary entries.
 
@@ -72,7 +84,7 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
     );
     yield put(
       setAddressLabelEntry({
-        id: 'ADDRESS_BOOK_TABLE_ID',
+        id: ADDRESS_BOOK_TABLE_ID,
         address: '',
         temporaryAddress: '',
         addressError: undefined,
@@ -85,7 +97,7 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
     // When editing a label, overwrite the previous entry.
     yield put(
       setAddressLabelEntry({
-        id: '0',
+        id,
         address: address,
         temporaryAddress: address,
         addressError: undefined,
@@ -97,7 +109,20 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
   }
 }
 
+export function* handleRemoveAddressLabelEntry(action: RemoveAddressLabelEntry): SagaIterator {
+  const id = action.payload;
+  const { id: entryId, address } = yield select(getAddressLabelEntry, id);
+
+  if (typeof entryId === 'undefined') {
+    return;
+  }
+
+  yield put(clearAddressLabel(address));
+  yield put(clearAddressLabelEntry(id));
+}
+
 export default function* addressBookSaga(): SagaIterator {
   yield takeEvery(TypeKeys.CHANGE_ADDRESS_LABEL_ENTRY, handleChangeAddressLabelEntry);
   yield takeEvery(TypeKeys.SAVE_ADDRESS_LABEL_ENTRY, handleSaveAddressLabelEntry);
+  yield takeEvery(TypeKeys.REMOVE_ADDRESS_LABEL_ENTRY, handleRemoveAddressLabelEntry);
 }

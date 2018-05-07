@@ -1,12 +1,38 @@
 import {
   TypeKeys,
+  setAddressLabel,
+  clearAddressLabel,
   setAddressLabelEntry,
   changeAddressLabelEntry,
   saveAddressLabelEntry,
-  clearAddressLabelEntry
+  clearAddressLabelEntry,
+  removeAddressLabelEntry
 } from '../../common/actions/addressBook';
 
 describe('addressBook: Actions', () => {
+  describe('setAddressLabel', () => {
+    it('should generate the correct action', () => {
+      const payload = {
+        address: '0x0',
+        label: 'Foo'
+      };
+
+      expect(setAddressLabel(payload)).toEqual({
+        type: TypeKeys.SET_ADDRESS_LABEL,
+        payload
+      });
+    });
+  });
+  describe('clearAddressLabel', () => {
+    it('should generate the correct action', () => {
+      const payload = '0';
+
+      expect(clearAddressLabel(payload)).toEqual({
+        type: TypeKeys.CLEAR_ADDRESS_LABEL,
+        payload
+      });
+    });
+  });
   describe('setAddressLabelEntry', () => {
     it('should generate the correct action', () => {
       const payload = {
@@ -55,6 +81,16 @@ describe('addressBook: Actions', () => {
 
       expect(clearAddressLabelEntry(payload)).toEqual({
         type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY,
+        payload
+      });
+    });
+  });
+  describe('removeAddressLabelEntry', () => {
+    it('should generate the correct action', () => {
+      const payload = '0';
+
+      expect(removeAddressLabelEntry(payload)).toEqual({
+        type: TypeKeys.REMOVE_ADDRESS_LABEL_ENTRY,
         payload
       });
     });
