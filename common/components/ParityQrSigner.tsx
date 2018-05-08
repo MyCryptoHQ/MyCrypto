@@ -18,7 +18,8 @@ interface ScanProps {
 interface ShowProps {
   scan: false;
   account: string;
-  rlp: string;
+  data?: string;
+  rlp?: string;
 }
 
 interface SharedProps {

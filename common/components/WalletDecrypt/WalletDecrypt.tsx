@@ -52,6 +52,7 @@ import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import './WalletDecrypt.scss';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { Errorable } from 'components';
 
 interface OwnProps {
   hidden?: boolean;
@@ -165,7 +166,8 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+        helpLink:
+          'https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html'
       },
       [SecureWalletName.PARITY_SIGNER]: {
         lid: 'X_PARITYSIGNER',
@@ -271,27 +273,35 @@ const WalletDecrypt = withRouter<Props>(
             {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
-            <selectedWallet.component
-              value={this.state.value}
-              onChange={this.onChange}
-              onUnlock={(value: any) => {
-                if (selectedWallet.redirect) {
-                  this.props.history.push(selectedWallet.redirect);
+            <Errorable
+              errorMessage={`Oops, looks like ${translateRaw(
+                selectedWallet.lid
+              )} is not supported by your browser`}
+              onError={this.clearWalletChoice}
+              shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
+            >
+              <selectedWallet.component
+                value={this.state.value}
+                onChange={this.onChange}
+                onUnlock={(value: any) => {
+                  if (selectedWallet.redirect) {
+                    this.props.history.push(selectedWallet.redirect);
+                  }
+                  this.onUnlock(value);
+                }}
+                showNotification={this.props.showNotification}
+                isWalletPending={
+                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                    ? this.props.isWalletPending
+                    : undefined
                 }
-                this.onUnlock(value);
-              }}
-              showNotification={this.props.showNotification}
-              isWalletPending={
-                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                  ? this.props.isWalletPending
-                  : undefined
-              }
-              isPasswordPending={
-                this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                  ? this.props.isPasswordPending
-                  : undefined
-              }
-            />
+                isPasswordPending={
+                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                    ? this.props.isPasswordPending
+                    : undefined
+                }
+              />
+            </Errorable>
           </section>
         </div>
       );
@@ -381,12 +391,14 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       let timeout = 0;
-      const web3Available = await isWeb3NodeAvailable();
-      if (wallet.attemptUnlock && web3Available) {
-        // timeout is only the maximum wait time before secondary view is shown
-        // send view will be shown immediately on web3 resolve
-        timeout = 1000;
-        wallet.unlock();
+      if (wallet.attemptUnlock) {
+        const web3Available = await isWeb3NodeAvailable();
+        if (web3Available) {
+          // timeout is only the maximum wait time before secondary view is shown
+          // send view will be shown immediately on web3 resolve
+          timeout = 1500;
+          wallet.unlock();
+        }
       }
 
       window.setTimeout(() => {
