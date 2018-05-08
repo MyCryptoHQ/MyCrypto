@@ -40,7 +40,7 @@ class AddressFieldDropdown extends React.Component<Props> {
     const { currentTo } = this.props;
     const noMatchContent = currentTo.startsWith('0x') ? null : (
       <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
-        <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')}"{currentTo}".
+        <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{currentTo}".
       </li>
     );
 
