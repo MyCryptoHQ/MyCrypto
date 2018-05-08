@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate, { translateRaw } from 'translations';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
-import { AddressLabelPair } from 'actions/addressBook';
 import { getLabelAddresses } from 'selectors/addressBook';
 import { getToRaw } from 'selectors/transaction/fields';
 import { Address, Identicon } from 'components/ui';
@@ -53,7 +52,7 @@ class AddressFieldDropdown extends React.Component<Props> {
   }
 
   private renderDropdownItems = () =>
-    this.getFilteredLabels().map((filteredLabel: AddressLabelPair, index: number) => {
+    this.getFilteredLabels().map((filteredLabel, index: number) => {
       const { activeIndex } = this.state;
       const { address, label } = filteredLabel;
       const isActive = activeIndex === index;

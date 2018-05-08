@@ -2,6 +2,7 @@ import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery } from 'redux-saga/effects';
 import { isValidAddressLabel } from 'libs/validators';
 import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
+import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
 import {
   TypeKeys,
   ChangeAddressLabelEntry,
@@ -15,8 +16,9 @@ import {
 import {
   getAddressLabels,
   getLabelAddresses,
-  getAddressLabelEntries,
-  getAddressLabelEntry
+  getAddressLabelEntry,
+  getAddressLabelEntryFromAddress,
+  getNextAddressLabelId
 } from 'selectors/addressBook';
 import { showNotification } from 'actions/notifications';
 
@@ -41,7 +43,7 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
   );
   const updatedEntry = {
     id,
-    address: addressError ? priorEntry.address || '' : temporaryAddress,
+    address: addressError && !isEditing ? priorEntry.address || '' : temporaryAddress,
     temporaryAddress,
     addressError: isEditing || overrideValidation ? undefined : addressError,
     label: labelError ? priorEntry.label || '' : temporaryLabel,
@@ -54,8 +56,8 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
 
 export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): SagaIterator {
   const id = action.payload;
-  const entries = yield select(getAddressLabelEntries);
   const { address, addressError, label, labelError } = yield select(getAddressLabelEntry, id);
+  const nextId = yield select(getNextAddressLabelId);
   const flashError = (error: string) => put(showNotification('danger', error, ERROR_DURATION));
 
   if (addressError) {
@@ -76,12 +78,10 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
 
   if (id === ADDRESS_BOOK_TABLE_ID) {
     // When entering a new label, create a new entry.
-    const currentEntryCount = Object.keys(entries).length - 1; // Subtract temporary entries.
-
     yield put(
       setAddressLabelEntry({
-        id: (currentEntryCount + 1).toString(),
-        address: address,
+        id: nextId,
+        address,
         temporaryAddress: address,
         addressError: undefined,
         label,
@@ -100,12 +100,37 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
         labelError: undefined
       })
     );
+  } else if (id === ACCOUNT_ADDRESS_ID) {
+    const ownEntry = yield select(getAddressLabelEntryFromAddress, address);
+
+    yield put(
+      setAddressLabelEntry({
+        id: ownEntry ? ownEntry.id : nextId,
+        address,
+        temporaryAddress: address,
+        addressError: undefined,
+        label,
+        temporaryLabel: label,
+        labelError: undefined
+      })
+    );
+    yield put(
+      setAddressLabelEntry({
+        id: ACCOUNT_ADDRESS_ID,
+        address: '',
+        temporaryAddress: '',
+        addressError: undefined,
+        label: '',
+        temporaryLabel: '',
+        labelError: undefined
+      })
+    );
   } else {
     // When editing a label, overwrite the previous entry.
     yield put(
       setAddressLabelEntry({
         id,
-        address: address,
+        address,
         temporaryAddress: address,
         addressError: undefined,
         label,
@@ -126,6 +151,14 @@ export function* handleRemoveAddressLabelEntry(action: RemoveAddressLabelEntry):
 
   yield put(clearAddressLabel(address));
   yield put(clearAddressLabelEntry(id));
+
+  if (id === ACCOUNT_ADDRESS_ID) {
+    const ownEntry = yield select(getAddressLabelEntryFromAddress, address);
+
+    if (ownEntry) {
+      yield put(clearAddressLabelEntry(ownEntry.id));
+    }
+  }
 }
 
 export default function* addressBookSaga(): SagaIterator {

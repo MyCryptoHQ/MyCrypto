@@ -1,5 +1,7 @@
 import { toChecksumAddress } from 'ethereumjs-util';
 import { TypeKeys, AddressBookAction, AddressLabelEntry } from 'actions/addressBook';
+import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
+import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
 
 export interface State {
   addresses: {
@@ -24,13 +26,14 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
     case TypeKeys.SET_ADDRESS_LABEL: {
       const { addresses, labels } = state;
       const { address, label } = action.payload;
+      const checksummedAddress = toChecksumAddress(address);
       const updatedAddresses = {
         ...addresses,
-        [toChecksumAddress(address)]: label
+        [checksummedAddress]: label
       };
       const updatedLabels = {
         ...labels,
-        [label]: toChecksumAddress(address)
+        [label]: checksummedAddress
       };
 
       return {
@@ -58,11 +61,18 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
     }
 
     case TypeKeys.SET_ADDRESS_LABEL_ENTRY: {
+      const { id, address } = action.payload;
+      const checksummedAddress = toChecksumAddress(address);
+      const isNonRowEntry = id === ADDRESS_BOOK_TABLE_ID || id === ACCOUNT_ADDRESS_ID;
+
       return {
         ...state,
         entries: {
           ...state.entries,
-          [action.payload.id]: { ...action.payload }
+          [id]: {
+            ...action.payload,
+            address: isNonRowEntry ? address : checksummedAddress
+          }
         }
       };
     }

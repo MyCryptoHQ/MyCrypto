@@ -166,9 +166,22 @@ class AddressBookTable extends React.Component<Props, State> {
   }
 
   private handleAddEntry = () => {
+    const { entry: { temporaryAddress, addressError, labelError } } = this.props;
+
+    if (!temporaryAddress || addressError || temporaryAddress.length === 0) {
+      return this.addressInput && this.addressInput.focus();
+    }
+
+    if (labelError && this.labelInput) {
+      this.labelInput.focus();
+    }
+
     this.props.saveAddressLabelEntry(ADDRESS_BOOK_TABLE_ID);
-    this.clearFieldStatuses();
-    this.setEditingRow(null);
+
+    if (!addressError && !labelError) {
+      this.clearFieldStatuses();
+      this.setEditingRow(null);
+    }
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {

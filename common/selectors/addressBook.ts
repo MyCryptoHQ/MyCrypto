@@ -1,5 +1,8 @@
+import { toChecksumAddress } from 'ethereumjs-util';
 import { AppState } from 'reducers';
 import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
+import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
+import { AddressLabelEntry } from 'actions/addressBook';
 import { getCurrentTo } from './transaction';
 
 export function getAddressLabels(state: AppState) {
@@ -22,6 +25,19 @@ export function getAddressBookTableEntry(state: AppState) {
   return getAddressLabelEntry(state, ADDRESS_BOOK_TABLE_ID);
 }
 
+export function getAccountAddressEntry(state: AppState) {
+  return getAddressLabelEntry(state, ACCOUNT_ADDRESS_ID);
+}
+
+export function getAddressLabelEntryFromAddress(state: AppState, address: string) {
+  const rows = getAddressLabelRows(state);
+  const entry = rows.find(
+    (iteratedEntry: AddressLabelEntry) => iteratedEntry.address === toChecksumAddress(address)
+  );
+
+  return entry;
+}
+
 export function getAddressLabelRows(state: AppState) {
   const nonRowEntries = [ADDRESS_BOOK_TABLE_ID, 'ACCOUNT_ADDRESS_ID'];
   const entries = getAddressLabelEntries(state);
@@ -31,6 +47,16 @@ export function getAddressLabelRows(state: AppState) {
     .sort((a, b) => +a.id - +b.id);
 
   return rows;
+}
+
+export function getNextAddressLabelId(state: AppState) {
+  const rows = getAddressLabelRows(state);
+
+  if (rows.length === 0) {
+    return '1';
+  }
+
+  return (+rows[rows.length - 1].id + 1).toString();
 }
 
 export function getCurrentToLabel(state: AppState) {

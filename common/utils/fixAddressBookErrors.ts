@@ -1,4 +1,6 @@
 import { State as AddressBookState } from 'reducers/addressBook';
+import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
+import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
 
 export default function fixAddressBookErrors(addressBook: AddressBookState | undefined) {
   if (!addressBook) {
@@ -18,6 +20,9 @@ export default function fixAddressBookErrors(addressBook: AddressBookState | und
       delete entry.labelError;
     }
   });
+
+  delete addressBook.entries[ADDRESS_BOOK_TABLE_ID];
+  delete addressBook.entries[ACCOUNT_ADDRESS_ID];
 
   return addressBook;
 }
