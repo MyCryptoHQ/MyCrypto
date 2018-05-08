@@ -48,8 +48,8 @@ export const socialMediaLinks: Link[] = [
 
 export const productLinks: Link[] = [
   {
-    link: 'https://classic.mycrypto.com/',
-    text: translateRaw('MYCRYPTO_CLASSIC')
+    link: 'https://legacy.mycrypto.com/',
+    text: translateRaw('OLD_MYCRYPTO')
   },
   {
     link:
@@ -66,7 +66,7 @@ export const productLinks: Link[] = [
     text: translateRaw('ETHERSCAMDB')
   },
   {
-    link: 'https://classic.mycrypto.com/helpers.html',
+    link: 'https://legacy.mycrypto.com/helpers.html',
     text: translateRaw('FOOTER_HELP_AND_DEBUGGING')
   }
 ];
