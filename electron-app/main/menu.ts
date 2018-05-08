@@ -1,5 +1,6 @@
 import { MenuItemConstructorOptions, shell } from 'electron';
 import { APP_TITLE, REPOSITORY } from '../constants';
+import packageJson from '../../package.json';
 
 const MENU: MenuItemConstructorOptions[] = [
   {
@@ -35,6 +36,11 @@ const MENU: MenuItemConstructorOptions[] = [
 const HELP_MENU = {
   role: 'help',
   submenu: [
+    {
+      label: `v${packageJson.version}`,
+      enabled: false
+    },
+    { type: 'separator' },
     {
       label: 'Help / FAQ',
       click() {
