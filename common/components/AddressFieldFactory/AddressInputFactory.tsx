@@ -8,7 +8,7 @@ import {
   isValidCurrentTo,
   isCurrentToLabelEntry
 } from 'selectors/transaction';
-import { getCurrentLabel } from 'selectors/addressBook';
+import { getCurrentToLabel } from 'selectors/addressBook';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
@@ -78,6 +78,7 @@ class AddressInputFactoryClass extends Component<Props> {
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
     const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
+    const isENSAddress = currentTo.raw.includes('.eth');
 
     return (
       <div className="AddressInput form-group">
@@ -97,7 +98,7 @@ class AddressInputFactoryClass extends Component<Props> {
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
-          {isFocused && <AddressFieldDropdown />}
+          {isFocused && !isENSAddress && <AddressFieldDropdown />}
           {showLabelMatch &&
             label && (
               <div title={sendingTo} className="AddressInput-input-label">
@@ -128,7 +129,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
 
   return {
     currentTo,
-    label: getCurrentLabel(state),
+    label: getCurrentToLabel(state),
     isResolving: getResolvingDomain(state),
     isValid: isValidCurrentTo(state),
     isLabelEntry: isCurrentToLabelEntry(state)

@@ -2,59 +2,56 @@ import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { AppState } from 'reducers';
 import translate, { translateRaw } from 'translations';
-import { isValidETHAddress, isValidLabelLength } from 'libs/validators';
 import {
-  TAddLabelForAddress,
-  TRemoveLabelForAddress,
-  addLabelForAddress,
-  removeLabelForAddress,
-  AddressLabelPair
+  changeAddressLabelEntry,
+  TChangeAddressLabelEntry,
+  saveAddressLabelEntry,
+  TSaveAddressLabelEntry,
+  removeAddressLabelEntry,
+  TRemoveAddressLabelEntry
 } from 'actions/addressBook';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { getAddressLabelPairs, getLabels } from 'selectors/addressBook';
+import {
+  getAddressLabels,
+  getLabelAddresses,
+  getAddressLabelRows,
+  getAddressBookTableEntry
+} from 'selectors/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
 
 interface DispatchProps {
-  addLabelForAddress: TAddLabelForAddress;
-  removeLabelForAddress: TRemoveLabelForAddress;
-  showNotification: TShowNotification;
+  changeAddressLabelEntry: TChangeAddressLabelEntry;
+  saveAddressLabelEntry: TSaveAddressLabelEntry;
+  removeAddressLabelEntry: TRemoveAddressLabelEntry;
 }
 
 interface StateProps {
-  rows: ReturnType<typeof getAddressLabelPairs>;
-  labels: ReturnType<typeof getLabels>;
-  reversedLabels: ReturnType<typeof getLabels>;
+  rows: ReturnType<typeof getAddressLabelRows>;
+  entry: ReturnType<typeof getAddressBookTableEntry>;
+  addressLabels: ReturnType<typeof getAddressLabels>;
+  labelAddresses: ReturnType<typeof getLabelAddresses>;
 }
 
 type Props = DispatchProps & StateProps;
 
 interface State {
   editingRow: number | null;
-  temporaryAddress: string;
-  temporaryAddressTouched: boolean;
-  temporaryAddressBlurred: boolean;
-  addressInputError: string | null;
-  temporaryLabel: string;
-  temporaryLabelTouched: boolean;
-  temporaryLabelBlurred: boolean;
-  labelInputError: string | null;
+  addressTouched: boolean;
+  addressBlurred: boolean;
+  labelTouched: boolean;
+  labelBlurred: boolean;
 }
 
-export const ERROR_DURATION: number = 4000;
+export const ADDRESS_BOOK_TABLE_ID: string = 'ADDRESS_BOOK_TABLE_ID';
 
 class AddressBookTable extends React.Component<Props, State> {
   public state: State = {
     editingRow: null,
-    temporaryAddress: '',
-    temporaryAddressTouched: false,
-    temporaryAddressBlurred: false,
-    addressInputError: null,
-    temporaryLabel: '',
-    temporaryLabelTouched: false,
-    temporaryLabelBlurred: false,
-    labelInputError: null
+    addressTouched: false,
+    addressBlurred: false,
+    labelTouched: false,
+    labelBlurred: false
   };
 
   private addressInput: HTMLInputElement | null = null;
@@ -62,23 +59,17 @@ class AddressBookTable extends React.Component<Props, State> {
   private labelInput: HTMLInputElement | null = null;
 
   public render() {
-    const { rows } = this.props;
     const {
-      temporaryAddress,
-      temporaryAddressTouched,
-      temporaryAddressBlurred,
-      addressInputError,
-      temporaryLabel,
-      temporaryLabelTouched,
-      temporaryLabelBlurred,
-      labelInputError
-    } = this.state;
-    const addressTouchedWithError = temporaryAddressTouched && addressInputError;
+      entry: { temporaryAddress = '', addressError = '', temporaryLabel = '', labelError = '' },
+      rows
+    } = this.props;
+    const { addressTouched, addressBlurred, labelTouched, labelBlurred } = this.state;
+
+    // Classnames
+    const addressTouchedWithError = addressTouched && addressError;
+    const labelTouchedWithError = labelTouched && labelError;
     const addressInputClassName = addressTouchedWithError ? 'invalid' : '';
-
-    const labelTouchedWithError = temporaryLabelTouched && labelInputError;
     const labelInputClassName = labelTouchedWithError ? 'invalid' : '';
-
     const nonMobileTemporaryInputErrorClassName =
       'AddressBookTable-row-error-temporary-input--non-mobile';
     const nonMobileVisibleErrorClassName = `${nonMobileTemporaryInputErrorClassName}--visible`;
@@ -113,9 +104,9 @@ class AddressBookTable extends React.Component<Props, State> {
                 className={addressInputClassName}
                 placeholder={translateRaw('NEW_ADDRESS')}
                 value={temporaryAddress}
-                onChange={this.setTemporaryAddress}
-                onFocus={this.setTemporaryAddressTouched}
-                onBlur={this.setTemporaryAddressBlurred}
+                onChange={this.handleAddressChange}
+                onFocus={this.setAddressTouched}
+                onBlur={this.setAddressBlurred}
                 setInnerRef={this.setAddressInputRef}
               />
             </div>
@@ -128,7 +119,7 @@ class AddressBookTable extends React.Component<Props, State> {
           </div>
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
             <label className="AddressBookTable-row-input-wrapper-error">
-              {temporaryAddressBlurred && addressInputError}
+              {addressBlurred && addressError}
             </label>
           </div>
           <div className="AddressBookTable-row-input">
@@ -141,9 +132,9 @@ class AddressBookTable extends React.Component<Props, State> {
                 className={labelInputClassName}
                 placeholder={translateRaw('NEW_LABEL')}
                 value={temporaryLabel}
-                onChange={this.setTemporaryLabel}
-                onFocus={this.setTemporaryLabelTouched}
-                onBlur={this.setTemporaryLabelBlurred}
+                onChange={this.handleLabelChange}
+                onFocus={this.setLabelTouched}
+                onBlur={this.setLabelBlurred}
                 setInnerRef={this.setLabelInputRef}
               />
             </div>
@@ -157,16 +148,16 @@ class AddressBookTable extends React.Component<Props, State> {
           </div>
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
             <label className="AddressBookTable-row-input-wrapper-error">
-              {temporaryLabelBlurred && labelInputError}
+              {labelBlurred && labelError}
             </label>
           </div>
         </div>
         <div className="AddressBookTable-row AddressBookTable-row-error">
           <label className={nonMobileTemporaryAddressErrorClassName}>
-            {temporaryAddressBlurred && addressInputError}
+            {addressBlurred && addressError}
           </label>
           <label className={nonMobileTemporaryLabelErrorClassName}>
-            {temporaryLabelBlurred && labelInputError}
+            {labelBlurred && labelError}
           </label>
         </div>
         {rows.map(this.makeLabelRow)}
@@ -174,43 +165,23 @@ class AddressBookTable extends React.Component<Props, State> {
     );
   }
 
-  private handleSave = (addressToLabel: AddressLabelPair) => {
-    this.props.addLabelForAddress(addressToLabel);
-    this.setEditingRow(null);
-  };
-
   private handleAddEntry = () => {
-    const { labels, reversedLabels } = this.props;
-    const { temporaryLabel: label, temporaryAddress: address } = this.state;
-    const addressAlreadyExists = !!labels[address];
-    const labelAlreadyExists = !!reversedLabels[label];
+    const { entry: { temporaryAddress, addressError, labelError } } = this.props;
 
-    if (!isValidETHAddress(address)) {
-      this.displayInvalidETHAddressNotification();
-      return this.focusAndSelectAddressInput();
+    if (!temporaryAddress || addressError || temporaryAddress.length === 0) {
+      return this.addressInput && this.addressInput.focus();
     }
 
-    if (addressAlreadyExists) {
-      this.displayAddressAlreadyExistsNotification();
-      return this.focusAndSelectAddressInput();
+    if (labelError && this.labelInput) {
+      this.labelInput.focus();
     }
 
-    if (!label) {
-      return this.focusAndSelectLabelInput();
-    }
+    this.props.saveAddressLabelEntry(ADDRESS_BOOK_TABLE_ID);
 
-    if (!isValidLabelLength(label)) {
-      this.displayInvalidLabelLengthNotification();
-      return this.focusAndSelectLabelInput();
+    if (!addressError && !labelError) {
+      this.clearFieldStatuses();
+      this.setEditingRow(null);
     }
-
-    if (labelAlreadyExists) {
-      this.displayLabelAlreadyExistsNotification();
-      return this.focusAndSelectLabelInput();
-    }
-
-    this.handleSave({ label, address });
-    this.clearTemporaryFields();
   };
 
   private handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
@@ -223,188 +194,123 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private clearEditingRow = () => this.setEditingRow(null);
 
-  private makeLabelRow = (addressToLabel: AddressLabelPair, index: number) => {
+  private makeLabelRow = (row: any, index: number) => {
     const { editingRow } = this.state;
-    const isEditingRow = index === editingRow;
+    const { id, address, label, temporaryLabel, labelError } = row;
+    const isEditing = index === editingRow;
+    const onChange = (newLabel: string) =>
+      this.props.changeAddressLabelEntry({
+        id,
+        address,
+        label: newLabel,
+        isEditing: true
+      });
+    const onSave = () => {
+      this.props.saveAddressLabelEntry(id);
+      this.setEditingRow(null);
+    };
+    const onLabelInputBlur = () => {
+      // If the new changes aren't valid, undo them.
+      if (labelError) {
+        this.props.changeAddressLabelEntry({
+          id,
+          address,
+          temporaryAddress: address,
+          label,
+          temporaryLabel: label,
+          overrideValidation: true
+        });
+      }
+
+      this.clearEditingRow();
+    };
 
     return (
       <AddressBookTableRow
-        key={index}
+        key={address}
         index={index}
-        address={addressToLabel.address}
-        label={addressToLabel.label}
-        labels={this.props.reversedLabels}
-        isEditing={isEditingRow}
-        onSave={(labelToSave: string) =>
-          this.handleSave({
-            label: labelToSave,
-            address: addressToLabel.address
-          })
-        }
-        onLabelInputBlur={this.clearEditingRow}
+        address={address}
+        label={label}
+        temporaryLabel={temporaryLabel}
+        labelError={labelError}
+        isEditing={isEditing}
+        onChange={onChange}
+        onSave={onSave}
+        onLabelInputBlur={onLabelInputBlur}
         onEditClick={() => this.setEditingRow(index)}
-        onRemoveClick={() => this.props.removeLabelForAddress(addressToLabel.address)}
-        displayInvalidLabelLengthNotification={this.displayInvalidLabelLengthNotification}
-        displayLabelAlreadyExistsNotification={this.displayLabelAlreadyExistsNotification}
+        onRemoveClick={() => this.props.removeAddressLabelEntry(id)}
       />
     );
   };
 
-  private setTemporaryAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const temporaryAddress = e.target.value;
+  private setAddressInputRef = (node: HTMLInputElement) => (this.addressInput = node);
 
-    this.setState(
-      { temporaryAddress, temporaryAddressTouched: true },
-      temporaryAddress.length > 0
-        ? this.checkTemporaryAddressValidation
-        : this.clearTemporaryAddressTouched
-    );
-  };
+  private setAddressTouched = () =>
+    !this.state.addressTouched && this.setState({ addressTouched: true });
 
-  private setTemporaryAddressTouched = () => {
-    const { temporaryAddress, temporaryAddressTouched } = this.state;
+  private clearAddressTouched = () => this.setState({ addressTouched: false });
 
-    if (!temporaryAddressTouched) {
-      this.setState({ temporaryAddressTouched: true });
-    }
+  private setAddressBlurred = () => this.setState({ addressBlurred: true });
 
-    if (temporaryAddress.length > 0) {
-      this.checkTemporaryAddressValidation();
-    }
-  };
+  private handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { entry } = this.props;
+    const address = e.target.value;
+    const label = entry.temporaryLabel || '';
 
-  private clearTemporaryAddressTouched = () =>
-    this.setState({ temporaryAddressTouched: false, addressInputError: null });
-
-  private setTemporaryAddressBlurred = () => this.setState({ temporaryAddressBlurred: true });
-
-  private checkTemporaryAddressValidation = () => {
-    const { labels } = this.props;
-    const { temporaryAddress, addressInputError } = this.state;
-    const addressAlreadyExists = !!labels[temporaryAddress];
-    const hadErrorPreviously = addressInputError !== null;
-
-    if (addressAlreadyExists) {
-      return this.setState({
-        addressInputError: translateRaw('ADDRESS_ALREADY_EXISTS')
-      });
-    }
-
-    if (!isValidETHAddress(temporaryAddress)) {
-      return this.setState({
-        addressInputError: translateRaw('INVALID_ADDRESS')
-      });
-    }
-
-    if (hadErrorPreviously) {
-      return this.setState({
-        addressInputError: null
-      });
-    }
-  };
-
-  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const temporaryLabel = e.target.value;
-
-    this.setState(
-      { temporaryLabel, temporaryLabelTouched: true },
-      temporaryLabel.length > 0
-        ? this.checkTemporaryLabelValidation
-        : this.clearTemporaryLabelTouched
-    );
-  };
-
-  private setTemporaryLabelTouched = () => {
-    const { temporaryLabel, temporaryLabelTouched } = this.state;
-
-    if (!temporaryLabelTouched) {
-      this.setState({ temporaryLabelTouched: true });
-    }
-
-    if (temporaryLabel.length > 0) {
-      this.checkTemporaryLabelValidation();
-    }
-  };
-
-  private clearTemporaryLabelTouched = () =>
-    this.setState({ temporaryLabelTouched: false, labelInputError: null });
-
-  private setTemporaryLabelBlurred = () => this.setState({ temporaryLabelBlurred: true });
-
-  private checkTemporaryLabelValidation = () => {
-    const { reversedLabels } = this.props;
-    const { temporaryLabel, labelInputError } = this.state;
-    const labelAlreadyExists = !!reversedLabels[temporaryLabel];
-    const hadErrorPreviously = labelInputError !== null;
-
-    if (labelAlreadyExists) {
-      return this.setState({
-        labelInputError: translateRaw('LABEL_ALREADY_EXISTS')
-      });
-    }
-
-    if (!isValidLabelLength(temporaryLabel)) {
-      return this.setState({
-        labelInputError: translateRaw('INVALID_LABEL_LENGTH')
-      });
-    }
-
-    if (hadErrorPreviously) {
-      return this.setState({
-        labelInputError: null
-      });
-    }
-  };
-
-  private clearTemporaryFields = () =>
-    this.setState({
-      temporaryLabel: '',
-      temporaryLabelTouched: false,
-      temporaryAddress: '',
-      temporaryAddressTouched: false
+    this.props.changeAddressLabelEntry({
+      id: ADDRESS_BOOK_TABLE_ID,
+      address,
+      label
     });
 
-  private setAddressInputRef = (node: HTMLInputElement) => (this.addressInput = node);
+    this.setState(
+      { addressTouched: true },
+      () => address.length === 0 && this.clearAddressTouched()
+    );
+  };
 
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private displayInvalidETHAddressNotification = () =>
-    this.props.showNotification('danger', translateRaw('INVALID_ADDRESS'), ERROR_DURATION);
+  private setLabelTouched = () => !this.state.labelTouched && this.setState({ labelTouched: true });
 
-  private displayAddressAlreadyExistsNotification = () =>
-    this.props.showNotification('danger', translateRaw('ADDRESS_ALREADY_EXISTS'), ERROR_DURATION);
+  private clearLabelTouched = () => this.setState({ labelTouched: false });
 
-  private displayInvalidLabelLengthNotification = () =>
-    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
+  private setLabelBlurred = () => this.setState({ labelBlurred: true });
 
-  private displayLabelAlreadyExistsNotification = () =>
-    this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
+  private handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { entry } = this.props;
+    const address = entry.temporaryAddress || '';
+    const label = e.target.value;
 
-  private focusAndSelectAddressInput = () => {
-    if (this.addressInput) {
-      this.addressInput.focus();
-      this.addressInput.select();
-    }
+    this.props.changeAddressLabelEntry({
+      id: ADDRESS_BOOK_TABLE_ID,
+      address,
+      label
+    });
+
+    this.setState({ labelTouched: true }, () => label.length === 0 && this.clearLabelTouched());
   };
 
-  private focusAndSelectLabelInput = () => {
-    if (this.labelInput) {
-      this.labelInput.focus();
-      this.labelInput.select();
-    }
-  };
+  private clearFieldStatuses = () =>
+    this.setState({
+      addressTouched: false,
+      addressBlurred: false,
+      labelTouched: false,
+      labelBlurred: false
+    });
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
-  rows: getAddressLabelPairs(state),
-  labels: getLabels(state),
-  reversedLabels: getLabels(state, { reversed: true })
+  rows: getAddressLabelRows(state),
+  entry: getAddressBookTableEntry(state),
+  addressLabels: getAddressLabels(state),
+  labelAddresses: getLabelAddresses(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
-  addLabelForAddress,
-  removeLabelForAddress,
-  showNotification
+  changeAddressLabelEntry,
+  saveAddressLabelEntry,
+  removeAddressLabelEntry
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressBookTable);

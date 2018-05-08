@@ -1,47 +1,67 @@
+import { toChecksumAddress } from 'ethereumjs-util';
 import { AppState } from 'reducers';
+import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
+import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
+import { AddressLabelEntry } from 'actions/addressBook';
 import { getCurrentTo } from './transaction';
 
-interface GetLabelOptions {
-  reversed?: boolean;
+export function getAddressLabels(state: AppState) {
+  return state.addressBook.addresses;
 }
 
-interface AddressToLabel {
-  [address: string]: string;
+export function getLabelAddresses(state: AppState) {
+  return state.addressBook.labels;
 }
 
-interface ReversedAddressToLabel {
-  [label: string]: string;
+export function getAddressLabelEntry(state: AppState, id: string) {
+  return state.addressBook.entries[id] || {};
 }
 
-export function getLabels(state: AppState, options: GetLabelOptions = {}) {
-  const { addressBook: { labels } } = state;
-  const finalLabels: AddressToLabel | ReversedAddressToLabel = options.reversed
-    ? // Label: Address
-      Object.keys(labels).reduce((prev: ReversedAddressToLabel, next: string) => {
-        prev[labels[next]] = next;
-
-        return prev;
-      }, {})
-    : // Address: Label
-      labels;
-
-  return finalLabels;
+export function getAddressLabelEntries(state: AppState) {
+  return state.addressBook.entries;
 }
 
-export function getAddressLabelPairs(state: AppState) {
-  const { addressBook: { labels } } = state;
-
-  const collection = Object.keys(labels).map(address => ({
-    label: labels[address],
-    address
-  }));
-
-  return collection;
+export function getAddressBookTableEntry(state: AppState) {
+  return getAddressLabelEntry(state, ADDRESS_BOOK_TABLE_ID);
 }
 
-export function getCurrentLabel(state: AppState) {
-  const labels = getLabels(state);
+export function getAccountAddressEntry(state: AppState) {
+  return getAddressLabelEntry(state, ACCOUNT_ADDRESS_ID);
+}
+
+export function getAddressLabelEntryFromAddress(state: AppState, address: string) {
+  const rows = getAddressLabelRows(state);
+  const entry = rows.find(
+    (iteratedEntry: AddressLabelEntry) => iteratedEntry.address === toChecksumAddress(address)
+  );
+
+  return entry;
+}
+
+export function getAddressLabelRows(state: AppState) {
+  const nonRowEntries = [ADDRESS_BOOK_TABLE_ID, 'ACCOUNT_ADDRESS_ID'];
+  const entries = getAddressLabelEntries(state);
+  const rows = Object.keys(entries)
+    .map(entry => ({ ...entries[entry] }))
+    .filter(entry => !nonRowEntries.includes(entry.id))
+    .sort((a, b) => +a.id - +b.id);
+
+  return rows;
+}
+
+export function getNextAddressLabelId(state: AppState) {
+  const rows = getAddressLabelRows(state);
+
+  if (rows.length === 0) {
+    return '1';
+  }
+
+  return (+rows[rows.length - 1].id + 1).toString();
+}
+
+export function getCurrentToLabel(state: AppState) {
+  const addresses = getAddressLabels(state);
   const currentTo = getCurrentTo(state);
 
-  return labels[currentTo.raw] || null;
+  return addresses[currentTo.raw] || null;
 }

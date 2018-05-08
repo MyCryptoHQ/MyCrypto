@@ -1,22 +1,68 @@
-import { AddLabelForAddressAction, RemoveLabelForAddressAction } from './actionTypes';
 import { TypeKeys } from './constants';
+import {
+  AddressLabel,
+  AddressLabelEntry,
+  SetAddressLabel,
+  ClearAddressLabel,
+  SetAddressLabelEntry,
+  ChangeAddressLabelEntry,
+  SaveAddressLabelEntry,
+  ClearAddressLabelEntry,
+  RemoveAddressLabelEntry
+} from './actionTypes';
 
-export type TAddLabelForAddress = typeof addLabelForAddress;
-export function addLabelForAddress(
-  payload: AddLabelForAddressAction['payload']
-): AddLabelForAddressAction {
+export type TSetAddressLabel = typeof setAddressLabel;
+export function setAddressLabel(payload: AddressLabel): SetAddressLabel {
   return {
-    type: TypeKeys.ADD_LABEL_FOR_ADDRESS,
+    type: TypeKeys.SET_ADDRESS_LABEL,
     payload
   };
 }
 
-export type TRemoveLabelForAddress = typeof removeLabelForAddress;
-export function removeLabelForAddress(
-  payload: RemoveLabelForAddressAction['payload']
-): RemoveLabelForAddressAction {
+export type TClearAddressLabel = typeof clearAddressLabel;
+export function clearAddressLabel(payload: string): ClearAddressLabel {
   return {
-    type: TypeKeys.REMOVE_LABEL_FOR_ADDRESS,
+    type: TypeKeys.CLEAR_ADDRESS_LABEL,
+    payload
+  };
+}
+
+export type TSetAddressLabelEntry = typeof setAddressLabelEntry;
+export function setAddressLabelEntry(payload: AddressLabelEntry): SetAddressLabelEntry {
+  return {
+    type: TypeKeys.SET_ADDRESS_LABEL_ENTRY,
+    payload
+  };
+}
+
+export type TChangeAddressLabelEntry = typeof changeAddressLabelEntry;
+export function changeAddressLabelEntry(payload: AddressLabelEntry): ChangeAddressLabelEntry {
+  return {
+    type: TypeKeys.CHANGE_ADDRESS_LABEL_ENTRY,
+    payload
+  };
+}
+
+export type TSaveAddressLabelEntry = typeof saveAddressLabelEntry;
+export function saveAddressLabelEntry(payload: string): SaveAddressLabelEntry {
+  return {
+    type: TypeKeys.SAVE_ADDRESS_LABEL_ENTRY,
+    payload
+  };
+}
+
+export type TClearAddressLabelEntry = typeof clearAddressLabelEntry;
+export function clearAddressLabelEntry(payload: string): ClearAddressLabelEntry {
+  return {
+    type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY,
+    payload
+  };
+}
+
+export type TRemoveAddressLabelEntry = typeof removeAddressLabelEntry;
+export function removeAddressLabelEntry(payload: string): RemoveAddressLabelEntry {
+  return {
+    type: TypeKeys.REMOVE_ADDRESS_LABEL_ENTRY,
     payload
   };
 }

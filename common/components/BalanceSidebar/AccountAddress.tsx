@@ -4,26 +4,25 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'reducers';
 import {
-  addLabelForAddress,
-  TAddLabelForAddress,
-  removeLabelForAddress,
-  TRemoveLabelForAddress
+  changeAddressLabelEntry,
+  TChangeAddressLabelEntry,
+  saveAddressLabelEntry,
+  TSaveAddressLabelEntry,
+  removeAddressLabelEntry,
+  TRemoveAddressLabelEntry
 } from 'actions/addressBook';
-import { showNotification, TShowNotification } from 'actions/notifications';
+import { getAccountAddressEntry, getAddressLabels } from 'selectors/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
-import { getLabels } from 'selectors/addressBook';
-import { isValidLabelLength } from 'libs/validators';
-import { ERROR_DURATION } from 'components/AddressBookTable';
 
 interface StateProps {
-  labels: ReturnType<typeof getLabels>;
-  reversedLabels: ReturnType<typeof getLabels>;
+  entry: ReturnType<typeof getAccountAddressEntry>;
+  addressLabels: ReturnType<typeof getAddressLabels>;
 }
 
 interface DispatchProps {
-  addLabelForAddress: TAddLabelForAddress;
-  removeLabelForAddress: TRemoveLabelForAddress;
-  showNotification: TShowNotification;
+  changeAddressLabelEntry: TChangeAddressLabelEntry;
+  saveAddressLabelEntry: TSaveAddressLabelEntry;
+  removeAddressLabelEntry: TRemoveAddressLabelEntry;
 }
 
 interface OwnProps {
@@ -35,20 +34,16 @@ type Props = StateProps & DispatchProps & OwnProps;
 interface State {
   copied: boolean;
   editingLabel: boolean;
-  temporaryLabel: string;
-  mostRecentValidLabel: string;
   labelInputTouched: boolean;
-  labelInputError: string | null;
 }
+
+export const ACCOUNT_ADDRESS_ID: string = 'ACCOUNT_ADDRESS_ID';
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {
     copied: false,
     editingLabel: false,
-    temporaryLabel: this.props.labels[this.props.address] || '',
-    mostRecentValidLabel: this.props.labels[this.props.address] || '',
-    labelInputTouched: false,
-    labelInputError: null
+    labelInputTouched: false
   };
 
   private goingToClearCopied: number | null = null;
@@ -63,12 +58,6 @@ class AccountAddress extends React.Component<Props, State> {
       this.clearCopied
     );
 
-  public componentWillReceiveProps(nextProps: Props) {
-    const temporaryLabel = nextProps.labels[nextProps.address] || '';
-
-    this.setState({ temporaryLabel, mostRecentValidLabel: temporaryLabel });
-  }
-
   public componentWillUnmount() {
     if (this.goingToClearCopied) {
       window.clearTimeout(this.goingToClearCopied);
@@ -76,9 +65,9 @@ class AccountAddress extends React.Component<Props, State> {
   }
 
   public render() {
-    const { address, labels } = this.props;
+    const { address, addressLabels } = this.props;
     const { copied } = this.state;
-    const label = labels[address];
+    const label = addressLabels[address];
     const labelContent = this.generateLabelContent();
     const labelButton = this.generateLabelButton();
     const addressClassName = `AccountInfo-address-addr ${
@@ -128,49 +117,14 @@ class AccountAddress extends React.Component<Props, State> {
 
   private stopEditingLabel = () => this.setState({ editingLabel: false });
 
-  private updateAccountLabel = (label: string) => {
-    const { address, labels } = this.props;
-    const currentLabel = labels[address];
-
-    this.stopEditingLabel();
-
-    if (label === currentLabel) {
-      return;
-    }
-
-    if (this.isValidLabel(label)) {
-      label.length > 0
-        ? this.props.addLabelForAddress({
-            address,
-            label
-          })
-        : this.props.removeLabelForAddress(address);
-    }
-  };
-
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
-  private handleBlur = () => {
-    const { temporaryLabel } = this.state;
-
-    this.updateAccountLabel(temporaryLabel);
-    this.clearTemporaryLabelTouched();
-  };
-
-  private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    switch (e.key) {
-      case 'Enter':
-        return this.handleBlur();
-      case 'Escape':
-        return this.stopEditingLabel();
-    }
-  };
-
   private generateLabelContent = () => {
-    const { address, labels } = this.props;
-    const { editingLabel, temporaryLabel, labelInputTouched, labelInputError } = this.state;
-    const label = labels[address];
-    const labelInputTouchedWithError = labelInputTouched && labelInputError;
+    const { address, addressLabels, entry: { temporaryLabel, labelError } } = this.props;
+    const { editingLabel, labelInputTouched } = this.state;
+    const storedLabel = addressLabels[address];
+    const newLabelSameAsPrevious = temporaryLabel === storedLabel;
+    const labelInputTouchedWithError = labelInputTouched && !newLabelSameAsPrevious && labelError;
     const inputClassName = labelInputTouchedWithError ? 'invalid' : '';
 
     let labelContent = null;
@@ -182,8 +136,8 @@ class AccountAddress extends React.Component<Props, State> {
             title={translateRaw('ADD_LABEL')}
             className={inputClassName}
             placeholder={translateRaw('NEW_LABEL')}
-            value={temporaryLabel}
-            onChange={this.setTemporaryLabel}
+            defaultValue={storedLabel}
+            onChange={this.handleLabelChange}
             onKeyDown={this.handleKeyDown}
             onFocus={this.setTemporaryLabelTouched}
             onBlur={this.handleBlur}
@@ -191,14 +145,14 @@ class AccountAddress extends React.Component<Props, State> {
             setInnerRef={this.setLabelInputRef}
           />
           {labelInputTouchedWithError && (
-            <label className="AccountInfo-address-wrapper-error">{labelInputError}</label>
+            <label className="AccountInfo-address-wrapper-error">{labelError}</label>
           )}
         </React.Fragment>
       );
-    } else if (label && !editingLabel) {
+    } else {
       labelContent = (
-        <label title={label} className="AccountInfo-address-label">
-          {label}
+        <label title={storedLabel} className="AccountInfo-address-label">
+          {storedLabel}
         </label>
       );
     }
@@ -207,9 +161,9 @@ class AccountAddress extends React.Component<Props, State> {
   };
 
   private generateLabelButton = () => {
-    const { address, labels } = this.props;
+    const { address, addressLabels } = this.props;
     const { editingLabel } = this.state;
-    const label = labels[address];
+    const label = addressLabels[address];
     const labelButton = editingLabel ? (
       <React.Fragment>
         <i className="fa fa-save" />
@@ -233,97 +187,84 @@ class AccountAddress extends React.Component<Props, State> {
     return labelButton;
   };
 
-  private setTemporaryLabel = (e: React.ChangeEvent<HTMLInputElement>) =>
-    this.setState({ temporaryLabel: e.target.value }, this.checkTemporaryLabelValidation);
+  private handleBlur = () => {
+    const { address, addressLabels, entry: { id, label, temporaryLabel, labelError } } = this.props;
+    const storedLabel = addressLabels[address];
+
+    this.clearTemporaryLabelTouched();
+    this.stopEditingLabel();
+
+    if (temporaryLabel === storedLabel) {
+      return;
+    }
+
+    if (temporaryLabel && temporaryLabel.length > 0) {
+      this.props.saveAddressLabelEntry(id);
+
+      if (labelError) {
+        // If the new changes aren't valid, undo them.
+        this.props.changeAddressLabelEntry({
+          id,
+          address,
+          temporaryAddress: address,
+          label,
+          temporaryLabel: label,
+          overrideValidation: true
+        });
+      }
+    } else {
+      this.props.removeAddressLabelEntry(id);
+    }
+  };
+
+  private handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (e.key) {
+      case 'Enter':
+        return this.handleBlur();
+      case 'Escape':
+        return this.stopEditingLabel();
+    }
+  };
+
+  private handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { address } = this.props;
+    const label = e.target.value;
+
+    this.props.changeAddressLabelEntry({
+      id: ACCOUNT_ADDRESS_ID,
+      address,
+      label,
+      isEditing: true
+    });
+
+    this.setState(
+      {
+        labelInputTouched: true
+      },
+      () => label.length === 0 && this.clearTemporaryLabelTouched()
+    );
+  };
 
   private setTemporaryLabelTouched = () => {
-    const { temporaryLabel, labelInputTouched } = this.state;
+    const { labelInputTouched } = this.state;
 
     if (!labelInputTouched) {
       this.setState({ labelInputTouched: true });
     }
-
-    if (temporaryLabel.length > 0) {
-      this.checkTemporaryLabelValidation();
-    }
   };
 
-  private clearTemporaryLabelTouched = () =>
-    this.setState({ labelInputTouched: false, labelInputError: null });
-
-  private checkTemporaryLabelValidation = () => {
-    const { reversedLabels } = this.props;
-    const { temporaryLabel, mostRecentValidLabel, labelInputError } = this.state;
-    const labelAlreadyExists = !!reversedLabels[temporaryLabel];
-    const hadErrorPreviously = labelInputError !== null;
-
-    if (temporaryLabel === mostRecentValidLabel) {
-      return;
-    }
-
-    if (temporaryLabel.length === 0) {
-      return this.setState({
-        labelInputError: null
-      });
-    }
-
-    if (labelAlreadyExists) {
-      return this.setState({
-        labelInputError: translateRaw('LABEL_ALREADY_EXISTS')
-      });
-    }
-
-    if (!isValidLabelLength(temporaryLabel)) {
-      return this.setState({
-        labelInputError: translateRaw('INVALID_LABEL_LENGTH')
-      });
-    }
-
-    if (hadErrorPreviously) {
-      return this.setState({
-        labelInputError: null
-      });
-    }
-  };
-
-  private isValidLabel = (label: string) => {
-    const { reversedLabels } = this.props;
-    const isValidLength = isValidLabelLength(label, {
-      allowEmpty: true
-    });
-    const isUnique = !reversedLabels[label];
-
-    if (!isValidLength) {
-      this.displayInvalidLabelLengthNotification();
-
-      return false;
-    }
-
-    if (!isUnique) {
-      this.displayLabelAlreadyExistsNotification();
-
-      return false;
-    }
-
-    return true;
-  };
-
-  private displayInvalidLabelLengthNotification = () =>
-    this.props.showNotification('danger', translateRaw('INVALID_LABEL_LENGTH'), ERROR_DURATION);
-
-  private displayLabelAlreadyExistsNotification = () =>
-    this.props.showNotification('danger', translateRaw('LABEL_ALREADY_EXISTS'), ERROR_DURATION);
+  private clearTemporaryLabelTouched = () => this.setState({ labelInputTouched: false });
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
-  labels: getLabels(state),
-  reversedLabels: getLabels(state, { reversed: true })
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (state: AppState) => ({
+  entry: getAccountAddressEntry(state),
+  addressLabels: getAddressLabels(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
-  addLabelForAddress,
-  removeLabelForAddress,
-  showNotification
+  changeAddressLabelEntry,
+  saveAddressLabelEntry,
+  removeAddressLabelEntry
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(

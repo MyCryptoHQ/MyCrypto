@@ -16,7 +16,7 @@ import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
-import { getLabels } from 'selectors/addressBook';
+import { getAddressLabels } from 'selectors/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 
@@ -32,7 +32,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  labels: ReturnType<typeof getLabels>;
+  addressLabels: ReturnType<typeof getAddressLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
   desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: ReturnType<typeof getNetworkConfig>;
@@ -278,9 +278,9 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private renderWalletRow(wallet: DeterministicWalletData) {
-    const { desiredToken, network, labels } = this.props;
+    const { desiredToken, network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
-    const label = labels[toChecksumAddress(wallet.address)];
+    const label = addressLabels[toChecksumAddress(wallet.address)];
     const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     // Get renderable values, but keep 'em short
@@ -342,7 +342,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    labels: getLabels(state),
+    addressLabels: getAddressLabels(state),
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),
