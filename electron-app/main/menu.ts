@@ -33,7 +33,7 @@ const MENU: MenuItemConstructorOptions[] = [
   }
 ];
 
-const HELP_MENU = {
+const HELP_MENU: MenuItemConstructorOptions = {
   role: 'help',
   submenu: [
     {
@@ -74,7 +74,7 @@ if (process.platform === 'darwin') {
   MENU.push({
     ...HELP_MENU,
     submenu: [
-      ...HELP_MENU.submenu,
+      ...(HELP_MENU.submenu as MenuItemConstructorOptions[]),
       {
         label: 'Speech',
         submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }]
