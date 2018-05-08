@@ -71,7 +71,7 @@ class AddressBookTableRow extends React.Component<Props> {
               </label>
               <Input
                 name={labelName}
-                title={`${translateRaw('EDIT_LABEL_FOR')}${address}`}
+                title={`${translateRaw('EDIT_LABEL_FOR')} ${address}`}
                 className={labelInputClassName}
                 value={temporaryLabel}
                 onChange={this.handleLabelChange}
@@ -92,16 +92,12 @@ class AddressBookTableRow extends React.Component<Props> {
           </div>
           {labelError && (
             <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
-              <label className="AddressBookTable-row-input-wrapper-error">
-                <div />
-                {labelError}
-              </label>
+              <label className="AddressBookTable-row-input-wrapper-error">{labelError}</label>
             </div>
           )}
         </div>
         {labelError && (
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--non-mobile">
-            <div />
             <label className="AddressBookTable-row-input-wrapper-error">{labelError}</label>
           </div>
         )}
