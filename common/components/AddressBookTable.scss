@@ -37,10 +37,6 @@
           align-self: flex-end;
         }
 
-        &--visible {
-          visibility: visible;
-        }
-
         @media (max-width: 650px) {
           display: none;
         }
@@ -90,10 +86,6 @@
       }
     }
 
-    // &-inputs {
-    //   margin-bottom: $space-xl * 1.5;
-    // }
-
     &-input {
       display: flex;
       align-items: center;
@@ -139,5 +131,9 @@
 
   input {
     margin-bottom: 0;
+  }
+
+  .is-visible {
+    visibility: visible;
   }
 }

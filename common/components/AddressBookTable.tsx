@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
+import classnames from 'classnames';
 import { AppState } from 'reducers';
 import translate, { translateRaw } from 'translations';
 import {
@@ -72,13 +73,18 @@ class AddressBookTable extends React.Component<Props, State> {
     const labelInputClassName = labelTouchedWithError ? 'invalid' : '';
     const nonMobileTemporaryInputErrorClassName =
       'AddressBookTable-row-error-temporary-input--non-mobile';
-    const nonMobileVisibleErrorClassName = `${nonMobileTemporaryInputErrorClassName}--visible`;
-    const nonMobileTemporaryAddressErrorClassName = `${nonMobileTemporaryInputErrorClassName} ${nonMobileTemporaryInputErrorClassName}-address ${
-      addressTouchedWithError ? nonMobileVisibleErrorClassName : ''
-    }`;
-    const nonMobileTemporaryLabelErrorClassName = `${nonMobileTemporaryInputErrorClassName} ${nonMobileTemporaryInputErrorClassName}-label ${
-      labelTouchedWithError ? nonMobileVisibleErrorClassName : ''
-    }`;
+
+    const nonMobileTemporaryAddressErrorClassName = classnames({
+      [nonMobileTemporaryInputErrorClassName]: true,
+      [`${nonMobileTemporaryInputErrorClassName}-address`]: true,
+      'is-visible': !!addressTouchedWithError
+    });
+
+    const nonMobileTemporaryLabelErrorClassName = classnames({
+      [nonMobileTemporaryInputErrorClassName]: true,
+      [`${nonMobileTemporaryInputErrorClassName}-label`]: true,
+      'is-visible': !!labelTouchedWithError
+    });
 
     return (
       <section className="AddressBookTable" onKeyDown={this.handleKeyDown}>
