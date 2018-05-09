@@ -7,9 +7,6 @@ import { SignAction } from './sign';
 import { SwapAction } from './swap';
 import { CurrentAction } from './current';
 import { SendEverythingAction } from './sendEverything';
-import { State as FieldState } from 'reducers/transaction/fields';
-import { State as MetaState } from 'reducers/transaction/meta';
-import { State as SignState } from 'reducers/transaction/sign';
 
 export * from './broadcast';
 export * from './fields';
@@ -20,20 +17,13 @@ export * from './swap';
 export * from './current';
 export * from './sendEverything';
 
-export interface ResetAction {
-  type: TypeKeys.RESET;
-  payload: {
-    include: {
-      fields?: (keyof FieldState)[];
-      meta?: (keyof MetaState)[];
-      sign?: (keyof SignState)[];
-    };
-    exclude: {
-      fields?: (keyof FieldState)[];
-      meta?: (keyof MetaState)[];
-      sign?: (keyof SignState)[];
-    };
-  };
+export interface ResetTransactionRequestedAction {
+  type: TypeKeys.RESET_REQUESTED;
+}
+
+export interface ResetTransactionSuccessfulAction {
+  type: TypeKeys.RESET_SUCCESSFUL;
+  payload: { isContractInteraction: boolean };
 }
 
 export type TransactionAction =
@@ -44,6 +34,7 @@ export type TransactionAction =
   | NetworkAction
   | SignAction
   | SwapAction
-  | ResetAction
+  | ResetTransactionRequestedAction
+  | ResetTransactionSuccessfulAction
   | CurrentAction
   | SendEverythingAction;

@@ -4,7 +4,7 @@ import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
 import { getOffline } from 'selectors/config';
-import { ElectronNav } from 'components';
+import { ElectronNav, AppAlphaNotice } from 'components';
 import './ElectronTemplate.scss';
 
 interface StateProps {
@@ -32,6 +32,7 @@ class ElectronTemplate extends Component<Props, {}> {
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
           <Notifications />
+          <AppAlphaNotice />
         </div>
         <div className="ElectronTemplate-draggable" />
       </div>

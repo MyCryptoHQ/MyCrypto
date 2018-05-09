@@ -92,7 +92,7 @@ export class VerifyMessage extends Component<Props, State> {
       this.props.showNotification('success', translate('SUCCESS_7'));
     } catch (err) {
       this.clearVerifiedData();
-      this.props.showNotification('danger', translate('ERROR_12'));
+      this.props.showNotification('danger', translate('ERROR_38'));
     }
   };
 
