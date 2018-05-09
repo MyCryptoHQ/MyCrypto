@@ -1,7 +1,7 @@
-import { shepherd, redux } from 'mycrypto-shepherd';
+import { shepherd, redux } from 'myc-shepherd';
 import { INode } from '.';
 import { tokenBalanceHandler } from './tokenBalanceProxy';
-import { IProviderConfig } from 'mycrypto-shepherd/dist/lib/ducks/providerConfigs';
+import { IProviderConfig } from 'myc-shepherd/dist/lib/ducks/providerConfigs';
 
 type DeepPartial<T> = Partial<{ [key in keyof T]: Partial<T[key]> }>;
 const { selectors, store } = redux;
@@ -11,7 +11,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
   const defaultConfig: IProviderConfig = {
     concurrency: 2,
     network: 'ETH',
-    requestFailureThreshold: 3,
+    requestFailureThreshold: 10,
     supportedMethods: {
       getNetVersion: true,
       ping: true,
@@ -30,7 +30,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
       signMessage: true,
       sendTransaction: true
     },
-    timeoutThresholdMs: 5000
+    timeoutThresholdMs: 10000
   };
 
   return {
@@ -45,7 +45,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
 
 let shepherdProvider: INode;
 shepherd
-  .init()
+  .init({ queueTimeout: 10000 })
   .then(
     provider => (shepherdProvider = (new Proxy(provider, tokenBalanceHandler) as any) as INode)
   );
