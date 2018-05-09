@@ -64,7 +64,7 @@ class OnlineSendClass extends Component<Props, State> {
     );
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.transactionBroadcasted && this.state.showModal) {
       this.closeModal();
     }

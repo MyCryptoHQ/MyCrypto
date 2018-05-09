@@ -73,7 +73,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     this.getAddresses();
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { publicKey, chainCode, seed, dPath } = this.props;
     if (
       nextProps.publicKey !== publicKey ||

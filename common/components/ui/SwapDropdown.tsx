@@ -34,7 +34,7 @@ class SwapDropdown extends PureComponent<Props, State> {
 
   public dropdown: HTMLDivElement | null;
 
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.buildOptions(this.props.options);
     document.addEventListener('click', this.handleBodyClick);
   }
@@ -43,7 +43,7 @@ class SwapDropdown extends PureComponent<Props, State> {
     document.removeEventListener('click', this.handleBodyClick);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.options !== nextProps.options) {
       this.buildOptions(nextProps.options);
     }

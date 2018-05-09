@@ -39,7 +39,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     dPath: this.props.dPath
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
       this.setState({ dPath: nextProps.dPath });
     }

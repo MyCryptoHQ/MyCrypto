@@ -33,7 +33,7 @@ class TxHashInput extends React.Component<Props, State> {
     this.state = { hash: props.hash || '' };
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.hash !== nextProps.hash && nextProps.hash) {
       this.setState({ hash: nextProps.hash });
     }
