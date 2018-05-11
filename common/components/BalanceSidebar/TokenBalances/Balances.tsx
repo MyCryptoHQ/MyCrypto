@@ -29,7 +29,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     showCustomTokenForm: false
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.tokenBalances !== this.props.tokenBalances) {
       const trackedTokens = nextProps.tokenBalances.reduce<TrackedTokens>((prev, t) => {
         prev[t.symbol] = !t.balance.isZero();

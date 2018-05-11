@@ -68,6 +68,10 @@ export const productLinks: Link[] = [
   {
     link: 'https://legacy.mycrypto.com/helpers.html',
     text: translateRaw('FOOTER_HELP_AND_DEBUGGING')
+  },
+  {
+    link: 'https://hackerone.com/mycrypto',
+    text: translateRaw('FOOTER_HACKERONE')
   }
 ];
 
