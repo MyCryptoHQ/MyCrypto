@@ -1,5 +1,5 @@
-import { addressBook, INITIAL_STATE } from 'reducers/addressBook';
-import * as addressBookActions from 'actions/addressBook';
+import addressBook, { INITIAL_STATE } from './reducers';
+import * as addressBookActions from './actions';
 
 describe('addressBook: Reducer', () => {
   it('should set an address label', () => {

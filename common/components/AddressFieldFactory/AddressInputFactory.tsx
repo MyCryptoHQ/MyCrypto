@@ -8,7 +8,7 @@ import {
   isValidCurrentTo,
   isCurrentToLabelEntry
 } from 'selectors/transaction';
-import { getCurrentToLabel } from 'selectors/addressBook';
+import { getCurrentToLabel } from 'redux/addressBook';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';

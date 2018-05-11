@@ -1,16 +1,22 @@
 import { toChecksumAddress } from 'ethereumjs-util';
-import { TypeKeys, AddressBookAction } from './types';
-
-export interface AddressToLabelDictionary {
-  [address: string]: string;
-}
+import { TypeKeys, AddressBookAction, AddressLabelEntry } from './types';
 
 export interface State {
-  labels: AddressToLabelDictionary;
+  addresses: {
+    [address: string]: string;
+  };
+  labels: {
+    [labels: string]: string;
+  };
+  entries: {
+    [id: string]: AddressLabelEntry;
+  };
 }
 
 export const INITIAL_STATE: State = {
-  labels: {}
+  addresses: {},
+  labels: {},
+  entries: {}
 };
 
 export default function addressBook(
@@ -18,28 +24,69 @@ export default function addressBook(
   action: AddressBookAction
 ): State {
   switch (action.type) {
-    case TypeKeys.ADD_LABEL_FOR_ADDRESS: {
+    case TypeKeys.SET_ADDRESS_LABEL: {
+      const { addresses, labels } = state;
       const { address, label } = action.payload;
+      const checksummedAddress = toChecksumAddress(address);
+      const updatedAddresses = {
+        ...addresses,
+        [checksummedAddress]: label
+      };
+      const updatedLabels = {
+        ...labels,
+        [label]: checksummedAddress
+      };
 
       return {
         ...state,
-        labels: {
-          ...state.labels,
-          [toChecksumAddress(address)]: label
+        addresses: updatedAddresses,
+        labels: updatedLabels
+      };
+    }
+
+    case TypeKeys.CLEAR_ADDRESS_LABEL: {
+      const { addresses, labels } = state;
+      const address = action.payload;
+      const label = addresses[address];
+      const updatedAddresses = { ...addresses };
+      const updatedLabels = { ...labels };
+
+      delete updatedAddresses[toChecksumAddress(address)];
+      delete updatedLabels[label];
+
+      return {
+        ...state,
+        addresses: updatedAddresses,
+        labels: updatedLabels
+      };
+    }
+
+    case TypeKeys.SET_ADDRESS_LABEL_ENTRY: {
+      const { id, address } = action.payload;
+      const checksummedAddress = toChecksumAddress(address);
+      const isNonRowEntry = id === 'ADDRESS_BOOK_TABLE_ID' || id === 'ACCOUNT_ADDRESS_ID';
+
+      return {
+        ...state,
+        entries: {
+          ...state.entries,
+          [id]: {
+            ...action.payload,
+            address: isNonRowEntry ? address : checksummedAddress
+          }
         }
       };
     }
 
-    case TypeKeys.REMOVE_LABEL_FOR_ADDRESS: {
-      const address = action.payload;
-      const { labels: previousLabels } = state;
-      const labels = { ...previousLabels };
+    case TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY: {
+      const id = action.payload;
+      const entries = { ...state.entries };
 
-      delete labels[toChecksumAddress(address)];
+      delete entries[id];
 
       return {
         ...state,
-        labels
+        entries
       };
     }
 

@@ -1,3 +1,4 @@
+import { getInitialState } from '../../../spec/selectors/helpers';
 import {
   getAddressLabels,
   getLabelAddresses,
@@ -8,8 +9,7 @@ import {
   getAddressLabelEntryFromAddress,
   getAddressLabelRows,
   getNextAddressLabelId
-} from 'selectors/addressBook';
-import { getInitialState } from './helpers';
+} from './selectors';
 
 describe('addressBook: Selectors', () => {
   const initialState = getInitialState();

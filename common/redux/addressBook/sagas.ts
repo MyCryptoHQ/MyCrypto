@@ -7,20 +7,22 @@ import {
   TypeKeys,
   ChangeAddressLabelEntry,
   SaveAddressLabelEntry,
-  RemoveAddressLabelEntry,
+  RemoveAddressLabelEntry
+} from './types';
+import {
   setAddressLabelEntry,
   setAddressLabel,
   clearAddressLabel,
   clearAddressLabelEntry
-} from 'actions/addressBook';
+} from './actions';
 import {
   getAddressLabels,
   getLabelAddresses,
   getAddressLabelEntry,
   getAddressLabelEntryFromAddress,
   getNextAddressLabelId
-} from 'selectors/addressBook';
-import { showNotification } from 'actions/notifications';
+} from './selectors';
+import { showNotification } from 'redux/notifications';
 
 export const ERROR_DURATION: number = 4000;
 

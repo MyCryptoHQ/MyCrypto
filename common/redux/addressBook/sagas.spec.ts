@@ -1,11 +1,12 @@
 import { runSaga } from 'redux-saga';
 import { translateRaw } from 'translations';
 import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
+import { getInitialState } from '../../../spec/selectors/helpers';
 import {
   handleChangeAddressLabelEntry,
   handleSaveAddressLabelEntry,
   handleRemoveAddressLabelEntry
-} from 'sagas/addressBook';
+} from './sagas';
 import {
   setAddressLabel,
   clearAddressLabel,
@@ -14,8 +15,7 @@ import {
   saveAddressLabelEntry,
   clearAddressLabelEntry,
   removeAddressLabelEntry
-} from 'actions/addressBook';
-import { getInitialState } from '../selectors/helpers';
+} from './actions';
 
 describe('addressBook: Sagas', () => {
   const initialState = getInitialState();

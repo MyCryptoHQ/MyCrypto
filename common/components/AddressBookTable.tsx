@@ -9,14 +9,12 @@ import {
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
-  TRemoveAddressLabelEntry
-} from 'actions/addressBook';
-import {
+  TRemoveAddressLabelEntry,
   getAddressLabels,
   getLabelAddresses,
   getAddressLabelRows,
   getAddressBookTableEntry
-} from 'selectors/addressBook';
+} from 'redux/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';

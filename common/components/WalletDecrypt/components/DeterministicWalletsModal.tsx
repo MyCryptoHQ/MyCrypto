@@ -16,7 +16,7 @@ import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
 import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
-import { getAddressLabels } from 'selectors/addressBook';
+import { getAddressLabels } from 'redux/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
 

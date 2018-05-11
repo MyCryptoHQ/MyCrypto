@@ -12,7 +12,7 @@ import { message } from './message';
 import transactions from './transactions';
 import gas from './gas';
 import { schedule } from './schedule';
-import addressBook from './addressBook';
+import { default as addressBook } from 'redux/addressBook/sagas';
 
 export default {
   ens,

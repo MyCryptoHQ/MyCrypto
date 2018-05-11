@@ -1,4 +1,4 @@
-import { State as AddressBookState } from 'reducers/addressBook';
+import { State as AddressBookState } from 'redux/addressBook';
 import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
 import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
 

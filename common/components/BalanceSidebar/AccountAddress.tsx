@@ -9,9 +9,10 @@ import {
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
-  TRemoveAddressLabelEntry
-} from 'actions/addressBook';
-import { getAccountAddressEntry, getAddressLabels } from 'selectors/addressBook';
+  TRemoveAddressLabelEntry,
+  getAccountAddressEntry,
+  getAddressLabels
+} from 'redux/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {

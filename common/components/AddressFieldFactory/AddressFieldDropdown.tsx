@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import translate, { translateRaw } from 'translations';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
-import { getLabelAddresses } from 'selectors/addressBook';
+import { getLabelAddresses } from 'redux/addressBook';
 import { getToRaw } from 'selectors/transaction/fields';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';

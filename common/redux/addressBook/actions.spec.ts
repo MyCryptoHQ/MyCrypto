@@ -1,5 +1,5 @@
+import { TypeKeys } from './types';
 import {
-  TypeKeys,
   setAddressLabel,
   clearAddressLabel,
   setAddressLabelEntry,
@@ -7,7 +7,7 @@ import {
   saveAddressLabelEntry,
   clearAddressLabelEntry,
   removeAddressLabelEntry
-} from '../../common/actions/addressBook';
+} from './actions';
 
 describe('addressBook: Actions', () => {
   describe('setAddressLabel', () => {
