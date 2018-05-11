@@ -63,7 +63,7 @@ class InteractForm extends Component<Props, State> {
     };
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const prevProps = this.props;
     if (nextProps.currentTo.raw !== prevProps.currentTo.raw) {
       nextProps.resetState();

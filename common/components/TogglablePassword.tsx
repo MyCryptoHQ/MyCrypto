@@ -40,7 +40,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
     isVisible: !!this.props.isVisible
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.isVisible !== nextProps.isVisible) {
       this.setState({ isVisible: !!nextProps.isVisible });
     }
