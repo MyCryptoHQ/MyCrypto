@@ -6,7 +6,6 @@ import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
 import { State as TransactionState, transaction } from './transaction';
-import { State as MessageState, message } from './message';
 import { onboardStatus, State as OnboardStatusState } from './onboardStatus';
 import { State as TransactionsState, transactions } from './transactions';
 import { schedule, State as ScheduleState } from './schedule';
@@ -19,6 +18,7 @@ import deterministicWallets, {
   State as DeterministicWalletsState
 } from 'redux/deterministicWallets';
 import gas, { State as GasState } from 'redux/gas';
+import message, { State as MessageState } from 'redux/message';
 
 export interface AppState {
   // Custom reducers
