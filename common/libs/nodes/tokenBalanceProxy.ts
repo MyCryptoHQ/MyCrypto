@@ -1,7 +1,7 @@
 import { Token } from 'shared/types/network';
 import ERC20 from 'libs/erc20';
 import { TokenValue } from 'libs/units';
-import { IProvider } from 'myc-shepherd/dist/lib/types';
+import { IProvider } from 'mycrypto-shepherd/dist/lib/types';
 
 export const tokenBalanceHandler: ProxyHandler<IProvider> = {
   get(target, propKey) {
