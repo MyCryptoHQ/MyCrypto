@@ -18,27 +18,21 @@ export function* signingWrapper(
   handler: (wallet: IFullWallet, message: string) => SagaIterator,
   action: SignMessageRequestedAction
 ): SagaIterator {
-  const message = action.payload;
+  const payloadMessage = action.payload;
   const wallet = yield select(getWalletInst);
 
   try {
-    yield call(handler, wallet, message);
+    yield call(handler, wallet, payloadMessage);
   } catch (err) {
     yield put(showNotification('danger', translate('SIGN_MSG_FAIL', { $err: err.message }), 5000));
     yield put(signMessageFailed());
   }
 }
 
-/**
- * Turns a string into hex-encoded UTF-8 byte array, `0x` prefixed.
- *
- * @param  {string} message to encode
- * @return {string}
- */
-export function messageToData(message: string): string {
+export function messageToData(messageToTransform: string): string {
   return (
     '0x' +
-    Array.from(Buffer.from(message, 'utf8'))
+    Array.from(Buffer.from(messageToTransform, 'utf8'))
       .map(n => padLeftEven(n.toString(16)))
       .join('')
   );
