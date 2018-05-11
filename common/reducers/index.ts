@@ -2,7 +2,6 @@ import { routerReducer } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import { config, State as ConfigState } from './config';
 import { ens, State as EnsState } from './ens';
-import { rates, State as RatesState } from './rates';
 import { State as SwapState, swap } from './swap';
 import { State as WalletState, wallet } from './wallet';
 import { State as TransactionState, transaction } from './transaction';
@@ -19,6 +18,7 @@ import gas, { State as GasState } from 'redux/gas';
 import message, { State as MessageState } from 'redux/message';
 import onboardStatus, { State as OnboardStatusState } from 'redux/onboardStatus';
 import paritySigner, { State as ParitySignerState } from 'redux/paritySigner';
+import rates, { State as RatesState } from 'redux/rates';
 
 export interface AppState {
   // Custom reducers
