@@ -68,7 +68,7 @@ class RequestPayment extends React.Component<Props, {}> {
     this.props.resetTransactionRequested();
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.wallet && this.props.wallet !== nextProps.wallet) {
       this.setWalletAsyncState(nextProps.wallet);
     }
