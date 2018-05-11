@@ -390,6 +390,7 @@
     "ETHERSCAMDB": "EtherScamDB",
     "ETHER_SECURITY_LOOKUP": "EtherSecurityLookup",
     "ETHER_ADDRESS_LOOKUP": "EtherAddressLookup",
+    "OLD_MYCRYPTO": "MyCrypto (Legacy Site)",
     "LEDGER_REFERRAL_1": "Buy a Ledger Wallet",
     "LEDGER_REFERRAL_2": "Don’t have a Ledger? Order one now!",
     "LEDGER_TIP": "**Tip:** Make sure you're logged into the $network app on your hardware wallet, and have enabled browser support in the settings",
@@ -561,6 +562,16 @@
     "APP_UPDATE_TITLE": "New App Version Available",
     "APP_UPDATE_BODY": "An updated version of the MyCrypto app has just been released! You can upgrade to the new version by downloading it from our GitHub release page.",
     "APP_UPDATE_CONFIRM": "Get the New Version",
-    "APP_UPDATE_CANCEL": "Maybe Later"
+    "APP_UPDATE_CANCEL": "Maybe Later",
+    "WELCOME_MODAL_BETA": "Thank you for testing the beta! People like you made this launch possible",
+    "WELCOME_MODAL_INTRO": "Welcome to the all new MyCrypto! We've made some cool new changes to the site that we're excited to show you. Beyond the new and improved look and feel of the site, we've also added a ton of new features:",
+    "WELCOME_MODAL_FEATURE_1": "Token balance scanner",
+    "WELCOME_MODAL_FEATURE_2": "Combined Send, Info, and Send Offline tabs",
+    "WELCOME_MODAL_FEATURE_3": "Parity Signer app integration",
+    "WELCOME_MODAL_FEATURE_4": "Recent transactions history",
+    "WELCOME_MODAL_FEATURE_5": "A downloadable desktop app",
+    "WELCOME_MODAL_FEATURE_MORE": "...and much, much more!",
+    "WELCOME_MODAL_LINKS": "Help out with any issues you find by [reporting bugs on GitHub](https://github.com/MyCryptoHQ/MyCrypto/issues) or [HackerOne](https://hackerone.com/mycrypto). Need something from the old site, or just miss that clunky feel? We've kept it up as [MyCrypto Legacy](https://legacy.mycrypto.com).",
+    "WELCOME_MODAL_CONTINUE": "Show me the new site!"
   }
 }
