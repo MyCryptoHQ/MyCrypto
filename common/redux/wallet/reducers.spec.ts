@@ -1,7 +1,8 @@
-import { configuredStore } from 'store';
-import { wallet, INITIAL_STATE } from 'reducers/wallet';
 import { Wei } from 'libs/units';
-import * as walletActions from 'actions/wallet';
+import { configuredStore } from 'store';
+import wallet, { INITIAL_STATE } from './reducers';
+import * as walletActions from './actions';
+
 configuredStore.getState();
 
 describe('wallet reducer', () => {

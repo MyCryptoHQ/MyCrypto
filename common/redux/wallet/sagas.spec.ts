@@ -1,5 +1,21 @@
+import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
+import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
+import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
+import translate from 'translations';
 import { configuredStore } from 'store';
+import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';
+import { Wei } from 'libs/units';
 import RpcNode from 'libs/nodes/rpc';
+import Web3Node from 'libs/nodes/web3';
+import { INode } from 'libs/nodes/INode';
+import { Token } from 'types/network';
+import { changeNodeIntent, web3UnsetNode } from 'actions/config';
+import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
+import { showNotification } from 'redux/notifications';
+import { getNodeLib, getOffline, getWeb3Node } from 'selectors/config';
+import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
+import { initWeb3Node, unlockWeb3 } from 'sagas/config/web3';
+import { TypeKeys } from './types';
 import {
   setBalanceFullfilled,
   setBalancePending,
@@ -8,38 +24,22 @@ import {
   unlockMnemonic as unlockMnemonicActionGen,
   setTokenBalancesFulfilled,
   setTokenBalancesPending,
-  setTokenBalancesRejected,
-  TypeKeys
-} from 'actions/wallet';
-import { Wei } from 'libs/units';
-import { changeNodeIntent, web3UnsetNode } from 'actions/config';
-import { INode } from 'libs/nodes/INode';
-import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
-import { getNodeLib, getOffline, getWeb3Node } from 'selectors/config';
-import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
+  setTokenBalancesRejected
+} from './actions';
 import {
   updateAccountBalance,
   updateTokenBalances,
   updateBalances,
-  unlockPrivateKey,
-  unlockKeystore,
-  unlockMnemonic,
-  getTokenBalances,
+  unlockPrivateKeySaga,
+  unlockKeystoreSaga,
+  unlockMnemonicSaga,
+  getTokenBalancesSaga,
   startLoadingSpinner,
   stopLoadingSpinner
-} from 'sagas/wallet';
-import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';
-import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
-import Web3Node from 'libs/nodes/web3';
-import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
-import { showNotification } from 'actions/notifications';
-import translate from 'translations';
-import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
-import { Token } from 'types/network';
-import { initWeb3Node, unlockWeb3 } from 'sagas/config/web3';
+} from './sagas';
 
-// init module
 configuredStore.getState();
+
 const offline = false;
 const pkey = '31e97f395cabc6faa37d8a9d6bb185187c35704e7b976c7a110e2f0eab37c344';
 const wallet = PrivKeyWallet(Buffer.from(pkey, 'hex'));
@@ -178,7 +178,7 @@ describe('updateTokenBalances*', () => {
   });
 
   it('should call getTokenBalances', () => {
-    expect(gen.next().value).toEqual(call(getTokenBalances, wallet, tokens));
+    expect(gen.next().value).toEqual(call(getTokenBalancesSaga, wallet, tokens));
   });
 
   it('should put setTokenBalancesFufilled', () => {
@@ -222,7 +222,7 @@ describe('unlockPrivateKey', () => {
     password: ''
   };
   const action = unlockPrivateKeyActionGen(value);
-  const gen = unlockPrivateKey(action);
+  const gen = unlockPrivateKeySaga(action);
 
   it('should match put setWallet snapshot', () => {
     expect(gen.next().value).toMatchSnapshot();
@@ -238,7 +238,7 @@ describe('unlockKeystore*', () => {
     file: JSON.stringify(utcKeystore),
     password: 'testtesttest'
   });
-  const gen = unlockKeystore(action);
+  const gen = unlockKeystoreSaga(action);
   const mockTask = createMockTask();
   const spinnerFork = fork(startLoadingSpinner);
 
@@ -274,7 +274,7 @@ describe('unlockMnemonic*', () => {
     path: "m/44'/60'/0'/0/8",
     address: '0xe2EdC95134bbD88443bc6D55b809F7d0C2f0C854'
   });
-  const gen = unlockMnemonic(action);
+  const gen = unlockMnemonicSaga(action);
 
   it('should match put setWallet snapshot', () => {
     expect(gen.next().value).toMatchSnapshot();

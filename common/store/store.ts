@@ -13,7 +13,6 @@ import {
   State as TransactionState
 } from 'reducers/transaction';
 import { State as SwapState, INITIAL_STATE as initialSwapState } from 'reducers/swap';
-import { State as WalletState, INITIAL_STATE as initialWalletState } from 'reducers/wallet';
 import {
   State as AddressBookState,
   INITIAL_STATE as initialAddressBookState
@@ -22,6 +21,7 @@ import {
   INITIAL_STATE as initialTransactionsState,
   State as TransactionsState
 } from 'redux/transactions';
+import { State as WalletState, INITIAL_STATE as initialWalletState } from 'redux/wallet';
 import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe

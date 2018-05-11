@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import { config, State as ConfigState } from './config';
 import { ens, State as EnsState } from './ens';
 import { State as SwapState, swap } from './swap';
-import { State as WalletState, wallet } from './wallet';
 import { State as TransactionState, transaction } from './transaction';
 import { schedule, State as ScheduleState } from './schedule';
 
@@ -19,6 +18,7 @@ import onboardStatus, { State as OnboardStatusState } from 'redux/onboardStatus'
 import paritySigner, { State as ParitySignerState } from 'redux/paritySigner';
 import rates, { State as RatesState } from 'redux/rates';
 import transactions, { State as TransactionsState } from 'redux/transactions';
+import wallet, { State as WalletState } from 'redux/wallet';
 
 export interface AppState {
   // Custom reducers
