@@ -15,12 +15,12 @@ interface State {
 
 export default class QRCode extends React.PureComponent<Props, State> {
   public state: State = {};
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     // Start generating QR codes immediately
     this.generateQrCode(this.props.data);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // Regenerate QR codes if props change
     if (nextProps.data !== this.props.data) {
       this.generateQrCode(nextProps.data);

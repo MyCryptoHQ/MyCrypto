@@ -117,7 +117,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.options !== this.props.options) {
       this.setState({ options: Object.values(nextProps.options.byId) });
     }
