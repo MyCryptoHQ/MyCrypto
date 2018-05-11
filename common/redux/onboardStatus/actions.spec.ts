@@ -1,4 +1,4 @@
-import * as actions from '../../common/actions/onboardStatus';
+import * as actions from './actions';
 
 describe('onboardStatus actions', () => {
   it('should create an action to start onboard session', () => {

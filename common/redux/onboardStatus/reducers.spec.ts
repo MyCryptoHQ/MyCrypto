@@ -1,5 +1,5 @@
-import { onboardStatus, INITIAL_STATE } from 'reducers/onboardStatus';
-import * as onboardStatusActions from 'actions/onboardStatus';
+import onboardStatus, { INITIAL_STATE } from './reducers';
+import * as onboardStatusActions from './actions';
 
 describe('onboardStatus reducer', () => {
   it('should handle START_ONBOARD_STATUS', () => {
