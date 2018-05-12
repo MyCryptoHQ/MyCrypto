@@ -19,7 +19,7 @@ class TextArea extends React.Component<HTMLProps<HTMLTextAreaElement>, State> {
             this.props.onBlur(e);
           }
         }}
-        className={`input-group-input  ${this.props.className} ${
+        className={`input-group-input form-control ${this.props.className} ${
           this.state.hasBlurred ? 'has-blurred' : ''
         }`}
       />

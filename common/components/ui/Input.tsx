@@ -21,7 +21,7 @@ class Input extends React.Component<HTMLProps<HTMLInputElement>, State> {
           }
         }}
         onWheel={this.props.type === 'number' ? this.preventNumberScroll : undefined}
-        className={`input-group-input  ${this.props.className} ${
+        className={`input-group-input form-control ${this.props.className} ${
           this.state.hasBlurred ? 'has-blurred' : ''
         } ${!!this.props.value && this.props.value.toString().length > 0 ? 'has-value' : ''}`}
       />
