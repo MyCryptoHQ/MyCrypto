@@ -466,7 +466,7 @@
     "INSECURE_WALLET_RECOMMEND_1": "Using [MetaMask]($metamask_article) or a [Hardware Wallet]($hardware_wallet_article) to access your wallet",
     "INSECURE_WALLET_RECOMMEND_2": "[Downloading MyCrypto and running it offline & locally]($download_mycrypto)",
     "INSECURE_WALLET_RECOMMEND_3": "Reading [How to Protect Yourself and Your Funds]($secure_your_eth_article)",
-    "INSECURE_WALLET_DEPRECATION": "**Warning:** Accessing this type of wallet via the web interface will be disabled soon. You’ll need to [run MyCrypto locally](https://download.mycrypto.com) going forward.",
+    "INSECURE_WALLET_DEPRECATION": "**Warning:** Accessing this type of wallet via the web interface will be disabled soon. You’ll need to run [MyCrypto Desktop](https://download.mycrypto.com), [Parity Signer](https://paritytech.io/send-transactions-with-mycrypto-beta-and-parity-signer/), or [MetaMask](https://metamask.io/) going forward. You can learn more [here](https://github.com/MyCryptoHQ/MyCrypto/pull/1466).",
     "DONT_HAVE_WALLET_PROMPT": "Don’t have a wallet?",
     "DL_WALLET_WARNING_1": "**Don't lose it!** It can't be recovered if you lose it.",
     "DL_WALLET_WARNING_2": "**Don't share it!** Your funds will be stolen if you use this file on a malicious site.",
