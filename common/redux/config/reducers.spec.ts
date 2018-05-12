@@ -1,58 +1,336 @@
-import { configuredStore } from 'store';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, put, take, select, apply } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
+import { shepherd } from 'mycrypto-shepherd';
+import { translateRaw } from 'translations';
+import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
+import { CustomNetworkConfig } from 'types/network';
+import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
+import { Web3Service } from 'libs/nodes/web3';
+import { Web3Wallet } from 'libs/wallet';
+import { configuredStore } from 'store';
+import { showNotification } from 'redux/notifications';
 import {
-  setOffline,
-  setOnline,
-  changeNode,
-  changeNodeIntent,
   changeNodeForce,
-  setLatestBlock,
   TypeKeys,
   ChangeNodeIntentOneTimeAction,
-  changeNodeIntentOneTime
-} from 'actions/config';
-import {
+  changeNodeIntentOneTime,
   handleNodeChangeIntent,
   handlePollOfflineStatus,
-  pollOfflineStatus,
+  pollOfflineStatusSaga,
   handleNewNetwork,
-  handleNodeChangeIntentOneTime
-} from 'sagas/config/node';
-import {
+  handleNodeChangeIntentOneTime,
   getNodeId,
   getNodeConfig,
   getOffline,
   isStaticNodeId,
   getStaticNodeFromId,
   getCustomNodeFromId,
-  getPreviouslySelectedNode
-} from 'selectors/config';
-import { Web3Wallet } from 'libs/wallet';
-import { showNotification } from 'actions/notifications';
-import { translateRaw } from 'translations';
-import { StaticNodeConfig } from 'types/node';
-import { staticNodesExpectedState } from './nodes/staticNodes.spec';
-import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
-import { customNodesExpectedState, firstCustomNodeId } from './nodes/customNodes.spec';
-import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
-import { shepherd } from 'mycrypto-shepherd';
-import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
+  getPreviouslySelectedNode,
+  changeLanguage,
+  setOnline,
+  setOffline,
+  toggleAutoGasLimit,
+  setLatestBlock,
+  addCustomNode,
+  removeCustomNode,
+  unsetWeb3Node,
+  unsetWeb3NodeOnWalletEvent,
+  meta,
+  addCustomNetwork,
+  removeCustomNetwork,
+  customNetworks,
+  STATIC_NETWORKS_INITIAL_STATE,
+  STATIC_NODES_INITIAL_STATE,
+  staticNetworks,
+  customNodes,
+  changeNodeIntent,
+  changeNode,
+  selectedNode,
+  SelectedNodeState,
+  web3UnsetNode,
+  web3SetNode,
+  staticNodes
+} from 'redux/config';
 
 // init module
 configuredStore.getState();
 
+//#region Meta
+describe('meta reducer', () => {
+  const expectedInitialState = {
+    languageSelection: 'en',
+    offline: false,
+    autoGasLimit: true,
+    latestBlock: '???'
+  };
+
+  const expectedState = {
+    initialState: expectedInitialState,
+    changingLanguage: {
+      ...expectedInitialState,
+      languageSelection: 'langaugeToChange'
+    },
+    togglingToOffline: {
+      ...expectedInitialState,
+      offline: true
+    },
+    togglingToOnline: {
+      ...expectedInitialState,
+      offline: false
+    },
+    togglingToManualGasLimit: {
+      ...expectedInitialState,
+      autoGasLimit: false
+    },
+    togglingToAutoGasLimit: {
+      ...expectedInitialState,
+      autoGasLimit: true
+    },
+    settingLatestBlock: {
+      ...expectedInitialState,
+      latestBlock: '12345'
+    }
+  };
+
+  const actions = {
+    changeLangauge: changeLanguage('langaugeToChange'),
+    setOnline: setOnline(),
+    setOffline: setOffline(),
+    toggleAutoGasLimit: toggleAutoGasLimit(),
+    setLatestBlock: setLatestBlock('12345')
+  };
+  it('should return the inital state', () =>
+    expect(meta(undefined, {} as any)).toEqual(expectedState.initialState));
+
+  it('should handle toggling to offline', () =>
+    expect(meta(expectedState.initialState, actions.setOffline)).toEqual(
+      expectedState.togglingToOffline
+    ));
+
+  it('should handle toggling back to online', () =>
+    expect(meta(expectedState.togglingToOffline, actions.setOnline)).toEqual(
+      expectedState.togglingToOnline
+    ));
+
+  it('should handle toggling to manual gas limit', () =>
+    expect(meta(expectedState.initialState, actions.toggleAutoGasLimit)).toEqual(
+      expectedState.togglingToManualGasLimit
+    ));
+
+  it('should handle toggling back to auto gas limit', () =>
+    expect(meta(expectedState.togglingToManualGasLimit, actions.toggleAutoGasLimit)).toEqual(
+      expectedState.togglingToAutoGasLimit
+    ));
+
+  it('should handle setting the latest block', () =>
+    expect(meta(expectedState.initialState, actions.setLatestBlock)).toEqual(
+      expectedState.settingLatestBlock
+    ));
+});
+//#endregion Meta
+
+//#region Networks
+
+//#region Custom Networks
+describe('custom networks reducer', () => {
+  const firstCustomNetworkId = 'firstCustomNetwork';
+  const firstCustomNetworkConfig: CustomNetworkConfig = {
+    isCustom: true,
+    chainId: 1,
+    name: firstCustomNetworkId,
+    unit: 'customNetworkUnit',
+    dPathFormats: null
+  };
+
+  const secondCustomNetworkId = 'secondCustomNetwork';
+  const secondCustomNetworkConfig: CustomNetworkConfig = {
+    ...firstCustomNetworkConfig,
+    name: secondCustomNetworkId
+  };
+
+  const expectedState = {
+    initialState: {},
+    addFirstCustomNetwork: { [firstCustomNetworkId]: firstCustomNetworkConfig },
+    addSecondCustomNetwork: {
+      [firstCustomNetworkId]: firstCustomNetworkConfig,
+      [secondCustomNetworkId]: secondCustomNetworkConfig
+    },
+    removeFirstCustomNetwork: { [secondCustomNetworkId]: secondCustomNetworkConfig }
+  };
+
+  const actions = {
+    addFirstCustomNetwork: addCustomNetwork({
+      id: firstCustomNetworkId,
+      config: firstCustomNetworkConfig
+    }),
+    addSecondCustomNetwork: addCustomNetwork({
+      config: secondCustomNetworkConfig,
+      id: secondCustomNetworkId
+    }),
+    removeFirstCustomNetwork: removeCustomNetwork({ id: firstCustomNetworkId })
+  };
+  it('should return the intial state', () =>
+    expect(customNetworks(undefined, {} as any)).toEqual(expectedState.initialState));
+
+  it('should handle adding the first custom network', () =>
+    expect(customNetworks(expectedState.initialState, actions.addFirstCustomNetwork)).toEqual(
+      expectedState.addFirstCustomNetwork
+    ));
+
+  it('should handle adding the second custom network', () =>
+    expect(
+      customNetworks(expectedState.addFirstCustomNetwork, actions.addSecondCustomNetwork)
+    ).toEqual(expectedState.addSecondCustomNetwork));
+
+  it('should handle removing the first custom network', () =>
+    expect(
+      customNetworks(expectedState.addSecondCustomNetwork, actions.removeFirstCustomNetwork)
+    ).toEqual(expectedState.removeFirstCustomNetwork));
+});
+//#endregion Custom Networks
+
+//#region Static Networks
+describe('Testing contained data', () => {
+  it(`contain unique chainIds`, () => {
+    const networkValues = Object.values(STATIC_NETWORKS_INITIAL_STATE);
+    const chainIds = networkValues.map(a => a.chainId);
+    const chainIdsSet = new Set(chainIds);
+    expect(Array.from(chainIdsSet).length).toEqual(chainIds.length);
+  });
+});
+
+describe('static networks reducer', () => {
+  it('should return the initial state', () =>
+    expect(JSON.stringify(staticNetworks(undefined, {} as any))).toEqual(
+      JSON.stringify(STATIC_NETWORKS_INITIAL_STATE)
+    ));
+});
+//#endregion Static Networks
+
+//#endregion Networks
+
+//#region Nodes
+
+//#region Custom Nodes
+const firstCustomNodeId = 'customNode1';
+const firstCustomNode: CustomNodeConfig = {
+  isCustom: true,
+  id: firstCustomNodeId,
+  lib: jest.fn() as any,
+  name: 'My cool custom node',
+  network: 'CustomNetworkId',
+  service: 'your custom node',
+  url: '127.0.0.1'
+};
+const secondCustomNodeId = 'customNode2';
+const secondCustomNode: CustomNodeConfig = {
+  ...firstCustomNode,
+  id: secondCustomNodeId
+};
+const customNodesExpectedState = {
+  initialState: {},
+  addFirstCustomNode: { [firstCustomNodeId]: firstCustomNode },
+  addSecondCustomNode: {
+    [firstCustomNodeId]: firstCustomNode,
+    [secondCustomNodeId]: secondCustomNode
+  },
+  removeFirstCustomNode: { [secondCustomNodeId]: secondCustomNode }
+};
+
+describe('custom nodes reducer', () => {
+  const actions = {
+    addFirstCustomNode: addCustomNode({ id: firstCustomNodeId, config: firstCustomNode }),
+    addSecondCustomNode: addCustomNode({ id: secondCustomNodeId, config: secondCustomNode }),
+    removeFirstCustomNode: removeCustomNode({ id: firstCustomNodeId })
+  };
+
+  it('should return the initial state', () =>
+    expect(customNodes(undefined, {} as any)).toEqual({}));
+
+  it('should handle adding the first custom node', () =>
+    expect(customNodes(customNodesExpectedState.initialState, actions.addFirstCustomNode)).toEqual(
+      customNodesExpectedState.addFirstCustomNode
+    ));
+  it('should handle adding a second custom node', () =>
+    expect(
+      customNodes(customNodesExpectedState.addFirstCustomNode, actions.addSecondCustomNode)
+    ).toEqual(customNodesExpectedState.addSecondCustomNode));
+  it('should handle removing the first custom node', () =>
+    expect(
+      customNodes(customNodesExpectedState.addSecondCustomNode, actions.removeFirstCustomNode)
+    ).toEqual(customNodesExpectedState.removeFirstCustomNode));
+});
+//#endregion Custom Nodes
+
+//#region Selected Node
+const selectedNodeExpectedState = {
+  initialState: { nodeId: 'eth_mycrypto', prevNode: 'eth_mycrypto', pending: false },
+  nodeChange: { nodeId: 'nodeToChangeTo', prevNode: 'eth_auto', pending: false },
+  nodeChangeIntent: { nodeId: 'eth_mycrypto', prevNode: 'eth_mycrypto', pending: true }
+};
+describe('selected node reducer', () => {
+  const actions = {
+    changeNode: changeNode({ nodeId: 'nodeToChangeTo', networkId: 'networkToChangeTo' }),
+    changeNodeIntent: changeNodeIntent('eth_mycrypto')
+  };
+
+  it('should handle a node change', () =>
+    expect(selectedNode(undefined, actions.changeNode)).toEqual(
+      selectedNodeExpectedState.nodeChange
+    ));
+
+  it('should handle the intent to change a node', () =>
+    expect(
+      selectedNode(
+        selectedNodeExpectedState.initialState as SelectedNodeState,
+        actions.changeNodeIntent
+      )
+    ).toEqual(selectedNodeExpectedState.nodeChangeIntent));
+});
+//#endregion Selected Node
+
+//#region Static Nodes
+const web3Id = 'web3';
+const web3Node: StaticNodeConfig = {
+  isCustom: false,
+  network: 'ETH',
+  service: Web3Service,
+  lib: jest.fn() as any,
+  estimateGas: false,
+  hidden: true
+};
+const staticNodesExpectedState = {
+  initialState: staticNodes(undefined, {} as any),
+  setWeb3: { ...STATIC_NODES_INITIAL_STATE, [web3Id]: web3Node },
+  unsetWeb3: { ...STATIC_NODES_INITIAL_STATE }
+};
+describe('static nodes reducer', () => {
+  const actions = {
+    web3SetNode: web3SetNode({ id: web3Id, config: web3Node }),
+    web3UnsetNode: web3UnsetNode()
+  };
+
+  it('should handle setting the web3 node', () =>
+    expect(staticNodes(STATIC_NODES_INITIAL_STATE, actions.web3SetNode)).toEqual(
+      staticNodesExpectedState.setWeb3
+    ));
+
+  it('should handle unsetting the web3 node', () =>
+    expect(staticNodes(staticNodesExpectedState.setWeb3, actions.web3UnsetNode)).toEqual(
+      staticNodesExpectedState.unsetWeb3
+    ));
+});
+//#endregion Static Nodes
+
+//#endregion Nodes
+
 describe('pollOfflineStatus*', () => {
   const restoreNotif = 'Your connection to the network has been restored!';
-
-  const lostNetworkNotif = `You’ve lost your connection to the network, check your internet
-      connection or try changing networks from the dropdown at the
-      top right of the page.`;
-
+  const lostNetworkNotif = `You’ve lost your connection to the network, check your internet connection or try changing networks from the dropdown at the top right of the page.`;
   const offlineNotif = 'You are currently offline. Some features will be unavailable.';
+  const offlineOnFirstTimeCase = pollOfflineStatusSaga();
 
-  const offlineOnFirstTimeCase = pollOfflineStatus();
   it('should delay by 2.5 seconds', () => {
     expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
   });
@@ -107,7 +385,7 @@ describe('handlePollOfflineStatus*', () => {
   const mockTask = createMockTask();
 
   it('should fork pollOffineStatus', () => {
-    const expectedForkYield = fork(pollOfflineStatus);
+    const expectedForkYield = fork(pollOfflineStatusSaga);
     expect(gen.next().value).toEqual(expectedForkYield);
   });
 

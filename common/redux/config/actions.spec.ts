@@ -1,4 +1,4 @@
-import { changeLanguage } from '../../common/actions/config';
+import { changeLanguage } from './actions';
 
 describe('actions', () => {
   it('should create an action to change language to index', () => {

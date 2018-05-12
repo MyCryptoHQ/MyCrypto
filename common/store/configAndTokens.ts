@@ -1,10 +1,13 @@
 import { State as ConfigState, config } from 'reducers/config';
 import { dedupeCustomTokens } from 'utils/tokens';
+import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
+import { CustomNodeConfig } from 'types/node';
+import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
+import RootReducer, { AppState } from 'reducers';
 import {
   State as CustomTokenState,
   INITIAL_STATE as customTokensInitialState
 } from 'redux/customTokens';
-import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import {
   isStaticNodeId,
   isStaticNetworkId,
@@ -12,10 +15,8 @@ import {
   getCustomNodeConfigs,
   getSelectedNode,
   getCustomNetworkConfigs
-} from 'selectors/config';
-import RootReducer, { AppState } from 'reducers';
-import { CustomNodeConfig } from 'types/node';
-import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
+} from 'redux/config';
+
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };

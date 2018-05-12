@@ -1,6 +1,5 @@
 import { routerReducer } from 'react-router-redux';
 import { combineReducers } from 'redux';
-import { config, State as ConfigState } from './config';
 import { ens, State as EnsState } from './ens';
 import { State as SwapState, swap } from './swap';
 import { State as TransactionState, transaction } from './transaction';
@@ -19,6 +18,7 @@ import paritySigner, { State as ParitySignerState } from 'redux/paritySigner';
 import rates, { State as RatesState } from 'redux/rates';
 import transactions, { State as TransactionsState } from 'redux/transactions';
 import wallet, { State as WalletState } from 'redux/wallet';
+import config, { State as ConfigState } from 'redux/config';
 
 export interface AppState {
   // Custom reducers
