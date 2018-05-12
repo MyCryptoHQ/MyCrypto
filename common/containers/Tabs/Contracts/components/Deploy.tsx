@@ -12,7 +12,6 @@ import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
 import './Deploy.scss';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { TextArea } from 'components/ui';
-import { isHexString } from 'ethereumjs-util';
 
 interface DispatchProps {
   setToField: TSetToField;
