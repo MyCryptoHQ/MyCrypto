@@ -4,7 +4,7 @@ import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 import { DeterministicWalletData, GetDeterministicWalletsAction } from './types';
 import { setDeterministicWallets, updateDeterministicWallet } from './actions';
-import { notificationsActions } from 'redux/notifications';
+import { showNotification } from 'redux/notifications';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
@@ -13,7 +13,7 @@ import translate from 'translations';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
 
-export function* getDeterministicWallets(action: GetDeterministicWalletsAction): SagaIterator {
+export function* getDeterministicWalletsSaga(action: GetDeterministicWalletsAction): SagaIterator {
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
   let pathBase;
   let hdk;
@@ -68,7 +68,7 @@ export function* updateWalletValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(notificationsActions.showNotification('danger', translate('ERROR_32')));
+    yield put(showNotification('danger', translate('ERROR_32')));
   }
 }
 
@@ -112,11 +112,11 @@ export function* updateWalletTokenValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(notificationsActions.showNotification('danger', translate('ERROR_32')));
+    yield put(showNotification('danger', translate('ERROR_32')));
   }
 }
 
 export default function* deterministicWalletsSaga(): SagaIterator {
-  yield takeLatest('DW_GET_WALLETS', getDeterministicWallets);
+  yield takeLatest('DW_GET_WALLETS', getDeterministicWalletsSaga);
   yield takeEvery('DW_SET_DESIRED_TOKEN', updateWalletTokenValues);
 }

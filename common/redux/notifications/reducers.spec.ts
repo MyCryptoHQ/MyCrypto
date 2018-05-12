@@ -1,9 +1,10 @@
-import notifications, { notificationsActions } from './';
+import { showNotification, closeNotification } from './actions';
+import notifications from './reducers';
 
 describe('customTokens reducer', () => {
-  const notification1 = notificationsActions.showNotification('success', 'msg');
+  const notification1 = showNotification('success', 'msg');
 
-  const notification2 = notificationsActions.showNotification('danger', 'msg');
+  const notification2 = showNotification('danger', 'msg');
 
   it('should handle SHOW_NOTIFICATION', () => {
     const state = notifications(undefined, notification1);
@@ -17,8 +18,8 @@ describe('customTokens reducer', () => {
     const state1 = notifications(undefined, notification1);
     const state2 = notifications(state1, notification2);
 
-    expect(
-      notifications(state2, notificationsActions.closeNotification(notification2.payload))
-    ).toEqual([notification1.payload]);
+    expect(notifications(state2, closeNotification(notification2.payload))).toEqual([
+      notification1.payload
+    ]);
   });
 });

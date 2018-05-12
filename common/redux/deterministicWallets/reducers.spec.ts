@@ -1,7 +1,8 @@
-import { configuredStore } from 'store';
-import deterministicWallets, { INITIAL_STATE, deterministicWalletsActions } from './';
-import { ITokenValues, DeterministicWalletData } from './types';
 import { TokenValue } from 'libs/units';
+import { configuredStore } from 'store';
+import { ITokenValues, DeterministicWalletData } from './types';
+import { setDeterministicWallets, setDesiredToken, updateDeterministicWallet } from './actions';
+import deterministicWallets, { INITIAL_STATE } from './reducers';
 
 configuredStore.getState();
 
@@ -22,9 +23,7 @@ describe('deterministicWallets reducer', () => {
 
   it('should handle DW_SET_WALLETS', () => {
     const wallets = [wallet];
-    expect(
-      deterministicWallets(undefined, deterministicWalletsActions.setDeterministicWallets(wallets))
-    ).toEqual({
+    expect(deterministicWallets(undefined, setDeterministicWallets(wallets))).toEqual({
       ...INITIAL_STATE,
       wallets
     });
@@ -32,9 +31,7 @@ describe('deterministicWallets reducer', () => {
 
   it('should handle DW_SET_DESIRED_TOKEN', () => {
     const desiredToken = 'OMG';
-    expect(
-      deterministicWallets(undefined, deterministicWalletsActions.setDesiredToken(desiredToken))
-    ).toEqual({
+    expect(deterministicWallets(undefined, setDesiredToken(desiredToken))).toEqual({
       ...INITIAL_STATE,
       desiredToken
     });
@@ -50,10 +47,7 @@ describe('deterministicWallets reducer', () => {
       address: 'wallet2'
     };
     const wallets = [wallet1, wallet2];
-    const state = deterministicWallets(
-      undefined,
-      deterministicWalletsActions.setDeterministicWallets(wallets)
-    );
+    const state = deterministicWallets(undefined, setDeterministicWallets(wallets));
 
     const wallet2Update = {
       ...wallet,
@@ -62,12 +56,7 @@ describe('deterministicWallets reducer', () => {
       value: TokenValue('100')
     };
 
-    expect(
-      deterministicWallets(
-        state,
-        deterministicWalletsActions.updateDeterministicWallet(wallet2Update)
-      )
-    ).toEqual({
+    expect(deterministicWallets(state, updateDeterministicWallet(wallet2Update))).toEqual({
       ...INITIAL_STATE,
       wallets: [wallet1, wallet2Update]
     });

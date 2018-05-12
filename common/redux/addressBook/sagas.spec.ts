@@ -3,11 +3,6 @@ import { translateRaw } from 'translations';
 import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
 import { getInitialState } from '../../../spec/selectors/helpers';
 import {
-  handleChangeAddressLabelEntry,
-  handleSaveAddressLabelEntry,
-  handleRemoveAddressLabelEntry
-} from './sagas';
-import {
   setAddressLabel,
   clearAddressLabel,
   setAddressLabelEntry,
@@ -16,6 +11,11 @@ import {
   clearAddressLabelEntry,
   removeAddressLabelEntry
 } from './actions';
+import {
+  handleChangeAddressLabelEntry,
+  handleSaveAddressLabelEntry,
+  handleRemoveAddressLabelEntry
+} from './sagas';
 
 describe('addressBook: Sagas', () => {
   const initialState = getInitialState();

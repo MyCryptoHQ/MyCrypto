@@ -1,7 +1,13 @@
 import { Wei } from 'libs/units';
 import { configuredStore } from 'store';
+import {
+  setWallet,
+  resetWallet,
+  setBalancePending,
+  setBalanceFullfilled,
+  setBalanceRejected
+} from './actions';
 import wallet, { INITIAL_STATE } from './reducers';
-import * as walletActions from './actions';
 
 configuredStore.getState();
 
@@ -19,7 +25,7 @@ describe('wallet reducer', () => {
     };
 
     //@ts-ignore
-    expect(wallet(undefined, walletActions.setWallet(walletInstance))).toEqual({
+    expect(wallet(undefined, setWallet(walletInstance))).toEqual({
       ...INITIAL_STATE,
       inst: walletInstance,
       recentAddresses: [address]
@@ -27,11 +33,11 @@ describe('wallet reducer', () => {
   });
 
   it('should handle WALLET_RESET', () => {
-    expect(wallet(undefined, walletActions.resetWallet())).toEqual(INITIAL_STATE);
+    expect(wallet(undefined, resetWallet())).toEqual(INITIAL_STATE);
   });
 
   it('should handle WALLET_SET_BALANCE_PENDING', () => {
-    expect(wallet(undefined, walletActions.setBalancePending())).toEqual({
+    expect(wallet(undefined, setBalancePending())).toEqual({
       ...INITIAL_STATE,
       balance: {
         ...INITIAL_STATE.balance,
@@ -42,7 +48,7 @@ describe('wallet reducer', () => {
 
   it('should handle WALLET_SET_BALANCE_FULFILLED', () => {
     const balance = Wei('100');
-    expect(wallet(undefined, walletActions.setBalanceFullfilled(balance))).toEqual({
+    expect(wallet(undefined, setBalanceFullfilled(balance))).toEqual({
       ...INITIAL_STATE,
       balance: {
         wei: balance,
@@ -52,7 +58,7 @@ describe('wallet reducer', () => {
   });
 
   it('should handle WALLET_SET_BALANCE_REJECTED', () => {
-    expect(wallet(undefined, walletActions.setBalanceRejected())).toEqual({
+    expect(wallet(undefined, setBalanceRejected())).toEqual({
       ...INITIAL_STATE,
       balance: {
         ...INITIAL_STATE.balance,

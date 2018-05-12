@@ -1,6 +1,6 @@
-import gas, { INITIAL_STATE } from './';
-import { fetchGasEstimates, setGasEstimates } from './actions';
 import { GasEstimates } from 'api/gas';
+import { fetchGasEstimates, setGasEstimates } from './actions';
+import gas, { INITIAL_STATE } from './reducers';
 
 describe('gas reducer', () => {
   it('should handle GAS_FETCH_ESTIMATES', () => {

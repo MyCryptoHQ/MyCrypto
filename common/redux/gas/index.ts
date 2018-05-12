@@ -1,8 +1,9 @@
 import reducer from './reducers';
 
+export * from './types';
+export * from './actions';
 export * from './reducers';
-export { default as gasActions } from './actions';
-export { default as gasSaga } from './sagas';
-export { default as gasSelectors } from './selectors';
+export * from './selectors';
+export * from './sagas';
 
 export default reducer;
