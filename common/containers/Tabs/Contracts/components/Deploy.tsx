@@ -1,5 +1,4 @@
 import translate from 'translations';
-import classnames from 'classnames';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
@@ -33,15 +32,13 @@ class DeployClass extends Component<DispatchProps> {
             <DataFieldFactory
               withProps={({ data: { raw }, onChange, readOnly, validData }) => (
                 <TextArea
+                  isValid={validData && !!raw}
                   name="byteCode"
                   placeholder="0x8f87a973e..."
                   rows={6}
                   onChange={onChange}
                   disabled={readOnly}
-                  className={classnames(
-                    'Deploy-field-input',
-                    validData && raw ? 'is-valid' : 'is-invalid'
-                  )}
+                  className="Deploy-field-input"
                   value={raw}
                 />
               )}

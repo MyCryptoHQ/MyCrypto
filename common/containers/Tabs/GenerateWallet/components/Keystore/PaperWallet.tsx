@@ -21,6 +21,8 @@ const PaperWallet: React.SFC<Props> = props => (
         <h1 className="GenPaper-title">{translate('GEN_LABEL_5')}</h1>
         <Input
           value={stripHexPrefix(props.privateKey)}
+          showValidAsPlain={true}
+          isValid={true}
           aria-label={translateRaw('X_PRIVKEY')}
           aria-describedby="x_PrivKeyDesc"
           type="text"

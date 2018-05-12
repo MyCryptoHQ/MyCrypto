@@ -11,7 +11,7 @@ export default class SimpleSelect extends PureComponent<Props, {}> {
     return (
       <select
         value={this.props.value || this.props.options[0]}
-        className={'form-control'}
+        className="form-control"
         onChange={this.props.onChange}
       >
         {this.props.options.map((obj, i) => {

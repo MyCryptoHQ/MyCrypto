@@ -11,7 +11,7 @@ export const DataField: React.SFC<{}> = () => (
         <label className="input-group">
           <div className="input-group-header">{translate('OFFLINE_STEP2_LABEL_6')}</div>
           <Input
-            className={validData ? 'is-valid' : 'is-invalid'}
+            isValid={validData}
             type="text"
             placeholder={donationAddressMap.ETH}
             value={raw}

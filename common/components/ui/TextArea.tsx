@@ -1,15 +1,33 @@
 import React, { HTMLProps } from 'react';
+import classnames from 'classnames';
+
 import './Input.scss';
 
 interface State {
   hasBlurred: boolean;
 }
 
-class TextArea extends React.Component<HTMLProps<HTMLTextAreaElement>, State> {
+interface OwnProps extends HTMLProps<HTMLTextAreaElement> {
+  isValid: boolean;
+  showValidAsPlain?: boolean;
+}
+
+class TextArea extends React.Component<OwnProps, State> {
   public state: State = {
     hasBlurred: false
   };
+
   public render() {
+    const classname = classnames(
+      this.props.className,
+      'input-group-input',
+      'form-control',
+      this.props.isValid
+        ? this.props.showValidAsPlain ? '' : `is-valid valid`
+        : `is-invalid invalid`,
+      this.state.hasBlurred && 'has-blurred'
+    );
+
     return (
       <textarea
         {...this.props}
@@ -19,9 +37,7 @@ class TextArea extends React.Component<HTMLProps<HTMLTextAreaElement>, State> {
             this.props.onBlur(e);
           }
         }}
-        className={`input-group-input form-control ${this.props.className} ${
-          this.state.hasBlurred ? 'has-blurred' : ''
-        }`}
+        className={classname}
       />
     );
   }

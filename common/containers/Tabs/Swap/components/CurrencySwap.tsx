@@ -316,12 +316,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                 <div className="input-group input-group-inline">
                   <Input
                     id="origin-swap-input"
-                    className={`input-group-input ${
-                      !!origin.amount &&
-                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
-                        ? ''
-                        : 'invalid'
-                    }`}
+                    isValid={this.isMinMaxValid(origin.amount, origin.label, destination.label)}
                     type="number"
                     placeholder={translateRaw('SEND_AMOUNT_SHORT')}
                     value={isNaN(origin.amount) ? '' : origin.amount}
@@ -341,12 +336,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                   <div className="input-group-header">{translate('SWAP_RECEIVE_INPUT_LABEL')}</div>
                   <Input
                     id="destination-swap-input"
-                    className={`${
-                      !!destination.amount &&
-                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
-                        ? ''
-                        : 'invalid'
-                    }`}
+                    isValid={this.isMinMaxValid(origin.amount, origin.label, destination.label)}
                     type="number"
                     placeholder={translateRaw('SEND_AMOUNT_SHORT')}
                     value={isNaN(destination.amount) ? '' : destination.amount}

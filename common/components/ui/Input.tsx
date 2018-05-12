@@ -1,16 +1,33 @@
 import React, { HTMLProps } from 'react';
+import classnames from 'classnames';
 import './Input.scss';
 
 interface State {
   hasBlurred: boolean;
 }
 
-class Input extends React.Component<HTMLProps<HTMLInputElement>, State> {
+interface OwnProps extends HTMLProps<HTMLInputElement> {
+  isValid: boolean;
+  showValidAsPlain?: boolean;
+}
+
+class Input extends React.Component<OwnProps, State> {
   public state: State = {
     hasBlurred: false
   };
 
   public render() {
+    const hasValue = !!this.props.value && this.props.value.toString().length > 0;
+    const classname = classnames(
+      this.props.className,
+      'input-group-input',
+      'form-control',
+      this.props.isValid
+        ? this.props.showValidAsPlain ? '' : `is-valid valid`
+        : `is-invalid invalid`,
+      this.state.hasBlurred && 'has-blurred',
+      hasValue && 'has-value'
+    );
     return (
       <input
         {...this.props}
@@ -21,9 +38,7 @@ class Input extends React.Component<HTMLProps<HTMLInputElement>, State> {
           }
         }}
         onWheel={this.props.type === 'number' ? this.preventNumberScroll : undefined}
-        className={`input-group-input form-control ${this.props.className} ${
-          this.state.hasBlurred ? 'has-blurred' : ''
-        } ${!!this.props.value && this.props.value.toString().length > 0 ? 'has-value' : ''}`}
+        className={classname}
       />
     );
   }
