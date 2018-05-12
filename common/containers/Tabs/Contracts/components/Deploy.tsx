@@ -12,6 +12,7 @@ import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
 import './Deploy.scss';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { TextArea } from 'components/ui';
+import { isHexString } from 'ethereumjs-util';
 
 interface DispatchProps {
   setToField: TSetToField;
@@ -31,16 +32,17 @@ class DeployClass extends Component<DispatchProps> {
           <label className="input-group">
             <div className="input-group-header">{translate('CONTRACT_BYTECODE')}</div>
             <DataFieldFactory
-              withProps={({ data: { raw, value }, onChange, readOnly }) => (
+              withProps={({ data: { raw }, onChange, readOnly, validData }) => (
                 <TextArea
                   name="byteCode"
                   placeholder="0x8f87a973e..."
                   rows={6}
                   onChange={onChange}
                   disabled={readOnly}
-                  className={classnames('Deploy-field-input', {
-                    'is-valid': value && value.length > 0
-                  })}
+                  className={classnames(
+                    'Deploy-field-input',
+                    validData && raw ? 'is-valid' : 'is-invalid'
+                  )}
                   value={raw}
                 />
               )}
