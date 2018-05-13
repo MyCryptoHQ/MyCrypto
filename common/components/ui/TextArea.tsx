@@ -1,10 +1,14 @@
 import React, { HTMLProps } from 'react';
 import classnames from 'classnames';
-
 import './Input.scss';
 
 interface State {
   hasBlurred: boolean;
+  /**
+   * @description when the input has not had any values inputted yet
+   * e.g. "Pristine" condition
+   */
+  isStateless: boolean;
 }
 
 interface OwnProps extends HTMLProps<HTMLTextAreaElement> {
@@ -14,7 +18,8 @@ interface OwnProps extends HTMLProps<HTMLTextAreaElement> {
 
 class TextArea extends React.Component<OwnProps, State> {
   public state: State = {
-    hasBlurred: false
+    hasBlurred: false,
+    isStateless: true
   };
 
   public render() {
@@ -22,9 +27,11 @@ class TextArea extends React.Component<OwnProps, State> {
       this.props.className,
       'input-group-input',
       'form-control',
-      this.props.isValid
-        ? this.props.showValidAsPlain ? '' : `is-valid valid`
-        : `is-invalid invalid`,
+      this.state.isStateless
+        ? ''
+        : this.props.isValid
+          ? this.props.showValidAsPlain ? '' : `is-valid valid`
+          : `is-invalid invalid`,
       this.state.hasBlurred && 'has-blurred'
     );
 
@@ -37,10 +44,20 @@ class TextArea extends React.Component<OwnProps, State> {
             this.props.onBlur(e);
           }
         }}
+        onChange={this.handleOnChange}
         className={classname}
       />
     );
   }
+
+  private handleOnChange = (args: React.FormEvent<HTMLTextAreaElement>) => {
+    if (this.state.isStateless) {
+      this.setState({ isStateless: false });
+    }
+    if (this.props.onChange) {
+      this.props.onChange(args);
+    }
+  };
 }
 
 export default TextArea;
