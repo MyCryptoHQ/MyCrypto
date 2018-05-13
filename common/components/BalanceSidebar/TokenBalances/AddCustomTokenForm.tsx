@@ -66,9 +66,8 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
             <label className="AddCustom-field form-group" key={field.name}>
               <div className="input-group-header">{field.label}</div>
               <Input
-                className={`${
-                  errors[field.name] ? 'invalid' : field.value ? 'valid' : ''
-                } input-group-input-small`}
+                isValid={!errors[field.name]}
+                className="input-group-input-small"
                 type="text"
                 name={field.name}
                 value={field.value}

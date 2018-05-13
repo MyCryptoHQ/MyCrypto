@@ -20,7 +20,12 @@ class DetailsClass extends Component<StateProps> {
       <div className="tx-modal-details">
         <label className="input-group">
           <div className="input-group-header">Network</div>
-          <Input readOnly={true} value={`${network} network - provided by ${service}`} />
+          <Input
+            isValid={true}
+            showValidAsPlain={true}
+            readOnly={true}
+            value={`${network} network - provided by ${service}`}
+          />
         </label>
 
         <SerializedTransaction

@@ -32,7 +32,7 @@ export const WindowSizeField: React.SFC<Props> = ({ isReadOnly }) => (
             </span>
           </div>
           <Input
-            className={`input-group-input ${isValid ? '' : 'invalid'}`}
+            isValid={isValid}
             type="text"
             value={currentWindowSize.raw}
             placeholder={
