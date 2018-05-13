@@ -1,24 +1,8 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import Modal, { IButton } from 'components/ui/Modal';
-import { VERSION } from 'config';
-import { isNewerVersion } from 'utils/helpers';
-
-interface IGitHubRelease {
-  tag_name: string;
-}
-
-function getLatestGitHubRelease(): Promise<IGitHubRelease> {
-  return fetch('https://api.github.com/repos/MyCryptoHQ/MyCrypto/releases/latest', {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'content-type': 'application/json; charset=utf-8'
-    }
-  })
-    .then(res => res.json())
-    .then(data => data as IGitHubRelease);
-}
+import { getLatestElectronRelease } from 'utils/versioning';
+import { VERSION } from 'config/data';
 
 interface State {
   isOpen: boolean;
@@ -32,10 +16,9 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
 
   public async componentDidMount() {
     try {
-      const release = await getLatestGitHubRelease();
-      // TODO: Use VERSION once done with release candidates
-      if (isNewerVersion(VERSION, release.tag_name)) {
-        this.setState({ isOpen: true, newRelease: release.tag_name });
+      const newRelease = await getLatestElectronRelease();
+      if (newRelease) {
+        this.setState({ isOpen: true, newRelease });
       }
     } catch (err) {
       console.error('Failed to fetch latest release from GitHub:', err);
