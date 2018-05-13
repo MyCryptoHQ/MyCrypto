@@ -87,7 +87,7 @@ Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
               isValid={true}
               showValidAsPlain={true}
               defaultValue={fallbackBody}
-              className="form-control input-sm"
+              className="input-sm"
               rows={9}
             />
           ) : null}

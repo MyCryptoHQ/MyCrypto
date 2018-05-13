@@ -85,13 +85,13 @@
         border-color: $brand-danger;
         box-shadow: inset 0px 0px 0px 1px $brand-danger;
       }
+      &.valid.has-value {
+        border-color: #8dd17b;
+        box-shadow: inset 0px 0px 0px 1px #8dd17b;
+      }
       &:focus {
         border-color: #4295bc;
         box-shadow: inset 0px 0px 0px 1px #4295bc;
-        &.valid {
-          border-color: #8dd17b;
-          box-shadow: inset 0px 0px 0px 1px #8dd17b;
-        }
       }
     }
   }
