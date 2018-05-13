@@ -28,7 +28,7 @@ class Input extends React.Component<OwnProps, State> {
     const classname = classnames(
       this.props.className,
       'input-group-input',
-      this.state.isStateless ? '' : isValid ? (showValidAsPlain ? '' : `valid`) : `invalid`,
+      this.state.isStateless ? '' : isValid ? (showValidAsPlain ? '' : '') : `invalid`,
       this.state.hasBlurred && 'has-blurred',
       hasValue && 'has-value'
     );
