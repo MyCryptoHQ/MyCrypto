@@ -37,7 +37,7 @@ const HELP_MENU: MenuItemConstructorOptions = {
   role: 'help',
   submenu: [
     {
-      label: `v${packageJson.version}`,
+      label: `v${packageJson['electron-version']}`,
       enabled: false
     },
     { type: 'separator' },

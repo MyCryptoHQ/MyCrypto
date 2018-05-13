@@ -1,7 +1,7 @@
 import React from 'react';
 import translate, { translateRaw } from 'translations';
 import Modal, { IButton } from 'components/ui/Modal';
-import { VERSION_RC } from 'config';
+import { VERSION } from 'config';
 import { isNewerVersion } from 'utils/helpers';
 
 interface IGitHubRelease {
@@ -22,6 +22,7 @@ function getLatestGitHubRelease(): Promise<IGitHubRelease> {
 
 interface State {
   isOpen: boolean;
+  newRelease?: string;
 }
 
 export default class NewAppReleaseModal extends React.Component<{}, State> {
@@ -33,8 +34,8 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
     try {
       const release = await getLatestGitHubRelease();
       // TODO: Use VERSION once done with release candidates
-      if (isNewerVersion(VERSION_RC, release.tag_name)) {
-        this.setState({ isOpen: true });
+      if (isNewerVersion(VERSION, release.tag_name)) {
+        this.setState({ isOpen: true, newRelease: release.tag_name });
       }
     } catch (err) {
       console.error('Failed to fetch latest release from GitHub:', err);
@@ -64,8 +65,19 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
         handleClose={this.close}
         maxWidth={520}
       >
-        <h5>{translateRaw('APP_UPDATE_BODY')}</h5>
+        <h5>
+          {translateRaw('APP_UPDATE_BODY')} {this.versionCompareStr()}
+        </h5>
       </Modal>
+    );
+  }
+
+  private versionCompareStr() {
+    return (
+      <>
+        <p>Current Version: {VERSION}</p>
+        <p>New Version: {this.state.newRelease}</p>
+      </>
     );
   }
 

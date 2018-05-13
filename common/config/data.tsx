@@ -9,7 +9,9 @@ export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
-export const VERSION = packageJson.version;
+const VERSION_ELECTRON = packageJson['electron-version'];
+const VERSION_WEB = packageJson.version;
+export const VERSION = process.env.BUILD_ELECTRON ? VERSION_ELECTRON : VERSION_WEB;
 export const N_FACTOR = 8192;
 
 // Bricks the app once this date has been exceeded. Remember to update these 2
@@ -17,7 +19,6 @@ export const N_FACTOR = 8192;
 // It is currently set to: 05/25/2018 @ 12:00am (UTC)
 // TODO: Remove me once app alpha / release candidates are done
 export const APP_ALPHA_EXPIRATION = 1527206400000;
-export const VERSION_RC = `${packageJson.version}-RC.0`;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, info, or blank for grey.
