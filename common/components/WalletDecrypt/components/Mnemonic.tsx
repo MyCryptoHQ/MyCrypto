@@ -67,6 +67,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
           <div className="form-group">
             <p>{translate('ADD_LABEL_8')}</p>
             <Input
+              isValid={true}
+              showValidAsPlain={true}
               value={pass}
               onChange={this.onPasswordChange}
               placeholder={translateRaw('INPUT_PASSWORD_LABEL')}

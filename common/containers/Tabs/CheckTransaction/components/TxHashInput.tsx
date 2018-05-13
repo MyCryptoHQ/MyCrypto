@@ -42,7 +42,7 @@ class TxHashInput extends React.Component<Props, State> {
   public render() {
     const { recentTxs } = this.props;
     const { hash } = this.state;
-    const validClass = hash ? (isValidTxHash(hash) ? 'is-valid' : 'is-invalid') : '';
+
     let selectOptions: Option[] = [];
 
     if (recentTxs && recentTxs.length) {
@@ -75,8 +75,9 @@ class TxHashInput extends React.Component<Props, State> {
 
         <Input
           value={hash}
+          isValid={hash ? isValidTxHash(hash) : true}
           placeholder="0x16e521..."
-          className={`TxHashInput-field ${validClass}`}
+          className="TxHashInput-field"
           onChange={this.handleChange}
         />
 

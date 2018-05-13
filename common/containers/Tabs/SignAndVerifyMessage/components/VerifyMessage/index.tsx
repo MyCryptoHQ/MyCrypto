@@ -41,7 +41,8 @@ export class VerifyMessage extends Component<Props, State> {
             <label className="input-group">
               <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>
               <TextArea
-                className={`VerifyMessage-inputBox ${signature ? 'is-valid' : 'is-invalid'}`}
+                isValid={!!signature}
+                className="VerifyMessage-inputBox"
                 placeholder={signaturePlaceholder}
                 value={signature}
                 onChange={this.handleSignatureChange}
