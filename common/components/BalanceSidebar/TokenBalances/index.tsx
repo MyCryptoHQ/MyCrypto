@@ -88,7 +88,6 @@ class TokenBalances extends React.Component<Props> {
       );
     } else {
       const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
-
       content = (
         <Balances
           allTokens={tokens}

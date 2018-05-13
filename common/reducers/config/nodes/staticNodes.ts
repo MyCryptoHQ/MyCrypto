@@ -184,6 +184,13 @@ export const INITIAL_STATE: StaticNodesState = {
     service: 'ellaism.org',
     lib: shepherdProvider,
     estimateGas: true
+  },
+  rsk_testnet: {
+    network: 'RSK_TESTNET',
+    isCustom: false,
+    service: 'mycrypto.testnet.rsk.co',
+    lib: shepherdProvider,
+    estimateGas: true
   }
 };
 

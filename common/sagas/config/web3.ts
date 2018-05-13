@@ -80,13 +80,14 @@ export function* unlockWeb3(): SagaIterator {
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
     }
 
+    const networkId: string = yield apply(nodeLib, nodeLib.getNetVersion);
     const accounts: string = yield apply(nodeLib, nodeLib.getAccounts);
     const address = accounts[0];
 
     if (!address) {
       throw new Error('No accounts found in MetaMask / Mist.');
     }
-    const wallet = new Web3Wallet(address, stripWeb3Network(network));
+    const wallet = new Web3Wallet(address, stripWeb3Network(network), Number.parseInt(networkId));
     yield put(setWallet(wallet));
   } catch (err) {
     console.error(err);

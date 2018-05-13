@@ -29,7 +29,7 @@ class AddressFieldFactoryClass extends React.Component<Props> {
     // this 'to' parameter can be either token or actual field related
     const { to } = this.props;
     if (to) {
-      this.props.setCurrentTo(to);
+      this.props.setCurrentTo({ raw: to });
     }
   }
 
@@ -45,7 +45,7 @@ class AddressFieldFactoryClass extends React.Component<Props> {
 
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    this.props.setCurrentTo(value);
+    this.props.setCurrentTo({ raw: value });
   };
 }
 

@@ -9,7 +9,9 @@ interface SetCurrentValueAction {
 
 interface SetCurrentToAction {
   type: TypeKeys.CURRENT_TO_SET;
-  payload: string;
+  payload: {
+    raw: string;
+  };
 }
 
 type CurrentAction = SetCurrentValueAction | SetCurrentToAction;

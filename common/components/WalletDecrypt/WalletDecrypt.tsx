@@ -53,6 +53,8 @@ import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/
 import './WalletDecrypt.scss';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Errorable } from 'components';
+import { NetworkConfig } from 'types/network';
+import { getNetworkConfig } from 'selectors/config';
 
 interface OwnProps {
   hidden?: boolean;
@@ -74,6 +76,7 @@ interface StateProps {
   computedDisabledWallets: DisabledWallets;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
+  network: NetworkConfig;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -94,6 +97,7 @@ interface BaseWalletInfo {
   isReadOnly?: boolean;
   attemptUnlock?: boolean;
   redirect?: string;
+  network?: NetworkConfig;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -300,6 +304,7 @@ const WalletDecrypt = withRouter<Props>(
                     ? this.props.isPasswordPending
                     : undefined
                 }
+                network={this.props.network}
               />
             </Errorable>
           </section>
@@ -486,7 +491,8 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   return {
     computedDisabledWallets,
     isWalletPending: state.wallet.isWalletPending,
-    isPasswordPending: state.wallet.isPasswordPending
+    isPasswordPending: state.wallet.isPasswordPending,
+    network: getNetworkConfig(state)
   };
 }
 

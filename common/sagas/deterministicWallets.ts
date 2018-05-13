@@ -5,7 +5,7 @@ import {
   updateDeterministicWallet
 } from 'actions/deterministicWallets';
 import { showNotification } from 'actions/notifications';
-import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
+import { publicToAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 import { INode } from 'libs/nodes/INode';
 import { SagaIterator } from 'redux-saga';
@@ -16,9 +16,10 @@ import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 
 export function* getDeterministicWallets(action: GetDeterministicWalletsAction): SagaIterator {
-  const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
+  const { seed, dPath, publicKey, chainCode, limit, offset, chainId } = action.payload;
   let pathBase;
   let hdk;
 
@@ -43,7 +44,7 @@ export function* getDeterministicWallets(action: GetDeterministicWalletsAction):
     const address = publicToAddress(dkey.publicKey, true).toString('hex');
     wallets.push({
       index,
-      address: toChecksumAddress(address),
+      address: toChecksumAddressByChainId(address, chainId),
       tokenValues: {}
     });
   }

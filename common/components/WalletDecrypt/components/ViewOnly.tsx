@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
 import translate, { translateRaw } from 'translations';
-import { isValidETHAddress } from 'libs/validators';
+import { isValidAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { getRecentAddresses } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -15,6 +17,7 @@ interface OwnProps {
 
 interface StateProps {
   recentAddresses: AppState['wallet']['recentAddresses'];
+  network: NetworkConfig;
 }
 
 type Props = OwnProps & StateProps;
@@ -29,14 +32,14 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   };
 
   public render() {
-    const { recentAddresses } = this.props;
+    const { recentAddresses, network } = this.props;
     const { address } = this.state;
-    const isValid = isValidETHAddress(address);
+    const isValid = isValidAddress(address, network.chainId);
 
     const recentOptions = (recentAddresses.map(addr => ({
       label: (
         <React.Fragment>
-          <Identicon address={addr} />
+          <Identicon address={addr} network={network} />
           {addr}
         </React.Fragment>
       ),
@@ -88,8 +91,9 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
       ev.preventDefault();
     }
 
+    const { network } = this.props;
     const { address } = this.state;
-    if (isValidETHAddress(address)) {
+    if (isValidAddress(address, network.chainId)) {
       const wallet = new AddressOnlyWallet(address);
       this.props.onUnlock(wallet);
     }
@@ -97,5 +101,6 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 }
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
-  recentAddresses: getRecentAddresses(state)
+  recentAddresses: getRecentAddresses(state),
+  network: getNetworkConfig(state)
 }))(ViewOnlyDecryptClass);

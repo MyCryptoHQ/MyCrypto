@@ -29,13 +29,14 @@ const Send = () => (
 interface StateProps {
   wallet: AppState['wallet']['inst'];
   requestDisabled: boolean;
+  //network: NetworkConfig;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match, location, history } = this.props;
+    const { wallet, match, location, history /*, network*/ } = this.props;
     const currentPath = match.url;
     const tabs: Tab[] = [
       {
@@ -116,4 +117,5 @@ class SendTransaction extends React.Component<Props> {
 export default connect((state: AppState) => ({
   wallet: getWalletInst(state),
   requestDisabled: !isNetworkUnit(state, 'ETH')
+  //network: getNetworkConfig(state)
 }))(SendTransaction);

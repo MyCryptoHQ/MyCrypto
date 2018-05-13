@@ -1,14 +1,19 @@
 import React from 'react';
-import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { print } from 'components/PrintableWallet';
 import { QRCode } from 'components/ui';
 import { GenerateKeystoreModal, TogglablePassword, AddressField } from 'components';
+import { NetworkConfig } from 'types/network';
 import './WalletInfo.scss';
+import { toChecksumAddressByChainId } from 'libs/checksum';
+import { getNetworkConfig } from 'selectors/config';
+import { AppState } from 'reducers';
+import { connect } from 'react-redux';
 
 interface Props {
   wallet: IWallet;
+  network: NetworkConfig;
 }
 
 interface State {
@@ -18,7 +23,7 @@ interface State {
   isKeystoreModalOpen: boolean;
 }
 
-export default class WalletInfo extends React.PureComponent<Props, State> {
+class WalletInfo extends React.PureComponent<Props, State> {
   public state = {
     address: '',
     privateKey: '',
@@ -27,12 +32,12 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
   };
 
   public componentDidMount() {
-    this.setStateFromWallet(this.props.wallet);
+    this.setStateFromWallet(this.props.wallet, this.props.network);
   }
 
   public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
-      this.setStateFromWallet(nextProps.wallet);
+      this.setStateFromWallet(nextProps.wallet, this.props.network);
     }
   }
 
@@ -42,7 +47,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     return (
       <div className="WalletInfo">
         <div className="Tab-content-pane">
-          <AddressField isSelfAddress={true} />
+          <AddressField isSelfAddress={true} network={this.props.network} />
 
           {privateKey && (
             <div className="row form-group">
@@ -85,7 +90,10 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
                 <div className="col-xs-6">
                   <label>{translate('WALLET_INFO_UTILITIES')}</label>
 
-                  <button className="btn btn-info btn-block" onClick={print(address, privateKey)}>
+                  <button
+                    className="btn btn-info btn-block"
+                    onClick={print(address, privateKey, this.props.network)}
+                  >
                     {translate('X_PRINT')}
                   </button>
 
@@ -107,8 +115,8 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     );
   }
 
-  private setStateFromWallet(wallet: IWallet) {
-    const address = toChecksumAddress(wallet.getAddressString());
+  private setStateFromWallet(wallet: IWallet, network: NetworkConfig) {
+    const address = toChecksumAddressByChainId(wallet.getAddressString(), network.chainId);
     const privateKey = wallet.getPrivateKeyString ? wallet.getPrivateKeyString() : '';
     this.setState({ address, privateKey });
   }
@@ -121,3 +129,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     this.setState({ isKeystoreModalOpen: !this.state.isKeystoreModalOpen });
   };
 }
+
+export default connect((state: AppState) => ({
+  network: getNetworkConfig(state)
+}))(WalletInfo);

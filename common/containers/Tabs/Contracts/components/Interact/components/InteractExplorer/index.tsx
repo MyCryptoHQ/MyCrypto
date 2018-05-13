@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractExplorer.scss';
 import { TShowNotification, showNotification } from 'actions/notifications';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getNetworkConfig } from 'selectors/config';
 import { getTo, getDataExists } from 'selectors/transaction';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import { AppState } from 'reducers';
@@ -13,11 +13,13 @@ import { Data } from 'libs/units';
 import { Input, Dropdown } from 'components/ui';
 import { INode } from 'libs/nodes';
 import { bufferToHex } from 'ethereumjs-util';
+import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   nodeLib: INode;
   to: AppState['transaction']['fields']['to'];
   dataExists: boolean;
+  network: NetworkConfig;
 }
 
 interface DispatchProps {
@@ -192,8 +194,10 @@ class InteractExplorerClass extends Component<Props, State> {
       const callData = { to: to.raw, data };
       const results = await nodeLib.sendCallRequest(callData);
 
-      const parsedResult = selectedFunction!.contract.decodeOutput(results);
-
+      const parsedResult = selectedFunction!.contract.decodeOutput(
+        results,
+        this.props.network.chainId
+      );
       this.setState({ outputs: parsedResult });
     } catch (e) {
       this.props.showNotification(
@@ -263,7 +267,8 @@ export const InteractExplorer = connect(
   (state: AppState) => ({
     nodeLib: getNodeLib(state),
     to: getTo(state),
-    dataExists: getDataExists(state)
+    dataExists: getDataExists(state),
+    network: getNetworkConfig(state)
   }),
   { showNotification, setDataField }
 )(InteractExplorerClass);

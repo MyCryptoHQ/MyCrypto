@@ -14,7 +14,7 @@ const paths = {
 
 module.exports = {
   // Configuration
-  port: process.env.HTTPS ? 3443 : 3000,
+  port: process.env.HTTPS ? 3443 : 3021,
   title: 'MyCrypto',
   // description < 200 characters
   description: 'MyCrypto is a free, open-source interface for interacting with the blockchain.',

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
 import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
@@ -11,6 +10,7 @@ import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 import './AccountInfo.scss';
 
 interface OwnProps {
@@ -102,13 +102,16 @@ class AccountInfo extends React.Component<Props, State> {
         <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
+            <Identicon address={address} size="100%" network={network} />
           </div>
           <div className="AccountInfo-address-wrapper">
             <div className="AccountInfo-address-addr">
-              <Address address={address} />
+              <Address address={toChecksumAddressByChainId(address, network.chainId)} />
             </div>
-            <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>
+            <CopyToClipboard
+              onCopy={this.onCopy}
+              text={toChecksumAddressByChainId(address, network.chainId)}
+            >
               <div
                 className={`AccountInfo-copy ${this.state.copied ? 'is-copied' : ''}`}
                 title="Copy To clipboard"
