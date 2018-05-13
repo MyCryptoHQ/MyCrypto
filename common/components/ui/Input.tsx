@@ -23,6 +23,7 @@ class Input extends React.Component<OwnProps, State> {
   };
 
   public render() {
+    const { showValidAsPlain, isValid, ...htmlProps } = this.props;
     const hasValue = !!this.props.value && this.props.value.toString().length > 0;
     const classname = classnames(
       this.props.className,
@@ -30,15 +31,14 @@ class Input extends React.Component<OwnProps, State> {
       'form-control',
       this.state.isStateless
         ? ''
-        : this.props.isValid
-          ? this.props.showValidAsPlain ? '' : `is-valid valid`
-          : `is-invalid invalid`,
+        : isValid ? (showValidAsPlain ? '' : `is-valid valid`) : `is-invalid invalid`,
       this.state.hasBlurred && 'has-blurred',
       hasValue && 'has-value'
     );
+
     return (
       <input
-        {...this.props}
+        {...htmlProps}
         onBlur={e => {
           this.setState({ hasBlurred: true });
           if (this.props && this.props.onBlur) {
