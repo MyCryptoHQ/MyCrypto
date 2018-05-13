@@ -108,7 +108,7 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
 
     // Formatting errors
     if (decimal && !isPositiveIntegerOrZero(Number(decimal))) {
-      errors.decimal = 'Invalid decimal'
+      errors.decimal = 'Invalid decimal';
     }
     if (address) {
       if (!isValidETHAddress(address)) {
