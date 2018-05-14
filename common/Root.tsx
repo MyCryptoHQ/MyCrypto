@@ -113,7 +113,7 @@ class RootClass extends Component<Props, State> {
               {!process.env.DOWNLOADABLE_BUILD && (
                 <React.Fragment>
                   <OnboardModal />
-                  <WelcomeModal />
+                  {!process.env.BUILD_ELECTRON && <WelcomeModal />}
                 </React.Fragment>
               )}
             </React.Fragment>
