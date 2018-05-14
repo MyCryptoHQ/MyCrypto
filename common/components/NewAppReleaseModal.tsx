@@ -48,9 +48,9 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
         handleClose={this.close}
         maxWidth={520}
       >
-        <h5>
+        <h4>
           {translateRaw('APP_UPDATE_BODY')} {this.versionCompareStr()}
-        </h5>
+        </h4>
       </Modal>
     );
   }
@@ -58,8 +58,8 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
   private versionCompareStr() {
     return (
       <>
-        <p>Current Version: {VERSION}</p>
-        <p>New Version: {this.state.newRelease}</p>
+        <h5>Current Version: {VERSION}</h5>
+        <h5>New Version: {this.state.newRelease}</h5>
       </>
     );
   }
