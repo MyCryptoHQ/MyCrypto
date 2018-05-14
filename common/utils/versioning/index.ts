@@ -58,17 +58,14 @@ export async function getLatestElectronRelease() {
   for (const { assets } of releases) {
     for (const { name } of assets) {
       const assetObj = parseAssetName(name);
-      console.log(`AssetObject ${JSON.stringify(assetObj, null, 2)}`);
       if (!assetObj) {
         continue;
       }
       const { versionNumber: nextVersion } = assetObj;
       if (semver.lt(currentVersion, nextVersion)) {
-        console.log(`${nextVersion} is newer, returning with newer version`);
         return nextVersion;
       }
     }
   }
-  console.log(`${VERSION} is the latest version, returning with nothing`);
   return null;
 }
