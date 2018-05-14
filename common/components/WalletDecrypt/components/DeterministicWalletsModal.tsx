@@ -132,7 +132,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
               <React.Fragment>
                 <div className="DWModal-path-custom">
                   <Input
-                    className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
+                    isValid={customPath ? isValidPath(customPath) : true}
                     value={customPath}
                     placeholder="m/44'/60'/0'/0"
                     onChange={this.handleChangeCustomPath}

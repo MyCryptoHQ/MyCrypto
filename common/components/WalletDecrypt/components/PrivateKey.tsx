@@ -74,7 +74,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
               <label className="input-group">
                 <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
                 <Input
-                  className={`form-control ${password.length > 0 ? 'is-valid' : 'is-invalid'}`}
+                  isValid={password.length > 0}
                   value={password}
                   onChange={this.onPasswordChange}
                   onKeyDown={this.onKeyDown}

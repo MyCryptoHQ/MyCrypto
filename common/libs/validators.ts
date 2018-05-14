@@ -140,10 +140,10 @@ export function isValidPath(dPath: string) {
 }
 
 export const isValidValue = (value: string) =>
-  !!(value && isFinite(parseFloat(value)) && parseFloat(value) >= 0);
+  !!(value && isFinite(Number(value)) && Number(value) >= 0);
 
 export const gasLimitValidator = (gasLimit: number | string) => {
-  const gasLimitFloat = typeof gasLimit === 'string' ? parseFloat(gasLimit) : gasLimit;
+  const gasLimitFloat = typeof gasLimit === 'string' ? Number(gasLimit) : gasLimit;
   return (
     validNumber(gasLimitFloat) &&
     gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
@@ -152,7 +152,7 @@ export const gasLimitValidator = (gasLimit: number | string) => {
 };
 
 export const gasPriceValidator = (gasPrice: number | string): boolean => {
-  const gasPriceFloat = typeof gasPrice === 'string' ? parseFloat(gasPrice) : gasPrice;
+  const gasPriceFloat = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
   return (
     validNumber(gasPriceFloat) &&
     gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
@@ -172,7 +172,7 @@ export const timeBountyValidator = (timeBounty: BN | number | string | null): bo
     );
   }
 
-  const timeBountyFloat = typeof timeBounty === 'string' ? parseFloat(timeBounty) : timeBounty;
+  const timeBountyFloat = typeof timeBounty === 'string' ? Number(timeBounty) : timeBounty;
 
   return validNumber(timeBountyFloat);
 };
