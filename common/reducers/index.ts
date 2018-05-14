@@ -3,7 +3,6 @@ import { routerReducer } from 'react-router-redux';
 
 import { State as SwapState, swap } from './swap';
 import { State as TransactionState, transaction } from './transaction';
-import { schedule, State as ScheduleState } from './schedule';
 
 import addressBook, { State as AddressBookState } from 'redux/addressBook';
 import notifications, { State as NotificationsState } from 'redux/notifications';
@@ -20,6 +19,7 @@ import transactions, { State as TransactionsState } from 'redux/transactions';
 import wallet, { State as WalletState } from 'redux/wallet';
 import config, { State as ConfigState } from 'redux/config';
 import ens, { State as EnsState } from 'redux/ens';
+import schedule, { State as ScheduleState } from 'redux/schedule';
 
 export interface AppState {
   // Custom reducers
