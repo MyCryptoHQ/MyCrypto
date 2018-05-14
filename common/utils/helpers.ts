@@ -1,7 +1,6 @@
 import qs from 'query-string';
 import has from 'lodash/has';
 import EthTx from 'ethereumjs-tx';
-import semver from 'semver';
 import { BlockExplorerConfig } from 'types/network';
 
 interface IObjectValue {
@@ -100,25 +99,4 @@ export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
     addressUrl: address => `${config.origin}/${config.addressPath}/${address}`,
     blockUrl: blockNum => `${config.origin}/${config.blockPath}/${blockNum}`
   };
-}
-
-export function isNewerVersion(oldVersion: string, newVersion: string) {
-  // 1.0.0 -> 1.0.1
-  if (semver.lt(oldVersion, newVersion)) {
-    return true;
-  }
-
-  // 1.0.0-RC.0 -> 1.0.0-RC.1
-  // TODO: Remove this code once done with release candidates
-  const oldv = semver.coerce(oldVersion);
-  const newv = semver.coerce(newVersion);
-  if (oldv && newv && semver.eq(oldv, newv)) {
-    const oldRc = parseInt(oldVersion.split('-RC.')[1], 10);
-    const newRc = parseInt(newVersion.split('-RC.')[1], 10);
-    if (newRc > oldRc) {
-      return true;
-    }
-  }
-
-  return false;
 }

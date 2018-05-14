@@ -95,8 +95,12 @@ export default class AbiFunction {
     return mapppedType ? mapppedType(value) : BN.isBN(value) ? value.toString() : value;
   };
 
-  private parsePreEncodedValue = (_: string, value: any) =>
-    BN.isBN(value) ? value.toString() : value;
+  private parsePreEncodedValue = (type: string, value: any) => {
+    if (type === 'bytes') {
+      return Buffer.from(value, 'hex');
+    }
+    return BN.isBN(value) ? value.toString() : value;
+  };
 
   private makeFuncParams = () =>
     this.inputs.reduce((accumulator, currInput) => {
