@@ -2,7 +2,7 @@
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
   "version": "1.0.0",
-  "electron-version": "1.0.0-RC2",
+  "electron-version": "1-0-0-alpha.2",
   "main": "main.js",
   "description": "MyCrypto web and electron app",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
