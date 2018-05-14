@@ -1,7 +1,6 @@
 import qs from 'query-string';
 import has from 'lodash/has';
 import EthTx from 'ethereumjs-tx';
-import semver from 'semver';
 import { BlockExplorerConfig } from 'types/network';
 
 interface IObjectValue {
