@@ -4,15 +4,17 @@ import { routerMiddleware } from 'react-router-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import throttle from 'lodash/throttle';
+import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
+import fixAddressBookErrors from 'utils/fixAddressBookErrors';
+import { gasPriceToBase } from 'libs/units';
+
 import RootReducer, { AppState } from 'reducers';
 import sagas from 'sagas';
-import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
-import { gasPriceToBase } from 'libs/units';
 import {
   INITIAL_STATE as transactionInitialState,
   State as TransactionState
 } from 'reducers/transaction';
-import { State as SwapState, INITIAL_STATE as initialSwapState } from 'reducers/swap';
+import { State as SwapState, INITIAL_STATE as initialSwapState } from 'redux/swap';
 import {
   State as AddressBookState,
   INITIAL_STATE as initialAddressBookState
@@ -26,7 +28,6 @@ import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
 } from './configAndTokens';
-import fixAddressBookErrors from 'utils/fixAddressBookErrors';
 
 const configureStore = () => {
   const logger = createLogger({

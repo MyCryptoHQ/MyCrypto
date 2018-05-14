@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import { State as SwapState, swap } from './swap';
 import { State as TransactionState, transaction } from './transaction';
 
 import addressBook, { State as AddressBookState } from 'redux/addressBook';
@@ -20,6 +19,7 @@ import wallet, { State as WalletState } from 'redux/wallet';
 import config, { State as ConfigState } from 'redux/config';
 import ens, { State as EnsState } from 'redux/ens';
 import schedule, { State as ScheduleState } from 'redux/schedule';
+import swap, { State as SwapState } from 'redux/swap';
 
 export interface AppState {
   // Custom reducers

@@ -1,15 +1,30 @@
-import { swap, INITIAL_STATE } from 'reducers/swap';
-import * as swapActions from 'actions/swap';
-import {
-  NormalizedBityRates,
-  NormalizedOptions,
-  NormalizedShapeshiftRates
-} from 'reducers/swap/types';
 import { normalize } from 'normalizr';
-import * as schema from 'reducers/swap/schema';
-import { TypeKeys } from 'actions/swap/constants';
-import tokens from 'config/tokens/eth.json';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
+import tokens from 'config/tokens/eth.json';
+import {
+  TypeKeys,
+  SwapAction,
+  NormalizedOptions,
+  NormalizedBityRates,
+  NormalizedShapeshiftRates,
+  BityOrderResponse,
+  BityOrderPostResponse,
+  ShapeshiftOrderResponse,
+  ShapeshiftStatusResponse
+} from './types';
+import {
+  loadBityRatesSucceededSwap,
+  loadShapeshiftRatesSucceededSwap,
+  changeStepSwap,
+  destinationAddressSwap,
+  restartSwap,
+  bityOrderCreateSucceededSwap,
+  shapeshiftOrderCreateSucceededSwap,
+  bityOrderStatusSucceededSwap,
+  shapeshiftOrderStatusSucceededSwap,
+  orderTimeSwap
+} from './actions';
+import swap, { INITIAL_STATE, allIds, providerRate } from './reducers';
 
 describe('ensure whitelist', () => {
   const findToken = (tkn: string) => tokens.find((t: any) => t.symbol === tkn);
@@ -58,26 +73,24 @@ describe('swap reducer', () => {
   };
 
   const normalizedBityRates: NormalizedBityRates = {
-    byId: normalize(bityApiResponse, [schema.providerRate]).entities.providerRates,
-    allIds: schema.allIds(normalize(bityApiResponse, [schema.providerRate]).entities.providerRates)
+    byId: normalize(bityApiResponse, [providerRate]).entities.providerRates,
+    allIds: allIds(normalize(bityApiResponse, [providerRate]).entities.providerRates)
   };
   const normalizedShapeshiftRates: NormalizedShapeshiftRates = {
-    byId: normalize(shapeshiftApiResponse, [schema.providerRate]).entities.providerRates,
-    allIds: schema.allIds(
-      normalize(shapeshiftApiResponse, [schema.providerRate]).entities.providerRates
-    )
+    byId: normalize(shapeshiftApiResponse, [providerRate]).entities.providerRates,
+    allIds: allIds(normalize(shapeshiftApiResponse, [providerRate]).entities.providerRates)
   };
   const normalizedBityOptions: NormalizedOptions = {
-    byId: normalize(bityApiResponse, [schema.providerRate]).entities.options,
-    allIds: schema.allIds(normalize(bityApiResponse, [schema.providerRate]).entities.options)
+    byId: normalize(bityApiResponse, [providerRate]).entities.options,
+    allIds: allIds(normalize(bityApiResponse, [providerRate]).entities.options)
   };
   const normalizedShapeshiftOptions: NormalizedOptions = {
-    byId: normalize(shapeshiftApiResponse, [schema.providerRate]).entities.options,
-    allIds: schema.allIds(normalize(shapeshiftApiResponse, [schema.providerRate]).entities.options)
+    byId: normalize(shapeshiftApiResponse, [providerRate]).entities.options,
+    allIds: allIds(normalize(shapeshiftApiResponse, [providerRate]).entities.options)
   };
 
   it('should handle SWAP_LOAD_BITY_RATES_SUCCEEDED', () => {
-    expect(swap(undefined, swapActions.loadBityRatesSucceededSwap(bityApiResponse))).toEqual({
+    expect(swap(undefined, loadBityRatesSucceededSwap(bityApiResponse))).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false,
       bityRates: normalizedBityRates,
@@ -86,19 +99,19 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED', () => {
-    expect(
-      swap(undefined, swapActions.loadShapeshiftRatesSucceededSwap(shapeshiftApiResponse as any))
-    ).toEqual({
-      ...INITIAL_STATE,
-      isFetchingRates: false,
-      shapeshiftRates: normalizedShapeshiftRates,
-      options: normalizedShapeshiftOptions
-    });
+    expect(swap(undefined, loadShapeshiftRatesSucceededSwap(shapeshiftApiResponse as any))).toEqual(
+      {
+        ...INITIAL_STATE,
+        isFetchingRates: false,
+        shapeshiftRates: normalizedShapeshiftRates,
+        options: normalizedShapeshiftOptions
+      }
+    );
   });
 
   it('should handle SWAP_STEP', () => {
     const step = 2;
-    expect(swap(undefined, swapActions.changeStepSwap(step))).toEqual({
+    expect(swap(undefined, changeStepSwap(step))).toEqual({
       ...INITIAL_STATE,
       step
     });
@@ -106,7 +119,7 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_DESTINATION_ADDRESS', () => {
     const destinationAddress = '341a0sdf83';
-    expect(swap(undefined, swapActions.destinationAddressSwap(destinationAddress))).toEqual({
+    expect(swap(undefined, destinationAddressSwap(destinationAddress))).toEqual({
       ...INITIAL_STATE,
       destinationAddress
     });
@@ -122,7 +135,7 @@ describe('swap reducer', () => {
           origin: { label: 'BTC', amount: 1 },
           destination: { label: 'ETH', amount: 3 }
         },
-        swapActions.restartSwap()
+        restartSwap()
       )
     ).toEqual({
       ...INITIAL_STATE,
@@ -135,7 +148,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isPostingOrder: true
@@ -146,7 +159,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isPostingOrder: true
@@ -157,7 +170,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: TypeKeys.SWAP_BITY_ORDER_CREATE_FAILED
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isPostingOrder: false
@@ -168,7 +181,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_FAILED
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isPostingOrder: false
@@ -176,7 +189,7 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_BITY_ORDER_CREATE_SUCCEEDED', () => {
-    const mockedBityOrder: swapActions.BityOrderPostResponse = {
+    const mockedBityOrder: BityOrderPostResponse = {
       payment_address: 'payment_address',
       status: 'status',
       input: {
@@ -196,7 +209,7 @@ describe('swap reducer', () => {
       id: 'id'
     };
 
-    expect(swap(undefined, swapActions.bityOrderCreateSucceededSwap(mockedBityOrder))).toEqual({
+    expect(swap(undefined, bityOrderCreateSucceededSwap(mockedBityOrder))).toEqual({
       ...INITIAL_STATE,
       bityOrder: {
         ...mockedBityOrder
@@ -214,7 +227,7 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_SHAPESHIFT_ORDER_CREATE_SUCCEEDED', () => {
-    const mockedShapeshiftOrder: swapActions.ShapeshiftOrderResponse = {
+    const mockedShapeshiftOrder: ShapeshiftOrderResponse = {
       orderId: '64d73218-0ee9-4c6c-9bbd-6da9208595f5',
       pair: 'eth_ant',
       withdrawal: '0x6b3a639eb96d8e0241fe4e114d99e739f906944e',
@@ -229,10 +242,7 @@ describe('swap reducer', () => {
       minerFee: '1.05'
     };
 
-    const swapState = swap(
-      undefined,
-      swapActions.shapeshiftOrderCreateSucceededSwap(mockedShapeshiftOrder)
-    );
+    const swapState = swap(undefined, shapeshiftOrderCreateSucceededSwap(mockedShapeshiftOrder));
 
     expect(swapState).toEqual({
       ...INITIAL_STATE,
@@ -252,7 +262,7 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_BITY_ORDER_STATUS_SUCCEEDED', () => {
-    const mockedBityResponse: swapActions.BityOrderResponse = {
+    const mockedBityResponse: BityOrderResponse = {
       input: {
         amount: '1.111',
         currency: 'input_currency',
@@ -268,7 +278,7 @@ describe('swap reducer', () => {
       status: 'status'
     };
 
-    expect(swap(undefined, swapActions.bityOrderStatusSucceededSwap(mockedBityResponse))).toEqual({
+    expect(swap(undefined, bityOrderStatusSucceededSwap(mockedBityResponse))).toEqual({
       ...INITIAL_STATE,
       outputTx: mockedBityResponse.output.reference,
       bityOrderStatus: mockedBityResponse.output.status
@@ -276,14 +286,12 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_SHAPESHIFT_ORDER_STATUS_SUCCEEDED', () => {
-    const mockedShapeshiftResponse: swapActions.ShapeshiftStatusResponse = {
+    const mockedShapeshiftResponse: ShapeshiftStatusResponse = {
       status: 'complete',
       transaction: '0x039ed77933388642fdd618d27bfc4fa3582d10c4'
     };
 
-    expect(
-      swap(undefined, swapActions.shapeshiftOrderStatusSucceededSwap(mockedShapeshiftResponse))
-    ).toEqual({
+    expect(swap(undefined, shapeshiftOrderStatusSucceededSwap(mockedShapeshiftResponse))).toEqual({
       ...INITIAL_STATE,
       shapeshiftOrderStatus: mockedShapeshiftResponse.status,
       outputTx: mockedShapeshiftResponse.transaction
@@ -292,7 +300,7 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_ORDER_TIME', () => {
     const secondsRemaining = 300;
-    expect(swap(undefined, swapActions.orderTimeSwap(secondsRemaining))).toEqual({
+    expect(swap(undefined, orderTimeSwap(secondsRemaining))).toEqual({
       ...INITIAL_STATE,
       secondsRemaining
     });
@@ -302,7 +310,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: 'SWAP_LOAD_BITY_RATES_REQUESTED'
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: true
@@ -313,7 +321,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: true
@@ -324,7 +332,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: 'SWAP_STOP_LOAD_BITY_RATES'
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false
@@ -335,7 +343,7 @@ describe('swap reducer', () => {
     expect(
       swap(undefined, {
         type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES
-      } as swapActions.SwapAction)
+      } as SwapAction)
     ).toEqual({
       ...INITIAL_STATE,
       isFetchingRates: false
