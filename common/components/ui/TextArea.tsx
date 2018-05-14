@@ -27,10 +27,7 @@ class TextArea extends React.Component<OwnProps, State> {
     const classname = classnames(
       this.props.className,
       'input-group-input',
-      'form-control',
-      this.state.isStateless
-        ? ''
-        : isValid ? (showValidAsPlain ? '' : `is-valid valid`) : `is-invalid invalid`,
+      this.state.isStateless ? '' : isValid ? (showValidAsPlain ? '' : '') : `invalid`,
       this.state.hasBlurred && 'has-blurred'
     );
 
