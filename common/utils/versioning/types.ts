@@ -77,11 +77,9 @@ export enum Platforms {
   MAC = 'mac',
   WINDOWS = 'windows',
   LINUX_i386 = 'linux-i386',
-  LINUX_x86 = 'linux-x86_64'
+  LINUX_x86 = 'linux-x86-64'
 }
 
-export enum Name {
-  MYCRYPTO = 'MyCrypto'
-}
+export type Name = 'MyCrypto';
 
 export type VersionNumber = string;

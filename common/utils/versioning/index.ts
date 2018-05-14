@@ -1,6 +1,8 @@
 import { Releases, Platforms, Name } from './types';
 import { VERSION } from 'config';
-import { isNewerVersion } from '../helpers';
+import semver from 'semver';
+
+const DELIMINATION_CHAR = '_';
 
 export function validPlatform(str: string): str is Platforms {
   const platformArr = Object.values(Platforms);
@@ -8,25 +10,22 @@ export function validPlatform(str: string): str is Platforms {
 }
 
 export function validName(str: string): str is Name {
-  const nameArr = Object.values(Name);
-  return nameArr.includes(str);
+  const name: Name = 'MyCrypto';
+  return str.startsWith(name);
 }
 
 export function parseAssetName(assetName: string) {
-  const electronAssetRaw = assetName.split('.');
+  const electronAssetRaw = assetName.split(DELIMINATION_CHAR);
   // check for array length
-  if (!electronAssetRaw || electronAssetRaw.length < 4) {
+  if (!electronAssetRaw || electronAssetRaw.length < 3) {
     return null;
   }
 
   const [rawPlatform, verNum, rawName] = electronAssetRaw;
+  console.log([rawPlatform, verNum, rawName]);
   if (validPlatform(rawPlatform) && verNum && validName(rawName)) {
     const platform = rawPlatform;
-    // convert hyphens to dots
-    // converts only the first two hyphens to dots
-    // so strings like 1-0-0-RC2 -> 1.0.0-RC2
-    // TODO: make this less fragile
-    const versionNumber = verNum.replace('-', '.').replace('-', '.');
+    const versionNumber = verNum;
     const name = rawName;
 
     return {
@@ -55,19 +54,16 @@ async function getGithubReleases(): Promise<Releases[]> {
 
 export async function getLatestElectronRelease() {
   const releases = await getGithubReleases();
-  console.log(`Releases: ${JSON.stringify(releases, null, 1)}`);
   const currentVersion = VERSION;
   for (const { assets } of releases) {
-    console.log(`Current assets ${JSON.stringify(assets, null, 1)}`);
     for (const { name } of assets) {
-      console.log(`Current name: ${name}`);
       const assetObj = parseAssetName(name);
+      console.log(`AssetObject ${JSON.stringify(assetObj, null, 2)}`);
       if (!assetObj) {
         continue;
       }
       const { versionNumber: nextVersion } = assetObj;
-      console.log(`Current Version ${currentVersion}, Next Version ${nextVersion}`);
-      if (isNewerVersion(currentVersion, nextVersion)) {
+      if (semver.lt(currentVersion, nextVersion)) {
         console.log(`${nextVersion} is newer, returning with newer version`);
         return nextVersion;
       }
