@@ -160,7 +160,7 @@ class AccountInfo extends React.Component<Props, State> {
                   unit={'ether'}
                   displayShortBalance={!showLongBalance}
                   checkOffline={true}
-                  symbol={balance.wei ? network.name : null}
+                  symbol={balance.wei ? network.unit : null}
                 />
               </span>
               {balance.wei && (
@@ -194,7 +194,7 @@ class AccountInfo extends React.Component<Props, State> {
                   </NewTabLink>
                 </li>
               )}
-              {network.name === 'ETH' && (
+              {network.id === 'ETH' && (
                 <li className="AccountInfo-list-item">
                   <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
                     {`${network.name} (${etherChainExplorerInst.origin})`}

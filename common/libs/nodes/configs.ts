@@ -1,7 +1,7 @@
 import { RawNodeConfig } from 'types/node';
 import { StaticNetworkIds } from 'types/network';
 
-export const makeNodeName = (network: StaticNetworkIds, name: string) => {
+export const makeNodeName = (network: string, name: string) => {
   return `${network.toLowerCase()}_${name}`;
 };
 

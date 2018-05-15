@@ -515,7 +515,8 @@
     "TOOLTIP_MORE_INFO": "More info",
     "TOOLTIP_INSECURE_WALLET_TYPE": "This wallet type is insecure",
     "TOOLTIP_SECURE_WALLET_TYPE": "This wallet type is secure",
-    "CUSTOM_NODE_CONFLICT": "You already have a node called $conflictedNode that matches this one, saving will overwrite it",
+    "CUSTOM_NODE_NAME_CONFLICT": "You already have a node called '$node' that matches this one, saving will overwrite it",
+    "CUSTOM_NODE_CHAINID_CONFLICT": "Custom network cannot share chain ID with '$network'",
     "CUSTOM_NETWORK": "Network",
     "CUSTOM_NODE_NAME": "Node Name",
     "CUSTOM_NETWORK_NAME": "Network Name",
@@ -523,6 +524,11 @@
     "CUSTOM_NETWORK_CHAIN_ID": "Chain ID",
     "CUSTOM_NETWORK_URL": "URL",
     "CUSTOM_NETWORK_HTTP_AUTH": "HTTP Basic Authentication",
+    "NETWORKS_SWITCH": "Switch to the $network network",
+    "NETWORKS_SWITCH_NODE": "Switch to the $node node on the $network network",
+    "NETWORKS_EXPAND_NODES": "Show node options for the $network network",
+    "NETWORKS_ALTERNATIVE": "Other Networks",
+    "NETWORK_UNKNOWN_ERROR": "Unknown network '$network', try adding a custom node or connecting to a different one",
     "BROADCAST_TX_TITLE": "Broadcast Signed Transaction",
     "BROADCAST_TX_DESCRIPTION": "Paste a signed transaction and click 'send transaction'",
     "NAME_AUCTION_PROMPT_BID_1": "Want to place a bid on {name}.eth? ",
@@ -552,6 +558,8 @@
     "CONTRACTS_INTERACT": "Interact",
     "CONTRACTS_DEPLOY": "Deploy",
     "SELECT_A_THING": "Select a $thing",
+    "SHOW_THING": "Show $thing",
+    "HIDE_THING": "Hide $thing",
     "NO_CONTRACTS_AVAILABLE": "No contracts available",
     "NETWORK_STATUS_ONLINE": "Connected to $network network",
     "NETWORK_STATUS_OFFLINE": "Disconnected from $network network",
@@ -559,6 +567,7 @@
     "APP_UPDATE_TITLE": "New App Version Available",
     "APP_UPDATE_BODY": "An updated version of the MyCrypto app has just been released! You can upgrade to the new version by downloading it from our GitHub release page.",
     "APP_UPDATE_CONFIRM": "Get the New Version",
-    "APP_UPDATE_CANCEL": "Maybe Later"
+    "APP_UPDATE_CANCEL": "Maybe Later",
+    "TESTNET": "Testnet"
   }
 }

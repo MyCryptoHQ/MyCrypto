@@ -30,7 +30,7 @@ class WebTemplate extends Component<Props, {}> {
         <Query
           params={['network']}
           withQuery={({ network }) => (
-            <Header networkParam={network && makeAutoNodeName(network as any)} />
+            <Header networkParam={network && makeAutoNodeName(network)} />
           )}
         />
         <div className="Tab container">

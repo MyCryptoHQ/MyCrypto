@@ -14,15 +14,14 @@ export function* pruneCustomNetworks(): SagaIterator {
   );
 
   //construct lookup table of networks
-
   const linkedNetworks: { [key: string]: boolean } = Object.values(customNodes).reduce(
     (networkMap, currentNode) => ({ ...networkMap, [currentNode.network]: true }),
     {}
   );
 
-  for (const currNetwork of Object.keys(customNetworks)) {
-    if (!linkedNetworks[currNetwork]) {
-      yield put(removeCustomNetwork({ id: currNetwork }));
+  for (const customNetwork of Object.values(customNetworks)) {
+    if (!linkedNetworks[customNetwork.id]) {
+      yield put(removeCustomNetwork(customNetwork.id));
     }
   }
 }

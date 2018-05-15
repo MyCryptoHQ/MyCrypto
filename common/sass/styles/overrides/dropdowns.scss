@@ -15,6 +15,7 @@ span.dropdown {
 .dropdown-menu {
   padding: 0;
   border: none;
+  box-shadow: $dropdown-shadow;
 
   > li {
     margin: 0;

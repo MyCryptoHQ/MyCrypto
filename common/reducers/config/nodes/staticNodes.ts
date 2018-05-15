@@ -6,8 +6,10 @@ import { StaticNetworkIds } from 'types/network';
 
 function makeStateFromNodeConfigs(prev: Partial<StaticNodesState>, network: StaticNetworkIds) {
   // Auto network
-  prev[makeAutoNodeName(network)] = {
+  const autoId = makeAutoNodeName(network);
+  prev[autoId] = {
     network,
+    id: autoId,
     isAuto: true,
     isCustom: false,
     service: 'AUTO'
@@ -17,6 +19,7 @@ function makeStateFromNodeConfigs(prev: Partial<StaticNodesState>, network: Stat
   NODE_CONFIGS[network].forEach((config: RawNodeConfig) => {
     prev[config.name] = {
       network,
+      id: config.name,
       isCustom: false,
       service: config.service
     };
