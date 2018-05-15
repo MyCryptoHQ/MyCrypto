@@ -20,10 +20,9 @@ import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
 import OnlineStatus from './components/OnlineStatus';
-import NetworkSelector from './components/NetworkSelector';
+import NetworkDropdown from './components/NetworkDropdown';
 import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
-import './index.scss';
 import { AppState } from 'reducers';
 import {
   getOffline,
@@ -34,6 +33,7 @@ import {
 } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
+import './index.scss';
 
 interface OwnProps {
   networkParam: string | null;
@@ -137,7 +137,7 @@ class Header extends Component<Props, State> {
                   'is-flashing': isChangingNode
                 })}
               >
-                <NetworkSelector openCustomNodeModal={this.openCustomNodeModal} />
+                <NetworkDropdown openCustomNodeModal={this.openCustomNodeModal} />
               </div>
             </div>
           </section>

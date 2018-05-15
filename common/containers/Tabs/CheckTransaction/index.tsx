@@ -45,7 +45,7 @@ class CheckTransaction extends React.Component<Props, State> {
     const { network } = this.props;
     const { hash } = this.state;
     const CHECK_TX_KEY =
-      network.name === 'ETH'
+      network.id === 'ETH'
         ? 'CHECK_TX_STATUS_DESCRIPTION_MULTIPLE'
         : 'CHECK_TX_STATUS_DESCRIPTION_2';
 

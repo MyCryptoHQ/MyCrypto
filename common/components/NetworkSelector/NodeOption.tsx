@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { translateRaw } from 'translations';
 import { TRemoveCustomNode, removeCustomNode } from 'actions/config';
 import { NodeConfig } from 'types/node';
 import './NodeOption.scss';
@@ -29,6 +30,10 @@ class NodeOption extends React.PureComponent<Props> {
             isSelected && 'is-selected',
             isAutoSelected && 'is-auto-selected'
           )}
+          title={translateRaw('NETWORKS_SWITCH_NODE', {
+            $node: node.isCustom ? node.name : node.service,
+            $network: node.network
+          })}
           onClick={this.handleSelect}
         >
           {node.isCustom ? node.name : node.service}
@@ -48,7 +53,7 @@ class NodeOption extends React.PureComponent<Props> {
 
   private handleRemove = () => {
     if (this.props.node.isCustom) {
-      this.props.removeCustomNode({ id: this.props.node.id });
+      this.props.removeCustomNode(this.props.node.id);
     }
   };
 }

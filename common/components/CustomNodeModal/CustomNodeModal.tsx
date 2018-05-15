@@ -69,7 +69,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
   public render() {
     const { customNetworks, handleClose, staticNetworks, isOpen } = this.props;
-    const { network } = this.state;
+    const { network, customNetworkChainId } = this.state;
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
 
@@ -87,7 +87,10 @@ class CustomNodeModal extends React.Component<Props, State> {
       }
     ];
 
-    const conflictedNode = this.getConflictedNode();
+    const nameConflictNode = this.getNameConflictNode();
+    const chainidConflictNetwork =
+      network === CUSTOM.value && this.getChainIdCollisionNetwork(customNetworkChainId);
+
     const staticNetwrks = Object.keys(staticNetworks).map(net => {
       return { label: net, value: net };
     });
@@ -105,9 +108,9 @@ class CustomNodeModal extends React.Component<Props, State> {
       >
         {isHttps && <div className="alert alert-warning small">{translate('NODE_WARNING')}</div>}
 
-        {conflictedNode && (
+        {nameConflictNode && (
           <div className="alert alert-warning small">
-            {translate('CUSTOM_NODE_CONFLICT', { conflictedNode: conflictedNode.name })}
+            {translate('CUSTOM_NODE_NAME_CONFLICT', { $node: nameConflictNode.name })}
           </div>
         )}
 
@@ -166,9 +169,7 @@ class CustomNodeModal extends React.Component<Props, State> {
                 <div className="input-group-header">{translate('CUSTOM_NETWORK_CHAIN_ID')}</div>
                 <Input
                   className={`input-group-input ${
-                    this.state.customNetworkChainId && invalids.customNetworkChainId
-                      ? 'invalid'
-                      : ''
+                    customNetworkChainId && invalids.customNetworkChainId ? 'invalid' : ''
                   }`}
                   type="text"
                   placeholder="1"
@@ -176,6 +177,11 @@ class CustomNodeModal extends React.Component<Props, State> {
                   onChange={e => this.setState({ customNetworkChainId: e.currentTarget.value })}
                 />
               </label>
+            </div>
+          )}
+          {chainidConflictNetwork && (
+            <div className="alert alert-warning small">
+              {translate('CUSTOM_NODE_CHAINID_CONFLICT', { $network: chainidConflictNetwork.name })}
             </div>
           )}
 
@@ -278,14 +284,34 @@ class CustomNodeModal extends React.Component<Props, State> {
         invalids.customNetworkUnit = true;
       }
 
-      // Numeric chain ID (if provided)
-      const iChainId = parseInt(customNetworkChainId, 10);
-      if (!iChainId || iChainId < 0) {
+      // Numeric chain ID
+      if (this.getChainIdCollisionNetwork(customNetworkChainId)) {
         invalids.customNetworkChainId = true;
+      } else {
+        const iChainId = parseInt(customNetworkChainId, 10);
+        if (!customNetworkChainId || !iChainId || iChainId < 0) {
+          invalids.customNetworkChainId = true;
+        }
       }
     }
 
     return invalids;
+  }
+
+  private getChainIdCollisionNetwork(chainId: string) {
+    if (!chainId) {
+      return false;
+    }
+
+    const chainIdInt = parseInt(chainId, 10);
+    const allNetworks = [
+      ...Object.values(this.props.staticNetworks),
+      ...Object.values(this.props.customNetworks)
+    ];
+    return allNetworks.reduce(
+      (collision, network) => (network.chainId === chainIdInt ? network : collision),
+      null
+    );
   }
 
   private makeCustomNetworkConfigFromState(): CustomNetworkConfig {
@@ -296,9 +322,10 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     return {
       isCustom: true,
+      id: this.state.customNetworkChainId,
       name: this.state.customNetworkId,
       unit: this.state.customNetworkUnit,
-      chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0,
+      chainId: parseInt(this.state.customNetworkChainId, 10),
       dPathFormats
     };
   }
@@ -329,7 +356,7 @@ class CustomNodeModal extends React.Component<Props, State> {
     };
   }
 
-  private getConflictedNode(): CustomNodeConfig | undefined {
+  private getNameConflictNode(): CustomNodeConfig | undefined {
     const { customNodes } = this.props;
     const config = this.makeCustomNodeConfigFromState();
 
@@ -342,14 +369,14 @@ class CustomNodeModal extends React.Component<Props, State> {
     if (this.state.network === CUSTOM.value) {
       const network = this.makeCustomNetworkConfigFromState();
 
-      this.props.addCustomNetwork({ config: network, id: node.network });
+      this.props.addCustomNetwork(network);
     }
 
-    this.props.addCustomNode({ config: node, id: node.id });
+    this.props.addCustomNode(node);
   };
 
   private makeCustomNetworkId(config: CustomNetworkConfig): string {
-    return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
+    return config.chainId.toString();
   }
 }
 

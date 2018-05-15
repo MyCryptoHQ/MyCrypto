@@ -12,7 +12,7 @@ import {
 import {
   getNodeId,
   getPreviouslySelectedNode,
-  getNetworkNameByChainId,
+  getNetworkByChainId,
   getWeb3Node
 } from 'selectors/config';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
@@ -31,9 +31,17 @@ import translate from 'translations';
 let web3Added = false;
 
 export function* initWeb3Node(): SagaIterator {
-  const { networkId, lib } = yield call(setupWeb3Node);
-  const network: string = yield select(getNetworkNameByChainId, networkId);
-  const web3Network = makeWeb3Network(network);
+  const { chainId, lib } = yield call(setupWeb3Node);
+  const network: ReturnType<typeof getNetworkByChainId> = yield select(
+    getNetworkByChainId,
+    chainId
+  );
+
+  if (!network) {
+    throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
+  }
+
+  const web3Network = makeWeb3Network(network.id);
   const id = 'web3';
 
   const config: StaticNodeConfig = {

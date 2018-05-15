@@ -132,6 +132,11 @@ export function* handleChangeNodeRequested({
   const isStaticNode: boolean = yield select(isStaticNodeId, nodeIdToSwitchTo);
   const currentConfig: NodeConfig = yield select(getNodeConfig);
 
+  // Bail out if they're switching to the same node
+  if (currentConfig.id === nodeIdToSwitchTo) {
+    return;
+  }
+
   function* bailOut(message: string) {
     yield put(showNotification('danger', message, 5000));
   }
@@ -195,14 +200,14 @@ export function* handleChangeNodeRequested({
 }
 
 export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator {
-  const { payload: { config } } = action;
+  const config = action.payload;
   shepherd.useProvider(
     'myccustom',
     config.id,
     makeProviderConfig({ network: config.network }),
     config
   );
-  yield put(changeNodeRequested(action.payload.id));
+  yield put(changeNodeRequested(config.id));
 }
 
 export function* handleNewNetwork() {
@@ -260,10 +265,10 @@ export function* handleChangeNetworkRequested({ payload: network }: ChangeNetwor
   }
 }
 
-export function* handleRemoveCustomNode({ payload }: RemoveCustomNodeAction): SagaIterator {
+export function* handleRemoveCustomNode({ payload: nodeId }: RemoveCustomNodeAction): SagaIterator {
   // If custom node is currently selected, go back to default node
   const currentNodeId = yield select(getNodeId);
-  if (payload.id === currentNodeId) {
+  if (nodeId === currentNodeId) {
     yield put(changeNodeForce(selectedNodeInitialState.nodeId));
   }
 }

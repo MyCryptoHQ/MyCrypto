@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import classnames from 'classnames';
 import { isAutoNode, isAutoNodeConfig } from 'libs/nodes';
 import { NodeConfig } from 'types/node';
@@ -24,6 +24,7 @@ export default class NetworkOption extends React.PureComponent<Props> {
     const borderLeftColor = network.isCustom ? '#CCC' : network.color;
     const singleNodes = nodes.filter(node => !isAutoNodeConfig(node));
     const isAutoSelected = isNetworkSelected && isAutoNode(nodeSelection);
+    const isLongName = network.name.length > 14;
 
     return (
       <div className="NetworkOption" style={{ borderLeftColor }}>
@@ -32,16 +33,21 @@ export default class NetworkOption extends React.PureComponent<Props> {
             className={classnames({
               'NetworkOption-label-name': true,
               'is-selected': isNetworkSelected,
-              'is-specific-node': isNetworkSelected && !isAutoSelected && singleNodes.length > 1
+              'is-specific-node': isNetworkSelected && !isAutoSelected && singleNodes.length > 1,
+              'is-long-name': isLongName
             })}
             title={translateRaw('NETWORKS_SWITCH', { $network: network.name })}
             onClick={this.handleSelect}
           >
             {network.name}
+            {network.isTestnet && (
+              <small className="NetworkOption-label-name-badge">({translate('TESTNET')})</small>
+            )}
           </div>
           <button
             className={classnames('NetworkOption-label-expand', isExpanded && 'is-expanded')}
             onClick={this.handleToggleExpand}
+            title={translateRaw('NETWORKS_EXPAND_NODES', { $network: network.name })}
           >
             <i className="fa fa-chevron-down" />
           </button>

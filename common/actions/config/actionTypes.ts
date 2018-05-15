@@ -61,25 +61,25 @@ export interface ChangeNetworkRequestedAction {
 /*** Add Custom Node ***/
 export interface AddCustomNodeAction {
   type: TypeKeys.CONFIG_ADD_CUSTOM_NODE;
-  payload: { id: string; config: CustomNodeConfig };
+  payload: CustomNodeConfig;
 }
 
 /*** Remove Custom Node ***/
 export interface RemoveCustomNodeAction {
   type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE;
-  payload: { id: string };
+  payload: string;
 }
 
 /*** Add Custom Network ***/
 export interface AddCustomNetworkAction {
   type: TypeKeys.CONFIG_ADD_CUSTOM_NETWORK;
-  payload: { id: string; config: CustomNetworkConfig };
+  payload: CustomNetworkConfig;
 }
 
 /*** Remove Custom Network ***/
 export interface RemoveCustomNetworkAction {
   type: TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK;
-  payload: { id: string };
+  payload: string;
 }
 
 /*** Set Latest Block ***/
