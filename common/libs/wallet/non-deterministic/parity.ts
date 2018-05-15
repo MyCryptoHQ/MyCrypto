@@ -10,10 +10,9 @@ export default class ParitySignerWallet implements IFullWallet {
   }
 
   public signRawTransaction = () =>
-    Promise.reject(new Error('Web3 wallets cannot sign raw transactions.'));
+    Promise.reject(new Error('Parity Signer cannot sign raw transactions.'));
 
-  public signMessage = () =>
-    Promise.reject(new Error('Signing via Parity Signer not yet supported.'));
+  public signMessage = () => Promise.reject(new Error('Parity Signer cannot sign messages.'));
 
   public getAddressString() {
     return this.address;

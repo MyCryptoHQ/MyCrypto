@@ -37,9 +37,8 @@ class NameInput extends Component<Props, State> {
           <label className="input-group input-group-inline ENSInput-name">
             <Input
               value={domainToCheck}
-              className={`${
-                !domainToCheck ? '' : isValidDomain ? '' : 'invalid'
-              } border-rad-right-0`}
+              isValid={!!domainToCheck && isValidDomain}
+              className="border-rad-right-0"
               type="text"
               placeholder="mycrypto"
               onChange={this.onChange}
