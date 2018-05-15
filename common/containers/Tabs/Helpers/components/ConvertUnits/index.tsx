@@ -21,9 +21,9 @@ interface State {
   units: any;
 }
 
-interface Props {}
+// interface Props {}
 
-export default class ConvertUnits extends React.Component<Props, State> {
+export default class ConvertUnits extends React.Component<State> {
   public state = {
     units: {
       ether: 1
@@ -66,9 +66,9 @@ export default class ConvertUnits extends React.Component<Props, State> {
   private convertUnits(value: string, unit: UnitKey) {
     const weiValue = toWei(value, getDecimalFromEtherUnit(unit));
 
-    let currentValues: any = {};
+    const currentValues: any = {};
 
-    Object.keys(unitNames).forEach(function(unitName: UnitKey) {
+    Object.keys(unitNames).forEach((unitName: UnitKey) => {
       currentValues[unitName] = fromWei(weiValue, unitName);
     });
 
