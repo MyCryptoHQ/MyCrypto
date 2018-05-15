@@ -16,7 +16,8 @@ import {
   EXP_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  EGEM_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
@@ -247,6 +248,28 @@ export const INITIAL_STATE: State = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  EGEM: {
+    name: 'EGEM',
+    unit: 'EGEM',
+    chainId: 1987,
+    isCustom: false,
+    color: '#D0F7FF',
+    blockExplorer: makeExplorer({
+      name: 'EtherGem Explorer',
+      origin: 'https://explorer.egem.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: EGEM_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: EGEM_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
