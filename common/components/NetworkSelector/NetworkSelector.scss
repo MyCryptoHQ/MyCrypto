@@ -1,16 +1,18 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
+$button-padding: $space-xs $space-md;
+$button-font-size: $font-size-small;
+
+@if ($is-electron) {
+  $button-padding: 12px 0px;
+  $button-font-size: 13px;
+}
+
+
 .NetworkSelector {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  width: 180px;
+  width: 100%;
   text-align: left;
-  z-index: $zindex-dropdown;
-  background: #FFF;
-  box-shadow: $dropdown-shadow;
-  transform: translateY(2px);
   color: $text-color;
   font-size: $font-size-base;
 
@@ -19,10 +21,10 @@
     @include reset-button;
     display: block;
     width: 100%;
-    padding: $space-xs $space-md;
+    padding: $button-padding;
     text-align: center;
     color: $text-color;
-    font-size: $font-size-small;
+    font-size: $button-font-size;
 
     &:hover {
       color: $link-hover-color;
@@ -39,5 +41,11 @@
 
   &-alts {
     border-bottom: 1px solid $gray-lighter;
+  }
+
+  @if ($is-electron) {
+    &-add {
+      border-bottom: 1px solid $gray-lighter;
+    }
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
-import { DropdownShell } from 'components/ui';
 import NetworkOption from './NetworkOption';
 import {
   TChangeNodeRequested,
@@ -10,13 +9,11 @@ import {
   changeNetworkRequested
 } from 'actions/config';
 import {
-  getNodeId,
   getNodeConfig,
   getNetworkConfig,
   getAllNodes,
   getAllNetworkConfigs
 } from 'selectors/config';
-import { isAutoNodeConfig } from 'libs/nodes';
 import { NodeConfig } from 'types/node';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'reducers';
@@ -26,10 +23,11 @@ const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby'];
 
 interface OwnProps {
   openCustomNodeModal(): void;
+  onSelectNetwork?(network: NetworkConfig): void;
+  onSelectNode?(node: NodeConfig): void;
 }
 
 interface StateProps {
-  nodeSelection: string;
   node: NodeConfig;
   network: NetworkConfig;
   allNodes: { [key: string]: NodeConfig };
@@ -54,11 +52,8 @@ class NetworkSelector extends React.Component<Props> {
     expandedNetwork: null
   };
 
-  private dropdown: DropdownShell | null;
-
   public componentDidMount() {
-    const { allNodes, nodeSelection } = this.props;
-    const node = allNodes[nodeSelection];
+    const { node } = this.props;
     const newState = { ...this.state };
     // Expand alt networks by default if they're on one
     if (!CORE_NETWORKS.includes(node.network)) {
@@ -72,64 +67,17 @@ class NetworkSelector extends React.Component<Props> {
   }
 
   public render() {
-    const { nodeSelection } = this.props;
-
-    return (
-      <DropdownShell
-        ariaLabel="Dropdown"
-        renderLabel={this.renderLabel}
-        renderOptions={this.renderOptions}
-        disabled={nodeSelection === 'web3'}
-        size="smr"
-        color="white"
-        ref={el => (this.dropdown = el)}
-      />
-    );
-  }
-
-  private renderLabel = () => {
-    const { allNodes, network, node } = this.props;
-    let suffix;
-
-    if (node.isCustom) {
-      // Custom nodes have names
-      suffix = node.name;
-    } else if (node.isAuto) {
-      // Auto nodes should show the count of all nodes it uses. If only one,
-      // show the service name of the node.
-      const networkNodes = Object.values(allNodes).filter(
-        n => !isAutoNodeConfig(n) && n.network === node.network
-      );
-
-      if (networkNodes.length > 1) {
-        suffix = `${networkNodes.length} Nodes`;
-      } else {
-        suffix = networkNodes[0].service;
-      }
-    } else {
-      suffix = node.service;
-    }
-
-    return (
-      <span>
-        {network.name} <small>({suffix})</small>
-      </span>
-    );
-  };
-
-  private renderOptions = () => {
-    const { allNodes, allNetworks, nodeSelection } = this.props;
+    const { allNodes, allNetworks, node } = this.props;
     const { expandedNetwork, isShowingAltNetworks } = this.state;
-    const selectedNode = allNodes[nodeSelection];
 
     const nodesByNetwork = {} as {
       [network: string]: NodeConfig[];
     };
-    Object.values(allNodes).forEach((node: NodeConfig) => {
-      if (!nodesByNetwork[node.network]) {
-        nodesByNetwork[node.network] = [];
+    Object.values(allNodes).forEach((n: NodeConfig) => {
+      if (!nodesByNetwork[n.network]) {
+        nodesByNetwork[n.network] = [];
       }
-      nodesByNetwork[node.network].push(node);
+      nodesByNetwork[n.network].push(n);
     }, {});
 
     const options = {
@@ -151,8 +99,8 @@ class NetworkSelector extends React.Component<Props> {
             key={netKey}
             network={allNetworks[netKey]}
             nodes={nodesByNetwork[netKey]}
-            nodeSelection={nodeSelection}
-            isNetworkSelected={selectedNode.network === netKey}
+            nodeSelection={node.id}
+            isNetworkSelected={node.network === netKey}
             isExpanded={expandedNetwork === allNetworks[netKey]}
             selectNetwork={this.selectNetwork}
             selectNode={this.selectNode}
@@ -171,25 +119,34 @@ class NetworkSelector extends React.Component<Props> {
           })}
         </button>
         {isShowingAltNetworks && options.alt}
-        <button className="NetworkSelector-add" onClick={this.openCustomNodeModal}>
+        <button className="NetworkSelector-add" onClick={this.props.openCustomNodeModal}>
           <i className="fa fa-plus" />
           {translate('NODE_ADD')}
         </button>
       </div>
     );
-  };
+  }
 
   private selectNetwork = (net: NetworkConfig) => {
+    const { node } = this.props;
+    if (net.id === node.network && node.isAuto) {
+      return;
+    }
+
     this.props.changeNetworkRequested(net.id);
-    if (this.dropdown) {
-      this.dropdown.close();
+    if (this.props.onSelectNetwork) {
+      this.props.onSelectNetwork(net);
     }
   };
 
   private selectNode = (node: NodeConfig) => {
+    if (node.id === this.props.node.id) {
+      return;
+    }
+
     this.props.changeNodeRequested(node.id);
-    if (this.dropdown) {
-      this.dropdown.close();
+    if (this.props.onSelectNode) {
+      this.props.onSelectNode(node);
     }
   };
 
@@ -199,13 +156,6 @@ class NetworkSelector extends React.Component<Props> {
     });
   };
 
-  private openCustomNodeModal = () => {
-    this.props.openCustomNodeModal();
-    if (this.dropdown) {
-      this.dropdown.close();
-    }
-  };
-
   private toggleShowAltNetworks = () => {
     this.setState({ isShowingAltNetworks: !this.state.isShowingAltNetworks });
   };
@@ -213,7 +163,6 @@ class NetworkSelector extends React.Component<Props> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    nodeSelection: getNodeId(state),
     node: getNodeConfig(state),
     network: getNetworkConfig(state),
     allNodes: getAllNodes(state),
