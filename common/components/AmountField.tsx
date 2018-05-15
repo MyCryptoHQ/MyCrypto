@@ -23,9 +23,7 @@ export const AmountField: React.SFC<Props> = ({
         <label className="AmountField-group input-group input-group-inline">
           <div className="input-group-header">{translate('SEND_AMOUNT_SHORT')}</div>
           <Input
-            className={`input-group-input ${
-              isAmountValid(raw, customValidator, isValid) ? '' : 'invalid'
-            }`}
+            isValid={isAmountValid(raw, customValidator, isValid)}
             type="number"
             placeholder="1"
             value={raw}

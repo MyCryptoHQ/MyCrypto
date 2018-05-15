@@ -226,7 +226,7 @@ const WalletDecrypt = withRouter<Props>(
       hasAcknowledgedInsecure: false
     };
 
-    public componentWillReceiveProps(nextProps: Props) {
+    public UNSAFE_componentWillReceiveProps(nextProps: Props) {
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
         this.setState({

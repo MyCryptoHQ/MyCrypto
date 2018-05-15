@@ -40,7 +40,7 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
     isVisible: !!this.props.isVisible
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.isVisible !== nextProps.isVisible) {
       this.setState({ isVisible: !!nextProps.isVisible });
     }
@@ -69,7 +69,8 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
       <div className={`TogglablePassword input-group input-group-inline`}>
         {isTextareaWhenVisible && isVisible ? (
           <TextArea
-            className={`${className} ${!isValid ? 'invalid' : ''}`}
+            isValid={!!isValid}
+            className={className}
             value={value}
             name={name}
             disabled={disabled}
@@ -84,11 +85,12 @@ export default class TogglablePassword extends React.PureComponent<Props, State>
           />
         ) : (
           <Input
+            isValid={!!isValid}
             value={value}
             name={name}
             disabled={disabled}
             type={isVisible ? 'text' : 'password'}
-            className={`${className} ${!isValid ? 'invalid' : ''} border-rad-right-0`}
+            className={`${className} border-rad-right-0`}
             placeholder={placeholder}
             onChange={onChange}
             onFocus={onFocus}
