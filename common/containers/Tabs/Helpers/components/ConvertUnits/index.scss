@@ -1,3 +1,5 @@
+@import 'common/sass/variables';
+
 .Helpers {
   max-width: 900px;
   margin: auto;
@@ -5,5 +7,10 @@
 
   .input-group-addon {
     min-width: 140px;
+
+    &.ether-addon {
+      color: white;
+      background-color: $brand-primary;
+    }
   }
 }

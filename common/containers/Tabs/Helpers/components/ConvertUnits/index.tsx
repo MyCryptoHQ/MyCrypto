@@ -1,21 +1,21 @@
 import React from 'react';
 import './index.scss';
 import { Input } from 'components/ui';
-import { toWei } from 'libs/units';
+import { toWei, fromWei, getDecimalFromEtherUnit, UnitKey } from 'libs/units';
 
-const unitNames = [
-  'wei',
-  'kwei',
-  'mwei',
-  'gwei (shannon)',
-  'szabo',
-  'finney',
-  'ether',
-  'kether',
-  'mether',
-  'gether',
-  'tether'
-];
+const unitNames = {
+  wei: 'wei',
+  kwei: 'kwei',
+  mwei: 'mwei',
+  gwei: 'gwei (shannon)',
+  szabo: 'szabo',
+  finney: 'finney',
+  ether: 'ether',
+  kether: 'kether',
+  mether: 'mether',
+  gether: 'gether',
+  tether: 'tether'
+};
 
 interface State {
   units: any;
@@ -30,6 +30,10 @@ export default class ConvertUnits extends React.Component<Props, State> {
     }
   };
 
+  public componentDidMount() {
+    this.convertUnits('1', 'ether');
+  }
+
   public render() {
     const { units } = this.state;
 
@@ -40,7 +44,7 @@ export default class ConvertUnits extends React.Component<Props, State> {
             <h1>Convert Ethereum Units (e.g. Ether &#60;-&#62; Wei)</h1>
             <h2>Ether Wei Converter</h2>
 
-            {unitNames.map(unitName => (
+            {Object.keys(unitNames).map(unitName => (
               <label className="input-group input-group-inline">
                 <Input
                   value={(units as any)[unitName]}
@@ -48,7 +52,9 @@ export default class ConvertUnits extends React.Component<Props, State> {
                   onChange={this.onChange}
                   name={unitName}
                 />
-                <span className="input-group-addon">{unitName}</span>
+                <span className={`input-group-addon ${unitName === 'ether' ? 'ether-addon' : ''}`}>
+                  {(unitNames as any)[unitName]}
+                </span>
               </label>
             ))}
           </div>
@@ -57,11 +63,21 @@ export default class ConvertUnits extends React.Component<Props, State> {
     );
   }
 
-  private onChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.setState({
-      units: {
-        wei: toWei(event.currentTarget.value, 0)
-      }
+  private convertUnits(value: string, unit: UnitKey) {
+    const weiValue = toWei(value, getDecimalFromEtherUnit(unit));
+
+    let currentValues: any = {};
+
+    Object.keys(unitNames).forEach(function(unitName: UnitKey) {
+      currentValues[unitName] = fromWei(weiValue, unitName);
     });
+
+    this.setState({
+      units: currentValues
+    });
+  }
+
+  private onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.convertUnits(event.currentTarget.value, event.currentTarget.name as UnitKey);
   };
 }
