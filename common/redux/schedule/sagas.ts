@@ -211,7 +211,7 @@ function* checkSchedulingParametersValidity() {
 export const schedulingParamsValidity = fork(shouldValidateParams);
 //#endregion Params Validity
 
-export function* schedule(): SagaIterator {
+export function* scheduleSaga(): SagaIterator {
   yield all([
     currentWindowSize,
     currentWindowStart,

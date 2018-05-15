@@ -1,7 +1,7 @@
 import { runSaga } from 'redux-saga';
 import { translateRaw } from 'translations';
-import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
 import { getInitialState } from '../../../spec/selectors/helpers';
+import { ADDRESS_BOOK_TABLE_ID } from './constants';
 import {
   setAddressLabel,
   clearAddressLabel,

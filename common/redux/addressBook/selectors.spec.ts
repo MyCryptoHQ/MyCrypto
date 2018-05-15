@@ -1,4 +1,5 @@
 import { getInitialState } from '../../../spec/selectors/helpers';
+import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
 import {
   getAddressLabels,
   getLabelAddresses,
@@ -30,11 +31,11 @@ describe('addressBook: Selectors', () => {
   };
   const addressBookTableEntry = {
     ...firstEntry,
-    id: 'ADDRESS_BOOK_TABLE_ID'
+    id: ADDRESS_BOOK_TABLE_ID
   };
   const accountAddressEntry = {
     ...firstEntry,
-    id: 'ACCOUNT_ADDRESS_ID'
+    id: ACCOUNT_ADDRESS_ID
   };
   const entries = {
     ADDRESS_BOOK_TABLE_ID: addressBookTableEntry,

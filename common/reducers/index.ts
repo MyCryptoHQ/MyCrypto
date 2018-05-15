@@ -3,7 +3,8 @@ import { routerReducer } from 'react-router-redux';
 
 import { State as TransactionState, transaction } from './transaction';
 
-import addressBook, { State as AddressBookState } from 'redux/addressBook';
+import addressBook from 'redux/addressBook/reducers';
+import { State as AddressBookState } from 'redux/addressBook';
 import notifications, { State as NotificationsState } from 'redux/notifications';
 import customTokens, { State as CustomTokensState } from 'redux/customTokens';
 import deterministicWallets, {

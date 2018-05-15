@@ -109,7 +109,7 @@ export function* resetTxData() {
   yield put(resetTransactionData());
 }
 
-export default function* transactions(): SagaIterator {
+export function* transactionsSaga(): SagaIterator {
   yield takeEvery(TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(TxTypeKeys.BROADCAST_TRANSACTION_QUEUED, saveBroadcastedTx);
   yield takeEvery(ConfigTypeKeys.CONFIG_NODE_CHANGE, resetTxData);

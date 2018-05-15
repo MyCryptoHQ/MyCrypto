@@ -60,6 +60,6 @@ function* resolveDomain(): SagaIterator {
   }
 }
 
-export function* ens(): SagaIterator {
+export function* ensSaga(): SagaIterator {
   yield all([fork(resolveDomain)]);
 }

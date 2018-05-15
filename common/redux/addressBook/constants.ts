@@ -1,0 +1,2 @@
+export const ADDRESS_BOOK_TABLE_ID: string = 'ADDRESS_BOOK_TABLE_ID';
+export const ACCOUNT_ADDRESS_ID: string = 'ACCOUNT_ADDRESS_ID';

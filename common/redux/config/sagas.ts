@@ -386,6 +386,6 @@ export const web3 = [
 ];
 //#endregion web3
 
-export default function*(): SagaIterator {
+export function* configSaga(): SagaIterator {
   yield all([...network, ...node, ...web3]);
 }

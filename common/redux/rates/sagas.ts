@@ -15,6 +15,6 @@ export function* fetchRatesSaga(action: FetchCCRatesRequested): SagaIterator {
   }
 }
 
-export default function* ratesSaga(): SagaIterator {
+export function* ratesSaga(): SagaIterator {
   yield takeLatest(TypeKeys.RATES_FETCH_CC_REQUESTED, fetchRatesSaga);
 }

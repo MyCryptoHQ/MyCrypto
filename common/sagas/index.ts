@@ -1,18 +1,21 @@
-import configSaga from './config';
-import deterministicWallets from './deterministicWallets';
-import notifications from './notifications';
-import rates from './rates';
-import swapOrders from './swap/orders';
-import swapLiteSend from './swap/liteSend';
-import swapRates from './swap/rates';
-import wallet from './wallet';
-import { ens } from './ens';
 import { transaction } from './transaction';
-import { message } from './message';
-import transactions from './transactions';
-import gas from './gas';
-import { schedule } from './schedule';
-import { default as addressBook } from 'redux/addressBook/sagas';
+
+import { ensSaga as ens } from 'redux/ens';
+import { configSaga } from 'redux/config';
+import {
+  swapOrdersSaga as swapOrders,
+  swapRatesSaga as swapRates,
+  swapLiteSendSaga as swapLiteSend
+} from 'redux/swap';
+import { notificationsSaga as notifications } from 'redux/notifications';
+import { walletSaga as wallet } from 'redux/wallet';
+import { messageSaga as message } from 'redux/message';
+import { deterministicWalletsSaga as deterministicWallets } from 'redux/deterministicWallets';
+import { ratesSaga as rates } from 'redux/rates';
+import { transactionsSaga as transactions } from 'redux/transactions';
+import { gasSaga as gas } from 'redux/gas';
+import { scheduleSaga as schedule } from 'redux/schedule';
+import { addressBookSaga as addressBook } from 'redux/addressBook';
 
 export default {
   ens,

@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { AppState } from 'reducers';
 import translate, { translateRaw } from 'translations';
 import {
+  ADDRESS_BOOK_TABLE_ID,
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
@@ -41,8 +42,6 @@ interface State {
   labelTouched: boolean;
   labelBlurred: boolean;
 }
-
-export const ADDRESS_BOOK_TABLE_ID: string = 'ADDRESS_BOOK_TABLE_ID';
 
 class AddressBookTable extends React.Component<Props, State> {
   public state: State = {

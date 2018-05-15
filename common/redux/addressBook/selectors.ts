@@ -1,8 +1,7 @@
 import { toChecksumAddress } from 'ethereumjs-util';
 import { AppState } from 'reducers';
-import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
-import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
 import { getCurrentTo } from 'selectors/transaction';
+import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
 import { AddressLabelEntry } from './types';
 
 export function getAddressLabels(state: AppState) {

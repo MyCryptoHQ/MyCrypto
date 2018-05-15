@@ -116,7 +116,7 @@ export function* updateWalletTokenValues(): SagaIterator {
   }
 }
 
-export default function* deterministicWalletsSaga(): SagaIterator {
+export function* deterministicWalletsSaga(): SagaIterator {
   yield takeLatest('DW_GET_WALLETS', getDeterministicWalletsSaga);
   yield takeEvery('DW_SET_DESIRED_TOKEN', updateWalletTokenValues);
 }

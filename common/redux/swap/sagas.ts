@@ -160,7 +160,7 @@ export function* fetchPaymentAddress(): SagaIterator {
   return false;
 }
 
-export function* swapLiteSend(): SagaIterator {
+export function* swapLiteSendSaga(): SagaIterator {
   yield takeEvery(TypeKeys.SWAP_CONFIGURE_LITE_SEND, handleConfigureLiteSend);
 }
 //#endregion Lite Send
@@ -472,7 +472,7 @@ export function* handleOrderTimeRemaining(): SagaIterator {
   yield cancel(orderTimeRemainingTask);
 }
 
-export function* swapOrders(): SagaIterator {
+export function* swapOrdersSaga(): SagaIterator {
   yield fork(handleOrderTimeRemaining);
   yield fork(pollShapeshiftOrderStatusSaga);
   yield fork(pollBityOrderStatusSaga);
@@ -555,7 +555,7 @@ export function* swapProvider(action: ChangeProviderSwapAcion): SagaIterator {
   }
 }
 
-export function* swapRates(): SagaIterator {
+export function* swapRatesSaga(): SagaIterator {
   yield takeLatest(TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED, handleBityRates);
   yield takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeshiftRates);
   yield takeLatest(TypeKeys.SWAP_CHANGE_PROVIDER, swapProvider);

@@ -63,6 +63,6 @@ export function* fetchEstimates(): SagaIterator {
   }
 }
 
-export default function* gas(): SagaIterator {
+export function* gasSaga(): SagaIterator {
   yield takeLatest(TypeKeys.GAS_FETCH_ESTIMATES, fetchEstimates);
 }

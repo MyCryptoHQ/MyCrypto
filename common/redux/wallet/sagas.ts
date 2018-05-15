@@ -316,7 +316,7 @@ export function* handleCustomTokenAdd(action: AddCustomTokenAction): SagaIterato
   yield fork(updateTokenBalances);
 }
 
-export default function* walletSaga(): SagaIterator {
+export function* walletSaga(): SagaIterator {
   yield [
     takeEvery(TypeKeys.WALLET_UNLOCK_PRIVATE_KEY, unlockPrivateKeySaga),
     takeEvery(TypeKeys.WALLET_UNLOCK_KEYSTORE, unlockKeystoreSaga),

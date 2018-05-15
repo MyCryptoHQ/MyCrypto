@@ -107,6 +107,6 @@ export const signing = [
   takeEvery(TypeKeys.SIGN_LOCAL_MESSAGE_SUCCEEDED, verifySignature)
 ];
 
-export function* message(): SagaIterator {
+export function* messageSaga(): SagaIterator {
   yield all([...signing]);
 }

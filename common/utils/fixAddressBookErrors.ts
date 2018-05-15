@@ -1,6 +1,8 @@
-import { State as AddressBookState } from 'redux/addressBook';
-import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
-import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
+import {
+  ADDRESS_BOOK_TABLE_ID,
+  ACCOUNT_ADDRESS_ID,
+  State as AddressBookState
+} from 'redux/addressBook';
 
 export default function fixAddressBookErrors(addressBook: AddressBookState | undefined) {
   if (!addressBook) {

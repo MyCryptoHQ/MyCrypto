@@ -14,6 +14,6 @@ export function* handleNotification(action: ShowNotificationAction): SagaIterato
   yield put(closeNotification(action.payload));
 }
 
-export default function* notificationsSaga(): SagaIterator {
+export function* notificationsSaga(): SagaIterator {
   yield takeEvery('SHOW_NOTIFICATION', handleNotification);
 }

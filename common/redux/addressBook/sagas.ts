@@ -1,8 +1,8 @@
 import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery } from 'redux-saga/effects';
 import { isValidAddressLabel } from 'libs/validators';
-import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
-import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
+import { showNotification } from 'redux/notifications';
+import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
 import {
   TypeKeys,
   ChangeAddressLabelEntry,
@@ -22,7 +22,6 @@ import {
   getAddressLabelEntryFromAddress,
   getNextAddressLabelId
 } from './selectors';
-import { showNotification } from 'redux/notifications';
 
 export const ERROR_DURATION: number = 4000;
 
@@ -163,7 +162,7 @@ export function* handleRemoveAddressLabelEntry(action: RemoveAddressLabelEntry):
   }
 }
 
-export default function* addressBookSaga(): SagaIterator {
+export function* addressBookSaga(): SagaIterator {
   yield takeEvery(TypeKeys.CHANGE_ADDRESS_LABEL_ENTRY, handleChangeAddressLabelEntry);
   yield takeEvery(TypeKeys.SAVE_ADDRESS_LABEL_ENTRY, handleSaveAddressLabelEntry);
   yield takeEvery(TypeKeys.REMOVE_ADDRESS_LABEL_ENTRY, handleRemoveAddressLabelEntry);

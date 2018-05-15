@@ -1,5 +1,6 @@
 import reducer from './reducers';
 
+export * from './constants';
 export * from './types';
 export * from './actions';
 export * from './selectors';
