@@ -21,7 +21,15 @@ interface State {
 }
 
 export class DecimalField extends React.Component<OwnProps, State> {
-  private currentRequest: Promise<any> | null;
+  public static getDerivedStateFromProps(
+    nextProps: OwnProps,
+    prevState: State
+  ): Partial<State> | null {
+    if (nextProps.address && nextProps.address !== prevState.addressToLoad) {
+      return { loading: true, autoDecimal: true, addressToLoad: nextProps.address };
+    }
+    return null;
+  }
 
   public state: State = {
     userInput: '',
@@ -30,12 +38,7 @@ export class DecimalField extends React.Component<OwnProps, State> {
     loading: false
   };
 
-  static getDerivedStateFromProps(nextProps: OwnProps, prevState: State): Partial<State> | null {
-    if (nextProps.address && nextProps.address !== prevState.addressToLoad) {
-      return { loading: true, autoDecimal: true, addressToLoad: nextProps.address };
-    }
-    return null;
-  }
+  private currentRequest: Promise<any> | null;
 
   public componentDidUpdate() {
     if (this.state.addressToLoad && this.state.loading) {

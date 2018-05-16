@@ -31,14 +31,14 @@ interface State {
 }
 
 export class AddCustomTokenForm extends React.PureComponent<Props, State> {
-  private tokenSymbolLookup = this.generateSymbolLookup();
-  private tokenAddressLookup = this.generateAddressMap();
-
   public state: State = {
     address: Result.from({ err: 'This field is empty' }),
     symbol: Result.from({ err: 'This field is empty' }),
     decimal: Result.from({ err: 'This field is empty' })
   };
+
+  private tokenSymbolLookup = this.generateSymbolLookup();
+  private tokenAddressLookup = this.generateAddressMap();
 
   public render() {
     const address = this.state.address.toVal().res;
@@ -87,7 +87,7 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
     this.props.onSave({
       address: address.unwrap(),
       symbol: symbol.unwrap(),
-      decimal: parseInt(decimal.unwrap())
+      decimal: parseInt(decimal.unwrap(), 10)
     });
   };
 

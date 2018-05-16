@@ -25,19 +25,22 @@ interface State {
 type Props = OwnProps & StateProps;
 
 class BalanceFieldClass extends React.Component<Props, State> {
-  private currentRequest: Promise<any> | null;
+  public static getDerivedStateFromProps(
+    nextProps: OwnProps,
+    prevState: State
+  ): Partial<State> | null {
+    if (nextProps.address && nextProps.address !== prevState.addressToLoad) {
+      return { loading: true, addressToLoad: nextProps.address };
+    }
+    return null;
+  }
 
   public state: State = {
     balance: Result.from({ res: '' }),
     loading: false
   };
 
-  static getDerivedStateFromProps(nextProps: OwnProps, prevState: State): Partial<State> | null {
-    if (nextProps.address && nextProps.address !== prevState.addressToLoad) {
-      return { loading: true, addressToLoad: nextProps.address };
-    }
-    return null;
-  }
+  private currentRequest: Promise<any> | null;
 
   public componentDidUpdate() {
     if (this.state.addressToLoad && this.state.loading) {
