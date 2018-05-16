@@ -2,8 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { languages } from 'config';
-import { TChangeLanguage, changeLanguage } from 'actions/config';
-import { getLanguageSelection } from 'redux/config';
+import { TChangeLanguage, changeLanguage, getLanguageSelection } from 'redux/config';
 import { AppState } from 'redux/reducers';
 import './LanguageSelect.scss';
 

@@ -3,13 +3,15 @@ import Modal, { IButton } from 'components/ui/Modal';
 import translate, { translateRaw } from 'translations';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
-import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
 import { connect, Omit } from 'react-redux';
 import { AppState } from 'redux/reducers';
 import {
   getCustomNetworkConfigs,
   getCustomNodeConfigs,
-  getStaticNetworkConfigs
+  getStaticNetworkConfigs,
+  TAddCustomNetwork,
+  addCustomNetwork,
+  AddCustomNodeAction
 } from 'redux/config';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';

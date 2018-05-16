@@ -18,13 +18,12 @@ import QrSignerModal from 'containers/QrSignerModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
-import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
+import { getNetworkUnit, pollOfflineStatus, TPollOfflineStatus } from 'redux/config';
 import { AppState } from 'redux/reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
-import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-import { getNetworkUnit } from 'redux/config';
+import { setUnitMeta, TSetUnitMeta } from 'redux/transaction';
 
 interface OwnProps {
   store: Store<AppState>;

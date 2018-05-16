@@ -1,8 +1,7 @@
-import { NormalizedRates } from 'reducers/swap/types';
+import { NormalizedRates, ProviderName } from 'redux/swap';
 import React, { Component } from 'react';
 import { toFixedIfLarger } from 'utils/formatters';
 import './CurrentRates.scss';
-import { ProviderName } from 'actions/swap';
 import { objectContainsObjectKeys } from 'utils/helpers';
 
 interface RateInputProps {

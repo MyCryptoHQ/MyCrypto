@@ -9,9 +9,8 @@ import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import { getCurrentTo } from 'redux/transaction';
+import { getCurrentTo, setCurrentTo, TSetCurrentTo } from 'redux/transaction';
 import { addHexPrefix } from 'ethereumjs-util';
-import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 
 interface ContractOption {
   name: string;

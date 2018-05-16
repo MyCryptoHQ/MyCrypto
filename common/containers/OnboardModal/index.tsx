@@ -15,7 +15,7 @@ import {
   TIncrementSlide,
   resumeSlide,
   TResumeSlide
-} from 'actions/onboardStatus';
+} from 'redux/onboardStatus';
 import {
   WelcomeSlide,
   NotABankSlide,

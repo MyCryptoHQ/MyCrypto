@@ -7,10 +7,14 @@ import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'redux/config';
 import { AppState } from 'redux/reducers';
-import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
+import {
+  getEtherBalance,
+  isEtherBalancePending,
+  TRefreshAccountBalance,
+  refreshAccountBalance
+} from 'redux/wallet';
 import { etherChainExplorerInst } from 'config/data';
 import './AccountInfo.scss';
-import { getEtherBalance, isEtherBalancePending } from 'redux/wallet';
 import AccountAddress from './AccountAddress';
 
 interface OwnProps {

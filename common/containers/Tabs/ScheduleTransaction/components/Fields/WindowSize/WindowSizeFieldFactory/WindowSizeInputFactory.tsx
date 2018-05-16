@@ -6,10 +6,10 @@ import {
   isValidCurrentWindowSize,
   getCurrentScheduleType,
   ICurrentScheduleType
-} from 'selectors/schedule';
+} from 'redux/schedule';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
-import { getResolvingDomain } from 'selectors/ens';
+import { getResolvingDomain } from 'redux/ens';
 import { CallbackProps } from './WindowSizeFieldFactory';
 
 interface StateProps {

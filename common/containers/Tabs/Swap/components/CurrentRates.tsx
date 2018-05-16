@@ -2,11 +2,6 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import sample from 'lodash/sample';
 import times from 'lodash/times';
-import {
-  NormalizedBityRates,
-  NormalizedShapeshiftRates,
-  NormalizedShapeshiftRate
-} from 'reducers/swap/types';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
@@ -18,8 +13,11 @@ import {
   TLoadShapeshiftRatesRequestedSwap,
   stopLoadShapeshiftRatesSwap,
   TStopLoadShapeshiftRatesSwap,
-  ProviderName
-} from 'actions/swap';
+  ProviderName,
+  NormalizedBityRates,
+  NormalizedShapeshiftRates,
+  NormalizedShapeshiftRate
+} from 'redux/swap';
 import { getOffline } from 'redux/config';
 import Rates from './Rates';
 import { AppState } from 'redux/reducers';

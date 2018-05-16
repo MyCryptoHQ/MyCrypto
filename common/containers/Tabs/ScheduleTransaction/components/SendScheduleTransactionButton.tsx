@@ -5,7 +5,7 @@ import { SigningStatus } from 'components';
 import { SendScheduleTransactionButtonFactory } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButtonFactory';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
-import { getScheduleParamsValidity } from 'selectors/schedule/fields';
+import { getScheduleParamsValidity } from 'redux/schedule';
 
 interface Props {
   className?: string;

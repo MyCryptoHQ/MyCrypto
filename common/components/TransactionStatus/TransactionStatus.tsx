@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import { fetchTransactionData, TFetchTransactionData } from 'actions/transactions';
-import { getTransactionDatas } from 'selectors/transactions';
+import {
+  fetchTransactionData,
+  TFetchTransactionData,
+  getTransactionDatas
+} from 'redux/transactions';
 import { getNetworkConfig } from 'redux/config';
 import { Spinner } from 'components/ui';
 import TransactionDataTable from './TransactionDataTable';

@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
-import {
-  getCurrentTimeBounty,
-  ICurrentTimeBounty,
-  isValidCurrentTimeBounty
-} from 'selectors/schedule';
+import { getCurrentTimeBounty, ICurrentTimeBounty, isValidCurrentTimeBounty } from 'redux/schedule';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
 import { CallbackProps } from 'containers/Tabs/ScheduleTransaction/components/Fields/TimeBounty/TimeBountyFieldFactory';

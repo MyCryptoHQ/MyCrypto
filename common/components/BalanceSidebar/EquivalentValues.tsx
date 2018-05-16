@@ -2,7 +2,7 @@ import React from 'react';
 import translate from 'translations';
 import { UnitDisplay, Spinner } from 'components/ui';
 import Select from 'react-select';
-import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'actions/rates';
+import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'redux/rates';
 import { rateSymbols } from 'api/rates';
 import { chain, flatMap } from 'lodash';
 import { TokenBalance, getShownTokenBalances } from 'redux/wallet';

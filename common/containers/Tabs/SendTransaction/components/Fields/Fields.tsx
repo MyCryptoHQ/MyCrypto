@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isAnyOfflineWithWeb3 } from 'selectors/derived';
+import { isAnyOfflineWithWeb3 } from 'redux/derivedSelectors';
 import {
   AddressField,
   AmountField,
@@ -19,7 +19,7 @@ import translate from 'translations';
 import { AppState } from 'redux/reducers';
 import { NonStandardTransaction } from './components';
 import { getOffline, getNetworkConfig } from 'redux/config';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
+import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'redux/schedule';
 import { getUnit } from 'redux/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (

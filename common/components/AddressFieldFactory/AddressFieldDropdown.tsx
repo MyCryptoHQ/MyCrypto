@@ -2,9 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
 import translate, { translateRaw } from 'translations';
-import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
+import { setCurrentTo, TSetCurrentTo, getToRaw } from 'redux/transaction';
 import { getLabelAddresses } from 'redux/addressBook';
-import { getToRaw } from 'selectors/transaction/fields';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 

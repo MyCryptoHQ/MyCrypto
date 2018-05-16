@@ -6,18 +6,17 @@ import { AppState } from 'redux/reducers';
 import {
   getGasLimitEstimationTimedOut,
   getGasEstimationPending,
-  nonceRequestPending
+  nonceRequestPending,
+  TInputGasPrice
 } from 'redux/transaction';
 import { connect } from 'react-redux';
-import { fetchGasEstimates, TFetchGasEstimates } from 'actions/gas';
+import { getEstimates, getIsEstimating, fetchGasEstimates, TFetchGasEstimates } from 'redux/gas';
 import { getIsWeb3Node } from 'redux/config';
-import { getEstimates, getIsEstimating } from 'selectors/gas';
 import { Wei, fromWei } from 'libs/units';
 import { gasPriceDefaults } from 'config';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
-import { TInputGasPrice } from 'actions/transaction';
 import FeeSummary from './FeeSummary';
-import { getScheduleGasPrice } from 'selectors/schedule';
+import { getScheduleGasPrice } from 'redux/schedule';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 

@@ -3,9 +3,9 @@ import {
   TChangeStepSwap,
   TDestinationAddressSwap,
   TShapeshiftOrderCreateRequestedSwap,
-  TStopLoadBityRatesSwap
-} from 'actions/swap';
-import { SwapInput } from 'reducers/swap/types';
+  TStopLoadBityRatesSwap,
+  SwapInput
+} from 'redux/swap';
 import SimpleButton from 'components/ui/SimpleButton';
 import { donationAddressMap } from 'config';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';

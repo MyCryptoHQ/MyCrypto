@@ -9,7 +9,7 @@ import { getGasLimit } from 'redux/transaction';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';
-import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'selectors/schedule';
+import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'redux/schedule';
 import { calcEACTotalCost } from 'libs/scheduling';
 
 export interface RenderData {

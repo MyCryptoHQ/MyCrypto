@@ -1,4 +1,4 @@
-import { signTransactionRequested, TSignTransactionRequested } from 'actions/transaction';
+import { signTransactionRequested, TSignTransactionRequested } from 'redux/transaction';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 

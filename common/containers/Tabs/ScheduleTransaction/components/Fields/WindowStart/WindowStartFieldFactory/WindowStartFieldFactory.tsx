@@ -1,9 +1,8 @@
 import { Query } from 'components/renderCbs';
-import { setCurrentWindowStart, TSetCurrentWindowStart } from 'actions/schedule';
+import { setCurrentWindowStart, TSetCurrentWindowStart, ICurrentWindowStart } from 'redux/schedule';
 import { WindowStartInputFactory } from './WindowStartInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentWindowStart } from 'selectors/schedule';
 
 interface DispatchProps {
   setCurrentWindowStart: TSetCurrentWindowStart;

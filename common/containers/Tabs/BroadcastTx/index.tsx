@@ -6,14 +6,14 @@ import {
   signLocalTransactionSucceeded,
   TSignLocalTransactionSucceeded,
   signTransactionFailed,
-  TSignTransactionFailed
-} from 'actions/transaction';
+  TSignTransactionFailed,
+  getSerializedTransaction
+} from 'redux/transaction';
 import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
 import { QRCode, Input, CodeBlock } from 'components/ui';
 import EthTx from 'ethereumjs-tx';
 import { SendButton } from 'components/SendButton';
 import { toBuffer, bufferToHex } from 'ethereumjs-util';
-import { getSerializedTransaction } from 'redux/transaction';
 import { AppState } from 'redux/reducers';
 import './index.scss';
 import { Switch, Route, RouteComponentProps } from 'react-router';

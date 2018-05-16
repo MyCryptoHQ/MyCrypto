@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'actions/schedule';
-import { connect } from 'react-redux';
-import translate from 'translations';
 import {
+  setCurrentScheduleTimestamp,
+  TSetCurrentScheduleTimestamp,
   getCurrentScheduleTimestamp,
   ICurrentScheduleTimestamp,
   isValidCurrentScheduleTimestamp
-} from 'selectors/schedule';
+} from 'redux/schedule';
+import { connect } from 'react-redux';
+import translate from 'translations';
 import { AppState } from 'redux/reducers';
 import DateTime from 'react-datetime';
 import moment from 'moment';

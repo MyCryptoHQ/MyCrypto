@@ -1,10 +1,13 @@
-import { TChangeStepSwap, TInitSwap, TChangeSwapProvider, ProviderName } from 'actions/swap';
 import {
+  TChangeStepSwap,
+  TInitSwap,
+  TChangeSwapProvider,
+  ProviderName,
   NormalizedBityRates,
   NormalizedShapeshiftRates,
   NormalizedOptions,
   SwapInput
-} from 'reducers/swap/types';
+} from 'redux/swap';
 import SimpleButton from 'components/ui/SimpleButton';
 import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';

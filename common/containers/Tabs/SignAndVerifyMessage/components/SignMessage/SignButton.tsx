@@ -1,6 +1,6 @@
 import React from 'react';
 import translate from 'translations';
-import { TSignMessageRequested } from 'actions/message';
+import { TSignMessageRequested } from 'redux/message';
 
 interface Props {
   message: string;

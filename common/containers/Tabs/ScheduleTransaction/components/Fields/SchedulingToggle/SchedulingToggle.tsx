@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { setSchedulingToggle, TSetSchedulingToggle } from 'actions/schedule';
+import {
+  setSchedulingToggle,
+  TSetSchedulingToggle,
+  getCurrentSchedulingToggle,
+  ICurrentSchedulingToggle
+} from 'redux/schedule';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
 import { AppState } from 'redux/reducers';
 import { Toggle } from 'components/ui';
 

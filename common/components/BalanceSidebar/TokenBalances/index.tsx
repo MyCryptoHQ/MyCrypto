@@ -6,17 +6,20 @@ import {
   removeCustomToken,
   TAddCustomToken,
   TRemoveCustomToken
-} from 'actions/customTokens';
+} from 'redux/customTokens';
 import {
   scanWalletForTokens,
   TScanWalletForTokens,
   setWalletTokens,
   TSetWalletTokens,
   refreshTokenBalances,
-  TRefreshTokenBalances
-} from 'actions/wallet';
+  TRefreshTokenBalances,
+  getTokenBalances,
+  getWalletInst,
+  getWalletConfig,
+  TokenBalance
+} from 'redux/wallet';
 import { getAllTokens, getOffline } from 'redux/config';
-import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'redux/wallet';
 import translate from 'translations';
 import Balances from './Balances';
 import Spinner from 'components/ui/Spinner';

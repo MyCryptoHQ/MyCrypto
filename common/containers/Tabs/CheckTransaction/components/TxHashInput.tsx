@@ -4,7 +4,7 @@ import Select from 'react-select';
 import moment from 'moment';
 import translate from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
-import { getRecentNetworkTransactions } from 'selectors/transactions';
+import { getRecentNetworkTransactions } from 'redux/transactions';
 import { AppState } from 'redux/reducers';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';

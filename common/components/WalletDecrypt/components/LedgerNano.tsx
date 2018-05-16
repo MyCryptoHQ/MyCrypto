@@ -8,7 +8,7 @@ import { Spinner, NewTabLink } from 'components/ui';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
 import { SecureWalletName, ledgerReferralURL } from 'config';
-import { getPaths, getSingleDPath } from 'selectors/config/wallet';
+import { getPaths, getSingleDPath } from 'redux/wallet';
 import { getNetworkConfig } from 'redux/config';
 import { NetworkConfig } from 'types/network';
 import './LedgerNano.scss';

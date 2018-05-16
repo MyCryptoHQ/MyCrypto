@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'redux/reducers';
-import { resetWallet, TResetWallet } from 'actions/wallet';
+import { resetWallet, TResetWallet } from 'redux/wallet';
 import translate, { translateRaw } from 'translations';
-import { TWeb3UnsetNode, web3UnsetNode } from 'actions/config';
+import { TWeb3UnsetNode, web3UnsetNode } from 'redux/config';
 
 interface DispatchProps {
   web3UnsetNode: TWeb3UnsetNode;

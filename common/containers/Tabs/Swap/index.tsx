@@ -30,14 +30,12 @@ import {
   TStopPollShapeshiftOrderStatus,
   TChangeSwapProvider,
   TStopLoadShapeshiftRatesSwap,
-  ProviderName
-} from 'actions/swap';
-import {
+  ProviderName,
   SwapInput,
   NormalizedOptions,
   NormalizedBityRates,
   NormalizedShapeshiftRates
-} from 'reducers/swap/types';
+} from 'redux/swap';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';

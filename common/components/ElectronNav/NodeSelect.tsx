@@ -10,9 +10,7 @@ import {
   changeNodeIntent,
   addCustomNode,
   removeCustomNode,
-  AddCustomNodeAction
-} from 'actions/config';
-import {
+  AddCustomNodeAction,
   isNodeChanging,
   getNodeId,
   CustomNodeOption,

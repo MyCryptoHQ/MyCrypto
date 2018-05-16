@@ -8,7 +8,7 @@ import { Spinner, NewTabLink } from 'components/ui';
 import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName, trezorReferralURL } from 'config';
-import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import { getSingleDPath, getPaths } from 'redux/config';
 import './Trezor.scss';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method

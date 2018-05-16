@@ -10,7 +10,7 @@ import {
   GetDeterministicWalletsArgs,
   setDesiredToken,
   SetDesiredTokenAction
-} from 'actions/deterministicWallets';
+} from 'redux/deterministicWallets';
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'redux/reducers';
 import { isValidPath } from 'libs/validators';

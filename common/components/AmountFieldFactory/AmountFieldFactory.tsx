@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
-import { setCurrentValue, TSetCurrentValue } from 'actions/transaction';
+import { setCurrentValue, TSetCurrentValue } from 'redux/transaction';
 import { connect } from 'react-redux';
 import { AmountInput } from './AmountInputFactory';
 import { AppState } from 'redux/reducers';

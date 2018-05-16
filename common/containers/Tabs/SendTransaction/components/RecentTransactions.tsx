@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
-import { getRecentWalletTransactions } from 'selectors/transactions';
+import { getRecentWalletTransactions } from 'redux/transactions';
 import { getNetworkConfig } from 'redux/config';
 import RecentTransaction from './RecentTransaction';
 import { TransactionStatus } from 'components';

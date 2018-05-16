@@ -1,10 +1,10 @@
 import { DataInput } from './DataInputFactory';
 import { Query } from 'components/renderCbs';
-import { inputData, TInputData } from 'actions/transaction';
+import { inputData, TInputData, isEtherTransaction } from 'redux/transaction';
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEtherTransaction } from 'redux/transaction';
 import { AppState } from 'redux/reducers';
+
 export interface CallBackProps {
   data: AppState['transaction']['fields']['data'];
   dataExists: boolean;

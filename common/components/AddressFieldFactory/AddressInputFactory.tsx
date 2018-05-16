@@ -14,7 +14,7 @@ import { AppState } from 'redux/reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
 import { addHexPrefix } from 'ethereumjs-util';
 import { getWalletInst } from 'redux/wallet';
-import { getResolvingDomain } from 'selectors/ens';
+import { getResolvingDomain } from 'redux/ens';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import AddressFieldDropdown from './AddressFieldDropdown';

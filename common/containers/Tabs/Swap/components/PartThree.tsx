@@ -6,9 +6,9 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus,
   TStopPollShapeshiftOrderStatus,
-  TStartOrderTimerSwap
-} from 'actions/swap';
-import { SwapInput } from 'reducers/swap/types';
+  TStartOrderTimerSwap,
+  SwapInput
+} from 'redux/swap';
 import React, { PureComponent } from 'react';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';

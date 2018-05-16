@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
+import { setUnitMeta, TSetUnitMeta, getUnit } from 'redux/transaction';
 import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'redux/wallet';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
-import { getUnit } from 'redux/transaction';
 import { getNetworkUnit } from 'redux/config';
 import { Option } from 'react-select';
 import { Dropdown } from 'components/ui';

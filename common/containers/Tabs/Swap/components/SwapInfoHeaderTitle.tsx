@@ -1,4 +1,4 @@
-import { RestartSwapAction } from 'actions/swap';
+import { RestartSwapAction } from 'redux/swap';
 import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
 import { shapeshiftReferralURL, bitboxReferralURL } from 'config';

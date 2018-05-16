@@ -1,5 +1,5 @@
 import { NonceInputFactory } from './NonceInputFactory';
-import { inputNonce, TInputNonce } from 'actions/transaction';
+import { inputNonce, TInputNonce } from 'redux/transaction';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';

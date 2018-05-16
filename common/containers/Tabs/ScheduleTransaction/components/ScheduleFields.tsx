@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import { AppState } from 'redux/reducers';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/schedule/fields';
+import { getCurrentScheduleType, ICurrentScheduleType } from 'redux/schedule';
 import {
   WindowSizeField,
   TimeBountyField,

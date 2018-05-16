@@ -7,11 +7,12 @@ import {
   currentTransactionBroadcasted,
   signaturePending,
   getSignedTx,
-  getWeb3Tx
+  getWeb3Tx,
+  ITransactionStatus,
+  TSignTransactionRequested,
+  signTransactionRequested
 } from 'redux/transaction';
 import { showNotification, TShowNotification } from 'redux/notifications';
-import { ITransactionStatus } from 'reducers/transaction/broadcast';
-import { TSignTransactionRequested, signTransactionRequested } from 'actions/transaction';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {

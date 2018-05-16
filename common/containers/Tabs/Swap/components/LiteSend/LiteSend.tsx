@@ -4,10 +4,9 @@ import { OnlyUnlocked } from 'components/renderCbs';
 import { Fields } from './Fields';
 import { isUnlocked as isUnlockedSelector } from 'redux/wallet';
 import { getNetworkConfig } from 'redux/config';
-import { configureLiteSend, TConfigureLiteSend } from 'actions/swap';
+import { configureLiteSend, TConfigureLiteSend, shouldDisplayLiteSend } from 'redux/swap';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
-import { shouldDisplayLiteSend } from 'selectors/swap';
 import { NetworkConfig } from 'types/network';
 
 interface DispatchProps {

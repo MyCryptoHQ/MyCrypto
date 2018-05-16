@@ -9,7 +9,7 @@ import {
 } from 'redux/transaction';
 import { getWalletType } from 'redux/wallet';
 import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionFactory';
-import { getSchedulingTransaction } from 'selectors/schedule/transaction';
+import { getSchedulingTransaction } from 'redux/schedule';
 
 export const ScheduleTransactionFactory = connect((state: AppState) => ({
   ...getSchedulingTransaction(state),

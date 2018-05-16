@@ -18,7 +18,7 @@ import {
 } from './components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
-import { isNetworkUnit } from 'selectors/config/wallet';
+import { isNetworkUnit } from 'redux/config';
 
 const Send = () => (
   <React.Fragment>

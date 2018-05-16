@@ -6,7 +6,7 @@ import { formatMnemonic } from 'utils/formatters';
 import { InsecureWalletName } from 'config';
 import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
-import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import { getSingleDPath, getPaths } from 'redux/config';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeprecationWarning from './DeprecationWarning';

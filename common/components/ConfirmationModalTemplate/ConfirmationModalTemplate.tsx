@@ -8,9 +8,9 @@ import {
   broadcastLocalTransactionRequested,
   TBroadcastLocalTransactionRequested,
   broadcastWeb3TransactionRequested,
-  TBroadcastWeb3TransactionRequested
-} from 'actions/transaction';
-import { currentTransactionBroadcasting } from 'redux/transaction';
+  TBroadcastWeb3TransactionRequested,
+  currentTransactionBroadcasting
+} from 'redux/transaction';
 import './ConfirmationModalTemplate.scss';
 import { AppState } from 'redux/reducers';
 import { translateRaw, translate } from 'translations';

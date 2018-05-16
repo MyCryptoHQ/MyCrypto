@@ -6,7 +6,7 @@ import {
   TSetAsContractInteraction,
   setAsViewAndSend,
   TSetAsViewAndSend
-} from 'actions/transaction';
+} from 'redux/transaction';
 
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';

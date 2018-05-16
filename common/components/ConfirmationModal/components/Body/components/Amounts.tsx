@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { UnitDisplay } from 'components/ui';
 import './Amounts.scss';
 import { AppState } from 'redux/reducers';
-import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'selectors/rates';
+import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'redux/rates';
 import { SerializedTxParams, getParamsFromSerializedTx } from 'redux/transaction';
 import { connect } from 'react-redux';
 import { getNetworkConfig } from 'redux/config';

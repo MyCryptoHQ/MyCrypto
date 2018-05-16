@@ -10,8 +10,12 @@ import {
 import { SecureWalletName, WalletName } from 'config';
 import { AppState } from 'redux/reducers';
 import { Token } from 'types/network';
-import { getNetworkConfig, getOffline, getStaticNetworkConfig } from 'redux/config';
-import { unSupportedWalletFormatsOnNetwork } from 'redux/config';
+import {
+  getNetworkConfig,
+  getOffline,
+  getStaticNetworkConfig,
+  unSupportedWalletFormatsOnNetwork
+} from 'redux/config';
 import { isEtherTransaction, getUnit } from 'redux/transaction';
 import { DisabledWallets } from 'components/WalletDecrypt';
 

@@ -1,10 +1,14 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import { AppState } from 'redux/reducers';
-import { setScheduleGasPriceField, TSetScheduleGasPriceField } from 'actions/schedule';
+import {
+  setScheduleGasPriceField,
+  TSetScheduleGasPriceField,
+  getScheduleGasPrice,
+  isValidScheduleGasPrice
+} from 'redux/schedule';
 import { translateRaw } from 'translations';
 import { Input } from 'components/ui';
-import { getScheduleGasPrice, isValidScheduleGasPrice } from 'selectors/schedule/fields';
 import { gasPriceToBase } from 'libs/units';
 
 interface OwnProps {

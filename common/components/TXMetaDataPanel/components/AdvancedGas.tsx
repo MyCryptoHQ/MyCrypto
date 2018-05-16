@@ -2,17 +2,15 @@ import React from 'react';
 import { translateRaw } from 'translations';
 import FeeSummary, { RenderData } from './FeeSummary';
 import './AdvancedGas.scss';
-import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'actions/config';
 import { AppState } from 'redux/reducers';
-import { TInputGasPrice } from 'actions/transaction';
 import { NonceField, GasLimitField, DataField } from 'components';
 import { connect } from 'react-redux';
-import { getAutoGasLimitEnabled } from 'redux/config';
-import { isValidGasPrice } from 'redux/transaction';
+import { getAutoGasLimitEnabled, TToggleAutoGasLimit, toggleAutoGasLimit } from 'redux/config';
+import { isValidGasPrice, TInputGasPrice } from 'redux/transaction';
 import { sanitizeNumericalInput } from 'libs/values';
 import { Input } from 'components/ui';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { getScheduleGasPrice, getTimeBounty } from 'selectors/schedule';
+import { getScheduleGasPrice, getTimeBounty } from 'redux/schedule';
 
 export interface AdvancedOptions {
   gasPriceField?: boolean;

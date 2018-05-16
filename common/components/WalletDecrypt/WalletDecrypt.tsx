@@ -13,9 +13,10 @@ import {
   unlockPrivateKey,
   TUnlockPrivateKey,
   unlockWeb3,
-  TUnlockWeb3
-} from 'actions/wallet';
-import { resetTransactionRequested, TResetTransactionRequested } from 'actions/transaction';
+  TUnlockWeb3,
+  getDisabledWallets
+} from 'redux/wallet';
+import { resetTransactionRequested, TResetTransactionRequested } from 'redux/transaction';
 import translate, { translateRaw } from 'translations';
 import {
   KeystoreDecrypt,
@@ -32,7 +33,6 @@ import {
 } from './components';
 import { AppState } from 'redux/reducers';
 import { showNotification, TShowNotification } from 'redux/notifications';
-import { getDisabledWallets } from 'redux/wallet';
 import { DisabledWallets } from './disables';
 import {
   SecureWalletName,

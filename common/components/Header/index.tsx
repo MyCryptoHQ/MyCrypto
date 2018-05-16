@@ -11,23 +11,7 @@ import {
   changeNodeIntentOneTime,
   addCustomNode,
   removeCustomNode,
-  addCustomNetwork
-} from 'actions/config';
-import logo from 'assets/images/logo-mycrypto.svg';
-import { OldDropDown, ColorDropdown } from 'components/ui';
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
-import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
-import Navigation from './components/Navigation';
-import OnlineStatus from './components/OnlineStatus';
-import CustomNodeModal from 'components/CustomNodeModal';
-import { getKeyByValue } from 'utils/helpers';
-import { NodeConfig } from 'types/node';
-import './index.scss';
-import { AppState } from 'redux/reducers';
-import {
+  addCustomNetwork,
   getOffline,
   isNodeChanging,
   getLanguageSelection,
@@ -39,6 +23,20 @@ import {
   getNetworkConfig,
   isStaticNodeId
 } from 'redux/config';
+import logo from 'assets/images/logo-mycrypto.svg';
+import { OldDropDown, ColorDropdown } from 'components/ui';
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import { Link } from 'react-router-dom';
+import { TSetGasPriceField, setGasPriceField } from 'redux/transaction';
+import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+import Navigation from './components/Navigation';
+import OnlineStatus from './components/OnlineStatus';
+import CustomNodeModal from 'components/CustomNodeModal';
+import { getKeyByValue } from 'utils/helpers';
+import { NodeConfig } from 'types/node';
+import './index.scss';
+import { AppState } from 'redux/reducers';
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
 import translate from 'translations';

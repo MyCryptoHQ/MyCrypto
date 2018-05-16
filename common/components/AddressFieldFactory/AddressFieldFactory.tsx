@@ -1,9 +1,8 @@
 import { Query } from 'components/renderCbs';
-import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
+import { setCurrentTo, TSetCurrentTo, ICurrentTo } from 'redux/transaction';
 import { AddressInputFactory } from './AddressInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentTo } from 'redux/transaction';
 import './AddressFieldFactory.scss';
 
 interface DispatchProps {
