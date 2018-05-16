@@ -44,7 +44,7 @@ export interface Pairs {
 }
 
 export interface SwapInput {
-  label: string;
+  label: WhitelistedCoins;
   amount: number | string;
 }
 
