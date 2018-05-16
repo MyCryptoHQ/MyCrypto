@@ -21,8 +21,6 @@ interface State {
   units: any;
 }
 
-// interface Props {}
-
 export default class ConvertUnits extends React.Component<State> {
   public state = {
     units: {

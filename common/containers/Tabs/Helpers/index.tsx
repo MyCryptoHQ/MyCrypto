@@ -1,4 +1,5 @@
 import ConvertUnits from './components/ConvertUnits';
+import ConvertHex from './components/ConvertHex';
 
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
@@ -10,6 +11,10 @@ const tabs = [
   {
     path: 'convert-units',
     name: 'Convert Ethereum Units'
+  },
+  {
+    path: 'convert-hex',
+    name: 'Convert Decimal <-> Hexadecimal'
   }
 ];
 
@@ -32,7 +37,7 @@ export default class Helpers extends Component<RouteComponentProps<{}>> {
                 )}
               />
               <Route exact={true} path={`${currentPath}/convert-units`} component={ConvertUnits} />
-              {/* <Route exact={true} path={`${currentPath}/deploy`} component={Deploy} /> */}
+              <Route exact={true} path={`${currentPath}/convert-hex`} component={ConvertHex} />
               <RouteNotFound />
             </Switch>
           </div>

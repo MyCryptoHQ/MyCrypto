@@ -1,88 +1,84 @@
 import React from 'react';
 import './index.scss';
 import { Input } from 'components/ui';
-import { toWei, fromWei, getDecimalFromEtherUnit, UnitKey } from 'libs/units';
-
-const unitNames = {
-  wei: 'wei',
-  kwei: 'kwei',
-  mwei: 'mwei',
-  gwei: 'gwei (shannon)',
-  szabo: 'szabo',
-  finney: 'finney',
-  ether: 'ether',
-  kether: 'kether',
-  mether: 'mether',
-  gether: 'gether',
-  tether: 'tether'
-};
 
 interface State {
-  units: any;
+  decValue: number;
+  hexValue: string;
+  hexValuePadded: string;
 }
 
-// interface Props {}
-
-export default class ConvertUnits extends React.Component<State> {
+export default class ConvertHex extends React.Component<State> {
   public state = {
-    units: {
-      ether: 1
-    }
+    dec: 123,
+    hex: '',
+    hexPadded: ''
   };
 
   public componentDidMount() {
-    this.convertUnits('1', 'ether');
+    this.calcFields(this.state.dec, 'dec');
   }
 
   public render() {
-    const { units } = this.state;
+    const { dec, hex, hexPadded } = this.state;
 
     return (
       <div className="Tab-content">
         <section className="Tab-content-pane">
           <div className="Helpers">
-            <h1>Convert Ethereum Units (e.g. Ether &#60;-&#62; Wei)</h1>
-            <h2>Ether Wei Converter</h2>
+            <h1>Convert Decimal to Hexadecimal and Hex to Dec</h1>
 
-            {Object.keys(unitNames).map(unitName => (
-              <label className="input-group input-group-inline" key={unitName}>
-                <Input
-                  value={(units as any)[unitName]}
-                  type="text"
-                  onChange={this.onChange}
-                  name={unitName}
-                  isValid={true}
-                />
-                <span className={`input-group-addon ${unitName === 'ether' ? 'ether-addon' : ''}`}>
-                  {(unitNames as any)[unitName]}
-                </span>
-              </label>
-            ))}
+            <label className="input-group">
+              <div className="input-group-header">Decimal</div>
+              <Input value={dec} type="text" onChange={this.onChange} isValid={true} name="dec" />
+            </label>
+
+            <label className="input-group">
+              <div className="input-group-header">Hexadecimal</div>
+              <Input value={hex} type="text" onChange={this.onChange} isValid={true} name="hex" />
+            </label>
+
+            <label className="input-group">
+              <div className="input-group-header">Hexadecimal - Padded Left w/ 64 characters</div>
+              <Input value={hexPadded} type="text" isValid={true} name="hexPadded" readOnly />
+            </label>
           </div>
         </section>
       </div>
     );
   }
 
-  private convertUnits(value: string, unit: UnitKey) {
-    const weiValue = toWei(value, getDecimalFromEtherUnit(unit));
+  private onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.calcFields(event.currentTarget.value, event.currentTarget.name);
+  };
 
-    const currentValues: any = {};
+  private calcFields(value: string | number, name: string) {
+    const currentState = { ...this.state };
 
-    Object.keys(unitNames).forEach((unitName: UnitKey) => {
-      if (unitName !== unit) {
-        console.log(unitName, unit);
+    if (name === 'dec') {
+      currentState.dec = parseInt(value as string);
+      currentState.hex = this.decToHex(parseInt(value as string));
+    }
 
-        currentValues[unitName] = fromWei(weiValue, unitName);
-      }
-    });
+    if (name === 'hex') {
+      currentState.dec = this.hexToDec(value ? (value as string) : '0');
+      currentState.hex = value as string;
+    }
 
-    this.setState({
-      units: currentValues
-    });
+    currentState.hexPadded = this.hexToPadded(currentState.hex);
+
+    this.setState(currentState);
   }
 
-  private onChange = (event: React.FormEvent<HTMLInputElement>) => {
-    this.convertUnits(event.currentTarget.value, event.currentTarget.name as UnitKey);
-  };
+  private decToHex(value: number) {
+    return value.toString(16);
+  }
+
+  private hexToDec(value: string) {
+    return parseInt(value, 16);
+  }
+
+  private hexToPadded(value: string) {
+    return value.length >= 64 ? value : new Array(64 - value.length + 1).join('0') + value;
+  }
 }
