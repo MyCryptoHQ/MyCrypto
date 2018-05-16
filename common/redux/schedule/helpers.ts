@@ -2,7 +2,7 @@ import moment from 'moment';
 import 'moment-timezone';
 import BN from 'bn.js';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { ICurrentScheduleTimestamp } from './selectors';
 
 export const isWindowStartValid = (

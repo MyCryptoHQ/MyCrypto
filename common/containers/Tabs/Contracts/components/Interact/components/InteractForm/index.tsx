@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import { getNetworkContracts } from 'selectors/config';
+import { getNetworkContracts } from 'redux/config';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
 import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import { getCurrentTo } from 'selectors/transaction';
+import { getCurrentTo } from 'redux/transaction';
 import { addHexPrefix } from 'ethereumjs-util';
 import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 

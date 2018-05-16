@@ -1,4 +1,4 @@
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 const getGas = (state: AppState) => state.gas;
 export const getEstimates = (state: AppState) => getGas(state).estimates;

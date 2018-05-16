@@ -1,5 +1,5 @@
 import { TokenValue } from 'libs/units';
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import { ITokenValues, DeterministicWalletData } from './types';
 import { setDeterministicWallets, setDesiredToken, updateDeterministicWallet } from './actions';
 import deterministicWallets, { INITIAL_STATE } from './reducers';

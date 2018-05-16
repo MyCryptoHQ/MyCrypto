@@ -1,4 +1,4 @@
-import { TShowNotification } from 'actions/notifications';
+import { TShowNotification } from 'redux/notifications';
 import { bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';

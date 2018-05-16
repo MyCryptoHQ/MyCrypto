@@ -1,8 +1,8 @@
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
 import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
-import { configuredStore } from 'store';
-import { getNodeLib, getNetworkNameByChainId } from 'selectors/config';
+import { configuredStore } from 'redux/store';
+import { getNodeLib, getNetworkNameByChainId } from 'redux/config';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 

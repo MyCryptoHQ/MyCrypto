@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React from 'react';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { setScheduleGasPriceField, TSetScheduleGasPriceField } from 'actions/schedule';
 import { translateRaw } from 'translations';
 import { Input } from 'components/ui';

@@ -3,11 +3,23 @@ import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { take, race, fork, call, cancel, apply, cancelled, put, select } from 'redux-saga/effects';
 import { getAllRates, getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
-import { configuredStore } from 'store';
-import { TypeKeys as TransactionTypeKeys } from 'actions/transaction';
+import { configuredStore } from 'redux/store';
+import { TypeKeys as TransactionTypeKeys } from 'redux/transaction';
 import { TypeKeys as WalletTypeKeys } from 'redux/wallet';
 import { showNotification } from 'redux/notifications';
 import {
+  TypeKeys,
+  BityOrderPostResponse,
+  BityOrderInput,
+  BityOrderOutput,
+  BityOrderResponse,
+  ShapeshiftOrderResponse
+} from './types';
+import {
+  loadBityRatesSucceededSwap,
+  loadShapeshiftRatesSucceededSwap,
+  loadShapeshiftRatesFailedSwap,
+  loadBityRatesFailedSwap,
   bityOrderCreateFailedSwap,
   bityOrderCreateSucceededSwap,
   bityOrderCreateRequestedSwap,
@@ -28,20 +40,6 @@ import {
   stopLoadShapeshiftRatesSwap,
   stopPollShapeshiftOrderStatus,
   stopOrderTimerSwap
-} from 'actions/swap';
-import {
-  TypeKeys,
-  BityOrderPostResponse,
-  BityOrderInput,
-  BityOrderOutput,
-  BityOrderResponse,
-  ShapeshiftOrderResponse
-} from './types';
-import {
-  loadBityRatesSucceededSwap,
-  loadShapeshiftRatesSucceededSwap,
-  loadShapeshiftRatesFailedSwap,
-  loadBityRatesFailedSwap
 } from './actions';
 import { State as SwapState, INITIAL_STATE as INITIAL_SWAP_STATE } from './reducers';
 import { getSwap, getHasNotifiedRatesFailure } from './selectors';

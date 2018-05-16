@@ -1,4 +1,4 @@
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 export const getSwap = (state: AppState) => state.swap;
 export const getOrigin = (state: AppState) => getSwap(state).origin;

@@ -9,7 +9,7 @@ import {
   getCurrentScheduleType
 } from 'selectors/schedule';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 interface DispatchProps {
   setCurrentWindowSize: TSetCurrentWindowSize;

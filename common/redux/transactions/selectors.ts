@@ -1,7 +1,7 @@
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { SavedTransaction } from 'types/transactions';
-import { getNetworkConfig } from 'selectors/config';
-import { getWalletInst } from 'selectors/wallet';
+import { getNetworkConfig } from 'redux/config';
+import { getWalletInst } from 'redux/wallet';
 
 export function getTransactionDatas(state: AppState) {
   return state.transactions.txData;

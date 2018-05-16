@@ -1,4 +1,4 @@
-import { getInitialState } from '../../../spec/selectors/helpers';
+import { getInitialState } from '../helpers';
 import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
 import {
   getAddressLabels,

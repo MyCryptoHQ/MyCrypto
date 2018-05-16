@@ -3,8 +3,8 @@ import { Query } from 'components/renderCbs';
 import { inputData, TInputData } from 'actions/transaction';
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEtherTransaction } from 'selectors/transaction';
-import { AppState } from 'reducers';
+import { isEtherTransaction } from 'redux/transaction';
+import { AppState } from 'redux/reducers';
 export interface CallBackProps {
   data: AppState['transaction']['fields']['data'];
   dataExists: boolean;

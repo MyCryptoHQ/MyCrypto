@@ -6,7 +6,7 @@ import { bufferToHex } from 'ethereumjs-util';
 import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import { getNetworkConfig, getOffline, isNetworkUnit } from 'redux/config';
 import { isSchedulingEnabled } from 'redux/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'redux/wallet';

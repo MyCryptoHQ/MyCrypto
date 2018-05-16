@@ -7,16 +7,16 @@ import { hexEncodeData } from 'libs/nodes/rpc/utils';
 import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
-import { AppState } from 'reducers';
-import { getNodeLib, getNetworkConfig } from 'selectors/config';
-import { getWalletInst } from 'selectors/wallet';
-import { TypeKeys as ConfigTypeKeys } from 'actions/config';
+import { AppState } from 'redux/reducers';
+import { getNodeLib, getNetworkConfig } from 'redux/config';
+import { getWalletInst } from 'redux/wallet';
+import { TypeKeys as ConfigTypeKeys } from 'redux/config';
 import {
   TypeKeys as TxTypeKeys,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
-} from 'actions/transaction';
+} from 'redux/transaction';
 import { TypeKeys, FetchTransactionDataAction } from './types';
 import { setTransactionData, addRecentTransaction, resetTransactionData } from './actions';
 

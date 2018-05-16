@@ -1,4 +1,4 @@
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import CONTRACTS from 'config/contracts';
 import { isValidETHAddress } from 'libs/validators';
 configuredStore.getState();

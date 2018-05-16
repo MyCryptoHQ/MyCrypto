@@ -2,15 +2,15 @@ import React from 'react';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
 import translate from 'translations';
 import './SimpleGas.scss';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   getGasLimitEstimationTimedOut,
   getGasEstimationPending,
   nonceRequestPending
-} from 'selectors/transaction';
+} from 'redux/transaction';
 import { connect } from 'react-redux';
 import { fetchGasEstimates, TFetchGasEstimates } from 'actions/gas';
-import { getIsWeb3Node } from 'selectors/config';
+import { getIsWeb3Node } from 'redux/config';
 import { getEstimates, getIsEstimating } from 'selectors/gas';
 import { Wei, fromWei } from 'libs/units';
 import { gasPriceDefaults } from 'config';

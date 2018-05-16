@@ -16,11 +16,11 @@ import {
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { NonStandardTransaction } from './components';
-import { getOffline, getNetworkConfig } from 'selectors/config';
+import { getOffline, getNetworkConfig } from 'redux/config';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
-import { getUnit } from 'selectors/transaction';
+import { getUnit } from 'redux/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists

@@ -12,13 +12,13 @@ import {
   TResetTransactionRequested
 } from 'actions/transaction';
 import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'actions/rates';
-import { getNetworkConfig, getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
+import { getNetworkConfig, getOffline } from 'redux/config';
+import { AppState } from 'redux/reducers';
 import { Units } from 'libs/units';
 import SimpleGas from './components/SimpleGas';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import './TXMetaDataPanel.scss';
-import { getGasPrice } from 'selectors/transaction';
+import { getGasPrice } from 'redux/transaction';
 import { NetworkConfig } from 'types/network';
 import { translateRaw } from 'translations';
 

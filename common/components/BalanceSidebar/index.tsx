@@ -2,8 +2,8 @@ import React from 'react';
 import AccountInfo from './AccountInfo';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import { AppState } from 'reducers';
-import { getWalletInst } from 'selectors/wallet';
+import { AppState } from 'redux/reducers';
+import { getWalletInst } from 'redux/wallet';
 import { connect } from 'react-redux';
 import EquivalentValues from './EquivalentValues';
 

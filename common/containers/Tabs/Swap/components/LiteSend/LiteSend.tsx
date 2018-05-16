@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { OnlyUnlocked } from 'components/renderCbs';
 import { Fields } from './Fields';
-import { isUnlocked as isUnlockedSelector } from 'selectors/wallet';
-import { getNetworkConfig } from 'selectors/config';
+import { isUnlocked as isUnlockedSelector } from 'redux/wallet';
+import { getNetworkConfig } from 'redux/config';
 import { configureLiteSend, TConfigureLiteSend } from 'actions/swap';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { shouldDisplayLiteSend } from 'selectors/swap';
 import { NetworkConfig } from 'types/network';
 

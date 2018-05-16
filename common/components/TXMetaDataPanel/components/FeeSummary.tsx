@@ -1,11 +1,11 @@
 import React from 'react';
 import BN from 'bn.js';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import classNames from 'classnames';
-import { getNetworkConfig, getOffline } from 'selectors/config';
+import { getNetworkConfig, getOffline } from 'redux/config';
 import { getIsEstimating } from 'selectors/gas';
-import { getGasLimit } from 'selectors/transaction';
+import { getGasLimit } from 'redux/transaction';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './FeeSummary.scss';

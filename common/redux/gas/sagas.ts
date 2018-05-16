@@ -3,10 +3,10 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { TypeKeys } from './types';
 import { setGasEstimates } from './actions';
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { getEstimates } from './selectors';
-import { getOffline, getNetworkConfig } from 'selectors/config';
+import { getOffline, getNetworkConfig } from 'redux/config';
 import { NetworkConfig } from 'types/network';
 
 export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {

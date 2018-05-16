@@ -5,6 +5,7 @@ import {
   NotificationsAction,
   ShowNotificationAction
 } from './types';
+
 export type State = Notification[];
 
 export const INITIAL_STATE: State = [];

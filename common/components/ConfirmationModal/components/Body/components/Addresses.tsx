@@ -6,8 +6,8 @@ import './Addresses.scss';
 import { ETHAddressExplorer } from 'config';
 import { connect } from 'react-redux';
 import { SerializedTransaction } from 'components/renderCbs';
-import { AppState } from 'reducers';
-import { getFrom, getUnit, isEtherTransaction } from 'selectors/transaction';
+import { AppState } from 'redux/reducers';
+import { getFrom, getUnit, isEtherTransaction } from 'redux/transaction';
 import { toChecksumAddress } from 'ethereumjs-util';
 import translate from 'translations';
 

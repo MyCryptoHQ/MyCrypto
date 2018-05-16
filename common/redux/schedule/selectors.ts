@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { Nonce, Wei } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator, timeBountyValidator } from 'libs/validators';
 import { makeTransaction } from 'libs/transaction';
@@ -23,7 +23,7 @@ import {
   getGasPrice,
   IGetTransaction,
   getTransaction
-} from 'selectors/transaction';
+} from 'redux/transaction';
 import {
   dateTimeToTimezone,
   minFromNow,

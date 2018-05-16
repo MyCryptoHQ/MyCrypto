@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { UnitDisplay } from 'components/ui';
 import './Amounts.scss';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'selectors/rates';
-import { SerializedTxParams, getParamsFromSerializedTx } from 'selectors/transaction';
+import { SerializedTxParams, getParamsFromSerializedTx } from 'redux/transaction';
 import { connect } from 'react-redux';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig } from 'redux/config';
 import { NetworkConfig } from 'types/network';
 import translate from 'translations';
 

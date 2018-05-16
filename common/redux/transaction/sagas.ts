@@ -48,7 +48,7 @@ import {
   gasLimitValidator
 } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   TypeKeys as ConfigTypeKeys,
   getNodeLib,

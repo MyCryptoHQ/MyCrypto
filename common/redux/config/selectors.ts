@@ -1,6 +1,6 @@
 import uniqBy from 'lodash/uniqBy';
 import difference from 'lodash/difference';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { EXTRA_PATHS } from 'config/dpaths';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
@@ -13,7 +13,7 @@ import {
   Token
 } from 'types/network';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
-import { getUnit } from 'selectors/transaction/meta';
+import { getUnit } from 'redux/transaction';
 import { PathType, DPathFormat } from './types';
 
 const getConfig = (state: AppState) => state.config;

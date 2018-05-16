@@ -4,7 +4,7 @@ import { ConfirmationModal } from 'components/ConfirmationModal';
 import { SigningStatus } from 'components';
 import { SendScheduleTransactionButtonFactory } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButtonFactory';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { getScheduleParamsValidity } from 'selectors/schedule/fields';
 
 interface Props {

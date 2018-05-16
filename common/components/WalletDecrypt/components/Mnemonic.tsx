@@ -4,7 +4,7 @@ import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import { formatMnemonic } from 'utils/formatters';
 import { InsecureWalletName } from 'config';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 import { TogglablePassword } from 'components';

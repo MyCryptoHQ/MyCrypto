@@ -3,7 +3,7 @@ import { Query } from 'components/renderCbs';
 import { setCurrentValue, TSetCurrentValue } from 'actions/transaction';
 import { connect } from 'react-redux';
 import { AmountInput } from './AmountInputFactory';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 export interface CallbackProps {
   isValid: boolean;

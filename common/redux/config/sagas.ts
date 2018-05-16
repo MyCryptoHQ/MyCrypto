@@ -28,7 +28,7 @@ import { Web3Wallet } from 'libs/wallet';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { showNotification } from 'redux/notifications';
 import { TypeKeys as WalletTypeKeys, resetWallet, SetWalletAction, setWallet } from 'redux/wallet';
 import {

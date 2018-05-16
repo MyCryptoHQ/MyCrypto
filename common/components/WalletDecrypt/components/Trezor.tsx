@@ -5,7 +5,7 @@ import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import { Spinner, NewTabLink } from 'components/ui';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName, trezorReferralURL } from 'config';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';

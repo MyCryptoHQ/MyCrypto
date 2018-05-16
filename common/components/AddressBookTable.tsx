@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import classnames from 'classnames';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import translate, { translateRaw } from 'translations';
 import {
   ADDRESS_BOOK_TABLE_ID,

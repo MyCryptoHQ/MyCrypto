@@ -5,12 +5,12 @@ import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
 import { connect, Omit } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   getCustomNetworkConfigs,
   getCustomNodeConfigs,
   getStaticNetworkConfigs
-} from 'selectors/config';
+} from 'redux/config';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
 import { shepherdProvider } from 'libs/nodes';

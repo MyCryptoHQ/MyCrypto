@@ -1,8 +1,8 @@
 import BN from 'bn.js';
 import { Wei, TokenValue } from 'libs/units';
-import { AppState } from 'reducers';
-import { getNetworkConfig } from 'selectors/config';
-import { getUnit, getParamsFromSerializedTx } from 'selectors/transaction';
+import { AppState } from 'redux/reducers';
+import { getNetworkConfig } from 'redux/config';
+import { getUnit, getParamsFromSerializedTx } from 'redux/transaction';
 
 export const getRates = (state: AppState) => state.rates;
 

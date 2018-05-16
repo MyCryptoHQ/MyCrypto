@@ -1,6 +1,6 @@
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { isCreationAddress } from 'libs/validators';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { REQUEST_STATES } from './reducers';
 
 export const getEns = (state: AppState) => state.ens;

@@ -1,6 +1,6 @@
-import { getWalletType } from 'selectors/wallet';
+import { getWalletType } from 'redux/wallet';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   getSerializedTransaction,
   isNetworkRequestPending,
@@ -8,7 +8,7 @@ import {
   isValidGasLimit,
   getSignedTx,
   getWeb3Tx
-} from 'selectors/transaction';
+} from 'redux/transaction';
 import { SendButtonFactoryClass } from 'components/SendButtonFactory';
 import { getSchedulingTransaction } from 'selectors/schedule/transaction';
 

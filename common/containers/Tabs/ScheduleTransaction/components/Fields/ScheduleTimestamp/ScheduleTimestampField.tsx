@@ -7,7 +7,7 @@ import {
   ICurrentScheduleTimestamp,
   isValidCurrentScheduleTimestamp
 } from 'selectors/schedule';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import DateTime from 'react-datetime';
 import moment from 'moment';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';

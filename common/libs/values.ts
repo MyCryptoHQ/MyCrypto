@@ -1,6 +1,6 @@
 import { Wei, toTokenBase } from 'libs/units';
 import { addHexPrefix } from 'ethereumjs-util';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 export function stripHexPrefix(value: string) {
   return value.replace('0x', '');

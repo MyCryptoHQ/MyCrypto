@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { ParityQrSigner } from 'components';
 import Modal, { IButton } from 'components/ui/Modal';
-import { TFinalizeSignature, finalizeSignature } from 'actions/paritySigner';
+import { TFinalizeSignature, finalizeSignature } from 'redux/paritySigner';
 
 interface State {
   scan: boolean;

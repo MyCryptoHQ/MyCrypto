@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import { UnlockHeader } from 'components/ui';
-import { getWalletInst } from 'selectors/wallet';
-import { AppState } from 'reducers';
+import { getWalletInst } from 'redux/wallet';
+import { AppState } from 'redux/reducers';
 import { RouteComponentProps, Route, Switch, Redirect } from 'react-router';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import {

@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   isNetworkRequestPending,
   isValidGasPrice,
   isValidGasLimit,
   getSerializedTransaction,
   getSignedTx
-} from 'selectors/transaction';
-import { getWalletType } from 'selectors/wallet';
+} from 'redux/transaction';
+import { getWalletType } from 'redux/wallet';
 import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionFactory';
 import { getSchedulingTransaction } from 'selectors/schedule/transaction';
 

@@ -8,7 +8,7 @@ import { CustomNetworkConfig } from 'types/network';
 import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 import { Web3Service } from 'libs/nodes/web3';
 import { Web3Wallet } from 'libs/wallet';
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import { showNotification } from 'redux/notifications';
 import {
   changeNodeForce,

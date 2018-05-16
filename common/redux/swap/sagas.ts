@@ -21,7 +21,7 @@ import {
   setCurrentValue,
   TypeKeys as TransactionTypeKeys,
   resetTransactionRequested
-} from 'actions/transaction';
+} from 'redux/transaction';
 import { isSupportedUnit, isNetworkUnit } from 'redux/config';
 import {
   TypeKeys as WalletTypeKeys,
@@ -31,7 +31,6 @@ import {
   resetWallet
 } from 'redux/wallet';
 import { showNotification } from 'redux/notifications';
-import { showLiteSend, configureLiteSend } from 'actions/swap';
 import {
   TypeKeys,
   BityOrderCreateRequestedSwapAction,
@@ -62,7 +61,9 @@ import {
   loadShapeshiftRatesSucceededSwap,
   loadBityRatesFailedSwap,
   loadShapeshiftRatesFailedSwap,
-  changeSwapProvider
+  changeSwapProvider,
+  showLiteSend,
+  configureLiteSend
 } from './actions';
 import { State as SwapState } from './reducers';
 import { getSwap, getOrigin, getPaymentAddress, getHasNotifiedRatesFailure } from './selectors';

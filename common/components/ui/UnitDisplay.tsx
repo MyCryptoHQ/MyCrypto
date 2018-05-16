@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
 import Spinner from 'components/ui/Spinner';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
+import { getOffline } from 'redux/config';
+import { AppState } from 'redux/reducers';
 
 interface Props {
   /**

@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import { getNetworkConfig, getOffline, isNodeChanging } from 'selectors/config';
+import { getNetworkConfig, getOffline, isNodeChanging } from 'redux/config';
 import { NetworkConfig } from 'types/network';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import './NetworkStatus.scss';
 
 enum NETWORK_STATUS {

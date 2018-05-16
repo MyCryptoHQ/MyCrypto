@@ -1,4 +1,4 @@
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import {
   decryptPrivKey,
   decodeCryptojsSalt,

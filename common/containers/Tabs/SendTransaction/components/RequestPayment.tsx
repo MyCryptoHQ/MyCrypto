@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet';
 import { QRCode, CodeBlock } from 'components/ui';
@@ -13,11 +13,11 @@ import {
 } from 'selectors/transaction/current';
 import BN from 'bn.js';
 import { validPositiveNumber, validDecimal } from 'libs/validators';
-import { getGasLimit } from 'selectors/transaction';
+import { getGasLimit } from 'redux/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { SetGasLimitFieldAction } from 'actions/transaction/actionTypes/fields';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
-import { getNetworkConfig, getSelectedTokenContractAddress, isNetworkUnit } from 'selectors/config';
+import { getNetworkConfig, getSelectedTokenContractAddress, isNetworkUnit } from 'redux/config';
 import './RequestPayment.scss';
 import {
   resetTransactionRequested,

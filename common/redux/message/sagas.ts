@@ -4,15 +4,15 @@ import translate, { translateRaw } from 'translations';
 import { verifySignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { padLeftEven } from 'libs/values';
-import { showNotification } from 'actions/notifications';
+import { showNotification } from 'redux/notifications';
 import {
   requestMessageSignature,
   FinalizeSignatureAction,
   TypeKeys as ParityKeys
-} from 'actions/paritySigner';
+} from 'redux/paritySigner';
 import { TypeKeys, SignLocalMessageSucceededAction, SignMessageRequestedAction } from './types';
 import { signLocalMessageSucceeded, signMessageFailed } from './actions';
-import { getWalletType, getWalletInst, IWalletType } from 'selectors/wallet';
+import { getWalletType, getWalletInst, IWalletType } from 'redux/wallet';
 
 export function* signingWrapper(
   handler: (wallet: IFullWallet, message: string) => SagaIterator,

@@ -2,7 +2,7 @@ import { isKeystorePassRequired } from 'libs/wallet';
 import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
-import { TShowNotification } from 'actions/notifications';
+import { TShowNotification } from 'redux/notifications';
 import { Input } from 'components/ui';
 import DeprecationWarning from './DeprecationWarning';
 

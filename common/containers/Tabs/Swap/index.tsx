@@ -1,4 +1,4 @@
-import { showNotification as dShowNotification, TShowNotification } from 'actions/notifications';
+import { showNotification as dShowNotification, TShowNotification } from 'redux/notifications';
 import {
   initSwap as dInitSwap,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
@@ -40,7 +40,7 @@ import {
 } from 'reducers/swap/types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
@@ -51,7 +51,7 @@ import TabSection from 'containers/TabSection';
 import { merge } from 'lodash';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { Switch, Route, RouteComponentProps } from 'react-router';
-import { getOffline } from 'selectors/config';
+import { getOffline } from 'redux/config';
 
 interface ReduxStateProps {
   step: number;

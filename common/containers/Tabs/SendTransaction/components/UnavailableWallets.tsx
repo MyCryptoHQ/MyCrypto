@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { OnlyUnlocked } from 'components/renderCbs';
 import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 interface StateProps {
   shouldDisplay: boolean;

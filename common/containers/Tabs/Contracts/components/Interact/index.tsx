@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import InteractForm from './components/InteractForm';
 import { InteractExplorer } from './components//InteractExplorer';
 import Contract from 'libs/contracts';
-import { showNotification, TShowNotification } from 'actions/notifications';
+import { showNotification, TShowNotification } from 'redux/notifications';
 import { connect } from 'react-redux';
-import { getCurrentTo } from 'selectors/transaction';
+import { getCurrentTo } from 'redux/transaction';
 
 interface State {
   currentContract: Contract | null;

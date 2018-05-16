@@ -5,7 +5,7 @@ import moment from 'moment';
 import translate from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
 import { getRecentNetworkTransactions } from 'selectors/transactions';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Modal, { IButton } from 'components/ui/Modal';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import translate, { translateRaw } from 'translations';
 import { TWeb3UnsetNode, web3UnsetNode } from 'actions/config';

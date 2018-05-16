@@ -1,5 +1,5 @@
 import { WhitelistedCoins } from 'config';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 export enum TypeKeys {
   SWAP_STEP = 'SWAP_STEP',

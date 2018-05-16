@@ -20,9 +20,9 @@ import {
   TStopLoadShapeshiftRatesSwap,
   ProviderName
 } from 'actions/swap';
-import { getOffline } from 'selectors/config';
+import { getOffline } from 'redux/config';
 import Rates from './Rates';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import './CurrentRates.scss';
 import { Optional } from 'utils/types';
 

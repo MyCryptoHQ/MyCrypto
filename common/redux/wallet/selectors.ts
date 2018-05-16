@@ -8,11 +8,11 @@ import {
   WalletConfig
 } from 'libs/wallet';
 import { SecureWalletName, WalletName } from 'config';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { Token } from 'types/network';
-import { getNetworkConfig, getOffline, getStaticNetworkConfig } from 'selectors/config';
-import { unSupportedWalletFormatsOnNetwork } from 'selectors/config/wallet';
-import { isEtherTransaction, getUnit } from 'selectors/transaction';
+import { getNetworkConfig, getOffline, getStaticNetworkConfig } from 'redux/config';
+import { unSupportedWalletFormatsOnNetwork } from 'redux/config';
+import { isEtherTransaction, getUnit } from 'redux/transaction';
 import { DisabledWallets } from 'components/WalletDecrypt';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {

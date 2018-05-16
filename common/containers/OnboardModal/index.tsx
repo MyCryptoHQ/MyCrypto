@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
 import Stepper from 'react-stepper-horizontal';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { AppState } from 'reducers';
+import { showNotification, TShowNotification } from 'redux/notifications';
+import { AppState } from 'redux/reducers';
 import Modal, { IButton } from 'components/ui/Modal';
 import './index.scss';
 import {

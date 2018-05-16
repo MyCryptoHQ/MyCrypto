@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
-import { getData, getDataExists } from 'selectors/transaction';
+import { getData, getDataExists } from 'redux/transaction';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { CallBackProps } from 'components/DataFieldFactory';
 
 interface OwnProps {

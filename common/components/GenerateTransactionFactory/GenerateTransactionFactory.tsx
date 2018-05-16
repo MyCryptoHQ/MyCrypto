@@ -2,7 +2,7 @@ import { WithSigner } from './Container';
 import EthTx from 'ethereumjs-tx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   getTransaction,
   isNetworkRequestPending,
@@ -10,8 +10,8 @@ import {
   isValidGasLimit,
   getSignedTx,
   getSerializedTransaction
-} from 'selectors/transaction';
-import { getWalletType, IWalletType } from 'selectors/wallet';
+} from 'redux/transaction';
+import { getWalletType, IWalletType } from 'redux/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import translate from 'translations';

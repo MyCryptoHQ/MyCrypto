@@ -7,13 +7,13 @@ import {
   getCurrentTo,
   isValidCurrentTo,
   isCurrentToLabelEntry
-} from 'selectors/transaction';
+} from 'redux/transaction';
 import { getCurrentToLabel } from 'redux/addressBook';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { CallbackProps } from 'components/AddressFieldFactory';
 import { addHexPrefix } from 'ethereumjs-util';
-import { getWalletInst } from 'selectors/wallet';
+import { getWalletInst } from 'redux/wallet';
 import { getResolvingDomain } from 'selectors/ens';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';

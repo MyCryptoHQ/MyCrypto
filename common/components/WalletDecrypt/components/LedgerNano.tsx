@@ -6,10 +6,10 @@ import UnsupportedNetwork from './UnsupportedNetwork';
 import { LedgerWallet } from 'libs/wallet';
 import { Spinner, NewTabLink } from 'components/ui';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { SecureWalletName, ledgerReferralURL } from 'config';
 import { getPaths, getSingleDPath } from 'selectors/config/wallet';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig } from 'redux/config';
 import { NetworkConfig } from 'types/network';
 import './LedgerNano.scss';
 

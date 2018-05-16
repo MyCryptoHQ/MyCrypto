@@ -1,7 +1,7 @@
-import { fetchRatesSaga } from 'sagas/rates';
 import { call, put } from 'redux-saga/effects';
 import { fetchRates } from 'api/rates';
 import { fetchCCRatesSucceeded, fetchCCRatesFailed, fetchCCRatesRequested } from './actions';
+import { fetchRatesSaga } from './sagas';
 
 describe('fetch rates saga success', () => {
   const saga = fetchRatesSaga(fetchCCRatesRequested());

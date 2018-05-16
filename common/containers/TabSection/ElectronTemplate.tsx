@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
-import { getOffline } from 'selectors/config';
+import { getOffline } from 'redux/config';
 import { ElectronNav, AppAlphaNotice } from 'components';
 import './ElectronTemplate.scss';
 

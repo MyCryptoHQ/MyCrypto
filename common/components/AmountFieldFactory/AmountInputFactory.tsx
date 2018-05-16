@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
-import { ICurrentValue, getCurrentValue, nonStandardTransaction } from 'selectors/transaction';
-import { AppState } from 'reducers';
+import { ICurrentValue, getCurrentValue, nonStandardTransaction } from 'redux/transaction';
+import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
 import { CallbackProps } from 'components/AmountFieldFactory';
 

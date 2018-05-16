@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   ACCOUNT_ADDRESS_ID,
   changeAddressLabelEntry,

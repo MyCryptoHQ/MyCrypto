@@ -6,9 +6,9 @@ import { DeterministicWalletData, GetDeterministicWalletsAction } from './types'
 import { setDeterministicWallets, updateDeterministicWallet } from './actions';
 import { showNotification } from 'redux/notifications';
 import { INode } from 'libs/nodes/INode';
-import { getNodeLib } from 'selectors/config';
-import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
-import { getTokens } from 'selectors/wallet';
+import { getNodeLib } from 'redux/config';
+import { getDesiredToken, getWallets } from 'redux/deterministicWallets';
+import { getTokens } from 'redux/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';

@@ -3,9 +3,9 @@ import { Amounts } from './components/Amounts';
 import { Details } from './components/Details';
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import './Body.scss';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig } from 'redux/config';
 import { NetworkConfig } from 'types/network';
 import translate from 'translations';
 

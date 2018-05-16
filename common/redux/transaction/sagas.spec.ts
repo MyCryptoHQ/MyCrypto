@@ -38,7 +38,7 @@ import {
   gasPriceValidator,
   gasLimitValidator
 } from 'libs/validators';
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import {
   TypeKeys as ConfigTypeKeys,
   getNodeLib,

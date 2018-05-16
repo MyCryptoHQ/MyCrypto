@@ -6,9 +6,9 @@ import { signMessageRequested, TSignMessageRequested } from 'actions/message';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import SignButton from './SignButton';
-import { isWalletFullyUnlocked } from 'selectors/wallet';
+import { isWalletFullyUnlocked } from 'redux/wallet';
 import './index.scss';
 import { TextArea, CodeBlock } from 'components/ui';
 

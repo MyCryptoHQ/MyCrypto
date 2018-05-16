@@ -1,6 +1,6 @@
 import { put, select } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import {
   handleNodeChangeForce,
   changeNode,

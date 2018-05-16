@@ -5,9 +5,9 @@ import Help from 'components/ui/Help';
 import { Spinner, Input } from 'components/ui';
 import { connect } from 'react-redux';
 import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
-import { nonceRequestPending } from 'selectors/transaction';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
+import { nonceRequestPending } from 'redux/transaction';
+import { getOffline } from 'redux/config';
+import { AppState } from 'redux/reducers';
 import './NonceField.scss';
 
 interface OwnProps {

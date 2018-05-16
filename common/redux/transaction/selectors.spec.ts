@@ -1,7 +1,7 @@
 import BN from 'bn.js';
-import { RequestStatus } from 'reducers/transaction/network';
-import { getInitialState } from '../../../spec/selectors/helpers';
 import { Wei } from 'libs/units';
+import { getInitialState } from '../helpers';
+import { RequestStatus } from './types';
 import {
   getTransactionStatus,
   currentTransactionFailed,

@@ -6,7 +6,7 @@ import {
   isValidCurrentWindowStart
 } from 'selectors/schedule';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { getResolvingDomain } from 'selectors/ens';
 import { CallbackProps } from './WindowStartFieldFactory';
 

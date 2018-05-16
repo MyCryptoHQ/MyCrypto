@@ -18,8 +18,8 @@ import {
   CustomNodeOption,
   NodeOption,
   getNodeOptions
-} from 'selectors/config';
-import { AppState } from 'reducers';
+} from 'redux/config';
+import { AppState } from 'redux/reducers';
 import './NodeSelect.scss';
 
 interface OwnProps {

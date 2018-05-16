@@ -1,8 +1,8 @@
 import { toTokenBase } from 'libs/units';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getDecimal } from 'selectors/transaction';
+import { AppState } from 'redux/reducers';
+import { getDecimal } from 'redux/transaction';
 
 interface IChildren {
   onUserInput: UnitConverterClass['onUserInput'];

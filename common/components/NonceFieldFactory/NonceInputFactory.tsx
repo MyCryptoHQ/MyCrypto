@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
-import { getNonce, nonceRequestFailed } from 'selectors/transaction';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
+import { getNonce, nonceRequestFailed } from 'redux/transaction';
+import { getOffline } from 'redux/config';
+import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
 import { CallbackProps } from 'components/NonceFieldFactory';
 

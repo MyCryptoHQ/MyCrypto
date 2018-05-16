@@ -5,12 +5,12 @@ import { UnitDisplay, NewTabLink } from 'components/ui';
 import { IWallet, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig, getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
+import { getNetworkConfig, getOffline } from 'redux/config';
+import { AppState } from 'redux/reducers';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
 import './AccountInfo.scss';
-import { getEtherBalance, isEtherBalancePending } from 'selectors/wallet';
+import { getEtherBalance, isEtherBalancePending } from 'redux/wallet';
 import AccountAddress from './AccountAddress';
 
 interface OwnProps {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getGasLimit, getGasEstimationPending } from 'selectors/transaction';
+import { AppState } from 'redux/reducers';
+import { getGasLimit, getGasEstimationPending } from 'redux/transaction';
 import { CallBackProps } from 'components/GasLimitFieldFactory';
-import { getAutoGasLimitEnabled } from 'selectors/config';
+import { getAutoGasLimitEnabled } from 'redux/config';
 
 interface StateProps {
   gasLimit: AppState['transaction']['fields']['gasLimit'];

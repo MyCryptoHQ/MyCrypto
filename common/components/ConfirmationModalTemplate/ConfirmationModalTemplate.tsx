@@ -2,17 +2,17 @@ import React from 'react';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import { connect } from 'react-redux';
-import { getWalletType, IWalletType } from 'selectors/wallet';
-import { getLanguageSelection } from 'selectors/config';
+import { getWalletType, IWalletType } from 'redux/wallet';
+import { getLanguageSelection } from 'redux/config';
 import {
   broadcastLocalTransactionRequested,
   TBroadcastLocalTransactionRequested,
   broadcastWeb3TransactionRequested,
   TBroadcastWeb3TransactionRequested
 } from 'actions/transaction';
-import { currentTransactionBroadcasting } from 'selectors/transaction';
+import { currentTransactionBroadcasting } from 'redux/transaction';
 import './ConfirmationModalTemplate.scss';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { translateRaw, translate } from 'translations';
 
 interface DispatchProps {

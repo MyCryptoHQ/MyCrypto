@@ -1,4 +1,4 @@
-import { TShowNotification } from 'actions/notifications';
+import { TShowNotification } from 'redux/notifications';
 import {
   TRestartSwap,
   TStartPollBityOrderStatus,

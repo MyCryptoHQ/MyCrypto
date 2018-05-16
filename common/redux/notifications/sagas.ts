@@ -1,4 +1,4 @@
-import { closeNotification, ShowNotificationAction } from 'actions/notifications';
+import { closeNotification, ShowNotificationAction } from 'redux/notifications';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 

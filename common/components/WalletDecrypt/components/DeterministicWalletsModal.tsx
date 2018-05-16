@@ -12,10 +12,10 @@ import {
   SetDesiredTokenAction
 } from 'actions/deterministicWallets';
 import Modal, { IButton } from 'components/ui/Modal';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { isValidPath } from 'libs/validators';
-import { getNetworkConfig } from 'selectors/config';
-import { getTokens } from 'selectors/wallet';
+import { getNetworkConfig } from 'redux/config';
+import { getTokens } from 'redux/wallet';
 import { getAddressLabels } from 'redux/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';

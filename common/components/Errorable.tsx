@@ -1,4 +1,4 @@
-import { showNotification, TShowNotification } from 'actions/notifications';
+import { showNotification, TShowNotification } from 'redux/notifications';
 import { connect } from 'react-redux';
 import React from 'react';
 

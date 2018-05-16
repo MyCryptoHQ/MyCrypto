@@ -5,8 +5,8 @@ import { Tooltip } from 'components/ui';
 import { TokenValue, Wei } from 'libs/units';
 import translate, { translateRaw } from 'translations';
 import { sendEverythingRequested, TSendEverythingRequested } from 'actions/transaction';
-import { getCurrentBalance } from 'selectors/wallet';
-import { AppState } from 'reducers';
+import { getCurrentBalance } from 'redux/wallet';
+import { AppState } from 'redux/reducers';
 import './SendEverything.scss';
 
 interface DispatchProps {

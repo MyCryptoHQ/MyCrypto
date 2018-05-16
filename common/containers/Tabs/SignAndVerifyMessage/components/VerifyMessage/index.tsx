@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
-import { showNotification, TShowNotification } from 'actions/notifications';
+import { showNotification, TShowNotification } from 'redux/notifications';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
 import './index.scss';
 import { TextArea } from 'components/ui';

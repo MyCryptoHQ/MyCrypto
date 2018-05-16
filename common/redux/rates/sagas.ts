@@ -1,8 +1,8 @@
-import { fetchCCRatesSucceeded, fetchCCRatesFailed, FetchCCRatesRequested } from 'actions/rates';
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchRates, CCResponse } from 'api/rates';
-import { TypeKeys } from './types';
+import { TypeKeys, FetchCCRatesRequested } from './types';
+import { fetchCCRatesSucceeded, fetchCCRatesFailed } from './actions';
 
 export function* fetchRatesSaga(action: FetchCCRatesRequested): SagaIterator {
   try {

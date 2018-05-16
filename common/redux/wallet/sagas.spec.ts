@@ -2,7 +2,7 @@ import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
 import translate from 'translations';
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';
 import { Wei } from 'libs/units';
 import RpcNode from 'libs/nodes/rpc';
@@ -12,8 +12,8 @@ import { Token } from 'types/network';
 import { changeNodeIntent, web3UnsetNode } from 'actions/config';
 import { TypeKeys as ConfigTypeKeys } from 'actions/config/constants';
 import { showNotification } from 'redux/notifications';
-import { getNodeLib, getOffline, getWeb3Node } from 'selectors/config';
-import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
+import { getNodeLib, getOffline, getWeb3Node } from 'redux/config';
+import { getWalletInst, getWalletConfigTokens } from 'redux/wallet';
 import { initWeb3Node, unlockWeb3 } from 'sagas/config/web3';
 import { TypeKeys } from './types';
 import {

@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getCurrentTo, ICurrentTo } from 'selectors/transaction';
-import { getAllTokens } from 'selectors/config';
-import { getWalletInst } from 'selectors/wallet';
+import { AppState } from 'redux/reducers';
+import { getCurrentTo, ICurrentTo } from 'redux/transaction';
+import { getAllTokens } from 'redux/config';
+import { getWalletInst } from 'redux/wallet';
 import { getAddressMessage } from 'config';
 import { Address } from 'components/ui';
 import { Token } from 'types/network';

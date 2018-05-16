@@ -15,7 +15,7 @@ import {
 } from 'libs/transaction';
 import { validNumber, validDecimal } from 'libs/validators';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { isNetworkUnit, getNetworkConfig, getOffline } from 'redux/config';
 import { isSchedulingEnabled } from 'redux/schedule';
 import { getGasLimit, getGasPrice, getUnit } from 'redux/transaction';
@@ -199,7 +199,7 @@ export const signTransactionWrapper = (
         getWalletAndTransaction,
         partialTx.payload
       );
-      yield call(getFrom);
+      yield call(getFromSaga);
       yield call(func, IWalletAndTx);
     } catch (err) {
       yield call(handleFailedTransaction, err);
@@ -235,7 +235,7 @@ export function* handleFailedTransaction(err: Error): SagaIterator {
   yield put(signTransactionFailed());
 }
 
-export function* getFrom(): SagaIterator {
+export function* getFromSaga(): SagaIterator {
   yield put(getFromRequested());
   // wait for it to finish
   const { type }: GetFromFailedAction | GetFromSucceededAction = yield take([

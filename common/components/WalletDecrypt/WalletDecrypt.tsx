@@ -30,9 +30,9 @@ import {
   ParitySignerDecrypt,
   InsecureWalletWarning
 } from './components';
-import { AppState } from 'reducers';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { getDisabledWallets } from 'selectors/wallet';
+import { AppState } from 'redux/reducers';
+import { showNotification, TShowNotification } from 'redux/notifications';
+import { getDisabledWallets } from 'redux/wallet';
 import { DisabledWallets } from './disables';
 import {
   SecureWalletName,

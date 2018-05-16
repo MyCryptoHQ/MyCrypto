@@ -19,12 +19,12 @@ import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import { TitleBar } from 'components/ui';
 import { Store } from 'redux';
 import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-import { getNetworkUnit } from 'selectors/config';
+import { getNetworkUnit } from 'redux/config';
 
 interface OwnProps {
   store: Store<AppState>;

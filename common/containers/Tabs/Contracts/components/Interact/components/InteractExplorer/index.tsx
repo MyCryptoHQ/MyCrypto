@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import translate from 'translations';
 import './InteractExplorer.scss';
-import { TShowNotification, showNotification } from 'actions/notifications';
-import { getNodeLib } from 'selectors/config';
-import { getTo, getDataExists } from 'selectors/transaction';
+import { TShowNotification, showNotification } from 'redux/notifications';
+import { getNodeLib } from 'redux/config';
+import { getTo, getDataExists } from 'redux/transaction';
 import { GenerateTransaction } from 'components/GenerateTransaction';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
 import { Fields } from './components';
 import { setDataField, TSetDataField } from 'actions/transaction';

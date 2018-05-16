@@ -26,7 +26,7 @@ import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import { NodeConfig } from 'types/node';
 import './index.scss';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import {
   getOffline,
   isNodeChanging,
@@ -38,7 +38,7 @@ import {
   getNodeOptions,
   getNetworkConfig,
   isStaticNodeId
-} from 'selectors/config';
+} from 'redux/config';
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
 import translate from 'translations';

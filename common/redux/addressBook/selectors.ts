@@ -1,6 +1,6 @@
 import { toChecksumAddress } from 'ethereumjs-util';
-import { AppState } from 'reducers';
-import { getCurrentTo } from 'selectors/transaction';
+import { AppState } from 'redux/reducers';
+import { getCurrentTo } from 'redux/transaction';
 import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
 import { AddressLabelEntry } from './types';
 

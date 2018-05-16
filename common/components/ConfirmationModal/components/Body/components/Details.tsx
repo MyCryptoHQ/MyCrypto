@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Details.scss';
 import { SerializedTransaction } from 'components/renderCbs';
-import { AppState } from 'reducers';
-import { getNodeConfig } from 'selectors/config';
+import { AppState } from 'redux/reducers';
+import { getNodeConfig } from 'redux/config';
 import { connect } from 'react-redux';
 import { NodeConfig } from 'types/node';
 import translate from 'translations';

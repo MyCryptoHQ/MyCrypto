@@ -1,5 +1,5 @@
 import { Wei } from 'libs/units';
-import { configuredStore } from 'store';
+import { configuredStore } from 'redux/store';
 import {
   setWallet,
   resetWallet,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import translate from 'translations';
 import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';

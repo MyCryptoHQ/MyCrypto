@@ -3,7 +3,7 @@ import { GasQuery } from 'components/renderCbs';
 import { GasLimitInput } from './GasLimitInputFactory';
 import { inputGasLimit, TInputGasLimit } from 'actions/transaction';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { sanitizeNumericalInput } from 'libs/values';
 import { getSchedulingToggle } from 'selectors/schedule/fields';
 

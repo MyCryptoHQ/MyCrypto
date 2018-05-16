@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { signaturePending } from 'selectors/transaction';
+import { AppState } from 'redux/reducers';
+import { signaturePending } from 'redux/transaction';
 import { Spinner } from 'components/ui';
 import './SigningStatus.scss';
 import { translate } from 'translations';

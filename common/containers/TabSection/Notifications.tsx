@@ -1,10 +1,10 @@
-import { closeNotification, Notification, TCloseNotification } from 'actions/notifications';
+import { closeNotification, Notification, TCloseNotification } from 'redux/notifications';
 import React from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import NotificationRow from './NotificationRow';
 import './Notifications.scss';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 
 interface Props {
   notifications: Notification[];

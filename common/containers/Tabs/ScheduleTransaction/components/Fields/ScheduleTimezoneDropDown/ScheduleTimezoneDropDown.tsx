@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { setScheduleTimezone, TSetScheduleTimezone } from 'actions/schedule';
 import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'selectors/schedule';
-import { AppState } from 'reducers';
+import { AppState } from 'redux/reducers';
 import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { Option } from 'react-select';

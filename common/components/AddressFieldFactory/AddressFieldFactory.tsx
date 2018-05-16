@@ -3,7 +3,7 @@ import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 import { AddressInputFactory } from './AddressInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentTo } from 'selectors/transaction';
+import { ICurrentTo } from 'redux/transaction';
 import './AddressFieldFactory.scss';
 
 interface DispatchProps {
