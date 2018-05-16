@@ -48,7 +48,7 @@ export default class ConvertUnits extends React.Component<State> {
               <label className="input-group input-group-inline" key={unitName}>
                 <Input
                   value={(units as any)[unitName]}
-                  type="number"
+                  type="text"
                   onChange={this.onChange}
                   name={unitName}
                   isValid={true}
@@ -67,10 +67,14 @@ export default class ConvertUnits extends React.Component<State> {
   private convertUnits(value: string, unit: UnitKey) {
     const weiValue = toWei(value, getDecimalFromEtherUnit(unit));
 
-    const currentValues: any = { ...this.state.units };
+    const currentValues: any = {};
 
     Object.keys(unitNames).forEach((unitName: UnitKey) => {
-      currentValues[unitName] = fromWei(weiValue, unitName);
+      if (unitName !== unit) {
+        console.log(unitName, unit);
+
+        currentValues[unitName] = fromWei(weiValue, unitName);
+      }
     });
 
     this.setState({
