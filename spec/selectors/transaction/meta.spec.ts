@@ -33,6 +33,7 @@ describe('meta tests', () => {
         decimal: 0
       }
     ]);
+
   it('should get the stored sender address', () => {
     expect(getFrom(state)).toEqual(state.transaction.meta.from);
   });

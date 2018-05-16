@@ -7,13 +7,12 @@ import throttle from 'lodash/throttle';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import fixAddressBookErrors from 'utils/fixAddressBookErrors';
 import { gasPriceToBase } from 'libs/units';
-
 import RootReducer, { AppState } from 'reducers';
 import sagas from 'sagas';
 import {
   INITIAL_STATE as transactionInitialState,
   State as TransactionState
-} from 'reducers/transaction';
+} from 'redux/transaction';
 import { State as SwapState, INITIAL_STATE as initialSwapState } from 'redux/swap';
 import {
   State as AddressBookState,
