@@ -1,10 +1,21 @@
 import Contract from 'libs/contracts';
-import { ABIFunc, ABIFuncParamless } from 'libs/ens/contracts/AbiFunc';
 
 type uint256 = any;
 type uint8 = any;
-
 type address = any;
+
+export interface ABIFunc<T, K = void> {
+  outputType: K;
+  decodeInput(argStr: string): T;
+  encodeInput(x: T): string;
+  decodeOutput(argStr: string): K;
+}
+
+export interface ABIFuncParamless<T = void> {
+  outputType: T;
+  encodeInput(): string;
+  decodeOutput(argStr: string): T;
+}
 
 interface IErc20 {
   decimals: ABIFuncParamless<{ decimals: uint8 }>;
