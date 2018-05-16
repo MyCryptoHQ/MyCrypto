@@ -5,16 +5,18 @@ import ERC20 from 'libs/erc20';
 import { shepherdProvider } from 'libs/nodes';
 import { isPositiveIntegerOrZero } from 'libs/validators';
 import { translateRaw } from 'translations';
+import { Result } from 'nano-result';
 
 interface OwnProps {
   address?: string;
-  onChange(decimals: string, isValid: boolean): void;
+  onChange(decimals: Result<string>): void;
 }
 
 interface State {
-  decimals: string;
+  userInput: string;
+  decimals: Result<string>;
   autoDecimal: boolean;
-  isErr: boolean;
+  addressToLoad?: string;
   loading: boolean;
 }
 
@@ -22,22 +24,22 @@ export class DecimalField extends React.Component<OwnProps, State> {
   private currentRequest: Promise<any> | null;
 
   public state: State = {
-    isErr: false,
+    userInput: '',
     autoDecimal: true,
-    decimals: '',
+    decimals: Result.from({ res: '' }),
     loading: false
   };
 
-  static getDerivedStateFromProps(nextProps: OwnProps): Partial<State> | null {
-    if (nextProps.address) {
-      return { loading: true, autoDecimal: true };
+  static getDerivedStateFromProps(nextProps: OwnProps, prevState: State): Partial<State> | null {
+    if (nextProps.address && nextProps.address !== prevState.addressToLoad) {
+      return { loading: true, autoDecimal: true, addressToLoad: nextProps.address };
     }
     return null;
   }
 
   public componentDidUpdate() {
-    if (this.props.address && this.state.loading) {
-      this.attemptToLoadDecimals(this.props.address);
+    if (this.state.addressToLoad && this.state.loading) {
+      this.attemptToLoadDecimals(this.state.addressToLoad);
     }
   }
 
@@ -47,7 +49,7 @@ export class DecimalField extends React.Component<OwnProps, State> {
     }
   }
   public render() {
-    const { isErr, decimals, autoDecimal, loading } = this.state;
+    const { decimals, autoDecimal, loading, userInput } = this.state;
 
     return (
       <label className="AddCustom-field form-group">
@@ -56,27 +58,30 @@ export class DecimalField extends React.Component<OwnProps, State> {
           <Spinner />
         ) : (
           <Input
-            isValid={isErr}
+            isValid={decimals.ok()}
             className="input-group-input-small"
             type="text"
             name="Decimals"
             readOnly={autoDecimal}
-            value={decimals}
+            value={decimals.ok() ? decimals.unwrap() : userInput}
             onChange={this.handleFieldChange}
           />
         )}
-        {isErr && <div className="AddCustom-field-error">Invalid decimal</div>}
+        {decimals.err() && <div className="AddCustom-field-error">{decimals.err()}</div>}
       </label>
     );
   }
 
-  private handleFieldChange(args: React.FormEvent<HTMLInputElement>) {
-    const decimals = args.currentTarget.value;
-    const validDecimals = isPositiveIntegerOrZero(Number(decimals));
+  private handleFieldChange = (args: React.FormEvent<HTMLInputElement>) => {
+    const userInput = args.currentTarget.value;
+    const validDecimals = isPositiveIntegerOrZero(Number(userInput));
+    const decimals: Result<string> = validDecimals
+      ? Result.from({ res: userInput })
+      : Result.from({ err: 'Invalid decimal' });
 
-    this.setState({ decimals, isErr: !validDecimals });
-    this.props.onChange(decimals, validDecimals);
-  }
+    this.setState({ decimals, userInput });
+    this.props.onChange(decimals);
+  };
 
   private attemptToLoadDecimals(address: string) {
     const req = this.loadDecimals(address);
@@ -88,8 +93,8 @@ export class DecimalField extends React.Component<OwnProps, State> {
       .then(({ decimals }) =>
         this.setState({
           decimals,
-          isErr: false,
-          loading: false
+          loading: false,
+          autoDecimal: decimals.toVal().res === '0' ? false : true
         })
       )
       .catch(e => {
@@ -110,8 +115,9 @@ export class DecimalField extends React.Component<OwnProps, State> {
       .sendCallRequest({ data: ERC20.decimals.encodeInput(), to: address })
       .then(ERC20.decimals.decodeOutput)
       .then(({ decimals }) => {
-        this.props.onChange(decimals, true);
-        return { decimals };
+        const result = Result.from({ res: decimals });
+        this.props.onChange(result);
+        return { decimals: result };
       });
   }
 }

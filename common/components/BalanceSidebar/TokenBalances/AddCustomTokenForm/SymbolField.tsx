@@ -5,17 +5,19 @@ import ERC20 from 'libs/erc20';
 import { shepherdProvider } from 'libs/nodes';
 import { translateRaw } from 'translations';
 import { IGenerateSymbolLookup } from './AddCustomTokenForm';
+import { Result } from 'nano-result';
 
 interface OwnProps {
   address?: string;
   symbolLookup: IGenerateSymbolLookup;
-  onChange(symbol: string, isValid: boolean): void;
+  onChange(symbol: Result<string>): void;
 }
 
 interface State {
-  symbol: string;
+  symbol: Result<string>;
   autoSymbol: boolean;
-  isErr: boolean;
+  userInput: string;
+  addressToLoad?: string;
   loading: boolean;
 }
 
@@ -23,22 +25,22 @@ export class SymbolField extends React.Component<OwnProps, State> {
   private currentRequest: Promise<any> | null;
 
   public state: State = {
-    isErr: false,
+    userInput: '',
     autoSymbol: true,
-    symbol: '',
+    symbol: Result.from({ res: '' }),
     loading: false
   };
 
-  static getDerivedStateFromProps(nextProps: OwnProps): Partial<State> | null {
-    if (nextProps.address) {
-      return { loading: true, autoSymbol: true };
+  static getDerivedStateFromProps(nextProps: OwnProps, prevState: State): Partial<State> | null {
+    if (nextProps.address && nextProps.address !== prevState.addressToLoad) {
+      return { loading: true, autoSymbol: true, addressToLoad: nextProps.address };
     }
     return null;
   }
 
   public componentDidUpdate() {
-    if (this.props.address && this.state.loading) {
-      this.attemptToLoadSymbol(this.props.address);
+    if (this.state.addressToLoad && this.state.loading) {
+      this.attemptToLoadSymbol(this.state.addressToLoad);
     }
   }
 
@@ -48,38 +50,39 @@ export class SymbolField extends React.Component<OwnProps, State> {
     }
   }
   public render() {
-    const { isErr, symbol, autoSymbol, loading } = this.state;
+    const { userInput, symbol, autoSymbol, loading } = this.state;
 
     return (
       <label className="AddCustom-field form-group">
-        <div className="input-group-header">{translateRaw('TOKEN_DEC')}</div>
+        <div className="input-group-header">{translateRaw('TOKEN_SYMBOL')}</div>
         {loading ? (
           <Spinner />
         ) : (
           <Input
-            isValid={isErr}
+            isValid={symbol.ok()}
             className="input-group-input-small"
             type="text"
             name="Symbol"
             readOnly={autoSymbol}
-            value={symbol}
+            value={symbol.ok() ? symbol.unwrap() : userInput}
             onChange={this.handleFieldChange}
           />
         )}
-        {isErr && (
-          <div className="AddCustom-field-error">A token with this symbol already exists</div>
-        )}
+        {symbol.err() && <div className="AddCustom-field-error">{symbol.err()}</div>}
       </label>
     );
   }
 
-  private handleFieldChange(args: React.FormEvent<HTMLInputElement>) {
-    const symbol = args.currentTarget.value;
-    const validSymbol = !this.props.symbolLookup[symbol];
+  private handleFieldChange = (args: React.FormEvent<HTMLInputElement>) => {
+    const userInput = args.currentTarget.value;
+    const validSymbol = !this.props.symbolLookup[userInput];
+    const symbol: Result<string> = validSymbol
+      ? Result.from({ res: userInput })
+      : Result.from({ err: 'A token with this symbol already exists' });
 
-    this.setState({ symbol, isErr: !validSymbol });
-    this.props.onChange(symbol, validSymbol);
-  }
+    this.setState({ userInput, symbol });
+    this.props.onChange(symbol);
+  };
 
   private attemptToLoadSymbol(address: string) {
     const req = this.loadSymbols(address);
@@ -91,8 +94,8 @@ export class SymbolField extends React.Component<OwnProps, State> {
       .then(({ symbol }) =>
         this.setState({
           symbol,
-          isErr: false,
-          loading: false
+          loading: false,
+          autoSymbol: symbol.err() ? false : true
         })
       )
       .catch(e => {
@@ -113,8 +116,11 @@ export class SymbolField extends React.Component<OwnProps, State> {
       .sendCallRequest({ data: ERC20.symbol.encodeInput(), to: address })
       .then(ERC20.symbol.decodeOutput)
       .then(({ symbol }) => {
-        this.props.onChange(symbol, true);
-        return { symbol };
+        const result: Result<string> = symbol
+          ? Result.from({ res: symbol })
+          : Result.from({ err: 'No Symbol found, please input the token symbol manually' });
+        this.props.onChange(result);
+        return { symbol: result };
       });
   }
 }

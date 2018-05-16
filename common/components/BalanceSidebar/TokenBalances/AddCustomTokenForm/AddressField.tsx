@@ -3,10 +3,11 @@ import { Input } from 'components/ui';
 import { translateRaw } from 'translations';
 import { IGenerateAddressLookup } from './AddCustomTokenForm';
 import { isValidETHAddress } from 'libs/validators';
+import { Result } from 'nano-result';
 
 interface OwnProps {
   addressLookup: IGenerateAddressLookup;
-  onChange(address: string, isValid: boolean): void;
+  onChange(address: Result<string>): void;
 }
 
 enum ErrType {
@@ -15,41 +16,43 @@ enum ErrType {
 }
 
 interface State {
-  address: string;
-
-  err?: ErrType;
+  address: Result<string>;
+  userInput: string;
 }
 
 export class AddressField extends React.Component<OwnProps, State> {
   public state: State = {
-    address: ''
+    address: Result.from({ res: '' }),
+    userInput: ''
   };
 
   public render() {
-    const { err, address } = this.state;
+    const { userInput, address } = this.state;
 
     return (
       <label className="AddCustom-field form-group">
-        <div className="input-group-header">{translateRaw('TOKEN_DEC')}</div>
+        <div className="input-group-header">{translateRaw('TOKEN_ADDR')}</div>
         <Input
-          isValid={!err}
+          isValid={address.ok()}
           className="input-group-input-small"
           type="text"
           name="Address"
-          value={address}
+          value={address.ok() ? address.unwrap() : userInput}
           onChange={this.handleFieldChange}
         />
-        {err && <div className="AddCustom-field-error">{err}</div>}
+        {address.err() && <div className="AddCustom-field-error">{address.err()}</div>}
       </label>
     );
   }
 
-  private handleFieldChange(args: React.FormEvent<HTMLInputElement>) {
-    const address = args.currentTarget.value;
-    const addrTaken = this.props.addressLookup[address];
-    const invalidAddr = isValidETHAddress(address);
-    let err = addrTaken ? ErrType.ADDRTAKEN : invalidAddr ? ErrType.INVALIDADDR : undefined;
-    this.setState({ address, err });
-    this.props.onChange(address, !err);
-  }
+  private handleFieldChange = (args: React.FormEvent<HTMLInputElement>) => {
+    const userInput = args.currentTarget.value;
+    const addrTaken = this.props.addressLookup[userInput];
+    const validAddr = isValidETHAddress(userInput);
+    const err = addrTaken ? ErrType.ADDRTAKEN : !validAddr ? ErrType.INVALIDADDR : undefined;
+    const address: Result<string> = err ? Result.from({ err }) : Result.from({ res: userInput });
+
+    this.setState({ userInput, address });
+    this.props.onChange(address);
+  };
 }

@@ -3,10 +3,12 @@ import { HELP_ARTICLE } from 'config';
 import { AddressField } from './AddressField';
 import { DecimalField } from './DecimalField';
 import { SymbolField } from './SymbolField';
+import { BalanceField } from './BalanceField';
 import translate from 'translations';
 import { HelpLink } from 'components/ui';
 import './AddCustomTokenForm.scss';
 import { Token } from 'types/network';
+import { Result } from 'nano-result';
 
 interface Props {
   allTokens: Token[];
@@ -23,28 +25,37 @@ export interface IGenerateAddressLookup {
 }
 
 interface State {
-  address: string;
-  symbol: string;
-  decimal: string;
+  address: Result<string>;
+  symbol: Result<string>;
+  decimal: Result<string>;
 }
 
-export default class AddCustomTokenForm extends React.PureComponent<Props, State> {
+export class AddCustomTokenForm extends React.PureComponent<Props, State> {
   private tokenSymbolLookup = this.generateSymbolLookup();
   private tokenAddressLookup = this.generateAddressMap();
 
   public state: State = {
-    address: '',
-    symbol: '',
-    decimal: ''
+    address: Result.from({ err: 'This field is empty' }),
+    symbol: Result.from({ err: 'This field is empty' }),
+    decimal: Result.from({ err: 'This field is empty' })
   };
 
   public render() {
+    const address = this.state.address.toVal().res;
+
     return (
       <form className="AddCustom" onSubmit={this.onSave}>
-        <AddressField addressLookup={this.tokenAddressLookup} onChange={} />
-        <DecimalField address={} onChange={} />
-        <SymbolField address={} symbolLookup={this.tokenSymbolLookup} onChange={} />
-
+        <AddressField
+          addressLookup={this.tokenAddressLookup}
+          onChange={this.handleFieldChange('address')}
+        />
+        <DecimalField address={address} onChange={this.handleFieldChange('decimal')} />
+        <SymbolField
+          address={address}
+          symbolLookup={this.tokenSymbolLookup}
+          onChange={this.handleFieldChange('symbol')}
+        />
+        <BalanceField address={address} />
         <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
           {translate('ADD_CUSTOM_TKN_HELP')}
         </HelpLink>
@@ -66,11 +77,6 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
     );
   }
 
-  public isValid() {
-    const { address, symbol, decimal } = this.state;
-    return !Object.keys(this.getErrors()).length && address && symbol && decimal;
-  }
-
   public onSave = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!this.isValid()) {
@@ -78,8 +84,22 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
     }
 
     const { address, symbol, decimal } = this.state;
-    this.props.onSave({ address, symbol, decimal });
+    this.props.onSave({
+      address: address.unwrap(),
+      symbol: symbol.unwrap(),
+      decimal: parseInt(decimal.unwrap())
+    });
   };
+
+  private handleFieldChange = (fieldName: keyof State) => (res: Result<string>) => {
+    this.setState({ [fieldName as any]: res });
+  };
+
+  private isValid() {
+    const { address, decimal, symbol } = this.state;
+    const valid = address.ok() && decimal.ok() && symbol.ok();
+    return valid;
+  }
 
   private generateSymbolLookup() {
     return this.tknArrToMap('symbol');

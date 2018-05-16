@@ -43,12 +43,12 @@
     core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
 
-"@parity/qr-signer@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@parity/qr-signer/-/qr-signer-0.2.0.tgz#5c6c41c03265608c117346f0a9d7ab89699352fa"
+"@parity/qr-signer@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@parity/qr-signer/-/qr-signer-0.2.1.tgz#f8b0e0ff5d8ee90b1788951c8524cdf8b1aadf27"
   dependencies:
     qrcode-generator "1.3.1"
-    react-qr-reader "2.0.1"
+    react-qr-reader "2.1.0"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -6571,9 +6571,9 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-"jsqr@https://github.com/cozmo/jsQR.git":
+jsqr@^1.0.1:
   version "1.0.4"
-  resolved "https://github.com/cozmo/jsQR.git#d37c764bf43a41ed7c6aa1c17cbdf21b7f9cb69e"
+  resolved "https://registry.yarnpkg.com/jsqr/-/jsqr-1.0.4.tgz#e2ea353fa81007708efab7d95b2652a7254c10dd"
 
 jssha@2.3.1:
   version "2.3.1"
@@ -7426,9 +7426,9 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-mycrypto-shepherd@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.3.1.tgz#901d86e2278c08fd9a3a0aee7a13dea971dbbc38"
+mycrypto-shepherd@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.3.3.tgz#3bdefec7604f4d6f094e0282b807001d87fd98b6"
   dependencies:
     "@types/jest" "^22.2.2"
     "@types/node" "^9.6.2"
@@ -7447,6 +7447,10 @@ mycrypto-shepherd@1.3.1:
 nan@^2.0.5, nan@^2.0.8, nan@^2.10.0, nan@^2.2.1, nan@^2.3.0, nan@^2.6.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
+
+nano-result@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/nano-result/-/nano-result-0.0.2.tgz#692e68b544fc22a35bb9187e3e53d6016e167cbd"
 
 nanomatch@^1.2.9:
   version "1.2.9"
@@ -9073,13 +9077,13 @@ react-onclickoutside@^6.5.0:
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.1.tgz#6a5b5b8b4eae6b776259712c89c8a2b36b17be93"
 
-react-qr-reader@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.0.1.tgz#f7be785e8c880d7e68423fc129802994f70b6b58"
+react-qr-reader@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.1.0.tgz#f429c196675a710926da1cc9057223b79358da75"
   dependencies:
-    jsqr "https://github.com/cozmo/jsQR.git"
+    jsqr "^1.0.1"
     prop-types "^15.5.8"
-    webrtc-adapter "^5.0.6"
+    webrtc-adapter "^6.1.1"
 
 react-reconciler@^0.7.0:
   version "0.7.0"
@@ -9778,7 +9782,7 @@ rst-selector-parser@^2.2.3:
     lodash.flattendeep "^4.4.0"
     nearley "^2.7.10"
 
-rtcpeerconnection-shim@^1.1.13:
+rtcpeerconnection-shim@^1.2.10:
   version "1.2.11"
   resolved "https://registry.yarnpkg.com/rtcpeerconnection-shim/-/rtcpeerconnection-shim-1.2.11.tgz#df2b2456020365daf26bf8c135523bca2deb252b"
   dependencies:
@@ -9942,9 +9946,13 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-sdp@^2.3.0, sdp@^2.6.0:
+sdp@^2.6.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.0.tgz#02b64ea0c29d73179afa19794e466b123b1b29f3"
+
+sdp@^2.7.0:
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.3.tgz#ed177eb4074aa3213e150e74a9ab2d06ae6e5dbf"
 
 secp256k1@^3.0.1:
   version "3.5.0"
@@ -11791,12 +11799,12 @@ webpack@4.5.0:
     watchpack "^1.5.0"
     webpack-sources "^1.0.1"
 
-webrtc-adapter@^5.0.6:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-5.0.6.tgz#7946fca194dadf869bb6c8cae1011dfda03f40c7"
+webrtc-adapter@^6.1.1:
+  version "6.1.5"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.1.5.tgz#df72e4af5cb6675656c896db0d1187695359220b"
   dependencies:
-    rtcpeerconnection-shim "^1.1.13"
-    sdp "^2.3.0"
+    rtcpeerconnection-shim "^1.2.10"
+    sdp "^2.7.0"
 
 what-input@5.0.5:
   version "5.0.5"
