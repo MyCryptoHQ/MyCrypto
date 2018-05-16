@@ -300,7 +300,7 @@ const web3Node: StaticNodeConfig = {
   estimateGas: false,
   hidden: true
 };
-const staticNodesExpectedState = {
+export const staticNodesExpectedState = {
   initialState: staticNodes(undefined, {} as any),
   setWeb3: { ...STATIC_NODES_INITIAL_STATE, [web3Id]: web3Node },
   unsetWeb3: { ...STATIC_NODES_INITIAL_STATE }

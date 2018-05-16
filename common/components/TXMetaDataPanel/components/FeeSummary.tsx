@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
 import classNames from 'classnames';
 import { getNetworkConfig, getOffline } from 'redux/config';
-import { getIsEstimating } from 'selectors/gas';
+import { getIsEstimating } from 'redux/gas';
 import { getGasLimit } from 'redux/transaction';
 import { UnitDisplay, Spinner } from 'components/ui';
 import { NetworkConfig } from 'types/network';

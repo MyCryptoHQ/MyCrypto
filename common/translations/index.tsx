@@ -1,6 +1,6 @@
 import TranslateMarkdown from 'components/Translate';
 import React from 'react';
-import { State as ConfigState } from 'reducers/config';
+import { State as ConfigState } from 'redux/config';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 const fallbackLanguage = 'en';
 const repository: {

@@ -6,7 +6,7 @@ import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
 import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
-import { config } from 'reducers/config';
+import config from 'redux/config';
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -4,7 +4,7 @@ import 'url-search-params-polyfill';
 import RPCNode from 'libs/nodes/rpc';
 import RpcNodeTestConfig from './RpcNodeTestConfig';
 import { StaticNodeConfig } from 'types/node';
-import { staticNodesExpectedState } from '../reducers/config/nodes/staticNodes.spec';
+import { staticNodesExpectedState } from 'redux/config/reducers.spec';
 
 const v = new Validator();
 

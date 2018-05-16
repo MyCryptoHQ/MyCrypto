@@ -45,7 +45,7 @@ import {
   signTransactionWrapper,
   getWalletAndTransaction,
   handleFailedTransaction,
-  getFrom
+  getFromSaga
 } from './helpers';
 
 configuredStore.getState();
@@ -277,7 +277,7 @@ describe('transaction: Helpers', () => {
 
       it('should call getFrom', () => {
         gens.clone = gens.gen.clone();
-        expect(gens.gen.next(IWalletAndTx).value).toEqual(call(getFrom));
+        expect(gens.gen.next(IWalletAndTx).value).toEqual(call(getFromSaga));
       });
 
       it('should call func with IWalletAndTx', () => {
@@ -365,7 +365,7 @@ describe('transaction: Helpers', () => {
       };
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(getFrom)();
+      gens.gen = cloneableGenerator(getFromSaga)();
 
       it('should put getFromRequested', () => {
         expect(gens.gen.next().value).toEqual(put(getFromRequested()));

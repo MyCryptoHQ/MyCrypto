@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { OnlyUnlocked } from 'components/renderCbs';
-import { isAnyOfflineWithWeb3 } from 'selectors/derived';
+import { isAnyOfflineWithWeb3 } from 'redux/derivedSelectors';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
 
