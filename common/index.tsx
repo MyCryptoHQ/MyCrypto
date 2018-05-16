@@ -5,9 +5,10 @@ import 'babel-polyfill';
 import 'whatwg-fetch';
 import React from 'react';
 import { render } from 'react-dom';
+
 import Root from './Root';
-import { configuredStore } from './store';
-import consoleAdvertisement from './utils/consoleAdvertisement';
+import consoleAdvertisement from 'utils/consoleAdvertisement';
+import { configuredStore } from 'redux/store';
 
 const appEl = document.getElementById('app');
 
