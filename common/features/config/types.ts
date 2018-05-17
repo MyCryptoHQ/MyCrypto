@@ -1,11 +1,6 @@
 import { InsecureWalletName, SecureWalletName } from 'config';
-import { StaticNodeConfigs, CustomNodeConfig, StaticNodeConfig } from 'types/node';
-import {
-  StaticNetworkIds,
-  StaticNetworkConfig,
-  CustomNetworkConfig,
-  DPathFormats
-} from 'types/network';
+import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
+import { CustomNetworkConfig, DPathFormats } from 'types/network';
 
 export enum TypeKeys {
   CONFIG_LANGUAGE_CHANGE = 'CONFIG_LANGUAGE_CHANGE',
@@ -109,6 +104,8 @@ export type CustomNetworkAction = AddCustomNetworkAction | RemoveCustomNetworkAc
 
 export type CustomNodeAction = AddCustomNodeAction | RemoveCustomNodeAction;
 
+export type ConfigAction = CustomNetworkAction | CustomNodeAction | NodeAction | MetaAction;
+
 export type NodeAction =
   | ChangeNodeAction
   | ChangeNodeIntentAction
@@ -122,37 +119,6 @@ export type MetaAction =
   | ToggleAutoGasLimitAction
   | PollOfflineStatus
   | SetLatestBlockAction;
-
-export type ConfigAction = CustomNetworkAction | CustomNodeAction | NodeAction | MetaAction;
-
-// Moving state types into their own file resolves an annoying webpack bug
-// https://github.com/angular/angular-cli/issues/2034
-export type StaticNetworksState = { [key in StaticNetworkIds]: StaticNetworkConfig };
-
-// TODO: this doesn't accurately represent custom networks state
-export interface CustomNetworksState {
-  [customNetworkId: string]: CustomNetworkConfig;
-}
-
-export interface CustomNodesState {
-  [customNodeId: string]: CustomNodeConfig;
-}
-
-interface NodeLoaded {
-  pending: false;
-  prevNode: string;
-  nodeId: string;
-}
-
-interface NodeChangePending {
-  pending: true;
-  prevNode: string;
-  nodeId: string;
-}
-
-export type SelectedNodeState = NodeLoaded | NodeChangePending;
-
-export type StaticNodesState = StaticNodeConfigs;
 
 export type PathType = keyof DPathFormats;
 

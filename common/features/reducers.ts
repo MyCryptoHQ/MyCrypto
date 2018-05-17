@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import config, { State as ConfigState } from './config/reducers';
+import config, { State as ConfigState } from './config/derivedReducers';
 import notifications, { State as NotificationsState } from './notifications/reducers';
 import onboardStatus, { State as OnboardStatusState } from './onboardStatus/reducers';
 import ens, { State as EnsState } from './ens/reducers';
