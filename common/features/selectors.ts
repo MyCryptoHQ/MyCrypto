@@ -1,5 +1,6 @@
-import { stripWeb3Network, shepherdProvider, INode } from 'libs/nodes';
+import { stripWeb3Network } from 'libs/nodes';
 import { StaticNodeId } from 'types/node';
+import { StaticNetworkIds } from 'types/network';
 import { AppState } from 'features/reducers';
 
 export const getConfig = (state: AppState) => state.config;
