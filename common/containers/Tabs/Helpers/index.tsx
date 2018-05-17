@@ -1,6 +1,7 @@
 import ConvertUnits from './components/ConvertUnits';
 import ConvertHex from './components/ConvertHex';
 import ConvertSHA3 from './components/ConvertSHA3';
+import UnitReference from './components/UnitReference';
 
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
@@ -20,6 +21,10 @@ const tabs = [
   {
     path: 'convert-sha3',
     name: 'Convert To SHA3'
+  },
+  {
+    path: 'unit-reference',
+    name: 'Ether Unit Reference Guide'
   }
 ];
 
@@ -44,6 +49,11 @@ export default class Helpers extends Component<RouteComponentProps<{}>> {
               <Route exact={true} path={`${currentPath}/convert-units`} component={ConvertUnits} />
               <Route exact={true} path={`${currentPath}/convert-hex`} component={ConvertHex} />
               <Route exact={true} path={`${currentPath}/convert-sha3`} component={ConvertSHA3} />
+              <Route
+                exact={true}
+                path={`${currentPath}/unit-reference`}
+                component={UnitReference}
+              />
               <RouteNotFound />
             </Switch>
           </div>
