@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate from 'translations';
 import Stepper from 'react-stepper-horizontal';
-import { showNotification, TShowNotification } from 'redux/notifications';
+
+import translate from 'translations';
 import { AppState } from 'redux/reducers';
-import Modal, { IButton } from 'components/ui/Modal';
-import './index.scss';
+import { showNotification, TShowNotification } from 'redux/notifications/actions';
 import {
   startOnboardSession,
   TStartOnboardSession,
@@ -15,7 +14,8 @@ import {
   TIncrementSlide,
   resumeSlide,
   TResumeSlide
-} from 'redux/onboardStatus';
+} from 'redux/onboardStatus/actions';
+import Modal, { IButton } from 'components/ui/Modal';
 import {
   WelcomeSlide,
   NotABankSlide,
@@ -28,6 +28,7 @@ import {
   SecureSlideThree,
   FinalSlide
 } from './components';
+import './index.scss';
 
 const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
 const NUMBER_OF_SLIDES = 10;

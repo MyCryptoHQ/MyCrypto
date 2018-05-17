@@ -1,10 +1,11 @@
 import React from 'react';
 import { toChecksumAddress } from 'ethereumjs-util';
+
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
-import { print } from 'components/PrintableWallet';
-import { QRCode } from 'components/ui';
 import { GenerateKeystoreModal, TogglablePassword, AddressField } from 'components';
+import { QRCode } from 'components/ui';
+import { print } from 'components/PrintableWallet';
 import './WalletInfo.scss';
 
 interface Props {

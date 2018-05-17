@@ -1,30 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+import BN from 'bn.js';
+
 import translate from 'translations';
 import { IWallet } from 'libs/wallet';
-import { QRCode, CodeBlock } from 'components/ui';
+import { validPositiveNumber, validDecimal } from 'libs/validators';
+import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
+import { AppState } from 'redux/reducers';
+import {
+  getNetworkConfig,
+  getSelectedTokenContractAddress,
+  isNetworkUnit
+} from 'redux/config/selectors';
+import { SetGasLimitFieldAction } from 'redux/transaction/types';
+import {
+  resetTransactionRequested,
+  TResetTransactionRequested,
+  setCurrentTo,
+  TSetCurrentTo
+} from 'redux/transaction/actions';
 import {
   getCurrentTo,
   getCurrentValue,
   ICurrentTo,
   ICurrentValue,
-  resetTransactionRequested,
-  TResetTransactionRequested,
-  setCurrentTo,
-  TSetCurrentTo,
   getGasLimit,
-  SetGasLimitFieldAction,
   getUnit,
   getDecimal
-} from 'redux/transaction';
-import BN from 'bn.js';
-import { validPositiveNumber, validDecimal } from 'libs/validators';
+} from 'redux/transaction/selectors';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
-import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
-import { getNetworkConfig, getSelectedTokenContractAddress, isNetworkUnit } from 'redux/config';
-import './RequestPayment.scss';
+import { QRCode, CodeBlock } from 'components/ui';
 import { NetworkConfig } from 'types/network';
+import './RequestPayment.scss';
 
 interface OwnProps {
   wallet: AppState['wallet']['inst'];

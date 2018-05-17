@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import {
-  setScheduleType,
-  TSetScheduleType,
-  getCurrentScheduleType,
-  ICurrentScheduleType
-} from 'redux/schedule';
 import { connect } from 'react-redux';
+
 import translate from 'translations';
 import { AppState } from 'redux/reducers';
+import { setScheduleType, TSetScheduleType } from 'redux/schedule/actions';
+import { getCurrentScheduleType, ICurrentScheduleType } from 'redux/schedule';
 
 interface DispatchProps {
   setScheduleType: TSetScheduleType;

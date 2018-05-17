@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BetaAgreement, Footer, Header } from 'components';
+
 import { AppState } from 'redux/reducers';
+import { getOffline, getLatestBlock } from 'redux/config/selectors';
+import { BetaAgreement, Footer, Header } from 'components';
+import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
-import { getOffline, getLatestBlock } from 'redux/config';
-import { Query } from 'components/renderCbs';
 import './WebTemplate.scss';
 
 interface StateProps {

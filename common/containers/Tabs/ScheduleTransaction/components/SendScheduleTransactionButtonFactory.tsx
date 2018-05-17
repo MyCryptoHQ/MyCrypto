@@ -1,6 +1,8 @@
-import { getWalletType } from 'redux/wallet';
 import { connect } from 'react-redux';
+
 import { AppState } from 'redux/reducers';
+import { getWalletType } from 'redux/wallet/selectors';
+import { getSchedulingTransaction } from 'redux/schedule/selectors';
 import {
   getSerializedTransaction,
   isNetworkRequestPending,
@@ -8,9 +10,8 @@ import {
   isValidGasLimit,
   getSignedTx,
   getWeb3Tx
-} from 'redux/transaction';
+} from 'redux/transaction/selectors';
 import { SendButtonFactoryClass } from 'components/SendButtonFactory';
-import { getSchedulingTransaction } from 'redux/schedule';
 
 const mapStateToProps = (state: AppState) => {
   return {

@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import translate, { translateRaw } from 'translations';
-import { getRecentWalletTransactions } from 'redux/transactions';
-import { getNetworkConfig } from 'redux/config';
-import RecentTransaction from './RecentTransaction';
-import { TransactionStatus } from 'components';
-import { IWallet } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
+import { IWallet } from 'libs/wallet';
 import { AppState } from 'redux/reducers';
+import { getNetworkConfig } from 'redux/config/selectors';
+import { getRecentWalletTransactions } from 'redux/transactions/selectors';
+import { TransactionStatus } from 'components';
+import RecentTransaction from './RecentTransaction';
 import './RecentTransactions.scss';
 
 interface OwnProps {

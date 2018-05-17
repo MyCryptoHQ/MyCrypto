@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import DateTime from 'react-datetime';
+import moment from 'moment';
+
+import { AppState } from 'redux/reducers';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import translate from 'translations';
+import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'redux/schedule/actions';
 import {
-  setCurrentScheduleTimestamp,
-  TSetCurrentScheduleTimestamp,
   getCurrentScheduleTimestamp,
   ICurrentScheduleTimestamp,
   isValidCurrentScheduleTimestamp
-} from 'redux/schedule';
-import { connect } from 'react-redux';
-import translate from 'translations';
-import { AppState } from 'redux/reducers';
-import DateTime from 'react-datetime';
-import moment from 'moment';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+} from 'redux/schedule/selectors';
 
 interface DispatchProps {
   setCurrentScheduleTimestamp: TSetCurrentScheduleTimestamp;

@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+
 import { NameState } from 'libs/ens';
+import { AppState } from 'redux/reducers';
+import { Spinner } from 'components/ui';
 import {
   NameOwned,
   NameAuction,
@@ -10,7 +12,6 @@ import {
   NameOpen,
   NameReveal
 } from './components';
-import { Spinner } from 'components/ui';
 import './NameResolve.scss';
 
 type Props = AppState['ens'];

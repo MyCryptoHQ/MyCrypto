@@ -1,3 +1,10 @@
+import React, { Component } from 'react';
+import { Switch, Route, RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+import { merge } from 'lodash';
+
+import { AppState } from 'redux/reducers';
+import { getOffline } from 'redux/config/selectors';
 import {
   showNotification as dShowNotification,
   TShowNotification
@@ -41,20 +48,14 @@ import {
   TChangeSwapProvider,
   TStopLoadShapeshiftRatesSwap
 } from 'redux/swap/actions';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+import TabSection from 'containers/TabSection';
+import { RouteNotFound } from 'components/RouteNotFound';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
 import SupportFooter from './components/SupportFooter';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
-import TabSection from 'containers/TabSection';
-import { merge } from 'lodash';
-import { RouteNotFound } from 'components/RouteNotFound';
-import { Switch, Route, RouteComponentProps } from 'react-router';
-import { getOffline } from 'redux/config/selectors';
 
 interface ReduxStateProps {
   step: number;

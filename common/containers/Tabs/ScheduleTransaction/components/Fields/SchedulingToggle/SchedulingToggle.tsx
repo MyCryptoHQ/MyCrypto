@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import {
-  setSchedulingToggle,
-  TSetSchedulingToggle,
-  getCurrentSchedulingToggle,
-  ICurrentSchedulingToggle
-} from 'redux/schedule';
 import { connect } from 'react-redux';
+
 import translate from 'translations';
 import { AppState } from 'redux/reducers';
+import { setSchedulingToggle, TSetSchedulingToggle } from 'redux/schedule/actions';
+import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'redux/schedule';
 import { Toggle } from 'components/ui';
 
 interface DispatchProps {

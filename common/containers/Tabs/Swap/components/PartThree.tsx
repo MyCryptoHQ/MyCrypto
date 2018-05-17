@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+
 import { TShowNotification } from 'redux/notifications/actions';
 import { SwapInput } from 'redux/swap/types';
 import {

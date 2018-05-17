@@ -1,16 +1,13 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { AppState } from 'redux/reducers';
-import {
-  setScheduleDepositField,
-  TSetScheduleDepositField,
-  getScheduleDeposit,
-  isValidScheduleDeposit
-} from 'redux/schedule';
+import { connect } from 'react-redux';
+
 import { translateRaw } from 'translations';
-import { Input, Tooltip } from 'components/ui';
-import { getDecimal } from 'redux/transaction';
 import { toWei } from 'libs/units';
+import { AppState } from 'redux/reducers';
+import { setScheduleDepositField, TSetScheduleDepositField } from 'redux/schedule/actions';
+import { getScheduleDeposit, isValidScheduleDeposit } from 'redux/schedule/selectors';
+import { getDecimal } from 'redux/transaction/selectors';
+import { Input, Tooltip } from 'components/ui';
 import Help from 'components/ui/Help';
 
 interface OwnProps {

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { Wei, TokenValue } from 'libs/units';
+import { AppState } from 'redux/reducers';
+import { resetWallet, TResetWallet } from 'redux/wallet/actions';
+import { getCurrentBalance } from 'redux/wallet/selectors';
+import { getUnit } from 'redux/transaction/selectors';
+import { SendButton, TXMetaDataPanel } from 'components';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { SendButton, TXMetaDataPanel } from 'components';
-import { resetWallet, TResetWallet, getCurrentBalance } from 'redux/wallet';
-import translate from 'translations';
-import { getUnit } from 'redux/transaction';
 import Spinner from 'components/ui/Spinner';
-import { Wei, TokenValue } from 'libs/units';
 import { Input } from 'components/ui';
 
 interface StateProps {

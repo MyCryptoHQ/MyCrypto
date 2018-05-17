@@ -1,8 +1,9 @@
 import React from 'react';
-import './SupportFooter.scss';
+
+import translate from 'translations';
 import { SwapInput, NormalizedBityRates, NormalizedShapeshiftRates } from 'redux/swap/types';
 import { TextArea } from 'components/ui';
-import translate from 'translations';
+import './SupportFooter.scss';
 
 interface Props {
   origin: SwapInput;

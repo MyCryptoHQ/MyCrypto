@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
+import { Switch, Route, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import TabSection from 'containers/TabSection';
+import { toBuffer, bufferToHex } from 'ethereumjs-util';
+import EthTx from 'ethereumjs-tx';
+
 import translate from 'translations';
+import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
+import { AppState } from 'redux/reducers';
 import {
   signLocalTransactionSucceeded,
   TSignLocalTransactionSucceeded,
   signTransactionFailed,
-  TSignTransactionFailed,
-  getSerializedTransaction
-} from 'redux/transaction';
-import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
+  TSignTransactionFailed
+} from 'redux/transaction/actions';
+import { getSerializedTransaction } from 'redux/transaction/selectors';
 import { QRCode, Input, CodeBlock } from 'components/ui';
-import EthTx from 'ethereumjs-tx';
 import { SendButton } from 'components/SendButton';
-import { toBuffer, bufferToHex } from 'ethereumjs-util';
-import { AppState } from 'redux/reducers';
 import './index.scss';
-import { Switch, Route, RouteComponentProps } from 'react-router';
+
+import TabSection from 'containers/TabSection';
 import { RouteNotFound } from 'components/RouteNotFound';
 
 interface StateProps {

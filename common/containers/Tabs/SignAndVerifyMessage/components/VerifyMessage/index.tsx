@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import translate from 'translations';
-import { showNotification, TShowNotification } from 'redux/notifications';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
-import './index.scss';
+import { showNotification, TShowNotification } from 'redux/notifications/actions';
 import { TextArea } from 'components/ui';
+import './index.scss';
 
 interface Props {
   showNotification: TShowNotification;

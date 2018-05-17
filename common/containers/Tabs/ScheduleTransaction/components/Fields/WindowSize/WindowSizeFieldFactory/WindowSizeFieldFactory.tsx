@@ -1,16 +1,16 @@
-import { Query } from 'components/renderCbs';
+import React from 'react';
+import { connect } from 'react-redux';
+
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import { AppState } from 'redux/reducers';
+import { setCurrentWindowSize, TSetCurrentWindowSize } from 'redux/schedule/actions';
 import {
-  setCurrentWindowSize,
-  TSetCurrentWindowSize,
   ICurrentWindowSize,
   ICurrentScheduleType,
   getCurrentScheduleType
-} from 'redux/schedule';
+} from 'redux/schedule/selectors';
+import { Query } from 'components/renderCbs';
 import { WindowSizeInputFactory } from './WindowSizeInputFactory';
-import React from 'react';
-import { connect } from 'react-redux';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { AppState } from 'redux/reducers';
 
 interface DispatchProps {
   setCurrentWindowSize: TSetCurrentWindowSize;

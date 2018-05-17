@@ -1,7 +1,8 @@
-import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import React from 'react';
 import classnames from 'classnames';
+
 import { Input } from 'components/ui';
+import { AmountFieldFactory } from 'components/AmountFieldFactory';
 
 export const AmountField: React.SFC = () => (
   <div className="input-group-wrapper InteractExplorer-field">

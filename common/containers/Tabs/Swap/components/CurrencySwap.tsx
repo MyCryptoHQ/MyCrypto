@@ -1,3 +1,9 @@
+import React, { PureComponent } from 'react';
+import { merge, debounce } from 'lodash';
+
+import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
+import translate, { translateRaw } from 'translations';
+import { combineAndUpper } from 'utils/formatters';
 import {
   ProviderName,
   NormalizedBityRates,
@@ -7,13 +13,8 @@ import {
 } from 'redux/swap/types';
 import { TChangeStepSwap, TInitSwap, TChangeSwapProvider } from 'redux/swap/actions';
 import SimpleButton from 'components/ui/SimpleButton';
-import { generateKindMax, generateKindMin, WhitelistedCoins, bityConfig } from 'config/bity';
-import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
-import { combineAndUpper } from 'utils/formatters';
 import { SwapDropdown, Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { merge, debounce } from 'lodash';
 import './CurrencySwap.scss';
 
 export interface StateProps {

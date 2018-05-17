@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { OnlyUnlocked } from 'components/renderCbs';
-import { isAnyOfflineWithWeb3 } from 'redux/derivedSelectors';
 import { connect } from 'react-redux';
+
 import { AppState } from 'redux/reducers';
+import { isAnyOfflineWithWeb3 } from 'redux/derivedSelectors';
+import { OnlyUnlocked } from 'components/renderCbs';
 
 interface StateProps {
   shouldDisplay: boolean;

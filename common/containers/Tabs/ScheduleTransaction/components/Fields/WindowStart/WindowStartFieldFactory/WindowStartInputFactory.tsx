@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Query } from 'components/renderCbs';
+import { connect } from 'react-redux';
+
+import { AppState } from 'redux/reducers';
 import {
   getCurrentWindowStart,
   ICurrentWindowStart,
   isValidCurrentWindowStart
-} from 'redux/schedule';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { getResolvingDomain } from 'redux/ens';
+} from 'redux/schedule/selectors';
+import { getResolvingDomain } from 'redux/ens/selectors';
+import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowStartFieldFactory';
 
 interface StateProps {

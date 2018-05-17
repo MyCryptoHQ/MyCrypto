@@ -1,11 +1,12 @@
 import React from 'react';
 import { generateMnemonic } from 'bip39';
-import translate from 'translations';
 import shuffle from 'lodash/shuffle';
-import Word from './Word';
+
+import translate from 'translations';
+import { WalletType } from '../../GenerateWallet';
 import FinalSteps from '../FinalSteps';
 import Template from '../Template';
-import { WalletType } from '../../GenerateWallet';
+import Word from './Word';
 import './Mnemonic.scss';
 
 interface State {

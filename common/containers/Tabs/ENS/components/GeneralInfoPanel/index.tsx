@@ -1,8 +1,9 @@
 import React from 'react';
-import GeneralInfoNode from './GeneralInfoNode';
+
 import { HELP_ARTICLE } from 'config';
-import { InfoNode } from './types';
 import { NewTabLink, HelpLink } from 'components/ui';
+import GeneralInfoNode from './GeneralInfoNode';
+import { InfoNode } from './types';
 
 const generalInfoNodes: InfoNode[] = [
   {

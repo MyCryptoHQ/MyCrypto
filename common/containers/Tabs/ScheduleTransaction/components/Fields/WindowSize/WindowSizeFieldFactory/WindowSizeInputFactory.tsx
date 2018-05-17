@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { Query } from 'components/renderCbs';
+import { connect } from 'react-redux';
+
+import { AppState } from 'redux/reducers';
 import {
   getCurrentWindowSize,
   ICurrentWindowSize,
   isValidCurrentWindowSize,
   getCurrentScheduleType,
   ICurrentScheduleType
-} from 'redux/schedule';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { getResolvingDomain } from 'redux/ens';
+} from 'redux/schedule/selectors';
+import { getResolvingDomain } from 'redux/ens/selectors';
+import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowSizeFieldFactory';
 
 interface StateProps {

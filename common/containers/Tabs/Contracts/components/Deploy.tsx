@@ -1,17 +1,18 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import translate from 'translations';
 import classnames from 'classnames';
+import { setToField, TSetToField } from 'redux/transaction/actions';
+import { resetWallet, TResetWallet } from 'redux/wallet/actions';
+import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
+import { FullWalletOnly } from 'components/renderCbs';
+import { TextArea } from 'components/ui';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-import React, { Component } from 'react';
-import { setToField, TSetToField } from 'redux/transaction';
-import { resetWallet, TResetWallet } from 'redux/wallet';
-import { connect } from 'react-redux';
-import { FullWalletOnly } from 'components/renderCbs';
-import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
-import './Deploy.scss';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import { TextArea } from 'components/ui';
+import './Deploy.scss';
 
 interface DispatchProps {
   setToField: TSetToField;

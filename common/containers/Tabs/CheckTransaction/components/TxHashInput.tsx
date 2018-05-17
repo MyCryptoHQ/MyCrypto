@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import moment from 'moment';
+
 import translate from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
-import { getRecentNetworkTransactions } from 'redux/transactions';
 import { AppState } from 'redux/reducers';
+import { getRecentNetworkTransactions } from 'redux/transactions/selectors';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
 

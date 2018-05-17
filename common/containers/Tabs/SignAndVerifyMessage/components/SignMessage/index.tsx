@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
+
 import translate, { translateRaw } from 'translations';
-import { signMessageRequested, TSignMessageRequested } from 'redux/message';
-import { resetWallet, TResetWallet, isWalletFullyUnlocked } from 'redux/wallet';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { AppState } from 'redux/reducers';
+import { signMessageRequested, TSignMessageRequested } from 'redux/message/actions';
+import { resetWallet, TResetWallet } from 'redux/wallet/actions';
+import { isWalletFullyUnlocked } from 'redux/wallet/selectors';
+import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
+import { TextArea, CodeBlock } from 'components/ui';
 import SignButton from './SignButton';
 import './index.scss';
-import { TextArea, CodeBlock } from 'components/ui';
 
 interface Props {
   wallet: IFullWallet;

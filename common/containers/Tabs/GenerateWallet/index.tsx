@@ -1,2 +1,1 @@
-import GenerateWallet from './GenerateWallet';
-export default GenerateWallet;
+export { default } from './GenerateWallet';

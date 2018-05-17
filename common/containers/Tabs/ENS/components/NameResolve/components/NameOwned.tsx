@@ -1,7 +1,9 @@
 import React from 'react';
+
+import translate from 'translations';
 import { IOwnedDomainRequest } from 'libs/ens';
 import { NewTabLink, Address } from 'components/ui';
-import translate from 'translations';
+
 const lookupLink = (name: string) => `https://etherscan.io/enslookup?q=${name}`;
 
 type ChildrenProps = any;

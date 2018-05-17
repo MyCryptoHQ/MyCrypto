@@ -1,4 +1,9 @@
 import React, { PureComponent } from 'react';
+
+import { donationAddressMap } from 'config';
+import translate, { translateRaw } from 'translations';
+import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
+import { combineAndUpper } from 'utils/formatters';
 import { SwapInput } from 'redux/swap/types';
 import {
   TBityOrderCreateRequestedSwap,
@@ -7,11 +12,7 @@ import {
   TShapeshiftOrderCreateRequestedSwap,
   TStopLoadBityRatesSwap
 } from 'redux/swap/actions';
-import { donationAddressMap } from 'config';
-import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
-import { combineAndUpper } from 'utils/formatters';
 import SimpleButton from 'components/ui/SimpleButton';
-import translate, { translateRaw } from 'translations';
 import { Input } from 'components/ui';
 import './ReceivingAddress.scss';
 

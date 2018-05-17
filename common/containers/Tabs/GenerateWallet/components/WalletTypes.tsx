@@ -1,10 +1,11 @@
 import React from 'react';
-import translate, { translateRaw } from 'translations';
-import { WalletType } from '../GenerateWallet';
 import { Link } from 'react-router-dom';
-import './WalletTypes.scss';
-import { HelpLink } from 'components/ui';
+
 import { HELP_ARTICLE, ledgerReferralURL, trezorReferralURL } from 'config';
+import translate, { translateRaw } from 'translations';
+import { HelpLink } from 'components/ui';
+import { WalletType } from '../GenerateWallet';
+import './WalletTypes.scss';
 
 const WalletTypes: React.SFC<{}> = () => {
   const typeInfo = {

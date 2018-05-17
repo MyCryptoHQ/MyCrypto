@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { AppState } from 'redux/reducers';
-import Notifications from './Notifications';
-import OfflineTab from './OfflineTab';
-import { getOffline } from 'redux/config';
+import { getOffline } from 'redux/config/selectors';
 import { ElectronNav, AppAlphaNotice } from 'components';
+import OfflineTab from './OfflineTab';
+import Notifications from './Notifications';
 import './ElectronTemplate.scss';
 
 interface StateProps {

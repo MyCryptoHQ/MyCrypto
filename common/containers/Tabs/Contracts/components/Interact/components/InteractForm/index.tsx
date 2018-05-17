@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations';
-import { getNetworkContracts } from 'redux/config';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import classnames from 'classnames';
-import { NetworkContract } from 'types/network';
+import { addHexPrefix } from 'ethereumjs-util';
+
 import { donationAddressMap } from 'config';
+import translate, { translateRaw } from 'translations';
+import { NetworkContract } from 'types/network';
+import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
+import { AppState } from 'redux/reducers';
+import { getNetworkContracts } from 'redux/config/selectors';
+import { setCurrentTo, TSetCurrentTo } from 'redux/transaction/actions';
+import { getCurrentTo } from 'redux/transaction/selectors';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import { getCurrentTo, setCurrentTo, TSetCurrentTo } from 'redux/transaction';
-import { addHexPrefix } from 'ethereumjs-util';
 
 interface ContractOption {
   name: string;

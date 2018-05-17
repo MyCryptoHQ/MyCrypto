@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import translate from 'translations';
+import { AppState } from 'redux/reducers';
+import { getScheduleParamsValidity } from 'redux/schedule/selectors';
+import { SendScheduleTransactionButtonFactory } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButtonFactory';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { SigningStatus } from 'components';
-import { SendScheduleTransactionButtonFactory } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButtonFactory';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { getScheduleParamsValidity } from 'redux/schedule';
 
 interface Props {
   className?: string;

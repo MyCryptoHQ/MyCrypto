@@ -1,19 +1,19 @@
+import React, { Component } from 'react';
+import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+
 import translate from 'translations';
-import { Interact } from './components/Interact';
-import { Deploy } from './components/Deploy';
 import {
   setAsContractInteraction,
   TSetAsContractInteraction,
   setAsViewAndSend,
   TSetAsViewAndSend
-} from 'redux/transaction';
-
+} from 'redux/transaction/actions';
 import TabSection from 'containers/TabSection';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
+import { Interact } from './components/Interact';
+import { Deploy } from './components/Deploy';
 
 interface DispatchProps {
   setAsContractInteraction: TSetAsContractInteraction;

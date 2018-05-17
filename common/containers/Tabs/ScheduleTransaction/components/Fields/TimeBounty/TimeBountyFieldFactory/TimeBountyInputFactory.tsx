@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { Query } from 'components/renderCbs';
-import { getCurrentTimeBounty, ICurrentTimeBounty, isValidCurrentTimeBounty } from 'redux/schedule';
 import { connect } from 'react-redux';
+
+import { Query } from 'components/renderCbs';
 import { AppState } from 'redux/reducers';
+import {
+  getCurrentTimeBounty,
+  ICurrentTimeBounty,
+  isValidCurrentTimeBounty
+} from 'redux/schedule/selectors';
 import { CallbackProps } from 'containers/Tabs/ScheduleTransaction/components/Fields/TimeBounty/TimeBountyFieldFactory';
 
 interface StateProps {

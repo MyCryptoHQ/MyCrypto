@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-import {
-  setScheduleTimezone,
-  TSetScheduleTimezone,
-  getCurrentScheduleTimezone,
-  ICurrentScheduleTimezone
-} from 'redux/schedule';
-import { AppState } from 'redux/reducers';
-import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
 import { Option } from 'react-select';
-import { Dropdown } from 'components/ui';
 import moment from 'moment';
 import 'moment-timezone';
+
 import translate from 'translations';
+import { setScheduleTimezone, TSetScheduleTimezone } from 'redux/schedule/actions';
+import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'redux/schedule/selectors';
+import { AppState } from 'redux/reducers';
+import { Query } from 'components/renderCbs';
+import { Dropdown } from 'components/ui';
 
 interface DispatchProps {
   setScheduleTimezone: TSetScheduleTimezone;

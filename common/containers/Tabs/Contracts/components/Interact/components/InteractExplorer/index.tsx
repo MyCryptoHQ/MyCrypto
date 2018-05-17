@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import translate from 'translations';
-import './InteractExplorer.scss';
-import { TShowNotification, showNotification } from 'redux/notifications';
-import { getNodeLib } from 'redux/config';
-import { getTo, getDataExists, setDataField, TSetDataField } from 'redux/transaction';
-import { GenerateTransaction } from 'components/GenerateTransaction';
-import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
-import { Fields } from './components';
-import { Data } from 'libs/units';
-import { Input, Dropdown } from 'components/ui';
-import { INode } from 'libs/nodes';
 import { bufferToHex } from 'ethereumjs-util';
+
+import translate from 'translations';
+import { Data } from 'libs/units';
+import { INode } from 'libs/nodes';
+import { AppState } from 'redux/reducers';
+import { getNodeLib } from 'redux/config/selectors';
+import { TShowNotification, showNotification } from 'redux/notifications/actions';
+import { setDataField, TSetDataField } from 'redux/transaction/actions';
+import { getTo, getDataExists } from 'redux/transaction/selectors';
+import { GenerateTransaction } from 'components/GenerateTransaction';
+import { Input, Dropdown } from 'components/ui';
+import { Fields } from './components';
+import './InteractExplorer.scss';
 
 interface StateProps {
   nodeLib: INode;

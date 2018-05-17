@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { resolveDomainRequested, TResolveDomainRequested } from 'redux/ens';
-import { isValidENSName } from 'libs/validators';
-import './NameInput.scss';
-import { Input } from 'components/ui';
+
 import translate from 'translations';
+import { isValidENSName } from 'libs/validators';
+import { AppState } from 'redux/reducers';
+import { resolveDomainRequested, TResolveDomainRequested } from 'redux/ens/actions';
+import { Input } from 'components/ui';
+import './NameInput.scss';
 
 interface State {
   domainToCheck: string;
