@@ -38,7 +38,7 @@ export default class UnitReference extends React.Component<State> {
                     </td>
                     <td>{unitNames[unitName]}</td>
                     <td>{(Units as any)[unitName]}</td>
-                    <td>{parseInt((Units as any)[unitName]).toLocaleString('en-US')}</td>
+                    <td>{parseInt((Units as any)[unitName], 10).toLocaleString('en-US')}</td>
                     <td>
                       10<sup>{getDecimalFromEtherUnit(unitName as UnitKey)}</sup>
                     </td>
