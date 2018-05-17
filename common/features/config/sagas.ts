@@ -33,7 +33,13 @@ import { AppState } from 'features/reducers';
 import { showNotification } from 'features/notifications/actions';
 import { TypeKeys as WalletTypeKeys, SetWalletAction } from 'features/wallet/types';
 import { resetWallet, setWallet } from 'features/wallet/actions';
-import { isStaticNodeId, getOffline } from '../selectors';
+import { getOffline } from './meta/selectors';
+import { getNetworkConfigById, getNetworkNameByChainId } from './networks/derivedSelectors';
+import { getCustomNetworkConfigs } from './networks/custom/selectors';
+import { getNodeConfig, getWeb3Node } from './nodes/derivedSelectors';
+import { getCustomNodeConfigs, getCustomNodeFromId } from './nodes/custom/selectors';
+import { isStaticNodeId } from './nodes/static/selectors';
+import { getNodeId, getPreviouslySelectedNode } from './nodes/selected/selectors';
 import {
   TypeKeys,
   AddCustomNodeAction,
@@ -52,18 +58,7 @@ import {
   web3SetNode,
   web3UnsetNode
 } from './actions';
-import {
-  getCustomNodeConfigs,
-  getCustomNetworkConfigs,
-  getNodeId,
-  getNodeConfig,
-  getCustomNodeFromId,
-  getStaticNodeFromId,
-  getNetworkConfigById,
-  getPreviouslySelectedNode,
-  getNetworkNameByChainId,
-  getWeb3Node
-} from './selectors';
+import { getStaticNodeFromId } from './derivedSelectors';
 
 //#region Network
 // If there are any orphaned custom networks, prune them

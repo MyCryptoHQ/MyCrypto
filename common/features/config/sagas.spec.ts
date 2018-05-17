@@ -9,7 +9,11 @@ import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 import { Web3Wallet } from 'libs/wallet';
 import { configuredStore } from 'features/store';
 import { showNotification } from 'features/notifications/actions';
-import { getOffline, isStaticNodeId } from '../selectors';
+import { getOffline } from './meta/selectors';
+import { getNodeConfig } from './nodes/derivedSelectors';
+import { getNodeId, getPreviouslySelectedNode } from './nodes/selected/selectors';
+import { getCustomNodeFromId } from './nodes/custom/selectors';
+import { isStaticNodeId } from './nodes/static/selectors';
 import { staticNodesExpectedState } from './nodes/static/reducers.spec';
 import { selectedNodeExpectedState } from './nodes/selected/reducers.spec';
 import { TypeKeys, ChangeNodeIntentOneTimeAction } from './types';
@@ -22,13 +26,7 @@ import {
   changeNodeIntent,
   changeNode
 } from './actions';
-import {
-  getNodeId,
-  getNodeConfig,
-  getStaticNodeFromId,
-  getCustomNodeFromId,
-  getPreviouslySelectedNode
-} from './selectors';
+import { getStaticNodeFromId } from './derivedSelectors';
 import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
