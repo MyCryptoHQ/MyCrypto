@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import './Details.scss';
-import { SerializedTransaction } from 'components/renderCbs';
-import { AppState } from 'redux/reducers';
-import { getNodeConfig } from 'redux/config';
 import { connect } from 'react-redux';
-import { NodeConfig } from 'types/node';
-import translate from 'translations';
-import { CodeBlock, Input } from 'components/ui';
 import { addHexPrefix } from 'ethereumjs-util';
+
+import translate from 'translations';
+import { NodeConfig } from 'types/node';
+import { CodeBlock, Input } from 'components/ui';
+import { AppState } from 'redux/reducers';
+import { getNodeConfig } from 'redux/config/selectors';
+import { SerializedTransaction } from 'components/renderCbs';
+import './Details.scss';
 
 interface StateProps {
   node: NodeConfig;

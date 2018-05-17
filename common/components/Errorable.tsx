@@ -1,6 +1,7 @@
-import { showNotification, TShowNotification } from 'redux/notifications';
-import { connect } from 'react-redux';
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { showNotification, TShowNotification } from 'redux/notifications/actions';
 
 interface DispatchProps {
   showNotification: TShowNotification;

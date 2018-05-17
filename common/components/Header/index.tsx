@@ -1,3 +1,15 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect, MapStateToProps } from 'react-redux';
+import classnames from 'classnames';
+
+import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+import translate from 'translations';
+import { getKeyByValue } from 'utils/helpers';
+import { NodeConfig } from 'types/node';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'redux/reducers';
+import { AddCustomNodeAction } from 'redux/config/types';
 import {
   TChangeLanguage,
   TChangeNodeIntent,
@@ -5,13 +17,14 @@ import {
   TAddCustomNode,
   TRemoveCustomNode,
   TAddCustomNetwork,
-  AddCustomNodeAction,
   changeLanguage,
   changeNodeIntent,
   changeNodeIntentOneTime,
   addCustomNode,
   removeCustomNode,
-  addCustomNetwork,
+  addCustomNetwork
+} from 'redux/config/actions';
+import {
   getOffline,
   isNodeChanging,
   getLanguageSelection,
@@ -22,24 +35,14 @@ import {
   getNodeOptions,
   getNetworkConfig,
   isStaticNodeId
-} from 'redux/config';
+} from 'redux/config/selectors';
+import { TSetGasPriceField, setGasPriceField } from 'redux/transaction/actions';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { OldDropDown, ColorDropdown } from 'components/ui';
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-import { TSetGasPriceField, setGasPriceField } from 'redux/transaction';
-import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+import CustomNodeModal from 'components/CustomNodeModal';
 import Navigation from './components/Navigation';
 import OnlineStatus from './components/OnlineStatus';
-import CustomNodeModal from 'components/CustomNodeModal';
-import { getKeyByValue } from 'utils/helpers';
-import { NodeConfig } from 'types/node';
 import './index.scss';
-import { AppState } from 'redux/reducers';
-import { NetworkConfig } from 'types/network';
-import { connect, MapStateToProps } from 'react-redux';
-import translate from 'translations';
 
 interface OwnProps {
   networkParam: string | null;

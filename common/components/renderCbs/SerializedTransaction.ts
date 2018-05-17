@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { getSerializedTransaction } from 'redux/transaction';
+
 import { makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
+import { AppState } from 'redux/reducers';
+import { getSerializedTransaction } from 'redux/transaction/selectors';
 
 interface StateProps {
   serializedTransaction: Buffer | null;

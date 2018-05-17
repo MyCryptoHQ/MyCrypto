@@ -1,8 +1,9 @@
 import React from 'react';
 import { toChecksumAddress } from 'ethereumjs-util';
-import NewTabLink from './NewTabLink';
-import { IWallet } from 'libs/wallet';
+
 import { BlockExplorerConfig } from 'types/network';
+import { IWallet } from 'libs/wallet';
+import NewTabLink from './NewTabLink';
 
 interface BaseProps {
   explorer?: BlockExplorerConfig | null;

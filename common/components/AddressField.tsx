@@ -1,9 +1,10 @@
 import React from 'react';
-import { AddressFieldFactory } from './AddressFieldFactory';
+import { toChecksumAddress } from 'ethereumjs-util';
+
 import { donationAddressMap } from 'config';
 import translate from 'translations';
 import { Input } from 'components/ui';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { AddressFieldFactory } from './AddressFieldFactory';
 
 interface Props {
   isReadOnly?: boolean;

@@ -1,21 +1,24 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import classnames from 'classnames';
-import { AppState } from 'redux/reducers';
+
 import translate, { translateRaw } from 'translations';
+import { AppState } from 'redux/reducers';
+import { ADDRESS_BOOK_TABLE_ID } from 'redux/addressBook/constants';
 import {
-  ADDRESS_BOOK_TABLE_ID,
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
-  TRemoveAddressLabelEntry,
+  TRemoveAddressLabelEntry
+} from 'redux/addressBook/actions';
+import {
   getAddressLabels,
   getLabelAddresses,
   getAddressLabelRows,
   getAddressBookTableEntry
-} from 'redux/addressBook';
+} from 'redux/addressBook/selectors';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';

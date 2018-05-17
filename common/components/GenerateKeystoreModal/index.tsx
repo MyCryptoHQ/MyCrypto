@@ -1,10 +1,11 @@
 import React from 'react';
-import { generateKeystoreFileInfo, KeystoreFile } from 'utils/keystore';
-import Modal from 'components/ui/Modal';
-import { TogglablePassword } from 'components';
-import translate, { translateRaw } from 'translations';
+
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
+import translate, { translateRaw } from 'translations';
+import { generateKeystoreFileInfo, KeystoreFile } from 'utils/keystore';
 import { isValidPrivKey } from 'libs/validators';
+import { TogglablePassword } from 'components';
+import Modal from 'components/ui/Modal';
 import './index.scss';
 
 interface Props {

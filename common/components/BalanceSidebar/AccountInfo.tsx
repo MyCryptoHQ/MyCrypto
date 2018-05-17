@@ -1,21 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { UnitDisplay, NewTabLink } from 'components/ui';
-import { IWallet, TrezorWallet, LedgerWallet } from 'libs/wallet';
-import translate from 'translations';
-import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig, getOffline } from 'redux/config';
-import { AppState } from 'redux/reducers';
-import {
-  getEtherBalance,
-  isEtherBalancePending,
-  TRefreshAccountBalance,
-  refreshAccountBalance
-} from 'redux/wallet';
+
 import { etherChainExplorerInst } from 'config/data';
-import './AccountInfo.scss';
+import translate from 'translations';
+import { IWallet, TrezorWallet, LedgerWallet } from 'libs/wallet';
+import { AppState } from 'redux/reducers';
+import { getNetworkConfig, getOffline } from 'redux/config/selectors';
+import { TRefreshAccountBalance, refreshAccountBalance } from 'redux/wallet/actions';
+import { getEtherBalance, isEtherBalancePending } from 'redux/wallet/selectors';
+import { UnitDisplay, NewTabLink } from 'components/ui';
+import Spinner from 'components/ui/Spinner';
 import AccountAddress from './AccountAddress';
+import './AccountInfo.scss';
 
 interface OwnProps {
   wallet: IWallet;

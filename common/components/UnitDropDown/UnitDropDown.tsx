@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { setUnitMeta, TSetUnitMeta, getUnit } from 'redux/transaction';
-import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'redux/wallet';
-import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { getNetworkUnit } from 'redux/config';
 import { Option } from 'react-select';
+
+import { AppState } from 'redux/reducers';
+import { setUnitMeta, TSetUnitMeta } from 'redux/transaction/actions';
+import { getUnit } from 'redux/transaction/selectors';
+import { getNetworkUnit } from 'redux/config/selectors';
+import {
+  TokenBalance,
+  MergedToken,
+  getShownTokenBalances,
+  getTokens
+} from 'redux/wallet/selectors';
+import { Query } from 'components/renderCbs';
 import { Dropdown } from 'components/ui';
 
 interface DispatchProps {

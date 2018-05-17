@@ -1,29 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { Token } from 'types/network';
 import { AppState } from 'redux/reducers';
 import {
   addCustomToken,
   removeCustomToken,
   TAddCustomToken,
   TRemoveCustomToken
-} from 'redux/customTokens';
+} from 'redux/customTokens/actions';
 import {
   scanWalletForTokens,
   TScanWalletForTokens,
   setWalletTokens,
   TSetWalletTokens,
   refreshTokenBalances,
-  TRefreshTokenBalances,
+  TRefreshTokenBalances
+} from 'redux/wallet/actions';
+import {
   getTokenBalances,
   getWalletInst,
   getWalletConfig,
   TokenBalance
-} from 'redux/wallet';
-import { getAllTokens, getOffline } from 'redux/config';
-import translate from 'translations';
-import Balances from './Balances';
+} from 'redux/wallet/selectors';
+import { getAllTokens, getOffline } from 'redux/config/selectors';
 import Spinner from 'components/ui/Spinner';
-import { Token } from 'types/network';
+import Balances from './Balances';
 import './index.scss';
 
 interface StateProps {

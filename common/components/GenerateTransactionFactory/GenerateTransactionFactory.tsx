@@ -1,7 +1,10 @@
-import { WithSigner } from './Container';
-import EthTx from 'ethereumjs-tx';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import EthTx from 'ethereumjs-tx';
+import { addHexPrefix } from 'ethereumjs-util';
+
+import translate from 'translations';
+import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { AppState } from 'redux/reducers';
 import {
   getTransaction,
@@ -10,13 +13,11 @@ import {
   isValidGasLimit,
   getSignedTx,
   getSerializedTransaction
-} from 'redux/transaction';
-import { getWalletType, IWalletType } from 'redux/wallet';
+} from 'redux/transaction/selectors';
+import { getWalletType, IWalletType } from 'redux/wallet/selectors';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
-import { getTransactionFields, makeTransaction } from 'libs/transaction';
-import translate from 'translations';
-import { addHexPrefix } from 'ethereumjs-util';
 import { CodeBlock } from 'components/ui';
+import { WithSigner } from './Container';
 
 export interface CallbackProps {
   disabled: boolean;

@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { AppState } from 'redux/reducers';
+import { getWalletInst } from 'redux/wallet/selectors';
+import EquivalentValues from './EquivalentValues';
 import AccountInfo from './AccountInfo';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import { AppState } from 'redux/reducers';
-import { getWalletInst } from 'redux/wallet';
-import { connect } from 'react-redux';
-import EquivalentValues from './EquivalentValues';
 
 interface Block {
   name: string;

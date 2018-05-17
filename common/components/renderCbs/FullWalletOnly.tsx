@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+
 import { IWallet, IFullWallet } from 'libs/wallet';
+import { AppState } from 'redux/reducers';
 
 interface Props {
   wallet: IWallet;

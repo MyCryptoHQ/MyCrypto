@@ -1,7 +1,8 @@
-import { GenerateTransactionFactory } from './GenerateTransactionFactory';
 import React from 'react';
+
 import translate from 'translations';
 import { SigningStatus } from 'components';
+import { GenerateTransactionFactory } from './GenerateTransactionFactory';
 import './GenerateTransaction.scss';
 
 export const GenerateTransaction: React.SFC<{}> = () => (

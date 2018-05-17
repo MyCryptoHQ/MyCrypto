@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
-import { getCurrentTo, ICurrentTo } from 'redux/transaction';
-import { getAllTokens } from 'redux/config';
-import { getWalletInst } from 'redux/wallet';
+
 import { getAddressMessage } from 'config';
-import { Address } from 'components/ui';
 import { Token } from 'types/network';
+import { AppState } from 'redux/reducers';
+import { getAllTokens } from 'redux/config/selectors';
+import { getCurrentTo, ICurrentTo } from 'redux/transaction/selectors';
+import { getWalletInst } from 'redux/wallet/selectors';
+import { Address } from 'components/ui';
 
 interface ReduxProps {
   currentTo: ICurrentTo;

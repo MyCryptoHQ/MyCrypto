@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { Query } from 'components/renderCbs';
-import { ICurrentValue, getCurrentValue, nonStandardTransaction } from 'redux/transaction';
-import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
+
+import { AppState } from 'redux/reducers';
+import {
+  ICurrentValue,
+  getCurrentValue,
+  nonStandardTransaction
+} from 'redux/transaction/selectors';
 import { CallbackProps } from 'components/AmountFieldFactory';
+import { Query } from 'components/renderCbs';
 
 interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;

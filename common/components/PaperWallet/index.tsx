@@ -1,9 +1,9 @@
-import { Identicon, QRCode } from 'components/ui';
 import React from 'react';
 
 import ethLogo from 'assets/images/logo-ethereum-1.png';
 import notesBg from 'assets/images/notes-bg.png';
 import sidebarImg from 'assets/images/print-sidebar.png';
+import { Identicon, QRCode } from 'components/ui';
 
 const walletWidth = 680;
 const walletHeight = 280;

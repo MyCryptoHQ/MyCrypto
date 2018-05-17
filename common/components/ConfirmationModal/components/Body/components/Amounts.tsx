@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { UnitDisplay } from 'components/ui';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { NetworkConfig } from 'types/network';
 import './Amounts.scss';
 import { AppState } from 'redux/reducers';
-import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'redux/rates';
-import { SerializedTxParams, getParamsFromSerializedTx } from 'redux/transaction';
-import { connect } from 'react-redux';
-import { getNetworkConfig } from 'redux/config';
-import { NetworkConfig } from 'types/network';
-import translate from 'translations';
+import { getNetworkConfig } from 'redux/config/selectors';
+import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'redux/rates/selectors';
+import { SerializedTxParams } from 'redux/transaction/types';
+import { getParamsFromSerializedTx } from 'redux/transaction/selectors';
+import { UnitDisplay } from 'components/ui';
 
 interface StateProps extends SerializedTxParams, AllUSDValues {
   network: NetworkConfig;

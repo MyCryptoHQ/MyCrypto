@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import DropdownShell from './DropdownShell';
+
 import removeIcon from 'assets/images/icon-remove.svg';
+import DropdownShell from './DropdownShell';
 import './ColorDropdown.scss';
 
 interface Option<T> {

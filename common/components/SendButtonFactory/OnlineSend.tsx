@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import { getOffline } from 'redux/config';
-import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
+
+import { AppState } from 'redux/reducers';
+import { getOffline } from 'redux/config/selectors';
+import { ITransactionStatus } from 'redux/transaction/types';
+import { TSignTransactionRequested, signTransactionRequested } from 'redux/transaction/actions';
 import {
   getCurrentTransactionStatus,
   currentTransactionBroadcasted,
   signaturePending,
   getSignedTx,
-  getWeb3Tx,
-  ITransactionStatus,
-  TSignTransactionRequested,
-  signTransactionRequested
-} from 'redux/transaction';
-import { showNotification, TShowNotification } from 'redux/notifications';
+  getWeb3Tx
+} from 'redux/transaction/selectors';
+import { showNotification, TShowNotification } from 'redux/notifications/actions';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {

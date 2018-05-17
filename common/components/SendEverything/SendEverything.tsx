@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import translate, { translateRaw } from 'translations';
+import { TokenValue, Wei } from 'libs/units';
+import { AppState } from 'redux/reducers';
+import { sendEverythingRequested, TSendEverythingRequested } from 'redux/transaction/actions';
+import { getCurrentBalance } from 'redux/wallet/selectors';
 import { Query } from 'components/renderCbs';
 import { Tooltip } from 'components/ui';
-import { TokenValue, Wei } from 'libs/units';
-import translate, { translateRaw } from 'translations';
-import { sendEverythingRequested, TSendEverythingRequested } from 'redux/transaction';
-import { getCurrentBalance } from 'redux/wallet';
-import { AppState } from 'redux/reducers';
 import './SendEverything.scss';
 
 interface DispatchProps {

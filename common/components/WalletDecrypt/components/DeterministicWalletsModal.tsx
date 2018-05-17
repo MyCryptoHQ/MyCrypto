@@ -1,23 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
+import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
+
 import translate, { translateRaw } from 'translations';
+import { isValidPath } from 'libs/validators';
+import { AppState } from 'redux/reducers';
+import { getNetworkConfig } from 'redux/config';
 import {
   DeterministicWalletData,
-  getDeterministicWallets,
   GetDeterministicWalletsAction,
   GetDeterministicWalletsArgs,
-  setDesiredToken,
   SetDesiredTokenAction
-} from 'redux/deterministicWallets';
-import Modal, { IButton } from 'components/ui/Modal';
-import { AppState } from 'redux/reducers';
-import { isValidPath } from 'libs/validators';
-import { getNetworkConfig } from 'redux/config';
-import { getTokens } from 'redux/wallet';
-import { getAddressLabels } from 'redux/addressBook';
+} from 'redux/deterministicWallets/types';
+import { setDesiredToken, getDeterministicWallets } from 'redux/deterministicWallets/actions';
+import { getTokens } from 'redux/wallet/selectors';
+import { getAddressLabels } from 'redux/addressBook/selectors';
 import { UnitDisplay, Input } from 'components/ui';
+import Modal, { IButton } from 'components/ui/Modal';
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;

@@ -1,14 +1,15 @@
-import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import { formatMnemonic } from 'utils/formatters';
-import { InsecureWalletName } from 'config';
-import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
-import { getSingleDPath, getPaths } from 'redux/config';
+import { mnemonicToSeed, validateMnemonic } from 'bip39';
+
+import { InsecureWalletName } from 'config';
+import translate, { translateRaw } from 'translations';
+import { formatMnemonic } from 'utils/formatters';
+import { AppState } from 'redux/reducers';
+import { getSingleDPath, getPaths } from 'redux/config/selectors';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import DeprecationWarning from './DeprecationWarning';
 
 interface OwnProps {

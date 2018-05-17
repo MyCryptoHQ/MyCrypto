@@ -1,4 +1,5 @@
 import React, { HTMLProps } from 'react';
+
 import './Input.scss';
 
 interface OwnProps extends HTMLProps<HTMLInputElement> {

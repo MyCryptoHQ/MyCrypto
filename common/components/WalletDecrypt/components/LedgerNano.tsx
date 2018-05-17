@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
-import ledger from 'ledgerco';
-import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import UnsupportedNetwork from './UnsupportedNetwork';
-import { LedgerWallet } from 'libs/wallet';
-import { Spinner, NewTabLink } from 'components/ui';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+import ledger from 'ledgerco';
+
 import { SecureWalletName, ledgerReferralURL } from 'config';
-import { getPaths, getSingleDPath, getNetworkConfig } from 'redux/config';
+import translate, { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
+import { LedgerWallet } from 'libs/wallet';
+import { AppState } from 'redux/reducers';
+import { getPaths, getSingleDPath, getNetworkConfig } from 'redux/config/selectors';
+import { Spinner, NewTabLink } from 'components/ui';
+import UnsupportedNetwork from './UnsupportedNetwork';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './LedgerNano.scss';
 
 interface OwnProps {

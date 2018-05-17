@@ -1,6 +1,7 @@
 import React from 'react';
-import { NewTabLink } from 'components/ui';
+
 import { discordURL } from 'config';
+import { NewTabLink } from 'components/ui';
 import './index.scss';
 
 const LS_KEY = 'acknowledged-beta';

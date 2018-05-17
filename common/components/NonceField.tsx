@@ -1,12 +1,14 @@
 import React from 'react';
-import translate from 'translations';
-import { NonceFieldFactory } from 'components/NonceFieldFactory';
-import Help from 'components/ui/Help';
-import { Spinner, Input } from 'components/ui';
 import { connect } from 'react-redux';
-import { nonceRequestPending, getNonceRequested, TGetNonceRequested } from 'redux/transaction';
-import { getOffline } from 'redux/config';
+
+import translate from 'translations';
 import { AppState } from 'redux/reducers';
+import { getOffline } from 'redux/config/selectors';
+import { getNonceRequested, TGetNonceRequested } from 'redux/transaction/actions';
+import { nonceRequestPending } from 'redux/transaction/selectors';
+import { Spinner, Input } from 'components/ui';
+import Help from 'components/ui/Help';
+import { NonceFieldFactory } from 'components/NonceFieldFactory';
 import './NonceField.scss';
 
 interface OwnProps {

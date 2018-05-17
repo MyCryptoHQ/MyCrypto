@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import { etherChainExplorerInst } from 'config/data';
 import translate from 'translations';
-import { NewTabLink } from 'components/ui';
 import { BlockExplorerConfig } from 'types/network';
 import { getTXDetailsCheckURL } from 'libs/scheduling';
-import { etherChainExplorerInst } from 'config/data';
+import { NewTabLink } from 'components/ui';
 
 export interface TransactionSucceededProps {
   txHash: string;

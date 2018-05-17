@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
-import Spinner from 'components/ui/Spinner';
-import { getOffline } from 'redux/config';
 import { AppState } from 'redux/reducers';
+import { getOffline } from 'redux/config/selectors';
+import Spinner from 'components/ui/Spinner';
 
 interface Props {
   /**

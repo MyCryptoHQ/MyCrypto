@@ -1,8 +1,9 @@
-import { PaperWallet } from 'components';
 import React from 'react';
+
+import translate, { translateRaw } from 'translations';
 import printElement from 'utils/printElement';
 import { stripHexPrefix } from 'libs/values';
-import translate, { translateRaw } from 'translations';
+import { PaperWallet } from 'components';
 
 export const print = (address: string, privateKey: string) => () =>
   address &&

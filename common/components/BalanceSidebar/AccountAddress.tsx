@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'redux/reducers';
+import { ACCOUNT_ADDRESS_ID } from 'redux/addressBook/constants';
 import {
-  ACCOUNT_ADDRESS_ID,
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
-  TRemoveAddressLabelEntry,
-  getAccountAddressEntry,
-  getAddressLabels
-} from 'redux/addressBook';
+  TRemoveAddressLabelEntry
+} from 'redux/addressBook/actions';
+import { getAccountAddressEntry, getAddressLabels } from 'redux/addressBook/selectors';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {

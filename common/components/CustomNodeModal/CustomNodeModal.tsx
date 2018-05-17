@@ -1,21 +1,21 @@
 import React from 'react';
-import Modal, { IButton } from 'components/ui/Modal';
+import { connect, Omit } from 'react-redux';
+
 import translate, { translateRaw } from 'translations';
+import { shepherdProvider } from 'libs/nodes';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
-import { connect, Omit } from 'react-redux';
 import { AppState } from 'redux/reducers';
+import { AddCustomNodeAction } from 'redux/config/types';
+import { TAddCustomNetwork, addCustomNetwork } from 'redux/config/actions';
 import {
   getCustomNetworkConfigs,
   getCustomNodeConfigs,
-  getStaticNetworkConfigs,
-  TAddCustomNetwork,
-  addCustomNetwork,
-  AddCustomNodeAction
-} from 'redux/config';
+  getStaticNetworkConfigs
+} from 'redux/config/selectors';
 import { Input, Dropdown } from 'components/ui';
+import Modal, { IButton } from 'components/ui/Modal';
 import './CustomNodeModal.scss';
-import { shepherdProvider } from 'libs/nodes';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 

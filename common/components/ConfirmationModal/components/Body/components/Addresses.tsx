@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import ERC20 from 'libs/erc20';
-import { Identicon } from 'components/ui';
-import arrow from 'assets/images/tail-triangle-down.svg';
-import './Addresses.scss';
-import { ETHAddressExplorer } from 'config';
 import { connect } from 'react-redux';
-import { SerializedTransaction } from 'components/renderCbs';
-import { AppState } from 'redux/reducers';
-import { getFrom, getUnit, isEtherTransaction } from 'redux/transaction';
 import { toChecksumAddress } from 'ethereumjs-util';
+
+import { ETHAddressExplorer } from 'config';
 import translate from 'translations';
+import ERC20 from 'libs/erc20';
+import { AppState } from 'redux/reducers';
+import { getFrom, getUnit, isEtherTransaction } from 'redux/transaction/selectors';
+import arrow from 'assets/images/tail-triangle-down.svg';
+import { SerializedTransaction } from 'components/renderCbs';
+import { Identicon } from 'components/ui';
+import './Addresses.scss';
 
 interface StateProps {
   from: AppState['transaction']['meta']['from'];

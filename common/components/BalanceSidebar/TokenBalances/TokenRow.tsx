@@ -1,6 +1,7 @@
-import removeIcon from 'assets/images/icon-remove.svg';
 import React from 'react';
+
 import { TokenValue } from 'libs/units';
+import removeIcon from 'assets/images/icon-remove.svg';
 import { UnitDisplay } from 'components/ui';
 import './TokenRow.scss';
 

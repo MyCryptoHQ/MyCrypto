@@ -1,10 +1,9 @@
-import EthTx from 'ethereumjs-tx';
-import { OnlineSend } from './OnlineSend';
-import { getWalletType, IWalletType } from 'redux/wallet';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import EthTx from 'ethereumjs-tx';
+
 import { AppState } from 'redux/reducers';
-import { ConfirmationModal } from 'components/ConfirmationModal';
+import { getWalletType, IWalletType } from 'redux/wallet/selectors';
 import {
   getSerializedTransaction,
   getTransaction,
@@ -13,7 +12,9 @@ import {
   isValidGasLimit,
   getSignedTx,
   getWeb3Tx
-} from 'redux/transaction';
+} from 'redux/transaction/selectors';
+import { ConfirmationModal } from 'components/ConfirmationModal';
+import { OnlineSend } from './OnlineSend';
 
 export interface CallbackProps {
   disabled: boolean;

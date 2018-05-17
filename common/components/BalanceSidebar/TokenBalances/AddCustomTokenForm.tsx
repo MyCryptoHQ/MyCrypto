@@ -1,10 +1,11 @@
 import React from 'react';
+
 import { HELP_ARTICLE } from 'config';
-import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
 import translate, { translateRaw } from 'translations';
+import { Token } from 'types/network';
+import { isPositiveIntegerOrZero, isValidETHAddress } from 'libs/validators';
 import { HelpLink, Input } from 'components/ui';
 import './AddCustomTokenForm.scss';
-import { Token } from 'types/network';
 
 interface Props {
   allTokens: Token[];

@@ -1,8 +1,9 @@
 import React from 'react';
-import translate, { translateRaw } from 'translations';
-import Modal, { IButton } from 'components/ui/Modal';
+
 import { VERSION_RC } from 'config';
+import translate, { translateRaw } from 'translations';
 import { isNewerVersion } from 'utils/helpers';
+import Modal, { IButton } from 'components/ui/Modal';
 
 interface IGitHubRelease {
   tag_name: string;

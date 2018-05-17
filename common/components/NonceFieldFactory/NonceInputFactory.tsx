@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Query } from 'components/renderCbs';
-import { getNonce, nonceRequestFailed } from 'redux/transaction';
-import { getOffline } from 'redux/config';
-import { AppState } from 'redux/reducers';
 import { connect } from 'react-redux';
+
+import { AppState } from 'redux/reducers';
+import { getOffline } from 'redux/config/selectors';
+import { getNonce, nonceRequestFailed } from 'redux/transaction/selectors';
 import { CallbackProps } from 'components/NonceFieldFactory';
+import { Query } from 'components/renderCbs';
 
 interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;

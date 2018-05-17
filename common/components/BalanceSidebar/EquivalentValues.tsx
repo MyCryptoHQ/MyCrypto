@@ -1,21 +1,22 @@
 import React from 'react';
-import translate from 'translations';
-import { UnitDisplay, Spinner } from 'components/ui';
-import Select from 'react-select';
-import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'redux/rates';
-import { rateSymbols } from 'api/rates';
-import { chain, flatMap } from 'lodash';
-import { TokenBalance, getShownTokenBalances } from 'redux/wallet';
-import { Balance } from 'libs/wallet';
-import './EquivalentValues.scss';
-import { AppState } from 'redux/reducers';
-import { getNetworkConfig, getOffline } from 'redux/config';
 import { connect } from 'react-redux';
+import Select from 'react-select';
+import BN from 'bn.js';
+import { chain, flatMap } from 'lodash';
+
+import translate from 'translations';
+import { rateSymbols } from 'api/rates';
+import { NetworkConfig } from 'types/network';
+import { Balance } from 'libs/wallet';
+import { AppState } from 'redux/reducers';
+import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'redux/rates/actions';
+import { TokenBalance, getShownTokenBalances } from 'redux/wallet/selectors';
+import { getNetworkConfig, getOffline } from 'redux/config/selectors';
+import { UnitDisplay, Spinner } from 'components/ui';
 import btcIco from 'assets/images/bitcoin.png';
 import ethIco from 'assets/images/ether.png';
 import repIco from 'assets/images/augur.png';
-import { NetworkConfig } from 'types/network';
-import BN from 'bn.js';
+import './EquivalentValues.scss';
 
 interface AllValue {
   symbol: string;

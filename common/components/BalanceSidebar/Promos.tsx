@@ -1,9 +1,10 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { connect } from 'react-redux';
+
+import { AppState } from 'redux/reducers';
 import { HardwareWallets, Coinbase, Shapeshift } from './PromoComponents';
 import './Promos.scss';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
 
 const CarouselAnimation = ({ children, ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="carousel">

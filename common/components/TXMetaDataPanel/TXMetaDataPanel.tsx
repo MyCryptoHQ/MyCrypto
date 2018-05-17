@@ -1,6 +1,12 @@
 import React from 'react';
-import BN from 'bn.js';
 import { connect } from 'react-redux';
+import BN from 'bn.js';
+
+import { translateRaw } from 'translations';
+import { NetworkConfig } from 'types/network';
+import { Units } from 'libs/units';
+import { AppState } from 'redux/reducers';
+import { getNetworkConfig, getOffline } from 'redux/config/selectors';
 import {
   inputGasPrice,
   TInputGasPrice,
@@ -9,18 +15,13 @@ import {
   getNonceRequested,
   TGetNonceRequested,
   resetTransactionRequested,
-  TResetTransactionRequested,
-  getGasPrice
-} from 'redux/transaction';
-import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'redux/rates';
-import { getNetworkConfig, getOffline } from 'redux/config';
-import { AppState } from 'redux/reducers';
-import { Units } from 'libs/units';
-import SimpleGas from './components/SimpleGas';
+  TResetTransactionRequested
+} from 'redux/transaction/actions';
+import { getGasPrice } from 'redux/transaction/selectors';
+import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'redux/rates/actions';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
+import SimpleGas from './components/SimpleGas';
 import './TXMetaDataPanel.scss';
-import { NetworkConfig } from 'types/network';
-import { translateRaw } from 'translations';
 
 type SliderStates = 'simple' | 'advanced';
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getNetworkConfig } from 'redux/config';
+
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'redux/reducers';
+import { getNetworkConfig } from 'redux/config/selectors';
 
 interface StateProps {
   network: NetworkConfig;

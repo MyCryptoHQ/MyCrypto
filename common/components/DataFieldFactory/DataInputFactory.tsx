@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Query } from 'components/renderCbs';
-import { getData, getDataExists } from 'redux/transaction';
 import { connect } from 'react-redux';
+
 import { AppState } from 'redux/reducers';
+import { getData, getDataExists } from 'redux/transaction/selectors';
 import { CallBackProps } from 'components/DataFieldFactory';
+import { Query } from 'components/renderCbs';
 
 interface OwnProps {
   withProps(props: CallBackProps): React.ReactElement<any> | null;

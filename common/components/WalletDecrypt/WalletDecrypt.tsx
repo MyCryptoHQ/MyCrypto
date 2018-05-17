@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 import {
-  setWallet,
-  TSetWallet,
-  unlockKeystore,
-  TUnlockKeystore,
-  unlockMnemonic,
-  TUnlockMnemonic,
-  unlockPrivateKey,
-  TUnlockPrivateKey,
-  unlockWeb3,
-  TUnlockWeb3,
-  getDisabledWallets
-} from 'redux/wallet';
-import { resetTransactionRequested, TResetTransactionRequested } from 'redux/transaction';
+  SecureWalletName,
+  InsecureWalletName,
+  MiscWalletName,
+  WalletName,
+  knowledgeBaseURL,
+  donationAddressMap
+} from 'config';
 import translate, { translateRaw } from 'translations';
+import { isWeb3NodeAvailable } from 'libs/nodes/web3';
+import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import {
   KeystoreDecrypt,
   LedgerNanoSDecrypt,
@@ -32,27 +30,30 @@ import {
   InsecureWalletWarning
 } from './components';
 import { AppState } from 'redux/reducers';
-import { showNotification, TShowNotification } from 'redux/notifications';
-import { DisabledWallets } from './disables';
 import {
-  SecureWalletName,
-  InsecureWalletName,
-  MiscWalletName,
-  WalletName,
-  knowledgeBaseURL,
-  donationAddressMap
-} from 'config';
-import { isWeb3NodeAvailable } from 'libs/nodes/web3';
+  setWallet,
+  TSetWallet,
+  unlockKeystore,
+  TUnlockKeystore,
+  unlockMnemonic,
+  TUnlockMnemonic,
+  unlockPrivateKey,
+  TUnlockPrivateKey,
+  unlockWeb3,
+  TUnlockWeb3
+} from 'redux/wallet/actions';
+import { getDisabledWallets } from 'redux/wallet/selectors';
+import { resetTransactionRequested, TResetTransactionRequested } from 'redux/transaction/actions';
+import { showNotification, TShowNotification } from 'redux/notifications/actions';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
-import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
-import './WalletDecrypt.scss';
-import { withRouter, RouteComponentProps } from 'react-router';
 import { Errorable } from 'components';
+import { DisabledWallets } from './disables';
+import './WalletDecrypt.scss';
 
 interface OwnProps {
   hidden?: boolean;

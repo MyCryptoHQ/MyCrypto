@@ -1,6 +1,7 @@
-import { signTransactionRequested, TSignTransactionRequested } from 'redux/transaction';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import { signTransactionRequested, TSignTransactionRequested } from 'redux/transaction/actions';
 
 interface DispatchProps {
   signTransactionRequested: TSignTransactionRequested;

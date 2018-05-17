@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
-import { Identicon, Spinner } from 'components/ui';
-import { Query } from 'components/renderCbs';
+import { connect } from 'react-redux';
+import { addHexPrefix } from 'ethereumjs-util';
+
 import { translateRaw } from 'translations';
+import { isValidENSAddress } from 'libs/validators';
+import { Address } from 'libs/units';
+import { AppState } from 'redux/reducers';
 import {
   ICurrentTo,
   getCurrentTo,
   isValidCurrentTo,
   isCurrentToLabelEntry
-} from 'redux/transaction';
-import { getCurrentToLabel } from 'redux/addressBook';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+} from 'redux/transaction/selectors';
+import { getCurrentToLabel } from 'redux/addressBook/selectors';
+import { getWalletInst } from 'redux/wallet/selectors';
+import { getResolvingDomain } from 'redux/ens/selectors';
+import { Identicon, Spinner } from 'components/ui';
+import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
-import { addHexPrefix } from 'ethereumjs-util';
-import { getWalletInst } from 'redux/wallet';
-import { getResolvingDomain } from 'redux/ens';
-import { isValidENSAddress } from 'libs/validators';
-import { Address } from 'libs/units';
 import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 

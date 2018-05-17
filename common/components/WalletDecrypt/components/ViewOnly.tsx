@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
+
 import translate, { translateRaw } from 'translations';
 import { isValidETHAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
-import { getRecentAddresses } from 'redux/wallet';
 import { AppState } from 'redux/reducers';
+import { getRecentAddresses } from 'redux/wallet/selectors';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
 

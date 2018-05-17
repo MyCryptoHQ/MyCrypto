@@ -1,9 +1,10 @@
-import { NonceInputFactory } from './NonceInputFactory';
-import { inputNonce, TInputNonce } from 'redux/transaction';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+
 import { sanitizeNumericalInput } from 'libs/values';
+import { AppState } from 'redux/reducers';
+import { inputNonce, TInputNonce } from 'redux/transaction/actions';
+import { NonceInputFactory } from './NonceInputFactory';
 
 export interface CallbackProps {
   nonce: AppState['transaction']['fields']['nonce'];

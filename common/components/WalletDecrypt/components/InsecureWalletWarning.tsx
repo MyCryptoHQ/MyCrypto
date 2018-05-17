@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { HELP_ARTICLE, DOWNLOAD_MYCRYPTO_LINK } from 'config';
-import './InsecureWalletWarning.scss';
-import translate from 'translations';
 import { knowledgeBaseURL } from 'config/data';
+import translate from 'translations';
+import './InsecureWalletWarning.scss';
 
 interface Props {
   walletType: string;

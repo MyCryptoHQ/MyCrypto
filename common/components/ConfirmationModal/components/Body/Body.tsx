@@ -1,13 +1,14 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'redux/reducers';
+import { getNetworkConfig } from 'redux/config/selectors';
 import { Addresses } from './components/Addresses';
 import { Amounts } from './components/Amounts';
 import { Details } from './components/Details';
-import React from 'react';
-import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
 import './Body.scss';
-import { getNetworkConfig } from 'redux/config';
-import { NetworkConfig } from 'types/network';
-import translate from 'translations';
 
 interface State {
   showDetails: boolean;

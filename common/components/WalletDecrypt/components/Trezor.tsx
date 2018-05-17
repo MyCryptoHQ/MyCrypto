@@ -1,14 +1,15 @@
-import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+
+import { SecureWalletName, trezorReferralURL } from 'config';
 import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import UnsupportedNetwork from './UnsupportedNetwork';
-import { Spinner, NewTabLink } from 'components/ui';
+import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import { AppState } from 'redux/reducers';
-import { connect } from 'react-redux';
-import { SecureWalletName, trezorReferralURL } from 'config';
-import { getSingleDPath, getPaths } from 'redux/config';
+import { getSingleDPath, getPaths } from 'redux/config/selectors';
+import { Spinner, NewTabLink } from 'components/ui';
+import UnsupportedNetwork from './UnsupportedNetwork';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
