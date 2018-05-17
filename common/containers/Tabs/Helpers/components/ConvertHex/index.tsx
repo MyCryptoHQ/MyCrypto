@@ -47,7 +47,13 @@ export default class ConvertHex extends React.Component<State> {
 
             <label className="input-group">
               <div className="input-group-header">Hexadecimal - Padded Left w/ 64 characters</div>
-              <Input value={hexPadded} type="text" isValid={true} name="hexPadded" readOnly />
+              <Input
+                value={hexPadded}
+                type="text"
+                isValid={true}
+                name="hexPadded"
+                readOnly={true}
+              />
             </label>
           </div>
         </section>
@@ -63,8 +69,9 @@ export default class ConvertHex extends React.Component<State> {
     const currentState = { ...this.state };
 
     if (name === 'dec') {
-      currentState.dec = new BN(value);
-      currentState.hex = this.decToHex(parseInt(value as string));
+      const dec = new BN(value);
+      currentState.dec = dec;
+      currentState.hex = this.decToHex(dec);
     }
 
     if (name === 'hex') {
@@ -77,7 +84,7 @@ export default class ConvertHex extends React.Component<State> {
     this.setState(currentState);
   }
 
-  private decToHex(value: number) {
+  private decToHex(value: BN) {
     return value.toString(16);
   }
 
