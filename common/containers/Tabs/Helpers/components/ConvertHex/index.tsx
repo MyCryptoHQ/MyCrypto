@@ -1,16 +1,17 @@
 import React from 'react';
 import './index.scss';
 import { Input } from 'components/ui';
+import BN from 'bn.js';
 
 interface State {
-  decValue: number;
+  decValue: BN;
   hexValue: string;
   hexValuePadded: string;
 }
 
 export default class ConvertHex extends React.Component<State> {
   public state = {
-    dec: 123,
+    dec: new BN(123),
     hex: '',
     hexPadded: ''
   };
@@ -30,7 +31,13 @@ export default class ConvertHex extends React.Component<State> {
 
             <label className="input-group">
               <div className="input-group-header">Decimal</div>
-              <Input value={dec} type="text" onChange={this.onChange} isValid={true} name="dec" />
+              <Input
+                value={dec.toString(10)}
+                type="text"
+                onChange={this.onChange}
+                isValid={true}
+                name="dec"
+              />
             </label>
 
             <label className="input-group">
@@ -52,11 +59,11 @@ export default class ConvertHex extends React.Component<State> {
     this.calcFields(event.currentTarget.value, event.currentTarget.name);
   };
 
-  private calcFields(value: string | number, name: string) {
+  private calcFields(value: string | BN, name: string) {
     const currentState = { ...this.state };
 
     if (name === 'dec') {
-      currentState.dec = parseInt(value as string);
+      currentState.dec = new BN(value);
       currentState.hex = this.decToHex(parseInt(value as string));
     }
 
@@ -75,7 +82,7 @@ export default class ConvertHex extends React.Component<State> {
   }
 
   private hexToDec(value: string) {
-    return parseInt(value, 16);
+    return new BN(value, 16);
   }
 
   private hexToPadded(value: string) {
