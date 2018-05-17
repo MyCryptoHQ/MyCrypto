@@ -4,9 +4,9 @@ import { Input } from 'components/ui';
 import BN from 'bn.js';
 
 interface State {
-  decValue: BN;
-  hexValue: string;
-  hexValuePadded: string;
+  dec: BN;
+  hex: string;
+  hexPadded: string;
 }
 
 export default class ConvertHex extends React.Component<State> {

@@ -1,5 +1,6 @@
 import ConvertUnits from './components/ConvertUnits';
 import ConvertHex from './components/ConvertHex';
+import ConvertSHA3 from './components/ConvertSHA3';
 
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
@@ -15,6 +16,10 @@ const tabs = [
   {
     path: 'convert-hex',
     name: 'Convert Decimal <-> Hexadecimal'
+  },
+  {
+    path: 'convert-sha3',
+    name: 'Convert To SHA3'
   }
 ];
 
@@ -38,6 +43,7 @@ export default class Helpers extends Component<RouteComponentProps<{}>> {
               />
               <Route exact={true} path={`${currentPath}/convert-units`} component={ConvertUnits} />
               <Route exact={true} path={`${currentPath}/convert-hex`} component={ConvertHex} />
+              <Route exact={true} path={`${currentPath}/convert-sha3`} component={ConvertSHA3} />
               <RouteNotFound />
             </Switch>
           </div>
