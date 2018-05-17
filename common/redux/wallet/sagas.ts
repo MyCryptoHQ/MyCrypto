@@ -17,20 +17,18 @@ import {
 } from 'libs/wallet';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { AppState } from 'redux/reducers';
-import { showNotification } from 'redux/notifications';
-import {
-  TypeKeys as CustomTokenTypeKeys,
-  AddCustomTokenAction,
-  getCustomTokens
-} from 'redux/customTokens';
+import { showNotification } from 'redux/notifications/actions';
+import { TypeKeys as CustomTokenTypeKeys, AddCustomTokenAction } from 'redux/customTokens/types';
+import { getCustomTokens } from 'redux/customTokens/selectors';
 import {
   TokenBalance,
   getTokens,
   getWalletInst,
   getWalletConfigTokens,
   MergedToken
-} from 'redux/wallet';
-import { TypeKeys as ConfigTypeKeys, getNodeLib, getAllTokens, getOffline } from 'redux/config';
+} from 'redux/wallet/selectors';
+import { TypeKeys as ConfigTypeKeys } from 'redux/config/types';
+import { getNodeLib, getAllTokens, getOffline } from 'redux/config/selectors';
 import {
   TypeKeys,
   UnlockKeystoreAction,

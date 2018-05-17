@@ -1,6 +1,7 @@
-import { closeNotification, ShowNotificationAction } from 'redux/notifications';
 import { delay, SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
+import { ShowNotificationAction } from './types';
+import { closeNotification } from './actions';
 
 export function* handleNotification(action: ShowNotificationAction): SagaIterator {
   const { duration } = action.payload;

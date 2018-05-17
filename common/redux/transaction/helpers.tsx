@@ -14,13 +14,13 @@ import {
   makeTransaction
 } from 'libs/transaction';
 import { validNumber, validDecimal } from 'libs/validators';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+// import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { AppState } from 'redux/reducers';
-import { isNetworkUnit, getNetworkConfig, getOffline } from 'redux/config';
-import { isSchedulingEnabled } from 'redux/schedule';
-import { getGasLimit, getGasPrice, getUnit } from 'redux/transaction';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'redux/wallet';
-import { showNotification } from 'redux/notifications';
+import { isNetworkUnit, getNetworkConfig, getOffline } from 'redux/config/selectors';
+import { isSchedulingEnabled } from 'redux/schedule/selectors';
+import { getGasLimit, getGasPrice, getUnit } from 'redux/transaction/selectors';
+import { getWalletInst, getEtherBalance, getTokenBalance } from 'redux/wallet/selectors';
+import { showNotification } from 'redux/notifications/actions';
 import {
   TypeKeys,
   BroadcastRequestedAction,
@@ -143,11 +143,12 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       yield put(
         showNotification(
           'success',
-          <TransactionSucceeded
-            txHash={broadcastedHash}
-            blockExplorer={network.isCustom ? undefined : network.blockExplorer}
-            scheduling={scheduling}
-          />,
+          // <TransactionSucceeded
+          //   txHash={broadcastedHash}
+          //   blockExplorer={network.isCustom ? undefined : network.blockExplorer}
+          //   scheduling={scheduling}
+          // />,
+          'gj',
           Infinity
         )
       );

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import translate from 'translations';
-import { SwapInput } from 'redux/swap';
+import { SwapInput } from 'redux/swap/types';
 import './PaymentInfo.scss';
 import { Input } from 'components/ui';
 

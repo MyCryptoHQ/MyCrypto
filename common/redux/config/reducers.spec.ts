@@ -9,24 +9,11 @@ import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 import { Web3Service } from 'libs/nodes/web3';
 import { Web3Wallet } from 'libs/wallet';
 import { configuredStore } from 'redux/store';
-import { showNotification } from 'redux/notifications';
+import { showNotification } from 'redux/notifications/actions';
+import { TypeKeys, ChangeNodeIntentOneTimeAction, SelectedNodeState } from './types';
 import {
   changeNodeForce,
-  TypeKeys,
-  ChangeNodeIntentOneTimeAction,
   changeNodeIntentOneTime,
-  handleNodeChangeIntent,
-  handlePollOfflineStatus,
-  pollOfflineStatusSaga,
-  handleNewNetwork,
-  handleNodeChangeIntentOneTime,
-  getNodeId,
-  getNodeConfig,
-  getOffline,
-  isStaticNodeId,
-  getStaticNodeFromId,
-  getCustomNodeFromId,
-  getPreviouslySelectedNode,
   changeLanguage,
   setOnline,
   setOffline,
@@ -34,24 +21,41 @@ import {
   setLatestBlock,
   addCustomNode,
   removeCustomNode,
-  unsetWeb3Node,
-  unsetWeb3NodeOnWalletEvent,
-  meta,
   addCustomNetwork,
   removeCustomNetwork,
-  customNetworks,
-  STATIC_NETWORKS_INITIAL_STATE,
-  STATIC_NODES_INITIAL_STATE,
-  staticNetworks,
-  customNodes,
   changeNodeIntent,
   changeNode,
-  selectedNode,
-  SelectedNodeState,
   web3UnsetNode,
-  web3SetNode,
+  web3SetNode
+} from './actions';
+import {
+  STATIC_NETWORKS_INITIAL_STATE,
+  STATIC_NODES_INITIAL_STATE,
+  meta,
+  staticNetworks,
+  customNetworks,
+  customNodes,
+  selectedNode,
   staticNodes
-} from 'redux/config';
+} from './reducers';
+import {
+  getNodeId,
+  getNodeConfig,
+  getOffline,
+  isStaticNodeId,
+  getStaticNodeFromId,
+  getCustomNodeFromId,
+  getPreviouslySelectedNode
+} from './selectors';
+import {
+  handleNodeChangeIntent,
+  handlePollOfflineStatus,
+  pollOfflineStatusSaga,
+  handleNewNetwork,
+  handleNodeChangeIntentOneTime,
+  unsetWeb3Node,
+  unsetWeb3NodeOnWalletEvent
+} from './sagas';
 
 // init module
 configuredStore.getState();

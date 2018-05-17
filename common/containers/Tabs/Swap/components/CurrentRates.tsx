@@ -9,20 +9,22 @@ import { bityReferralURL, shapeshiftReferralURL } from 'config';
 import translate from 'translations';
 import { SHAPESHIFT_WHITELIST } from 'api/shapeshift';
 import {
-  loadShapeshiftRatesRequestedSwap,
-  TLoadShapeshiftRatesRequestedSwap,
-  stopLoadShapeshiftRatesSwap,
-  TStopLoadShapeshiftRatesSwap,
   ProviderName,
   NormalizedBityRates,
   NormalizedShapeshiftRates,
   NormalizedShapeshiftRate
-} from 'redux/swap';
-import { getOffline } from 'redux/config';
+} from 'redux/swap/types';
+import {
+  loadShapeshiftRatesRequestedSwap,
+  TLoadShapeshiftRatesRequestedSwap,
+  stopLoadShapeshiftRatesSwap,
+  TStopLoadShapeshiftRatesSwap
+} from 'redux/swap/actions';
+import { getOffline } from 'redux/config/selectors';
 import Rates from './Rates';
 import { AppState } from 'redux/reducers';
-import './CurrentRates.scss';
 import { Optional } from 'utils/types';
+import './CurrentRates.scss';
 
 interface StateProps {
   isOffline: boolean;

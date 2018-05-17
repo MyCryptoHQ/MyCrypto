@@ -6,13 +6,10 @@ import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/s
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
 import { getOffline, getNodeLib } from 'redux/config';
-import {
-  TypeKeys as TransactionTypeKeys,
-  getDecimal,
-  getUnit,
-  setGasLimitField,
-  validateInput
-} from 'redux/transaction';
+import { TypeKeys as TransactionTypeKeys } from 'redux/transaction/types';
+import { getDecimal, getUnit } from 'redux/transaction/selectors';
+import { setGasLimitField } from 'redux/transaction/actions';
+import { validateInput } from 'redux/transaction/helpers';
 import {
   TypeKeys,
   SetCurrentScheduleTimestampAction,

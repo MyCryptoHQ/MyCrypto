@@ -10,14 +10,20 @@ import fixAddressBookErrors from 'utils/fixAddressBookErrors';
 import { gasPriceToBase } from 'libs/units';
 import RootReducer, { AppState } from './reducers';
 import sagas from './sagas';
-import { INITIAL_STATE as transactionInitialState, State as TransactionState } from './transaction';
-import { State as SwapState, INITIAL_STATE as initialSwapState } from './swap';
-import { State as AddressBookState, INITIAL_STATE as initialAddressBookState } from './addressBook';
+import {
+  INITIAL_STATE as transactionInitialState,
+  State as TransactionState
+} from './transaction/reducers';
+import { State as SwapState, INITIAL_STATE as initialSwapState } from './swap/reducers';
+import {
+  State as AddressBookState,
+  INITIAL_STATE as initialAddressBookState
+} from './addressBook/reducers';
 import {
   INITIAL_STATE as initialTransactionsState,
   State as TransactionsState
-} from './transactions';
-import { State as WalletState, INITIAL_STATE as initialWalletState } from './wallet';
+} from './transactions/reducers';
+import { State as WalletState, INITIAL_STATE as initialWalletState } from './wallet/reducers';
 import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe

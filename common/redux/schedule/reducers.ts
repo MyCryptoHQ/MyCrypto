@@ -2,7 +2,6 @@ import { Reducer } from 'redux';
 import moment from 'moment-timezone';
 import { gasPriceToBase, fromWei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { minFromNow } from './helpers';
 import {
   TypeKeys,
   ScheduleFieldAction,
@@ -18,6 +17,7 @@ import {
   SetScheduleParamsValidityAction,
   SetTimeBountyFieldAction
 } from './types';
+import { minFromNow } from './helpers';
 
 export interface State {
   schedulingToggle: SetSchedulingToggleAction['payload'];

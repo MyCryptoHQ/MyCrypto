@@ -13,7 +13,7 @@ import {
   Token
 } from 'types/network';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
-import { getUnit } from 'redux/transaction';
+import { getUnit } from 'redux/transaction/selectors';
 import { PathType, DPathFormat } from './types';
 
 const getConfig = (state: AppState) => state.config;

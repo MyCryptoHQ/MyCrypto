@@ -3,7 +3,7 @@ import abi from 'ethereumjs-abi';
 import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import { toBuffer } from 'ethereumjs-util';
 import RequestFactory from './contracts/RequestFactory';
-import { ICurrentValue } from 'redux/transaction';
+import { ICurrentValue } from 'redux/transaction/selectors';
 
 const TIME_BOUNTY_MIN = Wei('1');
 

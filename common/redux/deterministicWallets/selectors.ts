@@ -1,5 +1,5 @@
-import { DeterministicWalletData } from './types';
 import { AppState } from 'redux/reducers';
+import { DeterministicWalletData } from './types';
 
 export function getWallets(state: AppState): DeterministicWalletData[] {
   return state.deterministicWallets.wallets;

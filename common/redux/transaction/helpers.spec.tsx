@@ -5,12 +5,12 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import { bufferToHex } from 'ethereumjs-util';
 import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+// import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { configuredStore } from 'redux/store';
-import { getNetworkConfig, getOffline, isNetworkUnit } from 'redux/config';
-import { isSchedulingEnabled } from 'redux/schedule';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'redux/wallet';
-import { showNotification } from 'redux/notifications';
+import { getNetworkConfig, getOffline, isNetworkUnit } from 'redux/config/selectors';
+import { isSchedulingEnabled } from 'redux/schedule/selectors';
+import { getWalletInst, getEtherBalance, getTokenBalance } from 'redux/wallet/selectors';
+import { showNotification } from 'redux/notifications/actions';
 import { TypeKeys as TK } from './types';
 import {
   broadcastTransactionFailed,
@@ -157,11 +157,12 @@ describe('transaction: Helpers', () => {
           put(
             showNotification(
               'success',
-              <TransactionSucceeded
-                txHash={broadcastedHash}
-                blockExplorer={network.blockExplorer}
-                scheduling={false}
-              />,
+              // <TransactionSucceeded
+              //   txHash={broadcastedHash}
+              //   blockExplorer={network.blockExplorer}
+              //   scheduling={false}
+              // />,
+              'gj',
               Infinity
             )
           )

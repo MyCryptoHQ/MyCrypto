@@ -1,13 +1,9 @@
 import { put, select } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { configuredStore } from 'redux/store';
-import {
-  handleNodeChangeForce,
-  changeNode,
-  changeNodeIntent,
-  isStaticNodeId,
-  getStaticNodeFromId
-} from 'redux/config';
+import { changeNode, changeNodeIntent } from './actions';
+import { isStaticNodeId, getStaticNodeFromId } from './selectors';
+import { handleNodeChangeForce } from './sagas';
 
 // init module
 configuredStore.getState();

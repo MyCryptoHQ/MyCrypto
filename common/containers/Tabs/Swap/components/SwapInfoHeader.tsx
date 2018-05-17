@@ -1,4 +1,4 @@
-import { SwapInput, RestartSwapAction } from 'redux/swap';
+import { SwapInput, RestartSwapAction } from 'redux/swap/types';
 import React, { PureComponent } from 'react';
 import translate from 'translations';
 import classnames from 'classnames';

@@ -1,4 +1,14 @@
-import { showNotification as dShowNotification, TShowNotification } from 'redux/notifications';
+import {
+  showNotification as dShowNotification,
+  TShowNotification
+} from 'redux/notifications/actions';
+import {
+  ProviderName,
+  SwapInput,
+  NormalizedOptions,
+  NormalizedBityRates,
+  NormalizedShapeshiftRates
+} from 'redux/swap/types';
 import {
   initSwap as dInitSwap,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
@@ -29,13 +39,8 @@ import {
   TStopPollBityOrderStatus,
   TStopPollShapeshiftOrderStatus,
   TChangeSwapProvider,
-  TStopLoadShapeshiftRatesSwap,
-  ProviderName,
-  SwapInput,
-  NormalizedOptions,
-  NormalizedBityRates,
-  NormalizedShapeshiftRates
-} from 'redux/swap';
+  TStopLoadShapeshiftRatesSwap
+} from 'redux/swap/actions';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'redux/reducers';
@@ -49,7 +54,7 @@ import TabSection from 'containers/TabSection';
 import { merge } from 'lodash';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { Switch, Route, RouteComponentProps } from 'react-router';
-import { getOffline } from 'redux/config';
+import { getOffline } from 'redux/config/selectors';
 
 interface ReduxStateProps {
   step: number;

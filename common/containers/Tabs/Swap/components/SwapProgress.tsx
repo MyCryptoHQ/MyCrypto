@@ -1,6 +1,6 @@
-import { TShowNotification } from 'redux/notifications';
-import { bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
+import { TShowNotification } from 'redux/notifications/actions';
+import { bityConfig } from 'config/bity';
 import translate, { translateRaw } from 'translations';
 import './SwapProgress.scss';
 

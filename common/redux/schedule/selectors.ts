@@ -13,8 +13,8 @@ import {
   EAC_ADDRESSES,
   getValidateRequestParamsData
 } from 'libs/scheduling';
-import { getLatestBlock } from 'redux/config';
-import { getWalletInst } from 'redux/wallet';
+import { getLatestBlock } from 'redux/config/selectors';
+import { getWalletInst } from 'redux/wallet/selectors';
 import {
   getCurrentTo,
   getCurrentValue,
@@ -23,7 +23,7 @@ import {
   getGasPrice,
   IGetTransaction,
   getTransaction
-} from 'redux/transaction';
+} from 'redux/transaction/selectors';
 import {
   dateTimeToTimezone,
   minFromNow,

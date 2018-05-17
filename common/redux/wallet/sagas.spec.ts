@@ -9,18 +9,12 @@ import RpcNode from 'libs/nodes/rpc';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 import { Token } from 'types/network';
-import {
-  TypeKeys as ConfigTypeKeys,
-  changeNodeIntent,
-  web3UnsetNode,
-  initWeb3Node,
-  unlockWeb3,
-  getNodeLib,
-  getOffline,
-  getWeb3Node
-} from 'redux/config';
-import { showNotification } from 'redux/notifications';
-import { getWalletInst, getWalletConfigTokens } from 'redux/wallet';
+import { TypeKeys as ConfigTypeKeys } from 'redux/config/types';
+import { changeNodeIntent, web3UnsetNode } from 'redux/config/actions';
+import { getNodeLib, getOffline, getWeb3Node } from 'redux/config/selectors';
+import { initWeb3Node, unlockWeb3 } from 'redux/config/sagas';
+import { showNotification } from 'redux/notifications/actions';
+import { getWalletInst, getWalletConfigTokens } from 'redux/wallet/selectors';
 import { TypeKeys } from './types';
 import {
   setBalanceFullfilled,

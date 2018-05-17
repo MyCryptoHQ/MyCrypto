@@ -49,33 +49,31 @@ import {
 } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'redux/reducers';
+import { TypeKeys as ConfigTypeKeys } from 'redux/config/types';
 import {
-  TypeKeys as ConfigTypeKeys,
   getNodeLib,
   isNetworkUnit,
-  getAutoGasLimitEnabled,
-  ToggleAutoGasLimitAction,
-  getNetworkUnit,
-  getOffline
-} from 'redux/config';
-import { resolveDomainRequested, getResolvedAddress, TypeKeys as ENSTypekeys } from 'redux/ens';
+  getOffline,
+  getAutoGasLimitEnabled
+} from 'redux/config/selectors';
+import { TypeKeys as ENSTypekeys } from 'redux/ens/types';
+import { resolveDomainRequested } from 'redux/ens/actions';
+import { getResolvedAddress } from 'redux/ens/selectors';
+import { TypeKeys as WalletTypeKeys } from 'redux/wallet/types';
 import {
-  TypeKeys as WalletTypeKeys,
   getWalletInst,
+  getToken,
   getEtherBalance,
   getCurrentBalance,
-  getToken,
   MergedToken,
   getWalletType,
   IWalletType
-} from 'redux/wallet';
-import {
-  requestTransactionSignature,
-  FinalizeSignatureAction,
-  TypeKeys as ParityKeys
-} from 'redux/paritySigner';
-import { setSchedulingToggle, setScheduleGasLimitField, isSchedulingEnabled } from 'redux/schedule';
-import { showNotification } from 'redux/notifications';
+} from 'redux/wallet/selectors';
+import { TypeKeys as ParityKeys, FinalizeSignatureAction } from 'redux/paritySigner/types';
+import { requestTransactionSignature } from 'redux/paritySigner/actions';
+import { setSchedulingToggle, setScheduleGasLimitField } from 'redux/schedule/actions';
+import { isSchedulingEnabled } from 'redux/schedule/selectors';
+import { showNotification } from 'redux/notifications/actions';
 import {
   TypeKeys,
   SetCurrentToAction,

@@ -8,9 +8,9 @@ import { TokenValue, Wei, Address, getDecimalFromEtherUnit } from 'libs/units';
 import { stripHexPrefixAndLower } from 'libs/values';
 import { getTransactionFields, makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
-import { getNetworkConfig, getOffline, isNetworkUnit } from 'redux/config';
-import { getEtherBalance, getToken, getWalletType } from 'redux/wallet';
-import { getCustomTokens } from 'redux/customTokens';
+import { getNetworkConfig, getOffline, isNetworkUnit } from 'redux/config/selectors';
+import { getEtherBalance, getToken, getWalletType } from 'redux/wallet/selectors';
+import { getCustomTokens } from 'redux/customTokens/selectors';
 import { RequestStatus, SerializedTxParams } from './types';
 import { reduceToValues, isFullTx } from './helpers';
 

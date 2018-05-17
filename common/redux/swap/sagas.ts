@@ -15,22 +15,18 @@ import {
 import moment from 'moment';
 import { getOrderStatus, postOrder, getAllRates } from 'api/bity';
 import shapeshift from 'api/shapeshift';
+import { TypeKeys as TransactionTypeKeys } from 'redux/transaction/types';
 import {
   setUnitMeta,
   setCurrentTo,
   setCurrentValue,
-  TypeKeys as TransactionTypeKeys,
   resetTransactionRequested
-} from 'redux/transaction';
-import { isSupportedUnit, isNetworkUnit } from 'redux/config';
-import {
-  TypeKeys as WalletTypeKeys,
-  setTokenBalancePending,
-  isUnlocked,
-  isEtherBalancePending,
-  resetWallet
-} from 'redux/wallet';
-import { showNotification } from 'redux/notifications';
+} from 'redux/transaction/actions';
+import { isSupportedUnit, isNetworkUnit } from 'redux/config/selectors';
+import { TypeKeys as WalletTypeKeys } from 'redux/wallet/types';
+import { setTokenBalancePending, resetWallet } from 'redux/wallet/actions';
+import { isUnlocked, isEtherBalancePending } from 'redux/wallet/selectors';
+import { showNotification } from 'redux/notifications/actions';
 import {
   TypeKeys,
   BityOrderCreateRequestedSwapAction,

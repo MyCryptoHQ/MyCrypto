@@ -1,5 +1,5 @@
-import { TypeKeys, AddCustomTokenAction, RemoveCustomTokenAction } from './types';
 import { Token } from 'types/network';
+import { TypeKeys, AddCustomTokenAction, RemoveCustomTokenAction } from './types';
 
 export type TAddCustomToken = typeof addCustomToken;
 export function addCustomToken(payload: Token): AddCustomTokenAction {

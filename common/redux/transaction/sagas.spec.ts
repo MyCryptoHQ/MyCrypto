@@ -39,23 +39,26 @@ import {
   gasLimitValidator
 } from 'libs/validators';
 import { configuredStore } from 'redux/store';
+import { TypeKeys as ConfigTypeKeys } from 'redux/config/types';
 import {
-  TypeKeys as ConfigTypeKeys,
   getNodeLib,
   isNetworkUnit,
   getOffline,
   getAutoGasLimitEnabled
-} from 'redux/config';
+} from 'redux/config/selectors';
+import { TypeKeys as WalletTK } from 'redux/wallet/types';
 import {
-  TypeKeys as WalletTK,
   getWalletInst,
   getToken,
   getEtherBalance,
   getCurrentBalance
-} from 'redux/wallet';
-import { setSchedulingToggle, isSchedulingEnabled, setScheduleGasLimitField } from 'redux/schedule';
-import { TypeKeys as ENSTypekeys, resolveDomainRequested, getResolvedAddress } from 'redux/ens';
-import { showNotification } from 'redux/notifications';
+} from 'redux/wallet/selectors';
+import { setSchedulingToggle, setScheduleGasLimitField } from 'redux/schedule/actions';
+import { isSchedulingEnabled } from 'redux/schedule/selectors';
+import { TypeKeys as ENSTypekeys } from 'redux/ens/types';
+import { getResolvedAddress } from 'redux/ens/selectors';
+import { resolveDomainRequested } from 'redux/ens/actions';
+import { showNotification } from 'redux/notifications/actions';
 import { TypeKeys } from './types';
 import {
   setToField,

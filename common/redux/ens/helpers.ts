@@ -5,7 +5,7 @@ import networkConfigs from 'libs/ens/networkConfigs';
 import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';
 import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
-import { getNodeLib } from 'redux/config';
+import { getNodeLib } from 'redux/config/selectors';
 
 //#region Make & Decode
 interface Params {

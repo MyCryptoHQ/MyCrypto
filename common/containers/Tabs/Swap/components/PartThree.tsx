@@ -1,4 +1,6 @@
-import { TShowNotification } from 'redux/notifications';
+import React, { PureComponent } from 'react';
+import { TShowNotification } from 'redux/notifications/actions';
+import { SwapInput } from 'redux/swap/types';
 import {
   TRestartSwap,
   TStartPollBityOrderStatus,
@@ -6,10 +8,8 @@ import {
   TStopOrderTimerSwap,
   TStopPollBityOrderStatus,
   TStopPollShapeshiftOrderStatus,
-  TStartOrderTimerSwap,
-  SwapInput
-} from 'redux/swap';
-import React, { PureComponent } from 'react';
+  TStartOrderTimerSwap
+} from 'redux/swap/actions';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
 import SwapProgress from './SwapProgress';

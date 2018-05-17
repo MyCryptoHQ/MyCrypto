@@ -1,7 +1,7 @@
 import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery } from 'redux-saga/effects';
 import { isValidAddressLabel } from 'libs/validators';
-import { showNotification } from 'redux/notifications';
+import { showNotification } from 'redux/notifications/actions';
 import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
 import {
   TypeKeys,

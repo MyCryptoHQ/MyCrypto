@@ -6,7 +6,7 @@ import { IFullWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
-import { TransactionFieldValues } from 'redux/transaction';
+import { TransactionFieldValues } from 'redux/transaction/helpers';
 
 // we dont include the signature paramaters because web3 transactions are unsigned
 const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));

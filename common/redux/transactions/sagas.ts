@@ -8,14 +8,15 @@ import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'redux/reducers';
-import { TypeKeys as ConfigTypeKeys, getNodeLib, getNetworkConfig } from 'redux/config';
-import { getWalletInst } from 'redux/wallet';
+import { TypeKeys as ConfigTypeKeys } from 'redux/config/types';
+import { getNodeLib, getNetworkConfig } from 'redux/config/selectors';
+import { getWalletInst } from 'redux/wallet/selectors';
 import {
   TypeKeys as TxTypeKeys,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
-} from 'redux/transaction';
+} from 'redux/transaction/types';
 import { TypeKeys, FetchTransactionDataAction } from './types';
 import { setTransactionData, addRecentTransaction, resetTransactionData } from './actions';
 

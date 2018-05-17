@@ -1,13 +1,13 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
+import { fetchGasEstimates, GasEstimates } from 'api/gas';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'redux/reducers';
+import { getOffline, getNetworkConfig } from 'redux/config/selectors';
 import { TypeKeys } from './types';
 import { setGasEstimates } from './actions';
-import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
-import { AppState } from 'redux/reducers';
-import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { getEstimates } from './selectors';
-import { getOffline, getNetworkConfig } from 'redux/config';
-import { NetworkConfig } from 'types/network';
 
 export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
   // Must yield time for testability

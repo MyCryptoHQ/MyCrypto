@@ -11,7 +11,7 @@ import { transactionsSaga as transactions } from './transactions/sagas';
 import { messageSaga as message } from './message/sagas';
 import { deterministicWalletsSaga as deterministicWallets } from './deterministicWallets/sagas';
 import { ratesSaga as rates } from './rates/sagas';
-import { transactionSaga as transaction } from './transaction';
+import { transactionSaga as transaction } from './transaction/sagas';
 import { gasSaga as gas } from './gas/sagas';
 import { scheduleSaga as schedule } from './schedule/sagas';
 import { addressBookSaga as addressBook } from './addressBook/sagas';

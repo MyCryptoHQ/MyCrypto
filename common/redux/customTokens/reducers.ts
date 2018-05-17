@@ -1,10 +1,10 @@
+import { Token } from 'types/network';
 import {
   TypeKeys,
   AddCustomTokenAction,
   CustomTokenAction,
   RemoveCustomTokenAction
 } from './types';
-import { Token } from 'types/network';
 
 export type State = Token[];
 

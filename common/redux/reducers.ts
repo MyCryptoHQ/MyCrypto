@@ -1,22 +1,24 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import config, { State as ConfigState } from './config';
-import notifications, { State as NotificationsState } from './notifications';
-import onboardStatus, { State as OnboardStatusState } from './onboardStatus';
-import ens, { State as EnsState } from './ens';
-import wallet, { State as WalletState } from './wallet';
-import customTokens, { State as CustomTokensState } from './customTokens';
-import rates, { State as RatesState } from './rates';
-import deterministicWallets, { State as DeterministicWalletsState } from './deterministicWallets';
-import swap, { State as SwapState } from './swap';
-import transaction, { State as TransactionState } from './transaction';
-import transactions, { State as TransactionsState } from './transactions';
-import message, { State as MessageState } from './message';
-import paritySigner, { State as ParitySignerState } from './paritySigner';
-import addressBook, { State as AddressBookState } from './addressBook';
-import gas, { State as GasState } from './gas';
-import schedule, { State as ScheduleState } from './schedule';
+import config, { State as ConfigState } from './config/reducers';
+import notifications, { State as NotificationsState } from './notifications/reducers';
+import onboardStatus, { State as OnboardStatusState } from './onboardStatus/reducers';
+import ens, { State as EnsState } from './ens/reducers';
+import wallet, { State as WalletState } from './wallet/reducers';
+import customTokens, { State as CustomTokensState } from './customTokens/reducers';
+import rates, { State as RatesState } from './rates/reducers';
+import deterministicWallets, {
+  State as DeterministicWalletsState
+} from './deterministicWallets/reducers';
+import swap, { State as SwapState } from './swap/reducers';
+import transaction, { State as TransactionState } from './transaction/reducers';
+import transactions, { State as TransactionsState } from './transactions/reducers';
+import message, { State as MessageState } from './message/reducers';
+import paritySigner, { State as ParitySignerState } from './paritySigner/reducers';
+import addressBook, { State as AddressBookState } from './addressBook/reducers';
+import gas, { State as GasState } from './gas/reducers';
+import schedule, { State as ScheduleState } from './schedule/reducers';
 
 export interface AppState {
   // Custom reducers
