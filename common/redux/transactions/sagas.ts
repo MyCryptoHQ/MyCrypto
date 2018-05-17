@@ -2,6 +2,7 @@ import { SagaIterator } from 'redux-saga';
 import { put, select, apply, call, take, takeEvery } from 'redux-saga/effects';
 import EthTx from 'ethereumjs-tx';
 import { toChecksumAddress } from 'ethereumjs-util';
+
 import { INode } from 'libs/nodes';
 import { hexEncodeData } from 'libs/nodes/rpc/utils';
 import { getTransactionFields } from 'libs/transaction';

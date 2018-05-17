@@ -15,6 +15,7 @@ import {
 } from 'redux-saga/effects';
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
+
 import { AddressMessage } from 'config';
 import { INode } from 'libs/nodes/INode';
 import { IWallet, Web3Wallet } from 'libs/wallet';
@@ -49,12 +50,13 @@ import {
 } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'redux/reducers';
-import { TypeKeys as ConfigTypeKeys } from 'redux/config/types';
+import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'redux/config/types';
 import {
   getNodeLib,
   isNetworkUnit,
   getOffline,
-  getAutoGasLimitEnabled
+  getAutoGasLimitEnabled,
+  getNetworkUnit
 } from 'redux/config/selectors';
 import { TypeKeys as ENSTypekeys } from 'redux/ens/types';
 import { resolveDomainRequested } from 'redux/ens/actions';

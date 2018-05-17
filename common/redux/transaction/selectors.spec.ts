@@ -1,4 +1,6 @@
 import BN from 'bn.js';
+import cloneDeep from 'lodash/cloneDeep';
+
 import { Wei } from 'libs/units';
 import { getInitialState } from '../helpers';
 import { RequestStatus } from './types';
@@ -44,7 +46,6 @@ import {
   getSignState,
   getSerializedTransaction
 } from './selectors';
-import cloneDeep from 'lodash/cloneDeep';
 
 const initialState = cloneDeep(getInitialState());
 

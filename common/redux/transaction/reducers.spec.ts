@@ -1,5 +1,6 @@
 import EthTx from 'ethereumjs-tx';
 import BN from 'bn.js';
+
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
   TypeKeys,

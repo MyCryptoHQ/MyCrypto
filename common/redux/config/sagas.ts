@@ -11,6 +11,7 @@ import {
   apply,
   takeLatest
 } from 'redux-saga/effects';
+
 import translate, { translateRaw } from 'translations';
 import {
   getShepherdOffline,

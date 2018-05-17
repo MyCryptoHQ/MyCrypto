@@ -1,4 +1,5 @@
 import { createStore } from 'redux';
+
 import { resolveDomainRequested } from './actions';
 import ens from './reducers';
 

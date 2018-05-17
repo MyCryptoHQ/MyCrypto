@@ -1,4 +1,5 @@
 import { toChecksumAddress } from 'ethereumjs-util';
+
 import { AppState } from 'redux/reducers';
 import { getCurrentTo } from 'redux/transaction/selectors';
 import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';

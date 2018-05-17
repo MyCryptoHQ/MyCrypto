@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+
+import { Store } from 'redux';
+import { AppState } from 'redux/reducers';
+import { pollOfflineStatus, TPollOfflineStatus } from 'redux/config/actions';
+import { getNetworkUnit } from 'redux/config/selectors';
+import { setUnitMeta, TSetUnitMeta } from 'redux/transaction/actions';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -11,19 +17,15 @@ import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
 import SupportPage from 'containers/Tabs/SupportPage';
+import { TitleBar } from 'components/ui';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
-import { TitleBar } from 'components/ui';
-import { Store } from 'redux';
-import { getNetworkUnit, pollOfflineStatus, TPollOfflineStatus } from 'redux/config';
-import { AppState } from 'redux/reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
-import { setUnitMeta, TSetUnitMeta } from 'redux/transaction';
 
 interface OwnProps {
   store: Store<AppState>;

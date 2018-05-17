@@ -1,16 +1,17 @@
 import React from 'react';
-import BN from 'bn.js';
 import { connect } from 'react-redux';
-import { AppState } from 'redux/reducers';
+import BN from 'bn.js';
 import classNames from 'classnames';
-import { getNetworkConfig, getOffline } from 'redux/config';
-import { getIsEstimating } from 'redux/gas';
-import { getGasLimit } from 'redux/transaction';
-import { UnitDisplay, Spinner } from 'components/ui';
+
 import { NetworkConfig } from 'types/network';
-import './FeeSummary.scss';
-import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'redux/schedule';
 import { calcEACTotalCost } from 'libs/scheduling';
+import { AppState } from 'redux/reducers';
+import { getNetworkConfig, getOffline } from 'redux/config/selectors';
+import { getIsEstimating } from 'redux/gas/selectors';
+import { getGasLimit } from 'redux/transaction/selectors';
+import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'redux/schedule/selectors';
+import { UnitDisplay, Spinner } from 'components/ui';
+import './FeeSummary.scss';
 
 export interface RenderData {
   gasPriceWei: string;

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import { DomainRequest } from 'libs/ens';
 import {
   TypeKeys,

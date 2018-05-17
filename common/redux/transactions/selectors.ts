@@ -1,5 +1,5 @@
-import { AppState } from 'redux/reducers';
 import { SavedTransaction } from 'types/transactions';
+import { AppState } from 'redux/reducers';
 import { getNetworkConfig } from 'redux/config/selectors';
 import { getWalletInst } from 'redux/wallet/selectors';
 

@@ -1,10 +1,11 @@
 import uniqBy from 'lodash/uniqBy';
 import difference from 'lodash/difference';
-import { AppState } from 'redux/reducers';
+
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { EXTRA_PATHS } from 'config/dpaths';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { stripWeb3Network, shepherdProvider, INode } from 'libs/nodes';
+import { AppState } from 'redux/reducers';
 import {
   CustomNetworkConfig,
   StaticNetworkConfig,

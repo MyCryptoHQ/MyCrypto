@@ -1,6 +1,7 @@
 import erc20 from 'libs/erc20';
 import EthTx from 'ethereumjs-tx';
 import { toChecksumAddress } from 'ethereumjs-util';
+
 import { Token } from 'types/network';
 import { AppState } from 'redux/reducers';
 import { getAddressMessage, AddressMessage } from 'config';

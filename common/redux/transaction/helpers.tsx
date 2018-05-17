@@ -3,6 +3,7 @@ import Tx from 'ethereumjs-tx';
 import { SagaIterator } from 'redux-saga';
 import { select, call, put, take } from 'redux-saga/effects';
 import { bufferToHex } from 'ethereumjs-util';
+
 import { NetworkConfig, StaticNetworkConfig } from 'types/network';
 import { TokenValue, Wei, toTokenBase } from 'libs/units';
 import { IFullWallet } from 'libs/wallet';
@@ -14,7 +15,7 @@ import {
   makeTransaction
 } from 'libs/transaction';
 import { validNumber, validDecimal } from 'libs/validators';
-// import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { AppState } from 'redux/reducers';
 import { isNetworkUnit, getNetworkConfig, getOffline } from 'redux/config/selectors';
 import { isSchedulingEnabled } from 'redux/schedule/selectors';
@@ -143,12 +144,11 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       yield put(
         showNotification(
           'success',
-          // <TransactionSucceeded
-          //   txHash={broadcastedHash}
-          //   blockExplorer={network.isCustom ? undefined : network.blockExplorer}
-          //   scheduling={scheduling}
-          // />,
-          'gj',
+          <TransactionSucceeded
+            txHash={broadcastedHash}
+            blockExplorer={network.isCustom ? undefined : network.blockExplorer}
+            scheduling={scheduling}
+          />,
           Infinity
         )
       );

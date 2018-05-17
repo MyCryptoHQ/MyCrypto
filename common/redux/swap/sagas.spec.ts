@@ -1,12 +1,13 @@
 import { delay } from 'redux-saga';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { take, race, fork, call, cancel, apply, cancelled, put, select } from 'redux-saga/effects';
+
 import { getAllRates, getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import { configuredStore } from 'redux/store';
-import { TypeKeys as TransactionTypeKeys } from 'redux/transaction';
-import { TypeKeys as WalletTypeKeys } from 'redux/wallet';
-import { showNotification } from 'redux/notifications';
+import { TypeKeys as TransactionTypeKeys } from 'redux/transaction/types';
+import { TypeKeys as WalletTypeKeys } from 'redux/wallet/types';
+import { showNotification } from 'redux/notifications/actions';
 import {
   TypeKeys,
   BityOrderPostResponse,

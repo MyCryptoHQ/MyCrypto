@@ -13,6 +13,7 @@ import {
 import { cloneableGenerator, SagaIteratorClone, createMockTask } from 'redux-saga/utils';
 import BN from 'bn.js';
 import { bufferToHex, toBuffer } from 'ethereumjs-util';
+
 import {
   Address,
   toTokenBase,

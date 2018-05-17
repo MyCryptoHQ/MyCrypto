@@ -1,6 +1,7 @@
 import { SagaIterator } from 'redux-saga';
 import { select, apply, call } from 'redux-saga/effects';
 import ethUtil from 'ethereumjs-util';
+
 import networkConfigs from 'libs/ens/networkConfigs';
 import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';

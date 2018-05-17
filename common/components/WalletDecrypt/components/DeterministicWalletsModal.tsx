@@ -6,7 +6,7 @@ import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'redux/reducers';
-import { getNetworkConfig } from 'redux/config';
+import { getNetworkConfig } from 'redux/config/selectors';
 import {
   DeterministicWalletData,
   GetDeterministicWalletsAction,

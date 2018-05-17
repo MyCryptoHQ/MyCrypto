@@ -2,6 +2,7 @@ import { SagaIterator } from 'redux-saga';
 import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
+
 import { DeterministicWalletData, GetDeterministicWalletsAction } from './types';
 import { setDeterministicWallets, updateDeterministicWallet } from './actions';
 import { showNotification } from 'redux/notifications/actions';

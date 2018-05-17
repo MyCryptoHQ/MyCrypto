@@ -1,16 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import { translateRaw } from 'translations';
+import { sanitizeNumericalInput } from 'libs/values';
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import { AppState } from 'redux/reducers';
+import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'redux/config/actions';
+import { getAutoGasLimitEnabled } from 'redux/config/selectors';
+import { getScheduleGasPrice, getTimeBounty } from 'redux/schedule/selectors';
+import { TInputGasPrice } from 'redux/transaction/actions';
+import { isValidGasPrice } from 'redux/transaction/selectors';
+import { NonceField, GasLimitField, DataField } from 'components';
+import { Input } from 'components/ui';
 import FeeSummary, { RenderData } from './FeeSummary';
 import './AdvancedGas.scss';
-import { AppState } from 'redux/reducers';
-import { NonceField, GasLimitField, DataField } from 'components';
-import { connect } from 'react-redux';
-import { getAutoGasLimitEnabled, TToggleAutoGasLimit, toggleAutoGasLimit } from 'redux/config';
-import { isValidGasPrice, TInputGasPrice } from 'redux/transaction';
-import { sanitizeNumericalInput } from 'libs/values';
-import { Input } from 'components/ui';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { getScheduleGasPrice, getTimeBounty } from 'redux/schedule';
 
 export interface AdvancedOptions {
   gasPriceField?: boolean;

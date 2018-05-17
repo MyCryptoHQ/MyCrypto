@@ -1,4 +1,5 @@
 import { schema, normalize } from 'normalizr';
+
 import {
   TypeKeys,
   SwapAction,

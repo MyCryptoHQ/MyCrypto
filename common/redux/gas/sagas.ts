@@ -1,5 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { NetworkConfig } from 'types/network';

@@ -1,5 +1,6 @@
 import { Reducer, combineReducers } from 'redux';
 import BN from 'bn.js';
+
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
   TypeKeys,

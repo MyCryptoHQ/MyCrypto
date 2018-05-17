@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { AppState } from 'redux/reducers';
-import { nonStandardTransaction } from 'redux/transaction';
+import { nonStandardTransaction } from 'redux/transaction/selectors';
 
 interface Props {
   isNonStandard: boolean;

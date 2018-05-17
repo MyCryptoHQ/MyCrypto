@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import { shepherdProvider } from 'libs/nodes';
 import {
   ethPlorer,

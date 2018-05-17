@@ -1,7 +1,8 @@
 import { sha256 } from 'ethereumjs-util';
-import { State as SwapState } from 'redux/swap';
-import { IWallet, WalletConfig } from 'libs/wallet';
+
 import { AppState } from 'redux/reducers';
+import { State as SwapState } from 'redux/swap/reducers';
+import { IWallet, WalletConfig } from 'libs/wallet';
 
 export const REDUX_STATE = 'REDUX_STATE';
 

@@ -1,6 +1,6 @@
 import { INode } from 'libs/nodes';
 import { StaticNetworkIds } from './network';
-import { StaticNodesState, CustomNodesState } from 'redux/config';
+import { StaticNodesState, CustomNodesState } from 'redux/config/types';
 
 interface CustomNodeConfig {
   id: string;

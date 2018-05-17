@@ -1,12 +1,10 @@
 import { TokenValue, Wei } from 'libs/units';
-import {
-  IWallet,
-  Web3Wallet,
-  LedgerWallet,
-  TrezorWallet,
-  ParitySignerWallet,
-  WalletConfig
-} from 'libs/wallet';
+import { WalletConfig } from 'libs/wallet/config';
+import { IWallet } from 'libs/wallet/IWallet';
+import { LedgerWallet } from 'libs/wallet/deterministic/ledger';
+import { TrezorWallet } from 'libs/wallet/deterministic/trezor';
+import Web3Wallet from 'libs/wallet/non-deterministic/web3';
+import ParitySignerWallet from 'libs/wallet/non-deterministic/parity';
 import { SecureWalletName, WalletName } from 'config';
 import { Token } from 'types/network';
 import { AppState } from 'redux/reducers';
@@ -17,7 +15,7 @@ import {
   unSupportedWalletFormatsOnNetwork
 } from 'redux/config/selectors';
 import { isEtherTransaction, getUnit } from 'redux/transaction/selectors';
-// import { DisabledWallets } from 'components/WalletDecrypt';
+import { DisabledWallets } from 'components/WalletDecrypt';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;

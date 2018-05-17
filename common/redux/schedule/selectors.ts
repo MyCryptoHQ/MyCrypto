@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
+
 import { AppState } from 'redux/reducers';
 import { Nonce, Wei } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator, timeBountyValidator } from 'libs/validators';

@@ -1,22 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
+
+import { gasPriceDefaults } from 'config';
 import translate from 'translations';
-import './SimpleGas.scss';
+import { Wei, fromWei } from 'libs/units';
 import { AppState } from 'redux/reducers';
+import { getIsWeb3Node } from 'redux/config/selectors';
+import { TInputGasPrice } from 'redux/transaction/actions';
 import {
   getGasLimitEstimationTimedOut,
   getGasEstimationPending,
-  nonceRequestPending,
-  TInputGasPrice
-} from 'redux/transaction';
-import { connect } from 'react-redux';
-import { getEstimates, getIsEstimating, fetchGasEstimates, TFetchGasEstimates } from 'redux/gas';
-import { getIsWeb3Node } from 'redux/config';
-import { Wei, fromWei } from 'libs/units';
-import { gasPriceDefaults } from 'config';
+  nonceRequestPending
+} from 'redux/transaction/selectors';
+import { fetchGasEstimates, TFetchGasEstimates } from 'redux/gas/actions';
+import { getEstimates, getIsEstimating } from 'redux/gas/selectors';
+import { getScheduleGasPrice } from 'redux/schedule/selectors';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import FeeSummary from './FeeSummary';
-import { getScheduleGasPrice } from 'redux/schedule';
+import './SimpleGas.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 

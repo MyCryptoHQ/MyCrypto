@@ -1,6 +1,7 @@
 import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
+
 import translate from 'translations';
 import { configuredStore } from 'redux/store';
 import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';

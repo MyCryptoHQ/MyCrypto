@@ -1,5 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
+
 import { fetchRates, CCResponse } from 'api/rates';
 import { TypeKeys, FetchCCRatesRequested } from './types';
 import { fetchCCRatesSucceeded, fetchCCRatesFailed } from './actions';

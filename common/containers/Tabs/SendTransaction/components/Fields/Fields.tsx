@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { AppState } from 'redux/reducers';
 import { isAnyOfflineWithWeb3 } from 'redux/derivedSelectors';
+import { getOffline, getNetworkConfig } from 'redux/config/selectors';
+import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'redux/schedule/selectors';
+import { getUnit } from 'redux/transaction/selectors';
 import {
   AddressField,
   AmountField,
@@ -14,13 +20,7 @@ import {
   SendScheduleTransactionButton
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
-import translate from 'translations';
-
-import { AppState } from 'redux/reducers';
 import { NonStandardTransaction } from './components';
-import { getOffline, getNetworkConfig } from 'redux/config';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'redux/schedule';
-import { getUnit } from 'redux/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists

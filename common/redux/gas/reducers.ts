@@ -1,5 +1,5 @@
-import { SetGasEstimatesAction, GasAction, TypeKeys } from './types';
 import { GasEstimates } from 'api/gas';
+import { SetGasEstimatesAction, GasAction, TypeKeys } from './types';
 
 export interface State {
   estimates: GasEstimates | null;

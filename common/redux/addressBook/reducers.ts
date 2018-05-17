@@ -1,4 +1,5 @@
 import { toChecksumAddress } from 'ethereumjs-util';
+
 import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
 import { TypeKeys, AddressBookAction, AddressLabelEntry } from './types';
 

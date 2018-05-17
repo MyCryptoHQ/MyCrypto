@@ -1,11 +1,12 @@
 import { SagaIterator, delay } from 'redux-saga';
 import { select, take, call, apply, fork, put, all, takeLatest } from 'redux-saga/effects';
 import BN from 'bn.js';
+
 import { toTokenBase, Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
-import { getOffline, getNodeLib } from 'redux/config';
+import { getOffline, getNodeLib } from 'redux/config/selectors';
 import { TypeKeys as TransactionTypeKeys } from 'redux/transaction/types';
 import { getDecimal, getUnit } from 'redux/transaction/selectors';
 import { setGasLimitField } from 'redux/transaction/actions';

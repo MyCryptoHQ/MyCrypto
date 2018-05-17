@@ -1,4 +1,5 @@
 import BN from 'bn.js';
+
 import { Wei, TokenValue } from 'libs/units';
 import { AppState } from 'redux/reducers';
 import { getNetworkConfig } from 'redux/config/selectors';

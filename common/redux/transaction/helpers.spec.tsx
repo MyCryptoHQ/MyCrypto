@@ -3,9 +3,10 @@ import { SagaIterator } from 'redux-saga';
 import { select, call, put, take } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { bufferToHex } from 'ethereumjs-util';
+
 import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
-// import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { configuredStore } from 'redux/store';
 import { getNetworkConfig, getOffline, isNetworkUnit } from 'redux/config/selectors';
 import { isSchedulingEnabled } from 'redux/schedule/selectors';
@@ -157,12 +158,11 @@ describe('transaction: Helpers', () => {
           put(
             showNotification(
               'success',
-              // <TransactionSucceeded
-              //   txHash={broadcastedHash}
-              //   blockExplorer={network.blockExplorer}
-              //   scheduling={false}
-              // />,
-              'gj',
+              <TransactionSucceeded
+                txHash={broadcastedHash}
+                blockExplorer={network.blockExplorer}
+                scheduling={false}
+              />,
               Infinity
             )
           )

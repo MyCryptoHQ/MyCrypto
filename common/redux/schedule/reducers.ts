@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 import moment from 'moment-timezone';
+
 import { gasPriceToBase, fromWei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import {

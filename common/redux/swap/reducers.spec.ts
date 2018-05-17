@@ -1,4 +1,5 @@
 import { normalize } from 'normalizr';
+
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import tokens from 'config/tokens/eth.json';
 import {
