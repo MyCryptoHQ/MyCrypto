@@ -3,19 +3,19 @@ import { Switch, Route, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
-import { AppState } from 'redux/reducers';
-import { getOffline } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/selectors';
 import {
   showNotification as dShowNotification,
   TShowNotification
-} from 'redux/notifications/actions';
+} from 'features/notifications/actions';
 import {
   ProviderName,
   SwapInput,
   NormalizedOptions,
   NormalizedBityRates,
   NormalizedShapeshiftRates
-} from 'redux/swap/types';
+} from 'features/swap/types';
 import {
   initSwap as dInitSwap,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
@@ -47,7 +47,7 @@ import {
   TStopPollShapeshiftOrderStatus,
   TChangeSwapProvider,
   TStopLoadShapeshiftRatesSwap
-} from 'redux/swap/actions';
+} from 'features/swap/actions';
 import TabSection from 'containers/TabSection';
 import { RouteNotFound } from 'components/RouteNotFound';
 import CurrencySwap from './components/CurrencySwap';

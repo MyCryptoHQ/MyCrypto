@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import DateTime from 'react-datetime';
 import moment from 'moment';
 
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import translate from 'translations';
-import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'redux/schedule/actions';
+import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'features/schedule/actions';
 import {
   getCurrentScheduleTimestamp,
   ICurrentScheduleTimestamp,
   isValidCurrentScheduleTimestamp
-} from 'redux/schedule/selectors';
+} from 'features/schedule/selectors';
 
 interface DispatchProps {
   setCurrentScheduleTimestamp: TSetCurrentScheduleTimestamp;

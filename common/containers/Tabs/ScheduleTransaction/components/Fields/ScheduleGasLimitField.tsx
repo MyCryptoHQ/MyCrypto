@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { translateRaw } from 'translations';
 import { Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { AppState } from 'redux/reducers';
-import { setScheduleGasLimitField, TSetScheduleGasLimitField } from 'redux/schedule/actions';
-import { getScheduleGasLimit, isValidScheduleGasLimit } from 'redux/schedule/selectors';
-import { getGasEstimationPending } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { setScheduleGasLimitField, TSetScheduleGasLimitField } from 'features/schedule/actions';
+import { getScheduleGasLimit, isValidScheduleGasLimit } from 'features/schedule/selectors';
+import { getGasEstimationPending } from 'features/transaction/selectors';
 import { Input, InlineSpinner } from 'components/ui';
 
 interface OwnProps {

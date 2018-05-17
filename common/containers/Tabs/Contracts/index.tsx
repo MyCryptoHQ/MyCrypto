@@ -8,7 +8,7 @@ import {
   TSetAsContractInteraction,
   setAsViewAndSend,
   TSetAsViewAndSend
-} from 'redux/transaction/actions';
+} from 'features/transaction/actions';
 import TabSection from 'containers/TabSection';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';

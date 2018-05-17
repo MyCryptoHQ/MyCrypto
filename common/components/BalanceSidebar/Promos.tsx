@@ -2,7 +2,7 @@ import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import { HardwareWallets, Coinbase, Shapeshift } from './PromoComponents';
 import './Promos.scss';
 

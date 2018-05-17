@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { NameState } from 'libs/ens';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import { Spinner } from 'components/ui';
 import {
   NameOwned,

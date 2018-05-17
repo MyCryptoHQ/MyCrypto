@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { isUnlocked } from 'redux/wallet/selectors';
+import { AppState } from 'features/reducers';
+import { isUnlocked } from 'features/wallet/selectors';
 
 interface OwnProps {
   whenUnlocked: React.ReactElement<any> | null;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { setCurrentWindowStart, TSetCurrentWindowStart } from 'redux/schedule/actions';
-import { ICurrentWindowStart } from 'redux/schedule/selectors';
+import { setCurrentWindowStart, TSetCurrentWindowStart } from 'features/schedule/actions';
+import { ICurrentWindowStart } from 'features/schedule/selectors';
 import { Query } from 'components/renderCbs';
 import { WindowStartInputFactory } from './WindowStartInputFactory';
 

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
-import { AppState } from 'redux/reducers';
-import { getNetworkConfig } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig } from 'features/config/selectors';
 import { Addresses } from './components/Addresses';
 import { Amounts } from './components/Amounts';
 import { Details } from './components/Details';

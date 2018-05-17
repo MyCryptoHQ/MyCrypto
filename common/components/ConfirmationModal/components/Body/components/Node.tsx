@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { StaticNodeConfig } from 'types/node';
-import { AppState } from 'redux/reducers';
-import { getNodeConfig } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getNodeConfig } from 'features/config/selectors';
 
 interface StateProps {
   node: StaticNodeConfig;

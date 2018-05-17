@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import { translateRaw } from 'translations';
 import { toWei } from 'libs/units';
-import { AppState } from 'redux/reducers';
-import { setScheduleDepositField, TSetScheduleDepositField } from 'redux/schedule/actions';
-import { getScheduleDeposit, isValidScheduleDeposit } from 'redux/schedule/selectors';
-import { getDecimal } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { setScheduleDepositField, TSetScheduleDepositField } from 'features/schedule/actions';
+import { getScheduleDeposit, isValidScheduleDeposit } from 'features/schedule/selectors';
+import { getDecimal } from 'features/transaction/selectors';
 import { Input, Tooltip } from 'components/ui';
 import Help from 'components/ui/Help';
 

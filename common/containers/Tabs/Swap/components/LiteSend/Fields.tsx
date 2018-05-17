@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { Wei, TokenValue } from 'libs/units';
-import { AppState } from 'redux/reducers';
-import { resetWallet, TResetWallet } from 'redux/wallet/actions';
-import { getCurrentBalance } from 'redux/wallet/selectors';
-import { getUnit } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { resetWallet, TResetWallet } from 'features/wallet/actions';
+import { getCurrentBalance } from 'features/wallet/selectors';
+import { getUnit } from 'features/transaction/selectors';
 import { SendButton, TXMetaDataPanel } from 'components';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';

@@ -5,8 +5,8 @@ import { addHexPrefix } from 'ethereumjs-util';
 import translate from 'translations';
 import { NodeConfig } from 'types/node';
 import { CodeBlock, Input } from 'components/ui';
-import { AppState } from 'redux/reducers';
-import { getNodeConfig } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getNodeConfig } from 'features/config/selectors';
 import { SerializedTransaction } from 'components/renderCbs';
 import './Details.scss';
 

@@ -5,9 +5,9 @@ import moment from 'moment';
 import 'moment-timezone';
 
 import translate from 'translations';
-import { setScheduleTimezone, TSetScheduleTimezone } from 'redux/schedule/actions';
-import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'redux/schedule/selectors';
-import { AppState } from 'redux/reducers';
+import { setScheduleTimezone, TSetScheduleTimezone } from 'features/schedule/actions';
+import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'features/schedule/selectors';
+import { AppState } from 'features/reducers';
 import { Query } from 'components/renderCbs';
 import { Dropdown } from 'components/ui';
 

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import translate from 'translations';
-import { AppState } from 'redux/reducers';
-import { AddCustomNodeAction } from 'redux/config/types';
+import { AppState } from 'features/reducers';
+import { AddCustomNodeAction } from 'features/config/types';
 import {
   TChangeNodeIntent,
   TAddCustomNode,
@@ -12,14 +12,14 @@ import {
   changeNodeIntent,
   addCustomNode,
   removeCustomNode
-} from 'redux/config/actions';
+} from 'features/config/actions';
 import {
   isNodeChanging,
   getNodeId,
   CustomNodeOption,
   NodeOption,
   getNodeOptions
-} from 'redux/config/selectors';
+} from 'features/config/selectors';
 import CustomNodeModal from 'components/CustomNodeModal';
 import './NodeSelect.scss';
 

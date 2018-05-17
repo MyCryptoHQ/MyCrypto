@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { AppState } from 'redux/reducers';
-import { setCurrentWindowSize, TSetCurrentWindowSize } from 'redux/schedule/actions';
+import { AppState } from 'features/reducers';
+import { setCurrentWindowSize, TSetCurrentWindowSize } from 'features/schedule/actions';
 import {
   ICurrentWindowSize,
   ICurrentScheduleType,
   getCurrentScheduleType
-} from 'redux/schedule/selectors';
+} from 'features/schedule/selectors';
 import { Query } from 'components/renderCbs';
 import { WindowSizeInputFactory } from './WindowSizeInputFactory';
 

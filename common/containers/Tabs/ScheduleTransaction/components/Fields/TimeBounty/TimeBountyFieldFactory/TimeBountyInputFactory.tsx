@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { Query } from 'components/renderCbs';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import {
   getCurrentTimeBounty,
   ICurrentTimeBounty,
   isValidCurrentTimeBounty
-} from 'redux/schedule/selectors';
+} from 'features/schedule/selectors';
 import { CallbackProps } from 'containers/Tabs/ScheduleTransaction/components/Fields/TimeBounty/TimeBountyFieldFactory';
 
 interface StateProps {

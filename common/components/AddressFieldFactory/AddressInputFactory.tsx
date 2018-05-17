@@ -5,16 +5,16 @@ import { addHexPrefix } from 'ethereumjs-util';
 import { translateRaw } from 'translations';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import {
   ICurrentTo,
   getCurrentTo,
   isValidCurrentTo,
   isCurrentToLabelEntry
-} from 'redux/transaction/selectors';
-import { getCurrentToLabel } from 'redux/addressBook/selectors';
-import { getWalletInst } from 'redux/wallet/selectors';
-import { getResolvingDomain } from 'redux/ens/selectors';
+} from 'features/transaction/selectors';
+import { getCurrentToLabel } from 'features/addressBook/selectors';
+import { getWalletInst } from 'features/wallet/selectors';
+import { getResolvingDomain } from 'features/ens/selectors';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';

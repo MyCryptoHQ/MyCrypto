@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { translate } from 'translations';
-import { AppState } from 'redux/reducers';
-import { signaturePending } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { signaturePending } from 'features/transaction/selectors';
 import { Spinner } from 'components/ui';
 import './SigningStatus.scss';
 

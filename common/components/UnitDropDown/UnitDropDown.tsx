@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Option } from 'react-select';
 
-import { AppState } from 'redux/reducers';
-import { setUnitMeta, TSetUnitMeta } from 'redux/transaction/actions';
-import { getUnit } from 'redux/transaction/selectors';
-import { getNetworkUnit } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { setUnitMeta, TSetUnitMeta } from 'features/transaction/actions';
+import { getUnit } from 'features/transaction/selectors';
+import { getNetworkUnit } from 'features/config/selectors';
 import {
   TokenBalance,
   MergedToken,
   getShownTokenBalances,
   getTokens
-} from 'redux/wallet/selectors';
+} from 'features/wallet/selectors';
 import { Query } from 'components/renderCbs';
 import { Dropdown } from 'components/ui';
 

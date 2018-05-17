@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 
 import { makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
-import { AppState } from 'redux/reducers';
-import { getSerializedTransaction } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { getSerializedTransaction } from 'features/transaction/selectors';
 
 interface StateProps {
   serializedTransaction: Buffer | null;

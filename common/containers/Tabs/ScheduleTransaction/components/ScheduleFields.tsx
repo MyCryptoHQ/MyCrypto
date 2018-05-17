@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import translate from 'translations';
-import { AppState } from 'redux/reducers';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'redux/schedule/selectors';
+import { AppState } from 'features/reducers';
+import { getCurrentScheduleType, ICurrentScheduleType } from 'features/schedule/selectors';
 import {
   ScheduleTimezoneDropDown,
   ScheduleTimestampField,

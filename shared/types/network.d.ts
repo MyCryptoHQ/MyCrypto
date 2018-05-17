@@ -1,4 +1,4 @@
-import { StaticNetworksState, CustomNetworksState } from 'redux/config/types';
+import { StaticNetworksState, CustomNetworksState } from 'features/config/types';
 
 type StaticNetworkIds =
   | 'ETH'

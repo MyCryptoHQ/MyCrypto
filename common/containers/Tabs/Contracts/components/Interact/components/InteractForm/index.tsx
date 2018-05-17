@@ -7,10 +7,10 @@ import { donationAddressMap } from 'config';
 import translate, { translateRaw } from 'translations';
 import { NetworkContract } from 'types/network';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
-import { AppState } from 'redux/reducers';
-import { getNetworkContracts } from 'redux/config/selectors';
-import { setCurrentTo, TSetCurrentTo } from 'redux/transaction/actions';
-import { getCurrentTo } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { getNetworkContracts } from 'features/config/selectors';
+import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
+import { getCurrentTo } from 'features/transaction/selectors';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 

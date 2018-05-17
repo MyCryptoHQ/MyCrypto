@@ -3,8 +3,8 @@ import { connect, MapStateToProps } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'redux/reducers';
-import { ACCOUNT_ADDRESS_ID } from 'redux/addressBook/constants';
+import { AppState } from 'features/reducers';
+import { ACCOUNT_ADDRESS_ID } from 'features/addressBook/constants';
 import {
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
@@ -12,8 +12,8 @@ import {
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
   TRemoveAddressLabelEntry
-} from 'redux/addressBook/actions';
-import { getAccountAddressEntry, getAddressLabels } from 'redux/addressBook/selectors';
+} from 'features/addressBook/actions';
+import { getAccountAddressEntry, getAddressLabels } from 'features/addressBook/selectors';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {

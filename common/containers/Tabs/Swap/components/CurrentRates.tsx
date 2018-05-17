@@ -6,21 +6,21 @@ import times from 'lodash/times';
 import { bityReferralURL, shapeshiftReferralURL } from 'config';
 import translate from 'translations';
 import { SHAPESHIFT_WHITELIST } from 'api/shapeshift';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import { Optional } from 'utils/types';
 import {
   ProviderName,
   NormalizedBityRates,
   NormalizedShapeshiftRates,
   NormalizedShapeshiftRate
-} from 'redux/swap/types';
+} from 'features/swap/types';
 import {
   loadShapeshiftRatesRequestedSwap,
   TLoadShapeshiftRatesRequestedSwap,
   stopLoadShapeshiftRatesSwap,
   TStopLoadShapeshiftRatesSwap
-} from 'redux/swap/actions';
-import { getOffline } from 'redux/config/selectors';
+} from 'features/swap/actions';
+import { getOffline } from 'features/selectors';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';

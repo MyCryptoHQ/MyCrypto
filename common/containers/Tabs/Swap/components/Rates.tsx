@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { objectContainsObjectKeys } from 'utils/helpers';
 import { toFixedIfLarger } from 'utils/formatters';
-import { NormalizedRates, ProviderName } from 'redux/swap/types';
+import { NormalizedRates, ProviderName } from 'features/swap/types';
 import './CurrentRates.scss';
 
 interface RateInputProps {

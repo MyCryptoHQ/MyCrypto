@@ -5,8 +5,9 @@ import BN from 'bn.js';
 import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
-import { AppState } from 'redux/reducers';
-import { getNetworkConfig, getOffline } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/selectors';
+import { getNetworkConfig } from 'features/config/selectors';
 import {
   inputGasPrice,
   TInputGasPrice,
@@ -16,9 +17,9 @@ import {
   TGetNonceRequested,
   resetTransactionRequested,
   TResetTransactionRequested
-} from 'redux/transaction/actions';
-import { getGasPrice } from 'redux/transaction/selectors';
-import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'redux/rates/actions';
+} from 'features/transaction/actions';
+import { getGasPrice } from 'features/transaction/selectors';
+import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'features/rates/actions';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import SimpleGas from './components/SimpleGas';
 import './TXMetaDataPanel.scss';

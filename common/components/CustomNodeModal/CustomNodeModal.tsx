@@ -5,14 +5,11 @@ import translate, { translateRaw } from 'translations';
 import { shepherdProvider } from 'libs/nodes';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
-import { AppState } from 'redux/reducers';
-import { AddCustomNodeAction } from 'redux/config/types';
-import { TAddCustomNetwork, addCustomNetwork } from 'redux/config/actions';
-import {
-  getCustomNetworkConfigs,
-  getCustomNodeConfigs,
-  getStaticNetworkConfigs
-} from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getStaticNetworkConfigs } from 'features/selectors';
+import { AddCustomNodeAction } from 'features/config/types';
+import { TAddCustomNetwork, addCustomNetwork } from 'features/config/actions';
+import { getCustomNetworkConfigs, getCustomNodeConfigs } from 'features/config/selectors';
 import { Input, Dropdown } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
 import './CustomNodeModal.scss';

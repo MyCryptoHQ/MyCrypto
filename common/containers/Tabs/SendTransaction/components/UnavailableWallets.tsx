@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { isAnyOfflineWithWeb3 } from 'redux/derivedSelectors';
+import { AppState } from 'features/reducers';
+import { isAnyOfflineWithWeb3 } from 'features/derivedSelectors';
 import { OnlyUnlocked } from 'components/renderCbs';
 
 interface StateProps {

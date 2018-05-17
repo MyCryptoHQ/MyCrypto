@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import { getAddressMessage } from 'config';
 import { Token } from 'types/network';
-import { AppState } from 'redux/reducers';
-import { getAllTokens } from 'redux/config/selectors';
-import { getCurrentTo, ICurrentTo } from 'redux/transaction/selectors';
-import { getWalletInst } from 'redux/wallet/selectors';
+import { AppState } from 'features/reducers';
+import { getAllTokens } from 'features/config/selectors';
+import { getCurrentTo, ICurrentTo } from 'features/transaction/selectors';
+import { getWalletInst } from 'features/wallet/selectors';
 import { Address } from 'components/ui';
 
 interface ReduxProps {

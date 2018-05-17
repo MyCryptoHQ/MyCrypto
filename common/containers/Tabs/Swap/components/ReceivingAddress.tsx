@@ -4,14 +4,14 @@ import { donationAddressMap } from 'config';
 import translate, { translateRaw } from 'translations';
 import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
 import { combineAndUpper } from 'utils/formatters';
-import { SwapInput } from 'redux/swap/types';
+import { SwapInput } from 'features/swap/types';
 import {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
   TShapeshiftOrderCreateRequestedSwap,
   TStopLoadBityRatesSwap
-} from 'redux/swap/actions';
+} from 'features/swap/actions';
 import SimpleButton from 'components/ui/SimpleButton';
 import { Input } from 'components/ui';
 import './ReceivingAddress.scss';

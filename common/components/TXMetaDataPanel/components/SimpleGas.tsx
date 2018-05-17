@@ -5,17 +5,17 @@ import Slider, { createSliderWithTooltip } from 'rc-slider';
 import { gasPriceDefaults } from 'config';
 import translate from 'translations';
 import { Wei, fromWei } from 'libs/units';
-import { AppState } from 'redux/reducers';
-import { getIsWeb3Node } from 'redux/config/selectors';
-import { TInputGasPrice } from 'redux/transaction/actions';
+import { AppState } from 'features/reducers';
+import { getIsWeb3Node } from 'features/config/selectors';
+import { TInputGasPrice } from 'features/transaction/actions';
 import {
   getGasLimitEstimationTimedOut,
   getGasEstimationPending,
   nonceRequestPending
-} from 'redux/transaction/selectors';
-import { fetchGasEstimates, TFetchGasEstimates } from 'redux/gas/actions';
-import { getEstimates, getIsEstimating } from 'redux/gas/selectors';
-import { getScheduleGasPrice } from 'redux/schedule/selectors';
+} from 'features/transaction/selectors';
+import { fetchGasEstimates, TFetchGasEstimates } from 'features/gas/actions';
+import { getEstimates, getIsEstimating } from 'features/gas/selectors';
+import { getScheduleGasPrice } from 'features/schedule/selectors';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';

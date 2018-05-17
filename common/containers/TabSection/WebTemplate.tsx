@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { getOffline, getLatestBlock } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getOffline, getLatestBlock } from 'features/selectors';
 import { BetaAgreement, Footer, Header } from 'components';
 import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';

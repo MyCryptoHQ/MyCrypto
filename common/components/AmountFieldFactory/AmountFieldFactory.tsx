@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { setCurrentValue, TSetCurrentValue } from 'redux/transaction/actions';
+import { AppState } from 'features/reducers';
+import { setCurrentValue, TSetCurrentValue } from 'features/transaction/actions';
 import { Query } from 'components/renderCbs';
 import { AmountInput } from './AmountInputFactory';
 

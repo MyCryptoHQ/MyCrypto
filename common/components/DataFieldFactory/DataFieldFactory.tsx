@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { inputData, TInputData } from 'redux/transaction/actions';
-import { isEtherTransaction } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { inputData, TInputData } from 'features/transaction/actions';
+import { isEtherTransaction } from 'features/transaction/selectors';
 import { Query } from 'components/renderCbs';
 import { DataInput } from './DataInputFactory';
 

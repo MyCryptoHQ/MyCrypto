@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import './Amounts.scss';
-import { AppState } from 'redux/reducers';
-import { getNetworkConfig } from 'redux/config/selectors';
-import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'redux/rates/selectors';
-import { SerializedTxParams } from 'redux/transaction/types';
-import { getParamsFromSerializedTx } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig } from 'features/config/selectors';
+import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'features/rates/selectors';
+import { SerializedTxParams } from 'features/transaction/types';
+import { getParamsFromSerializedTx } from 'features/transaction/selectors';
 import { UnitDisplay } from 'components/ui';
 
 interface StateProps extends SerializedTxParams, AllUSDValues {

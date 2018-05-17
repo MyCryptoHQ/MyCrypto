@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { getWalletInst } from 'redux/wallet/selectors';
+import { AppState } from 'features/reducers';
+import { getWalletInst } from 'features/wallet/selectors';
 import EquivalentValues from './EquivalentValues';
 import AccountInfo from './AccountInfo';
 import Promos from './Promos';

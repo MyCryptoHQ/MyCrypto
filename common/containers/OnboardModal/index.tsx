@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import Stepper from 'react-stepper-horizontal';
 
 import translate from 'translations';
-import { AppState } from 'redux/reducers';
-import { showNotification, TShowNotification } from 'redux/notifications/actions';
+import { AppState } from 'features/reducers';
+import { showNotification, TShowNotification } from 'features/notifications/actions';
 import {
   startOnboardSession,
   TStartOnboardSession,
@@ -14,7 +14,7 @@ import {
   TIncrementSlide,
   resumeSlide,
   TResumeSlide
-} from 'redux/onboardStatus/actions';
+} from 'features/onboardStatus/actions';
 import Modal, { IButton } from 'components/ui/Modal';
 import {
   WelcomeSlide,

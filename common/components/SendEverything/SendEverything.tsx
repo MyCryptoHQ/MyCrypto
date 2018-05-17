@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import translate, { translateRaw } from 'translations';
 import { TokenValue, Wei } from 'libs/units';
-import { AppState } from 'redux/reducers';
-import { sendEverythingRequested, TSendEverythingRequested } from 'redux/transaction/actions';
-import { getCurrentBalance } from 'redux/wallet/selectors';
+import { AppState } from 'features/reducers';
+import { sendEverythingRequested, TSendEverythingRequested } from 'features/transaction/actions';
+import { getCurrentBalance } from 'features/wallet/selectors';
 import { Query } from 'components/renderCbs';
 import { Tooltip } from 'components/ui';
 import './SendEverything.scss';

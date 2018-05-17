@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { getTokens, MergedToken } from 'redux/wallet/selectors';
+import { AppState } from 'features/reducers';
+import { getTokens, MergedToken } from 'features/wallet/selectors';
 import { Query } from './Query';
 
 interface Props {

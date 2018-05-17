@@ -5,17 +5,17 @@ import { toChecksumAddress } from 'ethereumjs-util';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
-import { AppState } from 'redux/reducers';
-import { getNetworkConfig } from 'redux/config/selectors';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig } from 'features/config/selectors';
 import {
   DeterministicWalletData,
   GetDeterministicWalletsAction,
   GetDeterministicWalletsArgs,
   SetDesiredTokenAction
-} from 'redux/deterministicWallets/types';
-import { setDesiredToken, getDeterministicWallets } from 'redux/deterministicWallets/actions';
-import { getTokens } from 'redux/wallet/selectors';
-import { getAddressLabels } from 'redux/addressBook/selectors';
+} from 'features/deterministicWallets/types';
+import { setDesiredToken, getDeterministicWallets } from 'features/deterministicWallets/actions';
+import { getTokens } from 'features/wallet/selectors';
+import { getAddressLabels } from 'features/addressBook/selectors';
 import { UnitDisplay, Input } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
 import './DeterministicWalletsModal.scss';

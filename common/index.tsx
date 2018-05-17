@@ -8,15 +8,15 @@ import { render } from 'react-dom';
 
 import Root from './Root';
 import consoleAdvertisement from 'utils/consoleAdvertisement';
-import { configuredStore } from 'redux/store';
+import { configuredStore } from 'features/store';
 
 const appEl = document.getElementById('app');
 
 render(<Root store={configuredStore} />, appEl);
 
 if (module.hot) {
-  module.hot.accept('redux/reducers', () =>
-    configuredStore.replaceReducer(require('redux/reducers'))
+  module.hot.accept('features/reducers', () =>
+    configuredStore.replaceReducer(require('features/reducers'))
   );
 
   module.hot.accept('./Root', () => {

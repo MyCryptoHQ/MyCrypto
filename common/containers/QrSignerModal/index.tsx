@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'redux/reducers';
-import { TFinalizeSignature, finalizeSignature } from 'redux/paritySigner/actions';
+import { AppState } from 'features/reducers';
+import { TFinalizeSignature, finalizeSignature } from 'features/paritySigner/actions';
 import { ParityQrSigner } from 'components';
 import Modal, { IButton } from 'components/ui/Modal';
 

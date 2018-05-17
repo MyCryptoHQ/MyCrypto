@@ -5,8 +5,8 @@ import Select, { Option } from 'react-select';
 import translate, { translateRaw } from 'translations';
 import { isValidETHAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
-import { AppState } from 'redux/reducers';
-import { getRecentAddresses } from 'redux/wallet/selectors';
+import { AppState } from 'features/reducers';
+import { getRecentAddresses } from 'features/wallet/selectors';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
 

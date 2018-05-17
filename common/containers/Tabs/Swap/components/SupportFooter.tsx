@@ -1,7 +1,7 @@
 import React from 'react';
 
 import translate from 'translations';
-import { SwapInput, NormalizedBityRates, NormalizedShapeshiftRates } from 'redux/swap/types';
+import { SwapInput, NormalizedBityRates, NormalizedShapeshiftRates } from 'features/swap/types';
 import { TextArea } from 'components/ui';
 import './SupportFooter.scss';
 

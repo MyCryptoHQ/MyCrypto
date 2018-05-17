@@ -5,7 +5,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 
 import translate from 'translations';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import {
   getTransaction,
   isNetworkRequestPending,
@@ -13,8 +13,8 @@ import {
   isValidGasLimit,
   getSignedTx,
   getSerializedTransaction
-} from 'redux/transaction/selectors';
-import { getWalletType, IWalletType } from 'redux/wallet/selectors';
+} from 'features/transaction/selectors';
+import { getWalletType, IWalletType } from 'features/wallet/selectors';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
 import { CodeBlock } from 'components/ui';
 import { WithSigner } from './Container';

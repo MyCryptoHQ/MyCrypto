@@ -6,19 +6,19 @@ import translate from 'translations';
 import { IWallet } from 'libs/wallet';
 import { validPositiveNumber, validDecimal } from 'libs/validators';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import {
   getNetworkConfig,
   getSelectedTokenContractAddress,
   isNetworkUnit
-} from 'redux/config/selectors';
-import { SetGasLimitFieldAction } from 'redux/transaction/types';
+} from 'features/config/selectors';
+import { SetGasLimitFieldAction } from 'features/transaction/types';
 import {
   resetTransactionRequested,
   TResetTransactionRequested,
   setCurrentTo,
   TSetCurrentTo
-} from 'redux/transaction/actions';
+} from 'features/transaction/actions';
 import {
   getCurrentTo,
   getCurrentValue,
@@ -27,7 +27,7 @@ import {
   getGasLimit,
   getUnit,
   getDecimal
-} from 'redux/transaction/selectors';
+} from 'features/transaction/selectors';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { QRCode, CodeBlock } from 'components/ui';
 import { NetworkConfig } from 'types/network';

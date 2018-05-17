@@ -5,11 +5,16 @@ import classNames from 'classnames';
 
 import { NetworkConfig } from 'types/network';
 import { calcEACTotalCost } from 'libs/scheduling';
-import { AppState } from 'redux/reducers';
-import { getNetworkConfig, getOffline } from 'redux/config/selectors';
-import { getIsEstimating } from 'redux/gas/selectors';
-import { getGasLimit } from 'redux/transaction/selectors';
-import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'redux/schedule/selectors';
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/selectors';
+import { getNetworkConfig } from 'features/config/selectors';
+import { getIsEstimating } from 'features/gas/selectors';
+import { getGasLimit } from 'features/transaction/selectors';
+import {
+  getScheduleGasLimit,
+  getTimeBounty,
+  getSchedulingToggle
+} from 'features/schedule/selectors';
 import { UnitDisplay, Spinner } from 'components/ui';
 import './FeeSummary.scss';
 

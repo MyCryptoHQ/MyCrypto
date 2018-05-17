@@ -2,9 +2,9 @@ import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { Notification } from 'redux/notifications/types';
-import { closeNotification, TCloseNotification } from 'redux/notifications/actions';
+import { AppState } from 'features/reducers';
+import { Notification } from 'features/notifications/types';
+import { closeNotification, TCloseNotification } from 'features/notifications/actions';
 import NotificationRow from './NotificationRow';
 import './Notifications.scss';
 

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import EthTx from 'ethereumjs-tx';
 
-import { AppState } from 'redux/reducers';
-import { getWalletType, IWalletType } from 'redux/wallet/selectors';
+import { AppState } from 'features/reducers';
+import { getWalletType, IWalletType } from 'features/wallet/selectors';
 import {
   getSerializedTransaction,
   getTransaction,
@@ -12,7 +12,7 @@ import {
   isValidGasLimit,
   getSignedTx,
   getWeb3Tx
-} from 'redux/transaction/selectors';
+} from 'features/transaction/selectors';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { OnlineSend } from './OnlineSend';
 

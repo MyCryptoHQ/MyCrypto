@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { Token } from 'types/network';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/selectors';
 import {
   addCustomToken,
   removeCustomToken,
   TAddCustomToken,
   TRemoveCustomToken
-} from 'redux/customTokens/actions';
+} from 'features/customTokens/actions';
 import {
   scanWalletForTokens,
   TScanWalletForTokens,
@@ -17,14 +18,14 @@ import {
   TSetWalletTokens,
   refreshTokenBalances,
   TRefreshTokenBalances
-} from 'redux/wallet/actions';
+} from 'features/wallet/actions';
 import {
   getTokenBalances,
   getWalletInst,
   getWalletConfig,
   TokenBalance
-} from 'redux/wallet/selectors';
-import { getAllTokens, getOffline } from 'redux/config/selectors';
+} from 'features/wallet/selectors';
+import { getAllTokens } from 'features/config/selectors';
 import Spinner from 'components/ui/Spinner';
 import Balances from './Balances';
 import './index.scss';

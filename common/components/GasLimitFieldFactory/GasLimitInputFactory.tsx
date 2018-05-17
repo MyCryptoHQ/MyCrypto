@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { getAutoGasLimitEnabled } from 'redux/config/selectors';
-import { getGasLimit, getGasEstimationPending } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { getAutoGasLimitEnabled } from 'features/selectors';
+import { getGasLimit, getGasEstimationPending } from 'features/transaction/selectors';
 import { CallBackProps } from 'components/GasLimitFieldFactory';
 import { Query } from 'components/renderCbs';
 

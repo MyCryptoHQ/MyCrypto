@@ -8,8 +8,9 @@ import translate from 'translations';
 import { getKeyByValue } from 'utils/helpers';
 import { NodeConfig } from 'types/node';
 import { NetworkConfig } from 'types/network';
-import { AppState } from 'redux/reducers';
-import { AddCustomNodeAction } from 'redux/config/types';
+import { AppState } from 'features/reducers';
+import { isStaticNodeId, getOffline, getLanguageSelection } from 'features/selectors';
+import { AddCustomNodeAction } from 'features/config/types';
 import {
   TChangeLanguage,
   TChangeNodeIntent,
@@ -23,20 +24,17 @@ import {
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
-} from 'redux/config/actions';
+} from 'features/config/actions';
 import {
-  getOffline,
   isNodeChanging,
-  getLanguageSelection,
   getNodeId,
   getNodeConfig,
   CustomNodeOption,
   NodeOption,
   getNodeOptions,
-  getNetworkConfig,
-  isStaticNodeId
-} from 'redux/config/selectors';
-import { TSetGasPriceField, setGasPriceField } from 'redux/transaction/actions';
+  getNetworkConfig
+} from 'features/config/selectors';
+import { TSetGasPriceField, setGasPriceField } from 'features/transaction/actions';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { OldDropDown, ColorDropdown } from 'components/ui';
 import CustomNodeModal from 'components/CustomNodeModal';

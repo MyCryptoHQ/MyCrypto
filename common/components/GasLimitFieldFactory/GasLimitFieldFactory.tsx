@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { sanitizeNumericalInput } from 'libs/values';
-import { AppState } from 'redux/reducers';
-import { inputGasLimit, TInputGasLimit } from 'redux/transaction/actions';
-import { getSchedulingToggle } from 'redux/schedule/selectors';
+import { AppState } from 'features/reducers';
+import { inputGasLimit, TInputGasLimit } from 'features/transaction/actions';
+import { getSchedulingToggle } from 'features/schedule/selectors';
 import { GasQuery } from 'components/renderCbs';
 import { GasLimitInput } from './GasLimitInputFactory';
 

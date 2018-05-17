@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
-import { showNotification, TShowNotification } from 'redux/notifications/actions';
+import { showNotification, TShowNotification } from 'features/notifications/actions';
 import { TextArea } from 'components/ui';
 import './index.scss';
 

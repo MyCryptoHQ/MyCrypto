@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'redux/reducers';
-import { getData, getDataExists } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { getData, getDataExists } from 'features/transaction/selectors';
 import { CallBackProps } from 'components/DataFieldFactory';
 import { Query } from 'components/renderCbs';
 

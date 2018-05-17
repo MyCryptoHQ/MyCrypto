@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
-import { SwapInput, RestartSwapAction } from 'redux/swap/types';
+import { SwapInput, RestartSwapAction } from 'features/swap/types';
 import SwapInfoHeaderTitle from './SwapInfoHeaderTitle';
 import './SwapInfoHeader.scss';
 

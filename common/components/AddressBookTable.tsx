@@ -3,8 +3,8 @@ import { connect, MapStateToProps } from 'react-redux';
 import classnames from 'classnames';
 
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'redux/reducers';
-import { ADDRESS_BOOK_TABLE_ID } from 'redux/addressBook/constants';
+import { AppState } from 'features/reducers';
+import { ADDRESS_BOOK_TABLE_ID } from 'features/addressBook/constants';
 import {
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
@@ -12,13 +12,13 @@ import {
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
   TRemoveAddressLabelEntry
-} from 'redux/addressBook/actions';
+} from 'features/addressBook/actions';
 import {
   getAddressLabels,
   getLabelAddresses,
   getAddressLabelRows,
   getAddressBookTableEntry
-} from 'redux/addressBook/selectors';
+} from 'features/addressBook/selectors';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';

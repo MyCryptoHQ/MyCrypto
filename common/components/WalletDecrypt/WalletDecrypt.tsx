@@ -29,7 +29,7 @@ import {
   ParitySignerDecrypt,
   InsecureWalletWarning
 } from './components';
-import { AppState } from 'redux/reducers';
+import { AppState } from 'features/reducers';
 import {
   setWallet,
   TSetWallet,
@@ -41,10 +41,10 @@ import {
   TUnlockPrivateKey,
   unlockWeb3,
   TUnlockWeb3
-} from 'redux/wallet/actions';
-import { getDisabledWallets } from 'redux/wallet/selectors';
-import { resetTransactionRequested, TResetTransactionRequested } from 'redux/transaction/actions';
-import { showNotification, TShowNotification } from 'redux/notifications/actions';
+} from 'features/wallet/actions';
+import { getDisabledWallets } from 'features/wallet/selectors';
+import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction/actions';
+import { showNotification, TShowNotification } from 'features/notifications/actions';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';

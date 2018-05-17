@@ -3,10 +3,10 @@ import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 
 import { Store } from 'redux';
-import { AppState } from 'redux/reducers';
-import { pollOfflineStatus, TPollOfflineStatus } from 'redux/config/actions';
-import { getNetworkUnit } from 'redux/config/selectors';
-import { setUnitMeta, TSetUnitMeta } from 'redux/transaction/actions';
+import { AppState } from 'features/reducers';
+import { pollOfflineStatus, TPollOfflineStatus } from 'features/config/actions';
+import { getNetworkUnit } from 'features/config/selectors';
+import { setUnitMeta, TSetUnitMeta } from 'features/transaction/actions';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';

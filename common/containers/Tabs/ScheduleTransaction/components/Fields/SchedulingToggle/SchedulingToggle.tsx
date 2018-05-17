@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import translate from 'translations';
-import { AppState } from 'redux/reducers';
-import { setSchedulingToggle, TSetSchedulingToggle } from 'redux/schedule/actions';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'redux/schedule/selectors';
+import { AppState } from 'features/reducers';
+import { setSchedulingToggle, TSetSchedulingToggle } from 'features/schedule/actions';
+import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'features/schedule/selectors';
 import { Toggle } from 'components/ui';
 
 interface DispatchProps {

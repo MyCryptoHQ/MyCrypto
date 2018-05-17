@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { shapeshiftReferralURL, bitboxReferralURL } from 'config';
 import translate from 'translations';
-import { RestartSwapAction } from 'redux/swap/types';
+import { RestartSwapAction } from 'features/swap/types';
 import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
 import './SwapInfoHeader.scss';

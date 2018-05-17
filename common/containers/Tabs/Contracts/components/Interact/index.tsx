@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import Contract from 'libs/contracts';
 import InteractForm from './components/InteractForm';
 import { InteractExplorer } from './components/InteractExplorer';
-import { showNotification, TShowNotification } from 'redux/notifications/actions';
-import { getCurrentTo } from 'redux/transaction/selectors';
+import { showNotification, TShowNotification } from 'features/notifications/actions';
+import { getCurrentTo } from 'features/transaction/selectors';
 
 interface State {
   currentContract: Contract | null;

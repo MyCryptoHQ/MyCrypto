@@ -1,4 +1,4 @@
-import { configuredStore } from 'redux/store';
+import { configuredStore } from 'features/store';
 import { Wei } from 'libs/units';
 import {
   toFixedIfLarger,

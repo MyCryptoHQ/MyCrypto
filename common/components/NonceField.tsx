@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import translate from 'translations';
-import { AppState } from 'redux/reducers';
-import { getOffline } from 'redux/config/selectors';
-import { getNonceRequested, TGetNonceRequested } from 'redux/transaction/actions';
-import { nonceRequestPending } from 'redux/transaction/selectors';
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/selectors';
+import { getNonceRequested, TGetNonceRequested } from 'features/transaction/actions';
+import { nonceRequestPending } from 'features/transaction/selectors';
 import { Spinner, Input } from 'components/ui';
 import Help from 'components/ui/Help';
 import { NonceFieldFactory } from 'components/NonceFieldFactory';

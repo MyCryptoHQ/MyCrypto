@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import { Notification } from 'redux/notifications/types';
+import { Notification } from 'features/notifications/types';
 import './Notifications.scss';
 
 interface Props {

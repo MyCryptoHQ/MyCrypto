@@ -1,4 +1,4 @@
-import { configuredStore } from 'redux/store';
+import { configuredStore } from 'features/store';
 import React from 'react';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';

@@ -10,8 +10,8 @@ import {
   NormalizedShapeshiftRates,
   NormalizedOptions,
   SwapInput
-} from 'redux/swap/types';
-import { TChangeStepSwap, TInitSwap, TChangeSwapProvider } from 'redux/swap/actions';
+} from 'features/swap/types';
+import { TChangeStepSwap, TInitSwap, TChangeSwapProvider } from 'features/swap/actions';
 import SimpleButton from 'components/ui/SimpleButton';
 import { SwapDropdown, Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
