@@ -77,10 +77,8 @@ class BalanceFieldClass extends React.Component<Props, State> {
   }
 
   private attemptToLoadBalance(address: string) {
-    const req = this.loadBalance(address);
-
     // process request
-    this.currentRequest = req
+    this.currentRequest = this.loadBalance(address)
       // set state on successful request e.g it was not cancelled
       // and then also set our current request to null
       .then(({ balance }) =>
