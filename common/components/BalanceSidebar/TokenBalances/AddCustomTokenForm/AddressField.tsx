@@ -45,8 +45,8 @@ export class AddressField extends React.Component<OwnProps, State> {
     );
   }
 
-  private handleFieldChange = (args: React.FormEvent<HTMLInputElement>) => {
-    const userInput = args.currentTarget.value;
+  private handleFieldChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const userInput = e.currentTarget.value;
     const addrTaken = this.props.addressLookup[userInput];
     const validAddr = isValidETHAddress(userInput);
     const err = addrTaken ? ErrType.ADDRTAKEN : !validAddr ? ErrType.INVALIDADDR : undefined;
