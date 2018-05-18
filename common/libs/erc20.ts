@@ -1,7 +1,7 @@
 import Contract from 'libs/contracts';
 
 type uint256 = any;
-type uint8 = any;
+
 type address = any;
 
 export interface ABIFunc<T, K = void> {
@@ -18,7 +18,7 @@ export interface ABIFuncParamless<T = void> {
 }
 
 interface IErc20 {
-  decimals: ABIFuncParamless<{ decimals: uint8 }>;
+  decimals: ABIFuncParamless<{ decimals: string }>;
   symbol: ABIFuncParamless<{ symbol: string }>;
 
   balanceOf: ABIFunc<{ _owner: address }, { balance: uint256 }>;
