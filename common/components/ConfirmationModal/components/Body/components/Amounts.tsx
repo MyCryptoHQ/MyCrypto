@@ -5,7 +5,7 @@ import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import './Amounts.scss';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'features/rates/selectors';
 import { SerializedTxParams } from 'features/transaction/types';
 import { getParamsFromSerializedTx } from 'features/transaction/selectors';

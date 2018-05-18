@@ -1,6 +1,6 @@
 import TranslateMarkdown from 'components/Translate';
 import React from 'react';
-import { State as ConfigState } from 'features/config/reducers';
+import { State as ConfigState } from 'features/config/derivedReducers';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 
 const fallbackLanguage = 'en';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
+import { getOffline } from 'features/config/meta/selectors';
 import { NewTabLink } from 'components/ui';
 
 interface StateProps {

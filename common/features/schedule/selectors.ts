@@ -14,7 +14,7 @@ import {
   EAC_ADDRESSES,
   getValidateRequestParamsData
 } from 'libs/scheduling';
-import { getLatestBlock } from 'features/selectors';
+import { getLatestBlock } from 'features/config/meta/selectors';
 import { getWalletInst } from 'features/wallet/selectors';
 import {
   getCurrentTo,

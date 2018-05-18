@@ -29,8 +29,9 @@ import {
   MergedToken
 } from 'features/wallet/selectors';
 import { TypeKeys as ConfigTypeKeys } from 'features/config/types';
-import { getOffline } from 'features/selectors';
-import { getNodeLib, getAllTokens } from 'features/config/selectors';
+import { getAllTokens } from 'features/config/derivedSelectors';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import {
   TypeKeys,
   UnlockKeystoreAction,

@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { AppState } from 'features/reducers';
 import { isAnyOfflineWithWeb3 } from 'features/derivedSelectors';
-import { getOffline } from 'features/selectors';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'features/schedule/selectors';
 import { getUnit } from 'features/transaction/selectors';
 import {

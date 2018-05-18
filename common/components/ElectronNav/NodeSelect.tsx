@@ -13,13 +13,8 @@ import {
   addCustomNode,
   removeCustomNode
 } from 'features/config/actions';
-import {
-  isNodeChanging,
-  getNodeId,
-  CustomNodeOption,
-  NodeOption,
-  getNodeOptions
-} from 'features/config/selectors';
+import { CustomNodeOption, NodeOption, getNodeOptions } from 'features/config/derivedSelectors';
+import { isNodeChanging, getNodeId } from 'features/config/nodes/selected/selectors';
 import CustomNodeModal from 'components/CustomNodeModal';
 import './NodeSelect.scss';
 

@@ -9,7 +9,8 @@ import { getKeyByValue } from 'utils/helpers';
 import { NodeConfig } from 'types/node';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { isStaticNodeId, getOffline, getLanguageSelection } from 'features/selectors';
+import { getOffline, getLanguageSelection } from 'features/config/meta/selectors';
+import { isStaticNodeId } from 'features/config/nodes/static/selectors';
 import { AddCustomNodeAction } from 'features/config/types';
 import {
   TChangeLanguage,
@@ -26,14 +27,13 @@ import {
   addCustomNetwork
 } from 'features/config/actions';
 import {
-  isNodeChanging,
-  getNodeId,
-  getNodeConfig,
   CustomNodeOption,
   NodeOption,
   getNodeOptions,
   getNetworkConfig
-} from 'features/config/selectors';
+} from 'features/config/derivedSelectors';
+import { getNodeConfig } from 'features/config/nodes/derivedSelectors';
+import { isNodeChanging, getNodeId } from 'features/config/nodes/selected/selectors';
 import { TSetGasPriceField, setGasPriceField } from 'features/transaction/actions';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { OldDropDown, ColorDropdown } from 'components/ui';

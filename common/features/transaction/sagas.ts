@@ -50,9 +50,10 @@ import {
 } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
-import { getOffline, getAutoGasLimitEnabled } from 'features/selectors';
+import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
 import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'features/config/types';
-import { getNodeLib, isNetworkUnit, getNetworkUnit } from 'features/config/selectors';
+import { isNetworkUnit, getNetworkUnit } from 'features/config/derivedSelectors';
+import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { TypeKeys as ENSTypekeys } from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { getResolvedAddress } from 'features/ens/selectors';

@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
-import { getNetworkConfig, isNodeChanging } from 'features/config/selectors';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
+import { isNodeChanging } from 'features/config/nodes/selected/selectors';
 import './NetworkStatus.scss';
 
 enum NETWORK_STATUS {

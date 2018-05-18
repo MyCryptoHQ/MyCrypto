@@ -5,7 +5,7 @@ import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from '
 import { Store } from 'redux';
 import { AppState } from 'features/reducers';
 import { pollOfflineStatus, TPollOfflineStatus } from 'features/config/actions';
-import { getNetworkUnit } from 'features/config/selectors';
+import { getNetworkUnit } from 'features/config/derivedSelectors';
 import { setUnitMeta, TSetUnitMeta } from 'features/transaction/actions';
 // Components
 import Contracts from 'containers/Tabs/Contracts';

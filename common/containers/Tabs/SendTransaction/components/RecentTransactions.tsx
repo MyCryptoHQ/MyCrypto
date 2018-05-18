@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { IWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import { getRecentWalletTransactions } from 'features/transactions/selectors';
 import { TransactionStatus } from 'components';
 import RecentTransaction from './RecentTransaction';

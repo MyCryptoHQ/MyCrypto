@@ -3,9 +3,13 @@ import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import { CustomNodeConfig } from 'types/node';
 import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
 import RootReducer, { AppState } from './reducers';
-import config, { State as ConfigState } from './config/reducers';
-import { isStaticNetworkId, isStaticNodeId, getLanguageSelection } from './selectors';
-import { getCustomNodeConfigs, getSelectedNode, getCustomNetworkConfigs } from './config/selectors';
+import config, { State as ConfigState } from './config/derivedReducers';
+import { getLanguageSelection } from './config/meta/selectors';
+import { getCustomNetworkConfigs } from './config/networks/custom/selectors';
+import { isStaticNetworkId } from './config/networks/static/selectors';
+import { isStaticNodeId } from './config/nodes/static/selectors';
+import { getCustomNodeConfigs } from './config/nodes/custom/selectors';
+import { getSelectedNode } from './config/nodes/selected/selectors';
 import {
   State as CustomTokenState,
   INITIAL_STATE as customTokensInitialState

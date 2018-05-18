@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { translateRaw, translate } from 'translations';
 import { AppState } from 'features/reducers';
-import { getLanguageSelection } from 'features/selectors';
+import { getLanguageSelection } from 'features/config/meta/selectors';
 import {
   broadcastLocalTransactionRequested,
   TBroadcastLocalTransactionRequested,

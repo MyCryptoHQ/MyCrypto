@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { isNetworkUnit } from 'features/config/selectors';
+import { isNetworkUnit } from 'features/config/derivedSelectors';
 import { getWalletInst } from 'features/wallet/selectors';
 import TabSection from 'containers/TabSection';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';

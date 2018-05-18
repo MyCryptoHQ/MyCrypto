@@ -23,7 +23,7 @@ import {
   setCurrentValue,
   resetTransactionRequested
 } from 'features/transaction/actions';
-import { isSupportedUnit, isNetworkUnit } from 'features/config/selectors';
+import { isSupportedUnit, isNetworkUnit } from 'features/config/derivedSelectors';
 import { TypeKeys as WalletTypeKeys } from 'features/wallet/types';
 import { setTokenBalancePending, resetWallet } from 'features/wallet/actions';
 import { isUnlocked, isEtherBalancePending } from 'features/wallet/selectors';

@@ -5,7 +5,7 @@ import { Option } from 'react-select';
 import { AppState } from 'features/reducers';
 import { setUnitMeta, TSetUnitMeta } from 'features/transaction/actions';
 import { getUnit } from 'features/transaction/selectors';
-import { getNetworkUnit } from 'features/config/selectors';
+import { getNetworkUnit } from 'features/config/derivedSelectors';
 import {
   TokenBalance,
   MergedToken,

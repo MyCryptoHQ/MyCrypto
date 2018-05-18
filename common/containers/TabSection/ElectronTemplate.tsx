@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
+import { getOffline } from 'features/config/meta/selectors';
 import { ElectronNav, AppAlphaNotice } from 'components';
 import OfflineTab from './OfflineTab';
 import Notifications from './Notifications';

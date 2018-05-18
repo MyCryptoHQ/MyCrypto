@@ -6,8 +6,8 @@ import classNames from 'classnames';
 import { NetworkConfig } from 'types/network';
 import { calcEACTotalCost } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import { getIsEstimating } from 'features/gas/selectors';
 import { getGasLimit } from 'features/transaction/selectors';
 import {

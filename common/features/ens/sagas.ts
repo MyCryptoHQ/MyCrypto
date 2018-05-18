@@ -3,7 +3,7 @@ import { call, put, select, all, actionChannel, take, fork, race } from 'redux-s
 
 import { INode } from 'libs/nodes/INode';
 import { IBaseDomainRequest } from 'libs/ens';
-import { getNodeLib } from 'features/config/selectors';
+import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { showNotification } from 'features/notifications/actions';
 import { TypeKeys, ResolveDomainRequested } from './types';
 import { resolveDomainFailed, resolveDomainSucceeded, resolveDomainCached } from './actions';

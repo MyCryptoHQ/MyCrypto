@@ -6,8 +6,8 @@ import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import {
   inputGasPrice,
   TInputGasPrice,

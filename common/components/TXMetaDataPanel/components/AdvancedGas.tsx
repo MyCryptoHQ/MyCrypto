@@ -6,7 +6,7 @@ import { sanitizeNumericalInput } from 'libs/values';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'features/config/actions';
-import { getAutoGasLimitEnabled } from 'features/selectors';
+import { getAutoGasLimitEnabled } from 'features/config/meta/selectors';
 import { getScheduleGasPrice, getTimeBounty } from 'features/schedule/selectors';
 import { TInputGasPrice } from 'features/transaction/actions';
 import { isValidGasPrice } from 'features/transaction/selectors';

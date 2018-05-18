@@ -6,7 +6,7 @@ import { gasPriceDefaults } from 'config';
 import translate from 'translations';
 import { Wei, fromWei } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getIsWeb3Node } from 'features/config/selectors';
+import { getIsWeb3Node } from 'features/config/nodes/derivedSelectors';
 import { TInputGasPrice } from 'features/transaction/actions';
 import {
   getGasLimitEstimationTimedOut,

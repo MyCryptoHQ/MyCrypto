@@ -10,7 +10,8 @@ import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
 import { TypeKeys as ConfigTypeKeys } from 'features/config/types';
-import { getNodeLib, getNetworkConfig } from 'features/config/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
+import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { getWalletInst } from 'features/wallet/selectors';
 import {
   TypeKeys as TxTypeKeys,

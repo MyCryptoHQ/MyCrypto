@@ -7,7 +7,7 @@ import translate from 'translations';
 import { getParamFromURL } from 'utils/helpers';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import { TransactionStatus as TransactionStatusComponent } from 'components';
 import TabSection from 'containers/TabSection';
 import TxHashInput from './components/TxHashInput';

@@ -7,7 +7,7 @@ import { DeterministicWalletData, GetDeterministicWalletsAction } from './types'
 import { setDeterministicWallets, updateDeterministicWallet } from './actions';
 import { showNotification } from 'features/notifications/actions';
 import { INode } from 'libs/nodes/INode';
-import { getNodeLib } from 'features/config/selectors';
+import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { getDesiredToken, getWallets } from 'features/deterministicWallets/selectors';
 import { getTokens } from 'features/wallet/selectors';
 import translate from 'translations';

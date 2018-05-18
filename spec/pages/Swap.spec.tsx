@@ -5,7 +5,7 @@ import Swap from 'containers/Tabs/Swap';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
 import { INITIAL_STATE as swap } from 'features/swap/reducers';
-import config from 'features/config/reducers';
+import config from 'features/config/derivedReducers';
 import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
 

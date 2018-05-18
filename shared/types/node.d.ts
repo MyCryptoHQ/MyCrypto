@@ -1,6 +1,9 @@
 import { INode } from 'libs/nodes';
 import { StaticNetworkIds } from './network';
-import { StaticNodesState, CustomNodesState } from 'features/config/types';
+import { CustomNetworksState } from 'features/config/networks/custom/reducers';
+import { StaticNetworksState } from 'features/config/networks/static/reducers';
+import { CustomNodesState } from 'features/config/nodes/custom/reducers';
+import { StaticNodesState } from 'features/config/nodes/static/reducers';
 
 interface CustomNodeConfig {
   id: string;

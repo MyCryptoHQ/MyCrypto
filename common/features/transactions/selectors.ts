@@ -1,6 +1,6 @@
 import { SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import { getWalletInst } from 'features/wallet/selectors';
 
 export function getTransactionDatas(state: AppState) {

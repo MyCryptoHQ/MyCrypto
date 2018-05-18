@@ -40,9 +40,10 @@ import {
   gasLimitValidator
 } from 'libs/validators';
 import { configuredStore } from 'features/store';
-import { getOffline, getAutoGasLimitEnabled } from 'features/selectors';
+import { isNetworkUnit } from 'features/config/derivedSelectors';
+import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
+import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { TypeKeys as ConfigTypeKeys } from 'features/config/types';
-import { getNodeLib, isNetworkUnit } from 'features/config/selectors';
 import { TypeKeys as WalletTK } from 'features/wallet/types';
 import {
   getWalletInst,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
+import { getOffline } from 'features/config/meta/selectors';
 import { getNonce, nonceRequestFailed } from 'features/transaction/selectors';
 import { CallbackProps } from 'components/NonceFieldFactory';
 import { Query } from 'components/renderCbs';

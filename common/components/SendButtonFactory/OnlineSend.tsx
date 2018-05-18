@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
+import { getOffline } from 'features/config/meta/selectors';
 import { ITransactionStatus } from 'features/transaction/types';
 import { TSignTransactionRequested, signTransactionRequested } from 'features/transaction/actions';
 import {

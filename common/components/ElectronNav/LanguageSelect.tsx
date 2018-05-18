@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { languages } from 'config';
 import { AppState } from 'features/reducers';
 import { TChangeLanguage, changeLanguage } from 'features/config/actions';
-import { getLanguageSelection } from 'features/selectors';
+import { getLanguageSelection } from 'features/config/meta/selectors';
 import './LanguageSelect.scss';
 
 interface OwnProps {

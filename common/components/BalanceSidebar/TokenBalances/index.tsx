@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/selectors';
+import { getAllTokens } from 'features/config/derivedSelectors';
+import { getOffline } from 'features/config/meta/selectors';
 import {
   addCustomToken,
   removeCustomToken,
@@ -25,7 +26,6 @@ import {
   getWalletConfig,
   TokenBalance
 } from 'features/wallet/selectors';
-import { getAllTokens } from 'features/config/selectors';
 import Spinner from 'components/ui/Spinner';
 import Balances from './Balances';
 import './index.scss';

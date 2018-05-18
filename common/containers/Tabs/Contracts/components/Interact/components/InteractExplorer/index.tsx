@@ -6,7 +6,7 @@ import translate from 'translations';
 import { Data } from 'libs/units';
 import { INode } from 'libs/nodes';
 import { AppState } from 'features/reducers';
-import { getNodeLib } from 'features/config/selectors';
+import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { TShowNotification, showNotification } from 'features/notifications/actions';
 import { setDataField, TSetDataField } from 'features/transaction/actions';
 import { getTo, getDataExists } from 'features/transaction/selectors';

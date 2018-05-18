@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { isUnlocked as isUnlockedSelector } from 'features/wallet/selectors';
-import { getNetworkConfig } from 'features/config/selectors';
+import { getNetworkConfig } from 'features/config/derivedSelectors';
 import { configureLiteSend, TConfigureLiteSend } from 'features/swap/actions';
 import { shouldDisplayLiteSend } from 'features/swap/selectors';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
