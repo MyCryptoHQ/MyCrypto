@@ -102,14 +102,14 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
   }
 
   private generateSymbolLookup() {
-    return this.tknArrToMap('symbol');
+    return this.tokenArrayToMap('symbol');
   }
 
   private generateAddressMap() {
-    return this.tknArrToMap('address');
+    return this.tokenArrayToMap('address');
   }
 
-  private tknArrToMap(key: Exclude<keyof Token, 'error'>) {
+  private tokenArrayToMap(key: Exclude<keyof Token, 'error'>) {
     const tokens = this.props.allTokens;
     return tokens.reduce<{ [k: string]: boolean }>((prev, tk) => {
       prev[tk[key]] = true;
