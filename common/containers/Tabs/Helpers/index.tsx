@@ -2,6 +2,7 @@ import ConvertUnits from './components/ConvertUnits';
 import ConvertHex from './components/ConvertHex';
 import ConvertSHA3 from './components/ConvertSHA3';
 import UnitReference from './components/UnitReference';
+import RecoverPK from './components/RecoverPK';
 
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
@@ -25,6 +26,10 @@ const tabs = [
   {
     path: 'unit-reference',
     name: 'Ether Unit Reference Guide'
+  },
+  {
+    path: 'recover-pk',
+    name: 'Mistyped Private Key'
   }
 ];
 
@@ -54,6 +59,7 @@ export default class Helpers extends Component<RouteComponentProps<{}>> {
                 path={`${currentPath}/unit-reference`}
                 component={UnitReference}
               />
+              <Route exact={true} path={`${currentPath}/recover-pk`} component={RecoverPK} />
               <RouteNotFound />
             </Switch>
           </div>

@@ -18,9 +18,9 @@ export default class UnitReference extends React.Component<State> {
       finney: 'milliether, milli',
       ether: '',
       kether: 'grand, einstein',
-      mether: 'mether',
-      gether: 'gether',
-      tether: 'tether'
+      mether: '',
+      gether: '',
+      tether: ''
     };
 
     return (

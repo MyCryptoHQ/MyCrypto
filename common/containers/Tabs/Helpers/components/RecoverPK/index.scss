@@ -1,0 +1,20 @@
+@import 'common/sass/variables';
+
+.Helpers {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+
+  .input-group-addon {
+    min-width: 140px;
+
+    &.ether-addon {
+      color: white;
+      background-color: $brand-primary;
+    }
+  }
+
+  .recover-pk-list {
+    text-align: left;
+  }
+}
