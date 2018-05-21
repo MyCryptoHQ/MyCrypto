@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Identicon, UnitDisplay, Address, NewTabLink } from 'components/ui';
-import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
+import { UnitDisplay, NewTabLink } from 'components/ui';
+import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
 import translate from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
@@ -12,6 +11,7 @@ import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
 import { etherChainExplorerInst } from 'config/data';
 import './AccountInfo.scss';
+import AccountAddress from './AccountAddress';
 
 interface OwnProps {
   wallet: IWallet;
@@ -19,15 +19,14 @@ interface OwnProps {
 
 interface StateProps {
   balance: Balance;
-  network: NetworkConfig;
-  isOffline: boolean;
+  network: ReturnType<typeof getNetworkConfig>;
+  isOffline: ReturnType<typeof getOffline>;
 }
 
 interface State {
   showLongBalance: boolean;
   address: string;
   confirmAddr: boolean;
-  copied: boolean;
 }
 
 interface DispatchProps {
@@ -40,8 +39,7 @@ class AccountInfo extends React.Component<Props, State> {
   public state = {
     showLongBalance: false,
     address: '',
-    confirmAddr: false,
-    copied: false
+    confirmAddr: false
   };
 
   public setAddressFromWallet() {
@@ -74,20 +72,10 @@ class AccountInfo extends React.Component<Props, State> {
     });
   };
 
-  public onCopy = () => {
-    this.setState(state => {
-      return {
-        copied: !state.copied
-      };
-    });
-    setTimeout(() => {
-      this.setState({ copied: false });
-    }, 2000);
-  };
-
   public render() {
-    const { network, balance, isOffline } = this.props;
+    const { network, isOffline, balance } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
+
     let blockExplorer;
     let tokenExplorer;
     if (!network.isCustom) {
@@ -98,27 +86,8 @@ class AccountInfo extends React.Component<Props, State> {
 
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
-      <div className="AccountInfo">
-        <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
-        <div className="AccountInfo-section AccountInfo-address-section">
-          <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
-          </div>
-          <div className="AccountInfo-address-wrapper">
-            <div className="AccountInfo-address-addr">
-              <Address address={address} />
-            </div>
-            <CopyToClipboard onCopy={this.onCopy} text={toChecksumAddress(address)}>
-              <div
-                className={`AccountInfo-copy ${this.state.copied ? 'is-copied' : ''}`}
-                title="Copy To clipboard"
-              >
-                <i className="fa fa-copy" />
-                <span>{this.state.copied ? 'copied!' : 'copy address'}</span>
-              </div>
-            </CopyToClipboard>
-          </div>
-        </div>
+      <div>
+        <AccountAddress address={toChecksumAddress(address)} />
 
         {typeof wallet.displayAddress === 'function' && (
           <div className="AccountInfo-section">
@@ -222,6 +191,7 @@ class AccountInfo extends React.Component<Props, State> {
     return network.unit;
   }
 }
+
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
