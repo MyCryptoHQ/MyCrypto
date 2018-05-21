@@ -1,0 +1,16 @@
+@import 'common/sass/variables';
+
+.UnitInput {
+  max-width: 520px;
+  padding: $space-sm 0;
+  margin: 0 auto;
+
+  &-button {
+    .Spinner {
+      margin-left: $space-md;
+    }
+  }
+  &-convert-unit-input {
+    height: 18px;
+  }
+}

@@ -11,6 +11,7 @@ import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
 import SupportPage from 'containers/Tabs/SupportPage';
+import Helpers from 'components/Helpers';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
@@ -89,6 +90,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/helpers" component={Helpers} />
           <Route path="/support-us" component={SupportPage} exact={true} />
           <RouteNotFound />
         </Switch>
