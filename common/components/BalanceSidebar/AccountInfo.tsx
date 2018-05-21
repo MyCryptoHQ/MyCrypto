@@ -160,7 +160,7 @@ class AccountInfo extends React.Component<Props, State> {
                   unit={'ether'}
                   displayShortBalance={!showLongBalance}
                   checkOffline={true}
-                  symbol={balance.wei ? network.name : null}
+                  symbol={balance.wei ? this.setSymbol(network) : null}
                 />
               </span>
               {balance.wei && (
@@ -213,6 +213,13 @@ class AccountInfo extends React.Component<Props, State> {
         )}
       </div>
     );
+  }
+
+  private setSymbol(network: NetworkConfig) {
+    if (network.isTestnet) {
+      return network.unit + ' (' + network.name + ')';
+    }
+    return network.unit;
   }
 }
 function mapStateToProps(state: AppState): StateProps {
