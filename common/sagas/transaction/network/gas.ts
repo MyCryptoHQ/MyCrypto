@@ -78,6 +78,15 @@ export function* shouldEstimateGas(): SagaIterator {
       transaction
     );
 
+    // gas estimation calls with
+    // '0x' as an address (contract creation)
+    // fail, so instead we set it as undefined
+    // interestingly, the transaction itself as '0x' as the
+    // to address works fine.
+    if (rest.to === '0x') {
+      rest.to = undefined as any;
+    }
+
     yield put(estimateGasRequested(rest));
   }
 }
@@ -101,6 +110,7 @@ export function* estimateGas(): SagaIterator {
     try {
       const from: string = yield apply(walletInst, walletInst.getAddressString);
       const txObj = { ...payload, from };
+
       const { gasLimit } = yield race({
         gasLimit: apply(node, node.estimateGas, [txObj]),
         timeout: call(delay, 10000)

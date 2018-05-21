@@ -70,14 +70,7 @@ export default class DropdownComponent<T> extends PureComponent<Props<T>, State>
 
     return (
       <ul className={menuClass} style={searchable ? searchableStyle : undefined}>
-        {searchable && (
-          <input
-            className="form-control"
-            placeholder={'Search'}
-            onChange={onSearchChange}
-            value={search}
-          />
-        )}
+        {searchable && <input placeholder={'Search'} onChange={onSearchChange} value={search} />}
 
         {options
           .filter(option => {

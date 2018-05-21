@@ -76,7 +76,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (
       (this.props.offline && !nextProps.offline) ||
       this.props.network.unit !== nextProps.network.unit

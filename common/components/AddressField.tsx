@@ -21,7 +21,7 @@ export const AddressField: React.SFC<Props> = ({ isReadOnly, isSelfAddress, isCh
             {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
           </div>
           <Input
-            className={`input-group-input ${isValid ? '' : 'invalid'}`}
+            isValid={isValid}
             type="text"
             value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
             placeholder={donationAddressMap.ETH}
