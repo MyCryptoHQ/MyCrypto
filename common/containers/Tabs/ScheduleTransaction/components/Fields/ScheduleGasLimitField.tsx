@@ -34,7 +34,7 @@ class ScheduleGasLimitFieldClass extends React.Component<Props> {
             <InlineSpinner active={gasEstimationPending} text="Calculating" />
           </div>
           <Input
-            className={!!scheduleGasLimit.raw && !validScheduleGasLimit ? 'invalid' : ''}
+            isValid={scheduleGasLimit.raw && validScheduleGasLimit}
             type="number"
             placeholder={EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK.toString()}
             value={scheduleGasLimit.raw}

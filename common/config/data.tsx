@@ -1,16 +1,17 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
-import NewTabLink from 'components/ui/NewTabLink';
 import { getValues } from '../utils/helpers';
 import packageJson from '../../package.json';
 import { GasPriceSetting } from 'types/network';
 import { makeExplorer } from 'utils/helpers';
+import NewTabLink from 'components/ui/NewTabLink';
 
 export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
-export const VERSION_RAW = packageJson.version;
-export const VERSION = `${VERSION_RAW} (Release Candidate 2)`;
+const VERSION_ELECTRON = packageJson['electron-version'];
+const VERSION_WEB = packageJson.version;
+export const VERSION = process.env.BUILD_ELECTRON ? VERSION_ELECTRON : VERSION_WEB;
 export const N_FACTOR = 8192;
 
 // Bricks the app once this date has been exceeded. Remember to update these 2
@@ -18,7 +19,6 @@ export const N_FACTOR = 8192;
 // It is currently set to: 05/25/2018 @ 12:00am (UTC)
 // TODO: Remove me once app alpha / release candidates are done
 export const APP_ALPHA_EXPIRATION = 1527206400000;
-export const VERSION_RC = `${packageJson.version}-RC.0`;
 
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, info, or blank for grey.
@@ -26,10 +26,8 @@ export const VERSION_RC = `${packageJson.version}-RC.0`;
 export const ANNOUNCEMENT_TYPE = '';
 export const ANNOUNCEMENT_MESSAGE = (
   <React.Fragment>
-    This is a Beta Release Candidate of the new MyCrypto. Please submit any bug reports to our{' '}
-    <NewTabLink href="https://github.com/MyCryptoHQ/MyCrypto/issues">GitHub</NewTabLink> and use{' '}
-    <NewTabLink href="https://hackerone.com/mycrypto">HackerOne</NewTabLink> for critical
-    vulnerabilities. Join the discussion on <NewTabLink href={discordURL}>Discord</NewTabLink>.
+    Welcome to the new MyCrypto. We hope you like it! If it's urgent and you need the old site, you
+    can still use <NewTabLink href="https://legacy.mycrypto.com">MyCrypto Legacy</NewTabLink>
   </React.Fragment>
 );
 

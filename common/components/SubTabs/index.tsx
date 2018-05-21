@@ -39,7 +39,7 @@ export default class SubTabs extends React.PureComponent<Props, State> {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // When new tabs come in, we'll need to uncollapse so that they can
     // be measured and collapsed again, if needed.
     if (this.props.tabs !== nextProps.tabs) {

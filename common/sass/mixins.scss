@@ -87,8 +87,20 @@
   &:hover .Tooltip {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, -100%) translateY(-8px);
+    transform: translate(-50%, -100%) translateY(-$tooltip-hover-distance);
     transition-delay: 400ms, 400ms, 300ms;
+
+    &.is-direction-left {
+      transform: translate(-100%, -50%) translateX(-$tooltip-hover-distance);
+    }
+
+    &.is-direction-right {
+      transform: translate(100%, -50%) translateX($tooltip-hover-distance);
+    }
+
+    &.is-direction-bottom {
+      transform: translate(-50%, 100%) translateY($tooltip-hover-distance);
+    }
   }
 }
 

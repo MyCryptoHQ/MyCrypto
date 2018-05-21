@@ -29,6 +29,7 @@ export const AddressField: React.SFC<Props> = ({
           </div>
           <Input
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
+            isValid={isValid}
             type="text"
             value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
             placeholder={donationAddressMap.ETH}

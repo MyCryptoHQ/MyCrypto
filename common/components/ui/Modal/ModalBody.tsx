@@ -3,8 +3,8 @@ import closeIcon from 'assets/images/close.svg';
 import { IButton } from 'components/ui/Modal';
 
 interface Props {
-  title?: string;
-  children: any;
+  title?: React.ReactNode;
+  children: React.ReactNode;
   modalStyle?: CSSProperties;
   hasButtons?: number;
   buttons?: IButton[];
@@ -67,7 +67,7 @@ export default class ModalBody extends React.Component<Props> {
 
         <div className="Modal-content" ref={div => (this.modalContent = div as HTMLElement)}>
           {children}
-          <div className="Modal-fade" />
+          <div className={`Modal-fade ${!hasButtons ? 'has-no-footer' : ''}`} />
         </div>
         {hasButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
       </div>

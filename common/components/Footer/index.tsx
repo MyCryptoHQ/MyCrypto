@@ -12,7 +12,6 @@ import React from 'react';
 import PreFooter from './PreFooter';
 import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
-import OnboardModal from 'containers/OnboardModal';
 import './index.scss';
 import { translateRaw } from 'translations';
 
@@ -82,6 +81,9 @@ export default class Footer extends React.PureComponent<Props, State> {
               <NewTabLink href="https://about.mycrypto.com">
                 {translateRaw('FOOTER_TEAM')}
               </NewTabLink>
+              <NewTabLink href="https://about.mycrypto.com/privacy/">
+                {translateRaw('FOOTER_PRIVACY_POLICY')}
+              </NewTabLink>
             </div>
 
             <p className="Footer-about-text">{translateRaw('FOOTER_ABOUT')}</p>
@@ -130,8 +132,6 @@ export default class Footer extends React.PureComponent<Props, State> {
             </div>
           </div>
         </footer>
-
-        <OnboardModal />
         <DisclaimerModal isOpen={this.state.isDisclaimerOpen} handleClose={this.toggleModal} />
       </div>
     );
