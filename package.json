@@ -55,7 +55,7 @@
     "scryptsy": "2.0.0",
     "semver": "5.5.0",
     "uuid": "3.2.1",
-    "wallet-address-validator": "0.1.6",
+    "wallet-address-validator": "0.1.7",
     "whatwg-fetch": "2.0.3",
     "zxcvbn": "4.4.2"
   },
