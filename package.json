@@ -96,7 +96,7 @@
     "empty": "0.10.1",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
-    "enzyme-to-json": "3.3.3",
+    "enzyme-to-json": "3.3.4",
     "express": "4.16.2",
     "file-loader": "1.1.11",
     "friendly-errors-webpack-plugin": "1.6.1",
