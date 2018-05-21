@@ -14,7 +14,7 @@ import {
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
 import { shepherdProvider } from 'libs/nodes';
-import { exists } from 'eth-exists';
+import { exists, SuccessConfig, FailConfig } from 'eth-exists';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 
@@ -44,12 +44,13 @@ interface State {
   hasAuth: boolean;
   username: string;
   password: string;
+  defaultNodes: ((SuccessConfig | FailConfig) & { display: string; index: number })[];
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
 
 class CustomNodeModal extends React.Component<Props, State> {
-  public INITIAL_STATE = {
+  public INITIAL_STATE: State = {
     name: '',
     url: '',
     network: Object.keys(this.props.staticNetworks)[0],
@@ -58,15 +59,31 @@ class CustomNodeModal extends React.Component<Props, State> {
     customNetworkChainId: '',
     hasAuth: false,
     username: '',
-    password: ''
+    password: '',
+    defaultNodes: []
   };
+
   public state: State = this.INITIAL_STATE;
+
+  private timer: number | null;
+
+  constructor(props: Props) {
+    super(props);
+    this.pollForDefaultNodes();
+  }
 
   public componentDidUpdate(prevProps: Props) {
     // Reset state when modal opens
     if (!prevProps.isOpen && prevProps.isOpen !== this.props.isOpen) {
       this.setState(this.INITIAL_STATE);
     }
+  }
+
+  public componentWillUnmount() {
+    if (this.timer) {
+      window.clearInterval(this.timer);
+    }
+    this.timer = null;
   }
 
   public render() {
@@ -112,6 +129,8 @@ class CustomNodeModal extends React.Component<Props, State> {
             {translate('CUSTOM_NODE_CONFLICT', { conflictedNode: conflictedNode.name })}
           </div>
         )}
+
+        {this.renderDefaultNodeDropdown()}
 
         <form className="CustomNodeModal">
           <div className="flex-wrapper">
@@ -219,6 +238,53 @@ class CustomNodeModal extends React.Component<Props, State> {
           )}
         </form>
       </Modal>
+    );
+  }
+
+  private pollForDefaultNodes() {
+    const pollingInterval = 3000;
+    this.timer = window.setInterval(async () => {
+      const results = await exists(
+        [
+          // tslint:disable-next-line:no-http-string
+          { type: 'http', addr: 'http://localhost', port: 8545, timeout: 3000 }
+        ],
+        { includeDefaults: false }
+      );
+      if (!this.timer) {
+        return;
+      }
+      this.setState({
+        defaultNodes: results.filter(r => r.success).map((r, index) => ({
+          ...r,
+          display: `${r.addr}:${r.port}`,
+          index
+        }))
+      });
+    }, pollingInterval);
+  }
+
+  private renderDefaultNodeDropdown() {
+    const { defaultNodes } = this.state;
+    if (!defaultNodes.length) {
+      return null;
+    }
+
+    return (
+      <label className="col-sm-12 input-group">
+        <div className="input-group-header"> {'Default Nodes Found'}</div>
+        <Dropdown
+          options={this.state.defaultNodes.map(n => ({ label: n.display, value: n.index }))}
+          onChange={({ value }: { value: string }) => {
+            const result = this.state.defaultNodes.find(d => d.index === +value);
+            if (!result) {
+              return;
+            }
+            const { addr, port } = result;
+            this.setState({ url: `${addr}:${port}`, name: 'MyDefaultNode' });
+          }}
+        />
+      </label>
     );
   }
 
