@@ -79,7 +79,8 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
               </h4>
 
               <Input
-                className={`SwapAddress-address-input ${!validAddress ? 'invalid' : ''}`}
+                isValid={validAddress}
+                className="SwapAddress-address-input"
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}

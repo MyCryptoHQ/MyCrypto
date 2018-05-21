@@ -9,13 +9,22 @@ const paths = {
   static: path.join(__dirname, '../static'),
   electron: path.join(__dirname, '../electron-app'),
   shared: path.join(__dirname, '../shared'),
-  modules: path.join(__dirname, '../node_modules'),
-}
+  modules: path.join(__dirname, '../node_modules')
+};
 
 module.exports = {
   // Configuration
   port: process.env.HTTPS ? 3443 : 3000,
   title: 'MyCrypto',
+  // description < 200 characters
+  description: 'MyCrypto is a free, open-source interface for interacting with the blockchain.',
+  url: 'https://mycrypto.com/',
+  type: 'website',
+  // img < 5MB
+  img: path.join(paths.assets, 'images/link-preview.png'),
+  twitter: {
+    creator: '@MyCrypto'
+  },
   path: paths,
 
   // Typescript rule config
@@ -31,11 +40,7 @@ module.exports = {
   // File resolution
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [
-      paths.src,
-      paths.modules,
-      paths.root,
-    ]
+    modules: [paths.src, paths.modules, paths.root]
   },
 
   // Vendor modules

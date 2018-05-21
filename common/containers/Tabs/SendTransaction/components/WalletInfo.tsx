@@ -30,7 +30,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     this.setStateFromWallet(this.props.wallet);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
       this.setStateFromWallet(nextProps.wallet);
     }

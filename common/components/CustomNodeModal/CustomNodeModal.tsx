@@ -117,7 +117,7 @@ class CustomNodeModal extends React.Component<Props, State> {
             <label className="col-sm-9 input-group flex-grow-1">
               <div className="input-group-header">{translate('CUSTOM_NODE_NAME')}</div>
               <Input
-                className={`input-group-input ${this.state.name && invalids.name ? 'invalid' : ''}`}
+                isValid={!(this.state.name && invalids.name)}
                 type="text"
                 placeholder="My Node"
                 value={this.state.name}
@@ -142,9 +142,7 @@ class CustomNodeModal extends React.Component<Props, State> {
               <label className="col-sm-6 input-group input-group-inline">
                 <div className="input-group-header">{translate('CUSTOM_NETWORK_NAME')}</div>
                 <Input
-                  className={`input-group-input ${
-                    this.state.customNetworkId && invalids.customNetworkId ? 'invalid' : ''
-                  }`}
+                  isValid={!(this.state.customNetworkId && invalids.customNetworkId)}
                   type="text"
                   placeholder="My Custom Network"
                   value={this.state.customNetworkId}
@@ -154,9 +152,7 @@ class CustomNodeModal extends React.Component<Props, State> {
               <label className="col-sm-3 input-group input-group-inline">
                 <div className="input-group-header">{translate('CUSTOM_NETWORK_CURRENCY')}</div>
                 <Input
-                  className={`input-group-input ${
-                    this.state.customNetworkUnit && invalids.customNetworkUnit ? 'invalid' : ''
-                  }`}
+                  isValid={!(this.state.customNetworkUnit && invalids.customNetworkUnit)}
                   type="text"
                   placeholder="ETH"
                   value={this.state.customNetworkUnit}
@@ -166,11 +162,7 @@ class CustomNodeModal extends React.Component<Props, State> {
               <label className="col-sm-3 input-group input-group-inline">
                 <div className="input-group-header">{translate('CUSTOM_NETWORK_CHAIN_ID')}</div>
                 <Input
-                  className={`input-group-input ${
-                    this.state.customNetworkChainId && invalids.customNetworkChainId
-                      ? 'invalid'
-                      : ''
-                  }`}
+                  isValid={!(this.state.customNetworkChainId && invalids.customNetworkChainId)}
                   type="text"
                   placeholder="1"
                   value={this.state.customNetworkChainId}
@@ -183,7 +175,7 @@ class CustomNodeModal extends React.Component<Props, State> {
           <label className="input-group input-group-inline">
             <div className="input-group-header">{translate('CUSTOM_NETWORK_URL')}</div>
             <Input
-              className={`input-group-input ${this.state.url && invalids.url ? 'invalid' : ''}`}
+              isValid={!(this.state.url && invalids.url)}
               type="text"
               placeholder="https://127.0.0.1:8545/"
               value={this.state.url}
@@ -207,9 +199,7 @@ class CustomNodeModal extends React.Component<Props, State> {
               <label className="col-sm-6 input-group input-group-inline">
                 <div className="input-group-header">{translate('INPUT_USERNAME_LABEL')}</div>
                 <Input
-                  className={`input-group-input ${
-                    this.state.username && invalids.username ? 'invalid' : ''
-                  }`}
+                  isValid={!(this.state.username && invalids.username)}
                   type="text"
                   value={this.state.username}
                   onChange={e => this.setState({ username: e.currentTarget.value })}
@@ -218,9 +208,7 @@ class CustomNodeModal extends React.Component<Props, State> {
               <label className="col-sm-6 input-group input-group-inline">
                 <div className="input-group-header">{translate('INPUT_PASSWORD_LABEL')}</div>
                 <Input
-                  className={`input-group-input ${
-                    this.state.password && invalids.password ? 'invalid' : ''
-                  }`}
+                  isValid={!(this.state.password && invalids.password)}
                   type="password"
                   value={this.state.password}
                   onChange={e => this.setState({ password: e.currentTarget.value })}

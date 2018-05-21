@@ -166,7 +166,8 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: 'https://doc.satoshilabs.com/trezor-apps/mew.html'
+        helpLink:
+          'https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html'
       },
       [SecureWalletName.PARITY_SIGNER]: {
         lid: 'X_PARITYSIGNER',
@@ -225,7 +226,7 @@ const WalletDecrypt = withRouter<Props>(
       hasAcknowledgedInsecure: false
     };
 
-    public componentWillReceiveProps(nextProps: Props) {
+    public UNSAFE_componentWillReceiveProps(nextProps: Props) {
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
         this.setState({
@@ -390,12 +391,14 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       let timeout = 0;
-      const web3Available = await isWeb3NodeAvailable();
-      if (wallet.attemptUnlock && web3Available) {
-        // timeout is only the maximum wait time before secondary view is shown
-        // send view will be shown immediately on web3 resolve
-        timeout = 1000;
-        wallet.unlock();
+      if (wallet.attemptUnlock) {
+        const web3Available = await isWeb3NodeAvailable();
+        if (web3Available) {
+          // timeout is only the maximum wait time before secondary view is shown
+          // send view will be shown immediately on web3 resolve
+          timeout = 1500;
+          wallet.unlock();
+        }
       }
 
       window.setTimeout(() => {
