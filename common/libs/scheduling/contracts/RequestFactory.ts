@@ -8,11 +8,10 @@ interface ABIFunc<T, K = void> {
 
 type address = any;
 type uint256 = any;
-type bytes = any;
 
 interface IRequestFactory {
   validateRequestParams: ABIFunc<
-    { _addressArgs: address[]; _uintArgs: uint256[]; _callData: bytes; _endowment: uint256 },
+    { _addressArgs: address[]; _uintArgs: uint256[]; _endowment: uint256 },
     { paramsValidity: boolean[] }
   >;
 }
@@ -28,10 +27,6 @@ const requestFactoryAbi = [
       {
         name: '_uintArgs',
         type: 'uint256[12]'
-      },
-      {
-        name: '_callData',
-        type: 'bytes'
       },
       {
         name: '_endowment',

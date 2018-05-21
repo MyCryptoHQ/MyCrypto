@@ -14,7 +14,7 @@ export const WindowStartField: React.SFC<Props> = ({ isReadOnly }) => (
         <label className="input-group">
           <div className="input-group-header">{translate('SCHEDULE_BLOCK')}</div>
           <Input
-            className={`input-group-input ${isValid ? '' : 'invalid'}`}
+            isValid={isValid}
             type="text"
             value={currentWindowStart.raw}
             placeholder={translateRaw('SCHEDULE_BLOCK_PLACEHOLDER')}

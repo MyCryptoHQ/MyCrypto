@@ -29,7 +29,7 @@ const initialState = { userInput: '' };
 class UnitConverterClass extends Component<Props, State> {
   public state: State = initialState;
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { userInput } = this.state;
 
     if (this.props.decimal !== nextProps.decimal) {

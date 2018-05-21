@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BetaAgreement, Footer, Header } from 'components';
+import { Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
@@ -38,7 +38,6 @@ class WebTemplate extends Component<Props, {}> {
         <div className="WebTemplate-spacer" />
         <Footer latestBlock={latestBlock} />
         <Notifications />
-        <BetaAgreement />
       </div>
     );
   }

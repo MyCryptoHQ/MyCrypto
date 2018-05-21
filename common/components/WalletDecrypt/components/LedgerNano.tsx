@@ -50,7 +50,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     });
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath && nextProps.dPath) {
       this.setState({ dPath: nextProps.dPath });
     }

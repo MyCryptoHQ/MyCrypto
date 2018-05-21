@@ -73,7 +73,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     this.getAddresses();
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { publicKey, chainCode, seed, dPath } = this.props;
     if (
       nextProps.publicKey !== publicKey ||
@@ -132,7 +132,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
               <React.Fragment>
                 <div className="DWModal-path-custom">
                   <Input
-                    className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
+                    isValid={customPath ? isValidPath(customPath) : true}
                     value={customPath}
                     placeholder="m/44'/60'/0'/0"
                     onChange={this.handleChangeCustomPath}
