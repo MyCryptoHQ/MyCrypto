@@ -14,6 +14,7 @@ import {
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
 import { shepherdProvider } from 'libs/nodes';
+import { exists } from 'eth-exists';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 
