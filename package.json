@@ -82,7 +82,7 @@
     "@types/redux-logger": "3.0.5",
     "@types/semver": "5.5.0",
     "@types/uuid": "3.4.3",
-    "@types/webpack-env": "1.13.4",
+    "@types/webpack-env": "1.13.6",
     "@types/zxcvbn": "4.4.0",
     "autodll-webpack-plugin": "0.3.9",
     "check-node-version": "3.2.0",
