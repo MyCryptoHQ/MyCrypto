@@ -4,7 +4,7 @@ import { routerReducer } from 'react-router-redux';
 import config, { State as ConfigState } from './config/derivedReducers';
 import notifications, { State as NotificationsState } from './notifications/reducers';
 import onboardStatus, { State as OnboardStatusState } from './onboardStatus/reducers';
-import ens, { State as EnsState } from './ens/reducers';
+import ens, { State as EnsState } from './ens/derivedReducers';
 import wallet, { State as WalletState } from './wallet/reducers';
 import customTokens, { State as CustomTokensState } from './customTokens/reducers';
 import rates, { State as RatesState } from './rates/reducers';

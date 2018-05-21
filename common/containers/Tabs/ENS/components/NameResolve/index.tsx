@@ -33,7 +33,7 @@ const NameResolve: React.SFC<Props> = props => {
     return null;
   }
 
-  const domainData = domainRequests[currentDomain].data! || false;
+  const domainData = domainRequests[currentDomain].data || false;
   let content;
 
   if (domainData) {

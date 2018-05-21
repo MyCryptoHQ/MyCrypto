@@ -1,17 +1,14 @@
-import { combineReducers } from 'redux';
-
 import { DomainRequest } from 'libs/ens';
+
 import {
   TypeKeys,
-  EnsAction,
   ResolveDomainRequested,
   ResolveDomainFailed,
   ResolveDomainSucceeded,
   ResolveDomainCached,
   ResolveDomainAction
-} from './types';
+} from '../types';
 
-//#region Domain Requests
 export interface RequestsState {
   [key: string]: {
     state: REQUEST_STATES;
@@ -76,7 +73,7 @@ const resolveDomainFailed = (state: RequestsState, action: ResolveDomainFailed):
   return { ...state, [domain]: nextDomain };
 };
 
-function domainRequests(
+export default function domainRequests(
   state: RequestsState = REQUESTS_INITIAL_STATE,
   action: ResolveDomainAction
 ): RequestsState {
@@ -93,49 +90,3 @@ function domainRequests(
       return state;
   }
 }
-//#endregion Domain Requests
-
-//#region Domain Selector
-export interface SelectorState {
-  currentDomain: null | string;
-}
-
-const SELECTOR_INITIAL_STATE: SelectorState = {
-  currentDomain: null
-};
-
-const setCurrentDomainName = (
-  state: SelectorState,
-  action: ResolveDomainSucceeded | ResolveDomainCached | ResolveDomainRequested
-): SelectorState => {
-  const { domain: domainName } = action.payload;
-  return { ...state, currentDomain: domainName };
-};
-
-const clearCurrentDomainName = (): SelectorState => {
-  return { currentDomain: null };
-};
-
-export function domainSelector(
-  state: SelectorState = SELECTOR_INITIAL_STATE,
-  action: EnsAction
-): SelectorState {
-  switch (action.type) {
-    case TypeKeys.ENS_RESOLVE_DOMAIN_CACHED:
-    case TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED:
-    case TypeKeys.ENS_RESOLVE_DOMAIN_SUCCEEDED:
-      return setCurrentDomainName(state, action);
-    case TypeKeys.ENS_RESOLVE_DOMAIN_FAILED:
-      return clearCurrentDomainName();
-    default:
-      return state;
-  }
-}
-//#endregion Domain Selector
-
-export interface State {
-  domainSelector: SelectorState;
-  domainRequests: RequestsState;
-}
-
-export default combineReducers<State>({ domainSelector, domainRequests });

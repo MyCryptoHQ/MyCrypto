@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 
 import { resolveDomainRequested } from './actions';
-import ens from './reducers';
+import ens from './derivedReducers';
 
 const store = createStore(ens);
 const INITIAL_STATE = store.getState();
