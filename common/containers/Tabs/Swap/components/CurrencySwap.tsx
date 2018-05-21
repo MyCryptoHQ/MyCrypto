@@ -117,7 +117,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.options !== this.props.options) {
       this.setState({ options: Object.values(nextProps.options.byId) });
     }
@@ -316,12 +316,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                 <div className="input-group input-group-inline">
                   <Input
                     id="origin-swap-input"
-                    className={`input-group-input ${
-                      !!origin.amount &&
-                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
-                        ? ''
-                        : 'invalid'
-                    }`}
+                    isValid={!originErr}
                     type="number"
                     placeholder={translateRaw('SEND_AMOUNT_SHORT')}
                     value={isNaN(origin.amount) ? '' : origin.amount}
@@ -341,12 +336,7 @@ export default class CurrencySwap extends PureComponent<Props, State> {
                   <div className="input-group-header">{translate('SWAP_RECEIVE_INPUT_LABEL')}</div>
                   <Input
                     id="destination-swap-input"
-                    className={`${
-                      !!destination.amount &&
-                      this.isMinMaxValid(origin.amount, origin.label, destination.label)
-                        ? ''
-                        : 'invalid'
-                    }`}
+                    isValid={!destinationErr}
                     type="number"
                     placeholder={translateRaw('SEND_AMOUNT_SHORT')}
                     value={isNaN(destination.amount) ? '' : destination.amount}

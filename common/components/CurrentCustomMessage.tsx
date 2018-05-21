@@ -29,7 +29,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
     this.setAddressState(this.props);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
       this.setAddressState(nextProps);
     }

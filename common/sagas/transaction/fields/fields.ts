@@ -31,12 +31,12 @@ export function* handleGasLimitInput({ payload }: InputGasLimitAction): SagaIter
 }
 
 export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIterator {
-  const priceFloat = parseFloat(payload);
-  const validGasPrice: boolean = yield call(gasPriceValidator, priceFloat);
+  const gasPrice = Number(payload);
+  const validGasPrice: boolean = yield call(gasPriceValidator, gasPrice);
   yield put(
     setGasPriceField({
       raw: payload,
-      value: validGasPrice ? gasPriceToBase(priceFloat) : Wei('0')
+      value: validGasPrice ? gasPriceToBase(gasPrice) : Wei('0')
     })
   );
 }
