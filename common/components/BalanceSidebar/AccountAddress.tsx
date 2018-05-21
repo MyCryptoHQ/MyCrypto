@@ -125,7 +125,6 @@ class AccountAddress extends React.Component<Props, State> {
     const storedLabel = addressLabels[address];
     const newLabelSameAsPrevious = temporaryLabel === storedLabel;
     const labelInputTouchedWithError = labelInputTouched && !newLabelSameAsPrevious && labelError;
-    const inputClassName = labelInputTouchedWithError ? 'invalid' : '';
 
     let labelContent = null;
 
@@ -134,7 +133,6 @@ class AccountAddress extends React.Component<Props, State> {
         <React.Fragment>
           <Input
             title={translateRaw('ADD_LABEL')}
-            className={inputClassName}
             placeholder={translateRaw('NEW_LABEL')}
             defaultValue={storedLabel}
             onChange={this.handleLabelChange}
@@ -143,6 +141,7 @@ class AccountAddress extends React.Component<Props, State> {
             onBlur={this.handleBlur}
             showInvalidBeforeBlur={true}
             setInnerRef={this.setLabelInputRef}
+            isValid={!labelInputTouchedWithError}
           />
           {labelInputTouchedWithError && (
             <label className="AccountInfo-address-wrapper-error">{labelError}</label>
