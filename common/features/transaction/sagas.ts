@@ -56,7 +56,7 @@ import { isNetworkUnit, getNetworkUnit } from 'features/config/derivedSelectors'
 import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { TypeKeys as ENSTypekeys } from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
-import { getResolvedAddress } from 'features/ens/selectors';
+import { getResolvedAddress } from 'features/ens/derivedSelectors';
 import { TypeKeys as WalletTypeKeys } from 'features/wallet/types';
 import {
   getWalletInst,

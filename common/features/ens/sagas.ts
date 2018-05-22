@@ -7,7 +7,8 @@ import { getNodeLib } from 'features/config/nodes/derivedSelectors';
 import { showNotification } from 'features/notifications/actions';
 import { TypeKeys, ResolveDomainRequested } from './types';
 import { resolveDomainFailed, resolveDomainSucceeded, resolveDomainCached } from './actions';
-import { getCurrentDomainName, getCurrentDomainData } from './selectors';
+import { getCurrentDomainData } from './derivedSelectors';
+import { getCurrentDomainName } from './domainSelector/selectors';
 import { resolveDomainRequest } from './helpers';
 
 function* shouldResolveDomain(domain: string) {

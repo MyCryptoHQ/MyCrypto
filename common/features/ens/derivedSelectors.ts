@@ -2,12 +2,14 @@ import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { isCreationAddress } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import { REQUEST_STATES } from './domainRequests/reducers';
+import { getCurrentDomainName } from './domainSelector/selectors';
+import { getDomainRequests } from './domainRequests/selectors';
+
+const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
+  return !!(data as IOwnedDomainRequest).ownerAddress;
+};
 
 export const getEns = (state: AppState) => state.ens;
-
-export const getCurrentDomainName = (state: AppState) => getEns(state).domainSelector.currentDomain;
-
-export const getDomainRequests = (state: AppState) => getEns(state).domainRequests;
 
 export const getCurrentDomainData = (state: AppState) => {
   const currentDomain = getCurrentDomainName(state);
@@ -47,8 +49,4 @@ export const getResolvingDomain = (state: AppState) => {
   }
 
   return domainRequests[currentDomain].state === REQUEST_STATES.pending;
-};
-
-const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
-  return !!(data as IOwnedDomainRequest).ownerAddress;
 };

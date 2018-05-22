@@ -54,7 +54,7 @@ import {
 import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
 import { isSchedulingEnabled } from 'features/schedule/selectors';
 import { TypeKeys as ENSTypekeys } from 'features/ens/types';
-import { getResolvedAddress } from 'features/ens/selectors';
+import { getResolvedAddress } from 'features/ens/derivedSelectors';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { showNotification } from 'features/notifications/actions';
 import { TypeKeys } from './types';

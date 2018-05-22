@@ -9,7 +9,7 @@ import {
   getCurrentScheduleType,
   ICurrentScheduleType
 } from 'features/schedule/selectors';
-import { getResolvingDomain } from 'features/ens/selectors';
+import { getResolvingDomain } from 'features/ens/derivedSelectors';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowSizeFieldFactory';
 

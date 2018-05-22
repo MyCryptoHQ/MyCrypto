@@ -14,7 +14,7 @@ import {
 } from 'features/transaction/selectors';
 import { getCurrentToLabel } from 'features/addressBook/selectors';
 import { getWalletInst } from 'features/wallet/selectors';
-import { getResolvingDomain } from 'features/ens/selectors';
+import { getResolvingDomain } from 'features/ens/derivedSelectors';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
