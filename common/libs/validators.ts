@@ -4,6 +4,7 @@ import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
+import { translateRaw } from 'translations';
 import { isPositiveInteger } from 'utils/helpers';
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -305,3 +306,70 @@ export const isValidGetNetVersion = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
+
+export function isValidLabelLength(label: string, options: { allowEmpty?: boolean } = {}): boolean {
+  const meetsMinimumLengthRequirement = label.length >= 2;
+  const meetsMaximumLengthRequirement = label.length <= 50;
+  const labelOnlyContainsSpaces = !label.trim();
+
+  if (options.allowEmpty && label.length === 0) {
+    return true;
+  }
+
+  if (!options.allowEmpty && labelOnlyContainsSpaces) {
+    return false;
+  }
+
+  return meetsMinimumLengthRequirement && meetsMaximumLengthRequirement;
+}
+
+export function isLabelWithoutENS(label: string): boolean {
+  const ensTlds = ['.eth', '.test', '.reverse'];
+
+  for (const tld of ensTlds) {
+    if (label.includes(tld)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function isValidAddressLabel(
+  address: string,
+  label: string,
+  addresses: { [address: string]: string },
+  labels: { [label: string]: string }
+) {
+  const addressAlreadyExists = !!addresses[address];
+  const labelAlreadyExists = !!labels[label];
+  const result: { isValid: boolean; addressError?: string; labelError?: string } = {
+    isValid: true
+  };
+
+  if (!isValidETHAddress(address)) {
+    result.addressError = translateRaw('INVALID_ADDRESS');
+  }
+
+  if (addressAlreadyExists) {
+    result.addressError = translateRaw('ADDRESS_ALREADY_EXISTS');
+  }
+
+  if (!isValidLabelLength(label)) {
+    result.labelError = translateRaw('INVALID_LABEL_LENGTH');
+  }
+
+  if (!isLabelWithoutENS(label)) {
+    result.labelError = translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
+  }
+
+  if (labelAlreadyExists) {
+    result.labelError = translateRaw('LABEL_ALREADY_EXISTS');
+  }
+
+  if (result.addressError || result.labelError) {
+    result.isValid = false;
+  }
+
+  return result;
+}

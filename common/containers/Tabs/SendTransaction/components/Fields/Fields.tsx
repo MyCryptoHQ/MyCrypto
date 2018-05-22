@@ -50,7 +50,7 @@ class FieldsClass extends Component<StateProps> {
             <QueryWarning />
             {shouldDisplay && (
               <div className="Tab-content-pane">
-                <AddressField />
+                <AddressField showLabelMatch={true} />
                 <div className="row form-group">
                   <div
                     className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}

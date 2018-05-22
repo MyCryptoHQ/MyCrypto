@@ -55,9 +55,19 @@
         font-size: 13px;
         text-align: left;
         font-family: $font-family-monospace;
+        display: flex;
+        align-items: center;
+
+        &-label {
+          font-weight: bold;
+        }
 
         input {
-          margin-right: 6px;
+          margin-right: 10px;
+        }
+
+        &-text {
+          font-size: 10px;
         }
       }
 
@@ -78,9 +88,14 @@
         tr {
           cursor: pointer;
 
-          td {
-            vertical-align: middle;
+          label {
+            display: block;
+            font-family: $font-family-sans-serif;
           }
+        }
+
+        td {
+          vertical-align: middle;
         }
       }
     }
