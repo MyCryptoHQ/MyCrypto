@@ -23,7 +23,7 @@ type uint8 = any;
 
 interface GetEntryResponse {
   digest: bytes32;
-  hashfunction: uint8;
+  hashFunction: uint8;
   size: uint8;
 }
 
@@ -34,14 +34,14 @@ interface GetEntryResponse {
  * @returns {(string|null)} base58 encoded multihash string
  */
 function getMultihashFromBytes32(multihash: GetEntryResponse) {
-  const { digest, hashfunction, size } = multihash;
+  const { digest, hashFunction, size } = multihash;
   if (size === 0) {
     return null;
   }
 
   // prepend hashFunction and digest size
   const multihashBytes = Buffer.alloc(2 + digest.length);
-  multihashBytes[0] = hashfunction;
+  multihashBytes[0] = hashFunction;
   multihashBytes[1] = size;
   multihashBytes.set(digest, 2);
 
@@ -72,7 +72,7 @@ function fetchLatestIpfsHash(key: number) {
           type: 'bytes32'
         },
         {
-          name: 'hashfunction',
+          name: 'hashFunction',
           type: 'uint8'
         },
         {
@@ -91,9 +91,9 @@ function fetchLatestIpfsHash(key: number) {
       to: IPFS_MULTISIG_CONTRACT_ADDRESS
     })
     .then(contract.getEntry.decodeOutput)
-    .then(({ digest, hashfunction, size }) => ({
+    .then(({ digest, hashFunction, size }) => ({
       digest,
-      hashfunction: handleValues(hashfunction).toNumber(),
+      hashFunction: handleValues(hashFunction).toNumber(),
       size: handleValues(size).toNumber()
     }))
     .then(getMultihashFromBytes32);
