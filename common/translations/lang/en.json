@@ -422,7 +422,7 @@
     "STEELY_REFERRAL": "Get a Steely",
     "ETHERCARD_REFERAL": "Get an ether.card",
     "DISCLAIMER": "Disclaimer",
-    "INPUT_CONFIRM_PASSWORD_LABEL": "Confirm password",
+    "INPUT_CONFIRM_PASSWORD_LABEL": "Confirm Password",
     "INPUT_PASSWORD_LABEL": "Password",
     "INPUT_USERNAME_LABEL": "Username",
     "INPUT_PASSWORD_PLACEHOLDER": "Password must use at least $pass_length characters",
