@@ -1,7 +1,6 @@
-import { Wei, TokenValue } from 'libs/units';
-import { IHexStrTransaction } from 'libs/transaction';
-import { Token } from 'types/network';
-import { TransactionData, TransactionReceipt } from 'types/transactions';
+import { IRPCProvider } from 'mycrypto-shepherd/dist/lib/types';
+import { Token } from 'shared/types/network';
+import { TokenValue } from 'libs/units';
 
 export interface TxObj {
   to: string;
@@ -13,16 +12,8 @@ interface TokenBalanceResult {
   error: string | null;
 }
 
-export interface INode {
-  ping(): Promise<boolean>;
-  getBalance(address: string): Promise<Wei>;
+// alias for compatibility
+export type INode = IRPCProvider & {
   getTokenBalance(address: string, token: Token): Promise<TokenBalanceResult>;
   getTokenBalances(address: string, tokens: Token[]): Promise<TokenBalanceResult[]>;
-  estimateGas(tx: Partial<IHexStrTransaction>): Promise<Wei>;
-  getTransactionCount(address: string): Promise<string>;
-  getTransactionByHash(txhash: string): Promise<TransactionData>;
-  getTransactionReceipt(txhash: string): Promise<TransactionReceipt>;
-  sendRawTx(tx: string): Promise<string>;
-  sendCallRequest(txObj: TxObj): Promise<string>;
-  getCurrentBlock(): Promise<string>;
-}
+};

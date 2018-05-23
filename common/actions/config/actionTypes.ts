@@ -1,6 +1,6 @@
 import { TypeKeys } from './constants';
 import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
-import { CustomNetworkConfig } from 'types/network';
+import { CustomNetworkConfig, Token, StaticNetworkIds } from 'types/network';
 
 export interface SetOnlineAction {
   type: TypeKeys.CONFIG_SET_ONLINE;
@@ -92,6 +92,23 @@ export interface Web3setNodeAction {
   type: TypeKeys.CONFIG_NODE_WEB3_SET;
   payload: { id: 'web3'; config: StaticNodeConfig };
 }
+
+export interface UpdateTokensRequested {
+  type: TypeKeys.CONFIG_UPDATE_TOKENS_REQUESTED;
+  payload: { id: StaticNetworkIds };
+}
+
+export interface UpdateTokensSucceeded {
+  type: TypeKeys.CONFIG_UPDATE_TOKENS_SUCCEEDED;
+  payload: { tokens: Token[]; id: StaticNetworkIds; hash: string | null };
+}
+
+export interface UpdateTokensFailed {
+  type: TypeKeys.CONFIG_UDPATE_TOKENS_FAILED;
+  payload: { id: StaticNetworkIds };
+}
+
+export type UpdateTokensAction = UpdateTokensRequested | UpdateTokensSucceeded | UpdateTokensFailed;
 
 export type CustomNetworkAction = AddCustomNetworkAction | RemoveCustomNetworkAction;
 

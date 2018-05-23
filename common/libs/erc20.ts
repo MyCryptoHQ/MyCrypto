@@ -1,6 +1,6 @@
 import Contract from 'libs/contracts';
 
-interface ABIFunc<T, K = void> {
+export interface ABIFunc<T, K = void> {
   encodeInput(x: T): string;
   decodeInput(argStr: string): T;
   decodeOutput(argStr: string): K;

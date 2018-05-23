@@ -132,3 +132,21 @@ export function web3UnsetNode(): interfaces.Web3UnsetNodeAction {
     type: TypeKeys.CONFIG_NODE_WEB3_UNSET
   };
 }
+
+export function updateTokensRequested(
+  payload: interfaces.UpdateTokensRequested['payload']
+): interfaces.UpdateTokensRequested {
+  return { type: TypeKeys.CONFIG_UPDATE_TOKENS_REQUESTED, payload };
+}
+
+export function updateTokensSucceeded(
+  payload: interfaces.UpdateTokensSucceeded['payload']
+): interfaces.UpdateTokensSucceeded {
+  return { type: TypeKeys.CONFIG_UPDATE_TOKENS_SUCCEEDED, payload };
+}
+
+export function updateTokensFailed(
+  payload: interfaces.UpdateTokensFailed['payload']
+): interfaces.UpdateTokensFailed {
+  return { type: TypeKeys.CONFIG_UDPATE_TOKENS_FAILED, payload };
+}

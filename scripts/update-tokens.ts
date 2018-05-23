@@ -1,8 +1,8 @@
-import { GitCommit } from './types/GitCommit';
-import { CommitStatus } from './types/CommitStatus';
-import { RawTokenJSON } from './types/TokensJson';
+import { GitCommit } from 'shared/types/GitCommit';
+import { CommitStatus } from 'shared/types/CommitStatus';
+import { RawTokenJSON } from 'shared/types/TokensJson';
 
-const { processTokenJson } = require('./update-tokens-utils');
+const { processTokenJson } = require('../shared/update-tokens-utils');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');

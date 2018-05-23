@@ -1,5 +1,5 @@
-import { RawTokenJSON, ValidatedTokenJSON, NormalizedTokenJSON } from './types/TokensJson';
 import { Token } from '../shared/types/network';
+import { RawTokenJSON, ValidatedTokenJSON, NormalizedTokenJSON } from 'shared/types/TokensJson';
 interface StrIdx<T> {
   [key: string]: T;
 }

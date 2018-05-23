@@ -11,11 +11,14 @@ import {
   getLanguageSelection,
   getCustomNodeConfigs,
   getSelectedNode,
-  getCustomNetworkConfigs
+  getCustomNetworkConfigs,
+  getStaticNetworkConfigs
 } from 'selectors/config';
 import RootReducer, { AppState } from 'reducers';
 import { CustomNodeConfig } from 'types/node';
 import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
+import { StaticNetworkConfig, StaticNetworkIds } from 'shared/types/network';
+import { StaticNetworksState } from 'reducers/config/networks';
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
@@ -26,7 +29,8 @@ export function getConfigAndCustomTokensStateToSubscribe(
     meta: { languageSelection: getLanguageSelection(state) },
     nodes: { customNodes: getCustomNodeConfigs(state), selectedNode: getSelectedNode(state) },
     networks: {
-      customNetworks: getCustomNetworkConfigs(state)
+      customNetworks: getCustomNetworkConfigs(state),
+      staticNetworks: getStaticNetworkConfigs(state)
     }
   };
 
@@ -94,6 +98,24 @@ function rehydrateNetworks(
 ): ConfigState['networks'] {
   const nextNetworkState = { ...initialState };
   nextNetworkState.customNetworks = savedState.customNetworks;
+
+  // merge the states so that we just grab the tokenlist hash and tokens
+  const nextStaticNetworkState = Object.entries(savedState.staticNetworks).reduce<
+    StaticNetworksState
+  >(
+    (prev, [networkId, networkConfig]: [StaticNetworkIds, StaticNetworkConfig]) => {
+      const initialConfig = initialState.staticNetworks[networkId];
+      const nextConfig: StaticNetworkConfig = {
+        ...initialConfig,
+        tokenListHash: networkConfig.tokenListHash,
+        tokens: networkConfig.tokens
+      };
+      return { ...prev, [networkId]: nextConfig };
+    },
+    {} as StaticNetworksState
+  );
+
+  nextNetworkState.staticNetworks = nextStaticNetworkState;
   return nextNetworkState;
 }
 

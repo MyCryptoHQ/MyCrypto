@@ -29,6 +29,10 @@ export default class RpcNode implements INode {
     this.requests = new RPCRequests();
   }
 
+  public getNetVersion(): Promise<string> {
+    return this.client.call(this.requests.getNetVersion()).then(({ result }) => result);
+  }
+
   public ping(): Promise<boolean> {
     return this.client
       .call(this.requests.getNetVersion())
@@ -42,6 +46,14 @@ export default class RpcNode implements INode {
       .then(isValidCallRequest)
       .then(response => response.result);
   }
+
+  public sendCallRequests(txObjs: TxObj[]): Promise<string[]> {
+    return this.client
+      .batch(txObjs.map(this.requests.ethCall))
+      .then(r => r.map(isValidCallRequest))
+      .then(r => r.map(({ result }) => result));
+  }
+
   public getBalance(address: string): Promise<Wei> {
     return this.client
       .call(this.requests.getBalance(address))

@@ -5,6 +5,10 @@ import { GasPriceSetting } from 'types/network';
 import { makeExplorer } from 'utils/helpers';
 import NewTabLink from 'components/ui/NewTabLink';
 
+// tslint:disable-next-line:no-http-string
+export const IPFS_GATEWAY = 'http://127.0.0.1:8080';
+export const IPFS_MULTISIG_CONTRACT_ADDRESS = '0x230ead3dbbd50248456a57afdd6570cdc8b4e439';
+
 export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
 

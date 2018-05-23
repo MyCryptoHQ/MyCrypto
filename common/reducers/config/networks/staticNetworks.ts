@@ -18,9 +18,10 @@ import {
   TOMO_DEFAULT,
   UBQ_DEFAULT
 } from 'config/dpaths';
-import { ConfigAction } from 'actions/config';
+import { TypeKeys, UpdateTokensAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
 import { StaticNetworksState as State } from './types';
+import { StaticNetworkConfig } from 'shared/types/network';
 
 const testnetDefaultGasPrice = {
   min: 0.1,
@@ -44,6 +45,9 @@ export const INITIAL_STATE: State = {
       address: ETHTokenExplorer
     },
     tokens: require('config/tokens/eth.json'),
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: true,
+    tokenListHash: '',
     contracts: require('config/contracts/eth.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TREZOR,
@@ -64,6 +68,9 @@ export const INITIAL_STATE: State = {
       origin: 'https://ropsten.etherscan.io'
     }),
     tokens: require('config/tokens/ropsten.json'),
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: true,
+    tokenListHash: '',
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
     dPathFormats: {
@@ -84,6 +91,9 @@ export const INITIAL_STATE: State = {
       origin: 'https://kovan.etherscan.io'
     }),
     tokens: require('config/tokens/ropsten.json'),
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: true,
+    tokenListHash: '',
     contracts: require('config/contracts/ropsten.json'),
     isTestnet: true,
     dPathFormats: {
@@ -104,6 +114,9 @@ export const INITIAL_STATE: State = {
       origin: 'https://rinkeby.etherscan.io'
     }),
     tokens: require('config/tokens/rinkeby.json'),
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: true,
+    tokenListHash: '',
     contracts: require('config/contracts/rinkeby.json'),
     isTestnet: true,
     dPathFormats: {
@@ -125,6 +138,9 @@ export const INITIAL_STATE: State = {
       addressPath: 'addr'
     }),
     tokens: require('config/tokens/etc.json'),
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: true,
+    tokenListHash: '',
     contracts: require('config/contracts/etc.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETC_TREZOR,
@@ -148,6 +164,9 @@ export const INITIAL_STATE: State = {
       origin: 'https://ubiqscan.io/en'
     }),
     tokens: require('config/tokens/ubq.json'),
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: true,
+    tokenListHash: '',
     contracts: require('config/contracts/ubq.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: UBQ_DEFAULT,
@@ -171,6 +190,9 @@ export const INITIAL_STATE: State = {
       origin: 'https://www.gander.tech'
     }),
     tokens: require('config/tokens/exp.json'),
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: true,
+    tokenListHash: '',
     contracts: require('config/contracts/exp.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: EXP_DEFAULT,
@@ -196,6 +218,9 @@ export const INITIAL_STATE: State = {
       blockPath: 'blocks/block'
     }),
     tokens: [],
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: false,
+    tokenListHash: '',
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: POA_DEFAULT,
@@ -219,6 +244,9 @@ export const INITIAL_STATE: State = {
       origin: 'https://explorer.tomocoin.io/#'
     }),
     tokens: [],
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: false,
+    tokenListHash: '',
     contracts: [],
     dPathFormats: {
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
@@ -243,6 +271,9 @@ export const INITIAL_STATE: State = {
       origin: 'https://explorer.ellaism.org'
     }),
     tokens: [],
+    updatingTokens: false,
+    shouldCheckForTokenUpdates: false,
+    tokenListHash: '',
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
@@ -256,8 +287,42 @@ export const INITIAL_STATE: State = {
   }
 };
 
-export const staticNetworks = (state: State = INITIAL_STATE, action: ConfigAction) => {
+function networkReducerHelper(state: State, action: UpdateTokensAction) {
+  const { payload } = action;
+  const networkId = payload.id;
+  const networkToUpdate = state[networkId];
+  return { networkId, networkToUpdate, payload };
+}
+
+export const staticNetworks = (state: State = INITIAL_STATE, action: UpdateTokensAction) => {
   switch (action.type) {
+    case TypeKeys.CONFIG_UPDATE_TOKENS_REQUESTED: {
+      const { networkId, networkToUpdate } = networkReducerHelper(state, action);
+      const nextNetwork: StaticNetworkConfig = { ...networkToUpdate, updatingTokens: true };
+
+      return { ...state, [networkId]: nextNetwork };
+    }
+
+    case TypeKeys.CONFIG_UPDATE_TOKENS_SUCCEEDED: {
+      const { networkId, networkToUpdate } = networkReducerHelper(state, action);
+      const { tokens, hash } = action.payload;
+
+      const nextNetwork: StaticNetworkConfig = {
+        ...networkToUpdate,
+        updatingTokens: false,
+        tokens,
+        tokenListHash: hash || networkToUpdate.tokenListHash
+      };
+
+      return { ...state, [networkId]: nextNetwork };
+    }
+
+    case TypeKeys.CONFIG_UDPATE_TOKENS_FAILED: {
+      const { networkId, networkToUpdate } = networkReducerHelper(state, action);
+      const nextNetwork: StaticNetworkConfig = { ...networkToUpdate, updatingTokens: false };
+
+      return { ...state, [networkId]: nextNetwork };
+    }
     default:
       return state;
   }

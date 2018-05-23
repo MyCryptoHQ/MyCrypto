@@ -47,6 +47,9 @@ export interface GasPriceSetting {
 
 interface StaticNetworkConfig {
   isCustom: false; // used for type guards
+  shouldCheckForTokenUpdates: boolean;
+  tokenListHash: string;
+  updatingTokens: boolean;
   name: StaticNetworkIds;
   unit: string;
   color?: string;

@@ -24,7 +24,8 @@ export function* handleNonceRequest(): SagaIterator {
     const base10Nonce = Nonce(retrievedNonce);
     yield put(inputNonce(base10Nonce.toString()));
     yield put(getNonceSucceeded(retrievedNonce));
-  } catch {
+  } catch (e) {
+    console.error('Handle nonce request error:', e);
     yield put(showNotification('warning', 'Your addresses nonce could not be fetched'));
     yield put(getNonceFailed());
   }

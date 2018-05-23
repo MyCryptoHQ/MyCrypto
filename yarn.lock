@@ -43,22 +43,32 @@
     core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
 
-"@parity/qr-signer@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@parity/qr-signer/-/qr-signer-0.2.0.tgz#5c6c41c03265608c117346f0a9d7ab89699352fa"
+"@parity/qr-signer@0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@parity/qr-signer/-/qr-signer-0.2.1.tgz#f8b0e0ff5d8ee90b1788951c8524cdf8b1aadf27"
   dependencies:
     qrcode-generator "1.3.1"
-    react-qr-reader "2.0.1"
+    react-qr-reader "2.1.0"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
+
+"@types/base-x@*":
+  version "1.0.29"
+  resolved "https://registry.yarnpkg.com/@types/base-x/-/base-x-1.0.29.tgz#8a2d73e4a5c3121757a5f8870cfa4509655186b6"
 
 "@types/bip39@2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@types/bip39/-/bip39-2.4.0.tgz#eee31a14abc8ebbb41a1ff14575c447b18346cbc"
   dependencies:
     "@types/node" "*"
+
+"@types/bs58@3.0.30":
+  version "3.0.30"
+  resolved "https://registry.yarnpkg.com/@types/bs58/-/bs58-3.0.30.tgz#916ba10992465e56f81afc735e7935fd749893e1"
+  dependencies:
+    "@types/base-x" "*"
 
 "@types/cheerio@*":
   version "0.22.7"
@@ -1329,7 +1339,7 @@ base-x@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/base-x/-/base-x-1.1.0.tgz#42d3d717474f9ea02207f6d1aa1f426913eeb7ac"
 
-base-x@^3.0.4:
+base-x@^3.0.2, base-x@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/base-x/-/base-x-3.0.4.tgz#94c1788736da065edb1d68808869e357c977fa77"
   dependencies:
@@ -1659,6 +1669,12 @@ browserslist@^1.3.6, browserslist@^1.5.2, browserslist@^1.7.6:
   dependencies:
     caniuse-db "^1.0.30000639"
     electron-to-chromium "^1.2.7"
+
+bs58@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/bs58/-/bs58-4.0.1.tgz#be161e76c354f6f788ae4071f63f34e8c4f0a42a"
+  dependencies:
+    base-x "^3.0.2"
 
 bs58@^2.0.1:
   version "2.0.1"
@@ -6579,9 +6595,9 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-"jsqr@https://github.com/cozmo/jsQR.git":
+jsqr@^1.0.1:
   version "1.0.4"
-  resolved "https://github.com/cozmo/jsQR.git#d37c764bf43a41ed7c6aa1c17cbdf21b7f9cb69e"
+  resolved "https://registry.yarnpkg.com/jsqr/-/jsqr-1.0.4.tgz#e2ea353fa81007708efab7d95b2652a7254c10dd"
 
 jssha@2.3.1:
   version "2.3.1"
@@ -7434,9 +7450,9 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-mycrypto-shepherd@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.3.1.tgz#901d86e2278c08fd9a3a0aee7a13dea971dbbc38"
+mycrypto-shepherd@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.3.3.tgz#3bdefec7604f4d6f094e0282b807001d87fd98b6"
   dependencies:
     "@types/jest" "^22.2.2"
     "@types/node" "^9.6.2"
@@ -9077,17 +9093,17 @@ react-markdown@3.3.0:
     unist-util-visit "^1.3.0"
     xtend "^4.0.1"
 
-react-onclickoutside@6.7.1, react-onclickoutside@^6.5.0:
+react-onclickoutside@^6.5.0:
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.1.tgz#6a5b5b8b4eae6b776259712c89c8a2b36b17be93"
 
-react-qr-reader@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.0.1.tgz#f7be785e8c880d7e68423fc129802994f70b6b58"
+react-qr-reader@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.1.0.tgz#f429c196675a710926da1cc9057223b79358da75"
   dependencies:
-    jsqr "https://github.com/cozmo/jsQR.git"
+    jsqr "^1.0.1"
     prop-types "^15.5.8"
-    webrtc-adapter "^5.0.6"
+    webrtc-adapter "^6.1.1"
 
 react-reconciler@^0.7.0:
   version "0.7.0"
@@ -9786,7 +9802,7 @@ rst-selector-parser@^2.2.3:
     lodash.flattendeep "^4.4.0"
     nearley "^2.7.10"
 
-rtcpeerconnection-shim@^1.1.13:
+rtcpeerconnection-shim@^1.2.10:
   version "1.2.11"
   resolved "https://registry.yarnpkg.com/rtcpeerconnection-shim/-/rtcpeerconnection-shim-1.2.11.tgz#df2b2456020365daf26bf8c135523bca2deb252b"
   dependencies:
@@ -9950,9 +9966,13 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-sdp@^2.3.0, sdp@^2.6.0:
+sdp@^2.6.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.0.tgz#02b64ea0c29d73179afa19794e466b123b1b29f3"
+
+sdp@^2.7.0:
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.4.tgz#cac76b0e2f16f55243d25bc0432f6bbb5488bfc1"
 
 secp256k1@^3.0.1:
   version "3.5.0"
@@ -11803,12 +11823,12 @@ webpack@4.5.0:
     watchpack "^1.5.0"
     webpack-sources "^1.0.1"
 
-webrtc-adapter@^5.0.6:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-5.0.6.tgz#7946fca194dadf869bb6c8cae1011dfda03f40c7"
+webrtc-adapter@^6.1.1:
+  version "6.1.5"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.1.5.tgz#df72e4af5cb6675656c896db0d1187695359220b"
   dependencies:
-    rtcpeerconnection-shim "^1.1.13"
-    sdp "^2.3.0"
+    rtcpeerconnection-shim "^1.2.10"
+    sdp "^2.7.0"
 
 what-input@5.0.5:
   version "5.0.5"
