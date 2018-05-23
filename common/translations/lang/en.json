@@ -413,7 +413,7 @@
     "OLD_MYCRYPTO": "MyCrypto (Legacy Site)",
     "LEDGER_REFERRAL_1": "Buy a Ledger Wallet",
     "LEDGER_REFERRAL_2": "Don’t have a Ledger? Order one now!",
-    "LEDGER_TIP": "Make sure your Ledger is unlocked, you've selected the **$network** app on your hardware wallet, and browser support is **$browserSupportState**.",
+    "LEDGER_TIP": "Make sure your Ledger is unlocked, you've selected the **$network** app on the device, and browser support is **$browserSupportState**.",
     "ENABLED": "enabled",
     "DISABLED": "disabled",
     "LEDGER_TIMEOUT": "The request timed out",
