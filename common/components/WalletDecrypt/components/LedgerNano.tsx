@@ -28,7 +28,6 @@ interface State {
   dPath: DPath;
   error: string | null;
   isLoading: boolean;
-  showTip: boolean;
 }
 
 type Props = OwnProps & StateProps;
@@ -39,8 +38,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     chainCode: '',
     dPath: this.props.dPath || this.props.dPaths[0],
     error: null,
-    isLoading: false,
-    showTip: false
+    isLoading: false
   };
 
   public UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -51,7 +49,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   public render() {
     const { network } = this.props;
-    const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
+    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
 
     if (!dPath) {
@@ -71,6 +69,15 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="LedgerDecrypt">
+        <div className="LedgerDecrypt-tip">
+          {translate('LEDGER_TIP', {
+            $network: network.unit,
+            $browserSupportState: process.env.BUILD_ELECTRON
+              ? translateRaw('DISABLED')
+              : translateRaw('ENABLED')
+          })}
+        </div>
+
         <button
           className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
           onClick={this.handleNullConnect}
@@ -91,10 +98,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
         </NewTabLink>
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        {showTip && (
-          <p className="LedgerDecrypt-tip">{translate('LEDGER_TIP', { $network: network.unit })}</p>
-        )}
 
         <div className="LedgerDecrypt-help">
           <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
@@ -123,8 +126,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   private handleConnect = (dPath: DPath) => {
     this.setState({
       isLoading: true,
-      error: null,
-      showTip: false
+      error: null
     });
 
     LedgerWallet.getChainCode(dPath.value)
@@ -138,8 +140,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       .catch(err => {
         this.setState({
           error: err.message,
-          isLoading: false,
-          showTip: true
+          isLoading: false
         });
       });
   };
