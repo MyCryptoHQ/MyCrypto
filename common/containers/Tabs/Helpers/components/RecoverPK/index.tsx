@@ -1,8 +1,7 @@
 import React from 'react';
 import './index.scss';
 import { Input, Spinner } from 'components/ui';
-import { fromPrivateKey } from 'ethereumjs-wallet';
-import { toBuffer } from 'ethereumjs-util';
+import { searchPK } from 'libs/web-workers';
 
 interface Result {
   pk: string;
@@ -63,7 +62,11 @@ export default class RecoverPK extends React.Component<State> {
     }
 
     if (result.status === 'loading') {
-      content = <Spinner size="x3" />;
+      content = (
+        <div>
+          <Spinner size="x3" />
+        </div>
+      );
     }
 
     return (
@@ -93,7 +96,7 @@ export default class RecoverPK extends React.Component<State> {
               Start the Search!
             </button>
 
-            {content}
+            <div className="pk-resolve">{content}</div>
           </div>
         </section>
       </div>
@@ -114,64 +117,8 @@ export default class RecoverPK extends React.Component<State> {
 
   private searchPK = () => {
     const { address, pk, result } = this.state;
-    const targetPublicAddress = address;
-    const characters = [
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9'
-    ];
 
-    let basePrivateKey = pk;
-    basePrivateKey =
-      basePrivateKey.substring(0, 2) === '0x' ? basePrivateKey.substring(2) : basePrivateKey;
-
-    let wallet;
-
-    function* guessPK() {
-      for (const idx of Object.keys(basePrivateKey.split(''))) {
-        for (const character of characters) {
-          const pkArray = basePrivateKey.split('');
-          pkArray.splice(Number(idx), 0, character);
-          const privateKeyGuess = pkArray.join('');
-
-          try {
-            wallet = fromPrivateKey(toBuffer('0x' + privateKeyGuess));
-          } catch (error) {
-            wallet = null;
-          }
-
-          if (wallet) {
-            const publicAddress = wallet.getAddressString();
-
-            if (publicAddress.toLowerCase() === targetPublicAddress.toLowerCase()) {
-              result.status = 'ok';
-              result.pk = privateKeyGuess;
-            }
-          }
-
-          yield result;
-        }
-      }
-
-      if (!result.pk) {
-        result.status = 'error';
-      }
-
-      yield result;
-    }
+    const basePrivateKey = pk.substring(0, 2) === '0x' ? pk.substring(2) : pk;
 
     if (basePrivateKey.length === 63) {
       result.status = 'loading';
@@ -181,17 +128,31 @@ export default class RecoverPK extends React.Component<State> {
         result
       });
 
-      let newResult = { ...result };
-      const gen = guessPK();
+      searchPK(basePrivateKey, address)
+        .then(foundPK => {
+          result.status = 'ok';
+          result.pk = foundPK;
 
-      while (newResult.status === 'loading') {
-        newResult = gen.next().value;
-      }
+          this.setState({
+            ...this.state,
+            result
+          });
+        })
+        .catch(() => {
+          result.status = 'error';
+
+          this.setState({
+            ...this.state,
+            result
+          });
+        });
+    } else {
+      result.status = 'error';
+
+      this.setState({
+        ...this.state,
+        result
+      });
     }
-
-    this.setState({
-      ...this.state,
-      result
-    });
   };
 }
