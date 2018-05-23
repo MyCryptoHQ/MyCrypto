@@ -45,7 +45,7 @@ function getMethod(req: Electron.RegisterStringProtocolRequest): EnclaveMethods 
     throw new Error(`Invalid or unknown method '${method}'`);
   }
 
-  return method as EnclaveMethods;
+  return method;
 }
 
 function getParams(
