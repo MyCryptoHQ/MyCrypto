@@ -3,10 +3,10 @@ import translate, { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import { LedgerWallet } from 'libs/wallet';
-import { Spinner, NewTabLink } from 'components/ui';
+import { Spinner, NewTabLink, HelpLink } from 'components/ui';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { SecureWalletName, ledgerReferralURL } from 'config';
+import { SecureWalletName, ledgerReferralURL, HELP_ARTICLE } from 'config';
 import { getPaths, getSingleDPath } from 'selectors/config/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
@@ -100,9 +100,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="LedgerDecrypt-help">
-          <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
+          <HelpLink article={HELP_ARTICLE.HOW_TO_USE_LEDGER}>
             {translate('HELP_ARTICLE_1')}
-          </NewTabLink>
+          </HelpLink>
         </div>
 
         <DeterministicWalletsModal
