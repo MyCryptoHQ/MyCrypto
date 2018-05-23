@@ -116,6 +116,7 @@ class InteractExplorerClass extends Component<Props, State> {
                     <div className="input-group-header">{name + ' ' + type}</div>
                     <Input
                       className="InteractExplorer-func-in-input"
+                      isValid={!!(inputs[name] && inputs[name].rawData)}
                       name={name}
                       value={(inputs[name] && inputs[name].rawData) || ''}
                       onChange={this.handleInputChange}
@@ -138,7 +139,8 @@ class InteractExplorerClass extends Component<Props, State> {
                   <label className="input-group">
                     <div className="input-group-header"> ↳ {name + ' ' + type}</div>
                     <Input
-                      className="InteractExplorer-func-out-input "
+                      className="InteractExplorer-func-out-input"
+                      isValid={!!decodedFieldValue}
                       value={decodedFieldValue}
                       disabled={true}
                     />

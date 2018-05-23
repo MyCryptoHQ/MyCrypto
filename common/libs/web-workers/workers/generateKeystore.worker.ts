@@ -1,5 +1,4 @@
 import { generate } from 'ethereumjs-wallet';
-import { toChecksumAddress } from 'ethereumjs-util';
 
 const worker: Worker = self as any;
 
@@ -14,6 +13,6 @@ worker.onmessage = (event: MessageEvent) => {
   const filename = wallet.getV3Filename();
   const privateKey = wallet.getPrivateKeyString();
   const keystore = wallet.toV3(info.password, { n: info.N_FACTOR });
-  keystore.address = toChecksumAddress(keystore.address);
+
   worker.postMessage({ keystore, filename, privateKey });
 };

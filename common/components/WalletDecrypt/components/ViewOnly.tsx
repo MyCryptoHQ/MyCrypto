@@ -60,7 +60,8 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
           )}
 
           <Input
-            className={`ViewOnly-input ${isValid ? 'is-valid' : 'is-invalid'}`}
+            isValid={isValid}
+            className="ViewOnly-input"
             value={address}
             onChange={this.changeAddress}
             placeholder={translateRaw('VIEW_ONLY_ENTER')}

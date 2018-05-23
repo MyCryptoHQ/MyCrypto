@@ -13,7 +13,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
   const defaultConfig: IProviderConfig = {
     concurrency: 2,
     network: 'ETH',
-    requestFailureThreshold: 3,
+    requestFailureThreshold: 10,
     supportedMethods: {
       getNetVersion: true,
       ping: true,
@@ -32,7 +32,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
       signMessage: true,
       sendTransaction: true
     },
-    timeoutThresholdMs: 5000
+    timeoutThresholdMs: 10000
   };
 
   return {
@@ -47,7 +47,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
 
 let shepherdProvider: INode;
 shepherd
-  .init()
+  .init({ queueTimeout: 10000 })
   .then(
     provider => (shepherdProvider = (new Proxy(provider, tokenBalanceHandler) as any) as INode)
   );

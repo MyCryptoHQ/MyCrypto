@@ -133,7 +133,7 @@ describe('handleChangeNodeRequested*', () => {
         : acc
   );
   const newNodeConfig: StaticNodeConfig = (staticNodesExpectedState as any).initialState[newNodeId];
-
+  const isOffline = false;
   const changeNodeRequestedAction = changeNodeRequested(newNodeId);
   const latestBlock = '0xa';
 
@@ -170,6 +170,10 @@ describe('handleChangeNodeRequested*', () => {
     expect(data.gen.next(newNodeConfig).value).toMatchSnapshot();
   });
 
+  it('should select isOffline', () => {
+    expect(data.gen.next(true).value).toEqual(select(getOffline));
+  });
+
   it('should show error if check times out', () => {
     data.clone1 = data.gen.clone();
     data.clone1.next(true);
@@ -180,7 +184,7 @@ describe('handleChangeNodeRequested*', () => {
   });
 
   it('should sucessfully switch to the manual node', () => {
-    expect(data.gen.next(latestBlock).value).toEqual(
+    expect(data.gen.next(isOffline).value).toEqual(
       apply(shepherd, shepherd.manual, [newNodeId, false])
     );
   });

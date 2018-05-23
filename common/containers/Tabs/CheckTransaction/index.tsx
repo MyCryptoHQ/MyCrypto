@@ -34,7 +34,7 @@ class CheckTransaction extends React.Component<Props, State> {
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { network } = this.props;
     if (network.chainId !== nextProps.network.chainId) {
       this.setState({ hash: '' });
