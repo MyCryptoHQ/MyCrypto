@@ -1,6 +1,5 @@
 # MyCrypto Web & Desktop Apps
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/MyCryptoHq/MyCrypto.svg)](https://greenkeeper.io/)
 [![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=develop)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
 
 * **Just looking to download?** Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases).
