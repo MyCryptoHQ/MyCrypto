@@ -18,8 +18,9 @@
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitAny": true,
-    "noImplicitUseStrict": true
+    "pretty": true,
+    "noErrorTruncation": true,
+    "noImplicitAny": true
   },
   "include": [
     "./scripts",

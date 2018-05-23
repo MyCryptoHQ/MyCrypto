@@ -11,6 +11,7 @@ import {
   WalletInfo,
   RequestPayment,
   RecentTransactions,
+  AddressBook,
   Fields,
   UnavailableWallets,
   SideBar
@@ -55,6 +56,10 @@ class SendTransaction extends React.Component<Props> {
       {
         path: 'recent-txs',
         name: translate('NAV_RECENT_TX')
+      },
+      {
+        path: 'address-book',
+        name: translate('NAV_ADDRESS_BOOK')
       }
     ];
 
@@ -100,6 +105,11 @@ class SendTransaction extends React.Component<Props> {
                     path={`${currentPath}/recent-txs`}
                     exact={true}
                     render={() => <RecentTransactions wallet={wallet} />}
+                  />
+                  <Route
+                    path={`${currentPath}/address-book`}
+                    exact={true}
+                    render={() => <AddressBook />}
                   />
                   <RouteNotFound />
                 </Switch>

@@ -59,6 +59,10 @@ $speed: 500ms;
     text-align: center;
     padding-bottom: $space;
 
+    @media (max-width: $screen-md) {
+      padding-bottom: $space * 2;
+    }
+
     &-back {
       @include reset-button;
       position: absolute;

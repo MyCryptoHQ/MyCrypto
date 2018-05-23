@@ -54,6 +54,9 @@ class FeeSummary extends React.Component<Props> {
       scheduleGasLimit
     } = this.props;
 
+    if (!gasPrice.value || gasPrice.value.eqn(0) || !gasLimit.value || gasLimit.value.eqn(0)) {
+      return null;
+    }
     if (isGasEstimating) {
       return (
         <div className="FeeSummary is-loading">

@@ -1,6 +1,6 @@
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { EXTRA_PATHS } from 'config/dpaths';
-import sortedUniq from 'lodash/sortedUniq';
+import uniqBy from 'lodash/uniqBy';
 import difference from 'lodash/difference';
 import { StaticNetworkConfig, DPathFormats } from 'types/network';
 import { AppState } from 'reducers';
@@ -22,7 +22,7 @@ export function getPaths(state: AppState, pathType: PathType): DPath[] {
       return networkPaths;
     }, [])
     .concat(EXTRA_PATHS);
-  return sortedUniq(paths);
+  return uniqBy(paths, p => `${p.label}${p.value}`);
 }
 
 export function getSingleDPath(state: AppState, format: DPathFormat): DPath | undefined {
