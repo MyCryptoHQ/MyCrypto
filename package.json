@@ -13,6 +13,7 @@
   "dependencies": {
     "@ledgerhq/hw-app-eth": "4.7.3",
     "@ledgerhq/hw-transport-node-hid": "4.7.6",
+    "@ledgerhq/hw-transport-u2f": "4.12.0",
     "@parity/qr-signer": "0.2.1",
     "babel-polyfill": "6.26.0",
     "bip39": "2.5.0",
@@ -29,7 +30,6 @@
     "hdkey": "0.8.0",
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.4",
-    "ledgerco": "1.2.1",
     "lodash": "4.17.5",
     "moment": "2.22.1",
     "moment-timezone": "0.5.14",

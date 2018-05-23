@@ -1,4 +1,5 @@
-import ledger from 'ledgerco';
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import LedgerEth from '@ledgerhq/hw-app-eth';
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
@@ -17,11 +18,11 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
     }
 
     return makeApp()
-      .then(app => app.getAddress_async(dpath, false, true))
+      .then(app => app.getAddress(dpath, false, true))
       .then(res => {
         return {
           publicKey: res.publicKey,
-          chainCode: res.chainCode
+          chainCode: res.chainCode as string
         };
       })
       .catch((err: any) => {
@@ -29,15 +30,10 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
       });
   }
 
-  private ethApp: ledger.eth;
-
   constructor(address: string, dPath: string, index: number) {
     super(address, dPath, index);
-    makeApp().then(app => (this.ethApp = app));
   }
 
-  // modeled after
-  // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/uiFuncs.js#L58
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
     const txFields = getTransactionFields(t);
 
@@ -55,10 +51,8 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
     t.s = toBuffer(0);
 
     try {
-      const result = await this.ethApp.signTransaction_async(
-        this.getPath(),
-        t.serialize().toString('hex')
-      );
+      const ethApp = await makeApp();
+      const result = await ethApp.signTransaction(this.getPath(), t.serialize().toString('hex'));
 
       const txToSerialize: TxObj = {
         ...txFields,
@@ -73,8 +67,6 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
     }
   }
 
-  // modeled after
-  // https://github.com/kvhnuke/etherwallet/blob/3f7ff809e5d02d7ea47db559adaca1c930025e24/app/scripts/controllers/signMsgCtrl.js#L53
   public async signMessage(msg: string): Promise<string> {
     if (!msg) {
       throw Error('No message to sign');
@@ -89,17 +81,18 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
       return res.signedMessage;
     }
 
-    const msgHex = Buffer.from(msg).toString('hex');
     try {
-      const signed = await this.ethApp.signPersonalMessage_async(this.getPath(), msgHex);
+      const msgHex = Buffer.from(msg).toString('hex');
+      const ethApp = await makeApp();
+      const signed = await ethApp.signPersonalMessage(this.getPath(), msgHex);
       const combined = addHexPrefix(signed.r + signed.s + signed.v.toString(16));
       return combined;
-    } catch (error) {
-      throw (this.ethApp as any).getError(error);
+    } catch (err) {
+      throw new Error(ledgerErrToMessage(err));
     }
   }
 
-  public displayAddress() {
+  public async displayAddress() {
     const path = this.dPath + '/' + this.index;
 
     if (process.env.BUILD_ELECTRON) {
@@ -111,10 +104,14 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
         .catch(() => false);
     }
 
-    return this.ethApp
-      .getAddress_async(path, true, false)
-      .then(() => true)
-      .catch(() => false);
+    try {
+      const ethApp = await makeApp();
+      await ethApp.getAddress(path, true, false);
+      return true;
+    } catch (err) {
+      console.error('Failed to display Ledger address:', err);
+      return false;
+    }
   }
 
   public getWalletType(): string {
@@ -122,8 +119,9 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
   }
 }
 
-function makeApp(): Promise<ledger.eth> {
-  return ledger.comm_u2f.create_async().then((comm: any) => new ledger.eth(comm));
+async function makeApp() {
+  const transport = await TransportU2F.create();
+  return new LedgerEth(transport);
 }
 
 function ledgerErrToMessage(err: any) {
