@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import translate from 'translations';
 import { OnlyUnlocked } from 'components/renderCbs';
 import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import { connect } from 'react-redux';
@@ -10,8 +11,8 @@ interface StateProps {
 
 const content = (
   <div className="Tab-content-pane">
-    <h4>Sorry...</h4>
-    <p>MetaMask / Mist wallets are not available in offline mode.</p>
+    <h4>{translate('SORRY')}...</h4>
+    <p>{translate('WEB3_UNAVAILABLE_OFFLINE')}</p>
   </div>
 );
 
