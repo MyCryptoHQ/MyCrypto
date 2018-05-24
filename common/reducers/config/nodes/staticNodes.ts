@@ -184,6 +184,21 @@ export const INITIAL_STATE: StaticNodesState = {
     service: 'ellaism.org',
     lib: shepherdProvider,
     estimateGas: true
+  },
+
+  music_auto: {
+    network: 'MUSIC',
+    isCustom: false,
+    service: 'AUTO',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  music: {
+    network: 'MUSIC',
+    isCustom: false,
+    service: 'musicoin.tw',
+    lib: shepherdProvider,
+    estimateGas: true
   }
 };
 

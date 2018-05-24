@@ -16,7 +16,8 @@ import {
   EXP_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  MUSIC_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
@@ -247,6 +248,29 @@ export const INITIAL_STATE: State = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  MUSIC: {
+    name: 'MUSIC',
+    unit: 'MUSIC',
+    chainId: 7762959,
+    isCustom: false,
+    color: '#ffbb00',
+    blockExplorer: makeExplorer({
+      name: 'Musicoin Explorer',
+      origin: 'https://explorer.musicoin.org',
+      addressPath: 'account'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: MUSIC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: MUSIC_DEFAULT
     },
     gasPriceSettings: {
       min: 1,

@@ -103,6 +103,9 @@ shepherd.useProvider('rpc', 'tomo', regTomoConf, 'https://core.tomocoin.io');
 const regEllaConf = makeProviderConfig({ network: 'ELLA' });
 shepherd.useProvider('rpc', 'ella', regEllaConf, 'https://jsonrpc.ellaism.org');
 
+const regMusicConf = makeProviderConfig({ network: 'MUSIC' });
+shepherd.useProvider('rpc', 'music', regMusicConf, 'https://mewapi.musicoin.tw');
+
 /**
  * Pseudo-networks to support metamask / web3 interaction
  */
