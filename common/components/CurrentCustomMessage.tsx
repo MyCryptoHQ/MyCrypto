@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { getAddressMessage } from 'config';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getAllTokens } from 'features/config/derivedSelectors';
+import { getAllTokens } from 'features/config';
 import { getCurrentTo, ICurrentTo } from 'features/transaction/selectors';
-import { getWalletInst } from 'features/wallet/selectors';
+import { getWalletInst } from 'features/wallet';
 import { Address } from 'components/ui';
 
 interface ReduxProps {

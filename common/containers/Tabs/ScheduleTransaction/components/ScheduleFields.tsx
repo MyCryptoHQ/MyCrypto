@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'features/schedule/selectors';
+import { getCurrentScheduleType, ICurrentScheduleType } from 'features/schedule';
 import {
   ScheduleTimezoneDropDown,
   ScheduleTimestampField,

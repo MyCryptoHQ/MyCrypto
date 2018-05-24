@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { translateRaw, translate } from 'translations';
 import { AppState } from 'features/reducers';
-import { getLanguageSelection } from 'features/config/meta/selectors';
+import { getLanguageSelection } from 'features/config';
 import {
   broadcastLocalTransactionRequested,
   TBroadcastLocalTransactionRequested,
@@ -11,7 +11,7 @@ import {
   TBroadcastWeb3TransactionRequested
 } from 'features/transaction/actions';
 import { currentTransactionBroadcasting } from 'features/transaction/selectors';
-import { getWalletType, IWalletType } from 'features/wallet/selectors';
+import { getWalletType, IWalletType } from 'features/wallet';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import './ConfirmationModalTemplate.scss';

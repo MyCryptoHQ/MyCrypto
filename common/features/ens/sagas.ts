@@ -3,12 +3,17 @@ import { call, put, select, all, actionChannel, take, fork, race } from 'redux-s
 
 import { INode } from 'libs/nodes/INode';
 import { IBaseDomainRequest } from 'libs/ens';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
-import { showNotification } from 'features/notifications/actions';
-import { TypeKeys, ResolveDomainRequested } from './types';
-import { resolveDomainFailed, resolveDomainSucceeded, resolveDomainCached } from './actions';
-import { getCurrentDomainData } from './derivedSelectors';
-import { getCurrentDomainName } from './domainSelector/selectors';
+import { getNodeLib } from 'features/config';
+import { showNotification } from 'features/notifications';
+import {
+  ENS,
+  ResolveDomainRequested,
+  getCurrentDomainData,
+  getCurrentDomainName,
+  resolveDomainFailed,
+  resolveDomainSucceeded,
+  resolveDomainCached
+} from './';
 import { resolveDomainRequest } from './helpers';
 
 function* shouldResolveDomain(domain: string) {
@@ -23,10 +28,7 @@ function* shouldResolveDomain(domain: string) {
 }
 
 function* resolveDomain(): SagaIterator {
-  const requestChan = yield actionChannel(
-    TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED,
-    buffers.sliding(1)
-  );
+  const requestChan = yield actionChannel(ENS.RESOLVE_DOMAIN_REQUESTED, buffers.sliding(1));
 
   while (true) {
     const { payload }: ResolveDomainRequested = yield take(requestChan);

@@ -1,5 +1,5 @@
 import { AppState } from 'features/reducers';
-import { getConfig } from 'features/config/derivedSelectors';
+import { getConfig } from 'features/config';
 
 export function getMeta(state: AppState) {
   return getConfig(state).meta;

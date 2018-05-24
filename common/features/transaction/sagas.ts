@@ -50,15 +50,16 @@ import {
 } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
-import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
-import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'features/config/types';
-import { isNetworkUnit, getNetworkUnit } from 'features/config/derivedSelectors';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
-import { TypeKeys as ENSTypekeys } from 'features/ens/types';
-import { resolveDomainRequested } from 'features/ens/actions';
-import { getResolvedAddress } from 'features/ens/derivedSelectors';
-import { TypeKeys as WalletTypeKeys } from 'features/wallet/types';
 import {
+  getNodeLib,
+  isNetworkUnit,
+  getNetworkUnit,
+  getOffline,
+  getAutoGasLimitEnabled
+} from 'features/config';
+import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
+import {
+  WALLET,
   getWalletInst,
   getToken,
   getEtherBalance,
@@ -66,12 +67,18 @@ import {
   MergedToken,
   getWalletType,
   IWalletType
-} from 'features/wallet/selectors';
-import { TypeKeys as ParityKeys, FinalizeSignatureAction } from 'features/paritySigner/types';
-import { requestTransactionSignature } from 'features/paritySigner/actions';
-import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
-import { isSchedulingEnabled } from 'features/schedule/selectors';
-import { showNotification } from 'features/notifications/actions';
+} from 'features/wallet';
+import {
+  requestTransactionSignature,
+  PARITY_SIGNER as ParityKeys,
+  FinalizeSignatureAction
+} from 'features/paritySigner';
+import {
+  isSchedulingEnabled,
+  setSchedulingToggle,
+  setScheduleGasLimitField
+} from 'features/schedule';
+import { showNotification } from 'features/notifications';
 import {
   TypeKeys,
   SetCurrentToAction,
@@ -153,6 +160,7 @@ import {
   IInput,
   rebaseUserInput
 } from './helpers';
+import { CONFIG_META, ToggleAutoGasLimitAction } from '../config';
 
 //#region Broadcast
 export const broadcastLocalTransactionHandler = function*(signedTx: string): SagaIterator {
@@ -201,9 +209,9 @@ export function* setCurrentToSaga({ payload: raw }: SetCurrentToAction): SagaIte
     const [domain] = raw.split('.');
     yield put(resolveDomainRequested(domain));
     yield take([
-      ENSTypekeys.ENS_RESOLVE_DOMAIN_FAILED,
-      ENSTypekeys.ENS_RESOLVE_DOMAIN_SUCCEEDED,
-      ENSTypekeys.ENS_RESOLVE_DOMAIN_CACHED
+      ENS.RESOLVE_DOMAIN_FAILED,
+      ENS.RESOLVE_DOMAIN_SUCCEEDED,
+      ENS.RESOLVE_DOMAIN_CACHED
     ]);
     const resolvedAddress: string | null = yield select(getResolvedAddress, true);
     if (resolvedAddress) {
@@ -493,7 +501,7 @@ export function* shouldEstimateGas(): SagaIterator {
       TypeKeys.ETHER_TO_TOKEN_SWAP,
       TypeKeys.TOKEN_TO_TOKEN_SWAP,
       TypeKeys.TOKEN_TO_ETHER_SWAP,
-      ConfigTypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT
+      CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
     ]);
 
     const isOffline: boolean = yield select(getOffline);
@@ -635,13 +643,13 @@ export function* handleNonceRequest(): SagaIterator {
 export function* handleNonceRequestWrapper(): SagaIterator {
   const nonceRequest = yield fork(handleNonceRequest);
 
-  yield take(WalletTypeKeys.WALLET_SET);
+  yield take(WALLET.SET);
   yield cancel(nonceRequest);
 }
 
 //leave get nonce requested for nonce refresh later on
 export const nonceSaga = takeEvery(
-  [TypeKeys.GET_NONCE_REQUESTED, WalletTypeKeys.WALLET_SET],
+  [TypeKeys.GET_NONCE_REQUESTED, WALLET.SET],
   handleNonceRequestWrapper
 );
 //#endregion Nonce
@@ -684,9 +692,7 @@ export function* signParitySignerTransactionHandler({
 
   yield put(requestTransactionSignature(from, rlp));
 
-  const { payload }: FinalizeSignatureAction = yield take(
-    ParityKeys.PARITY_SIGNER_FINALIZE_SIGNATURE
-  );
+  const { payload }: FinalizeSignatureAction = yield take(ParityKeys.FINALIZE_SIGNATURE);
   const signedTransaction: Buffer = yield call(signTransactionWithSignature, tx, payload);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
 
@@ -810,7 +816,7 @@ export function* watchTransactionState(): SagaIterator {
     ]);
 
     const { bail } = yield race({
-      bail: take([TypeKeys.RESET_REQUESTED, WalletTypeKeys.WALLET_RESET]), // bail on actions that would wipe state
+      bail: take([TypeKeys.RESET_REQUESTED, WALLET.RESET]), // bail on actions that would wipe state
       wipeState: take([
         TypeKeys.CURRENT_TO_SET,
         TypeKeys.CURRENT_VALUE_SET,
@@ -840,7 +846,7 @@ export function* setNetworkUnit(): SagaIterator {
 }
 
 export const reset = [
-  takeEvery([WalletTypeKeys.WALLET_RESET], resetTransactionState),
+  takeEvery([WALLET.RESET], resetTransactionState),
   takeEvery(TypeKeys.RESET_REQUESTED, resetTransactionState),
   fork(watchTransactionState),
   takeEvery(TypeKeys.RESET_SUCCESSFUL, setNetworkUnit)

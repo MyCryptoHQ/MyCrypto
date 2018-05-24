@@ -1,16 +1,21 @@
 import { GasEstimates } from 'api/gas';
 
-export enum TypeKeys {
-  GAS_FETCH_ESTIMATES = 'GAS_FETCH_ESTIMATES',
-  GAS_SET_ESTIMATES = 'GAS_SET_ESTIMATES'
+export interface GasState {
+  estimates: GasEstimates | null;
+  isEstimating: boolean;
+}
+
+export enum GAS {
+  FETCH_ESTIMATES = 'GAS_FETCH_ESTIMATES',
+  SET_ESTIMATES = 'GAS_SET_ESTIMATES'
 }
 
 export interface FetchGasEstimatesAction {
-  type: TypeKeys.GAS_FETCH_ESTIMATES;
+  type: GAS.FETCH_ESTIMATES;
 }
 
 export interface SetGasEstimatesAction {
-  type: TypeKeys.GAS_SET_ESTIMATES;
+  type: GAS.SET_ESTIMATES;
   payload: GasEstimates;
 }
 

@@ -8,11 +8,10 @@ import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { configuredStore } from 'features/store';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig, isNetworkUnit } from 'features/config/derivedSelectors';
-import { isSchedulingEnabled } from 'features/schedule/selectors';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
-import { showNotification } from 'features/notifications/actions';
+import { getOffline, getNetworkConfig, isNetworkUnit } from 'features/config';
+import { isSchedulingEnabled } from 'features/schedule';
+import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
+import { showNotification } from 'features/notifications';
 import { TypeKeys as TK } from './types';
 import {
   broadcastTransactionFailed,

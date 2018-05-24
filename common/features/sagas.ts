@@ -1,5 +1,5 @@
 import { ensSaga as ens } from './ens/sagas';
-import { configSaga } from './config/sagas';
+import { configSaga as config } from './config/sagas';
 import {
   swapOrdersSaga as swapOrders,
   swapRatesSaga as swapRates,
@@ -18,7 +18,7 @@ import { addressBookSaga as addressBook } from './addressBook/sagas';
 
 export default {
   ens,
-  configSaga,
+  config,
   swapOrders,
   swapRates,
   swapLiteSend,

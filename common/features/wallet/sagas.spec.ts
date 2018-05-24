@@ -10,14 +10,18 @@ import RpcNode from 'libs/nodes/rpc';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 import { Token } from 'types/network';
-import { TypeKeys as ConfigTypeKeys } from 'features/config/types';
-import { changeNodeIntent, web3UnsetNode } from 'features/config/actions';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNodeLib, getWeb3Node } from 'features/config/nodes/derivedSelectors';
+import {
+  changeNodeIntent,
+  web3UnsetNode,
+  CONFIG_NODES_SELECTED,
+  getNodeLib,
+  getWeb3Node,
+  getOffline
+} from 'features/config';
 import { initWeb3Node, unlockWeb3 } from 'features/config/sagas';
-import { showNotification } from 'features/notifications/actions';
-import { getWalletInst, getWalletConfigTokens } from 'features/wallet/selectors';
-import { TypeKeys } from './types';
+import { showNotification } from 'features/notifications';
+import { getWalletInst, getWalletConfigTokens } from 'features/wallet';
+import { WALLET } from './types';
 import {
   setBalanceFullfilled,
   setBalancePending,
@@ -205,7 +209,7 @@ describe('updateBalances*', () => {
   });
 
   it('should take on WALLET_SET', () => {
-    expect(gen.next(updateToken).value).toEqual(take(TypeKeys.WALLET_SET));
+    expect(gen.next(updateToken).value).toEqual(take(WALLET.SET));
   });
 
   it('should cancel updates', () => {
@@ -335,7 +339,7 @@ describe('unlockWeb3*', () => {
   it('should yield take on node change', () => {
     const expected = take(
       (action: any) =>
-        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
+        action.type === CONFIG_NODES_SELECTED.CHANGE && action.payload.nodeSelection === 'web3'
     );
     const result = data.gen.next().value;
     expect(JSON.stringify(expected)).toEqual(JSON.stringify(result));

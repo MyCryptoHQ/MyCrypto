@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
+import { getOffline } from 'features/config';
 import { getNonceRequested, TGetNonceRequested } from 'features/transaction/actions';
 import { nonceRequestPending } from 'features/transaction/selectors';
 import { Spinner, Input } from 'components/ui';

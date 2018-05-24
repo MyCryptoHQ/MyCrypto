@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { StaticNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
-import { getNodeConfig } from 'features/config/nodes/derivedSelectors';
+import { getNodeConfig } from 'features/config';
 
 interface StateProps {
   node: StaticNodeConfig;

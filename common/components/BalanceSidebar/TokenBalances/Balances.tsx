@@ -2,7 +2,7 @@ import React from 'react';
 
 import translate from 'translations';
 import { Token } from 'types/network';
-import { TokenBalance } from 'features/wallet/selectors';
+import { TokenBalance } from 'features/wallet';
 import AddCustomTokenForm from './AddCustomTokenForm';
 import TokenRow from './TokenRow';
 

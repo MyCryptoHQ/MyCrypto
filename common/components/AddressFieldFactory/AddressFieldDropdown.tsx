@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { getToRaw } from 'features/transaction/selectors';
-import { getLabelAddresses } from 'features/addressBook/selectors';
+import { getLabelAddresses } from 'features/addressBook';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 

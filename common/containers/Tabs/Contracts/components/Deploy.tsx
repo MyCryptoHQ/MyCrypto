@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import classnames from 'classnames';
 import { setToField, TSetToField } from 'features/transaction/actions';
-import { resetWallet, TResetWallet } from 'features/wallet/actions';
+import { resetWallet, TResetWallet } from 'features/wallet';
 import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
 import { FullWalletOnly } from 'components/renderCbs';
 import { TextArea } from 'components/ui';

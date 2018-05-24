@@ -4,28 +4,25 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getAllTokens } from 'features/config/derivedSelectors';
-import { getOffline } from 'features/config/meta/selectors';
+import { getAllTokens, getOffline } from 'features/config';
 import {
   addCustomToken,
   removeCustomToken,
   TAddCustomToken,
   TRemoveCustomToken
-} from 'features/customTokens/actions';
+} from 'features/customTokens';
 import {
   scanWalletForTokens,
   TScanWalletForTokens,
   setWalletTokens,
   TSetWalletTokens,
   refreshTokenBalances,
-  TRefreshTokenBalances
-} from 'features/wallet/actions';
-import {
+  TRefreshTokenBalances,
   getTokenBalances,
   getWalletInst,
   getWalletConfig,
   TokenBalance
-} from 'features/wallet/selectors';
+} from 'features/wallet';
 import Spinner from 'components/ui/Spinner';
 import Balances from './Balances';
 import './index.scss';

@@ -18,22 +18,23 @@ import {
 } from 'libs/wallet';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { AppState } from 'features/reducers';
-import { showNotification } from 'features/notifications/actions';
-import { TypeKeys as CustomTokenTypeKeys, AddCustomTokenAction } from 'features/customTokens/types';
-import { getCustomTokens } from 'features/customTokens/selectors';
+import { showNotification } from 'features/notifications';
+
+import {
+  getCustomTokens,
+  CUSTOM_TOKEN as CustomTokenTypeKeys,
+  AddCustomTokenAction
+} from 'features/customTokens';
 import {
   TokenBalance,
   getTokens,
   getWalletInst,
   getWalletConfigTokens,
   MergedToken
-} from 'features/wallet/selectors';
-import { TypeKeys as ConfigTypeKeys } from 'features/config/types';
-import { getAllTokens } from 'features/config/derivedSelectors';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
+} from 'features/wallet';
+import { getOffline, getNodeLib, getAllTokens, CONFIG_META } from 'features/config';
 import {
-  TypeKeys,
+  WALLET,
   UnlockKeystoreAction,
   UnlockMnemonicAction,
   UnlockPrivateKeyAction,
@@ -215,7 +216,7 @@ export function* updateBalances(): SagaIterator {
   const updateAccount = yield fork(updateAccountBalance);
   const updateToken = yield fork(updateTokenBalances);
 
-  yield take(TypeKeys.WALLET_SET);
+  yield take(WALLET.SET);
   yield cancel(updateAccount);
   yield cancel(updateToken);
 }
@@ -321,17 +322,17 @@ export function* handleCustomTokenAdd(action: AddCustomTokenAction): SagaIterato
 
 export function* walletSaga(): SagaIterator {
   yield [
-    takeEvery(TypeKeys.WALLET_UNLOCK_PRIVATE_KEY, unlockPrivateKeySaga),
-    takeEvery(TypeKeys.WALLET_UNLOCK_KEYSTORE, unlockKeystoreSaga),
-    takeEvery(TypeKeys.WALLET_UNLOCK_MNEMONIC, unlockMnemonicSaga),
-    takeEvery(TypeKeys.WALLET_SET, handleNewWallet),
-    takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, handleScanWalletAction),
-    takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
-    takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
-    takeEvery(TypeKeys.WALLET_REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
-    takeEvery(TypeKeys.WALLET_REFRESH_TOKEN_BALANCES, retryTokenBalances),
+    takeEvery(WALLET.UNLOCK_PRIVATE_KEY, unlockPrivateKeySaga),
+    takeEvery(WALLET.UNLOCK_KEYSTORE, unlockKeystoreSaga),
+    takeEvery(WALLET.UNLOCK_MNEMONIC, unlockMnemonicSaga),
+    takeEvery(WALLET.SET, handleNewWallet),
+    takeEvery(WALLET.SCAN_WALLET_FOR_TOKENS, handleScanWalletAction),
+    takeEvery(WALLET.SET_WALLET_TOKENS, handleSetWalletTokens),
+    takeEvery(WALLET.SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
+    takeEvery(WALLET.REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
+    takeEvery(WALLET.REFRESH_TOKEN_BALANCES, retryTokenBalances),
     // Foreign actions
-    takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
-    takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)
+    takeEvery(CONFIG_META.TOGGLE_OFFLINE, updateBalances),
+    takeEvery(CustomTokenTypeKeys.ADD, handleCustomTokenAdd)
   ];
 }

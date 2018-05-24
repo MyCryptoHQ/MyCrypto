@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { TShowNotification } from 'features/notifications/actions';
+import { TShowNotification } from 'features/notifications';
 import { SwapInput } from 'features/swap/types';
 import {
   TRestartSwap,

@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { setCurrentWindowSize, TSetCurrentWindowSize } from 'features/schedule/actions';
 import {
+  setCurrentWindowSize,
+  TSetCurrentWindowSize,
   ICurrentWindowSize,
   ICurrentScheduleType,
   getCurrentScheduleType
-} from 'features/schedule/selectors';
+} from 'features/schedule';
 import { Query } from 'components/renderCbs';
 import { WindowSizeInputFactory } from './WindowSizeInputFactory';
 

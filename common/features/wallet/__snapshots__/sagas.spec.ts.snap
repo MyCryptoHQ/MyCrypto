@@ -170,7 +170,7 @@ Object {
   "@@redux-saga/IO": true,
   "PUT": Object {
     "action": Object {
-      "type": "CONFIG_NODE_WEB3_UNSET",
+      "type": "CONFIG_NODES_STATIC_WEB3_UNSET",
     },
     "channel": null,
   },

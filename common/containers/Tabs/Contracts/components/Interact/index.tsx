@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Contract from 'libs/contracts';
 import InteractForm from './components/InteractForm';
 import { InteractExplorer } from './components/InteractExplorer';
-import { showNotification, TShowNotification } from 'features/notifications/actions';
+import { showNotification, TShowNotification } from 'features/notifications';
 import { getCurrentTo } from 'features/transaction/selectors';
 
 interface State {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getOffline, getLatestBlock } from 'features/config/meta/selectors';
+import { getOffline, getLatestBlock } from 'features/config';
 import { BetaAgreement, Footer, Header } from 'components';
 import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';

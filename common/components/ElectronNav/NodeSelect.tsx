@@ -1,21 +1,23 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import classnames from 'classnames';
-
-import translate from 'translations';
-import { AppState } from 'features/reducers';
-import { AddCustomNodeAction } from 'features/config/types';
+import CustomNodeModal from 'components/CustomNodeModal';
 import {
-  TChangeNodeIntent,
+  AddCustomNodeAction,
+  CustomNodeOption,
+  NodeOption,
   TAddCustomNode,
+  TChangeNodeIntent,
   TRemoveCustomNode,
+  getNodeId,
+  getNodeOptions,
+  isNodeChanging,
   changeNodeIntent,
   addCustomNode,
   removeCustomNode
-} from 'features/config/actions';
-import { CustomNodeOption, NodeOption, getNodeOptions } from 'features/config/derivedSelectors';
-import { isNodeChanging, getNodeId } from 'features/config/nodes/selected/selectors';
-import CustomNodeModal from 'components/CustomNodeModal';
+} from 'features/config';
+import { AppState } from 'features/reducers';
+import React from 'react';
+import { connect } from 'react-redux';
+import translate from 'translations';
 import './NodeSelect.scss';
 
 interface OwnProps {

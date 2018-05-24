@@ -1,8 +1,10 @@
 import { ReactElement } from 'react';
 
-export enum TypeKeys {
-  SHOW_NOTIFICATION = 'SHOW_NOTIFICATION',
-  CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION'
+export type NotificationState = Notification[];
+
+export enum NOTIFICATIONS {
+  SHOW = 'NOTIFICATIONS_SHOW',
+  CLOSE = 'NOTIFICATIONS_CLOSE'
 }
 
 /*** Shared types ***/
@@ -17,13 +19,13 @@ export interface Notification {
 
 /*** Close notification ***/
 export interface CloseNotificationAction {
-  type: TypeKeys.CLOSE_NOTIFICATION;
+  type: NOTIFICATIONS.CLOSE;
   payload: Notification;
 }
 
 /*** Show Notification ***/
 export interface ShowNotificationAction {
-  type: TypeKeys.SHOW_NOTIFICATION;
+  type: NOTIFICATIONS.SHOW;
   payload: Notification;
 }
 

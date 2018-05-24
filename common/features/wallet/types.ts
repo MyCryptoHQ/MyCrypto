@@ -1,30 +1,49 @@
 import { Wei, TokenValue } from 'libs/units';
-import { IWallet, WalletConfig } from 'libs/wallet';
+import { IWallet, WalletConfig, Balance } from 'libs/wallet';
 
-export enum TypeKeys {
-  WALLET_UNLOCK_PRIVATE_KEY = 'WALLET_UNLOCK_PRIVATE_KEY',
-  WALLET_UNLOCK_KEYSTORE = 'WALLET_UNLOCK_KEYSTORE',
-  WALLET_UNLOCK_MNEMONIC = 'WALLET_UNLOCK_MNEMONIC',
-  WALLET_UNLOCK_WEB3 = 'WALLET_UNLOCK_WEB3',
-  WALLET_SET = 'WALLET_SET',
-  WALLET_SET_BALANCE_PENDING = 'WALLET_SET_BALANCE_PENDING',
-  WALLET_SET_BALANCE_FULFILLED = 'WALLET_SET_BALANCE_FULFILLED',
-  WALLET_SET_BALANCE_REJECTED = 'WALLET_SET_BALANCE_REJECTED',
-  WALLET_SET_TOKEN_BALANCES_PENDING = 'WALLET_SET_TOKEN_BALANCES_PENDING',
-  WALLET_SET_TOKEN_BALANCES_FULFILLED = 'WALLET_SET_TOKEN_BALANCES_FULFILLED',
-  WALLET_SET_TOKEN_BALANCES_REJECTED = 'WALLET_SET_TOKEN_BALANCES_REJECTED',
-  WALLET_SET_PENDING = 'WALLET_SET_PENDING',
-  WALLET_SET_NOT_PENDING = 'WALLET_SET_NOT_PENDING',
-  WALLET_SET_TOKEN_BALANCE_PENDING = 'WALLET_SET_TOKEN_BALANCE_PENDING',
-  WALLET_SET_TOKEN_BALANCE_FULFILLED = 'WALLET_SET_TOKEN_BALANCE_FULFILLED',
-  WALLET_SET_TOKEN_BALANCE_REJECTED = 'WALLET_SET_TOKEN_BALANCE_REJECTED',
-  WALLET_SCAN_WALLET_FOR_TOKENS = 'WALLET_SCAN_WALLET_FOR_TOKENS',
-  WALLET_SET_WALLET_TOKENS = 'WALLET_SET_WALLET_TOKENS',
-  WALLET_SET_CONFIG = 'WALLET_SET_CONFIG',
-  WALLET_RESET = 'WALLET_RESET',
-  WALLET_SET_PASSWORD_PENDING = 'WALLET_SET_PASSWORD_PENDING',
-  WALLET_REFRESH_ACCOUNT_BALANCE = 'WALLET_REFRESH_ACCOUNT_BALANCE',
-  WALLET_REFRESH_TOKEN_BALANCES = 'WALLET_REFRESH_TOKEN_BALANCES'
+export interface WalletState {
+  inst?: IWallet | null;
+  config?: WalletConfig | null;
+  // in ETH
+  balance: Balance;
+  tokens: {
+    [key: string]: {
+      balance: TokenValue;
+      error: string | null;
+    };
+  };
+  isWalletPending: boolean;
+  isTokensLoading: boolean;
+  isPasswordPending: boolean;
+  tokensError: string | null;
+  hasSavedWalletTokens: boolean;
+  recentAddresses: string[];
+}
+
+export enum WALLET {
+  UNLOCK_PRIVATE_KEY = 'WALLET_UNLOCK_PRIVATE_KEY',
+  UNLOCK_KEYSTORE = 'WALLET_UNLOCK_KEYSTORE',
+  UNLOCK_MNEMONIC = 'WALLET_UNLOCK_MNEMONIC',
+  UNLOCK_WEB3 = 'WALLET_UNLOCK_WEB3',
+  SET = 'WALLET_SET',
+  SET_BALANCE_PENDING = 'WALLET_SET_BALANCE_PENDING',
+  SET_BALANCE_FULFILLED = 'WALLET_SET_BALANCE_FULFILLED',
+  SET_BALANCE_REJECTED = 'WALLET_SET_BALANCE_REJECTED',
+  SET_TOKEN_BALANCES_PENDING = 'WALLET_SET_TOKEN_BALANCES_PENDING',
+  SET_TOKEN_BALANCES_FULFILLED = 'WALLET_SET_TOKEN_BALANCES_FULFILLED',
+  SET_TOKEN_BALANCES_REJECTED = 'WALLET_SET_TOKEN_BALANCES_REJECTED',
+  SET_PENDING = 'WALLET_SET_PENDING',
+  SET_NOT_PENDING = 'WALLET_SET_NOT_PENDING',
+  SET_TOKEN_BALANCE_PENDING = 'WALLET_SET_TOKEN_BALANCE_PENDING',
+  SET_TOKEN_BALANCE_FULFILLED = 'WALLET_SET_TOKEN_BALANCE_FULFILLED',
+  SET_TOKEN_BALANCE_REJECTED = 'WALLET_SET_TOKEN_BALANCE_REJECTED',
+  SCAN_WALLET_FOR_TOKENS = 'WALLET_SCAN_WALLET_FOR_TOKENS',
+  SET_WALLET_TOKENS = 'WALLET_SET_WALLET_TOKENS',
+  SET_CONFIG = 'WALLET_SET_CONFIG',
+  RESET = 'WALLET_RESET',
+  SET_PASSWORD_PENDING = 'WALLET_SET_PASSWORD_PENDING',
+  REFRESH_ACCOUNT_BALANCE = 'WALLET_REFRESH_ACCOUNT_BALANCE',
+  REFRESH_TOKEN_BALANCES = 'WALLET_REFRESH_TOKEN_BALANCES'
 }
 
 export interface PrivateKeyUnlockParams {
@@ -33,51 +52,51 @@ export interface PrivateKeyUnlockParams {
 }
 
 export interface UnlockPrivateKeyAction {
-  type: TypeKeys.WALLET_UNLOCK_PRIVATE_KEY;
+  type: WALLET.UNLOCK_PRIVATE_KEY;
   payload: PrivateKeyUnlockParams;
 }
 export interface UnlockMnemonicAction {
-  type: TypeKeys.WALLET_UNLOCK_MNEMONIC;
+  type: WALLET.UNLOCK_MNEMONIC;
   payload: MnemonicUnlockParams;
 }
 
 export interface UnlockWeb3Action {
-  type: TypeKeys.WALLET_UNLOCK_WEB3;
+  type: WALLET.UNLOCK_WEB3;
 }
 
 export interface SetWalletAction {
-  type: TypeKeys.WALLET_SET;
+  type: WALLET.SET;
   payload: IWallet;
 }
 
 export interface ResetWalletAction {
-  type: TypeKeys.WALLET_RESET;
+  type: WALLET.RESET;
 }
 
 export interface SetWalletPendingAction {
-  type: TypeKeys.WALLET_SET_PENDING;
+  type: WALLET.SET_PENDING;
   payload: boolean;
 }
 
 export interface SetBalancePendingAction {
-  type: TypeKeys.WALLET_SET_BALANCE_PENDING;
+  type: WALLET.SET_BALANCE_PENDING;
 }
 
 export interface SetBalanceFullfilledAction {
-  type: TypeKeys.WALLET_SET_BALANCE_FULFILLED;
+  type: WALLET.SET_BALANCE_FULFILLED;
   payload: Wei;
 }
 
 export interface SetBalanceRejectedAction {
-  type: TypeKeys.WALLET_SET_BALANCE_REJECTED;
+  type: WALLET.SET_BALANCE_REJECTED;
 }
 
 export interface SetTokenBalancesPendingAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_PENDING;
+  type: WALLET.SET_TOKEN_BALANCES_PENDING;
 }
 
 export interface SetTokenBalancesFulfilledAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_FULFILLED;
+  type: WALLET.SET_TOKEN_BALANCES_FULFILLED;
   payload: {
     [key: string]: {
       balance: TokenValue;
@@ -87,16 +106,16 @@ export interface SetTokenBalancesFulfilledAction {
 }
 
 export interface SetTokenBalancesRejectedAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCES_REJECTED;
+  type: WALLET.SET_TOKEN_BALANCES_REJECTED;
 }
 
 export interface SetTokenBalancePendingAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING;
+  type: WALLET.SET_TOKEN_BALANCE_PENDING;
   payload: { tokenSymbol: string };
 }
 
 export interface SetTokenBalanceFulfilledAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED;
+  type: WALLET.SET_TOKEN_BALANCE_FULFILLED;
   payload: {
     [key: string]: {
       balance: TokenValue;
@@ -106,16 +125,16 @@ export interface SetTokenBalanceFulfilledAction {
 }
 
 export interface SetTokenBalanceRejectedAction {
-  type: TypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED;
+  type: WALLET.SET_TOKEN_BALANCE_REJECTED;
 }
 
 export interface ScanWalletForTokensAction {
-  type: TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS;
+  type: WALLET.SCAN_WALLET_FOR_TOKENS;
   payload: IWallet;
 }
 
 export interface SetWalletTokensAction {
-  type: TypeKeys.WALLET_SET_WALLET_TOKENS;
+  type: WALLET.SET_WALLET_TOKENS;
   payload: string[];
 }
 
@@ -132,25 +151,25 @@ export interface KeystoreUnlockParams {
 }
 
 export interface UnlockKeystoreAction {
-  type: TypeKeys.WALLET_UNLOCK_KEYSTORE;
+  type: WALLET.UNLOCK_KEYSTORE;
   payload: KeystoreUnlockParams;
 }
 
 export interface SetWalletConfigAction {
-  type: TypeKeys.WALLET_SET_CONFIG;
+  type: WALLET.SET_CONFIG;
   payload: WalletConfig;
 }
 
 export interface SetPasswordPendingAction {
-  type: TypeKeys.WALLET_SET_PASSWORD_PENDING;
+  type: WALLET.SET_PASSWORD_PENDING;
 }
 
 export interface RefreshAccountBalanceAction {
-  type: TypeKeys.WALLET_REFRESH_ACCOUNT_BALANCE;
+  type: WALLET.REFRESH_ACCOUNT_BALANCE;
 }
 
 export interface RefreshTokenBalancesAction {
-  type: TypeKeys.WALLET_REFRESH_TOKEN_BALANCES;
+  type: WALLET.REFRESH_TOKEN_BALANCES;
 }
 
 export type WalletAction =

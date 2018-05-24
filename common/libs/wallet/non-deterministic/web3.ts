@@ -2,8 +2,7 @@ import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
 import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
 import { configuredStore } from 'features/index';
-import { getNetworkNameByChainId } from 'features/config/networks/derivedSelectors';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
+import { getNodeLib, getNetworkNameByChainId } from 'features/config';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 

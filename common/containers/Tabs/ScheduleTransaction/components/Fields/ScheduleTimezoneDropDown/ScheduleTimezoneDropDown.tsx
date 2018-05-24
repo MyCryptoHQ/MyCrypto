@@ -5,8 +5,12 @@ import moment from 'moment';
 import 'moment-timezone';
 
 import translate from 'translations';
-import { setScheduleTimezone, TSetScheduleTimezone } from 'features/schedule/actions';
-import { getCurrentScheduleTimezone, ICurrentScheduleTimezone } from 'features/schedule/selectors';
+import {
+  setScheduleTimezone,
+  TSetScheduleTimezone,
+  getCurrentScheduleTimezone,
+  ICurrentScheduleTimezone
+} from 'features/schedule';
 import { AppState } from 'features/reducers';
 import { Query } from 'components/renderCbs';
 import { Dropdown } from 'components/ui';

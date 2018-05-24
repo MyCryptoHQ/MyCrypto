@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import EthTx from 'ethereumjs-tx';
 
 import { AppState } from 'features/reducers';
-import { getWalletType, IWalletType } from 'features/wallet/selectors';
+import { getWalletType, IWalletType } from 'features/wallet';
 import {
   getSerializedTransaction,
   getTransaction,

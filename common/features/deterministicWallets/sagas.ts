@@ -5,11 +5,11 @@ import HDKey from 'hdkey';
 
 import { DeterministicWalletData, GetDeterministicWalletsAction } from './types';
 import { setDeterministicWallets, updateDeterministicWallet } from './actions';
-import { showNotification } from 'features/notifications/actions';
+import { showNotification } from 'features/notifications';
 import { INode } from 'libs/nodes/INode';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
-import { getDesiredToken, getWallets } from 'features/deterministicWallets/selectors';
-import { getTokens } from 'features/wallet/selectors';
+import { getNodeLib } from 'features/config';
+import { getDesiredToken, getWallets } from 'features/deterministicWallets';
+import { getTokens } from 'features/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';

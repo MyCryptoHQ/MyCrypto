@@ -7,8 +7,8 @@ import { IWallet } from 'libs/wallet';
 import { validPositiveNumber, validDecimal } from 'libs/validators';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { AppState } from 'features/reducers';
-import { getSelectedTokenContractAddress } from 'features/derivedSelectors';
-import { getNetworkConfig, isNetworkUnit } from 'features/config/derivedSelectors';
+import { getSelectedTokenContractAddress } from 'features/selectors';
+import { getNetworkConfig, isNetworkUnit } from 'features/config';
 import { SetGasLimitFieldAction } from 'features/transaction/types';
 import {
   resetTransactionRequested,

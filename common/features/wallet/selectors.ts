@@ -8,12 +8,12 @@ import ParitySignerWallet from 'libs/wallet/non-deterministic/parity';
 import { SecureWalletName, WalletName } from 'config';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
 import {
+  getOffline,
   getNetworkConfig,
   getStaticNetworkConfig,
   unSupportedWalletFormatsOnNetwork
-} from 'features/config/derivedSelectors';
+} from 'features/config';
 import { isEtherTransaction, getUnit } from 'features/transaction/selectors';
 import { DisabledWallets } from 'components/WalletDecrypt';
 

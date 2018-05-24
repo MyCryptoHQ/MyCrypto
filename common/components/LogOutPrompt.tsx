@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
-import { TWeb3UnsetNode, web3UnsetNode } from 'features/config/actions';
-import { resetWallet, TResetWallet } from 'features/wallet/actions';
+import { TWeb3UnsetNode, web3UnsetNode } from 'features/config';
+import { resetWallet, TResetWallet } from 'features/wallet';
 import Modal, { IButton } from 'components/ui/Modal';
 
 interface DispatchProps {

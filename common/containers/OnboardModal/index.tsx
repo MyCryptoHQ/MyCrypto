@@ -4,7 +4,7 @@ import Stepper from 'react-stepper-horizontal';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { showNotification, TShowNotification } from 'features/notifications/actions';
+import { showNotification, TShowNotification } from 'features/notifications';
 import {
   startOnboardSession,
   TStartOnboardSession,
@@ -14,7 +14,7 @@ import {
   TIncrementSlide,
   resumeSlide,
   TResumeSlide
-} from 'features/onboardStatus/actions';
+} from 'features/onboardStatus';
 import Modal, { IButton } from 'components/ui/Modal';
 import {
   WelcomeSlide,

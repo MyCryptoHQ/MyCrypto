@@ -20,7 +20,7 @@ import {
   stopLoadShapeshiftRatesSwap,
   TStopLoadShapeshiftRatesSwap
 } from 'features/swap/actions';
-import { getOffline } from 'features/config/meta/selectors';
+import { getOffline } from 'features/config';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';

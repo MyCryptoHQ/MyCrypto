@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 import { translateRaw } from 'translations';
 import { toWei } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { setScheduleDepositField, TSetScheduleDepositField } from 'features/schedule/actions';
-import { getScheduleDeposit, isValidScheduleDeposit } from 'features/schedule/selectors';
+import {
+  setScheduleDepositField,
+  TSetScheduleDepositField,
+  getScheduleDeposit,
+  isValidScheduleDeposit
+} from 'features/schedule';
 import { getDecimal } from 'features/transaction/selectors';
 import { Input, Tooltip } from 'components/ui';
 import Help from 'components/ui/Help';

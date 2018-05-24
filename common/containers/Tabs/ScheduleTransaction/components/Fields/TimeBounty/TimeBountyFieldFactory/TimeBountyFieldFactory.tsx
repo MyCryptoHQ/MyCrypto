@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { setCurrentTimeBounty, TSetCurrentTimeBounty } from 'features/schedule/actions';
-import { ICurrentTimeBounty } from 'features/schedule/selectors';
+import { setCurrentTimeBounty, TSetCurrentTimeBounty, ICurrentTimeBounty } from 'features/schedule';
 import { Query } from 'components/renderCbs';
 import { TimeBountyInputFactory } from './TimeBountyInputFactory';
 

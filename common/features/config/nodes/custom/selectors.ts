@@ -1,6 +1,6 @@
 import { CustomNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
-import { getNodes } from '../derivedSelectors';
+import { getNodes } from '../selectors';
 
 export function getCustomNodeConfigs(state: AppState) {
   return getNodes(state).customNodes;

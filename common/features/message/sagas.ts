@@ -5,11 +5,14 @@ import translate, { translateRaw } from 'translations';
 import { verifySignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { padLeftEven } from 'libs/values';
-import { showNotification } from 'features/notifications/actions';
-import { TypeKeys as ParityKeys, FinalizeSignatureAction } from 'features/paritySigner/types';
-import { requestMessageSignature } from 'features/paritySigner/actions';
-import { IWalletType, getWalletType, getWalletInst } from 'features/wallet/selectors';
-import { TypeKeys, SignLocalMessageSucceededAction, SignMessageRequestedAction } from './types';
+import { showNotification } from 'features/notifications';
+import {
+  PARITY_SIGNER,
+  FinalizeSignatureAction,
+  requestMessageSignature
+} from 'features/paritySigner';
+import { IWalletType, getWalletType, getWalletInst } from 'features/wallet';
+import { MESSAGE, SignLocalMessageSucceededAction, SignMessageRequestedAction } from './types';
 import { signLocalMessageSucceeded, signMessageFailed } from './actions';
 
 export function* signingWrapper(
@@ -56,9 +59,7 @@ function* signParitySignerMessage(wallet: IFullWallet, msg: string): SagaIterato
 
   yield put(requestMessageSignature(address, data));
 
-  const { payload: sig }: FinalizeSignatureAction = yield take(
-    ParityKeys.PARITY_SIGNER_FINALIZE_SIGNATURE
-  );
+  const { payload: sig }: FinalizeSignatureAction = yield take(PARITY_SIGNER.FINALIZE_SIGNATURE);
 
   if (!sig) {
     throw new Error(translateRaw('ERROR_38'));
@@ -101,8 +102,8 @@ function* verifySignature(action: SignLocalMessageSucceededAction): SagaIterator
 }
 
 export const signing = [
-  takeEvery(TypeKeys.SIGN_MESSAGE_REQUESTED, handleMessageRequest),
-  takeEvery(TypeKeys.SIGN_LOCAL_MESSAGE_SUCCEEDED, verifySignature)
+  takeEvery(MESSAGE.SIGN_REQUESTED, handleMessageRequest),
+  takeEvery(MESSAGE.SIGN_LOCAL_SUCCEEDED, verifySignature)
 ];
 
 export function* messageSaga(): SagaIterator {

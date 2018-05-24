@@ -6,10 +6,10 @@ import { getAllRates, getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import { configuredStore } from 'features/store';
 import { TypeKeys as TransactionTypeKeys } from 'features/transaction/types';
-import { TypeKeys as WalletTypeKeys } from 'features/wallet/types';
-import { showNotification } from 'features/notifications/actions';
+import { WALLET as WalletTypeKeys } from 'features/wallet';
+import { showNotification } from 'features/notifications';
 import {
-  TypeKeys,
+  SWAP,
   BityOrderPostResponse,
   BityOrderInput,
   BityOrderOutput,
@@ -42,8 +42,12 @@ import {
   stopPollShapeshiftOrderStatus,
   stopOrderTimerSwap
 } from './actions';
-import { State as SwapState, INITIAL_STATE as INITIAL_SWAP_STATE } from './reducers';
-import { getSwap, getHasNotifiedRatesFailure } from './selectors';
+import {
+  SwapState,
+  INITIAL_STATE as INITIAL_SWAP_STATE,
+  getSwap,
+  getHasNotifiedRatesFailure
+} from './';
 import {
   configureLiteSendSaga,
   handleConfigureLiteSend,
@@ -84,9 +88,9 @@ describe('swap: Sagas (Lite Send)', () => {
       const mockedTask = createMockTask();
       const expectedYield = race({
         transactionReset: take(TransactionTypeKeys.RESET_REQUESTED),
-        userNavigatedAway: take(WalletTypeKeys.WALLET_RESET),
-        bityPollingFinished: take(TypeKeys.SWAP_STOP_POLL_BITY_ORDER_STATUS),
-        shapeshiftPollingFinished: take(TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS)
+        userNavigatedAway: take(WalletTypeKeys.RESET),
+        bityPollingFinished: take(SWAP.STOP_POLL_BITY_ORDER_STATUS),
+        shapeshiftPollingFinished: take(SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
       });
 
       expect(original.next(mockedTask).value).toEqual(expectedYield);
@@ -269,7 +273,7 @@ describe('swap: Sagas (Orders)', () => {
     const mockedTask = createMockTask();
 
     it('should take SWAP_START_POLL_BITY_ORDER_STATUS', () => {
-      expect(data.gen.next().value).toEqual(take(TypeKeys.SWAP_START_POLL_BITY_ORDER_STATUS));
+      expect(data.gen.next().value).toEqual(take(SWAP.START_POLL_BITY_ORDER_STATUS));
     });
 
     it('should be done if order status is false', () => {
@@ -282,9 +286,7 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should take SWAP_STOP_POLL_BITY_ORDER_STATUS', () => {
-      expect(data.gen.next(mockedTask).value).toEqual(
-        take(TypeKeys.SWAP_STOP_POLL_BITY_ORDER_STATUS)
-      );
+      expect(data.gen.next(mockedTask).value).toEqual(take(SWAP.STOP_POLL_BITY_ORDER_STATUS));
     });
 
     it('should cancel pollBityOrderStatusTask', () => {
@@ -298,7 +300,7 @@ describe('swap: Sagas (Orders)', () => {
     const mockedTask = createMockTask();
 
     it('should take SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS', () => {
-      expect(data.gen.next().value).toEqual(take(TypeKeys.SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS));
+      expect(data.gen.next().value).toEqual(take(SWAP.START_POLL_SHAPESHIFT_ORDER_STATUS));
     });
 
     it('should be done if order status is false', () => {
@@ -311,9 +313,7 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should take SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS', () => {
-      expect(data.gen.next(mockedTask).value).toEqual(
-        take(TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS)
-      );
+      expect(data.gen.next(mockedTask).value).toEqual(take(SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS));
     });
 
     it('should cancel pollShapeshiftOrderStatusTask', () => {
@@ -542,7 +542,7 @@ describe('swap: Sagas (Orders)', () => {
       data.OPEN = data.gen.clone();
       expect(data.OPEN.next(openOrder).value).toEqual(put(orderTimeSwap(0)));
       expect(data.OPEN.next().value).toEqual(put(stopPollBityOrderStatus()));
-      expect(data.OPEN.next().value).toEqual(put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES }));
+      expect(data.OPEN.next().value).toEqual(put({ type: SWAP.STOP_LOAD_BITY_RATES }));
       expect(data.OPEN.next().value).toEqual(
         put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity))
       );
@@ -552,7 +552,7 @@ describe('swap: Sagas (Orders)', () => {
       const cancOrder = { ...swapOrderExpired, bityOrderStatus: 'CANC' };
       data.CANC = data.gen.clone();
       expect(data.CANC.next(cancOrder).value).toEqual(put(stopPollBityOrderStatus()));
-      expect(data.CANC.next().value).toEqual(put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES }));
+      expect(data.CANC.next().value).toEqual(put({ type: SWAP.STOP_LOAD_BITY_RATES }));
       expect(data.CANC.next().value).toEqual(
         put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity))
       );
@@ -570,7 +570,7 @@ describe('swap: Sagas (Orders)', () => {
       const fillOrder = { ...swapOrderExpired, bityOrderStatus: 'FILL' };
       data.FILL = data.gen.clone();
       expect(data.FILL.next(fillOrder).value).toEqual(put(stopPollBityOrderStatus()));
-      expect(data.FILL.next().value).toEqual(put({ type: TypeKeys.SWAP_STOP_LOAD_BITY_RATES }));
+      expect(data.FILL.next().value).toEqual(put({ type: SWAP.STOP_LOAD_BITY_RATES }));
     });
   });
 
@@ -623,9 +623,7 @@ describe('swap: Sagas (Orders)', () => {
       data.OPEN = data.gen.clone();
       expect(data.OPEN.next(openOrder).value).toEqual(put(orderTimeSwap(0)));
       expect(data.OPEN.next().value).toEqual(put(stopPollShapeshiftOrderStatus()));
-      expect(data.OPEN.next().value).toEqual(
-        put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES })
-      );
+      expect(data.OPEN.next().value).toEqual(put({ type: SWAP.STOP_LOAD_SHAPESHIFT_RATES }));
       expect(data.OPEN.next().value).toEqual(
         put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity))
       );
@@ -635,9 +633,7 @@ describe('swap: Sagas (Orders)', () => {
       const cancOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'failed' };
       data.CANC = data.gen.clone();
       expect(data.CANC.next(cancOrder).value).toEqual(put(stopPollShapeshiftOrderStatus()));
-      expect(data.CANC.next().value).toEqual(
-        put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES })
-      );
+      expect(data.CANC.next().value).toEqual(put({ type: SWAP.STOP_LOAD_SHAPESHIFT_RATES }));
       expect(data.CANC.next().value).toEqual(
         put(showNotification('danger', ORDER_TIMEOUT_MESSAGE, Infinity))
       );
@@ -655,9 +651,7 @@ describe('swap: Sagas (Orders)', () => {
       const fillOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'complete' };
       data.COMPLETE = data.gen.clone();
       expect(data.COMPLETE.next(fillOrder).value).toEqual(put(stopPollShapeshiftOrderStatus()));
-      expect(data.COMPLETE.next().value).toEqual(
-        put({ type: TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES })
-      );
+      expect(data.COMPLETE.next().value).toEqual(put({ type: SWAP.STOP_LOAD_SHAPESHIFT_RATES }));
       expect(data.COMPLETE.next().value).toEqual(put(stopOrderTimerSwap()));
     });
   });
@@ -810,7 +804,7 @@ describe('swap: Sagas (Rates)', () => {
     });
 
     it('should take SWAP_STOP_LOAD_BITY_RATES', () => {
-      expect(gen.next(mockTask).value).toEqual(take(TypeKeys.SWAP_STOP_LOAD_BITY_RATES));
+      expect(gen.next(mockTask).value).toEqual(take(SWAP.STOP_LOAD_BITY_RATES));
     });
 
     it('should cancel loadBityRatesTask', () => {
@@ -831,7 +825,7 @@ describe('swap: Sagas (Rates)', () => {
     });
 
     it('should take SWAP_STOP_LOAD_BITY_RATES', () => {
-      expect(gen.next(mockTask).value).toEqual(take(TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES));
+      expect(gen.next(mockTask).value).toEqual(take(SWAP.STOP_LOAD_SHAPESHIFT_RATES));
     });
 
     it('should cancel loadShapeShiftRatesTask', () => {

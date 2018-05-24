@@ -1,5 +1,5 @@
 import { AppState } from 'features/reducers';
-import { getNodes } from '../derivedSelectors';
+import { getNodes } from '../selectors';
 
 export function getSelectedNode(state: AppState) {
   return getNodes(state).selectedNode;

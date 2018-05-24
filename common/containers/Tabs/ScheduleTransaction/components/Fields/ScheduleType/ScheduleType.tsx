@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { setScheduleType, TSetScheduleType } from 'features/schedule/actions';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'features/schedule/selectors';
+import {
+  setScheduleType,
+  TSetScheduleType,
+  getCurrentScheduleType,
+  ICurrentScheduleType
+} from 'features/schedule';
 
 interface DispatchProps {
   setScheduleType: TSetScheduleType;

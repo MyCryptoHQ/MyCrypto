@@ -6,15 +6,10 @@ import classNames from 'classnames';
 import { NetworkConfig } from 'types/network';
 import { calcEACTotalCost } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
-import { getIsEstimating } from 'features/gas/selectors';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { getIsEstimating } from 'features/gas';
 import { getGasLimit } from 'features/transaction/selectors';
-import {
-  getScheduleGasLimit,
-  getTimeBounty,
-  getSchedulingToggle
-} from 'features/schedule/selectors';
+import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'features/schedule';
 import { UnitDisplay, Spinner } from 'components/ui';
 import './FeeSummary.scss';
 

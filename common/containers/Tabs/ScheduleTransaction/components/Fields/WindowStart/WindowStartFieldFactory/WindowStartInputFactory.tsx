@@ -6,8 +6,8 @@ import {
   getCurrentWindowStart,
   ICurrentWindowStart,
   isValidCurrentWindowStart
-} from 'features/schedule/selectors';
-import { getResolvingDomain } from 'features/ens/derivedSelectors';
+} from 'features/schedule';
+import { getResolvingDomain } from 'features/ens';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowStartFieldFactory';
 

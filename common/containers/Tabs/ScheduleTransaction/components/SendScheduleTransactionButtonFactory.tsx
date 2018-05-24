@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getWalletType } from 'features/wallet/selectors';
-import { getSchedulingTransaction } from 'features/schedule/selectors';
+import { getWalletType } from 'features/wallet';
+import { getSchedulingTransaction } from 'features/schedule';
 import {
   getSerializedTransaction,
   isNetworkRequestPending,

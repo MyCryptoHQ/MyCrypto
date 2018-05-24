@@ -2,7 +2,7 @@ import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import { fetchRates, CCResponse } from 'api/rates';
-import { TypeKeys, FetchCCRatesRequested } from './types';
+import { RATES_FETCH, FetchCCRatesRequested } from './types';
 import { fetchCCRatesSucceeded, fetchCCRatesFailed } from './actions';
 
 export function* fetchRatesSaga(action: FetchCCRatesRequested): SagaIterator {
@@ -17,5 +17,5 @@ export function* fetchRatesSaga(action: FetchCCRatesRequested): SagaIterator {
 }
 
 export function* ratesSaga(): SagaIterator {
-  yield takeLatest(TypeKeys.RATES_FETCH_CC_REQUESTED, fetchRatesSaga);
+  yield takeLatest(RATES_FETCH.CC_REQUESTED, fetchRatesSaga);
 }

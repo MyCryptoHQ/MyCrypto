@@ -1,6 +1,6 @@
 import { StaticNodeId } from 'types/node';
 import { AppState } from 'features/reducers';
-import { getNodes } from '../derivedSelectors';
+import { getNodes } from '../selectors';
 
 export function getStaticNodes(state: AppState) {
   return getNodes(state).staticNodes;

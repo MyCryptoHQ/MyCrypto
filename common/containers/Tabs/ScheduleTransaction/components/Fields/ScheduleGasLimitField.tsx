@@ -5,8 +5,12 @@ import { translateRaw } from 'translations';
 import { Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { setScheduleGasLimitField, TSetScheduleGasLimitField } from 'features/schedule/actions';
-import { getScheduleGasLimit, isValidScheduleGasLimit } from 'features/schedule/selectors';
+import {
+  setScheduleGasLimitField,
+  TSetScheduleGasLimitField,
+  getScheduleGasLimit,
+  isValidScheduleGasLimit
+} from 'features/schedule';
 import { getGasEstimationPending } from 'features/transaction/selectors';
 import { Input, InlineSpinner } from 'components/ui';
 

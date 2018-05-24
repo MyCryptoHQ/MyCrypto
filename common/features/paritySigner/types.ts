@@ -1,11 +1,21 @@
-export enum TypeKeys {
-  PARITY_SIGNER_REQUEST_TX_SIGNATURE = 'PARITY_SIGNER_REQUEST_TX_SIGNATURE',
-  PARITY_SIGNER_REQUEST_MSG_SIGNATURE = 'PARITY_SIGNER_REQUEST_MSG_SIGNATURE',
-  PARITY_SIGNER_FINALIZE_SIGNATURE = 'PARITY_SIGNER_FINALIZE_SIGNATURE'
+export interface ParitySignerState {
+  requested?: QrSignatureState | null;
+}
+
+interface QrSignatureState {
+  isMessage: boolean;
+  from: string;
+  data: string;
+}
+
+export enum PARITY_SIGNER {
+  REQUEST_TX_SIGNATURE = 'PARITY_SIGNER_REQUEST_TX_SIGNATURE',
+  REQUEST_MSG_SIGNATURE = 'PARITY_SIGNER_REQUEST_MSG_SIGNATURE',
+  FINALIZE_SIGNATURE = 'PARITY_SIGNER_FINALIZE_SIGNATURE'
 }
 
 export interface RequestTransactionSignatureAction {
-  type: TypeKeys.PARITY_SIGNER_REQUEST_TX_SIGNATURE;
+  type: PARITY_SIGNER.REQUEST_TX_SIGNATURE;
   payload: {
     isMessage: false;
     data: string;
@@ -14,7 +24,7 @@ export interface RequestTransactionSignatureAction {
 }
 
 export interface RequestMessageSignatureAction {
-  type: TypeKeys.PARITY_SIGNER_REQUEST_MSG_SIGNATURE;
+  type: PARITY_SIGNER.REQUEST_MSG_SIGNATURE;
   payload: {
     isMessage: true;
     data: string;
@@ -23,7 +33,7 @@ export interface RequestMessageSignatureAction {
 }
 
 export interface FinalizeSignatureAction {
-  type: TypeKeys.PARITY_SIGNER_FINALIZE_SIGNATURE;
+  type: PARITY_SIGNER.FINALIZE_SIGNATURE;
   payload: string | null;
 }
 
