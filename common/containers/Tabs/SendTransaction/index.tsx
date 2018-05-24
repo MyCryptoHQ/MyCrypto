@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
-import QrSignerModal from 'containers/QrSignerModal';
 import { UnlockHeader } from 'components/ui';
 import { getWalletInst } from 'selectors/wallet';
 import { AppState } from 'reducers';
@@ -12,6 +11,7 @@ import {
   WalletInfo,
   RequestPayment,
   RecentTransactions,
+  AddressBook,
   Fields,
   UnavailableWallets,
   SideBar
@@ -56,6 +56,10 @@ class SendTransaction extends React.Component<Props> {
       {
         path: 'recent-txs',
         name: translate('NAV_RECENT_TX')
+      },
+      {
+        path: 'address-book',
+        name: translate('NAV_ADDRESS_BOOK')
       }
     ];
 
@@ -102,6 +106,11 @@ class SendTransaction extends React.Component<Props> {
                     exact={true}
                     render={() => <RecentTransactions wallet={wallet} />}
                   />
+                  <Route
+                    path={`${currentPath}/address-book`}
+                    exact={true}
+                    render={() => <AddressBook />}
+                  />
                   <RouteNotFound />
                 </Switch>
               </div>
@@ -109,7 +118,6 @@ class SendTransaction extends React.Component<Props> {
             </div>
           )}
         </section>
-        <QrSignerModal />
       </TabSection>
     );
   }

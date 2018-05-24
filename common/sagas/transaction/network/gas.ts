@@ -18,7 +18,6 @@ import { getTransaction, IGetTransaction, getCurrentToAddressMessage } from 'sel
 import {
   EstimateGasRequestedAction,
   setGasLimitField,
-  estimateGasFailed,
   estimateGasTimedout,
   estimateGasSucceeded,
   TypeKeys,
@@ -27,12 +26,15 @@ import {
   SetDataFieldAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
-  SwapTokenToEtherAction
+  SwapTokenToEtherAction,
+  estimateGasFailed
 } from 'actions/transaction';
 import { TypeKeys as ConfigTypeKeys, ToggleAutoGasLimitAction } from 'actions/config';
 import { IWallet } from 'libs/wallet';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { AddressMessage } from 'config';
+import { isSchedulingEnabled } from 'selectors/schedule/fields';
+import { setScheduleGasLimitField } from 'actions/schedule';
 
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
@@ -76,6 +78,15 @@ export function* shouldEstimateGas(): SagaIterator {
       transaction
     );
 
+    // gas estimation calls with
+    // '0x' as an address (contract creation)
+    // fail, so instead we set it as undefined
+    // interestingly, the transaction itself as '0x' as the
+    // to address works fine.
+    if (rest.to === '0x') {
+      rest.to = undefined as any;
+    }
+
     yield put(estimateGasRequested(rest));
   }
 }
@@ -99,12 +110,25 @@ export function* estimateGas(): SagaIterator {
     try {
       const from: string = yield apply(walletInst, walletInst.getAddressString);
       const txObj = { ...payload, from };
+
       const { gasLimit } = yield race({
         gasLimit: apply(node, node.estimateGas, [txObj]),
         timeout: call(delay, 10000)
       });
       if (gasLimit) {
-        yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
+        const gasSetOptions = {
+          raw: gasLimit.toString(),
+          value: gasLimit
+        };
+
+        const scheduling: boolean = yield select(isSchedulingEnabled);
+
+        if (scheduling) {
+          yield put(setScheduleGasLimitField(gasSetOptions));
+        } else {
+          yield put(setGasLimitField(gasSetOptions));
+        }
+
         yield put(estimateGasSucceeded());
       } else {
         yield put(estimateGasTimedout());

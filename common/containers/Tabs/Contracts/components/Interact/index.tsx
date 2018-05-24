@@ -2,34 +2,36 @@ import React, { Component } from 'react';
 import InteractForm from './components/InteractForm';
 import { InteractExplorer } from './components//InteractExplorer';
 import Contract from 'libs/contracts';
-import { setToField, TSetToField } from 'actions/transaction';
-import { Address } from 'libs/units';
 import { showNotification, TShowNotification } from 'actions/notifications';
 import { connect } from 'react-redux';
+import { getCurrentTo } from 'selectors/transaction';
 
 interface State {
   currentContract: Contract | null;
   showExplorer: boolean;
 }
 
+interface StateProps {
+  currentTo: ReturnType<typeof getCurrentTo>;
+}
+
 interface DispatchProps {
-  setToField: TSetToField;
   showNotification: TShowNotification;
 }
 
-class InteractClass extends Component<DispatchProps, State> {
+type Props = StateProps & DispatchProps;
+class InteractClass extends Component<Props, State> {
   public initialState: State = {
     currentContract: null,
     showExplorer: false
   };
   public state: State = this.initialState;
 
-  public accessContract = (contractAbi: string, address: string) => () => {
+  public accessContract = (contractAbi: string) => () => {
     try {
       const parsedAbi = JSON.parse(contractAbi);
       const contractInstance = new Contract(parsedAbi);
-      this.props.setToField({ raw: address, value: Address(address) });
-      // dispatch address to to field
+
       this.setState({
         currentContract: contractInstance,
         showExplorer: true
@@ -65,4 +67,5 @@ class InteractClass extends Component<DispatchProps, State> {
 
   private resetState = () => this.setState(this.initialState);
 }
-export const Interact = connect(null, { showNotification, setToField })(InteractClass);
+
+export const Interact = connect(null, { showNotification })(InteractClass);

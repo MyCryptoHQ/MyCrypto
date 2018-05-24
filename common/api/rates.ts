@@ -47,11 +47,11 @@ export const rateSymbols: IRateSymbols = {
 
 // TODO - internationalize
 const ERROR_MESSAGE = 'Could not fetch rate data.';
-const CCApi = 'https://min-api.cryptocompare.com';
+const CCApi = 'https://proxy.mycryptoapi.com/cc';
 
 const CCRates = (symbols: string[]) => {
   const tsyms = rateSymbols.symbols.all.concat(symbols as any).join(',');
-  return `${CCApi}/data/price?fsym=ETH&tsyms=${tsyms}`;
+  return `${CCApi}/price?fsym=ETH&tsyms=${tsyms}`;
 };
 
 export interface CCResponse {

@@ -12,12 +12,6 @@ label {
   }
 }
 
-label + .form-control,
-label + input,
-label + textarea {
-  margin-top: 0;
-}
-
 input[type='radio'],
 input[type='checkbox'] {
   margin: 3px 0 0;
@@ -29,24 +23,6 @@ input[readonly] {
   cursor: text !important;
 }
 
-.form-control {
-  margin-bottom: $space-sm;
-  transition: $transition;
-  padding: $input-padding;
-  @include mono;
-
-  &:focus {
-    border-color: $input-border-focus;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px rgba($brand-primary, 0.5);
-  }
-}
-
-input.form-control,
-select.form-control {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
 .form-group {
   display: block;
   margin-bottom: $form-group-margin-bottom;
@@ -56,31 +32,6 @@ select.form-control {
 .checkbox {
   margin: 15px 0;
   font-weight: 500;
-}
-
-// Custom feedback classes
-@mixin form-control-state($color) {
-  border-color: lighten($color, 20%);
-  @include input-shadow($color);
-
-  &:focus {
-    border-color: lighten($color, 5%);
-    @include input-focus-shadow($color);
-  }
-}
-
-.form-control {
-  &.is-valid {
-    @include form-control-state($brand-success);
-  }
-
-  &.is-invalid {
-    @include form-control-state($brand-danger);
-  }
-
-  &.is-semivalid {
-    @include form-control-state($brand-warning);
-  }
 }
 
 .help-block {

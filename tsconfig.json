@@ -18,9 +18,12 @@
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "pretty": true,
+    "noErrorTruncation": true,
     "noImplicitAny": true
   },
   "include": [
+    "./scripts",
     "./common/",
     "./electron-app/",
     "./shared/",

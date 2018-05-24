@@ -4,6 +4,7 @@ import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { Validator } from 'jsonschema';
 import { JsonRpcResponse } from './nodes/rpc/types';
+import { translateRaw } from 'translations';
 import { isPositiveInteger } from 'utils/helpers';
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -11,7 +12,9 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'config/constants';
-import { dPathRegex } from 'config/dpaths';
+import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
+import { EAC_SCHEDULING_CONFIG } from './scheduling';
+import BN from 'bn.js';
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
@@ -124,14 +127,24 @@ export function isPositiveIntegerOrZero(num: number): boolean {
 }
 
 export function isValidPath(dPath: string) {
+  // ETC Ledger is incorrect up due to an extra ' at the end of it
+  if (dPath === ETC_LEDGER.value) {
+    return true;
+  }
+
+  // SingularDTV is incorrect due to using a 0 instead of a 44 as the purpose
+  if (dPath === ETH_SINGULAR.value) {
+    return true;
+  }
+
   return dPathRegex.test(dPath);
 }
 
 export const isValidValue = (value: string) =>
-  !!(value && isFinite(parseFloat(value)) && parseFloat(value) >= 0);
+  !!(value && isFinite(Number(value)) && Number(value) >= 0);
 
 export const gasLimitValidator = (gasLimit: number | string) => {
-  const gasLimitFloat = typeof gasLimit === 'string' ? parseFloat(gasLimit) : gasLimit;
+  const gasLimitFloat = typeof gasLimit === 'string' ? Number(gasLimit) : gasLimit;
   return (
     validNumber(gasLimitFloat) &&
     gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
@@ -140,12 +153,29 @@ export const gasLimitValidator = (gasLimit: number | string) => {
 };
 
 export const gasPriceValidator = (gasPrice: number | string): boolean => {
-  const gasPriceFloat = typeof gasPrice === 'string' ? parseFloat(gasPrice) : gasPrice;
+  const gasPriceFloat = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
   return (
     validNumber(gasPriceFloat) &&
     gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
     gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND
   );
+};
+
+export const timeBountyValidator = (timeBounty: BN | number | string | null): boolean => {
+  if (!timeBounty) {
+    return false;
+  }
+
+  if (timeBounty instanceof BN) {
+    return (
+      timeBounty.gte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN) &&
+      timeBounty.lte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MAX)
+    );
+  }
+
+  const timeBountyFloat = typeof timeBounty === 'string' ? Number(timeBounty) : timeBounty;
+
+  return validNumber(timeBountyFloat);
 };
 
 export const isValidByteCode = (byteCode: string) =>
@@ -276,3 +306,70 @@ export const isValidGetNetVersion = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
+
+export function isValidLabelLength(label: string, options: { allowEmpty?: boolean } = {}): boolean {
+  const meetsMinimumLengthRequirement = label.length >= 2;
+  const meetsMaximumLengthRequirement = label.length <= 50;
+  const labelOnlyContainsSpaces = !label.trim();
+
+  if (options.allowEmpty && label.length === 0) {
+    return true;
+  }
+
+  if (!options.allowEmpty && labelOnlyContainsSpaces) {
+    return false;
+  }
+
+  return meetsMinimumLengthRequirement && meetsMaximumLengthRequirement;
+}
+
+export function isLabelWithoutENS(label: string): boolean {
+  const ensTlds = ['.eth', '.test', '.reverse'];
+
+  for (const tld of ensTlds) {
+    if (label.includes(tld)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function isValidAddressLabel(
+  address: string,
+  label: string,
+  addresses: { [address: string]: string },
+  labels: { [label: string]: string }
+) {
+  const addressAlreadyExists = !!addresses[address];
+  const labelAlreadyExists = !!labels[label];
+  const result: { isValid: boolean; addressError?: string; labelError?: string } = {
+    isValid: true
+  };
+
+  if (!isValidETHAddress(address)) {
+    result.addressError = translateRaw('INVALID_ADDRESS');
+  }
+
+  if (addressAlreadyExists) {
+    result.addressError = translateRaw('ADDRESS_ALREADY_EXISTS');
+  }
+
+  if (!isValidLabelLength(label)) {
+    result.labelError = translateRaw('INVALID_LABEL_LENGTH');
+  }
+
+  if (!isLabelWithoutENS(label)) {
+    result.labelError = translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
+  }
+
+  if (labelAlreadyExists) {
+    result.labelError = translateRaw('LABEL_ALREADY_EXISTS');
+  }
+
+  if (result.addressError || result.labelError) {
+    result.isValid = false;
+  }
+
+  return result;
+}

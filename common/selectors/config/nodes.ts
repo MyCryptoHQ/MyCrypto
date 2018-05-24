@@ -111,7 +111,7 @@ export function getStaticNodeOptions(state: AppState): NodeOption[] {
       isCustom: node.isCustom,
       value: nodeId,
       label: {
-        network: node.network,
+        network: stripWeb3Network(node.network),
         service: node.service
       },
       color: associatedNetwork.color,

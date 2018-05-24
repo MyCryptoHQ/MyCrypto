@@ -43,7 +43,7 @@ export class KeystoreDecrypt extends PureComponent {
     const unlockDisabled = !file || (passReq && !password);
 
     return (
-      <form id="selectedUploadKey" onSubmit={this.unlock}>
+      <form onSubmit={this.unlock}>
         <div className="form-group">
           <input
             className="hidden"
@@ -63,9 +63,8 @@ export class KeystoreDecrypt extends PureComponent {
 
           {isWalletPending ? <Spinner /> : ''}
           <Input
-            className={`${password.length > 0 ? 'is-valid' : 'is-invalid'} ${
-              file.length && isWalletPending ? 'hidden' : ''
-            }`}
+            isValid={password.length > 0}
+            className={`${file.length && isWalletPending ? 'hidden' : ''}`}
             disabled={!file}
             value={password}
             onChange={this.onPasswordChange}

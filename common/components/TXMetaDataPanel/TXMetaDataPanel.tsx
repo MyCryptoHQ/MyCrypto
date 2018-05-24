@@ -8,9 +8,8 @@ import {
   TInputGasPriceIntent,
   getNonceRequested,
   TGetNonceRequested,
-  reset,
-  TReset,
-  ResetAction
+  resetTransactionRequested,
+  TResetTransactionRequested
 } from 'actions/transaction';
 import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'actions/rates';
 import { getNetworkConfig, getOffline } from 'selectors/config';
@@ -36,7 +35,7 @@ interface DispatchProps {
   inputGasPriceIntent: TInputGasPriceIntent;
   fetchCCRates: TFetchCCRatesRequested;
   getNonceRequested: TGetNonceRequested;
-  reset: TReset;
+  resetTransactionRequested: TResetTransactionRequested;
 }
 
 // Set default props for props that can't be truthy or falsy
@@ -45,11 +44,11 @@ interface DefaultProps {
 }
 
 interface OwnProps {
-  resetIncludeExcludeProperties?: ResetAction['payload'];
   initialState?: SliderStates;
   disableToggle?: boolean;
   advancedGasOptions?: AdvancedOptions;
   className?: string;
+  scheduling?: boolean;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
@@ -71,13 +70,13 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 
   public componentDidMount() {
     if (!this.props.offline) {
-      this.props.reset(this.props.resetIncludeExcludeProperties);
+      this.props.resetTransactionRequested();
       this.props.fetchCCRates([this.props.network.unit]);
       this.props.getNonceRequested();
     }
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (
       (this.props.offline && !nextProps.offline) ||
       this.props.network.unit !== nextProps.network.unit
@@ -90,16 +89,19 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   }
 
   public render() {
-    const { offline, disableToggle, advancedGasOptions, className = '' } = this.props;
+    const { offline, disableToggle, advancedGasOptions, className = '', scheduling } = this.props;
     const { gasPrice } = this.state;
     const showAdvanced = this.state.sliderState === 'advanced' || offline;
+
     return (
       <div className={`Gas col-md-12 ${className}`}>
+        <br />
         {showAdvanced ? (
           <AdvancedGas
             gasPrice={gasPrice}
             inputGasPrice={this.props.inputGasPrice}
             options={advancedGasOptions}
+            scheduling={scheduling}
           />
         ) : (
           <SimpleGas
@@ -152,5 +154,5 @@ export default connect(mapStateToProps, {
   inputGasPriceIntent,
   fetchCCRates: fetchCCRatesRequested,
   getNonceRequested,
-  reset
+  resetTransactionRequested
 })(TXMetaDataPanel);

@@ -66,22 +66,22 @@ module.exports = function(opts = {}) {
   }
 
   // Styles (CSS, SCSS)
+  const sassLoader = {
+    loader: 'sass-loader',
+    options: {
+      data: `$is-electron: ${options.isElectronBuild};`
+    }
+  };
+
   if (options.isProduction) {
     rules.push(
       {
         test: /\.css$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader'
-        ]
+        use: [MiniCSSExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.scss$/,
-        use: [
-          MiniCSSExtractPlugin.loader,
-          'css-loader',
-          'sass-loader'
-        ]
+        use: [MiniCSSExtractPlugin.loader, 'css-loader', sassLoader]
       }
     );
   } else {
@@ -97,7 +97,7 @@ module.exports = function(opts = {}) {
           .map(dir => path.resolve(config.path.src, dir))
           .concat([config.path.modules]),
 
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', sassLoader]
       }
     );
   }
@@ -154,9 +154,17 @@ module.exports = function(opts = {}) {
   // ====================
   const plugins = [
     new HtmlWebpackPlugin({
-      title: config.title,
       template: path.resolve(config.path.src, 'index.html'),
-      inject: true
+      inject: true,
+      title: config.title,
+      appDescription: config.description,
+      appUrl: config.url,
+      image: config.img,
+      type: config.type,
+      twitter: {
+        site: config.twitter.creator,
+        creator: config.twitter.creator
+      }
     }),
 
     new CopyWebpackPlugin([
@@ -164,6 +172,10 @@ module.exports = function(opts = {}) {
         from: config.path.static,
         // to the root of dist path
         to: './'
+      },
+      {
+        from: path.resolve(config.path.assets, 'images/link-preview.png'),
+        to: './common/assets/images'
       }
     ]),
 

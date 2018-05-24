@@ -116,6 +116,7 @@ class InteractExplorerClass extends Component<Props, State> {
                     <div className="input-group-header">{name + ' ' + type}</div>
                     <Input
                       className="InteractExplorer-func-in-input"
+                      isValid={!!(inputs[name] && inputs[name].rawData)}
                       name={name}
                       value={(inputs[name] && inputs[name].rawData) || ''}
                       onChange={this.handleInputChange}
@@ -127,7 +128,8 @@ class InteractExplorerClass extends Component<Props, State> {
             {selectedFunction.contract.outputs.map((output: any, index: number) => {
               const { type, name } = output;
               const parsedName = name === '' ? index : name;
-              const rawFieldValue = outputs[parsedName] || '';
+              const o = outputs[parsedName];
+              const rawFieldValue = o === null || o === undefined ? '' : o;
               const decodedFieldValue = Buffer.isBuffer(rawFieldValue)
                 ? bufferToHex(rawFieldValue)
                 : rawFieldValue;
@@ -137,7 +139,8 @@ class InteractExplorerClass extends Component<Props, State> {
                   <label className="input-group">
                     <div className="input-group-header"> ↳ {name + ' ' + type}</div>
                     <Input
-                      className="InteractExplorer-func-out-input "
+                      className="InteractExplorer-func-out-input"
+                      isValid={!!decodedFieldValue}
                       value={decodedFieldValue}
                       disabled={true}
                     />

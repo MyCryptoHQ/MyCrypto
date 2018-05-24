@@ -28,7 +28,8 @@ import {
   setLatestBlock,
   AddCustomNodeAction,
   ChangeNodeForceAction,
-  ChangeNodeIntentAction
+  ChangeNodeIntentAction,
+  ChangeNodeIntentOneTimeAction
 } from 'actions/config';
 import { showNotification } from 'actions/notifications';
 import { resetWallet } from 'actions/wallet';
@@ -42,7 +43,8 @@ import {
   shepherdProvider,
   stripWeb3Network,
   makeProviderConfig,
-  getShepherdNetwork
+  getShepherdNetwork,
+  getShepherdPending
 } from 'libs/nodes';
 
 export function* pollOfflineStatus(): SagaIterator {
@@ -69,8 +71,14 @@ export function* pollOfflineStatus(): SagaIterator {
   while (true) {
     yield call(delay, 2500);
 
+    const pending: ReturnType<typeof getShepherdPending> = yield call(getShepherdPending);
+    if (pending) {
+      continue;
+    }
+
     const isOffline: boolean = yield select(getOffline);
     const balancerOffline = yield call(getShepherdOffline);
+
     if (!balancerOffline && isOffline) {
       // If we were able to ping but redux says we're offline, mark online
       yield put(restoreNotif);
@@ -101,6 +109,15 @@ export function* handlePollOfflineStatus(): SagaIterator {
 // data to reload. Also the use of timeout to avoid using additional actions for now.
 export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 1150);
+}
+
+export function* handleNodeChangeIntentOneTime(): SagaIterator {
+  const action: ChangeNodeIntentOneTimeAction = yield take(
+    TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME
+  );
+  // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
+  yield call(delay, 100);
+  yield put(changeNodeIntent(action.payload));
 }
 
 export function* handleNodeChangeIntent({
@@ -143,6 +160,7 @@ export function* handleNodeChangeIntent({
     );
   }
 
+  const isOffline = yield select(getOffline);
   if (isAutoNode(nodeIdToSwitchTo)) {
     shepherd.auto();
     if (getShepherdNetwork() !== nextNodeConfig.network) {
@@ -150,19 +168,21 @@ export function* handleNodeChangeIntent({
     }
   } else {
     try {
-      yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, false]);
+      yield apply(shepherd, shepherd.manual, [nodeIdToSwitchTo, isOffline]);
     } catch (err) {
       console.error(err);
       return yield* bailOut(translateRaw('ERROR_32'));
     }
   }
 
-  let currentBlock;
+  let currentBlock = '???';
   try {
     currentBlock = yield apply(shepherdProvider, shepherdProvider.getCurrentBlock);
   } catch (err) {
-    console.error(err);
-    return yield* bailOut(translateRaw('ERROR_32'));
+    if (!isOffline) {
+      console.error(err);
+      return yield* bailOut(translateRaw('ERROR_32'));
+    }
   }
 
   yield put(setLatestBlock(currentBlock));
@@ -210,6 +230,7 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
 }
 
 export const node = [
+  fork(handleNodeChangeIntentOneTime),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
   takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
   takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),

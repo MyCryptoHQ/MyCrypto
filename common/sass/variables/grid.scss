@@ -1,12 +1,22 @@
-$screen-xs: 32rem;
+// In electron, we have a sidebar besides the content, so the media queries
+// need to shrink to reflect that
+$screen-xs: 512px;
+$screen-sm: 820px;
+$screen-md: 1060px;
+$screen-lg: 1280px;
+$screen-xl: 1440px;
+@if ($is-electron) {
+  $screen-xs: $screen-xs + $electron-sidebar-width;
+  $screen-sm: $screen-sm + $electron-sidebar-width;
+  $screen-md: $screen-md + $electron-sidebar-width;
+  $screen-lg: $screen-lg + $electron-sidebar-width;
+  $screen-xl: $screen-xl + $electron-sidebar-width;
+}
+
 $screen-xs-min: $screen-xs;
-$screen-sm: 51.2rem;
 $screen-sm-min: $screen-sm;
-$screen-md: 66.133333333rem;
 $screen-md-min: $screen-md;
-$screen-lg: 80rem;
 $screen-lg-min: $screen-lg;
-$screen-xl: 94rem;
 $screen-xl-min: $screen-xl;
 $screen-xs-max: ($screen-sm-min - 1);
 $screen-sm-max: ($screen-md-min - 1);
