@@ -8,7 +8,16 @@ import { GenerateTransaction } from 'components/GenerateTransaction';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { Fields } from './components';
-import { setDataField, TSetDataField } from 'actions/transaction';
+import {
+  setDataField,
+  resetTransactionRequested,
+  TSetDataField,
+  TResetTransactionRequested,
+  TSetAsContractInteraction,
+  TSetAsViewAndSend,
+  setAsContractInteraction,
+  setAsViewAndSend
+} from 'actions/transaction';
 import { Data } from 'libs/units';
 import { Input, Dropdown } from 'components/ui';
 import { INode } from 'libs/nodes';
@@ -23,6 +32,9 @@ interface StateProps {
 interface DispatchProps {
   showNotification: TShowNotification;
   setDataField: TSetDataField;
+  resetTransactionRequested: TResetTransactionRequested;
+  setAsContractInteraction: TSetAsContractInteraction;
+  setAsViewAndSend: TSetAsViewAndSend;
 }
 
 interface OwnProps {
@@ -63,6 +75,15 @@ class InteractExplorerClass extends Component<Props, State> {
     inputs: {},
     outputs: {}
   };
+
+  public componentDidMount() {
+    this.props.setAsContractInteraction();
+    this.props.resetTransactionRequested();
+  }
+
+  public componentWillUnmount() {
+    this.props.setAsViewAndSend();
+  }
 
   public render() {
     const { inputs, outputs, selectedFunction } = this.state;
@@ -296,5 +317,11 @@ export const InteractExplorer = connect(
     to: getTo(state),
     dataExists: getDataExists(state)
   }),
-  { showNotification, setDataField }
+  {
+    showNotification,
+    setDataField,
+    resetTransactionRequested,
+    setAsContractInteraction,
+    setAsViewAndSend
+  }
 )(InteractExplorerClass);
