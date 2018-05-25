@@ -184,6 +184,20 @@ export const INITIAL_STATE: StaticNodesState = {
     service: 'ellaism.org',
     lib: shepherdProvider,
     estimateGas: true
+  },
+  etsc_auto: {
+    network: 'ETSC',
+    isCustom: false,
+    service: 'AUTO',
+    lib: shepherdProvider,
+    estimateGas: true
+  },
+  etsc: {
+    network: 'ETSC',
+    isCustom: false,
+    service: 'ethereumsocial.kr',
+    lib: shepherdProvider,
+    estimateGas: true
   }
 };
 

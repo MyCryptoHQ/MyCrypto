@@ -58,6 +58,11 @@ export const ETH_SINGULAR: DPath = {
   value: "m/0'/0'/0'"
 };
 
+export const ETSC_DEFAULT: DPath = {
+  label: 'Default (ETSC)',
+  value: "m/44'/1128'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -69,7 +74,8 @@ export const DPaths: DPath[] = [
   UBQ_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  ELLA_DEFAULT
+  ELLA_DEFAULT,
+  ETSC_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
