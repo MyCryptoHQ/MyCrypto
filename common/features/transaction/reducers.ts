@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import network, { NetworkState } from './network/reducers';
-import fields, { FieldsState } from './fields/reducers';
-import meta, { MetaState } from './meta/reducers';
-import sign, { SignState } from './sign/reducers';
-import broadcast, { BroadcastState } from './broadcast/reducers';
+import network, { NetworkState } from './network/reducer';
+import fields, { FieldsState } from './fields/reducer';
+import meta, { MetaState } from './meta/reducer';
+import sign, { SignState } from './sign/reducer';
+import broadcast, { BroadcastState } from './broadcast/reducer';
 
 export const transaction = combineReducers({
   fields,

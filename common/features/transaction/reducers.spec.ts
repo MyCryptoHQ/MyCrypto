@@ -30,11 +30,11 @@ import {
   setTokenValue,
   getFromSucceeded
 } from './actions';
-import network, { NetworkState } from './network/reducers';
-import broadcast, { BROADCAST_INITIAL_STATE } from './broadcast/reducers';
-import fields, { FieldsState } from './fields/reducers';
-import meta, { MetaState } from './meta/reducers';
-import sign, { SignState } from './sign/reducers';
+import network, { NetworkState } from './network/reducer';
+import broadcast, { BROADCAST_INITIAL_STATE } from './broadcast/reducer';
+import fields, { FieldsState } from './fields/reducer';
+import meta, { MetaState } from './meta/reducer';
+import sign, { SignState } from './sign/reducer';
 
 describe('transaction: Reducers', () => {
   describe('Broadcast', () => {

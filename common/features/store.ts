@@ -13,7 +13,7 @@ import sagas from './sagas';
 import {
   INITIAL_STATE as transactionInitialState,
   State as TransactionState
-} from './transaction/derivedReducers';
+} from './transaction/reducers';
 import { SwapState, INITIAL_STATE as initialSwapState } from './swap';
 import { AddressBookState, INITIAL_STATE as initialAddressBookState } from './addressBook';
 import { INITIAL_STATE as initialTransactionsState, TransactionsState } from './transactions';

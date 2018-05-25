@@ -22,7 +22,7 @@ import { isSchedulingEnabled } from 'features/schedule';
 import { getGasLimit, getGasPrice, getUnit } from 'features/transaction/selectors';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
-import { StateSerializedTx } from './sign/reducers';
+import { StateSerializedTx } from './sign/reducer';
 import {
   TypeKeys,
   BroadcastRequestedAction,

@@ -10,7 +10,7 @@ import { customTokensReducer, CustomTokensState } from './customTokens';
 import { ratesReducer, RatesState } from './rates';
 import { deterministicWalletsReducer, DeterministicWalletsState } from './deterministicWallets';
 import { swapReducer, SwapState } from './swap';
-import transaction, { State as TransactionState } from './transaction/derivedReducers';
+import transaction, { State as TransactionState } from './transaction/reducers';
 import { transactionsReducer, TransactionsState } from './transactions';
 import { messageReducer, MessageState } from './message';
 import { paritySignerReducer, ParitySignerState } from './paritySigner';
