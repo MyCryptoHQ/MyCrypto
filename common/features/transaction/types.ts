@@ -83,16 +83,9 @@ export interface ITransactionStatus {
   broadcastSuccessful: boolean;
 }
 
-export interface BroadcastState {
-  [indexingHash: string]: ITransactionStatus | null;
-}
 export type BroadcastRequestedAction =
   | BroadcastWeb3TransactionRequestedAction
   | BroadcastLocalTransactionRequestedAction;
-
-export type StateSerializedTx =
-  | SignState['local']['signedTransaction']
-  | SignState['web3']['transaction'];
 
 export interface ISerializedTxAndIndexingHash {
   serializedTransaction: Buffer;
@@ -194,14 +187,6 @@ export type FieldAction =
   | SetValueFieldAction
   | SetGasPriceFieldAction;
 
-export interface FieldsState {
-  to: SetToFieldAction['payload'];
-  data: SetDataFieldAction['payload'];
-  nonce: SetNonceFieldAction['payload'];
-  value: { raw: string; value: Wei | null }; // TODO: fix this workaround since some of the payload is optional
-  gasLimit: SetGasLimitFieldAction['payload'];
-  gasPrice: { raw: string; value: Wei };
-}
 //#endregion Fields
 
 //#region Meta
@@ -241,16 +226,6 @@ export type TransactionMetaAction =
 export type TransactionTypeMetaAction = SetAsContractInteractionAction | SetAsViewAndSendAction;
 
 export type MetaAction = TransactionMetaAction | TransactionTypeMetaAction;
-
-export interface MetaState {
-  unit: SetUnitMetaAction['payload'];
-  previousUnit: SetUnitMetaAction['payload'];
-  decimal: number;
-  tokenValue: { raw: string; value: TokenValue | null }; // TODO: fix this workaround since some of the payload is optional
-  tokenTo: SetTokenToMetaAction['payload'];
-  from: GetFromSucceededAction['payload'] | null;
-  isContractInteraction: boolean;
-}
 //#endregion Meta
 
 //#region Network
@@ -306,12 +281,6 @@ export enum RequestStatus {
   FAILED = 'FAIL',
   TIMEDOUT = 'TIMEDOUT'
 }
-export interface NetworkState {
-  gasEstimationStatus: RequestStatus | null;
-  getFromStatus: RequestStatus | null;
-  getNonceStatus: RequestStatus | null;
-  gasPriceStatus: RequestStatus | null;
-}
 //#endregion Network
 
 //#region Send Everything
@@ -354,17 +323,6 @@ export type SignAction =
   | SignLocalTransactionSucceededAction
   | SignWeb3TransactionSucceededAction
   | SignTransactionFailedAction;
-
-export interface SignState {
-  indexingHash: string | null;
-  pending: boolean;
-  local: {
-    signedTransaction: Buffer | null;
-  };
-  web3: {
-    transaction: Buffer | null;
-  };
-}
 
 export interface SerializedTxParams extends IHexStrTransaction {
   unit: string;

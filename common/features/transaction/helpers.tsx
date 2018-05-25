@@ -23,10 +23,10 @@ import { isSchedulingEnabled } from 'features/schedule/selectors';
 import { getGasLimit, getGasPrice, getUnit } from 'features/transaction/selectors';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
 import { showNotification } from 'features/notifications/actions';
+import { StateSerializedTx } from './sign/reducers';
 import {
   TypeKeys,
   BroadcastRequestedAction,
-  StateSerializedTx,
   ISerializedTxAndIndexingHash,
   ITransactionStatus,
   GetFromFailedAction,

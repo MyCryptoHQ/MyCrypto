@@ -5,17 +5,13 @@ import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
   TypeKeys,
   ITransactionStatus,
-  FieldsState,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   ResetTransactionSuccessfulAction,
-  MetaState,
   SetUnitMetaAction,
-  NetworkState,
   NetworkAction,
   InputGasPriceAction,
-  SignState,
   SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction
@@ -34,7 +30,11 @@ import {
   setTokenValue,
   getFromSucceeded
 } from './actions';
-import { broadcast, BROADCAST_INITIAL_STATE, fields, meta, network, sign } from './reducers';
+import network, { NetworkState } from './network/reducers';
+import broadcast, { BROADCAST_INITIAL_STATE } from './broadcast/reducers';
+import fields, { FieldsState } from './fields/reducers';
+import meta, { MetaState } from './meta/reducers';
+import sign, { SignState } from './sign/reducers';
 
 describe('transaction: Reducers', () => {
   describe('Broadcast', () => {

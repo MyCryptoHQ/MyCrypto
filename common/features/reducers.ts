@@ -12,7 +12,7 @@ import deterministicWallets, {
   State as DeterministicWalletsState
 } from './deterministicWallets/reducers';
 import swap, { State as SwapState } from './swap/reducers';
-import transaction, { State as TransactionState } from './transaction/reducers';
+import transaction, { State as TransactionState } from './transaction/derivedReducers';
 import transactions, { State as TransactionsState } from './transactions/reducers';
 import message, { State as MessageState } from './message/reducers';
 import paritySigner, { State as ParitySignerState } from './paritySigner/reducers';
