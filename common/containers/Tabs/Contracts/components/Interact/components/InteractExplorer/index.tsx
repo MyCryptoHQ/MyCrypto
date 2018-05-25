@@ -109,18 +109,36 @@ class InteractExplorerClass extends Component<Props, State> {
             {/* TODO: Use reusable components with validation */}
             {selectedFunction.contract.inputs.map(input => {
               const { type, name } = input;
-
+              const inputState = this.state.inputs[name];
               return (
                 <div key={name} className="input-group-wrapper InteractExplorer-func-in">
                   <label className="input-group">
                     <div className="input-group-header">{name + ' ' + type}</div>
-                    <Input
-                      className="InteractExplorer-func-in-input"
-                      isValid={!!(inputs[name] && inputs[name].rawData)}
-                      name={name}
-                      value={(inputs[name] && inputs[name].rawData) || ''}
-                      onChange={this.handleInputChange}
-                    />
+                    {type === 'bool' ? (
+                      <Dropdown
+                        options={[{ value: false, label: 'false' }, { value: true, label: 'true' }]}
+                        value={
+                          inputState
+                            ? {
+                                label: inputState.rawData,
+                                value: inputState.parsedData as any
+                              }
+                            : undefined
+                        }
+                        clearable={false}
+                        onChange={({ value }: { value: boolean }) => {
+                          this.handleBooleanDropdownChange({ value, name });
+                        }}
+                      />
+                    ) : (
+                      <Input
+                        className="InteractExplorer-func-in-input"
+                        isValid={!!(inputs[name] && inputs[name].rawData)}
+                        name={name}
+                        value={(inputs[name] && inputs[name].rawData) || ''}
+                        onChange={this.handleInputChange}
+                      />
+                    )}
                   </label>
                 </div>
               );
@@ -244,6 +262,17 @@ class InteractExplorerClass extends Component<Props, State> {
     }
   }
 
+  private handleBooleanDropdownChange = ({ value, name }: { value: boolean; name: string }) => {
+    this.setState({
+      inputs: {
+        ...this.state.inputs,
+        [name as any]: {
+          rawData: value.toString(),
+          parsedData: value
+        }
+      }
+    });
+  };
   private handleInputChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const rawValue: string = ev.currentTarget.value;
     const isArr = rawValue.startsWith('[') && rawValue.endsWith(']');

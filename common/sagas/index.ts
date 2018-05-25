@@ -12,6 +12,7 @@ import { message } from './message';
 import transactions from './transactions';
 import gas from './gas';
 import { schedule } from './schedule';
+import addressBook from './addressBook';
 
 export default {
   ens,
@@ -27,5 +28,6 @@ export default {
   rates,
   transactions,
   gas,
-  schedule
+  schedule,
+  addressBook
 };
