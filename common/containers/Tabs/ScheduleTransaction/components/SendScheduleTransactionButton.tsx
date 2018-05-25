@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getScheduleParamsValidity } from 'features/schedule/selectors';
+import { getScheduleParamsValidity } from 'features/schedule';
 import { SendScheduleTransactionButtonFactory } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButtonFactory';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { SigningStatus } from 'components';

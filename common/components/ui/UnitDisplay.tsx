@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
+import { getOffline } from 'features/config';
 import Spinner from 'components/ui/Spinner';
 
 interface Props {

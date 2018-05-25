@@ -1,11 +1,10 @@
 import uniqBy from 'lodash/uniqBy';
-
 import { EXTRA_PATHS } from 'config/dpaths';
 import { stripWeb3Network } from 'libs/nodes';
 import { StaticNetworkIds } from 'types/network';
 import { AppState } from 'features/reducers';
 import { PathType } from '../../types';
-import { getNetworks } from '../derivedSelectors';
+import { getNetworks } from '../selectors';
 
 export function getStaticNetworkConfigs(state: AppState) {
   return getNetworks(state).staticNetworks;

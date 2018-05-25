@@ -7,7 +7,7 @@ import {
   getCurrentTimeBounty,
   ICurrentTimeBounty,
   isValidCurrentTimeBounty
-} from 'features/schedule/selectors';
+} from 'features/schedule';
 import { CallbackProps } from 'containers/Tabs/ScheduleTransaction/components/Fields/TimeBounty/TimeBountyFieldFactory';
 
 interface StateProps {

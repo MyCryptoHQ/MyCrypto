@@ -1,5 +1,4 @@
-import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from 'features/addressBook/constants';
-import { State as AddressBookState } from 'features/addressBook/reducers';
+import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID, AddressBookState } from 'features/addressBook';
 
 export default function fixAddressBookErrors(addressBook: AddressBookState | undefined) {
   if (!addressBook) {

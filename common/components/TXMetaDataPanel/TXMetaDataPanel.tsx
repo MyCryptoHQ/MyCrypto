@@ -6,8 +6,7 @@ import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
+import { getOffline, getNetworkConfig } from 'features/config';
 import {
   inputGasPrice,
   TInputGasPrice,
@@ -19,7 +18,7 @@ import {
   TResetTransactionRequested
 } from 'features/transaction/actions';
 import { getGasPrice } from 'features/transaction/selectors';
-import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'features/rates/actions';
+import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'features/rates';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import SimpleGas from './components/SimpleGas';
 import './TXMetaDataPanel.scss';

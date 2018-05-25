@@ -1,5 +1,5 @@
 import {
-  TypeKeys,
+  TRANSACTIONS,
   FetchTransactionDataAction,
   SetTransactionDataAction,
   ResetTransactionDataAction,
@@ -9,7 +9,7 @@ import {
 export type TFetchTransactionData = typeof fetchTransactionData;
 export function fetchTransactionData(txhash: string): FetchTransactionDataAction {
   return {
-    type: TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA,
+    type: TRANSACTIONS.FETCH_TRANSACTION_DATA,
     payload: txhash
   };
 }
@@ -19,14 +19,14 @@ export function setTransactionData(
   payload: SetTransactionDataAction['payload']
 ): SetTransactionDataAction {
   return {
-    type: TypeKeys.TRANSACTIONS_SET_TRANSACTION_DATA,
+    type: TRANSACTIONS.SET_TRANSACTION_DATA,
     payload
   };
 }
 
 export type TResetTransactionData = typeof resetTransactionData;
 export function resetTransactionData(): ResetTransactionDataAction {
-  return { type: TypeKeys.TRANSACTIONS_RESET_TRANSACTION_DATA };
+  return { type: TRANSACTIONS.RESET_TRANSACTION_DATA };
 }
 
 export type TAddRecentTransaction = typeof addRecentTransaction;
@@ -34,7 +34,7 @@ export function addRecentTransaction(
   payload: AddRecentTransactionAction['payload']
 ): AddRecentTransactionAction {
   return {
-    type: TypeKeys.TRANSACTIONS_ADD_RECENT_TRANSACTION,
+    type: TRANSACTIONS.ADD_RECENT_TRANSACTION,
     payload
   };
 }

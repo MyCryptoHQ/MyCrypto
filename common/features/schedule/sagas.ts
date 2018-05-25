@@ -6,14 +6,13 @@ import { toTokenBase, Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
+import { getOffline, getNodeLib } from 'features/config';
 import { TypeKeys as TransactionTypeKeys } from 'features/transaction/types';
 import { getDecimal, getUnit } from 'features/transaction/selectors';
 import { setGasLimitField } from 'features/transaction/actions';
 import { validateInput } from 'features/transaction/helpers';
 import {
-  TypeKeys,
+  SCHEDULE,
   SetCurrentScheduleTimestampAction,
   SetCurrentScheduleTimezoneAction,
   SetSchedulingToggleAction,
@@ -47,7 +46,7 @@ export function* setCurrentScheduleTimestampSaga({
 }
 
 export const currentScheduleTimestamp = takeLatest(
-  [TypeKeys.CURRENT_SCHEDULE_TIMESTAMP_SET],
+  [SCHEDULE.CURRENT_SCHEDULE_TIMESTAMP_SET],
   setCurrentScheduleTimestampSaga
 );
 //#endregion Schedule Timestamp
@@ -62,7 +61,7 @@ export function* setCurrentScheduleTimezoneSaga({
 }
 
 export const currentScheduleTimezone = takeLatest(
-  [TypeKeys.CURRENT_SCHEDULE_TIMEZONE_SET],
+  [SCHEDULE.CURRENT_SCHEDULE_TIMEZONE_SET],
   setCurrentScheduleTimezoneSaga
 );
 //#endregion Schedule Timezone
@@ -84,7 +83,7 @@ export function* setGasLimitForSchedulingSaga({
 }
 
 export const currentSchedulingToggle = takeLatest(
-  [TypeKeys.SCHEDULING_TOGGLE_SET],
+  [SCHEDULE.SCHEDULING_TOGGLE_SET],
   setGasLimitForSchedulingSaga
 );
 //#endregion Scheduling Toggle
@@ -109,7 +108,7 @@ export function* setCurrentTimeBountySaga({
 }
 
 export const currentTimeBounty = takeLatest(
-  [TypeKeys.CURRENT_TIME_BOUNTY_SET],
+  [SCHEDULE.CURRENT_TIME_BOUNTY_SET],
   setCurrentTimeBountySaga
 );
 //#endregion Time Bounty
@@ -130,7 +129,7 @@ export function* setCurrentWindowSizeSaga({
 }
 
 export const currentWindowSize = takeLatest(
-  [TypeKeys.CURRENT_WINDOW_SIZE_SET],
+  [SCHEDULE.CURRENT_WINDOW_SIZE_SET],
   setCurrentWindowSizeSaga
 );
 //#endregion Window Size
@@ -147,7 +146,7 @@ export function* setCurrentWindowStartSaga({
 }
 
 export const currentWindowStart = takeLatest(
-  [TypeKeys.CURRENT_WINDOW_START_SET],
+  [SCHEDULE.CURRENT_WINDOW_START_SET],
   setCurrentWindowStartSaga
 );
 //#endregion Window Start
@@ -159,14 +158,14 @@ export function* shouldValidateParams(): SagaIterator {
       TransactionTypeKeys.TO_FIELD_SET,
       TransactionTypeKeys.DATA_FIELD_SET,
       TransactionTypeKeys.VALUE_FIELD_SET,
-      TypeKeys.CURRENT_TIME_BOUNTY_SET,
-      TypeKeys.WINDOW_SIZE_FIELD_SET,
-      TypeKeys.WINDOW_START_FIELD_SET,
-      TypeKeys.SCHEDULE_TIMESTAMP_FIELD_SET,
-      TypeKeys.TIME_BOUNTY_FIELD_SET,
-      TypeKeys.SCHEDULE_TYPE_SET,
-      TypeKeys.SCHEDULING_TOGGLE_SET,
-      TypeKeys.SCHEDULE_TIMEZONE_SET
+      SCHEDULE.CURRENT_TIME_BOUNTY_SET,
+      SCHEDULE.WINDOW_SIZE_FIELD_SET,
+      SCHEDULE.WINDOW_START_FIELD_SET,
+      SCHEDULE.SCHEDULE_TIMESTAMP_FIELD_SET,
+      SCHEDULE.TIME_BOUNTY_FIELD_SET,
+      SCHEDULE.SCHEDULE_TYPE_SET,
+      SCHEDULE.SCHEDULING_TOGGLE_SET,
+      SCHEDULE.SCHEDULE_TIMEZONE_SET
     ]);
 
     yield call(delay, 250);

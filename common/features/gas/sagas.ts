@@ -5,9 +5,8 @@ import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
-import { TypeKeys } from './types';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { GAS } from './types';
 import { setGasEstimates } from './actions';
 import { getEstimates } from './selectors';
 
@@ -66,5 +65,5 @@ export function* fetchEstimates(): SagaIterator {
 }
 
 export function* gasSaga(): SagaIterator {
-  yield takeLatest(TypeKeys.GAS_FETCH_ESTIMATES, fetchEstimates);
+  yield takeLatest(GAS.FETCH_ESTIMATES, fetchEstimates);
 }

@@ -17,12 +17,11 @@ import {
 import { validNumber, validDecimal } from 'libs/validators';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
-import { isNetworkUnit, getNetworkConfig } from 'features/config/derivedSelectors';
-import { isSchedulingEnabled } from 'features/schedule/selectors';
+import { getOffline, isNetworkUnit, getNetworkConfig } from 'features/config';
+import { isSchedulingEnabled } from 'features/schedule';
 import { getGasLimit, getGasPrice, getUnit } from 'features/transaction/selectors';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
-import { showNotification } from 'features/notifications/actions';
+import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
+import { showNotification } from 'features/notifications';
 import { StateSerializedTx } from './sign/reducers';
 import {
   TypeKeys,

@@ -14,7 +14,7 @@ import {
   getSignedTx,
   getSerializedTransaction
 } from 'features/transaction/selectors';
-import { getWalletType, IWalletType } from 'features/wallet/selectors';
+import { getWalletType, IWalletType } from 'features/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
 import { CodeBlock } from 'components/ui';
 import { WithSigner } from './Container';

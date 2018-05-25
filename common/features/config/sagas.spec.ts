@@ -8,25 +8,17 @@ import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
 import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 import { Web3Wallet } from 'libs/wallet';
 import { configuredStore } from 'features/store';
-import { showNotification } from 'features/notifications/actions';
+import { showNotification } from 'features/notifications';
 import { getOffline } from './meta/selectors';
-import { getNodeConfig } from './nodes/derivedSelectors';
+import { getNodeConfig } from './nodes';
 import { getNodeId, getPreviouslySelectedNode } from './nodes/selected/selectors';
 import { getCustomNodeFromId } from './nodes/custom/selectors';
 import { isStaticNodeId } from './nodes/static/selectors';
-import { staticNodesExpectedState } from './nodes/static/reducers.spec';
-import { selectedNodeExpectedState } from './nodes/selected/reducers.spec';
-import { TypeKeys, ChangeNodeIntentOneTimeAction } from './types';
-import {
-  changeNodeForce,
-  changeNodeIntentOneTime,
-  setOnline,
-  setOffline,
-  setLatestBlock,
-  changeNodeIntent,
-  changeNode
-} from './actions';
-import { getStaticNodeFromId } from './derivedSelectors';
+import { staticNodesExpectedState } from './nodes/static/reducer.spec';
+import { selectedNodeExpectedState } from './nodes/selected/reducer.spec';
+import { CONFIG, ChangeNodeIntentOneTimeAction } from './types';
+import { changeNodeForce, changeNodeIntentOneTime } from './actions';
+import { getStaticNodeFromId } from './selectors';
 import {
   handleNodeChangeIntent,
   handlePollOfflineStatus,
@@ -37,6 +29,8 @@ import {
   unsetWeb3NodeOnWalletEvent,
   handleNodeChangeForce
 } from './sagas';
+import { changeNode, changeNodeIntent } from './nodes/selected/actions';
+import { setOffline, setOnline, setLatestBlock } from './meta/actions';
 
 // init module
 configuredStore.getState();
@@ -321,7 +315,7 @@ describe('handleNodeChangeIntentOneTime', () => {
   const saga = handleNodeChangeIntentOneTime();
   const action: ChangeNodeIntentOneTimeAction = changeNodeIntentOneTime('eth_auto');
   it('should take a one time action based on the url containing a valid network to switch to', () => {
-    expect(saga.next().value).toEqual(take(TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME));
+    expect(saga.next().value).toEqual(take(CONFIG.NODE_CHANGE_INTENT_ONETIME));
   });
   it(`should delay for 10 ms to allow shepherdProvider async init to complete`, () => {
     expect(saga.next(action).value).toEqual(call(delay, 100));

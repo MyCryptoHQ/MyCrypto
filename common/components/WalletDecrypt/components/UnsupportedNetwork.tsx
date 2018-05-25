@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
+import { getNetworkConfig } from 'features/config';
 
 interface StateProps {
   network: NetworkConfig;

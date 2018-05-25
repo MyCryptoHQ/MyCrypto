@@ -1,6 +1,6 @@
 import { ISignedMessage } from 'libs/signing';
 import {
-  TypeKeys,
+  MESSAGE,
   SignMessageRequestedAction,
   SignLocalMessageSucceededAction,
   SignMessageFailedAction
@@ -9,7 +9,7 @@ import {
 export type TSignMessageRequested = typeof signMessageRequested;
 export function signMessageRequested(payload: string): SignMessageRequestedAction {
   return {
-    type: TypeKeys.SIGN_MESSAGE_REQUESTED,
+    type: MESSAGE.SIGN_REQUESTED,
     payload
   };
 }
@@ -19,7 +19,7 @@ export function signLocalMessageSucceeded(
   payload: ISignedMessage
 ): SignLocalMessageSucceededAction {
   return {
-    type: TypeKeys.SIGN_LOCAL_MESSAGE_SUCCEEDED,
+    type: MESSAGE.SIGN_LOCAL_SUCCEEDED,
     payload
   };
 }
@@ -27,6 +27,6 @@ export function signLocalMessageSucceeded(
 export type TSignMessageFailed = typeof signMessageFailed;
 export function signMessageFailed(): SignMessageFailedAction {
   return {
-    type: TypeKeys.SIGN_MESSAGE_FAILED
+    type: MESSAGE.SIGN_FAILED
   };
 }

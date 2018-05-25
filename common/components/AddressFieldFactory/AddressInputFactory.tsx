@@ -12,9 +12,9 @@ import {
   isValidCurrentTo,
   isCurrentToLabelEntry
 } from 'features/transaction/selectors';
-import { getCurrentToLabel } from 'features/addressBook/selectors';
-import { getWalletInst } from 'features/wallet/selectors';
-import { getResolvingDomain } from 'features/ens/derivedSelectors';
+import { getCurrentToLabel } from 'features/addressBook';
+import { getWalletInst } from 'features/wallet';
+import { getResolvingDomain } from 'features/ens';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';

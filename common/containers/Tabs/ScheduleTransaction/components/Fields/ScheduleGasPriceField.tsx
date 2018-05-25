@@ -4,8 +4,12 @@ import { connect } from 'react-redux';
 import { AppState } from 'features/reducers';
 import { translateRaw } from 'translations';
 import { gasPriceToBase } from 'libs/units';
-import { setScheduleGasPriceField, TSetScheduleGasPriceField } from 'features/schedule/actions';
-import { getScheduleGasPrice, isValidScheduleGasPrice } from 'features/schedule/selectors';
+import {
+  setScheduleGasPriceField,
+  TSetScheduleGasPriceField,
+  getScheduleGasPrice,
+  isValidScheduleGasPrice
+} from 'features/schedule';
 import { Input } from 'components/ui';
 
 interface OwnProps {

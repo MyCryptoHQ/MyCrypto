@@ -1,5 +1,5 @@
 import {
-  TypeKeys,
+  DETERMINISTIC_WALLETS,
   GetDeterministicWalletsArgs,
   GetDeterministicWalletsAction,
   DeterministicWalletData,
@@ -14,7 +14,7 @@ export function getDeterministicWallets(
 ): GetDeterministicWalletsAction {
   const { seed, dPath, publicKey, chainCode, limit, offset } = args;
   return {
-    type: TypeKeys.DW_GET_WALLETS,
+    type: DETERMINISTIC_WALLETS.GET,
     payload: {
       seed,
       dPath,
@@ -30,14 +30,14 @@ export function setDeterministicWallets(
   wallets: DeterministicWalletData[]
 ): SetDeterministicWalletsAction {
   return {
-    type: TypeKeys.DW_SET_WALLETS,
+    type: DETERMINISTIC_WALLETS.SET,
     payload: wallets
   };
 }
 
 export function setDesiredToken(token: string | undefined): SetDesiredTokenAction {
   return {
-    type: TypeKeys.DW_SET_DESIRED_TOKEN,
+    type: DETERMINISTIC_WALLETS.SET_DESIRED_TOKEN,
     payload: token
   };
 }
@@ -46,7 +46,7 @@ export function updateDeterministicWallet(
   args: UpdateDeterministicWalletArgs
 ): UpdateDeterministicWalletAction {
   return {
-    type: TypeKeys.DW_UPDATE_WALLET,
+    type: DETERMINISTIC_WALLETS.UPDATE_WALLET,
     payload: args
   };
 }

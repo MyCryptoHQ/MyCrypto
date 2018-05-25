@@ -6,12 +6,13 @@ import moment from 'moment';
 import { AppState } from 'features/reducers';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import translate from 'translations';
-import { setCurrentScheduleTimestamp, TSetCurrentScheduleTimestamp } from 'features/schedule/actions';
 import {
+  setCurrentScheduleTimestamp,
+  TSetCurrentScheduleTimestamp,
   getCurrentScheduleTimestamp,
   ICurrentScheduleTimestamp,
   isValidCurrentScheduleTimestamp
-} from 'features/schedule/selectors';
+} from 'features/schedule';
 
 interface DispatchProps {
   setCurrentScheduleTimestamp: TSetCurrentScheduleTimestamp;

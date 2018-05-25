@@ -8,7 +8,7 @@ import translate, { translateRaw } from 'translations';
 import { NetworkContract } from 'types/network';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { getNetworkContracts } from 'features/config/derivedSelectors';
+import { getNetworkContracts } from 'features/config';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { getCurrentTo } from 'features/transaction/selectors';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';

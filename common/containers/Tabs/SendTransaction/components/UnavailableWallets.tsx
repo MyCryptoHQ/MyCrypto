@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { isAnyOfflineWithWeb3 } from 'features/derivedSelectors';
+import { isAnyOfflineWithWeb3 } from 'features/selectors';
 import { OnlyUnlocked } from 'components/renderCbs';
 
 interface StateProps {

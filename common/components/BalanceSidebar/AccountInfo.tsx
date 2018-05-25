@@ -6,10 +6,13 @@ import { etherChainExplorerInst } from 'config/data';
 import translate from 'translations';
 import { IWallet, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
-import { TRefreshAccountBalance, refreshAccountBalance } from 'features/wallet/actions';
-import { getEtherBalance, isEtherBalancePending } from 'features/wallet/selectors';
+import { getOffline, getNetworkConfig } from 'features/config';
+import {
+  TRefreshAccountBalance,
+  refreshAccountBalance,
+  getEtherBalance,
+  isEtherBalancePending
+} from 'features/wallet';
 import { UnitDisplay, NewTabLink } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
 import AccountAddress from './AccountAddress';

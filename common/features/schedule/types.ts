@@ -1,6 +1,20 @@
 import { Wei } from 'libs/units';
 
-export enum TypeKeys {
+export interface ScheduleState {
+  schedulingToggle: SetSchedulingToggleAction['payload'];
+  timeBounty: SetTimeBountyFieldAction['payload'];
+  windowSize: SetWindowSizeFieldAction['payload'];
+  windowStart: SetWindowStartFieldAction['payload'];
+  scheduleTimestamp: SetScheduleTimestampFieldAction['payload'];
+  scheduleTimezone: SetScheduleTimezoneAction['payload'];
+  scheduleType: SetScheduleTypeAction['payload'];
+  scheduleGasLimit: SetScheduleGasLimitFieldAction['payload'];
+  scheduleGasPrice: SetScheduleGasPriceFieldAction['payload'];
+  scheduleDeposit: SetScheduleDepositFieldAction['payload'];
+  scheduleParamsValidity: SetScheduleParamsValidityAction['payload'];
+}
+
+export enum SCHEDULE {
   CURRENT_TIME_BOUNTY_SET = 'CURRENT_TIME_BOUNTY_SET',
   CURRENT_WINDOW_SIZE_SET = 'CURRENT_WINDOW_SIZE_SET',
   CURRENT_WINDOW_START_SET = 'CURRENT_WINDOW_START_SET',
@@ -23,7 +37,7 @@ export enum TypeKeys {
 
 //#region Fields
 export interface SetTimeBountyFieldAction {
-  type: TypeKeys.TIME_BOUNTY_FIELD_SET;
+  type: SCHEDULE.TIME_BOUNTY_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -31,7 +45,7 @@ export interface SetTimeBountyFieldAction {
 }
 
 export interface SetWindowSizeFieldAction {
-  type: TypeKeys.WINDOW_SIZE_FIELD_SET;
+  type: SCHEDULE.WINDOW_SIZE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -39,7 +53,7 @@ export interface SetWindowSizeFieldAction {
 }
 
 export interface SetWindowStartFieldAction {
-  type: TypeKeys.WINDOW_START_FIELD_SET;
+  type: SCHEDULE.WINDOW_START_FIELD_SET;
   payload: {
     raw: string;
     value: number | null;
@@ -47,7 +61,7 @@ export interface SetWindowStartFieldAction {
 }
 
 export interface SetScheduleTimestampFieldAction {
-  type: TypeKeys.SCHEDULE_TIMESTAMP_FIELD_SET;
+  type: SCHEDULE.SCHEDULE_TIMESTAMP_FIELD_SET;
   payload: {
     raw: string;
     value: Date;
@@ -55,7 +69,7 @@ export interface SetScheduleTimestampFieldAction {
 }
 
 export interface SetScheduleTypeAction {
-  type: TypeKeys.SCHEDULE_TYPE_SET;
+  type: SCHEDULE.SCHEDULE_TYPE_SET;
   payload: {
     raw: string;
     value: string | null;
@@ -63,14 +77,14 @@ export interface SetScheduleTypeAction {
 }
 
 export interface SetSchedulingToggleAction {
-  type: TypeKeys.SCHEDULING_TOGGLE_SET;
+  type: SCHEDULE.SCHEDULING_TOGGLE_SET;
   payload: {
     value: boolean;
   };
 }
 
 export interface SetScheduleTimezoneAction {
-  type: TypeKeys.SCHEDULE_TIMEZONE_SET;
+  type: SCHEDULE.SCHEDULE_TIMEZONE_SET;
   payload: {
     raw: string;
     value: string;
@@ -78,7 +92,7 @@ export interface SetScheduleTimezoneAction {
 }
 
 export interface SetScheduleGasPriceFieldAction {
-  type: TypeKeys.SCHEDULE_GAS_PRICE_FIELD_SET;
+  type: SCHEDULE.SCHEDULE_GAS_PRICE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -86,7 +100,7 @@ export interface SetScheduleGasPriceFieldAction {
 }
 
 export interface SetScheduleGasLimitFieldAction {
-  type: TypeKeys.SCHEDULE_GAS_LIMIT_FIELD_SET;
+  type: SCHEDULE.SCHEDULE_GAS_LIMIT_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -94,7 +108,7 @@ export interface SetScheduleGasLimitFieldAction {
 }
 
 export interface SetScheduleDepositFieldAction {
-  type: TypeKeys.SCHEDULE_DEPOSIT_FIELD_SET;
+  type: SCHEDULE.SCHEDULE_DEPOSIT_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -102,7 +116,7 @@ export interface SetScheduleDepositFieldAction {
 }
 
 export interface SetScheduleParamsValidityAction {
-  type: TypeKeys.SCHEDULE_PARAMS_VALIDITY_SET;
+  type: SCHEDULE.SCHEDULE_PARAMS_VALIDITY_SET;
   payload: {
     value: boolean;
   };
@@ -124,21 +138,21 @@ export type ScheduleFieldAction =
 
 //#region Schedule Timestamp
 export interface SetCurrentScheduleTimestampAction {
-  type: TypeKeys.CURRENT_SCHEDULE_TIMESTAMP_SET;
+  type: SCHEDULE.CURRENT_SCHEDULE_TIMESTAMP_SET;
   payload: string;
 }
 
 export type ScheduleTimestampCurrentAction = SetCurrentScheduleTimestampAction;
 
 export interface SetCurrentScheduleTimezoneAction {
-  type: TypeKeys.CURRENT_SCHEDULE_TIMEZONE_SET;
+  type: SCHEDULE.CURRENT_SCHEDULE_TIMEZONE_SET;
   payload: string;
 }
 //#endregion Schedule Timestamp
 
 //#region Schedule Type
 export interface SetCurrentScheduleTypeAction {
-  type: TypeKeys.CURRENT_SCHEDULE_TYPE;
+  type: SCHEDULE.CURRENT_SCHEDULE_TYPE;
   payload: string;
 }
 
@@ -147,7 +161,7 @@ export type ScheduleTypeCurrentAction = SetCurrentScheduleTypeAction;
 
 //#region Schedule Toggle
 export interface SetCurrentSchedulingToggleAction {
-  type: TypeKeys.CURRENT_SCHEDULING_TOGGLE;
+  type: SCHEDULE.CURRENT_SCHEDULING_TOGGLE;
   payload: string;
 }
 
@@ -156,7 +170,7 @@ export type SchedulingToggleCurrentAction = SetCurrentSchedulingToggleAction;
 
 //#region Time Bounty
 export interface SetCurrentTimeBountyAction {
-  type: TypeKeys.CURRENT_TIME_BOUNTY_SET;
+  type: SCHEDULE.CURRENT_TIME_BOUNTY_SET;
   payload: string;
 }
 
@@ -165,7 +179,7 @@ export type TimeBountyCurrentAction = SetCurrentTimeBountyAction;
 
 //#region Window Size
 export interface SetCurrentWindowSizeAction {
-  type: TypeKeys.CURRENT_WINDOW_SIZE_SET;
+  type: SCHEDULE.CURRENT_WINDOW_SIZE_SET;
   payload: string;
 }
 
@@ -174,7 +188,7 @@ export type WindowSizeCurrentAction = SetCurrentWindowSizeAction;
 
 //#region Window Size
 export interface SetCurrentWindowStartAction {
-  type: TypeKeys.CURRENT_WINDOW_START_SET;
+  type: SCHEDULE.CURRENT_WINDOW_START_SET;
   payload: string;
 }
 

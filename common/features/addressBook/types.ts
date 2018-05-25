@@ -1,11 +1,23 @@
-export enum TypeKeys {
-  SET_ADDRESS_LABEL = 'SET_ADDRESS_LABEL',
-  CLEAR_ADDRESS_LABEL = 'CLEAR_ADDRESS_LABEL',
-  SET_ADDRESS_LABEL_ENTRY = 'SET_ADDRESS_LABEL_TEMPORARY_ENTRY',
-  CHANGE_ADDRESS_LABEL_ENTRY = 'CHANGE_ADDRESS_LABEL_ENTRY',
-  SAVE_ADDRESS_LABEL_ENTRY = 'SAVE_ADDRESS_LABEL_ENTRY',
-  CLEAR_ADDRESS_LABEL_ENTRY = 'CLEAR_ADDRESS_LABEL_ENTRY',
-  REMOVE_ADDRESS_LABEL_ENTRY = 'REMOVE_ADDRESS_LABEL_ENTRY'
+export interface AddressBookState {
+  addresses: {
+    [address: string]: string;
+  };
+  labels: {
+    [labels: string]: string;
+  };
+  entries: {
+    [id: string]: AddressLabelEntry;
+  };
+}
+
+export enum ADDRESS_BOOK {
+  SET_LABEL = 'ADDRESS_BOOK_SET_LABEL',
+  CLEAR_LABEL = 'ADDRESS_BOOK_CLEAR_LABEL',
+  SET_LABEL_ENTRY = 'ADDRESS_BOOK_SET_LABEL_TEMPORARY_ENTRY',
+  CHANGE_LABEL_ENTRY = 'ADDRESS_BOOK_CHANGE_LABEL_ENTRY',
+  SAVE_LABEL_ENTRY = 'ADDRESS_BOOK_SAVE_LABEL_ENTRY',
+  CLEAR_LABEL_ENTRY = 'ADDRESS_BOOK_CLEAR_LABEL_ENTRY',
+  REMOVE_LABEL_ENTRY = 'ADDRESS_BOOK_REMOVE_LABEL_ENTRY'
 }
 
 export interface AddressLabel {
@@ -24,37 +36,37 @@ export interface AddressLabelEntry extends AddressLabel {
 }
 
 export interface SetAddressLabel {
-  type: TypeKeys.SET_ADDRESS_LABEL;
+  type: ADDRESS_BOOK.SET_LABEL;
   payload: AddressLabel;
 }
 
 export interface ClearAddressLabel {
-  type: TypeKeys.CLEAR_ADDRESS_LABEL;
+  type: ADDRESS_BOOK.CLEAR_LABEL;
   payload: string;
 }
 
 export interface SetAddressLabelEntry {
-  type: TypeKeys.SET_ADDRESS_LABEL_ENTRY;
+  type: ADDRESS_BOOK.SET_LABEL_ENTRY;
   payload: AddressLabelEntry;
 }
 
 export interface ChangeAddressLabelEntry {
-  type: TypeKeys.CHANGE_ADDRESS_LABEL_ENTRY;
+  type: ADDRESS_BOOK.CHANGE_LABEL_ENTRY;
   payload: AddressLabelEntry;
 }
 
 export interface SaveAddressLabelEntry {
-  type: TypeKeys.SAVE_ADDRESS_LABEL_ENTRY;
+  type: ADDRESS_BOOK.SAVE_LABEL_ENTRY;
   payload: string;
 }
 
 export interface ClearAddressLabelEntry {
-  type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY;
+  type: ADDRESS_BOOK.CLEAR_LABEL_ENTRY;
   payload: string;
 }
 
 export interface RemoveAddressLabelEntry {
-  type: TypeKeys.REMOVE_ADDRESS_LABEL_ENTRY;
+  type: ADDRESS_BOOK.REMOVE_LABEL_ENTRY;
   payload: string;
 }
 

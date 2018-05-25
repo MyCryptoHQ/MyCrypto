@@ -1,5 +1,5 @@
 import {
-  TypeKeys,
+  PARITY_SIGNER,
   RequestTransactionSignatureAction,
   RequestMessageSignatureAction,
   FinalizeSignatureAction
@@ -11,7 +11,7 @@ export function requestTransactionSignature(
   data: string
 ): RequestTransactionSignatureAction {
   return {
-    type: TypeKeys.PARITY_SIGNER_REQUEST_TX_SIGNATURE,
+    type: PARITY_SIGNER.REQUEST_TX_SIGNATURE,
     payload: {
       isMessage: false,
       from,
@@ -23,7 +23,7 @@ export function requestTransactionSignature(
 export type TRequestMessageSignature = typeof requestMessageSignature;
 export function requestMessageSignature(from: string, data: string): RequestMessageSignatureAction {
   return {
-    type: TypeKeys.PARITY_SIGNER_REQUEST_MSG_SIGNATURE,
+    type: PARITY_SIGNER.REQUEST_MSG_SIGNATURE,
     payload: {
       isMessage: true,
       from,
@@ -35,7 +35,7 @@ export function requestMessageSignature(from: string, data: string): RequestMess
 export type TFinalizeSignature = typeof finalizeSignature;
 export function finalizeSignature(signature: string | null): FinalizeSignatureAction {
   return {
-    type: TypeKeys.PARITY_SIGNER_FINALIZE_SIGNATURE,
+    type: PARITY_SIGNER.FINALIZE_SIGNATURE,
     payload: signature
   };
 }

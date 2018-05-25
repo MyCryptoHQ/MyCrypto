@@ -2,7 +2,7 @@ import BN from 'bn.js';
 
 import { Wei, TokenValue } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
+import { getNetworkConfig } from 'features/config';
 import { getUnit, getParamsFromSerializedTx } from 'features/transaction/selectors';
 
 export const getRates = (state: AppState) => state.rates;

@@ -1,29 +1,29 @@
 import { DomainRequest } from 'libs/ens';
 
-export enum TypeKeys {
-  ENS_RESOLVE_DOMAIN_REQUESTED = 'ENS_RESOLVE_DOMAIN_REQUESTED',
-  ENS_RESOLVE_DOMAIN_SUCCEEDED = 'ENS_RESOLVE_DOMAIN_SUCCEEDED',
-  ENS_RESOLVE_DOMAIN_FAILED = 'ENS_RESOLVE_DOMAIN_FAILED',
-  ENS_RESOLVE_DOMAIN_CACHED = 'ENS_RESOLVE_DOMAIN_CACHED'
+export enum ENS {
+  RESOLVE_DOMAIN_REQUESTED = 'ENS_RESOLVE_DOMAIN_REQUESTED',
+  RESOLVE_DOMAIN_SUCCEEDED = 'ENS_RESOLVE_DOMAIN_SUCCEEDED',
+  RESOLVE_DOMAIN_FAILED = 'ENS_RESOLVE_DOMAIN_FAILED',
+  RESOLVE_DOMAIN_CACHED = 'ENS_RESOLVE_DOMAIN_CACHED'
 }
 
 export interface ResolveDomainRequested {
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED;
+  type: ENS.RESOLVE_DOMAIN_REQUESTED;
   payload: { domain: string };
 }
 
 export interface ResolveDomainSucceeded {
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_SUCCEEDED;
+  type: ENS.RESOLVE_DOMAIN_SUCCEEDED;
   payload: { domain: string; domainData: DomainRequest };
 }
 
 export interface ResolveDomainCached {
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_CACHED;
+  type: ENS.RESOLVE_DOMAIN_CACHED;
   payload: { domain: string };
 }
 
 export interface ResolveDomainFailed {
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_FAILED;
+  type: ENS.RESOLVE_DOMAIN_FAILED;
   payload: { domain: string; error: Error };
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import translate from 'translations';
-import { TSignMessageRequested } from 'features/message/actions';
+import { TSignMessageRequested } from 'features/message';
 
 interface Props {
   message: string;

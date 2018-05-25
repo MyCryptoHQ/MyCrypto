@@ -30,35 +30,32 @@ import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { showNotification } from 'features/notifications/actions';
-import { TypeKeys as WalletTypeKeys, SetWalletAction } from 'features/wallet/types';
-import { resetWallet, setWallet } from 'features/wallet/actions';
-import { getOffline } from './meta/selectors';
-import { getNetworkConfigById, getNetworkNameByChainId } from './networks/derivedSelectors';
-import { getCustomNetworkConfigs } from './networks/custom/selectors';
-import { getNodeConfig, getWeb3Node } from './nodes/derivedSelectors';
-import { getCustomNodeConfigs, getCustomNodeFromId } from './nodes/custom/selectors';
+import { showNotification } from 'features/notifications';
+import { WALLET, SetWalletAction, resetWallet, setWallet } from 'features/wallet';
+import { getNetworkConfigById, getNetworkNameByChainId } from './networks';
+import { getNodeConfig, getWeb3Node } from './nodes';
+
+import {
+  getCustomNodeConfigs,
+  getCustomNodeFromId,
+  CONFIG_NODES_CUSTOM,
+  AddCustomNodeAction
+} from './nodes/custom';
 import { isStaticNodeId } from './nodes/static/selectors';
-import { getNodeId, getPreviouslySelectedNode } from './nodes/selected/selectors';
+import { CONFIG, ChangeNodeForceAction, ChangeNodeIntentOneTimeAction } from './types';
+import { changeNodeForce } from './actions';
+import { getStaticNodeFromId } from './selectors';
+import { removeCustomNetwork, getCustomNetworkConfigs } from './networks/custom';
 import {
-  TypeKeys,
-  AddCustomNodeAction,
-  ChangeNodeForceAction,
-  ChangeNodeIntentAction,
-  ChangeNodeIntentOneTimeAction
-} from './types';
-import {
-  removeCustomNetwork,
-  setOnline,
-  setOffline,
-  changeNode,
+  getNodeId,
+  getPreviouslySelectedNode,
   changeNodeIntent,
-  setLatestBlock,
-  changeNodeForce,
-  web3SetNode,
-  web3UnsetNode
-} from './actions';
-import { getStaticNodeFromId } from './derivedSelectors';
+  changeNode,
+  ChangeNodeIntentAction,
+  CONFIG_NODES_SELECTED
+} from './nodes/selected';
+import { setOnline, setOffline, setLatestBlock, getOffline, CONFIG_META } from './meta';
+import { CONFIG_NODES_STATIC, web3SetNode, web3UnsetNode } from './nodes/static';
 
 //#region Network
 // If there are any orphaned custom networks, prune them
@@ -84,7 +81,7 @@ export function* pruneCustomNetworks(): SagaIterator {
   }
 }
 
-export const network = [takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, pruneCustomNetworks)];
+export const network = [takeEvery(CONFIG_NODES_CUSTOM.REMOVE, pruneCustomNetworks)];
 //#endregion Network
 
 //#region Node
@@ -151,9 +148,7 @@ export function* reload(): SagaIterator {
 }
 
 export function* handleNodeChangeIntentOneTime(): SagaIterator {
-  const action: ChangeNodeIntentOneTimeAction = yield take(
-    TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME
-  );
+  const action: ChangeNodeIntentOneTimeAction = yield take(CONFIG.NODE_CHANGE_INTENT_ONETIME);
   // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
   yield call(delay, 100);
   yield put(changeNodeIntent(action.payload));
@@ -270,11 +265,11 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
 
 export const node = [
   fork(handleNodeChangeIntentOneTime),
-  takeEvery(TypeKeys.CONFIG_NODE_CHANGE_INTENT, handleNodeChangeIntent),
-  takeEvery(TypeKeys.CONFIG_NODE_CHANGE_FORCE, handleNodeChangeForce),
-  takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
-  takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
-  takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode)
+  takeEvery(CONFIG_NODES_SELECTED.CHANGE_INTENT, handleNodeChangeIntent),
+  takeEvery(CONFIG.NODE_CHANGE_FORCE, handleNodeChangeForce),
+  takeLatest(CONFIG.POLL_OFFLINE_STATUS, handlePollOfflineStatus),
+  takeEvery(CONFIG_META.LANGUAGE_CHANGE, reload),
+  takeEvery(CONFIG_NODES_CUSTOM.ADD, handleAddCustomNode)
 ];
 //#endregion Node
 
@@ -317,7 +312,7 @@ export function* unlockWeb3(): SagaIterator {
     yield put(changeNodeIntent('web3'));
     yield take(
       (action: any) =>
-        action.type === TypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeId === 'web3'
+        action.type === CONFIG_NODES_SELECTED.CHANGE && action.payload.nodeId === 'web3'
     );
 
     const web3Node: any | null = yield select(getWeb3Node);
@@ -376,9 +371,9 @@ export function* unsetWeb3Node(): SagaIterator {
 }
 
 export const web3 = [
-  takeEvery(TypeKeys.CONFIG_NODE_WEB3_UNSET, unsetWeb3Node),
-  takeEvery(WalletTypeKeys.WALLET_SET, unsetWeb3NodeOnWalletEvent),
-  takeEvery(WalletTypeKeys.WALLET_UNLOCK_WEB3, unlockWeb3)
+  takeEvery(CONFIG_NODES_STATIC.WEB3_UNSET, unsetWeb3Node),
+  takeEvery(WALLET.SET, unsetWeb3NodeOnWalletEvent),
+  takeEvery(WALLET.UNLOCK_WEB3, unlockWeb3)
 ];
 //#endregion web3
 

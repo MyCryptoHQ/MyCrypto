@@ -4,16 +4,17 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
-import { ACCOUNT_ADDRESS_ID } from 'features/addressBook/constants';
 import {
+  ACCOUNT_ADDRESS_ID,
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
-  TRemoveAddressLabelEntry
-} from 'features/addressBook/actions';
-import { getAccountAddressEntry, getAddressLabels } from 'features/addressBook/selectors';
+  TRemoveAddressLabelEntry,
+  getAccountAddressEntry,
+  getAddressLabels
+} from 'features/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {

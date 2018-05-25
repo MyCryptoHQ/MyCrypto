@@ -1,6 +1,6 @@
 import { DomainRequest } from 'libs/ens';
 import {
-  TypeKeys,
+  ENS,
   ResolveDomainRequested,
   ResolveDomainSucceeded,
   ResolveDomainFailed,
@@ -9,14 +9,14 @@ import {
 
 export type TResolveDomainRequested = typeof resolveDomainRequested;
 export const resolveDomainRequested = (domain: string): ResolveDomainRequested => ({
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_REQUESTED,
+  type: ENS.RESOLVE_DOMAIN_REQUESTED,
   payload: { domain }
 });
 
 export const resolveDomainCached = (
   payload: ResolveDomainCached['payload']
 ): ResolveDomainCached => ({
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_CACHED,
+  type: ENS.RESOLVE_DOMAIN_CACHED,
   payload
 });
 
@@ -25,12 +25,12 @@ export const resolveDomainSucceeded = (
   domain: string,
   domainData: DomainRequest
 ): ResolveDomainSucceeded => ({
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_SUCCEEDED,
+  type: ENS.RESOLVE_DOMAIN_SUCCEEDED,
   payload: { domain, domainData }
 });
 
 export type TResolveDomainFailed = typeof resolveDomainFailed;
 export const resolveDomainFailed = (domain: string, error: Error): ResolveDomainFailed => ({
-  type: TypeKeys.ENS_RESOLVE_DOMAIN_FAILED,
+  type: ENS.RESOLVE_DOMAIN_FAILED,
   payload: { domain, error }
 });

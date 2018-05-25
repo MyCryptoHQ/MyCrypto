@@ -4,11 +4,8 @@ import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
-import {
-  showNotification as dShowNotification,
-  TShowNotification
-} from 'features/notifications/actions';
+import { getOffline } from 'features/config';
+import { showNotification as dShowNotification, TShowNotification } from 'features/notifications';
 import {
   ProviderName,
   SwapInput,

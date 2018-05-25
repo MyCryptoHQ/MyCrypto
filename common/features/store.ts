@@ -14,16 +14,10 @@ import {
   INITIAL_STATE as transactionInitialState,
   State as TransactionState
 } from './transaction/derivedReducers';
-import { State as SwapState, INITIAL_STATE as initialSwapState } from './swap/reducers';
-import {
-  State as AddressBookState,
-  INITIAL_STATE as initialAddressBookState
-} from './addressBook/reducers';
-import {
-  INITIAL_STATE as initialTransactionsState,
-  State as TransactionsState
-} from './transactions/reducers';
-import { State as WalletState, INITIAL_STATE as initialWalletState } from './wallet/reducers';
+import { SwapState, INITIAL_STATE as initialSwapState } from './swap';
+import { AddressBookState, INITIAL_STATE as initialAddressBookState } from './addressBook';
+import { INITIAL_STATE as initialTransactionsState, TransactionsState } from './transactions';
+import { WalletState, INITIAL_STATE as initialWalletState } from './wallet';
 import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe

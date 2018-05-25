@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getTokens, MergedToken } from 'features/wallet/selectors';
+import { getTokens, MergedToken } from 'features/wallet';
 import { Query } from './Query';
 
 interface Props {

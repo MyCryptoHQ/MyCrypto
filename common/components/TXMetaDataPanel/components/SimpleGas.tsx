@@ -6,16 +6,15 @@ import { gasPriceDefaults } from 'config';
 import translate from 'translations';
 import { Wei, fromWei } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getIsWeb3Node } from 'features/config/nodes/derivedSelectors';
+import { getIsWeb3Node } from 'features/config';
 import { TInputGasPrice } from 'features/transaction/actions';
 import {
   getGasLimitEstimationTimedOut,
   getGasEstimationPending,
   nonceRequestPending
 } from 'features/transaction/selectors';
-import { fetchGasEstimates, TFetchGasEstimates } from 'features/gas/actions';
-import { getEstimates, getIsEstimating } from 'features/gas/selectors';
-import { getScheduleGasPrice } from 'features/schedule/selectors';
+import { fetchGasEstimates, TFetchGasEstimates, getEstimates, getIsEstimating } from 'features/gas';
+import { getScheduleGasPrice } from 'features/schedule';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';

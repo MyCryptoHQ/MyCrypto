@@ -6,11 +6,14 @@ import { shepherdProvider } from 'libs/nodes';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
-import { getCustomNetworkConfigs } from 'features/config/networks/custom/selectors';
-import { getStaticNetworkConfigs } from 'features/config/networks/static/selectors';
-import { getCustomNodeConfigs } from 'features/config/nodes/custom/selectors';
-import { AddCustomNodeAction } from 'features/config/types';
-import { TAddCustomNetwork, addCustomNetwork } from 'features/config/actions';
+import {
+  getCustomNetworkConfigs,
+  getStaticNetworkConfigs,
+  getCustomNodeConfigs,
+  AddCustomNodeAction,
+  TAddCustomNetwork,
+  addCustomNetwork
+} from 'features/config';
 import { Input, Dropdown } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
 import './CustomNodeModal.scss';

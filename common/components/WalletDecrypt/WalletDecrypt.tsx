@@ -40,11 +40,14 @@ import {
   unlockPrivateKey,
   TUnlockPrivateKey,
   unlockWeb3,
-  TUnlockWeb3
-} from 'features/wallet/actions';
-import { getDisabledWallets } from 'features/wallet/selectors';
-import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction/actions';
-import { showNotification, TShowNotification } from 'features/notifications/actions';
+  TUnlockWeb3,
+  getDisabledWallets
+} from 'features/wallet';
+import {
+  resetTransactionRequested,
+  TResetTransactionRequested
+} from 'features/transaction/actions';
+import { showNotification, TShowNotification } from 'features/notifications';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';

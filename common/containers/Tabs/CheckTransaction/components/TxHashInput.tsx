@@ -6,7 +6,7 @@ import moment from 'moment';
 import translate from 'translations';
 import { isValidTxHash, isValidETHAddress } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { getRecentNetworkTransactions } from 'features/transactions/selectors';
+import { getRecentNetworkTransactions } from 'features/transactions';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
 

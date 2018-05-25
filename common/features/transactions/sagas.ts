@@ -9,17 +9,15 @@ import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import { TypeKeys as ConfigTypeKeys } from 'features/config/types';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
-import { getWalletInst } from 'features/wallet/selectors';
+import { getNetworkConfig, CONFIG_NODES_SELECTED, getNodeLib } from 'features/config';
+import { getWalletInst } from 'features/wallet';
 import {
   TypeKeys as TxTypeKeys,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
 } from 'features/transaction/types';
-import { TypeKeys, FetchTransactionDataAction } from './types';
+import { TRANSACTIONS, FetchTransactionDataAction } from './types';
 import { setTransactionData, addRecentTransaction, resetTransactionData } from './actions';
 
 export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
@@ -112,7 +110,7 @@ export function* resetTxData() {
 }
 
 export function* transactionsSaga(): SagaIterator {
-  yield takeEvery(TypeKeys.TRANSACTIONS_FETCH_TRANSACTION_DATA, fetchTxData);
+  yield takeEvery(TRANSACTIONS.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(TxTypeKeys.BROADCAST_TRANSACTION_QUEUED, saveBroadcastedTx);
-  yield takeEvery(ConfigTypeKeys.CONFIG_NODE_CHANGE, resetTxData);
+  yield takeEvery(CONFIG_NODES_SELECTED.CHANGE, resetTxData);
 }

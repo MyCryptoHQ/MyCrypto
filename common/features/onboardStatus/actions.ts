@@ -1,5 +1,5 @@
 import {
-  TypeKeys,
+  ONBOARD_STATUS,
   StartOnboardSessionAction,
   ResumeSlideAction,
   DecrementSlideAction,
@@ -9,14 +9,14 @@ import {
 export type TStartOnboardSession = typeof startOnboardSession;
 export function startOnboardSession(): StartOnboardSessionAction {
   return {
-    type: TypeKeys.START_ONBOARD_SESSION
+    type: ONBOARD_STATUS.START_SESSION
   };
 }
 
 export type TResumeSlide = typeof resumeSlide;
 export function resumeSlide(slideNumber: number): ResumeSlideAction {
   return {
-    type: TypeKeys.RESUME_SLIDE,
+    type: ONBOARD_STATUS.RESUME_SLIDE,
     slideNumber
   };
 }
@@ -24,13 +24,13 @@ export function resumeSlide(slideNumber: number): ResumeSlideAction {
 export type TDecrementSlide = typeof decrementSlide;
 export function decrementSlide(): DecrementSlideAction {
   return {
-    type: TypeKeys.DECREMENT_SLIDE
+    type: ONBOARD_STATUS.DECREMENT_SLIDE
   };
 }
 
 export type TIncrementSlide = typeof incrementSlide;
 export function incrementSlide(): IncrementSlideAction {
   return {
-    type: TypeKeys.INCREMENT_SLIDE
+    type: ONBOARD_STATUS.INCREMENT_SLIDE
   };
 }

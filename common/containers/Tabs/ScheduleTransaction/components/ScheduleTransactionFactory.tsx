@@ -8,8 +8,8 @@ import {
   getSerializedTransaction,
   getSignedTx
 } from 'features/transaction/selectors';
-import { getWalletType } from 'features/wallet/selectors';
-import { getSchedulingTransaction } from 'features/schedule/selectors';
+import { getWalletType } from 'features/wallet';
+import { getSchedulingTransaction } from 'features/schedule';
 import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionFactory';
 
 export const ScheduleTransactionFactory = connect((state: AppState) => ({

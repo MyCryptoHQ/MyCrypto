@@ -6,7 +6,7 @@ import translate, { translateRaw } from 'translations';
 import { isValidETHAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getRecentAddresses } from 'features/wallet/selectors';
+import { getRecentAddresses } from 'features/wallet';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
 

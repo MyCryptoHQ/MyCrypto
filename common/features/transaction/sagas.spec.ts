@@ -40,23 +40,21 @@ import {
   gasLimitValidator
 } from 'libs/validators';
 import { configuredStore } from 'features/store';
-import { isNetworkUnit } from 'features/config/derivedSelectors';
-import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
-import { getNodeLib } from 'features/config/nodes/derivedSelectors';
-import { TypeKeys as ConfigTypeKeys } from 'features/config/types';
-import { TypeKeys as WalletTK } from 'features/wallet/types';
+import { isNetworkUnit, getOffline, getAutoGasLimitEnabled, getNodeLib } from 'features/config';
 import {
+  WALLET,
   getWalletInst,
   getToken,
   getEtherBalance,
   getCurrentBalance
-} from 'features/wallet/selectors';
-import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
-import { isSchedulingEnabled } from 'features/schedule/selectors';
-import { TypeKeys as ENSTypekeys } from 'features/ens/types';
-import { getResolvedAddress } from 'features/ens/derivedSelectors';
-import { resolveDomainRequested } from 'features/ens/actions';
-import { showNotification } from 'features/notifications/actions';
+} from 'features/wallet';
+import {
+  setSchedulingToggle,
+  setScheduleGasLimitField,
+  isSchedulingEnabled
+} from 'features/schedule';
+import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
+import { showNotification } from 'features/notifications';
 import { TypeKeys } from './types';
 import {
   setToField,
@@ -134,6 +132,7 @@ import { validateInput, rebaseUserInput } from './helpers';
 
 /* tslint:disable */
 import './selectors'; //throws if not imported
+import { CONFIG_META } from '../config';
 /* tslint:enable */
 
 configuredStore.getState();
@@ -265,9 +264,9 @@ describe('transaction: Sagas', () => {
         it('should take ENS type keys', () => {
           expect(data.validEnsGen.next().value).toEqual(
             take([
-              ENSTypekeys.ENS_RESOLVE_DOMAIN_FAILED,
-              ENSTypekeys.ENS_RESOLVE_DOMAIN_SUCCEEDED,
-              ENSTypekeys.ENS_RESOLVE_DOMAIN_CACHED
+              ENS.RESOLVE_DOMAIN_FAILED,
+              ENS.RESOLVE_DOMAIN_SUCCEEDED,
+              ENS.RESOLVE_DOMAIN_CACHED
             ])
           );
         });
@@ -1209,7 +1208,7 @@ describe('transaction: Sagas', () => {
               TypeKeys.ETHER_TO_TOKEN_SWAP,
               TypeKeys.TOKEN_TO_TOKEN_SWAP,
               TypeKeys.TOKEN_TO_ETHER_SWAP,
-              ConfigTypeKeys.CONFIG_TOGGLE_AUTO_GAS_LIMIT
+              CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
             ])
           );
         });
@@ -1535,7 +1534,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should take on WALLET_SET', () => {
-          expect(gen.next(nonceRequest).value).toEqual(take(WalletTK.WALLET_SET));
+          expect(gen.next(nonceRequest).value).toEqual(take(WALLET.SET));
         });
 
         it('should cancel nonceRequest', () => {

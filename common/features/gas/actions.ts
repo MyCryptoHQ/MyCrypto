@@ -1,16 +1,16 @@
-import { TypeKeys, FetchGasEstimatesAction, SetGasEstimatesAction } from './types';
+import { GAS, FetchGasEstimatesAction, SetGasEstimatesAction } from './types';
 
 export type TFetchGasEstimates = typeof fetchGasEstimates;
 export function fetchGasEstimates(): FetchGasEstimatesAction {
   return {
-    type: TypeKeys.GAS_FETCH_ESTIMATES
+    type: GAS.FETCH_ESTIMATES
   };
 }
 
 export type TSetGasEstimates = typeof setGasEstimates;
 export function setGasEstimates(payload: SetGasEstimatesAction['payload']): SetGasEstimatesAction {
   return {
-    type: TypeKeys.GAS_SET_ESTIMATES,
+    type: GAS.SET_ESTIMATES,
     payload
   };
 }

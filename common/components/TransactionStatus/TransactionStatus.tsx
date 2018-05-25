@@ -5,9 +5,12 @@ import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { TransactionState } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/derivedSelectors';
-import { fetchTransactionData, TFetchTransactionData } from 'features/transactions/actions';
-import { getTransactionDatas } from 'features/transactions/selectors';
+import { getNetworkConfig } from 'features/config';
+import {
+  fetchTransactionData,
+  TFetchTransactionData,
+  getTransactionDatas
+} from 'features/transactions';
 import { Spinner } from 'components/ui';
 import TransactionDataTable from './TransactionDataTable';
 import './TransactionStatus.scss';

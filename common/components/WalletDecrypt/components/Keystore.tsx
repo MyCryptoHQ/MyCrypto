@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
 import { isKeystorePassRequired } from 'libs/wallet';
-import { TShowNotification } from 'features/notifications/actions';
+import { TShowNotification } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
 import DeprecationWarning from './DeprecationWarning';

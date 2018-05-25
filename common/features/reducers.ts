@@ -1,31 +1,29 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import config, { State as ConfigState } from './config/derivedReducers';
-import notifications, { State as NotificationsState } from './notifications/reducers';
-import onboardStatus, { State as OnboardStatusState } from './onboardStatus/reducers';
-import ens, { State as EnsState } from './ens/derivedReducers';
-import wallet, { State as WalletState } from './wallet/reducers';
-import customTokens, { State as CustomTokensState } from './customTokens/reducers';
-import rates, { State as RatesState } from './rates/reducers';
-import deterministicWallets, {
-  State as DeterministicWalletsState
-} from './deterministicWallets/reducers';
-import swap, { State as SwapState } from './swap/reducers';
+import { ConfigState, configReducer } from './config';
+import { notificationsReducer, NotificationState } from './notifications';
+import { OnboardStatusState, onboardStatusReducer } from './onboardStatus';
+import { ENSState, ensReducer } from './ens';
+import { walletReducer, WalletState } from './wallet';
+import { customTokensReducer, CustomTokensState } from './customTokens';
+import { ratesReducer, RatesState } from './rates';
+import { deterministicWalletsReducer, DeterministicWalletsState } from './deterministicWallets';
+import { swapReducer, SwapState } from './swap';
 import transaction, { State as TransactionState } from './transaction/derivedReducers';
-import transactions, { State as TransactionsState } from './transactions/reducers';
-import message, { State as MessageState } from './message/reducers';
-import paritySigner, { State as ParitySignerState } from './paritySigner/reducers';
-import addressBook, { State as AddressBookState } from './addressBook/reducers';
-import gas, { State as GasState } from './gas/reducers';
-import schedule, { State as ScheduleState } from './schedule/reducers';
+import { transactionsReducer, TransactionsState } from './transactions';
+import { messageReducer, MessageState } from './message';
+import { paritySignerReducer, ParitySignerState } from './paritySigner';
+import { addressBookReducer, AddressBookState } from './addressBook';
+import { gasReducer, GasState } from './gas';
+import { scheduleReducer, ScheduleState } from './schedule';
 
 export interface AppState {
   // Custom reducers
   config: ConfigState;
-  notifications: NotificationsState;
+  notifications: NotificationState;
   onboardStatus: OnboardStatusState;
-  ens: EnsState;
+  ens: ENSState;
   wallet: WalletState;
   customTokens: CustomTokensState;
   rates: RatesState;
@@ -43,21 +41,21 @@ export interface AppState {
 }
 
 export default combineReducers<AppState>({
-  config,
-  swap,
-  notifications,
-  onboardStatus,
-  ens,
-  wallet,
-  customTokens,
-  rates,
-  deterministicWallets,
+  config: configReducer,
+  swap: swapReducer,
+  notifications: notificationsReducer,
+  onboardStatus: onboardStatusReducer,
+  ens: ensReducer,
+  wallet: walletReducer,
+  customTokens: customTokensReducer,
+  rates: ratesReducer,
+  deterministicWallets: deterministicWalletsReducer,
   transaction,
-  transactions,
-  message,
-  paritySigner,
-  addressBook,
-  gas,
-  schedule,
+  transactions: transactionsReducer,
+  message: messageReducer,
+  paritySigner: paritySignerReducer,
+  addressBook: addressBookReducer,
+  gas: gasReducer,
+  schedule: scheduleReducer,
   routing: routerReducer
 });

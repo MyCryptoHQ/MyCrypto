@@ -1,6 +1,6 @@
 import { CCResponse } from 'api/rates';
 import {
-  TypeKeys,
+  RATES_FETCH,
   FetchCCRatesRequested,
   FetchCCRatesSucceeded,
   FetchCCRatesFailed
@@ -9,7 +9,7 @@ import {
 export type TFetchCCRatesRequested = typeof fetchCCRatesRequested;
 export function fetchCCRatesRequested(symbols: string[] = []): FetchCCRatesRequested {
   return {
-    type: TypeKeys.RATES_FETCH_CC_REQUESTED,
+    type: RATES_FETCH.CC_REQUESTED,
     payload: symbols
   };
 }
@@ -17,7 +17,7 @@ export function fetchCCRatesRequested(symbols: string[] = []): FetchCCRatesReque
 export type TFetchCCRatesSucceeded = typeof fetchCCRatesSucceeded;
 export function fetchCCRatesSucceeded(payload: CCResponse): FetchCCRatesSucceeded {
   return {
-    type: TypeKeys.RATES_FETCH_CC_SUCCEEDED,
+    type: RATES_FETCH.CC_SUCCEEDED,
     payload
   };
 }
@@ -25,6 +25,6 @@ export function fetchCCRatesSucceeded(payload: CCResponse): FetchCCRatesSucceede
 export type TFetchCCRatesFailed = typeof fetchCCRatesFailed;
 export function fetchCCRatesFailed(): FetchCCRatesFailed {
   return {
-    type: TypeKeys.RATES_FETCH_CC_FAILED
+    type: RATES_FETCH.CC_FAILED
   };
 }

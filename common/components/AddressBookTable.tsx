@@ -4,21 +4,19 @@ import classnames from 'classnames';
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
-import { ADDRESS_BOOK_TABLE_ID } from 'features/addressBook/constants';
 import {
+  ADDRESS_BOOK_TABLE_ID,
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
-  TRemoveAddressLabelEntry
-} from 'features/addressBook/actions';
-import {
+  TRemoveAddressLabelEntry,
   getAddressLabels,
   getLabelAddresses,
   getAddressLabelRows,
   getAddressBookTableEntry
-} from 'features/addressBook/selectors';
+} from 'features/addressBook';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';

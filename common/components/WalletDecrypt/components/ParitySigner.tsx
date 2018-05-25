@@ -5,7 +5,7 @@ import translate from 'translations';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
 import { wikiLink } from 'libs/wallet/non-deterministic/parity';
-import { showNotification, TShowNotification } from 'features/notifications/actions';
+import { showNotification, TShowNotification } from 'features/notifications';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
 import { ParityQrSigner } from 'components';

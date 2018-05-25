@@ -23,16 +23,21 @@ import {
   setCurrentValue,
   resetTransactionRequested
 } from 'features/transaction/actions';
-import { isSupportedUnit, isNetworkUnit } from 'features/config/derivedSelectors';
-import { TypeKeys as WalletTypeKeys } from 'features/wallet/types';
-import { setTokenBalancePending, resetWallet } from 'features/wallet/actions';
-import { isUnlocked, isEtherBalancePending } from 'features/wallet/selectors';
-import { showNotification } from 'features/notifications/actions';
+import { isSupportedUnit, isNetworkUnit } from 'features/config';
 import {
-  TypeKeys,
+  WALLET,
+  setTokenBalancePending,
+  resetWallet,
+  isUnlocked,
+  isEtherBalancePending
+} from 'features/wallet';
+import { showNotification } from 'features/notifications';
+import {
+  SWAP,
   BityOrderCreateRequestedSwapAction,
   ShapeshiftOrderCreateRequestedSwapAction,
-  ChangeProviderSwapAcion
+  ChangeProviderSwapAcion,
+  SwapState
 } from './types';
 import {
   bityOrderCreateFailedSwap,
@@ -62,7 +67,6 @@ import {
   showLiteSend,
   configureLiteSend
 } from './actions';
-import { State as SwapState } from './reducers';
 import { getSwap, getOrigin, getPaymentAddress, getHasNotifiedRatesFailure } from './selectors';
 
 //#region Lite Send
@@ -85,23 +89,17 @@ export function* configureLiteSendSaga(): SagaIterator {
 
   // wait for wallet to be unlocked to continue
   if (!unlocked) {
-    yield take(WalletTypeKeys.WALLET_SET);
+    yield take(WALLET.SET);
   }
   const isNetwrkUnit = yield select(isNetworkUnit, label);
   //if it's a token, manually scan for that tokens balance and wait for it to resolve
   if (!isNetwrkUnit) {
     yield put(setTokenBalancePending({ tokenSymbol: label }));
-    yield take([
-      WalletTypeKeys.WALLET_SET_TOKEN_BALANCE_FULFILLED,
-      WalletTypeKeys.WALLET_SET_TOKEN_BALANCE_REJECTED
-    ]);
+    yield take([WALLET.SET_TOKEN_BALANCE_FULFILLED, WALLET.SET_TOKEN_BALANCE_REJECTED]);
   } else {
     const etherBalanceResolving: boolean = yield select(isEtherBalancePending);
     if (etherBalanceResolving) {
-      yield take([
-        WalletTypeKeys.WALLET_SET_BALANCE_FULFILLED,
-        WalletTypeKeys.WALLET_SET_BALANCE_REJECTED
-      ]);
+      yield take([WALLET.SET_BALANCE_FULFILLED, WALLET.SET_BALANCE_REJECTED]);
     }
   }
 
@@ -115,9 +113,9 @@ export function* handleConfigureLiteSend(): SagaIterator {
     const liteSendProc = yield fork(configureLiteSendSaga);
     const result = yield race({
       transactionReset: take(TransactionTypeKeys.RESET_REQUESTED),
-      userNavigatedAway: take(WalletTypeKeys.WALLET_RESET),
-      bityPollingFinished: take(TypeKeys.SWAP_STOP_POLL_BITY_ORDER_STATUS),
-      shapeshiftPollingFinished: take(TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS)
+      userNavigatedAway: take(WALLET.RESET),
+      bityPollingFinished: take(SWAP.STOP_POLL_BITY_ORDER_STATUS),
+      shapeshiftPollingFinished: take(SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
     });
 
     //if polling is finished we should clear state and hide this tab
@@ -159,7 +157,7 @@ export function* fetchPaymentAddress(): SagaIterator {
 }
 
 export function* swapLiteSendSaga(): SagaIterator {
-  yield takeEvery(TypeKeys.SWAP_CONFIGURE_LITE_SEND, handleConfigureLiteSend);
+  yield takeEvery(SWAP.CONFIGURE_LITE_SEND, handleConfigureLiteSend);
 }
 //#endregion Lite Send
 
@@ -230,11 +228,11 @@ export function* pollShapeshiftOrderStatus(): SagaIterator {
 }
 
 export function* pollBityOrderStatusSaga(): SagaIterator {
-  while (yield take(TypeKeys.SWAP_START_POLL_BITY_ORDER_STATUS)) {
+  while (yield take(SWAP.START_POLL_BITY_ORDER_STATUS)) {
     // starts the task in the background
     const pollBityOrderStatusTask = yield fork(pollBityOrderStatus);
     // wait for the user to get to point where refresh is no longer needed
-    yield take(TypeKeys.SWAP_STOP_POLL_BITY_ORDER_STATUS);
+    yield take(SWAP.STOP_POLL_BITY_ORDER_STATUS);
     // cancel the background task
     // this will cause the forked loadBityRates task to jump into its finally block
     yield cancel(pollBityOrderStatusTask);
@@ -242,9 +240,9 @@ export function* pollBityOrderStatusSaga(): SagaIterator {
 }
 
 export function* pollShapeshiftOrderStatusSaga(): SagaIterator {
-  while (yield take(TypeKeys.SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS)) {
+  while (yield take(SWAP.START_POLL_SHAPESHIFT_ORDER_STATUS)) {
     const pollShapeshiftOrderStatusTask = yield fork(pollShapeshiftOrderStatus);
-    yield take(TypeKeys.SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS);
+    yield take(SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS);
     yield cancel(pollShapeshiftOrderStatusTask);
   }
 }
@@ -466,7 +464,7 @@ export function* handleOrderTimeRemaining(): SagaIterator {
   } else {
     orderTimeRemainingTask = yield fork(bityOrderTimeRemaining);
   }
-  yield take(TypeKeys.SWAP_ORDER_STOP_TIMER);
+  yield take(SWAP.ORDER_STOP_TIMER);
   yield cancel(orderTimeRemainingTask);
 }
 
@@ -474,10 +472,10 @@ export function* swapOrdersSaga(): SagaIterator {
   yield fork(handleOrderTimeRemaining);
   yield fork(pollShapeshiftOrderStatusSaga);
   yield fork(pollBityOrderStatusSaga);
-  yield takeEvery(TypeKeys.SWAP_BITY_ORDER_CREATE_REQUESTED, postBityOrderCreate);
-  yield takeEvery(TypeKeys.SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED, postShapeshiftOrderCreate);
-  yield takeEvery(TypeKeys.SWAP_ORDER_START_TIMER, handleOrderTimeRemaining);
-  yield takeEvery(TypeKeys.SWAP_RESTART, restartSwapSaga);
+  yield takeEvery(SWAP.BITY_ORDER_CREATE_REQUESTED, postBityOrderCreate);
+  yield takeEvery(SWAP.SHAPESHIFT_ORDER_CREATE_REQUESTED, postShapeshiftOrderCreate);
+  yield takeEvery(SWAP.ORDER_START_TIMER, handleOrderTimeRemaining);
+  yield takeEvery(SWAP.RESTART, restartSwapSaga);
 }
 //#endregion Orders
 
@@ -504,7 +502,7 @@ export function* loadBityRates(): SagaIterator {
 
 export function* handleBityRates(): SagaIterator {
   const loadBityRatesTask = yield fork(loadBityRates);
-  yield take(TypeKeys.SWAP_STOP_LOAD_BITY_RATES);
+  yield take(SWAP.STOP_LOAD_BITY_RATES);
   yield cancel(loadBityRatesTask);
 }
 
@@ -542,7 +540,7 @@ export function* loadShapeshiftRates(): SagaIterator {
 
 export function* handleShapeshiftRates(): SagaIterator {
   const loadShapeshiftRatesTask = yield fork(loadShapeshiftRates);
-  yield take(TypeKeys.SWAP_STOP_LOAD_SHAPESHIFT_RATES);
+  yield take(SWAP.STOP_LOAD_SHAPESHIFT_RATES);
   yield cancel(loadShapeshiftRatesTask);
 }
 
@@ -554,8 +552,8 @@ export function* swapProvider(action: ChangeProviderSwapAcion): SagaIterator {
 }
 
 export function* swapRatesSaga(): SagaIterator {
-  yield takeLatest(TypeKeys.SWAP_LOAD_BITY_RATES_REQUESTED, handleBityRates);
-  yield takeLatest(TypeKeys.SWAP_LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeshiftRates);
-  yield takeLatest(TypeKeys.SWAP_CHANGE_PROVIDER, swapProvider);
+  yield takeLatest(SWAP.LOAD_BITY_RATES_REQUESTED, handleBityRates);
+  yield takeLatest(SWAP.LOAD_SHAPESHIFT_RATES_REQUESTED, handleShapeshiftRates);
+  yield takeLatest(SWAP.CHANGE_PROVIDER, swapProvider);
 }
 //#endregion Rates

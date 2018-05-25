@@ -9,10 +9,9 @@ import { TokenValue, Wei, Address, getDecimalFromEtherUnit } from 'libs/units';
 import { stripHexPrefixAndLower } from 'libs/values';
 import { getTransactionFields, makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig, isNetworkUnit } from 'features/config/derivedSelectors';
-import { getEtherBalance, getToken, getWalletType } from 'features/wallet/selectors';
-import { getCustomTokens } from 'features/customTokens/selectors';
+import { getNetworkConfig, isNetworkUnit, getOffline } from 'features/config';
+import { getEtherBalance, getToken, getWalletType } from 'features/wallet';
+import { getCustomTokens } from 'features/customTokens';
 import { RequestStatus, SerializedTxParams } from './types';
 import { reduceToValues, isFullTx } from './helpers';
 

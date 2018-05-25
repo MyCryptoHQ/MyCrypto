@@ -1,4 +1,4 @@
-import { TypeKeys } from './types';
+import { ADDRESS_BOOK } from './types';
 import {
   setAddressLabel,
   clearAddressLabel,
@@ -18,7 +18,7 @@ describe('addressBook: Actions', () => {
       };
 
       expect(setAddressLabel(payload)).toEqual({
-        type: TypeKeys.SET_ADDRESS_LABEL,
+        type: ADDRESS_BOOK.SET_LABEL,
         payload
       });
     });
@@ -28,7 +28,7 @@ describe('addressBook: Actions', () => {
       const payload = '0';
 
       expect(clearAddressLabel(payload)).toEqual({
-        type: TypeKeys.CLEAR_ADDRESS_LABEL,
+        type: ADDRESS_BOOK.CLEAR_LABEL,
         payload
       });
     });
@@ -44,7 +44,7 @@ describe('addressBook: Actions', () => {
       };
 
       expect(setAddressLabelEntry(payload)).toEqual({
-        type: TypeKeys.SET_ADDRESS_LABEL_ENTRY,
+        type: ADDRESS_BOOK.SET_LABEL_ENTRY,
         payload
       });
     });
@@ -60,7 +60,7 @@ describe('addressBook: Actions', () => {
       };
 
       expect(changeAddressLabelEntry(payload)).toEqual({
-        type: TypeKeys.CHANGE_ADDRESS_LABEL_ENTRY,
+        type: ADDRESS_BOOK.CHANGE_LABEL_ENTRY,
         payload
       });
     });
@@ -70,7 +70,7 @@ describe('addressBook: Actions', () => {
       const payload = '0';
 
       expect(saveAddressLabelEntry(payload)).toEqual({
-        type: TypeKeys.SAVE_ADDRESS_LABEL_ENTRY,
+        type: ADDRESS_BOOK.SAVE_LABEL_ENTRY,
         payload
       });
     });
@@ -80,7 +80,7 @@ describe('addressBook: Actions', () => {
       const payload = '0';
 
       expect(clearAddressLabelEntry(payload)).toEqual({
-        type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY,
+        type: ADDRESS_BOOK.CLEAR_LABEL_ENTRY,
         payload
       });
     });
@@ -90,7 +90,7 @@ describe('addressBook: Actions', () => {
       const payload = '0';
 
       expect(removeAddressLabelEntry(payload)).toEqual({
-        type: TypeKeys.REMOVE_ADDRESS_LABEL_ENTRY,
+        type: ADDRESS_BOOK.REMOVE_LABEL_ENTRY,
         payload
       });
     });

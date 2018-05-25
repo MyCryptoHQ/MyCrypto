@@ -6,7 +6,7 @@ import translate from 'translations';
 import { NodeConfig } from 'types/node';
 import { CodeBlock, Input } from 'components/ui';
 import { AppState } from 'features/reducers';
-import { getNodeConfig } from 'features/config/nodes/derivedSelectors';
+import { getNodeConfig } from 'features/config';
 import { SerializedTransaction } from 'components/renderCbs';
 import './Details.scss';
 

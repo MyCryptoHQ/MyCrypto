@@ -1,43 +1,42 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect, MapStateToProps } from 'react-redux';
+import logo from 'assets/images/logo-mycrypto.svg';
 import classnames from 'classnames';
-
+import CustomNodeModal from 'components/CustomNodeModal';
+import { ColorDropdown, OldDropDown } from 'components/ui';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
-import translate from 'translations';
-import { getKeyByValue } from 'utils/helpers';
-import { NodeConfig } from 'types/node';
-import { NetworkConfig } from 'types/network';
-import { AppState } from 'features/reducers';
-import { getOffline, getLanguageSelection } from 'features/config/meta/selectors';
-import { isStaticNodeId } from 'features/config/nodes/static/selectors';
-import { AddCustomNodeAction } from 'features/config/types';
 import {
+  AddCustomNodeAction,
+  CustomNodeOption,
+  NodeOption,
+  TAddCustomNetwork,
+  TAddCustomNode,
   TChangeLanguage,
   TChangeNodeIntent,
   TChangeNodeIntentOneTime,
-  TAddCustomNode,
   TRemoveCustomNode,
-  TAddCustomNetwork,
+  getLanguageSelection,
+  getNetworkConfig,
+  getNodeConfig,
+  getNodeId,
+  getNodeOptions,
+  getOffline,
+  isNodeChanging,
+  isStaticNodeId,
   changeLanguage,
   changeNodeIntent,
   changeNodeIntentOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
-} from 'features/config/actions';
-import {
-  CustomNodeOption,
-  NodeOption,
-  getNodeOptions,
-  getNetworkConfig
-} from 'features/config/derivedSelectors';
-import { getNodeConfig } from 'features/config/nodes/derivedSelectors';
-import { isNodeChanging, getNodeId } from 'features/config/nodes/selected/selectors';
+} from 'features/config';
+import { AppState } from 'features/reducers';
 import { TSetGasPriceField, setGasPriceField } from 'features/transaction/actions';
-import logo from 'assets/images/logo-mycrypto.svg';
-import { OldDropDown, ColorDropdown } from 'components/ui';
-import CustomNodeModal from 'components/CustomNodeModal';
+import React, { Component } from 'react';
+import { MapStateToProps, connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import translate from 'translations';
+import { NetworkConfig } from 'types/network';
+import { NodeConfig } from 'types/node';
+import { getKeyByValue } from 'utils/helpers';
 import Navigation from './components/Navigation';
 import OnlineStatus from './components/OnlineStatus';
 import './index.scss';

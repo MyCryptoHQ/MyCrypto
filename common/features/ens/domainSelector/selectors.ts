@@ -1,4 +1,4 @@
 import { AppState } from 'features/reducers';
-import { getEns } from '../derivedSelectors';
+import { getEns } from '../selectors';
 
 export const getCurrentDomainName = (state: AppState) => getEns(state).domainSelector.currentDomain;

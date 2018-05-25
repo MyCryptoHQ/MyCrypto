@@ -3,17 +3,14 @@ import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import { CustomNodeConfig } from 'types/node';
 import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
 import RootReducer, { AppState } from './reducers';
-import config, { State as ConfigState } from './config/derivedReducers';
+import { configReducer, ConfigState } from './config';
 import { getLanguageSelection } from './config/meta/selectors';
 import { getCustomNetworkConfigs } from './config/networks/custom/selectors';
 import { isStaticNetworkId } from './config/networks/static/selectors';
 import { isStaticNodeId } from './config/nodes/static/selectors';
 import { getCustomNodeConfigs } from './config/nodes/custom/selectors';
 import { getSelectedNode } from './config/nodes/selected/selectors';
-import {
-  State as CustomTokenState,
-  INITIAL_STATE as customTokensInitialState
-} from './customTokens/reducers';
+import { CustomTokensState, INITIAL_STATE as customTokensInitialState } from './customTokens';
 
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 
@@ -35,7 +32,7 @@ export function getConfigAndCustomTokensStateToSubscribe(
 }
 
 export function rehydrateConfigAndCustomTokenState() {
-  const configInitialState = config(undefined as any, { type: 'inital_state' });
+  const configInitialState = configReducer(undefined as any, { type: 'inital_state' });
   const savedConfigState = loadStatePropertyOrEmptyObject<ConfigState>('config');
   const nextConfigState = { ...configInitialState };
 
@@ -75,7 +72,7 @@ export function rehydrateConfigAndCustomTokenState() {
 function rehydrateCustomTokens(networkState: ConfigState['networks'], selectedNetwork: string) {
   // Dedupe custom tokens initially
   const savedCustomTokensState =
-    loadStatePropertyOrEmptyObject<CustomTokenState>('customTokens') || customTokensInitialState;
+    loadStatePropertyOrEmptyObject<CustomTokensState>('customTokens') || customTokensInitialState;
 
   const { customNetworks, staticNetworks } = networkState;
   const network = isStaticNetworkId(appInitialState, selectedNetwork)
