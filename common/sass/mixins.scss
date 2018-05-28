@@ -111,3 +111,9 @@
 @mixin input-focus-shadow($color) {
   box-shadow: inset 0 1px 2px rgba(black, 0.125), 0 0 1px rgba($color, 0.5);
 }
+
+@mixin theme($name) {
+  .theme--#{$name} & {
+    @content;
+  }
+}

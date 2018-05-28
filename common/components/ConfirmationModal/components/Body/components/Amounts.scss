@@ -36,7 +36,7 @@
   }
 
   &-total {
-    background-image: linear-gradient(to right, #c2cfd6 33%, #fff0 0%);
+    background-image: linear-gradient(to right, color(control-border) 33%, transparent 0%);
     background-position: top;
     background-size: 5px 1px;
     background-repeat: repeat-x;

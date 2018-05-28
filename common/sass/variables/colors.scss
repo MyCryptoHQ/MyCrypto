@@ -54,18 +54,20 @@ $theme-light: (
   link-color: $brand-primary,
   link-hover-color: darken($brand-primary, 10%),
 
+  tab-color: #eee,
+  tab-active-color: #fff,
+
   control-bg: #fff,
-  control-bg-dark: darken(#fff, 8%),
-  control-bg-darker: darken(#fff, 15%),
   control-color: #333,
   control-border: #e5ecf3,
-  control-border-dark: darken(#e5ecf3, 8%),
-  control-border-darker: darken(#e5ecf3, 15%),
-  control-disabled-bg: #737373,
+  control-disabled-bg: #fafafa,
   control-disabled-color: #333,
   control-disabled-border: #e6e6e6,
   control-placeholder: rgba(#333, 0.3),
   control-inset-shadow: rgba(#000, 0.03),
+
+  loader-light: #fff,
+  loader-dark: $brand-info,
 
   table-bg: #fff,
   table-bg-odd: #fefefe,
@@ -79,27 +81,76 @@ $theme-light: (
 );
 
 $theme-dark: (
-  gray-base: #FFF,
-  gray-darker: #FFF,
-  gray-dark: #FFF,
-  gray: #FFF,
-  gray-light: #FFF,
-  gray-lighter: #FFF,
-  gray-lightest: #FFF,
+  gray-base: #fafafa,
+  gray-darker: #ececec,
+  gray-dark: #9a9a9a,
+  gray: #737373,
+  gray-light: #333,
+  gray-lighter: #1c1c1c,
+  gray-lightest: #000,
 
-  border-idle: #FFF,
-  border-disabled: #FFF,
+  brand-primary: $brand-primary,
+  brand-primary-dark: lighten($brand-primary, 10%),
+  brand-primary-darker: lighten($brand-primary, 20%),
+  brand-primary-light: darken($brand-primary, 10%),
+  brand-primary-lighter: darken($brand-primary, 20%),
 
-  brand-primary: #FFF,
-  brand-success: #FFF,
-  brand-info: #FFF,
-  brand-warning: #ff9800,
-  brand-danger: #db5846,
+  brand-success: $brand-success,
+  brand-success-dark: lighten($brand-success, 10%),
+  brand-success-darker: lighten($brand-success, 20%),
+  brand-success-light: darken($brand-success, 10%),
+  brand-success-lighter: darken($brand-success, 20%),
 
-  body-bg: #fbfbfb,
-  text-color: #333,
+  brand-info: $brand-info,
+  brand-info-dark: lighten($brand-info, 10%),
+  brand-info-darker: lighten($brand-info, 20%),
+  brand-info-light: darken($brand-info, 10%),
+  brand-info-lighter: darken($brand-info, 20%),
 
-  component-active-color: #fff,
+  brand-warning: $brand-warning,
+  brand-warning-dark: lighten($brand-warning, 10%),
+  brand-warning-darker: lighten($brand-warning, 20%),
+  brand-warning-light: darken($brand-warning, 10%),
+  brand-warning-lighter: darken($brand-warning, 20%),
+
+  brand-danger: $brand-danger,
+  brand-danger-dark: lighten($brand-danger, 10%),
+  brand-danger-darker: lighten($brand-danger, 20%),
+  brand-danger-light: darken($brand-danger, 10%),
+  brand-danger-lighter: darken($brand-danger, 20%),
+
+  white-clear: rgba(#333, 0.9),
+  white-clearer: rgba(#333, 0.8),
+  white-clearest: rgba(#333, 0.7),
+
+  body-bg: #222,
+  pane-bg: #333,
+  text-color: #fff,
+  text-color-inverted: #fff,
+  link-color: lighten($brand-primary, 10%),
+  link-hover-color: lighten($brand-primary, 20%),
+
+  control-bg: #444,
+  control-bg-dark: lighten(#444, 8%),
+  control-bg-darker: lighten(#444, 15%),
+  control-color: #FFF,
+  control-border: #666,
+  control-border-dark: darken(#666, 8%),
+  control-border-darker: darken(#666, 15%),
+  control-disabled-bg: #aaa,
+  control-disabled-color: #888,
+  control-disabled-border: #aaa,
+  control-placeholder: rgba(#FFF, 0.3),
+  control-inset-shadow: rgba(#FFF, 0.03),
+
+  table-bg: #fff,
+  table-bg-odd: #fefefe,
+  table-bg-hover: #fafafa,
+
+  tooltip-bg: #444,
+  tooltip-color: #FFF,
+
+  component-active-color: #333,
   component-active-bg: $brand-primary,
 );
 
@@ -129,12 +180,6 @@ $gray-lightest: #fafafa;
 
 $border-idle: #e5ecf3;
 $border-disabled: #e6e6e6;
-
-$brand-primary: #007896;
-$brand-success: #5dba5a;
-$brand-info: #163151;
-$brand-warning: #ff9800;
-$brand-danger: #db5846;
 
 $body-bg: #fbfbfb;
 $text-color: $gray-dark;

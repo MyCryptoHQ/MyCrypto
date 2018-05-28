@@ -2,7 +2,7 @@
 @import "common/sass/mixins";
 
 .TokenRow {
-  border-bottom: 1px solid $gray-lighter;
+  border-bottom: 1px solid color(gray-lighter);
 
   &-balance,
   &-symbol {

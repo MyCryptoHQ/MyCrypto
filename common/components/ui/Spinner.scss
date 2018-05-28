@@ -35,13 +35,13 @@
 
   &-light {
     & .path {
-      stroke: white;
+      stroke: color(loader-light);
     }
   }
 
   &-dark {
     & .path {
-      stroke: $brand-info;
+      stroke: color(loader-dark);
     }
   }
 }
@@ -66,4 +66,3 @@
     stroke-dashoffset: -124;
   }
 }
-

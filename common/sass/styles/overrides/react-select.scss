@@ -2,7 +2,7 @@
 
 .Select {
   border-radius: 2px;
-  background-color: white;
+  background-color: color(control-bg);
   border: 1px solid color(control-border);
   border-radius: 2px;
   font-weight: 400;
@@ -45,6 +45,11 @@
   }
   &-option {
     padding: 0.75rem 1rem;
+
+    &.is-focused {
+      background: color(brand-primary);
+      color: color(text-color-inverted);
+    }
   }
   &-menu-outer {
     z-index: 3;
@@ -78,6 +83,7 @@
     padding-left: 0 !important;
     padding: 0.75rem 1rem !important;
     height: inherit !important;
+
     &-label {
       position: relative;
       top: 50%;
@@ -89,6 +95,14 @@
     display: block;
     position: relative;
     height: inherit;
+  }
+
+  // This shitty selector is the text color of the select, no joke.
+  &.has-value.Select--single > .Select-control .Select-value,
+	&.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
+		.Select-value-label {
+			color: color(control-color);
+		}
   }
 
   // Identicons need to fit into the select

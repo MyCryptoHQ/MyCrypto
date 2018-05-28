@@ -18,9 +18,9 @@ $back-spacing: 10px;
     position: sticky;
     top: 0;
     padding-top: $branding-spacing-top;
-    background: #FFF;
+    background: color(control-bg);
     z-index: 1;
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: 1px solid color(gray-lighter);
 
     .is-osx & {
       padding-top: $electron-osx-control-spacing + $branding-spacing-top - 5;
@@ -42,7 +42,7 @@ $back-spacing: 10px;
       height: 20px;
       line-height: 20px;
       color: #FFF;
-      background: $brand-info;
+      background: color(brand-info);
       text-transform: uppercase;
       font-size: 8px;
       opacity: 0.8;
@@ -69,7 +69,7 @@ $back-spacing: 10px;
       display: flex;
       align-items: center;
       width: 100%;
-      color: $gray-light;
+      color: color(gray-light);
       font-size: 12px;
       padding: 6px 0;
 
@@ -79,7 +79,7 @@ $back-spacing: 10px;
       }
 
       &:hover {
-        color: $link-hover-color;
+        color: color(link-hover-color);
       }
     }
   }
@@ -100,9 +100,9 @@ $back-spacing: 10px;
       width: 100%;
       text-align: left;
       padding: $back-spacing 0 8px $back-spacing;
-      border-bottom: 1px solid $gray-lighter;
-      color: rgba($text-color, 0.4);
-      background: #FFF;
+      color: color(gray);
+      border-bottom: 1px solid color(gray-lighter);
+      background: color(control-bg);
 
       .is-osx & {
         padding-top: $electron-osx-control-spacing + $back-spacing;
@@ -114,7 +114,7 @@ $back-spacing: 10px;
       }
 
       &:hover {
-        color: $link-hover-color;
+        color: color(link-hover-color);
       }
     }
   }
@@ -131,18 +131,18 @@ $back-spacing: 10px;
     height: 48px;
     line-height: 48px;
     padding: 0 0 0 10px;
-    border-bottom: 1px solid $gray-lighter;
-    color: $text-color;
+    border-bottom: 1px solid color(gray-lighter);
+    color: color(text-color);
     font-size: 14px;
     font-weight: normal;
 
     &.is-active {
-      color: $link-color;
-      background: $gray-lightest;
+      color: color(link-color);
+      background: color(gray-lightest);
     }
 
     &:hover {
-      color: $link-hover-color;
+      color: color(link-hover-color);
     }
 
     &-icon {

@@ -18,7 +18,7 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
     left: $cont-padding-lg;
     right: $cont-padding-lg;
     height: $track-size;
-    background-color: $gray-lighter;
+    background-color: color(gray-lighter);
   }
 
   &-item {
@@ -36,9 +36,9 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
       padding-bottom: $circle-width;
       position: relative;
       width: $circle-width;
-      background: white;
-      color: $gray;
-      border-color: $gray;
+      background: color(control-bg);
+      color: color(gray);
+      border-color: color(gray);
 
       @each $idx, $color in $step-colors {
         &.position-#{$idx} {
@@ -53,10 +53,10 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
       }
 
       .is-complete & {
-        border-color: $brand-success;
-        background: $brand-success;
-        box-shadow: inset 0px 0px 0px $space-xs white;
-        color: #fff;
+        border-color: color(brand-success);
+        background: color(brand-success);
+        box-shadow: inset 0px 0px 0px $space-xs color(control-bg);
+        color: color(text-color-inverted);
       }
 
       &-number {
@@ -84,7 +84,7 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
       font-size: $font-size-small;
       font-weight: 600;
       text-transform: uppercase;
-      color: fade-out(lighten($gray, 10%), 0.5);
+      color: color(gray-light);
       letter-spacing: .1em;
 
       small {
@@ -93,11 +93,11 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
       }
 
       .is-active & {
-        color: lighten($gray, 10%);
+        color: color(gray-lighter);
       }
 
       .is-complete & {
-        color: $brand-success;
+        color: color(brand-success);
       }
     }
   }

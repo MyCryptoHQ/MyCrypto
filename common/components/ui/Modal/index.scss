@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-$m-background: #fff;
+$m-background: color(control-bg);
 $m-window-padding-w: 20px;
 $m-window-padding-h: 30px;
 $m-window-padding-w-mobile: 10px;
@@ -46,7 +46,7 @@ $m-anim-speed: 400ms;
   }
 
   &-fade {
-    background: linear-gradient(to bottom, #fff0, #fff);
+    background: linear-gradient(to bottom, transparent, $m-background);
     position: fixed;
     height: 25px;
     width: calc(100% - 3rem);

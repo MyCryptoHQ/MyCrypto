@@ -6,10 +6,10 @@ $number-margin: 6px;
 
 @keyframes word-fade {
   0% {
-    color: rgba($text-color, 0);
+    opacity: 0;
   }
   100% {
-    color: rgba($text-color, 1);
+    opacity: 1;
   }
 }
 
@@ -47,14 +47,14 @@ $number-margin: 6px;
       top: -4px;
       left: -7px;
       z-index: 1;
-      color: #fff;
+      color: color(text-color-inverted);
       width: 26px;
       height: 26px;
       border-radius: 100%;
       background: linear-gradient(
         to top,
-        lighten($brand-success, 10%),
-        lighten($brand-success, 5%)
+        color(brand-success),
+        color(brand-success-light)
       );
       line-height: 24px;
     }

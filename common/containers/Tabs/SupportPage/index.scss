@@ -25,7 +25,7 @@
 
       &-link {
         margin: 0 .45rem;
-        color: $text-color;
+        color: color(text-color);
         opacity: 0.3;
 
         &:hover {
@@ -44,14 +44,14 @@
 
       &-text {
         margin: 0 $space-sm;
-        color: $gray-light;
+        color: color(gray-light);
         font-size: $font-size-xs-bump;
 
         a {
-          color: $gray-light;
+          color: color(gray-light);
 
           &:hover {
-            color: $gray-darker;
+            color: color(gray-darker);
           }
         }
       }
@@ -98,7 +98,7 @@
       &-address {
         display: block;
         padding: $space-xs $space-sm;
-        background: $gray-lightest;
+        background: color(gray-lightest);
         border: 1px solid $gray-lighter;
         font-size: $font-size-xs;
         border-radius: 4px;

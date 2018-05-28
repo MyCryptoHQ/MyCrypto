@@ -12,11 +12,11 @@
   @each $name, $colors in $themes {
     // First theme in the list is the default theme
     @if ($i == 0) {
-      &, .theme--#{$name} {
+      &, &.theme--#{$name} {
         @include theme-vars($colors);
       }
     } @else {
-      .theme--#{$name} {
+      &.theme--#{$name} {
         @include theme-vars($colors);
       }
     }

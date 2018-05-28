@@ -12,11 +12,11 @@ $top-height: 40px;
       @include reset-button;
       line-height: $top-height;
       font-size: $font-size-small;
-      color: $gray-light;
+      color: color(gray-light);
       opacity: 0.7;
 
       &:hover {
-        color: $gray-dark;
+        color: color(gray-dark);
         opacity: 1;
       }
 
@@ -50,7 +50,7 @@ $top-height: 40px;
       min-height: 100px;
       text-align: center;
       padding: 1.2rem 0;
-      color: #fff;
+      color: color(text-color-inverted);
 
       &:nth-child(4n + 1) {
         background-color: #175575;
