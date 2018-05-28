@@ -1,12 +1,13 @@
 import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
 import ENS from 'libs/ens/contracts';
 import { SagaIterator } from 'redux-saga';
-import { call } from 'redux-saga/effects';
+import { call, select } from 'redux-saga/effects';
 import networkConfigs from 'libs/ens/networkConfigs';
 import { makeEthCallAndDecode } from 'sagas/ens/helpers';
 import ethUtil from 'ethereumjs-util';
+import { getSelectedNetwork } from 'selectors/config';
 
-const { main } = networkConfigs;
+const { ensNetworksByKey } = networkConfigs;
 
 function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash: string) {
   // Return the owner's address, and the resolved address if it exists
@@ -16,10 +17,11 @@ function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash
     decoder: ENS.deed.owner.decodeOutput
   });
 
+  const ensNetwork = ensNetworksByKey[yield select(getSelectedNetwork)];
   const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
     makeEthCallAndDecode,
     {
-      to: main.registry,
+      to: ensNetwork.registry,
       decoder: ENS.registry.resolver.decodeOutput,
       data: ENS.registry.resolver.encodeInput({
         node: nameHash
@@ -75,8 +77,9 @@ export function* resolveDomainRequest(name: string): SagaIterator {
   const hash = ethUtil.sha3(name);
   const nameHash = getNameHash(`${name}.eth`);
 
+  const ensNetwork = ensNetworksByKey[yield select(getSelectedNetwork)];
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {
-    to: main.public.ethAuction,
+    to: ensNetwork.public.ethAuction,
     data: ENS.auction.entries.encodeInput({ _hash: hash }),
     decoder: ENS.auction.entries.decodeOutput
   });
