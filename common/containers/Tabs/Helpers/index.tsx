@@ -3,6 +3,7 @@ import ConvertHex from './components/ConvertHex';
 import ConvertSHA3 from './components/ConvertSHA3';
 import UnitReference from './components/UnitReference';
 import RecoverPK from './components/RecoverPK';
+import ENSDebug from './components/ENSDebug';
 
 import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
@@ -14,6 +15,10 @@ const tabs = [
   {
     path: 'convert-units',
     name: 'Convert Ethereum Units'
+  },
+  {
+    path: 'ens-debug',
+    name: 'ENS Debugger & Data Grabber'
   },
   {
     path: 'convert-hex',
@@ -52,6 +57,7 @@ export default class Helpers extends Component<RouteComponentProps<{}>> {
                 )}
               />
               <Route exact={true} path={`${currentPath}/convert-units`} component={ConvertUnits} />
+              <Route exact={true} path={`${currentPath}/ens-debug`} component={ENSDebug} />
               <Route exact={true} path={`${currentPath}/convert-hex`} component={ConvertHex} />
               <Route exact={true} path={`${currentPath}/convert-sha3`} component={ConvertSHA3} />
               <Route
