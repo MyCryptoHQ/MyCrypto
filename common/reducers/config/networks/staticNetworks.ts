@@ -274,9 +274,9 @@ export const INITIAL_STATE: State = {
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },
     gasPriceSettings: {
-      min: 0.38,
+      min: 0.183,
       max: 1.5,
-      initial: 0.38
+      initial: 0.183
     }
   }
 };
