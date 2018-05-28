@@ -277,7 +277,8 @@ export default class ENSDebug extends React.Component<State> {
   }
 
   private calcENSData = () => {
-    let { loading, startAuctionData, ensName } = this.state;
+    const { ensName } = this.state;
+    let { loading, startAuctionData } = this.state;
 
     loading = true;
 
@@ -309,8 +310,8 @@ export default class ENSDebug extends React.Component<State> {
       return json.name;
     }
 
-    var typeName = json.inputs
-      .map(function(i: any) {
+    const typeName = json.inputs
+      .map((i: any) => {
         return i.type;
       })
       .join();
@@ -318,7 +319,7 @@ export default class ENSDebug extends React.Component<State> {
   };
 
   private extractTypeName = (name: string) => {
-    var length = name.indexOf('(');
+    const length = name.indexOf('(');
     return length !== -1
       ? name.substr(length + 1, name.length - 1 - (length + 1)).replace(' ', '')
       : '';
@@ -332,7 +333,7 @@ export default class ENSDebug extends React.Component<State> {
       .slice(0, 8);
     const typeName = this.extractTypeName(fullFuncName);
     let types = typeName.split(',');
-    types = types[0] == '' ? [] : types;
+    types = types[0] === '' ? [] : types;
     console.log(inputs);
 
     return '0x' + funcSig + abi.rawEncode(types, inputs).toString('hex');
