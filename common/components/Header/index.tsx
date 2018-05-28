@@ -43,6 +43,8 @@ import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
 import translate from 'translations';
 
+let theme = 'light';
+
 interface OwnProps {
   networkParam: string | null;
 }
@@ -204,6 +206,11 @@ class Header extends Component<Props, State> {
                   menuAlign="right"
                 />
               </div>
+              <div className="Header-branding-right-dropdown">
+                <button className="btn btn-smr btn-white" onClick={this.toggleTheme}>
+                  theme
+                </button>
+              </div>
             </div>
           </section>
         </section>
@@ -245,6 +252,12 @@ class Header extends Component<Props, State> {
       this.props.changeNodeIntentOneTime(networkParam!);
     }
   }
+
+  private toggleTheme = () => {
+    document.documentElement.classList.remove(`theme--${theme}`);
+    theme = theme === 'light' ? 'dark' : 'light';
+    document.documentElement.classList.add(`theme--${theme}`);
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

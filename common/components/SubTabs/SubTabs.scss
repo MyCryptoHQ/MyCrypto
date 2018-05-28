@@ -19,18 +19,18 @@
       text-align: center;
       font-weight: 300;
       color: color(tab-color);
-      border-bottom: 2px solid color(tab-color);
+      border-bottom: 2px solid color(tab-border);
       transition-duration: 100ms;
       opacity: 0.7;
 
       &:hover {
         opacity: 1;
-        color: color(tab-color);
+        color: color(tab-active-color);
       }
 
       &.is-active {
         color: color(tab-active-color);
-        border-bottom-color: color(tab-active-color);
+        border-bottom-color: color(tab-active-border);
         opacity: 1;
       }
 

@@ -54,8 +54,10 @@ $theme-light: (
   link-color: $brand-primary,
   link-hover-color: darken($brand-primary, 10%),
 
-  tab-color: #eee,
-  tab-active-color: #fff,
+  tab-color: $brand-info,
+  tab-border: #ececec,
+  tab-active-color: $brand-primary,
+  tab-active-border: $brand-primary,
 
   control-bg: #fff,
   control-color: #333,
@@ -129,6 +131,9 @@ $theme-dark: (
   text-color-inverted: #fff,
   link-color: lighten($brand-primary, 10%),
   link-hover-color: lighten($brand-primary, 20%),
+
+  tab-color: #eee,
+  tab-active-color: #fff,
 
   control-bg: #444,
   control-bg-dark: lighten(#444, 8%),
