@@ -5,23 +5,24 @@
 @import './variables/grid';
 @import './variables/typography';
 @import './variables/transitions';
-@import './variables/links';
 @import './variables/tables';
 @import './variables/tooltips';
 @import './variables/forms';
 @import './variables/zindex';
 
 // Misc.
-$border-radius-small: 0px;
-$border-radius-base: 0px;
-$border-radius-large: 0px;
-$input-border-radius: 0px;
-$input-border-radius-small: 0px;
-$input-border-radius-large: 0px;
+$border-radius-small: 2px;
+$border-radius-base: $border-radius-small;
+$border-radius-large: $border-radius-small;
+$input-border-radius: 2px;
+$input-border-radius-small: $input-border-radius;
+$input-border-radius-large: $input-border-radius;
 $btn-border-radius: 2px;
 
 $label-color: #fff;
 $label-link-hover-color: #fff;
+
+$link-hover-decoration: none;
 
 $alert-padding: 1rem;
 $alert-border-radius: $border-radius;

@@ -53,7 +53,7 @@
   &-input {
     width: 100%;
     border: 1px solid $border-idle;
-    border-radius: 2px;
+    border-radius: $input-border-radius;
     height: $input-height-base;
     padding: 0.75rem 1rem;
     font-weight: 400;

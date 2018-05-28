@@ -51,6 +51,8 @@ $theme-light: (
   pane-bg: #fff,
   text-color: #333,
   text-color-inverted: #fff,
+  link-color: $brand-primary,
+  link-hover-color: darken($brand-primary, 10%),
 
   control-bg: #fff,
   control-bg-dark: darken(#fff, 8%),
@@ -62,6 +64,15 @@ $theme-light: (
   control-disabled-bg: #737373,
   control-disabled-color: #333,
   control-disabled-border: #e6e6e6,
+  control-placeholder: rgba(#333, 0.3),
+  control-inset-shadow: rgba(#000, 0.03),
+
+  table-bg: #fff,
+  table-bg-odd: #fefefe,
+  table-bg-hover: #fafafa,
+
+  tooltip-bg: #222,
+  tooltip-color: #fff,
 
   component-active-color: #fff,
   component-active-bg: $brand-primary,
@@ -101,7 +112,7 @@ $color-var-prefix: '--color';
 @function color($name) {
   // First make sure it's a legit color, and error if not
   @if (map-get($theme-light, $name) == null) {
-    @error 'Color "#{$name}" is not a valid color';
+    @error 'Color `#{$name}` is not a valid color';
     @return false;
   }
 
@@ -127,6 +138,9 @@ $brand-danger: #db5846;
 
 $body-bg: #fbfbfb;
 $text-color: $gray-dark;
+
+$link-color: $brand-primary;
+$link-hover-color: darken($brand-primary, 10%);
 
 $component-active-color: #fff;
 $component-active-bg: $brand-primary;

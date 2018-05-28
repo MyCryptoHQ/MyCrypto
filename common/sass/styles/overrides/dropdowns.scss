@@ -31,7 +31,7 @@ span.dropdown {
       font-weight: 300;
 
       &.active {
-        color: $link-color;
+        color: color(link-color);
       }
     }
   }
