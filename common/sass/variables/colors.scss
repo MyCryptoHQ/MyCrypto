@@ -1,5 +1,112 @@
-$ether-navy: #163151;
-$ether-blue: #0e97c0;
+$brand-primary: #007896;
+$brand-info: #163151;
+$brand-success: #5dba5a;
+$brand-warning: #ff9800;
+$brand-danger: #db5846;
+
+$theme-light: (
+  gray-base: #000,
+  gray-darker: #1c1c1c,
+  gray-dark: #333,
+  gray: #737373,
+  gray-light: #9a9a9a,
+  gray-lighter: #ececec,
+  gray-lightest: #fafafa,
+
+  brand-primary: $brand-primary,
+  brand-primary-dark: darken($brand-primary, 10%),
+  brand-primary-darker: darken($brand-primary, 20%),
+  brand-primary-light: lighten($brand-primary, 10%),
+  brand-primary-lighter: lighten($brand-primary, 20%),
+
+  brand-success: $brand-success,
+  brand-success-dark: darken($brand-success, 10%),
+  brand-success-darker: darken($brand-success, 20%),
+  brand-success-light: lighten($brand-success, 10%),
+  brand-success-lighter: lighten($brand-success, 20%),
+
+  brand-info: $brand-info,
+  brand-info-dark: darken($brand-info, 10%),
+  brand-info-darker: darken($brand-info, 20%),
+  brand-info-light: lighten($brand-info, 10%),
+  brand-info-lighter: lighten($brand-info, 20%),
+
+  brand-warning: $brand-warning,
+  brand-warning-dark: darken($brand-warning, 10%),
+  brand-warning-darker: darken($brand-warning, 20%),
+  brand-warning-light: lighten($brand-warning, 10%),
+  brand-warning-lighter: lighten($brand-warning, 20%),
+
+  brand-danger: $brand-danger,
+  brand-danger-dark: darken($brand-danger, 10%),
+  brand-danger-darker: darken($brand-danger, 20%),
+  brand-danger-light: lighten($brand-danger, 10%),
+  brand-danger-lighter: lighten($brand-danger, 20%),
+
+  white-clear: rgba(#fff, 0.8),
+  white-clearer: rgba(#fff, 0.7),
+  white-clearest: rgba(#fff, 0.6),
+
+  body-bg: #fbfbfb,
+  pane-bg: #fff,
+  text-color: #333,
+  text-color-inverted: #fff,
+
+  control-bg: #fff,
+  control-bg-dark: darken(#fff, 8%),
+  control-bg-darker: darken(#fff, 15%),
+  control-color: #333,
+  control-border: #e5ecf3,
+  control-border-dark: darken(#e5ecf3, 8%),
+  control-border-darker: darken(#e5ecf3, 15%),
+  control-disabled-bg: #737373,
+  control-disabled-color: #333,
+  control-disabled-border: #e6e6e6,
+
+  component-active-color: #fff,
+  component-active-bg: $brand-primary,
+);
+
+$theme-dark: (
+  gray-base: #FFF,
+  gray-darker: #FFF,
+  gray-dark: #FFF,
+  gray: #FFF,
+  gray-light: #FFF,
+  gray-lighter: #FFF,
+  gray-lightest: #FFF,
+
+  border-idle: #FFF,
+  border-disabled: #FFF,
+
+  brand-primary: #FFF,
+  brand-success: #FFF,
+  brand-info: #FFF,
+  brand-warning: #ff9800,
+  brand-danger: #db5846,
+
+  body-bg: #fbfbfb,
+  text-color: #333,
+
+  component-active-color: #fff,
+  component-active-bg: $brand-primary,
+);
+
+$themes: (
+  ('light', $theme-light),
+  ('dark', $theme-dark)
+);
+
+$color-var-prefix: '--color';
+@function color($name) {
+  // First make sure it's a legit color, and error if not
+  @if (map-get($theme-light, $name) == null) {
+    @error 'Color "#{$name}" is not a valid color';
+    @return false;
+  }
+
+  @return var(#{$color-var-prefix}-#{$name});
+}
 
 $gray-base: #000;
 $gray-darker: lighten($gray-base, 13.5%);
@@ -14,7 +121,7 @@ $border-disabled: #e6e6e6;
 
 $brand-primary: #007896;
 $brand-success: #5dba5a;
-$brand-info: $ether-navy;
+$brand-info: #163151;
 $brand-warning: #ff9800;
 $brand-danger: #db5846;
 

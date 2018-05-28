@@ -41,7 +41,7 @@
 
   &-dark {
     & .path {
-      stroke: $ether-navy;
+      stroke: $brand-info;
     }
   }
 }
@@ -66,3 +66,4 @@
     stroke-dashoffset: -124;
   }
 }
+

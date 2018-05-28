@@ -12,7 +12,7 @@
   &-panel {
     position: relative;
     margin: 0 auto 0;
-    background: linear-gradient(150deg, $brand-primary, $ether-navy);
+    background: linear-gradient(150deg, $brand-primary, $brand-info);
     @include mono;
 
     &-side {
