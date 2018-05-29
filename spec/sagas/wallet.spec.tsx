@@ -12,7 +12,7 @@ import {
   TypeKeys
 } from 'actions/wallet';
 import { Wei } from 'libs/units';
-import { changeNodeIntent, web3UnsetNode } from 'actions/config';
+import { changeNodeRequested, web3UnsetNode } from 'actions/config';
 import { INode } from 'libs/nodes/INode';
 import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
 import { getNodeLib, getOffline, getWeb3Node } from 'selectors/config';
@@ -326,14 +326,15 @@ describe('unlockWeb3*', () => {
     expect(data.gen.next().value).toEqual(call(initWeb3Node));
   });
 
-  it('should put changeNodeIntent', () => {
-    expect(data.gen.next(nodeLib).value).toEqual(put(changeNodeIntent('web3')));
+  it('should put changeNodeRequested', () => {
+    expect(data.gen.next(nodeLib).value).toEqual(put(changeNodeRequested('web3')));
   });
 
   it('should yield take on node change', () => {
     const expected = take(
       (action: any) =>
-        action.type === ConfigTypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeSelection === 'web3'
+        action.type === ConfigTypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED &&
+        action.payload.nodeSelection === 'web3'
     );
     const result = data.gen.next().value;
     expect(JSON.stringify(expected)).toEqual(JSON.stringify(result));
