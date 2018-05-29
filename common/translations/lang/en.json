@@ -601,6 +601,12 @@
     "WELCOME_MODAL_FEATURE_MORE": "...and much, much more!",
     "WELCOME_MODAL_LINKS": "Help out with any issues you find by [reporting bugs on GitHub](https://github.com/MyCryptoHQ/MyCrypto/issues) or [HackerOne](https://hackerone.com/mycrypto). Need something from the old site, or just miss that clunky feel? We've kept it up as [MyCrypto Legacy](https://legacy.mycrypto.com).",
     "WELCOME_MODAL_CONTINUE": "Show me the new site!",
+    "HARDWARE_PROMO": "Learn more about protecting your funds.",
+    "SHAPESHIFT_PROMO_1": "Exchange Coins",
+    "SHAPESHIFT_PROMO_2": "& Tokens",
+    "COINBASE_PROMO_SMALL": "It’s now easier to get more ETH",
+    "COINBASE_PROMO": "Buy ETH with USD",
+    "SIMPLEX_PROMO": "Buy ETH with EUR"
     "TESTNET": "Testnet"
   }
 }
