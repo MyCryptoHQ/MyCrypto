@@ -83,6 +83,11 @@
       margin-right: 8px;
       max-height: 26px;
       opacity: 0.8;
+
+      @include theme(dark) {
+        opacity: 1;
+        filter: invert(1);
+      }
     }
   }
 

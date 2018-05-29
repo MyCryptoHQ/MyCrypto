@@ -4,13 +4,13 @@
 $footer-link-color: color(text-color-inverted);
 
 .Footer {
-  background-color: color(brand-info);
+  background-color: color(footer-bg);
   padding: $space-sm $space-sm 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  border-top: 3px solid color(brand-primary);
+  border-top: 3px solid color(footer-border);
 
   &-section {
     color: color(text-color-inverted);

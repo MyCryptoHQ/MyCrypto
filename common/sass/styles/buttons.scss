@@ -104,6 +104,10 @@
     opacity: 0.4;
     box-shadow: none;
     cursor: not-allowed;
+
+    @include theme(dark) {
+      opacity: 0.6;
+    }
   }
 
   &-link:hover {

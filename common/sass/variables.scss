@@ -7,7 +7,6 @@
 @import './variables/transitions';
 @import './variables/tables';
 @import './variables/tooltips';
-@import './variables/forms';
 @import './variables/zindex';
 
 // Misc.
@@ -18,6 +17,15 @@ $input-border-radius: 2px;
 $input-border-radius-small: $input-border-radius;
 $input-border-radius-large: $input-border-radius;
 $btn-border-radius: 2px;
+
+$input-height-base: 3rem;
+$input-height-large: 4rem;
+$input-height-small: 2rem;
+
+$input-border: color(control-border);
+$input-color: color(control-color);
+$input-group-addon-bg: color(control-addon-bg);
+$input-group-addon-border-color: color(control-addon-bg);
 
 $label-color: #fff;
 $label-link-hover-color: #fff;

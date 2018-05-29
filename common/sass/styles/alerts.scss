@@ -9,6 +9,13 @@
 .alert {
   padding: 1rem;
   margin-bottom: 1rem;
+  color: color(text-color-inverted);
+
+  @include theme(dark) {
+    border-radius: 2px;
+    background-color: rgba(#fff, 0.1);
+    color: color(text-color);
+  }
 
   a {
     color: #FFF;
@@ -41,28 +48,27 @@
 /* Colors Variants */
 /*******************/
 
-@mixin alert-variant($background, $text-color) {
+@mixin alert-variant($background) {
   background-color: $background;
-  color: $text-color;
 
-  hr {
-    border-top-color: $text-color;
+  @include theme(dark) {
+    border-bottom: 2px solid $background;
   }
 }
 
 .alert,
 .alert-info {
-  @include alert-variant(color(brand-info), color(text-color-inverted));
+  @include alert-variant(color(brand-info));
 }
 
 .alert-success {
-  @include alert-variant(color(brand-success), color(text-color-inverted));
+  @include alert-variant(color(brand-success));
 }
 
 .alert-warning {
-  @include alert-variant(color(brand-warning), color(text-color-inverted));
+  @include alert-variant(color(brand-warning));
 }
 
 .alert-danger {
-  @include alert-variant(color(brand-danger), color(text-color-inverted));
+  @include alert-variant(color(brand-danger));
 }
