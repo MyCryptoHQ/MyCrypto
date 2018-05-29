@@ -150,6 +150,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'egem.io',
       url: 'https://jsonrpc.egem.io/custom'
     }
+  ],
+
+  CLO: [
+    {
+      name: makeNodeName('CLO', 'clo'),
+      type: 'rpc',
+      service: '0xinfra.com',
+      url: 'https://clo-geth.0xinfra.com/'
+    }
   ]
 };
 

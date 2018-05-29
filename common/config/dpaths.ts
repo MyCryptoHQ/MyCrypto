@@ -68,6 +68,11 @@ export const EGEM_DEFAULT: DPath = {
   value: "m/44'/1987'/0'/0"
 };
 
+export const CLO_DEFAULT: DPath = {
+  label: 'Default (CLO)',
+  value: "m/44'/820'/0'/0"
+};
+
 export const ETH_SINGULAR: DPath = {
   label: 'SingularDTV',
   value: "m/0'/0'/0'"
@@ -87,7 +92,8 @@ export const DPaths: DPath[] = [
   ELLA_DEFAULT,
   MUSIC_DEFAULT,
   ETSC_DEFAULT,
-  EGEM_DEFAULT
+  EGEM_DEFAULT,
+  CLO_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

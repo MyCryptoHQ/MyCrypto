@@ -13,7 +13,8 @@ type StaticNetworkIds =
   | 'ELLA'
   | 'MUSIC'
   | 'ETSC'
-  | 'EGEM';
+  | 'EGEM'
+  | 'CLO';
 
 export interface BlockExplorerConfig {
   name: string;

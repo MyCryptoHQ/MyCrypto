@@ -19,7 +19,8 @@ import {
   UBQ_DEFAULT,
   MUSIC_DEFAULT,
   ETSC_DEFAULT,
-  EGEM_DEFAULT
+  EGEM_DEFAULT,
+  CLO_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
@@ -333,6 +334,30 @@ export const INITIAL_STATE: State = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: EGEM_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EGEM_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+
+  CLO: {
+    id: 'CLO',
+    name: 'Callisto',
+    unit: 'CLO',
+    chainId: 820,
+    isCustom: false,
+    color: '#00b04a',
+    blockExplorer: makeExplorer({
+      name: 'Callisto Explorer',
+      origin: 'https://explorer.callisto.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: CLO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: CLO_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
