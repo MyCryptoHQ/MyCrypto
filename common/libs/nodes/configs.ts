@@ -79,7 +79,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ETC', 'epool'),
       type: 'rpc',
       service: 'Epool.io',
-      url: 'https://mewapi.epool.io',
+      url: 'https://mew.epool.io',
       estimateGas: false
     },
     {
