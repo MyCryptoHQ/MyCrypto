@@ -1,5 +1,4 @@
 export { default as Dropdown } from './Dropdown';
-export { default as ColorDropdown } from './ColorDropdown';
 export { default as OldDropDown } from './OldDropdown';
 export { default as DropdownShell } from './DropdownShell';
 export { default as Identicon } from './Identicon';
