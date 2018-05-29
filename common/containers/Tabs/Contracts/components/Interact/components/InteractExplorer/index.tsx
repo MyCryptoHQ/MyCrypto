@@ -8,7 +8,16 @@ import { GenerateTransaction } from 'components/GenerateTransaction';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { Fields } from './components';
-import { setDataField, TSetDataField } from 'actions/transaction';
+import {
+  setDataField,
+  resetTransactionRequested,
+  TSetDataField,
+  TResetTransactionRequested,
+  TSetAsContractInteraction,
+  TSetAsViewAndSend,
+  setAsContractInteraction,
+  setAsViewAndSend
+} from 'actions/transaction';
 import { Data } from 'libs/units';
 import { Input, Dropdown } from 'components/ui';
 import { INode } from 'libs/nodes';
@@ -23,6 +32,9 @@ interface StateProps {
 interface DispatchProps {
   showNotification: TShowNotification;
   setDataField: TSetDataField;
+  resetTransactionRequested: TResetTransactionRequested;
+  setAsContractInteraction: TSetAsContractInteraction;
+  setAsViewAndSend: TSetAsViewAndSend;
 }
 
 interface OwnProps {
@@ -63,6 +75,15 @@ class InteractExplorerClass extends Component<Props, State> {
     inputs: {},
     outputs: {}
   };
+
+  public componentDidMount() {
+    this.props.setAsContractInteraction();
+    this.props.resetTransactionRequested();
+  }
+
+  public componentWillUnmount() {
+    this.props.setAsViewAndSend();
+  }
 
   public render() {
     const { inputs, outputs, selectedFunction } = this.state;
@@ -109,17 +130,36 @@ class InteractExplorerClass extends Component<Props, State> {
             {/* TODO: Use reusable components with validation */}
             {selectedFunction.contract.inputs.map(input => {
               const { type, name } = input;
-
+              const inputState = this.state.inputs[name];
               return (
                 <div key={name} className="input-group-wrapper InteractExplorer-func-in">
                   <label className="input-group">
                     <div className="input-group-header">{name + ' ' + type}</div>
-                    <Input
-                      className="InteractExplorer-func-in-input"
-                      name={name}
-                      value={(inputs[name] && inputs[name].rawData) || ''}
-                      onChange={this.handleInputChange}
-                    />
+                    {type === 'bool' ? (
+                      <Dropdown
+                        options={[{ value: false, label: 'false' }, { value: true, label: 'true' }]}
+                        value={
+                          inputState
+                            ? {
+                                label: inputState.rawData,
+                                value: inputState.parsedData as any
+                              }
+                            : undefined
+                        }
+                        clearable={false}
+                        onChange={({ value }: { value: boolean }) => {
+                          this.handleBooleanDropdownChange({ value, name });
+                        }}
+                      />
+                    ) : (
+                      <Input
+                        className="InteractExplorer-func-in-input"
+                        isValid={!!(inputs[name] && inputs[name].rawData)}
+                        name={name}
+                        value={(inputs[name] && inputs[name].rawData) || ''}
+                        onChange={this.handleInputChange}
+                      />
+                    )}
                   </label>
                 </div>
               );
@@ -138,7 +178,8 @@ class InteractExplorerClass extends Component<Props, State> {
                   <label className="input-group">
                     <div className="input-group-header"> ↳ {name + ' ' + type}</div>
                     <Input
-                      className="InteractExplorer-func-out-input "
+                      className="InteractExplorer-func-out-input"
+                      isValid={!!decodedFieldValue}
                       value={decodedFieldValue}
                       disabled={true}
                     />
@@ -242,6 +283,17 @@ class InteractExplorerClass extends Component<Props, State> {
     }
   }
 
+  private handleBooleanDropdownChange = ({ value, name }: { value: boolean; name: string }) => {
+    this.setState({
+      inputs: {
+        ...this.state.inputs,
+        [name as any]: {
+          rawData: value.toString(),
+          parsedData: value
+        }
+      }
+    });
+  };
   private handleInputChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const rawValue: string = ev.currentTarget.value;
     const isArr = rawValue.startsWith('[') && rawValue.endsWith(']');
@@ -265,5 +317,11 @@ export const InteractExplorer = connect(
     to: getTo(state),
     dataExists: getDataExists(state)
   }),
-  { showNotification, setDataField }
+  {
+    showNotification,
+    setDataField,
+    resetTransactionRequested,
+    setAsContractInteraction,
+    setAsViewAndSend
+  }
 )(InteractExplorerClass);

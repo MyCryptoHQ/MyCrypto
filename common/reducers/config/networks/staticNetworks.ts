@@ -30,7 +30,8 @@ const testnetDefaultGasPrice = {
 
 export const INITIAL_STATE: State = {
   ETH: {
-    name: 'ETH',
+    id: 'ETH',
+    name: 'Ethereum',
     unit: 'ETH',
     chainId: 1,
     isCustom: false,
@@ -54,6 +55,7 @@ export const INITIAL_STATE: State = {
     shouldEstimateGasPrice: true
   },
   Ropsten: {
+    id: 'Ropsten',
     name: 'Ropsten',
     unit: 'ETH',
     chainId: 3,
@@ -74,6 +76,7 @@ export const INITIAL_STATE: State = {
     gasPriceSettings: testnetDefaultGasPrice
   },
   Kovan: {
+    id: 'Kovan',
     name: 'Kovan',
     unit: 'ETH',
     chainId: 42,
@@ -94,6 +97,7 @@ export const INITIAL_STATE: State = {
     gasPriceSettings: testnetDefaultGasPrice
   },
   Rinkeby: {
+    id: 'Rinkeby',
     name: 'Rinkeby',
     unit: 'ETH',
     chainId: 4,
@@ -114,7 +118,8 @@ export const INITIAL_STATE: State = {
     gasPriceSettings: testnetDefaultGasPrice
   },
   ETC: {
-    name: 'ETC',
+    id: 'ETC',
+    name: 'Ethereum Classic',
     unit: 'ETC',
     chainId: 61,
     isCustom: false,
@@ -138,7 +143,8 @@ export const INITIAL_STATE: State = {
     }
   },
   UBQ: {
-    name: 'UBQ',
+    id: 'UBQ',
+    name: 'Ubiq',
     unit: 'UBQ',
     chainId: 8,
     isCustom: false,
@@ -161,7 +167,8 @@ export const INITIAL_STATE: State = {
     }
   },
   EXP: {
-    name: 'EXP',
+    id: 'EXP',
+    name: 'Expanse',
     unit: 'EXP',
     chainId: 2,
     isCustom: false,
@@ -184,6 +191,7 @@ export const INITIAL_STATE: State = {
     }
   },
   POA: {
+    id: 'POA',
     name: 'POA',
     unit: 'POA',
     chainId: 99,
@@ -209,7 +217,8 @@ export const INITIAL_STATE: State = {
     }
   },
   TOMO: {
-    name: 'TOMO',
+    id: 'TOMO',
+    name: 'TomoChain',
     unit: 'TOMO',
     chainId: 40686,
     isCustom: false,
@@ -233,7 +242,8 @@ export const INITIAL_STATE: State = {
     }
   },
   ELLA: {
-    name: 'ELLA',
+    id: 'ELLA',
+    name: 'Ellaism',
     unit: 'ELLA',
     chainId: 64,
     isCustom: false,

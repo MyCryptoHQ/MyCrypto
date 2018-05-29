@@ -31,7 +31,7 @@ class TransactionStatus extends React.Component<Props> {
     this.props.fetchTransactionData(this.props.txHash);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.txHash !== nextProps.txHash) {
       this.props.fetchTransactionData(nextProps.txHash);
     }

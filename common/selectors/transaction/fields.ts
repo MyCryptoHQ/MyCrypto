@@ -26,12 +26,15 @@ const getValidGasCost = (state: AppState) => {
   return gasCost.lte(etherBalance);
 };
 
+const getToRaw = (state: AppState) => getTo(state).raw;
+
 export {
   getData,
   getFields,
   getGasLimit,
   getValue,
   getTo,
+  getToRaw,
   getNonce,
   getGasPrice,
   getDataExists,

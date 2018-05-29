@@ -8,6 +8,10 @@
         "beta": {
             "gitUrl": "git@github.com:MyCryptoHQ/MyCrypto-Beta.git",
             "distFolder": "docs"
+        },
+        "prod": {
+            "gitUrl": "git@github.com:MyCryptoHQ/MyCrypto-Production.git",
+            "distFolder": "docs"
         }
     }
 }
