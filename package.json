@@ -93,7 +93,7 @@
     "coveralls": "3.0.0",
     "css-loader": "0.28.11",
     "electron": "1.8.4",
-    "electron-builder": "20.8.1",
+    "electron-builder": "20.13.4",
     "empty": "0.10.1",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
