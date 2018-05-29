@@ -12,7 +12,7 @@
     "LABEL_CANNOT_CONTAIN_ENS_SUFFIX": "Address labels may not contain \".eth\", \".test\" or \".reverse\".",
     "SENDING_TO": "Sending to",
     "NEW_ADDRESS": "New address",
-    "NEW_LABEL": "New label",    
+    "NEW_LABEL": "New label",
     "X_TXHASH": "TX Hash",
     "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your keystore file to unlock your wallet.**",
     "NAV_CHECKTXSTATUS": "Check TX Status",
@@ -538,7 +538,8 @@
     "TOOLTIP_MORE_INFO": "More info",
     "TOOLTIP_INSECURE_WALLET_TYPE": "This wallet type is insecure",
     "TOOLTIP_SECURE_WALLET_TYPE": "This wallet type is secure",
-    "CUSTOM_NODE_CONFLICT": "You already have a node called $conflictedNode that matches this one, saving will overwrite it",
+    "CUSTOM_NODE_NAME_CONFLICT": "You already have a node called '$node' that matches this one, saving will overwrite it",
+    "CUSTOM_NODE_CHAINID_CONFLICT": "Custom network cannot share chain ID with '$network'",
     "CUSTOM_NETWORK": "Network",
     "CUSTOM_NODE_NAME": "Node Name",
     "CUSTOM_NETWORK_NAME": "Network Name",
@@ -546,6 +547,11 @@
     "CUSTOM_NETWORK_CHAIN_ID": "Chain ID",
     "CUSTOM_NETWORK_URL": "URL",
     "CUSTOM_NETWORK_HTTP_AUTH": "HTTP Basic Authentication",
+    "NETWORKS_SWITCH": "Switch to the $network network",
+    "NETWORKS_SWITCH_NODE": "Switch to the $node node on the $network network",
+    "NETWORKS_EXPAND_NODES": "Show node options for the $network network",
+    "NETWORKS_ALTERNATIVE": "Other Networks",
+    "NETWORK_UNKNOWN_ERROR": "Unknown network '$network', try adding a custom node or connecting to a different one",
     "BROADCAST_TX_TITLE": "Broadcast Signed Transaction",
     "BROADCAST_TX_DESCRIPTION": "Paste a signed transaction and click 'send transaction'",
     "NAME_AUCTION_PROMPT_BID_1": "Want to place a bid on {name}.eth? ",
@@ -575,6 +581,8 @@
     "CONTRACTS_INTERACT": "Interact",
     "CONTRACTS_DEPLOY": "Deploy",
     "SELECT_A_THING": "Select a $thing",
+    "SHOW_THING": "Show $thing",
+    "HIDE_THING": "Hide $thing",
     "NO_CONTRACTS_AVAILABLE": "No contracts available",
     "NETWORK_STATUS_ONLINE": "Connected to $network network",
     "NETWORK_STATUS_OFFLINE": "Disconnected from $network network",
@@ -592,6 +600,7 @@
     "WELCOME_MODAL_FEATURE_5": "A downloadable desktop app",
     "WELCOME_MODAL_FEATURE_MORE": "...and much, much more!",
     "WELCOME_MODAL_LINKS": "Help out with any issues you find by [reporting bugs on GitHub](https://github.com/MyCryptoHQ/MyCrypto/issues) or [HackerOne](https://hackerone.com/mycrypto). Need something from the old site, or just miss that clunky feel? We've kept it up as [MyCrypto Legacy](https://legacy.mycrypto.com).",
-    "WELCOME_MODAL_CONTINUE": "Show me the new site!"
+    "WELCOME_MODAL_CONTINUE": "Show me the new site!",
+    "TESTNET": "Testnet"
   }
 }
