@@ -2,7 +2,13 @@ import React from 'react';
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
 import logo from 'assets/images/logo-mycrypto-transparent.svg';
-import { donationAddressMap, socialMediaLinks, productLinks, affiliateLinks } from 'config';
+import {
+  donationAddressMap,
+  socialMediaLinks,
+  productLinks,
+  affiliateLinks,
+  VERSION
+} from 'config';
 import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
 import './index.scss';
@@ -47,6 +53,7 @@ export default class SupportPage extends React.Component<{}, State> {
                   <div className="SupportPage-mycrypto-legal-text">
                     <a onClick={this.openDisclaimer}>{translate('DISCLAIMER')}</a>
                   </div>
+                  <div className="SupportPage-mycrypto-legal-text">v{VERSION}</div>
                 </div>
               </div>
             </div>

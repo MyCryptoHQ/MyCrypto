@@ -9,7 +9,8 @@ import {
   InputGasPriceIntentAction,
   InputDataAction,
   InputNonceAction,
-  ResetAction,
+  ResetTransactionRequestedAction,
+  ResetTransactionSuccessfulAction,
   SetGasPriceFieldAction
 } from '../actionTypes';
 import { TypeKeys } from 'actions/transaction/constants';
@@ -80,9 +81,16 @@ const setGasPriceField = (payload: SetGasPriceFieldAction['payload']): SetGasPri
   payload
 });
 
-type TReset = typeof reset;
-const reset = (payload: ResetAction['payload'] = { include: {}, exclude: {} }): ResetAction => ({
-  type: TypeKeys.RESET,
+type TResetTransactionRequested = typeof resetTransactionRequested;
+const resetTransactionRequested = (): ResetTransactionRequestedAction => ({
+  type: TypeKeys.RESET_REQUESTED
+});
+
+type TResetTransactionSuccessful = typeof resetTransactionSuccessful;
+const resetTransactionSuccessful = (
+  payload: ResetTransactionSuccessfulAction['payload']
+): ResetTransactionSuccessfulAction => ({
+  type: TypeKeys.RESET_SUCCESSFUL,
   payload
 });
 
@@ -98,7 +106,8 @@ export {
   TSetNonceField,
   TSetValueField,
   TSetGasPriceField,
-  TReset,
+  TResetTransactionRequested,
+  TResetTransactionSuccessful,
   inputGasLimit,
   inputGasPrice,
   inputGasPriceIntent,
@@ -110,5 +119,6 @@ export {
   setNonceField,
   setValueField,
   setGasPriceField,
-  reset
+  resetTransactionRequested,
+  resetTransactionSuccessful
 };

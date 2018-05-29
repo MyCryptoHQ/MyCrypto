@@ -3,8 +3,8 @@ import classnames from 'classnames';
 import translate from 'translations';
 import { navigationLinks } from 'config';
 import NavigationLink from 'components/NavigationLink';
+import NetworkSelect from './NetworkSelect';
 import LanguageSelect from './LanguageSelect';
-import NodeSelect from './NodeSelect';
 import NetworkStatus from './NetworkStatus';
 import './ElectronNav.scss';
 
@@ -31,7 +31,7 @@ export default class ElectronNav extends React.Component<{}, State> {
       >
         <div className="ElectronNav-branding">
           <div className="ElectronNav-branding-logo" />
-          <div className="ElectronNav-branding-beta">Beta Release</div>
+          <div className="ElectronNav-branding-beta">Alpha Release</div>
         </div>
 
         <ul className="ElectronNav-links">
@@ -80,7 +80,7 @@ export default class ElectronNav extends React.Component<{}, State> {
   };
 
   private openNodeSelect = () => {
-    const panelContent = <NodeSelect closePanel={this.closePanel} />;
+    const panelContent = <NetworkSelect closePanel={this.closePanel} />;
     this.setState({
       panelContent,
       isPanelOpen: true

@@ -47,7 +47,8 @@ export interface GasPriceSetting {
 
 interface StaticNetworkConfig {
   isCustom: false; // used for type guards
-  name: StaticNetworkIds;
+  id: StaticNetworkIds;
+  name: string;
   unit: string;
   color?: string;
   blockExplorer: BlockExplorerConfig;
@@ -67,6 +68,7 @@ interface StaticNetworkConfig {
 interface CustomNetworkConfig {
   isCustom: true; // used for type guards
   isTestnet?: boolean;
+  id: string;
   name: string;
   unit: string;
   chainId: number;
