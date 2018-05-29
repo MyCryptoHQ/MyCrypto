@@ -12,7 +12,7 @@
     "LABEL_CANNOT_CONTAIN_ENS_SUFFIX": "Address labels may not contain \".eth\", \".test\" or \".reverse\".",
     "SENDING_TO": "Sending to",
     "NEW_ADDRESS": "New address",
-    "NEW_LABEL": "New label",
+    "NEW_LABEL": "New label",    
     "X_TXHASH": "TX Hash",
     "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your keystore file to unlock your wallet.**",
     "NAV_CHECKTXSTATUS": "Check TX Status",
@@ -592,9 +592,6 @@
     "WELCOME_MODAL_FEATURE_5": "A downloadable desktop app",
     "WELCOME_MODAL_FEATURE_MORE": "...and much, much more!",
     "WELCOME_MODAL_LINKS": "Help out with any issues you find by [reporting bugs on GitHub](https://github.com/MyCryptoHQ/MyCrypto/issues) or [HackerOne](https://hackerone.com/mycrypto). Need something from the old site, or just miss that clunky feel? We've kept it up as [MyCrypto Legacy](https://legacy.mycrypto.com).",
-    "WELCOME_MODAL_CONTINUE": "Show me the new site!",
-    "SORRY": "Sorry",
-    "WEB3_UNAVAILABLE_OFFLINE": "Web3 wallets (e.g. MetaMask, Mist) are not available in offline mode.",
-    "WEB3_ERROR_WRONG_NETWORK": "Expected network to be $expectedNetwork, but got $actualNetwork instead. Please change to the correct network or refresh and try again."
+    "WELCOME_MODAL_CONTINUE": "Show me the new site!"
   }
 }

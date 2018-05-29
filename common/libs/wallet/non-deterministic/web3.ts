@@ -5,7 +5,6 @@ import { configuredStore } from 'store';
 import { getNodeLib, getNetworkNameByChainId } from 'selectors/config';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
-import { translateRaw } from 'translations';
 
 export default class Web3Wallet implements IFullWallet {
   private address: string;
@@ -79,10 +78,9 @@ export default class Web3Wallet implements IFullWallet {
     const netName = getNetworkNameByChainId(configuredStore.getState(), netId);
     if (this.network !== netName) {
       throw new Error(
-        translateRaw('WEB3_ERROR_WRONG_NETWORK', {
-          $expectedNetwork: this.network,
-          $actualNetwork: netName || 'null'
-        })
+        `Expected MetaMask / Mist network to be ${
+          this.network
+        }, but got ${netName}. Please change the network or refresh the page.`
       );
     }
   }
