@@ -20,60 +20,66 @@ export interface ChangeLanguageAction {
   payload: string;
 }
 
-/*** Change Node ***/
-export interface ChangeNodeAction {
-  type: TypeKeys.CONFIG_NODE_CHANGE;
+/*** Poll offline status ***/
+export interface PollOfflineStatus {
+  type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS;
+}
+
+/*** Change Node Requested ***/
+export interface ChangeNodeRequestedAction {
+  type: TypeKeys.CONFIG_CHANGE_NODE_REQUESTED;
+  payload: string;
+}
+
+/*** Change Node Succeeded ***/
+export interface ChangeNodeSucceededAction {
+  type: TypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED;
   payload: {
     nodeId: string;
     networkId: string;
   };
 }
 
-/*** Poll offline status ***/
-export interface PollOfflineStatus {
-  type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS;
-}
-
-/*** Change Node ***/
-export interface ChangeNodeIntentAction {
-  type: TypeKeys.CONFIG_NODE_CHANGE_INTENT;
-  payload: string;
-}
-
 /*** Change Node Onetime ***/
-export interface ChangeNodeIntentOneTimeAction {
-  type: TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME;
+export interface ChangeNodeRequestedOneTimeAction {
+  type: TypeKeys.CONFIG_CHANGE_NODE_REQUESTED_ONETIME;
   payload: string;
 }
 
 /*** Force Change Node ***/
 export interface ChangeNodeForceAction {
-  type: TypeKeys.CONFIG_NODE_CHANGE_FORCE;
+  type: TypeKeys.CONFIG_CHANGE_NODE_FORCE;
+  payload: string;
+}
+
+/*** Change Network Intent ***/
+export interface ChangeNetworkRequestedAction {
+  type: TypeKeys.CONFIG_CHANGE_NETWORK_REQUESTED;
   payload: string;
 }
 
 /*** Add Custom Node ***/
 export interface AddCustomNodeAction {
   type: TypeKeys.CONFIG_ADD_CUSTOM_NODE;
-  payload: { id: string; config: CustomNodeConfig };
+  payload: CustomNodeConfig;
 }
 
 /*** Remove Custom Node ***/
 export interface RemoveCustomNodeAction {
   type: TypeKeys.CONFIG_REMOVE_CUSTOM_NODE;
-  payload: { id: string };
+  payload: string;
 }
 
 /*** Add Custom Network ***/
 export interface AddCustomNetworkAction {
   type: TypeKeys.CONFIG_ADD_CUSTOM_NETWORK;
-  payload: { id: string; config: CustomNetworkConfig };
+  payload: CustomNetworkConfig;
 }
 
 /*** Remove Custom Network ***/
 export interface RemoveCustomNetworkAction {
   type: TypeKeys.CONFIG_REMOVE_CUSTOM_NETWORK;
-  payload: { id: string };
+  payload: string;
 }
 
 /*** Set Latest Block ***/
@@ -98,8 +104,8 @@ export type CustomNetworkAction = AddCustomNetworkAction | RemoveCustomNetworkAc
 export type CustomNodeAction = AddCustomNodeAction | RemoveCustomNodeAction;
 
 export type NodeAction =
-  | ChangeNodeAction
-  | ChangeNodeIntentAction
+  | ChangeNodeSucceededAction
+  | ChangeNodeRequestedAction
   | Web3UnsetNodeAction
   | Web3setNodeAction;
 

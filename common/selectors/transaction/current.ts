@@ -40,6 +40,11 @@ const isValidCurrentTo = (state: AppState) => {
   }
 };
 
+const isCurrentToLabelEntry = (state: AppState): boolean => {
+  const currentTo = getCurrentTo(state);
+  return !currentTo.raw.startsWith('0x');
+};
+
 const isValidGasPrice = (state: AppState): boolean => gasPriceValidator(getGasPrice(state).raw);
 
 const isValidGasLimit = (state: AppState): boolean => gasLimitValidator(getGasLimit(state).raw);
@@ -56,6 +61,7 @@ export {
   ICurrentTo,
   isEtherTransaction,
   isValidCurrentTo,
+  isCurrentToLabelEntry,
   isValidGasPrice,
   isValidGasLimit,
   getCurrentToAddressMessage

@@ -16,14 +16,14 @@ export const getNetworkConfigById = (state: AppState, networkId: string) =>
     ? getStaticNetworkConfigs(state)[networkId]
     : getCustomNetworkConfigs(state)[networkId];
 
-export const getNetworkNameByChainId = (state: AppState, chainId: number | string) => {
+export const getNetworkByChainId = (state: AppState, chainId: number | string) => {
   const network =
     Object.values(getStaticNetworkConfigs(state)).find(n => +n.chainId === +chainId) ||
     Object.values(getCustomNetworkConfigs(state)).find(n => +n.chainId === +chainId);
   if (!network) {
     return null;
   }
-  return network.name;
+  return network;
 };
 
 export const getStaticNetworkIds = (state: AppState): StaticNetworkIds[] =>
@@ -81,6 +81,11 @@ export const getNetworkContracts = (state: AppState): NetworkContract[] | null =
 export const getCustomNetworkConfigs = (state: AppState) => getNetworks(state).customNetworks;
 
 export const getStaticNetworkConfigs = (state: AppState) => getNetworks(state).staticNetworks;
+
+export const getAllNetworkConfigs = (state: AppState) => ({
+  ...getStaticNetworkConfigs(state),
+  ...getCustomNetworkConfigs(state)
+});
 
 export const isNetworkUnit = (state: AppState, unit: string) => {
   return unit === getNetworkUnit(state);

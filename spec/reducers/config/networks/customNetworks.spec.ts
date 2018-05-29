@@ -2,41 +2,36 @@ import { CustomNetworkConfig } from 'types/network';
 import { addCustomNetwork, removeCustomNetwork } from 'actions/config';
 import { customNetworks } from 'reducers/config/networks/customNetworks';
 
-const firstCustomNetworkId = 'firstCustomNetwork';
-const firstCustomNetworkConfig: CustomNetworkConfig = {
+const firstCustomNetwork: CustomNetworkConfig = {
   isCustom: true,
-  chainId: 1,
-  name: firstCustomNetworkId,
+  id: '111',
+  chainId: 111,
+  name: 'First Custom Network',
   unit: 'customNetworkUnit',
   dPathFormats: null
 };
 
-const secondCustomNetworkId = 'secondCustomNetwork';
-const secondCustomNetworkConfig: CustomNetworkConfig = {
-  ...firstCustomNetworkConfig,
-  name: secondCustomNetworkId
+const secondCustomNetwork: CustomNetworkConfig = {
+  ...firstCustomNetwork,
+  id: '222',
+  chainId: 222,
+  name: 'Second Custom Network'
 };
 
 const expectedState = {
   initialState: {},
-  addFirstCustomNetwork: { [firstCustomNetworkId]: firstCustomNetworkConfig },
+  addFirstCustomNetwork: { [firstCustomNetwork.id]: firstCustomNetwork },
   addSecondCustomNetwork: {
-    [firstCustomNetworkId]: firstCustomNetworkConfig,
-    [secondCustomNetworkId]: secondCustomNetworkConfig
+    [firstCustomNetwork.id]: firstCustomNetwork,
+    [secondCustomNetwork.id]: secondCustomNetwork
   },
-  removeFirstCustomNetwork: { [secondCustomNetworkId]: secondCustomNetworkConfig }
+  removeFirstCustomNetwork: { [secondCustomNetwork.id]: secondCustomNetwork }
 };
 
 const actions = {
-  addFirstCustomNetwork: addCustomNetwork({
-    id: firstCustomNetworkId,
-    config: firstCustomNetworkConfig
-  }),
-  addSecondCustomNetwork: addCustomNetwork({
-    config: secondCustomNetworkConfig,
-    id: secondCustomNetworkId
-  }),
-  removeFirstCustomNetwork: removeCustomNetwork({ id: firstCustomNetworkId })
+  addFirstCustomNetwork: addCustomNetwork(firstCustomNetwork),
+  addSecondCustomNetwork: addCustomNetwork(secondCustomNetwork),
+  removeFirstCustomNetwork: removeCustomNetwork(firstCustomNetwork.id)
 };
 
 describe('custom networks reducer', () => {

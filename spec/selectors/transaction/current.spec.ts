@@ -6,7 +6,8 @@ import {
   isValidCurrentTo,
   isValidGasPrice,
   isValidGasLimit,
-  getCurrentToAddressMessage
+  getCurrentToAddressMessage,
+  isCurrentToLabelEntry
 } from 'selectors/transaction';
 import { getInitialState } from '../helpers';
 
@@ -64,5 +65,17 @@ describe('current selector', () => {
 
   it('should check isValidCurrentTo', () => {
     expect(isValidCurrentTo(state)).toEqual(true);
+  });
+
+  it('should check isCurrentToLabelEntry', () => {
+    expect(isCurrentToLabelEntry(state)).toEqual(false);
+
+    const otherState = { ...state };
+    otherState.transaction = {
+      ...state.transaction,
+      fields: { ...state.transaction.fields, to: { ...state.transaction.fields.to, raw: 'derp' } }
+    };
+
+    expect(isCurrentToLabelEntry(otherState)).toEqual(true);
   });
 });
