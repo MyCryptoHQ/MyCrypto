@@ -64,18 +64,18 @@ export async function setupWeb3Node() {
   }
 
   const lib = new Web3Node();
-  const networkId = await lib.getNetVersion();
+  const chainId = await lib.getNetVersion();
   const accounts = await lib.getAccounts();
 
   if (!accounts.length) {
     throw new Error('No accounts found in MetaMask / Mist.');
   }
 
-  if (networkId === 'loading') {
+  if (chainId === 'loading') {
     throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
   }
 
-  return { networkId, lib };
+  return { chainId, lib };
 }
 
 export async function isWeb3NodeAvailable(): Promise<boolean> {

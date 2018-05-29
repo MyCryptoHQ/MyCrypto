@@ -43,10 +43,8 @@ import {
   donationAddressMap
 } from 'config';
 import { isWeb3NodeAvailable } from 'libs/nodes/web3';
-import CipherIcon from 'assets/images/wallets/cipher.svg';
+import { getWeb3ProviderInfo } from 'utils/web3';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
-import MetamaskIcon from 'assets/images/wallets/metamask.svg';
-import MistIcon from 'assets/images/wallets/mist.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
@@ -108,32 +106,16 @@ export interface InsecureWalletInfo extends BaseWalletInfo {
 // tslint:disable-next-line:no-empty-interface
 interface MiscWalletInfo extends InsecureWalletInfo {}
 
-const WEB3_TYPES = {
-  CipherProvider: {
-    lid: 'X_CIPHER',
-    icon: CipherIcon
-  },
-  MetamaskInpageProvider: {
-    lid: 'X_METAMASK',
-    icon: MetamaskIcon
-  },
-  EthereumProvider: {
-    lid: 'X_MIST',
-    icon: MistIcon
-  }
-};
-
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
 type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
 type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
 type Wallets = SecureWallets & InsecureWallets & MiscWallet;
 
-const WEB3_TYPE: keyof typeof WEB3_TYPES | false =
-  (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
-
 const SECURE_WALLETS = Object.values(SecureWalletName);
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
 const MISC_WALLETS = Object.values(MiscWalletName);
+
+const web3info = getWeb3ProviderInfo();
 
 const WalletDecrypt = withRouter<Props>(
   class WalletDecryptClass extends Component<RouteComponentProps<{}> & Props, State> {
@@ -141,8 +123,8 @@ const WalletDecrypt = withRouter<Props>(
     // index signature should become [key: Wallets] (from config) once typescript bug is fixed
     public WALLETS: Wallets = {
       [SecureWalletName.WEB3]: {
-        lid: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] ? WEB3_TYPES[WEB3_TYPE].lid : 'X_WEB3',
-        icon: WEB3_TYPE && WEB3_TYPES[WEB3_TYPE] && WEB3_TYPES[WEB3_TYPE].icon,
+        lid: web3info.lid,
+        icon: web3info.icon,
         description: 'ADD_WEB3DESC',
         component: Web3Decrypt,
         initialParams: {},
