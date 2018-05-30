@@ -66,7 +66,7 @@ class ENSDebug extends React.Component<Props, State> {
       loading
     } = this.state;
 
-    const { sealedBid } = this.props.shaBid;
+    // const { sealedBid } = this.props.shaBid;
 
     let content = null;
 
