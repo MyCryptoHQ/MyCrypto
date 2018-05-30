@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { UnitDisplay, NewTabLink } from 'components/ui';
 import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
 import { AppState } from 'reducers';
@@ -163,7 +163,7 @@ class AccountInfo extends React.Component<Props, State> {
                   </NewTabLink>
                 </li>
               )}
-              {network.name === 'ETH' && (
+              {network.id === 'ETH' && (
                 <li className="AccountInfo-list-item">
                   <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
                     {`${network.name} (${etherChainExplorerInst.origin})`}
@@ -186,7 +186,7 @@ class AccountInfo extends React.Component<Props, State> {
 
   private setSymbol(network: NetworkConfig) {
     if (network.isTestnet) {
-      return network.unit + ' (' + network.name + ')';
+      return `${network.unit} (${translateRaw('TESTNET')})`;
     }
     return network.unit;
   }

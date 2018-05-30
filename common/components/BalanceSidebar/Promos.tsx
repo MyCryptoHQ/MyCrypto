@@ -1,6 +1,6 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { HardwareWallets, Coinbase, Shapeshift } from './PromoComponents';
+import { HardwareWallets, Coinbase, Shapeshift, Simplex } from './PromoComponents';
 import './Promos.scss';
 import { connect } from 'react-redux';
 import { AppState } from '../../reducers';
@@ -13,6 +13,16 @@ const CarouselAnimation = ({ children, ...props }: any) => (
 
 // Don't change Coinbase index
 const promos = [HardwareWallets, Coinbase, Shapeshift];
+const isEuroLocal = () => {
+  // getTimezoneOffset returns the difference in minutes between UTC and local time.
+  // the offset is positive if behind UTC (like UTC-4), and negative if above (like UTC+2)
+  const offset = new Date().getTimezoneOffset();
+  // -240 to 0 covers UTC+4 to UTC+0, which is all of europe
+  return -240 <= offset && offset < 0;
+};
+if (isEuroLocal()) {
+  promos.push(Simplex);
+}
 
 interface State {
   activePromo: number;
@@ -24,7 +34,6 @@ interface StateProps {
 
 class PromosClass extends React.PureComponent<StateProps, State> {
   public timer: any = null;
-  public promos = [HardwareWallets, Coinbase, Shapeshift];
 
   public state = {
     activePromo: parseInt(String(Math.random() * promos.length), 10)

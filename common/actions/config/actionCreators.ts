@@ -28,16 +28,6 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
   };
 }
 
-export type TChangeNode = typeof changeNode;
-export function changeNode(
-  payload: interfaces.ChangeNodeAction['payload']
-): interfaces.ChangeNodeAction {
-  return {
-    type: TypeKeys.CONFIG_NODE_CHANGE,
-    payload
-  };
-}
-
 export type TPollOfflineStatus = typeof pollOfflineStatus;
 export function pollOfflineStatus(): interfaces.PollOfflineStatus {
   return {
@@ -45,18 +35,37 @@ export function pollOfflineStatus(): interfaces.PollOfflineStatus {
   };
 }
 
-export type TChangeNodeIntent = typeof changeNodeIntent;
-export function changeNodeIntent(payload: string): interfaces.ChangeNodeIntentAction {
+export type TChangeNodeRequested = typeof changeNodeRequested;
+export function changeNodeRequested(payload: string): interfaces.ChangeNodeRequestedAction {
   return {
-    type: TypeKeys.CONFIG_NODE_CHANGE_INTENT,
+    type: TypeKeys.CONFIG_CHANGE_NODE_REQUESTED,
     payload
   };
 }
 
-export type TChangeNodeIntentOneTime = typeof changeNodeIntentOneTime;
-export function changeNodeIntentOneTime(payload: string): interfaces.ChangeNodeIntentOneTimeAction {
+export type TChangeNodeSucceded = typeof changeNodeSucceeded;
+export function changeNodeSucceeded(
+  payload: interfaces.ChangeNodeSucceededAction['payload']
+): interfaces.ChangeNodeSucceededAction {
   return {
-    type: TypeKeys.CONFIG_NODE_CHANGE_INTENT_ONETIME,
+    type: TypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED,
+    payload
+  };
+}
+
+export type TChangeNodeFailed = typeof changeNodeFailed;
+export function changeNodeFailed(): interfaces.ChangeNodeFailedAction {
+  return {
+    type: TypeKeys.CONFIG_CHANGE_NODE_FAILED
+  };
+}
+
+export type TChangeNodeRequestedOneTime = typeof changeNodeRequestedOneTime;
+export function changeNodeRequestedOneTime(
+  payload: string
+): interfaces.ChangeNodeRequestedOneTimeAction {
+  return {
+    type: TypeKeys.CONFIG_CHANGE_NODE_REQUESTED_ONETIME,
     payload
   };
 }
@@ -64,7 +73,17 @@ export function changeNodeIntentOneTime(payload: string): interfaces.ChangeNodeI
 export type TChangeNodeForce = typeof changeNodeForce;
 export function changeNodeForce(payload: string): interfaces.ChangeNodeForceAction {
   return {
-    type: TypeKeys.CONFIG_NODE_CHANGE_FORCE,
+    type: TypeKeys.CONFIG_CHANGE_NODE_FORCE,
+    payload
+  };
+}
+
+export type TChangeNetworkRequested = typeof changeNetworkRequested;
+export function changeNetworkRequested(
+  payload: interfaces.ChangeNetworkRequestedAction['payload']
+): interfaces.ChangeNetworkRequestedAction {
+  return {
+    type: TypeKeys.CONFIG_CHANGE_NETWORK_REQUESTED,
     payload
   };
 }
