@@ -7,6 +7,7 @@ import {
   setOnline,
   changeNodeSucceeded,
   changeNodeRequested,
+  changeNodeFailed,
   changeNodeForce,
   setLatestBlock,
   TypeKeys,
@@ -142,6 +143,7 @@ describe('handleChangeNodeRequested*', () => {
 
   function shouldBailOut(gen: SagaIterator, nextVal: any, errMsg: string) {
     expect(gen.next(nextVal).value).toEqual(put(showNotification('danger', errMsg, 5000)));
+    expect(gen.next().value).toEqual(put(changeNodeFailed()));
     expect(gen.next().done).toEqual(true);
   }
 
@@ -180,6 +182,7 @@ describe('handleChangeNodeRequested*', () => {
     expect(data.clone1.throw('err').value).toEqual(
       put(showNotification('danger', translateRaw('ERROR_32'), 5000))
     );
+    expect(data.clone1.next().value).toEqual(put(changeNodeFailed()));
     expect(data.clone1.next().done).toEqual(true);
   });
 
