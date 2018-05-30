@@ -92,3 +92,20 @@ export function* resolveDomainRequest(name: string): SagaIterator {
   };
   return returnValue;
 }
+
+export function* shaBidRequest(payload: any): SagaIterator {
+  const { nameHash, bidAddress, amountWei, secretHash } = payload;
+
+  const shaBidData: typeof ENS.auction.shaBid.outputType = yield call(makeEthCallAndDecode, {
+    to: main.public.ethAuction,
+    data: ENS.auction.shaBid.encodeInput({
+      hash: nameHash,
+      owner: bidAddress,
+      value: amountWei,
+      salt: secretHash
+    }),
+    decoder: ENS.auction.shaBid.decodeOutput
+  });
+
+  return shaBidData;
+}

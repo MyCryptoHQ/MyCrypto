@@ -7,6 +7,9 @@ import { normalise } from 'libs/ens';
 import BN from 'bn.js';
 import auctionABI from 'libs/ens/contracts/auction/auction.json';
 import abi from 'ethereumjs-abi';
+import { AppState } from 'reducers';
+import { shaBidRequested, TShaBidRequested } from 'actions/ens';
+import { connect } from 'react-redux';
 
 interface State {
   bidAddress: string;
@@ -21,9 +24,15 @@ interface State {
   newBidData: string;
   revealData: string;
   finalizeData: string;
+  loading: boolean;
 }
 
-export default class ENSDebug extends React.Component<State> {
+interface Props {
+  shaBid: AppState['ens']['shaBid'];
+  shaBidRequested: TShaBidRequested;
+}
+
+class ENSDebug extends React.Component<Props, State> {
   public state = {
     bidAddress: '',
     ensName: '',
@@ -56,6 +65,8 @@ export default class ENSDebug extends React.Component<State> {
       finalizeData,
       loading
     } = this.state;
+
+    const { sealedBid } = this.props.shaBid;
 
     let content = null;
 
@@ -111,7 +122,13 @@ export default class ENSDebug extends React.Component<State> {
 
             <label className="input-group">
               <div className="input-group-header">Address you Bid From</div>
-              <Input value={bidAddress} type="text" isValid={true} name="bidAddress" />
+              <Input
+                value={bidAddress}
+                type="text"
+                isValid={true}
+                name="bidAddress"
+                onChange={this.onChange}
+              />
             </label>
 
             <div className="input-row">
@@ -219,6 +236,15 @@ export default class ENSDebug extends React.Component<State> {
       case 'secret':
         this.calcSecretHash(event.currentTarget.value);
         break;
+      case 'bidAddress':
+        let { bidAddress } = this.state;
+
+        bidAddress = event.currentTarget.value;
+
+        this.setState({
+          bidAddress
+        });
+        break;
       default:
         break;
     }
@@ -231,7 +257,6 @@ export default class ENSDebug extends React.Component<State> {
     nameHash = ensName ? '0x' + ethUtil.sha3(ensName).toString('hex') : '';
 
     this.setState({
-      ...this.state,
       ensName,
       nameHash
     });
@@ -244,7 +269,6 @@ export default class ENSDebug extends React.Component<State> {
     amountWei = toWei(amountEth, getDecimalFromEtherUnit('ether'));
 
     this.setState({
-      ...this.state,
       amountEth,
       amountWei
     });
@@ -257,7 +281,6 @@ export default class ENSDebug extends React.Component<State> {
     amountEth = fromWei(amountWei, 'ether');
 
     this.setState({
-      ...this.state,
       amountEth,
       amountWei
     });
@@ -270,30 +293,33 @@ export default class ENSDebug extends React.Component<State> {
     secretHash = secret ? '0x' + ethUtil.sha3(secret).toString('hex') : '';
 
     this.setState({
-      ...this.state,
       secret,
       secretHash
     });
   }
 
   private calcENSData = () => {
-    const { ensName } = this.state;
-    let { loading, startAuctionData } = this.state;
+    const { ensName, amountWei, secretHash, nameHash, bidAddress } = this.state;
+    let { loading, startAuctionData, revealData, finalizeData } = this.state;
 
     loading = true;
 
     this.setState({
-      ...this.state,
       loading
     });
 
     startAuctionData = this.getStartAuctionData(ensName);
+    revealData = this.getRevealData(ensName, amountWei, secretHash);
+    finalizeData = this.getFinalizeData(ensName);
+
+    this.props.shaBidRequested(nameHash, bidAddress, amountWei, secretHash);
 
     loading = false;
 
     this.setState({
-      ...this.state,
       startAuctionData,
+      revealData,
+      finalizeData,
       loading
     });
   };
@@ -301,6 +327,20 @@ export default class ENSDebug extends React.Component<State> {
   private getStartAuctionData = (name: string) => {
     name = '0x' + ethUtil.sha3(normalise(name)).toString('hex');
     const funcABI = auctionABI.find((func: any) => func.name === 'startAuction');
+
+    return this.getDataString(funcABI, [name]);
+  };
+
+  private getRevealData = (name: string, value: BN, secretHash: string) => {
+    name = '0x' + ethUtil.sha3(normalise(name)).toString('hex');
+    const funcABI = auctionABI.find((func: any) => func.name === 'unsealBid');
+
+    return this.getDataString(funcABI, [name, value, secretHash]);
+  };
+
+  private getFinalizeData = (name: string) => {
+    name = '0x' + ethUtil.sha3(normalise(name)).toString('hex');
+    const funcABI = auctionABI.find((func: any) => func.name === 'finalizeAuction');
 
     return this.getDataString(funcABI, [name]);
   };
@@ -334,8 +374,17 @@ export default class ENSDebug extends React.Component<State> {
     const typeName = this.extractTypeName(fullFuncName);
     let types = typeName.split(',');
     types = types[0] === '' ? [] : types;
-    console.log(inputs);
 
     return '0x' + funcSig + abi.rawEncode(types, inputs).toString('hex');
   };
 }
+
+function mapStateToProps(state: AppState) {
+  return {
+    shaBid: state.ens.shaBid
+  };
+}
+
+export default connect(mapStateToProps, {
+  shaBidRequested
+})(ENSDebug);

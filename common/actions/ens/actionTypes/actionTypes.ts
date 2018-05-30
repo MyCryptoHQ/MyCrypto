@@ -1,4 +1,7 @@
 import { ResolveDomainAction } from './resolveDomain';
-export * from './resolveDomain';
+import { ShaBidAction } from './shaBid';
 
-export type EnsAction = ResolveDomainAction;
+export * from './resolveDomain';
+export * from './shaBid';
+
+export type EnsAction = ResolveDomainAction | ShaBidAction;

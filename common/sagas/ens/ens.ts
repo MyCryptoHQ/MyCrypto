@@ -2,15 +2,18 @@ import {
   resolveDomainFailed,
   resolveDomainSucceeded,
   ResolveDomainRequested,
-  resolveDomainCached
+  resolveDomainCached,
+  ShaBidRequested,
+  shaBidSucceeded,
+  shaBidFailed
 } from 'actions/ens';
 import { TypeKeys } from 'actions/ens/constants';
 import { SagaIterator, delay, buffers } from 'redux-saga';
 import { INode } from 'libs/nodes/INode';
 import { getNodeLib } from 'selectors/config';
-import { call, put, select, all, actionChannel, take, fork, race } from 'redux-saga/effects';
+import { call, put, select, actionChannel, all, take, fork, race } from 'redux-saga/effects';
 import { showNotification } from 'actions/notifications';
-import { resolveDomainRequest } from './modeMap';
+import { resolveDomainRequest, shaBidRequest } from './modeMap';
 import { getCurrentDomainName, getCurrentDomainData } from 'selectors/ens';
 import { IBaseDomainRequest } from 'libs/ens';
 
@@ -55,6 +58,7 @@ function* resolveDomain(): SagaIterator {
       if (!domainData) {
         throw Error();
       }
+
       const domainSuccessAction = resolveDomainSucceeded(domain, domainData);
       yield put(domainSuccessAction);
     } catch (e) {
@@ -65,6 +69,37 @@ function* resolveDomain(): SagaIterator {
   }
 }
 
+function* shaBid(): SagaIterator {
+  const requestChan = yield actionChannel(TypeKeys.ENS_SHA_BID_REQUESTED, buffers.sliding(1));
+
+  while (true) {
+    const { payload }: ShaBidRequested = yield take(requestChan);
+
+    try {
+      const node: INode = yield select(getNodeLib);
+
+      const result = yield race({
+        shaBidData: call(shaBidRequest, payload, node),
+        err: call(delay, 10000)
+      });
+
+      const { shaBidData } = result;
+
+      if (!shaBidData) {
+        throw Error();
+      }
+
+      const sealedBid = shaBidData.sealedBid.toString('hex');
+
+      yield put(shaBidSucceeded(sealedBid));
+    } catch (e) {
+      const shaBidFailAction = shaBidFailed('error');
+      yield put(shaBidFailAction);
+      yield put(showNotification('danger', e.message || 'Could not get SHA Bid', 5000));
+    }
+  }
+}
+
 export function* ens(): SagaIterator {
-  yield all([fork(resolveDomain)]);
+  yield all([fork(resolveDomain), fork(shaBid)]);
 }
