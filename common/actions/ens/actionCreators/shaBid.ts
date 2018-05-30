@@ -7,22 +7,23 @@ const shaBidRequested = (
   nameHash: string,
   bidAddress: string,
   amountWei: BN,
-  secretHash: string
+  secretHash: string,
+  loading: boolean
 ): ActionTypes.ShaBidRequested => ({
   type: TypeKeys.ENS_SHA_BID_REQUESTED,
-  payload: { nameHash, bidAddress, amountWei, secretHash }
+  payload: { nameHash, bidAddress, amountWei, secretHash, loading }
 });
 
 type TShaBidSucceeded = typeof shaBidSucceeded;
-const shaBidSucceeded = (sealedBid: string): ActionTypes.ShaBidSucceeded => ({
+const shaBidSucceeded = (sealedBid: string, loading: boolean): ActionTypes.ShaBidSucceeded => ({
   type: TypeKeys.ENS_SHA_BID_SUCCEEDED,
-  payload: { sealedBid }
+  payload: { sealedBid, loading }
 });
 
 type TShaBidFailed = typeof shaBidFailed;
-const shaBidFailed = (error: any): ActionTypes.ShaBidFailed => ({
+const shaBidFailed = (error: any, loading: boolean): ActionTypes.ShaBidFailed => ({
   type: TypeKeys.ENS_SHA_BID_FAILED,
-  payload: { error }
+  payload: { error, loading }
 });
 
 export {

@@ -9,9 +9,20 @@ interface Params {
   decoder: any;
 }
 
+interface EthCallParams {
+  to: any;
+  data: any;
+}
+
 export function* makeEthCallAndDecode({ to, data, decoder }: Params): SagaIterator {
   const node: INode = yield select(getNodeLib);
   const result: string = yield apply(node, node.sendCallRequest, [{ data, to }]);
   const decodedResult = yield call(decoder, result);
   return decodedResult;
+}
+
+export function* makeEthCall({ to, data }: EthCallParams): SagaIterator {
+  const node: INode = yield select(getNodeLib);
+  const result: string = yield apply(node, node.sendCallRequest, [{ data, to }]);
+  return result;
 }

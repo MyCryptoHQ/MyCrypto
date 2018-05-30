@@ -89,11 +89,9 @@ function* shaBid(): SagaIterator {
         throw Error();
       }
 
-      const sealedBid = shaBidData.sealedBid.toString('hex');
-
-      yield put(shaBidSucceeded(sealedBid));
+      yield put(shaBidSucceeded(shaBidData, false));
     } catch (e) {
-      const shaBidFailAction = shaBidFailed('error');
+      const shaBidFailAction = shaBidFailed('error', false);
       yield put(shaBidFailAction);
       yield put(showNotification('danger', e.message || 'Could not get SHA Bid', 5000));
     }

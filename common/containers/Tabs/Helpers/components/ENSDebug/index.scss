@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 
 .Helpers {
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
   text-align: center;
 
@@ -23,5 +23,10 @@
       display: block;
       width: 47%;
     }
+  }
+
+  .inline-hint {
+    text-align: left;
+    margin-bottom: 20px;
   }
 }

@@ -10,6 +10,7 @@ import abi from 'ethereumjs-abi';
 import { AppState } from 'reducers';
 import { shaBidRequested, TShaBidRequested } from 'actions/ens';
 import { connect } from 'react-redux';
+import networkConfigs from 'libs/ens/networkConfigs';
 
 interface State {
   bidAddress: string;
@@ -24,7 +25,6 @@ interface State {
   newBidData: string;
   revealData: string;
   finalizeData: string;
-  loading: boolean;
 }
 
 interface Props {
@@ -45,8 +45,7 @@ class ENSDebug extends React.Component<Props, State> {
     startAndBidData: '',
     newBidData: '',
     revealData: '',
-    finalizeData: '',
-    loading: false
+    finalizeData: ''
   };
 
   public render() {
@@ -59,43 +58,69 @@ class ENSDebug extends React.Component<Props, State> {
       secret,
       secretHash,
       startAuctionData,
-      startAndBidData,
-      newBidData,
       revealData,
-      finalizeData,
-      loading
+      finalizeData
     } = this.state;
 
-    // const { sealedBid } = this.props.shaBid;
+    let { startAndBidData, newBidData } = this.state;
+
+    const { sealedBid, loading } = this.props.shaBid;
+    const { main } = networkConfigs;
+
+    if (sealedBid) {
+      newBidData = this.getNewBidData(sealedBid);
+      startAndBidData = this.getStartAndBidAuctionData(ensName, newBidData);
+    }
 
     let content = null;
 
     if (startAuctionData) {
       content = (
-        <div>
+        <div style={{ marginTop: 20 }}>
           <label className="input-group">
             <div className="input-group-header">Start Auction Data</div>
             <Input value={startAuctionData} type="text" isValid={true} disabled={true} />
+            <p className="inline-hint">
+              To: <code>{main.public.ethAuction}</code> &middot; Amount: <code>0</code> &middot; Gas
+              Limit: <code>200000</code> &middot; Data: <code>[ABOVE]</code>
+            </p>
           </label>
 
           <label className="input-group">
             <div className="input-group-header">Start Auction And Bid Data</div>
             <Input value={startAndBidData} type="text" isValid={true} disabled={true} />
+            <p className="inline-hint">
+              To: <code>{main.public.ethAuction}</code> &middot; Amount: <code>0</code> &middot; Gas
+              Limit: <code>200000</code> &middot; Data: <code>[ABOVE]</code>
+            </p>
           </label>
 
           <label className="input-group">
             <div className="input-group-header">New Bid Data</div>
             <Input value={newBidData} type="text" isValid={true} disabled={true} />
+            <p className="inline-hint">
+              To: <code>{main.public.ethAuction}</code> &middot; Amount:{' '}
+              <code>[A NUMBER >= BID AMOUNT]</code> &middot; Gas Limit: <code>500000</code> &middot;
+              Data: <code>[ABOVE]</code>
+            </p>
           </label>
 
           <label className="input-group">
             <div className="input-group-header">Reveal Data</div>
             <Input value={revealData} type="text" isValid={true} disabled={true} />
+            <p className="inline-hint">
+              To: <code>{main.public.ethAuction}</code> &middot; Amount: <code>0</code> &middot; Gas
+              Limit: <code>200000</code> &middot; Data: <code>[ABOVE]</code>
+            </p>
           </label>
 
           <label className="input-group">
             <div className="input-group-header">Finalize Auction Data</div>
             <Input value={finalizeData} type="text" isValid={true} disabled={true} />
+            <p className="inline-hint">
+              To: <code>{main.public.ethAuction}</code> &middot; Amount: <code>0</code> &middot; Gas
+              Limit: <code>200000</code> &middot; Data: <code>[ABOVE]</code>
+            </p>
           </label>
         </div>
       );
@@ -103,7 +128,7 @@ class ENSDebug extends React.Component<Props, State> {
 
     if (loading) {
       content = (
-        <div>
+        <div style={{ marginTop: 20 }}>
           <Spinner size="x3" />
         </div>
       );
@@ -225,28 +250,23 @@ class ENSDebug extends React.Component<Props, State> {
   private onChange = (event: React.FormEvent<HTMLInputElement>) => {
     switch (event.currentTarget.name) {
       case 'ensName':
-        this.calcNameHash(event.currentTarget.value);
-        break;
+        return this.calcNameHash(event.currentTarget.value);
       case 'amountEth':
-        this.calcAmountWei(event.currentTarget.value);
-        break;
+        return this.calcAmountWei(event.currentTarget.value);
       case 'amountWei':
-        this.calcAmountEth(event.currentTarget.value);
-        break;
+        return this.calcAmountEth(event.currentTarget.value);
       case 'secret':
-        this.calcSecretHash(event.currentTarget.value);
-        break;
+        return this.calcSecretHash(event.currentTarget.value);
       case 'bidAddress':
         let { bidAddress } = this.state;
 
         bidAddress = event.currentTarget.value;
 
-        this.setState({
+        return this.setState({
           bidAddress
         });
-        break;
       default:
-        break;
+        return;
     }
   };
 
@@ -300,28 +320,19 @@ class ENSDebug extends React.Component<Props, State> {
 
   private calcENSData = () => {
     const { ensName, amountWei, secretHash, nameHash, bidAddress } = this.state;
-    let { loading, startAuctionData, revealData, finalizeData } = this.state;
-
-    loading = true;
-
-    this.setState({
-      loading
-    });
+    let { startAuctionData, revealData, finalizeData } = this.state;
 
     startAuctionData = this.getStartAuctionData(ensName);
     revealData = this.getRevealData(ensName, amountWei, secretHash);
     finalizeData = this.getFinalizeData(ensName);
 
-    this.props.shaBidRequested(nameHash, bidAddress, amountWei, secretHash);
-
-    loading = false;
-
     this.setState({
       startAuctionData,
       revealData,
-      finalizeData,
-      loading
+      finalizeData
     });
+
+    this.props.shaBidRequested(nameHash, bidAddress, amountWei, secretHash, true);
   };
 
   private getStartAuctionData = (name: string) => {
@@ -343,6 +354,17 @@ class ENSDebug extends React.Component<Props, State> {
     const funcABI = auctionABI.find((func: any) => func.name === 'finalizeAuction');
 
     return this.getDataString(funcABI, [name]);
+  };
+
+  private getNewBidData = (sealedBid: string) => {
+    const funcABI = auctionABI.find((func: any) => func.name === 'newBid');
+    return this.getDataString(funcABI, [sealedBid]);
+  };
+
+  private getStartAndBidAuctionData = (name: string, newBidData: string) => {
+    name = '0x' + ethUtil.sha3(normalise(name)).toString('hex');
+    const funcABI = auctionABI.find((func: any) => func.name === 'startAuctionsAndBid');
+    return this.getDataString(funcABI, [[name], newBidData]);
   };
 
   private transformToFullName = (json: any) => {

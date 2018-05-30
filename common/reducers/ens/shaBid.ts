@@ -9,6 +9,7 @@ export interface State {
   secretHash: string;
   sealedBid: string;
   error: any;
+  loading: boolean;
 }
 
 const INITIAL_STATE: State = {
@@ -17,7 +18,8 @@ const INITIAL_STATE: State = {
   amountWei: new BN(''),
   secretHash: '',
   sealedBid: '',
-  error: null
+  error: null,
+  loading: false
 };
 
 const shaBidRequested = (state: State, action: ShaBidRequested): State => {
@@ -25,9 +27,7 @@ const shaBidRequested = (state: State, action: ShaBidRequested): State => {
 };
 
 const shaBidSucceeded = (state: State, action: ShaBidSucceeded): State => {
-  const { sealedBid } = action.payload;
-
-  return { ...state, sealedBid };
+  return { ...state, ...action.payload };
 };
 
 const shaBidFailed = (state: State, action: ShaBidFailed): State => {

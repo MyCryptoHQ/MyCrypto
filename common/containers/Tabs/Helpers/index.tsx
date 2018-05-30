@@ -14,15 +14,15 @@ import { RouteNotFound } from 'components/RouteNotFound';
 const tabs = [
   {
     path: 'convert-units',
-    name: 'Convert Ethereum Units'
+    name: 'Convert Eth Units'
   },
   {
     path: 'ens-debug',
-    name: 'ENS Debugger & Data Grabber'
+    name: 'ENS Debugger'
   },
   {
     path: 'convert-hex',
-    name: 'Convert Decimal <-> Hexadecimal'
+    name: 'Convert Dec <-> Hex'
   },
   {
     path: 'convert-sha3',
@@ -30,7 +30,7 @@ const tabs = [
   },
   {
     path: 'unit-reference',
-    name: 'Ether Unit Reference Guide'
+    name: 'Ether Unit Reference'
   },
   {
     path: 'recover-pk',

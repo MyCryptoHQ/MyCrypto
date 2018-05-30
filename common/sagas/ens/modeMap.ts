@@ -3,7 +3,7 @@ import ENS from 'libs/ens/contracts';
 import { SagaIterator } from 'redux-saga';
 import { call } from 'redux-saga/effects';
 import networkConfigs from 'libs/ens/networkConfigs';
-import { makeEthCallAndDecode } from 'sagas/ens/helpers';
+import { makeEthCallAndDecode, makeEthCall } from 'sagas/ens/helpers';
 import ethUtil from 'ethereumjs-util';
 
 const { main } = networkConfigs;
@@ -96,15 +96,14 @@ export function* resolveDomainRequest(name: string): SagaIterator {
 export function* shaBidRequest(payload: any): SagaIterator {
   const { nameHash, bidAddress, amountWei, secretHash } = payload;
 
-  const shaBidData: typeof ENS.auction.shaBid.outputType = yield call(makeEthCallAndDecode, {
+  const shaBidData = yield call(makeEthCall, {
     to: main.public.ethAuction,
     data: ENS.auction.shaBid.encodeInput({
       hash: nameHash,
       owner: bidAddress,
       value: amountWei,
       salt: secretHash
-    }),
-    decoder: ENS.auction.shaBid.decodeOutput
+    })
   });
 
   return shaBidData;
