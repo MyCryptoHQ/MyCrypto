@@ -18,6 +18,7 @@ import QrSignerModal from 'containers/QrSignerModal';
 import OnboardModal from 'containers/OnboardModal';
 import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
+import PalettePage from 'components/Palette';
 import { Store } from 'redux';
 import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
@@ -90,6 +91,9 @@ class RootClass extends Component<Props, State> {
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
           <Route path="/support-us" component={SupportPage} exact={true} />
+          {process.env.NODE_ENV !== 'production' && (
+            <Route path="/dev/palette" component={PalettePage} exact={true} />
+          )}
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
