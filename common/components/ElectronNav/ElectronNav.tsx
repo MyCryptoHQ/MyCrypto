@@ -8,6 +8,8 @@ import LanguageSelect from './LanguageSelect';
 import NetworkStatus from './NetworkStatus';
 import './ElectronNav.scss';
 
+let theme = 'light';
+
 interface State {
   panelContent: React.ReactElement<any> | null;
   isPanelOpen: boolean;
@@ -54,6 +56,9 @@ export default class ElectronNav extends React.Component<{}, State> {
             Change Network
             <i className="ElectronNav-controls-btn-icon fa fa-arrow-circle-right" />
           </button>
+          <button className="ElectronNav-controls-btn" onClick={this.toggleTheme}>
+            Theme
+          </button>
         </div>
 
         <div className="ElectronNav-status">
@@ -99,5 +104,11 @@ export default class ElectronNav extends React.Component<{}, State> {
         this.setState({ panelContent: null });
       }
     }, 300);
+  };
+
+  private toggleTheme = () => {
+    document.documentElement.classList.remove(`theme--${theme}`);
+    theme = theme === 'light' ? 'dark' : 'light';
+    document.documentElement.classList.add(`theme--${theme}`);
   };
 }

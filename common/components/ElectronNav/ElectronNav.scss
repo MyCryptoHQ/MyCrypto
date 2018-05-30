@@ -20,7 +20,7 @@ $back-spacing: 10px;
     padding-top: $branding-spacing-top;
     background: color(control-bg);
     z-index: 1;
-    border-bottom: 1px solid color(gray-lighter);
+    border-bottom: 1px solid shade-dark(0.1);
 
     .is-osx & {
       padding-top: $electron-osx-control-spacing + $branding-spacing-top - 5;
@@ -34,6 +34,10 @@ $back-spacing: 10px;
       background-position: center;
       background-repeat: no-repeat;
       background-size: auto 100%;
+
+      @include theme(dark) {
+        background-image: url('~assets/images/logo-mycrypto.svg');
+      }
     }
 
     &-beta {
@@ -69,7 +73,7 @@ $back-spacing: 10px;
       display: flex;
       align-items: center;
       width: 100%;
-      color: color(gray-light);
+      color: shade-dark(0.5);
       font-size: 12px;
       padding: 6px 0;
 
@@ -79,7 +83,7 @@ $back-spacing: 10px;
       }
 
       &:hover {
-        color: color(link-hover-color);
+        color: shade-dark(0.7);
       }
     }
   }
@@ -100,8 +104,8 @@ $back-spacing: 10px;
       width: 100%;
       text-align: left;
       padding: $back-spacing 0 8px $back-spacing;
-      color: color(gray);
-      border-bottom: 1px solid color(gray-lighter);
+      color: shade-dark(0.2);
+      border-bottom: 1px solid shade-dark(0.05);
       background: color(control-bg);
 
       .is-osx & {
@@ -114,7 +118,7 @@ $back-spacing: 10px;
       }
 
       &:hover {
-        color: color(link-hover-color);
+        color: color(brand-primary);
       }
     }
   }
@@ -131,14 +135,14 @@ $back-spacing: 10px;
     height: 48px;
     line-height: 48px;
     padding: 0 0 0 10px;
-    border-bottom: 1px solid color(gray-lighter);
+    border-bottom: 1px solid shade-dark(0.08);
     color: color(text-color);
     font-size: 14px;
     font-weight: normal;
 
     &.is-active {
       color: color(link-color);
-      background: color(gray-lightest);
+      background: shade-dark(0.03);
     }
 
     &:hover {
