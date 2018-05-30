@@ -3,8 +3,13 @@ $brand-info: #163151;
 $brand-success: #5dba5a;
 $brand-warning: #ff9800;
 $brand-danger: #db5846;
+$dark-rgb: 0, 0, 0;
+$light-rgb: 255, 255, 255;
 
 $theme-light: (
+  dark-rgb: $dark-rgb,
+  light-rgb: $light-rgb,
+
   gray-base: #000,
   gray-darker: #1c1c1c,
   gray-dark: #333,
@@ -92,6 +97,9 @@ $theme-light: (
 );
 
 $theme-dark: (
+  dark-rgb: $light-rgb,
+  light-rgb: $dark-rgb,
+
   gray-base: #fafafa,
   gray-darker: #ececec,
   gray-dark: #9a9a9a,
@@ -196,6 +204,14 @@ $color-var-prefix: '--color';
   }
 
   @return var(#{$color-var-prefix}-#{$name});
+}
+
+@function shade-dark($opacity) {
+  @return rgba(var(#{$color-var-prefix}-dark-rgb), $opacity);
+}
+
+@function shade-light($opacity) {
+  @return rgba(var(#{$color-var-prefix}-light-rgb), $opacity);
 }
 
 $gray-base: #000;
