@@ -7,11 +7,10 @@ configuredStore.getState();
 
 const web3Id = 'web3';
 const web3Node: StaticNodeConfig = {
+  id: web3Id,
   isCustom: false,
   network: 'ETH',
   service: Web3Service,
-  lib: jest.fn() as any,
-  estimateGas: false,
   hidden: true
 };
 

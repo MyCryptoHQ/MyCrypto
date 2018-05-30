@@ -7,12 +7,12 @@ import {
   TypeKeys,
   web3SetNode,
   web3UnsetNode,
-  changeNodeIntent
+  changeNodeRequested
 } from 'actions/config';
 import {
   getNodeId,
   getPreviouslySelectedNode,
-  getNetworkNameByChainId,
+  getNetworkByChainId,
   getWeb3Node
 } from 'selectors/config';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
@@ -22,8 +22,7 @@ import {
   makeProviderConfig,
   getShepherdManualMode,
   makeWeb3Network,
-  stripWeb3Network,
-  shepherdProvider
+  stripWeb3Network
 } from 'libs/nodes';
 import { StaticNodeConfig } from 'shared/types/node';
 import { showNotification } from 'actions/notifications';
@@ -32,16 +31,24 @@ import translate from 'translations';
 let web3Added = false;
 
 export function* initWeb3Node(): SagaIterator {
-  const { networkId, lib } = yield call(setupWeb3Node);
-  const network: string = yield select(getNetworkNameByChainId, networkId);
-  const web3Network = makeWeb3Network(network);
+  const { chainId, lib } = yield call(setupWeb3Node);
+  const network: ReturnType<typeof getNetworkByChainId> = yield select(
+    getNetworkByChainId,
+    chainId
+  );
+
+  if (!network) {
+    throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
+  }
+
+  const web3Network = makeWeb3Network(network.id);
+  const id = 'web3';
 
   const config: StaticNodeConfig = {
+    id,
     isCustom: false,
     network: web3Network as any,
     service: Web3Service,
-    lib: shepherdProvider,
-    estimateGas: false,
     hidden: true
   };
 
@@ -50,12 +57,12 @@ export function* initWeb3Node(): SagaIterator {
   }
 
   if (!web3Added) {
-    shepherd.useProvider('web3', 'web3', makeProviderConfig({ network: web3Network }));
+    shepherd.useProvider('web3', id, makeProviderConfig({ network: web3Network }));
   }
 
   web3Added = true;
 
-  yield put(web3SetNode({ id: 'web3', config }));
+  yield put(web3SetNode({ id, config }));
   return lib;
 }
 
@@ -64,10 +71,10 @@ export function* initWeb3Node(): SagaIterator {
 export function* unlockWeb3(): SagaIterator {
   try {
     const nodeLib = yield call(initWeb3Node);
-    yield put(changeNodeIntent('web3'));
+    yield put(changeNodeRequested('web3'));
     yield take(
       (action: any) =>
-        action.type === TypeKeys.CONFIG_NODE_CHANGE && action.payload.nodeId === 'web3'
+        action.type === TypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED && action.payload.nodeId === 'web3'
     );
 
     const web3Node: any | null = yield select(getWeb3Node);
