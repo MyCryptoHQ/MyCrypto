@@ -11,29 +11,25 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ETH', 'mycrypto'),
       type: 'rpc',
       service: 'MyCrypto',
-      url: 'https://api.mycryptoapi.com/eth',
-      estimateGas: true
+      url: 'https://api.mycryptoapi.com/eth'
     },
     {
       name: makeNodeName('ETH', 'ethscan'),
       type: 'etherscan',
       service: 'Etherscan',
-      url: 'https://api.etherscan.io/api',
-      estimateGas: false
+      url: 'https://api.etherscan.io/api'
     },
     {
       name: makeNodeName('ETH', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://mainnet.infura.io/mycrypto',
-      estimateGas: false
+      url: 'https://mainnet.infura.io/mycrypto'
     },
     {
       name: makeNodeName('ETH', 'blockscale'),
       type: 'rpc',
       service: 'Blockscale',
-      url: 'https://api.dev.blockscale.net/dev/parity',
-      estimateGas: true
+      url: 'https://api.dev.blockscale.net/dev/parity'
     }
   ],
 
@@ -42,8 +38,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Ropsten', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://ropsten.infura.io/mycrypto',
-      estimateGas: false
+      url: 'https://ropsten.infura.io/mycrypto'
     }
   ],
 
@@ -52,8 +47,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Kovan', 'ethscan'),
       type: 'etherscan',
       service: 'Etherscan',
-      url: 'https://kovan.etherscan.io/api',
-      estimateGas: false
+      url: 'https://kovan.etherscan.io/api'
     }
   ],
 
@@ -62,15 +56,13 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Rinkeby', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://rinkeby.infura.io/mycrypto',
-      estimateGas: false
+      url: 'https://rinkeby.infura.io/mycrypto'
     },
     {
       name: makeNodeName('Rinkeby', 'ethscan'),
       type: 'etherscan',
       service: 'Etherscan',
-      url: 'https://rinkeby.etherscan.io/api',
-      estimateGas: false
+      url: 'https://rinkeby.etherscan.io/api'
     }
   ],
 
@@ -79,15 +71,13 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ETC', 'epool'),
       type: 'rpc',
       service: 'Epool.io',
-      url: 'https://mew.epool.io',
-      estimateGas: false
+      url: 'https://mew.epool.io'
     },
     {
       name: makeNodeName('ETC', 'commonwealth'),
       type: 'rpc',
       service: 'Ethereum Commonwealth',
-      url: 'https://etc-geth.0xinfra.com/',
-      estimateGas: false
+      url: 'https://etc-geth.0xinfra.com/'
     }
   ],
 
@@ -96,8 +86,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('UBQ', 'ubiqscan'),
       type: 'rpc',
       service: 'ubiqscan.io',
-      url: 'https://pyrus2.ubiqscan.io',
-      estimateGas: true
+      url: 'https://pyrus2.ubiqscan.io'
     }
   ],
 
@@ -106,8 +95,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('EXP', 'tech'),
       type: 'rpc',
       service: 'expanse.tech',
-      url: 'https://node.expanse.tech/',
-      estimateGas: true
+      url: 'https://node.expanse.tech/'
     }
   ],
   POA: [
@@ -115,8 +103,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('POA', 'core'),
       type: 'rpc',
       service: 'poa.network',
-      url: 'https://core.poa.network',
-      estimateGas: true
+      url: 'https://core.poa.network'
     }
   ],
 
@@ -125,8 +112,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('TOMO', 'tomocoin'),
       type: 'rpc',
       service: 'tomocoin.io',
-      url: 'https://core.tomocoin.io',
-      estimateGas: true
+      url: 'https://core.tomocoin.io'
     }
   ],
 
@@ -135,8 +121,43 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ELLA', 'ellaism'),
       type: 'rpc',
       service: 'ellaism.org',
-      url: 'https://jsonrpc.ellaism.org',
-      estimateGas: true
+      url: 'https://jsonrpc.ellaism.org'
+    }
+  ],
+
+  MUSIC: [
+    {
+      name: makeNodeName('MUSIC', 'music'),
+      type: 'rpc',
+      service: 'musicoin.tw',
+      url: 'https://mewapi.musicoin.tw'
+    }
+  ],
+
+  ETSC: [
+    {
+      name: makeNodeName('ETSC', 'etsc'),
+      type: 'rpc',
+      service: 'ethereumsocial.kr',
+      url: 'https://node.ethereumsocial.kr'
+    }
+  ],
+
+  EGEM: [
+    {
+      name: makeNodeName('EGEM', 'egem'),
+      type: 'rpc',
+      service: 'egem.io',
+      url: 'https://jsonrpc.egem.io/custom'
+    }
+  ],
+
+  CLO: [
+    {
+      name: makeNodeName('CLO', 'clo'),
+      type: 'rpc',
+      service: '0xinfra.com',
+      url: 'https://clo-geth.0xinfra.com/'
     }
   ]
 };
