@@ -1,19 +1,27 @@
 import { WalletLib } from 'shared/enclave/types';
-// TODO: Trezor not working right now, come back later
-// TODO: Type trezor lib
-// import { DeviceList } from 'trezor.js-node';
-// const deviceList = new DeviceList({ debug: true });
+import { DeviceList } from 'trezor.js';
+const deviceList = new DeviceList({ debug: true });
+
+// Converts m/44'/60'/0'/0 to [44, 60, 0, 0]
+function pathToArray(path: string): number[] {
+  return path
+    .toLowerCase()
+    .replace('m', '')
+    .replace("'", '')
+    .split('/')
+    .map(n => parseInt(n, 10));
+}
 
 const Trezor: WalletLib = {
-  async getChainCode() {
-    throw new Error('Not yet implemented');
-    // const device = await deviceList.acquireFirstDevice(true);
-    // console.log(device);
-    // device.run((session: any) => {
-    //   return session.signMessage([1,2], "message", "bitcoin");
-    // });
-    //
-    // return { chainCode: 'test', publicKey: 'test' };
+  async getChainCode(dpath) {
+    console.log(deviceList.transport);
+    const { session } = await deviceList.acquireFirstDevice(true);
+    const { message } = await session.getPublicKey(pathToArray(dpath), 'ETH');
+
+    return {
+      chainCode: message.node.chain_code,
+      publicKey: message.node.public_key
+    };
   },
 
   async signTransaction() {
