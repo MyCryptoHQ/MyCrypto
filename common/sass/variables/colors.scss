@@ -3,20 +3,29 @@ $brand-info: #163151;
 $brand-success: #5dba5a;
 $brand-warning: #ff9800;
 $brand-danger: #db5846;
+
 $dark-rgb: 0, 0, 0;
 $light-rgb: 255, 255, 255;
+
+$gray-base: #000;
+$gray-darker: #1c1c1c;
+$gray-dark: #333;
+$gray: #737373;
+$gray-light: #9a9a9a;
+$gray-lighter: #ececec;
+$gray-lightest: #fafafa;
 
 $theme-light: (
   dark-rgb: $dark-rgb,
   light-rgb: $light-rgb,
 
-  gray-base: #000,
-  gray-darker: #1c1c1c,
-  gray-dark: #333,
-  gray: #737373,
-  gray-light: #9a9a9a,
-  gray-lighter: #ececec,
-  gray-lightest: #fafafa,
+  gray-base: $gray-base,
+  gray-darker: $gray-darker,
+  gray-dark: $gray-dark,
+  gray: $gray,
+  gray-light: $gray-light,
+  gray-lighter: $gray-lighter,
+  gray-lightest: $gray-lightest,
 
   brand-primary: $brand-primary,
   brand-primary-dark: darken($brand-primary, 6%),
@@ -52,13 +61,13 @@ $theme-light: (
   white-clearer: rgba(#fff, 0.7),
   white-clearest: rgba(#fff, 0.6),
 
-  body-bg: #fbfbfb,
+  body-bg: $gray-lightest,
   pane-bg: #fff,
 
   footer-bg: $brand-info,
   footer-border: $brand-primary,
 
-  text-color: #333,
+  text-color: $gray-dark,
   text-color-inverted: #fff,
 
   link-color: $brand-primary,
@@ -70,14 +79,14 @@ $theme-light: (
   tab-active-border: $brand-primary,
 
   control-bg: #fff,
-  control-color: #333,
+  control-color: $gray-dark,
   control-border: #e5ecf3,
-  control-disabled-bg: #fafafa,
-  control-disabled-color: #333,
+  control-disabled-bg: $gray-lightest,
+  control-disabled-color: $gray-dark,
   control-disabled-border: #e6e6e6,
-  control-placeholder: rgba(#333, 0.3),
-  control-inset-shadow: rgba(#000, 0.03),
-  control-addon-bg: #ececec,
+  control-placeholder: rgba($gray-dark, 0.3),
+  control-inset-shadow: rgba($gray-base, 0.03),
+  control-addon-bg: $gray-lighter,
 
   loader-light: #fff,
   loader-dark: $brand-info,
@@ -87,26 +96,34 @@ $theme-light: (
 
   table-bg: #fff,
   table-bg-odd: #fefefe,
-  table-bg-hover: #fafafa,
+  table-bg-hover: $gray-lightest,
 
-  tooltip-bg: #222,
+  tooltip-bg: $gray-darker,
   tooltip-color: #fff,
 
   component-active-color: #fff,
   component-active-bg: $brand-primary,
 );
 
+$gray-base: #b8bfd0;
+$gray-darker: #8e97a9;
+$gray-dark: #4d5463;
+$gray: #393f4c;
+$gray-light: #333842;
+$gray-lighter: #282C34;
+$gray-lightest: #21252B;
+
 $theme-dark: (
   dark-rgb: $light-rgb,
   light-rgb: $dark-rgb,
 
-  gray-base: #fafafa,
-  gray-darker: #ececec,
-  gray-dark: #9a9a9a,
-  gray: #737373,
-  gray-light: #333,
-  gray-lighter: #1c1c1c,
-  gray-lightest: #000,
+  gray-base: $gray-base,
+  gray-darker: $gray-darker,
+  gray-dark: $gray-dark,
+  gray: $gray,
+  gray-light: $gray-light,
+  gray-lighter: $gray-lighter,
+  gray-lightest: $gray-lightest,
 
   brand-primary: lighten($brand-primary, 6%),
   brand-primary-dark: $brand-primary,
@@ -138,15 +155,15 @@ $theme-dark: (
   brand-danger-light: lighten($brand-danger, 12%),
   brand-danger-lighter: lighten($brand-danger, 16%),
 
-  white-clear: rgba(#333, 0.9),
-  white-clearer: rgba(#333, 0.8),
-  white-clearest: rgba(#333, 0.7),
+  white-clear: rgba($gray-lightest, 0.9),
+  white-clearer: rgba($gray-lightest, 0.8),
+  white-clearest: rgba($gray-lightest, 0.7),
 
-  body-bg: #222,
-  pane-bg: #333,
+  body-bg: $gray-lightest,
+  pane-bg: $gray-lighter,
 
-  footer-bg: #222,
-  footer-border: #222,
+  footer-bg: $gray-light,
+  footer-border: $gray-light,
 
   text-color: #fff,
   text-color-inverted: #fff,
@@ -154,39 +171,35 @@ $theme-dark: (
   link-color: lighten($brand-primary, 10%),
   link-hover-color: lighten($brand-primary, 20%),
 
-  tab-color: #ececec,
-  tab-border: #ececec,
+  tab-color: $gray-base,
+  tab-border: $gray-base,
   tab-active-color: #fff,
   tab-active-border: #fff,
 
-  control-bg: #444,
-  control-bg-dark: lighten(#444, 8%),
-  control-bg-darker: lighten(#444, 15%),
+  control-bg: $gray,
   control-color: #FFF,
-  control-border: #666,
-  control-border-dark: darken(#666, 8%),
-  control-border-darker: darken(#666, 15%),
-  control-disabled-bg: #aaa,
-  control-disabled-color: #888,
-  control-disabled-border: #aaa,
+  control-border: $gray-dark,
+  control-disabled-bg: rgba($gray-light, 0.5),
+  control-disabled-color: #aaa,
+  control-disabled-border: rgba($gray-light, 0.5),
   control-placeholder: rgba(#FFF, 0.3),
   control-inset-shadow: rgba(#FFF, 0.03),
-  control-addon-bg: #666,
+  control-addon-bg: $gray-dark,
 
   loader-light: #fff,
   loader-dark: #fff,
 
-  code-bg: #444,
-  code-border: #666,
+  code-bg: $gray,
+  code-border: $gray-dark,
 
   table-bg: #fff,
   table-bg-odd: #fefefe,
   table-bg-hover: #fafafa,
 
-  tooltip-bg: #444,
+  tooltip-bg: $gray,
   tooltip-color: #FFF,
 
-  component-active-color: #333,
+  component-active-color: $gray-light,
   component-active-bg: $brand-primary,
 );
 
