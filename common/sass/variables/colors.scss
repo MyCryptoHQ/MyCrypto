@@ -94,10 +94,6 @@ $theme-light: (
   code-bg: #eff5fe,
   code-border: #e5ecf3,
 
-  table-bg: #fff,
-  table-bg-odd: #fefefe,
-  table-bg-hover: $gray-lightest,
-
   tooltip-bg: $gray-darker,
   tooltip-color: #fff,
 
@@ -141,7 +137,7 @@ $theme-dark: (
   brand-info-dark: $brand-info,
   brand-info-darker: darken($brand-info, 6%),
   brand-info-light: lighten($brand-info, 12%),
-  brand-info-lighter: darken($brand-info, 16%),
+  brand-info-lighter: lighten($brand-info, 16%),
 
   brand-warning: lighten($brand-warning, 6%),
   brand-warning-dark: $brand-warning,
@@ -191,10 +187,6 @@ $theme-dark: (
 
   code-bg: $gray,
   code-border: $gray-dark,
-
-  table-bg: #fff,
-  table-bg-odd: #fefefe,
-  table-bg-hover: #fafafa,
 
   tooltip-bg: $gray,
   tooltip-color: #FFF,
