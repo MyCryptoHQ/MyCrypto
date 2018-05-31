@@ -78,6 +78,12 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'Ethereum Commonwealth',
       url: 'https://etc-geth.0xinfra.com/'
+    },
+    {
+      name: makeNodeName('ETC', 'chainkorea'),
+      type: 'rpc',
+      service: 'Chainkorea',
+      url: 'https://node.classicexplorer.org/'
     }
   ],
 
