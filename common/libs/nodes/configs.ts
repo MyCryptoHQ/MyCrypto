@@ -193,6 +193,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'eos-classic.io',
       url: 'https://node.eos-classic.io/'
     }
+  ],
+
+  ESN: [
+    {
+      name: makeNodeName('ESN', 'esn'),
+      type: 'rpc',
+      service: 'ethersocial.org',
+      url: 'https://api.esn.gonspool.com'
+    }
   ]
 };
 
