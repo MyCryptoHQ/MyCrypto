@@ -13,7 +13,7 @@
 
   @include theme(dark) {
     border-radius: 2px;
-    background-color: rgba(#fff, 0.1);
+    background-color: shade-dark(0.1);
     color: color(text-color);
   }
 
