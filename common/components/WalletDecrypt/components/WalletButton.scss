@@ -87,6 +87,11 @@
       @include theme(dark) {
         opacity: 1;
         filter: invert(1);
+
+        // Kind of hacky, but we don't want to invert metamask
+        &[src*="metamask"] {
+          filter: none;
+        }
       }
     }
   }
@@ -132,7 +137,7 @@
 
         &-question-circle,
         &-eye {
-          color: color(gray);
+          color: shade-dark(0.5);
         }
 
         &-question-circle:hover {
