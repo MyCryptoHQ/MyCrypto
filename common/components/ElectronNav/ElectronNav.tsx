@@ -1,21 +1,33 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import translate from 'translations';
-import { navigationLinks } from 'config';
+import { navigationLinks, Theme } from 'config';
 import NavigationLink from 'components/NavigationLink';
 import NetworkSelect from './NetworkSelect';
 import LanguageSelect from './LanguageSelect';
 import NetworkStatus from './NetworkStatus';
+import { changeTheme, TChangeTheme } from 'actions/config';
+import { getTheme } from 'selectors/config';
+import { AppState } from 'reducers';
 import './ElectronNav.scss';
 
-let theme = 'light';
+interface StateProps {
+  theme: ReturnType<typeof getTheme>;
+}
+
+interface ActionProps {
+  changeTheme: TChangeTheme;
+}
+
+type Props = StateProps & ActionProps;
 
 interface State {
   panelContent: React.ReactElement<any> | null;
   isPanelOpen: boolean;
 }
 
-export default class ElectronNav extends React.Component<{}, State> {
+class ElectronNav extends React.Component<Props, State> {
   public state: State = {
     panelContent: null,
     isPanelOpen: false
@@ -32,7 +44,7 @@ export default class ElectronNav extends React.Component<{}, State> {
         })}
       >
         <div className="ElectronNav-branding">
-          <div className="ElectronNav-branding-logo" />
+          <div className="ElectronNav-branding-logo" onClick={this.toggleTheme} />
           <div className="ElectronNav-branding-beta">Alpha Release</div>
         </div>
 
@@ -55,9 +67,6 @@ export default class ElectronNav extends React.Component<{}, State> {
           <button className="ElectronNav-controls-btn" onClick={this.openNodeSelect}>
             Change Network
             <i className="ElectronNav-controls-btn-icon fa fa-arrow-circle-right" />
-          </button>
-          <button className="ElectronNav-controls-btn" onClick={this.toggleTheme}>
-            Theme
           </button>
         </div>
 
@@ -107,8 +116,16 @@ export default class ElectronNav extends React.Component<{}, State> {
   };
 
   private toggleTheme = () => {
-    document.documentElement.classList.remove(`theme--${theme}`);
-    theme = theme === 'light' ? 'dark' : 'light';
-    document.documentElement.classList.add(`theme--${theme}`);
+    const theme = this.props.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+    this.props.changeTheme(theme);
   };
 }
+
+export default connect(
+  (state: AppState) => ({
+    theme: getTheme(state)
+  }),
+  {
+    changeTheme
+  }
+)(ElectronNav);

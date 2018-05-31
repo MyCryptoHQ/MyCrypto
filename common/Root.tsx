@@ -115,8 +115,8 @@ class RootClass extends Component<Props, State> {
 
     return (
       <React.Fragment>
-        <Provider store={store} key={Math.random()}>
-          <Router key={Math.random()}>
+        <Provider store={store}>
+          <Router>
             <React.Fragment>
               {routes}
               <LegacyRoutes />

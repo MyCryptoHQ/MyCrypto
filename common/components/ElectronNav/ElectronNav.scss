@@ -34,9 +34,14 @@ $back-spacing: 10px;
       background-position: center;
       background-repeat: no-repeat;
       background-size: auto 100%;
+      cursor: pointer;
 
       @include theme(dark) {
         background-image: url('~assets/images/logo-mycrypto.svg');
+      }
+
+      &:hover {
+        opacity: 0.8;
       }
     }
 
