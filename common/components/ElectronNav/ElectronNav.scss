@@ -45,12 +45,16 @@ $back-spacing: 10px;
       letter-spacing: 4px;
       height: 20px;
       line-height: 20px;
-      color: #FFF;
+      color: color(text-color-inverted);
       background: color(brand-info);
       text-transform: uppercase;
       font-size: 8px;
       opacity: 0.8;
       pointer-events: none;
+
+      @include theme(dark) {
+        opacity: 1;
+      }
     }
   }
 

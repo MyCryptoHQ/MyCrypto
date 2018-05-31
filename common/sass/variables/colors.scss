@@ -133,11 +133,11 @@ $theme-dark: (
   brand-success-light: lighten($brand-success, 12%),
   brand-success-lighter: lighten($brand-success, 16%),
 
-  brand-info: lighten($brand-info, 6%),
-  brand-info-dark: $brand-info,
-  brand-info-darker: darken($brand-info, 6%),
-  brand-info-light: lighten($brand-info, 12%),
-  brand-info-lighter: lighten($brand-info, 16%),
+  brand-info: lighten($brand-info, 12%),
+  brand-info-dark: lighten($brand-info, 6%),
+  brand-info-darker: $brand-info,
+  brand-info-light: lighten($brand-info, 18%),
+  brand-info-lighter: lighten($brand-info, 24%),
 
   brand-warning: lighten($brand-warning, 6%),
   brand-warning-dark: $brand-warning,
