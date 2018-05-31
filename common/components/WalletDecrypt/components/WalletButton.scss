@@ -92,7 +92,7 @@
   }
 
   &-description {
-    color: color(gray);
+    color: shade-dark(0.65);
     font-size: $font-size-small;
     font-weight: lighter;
   }

@@ -86,19 +86,19 @@ $left-border-size: 2px;
       width: 20px;
       height: 20px;
       font-size: 10px;
-      color: color(gray-light);
+      color: shade-dark(0.4);
       border-radius: 100%;
       transition-property: color, background-color, transform;
       transition-duration: 75ms;
       transition-timing-function: ease;
 
       &:hover {
-        color: color(gray-dark);
+        color: shade-dark(0.6);
         background: shade-dark(0.1);
       }
 
       &.is-expanded {
-        color: color(gray-dark);
+        color: shade-dark(0.6);
         transform: rotate(180deg);
       }
     }
@@ -107,6 +107,6 @@ $left-border-size: 2px;
   &-nodes {
     padding: 0.2rem 0.5rem;
     background: shade-dark(0.02);
-    border-top: 1px solid color(gray-lighter);
+    border-top: 1px solid shade-dark(0.08);
   }
 }

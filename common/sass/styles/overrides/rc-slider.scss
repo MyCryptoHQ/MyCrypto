@@ -15,7 +15,7 @@ $speed: 70ms;
 
 .rc-slider {
   &-rail {
-    background: color(gray-lighter);
+    background: shade-dark(0.12);
   }
 
   &-track {
