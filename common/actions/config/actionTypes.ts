@@ -1,6 +1,7 @@
 import { TypeKeys } from './constants';
 import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
 import { CustomNetworkConfig } from 'types/network';
+import { Theme } from 'config';
 
 export interface SetOnlineAction {
   type: TypeKeys.CONFIG_SET_ONLINE;
@@ -18,6 +19,12 @@ export interface ToggleAutoGasLimitAction {
 export interface ChangeLanguageAction {
   type: TypeKeys.CONFIG_LANGUAGE_CHANGE;
   payload: string;
+}
+
+/*** Change Theme ***/
+export interface ChangeThemeAction {
+  type: TypeKeys.CONFIG_THEME_CHANGE;
+  payload: Theme;
 }
 
 /*** Poll offline status ***/
@@ -117,6 +124,7 @@ export type NodeAction =
 
 export type MetaAction =
   | ChangeLanguageAction
+  | ChangeThemeAction
   | SetOnlineAction
   | SetOfflineAction
   | ToggleAutoGasLimitAction

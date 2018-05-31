@@ -9,6 +9,7 @@ import {
   isStaticNodeId,
   isStaticNetworkId,
   getLanguageSelection,
+  getTheme,
   getCustomNodeConfigs,
   getSelectedNode,
   getCustomNetworkConfigs
@@ -23,7 +24,10 @@ export function getConfigAndCustomTokensStateToSubscribe(
   state: AppState
 ): Pick<DeepPartial<AppState>, 'config' | 'customTokens'> {
   const subscribedConfig: DeepPartial<ConfigState> = {
-    meta: { languageSelection: getLanguageSelection(state) },
+    meta: {
+      languageSelection: getLanguageSelection(state),
+      theme: getTheme(state)
+    },
     nodes: { customNodes: getCustomNodeConfigs(state), selectedNode: getSelectedNode(state) },
     networks: {
       customNetworks: getCustomNetworkConfigs(state)

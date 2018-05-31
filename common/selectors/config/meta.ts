@@ -1,4 +1,5 @@
 import { AppState } from 'reducers';
+import { Theme } from 'config';
 const getConfig = (state: AppState) => state.config;
 
 export const getMeta = (state: AppState) => getConfig(state).meta;
@@ -14,6 +15,10 @@ export function getAutoGasLimitEnabled(state: AppState): boolean {
 
 export function getLanguageSelection(state: AppState): string {
   return getMeta(state).languageSelection;
+}
+
+export function getTheme(state: AppState): Theme {
+  return getMeta(state).theme;
 }
 
 export function getLatestBlock(state: AppState) {

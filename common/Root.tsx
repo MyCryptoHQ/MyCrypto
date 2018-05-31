@@ -26,14 +26,16 @@ import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
 import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-import { getNetworkUnit } from 'selectors/config';
+import { getNetworkUnit, getTheme } from 'selectors/config';
+import { Theme } from 'config';
 
 interface OwnProps {
   store: Store<AppState>;
 }
 
 interface StateProps {
-  networkUnit: string;
+  networkUnit: ReturnType<typeof getNetworkUnit>;
+  theme: ReturnType<typeof getTheme>;
 }
 
 interface DispatchProps {
@@ -56,10 +58,17 @@ class RootClass extends Component<Props, State> {
     this.props.pollOfflineStatus();
     this.props.setUnitMeta(this.props.networkUnit);
     this.addBodyClasses();
+    this.updateTheme(this.props.theme);
   }
 
   public componentDidCatch(error: Error) {
     this.setState({ error });
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (this.props.theme !== prevProps.theme) {
+      this.updateTheme(this.props.theme, prevProps.theme);
+    }
   }
 
   public render() {
@@ -145,6 +154,14 @@ class RootClass extends Component<Props, State> {
 
     document.body.className += ` ${classes.join(' ')}`;
   }
+
+  private updateTheme(theme: Theme, oldTheme?: Theme) {
+    const root = document.documentElement;
+    if (oldTheme) {
+      root.classList.remove(`theme--${oldTheme}`);
+    }
+    root.classList.add(`theme--${theme}`);
+  }
 }
 
 const LegacyRoutes = withRouter(props => {
@@ -187,11 +204,10 @@ const LegacyRoutes = withRouter(props => {
   );
 });
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    networkUnit: getNetworkUnit(state)
-  };
-};
+const mapStateToProps = (state: AppState): StateProps => ({
+  networkUnit: getNetworkUnit(state),
+  theme: getTheme(state)
+});
 
 export default connect(mapStateToProps, {
   pollOfflineStatus,

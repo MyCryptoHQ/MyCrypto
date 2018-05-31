@@ -28,6 +28,16 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
   };
 }
 
+export type TChangeTheme = typeof changeTheme;
+export function changeTheme(
+  theme: interfaces.ChangeThemeAction['payload']
+): interfaces.ChangeThemeAction {
+  return {
+    type: TypeKeys.CONFIG_THEME_CHANGE,
+    payload: theme
+  };
+}
+
 export type TPollOfflineStatus = typeof pollOfflineStatus;
 export function pollOfflineStatus(): interfaces.PollOfflineStatus {
   return {
