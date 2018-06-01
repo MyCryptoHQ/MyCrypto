@@ -265,6 +265,11 @@
     "decimal": 18
   },
   {
+    "address": "0xff56Cc6b1E6dEd347aA0B7676C85AB0B3D08B0FA",
+    "symbol": "ORBS",
+    "decimal": 18
+  },
+  {
     "address": "0xB97048628DB6B661D4C2aA833e95Dbe1A905B280",
     "symbol": "PAY",
     "decimal": 18
