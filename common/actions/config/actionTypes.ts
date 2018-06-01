@@ -40,6 +40,11 @@ export interface ChangeNodeSucceededAction {
   };
 }
 
+/*** Change Node Failed ***/
+export interface ChangeNodeFailedAction {
+  type: TypeKeys.CONFIG_CHANGE_NODE_FAILED;
+}
+
 /*** Change Node Onetime ***/
 export interface ChangeNodeRequestedOneTimeAction {
   type: TypeKeys.CONFIG_CHANGE_NODE_REQUESTED_ONETIME;
@@ -106,6 +111,7 @@ export type CustomNodeAction = AddCustomNodeAction | RemoveCustomNodeAction;
 export type NodeAction =
   | ChangeNodeSucceededAction
   | ChangeNodeRequestedAction
+  | ChangeNodeFailedAction
   | Web3UnsetNodeAction
   | Web3setNodeAction;
 

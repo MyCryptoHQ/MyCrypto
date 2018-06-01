@@ -26,6 +26,11 @@ const changeNodeSucceeded = (state: State, { payload }: ChangeNodeSucceededActio
   pending: false
 });
 
+const changeNodeFailed = (state: State): State => ({
+  ...state,
+  pending: false
+});
+
 export const selectedNode = (
   state: State = INITIAL_STATE,
   action: NodeAction | CustomNodeAction
@@ -35,6 +40,8 @@ export const selectedNode = (
       return changeNodeSucceeded(state, action);
     case TypeKeys.CONFIG_CHANGE_NODE_REQUESTED:
       return changeNodeRequested(state, action);
+    case TypeKeys.CONFIG_CHANGE_NODE_FAILED:
+      return changeNodeFailed(state);
     default:
       return state;
   }

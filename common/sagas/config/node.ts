@@ -26,6 +26,7 @@ import {
   setOffline,
   changeNodeRequested,
   changeNodeSucceeded,
+  changeNodeFailed,
   changeNodeForce,
   setLatestBlock,
   AddCustomNodeAction,
@@ -139,6 +140,7 @@ export function* handleChangeNodeRequested({
 
   function* bailOut(message: string) {
     yield put(showNotification('danger', message, 5000));
+    yield put(changeNodeFailed());
   }
 
   let nextNodeConfig: CustomNodeConfig | StaticNodeConfig;

@@ -29,7 +29,6 @@ interface RawNodeConfig {
   type: 'rpc' | 'etherscan' | 'infura' | 'web3' | 'myccustom';
   service: string;
   url: string;
-  estimateGas: boolean;
 }
 
 type StaticNodeId = string;

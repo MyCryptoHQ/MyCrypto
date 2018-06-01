@@ -355,7 +355,7 @@
     "ONBOARD_SECURE_TITLE": "How To Protect Yourself & Your Funds",
     "ONBOARD_SECURE_1_TITLE": "How To Protect Yourself from Phishers",
     "ONBOARD_SECURE_1_CONTENT__1": "Phishers send you a message with a link to a website that looks just like MyCrypto, EtherDelta, Paypal, or your bank, but is not the real website. They steal your information and then steal your money.",
-    "ONBOARD_SECURE_1_CONTENT__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) or the [MyCrypto Chrome Extension](https://chrome.google.com/webstore/detail/myetherwallet-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm) to block malicious websites.",
+    "ONBOARD_SECURE_1_CONTENT__2": "Install [EAL](https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn) or [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) or [Cryptonite by Metacert](https://chrome.google.com/webstore/detail/cryptonite-by-metacert/keghdcpemohlojlglbiegihkljkgnige) to block malicious websites.",
     "ONBOARD_SECURE_1_CONTENT__3": "Always check the URL: `https://www.mycrypto.com`.",
     "ONBOARD_SECURE_1_CONTENT__4": "Always make sure the URL bar has `MyCrypto, Inc (US)` in green.",
     "ONBOARD_SECURE_1_CONTENT__5": "Do not trust messages or links sent to you randomly via email, Slack, Reddit, Twitter, etc.",

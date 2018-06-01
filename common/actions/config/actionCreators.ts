@@ -28,16 +28,6 @@ export function changeLanguage(sign: string): interfaces.ChangeLanguageAction {
   };
 }
 
-export type TChangeNodeSucceded = typeof changeNodeSucceeded;
-export function changeNodeSucceeded(
-  payload: interfaces.ChangeNodeSucceededAction['payload']
-): interfaces.ChangeNodeSucceededAction {
-  return {
-    type: TypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED,
-    payload
-  };
-}
-
 export type TPollOfflineStatus = typeof pollOfflineStatus;
 export function pollOfflineStatus(): interfaces.PollOfflineStatus {
   return {
@@ -50,6 +40,23 @@ export function changeNodeRequested(payload: string): interfaces.ChangeNodeReque
   return {
     type: TypeKeys.CONFIG_CHANGE_NODE_REQUESTED,
     payload
+  };
+}
+
+export type TChangeNodeSucceded = typeof changeNodeSucceeded;
+export function changeNodeSucceeded(
+  payload: interfaces.ChangeNodeSucceededAction['payload']
+): interfaces.ChangeNodeSucceededAction {
+  return {
+    type: TypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED,
+    payload
+  };
+}
+
+export type TChangeNodeFailed = typeof changeNodeFailed;
+export function changeNodeFailed(): interfaces.ChangeNodeFailedAction {
+  return {
+    type: TypeKeys.CONFIG_CHANGE_NODE_FAILED
   };
 }
 
