@@ -1,0 +1,64 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+$radio-size: 10px;
+
+.NodeOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $font-size-xs-bump;
+
+  &-name {
+    flex: 1;
+    padding: 0.2rem 0;
+    cursor: pointer;
+    @include ellipsis;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      border: 1px solid rgba($gray-light, 0.4);
+      border-radius: 100%;
+      height: $radio-size;
+      width: $radio-size;
+      margin-right: $space-xs;
+      background: #FFF;
+      box-shadow: 0 0 0 1px #FFF inset;
+    }
+
+    &:hover {
+      &:before {
+        border-color: rgba($gray-light, 0.8);
+      }
+    }
+
+    &.is-selected {
+      &:before {
+        border-color: $brand-primary;
+        background: $brand-primary;
+      }
+    }
+
+    &.is-auto-selected {
+      &:before {
+        background: rgba($brand-primary, 0.3);
+      }
+
+      &:hover:before {
+        background: rgba($brand-primary, 0.8);
+      }
+    }
+  }
+
+  &-remove {
+    @include reset-button;
+    opacity: 0.25;
+    font-size: 14px;
+
+    &:hover {
+      color: $brand-danger;
+      opacity: 0.8;
+    }
+  }
+}

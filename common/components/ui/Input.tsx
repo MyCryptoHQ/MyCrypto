@@ -2,6 +2,11 @@ import React, { HTMLProps } from 'react';
 import classnames from 'classnames';
 import './Input.scss';
 
+interface OwnProps extends HTMLProps<HTMLInputElement> {
+  showInvalidBeforeBlur?: boolean;
+  setInnerRef?(ref: HTMLInputElement | null): void;
+}
+
 interface State {
   hasBlurred: boolean;
   /**
@@ -23,19 +28,26 @@ class Input extends React.Component<OwnProps, State> {
   };
 
   public render() {
-    const { showValidAsPlain, isValid, ...htmlProps } = this.props;
+    const {
+      setInnerRef,
+      showInvalidBeforeBlur,
+      showValidAsPlain,
+      isValid,
+      ...htmlProps
+    } = this.props;
     const hasValue = !!this.props.value && this.props.value.toString().length > 0;
     const classname = classnames(
       this.props.className,
       'input-group-input',
       this.state.isStateless ? '' : isValid ? (showValidAsPlain ? '' : '') : `invalid`,
-      this.state.hasBlurred && 'has-blurred',
+      (showInvalidBeforeBlur || this.state.hasBlurred) && 'has-blurred',
       hasValue && 'has-value'
     );
 
     return (
       <input
         {...htmlProps}
+        ref={node => setInnerRef && setInnerRef(node)}
         onBlur={e => {
           this.setState({ hasBlurred: true });
           if (this.props && this.props.onBlur) {

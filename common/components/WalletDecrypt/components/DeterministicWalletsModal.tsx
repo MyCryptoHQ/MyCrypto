@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
+import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import {
   DeterministicWalletData,
@@ -14,36 +15,39 @@ import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
 import { getNetworkConfig } from 'selectors/config';
-import { getTokens, MergedToken } from 'selectors/wallet';
+import { getTokens } from 'selectors/wallet';
+import { getAddressLabels } from 'selectors/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
-import { StaticNetworkConfig } from 'types/network';
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
 
-interface Props {
-  // Passed props
+interface OwnProps {
   isOpen?: boolean;
   dPath: DPath;
   dPaths: DPath[];
   publicKey?: string;
   chainCode?: string;
   seed?: string;
+}
 
-  // Redux state
+interface StateProps {
+  addressLabels: ReturnType<typeof getAddressLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
   desiredToken: AppState['deterministicWallets']['desiredToken'];
-  network: StaticNetworkConfig;
-  tokens: MergedToken[];
+  network: ReturnType<typeof getNetworkConfig>;
+  tokens: ReturnType<typeof getTokens>;
+}
 
-  // Redux actions
+interface DispatchProps {
   getDeterministicWallets(args: GetDeterministicWalletsArgs): GetDeterministicWalletsAction;
   setDesiredToken(tkn: string | undefined): SetDesiredTokenAction;
-
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
   onPathChange(dPath: DPath): void;
 }
+
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   currentDPath: DPath;
@@ -274,8 +278,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private renderWalletRow(wallet: DeterministicWalletData) {
-    const { desiredToken, network } = this.props;
+    const { desiredToken, network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
+    const label = addressLabels[toChecksumAddress(wallet.address)];
+    const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     // Get renderable values, but keep 'em short
     const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
@@ -293,7 +299,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             checked={selectedAddress === wallet.address}
             value={wallet.address}
           />
-          {wallet.address}
+          <div>
+            {label && <label className="DWModal-addresses-table-address-label">{label}</label>}
+            <span className={spanClassName}>{wallet.address}</span>
+          </div>
         </td>
         <td>
           <UnitDisplay
@@ -331,8 +340,9 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(state: AppState): StateProps {
   return {
+    addressLabels: getAddressLabels(state),
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),

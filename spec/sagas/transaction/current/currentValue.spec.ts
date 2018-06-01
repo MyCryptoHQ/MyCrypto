@@ -45,8 +45,10 @@ describe('valueHandler', () => {
     setter
   );
   gen.invalidZeroToken = cloneableGenerator(valueHandler)(zeroAction, setTokenValue);
+
   const value = toTokenBase(action.payload, decimal);
   const zeroValue = toTokenBase(zeroAction.payload, decimal);
+
   const unit = 'eth';
   const isEth = true;
 
@@ -73,6 +75,23 @@ describe('valueHandler', () => {
     expect(gen.invalidDecimal.next(unit).value).toEqual(select(isEtherTransaction));
     expect(gen.invalidZeroToken.next(failCases.invalidZeroToken.unit).value).toEqual(
       select(isEtherTransaction)
+    );
+  });
+
+  it('handles floats without lead zero', () => {
+    const leadZeroValue = {
+      decimal: 18,
+      action: {
+        payload: '.1'
+      }
+    };
+    const g = cloneableGenerator(valueHandler)(leadZeroValue.action as any, setter);
+
+    expect(g.next().value).toEqual(select(getDecimal));
+    expect(g.next(leadZeroValue.decimal).value).toEqual(select(getUnit));
+    expect(g.next(unit).value).toEqual(select(isEtherTransaction));
+    expect(g.next(isEth).value).not.toEqual(
+      put(setter({ raw: leadZeroValue.action.payload, value: null }))
     );
   });
 

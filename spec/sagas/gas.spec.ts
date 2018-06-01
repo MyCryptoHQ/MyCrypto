@@ -127,7 +127,8 @@ describe('setDefaultEstimates*', () => {
   it('Should use config defaults if network has no defaults', () => {
     const customNetwork = {
       isCustom: true as true,
-      name: 'Custon',
+      id: '123',
+      name: 'Custom',
       unit: 'CST',
       chainId: 123,
       dPathFormats: null
