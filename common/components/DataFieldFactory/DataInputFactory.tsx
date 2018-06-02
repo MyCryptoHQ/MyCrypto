@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getData, getDataExists } from 'features/transaction/selectors';
+import { getData, getDataExists } from 'features/transaction';
 import { CallBackProps } from 'components/DataFieldFactory';
 import { Query } from 'components/renderCbs';
 
