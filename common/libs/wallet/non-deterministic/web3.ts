@@ -3,7 +3,7 @@ import { IFullWallet } from '../IWallet';
 import { bufferToHex } from 'ethereumjs-util';
 import { toChecksumAddressByChainId } from 'libs/checksum';
 import { configuredStore } from 'store';
-import { getNodeLib, getNetworkNameByChainId } from 'selectors/config';
+import { getNodeLib, getNetworkByChainId } from 'selectors/config';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 

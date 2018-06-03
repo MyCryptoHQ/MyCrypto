@@ -333,7 +333,8 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
   it('should return early if wallet type is web3', () => {
     const mockAddress = '0x0';
     const mockNetwork = 'ETH';
-    const mockWeb3Wallet = new Web3Wallet(mockAddress, mockNetwork);
+    const chainId = 1;
+    const mockWeb3Wallet = new Web3Wallet(mockAddress, mockNetwork, chainId);
     const gen2 = unsetWeb3NodeOnWalletEvent({ payload: mockWeb3Wallet } as any);
     gen2.next(); //getNode
     gen2.next('web3'); //getNodeConfig

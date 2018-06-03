@@ -118,7 +118,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           onCancel={this.handleCancel}
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
-          chainId={network.chainId}
         />
       </div>
     );
