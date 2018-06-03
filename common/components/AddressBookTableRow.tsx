@@ -11,12 +11,12 @@ interface Props {
   temporaryLabel: string;
   labelError?: string;
   isEditing: boolean;
+  network: NetworkConfig;
   onChange(label: string): void;
   onSave(): void;
   onLabelInputBlur(): void;
   onEditClick(): void;
   onRemoveClick(): void;
-  network: NetworkConfig;
 }
 
 interface State {
