@@ -65,9 +65,8 @@ export class KeystoreDecrypt extends PureComponent {
 
           {isWalletPending ? <Spinner /> : ''}
           <Input
-            className={`${password.length > 0 ? 'is-valid' : 'is-invalid'} ${
-              file.length && isWalletPending ? 'hidden' : ''
-            }`}
+            isValid={password.length > 0}
+            className={`${file.length && isWalletPending ? 'hidden' : ''}`}
             disabled={!file}
             value={password}
             onChange={this.onPasswordChange}

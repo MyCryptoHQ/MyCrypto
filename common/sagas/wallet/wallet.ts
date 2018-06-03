@@ -76,6 +76,18 @@ export function* updateAccountBalance(): SagaIterator {
   }
 }
 
+export function* retryTokenBalances(): SagaIterator {
+  const tokens: MergedToken[] = yield select(getWalletConfigTokens);
+  if (tokens && tokens.length) {
+    yield call(updateTokenBalances);
+  } else {
+    const wallet: null | IWallet = yield select(getWalletInst);
+    if (wallet) {
+      yield call(scanWalletForTokens, wallet);
+    }
+  }
+}
+
 export function* updateTokenBalances(): SagaIterator {
   try {
     const isOffline = yield select(getOffline);
@@ -126,14 +138,17 @@ export function* updateTokenBalance(action: SetTokenBalancePendingAction): SagaI
   }
 }
 
-export function* scanWalletForTokens(action: ScanWalletForTokensAction): SagaIterator {
+export function* handleScanWalletAction(action: ScanWalletForTokensAction): SagaIterator {
+  yield call(scanWalletForTokens, action.payload);
+}
+
+export function* scanWalletForTokens(wallet: IWallet): SagaIterator {
   try {
     const isOffline = yield select(getOffline);
     if (isOffline) {
       return;
     }
 
-    const wallet = action.payload;
     const tokens: MergedToken[] = yield select(getTokens);
     yield put(setTokenBalancesPending());
 
@@ -274,11 +289,11 @@ export default function* walletSaga(): SagaIterator {
     takeEvery(TypeKeys.WALLET_UNLOCK_KEYSTORE, unlockKeystore),
     takeEvery(TypeKeys.WALLET_UNLOCK_MNEMONIC, unlockMnemonic),
     takeEvery(TypeKeys.WALLET_SET, handleNewWallet),
-    takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, scanWalletForTokens),
+    takeEvery(TypeKeys.WALLET_SCAN_WALLET_FOR_TOKENS, handleScanWalletAction),
     takeEvery(TypeKeys.WALLET_SET_WALLET_TOKENS, handleSetWalletTokens),
     takeEvery(TypeKeys.WALLET_SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
     takeEvery(TypeKeys.WALLET_REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
-    takeEvery(TypeKeys.WALLET_REFRESH_TOKEN_BALANCES, updateTokenBalances),
+    takeEvery(TypeKeys.WALLET_REFRESH_TOKEN_BALANCES, retryTokenBalances),
     // Foreign actions
     takeEvery(ConfigTypeKeys.CONFIG_TOGGLE_OFFLINE, updateBalances),
     takeEvery(CustomTokenTypeKeys.CUSTOM_TOKEN_ADD, handleCustomTokenAdd)

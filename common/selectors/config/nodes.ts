@@ -1,13 +1,8 @@
 import { AppState } from 'reducers';
-import {
-  getStaticNetworkConfigs,
-  getCustomNetworkConfigs,
-  isStaticNetworkId
-} from 'selectors/config';
-import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
-import { StaticNetworkIds } from 'types/network';
+import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
 const getConfig = (state: AppState) => state.config;
-import { shepherdProvider, INode, stripWeb3Network } from 'libs/nodes';
+import { shepherdProvider, INode, isAutoNodeConfig } from 'libs/nodes';
+import { getNetworkConfig } from './networks';
 
 export const getNodes = (state: AppState) => getConfig(state).nodes;
 
@@ -84,8 +79,8 @@ export function getNodeConfig(state: AppState): StaticNodeConfig | CustomNodeCon
   const config = getStaticNodeConfig(state) || getCustomNodeConfig(state);
 
   if (!config) {
-    const { selectedNode } = getNodes(state);
-    throw Error(`No node config found for ${selectedNode.nodeId} in either static or custom nodes`);
+    const nodeId = getNodeId(state);
+    throw Error(`No node config found for ${nodeId} in either static or custom nodes`);
   }
   return config;
 }
@@ -94,70 +89,45 @@ export function getNodeLib(_: AppState): INode {
   return shepherdProvider;
 }
 
-export interface NodeOption {
-  isCustom: false;
-  value: string;
-  label: { network: string; service: string };
-  color?: string;
-  hidden?: boolean;
-}
-
-export function getStaticNodeOptions(state: AppState): NodeOption[] {
-  const staticNetworkConfigs = getStaticNetworkConfigs(state);
-  return Object.entries(getStaticNodes(state)).map(([nodeId, node]: [string, StaticNodeConfig]) => {
-    const associatedNetwork =
-      staticNetworkConfigs[stripWeb3Network(node.network) as StaticNetworkIds];
-    const opt: NodeOption = {
-      isCustom: node.isCustom,
-      value: nodeId,
-      label: {
-        network: stripWeb3Network(node.network),
-        service: node.service
-      },
-      color: associatedNetwork.color,
-      hidden: node.hidden
-    };
-    return opt;
-  });
-}
-
-export interface CustomNodeOption {
-  isCustom: true;
-  id: string;
-  value: string;
-  label: {
-    network: string;
-    nodeName: string;
+export function getAllNodes(state: AppState): { [key: string]: NodeConfig } {
+  return {
+    ...getStaticNodes(state),
+    ...getCustomNodeConfigs(state)
   };
-  color?: string;
-  hidden?: boolean;
 }
 
-export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
-  const staticNetworkConfigs = getStaticNetworkConfigs(state);
-  const customNetworkConfigs = getCustomNetworkConfigs(state);
-  return Object.entries(getCustomNodeConfigs(state)).map(
-    ([_, node]: [string, CustomNodeConfig]) => {
-      const chainId = node.network;
-      const associatedNetwork = isStaticNetworkId(state, chainId)
-        ? staticNetworkConfigs[chainId]
-        : customNetworkConfigs[chainId];
-      const opt: CustomNodeOption = {
-        isCustom: node.isCustom,
-        value: node.id,
-        label: {
-          network: associatedNetwork.unit,
-          nodeName: node.name
-        },
-        color: associatedNetwork.isCustom ? undefined : associatedNetwork.color,
-        hidden: false,
-        id: node.id
-      };
-      return opt;
+export interface INodeLabel {
+  network: string;
+  info: string;
+}
+
+export function getSelectedNodeLabel(state: AppState): INodeLabel {
+  const allNodes = getAllNodes(state);
+  const node = getNodeConfig(state);
+  const network = getNetworkConfig(state);
+  let info;
+
+  if (node.isCustom) {
+    // Custom nodes have names
+    info = node.name;
+  } else if (node.isAuto) {
+    // Auto nodes should show the count of all nodes it uses. If only one,
+    // show the service name of the node.
+    const networkNodes = Object.values(allNodes).filter(
+      n => !isAutoNodeConfig(n) && n.network === node.network
+    );
+
+    if (networkNodes.length > 1) {
+      info = `${networkNodes.length} Nodes`;
+    } else {
+      info = networkNodes[0].service;
     }
-  );
-}
+  } else {
+    info = node.service;
+  }
 
-export function getNodeOptions(state: AppState) {
-  return [...getStaticNodeOptions(state), ...getCustomNodeOptions(state)];
+  return {
+    network: network.name,
+    info
+  };
 }

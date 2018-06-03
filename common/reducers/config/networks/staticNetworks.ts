@@ -16,7 +16,11 @@ import {
   EXP_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
-  UBQ_DEFAULT
+  UBQ_DEFAULT,
+  MUSIC_DEFAULT,
+  ETSC_DEFAULT,
+  EGEM_DEFAULT,
+  CLO_DEFAULT
 } from 'config/dpaths';
 import { ConfigAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
@@ -30,7 +34,8 @@ const testnetDefaultGasPrice = {
 
 export const INITIAL_STATE: State = {
   ETH: {
-    name: 'ETH',
+    id: 'ETH',
+    name: 'Ethereum',
     unit: 'ETH',
     chainId: 1,
     isCustom: false,
@@ -54,6 +59,7 @@ export const INITIAL_STATE: State = {
     shouldEstimateGasPrice: true
   },
   Ropsten: {
+    id: 'Ropsten',
     name: 'Ropsten',
     unit: 'ETH',
     chainId: 3,
@@ -74,6 +80,7 @@ export const INITIAL_STATE: State = {
     gasPriceSettings: testnetDefaultGasPrice
   },
   Kovan: {
+    id: 'Kovan',
     name: 'Kovan',
     unit: 'ETH',
     chainId: 42,
@@ -94,6 +101,7 @@ export const INITIAL_STATE: State = {
     gasPriceSettings: testnetDefaultGasPrice
   },
   Rinkeby: {
+    id: 'Rinkeby',
     name: 'Rinkeby',
     unit: 'ETH',
     chainId: 4,
@@ -114,7 +122,8 @@ export const INITIAL_STATE: State = {
     gasPriceSettings: testnetDefaultGasPrice
   },
   ETC: {
-    name: 'ETC',
+    id: 'ETC',
+    name: 'Ethereum Classic',
     unit: 'ETC',
     chainId: 61,
     isCustom: false,
@@ -138,7 +147,8 @@ export const INITIAL_STATE: State = {
     }
   },
   UBQ: {
-    name: 'UBQ',
+    id: 'UBQ',
+    name: 'Ubiq',
     unit: 'UBQ',
     chainId: 8,
     isCustom: false,
@@ -161,7 +171,8 @@ export const INITIAL_STATE: State = {
     }
   },
   EXP: {
-    name: 'EXP',
+    id: 'EXP',
+    name: 'Expanse',
     unit: 'EXP',
     chainId: 2,
     isCustom: false,
@@ -184,6 +195,7 @@ export const INITIAL_STATE: State = {
     }
   },
   POA: {
+    id: 'POA',
     name: 'POA',
     unit: 'POA',
     chainId: 99,
@@ -209,7 +221,8 @@ export const INITIAL_STATE: State = {
     }
   },
   TOMO: {
-    name: 'TOMO',
+    id: 'TOMO',
+    name: 'TomoChain',
     unit: 'TOMO',
     chainId: 40686,
     isCustom: false,
@@ -233,7 +246,8 @@ export const INITIAL_STATE: State = {
     }
   },
   ELLA: {
-    name: 'ELLA',
+    id: 'ELLA',
+    name: 'Ellaism',
     unit: 'ELLA',
     chainId: 64,
     isCustom: false,
@@ -247,6 +261,103 @@ export const INITIAL_STATE: State = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+
+  MUSIC: {
+    id: 'MUSIC',
+    name: 'Musicoin',
+    unit: 'MUSIC',
+    chainId: 7762959,
+    isCustom: false,
+    color: '#ffbb00',
+    blockExplorer: makeExplorer({
+      name: 'Musicoin Explorer',
+      origin: 'https://explorer.musicoin.org',
+      addressPath: 'account'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: MUSIC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: MUSIC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+
+  ETSC: {
+    id: 'ETSC',
+    name: 'Ethereum Social',
+    unit: 'ETSC',
+    chainId: 28,
+    isCustom: false,
+    color: '#4295d1',
+    blockExplorer: makeExplorer({
+      name: 'Ethereum Social Explorer',
+      origin: 'https://explorer.ethereumsocial.kr'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETSC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETSC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+
+  EGEM: {
+    id: 'EGEM',
+    name: 'EtherGem',
+    unit: 'EGT',
+    chainId: 1987,
+    isCustom: false,
+    color: '#D0F7FF',
+    blockExplorer: makeExplorer({
+      name: 'EtherGem Explorer',
+      origin: 'https://explorer.egem.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: EGEM_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: EGEM_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+
+  CLO: {
+    id: 'CLO',
+    name: 'Callisto',
+    unit: 'CLO',
+    chainId: 820,
+    isCustom: false,
+    color: '#00b04a',
+    blockExplorer: makeExplorer({
+      name: 'Callisto Explorer',
+      origin: 'https://explorer.callisto.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: CLO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: CLO_DEFAULT
     },
     gasPriceSettings: {
       min: 1,

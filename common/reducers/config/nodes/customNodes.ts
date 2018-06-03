@@ -8,12 +8,12 @@ import { CustomNodesState as State } from './types';
 
 const addCustomNode = (state: State, { payload }: AddCustomNodeAction): State => ({
   ...state,
-  [payload.id]: payload.config
+  [payload.id]: payload
 });
 
 function removeCustomNode(state: State, { payload }: RemoveCustomNodeAction): State {
   const stateCopy = { ...state };
-  Reflect.deleteProperty(stateCopy, payload.id);
+  Reflect.deleteProperty(stateCopy, payload);
   return stateCopy;
 }
 

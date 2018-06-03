@@ -30,7 +30,7 @@ export const GasLimitField: React.SFC<Props> = ({
             />
           </div>
           <Input
-            className={gasLimitValidator(raw) ? 'is-valid' : 'is-invalid'}
+            isValid={gasLimitValidator(raw)}
             type="number"
             placeholder="21000"
             readOnly={!!readOnly}

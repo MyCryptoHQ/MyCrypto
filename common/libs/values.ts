@@ -44,7 +44,7 @@ export const buildEIP681TokenRequest = (
   }`;
 
 export const sanitizeNumericalInput = (input: string): string => {
-  const inputFloat = parseFloat(input);
+  const inputFloat = Number(input);
 
   if (!input || isNaN(inputFloat)) {
     return input;

@@ -37,16 +37,10 @@
       padding-right: $space;
       border: none;
     }
-
-    .form-control {
-      display: inline-block;
-      width: auto;
-      margin: 0 0 0 10px;
-    }
   }
 
   &-addresses {
-    overflow-y: scroll;
+    overflow-y: auto;
     &-table {
       width: 732px;
       text-align: center;
@@ -61,9 +55,19 @@
         font-size: 13px;
         text-align: left;
         font-family: $font-family-monospace;
+        display: flex;
+        align-items: center;
+
+        &-label {
+          font-weight: bold;
+        }
 
         input {
-          margin-right: 6px;
+          margin-right: 10px;
+        }
+
+        &-text {
+          font-size: 10px;
         }
       }
 
@@ -74,9 +78,20 @@
         background-image: url('~assets/images/icon-external-link.svg');
       }
 
+      &-na {
+        font-size: $font-size-xs;
+        opacity: 0.3;
+      }
+
+      // Specific selectors to override bootstrap
       tbody {
         tr {
           cursor: pointer;
+
+          label {
+            display: block;
+            font-family: $font-family-sans-serif;
+          }
         }
 
         td {

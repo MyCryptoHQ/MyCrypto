@@ -88,7 +88,7 @@ class EquivalentValues extends React.Component<Props, State> {
     };
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { balance, tokenBalances, isOffline, network } = this.props;
     if (
       nextProps.balance !== balance ||
