@@ -13,7 +13,7 @@ interface Props {
 
 export default function Identicon(props: Props) {
   const size = props.size || '4rem';
-  const { address, className, network } = props;
+  const { address, className = '', network } = props;
   // FIXME breaks on failed checksums
   const checksummedAddress = toChecksumAddressByChainId(address, network.chainId);
   const identiconDataUrl = isValidAddress(checksummedAddress, network.chainId)

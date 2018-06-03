@@ -19,16 +19,14 @@ describe('setCurrentTo*', () => {
       value: Address(raw)
     };
     const ethAddrAction: any = {
-      payload: { raw }
+      payload: raw
     };
 
-    const gen = cloneableGenerator(setCurrentTo)(ethAddrAction);
+    data.validEthGen = setCurrentTo(ethAddrAction);
 
-    data.validEthGen = gen;
-    it('should call getNetworkConfig', () => {
+    it('should select getNetworkConfig', () => {
       expect(data.validEthGen.next().value).toEqual(select(getNetworkConfig));
     });
-
     it('should call isValidETHAddress', () => {
       expect(data.validEthGen.next().value).toEqual(call(isValidAddress, raw, 0));
     });
@@ -51,16 +49,13 @@ describe('setCurrentTo*', () => {
       value: null
     };
     const ensAddrAction: any = {
-      payload: { raw, chainId: 0 }
+      payload: raw
     };
+    data.validEnsGen = setCurrentTo(ensAddrAction);
 
-    const gen = cloneableGenerator(setCurrentTo)(ensAddrAction);
-
-    data.validEnsGen = gen;
-    it('should call getNetworkConfig', () => {
+    it('should select getNetworkConfig', () => {
       expect(data.validEnsGen.next().value).toEqual(select(getNetworkConfig));
     });
-
     it('should call isValidETHAddress', () => {
       expect(data.validEnsGen.next().value).toEqual(call(isValidAddress, raw, 0));
     });

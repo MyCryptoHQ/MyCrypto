@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BetaAgreement, Footer, Header } from 'components';
+import { Footer, Header } from 'components';
 import { AppState } from 'reducers';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
 import { getOffline, getLatestBlock } from 'selectors/config';
 import { Query } from 'components/renderCbs';
+import { makeAutoNodeName } from 'libs/nodes';
 import './WebTemplate.scss';
 
 interface StateProps {
@@ -29,7 +30,7 @@ class WebTemplate extends Component<Props, {}> {
         <Query
           params={['network']}
           withQuery={({ network }) => (
-            <Header networkParam={network && `${network.toLowerCase()}_auto`} />
+            <Header networkParam={network && makeAutoNodeName(network)} />
           )}
         />
         <div className="Tab container">
@@ -38,7 +39,6 @@ class WebTemplate extends Component<Props, {}> {
         <div className="WebTemplate-spacer" />
         <Footer latestBlock={latestBlock} />
         <Notifications />
-        <BetaAgreement />
       </div>
     );
   }

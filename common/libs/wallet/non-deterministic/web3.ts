@@ -78,12 +78,14 @@ export default class Web3Wallet implements IFullWallet {
 
   private async networkCheck(lib: Web3Node) {
     const netId = await lib.getNetVersion();
-    const netName = getNetworkNameByChainId(configuredStore.getState(), netId);
-    if (this.network !== netName) {
+    const networkConfig = getNetworkByChainId(configuredStore.getState(), netId);
+    if (!networkConfig) {
+      throw new Error(`MyCrypto doesn’t support the network with chain ID '${netId}'`);
+    } else if (this.network !== networkConfig.id) {
       throw new Error(
-        `Expected MetaMask / Mist network to be ${
-          this.network
-        }, but got ${netName}. Please change the network or refresh the page.`
+        `Expected MetaMask / Mist network to be ${this.network}, but got ${
+          networkConfig.id
+        }. Please change the network or refresh the page.`
       );
     }
   }

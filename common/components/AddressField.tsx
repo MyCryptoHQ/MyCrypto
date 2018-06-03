@@ -10,6 +10,7 @@ interface Props {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
   isCheckSummed?: boolean;
+  showLabelMatch?: boolean;
   network: NetworkConfig;
 }
 
@@ -17,18 +18,21 @@ export const AddressField: React.SFC<Props> = ({
   isReadOnly,
   isSelfAddress,
   isCheckSummed,
+  showLabelMatch,
   network
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
-    withProps={({ currentTo, isValid, onChange, readOnly }) => (
+    showLabelMatch={showLabelMatch}
+    withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
             {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
           </div>
           <Input
-            className={`input-group-input ${isValid ? '' : 'invalid'}`}
+            className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
+            isValid={isValid}
             type="text"
             value={
               isCheckSummed
@@ -39,6 +43,8 @@ export const AddressField: React.SFC<Props> = ({
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
             onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         </label>
       </div>

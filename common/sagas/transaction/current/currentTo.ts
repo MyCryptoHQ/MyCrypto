@@ -13,17 +13,12 @@ import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
 import { NetworkConfig } from 'shared/types/network';
 import { getNetworkConfig } from 'selectors/config';
 
-export function* setCurrentTo(action: SetCurrentToAction): SagaIterator {
+export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
   const network: NetworkConfig = yield select(getNetworkConfig);
-  const validAddress: boolean = yield call(
-    isValidAddress,
-    action.payload.raw,
-    network ? network.chainId : 0
-  );
-  const validEns: boolean = yield call(isValidENSAddress, action.payload.raw);
+  const validAddress: boolean = yield call(isValidAddress, raw, network ? network.chainId : 0);
+  const validEns: boolean = yield call(isValidENSAddress, raw);
 
   let value: Buffer | null = null;
-  const raw: string = action.payload.raw;
   if (validAddress) {
     value = Address(raw);
   } else if (validEns) {

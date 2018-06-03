@@ -4,8 +4,11 @@ import {
   isValidETHAddress,
   isValidPath,
   isValidPrivKey,
+  isLabelWithoutENS,
+  isValidAddressLabel,
   isValidAddress
 } from '../../common/libs/validators';
+import { translateRaw } from '../../common/translations';
 import { DPaths } from 'config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
 configuredStore.getState();
@@ -78,6 +81,82 @@ describe('Validator', () => {
   it('should validate hardcoded DPaths as true', () => {
     DPaths.forEach(DPath => {
       expect(isValidPath(DPath.value)).toBeTruthy();
+    });
+  });
+});
+
+describe('isLabelWithoutENS', () => {
+  it('should return false if the label contains an ENS TLD', () => {
+    expect(isLabelWithoutENS('Foo.eth')).toEqual(false);
+    expect(isLabelWithoutENS('Foo.test')).toEqual(false);
+    expect(isLabelWithoutENS('Foo.reverse')).toEqual(false);
+  });
+  it('should return true if a label does not contain an ENS TLD', () => {
+    expect(isLabelWithoutENS('Foo')).toEqual(true);
+  });
+});
+
+describe('isValidAddressLabel', () => {
+  const validAddress = '0x081f37708032d0a7b3622591a8959b213fb47d6f';
+  const otherValidAddress = '0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0';
+  const addresses = {
+    [validAddress]: 'Foo'
+  };
+  const labels = {
+    Foo: validAddress
+  };
+
+  describe('Happy path', () => {
+    it('should return valid', () => {
+      expect(isValidAddressLabel(validAddress, 'Foo', {}, {}, 1).isValid).toEqual(true);
+    });
+  });
+  describe('Invalid cases', () => {
+    it('should return invalid when the provided address is invalid', () => {
+      const { isValid, addressError } = isValidAddressLabel('derp', 'Foo', {}, {}, 1);
+
+      expect(isValid).toEqual(false);
+      expect(addressError).toEqual(translateRaw('INVALID_ADDRESS'));
+    });
+
+    it('should return invalid if the address already exists', () => {
+      const { isValid, addressError } = isValidAddressLabel(
+        validAddress,
+        'Foo',
+        addresses,
+        labels,
+        1
+      );
+
+      expect(isValid).toEqual(false);
+      expect(addressError).toEqual(translateRaw('ADDRESS_ALREADY_EXISTS'));
+    });
+
+    it('should return invalid if the label is not of correct length', () => {
+      const { isValid, labelError } = isValidAddressLabel(validAddress, 'X', {}, {}, 1);
+
+      expect(isValid).toEqual(false);
+      expect(labelError).toEqual(translateRaw('INVALID_LABEL_LENGTH'));
+    });
+
+    it('should return invalid if the label contains an ENS TLD', () => {
+      const { isValid, labelError } = isValidAddressLabel(validAddress, 'Foo.eth', {}, {}, 1);
+
+      expect(isValid).toEqual(false);
+      expect(labelError).toEqual(translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX'));
+    });
+
+    it('should return invalid if the label already exists', () => {
+      const { isValid, labelError } = isValidAddressLabel(
+        otherValidAddress,
+        'Foo',
+        addresses,
+        labels,
+        1
+      );
+
+      expect(isValid).toEqual(false);
+      expect(labelError).toEqual(translateRaw('LABEL_ALREADY_EXISTS'));
     });
   });
 });

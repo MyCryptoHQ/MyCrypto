@@ -8,12 +8,12 @@ import { CustomNetworksState as State } from './types';
 
 const addCustomNetwork = (state: State, { payload }: AddCustomNetworkAction): State => ({
   ...state,
-  [payload.id]: payload.config
+  [payload.id]: payload
 });
 
 function removeCustomNetwork(state: State, { payload }: RemoveCustomNetworkAction): State {
   const stateCopy = { ...state };
-  Reflect.deleteProperty(stateCopy, payload.id);
+  Reflect.deleteProperty(stateCopy, payload);
   return stateCopy;
 }
 

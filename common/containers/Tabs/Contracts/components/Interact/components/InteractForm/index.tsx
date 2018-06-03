@@ -4,7 +4,6 @@ import { getNetworkContracts, getNetworkConfig } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { isValidAddress, isValidAbiJson } from 'libs/validators';
-import classnames from 'classnames';
 import { NetworkContract, NetworkConfig } from 'types/network';
 import { donationAddressMap } from 'config';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
@@ -64,7 +63,7 @@ class InteractForm extends Component<Props, State> {
     };
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const prevProps = this.props;
     if (nextProps.currentTo.raw !== prevProps.currentTo.raw) {
       nextProps.resetState();
@@ -128,9 +127,8 @@ class InteractForm extends Component<Props, State> {
                     name="contract_address"
                     autoComplete="off"
                     value={currentTo.raw}
-                    className={classnames('InteractForm-address-field-input', {
-                      invalid: !isValid
-                    })}
+                    isValid={isValid}
+                    className="InteractForm-address-field-input"
                     spellCheck={false}
                     onChange={onChange}
                   />
@@ -146,7 +144,8 @@ class InteractForm extends Component<Props, State> {
             contract.name === 'Custom' ? (
               <TextArea
                 placeholder={this.abiJsonPlaceholder}
-                className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
+                isValid={!!validAbiJson}
+                className="InteractForm-interface-field-input"
                 onChange={this.handleInput('abiJson')}
                 value={abiJson}
                 rows={6}
@@ -157,7 +156,8 @@ class InteractForm extends Component<Props, State> {
           ) : (
             <TextArea
               placeholder={this.abiJsonPlaceholder}
-              className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
+              isValid={!!validAbiJson}
+              className="InteractForm-interface-field-input"
               onChange={this.handleInput('abiJson')}
               value={abiJson}
               rows={6}
@@ -190,9 +190,7 @@ class InteractForm extends Component<Props, State> {
     });
 
     if (fullContract) {
-      this.props.setCurrentTo({
-        raw: fullContract.address || ''
-      });
+      this.props.setCurrentTo(fullContract.address || '');
       this.setState({
         abiJson: fullContract.abi || '',
         contract

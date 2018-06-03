@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`handleNodeChangeIntent* should get the next network 1`] = `
+exports[`handleChangeNodeRequested* should get the next network 1`] = `
 Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {
@@ -12,7 +12,7 @@ Object {
 }
 `;
 
-exports[`handleNodeChangeIntent* should select getCustomNodeConfig and match race snapshot 1`] = `
+exports[`handleChangeNodeRequested* should select getCustomNodeConfig and match race snapshot 1`] = `
 Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {

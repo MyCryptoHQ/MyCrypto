@@ -20,8 +20,13 @@ interface IGenerateSymbolLookup {
   [tokenSymbol: string]: boolean;
 }
 
+interface IGenerateAddressLookup {
+  [address: string]: boolean;
+}
+
 interface State {
   tokenSymbolLookup: IGenerateSymbolLookup;
+  tokenAddressLookup: IGenerateAddressLookup;
   address: string;
   symbol: string;
   decimal: string;
@@ -29,19 +34,12 @@ interface State {
 
 export class AddCustomTokenForm extends React.PureComponent<Props, State> {
   public state: State = {
-    tokenSymbolLookup: {},
+    tokenSymbolLookup: this.generateSymbolLookup(),
+    tokenAddressLookup: this.generateAddressMap(),
     address: '',
     symbol: '',
     decimal: ''
   };
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      ...this.state,
-      tokenSymbolLookup: this.generateSymbolLookup(props.allTokens)
-    };
-  }
 
   public render() {
     const { address, symbol, decimal } = this.state;
@@ -72,15 +70,14 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
             <label className="AddCustom-field form-group" key={field.name}>
               <div className="input-group-header">{field.label}</div>
               <Input
-                className={`${
-                  errors[field.name] ? 'invalid' : field.value ? 'valid' : ''
-                } input-group-input-small`}
+                isValid={!errors[field.name]}
+                className="input-group-input-small"
                 type="text"
                 name={field.name}
                 value={field.value}
                 onChange={this.onFieldChange}
               />
-              {typeof errors[field.name] === 'string' && (
+              {errors[field.name] && (
                 <div className="AddCustom-field-error">{errors[field.name]}</div>
               )}
             </label>
@@ -110,14 +107,19 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
 
   public getErrors() {
     const { address, symbol, decimal } = this.state;
-    const errors: { [key: string]: boolean | string } = {};
+    const errors: { [key: string]: string } = {};
 
     // Formatting errors
-    if (decimal && !isPositiveIntegerOrZero(parseInt(decimal, 10))) {
-      errors.decimal = true;
+    if (decimal && !isPositiveIntegerOrZero(Number(decimal))) {
+      errors.decimal = 'Invalid decimal';
     }
-    if (address && !isValidAddress(address, this.props.network.chainId)) {
-      errors.address = true;
+    if (address) {
+      if (!isValidAddress(address, this.props.network.chainId)) {
+        errors.address = 'Not a valid address';
+      }
+      if (this.state.tokenAddressLookup[address]) {
+        errors.address = 'A token with this address already exists';
+      }
     }
 
     // Message errors
@@ -150,14 +152,20 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
     this.props.onSave({ address, symbol, decimal: parseInt(decimal, 10) });
   };
 
-  private generateSymbolLookup(tokens: Token[]) {
-    return tokens.reduce(
-      (prev, tk) => {
-        prev[tk.symbol] = true;
-        return prev;
-      },
-      {} as IGenerateSymbolLookup
-    );
+  private generateSymbolLookup() {
+    return this.tknArrToMap('symbol');
+  }
+
+  private generateAddressMap() {
+    return this.tknArrToMap('address');
+  }
+
+  private tknArrToMap(key: Exclude<keyof Token, 'error'>) {
+    const tokens = this.props.allTokens;
+    return tokens.reduce<{ [k: string]: boolean }>((prev, tk) => {
+      prev[tk[key]] = true;
+      return prev;
+    }, {});
   }
 }
 

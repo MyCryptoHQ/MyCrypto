@@ -52,7 +52,7 @@ class FieldsClass extends Component<StateProps> {
             <QueryWarning />
             {shouldDisplay && (
               <div className="Tab-content-pane">
-                <AddressField network={network} />
+                <AddressField showLabelMatch={true} network={network} />
                 <div className="row form-group">
                   <div
                     className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}

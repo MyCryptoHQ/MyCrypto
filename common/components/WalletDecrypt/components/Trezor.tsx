@@ -28,7 +28,7 @@ interface StateProps {
 interface State {
   publicKey: string;
   chainCode: string;
-  dPath: string;
+  dPath: DPath;
   error: string | null;
   isLoading: boolean;
 }
@@ -39,14 +39,14 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath ? this.props.dPath.value : '',
+    dPath: this.props.dPath || this.props.dPaths[0],
     error: null,
     isLoading: false
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
-    if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath ? nextProps.dPath.value : '' });
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    if (this.props.dPath !== nextProps.dPath && nextProps.dPath) {
+      this.setState({ dPath: nextProps.dPath });
     }
   }
 
@@ -82,7 +82,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
-          <NewTabLink href="https://blog.trezor.io/trezor-integration-with-myetherwallet-3e217a652e08">
+          <NewTabLink href="https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html">
             How to use TREZOR with MyCrypto
           </NewTabLink>
         </div>
@@ -102,19 +102,19 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     );
   }
 
-  private handlePathChange = (dPath: string) => {
+  private handlePathChange = (dPath: DPath) => {
     this.setState({ dPath });
     this.handleConnect(dPath);
   };
 
-  private handleConnect = (dPath: string = this.state.dPath): void => {
+  private handleConnect = (dPath: DPath): void => {
     this.setState({
       isLoading: true,
       error: null
     });
 
     (TrezorConnect as any).getXPubKey(
-      dPath,
+      dPath.value,
       (res: any) => {
         if (res.success) {
           this.setState({
@@ -139,17 +139,19 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new TrezorWallet(address, this.state.dPath, index));
+    this.props.onUnlock(new TrezorWallet(address, this.state.dPath.value, index));
     this.reset();
   };
 
-  private handleNullConnect = (): void => this.handleConnect();
+  private handleNullConnect = (): void => {
+    this.handleConnect(this.state.dPath);
+  };
 
   private reset() {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath ? this.props.dPath.value : ''
+      dPath: this.props.dPath || this.props.dPaths[0]
     });
   }
 }

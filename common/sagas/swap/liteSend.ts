@@ -56,7 +56,7 @@ export function* configureLiteSendSaga(): SagaIterator {
 
   yield put(setUnitMeta(label));
   yield put(setCurrentValue(amount.toString()));
-  yield put(setCurrentTo({ raw: paymentAddress }));
+  yield put(setCurrentTo(paymentAddress));
 }
 
 export function* handleConfigureLiteSend(): SagaIterator {

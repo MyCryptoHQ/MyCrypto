@@ -57,7 +57,7 @@ class SimpleGas extends React.Component<Props> {
     this.props.fetchGasEstimates();
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (!this.state.hasSetRecommendedGasPrice && nextProps.gasEstimates) {
       this.setState({ hasSetRecommendedGasPrice: true });
       this.props.setGasPrice(nextProps.gasEstimates.fast.toString());
