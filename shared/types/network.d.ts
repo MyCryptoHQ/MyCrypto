@@ -14,7 +14,8 @@ type StaticNetworkIds =
   | 'MUSIC'
   | 'ETSC'
   | 'EGEM'
-  | 'CLO';
+  | 'CLO'
+  | 'RSK_TESTNET';
 
 export interface BlockExplorerConfig {
   name: string;

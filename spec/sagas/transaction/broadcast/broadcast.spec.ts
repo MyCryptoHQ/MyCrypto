@@ -40,7 +40,7 @@ describe('broadcastLocalTransactionHandler*', () => {
 
 describe('broadcastWeb3TransactionHandler*', () => {
   const tx = 'tx';
-  const web3Wallet = new Web3Wallet('', '');
+  const web3Wallet = new Web3Wallet('', '', 1);
   const notWeb3Wallet = false;
   const txHash = 'txHash';
 

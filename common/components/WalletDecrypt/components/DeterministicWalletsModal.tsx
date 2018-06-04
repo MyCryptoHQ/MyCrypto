@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
-import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import {
   DeterministicWalletData,
@@ -19,6 +18,7 @@ import { getTokens } from 'selectors/wallet';
 import { getAddressLabels } from 'selectors/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -200,17 +200,17 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private getAddresses(props: Props = this.props) {
-    const { dPath, publicKey, chainCode, seed } = props;
-
+    const { dPath, publicKey, chainCode, seed, network } = props;
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath.value)) {
         this.props.getDeterministicWallets({
           seed,
+          dPath: dPath.value,
           publicKey,
           chainCode,
-          dPath: dPath.value,
           limit: WALLETS_PER_PAGE,
-          offset: WALLETS_PER_PAGE * this.state.page
+          offset: WALLETS_PER_PAGE * this.state.page,
+          chainId: network.chainId
         });
       } else {
         console.error('Invalid dPath provided', dPath);
@@ -280,7 +280,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private renderWalletRow(wallet: DeterministicWalletData) {
     const { desiredToken, network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
-    const label = addressLabels[toChecksumAddress(wallet.address)];
+    const label = addressLabels[toChecksumAddressByChainId(wallet.address, network.chainId)];
     const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     // Get renderable values, but keep 'em short

@@ -194,6 +194,10 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
     addReason([SecureWalletName.WEB3], 'This wallet is not supported in the MyCrypto app');
   }
 
+  if (network.chainId === 30 || network.chainId === 31) {
+    addReason([SecureWalletName.PARITY_SIGNER], 'This wallet is not supported by RSK yet');
+  }
+
   // Dedupe and sort for consistency
   disabledWallets.wallets = disabledWallets.wallets
     .filter((name, idx) => disabledWallets.wallets.indexOf(name) === idx)

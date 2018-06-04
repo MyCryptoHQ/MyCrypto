@@ -7,10 +7,13 @@ import { getLabelAddresses } from 'selectors/addressBook';
 import { getToRaw } from 'selectors/transaction/fields';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   labelAddresses: ReturnType<typeof getLabelAddresses>;
   currentTo: ReturnType<typeof getToRaw>;
+  network: NetworkConfig;
 }
 
 interface DispatchProps {
@@ -69,7 +72,7 @@ class AddressFieldDropdown extends React.Component<Props> {
           title={`${translateRaw('SEND_TO')}${label}`}
         >
           <div className="AddressFieldDropdown-dropdown-item-identicon">
-            <Identicon address={address} />
+            <Identicon address={address} network={this.props.network} />
           </div>
           <strong className="AddressFieldDropdown-dropdown-item-label">{label}</strong>
           <em className="AddressFieldDropdown-dropdown-item-address">
@@ -159,7 +162,8 @@ class AddressFieldDropdown extends React.Component<Props> {
 export default connect(
   (state: AppState) => ({
     labelAddresses: getLabelAddresses(state),
-    currentTo: getToRaw(state)
+    currentTo: getToRaw(state),
+    network: getNetworkConfig(state)
   }),
   { setCurrentTo }
 )(AddressFieldDropdown);

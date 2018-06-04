@@ -19,6 +19,8 @@ import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -26,6 +28,7 @@ interface StateProps {
   isValid: boolean;
   isLabelEntry: boolean;
   isResolving: boolean;
+  network: NetworkConfig;
 }
 
 interface OwnProps {
@@ -72,7 +75,8 @@ class AddressInputFactoryClass extends Component<Props> {
       showLabelMatch,
       isSelfAddress,
       isResolving,
-      isFocused
+      isFocused,
+      network
     } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
@@ -107,7 +111,7 @@ class AddressInputFactoryClass extends Component<Props> {
             )}
         </div>
         <div className="AddressInput-identicon">
-          <Identicon address={addr} />
+          <Identicon address={addr} network={network} />
         </div>
       </div>
     );
@@ -132,6 +136,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
     label: getCurrentToLabel(state),
     isResolving: getResolvingDomain(state),
     isValid: isValidCurrentTo(state),
-    isLabelEntry: isCurrentToLabelEntry(state)
+    isLabelEntry: isCurrentToLabelEntry(state),
+    network: getNetworkConfig(state)
   };
 })(AddressInputFactoryClass);

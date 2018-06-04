@@ -1,5 +1,6 @@
 import { Identicon, QRCode } from 'components/ui';
 import React from 'react';
+import { NetworkConfig } from 'types/network';
 
 import ethLogo from 'assets/images/logo-ethereum-1.png';
 import notesBg from 'assets/images/notes-bg.png';
@@ -92,6 +93,7 @@ const styles: any = {
 interface Props {
   address: string;
   privateKey: string;
+  network: NetworkConfig;
 }
 
 export default class PaperWallet extends React.Component<Props, {}> {
@@ -137,7 +139,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
 
         <div style={styles.identiconContainer}>
           <div style={{ float: 'left' }}>
-            <Identicon address={address} size={'42px'} />
+            <Identicon address={address} size={'42px'} network={this.props.network} />
           </div>
           <p style={styles.identiconText}>Always look for this icon when sending to this wallet</p>
         </div>
