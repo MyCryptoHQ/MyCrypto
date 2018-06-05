@@ -12,7 +12,7 @@ import {
   isValidGasLimit,
   getSignedTx,
   getWeb3Tx
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { OnlineSend } from './OnlineSend';
 

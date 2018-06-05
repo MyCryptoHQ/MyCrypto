@@ -7,10 +7,13 @@ import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/s
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
 import { getOffline, getNodeLib } from 'features/config';
-import { TypeKeys as TransactionTypeKeys } from 'features/transaction/types';
-import { getDecimal, getUnit } from 'features/transaction/selectors';
-import { setGasLimitField } from 'features/transaction/actions';
-import { validateInput } from 'features/transaction/helpers';
+import {
+  TypeKeys as TransactionTypeKeys,
+  getDecimal,
+  getUnit,
+  setGasLimitField,
+  validateInput
+} from 'features/transaction';
 import {
   SCHEDULE,
   SetCurrentScheduleTimestampAction,

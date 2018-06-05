@@ -10,7 +10,7 @@ import {
   getScheduleDeposit,
   isValidScheduleDeposit
 } from 'features/schedule';
-import { getDecimal } from 'features/transaction/selectors';
+import { getDecimal } from 'features/transaction';
 import { Input, Tooltip } from 'components/ui';
 import Help from 'components/ui/Help';
 

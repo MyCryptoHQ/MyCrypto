@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { getOffline } from 'features/config';
-import { ITransactionStatus } from 'features/transaction/types';
-import { TSignTransactionRequested, signTransactionRequested } from 'features/transaction/actions';
 import {
+  ITransactionStatus,
+  TSignTransactionRequested,
+  signTransactionRequested,
   getCurrentTransactionStatus,
   currentTransactionBroadcasted,
   signaturePending,
   getSignedTx,
   getWeb3Tx
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import { showNotification, TShowNotification } from 'features/notifications';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 

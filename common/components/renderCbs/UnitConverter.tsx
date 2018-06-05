@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { toTokenBase } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getDecimal } from 'features/transaction/selectors';
+import { getDecimal } from 'features/transaction';
 
 interface IChildren {
   onUserInput: UnitConverterClass['onUserInput'];

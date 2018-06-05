@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { getAutoGasLimitEnabled } from 'features/config';
-import { getGasLimit, getGasEstimationPending } from 'features/transaction/selectors';
+import { getGasLimit, getGasEstimationPending } from 'features/transaction';
 import { CallBackProps } from 'components/GasLimitFieldFactory';
 import { Query } from 'components/renderCbs';
 

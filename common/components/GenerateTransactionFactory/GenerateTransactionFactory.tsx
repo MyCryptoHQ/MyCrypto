@@ -13,7 +13,7 @@ import {
   isValidGasLimit,
   getSignedTx,
   getSerializedTransaction
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import { getWalletType, IWalletType } from 'features/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
 import { CodeBlock } from 'components/ui';

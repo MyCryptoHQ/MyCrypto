@@ -5,7 +5,7 @@ import translate from 'translations';
 import { AppState } from 'features/reducers';
 import { getOffline } from 'features/config';
 import { getNonceRequested, TGetNonceRequested } from 'features/transaction/actions';
-import { nonceRequestPending } from 'features/transaction/selectors';
+import { nonceRequestPending } from 'features/transaction';
 import { Spinner, Input } from 'components/ui';
 import Help from 'components/ui/Help';
 import { NonceFieldFactory } from 'components/NonceFieldFactory';

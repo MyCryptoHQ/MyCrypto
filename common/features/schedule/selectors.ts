@@ -24,7 +24,7 @@ import {
   getGasPrice,
   IGetTransaction,
   getTransaction
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import {
   dateTimeToTimezone,
   minFromNow,

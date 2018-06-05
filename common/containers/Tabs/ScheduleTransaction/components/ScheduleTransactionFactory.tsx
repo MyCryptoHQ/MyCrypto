@@ -7,7 +7,7 @@ import {
   isValidGasLimit,
   getSerializedTransaction,
   getSignedTx
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import { getWalletType } from 'features/wallet';
 import { getSchedulingTransaction } from 'features/schedule';
 import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionFactory';

@@ -10,7 +10,7 @@ import {
   isValidGasLimit,
   getSignedTx,
   getWeb3Tx
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import { SendButtonFactoryClass } from 'components/SendButtonFactory';
 
 const mapStateToProps = (state: AppState) => {

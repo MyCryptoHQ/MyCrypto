@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { getOffline } from 'features/config';
-import { getNonce, nonceRequestFailed } from 'features/transaction/selectors';
+import { getNonce, nonceRequestFailed } from 'features/transaction';
 import { CallbackProps } from 'components/NonceFieldFactory';
 import { Query } from 'components/renderCbs';
 

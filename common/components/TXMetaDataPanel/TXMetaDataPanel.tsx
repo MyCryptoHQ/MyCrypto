@@ -15,9 +15,9 @@ import {
   getNonceRequested,
   TGetNonceRequested,
   resetTransactionRequested,
-  TResetTransactionRequested
-} from 'features/transaction/actions';
-import { getGasPrice } from 'features/transaction/selectors';
+  TResetTransactionRequested,
+  getGasPrice
+} from 'features/transaction';
 import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'features/rates';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import SimpleGas from './components/SimpleGas';

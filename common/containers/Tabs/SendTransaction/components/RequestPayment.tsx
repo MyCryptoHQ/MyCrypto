@@ -9,14 +9,12 @@ import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { AppState } from 'features/reducers';
 import { getSelectedTokenContractAddress } from 'features/selectors';
 import { getNetworkConfig, isNetworkUnit } from 'features/config';
-import { SetGasLimitFieldAction } from 'features/transaction/types';
 import {
+  SetGasLimitFieldAction,
   resetTransactionRequested,
   TResetTransactionRequested,
   setCurrentTo,
-  TSetCurrentTo
-} from 'features/transaction/actions';
-import {
+  TSetCurrentTo,
   getCurrentTo,
   getCurrentValue,
   ICurrentTo,
@@ -24,7 +22,7 @@ import {
   getGasLimit,
   getUnit,
   getDecimal
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { QRCode, CodeBlock } from 'components/ui';
 import { NetworkConfig } from 'types/network';

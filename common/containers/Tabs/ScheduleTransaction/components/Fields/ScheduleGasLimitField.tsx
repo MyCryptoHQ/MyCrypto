@@ -11,7 +11,7 @@ import {
   getScheduleGasLimit,
   isValidScheduleGasLimit
 } from 'features/schedule';
-import { getGasEstimationPending } from 'features/transaction/selectors';
+import { getGasEstimationPending } from 'features/transaction';
 import { Input, InlineSpinner } from 'components/ui';
 
 interface OwnProps {

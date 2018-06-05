@@ -8,7 +8,7 @@ import { calcEACTotalCost } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
 import { getIsEstimating } from 'features/gas';
-import { getGasLimit } from 'features/transaction/selectors';
+import { getGasLimit } from 'features/transaction';
 import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'features/schedule';
 import { UnitDisplay, Spinner } from 'components/ui';
 import './FeeSummary.scss';

@@ -6,7 +6,7 @@ import network, { NetworkState } from './network/reducer';
 import sign, { SignState } from './sign/reducer';
 import broadcast, { BroadcastState } from './broadcast/reducer';
 
-export const transaction = combineReducers({
+export const transactionReducer = combineReducers({
   fields,
   meta,
   network,
@@ -22,6 +22,10 @@ export interface State {
   broadcast: BroadcastState;
 }
 
-export const INITIAL_STATE: State = transaction({}, { type: undefined }) as State;
+export const INITIAL_STATE: State = transactionReducer({}, { type: undefined }) as State;
 
-export default transaction;
+export * from './broadcast/reducer';
+export * from './fields/reducer';
+export * from './meta/reducer';
+export * from './network/reducer';
+export * from './sign/reducer';
