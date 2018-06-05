@@ -86,19 +86,14 @@ import {
 import {
   isEtherTransaction,
   getUnit,
-  getDecimal,
   getCurrentValue,
-  getTokenValue,
-  getTokenTo,
-  getData,
-  getTo,
   getPreviousUnit,
-  getValue,
   getDecimalFromUnit,
   getTransaction,
-  getCurrentToAddressMessage,
-  isContractInteraction
+  getCurrentToAddressMessage
 } from './selectors';
+import { getTo, getData, getValue } from './fields/selectors';
+import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
 import {
   broadcastLocalTransactionHandler,
   broadcastWeb3TransactionHandler,

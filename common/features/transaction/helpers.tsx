@@ -19,7 +19,6 @@ import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSu
 import { AppState } from 'features/reducers';
 import { getOffline, isNetworkUnit, getNetworkConfig } from 'features/config';
 import { isSchedulingEnabled } from 'features/schedule';
-import { getGasLimit, getGasPrice, getUnit } from 'features/transaction/selectors';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
 import { StateSerializedTx } from './sign/reducer';
@@ -40,14 +39,10 @@ import {
   signTransactionFailed,
   getFromRequested
 } from './actions';
-import {
-  ICurrentTo,
-  ICurrentValue,
-  getWeb3Tx,
-  getSignedTx,
-  getTransactionStatus,
-  getDecimalFromUnit
-} from './selectors';
+import { ICurrentTo, ICurrentValue, getUnit, getDecimalFromUnit } from './selectors';
+import { getTransactionStatus } from './broadcast/selectors';
+import { getGasLimit, getGasPrice } from './fields/selectors';
+import { getWeb3Tx, getSignedTx } from './sign/selectors';
 
 //#region Selectors
 type TransactionFields = AppState['transaction']['fields'];

@@ -137,21 +137,16 @@ import {
   isEtherTransaction,
   getTransaction,
   IGetTransaction,
-  getDecimal,
-  getTo,
   getPreviousUnit,
-  getValue,
   getDecimalFromUnit,
   getUnit,
   getCurrentValue,
-  getTokenValue,
-  getTokenTo,
-  getData,
   ICurrentValue,
   getCurrentToAddressMessage,
-  serializedAndTransactionFieldsMatch,
-  isContractInteraction
+  serializedAndTransactionFieldsMatch
 } from './selectors';
+import { getTo, getData, getValue } from './fields/selectors';
+import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
 import {
   IFullWalletAndTransaction,
   signTransactionWrapper,
