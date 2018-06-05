@@ -6,9 +6,11 @@ import {
   toggleAutoGasLimit,
   setLatestBlock
 } from 'actions/config';
+import { Theme } from 'config';
 
 const expectedInitialState = {
   languageSelection: 'en',
+  theme: Theme.LIGHT,
   offline: false,
   autoGasLimit: true,
   latestBlock: '???'
