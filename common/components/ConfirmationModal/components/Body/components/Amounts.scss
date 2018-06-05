@@ -12,17 +12,21 @@
     @media screen and (max-width: 525px) {
       font-size: 1rem;
     }
+
     > td {
       padding: 0.5rem 0;
       text-align: right;
-      opacity: 0.54;
+      color: shade-dark(0.5);
+
       &:not(:first-child) {
         padding-left: 0.5rem;
       }
+
       &:first-child {
         text-align: left;
-        opacity: 1;
+        color: color(text-color);
       }
+
       &:last-child {
         font-size: 85%;
       }

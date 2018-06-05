@@ -82,6 +82,10 @@ $m-anim-speed: 400ms;
       opacity: 0.3;
       transition: opacity 120ms;
 
+      @include theme(dark) {
+        filter: invert(1);
+      }
+
       &:hover {
         opacity: 0.87;
       }

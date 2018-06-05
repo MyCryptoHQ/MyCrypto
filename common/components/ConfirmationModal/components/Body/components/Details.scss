@@ -5,7 +5,7 @@
   &-network-info {
     text-align: center;
     font-weight: 400;
-    color: color(gray-light);
+    color: shade-dark(0.5);
   }
   &-button {
     display: block;
@@ -14,8 +14,9 @@
     border: none;
     border-radius: 2px;
     transition: background-color 300ms;
+    background-color: transparent;
     &:hover {
-      background-color: color(gray-lighter);
+      background-color: shade-dark(0.06);
     }
   }
 }
