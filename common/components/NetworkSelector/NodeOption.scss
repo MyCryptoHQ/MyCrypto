@@ -62,7 +62,7 @@ $radio-size: 10px;
     font-size: 14px;
 
     &:hover {
-      color: $brand-danger;
+      color: color(brand-danger);
       opacity: 0.8;
     }
   }

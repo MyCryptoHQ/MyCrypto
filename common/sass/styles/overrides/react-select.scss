@@ -45,6 +45,13 @@
   }
   &-option {
     padding: 0.75rem 1rem;
+    background: color(control-bg);
+    color: shade-dark(0.8);
+
+    &.is-selected {
+      background: shade-dark(0.03);
+      color: color(text-color);
+    }
 
     &.is-focused {
       background: color(brand-primary);

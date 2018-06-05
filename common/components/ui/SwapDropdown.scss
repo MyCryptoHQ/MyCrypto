@@ -90,7 +90,7 @@ $option-width-main-small: 100%;
 
   &:hover {
     color: color(text-color-inverted);
-    background: $brand-info;
+    background: color(brand-info);
   }
 
   &-top {

@@ -41,7 +41,11 @@ $small-size: 900px;
     font-weight: 300;
     color: #fff;
     transition: background-color 80ms ease;
-    background: #1c1c1c;
+    background: color(gray-darker);
+
+    @include theme(dark) {
+      background: color(gray-lighter);
+    }
 
     a {
       color: #fff;

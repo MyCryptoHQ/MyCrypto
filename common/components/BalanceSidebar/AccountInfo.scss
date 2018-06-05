@@ -15,7 +15,7 @@
     }
 
     &.is-copied {
-      color: $brand-success;
+      color: color(brand-success);
       opacity: 1;
     }
 

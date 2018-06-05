@@ -218,23 +218,3 @@ $color-var-prefix: '--color';
 @function shade-light($opacity) {
   @return rgba(var(#{$color-var-prefix}-light-rgb), $opacity);
 }
-
-$gray-base: #000;
-$gray-darker: lighten($gray-base, 13.5%);
-$gray-dark: lighten($gray-base, 20%);
-$gray: #737373;
-$gray-light: #9a9a9a;
-$gray-lighter: #ececec;
-$gray-lightest: #fafafa;
-
-$border-idle: #e5ecf3;
-$border-disabled: #e6e6e6;
-
-$body-bg: #fbfbfb;
-$text-color: $gray-dark;
-
-$link-color: $brand-primary;
-$link-hover-color: darken($brand-primary, 10%);
-
-$component-active-color: #fff;
-$component-active-bg: $brand-primary;
