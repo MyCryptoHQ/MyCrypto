@@ -15,7 +15,8 @@ type StaticNetworkIds =
   | 'ETSC'
   | 'EGEM'
   | 'CLO'
-  | 'GO';
+  | 'GO'
+  | 'EOSC';
 
 export interface BlockExplorerConfig {
   name: string;
