@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
-import OnlineStatus from './components/OnlineStatus';
+import { knowledgeBaseURL } from 'config/data';
 import NetworkDropdown from './components/NetworkDropdown';
 import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
@@ -34,6 +34,7 @@ import {
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
 import './index.scss';
+import translate from 'translations';
 
 interface OwnProps {
   networkParam: string | null;
@@ -92,7 +93,7 @@ class Header extends Component<Props, State> {
   }
 
   public render() {
-    const { languageSelection, isChangingNode, isOffline, network } = this.props;
+    const { languageSelection, isChangingNode, network } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
     const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
@@ -117,10 +118,9 @@ class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <div className="Header-branding-right-online">
-                <OnlineStatus isOffline={isOffline} />
-              </div>
-
+              <a className="Header-support" href={knowledgeBaseURL}>
+                {translate('NAV_HELP')}
+              </a>
               <div className="Header-branding-right-dropdown">
                 <LanguageDropDown
                   ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
@@ -143,7 +143,7 @@ class Header extends Component<Props, State> {
           </section>
         </section>
 
-        <Navigation color={!network.isCustom && network.color} />
+        {network.id === 'XMR' ? null : <Navigation color={!network.isCustom && network.color} />}
 
         <CustomNodeModal
           isOpen={isAddingCustomNode}

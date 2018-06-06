@@ -22,12 +22,6 @@ export default class Navigation extends PureComponent<Props, State> {
     showRightArrow: false
   };
 
-  /*
-   *   public scrollLeft() {}
-      public scrollRight() {}
-   *
-   */
-
   public render() {
     const { color } = this.props;
     const borderStyle: BorderStyle = {};

@@ -77,11 +77,19 @@ $small-size: 900px;
     }
   }
 
+  &-support {
+    color: white;
+    margin-right: 2rem;
+    &:hover {
+      color: white;
+    }
+  }
+
   &-branding {
     color: white;
     padding: 0;
     background: #274e7e;
-    background-image: url('~assets/images/header-bg.jpg'), linear-gradient(130deg, #37709e, #274e7e);
+    // background-image: url('~assets/images/header-bg.jpg'), linear-gradient(130deg, #37709e, #274e7e);
     background-size: cover;
     background-position: left;
 

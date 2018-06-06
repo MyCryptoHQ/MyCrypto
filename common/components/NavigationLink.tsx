@@ -42,7 +42,6 @@ class NavigationLinkClass extends React.PureComponent<Props, {}> {
           rel="noopener noreferrer"
         >
           {translate(link.name)}
-          <i className={`${className}-link-icon fa fa-external-link`} />
         </a>
       ) : (
         <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>

@@ -17,7 +17,7 @@ $speed: 500ms;
 @mixin decrypt-title {
   text-align: center;
   line-height: 1;
-  margin: 0 0 30px;
+  margin: 0 0 3rem;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
 }
@@ -26,8 +26,6 @@ $speed: 500ms;
   position: relative;
 
   &-wallets {
-    margin: 0 -$space-md;
-
     &-title {
       @include decrypt-title;
     }
@@ -36,7 +34,7 @@ $speed: 500ms;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
 
       @media screen and (max-width: $screen-xs) {
         margin: 0;
@@ -50,7 +48,7 @@ $speed: 500ms;
     &-generate {
       text-align: center;
       font-weight: 300;
-      margin-top: $space;
+      margin-top: 1rem;
     }
   }
 
@@ -103,7 +101,7 @@ $speed: 500ms;
       max-width: 360px;
       margin: 0 auto;
     }
-    &-label{
+    &-label {
       opacity: 0.8;
       font-weight: 300;
       white-space: nowrap;
