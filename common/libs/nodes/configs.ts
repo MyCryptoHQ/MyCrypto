@@ -33,6 +33,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  XMR: [
+    {
+      name: makeNodeName('XMR', 'mycrypto'),
+      type: 'rpc',
+      service: 'MyCrypto',
+      url: 'https://api.mycryptoapi.com/eth'
+    }
+  ],
+
   Ropsten: [
     {
       name: makeNodeName('Ropsten', 'infura'),

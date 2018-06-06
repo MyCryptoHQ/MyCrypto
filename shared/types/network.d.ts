@@ -2,6 +2,7 @@ import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networ
 
 type StaticNetworkIds =
   | 'ETH'
+  | 'XMR'
   | 'Ropsten'
   | 'Kovan'
   | 'Rinkeby'

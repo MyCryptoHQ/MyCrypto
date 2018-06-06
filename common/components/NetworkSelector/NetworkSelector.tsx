@@ -19,7 +19,7 @@ import { NetworkConfig } from 'types/network';
 import { AppState } from 'reducers';
 import './NetworkSelector.scss';
 
-const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby'];
+const CORE_NETWORKS = ['ETH', 'XMR', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby'];
 
 interface OwnProps {
   openCustomNodeModal(): void;
