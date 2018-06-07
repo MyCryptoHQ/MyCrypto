@@ -73,7 +73,7 @@ class SendTransaction extends React.Component<Props> {
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
-        path: 'recieve',
+        path: 'receive',
         name: translate('NAV_REQUESTPAYMENT')
       },
       {
