@@ -40,7 +40,7 @@ type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match, location, history } = this.props;
+    const { wallet, match, location, history, network } = this.props;
     const currentPath = match.url;
     const EthTabs: Tab[] = [
       {
@@ -49,7 +49,7 @@ class SendTransaction extends React.Component<Props> {
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
-        path: 'request',
+        path: 'receive',
         name: translate('NAV_REQUESTPAYMENT'),
         disabled: this.props.requestDisabled
       },
@@ -90,7 +90,7 @@ class SendTransaction extends React.Component<Props> {
             <div className="SubTabs row">
               <div className="col-sm-8">
                 <SubTabs
-                  tabs={true ? XmrTabs : EthTabs}
+                  tabs={network.id === 'XMR' ? XmrTabs : EthTabs}
                   match={match}
                   location={location}
                   history={history}
@@ -125,7 +125,7 @@ class SendTransaction extends React.Component<Props> {
                     render={() => <WalletInfo wallet={wallet} />}
                   />
                   <Route
-                    path={`${currentPath}/request`}
+                    path={`${currentPath}/receive`}
                     exact={true}
                     render={() => <RequestPayment wallet={wallet} />}
                   />
