@@ -1,5 +1,3 @@
-import { knowledgeBaseURL } from './data';
-
 export interface NavigationLink {
   name: string;
   to: string;

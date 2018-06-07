@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Query } from 'components/renderCbs';
-import { Tooltip } from 'components/ui';
 import { TokenValue, Wei } from 'libs/units';
 import translate, { translateRaw } from 'translations';
 import { sendEverythingRequested, TSendEverythingRequested } from 'actions/transaction';
