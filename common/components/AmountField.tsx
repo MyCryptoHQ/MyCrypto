@@ -3,8 +3,10 @@ import { AmountFieldFactory } from './AmountFieldFactory';
 import { UnitDropDown, SendEverything } from 'components';
 import translate from 'translations';
 import { Input } from 'components/ui';
+import './AmountField.scss';
 
 interface Props {
+  networkId: string;
   hasUnitDropdown?: boolean;
   hasSendEverything?: boolean;
   showAllTokens?: boolean;
@@ -15,6 +17,7 @@ export const AmountField: React.SFC<Props> = ({
   hasUnitDropdown,
   hasSendEverything,
   showAllTokens,
+  networkId,
   customValidator
 }) => (
   <AmountFieldFactory
@@ -36,7 +39,16 @@ export const AmountField: React.SFC<Props> = ({
             readOnly={!!readOnly}
             onChange={onChange}
           />
-          {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
+          {hasUnitDropdown ? (
+            <UnitDropDown showAllTokens={showAllTokens} />
+          ) : (
+            <span
+              className="AmountField-networkId input-group-inline-absolute-right"
+              onClick={() => {}}
+            >
+              {networkId}
+            </span>
+          )}
         </label>
       </div>
     )}

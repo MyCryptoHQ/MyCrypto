@@ -37,10 +37,9 @@
   }
 
   &-section {
-    margin-bottom: $space;
-
-    &:first-child {
-      margin-top: 0;
+    margin: 0;
+    &:not(:last-child) {
+      margin-bottom: 1rem;
     }
 
     &-header {
@@ -149,6 +148,7 @@
   }
 
   &-list {
+    margin-bottom: 0;
     &-item {
       margin-bottom: 0;
       list-style-type: none;

@@ -52,12 +52,15 @@ class NonceField extends React.Component<Props> {
                   disabled={noncePending}
                 />
                 {noncePending ? (
-                  <div className="Nonce-spinner">
+                  <div className="Nonce-spinner input-group-inline-absolute-right">
                     <Spinner />
                   </div>
                 ) : (
                   !isOffline && (
-                    <button className="Nonce-refresh" onClick={requestNonce}>
+                    <button
+                      className="Nonce-refresh input-group-inline-absolute-right"
+                      onClick={requestNonce}
+                    >
                       <i className="fa fa-refresh" />
                     </button>
                   )

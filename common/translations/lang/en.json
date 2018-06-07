@@ -611,6 +611,8 @@
     "TESTNET": "Testnet",
     "SEND_TO_PLACEHOLDER": "Enter a ",
     "PAYMENT_ID_TITLE": "Payment ID",
-    "PAYMENT_ID_PLACEHOLDER": "Enter a Payment ID"
+    "PAYMENT_ID_PLACEHOLDER": "Enter a Payment ID",
+    "PRIVACY_RADIO": "Privacy",
+    "PRIORITY_RADIO": "Priority"
   }
 }

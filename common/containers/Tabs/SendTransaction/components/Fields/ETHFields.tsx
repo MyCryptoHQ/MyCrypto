@@ -36,12 +36,13 @@ interface StateProps {
   schedulingAvailable: boolean;
   shouldDisplay: boolean;
   offline: boolean;
+  networkId: string;
   useScheduling: ICurrentSchedulingToggle['value'];
 }
 
 class EthFieldsClass extends Component<StateProps> {
   public render() {
-    const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
+    const { shouldDisplay, schedulingAvailable, useScheduling, networkId } = this.props;
 
     return (
       <OnlyUnlocked
@@ -55,7 +56,11 @@ class EthFieldsClass extends Component<StateProps> {
                   <div
                     className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
                   >
-                    <AmountField hasUnitDropdown={true} hasSendEverything={true} />
+                    <AmountField
+                      networkId={networkId}
+                      hasUnitDropdown={true}
+                      hasSendEverything={true}
+                    />
                   </div>
                   {schedulingAvailable && (
                     <div className="col-sm-3 col-md-2">
@@ -89,17 +94,33 @@ class EthFieldsClass extends Component<StateProps> {
 
     if (useScheduling) {
       if (offline) {
-        return <GenerateScheduleTransactionButton />;
+        return (
+          <div className="submit-form">
+            <GenerateScheduleTransactionButton />;
+          </div>
+        );
       }
 
-      return <SendScheduleTransactionButton signing={true} />;
+      return (
+        <div className="submit-form">
+          <SendScheduleTransactionButton signing={true} />;
+        </div>
+      );
     }
 
     if (offline) {
-      return <GenerateTransaction />;
+      return (
+        <div className="submit-form">
+          <GenerateTransaction />;
+        </div>
+      );
     }
 
-    return <SendButton signing={true} />;
+    return (
+      <div className="submit-form">
+        <SendButton signing={true} />
+      </div>
+    );
   }
 }
 
@@ -107,5 +128,6 @@ export const EthFields = connect((state: AppState) => ({
   schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
-  useScheduling: getCurrentSchedulingToggle(state).value
+  useScheduling: getCurrentSchedulingToggle(state).value,
+  networkId: getNetworkConfig(state).id
 }))(EthFieldsClass);
