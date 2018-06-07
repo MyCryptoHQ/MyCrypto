@@ -31,6 +31,7 @@ interface StateProps {
 interface OwnProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
+  showBlockies?: boolean;
   isFocused?: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   onFocus(ev: React.FormEvent<HTMLInputElement>): void;
@@ -106,9 +107,11 @@ class AddressInputFactoryClass extends Component<Props> {
               </div>
             )}
         </div>
-        <div className="AddressInput-identicon">
-          <Identicon address={addr} />
-        </div>
+        {this.props.showBlockies && (
+          <div className="AddressInput-identicon">
+            <Identicon address={addr} />
+          </div>
+        )}
       </div>
     );
   }

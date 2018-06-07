@@ -1,4 +1,5 @@
 export * from './AddressField';
+export * from './PaymentIdField';
 export * from './DataField';
 export * from './GasLimitField';
 export * from './AmountField';

@@ -6,15 +6,19 @@ import { AppState } from 'reducers';
 import { getWalletInst } from 'selectors/wallet';
 import { connect } from 'react-redux';
 import EquivalentValues from './EquivalentValues';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'shared/types/network';
 
 interface Block {
   name: string;
   content: React.ReactElement<any>;
+  disabled?: boolean;
   isFullWidth?: boolean;
 }
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
+  network: NetworkConfig;
 }
 
 export class BalanceSidebar extends React.Component<StateProps> {
@@ -37,26 +41,38 @@ export class BalanceSidebar extends React.Component<StateProps> {
       },
       {
         name: 'Token Balances',
+        disabled: this.props.network.id === 'XMR',
         content: <TokenBalances />
       },
       {
         name: 'Equivalent Values',
+        disabled: this.props.network.id === 'XMR',
         content: <EquivalentValues />
       }
     ];
 
     return (
       <aside>
-        {blocks.map(block => (
-          <section className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`} key={block.name}>
-            {block.content}
-          </section>
-        ))}
+        {blocks.map(block => {
+          if (!block.disabled) {
+            return (
+              <section
+                className={`Block ${block.isFullWidth ? 'is-full-width' : ''}`}
+                key={block.name}
+              >
+                {block.content}
+              </section>
+            );
+          }
+        })}
       </aside>
     );
   }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({ wallet: getWalletInst(state) });
+const mapStateToProps = (state: AppState): StateProps => ({
+  wallet: getWalletInst(state),
+  network: getNetworkConfig(state)
+});
 
 export default connect(mapStateToProps)(BalanceSidebar);

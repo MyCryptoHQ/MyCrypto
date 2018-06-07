@@ -17,30 +17,11 @@ $default-opacity: 0.4;
   @include reset-button;
   display: block;
   position: relative;
-  height: $input-height-base;
-  width: $width;
   margin-left: -$width;
-  font-size: 1.4rem;
-  border-left: 1px solid #e5ecf3;
-  opacity: $default-opacity;
-  transition: $transition;
-  animation: send-everything-enter 200ms ease 1;
-  @include show-tooltip-on-hover;
-
-  &-icon {
-    transition: transform 150ms ease;
-  }
+  font-size: 0.875rem;
+  color: #4295bc;
 
   &:disabled {
     display: none;
-  }
-
-  &:hover {
-    color: $brand-primary;
-    opacity: 1;
-
-    .SendEverything-icon {
-      transform: translateY(-2px);
-    }
   }
 }

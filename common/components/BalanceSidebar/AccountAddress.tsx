@@ -27,6 +27,7 @@ interface DispatchProps {
 
 interface OwnProps {
   address: string;
+  networkId?: string;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -65,7 +66,7 @@ class AccountAddress extends React.Component<Props, State> {
   }
 
   public render() {
-    const { address, addressLabels } = this.props;
+    const { address, addressLabels, networkId } = this.props;
     const { copied } = this.state;
     const label = addressLabels[address];
     const labelContent = this.generateLabelContent();
@@ -78,10 +79,14 @@ class AccountAddress extends React.Component<Props, State> {
       <div className="AccountInfo">
         <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
-          <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
-          </div>
-          <div className="AccountInfo-address-wrapper">
+          {networkId !== 'XMR' && (
+            <div className="AccountInfo-address-icon">
+              <Identicon address={address} size="100%" />
+            </div>
+          )}
+          <div
+            className={`AccountInfo-address-wrapper ${networkId === 'XMR' ? 'no-identicon' : ''}`}
+          >
             {labelContent}
             <div className={addressClassName}>
               <Address address={address} />
@@ -95,9 +100,11 @@ class AccountAddress extends React.Component<Props, State> {
                 <span>{copied ? 'copied!' : 'copy address'}</span>
               </div>
             </CopyToClipboard>
-            <div className="AccountInfo-label" title="Edit label">
-              {labelButton}
-            </div>
+            {networkId !== 'XMR' && (
+              <div className="AccountInfo-label" title="Edit label">
+                {labelButton}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -150,7 +157,12 @@ class AccountAddress extends React.Component<Props, State> {
       );
     } else {
       labelContent = (
-        <label title={storedLabel} className="AccountInfo-address-label">
+        <label
+          title={storedLabel}
+          className={`AccountInfo-address-label ${
+            !!storedLabel && storedLabel.length > 0 ? '' : 'hidden'
+          }`}
+        >
           {storedLabel}
         </label>
       );

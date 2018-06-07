@@ -14,6 +14,7 @@ interface OwnProps {
   to: string | null;
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
+  showBlockies?: boolean;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -58,6 +59,7 @@ class AddressFieldFactoryClass extends React.Component<Props> {
     return (
       <div className="AddressField">
         <AddressInputFactory
+          showBlockies={this.props.showBlockies}
           isSelfAddress={this.props.isSelfAddress}
           showLabelMatch={this.props.showLabelMatch}
           isFocused={this.state.isFocused}
@@ -87,12 +89,14 @@ const AddressFieldFactory = connect(null, { setCurrentTo })(AddressFieldFactoryC
 interface DefaultAddressFieldProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
+  showBlockies?: boolean;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
 const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
   isSelfAddress,
   showLabelMatch,
+  showBlockies,
   withProps
 }) => (
   <Query
@@ -100,6 +104,7 @@ const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
     withQuery={({ to }) => (
       <AddressFieldFactory
         to={to}
+        showBlockies={showBlockies}
         isSelfAddress={isSelfAddress}
         showLabelMatch={showLabelMatch}
         withProps={withProps}

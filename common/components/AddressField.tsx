@@ -8,17 +8,22 @@ import { toChecksumAddress } from 'ethereumjs-util';
 interface Props {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
+  showBlockies?: boolean;
   isCheckSummed?: boolean;
   showLabelMatch?: boolean;
+  placeholder?: string;
 }
 
 export const AddressField: React.SFC<Props> = ({
   isReadOnly,
   isSelfAddress,
   isCheckSummed,
-  showLabelMatch
+  showBlockies,
+  showLabelMatch,
+  placeholder
 }) => (
   <AddressFieldFactory
+    showBlockies={showBlockies}
     isSelfAddress={isSelfAddress}
     showLabelMatch={showLabelMatch}
     withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
@@ -32,7 +37,7 @@ export const AddressField: React.SFC<Props> = ({
             isValid={isValid}
             type="text"
             value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
-            placeholder={donationAddressMap.ETH}
+            placeholder={placeholder || donationAddressMap.ETH}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
             onChange={onChange}

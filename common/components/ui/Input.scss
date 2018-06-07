@@ -47,7 +47,10 @@
       flex-grow: 1;
     }
     > .small {
-      color: rgba(0, 0, 0, 0.54);
+      color: #9a9a9a;
+      &.optional {
+        margin-left: 1rem;
+      }
     }
   }
   &-input {

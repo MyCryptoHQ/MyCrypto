@@ -87,7 +87,7 @@ class AccountInfo extends React.Component<Props, State> {
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div>
-        <AccountAddress address={toChecksumAddress(address)} />
+        <AccountAddress networkId={network.id} address={toChecksumAddress(address)} />
 
         {typeof wallet.displayAddress === 'function' && (
           <div className="AccountInfo-section">
@@ -121,7 +121,7 @@ class AccountInfo extends React.Component<Props, State> {
           <ul className="AccountInfo-list">
             <li className="AccountInfo-list-item AccountInfo-balance">
               <span
-                className="AccountInfo-list-item-clickable AccountInfo-balance-amount mono wrap"
+                className="AccountInfo-list-item-clickable AccountInfo-balance-amount wrap"
                 onClick={this.toggleShowLongBalance}
               >
                 <UnitDisplay
@@ -152,34 +152,35 @@ class AccountInfo extends React.Component<Props, State> {
           </ul>
         </div>
 
-        {(!!blockExplorer || !!tokenExplorer) && (
-          <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">{translate('SIDEBAR_TRANSHISTORY')}</h5>
-            <ul className="AccountInfo-list">
-              {!!blockExplorer && (
-                <li className="AccountInfo-list-item">
-                  <NewTabLink href={blockExplorer.addressUrl(address)}>
-                    {`${network.name} (${blockExplorer.origin})`}
-                  </NewTabLink>
-                </li>
-              )}
-              {network.id === 'ETH' && (
-                <li className="AccountInfo-list-item">
-                  <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
-                    {`${network.name} (${etherChainExplorerInst.origin})`}
-                  </NewTabLink>
-                </li>
-              )}
-              {!!tokenExplorer && (
-                <li className="AccountInfo-list-item">
-                  <NewTabLink href={tokenExplorer.address(address)}>
-                    {`Tokens (${tokenExplorer.name})`}
-                  </NewTabLink>
-                </li>
-              )}
-            </ul>
-          </div>
-        )}
+        {(!!blockExplorer || !!tokenExplorer) &&
+          network.id !== 'XMR' && (
+            <div className="AccountInfo-section">
+              <h5 className="AccountInfo-section-header">{translate('SIDEBAR_TRANSHISTORY')}</h5>
+              <ul className="AccountInfo-list">
+                {!!blockExplorer && (
+                  <li className="AccountInfo-list-item">
+                    <NewTabLink href={blockExplorer.addressUrl(address)}>
+                      {`${network.name} (${blockExplorer.origin})`}
+                    </NewTabLink>
+                  </li>
+                )}
+                {network.id === 'ETH' && (
+                  <li className="AccountInfo-list-item">
+                    <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
+                      {`${network.name} (${etherChainExplorerInst.origin})`}
+                    </NewTabLink>
+                  </li>
+                )}
+                {!!tokenExplorer && (
+                  <li className="AccountInfo-list-item">
+                    <NewTabLink href={tokenExplorer.address(address)}>
+                      {`Tokens (${tokenExplorer.name})`}
+                    </NewTabLink>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
       </div>
     );
   }

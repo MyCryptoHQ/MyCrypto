@@ -4,12 +4,9 @@ import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import {
   AddressField,
   AmountField,
-  TXMetaDataPanel,
-  CurrentCustomMessage,
+  PaymentIdField,
   GenerateTransaction,
   SendButton,
-  SchedulingToggle,
-  ScheduleFields,
   GenerateScheduleTransactionButton,
   SendScheduleTransactionButton
 } from 'components';
@@ -17,7 +14,6 @@ import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 
 import { AppState } from 'reducers';
-import { NonStandardTransaction } from './components';
 import { getOffline, getNetworkConfig } from 'selectors/config';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
 import { getUnit } from 'selectors/transaction';
@@ -39,9 +35,9 @@ interface StateProps {
   useScheduling: ICurrentSchedulingToggle['value'];
 }
 
-class FieldsClass extends Component<StateProps> {
+class XmrFieldsClass extends Component<StateProps> {
   public render() {
-    const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
+    const { shouldDisplay } = this.props;
 
     return (
       <OnlyUnlocked
@@ -50,31 +46,13 @@ class FieldsClass extends Component<StateProps> {
             <QueryWarning />
             {shouldDisplay && (
               <div className="Tab-content-pane">
-                <AddressField showLabelMatch={true} />
-                <div className="row form-group">
-                  <div
-                    className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
-                  >
-                    <AmountField hasUnitDropdown={true} hasSendEverything={true} />
-                  </div>
-                  {schedulingAvailable && (
-                    <div className="col-sm-3 col-md-2">
-                      <SchedulingToggle />
-                    </div>
-                  )}
-                </div>
-
-                {useScheduling && <ScheduleFields />}
-
-                <div className="row form-group">
-                  <div className="col-xs-12">
-                    <TXMetaDataPanel scheduling={useScheduling} />
-                  </div>
-                </div>
-
-                <CurrentCustomMessage />
-                <NonStandardTransaction />
-
+                <AddressField showLabelMatch={true} placeholder="Enter a Monero Address" />
+                <PaymentIdField />
+                <AmountField
+                  hasUnitDropdown={false}
+                  hasSendEverything={true}
+                  // showBlockies={false}
+                />
                 {this.getTxButton()}
               </div>
             )}
@@ -103,9 +81,9 @@ class FieldsClass extends Component<StateProps> {
   }
 }
 
-export const Fields = connect((state: AppState) => ({
+export const XmrFields = connect((state: AppState) => ({
   schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
   useScheduling: getCurrentSchedulingToggle(state).value
-}))(FieldsClass);
+}))(XmrFieldsClass);

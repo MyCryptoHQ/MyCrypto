@@ -1,1 +1,2 @@
-export * from './Fields';
+export * from './ETHFields';
+export * from './XMRFields';

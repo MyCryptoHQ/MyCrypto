@@ -33,7 +33,8 @@
     "NAV_SIGN": "Sign & Verify Message",
     "NAV_BROADCAST": "Broadcast Transaction",
     "NAV_SENDETHER": "Send Ether & Tokens ",
-    "NAV_REQUESTPAYMENT": "Request Payment",
+    "NAV_SEND": "Send",
+    "NAV_REQUESTPAYMENT": "Receive",
     "NAV_SIGNMSG": "Sign Message ",
     "NAV_SWAP": "Swap ",
     "NAV_VIEWWALLET": "Wallet Info ",
@@ -126,7 +127,7 @@
     "BULK_LABEL_1": "Number of Wallets To Generate ",
     "BULK_LABEL_2": "Generate Wallets ",
     "BULK_SUCCESSMSG": "Success! Your wallets have been generated. ",
-    "SEND_ADDR": "To Address",
+    "SEND_ADDR": "Send To",
     "SEND_ADDR_SHORT": "To ",
     "SEND_AMOUNT": "Amount to Send ",
     "SEND_AMOUNT_SHORT": "Amount",
@@ -157,7 +158,7 @@
     "SCHEDULE_WINDOW_SIZE_TOOLTIP_TIME": "Range of minutes during which the transaction may be executed. ",
     "SCHEDULE_WINDOW_SIZE_TOOLTIP_BLOCK": "Range of blocks during which the transaction may be executed. ",
     "SEND_GAS": "Gas ",
-    "SEND_TRANSFERTOTAL": "Send Entire Balance ",
+    "SEND_TRANSFERTOTAL": "send max",
     "SEND_GENERATE": "Generate Transaction ",
     "SEND_RAW": "Raw Transaction ",
     "SEND_SIGNED": "Signed Transaction ",
@@ -607,6 +608,9 @@
     "COINBASE_PROMO_SMALL": "It’s now easier to get more ETH",
     "COINBASE_PROMO": "Buy ETH with USD",
     "SIMPLEX_PROMO": "Buy ETH with EUR",
-    "TESTNET": "Testnet"
+    "TESTNET": "Testnet",
+    "SEND_TO_PLACEHOLDER": "Enter a ",
+    "PAYMENT_ID_TITLE": "Payment ID",
+    "PAYMENT_ID_PLACEHOLDER": "Enter a Payment ID"
   }
 }

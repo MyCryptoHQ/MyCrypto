@@ -37,13 +37,16 @@
   }
 
   &-section {
-    margin: $space 0;
+    margin-bottom: $space;
 
     &:first-child {
       margin-top: 0;
     }
 
     &-header {
+      color: #9a9a9a;
+      font-weight: 400;
+      font-size: 0.875rem;
       margin-top: 0;
       display: inline-block;
     }
@@ -73,7 +76,7 @@
 
   &-address,
   &-list {
-    padding-left: $space;
+    padding-left: 0;
   }
 
   &-address {
@@ -84,12 +87,14 @@
       max-width: 100%;
       flex-direction: row;
       flex-wrap: nowrap;
-      align-items: center;
     }
 
     &-wrapper {
       max-width: calc(100% - 44px - 24px);
 
+      &.no-identicon {
+        max-width: calc(100% - 24px);
+      }
       &-error {
         color: $brand-danger;
         margin-bottom: $space-md;
@@ -103,9 +108,8 @@
     }
 
     &-addr {
-      margin-top: -$space-xs;
+      font-size: 1rem;
       word-wrap: break-word;
-      @include mono;
 
       &--small {
         font-size: 0.8rem;
@@ -133,6 +137,11 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    font-weight: 400;
+
+    > span > span > span {
+      margin-left: 0.5rem;
+    }
 
     &-amount {
       margin-right: $space-sm;
@@ -145,9 +154,12 @@
       list-style-type: none;
       word-break: break-all;
 
-      &-clickable:hover {
-        cursor: pointer;
-        text-decoration: underline;
+      &-clickable {
+        &:hover {
+          cursor: pointer;
+          border-bottom: 1px solid #000;
+          line-height: 1;
+        }
       }
     }
   }

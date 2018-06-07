@@ -12,17 +12,20 @@ import {
   RequestPayment,
   RecentTransactions,
   AddressBook,
-  Fields,
+  EthFields,
+  XmrFields,
   UnavailableWallets,
   SideBar
 } from './components';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'shared/types/network';
 
-const Send = () => (
+const Send = (props: any) => (
   <React.Fragment>
-    <Fields />
+    {props.network.id === 'XMR' ? <XmrFields /> : <EthFields />}
     <UnavailableWallets />
   </React.Fragment>
 );
@@ -30,6 +33,7 @@ const Send = () => (
 interface StateProps {
   wallet: AppState['wallet']['inst'];
   requestDisabled: boolean;
+  network: NetworkConfig;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
@@ -38,7 +42,7 @@ class SendTransaction extends React.Component<Props> {
   public render() {
     const { wallet, match, location, history } = this.props;
     const currentPath = match.url;
-    const tabs: Tab[] = [
+    const EthTabs: Tab[] = [
       {
         path: 'send',
         name: translate('NAV_SENDETHER'),
@@ -62,6 +66,21 @@ class SendTransaction extends React.Component<Props> {
         name: translate('NAV_ADDRESS_BOOK')
       }
     ];
+    const XmrTabs: Tab[] = [
+      {
+        path: 'send',
+        name: translate('NAV_SEND'),
+        disabled: !!wallet && !!wallet.isReadOnly
+      },
+      {
+        path: 'recieve',
+        name: translate('NAV_REQUESTPAYMENT')
+      },
+      {
+        path: 'swap',
+        name: translate('NAV_SWAP')
+      }
+    ];
 
     return (
       <TabSection>
@@ -70,7 +89,12 @@ class SendTransaction extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                <SubTabs tabs={tabs} match={match} location={location} history={history} />
+                <SubTabs
+                  tabs={true ? XmrTabs : EthTabs}
+                  match={match}
+                  location={location}
+                  history={history}
+                />
               </div>
               <div className="col-sm-8">
                 <Switch>
@@ -88,7 +112,11 @@ class SendTransaction extends React.Component<Props> {
                     exact={true}
                     path={`${currentPath}/send`}
                     render={() => {
-                      return wallet.isReadOnly ? <Redirect to={`${currentPath}/info`} /> : <Send />;
+                      return wallet.isReadOnly ? (
+                        <Redirect to={`${currentPath}/info`} />
+                      ) : (
+                        <Send network={this.props.network} />
+                      );
                     }}
                   />
                   <Route
@@ -123,7 +151,10 @@ class SendTransaction extends React.Component<Props> {
   }
 }
 
-export default connect((state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   wallet: getWalletInst(state),
-  requestDisabled: !isNetworkUnit(state, 'ETH')
-}))(SendTransaction);
+  requestDisabled: !isNetworkUnit(state, 'ETH'),
+  network: getNetworkConfig(state)
+});
+
+export default connect(mapStateToProps)(SendTransaction);

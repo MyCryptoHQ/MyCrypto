@@ -28,11 +28,13 @@ class SendEverythingClass extends Component<Props> {
           <button
             className="SendEverything"
             disabled={!!readOnly || !currentBalance}
-            onClick={this.onSendEverything}
+            onClick={e => {
+              e.preventDefault();
+              this.onSendEverything();
+            }}
             aria-label={translateRaw('SEND_TRANSFERTOTAL')}
           >
-            <i className="SendEverything-icon fa fa-angle-double-up" />
-            <Tooltip>{translate('SEND_TRANSFERTOTAL')}</Tooltip>
+            {translate('SEND_TRANSFERTOTAL')}
           </button>
         )}
       />

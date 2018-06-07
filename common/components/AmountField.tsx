@@ -20,17 +20,22 @@ export const AmountField: React.SFC<Props> = ({
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
       <div className="AmountField input-group-wrapper">
-        <label className="AmountField-group input-group input-group-inline">
-          <div className="input-group-header">{translate('SEND_AMOUNT_SHORT')}</div>
+        <label className="AmountField-group input-group input-group-inline" htmlFor="amount">
+          <div className="input-group-header">
+            <div className="">{translate('SEND_AMOUNT_SHORT')}</div>
+            <div className="flex-spacer" />
+            {hasSendEverything && <SendEverything />}
+          </div>
           <Input
+            id="amount"
             isValid={isAmountValid(raw, customValidator, isValid)}
             type="number"
-            placeholder="1"
+            placeholder="0.0"
+            autoComplete="off"
             value={raw}
             readOnly={!!readOnly}
             onChange={onChange}
           />
-          {hasSendEverything && <SendEverything />}
           {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
         </label>
       </div>
