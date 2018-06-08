@@ -40,16 +40,13 @@
     font-weight: 400;
     align-items: center;
     flex-wrap: wrap;
-    > *:first-child {
-      margin-right: 8px;
-    }
     > .flex-spacer {
       flex-grow: 1;
     }
     > .small {
       color: #9a9a9a;
       &.optional {
-        margin-left: 1rem;
+        margin-left: 0.75rem;
       }
     }
   }
