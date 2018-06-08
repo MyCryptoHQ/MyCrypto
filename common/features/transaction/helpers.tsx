@@ -22,17 +22,13 @@ import { isSchedulingEnabled } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
 import { StateSerializedTx } from './sign/reducer';
-import {
-  TypeKeys,
-  GetFromFailedAction,
-  GetFromSucceededAction,
-  SignTransactionRequestedAction
-} from './types';
+import { TypeKeys, SignTransactionRequestedAction } from './types';
 import {
   BroadcastRequestedAction,
   ISerializedTxAndIndexingHash,
   ITransactionStatus
 } from './broadcast/types';
+import { GetFromFailedAction, GetFromSucceededAction } from './network/types';
 import { resetTransactionRequested } from './fields/actions';
 import {
   broadcastTransactionFailed,

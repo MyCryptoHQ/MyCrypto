@@ -1,5 +1,5 @@
+import { TypeKeys } from '../types';
 import {
-  TypeKeys,
   EstimateGasFailedAction,
   EstimateGasRequestedAction,
   EstimateGasTimeoutAction,
@@ -10,7 +10,7 @@ import {
   GetNonceRequestedAction,
   GetNonceSucceededAction,
   GetNonceFailedAction
-} from '../types';
+} from './types';
 
 export type TEstimateGasRequested = typeof estimateGasRequested;
 export const estimateGasRequested = (

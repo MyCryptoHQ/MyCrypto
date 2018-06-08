@@ -7,10 +7,9 @@ import {
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapAction,
-  ResetTransactionSuccessfulAction,
-  NetworkAction,
-  GetFromSucceededAction
+  ResetTransactionSuccessfulAction
 } from '../types';
+import { NetworkAction, GetFromSucceededAction } from '../network/types';
 import {
   MetaAction,
   SetUnitMetaAction,

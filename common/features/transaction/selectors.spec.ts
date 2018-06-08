@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { Wei } from 'libs/units';
 import { getInitialState } from '../helpers';
-import { RequestStatus } from './types';
+import { RequestStatus } from './network/types';
 import {
   currentTransactionFailed,
   currentTransactionBroadcasting,
