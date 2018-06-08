@@ -63,7 +63,7 @@ export default class AddCustomTokenForm extends React.PureComponent<Props, State
       <form className="AddCustom" onSubmit={this.onSave}>
         {fields.map(field => {
           return (
-            <label className="AddCustom-field form-group" key={field.name}>
+            <label className="AddCustom-field input-group" key={field.name}>
               <div className="input-group-header">{field.label}</div>
               <Input
                 isValid={!errors[field.name]}

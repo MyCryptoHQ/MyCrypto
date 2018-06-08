@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-.PrivacyRadio {
+.PriorityRadio {
   &-button {
     &-wrapper {
       position: relative;
@@ -12,7 +12,7 @@
       text-transform: capitalize;
     }
     &.selected {
-      .PrivacyRadio-button-level {
+      .PriorityRadio-button-level {
         color: #4295bc;
       }
     }

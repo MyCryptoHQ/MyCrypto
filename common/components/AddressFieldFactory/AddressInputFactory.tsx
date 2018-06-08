@@ -82,7 +82,7 @@ class AddressInputFactoryClass extends Component<Props> {
     const isENSAddress = currentTo.raw.includes('.eth');
 
     return (
-      <div className="AddressInput form-group">
+      <div className="AddressInput">
         <div className={inputClassName}>
           <Query
             params={['readOnly']}

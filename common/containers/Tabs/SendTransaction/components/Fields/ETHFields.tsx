@@ -52,7 +52,7 @@ class EthFieldsClass extends Component<StateProps> {
             {shouldDisplay && (
               <div className="Tab-content-pane">
                 <AddressField showLabelMatch={true} />
-                <div className="row form-group">
+                <div className="row input-group">
                   <div
                     className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
                   >
@@ -71,7 +71,7 @@ class EthFieldsClass extends Component<StateProps> {
 
                 {useScheduling && <ScheduleFields />}
 
-                <div className="row form-group">
+                <div className="row input-group">
                   <div className="col-xs-12">
                     <TXMetaDataPanel scheduling={useScheduling} />
                   </div>

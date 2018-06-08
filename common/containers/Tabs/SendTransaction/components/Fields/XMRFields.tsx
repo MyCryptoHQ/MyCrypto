@@ -18,6 +18,7 @@ import { getOffline, getNetworkConfig } from 'selectors/config';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
 import { getUnit } from 'selectors/transaction';
 import { PrivacyRadio } from 'components/PrivacyRadio';
+import { PriorityRadio } from 'components/PriorityRadio';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -56,6 +57,7 @@ class XmrFieldsClass extends Component<StateProps> {
                   hasSendEverything={true}
                 />
                 <PrivacyRadio />
+                <PriorityRadio />
                 {this.getTxButton()}
               </div>
             )}

@@ -46,7 +46,7 @@ export class KeystoreDecrypt extends PureComponent {
     return (
       <form onSubmit={this.unlock}>
         <DeprecationWarning />
-        <div className="form-group">
+        <div className="input-group">
           <input
             className="hidden"
             type="file"

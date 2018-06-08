@@ -79,7 +79,7 @@ class BroadcastTx extends Component<Props> {
                     </React.Fragment>
                   )}
 
-                  <SendButton className="form-group" />
+                  <SendButton className="input-group" />
 
                   <div className="BroadcastTx-qr">
                     {stateTransaction && <QRCode data={bufferToHex(stateTransaction)} />}

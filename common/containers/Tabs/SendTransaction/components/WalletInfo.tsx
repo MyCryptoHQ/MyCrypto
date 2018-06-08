@@ -45,7 +45,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
           <AddressField isSelfAddress={true} />
 
           {privateKey && (
-            <div className="row form-group">
+            <div className="row input-group">
               <div className="col-xs-12">
                 <label>{translate('X_PRIVKEY')}</label>
                 <TogglablePassword

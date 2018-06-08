@@ -24,7 +24,7 @@ class FieldsClass extends Component<Props> {
     const { currentBalance } = this.props;
     return (
       <div className="Tab-content-pane">
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-12">
             <button
               className="Deploy-field-reset btn btn-default btn-sm"
@@ -49,7 +49,7 @@ class FieldsClass extends Component<Props> {
           <div className="col-xs-1" />
         </div>
 
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-12">
             <label>{translate('SEND_AMOUNT')}</label>
             {currentBalance === null ? (
@@ -78,12 +78,12 @@ class FieldsClass extends Component<Props> {
             )}
           </div>
         </div>
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-12">
             <TXMetaDataPanel initialState={'simple'} disableToggle={true} />
           </div>
         </div>
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-12 clearfix">
             {currentBalance === null ? (
               <div className="row text-center">

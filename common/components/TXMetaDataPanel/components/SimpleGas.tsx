@@ -82,7 +82,7 @@ class SimpleGas extends React.Component<Props> {
     };
 
     return (
-      <div className="SimpleGas row form-group">
+      <div className="SimpleGas row input-group">
         <div className="SimpleGas-title">
           <div className="flex-wrapper">
             <label>{translate('CONFIRM_TX_FEE')} </label>

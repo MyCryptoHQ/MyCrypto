@@ -46,7 +46,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="ViewOnly">
-        <form className="form-group" onSubmit={this.openWallet}>
+        <form className="input-group" onSubmit={this.openWallet}>
           {!!recentOptions.length && (
             <div className="ViewOnly-recent">
               <Select
