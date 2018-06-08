@@ -8,9 +8,9 @@ import {
   broadcastLocalTransactionRequested,
   TBroadcastLocalTransactionRequested,
   broadcastWeb3TransactionRequested,
-  TBroadcastWeb3TransactionRequested
-} from 'features/transaction/actions';
-import { currentTransactionBroadcasting } from 'features/transaction/selectors';
+  TBroadcastWeb3TransactionRequested,
+  currentTransactionBroadcasting
+} from 'features/transaction';
 import { getWalletType, IWalletType } from 'features/wallet';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';

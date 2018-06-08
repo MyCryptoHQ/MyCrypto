@@ -17,9 +17,6 @@ import {
   SignWeb3TransactionSucceededAction
 } from './types';
 import {
-  broadcastTransactionQueued,
-  broadcastTransactionSucceeded,
-  broadcastTransactionFailed,
   setToField,
   setValueField,
   setDataField,
@@ -30,6 +27,11 @@ import {
   setTokenValue,
   getFromSucceeded
 } from './actions';
+import {
+  broadcastTransactionQueued,
+  broadcastTransactionSucceeded,
+  broadcastTransactionFailed
+} from './broadcast/actions';
 import network, { NetworkState } from './network/reducer';
 import broadcast, { BROADCAST_INITIAL_STATE } from './broadcast/reducer';
 import fields, { FieldsState } from './fields/reducer';
