@@ -82,17 +82,10 @@ import { showNotification } from 'features/notifications';
 import {
   TypeKeys,
   SetCurrentToAction,
-  SetToFieldAction,
   SetCurrentValueAction,
   SetTokenToMetaAction,
   SetTokenValueMetaAction,
   SetUnitMetaAction,
-  InputDataAction,
-  InputGasLimitAction,
-  InputGasPriceAction,
-  InputGasPriceIntentAction,
-  InputNonceAction,
-  SetDataFieldAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapTokenToEtherAction,
@@ -101,6 +94,15 @@ import {
   SignTransactionRequestedAction,
   EstimateGasRequestedAction
 } from './types';
+import {
+  SetToFieldAction,
+  InputDataAction,
+  InputGasLimitAction,
+  InputGasPriceAction,
+  InputGasPriceIntentAction,
+  InputNonceAction,
+  SetDataFieldAction
+} from './fields/types';
 import {
   sendEverythingSucceeded,
   sendEverythingFailed,

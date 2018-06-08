@@ -1,5 +1,9 @@
 import {
   TypeKeys,
+  ResetTransactionRequestedAction,
+  ResetTransactionSuccessfulAction
+} from '../types';
+import {
   SetGasLimitFieldAction,
   SetDataFieldAction,
   SetToFieldAction,
@@ -10,10 +14,8 @@ import {
   InputGasPriceIntentAction,
   InputDataAction,
   InputNonceAction,
-  ResetTransactionRequestedAction,
-  ResetTransactionSuccessfulAction,
   SetGasPriceFieldAction
-} from '../types';
+} from './types';
 
 export type TInputGasLimit = typeof inputGasLimit;
 export const inputGasLimit = (payload: InputGasLimitAction['payload']) => ({

@@ -10,12 +10,12 @@ import {
   ResetTransactionSuccessfulAction,
   SetUnitMetaAction,
   NetworkAction,
-  InputGasPriceAction,
   SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction
 } from './types';
 import { ITransactionStatus } from './broadcast/types';
+import { InputGasPriceAction } from './fields/types';
 import {
   broadcastTransactionQueued,
   broadcastTransactionSucceeded,

@@ -4,17 +4,19 @@ import BN from 'bn.js';
 import { Wei, gasPriceToBase } from 'libs/units';
 import {
   TypeKeys,
-  FieldAction,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapAction,
-  ResetTransactionSuccessfulAction,
+  ResetTransactionSuccessfulAction
+} from '../types';
+import {
+  FieldAction,
   SetToFieldAction,
   SetDataFieldAction,
   SetNonceFieldAction,
   SetGasLimitFieldAction
-} from '../types';
+} from './types';
 
 export interface FieldsState {
   to: SetToFieldAction['payload'];

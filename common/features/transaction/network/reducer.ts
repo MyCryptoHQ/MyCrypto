@@ -1,11 +1,5 @@
-import {
-  TypeKeys,
-  ResetTransactionSuccessfulAction,
-  NetworkAction,
-  RequestStatus,
-  InputGasPriceAction,
-  InputGasPriceIntentAction
-} from '../types';
+import { TypeKeys, ResetTransactionSuccessfulAction, NetworkAction, RequestStatus } from '../types';
+import { InputGasPriceAction, InputGasPriceIntentAction } from '../fields/types';
 
 export interface NetworkState {
   gasEstimationStatus: RequestStatus | null;
