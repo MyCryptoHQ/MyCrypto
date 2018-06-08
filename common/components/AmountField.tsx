@@ -42,10 +42,7 @@ export const AmountField: React.SFC<Props> = ({
           {hasUnitDropdown ? (
             <UnitDropDown showAllTokens={showAllTokens} />
           ) : (
-            <span
-              className="AmountField-networkId input-group-inline-absolute-right"
-              onClick={() => {}}
-            >
+            <span className="AmountField-networkId input-group-inline-absolute-right">
               {networkId}
             </span>
           )}

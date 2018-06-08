@@ -1,0 +1,50 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.PrivacyRadio {
+  &-button {
+    &-wrapper {
+      position: relative;
+      width: 100%;
+      border: 1px solid #e5ecf3;
+      border-radius: $border-radius;
+    }
+    &.selected {
+      .PrivacyRadio-button-level {
+        color: #4295bc;
+      }
+    }
+    @include reset-button;
+    width: 33%;
+    padding: 0.75rem;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &-level {
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: #9a9a9a;
+      transition: $transition;
+    }
+    &-ringsize {
+      color: #9a9a9a;
+    }
+  }
+  &-sliding-border {
+    height: calc(100% + 2px);
+    width: calc(33% + 2px);
+    margin: -1px;
+    position: absolute;
+    border: 1px solid #4295bc;
+    transition: transform 200ms ease;
+
+    &.medium {
+      transform: translateX(100%);
+    }
+    &.high {
+      transform: translateX(200%);
+    }
+  }
+}
