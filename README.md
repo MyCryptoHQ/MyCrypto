@@ -5,9 +5,19 @@
 * **Just looking to download?** Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases).
 * **Looking for the old site?** Check out [https://legacy.mycrypto.com](https://legacy.mycrypto.com) or the source at [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com)
 
+## Requirements
+
+* Node 8.9.4*
+* NPM >= 5
+* Python 2.7.X**
+
+<sub>*Higher versions should work fun, but may cause inconsistencies. It's suggested you run 8.9.4 using `nvm`.</sub>
+<br/>
+<sub>**Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
+
 ## Running the App
 
-This codebase targets Node 8.9.4 (LTS). After `npm install`ing all dependencies (You may be required to install additional system dependencies, due to some node modules relying on them) you can run various commands depending on what you want to do:
+After `npm install`ing all dependencies you can run various commands depending on what you want to do:
 
 #### Development
 
