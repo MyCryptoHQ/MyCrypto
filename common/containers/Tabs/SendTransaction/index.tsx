@@ -22,6 +22,7 @@ import { RouteNotFound } from 'components/RouteNotFound';
 import { isNetworkUnit } from 'selectors/config/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import { NetworkConfig } from 'shared/types/network';
+import { Recieve } from './components/Recieve';
 
 const Send = (props: any) => (
   <React.Fragment>
@@ -127,7 +128,9 @@ class SendTransaction extends React.Component<Props> {
                   <Route
                     path={`${currentPath}/receive`}
                     exact={true}
-                    render={() => <RequestPayment wallet={wallet} />}
+                    render={() =>
+                      network.id === 'XMR' ? <Recieve /> : <RequestPayment wallet={wallet} />
+                    }
                   />
                   <Route
                     path={`${currentPath}/recent-txs`}

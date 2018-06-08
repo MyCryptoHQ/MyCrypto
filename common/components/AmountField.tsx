@@ -6,7 +6,8 @@ import { Input } from 'components/ui';
 import './AmountField.scss';
 
 interface Props {
-  networkId: string;
+  optional?: boolean;
+  networkId?: string;
   hasUnitDropdown?: boolean;
   hasSendEverything?: boolean;
   showAllTokens?: boolean;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const AmountField: React.SFC<Props> = ({
+  optional,
   hasUnitDropdown,
   hasSendEverything,
   showAllTokens,
@@ -26,6 +28,7 @@ export const AmountField: React.SFC<Props> = ({
         <label className="AmountField-group input-group input-group-inline" htmlFor="amount">
           <div className="input-group-header">
             <div className="">{translate('SEND_AMOUNT_SHORT')}</div>
+            {optional && <span className="small optional">(optional)</span>}
             <div className="flex-spacer" />
             {hasSendEverything && <SendEverything />}
           </div>
