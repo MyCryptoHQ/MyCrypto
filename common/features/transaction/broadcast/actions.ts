@@ -1,11 +1,11 @@
+import { TypeKeys } from '../types';
 import {
-  TypeKeys,
   BroadcastLocalTransactionRequestedAction,
   BroadcastWeb3TransactionRequestedAction,
   BroadcastTransactionFailedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionQueuedAction
-} from '../types';
+} from './types';
 
 export type TBroadcastLocalTransactionRequested = typeof broadcastLocalTransactionRequested;
 export const broadcastLocalTransactionRequested = (): BroadcastLocalTransactionRequestedAction => ({

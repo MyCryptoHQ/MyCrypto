@@ -1,11 +1,11 @@
+import { TypeKeys } from '../types';
 import {
-  TypeKeys,
   ITransactionStatus,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction,
   BroadcastAction
-} from '../types';
+} from './types';
 
 export interface BroadcastState {
   [indexingHash: string]: ITransactionStatus | null;

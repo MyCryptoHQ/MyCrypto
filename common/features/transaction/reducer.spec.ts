@@ -4,7 +4,6 @@ import BN from 'bn.js';
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
   TypeKeys,
-  ITransactionStatus,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
@@ -16,6 +15,7 @@ import {
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction
 } from './types';
+import { ITransactionStatus } from './broadcast/types';
 import {
   broadcastTransactionQueued,
   broadcastTransactionSucceeded,

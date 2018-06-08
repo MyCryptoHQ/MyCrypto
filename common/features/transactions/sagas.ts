@@ -16,7 +16,7 @@ import {
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
-} from 'features/transaction/types';
+} from 'features/transaction';
 import { TRANSACTIONS, FetchTransactionDataAction } from './types';
 import { setTransactionData, addRecentTransaction, resetTransactionData } from './actions';
 

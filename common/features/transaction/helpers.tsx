@@ -24,13 +24,15 @@ import { showNotification } from 'features/notifications';
 import { StateSerializedTx } from './sign/reducer';
 import {
   TypeKeys,
-  BroadcastRequestedAction,
-  ISerializedTxAndIndexingHash,
-  ITransactionStatus,
   GetFromFailedAction,
   GetFromSucceededAction,
   SignTransactionRequestedAction
 } from './types';
+import {
+  BroadcastRequestedAction,
+  ISerializedTxAndIndexingHash,
+  ITransactionStatus
+} from './broadcast/types';
 import { resetTransactionRequested } from './fields/actions';
 import {
   broadcastTransactionFailed,
