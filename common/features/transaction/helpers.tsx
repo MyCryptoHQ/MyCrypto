@@ -31,7 +31,6 @@ import {
   GetFromSucceededAction,
   SignTransactionRequestedAction
 } from './types';
-import { signTransactionFailed } from './actions';
 import { resetTransactionRequested } from './fields/actions';
 import {
   broadcastTransactionFailed,
@@ -39,6 +38,7 @@ import {
   broadcastTransactionQueued
 } from './broadcast/actions';
 import { getFromRequested } from './network/actions';
+import { signTransactionFailed } from './sign/actions';
 import { ICurrentTo, ICurrentValue, getUnit, getDecimalFromUnit } from './selectors';
 import { getTransactionStatus } from './broadcast/selectors';
 import { getGasLimit, getGasPrice } from './fields/selectors';

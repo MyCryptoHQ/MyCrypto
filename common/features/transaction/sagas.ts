@@ -106,9 +106,7 @@ import {
   sendEverythingFailed,
   swapTokenToEther,
   swapEtherToToken,
-  swapTokenToToken,
-  signLocalTransactionSucceeded,
-  signWeb3TransactionSucceeded
+  swapTokenToToken
 } from './actions';
 import {
   setToField,
@@ -134,6 +132,7 @@ import {
   getNonceSucceeded,
   getNonceFailed
 } from './network/actions';
+import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
 import {
   isEtherTransaction,
   getTransaction,

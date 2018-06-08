@@ -11,9 +11,9 @@ import {
   signLocalTransactionSucceeded,
   TSignLocalTransactionSucceeded,
   signTransactionFailed,
-  TSignTransactionFailed
-} from 'features/transaction/actions';
-import { getSerializedTransaction } from 'features/transaction/selectors';
+  TSignTransactionFailed,
+  getSerializedTransaction
+} from 'features/transaction';
 import { QRCode, Input, CodeBlock } from 'components/ui';
 import { SendButton } from 'components/SendButton';
 import './index.scss';

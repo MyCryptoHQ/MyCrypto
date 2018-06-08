@@ -59,8 +59,6 @@ import { TypeKeys } from './types';
 import {
   swapEtherToToken,
   swapTokenToToken,
-  signLocalTransactionSucceeded,
-  signWeb3TransactionSucceeded,
   sendEverythingSucceeded,
   sendEverythingFailed,
   swapTokenToEther
@@ -86,6 +84,7 @@ import {
   estimateGasTimedout,
   getNonceSucceeded
 } from './network/actions';
+import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
 import {
   isEtherTransaction,
   getUnit,
