@@ -607,6 +607,7 @@
     "COINBASE_PROMO_SMALL": "It’s now easier to get more ETH",
     "COINBASE_PROMO": "Buy ETH with USD",
     "SIMPLEX_PROMO": "Buy ETH with EUR",
-    "TESTNET": "Testnet"
+    "TESTNET": "Testnet",
+    "LATEST": "Latest"
   }
 }
