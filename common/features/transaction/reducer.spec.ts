@@ -8,7 +8,6 @@ import {
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   ResetTransactionSuccessfulAction,
-  SetUnitMetaAction,
   NetworkAction,
   SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
@@ -16,6 +15,7 @@ import {
 } from './types';
 import { ITransactionStatus } from './broadcast/types';
 import { InputGasPriceAction } from './fields/types';
+import { SetUnitMetaAction } from './meta/types';
 import {
   broadcastTransactionQueued,
   broadcastTransactionSucceeded,

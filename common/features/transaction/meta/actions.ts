@@ -1,11 +1,11 @@
+import { TypeKeys } from '../types';
 import {
-  TypeKeys,
   SetUnitMetaAction,
   SetTokenValueMetaAction,
   SetTokenToMetaAction,
   SetAsContractInteractionAction,
   SetAsViewAndSendAction
-} from '../types';
+} from './types';
 
 export type TSetTokenTo = typeof setTokenTo;
 export const setTokenTo = (payload: SetTokenToMetaAction['payload']): SetTokenToMetaAction => ({

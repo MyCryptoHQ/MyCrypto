@@ -1,6 +1,6 @@
 import EthTx from 'ethereumjs-tx';
 
-import { Wei, Address, TokenValue } from 'libs/units';
+import { Wei, TokenValue } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
 import { BroadcastAction } from './broadcast/types';
 import {
@@ -10,6 +10,7 @@ import {
   SetValueFieldAction,
   SetDataFieldAction
 } from './fields/types';
+import { MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './meta/types';
 
 export enum TypeKeys {
   ESTIMATE_GAS_REQUESTED = 'ESTIMATE_GAS_REQUESTED',
@@ -70,45 +71,6 @@ export interface SetCurrentToAction {
 }
 
 export type CurrentAction = SetCurrentValueAction | SetCurrentToAction;
-
-//#region Meta
-export interface SetTokenToMetaAction {
-  type: TypeKeys.TOKEN_TO_META_SET;
-  payload: {
-    raw: string;
-    value: Address | null;
-  };
-}
-
-export interface SetUnitMetaAction {
-  type: TypeKeys.UNIT_META_SET;
-  payload: string;
-}
-
-export interface SetTokenValueMetaAction {
-  type: TypeKeys.TOKEN_VALUE_META_SET;
-  payload: {
-    raw: string;
-    value: TokenValue | null;
-  };
-}
-
-export interface SetAsContractInteractionAction {
-  type: TypeKeys.IS_CONTRACT_INTERACTION;
-}
-
-export interface SetAsViewAndSendAction {
-  type: TypeKeys.IS_VIEW_AND_SEND;
-}
-
-export type TransactionMetaAction =
-  | SetUnitMetaAction
-  | SetTokenValueMetaAction
-  | SetTokenToMetaAction;
-export type TransactionTypeMetaAction = SetAsContractInteractionAction | SetAsViewAndSendAction;
-
-export type MetaAction = TransactionMetaAction | TransactionTypeMetaAction;
-//#endregion Meta
 
 //#region Network
 export interface EstimateGasRequestedAction {

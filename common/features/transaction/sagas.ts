@@ -83,9 +83,6 @@ import {
   TypeKeys,
   SetCurrentToAction,
   SetCurrentValueAction,
-  SetTokenToMetaAction,
-  SetTokenValueMetaAction,
-  SetUnitMetaAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapTokenToEtherAction,
@@ -103,6 +100,7 @@ import {
   InputNonceAction,
   SetDataFieldAction
 } from './fields/types';
+import { SetTokenToMetaAction, SetTokenValueMetaAction, SetUnitMetaAction } from './meta/types';
 import {
   sendEverythingSucceeded,
   sendEverythingFailed,

@@ -8,13 +8,15 @@ import {
   SwapTokenToTokenAction,
   SwapAction,
   ResetTransactionSuccessfulAction,
-  MetaAction,
-  SetUnitMetaAction,
   NetworkAction,
-  TransactionMetaAction,
-  SetTokenToMetaAction,
   GetFromSucceededAction
 } from '../types';
+import {
+  MetaAction,
+  SetUnitMetaAction,
+  TransactionMetaAction,
+  SetTokenToMetaAction
+} from './types';
 
 export interface MetaState {
   unit: SetUnitMetaAction['payload'];
