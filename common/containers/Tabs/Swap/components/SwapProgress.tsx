@@ -12,7 +12,6 @@ export interface Props {
   provider: string;
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
-  // actions
   showNotification: TShowNotification;
 }
 
