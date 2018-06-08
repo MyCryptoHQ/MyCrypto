@@ -22,7 +22,7 @@ import {
   getDecimal
 } from './meta/selectors';
 import { getSignState, getSignedTx, getWeb3Tx } from './sign/selectors';
-import { SerializedTxParams } from './types';
+import { SerializedTxParams } from './sign/types';
 import { reduceToValues, isFullTx } from './helpers';
 
 export interface ICurrentValue {

@@ -1,7 +1,3 @@
-import EthTx from 'ethereumjs-tx';
-
-import { Wei, TokenValue } from 'libs/units';
-import { IHexStrTransaction } from 'libs/transaction';
 import { BroadcastAction } from './broadcast/types';
 import {
   FieldAction,
@@ -12,6 +8,7 @@ import {
 } from './fields/types';
 import { MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './meta/types';
 import { NetworkAction } from './network/types';
+import { SignAction } from './sign/types';
 
 export enum TypeKeys {
   ESTIMATE_GAS_REQUESTED = 'ESTIMATE_GAS_REQUESTED',
@@ -73,9 +70,6 @@ export interface SetCurrentToAction {
 
 export type CurrentAction = SetCurrentValueAction | SetCurrentToAction;
 
-//#region Network
-//#endregion Network
-
 //#region Send Everything
 export interface SendEverythingRequestedAction {
   type: TypeKeys.SEND_EVERYTHING_REQUESTED;
@@ -92,41 +86,6 @@ export type SendEverythingAction =
   | SendEverythingSucceededAction
   | SendEverythingFailedAction;
 //#endregion Send Everything
-
-//#region Sign
-export interface SignTransactionRequestedAction {
-  type: TypeKeys.SIGN_TRANSACTION_REQUESTED;
-  payload: EthTx;
-}
-export interface SignLocalTransactionSucceededAction {
-  type: TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED;
-  payload: { signedTransaction: Buffer; indexingHash: string; noVerify?: boolean }; // dont verify against fields, for pushTx
-}
-
-export interface SignWeb3TransactionSucceededAction {
-  type: TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED;
-  payload: { transaction: Buffer; indexingHash: string; noVerify?: boolean };
-}
-export interface SignTransactionFailedAction {
-  type: TypeKeys.SIGN_TRANSACTION_FAILED;
-}
-
-export type SignAction =
-  | SignTransactionRequestedAction
-  | SignLocalTransactionSucceededAction
-  | SignWeb3TransactionSucceededAction
-  | SignTransactionFailedAction;
-
-export interface SerializedTxParams extends IHexStrTransaction {
-  unit: string;
-  currentTo: Buffer;
-  currentValue: Wei | TokenValue;
-  fee: Wei;
-  total: Wei;
-  isToken: boolean;
-  decimal: number;
-}
-//#endregion Sign
 
 //#region Swap
 export interface SwapTokenToEtherAction {

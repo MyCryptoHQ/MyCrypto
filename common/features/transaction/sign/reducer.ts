@@ -1,10 +1,9 @@
+import { TypeKeys, ResetTransactionSuccessfulAction } from '../types';
 import {
-  TypeKeys,
-  ResetTransactionSuccessfulAction,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction,
   SignAction
-} from '../types';
+} from './types';
 
 export interface SignState {
   indexingHash: string | null;

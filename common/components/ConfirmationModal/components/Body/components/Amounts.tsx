@@ -7,8 +7,7 @@ import './Amounts.scss';
 import { AppState } from 'features/reducers';
 import { getNetworkConfig } from 'features/config';
 import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'features/rates';
-import { SerializedTxParams } from 'features/transaction/types';
-import { getParamsFromSerializedTx } from 'features/transaction/selectors';
+import { SerializedTxParams, getParamsFromSerializedTx } from 'features/transaction';
 import { UnitDisplay } from 'components/ui';
 
 interface StateProps extends SerializedTxParams, AllUSDValues {

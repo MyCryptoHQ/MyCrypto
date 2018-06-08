@@ -1,10 +1,10 @@
+import { TypeKeys } from '../types';
 import {
-  TypeKeys,
   SignTransactionFailedAction,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction,
   SignTransactionRequestedAction
-} from '../types';
+} from './types';
 
 export type TSignTransactionFailed = typeof signTransactionFailed;
 export const signTransactionFailed = (): SignTransactionFailedAction => ({

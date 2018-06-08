@@ -85,10 +85,7 @@ import {
   SetCurrentValueAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
-  SwapTokenToEtherAction,
-  SignWeb3TransactionSucceededAction,
-  SignLocalTransactionSucceededAction,
-  SignTransactionRequestedAction
+  SwapTokenToEtherAction
 } from './types';
 import {
   SetToFieldAction,
@@ -101,6 +98,11 @@ import {
 } from './fields/types';
 import { SetTokenToMetaAction, SetTokenValueMetaAction, SetUnitMetaAction } from './meta/types';
 import { EstimateGasRequestedAction } from './network/types';
+import {
+  SignWeb3TransactionSucceededAction,
+  SignLocalTransactionSucceededAction,
+  SignTransactionRequestedAction
+} from './sign/types';
 import {
   sendEverythingSucceeded,
   sendEverythingFailed,
