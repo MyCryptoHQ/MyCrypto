@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { inputData, TInputData } from 'features/transaction/actions';
-import { isEtherTransaction } from 'features/transaction/selectors';
+import { inputData, TInputData, isEtherTransaction } from 'features/transaction';
 import { Query } from 'components/renderCbs';
 import { DataInput } from './DataInputFactory';
 

@@ -16,13 +16,13 @@ import moment from 'moment';
 
 import { getOrderStatus, postOrder, getAllRates } from 'api/bity';
 import shapeshift from 'api/shapeshift';
-import { TypeKeys as TransactionTypeKeys } from 'features/transaction/types';
 import {
+  TypeKeys as TransactionTypeKeys,
   setUnitMeta,
   setCurrentTo,
   setCurrentValue,
   resetTransactionRequested
-} from 'features/transaction/actions';
+} from 'features/transaction';
 import { isSupportedUnit, isNetworkUnit } from 'features/config';
 import {
   WALLET,

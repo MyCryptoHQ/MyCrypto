@@ -103,16 +103,9 @@ import {
 } from './types';
 import {
   setTokenTo,
-  setToField,
-  setValueField,
   setTokenValue,
   sendEverythingSucceeded,
   sendEverythingFailed,
-  inputGasPrice,
-  setDataField,
-  setGasLimitField,
-  setGasPriceField,
-  setNonceField,
   estimateGasTimedout,
   estimateGasSucceeded,
   estimateGasRequested,
@@ -124,15 +117,24 @@ import {
   getFromFailed,
   getNonceSucceeded,
   getNonceFailed,
-  inputNonce,
   signLocalTransactionSucceeded,
   signWeb3TransactionSucceeded,
   setUnitMeta,
-  resetTransactionRequested,
-  resetTransactionSuccessful,
-  TSetValueField,
   TSetTokenValue
 } from './actions';
+import {
+  setToField,
+  setValueField,
+  inputGasPrice,
+  setDataField,
+  setGasLimitField,
+  setGasPriceField,
+  setNonceField,
+  inputNonce,
+  resetTransactionRequested,
+  resetTransactionSuccessful,
+  TSetValueField
+} from './fields/actions';
 import {
   isEtherTransaction,
   getTransaction,

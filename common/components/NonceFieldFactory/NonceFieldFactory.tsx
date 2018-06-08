@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { sanitizeNumericalInput } from 'libs/values';
 import { AppState } from 'features/reducers';
-import { inputNonce, TInputNonce } from 'features/transaction/actions';
+import { inputNonce, TInputNonce } from 'features/transaction';
 import { NonceInputFactory } from './NonceInputFactory';
 
 export interface CallbackProps {

@@ -43,10 +43,7 @@ import {
   TUnlockWeb3,
   getDisabledWallets
 } from 'features/wallet';
-import {
-  resetTransactionRequested,
-  TResetTransactionRequested
-} from 'features/transaction/actions';
+import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
 import { showNotification, TShowNotification } from 'features/notifications';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';

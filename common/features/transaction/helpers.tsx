@@ -31,7 +31,8 @@ import {
   GetFromSucceededAction,
   SignTransactionRequestedAction
 } from './types';
-import { resetTransactionRequested, signTransactionFailed, getFromRequested } from './actions';
+import { signTransactionFailed, getFromRequested } from './actions';
+import { resetTransactionRequested } from './fields/actions';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,

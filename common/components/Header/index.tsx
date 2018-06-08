@@ -29,7 +29,7 @@ import {
   addCustomNetwork
 } from 'features/config';
 import { AppState } from 'features/reducers';
-import { TSetGasPriceField, setGasPriceField } from 'features/transaction/actions';
+import { TSetGasPriceField, setGasPriceField } from 'features/transaction';
 import React, { Component } from 'react';
 import { MapStateToProps, connect } from 'react-redux';
 import { Link } from 'react-router-dom';

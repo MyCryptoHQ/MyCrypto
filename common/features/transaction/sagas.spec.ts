@@ -57,16 +57,8 @@ import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
 import { showNotification } from 'features/notifications';
 import { TypeKeys } from './types';
 import {
-  setToField,
   setTokenTo,
   setTokenValue,
-  setValueField,
-  setDataField,
-  setGasLimitField,
-  setNonceField,
-  setGasPriceField,
-  inputGasPrice,
-  swapTokenToEther,
   swapEtherToToken,
   swapTokenToToken,
   getFromSucceeded,
@@ -78,11 +70,21 @@ import {
   estimateGasRequested,
   estimateGasTimedout,
   getNonceSucceeded,
+  sendEverythingSucceeded,
+  sendEverythingFailed,
+  swapTokenToEther
+} from './actions';
+import {
+  setToField,
+  setValueField,
+  setDataField,
+  setGasLimitField,
+  setNonceField,
+  setGasPriceField,
   inputNonce,
   resetTransactionSuccessful,
-  sendEverythingSucceeded,
-  sendEverythingFailed
-} from './actions';
+  inputGasPrice
+} from './fields/actions';
 import {
   isEtherTransaction,
   getUnit,
