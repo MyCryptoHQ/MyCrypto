@@ -8,7 +8,7 @@ import {
   TSetAsContractInteraction,
   setAsViewAndSend,
   TSetAsViewAndSend
-} from 'features/transaction/actions';
+} from 'features/transaction';
 import TabSection from 'containers/TabSection';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';

@@ -57,8 +57,6 @@ import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
 import { showNotification } from 'features/notifications';
 import { TypeKeys } from './types';
 import {
-  setTokenTo,
-  setTokenValue,
   swapEtherToToken,
   swapTokenToToken,
   getFromSucceeded,
@@ -85,6 +83,7 @@ import {
   resetTransactionSuccessful,
   inputGasPrice
 } from './fields/actions';
+import { setTokenTo, setTokenValue } from './meta/actions';
 import {
   isEtherTransaction,
   getUnit,

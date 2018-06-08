@@ -2,11 +2,6 @@ import {
   TypeKeys,
   SetCurrentToAction,
   SetCurrentValueAction,
-  SetUnitMetaAction,
-  SetTokenValueMetaAction,
-  SetTokenToMetaAction,
-  SetAsContractInteractionAction,
-  SetAsViewAndSendAction,
   EstimateGasFailedAction,
   EstimateGasRequestedAction,
   EstimateGasTimeoutAction,
@@ -29,7 +24,6 @@ import {
   SwapTokenToTokenAction
 } from './types';
 
-//#region Current
 export type TSetCurrentValue = typeof setCurrentValue;
 export const setCurrentValue = (
   payload: SetCurrentValueAction['payload']
@@ -43,41 +37,6 @@ export const setCurrentTo = (payload: SetCurrentToAction['payload']): SetCurrent
   type: TypeKeys.CURRENT_TO_SET,
   payload
 });
-//#endregion Current
-
-//#region Fields
-
-//#endregion Fields
-
-//#region Meta
-export type TSetTokenTo = typeof setTokenTo;
-export const setTokenTo = (payload: SetTokenToMetaAction['payload']): SetTokenToMetaAction => ({
-  type: TypeKeys.TOKEN_TO_META_SET,
-  payload
-});
-
-export type TSetTokenValue = typeof setTokenValue;
-export const setTokenValue = (
-  payload: SetTokenValueMetaAction['payload']
-): SetTokenValueMetaAction => ({
-  type: TypeKeys.TOKEN_VALUE_META_SET,
-  payload
-});
-
-export type TSetUnitMeta = typeof setUnitMeta;
-export const setUnitMeta = (payload: SetUnitMetaAction['payload']): SetUnitMetaAction => ({
-  type: TypeKeys.UNIT_META_SET,
-  payload
-});
-
-export type TSetAsContractInteraction = typeof setAsContractInteraction;
-export const setAsContractInteraction = (): SetAsContractInteractionAction => ({
-  type: TypeKeys.IS_CONTRACT_INTERACTION
-});
-
-export type TSetAsViewAndSend = typeof setAsViewAndSend;
-export const setAsViewAndSend = (): SetAsViewAndSendAction => ({ type: TypeKeys.IS_VIEW_AND_SEND });
-//#endregion Meta
 
 //#region Network
 export type TEstimateGasRequested = typeof estimateGasRequested;

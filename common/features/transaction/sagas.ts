@@ -102,8 +102,6 @@ import {
   EstimateGasRequestedAction
 } from './types';
 import {
-  setTokenTo,
-  setTokenValue,
   sendEverythingSucceeded,
   sendEverythingFailed,
   estimateGasTimedout,
@@ -118,9 +116,7 @@ import {
   getNonceSucceeded,
   getNonceFailed,
   signLocalTransactionSucceeded,
-  signWeb3TransactionSucceeded,
-  setUnitMeta,
-  TSetTokenValue
+  signWeb3TransactionSucceeded
 } from './actions';
 import {
   setToField,
@@ -135,6 +131,7 @@ import {
   resetTransactionSuccessful,
   TSetValueField
 } from './fields/actions';
+import { setTokenTo, setTokenValue, setUnitMeta, TSetTokenValue } from './meta/actions';
 import {
   isEtherTransaction,
   getTransaction,

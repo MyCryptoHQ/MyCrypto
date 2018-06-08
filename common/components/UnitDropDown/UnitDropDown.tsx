@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { Option } from 'react-select';
 
 import { AppState } from 'features/reducers';
-import { setUnitMeta, TSetUnitMeta } from 'features/transaction/actions';
-import { getUnit } from 'features/transaction/selectors';
+import { setUnitMeta, TSetUnitMeta, getUnit } from 'features/transaction';
 import { getNetworkUnit } from 'features/config';
 import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'features/wallet';
 import { Query } from 'components/renderCbs';
