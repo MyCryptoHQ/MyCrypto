@@ -13,13 +13,14 @@ import { isSchedulingEnabled } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
 import { TypeKeys as TK } from './types';
-import { signTransactionFailed, getFromRequested } from './actions';
+import { signTransactionFailed } from './actions';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
   broadcastTransactionQueued
 } from './broadcast/actions';
 import { resetTransactionRequested } from './fields/actions';
+import { getFromRequested } from './network/actions';
 import { getUnit, getDecimalFromUnit } from './selectors';
 import { getTransactionStatus } from './broadcast/selectors';
 import { getGasLimit, getGasPrice } from './fields/selectors';

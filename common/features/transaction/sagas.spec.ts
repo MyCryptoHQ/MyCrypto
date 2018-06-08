@@ -59,15 +59,8 @@ import { TypeKeys } from './types';
 import {
   swapEtherToToken,
   swapTokenToToken,
-  getFromSucceeded,
-  getFromFailed,
   signLocalTransactionSucceeded,
   signWeb3TransactionSucceeded,
-  estimateGasFailed,
-  estimateGasSucceeded,
-  estimateGasRequested,
-  estimateGasTimedout,
-  getNonceSucceeded,
   sendEverythingSucceeded,
   sendEverythingFailed,
   swapTokenToEther
@@ -84,6 +77,15 @@ import {
   inputGasPrice
 } from './fields/actions';
 import { setTokenTo, setTokenValue } from './meta/actions';
+import {
+  getFromSucceeded,
+  getFromFailed,
+  estimateGasFailed,
+  estimateGasSucceeded,
+  estimateGasRequested,
+  estimateGasTimedout,
+  getNonceSucceeded
+} from './network/actions';
 import {
   isEtherTransaction,
   getUnit,

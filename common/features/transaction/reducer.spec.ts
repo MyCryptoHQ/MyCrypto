@@ -16,7 +16,6 @@ import {
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction
 } from './types';
-import { getFromSucceeded } from './actions';
 import {
   broadcastTransactionQueued,
   broadcastTransactionSucceeded,
@@ -31,6 +30,7 @@ import {
   setGasPriceField
 } from './fields/actions';
 import { setTokenTo, setTokenValue } from './meta/actions';
+import { getFromSucceeded } from './network/actions';
 import network, { NetworkState } from './network/reducer';
 import broadcast, { BROADCAST_INITIAL_STATE } from './broadcast/reducer';
 import fields, { FieldsState } from './fields/reducer';

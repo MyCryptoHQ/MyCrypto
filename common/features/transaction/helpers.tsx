@@ -31,13 +31,14 @@ import {
   GetFromSucceededAction,
   SignTransactionRequestedAction
 } from './types';
-import { signTransactionFailed, getFromRequested } from './actions';
+import { signTransactionFailed } from './actions';
 import { resetTransactionRequested } from './fields/actions';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
   broadcastTransactionQueued
 } from './broadcast/actions';
+import { getFromRequested } from './network/actions';
 import { ICurrentTo, ICurrentValue, getUnit, getDecimalFromUnit } from './selectors';
 import { getTransactionStatus } from './broadcast/selectors';
 import { getGasLimit, getGasPrice } from './fields/selectors';

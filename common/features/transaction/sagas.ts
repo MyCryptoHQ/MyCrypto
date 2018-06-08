@@ -104,17 +104,9 @@ import {
 import {
   sendEverythingSucceeded,
   sendEverythingFailed,
-  estimateGasTimedout,
-  estimateGasSucceeded,
-  estimateGasRequested,
-  estimateGasFailed,
   swapTokenToEther,
   swapEtherToToken,
   swapTokenToToken,
-  getFromSucceeded,
-  getFromFailed,
-  getNonceSucceeded,
-  getNonceFailed,
   signLocalTransactionSucceeded,
   signWeb3TransactionSucceeded
 } from './actions';
@@ -132,6 +124,16 @@ import {
   TSetValueField
 } from './fields/actions';
 import { setTokenTo, setTokenValue, setUnitMeta, TSetTokenValue } from './meta/actions';
+import {
+  getFromSucceeded,
+  getFromFailed,
+  estimateGasFailed,
+  estimateGasSucceeded,
+  estimateGasRequested,
+  estimateGasTimedout,
+  getNonceSucceeded,
+  getNonceFailed
+} from './network/actions';
 import {
   isEtherTransaction,
   getTransaction,
