@@ -13,12 +13,11 @@ import {
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getChecksumAddressFn } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 import { getAddressLabels } from 'selectors/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
-import { toChecksumAddressByChainId } from 'libs/checksum';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -37,6 +36,7 @@ interface StateProps {
   desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: ReturnType<typeof getNetworkConfig>;
   tokens: ReturnType<typeof getTokens>;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 interface DispatchProps {
@@ -278,9 +278,9 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private renderWalletRow(wallet: DeterministicWalletData) {
-    const { desiredToken, network, addressLabels } = this.props;
+    const { desiredToken, network, addressLabels, toChecksumAddress } = this.props;
     const { selectedAddress } = this.state;
-    const label = addressLabels[toChecksumAddressByChainId(wallet.address, network.chainId)];
+    const label = addressLabels[toChecksumAddress(wallet.address)];
     const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     // Get renderable values, but keep 'em short
@@ -346,7 +346,8 @@ function mapStateToProps(state: AppState): StateProps {
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),
-    tokens: getTokens(state)
+    tokens: getTokens(state),
+    toChecksumAddress: getChecksumAddressFn(state)
   };
 }
 

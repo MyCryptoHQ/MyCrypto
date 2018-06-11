@@ -10,16 +10,15 @@ import HDKey from 'hdkey';
 import { INode } from 'libs/nodes/INode';
 import { SagaIterator } from 'redux-saga';
 import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getChecksumAddressFn } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
-import { toChecksumAddressByChainId } from 'libs/checksum';
 
 export function* getDeterministicWallets(action: GetDeterministicWalletsAction): SagaIterator {
-  const { seed, dPath, publicKey, chainCode, limit, offset, chainId } = action.payload;
+  const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
   let pathBase;
   let hdk;
 
@@ -38,13 +37,16 @@ export function* getDeterministicWallets(action: GetDeterministicWalletsAction):
     return;
   }
   const wallets: DeterministicWalletData[] = [];
+  const toChecksumAddress: ReturnType<typeof getChecksumAddressFn> = yield select(
+    getChecksumAddressFn
+  );
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
     const dkey = hdk.derive(`${pathBase}/${index}`);
     const address = publicToAddress(dkey.publicKey, true).toString('hex');
     wallets.push({
       index,
-      address: toChecksumAddressByChainId(address, chainId),
+      address: toChecksumAddress(address),
       tokenValues: {}
     });
   }

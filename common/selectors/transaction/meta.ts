@@ -6,10 +6,9 @@ import { getDecimalFromEtherUnit } from 'libs/units';
 import { getSerializedTransaction } from 'selectors/transaction';
 import EthTx from 'ethereumjs-tx';
 import { getCustomTokens } from 'selectors/customTokens';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, getChecksumAddressFn } from 'selectors/config';
 import { Token } from '../../../shared/types/network';
 import { stripHexPrefixAndLower } from 'libs/values';
-import { toChecksumAddressByChainId } from 'libs/checksum';
 
 const getMetaState = (state: AppState) => getTransactionState(state).meta;
 const getFrom = (state: AppState) => {
@@ -20,8 +19,8 @@ const getFrom = (state: AppState) => {
     try {
       const from = transactionInstance.from;
       if (from) {
-        const networkConfig = getNetworkConfig(state);
-        return toChecksumAddressByChainId(from.toString('hex'), networkConfig.chainId);
+        const toChecksumAddress = getChecksumAddressFn(state);
+        return toChecksumAddress(from.toString('hex'));
       }
     } catch (e) {
       console.warn(e);
@@ -53,10 +52,8 @@ const getUnit = (state: AppState) => {
         networkTokens = networkConfig.tokens;
       }
       const mergedTokens = networkTokens ? [...networkTokens, ...customTokens] : customTokens;
-      const stringTo = toChecksumAddressByChainId(
-        stripHexPrefixAndLower(to.toString('hex')),
-        networkConfig.chainId
-      );
+      const toChecksumAddress = getChecksumAddressFn(state);
+      const stringTo = toChecksumAddress(stripHexPrefixAndLower(to.toString('hex')));
       const result = mergedTokens.find(t => t.address === stringTo);
       if (result) {
         return result.symbol;

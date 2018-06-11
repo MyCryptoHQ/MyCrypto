@@ -9,46 +9,38 @@ import { SerializedTransaction } from 'components/renderCbs';
 import { AppState } from 'reducers';
 import { getFrom, getUnit, isEtherTransaction } from 'selectors/transaction';
 import translate from 'translations';
-import { toChecksumAddressByChainId } from 'libs/checksum';
-import { NetworkConfig } from 'types/network';
-import { getNetworkConfig } from 'selectors/config';
+import { getChecksumAddressFn } from 'selectors/config';
 
 interface StateProps {
-  from: AppState['transaction']['meta']['from'];
-  unit: AppState['transaction']['meta']['unit'];
+  from: ReturnType<typeof getFrom>;
+  unit: ReturnType<typeof getUnit>;
   isToken: boolean;
-  network: NetworkConfig;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 const size = '3rem';
 
 class AddressesClass extends Component<StateProps> {
   public render() {
-    const { from, isToken, unit, network } = this.props;
+    const { from, isToken, unit, toChecksumAddress } = this.props;
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {
-          const toFormatted = toChecksumAddressByChainId(
-            isToken ? ERC20.transfer.decodeInput(data)._to : to,
-            network.chainId
+          const toFormatted = toChecksumAddress(
+            isToken ? ERC20.transfer.decodeInput(data)._to : to
           );
           return (
             <div className="tx-modal-address">
               <div className="tx-modal-address-from">
                 {from && (
                   <React.Fragment>
-                    <Identicon
-                      className="tx-modal-address-from-icon"
-                      size={size}
-                      address={from}
-                      network={network}
-                    />
+                    <Identicon className="tx-modal-address-from-icon" size={size} address={from} />
                     <div className="tx-modal-address-from-content">
                       <h5 className="tx-modal-address-from-title">
                         {translate('CONFIRM_TX_FROM')}{' '}
                       </h5>
                       <h5 className="tx-modal-address-from-address small">
-                        {toChecksumAddressByChainId(from, network.chainId)}
+                        {toChecksumAddress(from)}
                       </h5>
                     </div>
                   </React.Fragment>
@@ -69,7 +61,7 @@ class AddressesClass extends Component<StateProps> {
                       className="small tx-modal-address-tkn-contract-link"
                       href={ETHAddressExplorer(to)}
                     >
-                      {toChecksumAddressByChainId(to, network.chainId)}
+                      {toChecksumAddress(to)}
                     </a>
                   </div>
                 </div>
@@ -81,7 +73,6 @@ class AddressesClass extends Component<StateProps> {
                       className="tx-modal-address-from-icon"
                       size={size}
                       address={toFormatted}
-                      network={network}
                     />
                     <div className="tx-modal-address-to-content">
                       <h5 className="tx-modal-address-to-title">{translate('CONFIRM_TX_TO')} </h5>
@@ -102,7 +93,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
   from: getFrom(state),
   isToken: !isEtherTransaction(state),
   unit: getUnit(state),
-  network: getNetworkConfig(state)
+  toChecksumAddress: getChecksumAddressFn(state)
 });
 
 export const Addresses = connect(mapStateToProps)(AddressesClass);

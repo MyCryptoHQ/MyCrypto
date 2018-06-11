@@ -2,22 +2,20 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
 import translate, { translateRaw } from 'translations';
-import { isValidAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { getRecentAddresses } from 'selectors/wallet';
 import { AppState } from 'reducers';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
-import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
+import { getIsValidAddressFn } from 'selectors/config';
 
 interface OwnProps {
   onUnlock(param: any): void;
 }
 
 interface StateProps {
-  recentAddresses: AppState['wallet']['recentAddresses'];
-  network: NetworkConfig;
+  recentAddresses: ReturnType<typeof getRecentAddresses>;
+  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
 
 type Props = OwnProps & StateProps;
@@ -32,14 +30,14 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   };
 
   public render() {
-    const { recentAddresses, network } = this.props;
+    const { recentAddresses, isValidAddress } = this.props;
     const { address } = this.state;
-    const isValid = isValidAddress(address, network.chainId);
+    const isValid = isValidAddress(address);
 
     const recentOptions = (recentAddresses.map(addr => ({
       label: (
         <React.Fragment>
-          <Identicon address={addr} network={network} />
+          <Identicon address={addr} />
           {addr}
         </React.Fragment>
       ),
@@ -92,9 +90,9 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
       ev.preventDefault();
     }
 
-    const { network } = this.props;
+    const { isValidAddress } = this.props;
     const { address } = this.state;
-    if (isValidAddress(address, network.chainId)) {
+    if (isValidAddress(address)) {
       const wallet = new AddressOnlyWallet(address);
       this.props.onUnlock(wallet);
     }
@@ -103,5 +101,5 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
   recentAddresses: getRecentAddresses(state),
-  network: getNetworkConfig(state)
+  isValidAddress: getIsValidAddressFn(state)
 }))(ViewOnlyDecryptClass);

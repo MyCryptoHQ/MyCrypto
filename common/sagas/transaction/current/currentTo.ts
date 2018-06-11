@@ -5,18 +5,19 @@ import { setTokenTo } from 'actions/transaction/actionCreators/meta';
 import { Address } from 'libs/units';
 import { select, call, put, takeLatest, take } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { isValidENSAddress, isValidAddress } from 'libs/validators';
+import { isValidENSAddress } from 'libs/validators';
 import { TypeKeys } from 'actions/transaction/constants';
 import { getResolvedAddress } from 'selectors/ens';
 import { resolveDomainRequested, TypeKeys as ENSTypekeys } from 'actions/ens';
 import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
-import { NetworkConfig } from 'shared/types/network';
-import { getNetworkConfig } from 'selectors/config';
+import { getIsValidAddressFn } from 'selectors/config';
 
 export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
-  const network: NetworkConfig = yield select(getNetworkConfig);
-  const validAddress: boolean = yield call(isValidAddress, raw, network ? network.chainId : 0);
+  const isValidAddressFn: ReturnType<typeof getIsValidAddressFn> = yield select(
+    getIsValidAddressFn
+  );
   const validEns: boolean = yield call(isValidENSAddress, raw);
+  const validAddress = isValidAddressFn(raw);
 
   let value: Buffer | null = null;
   if (validAddress) {

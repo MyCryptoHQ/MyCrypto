@@ -49,8 +49,7 @@ describe('getDeterministicWallets*', () => {
     const dWallet = {
       seed:
         '1ba4b713b9cf6f91e8e2eea015fc4e107452fa7d8ade32322207967371e5c0fb93289d4dde94ce13625ecc60279d211b6d677c67f54b9e97c7e68afc9ca1b5ea',
-      dPath: "m/44'/60'/0'/0",
-      chainId: 1
+      dPath: "m/44'/60'/0'/0"
     };
     const action = dWalletActions.getDeterministicWallets(dWallet);
     const gen = getDeterministicWallets(action);
@@ -74,8 +73,7 @@ describe('getDeterministicWallets*', () => {
       publicKey: '02fcba7ecf41bc7e1be4ee122d9d22e3333671eb0a3a87b5cdf099d59874e1940f',
       chainCode: '180c998615636cd875aa70c71cfa6b7bf570187a56d8c6d054e60b644d13e9d3',
       limit: 10,
-      offset: 0,
-      chainId: 1
+      offset: 0
     };
 
     const action = dWalletActions.getDeterministicWallets(dWallet);

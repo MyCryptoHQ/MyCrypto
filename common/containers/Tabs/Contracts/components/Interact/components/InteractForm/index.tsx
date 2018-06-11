@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import { getNetworkContracts, getNetworkConfig } from 'selectors/config';
+import { getNetworkContracts, getNetworkConfig, getIsValidAddressFn } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { isValidAddress, isValidAbiJson } from 'libs/validators';
+import { isValidAbiJson } from 'libs/validators';
 import { NetworkContract, NetworkConfig } from 'types/network';
 import { donationAddressMap } from 'config';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
@@ -21,6 +21,7 @@ interface StateProps {
   currentTo: ReturnType<typeof getCurrentTo>;
   contracts: NetworkContract[];
   network: NetworkConfig;
+  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
 
 interface OwnProps {
@@ -76,11 +77,10 @@ class InteractForm extends Component<Props, State> {
   };
 
   public render() {
-    const { contracts, accessContract, currentTo } = this.props;
+    const { contracts, accessContract, currentTo, isValidAddress } = this.props;
     const { abiJson, contract } = this.state;
     const validEthAddress = isValidAddress(
-      currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : '',
-      this.props.network.chainId
+      currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : ''
     );
     const validAbiJson = isValidAbiJson(abiJson);
     const showContractAccessButton = validEthAddress && validAbiJson;
@@ -206,7 +206,8 @@ class InteractForm extends Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
   contracts: getNetworkContracts(state) || [],
   currentTo: getCurrentTo(state),
-  network: getNetworkConfig(state)
+  network: getNetworkConfig(state),
+  isValidAddress: getIsValidAddressFn(state)
 });
 
 export default connect(mapStateToProps, { setCurrentTo })(InteractForm);

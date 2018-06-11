@@ -1,7 +1,6 @@
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { IFullWallet } from '../IWallet';
 import { bufferToHex } from 'ethereumjs-util';
-import { toChecksumAddressByChainId } from 'libs/checksum';
 import { configuredStore } from 'store';
 import { getNodeLib, getNetworkByChainId } from 'selectors/config';
 import Web3Node from 'libs/nodes/web3';
@@ -10,16 +9,14 @@ import { INode } from 'libs/nodes/INode';
 export default class Web3Wallet implements IFullWallet {
   private address: string;
   private network: string;
-  private chainId: number;
 
-  constructor(address: string, network: string, chainId: number) {
+  constructor(address: string, network: string) {
     this.address = address;
     this.network = network;
-    this.chainId = chainId;
   }
 
   public getAddressString(): string {
-    return toChecksumAddressByChainId(this.address, this.chainId);
+    return this.address;
   }
 
   public signRawTransaction(): Promise<Buffer> {

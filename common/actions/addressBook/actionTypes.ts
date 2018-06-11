@@ -3,7 +3,6 @@ import { TypeKeys } from './constants';
 export interface AddressLabel {
   address: string;
   label: string;
-  chainId: number;
 }
 
 export interface AddressLabelEntry extends AddressLabel {

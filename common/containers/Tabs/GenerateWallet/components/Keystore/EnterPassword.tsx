@@ -6,21 +6,11 @@ import { Spinner } from 'components/ui';
 import Template from '../Template';
 import './EnterPassword.scss';
 import { TogglablePassword } from 'components';
-import { NetworkConfig } from 'types/network';
-import { connect } from 'react-redux';
-import { getNetworkConfig } from 'selectors/config';
-import { AppState } from 'reducers';
 
 interface Props {
   isGenerating: boolean;
-  continue(pw: string, network: NetworkConfig): void;
+  continue(pw: string): void;
 }
-
-interface StateProps {
-  network: NetworkConfig;
-}
-
-type AllProps = Props & StateProps;
 
 interface State {
   password: string;
@@ -29,7 +19,7 @@ interface State {
   feedback: string;
 }
 
-export default class EnterPassword extends Component<AllProps, State> {
+export default class EnterPassword extends Component<Props, State> {
   public state: State = {
     password: '',
     confirmedPassword: '',
@@ -135,7 +125,7 @@ export default class EnterPassword extends Component<AllProps, State> {
 
   private handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    this.props.continue(this.state.password, this.props.network);
+    this.props.continue(this.state.password);
   };
 
   private onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -170,11 +160,3 @@ export default class EnterPassword extends Component<AllProps, State> {
     this.setState({ passwordValidation, feedback });
   };
 }
-
-const mapStateToProps = (state: AppState): StateProps => {
-  return {
-    network: getNetworkConfig(state)
-  };
-};
-
-export const EnterPw = connect(mapStateToProps)(EnterPassword);

@@ -1,4 +1,3 @@
-export * from './AddressField';
 export * from './DataField';
 export * from './GasLimitField';
 export * from './AmountField';
@@ -9,6 +8,7 @@ export * from './GenerateTransaction';
 export * from './SendButton';
 export * from './SigningStatus';
 export * from '../containers/Tabs/ScheduleTransaction/components';
+export { default as AddressField } from './AddressField';
 export { default as NonceField } from './NonceField';
 export { default as Header } from './Header';
 export { default as Footer } from './Footer';

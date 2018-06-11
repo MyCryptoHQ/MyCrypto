@@ -99,7 +99,7 @@ class RequestPayment extends React.Component<Props, {}> {
     return (
       <div className="RequestPayment">
         <div className="Tab-content-pane">
-          <AddressField isReadOnly={true} isCheckSummed={true} network={networkConfig} />
+          <AddressField isReadOnly={true} isCheckSummed={true} />
 
           <div className="row form-group">
             <div className="col-xs-12">

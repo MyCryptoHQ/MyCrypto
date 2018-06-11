@@ -14,8 +14,7 @@ describe('addressBook: Actions', () => {
     it('should generate the correct action', () => {
       const payload = {
         address: '0x0',
-        label: 'Foo',
-        chainId: 1
+        label: 'Foo'
       };
 
       expect(setAddressLabel(payload)).toEqual({
@@ -26,7 +25,7 @@ describe('addressBook: Actions', () => {
   });
   describe('clearAddressLabel', () => {
     it('should generate the correct action', () => {
-      const payload = { label: '0', address: '', chainId: 1 };
+      const payload = { label: '0', address: '' };
 
       expect(clearAddressLabel(payload)).toEqual({
         type: TypeKeys.CLEAR_ADDRESS_LABEL,
@@ -41,8 +40,7 @@ describe('addressBook: Actions', () => {
         address: '0x0',
         addressError: 'Derp',
         label: 'Foo',
-        labelError: 'Derp',
-        chainId: 1
+        labelError: 'Derp'
       };
 
       expect(setAddressLabelEntry(payload)).toEqual({
@@ -58,8 +56,7 @@ describe('addressBook: Actions', () => {
         address: '0x0',
         addressError: 'Derp',
         label: 'Foo',
-        labelError: 'Derp',
-        chainId: 1
+        labelError: 'Derp'
       };
 
       expect(changeAddressLabelEntry(payload)).toEqual({
@@ -80,7 +77,7 @@ describe('addressBook: Actions', () => {
   });
   describe('clearAddressLabelEntry', () => {
     it('should generate the correct action', () => {
-      const payload = { label: '0', address: '', chainId: 1 };
+      const payload = { label: '0', address: '' };
 
       expect(clearAddressLabelEntry(payload)).toEqual({
         type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY,

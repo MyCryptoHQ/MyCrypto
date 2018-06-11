@@ -1,56 +1,69 @@
-import { isValidAddress } from 'libs/validators';
 import React from 'react';
 import makeBlockie from 'ethereum-blockies-base64';
-import { NetworkConfig } from 'types/network';
-import { toChecksumAddressByChainId } from 'libs/checksum';
+import { connect } from 'react-redux';
+import { getChecksumAddressFn, getIsValidAddressFn } from 'selectors/config';
+import { AppState } from 'reducers';
 
-interface Props {
+interface OwnProps {
   address: string;
   className?: string;
   size?: string;
-  network: NetworkConfig;
 }
 
-export default function Identicon(props: Props) {
-  const size = props.size || '4rem';
-  const { address, className = '', network } = props;
-  // FIXME breaks on failed checksums
-  const checksummedAddress = toChecksumAddressByChainId(address, network.chainId);
-  const identiconDataUrl = isValidAddress(checksummedAddress, network.chainId)
-    ? makeBlockie(checksummedAddress)
-    : '';
-  return (
-    // Use inline styles for printable wallets
-    <div
-      className={`Identicon ${className}`}
-      title="Address Identicon"
-      style={{ width: size, height: size, position: 'relative' }}
-      aria-hidden={!identiconDataUrl}
-    >
-      {identiconDataUrl && (
-        <img
-          src={identiconDataUrl}
-          alt="Unique Address Image"
+interface StateProps {
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
+}
+
+type Props = OwnProps & StateProps;
+
+class Identicon extends React.Component<Props> {
+  public render() {
+    const size = this.props.size || '4rem';
+    const { address, toChecksumAddress, isValidAddress, className = '' } = this.props;
+    // FIXME breaks on failed checksums
+    const checksummedAddress = toChecksumAddress(address);
+    const identiconDataUrl = isValidAddress(checksummedAddress)
+      ? makeBlockie(checksummedAddress)
+      : '';
+    return (
+      // Use inline styles for printable wallets
+      <div
+        className={`Identicon ${className}`}
+        title="Address Identicon"
+        style={{ width: size, height: size, position: 'relative' }}
+        aria-hidden={!identiconDataUrl}
+      >
+        {identiconDataUrl && (
+          <img
+            src={identiconDataUrl}
+            alt="Unique Address Image"
+            style={{
+              height: '100%',
+              width: '100%',
+              padding: '0px',
+              borderRadius: '50%'
+            }}
+          />
+        )}
+        <div
+          className="border"
           style={{
+            position: 'absolute',
             height: '100%',
             width: '100%',
-            padding: '0px',
-            borderRadius: '50%'
+            top: 0,
+            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.15), inset 0 0 3px 0 rgba(0, 0, 0, 0.15)',
+            borderRadius: '50%',
+            pointerEvents: 'none'
           }}
         />
-      )}
-      <div
-        className="border"
-        style={{
-          position: 'absolute',
-          height: '100%',
-          width: '100%',
-          top: 0,
-          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.15), inset 0 0 3px 0 rgba(0, 0, 0, 0.15)',
-          borderRadius: '50%',
-          pointerEvents: 'none'
-        }}
-      />
-    </div>
-  );
+      </div>
+    );
+  }
 }
+
+export default connect((state: AppState): StateProps => ({
+  toChecksumAddress: getChecksumAddressFn(state),
+  isValidAddress: getIsValidAddressFn(state)
+}))(Identicon);

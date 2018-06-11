@@ -6,12 +6,10 @@ import { stripHexPrefix } from 'libs/values';
 import './PaperWallet.scss';
 import Template from '../Template';
 import { Input } from 'components/ui';
-import { NetworkConfig } from 'types/network';
 
 interface Props {
   keystore: IV3Wallet;
   privateKey: string;
-  network: NetworkConfig;
   continue(): void;
 }
 
@@ -35,11 +33,7 @@ const PaperWallet: React.SFC<Props> = props => (
       {/* Download Paper Wallet */}
       <h2 className="GenPaper-title">{translate('X_PRINT')}</h2>
       <div className="GenPaper-paper">
-        <PrintableWallet
-          address={props.keystore.address}
-          privateKey={props.privateKey}
-          network={props.network}
-        />
+        <PrintableWallet address={props.keystore.address} privateKey={props.privateKey} />
       </div>
 
       {/* Warning */}

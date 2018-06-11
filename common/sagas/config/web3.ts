@@ -93,7 +93,7 @@ export function* unlockWeb3(): SagaIterator {
     if (!address) {
       throw new Error('No accounts found in MetaMask / Mist.');
     }
-    const wallet = new Web3Wallet(address, stripWeb3Network(network), network.chainId);
+    const wallet = new Web3Wallet(address, stripWeb3Network(network));
     yield put(setWallet(wallet));
   } catch (err) {
     console.error(err);

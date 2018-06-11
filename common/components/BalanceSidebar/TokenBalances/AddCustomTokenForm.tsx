@@ -1,20 +1,25 @@
 import React from 'react';
 import { HELP_ARTICLE } from 'config';
-import { isPositiveIntegerOrZero, isValidAddress } from 'libs/validators';
+import { isPositiveIntegerOrZero } from 'libs/validators';
 import translate, { translateRaw } from 'translations';
 import { HelpLink, Input } from 'components/ui';
 import './AddCustomTokenForm.scss';
-import { Token, NetworkConfig } from 'types/network';
-import { getNetworkConfig } from 'selectors/config';
+import { Token } from 'types/network';
+import { getIsValidAddressFn } from 'selectors/config';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 
-interface Props {
+interface OwnProps {
   allTokens: Token[];
-  network: NetworkConfig;
   onSave(params: Token): void;
   toggleForm(): void;
 }
+
+interface StateProps {
+  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
+}
+
+type Props = OwnProps & StateProps;
 
 interface IGenerateSymbolLookup {
   [tokenSymbol: string]: boolean;
@@ -106,6 +111,7 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
   }
 
   public getErrors() {
+    const { isValidAddress } = this.props;
     const { address, symbol, decimal } = this.state;
     const errors: { [key: string]: string } = {};
 
@@ -114,7 +120,7 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
       errors.decimal = 'Invalid decimal';
     }
     if (address) {
-      if (!isValidAddress(address, this.props.network.chainId)) {
+      if (!isValidAddress(address)) {
         errors.address = 'Not a valid address';
       }
       if (this.state.tokenAddressLookup[address]) {
@@ -169,6 +175,6 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
   }
 }
 
-export default connect((state: AppState) => ({
-  network: getNetworkConfig(state)
+export default connect((state: AppState): StateProps => ({
+  isValidAddress: getIsValidAddressFn(state)
 }))(AddCustomTokenForm);

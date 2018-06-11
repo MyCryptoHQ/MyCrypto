@@ -11,14 +11,11 @@ import { getCurrentBalance } from 'selectors/wallet';
 import Spinner from 'components/ui/Spinner';
 import { Wei, TokenValue } from 'libs/units';
 import { Input } from 'components/ui';
-import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   unit: string;
   resetWallet: TResetWallet;
   currentBalance: Wei | TokenValue | null;
-  network: NetworkConfig;
 }
 
 type Props = StateProps;
@@ -108,8 +105,7 @@ class FieldsClass extends Component<Props> {
 export const Fields = connect(
   (state: AppState) => ({
     unit: getUnit(state),
-    currentBalance: getCurrentBalance(state),
-    network: getNetworkConfig(state)
+    currentBalance: getCurrentBalance(state)
   }),
   { resetWallet }
 )(FieldsClass);

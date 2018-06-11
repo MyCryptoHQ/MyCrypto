@@ -21,7 +21,6 @@ import { NonStandardTransaction } from './components';
 import { getOffline, getNetworkConfig } from 'selectors/config';
 import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
 import { getUnit } from 'selectors/transaction';
-import { NetworkConfig } from 'types/network';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -38,12 +37,11 @@ interface StateProps {
   shouldDisplay: boolean;
   offline: boolean;
   useScheduling: ICurrentSchedulingToggle['value'];
-  network: NetworkConfig;
 }
 
 class FieldsClass extends Component<StateProps> {
   public render() {
-    const { shouldDisplay, schedulingAvailable, useScheduling, network } = this.props;
+    const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
 
     return (
       <OnlyUnlocked
@@ -52,7 +50,7 @@ class FieldsClass extends Component<StateProps> {
             <QueryWarning />
             {shouldDisplay && (
               <div className="Tab-content-pane">
-                <AddressField showLabelMatch={true} network={network} />
+                <AddressField showLabelMatch={true} />
                 <div className="row form-group">
                   <div
                     className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
@@ -109,6 +107,5 @@ export const Fields = connect((state: AppState) => ({
   schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
-  useScheduling: getCurrentSchedulingToggle(state).value,
-  network: getNetworkConfig(state)
+  useScheduling: getCurrentSchedulingToggle(state).value
 }))(FieldsClass);

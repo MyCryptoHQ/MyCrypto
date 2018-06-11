@@ -3,12 +3,11 @@ import React from 'react';
 import printElement from 'utils/printElement';
 import { stripHexPrefix } from 'libs/values';
 import translate, { translateRaw } from 'translations';
-import { NetworkConfig } from 'types/network';
 
-export const print = (address: string, privateKey: string, network: NetworkConfig) => () =>
+export const print = (address: string, privateKey: string) => () =>
   address &&
   privateKey &&
-  printElement(<PaperWallet address={address} privateKey={privateKey} network={network} />, {
+  printElement(<PaperWallet address={address} privateKey={privateKey} />, {
     popupFeatures: {
       scrollbars: 'no'
     },
@@ -29,21 +28,20 @@ export const print = (address: string, privateKey: string, network: NetworkConfi
 interface Props {
   address: string;
   privateKey: string;
-  network: NetworkConfig;
 }
 
-const PrintableWallet: React.SFC<Props> = ({ address, privateKey, network }) => {
+const PrintableWallet: React.SFC<Props> = ({ address, privateKey }) => {
   const pkey = stripHexPrefix(privateKey);
 
   return (
     <div>
-      <PaperWallet address={address} privateKey={pkey} network={network} />
+      <PaperWallet address={address} privateKey={pkey} />
       <a
         role="button"
         aria-label={translateRaw('X_PRINT')}
         aria-describedby="x_PrintDesc"
         className="btn btn-lg btn-primary btn-block"
-        onClick={print(address, pkey, network)}
+        onClick={print(address, pkey)}
         style={{ margin: '10px auto 0', maxWidth: '260px' }}
       >
         {translate('X_PRINT')}

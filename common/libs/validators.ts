@@ -25,8 +25,7 @@ export function isValidAddress(address: string, chainId: number) {
   }
 }
 
-// FIXME we probably want to do checksum checks sideways
-export function isValidETHAddress(address: string): boolean {
+function isValidETHLikeAddress(address: string): boolean {
   if (address === '0x0000000000000000000000000000000000000000') {
     return false;
   }
@@ -36,25 +35,17 @@ export function isValidETHAddress(address: string): boolean {
     return false;
   } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
     return true;
-  } else {
-    return isChecksumAddress(address);
   }
+  return false;
+}
+
+// FIXME we probably want to do checksum checks sideways
+export function isValidETHAddress(address: string): boolean {
+  return isValidETHLikeAddress(address) || isChecksumAddress(address);
 }
 
 export function isValidRSKAddress(address: string, chainId: number): boolean {
-  if (address === '0x0000000000000000000000000000000000000000') {
-    return false;
-  }
-  if (address.substring(0, 2) !== '0x') {
-    return false;
-  } else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
-    return false;
-  } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
-    return true;
-  } else {
-    //Passing chainId = null solves it using ethereumjs-util, to be considered...
-    return isValidChecksumRSKAddress(address, chainId);
-  }
+  return isValidETHLikeAddress(address) || isValidChecksumRSKAddress(address, chainId);
 }
 
 export const isCreationAddress = (address: string): boolean =>

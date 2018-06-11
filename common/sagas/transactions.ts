@@ -14,7 +14,7 @@ import {
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
 } from 'actions/transaction';
-import { getNodeLib, getNetworkConfig } from 'selectors/config';
+import { getNodeLib, getNetworkConfig, getChecksumAddressFn } from 'selectors/config';
 import { getWalletInst } from 'selectors/wallet';
 import { INode } from 'libs/nodes';
 import { hexEncodeData } from 'libs/nodes/rpc/utils';
@@ -23,7 +23,6 @@ import { TypeKeys as ConfigTypeKeys } from 'actions/config';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'reducers';
-import { toChecksumAddressByChainId } from 'libs/checksum';
 
 export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
   const txhash = action.payload;
@@ -99,11 +98,12 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
     }
   }
 
+  const toChecksumAddress = yield select(getChecksumAddressFn);
   const savableTx: SavedTransaction = {
     hash,
     from,
     chainId,
-    to: toChecksumAddressByChainId(fields.to, fields.chainId),
+    to: toChecksumAddress(fields.to),
     value: fields.value,
     time: Date.now()
   };

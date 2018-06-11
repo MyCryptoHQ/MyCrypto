@@ -1,25 +1,31 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { AddressFieldFactory } from './AddressFieldFactory';
 import { donationAddressMap } from 'config';
 import translate from 'translations';
 import { Input } from 'components/ui';
-import { toChecksumAddressByChainId } from 'libs/checksum';
-import { NetworkConfig } from 'types/network';
+import { getChecksumAddressFn } from 'selectors/config';
+import { AppState } from 'reducers';
 
-interface Props {
+interface OwnProps {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
   isCheckSummed?: boolean;
   showLabelMatch?: boolean;
-  network: NetworkConfig;
 }
 
-export const AddressField: React.SFC<Props> = ({
+interface StateProps {
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+}
+
+type Props = OwnProps & StateProps;
+
+const AddressField: React.SFC<Props> = ({
   isReadOnly,
   isSelfAddress,
   isCheckSummed,
   showLabelMatch,
-  network
+  toChecksumAddress
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
@@ -34,11 +40,7 @@ export const AddressField: React.SFC<Props> = ({
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"
-            value={
-              isCheckSummed
-                ? toChecksumAddressByChainId(currentTo.raw, network.chainId)
-                : currentTo.raw
-            }
+            value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
             placeholder={donationAddressMap.ETH}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
@@ -51,3 +53,7 @@ export const AddressField: React.SFC<Props> = ({
     )}
   />
 );
+
+export default connect((state: AppState): StateProps => ({
+  toChecksumAddress: getChecksumAddressFn(state)
+}))(AddressField);

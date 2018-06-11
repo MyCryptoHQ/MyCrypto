@@ -9,9 +9,7 @@ import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName, trezorReferralURL } from 'config';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
-import { NetworkConfig } from 'types/network';
 import './Trezor.scss';
-import { getNetworkConfig } from 'selectors/config';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -21,7 +19,6 @@ interface OwnProps {
 interface StateProps {
   dPath: DPath | undefined;
   dPaths: DPath[];
-  network: NetworkConfig;
 }
 
 // todo: nearly duplicates ledger component props
@@ -158,8 +155,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     dPath: getSingleDPath(state, SecureWalletName.TREZOR),
-    dPaths: getPaths(state, SecureWalletName.TREZOR),
-    network: getNetworkConfig(state)
+    dPaths: getPaths(state, SecureWalletName.TREZOR)
   };
 }
 

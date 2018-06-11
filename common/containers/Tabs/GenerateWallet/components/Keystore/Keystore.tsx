@@ -1,6 +1,5 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { generateKeystore } from 'libs/web-workers';
 import { WalletType } from '../../GenerateWallet';
 import Template from '../Template';
@@ -8,9 +7,6 @@ import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
 import FinalSteps from '../FinalSteps';
-import { getNetworkConfig } from 'selectors/config';
-import { AppState } from 'reducers';
-import { NetworkConfig } from 'types/network';
 import { N_FACTOR } from 'config';
 
 export enum Steps {
@@ -29,11 +25,7 @@ interface State {
   isGenerating: boolean;
 }
 
-interface StateProps {
-  network: NetworkConfig;
-}
-
-export class GenerateKeystore extends Component<StateProps, State> {
+export default class GenerateKeystore extends Component<{}, State> {
   public state: State = {
     activeStep: Steps.Password,
     password: '',
@@ -50,11 +42,7 @@ export class GenerateKeystore extends Component<StateProps, State> {
     switch (activeStep) {
       case Steps.Password:
         content = (
-          <EnterPassword
-            continue={this.generateWalletAndContinue}
-            isGenerating={isGenerating}
-            network={this.props.network}
-          />
+          <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
         );
         break;
 
@@ -77,7 +65,6 @@ export class GenerateKeystore extends Component<StateProps, State> {
               keystore={keystore}
               privateKey={privateKey}
               continue={this.continueToFinal}
-              network={this.props.network}
             />
           );
         }
@@ -121,11 +108,3 @@ export class GenerateKeystore extends Component<StateProps, State> {
     this.setState({ activeStep: Steps.Final });
   };
 }
-
-function mapStateToProps(state: AppState): StateProps {
-  return {
-    network: getNetworkConfig(state)
-  };
-}
-
-export default connect<StateProps>(mapStateToProps)(GenerateKeystore);

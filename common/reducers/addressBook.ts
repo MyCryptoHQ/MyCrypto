@@ -1,4 +1,3 @@
-import { toChecksumAddressByChainId } from 'libs/checksum';
 import { TypeKeys, AddressBookAction, AddressLabelEntry } from 'actions/addressBook';
 
 export interface State {
@@ -23,15 +22,14 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
   switch (action.type) {
     case TypeKeys.SET_ADDRESS_LABEL: {
       const { addresses, labels } = state;
-      const { address, label, chainId } = action.payload;
-      const checksummedAddress = toChecksumAddressByChainId(address, chainId);
+      const { address, label } = action.payload;
       const updatedAddresses = {
         ...addresses,
-        [checksummedAddress]: label
+        [address]: label
       };
       const updatedLabels = {
         ...labels,
-        [label]: checksummedAddress
+        [label]: address
       };
 
       return {
@@ -43,12 +41,12 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
 
     case TypeKeys.CLEAR_ADDRESS_LABEL: {
       const { addresses, labels } = state;
-      const { address, chainId } = action.payload;
+      const { address } = action.payload;
       const label = addresses[address];
       const updatedAddresses = { ...addresses };
       const updatedLabels = { ...labels };
 
-      delete updatedAddresses[toChecksumAddressByChainId(address, chainId)];
+      delete updatedAddresses[address];
       delete updatedLabels[label];
 
       return {
@@ -59,9 +57,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
     }
 
     case TypeKeys.SET_ADDRESS_LABEL_ENTRY: {
-      const { id, address, chainId } = action.payload;
-      const checksummedAddress = toChecksumAddressByChainId(address, chainId);
-      const isNonRowEntry = id === 'ADDRESS_BOOK_TABLE_ID' || id === 'ACCOUNT_ADDRESS_ID';
+      const { id, address } = action.payload;
 
       return {
         ...state,
@@ -69,7 +65,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
           ...state.entries,
           [id]: {
             ...action.payload,
-            address: isNonRowEntry ? address : checksummedAddress
+            address
           }
         }
       };
