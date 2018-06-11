@@ -50,6 +50,7 @@ class NonceField extends React.Component<Props> {
                   readOnly={readOnly}
                   onChange={onChange}
                   disabled={noncePending}
+                  showInvalidWithoutValue={true}
                 />
                 {noncePending ? (
                   <div className="Nonce-spinner">

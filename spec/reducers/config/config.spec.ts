@@ -1,10 +1,8 @@
 import { configuredStore } from 'store';
 import { delay, SagaIterator } from 'redux-saga';
-import { call, cancel, fork, put, take, select, apply } from 'redux-saga/effects';
-import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
+import { call, fork, put, take, select, apply } from 'redux-saga/effects';
+import { cloneableGenerator } from 'redux-saga/utils';
 import {
-  setOffline,
-  setOnline,
   changeNodeSucceeded,
   changeNodeRequested,
   changeNodeFailed,
@@ -16,8 +14,6 @@ import {
 } from 'actions/config';
 import {
   handleChangeNodeRequested,
-  handlePollOfflineStatus,
-  pollOfflineStatus,
   handleNewNetwork,
   handleChangeNodeRequestedOneTime
 } from 'sagas/config/node';
@@ -39,87 +35,9 @@ import { selectedNodeExpectedState } from './nodes/selectedNode.spec';
 import { customNodesExpectedState, firstCustomNode } from './nodes/customNodes.spec';
 import { unsetWeb3Node, unsetWeb3NodeOnWalletEvent } from 'sagas/config/web3';
 import { shepherd } from 'mycrypto-shepherd';
-import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
 
 // init module
 configuredStore.getState();
-
-describe('pollOfflineStatus*', () => {
-  const restoreNotif = 'Your connection to the network has been restored!';
-
-  const lostNetworkNotif = `You’ve lost your connection to the network, check your internet
-      connection or try changing networks from the dropdown at the
-      top right of the page.`;
-
-  const offlineNotif = 'You are currently offline. Some features will be unavailable.';
-
-  const offlineOnFirstTimeCase = pollOfflineStatus();
-  it('should delay by 2.5 seconds', () => {
-    expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
-  });
-
-  it('should skip if a node change is pending', () => {
-    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
-    expect(offlineOnFirstTimeCase.next(true).value).toEqual(call(delay, 2500));
-    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
-  });
-
-  it('should select offline', () => {
-    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
-  });
-
-  it('should select shepherd"s offline', () => {
-    expect(offlineOnFirstTimeCase.next(false).value).toEqual(call(getShepherdOffline));
-  });
-
-  // .PUT.action.payload.msg is used because the action creator uses an random ID, cant to a showNotif comparision
-  it('should put a different notif if online for the first time ', () => {
-    expect(offlineOnFirstTimeCase.next(true).value).toEqual(put(setOffline()));
-    expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
-      offlineNotif
-    );
-  });
-
-  it('should loop around then go back online, putting a restore msg', () => {
-    expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
-    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
-    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
-    expect(offlineOnFirstTimeCase.next(true).value).toEqual(call(getShepherdOffline));
-    expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
-      restoreNotif
-    );
-    expect(offlineOnFirstTimeCase.next(false).value).toEqual(put(setOnline()));
-  });
-
-  it('should put a generic lost connection notif on every time afterwards', () => {
-    expect(offlineOnFirstTimeCase.next().value).toEqual(call(delay, 2500));
-    expect(offlineOnFirstTimeCase.next().value).toEqual(call(getShepherdPending));
-    expect(offlineOnFirstTimeCase.next(false).value).toEqual(select(getOffline));
-    expect(offlineOnFirstTimeCase.next(false).value).toEqual(call(getShepherdOffline));
-    expect(offlineOnFirstTimeCase.next(true).value).toEqual(put(setOffline()));
-    expect((offlineOnFirstTimeCase.next().value as any).PUT.action.payload.msg).toEqual(
-      lostNetworkNotif
-    );
-  });
-});
-
-describe('handlePollOfflineStatus*', () => {
-  const gen = handlePollOfflineStatus();
-  const mockTask = createMockTask();
-
-  it('should fork pollOffineStatus', () => {
-    const expectedForkYield = fork(pollOfflineStatus);
-    expect(gen.next().value).toEqual(expectedForkYield);
-  });
-
-  it('should take CONFIG_STOP_POLL_OFFLINE_STATE', () => {
-    expect(gen.next(mockTask).value).toEqual(take('CONFIG_STOP_POLL_OFFLINE_STATE'));
-  });
-
-  it('should cancel pollOfflineStatus', () => {
-    expect(gen.next().value).toEqual(cancel(mockTask));
-  });
-});
 
 describe('handleChangeNodeRequested*', () => {
   let originalRandom: any;

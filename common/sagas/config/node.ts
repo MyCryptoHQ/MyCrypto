@@ -1,15 +1,6 @@
 import { delay, SagaIterator } from 'redux-saga';
-import {
-  call,
-  cancel,
-  fork,
-  put,
-  take,
-  takeEvery,
-  select,
-  apply,
-  takeLatest
-} from 'redux-saga/effects';
+import { call, fork, put, take, takeEvery, select, apply } from 'redux-saga/effects';
+import { bindActionCreators } from 'redux';
 import {
   getNodeId,
   getNodeConfig,
@@ -53,64 +44,86 @@ import {
   makeAutoNodeName
 } from 'libs/nodes';
 import { INITIAL_STATE as selectedNodeInitialState } from 'reducers/config/nodes/selectedNode';
+import { configuredStore as store } from 'store';
 
-export function* pollOfflineStatus(): SagaIterator {
-  let hasCheckedOnline = false;
+window.addEventListener('load', () => {
+  const getShepherdStatus = () => ({
+    pending: getShepherdPending(),
+    isOnline: !getShepherdOffline()
+  });
 
-  const restoreNotif = showNotification(
-    'success',
-    'Your connection to the network has been restored!',
-    3000
+  const { online, offline, lostNetworkNotif, offlineNotif, restoreNotif } = bindActionCreators(
+    {
+      offline: setOffline,
+      online: setOnline,
+      restoreNotif: () =>
+        showNotification('success', 'Your connection to the network has been restored!', 3000),
+      lostNetworkNotif: () =>
+        showNotification(
+          'danger',
+          `You’ve lost your connection to the network, check your internet
+connection or try changing networks from the dropdown at the
+top right of the page.`,
+          Infinity
+        ),
+
+      offlineNotif: () =>
+        showNotification(
+          'info',
+          'You are currently offline. Some features will be unavailable.',
+          5000
+        )
+    },
+    store.dispatch
   );
-  const lostNetworkNotif = showNotification(
-    'danger',
-    `You’ve lost your connection to the network, check your internet
-      connection or try changing networks from the dropdown at the
-      top right of the page.`,
-    Infinity
-  );
-  const offlineNotif = showNotification(
-    'info',
-    'You are currently offline. Some features will be unavailable.',
-    5000
-  );
 
-  while (true) {
-    yield call(delay, 2500);
+  const getAppOnline = () => !getOffline(store.getState());
 
-    const pending: ReturnType<typeof getShepherdPending> = yield call(getShepherdPending);
-    if (pending) {
-      continue;
+  /**
+   * @description Repeatedly polls itself to check for online state conflict occurs, implemented in recursive style for flexible polling times
+   * as network requests take a variable amount of time.
+   *
+   * Whenever an app online state conflict occurs, it resolves the conflict with the following priority:
+   * * If shepherd is online but app is offline ->  do a ping request via shepherd provider, with the result of the ping being the set app state
+   * * If shepherd is offline but app is online -> set app to offline as it wont be able to make requests anyway
+   */
+  async function detectOnlineStateConflict() {
+    const shepherdStatus = getShepherdStatus();
+    const appOffline = getAppOnline();
+    const onlineStateConflict = shepherdStatus.isOnline !== appOffline;
+
+    if (shepherdStatus.pending || !onlineStateConflict) {
+      return setTimeout(detectOnlineStateConflict, 1000);
     }
 
-    const isOffline: boolean = yield select(getOffline);
-    const balancerOffline = yield call(getShepherdOffline);
-
-    if (!balancerOffline && isOffline) {
-      // If we were able to ping but redux says we're offline, mark online
-      yield put(restoreNotif);
-      yield put(setOnline());
-    } else if (balancerOffline && !isOffline) {
-      // If we were unable to ping but redux says we're online, mark offline
-      // If they had been online, show an error.
-      // If they hadn't been online, just inform them with a warning.
-      yield put(setOffline());
-      if (hasCheckedOnline) {
-        yield put(lostNetworkNotif);
-      } else {
-        yield put(offlineNotif);
+    // if app reports online but shepherd offline, then set app offline
+    if (appOffline && !shepherdStatus.isOnline) {
+      lostNetworkNotif();
+      offline();
+    } else if (!appOffline && shepherdStatus.isOnline) {
+      // if app reports offline but shepherd reports online
+      // send a request to shepherd provider to see if we can still send out requests
+      const success = await shepherdProvider.ping().catch(() => false);
+      if (success) {
+        restoreNotif();
+        online();
       }
     }
-    hasCheckedOnline = true;
+    detectOnlineStateConflict();
   }
-}
+  detectOnlineStateConflict();
 
-// Fork our recurring API call, watch for the need to cancel.
-export function* handlePollOfflineStatus(): SagaIterator {
-  const pollOfflineStatusTask = yield fork(pollOfflineStatus);
-  yield take('CONFIG_STOP_POLL_OFFLINE_STATE');
-  yield cancel(pollOfflineStatusTask);
-}
+  window.addEventListener('offline', () => {
+    const previouslyOnline = getAppOnline();
+
+    // if browser reports as offline and we were previously online
+    // then set offline without checking balancer state
+    if (!navigator.onLine && previouslyOnline) {
+      offlineNotif();
+      offline();
+    }
+  });
+});
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.
@@ -283,7 +296,6 @@ export const node = [
   takeEvery(TypeKeys.CONFIG_CHANGE_NODE_REQUESTED, handleChangeNodeRequested),
   takeEvery(TypeKeys.CONFIG_CHANGE_NODE_FORCE, handleNodeChangeForce),
   takeEvery(TypeKeys.CONFIG_CHANGE_NETWORK_REQUESTED, handleChangeNetworkRequested),
-  takeLatest(TypeKeys.CONFIG_POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(TypeKeys.CONFIG_LANGUAGE_CHANGE, reload),
   takeEvery(TypeKeys.CONFIG_ADD_CUSTOM_NODE, handleAddCustomNode),
   takeEvery(TypeKeys.CONFIG_REMOVE_CUSTOM_NODE, handleRemoveCustomNode)
