@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
-import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
