@@ -60,7 +60,7 @@ interface State {
 
 class TXMetaDataPanel extends React.Component<Props, State> {
   public static defaultProps: DefaultProps = {
-    initialState: 'advanced'
+    initialState: 'simple'
   };
 
   public state: State = {
