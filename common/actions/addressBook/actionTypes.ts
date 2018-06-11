@@ -3,6 +3,7 @@ import { TypeKeys } from './constants';
 export interface AddressLabel {
   address: string;
   label: string;
+  chainId: number;
 }
 
 export interface AddressLabelEntry extends AddressLabel {
@@ -22,7 +23,7 @@ export interface SetAddressLabel {
 
 export interface ClearAddressLabel {
   type: TypeKeys.CLEAR_ADDRESS_LABEL;
-  payload: string;
+  payload: AddressLabel;
 }
 
 export interface SetAddressLabelEntry {
@@ -42,7 +43,7 @@ export interface SaveAddressLabelEntry {
 
 export interface ClearAddressLabelEntry {
   type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY;
-  payload: string;
+  payload: AddressLabel;
 }
 
 export interface RemoveAddressLabelEntry {

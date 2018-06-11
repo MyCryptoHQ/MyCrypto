@@ -1,7 +1,7 @@
 import Tx from 'ethereumjs-tx';
 import { bufferToHex } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
-import { isValidETHAddress } from 'libs/validators';
+import { isValidAddress } from 'libs/validators';
 import { IFullWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
@@ -68,8 +68,8 @@ const gasParamsInRange = (t: ITransaction) => {
   }
 };
 
-const validAddress = (t: ITransaction) => {
-  if (!isValidETHAddress(bufferToHex(t.to))) {
+const validAddress = (t: ITransaction, chainId: number) => {
+  if (!isValidAddress(bufferToHex(t.to), chainId)) {
     throw Error(translateRaw('ERROR_5'));
   }
 };
@@ -91,7 +91,7 @@ const signTx = async (t: ITransaction, w: IFullWallet) => {
   return signedTx; //instead of returning the rawTx with it, we can derive it from the signedTx anyway
 };
 
-const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean) => {
+const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean, chainId: number) => {
   gasParamsInRange(t);
   if (!isOffline && !validGasLimit(t)) {
     throw Error('Not enough gas supplied');
@@ -99,7 +99,7 @@ const validateTx = (t: ITransaction, accountBalance: Wei, isOffline: boolean) =>
   if (!enoughBalanceViaTx(t, accountBalance)) {
     throw Error(translateRaw('GETH_BALANCE'));
   }
-  validAddress(t);
+  validAddress(t, chainId);
 };
 
 export {

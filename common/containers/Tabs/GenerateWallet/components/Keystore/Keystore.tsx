@@ -1,5 +1,6 @@
 import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { generateKeystore } from 'libs/web-workers';
 import { WalletType } from '../../GenerateWallet';
 import Template from '../Template';
@@ -7,6 +8,10 @@ import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
 import FinalSteps from '../FinalSteps';
+import { getNetworkConfig } from 'selectors/config';
+import { AppState } from 'reducers';
+import { NetworkConfig } from 'types/network';
+import { N_FACTOR } from 'config';
 
 export enum Steps {
   Password = 'password',
@@ -24,7 +29,11 @@ interface State {
   isGenerating: boolean;
 }
 
-export default class GenerateKeystore extends Component<{}, State> {
+interface StateProps {
+  network: NetworkConfig;
+}
+
+export class GenerateKeystore extends Component<StateProps, State> {
   public state: State = {
     activeStep: Steps.Password,
     password: '',
@@ -41,7 +50,11 @@ export default class GenerateKeystore extends Component<{}, State> {
     switch (activeStep) {
       case Steps.Password:
         content = (
-          <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
+          <EnterPassword
+            continue={this.generateWalletAndContinue}
+            isGenerating={isGenerating}
+            network={this.props.network}
+          />
         );
         break;
 
@@ -64,6 +77,7 @@ export default class GenerateKeystore extends Component<{}, State> {
               keystore={keystore}
               privateKey={privateKey}
               continue={this.continueToFinal}
+              network={this.props.network}
             />
           );
         }
@@ -87,7 +101,7 @@ export default class GenerateKeystore extends Component<{}, State> {
   private generateWalletAndContinue = (password: string) => {
     this.setState({ isGenerating: true });
 
-    generateKeystore(password).then(res => {
+    generateKeystore(password, N_FACTOR).then(res => {
       this.setState({
         password,
         activeStep: Steps.Download,
@@ -107,3 +121,11 @@ export default class GenerateKeystore extends Component<{}, State> {
     this.setState({ activeStep: Steps.Final });
   };
 }
+
+function mapStateToProps(state: AppState): StateProps {
+  return {
+    network: getNetworkConfig(state)
+  };
+}
+
+export default connect<StateProps>(mapStateToProps)(GenerateKeystore);

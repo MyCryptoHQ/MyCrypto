@@ -9,7 +9,7 @@ import { getCustomTokens } from 'selectors/customTokens';
 import { getNetworkConfig } from 'selectors/config';
 import { Token } from '../../../shared/types/network';
 import { stripHexPrefixAndLower } from 'libs/values';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 
 const getMetaState = (state: AppState) => getTransactionState(state).meta;
 const getFrom = (state: AppState) => {
@@ -20,7 +20,8 @@ const getFrom = (state: AppState) => {
     try {
       const from = transactionInstance.from;
       if (from) {
-        return toChecksumAddress(from.toString('hex'));
+        const networkConfig = getNetworkConfig(state);
+        return toChecksumAddressByChainId(from.toString('hex'), networkConfig.chainId);
       }
     } catch (e) {
       console.warn(e);
@@ -52,7 +53,10 @@ const getUnit = (state: AppState) => {
         networkTokens = networkConfig.tokens;
       }
       const mergedTokens = networkTokens ? [...networkTokens, ...customTokens] : customTokens;
-      const stringTo = toChecksumAddress(stripHexPrefixAndLower(to.toString('hex')));
+      const stringTo = toChecksumAddressByChainId(
+        stripHexPrefixAndLower(to.toString('hex')),
+        networkConfig.chainId
+      );
       const result = mergedTokens.find(t => t.address === stringTo);
       if (result) {
         return result.symbol;

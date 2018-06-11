@@ -20,7 +20,7 @@ export function setAddressLabel(payload: AddressLabel): SetAddressLabel {
 }
 
 export type TClearAddressLabel = typeof clearAddressLabel;
-export function clearAddressLabel(payload: string): ClearAddressLabel {
+export function clearAddressLabel(payload: AddressLabel): ClearAddressLabel {
   return {
     type: TypeKeys.CLEAR_ADDRESS_LABEL,
     payload
@@ -52,7 +52,7 @@ export function saveAddressLabelEntry(payload: string): SaveAddressLabelEntry {
 }
 
 export type TClearAddressLabelEntry = typeof clearAddressLabelEntry;
-export function clearAddressLabelEntry(payload: string): ClearAddressLabelEntry {
+export function clearAddressLabelEntry(payload: AddressLabel): ClearAddressLabelEntry {
   return {
     type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY,
     payload

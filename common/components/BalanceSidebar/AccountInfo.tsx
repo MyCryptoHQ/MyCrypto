@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 import { UnitDisplay, NewTabLink } from 'components/ui';
 import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
 import translate, { translateRaw } from 'translations';
@@ -87,7 +87,7 @@ class AccountInfo extends React.Component<Props, State> {
     const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div>
-        <AccountAddress address={toChecksumAddress(address)} />
+        <AccountAddress address={toChecksumAddressByChainId(address, network.chainId)} />
 
         {typeof wallet.displayAddress === 'function' && (
           <div className="AccountInfo-section">

@@ -8,7 +8,8 @@ describe('addressBook: Reducer', () => {
         undefined,
         addressBookActions.setAddressLabel({
           address: '0x0',
-          label: 'Foo'
+          label: 'Foo',
+          chainId: 1
         })
       )
     ).toEqual({
@@ -26,13 +27,17 @@ describe('addressBook: Reducer', () => {
       undefined,
       addressBookActions.setAddressLabel({
         address: '0x0',
-        label: 'Foo'
+        label: 'Foo',
+        chainId: 1
       })
     );
 
-    expect(addressBook(firstState, addressBookActions.clearAddressLabel('0x0'))).toEqual(
-      INITIAL_STATE
-    );
+    expect(
+      addressBook(
+        firstState,
+        addressBookActions.clearAddressLabel({ address: '0x0', label: '', chainId: 1 })
+      )
+    ).toEqual(INITIAL_STATE);
   });
   it('should set an address label entry', () => {
     expect(
@@ -45,7 +50,8 @@ describe('addressBook: Reducer', () => {
           addressError: 'Derp',
           label: 'Foo',
           temporaryLabel: 'Food',
-          labelError: 'Derp'
+          labelError: 'Derp',
+          chainId: 1
         })
       )
     ).toEqual({
@@ -58,7 +64,8 @@ describe('addressBook: Reducer', () => {
           addressError: 'Derp',
           label: 'Foo',
           temporaryLabel: 'Food',
-          labelError: 'Derp'
+          labelError: 'Derp',
+          chainId: 1
         }
       }
     });
@@ -73,11 +80,15 @@ describe('addressBook: Reducer', () => {
         addressError: 'Derp',
         label: 'Foo',
         temporaryLabel: 'Food',
-        labelError: 'Derp'
+        labelError: 'Derp',
+        chainId: 1
       })
     );
-    expect(addressBook(firstState, addressBookActions.clearAddressLabelEntry('0'))).toEqual(
-      INITIAL_STATE
-    );
+    expect(
+      addressBook(
+        firstState,
+        addressBookActions.clearAddressLabelEntry({ label: '0', address: '', chainId: 1 })
+      )
+    ).toEqual(INITIAL_STATE);
   });
 });

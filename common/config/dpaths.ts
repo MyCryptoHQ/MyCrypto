@@ -78,6 +78,11 @@ export const ETH_SINGULAR: DPath = {
   value: "m/0'/0'/0'"
 };
 
+export const RSK_TESTNET: DPath = {
+  label: 'Testnet (RSK)',
+  value: "m/44'/37310'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -93,7 +98,8 @@ export const DPaths: DPath[] = [
   MUSIC_DEFAULT,
   ETSC_DEFAULT,
   EGEM_DEFAULT,
-  CLO_DEFAULT
+  CLO_DEFAULT,
+  RSK_TESTNET
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

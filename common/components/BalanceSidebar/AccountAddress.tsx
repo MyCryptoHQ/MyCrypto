@@ -13,10 +13,13 @@ import {
 } from 'actions/addressBook';
 import { getAccountAddressEntry, getAddressLabels } from 'selectors/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface StateProps {
   entry: ReturnType<typeof getAccountAddressEntry>;
   addressLabels: ReturnType<typeof getAddressLabels>;
+  network: NetworkConfig;
 }
 
 interface DispatchProps {
@@ -79,7 +82,7 @@ class AccountAddress extends React.Component<Props, State> {
         <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
+            <Identicon address={address} size="100%" network={this.props.network} />
           </div>
           <div className="AccountInfo-address-wrapper">
             {labelContent}
@@ -208,7 +211,8 @@ class AccountAddress extends React.Component<Props, State> {
           temporaryAddress: address,
           label,
           temporaryLabel: label,
-          overrideValidation: true
+          overrideValidation: true,
+          chainId: this.props.network.chainId
         });
       }
     } else {
@@ -233,7 +237,8 @@ class AccountAddress extends React.Component<Props, State> {
       id: ACCOUNT_ADDRESS_ID,
       address,
       label,
-      isEditing: true
+      isEditing: true,
+      chainId: this.props.network.chainId
     });
 
     this.setState(
@@ -257,7 +262,8 @@ class AccountAddress extends React.Component<Props, State> {
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (state: AppState) => ({
   entry: getAccountAddressEntry(state),
-  addressLabels: getAddressLabels(state)
+  addressLabels: getAddressLabels(state),
+  network: getNetworkConfig(state)
 });
 
 const mapDispatchToProps: DispatchProps = {

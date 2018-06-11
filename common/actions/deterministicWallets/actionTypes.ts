@@ -26,6 +26,7 @@ export interface GetDeterministicWalletsAction {
     chainCode?: string;
     limit: number;
     offset: number;
+    chainId: number;
   };
 }
 
@@ -61,6 +62,7 @@ export interface GetDeterministicWalletsArgs {
   chainCode?: string;
   limit?: number;
   offset?: number;
+  chainId: number;
 }
 
 /*** Union Type ***/

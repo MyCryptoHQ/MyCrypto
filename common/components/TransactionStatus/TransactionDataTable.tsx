@@ -97,7 +97,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('OFFLINE_STEP1_LABEL_1'),
       data: (
         <MaybeLink href={explorer.from}>
-          <Identicon address={data.from} size="26px" />
+          <Identicon address={data.from} size="26px" network={network} />
           <Address address={data.from} />
         </MaybeLink>
       )
@@ -106,7 +106,7 @@ const TransactionDataTable: React.SFC<Props> = ({ data, receipt, network }) => {
       label: translate('OFFLINE_STEP2_LABEL_1'),
       data: (
         <MaybeLink href={explorer.to}>
-          <Identicon address={data.to} size="26px" />
+          <Identicon address={data.to} size="26px" network={network} />
           <Address address={data.to} />
         </MaybeLink>
       )

@@ -1,9 +1,10 @@
-import { toChecksumAddress } from 'ethereumjs-util';
 import { AppState } from 'reducers';
 import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
 import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
 import { AddressLabelEntry } from 'actions/addressBook';
 import { getCurrentTo } from './transaction';
+import { toChecksumAddressByChainId } from 'libs/checksum';
+import { getNetworkConfig } from 'selectors/config';
 
 export function getAddressLabels(state: AppState) {
   return state.addressBook.addresses;
@@ -31,8 +32,10 @@ export function getAccountAddressEntry(state: AppState) {
 
 export function getAddressLabelEntryFromAddress(state: AppState, address: string) {
   const rows = getAddressLabelRows(state);
+  const network = getNetworkConfig(state);
   const entry = rows.find(
-    (iteratedEntry: AddressLabelEntry) => iteratedEntry.address === toChecksumAddress(address)
+    (iteratedEntry: AddressLabelEntry) =>
+      iteratedEntry.address === toChecksumAddressByChainId(address, network.chainId)
   );
 
   return entry;

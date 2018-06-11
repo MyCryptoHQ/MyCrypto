@@ -3,20 +3,23 @@ import { AddressFieldFactory } from './AddressFieldFactory';
 import { donationAddressMap } from 'config';
 import translate from 'translations';
 import { Input } from 'components/ui';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddressByChainId } from 'libs/checksum';
+import { NetworkConfig } from 'types/network';
 
 interface Props {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
   isCheckSummed?: boolean;
   showLabelMatch?: boolean;
+  network: NetworkConfig;
 }
 
 export const AddressField: React.SFC<Props> = ({
   isReadOnly,
   isSelfAddress,
   isCheckSummed,
-  showLabelMatch
+  showLabelMatch,
+  network
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
@@ -31,7 +34,11 @@ export const AddressField: React.SFC<Props> = ({
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"
-            value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
+            value={
+              isCheckSummed
+                ? toChecksumAddressByChainId(currentTo.raw, network.chainId)
+                : currentTo.raw
+            }
             placeholder={donationAddressMap.ETH}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}

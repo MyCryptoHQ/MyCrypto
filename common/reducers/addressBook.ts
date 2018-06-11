@@ -1,4 +1,4 @@
-import { toChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddressByChainId } from 'libs/checksum';
 import { TypeKeys, AddressBookAction, AddressLabelEntry } from 'actions/addressBook';
 
 export interface State {
@@ -23,8 +23,8 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
   switch (action.type) {
     case TypeKeys.SET_ADDRESS_LABEL: {
       const { addresses, labels } = state;
-      const { address, label } = action.payload;
-      const checksummedAddress = toChecksumAddress(address);
+      const { address, label, chainId } = action.payload;
+      const checksummedAddress = toChecksumAddressByChainId(address, chainId);
       const updatedAddresses = {
         ...addresses,
         [checksummedAddress]: label
@@ -43,12 +43,12 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
 
     case TypeKeys.CLEAR_ADDRESS_LABEL: {
       const { addresses, labels } = state;
-      const address = action.payload;
+      const { address, chainId } = action.payload;
       const label = addresses[address];
       const updatedAddresses = { ...addresses };
       const updatedLabels = { ...labels };
 
-      delete updatedAddresses[toChecksumAddress(address)];
+      delete updatedAddresses[toChecksumAddressByChainId(address, chainId)];
       delete updatedLabels[label];
 
       return {
@@ -59,8 +59,8 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
     }
 
     case TypeKeys.SET_ADDRESS_LABEL_ENTRY: {
-      const { id, address } = action.payload;
-      const checksummedAddress = toChecksumAddress(address);
+      const { id, address, chainId } = action.payload;
+      const checksummedAddress = toChecksumAddressByChainId(address, chainId);
       const isNonRowEntry = id === 'ADDRESS_BOOK_TABLE_ID' || id === 'ACCOUNT_ADDRESS_ID';
 
       return {
@@ -79,7 +79,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
       const id = action.payload;
       const entries = { ...state.entries };
 
-      delete entries[id];
+      delete entries[id.label];
 
       return {
         ...state,

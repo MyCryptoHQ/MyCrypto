@@ -13,7 +13,8 @@ import {
   changeAddressLabelEntry,
   saveAddressLabelEntry,
   clearAddressLabelEntry,
-  removeAddressLabelEntry
+  removeAddressLabelEntry,
+  AddressLabel
 } from 'actions/addressBook';
 import { getInitialState } from '../selectors/helpers';
 
@@ -31,13 +32,15 @@ describe('addressBook: Sagas', () => {
   const id = '0';
   const address = '0x081f37708032d0a7b3622591a8959b213fb47d6f';
   const label = 'Foo';
+  const chainId = 1;
 
   describe('handleChangeAddressLabelEntry', () => {
     it('should successfully change an address label entry with no errors', async () => {
       const action = changeAddressLabelEntry({
         id,
         address,
-        label
+        label,
+        chainId
       });
       const dispatched: string[] = [];
 
@@ -58,7 +61,8 @@ describe('addressBook: Sagas', () => {
           addressError: undefined,
           label,
           temporaryLabel: label,
-          labelError: undefined
+          labelError: undefined,
+          chainId
         })
       ]);
     });
@@ -66,7 +70,8 @@ describe('addressBook: Sagas', () => {
       const action = changeAddressLabelEntry({
         id,
         address: '0', // Invalid ETH address
-        label
+        label,
+        chainId
       });
       const dispatched: string[] = [];
 
@@ -87,7 +92,8 @@ describe('addressBook: Sagas', () => {
           addressError: translateRaw('INVALID_ADDRESS'),
           label,
           temporaryLabel: label,
-          labelError: undefined
+          labelError: undefined,
+          chainId
         })
       ]);
     });
@@ -95,7 +101,8 @@ describe('addressBook: Sagas', () => {
       const action = changeAddressLabelEntry({
         id,
         address,
-        label: 'F' // Invalid label length
+        label: 'F', // Invalid label length
+        chainId
       });
       const dispatched: string[] = [];
 
@@ -116,7 +123,8 @@ describe('addressBook: Sagas', () => {
           addressError: undefined,
           label: '',
           temporaryLabel: 'F',
-          labelError: translateRaw('INVALID_LABEL_LENGTH')
+          labelError: translateRaw('INVALID_LABEL_LENGTH'),
+          chainId
         })
       ]);
     });
@@ -183,10 +191,11 @@ describe('addressBook: Sagas', () => {
       );
 
       expect(dispatched).toEqual([
-        clearAddressLabel(address),
+        clearAddressLabel({ address, label, chainId }),
         setAddressLabel({
           address,
-          label
+          label,
+          chainId
         }),
         setAddressLabelEntry({
           id: '1',
@@ -195,7 +204,8 @@ describe('addressBook: Sagas', () => {
           addressError: undefined,
           label,
           temporaryLabel: label,
-          labelError: undefined
+          labelError: undefined,
+          chainId
         }),
         setAddressLabelEntry({
           id: ADDRESS_BOOK_TABLE_ID,
@@ -204,7 +214,8 @@ describe('addressBook: Sagas', () => {
           addressError: undefined,
           label: '',
           temporaryLabel: '',
-          labelError: undefined
+          labelError: undefined,
+          chainId
         })
       ]);
     });
@@ -237,10 +248,11 @@ describe('addressBook: Sagas', () => {
       );
 
       expect(dispatched).toEqual([
-        clearAddressLabel(address),
+        clearAddressLabel({ address, label, chainId }),
         setAddressLabel({
           address,
-          label
+          label,
+          chainId
         }),
         setAddressLabelEntry({
           id,
@@ -249,7 +261,8 @@ describe('addressBook: Sagas', () => {
           addressError: undefined,
           label: 'Foo',
           temporaryLabel: 'Foo',
-          labelError: undefined
+          labelError: undefined,
+          chainId
         })
       ]);
     });
@@ -289,24 +302,28 @@ describe('addressBook: Sagas', () => {
               addressError: undefined,
               label,
               temporaryLabel: label,
-              labelError: undefined
+              labelError: undefined,
+              chainId: 1
             }
           }
         }
       };
       const action = removeAddressLabelEntry(id);
-      const dispatched: string[] = [];
+      const dispatched: AddressLabel[] = [];
 
       await runSaga(
         {
-          dispatch: (dispatching: string) => dispatched.push(dispatching),
+          dispatch: (dispatching: AddressLabel) => dispatched.push(dispatching),
           getState: () => state
         },
         handleRemoveAddressLabelEntry,
         action
       );
 
-      expect(dispatched).toEqual([clearAddressLabel(address), clearAddressLabelEntry(id)]);
+      expect(dispatched).toEqual([
+        clearAddressLabel({ address, label: '0', chainId }),
+        clearAddressLabelEntry({ address, label: id, chainId: 1 })
+      ]);
     });
   });
 });

@@ -20,6 +20,8 @@ import {
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
+import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
 
 interface DispatchProps {
   changeAddressLabelEntry: TChangeAddressLabelEntry;
@@ -32,6 +34,7 @@ interface StateProps {
   entry: ReturnType<typeof getAddressBookTableEntry>;
   addressLabels: ReturnType<typeof getAddressLabels>;
   labelAddresses: ReturnType<typeof getLabelAddresses>;
+  network: NetworkConfig;
 }
 
 type Props = DispatchProps & StateProps;
@@ -115,10 +118,10 @@ class AddressBookTable extends React.Component<Props, State> {
               />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
-              <Identicon address={temporaryAddress} />
+              <Identicon address={temporaryAddress} network={this.props.network} />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
-              <Identicon address={temporaryAddress} size="3rem" />
+              <Identicon address={temporaryAddress} network={this.props.network} size="3rem" />
             </div>
           </div>
           <div className="AddressBookTable-row AddressBookTable-row-error AddressBookTable-row-error--mobile">
@@ -207,7 +210,8 @@ class AddressBookTable extends React.Component<Props, State> {
         id,
         address,
         label: newLabel,
-        isEditing: true
+        isEditing: true,
+        chainId: this.props.network.chainId
       });
     const onSave = () => {
       this.props.saveAddressLabelEntry(id);
@@ -222,7 +226,8 @@ class AddressBookTable extends React.Component<Props, State> {
           temporaryAddress: address,
           label,
           temporaryLabel: label,
-          overrideValidation: true
+          overrideValidation: true,
+          chainId: this.props.network.chainId
         });
       }
 
@@ -243,6 +248,7 @@ class AddressBookTable extends React.Component<Props, State> {
         onLabelInputBlur={onLabelInputBlur}
         onEditClick={() => this.setEditingRow(index)}
         onRemoveClick={() => this.props.removeAddressLabelEntry(id)}
+        network={this.props.network}
       />
     );
   };
@@ -264,7 +270,8 @@ class AddressBookTable extends React.Component<Props, State> {
     this.props.changeAddressLabelEntry({
       id: ADDRESS_BOOK_TABLE_ID,
       address,
-      label
+      label,
+      chainId: this.props.network.chainId
     });
 
     this.setState(
@@ -289,7 +296,8 @@ class AddressBookTable extends React.Component<Props, State> {
     this.props.changeAddressLabelEntry({
       id: ADDRESS_BOOK_TABLE_ID,
       address,
-      label
+      label,
+      chainId: this.props.network.chainId
     });
 
     this.setState({ labelTouched: true }, () => label.length === 0 && this.clearLabelTouched());
@@ -308,7 +316,8 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   rows: getAddressLabelRows(state),
   entry: getAddressBookTableEntry(state),
   addressLabels: getAddressLabels(state),
-  labelAddresses: getLabelAddresses(state)
+  labelAddresses: getLabelAddresses(state),
+  network: getNetworkConfig(state)
 });
 
 const mapDispatchToProps: DispatchProps = {

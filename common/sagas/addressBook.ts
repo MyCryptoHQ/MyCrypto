@@ -21,6 +21,7 @@ import {
   getNextAddressLabelId
 } from 'selectors/addressBook';
 import { showNotification } from 'actions/notifications';
+import { getNetworkConfig } from 'selectors/config';
 
 export const ERROR_DURATION: number = 4000;
 
@@ -35,11 +36,13 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
   const addresses = yield select(getAddressLabels);
   const labels = yield select(getLabelAddresses);
   const priorEntry = yield select(getAddressLabelEntry, id);
+  const network = yield select(getNetworkConfig);
   const { addressError, labelError } = isValidAddressLabel(
     temporaryAddress,
     temporaryLabel,
     addresses,
-    labels
+    labels,
+    network.chainId
   );
   const updatedEntry = {
     id,
@@ -48,7 +51,8 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
     addressError: isEditing || overrideValidation ? undefined : addressError,
     label: labelError ? priorEntry.label || '' : temporaryLabel,
     temporaryLabel,
-    labelError: overrideValidation ? undefined : labelError
+    labelError: overrideValidation ? undefined : labelError,
+    chainId: network.chainId
   };
 
   return yield put(setAddressLabelEntry(updatedEntry));
@@ -58,6 +62,7 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
   const id = action.payload;
   const { address, addressError, label, labelError } = yield select(getAddressLabelEntry, id);
   const nextId = yield select(getNextAddressLabelId);
+  const network = yield select(getNetworkConfig);
   const flashError = (error: string) => put(showNotification('danger', error, ERROR_DURATION));
 
   if (addressError) {
@@ -68,11 +73,12 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
     return yield flashError(labelError);
   }
 
-  yield put(clearAddressLabel(address));
+  yield put(clearAddressLabel({ address, label, chainId: network.chainId }));
   yield put(
     setAddressLabel({
       address,
-      label
+      label,
+      chainId: network.chainId
     })
   );
 
@@ -86,7 +92,8 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
         addressError: undefined,
         label,
         temporaryLabel: label,
-        labelError: undefined
+        labelError: undefined,
+        chainId: network.chainId
       })
     );
     yield put(
@@ -97,7 +104,8 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
         addressError: undefined,
         label: '',
         temporaryLabel: '',
-        labelError: undefined
+        labelError: undefined,
+        chainId: network.chainId
       })
     );
   } else if (id === ACCOUNT_ADDRESS_ID) {
@@ -111,7 +119,8 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
         addressError: undefined,
         label,
         temporaryLabel: label,
-        labelError: undefined
+        labelError: undefined,
+        chainId: network.chainId
       })
     );
     yield put(
@@ -122,7 +131,8 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
         addressError: undefined,
         label: '',
         temporaryLabel: '',
-        labelError: undefined
+        labelError: undefined,
+        chainId: network.chainId
       })
     );
   } else {
@@ -135,7 +145,8 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
         addressError: undefined,
         label,
         temporaryLabel: label,
-        labelError: undefined
+        labelError: undefined,
+        chainId: network.chainId
       })
     );
   }
@@ -143,14 +154,14 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
 
 export function* handleRemoveAddressLabelEntry(action: RemoveAddressLabelEntry): SagaIterator {
   const id = action.payload;
-  const { id: entryId, address } = yield select(getAddressLabelEntry, id);
+  const { id: entryId, address, chainId } = yield select(getAddressLabelEntry, id);
 
   if (typeof entryId === 'undefined') {
     return;
   }
 
-  yield put(clearAddressLabel(address));
-  yield put(clearAddressLabelEntry(id));
+  yield put(clearAddressLabel({ label: id, address, chainId }));
+  yield put(clearAddressLabelEntry({ label: id, address, chainId }));
 
   if (id === ACCOUNT_ADDRESS_ID) {
     const ownEntry = yield select(getAddressLabelEntryFromAddress, address);

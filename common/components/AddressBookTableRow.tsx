@@ -2,6 +2,7 @@ import React from 'react';
 import translate, { translateRaw } from 'translations';
 import noop from 'lodash/noop';
 import { Input, Identicon } from 'components/ui';
+import { NetworkConfig } from 'types/network';
 
 interface Props {
   index: number;
@@ -10,6 +11,7 @@ interface Props {
   temporaryLabel: string;
   labelError?: string;
   isEditing: boolean;
+  network: NetworkConfig;
   onChange(label: string): void;
   onSave(): void;
   onLabelInputBlur(): void;
@@ -63,10 +65,10 @@ class AddressBookTableRow extends React.Component<Props> {
               />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
-              <Identicon address={address} />
+              <Identicon address={address} network={this.props.network} />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-mobile">
-              <Identicon address={address} size="3rem" />
+              <Identicon address={address} size="3rem" network={this.props.network} />
             </div>
           </div>
           <div className="AddressBookTable-row-input">

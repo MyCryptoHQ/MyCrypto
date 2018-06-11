@@ -5,7 +5,7 @@ Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {
     "args": Array [
-      "ELLA",
+      "RSK_TESTNET",
     ],
     "selector": [Function],
   },
