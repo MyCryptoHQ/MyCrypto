@@ -49,6 +49,9 @@ class Input extends React.Component<Props, State> {
     } else if (!hasBlurred && !showInvalidBeforeBlur) {
       validClass = '';
     }
+    if (!hasValue && showInvalidWithoutValue) {
+      validClass = 'invalid';
+    }
 
     const classname = classnames('input-group-input', this.props.className, validClass);
 
