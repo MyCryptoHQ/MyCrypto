@@ -47,7 +47,7 @@ export function isNetworkUnit(state: AppState, unit: string) {
 
 export function isWalletFormatSupportedOnNetwork(state: AppState, format: WalletName): boolean {
   const network = getStaticNetworkConfig(state);
-  const chainId = network ? network.chainId || 0;
+  const chainId = network ? network.chainId : 0;
 
   const CHECK_FORMATS: DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
@@ -67,7 +67,7 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
   }
 
   // Parity signer on RSK
-  if (chainId === 30 || chainId === 31 && format === SecureWalletName.PARITY_SIGNER) {
+  if (chainId === 30 || (chainId === 31 && format === SecureWalletName.PARITY_SIGNER)) {
     return false;
   }
 
