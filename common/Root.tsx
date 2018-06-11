@@ -19,7 +19,6 @@ import OnboardModal from 'containers/OnboardModal';
 import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import { Store } from 'redux';
-import { pollOfflineStatus, TPollOfflineStatus } from 'actions/config';
 import { AppState } from 'reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
@@ -36,7 +35,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  pollOfflineStatus: TPollOfflineStatus;
   setUnitMeta: TSetUnitMeta;
 }
 
@@ -52,7 +50,6 @@ class RootClass extends Component<Props, State> {
   };
 
   public componentDidMount() {
-    this.props.pollOfflineStatus();
     this.props.setUnitMeta(this.props.networkUnit);
     this.addBodyClasses();
   }
@@ -190,6 +187,5 @@ const mapStateToProps = (state: AppState) => {
 };
 
 export default connect(mapStateToProps, {
-  pollOfflineStatus,
   setUnitMeta
 })(RootClass);
