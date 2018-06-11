@@ -8,16 +8,18 @@
 ## Requirements
 
 * Node 8.9.4*
-* NPM >= 5
-* Python 2.7.X**
+* Yarn >= 1.7.0**
+* Python 2.7.X***
 
 <sub>*Higher versions should work fun, but may cause inconsistencies. It's suggested you run 8.9.4 using `nvm`.</sub>
 <br/>
-<sub>**Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
+<sub>**npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
+<br/>
+<sub>***Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
 
 ## Running the App
 
-After `npm install`ing all dependencies you can run various commands depending on what you want to do:
+After `yarn`ing all dependencies you can run various commands depending on what you want to do:
 
 #### Development
 
