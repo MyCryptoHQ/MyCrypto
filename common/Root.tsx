@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
-import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -80,7 +80,6 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          <Redirect exact={true} from="/" to="/account" />
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
@@ -90,6 +89,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
           <Route path="/support-us" component={SupportPage} exact={true} />
+          <RedirectWithQuery exactArg={true} from="/" to="/account" />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
