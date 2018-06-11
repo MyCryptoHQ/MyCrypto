@@ -11,7 +11,7 @@ const addCustomNode = (
   { payload }: AddCustomNodeAction
 ): CustomNodesState => ({
   ...state,
-  [payload.id]: payload.config
+  [payload.id]: payload
 });
 
 function removeCustomNode(
@@ -19,7 +19,7 @@ function removeCustomNode(
   { payload }: RemoveCustomNodeAction
 ): CustomNodesState {
   const stateCopy = { ...state };
-  Reflect.deleteProperty(stateCopy, payload.id);
+  Reflect.deleteProperty(stateCopy, payload);
   return stateCopy;
 }
 

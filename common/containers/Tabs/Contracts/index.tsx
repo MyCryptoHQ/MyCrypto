@@ -3,22 +3,22 @@ import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 
 import translate from 'translations';
+<<<<<<< HEAD
 import {
   setAsContractInteraction,
   TSetAsContractInteraction,
   setAsViewAndSend,
   TSetAsViewAndSend
 } from 'features/transaction';
+=======
+import { Interact } from './components/Interact';
+import { Deploy } from './components/Deploy';
+>>>>>>> develop
 import TabSection from 'containers/TabSection';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { Interact } from './components/Interact';
 import { Deploy } from './components/Deploy';
-
-interface DispatchProps {
-  setAsContractInteraction: TSetAsContractInteraction;
-  setAsViewAndSend: TSetAsViewAndSend;
-}
 
 const tabs = [
   {
@@ -31,14 +31,7 @@ const tabs = [
   }
 ];
 
-class Contracts extends Component<DispatchProps & RouteComponentProps<{}>> {
-  public componentDidMount() {
-    this.props.setAsContractInteraction();
-  }
-  public componentWillUnmount() {
-    this.props.setAsViewAndSend();
-  }
-
+class Contracts extends Component<RouteComponentProps<{}>> {
   public render() {
     const { match, location, history } = this.props;
     const currentPath = match.url;
@@ -65,4 +58,4 @@ class Contracts extends Component<DispatchProps & RouteComponentProps<{}>> {
   }
 }
 
-export default connect(null, { setAsContractInteraction, setAsViewAndSend })(Contracts);
+export default connect(null, {})(Contracts);

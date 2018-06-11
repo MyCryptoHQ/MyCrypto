@@ -1,5 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 import { AddressBookTable } from 'components';
 
 const AddressBook: React.SFC = () => (

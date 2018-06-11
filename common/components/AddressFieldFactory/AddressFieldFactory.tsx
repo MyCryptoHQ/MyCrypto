@@ -1,10 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+<<<<<<< HEAD
 
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { ICurrentTo } from 'features/transaction/selectors';
 import { Query } from 'components/renderCbs';
 import { AddressInputFactory } from './AddressInputFactory';
+=======
+import { ICurrentTo } from 'selectors/transaction';
+>>>>>>> develop
 import './AddressFieldFactory.scss';
 
 interface DispatchProps {

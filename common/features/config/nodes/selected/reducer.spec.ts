@@ -1,27 +1,25 @@
-import { selectedNodesReducer, SelectedNodeState, changeNode, changeNodeIntent } from './';
+import { changeNodeRequested, changeNodeSucceeded, SelectedNodeState } from 'features/config';
+import { selectedNode } from 'reducers/config/nodes/selectedNode';
 
-export const selectedNodeExpectedState = {
+export const expectedState = {
   initialState: { nodeId: 'eth_mycrypto', prevNode: 'eth_mycrypto', pending: false },
   nodeChange: { nodeId: 'nodeToChangeTo', prevNode: 'eth_auto', pending: false },
   nodeChangeIntent: { nodeId: 'eth_mycrypto', prevNode: 'eth_mycrypto', pending: true }
 };
 
-describe('selected node reducer', () => {
-  const actions = {
-    changeNode: changeNode({ nodeId: 'nodeToChangeTo', networkId: 'networkToChangeTo' }),
-    changeNodeIntent: changeNodeIntent('eth_mycrypto')
-  };
+export const actions = {
+  changeNode: changeNodeSucceeded({ nodeId: 'nodeToChangeTo', networkId: 'networkToChangeTo' }),
+  changeNodeRequested: changeNodeRequested('eth_mycrypto')
+};
 
+describe('selected node reducer', () => {
   it('should handle a node change', () =>
-    expect(selectedNodesReducer(undefined, actions.changeNode)).toEqual(
-      selectedNodeExpectedState.nodeChange
-    ));
+    expect(selectedNode(undefined, actions.changeNode)).toEqual(expectedState.nodeChange));
 
   it('should handle the intent to change a node', () =>
     expect(
-      selectedNodesReducer(
-        selectedNodeExpectedState.initialState as SelectedNodeState,
-        actions.changeNodeIntent
-      )
-    ).toEqual(selectedNodeExpectedState.nodeChangeIntent));
+      selectedNode(expectedState.initialState as SelectedNodeState, actions.changeNodeRequested)
+    ).toEqual(expectedState.nodeChangeIntent));
 });
+
+export { actions as selectedNodeActions, expectedState as selectedNodeExpectedState };

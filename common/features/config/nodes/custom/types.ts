@@ -11,12 +11,12 @@ export enum CONFIG_NODES_CUSTOM {
 
 export interface AddCustomNodeAction {
   type: CONFIG_NODES_CUSTOM.ADD;
-  payload: { id: string; config: CustomNodeConfig };
+  payload: CustomNodeConfig;
 }
 
 export interface RemoveCustomNodeAction {
   type: CONFIG_NODES_CUSTOM.REMOVE;
-  payload: { id: string };
+  payload: string;
 }
 
 export type CustomNodeAction = AddCustomNodeAction | RemoveCustomNodeAction;

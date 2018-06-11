@@ -26,9 +26,9 @@ export const EAC_SCHEDULING_CONFIG = {
 
 export const EAC_ADDRESSES = {
   KOVAN: {
-    blockScheduler: '0x1afc19a7e642761ba2b55d2a45b32c7ef08269d1',
-    requestFactory: '0x496e2b6089bde77293a994469b08e9f266d87adb',
-    timestampScheduler: '0xc6370807f0164bdf10a66c08d0dab1028dbe80a3'
+    blockScheduler: '0x394ce9fe06c72f18e5a845842974f0c1224b1ff5',
+    requestFactory: '0x98c128b3d8a0ac240f7b7dd4969ea0ad54f9d330',
+    timestampScheduler: '0x31bbbf5180f2bd9c213e2e1d91a439677243268a'
   }
 };
 
@@ -163,7 +163,6 @@ export const parseSchedulingParametersValidity = (isValid: boolean[]) => {
 
 export const getValidateRequestParamsData = (
   toAddress: string,
-  callData = '',
   callGas: Wei,
   callValue: ICurrentValue['value'],
   windowSize: BN | null,
@@ -200,7 +199,6 @@ export const getValidateRequestParamsData = (
       gasPrice,
       requiredDeposit
     ],
-    _callData: callData,
     _endowment: endowment
   });
 };

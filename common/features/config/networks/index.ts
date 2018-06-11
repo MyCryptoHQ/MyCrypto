@@ -1,4 +1,3 @@
-export * from './custom';
-export * from './static';
+export * from './actions';
 export * from './reducer';
 export * from './selectors';

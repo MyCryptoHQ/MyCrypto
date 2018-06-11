@@ -53,6 +53,10 @@ $m-anim-speed: 400ms;
     bottom: 4.5rem;
     left: 50%;
     transform: translateX(-50%);
+
+    &.has-no-footer {
+      bottom: 0;
+    }
   }
 
   &-header {

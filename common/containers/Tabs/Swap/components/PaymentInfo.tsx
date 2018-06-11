@@ -22,6 +22,7 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
           })}
           <Input
             className="SwapPayment-address"
+            isValid={!!this.props.paymentAddress}
             value={this.props.paymentAddress || undefined}
             disabled={true}
           />

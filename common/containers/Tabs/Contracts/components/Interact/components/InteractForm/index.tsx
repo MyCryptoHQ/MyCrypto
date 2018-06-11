@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+<<<<<<< HEAD
 import classnames from 'classnames';
 import { addHexPrefix } from 'ethereumjs-util';
 
+=======
+import { AppState } from 'reducers';
+import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
+import { NetworkContract } from 'types/network';
+>>>>>>> develop
 import { donationAddressMap } from 'config';
 import translate, { translateRaw } from 'translations';
 import { NetworkContract } from 'types/network';
@@ -64,7 +70,7 @@ class InteractForm extends Component<Props, State> {
     };
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const prevProps = this.props;
     if (nextProps.currentTo.raw !== prevProps.currentTo.raw) {
       nextProps.resetState();
@@ -127,9 +133,8 @@ class InteractForm extends Component<Props, State> {
                     name="contract_address"
                     autoComplete="off"
                     value={currentTo.raw}
-                    className={classnames('InteractForm-address-field-input', {
-                      invalid: !isValid
-                    })}
+                    isValid={isValid}
+                    className="InteractForm-address-field-input"
                     spellCheck={false}
                     onChange={onChange}
                   />
@@ -145,7 +150,8 @@ class InteractForm extends Component<Props, State> {
             contract.name === 'Custom' ? (
               <TextArea
                 placeholder={this.abiJsonPlaceholder}
-                className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
+                isValid={!!validAbiJson}
+                className="InteractForm-interface-field-input"
                 onChange={this.handleInput('abiJson')}
                 value={abiJson}
                 rows={6}
@@ -156,7 +162,8 @@ class InteractForm extends Component<Props, State> {
           ) : (
             <TextArea
               placeholder={this.abiJsonPlaceholder}
-              className={`InteractForm-interface-field-input ${validAbiJson ? '' : 'invalid'}`}
+              isValid={!!validAbiJson}
+              className="InteractForm-interface-field-input"
               onChange={this.handleInput('abiJson')}
               value={abiJson}
               rows={6}

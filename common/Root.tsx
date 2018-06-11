@@ -16,11 +16,12 @@ import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
 import SupportPage from 'containers/Tabs/SupportPage';
-import { TitleBar } from 'components/ui';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
+import OnboardModal from 'containers/OnboardModal';
+import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
@@ -104,12 +105,17 @@ class RootClass extends Component<Props, State> {
         <Provider store={store} key={Math.random()}>
           <Router key={Math.random()}>
             <React.Fragment>
-              {process.env.BUILD_ELECTRON && <TitleBar />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+              {!process.env.DOWNLOADABLE_BUILD && (
+                <React.Fragment>
+                  <OnboardModal />
+                  {!process.env.BUILD_ELECTRON && <WelcomeModal />}
+                </React.Fragment>
+              )}
             </React.Fragment>
           </Router>
         </Provider>

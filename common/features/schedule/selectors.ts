@@ -183,7 +183,6 @@ export const getValidateScheduleParamsCallPayload = (
   const deposit = getScheduleDeposit(state);
   const scheduleTimestamp = getScheduleTimestamp(state);
   const windowSize = getWindowSize(state);
-  const callData = getData(state);
   const scheduleTimezone = getScheduleTimezone(state);
   const windowStart = getWindowStart(state);
 
@@ -216,7 +215,6 @@ export const getValidateScheduleParamsCallPayload = (
 
   const data = getValidateRequestParamsData(
     bufferToHex(currentTo.value),
-    callData.value ? bufferToHex(callData.value) : '',
     callGasLimit,
     currentValue.value,
     windowSizeBlockToMin(windowSize.value, scheduleType.value),

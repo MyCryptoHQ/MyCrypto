@@ -42,7 +42,8 @@ class NonceField extends React.Component<Props> {
                   />
                 </div>
                 <Input
-                  className={`Nonce-field-input  ${!!value ? 'is-valid' : 'is-invalid'}`}
+                  isValid={!!value}
+                  className="Nonce-field-input"
                   type="number"
                   placeholder="7"
                   value={raw}

@@ -21,7 +21,7 @@ interface TrackedTokens {
 }
 
 interface State {
-  trackedTokens: { [symbol: string]: boolean };
+  trackedTokens: TrackedTokens;
   showCustomTokenForm: boolean;
 }
 export default class TokenBalances extends React.PureComponent<Props, State> {
@@ -30,10 +30,10 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     showCustomTokenForm: false
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.tokenBalances !== this.props.tokenBalances) {
       const trackedTokens = nextProps.tokenBalances.reduce<TrackedTokens>((prev, t) => {
-        prev[t.symbol] = !t.balance.isZero();
+        prev[t.symbol] = !t.balance.isZero() || t.custom;
         return prev;
       }, {});
       this.setState({ trackedTokens });
@@ -46,7 +46,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
 
     let bottom;
     let help;
-    if (tokenBalances.length && !hasSavedWalletTokens) {
+    if (tokenBalances.length && !hasSavedWalletTokens && !this.onlyCustomTokens()) {
       help = 'Select which tokens you would like to keep track of';
       bottom = (
         <div className="TokenBalances-buttons">
@@ -135,6 +135,24 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     });
   };
 
+  /**
+   *
+   * @description Checks if all currently tracked tokens are custom
+   * @private
+   * @returns
+   * @memberof TokenBalances
+   */
+  private onlyCustomTokens() {
+    const tokenMap = this.props.tokenBalances.reduce<{ [key: string]: TokenBalance }>(
+      (acc, cur) => ({ ...acc, [cur.symbol]: cur }),
+      {}
+    );
+
+    return Object.keys(this.state.trackedTokens).reduce(
+      (prev, tokenName) => tokenMap[tokenName].custom && prev,
+      true
+    );
+  }
   private addCustomToken = (token: Token) => {
     this.props.onAddCustomToken(token);
     this.setState({ showCustomTokenForm: false });

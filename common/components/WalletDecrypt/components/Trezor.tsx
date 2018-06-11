@@ -42,7 +42,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     isLoading: false
   };
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath && nextProps.dPath) {
       this.setState({ dPath: nextProps.dPath });
     }

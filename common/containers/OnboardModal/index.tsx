@@ -28,10 +28,14 @@ import {
   SecureSlideThree,
   FinalSlide
 } from './components';
+<<<<<<< HEAD
 import './index.scss';
 
 const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
 const NUMBER_OF_SLIDES = 10;
+=======
+import { ONBOARD_LOCAL_STORAGE_KEY, NUMBER_OF_ONBOARD_SLIDES } from 'utils/localStorage';
+>>>>>>> develop
 
 interface State {
   isOpen: boolean;
@@ -59,7 +63,6 @@ class OnboardModal extends React.Component<Props, State> {
 
   public componentDidMount() {
     const { sessionStarted } = this.props;
-
     const currentSlide = Number(localStorage.getItem(ONBOARD_LOCAL_STORAGE_KEY)) || 0;
 
     if (!sessionStarted) {
@@ -69,7 +72,7 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
       }
-      if (currentSlide > 0 && currentSlide < NUMBER_OF_SLIDES) {
+      if (currentSlide > 0 && currentSlide < NUMBER_OF_ONBOARD_SLIDES) {
         this.props.resumeSlide(currentSlide);
         this.setState({
           isOpen: true
@@ -91,7 +94,7 @@ class OnboardModal extends React.Component<Props, State> {
 
     const firstButtons: IButton[] = [
       {
-        disabled: slideNumber === NUMBER_OF_SLIDES,
+        disabled: slideNumber === NUMBER_OF_ONBOARD_SLIDES,
         text: translate('ACTION_6'),
         type: 'primary',
         onClick: this.handleNextSlide
@@ -116,8 +119,8 @@ class OnboardModal extends React.Component<Props, State> {
       }
     ];
 
-    const buttons = slideNumber === NUMBER_OF_SLIDES ? lastButtons : firstButtons;
-    const steps = new Array(NUMBER_OF_SLIDES).fill({});
+    const buttons = slideNumber === NUMBER_OF_ONBOARD_SLIDES ? lastButtons : firstButtons;
+    const steps = new Array(NUMBER_OF_ONBOARD_SLIDES).fill({});
 
     return (
       <div className="OnboardModal">
@@ -159,8 +162,8 @@ class OnboardModal extends React.Component<Props, State> {
       <FinalSlide key={10} closeModal={this.closeModal} />
     ];
 
-    if (slides.length !== NUMBER_OF_SLIDES) {
-      console.log('Slides length do not match const NUMBER_OF_SLIDES');
+    if (slides.length !== NUMBER_OF_ONBOARD_SLIDES) {
+      console.log('Slides length do not match const NUMBER_OF_ONBOARD_SLIDES');
     }
     const currentSlideIndex = this.props.slideNumber - 1;
 

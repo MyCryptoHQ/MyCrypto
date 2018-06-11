@@ -83,7 +83,13 @@ Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
             <small>{translate('SWAP_SUPPORT_LINK_BROKEN')}</small>
           </p>
           {open ? (
-            <TextArea defaultValue={fallbackBody} className="form-control input-sm" rows={9} />
+            <TextArea
+              isValid={true}
+              showValidAsPlain={true}
+              defaultValue={fallbackBody}
+              className="input-sm"
+              rows={9}
+            />
           ) : null}
         </div>
       </section>

@@ -1,8 +1,12 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
+<<<<<<< HEAD
 import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
 
+=======
+import { toChecksumAddress } from 'ethereumjs-util';
+>>>>>>> develop
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
@@ -13,12 +17,24 @@ import {
   GetDeterministicWalletsArgs,
   SetDesiredTokenAction,
   setDesiredToken,
+<<<<<<< HEAD
   getDeterministicWallets
 } from 'features/deterministicWallets';
 import { getTokens } from 'features/wallet';
 import { getAddressLabels } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
+=======
+  SetDesiredTokenAction
+} from 'actions/deterministicWallets';
+import Modal, { IButton } from 'components/ui/Modal';
+import { AppState } from 'reducers';
+import { isValidPath } from 'libs/validators';
+import { getNetworkConfig } from 'selectors/config';
+import { getTokens } from 'selectors/wallet';
+import { getAddressLabels } from 'selectors/addressBook';
+import { UnitDisplay, Input } from 'components/ui';
+>>>>>>> develop
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
@@ -78,7 +94,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     this.getAddresses();
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { publicKey, chainCode, seed, dPath } = this.props;
     if (
       nextProps.publicKey !== publicKey ||
@@ -137,7 +153,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
               <React.Fragment>
                 <div className="DWModal-path-custom">
                   <Input
-                    className={customPath ? (isValidPath(customPath) ? 'valid' : 'invalid') : ''}
+                    isValid={customPath ? isValidPath(customPath) : true}
                     value={customPath}
                     placeholder="m/44'/60'/0'/0"
                     onChange={this.handleChangeCustomPath}

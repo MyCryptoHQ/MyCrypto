@@ -37,7 +37,12 @@ class FieldsClass extends Component<Props> {
           <div className="col-xs-12">
             <AddressFieldFactory
               withProps={({ currentTo }) => (
-                <Input type="text" value={currentTo.raw} readOnly={true} />
+                <Input
+                  type="text"
+                  value={currentTo.raw}
+                  readOnly={true}
+                  isValid={!!currentTo.raw}
+                />
               )}
             />
           </div>
@@ -60,6 +65,8 @@ class FieldsClass extends Component<Props> {
                     )}
                     {isValid && (
                       <Input
+                        isValid={true}
+                        showValidAsPlain={true}
                         type="text"
                         value={`${currentValue.raw} ${this.props.unit}`}
                         readOnly={true}

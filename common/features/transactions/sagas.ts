@@ -112,5 +112,9 @@ export function* resetTxData() {
 export function* transactionsSaga(): SagaIterator {
   yield takeEvery(TRANSACTIONS.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(TxTypeKeys.BROADCAST_TRANSACTION_QUEUED, saveBroadcastedTx);
+<<<<<<< HEAD:common/features/transactions/sagas.ts
   yield takeEvery(CONFIG_NODES_SELECTED.CHANGE, resetTxData);
+=======
+  yield takeEvery(ConfigTypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED, resetTxData);
+>>>>>>> develop:common/sagas/transactions.ts
 }

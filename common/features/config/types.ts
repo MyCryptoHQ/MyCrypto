@@ -5,22 +5,16 @@ import { MetaAction } from './meta';
 import { SelectedNodeAction, StaticNodeAction, CustomNodeAction } from './nodes';
 
 export enum CONFIG {
-  NODE_CHANGE_INTENT_ONETIME = 'CONFIG_NODE_CHANGE_INTENT_ONETIME',
-  NODE_CHANGE_FORCE = 'CONFIG_NODE_CHANGE_FORCE',
-  POLL_OFFLINE_STATUS = 'CONFIG_POLL_OFFLINE_STATUS'
+  POLL_OFFLINE_STATUS = 'CONFIG_POLL_OFFLINE_STATUS',
+  CHANGE_NETWORK_REQUESTED = 'CONFIG_NODES_SELECTED_CHANGE_NETWORK_REQUESTED'
 }
 
 export interface PollOfflineStatus {
   type: CONFIG.POLL_OFFLINE_STATUS;
 }
 
-export interface ChangeNodeIntentOneTimeAction {
-  type: CONFIG.NODE_CHANGE_INTENT_ONETIME;
-  payload: string;
-}
-
-export interface ChangeNodeForceAction {
-  type: CONFIG.NODE_CHANGE_FORCE;
+export interface ChangeNetworkRequestedAction {
+  type: CONFIG.CHANGE_NETWORK_REQUESTED;
   payload: string;
 }
 

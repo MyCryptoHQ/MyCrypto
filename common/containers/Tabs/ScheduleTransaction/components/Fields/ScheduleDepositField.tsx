@@ -43,7 +43,7 @@ class ScheduleDepositFieldClass extends Component<Props> {
             </span>
           </div>
           <Input
-            className={!!scheduleDeposit.raw && !validScheduleDeposit ? 'invalid' : ''}
+            isValid={scheduleDeposit.raw && validScheduleDeposit}
             type="number"
             placeholder="0.00001"
             value={scheduleDeposit.raw}

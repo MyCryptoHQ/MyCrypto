@@ -1,5 +1,8 @@
 import React from 'react';
+<<<<<<< HEAD
 import classnames from 'classnames';
+=======
+>>>>>>> develop
 
 import { Input } from 'components/ui';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
@@ -13,11 +16,10 @@ export const AmountField: React.SFC = () => (
           <Input
             name="value"
             value={raw}
+            isValid={isValid || raw === ''}
             onChange={onChange}
             readOnly={readOnly}
-            className={classnames('InteractExplorer-field-input', 'form-control', {
-              'is-invalid': !(isValid || raw === '')
-            })}
+            className="InteractExplorer-field-input"
           />
         )}
       />

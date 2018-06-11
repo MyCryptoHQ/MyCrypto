@@ -1,20 +1,32 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+<<<<<<< HEAD
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import {
   ACCOUNT_ADDRESS_ID,
+=======
+import translate, { translateRaw } from 'translations';
+import { AppState } from 'reducers';
+import {
+>>>>>>> develop
   changeAddressLabelEntry,
   TChangeAddressLabelEntry,
   saveAddressLabelEntry,
   TSaveAddressLabelEntry,
   removeAddressLabelEntry,
+<<<<<<< HEAD
   TRemoveAddressLabelEntry,
   getAccountAddressEntry,
   getAddressLabels
 } from 'features/addressBook';
+=======
+  TRemoveAddressLabelEntry
+} from 'actions/addressBook';
+import { getAccountAddressEntry, getAddressLabels } from 'selectors/addressBook';
+>>>>>>> develop
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {
@@ -40,6 +52,11 @@ interface State {
   labelInputTouched: boolean;
 }
 
+<<<<<<< HEAD
+=======
+export const ACCOUNT_ADDRESS_ID: string = 'ACCOUNT_ADDRESS_ID';
+
+>>>>>>> develop
 class AccountAddress extends React.Component<Props, State> {
   public state = {
     copied: false,
@@ -126,7 +143,10 @@ class AccountAddress extends React.Component<Props, State> {
     const storedLabel = addressLabels[address];
     const newLabelSameAsPrevious = temporaryLabel === storedLabel;
     const labelInputTouchedWithError = labelInputTouched && !newLabelSameAsPrevious && labelError;
+<<<<<<< HEAD
     const inputClassName = labelInputTouchedWithError ? 'invalid' : '';
+=======
+>>>>>>> develop
 
     let labelContent = null;
 
@@ -135,7 +155,10 @@ class AccountAddress extends React.Component<Props, State> {
         <React.Fragment>
           <Input
             title={translateRaw('ADD_LABEL')}
+<<<<<<< HEAD
             className={inputClassName}
+=======
+>>>>>>> develop
             placeholder={translateRaw('NEW_LABEL')}
             defaultValue={storedLabel}
             onChange={this.handleLabelChange}
@@ -144,6 +167,10 @@ class AccountAddress extends React.Component<Props, State> {
             onBlur={this.handleBlur}
             showInvalidBeforeBlur={true}
             setInnerRef={this.setLabelInputRef}
+<<<<<<< HEAD
+=======
+            isValid={!labelInputTouchedWithError}
+>>>>>>> develop
           />
           {labelInputTouchedWithError && (
             <label className="AccountInfo-address-wrapper-error">{labelError}</label>

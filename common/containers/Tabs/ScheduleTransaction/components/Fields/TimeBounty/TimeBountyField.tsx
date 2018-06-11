@@ -26,7 +26,7 @@ export const TimeBountyField: React.SFC<Props> = ({ isReadOnly }) => (
             </span>
           </div>
           <Input
-            className={`input-group-input ${isValid ? '' : 'invalid'}`}
+            isValid={isValid}
             type="text"
             value={currentTimeBounty.raw}
             placeholder={translateRaw('SCHEDULE_TIMEBOUNTY_PLACEHOLDER')}

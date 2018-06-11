@@ -62,7 +62,13 @@ export default class MnemonicWord extends React.Component<Props, State> {
               {word}
             </button>
           ) : (
-            <Input className="MnemonicWord-word-input" value={word} readOnly={true} />
+            <Input
+              className="MnemonicWord-word-input"
+              value={word}
+              readOnly={true}
+              showValidAsPlain={true}
+              isValid={true}
+            />
           )}
         </label>
       </div>

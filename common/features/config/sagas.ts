@@ -16,14 +16,15 @@ import translate, { translateRaw } from 'translations';
 import {
   getShepherdOffline,
   isAutoNode,
+  shepherd,
+  shepherdProvider,
+  stripWeb3Network,
+  makeProviderConfig,
   getShepherdNetwork,
   getShepherdPending,
-  shepherd,
-  makeProviderConfig,
-  getShepherdManualMode,
+  makeAutoNodeName,
   makeWeb3Network,
-  stripWeb3Network,
-  shepherdProvider
+  getShepherdManualMode
 } from 'libs/nodes';
 import { Web3Wallet } from 'libs/wallet';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
@@ -32,27 +33,31 @@ import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { showNotification } from 'features/notifications';
 import { WALLET, SetWalletAction, resetWallet, setWallet } from 'features/wallet';
-import { getNetworkConfigById, getNetworkNameByChainId } from './networks';
+import { getNetworkConfigById, getNetworkByChainId } from './networks';
 import { getNodeConfig, getWeb3Node } from './nodes';
-
+import { ChangeNetworkRequestedAction, CONFIG } from './types';
 import {
   getCustomNodeConfigs,
   getCustomNodeFromId,
   CONFIG_NODES_CUSTOM,
-  AddCustomNodeAction
+  AddCustomNodeAction,
+  RemoveCustomNodeAction
 } from './nodes/custom';
 import { isStaticNodeId } from './nodes/static/selectors';
-import { CONFIG, ChangeNodeForceAction, ChangeNodeIntentOneTimeAction } from './types';
-import { changeNodeForce } from './actions';
-import { getStaticNodeFromId } from './selectors';
+import { changeNodeForce } from './nodes/selected/actions';
+import { getStaticNodeFromId, getAllNodes } from './selectors';
 import { removeCustomNetwork, getCustomNetworkConfigs } from './networks/custom';
 import {
   getNodeId,
   getPreviouslySelectedNode,
-  changeNodeIntent,
-  changeNode,
-  ChangeNodeIntentAction,
-  CONFIG_NODES_SELECTED
+  changeNodeRequested,
+  ChangeNodeRequestedAction,
+  changeNodeSucceeded,
+  changeNodeFailed,
+  ChangeNodeRequestedOneTimeAction,
+  CONFIG_NODES_SELECTED,
+  ChangeNodeForceAction,
+  SELECTED_NODE_INITIAL_STATE,
 } from './nodes/selected';
 import { setOnline, setOffline, setLatestBlock, getOffline, CONFIG_META } from './meta';
 import { CONFIG_NODES_STATIC, web3SetNode, web3UnsetNode } from './nodes/static';
@@ -147,23 +152,29 @@ export function* reload(): SagaIterator {
   setTimeout(() => location.reload(), 1150);
 }
 
-export function* handleNodeChangeIntentOneTime(): SagaIterator {
-  const action: ChangeNodeIntentOneTimeAction = yield take(CONFIG.NODE_CHANGE_INTENT_ONETIME);
+export function* handleChangeNodeRequestedOneTime(): SagaIterator {
+  const action: ChangeNodeRequestedOneTimeAction = yield take(
+    CONFIG_NODES_SELECTED.CHANGE_REQUESTED_ONETIME
+  );
   // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
   yield call(delay, 100);
-  yield put(changeNodeIntent(action.payload));
+  yield put(changeNodeRequested(action.payload));
 }
 
-export function* handleNodeChangeIntent({
+export function* handleChangeNodeRequested({
   payload: nodeIdToSwitchTo
-}: ChangeNodeIntentAction): SagaIterator {
+}: ChangeNodeRequestedAction): SagaIterator {
   const isStaticNode: boolean = yield select(isStaticNodeId, nodeIdToSwitchTo);
   const currentConfig: NodeConfig = yield select(getNodeConfig);
 
+  // Bail out if they're switching to the same node
+  if (currentConfig.id === nodeIdToSwitchTo) {
+    return;
+  }
+
   function* bailOut(message: string) {
-    const currentNodeId: string = yield select(getNodeId);
     yield put(showNotification('danger', message, 5000));
-    yield put(changeNode({ networkId: currentConfig.network, nodeId: currentNodeId }));
+    yield put(changeNodeFailed());
   }
 
   let nextNodeConfig: CustomNodeConfig | StaticNodeConfig;
@@ -220,7 +231,7 @@ export function* handleNodeChangeIntent({
   }
 
   yield put(setLatestBlock(currentBlock));
-  yield put(changeNode({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
+  yield put(changeNodeSucceeded({ networkId: nextNodeConfig.network, nodeId: nodeIdToSwitchTo }));
 
   if (currentConfig.network !== nextNodeConfig.network) {
     yield fork(handleNewNetwork);
@@ -228,14 +239,14 @@ export function* handleNodeChangeIntent({
 }
 
 export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator {
-  const { payload: { config } } = action;
+  const config = action.payload;
   shepherd.useProvider(
     'myccustom',
     config.id,
-    makeProviderConfig({ network: config.network }),
+    makeProviderConfig({ network: config.name }),
     config
   );
-  yield put(changeNodeIntent(action.payload.id));
+  yield put(changeNodeRequested(config.id));
 }
 
 export function* handleNewNetwork() {
@@ -256,20 +267,60 @@ export function* handleNodeChangeForce({ payload: staticNodeIdToSwitchTo }: Chan
   const nodeConfig = yield select(getStaticNodeFromId, staticNodeIdToSwitchTo);
 
   // force the node change
-  yield put(changeNode({ networkId: nodeConfig.network, nodeId: staticNodeIdToSwitchTo }));
+  yield put(changeNodeSucceeded({ networkId: nodeConfig.network, nodeId: staticNodeIdToSwitchTo }));
 
   // also put the change through as usual so status check and
   // error messages occur if the node is unavailable
-  yield put(changeNodeIntent(staticNodeIdToSwitchTo));
+  yield put(changeNodeRequested(staticNodeIdToSwitchTo));
+}
+
+export function* handleChangeNetworkRequested({ payload: network }: ChangeNetworkRequestedAction) {
+  let desiredNode = '';
+  const autoNodeName = makeAutoNodeName(network);
+  const isStaticNode: boolean = yield select(isStaticNodeId, autoNodeName);
+
+  if (isStaticNode) {
+    desiredNode = autoNodeName;
+  } else {
+    const allNodes: { [id: string]: NodeConfig } = yield select(getAllNodes);
+    const networkNode = Object.values(allNodes).find(n => n.network === network);
+    if (networkNode) {
+      desiredNode = networkNode.id;
+    }
+  }
+
+  if (desiredNode) {
+    yield put(changeNodeRequested(desiredNode));
+  } else {
+    yield put(
+      showNotification(
+        'danger',
+        translateRaw('NETWORK_UNKNOWN_ERROR', {
+          $network: network
+        }),
+        5000
+      )
+    );
+  }
+}
+
+export function* handleRemoveCustomNode({ payload: nodeId }: RemoveCustomNodeAction): SagaIterator {
+  // If custom node is currently selected, go back to default node
+  const currentNodeId = yield select(getNodeId);
+  if (nodeId === currentNodeId) {
+    yield put(changeNodeForce(SELECTED_NODE_INITIAL_STATE.nodeId));
+  }
 }
 
 export const node = [
-  fork(handleNodeChangeIntentOneTime),
-  takeEvery(CONFIG_NODES_SELECTED.CHANGE_INTENT, handleNodeChangeIntent),
-  takeEvery(CONFIG.NODE_CHANGE_FORCE, handleNodeChangeForce),
+  fork(handleChangeNodeRequestedOneTime),
+  takeEvery(CONFIG_NODES_SELECTED.CHANGE_REQUESTED, handleChangeNodeRequested),
+  takeEvery(CONFIG_NODES_SELECTED.CHANGE_FORCE, handleNodeChangeForce),
+  takeEvery(CONFIG.CHANGE_NETWORK_REQUESTED, handleChangeNetworkRequested),
   takeLatest(CONFIG.POLL_OFFLINE_STATUS, handlePollOfflineStatus),
   takeEvery(CONFIG_META.LANGUAGE_CHANGE, reload),
-  takeEvery(CONFIG_NODES_CUSTOM.ADD, handleAddCustomNode)
+  takeEvery(CONFIG_NODES_CUSTOM.ADD, handleAddCustomNode),
+  takeEvery(CONFIG_NODES_CUSTOM.REMOVE, handleRemoveCustomNode)
 ];
 //#endregion Node
 
@@ -277,16 +328,24 @@ export const node = [
 let web3Added = false;
 
 export function* initWeb3Node(): SagaIterator {
-  const { networkId, lib } = yield call(setupWeb3Node);
-  const networkName: string = yield select(getNetworkNameByChainId, networkId);
-  const web3Network = makeWeb3Network(networkName);
+  const { chainId, lib } = yield call(setupWeb3Node);
+  const network: ReturnType<typeof getNetworkByChainId> = yield select(
+    getNetworkByChainId,
+    chainId
+  );
+
+  if (!network) {
+    throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
+  }
+
+  const web3Network = makeWeb3Network(network.id);
+  const id = 'web3';
 
   const config: StaticNodeConfig = {
+    id,
     isCustom: false,
     network: web3Network as any,
     service: Web3Service,
-    lib: shepherdProvider,
-    estimateGas: false,
     hidden: true
   };
 
@@ -295,12 +354,12 @@ export function* initWeb3Node(): SagaIterator {
   }
 
   if (!web3Added) {
-    shepherd.useProvider('web3', 'web3', makeProviderConfig({ network: web3Network }));
+    shepherd.useProvider('web3', id, makeProviderConfig({ network: web3Network }));
   }
 
   web3Added = true;
 
-  yield put(web3SetNode({ id: 'web3', config }));
+  yield put(web3SetNode({ id, config }));
   return lib;
 }
 
@@ -309,17 +368,17 @@ export function* initWeb3Node(): SagaIterator {
 export function* unlockWeb3(): SagaIterator {
   try {
     const nodeLib = yield call(initWeb3Node);
-    yield put(changeNodeIntent('web3'));
+    yield put(changeNodeRequested('web3'));
     yield take(
       (action: any) =>
-        action.type === CONFIG_NODES_SELECTED.CHANGE && action.payload.nodeId === 'web3'
+        action.type === CONFIG_NODES_SELECTED.CHANGE_SUCCEEDED && action.payload.nodeId === 'web3'
     );
 
     const web3Node: any | null = yield select(getWeb3Node);
     if (!web3Node) {
       throw Error('Web3 node config not found!');
     }
-    const web3Network = web3Node.network;
+    const network = web3Node.network;
 
     if (!isWeb3Node(nodeLib)) {
       throw new Error('Cannot use Web3 wallet without a Web3 node.');
@@ -331,7 +390,7 @@ export function* unlockWeb3(): SagaIterator {
     if (!address) {
       throw new Error('No accounts found in MetaMask / Mist.');
     }
-    const wallet = new Web3Wallet(address, stripWeb3Network(web3Network));
+    const wallet = new Web3Wallet(address, stripWeb3Network(network));
     yield put(setWallet(wallet));
   } catch (err) {
     console.error(err);
@@ -339,6 +398,7 @@ export function* unlockWeb3(): SagaIterator {
     yield put(web3UnsetNode());
     yield put(showNotification('danger', translate(err.message)));
   }
+
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected

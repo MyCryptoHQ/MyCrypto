@@ -13,9 +13,9 @@ export interface IButton {
 }
 interface Props {
   isOpen?: boolean;
-  title?: string;
+  title?: React.ReactNode;
   disableButtons?: boolean;
-  children: any;
+  children: React.ReactNode;
   buttons?: IButton[];
   maxWidth?: number;
   handleClose(): void;

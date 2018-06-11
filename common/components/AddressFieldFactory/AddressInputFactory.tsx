@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
+=======
+import { Identicon, Spinner } from 'components/ui';
+import { Query } from 'components/renderCbs';
+import { translateRaw } from 'translations';
+import {
+  ICurrentTo,
+  getCurrentTo,
+  isValidCurrentTo,
+  isCurrentToLabelEntry
+} from 'selectors/transaction';
+import { getCurrentToLabel } from 'selectors/addressBook';
+>>>>>>> develop
 import { connect } from 'react-redux';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import { translateRaw } from 'translations';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
+<<<<<<< HEAD
 import { AppState } from 'features/reducers';
 import {
   ICurrentTo,
@@ -18,6 +32,8 @@ import { getResolvingDomain } from 'features/ens';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
+=======
+>>>>>>> develop
 import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 

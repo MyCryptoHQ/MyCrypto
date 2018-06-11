@@ -1,8 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+<<<<<<< HEAD
 
 import { translateRaw } from 'translations';
 import { sanitizeNumericalInput } from 'libs/values';
+=======
+import { getAutoGasLimitEnabled } from 'selectors/config';
+import { isValidGasPrice } from 'selectors/transaction';
+import { Input } from 'components/ui';
+>>>>>>> develop
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import { TToggleAutoGasLimit, toggleAutoGasLimit, getAutoGasLimitEnabled } from 'features/config';
@@ -82,9 +88,11 @@ class AdvancedGas extends React.Component<Props, State> {
                   <div className="input-group-header">
                     {translateRaw('OFFLINE_STEP2_LABEL_3')} (gwei)
                   </div>
+                  {/*We leave type as string instead of number, because things such as multiple decimals
+                  or invalid exponent notation does not fire the onchange handler
+                  so the component will not display as invalid for such things */}
                   <Input
-                    className={!!gasPrice.raw && !validGasPrice ? 'invalid' : ''}
-                    type="number"
+                    isValid={validGasPrice}
                     placeholder="40"
                     value={gasPrice.raw}
                     onChange={this.handleGasPriceChange}
@@ -172,7 +180,7 @@ class AdvancedGas extends React.Component<Props, State> {
 
   private handleGasPriceChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
-    this.props.inputGasPrice(sanitizeNumericalInput(value));
+    this.props.inputGasPrice(value);
   };
 
   private handleToggleAutoGasLimit = (_: React.FormEvent<HTMLInputElement>) => {

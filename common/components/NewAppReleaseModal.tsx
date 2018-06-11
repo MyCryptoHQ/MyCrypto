@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 
 import { VERSION_RC } from 'config';
 import translate, { translateRaw } from 'translations';
@@ -20,9 +21,16 @@ function getLatestGitHubRelease(): Promise<IGitHubRelease> {
     .then(res => res.json())
     .then(data => data as IGitHubRelease);
 }
+=======
+import translate, { translateRaw } from 'translations';
+import Modal, { IButton } from 'components/ui/Modal';
+import { getLatestElectronRelease } from 'utils/versioning';
+import { VERSION } from 'config/data';
+>>>>>>> develop
 
 interface State {
   isOpen: boolean;
+  newRelease?: string;
 }
 
 export default class NewAppReleaseModal extends React.Component<{}, State> {
@@ -32,10 +40,9 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
 
   public async componentDidMount() {
     try {
-      const release = await getLatestGitHubRelease();
-      // TODO: Use VERSION once done with release candidates
-      if (isNewerVersion(VERSION_RC, release.tag_name)) {
-        this.setState({ isOpen: true });
+      const newRelease = await getLatestElectronRelease();
+      if (newRelease) {
+        this.setState({ isOpen: true, newRelease });
       }
     } catch (err) {
       console.error('Failed to fetch latest release from GitHub:', err);
@@ -65,8 +72,19 @@ export default class NewAppReleaseModal extends React.Component<{}, State> {
         handleClose={this.close}
         maxWidth={520}
       >
-        <h5>{translateRaw('APP_UPDATE_BODY')}</h5>
+        <h4>
+          {translateRaw('APP_UPDATE_BODY')} {this.versionCompareStr()}
+        </h4>
       </Modal>
+    );
+  }
+
+  private versionCompareStr() {
+    return (
+      <>
+        <h5>Current Version: {VERSION}</h5>
+        <h5>New Version: {this.state.newRelease}</h5>
+      </>
     );
   }
 

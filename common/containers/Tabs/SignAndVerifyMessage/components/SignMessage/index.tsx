@@ -57,7 +57,8 @@ export class SignMessage extends Component<Props, State> {
               <label className="input-group">
                 <div className="input-group-header">{translate('MSG_MESSAGE')}</div>
                 <TextArea
-                  className={`SignMessage-inputBox ${message ? 'is-valid' : 'is-invalid'}`}
+                  isValid={!!message}
+                  className="SignMessage-inputBox"
                   placeholder={messagePlaceholder}
                   value={message}
                   onChange={this.handleMessageChange}

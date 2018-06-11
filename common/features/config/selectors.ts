@@ -3,7 +3,7 @@ import difference from 'lodash/difference';
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { stripWeb3Network } from 'libs/nodes';
-import { CustomNodeConfig, StaticNodeConfig, StaticNodeId } from 'types/node';
+import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
 import {
   CustomNetworkConfig,
   StaticNetworkConfig,
@@ -12,12 +12,9 @@ import {
   Token
 } from 'types/network';
 import { AppState } from 'features/reducers';
-import {
-  getNetworks,
-  getCustomNetworkConfigs,
-  isStaticNetworkId,
-  getStaticNetworkConfigs
-} from './networks';
+import { getNetworks } from './networks';
+import { getCustomNetworkConfigs } from './networks/custom';
+import { getStaticNetworkConfigs, isStaticNetworkId } from './networks/static';
 import { getNodeConfig, getCustomNodeConfigs, getStaticNodes, getStaticNodeConfigs } from './nodes';
 import { DPathFormat } from './types';
 
@@ -166,6 +163,11 @@ export function unSupportedWalletFormatsOnNetwork(state: AppState): WalletName[]
   );
   return difference(walletNames, supportedFormats);
 }
+
+export const getAllNetworkConfigs = (state: AppState) => ({
+  ...getStaticNetworkConfigs(state),
+  ...getCustomNetworkConfigs(state)
+});
 //#endregion Networks
 
 //#region Nodes
@@ -218,5 +220,12 @@ export function getCustomNodeOptions(state: AppState): CustomNodeOption[] {
 
 export function getNodeOptions(state: AppState) {
   return [...getStaticNodeOptions(state), ...getCustomNodeOptions(state)];
+}
+
+export function getAllNodes(state: AppState): { [key: string]: NodeConfig } {
+  return {
+    ...getStaticNodes(state),
+    ...getCustomNodeConfigs(state)
+  };
 }
 //#endregion Nodes

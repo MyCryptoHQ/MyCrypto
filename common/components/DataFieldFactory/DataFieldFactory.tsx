@@ -8,7 +8,7 @@ import { DataInput } from './DataInputFactory';
 
 export interface CallBackProps {
   data: AppState['transaction']['fields']['data'];
-  dataExists: boolean;
+  validData: boolean;
   readOnly: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
