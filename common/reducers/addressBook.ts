@@ -22,7 +22,9 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
   switch (action.type) {
     case TypeKeys.SET_ADDRESS_LABEL: {
       const { addresses, labels } = state;
-      const { address, label } = action.payload;
+      const { label } = action.payload;
+      const address = action.payload.address.toLowerCase();
+
       const updatedAddresses = {
         ...addresses,
         [address]: label
@@ -41,7 +43,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
 
     case TypeKeys.CLEAR_ADDRESS_LABEL: {
       const { addresses, labels } = state;
-      const { address } = action.payload;
+      const address = action.payload.toLowerCase();
       const label = addresses[address];
       const updatedAddresses = { ...addresses };
       const updatedLabels = { ...labels };
@@ -57,7 +59,8 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
     }
 
     case TypeKeys.SET_ADDRESS_LABEL_ENTRY: {
-      const { id, address } = action.payload;
+      const { id } = action.payload;
+      const address = action.payload.address.toLowerCase();
 
       return {
         ...state,
@@ -75,7 +78,7 @@ export function addressBook(state: State = INITIAL_STATE, action: AddressBookAct
       const id = action.payload;
       const entries = { ...state.entries };
 
-      delete entries[id.label];
+      delete entries[id];
 
       return {
         ...state,

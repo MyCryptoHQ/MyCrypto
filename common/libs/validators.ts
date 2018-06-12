@@ -20,9 +20,8 @@ import BN from 'bn.js';
 export function isValidAddress(address: string, chainId: number) {
   if (chainId === 30 || chainId === 31) {
     return isValidRSKAddress(address, chainId);
-  } else {
-    return isValidETHAddress(address);
   }
+  return isValidETHAddress(address);
 }
 
 function isValidETHLikeAddress(address: string): boolean {
@@ -41,11 +40,11 @@ function isValidETHLikeAddress(address: string): boolean {
 
 // FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
-  return isValidETHLikeAddress(address) || isChecksumAddress(address);
+  return isChecksumAddress(address) || isValidETHLikeAddress(address);
 }
 
 export function isValidRSKAddress(address: string, chainId: number): boolean {
-  return isValidETHLikeAddress(address) || isValidChecksumRSKAddress(address, chainId);
+  return isValidChecksumRSKAddress(address, chainId) || isValidETHLikeAddress(address);
 }
 
 export const isCreationAddress = (address: string): boolean =>
@@ -358,7 +357,7 @@ export function isValidAddressLabel(
   labels: { [label: string]: string },
   chainId: number
 ) {
-  const addressAlreadyExists = !!addresses[address];
+  const addressAlreadyExists = !!addresses[address.toLowerCase()];
   const labelAlreadyExists = !!labels[label];
   const result: { isValid: boolean; addressError?: string; labelError?: string } = {
     isValid: true

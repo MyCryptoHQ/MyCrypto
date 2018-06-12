@@ -1,5 +1,3 @@
-import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
-import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
 import { AppState } from 'reducers';
 import {
   CustomNetworkConfig,
@@ -10,6 +8,7 @@ import {
 import { getNodeConfig } from 'selectors/config';
 import { stripWeb3Network } from 'libs/nodes';
 import { isValidETHAddress, isValidRSKAddress } from 'libs/validators';
+import { getChecksumAddressFunction } from 'utils/formatters';
 const getConfig = (state: AppState) => state.config;
 
 export const getNetworks = (state: AppState) => getConfig(state).networks;
@@ -108,8 +107,5 @@ export const getIsValidAddressFn = (state: AppState) => {
 
 export const getChecksumAddressFn = (state: AppState) => {
   const chainId = getNetworkChainId(state);
-  if (chainId === 30 || chainId === 31) {
-    return (addr: string) => toRSKChecksumAddress(addr, chainId);
-  }
-  return toETHChecksumAddress;
+  return getChecksumAddressFunction(chainId);
 };

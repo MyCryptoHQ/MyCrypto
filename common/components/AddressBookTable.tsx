@@ -17,6 +17,7 @@ import {
   getAddressLabelRows,
   getAddressBookTableEntry
 } from 'selectors/addressBook';
+import { getChecksumAddressFn } from 'selectors/config';
 import { Input, Identicon } from 'components/ui';
 import AddressBookTableRow from './AddressBookTableRow';
 import './AddressBookTable.scss';
@@ -32,6 +33,7 @@ interface StateProps {
   entry: ReturnType<typeof getAddressBookTableEntry>;
   addressLabels: ReturnType<typeof getAddressLabels>;
   labelAddresses: ReturnType<typeof getLabelAddresses>;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 type Props = DispatchProps & StateProps;
@@ -200,7 +202,9 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private makeLabelRow = (row: any, index: number) => {
     const { editingRow } = this.state;
-    const { id, address, label, temporaryLabel, labelError } = row;
+    const { id, label, temporaryLabel, labelError } = row;
+    const address = this.props.toChecksumAddress(row.address);
+
     const isEditing = index === editingRow;
     const onChange = (newLabel: string) =>
       this.props.changeAddressLabelEntry({
@@ -308,7 +312,8 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   rows: getAddressLabelRows(state),
   entry: getAddressBookTableEntry(state),
   addressLabels: getAddressLabels(state),
-  labelAddresses: getLabelAddresses(state)
+  labelAddresses: getLabelAddresses(state),
+  toChecksumAddress: getChecksumAddressFn(state)
 });
 
 const mapDispatchToProps: DispatchProps = {

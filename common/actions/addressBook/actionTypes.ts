@@ -22,7 +22,7 @@ export interface SetAddressLabel {
 
 export interface ClearAddressLabel {
   type: TypeKeys.CLEAR_ADDRESS_LABEL;
-  payload: AddressLabel;
+  payload: string;
 }
 
 export interface SetAddressLabelEntry {
@@ -42,7 +42,7 @@ export interface SaveAddressLabelEntry {
 
 export interface ClearAddressLabelEntry {
   type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY;
-  payload: AddressLabel;
+  payload: string;
 }
 
 export interface RemoveAddressLabelEntry {

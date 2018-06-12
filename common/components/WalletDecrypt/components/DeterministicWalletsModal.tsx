@@ -13,7 +13,7 @@ import {
 import Modal, { IButton } from 'components/ui/Modal';
 import { AppState } from 'reducers';
 import { isValidPath } from 'libs/validators';
-import { getNetworkConfig, getChecksumAddressFn } from 'selectors/config';
+import { getNetworkConfig } from 'selectors/config';
 import { getTokens } from 'selectors/wallet';
 import { getAddressLabels } from 'selectors/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
@@ -36,7 +36,6 @@ interface StateProps {
   desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: ReturnType<typeof getNetworkConfig>;
   tokens: ReturnType<typeof getTokens>;
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 interface DispatchProps {
@@ -200,7 +199,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private getAddresses(props: Props = this.props) {
-    const { dPath, publicKey, chainCode, seed, network } = props;
+    const { dPath, publicKey, chainCode, seed } = props;
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath.value)) {
         this.props.getDeterministicWallets({
@@ -209,8 +208,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
           publicKey,
           chainCode,
           limit: WALLETS_PER_PAGE,
-          offset: WALLETS_PER_PAGE * this.state.page,
-          chainId: network.chainId
+          offset: WALLETS_PER_PAGE * this.state.page
         });
       } else {
         console.error('Invalid dPath provided', dPath);
@@ -278,9 +276,9 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   private renderWalletRow(wallet: DeterministicWalletData) {
-    const { desiredToken, network, addressLabels, toChecksumAddress } = this.props;
+    const { desiredToken, network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
-    const label = addressLabels[toChecksumAddress(wallet.address)];
+    const label = addressLabels[wallet.address.toLowerCase()];
     const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     // Get renderable values, but keep 'em short
@@ -346,8 +344,7 @@ function mapStateToProps(state: AppState): StateProps {
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),
-    tokens: getTokens(state),
-    toChecksumAddress: getChecksumAddressFn(state)
+    tokens: getTokens(state)
   };
 }
 

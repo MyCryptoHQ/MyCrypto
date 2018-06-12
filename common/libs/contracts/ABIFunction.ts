@@ -1,6 +1,7 @@
 import abi from 'ethereumjs-abi';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
+import { toChecksumAddress } from 'utils/formatters';
 import {
   FuncParams,
   FunctionOutputMappings,
@@ -9,7 +10,6 @@ import {
   ITypeMapping,
   ISuppliedArgs
 } from './types';
-import { toChecksumAddressByChainId } from '../checksum';
 
 export default class AbiFunction {
   public constant: boolean;
@@ -88,7 +88,7 @@ export default class AbiFunction {
 
   private parsePostDecodedValue = (type: string, value: any, chainId: number) => {
     const valueMapping: ITypeMapping = {
-      address: (val: any) => toChecksumAddressByChainId(val.toString(16), chainId)
+      address: (val: any) => toChecksumAddress(val.toString(16), chainId)
     };
 
     const mapppedType = valueMapping[type];

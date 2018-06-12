@@ -1,7 +1,7 @@
 import React from 'react';
 import makeBlockie from 'ethereum-blockies-base64';
 import { connect } from 'react-redux';
-import { getChecksumAddressFn, getIsValidAddressFn } from 'selectors/config';
+import { getIsValidAddressFn } from 'selectors/config';
 import { AppState } from 'reducers';
 
 interface OwnProps {
@@ -11,7 +11,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
 
@@ -20,12 +19,8 @@ type Props = OwnProps & StateProps;
 class Identicon extends React.Component<Props> {
   public render() {
     const size = this.props.size || '4rem';
-    const { address, toChecksumAddress, isValidAddress, className = '' } = this.props;
-    // FIXME breaks on failed checksums
-    const checksummedAddress = toChecksumAddress(address);
-    const identiconDataUrl = isValidAddress(checksummedAddress)
-      ? makeBlockie(checksummedAddress)
-      : '';
+    const { address, isValidAddress, className = '' } = this.props;
+    const identiconDataUrl = isValidAddress(address) ? makeBlockie(address) : '';
     return (
       // Use inline styles for printable wallets
       <div
@@ -64,6 +59,5 @@ class Identicon extends React.Component<Props> {
 }
 
 export default connect((state: AppState): StateProps => ({
-  toChecksumAddress: getChecksumAddressFn(state),
   isValidAddress: getIsValidAddressFn(state)
 }))(Identicon);

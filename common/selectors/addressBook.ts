@@ -58,5 +58,5 @@ export function getCurrentToLabel(state: AppState) {
   const addresses = getAddressLabels(state);
   const currentTo = getCurrentTo(state);
 
-  return addresses[currentTo.raw] || null;
+  return addresses[currentTo.raw.toLowerCase()] || null;
 }
