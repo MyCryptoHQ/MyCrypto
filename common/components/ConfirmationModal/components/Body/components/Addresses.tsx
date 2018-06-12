@@ -6,7 +6,7 @@ import { ETHAddressExplorer } from 'config';
 import translate from 'translations';
 import ERC20 from 'libs/erc20';
 import { AppState } from 'features/reducers';
-import { getFrom, getUnit, isEtherTransaction } from 'features/transaction/selectors';
+import { getFrom, getUnit, isEtherTransaction } from 'features/transaction';
 import arrow from 'assets/images/tail-triangle-down.svg';
 import { SerializedTransaction } from 'components/renderCbs';
 import { Identicon } from 'components/ui';

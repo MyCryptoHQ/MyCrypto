@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { setCurrentValue, TSetCurrentValue } from 'features/transaction/actions';
+import { setCurrentValue, TSetCurrentValue } from 'features/transaction';
 import { Query } from 'components/renderCbs';
 import { AmountInput } from './AmountInputFactory';
 

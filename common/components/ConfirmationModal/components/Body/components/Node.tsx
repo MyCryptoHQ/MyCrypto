@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import translate from 'translations';
 import { StaticNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
 import { getNodeConfig } from 'features/config';
@@ -13,8 +14,8 @@ class NodeClass extends Component<StateProps, {}> {
   public render() {
     return (
       <li className="ConfModal-details-detail">
-        You are interacting with the <strong>{this.props.node.network}</strong> network provided by{' '}
-        <strong>{this.props.node.service}</strong>
+        {translate('YOU_ARE_INTERACTING')} <strong>{this.props.node.network}</strong>
+        {translate('NETWORK')} {translate('PROVIDED_BY')} <strong>{this.props.node.service}</strong>
       </li>
     );
   }

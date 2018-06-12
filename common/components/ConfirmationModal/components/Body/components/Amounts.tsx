@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
-import './Amounts.scss';
 import { AppState } from 'features/reducers';
 import { getNetworkConfig } from 'features/config';
 import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'features/rates';
 import { SerializedTxParams, getParamsFromSerializedTx } from 'features/transaction';
 import { UnitDisplay } from 'components/ui';
+import './Amounts.scss';
 
 interface StateProps extends SerializedTxParams, AllUSDValues {
   network: NetworkConfig;

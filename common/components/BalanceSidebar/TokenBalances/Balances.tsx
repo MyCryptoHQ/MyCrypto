@@ -47,7 +47,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     let bottom;
     let help;
     if (tokenBalances.length && !hasSavedWalletTokens && !this.onlyCustomTokens()) {
-      help = 'Select which tokens you would like to keep track of';
+      help = translate('SELECT_WHICH_TOKENS');
       bottom = (
         <div className="TokenBalances-buttons">
           <button

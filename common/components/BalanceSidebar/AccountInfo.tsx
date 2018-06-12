@@ -111,7 +111,7 @@ class AccountInfo extends React.Component<Props, State> {
             </a>
             {confirmAddr ? (
               <span className="AccountInfo-address-confirm">
-                <Spinner /> Confirm address on {wallet.getWalletType()}
+                <Spinner /> {translate('CONFIRM_ADDRESS_ON')} {wallet.getWalletType()}
               </span>
             ) : null}
           </div>

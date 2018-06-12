@@ -607,6 +607,19 @@
     "COINBASE_PROMO_SMALL": "It’s now easier to get more ETH",
     "COINBASE_PROMO": "Buy ETH with USD",
     "SIMPLEX_PROMO": "Buy ETH with EUR",
-    "TESTNET": "Testnet"
+    "TESTNET": "Testnet",
+    "LOADING_ENS_ADDRESS": "Loading ENS address...",
+    "SELECT_WHICH_TOKENS": "Select which tokens you would like to keep track of'",
+    "REMOVE_TOKEN": "Remove Token",
+    "REMOVE": "Remove",
+    "COPY_TO_CLIPBOARD": "Copy to clipboard",
+    "COPIED": "copied!",
+    "COPY_ADDRESS": "copy address",
+    "EDIT_LABEL_2": "Edit label",
+    "CONFIRM_ADDRESS_ON": "Confirm address on",
+    "NETWORK": "Network",
+    "NETWORK_2": "network",
+    "PROVIDED_BY": "provided by",
+    "YOU_ARE_INTERACTING": "You are interacting with the"
   }
 }

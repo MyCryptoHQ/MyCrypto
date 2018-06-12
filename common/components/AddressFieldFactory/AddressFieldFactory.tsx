@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
-import { ICurrentTo } from 'features/transaction/selectors';
+import { setCurrentTo, TSetCurrentTo, ICurrentTo } from 'features/transaction';
 import { Query } from 'components/renderCbs';
 import { AddressInputFactory } from './AddressInputFactory';
 import './AddressFieldFactory.scss';

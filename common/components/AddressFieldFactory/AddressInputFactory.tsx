@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addHexPrefix } from 'ethereumjs-util';
 
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import { AppState } from 'features/reducers';
@@ -11,7 +11,7 @@ import {
   getCurrentTo,
   isValidCurrentTo,
   isCurrentToLabelEntry
-} from 'features/transaction/selectors';
+} from 'features/transaction';
 import { getCurrentToLabel } from 'features/addressBook';
 import { getWalletInst } from 'features/wallet';
 import { getResolvingDomain } from 'features/ens';
@@ -45,7 +45,8 @@ const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress:
   rawAddress
 }) => {
   const isENS = isValidENSAddress(ensAddress);
-  const text = 'Loading ENS address...';
+  const text = translate('LOADING_ENS_ADDRESS');
+
   if (isLoading) {
     return (
       <React.Fragment>
