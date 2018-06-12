@@ -24,7 +24,7 @@ export function isValidAddress(address: string, chainId: number) {
   return isValidETHAddress(address);
 }
 
-function isValidETHLikeAddress(address: string): boolean {
+function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
   if (address === '0x0000000000000000000000000000000000000000') {
     return false;
   }
@@ -34,17 +34,17 @@ function isValidETHLikeAddress(address: string): boolean {
     return false;
   } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
     return true;
+  } else {
+    return extraChecks ? extraChecks() : false;
   }
-  return false;
 }
 
-// FIXME we probably want to do checksum checks sideways
 export function isValidETHAddress(address: string): boolean {
-  return isChecksumAddress(address) || isValidETHLikeAddress(address);
+  return isValidETHLikeAddress(address, () => isChecksumAddress(address));
 }
 
 export function isValidRSKAddress(address: string, chainId: number): boolean {
-  return isValidChecksumRSKAddress(address, chainId) || isValidETHLikeAddress(address);
+  return isValidETHLikeAddress(address, () => isValidChecksumRSKAddress(address, chainId));
 }
 
 export const isCreationAddress = (address: string): boolean =>
