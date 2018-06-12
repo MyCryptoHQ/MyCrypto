@@ -1,18 +1,10 @@
-import { SagaIterator, delay } from 'redux-saga';
-import {
-  all,
-  call,
-  cancel,
-  fork,
-  put,
-  take,
-  takeEvery,
-  select,
-  apply,
-  takeLatest
-} from 'redux-saga/effects';
+import { delay, SagaIterator } from 'redux-saga';
+import { call, fork, put, take, takeEvery, select, apply, all } from 'redux-saga/effects';
+import { bindActionCreators } from 'redux';
 
 import translate, { translateRaw } from 'translations';
+import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
+import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 import {
   getShepherdOffline,
   isAutoNode,
@@ -28,39 +20,45 @@ import {
 } from 'libs/nodes';
 import { Web3Wallet } from 'libs/wallet';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
-import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
-import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
+import { configuredStore as store } from 'features/store';
 import { showNotification } from 'features/notifications';
-import { WALLET, SetWalletAction, resetWallet, setWallet } from 'features/wallet';
-import { getNetworkConfigById, getNetworkByChainId } from './networks';
+import { resetWallet, setWallet, SetWalletAction, WALLET } from 'features/wallet';
+import { getAllNodes, getStaticNodeFromId } from './selectors';
+import { getOffline, setOnline, setOffline, setLatestBlock, CONFIG_META } from './meta';
 import { getNodeConfig, getWeb3Node } from './nodes';
-import { ChangeNetworkRequestedAction, CONFIG } from './types';
 import {
-  getCustomNodeConfigs,
   getCustomNodeFromId,
-  CONFIG_NODES_CUSTOM,
   AddCustomNodeAction,
-  RemoveCustomNodeAction
+  RemoveCustomNodeAction,
+  CONFIG_NODES_CUSTOM,
+  getCustomNodeConfigs
 } from './nodes/custom';
-import { isStaticNodeId } from './nodes/static/selectors';
-import { changeNodeForce } from './nodes/selected/actions';
-import { getStaticNodeFromId, getAllNodes } from './selectors';
-import { removeCustomNetwork, getCustomNetworkConfigs } from './networks/custom';
+import { isStaticNodeId, web3SetNode, web3UnsetNode, CONFIG_NODES_STATIC } from './nodes/static';
 import {
+  SELECTED_NODE_INITIAL_STATE,
   getNodeId,
-  getPreviouslySelectedNode,
   changeNodeRequested,
-  ChangeNodeRequestedAction,
   changeNodeSucceeded,
   changeNodeFailed,
+  changeNodeForce,
+  ChangeNodeForceAction,
+  ChangeNodeRequestedAction,
   ChangeNodeRequestedOneTimeAction,
   CONFIG_NODES_SELECTED,
-  ChangeNodeForceAction,
-  SELECTED_NODE_INITIAL_STATE
+  getPreviouslySelectedNode
 } from './nodes/selected';
-import { setOnline, setOffline, setLatestBlock, getOffline, CONFIG_META } from './meta';
-import { CONFIG_NODES_STATIC, web3SetNode, web3UnsetNode } from './nodes/static';
+import {
+  getNetworkConfigById,
+  ChangeNetworkRequestedAction,
+  CONFIG_NETWORKS,
+  getNetworkByChainId
+} from './networks';
+import {
+  getCustomNetworkConfigs,
+  removeCustomNetwork,
+  CONFIG_NETWORKS_CUSTOM
+} from './networks/custom';
 
 //#region Network
 // If there are any orphaned custom networks, prune them
@@ -73,78 +71,100 @@ export function* pruneCustomNetworks(): SagaIterator {
   );
 
   //construct lookup table of networks
-
   const linkedNetworks: { [key: string]: boolean } = Object.values(customNodes).reduce(
     (networkMap, currentNode) => ({ ...networkMap, [currentNode.network]: true }),
     {}
   );
 
-  for (const currNetwork of Object.keys(customNetworks)) {
-    if (!linkedNetworks[currNetwork]) {
-      yield put(removeCustomNetwork(currNetwork));
+  for (const customNetwork of Object.values(customNetworks)) {
+    if (!linkedNetworks[customNetwork.id]) {
+      yield put(removeCustomNetwork(customNetwork.id));
     }
   }
 }
 
-export const networkSaga = [takeEvery(CONFIG_NODES_CUSTOM.REMOVE, pruneCustomNetworks)];
+export const networkSaga = [takeEvery(CONFIG_NETWORKS_CUSTOM.REMOVE, pruneCustomNetworks)];
 //#endregion Network
 
-//#region Node
-export function* pollOfflineStatusSaga(): SagaIterator {
-  let hasCheckedOnline = false;
+//#region Nodes
+window.addEventListener('load', () => {
+  const getShepherdStatus = () => ({
+    pending: getShepherdPending(),
+    isOnline: !getShepherdOffline()
+  });
 
-  const restoreNotif = showNotification(
-    'success',
-    'Your connection to the network has been restored!',
-    3000
-  );
-  const lostNetworkNotif = showNotification(
-    'danger',
-    `You’ve lost your connection to the network, check your internet connection or try changing networks from the dropdown at the top right of the page.`,
-    Infinity
-  );
-  const offlineNotif = showNotification(
-    'info',
-    'You are currently offline. Some features will be unavailable.',
-    5000
+  const { online, offline, lostNetworkNotif, offlineNotif, restoreNotif } = bindActionCreators(
+    {
+      offline: setOffline,
+      online: setOnline,
+      restoreNotif: () =>
+        showNotification('success', 'Your connection to the network has been restored!', 3000),
+      lostNetworkNotif: () =>
+        showNotification(
+          'danger',
+          `You’ve lost your connection to the network, check your internet
+connection or try changing networks from the dropdown at the
+top right of the page.`,
+          Infinity
+        ),
+
+      offlineNotif: () =>
+        showNotification(
+          'info',
+          'You are currently offline. Some features will be unavailable.',
+          5000
+        )
+    },
+    store.dispatch
   );
 
-  while (true) {
-    yield call(delay, 2500);
+  const getAppOnline = () => !getOffline(store.getState());
 
-    const pending: ReturnType<typeof getShepherdPending> = yield call(getShepherdPending);
-    if (pending) {
-      continue;
+  /**
+   * @description Repeatedly polls itself to check for online state conflict occurs, implemented in recursive style for flexible polling times
+   * as network requests take a variable amount of time.
+   *
+   * Whenever an app online state conflict occurs, it resolves the conflict with the following priority:
+   * * If shepherd is online but app is offline ->  do a ping request via shepherd provider, with the result of the ping being the set app state
+   * * If shepherd is offline but app is online -> set app to offline as it wont be able to make requests anyway
+   */
+  async function detectOnlineStateConflict() {
+    const shepherdStatus = getShepherdStatus();
+    const appOffline = getAppOnline();
+    const onlineStateConflict = shepherdStatus.isOnline !== appOffline;
+
+    if (shepherdStatus.pending || !onlineStateConflict) {
+      return setTimeout(detectOnlineStateConflict, 1000);
     }
 
-    const isOffline: boolean = yield select(getOffline);
-    const balancerOffline = yield call(getShepherdOffline);
-
-    if (!balancerOffline && isOffline) {
-      // If we were able to ping but redux says we're offline, mark online
-      yield put(restoreNotif);
-      yield put(setOnline());
-    } else if (balancerOffline && !isOffline) {
-      // If we were unable to ping but redux says we're online, mark offline
-      // If they had been online, show an error.
-      // If they hadn't been online, just inform them with a warning.
-      yield put(setOffline());
-      if (hasCheckedOnline) {
-        yield put(lostNetworkNotif);
-      } else {
-        yield put(offlineNotif);
+    // if app reports online but shepherd offline, then set app offline
+    if (appOffline && !shepherdStatus.isOnline) {
+      lostNetworkNotif();
+      offline();
+    } else if (!appOffline && shepherdStatus.isOnline) {
+      // if app reports offline but shepherd reports online
+      // send a request to shepherd provider to see if we can still send out requests
+      const success = await shepherdProvider.ping().catch(() => false);
+      if (success) {
+        restoreNotif();
+        online();
       }
     }
-    hasCheckedOnline = true;
+    detectOnlineStateConflict();
   }
-}
+  detectOnlineStateConflict();
 
-// Fork our recurring API call, watch for the need to cancel.
-export function* handlePollOfflineStatus(): SagaIterator {
-  const pollOfflineStatusTask = yield fork(pollOfflineStatusSaga);
-  yield take('CONFIG_STOP_POLL_OFFLINE_STATE');
-  yield cancel(pollOfflineStatusTask);
-}
+  window.addEventListener('offline', () => {
+    const previouslyOnline = getAppOnline();
+
+    // if browser reports as offline and we were previously online
+    // then set offline without checking balancer state
+    if (!navigator.onLine && previouslyOnline) {
+      offlineNotif();
+      offline();
+    }
+  });
+});
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.
@@ -243,7 +263,7 @@ export function* handleAddCustomNode(action: AddCustomNodeAction): SagaIterator 
   shepherd.useProvider(
     'myccustom',
     config.id,
-    makeProviderConfig({ network: config.name }),
+    makeProviderConfig({ network: config.network }),
     config
   );
   yield put(changeNodeRequested(config.id));
@@ -312,19 +332,19 @@ export function* handleRemoveCustomNode({ payload: nodeId }: RemoveCustomNodeAct
   }
 }
 
-export const node = [
+export const nodeSaga = [
   fork(handleChangeNodeRequestedOneTime),
   takeEvery(CONFIG_NODES_SELECTED.CHANGE_REQUESTED, handleChangeNodeRequested),
   takeEvery(CONFIG_NODES_SELECTED.CHANGE_FORCE, handleNodeChangeForce),
-  takeEvery(CONFIG.CHANGE_NETWORK_REQUESTED, handleChangeNetworkRequested),
-  takeLatest(CONFIG.POLL_OFFLINE_STATUS, handlePollOfflineStatus),
+  takeEvery(CONFIG_NETWORKS.CHANGE_NETWORK_REQUESTED, handleChangeNetworkRequested),
   takeEvery(CONFIG_META.LANGUAGE_CHANGE, reload),
   takeEvery(CONFIG_NODES_CUSTOM.ADD, handleAddCustomNode),
   takeEvery(CONFIG_NODES_CUSTOM.REMOVE, handleRemoveCustomNode)
 ];
-//#endregion Node
+//#endregion Nodes
 
-//#region web3
+//#region Web3
+
 let web3Added = false;
 
 export function* initWeb3Node(): SagaIterator {
@@ -371,7 +391,7 @@ export function* unlockWeb3(): SagaIterator {
     yield put(changeNodeRequested('web3'));
     yield take(
       (action: any) =>
-        action.type === CONFIG_NODES_SELECTED.CHANGE_SUCCEEDED && action.payload.nodeId === 'web3'
+        action.type === CONFIG_NODES_SELECTED.CHANGE_REQUESTED && action.payload.nodeId === 'web3'
     );
 
     const web3Node: any | null = yield select(getWeb3Node);
@@ -402,11 +422,11 @@ export function* unlockWeb3(): SagaIterator {
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
 export function* unsetWeb3NodeOnWalletEvent(action: SetWalletAction): SagaIterator {
-  const nodeId = yield select(getNodeId);
+  const node = yield select(getNodeId);
   const newWallet = action.payload;
   const isWeb3Wallet = newWallet instanceof Web3Wallet;
 
-  if (nodeId !== 'web3' || isWeb3Wallet) {
+  if (node !== 'web3' || isWeb3Wallet) {
     return;
   }
 
@@ -417,9 +437,9 @@ export function* unsetWeb3NodeOnWalletEvent(action: SetWalletAction): SagaIterat
 }
 
 export function* unsetWeb3Node(): SagaIterator {
-  const nodeId = yield select(getNodeId);
+  const node = yield select(getNodeId);
 
-  if (nodeId !== 'web3') {
+  if (node !== 'web3') {
     return;
   }
 
@@ -434,8 +454,8 @@ export const web3 = [
   takeEvery(WALLET.SET, unsetWeb3NodeOnWalletEvent),
   takeEvery(WALLET.UNLOCK_WEB3, unlockWeb3)
 ];
-//#endregion web3
+//#endregion Web3
 
 export function* configSaga(): SagaIterator {
-  yield all([...networkSaga, ...node, ...web3]);
+  yield all([...networkSaga, ...nodeSaga, ...web3]);
 }

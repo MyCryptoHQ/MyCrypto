@@ -3,7 +3,7 @@ import { schema } from '../../common/libs/validators';
 import 'url-search-params-polyfill';
 import INodeTestConfig from './RpcNodeTestConfig';
 import { StaticNodeConfig } from 'types/node';
-import { staticNodesExpectedState } from '../reducers/config/nodes/staticNodes.spec';
+import { staticNodesExpectedState } from 'features/config/nodes/static/reducer.spec';
 import { INode, shepherd, shepherdProvider } from 'libs/nodes';
 
 const v = new Validator();
