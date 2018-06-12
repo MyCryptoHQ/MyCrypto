@@ -13,11 +13,9 @@ import { SetToFieldAction, SetTokenToMetaAction } from 'actions/transaction';
 import { getIsValidAddressFn } from 'selectors/config';
 
 export function* setCurrentTo({ payload: raw }: SetCurrentToAction): SagaIterator {
-  const isValidAddressFn: ReturnType<typeof getIsValidAddressFn> = yield select(
-    getIsValidAddressFn
-  );
+  const isValidAddress: ReturnType<typeof getIsValidAddressFn> = yield select(getIsValidAddressFn);
+  const validAddress: boolean = yield call(isValidAddress, raw);
   const validEns: boolean = yield call(isValidENSAddress, raw);
-  const validAddress = isValidAddressFn(raw);
 
   let value: Buffer | null = null;
   if (validAddress) {

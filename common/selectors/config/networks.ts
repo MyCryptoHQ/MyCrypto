@@ -7,7 +7,7 @@ import {
 } from 'types/network';
 import { getNodeConfig } from 'selectors/config';
 import { stripWeb3Network } from 'libs/nodes';
-import { isValidETHAddress, isValidRSKAddress } from 'libs/validators';
+import { getIsValidAddressFunction } from 'libs/validators';
 import { getChecksumAddressFunction } from 'utils/formatters';
 const getConfig = (state: AppState) => state.config;
 
@@ -99,10 +99,7 @@ export const getNetworkChainId = (state: AppState) => {
 
 export const getIsValidAddressFn = (state: AppState) => {
   const chainId = getNetworkChainId(state);
-  if (chainId === 30 || chainId === 31) {
-    return (addr: string) => isValidRSKAddress(addr, chainId);
-  }
-  return isValidETHAddress;
+  return getIsValidAddressFunction(chainId);
 };
 
 export const getChecksumAddressFn = (state: AppState) => {

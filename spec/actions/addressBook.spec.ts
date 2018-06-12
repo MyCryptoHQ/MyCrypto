@@ -25,7 +25,7 @@ describe('addressBook: Actions', () => {
   });
   describe('clearAddressLabel', () => {
     it('should generate the correct action', () => {
-      const payload = { label: '0', address: '' };
+      const payload = '0';
 
       expect(clearAddressLabel(payload)).toEqual({
         type: TypeKeys.CLEAR_ADDRESS_LABEL,
@@ -77,7 +77,7 @@ describe('addressBook: Actions', () => {
   });
   describe('clearAddressLabelEntry', () => {
     it('should generate the correct action', () => {
-      const payload = { label: '0', address: '' };
+      const payload = '0';
 
       expect(clearAddressLabelEntry(payload)).toEqual({
         type: TypeKeys.CLEAR_ADDRESS_LABEL_ENTRY,

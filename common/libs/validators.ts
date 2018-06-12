@@ -17,11 +17,15 @@ import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import BN from 'bn.js';
 
-export function isValidAddress(address: string, chainId: number) {
+export function getIsValidAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {
-    return isValidRSKAddress(address, chainId);
+    return (address: string) => isValidRSKAddress(address, chainId);
   }
-  return isValidETHAddress(address);
+  return isValidETHAddress;
+}
+
+export function isValidAddress(address: string, chainId: number) {
+  return getIsValidAddressFunction(chainId)(address);
 }
 
 function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {

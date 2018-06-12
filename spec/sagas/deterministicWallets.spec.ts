@@ -5,7 +5,8 @@ import { all, apply, fork, put, select } from 'redux-saga/effects';
 import RpcNode from 'libs/nodes/rpc';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getChecksumAddressFn } from 'selectors/config';
+import { getChecksumAddressFunction } from 'utils/formatters';
 import * as dWalletActions from 'actions/deterministicWallets';
 import {
   getDeterministicWallets,
@@ -45,6 +46,8 @@ const genWalletData2 = () => ({
 const genBalances = () => [Wei('100'), Wei('200')];
 
 describe('getDeterministicWallets*', () => {
+  const toChecksumAddress = getChecksumAddressFunction(1);
+
   describe('starting from seed', () => {
     const dWallet = {
       seed:
@@ -54,8 +57,12 @@ describe('getDeterministicWallets*', () => {
     const action = dWalletActions.getDeterministicWallets(dWallet);
     const gen = getDeterministicWallets(action);
 
+    it('should select getChecksumAddressFn', () => {
+      expect(gen.next().value).toEqual(select(getChecksumAddressFn));
+    });
+
     it('should match put snapshot', () => {
-      expect(gen.next().value).toMatchSnapshot();
+      expect(gen.next(toChecksumAddress).value).toMatchSnapshot();
     });
 
     it('should fork updateWalletValues', () => {
@@ -79,8 +86,12 @@ describe('getDeterministicWallets*', () => {
     const action = dWalletActions.getDeterministicWallets(dWallet);
     const gen = getDeterministicWallets(action);
 
+    it('should select getChecksumAddressFn', () => {
+      expect(gen.next().value).toEqual(select(getChecksumAddressFn));
+    });
+
     it('should match put snapshot', () => {
-      expect(gen.next().value).toMatchSnapshot();
+      expect(gen.next(toChecksumAddress).value).toMatchSnapshot();
     });
 
     it('should fork updateWalletValues', () => {

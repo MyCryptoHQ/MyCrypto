@@ -30,9 +30,9 @@ describe('addressBook: Reducer', () => {
       })
     );
 
-    expect(
-      addressBook(firstState, addressBookActions.clearAddressLabel({ address: '0x0', label: '' }))
-    ).toEqual(INITIAL_STATE);
+    expect(addressBook(firstState, addressBookActions.clearAddressLabel('0x0'))).toEqual(
+      INITIAL_STATE
+    );
   });
   it('should set an address label entry', () => {
     expect(
@@ -76,11 +76,8 @@ describe('addressBook: Reducer', () => {
         labelError: 'Derp'
       })
     );
-    expect(
-      addressBook(
-        firstState,
-        addressBookActions.clearAddressLabelEntry({ label: '0', address: '' })
-      )
-    ).toEqual(INITIAL_STATE);
+    expect(addressBook(firstState, addressBookActions.clearAddressLabelEntry('0'))).toEqual(
+      INITIAL_STATE
+    );
   });
 });

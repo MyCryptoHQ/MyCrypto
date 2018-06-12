@@ -1,13 +1,15 @@
 import { getResolvedAddress } from 'selectors/ens';
 import { Address } from 'libs/units';
 import { call, select, put, take } from 'redux-saga/effects';
-import { isValidAddress, isValidENSAddress } from 'libs/validators';
+import { isValidENSAddress, getIsValidAddressFunction } from 'libs/validators';
 import { setCurrentTo, setField } from 'sagas/transaction/current/currentTo';
 import { isEtherTransaction } from 'selectors/transaction';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { setToField, setTokenTo } from 'actions/transaction';
 import { resolveDomainRequested, TypeKeys as ENSTypekeys } from 'actions/ens';
-import { getNetworkConfig } from 'selectors/config';
+import { getIsValidAddressFn } from 'selectors/config';
+
+const isValidAddress = getIsValidAddressFunction(1);
 
 describe('setCurrentTo*', () => {
   const data = {} as any;
@@ -24,11 +26,12 @@ describe('setCurrentTo*', () => {
 
     data.validEthGen = setCurrentTo(ethAddrAction);
 
-    it('should select getNetworkConfig', () => {
-      expect(data.validEthGen.next().value).toEqual(select(getNetworkConfig));
+    it('should select getIsValidAddressFn', () => {
+      expect(data.validEthGen.next().value).toEqual(select(getIsValidAddressFn));
     });
-    it('should call isValidETHAddress', () => {
-      expect(data.validEthGen.next().value).toEqual(call(isValidAddress, raw, 0));
+
+    it('should call isValidAddress', () => {
+      expect(data.validEthGen.next(isValidAddress).value).toEqual(call(isValidAddress, raw));
     });
 
     it('should call isValidENSAddress', () => {
@@ -53,11 +56,12 @@ describe('setCurrentTo*', () => {
     };
     data.validEnsGen = setCurrentTo(ensAddrAction);
 
-    it('should select getNetworkConfig', () => {
-      expect(data.validEnsGen.next().value).toEqual(select(getNetworkConfig));
+    it('should select getIsValidAddressFn', () => {
+      expect(data.validEnsGen.next().value).toEqual(select(getIsValidAddressFn));
     });
-    it('should call isValidETHAddress', () => {
-      expect(data.validEnsGen.next().value).toEqual(call(isValidAddress, raw, 0));
+
+    it('should call isValidAddress', () => {
+      expect(data.validEnsGen.next(isValidAddress).value).toEqual(call(isValidAddress, raw));
     });
 
     it('should call isValidENSAddress', () => {

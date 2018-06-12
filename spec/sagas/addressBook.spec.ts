@@ -184,7 +184,7 @@ describe('addressBook: Sagas', () => {
       );
 
       expect(dispatched).toEqual([
-        clearAddressLabel({ address, label }),
+        clearAddressLabel(address),
         setAddressLabel({
           address,
           label
@@ -238,7 +238,7 @@ describe('addressBook: Sagas', () => {
       );
 
       expect(dispatched).toEqual([
-        clearAddressLabel({ address, label }),
+        clearAddressLabel(address),
         setAddressLabel({
           address,
           label
@@ -307,10 +307,7 @@ describe('addressBook: Sagas', () => {
         action
       );
 
-      expect(dispatched).toEqual([
-        clearAddressLabel({ address, label: '0' }),
-        clearAddressLabelEntry({ address, label: id })
-      ]);
+      expect(dispatched).toEqual([clearAddressLabel(address), clearAddressLabelEntry(id)]);
     });
   });
 });
