@@ -7,17 +7,11 @@ import { StaticNodeAction } from './nodes/static';
 import { CustomNodeAction } from './nodes/custom';
 
 export enum CONFIG {
-  POLL_OFFLINE_STATUS = 'CONFIG_POLL_OFFLINE_STATUS',
-  CHANGE_NETWORK_REQUESTED = 'CONFIG_NODES_SELECTED_CHANGE_NETWORK_REQUESTED'
+  POLL_OFFLINE_STATUS = 'CONFIG_POLL_OFFLINE_STATUS'
 }
 
 export interface PollOfflineStatus {
   type: CONFIG.POLL_OFFLINE_STATUS;
-}
-
-export interface ChangeNetworkRequestedAction {
-  type: CONFIG.CHANGE_NETWORK_REQUESTED;
-  payload: string;
 }
 
 export type NodeAction = SelectedNodeAction | StaticNodeAction;

@@ -3,8 +3,8 @@ import { ReactElement } from 'react';
 export type NotificationState = Notification[];
 
 export enum NOTIFICATIONS {
-  SHOW = 'NOTIFICATIONS_SHOW',
-  CLOSE = 'NOTIFICATIONS_CLOSE'
+  SHOW = 'SHOW_NOTIFICATION',
+  CLOSE = 'CLOSE_NOTIFICATION'
 }
 
 /*** Shared types ***/

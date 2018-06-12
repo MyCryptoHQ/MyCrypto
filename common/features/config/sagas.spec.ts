@@ -1,11 +1,11 @@
 import { delay, SagaIterator } from 'redux-saga';
 import { call, cancel, fork, take, apply, put, select } from 'redux-saga/effects';
-import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
+import { cloneableGenerator, createMockTask, SagaIteratorClone } from 'redux-saga/utils';
 import { shepherd } from 'mycrypto-shepherd';
 
 import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
-import { getShepherdOffline, getShepherdPending } from 'libs/nodes';
+import { getShepherdOffline, getShepherdPending, makeAutoNodeName } from 'libs/nodes';
 import { Web3Wallet } from 'libs/wallet';
 import { configuredStore } from 'features/store';
 import { showNotification } from 'features/notifications';
@@ -17,7 +17,10 @@ import { isStaticNodeId } from './nodes/static/selectors';
 import { staticNodesExpectedState } from './nodes/static/reducer.spec';
 import { selectedNodeExpectedState } from './nodes/selected/reducer.spec';
 import { CONFIG_NODES_SELECTED, ChangeNodeRequestedOneTimeAction } from './nodes/selected/types';
-import { getStaticNodeFromId } from './selectors';
+import { SELECTED_NODE_INITIAL_STATE } from './nodes/selected/reducer';
+import { CONFIG_NODES_CUSTOM, RemoveCustomNodeAction } from './nodes/custom/types';
+import { ChangeNetworkRequestedAction, CONFIG_NETWORKS } from './networks/types';
+import { getStaticNodeFromId, getAllNodes } from './selectors';
 import {
   handleChangeNodeRequested,
   handlePollOfflineStatus,
@@ -26,7 +29,9 @@ import {
   unsetWeb3Node,
   unsetWeb3NodeOnWalletEvent,
   handleNodeChangeForce,
-  handleChangeNodeRequestedOneTime
+  handleChangeNodeRequestedOneTime,
+  handleRemoveCustomNode,
+  handleChangeNetworkRequested
 } from './sagas';
 import {
   changeNodeForce,
@@ -63,45 +68,6 @@ const customNodesExpectedState = {
   },
   removeFirstCustomNode: { [secondCustomNodeId]: secondCustomNode }
 };
-
-describe('handleNodeChangeForce*', () => {
-  const payload: any = 'nodeId';
-  const action: any = { payload };
-  const gen = cloneableGenerator(handleNodeChangeForce)(action);
-  const nodeConfig: any = { network: 'network' };
-
-  it('should select isStaticNodeId', () => {
-    expect(gen.next().value).toEqual(select(isStaticNodeId, payload));
-  });
-
-  it('should return if not static node', () => {
-    const clone = gen.clone();
-    expect(clone.next(false).done).toEqual(true);
-  });
-
-  it('should select getStaticNodeFromId', () => {
-    expect(gen.next(true).value).toEqual(select(getStaticNodeFromId, payload));
-  });
-
-  it('should force the node change', () => {
-    expect(gen.next(nodeConfig).value).toEqual(
-      put(
-        changeNodeSucceeded({
-          networkId: nodeConfig.network,
-          nodeId: payload
-        })
-      )
-    );
-  });
-
-  it('should put a change node intent', () => {
-    expect(gen.next().value).toEqual(put(changeNodeRequested(payload)));
-  });
-
-  it('should be done', () => {
-    expect(gen.next().done).toEqual(true);
-  });
-});
 
 describe('pollOfflineStatus*', () => {
   const restoreNotif = 'Your connection to the network has been restored!';
@@ -393,5 +359,113 @@ describe('unsetWeb3NodeOnWalletEvent*', () => {
     gen2.next(); //getNode
     gen2.next('web3'); //getNodeConfig
     expect(gen2.next().done).toEqual(true);
+  });
+});
+
+describe('handleNodeChangeForce*', () => {
+  const payload: any = 'nodeId';
+  const action: any = { payload };
+  const gen = cloneableGenerator(handleNodeChangeForce)(action);
+  const nodeConfig: any = { network: 'network' };
+
+  it('should select isStaticNodeId', () => {
+    expect(gen.next().value).toEqual(select(isStaticNodeId, payload));
+  });
+
+  it('should return if not static node', () => {
+    const clone = gen.clone();
+    expect(clone.next(false).done).toEqual(true);
+  });
+
+  it('should select getStaticNodeFromId', () => {
+    expect(gen.next(true).value).toEqual(select(getStaticNodeFromId, payload));
+  });
+
+  it('should force the node change', () => {
+    expect(gen.next(nodeConfig).value).toEqual(
+      put(
+        changeNodeSucceeded({
+          networkId: nodeConfig.network,
+          nodeId: payload
+        })
+      )
+    );
+  });
+
+  it('should put a change node intent', () => {
+    expect(gen.next().value).toEqual(put(changeNodeRequested(payload)));
+  });
+
+  it('should be done', () => {
+    expect(gen.next().done).toEqual(true);
+  });
+});
+
+describe('handleChangeNetworkRequested*', () => {
+  const action: ChangeNetworkRequestedAction = {
+    payload: 'ETH',
+    type: CONFIG_NETWORKS.CHANGE_NETWORK_REQUESTED
+  };
+  const nextNodeName = makeAutoNodeName(action.payload);
+  const customNode: CustomNodeConfig = {
+    id: 'id',
+    url: 'url',
+    name: 'Custom Node',
+    service: 'your custom node',
+    network: action.payload,
+    isCustom: true
+  };
+  const gen = cloneableGenerator(handleChangeNetworkRequested);
+  const staticCase = gen(action);
+  let customCase: SagaIteratorClone;
+  let failureCase: SagaIteratorClone;
+
+  it('should select isStaticNodeId', () => {
+    expect(staticCase.next().value).toEqual(select(isStaticNodeId, nextNodeName));
+  });
+
+  it('should put changeNodeRequested for auto node if static network', () => {
+    customCase = staticCase.clone();
+    expect(staticCase.next(true).value).toEqual(put(changeNodeRequested(nextNodeName)));
+    expect(staticCase.next().done).toBeTruthy();
+  });
+
+  it('should select getAllNodes if non-static network', () => {
+    expect(customCase.next(false).value).toEqual(select(getAllNodes));
+  });
+
+  it('should put changeNodeRequested on the first custom node if found', () => {
+    failureCase = customCase.clone();
+    expect(customCase.next([customNode]).value).toEqual(put(changeNodeRequested(customNode.id)));
+  });
+
+  it('should put showNotification if not a valid network', () => {
+    const value = failureCase.next([]).value as any;
+    expect(value.PUT.action.type).toBe('SHOW_NOTIFICATION');
+  });
+});
+
+describe('handleRemoveCustomNode*', () => {
+  const customNodeUrl = 'https://mycustomnode.com';
+  const action: RemoveCustomNodeAction = {
+    type: CONFIG_NODES_CUSTOM.REMOVE,
+    payload: customNodeUrl
+  };
+  const sameCase = cloneableGenerator(handleRemoveCustomNode)(action);
+  let diffCase: SagaIteratorClone;
+
+  it('Should select getNodeId', () => {
+    expect(sameCase.next().value).toEqual(select(getNodeId));
+  });
+
+  it('Should put changeNodeForce to default network if current node id === removed node id', () => {
+    diffCase = sameCase.clone();
+    expect(sameCase.next(customNodeUrl).value).toEqual(
+      put(changeNodeForce(SELECTED_NODE_INITIAL_STATE.nodeId))
+    );
+  });
+
+  it('Should do nothing if current node id !== removed node id', () => {
+    expect(diffCase.next('Different').done).toBeTruthy();
   });
 });
