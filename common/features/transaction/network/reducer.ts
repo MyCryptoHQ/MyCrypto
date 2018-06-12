@@ -1,6 +1,6 @@
 import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
-import { InputGasPriceAction, InputGasPriceIntentAction } from '../fields/types';
-import { NetworkAction, RequestStatus } from '../network/types';
+import { TRANSACTION_FIELDS, InputGasPriceAction, InputGasPriceIntentAction } from '../fields';
+import { NetworkAction, RequestStatus } from '../network';
 
 export interface NetworkState {
   gasEstimationStatus: RequestStatus | null;
@@ -68,9 +68,9 @@ export default function network(
 
     // Not exactly "network" requests, but we want to show pending while
     // gas price is subject to change
-    case TRANSACTION.GAS_PRICE_INPUT_INTENT:
+    case TRANSACTION_FIELDS.GAS_PRICE_INPUT_INTENT:
       return setGasPriceStatus(state, RequestStatus.REQUESTED);
-    case TRANSACTION.GAS_PRICE_INPUT:
+    case TRANSACTION_FIELDS.GAS_PRICE_INPUT:
       return setGasPriceStatus(state, RequestStatus.SUCCEEDED);
 
     case TRANSACTION.RESET_SUCCESSFUL:

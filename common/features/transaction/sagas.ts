@@ -83,6 +83,7 @@ import {
 import { showNotification } from 'features/notifications';
 import { TRANSACTION_BROADCAST } from './broadcast';
 import {
+  TRANSACTION_FIELDS,
   SetToFieldAction,
   InputDataAction,
   InputGasLimitAction,
@@ -300,7 +301,7 @@ export function* reparseCurrentValue(value: IInput): SagaIterator {
 export const currentValue = [
   takeEvery([TRANSACTION.CURRENT_VALUE_SET], setCurrentValueSaga),
   takeEvery(
-    [TRANSACTION.GAS_LIMIT_FIELD_SET, TRANSACTION.GAS_PRICE_FIELD_SET],
+    [TRANSACTION_FIELDS.GAS_LIMIT_FIELD_SET, TRANSACTION_FIELDS.GAS_PRICE_FIELD_SET],
     revalidateCurrentValue
   )
 ];
@@ -346,11 +347,11 @@ export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
 }
 
 export const fieldsSaga = [
-  takeEvery(TRANSACTION.DATA_FIELD_INPUT, handleDataInput),
-  takeEvery(TRANSACTION.GAS_LIMIT_INPUT, handleGasLimitInput),
-  takeEvery(TRANSACTION.GAS_PRICE_INPUT, handleGasPriceInput),
-  takeEvery(TRANSACTION.NONCE_INPUT, handleNonceInput),
-  takeLatest(TRANSACTION.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent)
+  takeEvery(TRANSACTION_FIELDS.DATA_FIELD_INPUT, handleDataInput),
+  takeEvery(TRANSACTION_FIELDS.GAS_LIMIT_INPUT, handleGasLimitInput),
+  takeEvery(TRANSACTION_FIELDS.GAS_PRICE_INPUT, handleGasPriceInput),
+  takeEvery(TRANSACTION_FIELDS.NONCE_INPUT, handleNonceInput),
+  takeLatest(TRANSACTION_FIELDS.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent)
 ];
 //#endregion Fields
 
@@ -509,8 +510,8 @@ export function* shouldEstimateGas(): SagaIterator {
       | SwapTokenToTokenAction
       | SwapTokenToEtherAction
       | ToggleAutoGasLimitAction = yield take([
-      TRANSACTION.TO_FIELD_SET,
-      TRANSACTION.DATA_FIELD_SET,
+      TRANSACTION_FIELDS.TO_FIELD_SET,
+      TRANSACTION_FIELDS.DATA_FIELD_SET,
       TRANSACTION.ETHER_TO_TOKEN_SWAP,
       TRANSACTION.TOKEN_TO_TOKEN_SWAP,
       TRANSACTION.TOKEN_TO_ETHER_SWAP,
@@ -528,7 +529,8 @@ export function* shouldEstimateGas(): SagaIterator {
     // invalid field is a field that the value is null and the input box isnt empty
     // reason being is an empty field is valid because it'll be null
     const invalidField =
-      (action.type === TRANSACTION.TO_FIELD_SET || action.type === TRANSACTION.DATA_FIELD_SET) &&
+      (action.type === TRANSACTION_FIELDS.TO_FIELD_SET ||
+        action.type === TRANSACTION_FIELDS.DATA_FIELD_SET) &&
       !action.payload.value &&
       action.payload.raw !== '';
 
@@ -627,7 +629,7 @@ export function* setAddressMessageGasLimit() {
 export const gas = [
   fork(shouldEstimateGas),
   fork(estimateGas),
-  takeEvery(TRANSACTION.TO_FIELD_SET, setAddressMessageGasLimit)
+  takeEvery(TRANSACTION_FIELDS.TO_FIELD_SET, setAddressMessageGasLimit)
 ];
 //#endregion Gas
 
@@ -835,12 +837,12 @@ export function* watchTransactionState(): SagaIterator {
       wipeState: take([
         TRANSACTION.CURRENT_TO_SET,
         TRANSACTION.CURRENT_VALUE_SET,
-        TRANSACTION.GAS_LIMIT_FIELD_SET,
-        TRANSACTION.GAS_PRICE_FIELD_SET,
-        TRANSACTION.VALUE_FIELD_SET,
-        TRANSACTION.DATA_FIELD_SET,
-        TRANSACTION.NONCE_FIELD_SET,
-        TRANSACTION.TO_FIELD_SET,
+        TRANSACTION_FIELDS.GAS_LIMIT_FIELD_SET,
+        TRANSACTION_FIELDS.GAS_PRICE_FIELD_SET,
+        TRANSACTION_FIELDS.VALUE_FIELD_SET,
+        TRANSACTION_FIELDS.DATA_FIELD_SET,
+        TRANSACTION_FIELDS.NONCE_FIELD_SET,
+        TRANSACTION_FIELDS.TO_FIELD_SET,
         TRANSACTION.TOKEN_TO_META_SET,
         TRANSACTION.TOKEN_VALUE_META_SET,
         TRANSACTION.UNIT_META_SET

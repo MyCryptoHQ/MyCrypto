@@ -56,6 +56,7 @@ import {
 import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
 import { showNotification } from 'features/notifications';
 import {
+  TRANSACTION_FIELDS,
   setToField,
   setValueField,
   setDataField,
@@ -1213,7 +1214,7 @@ describe('transaction: Sagas', () => {
           ...rest
         };
         const action: any = {
-          type: TRANSACTION.TO_FIELD_SET,
+          type: TRANSACTION_FIELDS.TO_FIELD_SET,
           payload: {
             value: 'value',
             raw: 'raw'
@@ -1225,8 +1226,8 @@ describe('transaction: Sagas', () => {
         it('should take expected types', () => {
           expect(gen.next().value).toEqual(
             take([
-              TRANSACTION.TO_FIELD_SET,
-              TRANSACTION.DATA_FIELD_SET,
+              TRANSACTION_FIELDS.TO_FIELD_SET,
+              TRANSACTION_FIELDS.DATA_FIELD_SET,
               TRANSACTION.ETHER_TO_TOKEN_SWAP,
               TRANSACTION.TOKEN_TO_TOKEN_SWAP,
               TRANSACTION.TOKEN_TO_ETHER_SWAP,

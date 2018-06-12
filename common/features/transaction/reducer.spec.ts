@@ -3,36 +3,35 @@ import BN from 'bn.js';
 
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
+  broadcastTransactionQueued,
+  broadcastTransactionSucceeded,
+  broadcastTransactionFailed,
+  ITransactionStatus
+} from './broadcast';
+import {
+  TRANSACTION_FIELDS,
+  setToField,
+  setValueField,
+  setDataField,
+  setGasLimitField,
+  setNonceField,
+  setGasPriceField,
+  InputGasPriceAction
+} from './fields';
+import { SetUnitMetaAction, setTokenTo, setTokenValue } from './meta';
+import { NetworkAction, getFromSucceeded } from './network';
+import {
+  SignTransactionRequestedAction,
+  SignLocalTransactionSucceededAction,
+  SignWeb3TransactionSucceededAction
+} from './sign';
+import {
   TRANSACTION,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   ResetTransactionSuccessfulAction
 } from './types';
-import { ITransactionStatus } from './broadcast/types';
-import { InputGasPriceAction } from './fields/types';
-import { SetUnitMetaAction } from './meta/types';
-import { NetworkAction } from './network/types';
-import {
-  SignTransactionRequestedAction,
-  SignLocalTransactionSucceededAction,
-  SignWeb3TransactionSucceededAction
-} from './sign/types';
-import {
-  broadcastTransactionQueued,
-  broadcastTransactionSucceeded,
-  broadcastTransactionFailed
-} from './broadcast/actions';
-import {
-  setToField,
-  setValueField,
-  setDataField,
-  setGasLimitField,
-  setNonceField,
-  setGasPriceField
-} from './fields/actions';
-import { setTokenTo, setTokenValue } from './meta/actions';
-import { getFromSucceeded } from './network/actions';
 import network, { NetworkState } from './network/reducer';
 import broadcast, { BROADCAST_INITIAL_STATE } from './broadcast/reducer';
 import fields, { FieldsState } from './fields/reducer';
@@ -354,7 +353,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle gasPriceIntent', () => {
       const gasPriceAction: InputGasPriceAction = {
-        type: TRANSACTION.GAS_PRICE_INPUT,
+        type: TRANSACTION_FIELDS.GAS_PRICE_INPUT,
         payload: 'test'
       };
       expect(network(NETWORK_INITIAL_STATE, gasPriceAction)).toEqual({

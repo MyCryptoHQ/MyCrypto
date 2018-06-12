@@ -11,6 +11,7 @@ import {
   ResetTransactionSuccessfulAction
 } from '../types';
 import {
+  TRANSACTION_FIELDS,
   FieldAction,
   SetToFieldAction,
   SetDataFieldAction,
@@ -80,17 +81,17 @@ export default function fields(
   action: FieldAction | SwapAction | ResetTransactionSuccessfulAction
 ) {
   switch (action.type) {
-    case TRANSACTION.TO_FIELD_SET:
+    case TRANSACTION_FIELDS.TO_FIELD_SET:
       return updateField('to')(state, action);
-    case TRANSACTION.VALUE_FIELD_SET:
+    case TRANSACTION_FIELDS.VALUE_FIELD_SET:
       return updateField('value')(state, action);
-    case TRANSACTION.DATA_FIELD_SET:
+    case TRANSACTION_FIELDS.DATA_FIELD_SET:
       return updateField('data')(state, action);
-    case TRANSACTION.GAS_LIMIT_FIELD_SET:
+    case TRANSACTION_FIELDS.GAS_LIMIT_FIELD_SET:
       return updateField('gasLimit')(state, action);
-    case TRANSACTION.NONCE_FIELD_SET:
+    case TRANSACTION_FIELDS.NONCE_FIELD_SET:
       return updateField('nonce')(state, action);
-    case TRANSACTION.GAS_PRICE_FIELD_SET:
+    case TRANSACTION_FIELDS.GAS_PRICE_FIELD_SET:
       return updateField('gasPrice')(state, action);
     case TRANSACTION.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
