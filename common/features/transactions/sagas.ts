@@ -12,7 +12,7 @@ import { AppState } from 'features/reducers';
 import { getNetworkConfig, getNodeLib } from 'features/config';
 import { getWalletInst } from 'features/wallet';
 import {
-  TRANSACTION,
+  TRANSACTION_BROADCAST,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
@@ -54,13 +54,13 @@ export function* saveBroadcastedTx(action: BroadcastTransactionQueuedAction) {
   const { serializedTransaction: txBuffer, indexingHash: txIdx } = action.payload;
 
   const res: BroadcastTransactionSucceededAction | BroadcastTransactionFailedAction = yield take([
-    TRANSACTION.BROADCAST_TRANSACTION_SUCCEEDED,
-    TRANSACTION.BROADCAST_TRASACTION_FAILED
+    TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED,
+    TRANSACTION_BROADCAST.TRANSACTION_FAILED
   ]);
 
   // If our TX succeeded, save it and update the store.
   if (
-    res.type === TRANSACTION.BROADCAST_TRANSACTION_SUCCEEDED &&
+    res.type === TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED &&
     res.payload.indexingHash === txIdx
   ) {
     const tx = new EthTx(txBuffer);
@@ -111,6 +111,6 @@ export function* resetTxData() {
 
 export function* transactionsSaga(): SagaIterator {
   yield takeEvery(TRANSACTIONS.FETCH_TRANSACTION_DATA, fetchTxData);
-  yield takeEvery(TRANSACTION.BROADCAST_TRANSACTION_QUEUED, saveBroadcastedTx);
+  yield takeEvery(TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED, saveBroadcastedTx);
   yield takeEvery(TRANSACTIONS.RESET_TRANSACTION_DATA, resetTxData);
 }

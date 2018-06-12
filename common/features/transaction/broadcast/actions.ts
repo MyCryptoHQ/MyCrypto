@@ -1,5 +1,5 @@
-import { TRANSACTION } from '../types';
 import {
+  TRANSACTION_BROADCAST,
   BroadcastLocalTransactionRequestedAction,
   BroadcastWeb3TransactionRequestedAction,
   BroadcastTransactionFailedAction,
@@ -9,19 +9,19 @@ import {
 
 export type TBroadcastLocalTransactionRequested = typeof broadcastLocalTransactionRequested;
 export const broadcastLocalTransactionRequested = (): BroadcastLocalTransactionRequestedAction => ({
-  type: TRANSACTION.BROADCAST_LOCAL_TRANSACTION_REQUESTED
+  type: TRANSACTION_BROADCAST.LOCAL_TRANSACTION_REQUESTED
 });
 
 export type TBroadcastWeb3TransactionRequested = typeof broadcastWeb3TransactionRequested;
 export const broadcastWeb3TransactionRequested = (): BroadcastWeb3TransactionRequestedAction => ({
-  type: TRANSACTION.BROADCAST_WEB3_TRANSACTION_REQUESTED
+  type: TRANSACTION_BROADCAST.WEB3_TRANSACTION_REQUESTED
 });
 
 export type TBroadcastTransactionSucceeded = typeof broadcastTransactionSucceeded;
 export const broadcastTransactionSucceeded = (
   payload: BroadcastTransactionSucceededAction['payload']
 ): BroadcastTransactionSucceededAction => ({
-  type: TRANSACTION.BROADCAST_TRANSACTION_SUCCEEDED,
+  type: TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED,
   payload
 });
 
@@ -29,7 +29,7 @@ export type TBroadcastTransactionFailed = typeof broadcastTransactionFailed;
 export const broadcastTransactionFailed = (
   payload: BroadcastTransactionFailedAction['payload']
 ): BroadcastTransactionFailedAction => ({
-  type: TRANSACTION.BROADCAST_TRASACTION_FAILED,
+  type: TRANSACTION_BROADCAST.TRANSACTION_FAILED,
   payload
 });
 
@@ -37,6 +37,6 @@ export type TBroadcastTransactionQueued = typeof broadcastTransactionQueued;
 export const broadcastTransactionQueued = (
   payload: BroadcastTransactionQueuedAction['payload']
 ): BroadcastTransactionQueuedAction => ({
-  type: TRANSACTION.BROADCAST_TRANSACTION_QUEUED,
+  type: TRANSACTION_BROADCAST.TRANSACTION_QUEUED,
   payload
 });

@@ -87,6 +87,7 @@ import {
   SwapTokenToTokenAction,
   SwapTokenToEtherAction
 } from './types';
+import { TRANSACTION_BROADCAST } from './broadcast/types';
 import {
   SetToFieldAction,
   InputDataAction,
@@ -185,8 +186,8 @@ export const broadcastWeb3TransactionHandler = function*(tx: string): SagaIterat
 const broadcastWeb3Transaction = broadcastTransactionWrapper(broadcastWeb3TransactionHandler);
 
 export const broadcastSaga = [
-  takeEvery([TRANSACTION.BROADCAST_WEB3_TRANSACTION_REQUESTED], broadcastWeb3Transaction),
-  takeEvery([TRANSACTION.BROADCAST_LOCAL_TRANSACTION_REQUESTED], broadcastLocalTransaction)
+  takeEvery([TRANSACTION_BROADCAST.WEB3_TRANSACTION_REQUESTED], broadcastWeb3Transaction),
+  takeEvery([TRANSACTION_BROADCAST.LOCAL_TRANSACTION_REQUESTED], broadcastLocalTransaction)
 ];
 //#endregion Broadcast
 

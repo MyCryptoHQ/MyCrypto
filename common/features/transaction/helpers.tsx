@@ -24,6 +24,7 @@ import { showNotification } from 'features/notifications';
 import { StateSerializedTx } from './sign/reducer';
 import { TRANSACTION } from './types';
 import {
+  TRANSACTION_BROADCAST,
   BroadcastRequestedAction,
   ISerializedTxAndIndexingHash,
   ITransactionStatus
@@ -164,7 +165,7 @@ export function* shouldBroadcastTransaction(indexingHash: string): SagaIterator 
   return true;
 }
 export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction): SagaIterator {
-  const isWeb3Req = type === TRANSACTION.BROADCAST_WEB3_TRANSACTION_REQUESTED;
+  const isWeb3Req = type === TRANSACTION_BROADCAST.WEB3_TRANSACTION_REQUESTED;
   const txSelector = isWeb3Req ? getWeb3Tx : getSignedTx;
   const serializedTransaction: StateSerializedTx = yield select(txSelector);
 

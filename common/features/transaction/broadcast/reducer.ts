@@ -1,5 +1,5 @@
-import { TRANSACTION } from '../types';
 import {
+  TRANSACTION_BROADCAST,
   ITransactionStatus,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
@@ -66,11 +66,11 @@ export default function broadcast(
   action: BroadcastAction
 ) {
   switch (action.type) {
-    case TRANSACTION.BROADCAST_TRANSACTION_QUEUED:
+    case TRANSACTION_BROADCAST.TRANSACTION_QUEUED:
       return handleQueue(state, action);
-    case TRANSACTION.BROADCAST_TRANSACTION_SUCCEEDED:
+    case TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED:
       return handleSuccess(state, action);
-    case TRANSACTION.BROADCAST_TRASACTION_FAILED:
+    case TRANSACTION_BROADCAST.TRANSACTION_FAILED:
       return handleFailure(state, action);
     default:
       return state;
