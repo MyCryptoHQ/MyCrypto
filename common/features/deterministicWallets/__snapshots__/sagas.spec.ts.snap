@@ -1,0 +1,218 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getDeterministicWallets* starting from publicKey & chainCode should match put snapshot 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "PUT": Object {
+    "action": Object {
+      "payload": Array [
+        Object {
+          "address": "0xa3fA2e024bf9964bb64bDf0afdCa8E3c374a6e41",
+          "index": 0,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0x9bbC617740413CDCc41fB69901b252e20fd6Ef61",
+          "index": 1,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0xE5297818aEee60385306b7087B024af20524C0FD",
+          "index": 2,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0x111789ac11B69fE7EbC307c908Efe7677fd347A2",
+          "index": 3,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0x315857914bEd907e0Cf33b5883e599dD6ACc45d2",
+          "index": 4,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0xEA316E5BFd9FDeCD81489929ae56DBE6ffaDD22C",
+          "index": 5,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0x5De67797cEeCeD707A6868bbE96331ED6f811F06",
+          "index": 6,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0xd0cb2Fe67f66DF4D6610E99dDE2ad1B0B5bf4054",
+          "index": 7,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0xC7D3A4101bf3Ac1A5aE898784F80D2F9A1E67B62",
+          "index": 8,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0x12228Ec03f6aFd6Dad66ceD9C8B9762b3080e319",
+          "index": 9,
+          "tokenValues": Object {},
+        },
+      ],
+      "type": "DW_SET_WALLETS",
+    },
+    "channel": null,
+  },
+}
+`;
+
+exports[`getDeterministicWallets* starting from seed should match put snapshot 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "PUT": Object {
+    "action": Object {
+      "payload": Array [
+        Object {
+          "address": "0x2e516E79F439469AA3DD43a93429ee45cBeb77Aa",
+          "index": 0,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0x4aE493688184D612aF70C0B04aA7f2C8eE03a1dE",
+          "index": 1,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0xbd208C37C747f784EFfA379aA417d867216Ace19",
+          "index": 2,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0x85FF91929287F6cdC801280EAf8fa899e22a02F6",
+          "index": 3,
+          "tokenValues": Object {},
+        },
+        Object {
+          "address": "0xDF5acC09CDf1f966CEc6eFAB3523804E1de65c7f",
+          "index": 4,
+          "tokenValues": Object {},
+        },
+      ],
+      "type": "DW_SET_WALLETS",
+    },
+    "channel": null,
+  },
+}
+`;
+
+exports[`updateWalletTokenValues* should match snapshot for put wallet1 update 1`] = `
+Object {
+  "done": false,
+  "value": Object {
+    "@@redux-saga/IO": true,
+    "PUT": Object {
+      "action": Object {
+        "payload": Object {
+          "address": "0x0",
+          "index": 0,
+          "tokenValues": Object {
+            "OMG": Object {
+              "decimal": 16,
+              "value": "64",
+            },
+          },
+          "value": "64",
+        },
+        "type": "DW_UPDATE_WALLET",
+      },
+      "channel": null,
+    },
+  },
+}
+`;
+
+exports[`updateWalletTokenValues* should match snapshot for put wallet2 update 1`] = `
+Object {
+  "done": false,
+  "value": Object {
+    "@@redux-saga/IO": true,
+    "PUT": Object {
+      "action": Object {
+        "payload": Object {
+          "address": "0x1",
+          "index": 1,
+          "tokenValues": Object {
+            "BAT": Object {
+              "decimal": 16,
+              "value": "64",
+            },
+            "OMG": Object {
+              "decimal": 16,
+              "value": "c8",
+            },
+          },
+          "value": "64",
+        },
+        "type": "DW_UPDATE_WALLET",
+      },
+      "channel": null,
+    },
+  },
+}
+`;
+
+exports[`updateWalletTokenValues* should match snapshot of wallet token balances 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "ALL": Array [
+    Object {
+      "@@redux-saga/IO": true,
+      "CALL": Object {
+        "args": Array [
+          "0x0",
+          Object {
+            "address": "0x2",
+            "decimal": 16,
+            "symbol": "OMG",
+          },
+        ],
+        "context": RpcNode {
+          "client": RPCClient {
+            "batch": [Function],
+            "call": [Function],
+            "createHeaders": [Function],
+            "decorateRequest": [Function],
+            "endpoint": "",
+            "headers": Object {},
+          },
+          "requests": RPCRequests {},
+        },
+        "fn": [Function],
+      },
+    },
+    Object {
+      "@@redux-saga/IO": true,
+      "CALL": Object {
+        "args": Array [
+          "0x1",
+          Object {
+            "address": "0x2",
+            "decimal": 16,
+            "symbol": "OMG",
+          },
+        ],
+        "context": RpcNode {
+          "client": RPCClient {
+            "batch": [Function],
+            "call": [Function],
+            "createHeaders": [Function],
+            "decorateRequest": [Function],
+            "endpoint": "",
+            "headers": Object {},
+          },
+          "requests": RPCRequests {},
+        },
+        "fn": [Function],
+      },
+    },
+  ],
+}
+`;
