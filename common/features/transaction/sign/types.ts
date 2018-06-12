@@ -2,23 +2,29 @@ import EthTx from 'ethereumjs-tx';
 
 import { Wei, TokenValue } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
-import { TRANSACTION } from '../types';
+
+export enum TRANSACTION_SIGN {
+  SIGN_TRANSACTION_REQUESTED = 'SIGN_TRANSACTION_REQUESTED',
+  SIGN_WEB3_TRANSACTION_SUCCEEDED = 'SIGN_WEB3_TRANSACTION_SUCCEEDED',
+  SIGN_LOCAL_TRANSACTION_SUCCEEDED = 'SIGN_LOCAL_TRANSACTION_SUCCEEDED',
+  SIGN_TRANSACTION_FAILED = 'SIGN_TRANSACTION_FAILED'
+}
 
 export interface SignTransactionRequestedAction {
-  type: TRANSACTION.SIGN_TRANSACTION_REQUESTED;
+  type: TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED;
   payload: EthTx;
 }
 export interface SignLocalTransactionSucceededAction {
-  type: TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED;
+  type: TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED;
   payload: { signedTransaction: Buffer; indexingHash: string; noVerify?: boolean }; // dont verify against fields, for pushTx
 }
 
 export interface SignWeb3TransactionSucceededAction {
-  type: TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED;
+  type: TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED;
   payload: { transaction: Buffer; indexingHash: string; noVerify?: boolean };
 }
 export interface SignTransactionFailedAction {
-  type: TRANSACTION.SIGN_TRANSACTION_FAILED;
+  type: TRANSACTION_SIGN.SIGN_TRANSACTION_FAILED;
 }
 
 export type SignAction =

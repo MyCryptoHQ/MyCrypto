@@ -133,6 +133,7 @@ import {
   getNonceFailed
 } from './network';
 import {
+  TRANSACTION_SIGN,
   SignWeb3TransactionSucceededAction,
   SignLocalTransactionSucceededAction,
   SignTransactionRequestedAction,
@@ -737,7 +738,7 @@ function* verifyTransaction({
   }
   const transactionsMatch: boolean = yield select(
     serializedAndTransactionFieldsMatch,
-    type === TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+    type === TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
     noVerify
   );
   if (!transactionsMatch) {
@@ -759,9 +760,12 @@ function* handleTransactionRequest(action: SignTransactionRequestedAction): Saga
 }
 
 export const signing = [
-  takeEvery(TRANSACTION.SIGN_TRANSACTION_REQUESTED, handleTransactionRequest),
+  takeEvery(TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED, handleTransactionRequest),
   takeEvery(
-    [TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED, TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED],
+    [
+      TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+      TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED
+    ],
     verifyTransaction
   )
 ];
@@ -833,8 +837,8 @@ export function* watchTransactionState(): SagaIterator {
   while (true) {
     // wait for transaction to be signed
     yield take([
-      TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-      TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED
+      TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+      TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED
     ]);
 
     const { bail } = yield race({

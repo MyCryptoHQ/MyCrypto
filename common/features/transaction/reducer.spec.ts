@@ -21,6 +21,7 @@ import {
 import { TRANSACTION_META, SetUnitMetaAction, setTokenTo, setTokenValue } from './meta';
 import { TRANSACTION_NETWORK, NetworkAction, getFromSucceeded } from './network';
 import {
+  TRANSACTION_SIGN,
   SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction
@@ -372,7 +373,7 @@ describe('transaction: Reducers', () => {
     };
     it('should handle SIGN_TRANSACTION_REQUESTED', () => {
       const signTxRequestedAction: SignTransactionRequestedAction = {
-        type: TRANSACTION.SIGN_TRANSACTION_REQUESTED,
+        type: TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED,
         payload: {} as EthTx
       };
       expect(sign(SIGN_INITIAL_STATE, signTxRequestedAction)).toEqual({
@@ -385,7 +386,7 @@ describe('transaction: Reducers', () => {
       const signedTransaction = new Buffer('test');
       const indexingHash = 'test';
       const signLocalTxSucceededAction: SignLocalTransactionSucceededAction = {
-        type: TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+        type: TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
         payload: { signedTransaction, indexingHash }
       };
       expect(sign(SIGN_INITIAL_STATE, signLocalTxSucceededAction)).toEqual({
@@ -400,7 +401,7 @@ describe('transaction: Reducers', () => {
       const transaction = new Buffer('test');
       const indexingHash = 'test';
       const signWeb3TxSucceededAction: SignWeb3TransactionSucceededAction = {
-        type: TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED,
+        type: TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED,
         payload: { transaction, indexingHash }
       };
       expect(sign(SIGN_INITIAL_STATE, signWeb3TxSucceededAction)).toEqual({
