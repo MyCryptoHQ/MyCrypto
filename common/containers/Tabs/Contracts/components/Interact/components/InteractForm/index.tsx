@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
-import classnames from 'classnames';
 import { addHexPrefix } from 'ethereumjs-util';
 
-=======
-import { AppState } from 'reducers';
-import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
-import { NetworkContract } from 'types/network';
->>>>>>> develop
 import { donationAddressMap } from 'config';
 import translate, { translateRaw } from 'translations';
 import { NetworkContract } from 'types/network';

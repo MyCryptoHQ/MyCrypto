@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
 
+import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { getOffline, getLatestBlock } from 'features/config';
-import { BetaAgreement, Footer, Header } from 'components';
-import { Query } from 'components/renderCbs';
-import Notifications from './Notifications';
-import OfflineTab from './OfflineTab';
-=======
 import { Footer, Header } from 'components';
-import { AppState } from 'reducers';
+import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
-import { getOffline, getLatestBlock } from 'selectors/config';
-import { Query } from 'components/renderCbs';
-import { makeAutoNodeName } from 'libs/nodes';
->>>>>>> develop
 import './WebTemplate.scss';
 
 interface StateProps {

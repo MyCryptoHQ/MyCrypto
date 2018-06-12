@@ -1,13 +1,9 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-<<<<<<< HEAD
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { HardwareWallets, Coinbase, Shapeshift } from './PromoComponents';
-=======
 import { HardwareWallets, Coinbase, Shapeshift, Simplex } from './PromoComponents';
->>>>>>> develop
 import './Promos.scss';
 
 const CarouselAnimation = ({ children, ...props }: any) => (

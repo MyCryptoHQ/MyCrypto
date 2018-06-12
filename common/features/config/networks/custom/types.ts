@@ -7,12 +7,12 @@ export enum CONFIG_NETWORKS_CUSTOM {
 
 export interface AddCustomNetworkAction {
   type: CONFIG_NETWORKS_CUSTOM.ADD;
-  payload: { id: string; config: CustomNetworkConfig };
+  payload: CustomNetworkConfig;
 }
 
 export interface RemoveCustomNetworkAction {
   type: CONFIG_NETWORKS_CUSTOM.REMOVE;
-  payload: { id: string };
+  payload: string;
 }
 
 export interface CustomNetworksState {

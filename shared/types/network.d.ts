@@ -1,4 +1,4 @@
-import { CustomNetworksState, StaticNetworksState } from 'features/config/networks';
+import { CustomNetworksState, StaticNetworksState } from 'features/config';
 
 type StaticNetworkIds =
   | 'ETH'

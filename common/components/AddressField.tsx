@@ -29,7 +29,7 @@ export const AddressField: React.SFC<Props> = ({
             {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
           </div>
           <Input
-            className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
+            className="input-group-input"
             type="text"
             value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
             placeholder={donationAddressMap.ETH}
@@ -38,6 +38,7 @@ export const AddressField: React.SFC<Props> = ({
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
+            isValid={!(isValid && isLabelEntry)}
           />
         </label>
       </div>

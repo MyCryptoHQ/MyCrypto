@@ -44,7 +44,6 @@ class AddressBookTableRow extends React.Component<Props> {
     } = this.props;
     const { labelInputTouched } = this.state;
     const trOnClick = isEditing ? noop : onEditClick;
-    const labelInputClassName = labelInputTouched && labelError ? 'invalid' : '';
     const hashName = `${address}-hash`;
     const labelName = `${address}-label`;
 
@@ -56,7 +55,13 @@ class AddressBookTableRow extends React.Component<Props> {
               <label htmlFor={hashName} className="AddressBookTable-row-input-wrapper-label">
                 {translate('ADDRESS')}
               </label>
-              <Input name={hashName} title={address} value={address} readOnly={true} />
+              <Input
+                name={hashName}
+                title={address}
+                value={address}
+                readOnly={true}
+                isValid={true}
+              />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
               <Identicon address={address} />
@@ -73,7 +78,6 @@ class AddressBookTableRow extends React.Component<Props> {
               <Input
                 name={labelName}
                 title={`${translateRaw('EDIT_LABEL_FOR')} ${address}`}
-                className={labelInputClassName}
                 value={temporaryLabel}
                 onChange={this.handleLabelChange}
                 onKeyDown={this.handleKeyDown}
@@ -81,6 +85,7 @@ class AddressBookTableRow extends React.Component<Props> {
                 onBlur={this.handleBlur}
                 showInvalidBeforeBlur={true}
                 setInnerRef={this.setLabelInputRef}
+                isValid={!(labelInputTouched && labelError)}
               />
             </div>
             <button

@@ -1,32 +1,9 @@
 import React from 'react';
-<<<<<<< HEAD
 
-import { VERSION_RC } from 'config';
-import translate, { translateRaw } from 'translations';
-import { isNewerVersion } from 'utils/helpers';
-import Modal, { IButton } from 'components/ui/Modal';
-
-interface IGitHubRelease {
-  tag_name: string;
-}
-
-function getLatestGitHubRelease(): Promise<IGitHubRelease> {
-  return fetch('https://api.github.com/repos/MyCryptoHQ/MyCrypto/releases/latest', {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'content-type': 'application/json; charset=utf-8'
-    }
-  })
-    .then(res => res.json())
-    .then(data => data as IGitHubRelease);
-}
-=======
 import translate, { translateRaw } from 'translations';
 import Modal, { IButton } from 'components/ui/Modal';
 import { getLatestElectronRelease } from 'utils/versioning';
 import { VERSION } from 'config/data';
->>>>>>> develop
 
 interface State {
   isOpen: boolean;

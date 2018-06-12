@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
 import { bufferToHex } from 'ethereumjs-util';
 
 import translate from 'translations';
-=======
-import { Fields } from './components';
-import {
-  setDataField,
-  resetTransactionRequested,
-  TSetDataField,
-  TResetTransactionRequested,
-  TSetAsContractInteraction,
-  TSetAsViewAndSend,
-  setAsContractInteraction,
-  setAsViewAndSend
-} from 'actions/transaction';
->>>>>>> develop
 import { Data } from 'libs/units';
 import { INode } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { getNodeLib } from 'features/config';
 import { TShowNotification, showNotification } from 'features/notifications';
-import { getTo, getDataExists, setDataField, TSetDataField } from 'features/transaction';
+import {
+  getTo,
+  getDataExists,
+  setDataField,
+  TSetDataField,
+  resetTransactionRequested,
+  TResetTransactionRequested,
+  TSetAsContractInteraction,
+  TSetAsViewAndSend,
+  setAsContractInteraction,
+  setAsViewAndSend
+} from 'features/transaction';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import { Input, Dropdown } from 'components/ui';
 import { Fields } from './components';

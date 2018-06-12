@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-=======
-import { Query } from 'components/renderCbs';
-import { getData } from 'selectors/transaction';
->>>>>>> develop
 import { connect } from 'react-redux';
+import { isHexString } from 'ethereumjs-util';
 
 import { AppState } from 'features/reducers';
-import { getData, getDataExists } from 'features/transaction';
+import { getData } from 'features/transaction';
 import { CallBackProps } from 'components/DataFieldFactory';
-<<<<<<< HEAD
 import { Query } from 'components/renderCbs';
-=======
-import { isHexString } from 'ethereumjs-util';
->>>>>>> develop
 
 interface OwnProps {
   withProps(props: CallBackProps): React.ReactElement<any> | null;

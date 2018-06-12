@@ -3,17 +3,6 @@ import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 
 import translate from 'translations';
-<<<<<<< HEAD
-import {
-  setAsContractInteraction,
-  TSetAsContractInteraction,
-  setAsViewAndSend,
-  TSetAsViewAndSend
-} from 'features/transaction';
-=======
-import { Interact } from './components/Interact';
-import { Deploy } from './components/Deploy';
->>>>>>> develop
 import TabSection from 'containers/TabSection';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';

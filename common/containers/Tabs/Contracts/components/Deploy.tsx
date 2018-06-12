@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import translate from 'translations';
-<<<<<<< HEAD
-import classnames from 'classnames';
-import { setToField, TSetToField } from 'features/transaction';
+import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
 import { resetWallet, TResetWallet } from 'features/wallet';
 import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
 import { FullWalletOnly } from 'components/renderCbs';
@@ -12,18 +10,6 @@ import { TextArea } from 'components/ui';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-=======
-import { DataFieldFactory } from 'components/DataFieldFactory';
-import { SendButtonFactory } from 'components/SendButtonFactory';
-import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-import React, { Component } from 'react';
-import { resetTransactionRequested, TResetTransactionRequested } from 'actions/transaction';
-import { resetWallet, TResetWallet } from 'actions/wallet';
-import { connect } from 'react-redux';
-import { FullWalletOnly } from 'components/renderCbs';
-import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
-import './Deploy.scss';
->>>>>>> develop
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import './Deploy.scss';
 

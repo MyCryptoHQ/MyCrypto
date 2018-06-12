@@ -67,8 +67,6 @@ class AddressBookTable extends React.Component<Props, State> {
     // Classnames
     const addressTouchedWithError = addressTouched && addressError;
     const labelTouchedWithError = labelTouched && labelError;
-    const addressInputClassName = addressTouchedWithError ? 'invalid' : '';
-    const labelInputClassName = labelTouchedWithError ? 'invalid' : '';
     const nonMobileTemporaryInputErrorClassName =
       'AddressBookTable-row-error-temporary-input--non-mobile';
 
@@ -105,13 +103,13 @@ class AddressBookTable extends React.Component<Props, State> {
               </label>
               <Input
                 name="temporaryAddress"
-                className={addressInputClassName}
                 placeholder={translateRaw('NEW_ADDRESS')}
                 value={temporaryAddress}
                 onChange={this.handleAddressChange}
                 onFocus={this.setAddressTouched}
                 onBlur={this.setAddressBlurred}
                 setInnerRef={this.setAddressInputRef}
+                isValid={!addressTouchedWithError}
               />
             </div>
             <div className="AddressBookTable-row-identicon AddressBookTable-row-identicon-non-mobile">
@@ -133,13 +131,13 @@ class AddressBookTable extends React.Component<Props, State> {
               </label>
               <Input
                 name="temporaryLabel"
-                className={labelInputClassName}
                 placeholder={translateRaw('NEW_LABEL')}
                 value={temporaryLabel}
                 onChange={this.handleLabelChange}
                 onFocus={this.setLabelTouched}
                 onBlur={this.setLabelBlurred}
                 setInnerRef={this.setLabelInputRef}
+                isValid={!labelTouchedWithError}
               />
             </div>
             <button

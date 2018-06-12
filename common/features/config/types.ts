@@ -1,8 +1,10 @@
 import { InsecureWalletName, SecureWalletName } from 'config';
 import { DPathFormats } from 'types/network';
-import { CustomNetworkAction } from './networks';
+import { CustomNetworkAction } from './networks/custom';
 import { MetaAction } from './meta';
-import { SelectedNodeAction, StaticNodeAction, CustomNodeAction } from './nodes';
+import { SelectedNodeAction } from './nodes/selected';
+import { StaticNodeAction } from './nodes/static';
+import { CustomNodeAction } from './nodes/custom';
 
 export enum CONFIG {
   POLL_OFFLINE_STATUS = 'CONFIG_POLL_OFFLINE_STATUS',

@@ -9,7 +9,7 @@ import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig, CONFIG_NODES_SELECTED, getNodeLib } from 'features/config';
+import { getNetworkConfig, getNodeLib } from 'features/config';
 import { getWalletInst } from 'features/wallet';
 import {
   TypeKeys as TxTypeKeys,
@@ -112,9 +112,5 @@ export function* resetTxData() {
 export function* transactionsSaga(): SagaIterator {
   yield takeEvery(TRANSACTIONS.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(TxTypeKeys.BROADCAST_TRANSACTION_QUEUED, saveBroadcastedTx);
-<<<<<<< HEAD:common/features/transactions/sagas.ts
-  yield takeEvery(CONFIG_NODES_SELECTED.CHANGE, resetTxData);
-=======
-  yield takeEvery(ConfigTypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED, resetTxData);
->>>>>>> develop:common/sagas/transactions.ts
+  yield takeEvery(TRANSACTIONS.RESET_TRANSACTION_DATA, resetTxData);
 }

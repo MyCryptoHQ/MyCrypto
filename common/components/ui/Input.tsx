@@ -1,9 +1,5 @@
 import React, { HTMLProps } from 'react';
-<<<<<<< HEAD
-
-=======
 import classnames from 'classnames';
->>>>>>> develop
 import './Input.scss';
 
 interface OwnProps extends HTMLProps<HTMLInputElement> {
@@ -20,14 +16,11 @@ interface State {
   isStateless: boolean;
 }
 
-<<<<<<< HEAD
-=======
 interface OwnProps extends HTMLProps<HTMLInputElement> {
   isValid: boolean;
   showValidAsPlain?: boolean;
 }
 
->>>>>>> develop
 class Input extends React.Component<OwnProps, State> {
   public state: State = {
     hasBlurred: false,
@@ -35,13 +28,6 @@ class Input extends React.Component<OwnProps, State> {
   };
 
   public render() {
-<<<<<<< HEAD
-    const { setInnerRef, showInvalidBeforeBlur, ...props } = this.props;
-
-    return (
-      <input
-        {...props}
-=======
     const {
       setInnerRef,
       showInvalidBeforeBlur,
@@ -61,7 +47,6 @@ class Input extends React.Component<OwnProps, State> {
     return (
       <input
         {...htmlProps}
->>>>>>> develop
         ref={node => setInnerRef && setInnerRef(node)}
         onBlur={e => {
           this.setState({ hasBlurred: true });
@@ -71,13 +56,7 @@ class Input extends React.Component<OwnProps, State> {
         }}
         onChange={this.handleOnChange}
         onWheel={this.props.type === 'number' ? this.preventNumberScroll : undefined}
-<<<<<<< HEAD
-        className={`input-group-input  ${this.props.className} ${
-          showInvalidBeforeBlur || this.state.hasBlurred ? 'has-blurred' : ''
-        } ${!!this.props.value && this.props.value.toString().length > 0 ? 'has-value' : ''}`}
-=======
         className={classname}
->>>>>>> develop
       />
     );
   }

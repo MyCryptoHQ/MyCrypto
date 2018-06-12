@@ -1,41 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
-<<<<<<< HEAD
 
 import { etherChainExplorerInst } from 'config/data';
-import translate from 'translations';
-import { IWallet, TrezorWallet, LedgerWallet } from 'libs/wallet';
+import translate, { translateRaw } from 'translations';
+import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
+import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
-import {
-  TRefreshAccountBalance,
-  refreshAccountBalance,
-  getEtherBalance,
-  isEtherBalancePending
-} from 'features/wallet';
+import { TRefreshAccountBalance, refreshAccountBalance } from 'features/wallet';
 import { UnitDisplay, NewTabLink } from 'components/ui';
-=======
-import { UnitDisplay, NewTabLink } from 'components/ui';
-import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
-import translate, { translateRaw } from 'translations';
->>>>>>> develop
 import Spinner from 'components/ui/Spinner';
 import AccountAddress from './AccountAddress';
 import './AccountInfo.scss';
-import AccountAddress from './AccountAddress';
 
 interface OwnProps {
   wallet: IWallet;
 }
 
 interface StateProps {
-<<<<<<< HEAD
-  etherBalance: ReturnType<typeof getEtherBalance>;
-  etherBalancePending: ReturnType<typeof isEtherBalancePending>;
-=======
   balance: Balance;
->>>>>>> develop
   network: ReturnType<typeof getNetworkConfig>;
   isOffline: ReturnType<typeof getOffline>;
 }
@@ -90,11 +74,7 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-<<<<<<< HEAD
-    const { network, etherBalance, isOffline, etherBalancePending } = this.props;
-=======
     const { network, isOffline, balance } = this.props;
->>>>>>> develop
     const { address, showLongBalance, confirmAddr } = this.state;
 
     let blockExplorer;
@@ -146,20 +126,16 @@ class AccountInfo extends React.Component<Props, State> {
                 onClick={this.toggleShowLongBalance}
               >
                 <UnitDisplay
-                  value={etherBalance}
+                  value={balance.wei}
                   unit={'ether'}
                   displayShortBalance={!showLongBalance}
                   checkOffline={true}
-<<<<<<< HEAD
-                  symbol={etherBalance ? network.name : null}
-=======
                   symbol={balance.wei ? this.setSymbol(network) : null}
->>>>>>> develop
                 />
               </span>
-              {etherBalance && (
+              {balance.wei && (
                 <React.Fragment>
-                  {etherBalancePending ? (
+                  {balance.isPending ? (
                     <Spinner />
                   ) : (
                     !isOffline && (
@@ -219,8 +195,7 @@ class AccountInfo extends React.Component<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    etherBalancePending: isEtherBalancePending(state),
-    etherBalance: getEtherBalance(state),
+    balance: state.wallet.balance,
     network: getNetworkConfig(state),
     isOffline: getOffline(state)
   };

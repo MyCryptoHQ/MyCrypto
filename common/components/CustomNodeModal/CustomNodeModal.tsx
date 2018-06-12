@@ -1,17 +1,10 @@
 import React from 'react';
-import { connect, Omit } from 'react-redux';
+import { connect } from 'react-redux';
 
 import translate, { translateRaw } from 'translations';
-import { shepherdProvider } from 'libs/nodes';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
-<<<<<<< HEAD
 import { AppState } from 'features/reducers';
-=======
-import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
->>>>>>> develop
 import {
   getCustomNetworkConfigs,
   getStaticNetworkConfigs,

@@ -28,14 +28,7 @@ import {
   SecureSlideThree,
   FinalSlide
 } from './components';
-<<<<<<< HEAD
-import './index.scss';
-
-const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
-const NUMBER_OF_SLIDES = 10;
-=======
 import { ONBOARD_LOCAL_STORAGE_KEY, NUMBER_OF_ONBOARD_SLIDES } from 'utils/localStorage';
->>>>>>> develop
 
 interface State {
   isOpen: boolean;

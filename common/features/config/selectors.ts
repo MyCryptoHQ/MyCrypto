@@ -2,7 +2,7 @@ import difference from 'lodash/difference';
 
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
-import { stripWeb3Network } from 'libs/nodes';
+import { stripWeb3Network, isAutoNodeConfig } from 'libs/nodes';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
 import {
   CustomNetworkConfig,
@@ -15,8 +15,10 @@ import { AppState } from 'features/reducers';
 import { getNetworks } from './networks';
 import { getCustomNetworkConfigs } from './networks/custom';
 import { getStaticNetworkConfigs, isStaticNetworkId } from './networks/static';
-import { getNodeConfig, getCustomNodeConfigs, getStaticNodes, getStaticNodeConfigs } from './nodes';
+import { getNodeConfig } from './nodes';
 import { DPathFormat } from './types';
+import { getStaticNodes, getStaticNodeConfigs } from './nodes/static/selectors';
+import { getCustomNodeConfigs } from './nodes/custom/selectors';
 
 export interface NodeOption {
   isCustom: false;
@@ -226,6 +228,42 @@ export function getAllNodes(state: AppState): { [key: string]: NodeConfig } {
   return {
     ...getStaticNodes(state),
     ...getCustomNodeConfigs(state)
+  };
+}
+
+export interface INodeLabel {
+  network: string;
+  info: string;
+}
+
+export function getSelectedNodeLabel(state: AppState): INodeLabel {
+  const allNodes = getAllNodes(state);
+  const node = getNodeConfig(state);
+  const network = getNetworkConfig(state);
+  let info;
+
+  if (node.isCustom) {
+    // Custom nodes have names
+    info = node.name;
+  } else if (node.isAuto) {
+    // Auto nodes should show the count of all nodes it uses. If only one,
+    // show the service name of the node.
+    const networkNodes = Object.values(allNodes).filter(
+      n => !isAutoNodeConfig(n) && n.network === node.network
+    );
+
+    if (networkNodes.length > 1) {
+      info = 'AUTO';
+    } else {
+      info = networkNodes[0].service;
+    }
+  } else {
+    info = node.service;
+  }
+
+  return {
+    network: network.name,
+    info
   };
 }
 //#endregion Nodes

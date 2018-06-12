@@ -1,15 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
 
-import { translateRaw } from 'translations';
-import { sanitizeNumericalInput } from 'libs/values';
-=======
-import { getAutoGasLimitEnabled } from 'selectors/config';
-import { isValidGasPrice } from 'selectors/transaction';
-import { Input } from 'components/ui';
->>>>>>> develop
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
+import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { TToggleAutoGasLimit, toggleAutoGasLimit, getAutoGasLimitEnabled } from 'features/config';
 import { getScheduleGasPrice, getTimeBounty } from 'features/schedule';

@@ -1,28 +1,22 @@
-import logo from 'assets/images/logo-mycrypto.svg';
+import React, { Component } from 'react';
+import { MapStateToProps, connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import CustomNodeModal from 'components/CustomNodeModal';
-import { ColorDropdown, OldDropDown } from 'components/ui';
+
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+import { NetworkConfig } from 'types/network';
+import { getKeyByValue } from 'utils/helpers';
+import logo from 'assets/images/logo-mycrypto.svg';
+import { OldDropDown } from 'components/ui';
 import {
   AddCustomNodeAction,
-  CustomNodeOption,
-  NodeOption,
   TAddCustomNetwork,
   TAddCustomNode,
   TChangeLanguage,
-<<<<<<< HEAD
-  TChangeNodeIntent,
-  TChangeNodeIntentOneTime,
-=======
   TChangeNodeRequestedOneTime,
-  TAddCustomNode,
->>>>>>> develop
   TRemoveCustomNode,
   getLanguageSelection,
   getNetworkConfig,
-  getNodeConfig,
-  getNodeId,
-  getNodeOptions,
   getOffline,
   isNodeChanging,
   isStaticNodeId,
@@ -31,40 +25,13 @@ import {
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
-<<<<<<< HEAD
 } from 'features/config';
 import { AppState } from 'features/reducers';
 import { TSetGasPriceField, setGasPriceField } from 'features/transaction';
-=======
-} from 'actions/config';
-import logo from 'assets/images/logo-mycrypto.svg';
-import { OldDropDown } from 'components/ui';
->>>>>>> develop
-import React, { Component } from 'react';
-import { MapStateToProps, connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import translate from 'translations';
-import { NetworkConfig } from 'types/network';
-import { NodeConfig } from 'types/node';
-import { getKeyByValue } from 'utils/helpers';
+import CustomNodeModal from 'components/CustomNodeModal';
+import NetworkDropdown from './components/NetworkDropdown';
 import Navigation from './components/Navigation';
 import OnlineStatus from './components/OnlineStatus';
-<<<<<<< HEAD
-=======
-import NetworkDropdown from './components/NetworkDropdown';
-import CustomNodeModal from 'components/CustomNodeModal';
-import { getKeyByValue } from 'utils/helpers';
-import { AppState } from 'reducers';
-import {
-  getOffline,
-  isNodeChanging,
-  getLanguageSelection,
-  getNetworkConfig,
-  isStaticNodeId
-} from 'selectors/config';
-import { NetworkConfig } from 'types/network';
-import { connect, MapStateToProps } from 'react-redux';
->>>>>>> develop
 import './index.scss';
 
 interface OwnProps {

@@ -1,22 +1,3 @@
-<<<<<<< HEAD:common/features/store.ts
-=======
-import throttle from 'lodash/throttle';
-import { routerMiddleware } from 'react-router-redux';
-import {
-  INITIAL_STATE as transactionInitialState,
-  State as TransactionState
-} from 'reducers/transaction';
-import {
-  INITIAL_STATE as initialTransactionsState,
-  State as TransactionsState
-} from 'reducers/transactions';
-import { State as SwapState, INITIAL_STATE as initialSwapState } from 'reducers/swap';
-import { State as WalletState, INITIAL_STATE as initialWalletState } from 'reducers/wallet';
-import {
-  State as AddressBookState,
-  INITIAL_STATE as initialAddressBookState
-} from 'reducers/addressBook';
->>>>>>> develop:common/store/store.ts
 import { applyMiddleware, createStore, Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'react-router-redux';
@@ -38,7 +19,6 @@ import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
 } from './configAndTokens';
-import fixAddressBookErrors from 'utils/fixAddressBookErrors';
 
 const configureStore = () => {
   const logger = createLogger({

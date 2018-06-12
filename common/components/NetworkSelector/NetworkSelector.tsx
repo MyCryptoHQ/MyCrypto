@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import translate, { translateRaw } from 'translations';
-import NetworkOption from './NetworkOption';
+import { NodeConfig } from 'types/node';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
 import {
   TChangeNodeRequested,
   changeNodeRequested,
@@ -12,9 +15,7 @@ import {
   getAllNodes,
   getAllNetworkConfigs
 } from 'features/config';
-import { NodeConfig } from 'types/node';
-import { NetworkConfig } from 'types/network';
-import { AppState } from 'reducers';
+import NetworkOption from './NetworkOption';
 import './NetworkSelector.scss';
 
 const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby'];

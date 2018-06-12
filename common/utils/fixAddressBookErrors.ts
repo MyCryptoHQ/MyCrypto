@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID, AddressBookState } from 'features/addressBook';
-=======
-import { State as AddressBookState } from 'reducers/addressBook';
-import { ADDRESS_BOOK_TABLE_ID } from 'components/AddressBookTable';
-import { ACCOUNT_ADDRESS_ID } from 'components/BalanceSidebar/AccountAddress';
->>>>>>> develop
 
 export default function fixAddressBookErrors(addressBook: AddressBookState | undefined) {
   if (!addressBook) {

@@ -1,4 +1,11 @@
-import { ChangeNodeRequestedAction, ChangeNodeSucceededAction, ChangeNodeFailedAction, ChangeNodeRequestedOneTimeAction, ChangeNodeForceAction, SelectedNodeAction, CONFIG_NODES_SELECTED } from './types';
+import {
+  ChangeNodeRequestedAction,
+  ChangeNodeSucceededAction,
+  ChangeNodeFailedAction,
+  ChangeNodeRequestedOneTimeAction,
+  ChangeNodeForceAction,
+  CONFIG_NODES_SELECTED
+} from './types';
 
 export type TChangeNodeRequested = typeof changeNodeRequested;
 export function changeNodeRequested(payload: string): ChangeNodeRequestedAction {
@@ -26,9 +33,7 @@ export function changeNodeFailed(): ChangeNodeFailedAction {
 }
 
 export type TChangeNodeRequestedOneTime = typeof changeNodeRequestedOneTime;
-export function changeNodeRequestedOneTime(
-  payload: string
-): ChangeNodeRequestedOneTimeAction {
+export function changeNodeRequestedOneTime(payload: string): ChangeNodeRequestedOneTimeAction {
   return {
     type: CONFIG_NODES_SELECTED.CHANGE_REQUESTED_ONETIME,
     payload

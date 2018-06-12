@@ -1,8 +1,7 @@
 import { dedupeCustomTokens } from 'utils/tokens';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import { CustomNodeConfig } from 'types/node';
-<<<<<<< HEAD:common/features/configAndTokens.ts
-import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
+import { shepherd, makeProviderConfig, isAutoNode } from 'libs/nodes';
 import RootReducer, { AppState } from './reducers';
 import { configReducer, ConfigState } from './config';
 import { getLanguageSelection } from './config/meta/selectors';
@@ -13,9 +12,6 @@ import { getCustomNodeConfigs } from './config/nodes/custom/selectors';
 import { getSelectedNode } from './config/nodes/selected/selectors';
 import { CustomTokensState, INITIAL_STATE as customTokensInitialState } from './customTokens';
 
-=======
-import { shepherd, makeProviderConfig, isAutoNode } from 'libs/nodes';
->>>>>>> develop:common/store/configAndTokens.ts
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };

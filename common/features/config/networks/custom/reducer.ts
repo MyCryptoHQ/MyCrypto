@@ -11,7 +11,7 @@ const addCustomNetwork = (
   { payload }: AddCustomNetworkAction
 ): CustomNetworksState => ({
   ...state,
-  [payload.id]: payload.config
+  [payload.id]: payload
 });
 
 function removeCustomNetwork(
@@ -19,7 +19,7 @@ function removeCustomNetwork(
   { payload }: RemoveCustomNetworkAction
 ): CustomNetworksState {
   const stateCopy = { ...state };
-  Reflect.deleteProperty(stateCopy, payload.id);
+  Reflect.deleteProperty(stateCopy, payload);
   return stateCopy;
 }
 

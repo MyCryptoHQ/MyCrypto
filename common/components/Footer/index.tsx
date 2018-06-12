@@ -11,13 +11,9 @@ import {
   affiliateLinks,
   partnerLinks
 } from 'config';
-import OnboardModal from 'containers/OnboardModal';
 import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
-<<<<<<< HEAD
 import PreFooter from './PreFooter';
-=======
->>>>>>> develop
 import './index.scss';
 
 const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {

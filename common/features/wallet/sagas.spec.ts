@@ -11,12 +11,12 @@ import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 import { Token } from 'types/network';
 import {
-  changeNodeIntent,
   web3UnsetNode,
   CONFIG_NODES_SELECTED,
   getNodeLib,
   getWeb3Node,
-  getOffline
+  getOffline,
+  changeNodeRequested
 } from 'features/config';
 import { initWeb3Node, unlockWeb3 } from 'features/config/sagas';
 import { showNotification } from 'features/notifications';
@@ -30,20 +30,8 @@ import {
   unlockMnemonic as unlockMnemonicActionGen,
   setTokenBalancesFulfilled,
   setTokenBalancesPending,
-<<<<<<< HEAD:common/features/wallet/sagas.spec.ts
   setTokenBalancesRejected
 } from './actions';
-=======
-  setTokenBalancesRejected,
-  TypeKeys
-} from 'actions/wallet';
-import { Wei } from 'libs/units';
-import { changeNodeRequested, web3UnsetNode } from 'actions/config';
-import { INode } from 'libs/nodes/INode';
-import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects';
-import { getNodeLib, getOffline, getWeb3Node } from 'selectors/config';
-import { getWalletInst, getWalletConfigTokens } from 'selectors/wallet';
->>>>>>> develop:spec/sagas/wallet.spec.tsx
 import {
   updateAccountBalance,
   updateTokenBalances,
@@ -351,12 +339,8 @@ describe('unlockWeb3*', () => {
   it('should yield take on node change', () => {
     const expected = take(
       (action: any) =>
-<<<<<<< HEAD:common/features/wallet/sagas.spec.ts
-        action.type === CONFIG_NODES_SELECTED.CHANGE && action.payload.nodeSelection === 'web3'
-=======
-        action.type === ConfigTypeKeys.CONFIG_CHANGE_NODE_SUCCEEDED &&
+        action.type === CONFIG_NODES_SELECTED.CHANGE_SUCCEEDED &&
         action.payload.nodeSelection === 'web3'
->>>>>>> develop:spec/sagas/wallet.spec.tsx
     );
     const result = data.gen.next().value;
     expect(JSON.stringify(expected)).toEqual(JSON.stringify(result));

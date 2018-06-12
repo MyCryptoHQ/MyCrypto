@@ -1,8 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
-import classnames from 'classnames';
-=======
->>>>>>> develop
 
 import { Input } from 'components/ui';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';

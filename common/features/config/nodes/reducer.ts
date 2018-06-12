@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import { CustomNodesState, customNodesReducer } from './custom';
 import { StaticNodesState, staticNodesReducer } from './static';
-import { SelectedNodeState, selectedNodesReducer } from './selected';
+import { SelectedNodeState, selectedNodeReducer } from './selected';
 
 export interface NodesState {
   customNodes: CustomNodesState;
@@ -13,5 +13,5 @@ export interface NodesState {
 export const nodesReducer = combineReducers<NodesState>({
   customNodes: customNodesReducer,
   staticNodes: staticNodesReducer,
-  selectedNode: selectedNodesReducer
+  selectedNode: selectedNodeReducer
 });

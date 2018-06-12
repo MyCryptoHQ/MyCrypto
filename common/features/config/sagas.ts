@@ -57,7 +57,7 @@ import {
   ChangeNodeRequestedOneTimeAction,
   CONFIG_NODES_SELECTED,
   ChangeNodeForceAction,
-  SELECTED_NODE_INITIAL_STATE,
+  SELECTED_NODE_INITIAL_STATE
 } from './nodes/selected';
 import { setOnline, setOffline, setLatestBlock, getOffline, CONFIG_META } from './meta';
 import { CONFIG_NODES_STATIC, web3SetNode, web3UnsetNode } from './nodes/static';
@@ -81,12 +81,12 @@ export function* pruneCustomNetworks(): SagaIterator {
 
   for (const currNetwork of Object.keys(customNetworks)) {
     if (!linkedNetworks[currNetwork]) {
-      yield put(removeCustomNetwork({ id: currNetwork }));
+      yield put(removeCustomNetwork(currNetwork));
     }
   }
 }
 
-export const network = [takeEvery(CONFIG_NODES_CUSTOM.REMOVE, pruneCustomNetworks)];
+export const networkSaga = [takeEvery(CONFIG_NODES_CUSTOM.REMOVE, pruneCustomNetworks)];
 //#endregion Network
 
 //#region Node
@@ -398,7 +398,6 @@ export function* unlockWeb3(): SagaIterator {
     yield put(web3UnsetNode());
     yield put(showNotification('danger', translate(err.message)));
   }
-
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
@@ -438,5 +437,5 @@ export const web3 = [
 //#endregion web3
 
 export function* configSaga(): SagaIterator {
-  yield all([...network, ...node, ...web3]);
+  yield all([...networkSaga, ...node, ...web3]);
 }
