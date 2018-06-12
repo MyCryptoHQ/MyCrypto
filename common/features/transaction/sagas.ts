@@ -107,6 +107,7 @@ import {
   getValue
 } from './fields';
 import {
+  TRANSACTION_META,
   SetTokenToMetaAction,
   SetTokenValueMetaAction,
   SetUnitMetaAction,
@@ -383,8 +384,8 @@ export function* handleTokenValue({ payload }: SetTokenValueMetaAction) {
 }
 
 export const handleToken = [
-  takeEvery(TRANSACTION.TOKEN_TO_META_SET, handleTokenTo),
-  takeEvery(TRANSACTION.TOKEN_VALUE_META_SET, handleTokenValue)
+  takeEvery(TRANSACTION_META.TOKEN_TO_META_SET, handleTokenTo),
+  takeEvery(TRANSACTION_META.TOKEN_VALUE_META_SET, handleTokenValue)
 ];
 //#endregion Token
 
@@ -471,7 +472,7 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
   }
 }
 
-export const handleSetUnit = [takeEvery(TRANSACTION.UNIT_META_SET, handleSetUnitMeta)];
+export const handleSetUnit = [takeEvery(TRANSACTION_META.UNIT_META_SET, handleSetUnitMeta)];
 //#endregion Set Unit
 
 export const metaSaga = [...handleToken, ...handleSetUnit];
@@ -843,9 +844,9 @@ export function* watchTransactionState(): SagaIterator {
         TRANSACTION_FIELDS.DATA_FIELD_SET,
         TRANSACTION_FIELDS.NONCE_FIELD_SET,
         TRANSACTION_FIELDS.TO_FIELD_SET,
-        TRANSACTION.TOKEN_TO_META_SET,
-        TRANSACTION.TOKEN_VALUE_META_SET,
-        TRANSACTION.UNIT_META_SET
+        TRANSACTION_META.TOKEN_TO_META_SET,
+        TRANSACTION_META.TOKEN_VALUE_META_SET,
+        TRANSACTION_META.UNIT_META_SET
       ]) // watch for any actions that would change transaction state
     });
 

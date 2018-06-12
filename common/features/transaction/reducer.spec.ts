@@ -18,7 +18,7 @@ import {
   setGasPriceField,
   InputGasPriceAction
 } from './fields';
-import { SetUnitMetaAction, setTokenTo, setTokenValue } from './meta';
+import { TRANSACTION_META, SetUnitMetaAction, setTokenTo, setTokenValue } from './meta';
 import { NetworkAction, getFromSucceeded } from './network';
 import {
   SignTransactionRequestedAction,
@@ -220,7 +220,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle UNIT_META_SET', () => {
       const setUnitMetaAction: SetUnitMetaAction = {
-        type: TRANSACTION.UNIT_META_SET,
+        type: TRANSACTION_META.UNIT_META_SET,
         payload: 'test'
       };
       expect(meta(META_INITIAL_STATE, setUnitMetaAction));

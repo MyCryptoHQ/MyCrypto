@@ -11,6 +11,7 @@ import {
 } from '../types';
 import { NetworkAction, GetFromSucceededAction } from '../network/types';
 import {
+  TRANSACTION_META,
   MetaAction,
   SetUnitMetaAction,
   TransactionMetaAction,
@@ -88,11 +89,11 @@ export default function meta(
   action: MetaAction | SwapAction | ResetTransactionSuccessfulAction | NetworkAction
 ): MetaState {
   switch (action.type) {
-    case TRANSACTION.UNIT_META_SET:
+    case TRANSACTION_META.UNIT_META_SET:
       return unitMeta(state, action);
-    case TRANSACTION.TOKEN_VALUE_META_SET:
+    case TRANSACTION_META.TOKEN_VALUE_META_SET:
       return updateMetaField('tokenValue')(state, action);
-    case TRANSACTION.TOKEN_TO_META_SET:
+    case TRANSACTION_META.TOKEN_TO_META_SET:
       return updateMetaField('tokenTo')(state, action);
     case TRANSACTION.GET_FROM_SUCCEEDED:
       return updateMetaField('from')(state, action);
@@ -103,11 +104,11 @@ export default function meta(
     case TRANSACTION.TOKEN_TO_TOKEN_SWAP:
       return tokenToTokenMeta(state, action);
 
-    case TRANSACTION.IS_VIEW_AND_SEND: {
+    case TRANSACTION_META.IS_VIEW_AND_SEND: {
       const nextState: MetaState = { ...state, isContractInteraction: false };
       return nextState;
     }
-    case TRANSACTION.IS_CONTRACT_INTERACTION: {
+    case TRANSACTION_META.IS_CONTRACT_INTERACTION: {
       const nextState: MetaState = { ...state, isContractInteraction: true };
       return nextState;
     }
