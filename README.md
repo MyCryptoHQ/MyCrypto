@@ -7,48 +7,50 @@
 
 ## Requirements
 
-* Node 8.9.4*
-* NPM >= 5
-* Python 2.7.X**
+* Node 8.9.4\*
+* Yarn >= 1.7.0\*\*
+* Python 2.7.X\*\*\*
 
-<sub>*Higher versions should work fun, but may cause inconsistencies. It's suggested you run 8.9.4 using `nvm`.</sub>
+<sub>\*Higher versions should work fun, but may cause inconsistencies. It's suggested you run 8.9.4 using `nvm`.</sub>
 <br/>
-<sub>**Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
+<sub>**npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
+<br/>
+<sub>\***Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
 
 ## Running the App
 
-After `npm install`ing all dependencies you can run various commands depending on what you want to do:
+After `yarn`ing all dependencies you can run various commands depending on what you want to do:
 
 #### Development
 
 ```bash
 # run app in dev mode in browser, rebuild on file changes
-npm run dev
+yarn dev
 ```
 
 ```bash
 # run app in dev mode in electron, rebuild on file changes
-npm run dev:electron
+yarn dev:electron
 ```
 
 #### Build Releases
 
 ```bash
 # builds the production server app
-npm run build
+yarn build
 ```
 
 ```bash
 # builds the downloadable version of the site
-npm run build:downloadable
+yarn build:downloadable
 ```
 
 ```bash
 # builds the electron apps
-npm run build:electron
+yarn build:electron
 
 # builds only one OS's electron app
-npm run build:electron:(osx|linux|windows)
+yarn build:electron:(osx|linux|windows)
 ```
 
 All of these builds are output to a folder in `dist/`.
@@ -57,26 +59,26 @@ All of these builds are output to a folder in `dist/`.
 
 ```bash
 # run unit tests with Jest
-npm run test
+yarn test
 ```
 
 #### Integration Tests:
 
 ```bash
 # run integration tests with Jest
-npm run test:int
+yarn test:int
 ```
 
 #### Dev (HTTPS):
 
 Some parts of the site, such as the Ledger wallet, require an HTTPS environment to work. To develop on HTTPS, do the following:
 
-1. Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
-2. Move the `.key` and `.crt` files into `webpack_config/server.*`
-3. Run the following command:
+1.  Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
+2.  Move the `.key` and `.crt` files into `webpack_config/server.*`
+3.  Run the following command:
 
 ```bash
-npm run dev:https
+yarn dev:https
 ```
 
 #### Address Derivation Checker:
@@ -89,20 +91,20 @@ To test for correct address derivation, the address derivation checker uses mult
 
 ##### The derivation checker utility assumes that you have:
 
-1. Docker installed/available
-2. [dternyak/eth-priv-to-addr](https://hub.docker.com/r/dternyak/eth-priv-to-addr/) pulled from DockerHub
+1.  Docker installed/available
+2.  [dternyak/eth-priv-to-addr](https://hub.docker.com/r/dternyak/eth-priv-to-addr/) pulled from DockerHub
 
 ##### Docker setup instructions:
 
-1. Install docker (on macOS, [Docker for Mac](https://docs.docker.com/docker-for-mac/) is suggested)
-2. `docker pull dternyak/eth-priv-to-addr`
+1.  Install docker (on macOS, [Docker for Mac](https://docs.docker.com/docker-for-mac/) is suggested)
+2.  `docker pull dternyak/eth-priv-to-addr`
 
 ##### Run Derivation Checker
 
 The derivation checker utility runs as part of the integration test suite.
 
 ```bash
-npm run test:int
+yarn test:int
 ```
 
 ## Folder structure:
@@ -144,4 +146,3 @@ npm run test:int
 </a>
 
 Cross browser testing and debugging provided by the very lovely team at BrowserStack.
-
