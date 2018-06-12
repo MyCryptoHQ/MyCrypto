@@ -10,11 +10,11 @@
     opacity: 0.5;
     transition: $transition;
 
-    &:hover{
+    &:hover {
       opacity: 1;
     }
 
-    &.is-copied{
+    &.is-copied {
       color: $brand-success;
       opacity: 1;
     }
@@ -24,8 +24,20 @@
     }
   }
 
+  &-label {
+    display: inline-block;
+    cursor: pointer;
+    color: $text-color;
+    font-size: $font-size-xs;
+    opacity: 0.5;
+
+    .fa {
+      margin: 0 $space-xs 0 $space-sm;
+    }
+  }
+
   &-section {
-    margin-top: $space * 1.5;
+    margin: $space 0;
 
     &:first-child {
       margin-top: 0;
@@ -72,10 +84,16 @@
       max-width: 100%;
       flex-direction: row;
       flex-wrap: nowrap;
+      align-items: center;
     }
 
     &-wrapper {
       max-width: calc(100% - 44px - 24px);
+
+      &-error {
+        color: $brand-danger;
+        margin-bottom: $space-md;
+      }
     }
 
     &-icon {
@@ -88,6 +106,10 @@
       margin-top: -$space-xs;
       word-wrap: break-word;
       @include mono;
+
+      &--small {
+        font-size: 0.8rem;
+      }
     }
 
     &-confirm {
@@ -96,6 +118,14 @@
       .Spinner {
         margin-right: 16px;
       }
+    }
+
+    &-label {
+      font-weight: bolder;
+      font-size: 1.3rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
     }
   }
 
