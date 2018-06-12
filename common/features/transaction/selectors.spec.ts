@@ -3,7 +3,19 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { Wei } from 'libs/units';
 import { getInitialState } from '../helpers';
-import { RequestStatus } from './network/types';
+import { getTransactionStatus } from './broadcast';
+import { getFields, getGasLimit, getValue, getTo, getNonce, getData, getGasPrice } from './fields';
+import { getDecimal, getTokenValue, getTokenTo } from './meta';
+import {
+  RequestStatus,
+  getNetworkStatus,
+  nonceRequestPending,
+  nonceRequestFailed,
+  isNetworkRequestPending,
+  getGasEstimationPending,
+  getGasLimitEstimationTimedOut
+} from './network';
+import { getSignedTx, getWeb3Tx, getSignState } from './sign';
 import {
   currentTransactionFailed,
   currentTransactionBroadcasting,
@@ -26,26 +38,6 @@ import {
   signaturePending,
   getSerializedTransaction
 } from './selectors';
-import { getTransactionStatus } from './broadcast/selectors';
-import {
-  getFields,
-  getGasLimit,
-  getValue,
-  getTo,
-  getNonce,
-  getData,
-  getGasPrice
-} from './fields/selectors';
-import { getDecimal, getTokenValue, getTokenTo } from './meta/selectors';
-import {
-  getNetworkStatus,
-  nonceRequestPending,
-  nonceRequestFailed,
-  isNetworkRequestPending,
-  getGasEstimationPending,
-  getGasLimitEstimationTimedOut
-} from './network/selectors';
-import { getSignedTx, getWeb3Tx, getSignState } from './sign/selectors';
 import { reduceToValues, isFullTx } from './helpers';
 
 const initialState = cloneDeep(getInitialState());

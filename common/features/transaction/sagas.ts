@@ -51,6 +51,8 @@ import {
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import {
+  CONFIG_META,
+  ToggleAutoGasLimitAction,
   getNodeLib,
   isNetworkUnit,
   getNetworkUnit,
@@ -79,15 +81,7 @@ import {
   setScheduleGasLimitField
 } from 'features/schedule';
 import { showNotification } from 'features/notifications';
-import {
-  TRANSACTION,
-  SetCurrentToAction,
-  SetCurrentValueAction,
-  SwapEtherToTokenAction,
-  SwapTokenToTokenAction,
-  SwapTokenToEtherAction
-} from './types';
-import { TRANSACTION_BROADCAST } from './broadcast/types';
+import { TRANSACTION_BROADCAST } from './broadcast';
 import {
   SetToFieldAction,
   InputDataAction,
@@ -95,23 +89,7 @@ import {
   InputGasPriceAction,
   InputGasPriceIntentAction,
   InputNonceAction,
-  SetDataFieldAction
-} from './fields/types';
-import { SetTokenToMetaAction, SetTokenValueMetaAction, SetUnitMetaAction } from './meta/types';
-import { EstimateGasRequestedAction } from './network/types';
-import {
-  SignWeb3TransactionSucceededAction,
-  SignLocalTransactionSucceededAction,
-  SignTransactionRequestedAction
-} from './sign/types';
-import {
-  sendEverythingSucceeded,
-  sendEverythingFailed,
-  swapTokenToEther,
-  swapEtherToToken,
-  swapTokenToToken
-} from './actions';
-import {
+  SetDataFieldAction,
   setToField,
   setValueField,
   inputGasPrice,
@@ -122,10 +100,26 @@ import {
   inputNonce,
   resetTransactionRequested,
   resetTransactionSuccessful,
-  TSetValueField
-} from './fields/actions';
-import { setTokenTo, setTokenValue, setUnitMeta, TSetTokenValue } from './meta/actions';
+  TSetValueField,
+  getTo,
+  getData,
+  getValue
+} from './fields';
 import {
+  SetTokenToMetaAction,
+  SetTokenValueMetaAction,
+  SetUnitMetaAction,
+  setTokenTo,
+  setTokenValue,
+  setUnitMeta,
+  TSetTokenValue,
+  getDecimal,
+  getTokenValue,
+  getTokenTo,
+  isContractInteraction
+} from './meta';
+import {
+  EstimateGasRequestedAction,
   getFromSucceeded,
   getFromFailed,
   estimateGasFailed,
@@ -134,8 +128,29 @@ import {
   estimateGasTimedout,
   getNonceSucceeded,
   getNonceFailed
-} from './network/actions';
-import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
+} from './network';
+import {
+  SignWeb3TransactionSucceededAction,
+  SignLocalTransactionSucceededAction,
+  SignTransactionRequestedAction,
+  signLocalTransactionSucceeded,
+  signWeb3TransactionSucceeded
+} from './sign';
+import {
+  TRANSACTION,
+  SetCurrentToAction,
+  SetCurrentValueAction,
+  SwapEtherToTokenAction,
+  SwapTokenToTokenAction,
+  SwapTokenToEtherAction
+} from './types';
+import {
+  sendEverythingSucceeded,
+  sendEverythingFailed,
+  swapTokenToEther,
+  swapEtherToToken,
+  swapTokenToToken
+} from './actions';
 import {
   isEtherTransaction,
   getTransaction,
@@ -148,8 +163,6 @@ import {
   getCurrentToAddressMessage,
   serializedAndTransactionFieldsMatch
 } from './selectors';
-import { getTo, getData, getValue } from './fields/selectors';
-import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
 import {
   IFullWalletAndTransaction,
   signTransactionWrapper,
@@ -158,7 +171,6 @@ import {
   IInput,
   rebaseUserInput
 } from './helpers';
-import { CONFIG_META, ToggleAutoGasLimitAction } from '../config';
 
 //#region Broadcast
 export const broadcastLocalTransactionHandler = function*(signedTx: string): SagaIterator {

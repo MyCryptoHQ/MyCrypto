@@ -55,14 +55,6 @@ import {
 } from 'features/schedule';
 import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
 import { showNotification } from 'features/notifications';
-import { TRANSACTION } from './types';
-import {
-  swapEtherToToken,
-  swapTokenToToken,
-  sendEverythingSucceeded,
-  sendEverythingFailed,
-  swapTokenToEther
-} from './actions';
 import {
   setToField,
   setValueField,
@@ -72,9 +64,19 @@ import {
   setGasPriceField,
   inputNonce,
   resetTransactionSuccessful,
-  inputGasPrice
-} from './fields/actions';
-import { setTokenTo, setTokenValue } from './meta/actions';
+  inputGasPrice,
+  getTo,
+  getData,
+  getValue
+} from './fields';
+import {
+  setTokenTo,
+  setTokenValue,
+  getDecimal,
+  getTokenValue,
+  getTokenTo,
+  isContractInteraction
+} from './meta';
 import {
   getFromSucceeded,
   getFromFailed,
@@ -83,8 +85,16 @@ import {
   estimateGasRequested,
   estimateGasTimedout,
   getNonceSucceeded
-} from './network/actions';
-import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
+} from './network';
+import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign';
+import { TRANSACTION } from './types';
+import {
+  swapEtherToToken,
+  swapTokenToToken,
+  sendEverythingSucceeded,
+  sendEverythingFailed,
+  swapTokenToEther
+} from './actions';
 import {
   isEtherTransaction,
   getUnit,
@@ -94,8 +104,6 @@ import {
   getTransaction,
   getCurrentToAddressMessage
 } from './selectors';
-import { getTo, getData, getValue } from './fields/selectors';
-import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
 import {
   broadcastLocalTransactionHandler,
   broadcastWeb3TransactionHandler,
@@ -128,8 +136,8 @@ import {
 import { validateInput, rebaseUserInput } from './helpers';
 
 /* tslint:disable */
+import { CONFIG_META } from 'features/config';
 import './selectors'; //throws if not imported
-import { CONFIG_META } from '../config';
 /* tslint:enable */
 
 configuredStore.getState();

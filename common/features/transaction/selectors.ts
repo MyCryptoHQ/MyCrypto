@@ -2,27 +2,20 @@ import erc20 from 'libs/erc20';
 import EthTx from 'ethereumjs-tx';
 import { toChecksumAddress } from 'ethereumjs-util';
 
+import { getAddressMessage, AddressMessage } from 'config';
+import { getTransactionFields, makeTransaction, IHexStrTransaction } from 'libs/transaction';
+import { TokenValue, Wei, Address, getDecimalFromEtherUnit } from 'libs/units';
+import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
+import { stripHexPrefixAndLower } from 'libs/values';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getAddressMessage, AddressMessage } from 'config';
-import { TokenValue, Wei, Address, getDecimalFromEtherUnit } from 'libs/units';
-import { stripHexPrefixAndLower } from 'libs/values';
-import { getTransactionFields, makeTransaction, IHexStrTransaction } from 'libs/transaction';
-import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
 import { getNetworkConfig, isNetworkUnit, getOffline } from 'features/config';
 import { getEtherBalance, getToken, getWalletType } from 'features/wallet';
 import { getCustomTokens } from 'features/customTokens';
-import { getTo, getValue, getGasPrice, getGasLimit, getData, getFields } from './fields/selectors';
-import { getTransactionStatus } from './broadcast/selectors';
-import {
-  getTokenTo,
-  getTokenValue,
-  getMetaState,
-  isContractInteraction,
-  getDecimal
-} from './meta/selectors';
-import { getSignState, getSignedTx, getWeb3Tx } from './sign/selectors';
-import { SerializedTxParams } from './sign/types';
+import { getTransactionStatus } from './broadcast';
+import { getTo, getValue, getGasPrice, getGasLimit, getData, getFields } from './fields';
+import { getTokenTo, getTokenValue, getMetaState, isContractInteraction, getDecimal } from './meta';
+import { SerializedTxParams, getSignState, getSignedTx, getWeb3Tx } from './sign';
 import { reduceToValues, isFullTx } from './helpers';
 
 export interface ICurrentValue {
