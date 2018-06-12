@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import { getNetworkContracts, getNetworkConfig, getIsValidAddressFn } from 'selectors/config';
+import { getNetworkContracts, getIsValidAddressFn } from 'selectors/config';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import { isValidAbiJson } from 'libs/validators';
-import { NetworkContract, NetworkConfig } from 'types/network';
+import { NetworkContract } from 'types/network';
 import { donationAddressMap } from 'config';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
@@ -20,7 +20,6 @@ interface ContractOption {
 interface StateProps {
   currentTo: ReturnType<typeof getCurrentTo>;
   contracts: NetworkContract[];
-  network: NetworkConfig;
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
 
@@ -206,7 +205,6 @@ class InteractForm extends Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
   contracts: getNetworkContracts(state) || [],
   currentTo: getCurrentTo(state),
-  network: getNetworkConfig(state),
   isValidAddress: getIsValidAddressFn(state)
 });
 
