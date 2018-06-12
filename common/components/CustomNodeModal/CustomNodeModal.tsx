@@ -13,8 +13,7 @@ import {
 } from 'selectors/config';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
-import { shepherdProvider } from 'libs/nodes';
-import { exists, SuccessConfig, FailConfig } from 'eth-exists';
+import { exists, SuccessConfig, FailConfig } from 'mycrypto-eth-exists';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 
