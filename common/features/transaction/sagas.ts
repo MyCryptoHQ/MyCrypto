@@ -121,6 +121,7 @@ import {
   isContractInteraction
 } from './meta';
 import {
+  TRANSACTION_NETWORK,
   EstimateGasRequestedAction,
   getFromSucceeded,
   getFromFailed,
@@ -498,7 +499,7 @@ export function* handleFromRequest(): SagaIterator {
   }
 }
 
-export const fromSaga = takeEvery(TRANSACTION.GET_FROM_REQUESTED, handleFromRequest);
+export const fromSaga = takeEvery(TRANSACTION_NETWORK.GET_FROM_REQUESTED, handleFromRequest);
 //#endregion From
 
 //#region Gas
@@ -559,7 +560,10 @@ export function* shouldEstimateGas(): SagaIterator {
 }
 
 export function* estimateGas(): SagaIterator {
-  const requestChan = yield actionChannel(TRANSACTION.ESTIMATE_GAS_REQUESTED, buffers.sliding(1));
+  const requestChan = yield actionChannel(
+    TRANSACTION_NETWORK.ESTIMATE_GAS_REQUESTED,
+    buffers.sliding(1)
+  );
 
   while (true) {
     const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
@@ -665,7 +669,7 @@ export function* handleNonceRequestWrapper(): SagaIterator {
 
 //leave get nonce requested for nonce refresh later on
 export const nonceSaga = takeEvery(
-  [TRANSACTION.GET_NONCE_REQUESTED, WALLET.SET],
+  [TRANSACTION_NETWORK.GET_NONCE_REQUESTED, WALLET.SET],
   handleNonceRequestWrapper
 );
 //#endregion Nonce

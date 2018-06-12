@@ -19,7 +19,7 @@ import {
   InputGasPriceAction
 } from './fields';
 import { TRANSACTION_META, SetUnitMetaAction, setTokenTo, setTokenValue } from './meta';
-import { NetworkAction, getFromSucceeded } from './network';
+import { TRANSACTION_NETWORK, NetworkAction, getFromSucceeded } from './network';
 import {
   SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
@@ -321,7 +321,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle gas estimation status actions', () => {
       const gasEstimationAction: NetworkAction = {
-        type: TRANSACTION.ESTIMATE_GAS_SUCCEEDED
+        type: TRANSACTION_NETWORK.ESTIMATE_GAS_SUCCEEDED
       };
       expect(network(NETWORK_INITIAL_STATE, gasEstimationAction)).toEqual({
         ...NETWORK_INITIAL_STATE,
@@ -331,7 +331,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle get from status actions', () => {
       const getFromAction: NetworkAction = {
-        type: TRANSACTION.GET_FROM_SUCCEEDED,
+        type: TRANSACTION_NETWORK.GET_FROM_SUCCEEDED,
         payload: 'test'
       };
       expect(network(NETWORK_INITIAL_STATE, getFromAction)).toEqual({
@@ -342,7 +342,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle get nonce status actions', () => {
       const getNonceAction: NetworkAction = {
-        type: TRANSACTION.GET_NONCE_SUCCEEDED,
+        type: TRANSACTION_NETWORK.GET_NONCE_SUCCEEDED,
         payload: 'test'
       };
       expect(network(NETWORK_INITIAL_STATE, getNonceAction)).toEqual({

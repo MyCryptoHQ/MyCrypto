@@ -1,6 +1,6 @@
 import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
 import { TRANSACTION_FIELDS, InputGasPriceAction, InputGasPriceIntentAction } from '../fields';
-import { NetworkAction, RequestStatus } from '../network';
+import { TRANSACTION_NETWORK, NetworkAction, RequestStatus } from '../network';
 
 export interface NetworkState {
   gasEstimationStatus: RequestStatus | null;
@@ -45,25 +45,25 @@ export default function network(
     | InputGasPriceIntentAction
 ) {
   switch (action.type) {
-    case TRANSACTION.ESTIMATE_GAS_REQUESTED:
+    case TRANSACTION_NETWORK.ESTIMATE_GAS_REQUESTED:
       return getNextState('gasEstimationStatus')(state, action);
-    case TRANSACTION.ESTIMATE_GAS_FAILED:
+    case TRANSACTION_NETWORK.ESTIMATE_GAS_FAILED:
       return getNextState('gasEstimationStatus')(state, action);
-    case TRANSACTION.ESTIMATE_GAS_TIMEDOUT:
+    case TRANSACTION_NETWORK.ESTIMATE_GAS_TIMEDOUT:
       return getNextState('gasEstimationStatus')(state, action);
-    case TRANSACTION.ESTIMATE_GAS_SUCCEEDED:
+    case TRANSACTION_NETWORK.ESTIMATE_GAS_SUCCEEDED:
       return getNextState('gasEstimationStatus')(state, action);
-    case TRANSACTION.GET_FROM_REQUESTED:
+    case TRANSACTION_NETWORK.GET_FROM_REQUESTED:
       return getNextState('getFromStatus')(state, action);
-    case TRANSACTION.GET_FROM_SUCCEEDED:
+    case TRANSACTION_NETWORK.GET_FROM_SUCCEEDED:
       return getNextState('getFromStatus')(state, action);
-    case TRANSACTION.GET_FROM_FAILED:
+    case TRANSACTION_NETWORK.GET_FROM_FAILED:
       return getNextState('getFromStatus')(state, action);
-    case TRANSACTION.GET_NONCE_REQUESTED:
+    case TRANSACTION_NETWORK.GET_NONCE_REQUESTED:
       return getNextState('getNonceStatus')(state, action);
-    case TRANSACTION.GET_NONCE_SUCCEEDED:
+    case TRANSACTION_NETWORK.GET_NONCE_SUCCEEDED:
       return getNextState('getNonceStatus')(state, action);
-    case TRANSACTION.GET_NONCE_FAILED:
+    case TRANSACTION_NETWORK.GET_NONCE_FAILED:
       return getNextState('getNonceStatus')(state, action);
 
     // Not exactly "network" requests, but we want to show pending while

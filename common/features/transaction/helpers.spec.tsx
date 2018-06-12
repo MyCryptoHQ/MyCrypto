@@ -6,31 +6,22 @@ import { bufferToHex } from 'ethereumjs-util';
 
 import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { configuredStore } from 'features/store';
 import { getOffline, getNetworkConfig, isNetworkUnit } from 'features/config';
 import { isSchedulingEnabled } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
-import { TRANSACTION } from './types';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
-  broadcastTransactionQueued
-} from './broadcast/actions';
-import { resetTransactionRequested } from './fields/actions';
-import { getFromRequested } from './network/actions';
-import { signTransactionFailed } from './sign/actions';
+  broadcastTransactionQueued,
+  getTransactionStatus
+} from './broadcast';
+import { resetTransactionRequested, getGasLimit, getGasPrice } from './fields';
+import { TRANSACTION_NETWORK, getFromRequested } from './network';
+import { signTransactionFailed, getWeb3Tx, getSignedTx } from './sign';
 import { getUnit, getDecimalFromUnit } from './selectors';
-import { getTransactionStatus } from './broadcast/selectors';
-import { getGasLimit, getGasPrice } from './fields/selectors';
-import { getWeb3Tx, getSignedTx } from './sign/selectors';
-
-/* tslint:disable */
-import './actions';
-import './selectors'; //throws if not imported
-/* tslint:enable */
-
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import {
   rebaseUserInput,
   validateInput,
@@ -43,6 +34,11 @@ import {
   handleFailedTransaction,
   getFromSaga
 } from './helpers';
+
+/* tslint:disable */
+import './actions';
+import './selectors'; //throws if not imported
+/* tslint:enable */
 
 configuredStore.getState();
 
@@ -354,10 +350,10 @@ describe('transaction: Helpers', () => {
 
     describe('getFrom*', () => {
       const getFromSucceeded = {
-        type: TRANSACTION.GET_FROM_SUCCEEDED
+        type: TRANSACTION_NETWORK.GET_FROM_SUCCEEDED
       };
       const getFromFailed = {
-        type: TRANSACTION.GET_FROM_FAILED
+        type: TRANSACTION_NETWORK.GET_FROM_FAILED
       };
 
       const gens: any = {};
@@ -369,7 +365,7 @@ describe('transaction: Helpers', () => {
 
       it('should take GET_FROM*', () => {
         expect(gens.gen.next().value).toEqual(
-          take([TRANSACTION.GET_FROM_SUCCEEDED, TRANSACTION.GET_FROM_FAILED])
+          take([TRANSACTION_NETWORK.GET_FROM_SUCCEEDED, TRANSACTION_NETWORK.GET_FROM_FAILED])
         );
       });
 

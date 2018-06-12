@@ -79,6 +79,7 @@ import {
   isContractInteraction
 } from './meta';
 import {
+  TRANSACTION_NETWORK,
   getFromSucceeded,
   getFromFailed,
   estimateGasFailed,
@@ -1306,7 +1307,7 @@ describe('transaction: Sagas', () => {
 
         it('should yield actionChannel', () => {
           const expected = JSON.stringify(
-            actionChannel(TRANSACTION.ESTIMATE_GAS_REQUESTED, buffers.sliding(1))
+            actionChannel(TRANSACTION_NETWORK.ESTIMATE_GAS_REQUESTED, buffers.sliding(1))
           );
           const result = JSON.stringify(gens.successCase.next().value);
           expect(expected).toEqual(result);

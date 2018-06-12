@@ -9,7 +9,7 @@ import {
   SwapAction,
   ResetTransactionSuccessfulAction
 } from '../types';
-import { NetworkAction, GetFromSucceededAction } from '../network/types';
+import { TRANSACTION_NETWORK, NetworkAction, GetFromSucceededAction } from '../network';
 import {
   TRANSACTION_META,
   MetaAction,
@@ -95,7 +95,7 @@ export default function meta(
       return updateMetaField('tokenValue')(state, action);
     case TRANSACTION_META.TOKEN_TO_META_SET:
       return updateMetaField('tokenTo')(state, action);
-    case TRANSACTION.GET_FROM_SUCCEEDED:
+    case TRANSACTION_NETWORK.GET_FROM_SUCCEEDED:
       return updateMetaField('from')(state, action);
     case TRANSACTION.TOKEN_TO_ETHER_SWAP:
       return tokenToEtherMeta(state, action);

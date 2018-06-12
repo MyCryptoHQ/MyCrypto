@@ -4,7 +4,6 @@ import { SagaIterator } from 'redux-saga';
 import { select, call, put, take } from 'redux-saga/effects';
 import { bufferToHex } from 'ethereumjs-util';
 
-import { NetworkConfig, StaticNetworkConfig } from 'types/network';
 import { TokenValue, Wei, toTokenBase } from 'libs/units';
 import { IFullWallet } from 'libs/wallet';
 import {
@@ -15,34 +14,38 @@ import {
   makeTransaction
 } from 'libs/transaction';
 import { validNumber, validDecimal } from 'libs/validators';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+import { NetworkConfig, StaticNetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getOffline, isNetworkUnit, getNetworkConfig } from 'features/config';
 import { isSchedulingEnabled } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
-import { StateSerializedTx } from './sign/reducer';
-import { TRANSACTION } from './types';
 import {
   TRANSACTION_BROADCAST,
+  getTransactionStatus,
   BroadcastRequestedAction,
   ISerializedTxAndIndexingHash,
-  ITransactionStatus
-} from './broadcast/types';
-import { GetFromFailedAction, GetFromSucceededAction } from './network/types';
-import { SignTransactionRequestedAction } from './sign/types';
-import { resetTransactionRequested } from './fields/actions';
-import {
+  ITransactionStatus,
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
   broadcastTransactionQueued
-} from './broadcast/actions';
-import { getFromRequested } from './network/actions';
-import { signTransactionFailed } from './sign/actions';
+} from './broadcast';
+import { resetTransactionRequested, getGasLimit, getGasPrice } from './fields';
+import {
+  TRANSACTION_NETWORK,
+  GetFromFailedAction,
+  GetFromSucceededAction,
+  getFromRequested
+} from './network';
+import {
+  SignTransactionRequestedAction,
+  StateSerializedTx,
+  getWeb3Tx,
+  getSignedTx,
+  signTransactionFailed
+} from './sign';
 import { ICurrentTo, ICurrentValue, getUnit, getDecimalFromUnit } from './selectors';
-import { getTransactionStatus } from './broadcast/selectors';
-import { getGasLimit, getGasPrice } from './fields/selectors';
-import { getWeb3Tx, getSignedTx } from './sign/selectors';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 
 //#region Selectors
 type TransactionFields = AppState['transaction']['fields'];
@@ -235,11 +238,11 @@ export function* getFromSaga(): SagaIterator {
   yield put(getFromRequested());
   // wait for it to finish
   const { type }: GetFromFailedAction | GetFromSucceededAction = yield take([
-    TRANSACTION.GET_FROM_SUCCEEDED,
-    TRANSACTION.GET_FROM_FAILED
+    TRANSACTION_NETWORK.GET_FROM_SUCCEEDED,
+    TRANSACTION_NETWORK.GET_FROM_FAILED
   ]);
   // continue if it doesnt fail
-  if (type === TRANSACTION.GET_FROM_FAILED) {
+  if (type === TRANSACTION_NETWORK.GET_FROM_FAILED) {
     throw Error('Could not get "from" address of wallet');
   }
 }
