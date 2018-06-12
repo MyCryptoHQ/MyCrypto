@@ -8,7 +8,7 @@ import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
 import { getOffline, getNodeLib } from 'features/config';
 import {
-  TypeKeys as TransactionTypeKeys,
+  TRANSACTION,
   getDecimal,
   getUnit,
   setGasLimitField,
@@ -158,9 +158,9 @@ export const currentWindowStart = takeLatest(
 export function* shouldValidateParams(): SagaIterator {
   while (true) {
     yield take([
-      TransactionTypeKeys.TO_FIELD_SET,
-      TransactionTypeKeys.DATA_FIELD_SET,
-      TransactionTypeKeys.VALUE_FIELD_SET,
+      TRANSACTION.TO_FIELD_SET,
+      TRANSACTION.DATA_FIELD_SET,
+      TRANSACTION.VALUE_FIELD_SET,
       SCHEDULE.CURRENT_TIME_BOUNTY_SET,
       SCHEDULE.WINDOW_SIZE_FIELD_SET,
       SCHEDULE.WINDOW_START_FIELD_SET,

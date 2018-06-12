@@ -1,29 +1,29 @@
 import { Wei, Data, Address, Nonce } from 'libs/units';
-import { TypeKeys } from '../types';
+import { TRANSACTION } from '../types';
 
 export interface InputGasLimitAction {
-  type: TypeKeys.GAS_LIMIT_INPUT;
+  type: TRANSACTION.GAS_LIMIT_INPUT;
   payload: string;
 }
 export interface InputGasPriceAction {
-  type: TypeKeys.GAS_PRICE_INPUT;
+  type: TRANSACTION.GAS_PRICE_INPUT;
   payload: string;
 }
 export interface InputGasPriceIntentAction {
-  type: TypeKeys.GAS_PRICE_INPUT_INTENT;
+  type: TRANSACTION.GAS_PRICE_INPUT_INTENT;
   payload: string;
 }
 export interface InputDataAction {
-  type: TypeKeys.DATA_FIELD_INPUT;
+  type: TRANSACTION.DATA_FIELD_INPUT;
   payload: string;
 }
 export interface InputNonceAction {
-  type: TypeKeys.NONCE_INPUT;
+  type: TRANSACTION.NONCE_INPUT;
   payload: string;
 }
 
 export interface SetGasLimitFieldAction {
-  type: TypeKeys.GAS_LIMIT_FIELD_SET;
+  type: TRANSACTION.GAS_LIMIT_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -31,7 +31,7 @@ export interface SetGasLimitFieldAction {
 }
 
 export interface SetGasPriceFieldAction {
-  type: TypeKeys.GAS_PRICE_FIELD_SET;
+  type: TRANSACTION.GAS_PRICE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -39,7 +39,7 @@ export interface SetGasPriceFieldAction {
 }
 
 export interface SetDataFieldAction {
-  type: TypeKeys.DATA_FIELD_SET;
+  type: TRANSACTION.DATA_FIELD_SET;
   payload: {
     raw: string;
     value: Data | null;
@@ -47,7 +47,7 @@ export interface SetDataFieldAction {
 }
 
 export interface SetToFieldAction {
-  type: TypeKeys.TO_FIELD_SET;
+  type: TRANSACTION.TO_FIELD_SET;
   payload: {
     raw: string;
     value: Address | null;
@@ -55,7 +55,7 @@ export interface SetToFieldAction {
 }
 
 export interface SetNonceFieldAction {
-  type: TypeKeys.NONCE_FIELD_SET;
+  type: TRANSACTION.NONCE_FIELD_SET;
   payload: {
     raw: string;
     value: Nonce | null;
@@ -63,7 +63,7 @@ export interface SetNonceFieldAction {
 }
 
 export interface SetValueFieldAction {
-  type: TypeKeys.VALUE_FIELD_SET;
+  type: TRANSACTION.VALUE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;

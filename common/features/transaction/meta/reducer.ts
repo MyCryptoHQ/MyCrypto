@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 
 import { getDecimalFromEtherUnit, TokenValue } from 'libs/units';
 import {
-  TypeKeys,
+  TRANSACTION,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
@@ -88,30 +88,30 @@ export default function meta(
   action: MetaAction | SwapAction | ResetTransactionSuccessfulAction | NetworkAction
 ): MetaState {
   switch (action.type) {
-    case TypeKeys.UNIT_META_SET:
+    case TRANSACTION.UNIT_META_SET:
       return unitMeta(state, action);
-    case TypeKeys.TOKEN_VALUE_META_SET:
+    case TRANSACTION.TOKEN_VALUE_META_SET:
       return updateMetaField('tokenValue')(state, action);
-    case TypeKeys.TOKEN_TO_META_SET:
+    case TRANSACTION.TOKEN_TO_META_SET:
       return updateMetaField('tokenTo')(state, action);
-    case TypeKeys.GET_FROM_SUCCEEDED:
+    case TRANSACTION.GET_FROM_SUCCEEDED:
       return updateMetaField('from')(state, action);
-    case TypeKeys.TOKEN_TO_ETHER_SWAP:
+    case TRANSACTION.TOKEN_TO_ETHER_SWAP:
       return tokenToEtherMeta(state, action);
-    case TypeKeys.ETHER_TO_TOKEN_SWAP:
+    case TRANSACTION.ETHER_TO_TOKEN_SWAP:
       return etherToTokenMeta(state, action);
-    case TypeKeys.TOKEN_TO_TOKEN_SWAP:
+    case TRANSACTION.TOKEN_TO_TOKEN_SWAP:
       return tokenToTokenMeta(state, action);
 
-    case TypeKeys.IS_VIEW_AND_SEND: {
+    case TRANSACTION.IS_VIEW_AND_SEND: {
       const nextState: MetaState = { ...state, isContractInteraction: false };
       return nextState;
     }
-    case TypeKeys.IS_CONTRACT_INTERACTION: {
+    case TRANSACTION.IS_CONTRACT_INTERACTION: {
       const nextState: MetaState = { ...state, isContractInteraction: true };
       return nextState;
     }
-    case TypeKeys.RESET_SUCCESSFUL:
+    case TRANSACTION.RESET_SUCCESSFUL:
       return resetMeta(state);
     default:
       return state;

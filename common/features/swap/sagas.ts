@@ -17,7 +17,7 @@ import moment from 'moment';
 import { getOrderStatus, postOrder, getAllRates } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import {
-  TypeKeys as TransactionTypeKeys,
+  TRANSACTION,
   setUnitMeta,
   setCurrentTo,
   setCurrentValue,
@@ -112,7 +112,7 @@ export function* handleConfigureLiteSend(): SagaIterator {
   while (true) {
     const liteSendProc = yield fork(configureLiteSendSaga);
     const result = yield race({
-      transactionReset: take(TransactionTypeKeys.RESET_REQUESTED),
+      transactionReset: take(TRANSACTION.RESET_REQUESTED),
       userNavigatedAway: take(WALLET.RESET),
       bityPollingFinished: take(SWAP.STOP_POLL_BITY_ORDER_STATUS),
       shapeshiftPollingFinished: take(SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS)

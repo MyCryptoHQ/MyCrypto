@@ -1,4 +1,4 @@
-import { TypeKeys, ResetTransactionSuccessfulAction } from '../types';
+import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
 import { InputGasPriceAction, InputGasPriceIntentAction } from '../fields/types';
 import { NetworkAction, RequestStatus } from '../network/types';
 
@@ -45,35 +45,35 @@ export default function network(
     | InputGasPriceIntentAction
 ) {
   switch (action.type) {
-    case TypeKeys.ESTIMATE_GAS_REQUESTED:
+    case TRANSACTION.ESTIMATE_GAS_REQUESTED:
       return getNextState('gasEstimationStatus')(state, action);
-    case TypeKeys.ESTIMATE_GAS_FAILED:
+    case TRANSACTION.ESTIMATE_GAS_FAILED:
       return getNextState('gasEstimationStatus')(state, action);
-    case TypeKeys.ESTIMATE_GAS_TIMEDOUT:
+    case TRANSACTION.ESTIMATE_GAS_TIMEDOUT:
       return getNextState('gasEstimationStatus')(state, action);
-    case TypeKeys.ESTIMATE_GAS_SUCCEEDED:
+    case TRANSACTION.ESTIMATE_GAS_SUCCEEDED:
       return getNextState('gasEstimationStatus')(state, action);
-    case TypeKeys.GET_FROM_REQUESTED:
+    case TRANSACTION.GET_FROM_REQUESTED:
       return getNextState('getFromStatus')(state, action);
-    case TypeKeys.GET_FROM_SUCCEEDED:
+    case TRANSACTION.GET_FROM_SUCCEEDED:
       return getNextState('getFromStatus')(state, action);
-    case TypeKeys.GET_FROM_FAILED:
+    case TRANSACTION.GET_FROM_FAILED:
       return getNextState('getFromStatus')(state, action);
-    case TypeKeys.GET_NONCE_REQUESTED:
+    case TRANSACTION.GET_NONCE_REQUESTED:
       return getNextState('getNonceStatus')(state, action);
-    case TypeKeys.GET_NONCE_SUCCEEDED:
+    case TRANSACTION.GET_NONCE_SUCCEEDED:
       return getNextState('getNonceStatus')(state, action);
-    case TypeKeys.GET_NONCE_FAILED:
+    case TRANSACTION.GET_NONCE_FAILED:
       return getNextState('getNonceStatus')(state, action);
 
     // Not exactly "network" requests, but we want to show pending while
     // gas price is subject to change
-    case TypeKeys.GAS_PRICE_INPUT_INTENT:
+    case TRANSACTION.GAS_PRICE_INPUT_INTENT:
       return setGasPriceStatus(state, RequestStatus.REQUESTED);
-    case TypeKeys.GAS_PRICE_INPUT:
+    case TRANSACTION.GAS_PRICE_INPUT:
       return setGasPriceStatus(state, RequestStatus.SUCCEEDED);
 
-    case TypeKeys.RESET_SUCCESSFUL:
+    case TRANSACTION.RESET_SUCCESSFUL:
       return resetNetwork();
     default:
       return state;

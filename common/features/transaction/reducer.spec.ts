@@ -3,7 +3,7 @@ import BN from 'bn.js';
 
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
-  TypeKeys,
+  TRANSACTION,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
@@ -144,7 +144,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle TOKEN_TO_ETHER_SWAP', () => {
       const swapAction: SwapTokenToEtherAction = {
-        type: TypeKeys.TOKEN_TO_ETHER_SWAP,
+        type: TRANSACTION.TOKEN_TO_ETHER_SWAP,
         payload: {
           to: testPayload,
           value: testPayload,
@@ -160,7 +160,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle ETHER_TO_TOKEN_SWAP', () => {
       const swapAction: SwapEtherToTokenAction = {
-        type: TypeKeys.ETHER_TO_TOKEN_SWAP,
+        type: TRANSACTION.ETHER_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -178,7 +178,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle TOKEN_TO_TOKEN_SWAP', () => {
       const swapAction: SwapTokenToTokenAction = {
-        type: TypeKeys.TOKEN_TO_TOKEN_SWAP,
+        type: TRANSACTION.TOKEN_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -195,7 +195,7 @@ describe('transaction: Reducers', () => {
 
     it('should reset', () => {
       const resetAction: ResetTransactionSuccessfulAction = {
-        type: TypeKeys.RESET_SUCCESSFUL,
+        type: TRANSACTION.RESET_SUCCESSFUL,
         payload: { isContractInteraction: false }
       };
       const modifiedState: FieldsState = {
@@ -221,7 +221,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle UNIT_META_SET', () => {
       const setUnitMetaAction: SetUnitMetaAction = {
-        type: TypeKeys.UNIT_META_SET,
+        type: TRANSACTION.UNIT_META_SET,
         payload: 'test'
       };
       expect(meta(META_INITIAL_STATE, setUnitMetaAction));
@@ -250,7 +250,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle TOKEN_TO_ETHER_SWAP', () => {
       const swapAction: SwapTokenToEtherAction = {
-        type: TypeKeys.TOKEN_TO_ETHER_SWAP,
+        type: TRANSACTION.TOKEN_TO_ETHER_SWAP,
         payload: {
           to: testPayload,
           value: testPayload,
@@ -265,7 +265,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle ETHER_TO_TOKEN_SWAP', () => {
       const swapAction: SwapEtherToTokenAction = {
-        type: TypeKeys.ETHER_TO_TOKEN_SWAP,
+        type: TRANSACTION.ETHER_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -284,7 +284,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle TOKEN_TO_TOKEN_SWAP', () => {
       const swapAction: SwapTokenToTokenAction = {
-        type: TypeKeys.TOKEN_TO_TOKEN_SWAP,
+        type: TRANSACTION.TOKEN_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -301,7 +301,7 @@ describe('transaction: Reducers', () => {
 
     it('should reset', () => {
       const resetAction: ResetTransactionSuccessfulAction = {
-        type: TypeKeys.RESET_SUCCESSFUL,
+        type: TRANSACTION.RESET_SUCCESSFUL,
         payload: { isContractInteraction: false }
       };
       const modifiedState: MetaState = {
@@ -322,7 +322,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle gas estimation status actions', () => {
       const gasEstimationAction: NetworkAction = {
-        type: TypeKeys.ESTIMATE_GAS_SUCCEEDED
+        type: TRANSACTION.ESTIMATE_GAS_SUCCEEDED
       };
       expect(network(NETWORK_INITIAL_STATE, gasEstimationAction)).toEqual({
         ...NETWORK_INITIAL_STATE,
@@ -332,7 +332,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle get from status actions', () => {
       const getFromAction: NetworkAction = {
-        type: TypeKeys.GET_FROM_SUCCEEDED,
+        type: TRANSACTION.GET_FROM_SUCCEEDED,
         payload: 'test'
       };
       expect(network(NETWORK_INITIAL_STATE, getFromAction)).toEqual({
@@ -343,7 +343,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle get nonce status actions', () => {
       const getNonceAction: NetworkAction = {
-        type: TypeKeys.GET_NONCE_SUCCEEDED,
+        type: TRANSACTION.GET_NONCE_SUCCEEDED,
         payload: 'test'
       };
       expect(network(NETWORK_INITIAL_STATE, getNonceAction)).toEqual({
@@ -354,7 +354,7 @@ describe('transaction: Reducers', () => {
 
     it('should handle gasPriceIntent', () => {
       const gasPriceAction: InputGasPriceAction = {
-        type: TypeKeys.GAS_PRICE_INPUT,
+        type: TRANSACTION.GAS_PRICE_INPUT,
         payload: 'test'
       };
       expect(network(NETWORK_INITIAL_STATE, gasPriceAction)).toEqual({
@@ -373,7 +373,7 @@ describe('transaction: Reducers', () => {
     };
     it('should handle SIGN_TRANSACTION_REQUESTED', () => {
       const signTxRequestedAction: SignTransactionRequestedAction = {
-        type: TypeKeys.SIGN_TRANSACTION_REQUESTED,
+        type: TRANSACTION.SIGN_TRANSACTION_REQUESTED,
         payload: {} as EthTx
       };
       expect(sign(SIGN_INITIAL_STATE, signTxRequestedAction)).toEqual({
@@ -386,7 +386,7 @@ describe('transaction: Reducers', () => {
       const signedTransaction = new Buffer('test');
       const indexingHash = 'test';
       const signLocalTxSucceededAction: SignLocalTransactionSucceededAction = {
-        type: TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+        type: TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
         payload: { signedTransaction, indexingHash }
       };
       expect(sign(SIGN_INITIAL_STATE, signLocalTxSucceededAction)).toEqual({
@@ -401,7 +401,7 @@ describe('transaction: Reducers', () => {
       const transaction = new Buffer('test');
       const indexingHash = 'test';
       const signWeb3TxSucceededAction: SignWeb3TransactionSucceededAction = {
-        type: TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED,
+        type: TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED,
         payload: { transaction, indexingHash }
       };
       expect(sign(SIGN_INITIAL_STATE, signWeb3TxSucceededAction)).toEqual({
@@ -414,7 +414,7 @@ describe('transaction: Reducers', () => {
 
     it('should reset', () => {
       const resetAction: ResetTransactionSuccessfulAction = {
-        type: TypeKeys.RESET_SUCCESSFUL,
+        type: TRANSACTION.RESET_SUCCESSFUL,
         payload: { isContractInteraction: false }
       };
       const modifiedState: SignState = {

@@ -3,7 +3,7 @@ import BN from 'bn.js';
 
 import { Wei, gasPriceToBase } from 'libs/units';
 import {
-  TypeKeys,
+  TRANSACTION,
   SwapTokenToEtherAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
@@ -80,26 +80,25 @@ export default function fields(
   action: FieldAction | SwapAction | ResetTransactionSuccessfulAction
 ) {
   switch (action.type) {
-    case TypeKeys.TO_FIELD_SET:
+    case TRANSACTION.TO_FIELD_SET:
       return updateField('to')(state, action);
-    case TypeKeys.VALUE_FIELD_SET:
+    case TRANSACTION.VALUE_FIELD_SET:
       return updateField('value')(state, action);
-    case TypeKeys.DATA_FIELD_SET:
+    case TRANSACTION.DATA_FIELD_SET:
       return updateField('data')(state, action);
-    case TypeKeys.GAS_LIMIT_FIELD_SET:
+    case TRANSACTION.GAS_LIMIT_FIELD_SET:
       return updateField('gasLimit')(state, action);
-    case TypeKeys.NONCE_FIELD_SET:
+    case TRANSACTION.NONCE_FIELD_SET:
       return updateField('nonce')(state, action);
-    case TypeKeys.GAS_PRICE_FIELD_SET:
+    case TRANSACTION.GAS_PRICE_FIELD_SET:
       return updateField('gasPrice')(state, action);
-    case TypeKeys.TOKEN_TO_ETHER_SWAP:
+    case TRANSACTION.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
-    case TypeKeys.ETHER_TO_TOKEN_SWAP:
+    case TRANSACTION.ETHER_TO_TOKEN_SWAP:
       return etherToToken(state, action);
-    case TypeKeys.TOKEN_TO_TOKEN_SWAP:
+    case TRANSACTION.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
-
-    case TypeKeys.RESET_SUCCESSFUL:
+    case TRANSACTION.RESET_SUCCESSFUL:
       return reset(state, action);
     default:
       return state;

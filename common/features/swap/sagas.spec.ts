@@ -5,8 +5,8 @@ import { take, race, fork, call, cancel, apply, cancelled, put, select } from 'r
 import { getAllRates, getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import { configuredStore } from 'features/store';
-import { TypeKeys as TransactionTypeKeys } from 'features/transaction/types';
-import { WALLET as WalletTypeKeys } from 'features/wallet';
+import { TRANSACTION } from 'features/transaction/types';
+import { WALLET } from 'features/wallet';
 import { showNotification } from 'features/notifications';
 import {
   SWAP,
@@ -87,8 +87,8 @@ describe('swap: Sagas (Lite Send)', () => {
     it('races between three conditions, either the transaction state is reset, the user navigated away from the page, or bitty/shapeshift polling as finished', () => {
       const mockedTask = createMockTask();
       const expectedYield = race({
-        transactionReset: take(TransactionTypeKeys.RESET_REQUESTED),
-        userNavigatedAway: take(WalletTypeKeys.RESET),
+        transactionReset: take(TRANSACTION.RESET_REQUESTED),
+        userNavigatedAway: take(WALLET.RESET),
         bityPollingFinished: take(SWAP.STOP_POLL_BITY_ORDER_STATUS),
         shapeshiftPollingFinished: take(SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
       });

@@ -12,7 +12,7 @@ import { getOffline, getNetworkConfig, isNetworkUnit } from 'features/config';
 import { isSchedulingEnabled } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
-import { TypeKeys as TK } from './types';
+import { TRANSACTION } from './types';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
@@ -354,10 +354,10 @@ describe('transaction: Helpers', () => {
 
     describe('getFrom*', () => {
       const getFromSucceeded = {
-        type: TK.GET_FROM_SUCCEEDED
+        type: TRANSACTION.GET_FROM_SUCCEEDED
       };
       const getFromFailed = {
-        type: TK.GET_FROM_FAILED
+        type: TRANSACTION.GET_FROM_FAILED
       };
 
       const gens: any = {};
@@ -368,7 +368,9 @@ describe('transaction: Helpers', () => {
       });
 
       it('should take GET_FROM*', () => {
-        expect(gens.gen.next().value).toEqual(take([TK.GET_FROM_SUCCEEDED, TK.GET_FROM_FAILED]));
+        expect(gens.gen.next().value).toEqual(
+          take([TRANSACTION.GET_FROM_SUCCEEDED, TRANSACTION.GET_FROM_FAILED])
+        );
       });
 
       it('should throw error if failed', () => {

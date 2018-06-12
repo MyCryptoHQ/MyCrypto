@@ -1,4 +1,4 @@
-import { TypeKeys, ResetTransactionSuccessfulAction } from '../types';
+import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
 import {
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction,
@@ -63,15 +63,15 @@ export default function sign(
   action: SignAction | ResetTransactionSuccessfulAction
 ) {
   switch (action.type) {
-    case TypeKeys.SIGN_TRANSACTION_REQUESTED:
+    case TRANSACTION.SIGN_TRANSACTION_REQUESTED:
       return signTransactionRequested();
-    case TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED:
+    case TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED:
       return signLocalTransactionSucceeded(state, action);
-    case TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED:
+    case TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED:
       return signWeb3TranscationSucceeded(state, action);
-    case TypeKeys.SIGN_TRANSACTION_FAILED:
+    case TRANSACTION.SIGN_TRANSACTION_FAILED:
       return signTransactionFailed();
-    case TypeKeys.RESET_SUCCESSFUL:
+    case TRANSACTION.RESET_SUCCESSFUL:
       return resetSign();
     default:
       return state;

@@ -1,8 +1,8 @@
 import { Address, TokenValue } from 'libs/units';
-import { TypeKeys } from '../types';
+import { TRANSACTION } from '../types';
 
 export interface SetTokenToMetaAction {
-  type: TypeKeys.TOKEN_TO_META_SET;
+  type: TRANSACTION.TOKEN_TO_META_SET;
   payload: {
     raw: string;
     value: Address | null;
@@ -10,12 +10,12 @@ export interface SetTokenToMetaAction {
 }
 
 export interface SetUnitMetaAction {
-  type: TypeKeys.UNIT_META_SET;
+  type: TRANSACTION.UNIT_META_SET;
   payload: string;
 }
 
 export interface SetTokenValueMetaAction {
-  type: TypeKeys.TOKEN_VALUE_META_SET;
+  type: TRANSACTION.TOKEN_VALUE_META_SET;
   payload: {
     raw: string;
     value: TokenValue | null;
@@ -23,11 +23,11 @@ export interface SetTokenValueMetaAction {
 }
 
 export interface SetAsContractInteractionAction {
-  type: TypeKeys.IS_CONTRACT_INTERACTION;
+  type: TRANSACTION.IS_CONTRACT_INTERACTION;
 }
 
 export interface SetAsViewAndSendAction {
-  type: TypeKeys.IS_VIEW_AND_SEND;
+  type: TRANSACTION.IS_VIEW_AND_SEND;
 }
 
 export type TransactionMetaAction =

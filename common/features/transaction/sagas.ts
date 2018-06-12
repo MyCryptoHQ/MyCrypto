@@ -80,7 +80,7 @@ import {
 } from 'features/schedule';
 import { showNotification } from 'features/notifications';
 import {
-  TypeKeys,
+  TRANSACTION,
   SetCurrentToAction,
   SetCurrentValueAction,
   SwapEtherToTokenAction,
@@ -185,8 +185,8 @@ export const broadcastWeb3TransactionHandler = function*(tx: string): SagaIterat
 const broadcastWeb3Transaction = broadcastTransactionWrapper(broadcastWeb3TransactionHandler);
 
 export const broadcastSaga = [
-  takeEvery([TypeKeys.BROADCAST_WEB3_TRANSACTION_REQUESTED], broadcastWeb3Transaction),
-  takeEvery([TypeKeys.BROADCAST_LOCAL_TRANSACTION_REQUESTED], broadcastLocalTransaction)
+  takeEvery([TRANSACTION.BROADCAST_WEB3_TRANSACTION_REQUESTED], broadcastWeb3Transaction),
+  takeEvery([TRANSACTION.BROADCAST_LOCAL_TRANSACTION_REQUESTED], broadcastLocalTransaction)
 ];
 //#endregion Broadcast
 
@@ -229,7 +229,7 @@ export function* setField(payload: SetToFieldAction['payload'] | SetTokenToMetaA
   }
 }
 
-export const currentTo = takeLatest([TypeKeys.CURRENT_TO_SET], setCurrentToSaga);
+export const currentTo = takeLatest([TRANSACTION.CURRENT_TO_SET], setCurrentToSaga);
 //#endregion Current To
 
 //#region Current Value
@@ -285,8 +285,11 @@ export function* reparseCurrentValue(value: IInput): SagaIterator {
 }
 
 export const currentValue = [
-  takeEvery([TypeKeys.CURRENT_VALUE_SET], setCurrentValueSaga),
-  takeEvery([TypeKeys.GAS_LIMIT_FIELD_SET, TypeKeys.GAS_PRICE_FIELD_SET], revalidateCurrentValue)
+  takeEvery([TRANSACTION.CURRENT_VALUE_SET], setCurrentValueSaga),
+  takeEvery(
+    [TRANSACTION.GAS_LIMIT_FIELD_SET, TRANSACTION.GAS_PRICE_FIELD_SET],
+    revalidateCurrentValue
+  )
 ];
 //#endregion Current Value
 
@@ -330,11 +333,11 @@ export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
 }
 
 export const fieldsSaga = [
-  takeEvery(TypeKeys.DATA_FIELD_INPUT, handleDataInput),
-  takeEvery(TypeKeys.GAS_LIMIT_INPUT, handleGasLimitInput),
-  takeEvery(TypeKeys.GAS_PRICE_INPUT, handleGasPriceInput),
-  takeEvery(TypeKeys.NONCE_INPUT, handleNonceInput),
-  takeLatest(TypeKeys.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent)
+  takeEvery(TRANSACTION.DATA_FIELD_INPUT, handleDataInput),
+  takeEvery(TRANSACTION.GAS_LIMIT_INPUT, handleGasLimitInput),
+  takeEvery(TRANSACTION.GAS_PRICE_INPUT, handleGasPriceInput),
+  takeEvery(TRANSACTION.NONCE_INPUT, handleNonceInput),
+  takeLatest(TRANSACTION.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent)
 ];
 //#endregion Fields
 
@@ -366,8 +369,8 @@ export function* handleTokenValue({ payload }: SetTokenValueMetaAction) {
 }
 
 export const handleToken = [
-  takeEvery(TypeKeys.TOKEN_TO_META_SET, handleTokenTo),
-  takeEvery(TypeKeys.TOKEN_VALUE_META_SET, handleTokenValue)
+  takeEvery(TRANSACTION.TOKEN_TO_META_SET, handleTokenTo),
+  takeEvery(TRANSACTION.TOKEN_VALUE_META_SET, handleTokenValue)
 ];
 //#endregion Token
 
@@ -454,7 +457,7 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
   }
 }
 
-export const handleSetUnit = [takeEvery(TypeKeys.UNIT_META_SET, handleSetUnitMeta)];
+export const handleSetUnit = [takeEvery(TRANSACTION.UNIT_META_SET, handleSetUnitMeta)];
 //#endregion Set Unit
 
 export const metaSaga = [...handleToken, ...handleSetUnit];
@@ -480,7 +483,7 @@ export function* handleFromRequest(): SagaIterator {
   }
 }
 
-export const fromSaga = takeEvery(TypeKeys.GET_FROM_REQUESTED, handleFromRequest);
+export const fromSaga = takeEvery(TRANSACTION.GET_FROM_REQUESTED, handleFromRequest);
 //#endregion From
 
 //#region Gas
@@ -493,11 +496,11 @@ export function* shouldEstimateGas(): SagaIterator {
       | SwapTokenToTokenAction
       | SwapTokenToEtherAction
       | ToggleAutoGasLimitAction = yield take([
-      TypeKeys.TO_FIELD_SET,
-      TypeKeys.DATA_FIELD_SET,
-      TypeKeys.ETHER_TO_TOKEN_SWAP,
-      TypeKeys.TOKEN_TO_TOKEN_SWAP,
-      TypeKeys.TOKEN_TO_ETHER_SWAP,
+      TRANSACTION.TO_FIELD_SET,
+      TRANSACTION.DATA_FIELD_SET,
+      TRANSACTION.ETHER_TO_TOKEN_SWAP,
+      TRANSACTION.TOKEN_TO_TOKEN_SWAP,
+      TRANSACTION.TOKEN_TO_ETHER_SWAP,
       CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
     ]);
 
@@ -512,7 +515,7 @@ export function* shouldEstimateGas(): SagaIterator {
     // invalid field is a field that the value is null and the input box isnt empty
     // reason being is an empty field is valid because it'll be null
     const invalidField =
-      (action.type === TypeKeys.TO_FIELD_SET || action.type === TypeKeys.DATA_FIELD_SET) &&
+      (action.type === TRANSACTION.TO_FIELD_SET || action.type === TRANSACTION.DATA_FIELD_SET) &&
       !action.payload.value &&
       action.payload.raw !== '';
 
@@ -540,7 +543,7 @@ export function* shouldEstimateGas(): SagaIterator {
 }
 
 export function* estimateGas(): SagaIterator {
-  const requestChan = yield actionChannel(TypeKeys.ESTIMATE_GAS_REQUESTED, buffers.sliding(1));
+  const requestChan = yield actionChannel(TRANSACTION.ESTIMATE_GAS_REQUESTED, buffers.sliding(1));
 
   while (true) {
     const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
@@ -611,7 +614,7 @@ export function* setAddressMessageGasLimit() {
 export const gas = [
   fork(shouldEstimateGas),
   fork(estimateGas),
-  takeEvery(TypeKeys.TO_FIELD_SET, setAddressMessageGasLimit)
+  takeEvery(TRANSACTION.TO_FIELD_SET, setAddressMessageGasLimit)
 ];
 //#endregion Gas
 
@@ -646,7 +649,7 @@ export function* handleNonceRequestWrapper(): SagaIterator {
 
 //leave get nonce requested for nonce refresh later on
 export const nonceSaga = takeEvery(
-  [TypeKeys.GET_NONCE_REQUESTED, WALLET.SET],
+  [TRANSACTION.GET_NONCE_REQUESTED, WALLET.SET],
   handleNonceRequestWrapper
 );
 //#endregion Nonce
@@ -714,7 +717,7 @@ function* verifyTransaction({
   }
   const transactionsMatch: boolean = yield select(
     serializedAndTransactionFieldsMatch,
-    type === TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+    type === TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
     noVerify
   );
   if (!transactionsMatch) {
@@ -736,9 +739,9 @@ function* handleTransactionRequest(action: SignTransactionRequestedAction): Saga
 }
 
 export const signing = [
-  takeEvery(TypeKeys.SIGN_TRANSACTION_REQUESTED, handleTransactionRequest),
+  takeEvery(TRANSACTION.SIGN_TRANSACTION_REQUESTED, handleTransactionRequest),
   takeEvery(
-    [TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED, TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED],
+    [TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED, TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED],
     verifyTransaction
   )
 ];
@@ -788,7 +791,9 @@ export function* handleSendEverything(): SagaIterator {
   }
 }
 
-export const sendEverything = [takeEvery(TypeKeys.SEND_EVERYTHING_REQUESTED, handleSendEverything)];
+export const sendEverything = [
+  takeEvery(TRANSACTION.SEND_EVERYTHING_REQUESTED, handleSendEverything)
+];
 
 //#endregion Send Everything
 
@@ -808,24 +813,24 @@ export function* watchTransactionState(): SagaIterator {
   while (true) {
     // wait for transaction to be signed
     yield take([
-      TypeKeys.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-      TypeKeys.SIGN_WEB3_TRANSACTION_SUCCEEDED
+      TRANSACTION.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+      TRANSACTION.SIGN_WEB3_TRANSACTION_SUCCEEDED
     ]);
 
     const { bail } = yield race({
-      bail: take([TypeKeys.RESET_REQUESTED, WALLET.RESET]), // bail on actions that would wipe state
+      bail: take([TRANSACTION.RESET_REQUESTED, WALLET.RESET]), // bail on actions that would wipe state
       wipeState: take([
-        TypeKeys.CURRENT_TO_SET,
-        TypeKeys.CURRENT_VALUE_SET,
-        TypeKeys.GAS_LIMIT_FIELD_SET,
-        TypeKeys.GAS_PRICE_FIELD_SET,
-        TypeKeys.VALUE_FIELD_SET,
-        TypeKeys.DATA_FIELD_SET,
-        TypeKeys.NONCE_FIELD_SET,
-        TypeKeys.TO_FIELD_SET,
-        TypeKeys.TOKEN_TO_META_SET,
-        TypeKeys.TOKEN_VALUE_META_SET,
-        TypeKeys.UNIT_META_SET
+        TRANSACTION.CURRENT_TO_SET,
+        TRANSACTION.CURRENT_VALUE_SET,
+        TRANSACTION.GAS_LIMIT_FIELD_SET,
+        TRANSACTION.GAS_PRICE_FIELD_SET,
+        TRANSACTION.VALUE_FIELD_SET,
+        TRANSACTION.DATA_FIELD_SET,
+        TRANSACTION.NONCE_FIELD_SET,
+        TRANSACTION.TO_FIELD_SET,
+        TRANSACTION.TOKEN_TO_META_SET,
+        TRANSACTION.TOKEN_VALUE_META_SET,
+        TRANSACTION.UNIT_META_SET
       ]) // watch for any actions that would change transaction state
     });
 
@@ -844,9 +849,9 @@ export function* setNetworkUnit(): SagaIterator {
 
 export const reset = [
   takeEvery([WALLET.RESET], resetTransactionState),
-  takeEvery(TypeKeys.RESET_REQUESTED, resetTransactionState),
+  takeEvery(TRANSACTION.RESET_REQUESTED, resetTransactionState),
   fork(watchTransactionState),
-  takeEvery(TypeKeys.RESET_SUCCESSFUL, setNetworkUnit)
+  takeEvery(TRANSACTION.RESET_SUCCESSFUL, setNetworkUnit)
 ];
 
 //#endregion Reset

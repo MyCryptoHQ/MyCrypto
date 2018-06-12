@@ -22,7 +22,7 @@ import { isSchedulingEnabled } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
 import { showNotification } from 'features/notifications';
 import { StateSerializedTx } from './sign/reducer';
-import { TypeKeys } from './types';
+import { TRANSACTION } from './types';
 import {
   BroadcastRequestedAction,
   ISerializedTxAndIndexingHash,
@@ -164,7 +164,7 @@ export function* shouldBroadcastTransaction(indexingHash: string): SagaIterator 
   return true;
 }
 export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction): SagaIterator {
-  const isWeb3Req = type === TypeKeys.BROADCAST_WEB3_TRANSACTION_REQUESTED;
+  const isWeb3Req = type === TRANSACTION.BROADCAST_WEB3_TRANSACTION_REQUESTED;
   const txSelector = isWeb3Req ? getWeb3Tx : getSignedTx;
   const serializedTransaction: StateSerializedTx = yield select(txSelector);
 
@@ -234,11 +234,11 @@ export function* getFromSaga(): SagaIterator {
   yield put(getFromRequested());
   // wait for it to finish
   const { type }: GetFromFailedAction | GetFromSucceededAction = yield take([
-    TypeKeys.GET_FROM_SUCCEEDED,
-    TypeKeys.GET_FROM_FAILED
+    TRANSACTION.GET_FROM_SUCCEEDED,
+    TRANSACTION.GET_FROM_FAILED
   ]);
   // continue if it doesnt fail
-  if (type === TypeKeys.GET_FROM_FAILED) {
+  if (type === TRANSACTION.GET_FROM_FAILED) {
     throw Error('Could not get "from" address of wallet');
   }
 }

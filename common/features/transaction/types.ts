@@ -10,7 +10,7 @@ import { MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './met
 import { NetworkAction } from './network/types';
 import { SignAction } from './sign/types';
 
-export enum TypeKeys {
+export enum TRANSACTION {
   ESTIMATE_GAS_REQUESTED = 'ESTIMATE_GAS_REQUESTED',
   ESTIMATE_GAS_SUCCEEDED = 'ESTIMATE_GAS_SUCCEEDED',
   ESTIMATE_GAS_FAILED = 'ESTIMATE_GAS_FAILED',
@@ -59,12 +59,12 @@ export enum TypeKeys {
 }
 
 export interface SetCurrentValueAction {
-  type: TypeKeys.CURRENT_VALUE_SET;
+  type: TRANSACTION.CURRENT_VALUE_SET;
   payload: string;
 }
 
 export interface SetCurrentToAction {
-  type: TypeKeys.CURRENT_TO_SET;
+  type: TRANSACTION.CURRENT_TO_SET;
   payload: string;
 }
 
@@ -72,13 +72,13 @@ export type CurrentAction = SetCurrentValueAction | SetCurrentToAction;
 
 //#region Send Everything
 export interface SendEverythingRequestedAction {
-  type: TypeKeys.SEND_EVERYTHING_REQUESTED;
+  type: TRANSACTION.SEND_EVERYTHING_REQUESTED;
 }
 export interface SendEverythingSucceededAction {
-  type: TypeKeys.SEND_EVERYTHING_SUCCEEDED;
+  type: TRANSACTION.SEND_EVERYTHING_SUCCEEDED;
 }
 export interface SendEverythingFailedAction {
-  type: TypeKeys.SEND_EVERYTHING_FAILED;
+  type: TRANSACTION.SEND_EVERYTHING_FAILED;
 }
 
 export type SendEverythingAction =
@@ -89,7 +89,7 @@ export type SendEverythingAction =
 
 //#region Swap
 export interface SwapTokenToEtherAction {
-  type: TypeKeys.TOKEN_TO_ETHER_SWAP;
+  type: TRANSACTION.TOKEN_TO_ETHER_SWAP;
   payload: {
     to: SetToFieldAction['payload'];
     value: SetValueFieldAction['payload'];
@@ -97,7 +97,7 @@ export interface SwapTokenToEtherAction {
   };
 }
 export interface SwapEtherToTokenAction {
-  type: TypeKeys.ETHER_TO_TOKEN_SWAP;
+  type: TRANSACTION.ETHER_TO_TOKEN_SWAP;
   payload: {
     to: SetToFieldAction['payload'];
     data: SetDataFieldAction['payload'];
@@ -107,7 +107,7 @@ export interface SwapEtherToTokenAction {
   };
 }
 export interface SwapTokenToTokenAction {
-  type: TypeKeys.TOKEN_TO_TOKEN_SWAP;
+  type: TRANSACTION.TOKEN_TO_TOKEN_SWAP;
   payload: {
     to: SetToFieldAction['payload'];
     data: SetDataFieldAction['payload'];
@@ -119,11 +119,11 @@ export type SwapAction = SwapEtherToTokenAction | SwapTokenToEtherAction | SwapT
 //#endregion Swap
 
 export interface ResetTransactionRequestedAction {
-  type: TypeKeys.RESET_REQUESTED;
+  type: TRANSACTION.RESET_REQUESTED;
 }
 
 export interface ResetTransactionSuccessfulAction {
-  type: TypeKeys.RESET_SUCCESSFUL;
+  type: TRANSACTION.RESET_SUCCESSFUL;
   payload: { isContractInteraction: boolean };
 }
 

@@ -55,7 +55,7 @@ import {
 } from 'features/schedule';
 import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
 import { showNotification } from 'features/notifications';
-import { TypeKeys } from './types';
+import { TRANSACTION } from './types';
 import {
   swapEtherToToken,
   swapTokenToToken,
@@ -401,7 +401,7 @@ describe('transaction: Sagas', () => {
           }
         };
         const g = cloneableGenerator(valueHandler)(leadZeroValue.action as any, setter);
-    
+
         expect(g.next().value).toEqual(select(getDecimal));
         expect(g.next(leadZeroValue.decimal).value).toEqual(select(getUnit));
         expect(g.next(unit).value).toEqual(select(isEtherTransaction));
@@ -1205,7 +1205,7 @@ describe('transaction: Sagas', () => {
           ...rest
         };
         const action: any = {
-          type: TypeKeys.TO_FIELD_SET,
+          type: TRANSACTION.TO_FIELD_SET,
           payload: {
             value: 'value',
             raw: 'raw'
@@ -1217,11 +1217,11 @@ describe('transaction: Sagas', () => {
         it('should take expected types', () => {
           expect(gen.next().value).toEqual(
             take([
-              TypeKeys.TO_FIELD_SET,
-              TypeKeys.DATA_FIELD_SET,
-              TypeKeys.ETHER_TO_TOKEN_SWAP,
-              TypeKeys.TOKEN_TO_TOKEN_SWAP,
-              TypeKeys.TOKEN_TO_ETHER_SWAP,
+              TRANSACTION.TO_FIELD_SET,
+              TRANSACTION.DATA_FIELD_SET,
+              TRANSACTION.ETHER_TO_TOKEN_SWAP,
+              TRANSACTION.TOKEN_TO_TOKEN_SWAP,
+              TRANSACTION.TOKEN_TO_ETHER_SWAP,
               CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
             ])
           );
@@ -1297,7 +1297,7 @@ describe('transaction: Sagas', () => {
 
         it('should yield actionChannel', () => {
           const expected = JSON.stringify(
-            actionChannel(TypeKeys.ESTIMATE_GAS_REQUESTED, buffers.sliding(1))
+            actionChannel(TRANSACTION.ESTIMATE_GAS_REQUESTED, buffers.sliding(1))
           );
           const result = JSON.stringify(gens.successCase.next().value);
           expect(expected).toEqual(result);
