@@ -15,7 +15,7 @@ import {
 } from 'selectors/config';
 import RootReducer, { AppState } from 'reducers';
 import { CustomNodeConfig } from 'types/node';
-import { shepherd, makeProviderConfig, shepherdProvider, isAutoNode } from 'libs/nodes';
+import { shepherd, makeProviderConfig, isAutoNode } from 'libs/nodes';
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
@@ -168,8 +168,7 @@ function rehydrateCustomNodes(
         configToHydrate
       );
 
-      const lib = shepherdProvider;
-      const hydratedNode: CustomNodeConfig = { ...configToHydrate, lib };
+      const hydratedNode: CustomNodeConfig = { ...configToHydrate };
       return { ...hydratedNodes, [customNodeId]: hydratedNode };
     },
     {} as ConfigState['nodes']['customNodes']

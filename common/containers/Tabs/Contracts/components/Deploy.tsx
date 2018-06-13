@@ -3,7 +3,7 @@ import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import React, { Component } from 'react';
-import { setToField, TSetToField } from 'actions/transaction';
+import { resetTransactionRequested, TResetTransactionRequested } from 'actions/transaction';
 import { resetWallet, TResetWallet } from 'actions/wallet';
 import { connect } from 'react-redux';
 import { FullWalletOnly } from 'components/renderCbs';
@@ -13,11 +13,15 @@ import { ConfirmationModal } from 'components/ConfirmationModal';
 import { TextArea } from 'components/ui';
 
 interface DispatchProps {
-  setToField: TSetToField;
   resetWallet: TResetWallet;
+  resetTransactionRequested: TResetTransactionRequested;
 }
 
 class DeployClass extends Component<DispatchProps> {
+  public componentDidMount() {
+    this.props.resetTransactionRequested();
+  }
+
   public render() {
     const makeContent = () => (
       <main className="Deploy Tab-content-pane" role="main">
@@ -93,6 +97,6 @@ class DeployClass extends Component<DispatchProps> {
 }
 
 export const Deploy = connect(null, {
-  setToField,
-  resetWallet
+  resetWallet,
+  resetTransactionRequested
 })(DeployClass);

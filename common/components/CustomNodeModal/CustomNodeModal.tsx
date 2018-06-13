@@ -4,7 +4,7 @@ import translate, { translateRaw } from 'translations';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
-import { connect, Omit } from 'react-redux';
+import { connect } from 'react-redux';
 import { AppState } from 'reducers';
 import {
   getCustomNetworkConfigs,
@@ -13,7 +13,7 @@ import {
 } from 'selectors/config';
 import { Input, Dropdown } from 'components/ui';
 import './CustomNodeModal.scss';
-import { shepherdProvider } from 'libs/nodes';
+import { exists, SuccessConfig, FailConfig } from 'mycrypto-eth-exists';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 
@@ -43,12 +43,13 @@ interface State {
   hasAuth: boolean;
   username: string;
   password: string;
+  defaultNodes: ((SuccessConfig | FailConfig) & { display: string; index: number })[];
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
 
 class CustomNodeModal extends React.Component<Props, State> {
-  public INITIAL_STATE = {
+  public INITIAL_STATE: State = {
     name: '',
     url: '',
     network: Object.keys(this.props.staticNetworks)[0],
@@ -57,9 +58,18 @@ class CustomNodeModal extends React.Component<Props, State> {
     customNetworkChainId: '',
     hasAuth: false,
     username: '',
-    password: ''
+    password: '',
+    defaultNodes: []
   };
+
   public state: State = this.INITIAL_STATE;
+
+  private timer: number | null;
+
+  constructor(props: Props) {
+    super(props);
+    this.pollForDefaultNodes();
+  }
 
   public componentDidUpdate(prevProps: Props) {
     // Reset state when modal opens
@@ -68,9 +78,16 @@ class CustomNodeModal extends React.Component<Props, State> {
     }
   }
 
+  public componentWillUnmount() {
+    if (this.timer) {
+      window.clearInterval(this.timer);
+    }
+    this.timer = null;
+  }
+
   public render() {
     const { customNetworks, handleClose, staticNetworks, isOpen } = this.props;
-    const { network } = this.state;
+    const { network, customNetworkChainId } = this.state;
     const isHttps = window.location.protocol.includes('https');
     const invalids = this.getInvalids();
 
@@ -88,7 +105,10 @@ class CustomNodeModal extends React.Component<Props, State> {
       }
     ];
 
-    const conflictedNode = this.getConflictedNode();
+    const nameConflictNode = this.getNameConflictNode();
+    const chainidConflictNetwork =
+      network === CUSTOM.value && this.getChainIdCollisionNetwork(customNetworkChainId);
+
     const staticNetwrks = Object.keys(staticNetworks).map(net => {
       return { label: net, value: net };
     });
@@ -106,11 +126,13 @@ class CustomNodeModal extends React.Component<Props, State> {
       >
         {isHttps && <div className="alert alert-warning small">{translate('NODE_WARNING')}</div>}
 
-        {conflictedNode && (
+        {nameConflictNode && (
           <div className="alert alert-warning small">
-            {translate('CUSTOM_NODE_CONFLICT', { conflictedNode: conflictedNode.name })}
+            {translate('CUSTOM_NODE_NAME_CONFLICT', { $node: nameConflictNode.name })}
           </div>
         )}
+
+        {this.renderDefaultNodeDropdown()}
 
         <form className="CustomNodeModal">
           <div className="flex-wrapper">
@@ -171,6 +193,11 @@ class CustomNodeModal extends React.Component<Props, State> {
               </label>
             </div>
           )}
+          {chainidConflictNetwork && (
+            <div className="alert alert-warning small">
+              {translate('CUSTOM_NODE_CHAINID_CONFLICT', { $network: chainidConflictNetwork.name })}
+            </div>
+          )}
 
           <label className="input-group input-group-inline">
             <div className="input-group-header">{translate('CUSTOM_NETWORK_URL')}</div>
@@ -221,6 +248,53 @@ class CustomNodeModal extends React.Component<Props, State> {
     );
   }
 
+  private pollForDefaultNodes() {
+    const pollingInterval = 3000;
+    this.timer = window.setInterval(async () => {
+      const results = await exists(
+        [
+          // tslint:disable-next-line:no-http-string
+          { type: 'http', addr: 'http://localhost', port: 8545, timeout: 3000 }
+        ],
+        { includeDefaults: false }
+      );
+      if (!this.timer) {
+        return;
+      }
+      this.setState({
+        defaultNodes: results.filter(r => r.success).map((r, index) => ({
+          ...r,
+          display: `${r.addr}:${r.port}`,
+          index
+        }))
+      });
+    }, pollingInterval);
+  }
+
+  private renderDefaultNodeDropdown() {
+    const { defaultNodes } = this.state;
+    if (!defaultNodes.length) {
+      return null;
+    }
+
+    return (
+      <label className="col-sm-12 input-group">
+        <div className="input-group-header"> {'Default Nodes Found'}</div>
+        <Dropdown
+          options={this.state.defaultNodes.map(n => ({ label: n.display, value: n.index }))}
+          onChange={({ value }: { value: string }) => {
+            const result = this.state.defaultNodes.find(d => d.index === +value);
+            if (!result) {
+              return;
+            }
+            const { addr, port } = result;
+            this.setState({ url: `${addr}:${port}`, name: 'MyDefaultNode' });
+          }}
+        />
+      </label>
+    );
+  }
+
   private getInvalids(): { [key: string]: boolean } {
     const {
       url,
@@ -267,14 +341,34 @@ class CustomNodeModal extends React.Component<Props, State> {
         invalids.customNetworkUnit = true;
       }
 
-      // Numeric chain ID (if provided)
-      const iChainId = parseInt(customNetworkChainId, 10);
-      if (!iChainId || iChainId < 0) {
+      // Numeric chain ID
+      if (this.getChainIdCollisionNetwork(customNetworkChainId)) {
         invalids.customNetworkChainId = true;
+      } else {
+        const iChainId = parseInt(customNetworkChainId, 10);
+        if (!customNetworkChainId || !iChainId || iChainId < 0) {
+          invalids.customNetworkChainId = true;
+        }
       }
     }
 
     return invalids;
+  }
+
+  private getChainIdCollisionNetwork(chainId: string) {
+    if (!chainId) {
+      return false;
+    }
+
+    const chainIdInt = parseInt(chainId, 10);
+    const allNetworks = [
+      ...Object.values(this.props.staticNetworks),
+      ...Object.values(this.props.customNetworks)
+    ];
+    return allNetworks.reduce(
+      (collision, network) => (network.chainId === chainIdInt ? network : collision),
+      null
+    );
   }
 
   private makeCustomNetworkConfigFromState(): CustomNetworkConfig {
@@ -285,9 +379,10 @@ class CustomNodeModal extends React.Component<Props, State> {
 
     return {
       isCustom: true,
+      id: this.state.customNetworkChainId,
       name: this.state.customNetworkId,
       unit: this.state.customNetworkUnit,
-      chainId: this.state.customNetworkChainId ? parseInt(this.state.customNetworkChainId, 10) : 0,
+      chainId: parseInt(this.state.customNetworkChainId, 10),
       dPathFormats
     };
   }
@@ -300,7 +395,7 @@ class CustomNodeModal extends React.Component<Props, State> {
         ? this.makeCustomNetworkId(this.makeCustomNetworkConfigFromState())
         : network;
 
-    const node: Omit<CustomNodeConfig, 'lib'> = {
+    return {
       isCustom: true,
       service: 'your custom node',
       id: url,
@@ -316,11 +411,9 @@ class CustomNodeModal extends React.Component<Props, State> {
           }
         : {})
     };
-
-    return { ...node, lib: shepherdProvider };
   }
 
-  private getConflictedNode(): CustomNodeConfig | undefined {
+  private getNameConflictNode(): CustomNodeConfig | undefined {
     const { customNodes } = this.props;
     const config = this.makeCustomNodeConfigFromState();
 
@@ -333,14 +426,14 @@ class CustomNodeModal extends React.Component<Props, State> {
     if (this.state.network === CUSTOM.value) {
       const network = this.makeCustomNetworkConfigFromState();
 
-      this.props.addCustomNetwork({ config: network, id: node.network });
+      this.props.addCustomNetwork(network);
     }
 
-    this.props.addCustomNode({ config: node, id: node.id });
+    this.props.addCustomNode(node);
   };
 
   private makeCustomNetworkId(config: CustomNetworkConfig): string {
-    return config.chainId ? `${config.chainId}` : `${config.name}:${config.unit}`;
+    return config.chainId.toString();
   }
 }
 
