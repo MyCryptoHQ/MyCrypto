@@ -20,7 +20,8 @@ import {
   MUSIC_DEFAULT,
   ETSC_DEFAULT,
   EGEM_DEFAULT,
-  CLO_DEFAULT
+  CLO_DEFAULT,
+  GO_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { ConfigAction } from '../../types';
@@ -363,6 +364,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       min: 1,
       max: 60,
       initial: 20
+    }
+  },
+
+  GO: {
+    id: 'GO',
+    name: 'GO',
+    unit: 'GO',
+    chainId: 60,
+    isCustom: false,
+    color: '#00b04a',
+    blockExplorer: makeExplorer({
+      name: 'GoChain Explorer',
+      origin: 'https://explorer.gochain.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: GO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: GO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 2,
+      max: 60,
+      initial: 2
     }
   }
 };

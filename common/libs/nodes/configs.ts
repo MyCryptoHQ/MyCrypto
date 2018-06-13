@@ -165,6 +165,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: '0xinfra.com',
       url: 'https://clo-geth.0xinfra.com/'
     }
+  ],
+
+  GO: [
+    {
+      name: makeNodeName('GO', 'go'),
+      type: 'rpc',
+      service: 'gochain.io',
+      url: 'https://rpc.gochain.io/'
+    }
   ]
 };
 
