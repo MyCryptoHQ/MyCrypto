@@ -81,11 +81,11 @@
       color: $input-color-placeholder;
     }
     &:not([disabled]):not([readonly]) {
-      &.invalid.has-blurred.has-value {
+      &.invalid {
         border-color: $brand-danger;
         box-shadow: inset 0px 0px 0px 1px $brand-danger;
       }
-      &.valid.has-value {
+      &.valid {
         border-color: #8dd17b;
         box-shadow: inset 0px 0px 0px 1px #8dd17b;
       }

@@ -68,9 +68,14 @@ class TXMetaDataPanel extends React.Component<Props, State> {
     sliderState: (this.props as DefaultProps).initialState
   };
 
-  public componentDidMount() {
+  public componentWillMount() {
     if (!this.props.offline) {
       this.props.resetTransactionRequested();
+    }
+  }
+
+  public componentDidMount() {
+    if (!this.props.offline) {
       this.props.fetchCCRates([this.props.network.unit]);
       this.props.getNonceRequested();
     }
