@@ -152,7 +152,7 @@ declare module 'trezor.js' {
     public getEntropy(size: number): Promise<MessageResponse<{ bytes: string }>>;
     public ethereumGetAddress(
       path: number[],
-      display: boolean
+      display?: boolean
     ): Promise<MessageResponse<{ address: string; path: number[] }>>;
     public clearSession(): Promise<boolean>;
     public signEthMessage(
@@ -168,11 +168,11 @@ declare module 'trezor.js' {
       to: string,
       value: string,
       data?: string,
-      chainId?: string
+      chainId?: number
     ): Promise<EthereumSignature>;
     public getPublicKey(
       path: number[],
-      coin: string | CoinType
+      coin?: string | CoinType
     ): Promise<MessageResponse<PublicKey>>;
 
     /* Unused functions, either Bitcoin-centric or just things we wouldn't want to touch */

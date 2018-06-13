@@ -41,8 +41,24 @@ export class TrezorWallet extends HardwareWallet implements IFullWallet {
 
   public signRawTransaction(tx: EthTx): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      const { chainId, ...strTx } = getTransactionFields(tx);
+      const txFields = getTransactionFields(tx);
+
+      if (process.env.BUILD_ELECTRON) {
+        return EnclaveAPI.signTransaction({
+          walletType: WalletTypes.TREZOR,
+          transaction: txFields,
+          path: this.getPath()
+        })
+          .then(res => {
+            resolve(new EthTx(res.signedTransaction).serialize());
+          })
+          .catch(err => {
+            reject(Error(err));
+          });
+      }
+
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
+      const { chainId, ...strTx } = txFields;
       const cleanedTx = mapValues(mapValues(strTx, stripHexPrefixAndLower), padLeftEven);
 
       TrezorConnect.ethereumSignTx(
@@ -80,6 +96,17 @@ export class TrezorWallet extends HardwareWallet implements IFullWallet {
   public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
 
   public displayAddress(): Promise<any> {
+    const path = this.dPath + '/' + this.index;
+
+    if (process.env.BUILD_ELECTRON) {
+      return EnclaveAPI.displayAddress({
+        walletType: WalletTypes.TREZOR,
+        path
+      })
+        .then(res => res.success)
+        .catch(() => false);
+    }
+
     return new Promise(resolve => {
       TrezorConnect.ethereumGetAddress(
         this.dPath + '/' + this.index,
