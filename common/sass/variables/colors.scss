@@ -145,11 +145,11 @@ $theme-dark: (
   brand-warning-light: lighten($brand-warning, 12%),
   brand-warning-lighter: lighten($brand-warning, 16%),
 
-  brand-danger: lighten($brand-danger, 6%),
-  brand-danger-dark: $brand-danger,
-  brand-danger-darker: darken($brand-danger, 6%),
-  brand-danger-light: lighten($brand-danger, 12%),
-  brand-danger-lighter: lighten($brand-danger, 16%),
+  brand-danger: saturate(lighten($brand-danger, 6%), 7%),
+  brand-danger-dark: saturate($brand-danger, 7%),
+  brand-danger-darker: saturate(darken($brand-danger, 6%), 7%),
+  brand-danger-light: saturate(lighten($brand-danger, 12%), 7%),
+  brand-danger-lighter: saturate(lighten($brand-danger, 16%), 7%),
 
   white-clear: rgba($gray-lightest, 0.9),
   white-clearer: rgba($gray-lightest, 0.8),

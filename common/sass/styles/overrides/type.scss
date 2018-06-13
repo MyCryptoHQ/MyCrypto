@@ -146,3 +146,20 @@ li {
 blockquote {
   padding: $space-sm #{$line-height-computed}rem;
 }
+
+// Color text
+.text-primary {
+  color: color(brand-primary);
+}
+.text-info {
+  color: color(brand-info);
+}
+.text-success {
+  color: color(brand-success);
+}
+.text-warning {
+  color: color(brand-warning);
+}
+.text-danger {
+  color: color(brand-danger);
+}
