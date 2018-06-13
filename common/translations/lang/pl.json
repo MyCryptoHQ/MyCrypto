@@ -259,6 +259,8 @@
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Połącz z TREZOR ",
     "ADD_TREZOR_SELECT": "To jest ziarno (seed) TREZOR",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Połącz z Safe-T mini ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Otwórz MyCrypto ponownie na bezpiecznym połączeniu (SSL) ",
     "ADD_DIGITALBITBOX_0B": "Otwórz MyCrypto w [Chrome](https://www.google.com/chrome/browser/desktop/) lub [Opera](https://www.opera.com/) ",

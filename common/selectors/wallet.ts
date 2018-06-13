@@ -7,6 +7,7 @@ import {
   Web3Wallet,
   LedgerWallet,
   TrezorWallet,
+  SafeTWallet,
   ParitySignerWallet,
   WalletConfig
 } from 'libs/wallet';
@@ -113,8 +114,9 @@ export const getWalletType = (state: AppState): IWalletType => {
   const isWeb3Wallet = wallet instanceof Web3Wallet;
   const isLedgerWallet = wallet instanceof LedgerWallet;
   const isTrezorWallet = wallet instanceof TrezorWallet;
+  const isSafeTWallet = wallet instanceof SafeTWallet;
   const isParitySignerWallet = wallet instanceof ParitySignerWallet;
-  const isHardwareWallet = isLedgerWallet || isTrezorWallet;
+  const isHardwareWallet = isLedgerWallet || isTrezorWallet || isSafeTWallet;
   return { isWeb3Wallet, isHardwareWallet, isParitySignerWallet };
 };
 
@@ -181,7 +183,7 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
   // Some wallets are unavailable offline
   if (isOffline) {
     addReason(
-      [SecureWalletName.WEB3, SecureWalletName.TREZOR],
+      [SecureWalletName.WEB3, SecureWalletName.TREZOR, SecureWalletName.SAFE_T],
       'This wallet cannot be accessed offline'
     );
   }

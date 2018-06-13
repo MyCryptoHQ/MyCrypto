@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { toChecksumAddress } from 'ethereumjs-util';
 import { UnitDisplay, NewTabLink } from 'components/ui';
-import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
+import { IWallet, TrezorWallet, SafeTWallet, LedgerWallet, Balance } from 'libs/wallet';
 import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
 import { getNetworkConfig, getOffline } from 'selectors/config';
@@ -84,7 +84,7 @@ class AccountInfo extends React.Component<Props, State> {
       tokenExplorer = network.tokenExplorer;
     }
 
-    const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
+    const wallet = this.props.wallet as LedgerWallet | TrezorWallet | SafeTWallet;
     return (
       <div>
         <AccountAddress address={toChecksumAddress(address)} />

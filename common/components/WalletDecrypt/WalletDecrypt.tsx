@@ -24,6 +24,7 @@ import {
   PrivateKeyDecrypt,
   PrivateKeyValue,
   TrezorDecrypt,
+  SafeTminiDecrypt,
   ViewOnlyDecrypt,
   Web3Decrypt,
   WalletButton,
@@ -46,6 +47,7 @@ import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import './WalletDecrypt.scss';
@@ -150,6 +152,16 @@ const WalletDecrypt = withRouter<Props>(
         unlock: this.props.setWallet,
         helpLink:
           'https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html'
+      },
+      [SecureWalletName.SAFE_T]: {
+        lid: 'X_SAFE_T',
+        icon: SafeTIcon,
+        description: 'ADD_HARDWAREDESC',
+        component: SafeTminiDecrypt,
+        initialParams: {},
+        unlock: this.props.setWallet,
+        // TODO - Update with the right id once available
+        helpLink: 'https://www.archos.com/fr/products/crypto/faq.html'
       },
       [SecureWalletName.PARITY_SIGNER]: {
         lid: 'X_PARITYSIGNER',

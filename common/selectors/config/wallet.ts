@@ -10,6 +10,7 @@ type PathType = keyof DPathFormats;
 
 type DPathFormat =
   | SecureWalletName.TREZOR
+  | SecureWalletName.SAFE_T
   | SecureWalletName.LEDGER_NANO_S
   | InsecureWalletName.MNEMONIC_PHRASE;
 
@@ -51,6 +52,7 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
   const CHECK_FORMATS: DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
     SecureWalletName.TREZOR,
+    SecureWalletName.SAFE_T,
     InsecureWalletName.MNEMONIC_PHRASE
   ];
 
