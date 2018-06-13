@@ -24,6 +24,7 @@ import {
   estimateGasRequested,
   SetToFieldAction,
   SetDataFieldAction,
+  SetValueFieldAction,
   SwapEtherToTokenAction,
   SwapTokenToTokenAction,
   SwapTokenToEtherAction,
@@ -44,8 +45,10 @@ export function* shouldEstimateGas(): SagaIterator {
       | SwapEtherToTokenAction
       | SwapTokenToTokenAction
       | SwapTokenToEtherAction
-      | ToggleAutoGasLimitAction = yield take([
+      | ToggleAutoGasLimitAction
+      | SetValueFieldAction = yield take([
       TypeKeys.TO_FIELD_SET,
+      TypeKeys.VALUE_FIELD_SET,
       TypeKeys.DATA_FIELD_SET,
       TypeKeys.ETHER_TO_TOKEN_SWAP,
       TypeKeys.TOKEN_TO_TOKEN_SWAP,
@@ -64,7 +67,9 @@ export function* shouldEstimateGas(): SagaIterator {
     // invalid field is a field that the value is null and the input box isnt empty
     // reason being is an empty field is valid because it'll be null
     const invalidField =
-      (action.type === TypeKeys.TO_FIELD_SET || action.type === TypeKeys.DATA_FIELD_SET) &&
+      (action.type === TypeKeys.TO_FIELD_SET ||
+        action.type === TypeKeys.DATA_FIELD_SET ||
+        action.type === TypeKeys.VALUE_FIELD_SET) &&
       !action.payload.value &&
       action.payload.raw !== '';
 
