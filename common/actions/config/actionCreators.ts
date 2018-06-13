@@ -38,13 +38,6 @@ export function changeTheme(
   };
 }
 
-export type TPollOfflineStatus = typeof pollOfflineStatus;
-export function pollOfflineStatus(): interfaces.PollOfflineStatus {
-  return {
-    type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS
-  };
-}
-
 export type TChangeNodeRequested = typeof changeNodeRequested;
 export function changeNodeRequested(payload: string): interfaces.ChangeNodeRequestedAction {
   return {

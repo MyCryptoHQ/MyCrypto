@@ -101,11 +101,11 @@
       color: color(control-placeholder);
     }
     &:not([disabled]):not([readonly]) {
-      &.invalid.has-blurred.has-value {
+      &.invalid {
         border-color: color(brand-danger);
         box-shadow: inset 0px 0px 0px 1px color(brand-danger);
       }
-      &.valid.has-value {
+      &.valid {
         border-color: color(brand-success);
         box-shadow: inset 0px 0px 0px 1px color(brand-success);
       }
