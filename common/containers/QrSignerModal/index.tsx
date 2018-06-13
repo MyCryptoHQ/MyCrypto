@@ -94,7 +94,7 @@ class QrSignerModal extends React.Component<Props, State> {
       return;
     }
 
-    this.props.finalizeSignature(signature);
+    this.props.finalizeSignature('0x' + signature);
     this.setState({ scan: false });
   };
 }
