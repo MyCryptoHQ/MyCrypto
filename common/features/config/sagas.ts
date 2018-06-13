@@ -83,7 +83,6 @@ export function* pruneCustomNetworks(): SagaIterator {
   }
 }
 
-export const networkSaga = [takeEvery(CONFIG_NETWORKS_CUSTOM.REMOVE, pruneCustomNetworks)];
 //#endregion Network
 
 //#region Nodes
@@ -174,7 +173,7 @@ export function* reload(): SagaIterator {
 
 export function* handleChangeNodeRequestedOneTime(): SagaIterator {
   const action: ChangeNodeRequestedOneTimeAction = yield take(
-    CONFIG_NODES_SELECTED.CHANGE_REQUESTED_ONETIME
+    'CONFIG_NODES_SELECTED_CHANGE_REQUESTED_ONETIME'
   );
   // allow shepherdProvider async init to complete. TODO - don't export shepherdProvider as promise
   yield call(delay, 100);
@@ -331,16 +330,6 @@ export function* handleRemoveCustomNode({ payload: nodeId }: RemoveCustomNodeAct
     yield put(changeNodeForce(SELECTED_NODE_INITIAL_STATE.nodeId));
   }
 }
-
-export const nodeSaga = [
-  fork(handleChangeNodeRequestedOneTime),
-  takeEvery(CONFIG_NODES_SELECTED.CHANGE_REQUESTED, handleChangeNodeRequested),
-  takeEvery(CONFIG_NODES_SELECTED.CHANGE_FORCE, handleNodeChangeForce),
-  takeEvery(CONFIG_NETWORKS.CHANGE_NETWORK_REQUESTED, handleChangeNetworkRequested),
-  takeEvery(CONFIG_META.LANGUAGE_CHANGE, reload),
-  takeEvery(CONFIG_NODES_CUSTOM.ADD, handleAddCustomNode),
-  takeEvery(CONFIG_NODES_CUSTOM.REMOVE, handleRemoveCustomNode)
-];
 //#endregion Nodes
 
 //#region Web3
@@ -448,14 +437,24 @@ export function* unsetWeb3Node(): SagaIterator {
   // forcefully switch back to a node with the same network as MetaMask/Mist
   yield put(changeNodeForce(prevNodeId));
 }
-
-export const web3 = [
-  takeEvery(CONFIG_NODES_STATIC.WEB3_UNSET, unsetWeb3Node),
-  takeEvery(WALLET.SET, unsetWeb3NodeOnWalletEvent),
-  takeEvery(WALLET.UNLOCK_WEB3, unlockWeb3)
-];
 //#endregion Web3
 
 export function* configSaga(): SagaIterator {
+  const networkSaga = [takeEvery('CONFIG_NETWORKS_CUSTOM_REMOVE', pruneCustomNetworks)];
+  const nodeSaga = [
+    fork(handleChangeNodeRequestedOneTime),
+    takeEvery('CONFIG_NODES_SELECTED_CHANGE_REQUESTED', handleChangeNodeRequested),
+    takeEvery('CONFIG_NODES_SELECTED_CHANGE_FORCE', handleNodeChangeForce),
+    takeEvery('CONFIG_NETWORK_CHANGE_NETWORK_REQUESTED', handleChangeNetworkRequested),
+    takeEvery('CONFIG_META_LANGUAGE_CHANGE', reload),
+    takeEvery('CONFIG_NODES_CUSTOM_ADD', handleAddCustomNode),
+    takeEvery('CONFIG_NODES_CUSTOM_REMOVE', handleRemoveCustomNode)
+  ];
+  const web3 = [
+    takeEvery('CONFIG_NODES_STATIC_WEB3_UNSET', unsetWeb3Node),
+    takeEvery('WALLET_SET', unsetWeb3NodeOnWalletEvent),
+    takeEvery('WALLET_UNLOCK_WEB3', unlockWeb3)
+  ];
+
   yield all([...networkSaga, ...nodeSaga, ...web3]);
 }
