@@ -3,7 +3,10 @@ import classnames from 'classnames';
 import './Input.scss';
 
 interface OwnProps extends HTMLProps<HTMLInputElement> {
+  isValid?: boolean;
   showInvalidBeforeBlur?: boolean;
+  showInvalidWithoutValue?: boolean;
+  showValidAsPlain?: boolean;
   setInnerRef?(ref: HTMLInputElement | null): void;
 }
 
@@ -16,12 +19,9 @@ interface State {
   isStateless: boolean;
 }
 
-interface OwnProps extends HTMLProps<HTMLInputElement> {
-  isValid: boolean;
-  showValidAsPlain?: boolean;
-}
+type Props = OwnProps & HTMLProps<HTMLInputElement>;
 
-class Input extends React.Component<OwnProps, State> {
+class Input extends React.Component<Props, State> {
   public state: State = {
     hasBlurred: false,
     isStateless: true
@@ -31,18 +31,29 @@ class Input extends React.Component<OwnProps, State> {
     const {
       setInnerRef,
       showInvalidBeforeBlur,
+      showInvalidWithoutValue,
       showValidAsPlain,
       isValid,
       ...htmlProps
     } = this.props;
+    const { hasBlurred, isStateless } = this.state;
     const hasValue = !!this.props.value && this.props.value.toString().length > 0;
-    const classname = classnames(
-      this.props.className,
-      'input-group-input',
-      this.state.isStateless ? '' : isValid ? (showValidAsPlain ? '' : '') : `invalid`,
-      (showInvalidBeforeBlur || this.state.hasBlurred) && 'has-blurred',
-      hasValue && 'has-value'
-    );
+
+    // Currently we don't ever highlight valid, so go empty string instead
+    let validClass = isValid ? '' : 'invalid';
+    if (isStateless) {
+      validClass = '';
+    }
+    if (!hasValue && !showInvalidWithoutValue) {
+      validClass = '';
+    } else if (!hasBlurred && !showInvalidBeforeBlur) {
+      validClass = '';
+    }
+    if (!hasValue && showInvalidWithoutValue) {
+      validClass = 'invalid';
+    }
+
+    const classname = classnames('input-group-input', this.props.className, validClass);
 
     return (
       <input

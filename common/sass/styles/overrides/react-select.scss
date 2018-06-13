@@ -65,10 +65,11 @@
   &-menu {
     max-height: 10.0625rem;
   }
-  &.invalid.has-blurred {
-    border-color: $brand-danger;
-    box-shadow: inset 0px 0px 0px 1px $brand-danger;
-  }
+  // Selects should never have invalid input
+  // &.invalid {
+  //   border-color: $brand-danger;
+  //   box-shadow: inset 0px 0px 0px 1px $brand-danger;
+  // }
   &.is-focused {
     border-color: #4295bc;
     box-shadow: inset 0px 0px 0px 1px #4295bc;

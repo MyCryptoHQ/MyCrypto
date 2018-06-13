@@ -121,6 +121,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   private handlePathChange = (dPath: DPath) => {
     this.handleConnect(dPath);
+    this.setState({
+      dPath
+    });
   };
 
   private handleConnect = (dPath: DPath) => {
