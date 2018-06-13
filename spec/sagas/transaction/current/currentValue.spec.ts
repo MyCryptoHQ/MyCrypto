@@ -1,4 +1,12 @@
-import { isEtherTransaction, getUnit, getDecimal, getCurrentValue } from 'selectors/transaction';
+import BN from 'bn.js';
+
+import {
+  isEtherTransaction,
+  getUnit,
+  getDecimal,
+  getCurrentValue,
+  ICurrentValue
+} from 'selectors/transaction';
 import { select, call, put } from 'redux-saga/effects';
 import { setTokenValue, setValueField } from 'actions/transaction/actionCreators';
 import { toTokenBase } from 'libs/units';
@@ -7,7 +15,8 @@ import {
   setCurrentValue,
   revalidateCurrentValue,
   reparseCurrentValue,
-  valueHandler
+  valueHandler,
+  isValueDifferent
 } from 'sagas/transaction/current/currentValue';
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { SagaIterator } from 'redux-saga';
@@ -221,6 +230,32 @@ describe('revalidateCurrentValue*', () => {
     });
 
     itShouldBeDone(gen);
+  });
+});
+
+describe('isValueDifferent', () => {
+  it('should be truthy when raw differs', () => {
+    const curVal: ICurrentValue = { raw: 'a', value: new BN(0) };
+    const newVal: ICurrentValue = { raw: 'b', value: new BN(0) };
+    expect(isValueDifferent(curVal, newVal)).toBeTruthy();
+  });
+
+  it('should be falsy when value is the same BN', () => {
+    const curVal: ICurrentValue = { raw: '', value: new BN(1) };
+    const newVal: ICurrentValue = { raw: '', value: new BN(1) };
+    expect(isValueDifferent(curVal, newVal)).toBeFalsy();
+  });
+
+  it('should be truthy when value is a different BN', () => {
+    const curVal: ICurrentValue = { raw: '', value: new BN(1) };
+    const newVal: ICurrentValue = { raw: '', value: new BN(2) };
+    expect(isValueDifferent(curVal, newVal)).toBeTruthy();
+  });
+
+  it('should be truthy when value is not the same and not both BNs', () => {
+    const curVal: ICurrentValue = { raw: '', value: new BN(1) };
+    const newVal: ICurrentValue = { raw: '', value: null };
+    expect(isValueDifferent(curVal, newVal)).toBeTruthy();
   });
 });
 
