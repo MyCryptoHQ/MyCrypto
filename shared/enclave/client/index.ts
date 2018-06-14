@@ -1,6 +1,7 @@
 import { makeRequest } from './requests';
 import {
   EnclaveMethods,
+  EnclaveMethodParams,
   GetChainCodeParams,
   GetChainCodeResponse,
   SignTransactionParams,
@@ -11,22 +12,19 @@ import {
   DisplayAddressResponse
 } from 'shared/enclave/types';
 
+function makeMethod<ParamsType extends EnclaveMethodParams, ResponseType>(method: EnclaveMethods) {
+  return (params: ParamsType) => makeRequest<ResponseType>(method, params);
+}
+
 const api = {
-  getChainCode(params: GetChainCodeParams) {
-    return makeRequest<GetChainCodeResponse>(EnclaveMethods.GET_CHAIN_CODE, params);
-  },
-
-  signTransaction(params: SignTransactionParams) {
-    return makeRequest<SignTransactionResponse>(EnclaveMethods.SIGN_TRANSACTION, params);
-  },
-
-  signMessage(params: SignMessageParams) {
-    return makeRequest<SignMessageResponse>(EnclaveMethods.SIGN_MESSAGE, params);
-  },
-
-  displayAddress(params: DisplayAddressParams) {
-    return makeRequest<DisplayAddressResponse>(EnclaveMethods.DISPLAY_ADDRESS, params);
-  }
+  getChainCode: makeMethod<GetChainCodeParams, GetChainCodeResponse>(EnclaveMethods.GET_CHAIN_CODE),
+  signTransaction: makeMethod<SignTransactionParams, SignTransactionResponse>(
+    EnclaveMethods.SIGN_TRANSACTION
+  ),
+  signMessage: makeMethod<SignMessageParams, SignMessageResponse>(EnclaveMethods.SIGN_MESSAGE),
+  displayAddress: makeMethod<DisplayAddressParams, DisplayAddressResponse>(
+    EnclaveMethods.DISPLAY_ADDRESS
+  )
 };
 
 export default api;
