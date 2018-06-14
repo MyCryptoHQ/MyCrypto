@@ -20,11 +20,6 @@ export interface ChangeLanguageAction {
   payload: string;
 }
 
-/*** Poll offline status ***/
-export interface PollOfflineStatus {
-  type: TypeKeys.CONFIG_POLL_OFFLINE_STATUS;
-}
-
 /*** Change Node Requested ***/
 export interface ChangeNodeRequestedAction {
   type: TypeKeys.CONFIG_CHANGE_NODE_REQUESTED;
@@ -120,7 +115,6 @@ export type MetaAction =
   | SetOnlineAction
   | SetOfflineAction
   | ToggleAutoGasLimitAction
-  | PollOfflineStatus
   | SetLatestBlockAction;
 
 /*** Union Type ***/

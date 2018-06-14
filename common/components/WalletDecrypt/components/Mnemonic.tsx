@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
-import DeprecationWarning from './DeprecationWarning';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -51,7 +50,6 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <DeprecationWarning />
         <div id="selectedTypeKey">
           <div className="form-group">
             <TogglablePassword
