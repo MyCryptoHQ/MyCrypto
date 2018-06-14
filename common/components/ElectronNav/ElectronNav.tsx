@@ -41,6 +41,7 @@ export default class ElectronNav extends React.Component<{}, State> {
               link={link}
               isHomepage={link === navigationLinks[0]}
               className="ElectronNavLink"
+              isNotEnabled={false}
             />
           ))}
         </ul>

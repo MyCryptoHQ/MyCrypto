@@ -1,4 +1,5 @@
 import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
+import { TAB } from 'components/Header/components/constants';
 
 type StaticNetworkIds =
   | 'ETH'
@@ -67,6 +68,7 @@ interface StaticNetworkConfig {
   isTestnet?: boolean;
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice?: boolean;
+  unsupportedTabs?: TAB[];
 }
 
 interface CustomNetworkConfig {
@@ -77,6 +79,7 @@ interface CustomNetworkConfig {
   unit: string;
   chainId: number;
   dPathFormats: DPathFormats | null;
+  unsupportedTabs?: TAB[];
 }
 
 type NetworkConfig = StaticNetworksState[StaticNetworkIds] | CustomNetworksState[string];
