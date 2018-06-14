@@ -1,5 +1,6 @@
 import { Identicon, QRCode } from 'components/ui';
 import React from 'react';
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
 import ethLogo from 'assets/images/logo-ethereum-1.png';
 import notesBg from 'assets/images/notes-bg.png';
@@ -96,7 +97,8 @@ interface Props {
 
 export default class PaperWallet extends React.Component<Props, {}> {
   public render() {
-    const { privateKey, address } = this.props;
+    const { privateKey } = this.props;
+    const address = toChecksumAddress(addHexPrefix(this.props.address));
 
     return (
       <div style={styles.container}>
