@@ -28,7 +28,7 @@ const Ledger: WalletLib = {
       const res = await app.getAddress(dpath, false, true);
       return {
         publicKey: res.publicKey,
-        chainCode: res.chainCode as string
+        chainCode: res.chainCode
       };
     } catch (err) {
       console.error('Failed to get chain code from ledger:', err);
