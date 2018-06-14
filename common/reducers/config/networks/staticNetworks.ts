@@ -25,7 +25,6 @@ import {
 import { ConfigAction } from 'actions/config';
 import { makeExplorer } from 'utils/helpers';
 import { StaticNetworksState as State } from './types';
-import { TAB } from 'components/Header/components/constants';
 
 const testnetDefaultGasPrice = {
   min: 0.1,
