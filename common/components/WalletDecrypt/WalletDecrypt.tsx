@@ -79,8 +79,8 @@ type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
 type UnlockParams = {} | PrivateKeyValue;
 interface State {
   selectedWalletKey: WalletName | null;
+  isInsecureOverridden: boolean;
   value: UnlockParams | null;
-  hasAcknowledgedInsecure: boolean;
 }
 
 interface BaseWalletInfo {
@@ -204,8 +204,8 @@ const WalletDecrypt = withRouter<Props>(
 
     public state: State = {
       selectedWalletKey: null,
-      value: null,
-      hasAcknowledgedInsecure: false
+      isInsecureOverridden: false,
+      value: null
     };
 
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -228,20 +228,28 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public getDecryptionComponent() {
-      const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
+      const { selectedWalletKey, isInsecureOverridden } = this.state;
       const selectedWallet = this.getSelectedWallet();
       if (!selectedWalletKey || !selectedWallet) {
         return null;
       }
 
-      if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
+      const isInsecure = INSECURE_WALLETS.includes(selectedWalletKey);
+      if (isInsecure && !isInsecureOverridden && !process.env.BUILD_DOWNLOADABLE) {
         return (
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
               walletType={translateRaw(selectedWallet.lid)}
-              onContinue={this.handleAcknowledgeInsecure}
               onCancel={this.clearWalletChoice}
             />
+            {process.env.NODE_ENV !== 'production' && (
+              <button
+                className="WalletDecrypt-decrypt-override"
+                onClick={this.overrideInsecureWarning}
+              >
+                I'm a dev, override this
+              </button>
+            )}
           </div>
         );
       }
@@ -288,10 +296,6 @@ const WalletDecrypt = withRouter<Props>(
         </div>
       );
     }
-
-    public handleAcknowledgeInsecure = () => {
-      this.setState({ hasAcknowledgedInsecure: true });
-    };
 
     public buildWalletOptions() {
       const { computedDisabledWallets } = this.props;
@@ -386,8 +390,7 @@ const WalletDecrypt = withRouter<Props>(
       window.setTimeout(() => {
         this.setState({
           selectedWalletKey: walletType,
-          value: wallet.initialParams,
-          hasAcknowledgedInsecure: false
+          value: wallet.initialParams
         });
       }, timeout);
     };
@@ -395,8 +398,7 @@ const WalletDecrypt = withRouter<Props>(
     public clearWalletChoice = () => {
       this.setState({
         selectedWalletKey: null,
-        value: null,
-        hasAcknowledgedInsecure: false
+        value: null
       });
     };
 
@@ -447,6 +449,12 @@ const WalletDecrypt = withRouter<Props>(
 
     private isWalletDisabled = (walletKey: WalletName) => {
       return this.props.computedDisabledWallets.wallets.indexOf(walletKey) !== -1;
+    };
+
+    private overrideInsecureWarning = () => {
+      if (process.env.NODE_ENV !== 'production') {
+        this.setState({ isInsecureOverridden: true });
+      }
     };
   }
 );

@@ -175,6 +175,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'mycrypto.testnet.rsk.co',
       url: 'https://mycrypto.testnet.rsk.co/'
     }
+  ],
+
+  GO: [
+    {
+      name: makeNodeName('GO', 'go'),
+      type: 'rpc',
+      service: 'gochain.io',
+      url: 'https://rpc.gochain.io/'
+    }
   ]
 };
 

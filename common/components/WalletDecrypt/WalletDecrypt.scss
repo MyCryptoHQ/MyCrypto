@@ -111,6 +111,17 @@ $speed: 500ms;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    &-override {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      opacity: 0.3;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 }
 
