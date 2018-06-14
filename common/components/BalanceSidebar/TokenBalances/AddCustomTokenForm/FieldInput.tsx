@@ -1,5 +1,5 @@
 import React from 'react';
-import { Result } from 'nano-result';
+import { Result } from 'mycrypto-nano-result';
 import { shepherdProvider } from 'libs/nodes';
 import { Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';

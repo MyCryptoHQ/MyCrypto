@@ -3,7 +3,7 @@ import { Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
 import ERC20 from 'libs/erc20';
 import { shepherdProvider } from 'libs/nodes';
-import { Result } from 'nano-result';
+import { Result } from 'mycrypto-nano-result';
 import { getWalletInst } from 'selectors/wallet';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { translateRaw } from 'translations';
 import { IGenerateSymbolLookup } from './AddCustomTokenForm';
-import { Result } from 'nano-result';
+import { Result } from 'mycrypto-nano-result';
 import { FieldInput } from './FieldInput';
 
 interface OwnProps {

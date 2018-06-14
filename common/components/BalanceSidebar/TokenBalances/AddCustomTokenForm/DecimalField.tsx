@@ -1,7 +1,7 @@
 import React from 'react';
 import { isPositiveIntegerOrZero } from 'libs/validators';
 import { translateRaw } from 'translations';
-import { Result } from 'nano-result';
+import { Result } from 'mycrypto-nano-result';
 
 import { FieldInput } from './FieldInput';
 

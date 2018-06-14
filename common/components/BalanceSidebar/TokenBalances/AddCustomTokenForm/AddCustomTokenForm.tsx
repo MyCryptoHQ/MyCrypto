@@ -8,7 +8,7 @@ import translate from 'translations';
 import { HelpLink } from 'components/ui';
 import './AddCustomTokenForm.scss';
 import { Token } from 'types/network';
-import { Result } from 'nano-result';
+import { Result } from 'mycrypto-nano-result';
 
 interface Props {
   allTokens: Token[];

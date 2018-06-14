@@ -3,7 +3,7 @@ import { Input } from 'components/ui';
 import { translateRaw } from 'translations';
 import { IGenerateAddressLookup } from './AddCustomTokenForm';
 import { isValidETHAddress } from 'libs/validators';
-import { Result } from 'nano-result';
+import { Result } from 'mycrypto-nano-result';
 
 interface OwnProps {
   addressLookup: IGenerateAddressLookup;
