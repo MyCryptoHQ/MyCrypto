@@ -4,7 +4,11 @@ import BN from 'bn.js';
 
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { ICurrentScheduleTimestamp } from './selectors';
+
+export interface ICurrentScheduleTimestamp {
+  raw: string;
+  value: Date;
+}
 
 export const isWindowStartValid = (
   transactionFields: AppState['schedule'],

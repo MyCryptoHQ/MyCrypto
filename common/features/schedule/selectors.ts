@@ -31,7 +31,8 @@ import {
   windowSizeBlockToMin,
   calculateWindowStart,
   isWindowStartValid,
-  isScheduleTimestampValid
+  isScheduleTimestampValid,
+  ICurrentScheduleTimestamp
 } from './helpers';
 
 //#region Fields
@@ -242,11 +243,6 @@ export const getValidateScheduleParamsCallPayload = (
 //#region Current
 
 //#region Schedule Timestamp
-export interface ICurrentScheduleTimestamp {
-  raw: string;
-  value: Date;
-}
-
 export const isValidCurrentScheduleTimestamp = (state: AppState) => {
   const currentScheduleTimestamp = getScheduleTimestamp(state);
   const currentScheduleTimezone = getScheduleTimezone(state);
