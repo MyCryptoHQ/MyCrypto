@@ -4,7 +4,7 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { createMockStore } from 'redux-test-utils';
 
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import ENS from 'containers/Tabs/ENS';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';

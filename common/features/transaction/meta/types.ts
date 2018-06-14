@@ -8,6 +8,16 @@ export enum TRANSACTION_META {
   IS_VIEW_AND_SEND = 'IS_VIEW_AND_SEND'
 }
 
+export interface MetaState {
+  unit: SetUnitMetaAction['payload'];
+  previousUnit: SetUnitMetaAction['payload'];
+  decimal: number;
+  tokenValue: { raw: string; value: TokenValue | null }; // TODO: fix this workaround since some of the payload is optional
+  tokenTo: SetTokenToMetaAction['payload'];
+  from: string | null;
+  isContractInteraction: boolean;
+}
+
 export interface SetTokenToMetaAction {
   type: TRANSACTION_META.TOKEN_TO_META_SET;
   payload: {

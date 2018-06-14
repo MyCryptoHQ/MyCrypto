@@ -1,4 +1,4 @@
-import { configuredStore } from './store';
+import configuredStore from './store';
 
 export function getInitialState() {
   return { ...configuredStore.getState() };

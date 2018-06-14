@@ -1,15 +1,12 @@
 import {
   TRANSACTION_BROADCAST,
+  BroadcastState,
   ITransactionStatus,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction,
   BroadcastAction
 } from './types';
-
-export interface BroadcastState {
-  [indexingHash: string]: ITransactionStatus | null;
-}
 
 export const BROADCAST_INITIAL_STATE = {};
 const handleQueue = (

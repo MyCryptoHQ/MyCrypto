@@ -1,10 +1,11 @@
-import { getTransactionFields, makeTransaction } from 'libs/transaction';
-import { IFullWallet } from '../IWallet';
 import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
-import { configuredStore } from 'features/index';
-import { getNodeLib, getNetworkByChainId } from 'features/config';
+
+import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
+import configuredStore from 'features/store';
+import { getNodeLib, getNetworkByChainId } from 'features/config';
+import { IFullWallet } from '../IWallet';
 
 export default class Web3Wallet implements IFullWallet {
   private address: string;
@@ -45,7 +46,6 @@ export default class Web3Wallet implements IFullWallet {
       transactionInstance
     );
     const from = this.address;
-
     const web3Tx = {
       from,
       to,
@@ -56,7 +56,6 @@ export default class Web3Wallet implements IFullWallet {
       nonce,
       chainId
     };
-
     const state = configuredStore.getState();
     const nodeLib: Web3Node = getNodeLib(state) as any;
 

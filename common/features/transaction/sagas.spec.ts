@@ -39,7 +39,7 @@ import {
   gasPriceValidator,
   gasLimitValidator
 } from 'libs/validators';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { CONFIG_META } from 'features/config/meta/types';
 import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';

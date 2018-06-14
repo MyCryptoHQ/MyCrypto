@@ -8,7 +8,7 @@ import { render } from 'react-dom';
 
 import Root from './Root';
 import consoleAdvertisement from 'utils/consoleAdvertisement';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 
 const appEl = document.getElementById('app');
 

@@ -4,7 +4,7 @@ import { take, race, fork, call, cancel, apply, cancelled, put, select } from 'r
 
 import { getAllRates, getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { TRANSACTION } from 'features/transaction/types';
 import { WALLET } from 'features/wallet/types';
 import { showNotification } from 'features/notifications/actions';

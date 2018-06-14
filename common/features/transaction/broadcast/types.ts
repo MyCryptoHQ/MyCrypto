@@ -6,6 +6,10 @@ export enum TRANSACTION_BROADCAST {
   TRANSACTION_FAILED = 'BROADCAST_TRANSACTION_FAILED'
 }
 
+export interface BroadcastState {
+  [indexingHash: string]: ITransactionStatus | null;
+}
+
 export interface BroadcastLocalTransactionRequestedAction {
   type: TRANSACTION_BROADCAST.LOCAL_TRANSACTION_REQUESTED;
 }

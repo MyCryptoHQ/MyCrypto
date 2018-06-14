@@ -1,4 +1,4 @@
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { toWei } from 'libs/units';
 import ERC20 from 'libs/erc20';
 

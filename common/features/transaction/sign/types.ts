@@ -10,10 +10,22 @@ export enum TRANSACTION_SIGN {
   SIGN_TRANSACTION_FAILED = 'SIGN_TRANSACTION_FAILED'
 }
 
+export interface SignState {
+  indexingHash: string | null;
+  pending: boolean;
+  local: {
+    signedTransaction: Buffer | null;
+  };
+  web3: {
+    transaction: Buffer | null;
+  };
+}
+
 export interface SignTransactionRequestedAction {
   type: TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED;
   payload: EthTx;
 }
+
 export interface SignLocalTransactionSucceededAction {
   type: TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED;
   payload: { signedTransaction: Buffer; indexingHash: string; noVerify?: boolean }; // dont verify against fields, for pushTx

@@ -1,4 +1,4 @@
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import {
   decryptPrivKey,
   decodeCryptojsSalt,

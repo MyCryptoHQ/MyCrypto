@@ -1,5 +1,5 @@
 import { TokenValue } from 'libs/units';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { ITokenValues, DeterministicWalletData } from './types';
 import { setDeterministicWallets, setDesiredToken, updateDeterministicWallet } from './actions';
 import { INITIAL_STATE, deterministicWalletsReducer } from './reducer';

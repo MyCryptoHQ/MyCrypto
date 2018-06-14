@@ -1,21 +1,11 @@
 import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
 import {
   TRANSACTION_SIGN,
+  SignState,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction,
   SignAction
 } from './types';
-
-export interface SignState {
-  indexingHash: string | null;
-  pending: boolean;
-  local: {
-    signedTransaction: Buffer | null;
-  };
-  web3: {
-    transaction: Buffer | null;
-  };
-}
 
 export type StateSerializedTx =
   | SignState['local']['signedTransaction']

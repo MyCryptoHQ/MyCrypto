@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import BN from 'bn.js';
 
-import { Wei, gasPriceToBase } from 'libs/units';
+import { gasPriceToBase } from 'libs/units';
 import {
   TRANSACTION,
   SwapTokenToEtherAction,
@@ -10,23 +10,7 @@ import {
   SwapAction,
   ResetTransactionSuccessfulAction
 } from '../types';
-import {
-  TRANSACTION_FIELDS,
-  FieldAction,
-  SetToFieldAction,
-  SetDataFieldAction,
-  SetNonceFieldAction,
-  SetGasLimitFieldAction
-} from './types';
-
-export interface FieldsState {
-  to: SetToFieldAction['payload'];
-  data: SetDataFieldAction['payload'];
-  nonce: SetNonceFieldAction['payload'];
-  value: { raw: string; value: Wei | null }; // TODO: fix this workaround since some of the payload is optional
-  gasLimit: SetGasLimitFieldAction['payload'];
-  gasPrice: { raw: string; value: Wei };
-}
+import { TRANSACTION_FIELDS, FieldsState, FieldAction } from './types';
 
 export const FIELDS_INITIAL_STATE: FieldsState = {
   to: { raw: '', value: null },

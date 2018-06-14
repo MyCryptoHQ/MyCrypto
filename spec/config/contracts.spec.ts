@@ -1,4 +1,4 @@
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import CONTRACTS from 'config/contracts';
 import { isValidETHAddress } from 'libs/validators';
 

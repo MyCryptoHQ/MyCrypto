@@ -4,9 +4,8 @@ import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { createMockStore } from 'redux-test-utils';
 
-import { configReducer } from 'features/config';
-
-import { INITIAL_STATE as swap } from 'features/swap';
+import { configReducer } from 'features/config/reducer';
+import { INITIAL_STATE as swap } from 'features/swap/reducer';
 import Swap from 'containers/Tabs/Swap';
 import shallowWithStore from '../utils/shallowWithStore';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';

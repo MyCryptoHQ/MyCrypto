@@ -3,7 +3,7 @@ import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
 
 import translate from 'translations';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';
 import { Wei } from 'libs/units';
 import RpcNode from 'libs/nodes/rpc';

@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { getDecimalFromEtherUnit, TokenValue } from 'libs/units';
+import { getDecimalFromEtherUnit } from 'libs/units';
 import {
   TRANSACTION,
   SwapTokenToEtherAction,
@@ -9,24 +9,14 @@ import {
   SwapAction,
   ResetTransactionSuccessfulAction
 } from '../types';
-import { TRANSACTION_NETWORK, NetworkAction, GetFromSucceededAction } from '../network';
+import { TRANSACTION_NETWORK, NetworkAction } from '../network';
 import {
   TRANSACTION_META,
+  MetaState,
   MetaAction,
   SetUnitMetaAction,
-  TransactionMetaAction,
-  SetTokenToMetaAction
+  TransactionMetaAction
 } from './types';
-
-export interface MetaState {
-  unit: SetUnitMetaAction['payload'];
-  previousUnit: SetUnitMetaAction['payload'];
-  decimal: number;
-  tokenValue: { raw: string; value: TokenValue | null }; // TODO: fix this workaround since some of the payload is optional
-  tokenTo: SetTokenToMetaAction['payload'];
-  from: GetFromSucceededAction['payload'] | null;
-  isContractInteraction: boolean;
-}
 
 export const META_INITIAL_STATE: MetaState = {
   unit: '',

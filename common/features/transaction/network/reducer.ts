@@ -1,13 +1,6 @@
 import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
 import { TRANSACTION_FIELDS, InputGasPriceAction, InputGasPriceIntentAction } from '../fields';
-import { TRANSACTION_NETWORK, NetworkAction, RequestStatus } from '../network';
-
-export interface NetworkState {
-  gasEstimationStatus: RequestStatus | null;
-  getFromStatus: RequestStatus | null;
-  getNonceStatus: RequestStatus | null;
-  gasPriceStatus: RequestStatus | null;
-}
+import { TRANSACTION_NETWORK, NetworkState, NetworkAction, RequestStatus } from './types';
 
 export const NETWORK_INITIAL_STATE: NetworkState = {
   gasEstimationStatus: null,

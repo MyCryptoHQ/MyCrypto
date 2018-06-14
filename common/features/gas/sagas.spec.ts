@@ -3,7 +3,9 @@ import { cloneableGenerator } from 'redux-saga/utils';
 
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
-import { getOffline, getNetworkConfig, staticNetworksReducer } from 'features/config';
+import { getOffline } from 'features/config/meta/selectors';
+import { staticNetworksReducer } from 'features/config/networks/static/reducer';
+import { getNetworkConfig } from 'features/config/selectors';
 import { setGasEstimates } from './actions';
 import { getEstimates } from './selectors';
 import { fetchEstimates, setDefaultEstimates } from './sagas';

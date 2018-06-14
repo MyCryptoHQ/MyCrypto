@@ -7,7 +7,7 @@ import { translateRaw } from 'translations';
 import { makeAutoNodeName } from 'libs/nodes';
 import { Web3Wallet } from 'libs/wallet';
 import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { showNotification } from 'features/notifications';
 import { selectedNodeExpectedState } from './nodes/selected/reducer.spec';
 import { staticNodesExpectedState } from './nodes/static/reducer.spec';

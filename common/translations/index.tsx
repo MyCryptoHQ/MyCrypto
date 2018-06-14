@@ -1,7 +1,7 @@
-import TranslateMarkdown from 'components/Translate';
 import React from 'react';
-import { ConfigState as ConfigState } from 'features/config';
+import { ConfigState } from 'features/config/types';
 import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
+import TranslateMarkdown from 'components/Translate';
 
 const fallbackLanguage = 'en';
 const repository: {

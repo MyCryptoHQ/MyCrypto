@@ -5,7 +5,7 @@ import { INode } from 'libs/nodes/INode';
 import RpcNode from 'libs/nodes/rpc';
 import { Token } from 'types/network';
 import { TokenValue, Wei } from 'libs/units';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { getNodeLib } from 'features/config/nodes/selectors';
 import { getTokens } from 'features/wallet/selectors';
 import { DeterministicWalletData } from './types';

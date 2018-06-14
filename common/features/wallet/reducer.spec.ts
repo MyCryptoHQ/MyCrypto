@@ -1,5 +1,5 @@
 import { Wei } from 'libs/units';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import {
   setWallet,
   resetWallet,

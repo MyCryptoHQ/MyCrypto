@@ -6,7 +6,7 @@ import { bufferToHex } from 'ethereumjs-util';
 
 import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
-import { configuredStore } from 'features/store';
+import configuredStore from 'features/store';
 import { getOffline } from 'features/config/meta/selectors';
 import { getNetworkConfig, isNetworkUnit } from 'features/config/selectors';
 // import { isSchedulingEnabled } from 'features/schedule';

@@ -14,22 +14,35 @@ export enum TRANSACTION_FIELDS {
   GAS_PRICE_FIELD_SET = 'GAS_PRICE_FIELD_SET'
 }
 
+export interface FieldsState {
+  to: SetToFieldAction['payload'];
+  data: SetDataFieldAction['payload'];
+  nonce: SetNonceFieldAction['payload'];
+  value: { raw: string; value: Wei | null }; // TODO: fix this workaround since some of the payload is optional
+  gasLimit: SetGasLimitFieldAction['payload'];
+  gasPrice: { raw: string; value: Wei };
+}
+
 export interface InputGasLimitAction {
   type: TRANSACTION_FIELDS.GAS_LIMIT_INPUT;
   payload: string;
 }
+
 export interface InputGasPriceAction {
   type: TRANSACTION_FIELDS.GAS_PRICE_INPUT;
   payload: string;
 }
+
 export interface InputGasPriceIntentAction {
   type: TRANSACTION_FIELDS.GAS_PRICE_INPUT_INTENT;
   payload: string;
 }
+
 export interface InputDataAction {
   type: TRANSACTION_FIELDS.DATA_FIELD_INPUT;
   payload: string;
 }
+
 export interface InputNonceAction {
   type: TRANSACTION_FIELDS.NONCE_INPUT;
   payload: string;
