@@ -1,5 +1,6 @@
 import { Token } from 'types/network';
-import { addCustomToken, removeCustomToken, customTokensReducer } from './';
+import { addCustomToken, removeCustomToken } from './actions';
+import { customTokensReducer } from './reducer';
 
 describe('customTokens reducer', () => {
   const token1: Token = {

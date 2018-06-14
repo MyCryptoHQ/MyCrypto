@@ -2,7 +2,6 @@ import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
 
-import { AppState } from 'features/reducers';
 import { Nonce, Wei } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator, timeBountyValidator } from 'libs/validators';
 import { makeTransaction } from 'libs/transaction';
@@ -14,17 +13,16 @@ import {
   EAC_ADDRESSES,
   getValidateRequestParamsData
 } from 'libs/scheduling';
-import { getLatestBlock } from 'features/config';
-import { getWalletInst } from 'features/wallet';
+import { AppState } from 'features/reducers';
+import { getLatestBlock } from 'features/config/meta/selectors';
+import { getWalletInst } from 'features/wallet/selectors';
 import {
   getCurrentTo,
   getCurrentValue,
-  getData,
-  getNonce,
-  getGasPrice,
   IGetTransaction,
   getTransaction
-} from 'features/transaction';
+} from 'features/transaction/selectors';
+import { getData, getNonce, getGasPrice } from 'features/transaction/fields/selectors';
 import {
   dateTimeToTimezone,
   minFromNow,

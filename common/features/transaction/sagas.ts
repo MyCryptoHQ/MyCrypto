@@ -50,38 +50,28 @@ import {
 } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
+import { CONFIG_META, ToggleAutoGasLimitAction } from 'features/config/meta/types';
+import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
+import { getNodeLib } from 'features/config/nodes/selectors';
+import { isNetworkUnit, getNetworkUnit } from 'features/config/selectors';
+import { ENS } from 'features/ens/types';
+import { resolveDomainRequested } from 'features/ens/actions';
+import { getResolvedAddress } from 'features/ens/selectors';
+import { WALLET, MergedToken } from 'features/wallet/types';
 import {
-  CONFIG_META,
-  ToggleAutoGasLimitAction,
-  getNodeLib,
-  isNetworkUnit,
-  getNetworkUnit,
-  getOffline,
-  getAutoGasLimitEnabled
-} from 'features/config';
-import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
-import {
-  WALLET,
   getWalletInst,
   getToken,
   getEtherBalance,
   getCurrentBalance,
-  MergedToken,
   getWalletType,
   IWalletType
-} from 'features/wallet';
-import {
-  requestTransactionSignature,
-  PARITY_SIGNER as ParityKeys,
-  FinalizeSignatureAction
-} from 'features/paritySigner';
-import {
-  isSchedulingEnabled,
-  setSchedulingToggle,
-  setScheduleGasLimitField
-} from 'features/schedule';
-import { showNotification } from 'features/notifications';
-import { TRANSACTION_BROADCAST } from './broadcast';
+} from 'features/wallet/selectors';
+import { PARITY_SIGNER as ParityKeys, FinalizeSignatureAction } from 'features/paritySigner/types';
+import { requestTransactionSignature } from 'features/paritySigner/actions';
+import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
+import { isSchedulingEnabled } from 'features/schedule/selectors';
+import { showNotification } from 'features/notifications/actions';
+import { TRANSACTION_BROADCAST } from './broadcast/types';
 import {
   TRANSACTION_FIELDS,
   SetToFieldAction,
@@ -90,7 +80,9 @@ import {
   InputGasPriceAction,
   InputGasPriceIntentAction,
   InputNonceAction,
-  SetDataFieldAction,
+  SetDataFieldAction
+} from './fields/types';
+import {
   setToField,
   setValueField,
   inputGasPrice,
@@ -101,28 +93,19 @@ import {
   inputNonce,
   resetTransactionRequested,
   resetTransactionSuccessful,
-  TSetValueField,
-  getTo,
-  getData,
-  getValue
-} from './fields';
+  TSetValueField
+} from './fields/actions';
+import { getTo, getData, getValue } from './fields/selectors';
 import {
   TRANSACTION_META,
   SetTokenToMetaAction,
   SetTokenValueMetaAction,
-  SetUnitMetaAction,
-  setTokenTo,
-  setTokenValue,
-  setUnitMeta,
-  TSetTokenValue,
-  getDecimal,
-  getTokenValue,
-  getTokenTo,
-  isContractInteraction
-} from './meta';
+  SetUnitMetaAction
+} from './meta/types';
+import { setTokenTo, setTokenValue, setUnitMeta, TSetTokenValue } from './meta/actions';
+import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
+import { TRANSACTION_NETWORK, EstimateGasRequestedAction } from './network/types';
 import {
-  TRANSACTION_NETWORK,
-  EstimateGasRequestedAction,
   getFromSucceeded,
   getFromFailed,
   estimateGasFailed,
@@ -131,15 +114,14 @@ import {
   estimateGasTimedout,
   getNonceSucceeded,
   getNonceFailed
-} from './network';
+} from './network/actions';
 import {
   TRANSACTION_SIGN,
   SignWeb3TransactionSucceededAction,
   SignLocalTransactionSucceededAction,
-  SignTransactionRequestedAction,
-  signLocalTransactionSucceeded,
-  signWeb3TransactionSucceeded
-} from './sign';
+  SignTransactionRequestedAction
+} from './sign/types';
+import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
 import {
   TRANSACTION,
   SetCurrentToAction,

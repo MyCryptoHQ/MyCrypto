@@ -3,17 +3,12 @@ import { call, put, select, all, actionChannel, take, fork, race } from 'redux-s
 
 import { INode } from 'libs/nodes/INode';
 import { IBaseDomainRequest } from 'libs/ens';
-import { getNodeLib } from 'features/config';
-import { showNotification } from 'features/notifications';
-import {
-  ENS,
-  ResolveDomainRequested,
-  getCurrentDomainData,
-  getCurrentDomainName,
-  resolveDomainFailed,
-  resolveDomainSucceeded,
-  resolveDomainCached
-} from './';
+import { getNodeLib } from 'features/config/nodes/selectors';
+import { showNotification } from 'features/notifications/actions';
+import { getCurrentDomainName } from './domainSelector/selectors';
+import { ENS, ResolveDomainRequested } from './types';
+import { resolveDomainFailed, resolveDomainSucceeded, resolveDomainCached } from './actions';
+import { getCurrentDomainData } from './selectors';
 import { resolveDomainRequest } from './helpers';
 
 function* shouldResolveDomain(domain: string) {

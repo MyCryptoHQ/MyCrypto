@@ -1,4 +1,5 @@
 import { AppState } from 'features/reducers';
-import { getEns } from '../selectors';
+
+const getEns = (state: AppState) => state.ens;
 
 export const getDomainRequests = (state: AppState) => getEns(state).domainRequests;

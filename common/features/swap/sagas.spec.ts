@@ -6,10 +6,11 @@ import { getAllRates, getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import { configuredStore } from 'features/store';
 import { TRANSACTION } from 'features/transaction/types';
-import { WALLET } from 'features/wallet';
-import { showNotification } from 'features/notifications';
+import { WALLET } from 'features/wallet/types';
+import { showNotification } from 'features/notifications/actions';
 import {
   SWAP,
+  SwapState,
   BityOrderPostResponse,
   BityOrderInput,
   BityOrderOutput,
@@ -42,12 +43,8 @@ import {
   stopPollShapeshiftOrderStatus,
   stopOrderTimerSwap
 } from './actions';
-import {
-  SwapState,
-  INITIAL_STATE as INITIAL_SWAP_STATE,
-  getSwap,
-  getHasNotifiedRatesFailure
-} from './';
+import { INITIAL_STATE as INITIAL_SWAP_STATE } from './reducer';
+import { getSwap, getHasNotifiedRatesFailure } from './selectors';
 import {
   configureLiteSendSaga,
   handleConfigureLiteSend,

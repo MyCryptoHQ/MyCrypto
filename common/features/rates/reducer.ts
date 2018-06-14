@@ -1,11 +1,4 @@
-import { CCResponse } from 'api/rates';
-import { RATES_FETCH, FetchCCRatesSucceeded, RatesAction } from './types';
-
-// SYMBOL -> PRICE TO BUY 1 ETH
-export interface RatesState {
-  rates: { [symbol: string]: CCResponse['rates'] };
-  ratesError?: string | null;
-}
+import { RATES_FETCH, RatesState, FetchCCRatesSucceeded, RatesAction } from './types';
 
 export const INITIAL_STATE: RatesState = {
   rates: {},

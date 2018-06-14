@@ -2,50 +2,36 @@ import EthTx from 'ethereumjs-tx';
 import BN from 'bn.js';
 
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
+import { ITransactionStatus } from './broadcast/types';
 import {
-  broadcastReducer,
-  BroadcastState,
-  BROADCAST_INITIAL_STATE,
   broadcastTransactionQueued,
   broadcastTransactionSucceeded,
-  broadcastTransactionFailed,
-  ITransactionStatus
-} from './broadcast';
+  broadcastTransactionFailed
+} from './broadcast/actions';
+import { broadcastReducer, BroadcastState, BROADCAST_INITIAL_STATE } from './broadcast/reducer';
+import { TRANSACTION_FIELDS, InputGasPriceAction } from './fields/types';
 import {
-  fieldsReducer,
-  FieldsState,
-  TRANSACTION_FIELDS,
   setToField,
   setValueField,
   setDataField,
   setGasLimitField,
   setNonceField,
-  setGasPriceField,
-  InputGasPriceAction
-} from './fields';
+  setGasPriceField
+} from './fields/actions';
+import { fieldsReducer, FieldsState } from './fields/reducer';
+import { TRANSACTION_META, SetUnitMetaAction } from './meta/types';
+import { setTokenTo, setTokenValue } from './meta/actions';
+import { metaReducer, MetaState } from './meta/reducer';
+import { TRANSACTION_NETWORK, NetworkAction } from './network/types';
+import { getFromSucceeded } from './network/actions';
+import { networkReducer, NetworkState } from './network/reducer';
 import {
-  metaReducer,
-  MetaState,
-  TRANSACTION_META,
-  SetUnitMetaAction,
-  setTokenTo,
-  setTokenValue
-} from './meta';
-import {
-  networkReducer,
-  NetworkState,
-  TRANSACTION_NETWORK,
-  NetworkAction,
-  getFromSucceeded
-} from './network';
-import {
-  signReducer,
-  SignState,
   TRANSACTION_SIGN,
   SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
   SignWeb3TransactionSucceededAction
-} from './sign';
+} from './sign/types';
+import { signReducer, SignState } from './sign/reducer';
 import {
   TRANSACTION,
   SwapTokenToEtherAction,

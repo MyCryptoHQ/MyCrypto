@@ -1,6 +1,7 @@
 import { AppState } from './reducers';
-import { getWalletType } from './wallet';
-import { getAllTokens, isNetworkUnit, getOffline } from './config';
+import { getWalletType } from './wallet/selectors';
+import { getOffline } from './config/meta/selectors';
+import { getAllTokens, isNetworkUnit } from './config/selectors';
 import { getUnit } from './transaction/selectors';
 
 export const isAnyOfflineWithWeb3 = (state: AppState): boolean => {

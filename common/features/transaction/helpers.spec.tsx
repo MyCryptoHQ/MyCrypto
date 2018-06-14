@@ -7,20 +7,25 @@ import { bufferToHex } from 'ethereumjs-util';
 import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
 import { configuredStore } from 'features/store';
-import { getOffline, getNetworkConfig, isNetworkUnit } from 'features/config';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNetworkConfig, isNetworkUnit } from 'features/config/selectors';
 // import { isSchedulingEnabled } from 'features/schedule';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
-import { showNotification } from 'features/notifications';
+import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
+import { showNotification } from 'features/notifications/actions';
 import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
-  broadcastTransactionQueued,
-  getTransactionStatus
-} from './broadcast';
-import { resetTransactionRequested, getGasLimit, getGasPrice } from './fields';
-import { TRANSACTION_NETWORK, getFromRequested } from './network';
-import { signTransactionFailed, getWeb3Tx, getSignedTx } from './sign';
+  broadcastTransactionQueued
+} from './broadcast/actions';
+import { getTransactionStatus } from './broadcast/selectors';
+import { resetTransactionRequested } from './fields/actions';
+import { getGasLimit, getGasPrice } from './fields/selectors';
+import { TRANSACTION_NETWORK } from './network/types';
+import { getFromRequested } from './network/actions';
+import { signTransactionFailed } from './sign/actions';
+import { getWeb3Tx, getSignedTx } from './sign/selectors';
 import { getUnit, getDecimalFromUnit } from './selectors';
+
 // import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import {
   rebaseUserInput,

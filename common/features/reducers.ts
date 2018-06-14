@@ -1,22 +1,38 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import { ConfigState, configReducer } from './config';
-import { notificationsReducer, NotificationState } from './notifications';
-import { OnboardStatusState, onboardStatusReducer } from './onboardStatus';
-import { ENSState, ensReducer } from './ens';
-import { walletReducer, WalletState } from './wallet';
-import { customTokensReducer, CustomTokensState } from './customTokens';
-import { ratesReducer, RatesState } from './rates';
-import { deterministicWalletsReducer, DeterministicWalletsState } from './deterministicWallets';
-import { swapReducer, SwapState } from './swap';
-import { transactionReducer, State as TransactionState } from './transaction';
-import { transactionsReducer, TransactionsState } from './transactions';
-import { messageReducer, MessageState } from './message';
-import { paritySignerReducer, ParitySignerState } from './paritySigner';
-import { addressBookReducer, AddressBookState } from './addressBook';
-import { gasReducer, GasState } from './gas';
-import { scheduleReducer, ScheduleState } from './schedule';
+import { AddressBookState } from './addressBook/types';
+import { addressBookReducer } from './addressBook/reducer';
+import { ConfigState } from './config/types';
+import { configReducer } from './config/reducer';
+import { CustomTokensState } from './customTokens/types';
+import { customTokensReducer } from './customTokens/reducer';
+import { DeterministicWalletsState } from './deterministicWallets/types';
+import { deterministicWalletsReducer } from './deterministicWallets/reducer';
+import { ENSState } from './ens/types';
+import { ensReducer } from './ens/reducer';
+import { GasState } from './gas/types';
+import { gasReducer } from './gas/reducer';
+import { MessageState } from './message/types';
+import { messageReducer } from './message/reducer';
+import { NotificationState } from './notifications/types';
+import { notificationsReducer } from './notifications/reducer';
+import { OnboardStatusState } from './onboardStatus/types';
+import { onboardStatusReducer } from './onboardStatus/reducer';
+import { ParitySignerState } from './paritySigner/types';
+import { paritySignerReducer } from './paritySigner/reducer';
+import { RatesState } from './rates/types';
+import { ratesReducer } from './rates/reducer';
+import { ScheduleState } from './schedule/types';
+import { scheduleReducer } from './schedule/reducer';
+import { SwapState } from './swap/types';
+import { swapReducer } from './swap/reducer';
+import { TransactionState } from './transaction/types';
+import { transactionReducer } from './transaction/reducer';
+import { TransactionsState } from './transactions/types';
+import { transactionsReducer } from './transactions/reducer';
+import { WalletState } from './wallet/types';
+import { walletReducer } from './wallet/reducer';
 
 export interface AppState {
   // Custom reducers

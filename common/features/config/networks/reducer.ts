@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux';
 
-import { customNetworksReducer, CustomNetworksState } from './custom';
-import { staticNetworksReducer, StaticNetworksState } from './static';
-
-export interface NetworksState {
-  customNetworks: CustomNetworksState;
-  staticNetworks: StaticNetworksState;
-}
+import { customNetworksReducer } from './custom/reducer';
+import { staticNetworksReducer } from './static/reducer';
+import { NetworksState } from './types';
 
 export const networksReducer = combineReducers<NetworksState>({
   customNetworks: customNetworksReducer,

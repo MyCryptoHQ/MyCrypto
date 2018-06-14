@@ -1,14 +1,9 @@
 import { combineReducers } from 'redux';
 
-import { MetaState, metaReducer } from './meta';
-import { networksReducer, NetworksState } from './networks';
-import { nodesReducer, NodesState } from './nodes';
-
-export interface ConfigState {
-  meta: MetaState;
-  networks: NetworksState;
-  nodes: NodesState;
-}
+import { metaReducer } from './meta/reducer';
+import { networksReducer } from './networks/reducer';
+import { nodesReducer } from './nodes/reducer';
+import { ConfigState } from './types';
 
 export const configReducer = combineReducers<ConfigState>({
   meta: metaReducer,

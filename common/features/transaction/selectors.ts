@@ -9,13 +9,21 @@ import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
 import { stripHexPrefixAndLower } from 'libs/formatters';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig, isNetworkUnit, getOffline } from 'features/config';
-import { getEtherBalance, getToken, getWalletType } from 'features/wallet';
-import { getCustomTokens } from 'features/customTokens';
-import { getTransactionStatus } from './broadcast';
-import { getTo, getValue, getGasPrice, getGasLimit, getData, getFields } from './fields';
-import { getTokenTo, getTokenValue, getMetaState, isContractInteraction, getDecimal } from './meta';
-import { SerializedTxParams, getSignState, getSignedTx, getWeb3Tx } from './sign';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNetworkConfig, isNetworkUnit } from 'features/config/selectors';
+import { getEtherBalance, getToken, getWalletType } from 'features/wallet/selectors';
+import { getCustomTokens } from 'features/customTokens/selectors';
+import { getTransactionStatus } from './broadcast/selectors';
+import { getTo, getValue, getGasPrice, getGasLimit, getData, getFields } from './fields/selectors';
+import {
+  getTokenTo,
+  getTokenValue,
+  getMetaState,
+  isContractInteraction,
+  getDecimal
+} from './meta/selectors';
+import { SerializedTxParams } from './sign/types';
+import { getSignState, getSignedTx, getWeb3Tx } from './sign/selectors';
 import { reduceToValues, isFullTx } from './helpers';
 
 export interface ICurrentValue {

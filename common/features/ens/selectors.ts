@@ -1,8 +1,9 @@
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { isCreationAddress } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { REQUEST_STATES, getDomainRequests } from './domainRequests';
-import { getCurrentDomainName } from './domainSelector';
+import { REQUEST_STATES } from './domainRequests/types';
+import { getDomainRequests } from './domainRequests/selectors';
+import { getCurrentDomainName } from './domainSelector/selectors';
 
 const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
   return !!(data as IOwnedDomainRequest).ownerAddress;

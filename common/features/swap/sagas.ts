@@ -17,21 +17,14 @@ import moment from 'moment';
 import { getOrderStatus, postOrder, getAllRates } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import { isSupportedUnit, isNetworkUnit } from 'features/config';
-import {
-  TRANSACTION,
-  setUnitMeta,
-  setCurrentTo,
-  setCurrentValue,
-  resetTransactionRequested
-} from 'features/transaction';
-import {
-  WALLET,
-  setTokenBalancePending,
-  resetWallet,
-  isUnlocked,
-  isEtherBalancePending
-} from 'features/wallet';
-import { showNotification } from 'features/notifications';
+import { resetTransactionRequested } from 'features/transaction/fields/actions';
+import { setUnitMeta } from 'features/transaction/meta/actions';
+import { TRANSACTION } from 'features/transaction/types';
+import { setCurrentTo, setCurrentValue } from 'features/transaction/actions';
+import { WALLET } from 'features/wallet/types';
+import { setTokenBalancePending, resetWallet } from 'features/wallet/actions';
+import { isUnlocked, isEtherBalancePending } from 'features/wallet/selectors';
+import { showNotification } from 'features/notifications/actions';
 import {
   SWAP,
   BityOrderCreateRequestedSwapAction,

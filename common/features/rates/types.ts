@@ -6,6 +6,12 @@ export enum RATES_FETCH {
   CC_SUCCEEDED = 'RATES_FETCH_CC_SUCCEEDED'
 }
 
+// SYMBOL -> PRICE TO BUY 1 ETH
+export interface RatesState {
+  rates: { [symbol: string]: CCResponse['rates'] };
+  ratesError?: string | null;
+}
+
 export interface FetchCCRatesRequested {
   type: RATES_FETCH.CC_REQUESTED;
   payload: string[];

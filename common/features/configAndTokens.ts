@@ -3,14 +3,16 @@ import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import { CustomNodeConfig } from 'types/node';
 import { shepherd, makeProviderConfig, isAutoNode } from 'libs/nodes';
 import RootReducer, { AppState } from './reducers';
-import { configReducer, ConfigState } from './config';
 import { getLanguageSelection } from './config/meta/selectors';
 import { getCustomNetworkConfigs } from './config/networks/custom/selectors';
 import { isStaticNetworkId } from './config/networks/static/selectors';
 import { isStaticNodeId } from './config/nodes/static/selectors';
 import { getCustomNodeConfigs } from './config/nodes/custom/selectors';
 import { getSelectedNode } from './config/nodes/selected/selectors';
-import { CustomTokensState, INITIAL_STATE as customTokensInitialState } from './customTokens';
+import { ConfigState } from './config/types';
+import { configReducer } from './config/reducer';
+import { CustomTokensState } from './customTokens/types';
+import { INITIAL_STATE as customTokensInitialState } from './customTokens/reducer';
 
 const appInitialState = RootReducer(undefined as any, { type: 'inital_state' });
 

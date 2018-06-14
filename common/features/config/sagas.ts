@@ -22,42 +22,41 @@ import { Web3Wallet } from 'libs/wallet';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
 import { AppState } from 'features/reducers';
 // import { configuredStore as store } from 'features/store';
-import { showNotification } from 'features/notifications';
-import { resetWallet, setWallet, SetWalletAction, WALLET } from 'features/wallet';
-import { getOffline /*, setOnline, setOffline*/, setLatestBlock, CONFIG_META } from './meta';
+import { showNotification } from 'features/notifications/actions';
+import { WALLET, SetWalletAction } from 'features/wallet/types';
+import { resetWallet, setWallet } from 'features/wallet/actions';
+import { /*, setOnline, setOffline*/ CONFIG_META } from './meta/types';
+import { setLatestBlock } from './meta/actions';
+import { getOffline } from './meta/selectors';
+import { CONFIG_NETWORKS, ChangeNetworkRequestedAction } from './networks/types';
+import { getNetworkConfigById, getNetworkByChainId } from './networks/selectors';
+import { CONFIG_NETWORKS_CUSTOM } from './networks/custom/types';
+import { removeCustomNetwork } from './networks/custom/actions';
+import { getCustomNetworkConfigs } from './networks/custom/selectors';
+import { getNodeConfig, getWeb3Node } from './nodes/selectors';
 import {
-  getNetworkConfigById,
-  ChangeNetworkRequestedAction,
-  CONFIG_NETWORKS,
-  getNetworkByChainId,
-  getCustomNetworkConfigs,
-  removeCustomNetwork,
-  CONFIG_NETWORKS_CUSTOM
-} from './networks';
-import {
-  getNodeConfig,
-  getWeb3Node,
-  getCustomNodeFromId,
-  AddCustomNodeAction,
-  RemoveCustomNodeAction,
   CONFIG_NODES_CUSTOM,
-  getCustomNodeConfigs,
-  isStaticNodeId,
-  web3SetNode,
-  web3UnsetNode,
-  CONFIG_NODES_STATIC,
-  SELECTED_NODE_INITIAL_STATE,
-  getNodeId,
+  AddCustomNodeAction,
+  RemoveCustomNodeAction
+} from './nodes/custom/types';
+import { getCustomNodeFromId, getCustomNodeConfigs } from './nodes/custom/selectors';
+import {
+  CONFIG_NODES_SELECTED,
+  ChangeNodeForceAction,
+  ChangeNodeRequestedAction,
+  ChangeNodeRequestedOneTimeAction
+} from './nodes/selected/types';
+import {
   changeNodeRequested,
   changeNodeSucceeded,
   changeNodeFailed,
-  changeNodeForce,
-  ChangeNodeForceAction,
-  ChangeNodeRequestedAction,
-  ChangeNodeRequestedOneTimeAction,
-  CONFIG_NODES_SELECTED,
-  getPreviouslySelectedNode
-} from './nodes';
+  changeNodeForce
+} from './nodes/selected/actions';
+import { SELECTED_NODE_INITIAL_STATE } from './nodes/selected/reducer';
+import { getNodeId, getPreviouslySelectedNode } from './nodes/selected/selectors';
+import { CONFIG_NODES_STATIC } from './nodes/static/types';
+import { web3SetNode, web3UnsetNode } from './nodes/static/actions';
+import { isStaticNodeId } from './nodes/static/selectors';
 import { getAllNodes, getStaticNodeFromId } from './selectors';
 
 //#region Network

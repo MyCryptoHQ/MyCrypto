@@ -1,14 +1,19 @@
-import { BroadcastAction } from './broadcast';
+import { BroadcastAction } from './broadcast/types';
+import { BroadcastState } from './broadcast/reducer';
 import {
   FieldAction,
   InputFieldAction,
   SetToFieldAction,
   SetValueFieldAction,
   SetDataFieldAction
-} from './fields';
-import { MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './meta';
-import { NetworkAction } from './network';
-import { SignAction } from './sign';
+} from './fields/types';
+import { FieldsState } from './fields/reducer';
+import { MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './meta/types';
+import { MetaState } from './meta/reducer';
+import { NetworkAction } from './network/types';
+import { NetworkState } from './network/reducer';
+import { SignAction } from './sign/types';
+import { SignState } from './sign/reducer';
 
 export enum TRANSACTION {
   CURRENT_VALUE_SET = 'CURRENT_VALUE_SET',
@@ -21,6 +26,14 @@ export enum TRANSACTION {
   SEND_EVERYTHING_FAILED = 'SEND_EVERYTHING_FAILED',
   RESET_REQUESTED = 'TRANSACTION_RESET_REQUESTED',
   RESET_SUCCESSFUL = 'TRANSACTION_RESET_SUCCESSFUL'
+}
+
+export interface TransactionState {
+  broadcast: BroadcastState;
+  fields: FieldsState;
+  meta: MetaState;
+  network: NetworkState;
+  sign: SignState;
 }
 
 export interface SetCurrentValueAction {

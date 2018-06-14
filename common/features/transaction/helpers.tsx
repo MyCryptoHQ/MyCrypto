@@ -16,34 +16,31 @@ import {
 import { validNumber, validDecimal } from 'libs/validators';
 import { /*NetworkConfig,*/ StaticNetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline, isNetworkUnit, getNetworkConfig } from 'features/config';
+import { getOffline } from 'features/config/meta/selectors';
+import { isNetworkUnit, getNetworkConfig } from 'features/config/selectors';
 // import { isSchedulingEnabled } from 'features/schedule';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet';
-import { showNotification } from 'features/notifications';
+import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
+import { showNotification } from 'features/notifications/actions';
 import {
   TRANSACTION_BROADCAST,
-  getTransactionStatus,
   BroadcastRequestedAction,
   ISerializedTxAndIndexingHash,
-  ITransactionStatus,
+  ITransactionStatus
+} from './broadcast/types';
+import {
   broadcastTransactionFailed,
   broadcastTransactionSucceeded,
   broadcastTransactionQueued
-} from './broadcast';
-import { resetTransactionRequested, getGasLimit, getGasPrice } from './fields';
-import {
-  TRANSACTION_NETWORK,
-  GetFromFailedAction,
-  GetFromSucceededAction,
-  getFromRequested
-} from './network';
-import {
-  SignTransactionRequestedAction,
-  StateSerializedTx,
-  getWeb3Tx,
-  getSignedTx,
-  signTransactionFailed
-} from './sign';
+} from './broadcast/actions';
+import { getTransactionStatus } from './broadcast/selectors';
+import { resetTransactionRequested } from './fields/actions';
+import { getGasLimit, getGasPrice } from './fields/selectors';
+import { TRANSACTION_NETWORK, GetFromFailedAction, GetFromSucceededAction } from './network/types';
+import { getFromRequested } from './network/actions';
+import { SignTransactionRequestedAction } from './sign/types';
+import { signTransactionFailed } from './sign/actions';
+import { StateSerializedTx } from './sign/reducer';
+import { getWeb3Tx, getSignedTx } from './sign/selectors';
 import { ICurrentTo, ICurrentValue, getUnit, getDecimalFromUnit } from './selectors';
 // import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 

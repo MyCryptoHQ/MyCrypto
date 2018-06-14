@@ -1,6 +1,5 @@
 import { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
-
 import {
   WALLET,
   SetTokenBalancesFulfilledAction,

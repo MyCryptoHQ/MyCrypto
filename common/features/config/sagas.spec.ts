@@ -12,7 +12,24 @@ import { showNotification } from 'features/notifications';
 import { selectedNodeExpectedState } from './nodes/selected/reducer.spec';
 import { staticNodesExpectedState } from './nodes/static/reducer.spec';
 import { customNodesExpectedState, firstCustomNode } from './nodes/custom/reducer.spec';
-import { getStaticNodeFromId, getAllNodes } from './selectors';
+import { setLatestBlock } from './meta/actions';
+import { getOffline } from './meta/selectors';
+import { CONFIG_NETWORKS, ChangeNetworkRequestedAction } from './networks/types';
+import { getNodeConfig } from './nodes/selectors';
+import { CONFIG_NODES_CUSTOM, RemoveCustomNodeAction } from './nodes/custom/types';
+import { getCustomNodeFromId } from './nodes/custom/selectors';
+import { CONFIG_NODES_SELECTED, ChangeNodeRequestedOneTimeAction } from './nodes/selected/types';
+import {
+  changeNodeRequested,
+  changeNodeSucceeded,
+  changeNodeFailed,
+  changeNodeForce,
+  changeNodeRequestedOneTime
+} from './nodes/selected/actions';
+import { SELECTED_NODE_INITIAL_STATE } from './nodes/selected/reducer';
+import { getNodeId, getPreviouslySelectedNode } from './nodes/selected/selectors';
+import { isStaticNodeId } from './nodes/static/selectors';
+import { getAllNodes, getStaticNodeFromId } from './selectors';
 import {
   unsetWeb3Node,
   unsetWeb3NodeOnWalletEvent,
@@ -23,25 +40,6 @@ import {
   handleChangeNetworkRequested,
   handleRemoveCustomNode
 } from './sagas';
-import { getOffline, setLatestBlock } from './meta';
-import { ChangeNetworkRequestedAction, CONFIG_NETWORKS } from './networks';
-import {
-  CONFIG_NODES_CUSTOM,
-  getNodeConfig,
-  isStaticNodeId,
-  getCustomNodeFromId,
-  RemoveCustomNodeAction,
-  getNodeId,
-  getPreviouslySelectedNode,
-  changeNodeSucceeded,
-  changeNodeRequested,
-  changeNodeFailed,
-  changeNodeForce,
-  ChangeNodeRequestedOneTimeAction,
-  changeNodeRequestedOneTime,
-  CONFIG_NODES_SELECTED,
-  SELECTED_NODE_INITIAL_STATE
-} from './nodes';
 
 // init module
 configuredStore.getState();

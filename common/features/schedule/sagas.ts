@@ -6,14 +6,13 @@ import { toTokenBase, Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
-import { getOffline, getNodeLib } from 'features/config';
-import {
-  TRANSACTION_FIELDS,
-  getDecimal,
-  getUnit,
-  setGasLimitField,
-  validateInput
-} from 'features/transaction';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNodeLib } from 'features/config/nodes/selectors';
+import { TRANSACTION_FIELDS } from 'features/transaction/fields/types';
+import { setGasLimitField } from 'features/transaction/fields/actions';
+import { getDecimal } from 'features/transaction/meta/selectors';
+import { getUnit } from 'features/transaction/selectors';
+import { validateInput } from 'features/transaction/helpers';
 import {
   SCHEDULE,
   SetCurrentScheduleTimestampAction,

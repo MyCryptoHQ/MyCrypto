@@ -7,6 +7,13 @@ export enum CONFIG_META {
   SET_LATEST_BLOCK = 'CONFIG_META_SET_LATEST_BLOCK'
 }
 
+export interface MetaState {
+  languageSelection: string;
+  offline: boolean;
+  autoGasLimit: boolean;
+  latestBlock: string;
+}
+
 export interface SetLatestBlockAction {
   type: CONFIG_META.SET_LATEST_BLOCK;
   payload: string;
@@ -27,13 +34,6 @@ export interface ToggleAutoGasLimitAction {
 export interface ChangeLanguageAction {
   type: CONFIG_META.LANGUAGE_CHANGE;
   payload: string;
-}
-
-export interface MetaState {
-  languageSelection: string;
-  offline: boolean;
-  autoGasLimit: boolean;
-  latestBlock: string;
 }
 
 export type MetaAction =

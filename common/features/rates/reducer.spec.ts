@@ -1,6 +1,6 @@
 import { CCResponse } from 'api/rates';
 import { fetchCCRatesSucceeded, fetchCCRatesFailed } from './actions';
-import { ratesReducer, INITIAL_STATE } from '.';
+import { ratesReducer, INITIAL_STATE } from './reducer';
 
 describe('rates reducer', () => {
   it('should handle RATES_FETCH_CC_SUCCEEDED', () => {

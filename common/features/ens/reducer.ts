@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux';
 
-import { domainRequestsReducer, DomainRequestsState } from './domainRequests';
-import { domainSelectorReducer, DomainSelectorState } from './domainSelector';
-
-export interface ENSState {
-  domainSelector: DomainSelectorState;
-  domainRequests: DomainRequestsState;
-}
+import { domainRequestsReducer } from './domainRequests/reducer';
+import { domainSelectorReducer } from './domainSelector/reducer';
+import { ENSState } from './types';
 
 export const ensReducer = combineReducers<ENSState>({
   domainSelector: domainSelectorReducer,

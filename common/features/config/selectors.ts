@@ -12,13 +12,12 @@ import {
   Token
 } from 'types/network';
 import { AppState } from 'features/reducers';
-import {
-  getNetworks,
-  getCustomNetworkConfigs,
-  getStaticNetworkConfigs,
-  isStaticNetworkId
-} from './networks';
-import { getNodeConfig, getStaticNodes, getStaticNodeConfigs, getCustomNodeConfigs } from './nodes';
+import { getNetworks } from './networks/selectors';
+import { getCustomNetworkConfigs } from './networks/custom/selectors';
+import { getStaticNetworkConfigs, isStaticNetworkId } from './networks/static/selectors';
+import { getNodeConfig } from './nodes/selectors';
+import { getCustomNodeConfigs } from './nodes/custom/selectors';
+import { getStaticNodes, getStaticNodeConfigs } from './nodes/static/selectors';
 import { DPathFormat } from './types';
 
 export interface NodeOption {

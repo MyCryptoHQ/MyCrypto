@@ -18,13 +18,16 @@ import {
 } from 'libs/wallet';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { AppState } from 'features/reducers';
-import { getOffline, getNodeLib, getAllTokens, CONFIG_META } from 'features/config';
-import { showNotification } from 'features/notifications';
+import { CONFIG_META } from 'features/config/meta/types';
+import { getOffline } from 'features/config/meta/selectors';
+import { getNodeLib } from 'features/config/nodes/selectors';
+import { getAllTokens } from 'features/config/selectors';
+import { showNotification } from 'features/notifications/actions';
 import {
-  getCustomTokens,
   CUSTOM_TOKEN as CustomTokenTypeKeys,
   AddCustomTokenAction
-} from 'features/customTokens';
+} from 'features/customTokens/types';
+import { getCustomTokens } from 'features/customTokens/selectors';
 import {
   WALLET,
   UnlockKeystoreAction,

@@ -5,13 +5,10 @@ import translate, { translateRaw } from 'translations';
 import { verifySignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { padLeftEven } from 'libs/values';
-import { showNotification } from 'features/notifications';
-import {
-  PARITY_SIGNER,
-  FinalizeSignatureAction,
-  requestMessageSignature
-} from 'features/paritySigner';
-import { IWalletType, getWalletType, getWalletInst } from 'features/wallet';
+import { showNotification } from 'features/notifications/actions';
+import { PARITY_SIGNER, FinalizeSignatureAction } from 'features/paritySigner/types';
+import { requestMessageSignature } from 'features/paritySigner/actions';
+import { IWalletType, getWalletType, getWalletInst } from 'features/wallet/selectors';
 import { MESSAGE, SignLocalMessageSucceededAction, SignMessageRequestedAction } from './types';
 import { signLocalMessageSucceeded, signMessageFailed } from './actions';
 

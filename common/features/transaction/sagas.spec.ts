@@ -40,46 +40,40 @@ import {
   gasLimitValidator
 } from 'libs/validators';
 import { configuredStore } from 'features/store';
-import { isNetworkUnit, getOffline, getAutoGasLimitEnabled, getNodeLib } from 'features/config';
+import { CONFIG_META } from 'features/config/meta/types';
+import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
+import { getNodeLib } from 'features/config/nodes/selectors';
+import { isNetworkUnit } from 'features/config/selectors';
+import { ENS } from 'features/ens/types';
+import { resolveDomainRequested } from 'features/ens/actions';
+import { getResolvedAddress } from 'features/ens/selectors';
+import { WALLET } from 'features/wallet/types';
 import {
-  WALLET,
   getWalletInst,
   getToken,
   getEtherBalance,
   getCurrentBalance
-} from 'features/wallet';
+} from 'features/wallet/selectors';
+import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
+import { isSchedulingEnabled } from 'features/schedule/selectors';
+import { showNotification } from 'features/notifications/actions';
+import { TRANSACTION_FIELDS } from './fields/types';
 import {
-  setSchedulingToggle,
-  setScheduleGasLimitField,
-  isSchedulingEnabled
-} from 'features/schedule';
-import { ENS, getResolvedAddress, resolveDomainRequested } from 'features/ens';
-import { showNotification } from 'features/notifications';
-import {
-  TRANSACTION_FIELDS,
   setToField,
   setValueField,
+  inputGasPrice,
   setDataField,
   setGasLimitField,
-  setNonceField,
   setGasPriceField,
+  setNonceField,
   inputNonce,
-  resetTransactionSuccessful,
-  inputGasPrice,
-  getTo,
-  getData,
-  getValue
-} from './fields';
+  resetTransactionSuccessful
+} from './fields/actions';
+import { getTo, getData, getValue } from './fields/selectors';
+import { setTokenTo, setTokenValue } from './meta/actions';
+import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
+import { TRANSACTION_NETWORK } from './network/types';
 import {
-  setTokenTo,
-  setTokenValue,
-  getDecimal,
-  getTokenValue,
-  getTokenTo,
-  isContractInteraction
-} from './meta';
-import {
-  TRANSACTION_NETWORK,
   getFromSucceeded,
   getFromFailed,
   estimateGasFailed,
@@ -87,8 +81,8 @@ import {
   estimateGasRequested,
   estimateGasTimedout,
   getNonceSucceeded
-} from './network';
-import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign';
+} from './network/actions';
+import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
 import { TRANSACTION } from './types';
 import {
   swapEtherToToken,
@@ -138,7 +132,6 @@ import {
 import { validateInput, rebaseUserInput } from './helpers';
 
 /* tslint:disable */
-import { CONFIG_META } from 'features/config';
 import './selectors'; //throws if not imported
 /* tslint:enable */
 

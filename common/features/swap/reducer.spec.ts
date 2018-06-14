@@ -25,7 +25,7 @@ import {
   shapeshiftOrderStatusSucceededSwap,
   orderTimeSwap
 } from './actions';
-import { swapReducer, INITIAL_STATE, allIds, providerRate } from './';
+import { swapReducer, INITIAL_STATE, allIds, providerRate } from './reducer';
 
 describe('ensure whitelist', () => {
   const findToken = (tkn: string) => tokens.find((t: any) => t.symbol === tkn);

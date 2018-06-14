@@ -9,14 +9,15 @@ import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig, getNodeLib } from 'features/config';
-import { getWalletInst } from 'features/wallet';
+import { getNodeLib } from 'features/config/nodes/selectors';
+import { getNetworkConfig } from 'features/config/selectors';
+import { getWalletInst } from 'features/wallet/selectors';
 import {
   TRANSACTION_BROADCAST,
   BroadcastTransactionQueuedAction,
   BroadcastTransactionSucceededAction,
   BroadcastTransactionFailedAction
-} from 'features/transaction';
+} from 'features/transaction/broadcast/types';
 import { TRANSACTIONS, FetchTransactionDataAction } from './types';
 import { setTransactionData, addRecentTransaction, resetTransactionData } from './actions';
 
