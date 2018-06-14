@@ -157,6 +157,7 @@ import {
   IInput,
   rebaseUserInput
 } from './helpers';
+import { getNetworkByChainId } from '../config';
 
 //#region Broadcast
 export const broadcastLocalTransactionHandler = function*(signedTx: string): SagaIterator {
@@ -176,8 +177,12 @@ export const broadcastWeb3TransactionHandler = function*(tx: string): SagaIterat
     throw Error('Can not broadcast: Web3 wallet not found');
   }
 
+  const nodeLib = yield select(getNodeLib);
+  const netId = yield call(nodeLib.getNetVersion);
+  const networkConfig = yield select(getNetworkByChainId, netId);
+
   // sign and broadcast
-  const txHash: string = yield apply(wallet, wallet.sendTransaction, [tx]);
+  const txHash: string = yield apply(wallet, wallet.sendTransaction, [tx, nodeLib, networkConfig]);
   return txHash;
 };
 

@@ -5,12 +5,14 @@ import translate, { translateRaw } from 'translations';
 import { verifySignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { padLeftEven } from 'libs/values';
+import Web3Node from 'libs/nodes/web3';
 import { showNotification } from 'features/notifications/actions';
 import { PARITY_SIGNER, FinalizeSignatureAction } from 'features/paritySigner/types';
 import { requestMessageSignature } from 'features/paritySigner/actions';
 import { IWalletType, getWalletType, getWalletInst } from 'features/wallet/selectors';
 import { MESSAGE, SignLocalMessageSucceededAction, SignMessageRequestedAction } from './types';
 import { signLocalMessageSucceeded, signMessageFailed } from './actions';
+import { getNodeLib } from '../config';
 
 export function* signingWrapper(
   handler: (wallet: IFullWallet, message: string) => SagaIterator,
@@ -38,7 +40,8 @@ export function messageToData(messageToTransform: string): string {
 
 function* signLocalMessage(wallet: IFullWallet, msg: string): SagaIterator {
   const address = yield apply(wallet, wallet.getAddressString);
-  const sig: string = yield apply(wallet, wallet.signMessage, [msg]);
+  const nodeLib: Web3Node = yield select(getNodeLib);
+  const sig: string = yield apply(wallet, wallet.signMessage, [msg, nodeLib]);
 
   yield put(
     signLocalMessageSucceeded({
