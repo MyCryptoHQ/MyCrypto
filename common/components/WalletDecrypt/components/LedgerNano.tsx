@@ -142,7 +142,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       })
       .catch(err => {
         this.setState({
-          error: err.message,
+          error: translateRaw(err.message),
           isLoading: false
         });
       });

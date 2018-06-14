@@ -63,6 +63,6 @@ function getParams(
     const params = JSON.parse(data.bytes.toString());
     return params as EnclaveMethodParams;
   } catch (err) {
-    throw new Error(`Invalid JSON blob provided for '${method}'`);
+    throw new Error(`Invalid JSON blob provided for '${method}': ${err.message}`);
   }
 }

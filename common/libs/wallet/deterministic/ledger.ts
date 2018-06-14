@@ -4,28 +4,29 @@ import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { getTransactionFields } from 'libs/transaction';
-import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
-import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 
-export class LedgerWallet extends HardwareWallet implements IFullWallet {
+// Ledger throws a few types of errors
+interface U2FError {
+  metaData: {
+    type: string;
+    code: number;
+  };
+}
+
+type LedgerError = U2FError | Error | string;
+
+export class LedgerWallet extends HardwareWallet {
   public static async getChainCode(dpath: string): Promise<ChainCodeResponse> {
-    if (process.env.BUILD_ELECTRON) {
-      return EnclaveAPI.getChainCode({
-        walletType: WalletTypes.LEDGER,
-        dpath
-      });
-    }
-
     return makeApp()
       .then(app => app.getAddress(dpath, false, true))
       .then(res => {
         return {
           publicKey: res.publicKey,
-          chainCode: res.chainCode as string
+          chainCode: res.chainCode
         };
       })
-      .catch((err: any) => {
+      .catch((err: LedgerError) => {
         throw new Error(ledgerErrToMessage(err));
       });
   }
@@ -36,16 +37,6 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
 
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
     const txFields = getTransactionFields(t);
-
-    if (process.env.BUILD_ELECTRON) {
-      const res = await EnclaveAPI.signTransaction({
-        walletType: WalletTypes.LEDGER,
-        transaction: txFields,
-        path: this.getPath()
-      });
-      return new EthTx(res.signedTransaction).serialize();
-    }
-
     t.v = Buffer.from([t._chainId]);
     t.r = toBuffer(0);
     t.s = toBuffer(0);
@@ -72,15 +63,6 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
       throw Error('No message to sign');
     }
 
-    if (process.env.BUILD_ELECTRON) {
-      const res = await EnclaveAPI.signMessage({
-        walletType: WalletTypes.LEDGER,
-        message: msg,
-        path: this.getPath()
-      });
-      return res.signedMessage;
-    }
-
     try {
       const msgHex = Buffer.from(msg).toString('hex');
       const ethApp = await makeApp();
@@ -93,16 +75,7 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
   }
 
   public async displayAddress() {
-    const path = this.dPath + '/' + this.index;
-
-    if (process.env.BUILD_ELECTRON) {
-      return EnclaveAPI.displayAddress({
-        walletType: WalletTypes.LEDGER,
-        path
-      })
-        .then(res => res.success)
-        .catch(() => false);
-    }
+    const path = `${this.dPath}/${this.index}`;
 
     try {
       const ethApp = await makeApp();
@@ -124,19 +97,32 @@ async function makeApp() {
   return new LedgerEth(transport);
 }
 
-function ledgerErrToMessage(err: any) {
-  // Timeout
-  if (err && err.metaData && err.metaData.code === 5) {
-    return translateRaw('LEDGER_TIMEOUT');
+const isU2FError = (err: LedgerError): err is U2FError => !!err && !!(err as U2FError).metaData;
+const isStringError = (err: LedgerError): err is string => typeof err === 'string';
+function ledgerErrToMessage(err: LedgerError) {
+  // https://developers.yubico.com/U2F/Libraries/Client_error_codes.html
+  if (isU2FError(err)) {
+    // Timeout
+    if (err.metaData.code === 5) {
+      return translateRaw('LEDGER_TIMEOUT');
+    }
+
+    return err.metaData.type;
   }
-  // Wrong app logged into
-  if (err && err.includes && err.includes('6804')) {
-    return translateRaw('LEDGER_WRONG_APP');
+
+  if (isStringError(err)) {
+    // Wrong app logged into
+    if (err.includes('6804')) {
+      return translateRaw('LEDGER_WRONG_APP');
+    }
+    // Ledger locked
+    if (err.includes('6801')) {
+      return translateRaw('LEDGER_LOCKED');
+    }
+
+    return err;
   }
-  // Ledger locked
-  if (err && err.includes && err.includes('6801')) {
-    return translateRaw('LEDGER_LOCKED');
-  }
+
   // Other
-  return err && err.metaData ? err.metaData.type : err.toString();
+  return err.toString();
 }

@@ -8,12 +8,10 @@ export function makeRequest<T>(type: EnclaveMethods, params: EnclaveMethodParams
   })
     .then(res => res.json())
     .then((res: EnclaveResponse<T>) => {
-      if (res.error) {
-        throw new Error(res.error.message);
-      } else if (res.data) {
-        return res.data;
-      } else {
-        throw new Error('Unknown response from server');
+      const { error, data } = res;
+      if (data) {
+        return data;
       }
+      throw new Error(error!.message || 'Unknown response from server');
     });
 }

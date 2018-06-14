@@ -1,6 +1,7 @@
 import { makeRequest } from './requests';
 import {
   EnclaveMethods,
+  EnclaveMethodParams,
   GetChainCodeParams,
   GetChainCodeResponse,
   SignTransactionParams,
@@ -11,23 +12,24 @@ import {
   DisplayAddressResponse
 } from 'shared/enclave/types';
 
-const api = {
-  getChainCode(params: GetChainCodeParams) {
-    return makeRequest<GetChainCodeResponse>(EnclaveMethods.GET_CHAIN_CODE, params);
-  },
+function makeMethod<ParamsType extends EnclaveMethodParams, ResponseType>(method: EnclaveMethods) {
+  return (params: ParamsType) => makeRequest<ResponseType>(method, params);
+}
 
-  signTransaction(params: SignTransactionParams) {
-    return makeRequest<SignTransactionResponse>(EnclaveMethods.SIGN_TRANSACTION, params);
-  },
+export class EnclaveAPIClass {
+  public getChainCode = makeMethod<GetChainCodeParams, GetChainCodeResponse>(
+    EnclaveMethods.GET_CHAIN_CODE
+  );
+  public signTransaction = makeMethod<SignTransactionParams, SignTransactionResponse>(
+    EnclaveMethods.SIGN_TRANSACTION
+  );
+  public signMessage = makeMethod<SignMessageParams, SignMessageResponse>(
+    EnclaveMethods.SIGN_MESSAGE
+  );
+  public displayAddress = makeMethod<DisplayAddressParams, DisplayAddressResponse>(
+    EnclaveMethods.DISPLAY_ADDRESS
+  );
+}
 
-  signMessage(params: SignMessageParams) {
-    return makeRequest<SignMessageResponse>(EnclaveMethods.SIGN_MESSAGE, params);
-  },
-
-  displayAddress(params: DisplayAddressParams) {
-    return makeRequest<DisplayAddressResponse>(EnclaveMethods.DISPLAY_ADDRESS, params);
-  }
-};
-
-export default api;
+export default new EnclaveAPIClass();
 export * from 'shared/enclave/types';
