@@ -50,6 +50,7 @@
     "X_MIST": "Mist",
     "X_WEB3": "Web3",
     "X_MNEMONIC": "Mnemonic Phrase ",
+    "X_HARDWARE_WALLET": "hardware wallet ",
     "X_PRINT": "Print Paper Wallet ",
     "X_PRINTDESC": "ProTip: Click print and save this as a PDF, even if you do not own a printer! ",
     "X_PRIVKEY": "Private Key (unencrypted) ",

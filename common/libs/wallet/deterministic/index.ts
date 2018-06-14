@@ -8,4 +8,5 @@ function enclaveOrWallet<T>(type: WalletTypes, lib: T) {
 
 export * from './mnemonic';
 export * from './trezor';
+export * from './hardware';
 export const LedgerWallet = enclaveOrWallet(WalletTypes.LEDGER, LedgerWalletWeb);

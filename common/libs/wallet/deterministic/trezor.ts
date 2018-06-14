@@ -6,14 +6,13 @@ import TC from 'vendor/trezor-connect';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
-import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
 import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 
 export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 const TrezorConnect = TC as any;
 
-export class TrezorWallet extends HardwareWallet implements IFullWallet {
+export class TrezorWallet extends HardwareWallet {
   public static getChainCode(dpath: string): Promise<ChainCodeResponse> {
     if (process.env.BUILD_ELECTRON) {
       return EnclaveAPI.getChainCode({
@@ -78,7 +77,9 @@ export class TrezorWallet extends HardwareWallet implements IFullWallet {
     });
   }
 
-  public signMessage = () => Promise.reject(new Error('Signing via Trezor not yet supported.'));
+  public signMessage() {
+    return Promise.reject(new Error('Signing via Trezor not yet supported.'));
+  }
 
   public displayAddress(): Promise<any> {
     return new Promise(resolve => {

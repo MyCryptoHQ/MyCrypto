@@ -14,6 +14,9 @@ async function getEthApp() {
     }
     return new LedgerEth(transport);
   } catch (err) {
+    if (err && err.name === 'TransportError') {
+      throw new Error('ENCLAVE_LEDGER_IN_USE');
+    }
     if (err && err.message && err.message.includes('cannot open device with path')) {
       throw new Error('ENCLAVE_LEDGER_IN_USE');
     }
