@@ -3,7 +3,7 @@ export enum CONFIG_NODES_SELECTED {
   CHANGE_SUCCEEDED = 'CONFIG_NODES_SELECTED_CHANGE_SUCCEEDED',
   CHANGE_FAILED = 'CONFIG_NODES_SELECTED_CHANGE_FAILED',
   CHANGE_REQUESTED_ONETIME = 'CONFIG_NODES_SELECTED_CHANGE_REQUESTED_ONETIME',
-  CHANGE_FORCE = 'CONFIG_NODES_SELECTED_CHANGE_FORCE',
+  CHANGE_FORCE = 'CONFIG_NODES_SELECTED_CHANGE_FORCE'
 }
 
 export interface ChangeNodeRequestedAction {
@@ -16,7 +16,7 @@ export interface ChangeNodeSucceededAction {
   payload: {
     nodeId: string;
     networkId: string;
-  }
+  };
 }
 
 export interface ChangeNodeFailedAction {
@@ -33,7 +33,12 @@ export interface ChangeNodeForceAction {
   payload: string;
 }
 
-export type SelectedNodeAction = ChangeNodeRequestedAction | ChangeNodeSucceededAction | ChangeNodeFailedAction | ChangeNodeRequestedOneTimeAction | ChangeNodeForceAction;
+export type SelectedNodeAction =
+  | ChangeNodeRequestedAction
+  | ChangeNodeSucceededAction
+  | ChangeNodeFailedAction
+  | ChangeNodeRequestedOneTimeAction
+  | ChangeNodeForceAction;
 
 export interface NodeLoaded {
   pending: false;

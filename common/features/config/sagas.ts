@@ -1,19 +1,19 @@
 import { delay, SagaIterator } from 'redux-saga';
 import { call, fork, put, take, takeEvery, select, apply, all } from 'redux-saga/effects';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 
 import translate, { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 import {
-  getShepherdOffline,
+  // getShepherdOffline,
   isAutoNode,
   shepherd,
   shepherdProvider,
   stripWeb3Network,
   makeProviderConfig,
   getShepherdNetwork,
-  getShepherdPending,
+  // getShepherdPending,
   makeAutoNodeName,
   makeWeb3Network,
   getShepherdManualMode
@@ -21,11 +21,11 @@ import {
 import { Web3Wallet } from 'libs/wallet';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
 import { AppState } from 'features/reducers';
-import { configuredStore as store } from 'features/store';
+// import { configuredStore as store } from 'features/store';
 import { showNotification } from 'features/notifications';
 import { resetWallet, setWallet, SetWalletAction, WALLET } from 'features/wallet';
 import { getAllNodes, getStaticNodeFromId } from './selectors';
-import { getOffline, setOnline, setOffline, setLatestBlock, CONFIG_META } from './meta';
+import { getOffline /*, setOnline, setOffline*/, setLatestBlock, CONFIG_META } from './meta';
 import { getNodeConfig, getWeb3Node } from './nodes';
 import {
   getCustomNodeFromId,
@@ -48,6 +48,7 @@ import {
   CONFIG_NODES_SELECTED,
   getPreviouslySelectedNode
 } from './nodes/selected';
+import * as selected from './nodes/selected/types';
 import {
   getNetworkConfigById,
   ChangeNetworkRequestedAction,
@@ -86,84 +87,84 @@ export function* pruneCustomNetworks(): SagaIterator {
 //#endregion Network
 
 //#region Nodes
-window.addEventListener('load', () => {
-  const getShepherdStatus = () => ({
-    pending: getShepherdPending(),
-    isOnline: !getShepherdOffline()
-  });
+// window.addEventListener('load', () => {
+//   const getShepherdStatus = () => ({
+//     pending: getShepherdPending(),
+//     isOnline: !getShepherdOffline()
+//   });
 
-  const { online, offline, lostNetworkNotif, offlineNotif, restoreNotif } = bindActionCreators(
-    {
-      offline: setOffline,
-      online: setOnline,
-      restoreNotif: () =>
-        showNotification('success', 'Your connection to the network has been restored!', 3000),
-      lostNetworkNotif: () =>
-        showNotification(
-          'danger',
-          `You’ve lost your connection to the network, check your internet
-connection or try changing networks from the dropdown at the
-top right of the page.`,
-          Infinity
-        ),
+//   const { online, offline, lostNetworkNotif, offlineNotif, restoreNotif } = bindActionCreators(
+//     {
+//       offline: setOffline,
+//       online: setOnline,
+//       restoreNotif: () =>
+//         showNotification('success', 'Your connection to the network has been restored!', 3000),
+//       lostNetworkNotif: () =>
+//         showNotification(
+//           'danger',
+//           `You’ve lost your connection to the network, check your internet
+// connection or try changing networks from the dropdown at the
+// top right of the page.`,
+//           Infinity
+//         ),
 
-      offlineNotif: () =>
-        showNotification(
-          'info',
-          'You are currently offline. Some features will be unavailable.',
-          5000
-        )
-    },
-    store.dispatch
-  );
+//       offlineNotif: () =>
+//         showNotification(
+//           'info',
+//           'You are currently offline. Some features will be unavailable.',
+//           5000
+//         )
+//     },
+//     store.dispatch
+//   );
 
-  const getAppOnline = () => !getOffline(store.getState());
+//   const getAppOnline = () => !getOffline(store.getState());
 
-  /**
-   * @description Repeatedly polls itself to check for online state conflict occurs, implemented in recursive style for flexible polling times
-   * as network requests take a variable amount of time.
-   *
-   * Whenever an app online state conflict occurs, it resolves the conflict with the following priority:
-   * * If shepherd is online but app is offline ->  do a ping request via shepherd provider, with the result of the ping being the set app state
-   * * If shepherd is offline but app is online -> set app to offline as it wont be able to make requests anyway
-   */
-  async function detectOnlineStateConflict() {
-    const shepherdStatus = getShepherdStatus();
-    const appOffline = getAppOnline();
-    const onlineStateConflict = shepherdStatus.isOnline !== appOffline;
+//   /**
+//    * @description Repeatedly polls itself to check for online state conflict occurs, implemented in recursive style for flexible polling times
+//    * as network requests take a variable amount of time.
+//    *
+//    * Whenever an app online state conflict occurs, it resolves the conflict with the following priority:
+//    * * If shepherd is online but app is offline ->  do a ping request via shepherd provider, with the result of the ping being the set app state
+//    * * If shepherd is offline but app is online -> set app to offline as it wont be able to make requests anyway
+//    */
+//   async function detectOnlineStateConflict() {
+//     const shepherdStatus = getShepherdStatus();
+//     const appOffline = getAppOnline();
+//     const onlineStateConflict = shepherdStatus.isOnline !== appOffline;
 
-    if (shepherdStatus.pending || !onlineStateConflict) {
-      return setTimeout(detectOnlineStateConflict, 1000);
-    }
+//     if (shepherdStatus.pending || !onlineStateConflict) {
+//       return setTimeout(detectOnlineStateConflict, 1000);
+//     }
 
-    // if app reports online but shepherd offline, then set app offline
-    if (appOffline && !shepherdStatus.isOnline) {
-      lostNetworkNotif();
-      offline();
-    } else if (!appOffline && shepherdStatus.isOnline) {
-      // if app reports offline but shepherd reports online
-      // send a request to shepherd provider to see if we can still send out requests
-      const success = await shepherdProvider.ping().catch(() => false);
-      if (success) {
-        restoreNotif();
-        online();
-      }
-    }
-    detectOnlineStateConflict();
-  }
-  detectOnlineStateConflict();
+//     // if app reports online but shepherd offline, then set app offline
+//     if (appOffline && !shepherdStatus.isOnline) {
+//       lostNetworkNotif();
+//       offline();
+//     } else if (!appOffline && shepherdStatus.isOnline) {
+//       // if app reports offline but shepherd reports online
+//       // send a request to shepherd provider to see if we can still send out requests
+//       const success = await shepherdProvider.ping().catch(() => false);
+//       if (success) {
+//         restoreNotif();
+//         online();
+//       }
+//     }
+//     detectOnlineStateConflict();
+//   }
+//   detectOnlineStateConflict();
 
-  window.addEventListener('offline', () => {
-    const previouslyOnline = getAppOnline();
+//   window.addEventListener('offline', () => {
+//     const previouslyOnline = getAppOnline();
 
-    // if browser reports as offline and we were previously online
-    // then set offline without checking balancer state
-    if (!navigator.onLine && previouslyOnline) {
-      offlineNotif();
-      offline();
-    }
-  });
-});
+//     // if browser reports as offline and we were previously online
+//     // then set offline without checking balancer state
+//     if (!navigator.onLine && previouslyOnline) {
+//       offlineNotif();
+//       offline();
+//     }
+//   });
+// });
 
 // @HACK For now we reload the app when doing a language swap to force non-connected
 // data to reload. Also the use of timeout to avoid using additional actions for now.
@@ -440,6 +441,8 @@ export function* unsetWeb3Node(): SagaIterator {
 //#endregion Web3
 
 export function* configSaga(): SagaIterator {
+  console.log(selected);
+
   const networkSaga = [takeEvery(CONFIG_NETWORKS_CUSTOM.REMOVE, pruneCustomNetworks)];
   const nodeSaga = [
     fork(handleChangeNodeRequestedOneTime),
