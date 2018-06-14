@@ -70,7 +70,8 @@ export function translateRaw(key: string, variables?: { [name: string]: string }
     // Find each variable and replace it in the translated string
     let str = translatedString;
     Object.keys(variables).forEach(v => {
-      str = str.replace(v, variables[v]);
+      const re = new RegExp(v.replace('$', '\\$'), 'g');
+      str = str.replace(re, variables[v]);
     });
     return str;
   }
