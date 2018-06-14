@@ -24,18 +24,28 @@ import { AppState } from 'features/reducers';
 // import { configuredStore as store } from 'features/store';
 import { showNotification } from 'features/notifications';
 import { resetWallet, setWallet, SetWalletAction, WALLET } from 'features/wallet';
-import { getAllNodes, getStaticNodeFromId } from './selectors';
 import { getOffline /*, setOnline, setOffline*/, setLatestBlock, CONFIG_META } from './meta';
-import { getNodeConfig, getWeb3Node } from './nodes';
 import {
+  getNetworkConfigById,
+  ChangeNetworkRequestedAction,
+  CONFIG_NETWORKS,
+  getNetworkByChainId,
+  getCustomNetworkConfigs,
+  removeCustomNetwork,
+  CONFIG_NETWORKS_CUSTOM
+} from './networks';
+import {
+  getNodeConfig,
+  getWeb3Node,
   getCustomNodeFromId,
   AddCustomNodeAction,
   RemoveCustomNodeAction,
   CONFIG_NODES_CUSTOM,
-  getCustomNodeConfigs
-} from './nodes/custom';
-import { isStaticNodeId, web3SetNode, web3UnsetNode, CONFIG_NODES_STATIC } from './nodes/static';
-import {
+  getCustomNodeConfigs,
+  isStaticNodeId,
+  web3SetNode,
+  web3UnsetNode,
+  CONFIG_NODES_STATIC,
   SELECTED_NODE_INITIAL_STATE,
   getNodeId,
   changeNodeRequested,
@@ -47,19 +57,8 @@ import {
   ChangeNodeRequestedOneTimeAction,
   CONFIG_NODES_SELECTED,
   getPreviouslySelectedNode
-} from './nodes/selected';
-import * as selected from './nodes/selected/types';
-import {
-  getNetworkConfigById,
-  ChangeNetworkRequestedAction,
-  CONFIG_NETWORKS,
-  getNetworkByChainId
-} from './networks';
-import {
-  getCustomNetworkConfigs,
-  removeCustomNetwork,
-  CONFIG_NETWORKS_CUSTOM
-} from './networks/custom';
+} from './nodes';
+import { getAllNodes, getStaticNodeFromId } from './selectors';
 
 //#region Network
 // If there are any orphaned custom networks, prune them
@@ -441,8 +440,6 @@ export function* unsetWeb3Node(): SagaIterator {
 //#endregion Web3
 
 export function* configSaga(): SagaIterator {
-  console.log(selected);
-
   const networkSaga = [takeEvery(CONFIG_NETWORKS_CUSTOM.REMOVE, pruneCustomNetworks)];
   const nodeSaga = [
     fork(handleChangeNodeRequestedOneTime),

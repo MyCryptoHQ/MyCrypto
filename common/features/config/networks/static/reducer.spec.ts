@@ -1,4 +1,4 @@
-import { staticNetworksReducer, STATIC_NETWORKS_INITIAL_STATE } from './';
+import { staticNetworksReducer, STATIC_NETWORKS_INITIAL_STATE } from './reducer';
 
 describe('Testing contained data', () => {
   it(`contain unique chainIds`, () => {

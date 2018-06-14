@@ -1,4 +1,5 @@
-import { changeLanguage, CONFIG_META } from './';
+import { CONFIG_META } from './types';
+import { changeLanguage } from './actions';
 
 describe('actions', () => {
   it('should create an action to change language to index', () => {

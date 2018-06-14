@@ -1,10 +1,13 @@
 import { shepherdProvider, INode } from 'libs/nodes';
 import { CustomNodeConfig, StaticNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
-import { getConfig } from '../selectors';
-import { getCustomNodeConfig } from './custom/selectors';
-import { getStaticNodeConfig } from './static/selectors';
-import { getNodeId } from './selected/selectors';
+import { getCustomNodeConfig } from './custom';
+import { getStaticNodeConfig } from './static';
+import { getNodeId } from './selected';
+
+function getConfig(state: AppState) {
+  return state.config;
+}
 
 export function getNodes(state: AppState) {
   return getConfig(state).nodes;

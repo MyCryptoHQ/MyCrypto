@@ -9,26 +9,9 @@ import { Web3Wallet } from 'libs/wallet';
 import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
 import { configuredStore } from 'features/store';
 import { showNotification } from 'features/notifications';
-import { getOffline, setLatestBlock } from './meta';
-import { ChangeNetworkRequestedAction, CONFIG_NETWORKS } from './networks';
-import { getNodeConfig } from './nodes';
-import { isStaticNodeId } from './nodes/static';
-import { staticNodesExpectedState } from './nodes/static/reducer.spec';
-import { getCustomNodeFromId, RemoveCustomNodeAction, CONFIG_NODES_CUSTOM } from './nodes/custom';
-import { customNodesExpectedState, firstCustomNode } from './nodes/custom/reducer.spec';
-import {
-  getNodeId,
-  getPreviouslySelectedNode,
-  changeNodeSucceeded,
-  changeNodeRequested,
-  changeNodeFailed,
-  changeNodeForce,
-  ChangeNodeRequestedOneTimeAction,
-  changeNodeRequestedOneTime,
-  CONFIG_NODES_SELECTED,
-  SELECTED_NODE_INITIAL_STATE
-} from './nodes/selected';
 import { selectedNodeExpectedState } from './nodes/selected/reducer.spec';
+import { staticNodesExpectedState } from './nodes/static/reducer.spec';
+import { customNodesExpectedState, firstCustomNode } from './nodes/custom/reducer.spec';
 import { getStaticNodeFromId, getAllNodes } from './selectors';
 import {
   unsetWeb3Node,
@@ -40,6 +23,25 @@ import {
   handleChangeNetworkRequested,
   handleRemoveCustomNode
 } from './sagas';
+import { getOffline, setLatestBlock } from './meta';
+import { ChangeNetworkRequestedAction, CONFIG_NETWORKS } from './networks';
+import {
+  CONFIG_NODES_CUSTOM,
+  getNodeConfig,
+  isStaticNodeId,
+  getCustomNodeFromId,
+  RemoveCustomNodeAction,
+  getNodeId,
+  getPreviouslySelectedNode,
+  changeNodeSucceeded,
+  changeNodeRequested,
+  changeNodeFailed,
+  changeNodeForce,
+  ChangeNodeRequestedOneTimeAction,
+  changeNodeRequestedOneTime,
+  CONFIG_NODES_SELECTED,
+  SELECTED_NODE_INITIAL_STATE
+} from './nodes';
 
 // init module
 configuredStore.getState();

@@ -1,4 +1,4 @@
-import { CustomNetworkConfig } from 'shared/types/network';
+import { CustomNetworkConfig } from 'types/network';
 
 export enum CONFIG_NETWORKS_CUSTOM {
   ADD = 'CONFIG_NETWORKS_CUSTOM_ADD',

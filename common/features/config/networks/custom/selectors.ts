@@ -1,4 +1,5 @@
 import { AppState } from 'features/reducers';
-import { getNetworks } from '../selectors';
+
+const getNetworks = (state: AppState) => state.config.networks;
 
 export const getCustomNetworkConfigs = (state: AppState) => getNetworks(state).customNetworks;

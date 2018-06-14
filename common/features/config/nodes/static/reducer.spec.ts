@@ -1,8 +1,8 @@
+import { Web3Service } from 'libs/nodes/web3';
+import { StaticNodeConfig } from 'types/node';
 import { configuredStore } from 'features/store';
 import { web3SetNode, web3UnsetNode } from './actions';
 import { staticNodesReducer, STATIC_NODES_INITIAL_STATE } from './reducer';
-import { Web3Service } from 'libs/nodes/web3';
-import { StaticNodeConfig } from 'types/node';
 
 configuredStore.getState();
 

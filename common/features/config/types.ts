@@ -1,10 +1,7 @@
 import { InsecureWalletName, SecureWalletName } from 'config';
-import { DPathFormats } from 'types/network';
-import { CustomNetworkAction } from './networks/custom';
 import { MetaAction } from './meta';
-import { SelectedNodeAction } from './nodes/selected';
-import { StaticNodeAction } from './nodes/static';
-import { CustomNodeAction } from './nodes/custom';
+import { CustomNetworkAction } from './networks';
+import { SelectedNodeAction, StaticNodeAction, CustomNodeAction } from './nodes';
 
 export enum CONFIG {
   POLL_OFFLINE_STATUS = 'CONFIG_POLL_OFFLINE_STATUS'
@@ -17,8 +14,6 @@ export interface PollOfflineStatus {
 export type NodeAction = SelectedNodeAction | StaticNodeAction;
 
 export type ConfigAction = CustomNetworkAction | CustomNodeAction | NodeAction | MetaAction;
-
-export type PathType = keyof DPathFormats;
 
 export type DPathFormat =
   | SecureWalletName.TREZOR

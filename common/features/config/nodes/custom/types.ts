@@ -1,4 +1,4 @@
-import { CustomNodeConfig } from 'shared/types/node';
+import { CustomNodeConfig } from 'types/node';
 
 export interface CustomNodesState {
   [customNodeId: string]: CustomNodeConfig;

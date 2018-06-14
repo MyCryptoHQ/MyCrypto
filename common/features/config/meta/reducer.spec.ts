@@ -1,11 +1,11 @@
 import {
-  metaReducer,
   changeLanguage,
   setOnline,
   setOffline,
   toggleAutoGasLimit,
   setLatestBlock
-} from './';
+} from './actions';
+import { metaReducer } from './reducer';
 
 describe('meta reducer', () => {
   const expectedInitialState = {

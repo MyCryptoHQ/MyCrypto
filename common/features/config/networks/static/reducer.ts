@@ -24,7 +24,6 @@ import {
   GO_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
-import { ConfigAction } from '../../types';
 import { StaticNetworksState } from './types';
 
 const testnetDefaultGasPrice = {
@@ -394,7 +393,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
 
 export function staticNetworksReducer(
   state: StaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
-  action: ConfigAction
+  action: any
 ) {
   switch (action.type) {
     default:

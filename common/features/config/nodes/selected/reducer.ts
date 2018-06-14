@@ -1,9 +1,8 @@
-import { NodeAction } from '../../types';
-import { CustomNodeAction } from '../custom/types';
 import { makeAutoNodeName } from 'libs/nodes';
 import {
   CONFIG_NODES_SELECTED,
   SelectedNodeState as State,
+  SelectedNodeAction,
   ChangeNodeRequestedAction,
   ChangeNodeSucceededAction
 } from './types';
@@ -33,7 +32,7 @@ const changeNodeFailed = (state: State): State => ({
 
 export const selectedNodeReducer = (
   state: State = SELECTED_NODE_INITIAL_STATE,
-  action: NodeAction | CustomNodeAction
+  action: SelectedNodeAction
 ) => {
   switch (action.type) {
     case CONFIG_NODES_SELECTED.CHANGE_SUCCEEDED:

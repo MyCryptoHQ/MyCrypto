@@ -1,8 +1,9 @@
 import { StaticNetworkIds } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getConfig } from '../selectors';
 import { getCustomNetworkConfigs } from './custom';
 import { isStaticNetworkId, getStaticNetworkConfigs } from './static';
+
+const getConfig = (state: AppState) => state.config;
 
 export const getNetworks = (state: AppState) => getConfig(state).networks;
 
