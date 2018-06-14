@@ -143,7 +143,10 @@ class Header extends Component<Props, State> {
           </section>
         </section>
 
-        <Navigation color={!network.isCustom && network.color} />
+        <Navigation
+          color={!network.isCustom && network.color}
+          unsupportedTabs={network.unsupportedTabs}
+        />
 
         <CustomNodeModal
           isOpen={isAddingCustomNode}

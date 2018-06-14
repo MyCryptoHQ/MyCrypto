@@ -5,6 +5,7 @@ import './Navigation.scss';
 
 interface Props {
   color?: string | false;
+  unsupportedTabs?: string[];
 }
 
 interface State {
@@ -29,7 +30,7 @@ export default class Navigation extends PureComponent<Props, State> {
    */
 
   public render() {
-    const { color } = this.props;
+    const { color, unsupportedTabs } = this.props;
     const borderStyle: BorderStyle = {};
 
     if (color) {
@@ -57,6 +58,7 @@ export default class Navigation extends PureComponent<Props, State> {
                 link={link}
                 isHomepage={link === navigationLinks[0]}
                 className="NavigationLink"
+                isNotEnabled={unsupportedTabs != null && unsupportedTabs.includes(link.name)}
               />
             ))}
           </ul>
