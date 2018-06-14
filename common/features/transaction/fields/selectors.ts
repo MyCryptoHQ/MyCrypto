@@ -1,6 +1,6 @@
 import { AppState } from 'features/reducers';
 
-import { getTransactionState } from '../selectors';
+const getTransactionState = (state: AppState) => state.transaction;
 
 export const getFields = (state: AppState) => getTransactionState(state).fields;
 export const getTo = (state: AppState) => getFields(state).to;

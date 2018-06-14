@@ -3,12 +3,17 @@ import BN from 'bn.js';
 
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
 import {
+  broadcastReducer,
+  BroadcastState,
+  BROADCAST_INITIAL_STATE,
   broadcastTransactionQueued,
   broadcastTransactionSucceeded,
   broadcastTransactionFailed,
   ITransactionStatus
 } from './broadcast';
 import {
+  fieldsReducer,
+  FieldsState,
   TRANSACTION_FIELDS,
   setToField,
   setValueField,
@@ -18,9 +23,24 @@ import {
   setGasPriceField,
   InputGasPriceAction
 } from './fields';
-import { TRANSACTION_META, SetUnitMetaAction, setTokenTo, setTokenValue } from './meta';
-import { TRANSACTION_NETWORK, NetworkAction, getFromSucceeded } from './network';
 import {
+  metaReducer,
+  MetaState,
+  TRANSACTION_META,
+  SetUnitMetaAction,
+  setTokenTo,
+  setTokenValue
+} from './meta';
+import {
+  networkReducer,
+  NetworkState,
+  TRANSACTION_NETWORK,
+  NetworkAction,
+  getFromSucceeded
+} from './network';
+import {
+  signReducer,
+  SignState,
   TRANSACTION_SIGN,
   SignTransactionRequestedAction,
   SignLocalTransactionSucceededAction,
@@ -33,11 +53,6 @@ import {
   SwapTokenToTokenAction,
   ResetTransactionSuccessfulAction
 } from './types';
-import network, { NetworkState } from './network/reducer';
-import broadcast, { BROADCAST_INITIAL_STATE } from './broadcast/reducer';
-import fields, { FieldsState } from './fields/reducer';
-import meta, { MetaState } from './meta/reducer';
-import sign, { SignState } from './sign/reducer';
 
 describe('transaction: Reducers', () => {
   describe('Broadcast', () => {
@@ -49,14 +64,14 @@ describe('transaction: Reducers', () => {
       isBroadcasting: true,
       serializedTransaction
     };
-    const nextState: any = {
+    const nextState: BroadcastState = {
       ...BROADCAST_INITIAL_STATE,
       [indexingHash]: nextTxStatus
     };
     it('should handle BROADCAST_TRANSACTION_QUEUED', () => {
       expect(
-        broadcast(
-          BROADCAST_INITIAL_STATE as any,
+        broadcastReducer(
+          BROADCAST_INITIAL_STATE as BroadcastState,
           broadcastTransactionQueued({ indexingHash, serializedTransaction })
         )
       ).toEqual(nextState);
@@ -74,7 +89,10 @@ describe('transaction: Reducers', () => {
         }
       };
       expect(
-        broadcast(nextState, broadcastTransactionSucceeded({ indexingHash, broadcastedHash }))
+        broadcastReducer(
+          nextState,
+          broadcastTransactionSucceeded({ indexingHash, broadcastedHash })
+        )
       ).toEqual(broadcastedState);
     });
 
@@ -83,7 +101,7 @@ describe('transaction: Reducers', () => {
         ...nextState,
         [indexingHash]: { ...nextTxStatus, isBroadcasting: false, broadcastSuccessful: false }
       };
-      expect(broadcast(nextState, broadcastTransactionFailed({ indexingHash }))).toEqual(
+      expect(broadcastReducer(nextState, broadcastTransactionFailed({ indexingHash }))).toEqual(
         failedBroadcastState
       );
     });
@@ -101,42 +119,42 @@ describe('transaction: Reducers', () => {
     const testPayload = { raw: 'test', value: null };
 
     it('should handle TO_FIELD_SET', () => {
-      expect(fields(FIELDS_INITIAL_STATE, setToField(testPayload))).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, setToField(testPayload))).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload
       });
     });
 
     it('should handle VALUE_FIELD_SET', () => {
-      expect(fields(FIELDS_INITIAL_STATE, setValueField(testPayload))).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, setValueField(testPayload))).toEqual({
         ...FIELDS_INITIAL_STATE,
         value: testPayload
       });
     });
 
     it('should handle DATA_FIELD_SET', () => {
-      expect(fields(FIELDS_INITIAL_STATE, setDataField(testPayload))).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, setDataField(testPayload))).toEqual({
         ...FIELDS_INITIAL_STATE,
         data: testPayload
       });
     });
 
     it('should handle GAS_LIMIT_FIELD_SET', () => {
-      expect(fields(FIELDS_INITIAL_STATE, setGasLimitField(testPayload))).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, setGasLimitField(testPayload))).toEqual({
         ...FIELDS_INITIAL_STATE,
         gasLimit: testPayload
       });
     });
 
     it('should handle NONCE_SET', () => {
-      expect(fields(FIELDS_INITIAL_STATE, setNonceField(testPayload))).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, setNonceField(testPayload))).toEqual({
         ...FIELDS_INITIAL_STATE,
         nonce: testPayload
       });
     });
 
     it('should handle GAS_PRICE_FIELD_SET', () => {
-      expect(fields(FIELDS_INITIAL_STATE, setGasPriceField(testPayload))).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, setGasPriceField(testPayload))).toEqual({
         ...FIELDS_INITIAL_STATE,
         gasPrice: testPayload
       });
@@ -151,7 +169,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(fields(FIELDS_INITIAL_STATE, swapAction)).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload,
         value: testPayload
@@ -169,7 +187,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(fields(FIELDS_INITIAL_STATE, swapAction)).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload,
         data: testPayload
@@ -186,7 +204,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(fields(FIELDS_INITIAL_STATE, swapAction)).toEqual({
+      expect(fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload,
         data: testPayload
@@ -202,7 +220,7 @@ describe('transaction: Reducers', () => {
         ...FIELDS_INITIAL_STATE,
         data: { raw: 'modified', value: null }
       };
-      expect(fields(modifiedState, resetAction)).toEqual(FIELDS_INITIAL_STATE);
+      expect(fieldsReducer(modifiedState, resetAction)).toEqual(FIELDS_INITIAL_STATE);
     });
   });
 
@@ -224,25 +242,25 @@ describe('transaction: Reducers', () => {
         type: TRANSACTION_META.UNIT_META_SET,
         payload: 'test'
       };
-      expect(meta(META_INITIAL_STATE, setUnitMetaAction));
+      expect(metaReducer(META_INITIAL_STATE, setUnitMetaAction));
     });
 
     it('should handle TOKEN_VALUE_META_SET', () => {
-      expect(meta(META_INITIAL_STATE, setTokenValue(testPayload))).toEqual({
+      expect(metaReducer(META_INITIAL_STATE, setTokenValue(testPayload))).toEqual({
         ...META_INITIAL_STATE,
         tokenValue: testPayload
       });
     });
 
     it('should handle TOKEN_TO_META_SET', () => {
-      expect(meta(META_INITIAL_STATE, setTokenTo(testPayload))).toEqual({
+      expect(metaReducer(META_INITIAL_STATE, setTokenTo(testPayload))).toEqual({
         ...META_INITIAL_STATE,
         tokenTo: testPayload
       });
     });
 
     it('should handle GET_FROM_SUCCEEDED', () => {
-      expect(meta(META_INITIAL_STATE, getFromSucceeded('test'))).toEqual({
+      expect(metaReducer(META_INITIAL_STATE, getFromSucceeded('test'))).toEqual({
         ...META_INITIAL_STATE,
         from: 'test'
       });
@@ -257,7 +275,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(meta(META_INITIAL_STATE, swapAction)).toEqual({
+      expect(metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
         ...META_INITIAL_STATE,
         decimal: swapAction.payload.decimal
       });
@@ -274,7 +292,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(meta(META_INITIAL_STATE, swapAction)).toEqual({
+      expect(metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
         ...META_INITIAL_STATE,
         decimal: swapAction.payload.decimal,
         tokenTo: testPayload,
@@ -292,7 +310,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(meta(META_INITIAL_STATE, swapAction)).toEqual({
+      expect(metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
         ...META_INITIAL_STATE,
         decimal: swapAction.payload.decimal,
         tokenValue: testPayload
@@ -308,7 +326,7 @@ describe('transaction: Reducers', () => {
         ...META_INITIAL_STATE,
         unit: 'modified'
       };
-      expect(meta(modifiedState, resetAction)).toEqual(modifiedState);
+      expect(metaReducer(modifiedState, resetAction)).toEqual(modifiedState);
     });
   });
 
@@ -324,7 +342,7 @@ describe('transaction: Reducers', () => {
       const gasEstimationAction: NetworkAction = {
         type: TRANSACTION_NETWORK.ESTIMATE_GAS_SUCCEEDED
       };
-      expect(network(NETWORK_INITIAL_STATE, gasEstimationAction)).toEqual({
+      expect(networkReducer(NETWORK_INITIAL_STATE, gasEstimationAction)).toEqual({
         ...NETWORK_INITIAL_STATE,
         gasEstimationStatus: 'SUCCESS'
       });
@@ -335,7 +353,7 @@ describe('transaction: Reducers', () => {
         type: TRANSACTION_NETWORK.GET_FROM_SUCCEEDED,
         payload: 'test'
       };
-      expect(network(NETWORK_INITIAL_STATE, getFromAction)).toEqual({
+      expect(networkReducer(NETWORK_INITIAL_STATE, getFromAction)).toEqual({
         ...NETWORK_INITIAL_STATE,
         getFromStatus: 'SUCCESS'
       });
@@ -346,7 +364,7 @@ describe('transaction: Reducers', () => {
         type: TRANSACTION_NETWORK.GET_NONCE_SUCCEEDED,
         payload: 'test'
       };
-      expect(network(NETWORK_INITIAL_STATE, getNonceAction)).toEqual({
+      expect(networkReducer(NETWORK_INITIAL_STATE, getNonceAction)).toEqual({
         ...NETWORK_INITIAL_STATE,
         getNonceStatus: 'SUCCESS'
       });
@@ -357,7 +375,7 @@ describe('transaction: Reducers', () => {
         type: TRANSACTION_FIELDS.GAS_PRICE_INPUT,
         payload: 'test'
       };
-      expect(network(NETWORK_INITIAL_STATE, gasPriceAction)).toEqual({
+      expect(networkReducer(NETWORK_INITIAL_STATE, gasPriceAction)).toEqual({
         ...NETWORK_INITIAL_STATE,
         gasPriceStatus: 'SUCCESS'
       });
@@ -376,7 +394,7 @@ describe('transaction: Reducers', () => {
         type: TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED,
         payload: {} as EthTx
       };
-      expect(sign(SIGN_INITIAL_STATE, signTxRequestedAction)).toEqual({
+      expect(signReducer(SIGN_INITIAL_STATE, signTxRequestedAction)).toEqual({
         ...SIGN_INITIAL_STATE,
         pending: true
       });
@@ -389,7 +407,7 @@ describe('transaction: Reducers', () => {
         type: TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
         payload: { signedTransaction, indexingHash }
       };
-      expect(sign(SIGN_INITIAL_STATE, signLocalTxSucceededAction)).toEqual({
+      expect(signReducer(SIGN_INITIAL_STATE, signLocalTxSucceededAction)).toEqual({
         ...SIGN_INITIAL_STATE,
         pending: false,
         indexingHash,
@@ -404,7 +422,7 @@ describe('transaction: Reducers', () => {
         type: TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED,
         payload: { transaction, indexingHash }
       };
-      expect(sign(SIGN_INITIAL_STATE, signWeb3TxSucceededAction)).toEqual({
+      expect(signReducer(SIGN_INITIAL_STATE, signWeb3TxSucceededAction)).toEqual({
         ...SIGN_INITIAL_STATE,
         pending: false,
         indexingHash,
@@ -421,7 +439,7 @@ describe('transaction: Reducers', () => {
         ...SIGN_INITIAL_STATE,
         pending: true
       };
-      expect(sign(modifiedState, resetAction)).toEqual(SIGN_INITIAL_STATE);
+      expect(signReducer(modifiedState, resetAction)).toEqual(SIGN_INITIAL_STATE);
     });
   });
 });

@@ -1,5 +1,6 @@
 import { Wei, TokenValue } from 'libs/units';
 import { IWallet, WalletConfig, Balance } from 'libs/wallet';
+import { Token } from 'types/network';
 
 export interface WalletState {
   inst?: IWallet | null;
@@ -170,6 +171,22 @@ export interface RefreshAccountBalanceAction {
 
 export interface RefreshTokenBalancesAction {
   type: WALLET.REFRESH_TOKEN_BALANCES;
+}
+
+export interface TokenBalance {
+  symbol: string;
+  balance: TokenValue;
+  custom: boolean;
+  decimal: number;
+  error: string | null;
+}
+
+export type MergedToken = Token & {
+  custom: boolean;
+};
+
+export interface TokenBalanceLookup {
+  [symbol: string]: TokenBalance;
 }
 
 export type WalletAction =

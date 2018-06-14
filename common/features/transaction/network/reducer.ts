@@ -36,7 +36,7 @@ const setGasPriceStatus = (state: NetworkState, gasPriceStatus: RequestStatus) =
 
 const resetNetwork = () => NETWORK_INITIAL_STATE;
 
-export default function network(
+export function networkReducer(
   state: NetworkState = NETWORK_INITIAL_STATE,
   action:
     | NetworkAction

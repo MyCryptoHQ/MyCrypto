@@ -1,5 +1,8 @@
 import { AppState } from 'features/reducers';
-import { getConfig } from 'features/config';
+
+function getConfig(state: AppState) {
+  return state.config;
+}
 
 export function getMeta(state: AppState) {
   return getConfig(state).meta;

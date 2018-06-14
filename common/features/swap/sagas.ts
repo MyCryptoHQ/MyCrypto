@@ -16,6 +16,7 @@ import moment from 'moment';
 
 import { getOrderStatus, postOrder, getAllRates } from 'api/bity';
 import shapeshift from 'api/shapeshift';
+import { isSupportedUnit, isNetworkUnit } from 'features/config';
 import {
   TRANSACTION,
   setUnitMeta,
@@ -23,7 +24,6 @@ import {
   setCurrentValue,
   resetTransactionRequested
 } from 'features/transaction';
-import { isSupportedUnit, isNetworkUnit } from 'features/config';
 import {
   WALLET,
   setTokenBalancePending,

@@ -3,16 +3,16 @@ import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga
 import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 
-import { DeterministicWalletData, GetDeterministicWalletsAction } from './types';
-import { setDeterministicWallets, updateDeterministicWallet } from './actions';
-import { showNotification } from 'features/notifications';
-import { INode } from 'libs/nodes/INode';
-import { getNodeLib } from 'features/config';
-import { getDesiredToken, getWallets } from 'features/deterministicWallets';
-import { getTokens } from 'features/wallet';
 import translate from 'translations';
+import { INode } from 'libs/nodes/INode';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
+import { getNodeLib } from 'features/config';
+import { getTokens } from 'features/wallet';
+import { showNotification } from 'features/notifications';
+import { DeterministicWalletData, GetDeterministicWalletsAction } from './types';
+import { setDeterministicWallets, updateDeterministicWallet } from './actions';
+import { getDesiredToken, getWallets } from './selectors';
 
 export function* getDeterministicWalletsSaga(action: GetDeterministicWalletsAction): SagaIterator {
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;

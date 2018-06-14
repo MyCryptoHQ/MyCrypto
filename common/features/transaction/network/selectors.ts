@@ -1,7 +1,7 @@
 import { AppState } from 'features/reducers';
-
 import { RequestStatus } from '../network';
-import { getTransactionState } from '../selectors';
+
+const getTransactionState = (state: AppState) => state.transaction;
 
 export const getNetworkStatus = (state: AppState) => getTransactionState(state).network;
 

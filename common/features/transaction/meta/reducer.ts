@@ -84,7 +84,7 @@ const unitMeta = (state: MetaState, { payload }: SetUnitMetaAction): MetaState =
   unit: payload
 });
 
-export default function meta(
+export function metaReducer(
   state: MetaState = META_INITIAL_STATE,
   action: MetaAction | SwapAction | ResetTransactionSuccessfulAction | NetworkAction
 ): MetaState {

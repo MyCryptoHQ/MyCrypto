@@ -18,21 +18,13 @@ import {
 } from 'libs/wallet';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { AppState } from 'features/reducers';
+import { getOffline, getNodeLib, getAllTokens, CONFIG_META } from 'features/config';
 import { showNotification } from 'features/notifications';
-
 import {
   getCustomTokens,
   CUSTOM_TOKEN as CustomTokenTypeKeys,
   AddCustomTokenAction
 } from 'features/customTokens';
-import {
-  TokenBalance,
-  getTokens,
-  getWalletInst,
-  getWalletConfigTokens,
-  MergedToken
-} from 'features/wallet';
-import { getOffline, getNodeLib, getAllTokens, CONFIG_META } from 'features/config';
 import {
   WALLET,
   UnlockKeystoreAction,
@@ -40,7 +32,10 @@ import {
   UnlockPrivateKeyAction,
   ScanWalletForTokensAction,
   SetWalletTokensAction,
-  SetTokenBalancePendingAction
+  SetTokenBalancePendingAction,
+  TokenBalance,
+  MergedToken,
+  TokenBalanceLookup
 } from './types';
 import {
   setBalanceFullfilled,
@@ -56,10 +51,7 @@ import {
   setTokenBalanceRejected,
   setPasswordPrompt
 } from './actions';
-
-export interface TokenBalanceLookup {
-  [symbol: string]: TokenBalance;
-}
+import { getTokens, getWalletInst, getWalletConfigTokens } from './selectors';
 
 export function* getTokenBalancesSaga(wallet: IWallet, tokens: Token[]) {
   const node: INode = yield select(getNodeLib);

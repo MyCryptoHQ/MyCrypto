@@ -1,14 +1,14 @@
-import { BroadcastAction } from './broadcast/types';
+import { BroadcastAction } from './broadcast';
 import {
   FieldAction,
   InputFieldAction,
   SetToFieldAction,
   SetValueFieldAction,
   SetDataFieldAction
-} from './fields/types';
-import { MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './meta/types';
-import { NetworkAction } from './network/types';
-import { SignAction } from './sign/types';
+} from './fields';
+import { MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './meta';
+import { NetworkAction } from './network';
+import { SignAction } from './sign';
 
 export enum TRANSACTION {
   CURRENT_VALUE_SET = 'CURRENT_VALUE_SET',

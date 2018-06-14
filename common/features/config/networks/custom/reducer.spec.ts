@@ -1,5 +1,5 @@
 import { CustomNetworkConfig } from 'types/network';
-import { addCustomNetwork, removeCustomNetwork } from 'features/config';
+import { addCustomNetwork, removeCustomNetwork } from './actions';
 import { customNetworksReducer } from './reducer';
 
 const firstCustomNetwork: CustomNetworkConfig = {

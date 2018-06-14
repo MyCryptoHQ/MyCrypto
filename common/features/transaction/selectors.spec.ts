@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { Wei } from 'libs/units';
-import { getInitialState } from '../helpers';
+import { getInitialState } from 'features/helpers';
 import { getTransactionStatus } from './broadcast';
 import { getFields, getGasLimit, getValue, getTo, getNonce, getData, getGasPrice } from './fields';
 import { getDecimal, getTokenValue, getTokenTo } from './meta';

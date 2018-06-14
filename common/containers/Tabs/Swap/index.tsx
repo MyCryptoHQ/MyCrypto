@@ -11,9 +11,7 @@ import {
   SwapInput,
   NormalizedOptions,
   NormalizedBityRates,
-  NormalizedShapeshiftRates
-} from 'features/swap/types';
-import {
+  NormalizedShapeshiftRates,
   initSwap as dInitSwap,
   bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
   shapeshiftOrderCreateRequestedSwap as dShapeshiftOrderCreateRequestedSwap,
@@ -44,7 +42,7 @@ import {
   TStopPollShapeshiftOrderStatus,
   TChangeSwapProvider,
   TStopLoadShapeshiftRatesSwap
-} from 'features/swap/actions';
+} from 'features/swap';
 import TabSection from 'containers/TabSection';
 import { RouteNotFound } from 'components/RouteNotFound';
 import CurrencySwap from './components/CurrencySwap';

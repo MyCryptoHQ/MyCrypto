@@ -1,4 +1,5 @@
-import { changeNodeRequested, changeNodeSucceeded, SelectedNodeState } from 'features/config';
+import { SelectedNodeState } from './types';
+import { changeNodeRequested, changeNodeSucceeded } from './actions';
 import { selectedNodeReducer } from './reducer';
 
 export const expectedState = {

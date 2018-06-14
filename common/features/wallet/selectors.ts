@@ -5,8 +5,8 @@ import { LedgerWallet } from 'libs/wallet/deterministic/ledger';
 import { TrezorWallet } from 'libs/wallet/deterministic/trezor';
 import Web3Wallet from 'libs/wallet/non-deterministic/web3';
 import ParitySignerWallet from 'libs/wallet/non-deterministic/parity';
-import { SecureWalletName, WalletName } from 'config';
 import { Token } from 'types/network';
+import { SecureWalletName, WalletName } from 'config';
 import { AppState } from 'features/reducers';
 import {
   getOffline,
@@ -14,8 +14,9 @@ import {
   getStaticNetworkConfig,
   unSupportedWalletFormatsOnNetwork
 } from 'features/config';
-import { isEtherTransaction, getUnit } from 'features/transaction/selectors';
-import { DisabledWallets } from 'components/WalletDecrypt';
+import { isEtherTransaction, getUnit } from 'features/transaction';
+// import { DisabledWallets } from 'components/WalletDecrypt';
+import { MergedToken, TokenBalance } from './types';
 
 export function getWalletInst(state: AppState): IWallet | null | undefined {
   return state.wallet.inst;
@@ -28,18 +29,6 @@ export function getWalletConfig(state: AppState): WalletConfig | null | undefine
 export function isWalletFullyUnlocked(state: AppState): boolean | null | undefined {
   return state.wallet.inst && !state.wallet.inst.isReadOnly;
 }
-
-export interface TokenBalance {
-  symbol: string;
-  balance: TokenValue;
-  custom: boolean;
-  decimal: number;
-  error: string | null;
-}
-
-export type MergedToken = Token & {
-  custom: boolean;
-};
 
 export function getTokens(state: AppState): MergedToken[] {
   const network = getStaticNetworkConfig(state);
@@ -155,10 +144,10 @@ export function getShownTokenBalances(
 }
 
 // TODO: Convert to reselect selector (Issue #884)
-export function getDisabledWallets(state: AppState): DisabledWallets {
+export function getDisabledWallets(state: AppState): any {
   const network = getNetworkConfig(state);
   const isOffline = getOffline(state);
-  const disabledWallets: DisabledWallets = {
+  const disabledWallets: any = {
     wallets: [],
     reasons: {}
   };
@@ -198,7 +187,7 @@ export function getDisabledWallets(state: AppState): DisabledWallets {
 
   // Dedupe and sort for consistency
   disabledWallets.wallets = disabledWallets.wallets
-    .filter((name, idx) => disabledWallets.wallets.indexOf(name) === idx)
+    .filter((name: string, idx: number) => disabledWallets.wallets.indexOf(name) === idx)
     .sort();
 
   return disabledWallets;

@@ -20,7 +20,6 @@ import {
 } from 'features/config';
 import { initWeb3Node, unlockWeb3 } from 'features/config/sagas';
 import { showNotification } from 'features/notifications';
-import { getWalletInst, getWalletConfigTokens } from 'features/wallet';
 import { WALLET } from './types';
 import {
   setBalanceFullfilled,
@@ -32,6 +31,7 @@ import {
   setTokenBalancesPending,
   setTokenBalancesRejected
 } from './actions';
+import { getWalletInst, getWalletConfigTokens } from './selectors';
 import {
   updateAccountBalance,
   updateTokenBalances,

@@ -76,7 +76,7 @@ const reset = (
   ...(isContractInteraction ? { to: state.to } : {})
 });
 
-export default function fields(
+export function fieldsReducer(
   state: FieldsState = FIELDS_INITIAL_STATE,
   action: FieldAction | SwapAction | ResetTransactionSuccessfulAction
 ) {

@@ -1,10 +1,4 @@
 import { StaticNetworkIds } from './network';
-import {
-  CustomNetworksState,
-  StaticNetworksState,
-  CustomNodesState,
-  StaticNodesState
-} from 'features/config';
 
 interface CustomNodeConfig {
   id: string;
@@ -40,4 +34,4 @@ type StaticNodeId = string;
 
 type StaticNodeConfigs = { [id: string]: StaticNodeConfig } & { web3?: StaticNodeConfig };
 
-type NodeConfig = StaticNodesState[StaticNodeId] | CustomNodesState[string];
+type NodeConfig = StaticNodeConfig | CustomNodeConfig;

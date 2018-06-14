@@ -1,5 +1,6 @@
 import { AppState } from 'features/reducers';
-import { getTransactionState } from '../selectors';
+
+const getTransactionState = (state: AppState) => state.transaction;
 
 export const getMetaState = (state: AppState) => getTransactionState(state).meta;
 export const getDecimal = (state: AppState) => getMetaState(state).decimal;

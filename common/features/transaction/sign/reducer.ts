@@ -59,7 +59,7 @@ const signTransactionFailed = () => SIGN_INITIAL_STATE;
 
 const resetSign = () => SIGN_INITIAL_STATE;
 
-export default function sign(
+export function signReducer(
   state: SignState = SIGN_INITIAL_STATE,
   action: SignAction | ResetTransactionSuccessfulAction
 ) {

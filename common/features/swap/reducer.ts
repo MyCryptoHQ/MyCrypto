@@ -1,4 +1,5 @@
 import { schema, normalize } from 'normalizr';
+
 import { SWAP, SwapAction, SwapState } from './types';
 
 export const allIds = (byIds: { [name: string]: {} }) => {

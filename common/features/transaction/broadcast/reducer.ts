@@ -61,7 +61,7 @@ const handleFailure = (
   return { ...state, [indexingHash]: nextTx };
 };
 
-export default function broadcast(
+export function broadcastReducer(
   state: BroadcastState = BROADCAST_INITIAL_STATE,
   action: BroadcastAction
 ) {
