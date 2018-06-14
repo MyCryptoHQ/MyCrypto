@@ -5,7 +5,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
 import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
 import { WalletLib } from 'shared/enclave/types';
-const deviceList = new DeviceList();
+const deviceList = new DeviceList({ debug: false });
 
 // Keep session in memory so that we're not constantly re-acquiring
 // Null it out if session is grabbed somewhere else first

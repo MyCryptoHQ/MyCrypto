@@ -7,19 +7,11 @@ import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
 import { translateRaw } from 'translations';
-import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 
 export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 
 export class TrezorWallet extends HardwareWallet {
   public static getChainCode(dpath: string): Promise<ChainCodeResponse> {
-    if (process.env.BUILD_ELECTRON) {
-      return EnclaveAPI.getChainCode({
-        walletType: WalletTypes.TREZOR,
-        dpath
-      });
-    }
-
     return new Promise(resolve => {
       TrezorConnect.getXPubKey(
         dpath,
@@ -40,24 +32,8 @@ export class TrezorWallet extends HardwareWallet {
 
   public signRawTransaction(tx: EthTx): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      const txFields = getTransactionFields(tx);
-
-      if (process.env.BUILD_ELECTRON) {
-        return EnclaveAPI.signTransaction({
-          walletType: WalletTypes.TREZOR,
-          transaction: txFields,
-          path: this.getPath()
-        })
-          .then(res => {
-            resolve(new EthTx(res.signedTransaction).serialize());
-          })
-          .catch(err => {
-            reject(Error(err));
-          });
-      }
-
+      const { chainId, ...strTx } = getTransactionFields(tx);
       // stripHexPrefixAndLower identical to ethFuncs.getNakedAddress
-      const { chainId, ...strTx } = txFields;
       const cleanedTx = mapValues(mapValues(strTx, stripHexPrefixAndLower), padLeftEven);
 
       TrezorConnect.ethereumSignTx(
@@ -96,21 +72,10 @@ export class TrezorWallet extends HardwareWallet {
     return Promise.reject(new Error('Signing via Trezor not yet supported.'));
   }
 
-  public displayAddress(): Promise<any> {
-    const path = this.dPath + '/' + this.index;
-
-    if (process.env.BUILD_ELECTRON) {
-      return EnclaveAPI.displayAddress({
-        walletType: WalletTypes.TREZOR,
-        path
-      })
-        .then(res => res.success)
-        .catch(() => false);
-    }
-
+  public displayAddress(): Promise<boolean> {
     return new Promise(resolve => {
       TrezorConnect.ethereumGetAddress(
-        this.dPath + '/' + this.index,
+        `${this.dPath}/${this.index}`,
         res => {
           if (res.error) {
             resolve(false);
