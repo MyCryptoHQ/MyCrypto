@@ -4,9 +4,7 @@ import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
 import { getTransactionFields } from 'libs/transaction';
-import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
-import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
 
 // Ledger throws a few types of errors
 interface U2FError {
@@ -18,21 +16,14 @@ interface U2FError {
 
 type LedgerError = U2FError | Error | string;
 
-export class LedgerWallet extends HardwareWallet implements IFullWallet {
+export class LedgerWallet extends HardwareWallet {
   public static async getChainCode(dpath: string): Promise<ChainCodeResponse> {
-    if (process.env.BUILD_ELECTRON) {
-      return EnclaveAPI.getChainCode({
-        walletType: WalletTypes.LEDGER,
-        dpath
-      });
-    }
-
     return makeApp()
       .then(app => app.getAddress(dpath, false, true))
       .then(res => {
         return {
           publicKey: res.publicKey,
-          chainCode: res.chainCode as string
+          chainCode: res.chainCode
         };
       })
       .catch((err: LedgerError) => {
@@ -46,16 +37,6 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
 
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
     const txFields = getTransactionFields(t);
-
-    if (process.env.BUILD_ELECTRON) {
-      const res = await EnclaveAPI.signTransaction({
-        walletType: WalletTypes.LEDGER,
-        transaction: txFields,
-        path: this.getPath()
-      });
-      return new EthTx(res.signedTransaction).serialize();
-    }
-
     t.v = Buffer.from([t._chainId]);
     t.r = toBuffer(0);
     t.s = toBuffer(0);
@@ -82,15 +63,6 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
       throw Error('No message to sign');
     }
 
-    if (process.env.BUILD_ELECTRON) {
-      const res = await EnclaveAPI.signMessage({
-        walletType: WalletTypes.LEDGER,
-        message: msg,
-        path: this.getPath()
-      });
-      return res.signedMessage;
-    }
-
     try {
       const msgHex = Buffer.from(msg).toString('hex');
       const ethApp = await makeApp();
@@ -103,16 +75,7 @@ export class LedgerWallet extends HardwareWallet implements IFullWallet {
   }
 
   public async displayAddress() {
-    const path = this.dPath + '/' + this.index;
-
-    if (process.env.BUILD_ELECTRON) {
-      return EnclaveAPI.displayAddress({
-        walletType: WalletTypes.LEDGER,
-        path
-      })
-        .then(res => res.success)
-        .catch(() => false);
-    }
+    const path = `${this.dPath}/${this.index}`;
 
     try {
       const ethApp = await makeApp();
