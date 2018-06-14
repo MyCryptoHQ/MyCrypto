@@ -31,7 +31,7 @@ const PaperWallet: React.SFC<Props> = props => (
       </label>
 
       {/* Download Paper Wallet */}
-      <h2 className="GenPaper-title">{translate('X_PRINT')}</h2>
+      <h2 className="GenPaper-title">{translate('X_SAVE_PAPER')}</h2>
       <div className="GenPaper-paper">
         <PrintableWallet address={props.keystore.address} privateKey={props.privateKey} />
       </div>
