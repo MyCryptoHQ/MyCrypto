@@ -1,9 +1,10 @@
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import { WalletLib } from 'shared/enclave/types';
+import LedgerTransport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import LedgerEth from '@ledgerhq/hw-app-eth';
-let transport: any;
+let transport: LedgerTransport<string> | null;
 
 async function getEthApp() {
   try {
@@ -14,9 +15,7 @@ async function getEthApp() {
     return new LedgerEth(transport);
   } catch (err) {
     if (err && err.message && err.message.includes('cannot open device with path')) {
-      throw new Error(
-        'Your Ledger is currently in use with another application. Please wait, or close other wallet applications before trying again.'
-      );
+      throw new Error('ENCLAVE_LEDGER_IN_USE');
     }
     throw err;
   }
@@ -32,7 +31,8 @@ const Ledger: WalletLib = {
         chainCode: res.chainCode as string
       };
     } catch (err) {
-      throw new Error('Failed to connect to Ledger');
+      console.error('Failed to get chain code from ledger:', err);
+      throw new Error('ENCLAVE_LEDGER_FAIL');
     }
   },
 
@@ -71,13 +71,9 @@ const Ledger: WalletLib = {
     try {
       const app = await getEthApp();
       await app.getAddress(path, true, false);
-      return {
-        success: true
-      };
+      return { success: true };
     } catch (err) {
-      return {
-        success: false
-      };
+      return { success: false };
     }
   }
 };

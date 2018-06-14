@@ -16,16 +16,20 @@ function makeMethod<ParamsType extends EnclaveMethodParams, ResponseType>(method
   return (params: ParamsType) => makeRequest<ResponseType>(method, params);
 }
 
-const api = {
-  getChainCode: makeMethod<GetChainCodeParams, GetChainCodeResponse>(EnclaveMethods.GET_CHAIN_CODE),
-  signTransaction: makeMethod<SignTransactionParams, SignTransactionResponse>(
+export class EnclaveAPIClass {
+  public getChainCode = makeMethod<GetChainCodeParams, GetChainCodeResponse>(
+    EnclaveMethods.GET_CHAIN_CODE
+  );
+  public signTransaction = makeMethod<SignTransactionParams, SignTransactionResponse>(
     EnclaveMethods.SIGN_TRANSACTION
-  ),
-  signMessage: makeMethod<SignMessageParams, SignMessageResponse>(EnclaveMethods.SIGN_MESSAGE),
-  displayAddress: makeMethod<DisplayAddressParams, DisplayAddressResponse>(
+  );
+  public signMessage = makeMethod<SignMessageParams, SignMessageResponse>(
+    EnclaveMethods.SIGN_MESSAGE
+  );
+  public displayAddress = makeMethod<DisplayAddressParams, DisplayAddressResponse>(
     EnclaveMethods.DISPLAY_ADDRESS
-  )
-};
+  );
+}
 
-export default api;
+export default new EnclaveAPIClass();
 export * from 'shared/enclave/types';
