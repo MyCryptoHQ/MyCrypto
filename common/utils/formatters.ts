@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 import { Wei } from 'libs/units';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();

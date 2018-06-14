@@ -1,5 +1,5 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
 import { Validator } from 'jsonschema';

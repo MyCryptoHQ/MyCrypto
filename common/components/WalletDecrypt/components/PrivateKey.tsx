@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
 import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeprecationWarning from './DeprecationWarning';

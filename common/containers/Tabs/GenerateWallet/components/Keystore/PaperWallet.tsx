@@ -2,7 +2,7 @@ import React from 'react';
 import { IV3Wallet } from 'ethereumjs-wallet';
 
 import translate, { translateRaw } from 'translations';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 import { Input } from 'components/ui';
 import PrintableWallet from 'components/PrintableWallet';
 import Template from '../Template';

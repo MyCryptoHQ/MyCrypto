@@ -440,20 +440,20 @@ export function* unsetWeb3Node(): SagaIterator {
 //#endregion Web3
 
 export function* configSaga(): SagaIterator {
-  const networkSaga = [takeEvery('CONFIG_NETWORKS_CUSTOM_REMOVE', pruneCustomNetworks)];
+  const networkSaga = [takeEvery(CONFIG_NETWORKS_CUSTOM.REMOVE, pruneCustomNetworks)];
   const nodeSaga = [
     fork(handleChangeNodeRequestedOneTime),
-    takeEvery('CONFIG_NODES_SELECTED_CHANGE_REQUESTED', handleChangeNodeRequested),
-    takeEvery('CONFIG_NODES_SELECTED_CHANGE_FORCE', handleNodeChangeForce),
-    takeEvery('CONFIG_NETWORK_CHANGE_NETWORK_REQUESTED', handleChangeNetworkRequested),
-    takeEvery('CONFIG_META_LANGUAGE_CHANGE', reload),
-    takeEvery('CONFIG_NODES_CUSTOM_ADD', handleAddCustomNode),
-    takeEvery('CONFIG_NODES_CUSTOM_REMOVE', handleRemoveCustomNode)
+    takeEvery(CONFIG_NODES_SELECTED.CHANGE_REQUESTED, handleChangeNodeRequested),
+    takeEvery(CONFIG_NODES_SELECTED.CHANGE_FORCE, handleNodeChangeForce),
+    takeEvery(CONFIG_NETWORKS.CHANGE_NETWORK_REQUESTED, handleChangeNetworkRequested),
+    takeEvery(CONFIG_META.LANGUAGE_CHANGE, reload),
+    takeEvery(CONFIG_NODES_CUSTOM.ADD, handleAddCustomNode),
+    takeEvery(CONFIG_NODES_CUSTOM.REMOVE, handleRemoveCustomNode)
   ];
   const web3 = [
-    takeEvery('CONFIG_NODES_STATIC_WEB3_UNSET', unsetWeb3Node),
-    takeEvery('WALLET_SET', unsetWeb3NodeOnWalletEvent),
-    takeEvery('WALLET_UNLOCK_WEB3', unlockWeb3)
+    takeEvery(CONFIG_NODES_STATIC.WEB3_UNSET, unsetWeb3Node),
+    takeEvery(WALLET.SET, unsetWeb3NodeOnWalletEvent),
+    takeEvery(WALLET.UNLOCK_WEB3, unlockWeb3)
   ];
 
   yield all([...networkSaga, ...nodeSaga, ...web3]);

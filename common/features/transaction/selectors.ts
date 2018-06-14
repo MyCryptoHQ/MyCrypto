@@ -6,7 +6,7 @@ import { getAddressMessage, AddressMessage } from 'config';
 import { getTransactionFields, makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import { TokenValue, Wei, Address, getDecimalFromEtherUnit } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
-import { stripHexPrefixAndLower } from 'libs/values';
+import { stripHexPrefixAndLower } from 'libs/formatters';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getNetworkConfig, isNetworkUnit, getOffline } from 'features/config';

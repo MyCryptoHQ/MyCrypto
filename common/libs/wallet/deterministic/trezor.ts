@@ -1,14 +1,16 @@
 import BN from 'bn.js';
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
-import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
+
+import { translateRaw } from 'translations';
+import { padLeftEven } from 'libs/values';
+import { stripHexPrefixAndLower } from 'libs/formatters';
 import TrezorConnect from 'vendor/trezor-connect';
-import { DeterministicWallet } from './deterministic';
 import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
 
 import { IFullWallet } from '../IWallet';
-import { translateRaw } from 'translations';
+import { DeterministicWallet } from './deterministic';
 
 export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 
