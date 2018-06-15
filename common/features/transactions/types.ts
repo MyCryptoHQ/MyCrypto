@@ -10,21 +10,21 @@ export interface TransactionsState {
   recent: SavedTransaction[];
 }
 
-export enum TRANSACTIONS {
-  FETCH_TRANSACTION_DATA = 'TRANSACTIONS_FETCH_TRANSACTION_DATA',
-  SET_TRANSACTION_DATA = 'TRANSACTIONS_SET_TRANSACTION_DATA',
-  SET_TRANSACTION_ERROR = 'TRANSACTIONS_SET_TRANSACTION_ERROR',
-  RESET_TRANSACTION_DATA = 'TRANSACTIONS_RESET_TRANSACTION_DATA',
-  ADD_RECENT_TRANSACTION = 'TRANSACTIONS_ADD_RECENT_TRANSACTION'
+export enum TransactionsActions {
+  FETCH_TRANSACTION_DATA = 'TransactionsActions_FETCH_TRANSACTION_DATA',
+  SET_TRANSACTION_DATA = 'TransactionsActions_SET_TRANSACTION_DATA',
+  SET_TRANSACTION_ERROR = 'TransactionsActions_SET_TRANSACTION_ERROR',
+  RESET_TRANSACTION_DATA = 'TransactionsActions_RESET_TRANSACTION_DATA',
+  ADD_RECENT_TRANSACTION = 'TransactionsActions_ADD_RECENT_TRANSACTION'
 }
 
 export interface FetchTransactionDataAction {
-  type: TRANSACTIONS.FETCH_TRANSACTION_DATA;
+  type: TransactionsActions.FETCH_TRANSACTION_DATA;
   payload: string;
 }
 
 export interface SetTransactionDataAction {
-  type: TRANSACTIONS.SET_TRANSACTION_DATA;
+  type: TransactionsActions.SET_TRANSACTION_DATA;
   payload: {
     txhash: string;
     data: TransactionData | null;
@@ -34,11 +34,11 @@ export interface SetTransactionDataAction {
 }
 
 export interface ResetTransactionDataAction {
-  type: TRANSACTIONS.RESET_TRANSACTION_DATA;
+  type: TransactionsActions.RESET_TRANSACTION_DATA;
 }
 
 export interface AddRecentTransactionAction {
-  type: TRANSACTIONS.ADD_RECENT_TRANSACTION;
+  type: TransactionsActions.ADD_RECENT_TRANSACTION;
   payload: SavedTransaction;
 }
 

@@ -6,7 +6,7 @@ import { NetworkConfig } from 'types/network';
 import { IWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import { getNetworkConfig } from 'features/config';
-import { getRecentWalletTransactions } from 'features/transactions';
+import { transactionsSelectors } from 'features/transactions';
 import { TransactionStatus } from 'components';
 import RecentTransaction from './RecentTransaction';
 import './RecentTransactions.scss';
@@ -102,6 +102,6 @@ class RecentTransactions extends React.Component<Props> {
 }
 
 export default connect((state: AppState): StateProps => ({
-  recentTransactions: getRecentWalletTransactions(state),
+  recentTransactions: transactionsSelectors.getRecentWalletTransactions(state),
   network: getNetworkConfig(state)
 }))(RecentTransactions);

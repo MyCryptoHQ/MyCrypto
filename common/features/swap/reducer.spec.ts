@@ -53,17 +53,15 @@ describe('swap reducer', () => {
   };
 
   const normalizedBityRates: swapTypes.NormalizedBityRates = {
-    byId: normalize(bityApiResponse, [swapReducer.providerRate]).entities.swapReducer.providerRates,
+    byId: normalize(bityApiResponse, [swapReducer.providerRate]).entities.providerRates,
     allIds: swapReducer.allIds(
-      normalize(bityApiResponse, [swapReducer.providerRate]).entities.swapReducer.providerRates
+      normalize(bityApiResponse, [swapReducer.providerRate]).entities.providerRates
     )
   };
   const normalizedShapeshiftRates: swapTypes.NormalizedShapeshiftRates = {
-    byId: normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.swapReducer
-      .providerRates,
+    byId: normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.providerRates,
     allIds: swapReducer.allIds(
-      normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.swapReducer
-        .providerRates
+      normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.providerRates
     )
   };
   const normalizedBityOptions: swapTypes.NormalizedOptions = {

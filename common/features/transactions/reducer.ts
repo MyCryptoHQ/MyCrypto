@@ -1,21 +1,14 @@
-import {
-  TRANSACTIONS,
-  FetchTransactionDataAction,
-  SetTransactionDataAction,
-  AddRecentTransactionAction,
-  TransactionsAction,
-  TransactionsState
-} from './types';
+import * as transactionsTypes from './types';
 
-export const INITIAL_STATE: TransactionsState = {
+export const INITIAL_STATE: transactionsTypes.TransactionsState = {
   txData: {},
   recent: []
 };
 
 function fetchTxData(
-  state: TransactionsState,
-  action: FetchTransactionDataAction
-): TransactionsState {
+  state: transactionsTypes.TransactionsState,
+  action: transactionsTypes.FetchTransactionDataAction
+): transactionsTypes.TransactionsState {
   return {
     ...state,
     txData: {
@@ -30,7 +23,10 @@ function fetchTxData(
   };
 }
 
-function setTxData(state: TransactionsState, action: SetTransactionDataAction): TransactionsState {
+function setTxData(
+  state: transactionsTypes.TransactionsState,
+  action: transactionsTypes.SetTransactionDataAction
+): transactionsTypes.TransactionsState {
   return {
     ...state,
     txData: {
@@ -45,7 +41,9 @@ function setTxData(state: TransactionsState, action: SetTransactionDataAction): 
   };
 }
 
-function resetTxData(state: TransactionsState): TransactionsState {
+function resetTxData(
+  state: transactionsTypes.TransactionsState
+): transactionsTypes.TransactionsState {
   return {
     ...state,
     txData: INITIAL_STATE.txData
@@ -53,9 +51,9 @@ function resetTxData(state: TransactionsState): TransactionsState {
 }
 
 function addRecentTx(
-  state: TransactionsState,
-  action: AddRecentTransactionAction
-): TransactionsState {
+  state: transactionsTypes.TransactionsState,
+  action: transactionsTypes.AddRecentTransactionAction
+): transactionsTypes.TransactionsState {
   return {
     ...state,
     recent: [action.payload, ...state.recent].slice(0, 50)
@@ -63,17 +61,17 @@ function addRecentTx(
 }
 
 export function transactionsReducer(
-  state: TransactionsState = INITIAL_STATE,
-  action: TransactionsAction
-): TransactionsState {
+  state: transactionsTypes.TransactionsState = INITIAL_STATE,
+  action: transactionsTypes.TransactionsAction
+): transactionsTypes.TransactionsState {
   switch (action.type) {
-    case TRANSACTIONS.FETCH_TRANSACTION_DATA:
+    case transactionsTypes.TransactionsActions.FETCH_TRANSACTION_DATA:
       return fetchTxData(state, action);
-    case TRANSACTIONS.SET_TRANSACTION_DATA:
+    case transactionsTypes.TransactionsActions.SET_TRANSACTION_DATA:
       return setTxData(state, action);
-    case TRANSACTIONS.RESET_TRANSACTION_DATA:
+    case transactionsTypes.TransactionsActions.RESET_TRANSACTION_DATA:
       return resetTxData(state);
-    case TRANSACTIONS.ADD_RECENT_TRANSACTION:
+    case transactionsTypes.TransactionsActions.ADD_RECENT_TRANSACTION:
       return addRecentTx(state, action);
     default:
       return state;

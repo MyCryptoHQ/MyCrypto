@@ -174,7 +174,7 @@ export const broadcastWeb3TransactionHandler = function*(tx: string): SagaIterat
   //get web3 wallet
   const wallet: AppState['wallet']['inst'] = yield select(getWalletInst);
   if (!wallet || !(wallet instanceof Web3Wallet)) {
-    throw Error('Can not broadcast: Web3 wallet not found', wallet);
+    throw Error(`Cannot broadcast: Web3 wallet not found.`);
   }
 
   const nodeLib = yield select(getNodeLib);

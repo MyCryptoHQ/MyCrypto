@@ -9,25 +9,20 @@ import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import { getNodeLib } from 'features/config/nodes/selectors';
-import { getNetworkConfig } from 'features/config/selectors';
-import { getWalletInst } from 'features/wallet/selectors';
-import {
-  TRANSACTION_BROADCAST,
-  BroadcastTransactionQueuedAction,
-  BroadcastTransactionSucceededAction,
-  BroadcastTransactionFailedAction
-} from 'features/transaction/broadcast/types';
-import { TRANSACTIONS, FetchTransactionDataAction } from './types';
-import { setTransactionData, addRecentTransaction, resetTransactionData } from './actions';
+import * as configNodesSelectors from 'features/config/nodes/selectors';
+import * as configSelectors from 'features/config/selectors';
+import * as walletSelectors from 'features/wallet/selectors';
+import * as transactionBroadcastTypes from 'features/transaction/broadcast/types';
+import * as transactionsTypes from './types';
+import * as transactionsActions from './actions';
 
-export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
+export function* fetchTxData(action: transactionsTypes.FetchTransactionDataAction): SagaIterator {
   const txhash = action.payload;
   let data: TransactionData | null = null;
   let receipt: TransactionReceipt | null = null;
   let error: string | null = null;
 
-  const node: INode = yield select(getNodeLib);
+  const node: INode = yield select(configNodesSelectors.getNodeLib);
 
   // Fetch data and receipt separately, not in parallel. Receipt should only be
   // fetched if the tx is mined, and throws if it's not, but that's not really
@@ -48,20 +43,24 @@ export function* fetchTxData(action: FetchTransactionDataAction): SagaIterator {
     }
   }
 
-  yield put(setTransactionData({ txhash, data, receipt, error }));
+  yield put(transactionsActions.setTransactionData({ txhash, data, receipt, error }));
 }
 
-export function* saveBroadcastedTx(action: BroadcastTransactionQueuedAction) {
+export function* saveBroadcastedTx(
+  action: transactionBroadcastTypes.BroadcastTransactionQueuedAction
+) {
   const { serializedTransaction: txBuffer, indexingHash: txIdx } = action.payload;
 
-  const res: BroadcastTransactionSucceededAction | BroadcastTransactionFailedAction = yield take([
-    TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED,
-    TRANSACTION_BROADCAST.TRANSACTION_FAILED
+  const res:
+    | transactionBroadcastTypes.BroadcastTransactionSucceededAction
+    | transactionBroadcastTypes.BroadcastTransactionFailedAction = yield take([
+    transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED,
+    transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_FAILED
   ]);
 
   // If our TX succeeded, save it and update the store.
   if (
-    res.type === TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED &&
+    res.type === transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED &&
     res.payload.indexingHash === txIdx
   ) {
     const tx = new EthTx(txBuffer);
@@ -70,7 +69,7 @@ export function* saveBroadcastedTx(action: BroadcastTransactionQueuedAction) {
       tx,
       res.payload.broadcastedHash
     );
-    yield put(addRecentTransaction(savableTx));
+    yield put(transactionsActions.addRecentTransaction(savableTx));
   }
 }
 
@@ -86,8 +85,8 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
     chainId = fields.chainId;
   } catch (err) {
     // Unsigned transactions (e.g. web3) don't, so grab them from current state
-    const wallet: AppState['wallet']['inst'] = yield select(getWalletInst);
-    const network: NetworkConfig = yield select(getNetworkConfig);
+    const wallet: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
+    const network: NetworkConfig = yield select(configSelectors.getNetworkConfig);
 
     chainId = network.chainId;
     if (wallet) {
@@ -107,11 +106,14 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
 }
 
 export function* resetTxData() {
-  yield put(resetTransactionData());
+  yield put(transactionsActions.resetTransactionData());
 }
 
 export function* transactionsSaga(): SagaIterator {
-  yield takeEvery(TRANSACTIONS.FETCH_TRANSACTION_DATA, fetchTxData);
-  yield takeEvery(TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED, saveBroadcastedTx);
-  yield takeEvery(TRANSACTIONS.RESET_TRANSACTION_DATA, resetTxData);
+  yield takeEvery(transactionsTypes.TransactionsActions.FETCH_TRANSACTION_DATA, fetchTxData);
+  yield takeEvery(
+    transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED,
+    saveBroadcastedTx
+  );
+  yield takeEvery(transactionsTypes.TransactionsActions.RESET_TRANSACTION_DATA, resetTxData);
 }
