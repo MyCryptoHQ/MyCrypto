@@ -3,7 +3,7 @@ export interface OnboardStatusState {
   slideNumber: number;
 }
 
-export enum ONBOARD_STATUS {
+export enum OnboardStatusActions {
   START_SESSION = 'ONBOARD_STATUS_START_SESSION',
   RESUME_SLIDE = 'ONBOARD_STATUS_RESUME_SLIDE',
   DECREMENT_SLIDE = 'ONBOARD_STATUS_DECREMENT_SLIDE',
@@ -11,20 +11,20 @@ export enum ONBOARD_STATUS {
 }
 
 export interface StartOnboardSessionAction {
-  type: ONBOARD_STATUS.START_SESSION;
+  type: OnboardStatusActions.START_SESSION;
 }
 
 export interface ResumeSlideAction {
-  type: ONBOARD_STATUS.RESUME_SLIDE;
+  type: OnboardStatusActions.RESUME_SLIDE;
   slideNumber: number;
 }
 
 export interface DecrementSlideAction {
-  type: ONBOARD_STATUS.DECREMENT_SLIDE;
+  type: OnboardStatusActions.DECREMENT_SLIDE;
 }
 
 export interface IncrementSlideAction {
-  type: ONBOARD_STATUS.INCREMENT_SLIDE;
+  type: OnboardStatusActions.INCREMENT_SLIDE;
 }
 
 export type OnboardStatusAction =

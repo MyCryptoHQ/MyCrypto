@@ -16,8 +16,3 @@ export function setGasEstimates(
     payload
   };
 }
-
-export default {
-  fetchGasEstimates,
-  setGasEstimates
-};

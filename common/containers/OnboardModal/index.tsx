@@ -3,18 +3,10 @@ import { connect } from 'react-redux';
 import Stepper from 'react-stepper-horizontal';
 
 import translate from 'translations';
+import { ONBOARD_LOCAL_STORAGE_KEY, NUMBER_OF_ONBOARD_SLIDES } from 'utils/localStorage';
 import { AppState } from 'features/reducers';
 import { notificationsActions } from 'features/notifications';
-import {
-  startOnboardSession,
-  TStartOnboardSession,
-  decrementSlide,
-  TDecrementSlide,
-  incrementSlide,
-  TIncrementSlide,
-  resumeSlide,
-  TResumeSlide
-} from 'features/onboardStatus';
+import { onboardStatusActions } from 'features/onboardStatus';
 import Modal, { IButton } from 'components/ui/Modal';
 import {
   WelcomeSlide,
@@ -28,7 +20,6 @@ import {
   SecureSlideThree,
   FinalSlide
 } from './components';
-import { ONBOARD_LOCAL_STORAGE_KEY, NUMBER_OF_ONBOARD_SLIDES } from 'utils/localStorage';
 
 interface State {
   isOpen: boolean;
@@ -37,10 +28,10 @@ interface State {
 interface Props {
   sessionStarted: boolean;
   slideNumber: number;
-  startOnboardSession: TStartOnboardSession;
-  resumeSlide: TResumeSlide;
-  decrementSlide: TDecrementSlide;
-  incrementSlide: TIncrementSlide;
+  startOnboardSession: onboardStatusActions.TStartOnboardSession;
+  resumeSlide: onboardStatusActions.TResumeSlide;
+  decrementSlide: onboardStatusActions.TDecrementSlide;
+  incrementSlide: onboardStatusActions.TIncrementSlide;
   showNotification: notificationsActions.TShowNotification;
 }
 
@@ -190,9 +181,9 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  startOnboardSession,
-  resumeSlide,
-  decrementSlide,
-  incrementSlide,
+  startOnboardSession: onboardStatusActions.startOnboardSession,
+  resumeSlide: onboardStatusActions.resumeSlide,
+  decrementSlide: onboardStatusActions.decrementSlide,
+  incrementSlide: onboardStatusActions.incrementSlide,
   showNotification: notificationsActions.showNotification
 })(OnboardModal);

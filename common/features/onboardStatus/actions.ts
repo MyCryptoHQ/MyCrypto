@@ -1,36 +1,30 @@
-import {
-  ONBOARD_STATUS,
-  StartOnboardSessionAction,
-  ResumeSlideAction,
-  DecrementSlideAction,
-  IncrementSlideAction
-} from './types';
+import * as onboardStatusTypes from './types';
 
 export type TStartOnboardSession = typeof startOnboardSession;
-export function startOnboardSession(): StartOnboardSessionAction {
+export function startOnboardSession(): onboardStatusTypes.StartOnboardSessionAction {
   return {
-    type: ONBOARD_STATUS.START_SESSION
+    type: onboardStatusTypes.OnboardStatusActions.START_SESSION
   };
 }
 
 export type TResumeSlide = typeof resumeSlide;
-export function resumeSlide(slideNumber: number): ResumeSlideAction {
+export function resumeSlide(slideNumber: number): onboardStatusTypes.ResumeSlideAction {
   return {
-    type: ONBOARD_STATUS.RESUME_SLIDE,
+    type: onboardStatusTypes.OnboardStatusActions.RESUME_SLIDE,
     slideNumber
   };
 }
 
 export type TDecrementSlide = typeof decrementSlide;
-export function decrementSlide(): DecrementSlideAction {
+export function decrementSlide(): onboardStatusTypes.DecrementSlideAction {
   return {
-    type: ONBOARD_STATUS.DECREMENT_SLIDE
+    type: onboardStatusTypes.OnboardStatusActions.DECREMENT_SLIDE
   };
 }
 
 export type TIncrementSlide = typeof incrementSlide;
-export function incrementSlide(): IncrementSlideAction {
+export function incrementSlide(): onboardStatusTypes.IncrementSlideAction {
   return {
-    type: ONBOARD_STATUS.INCREMENT_SLIDE
+    type: onboardStatusTypes.OnboardStatusActions.INCREMENT_SLIDE
   };
 }

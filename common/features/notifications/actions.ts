@@ -27,8 +27,3 @@ export function closeNotification(
     payload: notification
   };
 }
-
-export default {
-  showNotification,
-  closeNotification
-};
