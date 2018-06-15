@@ -2,13 +2,13 @@ import BN from 'bn.js';
 
 import { Wei, TokenValue } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config/selectors';
-import { getUnit, getParamsFromSerializedTx } from 'features/transaction/selectors';
+import * as configSelectors from 'features/config/selectors';
+import * as transactionSelectors from 'features/transaction/selectors';
 
 export const getRates = (state: AppState) => state.rates;
 
 const getUSDConversionRate = (state: AppState, unit: string) => {
-  const { isTestnet } = getNetworkConfig(state);
+  const { isTestnet } = configSelectors.getNetworkConfig(state);
   const { rates } = getRates(state);
   if (isTestnet) {
     return null;
@@ -23,7 +23,7 @@ const getUSDConversionRate = (state: AppState, unit: string) => {
 };
 
 export const getValueInUSD = (state: AppState, value: TokenValue | Wei) => {
-  const unit = getUnit(state);
+  const unit = transactionSelectors.getUnit(state);
   const conversionRate = getUSDConversionRate(state, unit);
   if (!conversionRate) {
     return null;
@@ -32,7 +32,7 @@ export const getValueInUSD = (state: AppState, value: TokenValue | Wei) => {
   return sendValueUSD;
 };
 export const getTransactionFeeInUSD = (state: AppState, fee: Wei) => {
-  const { unit } = getNetworkConfig(state);
+  const { unit } = configSelectors.getNetworkConfig(state);
   const conversionRate = getUSDConversionRate(state, unit);
 
   if (!conversionRate) {
@@ -50,7 +50,7 @@ export interface AllUSDValues {
 }
 
 export const getAllUSDValuesFromSerializedTx = (state: AppState): AllUSDValues => {
-  const fields = getParamsFromSerializedTx(state);
+  const fields = transactionSelectors.getParamsFromSerializedTx(state);
   if (!fields) {
     return {
       feeUSD: null,

@@ -1,11 +1,14 @@
-import { RATES_FETCH, RatesState, FetchCCRatesSucceeded, RatesAction } from './types';
+import * as ratesTypes from './types';
 
-export const INITIAL_STATE: RatesState = {
+export const INITIAL_STATE: ratesTypes.RatesState = {
   rates: {},
   ratesError: null
 };
 
-function fetchCCRatesSucceeded(state: RatesState, action: FetchCCRatesSucceeded): RatesState {
+function fetchCCRatesSucceeded(
+  state: ratesTypes.RatesState,
+  action: ratesTypes.FetchCCRatesSucceeded
+): ratesTypes.RatesState {
   return {
     ...state,
     rates: {
@@ -15,7 +18,7 @@ function fetchCCRatesSucceeded(state: RatesState, action: FetchCCRatesSucceeded)
   };
 }
 
-function fetchCCRatesFailed(state: RatesState): RatesState {
+function fetchCCRatesFailed(state: ratesTypes.RatesState): ratesTypes.RatesState {
   // TODO: Make library for error messages
   return {
     ...state,
@@ -23,11 +26,14 @@ function fetchCCRatesFailed(state: RatesState): RatesState {
   };
 }
 
-export function ratesReducer(state: RatesState = INITIAL_STATE, action: RatesAction): RatesState {
+export function ratesReducer(
+  state: ratesTypes.RatesState = INITIAL_STATE,
+  action: ratesTypes.RatesAction
+): ratesTypes.RatesState {
   switch (action.type) {
-    case RATES_FETCH.CC_SUCCEEDED:
+    case ratesTypes.RatesActions.CC_SUCCEEDED:
       return fetchCCRatesSucceeded(state, action);
-    case RATES_FETCH.CC_FAILED:
+    case ratesTypes.RatesActions.CC_FAILED:
       return fetchCCRatesFailed(state);
     default:
       return state;

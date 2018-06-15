@@ -18,7 +18,7 @@ import {
   TResetTransactionRequested,
   getGasPrice
 } from 'features/transaction';
-import { fetchCCRatesRequested, TFetchCCRatesRequested } from 'features/rates';
+import { ratesActions } from 'features/rates';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
 import SimpleGas from './components/SimpleGas';
 import './TXMetaDataPanel.scss';
@@ -34,7 +34,7 @@ interface StateProps {
 interface DispatchProps {
   inputGasPrice: TInputGasPrice;
   inputGasPriceIntent: TInputGasPriceIntent;
-  fetchCCRates: TFetchCCRatesRequested;
+  fetchCCRates: ratesActions.TFetchCCRatesRequested;
   getNonceRequested: TGetNonceRequested;
   resetTransactionRequested: TResetTransactionRequested;
 }
@@ -158,7 +158,7 @@ function mapStateToProps(state: AppState): StateProps {
 export default connect(mapStateToProps, {
   inputGasPrice,
   inputGasPriceIntent,
-  fetchCCRates: fetchCCRatesRequested,
+  fetchCCRates: ratesActions.fetchCCRatesRequested,
   getNonceRequested,
   resetTransactionRequested
 })(TXMetaDataPanel);

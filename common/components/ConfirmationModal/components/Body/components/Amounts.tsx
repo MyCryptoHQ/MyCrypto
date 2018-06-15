@@ -5,12 +5,12 @@ import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getNetworkConfig } from 'features/config';
-import { getAllUSDValuesFromSerializedTx, AllUSDValues } from 'features/rates';
+import { ratesSelectors } from 'features/rates';
 import { SerializedTxParams, getParamsFromSerializedTx } from 'features/transaction';
 import { UnitDisplay } from 'components/ui';
 import './Amounts.scss';
 
-interface StateProps extends SerializedTxParams, AllUSDValues {
+interface StateProps extends SerializedTxParams, ratesSelectors.AllUSDValues {
   network: NetworkConfig;
 }
 
@@ -109,7 +109,7 @@ class AmountsClass extends Component<StateProps> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   ...getParamsFromSerializedTx(state),
-  ...getAllUSDValuesFromSerializedTx(state),
+  ...ratesSelectors.getAllUSDValuesFromSerializedTx(state),
   network: getNetworkConfig(state)
 });
 

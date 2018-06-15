@@ -1,30 +1,25 @@
 import { CCResponse } from 'api/rates';
-import {
-  RATES_FETCH,
-  FetchCCRatesRequested,
-  FetchCCRatesSucceeded,
-  FetchCCRatesFailed
-} from './types';
+import * as ratesTypes from './types';
 
 export type TFetchCCRatesRequested = typeof fetchCCRatesRequested;
-export function fetchCCRatesRequested(symbols: string[] = []): FetchCCRatesRequested {
+export function fetchCCRatesRequested(symbols: string[] = []): ratesTypes.FetchCCRatesRequested {
   return {
-    type: RATES_FETCH.CC_REQUESTED,
+    type: ratesTypes.RatesActions.CC_REQUESTED,
     payload: symbols
   };
 }
 
 export type TFetchCCRatesSucceeded = typeof fetchCCRatesSucceeded;
-export function fetchCCRatesSucceeded(payload: CCResponse): FetchCCRatesSucceeded {
+export function fetchCCRatesSucceeded(payload: CCResponse): ratesTypes.FetchCCRatesSucceeded {
   return {
-    type: RATES_FETCH.CC_SUCCEEDED,
+    type: ratesTypes.RatesActions.CC_SUCCEEDED,
     payload
   };
 }
 
 export type TFetchCCRatesFailed = typeof fetchCCRatesFailed;
-export function fetchCCRatesFailed(): FetchCCRatesFailed {
+export function fetchCCRatesFailed(): ratesTypes.FetchCCRatesFailed {
   return {
-    type: RATES_FETCH.CC_FAILED
+    type: ratesTypes.RatesActions.CC_FAILED
   };
 }

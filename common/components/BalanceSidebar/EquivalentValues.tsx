@@ -10,7 +10,7 @@ import { NetworkConfig } from 'types/network';
 import { Balance } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
-import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'features/rates';
+import { ratesActions } from 'features/rates';
 import { TokenBalance, getShownTokenBalances } from 'features/wallet';
 import { UnitDisplay, Spinner } from 'components/ui';
 import btcIco from 'assets/images/bitcoin.png';
@@ -49,7 +49,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  fetchCCRates: TFetchCCRatesRequested;
+  fetchCCRates: ratesActions.TFetchCCRatesRequested;
 }
 
 interface FiatSymbols {
@@ -330,4 +330,6 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, { fetchCCRates: fetchCCRatesRequested })(EquivalentValues);
+export default connect(mapStateToProps, { fetchCCRates: ratesActions.fetchCCRatesRequested })(
+  EquivalentValues
+);
