@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'translations';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { signMessageRequested, TSignMessageRequested } from 'features/message';
+import { messageActions } from 'features/message';
 import { resetWallet, TResetWallet, isWalletFullyUnlocked } from 'features/wallet';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { TextArea, CodeBlock } from 'components/ui';
@@ -15,7 +15,7 @@ import './index.scss';
 interface Props {
   wallet: IFullWallet;
   unlocked: boolean;
-  signMessageRequested: TSignMessageRequested;
+  signMessageRequested: messageActions.TSignMessageRequested;
   signedMessage: ISignedMessage | null;
   resetWallet: TResetWallet;
 }
@@ -106,6 +106,6 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 export default connect(mapStateToProps, {
-  signMessageRequested,
+  signMessageRequested: messageActions.signMessageRequested,
   resetWallet
 })(SignMessage);

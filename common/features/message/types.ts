@@ -1,6 +1,6 @@
 import { ISignedMessage } from 'libs/signing';
 
-export enum MESSAGE {
+export enum MessageActions {
   SIGN_REQUESTED = 'MESSAGE_SIGN_REQUESTED',
   SIGN_LOCAL_SUCCEEDED = 'MESSAGE_SIGN_LOCAL_SUCCEEDED',
   SIGN_FAILED = 'MESSAGE_SIGN_FAILED'
@@ -11,17 +11,17 @@ export interface MessageState {
 }
 
 export interface SignMessageRequestedAction {
-  type: MESSAGE.SIGN_REQUESTED;
+  type: MessageActions.SIGN_REQUESTED;
   payload: string;
 }
 
 export interface SignLocalMessageSucceededAction {
-  type: MESSAGE.SIGN_LOCAL_SUCCEEDED;
+  type: MessageActions.SIGN_LOCAL_SUCCEEDED;
   payload: ISignedMessage;
 }
 
 export interface SignMessageFailedAction {
-  type: MESSAGE.SIGN_FAILED;
+  type: MessageActions.SIGN_FAILED;
 }
 
 export type MessageAction =
