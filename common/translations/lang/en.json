@@ -591,6 +591,7 @@
     "NAME_OWNED_NAMEHASH": "Namehash $name.eth",
     "NAME_OWNED_OWNER": "Owner",
     "NAME_OWNED_HIGHEST_BIDDER": "Highest Bidder",
+    "NAME_OWNED_HIGHEST_BID": "Highest Bid",
     "NAME_OWNED_RESOLVED_ADDR": "Resolved Address",
     "LINK": "[$name]($link)",
     "RECENT_TX_NETWORK_EXPLORER": "an explorer for the $network_name network",
