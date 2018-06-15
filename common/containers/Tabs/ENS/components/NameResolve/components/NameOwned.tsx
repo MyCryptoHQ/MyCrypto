@@ -1,6 +1,6 @@
 import React from 'react';
 import { IOwnedDomainRequest } from 'libs/ens';
-import { fromWei, toWei, Wei } from 'libs/units';
+import { fromWei, Wei } from 'libs/units';
 import { NewTabLink, Address } from 'components/ui';
 import translate from 'translations';
 const lookupLink = (name: string) => `https://etherscan.io/enslookup?q=${name}`;
