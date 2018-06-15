@@ -1,0 +1,20 @@
+@import 'common/sass/variables';
+
+.ThemeToggle {
+  position: relative;
+
+  &-placeholder {
+    opacity: 0;
+    font-size: 1px;
+  }
+
+  &-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    transform: translate(-50%, -50%);
+    fill: color(text-color);
+  }
+}

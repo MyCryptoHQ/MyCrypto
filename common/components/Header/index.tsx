@@ -1,13 +1,11 @@
 import {
   TChangeLanguage,
-  TChangeTheme,
   TChangeNodeRequestedOneTime,
   TAddCustomNode,
   TRemoveCustomNode,
   TAddCustomNetwork,
   AddCustomNodeAction,
   changeLanguage,
-  changeTheme,
   changeNodeRequestedOneTime,
   addCustomNode,
   removeCustomNode,
@@ -19,10 +17,11 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
-import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages, Theme } from 'config';
+import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
 import OnlineStatus from './components/OnlineStatus';
 import NetworkDropdown from './components/NetworkDropdown';
+import ThemeToggle from './components/ThemeToggle';
 import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import { AppState } from 'reducers';
@@ -30,7 +29,6 @@ import {
   getOffline,
   isNodeChanging,
   getLanguageSelection,
-  getTheme,
   getNetworkConfig,
   isStaticNodeId
 } from 'selectors/config';
@@ -44,7 +42,6 @@ interface OwnProps {
 
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
-  changeTheme: TChangeTheme;
   changeNodeRequestedOneTime: TChangeNodeRequestedOneTime;
   setGasPriceField: TSetGasPriceField;
   addCustomNode: TAddCustomNode;
@@ -56,7 +53,6 @@ interface StateProps {
   shouldSetNodeFromQS: boolean;
   network: NetworkConfig;
   languageSelection: ReturnType<typeof getLanguageSelection>;
-  theme: ReturnType<typeof getTheme>;
   isChangingNode: ReturnType<typeof isNodeChanging>;
   isOffline: ReturnType<typeof getOffline>;
 }
@@ -69,14 +65,12 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
   isOffline: getOffline(state),
   isChangingNode: isNodeChanging(state),
   languageSelection: getLanguageSelection(state),
-  theme: getTheme(state),
   network: getNetworkConfig(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
   setGasPriceField,
   changeLanguage,
-  changeTheme,
   changeNodeRequestedOneTime,
   addCustomNode,
   removeCustomNode,
@@ -99,7 +93,7 @@ class Header extends Component<Props, State> {
   }
 
   public render() {
-    const { languageSelection, isChangingNode, isOffline, network, theme } = this.props;
+    const { languageSelection, isChangingNode, isOffline, network } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
     const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
@@ -147,10 +141,7 @@ class Header extends Component<Props, State> {
                 <NetworkDropdown openCustomNodeModal={this.openCustomNodeModal} />
               </div>
               <div className="Header-branding-right-dropdown">
-                <button className="btn btn-smr btn-white" onClick={this.toggleTheme}>
-                  {theme === Theme.LIGHT && <i className="fa fa-sun-o" />}
-                  {theme === Theme.DARK && <i className="fa fa-moon-o" />}
-                </button>
+                <ThemeToggle />
               </div>
             </div>
           </section>
@@ -193,11 +184,6 @@ class Header extends Component<Props, State> {
       this.props.changeNodeRequestedOneTime(networkParam!);
     }
   }
-
-  private toggleTheme = () => {
-    const theme = this.props.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
-    this.props.changeTheme(theme);
-  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
