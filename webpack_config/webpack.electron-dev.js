@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const path = require('path');
 const ClearDistPlugin = require('./plugins/clearDist');
 const config = require('./config');
-const makeConfig = require('./makeConfig');
 
 const electronConfig = {
   target: 'electron-main',
@@ -30,8 +29,7 @@ const electronConfig = {
     }),
   ],
   externals: {
-    'node-hid': 'commonjs node-hid',
-    'trezor.js-node': 'require("trezor.js-node")'
+    'node-hid': 'commonjs node-hid'
   },
   node: {
     __dirname: false,
