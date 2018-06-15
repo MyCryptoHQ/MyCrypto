@@ -50,6 +50,7 @@
     "X_MIST": "Mist",
     "X_WEB3": "Web3",
     "X_MNEMONIC": "Mnemonic Phrase ",
+    "X_HARDWARE_WALLET": "hardware wallet ",
     "X_PRINT": "Print Paper Wallet ",
     "X_PRINTDESC": "ProTip: Click print and save this as a PDF, even if you do not own a printer! ",
     "X_PRIVKEY": "Private Key (unencrypted) ",
@@ -76,6 +77,7 @@
     "X_TREZOR": "TREZOR ",
     "X_HARDWARE_WALLET": "Hardware Wallet",
     "ADD_TREZOR_SCAN": "Connect to TREZOR ",
+    "X_KEEPKEY": "KeepKey",
     "X_PARITYSIGNER": "Parity Signer ",
     "ADD_PARITY_DESC": "Connect & sign via your Parity Signer mobile app ",
     "ADD_PARITY_1": "Transaction canceled ",
@@ -447,7 +449,9 @@
     "OLD_MYCRYPTO": "MyCrypto (Legacy Site)",
     "LEDGER_REFERRAL_1": "Buy a Ledger Wallet",
     "LEDGER_REFERRAL_2": "Don’t have a Ledger? Order one now!",
-    "LEDGER_TIP": "**Tip:** Make sure you're logged into the $network app on your hardware wallet, and have enabled browser support in the settings",
+    "LEDGER_TIP": "Make sure your Ledger is unlocked, you've selected the **$network** app on the device, and browser support is **$browserSupportState**.",
+    "ENABLED": "enabled",
+    "DISABLED": "disabled",
     "LEDGER_TIMEOUT": "The request timed out",
     "LEDGER_WRONG_APP": "Wrong application selected on your device",
     "LEDGER_LOCKED": "Your Ledger device is locked",
@@ -636,6 +640,8 @@
     "COINBASE_PROMO_SMALL": "It’s now easier to get more ETH",
     "COINBASE_PROMO": "Buy ETH with USD",
     "SIMPLEX_PROMO": "Buy ETH with EUR",
-    "TESTNET": "Testnet"
+    "TESTNET": "Testnet",
+    "ENCLAVE_LEDGER_FAIL": "Failed to connect to Ledger",
+    "ENCLAVE_LEDGER_IN_USE": "Your Ledger is currently in use with another application. Please wait, or close other wallet applications before trying again."
   }
 }

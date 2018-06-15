@@ -1,5 +1,6 @@
 import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
+import path from 'path';
 import MENU from './menu';
 import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
@@ -25,7 +26,8 @@ export default function getWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
