@@ -5,17 +5,17 @@ export interface GasState {
   isEstimating: boolean;
 }
 
-export enum GAS {
+export enum GasActions {
   FETCH_ESTIMATES = 'GAS_FETCH_ESTIMATES',
   SET_ESTIMATES = 'GAS_SET_ESTIMATES'
 }
 
 export interface FetchGasEstimatesAction {
-  type: GAS.FETCH_ESTIMATES;
+  type: GasActions.FETCH_ESTIMATES;
 }
 
 export interface SetGasEstimatesAction {
-  type: GAS.SET_ESTIMATES;
+  type: GasActions.SET_ESTIMATES;
   payload: GasEstimates;
 }
 

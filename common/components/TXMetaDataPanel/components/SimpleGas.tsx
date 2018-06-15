@@ -13,7 +13,7 @@ import {
   getGasEstimationPending,
   nonceRequestPending
 } from 'features/transaction';
-import { fetchGasEstimates, TFetchGasEstimates, getEstimates, getIsEstimating } from 'features/gas';
+import { gasActions, gasSelectors } from 'features/gas';
 import { getScheduleGasPrice } from 'features/schedule';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import FeeSummary from './FeeSummary';
@@ -39,7 +39,7 @@ interface StateProps {
 }
 
 interface ActionProps {
-  fetchGasEstimates: TFetchGasEstimates;
+  fetchGasEstimates: gasActions.TFetchGasEstimates;
 }
 
 type Props = OwnProps & StateProps & ActionProps;
@@ -152,8 +152,8 @@ class SimpleGas extends React.Component<Props> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    gasEstimates: getEstimates(state),
-    isGasEstimating: getIsEstimating(state),
+    gasEstimates: gasSelectors.getEstimates(state),
+    isGasEstimating: gasSelectors.getIsEstimating(state),
     noncePending: nonceRequestPending(state),
     gasLimitPending: getGasEstimationPending(state),
     gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
@@ -161,6 +161,6 @@ export default connect(
     scheduleGasPrice: getScheduleGasPrice(state)
   }),
   {
-    fetchGasEstimates
+    fetchGasEstimates: gasActions.fetchGasEstimates
   }
 )(SimpleGas);

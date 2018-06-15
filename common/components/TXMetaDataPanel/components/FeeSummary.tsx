@@ -7,7 +7,7 @@ import { NetworkConfig } from 'types/network';
 import { calcEACTotalCost } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
-import { getIsEstimating } from 'features/gas';
+import { gasSelectors } from 'features/gas';
 import { getGasLimit } from 'features/transaction';
 import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'features/schedule';
 import { UnitDisplay, Spinner } from 'components/ui';
@@ -148,7 +148,7 @@ function mapStateToProps(state: AppState): ReduxStateProps {
     rates: state.rates.rates,
     network: getNetworkConfig(state),
     isOffline: getOffline(state),
-    isGasEstimating: getIsEstimating(state),
+    isGasEstimating: gasSelectors.getIsEstimating(state),
     scheduling: getSchedulingToggle(state).value,
     scheduleGasLimit: getScheduleGasLimit(state),
     timeBounty: getTimeBounty(state)

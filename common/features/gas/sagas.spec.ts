@@ -3,19 +3,19 @@ import { cloneableGenerator } from 'redux-saga/utils';
 
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
-import { getOffline } from 'features/config/meta/selectors';
-import { staticNetworksReducer } from 'features/config/networks/static/reducer';
-import { getNetworkConfig } from 'features/config/selectors';
-import { setGasEstimates } from './actions';
-import { getEstimates } from './selectors';
-import { fetchEstimates, setDefaultEstimates } from './sagas';
+import * as configMetaSelectors from 'features/config/meta/selectors';
+import * as configNetworksStaticReducer from 'features/config/networks/static/reducer';
+import * as configSelectors from 'features/config/selectors';
+import * as gasActions from './actions';
+import * as gasSelectors from './selectors';
+import * as gasSagas from './sagas';
 
-const networkState = staticNetworksReducer(undefined, {} as any);
+const networkState = configNetworksStaticReducer.staticNetworksReducer(undefined, {} as any);
 const network = networkState.ETH;
 const nonEstimateNetwork = networkState.ETC;
 
 describe('fetchEstimates*', () => {
-  const gen = cloneableGenerator(fetchEstimates)();
+  const gen = cloneableGenerator(gasSagas.fetchEstimates)();
   const offline = false;
   const oldEstimates: GasEstimates = {
     safeLow: 1,
@@ -41,29 +41,29 @@ describe('fetchEstimates*', () => {
   };
 
   it('Should select getNetworkConfig', () => {
-    expect(gen.next().value).toEqual(select(getNetworkConfig));
+    expect(gen.next().value).toEqual(select(configSelectors.getNetworkConfig));
   });
 
   it('Should use network default gas price settings if network shouldn’t estimate', () => {
     const noEstimateGen = gen.clone();
     expect(noEstimateGen.next(nonEstimateNetwork).value).toEqual(
-      call(setDefaultEstimates, nonEstimateNetwork)
+      call(gasSagas.setDefaultEstimates, nonEstimateNetwork)
     );
     expect(noEstimateGen.next().done).toBeTruthy();
   });
 
   it('Should select getOffline', () => {
-    expect(gen.next(network).value).toEqual(select(getOffline));
+    expect(gen.next(network).value).toEqual(select(configMetaSelectors.getOffline));
   });
 
   it('Should use network default gas price settings if offline', () => {
     const offlineGen = gen.clone();
-    expect(offlineGen.next(true).value).toEqual(call(setDefaultEstimates, network));
+    expect(offlineGen.next(true).value).toEqual(call(gasSagas.setDefaultEstimates, network));
     expect(offlineGen.next().done).toBeTruthy();
   });
 
   it('Should select getEstimates', () => {
-    expect(gen.next(offline).value).toEqual(select(getEstimates));
+    expect(gen.next(offline).value).toEqual(select(gasSelectors.getEstimates));
   });
 
   it('Should use cached estimates if they’re recent', () => {
@@ -72,7 +72,9 @@ describe('fetchEstimates*', () => {
       ...oldEstimates,
       time: Date.now() - gasEstimateCacheTime + 1000
     };
-    expect(cachedGen.next(cacheEstimate).value).toEqual(put(setGasEstimates(cacheEstimate)));
+    expect(cachedGen.next(cacheEstimate).value).toEqual(
+      put(gasActions.setGasEstimates(cacheEstimate))
+    );
     expect(cachedGen.next().done).toBeTruthy();
   });
 
@@ -84,7 +86,7 @@ describe('fetchEstimates*', () => {
     const failedReqGen = gen.clone();
     // Not sure why, but typescript seems to think throw might be missing.
     if (failedReqGen.throw) {
-      expect(failedReqGen.throw('test').value).toEqual(call(setDefaultEstimates, network));
+      expect(failedReqGen.throw('test').value).toEqual(call(gasSagas.setDefaultEstimates, network));
       expect(failedReqGen.next().done).toBeTruthy();
     } else {
       throw new Error('SagaIterator didn’t have throw');
@@ -94,13 +96,15 @@ describe('fetchEstimates*', () => {
   it('Should use new estimates if chainId changed, even if time is similar', () => {
     const newChainGen = gen.clone();
     expect(newChainGen.next(newChainIdEstimates).value).toEqual(
-      put(setGasEstimates(newChainIdEstimates))
+      put(gasActions.setGasEstimates(newChainIdEstimates))
     );
     expect(newChainGen.next().done).toBeTruthy();
   });
 
   it('Should use fetched estimates', () => {
-    expect(gen.next(newTimeEstimates).value).toEqual(put(setGasEstimates(newTimeEstimates)));
+    expect(gen.next(newTimeEstimates).value).toEqual(
+      put(gasActions.setGasEstimates(newTimeEstimates))
+    );
     expect(gen.next().done).toBeTruthy();
   });
 });
@@ -109,11 +113,11 @@ describe('setDefaultEstimates*', () => {
   const time = Date.now();
 
   it('Should put setGasEstimates with config defaults', () => {
-    const gen = setDefaultEstimates(network);
+    const gen = gasSagas.setDefaultEstimates(network);
     gen.next();
     expect(gen.next(time).value).toEqual(
       put(
-        setGasEstimates({
+        gasActions.setGasEstimates({
           safeLow: network.gasPriceSettings.min,
           standard: network.gasPriceSettings.initial,
           fast: network.gasPriceSettings.initial,
@@ -135,12 +139,12 @@ describe('setDefaultEstimates*', () => {
       chainId: 123,
       dPathFormats: null
     };
-    const gen = setDefaultEstimates(customNetwork);
+    const gen = gasSagas.setDefaultEstimates(customNetwork);
 
     gen.next();
     expect(gen.next(time).value).toEqual(
       put(
-        setGasEstimates({
+        gasActions.setGasEstimates({
           safeLow: gasPriceDefaults.min,
           standard: gasPriceDefaults.initial,
           fast: gasPriceDefaults.initial,

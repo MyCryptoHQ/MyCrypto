@@ -5,11 +5,11 @@ import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config/meta/selectors';
-import { getNetworkConfig } from 'features/config/selectors';
-import { GAS } from './types';
-import { setGasEstimates } from './actions';
-import { getEstimates } from './selectors';
+import * as configMetaSelectors from 'features/config/meta/selectors';
+import * as configSelectors from 'features/config/selectors';
+import * as gasTypes from './types';
+import * as gasActions from './actions';
+import * as gasSelectors from './selectors';
 
 export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
   // Must yield time for testability
@@ -17,7 +17,7 @@ export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
   const gasSettings = network.isCustom ? gasPriceDefaults : network.gasPriceSettings;
 
   yield put(
-    setGasEstimates({
+    gasActions.setGasEstimates({
       safeLow: gasSettings.min,
       standard: gasSettings.initial,
       fast: gasSettings.initial,
@@ -31,34 +31,34 @@ export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
 
 export function* fetchEstimates(): SagaIterator {
   // Don't try on non-estimating network
-  const network: NetworkConfig = yield select(getNetworkConfig);
+  const network: NetworkConfig = yield select(configSelectors.getNetworkConfig);
   if (network.isCustom || !network.shouldEstimateGasPrice) {
     yield call(setDefaultEstimates, network);
     return;
   }
 
   // Don't try while offline
-  const isOffline: boolean = yield select(getOffline);
+  const isOffline: boolean = yield select(configMetaSelectors.getOffline);
   if (isOffline) {
     yield call(setDefaultEstimates, network);
     return;
   }
 
   // Cache estimates for a bit
-  const oldEstimates: AppState['gas']['estimates'] = yield select(getEstimates);
+  const oldEstimates: AppState['gas']['estimates'] = yield select(gasSelectors.getEstimates);
   if (
     oldEstimates &&
     oldEstimates.chainId === network.chainId &&
     oldEstimates.time + gasEstimateCacheTime > Date.now()
   ) {
-    yield put(setGasEstimates(oldEstimates));
+    yield put(gasActions.setGasEstimates(oldEstimates));
     return;
   }
 
   // Try to fetch new estimates
   try {
     const estimates: GasEstimates = yield call(fetchGasEstimates);
-    yield put(setGasEstimates(estimates));
+    yield put(gasActions.setGasEstimates(estimates));
   } catch (err) {
     console.warn('Failed to fetch gas estimates:', err);
     yield call(setDefaultEstimates, network);
@@ -66,5 +66,5 @@ export function* fetchEstimates(): SagaIterator {
 }
 
 export function* gasSaga(): SagaIterator {
-  yield takeLatest(GAS.FETCH_ESTIMATES, fetchEstimates);
+  yield takeLatest(gasTypes.GasActions.FETCH_ESTIMATES, fetchEstimates);
 }

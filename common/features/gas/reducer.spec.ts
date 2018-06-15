@@ -1,12 +1,12 @@
 import { GasEstimates } from 'api/gas';
-import { fetchGasEstimates, setGasEstimates } from './actions';
-import { gasReducer, INITIAL_STATE } from './reducer';
+import * as gasActions from './actions';
+import * as gasReducer from './reducer';
 
 describe('gas reducer', () => {
   it('should handle GAS_FETCH_ESTIMATES', () => {
-    const state = gasReducer(undefined, fetchGasEstimates());
+    const state = gasReducer.gasReducer(undefined, gasActions.fetchGasEstimates());
     expect(state).toEqual({
-      ...INITIAL_STATE,
+      ...gasReducer.INITIAL_STATE,
       isEstimating: true
     });
   });
@@ -21,9 +21,9 @@ describe('gas reducer', () => {
       chainId: 1,
       isDefault: false
     };
-    const state = gasReducer(undefined, setGasEstimates(estimates));
+    const state = gasReducer.gasReducer(undefined, gasActions.setGasEstimates(estimates));
     expect(state).toEqual({
-      ...INITIAL_STATE,
+      ...gasReducer.INITIAL_STATE,
       estimates,
       isEstimating: false
     });
