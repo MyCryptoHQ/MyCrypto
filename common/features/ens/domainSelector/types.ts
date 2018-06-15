@@ -1,3 +1,3 @@
-export interface DomainSelectorState {
+export interface ENSDomainSelectorState {
   currentDomain: null | string;
 }

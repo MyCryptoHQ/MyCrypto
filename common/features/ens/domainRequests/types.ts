@@ -1,14 +1,14 @@
 import { DomainRequest } from 'libs/ens';
 
-export enum REQUEST_STATES {
+export enum RequestStates {
   pending = 'PENDING',
   success = 'SUCCESS',
   failed = 'FAILED'
 }
 
-export interface DomainRequestsState {
+export interface ENSDomainRequestsState {
   [key: string]: {
-    state: REQUEST_STATES;
+    state: RequestStates;
     data?: DomainRequest;
     error?: boolean;
     errorMsg?: string;

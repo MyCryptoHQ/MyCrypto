@@ -54,7 +54,7 @@ import { CONFIG_META, ToggleAutoGasLimitAction } from 'features/config/meta/type
 import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';
 import { isNetworkUnit, getNetworkUnit } from 'features/config/selectors';
-import { ENS } from 'features/ens/types';
+import * as ensTypes from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { getResolvedAddress } from 'features/ens/selectors';
 import { WALLET, MergedToken } from 'features/wallet/types';
@@ -210,9 +210,9 @@ export function* setCurrentToSaga({ payload: raw }: SetCurrentToAction): SagaIte
     const [domain] = raw.split('.');
     yield put(resolveDomainRequested(domain));
     yield take([
-      ENS.RESOLVE_DOMAIN_FAILED,
-      ENS.RESOLVE_DOMAIN_SUCCEEDED,
-      ENS.RESOLVE_DOMAIN_CACHED
+      ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
+      ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
+      ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED
     ]);
     const resolvedAddress: string | null = yield select(getResolvedAddress, true);
     if (resolvedAddress) {

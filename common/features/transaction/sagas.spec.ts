@@ -43,7 +43,7 @@ import { CONFIG_META } from 'features/config/meta/types';
 import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';
 import { isNetworkUnit } from 'features/config/selectors';
-import { ENS } from 'features/ens/types';
+import * as ensTypes from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { getResolvedAddress } from 'features/ens/selectors';
 import { WALLET } from 'features/wallet/types';
@@ -270,9 +270,9 @@ describe('transaction: Sagas', () => {
         it('should take ENS type keys', () => {
           expect(data.validEnsGen.next().value).toEqual(
             take([
-              ENS.RESOLVE_DOMAIN_FAILED,
-              ENS.RESOLVE_DOMAIN_SUCCEEDED,
-              ENS.RESOLVE_DOMAIN_CACHED
+              ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
+              ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
+              ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED
             ])
           );
         });

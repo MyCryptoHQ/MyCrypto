@@ -6,7 +6,7 @@ import networkConfigs from 'libs/ens/networkConfigs';
 import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';
 import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
-import { getNodeLib } from 'features/config/nodes/selectors';
+import * as configNodesSelectors from 'features/config/nodes/selectors';
 
 //#region Make & Decode
 interface Params {
@@ -16,7 +16,7 @@ interface Params {
 }
 
 export function* makeEthCallAndDecode({ to, data, decoder }: Params): SagaIterator {
-  const node: INode = yield select(getNodeLib);
+  const node: INode = yield select(configNodesSelectors.getNodeLib);
   const result: string = yield apply(node, node.sendCallRequest, [{ data, to }]);
   const decodedResult = yield call(decoder, result);
   return decodedResult;

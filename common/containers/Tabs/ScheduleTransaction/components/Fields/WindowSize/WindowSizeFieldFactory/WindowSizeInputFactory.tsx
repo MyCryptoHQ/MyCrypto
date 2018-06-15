@@ -9,7 +9,7 @@ import {
   getCurrentScheduleType,
   ICurrentScheduleType
 } from 'features/schedule';
-import { getResolvingDomain } from 'features/ens';
+import { ensSelectors } from 'features/ens';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowSizeFieldFactory';
 
@@ -51,6 +51,6 @@ class WindowSizeInputFactoryClass extends Component<Props> {
 export const WindowSizeInputFactory = connect((state: AppState) => ({
   currentWindowSize: getCurrentWindowSize(state),
   currentScheduleType: getCurrentScheduleType(state),
-  isResolving: getResolvingDomain(state),
+  isResolving: ensSelectors.getResolvingDomain(state),
   isValid: isValidCurrentWindowSize(state)
 }))(WindowSizeInputFactoryClass);

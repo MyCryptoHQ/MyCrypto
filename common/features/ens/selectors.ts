@@ -1,9 +1,9 @@
 import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
 import { isCreationAddress } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { REQUEST_STATES } from './domainRequests/types';
-import { getDomainRequests } from './domainRequests/selectors';
-import { getCurrentDomainName } from './domainSelector/selectors';
+import * as ensDomainRequestsTypes from './domainRequests/types';
+import * as ensDomainRequestsSelectors from './domainRequests/selectors';
+import * as ensDomainSelectorSelectors from './domainSelector/selectors';
 
 const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
   return !!(data as IOwnedDomainRequest).ownerAddress;
@@ -12,8 +12,8 @@ const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
 export const getEns = (state: AppState) => state.ens;
 
 export const getCurrentDomainData = (state: AppState) => {
-  const currentDomain = getCurrentDomainName(state);
-  const domainRequests = getDomainRequests(state);
+  const currentDomain = ensDomainSelectorSelectors.getCurrentDomainName(state);
+  const domainRequests = ensDomainRequestsSelectors.getDomainRequests(state);
 
   if (!currentDomain || !domainRequests[currentDomain] || domainRequests[currentDomain].error) {
     return null;
@@ -41,12 +41,12 @@ export const getResolvedAddress = (state: AppState, noGenesisAddress: boolean = 
 };
 
 export const getResolvingDomain = (state: AppState) => {
-  const currentDomain = getCurrentDomainName(state);
-  const domainRequests = getDomainRequests(state);
+  const currentDomain = ensDomainSelectorSelectors.getCurrentDomainName(state);
+  const domainRequests = ensDomainRequestsSelectors.getDomainRequests(state);
 
   if (!currentDomain || !domainRequests[currentDomain]) {
     return null;
   }
 
-  return domainRequests[currentDomain].state === REQUEST_STATES.pending;
+  return domainRequests[currentDomain].state === ensDomainRequestsTypes.RequestStates.pending;
 };

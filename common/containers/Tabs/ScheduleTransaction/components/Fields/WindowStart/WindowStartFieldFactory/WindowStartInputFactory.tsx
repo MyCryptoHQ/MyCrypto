@@ -7,7 +7,7 @@ import {
   ICurrentWindowStart,
   isValidCurrentWindowStart
 } from 'features/schedule';
-import { getResolvingDomain } from 'features/ens';
+import { ensSelectors } from 'features/ens';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowStartFieldFactory';
 
@@ -46,6 +46,6 @@ class WindowStartInputFactoryClass extends Component<Props> {
 
 export const WindowStartInputFactory = connect((state: AppState) => ({
   currentWindowStart: getCurrentWindowStart(state),
-  isResolving: getResolvingDomain(state),
+  isResolving: ensSelectors.getResolvingDomain(state),
   isValid: isValidCurrentWindowStart(state)
 }))(WindowStartInputFactoryClass);

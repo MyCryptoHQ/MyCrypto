@@ -14,7 +14,7 @@ import {
 } from 'features/transaction';
 import { addressBookSelectors } from 'features/addressBook';
 import { getWalletInst } from 'features/wallet';
-import { getResolvingDomain } from 'features/ens';
+import { ensSelectors } from 'features/ens';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
@@ -132,7 +132,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
   return {
     currentTo,
     label: addressBookSelectors.getCurrentToLabel(state),
-    isResolving: getResolvingDomain(state),
+    isResolving: ensSelectors.getResolvingDomain(state),
     isValid: isValidCurrentTo(state),
     isLabelEntry: isCurrentToLabelEntry(state)
   };
