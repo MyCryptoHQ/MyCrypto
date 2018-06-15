@@ -8,7 +8,6 @@ import { render } from 'react-dom';
 import Root from './Root';
 import { configuredStore } from './store';
 import consoleAdvertisement from './utils/consoleAdvertisement';
-import EnclaveAPI from 'shared/enclave/client';
 
 const appEl = document.getElementById('app');
 
