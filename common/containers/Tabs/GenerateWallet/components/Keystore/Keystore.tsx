@@ -7,6 +7,7 @@ import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
 import FinalSteps from '../FinalSteps';
+import { N_FACTOR } from 'config';
 
 export enum Steps {
   Password = 'password',
@@ -87,7 +88,7 @@ export default class GenerateKeystore extends Component<{}, State> {
   private generateWalletAndContinue = (password: string) => {
     this.setState({ isGenerating: true });
 
-    generateKeystore(password).then(res => {
+    generateKeystore(password, N_FACTOR).then(res => {
       this.setState({
         password,
         activeStep: Steps.Download,

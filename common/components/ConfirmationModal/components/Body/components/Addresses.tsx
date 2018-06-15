@@ -8,21 +8,21 @@ import { connect } from 'react-redux';
 import { SerializedTransaction } from 'components/renderCbs';
 import { AppState } from 'reducers';
 import { getFrom, getUnit, isEtherTransaction } from 'selectors/transaction';
-import { toChecksumAddress } from 'ethereumjs-util';
 import translate from 'translations';
+import { getChecksumAddressFn } from 'selectors/config';
 
 interface StateProps {
-  from: AppState['transaction']['meta']['from'];
-  unit: AppState['transaction']['meta']['unit'];
+  from: ReturnType<typeof getFrom>;
+  unit: ReturnType<typeof getUnit>;
   isToken: boolean;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 const size = '3rem';
 
 class AddressesClass extends Component<StateProps> {
   public render() {
-    const { from, isToken, unit } = this.props;
-
+    const { from, isToken, unit, toChecksumAddress } = this.props;
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {
@@ -92,7 +92,8 @@ class AddressesClass extends Component<StateProps> {
 const mapStateToProps = (state: AppState): StateProps => ({
   from: getFrom(state),
   isToken: !isEtherTransaction(state),
-  unit: getUnit(state)
+  unit: getUnit(state),
+  toChecksumAddress: getChecksumAddressFn(state)
 });
 
 export const Addresses = connect(mapStateToProps)(AddressesClass);

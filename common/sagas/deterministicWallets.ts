@@ -5,12 +5,12 @@ import {
   updateDeterministicWallet
 } from 'actions/deterministicWallets';
 import { showNotification } from 'actions/notifications';
-import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
+import { publicToAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 import { INode } from 'libs/nodes/INode';
 import { SagaIterator } from 'redux-saga';
 import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import { getNodeLib } from 'selectors/config';
+import { getNodeLib, getChecksumAddressFn } from 'selectors/config';
 import { getDesiredToken, getWallets } from 'selectors/deterministicWallets';
 import { getTokens } from 'selectors/wallet';
 import translate from 'translations';
@@ -37,6 +37,9 @@ export function* getDeterministicWallets(action: GetDeterministicWalletsAction):
     return;
   }
   const wallets: DeterministicWalletData[] = [];
+  const toChecksumAddress: ReturnType<typeof getChecksumAddressFn> = yield select(
+    getChecksumAddressFn
+  );
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
     const dkey = hdk.derive(`${pathBase}/${index}`);

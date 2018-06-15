@@ -1,4 +1,5 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
+import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
 import { normalise } from './ens';
@@ -16,8 +17,18 @@ import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import BN from 'bn.js';
 
-// FIXME we probably want to do checksum checks sideways
-export function isValidETHAddress(address: string): boolean {
+export function getIsValidAddressFunction(chainId: number) {
+  if (chainId === 30 || chainId === 31) {
+    return (address: string) => isValidRSKAddress(address, chainId);
+  }
+  return isValidETHAddress;
+}
+
+export function isValidAddress(address: string, chainId: number) {
+  return getIsValidAddressFunction(chainId)(address);
+}
+
+function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
   if (address === '0x0000000000000000000000000000000000000000') {
     return false;
   }
@@ -28,8 +39,16 @@ export function isValidETHAddress(address: string): boolean {
   } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
     return true;
   } else {
-    return isChecksumAddress(address);
+    return extraChecks ? extraChecks() : false;
   }
+}
+
+export function isValidETHAddress(address: string): boolean {
+  return isValidETHLikeAddress(address, () => isChecksumAddress(address));
+}
+
+export function isValidRSKAddress(address: string, chainId: number): boolean {
+  return isValidETHLikeAddress(address, () => isValidChecksumRSKAddress(address, chainId));
 }
 
 export const isCreationAddress = (address: string): boolean =>
@@ -339,15 +358,16 @@ export function isValidAddressLabel(
   address: string,
   label: string,
   addresses: { [address: string]: string },
-  labels: { [label: string]: string }
+  labels: { [label: string]: string },
+  chainId: number
 ) {
-  const addressAlreadyExists = !!addresses[address];
+  const addressAlreadyExists = !!addresses[address.toLowerCase()];
   const labelAlreadyExists = !!labels[label];
   const result: { isValid: boolean; addressError?: string; labelError?: string } = {
     isValid: true
   };
 
-  if (!isValidETHAddress(address)) {
+  if (!isValidAddress(address, chainId)) {
     result.addressError = translateRaw('INVALID_ADDRESS');
   }
 

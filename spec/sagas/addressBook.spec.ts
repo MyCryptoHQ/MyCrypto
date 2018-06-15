@@ -13,7 +13,8 @@ import {
   changeAddressLabelEntry,
   saveAddressLabelEntry,
   clearAddressLabelEntry,
-  removeAddressLabelEntry
+  removeAddressLabelEntry,
+  AddressLabel
 } from 'actions/addressBook';
 import { getInitialState } from '../selectors/helpers';
 
@@ -295,11 +296,11 @@ describe('addressBook: Sagas', () => {
         }
       };
       const action = removeAddressLabelEntry(id);
-      const dispatched: string[] = [];
+      const dispatched: AddressLabel[] = [];
 
       await runSaga(
         {
-          dispatch: (dispatching: string) => dispatched.push(dispatching),
+          dispatch: (dispatching: AddressLabel) => dispatched.push(dispatching),
           getState: () => state
         },
         handleRemoveAddressLabelEntry,

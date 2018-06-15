@@ -1,7 +1,7 @@
 import Tx from 'ethereumjs-tx';
 import { bufferToHex } from 'ethereumjs-util';
 import { Wei } from 'libs/units';
-import { isValidETHAddress } from 'libs/validators';
+import { isValidAddress } from 'libs/validators';
 import { IFullWallet } from 'libs/wallet';
 import { translateRaw } from 'translations';
 import { ITransaction, IHexStrTransaction } from '../typings';
@@ -69,7 +69,7 @@ const gasParamsInRange = (t: ITransaction) => {
 };
 
 const validAddress = (t: ITransaction) => {
-  if (!isValidETHAddress(bufferToHex(t.to))) {
+  if (!isValidAddress(bufferToHex(t.to), t.chainId)) {
     throw Error(translateRaw('ERROR_5'));
   }
 };

@@ -10,10 +10,7 @@ import {
 } from 'reducers/transactions';
 import { State as SwapState, INITIAL_STATE as initialSwapState } from 'reducers/swap';
 import { State as WalletState, INITIAL_STATE as initialWalletState } from 'reducers/wallet';
-import {
-  State as AddressBookState,
-  INITIAL_STATE as initialAddressBookState
-} from 'reducers/addressBook';
+import { State as AddressBookState } from 'reducers/addressBook';
 import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
@@ -26,7 +23,7 @@ import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
 } from './configAndTokens';
-import fixAddressBookErrors from 'utils/fixAddressBookErrors';
+import rehydrateAddressBookState from './addressBook';
 
 const configureStore = () => {
   const logger = createLogger({
@@ -78,10 +75,7 @@ const configureStore = () => {
       ...initialTransactionsState,
       ...savedTransactionsState
     },
-    addressBook: {
-      ...initialAddressBookState,
-      ...fixAddressBookErrors(savedAddressBook)
-    },
+    addressBook: rehydrateAddressBookState(savedAddressBook),
     wallet: {
       ...initialWalletState,
       ...savedWalletState

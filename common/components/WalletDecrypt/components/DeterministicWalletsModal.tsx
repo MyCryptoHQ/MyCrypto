@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
-import { toChecksumAddress } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import {
   DeterministicWalletData,
@@ -201,14 +200,13 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
   private getAddresses(props: Props = this.props) {
     const { dPath, publicKey, chainCode, seed } = props;
-
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath.value)) {
         this.props.getDeterministicWallets({
           seed,
+          dPath: dPath.value,
           publicKey,
           chainCode,
-          dPath: dPath.value,
           limit: WALLETS_PER_PAGE,
           offset: WALLETS_PER_PAGE * this.state.page
         });
@@ -280,7 +278,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private renderWalletRow(wallet: DeterministicWalletData) {
     const { desiredToken, network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
-    const label = addressLabels[toChecksumAddress(wallet.address)];
+    const label = addressLabels[wallet.address.toLowerCase()];
     const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     // Get renderable values, but keep 'em short

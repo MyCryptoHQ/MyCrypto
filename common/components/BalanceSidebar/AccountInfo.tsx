@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toChecksumAddress } from 'ethereumjs-util';
 import { UnitDisplay, NewTabLink } from 'components/ui';
 import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
 import translate, { translateRaw } from 'translations';
 import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig, getOffline } from 'selectors/config';
+import { getNetworkConfig, getOffline, getChecksumAddressFn } from 'selectors/config';
 import { AppState } from 'reducers';
 import { NetworkConfig } from 'types/network';
 import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
@@ -21,6 +20,7 @@ interface StateProps {
   balance: Balance;
   network: ReturnType<typeof getNetworkConfig>;
   isOffline: ReturnType<typeof getOffline>;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 interface State {
@@ -73,7 +73,7 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, isOffline, balance, wallet } = this.props;
+    const { network, isOffline, balance, toChecksumAddress, wallet } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
 
     let blockExplorer;
@@ -199,7 +199,8 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
     network: getNetworkConfig(state),
-    isOffline: getOffline(state)
+    isOffline: getOffline(state),
+    toChecksumAddress: getChecksumAddressFn(state)
   };
 }
 const mapDispatchToProps: DispatchProps = { refreshAccountBalance };

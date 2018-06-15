@@ -21,6 +21,7 @@ import {
   getNextAddressLabelId
 } from 'selectors/addressBook';
 import { showNotification } from 'actions/notifications';
+import { getNetworkChainId } from 'selectors/config';
 
 export const ERROR_DURATION: number = 4000;
 
@@ -32,15 +33,21 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
     isEditing,
     overrideValidation
   } = action.payload;
-  const addresses = yield select(getAddressLabels);
-  const labels = yield select(getLabelAddresses);
-  const priorEntry = yield select(getAddressLabelEntry, id);
+  const addresses: ReturnType<typeof getAddressLabels> = yield select(getAddressLabels);
+  const labels: ReturnType<typeof getLabelAddresses> = yield select(getLabelAddresses);
+  const priorEntry: ReturnType<typeof getAddressLabelEntry> = yield select(
+    getAddressLabelEntry,
+    id
+  );
+  const chainId: ReturnType<typeof getNetworkChainId> = yield select(getNetworkChainId);
   const { addressError, labelError } = isValidAddressLabel(
     temporaryAddress,
     temporaryLabel,
     addresses,
-    labels
+    labels,
+    chainId
   );
+
   const updatedEntry = {
     id,
     address: addressError && !isEditing ? priorEntry.address || '' : temporaryAddress,
@@ -56,8 +63,13 @@ export function* handleChangeAddressLabelEntry(action: ChangeAddressLabelEntry):
 
 export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): SagaIterator {
   const id = action.payload;
-  const { address, addressError, label, labelError } = yield select(getAddressLabelEntry, id);
-  const nextId = yield select(getNextAddressLabelId);
+  const {
+    address,
+    addressError,
+    label,
+    labelError
+  }: ReturnType<typeof getAddressLabelEntry> = yield select(getAddressLabelEntry, id);
+  const nextId: ReturnType<typeof getNextAddressLabelId> = yield select(getNextAddressLabelId);
   const flashError = (error: string) => put(showNotification('danger', error, ERROR_DURATION));
 
   if (addressError) {
@@ -101,7 +113,10 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
       })
     );
   } else if (id === ACCOUNT_ADDRESS_ID) {
-    const ownEntry = yield select(getAddressLabelEntryFromAddress, address);
+    const ownEntry: ReturnType<typeof getAddressLabelEntryFromAddress> = yield select(
+      getAddressLabelEntryFromAddress,
+      address
+    );
 
     yield put(
       setAddressLabelEntry({
@@ -143,7 +158,10 @@ export function* handleSaveAddressLabelEntry(action: SaveAddressLabelEntry): Sag
 
 export function* handleRemoveAddressLabelEntry(action: RemoveAddressLabelEntry): SagaIterator {
   const id = action.payload;
-  const { id: entryId, address } = yield select(getAddressLabelEntry, id);
+  const { id: entryId, address }: ReturnType<typeof getAddressLabelEntry> = yield select(
+    getAddressLabelEntry,
+    id
+  );
 
   if (typeof entryId === 'undefined') {
     return;
@@ -153,7 +171,10 @@ export function* handleRemoveAddressLabelEntry(action: RemoveAddressLabelEntry):
   yield put(clearAddressLabelEntry(id));
 
   if (id === ACCOUNT_ADDRESS_ID) {
-    const ownEntry = yield select(getAddressLabelEntryFromAddress, address);
+    const ownEntry: ReturnType<typeof getAddressLabelEntryFromAddress> = yield select(
+      getAddressLabelEntryFromAddress,
+      address
+    );
 
     if (ownEntry) {
       yield put(clearAddressLabelEntry(ownEntry.id));

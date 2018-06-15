@@ -103,6 +103,9 @@ class FieldsClass extends Component<Props> {
 }
 
 export const Fields = connect(
-  (state: AppState) => ({ unit: getUnit(state), currentBalance: getCurrentBalance(state) }),
+  (state: AppState) => ({
+    unit: getUnit(state),
+    currentBalance: getCurrentBalance(state)
+  }),
   { resetWallet }
 )(FieldsClass);

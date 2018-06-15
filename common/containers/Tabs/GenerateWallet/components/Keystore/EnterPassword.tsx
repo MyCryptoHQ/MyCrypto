@@ -18,6 +18,7 @@ interface State {
   passwordValidation: ZXCVBNResult | null;
   feedback: string;
 }
+
 export default class EnterPassword extends Component<Props, State> {
   public state: State = {
     password: '',
