@@ -1,68 +1,63 @@
-import {
-  ADDRESS_BOOK,
-  AddressLabel,
-  AddressLabelEntry,
-  SetAddressLabel,
-  ClearAddressLabel,
-  SetAddressLabelEntry,
-  ChangeAddressLabelEntry,
-  SaveAddressLabelEntry,
-  ClearAddressLabelEntry,
-  RemoveAddressLabelEntry
-} from './types';
+import * as addressBookTypes from './types';
 
 export type TSetAddressLabel = typeof setAddressLabel;
-export function setAddressLabel(payload: AddressLabel): SetAddressLabel {
+export function setAddressLabel(
+  payload: addressBookTypes.AddressLabel
+): addressBookTypes.SetAddressLabel {
   return {
-    type: ADDRESS_BOOK.SET_LABEL,
+    type: addressBookTypes.AddressBookActions.SET_LABEL,
     payload
   };
 }
 
 export type TClearAddressLabel = typeof clearAddressLabel;
-export function clearAddressLabel(payload: string): ClearAddressLabel {
+export function clearAddressLabel(payload: string): addressBookTypes.ClearAddressLabel {
   return {
-    type: ADDRESS_BOOK.CLEAR_LABEL,
+    type: addressBookTypes.AddressBookActions.CLEAR_LABEL,
     payload
   };
 }
 
 export type TSetAddressLabelEntry = typeof setAddressLabelEntry;
-export function setAddressLabelEntry(payload: AddressLabelEntry): SetAddressLabelEntry {
+export function setAddressLabelEntry(
+  payload: addressBookTypes.AddressLabelEntry
+): addressBookTypes.SetAddressLabelEntry {
   return {
-    type: ADDRESS_BOOK.SET_LABEL_ENTRY,
+    type: addressBookTypes.AddressBookActions.SET_LABEL_ENTRY,
     payload
   };
 }
 
 export type TChangeAddressLabelEntry = typeof changeAddressLabelEntry;
-export function changeAddressLabelEntry(payload: AddressLabelEntry): ChangeAddressLabelEntry {
+export function changeAddressLabelEntry(
+  payload: addressBookTypes.AddressLabelEntry
+): addressBookTypes.ChangeAddressLabelEntry {
   return {
-    type: ADDRESS_BOOK.CHANGE_LABEL_ENTRY,
+    type: addressBookTypes.AddressBookActions.CHANGE_LABEL_ENTRY,
     payload
   };
 }
 
 export type TSaveAddressLabelEntry = typeof saveAddressLabelEntry;
-export function saveAddressLabelEntry(payload: string): SaveAddressLabelEntry {
+export function saveAddressLabelEntry(payload: string): addressBookTypes.SaveAddressLabelEntry {
   return {
-    type: ADDRESS_BOOK.SAVE_LABEL_ENTRY,
+    type: addressBookTypes.AddressBookActions.SAVE_LABEL_ENTRY,
     payload
   };
 }
 
 export type TClearAddressLabelEntry = typeof clearAddressLabelEntry;
-export function clearAddressLabelEntry(payload: string): ClearAddressLabelEntry {
+export function clearAddressLabelEntry(payload: string): addressBookTypes.ClearAddressLabelEntry {
   return {
-    type: ADDRESS_BOOK.CLEAR_LABEL_ENTRY,
+    type: addressBookTypes.AddressBookActions.CLEAR_LABEL_ENTRY,
     payload
   };
 }
 
 export type TRemoveAddressLabelEntry = typeof removeAddressLabelEntry;
-export function removeAddressLabelEntry(payload: string): RemoveAddressLabelEntry {
+export function removeAddressLabelEntry(payload: string): addressBookTypes.RemoveAddressLabelEntry {
   return {
-    type: ADDRESS_BOOK.REMOVE_LABEL_ENTRY,
+    type: addressBookTypes.AddressBookActions.REMOVE_LABEL_ENTRY,
     payload
   };
 }

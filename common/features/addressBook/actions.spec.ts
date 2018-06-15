@@ -1,13 +1,5 @@
-import { ADDRESS_BOOK } from './types';
-import {
-  setAddressLabel,
-  clearAddressLabel,
-  setAddressLabelEntry,
-  changeAddressLabelEntry,
-  saveAddressLabelEntry,
-  clearAddressLabelEntry,
-  removeAddressLabelEntry
-} from './actions';
+import * as addressBookTypes from './types';
+import * as addressBookActions from './actions';
 
 describe('addressBook: Actions', () => {
   describe('setAddressLabel', () => {
@@ -17,8 +9,8 @@ describe('addressBook: Actions', () => {
         label: 'Foo'
       };
 
-      expect(setAddressLabel(payload)).toEqual({
-        type: ADDRESS_BOOK.SET_LABEL,
+      expect(addressBookActions.setAddressLabel(payload)).toEqual({
+        type: addressBookTypes.AddressBookActions.SET_LABEL,
         payload
       });
     });
@@ -27,8 +19,8 @@ describe('addressBook: Actions', () => {
     it('should generate the correct action', () => {
       const payload = '0';
 
-      expect(clearAddressLabel(payload)).toEqual({
-        type: ADDRESS_BOOK.CLEAR_LABEL,
+      expect(addressBookActions.clearAddressLabel(payload)).toEqual({
+        type: addressBookTypes.AddressBookActions.CLEAR_LABEL,
         payload
       });
     });
@@ -43,8 +35,8 @@ describe('addressBook: Actions', () => {
         labelError: 'Derp'
       };
 
-      expect(setAddressLabelEntry(payload)).toEqual({
-        type: ADDRESS_BOOK.SET_LABEL_ENTRY,
+      expect(addressBookActions.setAddressLabelEntry(payload)).toEqual({
+        type: addressBookTypes.AddressBookActions.SET_LABEL_ENTRY,
         payload
       });
     });
@@ -59,8 +51,8 @@ describe('addressBook: Actions', () => {
         labelError: 'Derp'
       };
 
-      expect(changeAddressLabelEntry(payload)).toEqual({
-        type: ADDRESS_BOOK.CHANGE_LABEL_ENTRY,
+      expect(addressBookActions.changeAddressLabelEntry(payload)).toEqual({
+        type: addressBookTypes.AddressBookActions.CHANGE_LABEL_ENTRY,
         payload
       });
     });
@@ -69,8 +61,8 @@ describe('addressBook: Actions', () => {
     it('should generate the correct action', () => {
       const payload = '0';
 
-      expect(saveAddressLabelEntry(payload)).toEqual({
-        type: ADDRESS_BOOK.SAVE_LABEL_ENTRY,
+      expect(addressBookActions.saveAddressLabelEntry(payload)).toEqual({
+        type: addressBookTypes.AddressBookActions.SAVE_LABEL_ENTRY,
         payload
       });
     });
@@ -79,8 +71,8 @@ describe('addressBook: Actions', () => {
     it('should generate the correct action', () => {
       const payload = '0';
 
-      expect(clearAddressLabelEntry(payload)).toEqual({
-        type: ADDRESS_BOOK.CLEAR_LABEL_ENTRY,
+      expect(addressBookActions.clearAddressLabelEntry(payload)).toEqual({
+        type: addressBookTypes.AddressBookActions.CLEAR_LABEL_ENTRY,
         payload
       });
     });
@@ -89,8 +81,8 @@ describe('addressBook: Actions', () => {
     it('should generate the correct action', () => {
       const payload = '0';
 
-      expect(removeAddressLabelEntry(payload)).toEqual({
-        type: ADDRESS_BOOK.REMOVE_LABEL_ENTRY,
+      expect(addressBookActions.removeAddressLabelEntry(payload)).toEqual({
+        type: addressBookTypes.AddressBookActions.REMOVE_LABEL_ENTRY,
         payload
       });
     });

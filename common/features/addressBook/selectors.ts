@@ -1,9 +1,9 @@
 import { toChecksumAddress } from 'ethereumjs-util';
 
 import { AppState } from 'features/reducers';
-import { getCurrentTo } from 'features/transaction/selectors';
-import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
-import { AddressLabelEntry } from './types';
+import * as transactionSelectors from 'features/transaction/selectors';
+import * as addressBookConstants from './constants';
+import * as addressBookTypes from './types';
 
 export function getAddressLabels(state: AppState) {
   return state.addressBook.addresses;
@@ -22,24 +22,25 @@ export function getAddressLabelEntries(state: AppState) {
 }
 
 export function getAddressBookTableEntry(state: AppState) {
-  return getAddressLabelEntry(state, ADDRESS_BOOK_TABLE_ID);
+  return getAddressLabelEntry(state, addressBookConstants.ADDRESS_BOOK_TABLE_ID);
 }
 
 export function getAccountAddressEntry(state: AppState) {
-  return getAddressLabelEntry(state, ACCOUNT_ADDRESS_ID);
+  return getAddressLabelEntry(state, addressBookConstants.ACCOUNT_ADDRESS_ID);
 }
 
 export function getAddressLabelEntryFromAddress(state: AppState, address: string) {
   const rows = getAddressLabelRows(state);
   const entry = rows.find(
-    (iteratedEntry: AddressLabelEntry) => iteratedEntry.address === toChecksumAddress(address)
+    (iteratedEntry: addressBookTypes.AddressLabelEntry) =>
+      iteratedEntry.address === toChecksumAddress(address)
   );
 
   return entry;
 }
 
 export function getAddressLabelRows(state: AppState) {
-  const nonRowEntries = [ADDRESS_BOOK_TABLE_ID, 'ACCOUNT_ADDRESS_ID'];
+  const nonRowEntries = [addressBookConstants.ADDRESS_BOOK_TABLE_ID, 'ACCOUNT_ADDRESS_ID'];
   const entries = getAddressLabelEntries(state);
   const rows = Object.keys(entries)
     .map(entry => ({ ...entries[entry] }))
@@ -61,7 +62,7 @@ export function getNextAddressLabelId(state: AppState) {
 
 export function getCurrentToLabel(state: AppState) {
   const addresses = getAddressLabels(state);
-  const currentTo = getCurrentTo(state);
+  const currentTo = transactionSelectors.getCurrentTo(state);
 
   return addresses[currentTo.raw] || null;
 }

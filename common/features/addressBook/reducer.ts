@@ -1,20 +1,20 @@
 import { toChecksumAddress } from 'ethereumjs-util';
 
-import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID } from './constants';
-import { ADDRESS_BOOK, AddressBookAction, AddressBookState } from './types';
+import * as addressBookConstants from './constants';
+import * as addressBookTypes from './types';
 
-export const INITIAL_STATE: AddressBookState = {
+export const INITIAL_STATE: addressBookTypes.AddressBookState = {
   addresses: {},
   labels: {},
   entries: {}
 };
 
 export function addressBookReducer(
-  state: AddressBookState = INITIAL_STATE,
-  action: AddressBookAction
-): AddressBookState {
+  state: addressBookTypes.AddressBookState = INITIAL_STATE,
+  action: addressBookTypes.AddressBookAction
+): addressBookTypes.AddressBookState {
   switch (action.type) {
-    case ADDRESS_BOOK.SET_LABEL: {
+    case addressBookTypes.AddressBookActions.SET_LABEL: {
       const { addresses, labels } = state;
       const { address, label } = action.payload;
       const checksummedAddress = toChecksumAddress(address);
@@ -34,7 +34,7 @@ export function addressBookReducer(
       };
     }
 
-    case ADDRESS_BOOK.CLEAR_LABEL: {
+    case addressBookTypes.AddressBookActions.CLEAR_LABEL: {
       const { addresses, labels } = state;
       const address = action.payload;
       const label = addresses[address];
@@ -51,10 +51,12 @@ export function addressBookReducer(
       };
     }
 
-    case ADDRESS_BOOK.SET_LABEL_ENTRY: {
+    case addressBookTypes.AddressBookActions.SET_LABEL_ENTRY: {
       const { id, address } = action.payload;
       const checksummedAddress = toChecksumAddress(address);
-      const isNonRowEntry = id === ADDRESS_BOOK_TABLE_ID || id === ACCOUNT_ADDRESS_ID;
+      const isNonRowEntry =
+        id === addressBookConstants.ADDRESS_BOOK_TABLE_ID ||
+        id === addressBookConstants.ACCOUNT_ADDRESS_ID;
 
       return {
         ...state,
@@ -68,7 +70,7 @@ export function addressBookReducer(
       };
     }
 
-    case ADDRESS_BOOK.CLEAR_LABEL_ENTRY: {
+    case addressBookTypes.AddressBookActions.CLEAR_LABEL_ENTRY: {
       const id = action.payload;
       const entries = { ...state.entries };
 

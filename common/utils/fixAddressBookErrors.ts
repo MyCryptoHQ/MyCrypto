@@ -1,6 +1,8 @@
-import { ADDRESS_BOOK_TABLE_ID, ACCOUNT_ADDRESS_ID, AddressBookState } from 'features/addressBook';
+import { addressBookConstants, addressBookTypes } from 'features/addressBook';
 
-export default function fixAddressBookErrors(addressBook: AddressBookState | undefined) {
+export default function fixAddressBookErrors(
+  addressBook: addressBookTypes.AddressBookState | undefined
+) {
   if (!addressBook) {
     return {};
   }
@@ -19,8 +21,8 @@ export default function fixAddressBookErrors(addressBook: AddressBookState | und
     }
   });
 
-  delete addressBook.entries[ADDRESS_BOOK_TABLE_ID];
-  delete addressBook.entries[ACCOUNT_ADDRESS_ID];
+  delete addressBook.entries[addressBookConstants.ADDRESS_BOOK_TABLE_ID];
+  delete addressBook.entries[addressBookConstants.ACCOUNT_ADDRESS_ID];
 
   return addressBook;
 }

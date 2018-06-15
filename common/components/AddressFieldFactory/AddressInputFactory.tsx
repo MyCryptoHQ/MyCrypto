@@ -12,7 +12,7 @@ import {
   isValidCurrentTo,
   isCurrentToLabelEntry
 } from 'features/transaction';
-import { getCurrentToLabel } from 'features/addressBook';
+import { addressBookSelectors } from 'features/addressBook';
 import { getWalletInst } from 'features/wallet';
 import { getResolvingDomain } from 'features/ens';
 import { Identicon, Spinner } from 'components/ui';
@@ -131,7 +131,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
 
   return {
     currentTo,
-    label: getCurrentToLabel(state),
+    label: addressBookSelectors.getCurrentToLabel(state),
     isResolving: getResolvingDomain(state),
     isValid: isValidCurrentTo(state),
     isLabelEntry: isCurrentToLabelEntry(state)

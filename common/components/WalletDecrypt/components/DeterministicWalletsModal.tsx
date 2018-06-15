@@ -16,7 +16,7 @@ import {
   getDeterministicWallets
 } from 'features/deterministicWallets';
 import { getTokens } from 'features/wallet';
-import { getAddressLabels } from 'features/addressBook';
+import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
 import './DeterministicWalletsModal.scss';
@@ -33,7 +33,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  addressLabels: ReturnType<typeof getAddressLabels>;
+  addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
   desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: ReturnType<typeof getNetworkConfig>;
@@ -343,7 +343,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    addressLabels: getAddressLabels(state),
+    addressLabels: addressBookSelectors.getAddressLabels(state),
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),

@@ -5,27 +5,21 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import {
-  ACCOUNT_ADDRESS_ID,
-  changeAddressLabelEntry,
-  TChangeAddressLabelEntry,
-  saveAddressLabelEntry,
-  TSaveAddressLabelEntry,
-  removeAddressLabelEntry,
-  TRemoveAddressLabelEntry,
-  getAccountAddressEntry,
-  getAddressLabels
+  addressBookConstants,
+  addressBookActions,
+  addressBookSelectors
 } from 'features/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {
-  entry: ReturnType<typeof getAccountAddressEntry>;
-  addressLabels: ReturnType<typeof getAddressLabels>;
+  entry: ReturnType<typeof addressBookSelectors.getAccountAddressEntry>;
+  addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
 }
 
 interface DispatchProps {
-  changeAddressLabelEntry: TChangeAddressLabelEntry;
-  saveAddressLabelEntry: TSaveAddressLabelEntry;
-  removeAddressLabelEntry: TRemoveAddressLabelEntry;
+  changeAddressLabelEntry: addressBookActions.TChangeAddressLabelEntry;
+  saveAddressLabelEntry: addressBookActions.TSaveAddressLabelEntry;
+  removeAddressLabelEntry: addressBookActions.TRemoveAddressLabelEntry;
 }
 
 interface OwnProps {
@@ -74,6 +68,8 @@ class AccountAddress extends React.Component<Props, State> {
     const addressClassName = `AccountInfo-address-addr ${
       label ? 'AccountInfo-address-addr--small' : ''
     }`;
+
+    console.log('actions', addressBookActions);
 
     return (
       <div className="AccountInfo">
@@ -231,7 +227,7 @@ class AccountAddress extends React.Component<Props, State> {
     const label = e.target.value;
 
     this.props.changeAddressLabelEntry({
-      id: ACCOUNT_ADDRESS_ID,
+      id: addressBookConstants.ACCOUNT_ADDRESS_ID,
       address,
       label,
       isEditing: true
@@ -257,14 +253,14 @@ class AccountAddress extends React.Component<Props, State> {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (state: AppState) => ({
-  entry: getAccountAddressEntry(state),
-  addressLabels: getAddressLabels(state)
+  entry: addressBookSelectors.getAccountAddressEntry(state),
+  addressLabels: addressBookSelectors.getAddressLabels(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
-  changeAddressLabelEntry,
-  saveAddressLabelEntry,
-  removeAddressLabelEntry
+  changeAddressLabelEntry: addressBookActions.changeAddressLabelEntry,
+  saveAddressLabelEntry: addressBookActions.saveAddressLabelEntry,
+  removeAddressLabelEntry: addressBookActions.removeAddressLabelEntry
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(

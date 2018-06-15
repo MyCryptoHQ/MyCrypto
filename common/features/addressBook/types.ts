@@ -10,10 +10,10 @@ export interface AddressBookState {
   };
 }
 
-export enum ADDRESS_BOOK {
+export enum AddressBookActions {
   SET_LABEL = 'ADDRESS_BOOK_SET_LABEL',
   CLEAR_LABEL = 'ADDRESS_BOOK_CLEAR_LABEL',
-  SET_LABEL_ENTRY = 'ADDRESS_BOOK_SET_LABEL_TEMPORARY_ENTRY',
+  SET_LABEL_ENTRY = 'ADDRESS_BOOK_SET_LABEL_ENTRY',
   CHANGE_LABEL_ENTRY = 'ADDRESS_BOOK_CHANGE_LABEL_ENTRY',
   SAVE_LABEL_ENTRY = 'ADDRESS_BOOK_SAVE_LABEL_ENTRY',
   CLEAR_LABEL_ENTRY = 'ADDRESS_BOOK_CLEAR_LABEL_ENTRY',
@@ -36,37 +36,37 @@ export interface AddressLabelEntry extends AddressLabel {
 }
 
 export interface SetAddressLabel {
-  type: ADDRESS_BOOK.SET_LABEL;
+  type: AddressBookActions.SET_LABEL;
   payload: AddressLabel;
 }
 
 export interface ClearAddressLabel {
-  type: ADDRESS_BOOK.CLEAR_LABEL;
+  type: AddressBookActions.CLEAR_LABEL;
   payload: string;
 }
 
 export interface SetAddressLabelEntry {
-  type: ADDRESS_BOOK.SET_LABEL_ENTRY;
+  type: AddressBookActions.SET_LABEL_ENTRY;
   payload: AddressLabelEntry;
 }
 
 export interface ChangeAddressLabelEntry {
-  type: ADDRESS_BOOK.CHANGE_LABEL_ENTRY;
+  type: AddressBookActions.CHANGE_LABEL_ENTRY;
   payload: AddressLabelEntry;
 }
 
 export interface SaveAddressLabelEntry {
-  type: ADDRESS_BOOK.SAVE_LABEL_ENTRY;
+  type: AddressBookActions.SAVE_LABEL_ENTRY;
   payload: string;
 }
 
 export interface ClearAddressLabelEntry {
-  type: ADDRESS_BOOK.CLEAR_LABEL_ENTRY;
+  type: AddressBookActions.CLEAR_LABEL_ENTRY;
   payload: string;
 }
 
 export interface RemoveAddressLabelEntry {
-  type: ADDRESS_BOOK.REMOVE_LABEL_ENTRY;
+  type: AddressBookActions.REMOVE_LABEL_ENTRY;
   payload: string;
 }
 
