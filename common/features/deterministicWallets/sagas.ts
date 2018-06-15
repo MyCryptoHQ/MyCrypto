@@ -7,14 +7,16 @@ import translate from 'translations';
 import { INode } from 'libs/nodes/INode';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
-import { getNodeLib } from 'features/config/nodes/selectors';
-import { getTokens } from 'features/wallet/selectors';
-import { showNotification } from 'features/notifications/actions';
-import { DeterministicWalletData, GetDeterministicWalletsAction } from './types';
-import { setDeterministicWallets, updateDeterministicWallet } from './actions';
-import { getDesiredToken, getWallets } from './selectors';
+import * as configNodesSelectors from 'features/config/nodes/selectors';
+import * as walletSelectors from 'features/wallet/selectors';
+import * as notificationsActions from 'features/notifications/actions';
+import * as deterministicWalletsTypes from './types';
+import * as deterministicWalletsActions from './actions';
+import * as deterministicWalletsSelectors from './selectors';
 
-export function* getDeterministicWalletsSaga(action: GetDeterministicWalletsAction): SagaIterator {
+export function* getDeterministicWalletsSaga(
+  action: deterministicWalletsTypes.GetDeterministicWalletsAction
+): SagaIterator {
   const { seed, dPath, publicKey, chainCode, limit, offset } = action.payload;
   let pathBase;
   let hdk;
@@ -33,7 +35,7 @@ export function* getDeterministicWalletsSaga(action: GetDeterministicWalletsActi
   } else {
     return;
   }
-  const wallets: DeterministicWalletData[] = [];
+  const wallets: deterministicWalletsTypes.DeterministicWalletData[] = [];
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
     const dkey = hdk.derive(`${pathBase}/${index}`);
@@ -45,15 +47,17 @@ export function* getDeterministicWalletsSaga(action: GetDeterministicWalletsActi
     });
   }
 
-  yield put(setDeterministicWallets(wallets));
+  yield put(deterministicWalletsActions.setDeterministicWallets(wallets));
   yield fork(updateWalletValues);
   yield fork(updateWalletTokenValues);
 }
 
 // Grab each wallet's main network token, and update it with it
 export function* updateWalletValues(): SagaIterator {
-  const node: INode = yield select(getNodeLib);
-  const wallets: DeterministicWalletData[] = yield select(getWallets);
+  const node: INode = yield select(configNodesSelectors.getNodeLib);
+  const wallets: deterministicWalletsTypes.DeterministicWalletData[] = yield select(
+    deterministicWalletsSelectors.getWallets
+  );
 
   try {
     const calls = wallets.map(w => apply(node, node.getBalance, [w.address]));
@@ -61,7 +65,7 @@ export function* updateWalletValues(): SagaIterator {
 
     for (let i = 0; i < wallets.length; i++) {
       yield put(
-        updateDeterministicWallet({
+        deterministicWalletsActions.updateDeterministicWallet({
           ...wallets[i],
           value: balances[i]
         })
@@ -69,25 +73,27 @@ export function* updateWalletValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(showNotification('danger', translate('ERROR_32')));
+    yield put(notificationsActions.showNotification('danger', translate('ERROR_32')));
   }
 }
 
 // Grab the current desired token, and update the wallet with it
 export function* updateWalletTokenValues(): SagaIterator {
-  const desiredToken: string = yield select(getDesiredToken);
+  const desiredToken: string = yield select(deterministicWalletsSelectors.getDesiredToken);
   if (!desiredToken) {
     return;
   }
 
-  const tokens: Token[] = yield select(getTokens);
+  const tokens: Token[] = yield select(walletSelectors.getTokens);
   const token = tokens.find(t => t.symbol === desiredToken);
   if (!token) {
     return;
   }
 
-  const node: INode = yield select(getNodeLib);
-  const wallets: DeterministicWalletData[] = yield select(getWallets);
+  const node: INode = yield select(configNodesSelectors.getNodeLib);
+  const wallets: deterministicWalletsTypes.DeterministicWalletData[] = yield select(
+    deterministicWalletsSelectors.getWallets
+  );
 
   try {
     const calls = wallets.map(w => {
@@ -98,7 +104,7 @@ export function* updateWalletTokenValues(): SagaIterator {
     for (let i = 0; i < wallets.length; i++) {
       if (!tokenBalances[i].error) {
         yield put(
-          updateDeterministicWallet({
+          deterministicWalletsActions.updateDeterministicWallet({
             ...wallets[i],
             tokenValues: {
               ...wallets[i].tokenValues,
@@ -113,7 +119,7 @@ export function* updateWalletTokenValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(showNotification('danger', translate('ERROR_32')));
+    yield put(notificationsActions.showNotification('danger', translate('ERROR_32')));
   }
 }
 

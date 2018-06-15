@@ -1,20 +1,11 @@
-import {
-  DETERMINISTIC_WALLETS,
-  GetDeterministicWalletsArgs,
-  GetDeterministicWalletsAction,
-  DeterministicWalletData,
-  SetDeterministicWalletsAction,
-  SetDesiredTokenAction,
-  UpdateDeterministicWalletArgs,
-  UpdateDeterministicWalletAction
-} from './types';
+import * as deterministicWalletsTypes from './types';
 
 export function getDeterministicWallets(
-  args: GetDeterministicWalletsArgs
-): GetDeterministicWalletsAction {
+  args: deterministicWalletsTypes.GetDeterministicWalletsArgs
+): deterministicWalletsTypes.GetDeterministicWalletsAction {
   const { seed, dPath, publicKey, chainCode, limit, offset } = args;
   return {
-    type: DETERMINISTIC_WALLETS.GET,
+    type: deterministicWalletsTypes.DeterministicWalletsActions.GET,
     payload: {
       seed,
       dPath,
@@ -27,33 +18,28 @@ export function getDeterministicWallets(
 }
 
 export function setDeterministicWallets(
-  wallets: DeterministicWalletData[]
-): SetDeterministicWalletsAction {
+  wallets: deterministicWalletsTypes.DeterministicWalletData[]
+): deterministicWalletsTypes.SetDeterministicWalletsAction {
   return {
-    type: DETERMINISTIC_WALLETS.SET,
+    type: deterministicWalletsTypes.DeterministicWalletsActions.SET,
     payload: wallets
   };
 }
 
-export function setDesiredToken(token: string | undefined): SetDesiredTokenAction {
+export function setDesiredToken(
+  token: string | undefined
+): deterministicWalletsTypes.SetDesiredTokenAction {
   return {
-    type: DETERMINISTIC_WALLETS.SET_DESIRED_TOKEN,
+    type: deterministicWalletsTypes.DeterministicWalletsActions.SET_DESIRED_TOKEN,
     payload: token
   };
 }
 
 export function updateDeterministicWallet(
-  args: UpdateDeterministicWalletArgs
-): UpdateDeterministicWalletAction {
+  args: deterministicWalletsTypes.UpdateDeterministicWalletArgs
+): deterministicWalletsTypes.UpdateDeterministicWalletAction {
   return {
-    type: DETERMINISTIC_WALLETS.UPDATE_WALLET,
+    type: deterministicWalletsTypes.DeterministicWalletsActions.UPDATE_WALLET,
     payload: args
   };
 }
-
-export default {
-  getDeterministicWallets,
-  setDeterministicWallets,
-  setDesiredToken,
-  updateDeterministicWallet
-};

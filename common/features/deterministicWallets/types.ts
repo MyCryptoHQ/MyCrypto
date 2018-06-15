@@ -1,15 +1,15 @@
 import { TokenValue, Wei } from 'libs/units';
 
-export enum DETERMINISTIC_WALLETS {
+export interface DeterministicWalletsState {
+  wallets: DeterministicWalletData[];
+  desiredToken: string | undefined;
+}
+
+export enum DeterministicWalletsActions {
   GET = 'DETERMINISTIC_WALLETS_GET_WALLETS',
   SET = 'DETERMINISTIC_WALLETS_SET_WALLETS',
   SET_DESIRED_TOKEN = 'DETERMINISTIC_WALLETS_SET_DESIRED_TOKEN',
   UPDATE_WALLET = 'DETERMINISTIC_WALLETS_UPDATE_WALLET'
-}
-
-export interface DeterministicWalletsState {
-  wallets: DeterministicWalletData[];
-  desiredToken: string | undefined;
 }
 
 export interface ITokenData {
@@ -30,7 +30,7 @@ export interface DeterministicWalletData {
 
 /*** Get determinstic wallets ***/
 export interface GetDeterministicWalletsAction {
-  type: DETERMINISTIC_WALLETS.GET;
+  type: DeterministicWalletsActions.GET;
   payload: {
     seed?: string;
     dPath: string;
@@ -43,13 +43,13 @@ export interface GetDeterministicWalletsAction {
 
 /*** Set deterministic wallets ***/
 export interface SetDeterministicWalletsAction {
-  type: DETERMINISTIC_WALLETS.SET;
+  type: DeterministicWalletsActions.SET;
   payload: DeterministicWalletData[];
 }
 
 /*** Set desired token ***/
 export interface SetDesiredTokenAction {
-  type: DETERMINISTIC_WALLETS.SET_DESIRED_TOKEN;
+  type: DeterministicWalletsActions.SET_DESIRED_TOKEN;
   payload: string | undefined;
 }
 
@@ -62,7 +62,7 @@ export interface UpdateDeterministicWalletArgs {
 }
 
 export interface UpdateDeterministicWalletAction {
-  type: DETERMINISTIC_WALLETS.UPDATE_WALLET;
+  type: DeterministicWalletsActions.UPDATE_WALLET;
   payload: UpdateDeterministicWalletArgs;
 }
 

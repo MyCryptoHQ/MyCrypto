@@ -8,12 +8,8 @@ import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import { getNetworkConfig } from 'features/config';
 import {
-  DeterministicWalletData,
-  GetDeterministicWalletsAction,
-  GetDeterministicWalletsArgs,
-  SetDesiredTokenAction,
-  setDesiredToken,
-  getDeterministicWallets
+  deterministicWalletsTypes,
+  deterministicWalletsActions
 } from 'features/deterministicWallets';
 import { getTokens } from 'features/wallet';
 import { addressBookSelectors } from 'features/addressBook';
@@ -41,8 +37,10 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  getDeterministicWallets(args: GetDeterministicWalletsArgs): GetDeterministicWalletsAction;
-  setDesiredToken(tkn: string | undefined): SetDesiredTokenAction;
+  getDeterministicWallets(
+    args: deterministicWalletsTypes.GetDeterministicWalletsArgs
+  ): deterministicWalletsTypes.GetDeterministicWalletsAction;
+  setDesiredToken(tkn: string | undefined): deterministicWalletsTypes.SetDesiredTokenAction;
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
   onPathChange(dPath: DPath): void;
@@ -278,7 +276,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderWalletRow(wallet: DeterministicWalletData) {
+  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData) {
     const { desiredToken, network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[toChecksumAddress(wallet.address)];
@@ -352,8 +350,8 @@ function mapStateToProps(state: AppState): StateProps {
 }
 
 const DeterministicWalletsModal = connect(mapStateToProps, {
-  getDeterministicWallets,
-  setDesiredToken
+  getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets,
+  setDesiredToken: deterministicWalletsActions.setDesiredToken
 })(DeterministicWalletsModalClass);
 
 export default DeterministicWalletsModal;

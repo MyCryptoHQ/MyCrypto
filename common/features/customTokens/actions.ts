@@ -17,8 +17,3 @@ export function removeCustomToken(payload: string): customTokensTypes.RemoveCust
     payload
   };
 }
-
-export default {
-  addCustomToken,
-  removeCustomToken
-};
