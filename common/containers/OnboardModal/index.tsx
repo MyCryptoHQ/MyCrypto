@@ -4,7 +4,7 @@ import Stepper from 'react-stepper-horizontal';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { showNotification, TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import {
   startOnboardSession,
   TStartOnboardSession,
@@ -41,7 +41,7 @@ interface Props {
   resumeSlide: TResumeSlide;
   decrementSlide: TDecrementSlide;
   incrementSlide: TIncrementSlide;
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 class OnboardModal extends React.Component<Props, State> {
@@ -194,5 +194,5 @@ export default connect(mapStateToProps, {
   resumeSlide,
   decrementSlide,
   incrementSlide,
-  showNotification
+  showNotification: notificationsActions.showNotification
 })(OnboardModal);

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import { Notification } from 'features/notifications';
+import { notificationsTypes } from 'features/notifications';
 import './Notifications.scss';
 
 interface Props {
-  notification: Notification;
-  onClose(n: Notification): void;
+  notification: notificationsTypes.Notification;
+  onClose(n: notificationsTypes.Notification): void;
 }
 
 export default class NotificationRow extends Component<Props, {}> {

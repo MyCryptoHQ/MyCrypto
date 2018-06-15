@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { bityConfig } from 'config/bity';
 import translate, { translateRaw } from 'translations';
-import { TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import './SwapProgress.scss';
 
 export interface Props {
@@ -14,7 +14,7 @@ export interface Props {
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
   // actions
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 interface State {

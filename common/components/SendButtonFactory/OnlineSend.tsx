@@ -13,7 +13,7 @@ import {
   getSignedTx,
   getWeb3Tx
 } from 'features/transaction';
-import { showNotification, TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {
@@ -29,7 +29,7 @@ interface State {
 }
 
 interface DispatchProps {
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 
   signTransactionRequested: TSignTransactionRequested;
 }
@@ -97,5 +97,5 @@ export const OnlineSend = connect(
     signaturePending: signaturePending(state).isSignaturePending,
     signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
   }),
-  { showNotification, signTransactionRequested }
+  { showNotification: notificationsActions.showNotification, signTransactionRequested }
 )(OnlineSendClass);

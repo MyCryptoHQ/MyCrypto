@@ -8,7 +8,7 @@ import { makeAutoNodeName } from 'libs/nodes';
 import { Web3Wallet } from 'libs/wallet';
 import { StaticNodeConfig, CustomNodeConfig } from 'types/node';
 import configuredStore from 'features/store';
-import { showNotification } from 'features/notifications';
+import * as notificationsActions from 'features/notifications/actions';
 import { selectedNodeExpectedState } from './nodes/selected/reducer.spec';
 import { staticNodesExpectedState } from './nodes/static/reducer.spec';
 import { customNodesExpectedState, firstCustomNode } from './nodes/custom/reducer.spec';
@@ -65,7 +65,9 @@ describe('handleChangeNodeRequested*', () => {
   data.gen = cloneableGenerator(handleChangeNodeRequested)(changeNodeRequestedAction);
 
   function shouldBailOut(gen: SagaIterator, nextVal: any, errMsg: string) {
-    expect(gen.next(nextVal).value).toEqual(put(showNotification('danger', errMsg, 5000)));
+    expect(gen.next(nextVal).value).toEqual(
+      put(notificationsActions.showNotification('danger', errMsg, 5000))
+    );
     expect(gen.next().value).toEqual(put(changeNodeFailed()));
     expect(gen.next().done).toEqual(true);
   }
@@ -103,7 +105,7 @@ describe('handleChangeNodeRequested*', () => {
     data.clone1 = data.gen.clone();
     data.clone1.next(true);
     expect(data.clone1.throw('err').value).toEqual(
-      put(showNotification('danger', translateRaw('ERROR_32'), 5000))
+      put(notificationsActions.showNotification('danger', translateRaw('ERROR_32'), 5000))
     );
     expect(data.clone1.next().value).toEqual(put(changeNodeFailed()));
     expect(data.clone1.next().done).toEqual(true);

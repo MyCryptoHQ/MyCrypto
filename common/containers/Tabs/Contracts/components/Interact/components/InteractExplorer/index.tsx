@@ -7,7 +7,7 @@ import { Data } from 'libs/units';
 import { INode } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { getNodeLib } from 'features/config';
-import { TShowNotification, showNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import {
   getTo,
   getDataExists,
@@ -32,7 +32,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
   setDataField: TSetDataField;
   resetTransactionRequested: TResetTransactionRequested;
   setAsContractInteraction: TSetAsContractInteraction;
@@ -320,7 +320,7 @@ export const InteractExplorer = connect(
     dataExists: getDataExists(state)
   }),
   {
-    showNotification,
+    showNotification: notificationsActions.showNotification,
     setDataField,
     resetTransactionRequested,
     setAsContractInteraction,

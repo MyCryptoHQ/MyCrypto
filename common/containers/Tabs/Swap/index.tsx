@@ -5,7 +5,7 @@ import { merge } from 'lodash';
 
 import { AppState } from 'features/reducers';
 import { getOffline } from 'features/config';
-import { showNotification as dShowNotification, TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import {
   ProviderName,
   SwapInput,
@@ -87,7 +87,7 @@ interface ReduxActionProps {
   stopOrderTimerSwap: TStopOrderTimerSwap;
   stopPollBityOrderStatus: TStopPollBityOrderStatus;
   stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
   initSwap: TInitSwap;
   swapProvider: TChangeSwapProvider;
 }
@@ -273,6 +273,6 @@ export default connect(mapStateToProps, {
   stopOrderTimerSwap: dStopOrderTimerSwap,
   stopPollBityOrderStatus: dStopPollBityOrderStatus,
   stopPollShapeshiftOrderStatus: dStopPollShapeshiftOrderStatus,
-  showNotification: dShowNotification,
+  showNotification: notificationsActions.showNotification,
   swapProvider: dChangeSwapProvider
 })(Swap);

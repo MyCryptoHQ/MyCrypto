@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import { SwapInput } from 'features/swap/types';
 import {
   TRestartSwap,
@@ -37,7 +37,7 @@ interface ReduxActionProps {
   startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
   stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
   stopOrderTimerSwap: TStopOrderTimerSwap;
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 export default class PartThree extends PureComponent<ReduxActionProps & ReduxStateProps, {}> {

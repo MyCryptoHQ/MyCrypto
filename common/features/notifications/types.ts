@@ -2,16 +2,16 @@ import { ReactElement } from 'react';
 
 export type NotificationState = Notification[];
 
-export enum NOTIFICATIONS {
+export enum NotificationsActions {
   SHOW = 'SHOW_NOTIFICATION',
   CLOSE = 'CLOSE_NOTIFICATION'
 }
 
 /*** Shared types ***/
-export type NOTIFICATION_LEVEL = 'danger' | 'warning' | 'success' | 'info';
+export type NotificationLevel = 'danger' | 'warning' | 'success' | 'info';
 
 export interface Notification {
-  level: NOTIFICATION_LEVEL;
+  level: NotificationLevel;
   msg: ReactElement<any> | string;
   id: number;
   duration?: number;
@@ -19,13 +19,13 @@ export interface Notification {
 
 /*** Close notification ***/
 export interface CloseNotificationAction {
-  type: NOTIFICATIONS.CLOSE;
+  type: NotificationsActions.CLOSE;
   payload: Notification;
 }
 
 /*** Show Notification ***/
 export interface ShowNotificationAction {
-  type: NOTIFICATIONS.SHOW;
+  type: NotificationsActions.SHOW;
   payload: Notification;
 }
 

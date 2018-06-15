@@ -44,7 +44,7 @@ import {
   getDisabledWallets
 } from 'features/wallet';
 import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
-import { showNotification, TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
@@ -66,7 +66,7 @@ interface DispatchProps {
   unlockWeb3: TUnlockWeb3;
   setWallet: TSetWallet;
   resetTransactionRequested: TResetTransactionRequested;
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 interface StateProps {
@@ -480,5 +480,5 @@ export default connect(mapStateToProps, {
   unlockWeb3,
   setWallet,
   resetTransactionRequested,
-  showNotification
+  showNotification: notificationsActions.showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;

@@ -2,7 +2,7 @@ import { bindActionCreators } from 'redux';
 
 import { shepherdProvider, getShepherdPending, getShepherdOffline } from 'libs/nodes';
 import { setOffline, setOnline, getOffline } from 'features/config';
-import { showNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import configureStore from './configureStore';
 
 const store = configureStore();
@@ -18,9 +18,13 @@ window.addEventListener('load', () => {
       offline: setOffline,
       online: setOnline,
       restoreNotif: () =>
-        showNotification('success', 'Your connection to the network has been restored!', 3000),
+        notificationsActions.showNotification(
+          'success',
+          'Your connection to the network has been restored!',
+          3000
+        ),
       lostNetworkNotif: () =>
-        showNotification(
+        notificationsActions.showNotification(
           'danger',
           `You’ve lost your connection to the network, check your internet
     connection or try changing networks from the dropdown at the
@@ -29,7 +33,7 @@ window.addEventListener('load', () => {
         ),
 
       offlineNotif: () =>
-        showNotification(
+        notificationsActions.showNotification(
           'info',
           'You are currently offline. Some features will be unavailable.',
           5000

@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { showNotification, TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 
 interface DispatchProps {
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 interface OwnProps {
@@ -50,4 +50,6 @@ class ErrorBoundary extends React.Component<Props> {
   }
 }
 
-export default connect(null, { showNotification })(ErrorBoundary);
+export default connect(null, { showNotification: notificationsActions.showNotification })(
+  ErrorBoundary
+);

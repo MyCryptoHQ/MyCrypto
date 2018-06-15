@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
-import { showNotification, TShowNotification } from 'features/notifications';
+import { notificationsActions } from 'features/notifications';
 import { TextArea } from 'components/ui';
 import './index.scss';
 
 interface Props {
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 interface State {
@@ -118,5 +118,5 @@ export class VerifyMessage extends Component<Props, State> {
 }
 
 export default connect(null, {
-  showNotification
+  showNotification: notificationsActions.showNotification
 })(VerifyMessage);

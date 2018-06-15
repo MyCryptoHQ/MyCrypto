@@ -1,20 +1,14 @@
 import { ReactElement } from 'react';
-import {
-  NOTIFICATIONS,
-  NOTIFICATION_LEVEL,
-  Notification,
-  CloseNotificationAction,
-  ShowNotificationAction
-} from './types';
+import * as notificationsTypes from './types';
 
 export type TShowNotification = typeof showNotification;
 export function showNotification(
-  level: NOTIFICATION_LEVEL = 'info',
+  level: notificationsTypes.NotificationLevel = 'info',
   msg: ReactElement<any> | string,
   duration?: number
-): ShowNotificationAction {
+): notificationsTypes.ShowNotificationAction {
   return {
-    type: NOTIFICATIONS.SHOW,
+    type: notificationsTypes.NotificationsActions.SHOW,
     payload: {
       level,
       msg,
@@ -25,9 +19,11 @@ export function showNotification(
 }
 
 export type TCloseNotification = typeof closeNotification;
-export function closeNotification(notification: Notification): CloseNotificationAction {
+export function closeNotification(
+  notification: notificationsTypes.Notification
+): notificationsTypes.CloseNotificationAction {
   return {
-    type: NOTIFICATIONS.CLOSE,
+    type: notificationsTypes.NotificationsActions.CLOSE,
     payload: notification
   };
 }

@@ -1,37 +1,31 @@
-import {
-  NOTIFICATIONS,
-  CloseNotificationAction,
-  NotificationsAction,
-  ShowNotificationAction,
-  NotificationState
-} from './types';
+import * as notificationTypes from './types';
 
-export const INITIAL_STATE: NotificationState = [];
+export const INITIAL_STATE: notificationTypes.NotificationState = [];
 
 function showNotification(
-  state: NotificationState,
-  action: ShowNotificationAction
-): NotificationState {
+  state: notificationTypes.NotificationState,
+  action: notificationTypes.ShowNotificationAction
+): notificationTypes.NotificationState {
   return state.concat(action.payload);
 }
 
 function closeNotification(
-  state: NotificationState,
-  action: CloseNotificationAction
-): NotificationState {
+  state: notificationTypes.NotificationState,
+  action: notificationTypes.CloseNotificationAction
+): notificationTypes.NotificationState {
   state = [...state];
   state.splice(state.indexOf(action.payload), 1);
   return state;
 }
 
 export function notificationsReducer(
-  state: NotificationState = INITIAL_STATE,
-  action: NotificationsAction
-): NotificationState {
+  state: notificationTypes.NotificationState = INITIAL_STATE,
+  action: notificationTypes.NotificationsAction
+): notificationTypes.NotificationState {
   switch (action.type) {
-    case NOTIFICATIONS.SHOW:
+    case notificationTypes.NotificationsActions.SHOW:
       return showNotification(state, action);
-    case NOTIFICATIONS.CLOSE:
+    case notificationTypes.NotificationsActions.CLOSE:
       return closeNotification(state, action);
     default:
       return state;

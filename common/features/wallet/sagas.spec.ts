@@ -19,7 +19,7 @@ import {
   changeNodeRequested
 } from 'features/config';
 import { initWeb3Node, unlockWeb3 } from 'features/config/sagas';
-import { showNotification } from 'features/notifications';
+import * as notificationsActions from 'features/notifications/actions';
 import { WALLET } from './types';
 import {
   setBalanceFullfilled,
@@ -357,7 +357,12 @@ describe('unlockWeb3*', () => {
       put(web3UnsetNode())
     );
     expect(data.clone.next().value).toEqual(
-      put(showNotification('danger', translate('Cannot use Web3 wallet without a Web3 node.')))
+      put(
+        notificationsActions.showNotification(
+          'danger',
+          translate('Cannot use Web3 wallet without a Web3 node.')
+        )
+      )
     );
     expect(data.clone.next().done).toEqual(true);
   });
@@ -370,7 +375,12 @@ describe('unlockWeb3*', () => {
     data.clone1 = data.gen.clone();
     expect(data.clone1.next([]).value).toEqual(put(web3UnsetNode()));
     expect(data.clone1.next().value).toEqual(
-      put(showNotification('danger', translate('No accounts found in MetaMask / Mist.')))
+      put(
+        notificationsActions.showNotification(
+          'danger',
+          translate('No accounts found in MetaMask / Mist.')
+        )
+      )
     );
     expect(data.clone1.next().done).toEqual(true);
   });

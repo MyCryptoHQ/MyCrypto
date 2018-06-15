@@ -3,13 +3,13 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { Notification, closeNotification, TCloseNotification } from 'features/notifications';
+import { notificationsTypes, notificationsActions } from 'features/notifications';
 import NotificationRow from './NotificationRow';
 import './Notifications.scss';
 
 interface Props {
-  notifications: Notification[];
-  closeNotification: TCloseNotification;
+  notifications: notificationsTypes.Notification[];
+  closeNotification: notificationsActions.TCloseNotification;
 }
 
 export class Notifications extends React.Component<Props, {}> {
@@ -32,4 +32,6 @@ const mapStateToProps = (state: AppState) => ({
   notifications: state.notifications
 });
 
-export default connect(mapStateToProps, { closeNotification })(Notifications);
+export default connect(mapStateToProps, {
+  closeNotification: notificationsActions.closeNotification
+})(Notifications);
