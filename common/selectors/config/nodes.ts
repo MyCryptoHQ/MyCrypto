@@ -118,7 +118,7 @@ export function getSelectedNodeLabel(state: AppState): INodeLabel {
     );
 
     if (networkNodes.length > 1) {
-      info = `${networkNodes.length} Nodes`;
+      info = 'AUTO';
     } else {
       info = networkNodes[0].service;
     }

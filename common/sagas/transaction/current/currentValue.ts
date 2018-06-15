@@ -1,3 +1,5 @@
+import BN from 'bn.js';
+
 import {
   isEtherTransaction,
   getUnit,
@@ -50,7 +52,26 @@ export function* revalidateCurrentValue(): SagaIterator {
     return yield put(setter({ raw: currVal.raw, value: null }));
   }
   const isValid: boolean = yield call(validateInput, reparsedValue.value, unit);
-  yield put(setter({ raw: reparsedValue.raw, value: isValid ? reparsedValue.value : null }));
+  const newVal = { raw: reparsedValue.raw, value: isValid ? reparsedValue.value : null };
+
+  if (isValueDifferent(currVal, newVal)) {
+    yield put(setter(newVal));
+  }
+}
+
+export function isValueDifferent(curVal: ICurrentValue, newVal: ICurrentValue) {
+  const val1 = curVal.value as BN;
+  const val2 = newVal.value as BN;
+
+  if (curVal.raw !== newVal.raw) {
+    return true;
+  }
+  if (BN.isBN(val1) && BN.isBN(val2)) {
+    return !val1.eq(val2);
+  }
+  if (curVal.value !== newVal.value) {
+    return true;
+  }
 }
 
 export function* reparseCurrentValue(value: IInput): SagaIterator {
