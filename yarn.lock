@@ -7432,6 +7432,10 @@ mycrypto-eth-exists@1.0.0:
     isomorphic-ws "^4.0.1"
     toml "^2.3.3"
 
+mycrypto-nano-result@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/mycrypto-nano-result/-/mycrypto-nano-result-0.0.1.tgz#c1d3208458dc485441b0230c69948f62344f9d5a"
+
 mycrypto-shepherd@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.4.0.tgz#ad86e0f18040da524631bf471bce03ba65c165a3"
@@ -9953,8 +9957,8 @@ sdp@^2.6.0:
   resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.0.tgz#02b64ea0c29d73179afa19794e466b123b1b29f3"
 
 sdp@^2.7.0:
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.4.tgz#cac76b0e2f16f55243d25bc0432f6bbb5488bfc1"
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.7.3.tgz#ed177eb4074aa3213e150e74a9ab2d06ae6e5dbf"
 
 secp256k1@^3.0.1:
   version "3.5.0"
