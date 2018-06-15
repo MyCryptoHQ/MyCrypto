@@ -5,12 +5,7 @@ import translate from 'translations';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getAllTokens, getOffline } from 'features/config';
-import {
-  addCustomToken,
-  removeCustomToken,
-  TAddCustomToken,
-  TRemoveCustomToken
-} from 'features/customTokens';
+import { customTokensActions } from 'features/customTokens';
 import {
   scanWalletForTokens,
   TScanWalletForTokens,
@@ -38,8 +33,8 @@ interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
 }
 interface ActionProps {
-  addCustomToken: TAddCustomToken;
-  removeCustomToken: TRemoveCustomToken;
+  addCustomToken: customTokensActions.TAddCustomToken;
+  removeCustomToken: customTokensActions.TRemoveCustomToken;
   scanWalletForTokens: TScanWalletForTokens;
   setWalletTokens: TSetWalletTokens;
   refreshTokenBalances: TRefreshTokenBalances;
@@ -136,8 +131,8 @@ function mapStateToProps(state: AppState): StateProps {
 }
 
 export default connect(mapStateToProps, {
-  addCustomToken,
-  removeCustomToken,
+  addCustomToken: customTokensActions.addCustomToken,
+  removeCustomToken: customTokensActions.removeCustomToken,
   scanWalletForTokens,
   setWalletTokens,
   refreshTokenBalances

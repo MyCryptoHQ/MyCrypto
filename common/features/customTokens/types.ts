@@ -2,18 +2,18 @@ import { Token } from 'types/network';
 
 export type CustomTokensState = Token[];
 
-export enum CUSTOM_TOKEN {
-  ADD = 'CUSTOM_TOKEN_ADD',
-  REMOVE = 'CUSTOM_TOKEN_REMOVE'
+export enum CustomTokensActions {
+  ADD = 'CUSTOM_TOKENS_ADD',
+  REMOVE = 'CUSTOM_TOKENS_REMOVE'
 }
 
 export interface AddCustomTokenAction {
-  type: CUSTOM_TOKEN.ADD;
+  type: CustomTokensActions.ADD;
   payload: Token;
 }
 
 export interface RemoveCustomTokenAction {
-  type: CUSTOM_TOKEN.REMOVE;
+  type: CustomTokensActions.REMOVE;
   payload: string;
 }
 

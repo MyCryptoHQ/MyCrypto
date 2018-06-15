@@ -23,11 +23,8 @@ import { getOffline } from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';
 import { getAllTokens } from 'features/config/selectors';
 import { showNotification } from 'features/notifications/actions';
-import {
-  CUSTOM_TOKEN as CustomTokenTypeKeys,
-  AddCustomTokenAction
-} from 'features/customTokens/types';
-import { getCustomTokens } from 'features/customTokens/selectors';
+import * as customTokensTypes from 'features/customTokens/types';
+import * as customTokensSelectors from 'features/customTokens/selectors';
 import {
   WALLET,
   UnlockKeystoreAction,
@@ -71,7 +68,9 @@ export function* getTokenBalancesSaga(wallet: IWallet, tokens: Token[]) {
 //  2. It was in the previous wallet's config
 //  3. It's a custom token that the user added
 export function* filterScannedTokenBalances(wallet: IWallet, balances: TokenBalanceLookup) {
-  const customTokens: AppState['customTokens'] = yield select(getCustomTokens);
+  const customTokens: AppState['customTokens'] = yield select(
+    customTokensSelectors.getCustomTokens
+  );
   const oldConfig: WalletConfig = yield call(loadWalletConfig, wallet);
   return Object.keys(balances).filter(symbol => {
     if (balances[symbol] && !balances[symbol].balance.isZero()) {
@@ -299,7 +298,9 @@ export function* unlockMnemonicSaga(action: UnlockMnemonicAction): SagaIterator 
   yield put(setWallet(wallet));
 }
 
-export function* handleCustomTokenAdd(action: AddCustomTokenAction): SagaIterator {
+export function* handleCustomTokenAdd(
+  action: customTokensTypes.AddCustomTokenAction
+): SagaIterator {
   // Add the custom token to our current wallet's config
   const wallet: null | IWallet = yield select(getWalletInst);
   if (!wallet) {
@@ -328,6 +329,6 @@ export function* walletSaga(): SagaIterator {
     takeEvery(WALLET.REFRESH_TOKEN_BALANCES, retryTokenBalances),
     // Foreign actions
     takeEvery(CONFIG_META.TOGGLE_OFFLINE, updateBalances),
-    takeEvery(CustomTokenTypeKeys.ADD, handleCustomTokenAdd)
+    takeEvery(customTokensTypes.CustomTokensActions.ADD, handleCustomTokenAdd)
   ];
 }

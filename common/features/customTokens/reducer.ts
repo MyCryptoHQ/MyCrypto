@@ -1,14 +1,11 @@
-import {
-  CUSTOM_TOKEN,
-  AddCustomTokenAction,
-  CustomTokenAction,
-  RemoveCustomTokenAction,
-  CustomTokensState
-} from './types';
+import * as customTokensTypes from './types';
 
-export const INITIAL_STATE: CustomTokensState = [];
+export const INITIAL_STATE: customTokensTypes.CustomTokensState = [];
 
-function addCustomToken(state: CustomTokensState, action: AddCustomTokenAction): CustomTokensState {
+function addCustomToken(
+  state: customTokensTypes.CustomTokensState,
+  action: customTokensTypes.AddCustomTokenAction
+): customTokensTypes.CustomTokensState {
   if (state.find(token => token.symbol === action.payload.symbol)) {
     return state;
   }
@@ -16,20 +13,20 @@ function addCustomToken(state: CustomTokensState, action: AddCustomTokenAction):
 }
 
 function removeCustomToken(
-  state: CustomTokensState,
-  action: RemoveCustomTokenAction
-): CustomTokensState {
+  state: customTokensTypes.CustomTokensState,
+  action: customTokensTypes.RemoveCustomTokenAction
+): customTokensTypes.CustomTokensState {
   return state.filter(token => token.symbol !== action.payload);
 }
 
 export function customTokensReducer(
-  state: CustomTokensState = INITIAL_STATE,
-  action: CustomTokenAction
-): CustomTokensState {
+  state: customTokensTypes.CustomTokensState = INITIAL_STATE,
+  action: customTokensTypes.CustomTokenAction
+): customTokensTypes.CustomTokensState {
   switch (action.type) {
-    case CUSTOM_TOKEN.ADD:
+    case customTokensTypes.CustomTokensActions.ADD:
       return addCustomToken(state, action);
-    case CUSTOM_TOKEN.REMOVE:
+    case customTokensTypes.CustomTokensActions.REMOVE:
       return removeCustomToken(state, action);
     default:
       return state;
