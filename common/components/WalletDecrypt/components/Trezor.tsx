@@ -1,7 +1,6 @@
-import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
+import { TrezorWallet } from 'libs/wallet';
 import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
-import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import { Spinner, NewTabLink } from 'components/ui';
@@ -109,25 +108,21 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
       error: null
     });
 
-    (TrezorConnect as any).getXPubKey(
-      dPath.value,
-      (res: any) => {
-        if (res.success) {
-          this.setState({
-            dPath,
-            publicKey: res.publicKey,
-            chainCode: res.chainCode,
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            error: res.error,
-            isLoading: false
-          });
-        }
-      },
-      TREZOR_MINIMUM_FIRMWARE
-    );
+    TrezorWallet.getChainCode(dPath.value)
+      .then(res => {
+        this.setState({
+          dPath,
+          publicKey: res.publicKey,
+          chainCode: res.chainCode,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: err.message,
+          isLoading: false
+        });
+      });
   };
 
   private handleCancel = () => {
