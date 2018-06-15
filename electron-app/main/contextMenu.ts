@@ -1,4 +1,11 @@
-import { MenuItemConstructorOptions, shell, BrowserWindow, Menu, clipboard } from 'electron';
+import {
+  MenuItemConstructorOptions,
+  shell,
+  BrowserWindow,
+  Menu,
+  clipboard,
+  PopupOptions
+} from 'electron';
 import { URL } from 'url';
 
 function popupContextMenu(
@@ -86,7 +93,14 @@ function popupContextMenu(
   }
 
   const ctxMenu = Menu.buildFromTemplate(ctxMenuTmpl);
-  ctxMenu.popup(window, props);
+
+  const popupOpts: PopupOptions = {
+    window,
+    x: props.x,
+    y: props.y
+  };
+
+  ctxMenu.popup(popupOpts);
 }
 
 export default popupContextMenu;
