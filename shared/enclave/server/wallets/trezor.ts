@@ -1,4 +1,4 @@
-import { DeviceList, Session } from 'trezor.js';
+import { DeviceList, Session } from 'mycrypto-trezor.js';
 import BN from 'bn.js';
 import mapValues from 'lodash/mapValues';
 import { addHexPrefix } from 'ethereumjs-util';
