@@ -26,7 +26,7 @@ export interface SwapState {
   showLiteSend: boolean;
 }
 
-export enum SWAP {
+export enum SwapActions {
   STEP = 'SWAP_STEP',
   INIT = 'SWAP_INIT',
   LOAD_BITY_RATES_SUCCEEDED = 'SWAP_LOAD_BITY_RATES_SUCCEEDED',
@@ -79,7 +79,7 @@ export interface SwapInputs {
 }
 
 export interface InitSwap {
-  type: SWAP.INIT;
+  type: SwapActions.INIT;
   payload: SwapInputs;
 }
 
@@ -100,60 +100,60 @@ export interface ApiResponse {
 }
 
 export interface LoadBityRatesSucceededSwapAction {
-  type: SWAP.LOAD_BITY_RATES_SUCCEEDED;
+  type: SwapActions.LOAD_BITY_RATES_SUCCEEDED;
   payload: ApiResponse;
 }
 
 export interface LoadShapeshiftRatesSucceededSwapAction {
-  type: SWAP.LOAD_SHAPESHIFT_RATES_SUCCEEDED;
+  type: SwapActions.LOAD_SHAPESHIFT_RATES_SUCCEEDED;
   payload: ApiResponse;
 }
 
 export interface DestinationAddressSwapAction {
-  type: SWAP.DESTINATION_ADDRESS;
+  type: SwapActions.DESTINATION_ADDRESS;
   payload?: string;
 }
 
 export interface RestartSwapAction {
-  type: SWAP.RESTART;
+  type: SwapActions.RESTART;
 }
 
 export interface LoadBityRatesRequestedSwapAction {
-  type: SWAP.LOAD_BITY_RATES_REQUESTED;
+  type: SwapActions.LOAD_BITY_RATES_REQUESTED;
 }
 
 export interface LoadShapeshiftRatesRequestedSwapAction {
-  type: SWAP.LOAD_SHAPESHIFT_RATES_REQUESTED;
+  type: SwapActions.LOAD_SHAPESHIFT_RATES_REQUESTED;
 }
 
 export interface LoadBityRatesFailedSwapAction {
-  type: SWAP.LOAD_BITY_RATES_FAILED;
+  type: SwapActions.LOAD_BITY_RATES_FAILED;
 }
 
 export interface LoadShapeshiftRatesFailedSwapAction {
-  type: SWAP.LOAD_SHAPESHIFT_RATES_FAILED;
+  type: SwapActions.LOAD_SHAPESHIFT_RATES_FAILED;
 }
 
 export interface ChangeStepSwapAction {
-  type: SWAP.STEP;
+  type: SwapActions.STEP;
   payload: number;
 }
 
 export interface StopLoadBityRatesSwapAction {
-  type: SWAP.STOP_LOAD_BITY_RATES;
+  type: SwapActions.STOP_LOAD_BITY_RATES;
 }
 
 export interface StopLoadShapeshiftRatesSwapAction {
-  type: SWAP.STOP_LOAD_SHAPESHIFT_RATES;
+  type: SwapActions.STOP_LOAD_SHAPESHIFT_RATES;
 }
 
 export interface OrderSwapTimeSwapAction {
-  type: SWAP.ORDER_TIME;
+  type: SwapActions.ORDER_TIME;
   payload: number;
 }
 
 export interface BityOrderCreateRequestedSwapAction {
-  type: SWAP.BITY_ORDER_CREATE_REQUESTED;
+  type: SwapActions.BITY_ORDER_CREATE_REQUESTED;
   payload: {
     amount: number;
     destinationAddress: string;
@@ -163,7 +163,7 @@ export interface BityOrderCreateRequestedSwapAction {
 }
 
 export interface ShapeshiftOrderCreateRequestedSwapAction {
-  type: SWAP.SHAPESHIFT_ORDER_CREATE_REQUESTED;
+  type: SwapActions.SHAPESHIFT_ORDER_CREATE_REQUESTED;
   payload: {
     withdrawal: string;
     originKind: string;
@@ -230,76 +230,76 @@ export type BityOrderPostResponse = BityOrderResponse & {
 export type ProviderName = 'shapeshift' | 'bity';
 
 export interface BityOrderCreateSucceededSwapAction {
-  type: SWAP.BITY_ORDER_CREATE_SUCCEEDED;
+  type: SwapActions.BITY_ORDER_CREATE_SUCCEEDED;
   payload: BityOrderPostResponse;
 }
 
 export interface ShapeshiftOrderCreateSucceededSwapAction {
-  type: SWAP.SHAPESHIFT_ORDER_CREATE_SUCCEEDED;
+  type: SwapActions.SHAPESHIFT_ORDER_CREATE_SUCCEEDED;
   payload: ShapeshiftOrderResponse;
 }
 
 export interface BityOrderCreateFailedSwapAction {
-  type: SWAP.BITY_ORDER_CREATE_FAILED;
+  type: SwapActions.BITY_ORDER_CREATE_FAILED;
 }
 
 export interface ShapeshiftOrderCreateFailedSwapAction {
-  type: SWAP.SHAPESHIFT_ORDER_CREATE_FAILED;
+  type: SwapActions.SHAPESHIFT_ORDER_CREATE_FAILED;
 }
 
 export interface BityOrderStatusRequestedSwapAction {
-  type: SWAP.BITY_ORDER_STATUS_REQUESTED;
+  type: SwapActions.BITY_ORDER_STATUS_REQUESTED;
 }
 
 export interface ShapeshiftOrderStatusRequestedSwapAction {
-  type: SWAP.SHAPESHIFT_ORDER_STATUS_REQUESTED;
+  type: SwapActions.SHAPESHIFT_ORDER_STATUS_REQUESTED;
 }
 
 export interface BityOrderStatusSucceededSwapAction {
-  type: SWAP.BITY_ORDER_STATUS_SUCCEEDED;
+  type: SwapActions.BITY_ORDER_STATUS_SUCCEEDED;
   payload: BityOrderResponse;
 }
 
 export interface ShapeshiftOrderStatusSucceededSwapAction {
-  type: SWAP.SHAPESHIFT_ORDER_STATUS_SUCCEEDED;
+  type: SwapActions.SHAPESHIFT_ORDER_STATUS_SUCCEEDED;
   payload: ShapeshiftStatusResponse;
 }
 
 export interface StartOrderTimerSwapAction {
-  type: SWAP.ORDER_START_TIMER;
+  type: SwapActions.ORDER_START_TIMER;
 }
 
 export interface StopOrderTimerSwapAction {
-  type: SWAP.ORDER_STOP_TIMER;
+  type: SwapActions.ORDER_STOP_TIMER;
 }
 
 export interface StartPollBityOrderStatusAction {
-  type: SWAP.START_POLL_BITY_ORDER_STATUS;
+  type: SwapActions.START_POLL_BITY_ORDER_STATUS;
 }
 
 export interface StartPollShapeshiftOrderStatusAction {
-  type: SWAP.START_POLL_SHAPESHIFT_ORDER_STATUS;
+  type: SwapActions.START_POLL_SHAPESHIFT_ORDER_STATUS;
 }
 
 export interface StopPollBityOrderStatusAction {
-  type: SWAP.STOP_POLL_BITY_ORDER_STATUS;
+  type: SwapActions.STOP_POLL_BITY_ORDER_STATUS;
 }
 
 export interface StopPollShapeshiftOrderStatusAction {
-  type: SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS;
+  type: SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS;
 }
 
 export interface ChangeProviderSwapAcion {
-  type: SWAP.CHANGE_PROVIDER;
+  type: SwapActions.CHANGE_PROVIDER;
   payload: ProviderName;
 }
 
 export interface ConfigureLiteSendAction {
-  type: SWAP.CONFIGURE_LITE_SEND;
+  type: SwapActions.CONFIGURE_LITE_SEND;
 }
 
 export interface ShowLiteSendAction {
-  type: SWAP.SHOW_LITE_SEND;
+  type: SwapActions.SHOW_LITE_SEND;
   payload: boolean;
 }
 

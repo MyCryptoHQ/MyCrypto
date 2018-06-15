@@ -1,161 +1,122 @@
-import {
-  SWAP,
-  ApiResponse,
-  SwapInputs,
-  BityOrderResponse,
-  BityOrderPostResponse,
-  BityOrderStatusRequestedSwapAction,
-  ShapeshiftOrderResponse,
-  ShapeshiftStatusResponse,
-  ShapeshiftOrderStatusRequestedSwapAction,
-  StartOrderTimerSwapAction,
-  StopOrderTimerSwapAction,
-  StopPollBityOrderStatusAction,
-  StopPollShapeshiftOrderStatusAction,
-  ProviderName,
-  ChangeStepSwapAction,
-  InitSwap,
-  DestinationAddressSwapAction,
-  RestartSwapAction,
-  LoadBityRatesRequestedSwapAction,
-  LoadBityRatesSucceededSwapAction,
-  LoadBityRatesFailedSwapAction,
-  LoadShapeshiftRatesRequestedSwapAction,
-  LoadShapeshiftRatesSucceededSwapAction,
-  LoadShapeshiftRatesFailedSwapAction,
-  StopLoadBityRatesSwapAction,
-  StopLoadShapeshiftRatesSwapAction,
-  BityOrderCreateRequestedSwapAction,
-  ShapeshiftOrderCreateRequestedSwapAction,
-  BityOrderCreateSucceededSwapAction,
-  ShapeshiftOrderCreateSucceededSwapAction,
-  BityOrderStatusSucceededSwapAction,
-  ShapeshiftOrderStatusSucceededSwapAction,
-  StartPollBityOrderStatusAction,
-  StartPollShapeshiftOrderStatusAction,
-  BityOrderCreateFailedSwapAction,
-  ShapeshiftOrderCreateFailedSwapAction,
-  OrderSwapTimeSwapAction,
-  ChangeProviderSwapAcion,
-  ConfigureLiteSendAction,
-  ShowLiteSendAction
-} from './types';
+import * as swapTypes from './types';
 
 export type TChangeStepSwap = typeof changeStepSwap;
-export function changeStepSwap(payload: number): ChangeStepSwapAction {
+export function changeStepSwap(payload: number): swapTypes.ChangeStepSwapAction {
   return {
-    type: SWAP.STEP,
+    type: swapTypes.SwapActions.STEP,
     payload
   };
 }
 
 export type TInitSwap = typeof initSwap;
-export function initSwap(payload: SwapInputs): InitSwap {
+export function initSwap(payload: swapTypes.SwapInputs): swapTypes.InitSwap {
   return {
-    type: SWAP.INIT,
+    type: swapTypes.SwapActions.INIT,
     payload
   };
 }
 
 export type TLoadBityRatesSucceededSwap = typeof loadBityRatesSucceededSwap;
-export function loadBityRatesSucceededSwap(payload: ApiResponse): LoadBityRatesSucceededSwapAction {
+export function loadBityRatesSucceededSwap(
+  payload: swapTypes.ApiResponse
+): swapTypes.LoadBityRatesSucceededSwapAction {
   return {
-    type: SWAP.LOAD_BITY_RATES_SUCCEEDED,
+    type: swapTypes.SwapActions.LOAD_BITY_RATES_SUCCEEDED,
     payload
   };
 }
 
 export type TLoadShapeshiftRatesSucceededSwap = typeof loadShapeshiftRatesSucceededSwap;
 export function loadShapeshiftRatesSucceededSwap(
-  payload: LoadShapeshiftRatesSucceededSwapAction['payload']
-): LoadShapeshiftRatesSucceededSwapAction {
+  payload: swapTypes.LoadShapeshiftRatesSucceededSwapAction['payload']
+): swapTypes.LoadShapeshiftRatesSucceededSwapAction {
   return {
-    type: SWAP.LOAD_SHAPESHIFT_RATES_SUCCEEDED,
+    type: swapTypes.SwapActions.LOAD_SHAPESHIFT_RATES_SUCCEEDED,
     payload
   };
 }
 
 export type TDestinationAddressSwap = typeof destinationAddressSwap;
-export function destinationAddressSwap(payload?: string): DestinationAddressSwapAction {
+export function destinationAddressSwap(payload?: string): swapTypes.DestinationAddressSwapAction {
   return {
-    type: SWAP.DESTINATION_ADDRESS,
+    type: swapTypes.SwapActions.DESTINATION_ADDRESS,
     payload
   };
 }
 
 export type TRestartSwap = typeof restartSwap;
-export function restartSwap(): RestartSwapAction {
+export function restartSwap(): swapTypes.RestartSwapAction {
   return {
-    type: SWAP.RESTART
+    type: swapTypes.SwapActions.RESTART
   };
 }
 
 export type TLoadBityRatesRequestedSwap = typeof loadBityRatesRequestedSwap;
-export function loadBityRatesRequestedSwap(): LoadBityRatesRequestedSwapAction {
+export function loadBityRatesRequestedSwap(): swapTypes.LoadBityRatesRequestedSwapAction {
   return {
-    type: SWAP.LOAD_BITY_RATES_REQUESTED
+    type: swapTypes.SwapActions.LOAD_BITY_RATES_REQUESTED
   };
 }
 
 export type TLoadShapeshiftRatesRequestedSwap = typeof loadShapeshiftRatesRequestedSwap;
-export function loadShapeshiftRatesRequestedSwap(): LoadShapeshiftRatesRequestedSwapAction {
+export function loadShapeshiftRatesRequestedSwap(): swapTypes.LoadShapeshiftRatesRequestedSwapAction {
   return {
-    type: SWAP.LOAD_SHAPESHIFT_RATES_REQUESTED
+    type: swapTypes.SwapActions.LOAD_SHAPESHIFT_RATES_REQUESTED
   };
 }
 
 export type TLoadBityRatesFailedSwap = typeof loadBityRatesFailedSwap;
-export function loadBityRatesFailedSwap(): LoadBityRatesFailedSwapAction {
+export function loadBityRatesFailedSwap(): swapTypes.LoadBityRatesFailedSwapAction {
   return {
-    type: SWAP.LOAD_BITY_RATES_FAILED
+    type: swapTypes.SwapActions.LOAD_BITY_RATES_FAILED
   };
 }
 
 export type TLoadShapeshiftFailedSwap = typeof loadShapeshiftRatesFailedSwap;
-export function loadShapeshiftRatesFailedSwap(): LoadShapeshiftRatesFailedSwapAction {
+export function loadShapeshiftRatesFailedSwap(): swapTypes.LoadShapeshiftRatesFailedSwapAction {
   return {
-    type: SWAP.LOAD_SHAPESHIFT_RATES_FAILED
+    type: swapTypes.SwapActions.LOAD_SHAPESHIFT_RATES_FAILED
   };
 }
 
 export type TStopLoadBityRatesSwap = typeof stopLoadBityRatesSwap;
-export function stopLoadBityRatesSwap(): StopLoadBityRatesSwapAction {
+export function stopLoadBityRatesSwap(): swapTypes.StopLoadBityRatesSwapAction {
   return {
-    type: SWAP.STOP_LOAD_BITY_RATES
+    type: swapTypes.SwapActions.STOP_LOAD_BITY_RATES
   };
 }
 
 export type TStopLoadShapeshiftRatesSwap = typeof stopLoadShapeshiftRatesSwap;
-export function stopLoadShapeshiftRatesSwap(): StopLoadShapeshiftRatesSwapAction {
+export function stopLoadShapeshiftRatesSwap(): swapTypes.StopLoadShapeshiftRatesSwapAction {
   return {
-    type: SWAP.STOP_LOAD_SHAPESHIFT_RATES
+    type: swapTypes.SwapActions.STOP_LOAD_SHAPESHIFT_RATES
   };
 }
 
 export type TOrderTimeSwap = typeof orderTimeSwap;
-export function orderTimeSwap(payload: number): OrderSwapTimeSwapAction {
+export function orderTimeSwap(payload: number): swapTypes.OrderSwapTimeSwapAction {
   return {
-    type: SWAP.ORDER_TIME,
+    type: swapTypes.SwapActions.ORDER_TIME,
     payload
   };
 }
 
 export type TBityOrderCreateSucceededSwap = typeof bityOrderCreateSucceededSwap;
 export function bityOrderCreateSucceededSwap(
-  payload: BityOrderPostResponse
-): BityOrderCreateSucceededSwapAction {
+  payload: swapTypes.BityOrderPostResponse
+): swapTypes.BityOrderCreateSucceededSwapAction {
   return {
-    type: SWAP.BITY_ORDER_CREATE_SUCCEEDED,
+    type: swapTypes.SwapActions.BITY_ORDER_CREATE_SUCCEEDED,
     payload
   };
 }
 
 export type TShapeshiftOrderCreateSucceededSwap = typeof shapeshiftOrderCreateSucceededSwap;
 export function shapeshiftOrderCreateSucceededSwap(
-  payload: ShapeshiftOrderResponse
-): ShapeshiftOrderCreateSucceededSwapAction {
+  payload: swapTypes.ShapeshiftOrderResponse
+): swapTypes.ShapeshiftOrderCreateSucceededSwapAction {
   return {
-    type: SWAP.SHAPESHIFT_ORDER_CREATE_SUCCEEDED,
+    type: swapTypes.SwapActions.SHAPESHIFT_ORDER_CREATE_SUCCEEDED,
     payload
   };
 }
@@ -166,9 +127,9 @@ export function bityOrderCreateRequestedSwap(
   destinationAddress: string,
   pair: string,
   mode: number = 0
-): BityOrderCreateRequestedSwapAction {
+): swapTypes.BityOrderCreateRequestedSwapAction {
   return {
-    type: SWAP.BITY_ORDER_CREATE_REQUESTED,
+    type: swapTypes.SwapActions.BITY_ORDER_CREATE_REQUESTED,
     payload: {
       amount,
       destinationAddress,
@@ -184,9 +145,9 @@ export function shapeshiftOrderCreateRequestedSwap(
   originKind: string,
   destinationKind: string,
   destinationAmount: number
-): ShapeshiftOrderCreateRequestedSwapAction {
+): swapTypes.ShapeshiftOrderCreateRequestedSwapAction {
   return {
-    type: SWAP.SHAPESHIFT_ORDER_CREATE_REQUESTED,
+    type: swapTypes.SwapActions.SHAPESHIFT_ORDER_CREATE_REQUESTED,
     payload: {
       withdrawal,
       originKind,
@@ -196,108 +157,112 @@ export function shapeshiftOrderCreateRequestedSwap(
   };
 }
 
-export function bityOrderCreateFailedSwap(): BityOrderCreateFailedSwapAction {
+export function bityOrderCreateFailedSwap(): swapTypes.BityOrderCreateFailedSwapAction {
   return {
-    type: SWAP.BITY_ORDER_CREATE_FAILED
+    type: swapTypes.SwapActions.BITY_ORDER_CREATE_FAILED
   };
 }
 
-export function shapeshiftOrderCreateFailedSwap(): ShapeshiftOrderCreateFailedSwapAction {
+export function shapeshiftOrderCreateFailedSwap(): swapTypes.ShapeshiftOrderCreateFailedSwapAction {
   return {
-    type: SWAP.SHAPESHIFT_ORDER_CREATE_FAILED
+    type: swapTypes.SwapActions.SHAPESHIFT_ORDER_CREATE_FAILED
   };
 }
 
 export type TBityOrderStatusSucceededSwap = typeof bityOrderStatusSucceededSwap;
 export function bityOrderStatusSucceededSwap(
-  payload: BityOrderResponse
-): BityOrderStatusSucceededSwapAction {
+  payload: swapTypes.BityOrderResponse
+): swapTypes.BityOrderStatusSucceededSwapAction {
   return {
-    type: SWAP.BITY_ORDER_STATUS_SUCCEEDED,
+    type: swapTypes.SwapActions.BITY_ORDER_STATUS_SUCCEEDED,
     payload
   };
 }
 
 export type TShapeshiftOrderStatusSucceededSwap = typeof shapeshiftOrderStatusSucceededSwap;
 export function shapeshiftOrderStatusSucceededSwap(
-  payload: ShapeshiftStatusResponse
-): ShapeshiftOrderStatusSucceededSwapAction {
+  payload: swapTypes.ShapeshiftStatusResponse
+): swapTypes.ShapeshiftOrderStatusSucceededSwapAction {
   return {
-    type: SWAP.SHAPESHIFT_ORDER_STATUS_SUCCEEDED,
+    type: swapTypes.SwapActions.SHAPESHIFT_ORDER_STATUS_SUCCEEDED,
     payload
   };
 }
 
 export type TBityOrderStatusRequestedSwap = typeof bityOrderStatusRequested;
-export function bityOrderStatusRequested(): BityOrderStatusRequestedSwapAction {
+export function bityOrderStatusRequested(): swapTypes.BityOrderStatusRequestedSwapAction {
   return {
-    type: SWAP.BITY_ORDER_STATUS_REQUESTED
+    type: swapTypes.SwapActions.BITY_ORDER_STATUS_REQUESTED
   };
 }
 
 export type TShapeshiftOrderStatusRequestedSwap = typeof shapeshiftOrderStatusRequested;
-export function shapeshiftOrderStatusRequested(): ShapeshiftOrderStatusRequestedSwapAction {
+export function shapeshiftOrderStatusRequested(): swapTypes.ShapeshiftOrderStatusRequestedSwapAction {
   return {
-    type: SWAP.SHAPESHIFT_ORDER_STATUS_REQUESTED
+    type: swapTypes.SwapActions.SHAPESHIFT_ORDER_STATUS_REQUESTED
   };
 }
 
 export type TStartOrderTimerSwap = typeof startOrderTimerSwap;
-export function startOrderTimerSwap(): StartOrderTimerSwapAction {
+export function startOrderTimerSwap(): swapTypes.StartOrderTimerSwapAction {
   return {
-    type: SWAP.ORDER_START_TIMER
+    type: swapTypes.SwapActions.ORDER_START_TIMER
   };
 }
 
 export type TStopOrderTimerSwap = typeof stopOrderTimerSwap;
-export function stopOrderTimerSwap(): StopOrderTimerSwapAction {
+export function stopOrderTimerSwap(): swapTypes.StopOrderTimerSwapAction {
   return {
-    type: SWAP.ORDER_STOP_TIMER
+    type: swapTypes.SwapActions.ORDER_STOP_TIMER
   };
 }
 
 export type TStartPollBityOrderStatus = typeof startPollBityOrderStatus;
-export function startPollBityOrderStatus(): StartPollBityOrderStatusAction {
+export function startPollBityOrderStatus(): swapTypes.StartPollBityOrderStatusAction {
   return {
-    type: SWAP.START_POLL_BITY_ORDER_STATUS
+    type: swapTypes.SwapActions.START_POLL_BITY_ORDER_STATUS
   };
 }
 
 export type TStartPollShapeshiftOrderStatus = typeof startPollShapeshiftOrderStatus;
-export function startPollShapeshiftOrderStatus(): StartPollShapeshiftOrderStatusAction {
+export function startPollShapeshiftOrderStatus(): swapTypes.StartPollShapeshiftOrderStatusAction {
   return {
-    type: SWAP.START_POLL_SHAPESHIFT_ORDER_STATUS
+    type: swapTypes.SwapActions.START_POLL_SHAPESHIFT_ORDER_STATUS
   };
 }
 
 export type TStopPollBityOrderStatus = typeof stopPollBityOrderStatus;
-export function stopPollBityOrderStatus(): StopPollBityOrderStatusAction {
+export function stopPollBityOrderStatus(): swapTypes.StopPollBityOrderStatusAction {
   return {
-    type: SWAP.STOP_POLL_BITY_ORDER_STATUS
+    type: swapTypes.SwapActions.STOP_POLL_BITY_ORDER_STATUS
   };
 }
 
 export type TStopPollShapeshiftOrderStatus = typeof stopPollShapeshiftOrderStatus;
-export function stopPollShapeshiftOrderStatus(): StopPollShapeshiftOrderStatusAction {
+export function stopPollShapeshiftOrderStatus(): swapTypes.StopPollShapeshiftOrderStatusAction {
   return {
-    type: SWAP.STOP_POLL_SHAPESHIFT_ORDER_STATUS
+    type: swapTypes.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS
   };
 }
 
 export type TConfigureLiteSend = typeof configureLiteSend;
-export function configureLiteSend(): ConfigureLiteSendAction {
-  return { type: SWAP.CONFIGURE_LITE_SEND };
+export function configureLiteSend(): swapTypes.ConfigureLiteSendAction {
+  return { type: swapTypes.SwapActions.CONFIGURE_LITE_SEND };
 }
 
 export type TShowLiteSend = typeof showLiteSend;
-export function showLiteSend(payload: ShowLiteSendAction['payload']): ShowLiteSendAction {
-  return { type: SWAP.SHOW_LITE_SEND, payload };
+export function showLiteSend(
+  payload: swapTypes.ShowLiteSendAction['payload']
+): swapTypes.ShowLiteSendAction {
+  return { type: swapTypes.SwapActions.SHOW_LITE_SEND, payload };
 }
 
 export type TChangeSwapProvider = typeof changeSwapProvider;
-export function changeSwapProvider(payload: ProviderName): ChangeProviderSwapAcion {
+export function changeSwapProvider(
+  payload: swapTypes.ProviderName
+): swapTypes.ChangeProviderSwapAcion {
   return {
-    type: SWAP.CHANGE_PROVIDER,
+    type: swapTypes.SwapActions.CHANGE_PROVIDER,
     payload
   };
 }
