@@ -8,14 +8,14 @@ interface QrSignatureState {
   data: string;
 }
 
-export enum PARITY_SIGNER {
+export enum ParitySignerActions {
   REQUEST_TX_SIGNATURE = 'PARITY_SIGNER_REQUEST_TX_SIGNATURE',
   REQUEST_MSG_SIGNATURE = 'PARITY_SIGNER_REQUEST_MSG_SIGNATURE',
   FINALIZE_SIGNATURE = 'PARITY_SIGNER_FINALIZE_SIGNATURE'
 }
 
 export interface RequestTransactionSignatureAction {
-  type: PARITY_SIGNER.REQUEST_TX_SIGNATURE;
+  type: ParitySignerActions.REQUEST_TX_SIGNATURE;
   payload: {
     isMessage: false;
     data: string;
@@ -24,7 +24,7 @@ export interface RequestTransactionSignatureAction {
 }
 
 export interface RequestMessageSignatureAction {
-  type: PARITY_SIGNER.REQUEST_MSG_SIGNATURE;
+  type: ParitySignerActions.REQUEST_MSG_SIGNATURE;
   payload: {
     isMessage: true;
     data: string;
@@ -33,7 +33,7 @@ export interface RequestMessageSignatureAction {
 }
 
 export interface FinalizeSignatureAction {
-  type: PARITY_SIGNER.FINALIZE_SIGNATURE;
+  type: ParitySignerActions.FINALIZE_SIGNATURE;
   payload: string | null;
 }
 

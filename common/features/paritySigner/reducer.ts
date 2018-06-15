@@ -1,19 +1,13 @@
-import {
-  PARITY_SIGNER,
-  ParitySignerAction,
-  RequestTransactionSignatureAction,
-  RequestMessageSignatureAction,
-  ParitySignerState
-} from './types';
+import * as paritySignerTypes from './types';
 
-export const INITIAL_STATE: ParitySignerState = {
+export const INITIAL_STATE: paritySignerTypes.ParitySignerState = {
   requested: null
 };
 
 function requestTransactionSignature(
-  state: ParitySignerState,
-  action: RequestTransactionSignatureAction
-): ParitySignerState {
+  state: paritySignerTypes.ParitySignerState,
+  action: paritySignerTypes.RequestTransactionSignatureAction
+): paritySignerTypes.ParitySignerState {
   return {
     ...state,
     requested: action.payload
@@ -21,16 +15,18 @@ function requestTransactionSignature(
 }
 
 function requestMessageSignature(
-  state: ParitySignerState,
-  action: RequestMessageSignatureAction
-): ParitySignerState {
+  state: paritySignerTypes.ParitySignerState,
+  action: paritySignerTypes.RequestMessageSignatureAction
+): paritySignerTypes.ParitySignerState {
   return {
     ...state,
     requested: action.payload
   };
 }
 
-function finalizeSignature(state: ParitySignerState): ParitySignerState {
+function finalizeSignature(
+  state: paritySignerTypes.ParitySignerState
+): paritySignerTypes.ParitySignerState {
   return {
     ...state,
     requested: null
@@ -38,15 +34,15 @@ function finalizeSignature(state: ParitySignerState): ParitySignerState {
 }
 
 export function paritySignerReducer(
-  state: ParitySignerState = INITIAL_STATE,
-  action: ParitySignerAction
-): ParitySignerState {
+  state: paritySignerTypes.ParitySignerState = INITIAL_STATE,
+  action: paritySignerTypes.ParitySignerAction
+): paritySignerTypes.ParitySignerState {
   switch (action.type) {
-    case PARITY_SIGNER.REQUEST_TX_SIGNATURE:
+    case paritySignerTypes.ParitySignerActions.REQUEST_TX_SIGNATURE:
       return requestTransactionSignature(state, action);
-    case PARITY_SIGNER.REQUEST_MSG_SIGNATURE:
+    case paritySignerTypes.ParitySignerActions.REQUEST_MSG_SIGNATURE:
       return requestMessageSignature(state, action);
-    case PARITY_SIGNER.FINALIZE_SIGNATURE:
+    case paritySignerTypes.ParitySignerActions.FINALIZE_SIGNATURE:
       return finalizeSignature(state);
     default:
       return state;

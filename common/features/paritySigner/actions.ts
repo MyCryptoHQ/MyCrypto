@@ -1,17 +1,12 @@
-import {
-  PARITY_SIGNER,
-  RequestTransactionSignatureAction,
-  RequestMessageSignatureAction,
-  FinalizeSignatureAction
-} from './types';
+import * as paritySignerTypes from './types';
 
 export type TRequestTransactionSignature = typeof requestTransactionSignature;
 export function requestTransactionSignature(
   from: string,
   data: string
-): RequestTransactionSignatureAction {
+): paritySignerTypes.RequestTransactionSignatureAction {
   return {
-    type: PARITY_SIGNER.REQUEST_TX_SIGNATURE,
+    type: paritySignerTypes.ParitySignerActions.REQUEST_TX_SIGNATURE,
     payload: {
       isMessage: false,
       from,
@@ -21,9 +16,12 @@ export function requestTransactionSignature(
 }
 
 export type TRequestMessageSignature = typeof requestMessageSignature;
-export function requestMessageSignature(from: string, data: string): RequestMessageSignatureAction {
+export function requestMessageSignature(
+  from: string,
+  data: string
+): paritySignerTypes.RequestMessageSignatureAction {
   return {
-    type: PARITY_SIGNER.REQUEST_MSG_SIGNATURE,
+    type: paritySignerTypes.ParitySignerActions.REQUEST_MSG_SIGNATURE,
     payload: {
       isMessage: true,
       from,
@@ -33,9 +31,11 @@ export function requestMessageSignature(from: string, data: string): RequestMess
 }
 
 export type TFinalizeSignature = typeof finalizeSignature;
-export function finalizeSignature(signature: string | null): FinalizeSignatureAction {
+export function finalizeSignature(
+  signature: string | null
+): paritySignerTypes.FinalizeSignatureAction {
   return {
-    type: PARITY_SIGNER.FINALIZE_SIGNATURE,
+    type: paritySignerTypes.ParitySignerActions.FINALIZE_SIGNATURE,
     payload: signature
   };
 }

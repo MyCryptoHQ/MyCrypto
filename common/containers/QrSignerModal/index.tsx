@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
-import { TFinalizeSignature, finalizeSignature } from 'features/paritySigner';
+import { paritySignerActions } from 'features/paritySigner';
 import { ParityQrSigner } from 'components';
 import Modal, { IButton } from 'components/ui/Modal';
 
@@ -23,7 +23,7 @@ interface PropsOpen {
 }
 
 interface ActionProps {
-  finalizeSignature: TFinalizeSignature;
+  finalizeSignature: paritySignerActions.TFinalizeSignature;
 }
 
 type Props = (PropsClosed | PropsOpen) & ActionProps;
@@ -113,4 +113,6 @@ function mapStateToProps(state: AppState): PropsClosed | PropsOpen {
   };
 }
 
-export default connect(mapStateToProps, { finalizeSignature })(QrSignerModal);
+export default connect(mapStateToProps, {
+  finalizeSignature: paritySignerActions.finalizeSignature
+})(QrSignerModal);

@@ -66,7 +66,7 @@ function* signParitySignerMessage(wallet: IFullWallet, msg: string): SagaIterato
   yield put(paritySignerActions.requestMessageSignature(address, data));
 
   const { payload: sig }: paritySignerTypes.FinalizeSignatureAction = yield take(
-    paritySignerTypes.PARITY_SIGNER.FINALIZE_SIGNATURE
+    paritySignerTypes.ParitySignerActions.FINALIZE_SIGNATURE
   );
 
   if (!sig) {

@@ -66,7 +66,7 @@ import {
   getWalletType,
   IWalletType
 } from 'features/wallet/selectors';
-import { PARITY_SIGNER as ParityKeys, FinalizeSignatureAction } from 'features/paritySigner/types';
+import * as paritySignerTypes from 'features/paritySigner/types';
 import { requestTransactionSignature } from 'features/paritySigner/actions';
 import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
 import { isSchedulingEnabled } from 'features/schedule/selectors';
@@ -700,7 +700,9 @@ export function* signParitySignerTransactionHandler({
 
   yield put(requestTransactionSignature(from, rlp));
 
-  const { payload }: FinalizeSignatureAction = yield take(ParityKeys.FINALIZE_SIGNATURE);
+  const { payload }: paritySignerTypes.FinalizeSignatureAction = yield take(
+    paritySignerTypes.ParitySignerActions.FINALIZE_SIGNATURE
+  );
   const signedTransaction: Buffer = yield call(signTransactionWithSignature, tx, payload);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
 
