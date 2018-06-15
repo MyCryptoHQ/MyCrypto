@@ -41,6 +41,9 @@ before_install:
 install:
   - yarn --silent
 
+before_script:
+  - chmod +x ./travis-scripts/test-{linux,osx}.sh
+
 script:
   - ./travis-scripts/test-linux.sh
   - ./travis-scripts/test-osx.sh
