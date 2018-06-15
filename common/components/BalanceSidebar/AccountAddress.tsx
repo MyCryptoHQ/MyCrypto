@@ -89,10 +89,12 @@ class AccountAddress extends React.Component<Props, State> {
             <CopyToClipboard onCopy={this.handleCopy} text={address}>
               <div
                 className={`AccountInfo-copy ${copied ? 'is-copied' : ''}`}
-                title="Copy To clipboard"
+                title={translateRaw('SIDEBAR_COPY_ADDRESS_TOOLTIP')}
               >
                 <i className="fa fa-copy" />
-                <span>{copied ? 'copied!' : 'copy address'}</span>
+                <span>
+                  {copied ? translate('SIDEBAR_COPIED') : translate('SIDEBAR_COPY_ADDRESS')}
+                </span>
               </div>
             </CopyToClipboard>
             <div className="AccountInfo-label" title="Edit label">

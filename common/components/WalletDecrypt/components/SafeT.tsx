@@ -66,7 +66,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
           {isLoading ? (
             <div className="SafeTminiDecrypt-message">
               <Spinner light={true} />
-              Unlocking...
+              {translate('UNLOCKING')}
             </div>
           ) : (
             translate('ADD_SAFE_T_SCAN')
@@ -74,7 +74,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
         </button>
 
         <NewTabLink className="SafeTminiDecrypt-buy btn btn-sm btn-default" href={safeTReferralURL}>
-          {translate('Don’t have a Safe-T mini? Order one now!')}
+          {translate('ORDER_SAFE_T')}
         </NewTabLink>
 
         <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>

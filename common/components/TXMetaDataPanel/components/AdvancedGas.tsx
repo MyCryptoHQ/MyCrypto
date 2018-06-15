@@ -1,5 +1,5 @@
 import React from 'react';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import FeeSummary, { RenderData } from './FeeSummary';
 import './AdvancedGas.scss';
 import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'actions/config';
@@ -70,7 +70,7 @@ class AdvancedGas extends React.Component<Props, State> {
               defaultChecked={autoGasLimitEnabled}
               onChange={this.handleToggleAutoGasLimit}
             />
-            <span>Automatically Calculate Gas Limit</span>
+            <span>{translate('TRANS_AUTO_GAS_TOGGLE')}</span>
           </label>
         </div>
 
