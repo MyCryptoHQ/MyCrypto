@@ -1,16 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {
-  setCurrentWindowStart,
-  TSetCurrentWindowStart,
-  ICurrentWindowStart
-} from 'features/schedule';
+import { scheduleActions, scheduleSelectors } from 'features/schedule';
 import { Query } from 'components/renderCbs';
 import { WindowStartInputFactory } from './WindowStartInputFactory';
 
 interface DispatchProps {
-  setCurrentWindowStart: TSetCurrentWindowStart;
+  setCurrentWindowStart: scheduleActions.TSetCurrentWindowStart;
 }
 
 interface OwnProps {
@@ -21,7 +17,7 @@ interface OwnProps {
 export interface CallbackProps {
   isValid: boolean;
   readOnly: boolean;
-  currentWindowStart: ICurrentWindowStart;
+  currentWindowStart: scheduleSelectors.ICurrentWindowStart;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
@@ -40,9 +36,9 @@ class WindowStartFieldFactoryClass extends React.Component<Props> {
   };
 }
 
-const WindowStartFieldFactory = connect(null, { setCurrentWindowStart })(
-  WindowStartFieldFactoryClass
-);
+const WindowStartFieldFactory = connect(null, {
+  setCurrentWindowStart: scheduleActions.setCurrentWindowStart
+})(WindowStartFieldFactoryClass);
 
 interface DefaultWindowStartFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { getWalletType } from 'features/wallet';
-import { getSchedulingTransaction } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import {
   getSerializedTransaction,
   isNetworkRequestPending,
@@ -17,7 +17,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     walletType: getWalletType(state),
     serializedTransaction: getSerializedTransaction(state),
-    ...getSchedulingTransaction(state),
+    ...scheduleSelectors.getSchedulingTransaction(state),
     networkRequestPending: isNetworkRequestPending(state),
     validGasPrice: isValidGasPrice(state),
     validGasLimit: isValidGasLimit(state),

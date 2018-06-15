@@ -1,103 +1,91 @@
-import {
-  SCHEDULE,
-  SetTimeBountyFieldAction,
-  SetWindowSizeFieldAction,
-  SetWindowStartFieldAction,
-  SetScheduleTimestampFieldAction,
-  SetScheduleTypeAction,
-  SetSchedulingToggleAction,
-  SetScheduleTimezoneAction,
-  SetScheduleGasPriceFieldAction,
-  SetScheduleGasLimitFieldAction,
-  SetScheduleDepositFieldAction,
-  SetScheduleParamsValidityAction,
-  SetCurrentScheduleTimestampAction,
-  SetCurrentScheduleTimezoneAction,
-  SetCurrentScheduleTypeAction,
-  SetCurrentSchedulingToggleAction,
-  SetCurrentTimeBountyAction,
-  SetCurrentWindowSizeAction,
-  SetCurrentWindowStartAction
-} from './types';
+import * as scheduleTypes from './types';
 
 //#region Fields
 export type TSetTimeBountyField = typeof setTimeBountyField;
 export const setTimeBountyField = (
-  payload: SetTimeBountyFieldAction['payload']
-): SetTimeBountyFieldAction => ({
-  type: SCHEDULE.TIME_BOUNTY_FIELD_SET,
+  payload: scheduleTypes.SetTimeBountyFieldAction['payload']
+): scheduleTypes.SetTimeBountyFieldAction => ({
+  type: scheduleTypes.ScheduleActions.TIME_BOUNTY_FIELD_SET,
   payload
 });
 
 export type TSetWindowSizeField = typeof setWindowSizeField;
 export const setWindowSizeField = (
-  payload: SetWindowSizeFieldAction['payload']
-): SetWindowSizeFieldAction => ({
-  type: SCHEDULE.WINDOW_SIZE_FIELD_SET,
+  payload: scheduleTypes.SetWindowSizeFieldAction['payload']
+): scheduleTypes.SetWindowSizeFieldAction => ({
+  type: scheduleTypes.ScheduleActions.WINDOW_SIZE_FIELD_SET,
   payload
 });
 
 export type TSetWindowStartField = typeof setWindowStartField;
 export const setWindowStartField = (
-  payload: SetWindowStartFieldAction['payload']
-): SetWindowStartFieldAction => ({
-  type: SCHEDULE.WINDOW_START_FIELD_SET,
+  payload: scheduleTypes.SetWindowStartFieldAction['payload']
+): scheduleTypes.SetWindowStartFieldAction => ({
+  type: scheduleTypes.ScheduleActions.WINDOW_START_FIELD_SET,
   payload
 });
 
 export type TSetScheduleTimestampField = typeof setScheduleTimestampField;
 export const setScheduleTimestampField = (
-  payload: SetScheduleTimestampFieldAction['payload']
-): SetScheduleTimestampFieldAction => ({
-  type: SCHEDULE.SCHEDULE_TIMESTAMP_FIELD_SET,
+  payload: scheduleTypes.SetScheduleTimestampFieldAction['payload']
+): scheduleTypes.SetScheduleTimestampFieldAction => ({
+  type: scheduleTypes.ScheduleActions.TIMESTAMP_FIELD_SET,
   payload
 });
 
 export type TSetScheduleType = typeof setScheduleType;
 export const setScheduleType = (
-  payload: SetScheduleTypeAction['payload']
-): SetScheduleTypeAction => ({
-  type: SCHEDULE.SCHEDULE_TYPE_SET,
+  payload: scheduleTypes.SetScheduleTypeAction['payload']
+): scheduleTypes.SetScheduleTypeAction => ({
+  type: scheduleTypes.ScheduleActions.TYPE_SET,
   payload
 });
 
 export type TSetSchedulingToggle = typeof setSchedulingToggle;
 export const setSchedulingToggle = (
-  payload: SetSchedulingToggleAction['payload']
-): SetSchedulingToggleAction => ({
-  type: SCHEDULE.SCHEDULING_TOGGLE_SET,
+  payload: scheduleTypes.SetSchedulingToggleAction['payload']
+): scheduleTypes.SetSchedulingToggleAction => ({
+  type: scheduleTypes.ScheduleActions.TOGGLE_SET,
   payload
 });
 
 export type TSetScheduleTimezone = typeof setScheduleTimezone;
 export const setScheduleTimezone = (
-  payload: SetScheduleTimezoneAction['payload']
-): SetScheduleTimezoneAction => ({
-  type: SCHEDULE.SCHEDULE_TIMEZONE_SET,
+  payload: scheduleTypes.SetScheduleTimezoneAction['payload']
+): scheduleTypes.SetScheduleTimezoneAction => ({
+  type: scheduleTypes.ScheduleActions.TIMEZONE_SET,
   payload
 });
 
 export type TSetScheduleGasPriceField = typeof setScheduleGasPriceField;
-export const setScheduleGasPriceField = (payload: SetScheduleGasPriceFieldAction['payload']) => ({
-  type: SCHEDULE.SCHEDULE_GAS_PRICE_FIELD_SET,
+export const setScheduleGasPriceField = (
+  payload: scheduleTypes.SetScheduleGasPriceFieldAction['payload']
+) => ({
+  type: scheduleTypes.ScheduleActions.GAS_PRICE_FIELD_SET,
   payload
 });
 
 export type TSetScheduleGasLimitField = typeof setScheduleGasLimitField;
-export const setScheduleGasLimitField = (payload: SetScheduleGasLimitFieldAction['payload']) => ({
-  type: SCHEDULE.SCHEDULE_GAS_LIMIT_FIELD_SET,
+export const setScheduleGasLimitField = (
+  payload: scheduleTypes.SetScheduleGasLimitFieldAction['payload']
+) => ({
+  type: scheduleTypes.ScheduleActions.GAS_LIMIT_FIELD_SET,
   payload
 });
 
 export type TSetScheduleDepositField = typeof setScheduleDepositField;
-export const setScheduleDepositField = (payload: SetScheduleDepositFieldAction['payload']) => ({
-  type: SCHEDULE.SCHEDULE_DEPOSIT_FIELD_SET,
+export const setScheduleDepositField = (
+  payload: scheduleTypes.SetScheduleDepositFieldAction['payload']
+) => ({
+  type: scheduleTypes.ScheduleActions.DEPOSIT_FIELD_SET,
   payload
 });
 
 export type TSetScheduleParamsValidity = typeof setScheduleParamsValidity;
-export const setScheduleParamsValidity = (payload: SetScheduleParamsValidityAction['payload']) => ({
-  type: SCHEDULE.SCHEDULE_PARAMS_VALIDITY_SET,
+export const setScheduleParamsValidity = (
+  payload: scheduleTypes.SetScheduleParamsValidityAction['payload']
+) => ({
+  type: scheduleTypes.ScheduleActions.PARAMS_VALIDITY_SET,
   payload
 });
 //#endregion Fields
@@ -105,17 +93,17 @@ export const setScheduleParamsValidity = (payload: SetScheduleParamsValidityActi
 //#region Schedule Timestamp
 export type TSetCurrentScheduleTimestamp = typeof setCurrentScheduleTimestamp;
 export const setCurrentScheduleTimestamp = (
-  payload: SetCurrentScheduleTimestampAction['payload']
-): SetCurrentScheduleTimestampAction => ({
-  type: SCHEDULE.CURRENT_SCHEDULE_TIMESTAMP_SET,
+  payload: scheduleTypes.SetCurrentScheduleTimestampAction['payload']
+): scheduleTypes.SetCurrentScheduleTimestampAction => ({
+  type: scheduleTypes.ScheduleActions.CURRENT_SCHEDULE_TIMESTAMP_SET,
   payload
 });
 
 export type TSetCurrentScheduleTimezone = typeof setCurrentScheduleTimezone;
 export const setCurrentScheduleTimezone = (
-  payload: SetCurrentScheduleTimezoneAction['payload']
-): SetCurrentScheduleTimezoneAction => ({
-  type: SCHEDULE.CURRENT_SCHEDULE_TIMEZONE_SET,
+  payload: scheduleTypes.SetCurrentScheduleTimezoneAction['payload']
+): scheduleTypes.SetCurrentScheduleTimezoneAction => ({
+  type: scheduleTypes.ScheduleActions.CURRENT_SCHEDULE_TIMEZONE_SET,
   payload
 });
 //#endregion Schedule Timestamp
@@ -123,9 +111,9 @@ export const setCurrentScheduleTimezone = (
 //#region Schedule Type
 export type TSetCurrentScheduleType = typeof setCurrentScheduleType;
 export const setCurrentScheduleType = (
-  payload: SetCurrentScheduleTypeAction['payload']
-): SetCurrentScheduleTypeAction => ({
-  type: SCHEDULE.CURRENT_SCHEDULE_TYPE,
+  payload: scheduleTypes.SetCurrentScheduleTypeAction['payload']
+): scheduleTypes.SetCurrentScheduleTypeAction => ({
+  type: scheduleTypes.ScheduleActions.CURRENT_SCHEDULE_TYPE,
   payload
 });
 //#endregion Schedule Type
@@ -133,9 +121,9 @@ export const setCurrentScheduleType = (
 //#region Scheduling Toggle
 export type TSetCurrentSchedulingToggle = typeof setCurrentSchedulingToggle;
 export const setCurrentSchedulingToggle = (
-  payload: SetCurrentSchedulingToggleAction['payload']
-): SetCurrentSchedulingToggleAction => ({
-  type: SCHEDULE.CURRENT_SCHEDULING_TOGGLE,
+  payload: scheduleTypes.SetCurrentSchedulingToggleAction['payload']
+): scheduleTypes.SetCurrentSchedulingToggleAction => ({
+  type: scheduleTypes.ScheduleActions.CURRENT_SCHEDULING_TOGGLE,
   payload
 });
 //#endregion Scheduling Toggle
@@ -143,9 +131,9 @@ export const setCurrentSchedulingToggle = (
 //#region Time Bounty
 export type TSetCurrentTimeBounty = typeof setCurrentTimeBounty;
 export const setCurrentTimeBounty = (
-  payload: SetCurrentTimeBountyAction['payload']
-): SetCurrentTimeBountyAction => ({
-  type: SCHEDULE.CURRENT_TIME_BOUNTY_SET,
+  payload: scheduleTypes.SetCurrentTimeBountyAction['payload']
+): scheduleTypes.SetCurrentTimeBountyAction => ({
+  type: scheduleTypes.ScheduleActions.CURRENT_TIME_BOUNTY_SET,
   payload
 });
 //#endregion Time Bounty
@@ -153,9 +141,9 @@ export const setCurrentTimeBounty = (
 //#region Window Size
 export type TSetCurrentWindowSize = typeof setCurrentWindowSize;
 export const setCurrentWindowSize = (
-  payload: SetCurrentWindowSizeAction['payload']
-): SetCurrentWindowSizeAction => ({
-  type: SCHEDULE.CURRENT_WINDOW_SIZE_SET,
+  payload: scheduleTypes.SetCurrentWindowSizeAction['payload']
+): scheduleTypes.SetCurrentWindowSizeAction => ({
+  type: scheduleTypes.ScheduleActions.CURRENT_WINDOW_SIZE_SET,
   payload
 });
 //#endregion Window Size
@@ -163,9 +151,9 @@ export const setCurrentWindowSize = (
 //#region Window Size
 export type TSetCurrentWindowStart = typeof setCurrentWindowStart;
 export const setCurrentWindowStart = (
-  payload: SetCurrentWindowStartAction['payload']
-): SetCurrentWindowStartAction => ({
-  type: SCHEDULE.CURRENT_WINDOW_START_SET,
+  payload: scheduleTypes.SetCurrentWindowStartAction['payload']
+): scheduleTypes.SetCurrentWindowStartAction => ({
+  type: scheduleTypes.ScheduleActions.CURRENT_WINDOW_START_SET,
   payload
 });
 //#endregion Window Size

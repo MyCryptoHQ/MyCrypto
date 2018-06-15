@@ -4,12 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'features/reducers';
 import { translateRaw } from 'translations';
 import { gasPriceToBase } from 'libs/units';
-import {
-  setScheduleGasPriceField,
-  TSetScheduleGasPriceField,
-  getScheduleGasPrice,
-  isValidScheduleGasPrice
-} from 'features/schedule';
+import { scheduleActions, scheduleSelectors } from 'features/schedule';
 import { Input } from 'components/ui';
 
 interface OwnProps {
@@ -18,7 +13,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  setScheduleGasPriceField: TSetScheduleGasPriceField;
+  setScheduleGasPriceField: scheduleActions.TSetScheduleGasPriceField;
 }
 
 type Props = OwnProps & DispatchProps;
@@ -55,10 +50,10 @@ class ScheduleGasPriceFieldClass extends React.Component<Props> {
 
 export const ScheduleGasPriceField = connect(
   (state: AppState) => ({
-    scheduleGasPrice: getScheduleGasPrice(state),
-    validScheduleGasPrice: isValidScheduleGasPrice(state)
+    scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state),
+    validScheduleGasPrice: scheduleSelectors.isValidScheduleGasPrice(state)
   }),
   {
-    setScheduleGasPriceField
+    setScheduleGasPriceField: scheduleActions.setScheduleGasPriceField
   }
 )(ScheduleGasPriceFieldClass);

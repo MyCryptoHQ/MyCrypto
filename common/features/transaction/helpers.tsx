@@ -18,7 +18,7 @@ import { NetworkConfig, StaticNetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getOffline } from 'features/config/meta/selectors';
 import { isNetworkUnit, getNetworkConfig } from 'features/config/selectors';
-import { isSchedulingEnabled } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
 import { showNotification } from 'features/notifications/actions';
 import {
@@ -134,7 +134,7 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
 
       const network: NetworkConfig = yield select(getNetworkConfig);
-      const scheduling: boolean = yield select(isSchedulingEnabled);
+      const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
       yield put(
         showNotification(
           'success',

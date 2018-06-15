@@ -5,7 +5,7 @@ import translate from 'translations';
 import { AppState } from 'features/reducers';
 import { isAnyOfflineWithWeb3 } from 'features/selectors';
 import { getOffline, getNetworkConfig } from 'features/config';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { getUnit } from 'features/transaction/selectors';
 import {
   AddressField,
@@ -36,7 +36,7 @@ interface StateProps {
   schedulingAvailable: boolean;
   shouldDisplay: boolean;
   offline: boolean;
-  useScheduling: ICurrentSchedulingToggle['value'];
+  useScheduling: scheduleSelectors.ICurrentSchedulingToggle['value'];
 }
 
 class FieldsClass extends Component<StateProps> {
@@ -107,5 +107,5 @@ export const Fields = connect((state: AppState) => ({
   schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
-  useScheduling: getCurrentSchedulingToggle(state).value
+  useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
 }))(FieldsClass);

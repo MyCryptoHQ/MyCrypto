@@ -14,7 +14,7 @@ import {
   nonceRequestPending
 } from 'features/transaction';
 import { gasActions, gasSelectors } from 'features/gas';
-import { getScheduleGasPrice } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
 import FeeSummary from './FeeSummary';
 import './SimpleGas.scss';
@@ -158,7 +158,7 @@ export default connect(
     gasLimitPending: getGasEstimationPending(state),
     gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
     isWeb3Node: getIsWeb3Node(state),
-    scheduleGasPrice: getScheduleGasPrice(state)
+    scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state)
   }),
   {
     fetchGasEstimates: gasActions.fetchGasEstimates

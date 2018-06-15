@@ -14,24 +14,11 @@ import {
   getValidateRequestParamsData
 } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { getLatestBlock } from 'features/config/meta/selectors';
-import { getWalletInst } from 'features/wallet/selectors';
-import {
-  getCurrentTo,
-  getCurrentValue,
-  IGetTransaction,
-  getTransaction
-} from 'features/transaction/selectors';
-import { getData, getNonce, getGasPrice } from 'features/transaction/fields/selectors';
-import {
-  dateTimeToTimezone,
-  minFromNow,
-  windowSizeBlockToMin,
-  calculateWindowStart,
-  isWindowStartValid,
-  isScheduleTimestampValid,
-  ICurrentScheduleTimestamp
-} from './helpers';
+import * as configMetaSelectors from 'features/config/meta/selectors';
+import * as walletSelectors from 'features/wallet/selectors';
+import * as transactionSelectors from 'features/transaction/selectors';
+import * as transactionFieldsSelectors from 'features/transaction/fields/selectors';
+import * as scheduleHelpers from './helpers';
 
 //#region Fields
 export const getScheduleState = (state: AppState) => state.schedule;
@@ -72,13 +59,13 @@ export const isSchedulingEnabled = (state: AppState): boolean => {
 //#endregion Fields
 
 //#region Transaction
-export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
-  const { isFullTransaction } = getTransaction(state);
+export const getSchedulingTransaction = (state: AppState): transactionSelectors.IGetTransaction => {
+  const { isFullTransaction } = transactionSelectors.getTransaction(state);
 
-  const currentTo = getCurrentTo(state);
-  const currentValue = getCurrentValue(state);
-  const nonce = getNonce(state);
-  const gasPrice = getGasPrice(state);
+  const currentTo = transactionSelectors.getCurrentTo(state);
+  const currentValue = transactionSelectors.getCurrentValue(state);
+  const nonce = transactionFieldsSelectors.getNonce(state);
+  const gasPrice = transactionFieldsSelectors.getGasPrice(state);
   const timeBounty = getTimeBounty(state);
   const scheduleGasPrice = getScheduleGasPrice(state);
   const scheduleGasLimit = getScheduleGasLimit(state);
@@ -99,7 +86,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     const deposit = getScheduleDeposit(state);
     const scheduleTimestamp = getScheduleTimestamp(state);
     const windowSize = getWindowSize(state);
-    const callData = getData(state);
+    const callData = transactionFieldsSelectors.getData(state);
     const scheduleTimezone = getScheduleTimezone(state);
     const windowStart = getWindowStart(state);
 
@@ -108,8 +95,8 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
       callData.raw,
       scheduleGasLimit.value,
       currentValue.value,
-      windowSizeBlockToMin(windowSize.value, scheduleType.value),
-      calculateWindowStart(
+      scheduleHelpers.windowSizeBlockToMin(windowSize.value, scheduleType.value),
+      scheduleHelpers.calculateWindowStart(
         scheduleType.value,
         scheduleTimestamp,
         scheduleTimezone.value,
@@ -145,8 +132,11 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
 const isSchedulingTransactionValid = (state: AppState): boolean => {
   const schedulingState = getScheduleState(state);
   const windowSizeValid = isWindowSizeValid(state);
-  const windowStartValid = isWindowStartValid(schedulingState, getLatestBlock(state));
-  const scheduleTimestampValid = isScheduleTimestampValid(schedulingState);
+  const windowStartValid = scheduleHelpers.isWindowStartValid(
+    schedulingState,
+    configMetaSelectors.getLatestBlock(state)
+  );
+  const scheduleTimestampValid = scheduleHelpers.isScheduleTimestampValid(schedulingState);
   const scheduleGasPriceValid = isValidScheduleGasPrice(state);
   const scheduleGasLimitValid = isValidScheduleGasLimit(state);
   const depositValid = isValidScheduleDeposit(state);
@@ -172,9 +162,9 @@ export interface IGetValidateScheduleParamsCallPayload {
 export const getValidateScheduleParamsCallPayload = (
   state: AppState
 ): IGetValidateScheduleParamsCallPayload | undefined => {
-  const wallet = getWalletInst(state);
-  const currentTo = getCurrentTo(state);
-  const currentValue = getCurrentValue(state);
+  const wallet = walletSelectors.getWalletInst(state);
+  const currentTo = transactionSelectors.getCurrentTo(state);
+  const currentValue = transactionSelectors.getCurrentValue(state);
   const timeBounty = getTimeBounty(state);
   const scheduleGasPrice = getScheduleGasPrice(state);
   const scheduleGasLimit = getScheduleGasLimit(state);
@@ -216,8 +206,8 @@ export const getValidateScheduleParamsCallPayload = (
     bufferToHex(currentTo.value),
     callGasLimit,
     currentValue.value,
-    windowSizeBlockToMin(windowSize.value, scheduleType.value),
-    calculateWindowStart(
+    scheduleHelpers.windowSizeBlockToMin(windowSize.value, scheduleType.value),
+    scheduleHelpers.calculateWindowStart(
       scheduleType.value,
       scheduleTimestamp,
       scheduleTimezone.value,
@@ -245,18 +235,20 @@ export const isValidCurrentScheduleTimestamp = (state: AppState) => {
   const currentScheduleTimestamp = getScheduleTimestamp(state);
   const currentScheduleTimezone = getScheduleTimezone(state);
 
-  const currentScheduleDatetime = dateTimeToTimezone(
+  const currentScheduleDatetime = scheduleHelpers.dateTimeToTimezone(
     currentScheduleTimestamp,
     currentScheduleTimezone.value
   );
 
   return (
-    currentScheduleDatetime >= minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW)
+    currentScheduleDatetime >=
+    scheduleHelpers.minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW)
   );
 };
 
-export const getCurrentScheduleTimestamp = (state: AppState): ICurrentScheduleTimestamp =>
-  getScheduleTimestamp(state);
+export const getCurrentScheduleTimestamp = (
+  state: AppState
+): scheduleHelpers.ICurrentScheduleTimestamp => getScheduleTimestamp(state);
 //#endregion Schedule Timestamp
 
 //#region Schedule Timezone
@@ -342,7 +334,7 @@ export const isValidCurrentWindowStart = (state: AppState) => {
     return false;
   }
 
-  return currentWindowStart.value > parseInt(getLatestBlock(state), 10);
+  return currentWindowStart.value > parseInt(configMetaSelectors.getLatestBlock(state), 10);
 };
 
 export const getCurrentWindowStart = (state: AppState): ICurrentWindowStart =>

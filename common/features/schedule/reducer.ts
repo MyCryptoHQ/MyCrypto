@@ -3,16 +3,18 @@ import moment from 'moment-timezone';
 
 import { gasPriceToBase, fromWei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { SCHEDULE, ScheduleFieldAction, ScheduleState } from './types';
-import { minFromNow } from './helpers';
+import * as scheduleTypes from './types';
+import * as scheduleHelpers from './helpers';
 
-const INITIAL_STATE: ScheduleState = {
+const INITIAL_STATE: scheduleTypes.ScheduleState = {
   schedulingToggle: { value: false },
   windowSize: { raw: '', value: null },
   windowStart: { raw: '', value: null },
   scheduleTimestamp: {
-    raw: moment(minFromNow(60)).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT),
-    value: minFromNow(60)
+    raw: moment(scheduleHelpers.minFromNow(60)).format(
+      EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT
+    ),
+    value: scheduleHelpers.minFromNow(60)
   },
   scheduleTimezone: { raw: moment.tz.guess(), value: moment.tz.guess() },
   timeBounty: {
@@ -35,37 +37,42 @@ const INITIAL_STATE: ScheduleState = {
   scheduleParamsValidity: { value: true }
 };
 
-const updateScheduleField = (key: keyof ScheduleState): Reducer<ScheduleState> => (
-  state: ScheduleState,
-  action: ScheduleFieldAction
+const updateScheduleField = (
+  key: keyof scheduleTypes.ScheduleState
+): Reducer<scheduleTypes.ScheduleState> => (
+  state: scheduleTypes.ScheduleState,
+  action: scheduleTypes.ScheduleFieldAction
 ) => ({
   ...state,
   [key]: { ...state[key], ...action.payload }
 });
 
-export function scheduleReducer(state: ScheduleState = INITIAL_STATE, action: ScheduleFieldAction) {
+export function scheduleReducer(
+  state: scheduleTypes.ScheduleState = INITIAL_STATE,
+  action: scheduleTypes.ScheduleFieldAction
+) {
   switch (action.type) {
-    case SCHEDULE.TIME_BOUNTY_FIELD_SET:
+    case scheduleTypes.ScheduleActions.TIME_BOUNTY_FIELD_SET:
       return updateScheduleField('timeBounty')(state, action);
-    case SCHEDULE.WINDOW_SIZE_FIELD_SET:
+    case scheduleTypes.ScheduleActions.WINDOW_SIZE_FIELD_SET:
       return updateScheduleField('windowSize')(state, action);
-    case SCHEDULE.WINDOW_START_FIELD_SET:
+    case scheduleTypes.ScheduleActions.WINDOW_START_FIELD_SET:
       return updateScheduleField('windowStart')(state, action);
-    case SCHEDULE.SCHEDULE_TIMESTAMP_FIELD_SET:
+    case scheduleTypes.ScheduleActions.TIMESTAMP_FIELD_SET:
       return updateScheduleField('scheduleTimestamp')(state, action);
-    case SCHEDULE.SCHEDULE_TIMEZONE_SET:
+    case scheduleTypes.ScheduleActions.TIMEZONE_SET:
       return updateScheduleField('scheduleTimezone')(state, action);
-    case SCHEDULE.SCHEDULE_TYPE_SET:
+    case scheduleTypes.ScheduleActions.TYPE_SET:
       return updateScheduleField('scheduleType')(state, action);
-    case SCHEDULE.SCHEDULING_TOGGLE_SET:
+    case scheduleTypes.ScheduleActions.TOGGLE_SET:
       return updateScheduleField('schedulingToggle')(state, action);
-    case SCHEDULE.SCHEDULE_GAS_LIMIT_FIELD_SET:
+    case scheduleTypes.ScheduleActions.GAS_LIMIT_FIELD_SET:
       return updateScheduleField('scheduleGasLimit')(state, action);
-    case SCHEDULE.SCHEDULE_GAS_PRICE_FIELD_SET:
+    case scheduleTypes.ScheduleActions.GAS_PRICE_FIELD_SET:
       return updateScheduleField('scheduleGasPrice')(state, action);
-    case SCHEDULE.SCHEDULE_DEPOSIT_FIELD_SET:
+    case scheduleTypes.ScheduleActions.DEPOSIT_FIELD_SET:
       return updateScheduleField('scheduleDeposit')(state, action);
-    case SCHEDULE.SCHEDULE_PARAMS_VALIDITY_SET:
+    case scheduleTypes.ScheduleActions.PARAMS_VALIDITY_SET:
       return updateScheduleField('scheduleParamsValidity')(state, action);
     default:
       return state;

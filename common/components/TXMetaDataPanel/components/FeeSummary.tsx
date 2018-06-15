@@ -9,7 +9,7 @@ import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
 import { gasSelectors } from 'features/gas';
 import { getGasLimit } from 'features/transaction';
-import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { UnitDisplay, Spinner } from 'components/ui';
 import './FeeSummary.scss';
 
@@ -149,9 +149,9 @@ function mapStateToProps(state: AppState): ReduxStateProps {
     network: getNetworkConfig(state),
     isOffline: getOffline(state),
     isGasEstimating: gasSelectors.getIsEstimating(state),
-    scheduling: getSchedulingToggle(state).value,
-    scheduleGasLimit: getScheduleGasLimit(state),
-    timeBounty: getTimeBounty(state)
+    scheduling: scheduleSelectors.getSchedulingToggle(state).value,
+    scheduleGasLimit: scheduleSelectors.getScheduleGasLimit(state),
+    timeBounty: scheduleSelectors.getTimeBounty(state)
   };
 }
 

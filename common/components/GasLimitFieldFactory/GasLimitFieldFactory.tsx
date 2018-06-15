@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { sanitizeNumericalInput } from 'libs/values';
 import { AppState } from 'features/reducers';
 import { inputGasLimit, TInputGasLimit } from 'features/transaction';
-import { getSchedulingToggle } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { GasQuery } from 'components/renderCbs';
 import { GasLimitInput } from './GasLimitInputFactory';
 
@@ -57,7 +57,7 @@ class GasLimitFieldClass extends Component<Props> {
 
 const GasLimitField = connect(
   (state: AppState) => ({
-    scheduling: getSchedulingToggle(state).value
+    scheduling: scheduleSelectors.getSchedulingToggle(state).value
   }),
   { inputGasLimit }
 )(GasLimitFieldClass);

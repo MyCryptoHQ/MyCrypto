@@ -4,12 +4,7 @@ import { connect } from 'react-redux';
 import { translateRaw } from 'translations';
 import { toWei } from 'libs/units';
 import { AppState } from 'features/reducers';
-import {
-  setScheduleDepositField,
-  TSetScheduleDepositField,
-  getScheduleDeposit,
-  isValidScheduleDeposit
-} from 'features/schedule';
+import { scheduleActions, scheduleSelectors } from 'features/schedule';
 import { getDecimal } from 'features/transaction';
 import { Input, Tooltip } from 'components/ui';
 import Help from 'components/ui/Help';
@@ -21,7 +16,7 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  setScheduleDepositField: TSetScheduleDepositField;
+  setScheduleDepositField: scheduleActions.TSetScheduleDepositField;
 }
 
 type Props = OwnProps & DispatchProps;
@@ -68,10 +63,10 @@ class ScheduleDepositFieldClass extends Component<Props> {
 export const ScheduleDepositField = connect(
   (state: AppState) => ({
     decimal: getDecimal(state),
-    scheduleDeposit: getScheduleDeposit(state),
-    validScheduleDeposit: isValidScheduleDeposit(state)
+    scheduleDeposit: scheduleSelectors.getScheduleDeposit(state),
+    validScheduleDeposit: scheduleSelectors.isValidScheduleDeposit(state)
   }),
   {
-    setScheduleDepositField
+    setScheduleDepositField: scheduleActions.setScheduleDepositField
   }
 )(ScheduleDepositFieldClass);

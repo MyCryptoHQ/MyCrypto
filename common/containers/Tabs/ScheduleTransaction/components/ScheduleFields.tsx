@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import {
   ScheduleTimezoneDropDown,
   ScheduleTimestampField,
@@ -21,7 +21,7 @@ import {
 import './ScheduleFields.scss';
 
 interface Props {
-  schedulingType: ICurrentScheduleType;
+  schedulingType: scheduleSelectors.ICurrentScheduleType;
 }
 
 class ScheduleFieldsClass extends React.Component<Props> {
@@ -108,5 +108,5 @@ class ScheduleFieldsClass extends React.Component<Props> {
 }
 
 export const ScheduleFields = connect((state: AppState) => ({
-  schedulingType: getCurrentScheduleType(state)
+  schedulingType: scheduleSelectors.getCurrentScheduleType(state)
 }))(ScheduleFieldsClass);

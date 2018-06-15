@@ -9,11 +9,11 @@ import {
   getSignedTx
 } from 'features/transaction';
 import { getWalletType } from 'features/wallet';
-import { getSchedulingTransaction } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionFactory';
 
 export const ScheduleTransactionFactory = connect((state: AppState) => ({
-  ...getSchedulingTransaction(state),
+  ...scheduleSelectors.getSchedulingTransaction(state),
   walletType: getWalletType(state),
   serializedTransaction: getSerializedTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),

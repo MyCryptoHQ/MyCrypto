@@ -3,20 +3,15 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import {
-  setSchedulingToggle,
-  TSetSchedulingToggle,
-  getCurrentSchedulingToggle,
-  ICurrentSchedulingToggle
-} from 'features/schedule';
+import { scheduleActions, scheduleSelectors } from 'features/schedule';
 import { Toggle } from 'components/ui';
 
 interface DispatchProps {
-  setSchedulingToggle: TSetSchedulingToggle;
+  setSchedulingToggle: scheduleActions.TSetSchedulingToggle;
 }
 
 interface StateProps {
-  currentSchedulingToggle: ICurrentSchedulingToggle;
+  currentSchedulingToggle: scheduleSelectors.ICurrentSchedulingToggle;
 }
 
 type Props = DispatchProps & StateProps;
@@ -41,7 +36,7 @@ class SchedulingToggleClass extends Component<Props> {
 
 export const SchedulingToggle = connect(
   (state: AppState) => ({
-    currentSchedulingToggle: getCurrentSchedulingToggle(state)
+    currentSchedulingToggle: scheduleSelectors.getCurrentSchedulingToggle(state)
   }),
-  { setSchedulingToggle }
+  { setSchedulingToggle: scheduleActions.setSchedulingToggle }
 )(SchedulingToggleClass);

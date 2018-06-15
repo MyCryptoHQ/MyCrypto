@@ -5,7 +5,7 @@ import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { TToggleAutoGasLimit, toggleAutoGasLimit, getAutoGasLimitEnabled } from 'features/config';
-import { getScheduleGasPrice, getTimeBounty } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { TInputGasPrice, isValidGasPrice } from 'features/transaction';
 import { NonceField, GasLimitField, DataField } from 'components';
 import { Input } from 'components/ui';
@@ -184,8 +184,8 @@ class AdvancedGas extends React.Component<Props, State> {
 export default connect(
   (state: AppState) => ({
     autoGasLimitEnabled: getAutoGasLimitEnabled(state),
-    scheduleGasPrice: getScheduleGasPrice(state),
-    timeBounty: getTimeBounty(state),
+    scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state),
+    timeBounty: scheduleSelectors.getTimeBounty(state),
     validGasPrice: isValidGasPrice(state)
   }),
   { toggleAutoGasLimit }

@@ -3,15 +3,11 @@ import { connect } from 'react-redux';
 
 import { Query } from 'components/renderCbs';
 import { AppState } from 'features/reducers';
-import {
-  getCurrentTimeBounty,
-  ICurrentTimeBounty,
-  isValidCurrentTimeBounty
-} from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { CallbackProps } from 'containers/Tabs/ScheduleTransaction/components/Fields/TimeBounty/TimeBountyFieldFactory';
 
 interface StateProps {
-  currentTimeBounty: ICurrentTimeBounty;
+  currentTimeBounty: scheduleSelectors.ICurrentTimeBounty;
   isValid: boolean;
 }
 
@@ -43,6 +39,6 @@ class TimeBountyInputFactoryClass extends Component<Props> {
 }
 
 export const TimeBountyInputFactory = connect((state: AppState) => ({
-  currentTimeBounty: getCurrentTimeBounty(state),
-  isValid: isValidCurrentTimeBounty(state)
+  currentTimeBounty: scheduleSelectors.getCurrentTimeBounty(state),
+  isValid: scheduleSelectors.isValidCurrentTimeBounty(state)
 }))(TimeBountyInputFactoryClass);

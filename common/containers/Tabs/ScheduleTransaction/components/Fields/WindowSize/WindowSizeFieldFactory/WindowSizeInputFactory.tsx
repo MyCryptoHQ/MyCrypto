@@ -2,20 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import {
-  getCurrentWindowSize,
-  ICurrentWindowSize,
-  isValidCurrentWindowSize,
-  getCurrentScheduleType,
-  ICurrentScheduleType
-} from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { ensSelectors } from 'features/ens';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from './WindowSizeFieldFactory';
 
 interface StateProps {
-  currentScheduleType: ICurrentScheduleType;
-  currentWindowSize: ICurrentWindowSize;
+  currentScheduleType: scheduleSelectors.ICurrentScheduleType;
+  currentWindowSize: scheduleSelectors.ICurrentWindowSize;
   isValid: boolean;
   isResolving: boolean;
 }
@@ -49,8 +43,8 @@ class WindowSizeInputFactoryClass extends Component<Props> {
 }
 
 export const WindowSizeInputFactory = connect((state: AppState) => ({
-  currentWindowSize: getCurrentWindowSize(state),
-  currentScheduleType: getCurrentScheduleType(state),
+  currentWindowSize: scheduleSelectors.getCurrentWindowSize(state),
+  currentScheduleType: scheduleSelectors.getCurrentScheduleType(state),
   isResolving: ensSelectors.getResolvingDomain(state),
-  isValid: isValidCurrentWindowSize(state)
+  isValid: scheduleSelectors.isValidCurrentWindowSize(state)
 }))(WindowSizeInputFactoryClass);

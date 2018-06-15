@@ -9,7 +9,7 @@ import { toTokenBase, Wei } from 'libs/units';
 import configuredStore from 'features/store';
 import { getOffline } from 'features/config/meta/selectors';
 import { getNetworkConfig, isNetworkUnit } from 'features/config/selectors';
-import { isSchedulingEnabled } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
 import { showNotification } from 'features/notifications/actions';
 import {
@@ -146,7 +146,7 @@ describe('transaction: Helpers', () => {
       });
 
       it('select isSchedulingEnabled', () => {
-        expect(gens.gen.next(network).value).toEqual(select(isSchedulingEnabled));
+        expect(gens.gen.next(network).value).toEqual(select(scheduleSelectors.isSchedulingEnabled));
       });
 
       it('should put showNotification', () => {
