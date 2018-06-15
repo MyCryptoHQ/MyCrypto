@@ -25,7 +25,3 @@ if (module.hot) {
 if (process.env.NODE_ENV === 'production') {
   consoleAdvertisement();
 }
-
-if (process.env.BUILD_ELECTRON) {
-  (window as any).EnclaveAPI = EnclaveAPI;
-}
