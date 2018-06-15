@@ -7,10 +7,9 @@ export const signTransaction = async (
   t: ITransaction,
   w: IFullWallet,
   accountBalance: Wei,
-  isOffline: boolean,
-  chainId: number
+  isOffline: boolean
 ) => {
-  eth.validateTx(t, accountBalance, isOffline, chainId);
+  eth.validateTx(t, accountBalance, isOffline);
   const signedT = await eth.signTx(t, w);
   return signedT;
 };

@@ -130,6 +130,6 @@ export function getChecksumAddressFunction(chainId: number) {
   return toETHChecksumAddress;
 }
 
-export function toChecksumAddress(address: string, chainId: number) {
+export function toChecksumAddressByChainId(address: string, chainId: number) {
   return getChecksumAddressFunction(chainId)(address);
 }

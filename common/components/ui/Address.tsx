@@ -18,29 +18,25 @@ interface StateProps {
 
 type Props = BaseProps & StateProps;
 
-// const isAddressProps = (props: Props): props is Props =>
-//   typeof (props as AddressProps).address === 'string';
-
 export class Address extends React.PureComponent<Props> {
   public render() {
     const { wallet, address, explorer, toChecksumAddress } = this.props;
-    let addr = '';
-    if (address != null) {
-      addr = address;
+    let renderAddress = '';
+    if (address !== null && address !== undefined) {
+      renderAddress = address;
     } else {
-      addr = wallet != null ? wallet.getAddressString() : '';
+      renderAddress = wallet !== null && wallet !== undefined ? wallet.getAddressString() : '';
     }
-    addr = toChecksumAddress(addr);
+    renderAddress = toChecksumAddress(renderAddress);
 
     if (explorer) {
-      return <NewTabLink href={explorer.addressUrl(addr)}>{addr}</NewTabLink>;
+      return <NewTabLink href={explorer.addressUrl(renderAddress)}>{renderAddress}</NewTabLink>;
     } else {
-      return <React.Fragment>{addr}</React.Fragment>;
+      return <React.Fragment>{renderAddress}</React.Fragment>;
     }
   }
 }
 
-//export default Address;
 export default connect((state: AppState) => ({
   toChecksumAddress: getChecksumAddressFn(state)
 }))(Address);
