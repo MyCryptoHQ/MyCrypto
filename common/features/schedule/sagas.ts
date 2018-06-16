@@ -6,6 +6,7 @@ import { toTokenBase, Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
+import * as selectors from 'features/selectors';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as transactionFieldsTypes from 'features/transaction/fields/types';
@@ -165,8 +166,8 @@ export function* shouldValidateParams(): SagaIterator {
 }
 
 function* checkSchedulingParametersValidity() {
-  const validateParamsCallData: scheduleSelectors.IGetValidateScheduleParamsCallPayload = yield select(
-    scheduleSelectors.getValidateScheduleParamsCallPayload
+  const validateParamsCallData: selectors.IGetValidateScheduleParamsCallPayload = yield select(
+    selectors.getValidateScheduleParamsCallPayload
   );
 
   if (!validateParamsCallData) {

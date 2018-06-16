@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { getNetworkConfig } from 'features/config';
-import { ratesSelectors } from 'features/rates';
 import { SerializedTxParams, getParamsFromSerializedTx } from 'features/transaction';
 import { UnitDisplay } from 'components/ui';
 import './Amounts.scss';
 
-interface StateProps extends SerializedTxParams, ratesSelectors.AllUSDValues {
+interface StateProps extends SerializedTxParams, selectors.AllUSDValues {
   network: NetworkConfig;
 }
 
@@ -109,7 +109,7 @@ class AmountsClass extends Component<StateProps> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   ...getParamsFromSerializedTx(state),
-  ...ratesSelectors.getAllUSDValuesFromSerializedTx(state),
+  ...selectors.getAllUSDValuesFromSerializedTx(state),
   network: getNetworkConfig(state)
 });
 

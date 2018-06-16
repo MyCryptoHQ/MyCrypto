@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { scheduleSelectors } from 'features/schedule';
 import { ensSelectors } from 'features/ens';
 import { Query } from 'components/renderCbs';
@@ -43,5 +44,5 @@ class WindowStartInputFactoryClass extends Component<Props> {
 export const WindowStartInputFactory = connect((state: AppState) => ({
   currentWindowStart: scheduleSelectors.getCurrentWindowStart(state),
   isResolving: ensSelectors.getResolvingDomain(state),
-  isValid: scheduleSelectors.isValidCurrentWindowStart(state)
+  isValid: selectors.isValidCurrentWindowStart(state)
 }))(WindowStartInputFactoryClass);

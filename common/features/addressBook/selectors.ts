@@ -1,7 +1,6 @@
 import { toChecksumAddress } from 'ethereumjs-util';
 
 import { AppState } from 'features/reducers';
-import * as transactionSelectors from 'features/transaction/selectors';
 import * as addressBookConstants from './constants';
 import * as addressBookTypes from './types';
 
@@ -58,11 +57,4 @@ export function getNextAddressLabelId(state: AppState) {
   }
 
   return (+rows[rows.length - 1].id + 1).toString();
-}
-
-export function getCurrentToLabel(state: AppState) {
-  const addresses = getAddressLabels(state);
-  const currentTo = transactionSelectors.getCurrentTo(state);
-
-  return addresses[currentTo.raw] || null;
 }
