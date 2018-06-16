@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import Tx from 'ethereumjs-tx';
 import { SagaIterator } from 'redux-saga';
 import { select, call, put, take } from 'redux-saga/effects';
@@ -42,7 +42,7 @@ import { SignTransactionRequestedAction } from './sign/types';
 import { signTransactionFailed } from './sign/actions';
 import { StateSerializedTx } from './sign/reducer';
 import { getWeb3Tx, getSignedTx } from './sign/selectors';
-// import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 
 //#region Selectors
 type TransactionFields = AppState['transaction']['fields'];
@@ -140,12 +140,11 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       yield put(
         showNotification(
           'success',
-          // <TransactionSucceeded
-          //   txHash={broadcastedHash}
-          //   blockExplorer={network.isCustom ? undefined : network.blockExplorer}
-          //   scheduling={scheduling}
-          // />,
-          'FIX ME',
+          <TransactionSucceeded
+            txHash={broadcastedHash}
+            blockExplorer={network.isCustom ? undefined : network.blockExplorer}
+            scheduling={scheduling}
+          />,
           Infinity
         )
       );

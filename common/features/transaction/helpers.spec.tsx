@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { SagaIterator } from 'redux-saga';
 import { select, call, put, take } from 'redux-saga/effects';
 import { cloneableGenerator } from 'redux-saga/utils';
@@ -26,7 +26,7 @@ import { getFromRequested } from './network/actions';
 import { signTransactionFailed } from './sign/actions';
 import { getWeb3Tx, getSignedTx } from './sign/selectors';
 
-// import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
+import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import {
   rebaseUserInput,
   validateInput,
@@ -39,11 +39,6 @@ import {
   handleFailedTransaction,
   getFromSaga
 } from './helpers';
-
-/* tslint:disable */
-// import './actions';
-// import './selectors'; //throws if not imported
-/* tslint:enable */
 
 configuredStore.getState();
 
@@ -154,12 +149,11 @@ describe('transaction: Helpers', () => {
           put(
             showNotification(
               'success',
-              // <TransactionSucceeded
-              //   txHash={broadcastedHash}
-              //   blockExplorer={network.blockExplorer}
-              //   scheduling={false}
-              // />,
-              'FIX ME',
+              <TransactionSucceeded
+                txHash={broadcastedHash}
+                blockExplorer={network.blockExplorer}
+                scheduling={false}
+              />,
               Infinity
             )
           )
