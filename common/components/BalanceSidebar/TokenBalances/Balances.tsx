@@ -3,7 +3,7 @@ import React from 'react';
 import translate from 'translations';
 import { Token } from 'types/network';
 import { walletTypes } from 'features/wallet';
-import AddCustomTokenForm from './AddCustomTokenForm';
+import { AddCustomTokenForm } from './AddCustomTokenForm';
 import TokenRow from './TokenRow';
 
 interface Props {
