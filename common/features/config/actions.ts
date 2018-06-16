@@ -1,7 +1,4 @@
-import {
-  CONFIG,
-  PollOfflineStatus,
-} from './types';
+import { CONFIG, PollOfflineStatus } from './types';
 
 export type TPollOfflineStatus = typeof pollOfflineStatus;
 export function pollOfflineStatus(): PollOfflineStatus {
