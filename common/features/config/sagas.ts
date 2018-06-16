@@ -105,6 +105,12 @@ export function* handleChangeNodeRequested({
 
   // Bail out if they're switching to the same node
   if (currentConfig.id === nodeIdToSwitchTo) {
+    yield put(
+      changeNodeSucceeded({
+        nodeId: currentConfig.id,
+        networkId: currentConfig.network
+      })
+    );
     return;
   }
 
