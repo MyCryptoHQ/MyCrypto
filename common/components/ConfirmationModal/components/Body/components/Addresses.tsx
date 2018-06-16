@@ -24,7 +24,6 @@ const size = '3rem';
 class AddressesClass extends Component<StateProps> {
   public render() {
     const { from, isToken, unit, toChecksumAddress } = this.props;
-
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {

@@ -289,11 +289,11 @@ describe('addressBook: Sagas', () => {
         }
       };
       const action = addressBookActions.removeAddressLabelEntry(id);
-      const dispatched: string[] = [];
+      const dispatched: addressBookTypes.AddressLabel[] = [];
 
       await runSaga(
         {
-          dispatch: (dispatching: string) => dispatched.push(dispatching),
+          dispatch: (dispatching: addressBookTypes.AddressLabel) => dispatched.push(dispatching),
           getState: () => state
         },
         addressBookSagas.handleRemoveAddressLabelEntry,

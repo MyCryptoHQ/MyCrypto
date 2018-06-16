@@ -199,7 +199,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
   private getAddresses(props: Props = this.props) {
     const { dPath, publicKey, chainCode, seed } = props;
-
     if (dPath && ((publicKey && chainCode) || seed)) {
       if (isValidPath(dPath.value)) {
         this.props.getDeterministicWallets({

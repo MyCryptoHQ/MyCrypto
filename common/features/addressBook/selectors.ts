@@ -28,7 +28,6 @@ export function getAccountAddressEntry(state: AppState) {
 export function getAddressLabelEntryFromAddress(state: AppState, address: string) {
   const rows = getAddressLabelRows(state);
   const entry = rows.find(e => e.address === address.toLowerCase());
-
   return entry;
 }
 

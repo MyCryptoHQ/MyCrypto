@@ -1,7 +1,6 @@
 import BN from 'bn.js';
 import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
 import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
-
 import { Wei } from 'libs/units';
 import { stripHexPrefix } from 'libs/formatters';
 

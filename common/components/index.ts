@@ -1,4 +1,3 @@
-export * from './AddressField';
 export * from './DataField';
 export * from './GasLimitField';
 export * from './AmountField';

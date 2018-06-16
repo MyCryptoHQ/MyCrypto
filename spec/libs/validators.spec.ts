@@ -11,7 +11,6 @@ import {
 import { translateRaw } from 'translations';
 import { DPaths } from 'config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
-
 configuredStore.getState();
 
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';

@@ -5,10 +5,10 @@ import { N_FACTOR } from 'config';
 import { generateKeystore } from 'libs/web-workers';
 import { WalletType } from '../../GenerateWallet';
 import Template from '../Template';
+import FinalSteps from '../FinalSteps';
 import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
-import FinalSteps from '../FinalSteps';
 
 export enum Steps {
   Password = 'password',

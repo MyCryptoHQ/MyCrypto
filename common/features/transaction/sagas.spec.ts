@@ -31,7 +31,6 @@ import {
   getTransactionFields
 } from 'libs/transaction';
 import {
-  isValidETHAddress,
   isValidENSAddress,
   isValidHex,
   isValidNonce,

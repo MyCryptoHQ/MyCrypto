@@ -1,5 +1,4 @@
 import React from 'react';
-
 import translate from 'translations';
 import { NewTabLink } from 'components/ui';
 import './InsecureWalletWarning.scss';
