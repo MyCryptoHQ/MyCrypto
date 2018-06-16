@@ -4,13 +4,13 @@ import { toChecksumAddress } from 'ethereumjs-util';
 
 import { etherChainExplorerInst } from 'config/data';
 import translate, { translateRaw } from 'translations';
-import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
+import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { getNetworkConfig, getOffline } from 'features/config';
 import { walletActions } from 'features/wallet';
-import { UnitDisplay, NewTabLink } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
+import { UnitDisplay, NewTabLink } from 'components/ui';
 import AccountAddress from './AccountAddress';
 import './AccountInfo.scss';
 
@@ -74,7 +74,7 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, isOffline, balance } = this.props;
+    const { network, isOffline, balance, wallet } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
 
     let blockExplorer;
@@ -85,12 +85,11 @@ class AccountInfo extends React.Component<Props, State> {
       tokenExplorer = network.tokenExplorer;
     }
 
-    const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div>
         <AccountAddress address={toChecksumAddress(address)} />
 
-        {typeof wallet.displayAddress === 'function' && (
+        {isHardwareWallet(wallet) && (
           <div className="AccountInfo-section">
             <a
               className="AccountInfo-address-hw-addr"
@@ -99,9 +98,9 @@ class AccountInfo extends React.Component<Props, State> {
                 wallet
                   .displayAddress()
                   .then(() => this.toggleConfirmAddr())
-                  .catch(e => {
+                  .catch((e: Error | string) => {
+                    console.error('Display address failed', e);
                     this.toggleConfirmAddr();
-                    throw new Error(e);
                   });
               }}
             >
@@ -111,7 +110,7 @@ class AccountInfo extends React.Component<Props, State> {
             </a>
             {confirmAddr ? (
               <span className="AccountInfo-address-confirm">
-                <Spinner /> {translate('CONFIRM_ADDRESS_ON')} {wallet.getWalletType()}
+                <Spinner /> Confirm address on {wallet.getWalletType()}
               </span>
             ) : null}
           </div>
@@ -191,6 +190,10 @@ class AccountInfo extends React.Component<Props, State> {
     }
     return network.unit;
   }
+}
+
+function isHardwareWallet(wallet: IWallet): wallet is HardwareWallet {
+  return typeof (wallet as any).displayAddress === 'function';
 }
 
 function mapStateToProps(state: AppState): StateProps {
