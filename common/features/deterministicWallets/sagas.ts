@@ -1,6 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import { publicToAddress, toChecksumAddress } from 'ethereumjs-util';
+import { publicToAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 
 import translate from 'translations';
@@ -8,6 +8,7 @@ import { INode } from 'libs/nodes/INode';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
 import * as selectors from 'features/selectors';
+import { getChecksumAddressFn } from 'features/config';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as notificationsActions from 'features/notifications/actions';
 import * as deterministicWalletsTypes from './types';
@@ -36,6 +37,9 @@ export function* getDeterministicWalletsSaga(
     return;
   }
   const wallets: deterministicWalletsTypes.DeterministicWalletData[] = [];
+  const toChecksumAddress: ReturnType<typeof getChecksumAddressFn> = yield select(
+    getChecksumAddressFn
+  );
   for (let i = 0; i < limit; i++) {
     const index = i + offset;
     const dkey = hdk.derive(`${pathBase}/${index}`);

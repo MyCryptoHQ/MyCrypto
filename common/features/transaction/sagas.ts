@@ -39,7 +39,6 @@ import {
 } from 'libs/transaction';
 import {
   isValidENSAddress,
-  isValidETHAddress,
   validNumber,
   validPositiveNumber,
   validDecimal,
@@ -55,6 +54,7 @@ import { CONFIG_META, ToggleAutoGasLimitAction } from 'features/config/meta/type
 import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';
 import { isNetworkUnit, getNetworkUnit } from 'features/config/selectors';
+import { getIsValidAddressFn } from 'features/config';
 import * as ensTypes from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { getResolvedAddress } from 'features/ens/selectors';
@@ -187,7 +187,8 @@ export const broadcastSaga = [
 
 //#region Current To
 export function* setCurrentToSaga({ payload: raw }: SetCurrentToAction): SagaIterator {
-  const validAddress: boolean = yield call(isValidETHAddress, raw);
+  const isValidAddress: ReturnType<typeof getIsValidAddressFn> = yield select(getIsValidAddressFn);
+  const validAddress: boolean = yield call(isValidAddress, raw);
   const validEns: boolean = yield call(isValidENSAddress, raw);
 
   let value: Buffer | null = null;

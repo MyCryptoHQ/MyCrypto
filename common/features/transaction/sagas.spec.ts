@@ -36,7 +36,8 @@ import {
   isValidHex,
   isValidNonce,
   gasPriceValidator,
-  gasLimitValidator
+  gasLimitValidator,
+  getIsValidAddressFunction
 } from 'libs/validators';
 import configuredStore from 'features/store';
 import * as selectors from 'features/selectors';
@@ -44,6 +45,7 @@ import * as configMetaTypes from 'features/config/meta/types';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';
 import { isNetworkUnit } from 'features/config/selectors';
+import { getIsValidAddressFn } from 'features/config';
 import * as ensTypes from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { getResolvedAddress } from 'features/ens/selectors';
@@ -201,6 +203,7 @@ describe('transaction: Sagas', () => {
     };
 
     describe('setCurrentTo*', () => {
+      const isValidAddress = getIsValidAddressFunction(1);
       const data = {} as any;
 
       describe('with valid Ethereum address', () => {
@@ -214,8 +217,13 @@ describe('transaction: Sagas', () => {
         };
 
         data.validEthGen = setCurrentToSaga(ethAddrAction);
-        it('should call isValidETHAddress', () => {
-          expect(data.validEthGen.next().value).toEqual(call(isValidETHAddress, raw));
+
+        it('should select getIsValidAddressFn', () => {
+          expect(data.validEthGen.next().value).toEqual(select(getIsValidAddressFn));
+        });
+
+        it('should call isValidAddress', () => {
+          expect(data.validEthGen.next(isValidAddress).value).toEqual(call(isValidAddress, raw));
         });
 
         it('should call isValidENSAddress', () => {
@@ -240,8 +248,12 @@ describe('transaction: Sagas', () => {
         };
         data.validEnsGen = setCurrentToSaga(ensAddrAction);
 
-        it('should call isValidETHAddress', () => {
-          expect(data.validEnsGen.next().value).toEqual(call(isValidETHAddress, raw));
+        it('should select getIsValidAddressFn', () => {
+          expect(data.validEnsGen.next().value).toEqual(select(getIsValidAddressFn));
+        });
+
+        it('should call isValidAddress', () => {
+          expect(data.validEnsGen.next(isValidAddress).value).toEqual(call(isValidAddress, raw));
         });
 
         it('should call isValidENSAddress', () => {

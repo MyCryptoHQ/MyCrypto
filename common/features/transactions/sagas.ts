@@ -1,7 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { put, select, apply, call, take, takeEvery } from 'redux-saga/effects';
 import EthTx from 'ethereumjs-tx';
-import { toChecksumAddress } from 'ethereumjs-util';
 
 import { INode } from 'libs/nodes';
 import { hexEncodeData } from 'libs/nodes/rpc/utils';
@@ -11,6 +10,7 @@ import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/tra
 import { AppState } from 'features/reducers';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as configSelectors from 'features/config/selectors';
+import { getChecksumAddressFn } from 'features/config';
 import * as walletSelectors from 'features/wallet/selectors';
 import * as transactionBroadcastTypes from 'features/transaction/broadcast/types';
 import * as transactionsTypes from './types';
@@ -93,7 +93,7 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
       from = wallet.getAddressString();
     }
   }
-
+  const toChecksumAddress = yield select(getChecksumAddressFn);
   const savableTx: SavedTransaction = {
     hash,
     from,

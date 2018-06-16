@@ -11,7 +11,9 @@ export function setAddressLabel(
 }
 
 export type TClearAddressLabel = typeof clearAddressLabel;
-export function clearAddressLabel(payload: string): addressBookTypes.ClearAddressLabel {
+export function clearAddressLabel(
+  payload: addressBookTypes.AddressLabel['address']
+): addressBookTypes.ClearAddressLabel {
   return {
     type: addressBookTypes.AddressBookActions.CLEAR_LABEL,
     payload
@@ -39,7 +41,9 @@ export function changeAddressLabelEntry(
 }
 
 export type TSaveAddressLabelEntry = typeof saveAddressLabelEntry;
-export function saveAddressLabelEntry(payload: string): addressBookTypes.SaveAddressLabelEntry {
+export function saveAddressLabelEntry(
+  payload: addressBookTypes.AddressLabelEntry['id']
+): addressBookTypes.SaveAddressLabelEntry {
   return {
     type: addressBookTypes.AddressBookActions.SAVE_LABEL_ENTRY,
     payload
@@ -47,7 +51,9 @@ export function saveAddressLabelEntry(payload: string): addressBookTypes.SaveAdd
 }
 
 export type TClearAddressLabelEntry = typeof clearAddressLabelEntry;
-export function clearAddressLabelEntry(payload: string): addressBookTypes.ClearAddressLabelEntry {
+export function clearAddressLabelEntry(
+  payload: addressBookTypes.AddressLabelEntry['id']
+): addressBookTypes.ClearAddressLabelEntry {
   return {
     type: addressBookTypes.AddressBookActions.CLEAR_LABEL_ENTRY,
     payload
@@ -55,7 +61,9 @@ export function clearAddressLabelEntry(payload: string): addressBookTypes.ClearA
 }
 
 export type TRemoveAddressLabelEntry = typeof removeAddressLabelEntry;
-export function removeAddressLabelEntry(payload: string): addressBookTypes.RemoveAddressLabelEntry {
+export function removeAddressLabelEntry(
+  payload: addressBookTypes.AddressLabelEntry['id']
+): addressBookTypes.RemoveAddressLabelEntry {
   return {
     type: addressBookTypes.AddressBookActions.REMOVE_LABEL_ENTRY,
     payload

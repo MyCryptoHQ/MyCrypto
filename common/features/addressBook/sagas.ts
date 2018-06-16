@@ -2,6 +2,7 @@ import { SagaIterator } from 'redux-saga';
 import { select, put, takeEvery } from 'redux-saga/effects';
 
 import { isValidAddressLabel } from 'libs/validators';
+import * as configSelectors from 'features/config/selectors';
 import * as notificationsActions from 'features/notifications/actions';
 import * as addressBookConstants from './constants';
 import * as addressBookTypes from './types';
@@ -20,14 +21,25 @@ export function* handleChangeAddressLabelEntry(
     isEditing,
     overrideValidation
   } = action.payload;
-  const addresses = yield select(addressBookSelectors.getAddressLabels);
-  const labels = yield select(addressBookSelectors.getLabelAddresses);
-  const priorEntry = yield select(addressBookSelectors.getAddressLabelEntry, id);
+  const addresses: ReturnType<typeof addressBookSelectors.getAddressLabels> = yield select(
+    addressBookSelectors.getAddressLabels
+  );
+  const labels: ReturnType<typeof addressBookSelectors.getLabelAddresses> = yield select(
+    addressBookSelectors.getLabelAddresses
+  );
+  const priorEntry: ReturnType<typeof addressBookSelectors.getAddressLabelEntry> = yield select(
+    addressBookSelectors.getAddressLabelEntry,
+    id
+  );
+  const chainId: ReturnType<typeof configSelectors.getNetworkChainId> = yield select(
+    configSelectors.getNetworkChainId
+  );
   const { addressError, labelError } = isValidAddressLabel(
     temporaryAddress,
     temporaryLabel,
     addresses,
-    labels
+    labels,
+    chainId
   );
   const updatedEntry = {
     id,
@@ -46,11 +58,18 @@ export function* handleSaveAddressLabelEntry(
   action: addressBookTypes.SaveAddressLabelEntry
 ): SagaIterator {
   const id = action.payload;
-  const { address, addressError, label, labelError } = yield select(
+  const {
+    address,
+    addressError,
+    label,
+    labelError
+  }: ReturnType<typeof addressBookSelectors.getAddressLabelEntry> = yield select(
     addressBookSelectors.getAddressLabelEntry,
     id
   );
-  const nextId = yield select(addressBookSelectors.getNextAddressLabelId);
+  const nextId: ReturnType<typeof addressBookSelectors.getNextAddressLabelId> = yield select(
+    addressBookSelectors.getNextAddressLabelId
+  );
   const flashError = (error: string) =>
     put(notificationsActions.showNotification('danger', error, ERROR_DURATION));
 
@@ -95,7 +114,9 @@ export function* handleSaveAddressLabelEntry(
       })
     );
   } else if (id === addressBookConstants.ACCOUNT_ADDRESS_ID) {
-    const ownEntry = yield select(addressBookSelectors.getAddressLabelEntryFromAddress, address);
+    const ownEntry: ReturnType<
+      typeof addressBookSelectors.getAddressLabelEntryFromAddress
+    > = yield select(addressBookSelectors.getAddressLabelEntryFromAddress, address);
 
     yield put(
       addressBookActions.setAddressLabelEntry({
@@ -139,7 +160,13 @@ export function* handleRemoveAddressLabelEntry(
   action: addressBookTypes.RemoveAddressLabelEntry
 ): SagaIterator {
   const id = action.payload;
-  const { id: entryId, address } = yield select(addressBookSelectors.getAddressLabelEntry, id);
+  const {
+    id: entryId,
+    address
+  }: ReturnType<typeof addressBookSelectors.getAddressLabelEntry> = yield select(
+    addressBookSelectors.getAddressLabelEntry,
+    id
+  );
 
   if (typeof entryId === 'undefined') {
     return;
@@ -149,7 +176,9 @@ export function* handleRemoveAddressLabelEntry(
   yield put(addressBookActions.clearAddressLabelEntry(id));
 
   if (id === addressBookConstants.ACCOUNT_ADDRESS_ID) {
-    const ownEntry = yield select(addressBookSelectors.getAddressLabelEntryFromAddress, address);
+    const ownEntry: ReturnType<
+      typeof addressBookSelectors.getAddressLabelEntryFromAddress
+    > = yield select(addressBookSelectors.getAddressLabelEntryFromAddress, address);
 
     if (ownEntry) {
       yield put(addressBookActions.clearAddressLabelEntry(ownEntry.id));

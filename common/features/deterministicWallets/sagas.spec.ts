@@ -5,9 +5,11 @@ import { INode } from 'libs/nodes/INode';
 import RpcNode from 'libs/nodes/rpc';
 import { Token } from 'types/network';
 import { TokenValue, Wei } from 'libs/units';
+import { getChecksumAddressFunction } from 'utils/formatters';
 import configuredStore from 'features/store';
 import * as selectors from 'features/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
+import { getChecksumAddressFn } from 'features/config';
 import * as deterministicWalletsTypes from './types';
 import * as deterministicWalletsActions from './actions';
 import * as deterministicWalletsSelectors from './selectors';
@@ -43,6 +45,8 @@ const genWalletData2 = () => ({
 const genBalances = () => [Wei('100'), Wei('200')];
 
 describe('getDeterministicWallets*', () => {
+  const toChecksumAddress = getChecksumAddressFunction(1);
+
   describe('starting from seed', () => {
     const dWallet = {
       seed:
@@ -52,8 +56,12 @@ describe('getDeterministicWallets*', () => {
     const action = deterministicWalletsActions.getDeterministicWallets(dWallet);
     const gen = deterministicWalletsSagas.getDeterministicWalletsSaga(action);
 
+    it('should select getChecksumAddressFn', () => {
+      expect(gen.next().value).toEqual(select(getChecksumAddressFn));
+    });
+
     it('should match put snapshot', () => {
-      expect(gen.next().value).toMatchSnapshot();
+      expect(gen.next(toChecksumAddress).value).toMatchSnapshot();
     });
 
     it('should fork updateWalletValues', () => {
@@ -77,8 +85,12 @@ describe('getDeterministicWallets*', () => {
     const action = deterministicWalletsActions.getDeterministicWallets(dWallet);
     const gen = deterministicWalletsSagas.getDeterministicWalletsSaga(action);
 
+    it('should select getChecksumAddressFn', () => {
+      expect(gen.next().value).toEqual(select(getChecksumAddressFn));
+    });
+
     it('should match put snapshot', () => {
-      expect(gen.next().value).toMatchSnapshot();
+      expect(gen.next(toChecksumAddress).value).toMatchSnapshot();
     });
 
     it('should fork updateWalletValues', () => {

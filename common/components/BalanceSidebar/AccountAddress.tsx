@@ -13,7 +13,7 @@ import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {
   entry: ReturnType<typeof addressBookSelectors.getAccountAddressEntry>;
-  addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
+  addressLabel: string;
 }
 
 interface DispatchProps {
@@ -60,16 +60,13 @@ class AccountAddress extends React.Component<Props, State> {
   }
 
   public render() {
-    const { address, addressLabels } = this.props;
+    const { address, addressLabel } = this.props;
     const { copied } = this.state;
-    const label = addressLabels[address];
     const labelContent = this.generateLabelContent();
     const labelButton = this.generateLabelButton();
     const addressClassName = `AccountInfo-address-addr ${
-      label ? 'AccountInfo-address-addr--small' : ''
+      addressLabel ? 'AccountInfo-address-addr--small' : ''
     }`;
-
-    console.log('actions', addressBookActions);
 
     return (
       <div className="AccountInfo">
@@ -117,10 +114,9 @@ class AccountAddress extends React.Component<Props, State> {
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
   private generateLabelContent = () => {
-    const { address, addressLabels, entry: { temporaryLabel, labelError } } = this.props;
+    const { addressLabel, entry: { temporaryLabel, labelError } } = this.props;
     const { editingLabel, labelInputTouched } = this.state;
-    const storedLabel = addressLabels[address];
-    const newLabelSameAsPrevious = temporaryLabel === storedLabel;
+    const newLabelSameAsPrevious = temporaryLabel === addressLabel;
     const labelInputTouchedWithError = labelInputTouched && !newLabelSameAsPrevious && labelError;
 
     let labelContent = null;
@@ -131,7 +127,7 @@ class AccountAddress extends React.Component<Props, State> {
           <Input
             title={translateRaw('ADD_LABEL')}
             placeholder={translateRaw('NEW_LABEL')}
-            defaultValue={storedLabel}
+            defaultValue={addressLabel}
             onChange={this.handleLabelChange}
             onKeyDown={this.handleKeyDown}
             onFocus={this.setTemporaryLabelTouched}
@@ -146,20 +142,15 @@ class AccountAddress extends React.Component<Props, State> {
         </React.Fragment>
       );
     } else {
-      labelContent = (
-        <label title={storedLabel} className="AccountInfo-address-label">
-          {storedLabel}
-        </label>
-      );
+      labelContent = <label className="AccountInfo-address-label">{addressLabel}</label>;
     }
 
     return labelContent;
   };
 
   private generateLabelButton = () => {
-    const { address, addressLabels } = this.props;
+    const { addressLabel } = this.props;
     const { editingLabel } = this.state;
-    const label = addressLabels[address];
     const labelButton = editingLabel ? (
       <React.Fragment>
         <i className="fa fa-save" />
@@ -172,10 +163,10 @@ class AccountAddress extends React.Component<Props, State> {
         <i className="fa fa-pencil" />
         <span
           role="button"
-          title={label ? translateRaw('EDIT_LABEL') : translateRaw('ADD_LABEL_9')}
+          title={addressLabel ? translateRaw('EDIT_LABEL') : translateRaw('ADD_LABEL_9')}
           onClick={this.startEditingLabel}
         >
-          {label ? translate('EDIT_LABEL') : translate('ADD_LABEL_9')}
+          {addressLabel ? translate('EDIT_LABEL') : translate('ADD_LABEL_9')}
         </span>
       </React.Fragment>
     );
@@ -184,13 +175,12 @@ class AccountAddress extends React.Component<Props, State> {
   };
 
   private handleBlur = () => {
-    const { address, addressLabels, entry: { id, label, temporaryLabel, labelError } } = this.props;
-    const storedLabel = addressLabels[address];
+    const { address, addressLabel, entry: { id, label, temporaryLabel, labelError } } = this.props;
 
     this.clearTemporaryLabelTouched();
     this.stopEditingLabel();
 
-    if (temporaryLabel === storedLabel) {
+    if (temporaryLabel === addressLabel) {
       return;
     }
 
@@ -252,10 +242,16 @@ class AccountAddress extends React.Component<Props, State> {
   private clearTemporaryLabelTouched = () => this.setState({ labelInputTouched: false });
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (state: AppState) => ({
-  entry: addressBookSelectors.getAccountAddressEntry(state),
-  addressLabels: addressBookSelectors.getAddressLabels(state)
-});
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (
+  state: AppState,
+  ownProps: OwnProps
+) => {
+  const labelEntry = addressBookSelectors.getAddressLabelEntryFromAddress(state, ownProps.address);
+  return {
+    entry: addressBookSelectors.getAccountAddressEntry(state),
+    addressLabel: labelEntry ? labelEntry.label : ''
+  };
+};
 
 const mapDispatchToProps: DispatchProps = {
   changeAddressLabelEntry: addressBookActions.changeAddressLabelEntry,

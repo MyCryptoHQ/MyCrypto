@@ -78,6 +78,11 @@ export const ETH_SINGULAR: DPath = {
   value: "m/0'/0'/0'"
 };
 
+export const RSK_TESTNET: DPath = {
+  label: 'Testnet (RSK)',
+  value: "m/44'/37310'/0'/0"
+};
+
 export const GO_DEFAULT: DPath = {
   label: 'Default (GO)',
   value: "m/44'/6060'/0'/0"
@@ -99,6 +104,7 @@ export const DPaths: DPath[] = [
   ETSC_DEFAULT,
   EGEM_DEFAULT,
   CLO_DEFAULT,
+  RSK_TESTNET,
   GO_DEFAULT
 ];
 

@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
 import {
   addressBookConstants,
   addressBookActions,
@@ -24,6 +25,7 @@ interface StateProps {
   entry: ReturnType<typeof addressBookSelectors.getAddressBookTableEntry>;
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 type Props = DispatchProps & StateProps;
@@ -190,7 +192,8 @@ class AddressBookTable extends React.Component<Props, State> {
 
   private makeLabelRow = (row: any, index: number) => {
     const { editingRow } = this.state;
-    const { id, address, label, temporaryLabel, labelError } = row;
+    const { id, label, temporaryLabel, labelError } = row;
+    const address = this.props.toChecksumAddress(row.address);
     const isEditing = index === editingRow;
     const onChange = (newLabel: string) =>
       this.props.changeAddressLabelEntry({
@@ -298,7 +301,8 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   rows: addressBookSelectors.getAddressLabelRows(state),
   entry: addressBookSelectors.getAddressBookTableEntry(state),
   addressLabels: addressBookSelectors.getAddressLabels(state),
-  labelAddresses: addressBookSelectors.getLabelAddresses(state)
+  labelAddresses: addressBookSelectors.getLabelAddresses(state),
+  toChecksumAddress: getChecksumAddressFn(state)
 });
 
 const mapDispatchToProps: DispatchProps = {

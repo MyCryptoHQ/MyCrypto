@@ -3,6 +3,7 @@ import difference from 'lodash/difference';
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { stripWeb3Network, isAutoNodeConfig } from 'libs/nodes';
+import { getIsValidAddressFunction } from 'libs/validators';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
 import {
   CustomNetworkConfig,
@@ -11,6 +12,7 @@ import {
   NetworkContract,
   Token
 } from 'types/network';
+import { getChecksumAddressFunction } from 'utils/formatters';
 import { AppState } from 'features/reducers';
 import { getNetworks } from './networks/selectors';
 import { getCustomNetworkConfigs } from './networks/custom/selectors';
@@ -81,6 +83,20 @@ export const getNetworkUnit = (state: AppState): string => {
   return getNetworkConfig(state).unit;
 };
 
+export const getNetworkChainId = (state: AppState) => {
+  return getNetworkConfig(state).chainId;
+};
+
+export const getIsValidAddressFn = (state: AppState) => {
+  const chainId = getNetworkChainId(state);
+  return getIsValidAddressFunction(chainId);
+};
+
+export const getChecksumAddressFn = (state: AppState) => {
+  const chainId = getNetworkChainId(state);
+  return getChecksumAddressFunction(chainId);
+};
+
 export const getNetworkContracts = (state: AppState): NetworkContract[] | null => {
   const network = getStaticNetworkConfig(state);
   return network ? network.contracts : [];
@@ -137,6 +153,7 @@ export function isANetworkUnit(state: AppState, unit: string) {
 
 export function isWalletFormatSupportedOnNetwork(state: AppState, format: WalletName): boolean {
   const network = getStaticNetworkConfig(state);
+  const chainId = network ? network.chainId : 0;
 
   const CHECK_FORMATS: DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
@@ -153,6 +170,11 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
     }
     const dPath = network.dPathFormats && network.dPathFormats[format];
     return !!dPath;
+  }
+
+  // Parity signer on RSK
+  if (chainId === 30 || (chainId === 31 && format === SecureWalletName.PARITY_SIGNER)) {
+    return false;
   }
 
   // All other wallet formats are supported

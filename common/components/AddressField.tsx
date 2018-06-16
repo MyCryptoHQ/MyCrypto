@@ -1,23 +1,32 @@
 import React from 'react';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { connect } from 'react-redux';
 
 import { donationAddressMap } from 'config';
 import translate from 'translations';
+import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
 import { Input } from 'components/ui';
 import { AddressFieldFactory } from './AddressFieldFactory';
 
-interface Props {
+interface OwnProps {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
   isCheckSummed?: boolean;
   showLabelMatch?: boolean;
 }
 
-export const AddressField: React.SFC<Props> = ({
+interface StateProps {
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+}
+
+type Props = OwnProps & StateProps;
+
+const AddressField: React.SFC<Props> = ({
   isReadOnly,
   isSelfAddress,
   isCheckSummed,
-  showLabelMatch
+  showLabelMatch,
+  toChecksumAddress
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
@@ -29,7 +38,8 @@ export const AddressField: React.SFC<Props> = ({
             {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
           </div>
           <Input
-            className="input-group-input"
+            className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
+            isValid={isValid}
             type="text"
             value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
             placeholder={donationAddressMap.ETH}
@@ -38,10 +48,13 @@ export const AddressField: React.SFC<Props> = ({
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
-            isValid={!(isValid && isLabelEntry)}
           />
         </label>
       </div>
     )}
   />
 );
+
+export default connect((state: AppState): StateProps => ({
+  toChecksumAddress: getChecksumAddressFn(state)
+}))(AddressField);

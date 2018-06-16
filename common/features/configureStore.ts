@@ -6,7 +6,6 @@ import { createLogger } from 'redux-logger';
 import throttle from 'lodash/throttle';
 
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
-import fixAddressBookErrors from 'utils/fixAddressBookErrors';
 import { gasPriceToBase } from 'libs/units';
 import RootReducer, { AppState } from './reducers';
 import sagas from './sagas';
@@ -15,7 +14,6 @@ import { INITIAL_STATE as transactionInitialState } from './transaction/reducer'
 import { SwapState } from './swap/types';
 import { INITIAL_STATE as initialSwapState } from './swap/reducer';
 import { AddressBookState } from './addressBook/types';
-import { INITIAL_STATE as initialAddressBookState } from './addressBook/reducer';
 import { TransactionsState } from './transactions/types';
 import { INITIAL_STATE as initialTransactionsState } from './transactions/reducer';
 import { WalletState } from './wallet/types';
@@ -24,6 +22,7 @@ import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
 } from './configAndTokens';
+import rehydrateAddressBook from './rehydrateAddressBook';
 
 export default function configureStore() {
   const logger = createLogger({
@@ -75,10 +74,7 @@ export default function configureStore() {
       ...initialTransactionsState,
       ...savedTransactionsState
     },
-    addressBook: {
-      ...initialAddressBookState,
-      ...fixAddressBookErrors(savedAddressBook)
-    },
+    addressBook: rehydrateAddressBook(savedAddressBook),
     wallet: {
       ...initialWalletState,
       ...savedWalletState

@@ -3,6 +3,7 @@ import { runSaga } from 'redux-saga';
 import { translateRaw } from 'translations';
 import { getInitialState } from 'features/helpers';
 import * as addressBookConstants from './constants';
+import * as addressBookTypes from './types';
 import * as addressBookActions from './actions';
 import * as addressBookSagas from './sagas';
 
@@ -250,11 +251,11 @@ describe('addressBook: Sagas', () => {
   describe('handleRemoveAddressLabelEntry', () => {
     it('should simply return if the requested entry is non-existent', async () => {
       const action = addressBookActions.removeAddressLabelEntry('Foo');
-      const dispatched: string[] = [];
+      const dispatched: addressBookTypes.AddressLabel[] = [];
 
       await runSaga(
         {
-          dispatch: (dispatching: string) => dispatched.push(dispatching),
+          dispatch: (dispatching: addressBookTypes.AddressLabel) => dispatched.push(dispatching),
           getState: () => getState()
         },
         addressBookSagas.handleRemoveAddressLabelEntry,

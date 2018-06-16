@@ -1,8 +1,5 @@
-import { toChecksumAddress } from 'ethereumjs-util';
-
 import { AppState } from 'features/reducers';
 import * as addressBookConstants from './constants';
-import * as addressBookTypes from './types';
 
 export function getAddressLabels(state: AppState) {
   return state.addressBook.addresses;
@@ -30,10 +27,7 @@ export function getAccountAddressEntry(state: AppState) {
 
 export function getAddressLabelEntryFromAddress(state: AppState, address: string) {
   const rows = getAddressLabelRows(state);
-  const entry = rows.find(
-    (iteratedEntry: addressBookTypes.AddressLabelEntry) =>
-      iteratedEntry.address === toChecksumAddress(address)
-  );
+  const entry = rows.find(e => e.address === address.toLowerCase());
 
   return entry;
 }

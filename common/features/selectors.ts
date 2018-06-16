@@ -1,7 +1,7 @@
 import erc20 from 'libs/erc20';
 import BN from 'bn.js';
 import EthTx from 'ethereumjs-tx';
-import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
+import { bufferToHex } from 'ethereumjs-util';
 
 import { Address, Wei, TokenValue, Nonce, getDecimalFromEtherUnit } from 'libs/units';
 import {
@@ -514,6 +514,7 @@ export const getUnit = (state: AppState) => {
         networkTokens = networkConfig.tokens;
       }
       const mergedTokens = networkTokens ? [...networkTokens, ...customTokens] : customTokens;
+      const toChecksumAddress = configSelectors.getChecksumAddressFn(state);
       const stringTo = toChecksumAddress(stripHexPrefixAndLower(to.toString('hex')));
       const result = mergedTokens.find(t => t.address === stringTo);
       if (result) {
@@ -616,6 +617,7 @@ export const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySi
 
 export const getFrom = (state: AppState) => {
   const serializedTransaction = getSerializedTransaction(state);
+
   // attempt to get the from address from the transaction
   if (serializedTransaction) {
     const transactionInstance = new EthTx(serializedTransaction);
@@ -623,6 +625,7 @@ export const getFrom = (state: AppState) => {
     try {
       const from = transactionInstance.from;
       if (from) {
+        const toChecksumAddress = configSelectors.getChecksumAddressFn(state);
         return toChecksumAddress(from.toString('hex'));
       }
     } catch (e) {
@@ -667,5 +670,5 @@ export function getCurrentToLabel(state: AppState) {
   const addresses = addressBookSelectors.getAddressLabels(state);
   const currentTo = getCurrentTo(state);
 
-  return addresses[currentTo.raw] || null;
+  return addresses[currentTo.raw.toLowerCase()] || null;
 }
