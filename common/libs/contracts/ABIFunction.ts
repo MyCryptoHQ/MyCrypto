@@ -1,6 +1,7 @@
 import abi from 'ethereumjs-abi';
-import { toChecksumAddress, addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
+import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
+import { toChecksumAddressByChainId } from 'utils/formatters';
 import {
   FuncParams,
   FunctionOutputMappings,
@@ -33,7 +34,7 @@ export default class AbiFunction {
     return encodedCall;
   };
 
-  public decodeInput = (argString: string) => {
+  public decodeInput = (argString: string, chainId: number) => {
     // Remove method selector from data, if present
     argString = argString.replace(addHexPrefix(this.methodSelector), '');
     // Convert argdata to a hex buffer for ethereumjs-abi
@@ -46,12 +47,12 @@ export default class AbiFunction {
       const currType = this.inputTypes[index];
       return {
         ...argObj,
-        [currName]: this.parsePostDecodedValue(currType, currArg)
+        [currName]: this.parsePostDecodedValue(currType, currArg, chainId)
       };
     }, {});
   };
 
-  public decodeOutput = (argString: string) => {
+  public decodeOutput = (argString: string, chainId: number) => {
     // Remove method selector from data, if present
     argString = argString.replace(addHexPrefix(this.methodSelector), '');
 
@@ -69,7 +70,7 @@ export default class AbiFunction {
       const currType = this.outputTypes[index];
       return {
         ...argObj,
-        [currName]: this.parsePostDecodedValue(currType, currArg)
+        [currName]: this.parsePostDecodedValue(currType, currArg, chainId)
       };
     }, {});
   };
@@ -85,9 +86,9 @@ export default class AbiFunction {
     this.methodSelector = abi.methodID(this.name, this.inputTypes).toString('hex');
   }
 
-  private parsePostDecodedValue = (type: string, value: any) => {
+  private parsePostDecodedValue = (type: string, value: any, chainId: number) => {
     const valueMapping: ITypeMapping = {
-      address: (val: any) => toChecksumAddress(val.toString(16))
+      address: (val: any) => toChecksumAddressByChainId(val.toString(16), chainId)
     };
 
     const mapppedType = valueMapping[type];

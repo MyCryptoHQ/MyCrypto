@@ -7,6 +7,8 @@ import {
 } from 'types/network';
 import { getNodeConfig } from 'selectors/config';
 import { stripWeb3Network } from 'libs/nodes';
+import { getIsValidAddressFunction } from 'libs/validators';
+import { getChecksumAddressFunction } from 'utils/formatters';
 const getConfig = (state: AppState) => state.config;
 
 export const getNetworks = (state: AppState) => getConfig(state).networks;
@@ -89,4 +91,18 @@ export const getAllNetworkConfigs = (state: AppState) => ({
 
 export const isNetworkUnit = (state: AppState, unit: string) => {
   return unit === getNetworkUnit(state);
+};
+
+export const getNetworkChainId = (state: AppState) => {
+  return getNetworkConfig(state).chainId;
+};
+
+export const getIsValidAddressFn = (state: AppState) => {
+  const chainId = getNetworkChainId(state);
+  return getIsValidAddressFunction(chainId);
+};
+
+export const getChecksumAddressFn = (state: AppState) => {
+  const chainId = getNetworkChainId(state);
+  return getChecksumAddressFunction(chainId);
 };

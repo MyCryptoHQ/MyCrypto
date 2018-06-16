@@ -4,7 +4,6 @@ import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
-import DeprecationWarning from './DeprecationWarning';
 
 export interface PrivateKeyValue {
   key: string;
@@ -55,7 +54,6 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
 
     return (
       <form id="selectedTypeKey" onSubmit={this.unlock}>
-        <DeprecationWarning />
         <div className="input-group-wrapper">
           <label className="input-group">
             <TogglablePassword

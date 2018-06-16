@@ -56,6 +56,7 @@ describe('shouldEstimateGas*', () => {
     expect(gen.next().value).toEqual(
       take([
         TypeKeys.TO_FIELD_SET,
+        TypeKeys.VALUE_FIELD_SET,
         TypeKeys.DATA_FIELD_SET,
         TypeKeys.ETHER_TO_TOKEN_SWAP,
         TypeKeys.TOKEN_TO_TOKEN_SWAP,
