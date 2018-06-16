@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import EthTx from 'ethereumjs-tx';
 
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
 import {
-  getSerializedTransaction,
-  getTransaction,
   isNetworkRequestPending,
   isValidGasPrice,
   isValidGasLimit,
@@ -78,8 +77,8 @@ export class SendButtonFactoryClass extends Component<Props> {
 const mapStateToProps = (state: AppState) => {
   return {
     walletType: walletSelectors.getWalletType(state),
-    serializedTransaction: getSerializedTransaction(state),
-    ...getTransaction(state),
+    serializedTransaction: selectors.getSerializedTransaction(state),
+    ...selectors.getTransaction(state),
     networkRequestPending: isNetworkRequestPending(state),
     validGasPrice: isValidGasPrice(state),
     validGasLimit: isValidGasLimit(state),

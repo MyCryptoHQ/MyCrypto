@@ -6,7 +6,7 @@ import { ETHAddressExplorer } from 'config';
 import translate from 'translations';
 import ERC20 from 'libs/erc20';
 import { AppState } from 'features/reducers';
-import { getFrom, getUnit, isEtherTransaction } from 'features/transaction';
+import * as selectors from 'features/selectors';
 import arrow from 'assets/images/tail-triangle-down.svg';
 import { SerializedTransaction } from 'components/renderCbs';
 import { Identicon } from 'components/ui';
@@ -91,9 +91,9 @@ class AddressesClass extends Component<StateProps> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  from: getFrom(state),
-  isToken: !isEtherTransaction(state),
-  unit: getUnit(state)
+  from: selectors.getFrom(state),
+  isToken: !selectors.isEtherTransaction(state),
+  unit: selectors.getUnit(state)
 });
 
 export const Addresses = connect(mapStateToProps)(AddressesClass);

@@ -86,15 +86,7 @@ import {
   sendEverythingFailed,
   swapTokenToEther
 } from './actions';
-import {
-  isEtherTransaction,
-  getUnit,
-  getCurrentValue,
-  getPreviousUnit,
-  getDecimalFromUnit,
-  getTransaction,
-  getCurrentToAddressMessage
-} from './selectors';
+import { getPreviousUnit } from './selectors';
 import {
   broadcastLocalTransactionHandler,
   broadcastWeb3TransactionHandler,
@@ -293,7 +285,7 @@ describe('transaction: Sagas', () => {
       };
       const etherTransaction = cloneableGenerator(setField)(payload);
       it('should select etherTransaction', () => {
-        expect(etherTransaction.next().value).toEqual(select(isEtherTransaction));
+        expect(etherTransaction.next().value).toEqual(select(selectors.isEtherTransaction));
       });
 
       it('should put setTokenTo field if its a token transaction ', () => {
@@ -349,20 +341,22 @@ describe('transaction: Sagas', () => {
 
       it('should select getUnit', () => {
         gen.invalidDecimal = gen.pass.clone();
-        expect(gen.pass.next(decimal).value).toEqual(select(getUnit));
-        expect(gen.zeroPass.next(decimal).value).toEqual(select(getUnit));
-        expect(gen.invalidNumber.next(decimal).value).toEqual(select(getUnit));
-        expect(gen.invalidDecimal.next(failCases.invalidDecimal).value).toEqual(select(getUnit));
-        expect(gen.invalidZeroToken.next(decimal).value).toEqual(select(getUnit));
+        expect(gen.pass.next(decimal).value).toEqual(select(selectors.getUnit));
+        expect(gen.zeroPass.next(decimal).value).toEqual(select(selectors.getUnit));
+        expect(gen.invalidNumber.next(decimal).value).toEqual(select(selectors.getUnit));
+        expect(gen.invalidDecimal.next(failCases.invalidDecimal).value).toEqual(
+          select(selectors.getUnit)
+        );
+        expect(gen.invalidZeroToken.next(decimal).value).toEqual(select(selectors.getUnit));
       });
 
       it('should select isEtherTransaction', () => {
-        expect(gen.pass.next(unit).value).toEqual(select(isEtherTransaction));
-        expect(gen.zeroPass.next(unit).value).toEqual(select(isEtherTransaction));
-        expect(gen.invalidNumber.next(unit).value).toEqual(select(isEtherTransaction));
-        expect(gen.invalidDecimal.next(unit).value).toEqual(select(isEtherTransaction));
+        expect(gen.pass.next(unit).value).toEqual(select(selectors.isEtherTransaction));
+        expect(gen.zeroPass.next(unit).value).toEqual(select(selectors.isEtherTransaction));
+        expect(gen.invalidNumber.next(unit).value).toEqual(select(selectors.isEtherTransaction));
+        expect(gen.invalidDecimal.next(unit).value).toEqual(select(selectors.isEtherTransaction));
         expect(gen.invalidZeroToken.next(failCases.invalidZeroToken.unit).value).toEqual(
-          select(isEtherTransaction)
+          select(selectors.isEtherTransaction)
         );
       });
 
@@ -408,8 +402,8 @@ describe('transaction: Sagas', () => {
         const g = cloneableGenerator(valueHandler)(leadZeroValue.action as any, setter);
 
         expect(g.next().value).toEqual(select(getDecimal));
-        expect(g.next(leadZeroValue.decimal).value).toEqual(select(getUnit));
-        expect(g.next(unit).value).toEqual(select(isEtherTransaction));
+        expect(g.next(leadZeroValue.decimal).value).toEqual(select(selectors.getUnit));
+        expect(g.next(unit).value).toEqual(select(selectors.isEtherTransaction));
         expect(g.next(isEth).value).not.toEqual(
           put(setter({ raw: leadZeroValue.action.payload, value: null }))
         );
@@ -423,10 +417,10 @@ describe('transaction: Sagas', () => {
       const action: any = { payload: '5' };
       const gen = setCurrentValueSaga(action);
       it('should select isEtherTransaction', () => {
-        expect(gen.next().value).toEqual(select(isEtherTransaction));
+        expect(gen.next().value).toEqual(select(selectors.isEtherTransaction));
       });
       it('should call valueHandler', () => {
-        expect(gen.next(isEtherTransaction).value).toEqual(
+        expect(gen.next(selectors.isEtherTransaction).value).toEqual(
           call(valueHandler, action, setValueField)
         );
       });
@@ -441,11 +435,11 @@ describe('transaction: Sagas', () => {
         reparsedValue: boolean
       ) => {
         it('should select isEtherTransaction', () => {
-          expect(gen.next().value).toEqual(select(isEtherTransaction));
+          expect(gen.next().value).toEqual(select(selectors.isEtherTransaction));
         });
 
         it('should select getCurrentValue', () => {
-          expect(gen.next(etherTransaction).value).toEqual(select(getCurrentValue));
+          expect(gen.next(etherTransaction).value).toEqual(select(selectors.getCurrentValue));
         });
 
         it('should call reparseCurrentValue', () => {
@@ -453,7 +447,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getUnit', () => {
-          expect(gen.next(reparsedValue).value).toEqual(select(getUnit));
+          expect(gen.next(reparsedValue).value).toEqual(select(selectors.getUnit));
         });
       };
 
@@ -519,7 +513,7 @@ describe('transaction: Sagas', () => {
 
       const sharedLogic = (gen: SagaIterator, isEth: boolean) => {
         it('should select isEtherTransaction', () => {
-          expect(gen.next().value).toEqual(select(isEtherTransaction));
+          expect(gen.next().value).toEqual(select(selectors.isEtherTransaction));
         });
 
         it('should select getDecimal', () => {
@@ -910,7 +904,7 @@ describe('transaction: Sagas', () => {
 
           it('should select getDeciimalFromUnit with currentUnit', () => {
             expect(gen.next(currUnitIsNetworkUnit).value).toEqual(
-              select(getDecimalFromUnit, currentUnit)
+              select(selectors.getDecimalFromUnit, currentUnit)
             );
           });
         };
@@ -1243,11 +1237,13 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getCurrentToAddressMessage', () => {
-          expect(gen.next(autoGasLimitEnabled).value).toEqual(select(getCurrentToAddressMessage));
+          expect(gen.next(autoGasLimitEnabled).value).toEqual(
+            select(selectors.getCurrentToAddressMessage)
+          );
         });
 
         it('should select getTransaction', () => {
-          expect(gen.next(addressMessage).value).toEqual(select(getTransaction));
+          expect(gen.next(addressMessage).value).toEqual(select(selectors.getTransaction));
         });
 
         it('should call getTransactionFields with transaction', () => {
@@ -1453,7 +1449,7 @@ describe('transaction: Sagas', () => {
 
         it('should select getCurrentToAddressMessage', () => {
           noAutoGen = gen.clone();
-          expect(gen.next(true).value).toEqual(select(getCurrentToAddressMessage));
+          expect(gen.next(true).value).toEqual(select(selectors.getCurrentToAddressMessage));
         });
 
         it('should put setGasLimitField', () => {
@@ -1754,7 +1750,7 @@ describe('transaction: Sagas', () => {
 
       const sharedStart = (gen: SagaIterator, transactionObj: any, currentBalance: BN | null) => {
         it('should select getTransaction', () => {
-          expect(gen.next().value).toEqual(select(getTransaction));
+          expect(gen.next().value).toEqual(select(selectors.getTransaction));
         });
 
         it('should select getCurrentBalance', () => {
@@ -1813,7 +1809,7 @@ describe('transaction: Sagas', () => {
         sharedStart(gens.gen, transactionObj, currentBalance);
 
         it('should select isEtherTransaction', () => {
-          expect(gens.gen.next(etherBalance).value).toEqual(select(isEtherTransaction));
+          expect(gens.gen.next(etherBalance).value).toEqual(select(selectors.isEtherTransaction));
         });
 
         it('should apply transaction.getUpfrontCost', () => {

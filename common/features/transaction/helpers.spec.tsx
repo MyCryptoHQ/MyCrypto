@@ -25,7 +25,6 @@ import { TRANSACTION_NETWORK } from './network/types';
 import { getFromRequested } from './network/actions';
 import { signTransactionFailed } from './sign/actions';
 import { getWeb3Tx, getSignedTx } from './sign/selectors';
-import { getUnit, getDecimalFromUnit } from './selectors';
 
 // import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import {
@@ -412,11 +411,11 @@ describe('transaction: Helpers', () => {
 
       describe('when a valid number', () => {
         it('should select getUnit', () => {
-          expect(gens.gen1.next().value).toEqual(select(getUnit));
+          expect(gens.gen1.next().value).toEqual(select(selectors.getUnit));
         });
 
         it('should select getDecimalFromUnit with unit', () => {
-          expect(gens.gen1.next(unit).value).toEqual(select(getDecimalFromUnit, unit));
+          expect(gens.gen1.next(unit).value).toEqual(select(selectors.getDecimalFromUnit, unit));
         });
 
         it('should return correctly', () => {
@@ -431,11 +430,11 @@ describe('transaction: Helpers', () => {
 
       describe('when not a valid number', () => {
         it('should select getUnit', () => {
-          expect(gens.gen2.next().value).toEqual(select(getUnit));
+          expect(gens.gen2.next().value).toEqual(select(selectors.getUnit));
         });
 
         it('should select getDecimalFromUnit with unit', () => {
-          expect(gens.gen2.next(unit).value).toEqual(select(getDecimalFromUnit, unit));
+          expect(gens.gen2.next(unit).value).toEqual(select(selectors.getDecimalFromUnit, unit));
         });
 
         it('should return correctly', () => {

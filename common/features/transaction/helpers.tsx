@@ -42,7 +42,6 @@ import { SignTransactionRequestedAction } from './sign/types';
 import { signTransactionFailed } from './sign/actions';
 import { StateSerializedTx } from './sign/reducer';
 import { getWeb3Tx, getSignedTx } from './sign/selectors';
-import { ICurrentTo, ICurrentValue, getUnit, getDecimalFromUnit } from './selectors';
 // import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 
 //#region Selectors
@@ -64,8 +63,8 @@ export const reduceToValues = (transactionFields: AppState['transaction']['field
 export const isFullTx = (
   state: AppState,
   transactionFields: AppState['transaction']['fields'],
-  currentTo: ICurrentTo,
-  currentValue: ICurrentValue,
+  currentTo: selectors.ICurrentTo,
+  currentValue: selectors.ICurrentValue,
   dataExists: boolean,
   validGasCost: boolean,
   unit: string // if its ether, we can have empty data, if its a token, we cant have value
@@ -74,8 +73,10 @@ export const isFullTx = (
   const partialParamsToCheck = { ...rest };
 
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
-    (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
-      isValid && !!v.value,
+    (
+      isValid,
+      v: AppState['transaction']['fields'] & selectors.ICurrentTo & selectors.ICurrentValue
+    ) => isValid && !!v.value,
     true
   );
 
@@ -258,9 +259,9 @@ export interface IInput {
  * @returns {SagaIterator}
  */
 export function* rebaseUserInput(value: IInput): SagaIterator {
-  const unit: string = yield select(getUnit);
+  const unit: string = yield select(selectors.getUnit);
   // get decimal
-  const newDecimal: number = yield select(getDecimalFromUnit, unit);
+  const newDecimal: number = yield select(selectors.getDecimalFromUnit, unit);
 
   if (validNumber(parseInt(value.raw, 10)) && validDecimal(value.raw, newDecimal)) {
     return {

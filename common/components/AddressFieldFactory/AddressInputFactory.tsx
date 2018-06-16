@@ -6,12 +6,6 @@ import translate, { translateRaw } from 'translations';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import { AppState } from 'features/reducers';
-import {
-  ICurrentTo,
-  getCurrentTo,
-  isValidCurrentTo,
-  isCurrentToLabelEntry
-} from 'features/transaction';
 import * as selectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
 import { ensSelectors } from 'features/ens';
@@ -22,7 +16,7 @@ import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 
 interface StateProps {
-  currentTo: ICurrentTo;
+  currentTo: selectors.ICurrentTo;
   label: string | null;
   isValid: boolean;
   isLabelEntry: boolean;
@@ -117,7 +111,7 @@ class AddressInputFactoryClass extends Component<Props> {
 }
 
 export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps) => {
-  let currentTo: ICurrentTo;
+  let currentTo: selectors.ICurrentTo;
   if (ownProps.isSelfAddress) {
     const wallet = walletSelectors.getWalletInst(state);
     const addr = wallet ? wallet.getAddressString() : '';
@@ -126,14 +120,14 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
       value: Address(addr)
     };
   } else {
-    currentTo = getCurrentTo(state);
+    currentTo = selectors.getCurrentTo(state);
   }
 
   return {
     currentTo,
     label: selectors.getCurrentToLabel(state),
     isResolving: ensSelectors.getResolvingDomain(state),
-    isValid: isValidCurrentTo(state),
-    isLabelEntry: isCurrentToLabelEntry(state)
+    isValid: selectors.isValidCurrentTo(state),
+    isLabelEntry: selectors.isCurrentToLabelEntry(state)
   };
 })(AddressInputFactoryClass);

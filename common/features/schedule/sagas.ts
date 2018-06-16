@@ -12,7 +12,6 @@ import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as transactionFieldsTypes from 'features/transaction/fields/types';
 import * as transactionFieldsActions from 'features/transaction/fields/actions';
 import * as transactionMetaSelectors from 'features/transaction/meta/selectors';
-import * as transactionSelectors from 'features/transaction/selectors';
 import * as transactionHelpers from 'features/transaction/helpers';
 import * as scheduleTypes from './types';
 import * as scheduleActions from './actions';
@@ -77,7 +76,7 @@ export function* setCurrentTimeBountySaga({
   payload: raw
 }: scheduleTypes.SetCurrentTimeBountyAction): SagaIterator {
   const decimal: number = yield select(transactionMetaSelectors.getDecimal);
-  const unit: string = yield select(transactionSelectors.getUnit);
+  const unit: string = yield select(selectors.getUnit);
 
   if (!validNumber(parseInt(raw, 10)) || !validDecimal(raw, decimal)) {
     yield put(scheduleActions.setTimeBountyField({ raw, value: null }));

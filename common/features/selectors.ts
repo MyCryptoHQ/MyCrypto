@@ -1,8 +1,9 @@
+import erc20 from 'libs/erc20';
 import BN from 'bn.js';
 import EthTx from 'ethereumjs-tx';
-import { bufferToHex } from 'ethereumjs-util';
+import { bufferToHex, toChecksumAddress } from 'ethereumjs-util';
 
-import { Wei, TokenValue, Nonce } from 'libs/units';
+import { Address, Wei, TokenValue, Nonce, getDecimalFromEtherUnit } from 'libs/units';
 import {
   EAC_SCHEDULING_CONFIG,
   EAC_ADDRESSES,
@@ -11,13 +12,15 @@ import {
   getScheduleData,
   getValidateRequestParamsData
 } from 'libs/scheduling';
-import { makeTransaction } from 'libs/transaction';
-import { SecureWalletName, WalletName } from 'config';
+import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
+import { stripHexPrefixAndLower } from 'libs/formatters';
+import { SecureWalletName, WalletName, getAddressMessage, AddressMessage } from 'config';
 import { Token } from 'types/network';
 import { AppState } from './reducers';
 import { addressBookSelectors } from './addressBook';
 import { walletTypes, walletSelectors } from './wallet';
 import { ratesSelectors } from './rates';
+import { customTokensSelectors } from './customTokens';
 import { scheduleSelectors, scheduleHelpers } from './schedule';
 import { transactionsSelectors } from './transactions';
 import { SavedTransaction } from 'types/transactions';
@@ -25,33 +28,31 @@ import * as configMetaSelectors from './config/meta/selectors';
 import * as configSelectors from './config/selectors';
 import * as transactionSelectors from './transaction/selectors';
 import * as transactionFieldsSelectors from 'features/transaction/fields/selectors';
+import * as transactionMetaSelectors from 'features/transaction/meta/selectors';
+import * as transactionSignTypes from 'features/transaction/sign/types';
+import * as transactionSignSelectors from './transaction/sign/selectors';
+import { reduceToValues, isFullTx } from 'features/transaction/helpers';
+
+export interface ICurrentValue {
+  raw: string;
+  value: TokenValue | Wei | null;
+}
+
+export interface ICurrentTo {
+  raw: string;
+  value: Address | null;
+}
+
+export interface IGetTransaction {
+  transaction: EthTx;
+  isFullTransaction: boolean; //if the user has filled all the fields
+}
 
 export const isAnyOfflineWithWeb3 = (state: AppState): boolean => {
   const { isWeb3Wallet } = walletSelectors.getWalletType(state);
   const offline = configMetaSelectors.getOffline(state);
   return offline && isWeb3Wallet;
 };
-
-export function getSelectedTokenContractAddress(state: AppState): string {
-  const allTokens = configSelectors.getAllTokens(state);
-  const currentUnit = transactionSelectors.getUnit(state);
-
-  if (configSelectors.isNetworkUnit(state, currentUnit)) {
-    return '';
-  }
-
-  return allTokens.reduce((tokenAddr, tokenInfo) => {
-    if (tokenAddr && tokenAddr.length) {
-      return tokenAddr;
-    }
-
-    if (tokenInfo.symbol === currentUnit) {
-      return tokenInfo.address;
-    }
-
-    return tokenAddr;
-  }, '');
-}
 
 // TODO: Convert to reselect selector (Issue #884)
 export function getDisabledWallets(state: AppState): any {
@@ -167,16 +168,6 @@ export const getTokenBalance = (state: AppState, unit: string): TokenValue | nul
   return token.balance;
 };
 
-export const getCurrentBalance = (state: AppState): Wei | TokenValue | null => {
-  const etherTransaction = transactionSelectors.isEtherTransaction(state);
-  if (etherTransaction) {
-    return walletSelectors.getEtherBalance(state);
-  } else {
-    const unit = transactionSelectors.getUnit(state);
-    return getTokenBalance(state, unit);
-  }
-};
-
 export function getShownTokenBalances(
   state: AppState,
   nonZeroOnly: boolean = false
@@ -192,13 +183,6 @@ export function getShownTokenBalances(
   }
 
   return tokenBalances.filter(t => walletTokens.includes(t.symbol));
-}
-
-export function getCurrentToLabel(state: AppState) {
-  const addresses = addressBookSelectors.getAddressLabels(state);
-  const currentTo = transactionSelectors.getCurrentTo(state);
-
-  return addresses[currentTo.raw] || null;
 }
 
 const getUSDConversionRate = (state: AppState, unit: string) => {
@@ -217,7 +201,7 @@ const getUSDConversionRate = (state: AppState, unit: string) => {
 };
 
 export const getValueInUSD = (state: AppState, value: TokenValue | Wei) => {
-  const unit = transactionSelectors.getUnit(state);
+  const unit = getUnit(state);
   const conversionRate = getUSDConversionRate(state, unit);
   if (!conversionRate) {
     return null;
@@ -244,7 +228,7 @@ export interface AllUSDValues {
 }
 
 export const getAllUSDValuesFromSerializedTx = (state: AppState): AllUSDValues => {
-  const fields = transactionSelectors.getParamsFromSerializedTx(state);
+  const fields = getParamsFromSerializedTx(state);
   if (!fields) {
     return {
       feeUSD: null,
@@ -280,11 +264,11 @@ export function getRecentWalletTransactions(state: AppState): SavedTransaction[]
   }
 }
 
-export const getSchedulingTransaction = (state: AppState): transactionSelectors.IGetTransaction => {
-  const { isFullTransaction } = transactionSelectors.getTransaction(state);
+export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
+  const { isFullTransaction } = getTransaction(state);
 
-  const currentTo = transactionSelectors.getCurrentTo(state);
-  const currentValue = transactionSelectors.getCurrentValue(state);
+  const currentTo = getCurrentTo(state);
+  const currentValue = getCurrentValue(state);
   const nonce = transactionFieldsSelectors.getNonce(state);
   const gasPrice = transactionFieldsSelectors.getGasPrice(state);
   const timeBounty = scheduleSelectors.getTimeBounty(state);
@@ -384,8 +368,8 @@ export const getValidateScheduleParamsCallPayload = (
   state: AppState
 ): IGetValidateScheduleParamsCallPayload | undefined => {
   const wallet = walletSelectors.getWalletInst(state);
-  const currentTo = transactionSelectors.getCurrentTo(state);
-  const currentValue = transactionSelectors.getCurrentValue(state);
+  const currentTo = getCurrentTo(state);
+  const currentValue = getCurrentValue(state);
   const timeBounty = scheduleSelectors.getTimeBounty(state);
   const scheduleGasPrice = scheduleSelectors.getScheduleGasPrice(state);
   const scheduleGasLimit = scheduleSelectors.getScheduleGasLimit(state);
@@ -457,3 +441,234 @@ export const isValidCurrentWindowStart = (state: AppState) => {
 
   return currentWindowStart.value > parseInt(configMetaSelectors.getLatestBlock(state), 10);
 };
+
+export const isEtherTransaction = (state: AppState) => {
+  const unit = getUnit(state);
+  const etherUnit = configSelectors.isNetworkUnit(state, unit);
+  return etherUnit;
+};
+
+export const getValidGasCost = (state: AppState) => {
+  const gasCost = transactionSelectors.getGasCost(state);
+  const etherBalance = walletSelectors.getEtherBalance(state);
+  const isOffline = configMetaSelectors.getOffline(state);
+  if (isOffline || !etherBalance) {
+    return true;
+  }
+  return gasCost.lte(etherBalance);
+};
+
+export const getDecimalFromUnit = (state: AppState, unit: string) => {
+  if (configSelectors.isNetworkUnit(state, unit)) {
+    return getDecimalFromEtherUnit('ether');
+  } else {
+    const token = getToken(state, unit);
+    if (!token) {
+      throw Error(`Token ${unit} not found`);
+    }
+    return token.decimal;
+  }
+};
+
+export const getCurrentTo = (state: AppState): ICurrentTo =>
+  isEtherTransaction(state)
+    ? transactionFieldsSelectors.getTo(state)
+    : transactionMetaSelectors.getTokenTo(state);
+
+export const getCurrentValue = (state: AppState): ICurrentValue =>
+  isEtherTransaction(state)
+    ? transactionFieldsSelectors.getValue(state)
+    : transactionMetaSelectors.getTokenValue(state);
+
+export const isValidCurrentTo = (state: AppState) => {
+  const currentTo = getCurrentTo(state);
+  const dataExists = transactionSelectors.getDataExists(state);
+  if (isEtherTransaction(state)) {
+    // if data exists the address can be 0x
+    return !!currentTo.value || dataExists;
+  } else {
+    return !!currentTo.value;
+  }
+};
+
+export const isCurrentToLabelEntry = (state: AppState): boolean => {
+  const currentTo = getCurrentTo(state);
+  return !currentTo.raw.startsWith('0x');
+};
+
+export function getCurrentToAddressMessage(state: AppState): AddressMessage | undefined {
+  const to = getCurrentTo(state);
+  return getAddressMessage(to.raw);
+}
+
+export const getUnit = (state: AppState) => {
+  const serializedTransaction = getSerializedTransaction(state);
+  const contractInteraction = transactionMetaSelectors.isContractInteraction(state);
+  // attempt to get the to address from the transaction
+  if (serializedTransaction && !contractInteraction) {
+    const transactionInstance = new EthTx(serializedTransaction);
+    const { to } = transactionInstance;
+    if (to) {
+      // see if any tokens match
+      let networkTokens: null | Token[] = null;
+      const customTokens = customTokensSelectors.getCustomTokens(state);
+      const networkConfig = configSelectors.getNetworkConfig(state);
+      if (!networkConfig.isCustom) {
+        networkTokens = networkConfig.tokens;
+      }
+      const mergedTokens = networkTokens ? [...networkTokens, ...customTokens] : customTokens;
+      const stringTo = toChecksumAddress(stripHexPrefixAndLower(to.toString('hex')));
+      const result = mergedTokens.find(t => t.address === stringTo);
+      if (result) {
+        return result.symbol;
+      }
+    }
+  }
+
+  return transactionMetaSelectors.getMetaState(state).unit;
+};
+
+export const signaturePending = (state: AppState) => {
+  const { isHardwareWallet } = walletSelectors.getWalletType(state);
+  const { pending } = state.transaction.sign;
+  return { isHardwareWallet, isSignaturePending: pending };
+};
+
+export const getSerializedTransaction = (state: AppState) =>
+  walletSelectors.getWalletType(state).isWeb3Wallet
+    ? transactionSignSelectors.getWeb3Tx(state)
+    : transactionSignSelectors.getSignedTx(state);
+
+export const getParamsFromSerializedTx = (
+  state: AppState
+): transactionSignTypes.SerializedTxParams => {
+  const tx = getSerializedTransaction(state);
+  const isEther = isEtherTransaction(state);
+  const decimal = transactionMetaSelectors.getDecimal(state);
+
+  if (!tx) {
+    throw Error('Serialized transaction not found');
+  }
+  const fields = getTransactionFields(makeTransaction(tx));
+  const { value, data, gasLimit, gasPrice, to } = fields;
+  const currentValue = isEther ? Wei(value) : TokenValue(erc20.transfer.decodeInput(data)._value);
+  const currentTo = isEther ? Address(to) : Address(erc20.transfer.decodeInput(data)._to);
+  const unit = getUnit(state);
+  const fee = Wei(gasLimit).mul(Wei(gasPrice));
+  const total = fee.add(Wei(value));
+  return { ...fields, currentValue, currentTo, fee, total, unit, decimal, isToken: !isEther };
+};
+
+export const getTransaction = (state: AppState): IGetTransaction => {
+  const currentTo = getCurrentTo(state);
+  const currentValue = getCurrentValue(state);
+  const transactionFields = transactionFieldsSelectors.getFields(state);
+  const unit = getUnit(state);
+  const reducedValues = reduceToValues(transactionFields);
+  const transaction: EthTx = makeTransaction(reducedValues);
+  const dataExists = transactionSelectors.getDataExists(state);
+  const validGasCost = getValidGasCost(state);
+  const isFullTransaction = isFullTx(
+    state,
+    transactionFields,
+    currentTo,
+    currentValue,
+    dataExists,
+    validGasCost,
+    unit
+  );
+
+  return { transaction, isFullTransaction };
+};
+
+export const nonStandardTransaction = (state: AppState): boolean => {
+  const etherTransaction = isEtherTransaction(state);
+  const { isFullTransaction } = getTransaction(state);
+  const dataExists = transactionSelectors.getDataExists(state);
+  return isFullTransaction && dataExists && etherTransaction;
+};
+
+export const serializedAndTransactionFieldsMatch = (state: AppState, isLocallySigned: boolean) => {
+  const serialzedTransaction = getSerializedTransaction(state);
+  const { transaction, isFullTransaction } = getTransaction(state);
+  if (!isFullTransaction || !serialzedTransaction) {
+    return false;
+  }
+  const t1 = getTransactionFields(transaction);
+  // inject chainId into t1 as it wont have it from the fields
+  const networkConfig = configSelectors.getNetworkConfig(state);
+  if (!networkConfig) {
+    return false;
+  }
+  const { chainId } = networkConfig;
+  t1.chainId = chainId;
+
+  const t2 = getTransactionFields(makeTransaction(serialzedTransaction));
+  const checkValidity = (tx: IHexStrTransaction) =>
+    Object.keys(tx).reduce(
+      (match, currField: keyof IHexStrTransaction) => match && t1[currField] === t2[currField],
+      true
+    );
+  //reduce both ways to make sure both are exact same
+  const transactionsMatch = checkValidity(t1) && checkValidity(t2);
+  // if its signed then verify the signature too
+  return transactionsMatch && isLocallySigned
+    ? makeTransaction(serialzedTransaction).verifySignature()
+    : true;
+};
+
+export const getFrom = (state: AppState) => {
+  const serializedTransaction = getSerializedTransaction(state);
+  // attempt to get the from address from the transaction
+  if (serializedTransaction) {
+    const transactionInstance = new EthTx(serializedTransaction);
+
+    try {
+      const from = transactionInstance.from;
+      if (from) {
+        return toChecksumAddress(from.toString('hex'));
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+  return transactionMetaSelectors.getMetaState(state).from;
+};
+
+export const getCurrentBalance = (state: AppState): Wei | TokenValue | null => {
+  const etherTransaction = isEtherTransaction(state);
+  if (etherTransaction) {
+    return walletSelectors.getEtherBalance(state);
+  } else {
+    const unit = getUnit(state);
+    return getTokenBalance(state, unit);
+  }
+};
+
+export function getSelectedTokenContractAddress(state: AppState): string {
+  const allTokens = configSelectors.getAllTokens(state);
+  const currentUnit = getUnit(state);
+
+  if (configSelectors.isNetworkUnit(state, currentUnit)) {
+    return '';
+  }
+
+  return allTokens.reduce((tokenAddr, tokenInfo) => {
+    if (tokenAddr && tokenAddr.length) {
+      return tokenAddr;
+    }
+
+    if (tokenInfo.symbol === currentUnit) {
+      return tokenInfo.address;
+    }
+
+    return tokenAddr;
+  }, '');
+}
+
+export function getCurrentToLabel(state: AppState) {
+  const addresses = addressBookSelectors.getAddressLabels(state);
+  const currentTo = getCurrentTo(state);
+
+  return addresses[currentTo.raw] || null;
+}

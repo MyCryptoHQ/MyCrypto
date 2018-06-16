@@ -6,13 +6,12 @@ import { addHexPrefix } from 'ethereumjs-util';
 import translate from 'translations';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import {
-  getTransaction,
   isNetworkRequestPending,
   isValidGasPrice,
   isValidGasLimit,
-  getSignedTx,
-  getSerializedTransaction
+  getSignedTx
 } from 'features/transaction';
 import { walletSelectors } from 'features/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
@@ -103,9 +102,9 @@ export class GenerateTransactionFactoryClass extends Component<Props> {
 }
 
 export const GenerateTransactionFactory = connect((state: AppState) => ({
-  ...getTransaction(state),
+  ...selectors.getTransaction(state),
   walletType: walletSelectors.getWalletType(state),
-  serializedTransaction: getSerializedTransaction(state),
+  serializedTransaction: selectors.getSerializedTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
   isWeb3Wallet: walletSelectors.getWalletType(state).isWeb3Wallet,
   validGasPrice: isValidGasPrice(state),

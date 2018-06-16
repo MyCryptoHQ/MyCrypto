@@ -136,18 +136,7 @@ import {
   swapEtherToToken,
   swapTokenToToken
 } from './actions';
-import {
-  isEtherTransaction,
-  getTransaction,
-  IGetTransaction,
-  getPreviousUnit,
-  getDecimalFromUnit,
-  getUnit,
-  getCurrentValue,
-  ICurrentValue,
-  getCurrentToAddressMessage,
-  serializedAndTransactionFieldsMatch
-} from './selectors';
+import { getPreviousUnit } from './selectors';
 import {
   IFullWalletAndTransaction,
   signTransactionWrapper,
@@ -223,7 +212,7 @@ export function* setCurrentToSaga({ payload: raw }: SetCurrentToAction): SagaIte
 }
 
 export function* setField(payload: SetToFieldAction['payload'] | SetTokenToMetaAction['payload']) {
-  const etherTransaction: boolean = yield select(isEtherTransaction);
+  const etherTransaction: boolean = yield select(selectors.isEtherTransaction);
 
   if (etherTransaction) {
     yield put(setToField(payload));
@@ -237,7 +226,7 @@ export const currentTo = takeLatest([TRANSACTION.CURRENT_TO_SET], setCurrentToSa
 
 //#region Current Value
 export function* setCurrentValueSaga(action: SetCurrentValueAction): SagaIterator {
-  const etherTransaction = yield select(isEtherTransaction);
+  const etherTransaction = yield select(selectors.isEtherTransaction);
   const setter = etherTransaction ? setValueField : setTokenValue;
   return yield call(valueHandler, action, setter);
 }
@@ -247,8 +236,8 @@ export function* valueHandler(
   setter: TSetValueField | TSetTokenValue
 ) {
   const decimal: number = yield select(getDecimal);
-  const unit: string = yield select(getUnit);
-  const isEth = yield select(isEtherTransaction);
+  const unit: string = yield select(selectors.getUnit);
+  const isEth = yield select(selectors.isEtherTransaction);
   const validNum = isEth ? validNumber : validPositiveNumber;
 
   if (!validNum(Number(payload)) || !validDecimal(payload, decimal)) {
@@ -260,10 +249,10 @@ export function* valueHandler(
 }
 
 export function* revalidateCurrentValue(): SagaIterator {
-  const etherTransaction = yield select(isEtherTransaction);
-  const currVal: ICurrentValue = yield select(getCurrentValue);
-  const reparsedValue: null | ICurrentValue = yield call(reparseCurrentValue, currVal);
-  const unit: string = yield select(getUnit);
+  const etherTransaction = yield select(selectors.isEtherTransaction);
+  const currVal: selectors.ICurrentValue = yield select(selectors.getCurrentValue);
+  const reparsedValue: null | selectors.ICurrentValue = yield call(reparseCurrentValue, currVal);
+  const unit: string = yield select(selectors.getUnit);
   const setter = etherTransaction ? setValueField : setTokenValue;
   if (!reparsedValue || !reparsedValue.value) {
     return yield put(setter({ raw: currVal.raw, value: null }));
@@ -273,7 +262,7 @@ export function* revalidateCurrentValue(): SagaIterator {
 }
 
 export function* reparseCurrentValue(value: IInput): SagaIterator {
-  const isEth = yield select(isEtherTransaction);
+  const isEth = yield select(selectors.isEtherTransaction);
   const decimal = yield select(getDecimal);
   const validNum = isEth ? validNumber : validPositiveNumber;
 
@@ -386,7 +375,7 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
   const etherToToken = !currUnit && prevUnit;
   const tokenToEther = currUnit && !prevUnit;
   const tokenToToken = !currUnit && !prevUnit;
-  const decimal: number = yield select(getDecimalFromUnit, currentUnit);
+  const decimal: number = yield select(selectors.getDecimalFromUnit, currentUnit);
 
   if (etherToEther || previousUnit === '') {
     return;
@@ -512,7 +501,7 @@ export function* shouldEstimateGas(): SagaIterator {
 
     const isOffline: boolean = yield select(getOffline);
     const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
-    const message: AddressMessage | undefined = yield select(getCurrentToAddressMessage);
+    const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
 
     if (isOffline || !autoGasLimitEnabled || (message && message.gasLimit)) {
       continue;
@@ -529,7 +518,7 @@ export function* shouldEstimateGas(): SagaIterator {
     if (invalidField) {
       continue;
     }
-    const { transaction }: IGetTransaction = yield select(getTransaction);
+    const { transaction }: selectors.IGetTransaction = yield select(selectors.getTransaction);
 
     const { gasLimit, gasPrice, nonce, chainId, ...rest }: IHexStrTransaction = yield call(
       getTransactionFields,
@@ -610,7 +599,7 @@ export function* localGasEstimation(payload: EstimateGasRequestedAction['payload
 
 export function* setAddressMessageGasLimit() {
   const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
-  const message: AddressMessage | undefined = yield select(getCurrentToAddressMessage);
+  const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
   if (autoGasLimitEnabled && message && message.gasLimit) {
     yield put(
       setGasLimitField({
@@ -728,7 +717,7 @@ function* verifyTransaction({
     return;
   }
   const transactionsMatch: boolean = yield select(
-    serializedAndTransactionFieldsMatch,
+    selectors.serializedAndTransactionFieldsMatch,
     type === TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
     noVerify
   );
@@ -764,7 +753,7 @@ export const signing = [
 
 //#region Send Everything
 export function* handleSendEverything(): SagaIterator {
-  const { transaction }: IGetTransaction = yield select(getTransaction);
+  const { transaction }: selectors.IGetTransaction = yield select(selectors.getTransaction);
   const currentBalance: Wei | TokenValue | null = yield select(selectors.getCurrentBalance);
   const etherBalance: AppState['wallet']['balance']['wei'] = yield select(getEtherBalance);
   if (!etherBalance || !currentBalance) {
@@ -772,7 +761,7 @@ export function* handleSendEverything(): SagaIterator {
   }
   transaction.value = Buffer.from([]);
 
-  const etherTransaction: boolean = yield select(isEtherTransaction);
+  const etherTransaction: boolean = yield select(selectors.isEtherTransaction);
   const setter = etherTransaction ? setValueField : setTokenValue;
 
   // set transaction value to 0 so it's not calculated in the upfrontcost

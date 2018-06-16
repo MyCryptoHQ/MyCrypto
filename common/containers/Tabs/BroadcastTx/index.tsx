@@ -7,12 +7,12 @@ import EthTx from 'ethereumjs-tx';
 import translate from 'translations';
 import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import {
   signLocalTransactionSucceeded,
   TSignLocalTransactionSucceeded,
   signTransactionFailed,
-  TSignTransactionFailed,
-  getSerializedTransaction
+  TSignTransactionFailed
 } from 'features/transaction';
 import { QRCode, Input, CodeBlock } from 'components/ui';
 import { SendButton } from 'components/SendButton';
@@ -118,6 +118,6 @@ class BroadcastTx extends Component<Props> {
 }
 
 export default connect(
-  (state: AppState) => ({ stateTransaction: getSerializedTransaction(state) }),
+  (state: AppState) => ({ stateTransaction: selectors.getSerializedTransaction(state) }),
   { signLocalTransactionSucceeded, signTransactionFailed }
 )(BroadcastTx);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { ICurrentValue, getCurrentValue, nonStandardTransaction } from 'features/transaction';
+import { ICurrentValue, getCurrentValue, nonStandardTransaction } from 'features/selectors';
 import { CallbackProps } from 'components/AmountFieldFactory';
 import { Query } from 'components/renderCbs';
 

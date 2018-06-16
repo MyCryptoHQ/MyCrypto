@@ -1,9 +1,10 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
-import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import { toBuffer } from 'ethereumjs-util';
+
+import * as selectors from 'features/selectors';
+import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import RequestFactory from './contracts/RequestFactory';
-import { ICurrentValue } from 'features/transaction/selectors';
 
 const TIME_BOUNTY_MIN = Wei('1');
 
@@ -164,7 +165,7 @@ export const parseSchedulingParametersValidity = (isValid: boolean[]) => {
 export const getValidateRequestParamsData = (
   toAddress: string,
   callGas: Wei,
-  callValue: ICurrentValue['value'],
+  callValue: selectors.ICurrentValue['value'],
   windowSize: BN | null,
   windowStart: number,
   gasPrice: Wei,

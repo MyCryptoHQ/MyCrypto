@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { nonStandardTransaction } from 'features/transaction/selectors';
+import * as selectors from 'features/selectors';
 
 interface Props {
   isNonStandard: boolean;
@@ -19,5 +19,5 @@ class NonStandardTransactionClass extends Component<Props> {
 }
 
 export const NonStandardTransaction = connect((state: AppState) => ({
-  isNonStandard: nonStandardTransaction(state)
+  isNonStandard: selectors.nonStandardTransaction(state)
 }))(NonStandardTransactionClass);

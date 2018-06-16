@@ -4,7 +4,7 @@ import { Option } from 'react-select';
 
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { setUnitMeta, TSetUnitMeta, getUnit } from 'features/transaction';
+import { setUnitMeta, TSetUnitMeta } from 'features/transaction';
 import { getNetworkUnit } from 'features/config';
 import { walletTypes } from 'features/wallet';
 import { Query } from 'components/renderCbs';
@@ -57,7 +57,7 @@ function mapStateToProps(state: AppState) {
   return {
     tokens: selectors.getShownTokenBalances(state, true),
     allTokens: selectors.getTokens(state),
-    unit: getUnit(state),
+    unit: selectors.getUnit(state),
     networkUnit: getNetworkUnit(state)
   };
 }

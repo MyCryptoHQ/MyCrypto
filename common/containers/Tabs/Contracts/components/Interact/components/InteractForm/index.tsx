@@ -7,9 +7,9 @@ import translate, { translateRaw } from 'translations';
 import { NetworkContract } from 'types/network';
 import { isValidETHAddress, isValidAbiJson } from 'libs/validators';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { getNetworkContracts } from 'features/config';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
-import { getCurrentTo } from 'features/transaction/selectors';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
 
@@ -19,7 +19,7 @@ interface ContractOption {
 }
 
 interface StateProps {
-  currentTo: ReturnType<typeof getCurrentTo>;
+  currentTo: ReturnType<typeof selectors.getCurrentTo>;
   contracts: NetworkContract[];
 }
 
@@ -204,7 +204,7 @@ class InteractForm extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => ({
   contracts: getNetworkContracts(state) || [],
-  currentTo: getCurrentTo(state)
+  currentTo: selectors.getCurrentTo(state)
 });
 
 export default connect(mapStateToProps, { setCurrentTo })(InteractForm);

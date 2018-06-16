@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { getAddressMessage } from 'config';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { getAllTokens } from 'features/config';
-import { getCurrentTo, ICurrentTo } from 'features/transaction/selectors';
 import { walletSelectors } from 'features/wallet';
 import { Address } from 'components/ui';
 
 interface ReduxProps {
-  currentTo: ICurrentTo;
+  currentTo: selectors.ICurrentTo;
   tokens: Token[];
   wallet: AppState['wallet']['inst'];
 }
@@ -117,7 +117,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
 }
 
 export const CurrentCustomMessage = connect((state: AppState): ReduxProps => ({
-  currentTo: getCurrentTo(state),
+  currentTo: selectors.getCurrentTo(state),
   tokens: getAllTokens(state),
   wallet: walletSelectors.getWalletInst(state)
 }))(CurrentCustomMessageClass);

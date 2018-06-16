@@ -16,27 +16,16 @@ import {
   getGasLimitEstimationTimedOut
 } from './network';
 import { getSignedTx, getWeb3Tx, getSignState } from './sign';
+import * as selectors from 'features/selectors';
 import {
   currentTransactionFailed,
   currentTransactionBroadcasting,
   currentTransactionBroadcasted,
   getCurrentTransactionStatus,
-  getCurrentValue,
-  getCurrentTo,
-  isEtherTransaction,
-  isValidCurrentTo,
   isValidGasPrice,
   isValidGasLimit,
-  getCurrentToAddressMessage,
-  isCurrentToLabelEntry,
   getDataExists,
-  getValidGasCost,
-  getFrom,
-  getUnit,
-  getPreviousUnit,
-  getDecimalFromUnit,
-  signaturePending,
-  getSerializedTransaction
+  getPreviousUnit
 } from './selectors';
 import { reduceToValues, isFullTx } from './helpers';
 
@@ -91,12 +80,12 @@ describe('helpers selector', () => {
   });
 
   it('should check isFullTransaction with full transaction arguments', () => {
-    const currentTo = getCurrentTo(state);
-    const currentValue = getCurrentValue(state);
+    const currentTo = selectors.getCurrentTo(state);
+    const currentValue = selectors.getCurrentValue(state);
     const transactionFields = getFields(state);
-    const unit = getUnit(state);
+    const unit = selectors.getUnit(state);
     const dataExists = getDataExists(state);
-    const validGasCost = getValidGasCost(state);
+    const validGasCost = selectors.getValidGasCost(state);
     const isFullTransaction = isFullTx(
       state,
       transactionFields,
@@ -111,11 +100,11 @@ describe('helpers selector', () => {
 
   it('should check isFullTransaction without full transaction arguments', () => {
     const currentTo = { raw: '', value: null };
-    const currentValue = getCurrentValue(state);
+    const currentValue = selectors.getCurrentValue(state);
     const transactionFields = getFields(state);
-    const unit = getUnit(state);
+    const unit = selectors.getUnit(state);
     const dataExists = getDataExists(state);
-    const validGasCost = getValidGasCost(state);
+    const validGasCost = selectors.getValidGasCost(state);
     const isFullTransaction = isFullTx(
       state,
       transactionFields,
@@ -214,15 +203,15 @@ describe('current selector', () => {
   };
 
   it('should get stored receiver address on getCurrentTo', () => {
-    expect(getCurrentTo(state)).toEqual(state.transaction.fields.to);
+    expect(selectors.getCurrentTo(state)).toEqual(state.transaction.fields.to);
   });
 
   it('should get stored value on getCurrentValue', () => {
-    expect(getCurrentValue(state)).toEqual(state.transaction.fields.value);
+    expect(selectors.getCurrentValue(state)).toEqual(state.transaction.fields.value);
   });
 
   it('should get message to the receiver', () => {
-    expect(getCurrentToAddressMessage(state)).toEqual({
+    expect(selectors.getCurrentToAddressMessage(state)).toEqual({
       msg: 'Thank you for donating to MyCrypto. TO THE MOON!'
     });
   });
@@ -232,7 +221,7 @@ describe('current selector', () => {
   });
 
   it('should check isEtherTransaction', () => {
-    expect(isEtherTransaction(state)).toEqual(true);
+    expect(selectors.isEtherTransaction(state)).toEqual(true);
   });
 
   it('should check isValidGasLimit', () => {
@@ -240,11 +229,11 @@ describe('current selector', () => {
   });
 
   it('should check isValidCurrentTo', () => {
-    expect(isValidCurrentTo(state)).toEqual(true);
+    expect(selectors.isValidCurrentTo(state)).toEqual(true);
   });
 
   it('should check isCurrentToLabelEntry', () => {
-    expect(isCurrentToLabelEntry(state)).toEqual(false);
+    expect(selectors.isCurrentToLabelEntry(state)).toEqual(false);
 
     const otherState = { ...state };
     otherState.transaction = {
@@ -252,7 +241,7 @@ describe('current selector', () => {
       fields: { ...state.transaction.fields, to: { ...state.transaction.fields.to, raw: 'derp' } }
     };
 
-    expect(isCurrentToLabelEntry(otherState)).toEqual(true);
+    expect(selectors.isCurrentToLabelEntry(otherState)).toEqual(true);
   });
 });
 
@@ -321,7 +310,7 @@ describe('fields selector', () => {
   });
 
   it('should check when gas cost is valid', () => {
-    expect(getValidGasCost(state)).toEqual(true);
+    expect(selectors.getValidGasCost(state)).toEqual(true);
   });
 
   it('should check when gas cost is invalid', () => {
@@ -329,7 +318,7 @@ describe('fields selector', () => {
       wei: Wei('0'),
       isPending: false
     };
-    expect(getValidGasCost(state)).toEqual(false);
+    expect(selectors.getValidGasCost(state)).toEqual(false);
   });
 });
 
@@ -362,7 +351,7 @@ describe('meta tests', () => {
     ]);
 
   it('should get the stored sender address', () => {
-    expect(getFrom(state)).toEqual(state.transaction.meta.from);
+    expect(selectors.getFrom(state)).toEqual(state.transaction.meta.from);
   });
 
   it('should get the stored decimal', () => {
@@ -378,7 +367,7 @@ describe('meta tests', () => {
   });
 
   it('should get the stored unit', () => {
-    expect(getUnit(state)).toEqual(state.transaction.meta.unit);
+    expect(selectors.getUnit(state)).toEqual(state.transaction.meta.unit);
   });
 
   it('should get the stored previous unit', () => {
@@ -386,15 +375,15 @@ describe('meta tests', () => {
   });
 
   it('should get the decimal for ether', () => {
-    expect(getDecimalFromUnit(state, getUnit(state))).toEqual(18);
+    expect(selectors.getDecimalFromUnit(state, selectors.getUnit(state))).toEqual(18);
   });
 
   it('should get the decimal for a token', () => {
-    expect(getDecimalFromUnit(state, 'UNI')).toEqual(0);
+    expect(selectors.getDecimalFromUnit(state, 'UNI')).toEqual(0);
   });
 
   it('should throw error if the token is not found', () => {
-    expect(() => getDecimalFromUnit(state, 'ABC')).toThrowError(`Token ABC not found`);
+    expect(() => selectors.getDecimalFromUnit(state, 'ABC')).toThrowError(`Token ABC not found`);
   });
 });
 
@@ -455,7 +444,7 @@ describe('sign tests', () => {
     }
   }),
     it('should return whether the current signature is pending', () => {
-      expect(signaturePending(state)).toEqual({
+      expect(selectors.signaturePending(state)).toEqual({
         isHardwareWallet: false,
         isSignaturePending: false
       });
@@ -474,7 +463,7 @@ describe('sign tests', () => {
   });
 
   it('should get the serialized transaction state', () => {
-    expect(getSerializedTransaction(state)).toEqual(new Buffer([4, 5, 6, 7]));
+    expect(selectors.getSerializedTransaction(state)).toEqual(new Buffer([4, 5, 6, 7]));
   });
 });
 

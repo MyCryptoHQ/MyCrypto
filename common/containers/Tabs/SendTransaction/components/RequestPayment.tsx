@@ -7,7 +7,7 @@ import { IWallet } from 'libs/wallet';
 import { validPositiveNumber, validDecimal } from 'libs/validators';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { AppState } from 'features/reducers';
-import { getSelectedTokenContractAddress } from 'features/selectors';
+import * as selectors from 'features/selectors';
 import { getNetworkConfig, isNetworkUnit } from 'features/config';
 import {
   SetGasLimitFieldAction,
@@ -15,12 +15,7 @@ import {
   TResetTransactionRequested,
   setCurrentTo,
   TSetCurrentTo,
-  getCurrentTo,
-  getCurrentValue,
-  ICurrentTo,
-  ICurrentValue,
   getGasLimit,
-  getUnit,
   getDecimal
 } from 'features/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
@@ -34,8 +29,8 @@ interface OwnProps {
 
 interface StateProps {
   unit: string;
-  currentTo: ICurrentTo;
-  currentValue: ICurrentValue;
+  currentTo: selectors.ICurrentTo;
+  currentValue: selectors.ICurrentValue;
   gasLimit: SetGasLimitFieldAction['payload'];
   networkConfig: NetworkConfig;
   decimal: number;
@@ -192,14 +187,14 @@ class RequestPayment extends React.Component<Props, {}> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    unit: getUnit(state),
-    currentTo: getCurrentTo(state),
-    currentValue: getCurrentValue(state),
+    unit: selectors.getUnit(state),
+    currentTo: selectors.getCurrentTo(state),
+    currentValue: selectors.getCurrentValue(state),
     gasLimit: getGasLimit(state),
     networkConfig: getNetworkConfig(state),
     decimal: getDecimal(state),
-    tokenContractAddress: getSelectedTokenContractAddress(state),
-    isNetworkUnit: isNetworkUnit(state, getUnit(state))
+    tokenContractAddress: selectors.getSelectedTokenContractAddress(state),
+    isNetworkUnit: isNetworkUnit(state, selectors.getUnit(state))
   };
 }
 

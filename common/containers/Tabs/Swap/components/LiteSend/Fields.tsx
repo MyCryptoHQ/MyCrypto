@@ -6,7 +6,6 @@ import { Wei, TokenValue } from 'libs/units';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { walletActions } from 'features/wallet';
-import { getUnit } from 'features/transaction/selectors';
 import { SendButton, TXMetaDataPanel } from 'components';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
@@ -105,7 +104,7 @@ class FieldsClass extends Component<Props> {
 
 export const Fields = connect(
   (state: AppState) => ({
-    unit: getUnit(state),
+    unit: selectors.getUnit(state),
     currentBalance: selectors.getCurrentBalance(state)
   }),
   { resetWallet: walletActions.resetWallet }

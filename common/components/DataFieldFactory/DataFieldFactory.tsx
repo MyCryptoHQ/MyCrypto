@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { inputData, TInputData, isEtherTransaction } from 'features/transaction';
+import * as selectors from 'features/selectors';
+import { inputData, TInputData } from 'features/transaction';
 import { Query } from 'components/renderCbs';
 import { DataInput } from './DataInputFactory';
 
@@ -47,7 +48,7 @@ class DataFieldClass extends React.Component<Props> {
 }
 
 const DataField = connect(
-  (state: AppState) => ({ isEtherTransaction: isEtherTransaction(state) }),
+  (state: AppState) => ({ isEtherTransaction: selectors.isEtherTransaction(state) }),
   { inputData }
 )(DataFieldClass);
 

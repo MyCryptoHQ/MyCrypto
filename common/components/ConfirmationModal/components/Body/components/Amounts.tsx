@@ -6,7 +6,7 @@ import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { getNetworkConfig } from 'features/config';
-import { SerializedTxParams, getParamsFromSerializedTx } from 'features/transaction';
+import { SerializedTxParams } from 'features/transaction';
 import { UnitDisplay } from 'components/ui';
 import './Amounts.scss';
 
@@ -108,7 +108,7 @@ class AmountsClass extends Component<StateProps> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  ...getParamsFromSerializedTx(state),
+  ...selectors.getParamsFromSerializedTx(state),
   ...selectors.getAllUSDValuesFromSerializedTx(state),
   network: getNetworkConfig(state)
 });

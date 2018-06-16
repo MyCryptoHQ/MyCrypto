@@ -6,7 +6,6 @@ import {
   isNetworkRequestPending,
   isValidGasPrice,
   isValidGasLimit,
-  getSerializedTransaction,
   getSignedTx
 } from 'features/transaction';
 import { walletSelectors } from 'features/wallet';
@@ -15,7 +14,7 @@ import { GenerateTransactionFactoryClass } from 'components/GenerateTransactionF
 export const ScheduleTransactionFactory = connect((state: AppState) => ({
   ...selectors.getSchedulingTransaction(state),
   walletType: walletSelectors.getWalletType(state),
-  serializedTransaction: getSerializedTransaction(state),
+  serializedTransaction: selectors.getSerializedTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
   isWeb3Wallet: walletSelectors.getWalletType(state).isWeb3Wallet,
   validGasPrice: isValidGasPrice(state),

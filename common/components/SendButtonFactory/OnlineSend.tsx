@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { getOffline } from 'features/config';
 import {
   ITransactionStatus,
@@ -9,7 +10,6 @@ import {
   signTransactionRequested,
   getCurrentTransactionStatus,
   currentTransactionBroadcasted,
-  signaturePending,
   getSignedTx,
   getWeb3Tx
 } from 'features/transaction';
@@ -94,7 +94,7 @@ export const OnlineSend = connect(
     offline: getOffline(state),
     currentTransaction: getCurrentTransactionStatus(state),
     transactionBroadcasted: currentTransactionBroadcasted(state),
-    signaturePending: signaturePending(state).isSignaturePending,
+    signaturePending: selectors.signaturePending(state).isSignaturePending,
     signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
   }),
   { showNotification: notificationsActions.showNotification, signTransactionRequested }

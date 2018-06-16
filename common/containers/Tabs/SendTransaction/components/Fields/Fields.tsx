@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { isAnyOfflineWithWeb3 } from 'features/selectors';
+import * as selectors from 'features/selectors';
 import { getOffline, getNetworkConfig } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
-import { getUnit } from 'features/transaction/selectors';
 import {
   AddressField,
   AmountField,
@@ -104,8 +103,9 @@ class FieldsClass extends Component<StateProps> {
 }
 
 export const Fields = connect((state: AppState) => ({
-  schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
-  shouldDisplay: !isAnyOfflineWithWeb3(state),
+  schedulingAvailable:
+    getNetworkConfig(state).name === 'Kovan' && selectors.getUnit(state) === 'ETH',
+  shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
   useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
 }))(FieldsClass);
