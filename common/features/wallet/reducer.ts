@@ -1,18 +1,8 @@
 import { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
-import {
-  WALLET,
-  SetTokenBalancesFulfilledAction,
-  SetWalletAction,
-  WalletAction,
-  SetWalletConfigAction,
-  SetWalletPendingAction,
-  SetTokenBalanceFulfilledAction,
-  SetBalanceFullfilledAction,
-  WalletState
-} from './types';
+import * as walletTypes from './types';
 
-export const INITIAL_STATE: WalletState = {
+export const INITIAL_STATE: walletTypes.WalletState = {
   inst: null,
   config: null,
   balance: { isPending: false, wei: null },
@@ -39,7 +29,10 @@ function addRecentAddress(addresses: string[], newWallet: IWallet | null) {
     .splice(0, RECENT_ADDRESS_LIMIT);
 }
 
-function setWallet(state: WalletState, action: SetWalletAction): WalletState {
+function setWallet(
+  state: walletTypes.WalletState,
+  action: walletTypes.SetWalletAction
+): walletTypes.WalletState {
   return {
     ...state,
     inst: action.payload,
@@ -50,30 +43,36 @@ function setWallet(state: WalletState, action: SetWalletAction): WalletState {
   };
 }
 
-function setBalancePending(state: WalletState): WalletState {
+function setBalancePending(state: walletTypes.WalletState): walletTypes.WalletState {
   return { ...state, balance: { ...state.balance, isPending: true } };
 }
 
-function setBalanceFullfilled(state: WalletState, action: SetBalanceFullfilledAction): WalletState {
+function setBalanceFullfilled(
+  state: walletTypes.WalletState,
+  action: walletTypes.SetBalanceFullfilledAction
+): walletTypes.WalletState {
   return {
     ...state,
     balance: { wei: action.payload, isPending: false }
   };
 }
 
-function setBalanceRejected(state: WalletState): WalletState {
+function setBalanceRejected(state: walletTypes.WalletState): walletTypes.WalletState {
   return { ...state, balance: { ...state.balance, isPending: false } };
 }
 
-function setWalletPending(state: WalletState, action: SetWalletPendingAction): WalletState {
+function setWalletPending(
+  state: walletTypes.WalletState,
+  action: walletTypes.SetWalletPendingAction
+): walletTypes.WalletState {
   return { ...state, isWalletPending: action.payload };
 }
 
-function setPasswordPending(state: WalletState): WalletState {
+function setPasswordPending(state: walletTypes.WalletState): walletTypes.WalletState {
   return { ...state, isPasswordPending: true };
 }
 
-function setTokenBalancesPending(state: WalletState): WalletState {
+function setTokenBalancesPending(state: walletTypes.WalletState): walletTypes.WalletState {
   return {
     ...state,
     tokens: {},
@@ -82,7 +81,7 @@ function setTokenBalancesPending(state: WalletState): WalletState {
   };
 }
 
-function setTokenBalancePending(state: WalletState): WalletState {
+function setTokenBalancePending(state: walletTypes.WalletState): walletTypes.WalletState {
   return {
     ...state,
     isTokensLoading: true,
@@ -91,9 +90,9 @@ function setTokenBalancePending(state: WalletState): WalletState {
 }
 
 function setTokenBalanceFufilled(
-  state: WalletState,
-  action: SetTokenBalanceFulfilledAction
-): WalletState {
+  state: walletTypes.WalletState,
+  action: walletTypes.SetTokenBalanceFulfilledAction
+): walletTypes.WalletState {
   return {
     ...state,
     tokens: { ...state.tokens, ...action.payload },
@@ -101,7 +100,7 @@ function setTokenBalanceFufilled(
   };
 }
 
-function setTokenBalanceRejected(state: WalletState): WalletState {
+function setTokenBalanceRejected(state: walletTypes.WalletState): walletTypes.WalletState {
   return {
     ...state,
     isTokensLoading: false,
@@ -110,9 +109,9 @@ function setTokenBalanceRejected(state: WalletState): WalletState {
 }
 
 function setTokenBalancesFulfilled(
-  state: WalletState,
-  action: SetTokenBalancesFulfilledAction
-): WalletState {
+  state: walletTypes.WalletState,
+  action: walletTypes.SetTokenBalancesFulfilledAction
+): walletTypes.WalletState {
   return {
     ...state,
     tokens: action.payload,
@@ -120,7 +119,7 @@ function setTokenBalancesFulfilled(
   };
 }
 
-function setTokenBalancesRejected(state: WalletState): WalletState {
+function setTokenBalancesRejected(state: walletTypes.WalletState): walletTypes.WalletState {
   return {
     ...state,
     isTokensLoading: false,
@@ -128,28 +127,31 @@ function setTokenBalancesRejected(state: WalletState): WalletState {
   };
 }
 
-function scanWalletForTokens(state: WalletState): WalletState {
+function scanWalletForTokens(state: walletTypes.WalletState): walletTypes.WalletState {
   return {
     ...state,
     hasSavedWalletTokens: false
   };
 }
 
-function setWalletTokens(state: WalletState): WalletState {
+function setWalletTokens(state: walletTypes.WalletState): walletTypes.WalletState {
   return {
     ...state,
     hasSavedWalletTokens: true
   };
 }
 
-function setWalletConfig(state: WalletState, action: SetWalletConfigAction): WalletState {
+function setWalletConfig(
+  state: walletTypes.WalletState,
+  action: walletTypes.SetWalletConfigAction
+): walletTypes.WalletState {
   return {
     ...state,
     config: action.payload
   };
 }
 
-function resetWallet(state: WalletState): WalletState {
+function resetWallet(state: walletTypes.WalletState): walletTypes.WalletState {
   return {
     ...INITIAL_STATE,
     recentAddresses: state.recentAddresses
@@ -157,41 +159,41 @@ function resetWallet(state: WalletState): WalletState {
 }
 
 export function walletReducer(
-  state: WalletState = INITIAL_STATE,
-  action: WalletAction
-): WalletState {
+  state: walletTypes.WalletState = INITIAL_STATE,
+  action: walletTypes.WalletAction
+): walletTypes.WalletState {
   switch (action.type) {
-    case WALLET.SET:
+    case walletTypes.WalletActions.SET:
       return setWallet(state, action);
-    case WALLET.RESET:
+    case walletTypes.WalletActions.RESET:
       return resetWallet(state);
-    case WALLET.SET_BALANCE_PENDING:
+    case walletTypes.WalletActions.SET_BALANCE_PENDING:
       return setBalancePending(state);
-    case WALLET.SET_BALANCE_FULFILLED:
+    case walletTypes.WalletActions.SET_BALANCE_FULFILLED:
       return setBalanceFullfilled(state, action);
-    case WALLET.SET_BALANCE_REJECTED:
+    case walletTypes.WalletActions.SET_BALANCE_REJECTED:
       return setBalanceRejected(state);
-    case WALLET.SET_PENDING:
+    case walletTypes.WalletActions.SET_PENDING:
       return setWalletPending(state, action);
-    case WALLET.SET_TOKEN_BALANCES_PENDING:
+    case walletTypes.WalletActions.SET_TOKEN_BALANCES_PENDING:
       return setTokenBalancesPending(state);
-    case WALLET.SET_TOKEN_BALANCES_FULFILLED:
+    case walletTypes.WalletActions.SET_TOKEN_BALANCES_FULFILLED:
       return setTokenBalancesFulfilled(state, action);
-    case WALLET.SET_TOKEN_BALANCES_REJECTED:
+    case walletTypes.WalletActions.SET_TOKEN_BALANCES_REJECTED:
       return setTokenBalancesRejected(state);
-    case WALLET.SET_TOKEN_BALANCE_PENDING:
+    case walletTypes.WalletActions.SET_TOKEN_BALANCE_PENDING:
       return setTokenBalancePending(state);
-    case WALLET.SET_TOKEN_BALANCE_FULFILLED:
+    case walletTypes.WalletActions.SET_TOKEN_BALANCE_FULFILLED:
       return setTokenBalanceFufilled(state, action);
-    case WALLET.SET_TOKEN_BALANCE_REJECTED:
+    case walletTypes.WalletActions.SET_TOKEN_BALANCE_REJECTED:
       return setTokenBalanceRejected(state);
-    case WALLET.SCAN_WALLET_FOR_TOKENS:
+    case walletTypes.WalletActions.SCAN_WALLET_FOR_TOKENS:
       return scanWalletForTokens(state);
-    case WALLET.SET_WALLET_TOKENS:
+    case walletTypes.WalletActions.SET_WALLET_TOKENS:
       return setWalletTokens(state);
-    case WALLET.SET_CONFIG:
+    case walletTypes.WalletActions.SET_CONFIG:
       return setWalletConfig(state, action);
-    case WALLET.SET_PASSWORD_PENDING:
+    case walletTypes.WalletActions.SET_PASSWORD_PENDING:
       return setPasswordPending(state);
     default:
       return state;

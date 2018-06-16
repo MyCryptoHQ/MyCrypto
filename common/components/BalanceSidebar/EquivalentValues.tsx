@@ -9,9 +9,10 @@ import { rateSymbols } from 'api/rates';
 import { NetworkConfig } from 'types/network';
 import { Balance } from 'libs/wallet';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { getOffline, getNetworkConfig } from 'features/config';
 import { ratesActions } from 'features/rates';
-import { TokenBalance, getShownTokenBalances } from 'features/wallet';
+import { walletTypes } from 'features/wallet';
 import { UnitDisplay, Spinner } from 'components/ui';
 import btcIco from 'assets/images/bitcoin.png';
 import ethIco from 'assets/images/ether.png';
@@ -42,7 +43,7 @@ interface StateProps {
   balance: Balance;
   network: NetworkConfig;
 
-  tokenBalances: TokenBalance[];
+  tokenBalances: walletTypes.TokenBalance[];
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
   isOffline: AppState['config']['meta']['offline'];
@@ -80,7 +81,7 @@ class EquivalentValues extends React.Component<Props, State> {
 
   public defaultOption(
     balance: Balance,
-    tokenBalances: TokenBalance[],
+    tokenBalances: walletTypes.TokenBalance[],
     network: StateProps['network']
   ): DefaultOption {
     return {
@@ -322,7 +323,7 @@ class EquivalentValues extends React.Component<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
-    tokenBalances: getShownTokenBalances(state, true),
+    tokenBalances: selectors.getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,

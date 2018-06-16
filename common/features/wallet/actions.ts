@@ -1,109 +1,88 @@
 import { Wei, TokenValue } from 'libs/units';
 import { IWallet, WalletConfig } from 'libs/wallet';
-import {
-  WALLET,
-  PrivateKeyUnlockParams,
-  UnlockPrivateKeyAction,
-  KeystoreUnlockParams,
-  UnlockKeystoreAction,
-  MnemonicUnlockParams,
-  UnlockMnemonicAction,
-  UnlockWeb3Action,
-  SetWalletPendingAction,
-  SetWalletAction,
-  SetPasswordPendingAction,
-  SetBalancePendingAction,
-  SetBalanceFullfilledAction,
-  SetBalanceRejectedAction,
-  SetTokenBalancePendingAction,
-  SetTokenBalanceFulfilledAction,
-  SetTokenBalanceRejectedAction,
-  SetTokenBalancesPendingAction,
-  SetTokenBalancesFulfilledAction,
-  SetTokenBalancesRejectedAction,
-  ScanWalletForTokensAction,
-  SetWalletTokensAction,
-  ResetWalletAction,
-  SetWalletConfigAction,
-  RefreshAccountBalanceAction,
-  RefreshTokenBalancesAction
-} from './types';
+import * as walletTypes from './types';
 
 export type TUnlockPrivateKey = typeof unlockPrivateKey;
-export function unlockPrivateKey(value: PrivateKeyUnlockParams): UnlockPrivateKeyAction {
+export function unlockPrivateKey(
+  value: walletTypes.PrivateKeyUnlockParams
+): walletTypes.UnlockPrivateKeyAction {
   return {
-    type: WALLET.UNLOCK_PRIVATE_KEY,
+    type: walletTypes.WalletActions.UNLOCK_PRIVATE_KEY,
     payload: value
   };
 }
 
 export type TUnlockKeystore = typeof unlockKeystore;
-export function unlockKeystore(value: KeystoreUnlockParams): UnlockKeystoreAction {
+export function unlockKeystore(
+  value: walletTypes.KeystoreUnlockParams
+): walletTypes.UnlockKeystoreAction {
   return {
-    type: WALLET.UNLOCK_KEYSTORE,
+    type: walletTypes.WalletActions.UNLOCK_KEYSTORE,
     payload: value
   };
 }
 
 export type TUnlockMnemonic = typeof unlockMnemonic;
-export function unlockMnemonic(value: MnemonicUnlockParams): UnlockMnemonicAction {
+export function unlockMnemonic(
+  value: walletTypes.MnemonicUnlockParams
+): walletTypes.UnlockMnemonicAction {
   return {
-    type: WALLET.UNLOCK_MNEMONIC,
+    type: walletTypes.WalletActions.UNLOCK_MNEMONIC,
     payload: value
   };
 }
 
 export type TUnlockWeb3 = typeof unlockWeb3;
-export function unlockWeb3(): UnlockWeb3Action {
+export function unlockWeb3(): walletTypes.UnlockWeb3Action {
   return {
-    type: WALLET.UNLOCK_WEB3
+    type: walletTypes.WalletActions.UNLOCK_WEB3
   };
 }
 
 export type TSetWallet = typeof setWallet;
-export function setWallet(value: IWallet): SetWalletAction {
+export function setWallet(value: IWallet): walletTypes.SetWalletAction {
   return {
-    type: WALLET.SET,
+    type: walletTypes.WalletActions.SET,
     payload: value
   };
 }
 
-export function setWalletPending(loadingStatus: boolean): SetWalletPendingAction {
+export function setWalletPending(loadingStatus: boolean): walletTypes.SetWalletPendingAction {
   return {
-    type: WALLET.SET_PENDING,
+    type: walletTypes.WalletActions.SET_PENDING,
     payload: loadingStatus
   };
 }
 
-export function setBalancePending(): SetBalancePendingAction {
+export function setBalancePending(): walletTypes.SetBalancePendingAction {
   return {
-    type: WALLET.SET_BALANCE_PENDING
+    type: walletTypes.WalletActions.SET_BALANCE_PENDING
   };
 }
 
-export function setPasswordPrompt(): SetPasswordPendingAction {
+export function setPasswordPrompt(): walletTypes.SetPasswordPendingAction {
   return {
-    type: WALLET.SET_PASSWORD_PENDING
+    type: walletTypes.WalletActions.SET_PASSWORD_PENDING
   };
 }
 
 export type TSetBalance = typeof setBalanceFullfilled;
-export function setBalanceFullfilled(value: Wei): SetBalanceFullfilledAction {
+export function setBalanceFullfilled(value: Wei): walletTypes.SetBalanceFullfilledAction {
   return {
-    type: WALLET.SET_BALANCE_FULFILLED,
+    type: walletTypes.WalletActions.SET_BALANCE_FULFILLED,
     payload: value
   };
 }
 
-export function setBalanceRejected(): SetBalanceRejectedAction {
+export function setBalanceRejected(): walletTypes.SetBalanceRejectedAction {
   return {
-    type: WALLET.SET_BALANCE_REJECTED
+    type: walletTypes.WalletActions.SET_BALANCE_REJECTED
   };
 }
 
-export function setTokenBalancesPending(): SetTokenBalancesPendingAction {
+export function setTokenBalancesPending(): walletTypes.SetTokenBalancesPendingAction {
   return {
-    type: WALLET.SET_TOKEN_BALANCES_PENDING
+    type: walletTypes.WalletActions.SET_TOKEN_BALANCES_PENDING
   };
 }
 
@@ -113,24 +92,24 @@ export function setTokenBalancesFulfilled(payload: {
     balance: TokenValue;
     error: string | null;
   };
-}): SetTokenBalancesFulfilledAction {
+}): walletTypes.SetTokenBalancesFulfilledAction {
   return {
-    type: WALLET.SET_TOKEN_BALANCES_FULFILLED,
+    type: walletTypes.WalletActions.SET_TOKEN_BALANCES_FULFILLED,
     payload
   };
 }
 
-export function setTokenBalancesRejected(): SetTokenBalancesRejectedAction {
+export function setTokenBalancesRejected(): walletTypes.SetTokenBalancesRejectedAction {
   return {
-    type: WALLET.SET_TOKEN_BALANCES_REJECTED
+    type: walletTypes.WalletActions.SET_TOKEN_BALANCES_REJECTED
   };
 }
 
 export function setTokenBalancePending(
-  payload: SetTokenBalancePendingAction['payload']
-): SetTokenBalancePendingAction {
+  payload: walletTypes.SetTokenBalancePendingAction['payload']
+): walletTypes.SetTokenBalancePendingAction {
   return {
-    type: WALLET.SET_TOKEN_BALANCE_PENDING,
+    type: walletTypes.WalletActions.SET_TOKEN_BALANCE_PENDING,
     payload
   };
 }
@@ -141,60 +120,60 @@ export function setTokenBalanceFulfilled(payload: {
     balance: TokenValue;
     error: string | null;
   };
-}): SetTokenBalanceFulfilledAction {
+}): walletTypes.SetTokenBalanceFulfilledAction {
   return {
-    type: WALLET.SET_TOKEN_BALANCE_FULFILLED,
+    type: walletTypes.WalletActions.SET_TOKEN_BALANCE_FULFILLED,
     payload
   };
 }
 
-export function setTokenBalanceRejected(): SetTokenBalanceRejectedAction {
+export function setTokenBalanceRejected(): walletTypes.SetTokenBalanceRejectedAction {
   return {
-    type: WALLET.SET_TOKEN_BALANCE_REJECTED
+    type: walletTypes.WalletActions.SET_TOKEN_BALANCE_REJECTED
   };
 }
 
 export type TScanWalletForTokens = typeof scanWalletForTokens;
-export function scanWalletForTokens(wallet: IWallet): ScanWalletForTokensAction {
+export function scanWalletForTokens(wallet: IWallet): walletTypes.ScanWalletForTokensAction {
   return {
-    type: WALLET.SCAN_WALLET_FOR_TOKENS,
+    type: walletTypes.WalletActions.SCAN_WALLET_FOR_TOKENS,
     payload: wallet
   };
 }
 
 export type TSetWalletTokens = typeof setWalletTokens;
-export function setWalletTokens(tokens: string[]): SetWalletTokensAction {
+export function setWalletTokens(tokens: string[]): walletTypes.SetWalletTokensAction {
   return {
-    type: WALLET.SET_WALLET_TOKENS,
+    type: walletTypes.WalletActions.SET_WALLET_TOKENS,
     payload: tokens
   };
 }
 
 export type TResetWallet = typeof resetWallet;
-export function resetWallet(): ResetWalletAction {
+export function resetWallet(): walletTypes.ResetWalletAction {
   return {
-    type: WALLET.RESET
+    type: walletTypes.WalletActions.RESET
   };
 }
 
 export type TSetWalletConfig = typeof setWalletConfig;
-export function setWalletConfig(config: WalletConfig): SetWalletConfigAction {
+export function setWalletConfig(config: WalletConfig): walletTypes.SetWalletConfigAction {
   return {
-    type: WALLET.SET_CONFIG,
+    type: walletTypes.WalletActions.SET_CONFIG,
     payload: config
   };
 }
 
 export type TRefreshAccountBalance = typeof refreshAccountBalance;
-export function refreshAccountBalance(): RefreshAccountBalanceAction {
+export function refreshAccountBalance(): walletTypes.RefreshAccountBalanceAction {
   return {
-    type: WALLET.REFRESH_ACCOUNT_BALANCE
+    type: walletTypes.WalletActions.REFRESH_ACCOUNT_BALANCE
   };
 }
 
 export type TRefreshTokenBalances = typeof refreshTokenBalances;
-export function refreshTokenBalances(): RefreshTokenBalancesAction {
+export function refreshTokenBalances(): walletTypes.RefreshTokenBalancesAction {
   return {
-    type: WALLET.REFRESH_TOKEN_BALANCES
+    type: walletTypes.WalletActions.REFRESH_TOKEN_BALANCES
   };
 }

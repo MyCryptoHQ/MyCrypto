@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'translations';
 import { TokenValue, Wei } from 'libs/units';
 import { AppState } from 'features/reducers';
 import { sendEverythingRequested, TSendEverythingRequested } from 'features/transaction/actions';
-import { getCurrentBalance } from 'features/wallet';
+import * as selectors from 'features/selectors';
 import { Query } from 'components/renderCbs';
 import { Tooltip } from 'components/ui';
 import './SendEverything.scss';
@@ -44,6 +44,6 @@ class SendEverythingClass extends Component<Props> {
   };
 }
 export const SendEverything = connect(
-  (state: AppState) => ({ currentBalance: getCurrentBalance(state) }),
+  (state: AppState) => ({ currentBalance: selectors.getCurrentBalance(state) }),
   { sendEverythingRequested }
 )(SendEverythingClass);

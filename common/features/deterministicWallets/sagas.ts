@@ -7,8 +7,8 @@ import translate from 'translations';
 import { INode } from 'libs/nodes/INode';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
+import * as selectors from 'features/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as walletSelectors from 'features/wallet/selectors';
 import * as notificationsActions from 'features/notifications/actions';
 import * as deterministicWalletsTypes from './types';
 import * as deterministicWalletsActions from './actions';
@@ -84,7 +84,7 @@ export function* updateWalletTokenValues(): SagaIterator {
     return;
   }
 
-  const tokens: Token[] = yield select(walletSelectors.getTokens);
+  const tokens: Token[] = yield select(selectors.getTokens);
   const token = tokens.find(t => t.symbol === desiredToken);
   if (!token) {
     return;

@@ -8,7 +8,7 @@ import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
-import { TRefreshAccountBalance, refreshAccountBalance } from 'features/wallet';
+import { walletActions } from 'features/wallet';
 import { UnitDisplay, NewTabLink } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
 import AccountAddress from './AccountAddress';
@@ -31,7 +31,7 @@ interface State {
 }
 
 interface DispatchProps {
-  refreshAccountBalance: TRefreshAccountBalance;
+  refreshAccountBalance: walletActions.TRefreshAccountBalance;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -200,5 +200,7 @@ function mapStateToProps(state: AppState): StateProps {
     isOffline: getOffline(state)
   };
 }
-const mapDispatchToProps: DispatchProps = { refreshAccountBalance };
+const mapDispatchToProps: DispatchProps = {
+  refreshAccountBalance: walletActions.refreshAccountBalance
+};
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

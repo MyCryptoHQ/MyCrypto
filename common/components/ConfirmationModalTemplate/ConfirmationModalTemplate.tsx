@@ -11,7 +11,7 @@ import {
   TBroadcastWeb3TransactionRequested,
   currentTransactionBroadcasting
 } from 'features/transaction';
-import { getWalletType, IWalletType } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import './ConfirmationModalTemplate.scss';
@@ -23,7 +23,7 @@ interface DispatchProps {
 
 interface StateProps {
   lang: string;
-  walletTypes: IWalletType;
+  walletTypes: walletSelectors.IWalletType;
   transactionBroadcasting: boolean;
 }
 
@@ -136,7 +136,7 @@ export const ConfirmationModalTemplate = connect(
   (state: AppState) => ({
     transactionBroadcasting: currentTransactionBroadcasting(state),
     lang: getLanguageSelection(state),
-    walletTypes: getWalletType(state)
+    walletTypes: walletSelectors.getWalletType(state)
   }),
   { broadcastLocalTransactionRequested, broadcastWeb3TransactionRequested }
 )(ConfirmationModalTemplateClass);

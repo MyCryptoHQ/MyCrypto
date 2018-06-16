@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { isUnlocked as isUnlockedSelector } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import { getNetworkConfig } from 'features/config';
 import { configureLiteSend, TConfigureLiteSend } from 'features/swap/actions';
 import { shouldDisplayLiteSend } from 'features/swap/selectors';
@@ -56,7 +56,7 @@ class LiteSendClass extends Component<Props> {
 export const LiteSend = connect(
   (state: AppState) => ({
     shouldDisplay: shouldDisplayLiteSend(state),
-    isUnlocked: isUnlockedSelector(state),
+    isUnlocked: walletSelectors.isUnlocked(state),
     network: getNetworkConfig(state)
   }),
   { configureLiteSend }

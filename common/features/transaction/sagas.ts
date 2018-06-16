@@ -50,6 +50,7 @@ import {
 } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { CONFIG_META, ToggleAutoGasLimitAction } from 'features/config/meta/types';
 import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';
@@ -57,12 +58,10 @@ import { isNetworkUnit, getNetworkUnit } from 'features/config/selectors';
 import * as ensTypes from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { getResolvedAddress } from 'features/ens/selectors';
-import { WALLET, MergedToken } from 'features/wallet/types';
+import * as walletTypes from 'features/wallet/types';
 import {
   getWalletInst,
-  getToken,
   getEtherBalance,
-  getCurrentBalance,
   getWalletType,
   IWalletType
 } from 'features/wallet/selectors';
@@ -408,7 +407,10 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
   }
 
   if (etherToToken || tokenToToken) {
-    const currentToken: MergedToken | undefined = yield select(getToken, currentUnit);
+    const currentToken: walletTypes.MergedToken | undefined = yield select(
+      selectors.getToken,
+      currentUnit
+    );
     if (!currentToken) {
       throw Error('Could not find token during unit swap');
     }
@@ -651,13 +653,13 @@ export function* handleNonceRequest(): SagaIterator {
 export function* handleNonceRequestWrapper(): SagaIterator {
   const nonceRequest = yield fork(handleNonceRequest);
 
-  yield take(WALLET.SET);
+  yield take(walletTypes.WalletActions.SET);
   yield cancel(nonceRequest);
 }
 
 //leave get nonce requested for nonce refresh later on
 export const nonceSaga = takeEvery(
-  [TRANSACTION_NETWORK.GET_NONCE_REQUESTED, WALLET.SET],
+  [TRANSACTION_NETWORK.GET_NONCE_REQUESTED, walletTypes.WalletActions.SET],
   handleNonceRequestWrapper
 );
 //#endregion Nonce
@@ -763,7 +765,7 @@ export const signing = [
 //#region Send Everything
 export function* handleSendEverything(): SagaIterator {
   const { transaction }: IGetTransaction = yield select(getTransaction);
-  const currentBalance: Wei | TokenValue | null = yield select(getCurrentBalance);
+  const currentBalance: Wei | TokenValue | null = yield select(selectors.getCurrentBalance);
   const etherBalance: AppState['wallet']['balance']['wei'] = yield select(getEtherBalance);
   if (!etherBalance || !currentBalance) {
     return yield put(sendEverythingFailed());
@@ -831,7 +833,7 @@ export function* watchTransactionState(): SagaIterator {
     ]);
 
     const { bail } = yield race({
-      bail: take([TRANSACTION.RESET_REQUESTED, WALLET.RESET]), // bail on actions that would wipe state
+      bail: take([TRANSACTION.RESET_REQUESTED, walletTypes.WalletActions.RESET]), // bail on actions that would wipe state
       wipeState: take([
         TRANSACTION.CURRENT_TO_SET,
         TRANSACTION.CURRENT_VALUE_SET,
@@ -861,7 +863,7 @@ export function* setNetworkUnit(): SagaIterator {
 }
 
 export const reset = [
-  takeEvery([WALLET.RESET], resetTransactionState),
+  takeEvery([walletTypes.WalletActions.RESET], resetTransactionState),
   takeEvery(TRANSACTION.RESET_REQUESTED, resetTransactionState),
   fork(watchTransactionState),
   takeEvery(TRANSACTION.RESET_SUCCESSFUL, setNetworkUnit)

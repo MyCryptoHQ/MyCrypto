@@ -6,7 +6,7 @@ import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import { messageActions } from 'features/message';
-import { resetWallet, TResetWallet, isWalletFullyUnlocked } from 'features/wallet';
+import { walletActions, walletSelectors } from 'features/wallet';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { TextArea, CodeBlock } from 'components/ui';
 import SignButton from './SignButton';
@@ -17,7 +17,7 @@ interface Props {
   unlocked: boolean;
   signMessageRequested: messageActions.TSignMessageRequested;
   signedMessage: ISignedMessage | null;
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
 }
 
 interface State {
@@ -102,10 +102,10 @@ export class SignMessage extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => ({
   signedMessage: state.message.signed,
-  unlocked: isWalletFullyUnlocked(state)
+  unlocked: walletSelectors.isWalletFullyUnlocked(state)
 });
 
 export default connect(mapStateToProps, {
   signMessageRequested: messageActions.signMessageRequested,
-  resetWallet
+  resetWallet: walletActions.resetWallet
 })(SignMessage);

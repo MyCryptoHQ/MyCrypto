@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
-import { resetWallet, TResetWallet } from 'features/wallet';
+import { walletActions } from 'features/wallet';
 import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
 import { FullWalletOnly } from 'components/renderCbs';
 import { TextArea } from 'components/ui';
@@ -14,7 +14,7 @@ import { ConfirmationModal } from 'components/ConfirmationModal';
 import './Deploy.scss';
 
 interface DispatchProps {
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
   resetTransactionRequested: TResetTransactionRequested;
 }
 
@@ -98,6 +98,6 @@ class DeployClass extends Component<DispatchProps> {
 }
 
 export const Deploy = connect(null, {
-  resetWallet,
+  resetWallet: walletActions.resetWallet,
   resetTransactionRequested
 })(DeployClass);

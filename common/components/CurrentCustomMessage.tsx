@@ -6,7 +6,7 @@ import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
 import { getAllTokens } from 'features/config';
 import { getCurrentTo, ICurrentTo } from 'features/transaction/selectors';
-import { getWalletInst } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import { Address } from 'components/ui';
 
 interface ReduxProps {
@@ -119,5 +119,5 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
 export const CurrentCustomMessage = connect((state: AppState): ReduxProps => ({
   currentTo: getCurrentTo(state),
   tokens: getAllTokens(state),
-  wallet: getWalletInst(state)
+  wallet: walletSelectors.getWalletInst(state)
 }))(CurrentCustomMessageClass);

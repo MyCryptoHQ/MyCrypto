@@ -6,8 +6,8 @@ import RpcNode from 'libs/nodes/rpc';
 import { Token } from 'types/network';
 import { TokenValue, Wei } from 'libs/units';
 import configuredStore from 'features/store';
+import * as selectors from 'features/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as walletSelectors from 'features/wallet/selectors';
 import * as deterministicWalletsTypes from './types';
 import * as deterministicWalletsActions from './actions';
 import * as deterministicWalletsSelectors from './selectors';
@@ -185,7 +185,7 @@ describe('updateWalletTokenValues*', () => {
 
   it('should select getTokens', () => {
     data.clone2 = data.gen.clone();
-    expect(data.gen.next(desiredToken).value).toEqual(select(walletSelectors.getTokens));
+    expect(data.gen.next(desiredToken).value).toEqual(select(selectors.getTokens));
   });
 
   it('should return if desired token is not amongst tokens', () => {

@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Option } from 'react-select';
 
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { setUnitMeta, TSetUnitMeta, getUnit } from 'features/transaction';
 import { getNetworkUnit } from 'features/config';
-import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'features/wallet';
+import { walletTypes } from 'features/wallet';
 import { Query } from 'components/renderCbs';
 import { Dropdown } from 'components/ui';
 
@@ -15,8 +16,8 @@ interface DispatchProps {
 
 interface StateProps {
   unit: string;
-  tokens: TokenBalance[];
-  allTokens: MergedToken[];
+  tokens: walletTypes.TokenBalance[];
+  allTokens: walletTypes.MergedToken[];
   showAllTokens?: boolean;
   networkUnit: string;
 }
@@ -49,12 +50,13 @@ class UnitDropdownClass extends Component<DispatchProps & StateProps> {
     this.props.setUnitMeta(unit.value);
   };
 }
-const getTokenSymbols = (tokens: (TokenBalance | MergedToken)[]) => tokens.map(t => t.symbol);
+const getTokenSymbols = (tokens: (walletTypes.TokenBalance | walletTypes.MergedToken)[]) =>
+  tokens.map(t => t.symbol);
 
 function mapStateToProps(state: AppState) {
   return {
-    tokens: getShownTokenBalances(state, true),
-    allTokens: getTokens(state),
+    tokens: selectors.getShownTokenBalances(state, true),
+    allTokens: selectors.getTokens(state),
     unit: getUnit(state),
     networkUnit: getNetworkUnit(state)
   };

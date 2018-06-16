@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { AppState } from 'features/reducers';
 import { isNetworkUnit } from 'features/config';
-import { getWalletInst } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import TabSection from 'containers/TabSection';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { UnlockHeader } from 'components/ui';
@@ -125,6 +125,6 @@ class SendTransaction extends React.Component<Props> {
 }
 
 export default connect((state: AppState) => ({
-  wallet: getWalletInst(state),
+  wallet: walletSelectors.getWalletInst(state),
   requestDisabled: !isNetworkUnit(state, 'ETH')
 }))(SendTransaction);

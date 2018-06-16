@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { Wei, TokenValue } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getCurrentBalance, resetWallet, TResetWallet } from 'features/wallet';
+import * as selectors from 'features/selectors';
+import { walletActions } from 'features/wallet';
 import { getUnit } from 'features/transaction/selectors';
 import { SendButton, TXMetaDataPanel } from 'components';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
@@ -14,7 +15,7 @@ import { Input } from 'components/ui';
 
 interface StateProps {
   unit: string;
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
   currentBalance: Wei | TokenValue | null;
 }
 
@@ -103,6 +104,9 @@ class FieldsClass extends Component<Props> {
 }
 
 export const Fields = connect(
-  (state: AppState) => ({ unit: getUnit(state), currentBalance: getCurrentBalance(state) }),
-  { resetWallet }
+  (state: AppState) => ({
+    unit: getUnit(state),
+    currentBalance: selectors.getCurrentBalance(state)
+  }),
+  { resetWallet: walletActions.resetWallet }
 )(FieldsClass);

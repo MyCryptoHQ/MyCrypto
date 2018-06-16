@@ -49,22 +49,22 @@ export function* configureLiteSendSaga(): SagaIterator {
 
   // wait for wallet to be unlocked to continue
   if (!unlocked) {
-    yield take(walletTypes.WALLET.SET);
+    yield take(walletTypes.WalletActions.SET);
   }
   const isNetwrkUnit = yield select(configSelectors.isNetworkUnit, label);
   //if it's a token, manually scan for that tokens balance and wait for it to resolve
   if (!isNetwrkUnit) {
     yield put(walletActions.setTokenBalancePending({ tokenSymbol: label }));
     yield take([
-      walletTypes.WALLET.SET_TOKEN_BALANCE_FULFILLED,
-      walletTypes.WALLET.SET_TOKEN_BALANCE_REJECTED
+      walletTypes.WalletActions.SET_TOKEN_BALANCE_FULFILLED,
+      walletTypes.WalletActions.SET_TOKEN_BALANCE_REJECTED
     ]);
   } else {
     const etherBalanceResolving: boolean = yield select(walletSelectors.isEtherBalancePending);
     if (etherBalanceResolving) {
       yield take([
-        walletTypes.WALLET.SET_BALANCE_FULFILLED,
-        walletTypes.WALLET.SET_BALANCE_REJECTED
+        walletTypes.WalletActions.SET_BALANCE_FULFILLED,
+        walletTypes.WalletActions.SET_BALANCE_REJECTED
       ]);
     }
   }
@@ -79,7 +79,7 @@ export function* handleConfigureLiteSend(): SagaIterator {
     const liteSendProc = yield fork(configureLiteSendSaga);
     const result = yield race({
       transactionReset: take(transactionTypes.TRANSACTION.RESET_REQUESTED),
-      userNavigatedAway: take(walletTypes.WALLET.RESET),
+      userNavigatedAway: take(walletTypes.WalletActions.RESET),
       bityPollingFinished: take(swapTypes.SwapActions.STOP_POLL_BITY_ORDER_STATUS),
       shapeshiftPollingFinished: take(swapTypes.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
     });

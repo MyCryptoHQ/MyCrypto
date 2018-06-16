@@ -16,6 +16,17 @@ import {
 import translate, { translateRaw } from 'translations';
 import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { walletActions } from 'features/wallet';
+import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
+import { notificationsActions } from 'features/notifications';
+import LedgerIcon from 'assets/images/wallets/ledger.svg';
+import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
+import { Errorable } from 'components';
+import { DisabledWallets } from './disables';
+import { getWeb3ProviderInfo } from 'utils/web3';
 import {
   KeystoreDecrypt,
   LedgerNanoSDecrypt,
@@ -29,28 +40,6 @@ import {
   ParitySignerDecrypt,
   InsecureWalletWarning
 } from './components';
-import { AppState } from 'features/reducers';
-import {
-  setWallet,
-  TSetWallet,
-  unlockKeystore,
-  TUnlockKeystore,
-  unlockMnemonic,
-  TUnlockMnemonic,
-  unlockPrivateKey,
-  TUnlockPrivateKey,
-  unlockWeb3,
-  TUnlockWeb3,
-  getDisabledWallets
-} from 'features/wallet';
-import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
-import { notificationsActions } from 'features/notifications';
-import LedgerIcon from 'assets/images/wallets/ledger.svg';
-import TrezorIcon from 'assets/images/wallets/trezor.svg';
-import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
-import { Errorable } from 'components';
-import { DisabledWallets } from './disables';
-import { getWeb3ProviderInfo } from 'utils/web3';
 import './WalletDecrypt.scss';
 
 interface OwnProps {
@@ -60,11 +49,11 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  unlockKeystore: TUnlockKeystore;
-  unlockMnemonic: TUnlockMnemonic;
-  unlockPrivateKey: TUnlockPrivateKey;
-  unlockWeb3: TUnlockWeb3;
-  setWallet: TSetWallet;
+  unlockKeystore: walletActions.TUnlockKeystore;
+  unlockMnemonic: walletActions.TUnlockMnemonic;
+  unlockPrivateKey: walletActions.TUnlockPrivateKey;
+  unlockWeb3: walletActions.TUnlockWeb3;
+  setWallet: walletActions.TSetWallet;
   resetTransactionRequested: TResetTransactionRequested;
   showNotification: notificationsActions.TShowNotification;
 }
@@ -454,7 +443,7 @@ const WalletDecrypt = withRouter<Props>(
 
 function mapStateToProps(state: AppState, ownProps: Props) {
   const { disabledWallets } = ownProps;
-  let computedDisabledWallets = getDisabledWallets(state);
+  let computedDisabledWallets = selectors.getDisabledWallets(state);
 
   if (disabledWallets) {
     computedDisabledWallets = {
@@ -474,11 +463,11 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 }
 
 export default connect(mapStateToProps, {
-  unlockKeystore,
-  unlockMnemonic,
-  unlockPrivateKey,
-  unlockWeb3,
-  setWallet,
+  unlockKeystore: walletActions.unlockKeystore,
+  unlockMnemonic: walletActions.unlockMnemonic,
+  unlockPrivateKey: walletActions.unlockPrivateKey,
+  unlockWeb3: walletActions.unlockWeb3,
+  setWallet: walletActions.setWallet,
   resetTransactionRequested,
   showNotification: notificationsActions.showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;

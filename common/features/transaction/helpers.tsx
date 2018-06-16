@@ -16,10 +16,11 @@ import {
 import { validNumber, validDecimal } from 'libs/validators';
 import { NetworkConfig, StaticNetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { getOffline } from 'features/config/meta/selectors';
 import { isNetworkUnit, getNetworkConfig } from 'features/config/selectors';
 import { scheduleSelectors } from 'features/schedule';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
+import { getWalletInst, getEtherBalance } from 'features/wallet/selectors';
 import { showNotification } from 'features/notifications/actions';
 import {
   TRANSACTION_BROADCAST,
@@ -300,7 +301,7 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
   valid = valid && enoughBalanceViaTx(validationTx, etherBalance);
 
   if (!networkUnitTransaction) {
-    const tokenBalance: TokenValue | null = yield select(getTokenBalance, unit);
+    const tokenBalance: TokenValue | null = yield select(selectors.getTokenBalance, unit);
     valid = valid && enoughTokensViaInput(input, tokenBalance);
   }
 

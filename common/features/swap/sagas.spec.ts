@@ -33,7 +33,7 @@ describe('swap: Sagas (Lite Send)', () => {
       const mockedTask = createMockTask();
       const expectedYield = race({
         transactionReset: take(transactionTypes.TRANSACTION.RESET_REQUESTED),
-        userNavigatedAway: take(walletTypes.WALLET.RESET),
+        userNavigatedAway: take(walletTypes.WalletActions.RESET),
         bityPollingFinished: take(swapTypes.SwapActions.STOP_POLL_BITY_ORDER_STATUS),
         shapeshiftPollingFinished: take(swapTypes.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
       });

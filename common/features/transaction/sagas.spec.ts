@@ -39,20 +39,16 @@ import {
   gasLimitValidator
 } from 'libs/validators';
 import configuredStore from 'features/store';
-import { CONFIG_META } from 'features/config/meta/types';
-import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
+import * as selectors from 'features/selectors';
+import * as configMetaTypes from 'features/config/meta/types';
+import * as configMetaSelectors from 'features/config/meta/selectors';
 import { getNodeLib } from 'features/config/nodes/selectors';
 import { isNetworkUnit } from 'features/config/selectors';
 import * as ensTypes from 'features/ens/types';
 import { resolveDomainRequested } from 'features/ens/actions';
 import { getResolvedAddress } from 'features/ens/selectors';
-import { WALLET } from 'features/wallet/types';
-import {
-  getWalletInst,
-  getToken,
-  getEtherBalance,
-  getCurrentBalance
-} from 'features/wallet/selectors';
+import * as walletTypes from 'features/wallet/types';
+import { getWalletInst, getEtherBalance } from 'features/wallet/selectors';
 import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
 import { isSchedulingEnabled } from 'features/schedule/selectors';
 import { showNotification } from 'features/notifications/actions';
@@ -988,7 +984,7 @@ describe('transaction: Sagas', () => {
         describe('etherToToken || tokenToToken', () => {
           const sharedLogicA = (gen: SagaIteratorClone, decimal: number, currentUnit: string) => {
             it('should select getToken with currentUnit', () => {
-              expect(gen.next(decimal).value).toEqual(select(getToken, currentUnit));
+              expect(gen.next(decimal).value).toEqual(select(selectors.getToken, currentUnit));
             });
 
             it('should throw error if !currentToken', () => {
@@ -1231,17 +1227,19 @@ describe('transaction: Sagas', () => {
               TRANSACTION.ETHER_TO_TOKEN_SWAP,
               TRANSACTION.TOKEN_TO_TOKEN_SWAP,
               TRANSACTION.TOKEN_TO_ETHER_SWAP,
-              CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
+              configMetaTypes.CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
             ])
           );
         });
 
         it('should select getOffline', () => {
-          expect(gen.next(action).value).toEqual(select(getOffline));
+          expect(gen.next(action).value).toEqual(select(configMetaSelectors.getOffline));
         });
 
         it('should select autoGasLimitEnabled', () => {
-          expect(gen.next(offline).value).toEqual(select(getAutoGasLimitEnabled));
+          expect(gen.next(offline).value).toEqual(
+            select(configMetaSelectors.getAutoGasLimitEnabled)
+          );
         });
 
         it('should select getCurrentToAddressMessage', () => {
@@ -1313,11 +1311,15 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select autoGasLimit', () => {
-          expect(gens.successCase.next(requestChan).value).toEqual(select(getAutoGasLimitEnabled));
+          expect(gens.successCase.next(requestChan).value).toEqual(
+            select(configMetaSelectors.getAutoGasLimitEnabled)
+          );
         });
 
         it('should select getOffline', () => {
-          expect(gens.successCase.next(autoGasLimitEnabled).value).toEqual(select(getOffline));
+          expect(gens.successCase.next(autoGasLimitEnabled).value).toEqual(
+            select(configMetaSelectors.getOffline)
+          );
         });
 
         it('should take requestChan', () => {
@@ -1446,7 +1448,7 @@ describe('transaction: Sagas', () => {
         };
 
         it('should select getAutoGasLimitEnabled', () => {
-          expect(gen.next().value).toEqual(select(getAutoGasLimitEnabled));
+          expect(gen.next().value).toEqual(select(configMetaSelectors.getAutoGasLimitEnabled));
         });
 
         it('should select getCurrentToAddressMessage', () => {
@@ -1517,7 +1519,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getOffline', () => {
-          expect(gens.gen.next(walletInst).value).toEqual(select(getOffline));
+          expect(gens.gen.next(walletInst).value).toEqual(select(configMetaSelectors.getOffline));
         });
 
         it('should exit if being called while offline', () => {
@@ -1557,7 +1559,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should take on WALLET_SET', () => {
-          expect(gen.next(nonceRequest).value).toEqual(take(WALLET.SET));
+          expect(gen.next(nonceRequest).value).toEqual(take(walletTypes.WalletActions.SET));
         });
 
         it('should cancel nonceRequest', () => {
@@ -1756,7 +1758,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getCurrentBalance', () => {
-          expect(gen.next(transactionObj).value).toEqual(select(getCurrentBalance));
+          expect(gen.next(transactionObj).value).toEqual(select(selectors.getCurrentBalance));
         });
 
         it('should select getEtherBalance', () => {

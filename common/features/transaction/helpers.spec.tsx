@@ -7,10 +7,11 @@ import { bufferToHex } from 'ethereumjs-util';
 import { computeIndexingHash, makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
 import configuredStore from 'features/store';
+import * as selectors from 'features/selectors';
 import { getOffline } from 'features/config/meta/selectors';
 import { getNetworkConfig, isNetworkUnit } from 'features/config/selectors';
 import { scheduleSelectors } from 'features/schedule';
-import { getWalletInst, getEtherBalance, getTokenBalance } from 'features/wallet/selectors';
+import { getWalletInst, getEtherBalance } from 'features/wallet/selectors';
 import { showNotification } from 'features/notifications/actions';
 import {
   broadcastTransactionFailed,
@@ -506,7 +507,9 @@ describe('transaction: Helpers', () => {
 
       it('should select getTokenBalance if !etherTransaction', () => {
         gens.clone3.next(!etherTransaction);
-        expect(gens.clone3.next(validationTx).value).toEqual(select(getTokenBalance, unit));
+        expect(gens.clone3.next(validationTx).value).toEqual(
+          select(selectors.getTokenBalance, unit)
+        );
       });
 
       it('should return true if !etherTransaction', () => {

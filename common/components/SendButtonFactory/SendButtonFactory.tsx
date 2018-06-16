@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import EthTx from 'ethereumjs-tx';
 
 import { AppState } from 'features/reducers';
-import { getWalletType, IWalletType } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import {
   getSerializedTransaction,
   getTransaction,
@@ -23,7 +23,7 @@ export interface CallbackProps {
 }
 
 interface StateProps {
-  walletType: IWalletType;
+  walletType: walletSelectors.IWalletType;
   serializedTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
   transaction: EthTx;
   isFullTransaction: boolean;
@@ -77,7 +77,7 @@ export class SendButtonFactoryClass extends Component<Props> {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    walletType: getWalletType(state),
+    walletType: walletSelectors.getWalletType(state),
     serializedTransaction: getSerializedTransaction(state),
     ...getTransaction(state),
     networkRequestPending: isNetworkRequestPending(state),

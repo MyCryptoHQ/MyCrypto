@@ -13,7 +13,7 @@ import {
   isCurrentToLabelEntry
 } from 'features/transaction';
 import { addressBookSelectors } from 'features/addressBook';
-import { getWalletInst } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import { ensSelectors } from 'features/ens';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
@@ -119,7 +119,7 @@ class AddressInputFactoryClass extends Component<Props> {
 export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps) => {
   let currentTo: ICurrentTo;
   if (ownProps.isSelfAddress) {
-    const wallet = getWalletInst(state);
+    const wallet = walletSelectors.getWalletInst(state);
     const addr = wallet ? wallet.getAddressString() : '';
     currentTo = {
       raw: addr,

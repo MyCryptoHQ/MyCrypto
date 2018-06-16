@@ -2,13 +2,13 @@ import React from 'react';
 
 import translate from 'translations';
 import { Token } from 'types/network';
-import { TokenBalance } from 'features/wallet';
+import { walletTypes } from 'features/wallet';
 import AddCustomTokenForm from './AddCustomTokenForm';
 import TokenRow from './TokenRow';
 
 interface Props {
   allTokens: Token[];
-  tokenBalances: TokenBalance[];
+  tokenBalances: walletTypes.TokenBalance[];
   hasSavedWalletTokens: boolean;
   scanWalletForTokens(): any;
   setWalletTokens(tokens: string[]): any;
@@ -143,7 +143,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
    * @memberof TokenBalances
    */
   private onlyCustomTokens() {
-    const tokenMap = this.props.tokenBalances.reduce<{ [key: string]: TokenBalance }>(
+    const tokenMap = this.props.tokenBalances.reduce<{ [key: string]: walletTypes.TokenBalance }>(
       (acc, cur) => ({ ...acc, [cur.symbol]: cur }),
       {}
     );

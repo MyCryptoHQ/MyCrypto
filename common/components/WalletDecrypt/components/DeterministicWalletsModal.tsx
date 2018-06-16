@@ -7,11 +7,11 @@ import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import { getNetworkConfig } from 'features/config';
+import * as selectors from 'features/selectors';
 import {
   deterministicWalletsTypes,
   deterministicWalletsActions
 } from 'features/deterministicWallets';
-import { getTokens } from 'features/wallet';
 import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
@@ -33,7 +33,7 @@ interface StateProps {
   wallets: AppState['deterministicWallets']['wallets'];
   desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: ReturnType<typeof getNetworkConfig>;
-  tokens: ReturnType<typeof getTokens>;
+  tokens: ReturnType<typeof selectors.getTokens>;
 }
 
 interface DispatchProps {
@@ -345,7 +345,7 @@ function mapStateToProps(state: AppState): StateProps {
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
     network: getNetworkConfig(state),
-    tokens: getTokens(state)
+    tokens: selectors.getTokens(state)
   };
 }
 

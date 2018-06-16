@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getWalletType } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import { scheduleSelectors } from 'features/schedule';
 import {
   getSerializedTransaction,
@@ -15,7 +15,7 @@ import { SendButtonFactoryClass } from 'components/SendButtonFactory';
 
 const mapStateToProps = (state: AppState) => {
   return {
-    walletType: getWalletType(state),
+    walletType: walletSelectors.getWalletType(state),
     serializedTransaction: getSerializedTransaction(state),
     ...scheduleSelectors.getSchedulingTransaction(state),
     networkRequestPending: isNetworkRequestPending(state),

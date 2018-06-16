@@ -14,7 +14,7 @@ import {
   getSignedTx,
   getSerializedTransaction
 } from 'features/transaction';
-import { getWalletType, IWalletType } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
 import { CodeBlock } from 'components/ui';
 import { WithSigner } from './Container';
@@ -27,7 +27,7 @@ export interface CallbackProps {
 
 interface StateProps {
   transaction: EthTx;
-  walletType: IWalletType;
+  walletType: walletSelectors.IWalletType;
   serializedTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
   networkRequestPending: boolean;
   isFullTransaction: boolean;
@@ -104,10 +104,10 @@ export class GenerateTransactionFactoryClass extends Component<Props> {
 
 export const GenerateTransactionFactory = connect((state: AppState) => ({
   ...getTransaction(state),
-  walletType: getWalletType(state),
+  walletType: walletSelectors.getWalletType(state),
   serializedTransaction: getSerializedTransaction(state),
   networkRequestPending: isNetworkRequestPending(state),
-  isWeb3Wallet: getWalletType(state).isWeb3Wallet,
+  isWeb3Wallet: walletSelectors.getWalletType(state).isWeb3Wallet,
   validGasPrice: isValidGasPrice(state),
   validGasLimit: isValidGasLimit(state),
   signedTx: !!getSignedTx(state)

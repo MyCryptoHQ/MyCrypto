@@ -6,7 +6,7 @@ import translate, { translateRaw } from 'translations';
 import { isValidETHAddress } from 'libs/validators';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getRecentAddresses } from 'features/wallet';
+import { walletSelectors } from 'features/wallet';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
 
@@ -99,5 +99,5 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 }
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
-  recentAddresses: getRecentAddresses(state)
+  recentAddresses: walletSelectors.getRecentAddresses(state)
 }))(ViewOnlyDecryptClass);

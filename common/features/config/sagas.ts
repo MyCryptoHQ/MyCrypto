@@ -19,7 +19,7 @@ import { Web3Wallet } from 'libs/wallet';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
 import { AppState } from 'features/reducers';
 import { showNotification } from 'features/notifications/actions';
-import { WALLET, SetWalletAction } from 'features/wallet/types';
+import * as walletTypes from 'features/wallet/types';
 import { resetWallet, setWallet } from 'features/wallet/actions';
 import { CONFIG_META } from './meta/types';
 import { setLatestBlock } from './meta/actions';
@@ -330,7 +330,7 @@ export function* unlockWeb3(): SagaIterator {
 }
 
 // unset web3 as the selected node if a non-web3 wallet has been selected
-export function* unsetWeb3NodeOnWalletEvent(action: SetWalletAction): SagaIterator {
+export function* unsetWeb3NodeOnWalletEvent(action: walletTypes.SetWalletAction): SagaIterator {
   const node = yield select(getNodeId);
   const newWallet = action.payload;
   const isWeb3Wallet = newWallet instanceof Web3Wallet;
@@ -372,8 +372,8 @@ export function* configSaga(): SagaIterator {
   ];
   const web3 = [
     takeEvery(CONFIG_NODES_STATIC.WEB3_UNSET, unsetWeb3Node),
-    takeEvery(WALLET.SET, unsetWeb3NodeOnWalletEvent),
-    takeEvery(WALLET.UNLOCK_WEB3, unlockWeb3)
+    takeEvery(walletTypes.WalletActions.SET, unsetWeb3NodeOnWalletEvent),
+    takeEvery(walletTypes.WalletActions.UNLOCK_WEB3, unlockWeb3)
   ];
 
   yield all([...networkSaga, ...nodeSaga, ...web3]);
