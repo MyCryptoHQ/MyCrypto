@@ -105,7 +105,7 @@ export function* resolveDomainRequest(name: string): SagaIterator {
     name,
     ...domainData,
     ...result,
-    labelHash: hash.toString('hex'),
+    labelHash: ethUtil.addHexPrefix(hash.toString('hex')),
     nameHash
   };
   return returnValue;
