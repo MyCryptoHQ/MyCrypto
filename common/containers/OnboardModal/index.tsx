@@ -20,6 +20,7 @@ import {
   SecureSlideThree,
   FinalSlide
 } from './components';
+import './index.scss';
 
 interface State {
   isOpen: boolean;
