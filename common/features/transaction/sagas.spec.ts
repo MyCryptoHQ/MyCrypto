@@ -96,6 +96,7 @@ import {
   revalidateCurrentValue,
   reparseCurrentValue,
   valueHandler,
+  isValueDifferent,
   handleDataInput,
   handleGasLimitInput,
   handleNonceInput,
@@ -505,6 +506,32 @@ describe('transaction: Sagas', () => {
         });
 
         itShouldBeDone(gen);
+      });
+    });
+
+    describe('isValueDifferent', () => {
+      it('should be truthy when raw differs', () => {
+        const curVal: selectors.ICurrentValue = { raw: 'a', value: new BN(0) };
+        const newVal: selectors.ICurrentValue = { raw: 'b', value: new BN(0) };
+        expect(isValueDifferent(curVal, newVal)).toBeTruthy();
+      });
+
+      it('should be falsy when value is the same BN', () => {
+        const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
+        expect(isValueDifferent(curVal, newVal)).toBeFalsy();
+      });
+
+      it('should be truthy when value is a different BN', () => {
+        const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: selectors.ICurrentValue = { raw: '', value: new BN(2) };
+        expect(isValueDifferent(curVal, newVal)).toBeTruthy();
+      });
+
+      it('should be truthy when value is not the same and not both BNs', () => {
+        const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: selectors.ICurrentValue = { raw: '', value: null };
+        expect(isValueDifferent(curVal, newVal)).toBeTruthy();
       });
     });
 
@@ -1217,6 +1244,7 @@ describe('transaction: Sagas', () => {
           expect(gen.next().value).toEqual(
             take([
               TRANSACTION_FIELDS.TO_FIELD_SET,
+              TRANSACTION_FIELDS.VALUE_FIELD_SET,
               TRANSACTION_FIELDS.DATA_FIELD_SET,
               TRANSACTION.ETHER_TO_TOKEN_SWAP,
               TRANSACTION.TOKEN_TO_TOKEN_SWAP,

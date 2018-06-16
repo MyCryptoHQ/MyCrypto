@@ -70,6 +70,7 @@ import { requestTransactionSignature } from 'features/paritySigner/actions';
 import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
 import { isSchedulingEnabled } from 'features/schedule/selectors';
 import { showNotification } from 'features/notifications/actions';
+import { getNetworkByChainId } from '../config';
 import { TRANSACTION_BROADCAST } from './broadcast/types';
 import {
   TRANSACTION_FIELDS,
@@ -79,7 +80,8 @@ import {
   InputGasPriceAction,
   InputGasPriceIntentAction,
   InputNonceAction,
-  SetDataFieldAction
+  SetDataFieldAction,
+  SetValueFieldAction
 } from './fields/types';
 import {
   setToField,
@@ -145,7 +147,6 @@ import {
   IInput,
   rebaseUserInput
 } from './helpers';
-import { getNetworkByChainId } from '../config';
 
 //#region Broadcast
 export const broadcastLocalTransactionHandler = function*(signedTx: string): SagaIterator {
@@ -245,6 +246,7 @@ export function* valueHandler(
   }
   const value = toTokenBase(payload, decimal);
   const isValid: boolean = yield call(validateInput, value, unit);
+
   yield put(setter({ raw: payload, value: isValid ? value : null }));
 }
 
@@ -258,7 +260,26 @@ export function* revalidateCurrentValue(): SagaIterator {
     return yield put(setter({ raw: currVal.raw, value: null }));
   }
   const isValid: boolean = yield call(validateInput, reparsedValue.value, unit);
-  yield put(setter({ raw: reparsedValue.raw, value: isValid ? reparsedValue.value : null }));
+  const newVal = { raw: reparsedValue.raw, value: isValid ? reparsedValue.value : null };
+
+  if (isValueDifferent(currVal, newVal)) {
+    yield put(setter(newVal));
+  }
+}
+
+export function isValueDifferent(curVal: selectors.ICurrentValue, newVal: selectors.ICurrentValue) {
+  const val1 = curVal.value as BN;
+  const val2 = newVal.value as BN;
+
+  if (curVal.raw !== newVal.raw) {
+    return true;
+  }
+  if (BN.isBN(val1) && BN.isBN(val2)) {
+    return !val1.eq(val2);
+  }
+  if (curVal.value !== newVal.value) {
+    return true;
+  }
 }
 
 export function* reparseCurrentValue(value: IInput): SagaIterator {
@@ -486,12 +507,15 @@ export function* shouldEstimateGas(): SagaIterator {
   while (true) {
     const action:
       | SetToFieldAction
+      | SetValueFieldAction
       | SetDataFieldAction
       | SwapEtherToTokenAction
       | SwapTokenToTokenAction
       | SwapTokenToEtherAction
-      | ToggleAutoGasLimitAction = yield take([
+      | ToggleAutoGasLimitAction
+      | SetValueFieldAction = yield take([
       TRANSACTION_FIELDS.TO_FIELD_SET,
+      TRANSACTION_FIELDS.VALUE_FIELD_SET,
       TRANSACTION_FIELDS.DATA_FIELD_SET,
       TRANSACTION.ETHER_TO_TOKEN_SWAP,
       TRANSACTION.TOKEN_TO_TOKEN_SWAP,
@@ -511,7 +535,8 @@ export function* shouldEstimateGas(): SagaIterator {
     // reason being is an empty field is valid because it'll be null
     const invalidField =
       (action.type === TRANSACTION_FIELDS.TO_FIELD_SET ||
-        action.type === TRANSACTION_FIELDS.DATA_FIELD_SET) &&
+        action.type === TRANSACTION_FIELDS.DATA_FIELD_SET ||
+        action.type === TRANSACTION_FIELDS.VALUE_FIELD_SET) &&
       !action.payload.value &&
       action.payload.raw !== '';
 
