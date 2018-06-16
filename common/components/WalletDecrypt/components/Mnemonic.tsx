@@ -10,7 +10,6 @@ import { getSingleDPath, getPaths } from 'features/config';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
-import DeprecationWarning from './DeprecationWarning';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -52,7 +51,6 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <DeprecationWarning />
         <div id="selectedTypeKey">
           <div className="form-group">
             <TogglablePassword
