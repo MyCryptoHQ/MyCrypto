@@ -14,7 +14,6 @@ import {
   all
 } from 'redux-saga/effects';
 import BN from 'bn.js';
-import { bufferToHex } from 'ethereumjs-util';
 
 import { AddressMessage } from 'config';
 import { INode } from 'libs/nodes/INode';
@@ -24,7 +23,6 @@ import {
   makeTransaction,
   getTransactionFields,
   IHexStrTransaction,
-  encodeTransfer,
   computeIndexingHash
 } from 'libs/transaction';
 import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
@@ -48,18 +46,17 @@ import * as notificationsActions from 'features/notifications/actions';
 import { transactionBroadcastSagas } from './broadcast';
 import * as transactionFieldsTypes from './fields/types';
 import * as transactionFieldsActions from './fields/actions';
-import * as transactionFieldsSelectors from './fields/selectors';
 import { transactionFieldsSagas } from './fields';
 import * as transactionMetaTypes from './meta/types';
 import * as transactionMetaActions from './meta/actions';
 import * as transactionMetaSelectors from './meta/selectors';
+import { transactionMetaSagas } from './meta';
 import * as transactionNetworkTypes from './network/types';
 import * as transactionNetworkActions from './network/actions';
 import * as transactionSignTypes from './sign/types';
 import * as transactionSignActions from './sign/actions';
 import * as types from './types';
 import * as actions from './actions';
-import * as transactionSelectors from './selectors';
 import * as helpers from './helpers';
 
 //#region Current
@@ -201,153 +198,6 @@ export const currentValue = [
 
 export const current = [currentTo, ...currentValue];
 //#endregion Current
-
-//#region Meta
-
-//#region Token
-export function* handleTokenTo({
-  payload
-}: transactionMetaTypes.SetTokenToMetaAction): SagaIterator {
-  const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(
-    transactionMetaSelectors.getTokenValue
-  );
-  if (!(tokenValue.value && payload.value)) {
-    return;
-  }
-
-  // encode token data and dispatch it
-  const data = yield call(encodeTransfer, payload.value, tokenValue.value);
-  yield put(transactionFieldsActions.setDataField({ raw: bufferToHex(data), value: data }));
-}
-
-export function* handleTokenValue({ payload }: transactionMetaTypes.SetTokenValueMetaAction) {
-  const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
-    transactionMetaSelectors.getTokenTo
-  );
-  const prevData = yield select(transactionFieldsSelectors.getData);
-  if (!(tokenTo.value && payload.value)) {
-    return;
-  }
-  const data = yield call(encodeTransfer, tokenTo.value, payload.value);
-  if (prevData.raw === bufferToHex(data)) {
-    return;
-  }
-  yield put(transactionFieldsActions.setDataField({ raw: bufferToHex(data), value: data }));
-}
-
-export const handleToken = [
-  takeEvery(transactionMetaTypes.TransactionMetaActions.TOKEN_TO_META_SET, handleTokenTo),
-  takeEvery(transactionMetaTypes.TransactionMetaActions.TOKEN_VALUE_META_SET, handleTokenValue)
-];
-//#endregion Token
-
-//#region Set Unit
-export function* handleSetUnitMeta({
-  payload: currentUnit
-}: transactionMetaTypes.SetUnitMetaAction): SagaIterator {
-  const previousUnit: string = yield select(transactionSelectors.getPreviousUnit);
-  const prevUnit = yield select(configSelectors.isNetworkUnit, previousUnit);
-  const currUnit = yield select(configSelectors.isNetworkUnit, currentUnit);
-  const etherToEther = currUnit && prevUnit;
-  const etherToToken = !currUnit && prevUnit;
-  const tokenToEther = currUnit && !prevUnit;
-  const tokenToToken = !currUnit && !prevUnit;
-  const decimal: number = yield select(selectors.getDecimalFromUnit, currentUnit);
-
-  if (etherToEther || previousUnit === '') {
-    return;
-  }
-
-  if (tokenToEther) {
-    const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
-      transactionMetaSelectors.getTokenTo
-    );
-    const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(
-      transactionMetaSelectors.getTokenValue
-    );
-
-    //set the 'to' field from what the token 'to' field was
-    // if switching to ether, clear token data and value
-    const { value, raw }: helpers.IInput = yield call(helpers.rebaseUserInput, tokenValue);
-
-    const isValid = yield call(helpers.validateInput, value, currentUnit);
-    return yield put(
-      actions.swapTokenToEther({
-        to: tokenTo,
-        value: { raw, value: isValid ? value : null },
-        decimal
-      })
-    );
-  }
-
-  if (etherToToken || tokenToToken) {
-    const currentToken: walletTypes.MergedToken | undefined = yield select(
-      selectors.getToken,
-      currentUnit
-    );
-    if (!currentToken) {
-      throw Error('Could not find token during unit swap');
-    }
-    const input:
-      | AppState['transaction']['fields']['value']
-      | AppState['transaction']['meta']['tokenValue'] = etherToToken
-      ? yield select(transactionFieldsSelectors.getValue)
-      : yield select(transactionMetaSelectors.getTokenValue);
-    const { raw, value }: helpers.IInput = yield call(helpers.rebaseUserInput, input);
-
-    const isValid = yield call(helpers.validateInput, value, currentUnit);
-    const to: AppState['transaction']['fields']['to'] = yield select(
-      transactionFieldsSelectors.getTo
-    );
-
-    const valueToEncode = isValid && value ? value : TokenValue('0');
-    let addressToEncode;
-    if (etherToToken) {
-      addressToEncode = to.value || Address('0x0');
-    } else {
-      const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
-        transactionMetaSelectors.getTokenTo
-      );
-      addressToEncode = tokenTo.value || Address('0x0');
-    }
-
-    const data = encodeTransfer(addressToEncode, valueToEncode);
-
-    const basePayload = {
-      data: { raw: bufferToHex(data), value: data },
-      to: { raw: '', value: Address(currentToken.address) },
-      tokenValue: { raw, value: isValid ? value : null },
-      decimal
-    };
-    // need to set meta fields for tokenTo and tokenValue
-    if (etherToToken) {
-      yield put(
-        scheduleActions.setSchedulingToggle({
-          value: false
-        })
-      );
-
-      return yield put(
-        actions.swapEtherToToken({
-          ...basePayload,
-          tokenTo: to
-        })
-      );
-    }
-    // need to rebase the token if the decimal has changed and re-validate
-    if (tokenToToken) {
-      return yield put(actions.swapTokenToToken(basePayload));
-    }
-  }
-}
-
-export const handleSetUnit = [
-  takeEvery(transactionMetaTypes.TransactionMetaActions.UNIT_META_SET, handleSetUnitMeta)
-];
-//#endregion Set Unit
-
-export const metaSaga = [...handleToken, ...handleSetUnit];
-//#endregion Meta
 
 //#region Network
 
@@ -808,7 +658,7 @@ export function* transactionSaga(): SagaIterator {
     ...transactionBroadcastSagas.broadcastSaga,
     ...current,
     ...transactionFieldsSagas.fieldsSaga,
-    ...metaSaga,
+    ...transactionMetaSagas.metaSaga,
     ...networkSaga,
     ...signing,
     ...sendEverything,
