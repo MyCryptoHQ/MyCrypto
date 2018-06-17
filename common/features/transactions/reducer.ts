@@ -1,14 +1,14 @@
-import * as transactionsTypes from './types';
+import * as types from './types';
 
-export const INITIAL_STATE: transactionsTypes.TransactionsState = {
+export const INITIAL_STATE: types.TransactionsState = {
   txData: {},
   recent: []
 };
 
 function fetchTxData(
-  state: transactionsTypes.TransactionsState,
-  action: transactionsTypes.FetchTransactionDataAction
-): transactionsTypes.TransactionsState {
+  state: types.TransactionsState,
+  action: types.FetchTransactionDataAction
+): types.TransactionsState {
   return {
     ...state,
     txData: {
@@ -24,9 +24,9 @@ function fetchTxData(
 }
 
 function setTxData(
-  state: transactionsTypes.TransactionsState,
-  action: transactionsTypes.SetTransactionDataAction
-): transactionsTypes.TransactionsState {
+  state: types.TransactionsState,
+  action: types.SetTransactionDataAction
+): types.TransactionsState {
   return {
     ...state,
     txData: {
@@ -41,9 +41,7 @@ function setTxData(
   };
 }
 
-function resetTxData(
-  state: transactionsTypes.TransactionsState
-): transactionsTypes.TransactionsState {
+function resetTxData(state: types.TransactionsState): types.TransactionsState {
   return {
     ...state,
     txData: INITIAL_STATE.txData
@@ -51,9 +49,9 @@ function resetTxData(
 }
 
 function addRecentTx(
-  state: transactionsTypes.TransactionsState,
-  action: transactionsTypes.AddRecentTransactionAction
-): transactionsTypes.TransactionsState {
+  state: types.TransactionsState,
+  action: types.AddRecentTransactionAction
+): types.TransactionsState {
   return {
     ...state,
     recent: [action.payload, ...state.recent].slice(0, 50)
@@ -61,17 +59,17 @@ function addRecentTx(
 }
 
 export function transactionsReducer(
-  state: transactionsTypes.TransactionsState = INITIAL_STATE,
-  action: transactionsTypes.TransactionsAction
-): transactionsTypes.TransactionsState {
+  state: types.TransactionsState = INITIAL_STATE,
+  action: types.TransactionsAction
+): types.TransactionsState {
   switch (action.type) {
-    case transactionsTypes.TransactionsActions.FETCH_TRANSACTION_DATA:
+    case types.TransactionsActions.FETCH_TRANSACTION_DATA:
       return fetchTxData(state, action);
-    case transactionsTypes.TransactionsActions.SET_TRANSACTION_DATA:
+    case types.TransactionsActions.SET_TRANSACTION_DATA:
       return setTxData(state, action);
-    case transactionsTypes.TransactionsActions.RESET_TRANSACTION_DATA:
+    case types.TransactionsActions.RESET_TRANSACTION_DATA:
       return resetTxData(state);
-    case transactionsTypes.TransactionsActions.ADD_RECENT_TRANSACTION:
+    case types.TransactionsActions.ADD_RECENT_TRANSACTION:
       return addRecentTx(state, action);
     default:
       return state;

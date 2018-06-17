@@ -1,7 +1,7 @@
 import { AppState } from 'features/reducers';
-import * as deterministicWalletsTypes from './types';
+import * as types from './types';
 
-export function getWallets(state: AppState): deterministicWalletsTypes.DeterministicWalletData[] {
+export function getWallets(state: AppState): types.DeterministicWalletData[] {
   return state.deterministicWallets.wallets;
 }
 

@@ -10,17 +10,17 @@ import RpcNode from 'libs/nodes/rpc';
 import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 import { Token } from 'types/network';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as configNodesStaticActions from 'features/config/nodes/static/actions';
 import * as configNodesSelectedActions from 'features/config/nodes/selected';
 import * as configSagas from 'features/config/sagas';
-import * as notificationsActions from 'features/notifications/actions';
-import * as walletTypes from './types';
-import * as walletActions from './actions';
-import * as walletSelectors from './selectors';
-import * as walletSagas from './sagas';
+import { notificationsActions } from 'features/notifications';
+import * as types from './types';
+import * as actions from './actions';
+import * as selectors from './selectors';
+import * as sagas from './sagas';
 
 configuredStore.getState();
 
@@ -67,19 +67,19 @@ const utcKeystore: IV3Wallet = {
 
 // necessary so we can later inject a mocked web3 to the window
 
-describe('walletSagas.updateAccountBalance*', () => {
-  const gen = walletSagas.updateAccountBalance();
+describe('sagas.updateAccountBalance*', () => {
+  const gen = sagas.updateAccountBalance();
 
   it('should select offline', () => {
     expect(gen.next().value).toEqual(select(configMetaSelectors.getOffline));
   });
 
   it('should put setBalancePending', () => {
-    expect(gen.next(false).value).toEqual(put(walletActions.setBalancePending()));
+    expect(gen.next(false).value).toEqual(put(actions.setBalancePending()));
   });
 
   it('should select getWalletInst', () => {
-    expect(gen.next(false).value).toEqual(select(walletSelectors.getWalletInst));
+    expect(gen.next(false).value).toEqual(select(selectors.getWalletInst));
   });
 
   it('should select getNodeLib', () => {
@@ -95,7 +95,7 @@ describe('walletSagas.updateAccountBalance*', () => {
   });
 
   it('should put setBalanceFulfilled', () => {
-    expect(gen.next(balance).value).toEqual(put(walletActions.setBalanceFullfilled(balance)));
+    expect(gen.next(balance).value).toEqual(put(actions.setBalanceFullfilled(balance)));
   });
 
   it('should be done', () => {
@@ -103,13 +103,13 @@ describe('walletSagas.updateAccountBalance*', () => {
   });
 
   it('should bail out if offline', () => {
-    const offlineGen = walletSagas.updateAccountBalance();
+    const offlineGen = sagas.updateAccountBalance();
     offlineGen.next();
     expect(offlineGen.next(true).done).toBe(true);
   });
 
   it('should bail out if wallet inst is missing', () => {
-    const noWalletGen = walletSagas.updateAccountBalance();
+    const noWalletGen = sagas.updateAccountBalance();
     noWalletGen.next();
     noWalletGen.next(false);
     noWalletGen.next(false);
@@ -118,7 +118,7 @@ describe('walletSagas.updateAccountBalance*', () => {
 });
 
 describe('updateTokenBalances*', () => {
-  const gen = cloneableGenerator(walletSagas.updateTokenBalances)();
+  const gen = cloneableGenerator(sagas.updateTokenBalances)();
 
   it('should bail out if offline', () => {
     const offlineGen = gen.clone();
@@ -131,7 +131,7 @@ describe('updateTokenBalances*', () => {
   });
 
   it('should select getWalletInst', () => {
-    expect(gen.next(offline).value).toEqual(select(walletSelectors.getWalletInst));
+    expect(gen.next(offline).value).toEqual(select(selectors.getWalletInst));
   });
 
   it('should return if wallet is falsey', () => {
@@ -141,7 +141,7 @@ describe('updateTokenBalances*', () => {
   });
 
   it('should select getWalletConfigTokens', () => {
-    expect(gen.next(wallet).value).toEqual(select(selectors.getWalletConfigTokens));
+    expect(gen.next(wallet).value).toEqual(select(derivedSelectors.getWalletConfigTokens));
   });
 
   it('should return if no tokens are requested', () => {
@@ -151,22 +151,22 @@ describe('updateTokenBalances*', () => {
   });
 
   it('should put setTokenBalancesPending', () => {
-    expect(gen.next(tokens).value).toEqual(put(walletActions.setTokenBalancesPending()));
+    expect(gen.next(tokens).value).toEqual(put(actions.setTokenBalancesPending()));
   });
 
   it('should put setTokenBalancesRejected on throw', () => {
     const throwGen = gen.clone();
     if (throwGen.throw) {
-      expect(throwGen.throw().value).toEqual(put(walletActions.setTokenBalancesRejected()));
+      expect(throwGen.throw().value).toEqual(put(actions.setTokenBalancesRejected()));
     }
   });
 
   it('should call getTokenBalances', () => {
-    expect(gen.next().value).toEqual(call(walletSagas.getTokenBalancesSaga, wallet, tokens));
+    expect(gen.next().value).toEqual(call(sagas.getTokenBalancesSaga, wallet, tokens));
   });
 
   it('should put setTokenBalancesFufilled', () => {
-    expect(gen.next({}).value).toEqual(put(walletActions.setTokenBalancesFulfilled({})));
+    expect(gen.next({}).value).toEqual(put(actions.setTokenBalancesFulfilled({})));
   });
   it('should be done', () => {
     expect(gen.next().done).toEqual(true);
@@ -174,20 +174,20 @@ describe('updateTokenBalances*', () => {
 });
 
 describe('updateBalances*', () => {
-  const gen = walletSagas.updateBalances();
+  const gen = sagas.updateBalances();
   const updateAccount = createMockTask();
   const updateToken = createMockTask();
 
-  it('should fork walletSagas.updateAccountBalance', () => {
-    expect(gen.next().value).toEqual(fork(walletSagas.updateAccountBalance));
+  it('should fork sagas.updateAccountBalance', () => {
+    expect(gen.next().value).toEqual(fork(sagas.updateAccountBalance));
   });
 
   it('should fork updateTokenBalances', () => {
-    expect(gen.next(updateAccount).value).toEqual(fork(walletSagas.updateTokenBalances));
+    expect(gen.next(updateAccount).value).toEqual(fork(sagas.updateTokenBalances));
   });
 
   it('should take on WALLET_SET', () => {
-    expect(gen.next(updateToken).value).toEqual(take(walletTypes.WalletActions.SET));
+    expect(gen.next(updateToken).value).toEqual(take(types.WalletActions.SET));
   });
 
   it('should cancel updates', () => {
@@ -205,8 +205,8 @@ describe('unlockPrivateKey', () => {
     key: pkey,
     password: ''
   };
-  const action = walletActions.unlockPrivateKey(value);
-  const gen = walletSagas.unlockPrivateKeySaga(action);
+  const action = actions.unlockPrivateKey(value);
+  const gen = sagas.unlockPrivateKeySaga(action);
 
   it('should match put setWallet snapshot', () => {
     expect(gen.next().value).toMatchSnapshot();
@@ -218,13 +218,13 @@ describe('unlockPrivateKey', () => {
 });
 
 describe('unlockKeystore*', () => {
-  const action = walletActions.unlockKeystore({
+  const action = actions.unlockKeystore({
     file: JSON.stringify(utcKeystore),
     password: 'testtesttest'
   });
-  const gen = walletSagas.unlockKeystoreSaga(action);
+  const gen = sagas.unlockKeystoreSaga(action);
   const mockTask = createMockTask();
-  const spinnerFork = fork(walletSagas.startLoadingSpinner);
+  const spinnerFork = fork(sagas.startLoadingSpinner);
 
   it('should fork startLoadingSpinner', () => {
     expect(gen.next().value).toEqual(spinnerFork);
@@ -239,7 +239,7 @@ describe('unlockKeystore*', () => {
   //keystore in this case decrypts quickly, so use fromV3 in ethjs-wallet to avoid testing with promises
   it('should call stopLoadingSpinner', () => {
     const mockWallet: IFullWallet = fromV3(action.payload.file, action.payload.password, true);
-    expect(gen.next(mockWallet).value).toEqual(call(walletSagas.stopLoadingSpinner, mockTask));
+    expect(gen.next(mockWallet).value).toEqual(call(sagas.stopLoadingSpinner, mockTask));
   });
 
   it('should match put setWallet snapshot', () => {
@@ -252,13 +252,13 @@ describe('unlockKeystore*', () => {
 });
 
 describe('unlockMnemonic*', () => {
-  const action = walletActions.unlockMnemonic({
+  const action = actions.unlockMnemonic({
     phrase: 'first catalog away faculty jelly now life kingdom pigeon raise gain accident',
     pass: '',
     path: "m/44'/60'/0'/0/8",
     address: '0xe2EdC95134bbD88443bc6D55b809F7d0C2f0C854'
   });
-  const gen = walletSagas.unlockMnemonicSaga(action);
+  const gen = sagas.unlockMnemonicSaga(action);
 
   it('should match put setWallet snapshot', () => {
     expect(gen.next().value).toMatchSnapshot();

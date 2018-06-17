@@ -15,7 +15,7 @@ import { cloneableGenerator, SagaIteratorClone, createMockTask } from 'redux-sag
 
 import { Wei, Nonce } from 'libs/units';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configMetaTypes from 'features/config/meta/types';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
@@ -131,12 +131,12 @@ describe('Network Sagas', () => {
 
       it('should select getCurrentToAddressMessage', () => {
         expect(gen.next(autoGasLimitEnabled).value).toEqual(
-          select(selectors.getCurrentToAddressMessage)
+          select(derivedSelectors.getCurrentToAddressMessage)
         );
       });
 
       it('should select getTransaction', () => {
-        expect(gen.next(addressMessage).value).toEqual(select(selectors.getTransaction));
+        expect(gen.next(addressMessage).value).toEqual(select(derivedSelectors.getTransaction));
       });
 
       it('should call getTransactionFields with transaction', () => {
@@ -342,7 +342,7 @@ describe('Network Sagas', () => {
 
       it('should select getCurrentToAddressMessage', () => {
         noAutoGen = gen.clone();
-        expect(gen.next(true).value).toEqual(select(selectors.getCurrentToAddressMessage));
+        expect(gen.next(true).value).toEqual(select(derivedSelectors.getCurrentToAddressMessage));
       });
 
       it('should put setGasLimitField', () => {

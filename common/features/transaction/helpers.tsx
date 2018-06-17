@@ -11,7 +11,7 @@ import {
 import { validNumber, validDecimal } from 'libs/validators';
 
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configSelectors from 'features/config/selectors';
 import { walletSelectors } from 'features/wallet';
@@ -29,9 +29,9 @@ export interface IInput {
  * @returns {SagaIterator}
  */
 export function* rebaseUserInput(value: IInput): SagaIterator {
-  const unit: string = yield select(selectors.getUnit);
+  const unit: string = yield select(derivedSelectors.getUnit);
   // get decimal
-  const newDecimal: number = yield select(selectors.getDecimalFromUnit, unit);
+  const newDecimal: number = yield select(derivedSelectors.getDecimalFromUnit, unit);
 
   if (validNumber(parseInt(value.raw, 10)) && validDecimal(value.raw, newDecimal)) {
     return {
@@ -72,7 +72,7 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
   valid = valid && enoughBalanceViaTx(validationTx, etherBalance);
 
   if (!networkUnitTransaction) {
-    const tokenBalance: TokenValue | null = yield select(selectors.getTokenBalance, unit);
+    const tokenBalance: TokenValue | null = yield select(derivedSelectors.getTokenBalance, unit);
     valid = valid && enoughTokensViaInput(input, tokenBalance);
   }
 

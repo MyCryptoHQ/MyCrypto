@@ -1,6 +1,6 @@
 import { CCResponse } from 'api/rates';
-import * as ratesActions from './actions';
-import * as ratesReducer from './reducer';
+import * as actions from './actions';
+import * as reducer from './reducer';
 
 describe('rates reducer', () => {
   it('should handle RATES_FETCH_CC_SUCCEEDED', () => {
@@ -16,19 +16,17 @@ describe('rates reducer', () => {
       }
     };
 
-    expect(
-      ratesReducer.ratesReducer(undefined, ratesActions.fetchCCRatesSucceeded(fakeCCResp))
-    ).toEqual({
-      ...ratesReducer.INITIAL_STATE,
+    expect(reducer.ratesReducer(undefined, actions.fetchCCRatesSucceeded(fakeCCResp))).toEqual({
+      ...reducer.INITIAL_STATE,
       rates: {
-        ...ratesReducer.INITIAL_STATE.rates,
+        ...reducer.INITIAL_STATE.rates,
         ...fakeCCResp
       }
     });
   });
 
   it('should handle RATES_FETCH_CC_FAILED', () => {
-    expect(ratesReducer.ratesReducer(undefined, ratesActions.fetchCCRatesFailed())).toHaveProperty(
+    expect(reducer.ratesReducer(undefined, actions.fetchCCRatesFailed())).toHaveProperty(
       'ratesError'
     );
   });

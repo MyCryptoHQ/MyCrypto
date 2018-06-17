@@ -5,7 +5,7 @@ import { bufferToHex } from 'ethereumjs-util';
 import { encodeTransfer } from 'libs/transaction';
 import { Address, TokenValue } from 'libs/units';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
 import { walletTypes } from 'features/wallet';
 import { scheduleActions } from 'features/schedule';
@@ -14,12 +14,12 @@ import * as transactionActions from '../actions';
 import * as transactionSelectors from '../selectors';
 import * as helpers from '../helpers';
 import * as types from './types';
-import * as metaSelectors from './selectors';
+import * as selectors from './selectors';
 
 //#region Token
 export function* handleTokenTo({ payload }: types.SetTokenToMetaAction): SagaIterator {
   const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(
-    metaSelectors.getTokenValue
+    selectors.getTokenValue
   );
   if (!(tokenValue.value && payload.value)) {
     return;
@@ -31,9 +31,7 @@ export function* handleTokenTo({ payload }: types.SetTokenToMetaAction): SagaIte
 }
 
 export function* handleTokenValue({ payload }: types.SetTokenValueMetaAction) {
-  const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
-    metaSelectors.getTokenTo
-  );
+  const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(selectors.getTokenTo);
   const prevData = yield select(transactionFieldsSelectors.getData);
   if (!(tokenTo.value && payload.value)) {
     return;
@@ -62,18 +60,16 @@ export function* handleSetUnitMeta({
   const etherToToken = !currUnit && prevUnit;
   const tokenToEther = currUnit && !prevUnit;
   const tokenToToken = !currUnit && !prevUnit;
-  const decimal: number = yield select(selectors.getDecimalFromUnit, currentUnit);
+  const decimal: number = yield select(derivedSelectors.getDecimalFromUnit, currentUnit);
 
   if (etherToEther || previousUnit === '') {
     return;
   }
 
   if (tokenToEther) {
-    const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
-      metaSelectors.getTokenTo
-    );
+    const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(selectors.getTokenTo);
     const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(
-      metaSelectors.getTokenValue
+      selectors.getTokenValue
     );
 
     //set the 'to' field from what the token 'to' field was
@@ -92,7 +88,7 @@ export function* handleSetUnitMeta({
 
   if (etherToToken || tokenToToken) {
     const currentToken: walletTypes.MergedToken | undefined = yield select(
-      selectors.getToken,
+      derivedSelectors.getToken,
       currentUnit
     );
     if (!currentToken) {
@@ -102,7 +98,7 @@ export function* handleSetUnitMeta({
       | AppState['transaction']['fields']['value']
       | AppState['transaction']['meta']['tokenValue'] = etherToToken
       ? yield select(transactionFieldsSelectors.getValue)
-      : yield select(metaSelectors.getTokenValue);
+      : yield select(selectors.getTokenValue);
     const { raw, value }: helpers.IInput = yield call(helpers.rebaseUserInput, input);
 
     const isValid = yield call(helpers.validateInput, value, currentUnit);
@@ -116,7 +112,7 @@ export function* handleSetUnitMeta({
       addressToEncode = to.value || Address('0x0');
     } else {
       const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
-        metaSelectors.getTokenTo
+        selectors.getTokenTo
       );
       addressToEncode = tokenTo.value || Address('0x0');
     }

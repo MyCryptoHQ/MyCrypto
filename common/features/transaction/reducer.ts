@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import * as transactionBroadcastReducer from './broadcast/reducer';
-import * as transactionFieldsReducer from './fields/reducer';
-import * as transactionMetaReducer from './meta/reducer';
-import * as transactionNetworkReducer from './network/reducer';
-import * as transactionSignReducer from './sign/reducer';
+import { transactionBroadcastReducer } from './broadcast';
+import { transactionFieldsReducer } from './fields';
+import { transactionMetaReducer } from './meta';
+import { transactionNetworkReducer } from './network';
+import { transactionSignReducer } from './sign';
 import * as types from './types';
 
 export const transactionReducer = combineReducers({

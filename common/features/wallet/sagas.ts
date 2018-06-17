@@ -18,26 +18,25 @@ import {
 } from 'libs/wallet';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configMetaTypes from 'features/config/meta/types';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as configSelectors from 'features/config/selectors';
-import * as notificationsActions from 'features/notifications/actions';
-import * as customTokensTypes from 'features/customTokens/types';
-import * as customTokensSelectors from 'features/customTokens/selectors';
-import * as walletTypes from './types';
-import * as walletActions from './actions';
-import * as walletSelectors from './selectors';
+import { notificationsActions } from 'features/notifications';
+import { customTokensTypes, customTokensSelectors } from 'features/customTokens';
+import * as types from './types';
+import * as actions from './actions';
+import * as selectors from './selectors';
 
 export function* getTokenBalancesSaga(wallet: IWallet, tokens: Token[]) {
   const node: INode = yield select(configNodesSelectors.getNodeLib);
   const address: string = yield apply(wallet, wallet.getAddressString);
-  const tokenBalances: walletTypes.TokenBalance[] = yield apply(node, node.getTokenBalances, [
+  const tokenBalances: types.TokenBalance[] = yield apply(node, node.getTokenBalances, [
     address,
     tokens
   ]);
-  return tokens.reduce<{ [TokenSymbol: string]: walletTypes.TokenBalance }>((acc, t, i) => {
+  return tokens.reduce<{ [TokenSymbol: string]: types.TokenBalance }>((acc, t, i) => {
     acc[t.symbol] = tokenBalances[i];
     return acc;
   }, {});
@@ -47,10 +46,7 @@ export function* getTokenBalancesSaga(wallet: IWallet, tokens: Token[]) {
 //  1. Non-zero balance
 //  2. It was in the previous wallet's config
 //  3. It's a custom token that the user added
-export function* filterScannedTokenBalances(
-  wallet: IWallet,
-  balances: walletTypes.TokenBalanceLookup
-) {
+export function* filterScannedTokenBalances(wallet: IWallet, balances: types.TokenBalanceLookup) {
   const customTokens: AppState['customTokens'] = yield select(
     customTokensSelectors.getCustomTokens
   );
@@ -75,8 +71,8 @@ export function* updateAccountBalance(): SagaIterator {
       return;
     }
 
-    yield put(walletActions.setBalancePending());
-    const wallet: null | IWallet = yield select(walletSelectors.getWalletInst);
+    yield put(actions.setBalancePending());
+    const wallet: null | IWallet = yield select(selectors.getWalletInst);
     if (!wallet) {
       return;
     }
@@ -84,18 +80,18 @@ export function* updateAccountBalance(): SagaIterator {
     const address: string = yield apply(wallet, wallet.getAddressString);
     // network request
     const balance: Wei = yield apply(node, node.getBalance, [address]);
-    yield put(walletActions.setBalanceFullfilled(balance));
+    yield put(actions.setBalanceFullfilled(balance));
   } catch (error) {
-    yield put(walletActions.setBalanceRejected());
+    yield put(actions.setBalanceRejected());
   }
 }
 
 export function* retryTokenBalances(): SagaIterator {
-  const tokens: walletTypes.MergedToken[] = yield select(selectors.getWalletConfigTokens);
+  const tokens: types.MergedToken[] = yield select(derivedSelectors.getWalletConfigTokens);
   if (tokens && tokens.length) {
     yield call(updateTokenBalances);
   } else {
-    const wallet: null | IWallet = yield select(walletSelectors.getWalletInst);
+    const wallet: null | IWallet = yield select(selectors.getWalletInst);
     if (wallet) {
       yield call(scanWalletForTokensSaga, wallet);
     }
@@ -109,34 +105,32 @@ export function* updateTokenBalances(): SagaIterator {
       return;
     }
 
-    const wallet: null | IWallet = yield select(walletSelectors.getWalletInst);
-    const tokens: walletTypes.MergedToken[] = yield select(selectors.getWalletConfigTokens);
+    const wallet: null | IWallet = yield select(selectors.getWalletInst);
+    const tokens: types.MergedToken[] = yield select(derivedSelectors.getWalletConfigTokens);
     if (!wallet || !tokens.length) {
       return;
     }
-    yield put(walletActions.setTokenBalancesPending());
-    const tokenBalances: walletTypes.TokenBalanceLookup = yield call(
+    yield put(actions.setTokenBalancesPending());
+    const tokenBalances: types.TokenBalanceLookup = yield call(
       getTokenBalancesSaga,
       wallet,
       tokens
     );
-    yield put(walletActions.setTokenBalancesFulfilled(tokenBalances));
+    yield put(actions.setTokenBalancesFulfilled(tokenBalances));
   } catch (error) {
     console.error('Failed to get token balances', error);
-    yield put(walletActions.setTokenBalancesRejected());
+    yield put(actions.setTokenBalancesRejected());
   }
 }
 
-export function* updateTokenBalance(
-  action: walletTypes.SetTokenBalancePendingAction
-): SagaIterator {
+export function* updateTokenBalance(action: types.SetTokenBalancePendingAction): SagaIterator {
   try {
     const isOffline = yield select(configMetaSelectors.getOffline);
     if (isOffline) {
       return;
     }
 
-    const wallet: null | IWallet = yield select(walletSelectors.getWalletInst);
+    const wallet: null | IWallet = yield select(selectors.getWalletInst);
     const { tokenSymbol } = action.payload;
     const allTokens: Token[] = yield select(configSelectors.getAllTokens);
     const token = allTokens.find(t => t.symbol === tokenSymbol);
@@ -149,20 +143,18 @@ export function* updateTokenBalance(
       throw Error('Token not found');
     }
 
-    const tokenBalances: walletTypes.TokenBalanceLookup = yield call(getTokenBalancesSaga, wallet, [
+    const tokenBalances: types.TokenBalanceLookup = yield call(getTokenBalancesSaga, wallet, [
       token
     ]);
 
-    yield put(walletActions.setTokenBalanceFulfilled(tokenBalances));
+    yield put(actions.setTokenBalanceFulfilled(tokenBalances));
   } catch (error) {
     console.error('Failed to get token balance', error);
-    yield put(walletActions.setTokenBalanceRejected());
+    yield put(actions.setTokenBalanceRejected());
   }
 }
 
-export function* handleScanWalletAction(
-  action: walletTypes.ScanWalletForTokensAction
-): SagaIterator {
+export function* handleScanWalletAction(action: types.ScanWalletForTokensAction): SagaIterator {
   yield call(scanWalletForTokensSaga, action.payload);
 }
 
@@ -173,41 +165,37 @@ export function* scanWalletForTokensSaga(wallet: IWallet): SagaIterator {
       return;
     }
 
-    const tokens: walletTypes.MergedToken[] = yield select(selectors.getTokens);
-    yield put(walletActions.setTokenBalancesPending());
+    const tokens: types.MergedToken[] = yield select(derivedSelectors.getTokens);
+    yield put(actions.setTokenBalancesPending());
 
     // Fetch all token balances, save ones we want to the config
-    const balances: walletTypes.TokenBalanceLookup = yield call(
-      getTokenBalancesSaga,
-      wallet,
-      tokens
-    );
+    const balances: types.TokenBalanceLookup = yield call(getTokenBalancesSaga, wallet, tokens);
     const tokensToSave: string[] = yield call(filterScannedTokenBalances, wallet, balances);
     const config: WalletConfig = yield call(saveWalletConfig, wallet, { tokens: tokensToSave });
-    yield put(walletActions.setWalletConfig(config));
+    yield put(actions.setWalletConfig(config));
 
-    yield put(walletActions.setTokenBalancesFulfilled(balances));
+    yield put(actions.setTokenBalancesFulfilled(balances));
   } catch (err) {
     console.error('Failed to scan for tokens', err);
-    yield put(walletActions.setTokenBalancesRejected());
+    yield put(actions.setTokenBalancesRejected());
   }
 }
 
-export function* handleSetWalletTokens(action: walletTypes.SetWalletTokensAction): SagaIterator {
-  const wallet: null | IWallet = yield select(walletSelectors.getWalletInst);
+export function* handleSetWalletTokens(action: types.SetWalletTokensAction): SagaIterator {
+  const wallet: null | IWallet = yield select(selectors.getWalletInst);
   if (!wallet) {
     return;
   }
 
   const config: WalletConfig = yield call(saveWalletConfig, wallet, { tokens: action.payload });
-  yield put(walletActions.setWalletConfig(config));
+  yield put(actions.setWalletConfig(config));
 }
 
 export function* updateBalances(): SagaIterator {
   const updateAccount = yield fork(updateAccountBalance);
   const updateToken = yield fork(updateTokenBalances);
 
-  yield take(walletTypes.WalletActions.SET);
+  yield take(types.WalletActions.SET);
   yield cancel(updateAccount);
   yield cancel(updateToken);
 }
@@ -218,15 +206,15 @@ export function* handleNewWallet(): SagaIterator {
 }
 
 export function* updateWalletConfig(): SagaIterator {
-  const wallet: null | IWallet = yield select(walletSelectors.getWalletInst);
+  const wallet: null | IWallet = yield select(selectors.getWalletInst);
   if (!wallet) {
     return;
   }
   const config: WalletConfig = yield call(loadWalletConfig, wallet);
-  yield put(walletActions.setWalletConfig(config));
+  yield put(actions.setWalletConfig(config));
 }
 
-export function* unlockPrivateKeySaga(action: walletTypes.UnlockPrivateKeyAction): SagaIterator {
+export function* unlockPrivateKeySaga(action: types.UnlockPrivateKeyAction): SagaIterator {
   let wallet: IWallet | null = null;
   const { key, password } = action.payload;
 
@@ -236,22 +224,22 @@ export function* unlockPrivateKeySaga(action: walletTypes.UnlockPrivateKeyAction
     yield put(notificationsActions.showNotification('danger', translate('INVALID_PKEY')));
     return;
   }
-  yield put(walletActions.setWallet(wallet));
+  yield put(actions.setWallet(wallet));
 }
 
 export function* startLoadingSpinner(): SagaIterator {
   yield call(delay, 400);
-  yield put(walletActions.setWalletPending(true));
+  yield put(actions.setWalletPending(true));
 }
 
 export function* stopLoadingSpinner(loadingFork: Task | null): SagaIterator {
   if (loadingFork !== null && loadingFork !== undefined) {
     yield cancel(loadingFork);
   }
-  yield put(walletActions.setWalletPending(false));
+  yield put(actions.setWalletPending(false));
 }
 
-export function* unlockKeystoreSaga(action: walletTypes.UnlockKeystoreAction): SagaIterator {
+export function* unlockKeystoreSaga(action: types.UnlockKeystoreAction): SagaIterator {
   const { file, password } = action.payload;
   let wallet: null | IWallet = null;
   let spinnerTask: null | Task = null;
@@ -268,7 +256,7 @@ export function* unlockKeystoreSaga(action: walletTypes.UnlockKeystoreAction): S
       password === '' &&
       e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
     ) {
-      yield put(walletActions.setPasswordPrompt());
+      yield put(actions.setPasswordPrompt());
     } else {
       yield put(notificationsActions.showNotification('danger', translate('ERROR_6')));
     }
@@ -277,10 +265,10 @@ export function* unlockKeystoreSaga(action: walletTypes.UnlockKeystoreAction): S
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
   yield call(stopLoadingSpinner, spinnerTask);
-  yield put(walletActions.setWallet(wallet));
+  yield put(actions.setWallet(wallet));
 }
 
-export function* unlockMnemonicSaga(action: walletTypes.UnlockMnemonicAction): SagaIterator {
+export function* unlockMnemonicSaga(action: types.UnlockMnemonicAction): SagaIterator {
   let wallet;
   const { phrase, pass, path, address } = action.payload;
 
@@ -292,14 +280,14 @@ export function* unlockMnemonicSaga(action: walletTypes.UnlockMnemonicAction): S
     return;
   }
 
-  yield put(walletActions.setWallet(wallet));
+  yield put(actions.setWallet(wallet));
 }
 
 export function* handleCustomTokenAdd(
   action: customTokensTypes.AddCustomTokenAction
 ): SagaIterator {
   // Add the custom token to our current wallet's config
-  const wallet: null | IWallet = yield select(walletSelectors.getWalletInst);
+  const wallet: null | IWallet = yield select(selectors.getWalletInst);
   if (!wallet) {
     return;
   }
@@ -307,7 +295,7 @@ export function* handleCustomTokenAdd(
   const config: WalletConfig = yield call(saveWalletConfig, wallet, {
     tokens: [...(oldConfig.tokens || []), action.payload.symbol]
   });
-  yield put(walletActions.setWalletConfig(config));
+  yield put(actions.setWalletConfig(config));
 
   // Update token balances
   yield fork(updateTokenBalances);
@@ -315,15 +303,15 @@ export function* handleCustomTokenAdd(
 
 export function* walletSaga(): SagaIterator {
   yield [
-    takeEvery(walletTypes.WalletActions.UNLOCK_PRIVATE_KEY, unlockPrivateKeySaga),
-    takeEvery(walletTypes.WalletActions.UNLOCK_KEYSTORE, unlockKeystoreSaga),
-    takeEvery(walletTypes.WalletActions.UNLOCK_MNEMONIC, unlockMnemonicSaga),
-    takeEvery(walletTypes.WalletActions.SET, handleNewWallet),
-    takeEvery(walletTypes.WalletActions.SCAN_WALLET_FOR_TOKENS, handleScanWalletAction),
-    takeEvery(walletTypes.WalletActions.SET_WALLET_TOKENS, handleSetWalletTokens),
-    takeEvery(walletTypes.WalletActions.SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
-    takeEvery(walletTypes.WalletActions.REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
-    takeEvery(walletTypes.WalletActions.REFRESH_TOKEN_BALANCES, retryTokenBalances),
+    takeEvery(types.WalletActions.UNLOCK_PRIVATE_KEY, unlockPrivateKeySaga),
+    takeEvery(types.WalletActions.UNLOCK_KEYSTORE, unlockKeystoreSaga),
+    takeEvery(types.WalletActions.UNLOCK_MNEMONIC, unlockMnemonicSaga),
+    takeEvery(types.WalletActions.SET, handleNewWallet),
+    takeEvery(types.WalletActions.SCAN_WALLET_FOR_TOKENS, handleScanWalletAction),
+    takeEvery(types.WalletActions.SET_WALLET_TOKENS, handleSetWalletTokens),
+    takeEvery(types.WalletActions.SET_TOKEN_BALANCE_PENDING, updateTokenBalance),
+    takeEvery(types.WalletActions.REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
+    takeEvery(types.WalletActions.REFRESH_TOKEN_BALANCES, retryTokenBalances),
     // Foreign actions
     takeEvery(configMetaTypes.CONFIG_META.TOGGLE_OFFLINE, updateBalances),
     takeEvery(customTokensTypes.CustomTokensActions.ADD, handleCustomTokenAdd)

@@ -1,6 +1,7 @@
 import { SagaIterator } from 'redux-saga';
 import { put, select, apply, call, take, takeEvery } from 'redux-saga/effects';
 import EthTx from 'ethereumjs-tx';
+
 import { INode } from 'libs/nodes';
 import { hexEncodeData } from 'libs/nodes/rpc/utils';
 import { getTransactionFields } from 'libs/transaction';
@@ -10,12 +11,12 @@ import { AppState } from 'features/reducers';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as configSelectors from 'features/config/selectors';
 import { getChecksumAddressFn } from 'features/config';
-import * as walletSelectors from 'features/wallet/selectors';
-import * as transactionBroadcastTypes from 'features/transaction/broadcast/types';
-import * as transactionsTypes from './types';
-import * as transactionsActions from './actions';
+import { walletSelectors } from 'features/wallet';
+import { transactionBroadcastTypes } from 'features/transaction';
+import * as types from './types';
+import * as actions from './actions';
 
-export function* fetchTxData(action: transactionsTypes.FetchTransactionDataAction): SagaIterator {
+export function* fetchTxData(action: types.FetchTransactionDataAction): SagaIterator {
   const txhash = action.payload;
   let data: TransactionData | null = null;
   let receipt: TransactionReceipt | null = null;
@@ -42,7 +43,7 @@ export function* fetchTxData(action: transactionsTypes.FetchTransactionDataActio
     }
   }
 
-  yield put(transactionsActions.setTransactionData({ txhash, data, receipt, error }));
+  yield put(actions.setTransactionData({ txhash, data, receipt, error }));
 }
 
 export function* saveBroadcastedTx(
@@ -68,7 +69,7 @@ export function* saveBroadcastedTx(
       tx,
       res.payload.broadcastedHash
     );
-    yield put(transactionsActions.addRecentTransaction(savableTx));
+    yield put(actions.addRecentTransaction(savableTx));
   }
 }
 
@@ -105,14 +106,14 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
 }
 
 export function* resetTxData() {
-  yield put(transactionsActions.resetTransactionData());
+  yield put(actions.resetTransactionData());
 }
 
 export function* transactionsSaga(): SagaIterator {
-  yield takeEvery(transactionsTypes.TransactionsActions.FETCH_TRANSACTION_DATA, fetchTxData);
+  yield takeEvery(types.TransactionsActions.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(
     transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED,
     saveBroadcastedTx
   );
-  yield takeEvery(transactionsTypes.TransactionsActions.RESET_TRANSACTION_DATA, resetTxData);
+  yield takeEvery(types.TransactionsActions.RESET_TRANSACTION_DATA, resetTxData);
 }

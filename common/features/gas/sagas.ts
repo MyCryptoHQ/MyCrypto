@@ -7,9 +7,9 @@ import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configSelectors from 'features/config/selectors';
-import * as gasTypes from './types';
-import * as gasActions from './actions';
-import * as gasSelectors from './selectors';
+import * as types from './types';
+import * as actions from './actions';
+import * as selectors from './selectors';
 
 export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
   // Must yield time for testability
@@ -17,7 +17,7 @@ export function* setDefaultEstimates(network: NetworkConfig): SagaIterator {
   const gasSettings = network.isCustom ? gasPriceDefaults : network.gasPriceSettings;
 
   yield put(
-    gasActions.setGasEstimates({
+    actions.setGasEstimates({
       safeLow: gasSettings.min,
       standard: gasSettings.initial,
       fast: gasSettings.initial,
@@ -45,20 +45,20 @@ export function* fetchEstimates(): SagaIterator {
   }
 
   // Cache estimates for a bit
-  const oldEstimates: AppState['gas']['estimates'] = yield select(gasSelectors.getEstimates);
+  const oldEstimates: AppState['gas']['estimates'] = yield select(selectors.getEstimates);
   if (
     oldEstimates &&
     oldEstimates.chainId === network.chainId &&
     oldEstimates.time + gasEstimateCacheTime > Date.now()
   ) {
-    yield put(gasActions.setGasEstimates(oldEstimates));
+    yield put(actions.setGasEstimates(oldEstimates));
     return;
   }
 
   // Try to fetch new estimates
   try {
     const estimates: GasEstimates = yield call(fetchGasEstimates);
-    yield put(gasActions.setGasEstimates(estimates));
+    yield put(actions.setGasEstimates(estimates));
   } catch (err) {
     console.warn('Failed to fetch gas estimates:', err);
     yield call(setDefaultEstimates, network);
@@ -66,5 +66,5 @@ export function* fetchEstimates(): SagaIterator {
 }
 
 export function* gasSaga(): SagaIterator {
-  yield takeLatest(gasTypes.GasActions.FETCH_ESTIMATES, fetchEstimates);
+  yield takeLatest(types.GasActions.FETCH_ESTIMATES, fetchEstimates);
 }

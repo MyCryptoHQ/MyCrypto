@@ -1,34 +1,34 @@
-import * as transactionsTypes from './types';
+import * as types from './types';
 
 export type TFetchTransactionData = typeof fetchTransactionData;
-export function fetchTransactionData(txhash: string): transactionsTypes.FetchTransactionDataAction {
+export function fetchTransactionData(txhash: string): types.FetchTransactionDataAction {
   return {
-    type: transactionsTypes.TransactionsActions.FETCH_TRANSACTION_DATA,
+    type: types.TransactionsActions.FETCH_TRANSACTION_DATA,
     payload: txhash
   };
 }
 
 export type TSetTransactionData = typeof setTransactionData;
 export function setTransactionData(
-  payload: transactionsTypes.SetTransactionDataAction['payload']
-): transactionsTypes.SetTransactionDataAction {
+  payload: types.SetTransactionDataAction['payload']
+): types.SetTransactionDataAction {
   return {
-    type: transactionsTypes.TransactionsActions.SET_TRANSACTION_DATA,
+    type: types.TransactionsActions.SET_TRANSACTION_DATA,
     payload
   };
 }
 
 export type TResetTransactionData = typeof resetTransactionData;
-export function resetTransactionData(): transactionsTypes.ResetTransactionDataAction {
-  return { type: transactionsTypes.TransactionsActions.RESET_TRANSACTION_DATA };
+export function resetTransactionData(): types.ResetTransactionDataAction {
+  return { type: types.TransactionsActions.RESET_TRANSACTION_DATA };
 }
 
 export type TAddRecentTransaction = typeof addRecentTransaction;
 export function addRecentTransaction(
-  payload: transactionsTypes.AddRecentTransactionAction['payload']
-): transactionsTypes.AddRecentTransactionAction {
+  payload: types.AddRecentTransactionAction['payload']
+): types.AddRecentTransactionAction {
   return {
-    type: transactionsTypes.TransactionsActions.ADD_RECENT_TRANSACTION,
+    type: types.TransactionsActions.ADD_RECENT_TRANSACTION,
     payload
   };
 }

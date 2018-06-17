@@ -2,10 +2,10 @@ import { runSaga } from 'redux-saga';
 
 import { translateRaw } from 'translations';
 import { getInitialState } from 'features/helpers';
-import * as addressBookConstants from './constants';
-import * as addressBookTypes from './types';
-import * as addressBookActions from './actions';
-import * as addressBookSagas from './sagas';
+import * as constants from './constants';
+import * as types from './types';
+import * as actions from './actions';
+import * as sagas from './sagas';
 
 describe('addressBook: Sagas', () => {
   const initialState = getInitialState();
@@ -24,7 +24,7 @@ describe('addressBook: Sagas', () => {
 
   describe('handleChangeAddressLabelEntry', () => {
     it('should successfully change an address label entry with no errors', async () => {
-      const action = addressBookActions.changeAddressLabelEntry({
+      const action = actions.changeAddressLabelEntry({
         id,
         address,
         label
@@ -36,12 +36,12 @@ describe('addressBook: Sagas', () => {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState
         },
-        addressBookSagas.handleChangeAddressLabelEntry,
+        sagas.handleChangeAddressLabelEntry,
         action
       );
 
       expect(dispatched).toEqual([
-        addressBookActions.setAddressLabelEntry({
+        actions.setAddressLabelEntry({
           id,
           address,
           temporaryAddress: address,
@@ -53,7 +53,7 @@ describe('addressBook: Sagas', () => {
       ]);
     });
     it('should change a temporary address and error when an error occurs, but not the address', async () => {
-      const action = addressBookActions.changeAddressLabelEntry({
+      const action = actions.changeAddressLabelEntry({
         id,
         address: '0', // Invalid ETH address
         label
@@ -65,12 +65,12 @@ describe('addressBook: Sagas', () => {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState
         },
-        addressBookSagas.handleChangeAddressLabelEntry,
+        sagas.handleChangeAddressLabelEntry,
         action
       );
 
       expect(dispatched).toEqual([
-        addressBookActions.setAddressLabelEntry({
+        actions.setAddressLabelEntry({
           id,
           address: '',
           temporaryAddress: '0',
@@ -82,7 +82,7 @@ describe('addressBook: Sagas', () => {
       ]);
     });
     it('should change a temporary label and error when an error occurs, but not the label', async () => {
-      const action = addressBookActions.changeAddressLabelEntry({
+      const action = actions.changeAddressLabelEntry({
         id,
         address,
         label: 'F' // Invalid label length
@@ -94,12 +94,12 @@ describe('addressBook: Sagas', () => {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => getState()
         },
-        addressBookSagas.handleChangeAddressLabelEntry,
+        sagas.handleChangeAddressLabelEntry,
         action
       );
 
       expect(dispatched).toEqual([
-        addressBookActions.setAddressLabelEntry({
+        actions.setAddressLabelEntry({
           id,
           address,
           temporaryAddress: address,
@@ -118,8 +118,8 @@ describe('addressBook: Sagas', () => {
         addressBook: {
           ...getState().addressBook,
           entries: {
-            [addressBookConstants.ADDRESS_BOOK_TABLE_ID]: {
-              id: addressBookConstants.ADDRESS_BOOK_TABLE_ID,
+            [constants.ADDRESS_BOOK_TABLE_ID]: {
+              id: constants.ADDRESS_BOOK_TABLE_ID,
               address: '0',
               temporaryAddress: '0',
               addressError: translateRaw('INVALID_ADDRESS'),
@@ -130,9 +130,7 @@ describe('addressBook: Sagas', () => {
           }
         }
       };
-      const action = addressBookActions.saveAddressLabelEntry(
-        addressBookConstants.ADDRESS_BOOK_TABLE_ID
-      );
+      const action = actions.saveAddressLabelEntry(constants.ADDRESS_BOOK_TABLE_ID);
       const dispatched: string[] = [];
 
       await runSaga(
@@ -140,7 +138,7 @@ describe('addressBook: Sagas', () => {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => state
         },
-        addressBookSagas.handleSaveAddressLabelEntry,
+        sagas.handleSaveAddressLabelEntry,
         action
       );
 
@@ -152,8 +150,8 @@ describe('addressBook: Sagas', () => {
         addressBook: {
           ...getState().addressBook,
           entries: {
-            [addressBookConstants.ADDRESS_BOOK_TABLE_ID]: {
-              id: addressBookConstants.ADDRESS_BOOK_TABLE_ID,
+            [constants.ADDRESS_BOOK_TABLE_ID]: {
+              id: constants.ADDRESS_BOOK_TABLE_ID,
               address,
               temporaryAddress: address,
               label,
@@ -162,9 +160,7 @@ describe('addressBook: Sagas', () => {
           }
         }
       };
-      const action = addressBookActions.saveAddressLabelEntry(
-        addressBookConstants.ADDRESS_BOOK_TABLE_ID
-      );
+      const action = actions.saveAddressLabelEntry(constants.ADDRESS_BOOK_TABLE_ID);
       const dispatched: string[] = [];
 
       await runSaga(
@@ -172,17 +168,17 @@ describe('addressBook: Sagas', () => {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => state
         },
-        addressBookSagas.handleSaveAddressLabelEntry,
+        sagas.handleSaveAddressLabelEntry,
         action
       );
 
       expect(dispatched).toEqual([
-        addressBookActions.clearAddressLabel(address),
-        addressBookActions.setAddressLabel({
+        actions.clearAddressLabel(address),
+        actions.setAddressLabel({
           address,
           label
         }),
-        addressBookActions.setAddressLabelEntry({
+        actions.setAddressLabelEntry({
           id: '1',
           address,
           temporaryAddress: address,
@@ -191,8 +187,8 @@ describe('addressBook: Sagas', () => {
           temporaryLabel: label,
           labelError: undefined
         }),
-        addressBookActions.setAddressLabelEntry({
-          id: addressBookConstants.ADDRESS_BOOK_TABLE_ID,
+        actions.setAddressLabelEntry({
+          id: constants.ADDRESS_BOOK_TABLE_ID,
           address: '',
           temporaryAddress: '',
           addressError: undefined,
@@ -218,7 +214,7 @@ describe('addressBook: Sagas', () => {
           }
         }
       };
-      const action = addressBookActions.saveAddressLabelEntry(id);
+      const action = actions.saveAddressLabelEntry(id);
       const dispatched: string[] = [];
 
       await runSaga(
@@ -226,17 +222,17 @@ describe('addressBook: Sagas', () => {
           dispatch: (dispatching: string) => dispatched.push(dispatching),
           getState: () => state
         },
-        addressBookSagas.handleSaveAddressLabelEntry,
+        sagas.handleSaveAddressLabelEntry,
         action
       );
 
       expect(dispatched).toEqual([
-        addressBookActions.clearAddressLabel(address),
-        addressBookActions.setAddressLabel({
+        actions.clearAddressLabel(address),
+        actions.setAddressLabel({
           address,
           label
         }),
-        addressBookActions.setAddressLabelEntry({
+        actions.setAddressLabelEntry({
           id,
           address,
           temporaryAddress: address,
@@ -250,15 +246,15 @@ describe('addressBook: Sagas', () => {
   });
   describe('handleRemoveAddressLabelEntry', () => {
     it('should simply return if the requested entry is non-existent', async () => {
-      const action = addressBookActions.removeAddressLabelEntry('Foo');
-      const dispatched: addressBookTypes.AddressLabel[] = [];
+      const action = actions.removeAddressLabelEntry('Foo');
+      const dispatched: types.AddressLabel[] = [];
 
       await runSaga(
         {
-          dispatch: (dispatching: addressBookTypes.AddressLabel) => dispatched.push(dispatching),
+          dispatch: (dispatching: types.AddressLabel) => dispatched.push(dispatching),
           getState: () => getState()
         },
-        addressBookSagas.handleRemoveAddressLabelEntry,
+        sagas.handleRemoveAddressLabelEntry,
         action
       );
 
@@ -288,21 +284,21 @@ describe('addressBook: Sagas', () => {
           }
         }
       };
-      const action = addressBookActions.removeAddressLabelEntry(id);
-      const dispatched: addressBookTypes.AddressLabel[] = [];
+      const action = actions.removeAddressLabelEntry(id);
+      const dispatched: types.AddressLabel[] = [];
 
       await runSaga(
         {
-          dispatch: (dispatching: addressBookTypes.AddressLabel) => dispatched.push(dispatching),
+          dispatch: (dispatching: types.AddressLabel) => dispatched.push(dispatching),
           getState: () => state
         },
-        addressBookSagas.handleRemoveAddressLabelEntry,
+        sagas.handleRemoveAddressLabelEntry,
         action
       );
 
       expect(dispatched).toEqual([
-        addressBookActions.clearAddressLabel(address),
-        addressBookActions.clearAddressLabelEntry(id)
+        actions.clearAddressLabel(address),
+        actions.clearAddressLabelEntry(id)
       ]);
     });
   });

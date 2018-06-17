@@ -1,5 +1,5 @@
 import { AppState } from 'features/reducers';
-import * as transactionNetworkTypes from '../network/types';
+import { transactionNetworkTypes } from '../network';
 
 const getTransactionState = (state: AppState) => state.transaction;
 

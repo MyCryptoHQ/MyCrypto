@@ -1,28 +1,28 @@
-import * as deterministicWalletsTypes from './types';
+import * as types from './types';
 
-export const INITIAL_STATE: deterministicWalletsTypes.DeterministicWalletsState = {
+export const INITIAL_STATE: types.DeterministicWalletsState = {
   wallets: [],
   desiredToken: ''
 };
 
 export function deterministicWalletsReducer(
-  state: deterministicWalletsTypes.DeterministicWalletsState = INITIAL_STATE,
-  action: deterministicWalletsTypes.DeterministicWalletAction
-): deterministicWalletsTypes.DeterministicWalletsState {
+  state: types.DeterministicWalletsState = INITIAL_STATE,
+  action: types.DeterministicWalletAction
+): types.DeterministicWalletsState {
   switch (action.type) {
-    case deterministicWalletsTypes.DeterministicWalletsActions.SET:
+    case types.DeterministicWalletsActions.SET:
       return {
         ...state,
         wallets: action.payload
       };
 
-    case deterministicWalletsTypes.DeterministicWalletsActions.SET_DESIRED_TOKEN:
+    case types.DeterministicWalletsActions.SET_DESIRED_TOKEN:
       return {
         ...state,
         desiredToken: action.payload
       };
 
-    case deterministicWalletsTypes.DeterministicWalletsActions.UPDATE_WALLET:
+    case types.DeterministicWalletsActions.UPDATE_WALLET:
       return {
         ...state,
         wallets: updateWalletValues(state.wallets, action.payload)
@@ -34,8 +34,8 @@ export function deterministicWalletsReducer(
 }
 
 function updateWalletValues(
-  wallets: deterministicWalletsTypes.DeterministicWalletData[],
-  newWallet: Partial<deterministicWalletsTypes.DeterministicWalletData>
+  wallets: types.DeterministicWalletData[],
+  newWallet: Partial<types.DeterministicWalletData>
 ) {
   return wallets.map(w => {
     if (w.address === newWallet.address) {

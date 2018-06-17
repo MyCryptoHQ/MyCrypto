@@ -1,15 +1,10 @@
-import * as onboardStatusActions from './actions';
-import * as onboardStatusReducer from './reducer';
+import * as actions from './actions';
+import * as reducer from './reducer';
 
 describe('onboardStatus reducer', () => {
   it('should handle START_ONBOARD_STATUS', () => {
-    expect(
-      onboardStatusReducer.onboardStatusReducer(
-        undefined,
-        onboardStatusActions.startOnboardSession()
-      )
-    ).toEqual({
-      ...onboardStatusReducer.INITIAL_STATE,
+    expect(reducer.onboardStatusReducer(undefined, actions.startOnboardSession())).toEqual({
+      ...reducer.INITIAL_STATE,
       sessionStarted: true
     });
   });

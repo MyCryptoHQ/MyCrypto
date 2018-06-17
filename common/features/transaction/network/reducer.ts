@@ -1,4 +1,4 @@
-import * as transactionFieldsTypes from '../fields/types';
+import { transactionFieldsTypes } from '../fields';
 import * as transactionTypes from '../types';
 import * as types from './types';
 

@@ -6,15 +6,15 @@ import { computeIndexingHash } from 'libs/transaction';
 import { IFullWallet } from 'libs/wallet';
 import { StaticNetworkConfig } from 'types/network';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import { getNetworkConfig } from 'features/config/selectors';
 import { paritySignerTypes, paritySignerActions } from 'features/paritySigner';
 import { walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsActions } from '../fields';
 import { transactionNetworkTypes, transactionNetworkActions } from '../network';
-import * as transactionSignTypes from './types';
-import * as transactionSignActions from './actions';
+import * as types from './types';
+import * as actions from './actions';
 
 //#region Signing
 export interface IFullWalletAndTransaction {
@@ -25,7 +25,7 @@ export interface IFullWalletAndTransaction {
 export const signTransactionWrapper = (
   func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator
 ) =>
-  function*(partialTx: transactionSignTypes.SignTransactionRequestedAction) {
+  function*(partialTx: types.SignTransactionRequestedAction) {
     try {
       const IWalletAndTx: IFullWalletAndTransaction = yield call(
         getWalletAndTransaction,
@@ -44,7 +44,7 @@ export const signTransactionWrapper = (
  * @param partialTx
  */
 export function* getWalletAndTransaction(
-  partialTx: transactionSignTypes.SignTransactionRequestedAction['payload']
+  partialTx: types.SignTransactionRequestedAction['payload']
 ): SagaIterator {
   // get the wallet we're going to sign with
   const wallet: null | IFullWallet = yield select(walletSelectors.getWalletInst);
@@ -64,7 +64,7 @@ export function* getWalletAndTransaction(
 
 export function* handleFailedTransaction(err: Error): SagaIterator {
   yield put(notificationsActions.showNotification('danger', err.message, 5000));
-  yield put(transactionSignActions.signTransactionFailed());
+  yield put(actions.signTransactionFailed());
 }
 
 export function* getFromSaga(): SagaIterator {
@@ -93,7 +93,7 @@ export function* signLocalTransactionHandler({
   const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
   yield put(
-    transactionSignActions.signLocalTransactionSucceeded({
+    actions.signLocalTransactionSucceeded({
       signedTransaction,
       indexingHash,
       noVerify: false
@@ -108,7 +108,7 @@ export function* signWeb3TransactionHandler({ tx }: IFullWalletAndTransaction): 
   const indexingHash: string = yield call(computeIndexingHash, serializedTransaction);
 
   yield put(
-    transactionSignActions.signWeb3TransactionSucceeded({
+    actions.signWeb3TransactionSucceeded({
       transaction: serializedTransaction,
       indexingHash
     })
@@ -133,7 +133,7 @@ export function* signParitySignerTransactionHandler({
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
 
   yield put(
-    transactionSignActions.signLocalTransactionSucceeded({
+    actions.signLocalTransactionSucceeded({
       signedTransaction,
       indexingHash,
       noVerify: false
@@ -154,14 +154,14 @@ function* verifyTransaction({
   type,
   payload: { noVerify }
 }:
-  | transactionSignTypes.SignWeb3TransactionSucceededAction
-  | transactionSignTypes.SignLocalTransactionSucceededAction): SagaIterator {
+  | types.SignWeb3TransactionSucceededAction
+  | types.SignLocalTransactionSucceededAction): SagaIterator {
   if (noVerify) {
     return;
   }
   const transactionsMatch: boolean = yield select(
-    selectors.serializedAndTransactionFieldsMatch,
-    type === transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+    derivedSelectors.serializedAndTransactionFieldsMatch,
+    type === types.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
     noVerify
   );
   if (!transactionsMatch) {
@@ -175,9 +175,7 @@ function* verifyTransaction({
   }
 }
 
-function* handleTransactionRequest(
-  action: transactionSignTypes.SignTransactionRequestedAction
-): SagaIterator {
+function* handleTransactionRequest(action: types.SignTransactionRequestedAction): SagaIterator {
   const walletType: walletSelectors.IWalletType = yield select(walletSelectors.getWalletType);
 
   const signingHandler = walletType.isWeb3Wallet
@@ -188,14 +186,11 @@ function* handleTransactionRequest(
 }
 
 export const signing = [
-  takeEvery(
-    transactionSignTypes.TransactionSignActions.SIGN_TRANSACTION_REQUESTED,
-    handleTransactionRequest
-  ),
+  takeEvery(types.TransactionSignActions.SIGN_TRANSACTION_REQUESTED, handleTransactionRequest),
   takeEvery(
     [
-      transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-      transactionSignTypes.TransactionSignActions.SIGN_WEB3_TRANSACTION_SUCCEEDED
+      types.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+      types.TransactionSignActions.SIGN_WEB3_TRANSACTION_SUCCEEDED
     ],
     verifyTransaction
   )

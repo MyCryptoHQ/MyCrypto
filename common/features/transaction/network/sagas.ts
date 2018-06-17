@@ -19,7 +19,7 @@ import { IWallet } from 'libs/wallet';
 import { Nonce } from 'libs/units';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configMetaTypes from 'features/config/meta/types';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
@@ -81,7 +81,9 @@ export function* shouldEstimateGas(): SagaIterator {
 
     const isOffline: boolean = yield select(configMetaSelectors.getOffline);
     const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
-    const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
+    const message: AddressMessage | undefined = yield select(
+      derivedSelectors.getCurrentToAddressMessage
+    );
 
     if (isOffline || !autoGasLimitEnabled || (message && message.gasLimit)) {
       continue;
@@ -99,7 +101,9 @@ export function* shouldEstimateGas(): SagaIterator {
     if (invalidField) {
       continue;
     }
-    const { transaction }: selectors.IGetTransaction = yield select(selectors.getTransaction);
+    const { transaction }: derivedSelectors.IGetTransaction = yield select(
+      derivedSelectors.getTransaction
+    );
 
     const { gasLimit, gasPrice, nonce, chainId, ...rest }: IHexStrTransaction = yield call(
       getTransactionFields,
@@ -182,7 +186,9 @@ export function* localGasEstimation(payload: types.EstimateGasRequestedAction['p
 
 export function* setAddressMessageGasLimit() {
   const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
-  const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
+  const message: AddressMessage | undefined = yield select(
+    derivedSelectors.getCurrentToAddressMessage
+  );
   if (autoGasLimitEnabled && message && message.gasLimit) {
     yield put(
       transactionFieldsActions.setGasLimitField({

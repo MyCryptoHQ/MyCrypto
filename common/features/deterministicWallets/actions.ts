@@ -1,11 +1,11 @@
-import * as deterministicWalletsTypes from './types';
+import * as types from './types';
 
 export function getDeterministicWallets(
-  args: deterministicWalletsTypes.GetDeterministicWalletsArgs
-): deterministicWalletsTypes.GetDeterministicWalletsAction {
+  args: types.GetDeterministicWalletsArgs
+): types.GetDeterministicWalletsAction {
   const { seed, dPath, publicKey, chainCode, limit, offset } = args;
   return {
-    type: deterministicWalletsTypes.DeterministicWalletsActions.GET,
+    type: types.DeterministicWalletsActions.GET,
     payload: {
       seed,
       dPath,
@@ -18,28 +18,26 @@ export function getDeterministicWallets(
 }
 
 export function setDeterministicWallets(
-  wallets: deterministicWalletsTypes.DeterministicWalletData[]
-): deterministicWalletsTypes.SetDeterministicWalletsAction {
+  wallets: types.DeterministicWalletData[]
+): types.SetDeterministicWalletsAction {
   return {
-    type: deterministicWalletsTypes.DeterministicWalletsActions.SET,
+    type: types.DeterministicWalletsActions.SET,
     payload: wallets
   };
 }
 
-export function setDesiredToken(
-  token: string | undefined
-): deterministicWalletsTypes.SetDesiredTokenAction {
+export function setDesiredToken(token: string | undefined): types.SetDesiredTokenAction {
   return {
-    type: deterministicWalletsTypes.DeterministicWalletsActions.SET_DESIRED_TOKEN,
+    type: types.DeterministicWalletsActions.SET_DESIRED_TOKEN,
     payload: token
   };
 }
 
 export function updateDeterministicWallet(
-  args: deterministicWalletsTypes.UpdateDeterministicWalletArgs
-): deterministicWalletsTypes.UpdateDeterministicWalletAction {
+  args: types.UpdateDeterministicWalletArgs
+): types.UpdateDeterministicWalletAction {
   return {
-    type: deterministicWalletsTypes.DeterministicWalletsActions.UPDATE_WALLET,
+    type: types.DeterministicWalletsActions.UPDATE_WALLET,
     payload: args
   };
 }

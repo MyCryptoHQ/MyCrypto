@@ -5,7 +5,7 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import { makeTransaction } from 'libs/transaction';
 import { toTokenBase, Wei } from 'libs/units';
 import configuredStore from 'features/store';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import { getOffline } from 'features/config/meta/selectors';
 import { getNetworkConfig, isNetworkUnit } from 'features/config/selectors';
 import { walletSelectors } from 'features/wallet';
@@ -183,11 +183,13 @@ describe('transaction: Helpers', () => {
 
       describe('when a valid number', () => {
         it('should select getUnit', () => {
-          expect(gens.gen1.next().value).toEqual(select(selectors.getUnit));
+          expect(gens.gen1.next().value).toEqual(select(derivedSelectors.getUnit));
         });
 
         it('should select getDecimalFromUnit with unit', () => {
-          expect(gens.gen1.next(unit).value).toEqual(select(selectors.getDecimalFromUnit, unit));
+          expect(gens.gen1.next(unit).value).toEqual(
+            select(derivedSelectors.getDecimalFromUnit, unit)
+          );
         });
 
         it('should return correctly', () => {
@@ -202,11 +204,13 @@ describe('transaction: Helpers', () => {
 
       describe('when not a valid number', () => {
         it('should select getUnit', () => {
-          expect(gens.gen2.next().value).toEqual(select(selectors.getUnit));
+          expect(gens.gen2.next().value).toEqual(select(derivedSelectors.getUnit));
         });
 
         it('should select getDecimalFromUnit with unit', () => {
-          expect(gens.gen2.next(unit).value).toEqual(select(selectors.getDecimalFromUnit, unit));
+          expect(gens.gen2.next(unit).value).toEqual(
+            select(derivedSelectors.getDecimalFromUnit, unit)
+          );
         });
 
         it('should return correctly', () => {
@@ -281,7 +285,7 @@ describe('transaction: Helpers', () => {
       it('should select getTokenBalance if !etherTransaction', () => {
         gens.clone3.next(!etherTransaction);
         expect(gens.clone3.next(validationTx).value).toEqual(
-          select(selectors.getTokenBalance, unit)
+          select(derivedSelectors.getTokenBalance, unit)
         );
       });
 

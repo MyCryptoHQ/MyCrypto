@@ -7,13 +7,13 @@ import { Token } from 'types/network';
 import { TokenValue, Wei } from 'libs/units';
 import { getChecksumAddressFunction } from 'utils/formatters';
 import configuredStore from 'features/store';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import { getChecksumAddressFn } from 'features/config';
-import * as deterministicWalletsTypes from './types';
-import * as deterministicWalletsActions from './actions';
-import * as deterministicWalletsSelectors from './selectors';
-import * as deterministicWalletsSagas from './sagas';
+import * as types from './types';
+import * as actions from './actions';
+import * as selectors from './selectors';
+import * as sagas from './sagas';
 
 // init module
 configuredStore.getState();
@@ -53,8 +53,8 @@ describe('getDeterministicWallets*', () => {
         '1ba4b713b9cf6f91e8e2eea015fc4e107452fa7d8ade32322207967371e5c0fb93289d4dde94ce13625ecc60279d211b6d677c67f54b9e97c7e68afc9ca1b5ea',
       dPath: "m/44'/60'/0'/0"
     };
-    const action = deterministicWalletsActions.getDeterministicWallets(dWallet);
-    const gen = deterministicWalletsSagas.getDeterministicWalletsSaga(action);
+    const action = actions.getDeterministicWallets(dWallet);
+    const gen = sagas.getDeterministicWalletsSaga(action);
 
     it('should select getChecksumAddressFn', () => {
       expect(gen.next().value).toEqual(select(getChecksumAddressFn));
@@ -65,11 +65,11 @@ describe('getDeterministicWallets*', () => {
     });
 
     it('should fork updateWalletValues', () => {
-      expect(gen.next().value).toEqual(fork(deterministicWalletsSagas.updateWalletValues));
+      expect(gen.next().value).toEqual(fork(sagas.updateWalletValues));
     });
 
     it('should fork updateWalletTokenValues', () => {
-      expect(gen.next().value).toEqual(fork(deterministicWalletsSagas.updateWalletTokenValues));
+      expect(gen.next().value).toEqual(fork(sagas.updateWalletTokenValues));
     });
   });
 
@@ -82,8 +82,8 @@ describe('getDeterministicWallets*', () => {
       offset: 0
     };
 
-    const action = deterministicWalletsActions.getDeterministicWallets(dWallet);
-    const gen = deterministicWalletsSagas.getDeterministicWalletsSaga(action);
+    const action = actions.getDeterministicWallets(dWallet);
+    const gen = sagas.getDeterministicWalletsSaga(action);
 
     it('should select getChecksumAddressFn', () => {
       expect(gen.next().value).toEqual(select(getChecksumAddressFn));
@@ -94,11 +94,11 @@ describe('getDeterministicWallets*', () => {
     });
 
     it('should fork updateWalletValues', () => {
-      expect(gen.next().value).toEqual(fork(deterministicWalletsSagas.updateWalletValues));
+      expect(gen.next().value).toEqual(fork(sagas.updateWalletValues));
     });
 
     it('should fork updateWalletTokenValues', () => {
-      expect(gen.next().value).toEqual(fork(deterministicWalletsSagas.updateWalletTokenValues));
+      expect(gen.next().value).toEqual(fork(sagas.updateWalletTokenValues));
     });
   });
 });
@@ -106,17 +106,17 @@ describe('getDeterministicWallets*', () => {
 describe('updateWalletValues*', () => {
   const walletData1 = genWalletData1();
   const walletData2 = genWalletData2();
-  const wallets: deterministicWalletsTypes.DeterministicWalletData[] = [walletData1, walletData2];
+  const wallets: types.DeterministicWalletData[] = [walletData1, walletData2];
   const balances = genBalances();
   const node: INode = new RpcNode('');
-  const gen = deterministicWalletsSagas.updateWalletValues();
+  const gen = sagas.updateWalletValues();
 
   it('should select getNodeLib', () => {
     expect(gen.next().value).toEqual(select(configNodesSelectors.getNodeLib));
   });
 
   it('should select getWallets', () => {
-    expect(gen.next(node).value).toEqual(select(deterministicWalletsSelectors.getWallets));
+    expect(gen.next(node).value).toEqual(select(selectors.getWallets));
   });
 
   it('should get balance for all wallets', () => {
@@ -131,7 +131,7 @@ describe('updateWalletValues*', () => {
   it('should put updateDeterministicWallet for wallet1', () => {
     expect(gen.next(balances).value).toEqual(
       put(
-        deterministicWalletsActions.updateDeterministicWallet({
+        actions.updateDeterministicWallet({
           ...walletData1,
           value: balances[0]
         })
@@ -142,7 +142,7 @@ describe('updateWalletValues*', () => {
   it('should put updateDeterministicWallet for wallet2', () => {
     expect(gen.next(balances).value).toEqual(
       put(
-        deterministicWalletsActions.updateDeterministicWallet({
+        actions.updateDeterministicWallet({
           ...walletData2,
           value: balances[1]
         })
@@ -158,7 +158,7 @@ describe('updateWalletValues*', () => {
 describe('updateWalletTokenValues*', () => {
   const walletData1 = genWalletData1();
   const walletData2 = genWalletData2();
-  const wallets: deterministicWalletsTypes.DeterministicWalletData[] = [walletData1, walletData2];
+  const wallets: types.DeterministicWalletData[] = [walletData1, walletData2];
   const node: INode = new RpcNode('');
   const token1: Token = {
     address: '0x2',
@@ -183,10 +183,10 @@ describe('updateWalletTokenValues*', () => {
   ];
   const desiredToken = 'OMG';
   const data = {} as any;
-  data.gen = cloneableGenerator(deterministicWalletsSagas.updateWalletTokenValues)();
+  data.gen = cloneableGenerator(sagas.updateWalletTokenValues)();
 
   it('should select getDesiredToken', () => {
-    expect(data.gen.next().value).toEqual(select(deterministicWalletsSelectors.getDesiredToken));
+    expect(data.gen.next().value).toEqual(select(selectors.getDesiredToken));
   });
 
   it('should return if desired token is falsey', () => {
@@ -197,7 +197,7 @@ describe('updateWalletTokenValues*', () => {
 
   it('should select getTokens', () => {
     data.clone2 = data.gen.clone();
-    expect(data.gen.next(desiredToken).value).toEqual(select(selectors.getTokens));
+    expect(data.gen.next(desiredToken).value).toEqual(select(derivedSelectors.getTokens));
   });
 
   it('should return if desired token is not amongst tokens', () => {
@@ -210,7 +210,7 @@ describe('updateWalletTokenValues*', () => {
   });
 
   it('should select getWallets', () => {
-    expect(data.gen.next(node).value).toEqual(select(deterministicWalletsSelectors.getWallets));
+    expect(data.gen.next(node).value).toEqual(select(selectors.getWallets));
   });
 
   it('should match snapshot of wallet token balances', () => {

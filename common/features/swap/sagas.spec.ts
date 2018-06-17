@@ -5,14 +5,14 @@ import { take, race, fork, call, cancel, apply, cancelled, put, select } from 'r
 import { getAllRates, getOrderStatus, postOrder } from 'api/bity';
 import shapeshift from 'api/shapeshift';
 import configuredStore from 'features/store';
-import * as transactionTypes from 'features/transaction/types';
-import * as walletTypes from 'features/wallet/types';
-import * as notificationsActions from 'features/notifications/actions';
-import * as swapTypes from './types';
-import * as swapActions from './actions';
-import * as swapReducer from './reducer';
-import * as swapSelectors from './selectors';
-import * as swapSagas from './sagas';
+import { transactionTypes } from 'features/transaction';
+import { walletTypes } from 'features/wallet';
+import { notificationsActions } from 'features/notifications';
+import * as types from './types';
+import * as actions from './actions';
+import * as reducer from './reducer';
+import * as selectors from './selectors';
+import * as sagas from './sagas';
 
 configuredStore.getState();
 
@@ -20,12 +20,12 @@ configuredStore.getState();
 describe('swap: Sagas (Lite Send)', () => {
   describe('Testing handle configure lite send', () => {
     const generators = {
-      original: cloneableGenerator(swapSagas.handleConfigureLiteSend)()
+      original: cloneableGenerator(sagas.handleConfigureLiteSend)()
     };
     const { original } = generators;
 
     it('forks a configureLiteSend saga', () => {
-      const expectedYield = fork(swapSagas.configureLiteSendSaga);
+      const expectedYield = fork(sagas.configureLiteSendSaga);
       expect(original.next().value).toEqual(expectedYield);
     });
 
@@ -34,8 +34,8 @@ describe('swap: Sagas (Lite Send)', () => {
       const expectedYield = race({
         transactionReset: take(transactionTypes.TransactionActions.RESET_REQUESTED),
         userNavigatedAway: take(walletTypes.WalletActions.RESET),
-        bityPollingFinished: take(swapTypes.SwapActions.STOP_POLL_BITY_ORDER_STATUS),
-        shapeshiftPollingFinished: take(swapTypes.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
+        bityPollingFinished: take(types.SwapActions.STOP_POLL_BITY_ORDER_STATUS),
+        shapeshiftPollingFinished: take(types.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
       });
 
       expect(original.next(mockedTask).value).toEqual(expectedYield);
@@ -50,13 +50,13 @@ describe('swap: Sagas (Orders)', () => {
   const TEN_SECONDS = ONE_SECOND * 10;
   const ELEVEN_SECONDS = ONE_SECOND * 11;
 
-  const orderInput: swapTypes.BityOrderInput = {
+  const orderInput: types.BityOrderInput = {
     amount: 'amount',
     currency: 'currency',
     reference: 'reference',
     status: 'status'
   };
-  const orderOutput: swapTypes.BityOrderOutput = {
+  const orderOutput: types.BityOrderOutput = {
     amount: 'amount',
     currency: 'currency',
     reference: 'reference',
@@ -65,12 +65,12 @@ describe('swap: Sagas (Orders)', () => {
 
   describe('pollBityOrderStatus*', () => {
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.pollBityOrderStatus)();
-    const fakeSwap: swapTypes.SwapState = {
-      ...swapReducer.INITIAL_STATE,
+    data.gen = cloneableGenerator(sagas.pollBityOrderStatus)();
+    const fakeSwap: types.SwapState = {
+      ...reducer.INITIAL_STATE,
       orderId: '1'
     };
-    const orderResponse: swapTypes.BityOrderResponse = {
+    const orderResponse: types.BityOrderResponse = {
       input: orderInput,
       output: orderOutput,
       status: 'status'
@@ -95,12 +95,12 @@ describe('swap: Sagas (Orders)', () => {
       Math.random = random;
     });
 
-    it('should select swapSelectors.getSwap', () => {
-      expect(data.gen.next().value).toEqual(select(swapSelectors.getSwap));
+    it('should select selectors.getSwap', () => {
+      expect(data.gen.next().value).toEqual(select(selectors.getSwap));
     });
 
     it('should put bityOrderStatusRequestedSwap', () => {
-      expect(data.gen.next(fakeSwap).value).toEqual(put(swapActions.bityOrderStatusRequested()));
+      expect(data.gen.next(fakeSwap).value).toEqual(put(actions.bityOrderStatusRequested()));
     });
 
     it('should call getOrderStatus with swap.orderId', () => {
@@ -122,7 +122,7 @@ describe('swap: Sagas (Orders)', () => {
 
     it('should put orderStatusSucceededSwap', () => {
       expect(data.gen.next(successStatus).value).toEqual(
-        put(swapActions.bityOrderStatusSucceededSwap(successStatus.data))
+        put(actions.bityOrderStatusSucceededSwap(successStatus.data))
       );
     });
 
@@ -130,8 +130,8 @@ describe('swap: Sagas (Orders)', () => {
       expect(data.gen.next().value).toEqual(call(delay, ONE_SECOND * 5));
     });
 
-    it('should select swapSelectors.getSwap', () => {
-      expect(data.gen.next().value).toEqual(select(swapSelectors.getSwap));
+    it('should select selectors.getSwap', () => {
+      expect(data.gen.next().value).toEqual(select(selectors.getSwap));
     });
 
     it('should break loop if swap is cancelled', () => {
@@ -141,15 +141,15 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should restart loop', () => {
-      expect(data.gen.next(fakeSwap).value).toEqual(put(swapActions.bityOrderStatusRequested()));
+      expect(data.gen.next(fakeSwap).value).toEqual(put(actions.bityOrderStatusRequested()));
     });
   });
 
   describe('pollShapeshiftOrderStatus*', () => {
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.pollShapeshiftOrderStatus)();
-    const fakeSwap: swapTypes.SwapState = {
-      ...swapReducer.INITIAL_STATE,
+    data.gen = cloneableGenerator(sagas.pollShapeshiftOrderStatus)();
+    const fakeSwap: types.SwapState = {
+      ...reducer.INITIAL_STATE,
       orderId: '1'
     };
     const cancelledSwap = 'CANC';
@@ -172,14 +172,12 @@ describe('swap: Sagas (Orders)', () => {
       Math.random = random;
     });
 
-    it('should select swapSelectors.getSwap', () => {
-      expect(data.gen.next().value).toEqual(select(swapSelectors.getSwap));
+    it('should select selectors.getSwap', () => {
+      expect(data.gen.next().value).toEqual(select(selectors.getSwap));
     });
 
     it('should put shapeshiftOrderStatusRequestedSwap', () => {
-      expect(data.gen.next(fakeSwap).value).toEqual(
-        put(swapActions.shapeshiftOrderStatusRequested())
-      );
+      expect(data.gen.next(fakeSwap).value).toEqual(put(actions.shapeshiftOrderStatusRequested()));
     });
 
     it('should apply shapeshift.checkStatus with swap.paymentAddress', () => {
@@ -203,7 +201,7 @@ describe('swap: Sagas (Orders)', () => {
 
     it('should put shapeshiftOrderStatusSucceededSwap', () => {
       expect(data.gen.next(successStatus).value).toEqual(
-        put(swapActions.shapeshiftOrderStatusSucceededSwap(successStatus))
+        put(actions.shapeshiftOrderStatusSucceededSwap(successStatus))
       );
     });
 
@@ -211,8 +209,8 @@ describe('swap: Sagas (Orders)', () => {
       expect(data.gen.next().value).toEqual(call(delay, ONE_SECOND * 5));
     });
 
-    it('should select swapSelectors.getSwap', () => {
-      expect(data.gen.next().value).toEqual(select(swapSelectors.getSwap));
+    it('should select selectors.getSwap', () => {
+      expect(data.gen.next().value).toEqual(select(selectors.getSwap));
     });
 
     it('should break loop if swap is cancelled', () => {
@@ -222,21 +220,17 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should restart loop', () => {
-      expect(data.gen.next(fakeSwap).value).toEqual(
-        put(swapActions.shapeshiftOrderStatusRequested())
-      );
+      expect(data.gen.next(fakeSwap).value).toEqual(put(actions.shapeshiftOrderStatusRequested()));
     });
   });
 
   describe('pollBityOrderStatusSaga*', () => {
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.pollBityOrderStatusSaga)();
+    data.gen = cloneableGenerator(sagas.pollBityOrderStatusSaga)();
     const mockedTask = createMockTask();
 
     it('should take SWAP_START_POLL_BITY_ORDER_STATUS', () => {
-      expect(data.gen.next().value).toEqual(
-        take(swapTypes.SwapActions.START_POLL_BITY_ORDER_STATUS)
-      );
+      expect(data.gen.next().value).toEqual(take(types.SwapActions.START_POLL_BITY_ORDER_STATUS));
     });
 
     it('should be done if order status is false', () => {
@@ -245,12 +239,12 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should fork pollBityOrderStatus', () => {
-      expect(data.gen.next(true).value).toEqual(fork(swapSagas.pollBityOrderStatus));
+      expect(data.gen.next(true).value).toEqual(fork(sagas.pollBityOrderStatus));
     });
 
     it('should take SWAP_STOP_POLL_BITY_ORDER_STATUS', () => {
       expect(data.gen.next(mockedTask).value).toEqual(
-        take(swapTypes.SwapActions.STOP_POLL_BITY_ORDER_STATUS)
+        take(types.SwapActions.STOP_POLL_BITY_ORDER_STATUS)
       );
     });
 
@@ -261,12 +255,12 @@ describe('swap: Sagas (Orders)', () => {
 
   describe('pollShapeshiftOrderStatusSaga*', () => {
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.pollShapeshiftOrderStatusSaga)();
+    data.gen = cloneableGenerator(sagas.pollShapeshiftOrderStatusSaga)();
     const mockedTask = createMockTask();
 
     it('should take SWAP_START_POLL_SHAPESHIFT_ORDER_STATUS', () => {
       expect(data.gen.next().value).toEqual(
-        take(swapTypes.SwapActions.START_POLL_SHAPESHIFT_ORDER_STATUS)
+        take(types.SwapActions.START_POLL_SHAPESHIFT_ORDER_STATUS)
       );
     });
 
@@ -276,12 +270,12 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should fork pollShapeshiftOrderStatus', () => {
-      expect(data.gen.next(true).value).toEqual(fork(swapSagas.pollShapeshiftOrderStatus));
+      expect(data.gen.next(true).value).toEqual(fork(sagas.pollShapeshiftOrderStatus));
     });
 
     it('should take SWAP_STOP_POLL_SHAPESHIFT_ORDER_STATUS', () => {
       expect(data.gen.next(mockedTask).value).toEqual(
-        take(swapTypes.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
+        take(types.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
       );
     });
 
@@ -294,8 +288,8 @@ describe('swap: Sagas (Orders)', () => {
     const amount = 100;
     const destinationAddress = '0x0';
     const pair = 'BTC_ETH';
-    const action = swapActions.bityOrderCreateRequestedSwap(amount, destinationAddress, pair);
-    const orderResp: swapTypes.BityOrderPostResponse = {
+    const action = actions.bityOrderCreateRequestedSwap(amount, destinationAddress, pair);
+    const orderResp: types.BityOrderPostResponse = {
       payment_address: '0x0',
       status: 'status',
       input: orderInput,
@@ -310,7 +304,7 @@ describe('swap: Sagas (Orders)', () => {
       'Connection Error. Please check the developer console for more details and/or contact support';
 
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.postBityOrderCreate)(action);
+    data.gen = cloneableGenerator(sagas.postBityOrderCreate)(action);
 
     let random: () => number;
     beforeAll(() => {
@@ -323,7 +317,7 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should put stopLoadBityRatesSwap', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.stopLoadBityRatesSwap()));
+      expect(data.gen.next().value).toEqual(put(actions.stopLoadBityRatesSwap()));
     });
 
     it('should call postOrder', () => {
@@ -336,20 +330,20 @@ describe('swap: Sagas (Orders)', () => {
     it('should put bityOrderCreateSucceededSwap', () => {
       data.clone2 = data.gen.clone();
       expect(data.gen.next(successOrder).value).toEqual(
-        put(swapActions.bityOrderCreateSucceededSwap(successOrder.data))
+        put(actions.bityOrderCreateSucceededSwap(successOrder.data))
       );
     });
 
     it('should put changeStepSwap', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.changeStepSwap(3)));
+      expect(data.gen.next().value).toEqual(put(actions.changeStepSwap(3)));
     });
 
     it('should put startOrderTimerSwap', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.startOrderTimerSwap()));
+      expect(data.gen.next().value).toEqual(put(actions.startOrderTimerSwap()));
     });
 
     it('should put startPollBityOrderStatus', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.startPollBityOrderStatus()));
+      expect(data.gen.next().value).toEqual(put(actions.startPollBityOrderStatus()));
     });
 
     // failure modes
@@ -357,7 +351,7 @@ describe('swap: Sagas (Orders)', () => {
       expect(data.clone1.throw().value).toEqual(
         put(notificationsActions.showNotification('danger', connectionErrMsg, TEN_SECONDS))
       );
-      expect(data.clone1.next().value).toEqual(put(swapActions.bityOrderCreateFailedSwap()));
+      expect(data.clone1.next().value).toEqual(put(actions.bityOrderCreateFailedSwap()));
       expect(data.clone1.next().done).toEqual(true);
     });
 
@@ -371,7 +365,7 @@ describe('swap: Sagas (Orders)', () => {
           )
         )
       );
-      expect(data.clone2.next().value).toEqual(put(swapActions.bityOrderCreateFailedSwap()));
+      expect(data.clone2.next().value).toEqual(put(actions.bityOrderCreateFailedSwap()));
     });
   });
 
@@ -380,13 +374,13 @@ describe('swap: Sagas (Orders)', () => {
     const withdrawalAddress = '0x0';
     const originKind = 'BAT';
     const destKind = 'ETH';
-    const action = swapActions.shapeshiftOrderCreateRequestedSwap(
+    const action = actions.shapeshiftOrderCreateRequestedSwap(
       withdrawalAddress,
       originKind,
       destKind,
       amount
     );
-    const orderResp: swapTypes.ShapeshiftOrderResponse = {
+    const orderResp: types.ShapeshiftOrderResponse = {
       deposit: '0x0',
       depositAmount: '0',
       expiration: 100,
@@ -404,7 +398,7 @@ describe('swap: Sagas (Orders)', () => {
       'Connection Error. Please check the developer console for more details and/or contact support';
 
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.postShapeshiftOrderCreate)(action);
+    data.gen = cloneableGenerator(sagas.postShapeshiftOrderCreate)(action);
 
     let random: () => number;
     beforeAll(() => {
@@ -417,7 +411,7 @@ describe('swap: Sagas (Orders)', () => {
     });
 
     it('should put stopLoadShapeshiftRatesSwap', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.stopLoadShapeshiftRatesSwap()));
+      expect(data.gen.next().value).toEqual(put(actions.stopLoadShapeshiftRatesSwap()));
     });
 
     it('should call shapeshift.sendAmount', () => {
@@ -435,20 +429,20 @@ describe('swap: Sagas (Orders)', () => {
     it('should put shapeshiftOrderCreateSucceededSwap', () => {
       data.clone2 = data.gen.clone();
       expect(data.gen.next(successOrder).value).toEqual(
-        put(swapActions.shapeshiftOrderCreateSucceededSwap(successOrder.success))
+        put(actions.shapeshiftOrderCreateSucceededSwap(successOrder.success))
       );
     });
 
     it('should put changeStepSwap', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.changeStepSwap(3)));
+      expect(data.gen.next().value).toEqual(put(actions.changeStepSwap(3)));
     });
 
     it('should put startOrderTimerSwap', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.startOrderTimerSwap()));
+      expect(data.gen.next().value).toEqual(put(actions.startOrderTimerSwap()));
     });
 
     it('should put startPollShapeshiftOrderStatus', () => {
-      expect(data.gen.next().value).toEqual(put(swapActions.startPollShapeshiftOrderStatus()));
+      expect(data.gen.next().value).toEqual(put(actions.startPollShapeshiftOrderStatus()));
     });
 
     // failure modes
@@ -456,7 +450,7 @@ describe('swap: Sagas (Orders)', () => {
       expect(data.clone1.throw().value).toEqual(
         put(notificationsActions.showNotification('danger', connectionErrMsg, TEN_SECONDS))
       );
-      expect(data.clone1.next().value).toEqual(put(swapActions.shapeshiftOrderCreateFailedSwap()));
+      expect(data.clone1.next().value).toEqual(put(actions.shapeshiftOrderCreateFailedSwap()));
       expect(data.clone1.next().done).toEqual(true);
     });
 
@@ -470,7 +464,7 @@ describe('swap: Sagas (Orders)', () => {
           )
         )
       );
-      expect(data.clone2.next().value).toEqual(put(swapActions.shapeshiftOrderCreateFailedSwap()));
+      expect(data.clone2.next().value).toEqual(put(actions.shapeshiftOrderCreateFailedSwap()));
     });
   });
 
@@ -479,19 +473,19 @@ describe('swap: Sagas (Orders)', () => {
     const orderTimeExpired = new Date().getTime() - ELEVEN_SECONDS;
     const swapValidFor = 10; //seconds
     const swapOrder = {
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       orderTimestampCreatedISOString: orderTime,
       validFor: swapValidFor
     };
     const swapOrderExpired = {
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       orderTimestampCreatedISOString: new Date(orderTimeExpired).toISOString(),
       validFor: swapValidFor
     };
     let random: () => number;
 
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.bityOrderTimeRemaining)();
+    data.gen = cloneableGenerator(sagas.bityOrderTimeRemaining)();
 
     beforeAll(() => {
       random = Math.random;
@@ -506,8 +500,8 @@ describe('swap: Sagas (Orders)', () => {
       expect(data.gen.next(true).value).toEqual(call(delay, ONE_SECOND));
     });
 
-    it('should select swapSelectors.getSwap', () => {
-      expect(data.gen.next().value).toEqual(select(swapSelectors.getSwap));
+    it('should select selectors.getSwap', () => {
+      expect(data.gen.next().value).toEqual(select(selectors.getSwap));
     });
 
     it('should handle if isValidUntil.isAfter(now)', () => {
@@ -521,29 +515,21 @@ describe('swap: Sagas (Orders)', () => {
     it('should handle an OPEN order state', () => {
       const openOrder = { ...swapOrderExpired, bityOrderStatus: 'OPEN' };
       data.OPEN = data.gen.clone();
-      expect(data.OPEN.next(openOrder).value).toEqual(put(swapActions.orderTimeSwap(0)));
-      expect(data.OPEN.next().value).toEqual(put(swapActions.stopPollBityOrderStatus()));
+      expect(data.OPEN.next(openOrder).value).toEqual(put(actions.orderTimeSwap(0)));
+      expect(data.OPEN.next().value).toEqual(put(actions.stopPollBityOrderStatus()));
+      expect(data.OPEN.next().value).toEqual(put({ type: types.SwapActions.STOP_LOAD_BITY_RATES }));
       expect(data.OPEN.next().value).toEqual(
-        put({ type: swapTypes.SwapActions.STOP_LOAD_BITY_RATES })
-      );
-      expect(data.OPEN.next().value).toEqual(
-        put(
-          notificationsActions.showNotification('danger', swapSagas.ORDER_TIMEOUT_MESSAGE, Infinity)
-        )
+        put(notificationsActions.showNotification('danger', sagas.ORDER_TIMEOUT_MESSAGE, Infinity))
       );
     });
 
     it('should handle a CANC order state', () => {
       const cancOrder = { ...swapOrderExpired, bityOrderStatus: 'CANC' };
       data.CANC = data.gen.clone();
-      expect(data.CANC.next(cancOrder).value).toEqual(put(swapActions.stopPollBityOrderStatus()));
+      expect(data.CANC.next(cancOrder).value).toEqual(put(actions.stopPollBityOrderStatus()));
+      expect(data.CANC.next().value).toEqual(put({ type: types.SwapActions.STOP_LOAD_BITY_RATES }));
       expect(data.CANC.next().value).toEqual(
-        put({ type: swapTypes.SwapActions.STOP_LOAD_BITY_RATES })
-      );
-      expect(data.CANC.next().value).toEqual(
-        put(
-          notificationsActions.showNotification('danger', swapSagas.ORDER_TIMEOUT_MESSAGE, Infinity)
-        )
+        put(notificationsActions.showNotification('danger', sagas.ORDER_TIMEOUT_MESSAGE, Infinity))
       );
     });
 
@@ -551,23 +537,15 @@ describe('swap: Sagas (Orders)', () => {
       const rcveOrder = { ...swapOrderExpired, bityOrderStatus: 'RCVE' };
       data.RCVE = data.gen.clone();
       expect(data.RCVE.next(rcveOrder).value).toEqual(
-        put(
-          notificationsActions.showNotification(
-            'warning',
-            swapSagas.ORDER_TIMEOUT_MESSAGE,
-            Infinity
-          )
-        )
+        put(notificationsActions.showNotification('warning', sagas.ORDER_TIMEOUT_MESSAGE, Infinity))
       );
     });
 
     it('should handle a FILL order state', () => {
       const fillOrder = { ...swapOrderExpired, bityOrderStatus: 'FILL' };
       data.FILL = data.gen.clone();
-      expect(data.FILL.next(fillOrder).value).toEqual(put(swapActions.stopPollBityOrderStatus()));
-      expect(data.FILL.next().value).toEqual(
-        put({ type: swapTypes.SwapActions.STOP_LOAD_BITY_RATES })
-      );
+      expect(data.FILL.next(fillOrder).value).toEqual(put(actions.stopPollBityOrderStatus()));
+      expect(data.FILL.next().value).toEqual(put({ type: types.SwapActions.STOP_LOAD_BITY_RATES }));
     });
   });
 
@@ -576,19 +554,19 @@ describe('swap: Sagas (Orders)', () => {
     const orderTimeExpired = new Date().getTime() - ELEVEN_SECONDS;
     const swapValidFor = 10; //seconds
     const swapOrder = {
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       orderTimestampCreatedISOString: orderTime,
       validFor: swapValidFor
     };
     const swapOrderExpired = {
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       orderTimestampCreatedISOString: new Date(orderTimeExpired).toISOString(),
       validFor: swapValidFor
     };
     let random: () => number;
 
     const data = {} as any;
-    data.gen = cloneableGenerator(swapSagas.shapeshiftOrderTimeRemaining)();
+    data.gen = cloneableGenerator(sagas.shapeshiftOrderTimeRemaining)();
 
     beforeAll(() => {
       random = Math.random;
@@ -603,8 +581,8 @@ describe('swap: Sagas (Orders)', () => {
       expect(data.gen.next(true).value).toEqual(call(delay, ONE_SECOND));
     });
 
-    it('should select swapSelectors.getSwap', () => {
-      expect(data.gen.next().value).toEqual(select(swapSelectors.getSwap));
+    it('should select selectors.getSwap', () => {
+      expect(data.gen.next().value).toEqual(select(selectors.getSwap));
     });
 
     it('should handle if isValidUntil.isAfter(now)', () => {
@@ -618,31 +596,25 @@ describe('swap: Sagas (Orders)', () => {
     it('should handle an no_deposits order state', () => {
       const openOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'no_deposits' };
       data.OPEN = data.gen.clone();
-      expect(data.OPEN.next(openOrder).value).toEqual(put(swapActions.orderTimeSwap(0)));
-      expect(data.OPEN.next().value).toEqual(put(swapActions.stopPollShapeshiftOrderStatus()));
+      expect(data.OPEN.next(openOrder).value).toEqual(put(actions.orderTimeSwap(0)));
+      expect(data.OPEN.next().value).toEqual(put(actions.stopPollShapeshiftOrderStatus()));
       expect(data.OPEN.next().value).toEqual(
-        put({ type: swapTypes.SwapActions.STOP_LOAD_SHAPESHIFT_RATES })
+        put({ type: types.SwapActions.STOP_LOAD_SHAPESHIFT_RATES })
       );
       expect(data.OPEN.next().value).toEqual(
-        put(
-          notificationsActions.showNotification('danger', swapSagas.ORDER_TIMEOUT_MESSAGE, Infinity)
-        )
+        put(notificationsActions.showNotification('danger', sagas.ORDER_TIMEOUT_MESSAGE, Infinity))
       );
     });
 
     it('should handle a failed order state', () => {
       const cancOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'failed' };
       data.CANC = data.gen.clone();
-      expect(data.CANC.next(cancOrder).value).toEqual(
-        put(swapActions.stopPollShapeshiftOrderStatus())
+      expect(data.CANC.next(cancOrder).value).toEqual(put(actions.stopPollShapeshiftOrderStatus()));
+      expect(data.CANC.next().value).toEqual(
+        put({ type: types.SwapActions.STOP_LOAD_SHAPESHIFT_RATES })
       );
       expect(data.CANC.next().value).toEqual(
-        put({ type: swapTypes.SwapActions.STOP_LOAD_SHAPESHIFT_RATES })
-      );
-      expect(data.CANC.next().value).toEqual(
-        put(
-          notificationsActions.showNotification('danger', swapSagas.ORDER_TIMEOUT_MESSAGE, Infinity)
-        )
+        put(notificationsActions.showNotification('danger', sagas.ORDER_TIMEOUT_MESSAGE, Infinity))
       );
     });
 
@@ -651,11 +623,7 @@ describe('swap: Sagas (Orders)', () => {
       data.RCVE = data.gen.clone();
       expect(data.RCVE.next(rcveOrder).value).toEqual(
         put(
-          notificationsActions.showNotification(
-            'warning',
-            swapSagas.ORDER_RECEIVED_MESSAGE,
-            Infinity
-          )
+          notificationsActions.showNotification('warning', sagas.ORDER_RECEIVED_MESSAGE, Infinity)
         )
       );
     });
@@ -664,12 +632,12 @@ describe('swap: Sagas (Orders)', () => {
       const fillOrder = { ...swapOrderExpired, shapeshiftOrderStatus: 'complete' };
       data.COMPLETE = data.gen.clone();
       expect(data.COMPLETE.next(fillOrder).value).toEqual(
-        put(swapActions.stopPollShapeshiftOrderStatus())
+        put(actions.stopPollShapeshiftOrderStatus())
       );
       expect(data.COMPLETE.next().value).toEqual(
-        put({ type: swapTypes.SwapActions.STOP_LOAD_SHAPESHIFT_RATES })
+        put({ type: types.SwapActions.STOP_LOAD_SHAPESHIFT_RATES })
       );
-      expect(data.COMPLETE.next().value).toEqual(put(swapActions.stopOrderTimerSwap()));
+      expect(data.COMPLETE.next().value).toEqual(put(actions.stopOrderTimerSwap()));
     });
   });
 });
@@ -678,7 +646,7 @@ describe('swap: Sagas (Orders)', () => {
 //#region Rates
 describe('swap: Sagas (Rates)', () => {
   describe('loadBityRates*', () => {
-    const gen1 = swapSagas.loadBityRates();
+    const gen1 = sagas.loadBityRates();
     const apiResponse = {
       BTCETH: {
         id: 'BTCETH',
@@ -709,40 +677,40 @@ describe('swap: Sagas (Rates)', () => {
 
     it('should put loadBityRatesSucceededSwap', () => {
       expect(gen1.next(apiResponse).value).toEqual(
-        put(swapActions.loadBityRatesSucceededSwap(apiResponse))
+        put(actions.loadBityRatesSucceededSwap(apiResponse))
       );
     });
 
-    it(`should delay for ${swapSagas.POLLING_CYCLE}ms`, () => {
-      expect(gen1.next().value).toEqual(call(delay, swapSagas.POLLING_CYCLE));
+    it(`should delay for ${sagas.POLLING_CYCLE}ms`, () => {
+      expect(gen1.next().value).toEqual(call(delay, sagas.POLLING_CYCLE));
     });
 
     it('should handle an exception', () => {
-      const errGen = swapSagas.loadBityRates();
+      const errGen = sagas.loadBityRates();
       errGen.next();
       expect((errGen as any).throw(err).value).toEqual(
-        select(swapSelectors.getHasNotifiedRatesFailure)
+        select(selectors.getHasNotifiedRatesFailure)
       );
       expect(errGen.next(false).value).toEqual(
         put(notificationsActions.showNotification('danger', err.message))
       );
-      expect(errGen.next().value).toEqual(put(swapActions.loadBityRatesFailedSwap()));
-      expect(errGen.next().value).toEqual(call(delay, swapSagas.POLLING_CYCLE));
+      expect(errGen.next().value).toEqual(put(actions.loadBityRatesFailedSwap()));
+      expect(errGen.next().value).toEqual(call(delay, sagas.POLLING_CYCLE));
     });
 
     it('should not notify on subsequent exceptions', () => {
-      const noNotifyErrGen = swapSagas.loadBityRates();
+      const noNotifyErrGen = sagas.loadBityRates();
       noNotifyErrGen.next();
       expect((noNotifyErrGen as any).throw(err).value).toEqual(
-        select(swapSelectors.getHasNotifiedRatesFailure)
+        select(selectors.getHasNotifiedRatesFailure)
       );
-      expect(noNotifyErrGen.next(true).value).toEqual(put(swapActions.loadBityRatesFailedSwap()));
-      expect(noNotifyErrGen.next().value).toEqual(call(delay, swapSagas.POLLING_CYCLE));
+      expect(noNotifyErrGen.next(true).value).toEqual(put(actions.loadBityRatesFailedSwap()));
+      expect(noNotifyErrGen.next().value).toEqual(call(delay, sagas.POLLING_CYCLE));
     });
   });
 
   describe('loadShapeshiftRates*', () => {
-    const gen1 = swapSagas.loadShapeshiftRates();
+    const gen1 = sagas.loadShapeshiftRates();
 
     const apiResponse = {
       ['1SSTANT']: {
@@ -782,26 +750,26 @@ describe('swap: Sagas (Rates)', () => {
       expect(gen1.next().value).toEqual(
         race({
           tokens: call(shapeshift.getAllRates),
-          timeout: call(delay, swapSagas.SHAPESHIFT_TIMEOUT)
+          timeout: call(delay, sagas.SHAPESHIFT_TIMEOUT)
         })
       );
     });
 
     it('should put loadShapeshiftRatesSucceededSwap', () => {
       expect(gen1.next({ tokens: apiResponse }).value).toEqual(
-        put(swapActions.loadShapeshiftRatesSucceededSwap(apiResponse as any))
+        put(actions.loadShapeshiftRatesSucceededSwap(apiResponse as any))
       );
     });
 
-    it(`should delay for ${swapSagas.POLLING_CYCLE}ms`, () => {
-      expect(gen1.next().value).toEqual(call(delay, swapSagas.POLLING_CYCLE));
+    it(`should delay for ${sagas.POLLING_CYCLE}ms`, () => {
+      expect(gen1.next().value).toEqual(call(delay, sagas.POLLING_CYCLE));
     });
 
     it('should handle an exception', () => {
-      const errGen = swapSagas.loadShapeshiftRates();
+      const errGen = sagas.loadShapeshiftRates();
       errGen.next();
       expect((errGen as any).throw(err).value).toEqual(
-        select(swapSelectors.getHasNotifiedRatesFailure)
+        select(selectors.getHasNotifiedRatesFailure)
       );
       expect(errGen.next(false).value).toEqual(
         put(
@@ -811,31 +779,29 @@ describe('swap: Sagas (Rates)', () => {
           )
         )
       );
-      expect(errGen.next().value).toEqual(put(swapActions.loadShapeshiftRatesFailedSwap()));
+      expect(errGen.next().value).toEqual(put(actions.loadShapeshiftRatesFailedSwap()));
     });
 
     it('should not notify on subsequent exceptions', () => {
-      const noNotifyErrGen = swapSagas.loadShapeshiftRates();
+      const noNotifyErrGen = sagas.loadShapeshiftRates();
       noNotifyErrGen.next();
       expect((noNotifyErrGen as any).throw(err).value).toEqual(
-        select(swapSelectors.getHasNotifiedRatesFailure)
+        select(selectors.getHasNotifiedRatesFailure)
       );
-      expect(noNotifyErrGen.next(true).value).toEqual(
-        put(swapActions.loadShapeshiftRatesFailedSwap())
-      );
+      expect(noNotifyErrGen.next(true).value).toEqual(put(actions.loadShapeshiftRatesFailedSwap()));
     });
   });
 
   describe('handleBityRates*', () => {
-    const gen = swapSagas.handleBityRates();
+    const gen = sagas.handleBityRates();
     const mockTask = createMockTask();
 
     it('should fork loadBityRates', () => {
-      expect(gen.next().value).toEqual(fork(swapSagas.loadBityRates));
+      expect(gen.next().value).toEqual(fork(sagas.loadBityRates));
     });
 
     it('should take SWAP_STOP_LOAD_BITY_RATES', () => {
-      expect(gen.next(mockTask).value).toEqual(take(swapTypes.SwapActions.STOP_LOAD_BITY_RATES));
+      expect(gen.next(mockTask).value).toEqual(take(types.SwapActions.STOP_LOAD_BITY_RATES));
     });
 
     it('should cancel loadBityRatesTask', () => {
@@ -848,17 +814,15 @@ describe('swap: Sagas (Rates)', () => {
   });
 
   describe('handleShapeshiftRates*', () => {
-    const gen = swapSagas.handleShapeshiftRates();
+    const gen = sagas.handleShapeshiftRates();
     const mockTask = createMockTask();
 
     it('should fork loadShapeshiftRates', () => {
-      expect(gen.next().value).toEqual(fork(swapSagas.loadShapeshiftRates));
+      expect(gen.next().value).toEqual(fork(sagas.loadShapeshiftRates));
     });
 
     it('should take SWAP_STOP_LOAD_BITY_RATES', () => {
-      expect(gen.next(mockTask).value).toEqual(
-        take(swapTypes.SwapActions.STOP_LOAD_SHAPESHIFT_RATES)
-      );
+      expect(gen.next(mockTask).value).toEqual(take(types.SwapActions.STOP_LOAD_SHAPESHIFT_RATES));
     });
 
     it('should cancel loadShapeShiftRatesTask', () => {

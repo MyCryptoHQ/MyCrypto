@@ -4,7 +4,7 @@ import { Wei } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator, timeBountyValidator } from 'libs/validators';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import * as scheduleHelpers from './helpers';
+import * as helpers from './helpers';
 
 //#region Fields
 export const getScheduleState = (state: AppState) => state.schedule;
@@ -51,20 +51,19 @@ export const isValidCurrentScheduleTimestamp = (state: AppState) => {
   const currentScheduleTimestamp = getScheduleTimestamp(state);
   const currentScheduleTimezone = getScheduleTimezone(state);
 
-  const currentScheduleDatetime = scheduleHelpers.dateTimeToTimezone(
+  const currentScheduleDatetime = helpers.dateTimeToTimezone(
     currentScheduleTimestamp,
     currentScheduleTimezone.value
   );
 
   return (
     currentScheduleDatetime >=
-    scheduleHelpers.minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW)
+    helpers.minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW)
   );
 };
 
-export const getCurrentScheduleTimestamp = (
-  state: AppState
-): scheduleHelpers.ICurrentScheduleTimestamp => getScheduleTimestamp(state);
+export const getCurrentScheduleTimestamp = (state: AppState): helpers.ICurrentScheduleTimestamp =>
+  getScheduleTimestamp(state);
 //#endregion Schedule Timestamp
 
 //#region Schedule Timezone

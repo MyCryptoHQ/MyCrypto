@@ -1,10 +1,10 @@
 import { Wei } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import * as transactionBroadcastSelectors from './broadcast/selectors';
-import * as transactionFieldsSelectors from './fields/selectors';
-import * as transactionMetaSelectors from './meta/selectors';
-import * as transactionSignSelectors from './sign/selectors';
+import { transactionBroadcastSelectors } from './broadcast';
+import { transactionFieldsSelectors } from './fields';
+import { transactionMetaSelectors } from './meta';
+import { transactionSignSelectors } from './sign';
 
 export const getTransactionState = (state: AppState) => state.transaction;
 

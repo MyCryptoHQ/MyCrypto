@@ -1,20 +1,20 @@
-import * as messageTypes from './types';
+import * as types from './types';
 
-export const INITIAL_STATE: messageTypes.MessageState = {
+export const INITIAL_STATE: types.MessageState = {
   signed: null
 };
 
 function signLocalMessageSucceeded(
-  state: messageTypes.MessageState,
-  action: messageTypes.SignLocalMessageSucceededAction
-): messageTypes.MessageState {
+  state: types.MessageState,
+  action: types.SignLocalMessageSucceededAction
+): types.MessageState {
   return {
     ...state,
     signed: action.payload
   };
 }
 
-function signMessageFailed(state: messageTypes.MessageState): messageTypes.MessageState {
+function signMessageFailed(state: types.MessageState): types.MessageState {
   return {
     ...state,
     signed: null
@@ -22,13 +22,13 @@ function signMessageFailed(state: messageTypes.MessageState): messageTypes.Messa
 }
 
 export function messageReducer(
-  state: messageTypes.MessageState = INITIAL_STATE,
-  action: messageTypes.MessageAction
-): messageTypes.MessageState {
+  state: types.MessageState = INITIAL_STATE,
+  action: types.MessageAction
+): types.MessageState {
   switch (action.type) {
-    case messageTypes.MessageActions.SIGN_LOCAL_SUCCEEDED:
+    case types.MessageActions.SIGN_LOCAL_SUCCEEDED:
       return signLocalMessageSucceeded(state, action);
-    case messageTypes.MessageActions.SIGN_FAILED:
+    case types.MessageActions.SIGN_FAILED:
       return signMessageFailed(state);
     default:
       return state;

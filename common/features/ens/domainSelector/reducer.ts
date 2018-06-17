@@ -1,29 +1,29 @@
 import * as ensTypes from '../types';
-import * as ensDomainSelectorTypes from './types';
+import * as types from './types';
 
-const SELECTOR_INITIAL_STATE: ensDomainSelectorTypes.ENSDomainSelectorState = {
+const SELECTOR_INITIAL_STATE: types.ENSDomainSelectorState = {
   currentDomain: null
 };
 
 const setCurrentDomainName = (
-  state: ensDomainSelectorTypes.ENSDomainSelectorState,
+  state: types.ENSDomainSelectorState,
   action:
     | ensTypes.ResolveDomainSucceeded
     | ensTypes.ResolveDomainCached
     | ensTypes.ResolveDomainRequested
-): ensDomainSelectorTypes.ENSDomainSelectorState => {
+): types.ENSDomainSelectorState => {
   const { domain: domainName } = action.payload;
   return { ...state, currentDomain: domainName };
 };
 
-const clearCurrentDomainName = (): ensDomainSelectorTypes.ENSDomainSelectorState => {
+const clearCurrentDomainName = (): types.ENSDomainSelectorState => {
   return { currentDomain: null };
 };
 
 export function ensDomainSelectorReducer(
-  state: ensDomainSelectorTypes.ENSDomainSelectorState = SELECTOR_INITIAL_STATE,
+  state: types.ENSDomainSelectorState = SELECTOR_INITIAL_STATE,
   action: ensTypes.EnsAction
-): ensDomainSelectorTypes.ENSDomainSelectorState {
+): types.ENSDomainSelectorState {
   switch (action.type) {
     case ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED:
     case ensTypes.ENSActions.RESOLVE_DOMAIN_REQUESTED:

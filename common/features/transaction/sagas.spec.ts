@@ -6,16 +6,13 @@ import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei } from 'libs/units';
 import { isValidENSAddress, getIsValidAddressFunction } from 'libs/validators';
 import configuredStore from 'features/store';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
-import * as ensTypes from 'features/ens/types';
-import * as ensActions from 'features/ens/actions';
-import * as ensSelectors from 'features/ens/selectors';
-import * as walletSelectors from 'features/wallet/selectors';
-import * as notificationsActions from 'features/notifications/actions';
-import * as transactionFieldsActions from './fields/actions';
-import * as transactionMetaActions from './meta/actions';
-import * as transactionMetaSelectors from './meta/selectors';
+import { ensTypes, ensActions, ensSelectors } from 'features/ens';
+import { walletSelectors } from 'features/wallet';
+import { notificationsActions } from 'features/notifications';
+import { transactionFieldsActions } from './fields';
+import { transactionMetaActions, transactionMetaSelectors } from './meta';
 import * as actions from './actions';
 import * as sagas from './sagas';
 import * as helpers from './helpers';
@@ -134,7 +131,7 @@ describe('transaction: Sagas', () => {
       };
       const etherTransaction = cloneableGenerator(sagas.setField)(payload);
       it('should select etherTransaction', () => {
-        expect(etherTransaction.next().value).toEqual(select(selectors.isEtherTransaction));
+        expect(etherTransaction.next().value).toEqual(select(derivedSelectors.isEtherTransaction));
       });
 
       it('should put setTokenTo field if its a token transaction ', () => {
@@ -199,22 +196,26 @@ describe('transaction: Sagas', () => {
 
       it('should select getUnit', () => {
         gen.invalidDecimal = gen.pass.clone();
-        expect(gen.pass.next(decimal).value).toEqual(select(selectors.getUnit));
-        expect(gen.zeroPass.next(decimal).value).toEqual(select(selectors.getUnit));
-        expect(gen.invalidNumber.next(decimal).value).toEqual(select(selectors.getUnit));
+        expect(gen.pass.next(decimal).value).toEqual(select(derivedSelectors.getUnit));
+        expect(gen.zeroPass.next(decimal).value).toEqual(select(derivedSelectors.getUnit));
+        expect(gen.invalidNumber.next(decimal).value).toEqual(select(derivedSelectors.getUnit));
         expect(gen.invalidDecimal.next(failCases.invalidDecimal).value).toEqual(
-          select(selectors.getUnit)
+          select(derivedSelectors.getUnit)
         );
-        expect(gen.invalidZeroToken.next(decimal).value).toEqual(select(selectors.getUnit));
+        expect(gen.invalidZeroToken.next(decimal).value).toEqual(select(derivedSelectors.getUnit));
       });
 
       it('should select isEtherTransaction', () => {
-        expect(gen.pass.next(unit).value).toEqual(select(selectors.isEtherTransaction));
-        expect(gen.zeroPass.next(unit).value).toEqual(select(selectors.isEtherTransaction));
-        expect(gen.invalidNumber.next(unit).value).toEqual(select(selectors.isEtherTransaction));
-        expect(gen.invalidDecimal.next(unit).value).toEqual(select(selectors.isEtherTransaction));
+        expect(gen.pass.next(unit).value).toEqual(select(derivedSelectors.isEtherTransaction));
+        expect(gen.zeroPass.next(unit).value).toEqual(select(derivedSelectors.isEtherTransaction));
+        expect(gen.invalidNumber.next(unit).value).toEqual(
+          select(derivedSelectors.isEtherTransaction)
+        );
+        expect(gen.invalidDecimal.next(unit).value).toEqual(
+          select(derivedSelectors.isEtherTransaction)
+        );
         expect(gen.invalidZeroToken.next(failCases.invalidZeroToken.unit).value).toEqual(
-          select(selectors.isEtherTransaction)
+          select(derivedSelectors.isEtherTransaction)
         );
       });
 
@@ -262,8 +263,8 @@ describe('transaction: Sagas', () => {
         const g = cloneableGenerator(sagas.valueHandler)(leadZeroValue.action as any, setter);
 
         expect(g.next().value).toEqual(select(transactionMetaSelectors.getDecimal));
-        expect(g.next(leadZeroValue.decimal).value).toEqual(select(selectors.getUnit));
-        expect(g.next(unit).value).toEqual(select(selectors.isEtherTransaction));
+        expect(g.next(leadZeroValue.decimal).value).toEqual(select(derivedSelectors.getUnit));
+        expect(g.next(unit).value).toEqual(select(derivedSelectors.isEtherTransaction));
         expect(g.next(isEth).value).not.toEqual(
           put(setter({ raw: leadZeroValue.action.payload, value: null }))
         );
@@ -277,10 +278,10 @@ describe('transaction: Sagas', () => {
       const action: any = { payload: '5' };
       const gen = sagas.setCurrentValueSaga(action);
       it('should select isEtherTransaction', () => {
-        expect(gen.next().value).toEqual(select(selectors.isEtherTransaction));
+        expect(gen.next().value).toEqual(select(derivedSelectors.isEtherTransaction));
       });
       it('should call valueHandler', () => {
-        expect(gen.next(selectors.isEtherTransaction).value).toEqual(
+        expect(gen.next(derivedSelectors.isEtherTransaction).value).toEqual(
           call(sagas.valueHandler, action, transactionFieldsActions.setValueField)
         );
       });
@@ -295,11 +296,13 @@ describe('transaction: Sagas', () => {
         reparsedValue: boolean
       ) => {
         it('should select isEtherTransaction', () => {
-          expect(gen.next().value).toEqual(select(selectors.isEtherTransaction));
+          expect(gen.next().value).toEqual(select(derivedSelectors.isEtherTransaction));
         });
 
         it('should select getCurrentValue', () => {
-          expect(gen.next(etherTransaction).value).toEqual(select(selectors.getCurrentValue));
+          expect(gen.next(etherTransaction).value).toEqual(
+            select(derivedSelectors.getCurrentValue)
+          );
         });
 
         it('should call reparseCurrentValue', () => {
@@ -307,7 +310,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getUnit', () => {
-          expect(gen.next(reparsedValue).value).toEqual(select(selectors.getUnit));
+          expect(gen.next(reparsedValue).value).toEqual(select(derivedSelectors.getUnit));
         });
       };
 
@@ -372,26 +375,26 @@ describe('transaction: Sagas', () => {
 
     describe('isValueDifferent', () => {
       it('should be truthy when raw differs', () => {
-        const curVal: selectors.ICurrentValue = { raw: 'a', value: new BN(0) };
-        const newVal: selectors.ICurrentValue = { raw: 'b', value: new BN(0) };
+        const curVal: derivedSelectors.ICurrentValue = { raw: 'a', value: new BN(0) };
+        const newVal: derivedSelectors.ICurrentValue = { raw: 'b', value: new BN(0) };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
 
       it('should be falsy when value is the same BN', () => {
-        const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
-        const newVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const curVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeFalsy();
       });
 
       it('should be truthy when value is a different BN', () => {
-        const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
-        const newVal: selectors.ICurrentValue = { raw: '', value: new BN(2) };
+        const curVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(2) };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
 
       it('should be truthy when value is not the same and not both BNs', () => {
-        const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
-        const newVal: selectors.ICurrentValue = { raw: '', value: null };
+        const curVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: derivedSelectors.ICurrentValue = { raw: '', value: null };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
     });
@@ -401,7 +404,7 @@ describe('transaction: Sagas', () => {
 
       const sharedLogic = (gen: SagaIterator, isEth: boolean) => {
         it('should select isEtherTransaction', () => {
-          expect(gen.next().value).toEqual(select(selectors.isEtherTransaction));
+          expect(gen.next().value).toEqual(select(derivedSelectors.isEtherTransaction));
         });
 
         it('should select getDecimal', () => {
@@ -508,11 +511,13 @@ describe('transaction: Sagas', () => {
 
       const sharedStart = (gen: SagaIterator, transactionObj: any, currentBalance: BN | null) => {
         it('should select getTransaction', () => {
-          expect(gen.next().value).toEqual(select(selectors.getTransaction));
+          expect(gen.next().value).toEqual(select(derivedSelectors.getTransaction));
         });
 
         it('should select getCurrentBalance', () => {
-          expect(gen.next(transactionObj).value).toEqual(select(selectors.getCurrentBalance));
+          expect(gen.next(transactionObj).value).toEqual(
+            select(derivedSelectors.getCurrentBalance)
+          );
         });
 
         it('should select getEtherBalance', () => {
@@ -567,7 +572,9 @@ describe('transaction: Sagas', () => {
         sharedStart(gens.gen, transactionObj, currentBalance);
 
         it('should select isEtherTransaction', () => {
-          expect(gens.gen.next(etherBalance).value).toEqual(select(selectors.isEtherTransaction));
+          expect(gens.gen.next(etherBalance).value).toEqual(
+            select(derivedSelectors.isEtherTransaction)
+          );
         });
 
         it('should apply transaction.getUpfrontCost', () => {

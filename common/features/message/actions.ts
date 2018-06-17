@@ -1,10 +1,10 @@
 import { ISignedMessage } from 'libs/signing';
-import * as messageTypes from './types';
+import * as types from './types';
 
 export type TSignMessageRequested = typeof signMessageRequested;
-export function signMessageRequested(payload: string): messageTypes.SignMessageRequestedAction {
+export function signMessageRequested(payload: string): types.SignMessageRequestedAction {
   return {
-    type: messageTypes.MessageActions.SIGN_REQUESTED,
+    type: types.MessageActions.SIGN_REQUESTED,
     payload
   };
 }
@@ -12,16 +12,16 @@ export function signMessageRequested(payload: string): messageTypes.SignMessageR
 export type TSignLocalMessageSucceeded = typeof signLocalMessageSucceeded;
 export function signLocalMessageSucceeded(
   payload: ISignedMessage
-): messageTypes.SignLocalMessageSucceededAction {
+): types.SignLocalMessageSucceededAction {
   return {
-    type: messageTypes.MessageActions.SIGN_LOCAL_SUCCEEDED,
+    type: types.MessageActions.SIGN_LOCAL_SUCCEEDED,
     payload
   };
 }
 
 export type TSignMessageFailed = typeof signMessageFailed;
-export function signMessageFailed(): messageTypes.SignMessageFailedAction {
+export function signMessageFailed(): types.SignMessageFailedAction {
   return {
-    type: messageTypes.MessageActions.SIGN_FAILED
+    type: types.MessageActions.SIGN_FAILED
   };
 }

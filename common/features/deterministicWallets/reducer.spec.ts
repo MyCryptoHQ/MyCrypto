@@ -1,20 +1,20 @@
 import { TokenValue } from 'libs/units';
 import configuredStore from 'features/store';
-import * as deterministicWalletsTypes from './types';
-import * as deterministicWalletsActions from './actions';
-import * as deterministicWalletsReducer from './reducer';
+import * as types from './types';
+import * as actions from './actions';
+import * as reducer from './reducer';
 
 configuredStore.getState();
 
 describe('deterministicWallets reducer', () => {
-  const tokenValues: deterministicWalletsTypes.ITokenValues = {
+  const tokenValues: types.ITokenValues = {
     OMG: {
       value: TokenValue('0'),
       decimal: 16
     }
   };
 
-  const wallet: deterministicWalletsTypes.DeterministicWalletData = {
+  const wallet: types.DeterministicWalletData = {
     index: 0,
     address: 'address',
     value: TokenValue('0'),
@@ -24,12 +24,9 @@ describe('deterministicWallets reducer', () => {
   it('should handle DW_SET_WALLETS', () => {
     const wallets = [wallet];
     expect(
-      deterministicWalletsReducer.deterministicWalletsReducer(
-        undefined,
-        deterministicWalletsActions.setDeterministicWallets(wallets)
-      )
+      reducer.deterministicWalletsReducer(undefined, actions.setDeterministicWallets(wallets))
     ).toEqual({
-      ...deterministicWalletsReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       wallets
     });
   });
@@ -37,12 +34,9 @@ describe('deterministicWallets reducer', () => {
   it('should handle DW_SET_DESIRED_TOKEN', () => {
     const desiredToken = 'OMG';
     expect(
-      deterministicWalletsReducer.deterministicWalletsReducer(
-        undefined,
-        deterministicWalletsActions.setDesiredToken(desiredToken)
-      )
+      reducer.deterministicWalletsReducer(undefined, actions.setDesiredToken(desiredToken))
     ).toEqual({
-      ...deterministicWalletsReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       desiredToken
     });
   });
@@ -57,9 +51,9 @@ describe('deterministicWallets reducer', () => {
       address: 'wallet2'
     };
     const wallets = [wallet1, wallet2];
-    const state = deterministicWalletsReducer.deterministicWalletsReducer(
+    const state = reducer.deterministicWalletsReducer(
       undefined,
-      deterministicWalletsActions.setDeterministicWallets(wallets)
+      actions.setDeterministicWallets(wallets)
     );
 
     const wallet2Update = {
@@ -70,12 +64,9 @@ describe('deterministicWallets reducer', () => {
     };
 
     expect(
-      deterministicWalletsReducer.deterministicWalletsReducer(
-        state,
-        deterministicWalletsActions.updateDeterministicWallet(wallet2Update)
-      )
+      reducer.deterministicWalletsReducer(state, actions.updateDeterministicWallet(wallet2Update))
     ).toEqual({
-      ...deterministicWalletsReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       wallets: [wallet1, wallet2Update]
     });
   });

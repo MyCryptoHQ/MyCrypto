@@ -1,30 +1,30 @@
-import * as onboardStatusTypes from './types';
+import * as types from './types';
 
-export const INITIAL_STATE: onboardStatusTypes.OnboardStatusState = {
+export const INITIAL_STATE: types.OnboardStatusState = {
   sessionStarted: false,
   slideNumber: 1
 };
 
 export function onboardStatusReducer(
-  state: onboardStatusTypes.OnboardStatusState = INITIAL_STATE,
-  action: onboardStatusTypes.OnboardStatusAction
-): onboardStatusTypes.OnboardStatusState {
+  state: types.OnboardStatusState = INITIAL_STATE,
+  action: types.OnboardStatusAction
+): types.OnboardStatusState {
   switch (action.type) {
-    case onboardStatusTypes.OnboardStatusActions.START_SESSION: {
+    case types.OnboardStatusActions.START_SESSION: {
       return {
         ...state,
         sessionStarted: true
       };
     }
 
-    case onboardStatusTypes.OnboardStatusActions.RESUME_SLIDE: {
+    case types.OnboardStatusActions.RESUME_SLIDE: {
       return {
         ...state,
         slideNumber: action.slideNumber
       };
     }
 
-    case onboardStatusTypes.OnboardStatusActions.DECREMENT_SLIDE: {
+    case types.OnboardStatusActions.DECREMENT_SLIDE: {
       const prevSlide = state.slideNumber - 1;
 
       return {
@@ -33,7 +33,7 @@ export function onboardStatusReducer(
       };
     }
 
-    case onboardStatusTypes.OnboardStatusActions.INCREMENT_SLIDE: {
+    case types.OnboardStatusActions.INCREMENT_SLIDE: {
       const nextSlide = state.slideNumber + 1;
 
       return {

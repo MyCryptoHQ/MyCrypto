@@ -1,65 +1,65 @@
 import * as ensTypes from '../types';
-import * as ensDomainRequestsTypes from './types';
+import * as types from './types';
 
-const REQUESTS_INITIAL_STATE: ensDomainRequestsTypes.ENSDomainRequestsState = {};
+const REQUESTS_INITIAL_STATE: types.ENSDomainRequestsState = {};
 
 const resolveDomainRequested = (
-  state: ensDomainRequestsTypes.ENSDomainRequestsState,
+  state: types.ENSDomainRequestsState,
   action: ensTypes.ResolveDomainRequested
-): ensDomainRequestsTypes.ENSDomainRequestsState => {
+): types.ENSDomainRequestsState => {
   const { domain } = action.payload;
   const nextDomain = {
     ...state[domain],
-    state: ensDomainRequestsTypes.RequestStates.pending
+    state: types.RequestStates.pending
   };
 
   return { ...state, [domain]: nextDomain };
 };
 
 const resolveDomainSuccess = (
-  state: ensDomainRequestsTypes.ENSDomainRequestsState,
+  state: types.ENSDomainRequestsState,
   action: ensTypes.ResolveDomainSucceeded
-): ensDomainRequestsTypes.ENSDomainRequestsState => {
+): types.ENSDomainRequestsState => {
   const { domain, domainData } = action.payload;
   const nextDomain = {
     data: domainData,
-    state: ensDomainRequestsTypes.RequestStates.success
+    state: types.RequestStates.success
   };
 
   return { ...state, [domain]: nextDomain };
 };
 
 const resolveDomainCached = (
-  state: ensDomainRequestsTypes.ENSDomainRequestsState,
+  state: types.ENSDomainRequestsState,
   action: ensTypes.ResolveDomainCached
-): ensDomainRequestsTypes.ENSDomainRequestsState => {
+): types.ENSDomainRequestsState => {
   const { domain } = action.payload;
   const nextDomain = {
     ...state[domain],
-    state: ensDomainRequestsTypes.RequestStates.success
+    state: types.RequestStates.success
   };
 
   return { ...state, [domain]: nextDomain };
 };
 
 const resolveDomainFailed = (
-  state: ensDomainRequestsTypes.ENSDomainRequestsState,
+  state: types.ENSDomainRequestsState,
   action: ensTypes.ResolveDomainFailed
-): ensDomainRequestsTypes.ENSDomainRequestsState => {
+): types.ENSDomainRequestsState => {
   const { domain, error } = action.payload;
   const nextDomain = {
     error: true,
     errorMsg: error.message,
-    state: ensDomainRequestsTypes.RequestStates.failed
+    state: types.RequestStates.failed
   };
 
   return { ...state, [domain]: nextDomain };
 };
 
 export function ensDomainRequestsReducer(
-  state: ensDomainRequestsTypes.ENSDomainRequestsState = REQUESTS_INITIAL_STATE,
+  state: types.ENSDomainRequestsState = REQUESTS_INITIAL_STATE,
   action: ensTypes.ResolveDomainAction
-): ensDomainRequestsTypes.ENSDomainRequestsState {
+): types.ENSDomainRequestsState {
   switch (action.type) {
     case ensTypes.ENSActions.RESOLVE_DOMAIN_REQUESTED:
       return resolveDomainRequested(state, action);

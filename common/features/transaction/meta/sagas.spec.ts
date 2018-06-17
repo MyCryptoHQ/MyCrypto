@@ -7,14 +7,14 @@ import { bufferToHex, toBuffer } from 'ethereumjs-util';
 import { encodeTransfer } from 'libs/transaction';
 import { Address, Wei } from 'libs/units';
 import configuredStore from 'features/store';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
 import { scheduleActions } from 'features/schedule';
+import { transactionFieldsActions, transactionFieldsSelectors } from '../fields';
 import * as transactionActions from '../actions';
 import * as transactionSelectors from '../selectors';
 import * as transactionHelpers from '../helpers';
-import { transactionFieldsActions, transactionFieldsSelectors } from '../fields';
-import * as metaSelectors from './selectors';
+import * as selectors from './selectors';
 import * as sagas from './sagas';
 
 describe('Meta Sagas', () => {
@@ -42,7 +42,7 @@ describe('Meta Sagas', () => {
       gens.gen = cloneableGenerator(sagas.handleTokenTo)(action);
 
       it('should select getTokenValue', () => {
-        expect(gens.gen.next().value).toEqual(select(metaSelectors.getTokenValue));
+        expect(gens.gen.next().value).toEqual(select(selectors.getTokenValue));
       });
 
       it('should return if !tokenValue.value', () => {
@@ -88,7 +88,7 @@ describe('Meta Sagas', () => {
       gens.gen = cloneableGenerator(sagas.handleTokenValue)(action);
 
       it('should select getTokenTo', () => {
-        expect(gens.gen.next().value).toEqual(select(metaSelectors.getTokenTo));
+        expect(gens.gen.next().value).toEqual(select(selectors.getTokenTo));
       });
 
       it('should select getData', () => {
@@ -156,7 +156,7 @@ describe('Meta Sagas', () => {
 
         it('should select getDeciimalFromUnit with currentUnit', () => {
           expect(gen.next(currUnitIsNetworkUnit).value).toEqual(
-            select(selectors.getDecimalFromUnit, currentUnit)
+            select(derivedSelectors.getDecimalFromUnit, currentUnit)
           );
         });
       };
@@ -194,11 +194,11 @@ describe('Meta Sagas', () => {
         expectedStart(gen, previousUnit, currentUnit, false, true);
 
         it('should select getTokenTo', () => {
-          expect(gen.next(decimal).value).toEqual(select(metaSelectors.getTokenTo));
+          expect(gen.next(decimal).value).toEqual(select(selectors.getTokenTo));
         });
 
         it('should select getTokenValue', () => {
-          expect(gen.next(tokenTo).value).toEqual(select(metaSelectors.getTokenValue));
+          expect(gen.next(tokenTo).value).toEqual(select(selectors.getTokenValue));
         });
 
         it('should call rebaseUserInput with tokenValue', () => {
@@ -234,7 +234,7 @@ describe('Meta Sagas', () => {
       describe('etherToToken || tokenToToken', () => {
         const sharedLogicA = (gen: SagaIteratorClone, decimal: number, currentUnit: string) => {
           it('should select getToken with currentUnit', () => {
-            expect(gen.next(decimal).value).toEqual(select(selectors.getToken, currentUnit));
+            expect(gen.next(decimal).value).toEqual(select(derivedSelectors.getToken, currentUnit));
           });
 
           it('should throw error if !currentToken', () => {
@@ -376,13 +376,13 @@ describe('Meta Sagas', () => {
           sharedLogicA(gens.gen, decimal, currentUnit);
 
           it('should select getTokenValue', () => {
-            expect(gens.gen.next(currentToken).value).toEqual(select(metaSelectors.getTokenValue));
+            expect(gens.gen.next(currentToken).value).toEqual(select(selectors.getTokenValue));
           });
 
           sharedLogicB(gens.gen, input, raw, value, currentUnit, isValid);
 
           it('should select getTokenTo', () => {
-            expect(gens.gen.next(to).value).toEqual(select(metaSelectors.getTokenTo));
+            expect(gens.gen.next(to).value).toEqual(select(selectors.getTokenTo));
           });
 
           it('should put swapEtherToToken', () => {

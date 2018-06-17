@@ -1,19 +1,19 @@
 import { Token } from 'types/network';
-import * as customTokensTypes from './types';
+import * as types from './types';
 
 export type TAddCustomToken = typeof addCustomToken;
-export function addCustomToken(payload: Token): customTokensTypes.AddCustomTokenAction {
+export function addCustomToken(payload: Token): types.AddCustomTokenAction {
   return {
-    type: customTokensTypes.CustomTokensActions.ADD,
+    type: types.CustomTokensActions.ADD,
     payload
   };
 }
 
 export type TRemoveCustomToken = typeof removeCustomToken;
 
-export function removeCustomToken(payload: string): customTokensTypes.RemoveCustomTokenAction {
+export function removeCustomToken(payload: string): types.RemoveCustomTokenAction {
   return {
-    type: customTokensTypes.CustomTokensActions.REMOVE,
+    type: types.CustomTokensActions.REMOVE,
     payload
   };
 }

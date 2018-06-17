@@ -1,8 +1,8 @@
-import * as transactionBroadcastTypes from './broadcast/types';
-import * as transactionFieldsTypes from './fields/types';
-import * as transactionMetaTypes from './meta/types';
-import * as transactionNetworkTypes from './network/types';
-import * as transactionSignTypes from './sign/types';
+import { transactionBroadcastTypes } from './broadcast';
+import { transactionFieldsTypes } from './fields';
+import { transactionMetaTypes } from './meta';
+import { transactionNetworkTypes } from './network';
+import { transactionSignTypes } from './sign';
 
 export enum TransactionActions {
   CURRENT_VALUE_SET = 'CURRENT_VALUE_SET',

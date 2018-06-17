@@ -1,17 +1,17 @@
-import * as addressBookTypes from './types';
+import * as types from './types';
 
-export const INITIAL_STATE: addressBookTypes.AddressBookState = {
+export const INITIAL_STATE: types.AddressBookState = {
   addresses: {},
   labels: {},
   entries: {}
 };
 
 export function addressBookReducer(
-  state: addressBookTypes.AddressBookState = INITIAL_STATE,
-  action: addressBookTypes.AddressBookAction
-): addressBookTypes.AddressBookState {
+  state: types.AddressBookState = INITIAL_STATE,
+  action: types.AddressBookAction
+): types.AddressBookState {
   switch (action.type) {
-    case addressBookTypes.AddressBookActions.SET_LABEL: {
+    case types.AddressBookActions.SET_LABEL: {
       const { addresses, labels } = state;
       const { label } = action.payload;
       const address = action.payload.address.toLowerCase();
@@ -31,7 +31,7 @@ export function addressBookReducer(
       };
     }
 
-    case addressBookTypes.AddressBookActions.CLEAR_LABEL: {
+    case types.AddressBookActions.CLEAR_LABEL: {
       const { addresses, labels } = state;
       const address = action.payload.toLowerCase();
       const label = addresses[address];
@@ -48,7 +48,7 @@ export function addressBookReducer(
       };
     }
 
-    case addressBookTypes.AddressBookActions.SET_LABEL_ENTRY: {
+    case types.AddressBookActions.SET_LABEL_ENTRY: {
       const { id } = action.payload;
       const address = action.payload.address.toLowerCase();
 
@@ -64,7 +64,7 @@ export function addressBookReducer(
       };
     }
 
-    case addressBookTypes.AddressBookActions.CLEAR_LABEL_ENTRY: {
+    case types.AddressBookActions.CLEAR_LABEL_ENTRY: {
       const id = action.payload;
       const entries = { ...state.entries };
 

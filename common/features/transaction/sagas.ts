@@ -16,25 +16,21 @@ import {
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei, TokenValue } from 'libs/units';
 import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
-import * as ensTypes from 'features/ens/types';
-import * as ensActions from 'features/ens/actions';
-import * as ensSelectors from 'features/ens/selectors';
-import * as walletTypes from 'features/wallet/types';
-import * as walletSelectors from 'features/wallet/selectors';
-import * as notificationsActions from 'features/notifications/actions';
+import { ensTypes, ensActions, ensSelectors } from 'features/ens';
+import { walletTypes, walletSelectors } from 'features/wallet';
+import { notificationsActions } from 'features/notifications';
 import { transactionBroadcastSagas } from './broadcast';
-import * as transactionFieldsTypes from './fields/types';
-import * as transactionFieldsActions from './fields/actions';
-import { transactionFieldsSagas } from './fields';
-import * as transactionMetaTypes from './meta/types';
-import * as transactionMetaActions from './meta/actions';
-import * as transactionMetaSelectors from './meta/selectors';
-import { transactionMetaSagas } from './meta';
+import { transactionFieldsTypes, transactionFieldsActions, transactionFieldsSagas } from './fields';
+import {
+  transactionMetaTypes,
+  transactionMetaActions,
+  transactionMetaSelectors,
+  transactionMetaSagas
+} from './meta';
 import { transactionNetworkSagas } from './network';
-import { transactionSignSagas } from './sign';
-import * as transactionSignTypes from './sign/types';
+import { transactionSignTypes, transactionSignSagas } from './sign';
 import * as types from './types';
 import * as actions from './actions';
 import * as helpers from './helpers';
@@ -76,7 +72,7 @@ export function* setField(
     | transactionFieldsTypes.SetToFieldAction['payload']
     | transactionMetaTypes.SetTokenToMetaAction['payload']
 ) {
-  const etherTransaction: boolean = yield select(selectors.isEtherTransaction);
+  const etherTransaction: boolean = yield select(derivedSelectors.isEtherTransaction);
 
   if (etherTransaction) {
     yield put(transactionFieldsActions.setToField(payload));
@@ -90,7 +86,7 @@ export const currentTo = takeLatest([types.TransactionActions.CURRENT_TO_SET], s
 
 //#region Current Value
 export function* setCurrentValueSaga(action: types.SetCurrentValueAction): SagaIterator {
-  const etherTransaction = yield select(selectors.isEtherTransaction);
+  const etherTransaction = yield select(derivedSelectors.isEtherTransaction);
   const setter = etherTransaction
     ? transactionFieldsActions.setValueField
     : transactionMetaActions.setTokenValue;
@@ -102,8 +98,8 @@ export function* valueHandler(
   setter: transactionFieldsActions.TSetValueField | transactionMetaActions.TSetTokenValue
 ) {
   const decimal: number = yield select(transactionMetaSelectors.getDecimal);
-  const unit: string = yield select(selectors.getUnit);
-  const isEth = yield select(selectors.isEtherTransaction);
+  const unit: string = yield select(derivedSelectors.getUnit);
+  const isEth = yield select(derivedSelectors.isEtherTransaction);
   const validNum = isEth ? validNumber : validPositiveNumber;
 
   if (!validNum(Number(payload)) || !validDecimal(payload, decimal)) {
@@ -116,10 +112,13 @@ export function* valueHandler(
 }
 
 export function* revalidateCurrentValue(): SagaIterator {
-  const etherTransaction = yield select(selectors.isEtherTransaction);
-  const currVal: selectors.ICurrentValue = yield select(selectors.getCurrentValue);
-  const reparsedValue: null | selectors.ICurrentValue = yield call(reparseCurrentValue, currVal);
-  const unit: string = yield select(selectors.getUnit);
+  const etherTransaction = yield select(derivedSelectors.isEtherTransaction);
+  const currVal: derivedSelectors.ICurrentValue = yield select(derivedSelectors.getCurrentValue);
+  const reparsedValue: null | derivedSelectors.ICurrentValue = yield call(
+    reparseCurrentValue,
+    currVal
+  );
+  const unit: string = yield select(derivedSelectors.getUnit);
   const setter = etherTransaction
     ? transactionFieldsActions.setValueField
     : transactionMetaActions.setTokenValue;
@@ -134,7 +133,10 @@ export function* revalidateCurrentValue(): SagaIterator {
   }
 }
 
-export function isValueDifferent(curVal: selectors.ICurrentValue, newVal: selectors.ICurrentValue) {
+export function isValueDifferent(
+  curVal: derivedSelectors.ICurrentValue,
+  newVal: derivedSelectors.ICurrentValue
+) {
   const val1 = curVal.value as BN;
   const val2 = newVal.value as BN;
 
@@ -150,7 +152,7 @@ export function isValueDifferent(curVal: selectors.ICurrentValue, newVal: select
 }
 
 export function* reparseCurrentValue(value: helpers.IInput): SagaIterator {
-  const isEth = yield select(selectors.isEtherTransaction);
+  const isEth = yield select(derivedSelectors.isEtherTransaction);
   const decimal = yield select(transactionMetaSelectors.getDecimal);
   const validNum = isEth ? validNumber : validPositiveNumber;
 
@@ -181,8 +183,10 @@ export const current = [currentTo, ...currentValue];
 
 //#region Send Everything
 export function* handleSendEverything(): SagaIterator {
-  const { transaction }: selectors.IGetTransaction = yield select(selectors.getTransaction);
-  const currentBalance: Wei | TokenValue | null = yield select(selectors.getCurrentBalance);
+  const { transaction }: derivedSelectors.IGetTransaction = yield select(
+    derivedSelectors.getTransaction
+  );
+  const currentBalance: Wei | TokenValue | null = yield select(derivedSelectors.getCurrentBalance);
   const etherBalance: AppState['wallet']['balance']['wei'] = yield select(
     walletSelectors.getEtherBalance
   );
@@ -191,7 +195,7 @@ export function* handleSendEverything(): SagaIterator {
   }
   transaction.value = Buffer.from([]);
 
-  const etherTransaction: boolean = yield select(selectors.isEtherTransaction);
+  const etherTransaction: boolean = yield select(derivedSelectors.isEtherTransaction);
   const setter = etherTransaction
     ? transactionFieldsActions.setValueField
     : transactionMetaActions.setTokenValue;

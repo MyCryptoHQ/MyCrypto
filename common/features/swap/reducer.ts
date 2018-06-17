@@ -1,6 +1,6 @@
 import { schema, normalize } from 'normalizr';
 
-import * as swapTypes from './types';
+import * as types from './types';
 
 export const allIds = (byIds: { [name: string]: {} }) => {
   return Object.keys(byIds);
@@ -11,7 +11,7 @@ export const providerRate = new schema.Entity('providerRates', {
   options: [option]
 });
 
-export const INITIAL_STATE: swapTypes.SwapState = {
+export const INITIAL_STATE: types.SwapState = {
   step: 1,
   origin: { label: 'BTC', amount: NaN },
   destination: { label: 'ETH', amount: NaN },
@@ -45,12 +45,9 @@ export const INITIAL_STATE: swapTypes.SwapState = {
   showLiteSend: false
 };
 
-export function swapReducer(
-  state: swapTypes.SwapState = INITIAL_STATE,
-  action: swapTypes.SwapAction
-) {
+export function swapReducer(state: types.SwapState = INITIAL_STATE, action: types.SwapAction) {
   switch (action.type) {
-    case swapTypes.SwapActions.LOAD_BITY_RATES_SUCCEEDED:
+    case types.SwapActions.LOAD_BITY_RATES_SUCCEEDED:
       const { payload } = action;
       return {
         ...state,
@@ -71,7 +68,7 @@ export function swapReducer(
         },
         isFetchingRates: false
       };
-    case swapTypes.SwapActions.LOAD_SHAPESHIFT_RATES_SUCCEEDED:
+    case types.SwapActions.LOAD_SHAPESHIFT_RATES_SUCCEEDED:
       return {
         ...state,
         shapeshiftRates: {
@@ -91,52 +88,52 @@ export function swapReducer(
         },
         isFetchingRates: false
       };
-    case swapTypes.SwapActions.INIT: {
+    case types.SwapActions.INIT: {
       return {
         ...state,
         origin: action.payload.origin,
         destination: action.payload.destination
       };
     }
-    case swapTypes.SwapActions.STEP: {
+    case types.SwapActions.STEP: {
       return {
         ...state,
         step: action.payload
       };
     }
-    case swapTypes.SwapActions.DESTINATION_ADDRESS:
+    case types.SwapActions.DESTINATION_ADDRESS:
       return {
         ...state,
         destinationAddress: action.payload
       };
-    case swapTypes.SwapActions.RESTART:
+    case types.SwapActions.RESTART:
       return {
         ...INITIAL_STATE,
         options: state.options,
         bityRates: state.bityRates,
         shapeshiftRates: state.shapeshiftRates
       };
-    case swapTypes.SwapActions.BITY_ORDER_CREATE_REQUESTED:
+    case types.SwapActions.BITY_ORDER_CREATE_REQUESTED:
       return {
         ...state,
         isPostingOrder: true
       };
-    case swapTypes.SwapActions.SHAPESHIFT_ORDER_CREATE_REQUESTED:
+    case types.SwapActions.SHAPESHIFT_ORDER_CREATE_REQUESTED:
       return {
         ...state,
         isPostingOrder: true
       };
-    case swapTypes.SwapActions.BITY_ORDER_CREATE_FAILED:
+    case types.SwapActions.BITY_ORDER_CREATE_FAILED:
       return {
         ...state,
         isPostingOrder: false
       };
-    case swapTypes.SwapActions.SHAPESHIFT_ORDER_CREATE_FAILED:
+    case types.SwapActions.SHAPESHIFT_ORDER_CREATE_FAILED:
       return {
         ...state,
         isPostingOrder: false
       };
-    case swapTypes.SwapActions.BITY_ORDER_CREATE_SUCCEEDED:
+    case types.SwapActions.BITY_ORDER_CREATE_SUCCEEDED:
       return {
         ...state,
         bityOrder: {
@@ -152,7 +149,7 @@ export function swapReducer(
         bityOrderStatus: action.payload.status,
         orderId: action.payload.id
       };
-    case swapTypes.SwapActions.SHAPESHIFT_ORDER_CREATE_SUCCEEDED:
+    case types.SwapActions.SHAPESHIFT_ORDER_CREATE_SUCCEEDED:
       const currDate = Date.now();
 
       const secondsRemaining = Math.floor((+new Date(action.payload.expiration) - currDate) / 1000);
@@ -171,7 +168,7 @@ export function swapReducer(
         shapeshiftOrderStatus: 'no_deposits',
         orderId: action.payload.orderId
       };
-    case swapTypes.SwapActions.BITY_ORDER_STATUS_SUCCEEDED:
+    case types.SwapActions.BITY_ORDER_STATUS_SUCCEEDED:
       return {
         ...state,
         outputTx: action.payload.output.reference,
@@ -180,47 +177,47 @@ export function swapReducer(
             ? action.payload.output.status
             : action.payload.input.status
       };
-    case swapTypes.SwapActions.SHAPESHIFT_ORDER_STATUS_SUCCEEDED:
+    case types.SwapActions.SHAPESHIFT_ORDER_STATUS_SUCCEEDED:
       return {
         ...state,
         outputTx: action.payload && action.payload.transaction ? action.payload.transaction : null,
         shapeshiftOrderStatus: action.payload.status
       };
-    case swapTypes.SwapActions.ORDER_TIME:
+    case types.SwapActions.ORDER_TIME:
       return {
         ...state,
         secondsRemaining: action.payload
       };
 
-    case swapTypes.SwapActions.LOAD_BITY_RATES_REQUESTED:
-    case swapTypes.SwapActions.LOAD_SHAPESHIFT_RATES_REQUESTED:
+    case types.SwapActions.LOAD_BITY_RATES_REQUESTED:
+    case types.SwapActions.LOAD_SHAPESHIFT_RATES_REQUESTED:
       return {
         ...state,
         isFetchingRates: true,
         hasNotifiedRatesFailure: false
       };
-    case swapTypes.SwapActions.LOAD_BITY_RATES_FAILED:
-    case swapTypes.SwapActions.LOAD_SHAPESHIFT_RATES_FAILED:
+    case types.SwapActions.LOAD_BITY_RATES_FAILED:
+    case types.SwapActions.LOAD_SHAPESHIFT_RATES_FAILED:
       return {
         ...state,
         hasNotifiedRatesFailure: true
       };
-    case swapTypes.SwapActions.STOP_LOAD_BITY_RATES:
+    case types.SwapActions.STOP_LOAD_BITY_RATES:
       return {
         ...state,
         isFetchingRates: false
       };
-    case swapTypes.SwapActions.STOP_LOAD_SHAPESHIFT_RATES:
+    case types.SwapActions.STOP_LOAD_SHAPESHIFT_RATES:
       return {
         ...state,
         isFetchingRates: false
       };
-    case swapTypes.SwapActions.CHANGE_PROVIDER:
+    case types.SwapActions.CHANGE_PROVIDER:
       return {
         ...state,
         provider: action.payload
       };
-    case swapTypes.SwapActions.SHOW_LITE_SEND:
+    case types.SwapActions.SHOW_LITE_SEND:
       return {
         ...state,
         showLiteSend: action.payload

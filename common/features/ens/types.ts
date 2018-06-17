@@ -1,6 +1,6 @@
 import { DomainRequest } from 'libs/ens';
-import * as ensDomainRequestsTypes from './domainRequests/types';
-import * as ensDomainSelectorTypes from './domainSelector/types';
+import { ensDomainRequestsTypes } from './domainRequests';
+import { ensDomainSelectorTypes } from './domainSelector';
 
 export interface ENSState {
   domainRequests: ensDomainRequestsTypes.ENSDomainRequestsState;

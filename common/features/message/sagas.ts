@@ -7,16 +7,15 @@ import { IFullWallet } from 'libs/wallet';
 import { padLeftEven } from 'libs/values';
 import Web3Node from 'libs/nodes/web3';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as notificationsActions from 'features/notifications/actions';
-import * as paritySignerTypes from 'features/paritySigner/types';
-import * as paritySignerActions from 'features/paritySigner/actions';
-import * as walletSelectors from 'features/wallet/selectors';
-import * as messageTypes from './types';
-import * as messageActions from './actions';
+import { notificationsActions } from 'features/notifications';
+import { paritySignerTypes, paritySignerActions } from 'features/paritySigner';
+import { walletSelectors } from 'features/wallet';
+import * as types from './types';
+import * as actions from './actions';
 
 export function* signingWrapper(
   handler: (wallet: IFullWallet, message: string) => SagaIterator,
-  action: messageTypes.SignMessageRequestedAction
+  action: types.SignMessageRequestedAction
 ): SagaIterator {
   const payloadMessage = action.payload;
   const wallet = yield select(walletSelectors.getWalletInst);
@@ -31,7 +30,7 @@ export function* signingWrapper(
         5000
       )
     );
-    yield put(messageActions.signMessageFailed());
+    yield put(actions.signMessageFailed());
   }
 }
 
@@ -50,7 +49,7 @@ function* signLocalMessage(wallet: IFullWallet, msg: string): SagaIterator {
   const sig: string = yield apply(wallet, wallet.signMessage, [msg, nodeLib]);
 
   yield put(
-    messageActions.signLocalMessageSucceeded({
+    actions.signLocalMessageSucceeded({
       address,
       msg,
       sig,
@@ -74,7 +73,7 @@ function* signParitySignerMessage(wallet: IFullWallet, msg: string): SagaIterato
   }
 
   yield put(
-    messageActions.signLocalMessageSucceeded({
+    actions.signLocalMessageSucceeded({
       address,
       msg,
       sig,
@@ -83,7 +82,7 @@ function* signParitySignerMessage(wallet: IFullWallet, msg: string): SagaIterato
   );
 }
 
-function* handleMessageRequest(action: messageTypes.SignMessageRequestedAction): SagaIterator {
+function* handleMessageRequest(action: types.SignMessageRequestedAction): SagaIterator {
   const walletType: walletSelectors.IWalletType = yield select(walletSelectors.getWalletType);
 
   const signingHandler = walletType.isParitySignerWallet
@@ -93,7 +92,7 @@ function* handleMessageRequest(action: messageTypes.SignMessageRequestedAction):
   return yield call(signingWrapper, signingHandler, action);
 }
 
-function* verifySignature(action: messageTypes.SignLocalMessageSucceededAction): SagaIterator {
+function* verifySignature(action: types.SignLocalMessageSucceededAction): SagaIterator {
   const success = yield call(verifySignedMessage, action.payload);
 
   if (success) {
@@ -104,14 +103,14 @@ function* verifySignature(action: messageTypes.SignLocalMessageSucceededAction):
       )
     );
   } else {
-    yield put(messageActions.signMessageFailed());
+    yield put(actions.signMessageFailed());
     yield put(notificationsActions.showNotification('danger', translate('ERROR_38')));
   }
 }
 
 export const signing = [
-  takeEvery(messageTypes.MessageActions.SIGN_REQUESTED, handleMessageRequest),
-  takeEvery(messageTypes.MessageActions.SIGN_LOCAL_SUCCEEDED, verifySignature)
+  takeEvery(types.MessageActions.SIGN_REQUESTED, handleMessageRequest),
+  takeEvery(types.MessageActions.SIGN_LOCAL_SUCCEEDED, verifySignature)
 ];
 
 export function* messageSaga(): SagaIterator {

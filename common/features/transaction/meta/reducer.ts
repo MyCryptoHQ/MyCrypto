@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 
 import { getDecimalFromEtherUnit } from 'libs/units';
-import * as transactionNetworkTypes from '../network/types';
+import { transactionNetworkTypes } from '../network';
 import * as transactionTypes from '../types';
 import * as types from './types';
 

@@ -3,13 +3,13 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { Wei } from 'libs/units';
 import * as helpers from 'features/helpers';
+import * as derivedSelectors from 'features/selectors';
 import { transactionBroadcastSelectors } from './broadcast';
 import { transactionFieldsSelectors } from './fields';
 import { transactionMetaSelectors } from './meta';
 import { transactionNetworkTypes, transactionNetworkSelectors } from './network';
 import { transactionSignSelectors } from './sign';
-import * as selectors from 'features/selectors';
-import * as transactionSelectors from './selectors';
+import * as selectors from './selectors';
 
 const initialState = cloneDeep(helpers.getInitialState());
 
@@ -62,12 +62,12 @@ describe('helpers selector', () => {
   });
 
   it('should check isFullTransaction with full transaction arguments', () => {
-    const currentTo = selectors.getCurrentTo(state);
-    const currentValue = selectors.getCurrentValue(state);
+    const currentTo = derivedSelectors.getCurrentTo(state);
+    const currentValue = derivedSelectors.getCurrentValue(state);
     const transactionFields = transactionFieldsSelectors.getFields(state);
-    const unit = selectors.getUnit(state);
-    const dataExists = transactionSelectors.getDataExists(state);
-    const validGasCost = selectors.getValidGasCost(state);
+    const unit = derivedSelectors.getUnit(state);
+    const dataExists = selectors.getDataExists(state);
+    const validGasCost = derivedSelectors.getValidGasCost(state);
     const isFullTransaction = helpers.isFullTx(
       state,
       transactionFields,
@@ -82,11 +82,11 @@ describe('helpers selector', () => {
 
   it('should check isFullTransaction without full transaction arguments', () => {
     const currentTo = { raw: '', value: null };
-    const currentValue = selectors.getCurrentValue(state);
+    const currentValue = derivedSelectors.getCurrentValue(state);
     const transactionFields = transactionFieldsSelectors.getFields(state);
-    const unit = selectors.getUnit(state);
-    const dataExists = transactionSelectors.getDataExists(state);
-    const validGasCost = selectors.getValidGasCost(state);
+    const unit = derivedSelectors.getUnit(state);
+    const dataExists = selectors.getDataExists(state);
+    const validGasCost = derivedSelectors.getValidGasCost(state);
     const isFullTransaction = helpers.isFullTx(
       state,
       transactionFields,
@@ -133,26 +133,26 @@ describe('broadcast selector', () => {
   });
 
   it('should check getCurrentTransactionStatus', () => {
-    expect(transactionSelectors.getCurrentTransactionStatus(state)).toEqual(
+    expect(selectors.getCurrentTransactionStatus(state)).toEqual(
       state.transaction.broadcast.testIndexingHash2
     );
   });
 
   it('should check currentTransactionFailed', () => {
-    expect(transactionSelectors.currentTransactionFailed(state)).toEqual(false);
+    expect(selectors.currentTransactionFailed(state)).toEqual(false);
   });
 
   it('should check currentTransactionBroadcasting', () => {
-    expect(transactionSelectors.currentTransactionBroadcasting(state)).toEqual(false);
+    expect(selectors.currentTransactionBroadcasting(state)).toEqual(false);
   });
 
   it('should check currentTransactionBroadcasted', () => {
-    expect(transactionSelectors.currentTransactionBroadcasted(state)).toEqual(true);
+    expect(selectors.currentTransactionBroadcasted(state)).toEqual(true);
   });
 
   it('should return false on getCurrentTransactionStatus if no index hash present', () => {
     state.transaction.sign.indexingHash = null;
-    expect(transactionSelectors.getCurrentTransactionStatus(state)).toEqual(false);
+    expect(selectors.getCurrentTransactionStatus(state)).toEqual(false);
   });
 });
 //#endregion Broadcast
@@ -185,37 +185,37 @@ describe('current selector', () => {
   };
 
   it('should get stored receiver address on getCurrentTo', () => {
-    expect(selectors.getCurrentTo(state)).toEqual(state.transaction.fields.to);
+    expect(derivedSelectors.getCurrentTo(state)).toEqual(state.transaction.fields.to);
   });
 
   it('should get stored value on getCurrentValue', () => {
-    expect(selectors.getCurrentValue(state)).toEqual(state.transaction.fields.value);
+    expect(derivedSelectors.getCurrentValue(state)).toEqual(state.transaction.fields.value);
   });
 
   it('should get message to the receiver', () => {
-    expect(selectors.getCurrentToAddressMessage(state)).toEqual({
+    expect(derivedSelectors.getCurrentToAddressMessage(state)).toEqual({
       msg: 'Thank you for donating to MyCrypto. TO THE MOON!'
     });
   });
 
   it('should check isValidGasPrice', () => {
-    expect(transactionSelectors.isValidGasPrice(state)).toEqual(true);
+    expect(selectors.isValidGasPrice(state)).toEqual(true);
   });
 
   it('should check isEtherTransaction', () => {
-    expect(selectors.isEtherTransaction(state)).toEqual(true);
+    expect(derivedSelectors.isEtherTransaction(state)).toEqual(true);
   });
 
   it('should check isValidGasLimit', () => {
-    expect(transactionSelectors.isValidGasLimit(state)).toEqual(true);
+    expect(selectors.isValidGasLimit(state)).toEqual(true);
   });
 
   it('should check isValidCurrentTo', () => {
-    expect(selectors.isValidCurrentTo(state)).toEqual(true);
+    expect(derivedSelectors.isValidCurrentTo(state)).toEqual(true);
   });
 
   it('should check isCurrentToLabelEntry', () => {
-    expect(selectors.isCurrentToLabelEntry(state)).toEqual(false);
+    expect(derivedSelectors.isCurrentToLabelEntry(state)).toEqual(false);
 
     const otherState = { ...state };
     otherState.transaction = {
@@ -223,7 +223,7 @@ describe('current selector', () => {
       fields: { ...state.transaction.fields, to: { ...state.transaction.fields.to, raw: 'derp' } }
     };
 
-    expect(selectors.isCurrentToLabelEntry(otherState)).toEqual(true);
+    expect(derivedSelectors.isCurrentToLabelEntry(otherState)).toEqual(true);
   });
 });
 
@@ -292,11 +292,11 @@ describe('fields selector', () => {
   });
 
   it('should check getDataExists', () => {
-    expect(transactionSelectors.getDataExists(state)).toEqual(false);
+    expect(selectors.getDataExists(state)).toEqual(false);
   });
 
   it('should check when gas cost is valid', () => {
-    expect(selectors.getValidGasCost(state)).toEqual(true);
+    expect(derivedSelectors.getValidGasCost(state)).toEqual(true);
   });
 
   it('should check when gas cost is invalid', () => {
@@ -304,7 +304,7 @@ describe('fields selector', () => {
       wei: Wei('0'),
       isPending: false
     };
-    expect(selectors.getValidGasCost(state)).toEqual(false);
+    expect(derivedSelectors.getValidGasCost(state)).toEqual(false);
   });
 });
 
@@ -337,7 +337,7 @@ describe('meta tests', () => {
     ]);
 
   it('should get the stored sender address', () => {
-    expect(selectors.getFrom(state)).toEqual(state.transaction.meta.from);
+    expect(derivedSelectors.getFrom(state)).toEqual(state.transaction.meta.from);
   });
 
   it('should get the stored decimal', () => {
@@ -355,25 +355,25 @@ describe('meta tests', () => {
   });
 
   it('should get the stored unit', () => {
-    expect(selectors.getUnit(state)).toEqual(state.transaction.meta.unit);
+    expect(derivedSelectors.getUnit(state)).toEqual(state.transaction.meta.unit);
   });
 
   it('should get the stored previous unit', () => {
-    expect(transactionSelectors.getPreviousUnit(state)).toEqual(
-      state.transaction.meta.previousUnit
-    );
+    expect(selectors.getPreviousUnit(state)).toEqual(state.transaction.meta.previousUnit);
   });
 
   it('should get the decimal for ether', () => {
-    expect(selectors.getDecimalFromUnit(state, selectors.getUnit(state))).toEqual(18);
+    expect(derivedSelectors.getDecimalFromUnit(state, derivedSelectors.getUnit(state))).toEqual(18);
   });
 
   it('should get the decimal for a token', () => {
-    expect(selectors.getDecimalFromUnit(state, 'UNI')).toEqual(0);
+    expect(derivedSelectors.getDecimalFromUnit(state, 'UNI')).toEqual(0);
   });
 
   it('should throw error if the token is not found', () => {
-    expect(() => selectors.getDecimalFromUnit(state, 'ABC')).toThrowError(`Token ABC not found`);
+    expect(() => derivedSelectors.getDecimalFromUnit(state, 'ABC')).toThrowError(
+      `Token ABC not found`
+    );
   });
 });
 
@@ -434,7 +434,7 @@ describe('sign tests', () => {
     }
   }),
     it('should return whether the current signature is pending', () => {
-      expect(selectors.signaturePending(state)).toEqual({
+      expect(derivedSelectors.signaturePending(state)).toEqual({
         isHardwareWallet: false,
         isSignaturePending: false
       });
@@ -457,7 +457,7 @@ describe('sign tests', () => {
   });
 
   it('should get the serialized transaction state', () => {
-    expect(selectors.getSerializedTransaction(state)).toEqual(new Buffer([4, 5, 6, 7]));
+    expect(derivedSelectors.getSerializedTransaction(state)).toEqual(new Buffer([4, 5, 6, 7]));
   });
 });
 

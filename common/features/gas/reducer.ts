@@ -1,11 +1,11 @@
-import * as gasTypes from './types';
+import * as types from './types';
 
-export const INITIAL_STATE: gasTypes.GasState = {
+export const INITIAL_STATE: types.GasState = {
   estimates: null,
   isEstimating: false
 };
 
-function fetchGasEstimates(state: gasTypes.GasState): gasTypes.GasState {
+function fetchGasEstimates(state: types.GasState): types.GasState {
   return {
     ...state,
     isEstimating: true
@@ -13,9 +13,9 @@ function fetchGasEstimates(state: gasTypes.GasState): gasTypes.GasState {
 }
 
 function setGasEstimates(
-  state: gasTypes.GasState,
-  action: gasTypes.SetGasEstimatesAction
-): gasTypes.GasState {
+  state: types.GasState,
+  action: types.SetGasEstimatesAction
+): types.GasState {
   return {
     ...state,
     estimates: action.payload,
@@ -24,13 +24,13 @@ function setGasEstimates(
 }
 
 export function gasReducer(
-  state: gasTypes.GasState = INITIAL_STATE,
-  action: gasTypes.GasAction
-): gasTypes.GasState {
+  state: types.GasState = INITIAL_STATE,
+  action: types.GasAction
+): types.GasState {
   switch (action.type) {
-    case gasTypes.GasActions.FETCH_ESTIMATES:
+    case types.GasActions.FETCH_ESTIMATES:
       return fetchGasEstimates(state);
-    case gasTypes.GasActions.SET_ESTIMATES:
+    case types.GasActions.SET_ESTIMATES:
       return setGasEstimates(state, action);
     default:
       return state;

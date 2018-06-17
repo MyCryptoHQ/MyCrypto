@@ -1,6 +1,6 @@
 import { getInitialState } from 'features/helpers';
-import * as addressBookConstants from './constants';
-import * as addressBookSelectors from './selectors';
+import * as constants from './constants';
+import * as selectors from './selectors';
 
 describe('addressBook: Selectors', () => {
   const initialState = getInitialState();
@@ -21,15 +21,15 @@ describe('addressBook: Selectors', () => {
   };
   const addressBookTableEntry = {
     ...firstEntry,
-    id: addressBookConstants.ADDRESS_BOOK_TABLE_ID
+    id: constants.ADDRESS_BOOK_TABLE_ID
   };
   const accountAddressEntry = {
     ...firstEntry,
-    id: addressBookConstants.ACCOUNT_ADDRESS_ID
+    id: constants.ACCOUNT_ADDRESS_ID
   };
   const entries = {
-    [addressBookConstants.ADDRESS_BOOK_TABLE_ID]: addressBookTableEntry,
-    [addressBookConstants.ACCOUNT_ADDRESS_ID]: accountAddressEntry,
+    [constants.ADDRESS_BOOK_TABLE_ID]: addressBookTableEntry,
+    [constants.ACCOUNT_ADDRESS_ID]: accountAddressEntry,
     '1': firstEntry,
     '2': secondEntry
   };
@@ -48,58 +48,56 @@ describe('addressBook: Selectors', () => {
 
   describe('getAddressLabels', () => {
     it('should return a hash of addresses to labels', () => {
-      expect(addressBookSelectors.getAddressLabels(state)['0x0']).toEqual('Foo');
+      expect(selectors.getAddressLabels(state)['0x0']).toEqual('Foo');
     });
   });
 
   describe('getLabelAddresses', () => {
     it('should return a hash of labels to addresses', () => {
-      expect(addressBookSelectors.getLabelAddresses(state).Foo).toEqual('0x0');
+      expect(selectors.getLabelAddresses(state).Foo).toEqual('0x0');
     });
   });
 
   describe('getAddressLabelEntry', () => {
     it('should return an address label entry', () => {
-      expect(addressBookSelectors.getAddressLabelEntry(state, '1')).toEqual(firstEntry);
+      expect(selectors.getAddressLabelEntry(state, '1')).toEqual(firstEntry);
     });
   });
 
   describe('getAddressLabelEntries', () => {
     it('should return all of the address label entries', () => {
-      expect(addressBookSelectors.getAddressLabelEntries(state)).toEqual(entries);
+      expect(selectors.getAddressLabelEntries(state)).toEqual(entries);
     });
   });
 
   describe('getAddressBookTableEntry', () => {
     it('should return the entry associated with the AddressBook component', () => {
-      expect(addressBookSelectors.getAddressBookTableEntry(state)).toEqual(addressBookTableEntry);
+      expect(selectors.getAddressBookTableEntry(state)).toEqual(addressBookTableEntry);
     });
   });
 
   describe('getAccountAddressEntry', () => {
     it('should return the entry associated with the AccountAddress component', () => {
-      expect(addressBookSelectors.getAccountAddressEntry(state)).toEqual(accountAddressEntry);
+      expect(selectors.getAccountAddressEntry(state)).toEqual(accountAddressEntry);
     });
   });
 
   describe('getAddressLabelEntryFromAddress', () => {
     it('should retrieve an entry with the given address', () => {
-      expect(addressBookSelectors.getAddressLabelEntryFromAddress(state, '0x1')).toEqual(
-        secondEntry
-      );
-      expect(addressBookSelectors.getAddressLabelEntryFromAddress(state, '0x2')).toEqual(undefined);
+      expect(selectors.getAddressLabelEntryFromAddress(state, '0x1')).toEqual(secondEntry);
+      expect(selectors.getAddressLabelEntryFromAddress(state, '0x2')).toEqual(undefined);
     });
   });
 
   describe('getAddressLabelRows', () => {
     it('should return an array of non-input entries', () => {
-      expect(addressBookSelectors.getAddressLabelRows(state)).toEqual([firstEntry, secondEntry]);
+      expect(selectors.getAddressLabelRows(state)).toEqual([firstEntry, secondEntry]);
     });
   });
 
   describe('getNextAddressLabelId', () => {
     it('should return a sequential id based on number of entries', () => {
-      expect(addressBookSelectors.getNextAddressLabelId(state)).toEqual('3');
+      expect(selectors.getNextAddressLabelId(state)).toEqual('3');
     });
   });
 });

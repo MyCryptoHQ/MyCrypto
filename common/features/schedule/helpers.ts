@@ -3,23 +3,20 @@ import 'moment-timezone';
 import BN from 'bn.js';
 
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import * as scheduleTypes from './types';
+import * as types from './types';
 
 export interface ICurrentScheduleTimestamp {
   raw: string;
   value: Date;
 }
 
-export const isWindowStartValid = (
-  transactionFields: scheduleTypes.ScheduleState,
-  latestBlock: string
-) => {
+export const isWindowStartValid = (transactionFields: types.ScheduleState, latestBlock: string) => {
   const { windowStart } = transactionFields;
 
   return Boolean(windowStart && windowStart.value && windowStart.value > parseInt(latestBlock, 10));
 };
 
-export const isScheduleTimestampValid = (transactionFields: scheduleTypes.ScheduleState) => {
+export const isScheduleTimestampValid = (transactionFields: types.ScheduleState) => {
   const { scheduleTimestamp, scheduleTimezone } = transactionFields;
   const selectedDate = dateTimeToTimezone(scheduleTimestamp, scheduleTimezone.value);
   return Boolean(selectedDate >= minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW));

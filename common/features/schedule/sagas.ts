@@ -6,30 +6,32 @@ import { toTokenBase, Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as transactionFieldsTypes from 'features/transaction/fields/types';
-import * as transactionFieldsActions from 'features/transaction/fields/actions';
-import * as transactionMetaSelectors from 'features/transaction/meta/selectors';
-import * as transactionHelpers from 'features/transaction/helpers';
-import * as scheduleTypes from './types';
-import * as scheduleActions from './actions';
-import * as scheduleSelectors from './selectors';
+import {
+  transactionFieldsTypes,
+  transactionFieldsActions,
+  transactionMetaSelectors,
+  transactionHelpers
+} from 'features/transaction';
+import * as types from './types';
+import * as actions from './actions';
+import * as selectors from './selectors';
 
 //#region Schedule Timestamp
 export function* setCurrentScheduleTimestampSaga({
   payload: raw
-}: scheduleTypes.SetCurrentScheduleTimestampAction): SagaIterator {
+}: types.SetCurrentScheduleTimestampAction): SagaIterator {
   let value: Date | null = null;
 
   value = new Date(raw);
 
-  yield put(scheduleActions.setScheduleTimestampField({ value, raw }));
+  yield put(actions.setScheduleTimestampField({ value, raw }));
 }
 
 export const currentScheduleTimestamp = takeLatest(
-  [scheduleTypes.ScheduleActions.CURRENT_SCHEDULE_TIMESTAMP_SET],
+  [types.ScheduleActions.CURRENT_SCHEDULE_TIMESTAMP_SET],
   setCurrentScheduleTimestampSaga
 );
 //#endregion Schedule Timestamp
@@ -37,14 +39,14 @@ export const currentScheduleTimestamp = takeLatest(
 //#region Schedule Timezone
 export function* setCurrentScheduleTimezoneSaga({
   payload: raw
-}: scheduleTypes.SetCurrentScheduleTimezoneAction): SagaIterator {
+}: types.SetCurrentScheduleTimezoneAction): SagaIterator {
   const value = raw;
 
-  yield put(scheduleActions.setScheduleTimezone({ value, raw }));
+  yield put(actions.setScheduleTimezone({ value, raw }));
 }
 
 export const currentScheduleTimezone = takeLatest(
-  [scheduleTypes.ScheduleActions.CURRENT_SCHEDULE_TIMEZONE_SET],
+  [types.ScheduleActions.CURRENT_SCHEDULE_TIMEZONE_SET],
   setCurrentScheduleTimezoneSaga
 );
 //#endregion Schedule Timezone
@@ -52,7 +54,7 @@ export const currentScheduleTimezone = takeLatest(
 //#region Scheduling Toggle
 export function* setGasLimitForSchedulingSaga({
   payload: { value: useScheduling }
-}: scheduleTypes.SetSchedulingToggleAction): SagaIterator {
+}: types.SetSchedulingToggleAction): SagaIterator {
   const gasLimit = useScheduling
     ? EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
     : EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK;
@@ -66,7 +68,7 @@ export function* setGasLimitForSchedulingSaga({
 }
 
 export const currentSchedulingToggle = takeLatest(
-  [scheduleTypes.ScheduleActions.TOGGLE_SET],
+  [types.ScheduleActions.TOGGLE_SET],
   setGasLimitForSchedulingSaga
 );
 //#endregion Scheduling Toggle
@@ -74,12 +76,12 @@ export const currentSchedulingToggle = takeLatest(
 //#region Time Bounty
 export function* setCurrentTimeBountySaga({
   payload: raw
-}: scheduleTypes.SetCurrentTimeBountyAction): SagaIterator {
+}: types.SetCurrentTimeBountyAction): SagaIterator {
   const decimal: number = yield select(transactionMetaSelectors.getDecimal);
-  const unit: string = yield select(selectors.getUnit);
+  const unit: string = yield select(derivedSelectors.getUnit);
 
   if (!validNumber(parseInt(raw, 10)) || !validDecimal(raw, decimal)) {
-    yield put(scheduleActions.setTimeBountyField({ raw, value: null }));
+    yield put(actions.setTimeBountyField({ raw, value: null }));
   }
 
   const value = toTokenBase(raw, decimal);
@@ -87,11 +89,11 @@ export function* setCurrentTimeBountySaga({
 
   const isValid = isInputValid && value.gte(Wei('0'));
 
-  yield put(scheduleActions.setTimeBountyField({ raw, value: isValid ? value : null }));
+  yield put(actions.setTimeBountyField({ raw, value: isValid ? value : null }));
 }
 
 export const currentTimeBounty = takeLatest(
-  [scheduleTypes.ScheduleActions.CURRENT_TIME_BOUNTY_SET],
+  [types.ScheduleActions.CURRENT_TIME_BOUNTY_SET],
   setCurrentTimeBountySaga
 );
 //#endregion Time Bounty
@@ -99,20 +101,20 @@ export const currentTimeBounty = takeLatest(
 //#region Window Size
 export function* setCurrentWindowSizeSaga({
   payload: raw
-}: scheduleTypes.SetCurrentWindowSizeAction): SagaIterator {
+}: types.SetCurrentWindowSizeAction): SagaIterator {
   let value: BN | null = null;
 
   if (!validNumber(parseInt(raw, 10))) {
-    yield put(scheduleActions.setWindowSizeField({ raw, value: null }));
+    yield put(actions.setWindowSizeField({ raw, value: null }));
   }
 
   value = new BN(raw);
 
-  yield put(scheduleActions.setWindowSizeField({ value, raw }));
+  yield put(actions.setWindowSizeField({ value, raw }));
 }
 
 export const currentWindowSize = takeLatest(
-  [scheduleTypes.ScheduleActions.CURRENT_WINDOW_SIZE_SET],
+  [types.ScheduleActions.CURRENT_WINDOW_SIZE_SET],
   setCurrentWindowSizeSaga
 );
 //#endregion Window Size
@@ -120,16 +122,16 @@ export const currentWindowSize = takeLatest(
 //#region Window Start
 export function* setCurrentWindowStartSaga({
   payload: raw
-}: scheduleTypes.SetCurrentWindowStartAction): SagaIterator {
+}: types.SetCurrentWindowStartAction): SagaIterator {
   let value: number | null = null;
 
   value = parseInt(raw, 10);
 
-  yield put(scheduleActions.setWindowStartField({ value, raw }));
+  yield put(actions.setWindowStartField({ value, raw }));
 }
 
 export const currentWindowStart = takeLatest(
-  [scheduleTypes.ScheduleActions.CURRENT_WINDOW_START_SET],
+  [types.ScheduleActions.CURRENT_WINDOW_START_SET],
   setCurrentWindowStartSaga
 );
 //#endregion Window Start
@@ -141,20 +143,20 @@ export function* shouldValidateParams(): SagaIterator {
       transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
-      scheduleTypes.ScheduleActions.CURRENT_TIME_BOUNTY_SET,
-      scheduleTypes.ScheduleActions.WINDOW_SIZE_FIELD_SET,
-      scheduleTypes.ScheduleActions.WINDOW_START_FIELD_SET,
-      scheduleTypes.ScheduleActions.TIMESTAMP_FIELD_SET,
-      scheduleTypes.ScheduleActions.TIME_BOUNTY_FIELD_SET,
-      scheduleTypes.ScheduleActions.TYPE_SET,
-      scheduleTypes.ScheduleActions.TOGGLE_SET,
-      scheduleTypes.ScheduleActions.TIMEZONE_SET
+      types.ScheduleActions.CURRENT_TIME_BOUNTY_SET,
+      types.ScheduleActions.WINDOW_SIZE_FIELD_SET,
+      types.ScheduleActions.WINDOW_START_FIELD_SET,
+      types.ScheduleActions.TIMESTAMP_FIELD_SET,
+      types.ScheduleActions.TIME_BOUNTY_FIELD_SET,
+      types.ScheduleActions.TYPE_SET,
+      types.ScheduleActions.TOGGLE_SET,
+      types.ScheduleActions.TIMEZONE_SET
     ]);
 
     yield call(delay, 250);
 
     const isOffline: boolean = yield select(configMetaSelectors.getOffline);
-    const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+    const scheduling: boolean = yield select(selectors.isSchedulingEnabled);
 
     if (isOffline || !scheduling) {
       continue;
@@ -165,13 +167,13 @@ export function* shouldValidateParams(): SagaIterator {
 }
 
 function* checkSchedulingParametersValidity() {
-  const validateParamsCallData: selectors.IGetValidateScheduleParamsCallPayload = yield select(
-    selectors.getValidateScheduleParamsCallPayload
+  const validateParamsCallData: derivedSelectors.IGetValidateScheduleParamsCallPayload = yield select(
+    derivedSelectors.getValidateScheduleParamsCallPayload
   );
 
   if (!validateParamsCallData) {
     return yield put(
-      scheduleActions.setScheduleParamsValidity({
+      actions.setScheduleParamsValidity({
         value: false
       })
     );
@@ -186,7 +188,7 @@ function* checkSchedulingParametersValidity() {
   const errors = parseSchedulingParametersValidity(paramsValidity);
 
   yield put(
-    scheduleActions.setScheduleParamsValidity({
+    actions.setScheduleParamsValidity({
       value: errors.length === 0
     })
   );

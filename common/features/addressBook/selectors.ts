@@ -1,5 +1,5 @@
 import { AppState } from 'features/reducers';
-import * as addressBookConstants from './constants';
+import * as constants from './constants';
 
 export function getAddressLabels(state: AppState) {
   return state.addressBook.addresses;
@@ -18,11 +18,11 @@ export function getAddressLabelEntries(state: AppState) {
 }
 
 export function getAddressBookTableEntry(state: AppState) {
-  return getAddressLabelEntry(state, addressBookConstants.ADDRESS_BOOK_TABLE_ID);
+  return getAddressLabelEntry(state, constants.ADDRESS_BOOK_TABLE_ID);
 }
 
 export function getAccountAddressEntry(state: AppState) {
-  return getAddressLabelEntry(state, addressBookConstants.ACCOUNT_ADDRESS_ID);
+  return getAddressLabelEntry(state, constants.ACCOUNT_ADDRESS_ID);
 }
 
 export function getAddressLabelEntryFromAddress(state: AppState, address: string) {
@@ -32,7 +32,7 @@ export function getAddressLabelEntryFromAddress(state: AppState, address: string
 }
 
 export function getAddressLabelRows(state: AppState) {
-  const nonRowEntries = [addressBookConstants.ADDRESS_BOOK_TABLE_ID, 'ACCOUNT_ADDRESS_ID'];
+  const nonRowEntries = [constants.ADDRESS_BOOK_TABLE_ID, 'ACCOUNT_ADDRESS_ID'];
   const entries = getAddressLabelEntries(state);
   const rows = Object.keys(entries)
     .map(entry => ({ ...entries[entry] }))

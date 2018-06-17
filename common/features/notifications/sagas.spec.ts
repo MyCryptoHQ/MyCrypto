@@ -1,26 +1,22 @@
 import { delay } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 
-import * as notificationsTypes from './types';
-import * as notificationsActions from './actions';
-import * as notificationsSagas from './sagas';
+import * as types from './types';
+import * as actions from './actions';
+import * as sagas from './sagas';
 
 describe('handleNotification*', () => {
   const level = 'success';
   const msg = 'msg';
   const duration = 10;
-  const notificationAction1: notificationsTypes.ShowNotificationAction = notificationsActions.showNotification(
+  const notificationAction1: types.ShowNotificationAction = actions.showNotification(
     level,
     msg,
     duration
   );
-  const notificationAction2: notificationsTypes.ShowNotificationAction = notificationsActions.showNotification(
-    level,
-    msg,
-    0
-  );
-  const gen1 = notificationsSagas.handleNotification(notificationAction1);
-  const gen2 = notificationsSagas.handleNotification(notificationAction2);
+  const notificationAction2: types.ShowNotificationAction = actions.showNotification(level, msg, 0);
+  const gen1 = sagas.handleNotification(notificationAction1);
+  const gen2 = sagas.handleNotification(notificationAction2);
 
   it('should call delay with duration', () => {
     expect(gen1.next(notificationAction1).value).toEqual(call(delay, duration));
@@ -32,7 +28,7 @@ describe('handleNotification*', () => {
 
   it('should put closeNotification', () => {
     expect(gen1.next(notificationAction1).value).toEqual(
-      put(notificationsActions.closeNotification(notificationAction1.payload))
+      put(actions.closeNotification(notificationAction1.payload))
     );
   });
 

@@ -2,9 +2,9 @@ import { normalize } from 'normalizr';
 
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import tokens from 'config/tokens/eth.json';
-import * as swapTypes from './types';
-import * as swapActions from './actions';
-import * as swapReducer from './reducer';
+import * as types from './types';
+import * as actions from './actions';
+import * as reducer from './reducer';
 
 describe('ensure whitelist', () => {
   const findToken = (tkn: string) => tokens.find((t: any) => t.symbol === tkn);
@@ -52,36 +52,34 @@ describe('swap reducer', () => {
     }
   };
 
-  const normalizedBityRates: swapTypes.NormalizedBityRates = {
-    byId: normalize(bityApiResponse, [swapReducer.providerRate]).entities.providerRates,
-    allIds: swapReducer.allIds(
-      normalize(bityApiResponse, [swapReducer.providerRate]).entities.providerRates
+  const normalizedBityRates: types.NormalizedBityRates = {
+    byId: normalize(bityApiResponse, [reducer.providerRate]).entities.providerRates,
+    allIds: reducer.allIds(
+      normalize(bityApiResponse, [reducer.providerRate]).entities.providerRates
     )
   };
-  const normalizedShapeshiftRates: swapTypes.NormalizedShapeshiftRates = {
-    byId: normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.providerRates,
-    allIds: swapReducer.allIds(
-      normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.providerRates
+  const normalizedShapeshiftRates: types.NormalizedShapeshiftRates = {
+    byId: normalize(shapeshiftApiResponse, [reducer.providerRate]).entities.providerRates,
+    allIds: reducer.allIds(
+      normalize(shapeshiftApiResponse, [reducer.providerRate]).entities.providerRates
     )
   };
-  const normalizedBityOptions: swapTypes.NormalizedOptions = {
-    byId: normalize(bityApiResponse, [swapReducer.providerRate]).entities.options,
-    allIds: swapReducer.allIds(
-      normalize(bityApiResponse, [swapReducer.providerRate]).entities.options
-    )
+  const normalizedBityOptions: types.NormalizedOptions = {
+    byId: normalize(bityApiResponse, [reducer.providerRate]).entities.options,
+    allIds: reducer.allIds(normalize(bityApiResponse, [reducer.providerRate]).entities.options)
   };
-  const normalizedShapeshiftOptions: swapTypes.NormalizedOptions = {
-    byId: normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.options,
-    allIds: swapReducer.allIds(
-      normalize(shapeshiftApiResponse, [swapReducer.providerRate]).entities.options
+  const normalizedShapeshiftOptions: types.NormalizedOptions = {
+    byId: normalize(shapeshiftApiResponse, [reducer.providerRate]).entities.options,
+    allIds: reducer.allIds(
+      normalize(shapeshiftApiResponse, [reducer.providerRate]).entities.options
     )
   };
 
   it('should handle SWAP_LOAD_BITY_RATES_SUCCEEDED', () => {
     expect(
-      swapReducer.swapReducer(undefined, swapActions.loadBityRatesSucceededSwap(bityApiResponse))
+      reducer.swapReducer(undefined, actions.loadBityRatesSucceededSwap(bityApiResponse))
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isFetchingRates: false,
       bityRates: normalizedBityRates,
       options: normalizedBityOptions
@@ -90,12 +88,12 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_LOAD_SHAPESHIFT_RATES_SUCCEEDED', () => {
     expect(
-      swapReducer.swapReducer(
+      reducer.swapReducer(
         undefined,
-        swapActions.loadShapeshiftRatesSucceededSwap(shapeshiftApiResponse as any)
+        actions.loadShapeshiftRatesSucceededSwap(shapeshiftApiResponse as any)
       )
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isFetchingRates: false,
       shapeshiftRates: normalizedShapeshiftRates,
       options: normalizedShapeshiftOptions
@@ -104,8 +102,8 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_STEP', () => {
     const step = 2;
-    expect(swapReducer.swapReducer(undefined, swapActions.changeStepSwap(step))).toEqual({
-      ...swapReducer.INITIAL_STATE,
+    expect(reducer.swapReducer(undefined, actions.changeStepSwap(step))).toEqual({
+      ...reducer.INITIAL_STATE,
       step
     });
   });
@@ -113,27 +111,27 @@ describe('swap reducer', () => {
   it('should handle SWAP_DESTINATION_ADDRESS', () => {
     const destinationAddress = '341a0sdf83';
     expect(
-      swapReducer.swapReducer(undefined, swapActions.destinationAddressSwap(destinationAddress))
+      reducer.swapReducer(undefined, actions.destinationAddressSwap(destinationAddress))
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       destinationAddress
     });
   });
 
   it('should handle SWAP_RESTART', () => {
     expect(
-      swapReducer.swapReducer(
+      reducer.swapReducer(
         {
-          ...swapReducer.INITIAL_STATE,
+          ...reducer.INITIAL_STATE,
           bityRates: normalizedBityRates,
           shapeshiftRates: normalizedShapeshiftRates,
           origin: { label: 'BTC', amount: 1 },
           destination: { label: 'ETH', amount: 3 }
         },
-        swapActions.restartSwap()
+        actions.restartSwap()
       )
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       bityRates: normalizedBityRates,
       shapeshiftRates: normalizedShapeshiftRates
     });
@@ -141,50 +139,50 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_BITY_ORDER_CREATE_REQUESTED', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
-        type: swapTypes.SwapActions.BITY_ORDER_CREATE_REQUESTED
-      } as swapTypes.SwapAction)
+      reducer.swapReducer(undefined, {
+        type: types.SwapActions.BITY_ORDER_CREATE_REQUESTED
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isPostingOrder: true
     });
   });
 
   it('should handle SWAP_SHAPESHIFT_ORDER_CREATE_REQUESTED', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
-        type: swapTypes.SwapActions.BITY_ORDER_CREATE_REQUESTED
-      } as swapTypes.SwapAction)
+      reducer.swapReducer(undefined, {
+        type: types.SwapActions.BITY_ORDER_CREATE_REQUESTED
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isPostingOrder: true
     });
   });
 
   it('should handle SWAP_BITY_ORDER_CREATE_FAILED', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
-        type: swapTypes.SwapActions.BITY_ORDER_CREATE_FAILED
-      } as swapTypes.SwapAction)
+      reducer.swapReducer(undefined, {
+        type: types.SwapActions.BITY_ORDER_CREATE_FAILED
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isPostingOrder: false
     });
   });
 
   it('should handle SWAP_SHAPESHIFT_ORDER_CREATE_FAILED', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
-        type: swapTypes.SwapActions.SHAPESHIFT_ORDER_CREATE_FAILED
-      } as swapTypes.SwapAction)
+      reducer.swapReducer(undefined, {
+        type: types.SwapActions.SHAPESHIFT_ORDER_CREATE_FAILED
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isPostingOrder: false
     });
   });
 
   it('should handle SWAP_BITY_ORDER_CREATE_SUCCEEDED', () => {
-    const mockedBityOrder: swapTypes.BityOrderPostResponse = {
+    const mockedBityOrder: types.BityOrderPostResponse = {
       payment_address: 'payment_address',
       status: 'status',
       input: {
@@ -205,9 +203,9 @@ describe('swap reducer', () => {
     };
 
     expect(
-      swapReducer.swapReducer(undefined, swapActions.bityOrderCreateSucceededSwap(mockedBityOrder))
+      reducer.swapReducer(undefined, actions.bityOrderCreateSucceededSwap(mockedBityOrder))
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       bityOrder: {
         ...mockedBityOrder
       },
@@ -224,7 +222,7 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_SHAPESHIFT_ORDER_CREATE_SUCCEEDED', () => {
-    const mockedShapeshiftOrder: swapTypes.ShapeshiftOrderResponse = {
+    const mockedShapeshiftOrder: types.ShapeshiftOrderResponse = {
       orderId: '64d73218-0ee9-4c6c-9bbd-6da9208595f5',
       pair: 'eth_ant',
       withdrawal: '0x6b3a639eb96d8e0241fe4e114d99e739f906944e',
@@ -239,13 +237,13 @@ describe('swap reducer', () => {
       minerFee: '1.05'
     };
 
-    const swapState = swapReducer.swapReducer(
+    const swapState = reducer.swapReducer(
       undefined,
-      swapActions.shapeshiftOrderCreateSucceededSwap(mockedShapeshiftOrder)
+      actions.shapeshiftOrderCreateSucceededSwap(mockedShapeshiftOrder)
     );
 
     expect(swapState).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       shapeshiftOrder: {
         ...mockedShapeshiftOrder
       },
@@ -262,7 +260,7 @@ describe('swap reducer', () => {
   });
 
   it('should handle SWAP_BITY_ORDER_STATUS_SUCCEEDED', () => {
-    const mockedBityResponse: swapTypes.BityOrderResponse = {
+    const mockedBityResponse: types.BityOrderResponse = {
       input: {
         amount: '1.111',
         currency: 'input_currency',
@@ -279,30 +277,27 @@ describe('swap reducer', () => {
     };
 
     expect(
-      swapReducer.swapReducer(
-        undefined,
-        swapActions.bityOrderStatusSucceededSwap(mockedBityResponse)
-      )
+      reducer.swapReducer(undefined, actions.bityOrderStatusSucceededSwap(mockedBityResponse))
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       outputTx: mockedBityResponse.output.reference,
       bityOrderStatus: mockedBityResponse.output.status
     });
   });
 
   it('should handle SWAP_SHAPESHIFT_ORDER_STATUS_SUCCEEDED', () => {
-    const mockedShapeshiftResponse: swapTypes.ShapeshiftStatusResponse = {
+    const mockedShapeshiftResponse: types.ShapeshiftStatusResponse = {
       status: 'complete',
       transaction: '0x039ed77933388642fdd618d27bfc4fa3582d10c4'
     };
 
     expect(
-      swapReducer.swapReducer(
+      reducer.swapReducer(
         undefined,
-        swapActions.shapeshiftOrderStatusSucceededSwap(mockedShapeshiftResponse)
+        actions.shapeshiftOrderStatusSucceededSwap(mockedShapeshiftResponse)
       )
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       shapeshiftOrderStatus: mockedShapeshiftResponse.status,
       outputTx: mockedShapeshiftResponse.transaction
     });
@@ -310,54 +305,52 @@ describe('swap reducer', () => {
 
   it('should handle SWAP_ORDER_TIME', () => {
     const secondsRemaining = 300;
-    expect(swapReducer.swapReducer(undefined, swapActions.orderTimeSwap(secondsRemaining))).toEqual(
-      {
-        ...swapReducer.INITIAL_STATE,
-        secondsRemaining
-      }
-    );
+    expect(reducer.swapReducer(undefined, actions.orderTimeSwap(secondsRemaining))).toEqual({
+      ...reducer.INITIAL_STATE,
+      secondsRemaining
+    });
   });
 
   it('should handle SWAP_LOAD_BITY_RATES_REQUESTED', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
+      reducer.swapReducer(undefined, {
         type: 'SWAP_LOAD_BITY_RATES_REQUESTED'
-      } as swapTypes.SwapAction)
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isFetchingRates: true
     });
   });
 
   it('should handle SWAP_LOAD_SHAPESHIFT_RATE_REQUESTED', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
-        type: swapTypes.SwapActions.LOAD_SHAPESHIFT_RATES_REQUESTED
-      } as swapTypes.SwapAction)
+      reducer.swapReducer(undefined, {
+        type: types.SwapActions.LOAD_SHAPESHIFT_RATES_REQUESTED
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isFetchingRates: true
     });
   });
 
   it('should handle SWAP_STOP_LOAD_BITY_RATES', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
+      reducer.swapReducer(undefined, {
         type: 'SWAP_STOP_LOAD_BITY_RATES'
-      } as swapTypes.SwapAction)
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isFetchingRates: false
     });
   });
 
   it('should handle SWAP_STOP_LOAD_SHAPESHIFT_RATES', () => {
     expect(
-      swapReducer.swapReducer(undefined, {
-        type: swapTypes.SwapActions.STOP_LOAD_SHAPESHIFT_RATES
-      } as swapTypes.SwapAction)
+      reducer.swapReducer(undefined, {
+        type: types.SwapActions.STOP_LOAD_SHAPESHIFT_RATES
+      } as types.SwapAction)
     ).toEqual({
-      ...swapReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       isFetchingRates: false
     });
   });

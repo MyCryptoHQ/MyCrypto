@@ -1,18 +1,18 @@
-import * as addressBookActions from './actions';
-import * as addressBookReducer from './reducer';
+import * as actions from './actions';
+import * as reducer from './reducer';
 
 describe('addressBook: Reducer', () => {
   it('should set an address label', () => {
     expect(
-      addressBookReducer.addressBookReducer(
+      reducer.addressBookReducer(
         undefined,
-        addressBookActions.setAddressLabel({
+        actions.setAddressLabel({
           address: '0x0',
           label: 'Foo'
         })
       )
     ).toEqual({
-      ...addressBookReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       addresses: {
         '0x0': 'Foo'
       },
@@ -22,23 +22,23 @@ describe('addressBook: Reducer', () => {
     });
   });
   it('should clear an address label', () => {
-    const firstState = addressBookReducer.addressBookReducer(
+    const firstState = reducer.addressBookReducer(
       undefined,
-      addressBookActions.setAddressLabel({
+      actions.setAddressLabel({
         address: '0x0',
         label: 'Foo'
       })
     );
 
-    expect(
-      addressBookReducer.addressBookReducer(firstState, addressBookActions.clearAddressLabel('0x0'))
-    ).toEqual(addressBookReducer.INITIAL_STATE);
+    expect(reducer.addressBookReducer(firstState, actions.clearAddressLabel('0x0'))).toEqual(
+      reducer.INITIAL_STATE
+    );
   });
   it('should set an address label entry', () => {
     expect(
-      addressBookReducer.addressBookReducer(
+      reducer.addressBookReducer(
         undefined,
-        addressBookActions.setAddressLabelEntry({
+        actions.setAddressLabelEntry({
           id: '0',
           address: '0x0',
           temporaryAddress: ' 0x0a',
@@ -49,7 +49,7 @@ describe('addressBook: Reducer', () => {
         })
       )
     ).toEqual({
-      ...addressBookReducer.INITIAL_STATE,
+      ...reducer.INITIAL_STATE,
       entries: {
         0: {
           id: '0',
@@ -64,9 +64,9 @@ describe('addressBook: Reducer', () => {
     });
   });
   it('should clear an address label entry', () => {
-    const firstState = addressBookReducer.addressBookReducer(
+    const firstState = reducer.addressBookReducer(
       undefined,
-      addressBookActions.setAddressLabelEntry({
+      actions.setAddressLabelEntry({
         id: '0',
         address: '0x0',
         temporaryAddress: ' 0x0a',
@@ -76,11 +76,8 @@ describe('addressBook: Reducer', () => {
         labelError: 'Derp'
       })
     );
-    expect(
-      addressBookReducer.addressBookReducer(
-        firstState,
-        addressBookActions.clearAddressLabelEntry('0')
-      )
-    ).toEqual(addressBookReducer.INITIAL_STATE);
+    expect(reducer.addressBookReducer(firstState, actions.clearAddressLabelEntry('0'))).toEqual(
+      reducer.INITIAL_STATE
+    );
   });
 });
