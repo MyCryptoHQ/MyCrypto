@@ -1,15 +1,8 @@
 import { Reducer } from 'redux';
 
 import { getDecimalFromEtherUnit } from 'libs/units';
-import {
-  TRANSACTION,
-  SwapTokenToEtherAction,
-  SwapEtherToTokenAction,
-  SwapTokenToTokenAction,
-  SwapAction,
-  ResetTransactionSuccessfulAction
-} from '../types';
 import * as transactionNetworkTypes from '../network/types';
+import * as transactionTypes from '../types';
 import * as types from './types';
 
 export const META_INITIAL_STATE: types.TransactionMetaState = {
@@ -45,7 +38,7 @@ const updateMetaField = (
 
 const tokenToEtherMeta = (
   state: types.TransactionMetaState,
-  { payload }: SwapTokenToEtherAction
+  { payload }: transactionTypes.SwapTokenToEtherAction
 ): types.TransactionMetaState => {
   const { tokenValue, tokenTo } = META_INITIAL_STATE;
   return { ...state, tokenTo, tokenValue, decimal: payload.decimal };
@@ -53,12 +46,12 @@ const tokenToEtherMeta = (
 
 const etherToTokenMeta = (
   state: types.TransactionMetaState,
-  { payload: { data: _, to: __, ...rest } }: SwapEtherToTokenAction
+  { payload: { data: _, to: __, ...rest } }: transactionTypes.SwapEtherToTokenAction
 ): types.TransactionMetaState => ({ ...state, ...rest });
 
 const tokenToTokenMeta = (
   state: types.TransactionMetaState,
-  { payload: { data: _, to: __, ...rest } }: SwapTokenToTokenAction
+  { payload: { data: _, to: __, ...rest } }: transactionTypes.SwapTokenToTokenAction
 ): types.TransactionMetaState => ({ ...state, ...rest });
 
 const resetMeta = (state: types.TransactionMetaState): types.TransactionMetaState => ({
@@ -80,8 +73,8 @@ export function metaReducer(
   state: types.TransactionMetaState = META_INITIAL_STATE,
   action:
     | types.MetaAction
-    | SwapAction
-    | ResetTransactionSuccessfulAction
+    | transactionTypes.SwapAction
+    | transactionTypes.ResetTransactionSuccessfulAction
     | transactionNetworkTypes.TransactionNetworkAction
 ): types.TransactionMetaState {
   switch (action.type) {
@@ -93,13 +86,12 @@ export function metaReducer(
       return updateMetaField('tokenTo')(state, action);
     case transactionNetworkTypes.TransactionNetworkActions.GET_FROM_SUCCEEDED:
       return updateMetaField('from')(state, action);
-    case TRANSACTION.TOKEN_TO_ETHER_SWAP:
+    case transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP:
       return tokenToEtherMeta(state, action);
-    case TRANSACTION.ETHER_TO_TOKEN_SWAP:
+    case transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP:
       return etherToTokenMeta(state, action);
-    case TRANSACTION.TOKEN_TO_TOKEN_SWAP:
+    case transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP:
       return tokenToTokenMeta(state, action);
-
     case types.TransactionMetaActions.IS_VIEW_AND_SEND: {
       const nextState: types.TransactionMetaState = { ...state, isContractInteraction: false };
       return nextState;
@@ -108,7 +100,7 @@ export function metaReducer(
       const nextState: types.TransactionMetaState = { ...state, isContractInteraction: true };
       return nextState;
     }
-    case TRANSACTION.RESET_SUCCESSFUL:
+    case transactionTypes.TransactionActions.RESET_SUCCESSFUL:
       return resetMeta(state);
     default:
       return state;

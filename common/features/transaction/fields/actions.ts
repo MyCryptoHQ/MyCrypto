@@ -1,8 +1,4 @@
-import {
-  TRANSACTION,
-  ResetTransactionRequestedAction,
-  ResetTransactionSuccessfulAction
-} from '../types';
+import * as transactionTypes from '../types';
 import * as types from './types';
 
 export type TInputGasLimit = typeof inputGasLimit;
@@ -82,14 +78,14 @@ export const setGasPriceField = (
 });
 
 export type TResetTransactionRequested = typeof resetTransactionRequested;
-export const resetTransactionRequested = (): ResetTransactionRequestedAction => ({
-  type: TRANSACTION.RESET_REQUESTED
+export const resetTransactionRequested = (): transactionTypes.ResetTransactionRequestedAction => ({
+  type: transactionTypes.TransactionActions.RESET_REQUESTED
 });
 
 export type TResetTransactionSuccessful = typeof resetTransactionSuccessful;
 export const resetTransactionSuccessful = (
-  payload: ResetTransactionSuccessfulAction['payload']
-): ResetTransactionSuccessfulAction => ({
-  type: TRANSACTION.RESET_SUCCESSFUL,
+  payload: transactionTypes.ResetTransactionSuccessfulAction['payload']
+): transactionTypes.ResetTransactionSuccessfulAction => ({
+  type: transactionTypes.TransactionActions.RESET_SUCCESSFUL,
   payload
 });

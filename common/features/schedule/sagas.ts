@@ -138,9 +138,9 @@ export const currentWindowStart = takeLatest(
 export function* shouldValidateParams(): SagaIterator {
   while (true) {
     yield take([
-      transactionFieldsTypes.TRANSACTION_FIELDS.TO_FIELD_SET,
-      transactionFieldsTypes.TRANSACTION_FIELDS.DATA_FIELD_SET,
-      transactionFieldsTypes.TRANSACTION_FIELDS.VALUE_FIELD_SET,
+      transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
+      transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
+      transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
       scheduleTypes.ScheduleActions.CURRENT_TIME_BOUNTY_SET,
       scheduleTypes.ScheduleActions.WINDOW_SIZE_FIELD_SET,
       scheduleTypes.ScheduleActions.WINDOW_START_FIELD_SET,

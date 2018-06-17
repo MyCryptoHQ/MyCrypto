@@ -1,4 +1,4 @@
-import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
+import * as transactionTypes from '../types';
 import * as types from './types';
 
 export type StateSerializedTx =
@@ -45,7 +45,7 @@ const resetSign = () => SIGN_INITIAL_STATE;
 
 export function signReducer(
   state: types.TransactionSignState = SIGN_INITIAL_STATE,
-  action: types.TransactionSignAction | ResetTransactionSuccessfulAction
+  action: types.TransactionSignAction | transactionTypes.ResetTransactionSuccessfulAction
 ) {
   switch (action.type) {
     case types.TransactionSignActions.SIGN_TRANSACTION_REQUESTED:
@@ -56,7 +56,7 @@ export function signReducer(
       return signWeb3TranscationSucceeded(state, action);
     case types.TransactionSignActions.SIGN_TRANSACTION_FAILED:
       return signTransactionFailed();
-    case TRANSACTION.RESET_SUCCESSFUL:
+    case transactionTypes.TransactionActions.RESET_SUCCESSFUL:
       return resetSign();
     default:
       return state;

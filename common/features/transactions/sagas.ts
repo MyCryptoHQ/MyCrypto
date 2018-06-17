@@ -53,13 +53,13 @@ export function* saveBroadcastedTx(
   const res:
     | transactionBroadcastTypes.BroadcastTransactionSucceededAction
     | transactionBroadcastTypes.BroadcastTransactionFailedAction = yield take([
-    transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED,
-    transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_FAILED
+    transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED,
+    transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_FAILED
   ]);
 
   // If our TX succeeded, save it and update the store.
   if (
-    res.type === transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED &&
+    res.type === transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED &&
     res.payload.indexingHash === txIdx
   ) {
     const tx = new EthTx(txBuffer);
@@ -111,7 +111,7 @@ export function* resetTxData() {
 export function* transactionsSaga(): SagaIterator {
   yield takeEvery(transactionsTypes.TransactionsActions.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(
-    transactionBroadcastTypes.TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED,
+    transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED,
     saveBroadcastedTx
   );
   yield takeEvery(transactionsTypes.TransactionsActions.RESET_TRANSACTION_DATA, resetTxData);

@@ -32,7 +32,7 @@ describe('swap: Sagas (Lite Send)', () => {
     it('races between three conditions, either the transaction state is reset, the user navigated away from the page, or bitty/shapeshift polling as finished', () => {
       const mockedTask = createMockTask();
       const expectedYield = race({
-        transactionReset: take(transactionTypes.TRANSACTION.RESET_REQUESTED),
+        transactionReset: take(transactionTypes.TransactionActions.RESET_REQUESTED),
         userNavigatedAway: take(walletTypes.WalletActions.RESET),
         bityPollingFinished: take(swapTypes.SwapActions.STOP_POLL_BITY_ORDER_STATUS),
         shapeshiftPollingFinished: take(swapTypes.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)

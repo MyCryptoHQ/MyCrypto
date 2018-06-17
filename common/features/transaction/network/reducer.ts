@@ -1,5 +1,5 @@
-import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
 import * as transactionFieldsTypes from '../fields/types';
+import * as transactionTypes from '../types';
 import * as types from './types';
 
 export const NETWORK_INITIAL_STATE: types.TransactionNetworkState = {
@@ -36,7 +36,7 @@ export function networkReducer(
   state: types.TransactionNetworkState = NETWORK_INITIAL_STATE,
   action:
     | types.TransactionNetworkAction
-    | ResetTransactionSuccessfulAction
+    | transactionTypes.ResetTransactionSuccessfulAction
     | transactionFieldsTypes.InputGasPriceAction
     | transactionFieldsTypes.InputGasPriceIntentAction
 ) {
@@ -69,7 +69,7 @@ export function networkReducer(
     case transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_INPUT:
       return setGasPriceStatus(state, types.RequestStatus.SUCCEEDED);
 
-    case TRANSACTION.RESET_SUCCESSFUL:
+    case transactionTypes.TransactionActions.RESET_SUCCESSFUL:
       return resetNetwork();
     default:
       return state;

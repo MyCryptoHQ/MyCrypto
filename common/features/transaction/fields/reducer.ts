@@ -2,14 +2,7 @@ import { Reducer } from 'redux';
 import BN from 'bn.js';
 
 import { gasPriceToBase } from 'libs/units';
-import {
-  TRANSACTION,
-  SwapTokenToEtherAction,
-  SwapEtherToTokenAction,
-  SwapTokenToTokenAction,
-  SwapAction,
-  ResetTransactionSuccessfulAction
-} from '../types';
+import * as transactionTypes from '../types';
 import * as types from './types';
 
 export const FIELDS_INITIAL_STATE: types.TransactionFieldsState = {
@@ -33,7 +26,7 @@ const updateField = (
 
 const tokenToEther = (
   state: types.TransactionFieldsState,
-  { payload: { decimal: _, ...rest } }: SwapTokenToEtherAction
+  { payload: { decimal: _, ...rest } }: transactionTypes.SwapTokenToEtherAction
 ): types.TransactionFieldsState => ({
   ...state,
   ...rest,
@@ -42,7 +35,9 @@ const tokenToEther = (
 
 const etherToToken = (
   state: types.TransactionFieldsState,
-  { payload: { decimal: _, tokenTo: __, tokenValue: ___, ...rest } }: SwapEtherToTokenAction
+  {
+    payload: { decimal: _, tokenTo: __, tokenValue: ___, ...rest }
+  }: transactionTypes.SwapEtherToTokenAction
 ): types.TransactionFieldsState => ({
   ...state,
   ...rest,
@@ -51,12 +46,12 @@ const etherToToken = (
 
 const tokenToToken = (
   state: types.TransactionFieldsState,
-  { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
+  { payload: { decimal: _, tokenValue: __, ...rest } }: transactionTypes.SwapTokenToTokenAction
 ): types.TransactionFieldsState => ({ ...state, ...rest });
 
 const reset = (
   state: types.TransactionFieldsState,
-  { payload: { isContractInteraction } }: ResetTransactionSuccessfulAction
+  { payload: { isContractInteraction } }: transactionTypes.ResetTransactionSuccessfulAction
 ): types.TransactionFieldsState => ({
   ...FIELDS_INITIAL_STATE,
   ...(isContractInteraction ? { to: state.to } : {})
@@ -64,7 +59,10 @@ const reset = (
 
 export function fieldsReducer(
   state: types.TransactionFieldsState = FIELDS_INITIAL_STATE,
-  action: types.TransactionFieldAction | SwapAction | ResetTransactionSuccessfulAction
+  action:
+    | types.TransactionFieldAction
+    | transactionTypes.SwapAction
+    | transactionTypes.ResetTransactionSuccessfulAction
 ) {
   switch (action.type) {
     case types.TransactionFieldsActions.TO_FIELD_SET:
@@ -79,13 +77,13 @@ export function fieldsReducer(
       return updateField('nonce')(state, action);
     case types.TransactionFieldsActions.GAS_PRICE_FIELD_SET:
       return updateField('gasPrice')(state, action);
-    case TRANSACTION.TOKEN_TO_ETHER_SWAP:
+    case transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
-    case TRANSACTION.ETHER_TO_TOKEN_SWAP:
+    case transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP:
       return etherToToken(state, action);
-    case TRANSACTION.TOKEN_TO_TOKEN_SWAP:
+    case transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP:
       return tokenToToken(state, action);
-    case TRANSACTION.RESET_SUCCESSFUL:
+    case transactionTypes.TransactionActions.RESET_SUCCESSFUL:
       return reset(state, action);
     default:
       return state;

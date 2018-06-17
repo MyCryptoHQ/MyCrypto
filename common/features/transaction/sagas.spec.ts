@@ -42,83 +42,29 @@ import configuredStore from 'features/store';
 import * as selectors from 'features/selectors';
 import * as configMetaTypes from 'features/config/meta/types';
 import * as configMetaSelectors from 'features/config/meta/selectors';
-import { getNodeLib } from 'features/config/nodes/selectors';
-import { isNetworkUnit } from 'features/config/selectors';
-import { getIsValidAddressFn } from 'features/config';
+import * as configNodesSelectors from 'features/config/nodes/selectors';
+import * as configSelectors from 'features/config/selectors';
 import * as ensTypes from 'features/ens/types';
-import { resolveDomainRequested } from 'features/ens/actions';
-import { getResolvedAddress } from 'features/ens/selectors';
+import * as ensActions from 'features/ens/actions';
+import * as ensSelectors from 'features/ens/selectors';
 import * as walletTypes from 'features/wallet/types';
-import { getWalletInst, getEtherBalance } from 'features/wallet/selectors';
-import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
-import { isSchedulingEnabled } from 'features/schedule/selectors';
-import { showNotification } from 'features/notifications/actions';
-import { TRANSACTION_FIELDS } from './fields/types';
-import {
-  setToField,
-  setValueField,
-  inputGasPrice,
-  setDataField,
-  setGasLimitField,
-  setGasPriceField,
-  setNonceField,
-  inputNonce,
-  resetTransactionSuccessful
-} from './fields/actions';
-import { getTo, getData, getValue } from './fields/selectors';
-import { setTokenTo, setTokenValue } from './meta/actions';
-import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
-import { TRANSACTION_NETWORK } from './network/types';
-import {
-  getFromSucceeded,
-  getFromFailed,
-  estimateGasFailed,
-  estimateGasSucceeded,
-  estimateGasRequested,
-  estimateGasTimedout,
-  getNonceSucceeded
-} from './network/actions';
-import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
-import { TRANSACTION } from './types';
-import {
-  swapEtherToToken,
-  swapTokenToToken,
-  sendEverythingSucceeded,
-  sendEverythingFailed,
-  swapTokenToEther
-} from './actions';
-import { getPreviousUnit } from './selectors';
-import {
-  broadcastLocalTransactionHandler,
-  broadcastWeb3TransactionHandler,
-  setCurrentToSaga,
-  setField,
-  setCurrentValueSaga,
-  revalidateCurrentValue,
-  reparseCurrentValue,
-  valueHandler,
-  isValueDifferent,
-  handleDataInput,
-  handleGasLimitInput,
-  handleNonceInput,
-  handleGasPriceInput,
-  handleGasPriceInputIntent,
-  handleTokenTo,
-  handleTokenValue,
-  handleSetUnitMeta,
-  handleFromRequest,
-  signLocalTransactionHandler,
-  signWeb3TransactionHandler,
-  shouldEstimateGas,
-  estimateGas,
-  localGasEstimation,
-  setAddressMessageGasLimit,
-  handleNonceRequest,
-  handleNonceRequestWrapper,
-  resetTransactionState,
-  handleSendEverything
-} from './sagas';
-import { validateInput, rebaseUserInput } from './helpers';
+import * as walletSelectors from 'features/wallet/selectors';
+import * as scheduleActions from 'features/schedule/actions';
+import * as scheduleSelectors from 'features/schedule/selectors';
+import * as notificationsActions from 'features/notifications/actions';
+import * as transactionFieldsTypes from './fields/types';
+import * as transactionFieldsActions from './fields/actions';
+import * as transactionFieldsSelectors from './fields/selectors';
+import * as transactionMetaActions from './meta/actions';
+import * as transactionMetaSelectors from './meta/selectors';
+import * as transactionNetworkTypes from './network/types';
+import * as transactionNetworkActions from './network/actions';
+import * as transactionSignActions from './sign/actions';
+import * as types from './types';
+import * as actions from './actions';
+import * as transactionSelectors from './selectors';
+import * as sagas from './sagas';
+import * as helpers from './helpers';
 
 /* tslint:disable */
 import './selectors'; //throws if not imported
@@ -136,10 +82,10 @@ describe('transaction: Sagas', () => {
       };
       const txHash = 'txHash';
 
-      const gen = broadcastLocalTransactionHandler(signedTx);
+      const gen = sagas.broadcastLocalTransactionHandler(signedTx);
 
       it('should select getNodeLib', () => {
-        expect(gen.next().value).toEqual(select(getNodeLib));
+        expect(gen.next().value).toEqual(select(configNodesSelectors.getNodeLib));
       });
 
       it('should apply node.sendRawTx', () => {
@@ -165,10 +111,10 @@ describe('transaction: Sagas', () => {
       const networkConfig = { id: 'ETH' };
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(broadcastWeb3TransactionHandler)(tx);
+      gens.gen = cloneableGenerator(sagas.broadcastWeb3TransactionHandler)(tx);
 
       it('should select getWalletInst', () => {
-        expect(gens.gen.next().value).toEqual(select(getWalletInst));
+        expect(gens.gen.next().value).toEqual(select(walletSelectors.getWalletInst));
       });
 
       it('should throw if not a web3 wallet', () => {
@@ -215,10 +161,12 @@ describe('transaction: Sagas', () => {
           payload: raw
         };
 
-        data.validEthGen = setCurrentToSaga(ethAddrAction);
+        data.validEthGen = sagas.setCurrentToSaga(ethAddrAction);
 
         it('should select getIsValidAddressFn', () => {
-          expect(data.validEthGen.next().value).toEqual(select(getIsValidAddressFn));
+          expect(data.validEthGen.next().value).toEqual(
+            select(configSelectors.getIsValidAddressFn)
+          );
         });
 
         it('should call isValidAddress', () => {
@@ -230,7 +178,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should call setField', () => {
-          expect(data.validEthGen.next(raw).value).toEqual(call(setField, ethAddrPayload));
+          expect(data.validEthGen.next(raw).value).toEqual(call(sagas.setField, ethAddrPayload));
         });
       });
 
@@ -245,10 +193,12 @@ describe('transaction: Sagas', () => {
         const ensAddrAction: any = {
           payload: raw
         };
-        data.validEnsGen = setCurrentToSaga(ensAddrAction);
+        data.validEnsGen = sagas.setCurrentToSaga(ensAddrAction);
 
         it('should select getIsValidAddressFn', () => {
-          expect(data.validEnsGen.next().value).toEqual(select(getIsValidAddressFn));
+          expect(data.validEnsGen.next().value).toEqual(
+            select(configSelectors.getIsValidAddressFn)
+          );
         });
 
         it('should call isValidAddress', () => {
@@ -260,11 +210,13 @@ describe('transaction: Sagas', () => {
         });
 
         it('should call setField', () => {
-          expect(data.validEnsGen.next(true).value).toEqual(call(setField, ensAddrPayload));
+          expect(data.validEnsGen.next(true).value).toEqual(call(sagas.setField, ensAddrPayload));
         });
 
         it('should put resolveDomainRequested', () => {
-          expect(data.validEnsGen.next().value).toEqual(put(resolveDomainRequested(domain)));
+          expect(data.validEnsGen.next().value).toEqual(
+            put(ensActions.resolveDomainRequested(domain))
+          );
         });
 
         it('should take ENS type keys', () => {
@@ -278,12 +230,14 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getResolvedAddress', () => {
-          expect(data.validEnsGen.next().value).toEqual(select(getResolvedAddress, true));
+          expect(data.validEnsGen.next().value).toEqual(
+            select(ensSelectors.getResolvedAddress, true)
+          );
         });
 
         it('should call setField', () => {
           expect(data.validEnsGen.next(resolvedAddress).value).toEqual(
-            call(setField, { raw, value: Address(resolvedAddress) })
+            call(sagas.setField, { raw, value: Address(resolvedAddress) })
           );
         });
       });
@@ -295,7 +249,7 @@ describe('transaction: Sagas', () => {
         raw,
         value: Address(raw)
       };
-      const etherTransaction = cloneableGenerator(setField)(payload);
+      const etherTransaction = cloneableGenerator(sagas.setField)(payload);
       it('should select etherTransaction', () => {
         expect(etherTransaction.next().value).toEqual(select(selectors.isEtherTransaction));
       });
@@ -303,11 +257,15 @@ describe('transaction: Sagas', () => {
       it('should put setTokenTo field if its a token transaction ', () => {
         const tokenTransaction = etherTransaction.clone();
 
-        expect(tokenTransaction.next(false).value).toEqual(put(setTokenTo(payload)));
+        expect(tokenTransaction.next(false).value).toEqual(
+          put(transactionMetaActions.setTokenTo(payload))
+        );
         expect(tokenTransaction.next().done).toBe(true);
       });
       it('should put setToField if its an etherTransaction', () => {
-        expect(etherTransaction.next(true).value).toEqual(put(setToField(payload)));
+        expect(etherTransaction.next(true).value).toEqual(
+          put(transactionFieldsActions.setToField(payload))
+        );
         expect(etherTransaction.next().done).toBe(true);
       });
     });
@@ -315,7 +273,7 @@ describe('transaction: Sagas', () => {
     describe('valueHandler', () => {
       const action: any = { payload: '5.1' };
       const zeroAction: any = { payload: '0' };
-      const setter = setValueField;
+      const setter = transactionFieldsActions.setValueField;
       const decimal = 1;
       const gen: { [key: string]: SagaIteratorClone } = {};
 
@@ -328,27 +286,32 @@ describe('transaction: Sagas', () => {
         invalidZeroToken: {
           unit: 'GNT',
           isEth: false,
-          setter: setTokenValue
+          setter: transactionMetaActions.setTokenValue
         }
       };
 
-      gen.pass = cloneableGenerator(valueHandler)(action, setter);
-      gen.zeroPass = cloneableGenerator(valueHandler)(zeroAction, setter);
-      gen.invalidNumber = cloneableGenerator(valueHandler)(
+      gen.pass = cloneableGenerator(sagas.valueHandler)(action, setter);
+      gen.zeroPass = cloneableGenerator(sagas.valueHandler)(zeroAction, setter);
+      gen.invalidNumber = cloneableGenerator(sagas.valueHandler)(
         failCases.invalidNumber.action as any,
         setter
       );
-      gen.invalidZeroToken = cloneableGenerator(valueHandler)(zeroAction, setTokenValue);
+      gen.invalidZeroToken = cloneableGenerator(sagas.valueHandler)(
+        zeroAction,
+        transactionMetaActions.setTokenValue
+      );
       const value = toTokenBase(action.payload, decimal);
       const zeroValue = toTokenBase(zeroAction.payload, decimal);
       const unit = 'eth';
       const isEth = true;
 
       it('should select getDecimal', () => {
-        expect(gen.pass.next().value).toEqual(select(getDecimal));
-        expect(gen.zeroPass.next().value).toEqual(select(getDecimal));
-        expect(gen.invalidNumber.next().value).toEqual(select(getDecimal));
-        expect(gen.invalidZeroToken.next().value).toEqual(select(getDecimal));
+        expect(gen.pass.next().value).toEqual(select(transactionMetaSelectors.getDecimal));
+        expect(gen.zeroPass.next().value).toEqual(select(transactionMetaSelectors.getDecimal));
+        expect(gen.invalidNumber.next().value).toEqual(select(transactionMetaSelectors.getDecimal));
+        expect(gen.invalidZeroToken.next().value).toEqual(
+          select(transactionMetaSelectors.getDecimal)
+        );
       });
 
       it('should select getUnit', () => {
@@ -388,8 +351,10 @@ describe('transaction: Sagas', () => {
       });
 
       it('should call isValid', () => {
-        expect(gen.pass.next(isEth).value).toEqual(call(validateInput, value, unit));
-        expect(gen.zeroPass.next(isEth).value).toEqual(call(validateInput, zeroValue, unit));
+        expect(gen.pass.next(isEth).value).toEqual(call(helpers.validateInput, value, unit));
+        expect(gen.zeroPass.next(isEth).value).toEqual(
+          call(helpers.validateInput, zeroValue, unit)
+        );
       });
 
       it('should put setter', () => {
@@ -411,9 +376,9 @@ describe('transaction: Sagas', () => {
             payload: '.1'
           }
         };
-        const g = cloneableGenerator(valueHandler)(leadZeroValue.action as any, setter);
+        const g = cloneableGenerator(sagas.valueHandler)(leadZeroValue.action as any, setter);
 
-        expect(g.next().value).toEqual(select(getDecimal));
+        expect(g.next().value).toEqual(select(transactionMetaSelectors.getDecimal));
         expect(g.next(leadZeroValue.decimal).value).toEqual(select(selectors.getUnit));
         expect(g.next(unit).value).toEqual(select(selectors.isEtherTransaction));
         expect(g.next(isEth).value).not.toEqual(
@@ -427,13 +392,13 @@ describe('transaction: Sagas', () => {
 
     describe('setCurrentValue*', () => {
       const action: any = { payload: '5' };
-      const gen = setCurrentValueSaga(action);
+      const gen = sagas.setCurrentValueSaga(action);
       it('should select isEtherTransaction', () => {
         expect(gen.next().value).toEqual(select(selectors.isEtherTransaction));
       });
       it('should call valueHandler', () => {
         expect(gen.next(selectors.isEtherTransaction).value).toEqual(
-          call(valueHandler, action, setValueField)
+          call(sagas.valueHandler, action, transactionFieldsActions.setValueField)
         );
       });
       itShouldBeDone(gen);
@@ -455,7 +420,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should call reparseCurrentValue', () => {
-          expect(gen.next(currVal).value).toEqual(call(reparseCurrentValue, currVal));
+          expect(gen.next(currVal).value).toEqual(call(sagas.reparseCurrentValue, currVal));
         });
 
         it('should select getUnit', () => {
@@ -469,14 +434,14 @@ describe('transaction: Sagas', () => {
           raw: 'raw1'
         };
         const reparsedValue = false;
-        const gen = revalidateCurrentValue();
+        const gen = sagas.revalidateCurrentValue();
 
         sharedLogic(gen, etherTransaction, currVal, reparsedValue);
 
         it('should put with setTokenValue', () => {
           expect(gen.next().value).toEqual(
             put(
-              setTokenValue({
+              transactionMetaActions.setTokenValue({
                 raw: currVal.raw,
                 value: null
               })
@@ -498,17 +463,19 @@ describe('transaction: Sagas', () => {
         };
         const unit = 'unit';
         const isValid = true;
-        const gen = revalidateCurrentValue();
+        const gen = sagas.revalidateCurrentValue();
         sharedLogic(gen, etherTransaction, currVal, reparsedValue);
 
         it('should call validateInput', () => {
-          expect(gen.next(unit).value).toEqual(call(validateInput, reparsedValue.value, unit));
+          expect(gen.next(unit).value).toEqual(
+            call(helpers.validateInput, reparsedValue.value, unit)
+          );
         });
 
         it('should put setValueField', () => {
           expect(gen.next(isValid).value).toEqual(
             put(
-              setValueField({
+              transactionFieldsActions.setValueField({
                 raw: reparsedValue.raw,
                 value: reparsedValue.value
               } as any)
@@ -524,25 +491,25 @@ describe('transaction: Sagas', () => {
       it('should be truthy when raw differs', () => {
         const curVal: selectors.ICurrentValue = { raw: 'a', value: new BN(0) };
         const newVal: selectors.ICurrentValue = { raw: 'b', value: new BN(0) };
-        expect(isValueDifferent(curVal, newVal)).toBeTruthy();
+        expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
 
       it('should be falsy when value is the same BN', () => {
         const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
         const newVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
-        expect(isValueDifferent(curVal, newVal)).toBeFalsy();
+        expect(sagas.isValueDifferent(curVal, newVal)).toBeFalsy();
       });
 
       it('should be truthy when value is a different BN', () => {
         const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
         const newVal: selectors.ICurrentValue = { raw: '', value: new BN(2) };
-        expect(isValueDifferent(curVal, newVal)).toBeTruthy();
+        expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
 
       it('should be truthy when value is not the same and not both BNs', () => {
         const curVal: selectors.ICurrentValue = { raw: '', value: new BN(1) };
         const newVal: selectors.ICurrentValue = { raw: '', value: null };
-        expect(isValueDifferent(curVal, newVal)).toBeTruthy();
+        expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
     });
 
@@ -555,7 +522,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getDecimal', () => {
-          expect(gen.next(isEth).value).toEqual(select(getDecimal));
+          expect(gen.next(isEth).value).toEqual(select(transactionMetaSelectors.getDecimal));
         });
       };
 
@@ -563,7 +530,7 @@ describe('transaction: Sagas', () => {
         const value: any = {
           raw: '100.0000'
         };
-        const gen = reparseCurrentValue(value);
+        const gen = sagas.reparseCurrentValue(value);
 
         sharedLogic(gen, true);
 
@@ -581,7 +548,7 @@ describe('transaction: Sagas', () => {
         const value: any = {
           raw: '0'
         };
-        const gen = reparseCurrentValue(value);
+        const gen = sagas.reparseCurrentValue(value);
 
         sharedLogic(gen, true);
 
@@ -599,7 +566,7 @@ describe('transaction: Sagas', () => {
         const value: any = {
           raw: 'invalidNumber'
         };
-        const gen = reparseCurrentValue(value);
+        const gen = sagas.reparseCurrentValue(value);
 
         sharedLogic(gen, true);
 
@@ -614,7 +581,7 @@ describe('transaction: Sagas', () => {
         const value: any = {
           raw: '0'
         };
-        const gen = reparseCurrentValue(value);
+        const gen = sagas.reparseCurrentValue(value);
 
         sharedLogic(gen, false);
 
@@ -639,7 +606,7 @@ describe('transaction: Sagas', () => {
       const validData = true;
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(handleDataInput)(action);
+      gens.gen = cloneableGenerator(sagas.handleDataInput)(action);
 
       it('should put call isValidHex with payload', () => {
         expect(gens.gen.next().value).toEqual(call(isValidHex, payload));
@@ -649,7 +616,7 @@ describe('transaction: Sagas', () => {
         gens.clone = gens.gen.clone();
         expect(gens.clone.next(!validData).value).toEqual(
           put(
-            setDataField({
+            transactionFieldsActions.setDataField({
               raw: payload,
               value: null
             })
@@ -660,7 +627,7 @@ describe('transaction: Sagas', () => {
       it('should put setDataField with parsed value', () => {
         expect(gens.gen.next(validData).value).toEqual(
           put(
-            setDataField({
+            transactionFieldsActions.setDataField({
               raw: payload,
               value: Data(payload)
             })
@@ -676,7 +643,7 @@ describe('transaction: Sagas', () => {
       const action: any = { payload };
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(handleGasLimitInput)(action);
+      gens.gen = cloneableGenerator(sagas.handleGasLimitInput)(action);
 
       it('should call gasLimitValidator', () => {
         expect(gens.gen.next().value).toEqual(call(gasLimitValidator, payload));
@@ -686,7 +653,7 @@ describe('transaction: Sagas', () => {
         gens.gen.invalid = gens.gen.clone();
         expect(gens.gen.invalid.next(false).value).toEqual(
           put(
-            setGasLimitField({
+            transactionFieldsActions.setGasLimitField({
               raw: payload,
               value: null
             })
@@ -698,7 +665,7 @@ describe('transaction: Sagas', () => {
         gens.gen.valid = gens.gen.clone();
         expect(gens.gen.valid.next(true).value).toEqual(
           put(
-            setGasLimitField({
+            transactionFieldsActions.setGasLimitField({
               raw: payload,
               value: Wei(payload)
             })
@@ -718,7 +685,7 @@ describe('transaction: Sagas', () => {
       const priceFloat = parseFloat(payload);
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(handleGasPriceInput)(action);
+      gens.gen = cloneableGenerator(sagas.handleGasPriceInput)(action);
 
       it('should call gasPriceValidator', () => {
         expect(gens.gen.next().value).toEqual(call(gasPriceValidator, priceFloat));
@@ -728,7 +695,7 @@ describe('transaction: Sagas', () => {
         gens.gen.invalid = gens.gen.clone();
         expect(gens.gen.invalid.next(false).value).toEqual(
           put(
-            setGasPriceField({
+            transactionFieldsActions.setGasPriceField({
               raw: payload,
               value: new BN(0)
             })
@@ -740,7 +707,7 @@ describe('transaction: Sagas', () => {
         gens.gen.valid = gens.gen.clone();
         expect(gens.gen.valid.next(true).value).toEqual(
           put(
-            setGasPriceField({
+            transactionFieldsActions.setGasPriceField({
               raw: payload,
               value: gasPriceToBase(priceFloat)
             })
@@ -757,13 +724,13 @@ describe('transaction: Sagas', () => {
     describe('handleGasPriceInputIntent*', () => {
       const payload = '100.111';
       const action: any = { payload };
-      const gen = handleGasPriceInputIntent(action);
+      const gen = sagas.handleGasPriceInputIntent(action);
       it('should call delay', () => {
         expect(gen.next().value).toEqual(call(delay, 300));
       });
 
       it('should put inputGasPrice', () => {
-        expect(gen.next().value).toEqual(put(inputGasPrice(payload)));
+        expect(gen.next().value).toEqual(put(transactionFieldsActions.inputGasPrice(payload)));
       });
     });
 
@@ -773,7 +740,7 @@ describe('transaction: Sagas', () => {
       const validNonce = true;
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(handleNonceInput)(action);
+      gens.gen = cloneableGenerator(sagas.handleNonceInput)(action);
 
       it('should put call isValidNonce with payload', () => {
         expect(gens.gen.next().value).toEqual(call(isValidNonce, payload));
@@ -783,7 +750,7 @@ describe('transaction: Sagas', () => {
         gens.clone = gens.gen.clone();
         expect(gens.clone.next(!validNonce).value).toEqual(
           put(
-            setNonceField({
+            transactionFieldsActions.setNonceField({
               raw: payload,
               value: null
             })
@@ -794,7 +761,7 @@ describe('transaction: Sagas', () => {
       it('should put setDataField with parsed value', () => {
         expect(gens.gen.next(validNonce).value).toEqual(
           put(
-            setNonceField({
+            transactionFieldsActions.setNonceField({
               raw: payload,
               value: Nonce(payload)
             })
@@ -827,10 +794,10 @@ describe('transaction: Sagas', () => {
         const data: any = 'data';
 
         const gens: any = {};
-        gens.gen = cloneableGenerator(handleTokenTo)(action);
+        gens.gen = cloneableGenerator(sagas.handleTokenTo)(action);
 
         it('should select getTokenValue', () => {
-          expect(gens.gen.next().value).toEqual(select(getTokenValue));
+          expect(gens.gen.next().value).toEqual(select(transactionMetaSelectors.getTokenValue));
         });
 
         it('should return if !tokenValue.value', () => {
@@ -847,7 +814,7 @@ describe('transaction: Sagas', () => {
         it('should put setDataField', () => {
           expect(gens.gen.next(data).value).toEqual(
             put(
-              setDataField({
+              transactionFieldsActions.setDataField({
                 raw: bufferToHex(data),
                 value: data
               })
@@ -873,15 +840,15 @@ describe('transaction: Sagas', () => {
         };
 
         const gens: any = {};
-        gens.gen = cloneableGenerator(handleTokenValue)(action);
+        gens.gen = cloneableGenerator(sagas.handleTokenValue)(action);
 
         it('should select getTokenTo', () => {
-          expect(gens.gen.next().value).toEqual(select(getTokenTo));
+          expect(gens.gen.next().value).toEqual(select(transactionMetaSelectors.getTokenTo));
         });
 
         it('should select getData', () => {
           gens.clone1 = gens.gen.clone();
-          expect(gens.gen.next(tokenTo).value).toEqual(select(getData));
+          expect(gens.gen.next(tokenTo).value).toEqual(select(transactionFieldsSelectors.getData));
         });
 
         it('should return if !tokenTo.value', () => {
@@ -898,7 +865,7 @@ describe('transaction: Sagas', () => {
         it('should put setDataField', () => {
           gens.clone2 = gens.gen.clone();
           expect(gens.gen.next(data).value).toEqual(
-            put(setDataField({ raw: bufferToHex(data), value: data }))
+            put(transactionFieldsActions.setDataField({ raw: bufferToHex(data), value: data }))
           );
         });
 
@@ -927,16 +894,18 @@ describe('transaction: Sagas', () => {
           currUnitIsNetworkUnit: boolean
         ) => {
           it('should select getPreviousUnit', () => {
-            expect(gen.next().value).toEqual(select(getPreviousUnit));
+            expect(gen.next().value).toEqual(select(transactionSelectors.getPreviousUnit));
           });
 
           it('should check if prevUnit is a network unit', () => {
-            expect(gen.next(previousUnit).value).toEqual(select(isNetworkUnit, previousUnit));
+            expect(gen.next(previousUnit).value).toEqual(
+              select(configSelectors.isNetworkUnit, previousUnit)
+            );
           });
 
           it('should check if currUnit is a network unit', () => {
             expect(gen.next(prevUnitIsNetworkUnit).value).toEqual(
-              select(isNetworkUnit, currentUnit)
+              select(configSelectors.isNetworkUnit, currentUnit)
             );
           });
 
@@ -953,7 +922,7 @@ describe('transaction: Sagas', () => {
           const action: any = {
             payload: currentUnit
           };
-          const gen = handleSetUnitMeta(action);
+          const gen = sagas.handleSetUnitMeta(action);
 
           expectedStart(gen, previousUnit, currentUnit, true, true);
 
@@ -975,30 +944,32 @@ describe('transaction: Sagas', () => {
           const tokenValue: any = 'tokenValue';
           const raw = 'raw';
           const value: any = 'value';
-          const gen = handleSetUnitMeta(action);
+          const gen = sagas.handleSetUnitMeta(action);
 
           expectedStart(gen, previousUnit, currentUnit, false, true);
 
           it('should select getTokenTo', () => {
-            expect(gen.next(decimal).value).toEqual(select(getTokenTo));
+            expect(gen.next(decimal).value).toEqual(select(transactionMetaSelectors.getTokenTo));
           });
 
           it('should select getTokenValue', () => {
-            expect(gen.next(tokenTo).value).toEqual(select(getTokenValue));
+            expect(gen.next(tokenTo).value).toEqual(select(transactionMetaSelectors.getTokenValue));
           });
 
           it('should call rebaseUserInput with tokenValue', () => {
-            expect(gen.next(tokenValue).value).toEqual(call(rebaseUserInput, tokenValue));
+            expect(gen.next(tokenValue).value).toEqual(call(helpers.rebaseUserInput, tokenValue));
           });
 
           it('should call validateInput with value and currentUnit', () => {
-            expect(gen.next({ value, raw }).value).toEqual(call(validateInput, value, currentUnit));
+            expect(gen.next({ value, raw }).value).toEqual(
+              call(helpers.validateInput, value, currentUnit)
+            );
           });
 
           it('should put swapTokenToEther', () => {
             expect(gen.next(true).value).toEqual(
               put(
-                swapTokenToEther({
+                actions.swapTokenToEther({
                   to: tokenTo,
                   value: {
                     raw,
@@ -1034,17 +1005,17 @@ describe('transaction: Sagas', () => {
             isValid: boolean
           ) => {
             it('should call rebaseUserInput with input', () => {
-              expect(gen.next(input).value).toEqual(call(rebaseUserInput, input as any));
+              expect(gen.next(input).value).toEqual(call(helpers.rebaseUserInput, input as any));
             });
 
             it('should call validateInput with value and currentUnit', () => {
               expect(gen.next({ raw, value }).value).toEqual(
-                call(validateInput, value, currentUnit)
+                call(helpers.validateInput, value, currentUnit)
               );
             });
 
             it('should select getTo', () => {
-              expect(gen.next(isValid).value).toEqual(select(getTo));
+              expect(gen.next(isValid).value).toEqual(select(transactionFieldsSelectors.getTo));
             });
           };
 
@@ -1088,14 +1059,16 @@ describe('transaction: Sagas', () => {
             const to = { value: value.toBuffer() };
 
             const gens: any = {};
-            gens.gen = cloneableGenerator(handleSetUnitMeta)(action);
+            gens.gen = cloneableGenerator(sagas.handleSetUnitMeta)(action);
 
             expectedStart(gens.gen, previousUnit, currentUnit, true, false);
 
             sharedLogicA(gens.gen, decimal, currentUnit);
 
             it('should select getValue', () => {
-              expect(gens.gen.next(currentToken).value).toEqual(select(getValue));
+              expect(gens.gen.next(currentToken).value).toEqual(
+                select(transactionFieldsSelectors.getValue)
+              );
             });
 
             sharedLogicB(gens.gen, input, raw, value, currentUnit, isValid);
@@ -1103,7 +1076,7 @@ describe('transaction: Sagas', () => {
             it('should put setSchedulingToogle', () => {
               expect(gens.gen.next(to).value).toEqual(
                 put(
-                  setSchedulingToggle({
+                  scheduleActions.setSchedulingToggle({
                     value: false
                   })
                 )
@@ -1121,7 +1094,7 @@ describe('transaction: Sagas', () => {
                 to
               );
 
-              expect(gens.gen.next(to).value).toEqual(put(swapEtherToToken(payload)));
+              expect(gens.gen.next(to).value).toEqual(put(actions.swapEtherToToken(payload)));
             });
 
             itShouldBeDone(gens.gen);
@@ -1145,20 +1118,22 @@ describe('transaction: Sagas', () => {
             const tokenTo = { value: '0xb' };
 
             const gens: any = {};
-            gens.gen = cloneableGenerator(handleSetUnitMeta)(action);
+            gens.gen = cloneableGenerator(sagas.handleSetUnitMeta)(action);
 
             expectedStart(gens.gen, previousUnit, currentUnit, false, false);
 
             sharedLogicA(gens.gen, decimal, currentUnit);
 
             it('should select getTokenValue', () => {
-              expect(gens.gen.next(currentToken).value).toEqual(select(getTokenValue));
+              expect(gens.gen.next(currentToken).value).toEqual(
+                select(transactionMetaSelectors.getTokenValue)
+              );
             });
 
             sharedLogicB(gens.gen, input, raw, value, currentUnit, isValid);
 
             it('should select getTokenTo', () => {
-              expect(gens.gen.next(to).value).toEqual(select(getTokenTo));
+              expect(gens.gen.next(to).value).toEqual(select(transactionMetaSelectors.getTokenTo));
             });
 
             it('should put swapEtherToToken', () => {
@@ -1170,7 +1145,7 @@ describe('transaction: Sagas', () => {
                 value,
                 decimal
               );
-              expect(gens.gen.next(tokenTo).value).toEqual(put(swapTokenToToken(payload)));
+              expect(gens.gen.next(tokenTo).value).toEqual(put(actions.swapTokenToToken(payload)));
             });
 
             itShouldBeDone(gens.gen);
@@ -1187,7 +1162,7 @@ describe('transaction: Sagas', () => {
         };
         const fromAddress = '0xa';
         const gens: any = {};
-        gens.gen = cloneableGenerator(handleFromRequest)();
+        gens.gen = cloneableGenerator(sagas.handleFromRequest)();
         let random: () => number;
 
         beforeAll(() => {
@@ -1200,15 +1175,20 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getWalletInst', () => {
-          expect(gens.gen.next().value).toEqual(select(getWalletInst));
+          expect(gens.gen.next().value).toEqual(select(walletSelectors.getWalletInst));
         });
 
         it('should handle errors as expected', () => {
           gens.clone = gens.gen.clone();
           expect(gens.clone.next(false).value).toEqual(
-            put(showNotification('warning', 'Your wallets address could not be fetched'))
+            put(
+              notificationsActions.showNotification(
+                'warning',
+                'Your wallets address could not be fetched'
+              )
+            )
           );
-          expect(gens.clone.next().value).toEqual(put(getFromFailed()));
+          expect(gens.clone.next().value).toEqual(put(transactionNetworkActions.getFromFailed()));
           expect(gens.clone.next().done).toEqual(true);
         });
 
@@ -1219,7 +1199,9 @@ describe('transaction: Sagas', () => {
         });
 
         it('should put getFromSucceeded', () => {
-          expect(gens.gen.next(fromAddress).value).toEqual(put(getFromSucceeded(fromAddress)));
+          expect(gens.gen.next(fromAddress).value).toEqual(
+            put(transactionNetworkActions.getFromSucceeded(fromAddress))
+          );
         });
       });
     });
@@ -1242,24 +1224,24 @@ describe('transaction: Sagas', () => {
           ...rest
         };
         const action: any = {
-          type: TRANSACTION_FIELDS.TO_FIELD_SET,
+          type: transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
           payload: {
             value: 'value',
             raw: 'raw'
           }
         };
 
-        const gen = shouldEstimateGas();
+        const gen = sagas.shouldEstimateGas();
 
         it('should take expected types', () => {
           expect(gen.next().value).toEqual(
             take([
-              TRANSACTION_FIELDS.TO_FIELD_SET,
-              TRANSACTION_FIELDS.VALUE_FIELD_SET,
-              TRANSACTION_FIELDS.DATA_FIELD_SET,
-              TRANSACTION.ETHER_TO_TOKEN_SWAP,
-              TRANSACTION.TOKEN_TO_TOKEN_SWAP,
-              TRANSACTION.TOKEN_TO_ETHER_SWAP,
+              transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
+              transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
+              transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
+              types.TransactionActions.ETHER_TO_TOKEN_SWAP,
+              types.TransactionActions.TOKEN_TO_TOKEN_SWAP,
+              types.TransactionActions.TOKEN_TO_ETHER_SWAP,
               configMetaTypes.CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
             ])
           );
@@ -1290,7 +1272,9 @@ describe('transaction: Sagas', () => {
         });
 
         it('should put estimatedGasRequested with rest', () => {
-          expect(gen.next(transactionFields).value).toEqual(put(estimateGasRequested(rest)));
+          expect(gen.next(transactionFields).value).toEqual(
+            put(transactionNetworkActions.estimateGasRequested(rest))
+          );
         });
       });
 
@@ -1325,7 +1309,7 @@ describe('transaction: Sagas', () => {
         };
 
         const gens: { [name: string]: any } = {};
-        gens.successCase = cloneableGenerator(estimateGas)();
+        gens.successCase = cloneableGenerator(sagas.estimateGas)();
 
         let random: () => number;
         beforeAll(() => {
@@ -1339,7 +1323,10 @@ describe('transaction: Sagas', () => {
 
         it('should yield actionChannel', () => {
           const expected = JSON.stringify(
-            actionChannel(TRANSACTION_NETWORK.ESTIMATE_GAS_REQUESTED, buffers.sliding(1))
+            actionChannel(
+              transactionNetworkTypes.TransactionNetworkActions.ESTIMATE_GAS_REQUESTED,
+              buffers.sliding(1)
+            )
           );
           const result = JSON.stringify(gens.successCase.next().value);
           expect(expected).toEqual(result);
@@ -1366,11 +1353,11 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getNodeLib', () => {
-          expect(gens.successCase.next().value).toEqual(select(getNodeLib));
+          expect(gens.successCase.next().value).toEqual(select(configNodesSelectors.getNodeLib));
         });
 
         it('should select getWalletInst', () => {
-          expect(gens.successCase.next(node).value).toEqual(select(getWalletInst));
+          expect(gens.successCase.next(node).value).toEqual(select(walletSelectors.getWalletInst));
         });
 
         it('should apply walletInst', () => {
@@ -1392,7 +1379,7 @@ describe('transaction: Sagas', () => {
         it('should select isSchedulingEnabled', () => {
           gens.timeOutCase = gens.successCase.clone();
           expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
-            select(isSchedulingEnabled)
+            select(scheduleSelectors.isSchedulingEnabled)
           );
         });
 
@@ -1400,42 +1387,46 @@ describe('transaction: Sagas', () => {
           gens.scheduleCase = gens.successCase.clone();
           const notScheduling = null as any;
           expect(gens.successCase.next(notScheduling).value).toEqual(
-            put(setGasLimitField(gasSetOptions))
+            put(transactionFieldsActions.setGasLimitField(gasSetOptions))
           );
         });
 
         it('should put setScheduleGasLimitField', () => {
           const scheduling = { value: true } as any;
           expect(gens.scheduleCase.next(scheduling).value).toEqual(
-            put(setScheduleGasLimitField(gasSetOptions))
+            put(scheduleActions.setScheduleGasLimitField(gasSetOptions))
           );
         });
 
         it('should put estimateGasSucceeded', () => {
-          expect(gens.successCase.next().value).toEqual(put(estimateGasSucceeded()));
+          expect(gens.successCase.next().value).toEqual(
+            put(transactionNetworkActions.estimateGasSucceeded())
+          );
         });
 
         describe('when it times out', () => {
           it('should put estimateGasTimedout ', () => {
             expect(gens.timeOutCase.next(unsuccessfulGasEstimationResult).value).toEqual(
-              put(estimateGasTimedout())
+              put(transactionNetworkActions.estimateGasTimedout())
             );
           });
           it('should call localGasEstimation', () => {
-            expect(gens.timeOutCase.next(estimateGasFailed()).value).toEqual(
-              call(localGasEstimation, payload)
-            );
+            expect(
+              gens.timeOutCase.next(transactionNetworkActions.estimateGasFailed()).value
+            ).toEqual(call(sagas.localGasEstimation, payload));
           });
         });
 
         describe('when it throws', () => {
           it('should catch and put estimateGasFailed', () => {
-            expect(gens.failCase.throw().value).toEqual(put(estimateGasFailed()));
+            expect(gens.failCase.throw().value).toEqual(
+              put(transactionNetworkActions.estimateGasFailed())
+            );
           });
 
           it('should call localGasEstimation', () => {
-            expect(gens.failCase.next(estimateGasFailed()).value).toEqual(
-              call(localGasEstimation, payload)
+            expect(gens.failCase.next(transactionNetworkActions.estimateGasFailed()).value).toEqual(
+              call(sagas.localGasEstimation, payload)
             );
           });
         });
@@ -1451,7 +1442,7 @@ describe('transaction: Sagas', () => {
         };
         const gasLimit = Wei('100');
 
-        const gen = localGasEstimation(payload);
+        const gen = sagas.localGasEstimation(payload);
         it('should call makeTransaction with payload', () => {
           expect(gen.next().value).toEqual(call(makeTransaction, payload));
         });
@@ -1463,7 +1454,7 @@ describe('transaction: Sagas', () => {
         it('should put setGasLimitField', () => {
           expect(gen.next(gasLimit).value).toEqual(
             put(
-              setGasLimitField({
+              transactionFieldsActions.setGasLimitField({
                 raw: gasLimit.toString(),
                 value: gasLimit
               })
@@ -1473,7 +1464,7 @@ describe('transaction: Sagas', () => {
       });
 
       describe('setAddressMessageGasLimit*', () => {
-        const gens = cloneableGenerator(setAddressMessageGasLimit)();
+        const gens = cloneableGenerator(sagas.setAddressMessageGasLimit)();
         const gen = gens.clone();
         let noAutoGen: SagaIteratorClone;
         let noMessageGen: SagaIteratorClone;
@@ -1495,7 +1486,7 @@ describe('transaction: Sagas', () => {
           noMessageGen = gen.clone();
           expect(gen.next(addressMessage).value).toEqual(
             put(
-              setGasLimitField({
+              transactionFieldsActions.setGasLimitField({
                 raw: addressMessage.gasLimit.toString(),
                 value: new BN(addressMessage.gasLimit)
               })
@@ -1527,7 +1518,7 @@ describe('transaction: Sagas', () => {
         const base10Nonce = Nonce(retrievedNonce);
 
         const gens: any = {};
-        gens.gen = cloneableGenerator(handleNonceRequest)();
+        gens.gen = cloneableGenerator(sagas.handleNonceRequest)();
         let random: () => number;
 
         beforeAll(() => {
@@ -1540,11 +1531,11 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getNodeLib', () => {
-          expect(gens.gen.next().value).toEqual(select(getNodeLib));
+          expect(gens.gen.next().value).toEqual(select(configNodesSelectors.getNodeLib));
         });
 
         it('should select getWalletInstance', () => {
-          expect(gens.gen.next(nodeLib).value).toEqual(select(getWalletInst));
+          expect(gens.gen.next(nodeLib).value).toEqual(select(walletSelectors.getWalletInst));
         });
 
         it('should exit if being called without a wallet inst', () => {
@@ -1576,21 +1567,23 @@ describe('transaction: Sagas', () => {
 
         it('should put inputNonce', () => {
           expect(gens.gen.next(retrievedNonce).value).toEqual(
-            put(inputNonce(base10Nonce.toString()))
+            put(transactionFieldsActions.inputNonce(base10Nonce.toString()))
           );
         });
 
         it('should put getNonceSucceeded', () => {
-          expect(gens.gen.next().value).toEqual(put(getNonceSucceeded(retrievedNonce)));
+          expect(gens.gen.next().value).toEqual(
+            put(transactionNetworkActions.getNonceSucceeded(retrievedNonce))
+          );
         });
       });
 
       describe('handleNonceRequestWrapper*', () => {
-        const gen = handleNonceRequestWrapper();
+        const gen = sagas.handleNonceRequestWrapper();
         const nonceRequest = createMockTask();
 
         it('should fork handleNonceRequest', () => {
-          expect(gen.next().value).toEqual(fork(handleNonceRequest));
+          expect(gen.next().value).toEqual(fork(sagas.handleNonceRequest));
         });
 
         it('should take on WALLET_SET', () => {
@@ -1617,7 +1610,7 @@ describe('transaction: Sagas', () => {
       const signedTransaction = new Buffer('signedTransaction');
       const indexingHash = 'indexingHash';
 
-      const gen = signLocalTransactionHandler(action);
+      const gen = sagas.signLocalTransactionHandler(action);
 
       it('should apply wallet.signRawTransaction', () => {
         expect(gen.next().value).toEqual(apply(wallet, wallet.signRawTransaction, [tx]));
@@ -1632,7 +1625,7 @@ describe('transaction: Sagas', () => {
       it('should put signLocalTransactionSucceeded', () => {
         expect(gen.next(indexingHash).value).toEqual(
           put(
-            signLocalTransactionSucceeded({
+            transactionSignActions.signLocalTransactionSucceeded({
               signedTransaction,
               indexingHash,
               noVerify: false
@@ -1654,7 +1647,7 @@ describe('transaction: Sagas', () => {
       const serializedTransaction = new Buffer('tx');
       const indexingHash = 'indexingHash';
 
-      const gen = signWeb3TransactionHandler(action);
+      const gen = sagas.signWeb3TransactionHandler(action);
 
       it('should apply tx.serialize', () => {
         expect(gen.next().value).toEqual(apply(tx, tx.serialize));
@@ -1669,7 +1662,7 @@ describe('transaction: Sagas', () => {
       it('should put signWeb3TransactionSucceeded', () => {
         expect(gen.next(indexingHash).value).toEqual(
           put(
-            signWeb3TransactionSucceeded({
+            transactionSignActions.signWeb3TransactionSucceeded({
               transaction: serializedTransaction,
               indexingHash
             })
@@ -1692,7 +1685,7 @@ describe('transaction: Sagas', () => {
       const signedTransaction = new Buffer('signedTransaction');
       const indexingHash = 'indexingHash';
 
-      const gen = signLocalTransactionHandler(action);
+      const gen = sagas.signLocalTransactionHandler(action);
 
       it('should apply wallet.signRawTransaction', () => {
         expect(gen.next().value).toEqual(apply(wallet, wallet.signRawTransaction, [tx]));
@@ -1707,7 +1700,7 @@ describe('transaction: Sagas', () => {
       it('should put signLocalTransactionSucceeded', () => {
         expect(gen.next(indexingHash).value).toEqual(
           put(
-            signLocalTransactionSucceeded({
+            transactionSignActions.signLocalTransactionSucceeded({
               signedTransaction,
               indexingHash,
               noVerify: false
@@ -1729,7 +1722,7 @@ describe('transaction: Sagas', () => {
       const serializedTransaction = new Buffer('tx');
       const indexingHash = 'indexingHash';
 
-      const gen = signWeb3TransactionHandler(action);
+      const gen = sagas.signWeb3TransactionHandler(action);
 
       it('should apply tx.serialize', () => {
         expect(gen.next().value).toEqual(apply(tx, tx.serialize));
@@ -1744,7 +1737,7 @@ describe('transaction: Sagas', () => {
       it('should put signWeb3TransactionSucceeded', () => {
         expect(gen.next(indexingHash).value).toEqual(
           put(
-            signWeb3TransactionSucceeded({
+            transactionSignActions.signWeb3TransactionSucceeded({
               transaction: serializedTransaction,
               indexingHash
             })
@@ -1759,14 +1752,14 @@ describe('transaction: Sagas', () => {
   });
   describe('Reset', () => {
     describe('resetTransactionState*', () => {
-      const gen = resetTransactionState();
+      const gen = sagas.resetTransactionState();
 
       it('should check if this is a contract interaction tab', () => {
-        expect(gen.next().value).toEqual(select(isContractInteraction));
+        expect(gen.next().value).toEqual(select(transactionMetaSelectors.isContractInteraction));
       });
       it('should put resetActionCreator', () => {
         expect(gen.next(false).value).toEqual(
-          put(resetTransactionSuccessful({ isContractInteraction: false }))
+          put(transactionFieldsActions.resetTransactionSuccessful({ isContractInteraction: false }))
         );
       });
 
@@ -1797,7 +1790,7 @@ describe('transaction: Sagas', () => {
         });
 
         it('should select getEtherBalance', () => {
-          expect(gen.next(currentBalance).value).toEqual(select(getEtherBalance));
+          expect(gen.next(currentBalance).value).toEqual(select(walletSelectors.getEtherBalance));
         });
       };
 
@@ -1807,12 +1800,12 @@ describe('transaction: Sagas', () => {
         };
         const currentBalance = Wei('100');
         const etherBalance = null;
-        const gen = handleSendEverything();
+        const gen = sagas.handleSendEverything();
 
         sharedStart(gen, transactionObj, currentBalance);
 
         it('should put sendEverythingFailed', () => {
-          expect(gen.next(etherBalance).value).toEqual(put(sendEverythingFailed()));
+          expect(gen.next(etherBalance).value).toEqual(put(actions.sendEverythingFailed()));
         });
       });
 
@@ -1822,12 +1815,12 @@ describe('transaction: Sagas', () => {
         };
         const currentBalance = null;
         const etherBalance = Wei('100');
-        const gen = handleSendEverything();
+        const gen = sagas.handleSendEverything();
 
         sharedStart(gen, transactionObj, currentBalance);
 
         it('should put sendEverythingFailed', () => {
-          expect(gen.next(etherBalance).value).toEqual(put(sendEverythingFailed()));
+          expect(gen.next(etherBalance).value).toEqual(put(actions.sendEverythingFailed()));
         });
       });
 
@@ -1841,7 +1834,7 @@ describe('transaction: Sagas', () => {
         const etherTransaction = true;
 
         const gens: any = {};
-        gens.gen = cloneableGenerator(handleSendEverything)();
+        gens.gen = cloneableGenerator(sagas.handleSendEverything)();
         gens.clone1 = {};
         gens.clone2 = {};
 
@@ -1865,7 +1858,7 @@ describe('transaction: Sagas', () => {
           it('should put showNotification', () => {
             expect(gens.clone1.next(totalCost).value).toEqual(
               put(
-                showNotification(
+                notificationsActions.showNotification(
                   'warning',
                   `The cost of gas is higher than your balance. Total cost: ${totalCost} >  Your Ether balance: ${etherBalance}`
                 )
@@ -1874,11 +1867,13 @@ describe('transaction: Sagas', () => {
           });
 
           it('should put sendEverythingFailed', () => {
-            expect(gens.clone1.next().value).toEqual(put(sendEverythingFailed()));
+            expect(gens.clone1.next().value).toEqual(put(actions.sendEverythingFailed()));
           });
 
           it('should put setValueField', () => {
-            expect(gens.clone1.next().value).toEqual(put(setValueField({ raw: '0', value: null })));
+            expect(gens.clone1.next().value).toEqual(
+              put(transactionFieldsActions.setValueField({ raw: '0', value: null }))
+            );
           });
 
           it('should be done', () => {
@@ -1894,7 +1889,7 @@ describe('transaction: Sagas', () => {
           it('should put setValueField', () => {
             expect(gens.gen.next(totalCost).value).toEqual(
               put(
-                setValueField({
+                transactionFieldsActions.setValueField({
                   raw: rawVersion,
                   value: remainder
                 })
@@ -1903,7 +1898,7 @@ describe('transaction: Sagas', () => {
           });
 
           it('should put sendEverythingSucceeded', () => {
-            expect(gens.gen.next().value).toEqual(put(sendEverythingSucceeded()));
+            expect(gens.gen.next().value).toEqual(put(actions.sendEverythingSucceeded()));
           });
 
           it('should be done', () => {
@@ -1924,17 +1919,19 @@ describe('transaction: Sagas', () => {
           });
 
           it('should select getDecimal', () => {
-            expect(gens.clone2.next(totalCostLocal).value).toEqual(select(getDecimal));
+            expect(gens.clone2.next(totalCostLocal).value).toEqual(
+              select(transactionMetaSelectors.getDecimal)
+            );
           });
 
           it('should put setTokenValue', () => {
             expect(gens.clone2.next(decimal).value).toEqual(
-              put(setTokenValue({ raw: rawVersion, value: currentBalance }))
+              put(transactionMetaActions.setTokenValue({ raw: rawVersion, value: currentBalance }))
             );
           });
 
           it('should put sendEverythingSucceeded', () => {
-            expect(gens.clone2.next().value).toEqual(put(sendEverythingSucceeded()));
+            expect(gens.clone2.next().value).toEqual(put(actions.sendEverythingSucceeded()));
           });
 
           it('should be done', () => {

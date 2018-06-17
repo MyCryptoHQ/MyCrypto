@@ -50,144 +50,89 @@ import {
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { CONFIG_META, ToggleAutoGasLimitAction } from 'features/config/meta/types';
-import { getOffline, getAutoGasLimitEnabled } from 'features/config/meta/selectors';
-import { getNodeLib } from 'features/config/nodes/selectors';
-import { isNetworkUnit, getNetworkUnit } from 'features/config/selectors';
-import { getIsValidAddressFn } from 'features/config';
+import * as configNetworksSelectors from 'features/config/networks/selectors';
+import * as configMetaTypes from 'features/config/meta/types';
+import * as configMetaSelectors from 'features/config/meta/selectors';
+import * as configNodesSelectors from 'features/config/nodes/selectors';
+import * as configSelectors from 'features/config/selectors';
 import * as ensTypes from 'features/ens/types';
-import { resolveDomainRequested } from 'features/ens/actions';
-import { getResolvedAddress } from 'features/ens/selectors';
+import * as ensActions from 'features/ens/actions';
+import * as ensSelectors from 'features/ens/selectors';
 import * as walletTypes from 'features/wallet/types';
-import {
-  getWalletInst,
-  getEtherBalance,
-  getWalletType,
-  IWalletType
-} from 'features/wallet/selectors';
+import * as walletSelectors from 'features/wallet/selectors';
 import * as paritySignerTypes from 'features/paritySigner/types';
-import { requestTransactionSignature } from 'features/paritySigner/actions';
-import { setSchedulingToggle, setScheduleGasLimitField } from 'features/schedule/actions';
-import { isSchedulingEnabled } from 'features/schedule/selectors';
-import { showNotification } from 'features/notifications/actions';
-import { getNetworkByChainId } from '../config';
-import { TRANSACTION_BROADCAST } from './broadcast/types';
-import {
-  TRANSACTION_FIELDS,
-  SetToFieldAction,
-  InputDataAction,
-  InputGasLimitAction,
-  InputGasPriceAction,
-  InputGasPriceIntentAction,
-  InputNonceAction,
-  SetDataFieldAction,
-  SetValueFieldAction
-} from './fields/types';
-import {
-  setToField,
-  setValueField,
-  inputGasPrice,
-  setDataField,
-  setGasLimitField,
-  setGasPriceField,
-  setNonceField,
-  inputNonce,
-  resetTransactionRequested,
-  resetTransactionSuccessful,
-  TSetValueField
-} from './fields/actions';
-import { getTo, getData, getValue } from './fields/selectors';
-import {
-  TRANSACTION_META,
-  SetTokenToMetaAction,
-  SetTokenValueMetaAction,
-  SetUnitMetaAction
-} from './meta/types';
-import { setTokenTo, setTokenValue, setUnitMeta, TSetTokenValue } from './meta/actions';
-import { getDecimal, getTokenValue, getTokenTo, isContractInteraction } from './meta/selectors';
-import { TRANSACTION_NETWORK, EstimateGasRequestedAction } from './network/types';
-import {
-  getFromSucceeded,
-  getFromFailed,
-  estimateGasFailed,
-  estimateGasSucceeded,
-  estimateGasRequested,
-  estimateGasTimedout,
-  getNonceSucceeded,
-  getNonceFailed
-} from './network/actions';
-import {
-  TRANSACTION_SIGN,
-  SignWeb3TransactionSucceededAction,
-  SignLocalTransactionSucceededAction,
-  SignTransactionRequestedAction
-} from './sign/types';
-import { signLocalTransactionSucceeded, signWeb3TransactionSucceeded } from './sign/actions';
-import {
-  TRANSACTION,
-  SetCurrentToAction,
-  SetCurrentValueAction,
-  SwapEtherToTokenAction,
-  SwapTokenToTokenAction,
-  SwapTokenToEtherAction
-} from './types';
-import {
-  sendEverythingSucceeded,
-  sendEverythingFailed,
-  swapTokenToEther,
-  swapEtherToToken,
-  swapTokenToToken
-} from './actions';
-import { getPreviousUnit } from './selectors';
-import {
-  IFullWalletAndTransaction,
-  signTransactionWrapper,
-  broadcastTransactionWrapper,
-  validateInput,
-  IInput,
-  rebaseUserInput
-} from './helpers';
+import * as paritySignerActions from 'features/paritySigner/actions';
+import * as scheduleActions from 'features/schedule/actions';
+import * as scheduleSelectors from 'features/schedule/selectors';
+import * as notificationsActions from 'features/notifications/actions';
+import * as transactionBroadcastTypes from './broadcast/types';
+import * as transactionFieldsTypes from './fields/types';
+import * as transactionFieldsActions from './fields/actions';
+import * as transactionFieldsSelectors from './fields/selectors';
+import * as transactionMetaTypes from './meta/types';
+import * as transactionMetaActions from './meta/actions';
+import * as transactionMetaSelectors from './meta/selectors';
+import * as transactionNetworkTypes from './network/types';
+import * as transactionNetworkActions from './network/actions';
+import * as transactionSignTypes from './sign/types';
+import * as transactionSignActions from './sign/actions';
+import * as types from './types';
+import * as actions from './actions';
+import * as transactionSelectors from './selectors';
+import * as helpers from './helpers';
 
 //#region Broadcast
 export const broadcastLocalTransactionHandler = function*(signedTx: string): SagaIterator {
-  const node: INode = yield select(getNodeLib);
+  const node: INode = yield select(configNodesSelectors.getNodeLib);
   const txHash = yield apply(node, node.sendRawTx, [signedTx.toString()]);
   return txHash;
 };
 
-const broadcastLocalTransaction = broadcastTransactionWrapper(broadcastLocalTransactionHandler);
+const broadcastLocalTransaction = helpers.broadcastTransactionWrapper(
+  broadcastLocalTransactionHandler
+);
 
 // web3 transactions are a little different since they do signing + broadcast in 1 step
 // meaning we have to grab the tx data and send it
 export const broadcastWeb3TransactionHandler = function*(tx: string): SagaIterator {
   //get web3 wallet
-  const wallet: AppState['wallet']['inst'] = yield select(getWalletInst);
+  const wallet: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
   if (!wallet || !(wallet instanceof Web3Wallet)) {
     throw Error(`Cannot broadcast: Web3 wallet not found.`);
   }
 
-  const nodeLib = yield select(getNodeLib);
+  const nodeLib = yield select(configNodesSelectors.getNodeLib);
   const netId = yield call(nodeLib.getNetVersion);
-  const networkConfig = yield select(getNetworkByChainId, netId);
+  const networkConfig = yield select(configNetworksSelectors.getNetworkByChainId, netId);
 
   // sign and broadcast
   const txHash: string = yield apply(wallet, wallet.sendTransaction, [tx, nodeLib, networkConfig]);
   return txHash;
 };
 
-const broadcastWeb3Transaction = broadcastTransactionWrapper(broadcastWeb3TransactionHandler);
+const broadcastWeb3Transaction = helpers.broadcastTransactionWrapper(
+  broadcastWeb3TransactionHandler
+);
 
 export const broadcastSaga = [
-  takeEvery([TRANSACTION_BROADCAST.WEB3_TRANSACTION_REQUESTED], broadcastWeb3Transaction),
-  takeEvery([TRANSACTION_BROADCAST.LOCAL_TRANSACTION_REQUESTED], broadcastLocalTransaction)
+  takeEvery(
+    [transactionBroadcastTypes.TransactionBroadcastActions.WEB3_TRANSACTION_REQUESTED],
+    broadcastWeb3Transaction
+  ),
+  takeEvery(
+    [transactionBroadcastTypes.TransactionBroadcastActions.LOCAL_TRANSACTION_REQUESTED],
+    broadcastLocalTransaction
+  )
 ];
 //#endregion Broadcast
 
 //#region Current
 
 //#region Current To
-export function* setCurrentToSaga({ payload: raw }: SetCurrentToAction): SagaIterator {
-  const isValidAddress: ReturnType<typeof getIsValidAddressFn> = yield select(getIsValidAddressFn);
+export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): SagaIterator {
+  const isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn> = yield select(
+    configSelectors.getIsValidAddressFn
+  );
   const validAddress: boolean = yield call(isValidAddress, raw);
   const validEns: boolean = yield call(isValidENSAddress, raw);
 
@@ -198,13 +143,13 @@ export function* setCurrentToSaga({ payload: raw }: SetCurrentToAction): SagaIte
     yield call(setField, { value, raw });
 
     const [domain] = raw.split('.');
-    yield put(resolveDomainRequested(domain));
+    yield put(ensActions.resolveDomainRequested(domain));
     yield take([
       ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
       ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
       ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED
     ]);
-    const resolvedAddress: string | null = yield select(getResolvedAddress, true);
+    const resolvedAddress: string | null = yield select(ensSelectors.getResolvedAddress, true);
     if (resolvedAddress) {
       value = Address(resolvedAddress);
     }
@@ -213,31 +158,37 @@ export function* setCurrentToSaga({ payload: raw }: SetCurrentToAction): SagaIte
   yield call(setField, { value, raw });
 }
 
-export function* setField(payload: SetToFieldAction['payload'] | SetTokenToMetaAction['payload']) {
+export function* setField(
+  payload:
+    | transactionFieldsTypes.SetToFieldAction['payload']
+    | transactionMetaTypes.SetTokenToMetaAction['payload']
+) {
   const etherTransaction: boolean = yield select(selectors.isEtherTransaction);
 
   if (etherTransaction) {
-    yield put(setToField(payload));
+    yield put(transactionFieldsActions.setToField(payload));
   } else {
-    yield put(setTokenTo(payload));
+    yield put(transactionMetaActions.setTokenTo(payload));
   }
 }
 
-export const currentTo = takeLatest([TRANSACTION.CURRENT_TO_SET], setCurrentToSaga);
+export const currentTo = takeLatest([types.TransactionActions.CURRENT_TO_SET], setCurrentToSaga);
 //#endregion Current To
 
 //#region Current Value
-export function* setCurrentValueSaga(action: SetCurrentValueAction): SagaIterator {
+export function* setCurrentValueSaga(action: types.SetCurrentValueAction): SagaIterator {
   const etherTransaction = yield select(selectors.isEtherTransaction);
-  const setter = etherTransaction ? setValueField : setTokenValue;
+  const setter = etherTransaction
+    ? transactionFieldsActions.setValueField
+    : transactionMetaActions.setTokenValue;
   return yield call(valueHandler, action, setter);
 }
 
 export function* valueHandler(
-  { payload }: SetCurrentValueAction,
-  setter: TSetValueField | TSetTokenValue
+  { payload }: types.SetCurrentValueAction,
+  setter: transactionFieldsActions.TSetValueField | transactionMetaActions.TSetTokenValue
 ) {
-  const decimal: number = yield select(getDecimal);
+  const decimal: number = yield select(transactionMetaSelectors.getDecimal);
   const unit: string = yield select(selectors.getUnit);
   const isEth = yield select(selectors.isEtherTransaction);
   const validNum = isEth ? validNumber : validPositiveNumber;
@@ -246,7 +197,7 @@ export function* valueHandler(
     return yield put(setter({ raw: payload, value: null }));
   }
   const value = toTokenBase(payload, decimal);
-  const isValid: boolean = yield call(validateInput, value, unit);
+  const isValid: boolean = yield call(helpers.validateInput, value, unit);
 
   yield put(setter({ raw: payload, value: isValid ? value : null }));
 }
@@ -256,11 +207,13 @@ export function* revalidateCurrentValue(): SagaIterator {
   const currVal: selectors.ICurrentValue = yield select(selectors.getCurrentValue);
   const reparsedValue: null | selectors.ICurrentValue = yield call(reparseCurrentValue, currVal);
   const unit: string = yield select(selectors.getUnit);
-  const setter = etherTransaction ? setValueField : setTokenValue;
+  const setter = etherTransaction
+    ? transactionFieldsActions.setValueField
+    : transactionMetaActions.setTokenValue;
   if (!reparsedValue || !reparsedValue.value) {
     return yield put(setter({ raw: currVal.raw, value: null }));
   }
-  const isValid: boolean = yield call(validateInput, reparsedValue.value, unit);
+  const isValid: boolean = yield call(helpers.validateInput, reparsedValue.value, unit);
   const newVal = { raw: reparsedValue.raw, value: isValid ? reparsedValue.value : null };
 
   if (isValueDifferent(currVal, newVal)) {
@@ -283,9 +236,9 @@ export function isValueDifferent(curVal: selectors.ICurrentValue, newVal: select
   }
 }
 
-export function* reparseCurrentValue(value: IInput): SagaIterator {
+export function* reparseCurrentValue(value: helpers.IInput): SagaIterator {
   const isEth = yield select(selectors.isEtherTransaction);
-  const decimal = yield select(getDecimal);
+  const decimal = yield select(transactionMetaSelectors.getDecimal);
   const validNum = isEth ? validNumber : validPositiveNumber;
 
   if (validNum(Number(value.raw)) && validDecimal(value.raw, decimal)) {
@@ -299,9 +252,12 @@ export function* reparseCurrentValue(value: IInput): SagaIterator {
 }
 
 export const currentValue = [
-  takeEvery([TRANSACTION.CURRENT_VALUE_SET], setCurrentValueSaga),
+  takeEvery([types.TransactionActions.CURRENT_VALUE_SET], setCurrentValueSaga),
   takeEvery(
-    [TRANSACTION_FIELDS.GAS_LIMIT_FIELD_SET, TRANSACTION_FIELDS.GAS_PRICE_FIELD_SET],
+    [
+      transactionFieldsTypes.TransactionFieldsActions.GAS_LIMIT_FIELD_SET,
+      transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_FIELD_SET
+    ],
     revalidateCurrentValue
   )
 ];
@@ -313,65 +269,96 @@ export const current = [currentTo, ...currentValue];
 //#region Fields
 const SLIDER_DEBOUNCE_INPUT_DELAY = 300;
 
-export function* handleDataInput({ payload }: InputDataAction): SagaIterator {
+export function* handleDataInput({
+  payload
+}: transactionFieldsTypes.InputDataAction): SagaIterator {
   const validData: boolean = yield call(isValidHex, payload);
-  yield put(setDataField({ raw: payload, value: validData ? Data(payload) : null }));
+  yield put(
+    transactionFieldsActions.setDataField({ raw: payload, value: validData ? Data(payload) : null })
+  );
 }
 
-export function* handleGasLimitInput({ payload }: InputGasLimitAction): SagaIterator {
+export function* handleGasLimitInput({
+  payload
+}: transactionFieldsTypes.InputGasLimitAction): SagaIterator {
   const validGasLimit: boolean = yield call(gasLimitValidator, payload);
-  yield put(setGasLimitField({ raw: payload, value: validGasLimit ? Wei(payload) : null }));
+  yield put(
+    transactionFieldsActions.setGasLimitField({
+      raw: payload,
+      value: validGasLimit ? Wei(payload) : null
+    })
+  );
 }
 
-export function* handleGasPriceInput({ payload }: InputGasPriceAction): SagaIterator {
+export function* handleGasPriceInput({
+  payload
+}: transactionFieldsTypes.InputGasPriceAction): SagaIterator {
   const gasPrice = Number(payload);
   const validGasPrice: boolean = yield call(gasPriceValidator, gasPrice);
   yield put(
-    setGasPriceField({
+    transactionFieldsActions.setGasPriceField({
       raw: payload,
       value: validGasPrice ? gasPriceToBase(gasPrice) : Wei('0')
     })
   );
 }
 
-export function* handleGasPriceInputIntent({ payload }: InputGasPriceIntentAction): SagaIterator {
+export function* handleGasPriceInputIntent({
+  payload
+}: transactionFieldsTypes.InputGasPriceIntentAction): SagaIterator {
   yield call(delay, SLIDER_DEBOUNCE_INPUT_DELAY);
   // Important to put and not fork handleGasPriceInput, we want
   // action to go to reducers.
-  yield put(inputGasPrice(payload));
+  yield put(transactionFieldsActions.inputGasPrice(payload));
 }
 
-export function* handleNonceInput({ payload }: InputNonceAction): SagaIterator {
+export function* handleNonceInput({
+  payload
+}: transactionFieldsTypes.InputNonceAction): SagaIterator {
   const validNonce: boolean = yield call(isValidNonce, payload);
-  yield put(setNonceField({ raw: payload, value: validNonce ? Nonce(payload) : null }));
+  yield put(
+    transactionFieldsActions.setNonceField({
+      raw: payload,
+      value: validNonce ? Nonce(payload) : null
+    })
+  );
 }
 
 export const fieldsSaga = [
-  takeEvery(TRANSACTION_FIELDS.DATA_FIELD_INPUT, handleDataInput),
-  takeEvery(TRANSACTION_FIELDS.GAS_LIMIT_INPUT, handleGasLimitInput),
-  takeEvery(TRANSACTION_FIELDS.GAS_PRICE_INPUT, handleGasPriceInput),
-  takeEvery(TRANSACTION_FIELDS.NONCE_INPUT, handleNonceInput),
-  takeLatest(TRANSACTION_FIELDS.GAS_PRICE_INPUT_INTENT, handleGasPriceInputIntent)
+  takeEvery(transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_INPUT, handleDataInput),
+  takeEvery(transactionFieldsTypes.TransactionFieldsActions.GAS_LIMIT_INPUT, handleGasLimitInput),
+  takeEvery(transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_INPUT, handleGasPriceInput),
+  takeEvery(transactionFieldsTypes.TransactionFieldsActions.NONCE_INPUT, handleNonceInput),
+  takeLatest(
+    transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_INPUT_INTENT,
+    handleGasPriceInputIntent
+  )
 ];
 //#endregion Fields
 
 //#region Meta
 
 //#region Token
-export function* handleTokenTo({ payload }: SetTokenToMetaAction): SagaIterator {
-  const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(getTokenValue);
+export function* handleTokenTo({
+  payload
+}: transactionMetaTypes.SetTokenToMetaAction): SagaIterator {
+  const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(
+    transactionMetaSelectors.getTokenValue
+  );
   if (!(tokenValue.value && payload.value)) {
     return;
   }
 
   // encode token data and dispatch it
   const data = yield call(encodeTransfer, payload.value, tokenValue.value);
-  yield put(setDataField({ raw: bufferToHex(data), value: data }));
+  yield put(transactionFieldsActions.setDataField({ raw: bufferToHex(data), value: data }));
 }
 
-export function* handleTokenValue({ payload }: SetTokenValueMetaAction) {
-  const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(getTokenTo);
-  const prevData = yield select(getData);
+export function* handleTokenValue({ payload }: transactionMetaTypes.SetTokenValueMetaAction) {
+  const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
+    transactionMetaSelectors.getTokenTo
+  );
+  const prevData = yield select(transactionFieldsSelectors.getData);
   if (!(tokenTo.value && payload.value)) {
     return;
   }
@@ -379,20 +366,22 @@ export function* handleTokenValue({ payload }: SetTokenValueMetaAction) {
   if (prevData.raw === bufferToHex(data)) {
     return;
   }
-  yield put(setDataField({ raw: bufferToHex(data), value: data }));
+  yield put(transactionFieldsActions.setDataField({ raw: bufferToHex(data), value: data }));
 }
 
 export const handleToken = [
-  takeEvery(TRANSACTION_META.TOKEN_TO_META_SET, handleTokenTo),
-  takeEvery(TRANSACTION_META.TOKEN_VALUE_META_SET, handleTokenValue)
+  takeEvery(transactionMetaTypes.TransactionMetaActions.TOKEN_TO_META_SET, handleTokenTo),
+  takeEvery(transactionMetaTypes.TransactionMetaActions.TOKEN_VALUE_META_SET, handleTokenValue)
 ];
 //#endregion Token
 
 //#region Set Unit
-export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction): SagaIterator {
-  const previousUnit: string = yield select(getPreviousUnit);
-  const prevUnit = yield select(isNetworkUnit, previousUnit);
-  const currUnit = yield select(isNetworkUnit, currentUnit);
+export function* handleSetUnitMeta({
+  payload: currentUnit
+}: transactionMetaTypes.SetUnitMetaAction): SagaIterator {
+  const previousUnit: string = yield select(transactionSelectors.getPreviousUnit);
+  const prevUnit = yield select(configSelectors.isNetworkUnit, previousUnit);
+  const currUnit = yield select(configSelectors.isNetworkUnit, currentUnit);
   const etherToEther = currUnit && prevUnit;
   const etherToToken = !currUnit && prevUnit;
   const tokenToEther = currUnit && !prevUnit;
@@ -404,16 +393,24 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
   }
 
   if (tokenToEther) {
-    const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(getTokenTo);
-    const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(getTokenValue);
+    const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
+      transactionMetaSelectors.getTokenTo
+    );
+    const tokenValue: AppState['transaction']['meta']['tokenValue'] = yield select(
+      transactionMetaSelectors.getTokenValue
+    );
 
     //set the 'to' field from what the token 'to' field was
     // if switching to ether, clear token data and value
-    const { value, raw }: IInput = yield call(rebaseUserInput, tokenValue);
+    const { value, raw }: helpers.IInput = yield call(helpers.rebaseUserInput, tokenValue);
 
-    const isValid = yield call(validateInput, value, currentUnit);
+    const isValid = yield call(helpers.validateInput, value, currentUnit);
     return yield put(
-      swapTokenToEther({ to: tokenTo, value: { raw, value: isValid ? value : null }, decimal })
+      actions.swapTokenToEther({
+        to: tokenTo,
+        value: { raw, value: isValid ? value : null },
+        decimal
+      })
     );
   }
 
@@ -428,19 +425,23 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
     const input:
       | AppState['transaction']['fields']['value']
       | AppState['transaction']['meta']['tokenValue'] = etherToToken
-      ? yield select(getValue)
-      : yield select(getTokenValue);
-    const { raw, value }: IInput = yield call(rebaseUserInput, input);
+      ? yield select(transactionFieldsSelectors.getValue)
+      : yield select(transactionMetaSelectors.getTokenValue);
+    const { raw, value }: helpers.IInput = yield call(helpers.rebaseUserInput, input);
 
-    const isValid = yield call(validateInput, value, currentUnit);
-    const to: AppState['transaction']['fields']['to'] = yield select(getTo);
+    const isValid = yield call(helpers.validateInput, value, currentUnit);
+    const to: AppState['transaction']['fields']['to'] = yield select(
+      transactionFieldsSelectors.getTo
+    );
 
     const valueToEncode = isValid && value ? value : TokenValue('0');
     let addressToEncode;
     if (etherToToken) {
       addressToEncode = to.value || Address('0x0');
     } else {
-      const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(getTokenTo);
+      const tokenTo: AppState['transaction']['meta']['tokenTo'] = yield select(
+        transactionMetaSelectors.getTokenTo
+      );
       addressToEncode = tokenTo.value || Address('0x0');
     }
 
@@ -455,13 +456,13 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
     // need to set meta fields for tokenTo and tokenValue
     if (etherToToken) {
       yield put(
-        setSchedulingToggle({
+        scheduleActions.setSchedulingToggle({
           value: false
         })
       );
 
       return yield put(
-        swapEtherToToken({
+        actions.swapEtherToToken({
           ...basePayload,
           tokenTo: to
         })
@@ -469,12 +470,14 @@ export function* handleSetUnitMeta({ payload: currentUnit }: SetUnitMetaAction):
     }
     // need to rebase the token if the decimal has changed and re-validate
     if (tokenToToken) {
-      return yield put(swapTokenToToken(basePayload));
+      return yield put(actions.swapTokenToToken(basePayload));
     }
   }
 }
 
-export const handleSetUnit = [takeEvery(TRANSACTION_META.UNIT_META_SET, handleSetUnitMeta)];
+export const handleSetUnit = [
+  takeEvery(transactionMetaTypes.TransactionMetaActions.UNIT_META_SET, handleSetUnitMeta)
+];
 //#endregion Set Unit
 
 export const metaSaga = [...handleToken, ...handleSetUnit];
@@ -487,45 +490,50 @@ export const metaSaga = [...handleToken, ...handleSetUnit];
 * This function will be called during transaction serialization / signing
 */
 export function* handleFromRequest(): SagaIterator {
-  const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
+  const walletInst: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
   try {
     if (!walletInst) {
       throw Error();
     }
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
-    yield put(getFromSucceeded(fromAddress));
+    yield put(transactionNetworkActions.getFromSucceeded(fromAddress));
   } catch {
-    yield put(showNotification('warning', 'Your wallets address could not be fetched'));
-    yield put(getFromFailed());
+    yield put(
+      notificationsActions.showNotification('warning', 'Your wallets address could not be fetched')
+    );
+    yield put(transactionNetworkActions.getFromFailed());
   }
 }
 
-export const fromSaga = takeEvery(TRANSACTION_NETWORK.GET_FROM_REQUESTED, handleFromRequest);
+export const fromSaga = takeEvery(
+  transactionNetworkTypes.TransactionNetworkActions.GET_FROM_REQUESTED,
+  handleFromRequest
+);
 //#endregion From
 
 //#region Gas
 export function* shouldEstimateGas(): SagaIterator {
   while (true) {
     const action:
-      | SetToFieldAction
-      | SetValueFieldAction
-      | SetDataFieldAction
-      | SwapEtherToTokenAction
-      | SwapTokenToTokenAction
-      | SwapTokenToEtherAction
-      | ToggleAutoGasLimitAction
-      | SetValueFieldAction = yield take([
-      TRANSACTION_FIELDS.TO_FIELD_SET,
-      TRANSACTION_FIELDS.VALUE_FIELD_SET,
-      TRANSACTION_FIELDS.DATA_FIELD_SET,
-      TRANSACTION.ETHER_TO_TOKEN_SWAP,
-      TRANSACTION.TOKEN_TO_TOKEN_SWAP,
-      TRANSACTION.TOKEN_TO_ETHER_SWAP,
-      CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
+      | transactionFieldsTypes.SetToFieldAction
+      | transactionFieldsTypes.SetValueFieldAction
+      | transactionFieldsTypes.SetDataFieldAction
+      | types.SwapEtherToTokenAction
+      | types.SwapTokenToTokenAction
+      | types.SwapTokenToEtherAction
+      | configMetaTypes.ToggleAutoGasLimitAction
+      | transactionFieldsTypes.SetValueFieldAction = yield take([
+      transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
+      transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
+      transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
+      types.TransactionActions.ETHER_TO_TOKEN_SWAP,
+      types.TransactionActions.TOKEN_TO_TOKEN_SWAP,
+      types.TransactionActions.TOKEN_TO_ETHER_SWAP,
+      configMetaTypes.CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
     ]);
 
-    const isOffline: boolean = yield select(getOffline);
-    const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
+    const isOffline: boolean = yield select(configMetaSelectors.getOffline);
+    const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
     const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
 
     if (isOffline || !autoGasLimitEnabled || (message && message.gasLimit)) {
@@ -535,9 +543,9 @@ export function* shouldEstimateGas(): SagaIterator {
     // invalid field is a field that the value is null and the input box isnt empty
     // reason being is an empty field is valid because it'll be null
     const invalidField =
-      (action.type === TRANSACTION_FIELDS.TO_FIELD_SET ||
-        action.type === TRANSACTION_FIELDS.DATA_FIELD_SET ||
-        action.type === TRANSACTION_FIELDS.VALUE_FIELD_SET) &&
+      (action.type === transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET ||
+        action.type === transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET ||
+        action.type === transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET) &&
       !action.payload.value &&
       action.payload.raw !== '';
 
@@ -560,29 +568,29 @@ export function* shouldEstimateGas(): SagaIterator {
       rest.to = undefined as any;
     }
 
-    yield put(estimateGasRequested(rest));
+    yield put(transactionNetworkActions.estimateGasRequested(rest));
   }
 }
 
 export function* estimateGas(): SagaIterator {
   const requestChan = yield actionChannel(
-    TRANSACTION_NETWORK.ESTIMATE_GAS_REQUESTED,
+    transactionNetworkTypes.TransactionNetworkActions.ESTIMATE_GAS_REQUESTED,
     buffers.sliding(1)
   );
 
   while (true) {
-    const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
-    const isOffline = yield select(getOffline);
+    const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
+    const isOffline = yield select(configMetaSelectors.getOffline);
 
     if (isOffline || !autoGasLimitEnabled) {
       continue;
     }
 
-    const { payload }: EstimateGasRequestedAction = yield take(requestChan);
+    const { payload }: transactionNetworkTypes.EstimateGasRequestedAction = yield take(requestChan);
     // debounce 250 ms
     yield call(delay, 250);
-    const node: INode = yield select(getNodeLib);
-    const walletInst: IWallet = yield select(getWalletInst);
+    const node: INode = yield select(configNodesSelectors.getNodeLib);
+    const walletInst: IWallet = yield select(walletSelectors.getWalletInst);
     try {
       const from: string = yield apply(walletInst, walletInst.getAddressString);
       const txObj = { ...payload, from };
@@ -597,38 +605,42 @@ export function* estimateGas(): SagaIterator {
           value: gasLimit
         };
 
-        const scheduling: boolean = yield select(isSchedulingEnabled);
+        const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
 
         if (scheduling) {
-          yield put(setScheduleGasLimitField(gasSetOptions));
+          yield put(scheduleActions.setScheduleGasLimitField(gasSetOptions));
         } else {
-          yield put(setGasLimitField(gasSetOptions));
+          yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
         }
 
-        yield put(estimateGasSucceeded());
+        yield put(transactionNetworkActions.estimateGasSucceeded());
       } else {
-        yield put(estimateGasTimedout());
+        yield put(transactionNetworkActions.estimateGasTimedout());
         yield call(localGasEstimation, payload);
       }
     } catch (e) {
-      yield put(estimateGasFailed());
+      yield put(transactionNetworkActions.estimateGasFailed());
       yield call(localGasEstimation, payload);
     }
   }
 }
 
-export function* localGasEstimation(payload: EstimateGasRequestedAction['payload']) {
+export function* localGasEstimation(
+  payload: transactionNetworkTypes.EstimateGasRequestedAction['payload']
+) {
   const tx = yield call(makeTransaction, payload);
   const gasLimit = yield apply(tx, tx.getBaseFee);
-  yield put(setGasLimitField({ raw: gasLimit.toString(), value: gasLimit }));
+  yield put(
+    transactionFieldsActions.setGasLimitField({ raw: gasLimit.toString(), value: gasLimit })
+  );
 }
 
 export function* setAddressMessageGasLimit() {
-  const autoGasLimitEnabled: boolean = yield select(getAutoGasLimitEnabled);
+  const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
   const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
   if (autoGasLimitEnabled && message && message.gasLimit) {
     yield put(
-      setGasLimitField({
+      transactionFieldsActions.setGasLimitField({
         raw: message.gasLimit.toString(),
         value: new BN(message.gasLimit)
       })
@@ -639,15 +651,15 @@ export function* setAddressMessageGasLimit() {
 export const gas = [
   fork(shouldEstimateGas),
   fork(estimateGas),
-  takeEvery(TRANSACTION_FIELDS.TO_FIELD_SET, setAddressMessageGasLimit)
+  takeEvery(transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET, setAddressMessageGasLimit)
 ];
 //#endregion Gas
 
 //#region Nonce
 export function* handleNonceRequest(): SagaIterator {
-  const nodeLib: INode = yield select(getNodeLib);
-  const walletInst: AppState['wallet']['inst'] = yield select(getWalletInst);
-  const isOffline: boolean = yield select(getOffline);
+  const nodeLib: INode = yield select(configNodesSelectors.getNodeLib);
+  const walletInst: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
+  const isOffline: boolean = yield select(configMetaSelectors.getOffline);
   try {
     if (isOffline || !walletInst) {
       return;
@@ -657,11 +669,13 @@ export function* handleNonceRequest(): SagaIterator {
 
     const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);
     const base10Nonce = Nonce(retrievedNonce);
-    yield put(inputNonce(base10Nonce.toString()));
-    yield put(getNonceSucceeded(retrievedNonce));
+    yield put(transactionFieldsActions.inputNonce(base10Nonce.toString()));
+    yield put(transactionNetworkActions.getNonceSucceeded(retrievedNonce));
   } catch {
-    yield put(showNotification('warning', 'Your addresses nonce could not be fetched'));
-    yield put(getNonceFailed());
+    yield put(
+      notificationsActions.showNotification('warning', 'Your addresses nonce could not be fetched')
+    );
+    yield put(transactionNetworkActions.getNonceFailed());
   }
 }
 
@@ -674,7 +688,10 @@ export function* handleNonceRequestWrapper(): SagaIterator {
 
 //leave get nonce requested for nonce refresh later on
 export const nonceSaga = takeEvery(
-  [TRANSACTION_NETWORK.GET_NONCE_REQUESTED, walletTypes.WalletActions.SET],
+  [
+    transactionNetworkTypes.TransactionNetworkActions.GET_NONCE_REQUESTED,
+    walletTypes.WalletActions.SET
+  ],
   handleNonceRequestWrapper
 );
 //#endregion Nonce
@@ -686,36 +703,44 @@ export const networkSaga = [fromSaga, ...gas, nonceSaga];
 export function* signLocalTransactionHandler({
   tx,
   wallet
-}: IFullWalletAndTransaction): SagaIterator {
+}: helpers.IFullWalletAndTransaction): SagaIterator {
   const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
-  yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash, noVerify: false }));
+  yield put(
+    transactionSignActions.signLocalTransactionSucceeded({
+      signedTransaction,
+      indexingHash,
+      noVerify: false
+    })
+  );
 }
 
-const signLocalTransaction = signTransactionWrapper(signLocalTransactionHandler);
+const signLocalTransaction = helpers.signTransactionWrapper(signLocalTransactionHandler);
 
-export function* signWeb3TransactionHandler({ tx }: IFullWalletAndTransaction): SagaIterator {
+export function* signWeb3TransactionHandler({
+  tx
+}: helpers.IFullWalletAndTransaction): SagaIterator {
   const serializedTransaction: Buffer = yield apply(tx, tx.serialize);
   const indexingHash: string = yield call(computeIndexingHash, serializedTransaction);
 
   yield put(
-    signWeb3TransactionSucceeded({
+    transactionSignActions.signWeb3TransactionSucceeded({
       transaction: serializedTransaction,
       indexingHash
     })
   );
 }
 
-const signWeb3Transaction = signTransactionWrapper(signWeb3TransactionHandler);
+const signWeb3Transaction = helpers.signTransactionWrapper(signWeb3TransactionHandler);
 
 export function* signParitySignerTransactionHandler({
   tx,
   wallet
-}: IFullWalletAndTransaction): SagaIterator {
+}: helpers.IFullWalletAndTransaction): SagaIterator {
   const from = yield apply(wallet, wallet.getAddressString);
   const rlp = yield call(transactionToRLP, tx);
 
-  yield put(requestTransactionSignature(from, rlp));
+  yield put(paritySignerActions.requestTransactionSignature(from, rlp));
 
   const { payload }: paritySignerTypes.FinalizeSignatureAction = yield take(
     paritySignerTypes.ParitySignerActions.FINALIZE_SIGNATURE
@@ -723,10 +748,18 @@ export function* signParitySignerTransactionHandler({
   const signedTransaction: Buffer = yield call(signTransactionWithSignature, tx, payload);
   const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
 
-  yield put(signLocalTransactionSucceeded({ signedTransaction, indexingHash, noVerify: false }));
+  yield put(
+    transactionSignActions.signLocalTransactionSucceeded({
+      signedTransaction,
+      indexingHash,
+      noVerify: false
+    })
+  );
 }
 
-const signParitySignerTransaction = signTransactionWrapper(signParitySignerTransactionHandler);
+const signParitySignerTransaction = helpers.signTransactionWrapper(
+  signParitySignerTransactionHandler
+);
 
 /**
  * @description Verifies that the transaction matches the fields, and if its a locally signed transaction (so it has a signature) it will verify the signature too
@@ -738,25 +771,32 @@ const signParitySignerTransaction = signTransactionWrapper(signParitySignerTrans
 function* verifyTransaction({
   type,
   payload: { noVerify }
-}: SignWeb3TransactionSucceededAction | SignLocalTransactionSucceededAction): SagaIterator {
+}:
+  | transactionSignTypes.SignWeb3TransactionSucceededAction
+  | transactionSignTypes.SignLocalTransactionSucceededAction): SagaIterator {
   if (noVerify) {
     return;
   }
   const transactionsMatch: boolean = yield select(
     selectors.serializedAndTransactionFieldsMatch,
-    type === TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+    type === transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
     noVerify
   );
   if (!transactionsMatch) {
     yield put(
-      showNotification('danger', 'Something went wrong signing your transaction, please try again')
+      notificationsActions.showNotification(
+        'danger',
+        'Something went wrong signing your transaction, please try again'
+      )
     );
-    yield put(resetTransactionRequested());
+    yield put(transactionFieldsActions.resetTransactionRequested());
   }
 }
 
-function* handleTransactionRequest(action: SignTransactionRequestedAction): SagaIterator {
-  const walletType: IWalletType = yield select(getWalletType);
+function* handleTransactionRequest(
+  action: transactionSignTypes.SignTransactionRequestedAction
+): SagaIterator {
+  const walletType: walletSelectors.IWalletType = yield select(walletSelectors.getWalletType);
 
   const signingHandler = walletType.isWeb3Wallet
     ? signWeb3Transaction
@@ -766,11 +806,14 @@ function* handleTransactionRequest(action: SignTransactionRequestedAction): Saga
 }
 
 export const signing = [
-  takeEvery(TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED, handleTransactionRequest),
+  takeEvery(
+    transactionSignTypes.TransactionSignActions.SIGN_TRANSACTION_REQUESTED,
+    handleTransactionRequest
+  ),
   takeEvery(
     [
-      TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-      TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED
+      transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+      transactionSignTypes.TransactionSignActions.SIGN_WEB3_TRANSACTION_SUCCEEDED
     ],
     verifyTransaction
   )
@@ -781,14 +824,18 @@ export const signing = [
 export function* handleSendEverything(): SagaIterator {
   const { transaction }: selectors.IGetTransaction = yield select(selectors.getTransaction);
   const currentBalance: Wei | TokenValue | null = yield select(selectors.getCurrentBalance);
-  const etherBalance: AppState['wallet']['balance']['wei'] = yield select(getEtherBalance);
+  const etherBalance: AppState['wallet']['balance']['wei'] = yield select(
+    walletSelectors.getEtherBalance
+  );
   if (!etherBalance || !currentBalance) {
-    return yield put(sendEverythingFailed());
+    return yield put(actions.sendEverythingFailed());
   }
   transaction.value = Buffer.from([]);
 
   const etherTransaction: boolean = yield select(selectors.isEtherTransaction);
-  const setter = etherTransaction ? setValueField : setTokenValue;
+  const setter = etherTransaction
+    ? transactionFieldsActions.setValueField
+    : transactionMetaActions.setTokenValue;
 
   // set transaction value to 0 so it's not calculated in the upfrontcost
 
@@ -796,12 +843,12 @@ export function* handleSendEverything(): SagaIterator {
   if (totalCost.gt(etherBalance)) {
     // Dust amount is too small
     yield put(
-      showNotification(
+      notificationsActions.showNotification(
         'warning',
         `The cost of gas is higher than your balance. Total cost: ${totalCost} >  Your Ether balance: ${etherBalance}`
       )
     );
-    yield put(sendEverythingFailed());
+    yield put(actions.sendEverythingFailed());
 
     return yield put(setter({ raw: '0', value: null }));
   }
@@ -810,29 +857,33 @@ export function* handleSendEverything(): SagaIterator {
     const rawVersion = fromWei(remainder, 'ether');
     yield put(setter({ raw: rawVersion, value: remainder }));
 
-    yield put(sendEverythingSucceeded());
+    yield put(actions.sendEverythingSucceeded());
   } else {
     // else we just max out the token value
-    const decimal: number = yield select(getDecimal);
+    const decimal: number = yield select(transactionMetaSelectors.getDecimal);
     const rawVersion = fromTokenBase(currentBalance, decimal);
     yield put(setter({ raw: rawVersion, value: currentBalance }));
 
-    yield put(sendEverythingSucceeded());
+    yield put(actions.sendEverythingSucceeded());
   }
 }
 
 export const sendEverything = [
-  takeEvery(TRANSACTION.SEND_EVERYTHING_REQUESTED, handleSendEverything)
+  takeEvery(types.TransactionActions.SEND_EVERYTHING_REQUESTED, handleSendEverything)
 ];
 
 //#endregion Send Everything
 
 //#region Reset
 export function* resetTransactionState(): SagaIterator {
-  const contractInteraction: ReturnType<typeof isContractInteraction> = yield select(
-    isContractInteraction
+  const contractInteraction: ReturnType<
+    typeof transactionMetaSelectors.isContractInteraction
+  > = yield select(transactionMetaSelectors.isContractInteraction);
+  yield put(
+    transactionFieldsActions.resetTransactionSuccessful({
+      isContractInteraction: contractInteraction
+    })
   );
-  yield put(resetTransactionSuccessful({ isContractInteraction: contractInteraction }));
 }
 
 /**
@@ -843,24 +894,24 @@ export function* watchTransactionState(): SagaIterator {
   while (true) {
     // wait for transaction to be signed
     yield take([
-      TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-      TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED
+      transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+      transactionSignTypes.TransactionSignActions.SIGN_WEB3_TRANSACTION_SUCCEEDED
     ]);
 
     const { bail } = yield race({
-      bail: take([TRANSACTION.RESET_REQUESTED, walletTypes.WalletActions.RESET]), // bail on actions that would wipe state
+      bail: take([types.TransactionActions.RESET_REQUESTED, walletTypes.WalletActions.RESET]), // bail on actions that would wipe state
       wipeState: take([
-        TRANSACTION.CURRENT_TO_SET,
-        TRANSACTION.CURRENT_VALUE_SET,
-        TRANSACTION_FIELDS.GAS_LIMIT_FIELD_SET,
-        TRANSACTION_FIELDS.GAS_PRICE_FIELD_SET,
-        TRANSACTION_FIELDS.VALUE_FIELD_SET,
-        TRANSACTION_FIELDS.DATA_FIELD_SET,
-        TRANSACTION_FIELDS.NONCE_FIELD_SET,
-        TRANSACTION_FIELDS.TO_FIELD_SET,
-        TRANSACTION_META.TOKEN_TO_META_SET,
-        TRANSACTION_META.TOKEN_VALUE_META_SET,
-        TRANSACTION_META.UNIT_META_SET
+        types.TransactionActions.CURRENT_TO_SET,
+        types.TransactionActions.CURRENT_VALUE_SET,
+        transactionFieldsTypes.TransactionFieldsActions.GAS_LIMIT_FIELD_SET,
+        transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_FIELD_SET,
+        transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
+        transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
+        transactionFieldsTypes.TransactionFieldsActions.NONCE_FIELD_SET,
+        transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
+        transactionMetaTypes.TransactionMetaActions.TOKEN_TO_META_SET,
+        transactionMetaTypes.TransactionMetaActions.TOKEN_VALUE_META_SET,
+        transactionMetaTypes.TransactionMetaActions.UNIT_META_SET
       ]) // watch for any actions that would change transaction state
     });
 
@@ -868,20 +919,20 @@ export function* watchTransactionState(): SagaIterator {
       continue;
     }
 
-    yield put(resetTransactionRequested());
+    yield put(transactionFieldsActions.resetTransactionRequested());
   }
 }
 
 export function* setNetworkUnit(): SagaIterator {
-  const networkUnit = yield select(getNetworkUnit);
-  yield put(setUnitMeta(networkUnit));
+  const networkUnit = yield select(configSelectors.getNetworkUnit);
+  yield put(transactionMetaActions.setUnitMeta(networkUnit));
 }
 
 export const reset = [
   takeEvery([walletTypes.WalletActions.RESET], resetTransactionState),
-  takeEvery(TRANSACTION.RESET_REQUESTED, resetTransactionState),
+  takeEvery(types.TransactionActions.RESET_REQUESTED, resetTransactionState),
   fork(watchTransactionState),
-  takeEvery(TRANSACTION.RESET_SUCCESSFUL, setNetworkUnit)
+  takeEvery(types.TransactionActions.RESET_SUCCESSFUL, setNetworkUnit)
 ];
 
 //#endregion Reset

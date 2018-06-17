@@ -78,7 +78,7 @@ export function* handleConfigureLiteSend(): SagaIterator {
   while (true) {
     const liteSendProc = yield fork(configureLiteSendSaga);
     const result = yield race({
-      transactionReset: take(transactionTypes.TRANSACTION.RESET_REQUESTED),
+      transactionReset: take(transactionTypes.TransactionActions.RESET_REQUESTED),
       userNavigatedAway: take(walletTypes.WalletActions.RESET),
       bityPollingFinished: take(swapTypes.SwapActions.STOP_POLL_BITY_ORDER_STATUS),
       shapeshiftPollingFinished: take(swapTypes.SwapActions.STOP_POLL_SHAPESHIFT_ORDER_STATUS)
