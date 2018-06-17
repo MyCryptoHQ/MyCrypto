@@ -1,67 +1,59 @@
-import {
-  TRANSACTION,
-  SetCurrentToAction,
-  SetCurrentValueAction,
-  SendEverythingFailedAction,
-  SendEverythingRequestedAction,
-  SendEverythingSucceededAction,
-  SwapEtherToTokenAction,
-  SwapTokenToEtherAction,
-  SwapTokenToTokenAction
-} from './types';
+import * as types from './types';
 
 export type TSetCurrentValue = typeof setCurrentValue;
 export const setCurrentValue = (
-  payload: SetCurrentValueAction['payload']
-): SetCurrentValueAction => ({
-  type: TRANSACTION.CURRENT_VALUE_SET,
+  payload: types.SetCurrentValueAction['payload']
+): types.SetCurrentValueAction => ({
+  type: types.TransactionActions.CURRENT_VALUE_SET,
   payload
 });
 
 export type TSetCurrentTo = typeof setCurrentTo;
-export const setCurrentTo = (payload: SetCurrentToAction['payload']): SetCurrentToAction => ({
-  type: TRANSACTION.CURRENT_TO_SET,
+export const setCurrentTo = (
+  payload: types.SetCurrentToAction['payload']
+): types.SetCurrentToAction => ({
+  type: types.TransactionActions.CURRENT_TO_SET,
   payload
 });
 
 //#region Send Everything
 export type TSendEverythingRequested = typeof sendEverythingRequested;
-export const sendEverythingRequested = (): SendEverythingRequestedAction => ({
-  type: TRANSACTION.SEND_EVERYTHING_REQUESTED
+export const sendEverythingRequested = (): types.SendEverythingRequestedAction => ({
+  type: types.TransactionActions.SEND_EVERYTHING_REQUESTED
 });
 
 export type TSendEverythingFailed = typeof sendEverythingFailed;
-export const sendEverythingFailed = (): SendEverythingFailedAction => ({
-  type: TRANSACTION.SEND_EVERYTHING_FAILED
+export const sendEverythingFailed = (): types.SendEverythingFailedAction => ({
+  type: types.TransactionActions.SEND_EVERYTHING_FAILED
 });
 
 export type TSendEverythingSucceeded = typeof sendEverythingSucceeded;
-export const sendEverythingSucceeded = (): SendEverythingSucceededAction => ({
-  type: TRANSACTION.SEND_EVERYTHING_SUCCEEDED
+export const sendEverythingSucceeded = (): types.SendEverythingSucceededAction => ({
+  type: types.TransactionActions.SEND_EVERYTHING_SUCCEEDED
 });
 //#endregion Send Everything
 
 //#region Swap
 export type TSwapTokenToEther = typeof swapTokenToEther;
 export const swapTokenToEther = (
-  payload: SwapTokenToEtherAction['payload']
-): SwapTokenToEtherAction => ({
-  type: TRANSACTION.TOKEN_TO_ETHER_SWAP,
+  payload: types.SwapTokenToEtherAction['payload']
+): types.SwapTokenToEtherAction => ({
+  type: types.TransactionActions.TOKEN_TO_ETHER_SWAP,
   payload
 });
 
 export type TSwapEtherToToken = typeof swapEtherToToken;
 export const swapEtherToToken = (
-  payload: SwapEtherToTokenAction['payload']
-): SwapEtherToTokenAction => ({
+  payload: types.SwapEtherToTokenAction['payload']
+): types.SwapEtherToTokenAction => ({
   payload,
-  type: TRANSACTION.ETHER_TO_TOKEN_SWAP
+  type: types.TransactionActions.ETHER_TO_TOKEN_SWAP
 });
 
 export const swapTokenToToken = (
-  payload: SwapTokenToTokenAction['payload']
-): SwapTokenToTokenAction => ({
+  payload: types.SwapTokenToTokenAction['payload']
+): types.SwapTokenToTokenAction => ({
   payload,
-  type: TRANSACTION.TOKEN_TO_TOKEN_SWAP
+  type: types.TransactionActions.TOKEN_TO_TOKEN_SWAP
 });
 //#endregion Swap

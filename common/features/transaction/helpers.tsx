@@ -20,28 +20,21 @@ import * as selectors from 'features/selectors';
 import { getOffline } from 'features/config/meta/selectors';
 import { isNetworkUnit, getNetworkConfig } from 'features/config/selectors';
 import { scheduleSelectors } from 'features/schedule';
-import { getWalletInst, getEtherBalance } from 'features/wallet/selectors';
-import { showNotification } from 'features/notifications/actions';
+import { walletSelectors } from 'features/wallet';
+import { notificationsActions } from 'features/notifications';
 import {
-  TRANSACTION_BROADCAST,
-  BroadcastRequestedAction,
-  ISerializedTxAndIndexingHash,
-  ITransactionStatus
-} from './broadcast/types';
+  transactionBroadcastTypes,
+  transactionBroadcastActions,
+  transactionBroadcastSelectors
+} from './broadcast';
+import { transactionFieldsActions, transactionFieldsSelectors } from './fields';
+import { transactionNetworkTypes, transactionNetworkActions } from './network';
 import {
-  broadcastTransactionFailed,
-  broadcastTransactionSucceeded,
-  broadcastTransactionQueued
-} from './broadcast/actions';
-import { getTransactionStatus } from './broadcast/selectors';
-import { resetTransactionRequested } from './fields/actions';
-import { getGasLimit, getGasPrice } from './fields/selectors';
-import { TRANSACTION_NETWORK, GetFromFailedAction, GetFromSucceededAction } from './network/types';
-import { getFromRequested } from './network/actions';
-import { SignTransactionRequestedAction } from './sign/types';
-import { signTransactionFailed } from './sign/actions';
-import { StateSerializedTx } from './sign/reducer';
-import { getWeb3Tx, getSignedTx } from './sign/selectors';
+  transactionSignTypes,
+  transactionSignActions,
+  transactionSignReducer,
+  transactionSignSelectors
+} from './sign';
 import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 
 //#region Selectors
@@ -108,8 +101,11 @@ export const isFullTx = (
 
 //#region Broadcast
 export const broadcastTransactionWrapper = (func: (serializedTx: string) => SagaIterator) =>
-  function* handleBroadcastTransaction(action: BroadcastRequestedAction) {
-    const { indexingHash, serializedTransaction }: ISerializedTxAndIndexingHash = yield call(
+  function* handleBroadcastTransaction(action: transactionBroadcastTypes.BroadcastRequestedAction) {
+    const {
+      indexingHash,
+      serializedTransaction
+    }: transactionBroadcastTypes.ISerializedTxAndIndexingHash = yield call(
       getSerializedTxAndIndexingHash,
       action
     );
@@ -118,27 +114,29 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       const shouldBroadcast: boolean = yield call(shouldBroadcastTransaction, indexingHash);
       if (!shouldBroadcast) {
         yield put(
-          showNotification(
+          notificationsActions.showNotification(
             'warning',
             'TxHash identical: This transaction has already been broadcasted or is broadcasting'
           )
         );
-        yield put(resetTransactionRequested());
+        yield put(transactionFieldsActions.resetTransactionRequested());
         return;
       }
-      const queueAction = broadcastTransactionQueued({
+      const queueAction = transactionBroadcastActions.broadcastTransactionQueued({
         indexingHash,
         serializedTransaction
       });
       yield put(queueAction);
       const stringTx: string = yield call(bufferToHex, serializedTransaction);
       const broadcastedHash: string = yield call(func, stringTx); // convert to string because node / web3 doesnt support buffers
-      yield put(broadcastTransactionSucceeded({ indexingHash, broadcastedHash }));
+      yield put(
+        transactionBroadcastActions.broadcastTransactionSucceeded({ indexingHash, broadcastedHash })
+      );
 
       const network: NetworkConfig = yield select(getNetworkConfig);
       const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
       yield put(
-        showNotification(
+        notificationsActions.showNotification(
           'success',
           <TransactionSucceeded
             txHash={broadcastedHash}
@@ -149,13 +147,16 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
         )
       );
     } catch (error) {
-      yield put(broadcastTransactionFailed({ indexingHash }));
-      yield put(showNotification('danger', (error as Error).message));
+      yield put(transactionBroadcastActions.broadcastTransactionFailed({ indexingHash }));
+      yield put(notificationsActions.showNotification('danger', (error as Error).message));
     }
   };
 
 export function* shouldBroadcastTransaction(indexingHash: string): SagaIterator {
-  const existingTx: ITransactionStatus | null = yield select(getTransactionStatus, indexingHash);
+  const existingTx: transactionBroadcastTypes.ITransactionStatus | null = yield select(
+    transactionBroadcastSelectors.getTransactionStatus,
+    indexingHash
+  );
   // if the transaction already exists
   if (existingTx) {
     // and is still broadcasting or already broadcasting, dont re-broadcast
@@ -165,10 +166,15 @@ export function* shouldBroadcastTransaction(indexingHash: string): SagaIterator 
   }
   return true;
 }
-export function* getSerializedTxAndIndexingHash({ type }: BroadcastRequestedAction): SagaIterator {
-  const isWeb3Req = type === TRANSACTION_BROADCAST.WEB3_TRANSACTION_REQUESTED;
-  const txSelector = isWeb3Req ? getWeb3Tx : getSignedTx;
-  const serializedTransaction: StateSerializedTx = yield select(txSelector);
+export function* getSerializedTxAndIndexingHash({
+  type
+}: transactionBroadcastTypes.BroadcastRequestedAction): SagaIterator {
+  const isWeb3Req =
+    type === transactionBroadcastTypes.TransactionBroadcastActions.WEB3_TRANSACTION_REQUESTED;
+  const txSelector = isWeb3Req
+    ? transactionSignSelectors.getWeb3Tx
+    : transactionSignSelectors.getSignedTx;
+  const serializedTransaction: transactionSignReducer.StateSerializedTx = yield select(txSelector);
 
   if (!serializedTransaction) {
     throw Error('Can not broadcast: tx does not exist');
@@ -190,7 +196,7 @@ export interface IFullWalletAndTransaction {
 export const signTransactionWrapper = (
   func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator
 ) =>
-  function*(partialTx: SignTransactionRequestedAction) {
+  function*(partialTx: transactionSignTypes.SignTransactionRequestedAction) {
     try {
       const IWalletAndTx: IFullWalletAndTransaction = yield call(
         getWalletAndTransaction,
@@ -209,10 +215,10 @@ export const signTransactionWrapper = (
  * @param partialTx
  */
 export function* getWalletAndTransaction(
-  partialTx: SignTransactionRequestedAction['payload']
+  partialTx: transactionSignTypes.SignTransactionRequestedAction['payload']
 ): SagaIterator {
   // get the wallet we're going to sign with
-  const wallet: null | IFullWallet = yield select(getWalletInst);
+  const wallet: null | IFullWallet = yield select(walletSelectors.getWalletInst);
   if (!wallet) {
     throw Error('Could not get wallet instance to sign transaction');
   }
@@ -228,19 +234,23 @@ export function* getWalletAndTransaction(
 }
 
 export function* handleFailedTransaction(err: Error): SagaIterator {
-  yield put(showNotification('danger', err.message, 5000));
-  yield put(signTransactionFailed());
+  yield put(notificationsActions.showNotification('danger', err.message, 5000));
+  yield put(transactionSignActions.signTransactionFailed());
 }
 
 export function* getFromSaga(): SagaIterator {
-  yield put(getFromRequested());
+  yield put(transactionNetworkActions.getFromRequested());
   // wait for it to finish
-  const { type }: GetFromFailedAction | GetFromSucceededAction = yield take([
-    TRANSACTION_NETWORK.GET_FROM_SUCCEEDED,
-    TRANSACTION_NETWORK.GET_FROM_FAILED
+  const {
+    type
+  }:
+    | transactionNetworkTypes.GetFromFailedAction
+    | transactionNetworkTypes.GetFromSucceededAction = yield take([
+    transactionNetworkTypes.TransactionNetworkActions.GET_FROM_SUCCEEDED,
+    transactionNetworkTypes.TransactionNetworkActions.GET_FROM_FAILED
   ]);
   // continue if it doesnt fail
-  if (type === TRANSACTION_NETWORK.GET_FROM_FAILED) {
+  if (type === transactionNetworkTypes.TransactionNetworkActions.GET_FROM_FAILED) {
     throw Error('Could not get "from" address of wallet');
   }
 }
@@ -280,7 +290,7 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
     return false;
   }
 
-  const etherBalance: Wei | null = yield select(getEtherBalance);
+  const etherBalance: Wei | null = yield select(walletSelectors.getEtherBalance);
   const isOffline: boolean = yield select(getOffline);
   const networkUnitTransaction: boolean = yield select(isNetworkUnit, unit);
 
@@ -316,8 +326,12 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
 export function* makeCostCalculationTx(
   value: AppState['transaction']['fields']['value']['value']
 ): SagaIterator {
-  const gasLimit: AppState['transaction']['fields']['gasLimit'] = yield select(getGasLimit);
-  const gasPrice: AppState['transaction']['fields']['gasPrice'] = yield select(getGasPrice);
+  const gasLimit: AppState['transaction']['fields']['gasLimit'] = yield select(
+    transactionFieldsSelectors.getGasLimit
+  );
+  const gasPrice: AppState['transaction']['fields']['gasPrice'] = yield select(
+    transactionFieldsSelectors.getGasPrice
+  );
   const txObj: Partial<ITransaction> = {
     gasLimit: gasLimit.value || undefined,
     gasPrice: gasPrice.value || undefined,

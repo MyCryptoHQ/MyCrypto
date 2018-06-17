@@ -1,19 +1,19 @@
 import { Wei } from 'libs/units';
 import { gasPriceValidator, gasLimitValidator } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { getTransactionStatus } from './broadcast/selectors';
-import { getTo, getGasPrice, getGasLimit, getData } from './fields/selectors';
-import { getMetaState } from './meta/selectors';
-import { getSignState } from './sign/selectors';
+import * as transactionBroadcastSelectors from './broadcast/selectors';
+import * as transactionFieldsSelectors from './fields/selectors';
+import * as transactionMetaSelectors from './meta/selectors';
+import * as transactionSignSelectors from './sign/selectors';
 
 export const getTransactionState = (state: AppState) => state.transaction;
 
 export const getCurrentTransactionStatus = (state: AppState) => {
-  const { indexingHash } = getSignState(state);
+  const { indexingHash } = transactionSignSelectors.getSignState(state);
   if (!indexingHash) {
     return false;
   }
-  const txExists = getTransactionStatus(state, indexingHash);
+  const txExists = transactionBroadcastSelectors.getTransactionStatus(state, indexingHash);
   return txExists;
 };
 
@@ -36,22 +36,23 @@ export const currentTransactionBroadcasted = (state: AppState) => {
 };
 
 export const isValidGasPrice = (state: AppState): boolean =>
-  gasPriceValidator(getGasPrice(state).raw);
+  gasPriceValidator(transactionFieldsSelectors.getGasPrice(state).raw);
 
 export const isValidGasLimit = (state: AppState): boolean =>
-  gasLimitValidator(getGasLimit(state).raw);
+  gasLimitValidator(transactionFieldsSelectors.getGasLimit(state).raw);
 
 export const getDataExists = (state: AppState) => {
-  const { value } = getData(state);
+  const { value } = transactionFieldsSelectors.getData(state);
   return !!value && value.length > 0;
 };
 
-export const getToRaw = (state: AppState) => getTo(state).raw;
+export const getToRaw = (state: AppState) => transactionFieldsSelectors.getTo(state).raw;
 
-export const getPreviousUnit = (state: AppState) => getMetaState(state).previousUnit;
+export const getPreviousUnit = (state: AppState) =>
+  transactionMetaSelectors.getMetaState(state).previousUnit;
 
 export const getGasCost = (state: AppState) => {
-  const gasPrice = getGasPrice(state);
-  const gasLimit = getGasLimit(state);
+  const gasPrice = transactionFieldsSelectors.getGasPrice(state);
+  const gasLimit = transactionFieldsSelectors.getGasLimit(state);
   return gasLimit.value ? gasPrice.value.mul(gasLimit.value) : Wei('0');
 };

@@ -3,31 +3,15 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { Wei } from 'libs/units';
 import { getInitialState } from 'features/helpers';
-import { getTransactionStatus } from './broadcast';
-import { getFields, getGasLimit, getValue, getTo, getNonce, getData, getGasPrice } from './fields';
-import { getDecimal, getTokenValue, getTokenTo } from './meta';
-import {
-  RequestStatus,
-  getNetworkStatus,
-  nonceRequestPending,
-  nonceRequestFailed,
-  isNetworkRequestPending,
-  getGasEstimationPending,
-  getGasLimitEstimationTimedOut
-} from './network';
-import { getSignedTx, getWeb3Tx, getSignState } from './sign';
+
+import { transactionBroadcastSelectors } from './broadcast';
+import { transactionFieldsSelectors } from './fields';
+import { transactionMetaSelectors } from './meta';
+import { transactionNetworkTypes, transactionNetworkSelectors } from './network';
+import { transactionSignSelectors } from './sign';
 import * as selectors from 'features/selectors';
-import {
-  currentTransactionFailed,
-  currentTransactionBroadcasting,
-  currentTransactionBroadcasted,
-  getCurrentTransactionStatus,
-  isValidGasPrice,
-  isValidGasLimit,
-  getDataExists,
-  getPreviousUnit
-} from './selectors';
-import { reduceToValues, isFullTx } from './helpers';
+import * as transactionSelectors from './selectors';
+import * as helpers from './helpers';
 
 const initialState = cloneDeep(getInitialState());
 
@@ -76,17 +60,17 @@ describe('helpers selector', () => {
       to: new Buffer([0, 1, 2, 3]),
       value: Wei('1000000000')
     };
-    expect(reduceToValues(state.transaction.fields)).toEqual(values);
+    expect(helpers.reduceToValues(state.transaction.fields)).toEqual(values);
   });
 
   it('should check isFullTransaction with full transaction arguments', () => {
     const currentTo = selectors.getCurrentTo(state);
     const currentValue = selectors.getCurrentValue(state);
-    const transactionFields = getFields(state);
+    const transactionFields = transactionFieldsSelectors.getFields(state);
     const unit = selectors.getUnit(state);
-    const dataExists = getDataExists(state);
+    const dataExists = transactionSelectors.getDataExists(state);
     const validGasCost = selectors.getValidGasCost(state);
-    const isFullTransaction = isFullTx(
+    const isFullTransaction = helpers.isFullTx(
       state,
       transactionFields,
       currentTo,
@@ -101,11 +85,11 @@ describe('helpers selector', () => {
   it('should check isFullTransaction without full transaction arguments', () => {
     const currentTo = { raw: '', value: null };
     const currentValue = selectors.getCurrentValue(state);
-    const transactionFields = getFields(state);
+    const transactionFields = transactionFieldsSelectors.getFields(state);
     const unit = selectors.getUnit(state);
-    const dataExists = getDataExists(state);
+    const dataExists = transactionSelectors.getDataExists(state);
     const validGasCost = selectors.getValidGasCost(state);
-    const isFullTransaction = isFullTx(
+    const isFullTransaction = helpers.isFullTx(
       state,
       transactionFields,
       currentTo,
@@ -145,32 +129,32 @@ describe('broadcast selector', () => {
     }
   };
   it('should check getTransactionState with an indexing hash', () => {
-    expect(getTransactionStatus(state, 'testIndexingHash1')).toEqual(
+    expect(transactionBroadcastSelectors.getTransactionStatus(state, 'testIndexingHash1')).toEqual(
       state.transaction.broadcast.testIndexingHash1
     );
   });
 
   it('should check getCurrentTransactionStatus', () => {
-    expect(getCurrentTransactionStatus(state)).toEqual(
+    expect(transactionSelectors.getCurrentTransactionStatus(state)).toEqual(
       state.transaction.broadcast.testIndexingHash2
     );
   });
 
   it('should check currentTransactionFailed', () => {
-    expect(currentTransactionFailed(state)).toEqual(false);
+    expect(transactionSelectors.currentTransactionFailed(state)).toEqual(false);
   });
 
   it('should check currentTransactionBroadcasting', () => {
-    expect(currentTransactionBroadcasting(state)).toEqual(false);
+    expect(transactionSelectors.currentTransactionBroadcasting(state)).toEqual(false);
   });
 
   it('should check currentTransactionBroadcasted', () => {
-    expect(currentTransactionBroadcasted(state)).toEqual(true);
+    expect(transactionSelectors.currentTransactionBroadcasted(state)).toEqual(true);
   });
 
   it('should return false on getCurrentTransactionStatus if no index hash present', () => {
     state.transaction.sign.indexingHash = null;
-    expect(getCurrentTransactionStatus(state)).toEqual(false);
+    expect(transactionSelectors.getCurrentTransactionStatus(state)).toEqual(false);
   });
 });
 //#endregion Broadcast
@@ -217,7 +201,7 @@ describe('current selector', () => {
   });
 
   it('should check isValidGasPrice', () => {
-    expect(isValidGasPrice(state)).toEqual(true);
+    expect(transactionSelectors.isValidGasPrice(state)).toEqual(true);
   });
 
   it('should check isEtherTransaction', () => {
@@ -225,7 +209,7 @@ describe('current selector', () => {
   });
 
   it('should check isValidGasLimit', () => {
-    expect(isValidGasLimit(state)).toEqual(true);
+    expect(transactionSelectors.isValidGasLimit(state)).toEqual(true);
   });
 
   it('should check isValidCurrentTo', () => {
@@ -278,35 +262,39 @@ describe('fields selector', () => {
   };
 
   it('should get fields from fields store', () => {
-    expect(getFields(state)).toEqual(state.transaction.fields);
+    expect(transactionFieldsSelectors.getFields(state)).toEqual(state.transaction.fields);
   });
 
   it('should get data from fields store', () => {
-    expect(getData(state)).toEqual(state.transaction.fields.data);
+    expect(transactionFieldsSelectors.getData(state)).toEqual(state.transaction.fields.data);
   });
 
   it('should get gas limit from fields store', () => {
-    expect(getGasLimit(state)).toEqual(state.transaction.fields.gasLimit);
+    expect(transactionFieldsSelectors.getGasLimit(state)).toEqual(
+      state.transaction.fields.gasLimit
+    );
   });
 
   it('should get value from fields store', () => {
-    expect(getValue(state)).toEqual(state.transaction.fields.value);
+    expect(transactionFieldsSelectors.getValue(state)).toEqual(state.transaction.fields.value);
   });
 
   it('sould get receiver address from fields store', () => {
-    expect(getTo(state)).toEqual(state.transaction.fields.to);
+    expect(transactionFieldsSelectors.getTo(state)).toEqual(state.transaction.fields.to);
   });
 
   it('should get nonce from fields store', () => {
-    expect(getNonce(state)).toEqual(state.transaction.fields.nonce);
+    expect(transactionFieldsSelectors.getNonce(state)).toEqual(state.transaction.fields.nonce);
   });
 
   it('should get gas price from fields store', () => {
-    expect(getGasPrice(state)).toEqual(state.transaction.fields.gasPrice);
+    expect(transactionFieldsSelectors.getGasPrice(state)).toEqual(
+      state.transaction.fields.gasPrice
+    );
   });
 
   it('should check getDataExists', () => {
-    expect(getDataExists(state)).toEqual(false);
+    expect(transactionSelectors.getDataExists(state)).toEqual(false);
   });
 
   it('should check when gas cost is valid', () => {
@@ -355,15 +343,17 @@ describe('meta tests', () => {
   });
 
   it('should get the stored decimal', () => {
-    expect(getDecimal(state)).toEqual(state.transaction.meta.decimal);
+    expect(transactionMetaSelectors.getDecimal(state)).toEqual(state.transaction.meta.decimal);
   });
 
   it('should get the token value', () => {
-    expect(getTokenValue(state)).toEqual(state.transaction.meta.tokenValue);
+    expect(transactionMetaSelectors.getTokenValue(state)).toEqual(
+      state.transaction.meta.tokenValue
+    );
   });
 
   it('should get the token receiver address', () => {
-    expect(getTokenTo(state)).toEqual(state.transaction.meta.tokenTo);
+    expect(transactionMetaSelectors.getTokenTo(state)).toEqual(state.transaction.meta.tokenTo);
   });
 
   it('should get the stored unit', () => {
@@ -371,7 +361,9 @@ describe('meta tests', () => {
   });
 
   it('should get the stored previous unit', () => {
-    expect(getPreviousUnit(state)).toEqual(state.transaction.meta.previousUnit);
+    expect(transactionSelectors.getPreviousUnit(state)).toEqual(
+      state.transaction.meta.previousUnit
+    );
   });
 
   it('should get the decimal for ether', () => {
@@ -394,37 +386,37 @@ describe('network selector', () => {
   const state = getInitialState();
   state.transaction.network = {
     ...state.transaction.network,
-    gasEstimationStatus: RequestStatus.REQUESTED,
-    getFromStatus: RequestStatus.SUCCEEDED,
-    getNonceStatus: RequestStatus.REQUESTED,
-    gasPriceStatus: RequestStatus.SUCCEEDED
+    gasEstimationStatus: transactionNetworkTypes.RequestStatus.REQUESTED,
+    getFromStatus: transactionNetworkTypes.RequestStatus.SUCCEEDED,
+    getNonceStatus: transactionNetworkTypes.RequestStatus.REQUESTED,
+    gasPriceStatus: transactionNetworkTypes.RequestStatus.SUCCEEDED
   };
 
   it('should get network status', () => {
-    expect(getNetworkStatus(state)).toEqual(state.transaction.network);
+    expect(transactionNetworkSelectors.getNetworkStatus(state)).toEqual(state.transaction.network);
   });
 
   it('should check with the store if the nonce request is pending', () => {
-    expect(nonceRequestPending(state)).toEqual(true);
+    expect(transactionNetworkSelectors.nonceRequestPending(state)).toEqual(true);
   });
 
   it('should check with the store if the nonce request failed', () => {
-    state.transaction.network.getNonceStatus = RequestStatus.FAILED;
-    expect(nonceRequestFailed(state)).toEqual(true);
+    state.transaction.network.getNonceStatus = transactionNetworkTypes.RequestStatus.FAILED;
+    expect(transactionNetworkSelectors.nonceRequestFailed(state)).toEqual(true);
   });
 
   it('should check with the store if the gas estimation is pending', () => {
-    expect(getGasEstimationPending(state)).toEqual(true);
+    expect(transactionNetworkSelectors.getGasEstimationPending(state)).toEqual(true);
   });
 
   it('should check with the store if gas limit estimation timed out', () => {
-    state.transaction.network.gasEstimationStatus = RequestStatus.TIMEDOUT;
-    expect(getGasLimitEstimationTimedOut(state)).toEqual(true);
+    state.transaction.network.gasEstimationStatus = transactionNetworkTypes.RequestStatus.TIMEDOUT;
+    expect(transactionNetworkSelectors.getGasLimitEstimationTimedOut(state)).toEqual(true);
   });
 
   it('should check with the store if network request is pending', () => {
-    state.transaction.network.gasEstimationStatus = RequestStatus.REQUESTED;
-    expect(isNetworkRequestPending(state)).toEqual(true);
+    state.transaction.network.gasEstimationStatus = transactionNetworkTypes.RequestStatus.REQUESTED;
+    expect(transactionNetworkSelectors.isNetworkRequestPending(state)).toEqual(true);
   });
 });
 
@@ -451,15 +443,19 @@ describe('sign tests', () => {
     });
 
   it('should should get the stored sign state', () => {
-    expect(getSignState(state)).toEqual(state.transaction.sign);
+    expect(transactionSignSelectors.getSignState(state)).toEqual(state.transaction.sign);
   });
 
   it('should get the signed local transaction state', () => {
-    expect(getSignedTx(state)).toEqual(state.transaction.sign.local.signedTransaction);
+    expect(transactionSignSelectors.getSignedTx(state)).toEqual(
+      state.transaction.sign.local.signedTransaction
+    );
   });
 
   it('should get the signed web3 transaction state', () => {
-    expect(getWeb3Tx(state)).toEqual(state.transaction.sign.web3.transaction);
+    expect(transactionSignSelectors.getWeb3Tx(state)).toEqual(
+      state.transaction.sign.web3.transaction
+    );
   });
 
   it('should get the serialized transaction state', () => {

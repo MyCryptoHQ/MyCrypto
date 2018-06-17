@@ -2,64 +2,47 @@ import EthTx from 'ethereumjs-tx';
 import BN from 'bn.js';
 
 import { gasPriceToBase, getDecimalFromEtherUnit } from 'libs/units';
-import { BroadcastState, ITransactionStatus } from './broadcast/types';
 import {
-  broadcastTransactionQueued,
-  broadcastTransactionSucceeded,
-  broadcastTransactionFailed
-} from './broadcast/actions';
-import { broadcastReducer, BROADCAST_INITIAL_STATE } from './broadcast/reducer';
-import { TRANSACTION_FIELDS, FieldsState, InputGasPriceAction } from './fields/types';
+  transactionBroadcastTypes,
+  transactionBroadcastActions,
+  transactionBroadcastReducer
+} from './broadcast';
 import {
-  setToField,
-  setValueField,
-  setDataField,
-  setGasLimitField,
-  setNonceField,
-  setGasPriceField
-} from './fields/actions';
-import { fieldsReducer } from './fields/reducer';
-import { TRANSACTION_META, MetaState, SetUnitMetaAction } from './meta/types';
-import { setTokenTo, setTokenValue } from './meta/actions';
-import { metaReducer } from './meta/reducer';
-import { TRANSACTION_NETWORK, NetworkState, NetworkAction } from './network/types';
-import { getFromSucceeded } from './network/actions';
-import { networkReducer } from './network/reducer';
+  transactionFieldsTypes,
+  transactionFieldsActions,
+  transactionFieldsReducer
+} from './fields';
+import { transactionMetaTypes, transactionMetaActions, transactionMetaReducer } from './meta';
 import {
-  TRANSACTION_SIGN,
-  SignState,
-  SignTransactionRequestedAction,
-  SignLocalTransactionSucceededAction,
-  SignWeb3TransactionSucceededAction
-} from './sign/types';
-import { signReducer } from './sign/reducer';
-import {
-  TRANSACTION,
-  SwapTokenToEtherAction,
-  SwapEtherToTokenAction,
-  SwapTokenToTokenAction,
-  ResetTransactionSuccessfulAction
-} from './types';
+  transactionNetworkTypes,
+  transactionNetworkActions,
+  transactionNetworkReducer
+} from './network';
+import { transactionSignTypes, transactionSignReducer } from './sign';
+import * as types from './types';
 
 describe('transaction: Reducers', () => {
   describe('Broadcast', () => {
     const indexingHash = 'testingHash';
     const serializedTransaction = new Buffer('testSerialized');
-    const nextTxStatus: ITransactionStatus = {
+    const nextTxStatus: transactionBroadcastTypes.ITransactionStatus = {
       broadcastedHash: null,
       broadcastSuccessful: false,
       isBroadcasting: true,
       serializedTransaction
     };
-    const nextState: BroadcastState = {
-      ...BROADCAST_INITIAL_STATE,
+    const nextState: transactionBroadcastTypes.TransactionBroadcastState = {
+      ...transactionBroadcastReducer.BROADCAST_INITIAL_STATE,
       [indexingHash]: nextTxStatus
     };
     it('should handle BROADCAST_TRANSACTION_QUEUED', () => {
       expect(
-        broadcastReducer(
-          BROADCAST_INITIAL_STATE as BroadcastState,
-          broadcastTransactionQueued({ indexingHash, serializedTransaction })
+        transactionBroadcastReducer.broadcastReducer(
+          transactionBroadcastReducer.BROADCAST_INITIAL_STATE as transactionBroadcastTypes.TransactionBroadcastState,
+          transactionBroadcastActions.broadcastTransactionQueued({
+            indexingHash,
+            serializedTransaction
+          })
         )
       ).toEqual(nextState);
     });
@@ -76,9 +59,12 @@ describe('transaction: Reducers', () => {
         }
       };
       expect(
-        broadcastReducer(
+        transactionBroadcastReducer.broadcastReducer(
           nextState,
-          broadcastTransactionSucceeded({ indexingHash, broadcastedHash })
+          transactionBroadcastActions.broadcastTransactionSucceeded({
+            indexingHash,
+            broadcastedHash
+          })
         )
       ).toEqual(broadcastedState);
     });
@@ -88,14 +74,17 @@ describe('transaction: Reducers', () => {
         ...nextState,
         [indexingHash]: { ...nextTxStatus, isBroadcasting: false, broadcastSuccessful: false }
       };
-      expect(broadcastReducer(nextState, broadcastTransactionFailed({ indexingHash }))).toEqual(
-        failedBroadcastState
-      );
+      expect(
+        transactionBroadcastReducer.broadcastReducer(
+          nextState,
+          transactionBroadcastActions.broadcastTransactionFailed({ indexingHash })
+        )
+      ).toEqual(failedBroadcastState);
     });
   });
 
   describe('Fields', () => {
-    const FIELDS_INITIAL_STATE: FieldsState = {
+    const FIELDS_INITIAL_STATE: transactionFieldsTypes.TransactionFieldsState = {
       to: { raw: '', value: null },
       data: { raw: '', value: null },
       nonce: { raw: '', value: null },
@@ -106,57 +95,87 @@ describe('transaction: Reducers', () => {
     const testPayload = { raw: 'test', value: null };
 
     it('should handle TO_FIELD_SET', () => {
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, setToField(testPayload))).toEqual({
+      expect(
+        transactionFieldsReducer.fieldsReducer(
+          FIELDS_INITIAL_STATE,
+          transactionFieldsActions.setToField(testPayload)
+        )
+      ).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload
       });
     });
 
     it('should handle VALUE_FIELD_SET', () => {
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, setValueField(testPayload))).toEqual({
+      expect(
+        transactionFieldsReducer.fieldsReducer(
+          FIELDS_INITIAL_STATE,
+          transactionFieldsActions.setValueField(testPayload)
+        )
+      ).toEqual({
         ...FIELDS_INITIAL_STATE,
         value: testPayload
       });
     });
 
     it('should handle DATA_FIELD_SET', () => {
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, setDataField(testPayload))).toEqual({
+      expect(
+        transactionFieldsReducer.fieldsReducer(
+          FIELDS_INITIAL_STATE,
+          transactionFieldsActions.setDataField(testPayload)
+        )
+      ).toEqual({
         ...FIELDS_INITIAL_STATE,
         data: testPayload
       });
     });
 
     it('should handle GAS_LIMIT_FIELD_SET', () => {
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, setGasLimitField(testPayload))).toEqual({
+      expect(
+        transactionFieldsReducer.fieldsReducer(
+          FIELDS_INITIAL_STATE,
+          transactionFieldsActions.setGasLimitField(testPayload)
+        )
+      ).toEqual({
         ...FIELDS_INITIAL_STATE,
         gasLimit: testPayload
       });
     });
 
     it('should handle NONCE_SET', () => {
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, setNonceField(testPayload))).toEqual({
+      expect(
+        transactionFieldsReducer.fieldsReducer(
+          FIELDS_INITIAL_STATE,
+          transactionFieldsActions.setNonceField(testPayload)
+        )
+      ).toEqual({
         ...FIELDS_INITIAL_STATE,
         nonce: testPayload
       });
     });
 
     it('should handle GAS_PRICE_FIELD_SET', () => {
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, setGasPriceField(testPayload))).toEqual({
+      expect(
+        transactionFieldsReducer.fieldsReducer(
+          FIELDS_INITIAL_STATE,
+          transactionFieldsActions.setGasPriceField(testPayload)
+        )
+      ).toEqual({
         ...FIELDS_INITIAL_STATE,
         gasPrice: testPayload
       });
     });
 
     it('should handle TOKEN_TO_ETHER_SWAP', () => {
-      const swapAction: SwapTokenToEtherAction = {
-        type: TRANSACTION.TOKEN_TO_ETHER_SWAP,
+      const swapAction: types.SwapTokenToEtherAction = {
+        type: types.TransactionActions.TOKEN_TO_ETHER_SWAP,
         payload: {
           to: testPayload,
           value: testPayload,
           decimal: 1
         }
       };
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
+      expect(transactionFieldsReducer.fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload,
         value: testPayload
@@ -164,8 +183,8 @@ describe('transaction: Reducers', () => {
     });
 
     it('should handle ETHER_TO_TOKEN_SWAP', () => {
-      const swapAction: SwapEtherToTokenAction = {
-        type: TRANSACTION.ETHER_TO_TOKEN_SWAP,
+      const swapAction: types.SwapEtherToTokenAction = {
+        type: types.TransactionActions.ETHER_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -174,7 +193,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
+      expect(transactionFieldsReducer.fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload,
         data: testPayload
@@ -182,8 +201,8 @@ describe('transaction: Reducers', () => {
     });
 
     it('should handle TOKEN_TO_TOKEN_SWAP', () => {
-      const swapAction: SwapTokenToTokenAction = {
-        type: TRANSACTION.TOKEN_TO_TOKEN_SWAP,
+      const swapAction: types.SwapTokenToTokenAction = {
+        type: types.TransactionActions.TOKEN_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -191,7 +210,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
+      expect(transactionFieldsReducer.fieldsReducer(FIELDS_INITIAL_STATE, swapAction)).toEqual({
         ...FIELDS_INITIAL_STATE,
         to: testPayload,
         data: testPayload
@@ -199,20 +218,22 @@ describe('transaction: Reducers', () => {
     });
 
     it('should reset', () => {
-      const resetAction: ResetTransactionSuccessfulAction = {
-        type: TRANSACTION.RESET_SUCCESSFUL,
+      const resetAction: types.ResetTransactionSuccessfulAction = {
+        type: types.TransactionActions.RESET_SUCCESSFUL,
         payload: { isContractInteraction: false }
       };
-      const modifiedState: FieldsState = {
+      const modifiedState: transactionFieldsTypes.TransactionFieldsState = {
         ...FIELDS_INITIAL_STATE,
         data: { raw: 'modified', value: null }
       };
-      expect(fieldsReducer(modifiedState, resetAction)).toEqual(FIELDS_INITIAL_STATE);
+      expect(transactionFieldsReducer.fieldsReducer(modifiedState, resetAction)).toEqual(
+        FIELDS_INITIAL_STATE
+      );
     });
   });
 
   describe('Meta', () => {
-    const META_INITIAL_STATE: MetaState = {
+    const META_INITIAL_STATE: transactionMetaTypes.TransactionMetaState = {
       unit: '',
       previousUnit: '',
       decimal: getDecimalFromEtherUnit('ether'),
@@ -225,52 +246,67 @@ describe('transaction: Reducers', () => {
     const testPayload = { raw: 'test', value: null };
 
     it('should handle UNIT_META_SET', () => {
-      const setUnitMetaAction: SetUnitMetaAction = {
-        type: TRANSACTION_META.UNIT_META_SET,
+      const setUnitMetaAction: transactionMetaTypes.SetUnitMetaAction = {
+        type: transactionMetaTypes.TransactionMetaActions.UNIT_META_SET,
         payload: 'test'
       };
-      expect(metaReducer(META_INITIAL_STATE, setUnitMetaAction));
+      expect(transactionMetaReducer.metaReducer(META_INITIAL_STATE, setUnitMetaAction));
     });
 
     it('should handle TOKEN_VALUE_META_SET', () => {
-      expect(metaReducer(META_INITIAL_STATE, setTokenValue(testPayload))).toEqual({
+      expect(
+        transactionMetaReducer.metaReducer(
+          META_INITIAL_STATE,
+          transactionMetaActions.setTokenValue(testPayload)
+        )
+      ).toEqual({
         ...META_INITIAL_STATE,
         tokenValue: testPayload
       });
     });
 
     it('should handle TOKEN_TO_META_SET', () => {
-      expect(metaReducer(META_INITIAL_STATE, setTokenTo(testPayload))).toEqual({
+      expect(
+        transactionMetaReducer.metaReducer(
+          META_INITIAL_STATE,
+          transactionMetaActions.setTokenTo(testPayload)
+        )
+      ).toEqual({
         ...META_INITIAL_STATE,
         tokenTo: testPayload
       });
     });
 
     it('should handle GET_FROM_SUCCEEDED', () => {
-      expect(metaReducer(META_INITIAL_STATE, getFromSucceeded('test'))).toEqual({
+      expect(
+        transactionMetaReducer.metaReducer(
+          META_INITIAL_STATE,
+          transactionNetworkActions.getFromSucceeded('test')
+        )
+      ).toEqual({
         ...META_INITIAL_STATE,
         from: 'test'
       });
     });
 
     it('should handle TOKEN_TO_ETHER_SWAP', () => {
-      const swapAction: SwapTokenToEtherAction = {
-        type: TRANSACTION.TOKEN_TO_ETHER_SWAP,
+      const swapAction: types.SwapTokenToEtherAction = {
+        type: types.TransactionActions.TOKEN_TO_ETHER_SWAP,
         payload: {
           to: testPayload,
           value: testPayload,
           decimal: 1
         }
       };
-      expect(metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
+      expect(transactionMetaReducer.metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
         ...META_INITIAL_STATE,
         decimal: swapAction.payload.decimal
       });
     });
 
     it('should handle ETHER_TO_TOKEN_SWAP', () => {
-      const swapAction: SwapEtherToTokenAction = {
-        type: TRANSACTION.ETHER_TO_TOKEN_SWAP,
+      const swapAction: types.SwapEtherToTokenAction = {
+        type: types.TransactionActions.ETHER_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -279,7 +315,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
+      expect(transactionMetaReducer.metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
         ...META_INITIAL_STATE,
         decimal: swapAction.payload.decimal,
         tokenTo: testPayload,
@@ -288,8 +324,8 @@ describe('transaction: Reducers', () => {
     });
 
     it('should handle TOKEN_TO_TOKEN_SWAP', () => {
-      const swapAction: SwapTokenToTokenAction = {
-        type: TRANSACTION.TOKEN_TO_TOKEN_SWAP,
+      const swapAction: types.SwapTokenToTokenAction = {
+        type: types.TransactionActions.TOKEN_TO_TOKEN_SWAP,
         payload: {
           to: testPayload,
           data: testPayload,
@@ -297,7 +333,7 @@ describe('transaction: Reducers', () => {
           decimal: 1
         }
       };
-      expect(metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
+      expect(transactionMetaReducer.metaReducer(META_INITIAL_STATE, swapAction)).toEqual({
         ...META_INITIAL_STATE,
         decimal: swapAction.payload.decimal,
         tokenValue: testPayload
@@ -305,20 +341,20 @@ describe('transaction: Reducers', () => {
     });
 
     it('should reset', () => {
-      const resetAction: ResetTransactionSuccessfulAction = {
-        type: TRANSACTION.RESET_SUCCESSFUL,
+      const resetAction: types.ResetTransactionSuccessfulAction = {
+        type: types.TransactionActions.RESET_SUCCESSFUL,
         payload: { isContractInteraction: false }
       };
-      const modifiedState: MetaState = {
+      const modifiedState: transactionMetaTypes.TransactionMetaState = {
         ...META_INITIAL_STATE,
         unit: 'modified'
       };
-      expect(metaReducer(modifiedState, resetAction)).toEqual(modifiedState);
+      expect(transactionMetaReducer.metaReducer(modifiedState, resetAction)).toEqual(modifiedState);
     });
   });
 
   describe('Network', () => {
-    const NETWORK_INITIAL_STATE: NetworkState = {
+    const NETWORK_INITIAL_STATE: transactionNetworkTypes.TransactionNetworkState = {
       gasEstimationStatus: null,
       getFromStatus: null,
       getNonceStatus: null,
@@ -326,43 +362,51 @@ describe('transaction: Reducers', () => {
     };
 
     it('should handle gas estimation status actions', () => {
-      const gasEstimationAction: NetworkAction = {
-        type: TRANSACTION_NETWORK.ESTIMATE_GAS_SUCCEEDED
+      const gasEstimationAction: transactionNetworkTypes.TransactionNetworkAction = {
+        type: transactionNetworkTypes.TransactionNetworkActions.ESTIMATE_GAS_SUCCEEDED
       };
-      expect(networkReducer(NETWORK_INITIAL_STATE, gasEstimationAction)).toEqual({
+      expect(
+        transactionNetworkReducer.networkReducer(NETWORK_INITIAL_STATE, gasEstimationAction)
+      ).toEqual({
         ...NETWORK_INITIAL_STATE,
         gasEstimationStatus: 'SUCCESS'
       });
     });
 
     it('should handle get from status actions', () => {
-      const getFromAction: NetworkAction = {
-        type: TRANSACTION_NETWORK.GET_FROM_SUCCEEDED,
+      const getFromAction: transactionNetworkTypes.TransactionNetworkAction = {
+        type: transactionNetworkTypes.TransactionNetworkActions.GET_FROM_SUCCEEDED,
         payload: 'test'
       };
-      expect(networkReducer(NETWORK_INITIAL_STATE, getFromAction)).toEqual({
+      expect(
+        transactionNetworkReducer.networkReducer(NETWORK_INITIAL_STATE, getFromAction)
+      ).toEqual({
         ...NETWORK_INITIAL_STATE,
         getFromStatus: 'SUCCESS'
       });
     });
 
     it('should handle get nonce status actions', () => {
-      const getNonceAction: NetworkAction = {
-        type: TRANSACTION_NETWORK.GET_NONCE_SUCCEEDED,
+      const getNonceAction: transactionNetworkTypes.TransactionNetworkAction = {
+        type: transactionNetworkTypes.TransactionNetworkActions.GET_NONCE_SUCCEEDED,
         payload: 'test'
       };
-      expect(networkReducer(NETWORK_INITIAL_STATE, getNonceAction)).toEqual({
+      expect(
+        transactionNetworkReducer.networkReducer(NETWORK_INITIAL_STATE, getNonceAction)
+      ).toEqual({
         ...NETWORK_INITIAL_STATE,
         getNonceStatus: 'SUCCESS'
       });
     });
 
     it('should handle gasPriceIntent', () => {
-      const gasPriceAction: InputGasPriceAction = {
-        type: TRANSACTION_FIELDS.GAS_PRICE_INPUT,
+      const gasPriceAction: transactionFieldsTypes.InputGasPriceAction = {
+        type: transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_INPUT,
         payload: 'test'
       };
-      expect(networkReducer(NETWORK_INITIAL_STATE, gasPriceAction)).toEqual({
+      expect(
+        transactionNetworkReducer.networkReducer(NETWORK_INITIAL_STATE, gasPriceAction)
+      ).toEqual({
         ...NETWORK_INITIAL_STATE,
         gasPriceStatus: 'SUCCESS'
       });
@@ -370,31 +414,35 @@ describe('transaction: Reducers', () => {
   });
 
   describe('Sign', () => {
-    const SIGN_INITIAL_STATE: SignState = {
+    const SIGN_INITIAL_STATE: transactionSignTypes.TransactionSignState = {
       local: { signedTransaction: null },
       web3: { transaction: null },
       indexingHash: null,
       pending: false
     };
     it('should handle SIGN_TRANSACTION_REQUESTED', () => {
-      const signTxRequestedAction: SignTransactionRequestedAction = {
-        type: TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED,
+      const signTxRequestedAction: transactionSignTypes.SignTransactionRequestedAction = {
+        type: transactionSignTypes.TransactionSignActions.SIGN_TRANSACTION_REQUESTED,
         payload: {} as EthTx
       };
-      expect(signReducer(SIGN_INITIAL_STATE, signTxRequestedAction)).toEqual({
-        ...SIGN_INITIAL_STATE,
-        pending: true
-      });
+      expect(transactionSignReducer.signReducer(SIGN_INITIAL_STATE, signTxRequestedAction)).toEqual(
+        {
+          ...SIGN_INITIAL_STATE,
+          pending: true
+        }
+      );
     });
 
     it('should handle SIGN_LOCAL_TRANSACTION_SUCCEEDED', () => {
       const signedTransaction = new Buffer('test');
       const indexingHash = 'test';
-      const signLocalTxSucceededAction: SignLocalTransactionSucceededAction = {
-        type: TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
+      const signLocalTxSucceededAction: transactionSignTypes.SignLocalTransactionSucceededAction = {
+        type: transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
         payload: { signedTransaction, indexingHash }
       };
-      expect(signReducer(SIGN_INITIAL_STATE, signLocalTxSucceededAction)).toEqual({
+      expect(
+        transactionSignReducer.signReducer(SIGN_INITIAL_STATE, signLocalTxSucceededAction)
+      ).toEqual({
         ...SIGN_INITIAL_STATE,
         pending: false,
         indexingHash,
@@ -405,11 +453,13 @@ describe('transaction: Reducers', () => {
     it('should handle SIGN_WEB3_TRANSACTION_SUCCEEDED', () => {
       const transaction = new Buffer('test');
       const indexingHash = 'test';
-      const signWeb3TxSucceededAction: SignWeb3TransactionSucceededAction = {
-        type: TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED,
+      const signWeb3TxSucceededAction: transactionSignTypes.SignWeb3TransactionSucceededAction = {
+        type: transactionSignTypes.TransactionSignActions.SIGN_WEB3_TRANSACTION_SUCCEEDED,
         payload: { transaction, indexingHash }
       };
-      expect(signReducer(SIGN_INITIAL_STATE, signWeb3TxSucceededAction)).toEqual({
+      expect(
+        transactionSignReducer.signReducer(SIGN_INITIAL_STATE, signWeb3TxSucceededAction)
+      ).toEqual({
         ...SIGN_INITIAL_STATE,
         pending: false,
         indexingHash,
@@ -418,15 +468,17 @@ describe('transaction: Reducers', () => {
     });
 
     it('should reset', () => {
-      const resetAction: ResetTransactionSuccessfulAction = {
-        type: TRANSACTION.RESET_SUCCESSFUL,
+      const resetAction: types.ResetTransactionSuccessfulAction = {
+        type: types.TransactionActions.RESET_SUCCESSFUL,
         payload: { isContractInteraction: false }
       };
-      const modifiedState: SignState = {
+      const modifiedState: transactionSignTypes.TransactionSignState = {
         ...SIGN_INITIAL_STATE,
         pending: true
       };
-      expect(signReducer(modifiedState, resetAction)).toEqual(SIGN_INITIAL_STATE);
+      expect(transactionSignReducer.signReducer(modifiedState, resetAction)).toEqual(
+        SIGN_INITIAL_STATE
+      );
     });
   });
 });

@@ -1,21 +1,21 @@
 import { combineReducers } from 'redux';
 
-import { broadcastReducer } from './broadcast/reducer';
-import { fieldsReducer } from './fields/reducer';
-import { metaReducer } from './meta/reducer';
-import { networkReducer } from './network/reducer';
-import { signReducer } from './sign/reducer';
-import { TransactionState } from './types';
+import * as transactionBroadcastReducer from './broadcast/reducer';
+import * as transactionFieldsReducer from './fields/reducer';
+import * as transactionMetaReducer from './meta/reducer';
+import * as transactionNetworkReducer from './network/reducer';
+import * as transactionSignReducer from './sign/reducer';
+import * as types from './types';
 
 export const transactionReducer = combineReducers({
-  broadcast: broadcastReducer,
-  fields: fieldsReducer,
-  meta: metaReducer,
-  network: networkReducer,
-  sign: signReducer
+  broadcast: transactionBroadcastReducer.broadcastReducer,
+  fields: transactionFieldsReducer.fieldsReducer,
+  meta: transactionMetaReducer.metaReducer,
+  network: transactionNetworkReducer.networkReducer,
+  sign: transactionSignReducer.signReducer
 });
 
-export const INITIAL_STATE: TransactionState = transactionReducer(
+export const INITIAL_STATE: types.TransactionState = transactionReducer(
   {},
   { type: undefined }
-) as TransactionState;
+) as types.TransactionState;

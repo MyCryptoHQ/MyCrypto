@@ -1,17 +1,10 @@
-import { BroadcastState, BroadcastAction } from './broadcast/types';
-import {
-  FieldsState,
-  FieldAction,
-  InputFieldAction,
-  SetToFieldAction,
-  SetValueFieldAction,
-  SetDataFieldAction
-} from './fields/types';
-import { MetaState, MetaAction, SetTokenToMetaAction, SetTokenValueMetaAction } from './meta/types';
-import { NetworkState, NetworkAction } from './network/types';
-import { SignState, SignAction } from './sign/types';
+import * as transactionBroadcastTypes from './broadcast/types';
+import * as transactionFieldsTypes from './fields/types';
+import * as transactionMetaTypes from './meta/types';
+import * as transactionNetworkTypes from './network/types';
+import * as transactionSignTypes from './sign/types';
 
-export enum TRANSACTION {
+export enum TransactionActions {
   CURRENT_VALUE_SET = 'CURRENT_VALUE_SET',
   CURRENT_TO_SET = 'CURRENT_TO_SET',
   TOKEN_TO_ETHER_SWAP = 'TOKEN_TO_ETHER_SWAP',
@@ -20,25 +13,25 @@ export enum TRANSACTION {
   SEND_EVERYTHING_REQUESTED = 'SEND_EVERYTHING_REQUESTED',
   SEND_EVERYTHING_SUCCEEDED = 'SEND_EVERYTHING_SUCCEEDED',
   SEND_EVERYTHING_FAILED = 'SEND_EVERYTHING_FAILED',
-  RESET_REQUESTED = 'TRANSACTION_RESET_REQUESTED',
-  RESET_SUCCESSFUL = 'TRANSACTION_RESET_SUCCESSFUL'
+  RESET_REQUESTED = 'TransactionActions_RESET_REQUESTED',
+  RESET_SUCCESSFUL = 'TransactionActions_RESET_SUCCESSFUL'
 }
 
 export interface TransactionState {
-  broadcast: BroadcastState;
-  fields: FieldsState;
-  meta: MetaState;
-  network: NetworkState;
-  sign: SignState;
+  broadcast: transactionBroadcastTypes.TransactionBroadcastState;
+  fields: transactionFieldsTypes.TransactionFieldsState;
+  meta: transactionMetaTypes.TransactionMetaState;
+  network: transactionNetworkTypes.TransactionNetworkState;
+  sign: transactionSignTypes.TransactionSignState;
 }
 
 export interface SetCurrentValueAction {
-  type: TRANSACTION.CURRENT_VALUE_SET;
+  type: TransactionActions.CURRENT_VALUE_SET;
   payload: string;
 }
 
 export interface SetCurrentToAction {
-  type: TRANSACTION.CURRENT_TO_SET;
+  type: TransactionActions.CURRENT_TO_SET;
   payload: string;
 }
 
@@ -46,13 +39,13 @@ export type CurrentAction = SetCurrentValueAction | SetCurrentToAction;
 
 //#region Send Everything
 export interface SendEverythingRequestedAction {
-  type: TRANSACTION.SEND_EVERYTHING_REQUESTED;
+  type: TransactionActions.SEND_EVERYTHING_REQUESTED;
 }
 export interface SendEverythingSucceededAction {
-  type: TRANSACTION.SEND_EVERYTHING_SUCCEEDED;
+  type: TransactionActions.SEND_EVERYTHING_SUCCEEDED;
 }
 export interface SendEverythingFailedAction {
-  type: TRANSACTION.SEND_EVERYTHING_FAILED;
+  type: TransactionActions.SEND_EVERYTHING_FAILED;
 }
 
 export type SendEverythingAction =
@@ -63,29 +56,29 @@ export type SendEverythingAction =
 
 //#region Swap
 export interface SwapTokenToEtherAction {
-  type: TRANSACTION.TOKEN_TO_ETHER_SWAP;
+  type: TransactionActions.TOKEN_TO_ETHER_SWAP;
   payload: {
-    to: SetToFieldAction['payload'];
-    value: SetValueFieldAction['payload'];
+    to: transactionFieldsTypes.SetToFieldAction['payload'];
+    value: transactionFieldsTypes.SetValueFieldAction['payload'];
     decimal: number;
   };
 }
 export interface SwapEtherToTokenAction {
-  type: TRANSACTION.ETHER_TO_TOKEN_SWAP;
+  type: TransactionActions.ETHER_TO_TOKEN_SWAP;
   payload: {
-    to: SetToFieldAction['payload'];
-    data: SetDataFieldAction['payload'];
-    tokenTo: SetTokenToMetaAction['payload'];
-    tokenValue: SetTokenValueMetaAction['payload'];
+    to: transactionFieldsTypes.SetToFieldAction['payload'];
+    data: transactionFieldsTypes.SetDataFieldAction['payload'];
+    tokenTo: transactionMetaTypes.SetTokenToMetaAction['payload'];
+    tokenValue: transactionMetaTypes.SetTokenValueMetaAction['payload'];
     decimal: number;
   };
 }
 export interface SwapTokenToTokenAction {
-  type: TRANSACTION.TOKEN_TO_TOKEN_SWAP;
+  type: TransactionActions.TOKEN_TO_TOKEN_SWAP;
   payload: {
-    to: SetToFieldAction['payload'];
-    data: SetDataFieldAction['payload'];
-    tokenValue: SetTokenValueMetaAction['payload'];
+    to: transactionFieldsTypes.SetToFieldAction['payload'];
+    data: transactionFieldsTypes.SetDataFieldAction['payload'];
+    tokenValue: transactionMetaTypes.SetTokenValueMetaAction['payload'];
     decimal: number;
   };
 }
@@ -93,21 +86,21 @@ export type SwapAction = SwapEtherToTokenAction | SwapTokenToEtherAction | SwapT
 //#endregion Swap
 
 export interface ResetTransactionRequestedAction {
-  type: TRANSACTION.RESET_REQUESTED;
+  type: TransactionActions.RESET_REQUESTED;
 }
 
 export interface ResetTransactionSuccessfulAction {
-  type: TRANSACTION.RESET_SUCCESSFUL;
+  type: TransactionActions.RESET_SUCCESSFUL;
   payload: { isContractInteraction: boolean };
 }
 
 export type TransactionAction =
-  | InputFieldAction
-  | BroadcastAction
-  | FieldAction
-  | MetaAction
-  | NetworkAction
-  | SignAction
+  | transactionBroadcastTypes.TransactionBroadcastAction
+  | transactionFieldsTypes.InputFieldAction
+  | transactionFieldsTypes.TransactionFieldAction
+  | transactionMetaTypes.TransactionMetaAction
+  | transactionNetworkTypes.TransactionNetworkAction
+  | transactionSignTypes.TransactionSignAction
   | SwapAction
   | ResetTransactionRequestedAction
   | ResetTransactionSuccessfulAction
