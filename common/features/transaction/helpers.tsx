@@ -1,9 +1,7 @@
-import Tx from 'ethereumjs-tx';
 import { SagaIterator } from 'redux-saga';
-import { select, call, put, take } from 'redux-saga/effects';
+import { select, call } from 'redux-saga/effects';
 
 import { TokenValue, Wei, toTokenBase } from 'libs/units';
-import { IFullWallet } from 'libs/wallet';
 import {
   ITransaction,
   enoughBalanceViaTx,
@@ -11,86 +9,13 @@ import {
   makeTransaction
 } from 'libs/transaction';
 import { validNumber, validDecimal } from 'libs/validators';
-import { StaticNetworkConfig } from 'types/network';
+
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getOffline } from 'features/config/meta/selectors';
-import { isNetworkUnit, getNetworkConfig } from 'features/config/selectors';
+import * as configMetaSelectors from 'features/config/meta/selectors';
+import * as configSelectors from 'features/config/selectors';
 import { walletSelectors } from 'features/wallet';
-import { notificationsActions } from 'features/notifications';
 import { transactionFieldsSelectors } from './fields';
-import { transactionNetworkTypes, transactionNetworkActions } from './network';
-import { transactionSignTypes, transactionSignActions } from './sign';
-//#region Sagas
-
-//#region Signing
-export interface IFullWalletAndTransaction {
-  wallet: IFullWallet;
-  tx: Tx;
-}
-
-export const signTransactionWrapper = (
-  func: (IWalletAndTx: IFullWalletAndTransaction) => SagaIterator
-) =>
-  function*(partialTx: transactionSignTypes.SignTransactionRequestedAction) {
-    try {
-      const IWalletAndTx: IFullWalletAndTransaction = yield call(
-        getWalletAndTransaction,
-        partialTx.payload
-      );
-      yield call(getFromSaga);
-      yield call(func, IWalletAndTx);
-    } catch (err) {
-      yield call(handleFailedTransaction, err);
-    }
-  };
-
-/**
- * @description grabs wallet and required tx parameters via selectors, and assigns
- * the rest of the tx parameters from the action
- * @param partialTx
- */
-export function* getWalletAndTransaction(
-  partialTx: transactionSignTypes.SignTransactionRequestedAction['payload']
-): SagaIterator {
-  // get the wallet we're going to sign with
-  const wallet: null | IFullWallet = yield select(walletSelectors.getWalletInst);
-  if (!wallet) {
-    throw Error('Could not get wallet instance to sign transaction');
-  }
-  // get the chainId
-  const { chainId }: StaticNetworkConfig = yield select(getNetworkConfig);
-
-  // get the rest of the transaction parameters
-  partialTx._chainId = chainId;
-  return {
-    wallet,
-    tx: partialTx
-  };
-}
-
-export function* handleFailedTransaction(err: Error): SagaIterator {
-  yield put(notificationsActions.showNotification('danger', err.message, 5000));
-  yield put(transactionSignActions.signTransactionFailed());
-}
-
-export function* getFromSaga(): SagaIterator {
-  yield put(transactionNetworkActions.getFromRequested());
-  // wait for it to finish
-  const {
-    type
-  }:
-    | transactionNetworkTypes.GetFromFailedAction
-    | transactionNetworkTypes.GetFromSucceededAction = yield take([
-    transactionNetworkTypes.TransactionNetworkActions.GET_FROM_SUCCEEDED,
-    transactionNetworkTypes.TransactionNetworkActions.GET_FROM_FAILED
-  ]);
-  // continue if it doesnt fail
-  if (type === transactionNetworkTypes.TransactionNetworkActions.GET_FROM_FAILED) {
-    throw Error('Could not get "from" address of wallet');
-  }
-}
-//#endregion Signing
 
 //#region Validation
 export interface IInput {
@@ -127,8 +52,8 @@ export function* validateInput(input: TokenValue | Wei | null, unit: string): Sa
   }
 
   const etherBalance: Wei | null = yield select(walletSelectors.getEtherBalance);
-  const isOffline: boolean = yield select(getOffline);
-  const networkUnitTransaction: boolean = yield select(isNetworkUnit, unit);
+  const isOffline: boolean = yield select(configMetaSelectors.getOffline);
+  const networkUnitTransaction: boolean = yield select(configSelectors.isNetworkUnit, unit);
 
   if (isOffline || !etherBalance) {
     return true;
@@ -178,5 +103,3 @@ export function* makeCostCalculationTx(
 }
 
 //#endregion Validation
-
-//#endregion Sagas

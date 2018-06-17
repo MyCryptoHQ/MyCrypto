@@ -14,9 +14,7 @@ import {
 } from 'redux-saga/effects';
 
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei, TokenValue } from 'libs/units';
-import { computeIndexingHash } from 'libs/transaction';
 import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
-import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
@@ -25,8 +23,6 @@ import * as ensActions from 'features/ens/actions';
 import * as ensSelectors from 'features/ens/selectors';
 import * as walletTypes from 'features/wallet/types';
 import * as walletSelectors from 'features/wallet/selectors';
-import * as paritySignerTypes from 'features/paritySigner/types';
-import * as paritySignerActions from 'features/paritySigner/actions';
 import * as notificationsActions from 'features/notifications/actions';
 import { transactionBroadcastSagas } from './broadcast';
 import * as transactionFieldsTypes from './fields/types';
@@ -37,8 +33,8 @@ import * as transactionMetaActions from './meta/actions';
 import * as transactionMetaSelectors from './meta/selectors';
 import { transactionMetaSagas } from './meta';
 import { transactionNetworkSagas } from './network';
+import { transactionSignSagas } from './sign';
 import * as transactionSignTypes from './sign/types';
-import * as transactionSignActions from './sign/actions';
 import * as types from './types';
 import * as actions from './actions';
 import * as helpers from './helpers';
@@ -183,127 +179,6 @@ export const currentValue = [
 export const current = [currentTo, ...currentValue];
 //#endregion Current
 
-//#region Signing
-export function* signLocalTransactionHandler({
-  tx,
-  wallet
-}: helpers.IFullWalletAndTransaction): SagaIterator {
-  const signedTransaction: Buffer = yield apply(wallet, wallet.signRawTransaction, [tx]);
-  const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
-  yield put(
-    transactionSignActions.signLocalTransactionSucceeded({
-      signedTransaction,
-      indexingHash,
-      noVerify: false
-    })
-  );
-}
-
-const signLocalTransaction = helpers.signTransactionWrapper(signLocalTransactionHandler);
-
-export function* signWeb3TransactionHandler({
-  tx
-}: helpers.IFullWalletAndTransaction): SagaIterator {
-  const serializedTransaction: Buffer = yield apply(tx, tx.serialize);
-  const indexingHash: string = yield call(computeIndexingHash, serializedTransaction);
-
-  yield put(
-    transactionSignActions.signWeb3TransactionSucceeded({
-      transaction: serializedTransaction,
-      indexingHash
-    })
-  );
-}
-
-const signWeb3Transaction = helpers.signTransactionWrapper(signWeb3TransactionHandler);
-
-export function* signParitySignerTransactionHandler({
-  tx,
-  wallet
-}: helpers.IFullWalletAndTransaction): SagaIterator {
-  const from = yield apply(wallet, wallet.getAddressString);
-  const rlp = yield call(transactionToRLP, tx);
-
-  yield put(paritySignerActions.requestTransactionSignature(from, rlp));
-
-  const { payload }: paritySignerTypes.FinalizeSignatureAction = yield take(
-    paritySignerTypes.ParitySignerActions.FINALIZE_SIGNATURE
-  );
-  const signedTransaction: Buffer = yield call(signTransactionWithSignature, tx, payload);
-  const indexingHash: string = yield call(computeIndexingHash, signedTransaction);
-
-  yield put(
-    transactionSignActions.signLocalTransactionSucceeded({
-      signedTransaction,
-      indexingHash,
-      noVerify: false
-    })
-  );
-}
-
-const signParitySignerTransaction = helpers.signTransactionWrapper(
-  signParitySignerTransactionHandler
-);
-
-/**
- * @description Verifies that the transaction matches the fields, and if its a locally signed transaction (so it has a signature) it will verify the signature too
- * @param {(SignWeb3TransactionSucceededAction | SignLocalTransactionSucceededAction)} {
- *   type
- * }
- * @returns {SagaIterator}
- */
-function* verifyTransaction({
-  type,
-  payload: { noVerify }
-}:
-  | transactionSignTypes.SignWeb3TransactionSucceededAction
-  | transactionSignTypes.SignLocalTransactionSucceededAction): SagaIterator {
-  if (noVerify) {
-    return;
-  }
-  const transactionsMatch: boolean = yield select(
-    selectors.serializedAndTransactionFieldsMatch,
-    type === transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-    noVerify
-  );
-  if (!transactionsMatch) {
-    yield put(
-      notificationsActions.showNotification(
-        'danger',
-        'Something went wrong signing your transaction, please try again'
-      )
-    );
-    yield put(transactionFieldsActions.resetTransactionRequested());
-  }
-}
-
-function* handleTransactionRequest(
-  action: transactionSignTypes.SignTransactionRequestedAction
-): SagaIterator {
-  const walletType: walletSelectors.IWalletType = yield select(walletSelectors.getWalletType);
-
-  const signingHandler = walletType.isWeb3Wallet
-    ? signWeb3Transaction
-    : walletType.isParitySignerWallet ? signParitySignerTransaction : signLocalTransaction;
-
-  return yield call(signingHandler, action);
-}
-
-export const signing = [
-  takeEvery(
-    transactionSignTypes.TransactionSignActions.SIGN_TRANSACTION_REQUESTED,
-    handleTransactionRequest
-  ),
-  takeEvery(
-    [
-      transactionSignTypes.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
-      transactionSignTypes.TransactionSignActions.SIGN_WEB3_TRANSACTION_SUCCEEDED
-    ],
-    verifyTransaction
-  )
-];
-//#endregion Signing
-
 //#region Send Everything
 export function* handleSendEverything(): SagaIterator {
   const { transaction }: selectors.IGetTransaction = yield select(selectors.getTransaction);
@@ -424,11 +299,11 @@ export const reset = [
 export function* transactionSaga(): SagaIterator {
   yield all([
     ...transactionBroadcastSagas.broadcastSaga,
-    ...current,
     ...transactionFieldsSagas.fieldsSaga,
     ...transactionMetaSagas.metaSaga,
     ...transactionNetworkSagas.networkSaga,
-    ...signing,
+    ...transactionSignSagas.signing,
+    ...current,
     ...sendEverything,
     ...reset
   ]);

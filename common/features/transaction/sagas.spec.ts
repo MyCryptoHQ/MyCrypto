@@ -4,7 +4,6 @@ import { call, select, put, take, apply } from 'redux-saga/effects';
 import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei } from 'libs/units';
-import { computeIndexingHash } from 'libs/transaction';
 import { isValidENSAddress, getIsValidAddressFunction } from 'libs/validators';
 import configuredStore from 'features/store';
 import * as selectors from 'features/selectors';
@@ -17,14 +16,9 @@ import * as notificationsActions from 'features/notifications/actions';
 import * as transactionFieldsActions from './fields/actions';
 import * as transactionMetaActions from './meta/actions';
 import * as transactionMetaSelectors from './meta/selectors';
-import * as transactionSignActions from './sign/actions';
 import * as actions from './actions';
 import * as sagas from './sagas';
 import * as helpers from './helpers';
-
-/* tslint:disable */
-import './selectors'; //throws if not imported
-/* tslint:enable */
 
 configuredStore.getState();
 
@@ -479,157 +473,6 @@ describe('transaction: Sagas', () => {
         });
 
         itShouldBeDone(gen);
-      });
-    });
-  });
-
-  describe('Sign', () => {
-    describe('signLocalTransactionHandler*', () => {
-      const tx = 'tx';
-      const wallet = {
-        signRawTransaction: jest.fn()
-      };
-      const action: any = { tx, wallet };
-      const signedTransaction = new Buffer('signedTransaction');
-      const indexingHash = 'indexingHash';
-
-      const gen = sagas.signLocalTransactionHandler(action);
-
-      it('should apply wallet.signRawTransaction', () => {
-        expect(gen.next().value).toEqual(apply(wallet, wallet.signRawTransaction, [tx]));
-      });
-
-      it('should call computeIndexingHash', () => {
-        expect(gen.next(signedTransaction).value).toEqual(
-          call(computeIndexingHash, signedTransaction)
-        );
-      });
-
-      it('should put signLocalTransactionSucceeded', () => {
-        expect(gen.next(indexingHash).value).toEqual(
-          put(
-            transactionSignActions.signLocalTransactionSucceeded({
-              signedTransaction,
-              indexingHash,
-              noVerify: false
-            })
-          )
-        );
-      });
-
-      it('should be done', () => {
-        expect(gen.next().done).toEqual(true);
-      });
-    });
-
-    describe('signWeb3TransactionHandler*', () => {
-      const tx = {
-        serialize: jest.fn
-      };
-      const action: any = { tx };
-      const serializedTransaction = new Buffer('tx');
-      const indexingHash = 'indexingHash';
-
-      const gen = sagas.signWeb3TransactionHandler(action);
-
-      it('should apply tx.serialize', () => {
-        expect(gen.next().value).toEqual(apply(tx, tx.serialize));
-      });
-
-      it('should call computeIndexingHash', () => {
-        expect(gen.next(serializedTransaction).value).toEqual(
-          call(computeIndexingHash, serializedTransaction)
-        );
-      });
-
-      it('should put signWeb3TransactionSucceeded', () => {
-        expect(gen.next(indexingHash).value).toEqual(
-          put(
-            transactionSignActions.signWeb3TransactionSucceeded({
-              transaction: serializedTransaction,
-              indexingHash
-            })
-          )
-        );
-      });
-
-      it('should be done', () => {
-        expect(gen.next().done).toEqual(true);
-      });
-    });
-  });
-  describe('Signing', () => {
-    describe('signLocalTransactionHandler*', () => {
-      const tx = 'tx';
-      const wallet = {
-        signRawTransaction: jest.fn()
-      };
-      const action: any = { tx, wallet };
-      const signedTransaction = new Buffer('signedTransaction');
-      const indexingHash = 'indexingHash';
-
-      const gen = sagas.signLocalTransactionHandler(action);
-
-      it('should apply wallet.signRawTransaction', () => {
-        expect(gen.next().value).toEqual(apply(wallet, wallet.signRawTransaction, [tx]));
-      });
-
-      it('should call computeIndexingHash', () => {
-        expect(gen.next(signedTransaction).value).toEqual(
-          call(computeIndexingHash, signedTransaction)
-        );
-      });
-
-      it('should put signLocalTransactionSucceeded', () => {
-        expect(gen.next(indexingHash).value).toEqual(
-          put(
-            transactionSignActions.signLocalTransactionSucceeded({
-              signedTransaction,
-              indexingHash,
-              noVerify: false
-            })
-          )
-        );
-      });
-
-      it('should be done', () => {
-        expect(gen.next().done).toEqual(true);
-      });
-    });
-
-    describe('signWeb3TransactionHandler*', () => {
-      const tx = {
-        serialize: jest.fn
-      };
-      const action: any = { tx };
-      const serializedTransaction = new Buffer('tx');
-      const indexingHash = 'indexingHash';
-
-      const gen = sagas.signWeb3TransactionHandler(action);
-
-      it('should apply tx.serialize', () => {
-        expect(gen.next().value).toEqual(apply(tx, tx.serialize));
-      });
-
-      it('should call computeIndexingHash', () => {
-        expect(gen.next(serializedTransaction).value).toEqual(
-          call(computeIndexingHash, serializedTransaction)
-        );
-      });
-
-      it('should put signWeb3TransactionSucceeded', () => {
-        expect(gen.next(indexingHash).value).toEqual(
-          put(
-            transactionSignActions.signWeb3TransactionSucceeded({
-              transaction: serializedTransaction,
-              indexingHash
-            })
-          )
-        );
-      });
-
-      it('should be done', () => {
-        expect(gen.next().done).toEqual(true);
       });
     });
   });

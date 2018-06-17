@@ -12,7 +12,7 @@ import { walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsSelectors } from './fields';
 import { transactionNetworkTypes, transactionNetworkActions } from './network';
-import { transactionSignActions } from './sign';
+import { transactionSignActions, transactionSignSagas } from './sign';
 import * as helpers from './helpers';
 
 configuredStore.getState();
@@ -30,17 +30,17 @@ describe('transaction: Helpers', () => {
 
       const func = jest.fn();
       const gens: any = {};
-      gens.gen = cloneableGenerator(helpers.signTransactionWrapper(func))(partialTx);
+      gens.gen = cloneableGenerator(transactionSignSagas.signTransactionWrapper(func))(partialTx);
 
       it('should call getWalletAndTransAction', () => {
         expect(gens.gen.next().value).toEqual(
-          call(helpers.getWalletAndTransaction, partialTx.payload)
+          call(transactionSignSagas.getWalletAndTransaction, partialTx.payload)
         );
       });
 
       it('should call getFrom', () => {
         gens.clone = gens.gen.clone();
-        expect(gens.gen.next(IWalletAndTx).value).toEqual(call(helpers.getFromSaga));
+        expect(gens.gen.next(IWalletAndTx).value).toEqual(call(transactionSignSagas.getFromSaga));
       });
 
       it('should call func with IWalletAndTx', () => {
@@ -48,7 +48,9 @@ describe('transaction: Helpers', () => {
       });
 
       it('should handle errors', () => {
-        expect(gens.clone.throw(err).value).toEqual(call(helpers.handleFailedTransaction, err));
+        expect(gens.clone.throw(err).value).toEqual(
+          call(transactionSignSagas.handleFailedTransaction, err)
+        );
       });
 
       it('should be done', () => {
@@ -69,7 +71,7 @@ describe('transaction: Helpers', () => {
       };
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(helpers.getWalletAndTransaction)(partialTx);
+      gens.gen = cloneableGenerator(transactionSignSagas.getWalletAndTransaction)(partialTx);
 
       it('should select getWalletInst', () => {
         expect(gens.gen.next().value).toEqual(select(walletSelectors.getWalletInst));
@@ -98,7 +100,7 @@ describe('transaction: Helpers', () => {
 
     describe('handleFailedTransaction*', () => {
       const err = new Error('Message');
-      const gen = helpers.handleFailedTransaction(err);
+      const gen = transactionSignSagas.handleFailedTransaction(err);
       let random: () => number;
 
       beforeAll(() => {
@@ -130,7 +132,7 @@ describe('transaction: Helpers', () => {
       };
 
       const gens: any = {};
-      gens.gen = cloneableGenerator(helpers.getFromSaga)();
+      gens.gen = cloneableGenerator(transactionSignSagas.getFromSaga)();
 
       it('should put getFromRequested', () => {
         expect(gens.gen.next().value).toEqual(put(transactionNetworkActions.getFromRequested()));
