@@ -19,17 +19,7 @@ import { bufferToHex } from 'ethereumjs-util';
 import { AddressMessage } from 'config';
 import { INode } from 'libs/nodes/INode';
 import { IWallet } from 'libs/wallet';
-import {
-  Address,
-  toTokenBase,
-  Data,
-  Wei,
-  Nonce,
-  gasPriceToBase,
-  fromTokenBase,
-  fromWei,
-  TokenValue
-} from 'libs/units';
+import { Address, toTokenBase, Wei, Nonce, fromTokenBase, fromWei, TokenValue } from 'libs/units';
 import {
   makeTransaction,
   getTransactionFields,
@@ -37,16 +27,7 @@ import {
   encodeTransfer,
   computeIndexingHash
 } from 'libs/transaction';
-import {
-  isValidENSAddress,
-  validNumber,
-  validPositiveNumber,
-  validDecimal,
-  isValidHex,
-  isValidNonce,
-  gasPriceValidator,
-  gasLimitValidator
-} from 'libs/validators';
+import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
@@ -64,10 +45,11 @@ import * as paritySignerActions from 'features/paritySigner/actions';
 import * as scheduleActions from 'features/schedule/actions';
 import * as scheduleSelectors from 'features/schedule/selectors';
 import * as notificationsActions from 'features/notifications/actions';
-import * as transactionBroadcastSagas from './broadcast/sagas';
+import { transactionBroadcastSagas } from './broadcast';
 import * as transactionFieldsTypes from './fields/types';
 import * as transactionFieldsActions from './fields/actions';
 import * as transactionFieldsSelectors from './fields/selectors';
+import { transactionFieldsSagas } from './fields';
 import * as transactionMetaTypes from './meta/types';
 import * as transactionMetaActions from './meta/actions';
 import * as transactionMetaSelectors from './meta/selectors';
@@ -79,10 +61,6 @@ import * as types from './types';
 import * as actions from './actions';
 import * as transactionSelectors from './selectors';
 import * as helpers from './helpers';
-
-//#region Broadcast
-
-//#endregion Broadcast
 
 //#region Current
 
@@ -223,76 +201,6 @@ export const currentValue = [
 
 export const current = [currentTo, ...currentValue];
 //#endregion Current
-
-//#region Fields
-const SLIDER_DEBOUNCE_INPUT_DELAY = 300;
-
-export function* handleDataInput({
-  payload
-}: transactionFieldsTypes.InputDataAction): SagaIterator {
-  const validData: boolean = yield call(isValidHex, payload);
-  yield put(
-    transactionFieldsActions.setDataField({ raw: payload, value: validData ? Data(payload) : null })
-  );
-}
-
-export function* handleGasLimitInput({
-  payload
-}: transactionFieldsTypes.InputGasLimitAction): SagaIterator {
-  const validGasLimit: boolean = yield call(gasLimitValidator, payload);
-  yield put(
-    transactionFieldsActions.setGasLimitField({
-      raw: payload,
-      value: validGasLimit ? Wei(payload) : null
-    })
-  );
-}
-
-export function* handleGasPriceInput({
-  payload
-}: transactionFieldsTypes.InputGasPriceAction): SagaIterator {
-  const gasPrice = Number(payload);
-  const validGasPrice: boolean = yield call(gasPriceValidator, gasPrice);
-  yield put(
-    transactionFieldsActions.setGasPriceField({
-      raw: payload,
-      value: validGasPrice ? gasPriceToBase(gasPrice) : Wei('0')
-    })
-  );
-}
-
-export function* handleGasPriceInputIntent({
-  payload
-}: transactionFieldsTypes.InputGasPriceIntentAction): SagaIterator {
-  yield call(delay, SLIDER_DEBOUNCE_INPUT_DELAY);
-  // Important to put and not fork handleGasPriceInput, we want
-  // action to go to reducers.
-  yield put(transactionFieldsActions.inputGasPrice(payload));
-}
-
-export function* handleNonceInput({
-  payload
-}: transactionFieldsTypes.InputNonceAction): SagaIterator {
-  const validNonce: boolean = yield call(isValidNonce, payload);
-  yield put(
-    transactionFieldsActions.setNonceField({
-      raw: payload,
-      value: validNonce ? Nonce(payload) : null
-    })
-  );
-}
-
-export const fieldsSaga = [
-  takeEvery(transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_INPUT, handleDataInput),
-  takeEvery(transactionFieldsTypes.TransactionFieldsActions.GAS_LIMIT_INPUT, handleGasLimitInput),
-  takeEvery(transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_INPUT, handleGasPriceInput),
-  takeEvery(transactionFieldsTypes.TransactionFieldsActions.NONCE_INPUT, handleNonceInput),
-  takeLatest(
-    transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_INPUT_INTENT,
-    handleGasPriceInputIntent
-  )
-];
-//#endregion Fields
 
 //#region Meta
 
@@ -899,7 +807,7 @@ export function* transactionSaga(): SagaIterator {
   yield all([
     ...transactionBroadcastSagas.broadcastSaga,
     ...current,
-    ...fieldsSaga,
+    ...transactionFieldsSagas.fieldsSaga,
     ...metaSaga,
     ...networkSaga,
     ...signing,
