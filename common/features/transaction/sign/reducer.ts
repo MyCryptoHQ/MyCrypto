@@ -1,32 +1,26 @@
 import { TRANSACTION, ResetTransactionSuccessfulAction } from '../types';
-import {
-  TRANSACTION_SIGN,
-  SignState,
-  SignLocalTransactionSucceededAction,
-  SignWeb3TransactionSucceededAction,
-  SignAction
-} from './types';
+import * as types from './types';
 
 export type StateSerializedTx =
-  | SignState['local']['signedTransaction']
-  | SignState['web3']['transaction'];
+  | types.TransactionSignState['local']['signedTransaction']
+  | types.TransactionSignState['web3']['transaction'];
 
-export const SIGN_INITIAL_STATE: SignState = {
+export const SIGN_INITIAL_STATE: types.TransactionSignState = {
   local: { signedTransaction: null },
   web3: { transaction: null },
   indexingHash: null,
   pending: false
 };
 
-const signTransactionRequested = (): SignState => ({
+const signTransactionRequested = (): types.TransactionSignState => ({
   ...SIGN_INITIAL_STATE,
   pending: true
 });
 
 const signLocalTransactionSucceeded = (
-  _: SignState,
-  { payload }: SignLocalTransactionSucceededAction
-): SignState => ({
+  _: types.TransactionSignState,
+  { payload }: types.SignLocalTransactionSucceededAction
+): types.TransactionSignState => ({
   indexingHash: payload.indexingHash,
   pending: false,
 
@@ -35,9 +29,9 @@ const signLocalTransactionSucceeded = (
 });
 
 const signWeb3TranscationSucceeded = (
-  _: SignState,
-  { payload }: SignWeb3TransactionSucceededAction
-): SignState => ({
+  _: types.TransactionSignState,
+  { payload }: types.SignWeb3TransactionSucceededAction
+): types.TransactionSignState => ({
   indexingHash: payload.indexingHash,
   pending: false,
 
@@ -50,17 +44,17 @@ const signTransactionFailed = () => SIGN_INITIAL_STATE;
 const resetSign = () => SIGN_INITIAL_STATE;
 
 export function signReducer(
-  state: SignState = SIGN_INITIAL_STATE,
-  action: SignAction | ResetTransactionSuccessfulAction
+  state: types.TransactionSignState = SIGN_INITIAL_STATE,
+  action: types.TransactionSignAction | ResetTransactionSuccessfulAction
 ) {
   switch (action.type) {
-    case TRANSACTION_SIGN.SIGN_TRANSACTION_REQUESTED:
+    case types.TransactionSignActions.SIGN_TRANSACTION_REQUESTED:
       return signTransactionRequested();
-    case TRANSACTION_SIGN.SIGN_LOCAL_TRANSACTION_SUCCEEDED:
+    case types.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED:
       return signLocalTransactionSucceeded(state, action);
-    case TRANSACTION_SIGN.SIGN_WEB3_TRANSACTION_SUCCEEDED:
+    case types.TransactionSignActions.SIGN_WEB3_TRANSACTION_SUCCEEDED:
       return signWeb3TranscationSucceeded(state, action);
-    case TRANSACTION_SIGN.SIGN_TRANSACTION_FAILED:
+    case types.TransactionSignActions.SIGN_TRANSACTION_FAILED:
       return signTransactionFailed();
     case TRANSACTION.RESET_SUCCESSFUL:
       return resetSign();

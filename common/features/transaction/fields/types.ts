@@ -1,6 +1,15 @@
 import { Wei, Data, Address, Nonce } from 'libs/units';
 
-export enum TRANSACTION_FIELDS {
+export interface TransactionFieldsState {
+  to: SetToFieldAction['payload'];
+  data: SetDataFieldAction['payload'];
+  nonce: SetNonceFieldAction['payload'];
+  value: { raw: string; value: Wei | null }; // TODO: fix this workaround since some of the payload is optional
+  gasLimit: SetGasLimitFieldAction['payload'];
+  gasPrice: { raw: string; value: Wei };
+}
+
+export enum TransactionFieldsActions {
   GAS_LIMIT_INPUT = 'GAS_LIMIT_INPUT',
   GAS_PRICE_INPUT = 'GAS_PRICE_INPUT',
   GAS_PRICE_INPUT_INTENT = 'GAS_PRICE_INPUT_INTENT',
@@ -14,42 +23,33 @@ export enum TRANSACTION_FIELDS {
   GAS_PRICE_FIELD_SET = 'GAS_PRICE_FIELD_SET'
 }
 
-export interface FieldsState {
-  to: SetToFieldAction['payload'];
-  data: SetDataFieldAction['payload'];
-  nonce: SetNonceFieldAction['payload'];
-  value: { raw: string; value: Wei | null }; // TODO: fix this workaround since some of the payload is optional
-  gasLimit: SetGasLimitFieldAction['payload'];
-  gasPrice: { raw: string; value: Wei };
-}
-
 export interface InputGasLimitAction {
-  type: TRANSACTION_FIELDS.GAS_LIMIT_INPUT;
+  type: TransactionFieldsActions.GAS_LIMIT_INPUT;
   payload: string;
 }
 
 export interface InputGasPriceAction {
-  type: TRANSACTION_FIELDS.GAS_PRICE_INPUT;
+  type: TransactionFieldsActions.GAS_PRICE_INPUT;
   payload: string;
 }
 
 export interface InputGasPriceIntentAction {
-  type: TRANSACTION_FIELDS.GAS_PRICE_INPUT_INTENT;
+  type: TransactionFieldsActions.GAS_PRICE_INPUT_INTENT;
   payload: string;
 }
 
 export interface InputDataAction {
-  type: TRANSACTION_FIELDS.DATA_FIELD_INPUT;
+  type: TransactionFieldsActions.DATA_FIELD_INPUT;
   payload: string;
 }
 
 export interface InputNonceAction {
-  type: TRANSACTION_FIELDS.NONCE_INPUT;
+  type: TransactionFieldsActions.NONCE_INPUT;
   payload: string;
 }
 
 export interface SetGasLimitFieldAction {
-  type: TRANSACTION_FIELDS.GAS_LIMIT_FIELD_SET;
+  type: TransactionFieldsActions.GAS_LIMIT_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -57,7 +57,7 @@ export interface SetGasLimitFieldAction {
 }
 
 export interface SetGasPriceFieldAction {
-  type: TRANSACTION_FIELDS.GAS_PRICE_FIELD_SET;
+  type: TransactionFieldsActions.GAS_PRICE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -65,7 +65,7 @@ export interface SetGasPriceFieldAction {
 }
 
 export interface SetDataFieldAction {
-  type: TRANSACTION_FIELDS.DATA_FIELD_SET;
+  type: TransactionFieldsActions.DATA_FIELD_SET;
   payload: {
     raw: string;
     value: Data | null;
@@ -73,7 +73,7 @@ export interface SetDataFieldAction {
 }
 
 export interface SetToFieldAction {
-  type: TRANSACTION_FIELDS.TO_FIELD_SET;
+  type: TransactionFieldsActions.TO_FIELD_SET;
   payload: {
     raw: string;
     value: Address | null;
@@ -81,7 +81,7 @@ export interface SetToFieldAction {
 }
 
 export interface SetNonceFieldAction {
-  type: TRANSACTION_FIELDS.NONCE_FIELD_SET;
+  type: TransactionFieldsActions.NONCE_FIELD_SET;
   payload: {
     raw: string;
     value: Nonce | null;
@@ -89,7 +89,7 @@ export interface SetNonceFieldAction {
 }
 
 export interface SetValueFieldAction {
-  type: TRANSACTION_FIELDS.VALUE_FIELD_SET;
+  type: TransactionFieldsActions.VALUE_FIELD_SET;
   payload: {
     raw: string;
     value: Wei | null;
@@ -98,7 +98,7 @@ export interface SetValueFieldAction {
 
 export type InputFieldAction = InputNonceAction | InputGasLimitAction | InputDataAction;
 
-export type FieldAction =
+export type TransactionFieldAction =
   | SetGasLimitFieldAction
   | SetDataFieldAction
   | SetToFieldAction

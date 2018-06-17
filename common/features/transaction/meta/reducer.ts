@@ -9,16 +9,10 @@ import {
   SwapAction,
   ResetTransactionSuccessfulAction
 } from '../types';
-import { TRANSACTION_NETWORK, NetworkAction } from '../network';
-import {
-  TRANSACTION_META,
-  MetaState,
-  MetaAction,
-  SetUnitMetaAction,
-  TransactionMetaAction
-} from './types';
+import * as transactionNetworkTypes from '../network/types';
+import * as types from './types';
 
-export const META_INITIAL_STATE: MetaState = {
+export const META_INITIAL_STATE: types.TransactionMetaState = {
   unit: '',
   previousUnit: '',
   decimal: getDecimalFromEtherUnit('ether'),
@@ -29,9 +23,11 @@ export const META_INITIAL_STATE: MetaState = {
 };
 
 //TODO: generic-ize updateField to reuse
-const updateMetaField = (key: keyof MetaState): Reducer<MetaState> => (
-  state: MetaState,
-  action: TransactionMetaAction
+const updateMetaField = (
+  key: keyof types.TransactionMetaState
+): Reducer<types.TransactionMetaState> => (
+  state: types.TransactionMetaState,
+  action: types.TransactionMetaAction
 ) => {
   if (typeof action.payload === 'object') {
     // we do this to update just 'raw' or 'value' param of tokenValue
@@ -47,45 +43,55 @@ const updateMetaField = (key: keyof MetaState): Reducer<MetaState> => (
   }
 };
 
-const tokenToEtherMeta = (state: MetaState, { payload }: SwapTokenToEtherAction): MetaState => {
+const tokenToEtherMeta = (
+  state: types.TransactionMetaState,
+  { payload }: SwapTokenToEtherAction
+): types.TransactionMetaState => {
   const { tokenValue, tokenTo } = META_INITIAL_STATE;
   return { ...state, tokenTo, tokenValue, decimal: payload.decimal };
 };
 
 const etherToTokenMeta = (
-  state: MetaState,
+  state: types.TransactionMetaState,
   { payload: { data: _, to: __, ...rest } }: SwapEtherToTokenAction
-): MetaState => ({ ...state, ...rest });
+): types.TransactionMetaState => ({ ...state, ...rest });
 
 const tokenToTokenMeta = (
-  state: MetaState,
+  state: types.TransactionMetaState,
   { payload: { data: _, to: __, ...rest } }: SwapTokenToTokenAction
-): MetaState => ({ ...state, ...rest });
+): types.TransactionMetaState => ({ ...state, ...rest });
 
-const resetMeta = (state: MetaState): MetaState => ({
+const resetMeta = (state: types.TransactionMetaState): types.TransactionMetaState => ({
   ...META_INITIAL_STATE,
   isContractInteraction: state.isContractInteraction,
   unit: state.unit
 });
 
-const unitMeta = (state: MetaState, { payload }: SetUnitMetaAction): MetaState => ({
+const unitMeta = (
+  state: types.TransactionMetaState,
+  { payload }: types.SetUnitMetaAction
+): types.TransactionMetaState => ({
   ...state,
   previousUnit: state.unit,
   unit: payload
 });
 
 export function metaReducer(
-  state: MetaState = META_INITIAL_STATE,
-  action: MetaAction | SwapAction | ResetTransactionSuccessfulAction | NetworkAction
-): MetaState {
+  state: types.TransactionMetaState = META_INITIAL_STATE,
+  action:
+    | types.MetaAction
+    | SwapAction
+    | ResetTransactionSuccessfulAction
+    | transactionNetworkTypes.TransactionNetworkAction
+): types.TransactionMetaState {
   switch (action.type) {
-    case TRANSACTION_META.UNIT_META_SET:
+    case types.TransactionMetaActions.UNIT_META_SET:
       return unitMeta(state, action);
-    case TRANSACTION_META.TOKEN_VALUE_META_SET:
+    case types.TransactionMetaActions.TOKEN_VALUE_META_SET:
       return updateMetaField('tokenValue')(state, action);
-    case TRANSACTION_META.TOKEN_TO_META_SET:
+    case types.TransactionMetaActions.TOKEN_TO_META_SET:
       return updateMetaField('tokenTo')(state, action);
-    case TRANSACTION_NETWORK.GET_FROM_SUCCEEDED:
+    case transactionNetworkTypes.TransactionNetworkActions.GET_FROM_SUCCEEDED:
       return updateMetaField('from')(state, action);
     case TRANSACTION.TOKEN_TO_ETHER_SWAP:
       return tokenToEtherMeta(state, action);
@@ -94,12 +100,12 @@ export function metaReducer(
     case TRANSACTION.TOKEN_TO_TOKEN_SWAP:
       return tokenToTokenMeta(state, action);
 
-    case TRANSACTION_META.IS_VIEW_AND_SEND: {
-      const nextState: MetaState = { ...state, isContractInteraction: false };
+    case types.TransactionMetaActions.IS_VIEW_AND_SEND: {
+      const nextState: types.TransactionMetaState = { ...state, isContractInteraction: false };
       return nextState;
     }
-    case TRANSACTION_META.IS_CONTRACT_INTERACTION: {
-      const nextState: MetaState = { ...state, isContractInteraction: true };
+    case types.TransactionMetaActions.IS_CONTRACT_INTERACTION: {
+      const nextState: types.TransactionMetaState = { ...state, isContractInteraction: true };
       return nextState;
     }
     case TRANSACTION.RESET_SUCCESSFUL:

@@ -1,20 +1,12 @@
-import {
-  TRANSACTION_BROADCAST,
-  BroadcastState,
-  ITransactionStatus,
-  BroadcastTransactionQueuedAction,
-  BroadcastTransactionSucceededAction,
-  BroadcastTransactionFailedAction,
-  BroadcastAction
-} from './types';
+import * as types from './types';
 
 export const BROADCAST_INITIAL_STATE = {};
 const handleQueue = (
-  state: BroadcastState,
-  { payload }: BroadcastTransactionQueuedAction
-): BroadcastState => {
+  state: types.TransactionBroadcastState,
+  { payload }: types.BroadcastTransactionQueuedAction
+): types.TransactionBroadcastState => {
   const { indexingHash, serializedTransaction } = payload;
-  const nextTxStatus: ITransactionStatus = {
+  const nextTxStatus: types.ITransactionStatus = {
     broadcastedHash: null,
     broadcastSuccessful: false,
     isBroadcasting: true,
@@ -24,15 +16,15 @@ const handleQueue = (
 };
 
 const handleSuccess = (
-  state: BroadcastState,
-  { payload }: BroadcastTransactionSucceededAction
-): BroadcastState => {
+  state: types.TransactionBroadcastState,
+  { payload }: types.BroadcastTransactionSucceededAction
+): types.TransactionBroadcastState => {
   const { broadcastedHash, indexingHash } = payload;
   const existingTx = state[indexingHash];
   if (!existingTx) {
     throw Error(`Broadcasted transaction not found: ${indexingHash}`);
   }
-  const nextTx: ITransactionStatus = {
+  const nextTx: types.ITransactionStatus = {
     ...existingTx,
     broadcastedHash,
     isBroadcasting: false,
@@ -42,15 +34,15 @@ const handleSuccess = (
 };
 
 const handleFailure = (
-  state: BroadcastState,
-  { payload }: BroadcastTransactionFailedAction
-): BroadcastState => {
+  state: types.TransactionBroadcastState,
+  { payload }: types.BroadcastTransactionFailedAction
+): types.TransactionBroadcastState => {
   const { indexingHash } = payload;
   const existingTx = state[indexingHash];
   if (!existingTx) {
     throw Error(`Broadcasted transaction not found: ${indexingHash}`);
   }
-  const nextTx: ITransactionStatus = {
+  const nextTx: types.ITransactionStatus = {
     ...existingTx,
     isBroadcasting: false,
     broadcastSuccessful: false
@@ -59,15 +51,15 @@ const handleFailure = (
 };
 
 export function broadcastReducer(
-  state: BroadcastState = BROADCAST_INITIAL_STATE,
-  action: BroadcastAction
+  state: types.TransactionBroadcastState = BROADCAST_INITIAL_STATE,
+  action: types.TransactionBroadcastAction
 ) {
   switch (action.type) {
-    case TRANSACTION_BROADCAST.TRANSACTION_QUEUED:
+    case types.TransactionBroadcastActions.TRANSACTION_QUEUED:
       return handleQueue(state, action);
-    case TRANSACTION_BROADCAST.TRANSACTION_SUCCEEDED:
+    case types.TransactionBroadcastActions.TRANSACTION_SUCCEEDED:
       return handleSuccess(state, action);
-    case TRANSACTION_BROADCAST.TRANSACTION_FAILED:
+    case types.TransactionBroadcastActions.TRANSACTION_FAILED:
       return handleFailure(state, action);
     default:
       return state;

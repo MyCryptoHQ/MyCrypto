@@ -1,4 +1,11 @@
-export * from './types';
-export * from './actions';
-export * from './reducer';
-export * from './selectors';
+import * as transactionBroadcastTypes from './types';
+import * as transactionBroadcastActions from './actions';
+import * as transactionBroadcastReducer from './reducer';
+import * as transactionBroadcastSelectors from './selectors';
+
+export {
+  transactionBroadcastTypes,
+  transactionBroadcastActions,
+  transactionBroadcastReducer,
+  transactionBroadcastSelectors
+};

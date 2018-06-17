@@ -10,9 +10,9 @@ import {
   SwapAction,
   ResetTransactionSuccessfulAction
 } from '../types';
-import { TRANSACTION_FIELDS, FieldsState, FieldAction } from './types';
+import * as types from './types';
 
-export const FIELDS_INITIAL_STATE: FieldsState = {
+export const FIELDS_INITIAL_STATE: types.TransactionFieldsState = {
   to: { raw: '', value: null },
   data: { raw: '', value: null },
   nonce: { raw: '', value: null },
@@ -21,61 +21,63 @@ export const FIELDS_INITIAL_STATE: FieldsState = {
   gasPrice: { raw: '20', value: gasPriceToBase(20) }
 };
 
-const updateField = (key: keyof FieldsState): Reducer<FieldsState> => (
-  state: FieldsState,
-  action: FieldAction
+const updateField = (
+  key: keyof types.TransactionFieldsState
+): Reducer<types.TransactionFieldsState> => (
+  state: types.TransactionFieldsState,
+  action: types.TransactionFieldAction
 ) => ({
   ...state,
   [key]: { ...state[key], ...action.payload }
 });
 
 const tokenToEther = (
-  state: FieldsState,
+  state: types.TransactionFieldsState,
   { payload: { decimal: _, ...rest } }: SwapTokenToEtherAction
-): FieldsState => ({
+): types.TransactionFieldsState => ({
   ...state,
   ...rest,
   data: FIELDS_INITIAL_STATE.data
 });
 
 const etherToToken = (
-  state: FieldsState,
+  state: types.TransactionFieldsState,
   { payload: { decimal: _, tokenTo: __, tokenValue: ___, ...rest } }: SwapEtherToTokenAction
-): FieldsState => ({
+): types.TransactionFieldsState => ({
   ...state,
   ...rest,
   value: FIELDS_INITIAL_STATE.value
 });
 
 const tokenToToken = (
-  state: FieldsState,
+  state: types.TransactionFieldsState,
   { payload: { decimal: _, tokenValue: __, ...rest } }: SwapTokenToTokenAction
-): FieldsState => ({ ...state, ...rest });
+): types.TransactionFieldsState => ({ ...state, ...rest });
 
 const reset = (
-  state: FieldsState,
+  state: types.TransactionFieldsState,
   { payload: { isContractInteraction } }: ResetTransactionSuccessfulAction
-): FieldsState => ({
+): types.TransactionFieldsState => ({
   ...FIELDS_INITIAL_STATE,
   ...(isContractInteraction ? { to: state.to } : {})
 });
 
 export function fieldsReducer(
-  state: FieldsState = FIELDS_INITIAL_STATE,
-  action: FieldAction | SwapAction | ResetTransactionSuccessfulAction
+  state: types.TransactionFieldsState = FIELDS_INITIAL_STATE,
+  action: types.TransactionFieldAction | SwapAction | ResetTransactionSuccessfulAction
 ) {
   switch (action.type) {
-    case TRANSACTION_FIELDS.TO_FIELD_SET:
+    case types.TransactionFieldsActions.TO_FIELD_SET:
       return updateField('to')(state, action);
-    case TRANSACTION_FIELDS.VALUE_FIELD_SET:
+    case types.TransactionFieldsActions.VALUE_FIELD_SET:
       return updateField('value')(state, action);
-    case TRANSACTION_FIELDS.DATA_FIELD_SET:
+    case types.TransactionFieldsActions.DATA_FIELD_SET:
       return updateField('data')(state, action);
-    case TRANSACTION_FIELDS.GAS_LIMIT_FIELD_SET:
+    case types.TransactionFieldsActions.GAS_LIMIT_FIELD_SET:
       return updateField('gasLimit')(state, action);
-    case TRANSACTION_FIELDS.NONCE_FIELD_SET:
+    case types.TransactionFieldsActions.NONCE_FIELD_SET:
       return updateField('nonce')(state, action);
-    case TRANSACTION_FIELDS.GAS_PRICE_FIELD_SET:
+    case types.TransactionFieldsActions.GAS_PRICE_FIELD_SET:
       return updateField('gasPrice')(state, action);
     case TRANSACTION.TOKEN_TO_ETHER_SWAP:
       return tokenToEther(state, action);
