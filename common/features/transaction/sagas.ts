@@ -18,7 +18,7 @@ import { bufferToHex } from 'ethereumjs-util';
 
 import { AddressMessage } from 'config';
 import { INode } from 'libs/nodes/INode';
-import { IWallet, Web3Wallet } from 'libs/wallet';
+import { IWallet } from 'libs/wallet';
 import {
   Address,
   toTokenBase,
@@ -50,7 +50,6 @@ import {
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import * as configNetworksSelectors from 'features/config/networks/selectors';
 import * as configMetaTypes from 'features/config/meta/types';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
@@ -65,7 +64,7 @@ import * as paritySignerActions from 'features/paritySigner/actions';
 import * as scheduleActions from 'features/schedule/actions';
 import * as scheduleSelectors from 'features/schedule/selectors';
 import * as notificationsActions from 'features/notifications/actions';
-import * as transactionBroadcastTypes from './broadcast/types';
+import * as transactionBroadcastSagas from './broadcast/sagas';
 import * as transactionFieldsTypes from './fields/types';
 import * as transactionFieldsActions from './fields/actions';
 import * as transactionFieldsSelectors from './fields/selectors';
@@ -82,48 +81,7 @@ import * as transactionSelectors from './selectors';
 import * as helpers from './helpers';
 
 //#region Broadcast
-export const broadcastLocalTransactionHandler = function*(signedTx: string): SagaIterator {
-  const node: INode = yield select(configNodesSelectors.getNodeLib);
-  const txHash = yield apply(node, node.sendRawTx, [signedTx.toString()]);
-  return txHash;
-};
 
-const broadcastLocalTransaction = helpers.broadcastTransactionWrapper(
-  broadcastLocalTransactionHandler
-);
-
-// web3 transactions are a little different since they do signing + broadcast in 1 step
-// meaning we have to grab the tx data and send it
-export const broadcastWeb3TransactionHandler = function*(tx: string): SagaIterator {
-  //get web3 wallet
-  const wallet: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
-  if (!wallet || !(wallet instanceof Web3Wallet)) {
-    throw Error(`Cannot broadcast: Web3 wallet not found.`);
-  }
-
-  const nodeLib = yield select(configNodesSelectors.getNodeLib);
-  const netId = yield call(nodeLib.getNetVersion);
-  const networkConfig = yield select(configNetworksSelectors.getNetworkByChainId, netId);
-
-  // sign and broadcast
-  const txHash: string = yield apply(wallet, wallet.sendTransaction, [tx, nodeLib, networkConfig]);
-  return txHash;
-};
-
-const broadcastWeb3Transaction = helpers.broadcastTransactionWrapper(
-  broadcastWeb3TransactionHandler
-);
-
-export const broadcastSaga = [
-  takeEvery(
-    [transactionBroadcastTypes.TransactionBroadcastActions.WEB3_TRANSACTION_REQUESTED],
-    broadcastWeb3Transaction
-  ),
-  takeEvery(
-    [transactionBroadcastTypes.TransactionBroadcastActions.LOCAL_TRANSACTION_REQUESTED],
-    broadcastLocalTransaction
-  )
-];
 //#endregion Broadcast
 
 //#region Current
@@ -939,7 +897,7 @@ export const reset = [
 
 export function* transactionSaga(): SagaIterator {
   yield all([
-    ...broadcastSaga,
+    ...transactionBroadcastSagas.broadcastSaga,
     ...current,
     ...fieldsSaga,
     ...metaSaga,

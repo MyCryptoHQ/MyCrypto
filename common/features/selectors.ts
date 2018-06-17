@@ -27,11 +27,11 @@ import { SavedTransaction } from 'types/transactions';
 import * as configMetaSelectors from './config/meta/selectors';
 import * as configSelectors from './config/selectors';
 import * as transactionSelectors from './transaction/selectors';
-import * as transactionFieldsSelectors from 'features/transaction/fields/selectors';
-import * as transactionMetaSelectors from 'features/transaction/meta/selectors';
-import * as transactionSignTypes from 'features/transaction/sign/types';
+import * as transactionFieldsSelectors from './transaction/fields/selectors';
+import * as transactionMetaSelectors from './transaction/meta/selectors';
+import * as transactionSignTypes from './transaction/sign/types';
 import * as transactionSignSelectors from './transaction/sign/selectors';
-import { reduceToValues, isFullTx } from 'features/transaction/helpers';
+import { reduceToValues, isFullTx } from './helpers';
 
 export interface ICurrentValue {
   raw: string;

@@ -68,78 +68,11 @@ import * as helpers from './helpers';
 
 /* tslint:disable */
 import './selectors'; //throws if not imported
-import Web3Wallet from 'libs/wallet/non-deterministic/web3';
 /* tslint:enable */
 
 configuredStore.getState();
 
 describe('transaction: Sagas', () => {
-  describe('Broadcast', () => {
-    describe('broadcastLocalTransactionHandler*', () => {
-      const signedTx = 'signedTx';
-      const node: any = {
-        sendRawTx: jest.fn()
-      };
-      const txHash = 'txHash';
-
-      const gen = sagas.broadcastLocalTransactionHandler(signedTx);
-
-      it('should select getNodeLib', () => {
-        expect(gen.next().value).toEqual(select(configNodesSelectors.getNodeLib));
-      });
-
-      it('should apply node.sendRawTx', () => {
-        expect(gen.next(node).value).toEqual(apply(node, node.sendRawTx, [signedTx]));
-      });
-
-      it('should return txHash', () => {
-        expect(gen.next(txHash).value).toEqual(txHash);
-      });
-
-      it('should be done', () => {
-        expect(gen.next().done).toEqual(true);
-      });
-    });
-
-    describe('broadcastWeb3TransactionHandler*', () => {
-      const tx = 'tx';
-      const notWeb3Wallet = false;
-      const web3Wallet = new Web3Wallet('', '');
-      const txHash = 'txHash';
-      const nodeLib = { getNetVersion: () => 'ETH' };
-      const netId = 'ETH';
-      const networkConfig = { id: 'ETH' };
-
-      const gens: any = {};
-      gens.gen = cloneableGenerator(sagas.broadcastWeb3TransactionHandler)(tx);
-
-      it('should select getWalletInst', () => {
-        expect(gens.gen.next().value).toEqual(select(walletSelectors.getWalletInst));
-      });
-
-      it('should throw if not a web3 wallet', () => {
-        gens.clone1 = gens.gen.clone();
-        expect(() => gens.clone1.next(notWeb3Wallet)).toThrow();
-      });
-
-      it('should apply wallet.sendTransaction', () => {
-        gens.gen.next(web3Wallet);
-        gens.gen.next(nodeLib);
-        gens.gen.next(netId);
-        expect(gens.gen.next(networkConfig).value).toEqual(
-          apply(web3Wallet as any, web3Wallet.sendTransaction as any, [tx, nodeLib, networkConfig])
-        );
-      });
-
-      it('should return txHash', () => {
-        expect(gens.gen.next(txHash).value).toEqual(txHash);
-      });
-
-      it('should be done', () => {
-        expect(gens.gen.next().done).toEqual(true);
-      });
-    });
-  });
   describe('Current', () => {
     const itShouldBeDone = (gen: SagaIterator) => {
       it('should be done', () => {

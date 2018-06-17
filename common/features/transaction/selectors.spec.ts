@@ -2,8 +2,7 @@ import BN from 'bn.js';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { Wei } from 'libs/units';
-import { getInitialState } from 'features/helpers';
-
+import * as helpers from 'features/helpers';
 import { transactionBroadcastSelectors } from './broadcast';
 import { transactionFieldsSelectors } from './fields';
 import { transactionMetaSelectors } from './meta';
@@ -11,12 +10,11 @@ import { transactionNetworkTypes, transactionNetworkSelectors } from './network'
 import { transactionSignSelectors } from './sign';
 import * as selectors from 'features/selectors';
 import * as transactionSelectors from './selectors';
-import * as helpers from './helpers';
 
-const initialState = cloneDeep(getInitialState());
+const initialState = cloneDeep(helpers.getInitialState());
 
 describe('helpers selector', () => {
-  const state = getInitialState();
+  const state = helpers.getInitialState();
   state.transaction = {
     ...state.transaction,
     meta: {
@@ -104,7 +102,7 @@ describe('helpers selector', () => {
 
 //#region Broadcast
 describe('broadcast selector', () => {
-  const state = getInitialState();
+  const state = helpers.getInitialState();
   state.transaction = {
     ...state.transaction,
     broadcast: {
@@ -161,7 +159,7 @@ describe('broadcast selector', () => {
 
 //#region Current
 describe('current selector', () => {
-  const state = getInitialState();
+  const state = helpers.getInitialState();
   state.transaction = {
     ...state.transaction,
     fields: {
@@ -233,7 +231,7 @@ describe('current selector', () => {
 
 //#region Fields
 describe('fields selector', () => {
-  const state = getInitialState();
+  const state = helpers.getInitialState();
   state.transaction.fields = {
     to: {
       raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
@@ -383,7 +381,7 @@ describe('meta tests', () => {
 
 //#region Network
 describe('network selector', () => {
-  const state = getInitialState();
+  const state = helpers.getInitialState();
   state.transaction.network = {
     ...state.transaction.network,
     gasEstimationStatus: transactionNetworkTypes.RequestStatus.REQUESTED,
@@ -424,7 +422,7 @@ describe('network selector', () => {
 
 //#region Sign
 describe('sign tests', () => {
-  const state = getInitialState();
+  const state = helpers.getInitialState();
   (state.transaction.sign = {
     indexingHash: 'testIndexingHash',
     pending: false,
