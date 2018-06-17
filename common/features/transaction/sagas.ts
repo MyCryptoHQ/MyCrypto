@@ -1,37 +1,24 @@
-import { SagaIterator, buffers, delay } from 'redux-saga';
+import BN from 'bn.js';
+import { SagaIterator } from 'redux-saga';
 import {
   apply,
   put,
   select,
   take,
-  actionChannel,
   call,
   fork,
   race,
-  cancel,
   takeEvery,
   takeLatest,
   all
 } from 'redux-saga/effects';
-import BN from 'bn.js';
 
-import { AddressMessage } from 'config';
-import { INode } from 'libs/nodes/INode';
-import { IWallet } from 'libs/wallet';
-import { Address, toTokenBase, Wei, Nonce, fromTokenBase, fromWei, TokenValue } from 'libs/units';
-import {
-  makeTransaction,
-  getTransactionFields,
-  IHexStrTransaction,
-  computeIndexingHash
-} from 'libs/transaction';
+import { Address, toTokenBase, Wei, fromTokenBase, fromWei, TokenValue } from 'libs/units';
+import { computeIndexingHash } from 'libs/transaction';
 import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
 import { transactionToRLP, signTransactionWithSignature } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import * as configMetaTypes from 'features/config/meta/types';
-import * as configMetaSelectors from 'features/config/meta/selectors';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
 import * as configSelectors from 'features/config/selectors';
 import * as ensTypes from 'features/ens/types';
 import * as ensActions from 'features/ens/actions';
@@ -40,8 +27,6 @@ import * as walletTypes from 'features/wallet/types';
 import * as walletSelectors from 'features/wallet/selectors';
 import * as paritySignerTypes from 'features/paritySigner/types';
 import * as paritySignerActions from 'features/paritySigner/actions';
-import * as scheduleActions from 'features/schedule/actions';
-import * as scheduleSelectors from 'features/schedule/selectors';
 import * as notificationsActions from 'features/notifications/actions';
 import { transactionBroadcastSagas } from './broadcast';
 import * as transactionFieldsTypes from './fields/types';
@@ -51,8 +36,7 @@ import * as transactionMetaTypes from './meta/types';
 import * as transactionMetaActions from './meta/actions';
 import * as transactionMetaSelectors from './meta/selectors';
 import { transactionMetaSagas } from './meta';
-import * as transactionNetworkTypes from './network/types';
-import * as transactionNetworkActions from './network/actions';
+import { transactionNetworkSagas } from './network';
 import * as transactionSignTypes from './sign/types';
 import * as transactionSignActions from './sign/actions';
 import * as types from './types';
@@ -198,222 +182,6 @@ export const currentValue = [
 
 export const current = [currentTo, ...currentValue];
 //#endregion Current
-
-//#region Network
-
-//#region From
-/*
-* This function will be called during transaction serialization / signing
-*/
-export function* handleFromRequest(): SagaIterator {
-  const walletInst: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
-  try {
-    if (!walletInst) {
-      throw Error();
-    }
-    const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
-    yield put(transactionNetworkActions.getFromSucceeded(fromAddress));
-  } catch {
-    yield put(
-      notificationsActions.showNotification('warning', 'Your wallets address could not be fetched')
-    );
-    yield put(transactionNetworkActions.getFromFailed());
-  }
-}
-
-export const fromSaga = takeEvery(
-  transactionNetworkTypes.TransactionNetworkActions.GET_FROM_REQUESTED,
-  handleFromRequest
-);
-//#endregion From
-
-//#region Gas
-export function* shouldEstimateGas(): SagaIterator {
-  while (true) {
-    const action:
-      | transactionFieldsTypes.SetToFieldAction
-      | transactionFieldsTypes.SetValueFieldAction
-      | transactionFieldsTypes.SetDataFieldAction
-      | types.SwapEtherToTokenAction
-      | types.SwapTokenToTokenAction
-      | types.SwapTokenToEtherAction
-      | configMetaTypes.ToggleAutoGasLimitAction
-      | transactionFieldsTypes.SetValueFieldAction = yield take([
-      transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
-      transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
-      transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
-      types.TransactionActions.ETHER_TO_TOKEN_SWAP,
-      types.TransactionActions.TOKEN_TO_TOKEN_SWAP,
-      types.TransactionActions.TOKEN_TO_ETHER_SWAP,
-      configMetaTypes.CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
-    ]);
-
-    const isOffline: boolean = yield select(configMetaSelectors.getOffline);
-    const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
-    const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
-
-    if (isOffline || !autoGasLimitEnabled || (message && message.gasLimit)) {
-      continue;
-    }
-
-    // invalid field is a field that the value is null and the input box isnt empty
-    // reason being is an empty field is valid because it'll be null
-    const invalidField =
-      (action.type === transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET ||
-        action.type === transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET ||
-        action.type === transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET) &&
-      !action.payload.value &&
-      action.payload.raw !== '';
-
-    if (invalidField) {
-      continue;
-    }
-    const { transaction }: selectors.IGetTransaction = yield select(selectors.getTransaction);
-
-    const { gasLimit, gasPrice, nonce, chainId, ...rest }: IHexStrTransaction = yield call(
-      getTransactionFields,
-      transaction
-    );
-
-    // gas estimation calls with
-    // '0x' as an address (contract creation)
-    // fail, so instead we set it as undefined
-    // interestingly, the transaction itself as '0x' as the
-    // to address works fine.
-    if (rest.to === '0x') {
-      rest.to = undefined as any;
-    }
-
-    yield put(transactionNetworkActions.estimateGasRequested(rest));
-  }
-}
-
-export function* estimateGas(): SagaIterator {
-  const requestChan = yield actionChannel(
-    transactionNetworkTypes.TransactionNetworkActions.ESTIMATE_GAS_REQUESTED,
-    buffers.sliding(1)
-  );
-
-  while (true) {
-    const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
-    const isOffline = yield select(configMetaSelectors.getOffline);
-
-    if (isOffline || !autoGasLimitEnabled) {
-      continue;
-    }
-
-    const { payload }: transactionNetworkTypes.EstimateGasRequestedAction = yield take(requestChan);
-    // debounce 250 ms
-    yield call(delay, 250);
-    const node: INode = yield select(configNodesSelectors.getNodeLib);
-    const walletInst: IWallet = yield select(walletSelectors.getWalletInst);
-    try {
-      const from: string = yield apply(walletInst, walletInst.getAddressString);
-      const txObj = { ...payload, from };
-
-      const { gasLimit } = yield race({
-        gasLimit: apply(node, node.estimateGas, [txObj]),
-        timeout: call(delay, 10000)
-      });
-      if (gasLimit) {
-        const gasSetOptions = {
-          raw: gasLimit.toString(),
-          value: gasLimit
-        };
-
-        const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
-
-        if (scheduling) {
-          yield put(scheduleActions.setScheduleGasLimitField(gasSetOptions));
-        } else {
-          yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
-        }
-
-        yield put(transactionNetworkActions.estimateGasSucceeded());
-      } else {
-        yield put(transactionNetworkActions.estimateGasTimedout());
-        yield call(localGasEstimation, payload);
-      }
-    } catch (e) {
-      yield put(transactionNetworkActions.estimateGasFailed());
-      yield call(localGasEstimation, payload);
-    }
-  }
-}
-
-export function* localGasEstimation(
-  payload: transactionNetworkTypes.EstimateGasRequestedAction['payload']
-) {
-  const tx = yield call(makeTransaction, payload);
-  const gasLimit = yield apply(tx, tx.getBaseFee);
-  yield put(
-    transactionFieldsActions.setGasLimitField({ raw: gasLimit.toString(), value: gasLimit })
-  );
-}
-
-export function* setAddressMessageGasLimit() {
-  const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
-  const message: AddressMessage | undefined = yield select(selectors.getCurrentToAddressMessage);
-  if (autoGasLimitEnabled && message && message.gasLimit) {
-    yield put(
-      transactionFieldsActions.setGasLimitField({
-        raw: message.gasLimit.toString(),
-        value: new BN(message.gasLimit)
-      })
-    );
-  }
-}
-
-export const gas = [
-  fork(shouldEstimateGas),
-  fork(estimateGas),
-  takeEvery(transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET, setAddressMessageGasLimit)
-];
-//#endregion Gas
-
-//#region Nonce
-export function* handleNonceRequest(): SagaIterator {
-  const nodeLib: INode = yield select(configNodesSelectors.getNodeLib);
-  const walletInst: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
-  const isOffline: boolean = yield select(configMetaSelectors.getOffline);
-  try {
-    if (isOffline || !walletInst) {
-      return;
-    }
-
-    const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
-
-    const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);
-    const base10Nonce = Nonce(retrievedNonce);
-    yield put(transactionFieldsActions.inputNonce(base10Nonce.toString()));
-    yield put(transactionNetworkActions.getNonceSucceeded(retrievedNonce));
-  } catch {
-    yield put(
-      notificationsActions.showNotification('warning', 'Your addresses nonce could not be fetched')
-    );
-    yield put(transactionNetworkActions.getNonceFailed());
-  }
-}
-
-export function* handleNonceRequestWrapper(): SagaIterator {
-  const nonceRequest = yield fork(handleNonceRequest);
-
-  yield take(walletTypes.WalletActions.SET);
-  yield cancel(nonceRequest);
-}
-
-//leave get nonce requested for nonce refresh later on
-export const nonceSaga = takeEvery(
-  [
-    transactionNetworkTypes.TransactionNetworkActions.GET_NONCE_REQUESTED,
-    walletTypes.WalletActions.SET
-  ],
-  handleNonceRequestWrapper
-);
-//#endregion Nonce
-
-export const networkSaga = [fromSaga, ...gas, nonceSaga];
-//#endregion Network
 
 //#region Signing
 export function* signLocalTransactionHandler({
@@ -659,7 +427,7 @@ export function* transactionSaga(): SagaIterator {
     ...current,
     ...transactionFieldsSagas.fieldsSaga,
     ...transactionMetaSagas.metaSaga,
-    ...networkSaga,
+    ...transactionNetworkSagas.networkSaga,
     ...signing,
     ...sendEverything,
     ...reset

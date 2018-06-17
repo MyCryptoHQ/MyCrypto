@@ -9,10 +9,10 @@ import * as selectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
 import { walletTypes } from 'features/wallet';
 import { scheduleActions } from 'features/schedule';
+import { transactionFieldsActions, transactionFieldsSelectors } from '../fields';
 import * as transactionActions from '../actions';
 import * as transactionSelectors from '../selectors';
 import * as helpers from '../helpers';
-import { transactionFieldsActions, transactionFieldsSelectors } from '../fields';
 import * as types from './types';
 import * as metaSelectors from './selectors';
 
