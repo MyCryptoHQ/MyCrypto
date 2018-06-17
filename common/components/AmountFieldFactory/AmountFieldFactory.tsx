@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { setCurrentValue, TSetCurrentValue } from 'features/transaction';
+import { transactionActions } from 'features/transaction';
 import { Query } from 'components/renderCbs';
 import { AmountInput } from './AmountInputFactory';
 
@@ -16,7 +16,7 @@ export interface CallbackProps {
 }
 
 interface DispatchProps {
-  setCurrentValue: TSetCurrentValue;
+  setCurrentValue: transactionActions.TSetCurrentValue;
 }
 
 interface OwnProps {
@@ -44,7 +44,9 @@ class AmountFieldClass extends Component<Props, {}> {
   };
 }
 
-const AmountField = connect(null, { setCurrentValue })(AmountFieldClass);
+const AmountField = connect(null, { setCurrentValue: transactionActions.setCurrentValue })(
+  AmountFieldClass
+);
 
 interface DefaultAmountFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;

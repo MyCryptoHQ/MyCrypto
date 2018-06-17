@@ -5,6 +5,7 @@ import { addHexPrefix } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
+import { ICurrentTo } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
@@ -16,7 +17,7 @@ import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 
 interface StateProps {
-  currentTo: selectors.ICurrentTo;
+  currentTo: ICurrentTo;
   label: string | null;
   isValid: boolean;
   isLabelEntry: boolean;
@@ -111,7 +112,7 @@ class AddressInputFactoryClass extends Component<Props> {
 }
 
 export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps) => {
-  let currentTo: selectors.ICurrentTo;
+  let currentTo: ICurrentTo;
   if (ownProps.isSelfAddress) {
     const wallet = walletSelectors.getWalletInst(state);
     const addr = wallet ? wallet.getAddressString() : '';

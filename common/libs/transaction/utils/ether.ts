@@ -6,7 +6,7 @@ import { Wei } from 'libs/units';
 import { isValidAddress } from 'libs/validators';
 import { IFullWallet } from 'libs/wallet';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
-import { TransactionFieldValues } from 'features/transaction/helpers';
+import { TransactionFieldValues } from 'features/types';
 import { ITransaction, IHexStrTransaction } from '../typings';
 
 // we dont include the signature paramaters because web3 transactions are unsigned

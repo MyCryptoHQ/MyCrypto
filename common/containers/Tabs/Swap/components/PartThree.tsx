@@ -37,7 +37,7 @@ interface ReduxActionProps {
   startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
   stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
   stopOrderTimerSwap: TStopOrderTimerSwap;
-  showNotification: notificationsActions.TShowNotification;
+  showNotificationWithComponent: notificationsActions.TShowNotificationWithComponent;
 }
 
 export default class PartThree extends PureComponent<ReduxActionProps & ReduxStateProps, {}> {
@@ -69,18 +69,18 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
       destinationAddress,
       outputTx,
       // ACTIONS
-      showNotification
+      showNotificationWithComponent
     } = this.props;
 
     const SwapProgressProps = {
-      originId: origin.label,
       destinationId: destination.label,
+      originId: origin.label,
+      destinationAddress,
+      outputTx,
       provider,
       bityOrderStatus,
       shapeshiftOrderStatus,
-      showNotification,
-      destinationAddress,
-      outputTx
+      showNotificationWithComponent
     };
 
     const PaymentInfoProps = {

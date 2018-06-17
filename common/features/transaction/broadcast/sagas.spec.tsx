@@ -1,4 +1,3 @@
-import React from 'react';
 import { cloneableGenerator } from 'redux-saga/utils';
 import { call, put, select, apply } from 'redux-saga/effects';
 import { bufferToHex } from 'ethereumjs-util';
@@ -10,7 +9,6 @@ import * as configSelectors from 'features/config/selectors';
 import { walletSelectors } from 'features/wallet';
 import { scheduleSelectors } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { transactionFieldsActions } from '../fields';
 import { transactionSignSelectors } from '../sign';
 import * as actions from './actions';
@@ -192,13 +190,15 @@ describe('Broadcast sagas', () => {
     it('should put showNotification', () => {
       expect(gens.gen.next(false).value).toEqual(
         put(
-          notificationsActions.showNotification(
+          notificationsActions.showNotificationWithComponent(
             'success',
-            <TransactionSucceeded
-              txHash={broadcastedHash}
-              blockExplorer={network.blockExplorer}
-              scheduling={false}
-            />,
+            '',
+            {
+              component: 'TransactionSucceeded',
+              txHash: broadcastedHash,
+              blockExplorer: network.blockExplorer,
+              scheduling: false
+            },
             Infinity
           )
         )

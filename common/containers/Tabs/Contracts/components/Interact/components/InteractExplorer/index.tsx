@@ -9,16 +9,10 @@ import { AppState } from 'features/reducers';
 import { getNodeLib } from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import {
-  getTo,
-  getDataExists,
-  setDataField,
-  TSetDataField,
-  resetTransactionRequested,
-  TResetTransactionRequested,
-  TSetAsContractInteraction,
-  TSetAsViewAndSend,
-  setAsContractInteraction,
-  setAsViewAndSend
+  transactionFieldsActions,
+  transactionFieldsSelectors,
+  transactionMetaActions,
+  transactionSelectors
 } from 'features/transaction';
 import { GenerateTransaction } from 'components/GenerateTransaction';
 import { Input, Dropdown } from 'components/ui';
@@ -33,10 +27,10 @@ interface StateProps {
 
 interface DispatchProps {
   showNotification: notificationsActions.TShowNotification;
-  setDataField: TSetDataField;
-  resetTransactionRequested: TResetTransactionRequested;
-  setAsContractInteraction: TSetAsContractInteraction;
-  setAsViewAndSend: TSetAsViewAndSend;
+  setDataField: transactionFieldsActions.TSetDataField;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
+  setAsContractInteraction: transactionMetaActions.TSetAsContractInteraction;
+  setAsViewAndSend: transactionMetaActions.TSetAsViewAndSend;
 }
 
 interface OwnProps {
@@ -316,14 +310,14 @@ class InteractExplorerClass extends Component<Props, State> {
 export const InteractExplorer = connect(
   (state: AppState) => ({
     nodeLib: getNodeLib(state),
-    to: getTo(state),
-    dataExists: getDataExists(state)
+    to: transactionFieldsSelectors.getTo(state),
+    dataExists: transactionSelectors.getDataExists(state)
   }),
   {
     showNotification: notificationsActions.showNotification,
-    setDataField,
-    resetTransactionRequested,
-    setAsContractInteraction,
-    setAsViewAndSend
+    setDataField: transactionFieldsActions.setDataField,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+    setAsContractInteraction: transactionMetaActions.setAsContractInteraction,
+    setAsViewAndSend: transactionMetaActions.setAsViewAndSend
   }
 )(InteractExplorerClass);

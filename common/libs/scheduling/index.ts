@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 import { toBuffer } from 'ethereumjs-util';
 
-import * as selectors from 'features/selectors';
+import { ICurrentValue } from 'features/types';
 import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import RequestFactory from './contracts/RequestFactory';
 
@@ -165,7 +165,7 @@ export const parseSchedulingParametersValidity = (isValid: boolean[]) => {
 export const getValidateRequestParamsData = (
   toAddress: string,
   callGas: Wei,
-  callValue: selectors.ICurrentValue['value'],
+  callValue: ICurrentValue['value'],
   windowSize: BN | null,
   windowStart: number,
   gasPrice: Wei,

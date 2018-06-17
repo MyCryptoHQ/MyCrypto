@@ -5,7 +5,7 @@ import { translateRaw } from 'translations';
 import { toWei } from 'libs/units';
 import { AppState } from 'features/reducers';
 import { scheduleActions, scheduleSelectors } from 'features/schedule';
-import { getDecimal } from 'features/transaction';
+import { transactionMetaSelectors } from 'features/transaction';
 import { Input, Tooltip } from 'components/ui';
 import Help from 'components/ui/Help';
 
@@ -62,7 +62,7 @@ class ScheduleDepositFieldClass extends Component<Props> {
 
 export const ScheduleDepositField = connect(
   (state: AppState) => ({
-    decimal: getDecimal(state),
+    decimal: transactionMetaSelectors.getDecimal(state),
     scheduleDeposit: scheduleSelectors.getScheduleDeposit(state),
     validScheduleDeposit: scheduleSelectors.isValidScheduleDeposit(state)
   }),

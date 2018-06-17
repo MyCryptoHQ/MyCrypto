@@ -18,14 +18,14 @@ import { INode } from 'libs/nodes/INode';
 import { IWallet } from 'libs/wallet';
 import { Nonce } from 'libs/units';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
+import { IGetTransaction } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import * as configMetaTypes from 'features/config/meta/types';
 import * as configMetaSelectors from 'features/config/meta/selectors';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
-import { walletSelectors } from 'features/wallet';
+import { walletTypes, walletSelectors } from 'features/wallet';
 import { scheduleActions, scheduleSelectors } from 'features/schedule';
-import { walletTypes } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
 import * as transactionTypes from '../types';
@@ -101,9 +101,7 @@ export function* shouldEstimateGas(): SagaIterator {
     if (invalidField) {
       continue;
     }
-    const { transaction }: derivedSelectors.IGetTransaction = yield select(
-      derivedSelectors.getTransaction
-    );
+    const { transaction }: IGetTransaction = yield select(derivedSelectors.getTransaction);
 
     const { gasLimit, gasPrice, nonce, chainId, ...rest }: IHexStrTransaction = yield call(
       getTransactionFields,

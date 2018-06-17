@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { isHexString } from 'ethereumjs-util';
 
 import { AppState } from 'features/reducers';
-import { getData } from 'features/transaction';
+import { transactionFieldsSelectors } from 'features/transaction';
 import { CallBackProps } from 'components/DataFieldFactory';
 import { Query } from 'components/renderCbs';
 
@@ -33,6 +33,8 @@ class DataInputClass extends Component<Props> {
 }
 
 export const DataInput = connect((state: AppState) => ({
-  data: getData(state),
-  validData: getData(state).raw === '' || isHexString(getData(state).raw)
+  data: transactionFieldsSelectors.getData(state),
+  validData:
+    transactionFieldsSelectors.getData(state).raw === '' ||
+    isHexString(transactionFieldsSelectors.getData(state).raw)
 }))(DataInputClass);

@@ -15,6 +15,7 @@ import {
 
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei, TokenValue } from 'libs/units';
 import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
+import { IGetTransaction, ICurrentValue } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
@@ -113,11 +114,8 @@ export function* valueHandler(
 
 export function* revalidateCurrentValue(): SagaIterator {
   const etherTransaction = yield select(derivedSelectors.isEtherTransaction);
-  const currVal: derivedSelectors.ICurrentValue = yield select(derivedSelectors.getCurrentValue);
-  const reparsedValue: null | derivedSelectors.ICurrentValue = yield call(
-    reparseCurrentValue,
-    currVal
-  );
+  const currVal: ICurrentValue = yield select(derivedSelectors.getCurrentValue);
+  const reparsedValue: null | ICurrentValue = yield call(reparseCurrentValue, currVal);
   const unit: string = yield select(derivedSelectors.getUnit);
   const setter = etherTransaction
     ? transactionFieldsActions.setValueField
@@ -133,10 +131,7 @@ export function* revalidateCurrentValue(): SagaIterator {
   }
 }
 
-export function isValueDifferent(
-  curVal: derivedSelectors.ICurrentValue,
-  newVal: derivedSelectors.ICurrentValue
-) {
+export function isValueDifferent(curVal: ICurrentValue, newVal: ICurrentValue) {
   const val1 = curVal.value as BN;
   const val2 = newVal.value as BN;
 
@@ -183,9 +178,7 @@ export const current = [currentTo, ...currentValue];
 
 //#region Send Everything
 export function* handleSendEverything(): SagaIterator {
-  const { transaction }: derivedSelectors.IGetTransaction = yield select(
-    derivedSelectors.getTransaction
-  );
+  const { transaction }: IGetTransaction = yield select(derivedSelectors.getTransaction);
   const currentBalance: Wei | TokenValue | null = yield select(derivedSelectors.getCurrentBalance);
   const etherBalance: AppState['wallet']['balance']['wei'] = yield select(
     walletSelectors.getEtherBalance

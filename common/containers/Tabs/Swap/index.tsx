@@ -52,6 +52,7 @@ interface ReduxActionProps {
   stopPollBityOrderStatus: swapActions.TStopPollBityOrderStatus;
   stopPollShapeshiftOrderStatus: swapActions.TStopPollShapeshiftOrderStatus;
   showNotification: notificationsActions.TShowNotification;
+  showNotificationWithComponent: notificationsActions.TShowNotificationWithComponent;
   initSwap: swapActions.TInitSwap;
   swapProvider: swapActions.TChangeSwapProvider;
 }
@@ -85,6 +86,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       bityOrderCreateRequestedSwap,
       shapeshiftOrderCreateRequestedSwap,
       showNotification,
+      showNotificationWithComponent,
       startOrderTimerSwap,
       startPollBityOrderStatus,
       stopPollShapeshiftOrderStatus,
@@ -155,7 +157,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       startPollShapeshiftOrderStatus,
       stopPollBityOrderStatus,
       stopPollShapeshiftOrderStatus,
-      showNotification,
+      showNotificationWithComponent,
       destinationAddress,
       outputTx
     };
@@ -238,5 +240,6 @@ export default connect(mapStateToProps, {
   stopPollBityOrderStatus: swapActions.stopPollBityOrderStatus,
   stopPollShapeshiftOrderStatus: swapActions.stopPollShapeshiftOrderStatus,
   showNotification: notificationsActions.showNotification,
+  showNotificationWithComponent: notificationsActions.showNotificationWithComponent,
   swapProvider: swapActions.changeSwapProvider
 })(Swap);

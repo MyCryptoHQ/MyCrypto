@@ -1,4 +1,3 @@
-import React from 'react';
 import { SagaIterator } from 'redux-saga';
 import { apply, select, call, put, takeEvery } from 'redux-saga/effects';
 import { bufferToHex } from 'ethereumjs-util';
@@ -14,10 +13,8 @@ import * as configSelectors from 'features/config/selectors';
 import { walletSelectors } from 'features/wallet';
 import { scheduleSelectors } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
-import TransactionSucceeded from 'components/ExtendedNotifications/TransactionSucceeded';
 import { transactionFieldsActions } from '../fields';
-import { transactionSignReducer } from '../sign';
-import { transactionSignSelectors } from '../sign';
+import { transactionSignReducer, transactionSignSelectors } from '../sign';
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
@@ -53,13 +50,15 @@ export const broadcastTransactionWrapper = (func: (serializedTx: string) => Saga
       const network: NetworkConfig = yield select(configSelectors.getNetworkConfig);
       const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
       yield put(
-        notificationsActions.showNotification(
+        notificationsActions.showNotificationWithComponent(
           'success',
-          <TransactionSucceeded
-            txHash={broadcastedHash}
-            blockExplorer={network.isCustom ? undefined : network.blockExplorer}
-            scheduling={scheduling}
-          />,
+          '',
+          {
+            component: 'TransactionSucceeded',
+            txHash: broadcastedHash,
+            blockExplorer: network.isCustom ? undefined : network.blockExplorer,
+            scheduling
+          },
           Infinity
         )
       );

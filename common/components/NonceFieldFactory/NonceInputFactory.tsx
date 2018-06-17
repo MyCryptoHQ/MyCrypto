@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { getOffline } from 'features/config';
-import { getNonce, nonceRequestFailed } from 'features/transaction';
+import { transactionFieldsSelectors, transactionNetworkSelectors } from 'features/transaction';
 import { CallbackProps } from 'components/NonceFieldFactory';
 import { Query } from 'components/renderCbs';
 
@@ -35,6 +35,6 @@ class NonceInputFactoryClass extends Component<Props> {
 }
 
 export const NonceInputFactory = connect((state: AppState) => ({
-  shouldDisplay: getOffline(state) || nonceRequestFailed(state),
-  nonce: getNonce(state)
+  shouldDisplay: getOffline(state) || transactionNetworkSelectors.nonceRequestFailed(state),
+  nonce: transactionFieldsSelectors.getNonce(state)
 }))(NonceInputFactoryClass);

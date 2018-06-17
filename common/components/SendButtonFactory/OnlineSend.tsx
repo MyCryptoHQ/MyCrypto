@@ -2,23 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import { getOffline } from 'features/config';
 import {
-  ITransactionStatus,
-  TSignTransactionRequested,
-  signTransactionRequested,
-  getCurrentTransactionStatus,
-  currentTransactionBroadcasted,
-  getSignedTx,
-  getWeb3Tx
+  transactionBroadcastTypes,
+  transactionSignActions,
+  transactionSignSelectors,
+  transactionSelectors
 } from 'features/transaction';
 import { notificationsActions } from 'features/notifications';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {
   offline: boolean;
-  currentTransaction: false | ITransactionStatus | null;
+  currentTransaction: false | transactionBroadcastTypes.ITransactionStatus | null;
   transactionBroadcasted: boolean;
   signaturePending: boolean;
   signedTx: boolean;
@@ -30,8 +27,7 @@ interface State {
 
 interface DispatchProps {
   showNotification: notificationsActions.TShowNotification;
-
-  signTransactionRequested: TSignTransactionRequested;
+  signTransactionRequested: transactionSignActions.TSignTransactionRequested;
 }
 
 interface OwnProps {
@@ -92,10 +88,14 @@ class OnlineSendClass extends Component<Props, State> {
 export const OnlineSend = connect(
   (state: AppState) => ({
     offline: getOffline(state),
-    currentTransaction: getCurrentTransactionStatus(state),
-    transactionBroadcasted: currentTransactionBroadcasted(state),
-    signaturePending: selectors.signaturePending(state).isSignaturePending,
-    signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
+    currentTransaction: transactionSelectors.getCurrentTransactionStatus(state),
+    transactionBroadcasted: transactionSelectors.currentTransactionBroadcasted(state),
+    signaturePending: derivedSelectors.signaturePending(state).isSignaturePending,
+    signedTx:
+      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state)
   }),
-  { showNotification: notificationsActions.showNotification, signTransactionRequested }
+  {
+    showNotification: notificationsActions.showNotification,
+    signTransactionRequested: transactionSignActions.signTransactionRequested
+  }
 )(OnlineSendClass);

@@ -6,7 +6,7 @@ import { Wei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import { scheduleActions, scheduleSelectors } from 'features/schedule';
-import { getGasEstimationPending } from 'features/transaction';
+import { transactionNetworkSelectors } from 'features/transaction';
 import { Input, InlineSpinner } from 'components/ui';
 
 interface OwnProps {
@@ -57,7 +57,7 @@ class ScheduleGasLimitFieldClass extends React.Component<Props> {
 
 export const ScheduleGasLimitField = connect(
   (state: AppState) => ({
-    gasEstimationPending: getGasEstimationPending(state),
+    gasEstimationPending: transactionNetworkSelectors.getGasEstimationPending(state),
     scheduleGasLimit: scheduleSelectors.getScheduleGasLimit(state),
     validScheduleGasLimit: scheduleSelectors.isValidScheduleGasLimit(state)
   }),

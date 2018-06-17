@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import translate from 'translations';
-import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
+import { transactionFieldsActions } from 'features/transaction';
 import { walletActions } from 'features/wallet';
 import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
 import { FullWalletOnly } from 'components/renderCbs';
@@ -15,7 +15,7 @@ import './Deploy.scss';
 
 interface DispatchProps {
   resetWallet: walletActions.TResetWallet;
-  resetTransactionRequested: TResetTransactionRequested;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
 }
 
 class DeployClass extends Component<DispatchProps> {
@@ -99,5 +99,5 @@ class DeployClass extends Component<DispatchProps> {
 
 export const Deploy = connect(null, {
   resetWallet: walletActions.resetWallet,
-  resetTransactionRequested
+  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
 })(DeployClass);

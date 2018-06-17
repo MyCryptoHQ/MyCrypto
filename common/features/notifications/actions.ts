@@ -1,10 +1,9 @@
-import { ReactElement } from 'react';
 import * as types from './types';
 
 export type TShowNotification = typeof showNotification;
 export function showNotification(
   level: types.NotificationLevel = 'info',
-  msg: ReactElement<any> | string,
+  msg: string,
   duration?: number
 ): types.ShowNotificationAction {
   return {
@@ -14,6 +13,29 @@ export function showNotification(
       msg,
       duration,
       id: Math.random()
+    }
+  };
+}
+
+export type TShowNotificationWithComponent = typeof showNotificationWithComponent;
+export function showNotificationWithComponent(
+  level: types.NotificationLevel,
+  msg: string,
+  componentConfig: {
+    component: string;
+    [restProp: string]: any;
+  },
+  duration?: number
+): types.ShowNotificationAction {
+  return {
+    type: types.NotificationsActions.SHOW,
+    payload: {
+      id: Math.random(),
+      level,
+      msg,
+      rendersComponent: true,
+      componentConfig,
+      duration
     }
   };
 }

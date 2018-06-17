@@ -7,12 +7,7 @@ import translate from 'translations';
 import { Wei, fromWei } from 'libs/units';
 import { AppState } from 'features/reducers';
 import { getIsWeb3Node } from 'features/config';
-import {
-  TInputGasPrice,
-  getGasLimitEstimationTimedOut,
-  getGasEstimationPending,
-  nonceRequestPending
-} from 'features/transaction';
+import { transactionFieldsActions, transactionNetworkSelectors } from 'features/transaction';
 import { gasActions, gasSelectors } from 'features/gas';
 import { scheduleSelectors } from 'features/schedule';
 import { InlineSpinner } from 'components/ui/InlineSpinner';
@@ -23,7 +18,7 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: AppState['transaction']['fields']['gasPrice'];
-  setGasPrice: TInputGasPrice;
+  setGasPrice: transactionFieldsActions.TInputGasPrice;
 
   inputGasPrice(rawGas: string): void;
 }
@@ -154,9 +149,9 @@ export default connect(
   (state: AppState): StateProps => ({
     gasEstimates: gasSelectors.getEstimates(state),
     isGasEstimating: gasSelectors.getIsEstimating(state),
-    noncePending: nonceRequestPending(state),
-    gasLimitPending: getGasEstimationPending(state),
-    gasLimitEstimationTimedOut: getGasLimitEstimationTimedOut(state),
+    noncePending: transactionNetworkSelectors.nonceRequestPending(state),
+    gasLimitPending: transactionNetworkSelectors.getGasEstimationPending(state),
+    gasLimitEstimationTimedOut: transactionNetworkSelectors.getGasLimitEstimationTimedOut(state),
     isWeb3Node: getIsWeb3Node(state),
     scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state)
   }),

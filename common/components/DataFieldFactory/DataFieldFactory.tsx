@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { inputData, TInputData } from 'features/transaction';
+import { transactionFieldsActions } from 'features/transaction';
 import { Query } from 'components/renderCbs';
 import { DataInput } from './DataInputFactory';
 
@@ -15,7 +15,7 @@ export interface CallBackProps {
 }
 interface DispatchProps {
   isEtherTransaction: boolean;
-  inputData: TInputData;
+  inputData: transactionFieldsActions.TInputData;
 }
 interface OwnProps {
   data: string | null;
@@ -49,7 +49,7 @@ class DataFieldClass extends React.Component<Props> {
 
 const DataField = connect(
   (state: AppState) => ({ isEtherTransaction: selectors.isEtherTransaction(state) }),
-  { inputData }
+  { inputData: transactionFieldsActions.inputData }
 )(DataFieldClass);
 
 interface DefaultDataFieldProps {

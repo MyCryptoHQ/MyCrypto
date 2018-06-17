@@ -6,17 +6,16 @@ import translate from 'translations';
 import { IWallet } from 'libs/wallet';
 import { validPositiveNumber, validDecimal } from 'libs/validators';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
+import { ICurrentTo, ICurrentValue } from 'features/types';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import { getNetworkConfig, isNetworkUnit } from 'features/config';
 import {
-  SetGasLimitFieldAction,
-  resetTransactionRequested,
-  TResetTransactionRequested,
-  setCurrentTo,
-  TSetCurrentTo,
-  getGasLimit,
-  getDecimal
+  transactionFieldsTypes,
+  transactionFieldsActions,
+  transactionFieldsSelectors,
+  transactionMetaSelectors,
+  transactionActions
 } from 'features/transaction';
 import { AddressField, AmountField, TXMetaDataPanel } from 'components';
 import { QRCode, CodeBlock } from 'components/ui';
@@ -29,9 +28,9 @@ interface OwnProps {
 
 interface StateProps {
   unit: string;
-  currentTo: selectors.ICurrentTo;
-  currentValue: selectors.ICurrentValue;
-  gasLimit: SetGasLimitFieldAction['payload'];
+  currentTo: ICurrentTo;
+  currentValue: ICurrentValue;
+  gasLimit: transactionFieldsTypes.SetGasLimitFieldAction['payload'];
   networkConfig: NetworkConfig;
   decimal: number;
   tokenContractAddress: string;
@@ -39,8 +38,8 @@ interface StateProps {
 }
 
 interface ActionProps {
-  resetTransactionRequested: TResetTransactionRequested;
-  setCurrentTo: TSetCurrentTo;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
+  setCurrentTo: transactionActions.TSetCurrentTo;
 }
 
 type Props = OwnProps & StateProps & ActionProps;
@@ -187,17 +186,18 @@ class RequestPayment extends React.Component<Props, {}> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    unit: selectors.getUnit(state),
-    currentTo: selectors.getCurrentTo(state),
-    currentValue: selectors.getCurrentValue(state),
-    gasLimit: getGasLimit(state),
+    unit: derivedSelectors.getUnit(state),
+    currentTo: derivedSelectors.getCurrentTo(state),
+    currentValue: derivedSelectors.getCurrentValue(state),
+    gasLimit: transactionFieldsSelectors.getGasLimit(state),
     networkConfig: getNetworkConfig(state),
-    decimal: getDecimal(state),
-    tokenContractAddress: selectors.getSelectedTokenContractAddress(state),
-    isNetworkUnit: isNetworkUnit(state, selectors.getUnit(state))
+    decimal: transactionMetaSelectors.getDecimal(state),
+    tokenContractAddress: derivedSelectors.getSelectedTokenContractAddress(state),
+    isNetworkUnit: isNetworkUnit(state, derivedSelectors.getUnit(state))
   };
 }
 
-export default connect(mapStateToProps, { resetTransactionRequested, setCurrentTo })(
-  RequestPayment
-);
+export default connect(mapStateToProps, {
+  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+  setCurrentTo: transactionActions.setCurrentTo
+})(RequestPayment);

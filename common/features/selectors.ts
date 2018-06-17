@@ -16,6 +16,7 @@ import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/
 import { stripHexPrefixAndLower } from 'libs/formatters';
 import { SecureWalletName, WalletName, getAddressMessage, AddressMessage } from 'config';
 import { Token } from 'types/network';
+import { ICurrentTo, ICurrentValue, IGetTransaction } from './types';
 import { AppState } from './reducers';
 import { addressBookSelectors } from './addressBook';
 import { walletTypes, walletSelectors } from './wallet';
@@ -32,21 +33,6 @@ import * as transactionMetaSelectors from './transaction/meta/selectors';
 import * as transactionSignTypes from './transaction/sign/types';
 import * as transactionSignSelectors from './transaction/sign/selectors';
 import { reduceToValues, isFullTx } from './helpers';
-
-export interface ICurrentValue {
-  raw: string;
-  value: TokenValue | Wei | null;
-}
-
-export interface ICurrentTo {
-  raw: string;
-  value: Address | null;
-}
-
-export interface IGetTransaction {
-  transaction: EthTx;
-  isFullTransaction: boolean; //if the user has filled all the fields
-}
 
 export const isAnyOfflineWithWeb3 = (state: AppState): boolean => {
   const { isWeb3Wallet } = walletSelectors.getWalletType(state);

@@ -6,7 +6,7 @@ import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { TToggleAutoGasLimit, toggleAutoGasLimit, getAutoGasLimitEnabled } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
-import { TInputGasPrice, isValidGasPrice } from 'features/transaction';
+import { transactionFieldsActions, transactionSelectors } from 'features/transaction';
 import { NonceField, GasLimitField, DataField } from 'components';
 import { Input } from 'components/ui';
 import FeeSummary, { RenderData } from './FeeSummary';
@@ -21,7 +21,7 @@ export interface AdvancedOptions {
 }
 
 interface OwnProps {
-  inputGasPrice: TInputGasPrice;
+  inputGasPrice: transactionFieldsActions.TInputGasPrice;
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   options?: AdvancedOptions;
   scheduling?: boolean;
@@ -186,7 +186,7 @@ export default connect(
     autoGasLimitEnabled: getAutoGasLimitEnabled(state),
     scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state),
     timeBounty: scheduleSelectors.getTimeBounty(state),
-    validGasPrice: isValidGasPrice(state)
+    validGasPrice: transactionSelectors.isValidGasPrice(state)
   }),
   { toggleAutoGasLimit }
 )(AdvancedGas);

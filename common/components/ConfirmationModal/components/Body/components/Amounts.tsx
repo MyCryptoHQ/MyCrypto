@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import { getNetworkConfig } from 'features/config';
-import { SerializedTxParams } from 'features/transaction';
+import { transactionSignTypes } from 'features/transaction';
 import { UnitDisplay } from 'components/ui';
 import './Amounts.scss';
 
-interface StateProps extends SerializedTxParams, selectors.AllUSDValues {
+interface StateProps
+  extends transactionSignTypes.SerializedTxParams,
+    derivedSelectors.AllUSDValues {
   network: NetworkConfig;
 }
 
@@ -108,8 +110,8 @@ class AmountsClass extends Component<StateProps> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  ...selectors.getParamsFromSerializedTx(state),
-  ...selectors.getAllUSDValuesFromSerializedTx(state),
+  ...derivedSelectors.getParamsFromSerializedTx(state),
+  ...derivedSelectors.getAllUSDValuesFromSerializedTx(state),
   network: getNetworkConfig(state)
 });
 

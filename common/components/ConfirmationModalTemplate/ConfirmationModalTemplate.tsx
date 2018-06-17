@@ -4,21 +4,15 @@ import { connect } from 'react-redux';
 import { translateRaw, translate } from 'translations';
 import { AppState } from 'features/reducers';
 import { getLanguageSelection } from 'features/config';
-import {
-  broadcastLocalTransactionRequested,
-  TBroadcastLocalTransactionRequested,
-  broadcastWeb3TransactionRequested,
-  TBroadcastWeb3TransactionRequested,
-  currentTransactionBroadcasting
-} from 'features/transaction';
+import { transactionBroadcastActions, transactionSelectors } from 'features/transaction';
 import { walletSelectors } from 'features/wallet';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
 import './ConfirmationModalTemplate.scss';
 
 interface DispatchProps {
-  broadcastLocalTransactionRequested: TBroadcastLocalTransactionRequested;
-  broadcastWeb3TransactionRequested: TBroadcastWeb3TransactionRequested;
+  broadcastLocalTransactionRequested: transactionBroadcastActions.TBroadcastLocalTransactionRequested;
+  broadcastWeb3TransactionRequested: transactionBroadcastActions.TBroadcastWeb3TransactionRequested;
 }
 
 interface StateProps {
@@ -134,9 +128,13 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
 
 export const ConfirmationModalTemplate = connect(
   (state: AppState) => ({
-    transactionBroadcasting: currentTransactionBroadcasting(state),
+    transactionBroadcasting: transactionSelectors.currentTransactionBroadcasting(state),
     lang: getLanguageSelection(state),
     walletTypes: walletSelectors.getWalletType(state)
   }),
-  { broadcastLocalTransactionRequested, broadcastWeb3TransactionRequested }
+  {
+    broadcastLocalTransactionRequested:
+      transactionBroadcastActions.broadcastLocalTransactionRequested,
+    broadcastWeb3TransactionRequested: transactionBroadcastActions.broadcastWeb3TransactionRequested
+  }
 )(ConfirmationModalTemplateClass);

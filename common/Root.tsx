@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 
-import { Store } from 'redux';
 import { AppState } from 'features/reducers';
 import { getNetworkUnit } from 'features/config';
-import { setUnitMeta, TSetUnitMeta } from 'features/transaction';
+import { transactionMetaActions } from 'features/transaction';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -36,7 +36,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setUnitMeta: TSetUnitMeta;
+  setUnitMeta: transactionMetaActions.TSetUnitMeta;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -188,5 +188,5 @@ const mapStateToProps = (state: AppState) => {
 };
 
 export default connect(mapStateToProps, {
-  setUnitMeta
+  setUnitMeta: transactionMetaActions.setUnitMeta
 })(RootClass);

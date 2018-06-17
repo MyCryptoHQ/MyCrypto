@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { sanitizeNumericalInput } from 'libs/values';
 import { AppState } from 'features/reducers';
-import { inputNonce, TInputNonce } from 'features/transaction';
+import { transactionFieldsActions } from 'features/transaction';
 import { NonceInputFactory } from './NonceInputFactory';
 
 export interface CallbackProps {
@@ -14,7 +14,7 @@ export interface CallbackProps {
 }
 
 interface DispatchProps {
-  inputNonce: TInputNonce;
+  inputNonce: transactionFieldsActions.TInputNonce;
 }
 
 interface OwnProps {
@@ -35,5 +35,5 @@ class NonceFieldClass extends Component<Props> {
 }
 
 export const NonceFieldFactory = connect(null, {
-  inputNonce
+  inputNonce: transactionFieldsActions.inputNonce
 })(NonceFieldClass);

@@ -6,6 +6,7 @@ import { cloneableGenerator, SagaIteratorClone } from 'redux-saga/utils';
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei } from 'libs/units';
 import { isValidENSAddress, getIsValidAddressFunction } from 'libs/validators';
 import configuredStore from 'features/store';
+import { ICurrentValue } from 'features/types';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
 import { ensTypes, ensActions, ensSelectors } from 'features/ens';
@@ -375,26 +376,26 @@ describe('transaction: Sagas', () => {
 
     describe('isValueDifferent', () => {
       it('should be truthy when raw differs', () => {
-        const curVal: derivedSelectors.ICurrentValue = { raw: 'a', value: new BN(0) };
-        const newVal: derivedSelectors.ICurrentValue = { raw: 'b', value: new BN(0) };
+        const curVal: ICurrentValue = { raw: 'a', value: new BN(0) };
+        const newVal: ICurrentValue = { raw: 'b', value: new BN(0) };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
 
       it('should be falsy when value is the same BN', () => {
-        const curVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
-        const newVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
+        const curVal: ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: ICurrentValue = { raw: '', value: new BN(1) };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeFalsy();
       });
 
       it('should be truthy when value is a different BN', () => {
-        const curVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
-        const newVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(2) };
+        const curVal: ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: ICurrentValue = { raw: '', value: new BN(2) };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
 
       it('should be truthy when value is not the same and not both BNs', () => {
-        const curVal: derivedSelectors.ICurrentValue = { raw: '', value: new BN(1) };
-        const newVal: derivedSelectors.ICurrentValue = { raw: '', value: null };
+        const curVal: ICurrentValue = { raw: '', value: new BN(1) };
+        const newVal: ICurrentValue = { raw: '', value: null };
         expect(sagas.isValueDifferent(curVal, newVal)).toBeTruthy();
       });
     });

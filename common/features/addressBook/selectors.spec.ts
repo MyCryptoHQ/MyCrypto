@@ -1,9 +1,9 @@
-import { getInitialState } from 'features/helpers';
+import * as testHelpers from 'features/testHelpers';
 import * as constants from './constants';
 import * as selectors from './selectors';
 
 describe('addressBook: Selectors', () => {
-  const initialState = getInitialState();
+  const initialState = testHelpers.getInitialState();
   const firstEntry = {
     id: '1',
     address: '0x0',

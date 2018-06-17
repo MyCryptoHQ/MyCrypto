@@ -3,14 +3,12 @@ import { connect } from 'react-redux';
 import EthTx from 'ethereumjs-tx';
 
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
 import {
-  isNetworkRequestPending,
-  isValidGasPrice,
-  isValidGasLimit,
-  getSignedTx,
-  getWeb3Tx
+  transactionNetworkSelectors,
+  transactionSignSelectors,
+  transactionSelectors
 } from 'features/transaction';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { OnlineSend } from './OnlineSend';
@@ -77,12 +75,13 @@ export class SendButtonFactoryClass extends Component<Props> {
 const mapStateToProps = (state: AppState) => {
   return {
     walletType: walletSelectors.getWalletType(state),
-    serializedTransaction: selectors.getSerializedTransaction(state),
-    ...selectors.getTransaction(state),
-    networkRequestPending: isNetworkRequestPending(state),
-    validGasPrice: isValidGasPrice(state),
-    validGasLimit: isValidGasLimit(state),
-    signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
+    serializedTransaction: derivedSelectors.getSerializedTransaction(state),
+    ...derivedSelectors.getTransaction(state),
+    networkRequestPending: transactionNetworkSelectors.isNetworkRequestPending(state),
+    validGasPrice: transactionSelectors.isValidGasPrice(state),
+    validGasLimit: transactionSelectors.isValidGasLimit(state),
+    signedTx:
+      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state)
   };
 };
 

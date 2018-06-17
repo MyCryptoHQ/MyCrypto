@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { AppState } from 'features/reducers';
 import { getOffline } from 'features/config';
-import { getNonceRequested, TGetNonceRequested, nonceRequestPending } from 'features/transaction';
+import { transactionNetworkActions, transactionNetworkSelectors } from 'features/transaction';
 import { Spinner, Input } from 'components/ui';
 import Help from 'components/ui/Help';
 import { NonceFieldFactory } from 'components/NonceFieldFactory';
@@ -20,7 +20,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  requestNonce: TGetNonceRequested;
+  requestNonce: transactionNetworkActions.TGetNonceRequested;
 }
 
 type Props = OwnProps & DispatchProps & StateProps;
@@ -75,8 +75,10 @@ class NonceField extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
   return {
     isOffline: getOffline(state),
-    noncePending: nonceRequestPending(state)
+    noncePending: transactionNetworkSelectors.nonceRequestPending(state)
   };
 };
 
-export default connect(mapStateToProps, { requestNonce: getNonceRequested })(NonceField);
+export default connect(mapStateToProps, {
+  requestNonce: transactionNetworkActions.getNonceRequested
+})(NonceField);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
 import { notificationsActions } from 'features/notifications';
 import { TextArea } from 'components/ui';
@@ -91,10 +91,10 @@ export class VerifyMessage extends Component<Props, State> {
         verifiedAddress: address,
         verifiedMessage: msg
       });
-      this.props.showNotification('success', translate('SUCCESS_7'));
+      this.props.showNotification('success', translateRaw('SUCCESS_7'));
     } catch (err) {
       this.clearVerifiedData();
-      this.props.showNotification('danger', translate('ERROR_38'));
+      this.props.showNotification('danger', translateRaw('ERROR_38'));
     }
   };
 

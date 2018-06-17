@@ -1,7 +1,7 @@
 import { SagaIterator } from 'redux-saga';
 import { put, take, all, apply, takeEvery, call, select } from 'redux-saga/effects';
 
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import { verifySignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
 import { padLeftEven } from 'libs/values';
@@ -26,7 +26,7 @@ export function* signingWrapper(
     yield put(
       notificationsActions.showNotification(
         'danger',
-        translate('SIGN_MSG_FAIL', { $err: err.message }),
+        translateRaw('SIGN_MSG_FAIL', { $err: err.message }),
         5000
       )
     );
@@ -99,12 +99,12 @@ function* verifySignature(action: types.SignLocalMessageSucceededAction): SagaIt
     yield put(
       notificationsActions.showNotification(
         'success',
-        translate('SIGN_MSG_SUCCESS', { $address: action.payload.address })
+        translateRaw('SIGN_MSG_SUCCESS', { $address: action.payload.address })
       )
     );
   } else {
     yield put(actions.signMessageFailed());
-    yield put(notificationsActions.showNotification('danger', translate('ERROR_38')));
+    yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_38')));
   }
 }
 

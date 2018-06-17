@@ -1,23 +1,6 @@
-import configuredStore from './store';
 import { AppState } from './reducers';
 import * as configSelectors from './config/selectors';
-import * as selectors from './selectors';
-
-export function getInitialState() {
-  return { ...configuredStore.getState() };
-}
-
-export function testShallowlyEqual(oldValue: any, newValue: any) {
-  it('should be shallowly equal when called again with the same state', () => {
-    expect(oldValue === newValue).toBeTruthy();
-  });
-}
-
-type TransactionFields = AppState['transaction']['fields'];
-
-export type TransactionFieldValues = {
-  [field in keyof TransactionFields]: TransactionFields[field]['value']
-};
+import { ICurrentTo, ICurrentValue, TransactionFieldValues, TransactionFields } from './types';
 
 export const reduceToValues = (transactionFields: AppState['transaction']['fields']) =>
   Object.keys(transactionFields).reduce<TransactionFieldValues>(
@@ -31,8 +14,8 @@ export const reduceToValues = (transactionFields: AppState['transaction']['field
 export const isFullTx = (
   state: AppState,
   transactionFields: AppState['transaction']['fields'],
-  currentTo: selectors.ICurrentTo,
-  currentValue: selectors.ICurrentValue,
+  currentTo: ICurrentTo,
+  currentValue: ICurrentValue,
   dataExists: boolean,
   validGasCost: boolean,
   unit: string // if its ether, we can have empty data, if its a token, we cant have value
@@ -41,10 +24,8 @@ export const isFullTx = (
   const partialParamsToCheck = { ...rest };
 
   const validPartialParams = Object.values(partialParamsToCheck).reduce<boolean>(
-    (
-      isValid,
-      v: AppState['transaction']['fields'] & selectors.ICurrentTo & selectors.ICurrentValue
-    ) => isValid && !!v.value,
+    (isValid, v: AppState['transaction']['fields'] & ICurrentTo & ICurrentValue) =>
+      isValid && !!v.value,
     true
   );
 

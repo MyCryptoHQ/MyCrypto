@@ -8,7 +8,7 @@ import { calcEACTotalCost } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
 import { gasSelectors } from 'features/gas';
-import { getGasLimit } from 'features/transaction';
+import { transactionFieldsSelectors } from 'features/transaction';
 import { scheduleSelectors } from 'features/schedule';
 import { UnitDisplay, Spinner } from 'components/ui';
 import './FeeSummary.scss';
@@ -144,7 +144,7 @@ class FeeSummary extends React.Component<Props> {
 
 function mapStateToProps(state: AppState): ReduxStateProps {
   return {
-    gasLimit: getGasLimit(state),
+    gasLimit: transactionFieldsSelectors.getGasLimit(state),
     rates: state.rates.rates,
     network: getNetworkConfig(state),
     isOffline: getOffline(state),

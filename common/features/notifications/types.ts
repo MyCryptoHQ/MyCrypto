@@ -1,5 +1,3 @@
-import { ReactElement } from 'react';
-
 export type NotificationState = Notification[];
 
 export enum NotificationsActions {
@@ -12,9 +10,17 @@ export type NotificationLevel = 'danger' | 'warning' | 'success' | 'info';
 
 export interface Notification {
   level: NotificationLevel;
-  msg: ReactElement<any> | string;
+  msg?: string;
   id: number;
   duration?: number;
+
+  // Note: This is a temporary fix to avoid a circular dependency.
+
+  rendersComponent?: boolean;
+  componentConfig?: {
+    component: string;
+    [restProp: string]: any;
+  };
 }
 
 /*** Close notification ***/

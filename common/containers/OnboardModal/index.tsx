@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Stepper from 'react-stepper-horizontal';
 
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { ONBOARD_LOCAL_STORAGE_KEY, NUMBER_OF_ONBOARD_SLIDES } from 'utils/localStorage';
 import { AppState } from 'features/reducers';
 import { notificationsActions } from 'features/notifications';
@@ -63,7 +63,7 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
 
-        const onboardResumeMessage = translate('ONBOARD_RESUME');
+        const onboardResumeMessage = translateRaw('ONBOARD_RESUME');
 
         // Wait a sec so it doesn't get lost in the page-load
         setTimeout(() => {

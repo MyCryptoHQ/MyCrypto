@@ -3,7 +3,7 @@ import { all, apply, fork, put, select, takeEvery, takeLatest } from 'redux-saga
 import { publicToAddress } from 'ethereumjs-util';
 import HDKey from 'hdkey';
 
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { INode } from 'libs/nodes/INode';
 import { TokenValue } from 'libs/units';
 import { Token } from 'types/network';
@@ -75,7 +75,7 @@ export function* updateWalletValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(notificationsActions.showNotification('danger', translate('ERROR_32')));
+    yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_32')));
   }
 }
 
@@ -119,7 +119,7 @@ export function* updateWalletTokenValues(): SagaIterator {
     }
   } catch (err) {
     console.log(err);
-    yield put(notificationsActions.showNotification('danger', translate('ERROR_32')));
+    yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_32')));
   }
 }
 

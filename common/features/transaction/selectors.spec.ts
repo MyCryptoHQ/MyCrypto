@@ -3,6 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { Wei } from 'libs/units';
 import * as helpers from 'features/helpers';
+import * as testHelpers from 'features/testHelpers';
 import * as derivedSelectors from 'features/selectors';
 import { transactionBroadcastSelectors } from './broadcast';
 import { transactionFieldsSelectors } from './fields';
@@ -11,10 +12,10 @@ import { transactionNetworkTypes, transactionNetworkSelectors } from './network'
 import { transactionSignSelectors } from './sign';
 import * as selectors from './selectors';
 
-const initialState = cloneDeep(helpers.getInitialState());
+const initialState = cloneDeep(testHelpers.getInitialState());
 
 describe('helpers selector', () => {
-  const state = helpers.getInitialState();
+  const state = testHelpers.getInitialState();
   state.transaction = {
     ...state.transaction,
     meta: {
@@ -102,7 +103,7 @@ describe('helpers selector', () => {
 
 //#region Broadcast
 describe('broadcast selector', () => {
-  const state = helpers.getInitialState();
+  const state = testHelpers.getInitialState();
   state.transaction = {
     ...state.transaction,
     broadcast: {
@@ -159,7 +160,7 @@ describe('broadcast selector', () => {
 
 //#region Current
 describe('current selector', () => {
-  const state = helpers.getInitialState();
+  const state = testHelpers.getInitialState();
   state.transaction = {
     ...state.transaction,
     fields: {
@@ -231,7 +232,7 @@ describe('current selector', () => {
 
 //#region Fields
 describe('fields selector', () => {
-  const state = helpers.getInitialState();
+  const state = testHelpers.getInitialState();
   state.transaction.fields = {
     to: {
       raw: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520',
@@ -381,7 +382,7 @@ describe('meta tests', () => {
 
 //#region Network
 describe('network selector', () => {
-  const state = helpers.getInitialState();
+  const state = testHelpers.getInitialState();
   state.transaction.network = {
     ...state.transaction.network,
     gasEstimationStatus: transactionNetworkTypes.RequestStatus.REQUESTED,
@@ -422,7 +423,7 @@ describe('network selector', () => {
 
 //#region Sign
 describe('sign tests', () => {
-  const state = helpers.getInitialState();
+  const state = testHelpers.getInitialState();
   (state.transaction.sign = {
     indexingHash: 'testIndexingHash',
     pending: false,

@@ -1,7 +1,7 @@
 import { delay, SagaIterator } from 'redux-saga';
 import { call, fork, put, take, takeEvery, select, apply, all } from 'redux-saga/effects';
 
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import { StaticNodeConfig, CustomNodeConfig, NodeConfig } from 'types/node';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 import {
@@ -331,7 +331,7 @@ export function* unlockWeb3(): SagaIterator {
     console.error(err);
     // unset web3 node so node dropdown isn't disabled
     yield put(web3UnsetNode());
-    yield put(showNotification('danger', translate(err.message)));
+    yield put(showNotification('danger', translateRaw(err.message)));
   }
 }
 

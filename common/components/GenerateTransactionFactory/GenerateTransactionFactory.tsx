@@ -6,12 +6,11 @@ import { addHexPrefix } from 'ethereumjs-util';
 import translate from 'translations';
 import { getTransactionFields, makeTransaction } from 'libs/transaction';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import {
-  isNetworkRequestPending,
-  isValidGasPrice,
-  isValidGasLimit,
-  getSignedTx
+  transactionNetworkSelectors,
+  transactionSignSelectors,
+  transactionSelectors
 } from 'features/transaction';
 import { walletSelectors } from 'features/wallet';
 import { OfflineBroadcast } from 'components/SendButtonFactory/OfflineBroadcast';
@@ -102,12 +101,12 @@ export class GenerateTransactionFactoryClass extends Component<Props> {
 }
 
 export const GenerateTransactionFactory = connect((state: AppState) => ({
-  ...selectors.getTransaction(state),
+  ...derivedSelectors.getTransaction(state),
   walletType: walletSelectors.getWalletType(state),
-  serializedTransaction: selectors.getSerializedTransaction(state),
-  networkRequestPending: isNetworkRequestPending(state),
+  serializedTransaction: derivedSelectors.getSerializedTransaction(state),
+  networkRequestPending: transactionNetworkSelectors.isNetworkRequestPending(state),
   isWeb3Wallet: walletSelectors.getWalletType(state).isWeb3Wallet,
-  validGasPrice: isValidGasPrice(state),
-  validGasLimit: isValidGasLimit(state),
-  signedTx: !!getSignedTx(state)
+  validGasPrice: transactionSelectors.isValidGasPrice(state),
+  validGasLimit: transactionSelectors.isValidGasLimit(state),
+  signedTx: !!transactionSignSelectors.getSignedTx(state)
 }))(GenerateTransactionFactoryClass);

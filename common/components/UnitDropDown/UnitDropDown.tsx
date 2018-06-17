@@ -4,14 +4,14 @@ import { Option } from 'react-select';
 
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { setUnitMeta, TSetUnitMeta } from 'features/transaction';
+import { transactionMetaActions } from 'features/transaction';
 import { getNetworkUnit } from 'features/config';
 import { walletTypes } from 'features/wallet';
 import { Query } from 'components/renderCbs';
 import { Dropdown } from 'components/ui';
 
 interface DispatchProps {
-  setUnitMeta: TSetUnitMeta;
+  setUnitMeta: transactionMetaActions.TSetUnitMeta;
 }
 
 interface StateProps {
@@ -62,4 +62,6 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export const UnitDropDown = connect(mapStateToProps, { setUnitMeta })(UnitDropdownClass);
+export const UnitDropDown = connect(mapStateToProps, {
+  setUnitMeta: transactionMetaActions.setUnitMeta
+})(UnitDropdownClass);

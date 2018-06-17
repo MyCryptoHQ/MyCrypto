@@ -2,7 +2,7 @@ import { apply, call, fork, put, select, take, cancel } from 'redux-saga/effects
 import { cloneableGenerator, createMockTask } from 'redux-saga/utils';
 import { IFullWallet, IV3Wallet, fromV3 } from 'ethereumjs-wallet';
 
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import configuredStore from 'features/store';
 import { getUtcWallet, PrivKeyWallet } from 'libs/wallet';
 import { Wei } from 'libs/units';
@@ -340,7 +340,7 @@ describe('unlockWeb3*', () => {
       put(
         notificationsActions.showNotification(
           'danger',
-          translate('Cannot use Web3 wallet without a Web3 node.')
+          translateRaw('Cannot use Web3 wallet without a Web3 node.')
         )
       )
     );
@@ -358,7 +358,7 @@ describe('unlockWeb3*', () => {
       put(
         notificationsActions.showNotification(
           'danger',
-          translate('No accounts found in MetaMask / Mist.')
+          translateRaw('No accounts found in MetaMask / Mist.')
         )
       )
     );

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { getAutoGasLimitEnabled } from 'features/config';
-import { getGasLimit, getGasEstimationPending } from 'features/transaction';
+import { transactionFieldsSelectors, transactionNetworkSelectors } from 'features/transaction';
 import { CallBackProps } from 'components/GasLimitFieldFactory';
 import { Query } from 'components/renderCbs';
 
@@ -38,7 +38,7 @@ class GasLimitInputClass extends Component<Props> {
   }
 }
 export const GasLimitInput = connect((state: AppState) => ({
-  gasLimit: getGasLimit(state),
-  gasEstimationPending: getGasEstimationPending(state),
+  gasLimit: transactionFieldsSelectors.getGasLimit(state),
+  gasEstimationPending: transactionNetworkSelectors.getGasEstimationPending(state),
   autoGasLimitEnabled: getAutoGasLimitEnabled(state)
 }))(GasLimitInputClass);

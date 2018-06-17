@@ -27,7 +27,7 @@ import {
   addCustomNetwork
 } from 'features/config';
 import { AppState } from 'features/reducers';
-import { TSetGasPriceField, setGasPriceField } from 'features/transaction';
+import { transactionFieldsActions } from 'features/transaction';
 import CustomNodeModal from 'components/CustomNodeModal';
 import NetworkDropdown from './components/NetworkDropdown';
 import Navigation from './components/Navigation';
@@ -41,7 +41,7 @@ interface OwnProps {
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
   changeNodeRequestedOneTime: TChangeNodeRequestedOneTime;
-  setGasPriceField: TSetGasPriceField;
+  setGasPriceField: transactionFieldsActions.TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
   addCustomNetwork: TAddCustomNetwork;
@@ -54,26 +54,6 @@ interface StateProps {
   isChangingNode: AppState['config']['nodes']['selectedNode']['pending'];
   isOffline: AppState['config']['meta']['offline'];
 }
-
-const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
-  state,
-  { networkParam }
-): StateProps => ({
-  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
-  isOffline: getOffline(state),
-  isChangingNode: isNodeChanging(state),
-  languageSelection: getLanguageSelection(state),
-  network: getNetworkConfig(state)
-});
-
-const mapDispatchToProps: DispatchProps = {
-  setGasPriceField,
-  changeLanguage,
-  changeNodeRequestedOneTime,
-  addCustomNode,
-  removeCustomNode,
-  addCustomNetwork
-};
 
 interface State {
   isAddingCustomNode: boolean;
@@ -180,5 +160,25 @@ class Header extends Component<Props, State> {
     }
   }
 }
+
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
+  state,
+  { networkParam }
+): StateProps => ({
+  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
+  isOffline: getOffline(state),
+  isChangingNode: isNodeChanging(state),
+  languageSelection: getLanguageSelection(state),
+  network: getNetworkConfig(state)
+});
+
+const mapDispatchToProps: DispatchProps = {
+  setGasPriceField: transactionFieldsActions.setGasPriceField,
+  changeLanguage,
+  changeNodeRequestedOneTime,
+  addCustomNode,
+  removeCustomNode,
+  addCustomNetwork
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

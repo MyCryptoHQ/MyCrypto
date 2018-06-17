@@ -17,9 +17,9 @@ import translate, { translateRaw } from 'translations';
 import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import { AppState } from 'features/reducers';
-import * as selectors from 'features/selectors';
+import * as derivedSelectors from 'features/selectors';
 import { walletActions } from 'features/wallet';
-import { resetTransactionRequested, TResetTransactionRequested } from 'features/transaction';
+import { transactionFieldsActions } from 'features/transaction';
 import { notificationsActions } from 'features/notifications';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
 import TrezorIcon from 'assets/images/wallets/trezor.svg';
@@ -54,7 +54,7 @@ interface DispatchProps {
   unlockPrivateKey: walletActions.TUnlockPrivateKey;
   unlockWeb3: walletActions.TUnlockWeb3;
   setWallet: walletActions.TSetWallet;
-  resetTransactionRequested: TResetTransactionRequested;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
   showNotification: notificationsActions.TShowNotification;
 }
 
@@ -451,7 +451,7 @@ const WalletDecrypt = withRouter<Props>(
 
 function mapStateToProps(state: AppState, ownProps: Props) {
   const { disabledWallets } = ownProps;
-  let computedDisabledWallets = selectors.getDisabledWallets(state);
+  let computedDisabledWallets = derivedSelectors.getDisabledWallets(state);
 
   if (disabledWallets) {
     computedDisabledWallets = {
@@ -476,6 +476,6 @@ export default connect(mapStateToProps, {
   unlockPrivateKey: walletActions.unlockPrivateKey,
   unlockWeb3: walletActions.unlockWeb3,
   setWallet: walletActions.setWallet,
-  resetTransactionRequested,
+  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;

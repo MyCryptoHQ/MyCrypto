@@ -8,12 +8,7 @@ import translate from 'translations';
 import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import {
-  signLocalTransactionSucceeded,
-  TSignLocalTransactionSucceeded,
-  signTransactionFailed,
-  TSignTransactionFailed
-} from 'features/transaction';
+import { transactionSignActions } from 'features/transaction';
 import { QRCode, Input, CodeBlock } from 'components/ui';
 import { SendButton } from 'components/SendButton';
 import './index.scss';
@@ -25,8 +20,8 @@ interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
 }
 interface DispatchProps {
-  signLocalTransactionSucceeded: TSignLocalTransactionSucceeded;
-  signTransactionFailed: TSignTransactionFailed;
+  signLocalTransactionSucceeded: transactionSignActions.TSignLocalTransactionSucceeded;
+  signTransactionFailed: transactionSignActions.TSignTransactionFailed;
 }
 interface State {
   userInput: string;
@@ -119,5 +114,8 @@ class BroadcastTx extends Component<Props> {
 
 export default connect(
   (state: AppState) => ({ stateTransaction: selectors.getSerializedTransaction(state) }),
-  { signLocalTransactionSucceeded, signTransactionFailed }
+  {
+    signLocalTransactionSucceeded: transactionSignActions.signLocalTransactionSucceeded,
+    signTransactionFailed: transactionSignActions.signTransactionFailed
+  }
 )(BroadcastTx);

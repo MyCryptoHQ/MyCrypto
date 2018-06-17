@@ -1,14 +1,14 @@
 import { runSaga } from 'redux-saga';
 
 import { translateRaw } from 'translations';
-import { getInitialState } from 'features/helpers';
+import * as testHelpers from 'features/testHelpers';
 import * as constants from './constants';
 import * as types from './types';
 import * as actions from './actions';
 import * as sagas from './sagas';
 
 describe('addressBook: Sagas', () => {
-  const initialState = getInitialState();
+  const initialState = testHelpers.getInitialState();
   const getState = () => ({
     ...initialState,
     addressBook: {

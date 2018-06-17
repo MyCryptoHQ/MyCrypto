@@ -1,7 +1,7 @@
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
 
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import { INode } from 'libs/nodes/INode';
 import { Wei } from 'libs/units';
 import { Token } from 'types/network';
@@ -221,7 +221,7 @@ export function* unlockPrivateKeySaga(action: types.UnlockPrivateKeyAction): Sag
   try {
     wallet = getPrivKeyWallet(key, password);
   } catch (e) {
-    yield put(notificationsActions.showNotification('danger', translate('INVALID_PKEY')));
+    yield put(notificationsActions.showNotification('danger', translateRaw('INVALID_PKEY')));
     return;
   }
   yield put(actions.setWallet(wallet));
@@ -258,7 +258,7 @@ export function* unlockKeystoreSaga(action: types.UnlockKeystoreAction): SagaIte
     ) {
       yield put(actions.setPasswordPrompt());
     } else {
-      yield put(notificationsActions.showNotification('danger', translate('ERROR_6')));
+      yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_6')));
     }
     return;
   }
@@ -276,7 +276,7 @@ export function* unlockMnemonicSaga(action: types.UnlockMnemonicAction): SagaIte
     wallet = MnemonicWallet(phrase, pass, path, address);
   } catch (err) {
     // TODO: use better error than 'ERROR_14' (wallet not found)
-    yield put(notificationsActions.showNotification('danger', translate('ERROR_14')));
+    yield put(notificationsActions.showNotification('danger', translateRaw('ERROR_14')));
     return;
   }
 

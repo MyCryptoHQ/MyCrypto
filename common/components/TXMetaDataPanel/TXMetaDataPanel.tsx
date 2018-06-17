@@ -8,15 +8,9 @@ import { Units } from 'libs/units';
 import { AppState } from 'features/reducers';
 import { getOffline, getNetworkConfig } from 'features/config';
 import {
-  inputGasPrice,
-  TInputGasPrice,
-  inputGasPriceIntent,
-  TInputGasPriceIntent,
-  getNonceRequested,
-  TGetNonceRequested,
-  resetTransactionRequested,
-  TResetTransactionRequested,
-  getGasPrice
+  transactionFieldsActions,
+  transactionFieldsSelectors,
+  transactionNetworkActions
 } from 'features/transaction';
 import { ratesActions } from 'features/rates';
 import AdvancedGas, { AdvancedOptions } from './components/AdvancedGas';
@@ -32,11 +26,11 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  inputGasPrice: TInputGasPrice;
-  inputGasPriceIntent: TInputGasPriceIntent;
+  inputGasPrice: transactionFieldsActions.TInputGasPrice;
+  inputGasPriceIntent: transactionFieldsActions.TInputGasPriceIntent;
   fetchCCRates: ratesActions.TFetchCCRatesRequested;
-  getNonceRequested: TGetNonceRequested;
-  resetTransactionRequested: TResetTransactionRequested;
+  getNonceRequested: transactionNetworkActions.TGetNonceRequested;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
 }
 
 // Set default props for props that can't be truthy or falsy
@@ -149,16 +143,16 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    gasPrice: getGasPrice(state),
+    gasPrice: transactionFieldsSelectors.getGasPrice(state),
     offline: getOffline(state),
     network: getNetworkConfig(state)
   };
 }
 
 export default connect(mapStateToProps, {
-  inputGasPrice,
-  inputGasPriceIntent,
+  inputGasPrice: transactionFieldsActions.inputGasPrice,
+  inputGasPriceIntent: transactionFieldsActions.inputGasPriceIntent,
   fetchCCRates: ratesActions.fetchCCRatesRequested,
-  getNonceRequested,
-  resetTransactionRequested
+  getNonceRequested: transactionNetworkActions.getNonceRequested,
+  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
 })(TXMetaDataPanel);
