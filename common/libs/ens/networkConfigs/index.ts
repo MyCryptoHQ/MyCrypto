@@ -12,4 +12,10 @@ interface IEnsAddresses {
   registry: string;
 }
 
-export default { main, rinkeby, ropsten };
+const ensNetworksByKey: { [key: string]: IEnsAddresses } = {
+  ETH: main,
+  Rinkeby: rinkeby,
+  Ropsten: ropsten
+};
+
+export default { main, rinkeby, ropsten, ensNetworksByKey };
