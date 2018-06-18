@@ -184,6 +184,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'gochain.io',
       url: 'https://rpc.gochain.io/'
     }
+  ],
+
+  EOSC: [
+    {
+      name: makeNodeName('EOSC', 'eosc'),
+      type: 'rpc',
+      service: 'eos-classic.io',
+      url: 'https://node.eos-classic.io/'
+    }
   ]
 };
 
