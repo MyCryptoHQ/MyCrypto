@@ -1,7 +1,8 @@
 import React from 'react';
+
 import translate from 'translations';
-import OnboardSlide from './OnboardSlide';
 import onboardIconThree from 'assets/images/onboarding/slide-03.svg';
+import OnboardSlide from './OnboardSlide';
 
 const InterfaceSlide = () => {
   const header = translate('ONBOARD_INTERFACE_TITLE');

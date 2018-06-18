@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleChangeNodeRequested* should get the next network 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "SELECT": Object {
+    "args": Array [
+      "GO",
+    ],
+    "selector": [Function],
+  },
+}
+`;
+
+exports[`handleChangeNodeRequested* should select getCustomNodeConfig and match race snapshot 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "SELECT": Object {
+    "args": Array [
+      "CustomNetworkId",
+    ],
+    "selector": [Function],
+  },
+}
+`;

@@ -1,9 +1,10 @@
 import EthTx from 'ethereumjs-tx';
+
 import EnclaveAPI, { WalletTypes } from 'shared/enclave/client';
-import { getTransactionFields } from 'libs/transaction';
-import { HardwareWallet, ChainCodeResponse } from './hardware';
-import { IFullWallet } from '../IWallet';
 import { translateRaw } from 'translations';
+import { getTransactionFields } from 'libs/transaction';
+import { IFullWallet } from '../IWallet';
+import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 const walletTypeNames = {
   [WalletTypes.LEDGER]: 'X_LEDGER',

@@ -1,6 +1,7 @@
 import EthTx from 'ethereumjs-tx';
-import { DeterministicWallet } from './deterministic';
+
 import { IFullWallet } from '../IWallet';
+import { DeterministicWallet } from './deterministic';
 
 export interface ChainCodeResponse {
   chainCode: string;

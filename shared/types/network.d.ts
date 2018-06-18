@@ -1,5 +1,3 @@
-import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
-
 type StaticNetworkIds =
   | 'ETH'
   | 'Ropsten'
@@ -81,4 +79,4 @@ interface CustomNetworkConfig {
   dPathFormats: DPathFormats | null;
 }
 
-type NetworkConfig = StaticNetworksState[StaticNetworkIds] | CustomNetworksState[string];
+type NetworkConfig = CustomNetworkConfig | StaticNetworkConfig;

@@ -1,10 +1,11 @@
 import React from 'react';
-import NewTabLink from './NewTabLink';
+import { connect } from 'react-redux';
+
 import { IWallet } from 'libs/wallet';
 import { BlockExplorerConfig } from 'types/network';
-import { getChecksumAddressFn } from 'selectors/config';
-import { AppState } from 'reducers';
-import { connect } from 'react-redux';
+import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
+import NewTabLink from './NewTabLink';
 
 interface BaseProps {
   explorer?: BlockExplorerConfig | null;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Template.scss';
+
 import translate from 'translations';
+import './Template.scss';
 
 interface Props {
   hideBack?: boolean;

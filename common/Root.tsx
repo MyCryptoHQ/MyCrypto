@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+
+import { AppState } from 'features/reducers';
+import { getNetworkUnit } from 'features/config';
+import { transactionMetaActions } from 'features/transaction';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -18,13 +23,9 @@ import QrSignerModal from 'containers/QrSignerModal';
 import OnboardModal from 'containers/OnboardModal';
 import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
-import { Store } from 'redux';
-import { AppState } from 'reducers';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import 'what-input';
-import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-import { getNetworkUnit } from 'selectors/config';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -35,7 +36,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setUnitMeta: TSetUnitMeta;
+  setUnitMeta: transactionMetaActions.TSetUnitMeta;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -187,5 +188,5 @@ const mapStateToProps = (state: AppState) => {
 };
 
 export default connect(mapStateToProps, {
-  setUnitMeta
+  setUnitMeta: transactionMetaActions.setUnitMeta
 })(RootClass);

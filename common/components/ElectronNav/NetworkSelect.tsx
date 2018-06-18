@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
+import { TAddCustomNode, AddCustomNodeAction, addCustomNode } from 'features/config';
 import NetworkSelector from 'components/NetworkSelector';
 import CustomNodeModal from 'components/CustomNodeModal';
-import { TAddCustomNode, AddCustomNodeAction, addCustomNode } from 'actions/config';
 
 interface OwnProps {
   closePanel(): void;

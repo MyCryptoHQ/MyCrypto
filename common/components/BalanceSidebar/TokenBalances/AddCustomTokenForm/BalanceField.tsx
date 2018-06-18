@@ -1,19 +1,20 @@
 import React from 'react';
-import { Input } from 'components/ui';
-import Spinner from 'components/ui/Spinner';
+import { connect } from 'react-redux';
+import { Result } from 'mycrypto-nano-result';
+
 import ERC20 from 'libs/erc20';
 import { shepherdProvider } from 'libs/nodes';
-import { Result } from 'mycrypto-nano-result';
-import { getWalletInst } from 'selectors/wallet';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
+import { walletSelectors } from 'features/wallet';
+import Spinner from 'components/ui/Spinner';
+import { Input } from 'components/ui';
 
 interface OwnProps {
   address?: string;
 }
 
 interface StateProps {
-  walletInst: ReturnType<typeof getWalletInst>;
+  walletInst: ReturnType<typeof walletSelectors.getWalletInst>;
 }
 
 interface State {
@@ -117,7 +118,7 @@ class BalanceFieldClass extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  return { walletInst: getWalletInst(state) };
+  return { walletInst: walletSelectors.getWalletInst(state) };
 }
 
 export const BalanceField = connect(mapStateToProps)(BalanceFieldClass);

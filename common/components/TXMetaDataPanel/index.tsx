@@ -1,2 +1,1 @@
-import TXMetaDataPanel from './TXMetaDataPanel';
-export default TXMetaDataPanel;
+export { default } from './TXMetaDataPanel';

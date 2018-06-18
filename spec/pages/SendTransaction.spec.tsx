@@ -6,12 +6,12 @@ import shallowWithStore from '../utils/shallowWithStore';
 import { createMockStore } from 'redux-test-utils';
 import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
-import { config } from 'reducers/config';
+import { configReducer } from 'features/config';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 it('render snapshot', () => {
-  const testStateConfig = config(undefined as any, {} as any);
+  const testStateConfig = configReducer(undefined as any, {} as any);
   const testState = {
     wallet: {},
     balance: {},

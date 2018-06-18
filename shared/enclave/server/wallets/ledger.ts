@@ -1,9 +1,11 @@
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
-import { WalletLib } from 'shared/enclave/types';
 import LedgerTransport from '@ledgerhq/hw-transport';
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import LedgerEth from '@ledgerhq/hw-app-eth';
+
+import { WalletLib } from 'shared/enclave/types';
+
 let transport: LedgerTransport<string> | null;
 
 async function getEthApp() {

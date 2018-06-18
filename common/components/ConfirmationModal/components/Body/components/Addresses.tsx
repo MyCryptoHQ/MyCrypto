@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import ERC20 from 'libs/erc20';
-import { Identicon } from 'components/ui';
-import arrow from 'assets/images/tail-triangle-down.svg';
-import './Addresses.scss';
-import { ETHAddressExplorer } from 'config';
 import { connect } from 'react-redux';
-import { SerializedTransaction } from 'components/renderCbs';
-import { AppState } from 'reducers';
-import { getFrom, getUnit, isEtherTransaction } from 'selectors/transaction';
+
+import { ETHAddressExplorer } from 'config';
 import translate from 'translations';
-import { getChecksumAddressFn } from 'selectors/config';
+import ERC20 from 'libs/erc20';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getChecksumAddressFn } from 'features/config';
+import arrow from 'assets/images/tail-triangle-down.svg';
+import { SerializedTransaction } from 'components/renderCbs';
+import { Identicon } from 'components/ui';
+import './Addresses.scss';
 
 interface StateProps {
-  from: ReturnType<typeof getFrom>;
-  unit: ReturnType<typeof getUnit>;
+  from: ReturnType<typeof selectors.getFrom>;
+  unit: ReturnType<typeof selectors.getUnit>;
   isToken: boolean;
   toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
@@ -90,9 +91,9 @@ class AddressesClass extends Component<StateProps> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  from: getFrom(state),
-  isToken: !isEtherTransaction(state),
-  unit: getUnit(state),
+  from: selectors.getFrom(state),
+  isToken: !selectors.isEtherTransaction(state),
+  unit: selectors.getUnit(state),
   toChecksumAddress: getChecksumAddressFn(state)
 });
 

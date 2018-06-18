@@ -1,8 +1,8 @@
 import React from 'react';
-import { isPositiveIntegerOrZero } from 'libs/validators';
-import { translateRaw } from 'translations';
 import { Result } from 'mycrypto-nano-result';
 
+import { translateRaw } from 'translations';
+import { isPositiveIntegerOrZero } from 'libs/validators';
 import { FieldInput } from './FieldInput';
 
 interface OwnProps {

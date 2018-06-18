@@ -1,11 +1,12 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
 import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
-import { stripHexPrefix } from 'libs/values';
 import WalletAddressValidator from 'wallet-address-validator';
-import { normalise } from './ens';
 import { Validator } from 'jsonschema';
-import { JsonRpcResponse } from './nodes/rpc/types';
+import BN from 'bn.js';
+
+import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
 import { translateRaw } from 'translations';
+import { stripHexPrefix } from 'libs/formatters';
 import { isPositiveInteger } from 'utils/helpers';
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -13,9 +14,9 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'config/constants';
-import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
+import { JsonRpcResponse } from './nodes/rpc/types';
+import { normalise } from './ens';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
-import BN from 'bn.js';
 
 export function getIsValidAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {

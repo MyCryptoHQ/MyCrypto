@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isUnlocked } from 'selectors/wallet';
-import { AppState } from 'reducers';
+
+import { AppState } from 'features/reducers';
+import { walletSelectors } from 'features/wallet';
 
 interface OwnProps {
   whenUnlocked: React.ReactElement<any> | null;
@@ -13,7 +14,7 @@ interface StateProps {
 
 function mapStateToProps(state: AppState) {
   return {
-    isUnlocked: isUnlocked(state)
+    isUnlocked: walletSelectors.isUnlocked(state)
   };
 }
 

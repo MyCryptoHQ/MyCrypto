@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AddressFieldFactory } from './AddressFieldFactory';
+
 import { donationAddressMap } from 'config';
 import translate from 'translations';
+import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
 import { Input } from 'components/ui';
-import { getChecksumAddressFn } from 'selectors/config';
-import { AppState } from 'reducers';
+import { AddressFieldFactory } from './AddressFieldFactory';
 
 interface OwnProps {
   isReadOnly?: boolean;

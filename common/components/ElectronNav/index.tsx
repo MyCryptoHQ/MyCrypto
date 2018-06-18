@@ -1,2 +1,1 @@
-import ElectronNav from './ElectronNav';
-export default ElectronNav;
+export { default } from './ElectronNav';

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import zxcvbn, { ZXCVBNResult } from 'zxcvbn';
-import translate, { translateRaw } from 'translations';
+
 import { MINIMUM_PASSWORD_LENGTH } from 'config';
+import translate, { translateRaw } from 'translations';
+import { TogglablePassword } from 'components';
 import { Spinner } from 'components/ui';
 import Template from '../Template';
 import './EnterPassword.scss';
-import { TogglablePassword } from 'components';
 
 interface Props {
   isGenerating: boolean;

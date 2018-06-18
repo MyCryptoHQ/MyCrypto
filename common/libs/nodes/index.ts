@@ -1,9 +1,10 @@
 import { shepherd, redux } from 'mycrypto-shepherd';
-import { INode } from '.';
-import { tokenBalanceHandler } from './tokenBalanceProxy';
 import { IProviderConfig } from 'mycrypto-shepherd/dist/lib/ducks/providerConfigs';
-import { NODE_CONFIGS, makeNodeName } from './configs';
+
 import { NodeConfig } from 'types/node';
+import { tokenBalanceHandler } from './tokenBalanceProxy';
+import { NODE_CONFIGS, makeNodeName } from './configs';
+import { INode } from '.';
 
 type DeepPartial<T> = Partial<{ [key in keyof T]: Partial<T[key]> }>;
 const { selectors, store } = redux;

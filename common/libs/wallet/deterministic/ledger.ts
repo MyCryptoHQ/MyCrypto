@@ -1,10 +1,11 @@
-import TransportU2F from '@ledgerhq/hw-transport-u2f';
-import LedgerEth from '@ledgerhq/hw-app-eth';
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
-import { HardwareWallet, ChainCodeResponse } from './hardware';
-import { getTransactionFields } from 'libs/transaction';
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import LedgerEth from '@ledgerhq/hw-app-eth';
+
 import { translateRaw } from 'translations';
+import { getTransactionFields } from 'libs/transaction';
+import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 // Ledger throws a few types of errors
 interface U2FError {

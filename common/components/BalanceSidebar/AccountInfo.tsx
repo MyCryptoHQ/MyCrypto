@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { UnitDisplay, NewTabLink } from 'components/ui';
-import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
-import translate, { translateRaw } from 'translations';
-import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig, getOffline, getChecksumAddressFn } from 'selectors/config';
-import { AppState } from 'reducers';
-import { NetworkConfig } from 'types/network';
-import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
+
 import { etherChainExplorerInst } from 'config/data';
-import './AccountInfo.scss';
+import translate, { translateRaw } from 'translations';
+import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig, getOffline, getChecksumAddressFn } from 'features/config';
+import { walletActions } from 'features/wallet';
+import Spinner from 'components/ui/Spinner';
+import { UnitDisplay, NewTabLink } from 'components/ui';
 import AccountAddress from './AccountAddress';
+import './AccountInfo.scss';
 
 interface OwnProps {
   wallet: IWallet;
@@ -30,7 +31,7 @@ interface State {
 }
 
 interface DispatchProps {
-  refreshAccountBalance: TRefreshAccountBalance;
+  refreshAccountBalance: walletActions.TRefreshAccountBalance;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -203,5 +204,7 @@ function mapStateToProps(state: AppState): StateProps {
     toChecksumAddress: getChecksumAddressFn(state)
   };
 }
-const mapDispatchToProps: DispatchProps = { refreshAccountBalance };
+const mapDispatchToProps: DispatchProps = {
+  refreshAccountBalance: walletActions.refreshAccountBalance
+};
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { HELP_ARTICLE } from 'config';
 import { HelpLink } from 'components/ui';
 import ledgerLogo from 'assets/images/logo-ledger.svg';

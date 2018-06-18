@@ -1,4 +1,5 @@
 import React, { CSSProperties } from 'react';
+
 import closeIcon from 'assets/images/close.svg';
 import { IButton } from 'components/ui/Modal';
 

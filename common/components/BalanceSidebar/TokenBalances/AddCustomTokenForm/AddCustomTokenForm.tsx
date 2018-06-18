@@ -1,14 +1,15 @@
 import React from 'react';
+import { Result } from 'mycrypto-nano-result';
+
 import { HELP_ARTICLE } from 'config';
+import translate from 'translations';
+import { Token } from 'types/network';
+import { HelpLink } from 'components/ui';
 import { AddressField } from './AddressField';
 import { DecimalField } from './DecimalField';
 import { SymbolField } from './SymbolField';
 import { BalanceField } from './BalanceField';
-import translate from 'translations';
-import { HelpLink } from 'components/ui';
 import './AddCustomTokenForm.scss';
-import { Token } from 'types/network';
-import { Result } from 'mycrypto-nano-result';
 
 interface Props {
   allTokens: Token[];

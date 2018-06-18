@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import translate from 'translations';
-import { WalletType } from '../GenerateWallet';
 import OpenAppImage from 'assets/images/unlock-guide/open-app.png';
 import OpenWebImage from 'assets/images/unlock-guide/open-web.png';
 import TabAppImage from 'assets/images/unlock-guide/tab-app.png';
@@ -10,6 +10,7 @@ import SelectKeystoreImage from 'assets/images/unlock-guide/select-keystore.png'
 import ProvideKeystoreImage from 'assets/images/unlock-guide/provide-keystore.png';
 import SelectMnemonicImage from 'assets/images/unlock-guide/select-mnemonic.png';
 import ProvideMnemonicImage from 'assets/images/unlock-guide/provide-mnemonic.png';
+import { WalletType } from '../GenerateWallet';
 import './FinalSteps.scss';
 
 interface Props {
