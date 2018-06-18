@@ -65,7 +65,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           {isLoading ? (
             <div className="TrezorDecrypt-message">
               <Spinner light={true} />
-              Unlocking...
+              {translate('WALLET_UNLOCKING')}
             </div>
           ) : (
             translate('ADD_TREZOR_SCAN')
@@ -73,14 +73,14 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
         </button>
 
         <NewTabLink className="TrezorDecrypt-buy btn btn-sm btn-default" href={trezorReferralURL}>
-          {translate('Don’t have a TREZOR? Order one now!')}
+          {translate('ORDER_TREZOR')}
         </NewTabLink>
 
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
           <NewTabLink href="https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html">
-            How to use TREZOR with MyCrypto
+            {translate('HOWTO_TREZOR')}
           </NewTabLink>
         </div>
 

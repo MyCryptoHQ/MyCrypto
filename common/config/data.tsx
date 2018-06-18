@@ -3,7 +3,7 @@ import { getValues } from '../utils/helpers';
 import packageJson from '../../package.json';
 import { GasPriceSetting } from 'types/network';
 import { makeExplorer } from 'utils/helpers';
-import NewTabLink from 'components/ui/NewTabLink';
+import translate from 'translations';
 
 export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
@@ -25,10 +25,7 @@ export const APP_ALPHA_EXPIRATION = 1532476800000;
 // Message must be a JSX element if you want to use HTML.
 export const ANNOUNCEMENT_TYPE = '';
 export const ANNOUNCEMENT_MESSAGE = (
-  <React.Fragment>
-    Welcome to the new MyCrypto. We hope you like it! If it's urgent and you need the old site, you
-    can still use <NewTabLink href="https://legacy.mycrypto.com">MyCrypto Legacy</NewTabLink>
-  </React.Fragment>
+  <React.Fragment>{translate('ANNOUNCEMENT_MESSAGE')}</React.Fragment>
 );
 
 const etherScan = 'https://etherscan.io';
