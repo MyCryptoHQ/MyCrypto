@@ -1,7 +1,8 @@
 import React from 'react';
-import { PaperWallet } from 'components';
-import { stripHexPrefix } from 'libs/values';
+
 import translate from 'translations';
+import { stripHexPrefix } from 'libs/formatters';
+import { PaperWallet } from 'components';
 
 interface Props {
   address: string;

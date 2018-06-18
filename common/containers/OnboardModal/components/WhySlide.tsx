@@ -1,7 +1,8 @@
 import React from 'react';
+
 import translate from 'translations';
-import OnboardSlide from './OnboardSlide';
 import onboardIconFive from 'assets/images/onboarding/slide-05.svg';
+import OnboardSlide from './OnboardSlide';
 
 const WhySlide = () => {
   const header = translate('ONBOARD_WHY_TITLE');

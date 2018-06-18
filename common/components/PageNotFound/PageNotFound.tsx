@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import TabSection from '../../containers/TabSection/index';
+
+import TabSection from 'containers/TabSection';
 import './PageNotFound.scss';
 
 const PageNotFound: React.SFC = () => (

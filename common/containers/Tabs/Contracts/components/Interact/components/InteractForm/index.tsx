@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import translate, { translateRaw } from 'translations';
-import { getNetworkContracts, getIsValidAddressFn } from 'selectors/config';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { isValidAbiJson } from 'libs/validators';
-import { NetworkContract } from 'types/network';
+import { addHexPrefix } from 'ethereumjs-util';
+
 import { donationAddressMap } from 'config';
+import translate, { translateRaw } from 'translations';
+import { NetworkContract } from 'types/network';
+import { isValidAbiJson } from 'libs/validators';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getNetworkContracts, getIsValidAddressFn } from 'features/config';
+import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import { getCurrentTo } from 'selectors/transaction';
-import { addHexPrefix } from 'ethereumjs-util';
-import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
 
 interface ContractOption {
   name: string;
@@ -18,7 +19,7 @@ interface ContractOption {
 }
 
 interface StateProps {
-  currentTo: ReturnType<typeof getCurrentTo>;
+  currentTo: ReturnType<typeof selectors.getCurrentTo>;
   contracts: NetworkContract[];
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
@@ -204,7 +205,7 @@ class InteractForm extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => ({
   contracts: getNetworkContracts(state) || [],
-  currentTo: getCurrentTo(state),
+  currentTo: selectors.getCurrentTo(state),
   isValidAddress: getIsValidAddressFn(state)
 });
 

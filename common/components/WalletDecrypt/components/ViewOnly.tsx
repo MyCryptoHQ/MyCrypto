@@ -1,20 +1,21 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import Select, { Option } from 'react-select';
+
 import translate, { translateRaw } from 'translations';
 import { AddressOnlyWallet } from 'libs/wallet';
-import { getRecentAddresses } from 'selectors/wallet';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
+import { getIsValidAddressFn } from 'features/config';
+import { walletSelectors } from 'features/wallet';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
-import { getIsValidAddressFn } from 'selectors/config';
 
 interface OwnProps {
   onUnlock(param: any): void;
 }
 
 interface StateProps {
-  recentAddresses: ReturnType<typeof getRecentAddresses>;
+  recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
 
@@ -100,6 +101,6 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 }
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
-  recentAddresses: getRecentAddresses(state),
+  recentAddresses: walletSelectors.getRecentAddresses(state),
   isValidAddress: getIsValidAddressFn(state)
 }))(ViewOnlyDecryptClass);

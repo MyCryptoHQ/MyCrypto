@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import moment from 'moment';
+
 import translate from 'translations';
 import { isValidTxHash } from 'libs/validators';
-import { getRecentNetworkTransactions } from 'selectors/transactions';
-import { getIsValidAddressFn } from 'selectors/config';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getIsValidAddressFn } from 'features/config';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
 
@@ -14,10 +15,12 @@ interface OwnProps {
   hash?: string;
   onSubmit(hash: string): void;
 }
+
 interface ReduxProps {
   recentTxs: AppState['transactions']['recent'];
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
+
 type Props = OwnProps & ReduxProps;
 
 interface State {
@@ -118,6 +121,6 @@ class TxHashInput extends React.Component<Props, State> {
 }
 
 export default connect((state: AppState): ReduxProps => ({
-  recentTxs: getRecentNetworkTransactions(state),
+  recentTxs: selectors.getRecentNetworkTransactions(state),
   isValidAddress: getIsValidAddressFn(state)
 }))(TxHashInput);

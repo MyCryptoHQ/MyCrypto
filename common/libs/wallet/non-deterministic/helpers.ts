@@ -1,13 +1,7 @@
 import { IFullWallet } from 'ethereumjs-wallet';
-import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from 'libs/signing';
-import {
-  EncryptedPrivateKeyWallet,
-  MewV1Wallet,
-  PresaleWallet,
-  PrivKeyWallet,
-  UtcWallet
-} from './wallets';
 import Tx from 'ethereumjs-tx';
+
+import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from 'libs/signing';
 
 enum KeystoreTypes {
   presale = 'presale',
@@ -58,41 +52,4 @@ const isKeystorePassRequired = (file: string): boolean => {
   );
 };
 
-const getUtcWallet = (file: string, password: string): Promise<IFullWallet> => {
-  return UtcWallet(file, password);
-};
-
-const getPrivKeyWallet = (key: string, password: string) =>
-  key.length === 64
-    ? PrivKeyWallet(Buffer.from(key, 'hex'))
-    : EncryptedPrivateKeyWallet(key, password);
-
-const getKeystoreWallet = (file: string, password: string) => {
-  const parsed = JSON.parse(file);
-
-  switch (determineKeystoreType(file)) {
-    case KeystoreTypes.presale:
-      return PresaleWallet(file, password);
-
-    case KeystoreTypes.v1Unencrypted:
-      return PrivKeyWallet(Buffer.from(parsed.private, 'hex'));
-
-    case KeystoreTypes.v1Encrypted:
-      return MewV1Wallet(file, password);
-
-    case KeystoreTypes.v2Unencrypted:
-      return PrivKeyWallet(Buffer.from(parsed.privKey, 'hex'));
-
-    default:
-      throw Error('Unknown wallet');
-  }
-};
-
-export {
-  isKeystorePassRequired,
-  determineKeystoreType,
-  getPrivKeyWallet,
-  getKeystoreWallet,
-  getUtcWallet,
-  KeystoreTypes
-};
+export { isKeystorePassRequired, determineKeystoreType, KeystoreTypes };

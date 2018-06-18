@@ -1,8 +1,9 @@
-import { isKeystorePassRequired } from 'libs/wallet';
 import React, { PureComponent } from 'react';
+
 import translate, { translateRaw } from 'translations';
+import { isKeystorePassRequired } from 'libs/wallet';
+import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
-import { TShowNotification } from 'actions/notifications';
 import { Input } from 'components/ui';
 
 export interface KeystoreValue {
@@ -34,7 +35,7 @@ export class KeystoreDecrypt extends PureComponent {
     isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
     onUnlock(): void;
-    showNotification(level: string, message: string): TShowNotification;
+    showNotification(level: string, message: string): notificationsActions.TShowNotification;
   };
 
   public render() {

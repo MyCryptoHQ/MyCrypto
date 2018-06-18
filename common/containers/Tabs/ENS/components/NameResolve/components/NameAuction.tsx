@@ -1,10 +1,11 @@
 import React from 'react';
-import { IBaseDomainRequest } from 'libs/ens';
-import ENSTime from './components/ENSTime';
 import moment from 'moment';
-import { NewTabLink } from 'components/ui';
-import { ensV3Url } from 'utils/formatters';
+
 import translate from 'translations';
+import { IBaseDomainRequest } from 'libs/ens';
+import { ensV3Url } from 'utils/formatters';
+import { NewTabLink } from 'components/ui';
+import ENSTime from './components/ENSTime';
 
 const getDeadlines = (registrationDate: string) => {
   // Get the time to reveal bids, and the time when the action closes

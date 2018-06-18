@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
+import QrSigner from '@parity/qr-signer';
+
 import translate from 'translations';
 import { Spinner } from 'components/ui';
-import QrSigner from '@parity/qr-signer';
 import './ParityQrSigner.scss';
 
 interface State {

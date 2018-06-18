@@ -1,28 +1,25 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
 import {
-  changeAddressLabelEntry,
-  TChangeAddressLabelEntry,
-  saveAddressLabelEntry,
-  TSaveAddressLabelEntry,
-  removeAddressLabelEntry,
-  TRemoveAddressLabelEntry
-} from 'actions/addressBook';
-import { getAccountAddressEntry, getAddressLabelEntryFromAddress } from 'selectors/addressBook';
+  addressBookConstants,
+  addressBookActions,
+  addressBookSelectors
+} from 'features/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {
-  entry: ReturnType<typeof getAccountAddressEntry>;
+  entry: ReturnType<typeof addressBookSelectors.getAccountAddressEntry>;
   addressLabel: string;
 }
 
 interface DispatchProps {
-  changeAddressLabelEntry: TChangeAddressLabelEntry;
-  saveAddressLabelEntry: TSaveAddressLabelEntry;
-  removeAddressLabelEntry: TRemoveAddressLabelEntry;
+  changeAddressLabelEntry: addressBookActions.TChangeAddressLabelEntry;
+  saveAddressLabelEntry: addressBookActions.TSaveAddressLabelEntry;
+  removeAddressLabelEntry: addressBookActions.TRemoveAddressLabelEntry;
 }
 
 interface OwnProps {
@@ -36,8 +33,6 @@ interface State {
   editingLabel: boolean;
   labelInputTouched: boolean;
 }
-
-export const ACCOUNT_ADDRESS_ID: string = 'ACCOUNT_ADDRESS_ID';
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {
@@ -88,13 +83,13 @@ class AccountAddress extends React.Component<Props, State> {
             <CopyToClipboard onCopy={this.handleCopy} text={address}>
               <div
                 className={`AccountInfo-copy ${copied ? 'is-copied' : ''}`}
-                title="Copy To clipboard"
+                title={translateRaw('COPY_TO_CLIPBOARD')}
               >
                 <i className="fa fa-copy" />
-                <span>{copied ? 'copied!' : 'copy address'}</span>
+                <span>{translateRaw(copied ? 'COPIED' : 'COPY_ADDRESS')}</span>
               </div>
             </CopyToClipboard>
-            <div className="AccountInfo-label" title="Edit label">
+            <div className="AccountInfo-label" title={translateRaw('EDIT_LABEL_2')}>
               {labelButton}
             </div>
           </div>
@@ -222,7 +217,7 @@ class AccountAddress extends React.Component<Props, State> {
     const label = e.target.value;
 
     this.props.changeAddressLabelEntry({
-      id: ACCOUNT_ADDRESS_ID,
+      id: addressBookConstants.ACCOUNT_ADDRESS_ID,
       address,
       label,
       isEditing: true
@@ -251,17 +246,17 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (
   state: AppState,
   ownProps: OwnProps
 ) => {
-  const labelEntry = getAddressLabelEntryFromAddress(state, ownProps.address);
+  const labelEntry = addressBookSelectors.getAddressLabelEntryFromAddress(state, ownProps.address);
   return {
-    entry: getAccountAddressEntry(state),
+    entry: addressBookSelectors.getAccountAddressEntry(state),
     addressLabel: labelEntry ? labelEntry.label : ''
   };
 };
 
 const mapDispatchToProps: DispatchProps = {
-  changeAddressLabelEntry,
-  saveAddressLabelEntry,
-  removeAddressLabelEntry
+  changeAddressLabelEntry: addressBookActions.changeAddressLabelEntry,
+  saveAddressLabelEntry: addressBookActions.saveAddressLabelEntry,
+  removeAddressLabelEntry: addressBookActions.removeAddressLabelEntry
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(

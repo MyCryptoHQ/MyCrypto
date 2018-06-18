@@ -2,29 +2,30 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import sample from 'lodash/sample';
 import times from 'lodash/times';
-import {
-  NormalizedBityRates,
-  NormalizedShapeshiftRates,
-  NormalizedShapeshiftRate
-} from 'reducers/swap/types';
-import bityLogoWhite from 'assets/images/logo-bity-white.svg';
-import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
-import Spinner from 'components/ui/Spinner';
+
 import { bityReferralURL, shapeshiftReferralURL } from 'config';
 import translate from 'translations';
 import { SHAPESHIFT_WHITELIST } from 'api/shapeshift';
+import { AppState } from 'features/reducers';
+import { Optional } from 'utils/types';
+import {
+  ProviderName,
+  NormalizedBityRates,
+  NormalizedShapeshiftRates,
+  NormalizedShapeshiftRate
+} from 'features/swap/types';
 import {
   loadShapeshiftRatesRequestedSwap,
   TLoadShapeshiftRatesRequestedSwap,
   stopLoadShapeshiftRatesSwap,
-  TStopLoadShapeshiftRatesSwap,
-  ProviderName
-} from 'actions/swap';
-import { getOffline } from 'selectors/config';
+  TStopLoadShapeshiftRatesSwap
+} from 'features/swap/actions';
+import { getOffline } from 'features/config';
+import bityLogoWhite from 'assets/images/logo-bity-white.svg';
+import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
+import Spinner from 'components/ui/Spinner';
 import Rates from './Rates';
-import { AppState } from 'reducers';
 import './CurrentRates.scss';
-import { Optional } from 'utils/types';
 
 interface StateProps {
   isOffline: boolean;

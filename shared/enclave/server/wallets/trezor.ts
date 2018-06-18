@@ -1,10 +1,13 @@
-import { DeviceList, Session } from 'mycrypto-trezor.js';
 import BN from 'bn.js';
+import { DeviceList, Session } from 'mycrypto-trezor.js';
 import mapValues from 'lodash/mapValues';
 import { addHexPrefix } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
-import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
+
 import { WalletLib } from 'shared/enclave/types';
+import { padLeftEven } from 'libs/values';
+import { stripHexPrefixAndLower } from 'libs/formatters';
+
 const deviceList = new DeviceList({ debug: false });
 
 // Keep session in memory so that we're not constantly re-acquiring

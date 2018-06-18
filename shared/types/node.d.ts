@@ -1,5 +1,4 @@
 import { StaticNetworkIds } from './network';
-import { StaticNodesState, CustomNodesState } from 'reducers/config/nodes';
 
 interface CustomNodeConfig {
   id: string;
@@ -35,4 +34,4 @@ type StaticNodeId = string;
 
 type StaticNodeConfigs = { [id: string]: StaticNodeConfig } & { web3?: StaticNodeConfig };
 
-type NodeConfig = StaticNodesState[StaticNodeId] | CustomNodesState[string];
+type NodeConfig = StaticNodeConfig | CustomNodeConfig;

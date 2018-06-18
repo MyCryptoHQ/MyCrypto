@@ -1,4 +1,5 @@
 import React from 'react';
+
 import translate, { translateRaw } from 'translations';
 import Modal, { IButton } from 'components/ui/Modal';
 import { getLatestElectronRelease } from 'utils/versioning';

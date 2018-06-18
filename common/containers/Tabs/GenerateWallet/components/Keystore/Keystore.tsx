@@ -1,13 +1,14 @@
-import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
+import { IV3Wallet } from 'ethereumjs-wallet';
+
+import { N_FACTOR } from 'config';
 import { generateKeystore } from 'libs/web-workers';
 import { WalletType } from '../../GenerateWallet';
 import Template from '../Template';
+import FinalSteps from '../FinalSteps';
 import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
-import FinalSteps from '../FinalSteps';
-import { N_FACTOR } from 'config';
 
 export enum Steps {
   Password = 'password',

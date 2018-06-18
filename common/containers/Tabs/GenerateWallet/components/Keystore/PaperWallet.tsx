@@ -1,11 +1,12 @@
-import PrintableWallet from 'components/PrintableWallet';
-import { IV3Wallet } from 'ethereumjs-wallet';
 import React from 'react';
+import { IV3Wallet } from 'ethereumjs-wallet';
+
 import translate, { translateRaw } from 'translations';
-import { stripHexPrefix } from 'libs/values';
-import './PaperWallet.scss';
-import Template from '../Template';
+import { stripHexPrefix } from 'libs/formatters';
 import { Input } from 'components/ui';
+import PrintableWallet from 'components/PrintableWallet';
+import Template from '../Template';
+import './PaperWallet.scss';
 
 interface Props {
   keystore: IV3Wallet;

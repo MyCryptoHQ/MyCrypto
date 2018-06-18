@@ -1,12 +1,14 @@
 import BN from 'bn.js';
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix } from 'ethereumjs-util';
-import { stripHexPrefixAndLower, padLeftEven } from 'libs/values';
-import TrezorConnect from 'vendor/trezor-connect';
-import { HardwareWallet, ChainCodeResponse } from './hardware';
-import { getTransactionFields } from 'libs/transaction';
 import mapValues from 'lodash/mapValues';
+
 import { translateRaw } from 'translations';
+import TrezorConnect from 'vendor/trezor-connect';
+import { getTransactionFields } from 'libs/transaction';
+import { padLeftEven } from 'libs/values';
+import { stripHexPrefixAndLower } from 'libs/formatters';
+import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
 

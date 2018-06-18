@@ -1,6 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
+import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
 import { QRCode, Modal } from 'components/ui';
 import {
   GenerateKeystoreModal,
@@ -9,9 +13,6 @@ import {
   PrintableWallet
 } from 'components';
 import './WalletInfo.scss';
-import { getChecksumAddressFn } from 'selectors/config';
-import { AppState } from 'reducers';
-import { connect } from 'react-redux';
 
 interface OwnProps {
   wallet: IWallet;

@@ -1,4 +1,3 @@
-import { makeRequest } from './requests';
 import {
   EnclaveMethods,
   EnclaveMethodParams,
@@ -11,6 +10,7 @@ import {
   DisplayAddressParams,
   DisplayAddressResponse
 } from 'shared/enclave/types';
+import { makeRequest } from './requests';
 
 function makeMethod<ParamsType extends EnclaveMethodParams, ResponseType>(method: EnclaveMethods) {
   return (params: ParamsType) => makeRequest<ResponseType>(method, params);

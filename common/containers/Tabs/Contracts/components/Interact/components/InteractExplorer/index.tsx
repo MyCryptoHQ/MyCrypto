@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-import translate from 'translations';
-import './InteractExplorer.scss';
-import { TShowNotification, showNotification } from 'actions/notifications';
-import { getNodeLib } from 'selectors/config';
-import { getTo, getDataExists } from 'selectors/transaction';
-import { GenerateTransaction } from 'components/GenerateTransaction';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { Fields } from './components';
-import {
-  setDataField,
-  resetTransactionRequested,
-  TSetDataField,
-  TResetTransactionRequested,
-  TSetAsContractInteraction,
-  TSetAsViewAndSend,
-  setAsContractInteraction,
-  setAsViewAndSend
-} from 'actions/transaction';
-import { Data } from 'libs/units';
-import { Input, Dropdown } from 'components/ui';
-import { INode } from 'libs/nodes';
 import { bufferToHex } from 'ethereumjs-util';
+
+import translate from 'translations';
+import { Data } from 'libs/units';
+import { INode } from 'libs/nodes';
+import { AppState } from 'features/reducers';
+import { getNodeLib } from 'features/config';
+import { notificationsActions } from 'features/notifications';
+import {
+  transactionFieldsActions,
+  transactionFieldsSelectors,
+  transactionMetaActions,
+  transactionSelectors
+} from 'features/transaction';
+import { GenerateTransaction } from 'components/GenerateTransaction';
+import { Input, Dropdown } from 'components/ui';
+import { Fields } from './components';
+import './InteractExplorer.scss';
 
 interface StateProps {
   nodeLib: INode;
@@ -30,11 +26,11 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  showNotification: TShowNotification;
-  setDataField: TSetDataField;
-  resetTransactionRequested: TResetTransactionRequested;
-  setAsContractInteraction: TSetAsContractInteraction;
-  setAsViewAndSend: TSetAsViewAndSend;
+  showNotification: notificationsActions.TShowNotification;
+  setDataField: transactionFieldsActions.TSetDataField;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
+  setAsContractInteraction: transactionMetaActions.TSetAsContractInteraction;
+  setAsViewAndSend: transactionMetaActions.TSetAsViewAndSend;
 }
 
 interface OwnProps {
@@ -314,14 +310,14 @@ class InteractExplorerClass extends Component<Props, State> {
 export const InteractExplorer = connect(
   (state: AppState) => ({
     nodeLib: getNodeLib(state),
-    to: getTo(state),
-    dataExists: getDataExists(state)
+    to: transactionFieldsSelectors.getTo(state),
+    dataExists: transactionSelectors.getDataExists(state)
   }),
   {
-    showNotification,
-    setDataField,
-    resetTransactionRequested,
-    setAsContractInteraction,
-    setAsViewAndSend
+    showNotification: notificationsActions.showNotification,
+    setDataField: transactionFieldsActions.setDataField,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+    setAsContractInteraction: transactionMetaActions.setAsContractInteraction,
+    setAsViewAndSend: transactionMetaActions.setAsViewAndSend
   }
 )(InteractExplorerClass);

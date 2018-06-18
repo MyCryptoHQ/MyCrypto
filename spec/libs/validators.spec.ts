@@ -1,4 +1,4 @@
-import { configuredStore } from 'store';
+import configuredStore from 'features/store';
 import {
   isValidBTCAddress,
   isValidETHAddress,
@@ -7,8 +7,8 @@ import {
   isLabelWithoutENS,
   isValidAddressLabel,
   isValidAddress
-} from '../../common/libs/validators';
-import { translateRaw } from '../../common/translations';
+} from 'libs/validators';
+import { translateRaw } from 'translations';
 import { DPaths } from 'config/dpaths';
 import { valid, invalid } from '../utils/testStrings';
 configuredStore.getState();

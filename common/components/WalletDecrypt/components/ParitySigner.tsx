@@ -1,18 +1,19 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+
 import translate from 'translations';
-import { ParityQrSigner } from 'components';
-import { NewTabLink } from 'components/ui';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
-import { showNotification, TShowNotification } from 'actions/notifications';
 import { wikiLink } from 'libs/wallet/non-deterministic/parity';
+import { notificationsActions } from 'features/notifications';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
+import { ParityQrSigner } from 'components';
+import { NewTabLink } from 'components/ui';
 import './ParitySigner.scss';
 
 interface Props {
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
   onUnlock(param: any): void;
 }
 
@@ -45,6 +46,6 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
   };
 }
 
-export const ParitySignerDecrypt = connect(() => ({}), { showNotification })(
-  ParitySignerDecryptClass
-);
+export const ParitySignerDecrypt = connect(() => ({}), {
+  showNotification: notificationsActions.showNotification
+})(ParitySignerDecryptClass);

@@ -1,8 +1,9 @@
 import React from 'react';
-import makeBlockie from 'ethereum-blockies-base64';
 import { connect } from 'react-redux';
-import { getIsValidAddressFn } from 'selectors/config';
-import { AppState } from 'reducers';
+import makeBlockie from 'ethereum-blockies-base64';
+
+import { AppState } from 'features/reducers';
+import { getIsValidAddressFn } from 'features/config';
 import './Identicon.scss';
 
 interface OwnProps {

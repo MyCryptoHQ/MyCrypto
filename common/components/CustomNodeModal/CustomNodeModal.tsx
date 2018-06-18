@@ -1,19 +1,22 @@
 import React from 'react';
-import Modal, { IButton } from 'components/ui/Modal';
+import { connect } from 'react-redux';
+import { exists, SuccessConfig, FailConfig } from 'mycrypto-eth-exists';
+
 import translate, { translateRaw } from 'translations';
 import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
-import { TAddCustomNetwork, addCustomNetwork, AddCustomNodeAction } from 'actions/config';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
 import {
   getCustomNetworkConfigs,
+  getStaticNetworkConfigs,
   getCustomNodeConfigs,
-  getStaticNetworkConfigs
-} from 'selectors/config';
+  AddCustomNodeAction,
+  TAddCustomNetwork,
+  addCustomNetwork
+} from 'features/config';
 import { Input, Dropdown } from 'components/ui';
+import Modal, { IButton } from 'components/ui/Modal';
 import './CustomNodeModal.scss';
-import { exists, SuccessConfig, FailConfig } from 'mycrypto-eth-exists';
 
 const CUSTOM = { label: 'Custom', value: 'custom' };
 

@@ -1,12 +1,13 @@
 import Tx from 'ethereumjs-tx';
 import { bufferToHex } from 'ethereumjs-util';
+
+import { translateRaw } from 'translations';
 import { Wei } from 'libs/units';
 import { isValidAddress } from 'libs/validators';
 import { IFullWallet } from 'libs/wallet';
-import { translateRaw } from 'translations';
-import { ITransaction, IHexStrTransaction } from '../typings';
 import { hexEncodeQuantity, hexEncodeData } from 'libs/nodes/rpc/utils';
-import { TransactionFieldValues } from 'selectors/transaction/helpers';
+import { TransactionFieldValues } from 'features/types';
+import { ITransaction, IHexStrTransaction } from '../typings';
 
 // we dont include the signature paramaters because web3 transactions are unsigned
 const computeIndexingHash = (tx: Buffer) => bufferToHex(makeTransaction(tx).hash(false));

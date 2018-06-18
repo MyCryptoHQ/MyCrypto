@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { Wei, TokenValue } from 'libs/units';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { walletActions } from 'features/wallet';
+import { SendButton, TXMetaDataPanel } from 'components';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { SendButton, TXMetaDataPanel } from 'components';
-import { resetWallet, TResetWallet } from 'actions/wallet';
-import translate from 'translations';
-import { getUnit } from 'selectors/transaction';
-import { getCurrentBalance } from 'selectors/wallet';
 import Spinner from 'components/ui/Spinner';
-import { Wei, TokenValue } from 'libs/units';
 import { Input } from 'components/ui';
 
 interface StateProps {
   unit: string;
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
   currentBalance: Wei | TokenValue | null;
 }
 
@@ -104,8 +104,8 @@ class FieldsClass extends Component<Props> {
 
 export const Fields = connect(
   (state: AppState) => ({
-    unit: getUnit(state),
-    currentBalance: getCurrentBalance(state)
+    unit: selectors.getUnit(state),
+    currentBalance: selectors.getCurrentBalance(state)
   }),
-  { resetWallet }
+  { resetWallet: walletActions.resetWallet }
 )(FieldsClass);

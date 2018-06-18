@@ -1,9 +1,10 @@
 import React from 'react';
-import { Input } from 'components/ui';
-import { translateRaw } from 'translations';
-import { IGenerateAddressLookup } from './AddCustomTokenForm';
-import { isValidETHAddress } from 'libs/validators';
 import { Result } from 'mycrypto-nano-result';
+
+import { translateRaw } from 'translations';
+import { isValidETHAddress } from 'libs/validators';
+import { Input } from 'components/ui';
+import { IGenerateAddressLookup } from './AddCustomTokenForm';
 
 interface OwnProps {
   addressLookup: IGenerateAddressLookup;

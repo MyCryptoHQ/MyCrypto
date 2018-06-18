@@ -1,9 +1,10 @@
 import React from 'react';
 import { Result } from 'mycrypto-nano-result';
+
 import { shepherdProvider } from 'libs/nodes';
-import { Input } from 'components/ui';
-import Spinner from 'components/ui/Spinner';
 import ERC20 from 'libs/erc20';
+import Spinner from 'components/ui/Spinner';
+import { Input } from 'components/ui';
 
 interface OwnProps {
   fieldToFetch: keyof Pick<typeof ERC20, 'symbol' | 'decimals'>;
@@ -12,7 +13,6 @@ interface OwnProps {
   userInputValidator(input: string): Result<string>;
   fetchedFieldValidator?(input: any): Result<string>;
   shouldEnableAutoField(input: Result<string>): boolean;
-
   onChange(symbol: Result<string>): void;
 }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import Spinner from './Spinner';
 import './SimpleButton.scss';
 
