@@ -1,18 +1,9 @@
 @import 'common/sass/variables';
 
-.Helpers {
+.Helpers-ENSDebug {
   max-width: 1000px;
   margin: auto;
   text-align: center;
-
-  .input-group-addon {
-    min-width: 140px;
-
-    &.ether-addon {
-      color: white;
-      background-color: $brand-primary;
-    }
-  }
 
   .input-row {
     display: flex;

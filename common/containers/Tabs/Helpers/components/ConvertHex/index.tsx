@@ -2,6 +2,8 @@ import React from 'react';
 import './index.scss';
 import { Input } from 'components/ui';
 import BN from 'bn.js';
+import { isValidHex } from 'libs/validators';
+import { stripHexPrefix } from 'libs/values';
 
 interface State {
   dec: BN;
@@ -33,7 +35,7 @@ export default class ConvertHex extends React.Component<State> {
               <div className="input-group-header">Decimal</div>
               <Input
                 value={dec.toString(10)}
-                type="text"
+                type="number"
                 onChange={this.onChange}
                 isValid={true}
                 name="dec"
@@ -42,7 +44,13 @@ export default class ConvertHex extends React.Component<State> {
 
             <label className="input-group">
               <div className="input-group-header">Hexadecimal</div>
-              <Input value={hex} type="text" onChange={this.onChange} isValid={true} name="hex" />
+              <Input
+                value={hex}
+                type="text"
+                onChange={this.onChange}
+                isValid={isValidHex(hex)}
+                name="hex"
+              />
             </label>
 
             <label className="input-group">
@@ -67,19 +75,21 @@ export default class ConvertHex extends React.Component<State> {
 
   private calcFields(value: string | BN, name: string) {
     const currentState = { ...this.state };
+    let validHex: string = '';
 
     if (name === 'dec') {
       const dec = new BN(value);
       currentState.dec = dec;
-      currentState.hex = this.decToHex(dec);
+      currentState.hex = validHex = this.decToHex(dec);
     }
 
-    if (name === 'hex') {
-      currentState.dec = this.hexToDec(value ? (value as string) : '0');
+    if (name === 'hex' && isValidHex(value as string)) {
+      validHex = stripHexPrefix(value as string);
+      currentState.dec = this.hexToDec(validHex ? validHex : '0');
       currentState.hex = value as string;
     }
 
-    currentState.hexPadded = this.hexToPadded(currentState.hex);
+    currentState.hexPadded = this.hexToPadded(validHex);
 
     this.setState(currentState);
   }

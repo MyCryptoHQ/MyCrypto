@@ -2,6 +2,8 @@ import React from 'react';
 import './index.scss';
 import { Input, Spinner } from 'components/ui';
 import { searchPK } from 'libs/web-workers';
+import { isValidPrivKey, isValidETHAddress } from 'libs/validators';
+import { stripHexPrefix } from 'libs/values';
 
 interface Result {
   pk: string;
@@ -78,7 +80,13 @@ export default class RecoverPK extends React.Component<State> {
               <div className="input-group-header">
                 Private Key that isn't unlocking correct address
               </div>
-              <Input value={pk} type="text" onChange={this.onChange} isValid={true} name="pk" />
+              <Input
+                value={pk}
+                type="text"
+                onChange={this.onChange}
+                isValid={isValidPrivKey(pk)}
+                name="pk"
+              />
             </label>
 
             <label className="input-group">
@@ -87,12 +95,16 @@ export default class RecoverPK extends React.Component<State> {
                 value={address}
                 type="text"
                 onChange={this.onChange}
-                isValid={true}
+                isValid={isValidETHAddress(address)}
                 name="address"
               />
             </label>
 
-            <button className="btn btn-primary" onClick={this.searchPK}>
+            <button
+              className="btn btn-primary"
+              onClick={this.searchPK}
+              disabled={!isValidPrivKey(pk) || !isValidETHAddress(address)}
+            >
               Start the Search!
             </button>
 
@@ -118,41 +130,32 @@ export default class RecoverPK extends React.Component<State> {
   private searchPK = () => {
     const { address, pk, result } = this.state;
 
-    const basePrivateKey = pk.substring(0, 2) === '0x' ? pk.substring(2) : pk;
+    const basePrivateKey = stripHexPrefix(pk);
 
-    if (basePrivateKey.length === 63) {
-      result.status = 'loading';
+    result.status = 'loading';
 
-      this.setState({
-        ...this.state,
-        result
-      });
+    this.setState({
+      ...this.state,
+      result
+    });
 
-      searchPK(basePrivateKey, address)
-        .then(foundPK => {
-          result.status = 'ok';
-          result.pk = foundPK;
+    searchPK(basePrivateKey, address)
+      .then(foundPK => {
+        result.status = 'ok';
+        result.pk = foundPK;
 
-          this.setState({
-            ...this.state,
-            result
-          });
-        })
-        .catch(() => {
-          result.status = 'error';
-
-          this.setState({
-            ...this.state,
-            result
-          });
+        this.setState({
+          ...this.state,
+          result
         });
-    } else {
-      result.status = 'error';
+      })
+      .catch(() => {
+        result.status = 'error';
 
-      this.setState({
-        ...this.state,
-        result
+        this.setState({
+          ...this.state,
+          result
+        });
       });
-    }
   };
 }

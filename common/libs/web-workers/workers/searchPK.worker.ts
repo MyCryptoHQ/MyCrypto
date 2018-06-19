@@ -30,7 +30,7 @@ worker.onmessage = (event: MessageEvent) => {
   for (const idx of Object.keys(basePrivateKey.split(''))) {
     for (const character of characters) {
       const pkArray = basePrivateKey.split('');
-      pkArray.splice(Number(idx), 0, character);
+      pkArray.splice(Number(idx), 1, character);
       const privateKeyGuess = pkArray.join('');
 
       let wallet;

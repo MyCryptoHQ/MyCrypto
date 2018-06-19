@@ -11,6 +11,7 @@ import { AppState } from 'reducers';
 import { shaBidRequested, TShaBidRequested } from 'actions/ens';
 import { connect } from 'react-redux';
 import networkConfigs from 'libs/ens/networkConfigs';
+import { isValidETHAddress, isValidENSName } from 'libs/validators';
 
 interface State {
   bidAddress: string;
@@ -137,7 +138,7 @@ class ENSDebug extends React.Component<Props, State> {
     return (
       <div className="Tab-content">
         <section className="Tab-content-pane">
-          <div className="Helpers">
+          <div className="Helpers-ENSDebug">
             <h1>ENS Debugger & Data Grabber</h1>
             <h2>Ethereum Name Service Data String Generator</h2>
             <p style={{ color: 'red' }}>
@@ -146,28 +147,31 @@ class ENSDebug extends React.Component<Props, State> {
             </p>
 
             <label className="input-group">
-              <div className="input-group-header">Address you Bid From</div>
+              <div className="input-group-header">Address You Bid From</div>
               <Input
                 value={bidAddress}
                 type="text"
-                isValid={true}
+                isValid={isValidETHAddress(bidAddress)}
                 name="bidAddress"
                 onChange={this.onChange}
+                disabled={loading}
               />
             </label>
 
             <div className="input-row">
               <label className="input-group">
-                <div className="input-group-header">
-                  ENS Name you Bid On (no '.eth' at the end!)
+                <div className="input-group-header">ENS Name You Bid On</div>
+                <div className="input-group-inline">
+                  <Input
+                    value={ensName}
+                    type="text"
+                    onChange={this.onChange}
+                    isValid={isValidENSName(ensName)}
+                    name="ensName"
+                    disabled={loading}
+                  />
+                  <span className="input-group-addon">.eth</span>
                 </div>
-                <Input
-                  value={ensName}
-                  type="text"
-                  onChange={this.onChange}
-                  isValid={true}
-                  name="ensName"
-                />
               </label>
 
               <label className="input-group">
@@ -178,30 +182,33 @@ class ENSDebug extends React.Component<Props, State> {
                   onChange={this.onChange}
                   isValid={true}
                   name="nameHash"
+                  disabled={loading}
                 />
               </label>
             </div>
 
             <div className="input-row">
               <label className="input-group">
-                <div className="input-group-header">Amount you Bid (ETH)</div>
+                <div className="input-group-header">Amount You Bid (ETH)</div>
                 <Input
                   value={amountEth}
                   type="text"
                   onChange={this.onChange}
                   isValid={true}
                   name="amountEth"
+                  disabled={loading}
                 />
               </label>
 
               <label className="input-group">
-                <div className="input-group-header">Amount you Bid (WEI)</div>
+                <div className="input-group-header">Amount You Bid (WEI)</div>
                 <Input
                   value={amountWei.toString()}
                   type="text"
                   onChange={this.onChange}
                   isValid={true}
                   name="amountWei"
+                  disabled={loading}
                 />
               </label>
             </div>
@@ -215,6 +222,7 @@ class ENSDebug extends React.Component<Props, State> {
                   onChange={this.onChange}
                   isValid={true}
                   name="secret"
+                  disabled={loading}
                 />
               </label>
 
@@ -226,6 +234,7 @@ class ENSDebug extends React.Component<Props, State> {
                   onChange={this.onChange}
                   isValid={true}
                   name="secretHash"
+                  disabled={loading}
                 />
               </label>
             </div>
@@ -235,6 +244,12 @@ class ENSDebug extends React.Component<Props, State> {
                 className="btn btn-primary"
                 onClick={this.calcENSData}
                 style={{ marginTop: 20 }}
+                disabled={
+                  !isValidETHAddress(bidAddress) ||
+                  !isValidENSName(ensName) ||
+                  !amountWei ||
+                  !secretHash
+                }
               >
                 Show Debug Data
               </button>

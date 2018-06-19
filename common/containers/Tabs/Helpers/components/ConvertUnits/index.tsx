@@ -3,7 +3,11 @@ import './index.scss';
 import { Input } from 'components/ui';
 import { toWei, fromWei, getDecimalFromEtherUnit, UnitKey } from 'libs/units';
 
-const unitNames = {
+interface UnitNames {
+  [propName: string]: string;
+}
+
+const unitNames: UnitNames = {
   wei: 'wei',
   kwei: 'kwei',
   mwei: 'mwei',
@@ -17,12 +21,16 @@ const unitNames = {
   tether: 'tether'
 };
 
+interface Units {
+  [propName: string]: number;
+}
+
 interface State {
-  units: any;
+  units: Units;
 }
 
 export default class ConvertUnits extends React.Component<State> {
-  public state = {
+  public state: State = {
     units: {
       ether: 1
     }
@@ -45,14 +53,14 @@ export default class ConvertUnits extends React.Component<State> {
             {Object.keys(unitNames).map(unitName => (
               <label className="input-group input-group-inline" key={unitName}>
                 <Input
-                  value={(units as any)[unitName]}
+                  value={units[unitName]}
                   type="number"
                   onChange={this.onChange}
                   name={unitName}
                   isValid={true}
                 />
                 <span className={`input-group-addon ${unitName === 'ether' ? 'ether-addon' : ''}`}>
-                  {(unitNames as any)[unitName]}
+                  {unitNames[unitName]}
                 </span>
               </label>
             ))}
@@ -65,10 +73,10 @@ export default class ConvertUnits extends React.Component<State> {
   private convertUnits(value: string, unit: UnitKey) {
     const weiValue = toWei(value, getDecimalFromEtherUnit(unit));
 
-    const currentValues: any = { ...this.state.units };
+    const currentValues: Units = { ...this.state.units };
 
     Object.keys(unitNames).forEach((unitName: UnitKey) => {
-      currentValues[unitName] = fromWei(weiValue, unitName);
+      currentValues[unitName] = Number(fromWei(weiValue, unitName));
     });
 
     this.setState({

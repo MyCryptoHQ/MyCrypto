@@ -10,7 +10,7 @@ interface State {
 
 export default class ConvertSHA3 extends React.Component<State> {
   public state = {
-    input: 'welcome to MyCrypto',
+    input: 'Welcome to MyCrypto',
     output: ''
   };
 
