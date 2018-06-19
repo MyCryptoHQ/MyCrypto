@@ -1,7 +1,14 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+@mixin theme-icon-showing {
+  transform: translate(-50%, -50%);
+  transition-delay: 150ms;
+}
 
 .ThemeToggle {
   position: relative;
+  overflow: hidden;
 
   &-placeholder {
     opacity: 0;
@@ -12,9 +19,30 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 26px;
-    height: 26px;
-    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    transform: translate(-50%, -50%) translateY(30px);
     fill: color(text-color);
+    transition: transform 200ms ease;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &.is-theme-light {
+      background-image: url('~assets/images/icon-theme-light.svg');
+      opacity: 0.9;
+      @include theme('light') {
+        @include theme-icon-showing;
+      }
+    }
+
+    &.is-theme-dark {
+      background-image: url('~assets/images/icon-theme-dark.svg');
+      opacity: 0.85;
+      filter: invert(1);
+      @include theme('dark') {
+        @include theme-icon-showing;
+      }
+    }
   }
 }
