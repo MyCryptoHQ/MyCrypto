@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Theme } from 'config';
-import { TChangeTheme, changeTheme } from 'actions/config';
-import { getTheme } from 'selectors/config';
-import { AppState } from 'reducers';
+import { getTheme, changeTheme } from 'features/config';
+import { AppState } from 'features/reducers';
 import './ThemeToggle.scss';
 
 interface ActionProps {
-  changeTheme: TChangeTheme;
+  changeTheme: typeof changeTheme;
 }
 
 interface StateProps {

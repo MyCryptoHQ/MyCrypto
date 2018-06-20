@@ -39,7 +39,7 @@ export function changeLanguage(sign: string): ChangeLanguageAction {
 export type TChangeTheme = typeof changeTheme;
 export function changeTheme(theme: Theme): ChangeThemeAction {
   return {
-    type: TypeKeys.CONFIG_THEME_CHANGE,
+    type: CONFIG_META.THEME_CHANGE,
     payload: theme
   };
 }

@@ -51,7 +51,7 @@ function setLatestBlock(state: MetaState, action: SetLatestBlockAction): MetaSta
   };
 }
 
-function setTheme(state: MetaState, action: SetThemeAction): MetaState {
+function setTheme(state: MetaState, action: ChangeThemeAction): MetaState {
   return {
     ...state,
     theme: action.payload
