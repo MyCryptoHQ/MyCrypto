@@ -92,7 +92,10 @@ class TxHashInput extends React.Component<Props, State> {
           </p>
         )}
 
-        <button className="TxHashInput-submit btn btn-primary btn-block">
+        <button
+          className="TxHashInput-submit btn btn-primary btn-block"
+          disabled={!isValidTxHash(hash)}
+        >
           {translate('NAV_CHECKTXSTATUS')}
         </button>
       </form>
