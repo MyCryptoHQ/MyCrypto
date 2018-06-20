@@ -76,14 +76,6 @@ class RootClass extends Component<Props, State> {
       return <ErrorScreen error={error} />;
     }
 
-    const CaptureRouteNotFound = withRouter(({ children, location }) => {
-      return location && location.state && location.state.error ? (
-        <PageNotFound />
-      ) : (
-        (children as JSX.Element)
-      );
-    });
-
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
@@ -198,6 +190,14 @@ const LegacyRoutes = withRouter(props => {
       <RedirectWithQuery from="/helpers.html" to="/helpers" />
       <RedirectWithQuery from="/send-transaction" to={'/account/send'} />
     </Switch>
+  );
+});
+
+const CaptureRouteNotFound = withRouter(({ children, location }) => {
+  return location && location.state && location.state.error ? (
+    <PageNotFound />
+  ) : (
+    (children as JSX.Element)
   );
 });
 
