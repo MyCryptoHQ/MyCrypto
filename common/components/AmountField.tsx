@@ -1,8 +1,9 @@
 import React from 'react';
-import { AmountFieldFactory } from './AmountFieldFactory';
-import { UnitDropDown, SendEverything } from 'components';
+
 import translate from 'translations';
+import { UnitDropDown, SendEverything } from 'components';
 import { Input } from 'components/ui';
+import { AmountFieldFactory } from './AmountFieldFactory';
 
 interface Props {
   hasUnitDropdown?: boolean;

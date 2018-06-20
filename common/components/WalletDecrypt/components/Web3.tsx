@@ -1,4 +1,5 @@
 import React from 'react';
+
 import translate from 'translations';
 import { NewTabLink } from 'components/ui';
 import './Web3.scss';

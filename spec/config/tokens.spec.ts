@@ -1,6 +1,7 @@
-import { configuredStore } from 'store';
+import configuredStore from 'features/store';
 import TOKENS from 'config/tokens';
 import { isValidETHAddress } from 'libs/validators';
+
 configuredStore.getState();
 
 describe('Tokens JSON', () => {

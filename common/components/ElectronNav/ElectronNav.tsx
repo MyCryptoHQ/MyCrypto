@@ -7,9 +7,8 @@ import NavigationLink from 'components/NavigationLink';
 import NetworkSelect from './NetworkSelect';
 import LanguageSelect from './LanguageSelect';
 import NetworkStatus from './NetworkStatus';
-import { changeTheme, TChangeTheme } from 'actions/config';
-import { getTheme } from 'selectors/config';
-import { AppState } from 'reducers';
+import { changeTheme, getTheme } from 'features/config';
+import { AppState } from 'features/reducers';
 import './ElectronNav.scss';
 
 interface StateProps {
@@ -17,7 +16,7 @@ interface StateProps {
 }
 
 interface ActionProps {
-  changeTheme: TChangeTheme;
+  changeTheme: typeof changeTheme;
 }
 
 type Props = StateProps & ActionProps;

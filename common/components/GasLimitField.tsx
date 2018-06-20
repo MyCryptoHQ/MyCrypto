@@ -1,10 +1,11 @@
 import React from 'react';
-import { GasLimitFieldFactory } from './GasLimitFieldFactory';
+
 import translate from 'translations';
 import { gasLimitValidator } from 'libs/validators';
-import { InlineSpinner } from 'components/ui/InlineSpinner';
-import './GasLimitField.scss';
 import { Input } from 'components/ui';
+import { InlineSpinner } from 'components/ui/InlineSpinner';
+import { GasLimitFieldFactory } from './GasLimitFieldFactory';
+import './GasLimitField.scss';
 
 interface Props {
   customLabel?: string;

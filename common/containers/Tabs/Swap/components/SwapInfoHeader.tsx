@@ -1,11 +1,11 @@
-import { RestartSwapAction } from 'actions/swap';
-import { SwapInput } from 'reducers/swap/types';
 import React, { PureComponent } from 'react';
-import translate from 'translations';
 import classnames from 'classnames';
+
+import translate from 'translations';
 import { toFixedIfLarger } from 'utils/formatters';
-import './SwapInfoHeader.scss';
+import { SwapInput, RestartSwapAction } from 'features/swap/types';
 import SwapInfoHeaderTitle from './SwapInfoHeaderTitle';
+import './SwapInfoHeader.scss';
 
 export interface SwapInfoHeaderProps {
   origin: SwapInput;

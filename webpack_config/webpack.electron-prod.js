@@ -23,4 +23,6 @@ electronConfig.plugins = [
   new DelayPlugin(500)
 ];
 
+electronConfig.devtool = undefined;
+
 module.exports = [electronConfig, jsConfig];

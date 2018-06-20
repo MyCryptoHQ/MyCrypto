@@ -1,16 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+
+import { etherChainExplorerInst } from 'config/data';
+import translate from 'translations';
+import { getParamFromURL } from 'utils/helpers';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig } from 'features/config';
+import { TransactionStatus as TransactionStatusComponent } from 'components';
 import TabSection from 'containers/TabSection';
 import TxHashInput from './components/TxHashInput';
-import { TransactionStatus as TransactionStatusComponent } from 'components';
-import { getNetworkConfig } from 'selectors/config';
-import { getParamFromURL } from 'utils/helpers';
-import { AppState } from 'reducers';
-import { NetworkConfig } from 'types/network';
 import './index.scss';
-import translate from 'translations';
-import { etherChainExplorerInst } from 'config/data';
 
 interface StateProps {
   network: NetworkConfig;

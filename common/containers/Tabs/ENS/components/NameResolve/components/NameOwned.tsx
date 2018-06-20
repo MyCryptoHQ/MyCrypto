@@ -1,5 +1,6 @@
 import React from 'react';
 import { IOwnedDomainRequest } from 'libs/ens';
+import { fromWei, Wei } from 'libs/units';
 import { NewTabLink, Address } from 'components/ui';
 import translate from 'translations';
 const lookupLink = (name: string) => `https://etherscan.io/enslookup?q=${name}`;
@@ -34,7 +35,7 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
             <MonoTd>{labelHash}</MonoTd>
           </tr>
           <tr>
-            <td>{translate('NAME_OWNED_NAMEHASH', { name })} </td>
+            <td>{translate('NAME_OWNED_NAMEHASH', { name })}: </td>
             <MonoTd>{nameHash}</MonoTd>
           </tr>
           <tr>
@@ -44,9 +45,9 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
             </MonoTd>
           </tr>
           <tr>
-            <td>{translate('NAME_OWNED_HIGHEST_BIDDER')}</td>
+            <td>{translate('NAME_OWNED_HIGHEST_BID')}:</td>
             <MonoTd>
-              <span>{highestBid}</span>
+              <span>{fromWei(Wei(highestBid), 'ether')} ETH</span>
             </MonoTd>
           </tr>
           <tr>

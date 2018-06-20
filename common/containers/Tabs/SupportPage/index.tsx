@@ -1,6 +1,5 @@
 import React from 'react';
-import translate from 'translations';
-import TabSection from 'containers/TabSection';
+
 import {
   donationAddressMap,
   socialMediaLinks,
@@ -8,6 +7,8 @@ import {
   affiliateLinks,
   VERSION
 } from 'config';
+import translate from 'translations';
+import TabSection from 'containers/TabSection';
 import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
 import './index.scss';

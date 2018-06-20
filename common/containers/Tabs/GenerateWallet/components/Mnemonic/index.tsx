@@ -1,2 +1,1 @@
-import Mnemonic from './Mnemonic';
-export default Mnemonic;
+export { default } from './Mnemonic';

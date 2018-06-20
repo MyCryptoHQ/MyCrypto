@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import translate from 'translations';
 import QRCode from 'qrcode.react';
+
+import translate from 'translations';
 import './BitcoinQR.scss';
 
 interface Props {

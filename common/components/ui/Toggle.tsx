@@ -1,4 +1,5 @@
 import React, { ChangeEvent } from 'react';
+
 import './Toggle.scss';
 
 interface Props {

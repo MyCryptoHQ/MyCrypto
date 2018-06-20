@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isAnyOfflineWithWeb3 } from 'selectors/derived';
+
+import translate from 'translations';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { scheduleSelectors } from 'features/schedule';
 import {
   AddressField,
   AmountField,
@@ -14,13 +19,7 @@ import {
   SendScheduleTransactionButton
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
-import translate from 'translations';
-
-import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
-import { getOffline, getNetworkConfig } from 'selectors/config';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
-import { getUnit } from 'selectors/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -36,7 +35,7 @@ interface StateProps {
   schedulingAvailable: boolean;
   shouldDisplay: boolean;
   offline: boolean;
-  useScheduling: ICurrentSchedulingToggle['value'];
+  useScheduling: scheduleSelectors.ICurrentSchedulingToggle['value'];
 }
 
 class FieldsClass extends Component<StateProps> {
@@ -104,8 +103,9 @@ class FieldsClass extends Component<StateProps> {
 }
 
 export const Fields = connect((state: AppState) => ({
-  schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
-  shouldDisplay: !isAnyOfflineWithWeb3(state),
+  schedulingAvailable:
+    getNetworkConfig(state).name === 'Kovan' && selectors.getUnit(state) === 'ETH',
+  shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
-  useScheduling: getCurrentSchedulingToggle(state).value
+  useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
 }))(FieldsClass);

@@ -1,44 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import {
-  addCustomToken,
-  removeCustomToken,
-  TAddCustomToken,
-  TRemoveCustomToken
-} from 'actions/customTokens';
-import {
-  scanWalletForTokens,
-  TScanWalletForTokens,
-  setWalletTokens,
-  TSetWalletTokens,
-  refreshTokenBalances,
-  TRefreshTokenBalances
-} from 'actions/wallet';
-import { getAllTokens, getOffline } from 'selectors/config';
-import { getTokenBalances, getWalletInst, getWalletConfig, TokenBalance } from 'selectors/wallet';
+
 import translate from 'translations';
-import Balances from './Balances';
-import Spinner from 'components/ui/Spinner';
 import { Token } from 'types/network';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getAllTokens, getOffline } from 'features/config';
+import { customTokensActions } from 'features/customTokens';
+import { walletTypes, walletActions, walletSelectors } from 'features/wallet';
+import Spinner from 'components/ui/Spinner';
+import Balances from './Balances';
 import './index.scss';
 
 interface StateProps {
   wallet: AppState['wallet']['inst'];
   walletConfig: AppState['wallet']['config'];
   tokens: Token[];
-  tokenBalances: TokenBalance[];
+  tokenBalances: walletTypes.TokenBalance[];
   tokensError: AppState['wallet']['tokensError'];
   isTokensLoading: AppState['wallet']['isTokensLoading'];
   hasSavedWalletTokens: AppState['wallet']['hasSavedWalletTokens'];
   isOffline: AppState['config']['meta']['offline'];
 }
 interface ActionProps {
-  addCustomToken: TAddCustomToken;
-  removeCustomToken: TRemoveCustomToken;
-  scanWalletForTokens: TScanWalletForTokens;
-  setWalletTokens: TSetWalletTokens;
-  refreshTokenBalances: TRefreshTokenBalances;
+  addCustomToken: customTokensActions.TAddCustomToken;
+  removeCustomToken: customTokensActions.TRemoveCustomToken;
+  scanWalletForTokens: walletActions.TScanWalletForTokens;
+  setWalletTokens: walletActions.TSetWalletTokens;
+  refreshTokenBalances: walletActions.TRefreshTokenBalances;
 }
 type Props = StateProps & ActionProps;
 
@@ -120,10 +109,10 @@ class TokenBalances extends React.Component<Props> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    wallet: getWalletInst(state),
-    walletConfig: getWalletConfig(state),
+    wallet: walletSelectors.getWalletInst(state),
+    walletConfig: walletSelectors.getWalletConfig(state),
     tokens: getAllTokens(state),
-    tokenBalances: getTokenBalances(state),
+    tokenBalances: selectors.getTokenBalances(state),
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
     hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
@@ -132,9 +121,9 @@ function mapStateToProps(state: AppState): StateProps {
 }
 
 export default connect(mapStateToProps, {
-  addCustomToken,
-  removeCustomToken,
-  scanWalletForTokens,
-  setWalletTokens,
-  refreshTokenBalances
+  addCustomToken: customTokensActions.addCustomToken,
+  removeCustomToken: customTokensActions.removeCustomToken,
+  scanWalletForTokens: walletActions.scanWalletForTokens,
+  setWalletTokens: walletActions.setWalletTokens,
+  refreshTokenBalances: walletActions.refreshTokenBalances
 })(TokenBalances);
