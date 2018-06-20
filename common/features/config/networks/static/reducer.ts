@@ -22,7 +22,8 @@ import {
   EGEM_DEFAULT,
   CLO_DEFAULT,
   RSK_TESTNET,
-  GO_DEFAULT
+  GO_DEFAULT,
+  EOSC_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { StaticNetworksState } from './types';
@@ -414,6 +415,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       min: 2,
       max: 60,
       initial: 2
+    }
+  },
+
+  EOSC: {
+    id: 'EOSC',
+    name: 'EOS Classic',
+    unit: 'EOSC',
+    chainId: 20,
+    isCustom: false,
+    color: '#926565',
+    blockExplorer: makeExplorer({
+      name: 'EOSC Explorer',
+      origin: 'https://explorer.eos-classic.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: EOSC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: EOSC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
     }
   }
 };
