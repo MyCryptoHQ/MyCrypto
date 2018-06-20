@@ -21,7 +21,6 @@ import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
 import OnlineStatus from './components/OnlineStatus';
 import NetworkDropdown from './components/NetworkDropdown';
-import ThemeToggle from './components/ThemeToggle';
 import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
 import { AppState } from 'reducers';
@@ -139,9 +138,6 @@ class Header extends Component<Props, State> {
                 })}
               >
                 <NetworkDropdown openCustomNodeModal={this.openCustomNodeModal} />
-              </div>
-              <div className="Header-branding-right-dropdown">
-                <ThemeToggle />
               </div>
             </div>
           </section>

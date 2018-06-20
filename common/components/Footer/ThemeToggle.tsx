@@ -18,13 +18,12 @@ type Props = ActionProps & StateProps;
 
 class ThemeToggle extends React.Component<Props> {
   public render() {
-    const { theme } = this.props;
-
     return (
-      <button className="ThemeToggle btn btn-smr btn-white" onClick={this.toggleTheme}>
-        <span className="ThemeToggle-placeholder">{theme}</span>
-        <span className="ThemeToggle-icon is-theme-dark" />
-        <span className="ThemeToggle-icon is-theme-light" />
+      <button className="ThemeToggle" onClick={this.toggleTheme} aria-hidden={true}>
+        <div className="ThemeToggle-control">
+          <span className="ThemeToggle-control-icon is-dark" />
+          <span className="ThemeToggle-control-icon is-light" />
+        </div>
       </button>
     );
   }

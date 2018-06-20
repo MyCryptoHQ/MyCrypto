@@ -97,6 +97,7 @@ $footer-link-color: color(text-color-inverted);
 
     &-legal {
       font-size: $font-size-xs-bump;
+      margin-bottom: $space-md;
 
       &-text {
         display: inline-block;
