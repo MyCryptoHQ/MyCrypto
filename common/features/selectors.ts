@@ -69,7 +69,7 @@ export function getDisabledWallets(state: AppState): any {
   // Some wallets are unavailable offline
   if (isOffline) {
     addReason(
-      [SecureWalletName.WEB3, SecureWalletName.TREZOR],
+      [SecureWalletName.WEB3, SecureWalletName.TREZOR, SecureWalletName.SAFE_T],
       'This wallet cannot be accessed offline'
     );
   }

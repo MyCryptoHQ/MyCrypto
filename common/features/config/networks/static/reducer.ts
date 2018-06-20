@@ -9,10 +9,12 @@ import {
   ELLA_DEFAULT,
   ETC_LEDGER,
   ETC_TREZOR,
+  ETC_SAFE_T,
   ETH_DEFAULT,
   ETH_LEDGER,
   ETH_TESTNET,
   ETH_TREZOR,
+  ETH_SAFE_T,
   EXP_DEFAULT,
   POA_DEFAULT,
   TOMO_DEFAULT,
@@ -53,6 +55,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: require('config/contracts/eth.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TREZOR,
+      [SecureWalletName.SAFE_T]: ETH_SAFE_T,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
     },
@@ -75,6 +78,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.SAFE_T]: ETH_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
     },
@@ -96,6 +100,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.SAFE_T]: ETH_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
     },
@@ -117,6 +122,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.SAFE_T]: ETH_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
     },
@@ -138,6 +144,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: require('config/contracts/etc.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETC_TREZOR,
+      [SecureWalletName.SAFE_T]: ETC_SAFE_T,
       [SecureWalletName.LEDGER_NANO_S]: ETC_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETC_TREZOR
     },
@@ -162,6 +169,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: require('config/contracts/ubq.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: UBQ_DEFAULT,
+      [SecureWalletName.SAFE_T]: UBQ_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: UBQ_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: UBQ_DEFAULT
     },
@@ -186,6 +194,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: require('config/contracts/exp.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: EXP_DEFAULT,
+      [SecureWalletName.SAFE_T]: EXP_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: EXP_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EXP_DEFAULT
     },
@@ -212,6 +221,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: POA_DEFAULT,
+      [SecureWalletName.SAFE_T]: POA_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: POA_DEFAULT
     },
@@ -237,6 +247,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [SecureWalletName.TREZOR]: ETH_TREZOR,
+      [SecureWalletName.SAFE_T]: ETH_SAFE_T,
       [SecureWalletName.LEDGER_NANO_S]: TOMO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: TOMO_DEFAULT
     },
@@ -261,6 +272,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
+      [SecureWalletName.SAFE_T]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
     },
     gasPriceSettings: {
@@ -286,6 +298,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: MUSIC_DEFAULT,
+      [SecureWalletName.SAFE_T]: MUSIC_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: MUSIC_DEFAULT
     },
     gasPriceSettings: {
@@ -310,6 +323,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETSC_DEFAULT,
+      [SecureWalletName.SAFE_T]: ETSC_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETSC_DEFAULT
     },
     gasPriceSettings: {
@@ -334,6 +348,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: EGEM_DEFAULT,
+      [SecureWalletName.SAFE_T]: EGEM_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EGEM_DEFAULT
     },
     gasPriceSettings: {
@@ -358,6 +373,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: CLO_DEFAULT,
+      [SecureWalletName.SAFE_T]: CLO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: CLO_DEFAULT
     },
     gasPriceSettings: {
@@ -383,6 +399,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: RSK_TESTNET,
+      [SecureWalletName.SAFE_T]: RSK_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: RSK_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },
@@ -408,6 +425,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: GO_DEFAULT,
+      [SecureWalletName.SAFE_T]: GO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: GO_DEFAULT
     },
     gasPriceSettings: {

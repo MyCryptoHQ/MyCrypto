@@ -255,6 +255,9 @@
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Connexion au TREZOR ",
     "ADD_TREZOR_SELECT": "Ceci est une _seed_ TREZOR ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Connexion au Safe-T mini ",
+    "ORDER_SAFE_T": "Pas de Safe-T mini ? Achetez-en un maintenant !",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Réouvrir MyCrypto sur une connexion sécurisée (SSL) ",
     "ADD_DIGITALBITBOX_0B": "Réouvrir MyCrypto avec [Chrome](https://www.google.com/chrome/browser/desktop/) ou [Opera](https://www.opera.com/) ",
@@ -659,6 +662,7 @@
     "ONBOARD_FINAL_CONTENT__7": "How to Send via MetaMask",
     "ONBOARD_FINAL_CONTENT__8": "Learn More or Contact Us",
     "ONBOARD_FINAL_CONTENT__9": "OMG, please just let me send FFS.",
-    "ONBOARD_RESUME": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉"
+    "ONBOARD_RESUME": "It looks like you didn't finish reading through these slides last time. ProTip: Finish reading through the slides 😉",
+    "SAFE_T_REFERAL": "Acheter un Safe-T mini"
   }
 }
