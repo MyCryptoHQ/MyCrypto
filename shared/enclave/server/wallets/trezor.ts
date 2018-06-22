@@ -25,12 +25,13 @@ async function getSession() {
       currentSession = null;
     }
   });
-  device.on('pin', (_, cb: (err: Error | undefined, pin?: string) => void) => {
+  device.on('pin', (_, cb: (err?: Error, pin?: string) => void) => {
     showPinPrompt()
       .then(pin => {
         cb(undefined, pin);
       })
       .catch(err => {
+        console.error('PIN entry failed', err);
         cb(err);
       });
   });

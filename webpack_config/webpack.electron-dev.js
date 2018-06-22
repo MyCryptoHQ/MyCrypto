@@ -12,7 +12,14 @@ const electronConfig = {
     preload: path.join(config.path.electron, 'preload/index.ts')
   },
   module: {
-    rules: [config.typescriptRule]
+    rules: [
+      config.typescriptRule,
+      // HTML as string
+      {
+        test: /\.html$/,
+        use: 'raw-loader',
+      }
+    ]
   },
   resolve: {
     extensions: ['.ts', '.js', '.json'],
