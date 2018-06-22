@@ -33,6 +33,11 @@ class AddressBookTableRow extends React.Component<Props> {
     this.setState({ label: nextProps.label, mostRecentValidLabel: nextProps.label });
   }
 
+  public componentDidMount() {
+    // needed for showing metacert shield icons
+    this.forceUpdate();
+  }
+
   public render() {
     const {
       address,
