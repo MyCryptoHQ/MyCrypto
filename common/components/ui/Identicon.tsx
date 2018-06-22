@@ -29,8 +29,10 @@ enum metacert_wallet_type {
   phishing
 }
 
-//const MetaCertAPIUrl = 'http://apifaker.seeksmarterdev.com/check';
-const MetaCertAPIUrl = 'http://localhost:5000/check';
+// for staging
+const MetaCertAPIUrl = 'http://middleware.seeksmarterdev.com/check';
+// for local dev
+//const MetaCertAPIUrl = 'http://localhost:5000/check';
 
 interface StateProps {
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
