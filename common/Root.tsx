@@ -87,7 +87,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
           <Route path="/support-us" component={SupportPage} exact={true} />
-          <RedirectWithQuery exactArg={true} from="/" to="/account" />
+          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
