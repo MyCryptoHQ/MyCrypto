@@ -5,6 +5,8 @@ import { AppState } from 'features/reducers';
 import { getIsValidAddressFn } from 'features/config';
 import { isValidETHAddress } from 'libs/validators';
 import { toChecksumAddress } from 'ethereumjs-util';
+import { Tooltip } from 'components/ui';
+import { translateRaw } from 'translations';
 import './Identicon.scss';
 
 interface OwnProps {
@@ -25,13 +27,6 @@ enum metacert_wallet_type {
   notverified,
   verified,
   phishing
-}
-
-enum metacert_wallet_title {
-  invalid = 'invalid wallet',
-  notverified = 'unverified wallet',
-  verified = 'verified wallet',
-  phishing = 'phishing wallet'
 }
 
 //const MetaCertAPIUrl = 'http://apifaker.seeksmarterdev.com/check';
@@ -121,6 +116,7 @@ class Identicon extends React.Component<Props> {
     } else {
       let metacertIcon = '';
       let metacertAlt = '';
+      let metacertTooltip = '';
       let metacertClass = '';
 
       if (isValidETHAddress(address)) {
@@ -128,6 +124,7 @@ class Identicon extends React.Component<Props> {
         metacertIcon = info.icon;
         metacertAlt = info.title;
         metacertClass = info.class;
+        metacertTooltip = info.tooltip;
       }
 
       const identiconDataUrl = isValidETHAddress(address) ? makeBlockie(address) : '';
@@ -135,7 +132,6 @@ class Identicon extends React.Component<Props> {
         // Use inline styles for printable wallets
         <div
           className={`Identicon ${metacertClass} ${className} `}
-          title="Address Identicon"
           style={{
             width: size,
             height: size
@@ -143,9 +139,11 @@ class Identicon extends React.Component<Props> {
           aria-hidden={!identiconDataUrl}
         >
           {identiconDataUrl && <img className="blockie" src={identiconDataUrl} />}
+
+          {metacertTooltip && <Tooltip direction="left">{metacertTooltip}</Tooltip>}
           {metacertIcon && (
-            <div className="metacertIcon" title={metacertAlt} aria-hidden={!metacertIcon}>
-              <img src={metacertIcon} />
+            <div className="metacertIcon" aria-hidden={!metacertIcon}>
+              <img src={metacertIcon} alt={metacertAlt} />
             </div>
           )}
           <div
@@ -184,53 +182,50 @@ class Identicon extends React.Component<Props> {
 
   protected _getMetacertResponse(apiResponse) {
     let walletType = metacert_wallet_type.notverified;
-    let walletTitle = metacert_wallet_title.notverified;
-
     if (apiResponse.valid === true) {
       if (apiResponse.labelType === null) {
         walletType = metacert_wallet_type.notverified;
-        walletTitle = metacert_wallet_title.notverified;
       }
       if (apiResponse.labelType === 'verified-wallet') {
         walletType = metacert_wallet_type.verified;
-        walletTitle = metacert_wallet_title.verified;
       }
       if (apiResponse.labelType === 'phishing-wallet') {
         walletType = metacert_wallet_type.phishing;
-        walletTitle = metacert_wallet_title.phishing;
       }
     } else {
       walletType = metacert_wallet_type.invalid;
-      walletTitle = metacert_wallet_title.invalid;
     }
-
-    return { wallet: walletType, title: walletTitle };
+    return walletType;
   }
 
   protected _getMetacertInfo(metacertResponse) {
     let info = {
       icon: null,
       title: '',
+      tooltip: '',
       class: ''
     };
-    if (metacertResponse.wallet === metacert_wallet_type.notverified) {
+    if (metacertResponse === metacert_wallet_type.notverified) {
       info = {
         icon: unverifiedIcon,
-        title: metacertResponse.title,
+        title: translateRaw('METACERT_NOT_VERIFIED'),
+        tooltip: translateRaw('METACERT_NOT_VERIFIED_VERBOSE'),
         class: 'metacert-not-verified'
       };
     }
-    if (metacertResponse.wallet === metacert_wallet_type.verified) {
+    if (metacertResponse === metacert_wallet_type.verified) {
       info = {
         icon: verifiedIcon,
-        title: metacertResponse.title,
+        title: translateRaw('METACERT_VERIFIED'),
+        tooltip: translateRaw('METACERT_VERIFIED_VERBOSE'),
         class: 'metacert-verified'
       };
     }
-    if (metacertResponse.wallet === metacert_wallet_type.phishing) {
+    if (metacertResponse === metacert_wallet_type.phishing) {
       info = {
         icon: dangerousIcon,
-        title: metacertResponse.title,
+        title: translateRaw('METACERT_PHISHING'),
+        tooltip: translateRaw('METACERT_PHISHING_VERBOSE'),
         class: 'metacert-phishing'
       };
     }

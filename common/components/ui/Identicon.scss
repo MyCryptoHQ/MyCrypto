@@ -1,7 +1,10 @@
+@import 'common/sass/mixins';
+
 .Identicon {
   position: relative;
   width: 4rem;
   height: 4rem;
+  @include show-tooltip-on-hover;
 
   .blockie {
     height: 100%;
@@ -18,6 +21,7 @@
     position: relative;
     padding: 0px;
     border-radius: 50%;
+
     img {
       padding: 3px;
       height: 100%;
