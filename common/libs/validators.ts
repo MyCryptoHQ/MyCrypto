@@ -130,8 +130,16 @@ export const validNumber = (num: number) => isFinite(num) && num >= 0;
 export const validPositiveNumber = (num: number) => validNumber(num) && num !== 0;
 
 export const validDecimal = (input: string, decimal: number) => {
+  const decimals: RegExpMatchArray | null = input.match(/\./g);
+
+  // Only a single decimal can exist.
+  if (decimals && decimals.length > 1) {
+    return false;
+  }
+
   const arr = input.split('.');
   const fractionPortion = arr[1];
+
   if (!fractionPortion || fractionPortion.length === 0) {
     return true;
   }

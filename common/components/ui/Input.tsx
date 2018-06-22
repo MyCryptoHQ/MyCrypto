@@ -40,16 +40,17 @@ class Input extends React.Component<Props, State> {
     const hasValue = !!this.props.value && this.props.value.toString().length > 0;
 
     // Currently we don't ever highlight valid, so go empty string instead
+    const validDueToValue = !hasValue && !showInvalidWithoutValue;
+    const validDueToBlur = !hasBlurred && !showInvalidBeforeBlur;
     let validClass = isValid ? '' : 'invalid';
-    if (isStateless) {
+
+    // Override validity based on initial conditions.
+    if (isStateless || validDueToValue || validDueToBlur) {
       validClass = '';
     }
-    if (!hasValue && !showInvalidWithoutValue) {
-      validClass = '';
-    } else if (!hasBlurred && !showInvalidBeforeBlur) {
-      validClass = '';
-    }
-    if (!hasValue && showInvalidWithoutValue) {
+
+    // Show an error with no value only after blurring.
+    if (!hasValue && showInvalidWithoutValue && !validDueToBlur) {
       validClass = 'invalid';
     }
 

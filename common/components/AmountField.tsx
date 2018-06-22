@@ -30,6 +30,7 @@ export const AmountField: React.SFC<Props> = ({
             value={raw}
             readOnly={!!readOnly}
             onChange={onChange}
+            showInvalidWithoutValue={true}
           />
           {hasSendEverything && <SendEverything />}
           {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
