@@ -50,7 +50,7 @@ class Input extends React.Component<Props, State> {
     }
 
     // Show an error with no value only after blurring.
-    if (!hasValue && showInvalidWithoutValue && !validDueToBlur) {
+    if (!isStateless && !validDueToBlur && !hasValue && showInvalidWithoutValue) {
       validClass = 'invalid';
     }
 
