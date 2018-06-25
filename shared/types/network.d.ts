@@ -1,4 +1,5 @@
 import { TAB } from 'components/Header/components/constants';
+
 type StaticNetworkIds =
   | 'ETH'
   | 'Ropsten'
