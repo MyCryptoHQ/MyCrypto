@@ -1,8 +1,9 @@
 import React from 'react';
-import { IBaseDomainRequest } from 'libs/ens';
-import { NewTabLink } from 'components/ui';
-import { ensV3Url } from 'utils/formatters';
+
 import translate from 'translations';
+import { IBaseDomainRequest } from 'libs/ens';
+import { ensV3Url } from 'utils/formatters';
+import { NewTabLink } from 'components/ui';
 
 export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
   <section className="row">

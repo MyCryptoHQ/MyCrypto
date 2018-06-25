@@ -1,5 +1,6 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+
 import { Spinner } from 'components/ui';
 import './InlineSpinner.scss';
 

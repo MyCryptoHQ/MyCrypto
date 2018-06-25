@@ -1,4 +1,3 @@
-import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
 import { TAB } from 'components/Header/components/constants';
 
 type StaticNetworkIds =
@@ -16,7 +15,9 @@ type StaticNetworkIds =
   | 'ETSC'
   | 'EGEM'
   | 'CLO'
-  | 'GO';
+  | 'RSK_TESTNET'
+  | 'GO'
+  | 'EOSC';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -83,4 +84,4 @@ interface CustomNetworkConfig {
   unsupportedTabs?: TAB[];
 }
 
-type NetworkConfig = StaticNetworksState[StaticNetworkIds] | CustomNetworksState[string];
+type NetworkConfig = CustomNetworkConfig | StaticNetworkConfig;

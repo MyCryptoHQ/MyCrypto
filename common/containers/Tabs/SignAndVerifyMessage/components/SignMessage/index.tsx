@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
+
 import translate, { translateRaw } from 'translations';
-import { signMessageRequested, TSignMessageRequested } from 'actions/message';
-import { resetWallet, TResetWallet } from 'actions/wallet';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
-import { AppState } from 'reducers';
-import SignButton from './SignButton';
-import { isWalletFullyUnlocked } from 'selectors/wallet';
-import './index.scss';
+import { AppState } from 'features/reducers';
+import { messageActions } from 'features/message';
+import { walletActions, walletSelectors } from 'features/wallet';
+import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { TextArea, CodeBlock } from 'components/ui';
+import SignButton from './SignButton';
+import './index.scss';
 
 interface Props {
   wallet: IFullWallet;
   unlocked: boolean;
-  signMessageRequested: TSignMessageRequested;
+  signMessageRequested: messageActions.TSignMessageRequested;
   signedMessage: ISignedMessage | null;
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
 }
 
 interface State {
@@ -102,10 +102,10 @@ export class SignMessage extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => ({
   signedMessage: state.message.signed,
-  unlocked: isWalletFullyUnlocked(state)
+  unlocked: walletSelectors.isWalletFullyUnlocked(state)
 });
 
 export default connect(mapStateToProps, {
-  signMessageRequested,
-  resetWallet
+  signMessageRequested: messageActions.signMessageRequested,
+  resetWallet: walletActions.resetWallet
 })(SignMessage);

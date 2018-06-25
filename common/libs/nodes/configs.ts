@@ -104,6 +104,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       url: 'https://node.expanse.tech/'
     }
   ],
+
   POA: [
     {
       name: makeNodeName('POA', 'core'),
@@ -167,12 +168,30 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  RSK_TESTNET: [
+    {
+      name: makeNodeName('RSK_TESTNET', 'rsk_testnet'),
+      type: 'rpc',
+      service: 'mycrypto.testnet.rsk.co',
+      url: 'https://mycrypto.testnet.rsk.co/'
+    }
+  ],
+
   GO: [
     {
       name: makeNodeName('GO', 'go'),
       type: 'rpc',
       service: 'gochain.io',
       url: 'https://rpc.gochain.io/'
+    }
+  ],
+
+  EOSC: [
+    {
+      name: makeNodeName('EOSC', 'eosc'),
+      type: 'rpc',
+      service: 'eos-classic.io',
+      url: 'https://node.eos-classic.io/'
     }
   ]
 };

@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import translate from 'translations';
+
 import { navigationLinks } from 'config';
+import translate from 'translations';
 import NavigationLink from 'components/NavigationLink';
 import NetworkSelect from './NetworkSelect';
 import LanguageSelect from './LanguageSelect';

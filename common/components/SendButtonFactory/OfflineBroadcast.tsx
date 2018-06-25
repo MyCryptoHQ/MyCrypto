@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AppState } from 'reducers';
-import { getOffline } from 'selectors/config';
+
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/config';
 import { NewTabLink } from 'components/ui';
 
 interface StateProps {

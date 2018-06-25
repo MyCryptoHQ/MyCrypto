@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import './Details.scss';
-import { SerializedTransaction } from 'components/renderCbs';
-import { AppState } from 'reducers';
-import { getNodeConfig } from 'selectors/config';
 import { connect } from 'react-redux';
-import { NodeConfig } from 'types/node';
-import translate from 'translations';
-import { CodeBlock, Input } from 'components/ui';
 import { addHexPrefix } from 'ethereumjs-util';
+
+import translate, { translateRaw } from 'translations';
+import { NodeConfig } from 'types/node';
+import { CodeBlock, Input } from 'components/ui';
+import { AppState } from 'features/reducers';
+import { getNodeConfig } from 'features/config';
+import { SerializedTransaction } from 'components/renderCbs';
+import './Details.scss';
 
 interface StateProps {
   node: NodeConfig;
@@ -19,12 +20,14 @@ class DetailsClass extends Component<StateProps> {
     return (
       <div className="tx-modal-details">
         <label className="input-group">
-          <div className="input-group-header">Network</div>
+          <div className="input-group-header">{translate('NETWORK')}</div>
           <Input
             isValid={true}
             showValidAsPlain={true}
             readOnly={true}
-            value={`${network} network - provided by ${service}`}
+            value={`${network} ${translateRaw('NETWORK_2')} - ${translateRaw(
+              'PROVIDED_BY'
+            )} ${service}`}
           />
         </label>
 

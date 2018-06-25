@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import './Word.scss';
+
 import { Input } from 'components/ui';
+import './Word.scss';
 
 interface Props {
   index: number;

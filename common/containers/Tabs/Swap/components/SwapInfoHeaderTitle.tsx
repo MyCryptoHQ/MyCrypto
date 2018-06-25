@@ -1,9 +1,10 @@
-import { RestartSwapAction } from 'actions/swap';
+import React, { PureComponent } from 'react';
+
+import { shapeshiftReferralURL, bitboxReferralURL } from 'config';
+import translate from 'translations';
+import { RestartSwapAction } from 'features/swap/types';
 import bityLogo from 'assets/images/logo-bity.svg';
 import shapeshiftLogo from 'assets/images/shapeshift-dark.svg';
-import { shapeshiftReferralURL, bitboxReferralURL } from 'config';
-import React, { PureComponent } from 'react';
-import translate from 'translations';
 import './SwapInfoHeader.scss';
 
 export interface SwapInfoHeaderTitleProps {

@@ -1,3 +1,6 @@
+import React from 'react';
+
+import { translateRaw } from 'translations';
 import logo from 'assets/images/logo-mycrypto.svg';
 import {
   donationAddressMap,
@@ -8,12 +11,10 @@ import {
   affiliateLinks,
   partnerLinks
 } from 'config';
-import React from 'react';
-import PreFooter from './PreFooter';
 import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
+import PreFooter from './PreFooter';
 import './index.scss';
-import { translateRaw } from 'translations';
 
 const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
   return (

@@ -1,12 +1,14 @@
-import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
+import { IV3Wallet } from 'ethereumjs-wallet';
+
+import { N_FACTOR } from 'config';
 import { generateKeystore } from 'libs/web-workers';
 import { WalletType } from '../../GenerateWallet';
 import Template from '../Template';
+import FinalSteps from '../FinalSteps';
 import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
-import FinalSteps from '../FinalSteps';
 
 export enum Steps {
   Password = 'password',
@@ -87,7 +89,7 @@ export default class GenerateKeystore extends Component<{}, State> {
   private generateWalletAndContinue = (password: string) => {
     this.setState({ isGenerating: true });
 
-    generateKeystore(password).then(res => {
+    generateKeystore(password, N_FACTOR).then(res => {
       this.setState({
         password,
         activeStep: Steps.Download,

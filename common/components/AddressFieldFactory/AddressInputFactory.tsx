@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
-import { Identicon, Spinner } from 'components/ui';
-import { Query } from 'components/renderCbs';
-import { translateRaw } from 'translations';
-import {
-  ICurrentTo,
-  getCurrentTo,
-  isValidCurrentTo,
-  isCurrentToLabelEntry
-} from 'selectors/transaction';
-import { getCurrentToLabel } from 'selectors/addressBook';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { CallbackProps } from 'components/AddressFieldFactory';
 import { addHexPrefix } from 'ethereumjs-util';
-import { getWalletInst } from 'selectors/wallet';
-import { getResolvingDomain } from 'selectors/ens';
+
+import translate, { translateRaw } from 'translations';
 import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
+import { ICurrentTo } from 'features/types';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { walletSelectors } from 'features/wallet';
+import { ensSelectors } from 'features/ens';
+import { Identicon, Spinner } from 'components/ui';
+import { Query } from 'components/renderCbs';
+import { CallbackProps } from 'components/AddressFieldFactory';
 import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 
@@ -44,7 +40,8 @@ const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress:
   rawAddress
 }) => {
   const isENS = isValidENSAddress(ensAddress);
-  const text = 'Loading ENS address...';
+  const text = translate('LOADING_ENS_ADDRESS');
+
   if (isLoading) {
     return (
       <React.Fragment>
@@ -117,21 +114,21 @@ class AddressInputFactoryClass extends Component<Props> {
 export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps) => {
   let currentTo: ICurrentTo;
   if (ownProps.isSelfAddress) {
-    const wallet = getWalletInst(state);
+    const wallet = walletSelectors.getWalletInst(state);
     const addr = wallet ? wallet.getAddressString() : '';
     currentTo = {
       raw: addr,
       value: Address(addr)
     };
   } else {
-    currentTo = getCurrentTo(state);
+    currentTo = selectors.getCurrentTo(state);
   }
 
   return {
     currentTo,
-    label: getCurrentToLabel(state),
-    isResolving: getResolvingDomain(state),
-    isValid: isValidCurrentTo(state),
-    isLabelEntry: isCurrentToLabelEntry(state)
+    label: selectors.getCurrentToLabel(state),
+    isResolving: ensSelectors.getResolvingDomain(state),
+    isValid: selectors.isValidCurrentTo(state),
+    isLabelEntry: selectors.isCurrentToLabelEntry(state)
   };
 })(AddressInputFactoryClass);

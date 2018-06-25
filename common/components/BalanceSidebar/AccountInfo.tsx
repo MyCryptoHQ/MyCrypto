@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toChecksumAddress } from 'ethereumjs-util';
-import { UnitDisplay, NewTabLink } from 'components/ui';
-import { IWallet, TrezorWallet, LedgerWallet, Balance } from 'libs/wallet';
-import translate, { translateRaw } from 'translations';
-import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig, getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
-import { NetworkConfig } from 'types/network';
-import { TRefreshAccountBalance, refreshAccountBalance } from 'actions/wallet';
+
 import { etherChainExplorerInst } from 'config/data';
-import './AccountInfo.scss';
+import translate, { translateRaw } from 'translations';
+import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig, getOffline, getChecksumAddressFn } from 'features/config';
+import { walletActions } from 'features/wallet';
+import Spinner from 'components/ui/Spinner';
+import { UnitDisplay, NewTabLink } from 'components/ui';
 import AccountAddress from './AccountAddress';
+import './AccountInfo.scss';
 
 interface OwnProps {
   wallet: IWallet;
@@ -21,6 +21,7 @@ interface StateProps {
   balance: Balance;
   network: ReturnType<typeof getNetworkConfig>;
   isOffline: ReturnType<typeof getOffline>;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 interface State {
@@ -30,7 +31,7 @@ interface State {
 }
 
 interface DispatchProps {
-  refreshAccountBalance: TRefreshAccountBalance;
+  refreshAccountBalance: walletActions.TRefreshAccountBalance;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -73,7 +74,7 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, isOffline, balance } = this.props;
+    const { network, isOffline, balance, toChecksumAddress, wallet } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
 
     let blockExplorer;
@@ -84,12 +85,11 @@ class AccountInfo extends React.Component<Props, State> {
       tokenExplorer = network.tokenExplorer;
     }
 
-    const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
       <div>
         <AccountAddress address={toChecksumAddress(address)} />
 
-        {typeof wallet.displayAddress === 'function' && (
+        {isHardwareWallet(wallet) && (
           <div className="AccountInfo-section">
             <a
               className="AccountInfo-address-hw-addr"
@@ -98,9 +98,9 @@ class AccountInfo extends React.Component<Props, State> {
                 wallet
                   .displayAddress()
                   .then(() => this.toggleConfirmAddr())
-                  .catch(e => {
+                  .catch((e: Error | string) => {
+                    console.error('Display address failed', e);
                     this.toggleConfirmAddr();
-                    throw new Error(e);
                   });
               }}
             >
@@ -192,12 +192,19 @@ class AccountInfo extends React.Component<Props, State> {
   }
 }
 
+function isHardwareWallet(wallet: IWallet): wallet is HardwareWallet {
+  return typeof (wallet as any).displayAddress === 'function';
+}
+
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
     network: getNetworkConfig(state),
-    isOffline: getOffline(state)
+    isOffline: getOffline(state),
+    toChecksumAddress: getChecksumAddressFn(state)
   };
 }
-const mapDispatchToProps: DispatchProps = { refreshAccountBalance };
+const mapDispatchToProps: DispatchProps = {
+  refreshAccountBalance: walletActions.refreshAccountBalance
+};
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

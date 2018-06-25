@@ -1,6 +1,8 @@
-import removeIcon from 'assets/images/icon-remove.svg';
 import React from 'react';
+
+import { translateRaw } from 'translations';
 import { TokenValue } from 'libs/units';
+import removeIcon from 'assets/images/icon-remove.svg';
 import { UnitDisplay } from 'components/ui';
 import './TokenRow.scss';
 
@@ -57,9 +59,9 @@ export default class TokenRow extends React.PureComponent<Props, State> {
           {!!custom && (
             <img
               src={removeIcon}
-              alt="Remove"
+              alt={translateRaw('REMOVE')}
               className="TokenRow-symbol-remove"
-              title="Remove Token"
+              title={translateRaw('REMOVE_TOKEN')}
               onClick={this.onRemove}
               tabIndex={0}
             />
