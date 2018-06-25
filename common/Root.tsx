@@ -92,7 +92,7 @@ class RootClass extends Component<Props, State> {
           {process.env.NODE_ENV !== 'production' && (
             <Route path="/dev/palette" component={PalettePage} exact={true} />
           )}
-          <RedirectWithQuery exactArg={true} from="/" to="/account" />
+          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
