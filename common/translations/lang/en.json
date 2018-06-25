@@ -658,6 +658,7 @@
     "YOU_ARE_INTERACTING": "You are interacting with the",
     "PAYMENT_ID": "Payment ID:",
     "PAYMENT_ID_WARNING": "Don't forget to send your XMR with this payment ID, or you will lose your money!",
-    "WHAT_IS_PAYMENT_ID": "what's a payment ID?"
+    "WHAT_IS_PAYMENT_ID": "what's a payment ID?",
+    "U2F_NOT_SUPPORTED": "The U2F standard that hardware wallets use does not seem to be supported by your browser. Please try again using Google Chrome."
   }
 }
