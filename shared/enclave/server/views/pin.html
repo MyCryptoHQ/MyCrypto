@@ -56,11 +56,6 @@
       var clear = document.querySelector('.pin-clear');
       var close = document.querySelector('.close');
 
-      var closeWindow = function() {
-        var window = remote.getCurrentWindow();
-        window.close();
-      }
-
       pinButtons.forEach(function(el) {
         el.addEventListener('click', function(ev) {
           pin.push(ev.currentTarget.getAttribute('data-number'));
@@ -75,12 +70,12 @@
 
       unlock.addEventListener('click', function() {
         if (!pin.length) return;
-        ipcRenderer.send('${EVENT}', pin.join(''));
-        closeWindow();
+        ipcRenderer.send('$EVENT', pin.join(''));
       });
 
       close.addEventListener('click', function() {
-        closeWindow();
+        var window = remote.getCurrentWindow();
+        window.close();
       });
     </script>
 
@@ -135,9 +130,11 @@
         transition: all 120ms ease;
         opacity: 0.4;
       }
-      .pin-button:hover,
-      .pin-button:active {
+      .pin-button:hover {
         opacity: 0.8;
+      }
+      .pin-button:active {
+        opacity: 1;
       }
       .pin-button:after {
         content: '';
@@ -177,9 +174,11 @@
         border: 2px solid;
         opacity: 0.6;
       }
-      .pin-clear:hover,
-      .pin-clear:active {
+      .pin-clear:hover {
         opacity: 0.8;
+      }
+      .pin-clear:active {
+        opacity: 1;
       }
       .pin-unlock {
         width: 100%;
@@ -192,9 +191,11 @@
         text-transform: uppercase;
         letter-spacing: 1.2px;
       }
-      .pin-unlock:hover,
-      .pin-unlock:active {
+      .pin-unlock:hover {
         opacity: 0.8;
+      }
+      .pin-unlock:active {
+        opacity: 1;
       }
 
       .close {
