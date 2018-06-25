@@ -101,6 +101,7 @@ class RequestPayment extends React.Component<Props, {}> {
               <AmountField
                 hasUnitDropdown={true}
                 showAllTokens={true}
+                customValidator={isValidAmount(decimal)}
                 showInvalidWithoutValue={true}
               />
             </div>
