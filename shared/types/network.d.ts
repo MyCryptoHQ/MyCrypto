@@ -15,7 +15,8 @@ type StaticNetworkIds =
   | 'CLO'
   | 'RSK_TESTNET'
   | 'GO'
-  | 'EOSC';
+  | 'EOSC'
+  | 'ESN';
 
 export interface BlockExplorerConfig {
   name: string;
