@@ -10,13 +10,15 @@ interface Props {
   hasSendEverything?: boolean;
   showAllTokens?: boolean;
   customValidator?(rawAmount: string): boolean;
+  showInvalidWithoutValue?: boolean;
 }
 
 export const AmountField: React.SFC<Props> = ({
   hasUnitDropdown,
   hasSendEverything,
   showAllTokens,
-  customValidator
+  customValidator,
+  showInvalidWithoutValue
 }) => (
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
@@ -30,7 +32,7 @@ export const AmountField: React.SFC<Props> = ({
             value={raw}
             readOnly={!!readOnly}
             onChange={onChange}
-            showInvalidWithoutValue={true}
+            showInvalidWithoutValue={showInvalidWithoutValue}
           />
           {hasSendEverything && <SendEverything />}
           {hasUnitDropdown && <UnitDropDown showAllTokens={showAllTokens} />}
