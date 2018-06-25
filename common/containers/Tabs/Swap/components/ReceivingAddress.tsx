@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 
-import { donationAddressMap } from 'config';
+import { donationAddressMap, WhitelistedCoins } from 'config';
 import translate, { translateRaw } from 'translations';
-import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
+import { isValidBTCAddress, isValidETHAddress, isValidXMRAddress } from 'libs/validators';
 import { combineAndUpper } from 'utils/formatters';
 import { SwapInput } from 'features/swap/types';
 import {
@@ -18,7 +18,7 @@ import './ReceivingAddress.scss';
 
 export interface StateProps {
   origin: SwapInput;
-  destinationId: keyof typeof donationAddressMap;
+  destinationId: WhitelistedCoins;
   isPostingOrder: boolean;
   destinationAddress: string;
   destinationKind: number;
@@ -62,13 +62,14 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
 
   public render() {
     const { destinationId, destinationAddress, isPostingOrder } = this.props;
-    let validAddress;
-    // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
-    if (destinationId === 'BTC') {
-      validAddress = isValidBTCAddress(destinationAddress);
-    } else {
-      validAddress = isValidETHAddress(destinationAddress);
-    }
+    const addressValidators: { [coinOrToken: string]: (address: string) => boolean } = {
+      BTC: isValidBTCAddress,
+      XMR: isValidXMRAddress,
+      ETH: isValidETHAddress
+    };
+    // If there is no matching validator for the ID, assume it's a token and use ETH.
+    const addressValidator = addressValidators[destinationId] || addressValidators.ETH;
+    const validAddress = addressValidator(destinationAddress);
 
     return (
       <section className="SwapAddress block">

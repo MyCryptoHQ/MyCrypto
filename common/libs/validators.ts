@@ -59,6 +59,12 @@ export function isValidBTCAddress(address: string): boolean {
   return WalletAddressValidator.validate(address, 'BTC');
 }
 
+export function isValidXMRAddress(address: string): boolean {
+  return !!address.match(
+    /4[0-9AB][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{93}/
+  );
+}
+
 export function isValidHex(str: string): boolean {
   if (str === '') {
     return true;

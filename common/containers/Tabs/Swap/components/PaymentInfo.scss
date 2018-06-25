@@ -1,5 +1,5 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .SwapPayment {
   text-align: center;
@@ -17,6 +17,19 @@
   @media screen and (max-width: $screen-sm) {
     h1 {
       font-size: $font-size-base;
+    }
+  }
+
+  &-payment-id {
+    max-width: 620px;
+    margin: $space auto 0;
+
+    h2 {
+      font-weight: bolder;
+    }
+    a {
+      margin-left: $space;
+      font-size: $font-size-small;
     }
   }
 }

@@ -42,7 +42,9 @@ export const INITIAL_STATE: types.SwapState = {
   paymentAddress: null,
   validFor: null,
   orderId: null,
-  showLiteSend: false
+  showLiteSend: false,
+  paymentId: null,
+  xmrPaymentAddress: null
 };
 
 export function swapReducer(state: types.SwapState = INITIAL_STATE, action: types.SwapAction) {
@@ -151,8 +153,8 @@ export function swapReducer(state: types.SwapState = INITIAL_STATE, action: type
       };
     case types.SwapActions.SHAPESHIFT_ORDER_CREATE_SUCCEEDED:
       const currDate = Date.now();
-
       const secondsRemaining = Math.floor((+new Date(action.payload.expiration) - currDate) / 1000);
+
       return {
         ...state,
         shapeshiftOrder: {
@@ -166,7 +168,10 @@ export function swapReducer(state: types.SwapState = INITIAL_STATE, action: type
         orderTimestampCreatedISOString: new Date(currDate).toISOString(),
         paymentAddress: action.payload.deposit,
         shapeshiftOrderStatus: 'no_deposits',
-        orderId: action.payload.orderId
+        orderId: action.payload.orderId,
+        // For XMR swaps
+        paymentId: action.payload.deposit,
+        xmrPaymentAddress: action.payload.sAddress
       };
     case types.SwapActions.BITY_ORDER_STATUS_SUCCEEDED:
       return {

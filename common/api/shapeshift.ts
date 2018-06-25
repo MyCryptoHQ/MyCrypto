@@ -26,7 +26,7 @@ export const SHAPESHIFT_TOKEN_WHITELIST = [
   'TRST',
   'GUP'
 ];
-export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC', 'BTC'];
+export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC', 'BTC', 'XMR'];
 
 interface IPairData {
   limit: number;
