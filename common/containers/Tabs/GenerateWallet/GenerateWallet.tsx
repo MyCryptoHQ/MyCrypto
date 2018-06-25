@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
+
+import TabSection from 'containers/TabSection';
+import { RouteNotFound } from 'components/RouteNotFound';
 import Keystore from './components/Keystore';
 import Mnemonic from './components/Mnemonic';
 import WalletTypes from './components/WalletTypes';
 import CryptoWarning from './components/CryptoWarning';
-import TabSection from 'containers/TabSection';
-import { RouteComponentProps } from 'react-router-dom';
-import { Route, Switch } from 'react-router';
-import { RouteNotFound } from 'components/RouteNotFound';
 
 export enum WalletType {
   Keystore = 'keystore',

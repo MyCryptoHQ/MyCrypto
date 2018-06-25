@@ -1,17 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { translateRaw } from 'translations';
+import { AppState } from 'features/reducers';
+import { TToggleAutoGasLimit, toggleAutoGasLimit, getAutoGasLimitEnabled } from 'features/config';
+import { scheduleSelectors } from 'features/schedule';
+import { transactionFieldsActions, transactionSelectors } from 'features/transaction';
+import { NonceField, GasLimitField, DataField } from 'components';
+import { Input } from 'components/ui';
 import FeeSummary, { RenderData } from './FeeSummary';
 import './AdvancedGas.scss';
-import { TToggleAutoGasLimit, toggleAutoGasLimit } from 'actions/config';
-import { AppState } from 'reducers';
-import { TInputGasPrice } from 'actions/transaction';
-import { NonceField, GasLimitField, DataField } from 'components';
-import { connect } from 'react-redux';
-import { getAutoGasLimitEnabled } from 'selectors/config';
-import { isValidGasPrice } from 'selectors/transaction';
-import { Input } from 'components/ui';
-import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { getScheduleGasPrice, getTimeBounty } from 'selectors/schedule';
 
 export interface AdvancedOptions {
   gasPriceField?: boolean;
@@ -22,7 +21,7 @@ export interface AdvancedOptions {
 }
 
 interface OwnProps {
-  inputGasPrice: TInputGasPrice;
+  inputGasPrice: transactionFieldsActions.TInputGasPrice;
   gasPrice: AppState['transaction']['fields']['gasPrice'];
   options?: AdvancedOptions;
   scheduling?: boolean;
@@ -185,9 +184,9 @@ class AdvancedGas extends React.Component<Props, State> {
 export default connect(
   (state: AppState) => ({
     autoGasLimitEnabled: getAutoGasLimitEnabled(state),
-    scheduleGasPrice: getScheduleGasPrice(state),
-    timeBounty: getTimeBounty(state),
-    validGasPrice: isValidGasPrice(state)
+    scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state),
+    timeBounty: scheduleSelectors.getTimeBounty(state),
+    validGasPrice: transactionSelectors.isValidGasPrice(state)
   }),
   { toggleAutoGasLimit }
 )(AdvancedGas);

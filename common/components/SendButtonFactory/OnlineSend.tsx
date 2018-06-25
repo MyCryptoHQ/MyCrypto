@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
+
+import { AppState } from 'features/reducers';
+import * as derivedSelectors from 'features/selectors';
+import { getOffline } from 'features/config';
 import {
-  getCurrentTransactionStatus,
-  currentTransactionBroadcasted,
-  signaturePending,
-  getSignedTx,
-  getWeb3Tx
-} from 'selectors/transaction';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { ITransactionStatus } from 'reducers/transaction/broadcast';
-import { TSignTransactionRequested, signTransactionRequested } from 'actions/transaction';
+  transactionBroadcastTypes,
+  transactionSignActions,
+  transactionSignSelectors,
+  transactionSelectors
+} from 'features/transaction';
+import { notificationsActions } from 'features/notifications';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {
   offline: boolean;
-  currentTransaction: false | ITransactionStatus | null;
+  currentTransaction: false | transactionBroadcastTypes.ITransactionStatus | null;
   transactionBroadcasted: boolean;
   signaturePending: boolean;
   signedTx: boolean;
@@ -27,9 +26,8 @@ interface State {
 }
 
 interface DispatchProps {
-  showNotification: TShowNotification;
-
-  signTransactionRequested: TSignTransactionRequested;
+  showNotification: notificationsActions.TShowNotification;
+  signTransactionRequested: transactionSignActions.TSignTransactionRequested;
 }
 
 interface OwnProps {
@@ -90,10 +88,14 @@ class OnlineSendClass extends Component<Props, State> {
 export const OnlineSend = connect(
   (state: AppState) => ({
     offline: getOffline(state),
-    currentTransaction: getCurrentTransactionStatus(state),
-    transactionBroadcasted: currentTransactionBroadcasted(state),
-    signaturePending: signaturePending(state).isSignaturePending,
-    signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
+    currentTransaction: transactionSelectors.getCurrentTransactionStatus(state),
+    transactionBroadcasted: transactionSelectors.currentTransactionBroadcasted(state),
+    signaturePending: derivedSelectors.signaturePending(state).isSignaturePending,
+    signedTx:
+      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state)
   }),
-  { showNotification, signTransactionRequested }
+  {
+    showNotification: notificationsActions.showNotification,
+    signTransactionRequested: transactionSignActions.signTransactionRequested
+  }
 )(OnlineSendClass);

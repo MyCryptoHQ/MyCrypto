@@ -1,8 +1,9 @@
 import React from 'react';
+
 import translate from 'translations';
-import { Identicon, UnitDisplay, NewTabLink, Address, CodeBlock } from 'components/ui';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
 import { NetworkConfig } from 'types/network';
+import { Identicon, UnitDisplay, NewTabLink, Address, CodeBlock } from 'components/ui';
 import './TransactionDataTable.scss';
 
 interface TableRow {

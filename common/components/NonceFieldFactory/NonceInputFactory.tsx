@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Query } from 'components/renderCbs';
-import { getNonce, nonceRequestFailed } from 'selectors/transaction';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
+
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/config';
+import { transactionFieldsSelectors, transactionNetworkSelectors } from 'features/transaction';
 import { CallbackProps } from 'components/NonceFieldFactory';
+import { Query } from 'components/renderCbs';
 
 interface OwnProps {
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
@@ -34,6 +35,6 @@ class NonceInputFactoryClass extends Component<Props> {
 }
 
 export const NonceInputFactory = connect((state: AppState) => ({
-  shouldDisplay: getOffline(state) || nonceRequestFailed(state),
-  nonce: getNonce(state)
+  shouldDisplay: getOffline(state) || transactionNetworkSelectors.nonceRequestFailed(state),
+  nonce: transactionFieldsSelectors.getNonce(state)
 }))(NonceInputFactoryClass);

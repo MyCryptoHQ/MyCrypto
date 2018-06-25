@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-import translate from 'translations';
-import './InteractExplorer.scss';
-import { TShowNotification, showNotification } from 'actions/notifications';
-import { getNodeLib } from 'selectors/config';
-import { getTo, getDataExists } from 'selectors/transaction';
-import { GenerateTransaction } from 'components/GenerateTransaction';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { Fields } from './components';
-import {
-  setDataField,
-  resetTransactionRequested,
-  TSetDataField,
-  TResetTransactionRequested,
-  TSetAsContractInteraction,
-  TSetAsViewAndSend,
-  setAsContractInteraction,
-  setAsViewAndSend
-} from 'actions/transaction';
-import { Data } from 'libs/units';
-import { Input, Dropdown } from 'components/ui';
-import { INode } from 'libs/nodes';
 import { bufferToHex } from 'ethereumjs-util';
+
+import translate from 'translations';
+import { Data } from 'libs/units';
+import { INode } from 'libs/nodes';
+import { AppState } from 'features/reducers';
+import { getNodeLib } from 'features/config';
+import { notificationsActions } from 'features/notifications';
+import {
+  transactionFieldsActions,
+  transactionFieldsSelectors,
+  transactionMetaActions,
+  transactionSelectors
+} from 'features/transaction';
+import { GenerateTransaction } from 'components/GenerateTransaction';
+import { Input, Dropdown } from 'components/ui';
+import { Fields } from './components';
+import './InteractExplorer.scss';
 
 interface StateProps {
   nodeLib: INode;
@@ -30,11 +26,11 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  showNotification: TShowNotification;
-  setDataField: TSetDataField;
-  resetTransactionRequested: TResetTransactionRequested;
-  setAsContractInteraction: TSetAsContractInteraction;
-  setAsViewAndSend: TSetAsViewAndSend;
+  showNotification: notificationsActions.TShowNotification;
+  setDataField: transactionFieldsActions.TSetDataField;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
+  setAsContractInteraction: transactionMetaActions.TSetAsContractInteraction;
+  setAsViewAndSend: transactionMetaActions.TSetAsViewAndSend;
 }
 
 interface OwnProps {
@@ -128,13 +124,20 @@ class InteractExplorerClass extends Component<Props, State> {
         {selectedFunction && (
           <div key={selectedFunction.name} className="InteractExplorer-func">
             {/* TODO: Use reusable components with validation */}
-            {selectedFunction.contract.inputs.map(input => {
+            {selectedFunction.contract.inputs.map((input, index) => {
               const { type, name } = input;
-              const inputState = this.state.inputs[name];
+              // if name is not supplied to arg, use the index instead
+              // since that's what the contract ABI function factory subsitutes for the name
+              // if it is undefined
+              const parsedName = name === '' ? index : name;
+
+              const inputState = this.state.inputs[parsedName];
               return (
-                <div key={name} className="input-group-wrapper InteractExplorer-func-in">
+                <div key={parsedName} className="input-group-wrapper InteractExplorer-func-in">
                   <label className="input-group">
-                    <div className="input-group-header">{name + ' ' + type}</div>
+                    <div className="input-group-header">
+                      {(parsedName === index ? `Input#${parsedName}` : parsedName) + ' ' + type}
+                    </div>
                     {type === 'bool' ? (
                       <Dropdown
                         options={[{ value: false, label: 'false' }, { value: true, label: 'true' }]}
@@ -148,15 +151,15 @@ class InteractExplorerClass extends Component<Props, State> {
                         }
                         clearable={false}
                         onChange={({ value }: { value: boolean }) => {
-                          this.handleBooleanDropdownChange({ value, name });
+                          this.handleBooleanDropdownChange({ value, name: parsedName });
                         }}
                       />
                     ) : (
                       <Input
                         className="InteractExplorer-func-in-input"
-                        isValid={!!(inputs[name] && inputs[name].rawData)}
-                        name={name}
-                        value={(inputs[name] && inputs[name].rawData) || ''}
+                        isValid={!!(inputs[parsedName] && inputs[parsedName].rawData)}
+                        name={parsedName}
+                        value={(inputs[parsedName] && inputs[parsedName].rawData) || ''}
                         onChange={this.handleInputChange}
                       />
                     )}
@@ -314,14 +317,14 @@ class InteractExplorerClass extends Component<Props, State> {
 export const InteractExplorer = connect(
   (state: AppState) => ({
     nodeLib: getNodeLib(state),
-    to: getTo(state),
-    dataExists: getDataExists(state)
+    to: transactionFieldsSelectors.getTo(state),
+    dataExists: transactionSelectors.getDataExists(state)
   }),
   {
-    showNotification,
-    setDataField,
-    resetTransactionRequested,
-    setAsContractInteraction,
-    setAsViewAndSend
+    showNotification: notificationsActions.showNotification,
+    setDataField: transactionFieldsActions.setDataField,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+    setAsContractInteraction: transactionMetaActions.setAsContractInteraction,
+    setAsViewAndSend: transactionMetaActions.setAsViewAndSend
   }
 )(InteractExplorerClass);

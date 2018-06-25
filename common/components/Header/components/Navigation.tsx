@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import NavigationLink from 'components/NavigationLink';
+
 import { navigationLinks } from 'config';
+import NavigationLink from 'components/NavigationLink';
 import './Navigation.scss';
 
 interface Props {

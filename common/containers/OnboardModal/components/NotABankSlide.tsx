@@ -1,7 +1,8 @@
 import React from 'react';
+
 import translate from 'translations';
-import OnboardSlide from './OnboardSlide';
 import onboardIconTwo from 'assets/images/onboarding/slide-02.svg';
+import OnboardSlide from './OnboardSlide';
 
 const NotABankSlide = () => {
   const header = translate('ONBOARD_BANK_TITLE');

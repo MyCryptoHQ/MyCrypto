@@ -1,12 +1,13 @@
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { createMockStore } from 'redux-test-utils';
+
+import { configReducer } from 'features/config/reducer';
+import { INITIAL_STATE as swap } from 'features/swap/reducer';
 import Swap from 'containers/Tabs/Swap';
 import shallowWithStore from '../utils/shallowWithStore';
-import { createMockStore } from 'redux-test-utils';
-import { INITIAL_STATE as swap } from 'reducers/swap';
-import { config } from 'reducers/config';
-import { RouteComponentProps } from 'react-router';
 import { createMockRouteComponentProps } from '../utils/mockRouteComponentProps';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -22,7 +23,7 @@ const routeProps: RouteComponentProps<any> = createMockRouteComponentProps({
 });
 
 it('render snapshot', () => {
-  const store = createMockStore({ swap, config: config(undefined as any, {} as any) });
+  const store = createMockStore({ swap, config: configReducer(undefined as any, {} as any) });
   const component = shallowWithStore(<Swap {...routeProps} />, store);
 
   expect(component).toMatchSnapshot();

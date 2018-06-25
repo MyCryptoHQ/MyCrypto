@@ -1,9 +1,9 @@
-import { NormalizedRates } from 'reducers/swap/types';
 import React, { Component } from 'react';
-import { toFixedIfLarger } from 'utils/formatters';
-import './CurrentRates.scss';
-import { ProviderName } from 'actions/swap';
+
 import { objectContainsObjectKeys } from 'utils/helpers';
+import { toFixedIfLarger } from 'utils/formatters';
+import { NormalizedRates, ProviderName } from 'features/swap/types';
+import './CurrentRates.scss';
 
 interface RateInputProps {
   rate: number;

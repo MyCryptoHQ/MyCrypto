@@ -1,6 +1,8 @@
-import abi from 'ethereumjs-abi';
-import { toChecksumAddress, addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
+import abi from 'ethereumjs-abi';
+import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
+
+import { toChecksumAddressByChainId } from 'utils/formatters';
 import {
   FuncParams,
   FunctionOutputMappings,
@@ -33,7 +35,7 @@ export default class AbiFunction {
     return encodedCall;
   };
 
-  public decodeInput = (argString: string) => {
+  public decodeInput = (argString: string, chainId: number) => {
     // Remove method selector from data, if present
     argString = argString.replace(addHexPrefix(this.methodSelector), '');
     // Convert argdata to a hex buffer for ethereumjs-abi
@@ -46,12 +48,12 @@ export default class AbiFunction {
       const currType = this.inputTypes[index];
       return {
         ...argObj,
-        [currName]: this.parsePostDecodedValue(currType, currArg)
+        [currName]: this.parsePostDecodedValue(currType, currArg, chainId)
       };
     }, {});
   };
 
-  public decodeOutput = (argString: string) => {
+  public decodeOutput = (argString: string, chainId: number) => {
     // Remove method selector from data, if present
     argString = argString.replace(addHexPrefix(this.methodSelector), '');
 
@@ -69,25 +71,25 @@ export default class AbiFunction {
       const currType = this.outputTypes[index];
       return {
         ...argObj,
-        [currName]: this.parsePostDecodedValue(currType, currArg)
+        [currName]: this.parsePostDecodedValue(currType, currArg, chainId)
       };
     }, {});
   };
 
   private init(outputMappings: FunctionOutputMappings = []) {
-    this.funcParams = this.makeFuncParams();
     //TODO: do this in O(n)
     this.inputTypes = this.inputs.map(({ type }) => type);
     this.outputTypes = this.outputs.map(({ type }) => type);
-    this.inputNames = this.inputs.map(({ name }) => name);
+    this.inputNames = this.inputs.map(({ name }, i) => name || `${i}`);
     this.outputNames = this.outputs.map(({ name }, i) => outputMappings[i] || name || `${i}`);
+    this.funcParams = this.makeFuncParams();
 
     this.methodSelector = abi.methodID(this.name, this.inputTypes).toString('hex');
   }
 
-  private parsePostDecodedValue = (type: string, value: any) => {
+  private parsePostDecodedValue = (type: string, value: any, chainId: number) => {
     const valueMapping: ITypeMapping = {
-      address: (val: any) => toChecksumAddress(val.toString(16))
+      address: (val: any) => toChecksumAddressByChainId(val.toString(16), chainId)
     };
 
     const mapppedType = valueMapping[type];
@@ -103,8 +105,11 @@ export default class AbiFunction {
   };
 
   private makeFuncParams = () =>
-    this.inputs.reduce((accumulator, currInput) => {
-      const { name, type } = currInput;
+    this.inputs.reduce((accumulator, _, idx) => {
+      // use our properties over this.inputs since the names can be modified
+      // if the input names are undefined
+      const name = this.inputNames[idx];
+      const type = this.inputTypes[idx];
       const inputHandler = (inputToParse: any) =>
         //TODO: introduce typechecking and typecasting mapping for inputs
         ({ name, type, value: this.parsePreEncodedValue(type, inputToParse) });

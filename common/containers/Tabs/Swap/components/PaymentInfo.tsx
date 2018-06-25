@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
+
 import translate from 'translations';
-import { SwapInput } from 'reducers/swap/types';
-import './PaymentInfo.scss';
+import { SwapInput } from 'features/swap/types';
 import { Input } from 'components/ui';
+import './PaymentInfo.scss';
 
 export interface Props {
   origin: SwapInput;

@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
+import { AppState } from 'features/reducers';
+import { getNodeConfig, getSelectedNodeLabel } from 'features/config';
 import { DropdownShell } from 'components/ui';
 import NetworkSelector from 'components/NetworkSelector';
-import { getNodeConfig, getSelectedNodeLabel } from 'selectors/config';
-import { AppState } from 'reducers';
 import './NetworkDropdown.scss';
 
 interface OwnProps {
