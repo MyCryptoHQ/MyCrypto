@@ -9,8 +9,8 @@ interface Props {
   hasUnitDropdown?: boolean;
   hasSendEverything?: boolean;
   showAllTokens?: boolean;
-  customValidator?(rawAmount: string): boolean;
   showInvalidWithoutValue?: boolean;
+  customValidator?(rawAmount: string): boolean;
 }
 
 export const AmountField: React.SFC<Props> = ({
