@@ -42,6 +42,8 @@ export default async function handleMetaMaskPolling(store: Store<AppState>) {
           3000
         )
       );
+
+      return true;
     }
   } catch (error) {
     store.dispatch(walletActions.resetWallet());
@@ -52,5 +54,9 @@ export default async function handleMetaMaskPolling(store: Store<AppState>) {
         3000
       )
     );
+
+    return true;
   }
+
+  return false;
 }
