@@ -91,7 +91,6 @@ window.addEventListener('load', () => {
   });
 });
 
-// See: https://medium.com/metamask/breaking-change-no-longer-reloading-pages-on-network-change-4a3e1fd2f5e7
 setInterval(handleMetaMaskPolling.bind(null, store), METAMASK_POLLING_INTERVAL);
 
 export default store;
