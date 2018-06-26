@@ -324,7 +324,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
   EGEM: {
     id: 'EGEM',
     name: 'EtherGem',
-    unit: 'EGT',
+    unit: 'EGEM',
     chainId: 1987,
     isCustom: false,
     color: '#D0F7FF',
