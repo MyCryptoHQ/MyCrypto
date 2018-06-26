@@ -3,16 +3,20 @@ import React from 'react';
 import './Warning.scss';
 
 interface WarningProps {
-  children: any;
+  highlighted?: boolean;
 }
 
-export default function Warning(props: WarningProps) {
+const Warning: React.SFC<WarningProps> = ({ highlighted, children }) => {
+  const className = `Warning ${highlighted ? 'highlighted' : ''}`;
+
   return (
-    <section className="Warning">
+    <section className={className}>
       <section className="Warning-icon">
         <i className="fa fa-exclamation-triangle" />
       </section>
-      <section className="Warning-content">{props.children}</section>
+      <section className="Warning-content">{children}</section>
     </section>
   );
-}
+};
+
+export default Warning;

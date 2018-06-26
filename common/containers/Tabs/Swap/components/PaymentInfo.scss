@@ -2,16 +2,22 @@
 @import 'common/sass/mixins';
 
 .SwapPayment {
-  text-align: center;
+  > * {
+    margin: $space auto 0;
+    width: 100%;
+    max-width: 620px;
+  }
+
+  h4 {
+    margin: 0.5rem 0;
+  }
 
   &-address {
+    @include mono;
+
     display: block;
-    margin: $space auto 0;
-    max-width: 620px;
-    width: 100%;
     font-size: $font-size-medium;
     text-align: center;
-    @include mono;
   }
 
   @media screen and (max-width: $screen-sm) {
@@ -21,15 +27,13 @@
   }
 
   &-payment-id {
-    max-width: 620px;
-    margin: $space auto 0;
-
     h2 {
       font-weight: bolder;
     }
-    a {
-      margin-left: $space;
+
+    &-link {
       font-size: $font-size-small;
+      text-align: right;
     }
   }
 }

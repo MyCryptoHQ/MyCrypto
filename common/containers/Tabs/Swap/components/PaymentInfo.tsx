@@ -20,6 +20,17 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
 
     return (
       <section className="SwapPayment">
+        {isXMRSwap && (
+          <section className="SwapPayment-payment-id">
+            <h2>{translate('USING_PAYMENT_ID')}</h2>
+            <Input
+              className="SwapPayment-address"
+              isValid={!!paymentId}
+              value={paymentId || undefined}
+              disabled={true}
+            />
+          </section>
+        )}
         <h2>
           {translate('SWAP_SEND_TO', {
             $origin_amount: origin.amount.toString(),
@@ -32,27 +43,9 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
             disabled={true}
           />
         </h2>
-        {isXMRSwap && (
-          <section className="SwapPayment-payment-id">
-            <h2>{translate('PAYMENT_ID')}</h2>
-            <Warning>
-              <h4>{translate('PAYMENT_ID_WARNING')}</h4>
-              <a
-                href="https://getmonero.org/resources/moneropedia/paymentid.html"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {translate('WHAT_IS_PAYMENT_ID')}
-              </a>
-            </Warning>
-            <Input
-              className="SwapPayment-address"
-              isValid={!!paymentId}
-              value={paymentId || undefined}
-              disabled={true}
-            />
-          </section>
-        )}
+        <Warning highlighted={true}>
+          <h4>{translate('PAYMENT_ID_WARNING')}</h4>
+        </Warning>
       </section>
     );
   }

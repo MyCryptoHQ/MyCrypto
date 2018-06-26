@@ -12,6 +12,10 @@
   box-shadow: 0 1px 1px 1px rgba(#000, 0.12);
   margin-bottom: $space;
 
+  &.highlighted {
+    background-color: lighten($brand-danger, 30%);
+  }
+
   &-icon {
     display: flex;
     flex-direction: column;
