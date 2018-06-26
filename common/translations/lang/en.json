@@ -656,6 +656,8 @@
     "NETWORK_2": "network",
     "PROVIDED_BY": "provided by",
     "YOU_ARE_INTERACTING": "You are interacting with the",
-    "U2F_NOT_SUPPORTED": "The U2F standard that hardware wallets use does not seem to be supported by your browser. Please try again using Google Chrome."
+    "U2F_NOT_SUPPORTED": "The U2F standard that hardware wallets use does not seem to be supported by your browser. Please try again using Google Chrome.",
+    "DETECTED_METAMASK_NETWORK_CHANGE": "Detected a change in MetaMask's network.",
+    "METAMASK_NETWORK_VERIFY_ERROR": "An error occurred while verifying network status with MetaMask."
   }
 }

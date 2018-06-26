@@ -6,8 +6,9 @@ import { INode } from 'libs/nodes/INode';
 import { IFullWallet } from '../IWallet';
 
 export default class Web3Wallet implements IFullWallet {
+  public network: string;
+
   private address: string;
-  private network: string;
 
   constructor(address: string, network: string) {
     this.address = address;
