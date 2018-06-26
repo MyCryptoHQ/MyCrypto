@@ -15,6 +15,7 @@ interface Props {
   isOpen?: boolean;
   title?: React.ReactNode;
   disableButtons?: boolean;
+  hideButtons?: boolean;
   children: React.ReactNode;
   buttons?: IButton[];
   maxWidth?: number;
@@ -56,7 +57,16 @@ export default class Modal extends PureComponent<Props, {}> {
   }
 
   public render() {
-    const { isOpen, title, children, buttons, disableButtons, handleClose, maxWidth } = this.props;
+    const {
+      isOpen,
+      title,
+      children,
+      buttons,
+      disableButtons,
+      hideButtons,
+      handleClose,
+      maxWidth
+    } = this.props;
     const hasButtons = buttons && buttons.length;
     const modalStyle: ModalStyle = {};
 
@@ -72,6 +82,7 @@ export default class Modal extends PureComponent<Props, {}> {
       hasButtons,
       buttons,
       disableButtons,
+      hideButtons,
       handleClose
     };
 
