@@ -56,7 +56,7 @@ export default class Modal extends PureComponent<Props, {}> {
   }
 
   public render() {
-    const { isOpen, title, children, buttons, handleClose, maxWidth } = this.props;
+    const { isOpen, title, children, buttons, disableButtons, handleClose, maxWidth } = this.props;
     const hasButtons = buttons && buttons.length;
     const modalStyle: ModalStyle = {};
 
@@ -65,7 +65,15 @@ export default class Modal extends PureComponent<Props, {}> {
       modalStyle.maxWidth = `${maxWidth}px`;
     }
 
-    const modalBodyProps = { title, children, modalStyle, hasButtons, buttons, handleClose };
+    const modalBodyProps = {
+      title,
+      children,
+      modalStyle,
+      hasButtons,
+      buttons,
+      disableButtons,
+      handleClose
+    };
 
     const modal = (
       <TransitionGroup>
