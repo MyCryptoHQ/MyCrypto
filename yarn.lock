@@ -7635,34 +7635,6 @@ mycrypto-shepherd@1.4.0:
     remote-redux-devtools "^0.5.12"
     url-search-params "^0.10.0"
 
-mycrypto-trezor-link@1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/mycrypto-trezor-link/-/mycrypto-trezor-link-1.5.1.tgz#1d0b13bd854022dcd9960062d04f8d9e7b4c67c0"
-  dependencies:
-    bigi "^1.4.1"
-    bitcoinjs-lib-zcash "^3.0.0"
-    ecurve "^1.0.3"
-    json-stable-stringify "^1.0.1"
-    node-fetch "^1.6.0"
-    object.values "^1.0.3"
-    protobufjs-old-fixed-webpack "3.8.5"
-    semver-compare "^1.0.0"
-    whatwg-fetch "0.11.0"
-
-mycrypto-trezor.js@6.17.5:
-  version "6.17.5"
-  resolved "https://registry.yarnpkg.com/mycrypto-trezor.js/-/mycrypto-trezor.js-6.17.5.tgz#f92cf11e614aa813814f8e444f459f02bf7ce906"
-  dependencies:
-    bchaddrjs "^0.2.1"
-    bitcoinjs-lib-zcash "^3.3.2"
-    ecurve "^1.0.2"
-    mycrypto-trezor-link "1.5.1"
-    node-fetch "^1.6.0"
-    randombytes "^2.0.1"
-    semver-compare "1.0.0"
-    unorm "^1.3.3"
-    whatwg-fetch "0.11.0"
-
 nan@^2.0.5, nan@^2.0.8, nan@^2.10.0, nan@^2.2.1, nan@^2.3.0, nan@^2.6.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
@@ -9206,6 +9178,10 @@ raw-body@2.3.2:
     http-errors "1.6.2"
     iconv-lite "0.4.19"
     unpipe "1.0.0"
+
+raw-loader@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
 
 rc-align@2.x:
   version "2.3.6"
@@ -11298,6 +11274,34 @@ tr46@^1.0.0:
 tree-kill@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.0.tgz#5846786237b4239014f05db156b643212d4c6f36"
+
+trezor-link@1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/trezor-link/-/trezor-link-1.5.2.tgz#a87defc5ea4d0e882c5a8623b554673d62cdabbb"
+  dependencies:
+    bigi "^1.4.1"
+    bitcoinjs-lib-zcash "^3.0.0"
+    ecurve "^1.0.3"
+    json-stable-stringify "^1.0.1"
+    node-fetch "^1.6.0"
+    object.values "^1.0.3"
+    protobufjs-old-fixed-webpack "3.8.5"
+    semver-compare "^1.0.0"
+    whatwg-fetch "0.11.0"
+
+trezor.js@6.17.5:
+  version "6.17.5"
+  resolved "https://registry.yarnpkg.com/trezor.js/-/trezor.js-6.17.5.tgz#cc080fce430c0ad921474ef210da2eceab8ec1f1"
+  dependencies:
+    bchaddrjs "^0.2.1"
+    bitcoinjs-lib-zcash "^3.3.2"
+    ecurve "^1.0.2"
+    node-fetch "^1.6.0"
+    randombytes "^2.0.1"
+    semver-compare "1.0.0"
+    trezor-link "1.5.2"
+    unorm "^1.3.3"
+    whatwg-fetch "0.11.0"
 
 trim-newlines@^1.0.0:
   version "1.0.0"
