@@ -22,7 +22,13 @@ export const getActualChainId = (): Promise<string> =>
     );
   });
 
-export default async function handleMetaMaskPolling(store: Store<AppState>) {
+/**
+ * @desc
+ * MetaMask no longer refreshes the page automatically on network change,
+ * so we must poll to ensure the network is the same as the locally stored version.
+ * @see https://medium.com/metamask/breaking-change-no-longer-reloading-pages-on-network-change-4a3e1fd2f5e7
+ */
+export default async function handleMetaMaskPolling(store: Store<AppState>): Promise<boolean> {
   const state = store.getState();
 
   try {

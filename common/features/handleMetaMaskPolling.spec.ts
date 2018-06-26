@@ -6,7 +6,6 @@ import { walletSelectors } from './wallet';
 
 jest.mock('./config/networks/selectors');
 jest.mock('./wallet');
-jest.mock('./notifications');
 
 describe('getActualChainId', () => {
   it('should reject with an error if web3 does not exist', async done => {
