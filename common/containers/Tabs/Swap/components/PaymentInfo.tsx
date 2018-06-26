@@ -22,13 +22,15 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
       <section className="SwapPayment">
         {isXMRSwap && (
           <section className="SwapPayment-payment-id">
-            <h2>{translate('USING_PAYMENT_ID')}</h2>
-            <Input
-              className="SwapPayment-address"
-              isValid={!!paymentId}
-              value={paymentId || undefined}
-              disabled={true}
-            />
+            <h2>
+              {translate('USING_PAYMENT_ID')}
+              <Input
+                className="SwapPayment-address"
+                isValid={!!paymentId}
+                value={paymentId || undefined}
+                disabled={true}
+              />
+            </h2>
           </section>
         )}
         <h2>
@@ -43,9 +45,11 @@ export default class PaymentInfo extends PureComponent<Props, {}> {
             disabled={true}
           />
         </h2>
-        <Warning highlighted={true}>
-          <h4>{translate('PAYMENT_ID_WARNING')}</h4>
-        </Warning>
+        {isXMRSwap && (
+          <Warning highlighted={true}>
+            <h4>{translate('PAYMENT_ID_WARNING')}</h4>
+          </Warning>
+        )}
       </section>
     );
   }

@@ -8,6 +8,10 @@
     max-width: 620px;
   }
 
+  h2 > input {
+    margin-top: $space;
+  }
+
   h4 {
     margin: 0.5rem 0;
   }
