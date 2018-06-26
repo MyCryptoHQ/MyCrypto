@@ -6,8 +6,8 @@
   transition-delay: 100ms;
 }
 
-$toggle-height: 38px;
-$toggle-width: 80px;
+$toggle-height: 30px;
+$toggle-width: 60px;
 $toggle-control-gutter: 3px;
 $toggle-control-size: $toggle-height - $toggle-control-gutter * 2;
 
@@ -38,18 +38,16 @@ $toggle-control-size: $toggle-height - $toggle-control-gutter * 2;
     transition: transform 300ms ease;
 
     @include theme('dark') {
-      transform: translateY(-50%)
-                 translateX(-100%)
-                 translateX($toggle-width)
-                 translateX($toggle-control-gutter * -3);
+      transform: translateY(-50%) translateX(-100%) translateX($toggle-width)
+        translateX($toggle-control-gutter * -3);
     }
 
     &-icon {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 18px;
-      height: 18px;
+      width: 13px;
+      height: 13px;
       transform: translate(-50%, -50%) translateY(30px);
       fill: color(text-color);
       transition: transform 200ms ease;
