@@ -53,7 +53,7 @@ $step-number-size: 42px;
       top: 0;
       left: 0;
       bottom: 0;
-      background: #EEE;
+      background: color(gray-lighter);
       border-radius: 4px;
       box-shadow: 0 1px 3px rgba(#000, 0.3);
     }
@@ -68,8 +68,8 @@ $step-number-size: 42px;
       font-size: 22px;
       color: #FFF;
       text-align: center;
-      background: $ether-navy;
-      box-shadow: 0 1px 2px rgba(#000, .3);
+      background: color(brand-info);
+      box-shadow: 0 1px 2px rgba(#000, 0.3);
       border-radius: 100%;
     }
   }

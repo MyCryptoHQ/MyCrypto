@@ -13,7 +13,8 @@ $button-font-size: $font-size-small;
 .NetworkSelector {
   width: 100%;
   text-align: left;
-  color: $text-color;
+  color: color(text-color);
+  background: color(control-bg);
   font-size: $font-size-base;
 
   &-add,
@@ -23,11 +24,11 @@ $button-font-size: $font-size-small;
     width: 100%;
     padding: $button-padding;
     text-align: center;
-    color: $text-color;
+    color: color(text-color);
     font-size: $button-font-size;
 
     &:hover {
-      color: $link-hover-color;
+      color: color(link-hover-color);
     }
 
     .fa {
@@ -40,12 +41,12 @@ $button-font-size: $font-size-small;
   }
 
   &-alts {
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: 1px solid shade-dark(0.08);
   }
 
   @if ($is-electron) {
     &-add {
-      border-bottom: 1px solid $gray-lighter;
+      border-bottom: 1px solid shade-dark(0.08);
     }
   }
 }
