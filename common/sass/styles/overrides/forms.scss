@@ -8,7 +8,7 @@ label {
   &.is-required:after {
     content: '*';
     padding-left: 2px;
-    color: $brand-warning;
+    color: color(brand-warning);
   }
 }
 
@@ -19,7 +19,7 @@ input[type='checkbox'] {
 }
 
 input[readonly] {
-  background-color: $gray-lightest;
+  background-color: color(control-disabled-bg);
   cursor: text !important;
 }
 
@@ -36,14 +36,14 @@ input[readonly] {
 
 .help-block {
   &.is-valid {
-    color: $brand-success;
+    color: color(brand-success);
   }
 
   &.is-invalid {
-    color: $brand-danger;
+    color: color(brand-danger);
   }
 
   &.is-semivalid {
-    color: $brand-warning;
+    color: color(brand-warning);
   }
 }

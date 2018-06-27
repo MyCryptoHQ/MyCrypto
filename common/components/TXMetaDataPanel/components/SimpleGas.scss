@@ -8,18 +8,22 @@
     display: flex;
     > .SimpleGas-slider {
       flex-grow: 1;
-      margin-right: $input-padding-x;
+      margin-right: $space;
     }
+
     > .FeeSummary {
-      margin-left: $input-padding-x;
+      margin-left: $space;
       min-width: 224px;
     }
+
     @media screen and (max-width: $screen-md) {
       flex-wrap: wrap;
+
       > .SimpleGas-slider {
         width: 100%;
         margin-right: 0;
       }
+
       > .FeeSummary {
         width: 100%;
         margin-left: 0;
@@ -39,7 +43,7 @@
         flex: 1;
         padding: 0 $space-xs;
         text-align: center;
-        color: $gray-light;
+        color: shade-dark(0.4);
         font-size: $font-size-xs;
 
         &:first-child {

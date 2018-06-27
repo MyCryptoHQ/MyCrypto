@@ -3,7 +3,7 @@ import { loadStatePropertyOrEmptyObject } from 'utils/localStorage';
 import { CustomNodeConfig } from 'types/node';
 import { shepherd, makeProviderConfig, isAutoNode } from 'libs/nodes';
 import RootReducer, { AppState } from './reducers';
-import { getLanguageSelection } from './config/meta/selectors';
+import { getLanguageSelection, getTheme } from './config/meta/selectors';
 import { getCustomNetworkConfigs } from './config/networks/custom/selectors';
 import { isStaticNetworkId } from './config/networks/static/selectors';
 import { isStaticNodeId } from './config/nodes/static/selectors';
@@ -21,7 +21,10 @@ export function getConfigAndCustomTokensStateToSubscribe(
   state: AppState
 ): Pick<DeepPartial<AppState>, 'config' | 'customTokens'> {
   const subscribedConfig: DeepPartial<ConfigState> = {
-    meta: { languageSelection: getLanguageSelection(state) },
+    meta: {
+      languageSelection: getLanguageSelection(state),
+      theme: getTheme(state)
+    },
     nodes: { customNodes: getCustomNodeConfigs(state), selectedNode: getSelectedNode(state) },
     networks: {
       customNetworks: getCustomNetworkConfigs(state)
