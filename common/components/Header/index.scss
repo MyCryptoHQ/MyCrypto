@@ -29,6 +29,27 @@ $small-size: 900px;
 .Header {
   margin-bottom: 2rem;
 
+  &-latest {
+    text-align: center;
+    color: #fff;
+    margin-right: 2rem;
+    &-title {
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+    }
+    &-description {
+      padding: 0.125rem 0.5rem;
+      color: white;
+      background-color: #2f6cb6;
+      border-radius: 3px;
+      font-size: 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      &:hover {
+        color: white;
+      }
+    }
+  }
+
   @media screen and (max-width: $screen-sm) {
     margin-bottom: 1rem;
   }

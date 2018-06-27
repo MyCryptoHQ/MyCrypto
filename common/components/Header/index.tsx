@@ -33,6 +33,7 @@ import NetworkDropdown from './components/NetworkDropdown';
 import Navigation from './components/Navigation';
 import OnlineStatus from './components/OnlineStatus';
 import './index.scss';
+import translate from 'translations';
 
 interface OwnProps {
   networkParam: string | null;
@@ -96,6 +97,12 @@ class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
+              <div className="Header-latest">
+                <p className="Header-latest-title">{translate('LATEST')}</p>
+                <a className="Header-latest-description" href={'https://mycrypto.com/'}>
+                  MoneroVision Launches!
+                </a>
+              </div>
               <div className="Header-branding-right-online">
                 <OnlineStatus isOffline={isOffline} />
               </div>
