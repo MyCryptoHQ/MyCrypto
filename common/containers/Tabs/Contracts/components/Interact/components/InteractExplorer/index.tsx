@@ -124,13 +124,20 @@ class InteractExplorerClass extends Component<Props, State> {
         {selectedFunction && (
           <div key={selectedFunction.name} className="InteractExplorer-func">
             {/* TODO: Use reusable components with validation */}
-            {selectedFunction.contract.inputs.map(input => {
+            {selectedFunction.contract.inputs.map((input, index) => {
               const { type, name } = input;
-              const inputState = this.state.inputs[name];
+              // if name is not supplied to arg, use the index instead
+              // since that's what the contract ABI function factory subsitutes for the name
+              // if it is undefined
+              const parsedName = name === '' ? index : name;
+
+              const inputState = this.state.inputs[parsedName];
               return (
-                <div key={name} className="input-group-wrapper InteractExplorer-func-in">
+                <div key={parsedName} className="input-group-wrapper InteractExplorer-func-in">
                   <label className="input-group">
-                    <div className="input-group-header">{name + ' ' + type}</div>
+                    <div className="input-group-header">
+                      {(parsedName === index ? `Input#${parsedName}` : parsedName) + ' ' + type}
+                    </div>
                     {type === 'bool' ? (
                       <Dropdown
                         options={[{ value: false, label: 'false' }, { value: true, label: 'true' }]}
@@ -144,15 +151,15 @@ class InteractExplorerClass extends Component<Props, State> {
                         }
                         clearable={false}
                         onChange={({ value }: { value: boolean }) => {
-                          this.handleBooleanDropdownChange({ value, name });
+                          this.handleBooleanDropdownChange({ value, name: parsedName });
                         }}
                       />
                     ) : (
                       <Input
                         className="InteractExplorer-func-in-input"
-                        isValid={!!(inputs[name] && inputs[name].rawData)}
-                        name={name}
-                        value={(inputs[name] && inputs[name].rawData) || ''}
+                        isValid={!!(inputs[parsedName] && inputs[parsedName].rawData)}
+                        name={parsedName}
+                        value={(inputs[parsedName] && inputs[parsedName].rawData) || ''}
                         onChange={this.handleInputChange}
                       />
                     )}

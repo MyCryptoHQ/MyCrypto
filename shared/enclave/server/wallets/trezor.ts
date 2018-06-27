@@ -1,12 +1,12 @@
 import BN from 'bn.js';
-import { DeviceList, Session } from 'mycrypto-trezor.js';
+import { DeviceList, Session } from 'trezor.js';
 import mapValues from 'lodash/mapValues';
 import { addHexPrefix } from 'ethereumjs-util';
 import EthTx from 'ethereumjs-tx';
-
 import { WalletLib } from 'shared/enclave/types';
 import { padLeftEven } from 'libs/values';
 import { stripHexPrefixAndLower } from 'libs/formatters';
+import { showPinPrompt } from '../views/pin';
 
 const deviceList = new DeviceList({ debug: false });
 
@@ -24,6 +24,16 @@ async function getSession() {
     if (isUsedHere) {
       currentSession = null;
     }
+  });
+  device.on('pin', (_, cb: (err?: Error, pin?: string) => void) => {
+    showPinPrompt()
+      .then(pin => {
+        cb(undefined, pin);
+      })
+      .catch(err => {
+        console.error('PIN entry failed', err);
+        cb(err);
+      });
   });
 
   currentSession = session;

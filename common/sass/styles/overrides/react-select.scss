@@ -2,12 +2,12 @@
 
 .Select {
   border-radius: 2px;
-  background-color: white;
-  border: 1px solid #e5ecf3;
+  background-color: color(control-bg);
+  border: 1px solid color(control-border);
   border-radius: 2px;
   font-weight: 400;
   font-size: 1rem;
-  box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
+  box-shadow: inset 0 1px 0 0 color(control-inset-shadow);
   transition: border-color 120ms, box-shadow 120ms;
   height: $input-height-base;
 
@@ -24,7 +24,7 @@
   }
   &-placeholder {
     line-height: $line-height-base;
-    color: $input-color-placeholder;
+    color: color(control-placeholder);
   }
   &-input {
     position: absolute;
@@ -45,21 +45,29 @@
   }
   &-option {
     padding: 0.75rem 1rem;
+    background: color(control-bg);
+    color: shade-dark(0.8);
+
+    &.is-selected {
+      background: shade-dark(0.03);
+      color: color(text-color);
+    }
+
+    &.is-focused {
+      background: color(brand-primary);
+      color: color(text-color-inverted);
+    }
   }
   &-menu-outer {
     z-index: 3;
     width: calc(100% + 2px);
     left: -1px;
-    border-radius: 2px;
-    background-color: white;
-    border: none;
-    border-left: 2px solid #5694b8;
-    border-right: 2px solid #5694b8;
-    border-bottom: 2px solid #5694b8;
+    background-color: color(control-bg);
+    border: 2px solid color(brand-primary);
+    border-top: none;
+    border-radius: $input-border-radius;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
     border-color: inherit;
   }
   &-menu {
@@ -67,15 +75,15 @@
   }
   // Selects should never have invalid input
   // &.invalid {
-  //   border-color: $brand-danger;
-  //   box-shadow: inset 0px 0px 0px 1px $brand-danger;
+  //   border-color: color(brand-danger);
+  //   box-shadow: inset 0px 0px 0px 1px color(brand-danger);
   // }
   &.is-focused {
-    border-color: #4295bc;
-    box-shadow: inset 0px 0px 0px 1px #4295bc;
+    border-color: color(brand-primary);
+    box-shadow: inset 0px 0px 0px 1px color(brand-primary);
     &.valid {
-      border-color: #8dd17b;
-      box-shadow: inset 0px 0px 0px 1px #8dd17b;
+      border-color: color(brand-success);
+      box-shadow: inset 0px 0px 0px 1px color(brand-success);
     }
   }
   &-value {
@@ -83,6 +91,7 @@
     padding-left: 0 !important;
     padding: 0.75rem 1rem !important;
     height: inherit !important;
+
     &-label {
       position: relative;
       top: 50%;
@@ -94,6 +103,14 @@
     display: block;
     position: relative;
     height: inherit;
+  }
+
+  // This shitty selector is the text color of the select, no joke.
+  &.has-value.Select--single > .Select-control .Select-value,
+	&.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
+		.Select-value-label {
+			color: color(control-color);
+		}
   }
 
   // Identicons need to fit into the select

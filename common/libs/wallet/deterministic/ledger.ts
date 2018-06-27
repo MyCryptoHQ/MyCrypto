@@ -15,7 +15,14 @@ interface U2FError {
   };
 }
 
-type LedgerError = U2FError | Error | string;
+interface ErrorWithId {
+  id: string;
+  message: string;
+  name: string;
+  stack: string;
+}
+
+type LedgerError = U2FError | ErrorWithId | Error | string;
 
 export class LedgerWallet extends HardwareWallet {
   public static async getChainCode(dpath: string): Promise<ChainCodeResponse> {
@@ -100,6 +107,8 @@ async function makeApp() {
 
 const isU2FError = (err: LedgerError): err is U2FError => !!err && !!(err as U2FError).metaData;
 const isStringError = (err: LedgerError): err is string => typeof err === 'string';
+const isErrorWithId = (err: LedgerError): err is ErrorWithId =>
+  err.hasOwnProperty('id') && err.hasOwnProperty('message');
 function ledgerErrToMessage(err: LedgerError) {
   // https://developers.yubico.com/U2F/Libraries/Client_error_codes.html
   if (isU2FError(err)) {
@@ -122,6 +131,13 @@ function ledgerErrToMessage(err: LedgerError) {
     }
 
     return err;
+  }
+
+  if (isErrorWithId(err)) {
+    // Browser doesn't support U2F
+    if (err.message.includes('U2F not supported')) {
+      return translateRaw('U2F_NOT_SUPPORTED');
+    }
   }
 
   // Other

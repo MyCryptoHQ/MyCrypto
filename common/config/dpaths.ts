@@ -88,6 +88,16 @@ export const GO_DEFAULT: DPath = {
   value: "m/44'/6060'/0'/0"
 };
 
+export const EOSC_DEFAULT: DPath = {
+  label: 'Default (EOSC)',
+  value: "m/44'/2018'/0'/0"
+};
+
+export const ESN_DEFAULT: DPath = {
+  label: 'Default (ESN)',
+  value: "m/44'/31102'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -105,7 +115,9 @@ export const DPaths: DPath[] = [
   EGEM_DEFAULT,
   CLO_DEFAULT,
   RSK_TESTNET,
-  GO_DEFAULT
+  GO_DEFAULT,
+  EOSC_DEFAULT,
+  ESN_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

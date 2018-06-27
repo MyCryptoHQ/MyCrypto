@@ -18,7 +18,7 @@
     opacity: 0.8;
 
     .fa-ban {
-      color: $brand-danger;
+      color: color(brand-danger);
       animation: ban-wifi 500ms ease 200ms 1;
       animation-fill-mode: both;
     }
