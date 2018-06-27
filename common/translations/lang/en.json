@@ -656,13 +656,15 @@
     "NETWORK_2": "network",
     "PROVIDED_BY": "provided by",
     "YOU_ARE_INTERACTING": "You are interacting with the",
-    "METACERT_INVALID": "Invalid Wallet",
-    "METACERT_INVALID_VERBOSE": "This is an invalid Wallet.",
-    "METACERT_NOT_VERIFIED": "Wallet not verified",
-    "METACERT_NOT_VERIFIED_VERBOSE": "This Wallet has not been verified my Metacert yet.",
-    "METACERT_VERIFIED": "Verified Wallet",
-    "METACERT_VERIFIED_VERBOSE": "This is a Metacert Verified Wallet",
-    "METACERT_PHISHING": "Phishing Wallet",
-    "METACERT_PHISHING_VERBOSE": "Warning! This has been classified as a Phishing Wallet!"
+    "METACERT_INVALID": "Invalid address",
+    "METACERT_INVALID_VERBOSE": "This is an invalid address.",
+    "METACERT_NOT_VERIFIED": "Address not verified",
+    "METACERT_NOT_VERIFIED_VERBOSE": "This address has NOT been verified by MetaCert Protocol.",
+    "METACERT_VERIFIED": "Address verified",
+    "METACERT_VERIFIED_VERBOSE": "This address is verified by MetaCert Protocol.",
+    "METACERT_PHISHING": "Phishing address",
+    "METACERT_PHISHING_VERBOSE": "Warning! This address has been classified as phishing!",
+    "METACERT_PENDING_INVESTIGATION": "Address under investigation",
+    "METACERT_PENDING_INVESTIGATION_VERBOSE": "Warning! This address is under investigation."
   }
 }
