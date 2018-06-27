@@ -4,8 +4,10 @@ import {
   SetLatestBlockAction,
   SetOfflineAction,
   SetOnlineAction,
-  ToggleAutoGasLimitAction
+  ToggleAutoGasLimitAction,
+  ChangeThemeAction
 } from './types';
+import { Theme } from 'config';
 
 export function setOnline(): SetOnlineAction {
   return {
@@ -31,6 +33,14 @@ export function changeLanguage(sign: string): ChangeLanguageAction {
   return {
     type: CONFIG_META.LANGUAGE_CHANGE,
     payload: sign
+  };
+}
+
+export type TChangeTheme = typeof changeTheme;
+export function changeTheme(theme: Theme): ChangeThemeAction {
+  return {
+    type: CONFIG_META.THEME_CHANGE,
+    payload: theme
   };
 }
 

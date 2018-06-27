@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 
 .FeeSummary {
-  background: $gray-lighter;
+  background: shade-dark(0.08);
   height: 42px;
   line-height: 42px;
   padding: 0 12px;

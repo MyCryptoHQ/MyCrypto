@@ -23,7 +23,7 @@
       align-self: stretch;
       padding: 0;
       box-shadow: none;
-      color: $brand-danger;
+      color: color(brand-danger);
 
       &-temporary-input--non-mobile {
         flex: 1;
@@ -122,7 +122,7 @@
         }
 
         &-error {
-          color: $brand-danger;
+          color: color(brand-danger);
           align-self: end;
         }
       }
