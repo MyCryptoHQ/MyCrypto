@@ -2,7 +2,7 @@
 @import 'common/sass/mixins';
 
 .Disclaimer {
-  color: $text-color;
+  color: color(text-color);
 
   &-button {
     @include reset-button;

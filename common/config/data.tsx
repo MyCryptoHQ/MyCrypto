@@ -104,3 +104,8 @@ export const walletNames = getValues(
 );
 
 export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName;
+
+export enum Theme {
+  DARK = 'dark',
+  LIGHT = 'light'
+}

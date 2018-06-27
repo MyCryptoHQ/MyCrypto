@@ -6,13 +6,15 @@ import {
   setLatestBlock
 } from './actions';
 import { metaReducer } from './reducer';
+import { Theme } from 'config';
 
 describe('meta reducer', () => {
   const expectedInitialState = {
     languageSelection: 'en',
     offline: false,
     autoGasLimit: true,
-    latestBlock: '???'
+    latestBlock: '???',
+    theme: Theme.LIGHT
   };
 
   const expectedState = {
