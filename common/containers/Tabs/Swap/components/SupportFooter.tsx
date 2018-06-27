@@ -35,7 +35,9 @@ class SupportFooter extends React.PureComponent<Props, {}> {
     const pair = origin && destination ? origin.label + destination.label : 'BTCETH';
     const rates = provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
     const emailTo =
-      provider === 'shapeshift' ? 'support@mycrypto.com' : 'support@mycrypto.com,mew@bity.com';
+      provider === 'shapeshift'
+        ? 'support@shapeshift.zendesk.com,support@mycrypto.com'
+        : 'support@mycrypto.com,mew@bity.com';
     const mailSubject = encodeURI('Issue regarding my Swap via MyCrypto');
     const serviceProvider = provider.charAt(0).toUpperCase() + provider.slice(1);
     let mailBody;
