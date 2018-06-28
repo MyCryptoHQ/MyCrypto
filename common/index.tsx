@@ -28,8 +28,8 @@ if (process.env.NODE_ENV === 'production') {
   consoleAdvertisement();
 }
 
-const noOp = (event: any) => {
-  event.prevtDefault();
+const noOp = (event: DragEvent) => {
+  event.preventDefault();
   return false;
 };
 
