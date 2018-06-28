@@ -71,7 +71,13 @@ class SendTransaction extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                <SubTabs tabs={tabs} match={match} location={location} history={history} />
+                <SubTabs
+                  tabs={tabs}
+                  match={match}
+                  location={location}
+                  history={history}
+                  staticContext={this.props.staticContext}
+                />
               </div>
               <div className="col-sm-8">
                 <Switch>

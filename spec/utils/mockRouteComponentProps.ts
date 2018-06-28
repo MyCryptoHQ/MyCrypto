@@ -27,5 +27,6 @@ export const createMockRouteComponentProps = (props: IProps): RouteComponentProp
     listen: () => () => null,
     location: { state: {}, ...props.history.location },
     ...props.history
-  }
+  },
+  staticContext: undefined
 });
