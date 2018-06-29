@@ -6,9 +6,9 @@ try {
   window.localStorage.removeItem('test');
 
   // Flexbox
-  var el = document.createElement('div');
-  el.style.display = 'flex';
-  if (el.style.display !== 'flex') {
+  var elTest = document.createElement('div');
+  elTest.style.display = 'flex';
+  if (elTest.style.display !== 'flex') {
     badBrowser = true;
   }
 
