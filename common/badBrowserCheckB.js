@@ -23,7 +23,7 @@ try {
 }
 
 if (badBrowser) {
-  var el = document.getElementById('BadBrowserWarning');
+  var el = document.getElementsByClassName('BadBrowser')[0];
   el.className += ' is-open';
   // Dumb check for known mobile OS's. Not important to catch all, just
   // displays more appropriate information.
