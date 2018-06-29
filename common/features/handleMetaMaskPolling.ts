@@ -1,11 +1,9 @@
 import { Store } from 'redux';
 
-import { translateRaw } from 'translations';
 import { Web3Wallet } from 'libs/wallet';
 import { AppState } from './reducers';
 import * as configNetworksSelectors from './config/networks/selectors';
-import { walletActions, walletSelectors } from './wallet';
-import { notificationsActions } from './notifications';
+import { walletSelectors } from './wallet';
 
 export const METAMASK_POLLING_INTERVAL: number = 1000;
 
@@ -40,26 +38,12 @@ export default async function handleMetaMaskPolling(store: Store<AppState>): Pro
     const actualNetwork = configNetworksSelectors.getNetworkByChainId(state, actualChainId);
 
     if (web3Wallet && actualNetwork && (web3Wallet as Web3Wallet).network !== actualNetwork.id) {
-      store.dispatch(walletActions.resetWallet());
-      store.dispatch(
-        notificationsActions.showNotification(
-          'danger',
-          translateRaw('DETECTED_METAMASK_NETWORK_CHANGE'),
-          3000
-        )
-      );
+      window.location.reload();
 
       return true;
     }
   } catch (error) {
-    store.dispatch(walletActions.resetWallet());
-    store.dispatch(
-      notificationsActions.showNotification(
-        'danger',
-        translateRaw('METAMASK_NETWORK_VERIFY_ERROR'),
-        3000
-      )
-    );
+    window.location.reload();
 
     return true;
   }

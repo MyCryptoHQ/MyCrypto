@@ -78,12 +78,10 @@ describe('handleMetaMaskPolling', () => {
     (configNetworksSelectors as any).getNetworkByChainId.mockReturnValue('ETH');
 
     const store = {
-      getState: noop,
-      dispatch: jest.fn()
+      getState: noop
     };
     const result = await handleMetaMaskPolling(store as any);
 
-    expect(store.dispatch.mock.calls.length).toBe(2);
     expect(result).toBe(true);
     done();
   });
@@ -100,12 +98,10 @@ describe('handleMetaMaskPolling', () => {
     (configNetworksSelectors as any).getNetworkByChainId.mockReturnValue('ETH');
 
     const store = {
-      getState: noop,
-      dispatch: jest.fn()
+      getState: noop
     };
     const result = await handleMetaMaskPolling(store as any);
 
-    expect(store.dispatch.mock.calls.length).toBe(2);
     expect(result).toBe(true);
     done();
   });
