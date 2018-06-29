@@ -1,3 +1,15 @@
+@import 'common/sass/variables/colors';
+
 tr {
   transition: background-color 120ms;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: shade-dark(0.02);
+}
+
+.table-hover {
+  > tbody > tr:hover {
+    background-color: shade-dark(0.05);
+  }
 }

@@ -49,6 +49,8 @@
 
       &-token {
         width: 82px;
+        background: color(control-bg);
+        color: control(control-color);
       }
 
       &-address {

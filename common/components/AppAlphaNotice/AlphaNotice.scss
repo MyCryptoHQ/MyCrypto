@@ -3,7 +3,7 @@
 
 .AppAlpha {
   @include cover-message;
-  background: $brand-info;
+  background: color(brand-info);
   left: $electron-sidebar-width - 1;
 
   &-content {
@@ -26,13 +26,13 @@
       height: 60px;
       line-height: 60px;
       font-size: 22px;
-      background: rgba(#fff, 0.96);
-      color: $gray-dark;
+      background: #fff;
+      color: #333;
+      opacity: 0.96;
       border-radius: 4px;
 
       &:hover {
-        background: #fff;
-        color: $gray-darker;
+        opacity: 1;
       }
     }
   }
@@ -41,7 +41,7 @@
   &.is-fading {
     pointer-events: none;
     opacity: 0;
-    background: #fff;
+    background: color(control-bg);
     transition: all 500ms ease 400ms;
 
     .AppAlpha-content {
