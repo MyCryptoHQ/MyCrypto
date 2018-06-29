@@ -1,20 +1,32 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
-
-import { navigationLinks } from 'config';
 import translate from 'translations';
+import { navigationLinks, Theme } from 'config';
 import NavigationLink from 'components/NavigationLink';
 import NetworkSelect from './NetworkSelect';
 import LanguageSelect from './LanguageSelect';
 import NetworkStatus from './NetworkStatus';
+import { changeTheme, getTheme } from 'features/config';
+import { AppState } from 'features/reducers';
 import './ElectronNav.scss';
+
+interface StateProps {
+  theme: ReturnType<typeof getTheme>;
+}
+
+interface ActionProps {
+  changeTheme: typeof changeTheme;
+}
+
+type Props = StateProps & ActionProps;
 
 interface State {
   panelContent: React.ReactElement<any> | null;
   isPanelOpen: boolean;
 }
 
-export default class ElectronNav extends React.Component<{}, State> {
+class ElectronNav extends React.Component<Props, State> {
   public state: State = {
     panelContent: null,
     isPanelOpen: false
@@ -31,7 +43,7 @@ export default class ElectronNav extends React.Component<{}, State> {
         })}
       >
         <div className="ElectronNav-branding">
-          <div className="ElectronNav-branding-logo" />
+          <div className="ElectronNav-branding-logo" onClick={this.toggleTheme} />
           <div className="ElectronNav-branding-beta">Alpha Release</div>
         </div>
 
@@ -101,4 +113,18 @@ export default class ElectronNav extends React.Component<{}, State> {
       }
     }, 300);
   };
+
+  private toggleTheme = () => {
+    const theme = this.props.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+    this.props.changeTheme(theme);
+  };
 }
+
+export default connect(
+  (state: AppState) => ({
+    theme: getTheme(state)
+  }),
+  {
+    changeTheme
+  }
+)(ElectronNav);

@@ -7,10 +7,12 @@ $identicon-size-mobile: 24px;
 
 .RecentTx {
   line-height: $identicon-size;
-  border: 1px solid $gray-lighter;
   cursor: pointer;
   transition: box-shadow $hover-speed ease;
-  box-shadow: 0 0 $brand-primary inset;
+  box-shadow: 0 1px shade-dark(0.1),
+              1px 0 shade-dark(0.1),
+              -1px 0 shade-dark(0.1),
+              0 0 color(brand-primary) inset;
 
   &-to {
     width: 100%;
@@ -40,11 +42,14 @@ $identicon-size-mobile: 24px;
   }
 
   &:hover {
-    box-shadow: 3px 0 $brand-primary inset;
+    box-shadow: 0 1px shade-dark(0.1),
+                1px 0 shade-dark(0.1),
+                -1px 0 shade-dark(0.1),
+                3px 0 color(brand-primary) inset;
 
     .RecentTx-arrow {
       opacity: 1;
-      color: $brand-primary;
+      color: color(brand-primary);
       transform: translateX(3px);
     }
   }

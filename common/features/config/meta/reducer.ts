@@ -2,15 +2,18 @@ import {
   CONFIG_META,
   ChangeLanguageAction,
   SetLatestBlockAction,
+  ChangeThemeAction,
   MetaAction,
   MetaState
 } from './types';
+import { Theme } from 'config';
 
 const META_INITIAL_STATE: MetaState = {
   languageSelection: 'en',
   offline: false,
   autoGasLimit: true,
-  latestBlock: '???'
+  latestBlock: '???',
+  theme: Theme.LIGHT
 };
 
 function changeLanguage(state: MetaState, action: ChangeLanguageAction): MetaState {
@@ -48,6 +51,13 @@ function setLatestBlock(state: MetaState, action: SetLatestBlockAction): MetaSta
   };
 }
 
+function setTheme(state: MetaState, action: ChangeThemeAction): MetaState {
+  return {
+    ...state,
+    theme: action.payload
+  };
+}
+
 export function metaReducer(state: MetaState = META_INITIAL_STATE, action: MetaAction): MetaState {
   switch (action.type) {
     case CONFIG_META.LANGUAGE_CHANGE:
@@ -63,6 +73,9 @@ export function metaReducer(state: MetaState = META_INITIAL_STATE, action: MetaA
 
     case CONFIG_META.SET_LATEST_BLOCK:
       return setLatestBlock(state, action);
+
+    case CONFIG_META.THEME_CHANGE:
+      return setTheme(state, action);
 
     default:
       return state;

@@ -4,7 +4,7 @@
 $circle-width: 4rem;
 $circle-width-phone: 3rem;
 $track-size: .25rem;
-$step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
+$track-color: shade-dark(0.2);
 
 .SwapProgress {
   margin-top: 2rem;
@@ -14,11 +14,11 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
 
   &-track {
     position: absolute;
-    top: 3.5rem;
-    left: $cont-padding-lg;
-    right: $cont-padding-lg;
+    top: 3.4rem;
+    left: 10%;
+    right: 10%;
     height: $track-size;
-    background-color: $gray-lighter;
+    background-color: $track-color;
   }
 
   &-item {
@@ -36,27 +36,22 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
       padding-bottom: $circle-width;
       position: relative;
       width: $circle-width;
-      background: white;
-      color: $gray;
-      border-color: $gray;
+      background: color(pane-bg);
+      color: $track-color;
+      border-color: $track-color;
 
-      @each $idx, $color in $step-colors {
-        &.position-#{$idx} {
-          border-color: fade-out($color, 0.6);
-          color: fade-out($color, 0.6);
-
-          .is-active & {
-            border-color: $color;
-            color: $color;
-          }
-        }
+      .is-active & {
+        border-color: color(brand-primary);
+        color: color(brand-primary);
       }
 
       .is-complete & {
-        border-color: $brand-success;
-        background: $brand-success;
-        box-shadow: inset 0px 0px 0px $space-xs white;
-        color: #fff;
+        border-color: color(brand-success);
+        background: color(brand-success);
+        box-shadow: inset 0px 0px 0px $space-xs color(control-bg);
+        color: color(text-color-inverted);
+
+
       }
 
       &-number {
@@ -84,7 +79,7 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
       font-size: $font-size-small;
       font-weight: 600;
       text-transform: uppercase;
-      color: fade-out(lighten($gray, 10%), 0.5);
+      color: shade-dark(0.2);
       letter-spacing: .1em;
 
       small {
@@ -93,11 +88,11 @@ $step-colors: (1: #1e92ba, 2: #175575, 3: #19b3ae, 4: #143955, 5: #1e92ba);
       }
 
       .is-active & {
-        color: lighten($gray, 10%);
+        color: shade-dark(0.7);
       }
 
       .is-complete & {
-        color: $brand-success;
+        color: color(brand-success);
       }
     }
   }
