@@ -37,13 +37,7 @@ export default class SignAndVerifyMessage extends Component<RouteComponentProps<
     return (
       <TabSection>
         <section className="Tab-content SignAndVerifyMsg">
-          <SubTabs
-            tabs={tabs}
-            match={match}
-            location={location}
-            history={history}
-            staticContext={this.props.staticContext}
-          />
+          <SubTabs tabs={tabs} match={match} location={location} history={history} />
           <Switch>
             <Route
               exact={true}

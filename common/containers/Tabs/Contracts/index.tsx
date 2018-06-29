@@ -27,13 +27,7 @@ class Contracts extends Component<RouteComponentProps<{}>> {
 
     return (
       <TabSection isUnavailableOffline={true}>
-        <SubTabs
-          tabs={tabs}
-          match={match}
-          location={location}
-          history={history}
-          staticContext={this.props.staticContext}
-        />
+        <SubTabs tabs={tabs} match={match} location={location} history={history} />
         <section className="Tab-content Contracts">
           <div className="Contracts-content">
             <Switch>
