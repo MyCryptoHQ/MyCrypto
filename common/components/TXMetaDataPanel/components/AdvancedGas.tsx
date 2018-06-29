@@ -106,7 +106,7 @@ class AdvancedGas extends React.Component<Props, State> {
           )}
           {nonceField && (
             <div className="AdvancedGas-nonce">
-              <NonceField alwaysDisplay={true} />
+              <NonceField alwaysDisplay={true} showInvalidBeforeBlur={true} />
             </div>
           )}
         </div>
