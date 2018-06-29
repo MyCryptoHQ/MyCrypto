@@ -73,7 +73,7 @@ Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
     return (
       <section className="SupportFooter">
         <a
-          className="btn-warning btn-sm"
+          className="SupportFooter-button btn-warning btn-sm"
           href={`mailto:${emailTo}?Subject=${mailSubject}&Body=${mailBody}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -81,9 +81,9 @@ Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
           {translate('SWAP_SUPPORT')}
         </a>
         <div className="SupportFooter-fallback">
-          <p onClick={this.toggleFallback}>
+          <button className="SupportFooter-fallback-button" onClick={this.toggleFallback}>
             <small>{translate('SWAP_SUPPORT_LINK_BROKEN')}</small>
-          </p>
+          </button>
           {open ? (
             <TextArea
               isValid={true}

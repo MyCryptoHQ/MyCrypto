@@ -18,7 +18,7 @@
     &-label {
       position: absolute;
       width: 100%;
-      color: darken($brand-success, 15%);
+      color: color(brand-success-darker);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
