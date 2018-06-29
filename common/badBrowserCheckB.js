@@ -8,7 +8,7 @@ try {
   // Flexbox
   var elTest = document.createElement('div');
   elTest.style.display = 'flex';
-  if (elTest.style.display !== 'flex') {
+  if (elTesdt.style.display !== 'flex') {
     badBrowser = true;
   }
 
@@ -23,7 +23,6 @@ try {
 }
 
 if (badBrowser) {
-  console.log('badBrowserCheckB: FAIL');
   var el = document.getElementsByClassName('BadBrowser')[0];
   el.className += ' is-open';
   // Dumb check for known mobile OS's. Not important to catch all, just
@@ -31,6 +30,4 @@ if (badBrowser) {
   if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
     el.className += ' is-mobile';
   }
-} else {
-  console.log('badBrowserCheckB: PASS')
 }

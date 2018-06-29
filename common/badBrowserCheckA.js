@@ -6,5 +6,4 @@ const arrowCheck = (() => new Date())();
 
 if (letCheck && constCheck && arrowCheck) {
   window.localStorage.setItem('goodBrowser', 'true');
-  console.log('badBrowserCheckA: PASS')
 }
