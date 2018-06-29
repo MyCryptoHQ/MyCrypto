@@ -8,7 +8,7 @@ try {
   // Flexbox
   var elTest = document.createElement('div');
   elTest.style.display = 'flex';
-  if (elTesdt.style.display !== 'flex') {
+  if (elTest.style.display !== 'flex') {
     badBrowser = true;
   }
 
