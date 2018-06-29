@@ -78,7 +78,10 @@
     "X_HARDWARE_WALLET": "Hardware Wallet",
     "X_HARDWARE_WALLET_2": "hardware wallet ",
     "ADD_TREZOR_SCAN": "Connect to TREZOR ",
+    "ORDER_TREZOR": "Don’t have a TREZOR? Order one now!",
+    "HOWTO_TREZOR": "How to use TREZOR with MyCrypto",
     "X_KEEPKEY": "KeepKey",
+    "UNLOCK_WALLET": "Unlock your",
     "X_PARITYSIGNER": "Parity Signer ",
     "ADD_PARITY_DESC": "Connect & sign via your Parity Signer mobile app ",
     "ADD_PARITY_1": "Transaction canceled ",
@@ -181,6 +184,7 @@
     "TRANS_SIMPLE": "Simple",
     "TRANS_DATA": "Data ",
     "TRANS_GAS": "Gas Limit ",
+    "TRANS_AUTO_GAS_TOGGLE": "Automatically Calculate Gas Limit",
     "TRANS_SENDINFO": "A standard transaction using 21000 gas will cost 0.000441 ETH. We use a slightly-above-minimum gas price of 0.000000021 ETH to ensure it gets mined quickly. We do not take a transaction fee. ",
     "OFFLINE_TITLE": "Generate & Send Offline Transaction ",
     "OFFLINE_DESC": "Generating offline transactions can be done in three steps. You will complete steps 1 and 3 on an online computer, and step 2 on an offline/airgapped computer. This ensures your private keys do not touch an internet-connected device. ",
@@ -656,6 +660,7 @@
     "NETWORK_2": "network",
     "PROVIDED_BY": "provided by",
     "YOU_ARE_INTERACTING": "You are interacting with the",
+    "ANNOUNCEMENT_MESSAGE": "Welcome to the new MyCrypto. We hope you like it! If it's urgent and you need the old site, you can still use [MyCrypto Legacy](https://legacy.mycrypto.com)",
     "U2F_NOT_SUPPORTED": "The U2F standard that hardware wallets use does not seem to be supported by your browser. Please try again using Google Chrome."
   }
 }

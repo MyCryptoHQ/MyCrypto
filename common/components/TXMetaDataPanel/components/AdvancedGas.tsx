@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { translateRaw } from 'translations';
+import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { TToggleAutoGasLimit, toggleAutoGasLimit, getAutoGasLimitEnabled } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
@@ -69,7 +69,7 @@ class AdvancedGas extends React.Component<Props, State> {
               defaultChecked={autoGasLimitEnabled}
               onChange={this.handleToggleAutoGasLimit}
             />
-            <span>Automatically Calculate Gas Limit</span>
+            <span>{translate('TRANS_AUTO_GAS_TOGGLE')}</span>
           </label>
         </div>
 
