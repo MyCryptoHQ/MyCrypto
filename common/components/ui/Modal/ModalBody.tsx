@@ -69,7 +69,7 @@ export default class ModalBody extends React.Component<Props> {
 
         <div className="Modal-content" ref={div => (this.modalContent = div as HTMLElement)}>
           {children}
-          <div className={`Modal-fade ${!hasButtons ? 'has-no-footer' : ''}`} />
+          <div className={`Modal-fade ${!hasButtons || hideButtons ? 'has-no-footer' : ''}`} />
         </div>
         {hasButtons && !hideButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
       </div>
