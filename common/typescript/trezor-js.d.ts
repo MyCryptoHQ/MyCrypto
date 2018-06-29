@@ -2,7 +2,7 @@
 // Types are only based off of what's mentioned in the API
 // https://github.com/trezor/trezor.js/blob/master/API.md
 
-declare module 'mycrypto-trezor.js' {
+declare module 'trezor.js' {
   import { EventEmitter } from 'events';
   import { Transport, TrezorDeviceInfoWithSession as DeviceDescriptor } from 'trezor-link';
 

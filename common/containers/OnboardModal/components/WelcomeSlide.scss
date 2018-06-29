@@ -4,7 +4,7 @@
 .WelcomeSlide {
   &-alert {
     display: flex;
-    border-top: 2px solid $brand-danger;
+    border-top: 2px solid color(brand-danger);
     padding: $space-sm;
     font-size: $font-size-base;
     line-height: 1.5;
@@ -21,7 +21,7 @@
       margin-right: $space * 0.8;
       text-align: center;
       font-size: 32px;
-      color: $brand-danger;
+      color: color(brand-danger);
     }
   }
 }

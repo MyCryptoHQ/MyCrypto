@@ -18,16 +18,24 @@
       min-width: 80px;
       text-align: center;
       font-weight: 300;
-      color: $ether-navy;
-      border-bottom: 2px solid $gray-lighter;
+      color: color(tab-color);
+      border-bottom: 2px solid color(tab-border);
       transition-duration: 100ms;
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+        color: color(tab-active-color);
+      }
 
       &.is-active {
-        border-bottom-color: $brand-primary;
+        color: color(tab-active-color);
+        border-bottom-color: color(tab-active-border);
+        opacity: 1;
       }
 
       &.is-disabled {
-        color: $gray-light;
+        color: color(gray-light);
         pointer-events: none;
         text-decoration: line-through;
       }

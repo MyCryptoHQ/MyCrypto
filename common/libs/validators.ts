@@ -74,7 +74,9 @@ export function isValidENSorEtherAddress(address: string): boolean {
 
 export function isValidENSName(str: string) {
   try {
-    return str.length > 6 && normalise(str) !== '' && str.substring(0, 2) !== '0x';
+    return (
+      str.length > 6 && !str.includes('.') && normalise(str) !== '' && str.substring(0, 2) !== '0x'
+    );
   } catch (e) {
     return false;
   }

@@ -23,13 +23,13 @@
         font-weight: bold;
 
         &.is-success {
-          color: $brand-success;
+          color: color(brand-success);
         }
         &.is-warning {
-          color: $brand-warning;
+          color: color(brand-warning);
         }
         &.is-danger {
-          color: $brand-danger;
+          color: color(brand-danger);
         }
       }
 
@@ -42,7 +42,7 @@
         display: block;
         width: 100%;
         height: 7.2rem;
-        background: $gray-lighter;
+        background: color(gray-lighter);
       }
     }
   }
