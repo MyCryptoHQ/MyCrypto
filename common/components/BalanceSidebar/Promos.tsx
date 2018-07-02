@@ -25,7 +25,6 @@ interface StateProps {
 
 class PromosClass extends React.PureComponent<StateProps, State> {
   public timer: any = null;
-
   public state = {
     activePromo: parseInt(String(Math.random() * promos.length), 10)
   };
