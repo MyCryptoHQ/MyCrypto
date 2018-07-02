@@ -83,6 +83,11 @@ export const RSK_TESTNET: DPath = {
   value: "m/44'/37310'/0'/0"
 };
 
+export const RSK_MAINNET: DPath = {
+  label: 'Mainnet (RSK)',
+  value: "m/44'/137'/0'/0"
+};
+
 export const GO_DEFAULT: DPath = {
   label: 'Default (GO)',
   value: "m/44'/6060'/0'/0"
@@ -114,6 +119,7 @@ export const DPaths: DPath[] = [
   ETSC_DEFAULT,
   EGEM_DEFAULT,
   CLO_DEFAULT,
+  RSK_MAINNET,
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
