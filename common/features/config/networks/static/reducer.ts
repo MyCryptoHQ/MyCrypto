@@ -206,7 +206,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'Etherchain Light',
+      name: 'POA Explorer',
       origin: 'https://poaexplorer.com',
       addressPath: 'address/search',
       blockPath: 'blocks/block'
