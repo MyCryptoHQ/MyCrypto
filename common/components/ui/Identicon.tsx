@@ -36,8 +36,7 @@ enum metacert_wallet_type {
 }
 
 // for staging
-//const MetaCertAPIUrl = 'http://middleware.seeksmarterdev.com/check';
-const MetaCertAPIUrl = 'http://middleware.seeksmarterdev.com/fakecheck';
+const MetaCertAPIUrl = 'http://middleware.seeksmarterdev.com/check';
 
 // for local dev
 //const MetaCertAPIUrl = 'http://localhost:5000/fakecheck';
