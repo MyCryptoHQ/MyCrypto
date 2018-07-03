@@ -54,6 +54,7 @@ class ElectronNav extends React.Component<Props, State> {
               link={link}
               isHomepage={link === navigationLinks[0]}
               className="ElectronNavLink"
+              isNotEnabled={false}
             />
           ))}
         </ul>
