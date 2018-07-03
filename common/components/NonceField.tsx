@@ -12,6 +12,7 @@ import './NonceField.scss';
 
 interface OwnProps {
   alwaysDisplay: boolean;
+  showInvalidBeforeBlur?: boolean;
 }
 
 interface StateProps {
@@ -27,7 +28,13 @@ type Props = OwnProps & DispatchProps & StateProps;
 
 class NonceField extends React.Component<Props> {
   public render() {
-    const { alwaysDisplay, requestNonce, noncePending, isOffline } = this.props;
+    const {
+      alwaysDisplay,
+      showInvalidBeforeBlur,
+      requestNonce,
+      noncePending,
+      isOffline
+    } = this.props;
     return (
       <NonceFieldFactory
         withProps={({ nonce: { raw, value }, onChange, readOnly, shouldDisplay }) => {
@@ -51,6 +58,7 @@ class NonceField extends React.Component<Props> {
                   onChange={onChange}
                   disabled={noncePending}
                   showInvalidWithoutValue={true}
+                  showInvalidBeforeBlur={showInvalidBeforeBlur}
                 />
                 {noncePending ? (
                   <div className="Nonce-spinner">
