@@ -66,7 +66,7 @@ describe('handleMetaMaskPolling', () => {
     done();
   });
 
-  it('should display a notification and reset the wallet if the network has changed', async done => {
+  it('should reload the page if the network has changed', async done => {
     (global as any).web3 = {
       version: {
         getNetwork: jest.fn(callback => callback(null, '1'))
@@ -86,7 +86,7 @@ describe('handleMetaMaskPolling', () => {
     done();
   });
 
-  it('should display a notification and reset the wallet if `getActualChainId` rejects', async done => {
+  it('should reload the page if `getActualChainId` rejects', async done => {
     (global as any).web3 = {
       version: {
         getNetwork: jest.fn(callback => callback('Network check failed'))
