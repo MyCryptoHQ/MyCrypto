@@ -54,6 +54,19 @@
       width: 80%;
     }
   }
+  &.metacert-awaiting {
+    border: 5px solid #FD9A3F;
+    border-radius: 50%;
+    .blockie {
+      opacity: 0.5;
+    }
+    .metacertIcon {
+      background-color: #FD9A3F;
+      top: -65%;
+      left: -25%;
+      width: 80%;
+    }
+  }
 
   &-img {
     display: block;
