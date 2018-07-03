@@ -104,12 +104,13 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       url: 'https://node.expanse.tech/'
     }
   ],
+
   POA: [
     {
       name: makeNodeName('POA', 'core'),
-      type: 'rpc',
-      service: 'poa.network',
-      url: 'https://core.poa.network'
+      type: 'infura',
+      service: 'poa.infura.io',
+      url: 'https://poa.infura.io'
     }
   ],
 
@@ -164,6 +165,51 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: '0xinfra.com',
       url: 'https://clo-geth.0xinfra.com/'
+    }
+  ],
+
+  RSK: [
+    {
+      name: makeNodeName('RSK', 'rsk_mainnet'),
+      type: 'rpc',
+      service: 'mycrypto.rsk.co',
+      url: 'https://mycrypto.rsk.co/'
+    }
+  ],
+
+  RSK_TESTNET: [
+    {
+      name: makeNodeName('RSK_TESTNET', 'rsk_testnet'),
+      type: 'rpc',
+      service: 'mycrypto.testnet.rsk.co',
+      url: 'https://mycrypto.testnet.rsk.co/'
+    }
+  ],
+
+  GO: [
+    {
+      name: makeNodeName('GO', 'go'),
+      type: 'rpc',
+      service: 'gochain.io',
+      url: 'https://rpc.gochain.io/'
+    }
+  ],
+
+  EOSC: [
+    {
+      name: makeNodeName('EOSC', 'eosc'),
+      type: 'rpc',
+      service: 'eos-classic.io',
+      url: 'https://node.eos-classic.io/'
+    }
+  ],
+
+  ESN: [
+    {
+      name: makeNodeName('ESN', 'esn'),
+      type: 'rpc',
+      service: 'ethersocial.org',
+      url: 'https://api.esn.gonspool.com'
     }
   ]
 };

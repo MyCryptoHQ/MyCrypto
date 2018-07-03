@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import moment from 'moment';
+
 import translate from 'translations';
-import { isValidTxHash, isValidETHAddress } from 'libs/validators';
-import { getRecentNetworkTransactions } from 'selectors/transactions';
-import { AppState } from 'reducers';
+import { isValidTxHash } from 'libs/validators';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getIsValidAddressFn } from 'features/config';
 import { Input } from 'components/ui';
 import './TxHashInput.scss';
 
@@ -13,9 +15,12 @@ interface OwnProps {
   hash?: string;
   onSubmit(hash: string): void;
 }
+
 interface ReduxProps {
   recentTxs: AppState['transactions']['recent'];
+  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
+
 type Props = OwnProps & ReduxProps;
 
 interface State {
@@ -40,7 +45,7 @@ class TxHashInput extends React.Component<Props, State> {
   }
 
   public render() {
-    const { recentTxs } = this.props;
+    const { recentTxs, isValidAddress } = this.props;
     const { hash } = this.state;
 
     let selectOptions: Option[] = [];
@@ -81,13 +86,16 @@ class TxHashInput extends React.Component<Props, State> {
           onChange={this.handleChange}
         />
 
-        {isValidETHAddress(hash) && (
+        {isValidAddress(hash) && (
           <p className="TxHashInput-message help-block is-invalid">
             {translate('SELECT_RECENT_TX_BY_TXHASH')}
           </p>
         )}
 
-        <button className="TxHashInput-submit btn btn-primary btn-block">
+        <button
+          className="TxHashInput-submit btn btn-primary btn-block"
+          disabled={!isValidTxHash(hash)}
+        >
           {translate('NAV_CHECKTXSTATUS')}
         </button>
       </form>
@@ -116,5 +124,6 @@ class TxHashInput extends React.Component<Props, State> {
 }
 
 export default connect((state: AppState): ReduxProps => ({
-  recentTxs: getRecentNetworkTransactions(state)
+  recentTxs: selectors.getRecentNetworkTransactions(state),
+  isValidAddress: getIsValidAddressFn(state)
 }))(TxHashInput);

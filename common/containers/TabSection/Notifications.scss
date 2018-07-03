@@ -17,6 +17,10 @@
   font-size: $font-size-bump;
   box-shadow: 0 1px rgba(#fff, 0.4);
 
+  @include theme(dark) {
+    background: color(tooltip-bg);
+  }
+
   &:first-child {
     margin-top: 0;
   }

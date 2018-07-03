@@ -1,13 +1,14 @@
-import { Query } from 'components/renderCbs';
-import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
-import { AddressInputFactory } from './AddressInputFactory';
 import React from 'react';
 import { connect } from 'react-redux';
-import { ICurrentTo } from 'selectors/transaction';
+
+import { ICurrentTo } from 'features/types';
+import { transactionActions } from 'features/transaction';
+import { Query } from 'components/renderCbs';
+import { AddressInputFactory } from './AddressInputFactory';
 import './AddressFieldFactory.scss';
 
 interface DispatchProps {
-  setCurrentTo: TSetCurrentTo;
+  setCurrentTo: transactionActions.TSetCurrentTo;
 }
 
 interface OwnProps {
@@ -82,7 +83,9 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   private setBlurTimeout = () => (this.goingToBlur = window.setTimeout(this.blur, 150));
 }
 
-const AddressFieldFactory = connect(null, { setCurrentTo })(AddressFieldFactoryClass);
+const AddressFieldFactory = connect(null, { setCurrentTo: transactionActions.setCurrentTo })(
+  AddressFieldFactoryClass
+);
 
 interface DefaultAddressFieldProps {
   isSelfAddress?: boolean;

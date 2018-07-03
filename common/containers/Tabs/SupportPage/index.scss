@@ -12,7 +12,15 @@
     &-logo {
       display: block;
       margin: 0 auto $space;
-      max-width: 360px;
+      height: 100px;
+      background-image: url('~assets/images/logo-mycrypto-transparent.svg');
+      background-position: center;
+      background-size: auto 100%;
+      background-repeat: no-repeat;
+
+      @include theme(dark) {
+        background-image: url('~assets/images/logo-mycrypto.svg');
+      }
     }
 
     &-about {
@@ -25,8 +33,7 @@
 
       &-link {
         margin: 0 .45rem;
-        color: $text-color;
-        opacity: 0.3;
+        color: shade-dark(0.4);
 
         &:hover {
           opacity: 1;
@@ -44,14 +51,14 @@
 
       &-text {
         margin: 0 $space-sm;
-        color: $gray-light;
+        color: shade-dark(0.4);
         font-size: $font-size-xs-bump;
 
         a {
-          color: $gray-light;
+          color: shade-dark(0.4);
 
           &:hover {
-            color: $gray-darker;
+            color: color(link-hover-color);
           }
         }
       }
@@ -70,6 +77,8 @@
     text-align: center;
 
     &-type {
+      margin-bottom: $space-md;
+
       &-currency {
         display: flex;
         justify-content: center;
@@ -98,8 +107,8 @@
       &-address {
         display: block;
         padding: $space-xs $space-sm;
-        background: $gray-lightest;
-        border: 1px solid $gray-lighter;
+        background: shade-dark(0.06);
+        border: 1px solid shade-dark(0.12);
         font-size: $font-size-xs;
         border-radius: 4px;
         word-wrap: break-word;

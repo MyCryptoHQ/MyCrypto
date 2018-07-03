@@ -36,7 +36,7 @@ $button-break: 'max-width: 620px';
       }
 
       &-currency {
-        color: $brand-danger;
+        color: color(brand-danger);
       }
     }
   }

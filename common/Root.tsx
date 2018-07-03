@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+
+import { AppState } from 'features/reducers';
+import { getNetworkUnit, getTheme } from 'features/config';
+import { transactionMetaActions } from 'features/transaction';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -18,24 +23,23 @@ import QrSignerModal from 'containers/QrSignerModal';
 import OnboardModal from 'containers/OnboardModal';
 import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
-import { Store } from 'redux';
-import { AppState } from 'reducers';
+import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
+import { Theme } from 'config';
 import 'what-input';
-import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-import { getNetworkUnit } from 'selectors/config';
 
 interface OwnProps {
   store: Store<AppState>;
 }
 
 interface StateProps {
-  networkUnit: string;
+  networkUnit: ReturnType<typeof getNetworkUnit>;
+  theme: ReturnType<typeof getTheme>;
 }
 
 interface DispatchProps {
-  setUnitMeta: TSetUnitMeta;
+  setUnitMeta: transactionMetaActions.TSetUnitMeta;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -52,10 +56,17 @@ class RootClass extends Component<Props, State> {
   public componentDidMount() {
     this.props.setUnitMeta(this.props.networkUnit);
     this.addBodyClasses();
+    this.updateTheme(this.props.theme);
   }
 
   public componentDidCatch(error: Error) {
     this.setState({ error });
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (this.props.theme !== prevProps.theme) {
+      this.updateTheme(this.props.theme, prevProps.theme);
+    }
   }
 
   public render() {
@@ -65,14 +76,6 @@ class RootClass extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
-
-    const CaptureRouteNotFound = withRouter(({ children, location }) => {
-      return location && location.state && location.state.error ? (
-        <PageNotFound />
-      ) : (
-        (children as JSX.Element)
-      );
-    });
 
     const routes = (
       <CaptureRouteNotFound>
@@ -86,7 +89,10 @@ class RootClass extends Component<Props, State> {
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
           <Route path="/support-us" component={SupportPage} exact={true} />
-          <RedirectWithQuery exactArg={true} from="/" to="/account" />
+          {process.env.NODE_ENV !== 'production' && (
+            <Route path="/dev/palette" component={PalettePage} exact={true} />
+          )}
+          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
@@ -99,8 +105,8 @@ class RootClass extends Component<Props, State> {
 
     return (
       <React.Fragment>
-        <Provider store={store} key={Math.random()}>
-          <Router key={Math.random()}>
+        <Provider store={store}>
+          <Router>
             <React.Fragment>
               {routes}
               <LegacyRoutes />
@@ -137,6 +143,14 @@ class RootClass extends Component<Props, State> {
     }
 
     document.body.className += ` ${classes.join(' ')}`;
+  }
+
+  private updateTheme(theme: Theme, oldTheme?: Theme) {
+    const root = document.documentElement;
+    if (oldTheme) {
+      root.classList.remove(`theme--${oldTheme}`);
+    }
+    root.classList.add(`theme--${theme}`);
   }
 }
 
@@ -180,12 +194,19 @@ const LegacyRoutes = withRouter(props => {
   );
 });
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    networkUnit: getNetworkUnit(state)
-  };
-};
+const CaptureRouteNotFound = withRouter(({ children, location }) => {
+  return location && location.state && location.state.error ? (
+    <PageNotFound />
+  ) : (
+    (children as JSX.Element)
+  );
+});
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  networkUnit: getNetworkUnit(state),
+  theme: getTheme(state)
+});
 
 export default connect(mapStateToProps, {
-  setUnitMeta
+  setUnitMeta: transactionMetaActions.setUnitMeta
 })(RootClass);

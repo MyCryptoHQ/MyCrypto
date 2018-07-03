@@ -1,11 +1,12 @@
-import { configuredStore } from 'store';
+import configuredStore from 'features/store';
 import {
   decryptPrivKey,
   decodeCryptojsSalt,
   evp_kdf,
   decipherBuffer,
   decryptMnemonicToPrivKey
-} from '../../common/libs/decrypt';
+} from 'libs/decrypt';
+
 configuredStore.getState();
 
 // Elements of a V1 encrypted priv key
