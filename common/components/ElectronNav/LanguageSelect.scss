@@ -9,17 +9,17 @@
     height: 48px;
     line-height: 48px;
     padding: 0 10px;
-    color: $text-color;
-    border-bottom: 1px solid $gray-lighter;
+    color: color(text-color);
+    border-bottom: 1px solid color(gray-lighter);
     text-align: left;
 
     &:hover {
-      color: $link-hover-color;
+      color: color(link-hover-color);
     }
 
     &.is-selected {
-      color: $link-color;
-      background: $gray-lightest;
+      color: color(link-color);
+      background: color(gray-lightest);
     }
   }
 }

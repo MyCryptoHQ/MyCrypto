@@ -12,17 +12,21 @@
     @media screen and (max-width: 525px) {
       font-size: 1rem;
     }
+
     > td {
       padding: 0.5rem 0;
       text-align: right;
-      opacity: 0.54;
+      color: shade-dark(0.5);
+
       &:not(:first-child) {
         padding-left: 0.5rem;
       }
+
       &:first-child {
         text-align: left;
-        opacity: 1;
+        color: color(text-color);
       }
+
       &:last-child {
         font-size: 85%;
       }
@@ -36,7 +40,7 @@
   }
 
   &-total {
-    background-image: linear-gradient(to right, #c2cfd6 33%, #fff0 0%);
+    background-image: linear-gradient(to right, color(control-border) 33%, transparent 0%);
     background-position: top;
     background-size: 5px 1px;
     background-repeat: repeat-x;

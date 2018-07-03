@@ -15,6 +15,7 @@ type StaticNetworkIds =
   | 'ETSC'
   | 'EGEM'
   | 'CLO'
+  | 'RSK'
   | 'RSK_TESTNET'
   | 'GO'
   | 'EOSC'

@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Bridge",
+    "address": "0x0000000000000000000000000000000001000006",
+    "abi":
+      "[{ \"name\": \"getFederationAddress\", \"type\": \"function\", \"constant\": true, \"inputs\": [], \"outputs\": [{ \"name\": \"\", \"type\": \"string\" }] }]"
+  }
+]

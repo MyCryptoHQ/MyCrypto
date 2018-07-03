@@ -35,7 +35,7 @@
       margin: 0;
       font-family: $font-family-monospace;
       font-weight: 400;
-      opacity: 0.54;
+      color: shade-dark(0.4);
       word-wrap: break-word;
     }
   }
@@ -50,7 +50,7 @@
       margin: 0;
       padding: 0;
       font-weight: 400;
-      color: rgba(0, 0, 0, 0.54);
+      color: shade-dark(0.4);
     }
     &-link {
       font-family: $font-family-monospace;

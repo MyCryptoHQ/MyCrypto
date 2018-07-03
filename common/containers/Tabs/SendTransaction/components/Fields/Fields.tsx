@@ -54,7 +54,11 @@ class FieldsClass extends Component<StateProps> {
                   <div
                     className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
                   >
-                    <AmountField hasUnitDropdown={true} hasSendEverything={true} />
+                    <AmountField
+                      hasUnitDropdown={true}
+                      hasSendEverything={true}
+                      showInvalidWithoutValue={true}
+                    />
                   </div>
                   {schedulingAvailable && (
                     <div className="col-sm-3 col-md-2">

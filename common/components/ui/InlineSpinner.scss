@@ -1,7 +1,7 @@
 @import 'common/sass/variables';
 
 .InlineSpinner {
-  color: $gray-light;
+  color: color(gray-light);
   display: flex;
   align-items: center;
   font-weight: 400;

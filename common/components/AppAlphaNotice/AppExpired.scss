@@ -3,7 +3,7 @@
 
 .AppExpired {
   @include cover-message;
-  background: $brand-danger;
+  background: color(brand-danger);
   display: flex;
   align-items: center;
 
@@ -30,14 +30,14 @@
       height: 60px;
       line-height: 60px;
       font-size: 22px;
-      background: rgba(#fff, 0.96);
-      color: $gray-dark;
+      background: #fff;
+      color: #333;
       border-radius: 4px;
       text-shadow: none;
+      opacity: 0.95;
 
       &:hover {
-        background: #fff;
-        color: $gray-darker;
+        opacity: 1;
       }
     }
   }

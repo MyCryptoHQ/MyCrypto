@@ -50,9 +50,9 @@ interface DispatchProps {
 interface StateProps {
   shouldSetNodeFromQS: boolean;
   network: NetworkConfig;
-  languageSelection: AppState['config']['meta']['languageSelection'];
-  isChangingNode: AppState['config']['nodes']['selectedNode']['pending'];
-  isOffline: AppState['config']['meta']['offline'];
+  languageSelection: ReturnType<typeof getLanguageSelection>;
+  isChangingNode: ReturnType<typeof isNodeChanging>;
+  isOffline: ReturnType<typeof getOffline>;
 }
 
 interface State {
