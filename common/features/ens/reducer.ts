@@ -8,5 +8,5 @@ import * as types from './types';
 export const ensReducer = combineReducers<types.ENSState>({
   domainSelector: ensDomainSelectorReducer.ensDomainSelectorReducer,
   domainRequests: ensDomainRequestsReducer.ensDomainRequestsReducer,
-  shaBid: shaBid
+  shaBid
 });
