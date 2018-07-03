@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+
 import translate, { translateRaw } from 'translations';
-import { setCurrentTo, TSetCurrentTo } from 'actions/transaction';
-import { getLabelAddresses } from 'selectors/addressBook';
-import { getToRaw } from 'selectors/transaction/fields';
+import { AppState } from 'features/reducers';
+import { transactionActions, transactionSelectors } from 'features/transaction';
+import { addressBookSelectors } from 'features/addressBook';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
 interface StateProps {
-  labelAddresses: ReturnType<typeof getLabelAddresses>;
-  currentTo: ReturnType<typeof getToRaw>;
+  labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
+  currentTo: ReturnType<typeof transactionSelectors.getToRaw>;
 }
 
 interface DispatchProps {
-  setCurrentTo: TSetCurrentTo;
+  setCurrentTo: transactionActions.TSetCurrentTo;
 }
 
 type Props = StateProps & DispatchProps;
@@ -158,8 +158,8 @@ class AddressFieldDropdown extends React.Component<Props> {
 
 export default connect(
   (state: AppState) => ({
-    labelAddresses: getLabelAddresses(state),
-    currentTo: getToRaw(state)
+    labelAddresses: addressBookSelectors.getLabelAddresses(state),
+    currentTo: transactionSelectors.getToRaw(state)
   }),
-  { setCurrentTo }
+  { setCurrentTo: transactionActions.setCurrentTo }
 )(AddressFieldDropdown);

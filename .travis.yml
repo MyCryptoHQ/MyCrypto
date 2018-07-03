@@ -35,29 +35,19 @@ before_install:
       sh -e /etc/init.d/xvfb start
       # uncomment once integration tests are included in CI
       # docker pull dternyak/eth-priv-to-addr:latest
-      sudo apt-get install libusb-1.0     
+      sudo apt-get install libusb-1.0
     fi
-  
+
 install:
   - yarn --silent
 
-script:
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      npm run prettier:diff
-      npm run test:coverage -- --maxWorkers=2
-      npm run report-coverage
-      npm run tslint
-      npm run tscheck
-      npm run freezer
-      npm run freezer:validate
-    fi
+before_script:
+  - chmod +x ./travis-scripts/test-{linux,osx}.sh
 
-  - | 
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      npm run build:electron
-      ls -la dist/electron-builds
-    fi
+script:
+  - ./travis-scripts/test-linux.sh
+  - ./travis-scripts/test-osx.sh
+
 
 notifications:
   email:

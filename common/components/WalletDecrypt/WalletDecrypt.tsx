@@ -1,22 +1,32 @@
 import React, { Component } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { withRouter, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 import {
-  setWallet,
-  TSetWallet,
-  unlockKeystore,
-  TUnlockKeystore,
-  unlockMnemonic,
-  TUnlockMnemonic,
-  unlockPrivateKey,
-  TUnlockPrivateKey,
-  unlockWeb3,
-  TUnlockWeb3
-} from 'actions/wallet';
-import { resetTransactionRequested, TResetTransactionRequested } from 'actions/transaction';
+  SecureWalletName,
+  InsecureWalletName,
+  MiscWalletName,
+  WalletName,
+  knowledgeBaseURL,
+  donationAddressMap
+} from 'config';
 import translate, { translateRaw } from 'translations';
+import { isWeb3NodeAvailable } from 'libs/nodes/web3';
+import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
+import { AppState } from 'features/reducers';
+import * as derivedSelectors from 'features/selectors';
+import { walletActions } from 'features/wallet';
+import { transactionFieldsActions } from 'features/transaction';
+import { notificationsActions } from 'features/notifications';
+import LedgerIcon from 'assets/images/wallets/ledger.svg';
+import TrezorIcon from 'assets/images/wallets/trezor.svg';
+import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
+import { Errorable } from 'components';
+import { DisabledWallets } from './disables';
+import { getWeb3ProviderInfo } from 'utils/web3';
 import {
   KeystoreDecrypt,
   LedgerNanoSDecrypt,
@@ -30,27 +40,7 @@ import {
   ParitySignerDecrypt,
   InsecureWalletWarning
 } from './components';
-import { AppState } from 'reducers';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { getDisabledWallets } from 'selectors/wallet';
-import { DisabledWallets } from './disables';
-import {
-  SecureWalletName,
-  InsecureWalletName,
-  MiscWalletName,
-  WalletName,
-  knowledgeBaseURL,
-  donationAddressMap
-} from 'config';
-import { isWeb3NodeAvailable } from 'libs/nodes/web3';
-import { getWeb3ProviderInfo } from 'utils/web3';
-import LedgerIcon from 'assets/images/wallets/ledger.svg';
-import TrezorIcon from 'assets/images/wallets/trezor.svg';
-import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
-import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import './WalletDecrypt.scss';
-import { withRouter, RouteComponentProps } from 'react-router';
-import { Errorable } from 'components';
 
 interface OwnProps {
   hidden?: boolean;
@@ -59,13 +49,13 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  unlockKeystore: TUnlockKeystore;
-  unlockMnemonic: TUnlockMnemonic;
-  unlockPrivateKey: TUnlockPrivateKey;
-  unlockWeb3: TUnlockWeb3;
-  setWallet: TSetWallet;
-  resetTransactionRequested: TResetTransactionRequested;
-  showNotification: TShowNotification;
+  unlockKeystore: walletActions.TUnlockKeystore;
+  unlockMnemonic: walletActions.TUnlockMnemonic;
+  unlockPrivateKey: walletActions.TUnlockPrivateKey;
+  unlockWeb3: walletActions.TUnlockWeb3;
+  setWallet: walletActions.TSetWallet;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 interface StateProps {
@@ -79,8 +69,8 @@ type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
 type UnlockParams = {} | PrivateKeyValue;
 interface State {
   selectedWalletKey: WalletName | null;
+  isInsecureOverridden: boolean;
   value: UnlockParams | null;
-  hasAcknowledgedInsecure: boolean;
 }
 
 interface BaseWalletInfo {
@@ -204,8 +194,8 @@ const WalletDecrypt = withRouter<Props>(
 
     public state: State = {
       selectedWalletKey: null,
-      value: null,
-      hasAcknowledgedInsecure: false
+      isInsecureOverridden: false,
+      value: null
     };
 
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -228,20 +218,28 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public getDecryptionComponent() {
-      const { selectedWalletKey, hasAcknowledgedInsecure } = this.state;
+      const { selectedWalletKey, isInsecureOverridden } = this.state;
       const selectedWallet = this.getSelectedWallet();
       if (!selectedWalletKey || !selectedWallet) {
         return null;
       }
 
-      if (INSECURE_WALLETS.includes(selectedWalletKey) && !hasAcknowledgedInsecure) {
+      const isInsecure = INSECURE_WALLETS.includes(selectedWalletKey);
+      if (isInsecure && !isInsecureOverridden && !process.env.BUILD_DOWNLOADABLE) {
         return (
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
               walletType={translateRaw(selectedWallet.lid)}
-              onContinue={this.handleAcknowledgeInsecure}
               onCancel={this.clearWalletChoice}
             />
+            {process.env.NODE_ENV !== 'production' && (
+              <button
+                className="WalletDecrypt-decrypt-override"
+                onClick={this.overrideInsecureWarning}
+              >
+                I'm a dev, override this
+              </button>
+            )}
           </div>
         );
       }
@@ -252,7 +250,8 @@ const WalletDecrypt = withRouter<Props>(
             <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
+            {!selectedWallet.isReadOnly && translate('UNLOCK_WALLET')}{' '}
+            {translate(selectedWallet.lid)}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
             <Errorable
@@ -288,10 +287,6 @@ const WalletDecrypt = withRouter<Props>(
         </div>
       );
     }
-
-    public handleAcknowledgeInsecure = () => {
-      this.setState({ hasAcknowledgedInsecure: true });
-    };
 
     public buildWalletOptions() {
       const { computedDisabledWallets } = this.props;
@@ -386,8 +381,7 @@ const WalletDecrypt = withRouter<Props>(
       window.setTimeout(() => {
         this.setState({
           selectedWalletKey: walletType,
-          value: wallet.initialParams,
-          hasAcknowledgedInsecure: false
+          value: wallet.initialParams
         });
       }, timeout);
     };
@@ -395,8 +389,7 @@ const WalletDecrypt = withRouter<Props>(
     public clearWalletChoice = () => {
       this.setState({
         selectedWalletKey: null,
-        value: null,
-        hasAcknowledgedInsecure: false
+        value: null
       });
     };
 
@@ -448,12 +441,18 @@ const WalletDecrypt = withRouter<Props>(
     private isWalletDisabled = (walletKey: WalletName) => {
       return this.props.computedDisabledWallets.wallets.indexOf(walletKey) !== -1;
     };
+
+    private overrideInsecureWarning = () => {
+      if (process.env.NODE_ENV !== 'production') {
+        this.setState({ isInsecureOverridden: true });
+      }
+    };
   }
 );
 
 function mapStateToProps(state: AppState, ownProps: Props) {
   const { disabledWallets } = ownProps;
-  let computedDisabledWallets = getDisabledWallets(state);
+  let computedDisabledWallets = derivedSelectors.getDisabledWallets(state);
 
   if (disabledWallets) {
     computedDisabledWallets = {
@@ -473,11 +472,11 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 }
 
 export default connect(mapStateToProps, {
-  unlockKeystore,
-  unlockMnemonic,
-  unlockPrivateKey,
-  unlockWeb3,
-  setWallet,
-  resetTransactionRequested,
-  showNotification
+  unlockKeystore: walletActions.unlockKeystore,
+  unlockMnemonic: walletActions.unlockMnemonic,
+  unlockPrivateKey: walletActions.unlockPrivateKey,
+  unlockWeb3: walletActions.unlockWeb3,
+  setWallet: walletActions.setWallet,
+  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+  showNotification: notificationsActions.showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;

@@ -1,8 +1,9 @@
-import { AmountField } from './AmountField';
 import React, { Component } from 'react';
+
 import { SendButton, TXMetaDataPanel } from 'components';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { FullWalletOnly } from 'components/renderCbs';
+import { AmountField } from './AmountField';
 
 interface OwnProps {
   button: React.ReactElement<any>;

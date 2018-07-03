@@ -1,15 +1,14 @@
 import { IHexStrWeb3Transaction } from 'libs/transaction';
-import RPCNode from '../rpc';
-import Web3Client from './client';
-import Web3Requests from './requests';
 import { INode } from 'libs/nodes/INode';
-
 import {
   isValidSendTransaction,
   isValidSignMessage,
   isValidGetAccounts,
   isValidGetNetVersion
 } from 'libs/validators';
+import RPCNode from '../rpc';
+import Web3Client from './client';
+import Web3Requests from './requests';
 
 export default class Web3Node extends RPCNode {
   public client: Web3Client;

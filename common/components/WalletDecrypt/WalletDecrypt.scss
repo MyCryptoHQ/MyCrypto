@@ -103,13 +103,24 @@ $speed: 500ms;
       max-width: 360px;
       margin: 0 auto;
     }
-    &-label{
+    &-label {
       opacity: 0.8;
       font-weight: 300;
       white-space: nowrap;
       width: 60%;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    &-override {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      opacity: 0.3;
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }

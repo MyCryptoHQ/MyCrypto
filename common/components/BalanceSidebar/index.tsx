@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { AppState } from 'features/reducers';
+import { walletSelectors } from 'features/wallet';
+import EquivalentValues from './EquivalentValues';
 import AccountInfo from './AccountInfo';
 import Promos from './Promos';
 import TokenBalances from './TokenBalances';
-import { AppState } from 'reducers';
-import { getWalletInst } from 'selectors/wallet';
-import { connect } from 'react-redux';
-import EquivalentValues from './EquivalentValues';
 
 interface Block {
   name: string;
@@ -57,6 +58,8 @@ export class BalanceSidebar extends React.Component<StateProps> {
   }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({ wallet: getWalletInst(state) });
+const mapStateToProps = (state: AppState): StateProps => ({
+  wallet: walletSelectors.getWalletInst(state)
+});
 
 export default connect(mapStateToProps)(BalanceSidebar);

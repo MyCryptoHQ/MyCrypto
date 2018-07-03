@@ -1,26 +1,25 @@
-import { getWalletType } from 'selectors/wallet';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+
+import { AppState } from 'features/reducers';
+import * as derivedSelectors from 'features/selectors';
+import { walletSelectors } from 'features/wallet';
 import {
-  getSerializedTransaction,
-  isNetworkRequestPending,
-  isValidGasPrice,
-  isValidGasLimit,
-  getSignedTx,
-  getWeb3Tx
-} from 'selectors/transaction';
+  transactionNetworkSelectors,
+  transactionSignSelectors,
+  transactionSelectors
+} from 'features/transaction';
 import { SendButtonFactoryClass } from 'components/SendButtonFactory';
-import { getSchedulingTransaction } from 'selectors/schedule/transaction';
 
 const mapStateToProps = (state: AppState) => {
   return {
-    walletType: getWalletType(state),
-    serializedTransaction: getSerializedTransaction(state),
-    ...getSchedulingTransaction(state),
-    networkRequestPending: isNetworkRequestPending(state),
-    validGasPrice: isValidGasPrice(state),
-    validGasLimit: isValidGasLimit(state),
-    signedTx: !!getSignedTx(state) || !!getWeb3Tx(state)
+    walletType: walletSelectors.getWalletType(state),
+    serializedTransaction: derivedSelectors.getSerializedTransaction(state),
+    ...derivedSelectors.getSchedulingTransaction(state),
+    networkRequestPending: transactionNetworkSelectors.isNetworkRequestPending(state),
+    validGasPrice: transactionSelectors.isValidGasPrice(state),
+    validGasLimit: transactionSelectors.isValidGasLimit(state),
+    signedTx:
+      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state)
   };
 };
 

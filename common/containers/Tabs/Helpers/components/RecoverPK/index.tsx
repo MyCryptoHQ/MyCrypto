@@ -3,7 +3,6 @@ import './index.scss';
 import { Input, Spinner } from 'components/ui';
 import { searchPK } from 'libs/web-workers';
 import { isValidPrivKey, isValidETHAddress } from 'libs/validators';
-import { stripHexPrefix } from 'libs/values';
 
 interface Result {
   pk: string;
@@ -130,7 +129,7 @@ export default class RecoverPK extends React.Component<State> {
   private searchPK = () => {
     const { address, pk, result } = this.state;
 
-    const basePrivateKey = stripHexPrefix(pk);
+    const basePrivateKey = pk.replace('0x', '');
 
     result.status = 'loading';
 

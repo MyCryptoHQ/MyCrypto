@@ -34,7 +34,7 @@
   }
 
   &-error {
-    color: $brand-danger;
+    color: color(brand-danger);
     text-align: center;
 
     &-message {
@@ -61,7 +61,7 @@
       padding-top: 10px;
       text-align: center;
       font-size: $font-size-xs;
-      color: $gray;
+      color: shade-dark(0.7);
     }
   }
 

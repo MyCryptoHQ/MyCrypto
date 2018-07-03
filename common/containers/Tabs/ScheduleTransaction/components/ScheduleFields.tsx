@@ -1,7 +1,15 @@
-import { connect } from 'react-redux';
 import React from 'react';
-import { AppState } from 'reducers';
-import { getCurrentScheduleType, ICurrentScheduleType } from 'selectors/schedule/fields';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { AppState } from 'features/reducers';
+import { scheduleSelectors } from 'features/schedule';
+import {
+  ScheduleTimezoneDropDown,
+  ScheduleTimestampField,
+  ScheduleType,
+  DataField
+} from 'components';
 import {
   WindowSizeField,
   TimeBountyField,
@@ -10,17 +18,10 @@ import {
   ScheduleGasLimitField,
   ScheduleDepositField
 } from '.';
-import {
-  ScheduleTimezoneDropDown,
-  ScheduleTimestampField,
-  ScheduleType,
-  DataField
-} from 'components';
 import './ScheduleFields.scss';
-import translate from 'translations';
 
 interface Props {
-  schedulingType: ICurrentScheduleType;
+  schedulingType: scheduleSelectors.ICurrentScheduleType;
 }
 
 class ScheduleFieldsClass extends React.Component<Props> {
@@ -107,5 +108,5 @@ class ScheduleFieldsClass extends React.Component<Props> {
 }
 
 export const ScheduleFields = connect((state: AppState) => ({
-  schedulingType: getCurrentScheduleType(state)
+  schedulingType: scheduleSelectors.getCurrentScheduleType(state)
 }))(ScheduleFieldsClass);

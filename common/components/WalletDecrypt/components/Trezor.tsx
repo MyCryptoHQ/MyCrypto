@@ -1,14 +1,14 @@
-import { TrezorWallet, TREZOR_MINIMUM_FIRMWARE } from 'libs/wallet';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
-import TrezorConnect from 'vendor/trezor-connect';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import UnsupportedNetwork from './UnsupportedNetwork';
-import { Spinner, NewTabLink } from 'components/ui';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
+
 import { SecureWalletName, trezorReferralURL } from 'config';
-import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import translate, { translateRaw } from 'translations';
+import { TrezorWallet } from 'libs/wallet';
+import { AppState } from 'features/reducers';
+import { getSingleDPath, getPaths } from 'features/config';
+import { Spinner, NewTabLink } from 'components/ui';
+import UnsupportedNetwork from './UnsupportedNetwork';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
@@ -65,7 +65,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           {isLoading ? (
             <div className="TrezorDecrypt-message">
               <Spinner light={true} />
-              Unlocking...
+              {translate('WALLET_UNLOCKING')}
             </div>
           ) : (
             translate('ADD_TREZOR_SCAN')
@@ -73,14 +73,14 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
         </button>
 
         <NewTabLink className="TrezorDecrypt-buy btn btn-sm btn-default" href={trezorReferralURL}>
-          {translate('Don’t have a TREZOR? Order one now!')}
+          {translate('ORDER_TREZOR')}
         </NewTabLink>
 
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
           <NewTabLink href="https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html">
-            How to use TREZOR with MyCrypto
+            {translate('HOWTO_TREZOR')}
           </NewTabLink>
         </div>
 
@@ -109,25 +109,21 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
       error: null
     });
 
-    (TrezorConnect as any).getXPubKey(
-      dPath.value,
-      (res: any) => {
-        if (res.success) {
-          this.setState({
-            dPath,
-            publicKey: res.publicKey,
-            chainCode: res.chainCode,
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            error: res.error,
-            isLoading: false
-          });
-        }
-      },
-      TREZOR_MINIMUM_FIRMWARE
-    );
+    TrezorWallet.getChainCode(dPath.value)
+      .then(res => {
+        this.setState({
+          dPath,
+          publicKey: res.publicKey,
+          chainCode: res.chainCode,
+          isLoading: false
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: err.message,
+          isLoading: false
+        });
+      });
   };
 
   private handleCancel = () => {

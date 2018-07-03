@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getSerializedTransaction } from 'selectors/transaction';
+
 import { makeTransaction, IHexStrTransaction } from 'libs/transaction';
 import { getTransactionFields } from 'libs/transaction/utils/ether';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 
 interface StateProps {
   serializedTransaction: Buffer | null;
@@ -32,5 +33,5 @@ const getRawTxFields = (serializedTransaction: string) =>
   getTransactionFields(makeTransaction(serializedTransaction));
 
 export const SerializedTransaction = connect((state: AppState) => ({
-  serializedTransaction: getSerializedTransaction(state)
+  serializedTransaction: selectors.getSerializedTransaction(state)
 }))(SerializedTransactionClass);

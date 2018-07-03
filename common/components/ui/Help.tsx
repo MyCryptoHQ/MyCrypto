@@ -1,4 +1,5 @@
 import React from 'react';
+
 import icon from 'assets/images/icon-help-3.svg';
 import './Help.scss';
 

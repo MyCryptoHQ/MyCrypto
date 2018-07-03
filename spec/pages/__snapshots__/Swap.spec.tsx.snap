@@ -89,6 +89,7 @@ exports[`render snapshot 1`] = `
     }
   }
   showNotification={[Function]}
+  showNotificationWithComponent={[Function]}
   startOrderTimerSwap={[Function]}
   startPollBityOrderStatus={[Function]}
   startPollShapeshiftOrderStatus={[Function]}

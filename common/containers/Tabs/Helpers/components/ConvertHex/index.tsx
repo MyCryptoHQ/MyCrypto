@@ -3,7 +3,6 @@ import './index.scss';
 import { Input } from 'components/ui';
 import BN from 'bn.js';
 import { isValidHex } from 'libs/validators';
-import { stripHexPrefix } from 'libs/values';
 
 interface State {
   dec: BN;
@@ -84,7 +83,7 @@ export default class ConvertHex extends React.Component<State> {
     }
 
     if (name === 'hex' && isValidHex(value as string)) {
-      validHex = stripHexPrefix(value as string);
+      validHex = (value as string).replace('0x', '');
       currentState.dec = this.hexToDec(validHex ? validHex : '0');
       currentState.hex = value as string;
     }

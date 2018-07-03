@@ -1,10 +1,10 @@
 import * as React from 'react';
-import NewTabLink from 'components/ui/NewTabLink';
-import isMobile from 'utils/isMobile';
 
 import firefoxIcon from 'assets/images/browsers/firefox.svg';
 import chromeIcon from 'assets/images/browsers/chrome.svg';
 import operaIcon from 'assets/images/browsers/opera.svg';
+import isMobile from 'utils/isMobile';
+import NewTabLink from 'components/ui/NewTabLink';
 import './CryptoWarning.scss';
 
 const BROWSERS = [

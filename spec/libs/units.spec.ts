@@ -1,4 +1,4 @@
-import { configuredStore } from 'store';
+import configuredStore from 'features/store';
 import {
   fromWei,
   Wei,
@@ -9,6 +9,7 @@ import {
   convertTokenBase,
   TokenValue
 } from 'libs/units';
+
 configuredStore.getState();
 
 const Units = {

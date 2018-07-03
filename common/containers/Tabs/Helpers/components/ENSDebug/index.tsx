@@ -7,8 +7,8 @@ import { normalise } from 'libs/ens';
 import BN from 'bn.js';
 import auctionABI from 'libs/ens/contracts/auction/auction.json';
 import abi from 'ethereumjs-abi';
-import { AppState } from 'reducers';
-import { shaBidRequested, TShaBidRequested } from 'actions/ens';
+import { AppState } from 'features/reducers';
+import { ensActions } from 'features/ens';
 import { connect } from 'react-redux';
 import networkConfigs from 'libs/ens/networkConfigs';
 import { isValidETHAddress, isValidENSName } from 'libs/validators';
@@ -30,7 +30,7 @@ interface State {
 
 interface Props {
   shaBid: AppState['ens']['shaBid'];
-  shaBidRequested: TShaBidRequested;
+  shaBidRequested: ensActions.TShaBidRequested;
 }
 
 class ENSDebug extends React.Component<Props, State> {
@@ -423,5 +423,5 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  shaBidRequested
+  shaBidRequested: ensActions.shaBidRequested
 })(ENSDebug);

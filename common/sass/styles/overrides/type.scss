@@ -84,21 +84,21 @@ strong,
 }
 
 a {
-  color: $link-color;
+  color: color(link-color);
   text-decoration: none;
   cursor: pointer;
   transition: $transition;
 
   &:hover {
     opacity: 0.8;
-    color: $link-hover-color;
+    color: color(link-hover-color);
   }
   &:active,
   &:focus {
     opacity: 1;
   }
   &:focus {
-    @include tab-focus();
+    @include tab-focus;
   }
 }
 
@@ -145,4 +145,21 @@ li {
 // Blockquotes
 blockquote {
   padding: $space-sm #{$line-height-computed}rem;
+}
+
+// Color text
+.text-primary {
+  color: color(brand-primary);
+}
+.text-info {
+  color: color(brand-info);
+}
+.text-success {
+  color: color(brand-success);
+}
+.text-warning {
+  color: color(brand-warning);
+}
+.text-danger {
+  color: color(brand-danger);
 }

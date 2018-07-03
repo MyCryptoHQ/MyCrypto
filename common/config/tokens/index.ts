@@ -6,6 +6,7 @@ import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
 import RSK from './rsk.json';
 import UBQ from './ubq.json';
+import ESN from './esn.json';
 
 export default {
   ETC,
@@ -15,5 +16,6 @@ export default {
   Rinkeby,
   Ropsten,
   RSK,
-  UBQ
+  UBQ,
+  ESN
 };
