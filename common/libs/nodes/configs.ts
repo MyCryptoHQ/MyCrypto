@@ -108,9 +108,9 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   POA: [
     {
       name: makeNodeName('POA', 'core'),
-      type: 'rpc',
-      service: 'poa.network',
-      url: 'https://core.poa.network'
+      type: 'infura',
+      service: 'poa.infura.io',
+      url: 'https://poa.infura.io'
     }
   ],
 
@@ -165,6 +165,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: '0xinfra.com',
       url: 'https://clo-geth.0xinfra.com/'
+    }
+  ],
+
+  RSK: [
+    {
+      name: makeNodeName('RSK', 'rsk_mainnet'),
+      type: 'rpc',
+      service: 'mycrypto.rsk.co',
+      url: 'https://mycrypto.rsk.co/'
     }
   ],
 
