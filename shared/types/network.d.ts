@@ -1,3 +1,5 @@
+import { TAB } from 'components/Header/components/constants';
+
 type StaticNetworkIds =
   | 'ETH'
   | 'Ropsten'
@@ -13,8 +15,11 @@ type StaticNetworkIds =
   | 'ETSC'
   | 'EGEM'
   | 'CLO'
+  | 'RSK'
   | 'RSK_TESTNET'
-  | 'GO';
+  | 'GO'
+  | 'EOSC'
+  | 'ESN';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -68,6 +73,7 @@ interface StaticNetworkConfig {
   isTestnet?: boolean;
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice?: boolean;
+  unsupportedTabs?: TAB[];
 }
 
 interface CustomNetworkConfig {
@@ -78,6 +84,7 @@ interface CustomNetworkConfig {
   unit: string;
   chainId: number;
   dPathFormats: DPathFormats | null;
+  unsupportedTabs?: TAB[];
 }
 
 type NetworkConfig = CustomNetworkConfig | StaticNetworkConfig;

@@ -3,7 +3,7 @@
 
 .ErrorScreen {
   @include cover-message;
-  background: $brand-danger;
+  background: color(brand-danger);
 
   code {
     display: block;

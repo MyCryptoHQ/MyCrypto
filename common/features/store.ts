@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { shepherdProvider, getShepherdPending, getShepherdOffline } from 'libs/nodes';
 import { setOffline, setOnline, getOffline } from 'features/config';
 import { notificationsActions } from 'features/notifications';
+import handleMetaMaskPolling, { METAMASK_POLLING_INTERVAL } from './handleMetaMaskPolling';
 import configureStore from './configureStore';
 
 const store = configureStore();
@@ -89,5 +90,7 @@ window.addEventListener('load', () => {
     }
   });
 });
+
+setInterval(handleMetaMaskPolling.bind(null, store), METAMASK_POLLING_INTERVAL);
 
 export default store;

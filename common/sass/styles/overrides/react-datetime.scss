@@ -8,16 +8,16 @@
   td {
     &.rdtActive,
     &.rdtActive:hover {
-      background-color: $brand-primary;
+      background-color: color(brand-primary);
     }
   }
   td.rdtToday::before {
-    border-bottom: 7px solid $brand-primary;
+    border-bottom: 7px solid color(brand-primary);
   }
 }
 
 .rdtCounter .rdtBtn,
 .rdtNext,
 .rdtPrev {
-  color: $brand-primary;
+  color: color(brand-primary);
 }
