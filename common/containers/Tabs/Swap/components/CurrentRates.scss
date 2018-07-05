@@ -40,12 +40,13 @@
       }
 
       &-input {
+        color: #fff;
         display: inline-block;
         width: 16%;
         min-width: 3.5rem;
         height: 2rem;
         padding: 1rem;
-        margin: .5rem auto;
+        margin: 0.5rem auto;
         font-size: 1rem;
         margin-right: $space;
         text-align: right;
