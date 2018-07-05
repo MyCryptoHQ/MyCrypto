@@ -295,7 +295,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
     }
 
     db.find({}, (err, docs) => {
-      if (docs.length == 0) {
+      if (docs.length === 0) {
         alert('You do not have a local wallet yet.');
       }
       keystore = JSON.stringify(docs[0]);
@@ -315,8 +315,8 @@ export class KeystoreLocalDecrypt extends PureComponent {
   private registerUser = (e: any) => {
     const { value: { hydroId } } = this.props;
     raindropDb.find({}, (err, docs) => {
-      if (docs.length == 0) {
-        var doc = { hydroId: hydroId };
+      if (docs.length === 0) {
+        const doc = { hydroId: hydroId };
         raindropDb.insert(doc, function(err, newDoc) {
           console.log(newDoc);
         });
