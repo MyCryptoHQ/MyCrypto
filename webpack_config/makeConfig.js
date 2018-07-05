@@ -166,7 +166,10 @@ module.exports = function(opts = {}) {
       twitter: {
         site: config.twitter.creator,
         creator: config.twitter.creator
-      }
+      },
+      metaCsp: config.isProduction 
+        ? "default-src 'none'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://shapeshift.io; connect-src *;"
+        :  ""
     }),
 
     new CopyWebpackPlugin([
@@ -283,7 +286,7 @@ module.exports = function(opts = {}) {
     if (process.env.VSCODE_DEBUG) {
       devtool = 'cheap-module-source-map';
     } else {
-      devtool = 'cheap-module-eval-source-map';
+      devtool = 'cheap-source-map';
     }
   }
 
