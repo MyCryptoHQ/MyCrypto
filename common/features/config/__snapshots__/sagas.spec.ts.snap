@@ -12,7 +12,9 @@ Object {
 }
 `;
 
-exports[`handleChangeNodeRequested* should select getCustomNodeConfig and match race snapshot 1`] = `
+exports[
+  `handleChangeNodeRequested* should select getCustomNodeConfig and match race snapshot 1`
+] = `
 Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {
