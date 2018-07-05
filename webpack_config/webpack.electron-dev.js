@@ -39,6 +39,7 @@ const electronConfig = {
     'node-hid': 'commonjs node-hid'
   },
   node: {
+    fs: 'empty',
     __dirname: false,
     __filename: false
   },

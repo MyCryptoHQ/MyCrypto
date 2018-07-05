@@ -75,7 +75,7 @@ export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1
 export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
 
 export enum SecureWalletName {
-  WEB3 = 'web3',
+  WEB3 = 'localWallet',
   LEDGER_NANO_S = 'ledgerNanoS',
   TREZOR = 'trezor',
   PARITY_SIGNER = 'paritySigner'

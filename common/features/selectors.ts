@@ -76,7 +76,7 @@ export function getDisabledWallets(state: AppState): any {
 
   // Some wallets are disabled on certain platforms
   if (process.env.BUILD_ELECTRON) {
-    addReason([SecureWalletName.WEB3], 'This wallet is not supported in the MyCrypto app');
+    // addReason([SecureWalletName.WEB3], 'This wallet is not supported in the MyCrypto app');
   }
 
   // Dedupe and sort for consistency

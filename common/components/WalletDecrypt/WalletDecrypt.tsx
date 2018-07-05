@@ -29,6 +29,7 @@ import { DisabledWallets } from './disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
   KeystoreDecrypt,
+  KeystoreLocalDecrypt,
   LedgerNanoSDecrypt,
   MnemonicDecrypt,
   PrivateKeyDecrypt,
@@ -105,20 +106,20 @@ const SECURE_WALLETS = Object.values(SecureWalletName);
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
 const MISC_WALLETS = Object.values(MiscWalletName);
 
-const web3info = getWeb3ProviderInfo();
-
 const WalletDecrypt = withRouter<Props>(
   class WalletDecryptClass extends Component<RouteComponentProps<{}> & Props, State> {
     // https://github.com/Microsoft/TypeScript/issues/13042
     // index signature should become [key: Wallets] (from config) once typescript bug is fixed
     public WALLETS: Wallets = {
       [SecureWalletName.WEB3]: {
-        lid: web3info.lid,
-        icon: web3info.icon,
-        description: 'ADD_WEB3DESC',
-        component: Web3Decrypt,
-        initialParams: {},
-        unlock: this.props.unlockWeb3,
+        lid: 'Local Wallet',
+        description: 'A local wallet stored in the app.',
+        component: KeystoreLocalDecrypt,
+        initialParams: {
+          file: '',
+          password: ''
+        },
+        unlock: this.props.unlockKeystore,
         attemptUnlock: true,
         helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
       },

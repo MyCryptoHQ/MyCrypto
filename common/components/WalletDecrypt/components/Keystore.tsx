@@ -5,12 +5,27 @@ import { isKeystorePassRequired } from 'libs/wallet';
 import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
+import Datastore from 'nedb';
+import raindrop from '@hydrogenplatform/raindrop';
+
+const db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
+const raindropDb = new Datastore({ filename: __dirname + 'testHydroId5', autoload: true });
 
 export interface KeystoreValue {
   file: string;
   password: string;
   filename: string;
   valid: boolean;
+}
+
+export interface KeystoreLocalValue {
+  file: string;
+  password: string;
+  filename: string;
+  valid: boolean;
+  hydroId: string;
+  loaded: boolean;
+  registered: boolean;
 }
 
 function isPassRequired(file: string): boolean {
@@ -127,5 +142,200 @@ export class KeystoreDecrypt extends PureComponent {
     } else {
       this.props.showNotification('danger', translateRaw('ERROR_3'));
     }
+  };
+}
+
+export class KeystoreLocalDecrypt extends PureComponent {
+  public props: {
+    value: KeystoreLocalValue;
+    isWalletPending: boolean;
+    isPasswordPending: boolean;
+    onChange(value: KeystoreLocalValue): void;
+    onUnlock(): void;
+    showNotification(level: string, message: string): notificationsActions.TShowNotification;
+  };
+
+  public render() {
+    const {
+      isWalletPending,
+      value: { file, password, filename, hydroId, loaded, registered }
+    } = this.props;
+    const passReq = isPassRequired(file);
+    const unlockDisabled = !file || (passReq && !password);
+
+    console.log(registered);
+
+    return (
+      <form onSubmit={this.unlock}>
+        <div hidden={!loaded || (hydroId && registered && file)}>
+          <label className="WalletDecrypt-decrypt-label">
+            <span>Please register your Hydro ID</span>
+          </label>
+          <br />
+
+          <Input
+            isValid={true}
+            className={`${file.length && isWalletPending ? 'hidden' : ''}`}
+            value={hydroId}
+            onChange={this.onHydroIdChange}
+            onKeyDown={this.onKeyDown}
+            placeholder="Hydro ID"
+          />
+          <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.registerUser}>
+            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+              Register
+            </a>
+          </label>
+        </div>
+        <br />
+        <div className="form-group">
+          <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.handleFileSelection}>
+            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+              Load Wallet
+            </a>
+          </label>
+
+          {isWalletPending ? <Spinner /> : ''}
+          <Input
+            isValid={password.length > 0}
+            className={`${file.length && isWalletPending ? 'hidden' : ''}`}
+            value={password}
+            onChange={this.onPasswordChange}
+            onKeyDown={this.onKeyDown}
+            placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+            type="password"
+          />
+        </div>
+
+        <button className="btn btn-primary btn-block">{translate('ADD_LABEL_6_SHORT')}</button>
+      </form>
+    );
+  }
+
+  private loadHydroId = (e: any) => {
+    raindropDb.find({}, (err, docs) => {
+      if (docs.length !== 0) {
+        this.props.onChange({
+          ...this.props.value,
+          hydroId: docs[0]['hydroId'],
+          loaded: true,
+          registered: true
+        });
+      } else {
+        this.props.onChange({
+          ...this.props.value,
+          loaded: true
+        });
+      }
+    });
+  };
+
+  private onHydroIdChange = (e: any) => {
+    if (e.target.value && e.target.value.length === 7) {
+      this.props.onChange({
+        ...this.props.value,
+        hydroId: e.target.value
+      });
+    }
+  };
+
+  private onKeyDown = (e: any) => {
+    if (e.keyCode === 13) {
+      this.unlock(e);
+    }
+  };
+
+  private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { value: { hydroId } } = this.props;
+    e.preventDefault();
+    e.stopPropagation();
+    fetch('https://arcane-meadow-23743.herokuapp.com/verify', {
+      method: 'post',
+      body: JSON.stringify({ user: hydroId }),
+      headers: new Headers({ 'Content-Type': 'application/json' })
+    })
+      .then(response => response.text())
+      .then(body => {
+        const jsonBody = JSON.parse(body);
+        if (jsonBody['verified']) {
+          this.props.onUnlock();
+        } else {
+          alert('something went wrong');
+        }
+      });
+  };
+
+  private onPasswordChange = (e: any) => {
+    const valid = this.props.value.file.length && e.target.value.length;
+    this.props.onChange({
+      ...this.props.value,
+      password: e.target.value,
+      valid
+    });
+  };
+
+  private handleFileSelection = (e: any) => {
+    const fileReader = new FileReader();
+    const { value: { hydroId, registered } } = this.props;
+
+    var keystore;
+
+    this.loadHydroId();
+
+    if (registered) {
+      fetch('https://arcane-meadow-23743.herokuapp.com/message', {
+        method: 'post',
+        body: JSON.stringify({ user: hydroId }),
+        headers: new Headers({ 'Content-Type': 'application/json' })
+      })
+        .then(response => response.text())
+        .then(body => {
+          alert('Please sign ' + body + ' in your Hydro app.');
+        });
+    }
+
+    db.find({}, (err, docs) => {
+      if (docs.length == 0) {
+        alert('You do not have a local wallet yet.');
+      }
+      keystore = JSON.stringify(docs[0]);
+
+      const passReq = isPassRequired(keystore);
+      this.props.onChange({
+        ...this.props.value,
+        file: keystore,
+        valid: keystore.length && !passReq,
+        password: '',
+        filename: 'local'
+      });
+      this.props.onUnlock();
+    });
+  };
+
+  private registerUser = (e: any) => {
+    const { value: { hydroId } } = this.props;
+    raindropDb.find({}, (err, docs) => {
+      if (docs.length == 0) {
+        var doc = { hydroId: hydroId };
+        raindropDb.insert(doc, function(err, newDoc) {
+          console.log(newDoc);
+        });
+
+        this.props.onChange({
+          ...this.props.value,
+          hydroId: hydroId,
+          registered: true
+        });
+      }
+    });
+    fetch('https://arcane-meadow-23743.herokuapp.com/register', {
+      method: 'post',
+      body: JSON.stringify({ user: hydroId }),
+      headers: new Headers({ 'Content-Type': 'application/json' })
+    })
+      .then(response => response.text())
+      .then(body => {
+        alert('You are now registered');
+      });
   };
 }
