@@ -11,7 +11,7 @@ import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
 import Datastore from 'nedb';
 
-var db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
+const db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
 
 export enum Steps {
   Password = 'password',
@@ -52,9 +52,9 @@ export default class GenerateKeystore extends Component<{}, State> {
 
       case Steps.Download:
         if (keystore) {
-          db.find({}, function(err, docs) {
-            if (docs.length == 0) {
-              db.insert(keystore, function(err, newDoc) {});
+          db.find({}, (err, docs) => {
+            if (docs.length === 0) {
+              db.insert(keystore, (error, newDoc) => {});
             }
           });
 
