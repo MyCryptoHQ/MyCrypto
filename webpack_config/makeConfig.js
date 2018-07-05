@@ -286,7 +286,7 @@ module.exports = function(opts = {}) {
     if (process.env.VSCODE_DEBUG) {
       devtool = 'cheap-module-source-map';
     } else {
-      devtool = 'cheap-source-map';
+      devtool = 'cheap-module-eval-source-map';
     }
   }
 
