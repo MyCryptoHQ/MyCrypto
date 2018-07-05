@@ -91,6 +91,9 @@ window.addEventListener('load', () => {
   });
 });
 
-setInterval(handleMetaMaskPolling.bind(null, store), METAMASK_POLLING_INTERVAL);
+/** @desc When MetaMask is loaded as an extension, watch for network changes. */
+if ((window as any).web3) {
+  setInterval(handleMetaMaskPolling.bind(null, store), METAMASK_POLLING_INTERVAL);
+}
 
 export default store;
