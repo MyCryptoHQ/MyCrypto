@@ -283,7 +283,7 @@ function SafeTConnect() {
         requiredFirmware
     ) {
         if (requiredFirmware == null) {
-            requiredFirmware = '1.4.0'; // first firmware that supports ethereum
+            requiredFirmware = '1.0.0';
         }
         if (typeof address_n === 'string') {
             address_n = parseHDPath(address_n);
@@ -555,7 +555,7 @@ function SafeTConnect() {
         requiredFirmware
     ) {
         if (requiredFirmware == null) {
-            requiredFirmware = '1.6.0'; // first firmware that supports NEM
+            requiredFirmware = '1.0.0';
         }
         if (typeof address_n === 'string') {
             address_n = parseHDPath(address_n);
@@ -574,7 +574,7 @@ function SafeTConnect() {
         requiredFirmware
     ) {
         if (requiredFirmware == null) {
-            requiredFirmware = '1.6.0'; // first firmware that supports NEM
+            requiredFirmware = '1.0.0';
         }
         if (typeof address_n === 'string') {
             address_n = parseHDPath(address_n);
