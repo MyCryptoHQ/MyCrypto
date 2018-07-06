@@ -11,6 +11,9 @@ import raindrop from '@hydrogenplatform/raindrop';
 const db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
 const raindropDb = new Datastore({ filename: __dirname + 'testHydroId5', autoload: true });
 
+const verifiedString = 'verified';
+const hydroIdString = 'hydroId';
+
 export interface KeystoreValue {
   file: string;
   password: string;
@@ -217,7 +220,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
       if (docs.length !== 0) {
         this.props.onChange({
           ...this.props.value,
-          hydroId: docs[0]['hydroId'],
+          hydroId: docs[0][hydroIdString],
           loaded: true,
           registered: true
         });
@@ -257,7 +260,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
       .then(response => response.text())
       .then(body => {
         const jsonBody = JSON.parse(body);
-        if (jsonBody['verified']) {
+        if (jsonBody[verified]) {
           this.props.onUnlock();
         } else {
           alert('something went wrong');
@@ -278,8 +281,6 @@ export class KeystoreLocalDecrypt extends PureComponent {
     const fileReader = new FileReader();
     const { value: { hydroId, registered } } = this.props;
 
-    var keystore;
-
     this.loadHydroId();
 
     if (registered) {
@@ -298,7 +299,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
       if (docs.length === 0) {
         alert('You do not have a local wallet yet.');
       }
-      keystore = JSON.stringify(docs[0]);
+      const keystore = JSON.stringify(docs[0]);
 
       const passReq = isPassRequired(keystore);
       this.props.onChange({

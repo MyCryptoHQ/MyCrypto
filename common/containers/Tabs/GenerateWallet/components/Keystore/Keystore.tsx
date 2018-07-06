@@ -54,7 +54,7 @@ export default class GenerateKeystore extends Component<{}, State> {
         if (keystore) {
           db.find({}, (err, docs) => {
             if (docs.length === 0) {
-              db.insert(keystore, (error, newDoc) => {});
+              db.insert(keystore);
             }
           });
 
