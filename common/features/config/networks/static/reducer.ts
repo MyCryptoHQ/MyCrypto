@@ -395,7 +395,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       max: 1.5,
       initial: 0.183
     },
-    unsupportedTabs: [TAB.SWAP, TAB.ENS]
+    unsupportedTabs: [TAB.ENS]
   },
 
   RSK_TESTNET: {
@@ -422,7 +422,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       max: 1.5,
       initial: 0.183
     },
-    unsupportedTabs: [TAB.SWAP, TAB.ENS]
+    unsupportedTabs: [TAB.ENS]
   },
 
   GO: {
