@@ -663,7 +663,7 @@
     "USING_PAYMENT_ID": "Using the required Payment ID of:",
     "PAYMENT_ID_WARNING": "Don't forget to send your XMR with the payment ID [[?]](https://getmonero.org/resources/moneropedia/paymentid.html) above, or you WILL lose your funds.",
     "WHAT_IS_PAYMENT_ID": "what's a payment ID?",
-    "ANNOUNCEMENT_MESSAGE": "Welcome to the new MyCrypto. We hope you like it! If it's urgent and you need the old site, you can still use [MyCrypto Legacy](https://legacy.mycrypto.com)",
+    "ANNOUNCEMENT_MESSAGE": "MyCrypto.com no longer allows the use of private keys, mnemonics, or keystore files in the browser. To continue using them, please download the [MyCrypto Desktop App](https://download.mycrypto.com).",
     "U2F_NOT_SUPPORTED": "The U2F standard that hardware wallets use does not seem to be supported by your browser. Please try again using Google Chrome."
   }
 }
