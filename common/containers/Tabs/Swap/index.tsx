@@ -34,6 +34,8 @@ interface ReduxStateProps {
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
   paymentAddress: string | null;
+  paymentId: string | null;
+  xmrPaymentAddress: string | null;
   isOffline: boolean;
 }
 
@@ -77,6 +79,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       shapeshiftOrderStatus,
       isPostingOrder,
       outputTx,
+      paymentId,
+      xmrPaymentAddress,
       // ACTIONS
       initSwap,
       restartSwap,
@@ -159,7 +163,9 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       stopPollShapeshiftOrderStatus,
       showNotificationWithComponent,
       destinationAddress,
-      outputTx
+      outputTx,
+      paymentId,
+      xmrPaymentAddress
     };
 
     const SupportProps = {
@@ -220,6 +226,8 @@ function mapStateToProps(state: AppState) {
     bityOrderStatus: state.swap.bityOrderStatus,
     shapeshiftOrderStatus: state.swap.shapeshiftOrderStatus,
     paymentAddress: state.swap.paymentAddress,
+    paymentId: state.swap.paymentId,
+    xmrPaymentAddress: state.swap.xmrPaymentAddress,
     isOffline: getOffline(state)
   };
 }

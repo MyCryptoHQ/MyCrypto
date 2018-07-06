@@ -73,11 +73,16 @@
   dependencies:
     events "^2.0.0"
 
-"@parity/qr-signer@0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@parity/qr-signer/-/qr-signer-0.2.1.tgz#f8b0e0ff5d8ee90b1788951c8524cdf8b1aadf27"
+"@parity/erc681@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@parity/erc681/-/erc681-0.1.1.tgz#0ade5233751011c15d5e75bd2bb583a9ba450a5e"
+
+"@parity/qr-signer@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@parity/qr-signer/-/qr-signer-0.3.1.tgz#00a983c7311a3d14701fae0b95f014e8a2a77618"
   dependencies:
-    qrcode-generator "1.3.1"
+    "@parity/erc681" "0.1.1"
+    qrcode-generator "1.4.0"
     react-qr-reader "2.1.0"
 
 "@sindresorhus/is@^0.7.0":
@@ -3915,9 +3920,9 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
 
-ethereum-blockies-base64@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ethereum-blockies-base64/-/ethereum-blockies-base64-1.0.1.tgz#e8c52bee8d71a089a7732b917a4c4ae23f679ba4"
+ethereum-blockies-base64@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ethereum-blockies-base64/-/ethereum-blockies-base64-1.0.2.tgz#4aebca52142bf4d16a3144e6e2b59303e39ed2b3"
   dependencies:
     pnglib "0.0.1"
 
@@ -9066,9 +9071,9 @@ qr.js@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
 
-qrcode-generator@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-1.3.1.tgz#eedcbe967ceba5585f0f4b8d9d7916961a335369"
+qrcode-generator@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-1.4.0.tgz#23521ae5d13658adb745a38f19e00c00f9b8488c"
 
 qrcode.react@0.8.0:
   version "0.8.0"
