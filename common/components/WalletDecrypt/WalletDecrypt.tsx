@@ -250,8 +250,10 @@ const WalletDecrypt = withRouter<Props>(
             <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly && translate('UNLOCK_WALLET')}{' '}
-            {translate(selectedWallet.lid)}
+            {!selectedWallet.isReadOnly &&
+              translate('UNLOCK_WALLET', {
+                $wallet: translateRaw(selectedWallet.lid)
+              })}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
             <Errorable

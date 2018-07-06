@@ -14,8 +14,10 @@ class NodeClass extends Component<StateProps, {}> {
   public render() {
     return (
       <li className="ConfModal-details-detail">
-        {translate('YOU_ARE_INTERACTING')} <strong>{this.props.node.network}</strong>
-        {translate('NETWORK')} {translate('PROVIDED_BY')} <strong>{this.props.node.service}</strong>
+        {translate('YOU_ARE_INTERACTING', {
+          $network: this.props.node.network
+        })}
+        {translate('PROVIDED_BY', { $service: this.props.node.service })}
       </li>
     );
   }

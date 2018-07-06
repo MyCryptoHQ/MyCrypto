@@ -74,7 +74,11 @@ class AddressInputFactoryClass extends Component<Props> {
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
-    const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
+    const sendingTo = label
+      ? translateRaw('SENDING_TO', {
+          $label: label
+        })
+      : '';
     const isENSAddress = currentTo.raw.includes('.eth');
 
     return (
