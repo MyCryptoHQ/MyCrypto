@@ -1,5 +1,6 @@
-import { checkHttpStatus, parseJSON } from './utils';
 import { Omit } from 'react-redux';
+
+import { checkHttpStatus, parseJSON } from './utils';
 
 const MAX_GAS_FAST = 250;
 

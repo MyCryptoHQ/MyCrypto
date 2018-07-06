@@ -1,6 +1,7 @@
 import React from 'react';
-import './PreFooter.scss';
+
 import translate, { translateRaw } from 'translations';
+import './PreFooter.scss';
 
 interface Props {
   openModal(): void;

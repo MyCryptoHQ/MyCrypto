@@ -1,9 +1,10 @@
-import { IV3Wallet } from 'ethereumjs-wallet';
 import React, { Component } from 'react';
+import { IV3Wallet } from 'ethereumjs-wallet';
+
 import translate, { translateRaw } from 'translations';
 import { makeBlob } from 'utils/blob';
-import './DownloadWallet.scss';
 import Template from '../Template';
+import './DownloadWallet.scss';
 
 interface Props {
   keystore: IV3Wallet;

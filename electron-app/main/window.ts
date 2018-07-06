@@ -1,6 +1,8 @@
 import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
+import path from 'path';
 import MENU from './menu';
+import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -24,7 +26,8 @@ export default function getWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
@@ -48,6 +51,10 @@ export default function getWindow() {
     }
   });
 
+  window.webContents.on('context-menu', (_, props) => {
+    popupContextMenu(window!, isDevelopment, props);
+  });
+
   // TODO: Figure out updater release process
   // window.webContents.on('did-finish-load', () => {
   //   updater(window!);
@@ -58,6 +65,10 @@ export default function getWindow() {
     setImmediate(() => {
       window!.focus();
     });
+  });
+
+  window.webContents.on('will-navigate', (event: any) => {
+    event.preventDefault();
   });
 
   if (isDevelopment) {

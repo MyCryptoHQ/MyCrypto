@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { addHexPrefix } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
+import { paritySignerActions } from 'features/paritySigner';
 import { ParityQrSigner } from 'components';
 import Modal, { IButton } from 'components/ui/Modal';
-import { TFinalizeSignature, finalizeSignature } from 'actions/paritySigner';
 
 interface State {
   scan: boolean;
@@ -22,7 +23,7 @@ interface PropsOpen {
 }
 
 interface ActionProps {
-  finalizeSignature: TFinalizeSignature;
+  finalizeSignature: paritySignerActions.TFinalizeSignature;
 }
 
 type Props = (PropsClosed | PropsOpen) & ActionProps;
@@ -94,7 +95,7 @@ class QrSignerModal extends React.Component<Props, State> {
       return;
     }
 
-    this.props.finalizeSignature(signature);
+    this.props.finalizeSignature(addHexPrefix(signature));
     this.setState({ scan: false });
   };
 }
@@ -112,4 +113,6 @@ function mapStateToProps(state: AppState): PropsClosed | PropsOpen {
   };
 }
 
-export default connect(mapStateToProps, { finalizeSignature })(QrSignerModal);
+export default connect(mapStateToProps, {
+  finalizeSignature: paritySignerActions.finalizeSignature
+})(QrSignerModal);

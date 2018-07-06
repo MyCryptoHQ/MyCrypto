@@ -1,21 +1,23 @@
 import React from 'react';
-import translate from 'translations';
-import { UnitDisplay, Spinner } from 'components/ui';
-import Select from 'react-select';
-import { TFetchCCRatesRequested, fetchCCRatesRequested } from 'actions/rates';
-import { rateSymbols } from 'api/rates';
-import { chain, flatMap } from 'lodash';
-import { TokenBalance, getShownTokenBalances } from 'selectors/wallet';
-import { Balance } from 'libs/wallet';
-import './EquivalentValues.scss';
-import { AppState } from 'reducers';
-import { getNetworkConfig, getOffline } from 'selectors/config';
 import { connect } from 'react-redux';
+import Select from 'react-select';
+import BN from 'bn.js';
+import { chain, flatMap } from 'lodash';
+
+import translate from 'translations';
+import { rateSymbols } from 'api/rates';
+import { NetworkConfig } from 'types/network';
+import { Balance } from 'libs/wallet';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { ratesActions } from 'features/rates';
+import { walletTypes } from 'features/wallet';
+import { UnitDisplay, Spinner } from 'components/ui';
 import btcIco from 'assets/images/bitcoin.png';
 import ethIco from 'assets/images/ether.png';
 import repIco from 'assets/images/augur.png';
-import { NetworkConfig } from 'types/network';
-import BN from 'bn.js';
+import './EquivalentValues.scss';
 
 interface AllValue {
   symbol: string;
@@ -41,14 +43,14 @@ interface StateProps {
   balance: Balance;
   network: NetworkConfig;
 
-  tokenBalances: TokenBalance[];
+  tokenBalances: walletTypes.TokenBalance[];
   rates: AppState['rates']['rates'];
   ratesError: AppState['rates']['ratesError'];
   isOffline: AppState['config']['meta']['offline'];
 }
 
 interface DispatchProps {
-  fetchCCRates: TFetchCCRatesRequested;
+  fetchCCRates: ratesActions.TFetchCCRatesRequested;
 }
 
 interface FiatSymbols {
@@ -79,7 +81,7 @@ class EquivalentValues extends React.Component<Props, State> {
 
   public defaultOption(
     balance: Balance,
-    tokenBalances: TokenBalance[],
+    tokenBalances: walletTypes.TokenBalance[],
     network: StateProps['network']
   ): DefaultOption {
     return {
@@ -321,7 +323,7 @@ class EquivalentValues extends React.Component<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
-    tokenBalances: getShownTokenBalances(state, true),
+    tokenBalances: selectors.getShownTokenBalances(state, true),
     network: getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,
@@ -329,4 +331,6 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, { fetchCCRates: fetchCCRatesRequested })(EquivalentValues);
+export default connect(mapStateToProps, { fetchCCRates: ratesActions.fetchCCRatesRequested })(
+  EquivalentValues
+);

@@ -1,6 +1,7 @@
 import React from 'react';
-import Select, { Option } from 'react-select';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
+import Select, { Option } from 'react-select';
+
 import './SubTabs.scss';
 
 export interface Tab {

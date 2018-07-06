@@ -1,8 +1,9 @@
 import React from 'react';
-import { SendButtonFactory } from './SendButtonFactory';
+
 import translate from 'translations';
-import { ConfirmationModal } from 'components/ConfirmationModal';
 import { SigningStatus } from 'components';
+import { ConfirmationModal } from 'components/ConfirmationModal';
+import { SendButtonFactory } from './SendButtonFactory';
 import './SendButton.scss';
 
 export const SendButton: React.SFC<{

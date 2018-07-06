@@ -1,22 +1,48 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .SwapPayment {
-  text-align: center;
+  > * {
+    margin: $space auto 0;
+    width: 100%;
+    max-width: 620px;
+  }
+
+  h2 {
+    text-align: center;
+
+    & > input {
+      margin-top: $space;
+    }
+  }
+
+  h4 {
+    margin: 0.5rem 0;
+  }
 
   &-address {
+    @include mono;
+
     display: block;
-    margin: $space auto 0;
-    max-width: 620px;
-    width: 100%;
     font-size: $font-size-medium;
     text-align: center;
-    @include mono;
   }
 
   @media screen and (max-width: $screen-sm) {
     h1 {
       font-size: $font-size-base;
+    }
+  }
+
+  &-payment-id {
+    h2 {
+      font-weight: bolder;
+      text-align: center;
+    }
+
+    &-link {
+      font-size: $font-size-small;
+      text-align: right;
     }
   }
 }

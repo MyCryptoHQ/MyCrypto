@@ -12,7 +12,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: $gray-light;
+      background: color(gray-light);
 
       &, &-icon {
         transition: 100ms ease;
@@ -30,8 +30,6 @@
       }
 
       &:hover {
-        background: lighten($gray-light, 2%);
-
         .WalletInfo-qr-cover-icon {
           opacity: 1;
         }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { translateRaw } from 'translations';
-import { TRemoveCustomNode, removeCustomNode } from 'actions/config';
+import { TRemoveCustomNode, removeCustomNode } from 'features/config';
 import { NodeConfig } from 'types/node';
 import './NodeOption.scss';
 

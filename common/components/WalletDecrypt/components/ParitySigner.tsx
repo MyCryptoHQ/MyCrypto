@@ -1,20 +1,28 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+
 import translate from 'translations';
-import { ParityQrSigner } from 'components';
-import { NewTabLink } from 'components/ui';
 import { isValidETHAddress } from 'libs/validators';
 import { ParitySignerWallet } from 'libs/wallet';
-import { showNotification, TShowNotification } from 'actions/notifications';
 import { wikiLink } from 'libs/wallet/non-deterministic/parity';
+import { notificationsActions } from 'features/notifications';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
+import { ParityQrSigner } from 'components';
+import { NewTabLink } from 'components/ui';
 import './ParitySigner.scss';
 
 interface Props {
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
   onUnlock(param: any): void;
 }
+
+interface SignerAddress {
+  address: string;
+  chainId: number;
+}
+
+type SignerQrContent = SignerAddress | string;
 
 class ParitySignerDecryptClass extends PureComponent<Props> {
   public render() {
@@ -35,16 +43,16 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
     );
   }
 
-  private unlockAddress = (address: string) => {
-    if (!isValidETHAddress(address)) {
+  private unlockAddress = (content: SignerQrContent) => {
+    if (typeof content === 'string' || !isValidETHAddress(content.address)) {
       this.props.showNotification('danger', 'Not a valid address!');
       return;
     }
 
-    this.props.onUnlock(new ParitySignerWallet(address));
+    this.props.onUnlock(new ParitySignerWallet(content.address));
   };
 }
 
-export const ParitySignerDecrypt = connect(() => ({}), { showNotification })(
-  ParitySignerDecryptClass
-);
+export const ParitySignerDecrypt = connect(() => ({}), {
+  showNotification: notificationsActions.showNotification
+})(ParitySignerDecryptClass);

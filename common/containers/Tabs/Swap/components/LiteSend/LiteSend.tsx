@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import { walletSelectors } from 'features/wallet';
+import { getNetworkConfig } from 'features/config';
+import { configureLiteSend, TConfigureLiteSend } from 'features/swap/actions';
+import { shouldDisplayLiteSend } from 'features/swap/selectors';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { OnlyUnlocked } from 'components/renderCbs';
 import { Fields } from './Fields';
-import { isUnlocked as isUnlockedSelector } from 'selectors/wallet';
-import { getNetworkConfig } from 'selectors/config';
-import { configureLiteSend, TConfigureLiteSend } from 'actions/swap';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { shouldDisplayLiteSend } from 'selectors/swap';
-import { NetworkConfig } from 'types/network';
 
 interface DispatchProps {
   configureLiteSend: TConfigureLiteSend;
@@ -55,7 +56,7 @@ class LiteSendClass extends Component<Props> {
 export const LiteSend = connect(
   (state: AppState) => ({
     shouldDisplay: shouldDisplayLiteSend(state),
-    isUnlocked: isUnlockedSelector(state),
+    isUnlocked: walletSelectors.isUnlocked(state),
     network: getNetworkConfig(state)
   }),
   { configureLiteSend }

@@ -1,15 +1,15 @@
-import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import { formatMnemonic } from 'utils/formatters';
-import { InsecureWalletName } from 'config';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import { mnemonicToSeed, validateMnemonic } from 'bip39';
+
+import { InsecureWalletName } from 'config';
+import translate, { translateRaw } from 'translations';
+import { formatMnemonic } from 'utils/formatters';
+import { AppState } from 'features/reducers';
+import { getSingleDPath, getPaths } from 'features/config';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
-import DeprecationWarning from './DeprecationWarning';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -51,7 +51,6 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
     return (
       <React.Fragment>
-        <DeprecationWarning />
         <div id="selectedTypeKey">
           <div className="form-group">
             <TogglablePassword

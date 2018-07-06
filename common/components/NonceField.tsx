@@ -1,17 +1,18 @@
 import React from 'react';
-import translate from 'translations';
-import { NonceFieldFactory } from 'components/NonceFieldFactory';
-import Help from 'components/ui/Help';
-import { Spinner, Input } from 'components/ui';
 import { connect } from 'react-redux';
-import { getNonceRequested, TGetNonceRequested } from 'actions/transaction';
-import { nonceRequestPending } from 'selectors/transaction';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
+
+import translate from 'translations';
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/config';
+import { transactionNetworkActions, transactionNetworkSelectors } from 'features/transaction';
+import { Spinner, Input } from 'components/ui';
+import Help from 'components/ui/Help';
+import { NonceFieldFactory } from 'components/NonceFieldFactory';
 import './NonceField.scss';
 
 interface OwnProps {
   alwaysDisplay: boolean;
+  showInvalidBeforeBlur?: boolean;
 }
 
 interface StateProps {
@@ -20,14 +21,20 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  requestNonce: TGetNonceRequested;
+  requestNonce: transactionNetworkActions.TGetNonceRequested;
 }
 
 type Props = OwnProps & DispatchProps & StateProps;
 
 class NonceField extends React.Component<Props> {
   public render() {
-    const { alwaysDisplay, requestNonce, noncePending, isOffline } = this.props;
+    const {
+      alwaysDisplay,
+      showInvalidBeforeBlur,
+      requestNonce,
+      noncePending,
+      isOffline
+    } = this.props;
     return (
       <NonceFieldFactory
         withProps={({ nonce: { raw, value }, onChange, readOnly, shouldDisplay }) => {
@@ -51,6 +58,7 @@ class NonceField extends React.Component<Props> {
                   onChange={onChange}
                   disabled={noncePending}
                   showInvalidWithoutValue={true}
+                  showInvalidBeforeBlur={showInvalidBeforeBlur}
                 />
                 {noncePending ? (
                   <div className="Nonce-spinner">
@@ -75,8 +83,10 @@ class NonceField extends React.Component<Props> {
 const mapStateToProps = (state: AppState): StateProps => {
   return {
     isOffline: getOffline(state),
-    noncePending: nonceRequestPending(state)
+    noncePending: transactionNetworkSelectors.nonceRequestPending(state)
   };
 };
 
-export default connect(mapStateToProps, { requestNonce: getNonceRequested })(NonceField);
+export default connect(mapStateToProps, {
+  requestNonce: transactionNetworkActions.getNonceRequested
+})(NonceField);

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { Option } from 'react-select';
+
 import './SwapDropdown.scss';
 
 export interface SingleCoin {
@@ -86,7 +87,7 @@ class SwapDropdown extends PureComponent<Props, State> {
                   key={opt.name}
                   option={opt}
                   isMain={false}
-                  isDisabled={opt.name === disabledOption}
+                  isDisabled={opt.name === disabledOption || opt.status === 'unavailable'}
                   onChange={this.handleChange}
                 />
               ))}
@@ -138,6 +139,23 @@ class SwapDropdown extends PureComponent<Props, State> {
     otherOptions = otherOptions.sort(
       (opt1, opt2) => (opt1.id.toLowerCase() > opt2.id.toLowerCase() ? 1 : -1)
     );
+
+    // Sort unavailable options last
+    otherOptions = otherOptions.sort((opt1, opt2) => {
+      if (opt1.status === 'available' && opt2.status === 'unavailable') {
+        return -1;
+      }
+
+      if (opt1.status === 'available' && opt2.status === 'available') {
+        return 0;
+      }
+
+      if (opt1.status === 'unavailable' && opt2.status === 'available') {
+        return 1;
+      }
+
+      return 0;
+    });
 
     this.setState({ mainOptions, otherOptions });
   }

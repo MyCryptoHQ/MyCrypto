@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { signaturePending } from 'selectors/transaction';
+
+import { translate } from 'translations';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
 import { Spinner } from 'components/ui';
 import './SigningStatus.scss';
-import { translate } from 'translations';
+
 interface StateProps {
   isSignaturePending: boolean;
   isHardwareWallet: boolean;
@@ -30,6 +32,6 @@ class SigningStatusClass extends Component<StateProps> {
   }
 }
 
-export const SigningStatus = connect((state: AppState) => signaturePending(state))(
+export const SigningStatus = connect((state: AppState) => selectors.signaturePending(state))(
   SigningStatusClass
 );

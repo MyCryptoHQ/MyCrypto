@@ -1,5 +1,5 @@
-@import "common/sass/variables";
-@import "common/sass/mixins";
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .SwapRates {
   margin-bottom: $space;
@@ -12,8 +12,12 @@
   &-panel {
     position: relative;
     margin: 0 auto 0;
-    background: linear-gradient(150deg, $brand-primary, $ether-navy);
+    background: linear-gradient(150deg, color(brand-primary), color(brand-info));
     @include mono;
+
+    @include theme(dark) {
+      background: linear-gradient(150deg, color(gray), color(gray-light));
+    }
 
     &-side {
       display: flex;
@@ -36,12 +40,13 @@
       }
 
       &-input {
+        color: #fff;
         display: inline-block;
         width: 16%;
         min-width: 3.5rem;
         height: 2rem;
         padding: 1rem;
-        margin: .5rem auto;
+        margin: 0.5rem auto;
         font-size: 1rem;
         margin-right: $space;
         text-align: right;

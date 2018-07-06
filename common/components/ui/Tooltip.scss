@@ -8,7 +8,7 @@
   top: 0;
   left: 50%;
   width: 220px;
-  color: #FFF;
+  color: color(tooltip-color);
   font-size: $font-size-small;
   font-family: $font-family-sans-serif;
   pointer-events: none;
@@ -22,7 +22,7 @@
 
   > span {
     display: inline-block;
-    background: $tooltip-bg;
+    background: color(tooltip-bg);
     border-radius: 3px;
     padding: 6px 10px;
 
@@ -32,7 +32,7 @@
       bottom: 0;
       left: 50%;
       transform: translate(-50%, 100%);
-      @include triangle($tooltip-arrow-size * 2, $tooltip-bg, down);
+      @include triangle($tooltip-arrow-size * 2, color(tooltip-bg), down);
     }
   }
 
@@ -78,7 +78,7 @@
       left: auto;
       transform: translate(100%, 50%);
       border-top-color: transparent;
-      border-left-color: $tooltip-bg;
+      border-left-color: color(tooltip-bg);
     }
   }
 
@@ -94,7 +94,7 @@
       left: 0;
       transform: translate(-100%, 50%);
       border-top-color: transparent;
-      border-right-color: $tooltip-bg;
+      border-right-color: color(tooltip-bg);
     }
   }
 
@@ -108,7 +108,7 @@
       top: 0;
       transform: translate(-50%, -100%);
       border-top-color: transparent;
-      border-bottom-color: $tooltip-bg;
+      border-bottom-color: color(tooltip-bg);
     }
   }
 }

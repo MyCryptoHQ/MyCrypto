@@ -1,6 +1,6 @@
 import { fromPrivateKey, IFullWallet, fromV3 } from 'ethereumjs-wallet';
 import { isValidPrivKey } from 'libs/validators';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 import { makeBlob } from 'utils/blob';
 import { N_FACTOR } from 'config';
 

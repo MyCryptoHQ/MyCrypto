@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react';
-import ledger from 'ledgerco';
-import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import UnsupportedNetwork from './UnsupportedNetwork';
-import { LedgerWallet } from 'libs/wallet';
-import { Spinner, NewTabLink } from 'components/ui';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { SecureWalletName, ledgerReferralURL } from 'config';
-import { getPaths, getSingleDPath } from 'selectors/config/wallet';
-import { getNetworkConfig } from 'selectors/config';
+
+import { SecureWalletName, ledgerReferralURL, HELP_ARTICLE } from 'config';
+import translate, { translateRaw } from 'translations';
+import { LedgerWallet } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig, getPaths, getSingleDPath } from 'features/config';
+import { Spinner, NewTabLink, HelpLink } from 'components/ui';
+import UnsupportedNetwork from './UnsupportedNetwork';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './LedgerNano.scss';
 
 interface OwnProps {
@@ -29,7 +28,6 @@ interface State {
   dPath: DPath;
   error: string | null;
   isLoading: boolean;
-  showTip: boolean;
 }
 
 type Props = OwnProps & StateProps;
@@ -40,14 +38,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     chainCode: '',
     dPath: this.props.dPath || this.props.dPaths[0],
     error: null,
-    isLoading: false,
-    showTip: false
-  };
-
-  public showTip = () => {
-    this.setState({
-      showTip: true
-    });
+    isLoading: false
   };
 
   public UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -58,14 +49,14 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   public render() {
     const { network } = this.props;
-    const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
+    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
     }
 
-    if (window.location.protocol !== 'https:') {
+    if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
       return (
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
@@ -78,6 +69,15 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="LedgerDecrypt">
+        <div className="LedgerDecrypt-tip">
+          {translate('LEDGER_TIP', {
+            $network: network.unit,
+            $browserSupportState: process.env.BUILD_ELECTRON
+              ? translateRaw('DISABLED')
+              : translateRaw('ENABLED')
+          })}
+        </div>
+
         <button
           className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
           onClick={this.handleNullConnect}
@@ -99,14 +99,10 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
-        {showTip && (
-          <p className="LedgerDecrypt-tip">{translate('LEDGER_TIP', { $network: network.unit })}</p>
-        )}
-
         <div className="LedgerDecrypt-help">
-          <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
+          <HelpLink article={HELP_ARTICLE.HOW_TO_USE_LEDGER}>
             {translate('HELP_ARTICLE_1')}
-          </NewTabLink>
+          </HelpLink>
         </div>
 
         <DeterministicWalletsModal
@@ -133,51 +129,23 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   private handleConnect = (dPath: DPath) => {
     this.setState({
       isLoading: true,
-      error: null,
-      showTip: false
+      error: null
     });
 
-    ledger.comm_u2f.create_async().then((comm: any) => {
-      new ledger.eth(comm)
-        .getAddress_async(dPath.value, false, true)
-        .then(res => {
-          this.setState({
-            publicKey: res.publicKey,
-            chainCode: res.chainCode,
-            isLoading: false
-          });
-        })
-        .catch((err: any) => {
-          let showTip;
-          let errMsg;
-          // Timeout
-          if (err && err.metaData && err.metaData.code === 5) {
-            showTip = true;
-            errMsg = translateRaw('LEDGER_TIMEOUT');
-          }
-          // Wrong app logged into
-          if (err && err.includes && err.includes('6804')) {
-            showTip = true;
-            errMsg = translateRaw('LEDGER_WRONG_APP');
-          }
-          // Ledger locked
-          if (err && err.includes && err.includes('6801')) {
-            errMsg = translateRaw('LEDGER_LOCKED');
-          }
-          // Other
-          if (!errMsg) {
-            errMsg = err && err.metaData ? err.metaData.type : err.toString();
-          }
-
-          this.setState({
-            error: errMsg,
-            isLoading: false
-          });
-          if (showTip) {
-            this.showTip();
-          }
+    LedgerWallet.getChainCode(dPath.value)
+      .then(res => {
+        this.setState({
+          publicKey: res.publicKey,
+          chainCode: res.chainCode,
+          isLoading: false
         });
-    });
+      })
+      .catch(err => {
+        this.setState({
+          error: translateRaw(err.message),
+          isLoading: false
+        });
+      });
   };
 
   private handleCancel = () => {

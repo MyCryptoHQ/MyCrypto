@@ -10,12 +10,8 @@
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/code';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/grid';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/tables';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/forms';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/buttons';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/dropdowns';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/button-groups';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/input-groups';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/alerts';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/wells';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/close';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap/utilities';
@@ -39,6 +35,10 @@
 @import './styles/flexbox';
 @import './styles/helpers';
 @import './styles/code';
+@import './styles/buttons';
+@import './styles/forms';
+@import './styles/alerts';
+@import './styles/themes';
 @import './fonts';
 
 [data-whatintent='mouse'] *:focus {

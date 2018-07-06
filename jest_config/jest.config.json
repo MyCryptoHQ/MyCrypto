@@ -7,6 +7,7 @@
   "moduleDirectories": ["node_modules", "common"],
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "worker.ts"],
   "moduleNameMapper": {
+    "shared/(.*)": "<rootDir>/shared/$1",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "<rootDir>/jest_config/__mocks__/fileMock.ts",
     "\\.(css|scss)$": "<rootDir>/jest_config/__mocks__/styleMock.ts",

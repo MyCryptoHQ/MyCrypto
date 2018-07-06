@@ -1,10 +1,10 @@
-import { isKeystorePassRequired } from 'libs/wallet';
 import React, { PureComponent } from 'react';
+
 import translate, { translateRaw } from 'translations';
+import { isKeystorePassRequired } from 'libs/wallet';
+import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
-import { TShowNotification } from 'actions/notifications';
 import { Input } from 'components/ui';
-import DeprecationWarning from './DeprecationWarning';
 
 export interface KeystoreValue {
   file: string;
@@ -35,7 +35,7 @@ export class KeystoreDecrypt extends PureComponent {
     isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
     onUnlock(): void;
-    showNotification(level: string, message: string): TShowNotification;
+    showNotification(level: string, message: string): notificationsActions.TShowNotification;
   };
 
   public render() {
@@ -45,7 +45,6 @@ export class KeystoreDecrypt extends PureComponent {
 
     return (
       <form onSubmit={this.unlock}>
-        <DeprecationWarning />
         <div className="form-group">
           <input
             className="hidden"
