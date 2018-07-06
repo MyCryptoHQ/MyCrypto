@@ -1,3 +1,6 @@
+import flatten from 'lodash/flatten';
+import uniqBy from 'lodash/uniqBy';
+
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
 const SHAPESHIFT_API_KEY =
@@ -66,17 +69,6 @@ interface TokenMap {
   };
 }
 
-interface Option {
-  id: string;
-  status?: string;
-  image?: string;
-  name?: string;
-}
-
-interface OptionMap {
-  [symbol: string]: Option;
-}
-
 interface ShapeshiftCoinInfo {
   image: string;
   imageSmall: string;
@@ -87,7 +79,17 @@ interface ShapeshiftCoinInfo {
 }
 
 interface ShapeshiftCoinInfoMap {
-  [symbol: string]: ShapeshiftCoinInfo;
+  [id: string]: ShapeshiftCoinInfo;
+}
+
+interface ShapeshiftOption {
+  id?: string;
+  status?: string;
+  image?: string;
+}
+
+interface ShapeshiftOptionMap {
+  [symbol: string]: ShapeshiftOption;
 }
 
 class ShapeshiftService {
@@ -147,54 +149,71 @@ class ShapeshiftService {
     const pairRates = await this.filterPairs(marketInfo);
     const checkAvl = await this.checkAvl(pairRates);
     const mappedRates = this.mapMarketInfo(checkAvl);
-    return mappedRates;
+    const allRates = this.addUnavailableCoinsAndTokens(mappedRates);
+
+    return allRates;
   };
 
-  public addUnavailablCoinsAndTokens = (availableOptions: OptionMap) => {
+  public addUnavailableCoinsAndTokens = (availableCoinsAndTokens: TokenMap) => {
     if (this.fetchedSupportedCoinsAndTokens) {
-      const fullOptions = this.whitelist
+      /** @desc Create a hash for efficiently checking which tokens are currently available. */
+      const allOptions = flatten(
+        Object.values(availableCoinsAndTokens).map(({ options }) => options)
+      );
+      const availableOptions: ShapeshiftOptionMap = uniqBy(allOptions, 'id').reduce(
+        (prev: ShapeshiftOptionMap, next) => {
+          prev[next.id] = next;
+          return prev;
+        },
+        {}
+      );
+
+      const unavailableCoinsAndTokens = this.whitelist
         .map(symbol => {
-          if (availableOptions[symbol]) {
-            return availableOptions[symbol];
+          /** @desc ShapeShift claims support for the token and it is available. */
+          const availableCoinOrToken = availableOptions[symbol];
+
+          if (availableCoinOrToken) {
+            return null;
           }
 
-          if (this.supportedCoinsAndTokens[symbol]) {
-            const coinOrToken = this.supportedCoinsAndTokens[symbol];
+          /** @desc ShapeShift claims support for the token, but it is unavailable. */
+          const supportedCoinOrToken = this.supportedCoinsAndTokens[symbol];
 
-            if (coinOrToken && coinOrToken.status === 'unavailable') {
-              const { symbol: id, status, image, name } = coinOrToken;
-
-              return { id, status, image, name };
-            }
+          if (supportedCoinOrToken) {
+            return {
+              /** @desc Preface the false id with '__' to differentiate from actual pairs. */
+              id: `__${symbol}`,
+              limit: 0,
+              min: 0,
+              options: [{ ...supportedCoinOrToken, id: supportedCoinOrToken.symbol }]
+            };
           }
 
-          if (process.env.NODE_ENV !== 'production') {
-            console.warn(
-              `Coin or token ${symbol} is supported, but did not exist in the API response.`
-            );
-          }
-
+          /** @desc We claim support for the coin or token, but ShapeShift doesn't. */
           return null;
         })
-        .filter(Boolean)
-        .reduce((prev: OptionMap, next: Option) => {
-          prev[next.id] = next;
+        .reduce((prev: ShapeshiftOptionMap, next) => {
+          if (next) {
+            prev[next.id] = next;
+
+            return prev;
+          }
+
           return prev;
         }, {});
 
-      return fullOptions;
+      return { ...availableCoinsAndTokens, ...unavailableCoinsAndTokens };
     }
 
-    return availableOptions;
+    return availableCoinsAndTokens;
   };
 
   private filterPairs(marketInfo: ShapeshiftMarketInfo[]) {
     return marketInfo.filter(obj => {
       const { pair } = obj;
       const pairArr = pair.split('_');
-      return this.whitelist.includes(pairArr[0]) && this.whitelist.includes(pairArr[1])
-        ? true
-        : false;
+      return this.whitelist.includes(pairArr[0]) && this.whitelist.includes(pairArr[1]);
     });
   }
 

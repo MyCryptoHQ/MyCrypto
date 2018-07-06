@@ -1,6 +1,5 @@
 import { schema, normalize } from 'normalizr';
 
-import shapeshift from 'api/shapeshift';
 import * as types from './types';
 
 export const allIds = (byIds: { [name: string]: {} }) => {
@@ -73,11 +72,8 @@ export function swapReducer(state: types.SwapState = INITIAL_STATE, action: type
       };
     case types.SwapActions.LOAD_SHAPESHIFT_RATES_SUCCEEDED:
       const {
-        entities: { providerRates: normalizedProviderRates, options: availableOptions }
+        entities: { providerRates: normalizedProviderRates, options: normalizedOptions }
       } = normalize(action.payload, [providerRate]);
-
-      /** @desc Add unavailable options so users don't think we dropped support. */
-      const normalizedOptions = shapeshift.addUnavailablCoinsAndTokens(availableOptions);
 
       return {
         ...state,
