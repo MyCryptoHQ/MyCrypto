@@ -1,3 +1,5 @@
+import { TAB } from 'components/Header/components/constants';
+
 type StaticNetworkIds =
   | 'ETH'
   | 'Ropsten'
@@ -70,6 +72,7 @@ interface StaticNetworkConfig {
   isTestnet?: boolean;
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice?: boolean;
+  unsupportedTabs?: TAB[];
 }
 
 interface CustomNetworkConfig {
@@ -80,6 +83,7 @@ interface CustomNetworkConfig {
   unit: string;
   chainId: number;
   dPathFormats: DPathFormats | null;
+  unsupportedTabs?: TAB[];
 }
 
 type NetworkConfig = CustomNetworkConfig | StaticNetworkConfig;
