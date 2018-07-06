@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://mycrypto.com/sitemap_location.xml
+Sitemap: https://mycrypto.com/sitemap.xml
