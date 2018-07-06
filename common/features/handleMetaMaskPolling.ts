@@ -37,7 +37,12 @@ export default async function handleMetaMaskPolling(store: Store<AppState>): Pro
     const actualChainId = await getActualChainId();
     const actualNetwork = configNetworksSelectors.getNetworkByChainId(state, actualChainId);
 
-    if (web3Wallet && actualNetwork && (web3Wallet as Web3Wallet).network !== actualNetwork.id) {
+    if (
+      web3Wallet &&
+      (web3Wallet as Web3Wallet).network &&
+      actualNetwork &&
+      (web3Wallet as Web3Wallet).network !== actualNetwork.id
+    ) {
       window.location.reload();
 
       return true;
