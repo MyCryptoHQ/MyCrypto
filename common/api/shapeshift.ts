@@ -3,10 +3,10 @@ import uniqBy from 'lodash/uniqBy';
 
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
-const SHAPESHIFT_API_KEY =
+export const SHAPESHIFT_API_KEY =
   '8abde0f70ca69d5851702d57b10305705d7333e93263124cc2a2649dab7ff9cf86401fc8de7677e8edcd0e7f1eed5270b1b49be8806937ef95d64839e319e6d9';
 
-const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
+export const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
 
 export const SHAPESHIFT_TOKEN_WHITELIST = [
   'OMG',
@@ -146,7 +146,7 @@ class ShapeshiftService {
 
   public getAllRates = async () => {
     const marketInfo = await this.getMarketInfo();
-    const pairRates = await this.filterPairs(marketInfo);
+    const pairRates = this.filterPairs(marketInfo);
     const checkAvl = await this.checkAvl(pairRates);
     const mappedRates = this.mapMarketInfo(checkAvl);
     const allRates = this.addUnavailableCoinsAndTokens(mappedRates);
@@ -169,24 +169,26 @@ class ShapeshiftService {
       );
 
       const unavailableCoinsAndTokens = this.whitelist
-        .map(symbol => {
+        .map(token => {
           /** @desc ShapeShift claims support for the token and it is available. */
-          const availableCoinOrToken = availableOptions[symbol];
+          const availableCoinOrToken = availableOptions[token];
 
           if (availableCoinOrToken) {
             return null;
           }
 
           /** @desc ShapeShift claims support for the token, but it is unavailable. */
-          const supportedCoinOrToken = this.supportedCoinsAndTokens[symbol];
+          const supportedCoinOrToken = this.supportedCoinsAndTokens[token];
 
           if (supportedCoinOrToken) {
+            const { symbol: id, image, name, status } = supportedCoinOrToken;
+
             return {
               /** @desc Preface the false id with '__' to differentiate from actual pairs. */
-              id: `__${symbol}`,
+              id: `__${id}`,
               limit: 0,
               min: 0,
-              options: [{ ...supportedCoinOrToken, id: supportedCoinOrToken.symbol }]
+              options: [{ id, image, name, status }]
             };
           }
 
