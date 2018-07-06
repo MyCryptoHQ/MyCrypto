@@ -6,7 +6,6 @@ import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
 import Datastore from 'nedb';
-import raindrop from '@hydrogenplatform/raindrop';
 
 const db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
 const raindropDb = new Datastore({ filename: __dirname + 'testHydroId5', autoload: true });
@@ -159,18 +158,13 @@ export class KeystoreLocalDecrypt extends PureComponent {
   };
 
   public render() {
-    const {
-      isWalletPending,
-      value: { file, password, filename, hydroId, loaded, registered }
-    } = this.props;
-    const passReq = isPassRequired(file);
-    const unlockDisabled = !file || (passReq && !password);
+    const { isWalletPending, value: { file, password, hydroId, loaded, registered } } = this.props;
 
-    console.log(registered);
+    const hide = !loaded || (hydroId != null && registered);
 
     return (
       <form onSubmit={this.unlock}>
-        <div hidden={!loaded || (hydroId && registered && file)}>
+        <div hidden={hide}>
           <label className="WalletDecrypt-decrypt-label">
             <span>Please register your Hydro ID</span>
           </label>
@@ -215,8 +209,13 @@ export class KeystoreLocalDecrypt extends PureComponent {
     );
   }
 
-  private loadHydroId = (e: any) => {
-    raindropDb.find({}, (err, docs) => {
+  private loadHydroId = () => {
+    raindropDb.find({}, (err: any, docs: any) => {
+      if (err) {
+        console.log(err);
+        alert('Something went wrong. Please reload your wallet.');
+      }
+
       if (docs.length !== 0) {
         this.props.onChange({
           ...this.props.value,
@@ -277,8 +276,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
     });
   };
 
-  private handleFileSelection = (e: any) => {
-    const fileReader = new FileReader();
+  private handleFileSelection = () => {
     const { value: { hydroId, registered } } = this.props;
 
     this.loadHydroId();
@@ -295,7 +293,11 @@ export class KeystoreLocalDecrypt extends PureComponent {
         });
     }
 
-    db.find({}, (err, docs) => {
+    db.find({}, (err: any, docs: any) => {
+      if (err) {
+        console.log(err);
+        alert('Something went wrong. Please reload your wallet.');
+      }
       if (docs.length === 0) {
         alert('You do not have a local wallet yet.');
       }
@@ -305,7 +307,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq,
+        valid: keystore != null && !passReq,
         password: '',
         filename: 'local'
       });
@@ -313,12 +315,20 @@ export class KeystoreLocalDecrypt extends PureComponent {
     });
   };
 
-  private registerUser = (e: any) => {
+  private registerUser = () => {
     const { value: { hydroId } } = this.props;
-    raindropDb.find({}, (err, docs) => {
+    raindropDb.find({}, (err: any, docs: any) => {
+      if (err) {
+        console.log(err);
+        alert('Something went wrong. Please reload your wallet.');
+      }
       if (docs.length === 0) {
         const doc = { hydroId: hydroId };
         raindropDb.insert(doc, (error, newDoc) => {
+          if (error) {
+            console.log(error);
+            alert('Something went wrong saving your Hydro ID. Please try again.');
+          }
           console.log(newDoc);
         });
 
@@ -333,10 +343,6 @@ export class KeystoreLocalDecrypt extends PureComponent {
       method: 'post',
       body: JSON.stringify({ user: hydroId }),
       headers: new Headers({ 'Content-Type': 'application/json' })
-    })
-      .then(response => response.text())
-      .then(body => {
-        alert('You are now registered');
-      });
+    });
   };
 }

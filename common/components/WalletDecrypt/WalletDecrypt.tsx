@@ -26,7 +26,6 @@ import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
 import { DisabledWallets } from './disables';
-import { getWeb3ProviderInfo } from 'utils/web3';
 import {
   KeystoreDecrypt,
   KeystoreLocalDecrypt,
@@ -36,7 +35,6 @@ import {
   PrivateKeyValue,
   TrezorDecrypt,
   ViewOnlyDecrypt,
-  Web3Decrypt,
   WalletButton,
   ParitySignerDecrypt,
   InsecureWalletWarning

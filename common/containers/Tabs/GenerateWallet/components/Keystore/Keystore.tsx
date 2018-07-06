@@ -52,7 +52,11 @@ export default class GenerateKeystore extends Component<{}, State> {
 
       case Steps.Download:
         if (keystore) {
-          db.find({}, (err, docs) => {
+          db.find({}, (err: any, docs: any) => {
+            if (err) {
+              console.log(err);
+              alert('Something went wrong. Please download you wallet again.');
+            }
             if (docs.length === 0) {
               db.insert(keystore);
             }
