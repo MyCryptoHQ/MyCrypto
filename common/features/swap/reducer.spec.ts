@@ -234,7 +234,8 @@ describe('swap reducer', () => {
       maxLimit: 7.04575258,
       apiPubKey:
         '0ca1ccd50b708a3f8c02327f0caeeece06d3ddc1b0ac749a987b453ee0f4a29bdb5da2e53bc35e57fb4bb7ae1f43c93bb098c3c4716375fc1001c55d8c94c160',
-      minerFee: '1.05'
+      minerFee: '1.05',
+      sAddress: '0x055ed77933388642fdn4px9v73j4fa3582d10c4'
     };
 
     const swapState = reducer.swapReducer(
@@ -254,8 +255,10 @@ describe('swap reducer', () => {
       validFor: swapState.validFor,
       orderTimestampCreatedISOString: swapState.orderTimestampCreatedISOString,
       paymentAddress: mockedShapeshiftOrder.deposit,
+      paymentId: mockedShapeshiftOrder.deposit,
       shapeshiftOrderStatus: 'no_deposits',
-      orderId: mockedShapeshiftOrder.orderId
+      orderId: mockedShapeshiftOrder.orderId,
+      xmrPaymentAddress: mockedShapeshiftOrder.sAddress
     });
   });
 
