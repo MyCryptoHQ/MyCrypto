@@ -44,7 +44,6 @@ class ElectronNav extends React.Component<Props, State> {
       >
         <div className="ElectronNav-branding">
           <div className="ElectronNav-branding-logo" onClick={this.toggleTheme} />
-          <div className="ElectronNav-branding-beta">Alpha Release</div>
         </div>
 
         <ul className="ElectronNav-links">
