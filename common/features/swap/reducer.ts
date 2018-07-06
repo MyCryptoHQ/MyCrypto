@@ -71,22 +71,19 @@ export function swapReducer(state: types.SwapState = INITIAL_STATE, action: type
         isFetchingRates: false
       };
     case types.SwapActions.LOAD_SHAPESHIFT_RATES_SUCCEEDED:
+      const {
+        entities: { providerRates: normalizedProviderRates, options: normalizedOptions }
+      } = normalize(action.payload, [providerRate]);
+
       return {
         ...state,
         shapeshiftRates: {
-          byId: normalize(action.payload, [providerRate]).entities.providerRates,
-          allIds: allIds(normalize(action.payload, [providerRate]).entities.providerRates)
+          byId: normalizedProviderRates,
+          allIds: allIds(normalizedProviderRates)
         },
         options: {
-          byId: Object.assign(
-            {},
-            normalize(action.payload, [providerRate]).entities.options,
-            state.options.byId
-          ),
-          allIds: [
-            ...allIds(normalize(action.payload, [providerRate]).entities.options),
-            ...state.options.allIds
-          ]
+          byId: { ...normalizedOptions, ...state.options.byId },
+          allIds: [...allIds(normalizedOptions), ...state.options.allIds]
         },
         isFetchingRates: false
       };
