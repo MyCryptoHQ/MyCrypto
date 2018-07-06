@@ -1,6 +1,6 @@
 import { BTCTxExplorer, ETHTxExplorer } from './data';
 
-export type WhitelistedCoins = 'BTC' | 'REP' | 'ETH';
+export type WhitelistedCoins = 'BTC' | 'REP' | 'ETH' | 'XMR';
 const serverURL = 'https://bity.myetherapi.com';
 const bityURL = 'https://bity.com/api';
 const BTCMin = 0.01;
@@ -11,7 +11,8 @@ const BTCMax = 3;
 // value = percent higher/lower than 0.01 BTC worth
 const buffers = {
   ETH: 0.1,
-  REP: 0.2
+  REP: 0.2,
+  XMR: 0.3
 };
 
 // rate must be BTC[KIND]
