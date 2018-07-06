@@ -195,6 +195,12 @@ class InteractForm extends Component<Props, State> {
         abiJson: fullContract.abi || '',
         contract
       });
+    } else {
+      this.props.setCurrentTo('');
+      this.setState({
+        abiJson: '',
+        contract
+      });
     }
   };
 
