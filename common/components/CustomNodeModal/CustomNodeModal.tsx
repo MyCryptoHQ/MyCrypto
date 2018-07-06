@@ -252,6 +252,8 @@ class CustomNodeModal extends React.Component<Props, State> {
   }
 
   private pollForDefaultNodes() {
+    return null;
+    // @ts-ignore
     const pollingInterval = 3000;
     // console.warning in production to explain to users why we are making a call to localhost
     console.warn(
