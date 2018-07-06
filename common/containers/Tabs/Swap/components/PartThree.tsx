@@ -27,6 +27,8 @@ interface ReduxStateProps {
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
   outputTx: any;
+  paymentId: string | null;
+  xmrPaymentAddress: string | null;
 }
 
 interface ReduxActionProps {
@@ -68,6 +70,8 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
       shapeshiftOrderStatus,
       destinationAddress,
       outputTx,
+      paymentId,
+      xmrPaymentAddress,
       // ACTIONS
       showNotificationWithComponent
     } = this.props;
@@ -85,7 +89,9 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
 
     const PaymentInfoProps = {
       origin,
-      paymentAddress
+      paymentAddress,
+      paymentId,
+      xmrPaymentAddress
     };
 
     const BitcoinQRProps = {
