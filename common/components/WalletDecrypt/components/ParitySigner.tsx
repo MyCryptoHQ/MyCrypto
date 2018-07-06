@@ -17,6 +17,13 @@ interface Props {
   onUnlock(param: any): void;
 }
 
+interface SignerAddress {
+  address: string;
+  chainId: number;
+}
+
+type SignerQrContent = SignerAddress | string;
+
 class ParitySignerDecryptClass extends PureComponent<Props> {
   public render() {
     return (
@@ -36,13 +43,13 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
     );
   }
 
-  private unlockAddress = (address: string) => {
-    if (!isValidETHAddress(address)) {
+  private unlockAddress = (content: SignerQrContent) => {
+    if (typeof content === 'string' || !isValidETHAddress(content.address)) {
       this.props.showNotification('danger', 'Not a valid address!');
       return;
     }
 
-    this.props.onUnlock(new ParitySignerWallet(address));
+    this.props.onUnlock(new ParitySignerWallet(content.address));
   };
 }
 
