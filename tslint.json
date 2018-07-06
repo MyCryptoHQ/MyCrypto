@@ -8,6 +8,7 @@
     "object-literal-sort-keys": false
   },
   "rules": {
+    "max-classes-per-file": [true, 2],
     "quotemark": false,
     "trailing-comma": false,
     "object-literal-sort-keys": false,

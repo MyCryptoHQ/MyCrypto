@@ -260,7 +260,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
       .then(response => response.text())
       .then(body => {
         const jsonBody = JSON.parse(body);
-        if (jsonBody[verified]) {
+        if (jsonBody[verifiedString]) {
           this.props.onUnlock();
         } else {
           alert('something went wrong');
@@ -318,7 +318,7 @@ export class KeystoreLocalDecrypt extends PureComponent {
     raindropDb.find({}, (err, docs) => {
       if (docs.length === 0) {
         const doc = { hydroId: hydroId };
-        raindropDb.insert(doc, function(err, newDoc) {
+        raindropDb.insert(doc, (error, newDoc) => {
           console.log(newDoc);
         });
 
