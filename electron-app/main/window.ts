@@ -67,6 +67,10 @@ export default function getWindow() {
     });
   });
 
+  window.webContents.on('will-navigate', (event: any) => {
+    event.preventDefault();
+  });
+
   if (isDevelopment) {
     window.webContents.on('did-fail-load', () => {
       setTimeout(() => {

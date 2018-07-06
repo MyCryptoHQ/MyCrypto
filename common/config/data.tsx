@@ -12,12 +12,6 @@ export const discordURL = 'https://discord.gg/VSaTXEA';
 export const VERSION = packageJson.version;
 export const N_FACTOR = 8192;
 
-// Bricks the app once this date has been exceeded. Remember to update these 2
-// whenever making a new app release.
-// It is currently set to: Wednesday, July 25, 2018 12:00:00 AM (GMT)
-// TODO: Remove me once app alpha / release candidates are done
-export const APP_ALPHA_EXPIRATION = 1532476800000;
-
 // Displays at the top of the site, make message empty string to remove.
 // Type can be primary, warning, danger, success, info, or blank for grey.
 // Message must be a JSX element if you want to use HTML.
