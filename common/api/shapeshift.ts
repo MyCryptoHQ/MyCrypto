@@ -66,6 +66,30 @@ interface TokenMap {
   };
 }
 
+interface Option {
+  id: string;
+  status?: string;
+  image?: string;
+  name?: string;
+}
+
+interface OptionMap {
+  [symbol: string]: Option;
+}
+
+interface ShapeshiftCoinInfo {
+  image: string;
+  imageSmall: string;
+  minerFee: number;
+  name: string;
+  status: string;
+  symbol: string;
+}
+
+interface ShapeshiftCoinInfoMap {
+  [symbol: string]: ShapeshiftCoinInfo;
+}
+
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
@@ -73,6 +97,8 @@ class ShapeshiftService {
   private postHeaders = {
     'Content-Type': 'application/json'
   };
+  private supportedCoinsAndTokens: ShapeshiftCoinInfoMap = {};
+  private fetchedSupportedCoinsAndTokens = false;
 
   public checkStatus(address: string) {
     return fetch(`${this.url}/txStat/${address}`)
@@ -124,6 +150,44 @@ class ShapeshiftService {
     return mappedRates;
   };
 
+  public addUnavailablCoinsAndTokens = (availableOptions: OptionMap) => {
+    if (this.fetchedSupportedCoinsAndTokens) {
+      const fullOptions = this.whitelist
+        .map(symbol => {
+          if (availableOptions[symbol]) {
+            return availableOptions[symbol];
+          }
+
+          if (this.supportedCoinsAndTokens[symbol]) {
+            const coinOrToken = this.supportedCoinsAndTokens[symbol];
+
+            if (coinOrToken && coinOrToken.status === 'unavailable') {
+              const { symbol: id, status, image, name } = coinOrToken;
+
+              return { id, status, image, name };
+            }
+          }
+
+          if (process.env.NODE_ENV !== 'production') {
+            console.warn(
+              `Coin or token ${symbol} is supported, but did not exist in the API response.`
+            );
+          }
+
+          return null;
+        })
+        .filter(Boolean)
+        .reduce((prev: OptionMap, next: Option) => {
+          prev[next.id] = next;
+          return prev;
+        }, {});
+
+      return fullOptions;
+    }
+
+    return availableOptions;
+  };
+
   private filterPairs(marketInfo: ShapeshiftMarketInfo[]) {
     return marketInfo.filter(obj => {
       const { pair } = obj;
@@ -165,7 +229,13 @@ class ShapeshiftService {
   private getAvlCoins() {
     return fetch(`${this.url}/getcoins`)
       .then(checkHttpStatus)
-      .then(parseJSON);
+      .then(parseJSON)
+      .then(supportedCoinsAndTokens => {
+        this.supportedCoinsAndTokens = supportedCoinsAndTokens;
+        this.fetchedSupportedCoinsAndTokens = true;
+
+        return supportedCoinsAndTokens;
+      });
   }
 
   private getMarketInfo() {
