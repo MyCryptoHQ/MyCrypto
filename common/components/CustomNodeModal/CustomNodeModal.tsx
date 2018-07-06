@@ -71,7 +71,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.checkForDefaultNodes();
+    this.pollForDefaultNodes();
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -251,22 +251,31 @@ class CustomNodeModal extends React.Component<Props, State> {
     );
   }
 
-  private async checkForDefaultNodes() {
-    const results = await exists(
-      [
-        // tslint:disable-next-line:no-http-string
-        { type: 'http', addr: 'http://localhost', port: 8545, timeout: 3000 }
-      ],
-      { includeDefaults: false }
+  private pollForDefaultNodes() {
+    const pollingInterval = 3000;
+    // console.warning in production to explain to users why we are making a call to localhost
+    console.warn(
+      "Don't panic! MyCrypto is going to start a poll for default nodes on port 8545. If you don't like this feature, send us a ping at support@mycrypto.com and we'll walk you through disabling it."
     );
-
-    this.setState({
-      defaultNodes: results.filter(r => r.success).map((r, index) => ({
-        ...r,
-        display: `${r.addr}:${r.port}`,
-        index
-      }))
-    });
+    this.timer = window.setInterval(async () => {
+      const results = await exists(
+        [
+          // tslint:disable-next-line:no-http-string
+          { type: 'http', addr: 'http://localhost', port: 8545, timeout: 3000 }
+        ],
+        { includeDefaults: false }
+      );
+      if (!this.timer) {
+        return;
+      }
+      this.setState({
+        defaultNodes: results.filter(r => r.success).map((r, index) => ({
+          ...r,
+          display: `${r.addr}:${r.port}`,
+          index
+        }))
+      });
+    }, pollingInterval);
   }
 
   private renderDefaultNodeDropdown() {
