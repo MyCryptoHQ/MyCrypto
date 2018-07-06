@@ -71,7 +71,7 @@ class CustomNodeModal extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.pollForDefaultNodes();
+    this.checkForDefaultNodes();
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -251,27 +251,22 @@ class CustomNodeModal extends React.Component<Props, State> {
     );
   }
 
-  private pollForDefaultNodes() {
-    const pollingInterval = 3000;
-    this.timer = window.setInterval(async () => {
-      const results = await exists(
-        [
-          // tslint:disable-next-line:no-http-string
-          { type: 'http', addr: 'http://localhost', port: 8545, timeout: 3000 }
-        ],
-        { includeDefaults: false }
-      );
-      if (!this.timer) {
-        return;
-      }
-      this.setState({
-        defaultNodes: results.filter(r => r.success).map((r, index) => ({
-          ...r,
-          display: `${r.addr}:${r.port}`,
-          index
-        }))
-      });
-    }, pollingInterval);
+  private async checkForDefaultNodes() {
+    const results = await exists(
+      [
+        // tslint:disable-next-line:no-http-string
+        { type: 'http', addr: 'http://localhost', port: 8545, timeout: 3000 }
+      ],
+      { includeDefaults: false }
+    );
+
+    this.setState({
+      defaultNodes: results.filter(r => r.success).map((r, index) => ({
+        ...r,
+        display: `${r.addr}:${r.port}`,
+        index
+      }))
+    });
   }
 
   private renderDefaultNodeDropdown() {
