@@ -29,6 +29,7 @@ import {
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { StaticNetworksState } from './types';
+import { TAB } from 'components/Header/components/constants';
 
 const testnetDefaultGasPrice = {
   min: 0.1,
@@ -393,7 +394,8 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       min: 0.183,
       max: 1.5,
       initial: 0.183
-    }
+    },
+    unsupportedTabs: [TAB.ENS]
   },
 
   RSK_TESTNET: {
@@ -419,7 +421,8 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       min: 0.183,
       max: 1.5,
       initial: 0.183
-    }
+    },
+    unsupportedTabs: [TAB.ENS]
   },
 
   GO: {
