@@ -1,3 +1,12 @@
+# Hydro added to MyCrypto
+
+I have forked the MyCrypto electron app and added in a local wallet. It is hidden behind the Hydro Authentication App.
+
+## TODO
+
+- Add initial signing to check for correct hydroId
+- Add a new modal for local account creation
+
 # MyCrypto Web & Desktop Apps
 
 [![Coverage Status](https://coveralls.io/repos/github/MyCryptoHQ/MyCrypto/badge.svg?branch=develop)](https://coveralls.io/github/MyCryptoHQ/MyCrypto?branch=develop)
