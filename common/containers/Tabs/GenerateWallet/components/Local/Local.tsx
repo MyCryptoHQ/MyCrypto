@@ -9,6 +9,9 @@ import FinalSteps from '../FinalSteps';
 import DownloadWallet from './DownloadWallet';
 import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
+import Datastore from 'nedb';
+
+const db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
 
 export enum Steps {
   Password = 'password',
@@ -26,7 +29,7 @@ interface State {
   isGenerating: boolean;
 }
 
-export default class GenerateKeystore extends Component<{}, State> {
+export default class GenerateLocal extends Component<{}, State> {
   public state: State = {
     activeStep: Steps.Password,
     password: '',
@@ -49,6 +52,16 @@ export default class GenerateKeystore extends Component<{}, State> {
 
       case Steps.Download:
         if (keystore) {
+          db.find({}, (err: any, docs: any) => {
+            if (err) {
+              console.log(err);
+              alert('Something went wrong. Please download your wallet again.');
+            }
+            if (docs.length === 0) {
+              db.insert(keystore);
+            }
+          });
+
           content = (
             <DownloadWallet
               keystore={keystore}

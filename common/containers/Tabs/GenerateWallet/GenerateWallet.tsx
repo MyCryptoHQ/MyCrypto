@@ -6,17 +6,20 @@ import TabSection from 'containers/TabSection';
 import { RouteNotFound } from 'components/RouteNotFound';
 import Keystore from './components/Keystore';
 import Mnemonic from './components/Mnemonic';
+import Local from './components/Local';
 import WalletTypes from './components/WalletTypes';
 import CryptoWarning from './components/CryptoWarning';
 
 export enum WalletType {
   Keystore = 'keystore',
+  Local = 'local',
   Mnemonic = 'mnemonic'
 }
 
 export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
   public render() {
     const currentPath = this.props.match.url;
+    console.log('\n\n\n\n\n' + currentPath);
     return (
       <React.Fragment>
         <TabSection>
@@ -25,6 +28,7 @@ export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
               <Switch>
                 <Route exact={true} path={currentPath} component={WalletTypes} />
                 <Route exact={true} path={`${currentPath}/keystore`} component={Keystore} />
+                <Route exact={true} path={`${currentPath}/local`} component={Local} />
                 <Route exact={true} path={`${currentPath}/mnemonic`} component={Mnemonic} />
                 <RouteNotFound />
               </Switch>

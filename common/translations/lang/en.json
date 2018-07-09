@@ -470,6 +470,7 @@
     "INPUT_USERNAME_LABEL": "Username",
     "INPUT_PASSWORD_PLACEHOLDER": "Password must use at least $pass_length characters",
     "GENERATE_KEYSTORE_TITLE": "Generate a Keystore File",
+    "GENERATE_LOCAL_KEYSTORE_TITLE": "Generate a Local Keystore File",
     "GENERATE_KEYSTORE_ACTION": "Generate Keystore File",
     "GENERATE_KEYSTORE_FAILED": "Keystore generation failed or was invalid. In order to prevent loss of funds, we cannot provide you with a keystore file that may be corrupted. Refresh the page or use a different browser, and try again.",
     "WEAK_PASSWORD": "This password isn't strong enough.",
