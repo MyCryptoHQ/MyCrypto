@@ -29,20 +29,6 @@ class BodyClass extends React.Component<StateProps, State> {
     });
   };
 
-  public componentDidCatch(error: Error) {
-    if (error.message === 'Serialized transaction not found') {
-      /**
-       * @desc Occasionally, when a new signed transaction matches a previous transaction,
-       * the transaction state is cleared and a warning notification alerts the user. Once the
-       * transaction state is cleared, however, the <Amounts /> component's attempts at selecting
-       * the transaction causes the 'Serialized transaction not found' error.
-       * A longer term fix will involve finding a better way to calculate nonces to avoid
-       * nonce duplication on serial transactions.
-       */
-      // Pass
-    }
-  }
-
   public render() {
     const { showDetails } = this.state;
 
