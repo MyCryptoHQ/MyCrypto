@@ -45,6 +45,7 @@
     "X_CIPHER": "Cipher Browser",
     "X_KEYSTORE": "Keystore File (UTC / JSON · Recommended · Encrypted) ",
     "X_KEYSTORE2": "Keystore File ",
+    "X_KEYSTORE_LOCAL": "Local Keystore File ",
     "X_KEYSTOREDESC": "This Keystore file matches the format used by Mist so you can easily import it in the future. It is the recommended file to download and back up. ",
     "X_METAMASK": "MetaMask",
     "X_MIST": "Mist",

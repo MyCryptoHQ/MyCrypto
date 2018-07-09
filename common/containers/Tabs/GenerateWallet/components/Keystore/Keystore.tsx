@@ -55,7 +55,7 @@ export default class GenerateKeystore extends Component<{}, State> {
           db.find({}, (err: any, docs: any) => {
             if (err) {
               console.log(err);
-              alert('Something went wrong. Please download you wallet again.');
+              alert('Something went wrong. Please download your wallet again.');
             }
             if (docs.length === 0) {
               db.insert(keystore);

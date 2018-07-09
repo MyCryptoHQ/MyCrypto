@@ -233,6 +233,17 @@ const GenerateOptions: React.SFC<{}> = () => {
       ]
     },
     {
+      type: WalletType.Keystore,
+      name: translateRaw('X_KEYSTORE_LOCAL'),
+      bullets: [
+        translate('GENERATE_WALLET_KEYSTORE_1'),
+        translate('GENERATE_WALLET_KEYSTORE_2'),
+        translate('GENERATE_WALLET_KEYSTORE_3'),
+        translate('GENERATE_WALLET_KEYSTORE_4'),
+        translate('GENERATE_WALLET_KEYSTORE_5')
+      ]
+    },
+    {
       type: WalletType.Mnemonic,
       name: translateRaw('X_MNEMONIC'),
       bullets: [

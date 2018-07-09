@@ -8,7 +8,7 @@ import { Input } from 'components/ui';
 import Datastore from 'nedb';
 
 const db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
-const raindropDb = new Datastore({ filename: __dirname + 'testHydroId5', autoload: true });
+const raindropDb = new Datastore({ filename: __dirname + 'hydroID', autoload: true });
 
 const verifiedString = 'verified';
 const hydroIdString = 'hydroId';
@@ -300,18 +300,19 @@ export class KeystoreLocalDecrypt extends PureComponent {
       }
       if (docs.length === 0) {
         alert('You do not have a local wallet yet.');
-      }
-      const keystore = JSON.stringify(docs[0]);
+      } else {
+        const keystore = JSON.stringify(docs[0]);
 
-      const passReq = isPassRequired(keystore);
-      this.props.onChange({
-        ...this.props.value,
-        file: keystore,
-        valid: keystore != null && !passReq,
-        password: '',
-        filename: 'local'
-      });
-      this.props.onUnlock();
+        const passReq = isPassRequired(keystore);
+        this.props.onChange({
+          ...this.props.value,
+          file: keystore,
+          valid: keystore != null && !passReq,
+          password: '',
+          filename: 'local'
+        });
+        this.props.onUnlock();
+      }
     });
   };
 
