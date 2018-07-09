@@ -49,7 +49,7 @@ class Input extends React.Component<Props, State> {
     } else if (!hasBlurred && !showInvalidBeforeBlur) {
       validClass = '';
     }
-    if (!hasValue && showInvalidWithoutValue) {
+    if ((!isStateless || showInvalidBeforeBlur) && !hasValue && showInvalidWithoutValue) {
       validClass = 'invalid';
     }
 

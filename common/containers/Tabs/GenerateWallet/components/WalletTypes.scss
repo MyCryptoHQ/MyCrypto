@@ -1,4 +1,5 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 $divider-size: 60px;
 
@@ -32,10 +33,10 @@ $divider-size: 60px;
   &-divider {
     position: relative;
     margin: 3rem auto 4rem;
-    background: #fff;
+    background: color(pane-bg);
     font-size: 1.8rem;
     font-weight: 300;
-    color: $gray-light;
+    color: shade-dark(0.4);
 
     @media (max-width: $screen-xs) {
       margin: 1.5rem auto 2.5rem;
@@ -49,7 +50,7 @@ $divider-size: 60px;
       left: 50%;
       width: calc(50% - 2rem);
       max-width: 600px;
-      background: rgba($gray-light, 0.4);
+      background: shade-dark(0.1);
       height: 1px;
     }
 
@@ -78,7 +79,7 @@ $divider-size: 60px;
     }
 
     &-desc {
-      color: $gray;
+      color: shade-dark(0.5);
 
       @media (max-width: $screen-xs) {
         font-size: $font-size-small;
@@ -91,9 +92,9 @@ $divider-size: 60px;
 .WalletType {
   display: flex;
   flex-direction: column;
-  border: 1px solid $gray-lighter;
+  border: 1px solid shade-dark(0.12);
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.12);
-  background: #fff;
+  background: color(control-bg);
   border-radius: 4px;
   transition: transform 100ms ease, box-shadow 100ms ease;
 
@@ -104,17 +105,12 @@ $divider-size: 60px;
 }
 
 .WalletSuggestion {
-  display: flex;
-  flex-direction: column;
   flex: 1;
   max-width: 340px;
   min-width: 300px;
   margin: 0 $space $space * 2;
   padding: $space;
-  border: 1px solid $gray-lighter;
-  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  transition: transform 100ms ease, box-shadow 100ms ease;
   border-top: 3px solid;
 
   &.is-hardware {
@@ -127,10 +123,14 @@ $divider-size: 60px;
 
   &.is-parity {
     border-top-color: #444;
+
+    @include theme(dark) {
+      border-top-color: #FFF;
+    }
   }
 
   &.is-generate {
-    border-top-color: $brand-danger;
+    border-top-color: color(brand-danger);
   }
 
   @media (max-width: $screen-sm) {
@@ -157,6 +157,10 @@ $divider-size: 60px;
       height: 28px;
       margin-right: $space-md;
       opacity: 0.8;
+
+      @include theme(dark) {
+        filter: invert(1);
+      }
     }
   }
 
@@ -169,7 +173,7 @@ $divider-size: 60px;
     }
 
     .is-danger {
-      color: $brand-danger;
+      color: color(brand-danger);
     }
   }
 

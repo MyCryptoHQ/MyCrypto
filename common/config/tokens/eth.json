@@ -3328,5 +3328,32 @@
     "address": "0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5",
     "symbol": "ARC",
     "decimal": 18
+  },
+
+
+  {
+    "address": "0xDF2C7238198Ad8B389666574f2d8bc411A4b7428",
+    "symbol": "MFT",
+    "decimal": 18
+  },
+  {
+    "address": "0xc92d6e3e64302c59d734f3292e2a13a13d7e1817",
+    "symbol": "FXC",
+    "decimal": 8
+  },
+  {
+    "address": "0x4f3afec4e5a3f2a6a1a411def7d7dfe50ee057bf",
+    "symbol": "DGX 2.0",
+    "decimal": 9
+  },
+  {
+    "address": "0xd9a12cde03a86e800496469858de8581d3a5353d",
+    "symbol": "YUP",
+    "decimal": 18
+  },
+  {
+    "address": "0x6aEDbF8dFF31437220dF351950Ba2a3362168d1b",
+    "symbol": "DGS",
+    "decimal": 8
   }
 ]

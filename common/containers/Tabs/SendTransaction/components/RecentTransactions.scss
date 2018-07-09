@@ -18,7 +18,7 @@
 
     thead {
       font-size: $font-size-bump-more;
-      border-bottom: 2px solid $gray-lighter;
+      border-bottom: 2px solid shade-dark(0.1);
 
       td {
         padding-top: $space-xs;
@@ -60,6 +60,6 @@
     margin: $space * 2 auto 0;
     font-size: $font-size-small;
     text-align: center;
-    color: $gray-light;
+    color: shade-dark(0.5);
   }
 }

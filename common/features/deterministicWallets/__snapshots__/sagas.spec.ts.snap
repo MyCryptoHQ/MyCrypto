@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getDeterministicWallets* starting from publicKey & chainCode should match put snapshot 1`] = `
+exports[
+  `getDeterministicWallets* starting from publicKey & chainCode should match put snapshot 1`
+] = `
 Object {
   "@@redux-saga/IO": true,
   "PUT": Object {

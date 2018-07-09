@@ -24,6 +24,18 @@ export interface SwapState {
   validFor: number | null;
   orderId: string | null;
   showLiteSend: boolean;
+  /**
+   * @desc
+   * For XMR swaps, the "deposit" property in the response
+   * actually refers to the "paymentId", not the payment address.
+   */
+  paymentId: string | null;
+  /**
+   * @desc
+   * For XMR swap, the actual payment address is the "sAddress"
+   * property in the response.
+   */
+  xmrPaymentAddress: string | null;
 }
 
 export enum SwapActions {
@@ -208,6 +220,7 @@ export interface ShapeshiftOrderResponse {
   quotedRate: string;
   withdrawal: string;
   withdrawalAmount: string;
+  sAddress?: string;
 }
 
 export interface ShapeshiftStatusResponse {

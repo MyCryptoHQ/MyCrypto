@@ -19,7 +19,7 @@
   &-error-message {
     display: block;
     min-height: 25px;
-    color: $brand-danger;
+    color: color(brand-danger);
     text-align: left;
   }
   &-inner-wrap {
