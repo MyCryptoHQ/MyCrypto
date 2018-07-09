@@ -7,12 +7,13 @@ import { NavigationLink } from 'config';
 interface Props extends RouteComponentProps<{}> {
   link: NavigationLink;
   isHomepage: boolean;
-  className: string;
+  className?: string;
+  disabled?: boolean;
 }
 
 class NavigationLinkClass extends React.PureComponent<Props, {}> {
   public render() {
-    const { link, location, isHomepage, className } = this.props;
+    const { link, location, isHomepage, className, disabled } = this.props;
     let isActive = false;
 
     if (!link.external) {
@@ -27,7 +28,7 @@ class NavigationLinkClass extends React.PureComponent<Props, {}> {
 
     const linkClasses = classnames({
       [`${className}-link`]: true,
-      'is-disabled': !link.to,
+      'is-disabled': !link.to || disabled,
       'is-active': isActive
     });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;

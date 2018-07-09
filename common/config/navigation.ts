@@ -11,12 +11,12 @@ export const navigationLinks: NavigationLink[] = [
     to: '/account'
   },
   {
-    name: 'NAV_GENERATEWALLET',
-    to: '/generate'
-  },
-  {
     name: 'NAV_SWAP',
     to: '/swap'
+  },
+  {
+    name: 'NAV_GENERATEWALLET',
+    to: '/generate'
   },
   {
     name: 'NAV_CONTRACTS',
@@ -37,10 +37,5 @@ export const navigationLinks: NavigationLink[] = [
   {
     name: 'NAV_BROADCAST',
     to: '/pushTx'
-  },
-  {
-    name: 'NAV_SUPPORT_US',
-    to: '/support-us',
-    disabled: !process.env.BUILD_ELECTRON
   }
-].filter(link => !link.disabled);
+];

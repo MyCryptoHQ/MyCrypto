@@ -118,9 +118,6 @@ class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <a className="Header-support" href={knowledgeBaseURL}>
-                {translate('NAV_HELP')}
-              </a>
               <div className="Header-branding-right-dropdown">
                 <LanguageDropDown
                   ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
@@ -143,7 +140,7 @@ class Header extends Component<Props, State> {
           </section>
         </section>
 
-        {network.id === 'XMR' ? null : <Navigation color={!network.isCustom && network.color} />}
+        <Navigation color={!network.isCustom && network.color} />
 
         <CustomNodeModal
           isOpen={isAddingCustomNode}

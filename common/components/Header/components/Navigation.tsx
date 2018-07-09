@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import NavigationLink from 'components/NavigationLink';
-import { navigationLinks } from 'config';
+import { navigationLinks, knowledgeBaseURL } from 'config';
 import './Navigation.scss';
 
 interface Props {
@@ -50,6 +50,7 @@ export default class Navigation extends PureComponent<Props, State> {
                 key={link.name}
                 link={link}
                 isHomepage={link === navigationLinks[0]}
+                disabled={!['NAV_VIEW', 'NAV_SWAP'].includes(link.name)}
                 className="NavigationLink"
               />
             ))}
