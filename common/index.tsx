@@ -27,3 +27,12 @@ if (module.hot) {
 if (process.env.NODE_ENV === 'production') {
   consoleAdvertisement();
 }
+
+const noOp = (event: DragEvent) => {
+  event.preventDefault();
+  return false;
+};
+
+// disables drag-and-drop due to potential security issues by Cure53 recommendation
+document.addEventListener('dragover', noOp, false);
+document.addEventListener('drop', noOp, false);

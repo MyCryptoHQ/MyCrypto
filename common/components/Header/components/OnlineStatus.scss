@@ -21,15 +21,15 @@
   @include show-tooltip-on-hover;
 
   &.is-online {
-    background: lighten($brand-success, 10%);
+    background: color(brand-success-light);
   }
 
   &.is-offline {
-    background: lighten($brand-danger, 5%);
+    background: color(brand-danger-light);
   }
 
   &.is-connecting {
-    background: #FFF;
+    background: color(brand-warning);
     animation: online-pulse 800ms ease infinite;
   }
 }

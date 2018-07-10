@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import { addHexPrefix } from 'ethereumjs-util';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { paritySignerActions } from 'features/paritySigner';
@@ -95,7 +95,7 @@ class QrSignerModal extends React.Component<Props, State> {
       return;
     }
 
-    this.props.finalizeSignature(signature);
+    this.props.finalizeSignature(addHexPrefix(signature));
     this.setState({ scan: false });
   };
 }
