@@ -19,7 +19,6 @@ export enum WalletType {
 export default class GenerateWallet extends Component<RouteComponentProps<{}>> {
   public render() {
     const currentPath = this.props.match.url;
-    console.log('\n\n\n\n\n' + currentPath);
     return (
       <React.Fragment>
         <TabSection>
