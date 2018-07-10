@@ -8,7 +8,6 @@ import {
   VERSION
 } from 'config';
 import translate from 'translations';
-import logo from 'assets/images/logo-mycrypto-transparent.svg';
 import TabSection from 'containers/TabSection';
 import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
@@ -32,7 +31,7 @@ export default class SupportPage extends React.Component<{}, State> {
           <div className="row">
             <div className="col-xs-12">
               <div className="SupportPage-mycrypto Tab-content-pane">
-                <img className="SupportPage-mycrypto-logo" src={logo} />
+                <div className="SupportPage-mycrypto-logo" />
                 <p className="SupportPage-mycrypto-about">{translate('FOOTER_ABOUT')}</p>
 
                 <div className="SupportPage-mycrypto-social">

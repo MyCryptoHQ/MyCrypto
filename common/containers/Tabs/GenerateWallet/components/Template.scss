@@ -14,7 +14,7 @@
     top: 36px;
     left: 30px;
     opacity: 0.3;
-    color: $text-color;
+    color: color(text-color);
 
     @media (max-width: $screen-sm) {
       display: none;
@@ -27,7 +27,7 @@
     &:hover,
     &:focus {
       opacity: 0.8;
-      color: $text-color;
+      color: color(text-color);
     }
 
     &:active {

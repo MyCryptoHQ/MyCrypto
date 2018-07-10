@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://mycrypto.com</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/account</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/generate</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/swap</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/contracts</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/ens</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/sign-and-verify-message</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/tx-status</loc><priority>0.5</priority></url>
+<url><loc>https://mycrypto.com/pushTx</loc><priority>0.5</priority></url>
+</urlset>

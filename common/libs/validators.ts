@@ -59,6 +59,12 @@ export function isValidBTCAddress(address: string): boolean {
   return WalletAddressValidator.validate(address, 'BTC');
 }
 
+export function isValidXMRAddress(address: string): boolean {
+  return !!address.match(
+    /4[0-9AB][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{93}/
+  );
+}
+
 export function isValidHex(str: string): boolean {
   if (str === '') {
     return true;
@@ -74,7 +80,9 @@ export function isValidENSorEtherAddress(address: string): boolean {
 
 export function isValidENSName(str: string) {
   try {
-    return str.length > 6 && normalise(str) !== '' && str.substring(0, 2) !== '0x';
+    return (
+      str.length > 6 && !str.includes('.') && normalise(str) !== '' && str.substring(0, 2) !== '0x'
+    );
   } catch (e) {
     return false;
   }
@@ -131,11 +139,20 @@ export const validPositiveNumber = (num: number) => validNumber(num) && num !== 
 
 export const validDecimal = (input: string, decimal: number) => {
   const arr = input.split('.');
+
+  // Only a single decimal can exist.
+  if (arr.length > 2) {
+    return false;
+  }
+
   const fractionPortion = arr[1];
+
   if (!fractionPortion || fractionPortion.length === 0) {
     return true;
   }
+
   const decimalLength = fractionPortion.length;
+
   return decimalLength <= decimal;
 };
 

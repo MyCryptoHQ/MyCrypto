@@ -3,9 +3,11 @@ import React, { PureComponent } from 'react';
 import { navigationLinks } from 'config';
 import NavigationLink from 'components/NavigationLink';
 import './Navigation.scss';
+import { TAB } from './constants';
 
 interface Props {
   color?: string | false;
+  unsupportedTabs?: TAB[];
 }
 
 interface State {
@@ -30,7 +32,7 @@ export default class Navigation extends PureComponent<Props, State> {
    */
 
   public render() {
-    const { color } = this.props;
+    const { color, unsupportedTabs } = this.props;
     const borderStyle: BorderStyle = {};
 
     if (color) {
@@ -58,6 +60,9 @@ export default class Navigation extends PureComponent<Props, State> {
                 link={link}
                 isHomepage={link === navigationLinks[0]}
                 className="NavigationLink"
+                isNotEnabled={
+                  unsupportedTabs && unsupportedTabs.map(tab => tab.toString()).includes(link.name)
+                }
               />
             ))}
           </ul>

@@ -32,6 +32,8 @@ module.exports = function(opts = {}) {
   // ====== Entry =======
   // ====================
   const entry = {
+    badBrowserCheckA: './common/badBrowserCheckA.js',
+    badBrowserCheckB: './common/badBrowserCheckB.js',
     client: './common/index.tsx'
   };
 
@@ -164,7 +166,10 @@ module.exports = function(opts = {}) {
       twitter: {
         site: config.twitter.creator,
         creator: config.twitter.creator
-      }
+      },
+      metaCsp: options.isProduction 
+        ? "default-src 'none'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://shapeshift.io; connect-src *;"
+        :  ""
     }),
 
     new CopyWebpackPlugin([

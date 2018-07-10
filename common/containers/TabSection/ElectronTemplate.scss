@@ -14,8 +14,8 @@
   &-sidebar {
     width: $electron-sidebar-width;
     overflow-x: hidden;
-    background: #FFF;
-    border-right: 1px solid $gray-lighter;
+    background: color(control-bg);
+    border-right: 1px solid color(gray-lighter);
   }
 
   &-content {

@@ -1,0 +1,132 @@
+// A fork of bootstrap's forms to have some custom behavior, and to work with
+// css variables
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+// Normalize elements for various browsers
+fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: $line-height-computed;
+  font-size: ($font-size-base * 1.5);
+  line-height: inherit;
+  color: $legend-color;
+  border: 0;
+  border-bottom: 1px solid $legend-border-color;
+}
+
+input[type="search"] {
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+input[type="file"] {
+  display: block;
+}
+
+input[type="range"] {
+  display: block;
+  width: 100%;
+}
+
+select[multiple],
+select[size] {
+  height: auto;
+}
+
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+  @include tab-focus;
+}
+
+// Labels
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: $space-xs;
+  font-weight: bold;
+
+  &.is-required:after {
+    content: '*';
+    padding-left: 2px;
+    color: color(brand-warning);
+  }
+}
+
+// Checkbox / radio
+.radio,
+.checkbox {
+  position: relative;
+  display: block;
+  margin: 15px 0;
+  font-weight: 500;
+
+  label {
+    min-height: $line-height-computed;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+  }
+}
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  position: absolute;
+  margin-left: -20px;
+  margin-top: 4px \9;
+}
+
+.radio + .radio,
+.checkbox + .checkbox {
+  margin-top: -5px; // Move up sibling radios or checkboxes for tighter spacing
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  margin: 3px 0 0;
+  line-height: normal;
+}
+
+// Misc
+input[readonly] {
+  background-color: color(control-disabled-bg);
+  color: color(control-disabled-color);
+  border-color: color(control-disabled-border);
+  cursor: text !important;
+}
+
+.form-group {
+  display: block;
+  margin-bottom: $form-group-margin-bottom;
+}
+
+.help-block {
+  display: block;
+  margin-top: $space-xs;
+  margin-bottom: $space-sm;
+  opacity: 0.8;
+
+  &.is-valid {
+    color: color(brand-success);
+  }
+
+  &.is-invalid {
+    color: color(brand-danger);
+  }
+
+  &.is-semivalid {
+    color: color(brand-warning);
+  }
+}

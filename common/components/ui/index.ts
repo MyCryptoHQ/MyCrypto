@@ -16,5 +16,6 @@ export { default as TextArea } from './TextArea';
 export { default as Address } from './Address';
 export { default as CodeBlock } from './CodeBlock';
 export { default as Toggle } from './Toggle';
+export { default as Warning } from './Warning';
 export * from './Expandable';
 export * from './InlineSpinner';
