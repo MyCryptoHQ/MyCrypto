@@ -28,14 +28,13 @@ export default function showPrompt(template: string, event: string): Promise<str
       try {
         resolve(value);
         hasResolved = true;
-      } catch (e) {
-        console.error('Problem with var', e);
-      }
-
-      try {
         window.close();
       } catch (e) {
-        console.error('Problem with window', e);
+        /**
+         * @desc The window.close call sometimes fails
+         *  if the window has already been destroyed.
+         */
+        console.error(e);
       }
     });
 

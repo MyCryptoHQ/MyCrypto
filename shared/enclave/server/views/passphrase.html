@@ -28,6 +28,7 @@
     <script nonce="$scriptNonce">
         var ipcRenderer = require('electron').ipcRenderer;
         var remote = require('electron').remote;
+        var body = document.querySelector('body');
         var input = document.querySelector('.passphrase-input');
         var unlock = document.querySelector('.passphrase-unlock');
         var close = document.querySelector('.close');
@@ -38,14 +39,15 @@
             ipcRenderer.send('$EVENT', passphrase);
         }
 
-        input.addEventListener('change', function (e) {
-            passphrase = e.target.value
-        });
-        input.addEventListener('keydown', function (e) {
+        body.addEventListener('keydown', function (e) {
             // On enter press,
             if (e.keyCode === 13) {
                 unlockWithPassphrase();
             }
+        });
+
+        input.addEventListener('change', function (e) {
+            passphrase = e.target.value
         });
 
         unlock.addEventListener('click', unlockWithPassphrase);
@@ -99,7 +101,7 @@
             margin-bottom: 10px;
             letter-spacing: 1px;
             color: #FFF;
-            margin-top: 4rem;
+            margin-top: 5rem;
         }
 
         .passphrase-unlock {
