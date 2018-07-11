@@ -25,9 +25,18 @@ export default function showPrompt(template: string, event: string): Promise<str
     });
 
     ipcMain.once(event, (_: IpcMessageEvent, value: string) => {
-      resolve(value);
-      hasResolved = true;
-      window.close();
+      try {
+        resolve(value);
+        hasResolved = true;
+      } catch (e) {
+        console.error('Problem with var', e);
+      }
+
+      try {
+        window.close();
+      } catch (e) {
+        console.error('Problem with window', e);
+      }
     });
 
     window.loadURL(`data:text/html;charset=UTF-8,${encodeURIComponent(html)}`);
