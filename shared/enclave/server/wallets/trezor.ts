@@ -42,7 +42,7 @@ async function getSession() {
         cb(undefined, passphrase);
       })
       .catch(err => {
-        console.error('Passprhase entry failed', err);
+        console.error('Passphrase entry failed', err);
         cb(err);
       });
   });
