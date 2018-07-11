@@ -36,7 +36,7 @@ async function getSession() {
         cb(err);
       });
   });
-  device.on('passphrase', (_, cb: (err?: Error, passphrase?: string) => void) => {
+  device.on('passphrase', (cb: (err?: Error, passphrase?: string) => void) => {
     showPassphrasePrompt()
       .then(passphrase => {
         cb(undefined, passphrase);
