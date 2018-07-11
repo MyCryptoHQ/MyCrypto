@@ -17,7 +17,7 @@ $speed: 500ms;
 @mixin decrypt-title {
   text-align: center;
   line-height: 1;
-  margin: 0 0 30px;
+  margin: $space 0 2rem;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
 }
@@ -50,7 +50,7 @@ $speed: 500ms;
     &-generate {
       text-align: center;
       font-weight: 300;
-      margin-top: $space;
+      margin: $space 0;
     }
   }
 
