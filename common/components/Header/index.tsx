@@ -19,7 +19,6 @@ import { Link } from 'react-router-dom';
 import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
 import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
 import Navigation from './components/Navigation';
-import { knowledgeBaseURL } from 'config/data';
 import NetworkDropdown from './components/NetworkDropdown';
 import CustomNodeModal from 'components/CustomNodeModal';
 import { getKeyByValue } from 'utils/helpers';
@@ -34,7 +33,6 @@ import {
 import { NetworkConfig } from 'types/network';
 import { connect, MapStateToProps } from 'react-redux';
 import './index.scss';
-import translate from 'translations';
 
 interface OwnProps {
   networkParam: string | null;

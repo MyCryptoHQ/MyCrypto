@@ -1,0 +1,53 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.PrimaryButton {
+  @include reset-button;
+  display: block;
+  color: white;
+  font-size: 1rem;
+  font-weight: 400;
+  background-color: $brand-primary;
+  padding: 0.75rem 1rem;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(#32325d, 0.1), 0 1px 1px rgba(#32325d, 0.05),
+    0 0 1px rgba(#32325d, 0.03);
+  transition: box-shadow 150ms ease, transform 150ms ease, background-color 150ms ease;
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.loading {
+    transform: translateY(-1px);
+    background-color: darken($brand-primary, 7%);
+    box-shadow: 0 1px 3px rgba(#32325d, 0.1), 0 1px 1px rgba(#32325d, 0.05),
+      0 0 1px rgba(#32325d, 0.03);
+  }
+
+  &:not([disabled]):not(.loading) {
+    &:hover,
+    &:focus {
+      transform: translateY(-2px);
+      z-index: 2;
+      box-shadow: 0 7px 14px rgba(232, 234, 237, 0.5), 0 3px 6px rgba(232, 234, 237, 0.5);
+    }
+    &:active {
+      transform: translateY(-1px);
+      background-color: darken($brand-primary, 3.5%);
+      box-shadow: 0 1px 3px rgba(#32325d, 0.1), 0 1px 1px rgba(#32325d, 0.05),
+        0 0 1px rgba(#32325d, 0.03);
+    }
+  }
+
+  &-spinner-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    > .Spinner {
+      margin-right: 1rem;
+    }
+  }
+}

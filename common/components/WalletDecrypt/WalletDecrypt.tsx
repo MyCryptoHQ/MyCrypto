@@ -51,6 +51,7 @@ import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/
 import './WalletDecrypt.scss';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { Errorable } from 'components';
+import { getNetworkConfig } from 'selectors/config';
 
 interface OwnProps {
   hidden?: boolean;
@@ -72,6 +73,7 @@ interface StateProps {
   computedDisabledWallets: DisabledWallets;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
+  networkName: string;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -248,22 +250,28 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-decrypt">
-          <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
-            <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
-          </button>
-          <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly && 'Unlock your'} {translate(selectedWallet.lid)}
-          </h2>
+          <div className="WalletDecrypt-header">
+            <h2 className="WalletDecrypt-decrypt-title">
+              {translate('UNLOCK_DEVICE', { $device: translateRaw(selectedWallet.lid) })}
+            </h2>
+            {this.props.showGenerateLink && (
+              <p className="WalletDecrypt-decrypt-desc">
+                {translate('UNLOCK_DEVICE_NEXT_STEP', { $network: this.props.networkName })}{' '}
+              </p>
+            )}
+          </div>
+
           <section className="WalletDecrypt-decrypt-form">
             <Errorable
-              errorMessage={`Oops, looks like ${translateRaw(
-                selectedWallet.lid
-              )} is not supported by your browser`}
+              errorMessage={`${translate('ERROR_DEVICE_NOT_SUPPORTED', {
+                $device: translateRaw(selectedWallet.lid)
+              })}`}
               onError={this.clearWalletChoice}
               shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
             >
               <selectedWallet.component
                 value={this.state.value}
+                clearWalletChoice={this.clearWalletChoice}
                 onChange={this.onChange}
                 onUnlock={(value: any) => {
                   if (selectedWallet.redirect) {
@@ -299,7 +307,17 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-wallets">
-          <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
+          <div className="WalletDecrypt-header">
+            <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
+            {this.props.showGenerateLink && (
+              <p className="WalletDecrypt-wallets-desc">
+                {translate('DONT_HAVE_WALLET_PROMPT')}{' '}
+                <span>
+                  <Link to="/generate">{translate('Create One.')}</Link>
+                </span>
+              </p>
+            )}
+          </div>
 
           <div className="WalletDecrypt-wallets-row">
             {SECURE_WALLETS.map((walletType: SecureWalletName) => {
@@ -355,12 +373,6 @@ const WalletDecrypt = withRouter<Props>(
               );
             })}
           </div>
-
-          {this.props.showGenerateLink && (
-            <div className="WalletDecrypt-wallets-generate">
-              <Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link>
-            </div>
-          )}
         </div>
       );
     }
@@ -437,8 +449,8 @@ const WalletDecrypt = withRouter<Props>(
         return;
       }
 
-      // some components (TrezorDecrypt) don't take an onChange prop, and thus
-      // this.state.value will remain unpopulated. in this case, we can expect
+      // some components (TrezorDecrypt) don't take an onChange prop, so
+      // this.state.value will remain unpopulated. In this case, we can expect
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
       this.WALLETS[selectedWalletKey].unlock(unlockValue);
@@ -468,7 +480,8 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   return {
     computedDisabledWallets,
     isWalletPending: state.wallet.isWalletPending,
-    isPasswordPending: state.wallet.isPasswordPending
+    isPasswordPending: state.wallet.isPasswordPending,
+    networkName: getNetworkConfig(state).name
   };
 }
 

@@ -1,20 +1,23 @@
 import React, { PureComponent } from 'react';
 import ledger from 'ledgerco';
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import { LedgerWallet } from 'libs/wallet';
-import { Spinner, NewTabLink } from 'components/ui';
+import { NewTabLink } from 'components/ui';
+import { PrimaryButton, SecondaryButton } from 'components';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import { SecureWalletName, ledgerReferralURL } from 'config';
+import { SecureWalletName } from 'config';
 import { getPaths, getSingleDPath } from 'selectors/config/wallet';
 import { getNetworkConfig } from 'selectors/config';
 import { NetworkConfig } from 'types/network';
+import img from 'assets/images/ledger-nano-illustration.svg';
 import './LedgerNano.scss';
 
 interface OwnProps {
   onUnlock(param: any): void;
+  clearWalletChoice(): void;
 }
 
 interface StateProps {
@@ -57,8 +60,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   }
 
   public render() {
-    const { network } = this.props;
-    const { dPath, publicKey, chainCode, error, isLoading, showTip } = this.state;
+    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
 
     if (!dPath) {
@@ -78,37 +80,29 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="LedgerDecrypt">
-        <button
-          className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
-          onClick={this.handleNullConnect}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <div className="LedgerDecrypt-message">
-              <Spinner light={true} />
-              {translate('WALLET_UNLOCKING')}
-            </div>
-          ) : (
-            translate('ADD_LEDGER_SCAN')
-          )}
-        </button>
-
-        <NewTabLink className="LedgerDecrypt-buy btn btn-sm btn-default" href={ledgerReferralURL}>
-          {translate('LEDGER_REFERRAL_2')}
-        </NewTabLink>
-
-        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        {showTip && (
-          <p className="LedgerDecrypt-tip">{translate('LEDGER_TIP', { $network: network.unit })}</p>
+        {error && (
+          <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error}</div>
         )}
-
-        <div className="LedgerDecrypt-help">
-          <NewTabLink href="https://support.ledgerwallet.com/hc/en-us/articles/115005200009">
-            {translate('HELP_ARTICLE_1')}
-          </NewTabLink>
+        <img src={img} alt="Ledger nano illustration" className="LedgerDecrypt-illustration" />
+        <div className="LedgerDecrypt-tip-wrapper">
+          <p>Tip: </p>
+          <p>Make sure you’ve enabled browser support in settings on your device.</p>
         </div>
-
+        <div className="LedgerDecrypt-btn-wrapper">
+          <SecondaryButton
+            text="Back"
+            onClick={this.props.clearWalletChoice}
+            className="LedgerDecrypt-btn"
+          />
+          <div className="flex-spacer" />
+          <PrimaryButton
+            text="Connect"
+            onClick={this.handleNullConnect}
+            loading={isLoading}
+            loadingTxt={translateRaw('WALLET_UNLOCKING')}
+            className="LedgerDecrypt-btn"
+          />
+        </div>
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}

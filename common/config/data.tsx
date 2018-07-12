@@ -1,9 +1,8 @@
-import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
+// import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 import { getValues } from '../utils/helpers';
 import packageJson from '../../package.json';
 import { GasPriceSetting } from 'types/network';
 import { makeExplorer } from 'utils/helpers';
-import NewTabLink from 'components/ui/NewTabLink';
 
 export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';

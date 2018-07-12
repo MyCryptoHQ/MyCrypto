@@ -25,3 +25,5 @@ export { default as ElectronNav } from './ElectronNav';
 export { default as AddressBookTable } from './AddressBookTable';
 export { default as Errorable } from './Errorable';
 export { default as AppAlphaNotice } from './AppAlphaNotice';
+export { default as PrimaryButton } from './PrimaryButton';
+export { default as SecondaryButton } from './SecondaryButton';

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { NewTabLink, Tooltip } from 'components/ui';
+import { Tooltip } from 'components/ui';
 import './WalletButton.scss';
 
 import { WalletName } from 'config';
@@ -35,17 +35,7 @@ type Props = OwnProps & StateProps;
 
 export class WalletButton extends React.PureComponent<Props> {
   public render() {
-    const {
-      name,
-      description,
-      example,
-      icon,
-      helpLink,
-      isSecure,
-      isReadOnly,
-      isDisabled,
-      disableReason
-    } = this.props;
+    const { name, icon, helpLink, isSecure, isReadOnly, isDisabled, disableReason } = this.props;
 
     const icons: Icon[] = [];
     if (isReadOnly) {
@@ -90,32 +80,26 @@ export class WalletButton extends React.PureComponent<Props> {
         aria-disabled={isDisabled}
       >
         <div className="WalletButton-inner">
+          {icon && <img className="WalletButton-title-icon" src={icon} alt={name + ' logo'} />}
           <div className="WalletButton-title">
-            {icon && <img className="WalletButton-title-icon" src={icon} alt={name + ' logo'} />}
             <span>{name}</span>
           </div>
 
-          {description && (
+          {/* {description && (
             <div className="WalletButton-description" aria-label="description">
               {description}
             </div>
-          )}
-          {example && (
+          )} */}
+          {/* {example && (
             <div className="WalletButton-example" aria-label="example" aria-hidden={true}>
               {example}
             </div>
-          )}
+          )} */}
 
           <div className="WalletButton-icons">
             {icons.map(i => (
               <span className="WalletButton-icons-icon" key={i.icon} onClick={this.stopPropogation}>
-                {i.href ? (
-                  <NewTabLink href={i.href} onClick={this.stopPropogation} aria-label={i.arialabel}>
-                    <i className={`fa fa-${i.icon}`} />
-                  </NewTabLink>
-                ) : (
-                  <i className={`fa fa-${i.icon}`} aria-label={i.arialabel} />
-                )}
+                {!i.href && <i className={`fa fa-${i.icon}`} aria-label={i.arialabel} />}
                 {!isDisabled && <Tooltip size="sm">{i.tooltip}</Tooltip>}
               </span>
             ))}

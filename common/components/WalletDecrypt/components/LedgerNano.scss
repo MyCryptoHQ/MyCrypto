@@ -9,6 +9,8 @@
   &-error {
     opacity: 0;
     transition: none;
+    border-radius: 3px;
+    margin-bottom: 2.5rem;
 
     &.is-showing {
       opacity: 1;
@@ -26,6 +28,40 @@
 
     .Spinner {
       margin-right: 16px;
+    }
+  }
+
+  &-illustration {
+    margin-bottom: 2rem;
+    width: 128px;
+  }
+
+  &-tip {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin: auto;
+      margin-bottom: 3rem;
+      max-width: 360px;
+      > p {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #a8adb3;
+        text-align: left;
+        &:first-child {
+          color: #333;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+
+  &-btn {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
     }
   }
 }

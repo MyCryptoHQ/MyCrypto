@@ -14,20 +14,30 @@ $speed: 500ms;
   }
 }
 
-@mixin decrypt-title {
-  text-align: center;
-  line-height: 1;
-  margin: 0 0 3rem;
-  font-weight: normal;
-  animation: decrypt-enter $speed ease 1;
-}
-
 .WalletDecrypt {
   position: relative;
 
+  &-header {
+    margin-bottom: 1.5rem;
+  }
+
   &-wallets {
     &-title {
-      @include decrypt-title;
+      text-align: center;
+      font-size: 24px;
+      line-height: 1;
+      margin: 0;
+      font-weight: normal;
+      animation: decrypt-enter $speed ease 1;
+    }
+    &-desc {
+      text-align: center;
+      font-size: 16px;
+      line-height: 1;
+      margin: 0;
+      margin-top: 0.5rem;
+      font-weight: 400;
+      animation: decrypt-enter $speed ease 1;
     }
 
     &-row {
@@ -54,11 +64,23 @@ $speed: 500ms;
 
   &-decrypt {
     position: relative;
-    text-align: center;
-    padding-bottom: $space;
 
-    @media (max-width: $screen-md) {
-      padding-bottom: $space * 2;
+    &-title {
+      text-align: center;
+      font-size: 24px;
+      line-height: 1;
+      margin: 0;
+      font-weight: normal;
+      animation: decrypt-enter $speed ease 1;
+    }
+    &-desc {
+      text-align: center;
+      font-size: 16px;
+      line-height: 1;
+      margin: 0;
+      margin-top: 0.5rem;
+      font-weight: 400;
+      animation: decrypt-enter $speed ease 1;
     }
 
     &-back {
@@ -93,13 +115,9 @@ $speed: 500ms;
       }
     }
 
-    &-title {
-      @include decrypt-title;
-    }
-
     &-form {
-      max-width: 360px;
       margin: 0 auto;
+      width: 516px;
     }
     &-label {
       opacity: 0.8;

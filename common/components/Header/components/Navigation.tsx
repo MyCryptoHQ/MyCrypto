@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import NavigationLink from 'components/NavigationLink';
-import { navigationLinks, knowledgeBaseURL } from 'config';
+import { navigationLinks } from 'config';
 import './Navigation.scss';
 
 interface Props {

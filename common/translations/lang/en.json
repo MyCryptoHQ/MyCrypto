@@ -69,7 +69,7 @@
     "SIDEBAR_DONATE": "Donate ",
     "SIDEBAR_THANKS": "THANK YOU!!! ",
     "SIDEBAR_DISPLAY_ADDR": "Display address on $wallet",
-    "DECRYPT_ACCESS": "How would you like to access your wallet? ",
+    "DECRYPT_ACCESS": "Select a Method to Unlock Your Wallet",
     "X_LEDGER": "Ledger ",
     "ADD_LEDGER_SCAN": "Connect to Ledger Wallet ",
     "ADD_METAMASK": "Connect to MetaMask ",
@@ -613,6 +613,10 @@
     "PAYMENT_ID_TITLE": "Payment ID",
     "PAYMENT_ID_PLACEHOLDER": "Enter a Payment ID",
     "PRIVACY_RADIO": "Privacy",
-    "PRIORITY_RADIO": "Priority"
+    "PRIORITY_RADIO": "Priority",
+    "UNLOCK_DEVICE":"Unlock Your $device",
+    "ERROR_DEVICE_NOT_SUPPORTED": "$device is not supported by your browser",
+    "CONNECT_TO_DEVICE": "Connect to $device",
+    "UNLOCK_DEVICE_NEXT_STEP": "After, open the $network App on your device."
   }
 }

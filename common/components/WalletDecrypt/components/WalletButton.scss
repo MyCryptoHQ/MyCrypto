@@ -15,18 +15,17 @@
 .WalletButton {
   position: relative;
   flex: 1;
-  height: 155px;
-  max-width: 230px;
-  min-width: 200px;
-  padding: 25px 15px;
+  min-width: 180px;
+  padding: 1.5rem;
   margin: 0 $space-md $space;
 
   background: #fff;
-  box-shadow: 0 1px 4px rgba(#000, 0.2);
-  border-radius: 8px;
+  border: 1px solid #e8eaed;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(#e8eaed, 0.5), 0 1px 1px rgba(#e8eaed, 0.5);
   text-align: center;
   cursor: pointer;
-  transition: transform 150ms ease, box-shadow 150ms ease;
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
   animation: wallet-button-enter 400ms ease 1;
   animation-fill-mode: backwards;
 
@@ -41,11 +40,9 @@
     &:focus {
       transform: translateY(-2px);
       z-index: 2;
-      box-shadow: 0 1px 4px rgba(#000, 0.12), 0 4px 6px rgba(#000, 0.12);
+      box-shadow: 0 7px 14px rgba(232, 234, 237, 0.5), 0 3px 6px rgba(232, 234, 237, 0.5);
 
       .WalletButton-title {
-        color: $brand-primary;
-
         &-icon {
           opacity: 1;
         }
@@ -54,7 +51,8 @@
 
     &:active {
       transform: translateY(-1px);
-      box-shadow: 0 1px 2px rgba(#000, 0.2), 0 3px 4px rgba(#000, 0.2);
+      background-color: #fafbfc;
+      box-shadow: 0 2px 4px rgba(#e8eaed, 0.5), 0 1px 1px rgba(#e8eaed, 0.5);
     }
   }
 
@@ -76,12 +74,11 @@
     justify-content: center;
     align-items: center;
     font-size: $font-size-medium;
-    margin-bottom: $space * 1.25;
     transition: color 150ms ease;
 
     &-icon {
-      margin-right: 8px;
-      max-height: 26px;
+      max-height: 60px;
+      margin-bottom: 1rem;
       opacity: 0.8;
     }
   }
@@ -100,8 +97,8 @@
 
   &-icons {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
+    top: 0.5rem;
+    right: 0.5rem;
 
     &-icon {
       position: relative;
@@ -141,13 +138,16 @@
     height: 105px;
     max-width: 180px;
     min-width: 160px;
-    margin: 0 $space-sm $space-md;
-    padding: 20px 15px;
+    padding: 1.5rem;
 
     .WalletButton {
       &-title {
-        font-size: $font-size-bump;
-        margin-bottom: $space-sm;
+        font-size: $font-size-base;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
       }
 
       &-icons {

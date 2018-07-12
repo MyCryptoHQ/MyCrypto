@@ -43,7 +43,7 @@ class SendTransaction extends React.Component<Props> {
   public render() {
     const { wallet, match, location, history, network } = this.props;
     const currentPath = match.url;
-    const EthTabs: Tab[] = [
+    const Tabs: Tab[] = [
       {
         path: 'send',
         name: translate('NAV_SENDETHER'),
@@ -67,21 +67,6 @@ class SendTransaction extends React.Component<Props> {
         name: translate('NAV_ADDRESS_BOOK')
       }
     ];
-    const XmrTabs: Tab[] = [
-      {
-        path: 'send',
-        name: translate('NAV_SEND'),
-        disabled: !!wallet && !!wallet.isReadOnly
-      },
-      {
-        path: 'receive',
-        name: translate('NAV_REQUESTPAYMENT')
-      },
-      {
-        path: 'swap',
-        name: translate('NAV_SWAP')
-      }
-    ];
 
     return (
       <TabSection>
@@ -90,12 +75,7 @@ class SendTransaction extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                <SubTabs
-                  tabs={network.id === 'XMR' ? XmrTabs : EthTabs}
-                  match={match}
-                  location={location}
-                  history={history}
-                />
+                <SubTabs tabs={Tabs} match={match} location={location} history={history} />
               </div>
               <div className="col-sm-8">
                 <Switch>
