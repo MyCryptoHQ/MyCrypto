@@ -18,7 +18,7 @@ interface OwnProps {
   placeholder?: string;
   value?: string;
   dropdownThreshold?: number;
-  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
 interface StateProps {

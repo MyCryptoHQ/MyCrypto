@@ -8,12 +8,24 @@ import { addressBookSelectors } from 'features/addressBook';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
+/**
+ * @desc The `onChangeOverride` prop needs to work
+ *  with actual events, but also needs a value to be directly passed in
+ *  occasionally. This interface allows us to skip all of the other FormEvent
+ *  properties and methods.
+ */
+interface FakeFormEvent {
+  currentTarget: {
+    value: string;
+  };
+}
+
 interface StateProps {
   value?: string;
   dropdownThreshold?: number;
-  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
   currentTo: ReturnType<typeof transactionSelectors.getToRaw>;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
 }
 
 interface DispatchProps {

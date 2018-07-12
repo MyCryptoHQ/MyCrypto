@@ -32,8 +32,8 @@ interface OwnProps {
   className?: string;
   value?: string;
   dropdownThreshold?: number;
-  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement>): void;
   onFocus(ev: React.FormEvent<HTMLInputElement>): void;
   onBlur(ev: React.FormEvent<HTMLInputElement>): void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
@@ -63,7 +63,6 @@ type Props = OwnProps & StateProps;
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
     const {
-      className,
       label,
       currentTo,
       onChange,

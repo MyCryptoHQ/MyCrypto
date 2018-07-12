@@ -18,8 +18,8 @@ interface OwnProps {
   showIdenticon?: boolean;
   value?: string;
   dropdownThreshold?: number;
-  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
 interface State {
@@ -113,8 +113,8 @@ interface DefaultAddressFieldProps {
   showIdenticon?: boolean;
   value?: string;
   dropdownThreshold?: number;
-  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
 const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
