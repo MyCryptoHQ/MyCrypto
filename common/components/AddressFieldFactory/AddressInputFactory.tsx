@@ -101,7 +101,7 @@ class AddressInputFactoryClass extends Component<Props> {
     const controlled = value == null && !onChangeOverride;
 
     return (
-      <div className={'AddressInput form-group'}>
+      <div className="AddressInput form-group">
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
