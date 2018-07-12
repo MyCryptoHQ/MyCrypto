@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import Select, { Option } from 'react-select';
 
 import translate, { translateRaw } from 'translations';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import { getIsValidAddressFn } from 'features/config';
-import { walletSelectors } from 'features/wallet';
-import { Input, Identicon } from 'components/ui';
+import { Input } from 'components/ui';
 import { AddressField } from 'components';
 import './ViewOnly.scss';
 
@@ -16,7 +14,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
 }
 
@@ -34,57 +31,40 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   };
 
   public render() {
-    const { recentAddresses, isValidAddress } = this.props;
+    const { isValidAddress } = this.props;
     const { address, addressFromBook } = this.state;
     const isValid = isValidAddress(address);
-    const or = <em className="ViewOnly-recent-separator">{translate('OR')}</em>;
-
-    const recentOptions = (recentAddresses.map(addr => ({
-      label: (
-        <React.Fragment>
-          <Identicon address={addr} />
-          {addr}
-        </React.Fragment>
-      ),
-      value: addr
-      // I hate this assertion, but React elements definitely work as labels
-    })) as any) as Option[];
 
     return (
       <div className="ViewOnly">
         <form className="form-group" onSubmit={this.openWalletWithAddress}>
-          {!!recentOptions.length && (
-            <div className="ViewOnly-recent">
-              <Select
-                value={address}
-                onChange={this.handleSelectAddress}
-                options={recentOptions}
-                placeholder={translateRaw('VIEW_ONLY_RECENT')}
+          <section className="ViewOnly-fields">
+            <section className="ViewOnly-fields-field">
+              <AddressField
+                value={addressFromBook}
+                showInputLabel={false}
+                showIdenticon={false}
+                placeholder={translateRaw('SELECT_FROM_ADDRESS_BOOK')}
+                onChangeOverride={this.handleSelectAddressFromBook}
+                dropdownThreshold={0}
               />
-              {or}
-            </div>
-          )}
-          <div className="ViewOnly-book">
-            <AddressField
-              value={addressFromBook}
-              showInputLabel={false}
-              showIdenticon={false}
-              placeholder={translateRaw('SELECT_FROM_ADDRESS_BOOK')}
-              onChangeOverride={this.handleSelectAddressFromBook}
-              dropdownThreshold={0}
-            />
-            {or}
-          </div>
-          <Input
-            isValid={isValid}
-            className="ViewOnly-input"
-            value={address}
-            onChange={this.changeAddress}
-            placeholder={translateRaw('VIEW_ONLY_ENTER')}
-          />
-          <button className="ViewOnly-submit btn btn-primary btn-block" disabled={!isValid}>
-            {translate('VIEW_ADDR')}
-          </button>
+            </section>
+            <section className="ViewOnly-fields-field">
+              <em>{translate('OR')}</em>
+            </section>
+            <section className="ViewOnly-fields-field">
+              <Input
+                isValid={isValid}
+                className="ViewOnly-input"
+                value={address}
+                onChange={this.changeAddress}
+                placeholder={translateRaw('VIEW_ONLY_ENTER')}
+              />
+              <button className="ViewOnly-submit btn btn-primary btn-block" disabled={!isValid}>
+                {translate('VIEW_ADDR')}
+              </button>
+            </section>
+          </section>
         </form>
       </div>
     );
@@ -92,11 +72,6 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
   private changeAddress = (ev: React.FormEvent<HTMLInputElement>) => {
     this.setState({ address: ev.currentTarget.value });
-  };
-
-  private handleSelectAddress = (option: Option) => {
-    const address = option && option.value ? option.value.toString() : '';
-    this.setState({ address }, this.openWalletWithAddress);
   };
 
   private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
@@ -131,6 +106,5 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 }
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
-  recentAddresses: walletSelectors.getRecentAddresses(state),
   isValidAddress: getIsValidAddressFn(state)
 }))(ViewOnlyDecryptClass);
