@@ -27,7 +27,12 @@ interface StateProps {
 interface OwnProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
+  showIdenticon?: boolean;
   isFocused?: boolean;
+  className?: string;
+  value?: string;
+  dropdownThreshold?: number;
+  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   onFocus(ev: React.FormEvent<HTMLInputElement>): void;
   onBlur(ev: React.FormEvent<HTMLInputElement>): void;
@@ -58,6 +63,7 @@ type Props = OwnProps & StateProps;
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
     const {
+      className,
       label,
       currentTo,
       onChange,
@@ -69,16 +75,28 @@ class AddressInputFactoryClass extends Component<Props> {
       showLabelMatch,
       isSelfAddress,
       isResolving,
-      isFocused
+      isFocused,
+      showIdenticon = true,
+      onChangeOverride,
+      value,
+      dropdownThreshold
     } = this.props;
-    const { value } = currentTo;
-    const addr = addHexPrefix(value ? value.toString('hex') : '0');
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
     const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
     const isENSAddress = currentTo.raw.includes('.eth');
 
+    /**
+     * @desc Initially set the address to the passed value.
+     *  If there wasn't a value passed, use the value from the redux store.
+     */
+    let addr = value;
+
+    if (addr == null) {
+      addr = addHexPrefix(currentTo.value ? currentTo.value.toString('hex') : '0');
+    }
+
     return (
-      <div className="AddressInput form-group">
+      <div className={`AddressInput form-group`}>
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
@@ -95,7 +113,14 @@ class AddressInputFactoryClass extends Component<Props> {
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
-          {isFocused && !isENSAddress && <AddressFieldDropdown />}
+          {isFocused &&
+            !isENSAddress && (
+              <AddressFieldDropdown
+                onChangeOverride={onChangeOverride}
+                value={value}
+                dropdownThreshold={dropdownThreshold}
+              />
+            )}
           {showLabelMatch &&
             label && (
               <div title={sendingTo} className="AddressInput-input-label">
@@ -103,9 +128,11 @@ class AddressInputFactoryClass extends Component<Props> {
               </div>
             )}
         </div>
-        <div className="AddressInput-identicon">
-          <Identicon address={addr} />
-        </div>
+        {showIdenticon && (
+          <div className="AddressInput-identicon">
+            <Identicon address={addr} />
+          </div>
+        )}
       </div>
     );
   }

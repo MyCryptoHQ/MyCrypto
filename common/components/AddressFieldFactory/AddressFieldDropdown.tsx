@@ -9,6 +9,9 @@ import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
 interface StateProps {
+  value?: string;
+  dropdownThreshold?: number;
+  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
   currentTo: ReturnType<typeof transactionSelectors.getToRaw>;
 }
@@ -37,14 +40,15 @@ class AddressFieldDropdown extends React.Component<Props> {
   }
 
   public render() {
-    const { currentTo } = this.props;
-    const noMatchContent = currentTo.startsWith('0x') ? null : (
+    const { value, currentTo, dropdownThreshold = 3 } = this.props;
+    const stringInQuestion = value != null ? value : currentTo;
+    const noMatchContent = stringInQuestion.startsWith('0x') ? null : (
       <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
-        <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{currentTo}".
+        <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{stringInQuestion}".
       </li>
     );
 
-    return this.props.currentTo.length > 1 ? (
+    return stringInQuestion.length >= dropdownThreshold ? (
       <ul className="AddressFieldDropdown" role="listbox">
         {this.getFilteredLabels().length > 0 ? this.renderDropdownItems() : noMatchContent}
       </ul>
@@ -53,6 +57,7 @@ class AddressFieldDropdown extends React.Component<Props> {
 
   private renderDropdownItems = () =>
     this.getFilteredLabels().map((filteredLabel, index: number) => {
+      const { onChangeOverride, setCurrentTo } = this.props;
       const { activeIndex } = this.state;
       const { address, label } = filteredLabel;
       const isActive = activeIndex === index;
@@ -64,7 +69,11 @@ class AddressFieldDropdown extends React.Component<Props> {
         <li
           key={address}
           className={className}
-          onClick={() => this.props.setCurrentTo(address)}
+          onClick={() =>
+            onChangeOverride
+              ? onChangeOverride({ currentTarget: { value: address } })
+              : setCurrentTo(address)
+          }
           role="option"
           title={`${translateRaw('SEND_TO')}${label}`}
         >
@@ -79,11 +88,15 @@ class AddressFieldDropdown extends React.Component<Props> {
       );
     });
 
-  private getFilteredLabels = () =>
-    Object.keys(this.props.labelAddresses)
-      .filter(label => label.toLowerCase().includes(this.props.currentTo.toLowerCase()))
+  private getFilteredLabels = () => {
+    const { value, currentTo } = this.props;
+    const includedString = value != null ? value : currentTo.toLowerCase();
+
+    return Object.keys(this.props.labelAddresses)
+      .filter(label => label.toLowerCase().includes(includedString))
       .map(label => ({ address: this.props.labelAddresses[label], label }))
       .slice(0, 5);
+  };
 
   private getIsVisible = () =>
     this.props.currentTo.length > 1 && this.getFilteredLabels().length > 0;

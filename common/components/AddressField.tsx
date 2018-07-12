@@ -13,6 +13,12 @@ interface OwnProps {
   isSelfAddress?: boolean;
   isCheckSummed?: boolean;
   showLabelMatch?: boolean;
+  showIdenticon?: boolean;
+  showInputLabel?: boolean;
+  placeholder?: string;
+  value?: string;
+  dropdownThreshold?: number;
+  onChangeOverride?: (ev: React.FormEvent<HTMLInputElement>) => void;
 }
 
 interface StateProps {
@@ -26,26 +32,38 @@ const AddressField: React.SFC<Props> = ({
   isSelfAddress,
   isCheckSummed,
   showLabelMatch,
-  toChecksumAddress
+  toChecksumAddress,
+  showIdenticon,
+  placeholder = donationAddressMap.ETH,
+  showInputLabel = true,
+  onChangeOverride,
+  value,
+  dropdownThreshold
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
     showLabelMatch={showLabelMatch}
+    showIdenticon={showIdenticon}
+    onChangeOverride={onChangeOverride}
+    value={value}
+    dropdownThreshold={dropdownThreshold}
     withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">
-            {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
-          </div>
+          {showInputLabel && (
+            <div className="input-group-header">
+              {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
+            </div>
+          )}
           <Input
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"
-            value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
-            placeholder={donationAddressMap.ETH}
+            value={value ? value : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
+            placeholder={placeholder}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
-            onChange={onChange}
+            onChange={onChangeOverride || onChange}
             onFocus={onFocus}
             onBlur={onBlur}
           />

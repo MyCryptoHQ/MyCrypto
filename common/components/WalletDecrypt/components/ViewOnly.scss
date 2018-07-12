@@ -2,6 +2,14 @@
 @import 'common/sass/mixins';
 
 .ViewOnly {
+  & .AddressInput {
+    margin-top: 15px;
+
+    & .input-group-input {
+      margin-top: 1rem;
+    }
+  }
+
   &-recent {
     text-align: left;
 
