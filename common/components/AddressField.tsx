@@ -60,7 +60,7 @@ const AddressField: React.SFC<Props> = ({
             isValid={isValid}
             type="text"
             value={
-              value !== null
+              value != null
                 ? value
                 : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
             }
