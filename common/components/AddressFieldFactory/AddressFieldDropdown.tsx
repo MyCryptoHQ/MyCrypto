@@ -8,38 +8,19 @@ import { addressBookSelectors } from 'features/addressBook';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
-/**
- * @desc The `onChangeOverride` prop needs to work
- *  with actual events, but also needs a value to be directly passed in
- *  occasionally. This interface allows us to skip all of the other FormEvent
- *  properties and methods.
- */
-interface FakeFormEvent {
-  currentTarget: {
-    value: string;
-  };
-}
-
-interface StateProps {
-  value?: string;
+interface Props {
+  addressInput: string;
   dropdownThreshold?: number;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
-  currentTo: ReturnType<typeof transactionSelectors.getToRaw>;
-  onChangeOverride?(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
+  onEntryClick(address: string): void;
 }
-
-interface DispatchProps {
-  setCurrentTo: transactionActions.TSetCurrentTo;
-}
-
-type Props = StateProps & DispatchProps;
 
 interface State {
   activeIndex: number | null;
 }
 
-class AddressFieldDropdown extends React.Component<Props> {
-  public state: State = {
+class AddressFieldDropdownClass extends React.Component<Props, State> {
+  public state = {
     activeIndex: null
   };
 
@@ -52,67 +33,77 @@ class AddressFieldDropdown extends React.Component<Props> {
   }
 
   public render() {
-    const { value, currentTo, dropdownThreshold = 3 } = this.props;
-    const stringInQuestion = value != null ? value : currentTo;
-    const noMatchContent = stringInQuestion.startsWith('0x') ? null : (
-      <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
-        <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{stringInQuestion}".
-      </li>
-    );
+    const { addressInput } = this.props;
 
-    return stringInQuestion.length >= dropdownThreshold ? (
-      <ul className="AddressFieldDropdown" role="listbox">
-        {this.getFilteredLabels().length > 0 ? this.renderDropdownItems() : noMatchContent}
-      </ul>
-    ) : null;
+    return (
+      this.getIsVisible() && (
+        <ul className="AddressFieldDropdown" role="listbox">
+          {this.getFilteredLabels().length > 0 ? (
+            this.renderDropdownItems()
+          ) : (
+            <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
+              <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{
+                addressInput
+              }".
+            </li>
+          )}
+        </ul>
+      )
+    );
   }
 
-  private renderDropdownItems = () =>
-    this.getFilteredLabels().map((filteredLabel, index: number) => {
-      const { onChangeOverride, setCurrentTo } = this.props;
-      const { activeIndex } = this.state;
-      const { address, label } = filteredLabel;
-      const isActive = activeIndex === index;
-      const className = `AddressFieldDropdown-dropdown-item ${
-        isActive ? 'AddressFieldDropdown-dropdown-item--active' : ''
-      }`;
+  private renderDropdownItems = () => {
+    const { onEntryClick } = this.props;
+    const { activeIndex } = this.state;
 
-      return (
-        <li
-          key={address}
-          className={className}
-          onClick={() =>
-            onChangeOverride
-              ? onChangeOverride({ currentTarget: { value: address } })
-              : setCurrentTo(address)
-          }
-          role="option"
-          title={`${translateRaw('SEND_TO')}${label}`}
-        >
-          <div className="AddressFieldDropdown-dropdown-item-identicon">
-            <Identicon address={address} />
-          </div>
-          <strong className="AddressFieldDropdown-dropdown-item-label">{label}</strong>
-          <em className="AddressFieldDropdown-dropdown-item-address">
-            <Address address={address} />
-          </em>
-        </li>
-      );
-    });
+    return this.getFilteredLabels().map(
+      ({ address, label }: { address: string; label: string }, index: number) => {
+        const isActive = activeIndex === index;
+        const className = `AddressFieldDropdown-dropdown-item ${
+          isActive ? 'AddressFieldDropdown-dropdown-item--active' : ''
+        }`;
+
+        return (
+          <li
+            key={address}
+            role="option"
+            className={className}
+            onClick={() => onEntryClick(address)}
+            title={`${translateRaw('SEND_TO')}${label}`}
+          >
+            <div className="AddressFieldDropdown-dropdown-item-identicon">
+              <Identicon address={address} />
+            </div>
+            <strong className="AddressFieldDropdown-dropdown-item-label">{label}</strong>
+            <em className="AddressFieldDropdown-dropdown-item-address">
+              <Address address={address} />
+            </em>
+          </li>
+        );
+      }
+    );
+  };
 
   private getFilteredLabels = () => {
-    const { value, currentTo } = this.props;
-    const includedString = value != null ? value : currentTo.toLowerCase();
+    const { addressInput, labelAddresses } = this.props;
 
-    return Object.keys(this.props.labelAddresses)
-      .filter(label => label.toLowerCase().includes(includedString))
-      .map(label => ({ address: this.props.labelAddresses[label], label }))
+    return Object.keys(labelAddresses)
+      .filter(label => label.toLowerCase().includes(addressInput))
+      .map(label => ({ address: labelAddresses[label], label }))
       .slice(0, 5);
   };
 
-  private getIsVisible = () =>
-    this.props.currentTo.length > 1 && this.getFilteredLabels().length > 0;
+  private getIsVisible = () => {
+    const { addressInput, dropdownThreshold = 3 } = this.props;
 
+    return addressInput.length >= dropdownThreshold && this.getFilteredLabels().length > 0;
+  };
+
+  private setActiveIndex = (activeIndex: number | null) => this.setState({ activeIndex });
+
+  private clearActiveIndex = () => this.setActiveIndex(null);
+
+  //#region Keyboard Controls
   private handleKeyDown = (e: KeyboardEvent) => {
     if (this.getIsVisible()) {
       switch (e.key) {
@@ -132,6 +123,7 @@ class AddressFieldDropdown extends React.Component<Props> {
   };
 
   private handleEnterKeyDown = () => {
+    const { onEntryClick } = this.props;
     const { activeIndex } = this.state;
 
     if (activeIndex !== null) {
@@ -139,7 +131,7 @@ class AddressFieldDropdown extends React.Component<Props> {
 
       filteredLabels.forEach(({ address }, index) => {
         if (activeIndex === index) {
-          this.props.setCurrentTo(address);
+          onEntryClick(address);
         }
       });
 
@@ -175,16 +167,108 @@ class AddressFieldDropdown extends React.Component<Props> {
 
     this.setState({ activeIndex });
   };
-
-  private setActiveIndex = (activeIndex: number | null) => this.setState({ activeIndex });
-
-  private clearActiveIndex = () => this.setActiveIndex(null);
+  //#endregion Keyboard Controls
 }
 
-export default connect(
+//#region Uncontrolled
+/**
+ * @desc The `onChangeOverride` prop needs to work
+ *  with actual events, but also needs a value to be directly passed in
+ *  occasionally. This interface allows us to skip all of the other FormEvent
+ *  properties and methods.
+ */
+interface FakeFormEvent {
+  currentTarget: {
+    value: string;
+  };
+}
+
+interface UncontrolledAddressFieldDropdownProps {
+  value: string;
+  labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
+  dropdownThreshold?: number;
+  onChangeOverride(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
+}
+
+/**
+ * @desc The uncontrolled dropdown changes the address input onClick,
+ *  as well as calls the onChange override, but does not update the `currentTo`
+ *  property in the Redux store.
+ */
+function RawUncontrolledAddressFieldDropdown({
+  value,
+  onChangeOverride,
+  labelAddresses,
+  dropdownThreshold
+}: UncontrolledAddressFieldDropdownProps) {
+  const onEntryClick = (address: string) => onChangeOverride({ currentTarget: { value: address } });
+
+  return (
+    <AddressFieldDropdownClass
+      addressInput={value}
+      onEntryClick={onEntryClick}
+      labelAddresses={labelAddresses}
+      dropdownThreshold={dropdownThreshold}
+    />
+  );
+}
+
+const UncontrolledAddressFieldDropdown = connect((state: AppState) => ({
+  labelAddresses: addressBookSelectors.getLabelAddresses(state)
+}))(RawUncontrolledAddressFieldDropdown);
+//#endregion Uncontrolled
+
+//#region Controlled
+interface ControlledAddressFieldDropdownProps {
+  currentTo: ReturnType<typeof transactionSelectors.getToRaw>;
+  labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
+  setCurrentTo: transactionActions.TSetCurrentTo;
+  dropdownThreshold?: number;
+}
+
+/**
+ * @desc The controlled dropdown connects directly to the Redux store,
+ *  modifying the `currentTo` property onChange.
+ */
+function RawControlledAddressFieldDropdown({
+  currentTo,
+  labelAddresses,
+  setCurrentTo,
+  dropdownThreshold
+}: ControlledAddressFieldDropdownProps) {
+  return (
+    <AddressFieldDropdownClass
+      addressInput={currentTo}
+      onEntryClick={setCurrentTo}
+      labelAddresses={labelAddresses}
+      dropdownThreshold={dropdownThreshold}
+    />
+  );
+}
+
+const ControlledAddressFieldDropdown = connect(
   (state: AppState) => ({
-    labelAddresses: addressBookSelectors.getLabelAddresses(state),
-    currentTo: transactionSelectors.getToRaw(state)
+    currentTo: transactionSelectors.getToRaw(state),
+    labelAddresses: addressBookSelectors.getLabelAddresses(state)
   }),
-  { setCurrentTo: transactionActions.setCurrentTo }
-)(AddressFieldDropdown);
+  {
+    setCurrentTo: transactionActions.setCurrentTo
+  }
+)(RawControlledAddressFieldDropdown);
+//#endregion Controlled
+
+interface AddressFieldDropdownProps {
+  controlled: boolean;
+  value?: string;
+  dropdownThreshold?: number;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
+}
+
+export default function AddressFieldDropdown({
+  controlled = true,
+  ...props
+}: AddressFieldDropdownProps) {
+  const Dropdown = controlled ? ControlledAddressFieldDropdown : UncontrolledAddressFieldDropdown;
+
+  return <Dropdown {...props} />;
+}

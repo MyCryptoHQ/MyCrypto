@@ -94,8 +94,14 @@ class AddressInputFactoryClass extends Component<Props> {
       addr = addHexPrefix(currentTo.value ? currentTo.value.toString('hex') : '0');
     }
 
+    /**
+     * @desc If passed a value and an onChangeOverride function,
+     *  infer that the dropdown should be uncontrolled.
+     */
+    const controlled = value == null && !onChangeOverride;
+
     return (
-      <div className={`AddressInput form-group`}>
+      <div className={'AddressInput form-group'}>
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
@@ -115,8 +121,9 @@ class AddressInputFactoryClass extends Component<Props> {
           {isFocused &&
             !isENSAddress && (
               <AddressFieldDropdown
-                onChangeOverride={onChangeOverride}
+                controlled={controlled}
                 value={value}
+                onChangeOverride={onChangeOverride}
                 dropdownThreshold={dropdownThreshold}
               />
             )}
