@@ -5,6 +5,7 @@ import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { transactionActions, transactionSelectors } from 'features/transaction';
 import { addressBookSelectors } from 'features/addressBook';
+import { walletSelectors } from 'features/wallet';
 import { Address, Identicon } from 'components/ui';
 import './AddressFieldDropdown.scss';
 
@@ -12,6 +13,7 @@ interface Props {
   addressInput: string;
   dropdownThreshold?: number;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
+  recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
   onEntryClick(address: string): void;
 }
 
@@ -24,12 +26,15 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     activeIndex: null
   };
 
+  private exists: boolean = true;
+
   public componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
   public componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
+    this.exists = false;
   }
 
   public render() {
@@ -84,12 +89,40 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     );
   };
 
+  private getFormattedRecentAddresses = (): { [label: string]: string } => {
+    const { labelAddresses, recentAddresses } = this.props;
+    // Hash existing entries by address for performance.
+    const addressesInBook: { [address: string]: boolean } = Object.values(labelAddresses).reduce(
+      (prev: { [address: string]: boolean }, next: string) => {
+        prev[next] = true;
+        return prev;
+      },
+      {}
+    );
+    // Make recent addresses sequential.
+    let recentAddressCount: number = 0;
+    const addresses = recentAddresses.reduce((prev: { [label: string]: string }, next: string) => {
+      // Prevent duplication.
+      if (addressesInBook[next]) {
+        return prev;
+      }
+      prev[
+        translateRaw('RECENT_ADDRESS_NUMBER', { $number: (++recentAddressCount).toString() })
+      ] = next;
+
+      return prev;
+    }, {});
+
+    return addresses;
+  };
+
   private getFilteredLabels = () => {
     const { addressInput, labelAddresses } = this.props;
+    const formattedRecentAddresses = this.getFormattedRecentAddresses();
 
-    return Object.keys(labelAddresses)
+    return Object.keys({ ...labelAddresses, ...formattedRecentAddresses })
       .filter(label => label.toLowerCase().includes(addressInput))
-      .map(label => ({ address: labelAddresses[label], label }))
+      .map(label => ({ address: labelAddresses[label] || formattedRecentAddresses[label], label }))
       .slice(0, 5);
   };
 
@@ -135,7 +168,9 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
         }
       });
 
-      this.clearActiveIndex();
+      if (this.exists) {
+        this.clearActiveIndex();
+      }
     }
   };
 
@@ -186,6 +221,7 @@ interface FakeFormEvent {
 interface UncontrolledAddressFieldDropdownProps {
   value: string;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
+  recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
   dropdownThreshold?: number;
   onChangeOverride(ev: React.FormEvent<HTMLInputElement> | FakeFormEvent): void;
 }
@@ -199,6 +235,7 @@ function RawUncontrolledAddressFieldDropdown({
   value,
   onChangeOverride,
   labelAddresses,
+  recentAddresses,
   dropdownThreshold
 }: UncontrolledAddressFieldDropdownProps) {
   const onEntryClick = (address: string) => onChangeOverride({ currentTarget: { value: address } });
@@ -208,13 +245,15 @@ function RawUncontrolledAddressFieldDropdown({
       addressInput={value}
       onEntryClick={onEntryClick}
       labelAddresses={labelAddresses}
+      recentAddresses={recentAddresses}
       dropdownThreshold={dropdownThreshold}
     />
   );
 }
 
 const UncontrolledAddressFieldDropdown = connect((state: AppState) => ({
-  labelAddresses: addressBookSelectors.getLabelAddresses(state)
+  labelAddresses: addressBookSelectors.getLabelAddresses(state),
+  recentAddresses: walletSelectors.getRecentAddresses(state)
 }))(RawUncontrolledAddressFieldDropdown);
 //#endregion Uncontrolled
 
@@ -222,6 +261,7 @@ const UncontrolledAddressFieldDropdown = connect((state: AppState) => ({
 interface ControlledAddressFieldDropdownProps {
   currentTo: ReturnType<typeof transactionSelectors.getToRaw>;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
+  recentAddresses: ReturnType<typeof walletSelectors.getRecentAddresses>;
   setCurrentTo: transactionActions.TSetCurrentTo;
   dropdownThreshold?: number;
 }
@@ -233,6 +273,7 @@ interface ControlledAddressFieldDropdownProps {
 function RawControlledAddressFieldDropdown({
   currentTo,
   labelAddresses,
+  recentAddresses,
   setCurrentTo,
   dropdownThreshold
 }: ControlledAddressFieldDropdownProps) {
@@ -241,6 +282,7 @@ function RawControlledAddressFieldDropdown({
       addressInput={currentTo}
       onEntryClick={setCurrentTo}
       labelAddresses={labelAddresses}
+      recentAddresses={recentAddresses}
       dropdownThreshold={dropdownThreshold}
     />
   );
@@ -249,7 +291,8 @@ function RawControlledAddressFieldDropdown({
 const ControlledAddressFieldDropdown = connect(
   (state: AppState) => ({
     currentTo: transactionSelectors.getToRaw(state),
-    labelAddresses: addressBookSelectors.getLabelAddresses(state)
+    labelAddresses: addressBookSelectors.getLabelAddresses(state),
+    recentAddresses: walletSelectors.getRecentAddresses(state)
   }),
   {
     setCurrentTo: transactionActions.setCurrentTo

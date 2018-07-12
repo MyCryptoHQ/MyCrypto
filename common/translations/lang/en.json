@@ -666,6 +666,7 @@
     "ANNOUNCEMENT_MESSAGE": "MyCrypto.com no longer allows the use of private keys, mnemonics, or keystore files in the browser. To continue using them, please download the [MyCrypto Desktop App](https://download.mycrypto.com).",
     "U2F_NOT_SUPPORTED": "The U2F standard that hardware wallets use does not seem to be supported by your browser. Please try again using Google Chrome.",
     "SIMILAR_TRANSACTION_ERROR": "This transaction is very similar to a recent transaction. Please wait a few moments and try again, or click 'Advanced' and manually set the nonce to a new value.",
-    "SELECT_FROM_ADDRESS_BOOK": "Select from your address book"
+    "SELECT_FROM_ADDRESS_BOOK": "Select from your address book",
+    "RECENT_ADDRESS_NUMBER": "Recent Address #$number"
   }
 }
