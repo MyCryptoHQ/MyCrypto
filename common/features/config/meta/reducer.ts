@@ -1,14 +1,7 @@
-import {
-  CONFIG_META,
-  ChangeLanguageAction,
-  SetLatestBlockAction,
-  ChangeThemeAction,
-  MetaAction,
-  MetaState
-} from './types';
 import { Theme } from 'config';
+import * as configMetaTypes from './types';
 
-const META_INITIAL_STATE: MetaState = {
+const META_INITIAL_STATE: configMetaTypes.ConfigMetaState = {
   languageSelection: 'en',
   offline: false,
   autoGasLimit: true,
@@ -16,65 +9,79 @@ const META_INITIAL_STATE: MetaState = {
   theme: Theme.LIGHT
 };
 
-function changeLanguage(state: MetaState, action: ChangeLanguageAction): MetaState {
+function changeLanguage(
+  state: configMetaTypes.ConfigMetaState,
+  action: configMetaTypes.ChangeLanguageAction
+): configMetaTypes.ConfigMetaState {
   return {
     ...state,
     languageSelection: action.payload
   };
 }
 
-function setOnline(state: MetaState): MetaState {
+function setOnline(state: configMetaTypes.ConfigMetaState): configMetaTypes.ConfigMetaState {
   return {
     ...state,
     offline: false
   };
 }
 
-function setOffline(state: MetaState): MetaState {
+function setOffline(state: configMetaTypes.ConfigMetaState): configMetaTypes.ConfigMetaState {
   return {
     ...state,
     offline: true
   };
 }
 
-function toggleAutoGasLimitEstimation(state: MetaState): MetaState {
+function toggleAutoGasLimitEstimation(
+  state: configMetaTypes.ConfigMetaState
+): configMetaTypes.ConfigMetaState {
   return {
     ...state,
     autoGasLimit: !state.autoGasLimit
   };
 }
 
-function setLatestBlock(state: MetaState, action: SetLatestBlockAction): MetaState {
+function setLatestBlock(
+  state: configMetaTypes.ConfigMetaState,
+  action: configMetaTypes.SetLatestBlockAction
+): configMetaTypes.ConfigMetaState {
   return {
     ...state,
     latestBlock: action.payload
   };
 }
 
-function setTheme(state: MetaState, action: ChangeThemeAction): MetaState {
+function setTheme(
+  state: configMetaTypes.ConfigMetaState,
+  action: configMetaTypes.ChangeThemeAction
+): configMetaTypes.ConfigMetaState {
   return {
     ...state,
     theme: action.payload
   };
 }
 
-export function metaReducer(state: MetaState = META_INITIAL_STATE, action: MetaAction): MetaState {
+export function metaReducer(
+  state: configMetaTypes.ConfigMetaState = META_INITIAL_STATE,
+  action: configMetaTypes.MetaAction
+): configMetaTypes.ConfigMetaState {
   switch (action.type) {
-    case CONFIG_META.LANGUAGE_CHANGE:
+    case configMetaTypes.ConfigMetaActions.LANGUAGE_CHANGE:
       return changeLanguage(state, action);
 
-    case CONFIG_META.SET_ONLINE:
+    case configMetaTypes.ConfigMetaActions.SET_ONLINE:
       return setOnline(state);
-    case CONFIG_META.SET_OFFLINE:
+    case configMetaTypes.ConfigMetaActions.SET_OFFLINE:
       return setOffline(state);
 
-    case CONFIG_META.TOGGLE_AUTO_GAS_LIMIT:
+    case configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT:
       return toggleAutoGasLimitEstimation(state);
 
-    case CONFIG_META.SET_LATEST_BLOCK:
+    case configMetaTypes.ConfigMetaActions.SET_LATEST_BLOCK:
       return setLatestBlock(state, action);
 
-    case CONFIG_META.THEME_CHANGE:
+    case configMetaTypes.ConfigMetaActions.THEME_CHANGE:
       return setTheme(state, action);
 
     default:
