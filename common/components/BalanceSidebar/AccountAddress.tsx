@@ -78,11 +78,6 @@ class AccountAddress extends React.Component<Props, State> {
             >
               <Address address={address} />
             </div>
-            {/* {networkId !== 'XMR' && (
-              <div className="AccountInfo-label" title="Edit label">
-                {labelButton}
-              </div>
-            )} */}
           </div>
         </div>
       </div>

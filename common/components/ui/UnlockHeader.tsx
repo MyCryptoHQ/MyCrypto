@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppState } from 'reducers';
-import translate from 'translations';
+import { translateRaw } from 'translations';
 import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import { IWallet } from 'libs/wallet/IWallet';
 import closeIcon from 'assets/images/close.svg';
+import { SecondaryButton } from 'components';
 import './UnlockHeader.scss';
 
 interface Props {
@@ -38,17 +39,14 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
         {title && <h1 className="UnlockHeader-title">{title}</h1>}
         {wallet &&
           !isExpanded && (
-            <button
-              className="UnlockHeader-open btn btn-default btn-smr"
-              onClick={this.toggleisExpanded}
+            <SecondaryButton
+              text={translateRaw('CHANGE_WALLET')}
+              onClick={this.toggleisExpanded as any}
+              className="UnlockHeader-open btn-smr"
             >
-              <span>
-                <span className="hidden-xs UnlockHeader-open-text">
-                  {translate('CHANGE_WALLET')}
-                </span>
-                <i className="fa fa-refresh" />
-              </span>
-            </button>
+              {/* use 'children' prop for inline icons */}
+              <i className="fa fa-refresh" />
+            </SecondaryButton>
           )}
         {wallet &&
           isExpanded && (
