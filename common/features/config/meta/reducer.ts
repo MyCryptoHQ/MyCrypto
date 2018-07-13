@@ -1,7 +1,7 @@
 import { Theme } from 'config';
-import * as configMetaTypes from './types';
+import * as types from './types';
 
-const META_INITIAL_STATE: configMetaTypes.ConfigMetaState = {
+const META_INITIAL_STATE: types.ConfigMetaState = {
   languageSelection: 'en',
   offline: false,
   autoGasLimit: true,
@@ -10,32 +10,30 @@ const META_INITIAL_STATE: configMetaTypes.ConfigMetaState = {
 };
 
 function changeLanguage(
-  state: configMetaTypes.ConfigMetaState,
-  action: configMetaTypes.ChangeLanguageAction
-): configMetaTypes.ConfigMetaState {
+  state: types.ConfigMetaState,
+  action: types.ChangeLanguageAction
+): types.ConfigMetaState {
   return {
     ...state,
     languageSelection: action.payload
   };
 }
 
-function setOnline(state: configMetaTypes.ConfigMetaState): configMetaTypes.ConfigMetaState {
+function setOnline(state: types.ConfigMetaState): types.ConfigMetaState {
   return {
     ...state,
     offline: false
   };
 }
 
-function setOffline(state: configMetaTypes.ConfigMetaState): configMetaTypes.ConfigMetaState {
+function setOffline(state: types.ConfigMetaState): types.ConfigMetaState {
   return {
     ...state,
     offline: true
   };
 }
 
-function toggleAutoGasLimitEstimation(
-  state: configMetaTypes.ConfigMetaState
-): configMetaTypes.ConfigMetaState {
+function toggleAutoGasLimitEstimation(state: types.ConfigMetaState): types.ConfigMetaState {
   return {
     ...state,
     autoGasLimit: !state.autoGasLimit
@@ -43,9 +41,9 @@ function toggleAutoGasLimitEstimation(
 }
 
 function setLatestBlock(
-  state: configMetaTypes.ConfigMetaState,
-  action: configMetaTypes.SetLatestBlockAction
-): configMetaTypes.ConfigMetaState {
+  state: types.ConfigMetaState,
+  action: types.SetLatestBlockAction
+): types.ConfigMetaState {
   return {
     ...state,
     latestBlock: action.payload
@@ -53,9 +51,9 @@ function setLatestBlock(
 }
 
 function setTheme(
-  state: configMetaTypes.ConfigMetaState,
-  action: configMetaTypes.ChangeThemeAction
-): configMetaTypes.ConfigMetaState {
+  state: types.ConfigMetaState,
+  action: types.ChangeThemeAction
+): types.ConfigMetaState {
   return {
     ...state,
     theme: action.payload
@@ -63,25 +61,25 @@ function setTheme(
 }
 
 export function metaReducer(
-  state: configMetaTypes.ConfigMetaState = META_INITIAL_STATE,
-  action: configMetaTypes.MetaAction
-): configMetaTypes.ConfigMetaState {
+  state: types.ConfigMetaState = META_INITIAL_STATE,
+  action: types.MetaAction
+): types.ConfigMetaState {
   switch (action.type) {
-    case configMetaTypes.ConfigMetaActions.LANGUAGE_CHANGE:
+    case types.ConfigMetaActions.LANGUAGE_CHANGE:
       return changeLanguage(state, action);
 
-    case configMetaTypes.ConfigMetaActions.SET_ONLINE:
+    case types.ConfigMetaActions.SET_ONLINE:
       return setOnline(state);
-    case configMetaTypes.ConfigMetaActions.SET_OFFLINE:
+    case types.ConfigMetaActions.SET_OFFLINE:
       return setOffline(state);
 
-    case configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT:
+    case types.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT:
       return toggleAutoGasLimitEstimation(state);
 
-    case configMetaTypes.ConfigMetaActions.SET_LATEST_BLOCK:
+    case types.ConfigMetaActions.SET_LATEST_BLOCK:
       return setLatestBlock(state, action);
 
-    case configMetaTypes.ConfigMetaActions.THEME_CHANGE:
+    case types.ConfigMetaActions.THEME_CHANGE:
       return setTheme(state, action);
 
     default:

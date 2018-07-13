@@ -1,45 +1,45 @@
 import { Theme } from 'config';
-import * as configMetaTypes from './types';
+import * as types from './types';
 
-export function setOnline(): configMetaTypes.SetOnlineAction {
+export function setOnline(): types.SetOnlineAction {
   return {
-    type: configMetaTypes.ConfigMetaActions.SET_ONLINE
+    type: types.ConfigMetaActions.SET_ONLINE
   };
 }
 
-export function setOffline(): configMetaTypes.SetOfflineAction {
+export function setOffline(): types.SetOfflineAction {
   return {
-    type: configMetaTypes.ConfigMetaActions.SET_OFFLINE
+    type: types.ConfigMetaActions.SET_OFFLINE
   };
 }
 
 export type TToggleAutoGasLimit = typeof toggleAutoGasLimit;
-export function toggleAutoGasLimit(): configMetaTypes.ToggleAutoGasLimitAction {
+export function toggleAutoGasLimit(): types.ToggleAutoGasLimitAction {
   return {
-    type: configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT
+    type: types.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT
   };
 }
 
 export type TChangeLanguage = typeof changeLanguage;
-export function changeLanguage(sign: string): configMetaTypes.ChangeLanguageAction {
+export function changeLanguage(sign: string): types.ChangeLanguageAction {
   return {
-    type: configMetaTypes.ConfigMetaActions.LANGUAGE_CHANGE,
+    type: types.ConfigMetaActions.LANGUAGE_CHANGE,
     payload: sign
   };
 }
 
 export type TChangeTheme = typeof changeTheme;
-export function changeTheme(theme: Theme): configMetaTypes.ChangeThemeAction {
+export function changeTheme(theme: Theme): types.ChangeThemeAction {
   return {
-    type: configMetaTypes.ConfigMetaActions.THEME_CHANGE,
+    type: types.ConfigMetaActions.THEME_CHANGE,
     payload: theme
   };
 }
 
 export type TSetLatestBlock = typeof setLatestBlock;
-export function setLatestBlock(payload: string): configMetaTypes.SetLatestBlockAction {
+export function setLatestBlock(payload: string): types.SetLatestBlockAction {
   return {
-    type: configMetaTypes.ConfigMetaActions.SET_LATEST_BLOCK,
+    type: types.ConfigMetaActions.SET_LATEST_BLOCK,
     payload
   };
 }
