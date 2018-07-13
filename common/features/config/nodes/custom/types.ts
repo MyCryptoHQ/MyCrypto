@@ -1,6 +1,6 @@
 import { CustomNodeConfig } from 'types/node';
 
-export interface CustomNodesState {
+export interface ConfigCustomNodesState {
   [customNodeId: string]: CustomNodeConfig;
 }
 
