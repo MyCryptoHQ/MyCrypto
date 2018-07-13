@@ -4,18 +4,18 @@ export interface CustomNodesState {
   [customNodeId: string]: CustomNodeConfig;
 }
 
-export enum CONFIG_NODES_CUSTOM {
+export enum ConfigNodesCustomActions {
   ADD = 'CONFIG_NODES_CUSTOM_ADD',
   REMOVE = 'CONFIG_NODES_CUSTOM_REMOVE'
 }
 
 export interface AddCustomNodeAction {
-  type: CONFIG_NODES_CUSTOM.ADD;
+  type: ConfigNodesCustomActions.ADD;
   payload: CustomNodeConfig;
 }
 
 export interface RemoveCustomNodeAction {
-  type: CONFIG_NODES_CUSTOM.REMOVE;
+  type: ConfigNodesCustomActions.REMOVE;
   payload: string;
 }
 
