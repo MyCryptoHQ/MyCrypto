@@ -1,5 +1,10 @@
 [
   {
+    "address": "0xEBBdf302c940c6bfd49C6b165f457fdb324649bc",
+    "symbol": "HYDRO",
+    "decimal": 18
+  },
+  {
     "address": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
     "symbol": "AION",
     "decimal": 8
