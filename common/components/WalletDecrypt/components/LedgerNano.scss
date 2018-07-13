@@ -1,5 +1,42 @@
+$speed: 500ms;
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .LedgerDecrypt {
   text-align: center;
+
+  &-header {
+    margin-bottom: 3rem;
+  }
+  &-decrypt {
+    position: relative;
+
+    &-title {
+      text-align: center;
+      font-size: 24px;
+      line-height: 1;
+      margin: 0;
+      font-weight: normal;
+      animation: enter $speed ease 1;
+    }
+    &-desc {
+      text-align: center;
+      font-size: 16px;
+      line-height: 1;
+      margin: 0;
+      margin-top: 0.5rem;
+      font-weight: 400;
+      animation: enter $speed ease 1;
+    }
+  }
 
   &-help {
     margin-top: 10px;

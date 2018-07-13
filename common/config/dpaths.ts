@@ -4,7 +4,7 @@ export const ETH_DEFAULT: DPath = {
 };
 
 export const ETH_TREZOR: DPath = {
-  label: 'TREZOR (ETH)',
+  label: 'Trezor (ETH)',
   value: "m/44'/60'/0'/0"
 };
 
@@ -19,7 +19,7 @@ export const ETC_LEDGER: DPath = {
 };
 
 export const ETC_TREZOR: DPath = {
-  label: 'TREZOR (ETC)',
+  label: 'Trezor (ETC)',
   value: "m/44'/61'/0'/0"
 };
 

@@ -4,16 +4,18 @@ import translate, { translateRaw } from 'translations';
 import TrezorConnect from 'vendor/trezor-connect';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import UnsupportedNetwork from './UnsupportedNetwork';
-import { Spinner, NewTabLink } from 'components/ui';
 import { AppState } from 'reducers';
 import { connect } from 'react-redux';
 import { SecureWalletName, trezorReferralURL } from 'config';
 import { getSingleDPath, getPaths } from 'selectors/config/wallet';
+import { PrimaryButton, SecondaryButton } from 'components';
+import img from 'assets/images/trezor-illustration.svg';
 import './Trezor.scss';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
   onUnlock(param: any): void;
+  clearWalletChoice(): void;
 }
 
 interface StateProps {
@@ -57,33 +59,38 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="TrezorDecrypt">
-        <button
-          className="TrezorDecrypt-decrypt btn btn-primary btn-lg btn-block"
-          onClick={this.handleNullConnect}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <div className="TrezorDecrypt-message">
-              <Spinner light={true} />
-              Unlocking...
-            </div>
-          ) : (
-            translate('ADD_TREZOR_SCAN')
-          )}
-        </button>
-
-        <NewTabLink className="TrezorDecrypt-buy btn btn-sm btn-default" href={trezorReferralURL}>
-          {translate('Don’t have a TREZOR? Order one now!')}
-        </NewTabLink>
-
-        <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        <div className="TrezorDecrypt-help">
-          <NewTabLink href="https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html">
-            How to use TREZOR with MyCrypto
-          </NewTabLink>
+        <div className="TrezorDecrypt-header">
+          <h2 className="TrezorDecrypt-decrypt-title">
+            {translate('UNLOCK_DEVICE', { $device: translateRaw('X_TREZOR') })}
+          </h2>
         </div>
+        {error && (
+          <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error}</div>
+        )}
+        <img src={img} alt="Trezor illustration" className="TrezorDecrypt-illustration" />
 
+        <p className="TrezorDecrypt-buy">
+          Don't have a one?{' '}
+          <span>
+            <a href={trezorReferralURL}>Order now!</a>
+          </span>
+        </p>
+
+        <div className="TrezorDecrypt-btn-wrapper">
+          <SecondaryButton
+            text="Back"
+            onClick={this.props.clearWalletChoice}
+            className="TrezorDecrypt-btn"
+          />
+          <div className="flex-spacer" />
+          <PrimaryButton
+            text="Connect"
+            onClick={this.handleNullConnect}
+            loading={isLoading}
+            loadingTxt={translateRaw('WALLET_UNLOCKING')}
+            className="TrezorDecrypt-btn"
+          />
+        </div>
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
           publicKey={publicKey}

@@ -1,7 +1,21 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
+$speed: 500ms;
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .ViewOnly {
+  text-align: center;
+
   &-recent {
     text-align: left;
 
@@ -21,6 +35,100 @@
         display: inline-block;
         margin-right: $space-sm;
       }
+    }
+  }
+
+  &-header {
+    margin-bottom: 3rem;
+  }
+  &-decrypt {
+    position: relative;
+
+    &-title {
+      text-align: center;
+      font-size: 24px;
+      line-height: 1;
+      margin: 0;
+      font-weight: normal;
+      margin-bottom: 3rem;
+      animation: enter $speed ease 1;
+    }
+    &-desc {
+      text-align: center;
+      font-size: 16px;
+      line-height: 1;
+      margin: 0;
+      margin-top: 0.5rem;
+      font-weight: 400;
+      animation: enter $speed ease 1;
+    }
+  }
+
+  &-input {
+    margin-bottom: 3rem;
+  }
+
+  &-help {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  &-error {
+    opacity: 0;
+    transition: none;
+    border-radius: 3px;
+    margin-bottom: 2.5rem;
+
+    &.is-showing {
+      opacity: 1;
+    }
+  }
+
+  &-buy {
+    margin: 10px 0;
+  }
+
+  &-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .Spinner {
+      margin-right: 16px;
+    }
+  }
+
+  &-illustration {
+    margin-bottom: 2rem;
+    width: 128px;
+  }
+
+  &-tip {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin: auto;
+      margin-bottom: 3rem;
+      max-width: 360px;
+      > p {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #a8adb3;
+        text-align: left;
+        &:first-child {
+          color: #333;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+
+  &-btn {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
     }
   }
 }

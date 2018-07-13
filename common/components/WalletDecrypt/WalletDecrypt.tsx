@@ -250,17 +250,6 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-decrypt">
-          <div className="WalletDecrypt-header">
-            <h2 className="WalletDecrypt-decrypt-title">
-              {translate('UNLOCK_DEVICE', { $device: translateRaw(selectedWallet.lid) })}
-            </h2>
-            {this.props.showGenerateLink && (
-              <p className="WalletDecrypt-decrypt-desc">
-                {translate('UNLOCK_DEVICE_NEXT_STEP', { $network: this.props.networkName })}{' '}
-              </p>
-            )}
-          </div>
-
           <section className="WalletDecrypt-decrypt-form">
             <Errorable
               errorMessage={`${translate('ERROR_DEVICE_NOT_SUPPORTED', {
