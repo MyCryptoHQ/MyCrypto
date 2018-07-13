@@ -62,7 +62,7 @@ class AdvancedGas extends React.Component<Props, State> {
     const { gasPriceField, gasLimitField, nonceField, dataField } = this.state.options;
 
     return (
-      <div className="AdvancedGas row input-group">
+      <div className="AdvancedGas row">
         <div className="AdvancedGas-calculate-limit">
           <label className="checkbox">
             <input

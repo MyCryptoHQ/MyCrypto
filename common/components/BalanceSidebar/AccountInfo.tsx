@@ -90,7 +90,7 @@ class AccountInfo extends React.Component<Props, State> {
         <AccountAddress networkId={network.id} address={toChecksumAddress(address)} />
 
         {typeof wallet.displayAddress === 'function' && (
-          <div className="AccountInfo-section">
+          <div className="AccountInfo-section actions">
             <a
               className="AccountInfo-address-hw-addr"
               onClick={() => {
@@ -110,7 +110,7 @@ class AccountInfo extends React.Component<Props, State> {
             </a>
             {confirmAddr ? (
               <span className="AccountInfo-address-confirm">
-                <Spinner /> Confirm address on {wallet.getWalletType()}
+                <Spinner /> Confirm on {wallet.getWalletType()}
               </span>
             ) : null}
           </div>
@@ -160,21 +160,21 @@ class AccountInfo extends React.Component<Props, State> {
                 {!!blockExplorer && (
                   <li className="AccountInfo-list-item">
                     <NewTabLink href={blockExplorer.addressUrl(address)}>
-                      {`${network.name} (${blockExplorer.origin})`}
+                      {`${blockExplorer.origin}`}
                     </NewTabLink>
                   </li>
                 )}
                 {network.id === 'ETH' && (
                   <li className="AccountInfo-list-item">
                     <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
-                      {`${network.name} (${etherChainExplorerInst.origin})`}
+                      {`${etherChainExplorerInst.origin}`}
                     </NewTabLink>
                   </li>
                 )}
                 {!!tokenExplorer && (
                   <li className="AccountInfo-list-item">
                     <NewTabLink href={tokenExplorer.address(address)}>
-                      {`Tokens (${tokenExplorer.name})`}
+                      {`${tokenExplorer.name}`}
                     </NewTabLink>
                   </li>
                 )}

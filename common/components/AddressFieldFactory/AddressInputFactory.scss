@@ -16,12 +16,14 @@
     }
 
     &-label {
-      position: absolute;
+      position: relative;
       width: 100%;
       color: darken($brand-success, 15%);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-top: -1.25rem;
+      margin-bottom: 1rem;
     }
   }
 

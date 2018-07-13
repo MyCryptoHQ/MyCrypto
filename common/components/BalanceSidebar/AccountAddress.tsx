@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'reducers';
 import {
@@ -33,7 +32,6 @@ interface OwnProps {
 type Props = StateProps & DispatchProps & OwnProps;
 
 interface State {
-  copied: boolean;
   editingLabel: boolean;
   labelInputTouched: boolean;
 }
@@ -42,7 +40,6 @@ export const ACCOUNT_ADDRESS_ID: string = 'ACCOUNT_ADDRESS_ID';
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {
-    copied: false,
     editingLabel: false,
     labelInputTouched: false
   };
@@ -50,14 +47,6 @@ class AccountAddress extends React.Component<Props, State> {
   private goingToClearCopied: number | null = null;
 
   private labelInput: HTMLInputElement | null = null;
-
-  public handleCopy = () =>
-    this.setState(
-      (prevState: State) => ({
-        copied: !prevState.copied
-      }),
-      this.clearCopied
-    );
 
   public componentWillUnmount() {
     if (this.goingToClearCopied) {
@@ -67,17 +56,12 @@ class AccountAddress extends React.Component<Props, State> {
 
   public render() {
     const { address, addressLabels, networkId } = this.props;
-    const { copied } = this.state;
     const label = addressLabels[address];
     const labelContent = this.generateLabelContent();
-    const labelButton = this.generateLabelButton();
-    const addressClassName = `AccountInfo-address-addr ${
-      label ? 'AccountInfo-address-addr--small' : ''
-    }`;
 
     return (
-      <div className="AccountInfo-section">
-        <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
+      <div className="AccountInfo-section address">
+        {labelContent}
         <div className="AccountInfo-section AccountInfo-address-section">
           {networkId !== 'XMR' && (
             <div className="AccountInfo-address-icon">
@@ -87,32 +71,23 @@ class AccountAddress extends React.Component<Props, State> {
           <div
             className={`AccountInfo-address-wrapper ${networkId === 'XMR' ? 'no-identicon' : ''}`}
           >
-            {labelContent}
-            <div className={addressClassName}>
+            <div
+              className={`AccountInfo-address-addr ${
+                label ? 'AccountInfo-address-addr--small' : ''
+              }`}
+            >
               <Address address={address} />
             </div>
-            <CopyToClipboard onCopy={this.handleCopy} text={address}>
-              <div
-                className={`AccountInfo-copy ${copied ? 'is-copied' : ''}`}
-                title="Copy To clipboard"
-              >
-                <i className="fa fa-copy" />
-                <span>{copied ? 'copied!' : 'copy address'}</span>
-              </div>
-            </CopyToClipboard>
-            {networkId !== 'XMR' && (
+            {/* {networkId !== 'XMR' && (
               <div className="AccountInfo-label" title="Edit label">
                 {labelButton}
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>
     );
   }
-
-  private clearCopied = () =>
-    (this.goingToClearCopied = window.setTimeout(() => this.setState({ copied: false }), 2000));
 
   private startEditingLabel = () =>
     this.setState({ editingLabel: true }, () => {
@@ -157,45 +132,20 @@ class AccountAddress extends React.Component<Props, State> {
       );
     } else {
       labelContent = (
-        <label
-          title={storedLabel}
-          className={`AccountInfo-address-label ${
-            !!storedLabel && storedLabel.length > 0 ? '' : 'hidden'
-          }`}
-        >
-          {storedLabel}
-        </label>
+        <div className="AccountInfo-section-header-wrapper">
+          <h5 className="AccountInfo-section-header">
+            {!!storedLabel && storedLabel.length > 0
+              ? storedLabel
+              : translate('SIDEBAR_ACCOUNTADDR')}
+          </h5>
+          <button onClick={this.startEditingLabel}>
+            <i className="fa fa-pencil" />
+          </button>
+        </div>
       );
     }
 
     return labelContent;
-  };
-
-  private generateLabelButton = () => {
-    const { address, addressLabels } = this.props;
-    const { editingLabel } = this.state;
-    const label = addressLabels[address];
-    const labelButton = editingLabel ? (
-      <React.Fragment>
-        <i className="fa fa-save" />
-        <span role="button" title={translateRaw('SAVE_LABEL')} onClick={this.stopEditingLabel}>
-          {translate('SAVE_LABEL')}
-        </span>
-      </React.Fragment>
-    ) : (
-      <React.Fragment>
-        <i className="fa fa-pencil" />
-        <span
-          role="button"
-          title={label ? translateRaw('EDIT_LABEL') : translateRaw('ADD_LABEL_9')}
-          onClick={this.startEditingLabel}
-        >
-          {label ? translate('EDIT_LABEL') : translate('ADD_LABEL_9')}
-        </span>
-      </React.Fragment>
-    );
-
-    return labelButton;
   };
 
   private handleBlur = () => {
