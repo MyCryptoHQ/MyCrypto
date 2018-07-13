@@ -152,7 +152,8 @@ class SendTransaction extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   wallet: getWalletInst(state),
-  network: getNetworkConfig(state)
+  network: getNetworkConfig(state),
+  requestDisabled: !isNetworkUnit(state, 'ETH')
 });
 
 export default connect(mapStateToProps)(SendTransaction);

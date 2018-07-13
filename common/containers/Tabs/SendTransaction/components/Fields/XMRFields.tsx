@@ -50,12 +50,12 @@ class XmrFieldsClass extends Component<StateProps> {
             {shouldDisplay && (
               <div className="Tab-content-pane">
                 <AddressField showLabelMatch={true} placeholder="Enter a Monero Address" />
-                <PaymentIdField optional={true} />
                 <AmountField
                   networkId={networkId}
                   hasUnitDropdown={false}
                   hasSendEverything={true}
                 />
+                <PaymentIdField optional={true} />
                 <PrivacyRadio />
                 <PriorityRadio />
                 {this.getTxButton()}

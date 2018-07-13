@@ -38,11 +38,6 @@ export class PrivacyRadio extends React.Component<any, State> {
             <div className="flex-spacer" />
           </div>
           <div className="PrivacyRadio-button-wrapper">
-            <div
-              className={`PrivacyRadio-sliding-border ${
-                option.type === 'high' ? 'high' : option.type === 'medium' ? 'medium' : ''
-              }`}
-            />
             {buttons.map((btn, i) => (
               <button
                 key={i}

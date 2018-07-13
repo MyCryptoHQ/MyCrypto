@@ -22,12 +22,12 @@ export class PriorityRadio extends React.Component<any, State> {
 
   public render() {
     const { option } = this.state;
-    const prices = { low: '$0.24', medium: '$0.34', high: '$0.85' };
-    const ringSize = { low: '7', medium: '20', high: '40' };
+    const speed = { slow: '$0.075', average: '$0.088', fast: '$0.19' };
+    const estimate = { slow: '4 min', average: '3.4 min', fast: '24 sec' };
     const buttons = [
-      { type: 'low', price: prices.low, ringSize: ringSize.low },
-      { type: 'medium', price: prices.medium, ringSize: ringSize.medium },
-      { type: 'high', price: prices.high, ringSize: ringSize.high }
+      { type: 'low', price: speed.slow, ringSize: estimate.slow },
+      { type: 'medium', price: speed.average, ringSize: estimate.average },
+      { type: 'high', price: speed.fast, ringSize: estimate.fast }
     ];
     return (
       <div className="PriorityRadio input-group-wrapper">
@@ -38,11 +38,6 @@ export class PriorityRadio extends React.Component<any, State> {
             <div className="flex-spacer" />
           </div>
           <div className="PriorityRadio-button-wrapper">
-            <div
-              className={`PriorityRadio-sliding-border ${
-                option.type === 'high' ? 'high' : option.type === 'medium' ? 'medium' : ''
-              }`}
-            />
             {buttons.map((btn, i) => (
               <button
                 key={i}
@@ -52,9 +47,7 @@ export class PriorityRadio extends React.Component<any, State> {
                 <span className="PriorityRadio-button-level">
                   {btn.type}: {btn.price}
                 </span>
-                <span className="PriorityRadio-button-ringsize small">
-                  ring size: {btn.ringSize}
-                </span>
+                <span className="PriorityRadio-button-ringsize small">~{btn.ringSize}</span>
               </button>
             ))}
           </div>
