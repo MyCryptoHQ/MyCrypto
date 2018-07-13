@@ -1,4 +1,4 @@
-export enum CONFIG_NODES_SELECTED {
+export enum ConfigNodesSelectedActions {
   CHANGE_REQUESTED = 'CONFIG_NODES_SELECTED_CHANGE_REQUESTED',
   CHANGE_SUCCEEDED = 'CONFIG_NODES_SELECTED_CHANGE_SUCCEEDED',
   CHANGE_FAILED = 'CONFIG_NODES_SELECTED_CHANGE_FAILED',
@@ -7,12 +7,12 @@ export enum CONFIG_NODES_SELECTED {
 }
 
 export interface ChangeNodeRequestedAction {
-  type: CONFIG_NODES_SELECTED.CHANGE_REQUESTED;
+  type: ConfigNodesSelectedActions.CHANGE_REQUESTED;
   payload: string;
 }
 
 export interface ChangeNodeSucceededAction {
-  type: CONFIG_NODES_SELECTED.CHANGE_SUCCEEDED;
+  type: ConfigNodesSelectedActions.CHANGE_SUCCEEDED;
   payload: {
     nodeId: string;
     networkId: string;
@@ -20,16 +20,16 @@ export interface ChangeNodeSucceededAction {
 }
 
 export interface ChangeNodeFailedAction {
-  type: CONFIG_NODES_SELECTED.CHANGE_FAILED;
+  type: ConfigNodesSelectedActions.CHANGE_FAILED;
 }
 
 export interface ChangeNodeRequestedOneTimeAction {
-  type: CONFIG_NODES_SELECTED.CHANGE_REQUESTED_ONETIME;
+  type: ConfigNodesSelectedActions.CHANGE_REQUESTED_ONETIME;
   payload: string;
 }
 
 export interface ChangeNodeForceAction {
-  type: CONFIG_NODES_SELECTED.CHANGE_FORCE;
+  type: ConfigNodesSelectedActions.CHANGE_FORCE;
   payload: string;
 }
 
@@ -52,4 +52,4 @@ export interface NodeChangePending {
   nodeId: string;
 }
 
-export type SelectedNodeState = NodeLoaded | NodeChangePending;
+export type ConfigNodesSelectedState = NodeLoaded | NodeChangePending;
