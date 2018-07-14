@@ -5,9 +5,9 @@ export enum ConfigNetworksActions {
   CHANGE_NETWORK_REQUESTED = 'CONFIG_NETWORK_CHANGE_NETWORK_REQUESTED'
 }
 
-export interface NetworksState {
-  customNetworks: configNetworksCustomTypes.CustomNetworksState;
-  staticNetworks: configNetworksStaticTypes.StaticNetworksState;
+export interface ConfigNetworksState {
+  customNetworks: configNetworksCustomTypes.ConfigCustomNetworksState;
+  staticNetworks: configNetworksStaticTypes.ConfigStaticNetworksState;
 }
 
 export interface ChangeNetworkRequestedAction {
