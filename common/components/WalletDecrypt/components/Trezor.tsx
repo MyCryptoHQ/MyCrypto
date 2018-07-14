@@ -5,7 +5,7 @@ import { SecureWalletName, trezorReferralURL } from 'config';
 import translate, { translateRaw } from 'translations';
 import { TrezorWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getSingleDPath, getPaths } from 'features/config';
+import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
@@ -150,8 +150,8 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    dPath: getSingleDPath(state, SecureWalletName.TREZOR),
-    dPaths: getPaths(state, SecureWalletName.TREZOR)
+    dPath: configSelectors.getSingleDPath(state, SecureWalletName.TREZOR),
+    dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.TREZOR)
   };
 }
 

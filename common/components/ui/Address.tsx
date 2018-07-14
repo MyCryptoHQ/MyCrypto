@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { IWallet } from 'libs/wallet';
 import { BlockExplorerConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import NewTabLink from './NewTabLink';
 
 interface BaseProps {
@@ -14,7 +14,7 @@ interface BaseProps {
 }
 
 interface StateProps {
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 type Props = BaseProps & StateProps;
@@ -39,5 +39,5 @@ export class Address extends React.PureComponent<Props> {
 }
 
 export default connect((state: AppState) => ({
-  toChecksumAddress: getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
 }))(Address);

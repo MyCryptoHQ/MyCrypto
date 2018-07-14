@@ -5,7 +5,7 @@ import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { TransactionState } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 import { transactionsActions, transactionsSelectors } from 'features/transactions';
 import { Spinner } from 'components/ui';
 import TransactionDataTable from './TransactionDataTable';
@@ -80,7 +80,7 @@ function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
 
   return {
     tx: transactionsSelectors.getTransactionDatas(state)[txHash],
-    network: getNetworkConfig(state)
+    network: configSelectors.getNetworkConfig(state)
   };
 }
 

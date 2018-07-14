@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { donationAddressMap } from 'config';
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import { Input } from 'components/ui';
 import { AddressFieldFactory } from './AddressFieldFactory';
 
@@ -16,7 +16,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 type Props = OwnProps & StateProps;
@@ -56,5 +56,5 @@ const AddressField: React.SFC<Props> = ({
 );
 
 export default connect((state: AppState): StateProps => ({
-  toChecksumAddress: getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
 }))(AddressField);

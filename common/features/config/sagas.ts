@@ -18,7 +18,6 @@ import {
 import { Web3Wallet } from 'libs/wallet';
 import { setupWeb3Node, Web3Service, isWeb3Node } from 'libs/nodes/web3';
 import { AppState } from 'features/reducers';
-
 import { notificationsActions } from 'features/notifications';
 import { walletTypes, walletActions } from 'features/wallet';
 import * as configMetaTypes from './meta/types';

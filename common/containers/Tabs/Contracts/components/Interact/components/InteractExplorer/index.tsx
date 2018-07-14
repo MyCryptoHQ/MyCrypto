@@ -6,7 +6,7 @@ import translate from 'translations';
 import { Data } from 'libs/units';
 import { INode } from 'libs/nodes';
 import { AppState } from 'features/reducers';
-import { getNodeLib } from 'features/config';
+import { configNodesSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import {
   transactionFieldsActions,
@@ -316,7 +316,7 @@ class InteractExplorerClass extends Component<Props, State> {
 
 export const InteractExplorer = connect(
   (state: AppState) => ({
-    nodeLib: getNodeLib(state),
+    nodeLib: configNodesSelectors.getNodeLib(state),
     to: transactionFieldsSelectors.getTo(state),
     dataExists: transactionSelectors.getDataExists(state)
   }),
