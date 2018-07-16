@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+
 import { SecureWalletName, trezorReferralURL } from 'config';
 import { PrimaryButton, SecondaryButton } from 'components';
 import img from 'assets/images/trezor-illustration.svg';

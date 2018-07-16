@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { etherChainExplorerInst } from 'config/data';
 import translate, { translateRaw } from 'translations';
 import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
