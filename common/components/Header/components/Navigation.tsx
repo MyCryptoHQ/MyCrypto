@@ -53,9 +53,8 @@ export default class Navigation extends PureComponent<Props, State> {
                 key={link.name}
                 link={link}
                 isHomepage={link === navigationLinks[0]}
-                disabled={!['NAV_VIEW', 'NAV_SWAP'].includes(link.name)}
                 className="NavigationLink"
-                isNotEnabled={
+                disabled={
                   unsupportedTabs && unsupportedTabs.map(tab => tab.toString()).includes(link.name)
                 }
               />

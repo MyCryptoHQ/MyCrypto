@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@types/bip39": "2.4.0",
+    "@types/btoa": "^1.2.0",
     "@types/classnames": "2.2.3",
     "@types/enzyme": "3.1.8",
     "@types/enzyme-adapter-react-16": "1.0.1",
