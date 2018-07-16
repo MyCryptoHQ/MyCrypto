@@ -80,18 +80,28 @@
       max-height: 60px;
       margin-bottom: 1rem;
       opacity: 0.8;
+
+      @include theme(dark) {
+        opacity: 1;
+        filter: invert(1);
+
+        // Kind of hacky, but we don't want to invert metamask
+        &[src*='metamask'] {
+          filter: none;
+        }
+      }
     }
   }
 
   &-description {
-    color: $gray;
+    color: shade-dark(0.65);
     font-size: $font-size-small;
     font-weight: lighter;
   }
 
   &-example {
     font-size: $font-size-xs;
-    color: rgba($brand-danger, 0.7);
+    color: color(brand-danger-light);
     @include ellipsis;
   }
 
@@ -115,20 +125,20 @@
         }
 
         &-shield {
-          color: $brand-primary;
+          color: color(brand-primary);
         }
 
         &-exclamation-triangle {
-          color: $brand-warning;
+          color: color(brand-warning);
         }
 
         &-question-circle,
         &-eye {
-          color: #666;
+          color: shade-dark(0.5);
         }
 
         &-question-circle:hover {
-          color: $brand-primary;
+          color: color(brand-primary);
         }
       }
     }
@@ -198,8 +208,7 @@
         margin: 0;
         width: 48px;
         text-align: center;
-        border-left: 1px solid #f4f4f4;
-        background: #fefefe;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
 
         a {
           position: absolute;

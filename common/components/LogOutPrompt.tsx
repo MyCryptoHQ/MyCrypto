@@ -1,15 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import Modal, { IButton } from 'components/ui/Modal';
-import { AppState } from 'reducers';
-import { resetWallet, TResetWallet } from 'actions/wallet';
+import { connect } from 'react-redux';
+
 import translate, { translateRaw } from 'translations';
-import { TWeb3UnsetNode, web3UnsetNode } from 'actions/config';
+import { AppState } from 'features/reducers';
+import { TWeb3UnsetNode, web3UnsetNode } from 'features/config';
+import { walletActions } from 'features/wallet';
+import Modal, { IButton } from 'components/ui/Modal';
 
 interface DispatchProps {
   web3UnsetNode: TWeb3UnsetNode;
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
 }
 
 interface StateProps {
@@ -90,6 +91,6 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  resetWallet,
+  resetWallet: walletActions.resetWallet,
   web3UnsetNode
 })(withRouter<Props>(LogOutPromptClass));

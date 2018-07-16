@@ -1,27 +1,23 @@
 import React from 'react';
 import { connect, MapStateToProps } from 'react-redux';
 import translate, { translateRaw } from 'translations';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
 import {
-  changeAddressLabelEntry,
-  TChangeAddressLabelEntry,
-  saveAddressLabelEntry,
-  TSaveAddressLabelEntry,
-  removeAddressLabelEntry,
-  TRemoveAddressLabelEntry
-} from 'actions/addressBook';
-import { getAccountAddressEntry, getAddressLabels } from 'selectors/addressBook';
+  addressBookConstants,
+  addressBookActions,
+  addressBookSelectors
+} from 'features/addressBook';
 import { Address, Identicon, Input } from 'components/ui';
 
 interface StateProps {
-  entry: ReturnType<typeof getAccountAddressEntry>;
-  addressLabels: ReturnType<typeof getAddressLabels>;
+  entry: ReturnType<typeof addressBookSelectors.getAccountAddressEntry>;
+  addressLabel: string;
 }
 
 interface DispatchProps {
-  changeAddressLabelEntry: TChangeAddressLabelEntry;
-  saveAddressLabelEntry: TSaveAddressLabelEntry;
-  removeAddressLabelEntry: TRemoveAddressLabelEntry;
+  changeAddressLabelEntry: addressBookActions.TChangeAddressLabelEntry;
+  saveAddressLabelEntry: addressBookActions.TSaveAddressLabelEntry;
+  removeAddressLabelEntry: addressBookActions.TRemoveAddressLabelEntry;
 }
 
 interface OwnProps {
@@ -35,8 +31,6 @@ interface State {
   editingLabel: boolean;
   labelInputTouched: boolean;
 }
-
-export const ACCOUNT_ADDRESS_ID: string = 'ACCOUNT_ADDRESS_ID';
 
 class AccountAddress extends React.Component<Props, State> {
   public state = {
@@ -55,8 +49,7 @@ class AccountAddress extends React.Component<Props, State> {
   }
 
   public render() {
-    const { address, addressLabels, networkId } = this.props;
-    const label = addressLabels[address];
+    const { address, addressLabel, networkId } = this.props;
     const labelContent = this.generateLabelContent();
 
     return (
@@ -73,7 +66,7 @@ class AccountAddress extends React.Component<Props, State> {
           >
             <div
               className={`AccountInfo-address-addr ${
-                label ? 'AccountInfo-address-addr--small' : ''
+                addressLabel ? 'AccountInfo-address-addr--small' : ''
               }`}
             >
               <Address address={address} />
@@ -97,10 +90,9 @@ class AccountAddress extends React.Component<Props, State> {
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
   private generateLabelContent = () => {
-    const { address, addressLabels, entry: { temporaryLabel, labelError } } = this.props;
+    const { addressLabel, entry: { temporaryLabel, labelError } } = this.props;
     const { editingLabel, labelInputTouched } = this.state;
-    const storedLabel = addressLabels[address];
-    const newLabelSameAsPrevious = temporaryLabel === storedLabel;
+    const newLabelSameAsPrevious = temporaryLabel === addressLabel;
     const labelInputTouchedWithError = labelInputTouched && !newLabelSameAsPrevious && labelError;
 
     let labelContent = null;
@@ -111,7 +103,7 @@ class AccountAddress extends React.Component<Props, State> {
           <Input
             title={translateRaw('ADD_LABEL')}
             placeholder={translateRaw('NEW_LABEL')}
-            defaultValue={storedLabel}
+            defaultValue={addressLabel}
             onChange={this.handleLabelChange}
             onKeyDown={this.handleKeyDown}
             onFocus={this.setTemporaryLabelTouched}
@@ -129,8 +121,8 @@ class AccountAddress extends React.Component<Props, State> {
       labelContent = (
         <div className="AccountInfo-section-header-wrapper">
           <h5 className="AccountInfo-section-header">
-            {!!storedLabel && storedLabel.length > 0
-              ? storedLabel
+            {!!addressLabel && addressLabel.length > 0
+              ? addressLabel
               : translate('SIDEBAR_ACCOUNTADDR')}
           </h5>
           <button onClick={this.startEditingLabel}>
@@ -144,13 +136,12 @@ class AccountAddress extends React.Component<Props, State> {
   };
 
   private handleBlur = () => {
-    const { address, addressLabels, entry: { id, label, temporaryLabel, labelError } } = this.props;
-    const storedLabel = addressLabels[address];
+    const { address, addressLabel, entry: { id, label, temporaryLabel, labelError } } = this.props;
 
     this.clearTemporaryLabelTouched();
     this.stopEditingLabel();
 
-    if (temporaryLabel === storedLabel) {
+    if (temporaryLabel === addressLabel) {
       return;
     }
 
@@ -187,7 +178,7 @@ class AccountAddress extends React.Component<Props, State> {
     const label = e.target.value;
 
     this.props.changeAddressLabelEntry({
-      id: ACCOUNT_ADDRESS_ID,
+      id: addressBookConstants.ACCOUNT_ADDRESS_ID,
       address,
       label,
       isEditing: true
@@ -212,15 +203,21 @@ class AccountAddress extends React.Component<Props, State> {
   private clearTemporaryLabelTouched = () => this.setState({ labelInputTouched: false });
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (state: AppState) => ({
-  entry: getAccountAddressEntry(state),
-  addressLabels: getAddressLabels(state)
-});
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = (
+  state: AppState,
+  ownProps: OwnProps
+) => {
+  const labelEntry = addressBookSelectors.getAddressLabelEntryFromAddress(state, ownProps.address);
+  return {
+    entry: addressBookSelectors.getAccountAddressEntry(state),
+    addressLabel: labelEntry ? labelEntry.label : ''
+  };
+};
 
 const mapDispatchToProps: DispatchProps = {
-  changeAddressLabelEntry,
-  saveAddressLabelEntry,
-  removeAddressLabelEntry
+  changeAddressLabelEntry: addressBookActions.changeAddressLabelEntry,
+  saveAddressLabelEntry: addressBookActions.saveAddressLabelEntry,
+  removeAddressLabelEntry: addressBookActions.removeAddressLabelEntry
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, AppState>(

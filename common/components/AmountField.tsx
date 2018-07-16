@@ -1,8 +1,9 @@
 import React from 'react';
-import { AmountFieldFactory } from './AmountFieldFactory';
-import { UnitDropDown, SendEverything } from 'components';
+
 import translate from 'translations';
+import { UnitDropDown, SendEverything } from 'components';
 import { Input } from 'components/ui';
+import { AmountFieldFactory } from './AmountFieldFactory';
 import './AmountField.scss';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   hasUnitDropdown?: boolean;
   hasSendEverything?: boolean;
   showAllTokens?: boolean;
+  showInvalidWithoutValue?: boolean;
   customValidator?(rawAmount: string): boolean;
 }
 
@@ -20,7 +22,8 @@ export const AmountField: React.SFC<Props> = ({
   hasSendEverything,
   showAllTokens,
   networkId,
-  customValidator
+  customValidator,
+  showInvalidWithoutValue
 }) => (
   <AmountFieldFactory
     withProps={({ currentValue: { raw }, isValid, onChange, readOnly }) => (
@@ -41,6 +44,7 @@ export const AmountField: React.SFC<Props> = ({
             value={raw}
             readOnly={!!readOnly}
             onChange={onChange}
+            showInvalidWithoutValue={showInvalidWithoutValue}
           />
           {hasUnitDropdown ? (
             <UnitDropDown showAllTokens={showAllTokens} />

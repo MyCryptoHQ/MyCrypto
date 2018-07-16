@@ -1,45 +1,43 @@
 import React from 'react';
-import { toChecksumAddress } from 'ethereumjs-util';
-import NewTabLink from './NewTabLink';
+import { connect } from 'react-redux';
+
 import { IWallet } from 'libs/wallet';
 import { BlockExplorerConfig } from 'types/network';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
+import NewTabLink from './NewTabLink';
 import './Address.scss';
 
 interface BaseProps {
-  explorer?: BlockExplorerConfig | null;
-}
-
-interface AddressProps extends BaseProps {
   address: string;
+  explorer?: BlockExplorerConfig | null;
+  wallet?: IWallet | null;
 }
 
-interface WalletProps extends BaseProps {
-  wallet: IWallet;
+interface StateProps {
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
-type Props = AddressProps | WalletProps;
+type Props = BaseProps & StateProps;
 
 interface State {
   copied: boolean;
 }
 
-const isAddressProps = (props: Props): props is AddressProps =>
-  typeof (props as AddressProps).address === 'string';
-
-class Address extends React.Component<Props, State> {
+export class Address extends React.PureComponent<Props, State> {
   public state = {
     copied: false
   };
-
   public render() {
-    let addr = '';
-    if (isAddressProps(this.props)) {
-      addr = this.props.address;
+    const { wallet, address, toChecksumAddress } = this.props;
+    let renderAddress = '';
+    if (address !== null && address !== undefined) {
+      renderAddress = address;
     } else {
-      addr = this.props.wallet.getAddressString();
+      renderAddress = wallet !== null && wallet !== undefined ? wallet.getAddressString() : '';
     }
-    addr = toChecksumAddress(addr);
+    renderAddress = toChecksumAddress(renderAddress);
 
     const setInterval = () => {
       this.setState({ copied: true });
@@ -52,15 +50,15 @@ class Address extends React.Component<Props, State> {
     };
 
     return (
-      <div className="Truncated" data-last6={addr.slice(-6)}>
+      <div className="Truncated" data-last6={address.slice(-6)}>
         {this.props.explorer ? (
-          <NewTabLink href={this.props.explorer.addressUrl(addr)}>{addr}</NewTabLink>
+          <NewTabLink href={this.props.explorer.addressUrl(address)}>{address}</NewTabLink>
         ) : (
           <>
-            <CopyToClipboard onCopy={onCopy} text={addr}>
+            <CopyToClipboard onCopy={onCopy} text={address}>
               <div className="Truncated-target" />
             </CopyToClipboard>
-            <p>{addr}</p>
+            <p>{address}</p>
             <i className={`${this.state.copied && 'visible'} fa fa-check`} />
             <i className={`${!this.state.copied && 'visible'} fa fa-copy`} />
           </>
@@ -70,4 +68,6 @@ class Address extends React.Component<Props, State> {
   }
 }
 
-export default Address;
+export default connect((state: AppState) => ({
+  toChecksumAddress: getChecksumAddressFn(state)
+}))(Address);

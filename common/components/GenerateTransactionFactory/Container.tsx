@@ -1,14 +1,17 @@
-import { signTransactionRequested, TSignTransactionRequested } from 'actions/transaction';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { transactionSignActions } from 'features/transaction';
+
 interface DispatchProps {
-  signTransactionRequested: TSignTransactionRequested;
+  signTransactionRequested: transactionSignActions.TSignTransactionRequested;
 }
 
 interface OwnProps {
   isWeb3: boolean;
-  withSigner(signer: TSignTransactionRequested): React.ReactElement<any> | null;
+  withSigner(
+    signer: transactionSignActions.TSignTransactionRequested
+  ): React.ReactElement<any> | null;
 }
 
 class Container extends Component<DispatchProps & OwnProps, {}> {
@@ -17,4 +20,6 @@ class Container extends Component<DispatchProps & OwnProps, {}> {
   }
 }
 
-export const WithSigner = connect(null, { signTransactionRequested })(Container);
+export const WithSigner = connect(null, {
+  signTransactionRequested: transactionSignActions.signTransactionRequested
+})(Container);

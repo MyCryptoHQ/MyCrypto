@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isAnyOfflineWithWeb3 } from 'selectors/derived';
+
+import translate, { translateRaw } from 'translations';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { scheduleSelectors } from 'features/schedule';
+import { notificationsActions } from 'features/notifications';
 import {
   AddressField,
   AmountField,
@@ -14,13 +20,7 @@ import {
   SendScheduleTransactionButton
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
-import translate from 'translations';
-
-import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
-import { getOffline, getNetworkConfig } from 'selectors/config';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
-import { getUnit } from 'selectors/transaction';
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
@@ -36,11 +36,30 @@ interface StateProps {
   schedulingAvailable: boolean;
   shouldDisplay: boolean;
   offline: boolean;
+  useScheduling: scheduleSelectors.ICurrentSchedulingToggle['value'];
   networkId: string;
-  useScheduling: ICurrentSchedulingToggle['value'];
 }
 
-class EthFieldsClass extends Component<StateProps> {
+interface DispatchProps {
+  showNotification: notificationsActions.TShowNotification;
+}
+
+class FieldsClass extends Component<StateProps & DispatchProps> {
+  public componentDidCatch(error: Error) {
+    if (error.message === 'Serialized transaction not found') {
+      /**
+       * @desc Occasionally, when a new signed transaction matches a previous transaction,
+       * the nonce does not update, since the transaction has not yet been confirmed. This triggers
+       * the <Amounts /> component inside the <ConfirmationModal /> of <TXMetaDataPanel /> to throw
+       * an error when selecting the current transaction's serialized parameters.
+       * A longer term fix will involve finding a better way to calculate nonces to avoid
+       * nonce duplication on serial transactions.
+       */
+      this.props.showNotification('danger', translateRaw('SIMILAR_TRANSACTION_ERROR'));
+      this.forceUpdate();
+    }
+  }
+
   public render() {
     const { shouldDisplay, schedulingAvailable, useScheduling, networkId } = this.props;
 
@@ -60,6 +79,7 @@ class EthFieldsClass extends Component<StateProps> {
                       networkId={networkId}
                       hasUnitDropdown={true}
                       hasSendEverything={true}
+                      showInvalidWithoutValue={true}
                     />
                   </div>
                   {schedulingAvailable && (
@@ -124,10 +144,16 @@ class EthFieldsClass extends Component<StateProps> {
   }
 }
 
-export const EthFields = connect((state: AppState) => ({
-  schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
-  shouldDisplay: !isAnyOfflineWithWeb3(state),
-  offline: getOffline(state),
-  useScheduling: getCurrentSchedulingToggle(state).value,
-  networkId: getNetworkConfig(state).id
-}))(EthFieldsClass);
+export const ETHFields = connect(
+  (state: AppState) => ({
+    schedulingAvailable:
+      getNetworkConfig(state).name === 'Kovan' && selectors.getUnit(state) === 'ETH',
+    shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
+    offline: getOffline(state),
+    networkId: getNetworkConfig(state).id,
+    useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
+  }),
+  {
+    showNotification: notificationsActions.showNotification
+  }
+)(FieldsClass);

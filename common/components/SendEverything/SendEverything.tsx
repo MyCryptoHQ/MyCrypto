@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Query } from 'components/renderCbs';
-import { TokenValue, Wei } from 'libs/units';
+
 import translate, { translateRaw } from 'translations';
-import { sendEverythingRequested, TSendEverythingRequested } from 'actions/transaction';
-import { getCurrentBalance } from 'selectors/wallet';
-import { AppState } from 'reducers';
+import { TokenValue, Wei } from 'libs/units';
+import { AppState } from 'features/reducers';
+import { sendEverythingRequested, TSendEverythingRequested } from 'features/transaction/actions';
+import * as selectors from 'features/selectors';
+import { Query } from 'components/renderCbs';
 import './SendEverything.scss';
 
 interface DispatchProps {
@@ -44,6 +45,6 @@ class SendEverythingClass extends Component<Props> {
   };
 }
 export const SendEverything = connect(
-  (state: AppState) => ({ currentBalance: getCurrentBalance(state) }),
+  (state: AppState) => ({ currentBalance: selectors.getCurrentBalance(state) }),
   { sendEverythingRequested }
 )(SendEverythingClass);

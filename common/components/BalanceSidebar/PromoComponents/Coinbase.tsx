@@ -1,4 +1,5 @@
 import React from 'react';
+
 import CoinbaseLogo from 'assets/images/logo-coinbase.svg';
 import { NewTabLink } from 'components/ui';
 import translate from 'translations';

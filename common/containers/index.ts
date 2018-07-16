@@ -1,2 +1,1 @@
-import TabSection from './TabSection';
-export default TabSection;
+export { default } from './TabSection';

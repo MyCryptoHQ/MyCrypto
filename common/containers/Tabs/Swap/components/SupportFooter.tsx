@@ -1,9 +1,9 @@
 import React from 'react';
-import './SupportFooter.scss';
-import { SwapInput } from 'actions/swap';
-import { NormalizedBityRates, NormalizedShapeshiftRates } from 'reducers/swap/types';
-import { TextArea } from 'components/ui';
+
 import translate from 'translations';
+import { SwapInput, NormalizedBityRates, NormalizedShapeshiftRates } from 'features/swap/types';
+import { TextArea } from 'components/ui';
+import './SupportFooter.scss';
 
 interface Props {
   origin: SwapInput;
@@ -35,7 +35,9 @@ class SupportFooter extends React.PureComponent<Props, {}> {
     const pair = origin && destination ? origin.label + destination.label : 'BTCETH';
     const rates = provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
     const emailTo =
-      provider === 'shapeshift' ? 'support@mycrypto.com' : 'support@mycrypto.com,mew@bity.com';
+      provider === 'shapeshift'
+        ? 'support@shapeshift.zendesk.com,support@mycrypto.com'
+        : 'support@mycrypto.com,mew@bity.com';
     const mailSubject = encodeURI('Issue regarding my Swap via MyCrypto');
     const serviceProvider = provider.charAt(0).toUpperCase() + provider.slice(1);
     let mailBody;
@@ -71,7 +73,7 @@ Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
     return (
       <section className="SupportFooter">
         <a
-          className="btn-warning btn-sm"
+          className="SupportFooter-button btn-warning btn-sm"
           href={`mailto:${emailTo}?Subject=${mailSubject}&Body=${mailBody}`}
           target="_blank"
           rel="noopener noreferrer"
@@ -79,9 +81,9 @@ Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
           {translate('SWAP_SUPPORT')}
         </a>
         <div className="SupportFooter-fallback">
-          <p onClick={this.toggleFallback}>
+          <button className="SupportFooter-fallback-button" onClick={this.toggleFallback}>
             <small>{translate('SWAP_SUPPORT_LINK_BROKEN')}</small>
-          </p>
+          </button>
           {open ? (
             <TextArea
               isValid={true}

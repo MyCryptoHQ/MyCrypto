@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import Notifications from './Notifications';
+
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/config';
+import { ElectronNav } from 'components';
 import OfflineTab from './OfflineTab';
-import { getOffline } from 'selectors/config';
-import { ElectronNav, AppAlphaNotice } from 'components';
+import Notifications from './Notifications';
 import './ElectronTemplate.scss';
 
 interface StateProps {
@@ -32,7 +33,6 @@ class ElectronTemplate extends Component<Props, {}> {
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
           <Notifications />
-          <AppAlphaNotice />
         </div>
         <div className="ElectronTemplate-draggable" />
       </div>

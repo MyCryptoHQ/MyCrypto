@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
-import ledger from 'ledgerco';
+import { connect } from 'react-redux';
+
+import { SecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
-import UnsupportedNetwork from './UnsupportedNetwork';
 import { LedgerWallet } from 'libs/wallet';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig, getPaths, getSingleDPath } from 'features/config';
 import { NewTabLink } from 'components/ui';
 import { PrimaryButton, SecondaryButton } from 'components';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { SecureWalletName } from 'config';
-import { getPaths, getSingleDPath } from 'selectors/config/wallet';
-import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
+import UnsupportedNetwork from './UnsupportedNetwork';
+import DeterministicWalletsModal from './DeterministicWalletsModal';
 import img from 'assets/images/ledger-nano-illustration.svg';
 import './LedgerNano.scss';
 
@@ -32,7 +31,6 @@ interface State {
   dPath: DPath;
   error: string | null;
   isLoading: boolean;
-  showTip: boolean;
 }
 
 type Props = OwnProps & StateProps;
@@ -43,14 +41,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     chainCode: '',
     dPath: this.props.dPath || this.props.dPaths[0],
     error: null,
-    isLoading: false,
-    showTip: false
-  };
-
-  public showTip = () => {
-    this.setState({
-      showTip: true
-    });
+    isLoading: false
   };
 
   public UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -67,7 +58,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
     }
 
-    if (window.location.protocol !== 'https:') {
+    if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
       return (
         <div className="LedgerDecrypt">
           <div className="alert alert-danger">
@@ -127,56 +118,31 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
   private handlePathChange = (dPath: DPath) => {
     this.handleConnect(dPath);
+    this.setState({
+      dPath
+    });
   };
 
   private handleConnect = (dPath: DPath) => {
     this.setState({
       isLoading: true,
-      error: null,
-      showTip: false
+      error: null
     });
 
-    ledger.comm_u2f.create_async().then((comm: any) => {
-      new ledger.eth(comm)
-        .getAddress_async(dPath.value, false, true)
-        .then(res => {
-          this.setState({
-            publicKey: res.publicKey,
-            chainCode: res.chainCode,
-            isLoading: false
-          });
-        })
-        .catch((err: any) => {
-          let showTip;
-          let errMsg;
-          // Timeout
-          if (err && err.metaData && err.metaData.code === 5) {
-            showTip = true;
-            errMsg = translateRaw('LEDGER_TIMEOUT');
-          }
-          // Wrong app logged into
-          if (err && err.includes && err.includes('6804')) {
-            showTip = true;
-            errMsg = translateRaw('LEDGER_WRONG_APP');
-          }
-          // Ledger locked
-          if (err && err.includes && err.includes('6801')) {
-            errMsg = translateRaw('LEDGER_LOCKED');
-          }
-          // Other
-          if (!errMsg) {
-            errMsg = err && err.metaData ? err.metaData.type : err.toString();
-          }
-
-          this.setState({
-            error: errMsg,
-            isLoading: false
-          });
-          if (showTip) {
-            this.showTip();
-          }
+    LedgerWallet.getChainCode(dPath.value)
+      .then(res => {
+        this.setState({
+          publicKey: res.publicKey,
+          chainCode: res.chainCode,
+          isLoading: false
         });
-    });
+      })
+      .catch(err => {
+        this.setState({
+          error: translateRaw(err.message),
+          isLoading: false
+        });
+      });
   };
 
   private handleCancel = () => {

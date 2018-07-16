@@ -1,4 +1,4 @@
-import { StaticNetworksState, CustomNetworksState } from 'reducers/config/networks';
+import { TAB } from 'components/Header/components/constants';
 
 type StaticNetworkIds =
   | 'ETH'
@@ -15,7 +15,12 @@ type StaticNetworkIds =
   | 'MUSIC'
   | 'ETSC'
   | 'EGEM'
-  | 'CLO';
+  | 'CLO'
+  | 'RSK'
+  | 'RSK_TESTNET'
+  | 'GO'
+  | 'EOSC'
+  | 'ESN';
 
 export interface BlockExplorerConfig {
   name: string;
@@ -68,6 +73,7 @@ interface StaticNetworkConfig {
   isTestnet?: boolean;
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice?: boolean;
+  unsupportedTabs?: TAB[];
 }
 
 interface CustomNetworkConfig {
@@ -78,6 +84,7 @@ interface CustomNetworkConfig {
   unit: string;
   chainId: number;
   dPathFormats: DPathFormats | null;
+  unsupportedTabs?: TAB[];
 }
 
-type NetworkConfig = StaticNetworksState[StaticNetworkIds] | CustomNetworksState[string];
+type NetworkConfig = CustomNetworkConfig | StaticNetworkConfig;

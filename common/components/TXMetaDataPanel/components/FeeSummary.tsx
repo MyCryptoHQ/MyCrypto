@@ -1,16 +1,17 @@
 import React from 'react';
-import BN from 'bn.js';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import BN from 'bn.js';
 import classNames from 'classnames';
-import { getNetworkConfig, getOffline } from 'selectors/config';
-import { getIsEstimating } from 'selectors/gas';
-import { getGasLimit } from 'selectors/transaction';
-import { UnitDisplay, Spinner } from 'components/ui';
+
 import { NetworkConfig } from 'types/network';
-import './FeeSummary.scss';
-import { getScheduleGasLimit, getTimeBounty, getSchedulingToggle } from 'selectors/schedule';
 import { calcEACTotalCost } from 'libs/scheduling';
+import { AppState } from 'features/reducers';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { gasSelectors } from 'features/gas';
+import { transactionFieldsSelectors } from 'features/transaction';
+import { scheduleSelectors } from 'features/schedule';
+import { UnitDisplay, Spinner } from 'components/ui';
+import './FeeSummary.scss';
 
 export interface RenderData {
   gasPriceWei: string;
@@ -143,14 +144,14 @@ class FeeSummary extends React.Component<Props> {
 
 function mapStateToProps(state: AppState): ReduxStateProps {
   return {
-    gasLimit: getGasLimit(state),
+    gasLimit: transactionFieldsSelectors.getGasLimit(state),
     rates: state.rates.rates,
     network: getNetworkConfig(state),
     isOffline: getOffline(state),
-    isGasEstimating: getIsEstimating(state),
-    scheduling: getSchedulingToggle(state).value,
-    scheduleGasLimit: getScheduleGasLimit(state),
-    timeBounty: getTimeBounty(state)
+    isGasEstimating: gasSelectors.getIsEstimating(state),
+    scheduling: scheduleSelectors.getSchedulingToggle(state).value,
+    scheduleGasLimit: scheduleSelectors.getScheduleGasLimit(state),
+    timeBounty: scheduleSelectors.getTimeBounty(state)
   };
 }
 

@@ -1,28 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { translateRaw, translate } from 'translations';
+import { AppState } from 'features/reducers';
+import { getLanguageSelection } from 'features/config';
+import { transactionBroadcastActions, transactionSelectors } from 'features/transaction';
+import { walletSelectors } from 'features/wallet';
 import Modal, { IButton } from 'components/ui/Modal';
 import Spinner from 'components/ui/Spinner';
-import { connect } from 'react-redux';
-import { getWalletType, IWalletType } from 'selectors/wallet';
-import { getLanguageSelection } from 'selectors/config';
-import {
-  broadcastLocalTransactionRequested,
-  TBroadcastLocalTransactionRequested,
-  broadcastWeb3TransactionRequested,
-  TBroadcastWeb3TransactionRequested
-} from 'actions/transaction';
-import { currentTransactionBroadcasting } from 'selectors/transaction';
 import './ConfirmationModalTemplate.scss';
-import { AppState } from 'reducers';
-import { translateRaw, translate } from 'translations';
 
 interface DispatchProps {
-  broadcastLocalTransactionRequested: TBroadcastLocalTransactionRequested;
-  broadcastWeb3TransactionRequested: TBroadcastWeb3TransactionRequested;
+  broadcastLocalTransactionRequested: transactionBroadcastActions.TBroadcastLocalTransactionRequested;
+  broadcastWeb3TransactionRequested: transactionBroadcastActions.TBroadcastWeb3TransactionRequested;
 }
 
 interface StateProps {
   lang: string;
-  walletTypes: IWalletType;
+  walletTypes: walletSelectors.IWalletType;
   transactionBroadcasting: boolean;
 }
 
@@ -105,6 +100,7 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
         buttons={buttons}
         handleClose={onClose}
         disableButtons={transactionBroadcasting}
+        hideButtons={transactionBroadcasting}
         isOpen={isOpen}
       >
         {transactionBroadcasting ? (
@@ -133,9 +129,13 @@ class ConfirmationModalTemplateClass extends React.Component<Props, State> {
 
 export const ConfirmationModalTemplate = connect(
   (state: AppState) => ({
-    transactionBroadcasting: currentTransactionBroadcasting(state),
+    transactionBroadcasting: transactionSelectors.currentTransactionBroadcasting(state),
     lang: getLanguageSelection(state),
-    walletTypes: getWalletType(state)
+    walletTypes: walletSelectors.getWalletType(state)
   }),
-  { broadcastLocalTransactionRequested, broadcastWeb3TransactionRequested }
+  {
+    broadcastLocalTransactionRequested:
+      transactionBroadcastActions.broadcastLocalTransactionRequested,
+    broadcastWeb3TransactionRequested: transactionBroadcastActions.broadcastWeb3TransactionRequested
+  }
 )(ConfirmationModalTemplateClass);

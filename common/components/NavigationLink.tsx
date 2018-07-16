@@ -1,8 +1,8 @@
-import classnames from 'classnames';
 import React from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import translate, { translateRaw } from 'translations';
+
 import { NavigationLink } from 'config';
+import translate, { translateRaw } from 'translations';
 
 interface Props extends RouteComponentProps<{}> {
   link: NavigationLink;
@@ -26,17 +26,13 @@ class NavigationLinkClass extends React.PureComponent<Props, {}> {
         location.pathname === link.to || isSubRoute || (isHomepage && location.pathname === '/');
     }
 
-    const linkClasses = classnames({
-      [`${className}-link`]: true,
-      'is-disabled': !link.to || disabled,
-      'is-active': isActive
-    });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
     const linkEl =
       link.external || !link.to ? (
         <a
-          className={linkClasses}
+          className={`${className}-link ${!link.to || (disabled && 'is-disabled')} ${isActive &&
+            'is-active'}`}
           href={link.to}
           aria-label={linkLabel}
           target="_blank"
@@ -45,7 +41,12 @@ class NavigationLinkClass extends React.PureComponent<Props, {}> {
           {translate(link.name)}
         </a>
       ) : (
-        <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>
+        <Link
+          className={`${className}-link ${!link.to || (disabled && 'is-disabled')} ${isActive &&
+            'is-active'}`}
+          to={(link as any).to}
+          aria-label={linkLabel}
+        >
           {translate(link.name)}
         </Link>
       );

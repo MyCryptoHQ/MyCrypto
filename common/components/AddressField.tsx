@@ -1,11 +1,14 @@
 import React from 'react';
-import { AddressFieldFactory } from './AddressFieldFactory';
+import { connect } from 'react-redux';
+
 import { donationAddressMap } from 'config';
 import translate from 'translations';
+import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
 import { Input } from 'components/ui';
-import { toChecksumAddress } from 'ethereumjs-util';
+import { AddressFieldFactory } from './AddressFieldFactory';
 
-interface Props {
+interface OwnProps {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
   showBlockies?: boolean;
@@ -14,13 +17,20 @@ interface Props {
   placeholder?: string;
 }
 
-export const AddressField: React.SFC<Props> = ({
+interface StateProps {
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+}
+
+type Props = OwnProps & StateProps;
+
+const AddressField: React.SFC<Props> = ({
   isReadOnly,
   isSelfAddress,
   isCheckSummed,
   showBlockies,
   showLabelMatch,
-  placeholder
+  placeholder,
+  toChecksumAddress
 }) => (
   <AddressFieldFactory
     showBlockies={showBlockies}
@@ -49,3 +59,7 @@ export const AddressField: React.SFC<Props> = ({
     )}
   />
 );
+
+export default connect((state: AppState): StateProps => ({
+  toChecksumAddress: getChecksumAddressFn(state)
+}))(AddressField);

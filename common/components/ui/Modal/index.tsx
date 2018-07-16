@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { createPortal } from 'react-dom';
-import ModalBody from './ModalBody';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+import ModalBody from './ModalBody';
 import './index.scss';
 
 export interface IButton {
@@ -14,6 +15,7 @@ interface Props {
   isOpen?: boolean;
   title?: React.ReactNode;
   disableButtons?: boolean;
+  hideButtons?: boolean;
   children: React.ReactNode;
   buttons?: IButton[];
   maxWidth?: number;
@@ -55,7 +57,16 @@ export default class Modal extends PureComponent<Props, {}> {
   }
 
   public render() {
-    const { isOpen, title, children, buttons, handleClose, maxWidth } = this.props;
+    const {
+      isOpen,
+      title,
+      children,
+      buttons,
+      disableButtons,
+      hideButtons,
+      handleClose,
+      maxWidth
+    } = this.props;
     const hasButtons = buttons && buttons.length;
     const modalStyle: ModalStyle = {};
 
@@ -64,7 +75,16 @@ export default class Modal extends PureComponent<Props, {}> {
       modalStyle.maxWidth = `${maxWidth}px`;
     }
 
-    const modalBodyProps = { title, children, modalStyle, hasButtons, buttons, handleClose };
+    const modalBodyProps = {
+      title,
+      children,
+      modalStyle,
+      hasButtons,
+      buttons,
+      disableButtons,
+      hideButtons,
+      handleClose
+    };
 
     const modal = (
       <TransitionGroup>

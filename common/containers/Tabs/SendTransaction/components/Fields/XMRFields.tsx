@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isAnyOfflineWithWeb3 } from 'selectors/derived';
 import {
   AddressField,
   AmountField,
@@ -13,10 +12,10 @@ import {
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
 
-import { AppState } from 'reducers';
-import { getOffline, getNetworkConfig } from 'selectors/config';
-import { getCurrentSchedulingToggle, ICurrentSchedulingToggle } from 'selectors/schedule/fields';
-import { getUnit } from 'selectors/transaction';
+import { AppState } from 'features/reducers';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { scheduleSelectors } from 'features/schedule';
+import { getUnit, isAnyOfflineWithWeb3 } from 'features/selectors';
 import { PrivacyRadio } from 'components/PrivacyRadio';
 import { PriorityRadio } from 'components/PriorityRadio';
 
@@ -35,7 +34,7 @@ interface StateProps {
   shouldDisplay: boolean;
   offline: boolean;
   networkId: string;
-  useScheduling: ICurrentSchedulingToggle['value'];
+  useScheduling: scheduleSelectors.ICurrentSchedulingToggle['value'];
 }
 
 class XmrFieldsClass extends Component<StateProps> {
@@ -102,10 +101,10 @@ class XmrFieldsClass extends Component<StateProps> {
   }
 }
 
-export const XmrFields = connect((state: AppState) => ({
+export const XMRFields = connect((state: AppState) => ({
   schedulingAvailable: getNetworkConfig(state).name === 'Kovan' && getUnit(state) === 'ETH',
   shouldDisplay: !isAnyOfflineWithWeb3(state),
   offline: getOffline(state),
-  useScheduling: getCurrentSchedulingToggle(state).value,
+  useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value,
   networkId: getNetworkConfig(state).id
 }))(XmrFieldsClass);

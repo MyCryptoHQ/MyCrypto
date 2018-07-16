@@ -1,3 +1,5 @@
+@import 'common/sass/variables';
+
 $speed: 500ms;
 @keyframes enter {
   0% {
@@ -36,69 +38,74 @@ $speed: 500ms;
       font-weight: 400;
       animation: enter $speed ease 1;
     }
-  }
-
-  &-help {
-    margin-top: 10px;
-    font-size: 13px;
-  }
-
-  &-error {
-    opacity: 0;
-    transition: none;
-    border-radius: 3px;
-    margin-bottom: 2.5rem;
-
-    &.is-showing {
-      opacity: 1;
+    &-tip {
+      font-size: $font-size-xs-bump;
+      opacity: 0.7;
+      margin-bottom: $space;
     }
-  }
 
-  &-buy {
-    margin: 10px 0;
-  }
-
-  &-message {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .Spinner {
-      margin-right: 16px;
+    &-help {
+      margin-top: 10px;
+      font-size: 13px;
     }
-  }
 
-  &-illustration {
-    margin-bottom: 2rem;
-    width: 128px;
-  }
+    &-error {
+      opacity: 0;
+      transition: none;
+      border-radius: 3px;
+      margin-bottom: 2.5rem;
 
-  &-tip {
-    &-wrapper {
+      &.is-showing {
+        opacity: 1;
+      }
+    }
+
+    &-buy {
+      margin: 10px 0;
+    }
+
+    &-message {
       display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      margin: auto;
-      margin-bottom: 3rem;
-      max-width: 360px;
-      > p {
-        font-size: 1rem;
-        font-weight: 400;
-        color: #a8adb3;
-        text-align: left;
-        &:first-child {
-          color: #333;
-          margin-right: 0.5rem;
+      justify-content: center;
+      align-items: center;
+
+      .Spinner {
+        margin-right: 16px;
+      }
+    }
+
+    &-illustration {
+      margin-bottom: 2rem;
+      width: 128px;
+    }
+
+    &-tip {
+      &-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin: auto;
+        margin-bottom: 3rem;
+        max-width: 360px;
+        > p {
+          font-size: 1rem;
+          font-weight: 400;
+          color: #a8adb3;
+          text-align: left;
+          &:first-child {
+            color: #333;
+            margin-right: 0.5rem;
+          }
         }
       }
     }
-  }
 
-  &-btn {
-    &-wrapper {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
+    &-btn {
+      &-wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
     }
   }
 }

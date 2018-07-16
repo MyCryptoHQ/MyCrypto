@@ -1,30 +1,27 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import TabSection from 'containers/TabSection';
-import translate from 'translations';
-import {
-  signLocalTransactionSucceeded,
-  TSignLocalTransactionSucceeded,
-  signTransactionFailed,
-  TSignTransactionFailed
-} from 'actions/transaction';
-import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
-import { QRCode, Input, CodeBlock } from 'components/ui';
-import EthTx from 'ethereumjs-tx';
-import { SendButton } from 'components/SendButton';
-import { toBuffer, bufferToHex } from 'ethereumjs-util';
-import { getSerializedTransaction } from 'selectors/transaction';
-import { AppState } from 'reducers';
-import './index.scss';
 import { Switch, Route, RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+import { toBuffer, bufferToHex } from 'ethereumjs-util';
+import EthTx from 'ethereumjs-tx';
+
+import translate from 'translations';
+import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs/transaction';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { transactionSignActions } from 'features/transaction';
+import { QRCode, Input, CodeBlock } from 'components/ui';
+import { SendButton } from 'components/SendButton';
+import './index.scss';
+
+import TabSection from 'containers/TabSection';
 import { RouteNotFound } from 'components/RouteNotFound';
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
 }
 interface DispatchProps {
-  signLocalTransactionSucceeded: TSignLocalTransactionSucceeded;
-  signTransactionFailed: TSignTransactionFailed;
+  signLocalTransactionSucceeded: transactionSignActions.TSignLocalTransactionSucceeded;
+  signTransactionFailed: transactionSignActions.TSignTransactionFailed;
 }
 interface State {
   userInput: string;
@@ -116,6 +113,9 @@ class BroadcastTx extends Component<Props> {
 }
 
 export default connect(
-  (state: AppState) => ({ stateTransaction: getSerializedTransaction(state) }),
-  { signLocalTransactionSucceeded, signTransactionFailed }
+  (state: AppState) => ({ stateTransaction: selectors.getSerializedTransaction(state) }),
+  {
+    signLocalTransactionSucceeded: transactionSignActions.signLocalTransactionSucceeded,
+    signTransactionFailed: transactionSignActions.signTransactionFailed
+  }
 )(BroadcastTx);

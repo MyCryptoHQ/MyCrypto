@@ -1,4 +1,5 @@
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 .example-form {
   max-width: 744px;
@@ -19,17 +20,29 @@
     flex-direction: row;
     font-size: 1rem;
     flex-wrap: wrap;
+
     > .input-group-header {
       width: 100%;
     }
+
     > .input-group-input {
       flex-grow: 1;
       width: auto;
     }
+
     > .Select {
       margin-left: 8px;
     }
+
+    &[readonly],
+    &[disabled] {
+      background-color: color(control-disabled-bg);
+      color: color(control-disabled-color);
+      border-color: color(control-disabled-border);
+      cursor: text !important;
+    }
   }
+
   &-header {
     display: flex;
     font-size: 1rem;
@@ -40,6 +53,7 @@
     > .flex-spacer {
       flex-grow: 1;
     }
+
     > .small {
       color: #9a9a9a;
       &.optional {
@@ -47,15 +61,16 @@
       }
     }
   }
+
   &-input {
     width: 100%;
-    border: 1px solid $border-idle;
+    border: 1px solid color(control-border);
     border-radius: 3px;
     height: $input-height-base;
     padding: 0.75rem 1rem;
     font-weight: 400;
-    font-size: $input-margin-bottom;
-    color: rgba(0, 0, 0, 0.87);
+    background: color(control-bg);
+    color: color(control-color);
     box-shadow: inset 0 1px 0 0 rgba(63, 63, 68, 0.05);
     transition: border-color 120ms, box-shadow 120ms;
     &[placeholder] {
@@ -74,20 +89,20 @@
       padding: 0.5rem 0.75rem;
     }
     &::placeholder {
-      color: $input-color-placeholder;
+      color: color(control-placeholder);
     }
     &:not([disabled]):not([readonly]) {
-      &.invalid.has-blurred.has-value {
-        border-color: $brand-danger;
-        box-shadow: inset 0px 0px 0px 1px $brand-danger;
+      &.invalid {
+        border-color: color(brand-danger);
+        box-shadow: inset 0px 0px 0px 1px color(brand-danger);
       }
-      &.valid.has-value {
-        border-color: #8dd17b;
-        box-shadow: inset 0px 0px 0px 1px #8dd17b;
+      &.valid {
+        border-color: color(brand-success);
+        box-shadow: inset 0px 0px 0px 1px color(brand-success);
       }
       &:focus {
-        border-color: #4295bc;
-        box-shadow: inset 0px 0px 0px 1px #4295bc;
+        border-color: color(brand-primary);
+        box-shadow: inset 0px 0px 0px 1px color(brand-primary);
       }
     }
   }

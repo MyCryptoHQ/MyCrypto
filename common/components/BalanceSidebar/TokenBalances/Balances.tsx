@@ -1,13 +1,14 @@
 import React from 'react';
+
 import translate from 'translations';
-import { TokenBalance } from 'selectors/wallet';
-import AddCustomTokenForm from './AddCustomTokenForm';
-import TokenRow from './TokenRow';
 import { Token } from 'types/network';
+import { walletTypes } from 'features/wallet';
+import { AddCustomTokenForm } from './AddCustomTokenForm';
+import TokenRow from './TokenRow';
 
 interface Props {
   allTokens: Token[];
-  tokenBalances: TokenBalance[];
+  tokenBalances: walletTypes.TokenBalance[];
   hasSavedWalletTokens: boolean;
   scanWalletForTokens(): any;
   setWalletTokens(tokens: string[]): any;
@@ -46,7 +47,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
     let bottom;
     let help;
     if (tokenBalances.length && !hasSavedWalletTokens && !this.onlyCustomTokens()) {
-      help = 'Select which tokens you would like to keep track of';
+      help = translate('SELECT_WHICH_TOKENS');
       bottom = (
         <div className="TokenBalances-buttons">
           <button
@@ -142,7 +143,7 @@ export default class TokenBalances extends React.PureComponent<Props, State> {
    * @memberof TokenBalances
    */
   private onlyCustomTokens() {
-    const tokenMap = this.props.tokenBalances.reduce<{ [key: string]: TokenBalance }>(
+    const tokenMap = this.props.tokenBalances.reduce<{ [key: string]: walletTypes.TokenBalance }>(
       (acc, cur) => ({ ...acc, [cur.symbol]: cur }),
       {}
     );

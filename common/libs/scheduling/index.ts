@@ -1,9 +1,10 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
-import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import { toBuffer } from 'ethereumjs-util';
+
+import { ICurrentValue } from 'features/types';
+import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
 import RequestFactory from './contracts/RequestFactory';
-import { ICurrentValue } from 'selectors/transaction';
 
 const TIME_BOUNTY_MIN = Wei('1');
 

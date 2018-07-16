@@ -1,4 +1,7 @@
-import { TShowNotification } from 'actions/notifications';
+import React, { PureComponent } from 'react';
+
+import { notificationsActions } from 'features/notifications';
+import { SwapInput } from 'features/swap/types';
 import {
   TRestartSwap,
   TStartPollBityOrderStatus,
@@ -7,9 +10,7 @@ import {
   TStopPollBityOrderStatus,
   TStopPollShapeshiftOrderStatus,
   TStartOrderTimerSwap
-} from 'actions/swap';
-import { SwapInput } from 'reducers/swap/types';
-import React, { PureComponent } from 'react';
+} from 'features/swap/actions';
 import BitcoinQR from './BitcoinQR';
 import PaymentInfo from './PaymentInfo';
 import SwapProgress from './SwapProgress';
@@ -26,6 +27,8 @@ interface ReduxStateProps {
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
   outputTx: any;
+  paymentId: string | null;
+  xmrPaymentAddress: string | null;
 }
 
 interface ReduxActionProps {
@@ -36,7 +39,7 @@ interface ReduxActionProps {
   startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
   stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
   stopOrderTimerSwap: TStopOrderTimerSwap;
-  showNotification: TShowNotification;
+  showNotificationWithComponent: notificationsActions.TShowNotificationWithComponent;
 }
 
 export default class PartThree extends PureComponent<ReduxActionProps & ReduxStateProps, {}> {
@@ -67,24 +70,28 @@ export default class PartThree extends PureComponent<ReduxActionProps & ReduxSta
       shapeshiftOrderStatus,
       destinationAddress,
       outputTx,
+      paymentId,
+      xmrPaymentAddress,
       // ACTIONS
-      showNotification
+      showNotificationWithComponent
     } = this.props;
 
     const SwapProgressProps = {
-      originId: origin.label,
       destinationId: destination.label,
+      originId: origin.label,
+      destinationAddress,
+      outputTx,
       provider,
       bityOrderStatus,
       shapeshiftOrderStatus,
-      showNotification,
-      destinationAddress,
-      outputTx
+      showNotificationWithComponent
     };
 
     const PaymentInfoProps = {
       origin,
-      paymentAddress
+      paymentAddress,
+      paymentId,
+      xmrPaymentAddress
     };
 
     const BitcoinQRProps = {

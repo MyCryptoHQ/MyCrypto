@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Tooltip } from 'components/ui';
-import './WalletButton.scss';
 
 import { WalletName } from 'config';
 import { translateRaw } from 'translations';
+import { Tooltip } from 'components/ui';
+import './WalletButton.scss';
 
 interface OwnProps {
   name: string;

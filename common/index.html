@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>MyCrypto</title>
+  <meta http-equiv="Content-Security-Policy" content="<%= htmlWebpackPlugin.options.metaCsp %>" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="description" content="MyCrypto is a free, open-source interface for interacting with the blockchain.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -12,7 +13,7 @@
   <meta property="og:description" content="<%= htmlWebpackPlugin.options.appDescription %>">
   <meta property="og:site_name" content="<%= htmlWebpackPlugin.options.title %>">
   <meta property="og:type" content="<%= htmlWebpackPlugin.options.type %>">
-  <meta property="og:image" content="<%= htmlWebpackPlugin.options.image %>">
+  <meta property="og:image" content="/common/assets/images/link-preview.png">
   <meta name="twitter:site" content="<%= htmlWebpackPlugin.options.twitter.site %>">
   <meta name="twitter:creator" content="<%= htmlWebpackPlugin.options.twitter.creator %>">
   <meta name="google-site-verification" content="dRWkvANAUNAhNyMnTyc7M7S3lnucotMY8j8R-gsZhbo" />
@@ -71,40 +72,6 @@
     </div>
   </div>
 
-  <script>
-    (function () {
-      var badBrowser = false;
-
-      try {
-        // Let and const
-        eval('let a = 1;');
-        eval('const b = 1');
-
-        // Local storage
-        window.localStorage.setItem('test', 'test');
-        window.localStorage.removeItem('test');
-
-        // Flexbox
-        var el = document.createElement('div');
-        el.style.display = 'flex';
-        if (el.style.display !== 'flex') {
-          badBrowser = false;
-        }
-      } catch (err) {
-        badBrowser = true;
-      }
-
-      if (badBrowser) {
-        var el = document.getElementsByClassName('BadBrowser')[0];
-        el.className += ' is-open';
-        // Dumb check for known mobile OS's. Not important to catch all, just
-        // displays more appropriate information.
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-          el.className += ' is-mobile';
-        }
-      }
-    })();
-  </script>
 </body>
 
 </html>

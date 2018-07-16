@@ -1,37 +1,36 @@
+import React, { Component } from 'react';
+import { MapStateToProps, connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import classnames from 'classnames';
+
+import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+import { NetworkConfig } from 'types/network';
+import { getKeyByValue } from 'utils/helpers';
+import logo from 'assets/images/logo-mycrypto.svg';
+import { OldDropDown } from 'components/ui';
 import {
+  AddCustomNodeAction,
+  TAddCustomNetwork,
+  TAddCustomNode,
   TChangeLanguage,
   TChangeNodeRequestedOneTime,
-  TAddCustomNode,
   TRemoveCustomNode,
-  TAddCustomNetwork,
-  AddCustomNodeAction,
+  getLanguageSelection,
+  getNetworkConfig,
+  getOffline,
+  isNodeChanging,
+  isStaticNodeId,
   changeLanguage,
   changeNodeRequestedOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
-} from 'actions/config';
-import logo from 'assets/images/logo-mycrypto.svg';
-import { OldDropDown } from 'components/ui';
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
-import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
-import Navigation from './components/Navigation';
-import NetworkDropdown from './components/NetworkDropdown';
+} from 'features/config';
+import { AppState } from 'features/reducers';
+import { transactionFieldsActions } from 'features/transaction';
 import CustomNodeModal from 'components/CustomNodeModal';
-import { getKeyByValue } from 'utils/helpers';
-import { AppState } from 'reducers';
-import {
-  getOffline,
-  isNodeChanging,
-  getLanguageSelection,
-  getNetworkConfig,
-  isStaticNodeId
-} from 'selectors/config';
-import { NetworkConfig } from 'types/network';
-import { connect, MapStateToProps } from 'react-redux';
+import NetworkDropdown from './components/NetworkDropdown';
+import Navigation from './components/Navigation';
 import './index.scss';
 
 interface OwnProps {
@@ -41,7 +40,7 @@ interface OwnProps {
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
   changeNodeRequestedOneTime: TChangeNodeRequestedOneTime;
-  setGasPriceField: TSetGasPriceField;
+  setGasPriceField: transactionFieldsActions.TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
   addCustomNetwork: TAddCustomNetwork;
@@ -50,30 +49,10 @@ interface DispatchProps {
 interface StateProps {
   shouldSetNodeFromQS: boolean;
   network: NetworkConfig;
-  languageSelection: AppState['config']['meta']['languageSelection'];
-  isChangingNode: AppState['config']['nodes']['selectedNode']['pending'];
-  isOffline: AppState['config']['meta']['offline'];
+  languageSelection: ReturnType<typeof getLanguageSelection>;
+  isChangingNode: ReturnType<typeof isNodeChanging>;
+  isOffline: ReturnType<typeof getOffline>;
 }
-
-const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
-  state,
-  { networkParam }
-): StateProps => ({
-  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
-  isOffline: getOffline(state),
-  isChangingNode: isNodeChanging(state),
-  languageSelection: getLanguageSelection(state),
-  network: getNetworkConfig(state)
-});
-
-const mapDispatchToProps: DispatchProps = {
-  setGasPriceField,
-  changeLanguage,
-  changeNodeRequestedOneTime,
-  addCustomNode,
-  removeCustomNode,
-  addCustomNetwork
-};
 
 interface State {
   isAddingCustomNode: boolean;
@@ -138,7 +117,10 @@ class Header extends Component<Props, State> {
           </section>
         </section>
 
-        <Navigation color={!network.isCustom && network.color} />
+        <Navigation
+          color={!network.isCustom && network.color}
+          unsupportedTabs={network.unsupportedTabs}
+        />
 
         <CustomNodeModal
           isOpen={isAddingCustomNode}
@@ -176,5 +158,25 @@ class Header extends Component<Props, State> {
     }
   }
 }
+
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
+  state,
+  { networkParam }
+): StateProps => ({
+  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
+  isOffline: getOffline(state),
+  isChangingNode: isNodeChanging(state),
+  languageSelection: getLanguageSelection(state),
+  network: getNetworkConfig(state)
+});
+
+const mapDispatchToProps: DispatchProps = {
+  setGasPriceField: transactionFieldsActions.setGasPriceField,
+  changeLanguage,
+  changeNodeRequestedOneTime,
+  addCustomNode,
+  removeCustomNode,
+  addCustomNetwork
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

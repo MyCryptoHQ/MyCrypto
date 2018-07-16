@@ -1,32 +1,31 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import translate from 'translations';
-import TabSection from 'containers/TabSection';
-import { UnlockHeader } from 'components/ui';
-import { getWalletInst } from 'selectors/wallet';
-import { AppState } from 'reducers';
 import { RouteComponentProps, Route, Switch, Redirect } from 'react-router';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { AppState } from 'features/reducers';
+import { walletSelectors } from 'features/wallet';
+import TabSection from 'containers/TabSection';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
+import { UnlockHeader } from 'components/ui';
 import {
   WalletInfo,
   RequestPayment,
   RecentTransactions,
   AddressBook,
-  EthFields,
-  XmrFields,
   UnavailableWallets,
   SideBar
 } from './components';
+import { ETHFields, XMRFields } from './components/Fields';
 import SubTabs, { Tab } from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
-import { isNetworkUnit } from 'selectors/config/wallet';
-import { getNetworkConfig } from 'selectors/config';
+import { getNetworkConfig, isNetworkUnit } from 'features/config';
 import { NetworkConfig } from 'shared/types/network';
 import { Recieve } from './components/Recieve';
 
 const Send = (props: any) => (
   <React.Fragment>
-    {props.network.id === 'XMR' ? <XmrFields /> : <EthFields />}
+    {props.network.id === 'XMR' ? <XMRFields /> : <ETHFields />}
     <UnavailableWallets />
   </React.Fragment>
 );
@@ -150,10 +149,10 @@ class SendTransaction extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: AppState): StateProps => ({
-  wallet: getWalletInst(state),
-  network: getNetworkConfig(state),
-  requestDisabled: !isNetworkUnit(state, 'ETH')
+const mapStateToProps = (state: AppState) => ({
+  wallet: walletSelectors.getWalletInst(state),
+  requestDisabled: !isNetworkUnit(state, 'ETH'),
+  network: getNetworkConfig(state)
 });
 
 export default connect(mapStateToProps)(SendTransaction);

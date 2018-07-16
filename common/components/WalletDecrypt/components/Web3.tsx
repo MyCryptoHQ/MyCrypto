@@ -1,4 +1,5 @@
 import React from 'react';
+
 import translate, { translateRaw } from 'translations';
 import { NewTabLink } from 'components/ui';
 import { PrimaryButton, SecondaryButton } from 'components';
