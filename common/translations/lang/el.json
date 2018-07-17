@@ -296,6 +296,8 @@
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Συνδεθείτε στο TREZOR ",
     "ADD_TREZOR_SELECT": "Αυτός είναι σπόρος του TREZOR ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Συνδεθείτε στο Safe-T mini ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Re-open MyCrypto on a secure (SSL) connection ",
     "ADD_DIGITALBITBOX_0B": "Re-open MyCrypto using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ",
