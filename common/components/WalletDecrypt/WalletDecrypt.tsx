@@ -105,10 +105,10 @@ type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
 type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
 type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallet;
 
-const HARDWARE_WALLET = Object.values(HardwareWalletName);
+const HARDWARE_WALLETS = Object.values(HardwareWalletName);
 /** @desc Hardware wallets are secure too, but we want to avoid duplication. */
 const SECURE_WALLETS = Object.values(SecureWalletName).filter(
-  value => !HARDWARE_WALLET.includes(value)
+  value => !HARDWARE_WALLETS.includes(value)
 );
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
 const MISC_WALLETS = Object.values(MiscWalletName);
@@ -315,7 +315,7 @@ const WalletDecrypt = withRouter<Props>(
           <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
 
           <div className="WalletDecrypt-wallets-row">
-            {HARDWARE_WALLET.map((walletType: SecureWalletName) => {
+            {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];
               return (
                 <WalletButton
