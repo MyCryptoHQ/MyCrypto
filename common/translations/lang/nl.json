@@ -134,6 +134,8 @@
     "ADD_LEDGER_SCAN": "Verbind met Ledger Wallet ",
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Verbind met TREZOR ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Verbind met Safe-T mini ",
     "ADD_METAMASK": "Verbind met MetaMask ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Her-open MyCrypto met een veilige (SSL) verbinding ",

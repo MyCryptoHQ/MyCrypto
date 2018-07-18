@@ -78,6 +78,8 @@
     "X_HARDWARE_WALLET": "하드웨어 지갑",
     "X_HARDWARE_WALLET_2": "하드웨어 지갑 ",
     "ADD_TREZOR_SCAN": "TREZOR에 연결하기 ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Safe-T mini 에 연결하기 ",
     "X_KEEPKEY": "KeepKey 지갑",
     "X_PARITYSIGNER": "Parity Signer ",
     "ADD_PARITY_DESC": "Parity Signer 모바일 앱을 통해 연결 및 서명 ",
