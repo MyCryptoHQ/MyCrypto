@@ -27,5 +27,6 @@ export type ConfigAction = CustomNetworkAction | CustomNodeAction | NodeAction |
 
 export type DPathFormat =
   | SecureWalletName.TREZOR
+  | SecureWalletName.SAFE_T
   | SecureWalletName.LEDGER_NANO_S
   | InsecureWalletName.MNEMONIC_PHRASE;

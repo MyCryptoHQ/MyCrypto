@@ -295,6 +295,8 @@
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Conectar a TREZOR ",
     "ADD_TREZOR_SELECT": "Esto es una semilla TREZOR ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Conectar a Safe-T mini ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Volver a abrir MyCrypto en una conexión segura (SSL) ",
     "ADD_DIGITALBITBOX_0B": "Volver a abrir MyCrypto usando [Chrome](https://www.google.com/chrome/browser/desktop/) u [Opera](https://www.opera.com/) ",
