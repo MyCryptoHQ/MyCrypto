@@ -158,6 +158,7 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
   const CHECK_FORMATS: types.DPathFormat[] = [
     SecureWalletName.LEDGER_NANO_S,
     SecureWalletName.TREZOR,
+    SecureWalletName.SAFE_T,
     InsecureWalletName.MNEMONIC_PHRASE
   ];
 

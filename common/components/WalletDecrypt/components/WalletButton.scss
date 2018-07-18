@@ -30,7 +30,7 @@
   animation: wallet-button-enter 400ms ease 1;
   animation-fill-mode: backwards;
 
-  @for $i from 0 to 5 {
+  @for $i from 0 to 6 {
     &:nth-child(#{$i}) {
       animation-delay: 100ms + ($i * 60ms);
     }
