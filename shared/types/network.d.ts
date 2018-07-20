@@ -45,6 +45,7 @@ interface NetworkContract {
 
 interface DPathFormats {
   trezor?: DPath;
+  safeTmini?: DPath;
   ledgerNanoS?: DPath;
   mnemonicPhrase: DPath;
 }
