@@ -464,6 +464,7 @@
     "LEDGER_WRONG_APP": "Wrong application selected on your device",
     "LEDGER_LOCKED": "Your Ledger device is locked",
     "TREZOR_REFERAL": "Buy a Trezor",
+    "SAFE_T_REFERAL": "Buy a Safe-T mini",
     "KEEPKEY_REFERRAL": "Buy a Keepkey",
     "STEELY_REFERRAL": "Get a Steely",
     "ETHERCARD_REFERAL": "Get an ether.card",
