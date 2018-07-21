@@ -8,7 +8,7 @@ import { NetworkContract } from 'types/network';
 import { isValidAbiJson } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getNetworkContracts, getIsValidAddressFn } from 'features/config';
+import { getNetworkContracts, getIsValidAddressFn, getSelectedNetwork } from 'features/config';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
@@ -22,6 +22,7 @@ interface StateProps {
   currentTo: ReturnType<typeof selectors.getCurrentTo>;
   contracts: NetworkContract[];
   isValidAddress: ReturnType<typeof getIsValidAddressFn>;
+  currentNetwork: string;
 }
 
 interface OwnProps {
@@ -69,6 +70,11 @@ class InteractForm extends Component<Props, State> {
     if (nextProps.currentTo.raw !== prevProps.currentTo.raw) {
       nextProps.resetState();
     }
+
+    if (nextProps.currentNetwork !== prevProps.currentNetwork) {
+      nextProps.resetState();
+      this.setState({ abiJson: '', contract: null });
+    }
   }
 
   public isContractsValid = () => {
@@ -77,7 +83,7 @@ class InteractForm extends Component<Props, State> {
   };
 
   public render() {
-    const { contracts, accessContract, currentTo, isValidAddress } = this.props;
+    const { contracts, accessContract, currentTo, isValidAddress, currentNetwork } = this.props;
     const { abiJson, contract } = this.state;
     const validEthAddress = isValidAddress(
       currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : ''
@@ -105,6 +111,7 @@ class InteractForm extends Component<Props, State> {
             <label className="input-group">
               <div className="input-group-header">{translate('CONTRACT_TITLE_2')}</div>
               <Dropdown
+                key={currentNetwork}
                 className={`${!contract ? 'invalid' : ''}`}
                 value={contract as any}
                 placeholder={this.state.contractPlaceholder}
@@ -212,7 +219,8 @@ class InteractForm extends Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
   contracts: getNetworkContracts(state) || [],
   currentTo: selectors.getCurrentTo(state),
-  isValidAddress: getIsValidAddressFn(state)
+  isValidAddress: getIsValidAddressFn(state),
+  currentNetwork: getSelectedNetwork(state)
 });
 
 export default connect(mapStateToProps, { setCurrentTo })(InteractForm);
