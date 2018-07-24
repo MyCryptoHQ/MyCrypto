@@ -3,6 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { gasPriceDefaults, gasEstimateCacheTime } from 'config';
 import { fetchGasEstimates, GasEstimates } from 'api/gas';
+import { fetchRSKEstimates } from 'api/RSKgas';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as configMetaSelectors from 'features/config/meta/selectors';
@@ -52,6 +53,17 @@ export function* fetchEstimates(): SagaIterator {
     oldEstimates.time + gasEstimateCacheTime > Date.now()
   ) {
     yield put(actions.setGasEstimates(oldEstimates));
+    return;
+  }
+
+  if (network.chainId === 30 || network.chainId === 31) {
+    try {
+      const estimates: GasEstimates = yield call(fetchRSKEstimates, network.chainId);
+      yield put(actions.setGasEstimates(estimates));
+    } catch (err) {
+      console.warn('Failed to fetch RSK gas estimates:', err);
+      yield call(setDefaultEstimates, network);
+    }
     return;
   }
 
