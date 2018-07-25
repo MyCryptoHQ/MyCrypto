@@ -89,7 +89,15 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
     },
     gasPriceSettings: gasPriceDefaults,
-    shouldEstimateGasPrice: true
+    shouldEstimateGasPrice: true,
+    unsupportedTabs: [
+      'NAV_GENERATEWALLET',
+      'NAV_CONTRACTS',
+      'NAV_ENS',
+      'NAV_SIGN',
+      'NAV_TXSTATUS',
+      'NAV_BROADCAST'
+    ]
   },
   Ropsten: {
     id: 'Ropsten',

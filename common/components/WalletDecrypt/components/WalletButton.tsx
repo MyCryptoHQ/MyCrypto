@@ -8,6 +8,7 @@ import './WalletButton.scss';
 
 interface OwnProps {
   name: string;
+  render: boolean;
   description?: string;
   example?: string;
   icon?: string;
@@ -35,7 +36,20 @@ type Props = OwnProps & StateProps;
 
 export class WalletButton extends React.PureComponent<Props> {
   public render() {
-    const { name, icon, helpLink, isSecure, isReadOnly, isDisabled, disableReason } = this.props;
+    const {
+      name,
+      icon,
+      helpLink,
+      isSecure,
+      isReadOnly,
+      isDisabled,
+      disableReason,
+      render
+    } = this.props;
+
+    if (!render) {
+      return null;
+    }
 
     const icons: Icon[] = [];
     if (isReadOnly) {
