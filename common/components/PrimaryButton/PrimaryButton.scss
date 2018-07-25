@@ -1,6 +1,10 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
+a.PrimaryButton {
+  color: white;
+}
+
 .PrimaryButton {
   @include reset-button;
   display: block;

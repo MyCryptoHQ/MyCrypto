@@ -78,7 +78,7 @@ $speed: 500ms;
 
   &-illustration {
     margin-bottom: 2rem;
-    width: 128px;
+    width: 160px;
   }
 
   &-tip {
@@ -103,7 +103,7 @@ $speed: 500ms;
   }
 
   &-btn {
-    margin: auto;
+    margin: auto !important;
     width: 100%;
     max-width: 308px;
     &-wrapper {

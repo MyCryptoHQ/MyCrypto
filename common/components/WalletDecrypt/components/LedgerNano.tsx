@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-
-import { SecureWalletName } from 'config';
+import { SecureWalletName, ledgerReferralURL } from 'config';
 import translate, { translateRaw } from 'translations';
 import { LedgerWallet } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
@@ -71,14 +70,15 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="LedgerDecrypt">
-        <div className="LedgerDecrypt-header">
-          <h2 className="LedgerDecrypt-decrypt-title">
-            {translate('UNLOCK_DEVICE', { $device: translateRaw('X_LEDGER') })}
-          </h2>
-          <p className="LedgerDecrypt-decrypt-desc">
-            {translate('UNLOCK_DEVICE_NEXT_STEP', { $network: this.props.network.name })}{' '}
-          </p>
-        </div>
+        <h2 className="LedgerDecrypt-title">
+          {translate('UNLOCK_DEVICE', { $device: translateRaw('X_LEDGER') })}
+        </h2>
+        <p className="LedgerDecrypt-buy">
+          Don't have a one?{' '}
+          <span>
+            <a href={ledgerReferralURL}>Order now!</a>
+          </span>
+        </p>
         {error && (
           <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error}</div>
         )}

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import translate, { translateRaw } from 'translations';
 import { NewTabLink } from 'components/ui';
 import { PrimaryButton, SecondaryButton } from 'components';
@@ -12,17 +11,14 @@ interface Props {
 
 export const Web3Decrypt: React.SFC<Props> = props => (
   <div className="Web3Decrypt">
-    <div className="Web3Decrypt-header">
-      <h2 className="Web3Decrypt-decrypt-title">{translate('ADD_METAMASK')}</h2>
-    </div>
-    <img src={img} alt="Metamask Logo" className="Web3Decrypt-illustration" />
-    <br />
+    <h2 className="Web3Decrypt-title">{translate('ADD_METAMASK')}</h2>
     <NewTabLink
       className="Web3Decrypt-buy"
       href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
     >
       {translate('ACTION_13', { $thing: 'MetaMask' })}
     </NewTabLink>
+    <img src={img} alt="Metamask Logo" className="Web3Decrypt-illustration" />
     <div className="Web3Decrypt-btn-wrapper">
       <SecondaryButton
         text="Back"

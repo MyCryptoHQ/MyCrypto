@@ -59,22 +59,19 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="TrezorDecrypt">
-        <div className="TrezorDecrypt-header">
-          <h2 className="TrezorDecrypt-decrypt-title">
-            {translate('UNLOCK_DEVICE', { $device: translateRaw('X_TREZOR') })}
-          </h2>
-        </div>
-        {error && (
-          <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error}</div>
-        )}
-        <img src={img} alt="Trezor illustration" className="TrezorDecrypt-illustration" />
-
+        <h2 className="TrezorDecrypt-decrypt-title">
+          {translate('UNLOCK_DEVICE', { $device: translateRaw('X_TREZOR') })}
+        </h2>
         <p className="TrezorDecrypt-buy">
           Don't have a one?{' '}
           <span>
             <a href={trezorReferralURL}>Order now!</a>
           </span>
         </p>
+        {error && (
+          <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error}</div>
+        )}
+        <img src={img} alt="Trezor illustration" className="TrezorDecrypt-illustration" />
 
         <div className="TrezorDecrypt-btn-wrapper">
           <SecondaryButton

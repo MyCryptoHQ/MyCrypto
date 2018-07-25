@@ -8,7 +8,7 @@
 
 .alert {
   padding: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   color: color(text-color-inverted);
 
   @include theme(dark) {
@@ -18,12 +18,12 @@
   }
 
   a {
-    color: #FFF;
+    color: #fff;
     font-weight: normal;
     text-decoration: underline;
 
     &:hover {
-      color: #FFF;
+      color: #fff;
       opacity: 0.8;
     }
   }

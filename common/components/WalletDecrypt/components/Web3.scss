@@ -12,29 +12,29 @@ $speed: 500ms;
 
 .Web3Decrypt {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
   &-header {
     margin-bottom: 3rem;
   }
-  &-decrypt {
-    position: relative;
-
-    &-title {
-      text-align: center;
-      font-size: 24px;
-      line-height: 1;
-      margin: 0;
-      font-weight: normal;
-      animation: enter $speed ease 1;
-    }
-    &-desc {
-      text-align: center;
-      font-size: 16px;
-      line-height: 1;
-      margin: 0;
-      margin-top: 0.5rem;
-      font-weight: 400;
-      animation: enter $speed ease 1;
-    }
+  &-title {
+    text-align: center;
+    font-size: 24px;
+    line-height: 1;
+    margin: 0;
+    font-weight: normal;
+    animation: enter $speed ease 1;
+  }
+  &-desc {
+    text-align: center;
+    font-size: 16px;
+    line-height: 1;
+    margin: 0;
+    margin-top: 0.5rem;
+    font-weight: 400;
+    animation: enter $speed ease 1;
   }
 
   &-help {
@@ -54,9 +54,13 @@ $speed: 500ms;
   }
 
   &-buy {
-    display: block;
-    font-size: 1rem;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1;
+    margin: 0;
+    margin-top: 0.5rem;
     font-weight: 400;
+    animation: decrypt-enter 500ms ease 1;
     margin-bottom: 3rem;
   }
 
@@ -71,8 +75,9 @@ $speed: 500ms;
   }
 
   &-illustration {
+    margin: auto;
     margin-bottom: 2rem;
-    width: 128px;
+    width: 160px;
   }
 
   &-tip {

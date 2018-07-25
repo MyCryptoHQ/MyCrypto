@@ -90,14 +90,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     },
     gasPriceSettings: gasPriceDefaults,
     shouldEstimateGasPrice: true,
-    unsupportedTabs: [
-      'NAV_GENERATEWALLET',
-      'NAV_CONTRACTS',
-      'NAV_ENS',
-      'NAV_SIGN',
-      'NAV_TXSTATUS',
-      'NAV_BROADCAST'
-    ]
+    unsupportedTabs: [TAB.CREATE, TAB.CONTRACTS, TAB.ENS, TAB.SIGN, TAB.TXSTATUS, TAB.BROADCAST]
   },
   Ropsten: {
     id: 'Ropsten',

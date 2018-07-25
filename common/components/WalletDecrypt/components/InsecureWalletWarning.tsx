@@ -1,6 +1,6 @@
 import React from 'react';
-import translate from 'translations';
-import { NewTabLink } from 'components/ui';
+import translate, { translateRaw } from 'translations';
+import { PrimaryButton, SecondaryButton } from 'components';
 import './InsecureWalletWarning.scss';
 
 interface Props {
@@ -25,17 +25,18 @@ export class InsecureWalletWarning extends React.Component<Props> {
           {translate('INSECURE_WALLET_TYPE_DESC', { $wallet_type: walletType })}
         </p>
 
-        <div className="WalletWarning-buttons">
-          <NewTabLink
+        <div className="WalletWarning-btn-wrapper">
+          <SecondaryButton
+            text={translateRaw('ACTION_4')}
+            onClick={onCancel}
+            className="WalletWarning-btn"
+          />
+          <div className="flex-spacer" />
+          <PrimaryButton
+            text={translateRaw('WALLET_SUGGESTION_DESKTOP_APP')}
             href="https://download.mycrypto.com/"
-            className="WalletWarning-buttons-btn is-download btn btn-lg btn-primary"
-          >
-            {translate('WALLET_SUGGESTION_DESKTOP_APP')}
-          </NewTabLink>
-          <button className="WalletWarning-buttons-btn is-cancel" onClick={onCancel}>
-            <i className="fa fa-arrow-left" />
-            {translate('INSECURE_WALLET_GO_BACK')}
-          </button>
+            className="WalletWarning-btn"
+          />
         </div>
       </div>
     );

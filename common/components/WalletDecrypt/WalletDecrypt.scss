@@ -61,14 +61,16 @@ $speed: 500ms;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
+      margin: auto;
       margin-bottom: 1rem;
+      max-width: 895px;
 
       @media screen and (max-width: $screen-xs) {
         margin: 0;
       }
 
       &:last-child {
-        margin: 0;
+        margin: auto;
       }
     }
 
@@ -127,9 +129,10 @@ $speed: 500ms;
 
     &-override {
       position: absolute;
-      bottom: 0;
-      right: 0;
-      opacity: 0.3;
+      bottom: -15%;
+      right: 50%;
+      transform: translateX(50%);
+      opacity: 0.8;
 
       &:hover {
         opacity: 1;
