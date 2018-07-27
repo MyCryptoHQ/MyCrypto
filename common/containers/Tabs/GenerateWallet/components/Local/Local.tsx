@@ -113,6 +113,8 @@ export default class GenerateLocal extends Component<{}, State> {
   }
 
   private initialize = () => {
+    db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
+
     db.find({}, (err: any, docs: any) => {
       if (err) {
         console.log(err);

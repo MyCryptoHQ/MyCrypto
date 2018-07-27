@@ -14,15 +14,18 @@ import { Link } from 'react-router-dom';
 import TabSection from 'containers/TabSection';
 
 let db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
-let raindropDb = new Datastore({ filename: __dirname + 'hydroID4', autoload: true });
+let raindropDb = new Datastore({ filename: __dirname + 'hydroID45', autoload: true });
 
 const verifiedString = 'verified';
 const hydroIdString = 'hydroId';
+const confirmedString = 'confirmed';
 
 export enum Steps {
   NoWallet = 'no_wallet',
   Initializing = 'initializing',
   Register = 'register',
+  Confirm = 'confirm',
+  LoadWallet = 'load',
   Password = 'password',
   Mfa = 'mfa',
   Final = 'final'
@@ -186,7 +189,7 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
     const hide = !loaded || (hydroId != null && registered);
 
     db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
-    raindropDb = new Datastore({ filename: __dirname + 'hydroID4', autoload: true });
+    raindropDb = new Datastore({ filename: __dirname + 'hydroID45', autoload: true });
 
     let content;
 
@@ -232,6 +235,26 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
         );
         break;
 
+      case Steps.Confirm:
+        content = (
+          <form>
+            <div>
+              <label className="WalletDecrypt-decrypt-label">
+                <p>Please sign the message in your Hydro App</p>
+                <p>{message}</p>
+              </label>
+              <br />
+
+              <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.confirmMfa}>
+                <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+                  Continue
+                </a>
+              </label>
+            </div>
+          </form>
+        );
+        break;
+
       case Steps.Mfa:
         content = (
           <form>
@@ -252,16 +275,34 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
         );
         break;
 
+      case Steps.LoadWallet:
+        content = (
+          <form>
+            <div>
+              <label
+                htmlFor="fselector"
+                style={{ width: '100%' }}
+                onClick={this.handleFileSelection}
+              >
+                <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+                  Load Wallet
+                </a>
+              </label>
+
+              <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.removeHydroId}>
+                <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+                  Remove Hydro ID
+                </a>
+              </label>
+            </div>
+          </form>
+        );
+        break;
+
       case Steps.Password:
         content = (
           <form onSubmit={this.unlock}>
             <div className="form-group">
-              {/* <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.handleFileSelection}>
-                            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-                              Load Wallet
-                            </a>
-                          </label> */}
-
               {isWalletPending ? <Spinner /> : ''}
               <Input
                 isValid={password.length > 0}
@@ -324,73 +365,6 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
     }
 
     return content;
-
-    /*return (
-      <form onSubmit={this.unlock}>
-        <div hidden={hide}>
-          <label className="WalletDecrypt-decrypt-label">
-            <span>Please register your Hydro ID</span>
-          </label>
-          <br />
-
-          <Input
-            isValid={true}
-            className={`${file.length && isWalletPending ? 'hidden' : ''}`}
-            value={hydroId}
-            onChange={this.onHydroIdChange}
-            onKeyDown={this.onKeyDown}
-            placeholder="Hydro ID"
-          />
-          <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.registerUser}>
-            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              Register
-            </a>
-          </label>
-        </div>
-        <br />
-        <div className="form-group">
-          <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.handleFileSelection}>
-            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              Load Wallet
-            </a>
-          </label>
-
-          {isWalletPending ? <Spinner /> : ''}
-          <Input
-            isValid={password.length > 0}
-            className={`${file.length && isWalletPending ? 'hidden' : ''}`}
-            value={password}
-            onChange={this.onPasswordChange}
-            onKeyDown={this.onKeyDown}
-            placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-            type="password"
-          />
-        </div>
-
-        <button className="btn btn-primary btn-block">{translate('ADD_LABEL_6_SHORT')}</button>
-
-        <br />
-
-        <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.deleteLocalWallet1} hidden={delete_one || delete_two}>
-          <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-            Delete Local Wallet
-          </a>
-        </label>
-        <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.deleteLocalWallet2} hidden={!delete_one}>
-          <p>Are you sure you want to do this? You want be able to access your wallet here anymore.</p>
-          <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-            Yes Delete Local Wallet
-          </a>
-        </label>
-        <label htmlFor="fselector" style={{ width: '100%' }} onClick={this.deleteLocalWallet3} hidden={!delete_two}>
-          <p>Last chance to turn back.</p>
-          <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-            Just Do It Already
-          </a>
-        </label>
-
-      </form>
-    );*/
   }
 
   private setInitializing = () => {
@@ -405,10 +379,63 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
   };
 
   private submitMfa = () => {
-    this.props.onChange({
-      ...this.props.value,
-      step: Steps.Password
-    });
+    const { value: { hydroId } } = this.props;
+
+    fetch('https://arcane-meadow-23743.herokuapp.com/verify', {
+      method: 'post',
+      body: JSON.stringify({ user: hydroId }),
+      headers: new Headers({ 'Content-Type': 'application/json' })
+    })
+      .then(response => response.text())
+      .then(body => {
+        const jsonBody = JSON.parse(body);
+        if (jsonBody[verifiedString]) {
+          this.props.onChange({
+            ...this.props.value,
+            step: Steps.LoadWallet
+          });
+        } else {
+          alert('something went wrong');
+        }
+      });
+  };
+
+  private confirmMfa = () => {
+    const { value: { hydroId } } = this.props;
+
+    fetch('https://arcane-meadow-23743.herokuapp.com/verify', {
+      method: 'post',
+      body: JSON.stringify({ user: hydroId }),
+      headers: new Headers({ 'Content-Type': 'application/json' })
+    })
+      .then(response => response.text())
+      .then(body => {
+        const jsonBody = JSON.parse(body);
+        if (jsonBody[verifiedString]) {
+          console.log('updating db');
+
+          raindropDb.remove({}, { multi: true }, (error: any, numRemoved: any) => {
+            if (error) {
+              console.log(error);
+              alert('Something went wrong deleting your Hydro ID. Please try again.');
+            } else {
+              const doc = { hydroId: hydroId, confirmed: 1 };
+              raindropDb.insert(doc, (error, newDoc) => {
+                if (!error) {
+                  this.props.onChange({
+                    ...this.props.value,
+                    registered: true,
+                    step: Steps.LoadWallet
+                  });
+                }
+              });
+            }
+          });
+        } else {
+          alert('You did not correctly link your Hydro ID');
+          this.removeHydroId();
+        }
+      });
   };
 
   private deleteLocalWallet1 = () => {
@@ -438,7 +465,7 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
   };
 
   private loadHydroId = () => {
-    const { value: { hydroId } } = this.props;
+    const { value: { hydroId, registered } } = this.props;
 
     db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
 
@@ -466,6 +493,9 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
             console.log('loaded hydro id');
 
             let tempHydroId = docs[0][hydroIdString];
+            let confirmed = docs[0][confirmedString];
+
+            console.log(confirmed);
 
             fetch('https://arcane-meadow-23743.herokuapp.com/message', {
               method: 'post',
@@ -474,14 +504,25 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
             })
               .then(response => response.text())
               .then(body => {
-                this.props.onChange({
-                  ...this.props.value,
-                  hydroId: tempHydroId,
-                  loaded: true,
-                  registered: true,
-                  step: Steps.Mfa,
-                  message: body
-                });
+                if (confirmed === 1) {
+                  this.props.onChange({
+                    ...this.props.value,
+                    hydroId: tempHydroId,
+                    loaded: true,
+                    registered: true,
+                    step: Steps.Mfa,
+                    message: body
+                  });
+                } else {
+                  this.props.onChange({
+                    ...this.props.value,
+                    hydroId: tempHydroId,
+                    loaded: true,
+                    registered: false,
+                    step: Steps.Confirm,
+                    message: body
+                  });
+                }
               });
           } else {
             this.props.onChange({
@@ -511,23 +552,10 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
   };
 
   private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
-    const { value: { hydroId } } = this.props;
     e.preventDefault();
     e.stopPropagation();
-    fetch('https://arcane-meadow-23743.herokuapp.com/verify', {
-      method: 'post',
-      body: JSON.stringify({ user: hydroId }),
-      headers: new Headers({ 'Content-Type': 'application/json' })
-    })
-      .then(response => response.text())
-      .then(body => {
-        const jsonBody = JSON.parse(body);
-        if (jsonBody[verifiedString]) {
-          this.props.onUnlock();
-        } else {
-          alert('something went wrong');
-        }
-      });
+
+    this.props.onUnlock();
   };
 
   private onPasswordChange = (e: any) => {
@@ -558,7 +586,8 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
           file: keystore,
           valid: keystore != null && !passReq,
           password: '',
-          filename: 'local'
+          filename: 'local',
+          step: Steps.Password
         });
         this.props.onUnlock();
       }
@@ -573,7 +602,7 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
         alert('Something went wrong. Please reload your wallet.');
       }
       if (docs.length === 0) {
-        const doc = { hydroId: hydroId };
+        const doc = { hydroId: hydroId, confirmed: 0 };
         raindropDb.insert(doc, (error, newDoc) => {
           if (error) {
             console.log(error);
@@ -589,15 +618,50 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
         })
           .then(response => {
             response.text();
-            console.log('got response');
           })
           .then(body => {
             this.props.onChange({
               ...this.props.value,
               hydroId: hydroId,
-              registered: true
+              registered: true,
+              step: Steps.Initializing
             });
           });
+      }
+    });
+  };
+
+  private removeHydroId = () => {
+    const { value: { hydroId } } = this.props;
+    raindropDb.find({}, (err: any, docs: any) => {
+      if (err) {
+        console.log(err);
+        alert('Something went wrong. Please reload your wallet.');
+      }
+      if (docs.length !== 0) {
+        raindropDb.remove({}, { multi: true }, (error: any, numRemoved: any) => {
+          if (error) {
+            console.log(error);
+            alert('Something went wrong deleting your Hydro ID. Please try again.');
+          } else {
+            fetch('https://arcane-meadow-23743.herokuapp.com/unregister', {
+              method: 'post',
+              body: JSON.stringify({ user: hydroId }),
+              headers: new Headers({ 'Content-Type': 'application/json' })
+            })
+              .then(response => {
+                response.text();
+              })
+              .then(body => {
+                this.props.onChange({
+                  ...this.props.value,
+                  hydroId: '',
+                  registered: false,
+                  step: Steps.Register
+                });
+              });
+          }
+        });
       }
     });
   };
