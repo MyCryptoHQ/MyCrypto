@@ -11,9 +11,10 @@ import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
 import Datastore from 'nedb';
 
-const db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
+let db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
 
 export enum Steps {
+  Initialize = 'initialize',
   Password = 'password',
   Download = 'download',
   Paper = 'paper',
@@ -27,27 +28,39 @@ interface State {
   filename: string;
   privateKey: string;
   isGenerating: boolean;
+  localWallet: boolean;
 }
 
 export default class GenerateLocal extends Component<{}, State> {
   public state: State = {
-    activeStep: Steps.Password,
+    activeStep: Steps.Initialize,
     password: '',
     keystore: null,
     filename: '',
     privateKey: '',
-    isGenerating: false
+    isGenerating: false,
+    localWallet: false
   };
 
   public render() {
-    const { activeStep, keystore, privateKey, filename, isGenerating } = this.state;
+    const { activeStep, keystore, privateKey, filename, isGenerating, localWallet } = this.state;
     let content;
 
     switch (activeStep) {
+      case Steps.Initialize:
+        this.initialize();
+        content = <h2>Loading...</h2>;
+
       case Steps.Password:
-        content = (
-          <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
-        );
+        console.log(localWallet);
+        if (localWallet) {
+          content = <p>You already have a local wallet.</p>;
+        } else {
+          content = (
+            <EnterPassword continue={this.generateWalletAndContinue} isGenerating={isGenerating} />
+          );
+        }
+
         break;
 
       case Steps.Download:
@@ -98,6 +111,26 @@ export default class GenerateLocal extends Component<{}, State> {
 
     return content;
   }
+
+  private initialize = () => {
+    db.find({}, (err: any, docs: any) => {
+      if (err) {
+        console.log(err);
+        alert('Something went wrong.');
+      }
+      if (docs.length === 0) {
+        this.setState({
+          activeStep: Steps.Password,
+          localWallet: false
+        });
+      } else {
+        this.setState({
+          activeStep: Steps.Password,
+          localWallet: true
+        });
+      }
+    });
+  };
 
   private generateWalletAndContinue = (password: string) => {
     this.setState({ isGenerating: true });
