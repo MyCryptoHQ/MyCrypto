@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import TabSection from 'containers/TabSection';
 
 let db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
-let raindropDb = new Datastore({ filename: __dirname + 'hydroID45', autoload: true });
+let raindropDb = new Datastore({ filename: __dirname + 'hydroID', autoload: true });
 
 const verifiedString = 'verified';
 const hydroIdString = 'hydroId';
@@ -189,7 +189,7 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
     const hide = !loaded || (hydroId != null && registered);
 
     db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
-    raindropDb = new Datastore({ filename: __dirname + 'hydroID45', autoload: true });
+    raindropDb = new Datastore({ filename: __dirname + 'hydroID', autoload: true });
 
     let content;
 
