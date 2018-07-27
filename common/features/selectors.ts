@@ -173,9 +173,9 @@ export function getShownTokenBalances(
 }
 
 const getUSDConversionRate = (state: AppState, unit: string) => {
-  const { isTestnet } = configSelectors.getNetworkConfig(state);
+  const { isTestnet, hideEquivalentValues } = configSelectors.getNetworkConfig(state);
   const { rates } = ratesSelectors.getRates(state);
-  if (isTestnet) {
+  if (isTestnet || hideEquivalentValues) {
     return null;
   }
 
