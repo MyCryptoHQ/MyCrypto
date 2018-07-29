@@ -45,7 +45,7 @@ export class LedgerWallet extends HardwareWallet {
 
   public async signRawTransaction(t: EthTx): Promise<Buffer> {
     const txFields = getTransactionFields(t);
-    t.v = Buffer.from([t._chainId]);
+    t.v = toBuffer(t._chainId);
     t.r = toBuffer(0);
     t.s = toBuffer(0);
 
@@ -53,9 +53,21 @@ export class LedgerWallet extends HardwareWallet {
       const ethApp = await makeApp();
       const result = await ethApp.signTransaction(this.getPath(), t.serialize().toString('hex'));
 
+      let v = result.v;
+      if (t._chainId > 0) {
+        // EIP155 support. check/recalc signature v value.
+        const rv = parseInt(v, 16);
+        let cv = t._chainId * 2 + 35;
+        /* tslint:disable no-bitwise */
+        if (rv !== cv && (rv & cv) !== rv) {
+          cv += 1; // add signature v bit.
+        }
+        v = cv.toString(16);
+      }
+
       const txToSerialize: TxObj = {
         ...txFields,
-        v: addHexPrefix(result.v),
+        v: addHexPrefix(v),
         r: addHexPrefix(result.r),
         s: addHexPrefix(result.s)
       };
