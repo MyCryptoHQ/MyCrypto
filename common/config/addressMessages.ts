@@ -9,6 +9,10 @@ export interface AddressMessage {
 
 // MAKE SURE THE ADDRESS KEY IS EITHER LOWER CASED OR CHECKSUMMED.
 export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
+  '0xC33B16198DD9FB3bB342d8119694f94aDfcdca23': {
+    gasLimit: 0,
+    msg: 'This addresses has been associated with an ongoing issue with the Ledger Chrome App. Monitor their twitter account for updates at: https://twitter.com/LedgerHQ'
+  },
   '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520': {
     msg: 'Thank you for donating to MyCrypto. TO THE MOON!'
   },
