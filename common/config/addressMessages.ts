@@ -11,7 +11,7 @@ export interface AddressMessage {
 export const ADDRESS_MESSAGES: { [key: string]: AddressMessage } = {
   '0xC33B16198DD9FB3bB342d8119694f94aDfcdca23': {
     gasLimit: 0,
-    msg: 'This addresses has been associated with an ongoing issue with the Ledger Chrome App. Monitor their twitter account for updates at: https://twitter.com/LedgerHQ'
+    msg: 'This address has been associated with an issue with the Ledger Chrome App. Do not send to this address. Monitor [their Twitter account](https://twitter.com/LedgerHQ) for updates.'
   },
   '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520': {
     msg: 'Thank you for donating to MyCrypto. TO THE MOON!'
