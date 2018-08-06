@@ -11,7 +11,7 @@ import EnterPassword from './EnterPassword';
 import PaperWallet from './PaperWallet';
 import Datastore from 'nedb';
 
-let db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
+let db = new Datastore({ filename: '/LocalWallet', autoload: true });
 
 export enum Steps {
   Initialize = 'initialize',
@@ -113,7 +113,7 @@ export default class GenerateLocal extends Component<{}, State> {
   }
 
   private initialize = () => {
-    db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
+    db = new Datastore({ filename: '/LocalWallet', autoload: true });
 
     db.find({}, (err: any, docs: any) => {
       if (err) {

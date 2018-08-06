@@ -13,8 +13,8 @@ import { Route, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 import TabSection from 'containers/TabSection';
 
-let db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
-let raindropDb = new Datastore({ filename: __dirname + 'hydroID', autoload: true });
+let db = new Datastore({ filename: '/LocalWallet', autoload: true });
+let raindropDb = new Datastore({ filename: '/LocalHydroID', autoload: true });
 
 const verifiedString = 'verified';
 const hydroIdString = 'hydroId';
@@ -188,8 +188,8 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
 
     const hide = !loaded || (hydroId != null && registered);
 
-    db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
-    raindropDb = new Datastore({ filename: __dirname + 'hydroID', autoload: true });
+    db = new Datastore({ filename: '/LocalWallet', autoload: true });
+    raindropDb = new Datastore({ filename: '/LocalHydroID', autoload: true });
 
     let content;
 
@@ -455,19 +455,21 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
 
   private deleteLocalWallet3 = () => {
     db.remove({}, { multi: true }, (err: any, numRemoved: any) => {
-      alert('Local wallet successfully deleted');
-      this.props.onChange({
-        ...this.props.value,
-        delete_one: false,
-        delete_two: false
+      raindropDb.remove({}, { multi: true }, (err: any, numRemoved: any) => {
+        alert('Local wallet successfully deleted');
+
+        this.props.onChange({
+          ...this.props.value,
+          hydroId: '',
+          delete_one: false,
+          delete_two: false
+        });
       });
     });
   };
 
   private loadHydroId = () => {
     const { value: { hydroId, registered } } = this.props;
-
-    db = new Datastore({ filename: __dirname + 'wallet', autoload: true });
 
     db.find({}, (err: any, docs: any) => {
       console.log('loading wallet');
@@ -495,7 +497,7 @@ export class KeystoreLocalDecrypt extends Component<RouteComponentProps<{}>> {
             let tempHydroId = docs[0][hydroIdString];
             let confirmed = docs[0][confirmedString];
 
-            console.log(confirmed);
+            console.log('Hydro ID: ' + tempHydroId);
 
             fetch('https://arcane-meadow-23743.herokuapp.com/message', {
               method: 'post',
