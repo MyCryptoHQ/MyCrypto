@@ -1,0 +1,20 @@
+.Stepper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  .step {
+    color: transparent;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    margin: 0px 4px;
+    background-color: white;
+    box-sizing: content-box;
+    border: solid 5px #1097c0;
+    cursor: pointer;
+    &.active {
+      background-color: #1097c0;
+      border: solid 5px #ffffff;
+    }
+  }
+}

@@ -12,6 +12,7 @@ export interface IButton {
   onClick?(): void;
 }
 interface Props {
+  className?: string;
   isOpen?: boolean;
   title?: React.ReactNode;
   disableButtons?: boolean;
@@ -19,6 +20,7 @@ interface Props {
   children: React.ReactNode;
   buttons?: IButton[];
   maxWidth?: number;
+  closeable?: boolean;
   handleClose(): void;
 }
 interface ModalStyle {
@@ -30,7 +32,10 @@ const Fade = ({ ...props }: any) => (
   <CSSTransition {...props} timeout={300} classNames="animate-modal" />
 );
 
-export default class Modal extends PureComponent<Props, {}> {
+export default class Modal extends React.Component<Props> {
+  public static defaultProps = {
+    closeable: true
+  };
   public modalParent: HTMLElement;
   public modalBody: ModalBody;
 
@@ -58,6 +63,7 @@ export default class Modal extends PureComponent<Props, {}> {
 
   public render() {
     const {
+      className,
       isOpen,
       title,
       children,
@@ -65,6 +71,7 @@ export default class Modal extends PureComponent<Props, {}> {
       disableButtons,
       hideButtons,
       handleClose,
+      closeable,
       maxWidth
     } = this.props;
     const hasButtons = buttons && buttons.length;
@@ -76,6 +83,7 @@ export default class Modal extends PureComponent<Props, {}> {
     }
 
     const modalBodyProps = {
+      className,
       title,
       children,
       modalStyle,
@@ -83,7 +91,8 @@ export default class Modal extends PureComponent<Props, {}> {
       buttons,
       disableButtons,
       hideButtons,
-      handleClose
+      handleClose,
+      closeable
     };
 
     const modal = (
@@ -92,7 +101,7 @@ export default class Modal extends PureComponent<Props, {}> {
           // Trap focus in modal by focusing the first element after the animation is complete
           <Fade onEntered={() => this.modalBody.firstTabStop.focus()}>
             <div>
-              <div className="Modal-overlay" onClick={handleClose} />
+              <div className="Modal-overlay" onClick={closeable ? handleClose : () => []} />
               <ModalBody {...modalBodyProps} ref={div => (this.modalBody = div as ModalBody)} />
             </div>
           </Fade>

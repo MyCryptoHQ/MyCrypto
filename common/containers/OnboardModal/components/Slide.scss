@@ -1,0 +1,49 @@
+.Slide {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 500px;
+  margin: -1.5rem -2rem;
+
+  &-content {
+    padding: 1.5rem 3rem;
+    width: 67%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h1 {
+      color: #4a4a4a;
+      font-size: 30px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 18px;
+      font-weight: 400;
+      max-width: 40ch;
+      color: #000000;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  &-supporting-info {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 33%;
+    background-color: #1097c0;
+    padding: 1.5rem;
+    &-myc-logo {
+      width: 152px;
+    }
+    &-illustration {
+      padding: 1.5rem;
+      width: 100%;
+    }
+  }
+}

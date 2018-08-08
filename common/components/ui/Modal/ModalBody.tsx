@@ -1,15 +1,16 @@
 import React, { CSSProperties } from 'react';
-
 import closeIcon from 'assets/images/close.svg';
 import { IButton } from 'components/ui/Modal';
 
 interface Props {
+  className?: string;
   title?: React.ReactNode;
   children: React.ReactNode;
   modalStyle?: CSSProperties;
   hasButtons?: number;
   buttons?: IButton[];
   disableButtons?: boolean;
+  closeable?: boolean;
   hideButtons?: boolean;
   handleClose(): void;
 }
@@ -46,10 +47,18 @@ export default class ModalBody extends React.Component<Props> {
   };
 
   public render() {
-    const { title, children, modalStyle, hasButtons, hideButtons, handleClose } = this.props;
+    const {
+      title,
+      children,
+      modalStyle,
+      hasButtons,
+      hideButtons,
+      handleClose,
+      className
+    } = this.props;
     return (
       <div
-        className="Modal"
+        className={`Modal ${className}`}
         style={modalStyle}
         role="dialog"
         aria-labelledby="Modal-header-title"
@@ -69,7 +78,7 @@ export default class ModalBody extends React.Component<Props> {
 
         <div className="Modal-content" ref={div => (this.modalContent = div as HTMLElement)}>
           {children}
-          <div className={`Modal-fade ${!hasButtons || hideButtons ? 'has-no-footer' : ''}`} />
+          {/* <div className={`Modal-fade ${!hasButtons || hideButtons ? 'has-no-footer' : ''}`} /> */}
         </div>
         {hasButtons && !hideButtons && <div className="Modal-footer">{this.renderButtons()}</div>}
       </div>
@@ -122,7 +131,7 @@ export default class ModalBody extends React.Component<Props> {
     }
 
     // Check for ESC key press
-    if (e.keyCode === 27) {
+    if (e.keyCode === 27 && this.props.closeable) {
       this.focusedElementBeforeModal.focus();
       this.props.handleClose();
     }
