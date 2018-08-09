@@ -71,16 +71,10 @@ export default class Modal extends React.Component<Props> {
       disableButtons,
       hideButtons,
       handleClose,
-      closeable,
-      maxWidth
+      closeable
     } = this.props;
     const hasButtons = buttons && buttons.length;
     const modalStyle: ModalStyle = {};
-
-    if (maxWidth) {
-      modalStyle.width = '100%';
-      modalStyle.maxWidth = `${maxWidth}px`;
-    }
 
     const modalBodyProps = {
       className,

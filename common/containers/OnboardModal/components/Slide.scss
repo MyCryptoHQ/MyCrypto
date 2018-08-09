@@ -19,6 +19,12 @@
       font-weight: 600;
       margin-bottom: 1rem;
     }
+    li {
+      font-size: 18px;
+      font-weight: 400;
+      max-width: 40ch;
+      color: #000000;
+    }
     p {
       font-size: 18px;
       font-weight: 400;
@@ -43,7 +49,8 @@
     }
     &-illustration {
       padding: 1.5rem;
-      width: 100%;
+      width: 250px;
+      height: 250px;
     }
   }
 }
