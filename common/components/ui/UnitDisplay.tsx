@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { fromTokenBase, getDecimalFromEtherUnit, UnitKey, Wei, TokenValue } from 'libs/units';
 import { formatNumber as format } from 'utils/formatters';
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/config';
 import Spinner from 'components/ui/Spinner';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
 
 interface Props {
   /**
@@ -70,7 +71,7 @@ const UnitDisplay: React.SFC<EthProps | TokenProps> = params => {
     element = (
       <span>
         {formattedValue}
-        <span>{symbol ? ` ${symbol}` : ''}</span>
+        <span>{symbol ? <>&nbsp;{symbol}</> : ''}</span>
       </span>
     );
   }

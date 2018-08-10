@@ -17,7 +17,7 @@ $speed: 500ms;
 @mixin decrypt-title {
   text-align: center;
   line-height: 1;
-  margin: 0 0 30px;
+  margin: $space 0 2rem;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
 }
@@ -26,6 +26,8 @@ $speed: 500ms;
   position: relative;
 
   &-wallets {
+    margin: 0 -$space-md;
+
     &-title {
       @include decrypt-title;
     }
@@ -40,7 +42,6 @@ $speed: 500ms;
         margin: 0;
       }
 
-
       &:last-child {
         margin: 0;
       }
@@ -49,7 +50,7 @@ $speed: 500ms;
     &-generate {
       text-align: center;
       font-weight: 300;
-      margin-top: $space;
+      margin: $space 0;
     }
   }
 
@@ -57,6 +58,10 @@ $speed: 500ms;
     position: relative;
     text-align: center;
     padding-bottom: $space;
+
+    @media (max-width: $screen-md) {
+      padding-bottom: $space * 2;
+    }
 
     &-back {
       @include reset-button;
@@ -80,7 +85,6 @@ $speed: 500ms;
       }
 
       &:active {
-        outline: none;
         opacity: 1;
       }
 
@@ -99,6 +103,25 @@ $speed: 500ms;
       max-width: 360px;
       margin: 0 auto;
     }
+    &-label {
+      opacity: 0.8;
+      font-weight: 300;
+      white-space: nowrap;
+      width: 60%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &-override {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      opacity: 0.3;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 }
 
@@ -106,7 +129,7 @@ $speed: 500ms;
 .DecryptContent {
   &-enter {
     opacity: 0;
-    transition: opacity $speed * .25 ease $speed * .125;
+    transition: opacity $speed * 0.25 ease $speed * 0.125;
 
     &-active {
       opacity: 1;
@@ -119,7 +142,7 @@ $speed: 500ms;
     left: 0;
     width: 100%;
     opacity: 1;
-    transition: opacity $speed * .25 ease;
+    transition: opacity $speed * 0.25 ease;
     pointer-events: none;
 
     &-active {

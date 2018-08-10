@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Query, Param } from './Query';
 
 interface Props {

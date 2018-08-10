@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { sanitizeNumericalInput } from 'libs/values';
+import { AppState } from 'features/reducers';
+import { transactionFieldsActions } from 'features/transaction';
+import { scheduleSelectors } from 'features/schedule';
 import { GasQuery } from 'components/renderCbs';
 import { GasLimitInput } from './GasLimitInputFactory';
-import { inputGasLimit, TInputGasLimit } from 'actions/transaction';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { sanitizeNumericalInput } from 'libs/values';
 
 const defaultGasLimit = '21000';
 
@@ -16,18 +18,26 @@ export interface CallBackProps {
 }
 
 interface DispatchProps {
-  inputGasLimit: TInputGasLimit;
+  inputGasLimit: transactionFieldsActions.TInputGasLimit;
 }
+
 interface OwnProps {
   gasLimit: string | null;
+  scheduling: boolean;
+
   withProps(props: CallBackProps): React.ReactElement<any> | null;
 }
 
 type Props = DispatchProps & OwnProps;
 
-class GasLimitFieldClass extends Component<Props, {}> {
+class GasLimitFieldClass extends Component<Props> {
   public componentDidMount() {
-    const { gasLimit } = this.props;
+    const { gasLimit, scheduling } = this.props;
+
+    if (scheduling) {
+      return;
+    }
+
     if (gasLimit) {
       this.props.inputGasLimit(gasLimit);
     } else {
@@ -45,7 +55,12 @@ class GasLimitFieldClass extends Component<Props, {}> {
   };
 }
 
-const GasLimitField = connect(null, { inputGasLimit })(GasLimitFieldClass);
+const GasLimitField = connect(
+  (state: AppState) => ({
+    scheduling: scheduleSelectors.getSchedulingToggle(state).value
+  }),
+  { inputGasLimit: transactionFieldsActions.inputGasLimit }
+)(GasLimitFieldClass);
 
 interface DefaultGasLimitFieldProps {
   withProps(props: CallBackProps): React.ReactElement<any> | null;

@@ -1,23 +1,24 @@
+import React, { PureComponent } from 'react';
+
+import { donationAddressMap, WhitelistedCoins } from 'config';
+import translate, { translateRaw } from 'translations';
+import { isValidBTCAddress, isValidETHAddress, isValidXMRAddress } from 'libs/validators';
+import { combineAndUpper } from 'utils/formatters';
+import { SwapInput } from 'features/swap/types';
 import {
   TBityOrderCreateRequestedSwap,
   TChangeStepSwap,
   TDestinationAddressSwap,
   TShapeshiftOrderCreateRequestedSwap,
   TStopLoadBityRatesSwap
-} from 'actions/swap';
-import { SwapInput } from 'reducers/swap/types';
-import classnames from 'classnames';
+} from 'features/swap/actions';
 import SimpleButton from 'components/ui/SimpleButton';
-import { donationAddressMap } from 'config';
-import { isValidBTCAddress, isValidETHAddress } from 'libs/validators';
-import React, { PureComponent } from 'react';
-import translate from 'translations';
-import { combineAndUpper } from 'utils/formatters';
+import { Input } from 'components/ui';
 import './ReceivingAddress.scss';
 
 export interface StateProps {
   origin: SwapInput;
-  destinationId: keyof typeof donationAddressMap;
+  destinationId: WhitelistedCoins;
   isPostingOrder: boolean;
   destinationAddress: string;
   destinationKind: number;
@@ -46,7 +47,7 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
     if (provider === 'shapeshift') {
       this.props.shapeshiftOrderCreateRequestedSwap(
         destinationAddress,
-        origin.id,
+        origin.label,
         destinationId,
         destinationKind
       );
@@ -54,27 +55,29 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
       this.props.bityOrderCreateRequestedSwap(
         origin.amount as number,
         this.props.destinationAddress,
-        combineAndUpper(origin.id, destinationId)
+        combineAndUpper(origin.label, destinationId)
       );
     }
   };
 
   public render() {
     const { destinationId, destinationAddress, isPostingOrder } = this.props;
-    let validAddress;
-    // TODO - find better pattern here once currencies move beyond BTC, ETH, REP
-    if (destinationId === 'BTC') {
-      validAddress = isValidBTCAddress(destinationAddress);
-    } else {
-      validAddress = isValidETHAddress(destinationAddress);
-    }
 
-    const inputClasses = classnames({
-      'SwapAddress-address-input': true,
-      'form-control': true,
-      'is-valid': validAddress,
-      'is-invalid': !validAddress
-    });
+    const addressValidators: { [coinOrToken: string]: (address: string) => boolean } = {
+      BTC: isValidBTCAddress,
+      XMR: isValidXMRAddress,
+      ETH: isValidETHAddress
+    };
+    // If there is no matching validator for the ID, assume it's a token and use ETH.
+    const addressValidator = addressValidators[destinationId] || addressValidators.ETH;
+    const validAddress = addressValidator(destinationAddress);
+
+    const placeholders: { [coinOrToken: string]: string } = {
+      BTC: donationAddressMap.BTC,
+      XMR: donationAddressMap.XMR,
+      ETH: donationAddressMap.ETH
+    };
+    const placeholder = placeholders[destinationId] || donationAddressMap.ETH;
 
     return (
       <section className="SwapAddress block">
@@ -82,19 +85,16 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
           <div className="col-sm-8 col-sm-offset-2 col-xs-12">
             <label className="SwapAddress-address">
               <h4 className="SwapAddress-address-label">
-                {translate('SWAP_rec_add')} ({destinationId})
+                {translate('SWAP_REC_ADD')} ({destinationId})
               </h4>
 
-              <input
-                className={inputClasses}
+              <Input
+                isValid={validAddress}
+                className="SwapAddress-address-input"
                 type="text"
                 value={destinationAddress}
                 onChange={this.onChangeDestinationAddress}
-                placeholder={
-                  destinationId === 'BTC'
-                    ? donationAddressMap[destinationId]
-                    : donationAddressMap.ETH
-                }
+                placeholder={placeholder}
               />
             </label>
           </div>
@@ -102,7 +102,7 @@ export default class ReceivingAddress extends PureComponent<StateProps & ActionP
 
         <section className="SwapAddress-submit row">
           <SimpleButton
-            text={translate('SWAP_start_CTA')}
+            text={translateRaw('SWAP_START_CTA')}
             onClick={this.onClickPartTwoComplete}
             disabled={!validAddress}
             loading={isPostingOrder}

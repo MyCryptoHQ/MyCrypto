@@ -1,12 +1,14 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig } from 'features/config';
 import { Addresses } from './components/Addresses';
 import { Amounts } from './components/Amounts';
 import { Details } from './components/Details';
-import React from 'react';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
 import './Body.scss';
-import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
 
 interface State {
   showDetails: boolean;
@@ -43,7 +45,7 @@ class BodyClass extends React.Component<StateProps, State> {
           }`}
           onClick={this.toggleDetails}
         >
-          Details
+          {translate('ACTION_8')}
         </button>
         {showDetails && <Details />}
       </div>

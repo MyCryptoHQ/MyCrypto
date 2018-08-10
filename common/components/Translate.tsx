@@ -1,22 +1,25 @@
 import React from 'react';
 import Markdown from 'react-markdown';
-import { translateRaw } from 'translations';
+
+import NewTabLink from 'components/ui/NewTabLink';
 
 interface Props {
-  translationKey: string;
+  source: string;
 }
 
-const Translate = ({ translationKey }: Props) => {
-  const source = translateRaw(translationKey);
+const TranslateMarkdown = ({ source }: Props) => {
   return (
     <Markdown
       escapeHtml={true}
       unwrapDisallowed={true}
       allowedTypes={['link', 'emphasis', 'strong', 'code', 'root', 'inlineCode']}
-      renderers={{ root: 'span' }}
+      renderers={{
+        root: React.Fragment,
+        link: NewTabLink
+      }}
       source={source}
     />
   );
 };
 
-export default Translate;
+export default TranslateMarkdown;

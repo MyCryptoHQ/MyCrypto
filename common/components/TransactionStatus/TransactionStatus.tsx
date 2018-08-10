@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import translate from 'translations';
-import { fetchTransactionData, TFetchTransactionData } from 'actions/transactions';
-import { getTransactionDatas } from 'selectors/transactions';
-import { getNetworkConfig } from 'selectors/config';
+import { NetworkConfig } from 'types/network';
+import { TransactionState } from 'types/transactions';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig } from 'features/config';
+import { transactionsActions, transactionsSelectors } from 'features/transactions';
 import { Spinner } from 'components/ui';
 import TransactionDataTable from './TransactionDataTable';
-import { AppState } from 'reducers';
-import { NetworkConfig } from 'types/network';
-import { TransactionState } from 'reducers/transactions';
 import './TransactionStatus.scss';
 
 interface OwnProps {
@@ -21,7 +21,7 @@ interface StateProps {
 }
 
 interface ActionProps {
-  fetchTransactionData: TFetchTransactionData;
+  fetchTransactionData: transactionsActions.TFetchTransactionData;
 }
 
 type Props = OwnProps & StateProps & ActionProps;
@@ -31,7 +31,7 @@ class TransactionStatus extends React.Component<Props> {
     this.props.fetchTransactionData(this.props.txHash);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.txHash !== nextProps.txHash) {
       this.props.fetchTransactionData(nextProps.txHash);
     }
@@ -44,7 +44,6 @@ class TransactionStatus extends React.Component<Props> {
     if (tx && tx.data) {
       content = (
         <React.Fragment>
-          <h2 className="TxStatus-title">Transaction Found</h2>
           <div className="TxStatus-data">
             <TransactionDataTable network={network} data={tx.data} receipt={tx.receipt} />
           </div>
@@ -53,13 +52,13 @@ class TransactionStatus extends React.Component<Props> {
     } else if (tx && tx.error) {
       content = (
         <div className="TxStatus-error">
-          <h2 className="TxStatus-error-title">{translate('tx_notFound')}</h2>
-          <p className="TxStatus-error-desc">{translate('tx_notFound_1')}</p>
+          <h2 className="TxStatus-error-title">{translate('TX_NOTFOUND')}</h2>
+          <p className="TxStatus-error-desc">{translate('TX_NOTFOUND_1')}</p>
           <ul className="TxStatus-error-list">
-            <li>Make sure you copied the Transaction Hash correctly</li>
-            <li>{translate('tx_notFound_2')}</li>
-            <li>{translate('tx_notFound_3')}</li>
-            <li>{translate('tx_notFound_4')}</li>
+            <li>{translate('TX_NOTFOUND_5')}</li>
+            <li>{translate('TX_NOTFOUND_2')}</li>
+            <li>{translate('TX_NOTFOUND_3')}</li>
+            <li>{translate('TX_NOTFOUND_4')}</li>
           </ul>
         </div>
       );
@@ -80,9 +79,11 @@ function mapStateToProps(state: AppState, ownProps: OwnProps): StateProps {
   const { txHash } = ownProps;
 
   return {
-    tx: getTransactionDatas(state)[txHash],
+    tx: transactionsSelectors.getTransactionDatas(state)[txHash],
     network: getNetworkConfig(state)
   };
 }
 
-export default connect(mapStateToProps, { fetchTransactionData })(TransactionStatus);
+export default connect(mapStateToProps, {
+  fetchTransactionData: transactionsActions.fetchTransactionData
+})(TransactionStatus);

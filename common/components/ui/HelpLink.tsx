@@ -1,6 +1,7 @@
 import React from 'react';
-import NewTabLink, { AAttributes } from './NewTabLink';
+
 import { HELP_ARTICLE, knowledgeBaseURL } from 'config';
+import NewTabLink, { AAttributes } from './NewTabLink';
 
 interface Props {
   article?: HELP_ARTICLE;
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const HelpLink: React.SFC<AAttributes & Props> = ({ article, children, ...rest }) => (
-  <NewTabLink {...rest} href={`${knowledgeBaseURL}/${article}`} onClick={this.handleClick}>
+  <NewTabLink {...rest} href={`${knowledgeBaseURL}/${article}`}>
     {children}
   </NewTabLink>
 );

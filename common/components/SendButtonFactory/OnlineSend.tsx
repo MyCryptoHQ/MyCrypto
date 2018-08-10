@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-import { getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
-import { CallbackProps } from '../SendButtonFactory';
-import { getCurrentTransactionStatus, currentTransactionBroadcasted } from 'selectors/transaction';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { ITransactionStatus } from 'reducers/transaction/broadcast';
-import { reset, TReset } from 'actions/transaction';
+
+import { AppState } from 'features/reducers';
+import * as derivedSelectors from 'features/selectors';
+import { getOffline } from 'features/config';
+import {
+  transactionBroadcastTypes,
+  transactionSignActions,
+  transactionSignSelectors,
+  transactionSelectors
+} from 'features/transaction';
+import { notificationsActions } from 'features/notifications';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 
 interface StateProps {
   offline: boolean;
-  currentTransaction: false | ITransactionStatus | null;
+  currentTransaction: false | transactionBroadcastTypes.ITransactionStatus | null;
   transactionBroadcasted: boolean;
+  signaturePending: boolean;
+  signedTx: boolean;
 }
 
 interface State {
@@ -20,13 +26,16 @@ interface State {
 }
 
 interface DispatchProps {
-  showNotification: TShowNotification;
-  reset: TReset;
+  showNotification: notificationsActions.TShowNotification;
+  signTransactionRequested: transactionSignActions.TSignTransactionRequested;
 }
 
 interface OwnProps {
   Modal: typeof ConfirmationModal;
-  withProps(props: CallbackProps): React.ReactElement<any> | null;
+  withOnClick(onClick: {
+    openModal(): void;
+    signer(signer: any): void;
+  }): React.ReactElement<any> | null;
 }
 
 const INITIAL_STATE: State = {
@@ -39,15 +48,21 @@ class OnlineSendClass extends Component<Props, State> {
   public state: State = INITIAL_STATE;
 
   public render() {
-    return !this.props.offline ? (
+    return (
       <React.Fragment>
-        {this.props.withProps({ onClick: this.openModal })}
-        <this.props.Modal isOpen={this.state.showModal} onClose={this.closeModal} />
+        {this.props.withOnClick({
+          openModal: this.openModal,
+          signer: this.props.signTransactionRequested
+        })}
+        <this.props.Modal
+          isOpen={!this.props.signaturePending && this.props.signedTx && this.state.showModal}
+          onClose={this.closeModal}
+        />
       </React.Fragment>
-    ) : null;
+    );
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.transactionBroadcasted && this.state.showModal) {
       this.closeModal();
     }
@@ -73,8 +88,14 @@ class OnlineSendClass extends Component<Props, State> {
 export const OnlineSend = connect(
   (state: AppState) => ({
     offline: getOffline(state),
-    currentTransaction: getCurrentTransactionStatus(state),
-    transactionBroadcasted: currentTransactionBroadcasted(state)
+    currentTransaction: transactionSelectors.getCurrentTransactionStatus(state),
+    transactionBroadcasted: transactionSelectors.currentTransactionBroadcasted(state),
+    signaturePending: derivedSelectors.signaturePending(state).isSignaturePending,
+    signedTx:
+      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state)
   }),
-  { showNotification, reset }
+  {
+    showNotification: notificationsActions.showNotification,
+    signTransactionRequested: transactionSignActions.signTransactionRequested
+  }
 )(OnlineSendClass);

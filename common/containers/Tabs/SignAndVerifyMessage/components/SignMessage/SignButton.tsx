@@ -1,43 +1,25 @@
 import React from 'react';
+
 import translate from 'translations';
-import { ISignedMessage } from 'libs/signing';
-import { IFullWallet } from 'libs/wallet';
-import { TShowNotification } from 'actions/notifications';
+import { messageActions } from 'features/message';
 
 interface Props {
-  wallet: IFullWallet;
   message: string;
-  showNotification: TShowNotification;
-  onSignMessage(msg: ISignedMessage): any;
+  signMessageRequested: messageActions.TSignMessageRequested;
 }
 
 export default class SignMessageButton extends React.Component<Props, {}> {
   public render() {
     return (
       <button className="SignMessage-sign btn btn-primary btn-lg" onClick={this.handleSignMessage}>
-        {translate('NAV_SignMsg')}
+        {translate('NAV_SIGNMSG')}
       </button>
     );
   }
 
-  private handleSignMessage = async () => {
-    const { wallet, message, showNotification, onSignMessage } = this.props;
+  private handleSignMessage = () => {
+    const { signMessageRequested, message } = this.props;
 
-    try {
-      const signedMessage: ISignedMessage = {
-        address: await wallet.getAddressString(),
-        msg: message,
-        sig: await wallet.signMessage(message),
-        version: '2'
-      };
-
-      onSignMessage(signedMessage);
-      showNotification(
-        'success',
-        `Successfully signed message with address ${signedMessage.address}.`
-      );
-    } catch (err) {
-      showNotification('danger', `Error signing message: ${err.message}`);
-    }
+    signMessageRequested(message);
   };
 }

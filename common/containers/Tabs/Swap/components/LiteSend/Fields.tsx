@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import { Wei, TokenValue } from 'libs/units';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { walletActions } from 'features/wallet';
+import { SendButton, TXMetaDataPanel } from 'components';
 import { AmountFieldFactory } from 'components/AmountFieldFactory';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
-import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { GenerateTransaction, SendButton, SigningStatus, TXMetaDataPanel } from 'components';
-import { resetWallet, TResetWallet } from 'actions/wallet';
-import translate from 'translations';
-import { getUnit } from 'selectors/transaction';
-import { getCurrentBalance } from 'selectors/wallet';
 import Spinner from 'components/ui/Spinner';
-import { Wei, TokenValue } from 'libs/units';
+import { Input } from 'components/ui';
 
 interface StateProps {
   unit: string;
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
   currentBalance: Wei | TokenValue | null;
 }
 
@@ -30,13 +31,18 @@ class FieldsClass extends Component<Props> {
               onClick={this.changeWallet}
             >
               <i className="fa fa-refresh" />
-              {translate('Change Wallet')}
+              {translate('CHANGE_WALLET')}
             </button>
           </div>
           <div className="col-xs-12">
             <AddressFieldFactory
               withProps={({ currentTo }) => (
-                <input className="form-control" type="text" value={currentTo.raw} readOnly={true} />
+                <Input
+                  type="text"
+                  value={currentTo.raw}
+                  readOnly={true}
+                  isValid={!!currentTo.raw}
+                />
               )}
             />
           </div>
@@ -45,7 +51,7 @@ class FieldsClass extends Component<Props> {
 
         <div className="row form-group">
           <div className="col-xs-12">
-            <label>{translate('SEND_amount')}</label>
+            <label>{translate('SEND_AMOUNT')}</label>
             {currentBalance === null ? (
               <div className="row text-center">
                 <Spinner />
@@ -55,14 +61,12 @@ class FieldsClass extends Component<Props> {
                 withProps={({ currentValue, isValid }) => (
                   <React.Fragment>
                     {!isValid && (
-                      <h5 style={{ color: 'red' }}>
-                        WARNING: Your ether or token balance is not high enough to complete this
-                        transaction! Please send more funds or switch to a different wallet
-                      </h5>
+                      <h5 style={{ color: 'red' }}>{translate('INSUFFICIENT_FUNDS')}</h5>
                     )}
                     {isValid && (
-                      <input
-                        className="form-control"
+                      <Input
+                        isValid={true}
+                        showValidAsPlain={true}
                         type="text"
                         value={`${currentValue.raw} ${this.props.unit}`}
                         readOnly={true}
@@ -79,7 +83,6 @@ class FieldsClass extends Component<Props> {
             <TXMetaDataPanel initialState={'simple'} disableToggle={true} />
           </div>
         </div>
-        <SigningStatus />
         <div className="row form-group">
           <div className="col-xs-12 clearfix">
             {currentBalance === null ? (
@@ -87,12 +90,9 @@ class FieldsClass extends Component<Props> {
                 <Spinner />
               </div>
             ) : (
-              <GenerateTransaction />
+              <SendButton signing={true} />
             )}
           </div>
-        </div>
-        <div className="row form-group">
-          <SendButton />
         </div>
       </div>
     );
@@ -103,6 +103,9 @@ class FieldsClass extends Component<Props> {
 }
 
 export const Fields = connect(
-  (state: AppState) => ({ unit: getUnit(state), currentBalance: getCurrentBalance(state) }),
-  { resetWallet }
+  (state: AppState) => ({
+    unit: selectors.getUnit(state),
+    currentBalance: selectors.getCurrentBalance(state)
+  }),
+  { resetWallet: walletActions.resetWallet }
 )(FieldsClass);

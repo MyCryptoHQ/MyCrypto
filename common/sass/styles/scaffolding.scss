@@ -29,8 +29,12 @@ body {
   font-family: $font-family-base;
   font-size: $font-size-base;
   line-height: $line-height-base;
-  color: $text-color;
-  background-color: $body-bg;
+  color: color(text-color);
+  background-color: color(body-bg);
+  height: 100%;
+}
+
+#app {
   height: 100%;
 }
 
@@ -43,11 +47,17 @@ textarea {
   line-height: inherit;
 }
 
+textarea {
+  resize: vertical;
+}
+
 figure {
   margin: 0;
 }
 
 img {
+  max-width: 100%;
+  height: auto;
   vertical-align: middle;
 }
 
@@ -56,6 +66,10 @@ hr {
   margin-bottom: $space;
   border: 0;
   border-top: 1px solid $hr-border;
+}
+
+a {
+  text-decoration-skip-ink: none;
 }
 
 #app {

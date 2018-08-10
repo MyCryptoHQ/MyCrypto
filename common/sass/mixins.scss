@@ -37,14 +37,14 @@
   right: 0;
   bottom: 0;
   overflow: auto;
-  background: $brand-info;
+  background: color(brand-info);
   z-index: $zindex-top;
 
   &-content {
     max-width: 580px;
     padding: 20px;
     margin: 0 auto;
-    color: #fff;
+    color: color(text-color-inverted);
     text-shadow: 1px 1px 1px rgba(#000, 0.12);
     overflow: auto;
 
@@ -58,7 +58,7 @@
       margin-bottom: 15px;
 
       a {
-        color: #fff;
+        color: color(text-color-inverted);
         text-decoration: underline;
       }
     }
@@ -87,8 +87,20 @@
   &:hover .Tooltip {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, -100%) translateY(-8px);
+    transform: translate(-50%, -100%) translateY(-$tooltip-hover-distance);
     transition-delay: 400ms, 400ms, 300ms;
+
+    &.is-direction-left {
+      transform: translate(-100%, -50%) translateX(-$tooltip-hover-distance);
+    }
+
+    &.is-direction-right {
+      transform: translate(100%, -50%) translateX($tooltip-hover-distance);
+    }
+
+    &.is-direction-bottom {
+      transform: translate(-50%, 100%) translateY($tooltip-hover-distance);
+    }
   }
 }
 
@@ -98,4 +110,10 @@
 
 @mixin input-focus-shadow($color) {
   box-shadow: inset 0 1px 2px rgba(black, 0.125), 0 0 1px rgba($color, 0.5);
+}
+
+@mixin theme($name) {
+  .theme--#{$name} & {
+    @content;
+  }
 }

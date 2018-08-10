@@ -1,2 +1,1 @@
-import TransactionStatus from './TransactionStatus';
-export default TransactionStatus;
+export { default } from './TransactionStatus';

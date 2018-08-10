@@ -1,113 +1,29 @@
+import React from 'react';
+
+import { translateRaw } from 'translations';
 import logo from 'assets/images/logo-mycrypto.svg';
 import {
-  ledgerReferralURL,
-  trezorReferralURL,
-  ethercardReferralURL,
   donationAddressMap,
   VERSION,
-  knowledgeBaseURL
+  knowledgeBaseURL,
+  socialMediaLinks,
+  productLinks,
+  affiliateLinks,
+  partnerLinks
 } from 'config';
-import React from 'react';
-import PreFooter from './PreFooter';
-import DisclaimerModal from './DisclaimerModal';
+import DisclaimerModal from 'components/DisclaimerModal';
 import { NewTabLink } from 'components/ui';
-import OnboardModal from 'containers/OnboardModal';
+import PreFooter from './PreFooter';
+import ThemeToggle from './ThemeToggle';
 import './index.scss';
 
-const SocialMediaLink = ({ link, text }: Link) => {
+const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
   return (
     <NewTabLink className="SocialMediaLink" key={link} href={link} aria-label={text}>
       <i className={`sm-icon sm-logo-${text}`} />
     </NewTabLink>
   );
 };
-
-const SOCIAL_MEDIA: Link[] = [
-  {
-    link: 'https://twitter.com/mycrypto',
-    text: 'twitter'
-  },
-  {
-    link: 'https://www.facebook.com/MyCrypto/',
-    text: 'facebook'
-  },
-  {
-    link: 'https://medium.com/@mycrypto',
-    text: 'medium'
-  },
-  {
-    link: 'https://www.linkedin.com/company/mycrypto',
-    text: 'linkedin'
-  },
-  {
-    link: 'https://github.com/MyCryptoHQ',
-    text: 'github'
-  },
-  {
-    link: 'https://www.reddit.com/r/mycrypto/',
-    text: 'reddit'
-  }
-];
-
-const PRODUCT_INFO: Link[] = [
-  {
-    link:
-      'https://chrome.google.com/webstore/detail/etheraddresslookup/pdknmigbbbhmllnmgdfalmedcmcefdfn',
-    text: 'Ether Address Lookup'
-  },
-  {
-    link:
-      'https://chrome.google.com/webstore/detail/ethersecuritylookup/bhhfhgpgmifehjdghlbbijjaimhmcgnf',
-    text: 'Ether Security Lookup'
-  },
-  {
-    link: 'https://etherscamdb.info/',
-    text: 'EtherScamDB'
-  },
-  {
-    link: 'https://www.mycrypto.com/helpers.html',
-    text: 'Helpers & ENS Debugging'
-  },
-  {
-    link: 'mailto:press@mycrypto.com',
-    text: 'Press Inquiries'
-  }
-];
-
-const AFFILIATES: Link[] = [
-  {
-    link: ledgerReferralURL,
-    text: 'Buy a Ledger Wallet'
-  },
-  {
-    link: trezorReferralURL,
-    text: 'Buy a TREZOR'
-  },
-  {
-    link: ethercardReferralURL,
-    text: 'Get an ether.card'
-  }
-];
-
-const FRIENDS: Link[] = [
-  {
-    link: 'https://metamask.io/',
-    text: 'MetaMask'
-  },
-  {
-    link: 'https://infura.io/',
-    text: 'Infura'
-  },
-  {
-    link: 'https://etherscan.io/',
-    text: 'Etherscan'
-  }
-];
-
-interface Link {
-  link: string;
-  text: string;
-}
 
 interface Props {
   latestBlock: string;
@@ -129,7 +45,7 @@ export default class Footer extends React.PureComponent<Props, State> {
         <footer className="Footer" role="contentinfo" aria-label="footer">
           <div className="Footer-links Footer-section">
             <div className="Footer-links-social">
-              {SOCIAL_MEDIA.map((socialMediaItem, idx) => (
+              {socialMediaLinks.map((socialMediaItem, idx) => (
                 <SocialMediaLink
                   link={socialMediaItem.link}
                   key={idx}
@@ -139,11 +55,14 @@ export default class Footer extends React.PureComponent<Props, State> {
             </div>
 
             <div className="Footer-links-links">
-              {PRODUCT_INFO.map((productInfoItem, idx) => (
-                <NewTabLink key={idx} href={productInfoItem.link}>
-                  {productInfoItem.text}
+              {productLinks.map(link => (
+                <NewTabLink key={link.link} href={link.link}>
+                  {link.text}
                 </NewTabLink>
               ))}
+              <NewTabLink href="mailto:press@mycrypto.com">
+                {translateRaw('FOOTER_PRESS')}
+              </NewTabLink>
             </div>
           </div>
 
@@ -159,60 +78,66 @@ export default class Footer extends React.PureComponent<Props, State> {
             </NewTabLink>
 
             <div className="Footer-about-links">
-              <a href="https://mycrypto.com">MyCrypto.com</a>
-              <NewTabLink href={knowledgeBaseURL}>Help & Support</NewTabLink>
-              <NewTabLink href="https://about.mycrypto.com">Our Team</NewTabLink>
+              <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
+              <NewTabLink href={knowledgeBaseURL}>{translateRaw('FOOTER_SUPPORT')}</NewTabLink>
+              <NewTabLink href="https://about.mycrypto.com">
+                {translateRaw('FOOTER_TEAM')}
+              </NewTabLink>
+              <NewTabLink href="https://about.mycrypto.com/privacy/">
+                {translateRaw('FOOTER_PRIVACY_POLICY')}
+              </NewTabLink>
             </div>
 
-            <p className="Footer-about-text">
-              MyCrypto is an open-source, client-side tool for generating Ether Wallets, handling
-              ERC-20 tokens, and interacting with the blockchain more easily. Developed by and for
-              the community since 2015, we’re focused on building awesome products that put the
-              power in people’s hands.
-            </p>
+            <p className="Footer-about-text">{translateRaw('FOOTER_ABOUT')}</p>
 
             <div className="Footer-about-legal">
               <div className="Footer-about-legal-text">
                 © {new Date().getFullYear()} MyCrypto, Inc.
               </div>
               <div className="Footer-about-legal-text">
-                <a onClick={this.toggleModal}>Disclaimer</a>
+                <a onClick={this.toggleModal}>{translateRaw('DISCLAIMER')}</a>
               </div>
               <div className="Footer-about-legal-text">v{VERSION}</div>
+            </div>
+
+            <div className="Footer-about-theme">
+              <ThemeToggle />
             </div>
           </div>
 
           <div className="Footer-support Footer-section">
-            <h5 className="Footer-support-title">Support Us & Our Friends</h5>
+            <h5 className="Footer-support-title">{translateRaw('FOOTER_AFFILIATE_TITLE')}</h5>
             <div className="Footer-support-affiliates">
-              {AFFILIATES.map(link => (
-                <NewTabLink key={link.text} href={link.link}>
+              {affiliateLinks.map((link, i) => (
+                <NewTabLink key={i} href={link.link}>
                   {link.text}
                 </NewTabLink>
               ))}
             </div>
 
             <div className="Footer-support-donate">
-              <div className="Footer-support-donate-currency">Donate ETH</div>
+              <div className="Footer-support-donate-currency">
+                {translateRaw('DONATE_CURRENCY', { $currency: 'ETH' })}
+              </div>
               <div className="Footer-support-donate-address">{donationAddressMap.ETH}</div>
             </div>
 
             <div className="Footer-support-donate">
-              <div className="Footer-support-donate-currency">Donate BTC</div>
+              <div className="Footer-support-donate-currency">
+                {translateRaw('DONATE_CURRENCY', { $currency: 'BTC' })}
+              </div>
               <div className="Footer-support-donate-address">{donationAddressMap.BTC}</div>
             </div>
 
             <div className="Footer-support-friends">
-              {FRIENDS.map(link => (
-                <NewTabLink key={link.text} href={link.link}>
+              {partnerLinks.map((link, i) => (
+                <NewTabLink key={i} href={link.link}>
                   {link.text}
                 </NewTabLink>
               ))}
             </div>
           </div>
         </footer>
-
-        <OnboardModal />
         <DisclaimerModal isOpen={this.state.isDisclaimerOpen} handleClose={this.toggleModal} />
       </div>
     );

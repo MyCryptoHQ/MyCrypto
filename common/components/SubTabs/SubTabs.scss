@@ -1,9 +1,16 @@
 @import 'common/sass/variables';
 
 .SubTabs {
-  margin-top: 15px;
+  margin-top: $space-xs;
+
+  .is-electron & {
+    margin-top: 0;
+  }
 
   &-tabs {
+    display: inline-block;
+    white-space: nowrap;
+
     &-link {
       display: inline-block;
       padding: 8px;
@@ -11,19 +18,31 @@
       min-width: 80px;
       text-align: center;
       font-weight: 300;
-      color: $ether-navy;
-      border-bottom: 2px solid $gray-lighter;
+      color: color(tab-color);
+      border-bottom: 2px solid color(tab-border);
       transition-duration: 100ms;
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+        color: color(tab-active-color);
+      }
 
       &.is-active {
-        border-bottom-color: $ether-blue;
+        color: color(tab-active-color);
+        border-bottom-color: color(tab-active-border);
+        opacity: 1;
       }
 
       &.is-disabled {
-        color: $gray-light;
+        color: color(gray-light);
         pointer-events: none;
         text-decoration: line-through;
       }
     }
+  }
+
+  &-select {
+    margin-bottom: $space-md;
   }
 }

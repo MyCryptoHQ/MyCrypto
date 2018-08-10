@@ -3,18 +3,27 @@ const webpack = require('webpack');
 const path = require('path');
 const ClearDistPlugin = require('./plugins/clearDist');
 const config = require('./config');
-const makeConfig = require('./makeConfig');
 
 const electronConfig = {
   target: 'electron-main',
+  mode: 'development',
   entry: {
-    main: path.join(config.path.electron, 'main/index.ts')
+    main: path.join(config.path.electron, 'main/index.ts'),
+    preload: path.join(config.path.electron, 'preload/index.ts')
   },
   module: {
-    rules: [config.typescriptRule]
+    rules: [
+      config.typescriptRule,
+      // HTML as string
+      {
+        test: /\.html$/,
+        use: 'raw-loader',
+      }
+    ]
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json'],
+    modules: config.resolve.modules
   },
   output: {
     filename: '[name].js',
@@ -24,12 +33,16 @@ const electronConfig = {
     new ClearDistPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
-    }),
+    })
   ],
+  externals: {
+    'node-hid': 'commonjs node-hid'
+  },
   node: {
     __dirname: false,
     __filename: false
-  }
+  },
+  devtool: 'eval'
 };
 
 module.exports = electronConfig;

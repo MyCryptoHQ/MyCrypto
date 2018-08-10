@@ -1,15 +1,14 @@
 import { IHexStrWeb3Transaction } from 'libs/transaction';
-import RPCNode from '../rpc';
-import Web3Client from './client';
-import Web3Requests from './requests';
 import { INode } from 'libs/nodes/INode';
-
 import {
   isValidSendTransaction,
   isValidSignMessage,
   isValidGetAccounts,
   isValidGetNetVersion
 } from 'libs/validators';
+import RPCNode from '../rpc';
+import Web3Client from './client';
+import Web3Requests from './requests';
 
 export default class Web3Node extends RPCNode {
   public client: Web3Client;
@@ -60,24 +59,22 @@ export async function setupWeb3Node() {
   const { web3 } = window as any;
 
   if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
-    throw new Error(
-      'Web3 not found. Please check that MetaMask is installed, or that MyEtherWallet is open in Mist.'
-    );
+    throw new Error('Web3 not found. Please check that MetaMask is installed');
   }
 
   const lib = new Web3Node();
-  const networkId = await lib.getNetVersion();
+  const chainId = await lib.getNetVersion();
   const accounts = await lib.getAccounts();
 
   if (!accounts.length) {
     throw new Error('No accounts found in MetaMask / Mist.');
   }
 
-  if (networkId === 'loading') {
+  if (chainId === 'loading') {
     throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
   }
 
-  return { networkId, lib };
+  return { chainId, lib };
 }
 
 export async function isWeb3NodeAvailable(): Promise<boolean> {

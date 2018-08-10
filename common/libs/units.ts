@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 import { toBuffer, addHexPrefix } from 'ethereumjs-util';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -103,8 +103,6 @@ const fromTokenBase = (value: TokenValue, decimal: number) =>
 const toTokenBase = (value: string, decimal: number) =>
   TokenValue(convertedToBaseUnit(value, decimal));
 
-const isEtherUnit = (unit: string) => unit === 'ether' || unit === 'ETH';
-
 const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: number) => {
   if (oldDecimal === newDecimal) {
     return value;
@@ -112,10 +110,9 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
   return toTokenBase(fromTokenBase(value, oldDecimal), newDecimal);
 };
 
-const gasPricetoBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
+const gasPriceToBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
 export {
-  isEtherUnit,
   Data,
   Address,
   TokenValue,
@@ -129,5 +126,5 @@ export {
   UnitKey,
   Nonce,
   handleValues,
-  gasPricetoBase
+  gasPriceToBase
 };

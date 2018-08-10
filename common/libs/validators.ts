@@ -1,9 +1,12 @@
 import { toChecksumAddress, isValidPrivate } from 'ethereumjs-util';
-import { stripHexPrefix } from 'libs/values';
+import { isValidChecksumAddress as isValidChecksumRSKAddress } from 'rskjs-util';
 import WalletAddressValidator from 'wallet-address-validator';
-import { normalise } from './ens';
 import { Validator } from 'jsonschema';
-import { JsonRpcResponse } from './nodes/rpc/types';
+import BN from 'bn.js';
+
+import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'config/dpaths';
+import { translateRaw } from 'translations';
+import { stripHexPrefix } from 'libs/formatters';
 import { isPositiveInteger } from 'utils/helpers';
 import {
   GAS_LIMIT_LOWER_BOUND,
@@ -11,9 +14,22 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'config/constants';
+import { JsonRpcResponse } from './nodes/rpc/types';
+import { normalise } from './ens';
+import { EAC_SCHEDULING_CONFIG } from './scheduling';
 
-// FIXME we probably want to do checksum checks sideways
-export function isValidETHAddress(address: string): boolean {
+export function getIsValidAddressFunction(chainId: number) {
+  if (chainId === 30 || chainId === 31) {
+    return (address: string) => isValidRSKAddress(address, chainId);
+  }
+  return isValidETHAddress;
+}
+
+export function isValidAddress(address: string, chainId: number) {
+  return getIsValidAddressFunction(chainId)(address);
+}
+
+function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
   if (address === '0x0000000000000000000000000000000000000000') {
     return false;
   }
@@ -24,8 +40,16 @@ export function isValidETHAddress(address: string): boolean {
   } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
     return true;
   } else {
-    return isChecksumAddress(address);
+    return extraChecks ? extraChecks() : false;
   }
+}
+
+export function isValidETHAddress(address: string): boolean {
+  return isValidETHLikeAddress(address, () => isChecksumAddress(address));
+}
+
+export function isValidRSKAddress(address: string, chainId: number): boolean {
+  return isValidETHLikeAddress(address, () => isValidChecksumRSKAddress(address, chainId));
 }
 
 export const isCreationAddress = (address: string): boolean =>
@@ -33,6 +57,12 @@ export const isCreationAddress = (address: string): boolean =>
 
 export function isValidBTCAddress(address: string): boolean {
   return WalletAddressValidator.validate(address, 'BTC');
+}
+
+export function isValidXMRAddress(address: string): boolean {
+  return !!address.match(
+    /4[0-9AB][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{93}/
+  );
 }
 
 export function isValidHex(str: string): boolean {
@@ -50,7 +80,9 @@ export function isValidENSorEtherAddress(address: string): boolean {
 
 export function isValidENSName(str: string) {
   try {
-    return str.length > 6 && normalise(str) !== '' && str.substring(0, 2) !== '0x';
+    return (
+      str.length > 6 && !str.includes('.') && normalise(str) !== '' && str.substring(0, 2) !== '0x'
+    );
   } catch (e) {
     return false;
   }
@@ -102,15 +134,25 @@ export function isValidEncryptedPrivKey(privkey: string): boolean {
   }
 }
 
-export const validNumber = (num: number) => isFinite(num) && num > 0;
+export const validNumber = (num: number) => isFinite(num) && num >= 0;
+export const validPositiveNumber = (num: number) => validNumber(num) && num !== 0;
 
 export const validDecimal = (input: string, decimal: number) => {
   const arr = input.split('.');
+
+  // Only a single decimal can exist.
+  if (arr.length > 2) {
+    return false;
+  }
+
   const fractionPortion = arr[1];
+
   if (!fractionPortion || fractionPortion.length === 0) {
     return true;
   }
+
   const decimalLength = fractionPortion.length;
+
   return decimalLength <= decimal;
 };
 
@@ -121,20 +163,25 @@ export function isPositiveIntegerOrZero(num: number): boolean {
   return num >= 0 && parseInt(num.toString(), 10) === num;
 }
 
-// Full length deterministic wallet paths from BIP44
-// https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
-// normal path length is 4, ledger is the exception at 3
 export function isValidPath(dPath: string) {
-  // TODO: use a regex to detect proper paths
-  const len = dPath.split("'/").length;
-  return len === 3 || len === 4;
+  // ETC Ledger is incorrect up due to an extra ' at the end of it
+  if (dPath === ETC_LEDGER.value) {
+    return true;
+  }
+
+  // SingularDTV is incorrect due to using a 0 instead of a 44 as the purpose
+  if (dPath === ETH_SINGULAR.value) {
+    return true;
+  }
+
+  return dPathRegex.test(dPath);
 }
 
 export const isValidValue = (value: string) =>
-  !!(value && isFinite(parseFloat(value)) && parseFloat(value) >= 0);
+  !!(value && isFinite(Number(value)) && Number(value) >= 0);
 
 export const gasLimitValidator = (gasLimit: number | string) => {
-  const gasLimitFloat = typeof gasLimit === 'string' ? parseFloat(gasLimit) : gasLimit;
+  const gasLimitFloat = typeof gasLimit === 'string' ? Number(gasLimit) : gasLimit;
   return (
     validNumber(gasLimitFloat) &&
     gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
@@ -143,12 +190,29 @@ export const gasLimitValidator = (gasLimit: number | string) => {
 };
 
 export const gasPriceValidator = (gasPrice: number | string): boolean => {
-  const gasPriceFloat = typeof gasPrice === 'string' ? parseFloat(gasPrice) : gasPrice;
+  const gasPriceFloat = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
   return (
     validNumber(gasPriceFloat) &&
     gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
     gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND
   );
+};
+
+export const timeBountyValidator = (timeBounty: BN | number | string | null): boolean => {
+  if (!timeBounty) {
+    return false;
+  }
+
+  if (timeBounty instanceof BN) {
+    return (
+      timeBounty.gte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MIN) &&
+      timeBounty.lte(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_MAX)
+    );
+  }
+
+  const timeBountyFloat = typeof timeBounty === 'string' ? Number(timeBounty) : timeBounty;
+
+  return validNumber(timeBountyFloat);
 };
 
 export const isValidByteCode = (byteCode: string) =>
@@ -188,7 +252,7 @@ export const isValidNonce = (value: string): boolean => {
   return valid;
 };
 
-function isValidResult(response: JsonRpcResponse, schemaFormat): boolean {
+function isValidResult(response: JsonRpcResponse, schemaFormat: typeof schema.RpcNode): boolean {
   return v.validate(response, schemaFormat).valid;
 }
 
@@ -208,9 +272,25 @@ function formatErrors(response: JsonRpcResponse, apiType: string) {
   return `Invalid ${apiType} Error`;
 }
 
+enum API_NAME {
+  Get_Balance = 'Get Balance',
+  Estimate_Gas = 'Estimate Gas',
+  Call_Request = 'Call Request',
+  Token_Balance = 'Token Balance',
+  Transaction_Count = 'Transaction Count',
+  Current_Block = 'Current Block',
+  Raw_Tx = 'Raw Tx',
+  Send_Transaction = 'Send Transaction',
+  Sign_Message = 'Sign Message',
+  Get_Accounts = 'Get Accounts',
+  Net_Version = 'Net Version',
+  Transaction_By_Hash = 'Transaction By Hash',
+  Transaction_Receipt = 'Transaction Receipt'
+}
+
 const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.RpcNode) => (
-  apiName,
-  cb?
+  apiName: API_NAME,
+  cb?: (res: JsonRpcResponse) => any
 ) => {
   if (!isValidResult(response, schemaType)) {
     if (cb) {
@@ -222,45 +302,112 @@ const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.Rpc
 };
 
 export const isValidGetBalance = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Get Balance');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Balance);
 
 export const isValidEstimateGas = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Estimate Gas');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Estimate_Gas);
 
 export const isValidCallRequest = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Call Request');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Call_Request);
 
 export const isValidTokenBalance = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Token Balance', () => ({
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Token_Balance, () => ({
     result: 'Failed'
   }));
 
 export const isValidTransactionCount = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Transaction Count');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_Count);
 
 export const isValidTransactionByHash = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Transaction By Hash');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_By_Hash);
 
 export const isValidTransactionReceipt = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Transaction Receipt');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Transaction_Receipt);
 
 export const isValidCurrentBlock = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Current Block');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Current_Block);
 
 export const isValidRawTxApi = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Raw Tx');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Raw_Tx);
 
 export const isValidSendTransaction = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Send Transaction');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Send_Transaction);
 
 export const isValidSignMessage = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Sign Message');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Sign_Message);
 
 export const isValidGetAccounts = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Get Accounts');
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Accounts);
 
 export const isValidGetNetVersion = (response: JsonRpcResponse) =>
-  isValidEthCall(response, schema.RpcNode)('Net Version');
-
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);
+
+export function isValidLabelLength(label: string, options: { allowEmpty?: boolean } = {}): boolean {
+  const meetsMinimumLengthRequirement = label.length >= 2;
+  const meetsMaximumLengthRequirement = label.length <= 50;
+  const labelOnlyContainsSpaces = !label.trim();
+
+  if (options.allowEmpty && label.length === 0) {
+    return true;
+  }
+
+  if (!options.allowEmpty && labelOnlyContainsSpaces) {
+    return false;
+  }
+
+  return meetsMinimumLengthRequirement && meetsMaximumLengthRequirement;
+}
+
+export function isLabelWithoutENS(label: string): boolean {
+  const ensTlds = ['.eth', '.test', '.reverse'];
+
+  for (const tld of ensTlds) {
+    if (label.includes(tld)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function isValidAddressLabel(
+  address: string,
+  label: string,
+  addresses: { [address: string]: string },
+  labels: { [label: string]: string },
+  chainId: number
+) {
+  const addressAlreadyExists = !!addresses[address.toLowerCase()];
+  const labelAlreadyExists = !!labels[label];
+  const result: { isValid: boolean; addressError?: string; labelError?: string } = {
+    isValid: true
+  };
+
+  if (!isValidAddress(address, chainId)) {
+    result.addressError = translateRaw('INVALID_ADDRESS');
+  }
+
+  if (addressAlreadyExists) {
+    result.addressError = translateRaw('ADDRESS_ALREADY_EXISTS');
+  }
+
+  if (!isValidLabelLength(label)) {
+    result.labelError = translateRaw('INVALID_LABEL_LENGTH');
+  }
+
+  if (!isLabelWithoutENS(label)) {
+    result.labelError = translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
+  }
+
+  if (labelAlreadyExists) {
+    result.labelError = translateRaw('LABEL_ALREADY_EXISTS');
+  }
+
+  if (result.addressError || result.labelError) {
+    result.isValid = false;
+  }
+
+  return result;
+}

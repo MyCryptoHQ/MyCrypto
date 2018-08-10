@@ -1,18 +1,19 @@
 import React from 'react';
+
 import translate from 'translations';
-import OnboardSlide from './OnboardSlide';
 import onboardIconTwo from 'assets/images/onboarding/slide-02.svg';
+import OnboardSlide from './OnboardSlide';
 
 const NotABankSlide = () => {
-  const header = translate('ONBOARD_bank_title');
+  const header = translate('ONBOARD_BANK_TITLE');
 
   const content = (
     <ul>
-      <li>{translate('ONBOARD_bank_content__1')}</li>
-      <li>{translate('ONBOARD_bank_content__2')}</li>
-      <li>{translate('ONBOARD_bank_content__3')}</li>
-      <li>{translate('ONBOARD_bank_content__4')}</li>
-      <li>{translate('ONBOARD_bank_content__5')}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__1')}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__2')}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__3')}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__4')}</li>
+      <li>{translate('ONBOARD_BANK_CONTENT__5')}</li>
     </ul>
   );
 

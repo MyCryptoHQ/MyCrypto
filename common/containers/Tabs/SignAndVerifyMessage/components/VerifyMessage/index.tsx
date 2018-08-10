@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
-import translate from 'translations';
-import { showNotification, TShowNotification } from 'actions/notifications';
+
+import translate, { translateRaw } from 'translations';
 import { verifySignedMessage, ISignedMessage } from 'libs/signing';
+import { notificationsActions } from 'features/notifications';
+import { TextArea } from 'components/ui';
 import './index.scss';
 
 interface Props {
-  showNotification: TShowNotification;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 interface State {
@@ -34,24 +35,21 @@ export class VerifyMessage extends Component<Props, State> {
   public render() {
     const { verifiedAddress, verifiedMessage, signature } = this.state;
 
-    const signatureBoxClass = classnames([
-      'VerifyMessage-inputBox',
-      'form-control',
-      signature ? 'is-valid' : 'is-invalid'
-    ]);
-
     return (
       <div>
         <div className="Tab-content-pane">
-          <h4>{translate('MSG_signature')}</h4>
-          <div className="form-group">
-            <textarea
-              className={signatureBoxClass}
-              placeholder={signaturePlaceholder}
-              value={signature}
-              onChange={this.handleSignatureChange}
-              onPaste={this.handleSignaturePaste}
-            />
+          <div className="input-group-wrapper ">
+            <label className="input-group">
+              <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>
+              <TextArea
+                isValid={!!signature}
+                className="VerifyMessage-inputBox"
+                placeholder={signaturePlaceholder}
+                value={signature}
+                onChange={this.handleSignatureChange}
+                onPaste={this.handleSignaturePaste}
+              />
+            </label>
           </div>
 
           <button
@@ -59,13 +57,13 @@ export class VerifyMessage extends Component<Props, State> {
             onClick={this.handleVerifySignedMessage}
             disabled={false}
           >
-            {translate('MSG_verify')}
+            {translate('MSG_VERIFY')}
           </button>
 
           {!!verifiedAddress &&
             !!verifiedMessage && (
               <div className="VerifyMessage-success alert alert-success">
-                <strong>{verifiedAddress}</strong> did sign the message{' '}
+                <strong>{verifiedAddress}</strong> {translate('SIGNED')}
                 <strong>{verifiedMessage}</strong>.
               </div>
             )}
@@ -93,10 +91,10 @@ export class VerifyMessage extends Component<Props, State> {
         verifiedAddress: address,
         verifiedMessage: msg
       });
-      this.props.showNotification('success', translate('SUCCESS_7'));
+      this.props.showNotification('success', translateRaw('SUCCESS_7'));
     } catch (err) {
       this.clearVerifiedData();
-      this.props.showNotification('danger', translate('ERROR_12'));
+      this.props.showNotification('danger', translateRaw('ERROR_38'));
     }
   };
 
@@ -120,5 +118,5 @@ export class VerifyMessage extends Component<Props, State> {
 }
 
 export default connect(null, {
-  showNotification
+  showNotification: notificationsActions.showNotification
 })(VerifyMessage);

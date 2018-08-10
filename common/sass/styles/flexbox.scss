@@ -6,7 +6,20 @@
   &-nowrap {
     flex-wrap: nowrap;
   }
-  .flex-spacer {
+}
+
+.flex-grow {
+  &-1 {
+    flex-grow: 1;
+  }
+  &-2 {
     flex-grow: 2;
   }
+  &-3 {
+    flex-grow: 3;
+  }
+}
+
+.flex-spacer {
+  flex-grow: 2;
 }

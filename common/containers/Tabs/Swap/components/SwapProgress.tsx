@@ -1,7 +1,8 @@
-import { TShowNotification } from 'actions/notifications';
-import { bityConfig } from 'config/bity';
 import React, { PureComponent } from 'react';
+
+import { bityConfig } from 'config/bity';
 import translate, { translateRaw } from 'translations';
+import { notificationsActions } from 'features/notifications';
 import './SwapProgress.scss';
 
 export interface Props {
@@ -13,7 +14,7 @@ export interface Props {
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
   // actions
-  showNotification: TShowNotification;
+  showNotificationWithComponent: notificationsActions.TShowNotificationWithComponent;
 }
 
 interface State {
@@ -33,7 +34,7 @@ export default class SwapProgress extends PureComponent<Props, State> {
     const {
       destinationId,
       outputTx,
-      showNotification,
+      showNotificationWithComponent,
       provider,
       bityOrderStatus,
       shapeshiftOrderStatus
@@ -42,28 +43,23 @@ export default class SwapProgress extends PureComponent<Props, State> {
 
     if (isShapeshift ? shapeshiftOrderStatus === 'complete' : bityOrderStatus === 'FILL') {
       if (!hasShownViewTx) {
-        let linkElement: React.ReactElement<HTMLAnchorElement>;
-        let link;
+        let link: string;
         const notificationMessage = translateRaw('SUCCESS_3') + outputTx;
         // everything but BTC is a token
         if (destinationId !== 'BTC') {
           link = bityConfig.ETHTxExplorer(outputTx);
-          linkElement = (
-            <a href={link} target="_blank" rel="noopener noreferrer">
-              {notificationMessage}
-            </a>
-          );
           // BTC uses a different explorer
         } else {
           link = bityConfig.BTCTxExplorer(outputTx);
-          linkElement = (
-            <a href={link} target="_blank" rel="noopener noreferrer">
-              {notificationMessage}
-            </a>
-          );
         }
+
         this.setState({ hasShownViewTx: true }, () => {
-          showNotification('success', linkElement);
+          showNotificationWithComponent('success', notificationMessage, {
+            component: 'a',
+            href: link,
+            target: '_blank',
+            rel: 'noopener noreferrer'
+          });
         });
       }
     }
@@ -110,23 +106,23 @@ export default class SwapProgress extends PureComponent<Props, State> {
     const numberOfConfirmations = originId === 'BTC' ? '3' : '10';
     const steps = [
       // 1
-      translate('SWAP_progress_1'),
+      translate('SWAP_PROGRESS_1'),
       // 2
-      <span key="1">
-        {translate('SWAP_progress_2')} {originId}...
-      </span>,
+      <span key="1">{translate('SWAP_PROGRESS_2', { $origin_id: originId })}</span>,
       // 3
-      <span key="2">
-        {originId} {translate('SWAP_progress_3')}
-      </span>,
+      <span key="2">{translate('SWAP_PROGRESS_3', { $origin_id: originId })}</span>,
       // 4 TODO: Translate me
       <span key="3">
-        Sending your {destinationId}
+        {translate('SWAP_PROGRESS_4', { $destination_id: destinationId })}
         <br />
-        <small>Waiting for {numberOfConfirmations} confirmations...</small>
+        <small>
+          {translate('SWAP_PROGRESS_CONFIRMATIONS', {
+            $number_confirmations: numberOfConfirmations
+          })}
+        </small>
       </span>,
       // 5
-      translate('SWAP_progress_5')
+      translate('SWAP_PROGRESS_5')
     ];
 
     return (

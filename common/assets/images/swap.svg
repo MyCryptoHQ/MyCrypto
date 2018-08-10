@@ -13,7 +13,7 @@
                 <mask id="mask-2" fill="white">
                     <use xlink:href="#path-1"></use>
                 </mask>
-                <circle stroke="#0E97C0" stroke-width="20" cx="170" cy="170" r="160"></circle>
+                <circle stroke="#007896" stroke-width="20" cx="170" cy="170" r="160"></circle>
                 <rect id="Rectangle" fill="#FFE14D" mask="url(#mask-2)" x="-1.13333333" y="1.13333333" width="173.4" height="340"></rect>
                 <rect id="Rectangle" fill="#FFCC33" mask="url(#mask-2)" x="171.133333" y="1.13333333" width="173.4" height="340"></rect>
                 <circle id="Oval-2" stroke="#333333" stroke-width="20" mask="url(#mask-2)" cx="170" cy="170" r="160"></circle>
@@ -23,7 +23,7 @@
                 <mask id="mask-4" fill="white">
                     <use xlink:href="#path-3"></use>
                 </mask>
-                <circle stroke="#0E97C0" stroke-width="20" cx="170" cy="170" r="160"></circle>
+                <circle stroke="#007896" stroke-width="20" cx="170" cy="170" r="160"></circle>
                 <rect id="Rectangle" fill="#6EA6E8" mask="url(#mask-4)" x="-1.13333333" y="1.13333333" width="173.4" height="340"></rect>
                 <rect id="Rectangle" fill="#5C9BE4" mask="url(#mask-4)" x="171.133333" y="1.13333333" width="173.4" height="340"></rect>
                 <circle id="Oval-2" stroke="#333333" stroke-width="20" mask="url(#mask-4)" cx="170" cy="170" r="160"></circle>

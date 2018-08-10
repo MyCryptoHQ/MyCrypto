@@ -2,16 +2,16 @@
   &-field {
     margin-top: 0;
 
-    &-label {
-      float: left;
-    }
-
     &-reset {
-      float: right;
-
+      display: block;
+      margin: auto;
+      margin-bottom: 0.25rem;
       .fa {
         margin-right: 8px;
       }
     }
+  }
+  &-submit {
+    margin-bottom: 1rem;
   }
 }

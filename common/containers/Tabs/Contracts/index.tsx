@@ -1,42 +1,33 @@
-import translate from 'translations';
-import { Interact } from './components/Interact';
-import { Deploy } from './components/Deploy';
-import './index.scss';
-import { reset, TReset } from 'actions/transaction';
-import { resetWallet, TResetWallet } from 'actions/wallet';
-import TabSection from 'containers/TabSection';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+
+import translate from 'translations';
+import TabSection from 'containers/TabSection';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
-
-interface Props {
-  reset: TReset;
-  resetWallet: TResetWallet;
-}
+import { Interact } from './components/Interact';
+import { Deploy } from './components/Deploy';
 
 const tabs = [
   {
     path: 'interact',
-    name: translate('Interact')
+    name: translate('CONTRACTS_INTERACT')
   },
   {
     path: 'deploy',
-    name: translate('Deploy')
+    name: translate('CONTRACTS_DEPLOY')
   }
 ];
 
-class Contracts extends Component<Props & RouteComponentProps<{}>> {
+class Contracts extends Component<RouteComponentProps<{}>> {
   public render() {
-    const { match } = this.props;
+    const { match, location, history } = this.props;
     const currentPath = match.url;
 
     return (
       <TabSection isUnavailableOffline={true}>
-        <div className="SubTabs-tabs">
-          <SubTabs tabs={tabs} match={match} />
-        </div>
+        <SubTabs tabs={tabs} match={match} location={location} history={history} />
         <section className="Tab-content Contracts">
           <div className="Contracts-content">
             <Switch>
@@ -56,4 +47,4 @@ class Contracts extends Component<Props & RouteComponentProps<{}>> {
   }
 }
 
-export default connect(null, { reset, resetWallet })(Contracts);
+export default connect(null, {})(Contracts);

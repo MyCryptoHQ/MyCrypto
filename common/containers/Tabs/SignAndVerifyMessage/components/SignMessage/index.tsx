@@ -1,93 +1,87 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
-import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-import translate from 'translations';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { resetWallet, TResetWallet } from 'actions/wallet';
+
+import translate, { translateRaw } from 'translations';
 import { ISignedMessage } from 'libs/signing';
 import { IFullWallet } from 'libs/wallet';
-import { AppState } from 'reducers';
+import { AppState } from 'features/reducers';
+import { messageActions } from 'features/message';
+import { walletActions, walletSelectors } from 'features/wallet';
+import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
+import { TextArea, CodeBlock } from 'components/ui';
 import SignButton from './SignButton';
-import { isWalletFullyUnlocked } from 'selectors/wallet';
 import './index.scss';
 
 interface Props {
   wallet: IFullWallet;
   unlocked: boolean;
-  showNotification: TShowNotification;
-  resetWallet: TResetWallet;
+  signMessageRequested: messageActions.TSignMessageRequested;
+  signedMessage: ISignedMessage | null;
+  resetWallet: walletActions.TResetWallet;
+  resetMessage: messageActions.TResetMessage;
 }
 
 interface State {
   message: string;
-  signedMessage: ISignedMessage | null;
 }
 
 const initialState: State = {
-  message: '',
-  signedMessage: null
+  message: ''
 };
 
-const messagePlaceholder =
-  'This is a sweet message that you are signing to prove that you own the address you say you own.';
+const messagePlaceholder = translateRaw('SIGN_MSG_PLACEHOLDER');
 
 export class SignMessage extends Component<Props, State> {
   public state: State = initialState;
 
   public componentWillUnmount() {
     this.props.resetWallet();
+    this.props.resetMessage();
   }
 
   public render() {
-    const { wallet, unlocked } = this.props;
-    const { message, signedMessage } = this.state;
-    const messageBoxClass = classnames([
-      'SignMessage-inputBox',
-      'form-control',
-      message ? 'is-valid' : 'is-invalid'
-    ]);
+    const { unlocked, signedMessage } = this.props;
+    const { message } = this.state;
 
     return (
       <div>
         {unlocked ? (
           <div className="Tab-content-pane">
-            <h3 className="SignMessage-label">{translate('MSG_message')}</h3>
             <button
               className="SignMessage-reset btn btn-default btn-sm"
               onClick={this.changeWallet}
             >
               <i className="fa fa-refresh" />
-              {translate('Change Wallet')}
+              {translate('CHANGE_WALLET')}
             </button>
-            <div className="form-group">
-              <textarea
-                className={messageBoxClass}
-                placeholder={messagePlaceholder}
-                value={message}
-                onChange={this.handleMessageChange}
-              />
-              <div className="SignMessage-help">{translate('MSG_info2')}</div>
+
+            <div className="input-group-wrapper Deploy-field">
+              <label className="input-group">
+                <div className="input-group-header">{translate('MSG_MESSAGE')}</div>
+                <TextArea
+                  isValid={!!message}
+                  className="SignMessage-inputBox"
+                  placeholder={messagePlaceholder}
+                  value={message}
+                  onChange={this.handleMessageChange}
+                />
+              </label>
+              <div className="SignMessage-help">{translate('MSG_INFO2')}</div>
             </div>
 
             <SignButton
-              wallet={wallet}
               message={this.state.message}
-              showNotification={this.props.showNotification}
-              onSignMessage={this.onSignMessage}
+              signMessageRequested={this.props.signMessageRequested}
             />
 
-            {!!signedMessage && (
-              <div>
-                <h4>{translate('MSG_signature')}</h4>
-                <div className="form-group">
-                  <textarea
-                    className="SignMessage-inputBox form-control"
-                    value={JSON.stringify(signedMessage, null, 2)}
-                    disabled={true}
-                    onChange={this.handleMessageChange}
-                  />
-                </div>
+            {signedMessage && (
+              <div className="input-group-wrapper SignMessage-inputBox">
+                <label className="input-group">
+                  <div className="input-group-header">{translate('MSG_SIGNATURE')}</div>
+                  <CodeBlock className="SignMessage-inputBox">
+                    {JSON.stringify(signedMessage, null, 2)}
+                  </CodeBlock>
+                </label>
               </div>
             )}
           </div>
@@ -103,21 +97,20 @@ export class SignMessage extends Component<Props, State> {
     this.setState({ message });
   };
 
-  private onSignMessage = (signedMessage: ISignedMessage) => {
-    this.setState({ signedMessage });
-  };
-
   private changeWallet = () => {
     this.props.resetWallet();
+    this.props.resetMessage();
+    this.setState(initialState);
   };
 }
 
 const mapStateToProps = (state: AppState) => ({
-  wallet: state.wallet.inst,
-  unlocked: isWalletFullyUnlocked(state)
+  signedMessage: state.message.signed,
+  unlocked: walletSelectors.isWalletFullyUnlocked(state)
 });
 
 export default connect(mapStateToProps, {
-  showNotification,
-  resetWallet
+  signMessageRequested: messageActions.signMessageRequested,
+  resetWallet: walletActions.resetWallet,
+  resetMessage: messageActions.resetMessage
 })(SignMessage);

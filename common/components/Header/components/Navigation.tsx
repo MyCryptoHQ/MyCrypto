@@ -1,56 +1,13 @@
 import React, { PureComponent } from 'react';
-import NavigationLink from './NavigationLink';
-import { knowledgeBaseURL } from 'config';
+
+import { navigationLinks } from 'config';
+import NavigationLink from 'components/NavigationLink';
 import './Navigation.scss';
-
-export interface TabLink {
-  name: string;
-  to: string;
-  external?: boolean;
-}
-
-const tabs: TabLink[] = [
-  {
-    name: 'Account View & Send',
-    to: '/account'
-  },
-  {
-    name: 'NAV_GenerateWallet',
-    to: '/generate'
-  },
-  {
-    name: 'NAV_Swap',
-    to: '/swap'
-  },
-  {
-    name: 'NAV_Contracts',
-    to: '/contracts'
-  },
-  {
-    name: 'NAV_ENS',
-    to: '/ens'
-  },
-  {
-    name: 'Sign & Verify Message',
-    to: '/sign-and-verify-message'
-  },
-  {
-    name: 'NAV_TxStatus',
-    to: '/tx-status'
-  },
-  {
-    name: 'Broadcast Transaction',
-    to: '/pushTx'
-  },
-  {
-    name: 'NAV_Help',
-    to: `${knowledgeBaseURL}`,
-    external: true
-  }
-];
+import { TAB } from './constants';
 
 interface Props {
   color?: string | false;
+  unsupportedTabs?: TAB[];
 }
 
 interface State {
@@ -75,7 +32,7 @@ export default class Navigation extends PureComponent<Props, State> {
    */
 
   public render() {
-    const { color } = this.props;
+    const { color, unsupportedTabs } = this.props;
     const borderStyle: BorderStyle = {};
 
     if (color) {
@@ -97,9 +54,17 @@ export default class Navigation extends PureComponent<Props, State> {
 
         <div className="Navigation-scroll container">
           <ul className="Navigation-links">
-            {tabs.map(link => {
-              return <NavigationLink key={link.name} link={link} isHomepage={link === tabs[0]} />;
-            })}
+            {navigationLinks.map(link => (
+              <NavigationLink
+                key={link.name}
+                link={link}
+                isHomepage={link === navigationLinks[0]}
+                className="NavigationLink"
+                isNotEnabled={
+                  unsupportedTabs && unsupportedTabs.map(tab => tab.toString()).includes(link.name)
+                }
+              />
+            ))}
           </ul>
         </div>
 

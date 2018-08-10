@@ -1,14 +1,14 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
 
 .RequestPayment {
+  &-title {
+    display: block;
+    margin: 0.5rem 1rem;
+    margin-bottom: 0.25rem;
+  }
   &-qr {
     position: relative;
-    background: #FFF;
-    cursor: pointer;
-  }
-
-  &-codeContainer {
-    padding-top: 20px;
+    background: #fff;
   }
 
   &-codeBox {

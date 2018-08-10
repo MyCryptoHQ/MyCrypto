@@ -8,7 +8,8 @@ import {
   toBuffer,
   pubToAddress
 } from 'ethereumjs-util';
-import { stripHexPrefixAndLower } from 'libs/values';
+
+import { stripHexPrefixAndLower } from 'libs/formatters';
 
 export function signRawTxWithPrivKey(privKey: Buffer, t: EthTx): Buffer {
   t.sign(privKey);

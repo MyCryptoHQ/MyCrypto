@@ -1,3 +1,5 @@
+import { Omit } from 'react-redux';
+
 import { checkHttpStatus, parseJSON } from './utils';
 
 const MAX_GAS_FAST = 250;
@@ -17,7 +19,17 @@ export interface GasEstimates {
   fast: number;
   fastest: number;
   time: number;
+  chainId: number;
   isDefault: boolean;
+}
+
+interface GasExpressResponse {
+  block_time: number;
+  blockNum: number;
+  fast: number;
+  fastest: number;
+  safeLow: number;
+  standard: number;
 }
 
 export function fetchGasEstimates(): Promise<GasEstimates> {
@@ -26,9 +38,14 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
   })
     .then(checkHttpStatus)
     .then(parseJSON)
-    .then((res: object) => {
+    .then((res: GasExpressResponse) => {
       // Make sure it looks like a raw gas estimate, and it has valid values
-      const keys = ['safeLow', 'standard', 'fast', 'fastest'];
+      const keys: (keyof Omit<GasExpressResponse, 'block_time' | 'blockNum'>)[] = [
+        'safeLow',
+        'standard',
+        'fast',
+        'fastest'
+      ];
       keys.forEach(key => {
         if (typeof res[key] !== 'number') {
           throw new Error(
@@ -66,6 +83,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
     .then((res: RawGasEstimates) => ({
       ...res,
       time: Date.now(),
+      chainId: 1,
       isDefault: false
     }));
 }

@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import DropdownShell from './DropdownShell';
+
 import removeIcon from 'assets/images/icon-remove.svg';
+import DropdownShell from './DropdownShell';
 import './ColorDropdown.scss';
 
 interface Option<T> {
@@ -92,6 +93,7 @@ export default class ColorDropdown<T> extends PureComponent<Props<T>, {}> {
                       className="ColorDropdown-item-remove"
                       onClick={this.onRemove.bind(null, option.onRemove)}
                       src={removeIcon}
+                      alt="remove"
                     />
                   )}
                 </a>

@@ -1,78 +1,88 @@
-import translate from 'translations';
-import { getTransactionFields, makeTransaction } from 'libs/transaction';
-import { OfflineBroadcast } from './OfflineBroadcast';
-import { SerializedTransaction } from 'components/renderCbs';
-import { OnlineSend } from './OnlineSend';
-import { addHexPrefix } from 'ethereumjs-util';
-import { getWalletType, IWalletType } from 'selectors/wallet';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import EthTx from 'ethereumjs-tx';
+
+import { AppState } from 'features/reducers';
+import * as derivedSelectors from 'features/selectors';
+import { walletSelectors } from 'features/wallet';
+import {
+  transactionNetworkSelectors,
+  transactionSignSelectors,
+  transactionSelectors
+} from 'features/transaction';
 import { ConfirmationModal } from 'components/ConfirmationModal';
+import { OnlineSend } from './OnlineSend';
 
 export interface CallbackProps {
-  onClick(): void;
+  disabled: boolean;
+  signTx(): void;
+  openModal(): void;
 }
 
 interface StateProps {
-  walletType: IWalletType;
+  walletType: walletSelectors.IWalletType;
+  serializedTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
+  transaction: EthTx;
+  isFullTransaction: boolean;
+  networkRequestPending: boolean;
+  validGasPrice: boolean;
+  validGasLimit: boolean;
+  signedTx: boolean;
 }
 
 interface OwnProps {
   onlyTransactionParameters?: boolean;
+  signing?: boolean;
   Modal: typeof ConfirmationModal;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const getStringifiedTx = (serializedTransaction: string) =>
-  JSON.stringify(getTransactionFields(makeTransaction(serializedTransaction)), null, 2);
-
 type Props = StateProps & OwnProps;
-class SendButtonFactoryClass extends Component<Props> {
+
+export class SendButtonFactoryClass extends Component<Props> {
   public render() {
-    const { onlyTransactionParameters } = this.props;
-    const columnSize = onlyTransactionParameters ? 12 : 6;
+    const {
+      signing,
+      signedTx,
+      transaction,
+      isFullTransaction,
+      serializedTransaction,
+      networkRequestPending,
+      validGasPrice,
+      validGasLimit
+    } = this.props;
+
+    // return signing ? true : signedTx ? true : false
     return (
-      <SerializedTransaction
-        withSerializedTransaction={serializedTransaction => (
-          <React.Fragment>
-            <div className={`col-sm-${columnSize}`}>
-              <label>
-                {this.props.walletType.isWeb3Wallet
-                  ? 'Transaction Parameters'
-                  : translate('SEND_raw')}
-              </label>
-              <textarea
-                className="form-control"
-                value={getStringifiedTx(serializedTransaction)}
-                rows={4}
-                readOnly={true}
-              />
-            </div>
-            {!onlyTransactionParameters && (
-              <div className="col-sm-6">
-                <label>
-                  {this.props.walletType.isWeb3Wallet
-                    ? 'Serialized Transaction Parameters'
-                    : translate('SEND_signed')}
-                </label>
-                <textarea
-                  className="form-control"
-                  value={addHexPrefix(serializedTransaction)}
-                  rows={4}
-                  readOnly={true}
-                />
-              </div>
-            )}
-            <OfflineBroadcast />
-            <OnlineSend withProps={this.props.withProps} Modal={this.props.Modal} />
-          </React.Fragment>
-        )}
-      />
+      (signing || (!signing && signedTx)) && (
+        <OnlineSend
+          withOnClick={({ openModal, signer }) =>
+            this.props.withProps({
+              disabled: signing
+                ? !isFullTransaction || networkRequestPending || !validGasPrice || !validGasLimit
+                : !!(signing && !serializedTransaction),
+              signTx: () => signer(transaction),
+              openModal
+            })
+          }
+          Modal={this.props.Modal}
+        />
+      )
     );
   }
 }
 
-export const SendButtonFactory = connect((state: AppState) => ({
-  walletType: getWalletType(state)
-}))(SendButtonFactoryClass);
+const mapStateToProps = (state: AppState) => {
+  return {
+    walletType: walletSelectors.getWalletType(state),
+    serializedTransaction: derivedSelectors.getSerializedTransaction(state),
+    ...derivedSelectors.getTransaction(state),
+    networkRequestPending: transactionNetworkSelectors.isNetworkRequestPending(state),
+    validGasPrice: transactionSelectors.isValidGasPrice(state),
+    validGasLimit: transactionSelectors.isValidGasLimit(state),
+    signedTx:
+      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state)
+  };
+};
+
+export const SendButtonFactory = connect(mapStateToProps)(SendButtonFactoryClass);

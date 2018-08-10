@@ -1,65 +1,79 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
-import { print } from 'components/PrintableWallet';
-import { Identicon, QRCode } from 'components/ui';
-import { GenerateKeystoreModal, TogglablePassword } from 'components';
+import { AppState } from 'features/reducers';
+import { getChecksumAddressFn } from 'features/config';
+import { QRCode, Modal } from 'components/ui';
+import {
+  GenerateKeystoreModal,
+  TogglablePassword,
+  AddressField,
+  PrintableWallet
+} from 'components';
 import './WalletInfo.scss';
 
-interface Props {
+interface OwnProps {
   wallet: IWallet;
 }
+
+interface StateProps {
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+}
+
+type Props = OwnProps & StateProps;
 
 interface State {
   address: string;
   privateKey: string;
   isPrivateKeyVisible: boolean;
   isKeystoreModalOpen: boolean;
+  isPaperWalletModalOpen: boolean;
 }
 
-export default class WalletInfo extends React.PureComponent<Props, State> {
+class WalletInfo extends React.PureComponent<Props, State> {
   public state = {
     address: '',
     privateKey: '',
     isPrivateKeyVisible: false,
-    isKeystoreModalOpen: false
+    isKeystoreModalOpen: false,
+    isPaperWalletModalOpen: false
   };
 
   public componentDidMount() {
-    this.setWalletAsyncState(this.props.wallet);
+    this.setStateFromWallet(this.props);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
-      this.setWalletAsyncState(nextProps.wallet);
+      this.setStateFromWallet(nextProps);
     }
   }
 
   public render() {
-    const { address, privateKey, isPrivateKeyVisible, isKeystoreModalOpen } = this.state;
+    const {
+      address,
+      privateKey,
+      isPrivateKeyVisible,
+      isKeystoreModalOpen,
+      isPaperWalletModalOpen
+    } = this.state;
 
     return (
       <div className="WalletInfo">
         <div className="Tab-content-pane">
-          <div className="row form-group">
-            <div className="col-xs-11">
-              <label>{translate('x_Address')}</label>
-              <input className="form-control" disabled={true} value={address} />
-            </div>
-            <div className="col-xs-1" style={{ padding: 0 }}>
-              <Identicon address={address} />
-            </div>
-          </div>
+          <AddressField isSelfAddress={true} />
 
           {privateKey && (
             <div className="row form-group">
               <div className="col-xs-12">
-                <label>{translate('x_PrivKey')}</label>
+                <label>{translate('X_PRIVKEY')}</label>
                 <TogglablePassword
                   disabled={true}
                   value={privateKey}
                   isVisible={isPrivateKeyVisible}
-                  toggleAriaLabel={translateRaw('GEN_Aria_2')}
+                  toggleAriaLabel={translateRaw('GEN_ARIA_2')}
                   handleToggleVisibility={this.togglePrivateKey}
                 />
               </div>
@@ -70,7 +84,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
         <div className="Tab-content-pane">
           <div className="row">
             <div className="col-xs-6">
-              <label>Public Address</label>
+              <label>{translate('TOKEN_ADDR')}</label>
               <div className="WalletInfo-qr well well-lg">
                 <QRCode data={address} />
               </div>
@@ -78,7 +92,7 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
             {privateKey && (
               <div>
                 <div className="col-xs-6">
-                  <label>Private Key</label>
+                  <label>{translate('X_PRIVKEY2')}</label>
                   <div className="WalletInfo-qr well well-lg" onClick={this.togglePrivateKey}>
                     <QRCode data={isPrivateKeyVisible ? privateKey : '0'} />
                     {!isPrivateKeyVisible && (
@@ -90,14 +104,14 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
                 </div>
 
                 <div className="col-xs-6">
-                  <label>Utilities</label>
+                  <label>{translate('WALLET_INFO_UTILITIES')}</label>
 
-                  <button className="btn btn-info btn-block" onClick={print(address, privateKey)}>
-                    {translate('x_Print')}
+                  <button className="btn btn-info btn-block" onClick={this.openPaperWalletModal}>
+                    {translate('X_SAVE_PAPER')}
                   </button>
 
-                  <button className="btn btn-info btn-block" onClick={this.toggleKeystoreModal}>
-                    Generate Keystore File
+                  <button className="btn btn-info btn-block" onClick={this.openKeystoreModal}>
+                    {translate('GENERATE_KEYSTORE_TITLE')}
                   </button>
                 </div>
               </div>
@@ -106,17 +120,22 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
             <GenerateKeystoreModal
               isOpen={isKeystoreModalOpen}
               privateKey={privateKey}
-              handleClose={this.toggleKeystoreModal}
+              handleClose={this.closeKeystoreModal}
             />
+
+            <Modal isOpen={isPaperWalletModalOpen} handleClose={this.closePaperWalletModal}>
+              <PrintableWallet address={address} privateKey={privateKey} />
+            </Modal>
           </div>
         </div>
       </div>
     );
   }
 
-  private async setWalletAsyncState(wallet: IWallet) {
-    const address = await wallet.getAddressString();
-    const privateKey = wallet.getPrivateKeyString ? await wallet.getPrivateKeyString() : '';
+  private setStateFromWallet(props: Props) {
+    const { wallet, toChecksumAddress } = props;
+    const address = toChecksumAddress(wallet.getAddressString());
+    const privateKey = wallet.getPrivateKeyString ? wallet.getPrivateKeyString() : '';
     this.setState({ address, privateKey });
   }
 
@@ -124,7 +143,13 @@ export default class WalletInfo extends React.PureComponent<Props, State> {
     this.setState({ isPrivateKeyVisible: !this.state.isPrivateKeyVisible });
   };
 
-  private toggleKeystoreModal = () => {
-    this.setState({ isKeystoreModalOpen: !this.state.isKeystoreModalOpen });
-  };
+  private openKeystoreModal = () => this.setState({ isKeystoreModalOpen: true });
+  private closeKeystoreModal = () => this.setState({ isKeystoreModalOpen: false });
+
+  private openPaperWalletModal = () => this.setState({ isPaperWalletModalOpen: true });
+  private closePaperWalletModal = () => this.setState({ isPaperWalletModalOpen: false });
 }
+
+export default connect((state: AppState): StateProps => ({
+  toChecksumAddress: getChecksumAddressFn(state)
+}))(WalletInfo);

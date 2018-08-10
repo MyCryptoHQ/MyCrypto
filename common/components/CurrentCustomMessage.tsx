@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getCurrentTo, ICurrentTo } from 'selectors/transaction';
-import { getAllTokens } from 'selectors/config';
-import { getWalletInst } from 'selectors/wallet';
+
 import { getAddressMessage } from 'config';
 import { Token } from 'types/network';
+import { ICurrentTo } from 'features/types';
+import { AppState } from 'features/reducers';
+import * as derivedSelectors from 'features/selectors';
+import { getAllTokens } from 'features/config';
+import { walletSelectors } from 'features/wallet';
+import { Address } from 'components/ui';
 
 interface ReduxProps {
   currentTo: ICurrentTo;
@@ -28,7 +31,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
     this.setAddressState(this.props);
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.wallet !== nextProps.wallet) {
       this.setAddressState(nextProps);
     }
@@ -47,9 +50,9 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
     }
   }
 
-  private async setAddressState(props: Props) {
+  private setAddressState(props: Props) {
     if (props.wallet) {
-      const walletAddress = await props.wallet.getAddressString();
+      const walletAddress = props.wallet.getAddressString();
       this.setState({ walletAddress });
     } else {
       this.setState({ walletAddress: '' });
@@ -72,7 +75,10 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
         <React.Fragment>
           <p>
             <small>
-              A message regarding <strong>{address}</strong>:
+              A message regarding{' '}
+              <strong>
+                <Address address={address} />
+              </strong>:
             </small>
           </p>
           <p>{msg.msg}</p>
@@ -112,7 +118,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
 }
 
 export const CurrentCustomMessage = connect((state: AppState): ReduxProps => ({
-  currentTo: getCurrentTo(state),
+  currentTo: derivedSelectors.getCurrentTo(state),
   tokens: getAllTokens(state),
-  wallet: getWalletInst(state)
+  wallet: walletSelectors.getWalletInst(state)
 }))(CurrentCustomMessageClass);

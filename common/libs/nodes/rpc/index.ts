@@ -1,9 +1,9 @@
 import BN from 'bn.js';
 import { IHexStrTransaction } from 'libs/transaction';
 import { Wei, TokenValue } from 'libs/units';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 import { hexToNumber } from 'utils/formatters';
-import { INode, TxObj, TransactionData, TransactionReceipt } from '../INode';
+import { INode, TxObj } from '../INode';
 import RPCClient from './client';
 import RPCRequests from './requests';
 import {
@@ -18,6 +18,7 @@ import {
   isValidRawTxApi
 } from 'libs/validators';
 import { Token } from 'types/network';
+import { TransactionData, TransactionReceipt } from 'types/transactions';
 
 export default class RpcNode implements INode {
   public client: RPCClient;

@@ -1,7 +1,9 @@
 import React from 'react';
+
+import translate from 'translations';
+import { SwapInput, NormalizedBityRates, NormalizedShapeshiftRates } from 'features/swap/types';
+import { TextArea } from 'components/ui';
 import './SupportFooter.scss';
-import { SwapInput } from 'actions/swap';
-import { NormalizedBityRates, NormalizedShapeshiftRates } from 'reducers/swap/types';
 
 interface Props {
   origin: SwapInput;
@@ -30,10 +32,12 @@ class SupportFooter extends React.PureComponent<Props, {}> {
       shapeshiftRates,
       bityRates
     } = this.props;
-    const pair = origin && destination ? origin.id + destination.id : 'BTCETH';
+    const pair = origin && destination ? origin.label + destination.label : 'BTCETH';
     const rates = provider === 'shapeshift' ? shapeshiftRates.byId : bityRates.byId;
     const emailTo =
-      provider === 'shapeshift' ? 'support@mycrypto.com' : 'support@mycrypto.com,mew@bity.com';
+      provider === 'shapeshift'
+        ? 'support@shapeshift.zendesk.com,support@mycrypto.com'
+        : 'support@mycrypto.com,mew@bity.com';
     const mailSubject = encodeURI('Issue regarding my Swap via MyCrypto');
     const serviceProvider = provider.charAt(0).toUpperCase() + provider.slice(1);
     let mailBody;
@@ -45,43 +49,49 @@ Provider: ${serviceProvider}
 
 REF ID#: ${reference || ''}
 
-Amount to send: ${origin.amount || ''} ${origin.id}
+Amount to send: ${origin.amount || ''} ${origin.label}
 
-Amount to receive: ${destination.amount || ''} ${destination.id}
+Amount to receive: ${destination.amount || ''} ${destination.label}
 
 Payment Address: ${paymentAddress || ''}
 
 Receiving Address: ${destinationAddress || ''}
 
-Rate: ${rates[pair].rate} ${origin.id}/${destination.id}
+Rate: ${rates[pair].rate} ${origin.label}/${destination.label}
         `);
       fallbackBody = `To: ${emailTo}
 Subject: Issue regarding my Swap via MyCrypto
 Message:
 Provider: ${serviceProvider}
 REF ID#: ${reference || ''}
-Amount to send: ${origin.amount || ''} ${origin.id}
-Amount to receive: ${destination.amount || ''} ${destination.id}
+Amount to send: ${origin.amount || ''} ${origin.label}
+Amount to receive: ${destination.amount || ''} ${destination.label}
 Payment Address: ${paymentAddress || ''}
 Receiving Address: ${destinationAddress || ''}
-Rate: ${rates[pair].rate} ${origin.id}/${destination.id}`;
+Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
     }
     return (
       <section className="SupportFooter">
         <a
-          className="btn-warning btn-sm"
+          className="SupportFooter-button btn-warning btn-sm"
           href={`mailto:${emailTo}?Subject=${mailSubject}&Body=${mailBody}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Issue with your Swap? Contact support
+          {translate('SWAP_SUPPORT')}
         </a>
         <div className="SupportFooter-fallback">
-          <p onClick={this.toggleFallback}>
-            <small>Click here if link doesn't work</small>
-          </p>
+          <button className="SupportFooter-fallback-button" onClick={this.toggleFallback}>
+            <small>{translate('SWAP_SUPPORT_LINK_BROKEN')}</small>
+          </button>
           {open ? (
-            <textarea defaultValue={fallbackBody} className="form-control input-sm" rows={9} />
+            <TextArea
+              isValid={true}
+              showValidAsPlain={true}
+              defaultValue={fallbackBody}
+              className="input-sm"
+              rows={9}
+            />
           ) : null}
         </div>
       </section>

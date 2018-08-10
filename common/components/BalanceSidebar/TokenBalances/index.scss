@@ -1,4 +1,4 @@
-@import "common/sass/variables";
+@import 'common/sass/variables';
 
 .TokenBalances {
   &-title {
@@ -33,12 +33,35 @@
     margin-top: $space;
   }
 
+  &-error {
+    color: color(brand-danger);
+    text-align: center;
+
+    &-message {
+      margin-top: 0;
+    }
+
+    .fa {
+      margin-left: $space-md;
+    }
+  }
+
   &-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 #{-$space-xs} #{-$space-xs};
+
+    &-btn {
+      flex-grow: 1;
+      margin: 0 $space-xs $space-xs;
+    }
+
     &-help {
       padding-top: 10px;
       text-align: center;
       font-size: $font-size-xs;
-      color: $gray;
+      color: shade-dark(0.7);
     }
   }
 

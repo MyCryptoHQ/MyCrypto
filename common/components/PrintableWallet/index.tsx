@@ -1,53 +1,54 @@
-import { PaperWallet } from 'components';
 import React from 'react';
-import { translateRaw } from 'translations';
-import printElement from 'utils/printElement';
-import { stripHexPrefix } from 'libs/values';
 
-export const print = (address: string, privateKey: string) => () =>
-  address &&
-  privateKey &&
-  printElement(<PaperWallet address={address} privateKey={privateKey} />, {
-    popupFeatures: {
-      scrollbars: 'no'
-    },
-    styles: `
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: Lato, sans-serif;
-        font-size: 1rem;
-        line-height: 1.4;
-        margin: 0;
-      }
-    `
-  });
+import translate from 'translations';
+import { stripHexPrefix } from 'libs/formatters';
+import { PaperWallet } from 'components';
 
 interface Props {
   address: string;
   privateKey: string;
 }
 
-const PrintableWallet: React.SFC<Props> = ({ address, privateKey }) => {
-  const pkey = stripHexPrefix(privateKey);
+interface State {
+  paperWalletImage: string;
+}
 
-  return (
-    <div>
-      <PaperWallet address={address} privateKey={pkey} />
-      <a
-        role="button"
-        aria-label={translateRaw('x_Print')}
-        aria-describedby="x_PrintDesc"
-        className="btn btn-lg btn-primary btn-block"
-        onClick={print(address, pkey)}
-        style={{ margin: '10px auto 0', maxWidth: '260px' }}
-      >
-        {translateRaw('x_Print')}
-      </a>
-    </div>
-  );
-};
+export default class PrintableWallet extends React.Component<Props, State> {
+  public state: State = {
+    paperWalletImage: ''
+  };
 
-export default PrintableWallet;
+  private paperWallet: PaperWallet | null;
+
+  public componentDidMount() {
+    setTimeout(() => {
+      if (!this.paperWallet) {
+        return this.componentDidMount();
+      }
+
+      this.paperWallet.toPNG().then(png => this.setState({ paperWalletImage: png }));
+    }, 500);
+  }
+
+  public render() {
+    const { address, privateKey } = this.props;
+    const { paperWalletImage } = this.state;
+    const pkey = stripHexPrefix(privateKey);
+    const disabled = paperWalletImage ? '' : 'disabled';
+
+    return (
+      <div>
+        <PaperWallet address={address} privateKey={pkey} ref={c => (this.paperWallet = c)} />
+        <a
+          role="button"
+          href={paperWalletImage}
+          className={`btn btn-lg btn-primary btn-block ${disabled}`}
+          style={{ margin: '10px auto 0', maxWidth: '260px' }}
+          download={`paper-wallet-0x${address.substr(0, 6)}`}
+        >
+          {translate('X_SAVE_PAPER')}
+        </a>
+      </div>
+    );
+  }
+}

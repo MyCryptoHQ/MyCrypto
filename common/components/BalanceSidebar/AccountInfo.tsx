@@ -1,14 +1,17 @@
-import { Identicon, UnitDisplay } from 'components/ui';
-import { IWallet, Balance, TrezorWallet, LedgerWallet } from 'libs/wallet';
 import React from 'react';
-import translate from 'translations';
-import './AccountInfo.scss';
-import Spinner from 'components/ui/Spinner';
-import { getNetworkConfig, getOffline } from 'selectors/config';
-import { AppState } from 'reducers';
 import { connect } from 'react-redux';
+
+import { etherChainExplorerInst } from 'config/data';
+import translate, { translateRaw } from 'translations';
+import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
-import { TSetAccountBalance, setAccountBalance } from 'actions/wallet';
+import { AppState } from 'features/reducers';
+import { getNetworkConfig, getOffline, getChecksumAddressFn } from 'features/config';
+import { walletActions } from 'features/wallet';
+import Spinner from 'components/ui/Spinner';
+import { UnitDisplay, NewTabLink } from 'components/ui';
+import AccountAddress from './AccountAddress';
+import './AccountInfo.scss';
 
 interface OwnProps {
   wallet: IWallet;
@@ -16,8 +19,9 @@ interface OwnProps {
 
 interface StateProps {
   balance: Balance;
-  network: NetworkConfig;
-  isOffline: boolean;
+  network: ReturnType<typeof getNetworkConfig>;
+  isOffline: ReturnType<typeof getOffline>;
+  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
 }
 
 interface State {
@@ -27,7 +31,7 @@ interface State {
 }
 
 interface DispatchProps {
-  setAccountBalance: TSetAccountBalance;
+  refreshAccountBalance: walletActions.TRefreshAccountBalance;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -39,8 +43,8 @@ class AccountInfo extends React.Component<Props, State> {
     confirmAddr: false
   };
 
-  public async setAddressFromWallet() {
-    const address = await this.props.wallet.getAddressString();
+  public setAddressFromWallet() {
+    const address = this.props.wallet.getAddressString();
     if (address !== this.state.address) {
       this.setState({ address });
     }
@@ -70,8 +74,9 @@ class AccountInfo extends React.Component<Props, State> {
   };
 
   public render() {
-    const { network, balance, isOffline } = this.props;
+    const { network, isOffline, balance, toChecksumAddress, wallet } = this.props;
     const { address, showLongBalance, confirmAddr } = this.state;
+
     let blockExplorer;
     let tokenExplorer;
     if (!network.isCustom) {
@@ -80,20 +85,11 @@ class AccountInfo extends React.Component<Props, State> {
       tokenExplorer = network.tokenExplorer;
     }
 
-    const wallet = this.props.wallet as LedgerWallet | TrezorWallet;
     return (
-      <div className="AccountInfo">
-        <h5 className="AccountInfo-section-header">{translate('sidebar_AccountAddr')}</h5>
-        <div className="AccountInfo-section AccountInfo-address-section">
-          <div className="AccountInfo-address-icon">
-            <Identicon address={address} size="100%" />
-          </div>
-          <div className="AccountInfo-address-wrapper">
-            <div className="AccountInfo-address-addr">{address}</div>
-          </div>
-        </div>
+      <div>
+        <AccountAddress address={toChecksumAddress(address)} />
 
-        {typeof wallet.displayAddress === 'function' && (
+        {isHardwareWallet(wallet) && (
           <div className="AccountInfo-section">
             <a
               className="AccountInfo-address-hw-addr"
@@ -102,13 +98,15 @@ class AccountInfo extends React.Component<Props, State> {
                 wallet
                   .displayAddress()
                   .then(() => this.toggleConfirmAddr())
-                  .catch(e => {
+                  .catch((e: Error | string) => {
+                    console.error('Display address failed', e);
                     this.toggleConfirmAddr();
-                    throw new Error(e);
                   });
               }}
             >
-              {confirmAddr ? null : 'Display address on ' + wallet.getWalletType()}
+              {confirmAddr
+                ? null
+                : translate('SIDEBAR_DISPLAY_ADDR', { $wallet: wallet.getWalletType() })}
             </a>
             {confirmAddr ? (
               <span className="AccountInfo-address-confirm">
@@ -119,7 +117,7 @@ class AccountInfo extends React.Component<Props, State> {
         )}
 
         <div className="AccountInfo-section">
-          <h5 className="AccountInfo-section-header">{translate('sidebar_AccountBal')}</h5>
+          <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTBAL')}</h5>
           <ul className="AccountInfo-list">
             <li className="AccountInfo-list-item AccountInfo-balance">
               <span
@@ -131,7 +129,7 @@ class AccountInfo extends React.Component<Props, State> {
                   unit={'ether'}
                   displayShortBalance={!showLongBalance}
                   checkOffline={true}
-                  symbol={balance.wei ? network.name : null}
+                  symbol={balance.wei ? this.setSymbol(network) : null}
                 />
               </span>
               {balance.wei && (
@@ -142,7 +140,7 @@ class AccountInfo extends React.Component<Props, State> {
                     !isOffline && (
                       <button
                         className="AccountInfo-section-refresh"
-                        onClick={this.props.setAccountBalance}
+                        onClick={this.props.refreshAccountBalance}
                       >
                         <i className="fa fa-refresh" />
                       </button>
@@ -156,28 +154,27 @@ class AccountInfo extends React.Component<Props, State> {
 
         {(!!blockExplorer || !!tokenExplorer) && (
           <div className="AccountInfo-section">
-            <h5 className="AccountInfo-section-header">{translate('sidebar_TransHistory')}</h5>
+            <h5 className="AccountInfo-section-header">{translate('SIDEBAR_TRANSHISTORY')}</h5>
             <ul className="AccountInfo-list">
               {!!blockExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={blockExplorer.addressUrl(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={blockExplorer.addressUrl(address)}>
                     {`${network.name} (${blockExplorer.origin})`}
-                  </a>
+                  </NewTabLink>
+                </li>
+              )}
+              {network.id === 'ETH' && (
+                <li className="AccountInfo-list-item">
+                  <NewTabLink href={etherChainExplorerInst.addressUrl(address)}>
+                    {`${network.name} (${etherChainExplorerInst.origin})`}
+                  </NewTabLink>
                 </li>
               )}
               {!!tokenExplorer && (
                 <li className="AccountInfo-list-item">
-                  <a
-                    href={tokenExplorer.address(address)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <NewTabLink href={tokenExplorer.address(address)}>
                     {`Tokens (${tokenExplorer.name})`}
-                  </a>
+                  </NewTabLink>
                 </li>
               )}
             </ul>
@@ -186,13 +183,28 @@ class AccountInfo extends React.Component<Props, State> {
       </div>
     );
   }
+
+  private setSymbol(network: NetworkConfig) {
+    if (network.isTestnet) {
+      return `${network.unit} (${translateRaw('TESTNET')})`;
+    }
+    return network.unit;
+  }
 }
+
+function isHardwareWallet(wallet: IWallet): wallet is HardwareWallet {
+  return typeof (wallet as any).displayAddress === 'function';
+}
+
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
     network: getNetworkConfig(state),
-    isOffline: getOffline(state)
+    isOffline: getOffline(state),
+    toChecksumAddress: getChecksumAddressFn(state)
   };
 }
-const mapDispatchToProps: DispatchProps = { setAccountBalance };
+const mapDispatchToProps: DispatchProps = {
+  refreshAccountBalance: walletActions.refreshAccountBalance
+};
 export default connect(mapStateToProps, mapDispatchToProps)(AccountInfo);

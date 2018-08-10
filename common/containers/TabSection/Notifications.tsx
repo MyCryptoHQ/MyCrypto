@@ -1,20 +1,21 @@
-import { closeNotification, Notification, TCloseNotification } from 'actions/notifications';
 import React from 'react';
-import { connect } from 'react-redux';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { connect } from 'react-redux';
+
+import { AppState } from 'features/reducers';
+import { notificationsTypes, notificationsActions } from 'features/notifications';
 import NotificationRow from './NotificationRow';
 import './Notifications.scss';
-import { AppState } from 'reducers';
 
 interface Props {
-  notifications: Notification[];
-  closeNotification: TCloseNotification;
+  notifications: notificationsTypes.Notification[];
+  closeNotification: notificationsActions.TCloseNotification;
 }
 
 export class Notifications extends React.Component<Props, {}> {
   public render() {
     return (
-      <TransitionGroup className="Notifications">
+      <TransitionGroup className="Notifications" aria-live="polite">
         {this.props.notifications.map(n => {
           return (
             <CSSTransition classNames="NotificationAnimation" timeout={500} key={n.id}>
@@ -31,4 +32,6 @@ const mapStateToProps = (state: AppState) => ({
   notifications: state.notifications
 });
 
-export default connect(mapStateToProps, { closeNotification })(Notifications);
+export default connect(mapStateToProps, {
+  closeNotification: notificationsActions.closeNotification
+})(Notifications);

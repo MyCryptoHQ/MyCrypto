@@ -1,19 +1,21 @@
-import { DataInput } from './DataInputFactory';
-import { Query } from 'components/renderCbs';
-import { inputData, TInputData } from 'actions/transaction';
 import React from 'react';
 import { connect } from 'react-redux';
-import { isEtherTransaction } from 'selectors/transaction';
-import { AppState } from 'reducers';
+
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { transactionFieldsActions } from 'features/transaction';
+import { Query } from 'components/renderCbs';
+import { DataInput } from './DataInputFactory';
+
 export interface CallBackProps {
   data: AppState['transaction']['fields']['data'];
-  dataExists: boolean;
+  validData: boolean;
   readOnly: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
 interface DispatchProps {
   isEtherTransaction: boolean;
-  inputData: TInputData;
+  inputData: transactionFieldsActions.TInputData;
 }
 interface OwnProps {
   data: string | null;
@@ -46,8 +48,8 @@ class DataFieldClass extends React.Component<Props> {
 }
 
 const DataField = connect(
-  (state: AppState) => ({ isEtherTransaction: isEtherTransaction(state) }),
-  { inputData }
+  (state: AppState) => ({ isEtherTransaction: selectors.isEtherTransaction(state) }),
+  { inputData: transactionFieldsActions.inputData }
 )(DataFieldClass);
 
 interface DefaultDataFieldProps {

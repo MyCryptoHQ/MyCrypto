@@ -1,83 +1,140 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { isAnyOfflineWithWeb3 } from 'selectors/derived';
+
+import translate, { translateRaw } from 'translations';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { getOffline, getNetworkConfig } from 'features/config';
+import { scheduleSelectors } from 'features/schedule';
+import { notificationsActions } from 'features/notifications';
 import {
   AddressField,
   AmountField,
   TXMetaDataPanel,
-  SendEverything,
   CurrentCustomMessage,
   GenerateTransaction,
   SendButton,
-  SigningStatus
+  SchedulingToggle,
+  ScheduleFields,
+  GenerateScheduleTransactionButton,
+  SendScheduleTransactionButton
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
-import translate from 'translations';
-
-import { AppState } from 'reducers';
 import { NonStandardTransaction } from './components';
-
-const content = (
-  <div className="Tab-content-pane">
-    <AddressField />
-    <div className="row form-group">
-      <div className="col-xs-12">
-        <AmountField hasUnitDropdown={true} />
-        <SendEverything />
-      </div>
-    </div>
-
-    <div className="row form-group">
-      <div className="col-xs-12">
-        <TXMetaDataPanel />
-      </div>
-    </div>
-
-    <CurrentCustomMessage />
-    <NonStandardTransaction />
-
-    <div className="row form-group">
-      <div className="col-xs-12 clearfix">
-        <GenerateTransaction />
-      </div>
-    </div>
-    <SigningStatus />
-    <div className="row form-group">
-      <SendButton />
-    </div>
-  </div>
-);
 
 const QueryWarning: React.SFC<{}> = () => (
   <WhenQueryExists
     whenQueryExists={
       <div className="alert alert-info">
-        <p>{translate('WARN_Send_Link')}</p>
+        <p>{translate('WARN_SEND_LINK')}</p>
       </div>
     }
   />
 );
 
 interface StateProps {
+  schedulingAvailable: boolean;
   shouldDisplay: boolean;
+  offline: boolean;
+  useScheduling: scheduleSelectors.ICurrentSchedulingToggle['value'];
 }
 
-class FieldsClass extends Component<StateProps> {
+interface DispatchProps {
+  showNotification: notificationsActions.TShowNotification;
+}
+
+class FieldsClass extends Component<StateProps & DispatchProps> {
+  public componentDidCatch(error: Error) {
+    if (error.message === 'Serialized transaction not found') {
+      /**
+       * @desc Occasionally, when a new signed transaction matches a previous transaction,
+       * the nonce does not update, since the transaction has not yet been confirmed. This triggers
+       * the <Amounts /> component inside the <ConfirmationModal /> of <TXMetaDataPanel /> to throw
+       * an error when selecting the current transaction's serialized parameters.
+       * A longer term fix will involve finding a better way to calculate nonces to avoid
+       * nonce duplication on serial transactions.
+       */
+      this.props.showNotification('danger', translateRaw('SIMILAR_TRANSACTION_ERROR'));
+      this.forceUpdate();
+    }
+  }
+
   public render() {
-    const { shouldDisplay } = this.props;
+    const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
+
     return (
       <OnlyUnlocked
         whenUnlocked={
           <React.Fragment>
             <QueryWarning />
-            {shouldDisplay ? content : null}
+            {shouldDisplay && (
+              <div className="Tab-content-pane">
+                <AddressField showLabelMatch={true} />
+                <div className="row form-group">
+                  <div
+                    className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
+                  >
+                    <AmountField
+                      hasUnitDropdown={true}
+                      hasSendEverything={true}
+                      showInvalidWithoutValue={true}
+                    />
+                  </div>
+                  {schedulingAvailable && (
+                    <div className="col-sm-3 col-md-2">
+                      <SchedulingToggle />
+                    </div>
+                  )}
+                </div>
+
+                {useScheduling && <ScheduleFields />}
+
+                <div className="row form-group">
+                  <div className="col-xs-12">
+                    <TXMetaDataPanel scheduling={useScheduling} />
+                  </div>
+                </div>
+
+                <CurrentCustomMessage />
+                <NonStandardTransaction />
+
+                {this.getTxButton()}
+              </div>
+            )}
           </React.Fragment>
         }
       />
     );
   }
+
+  private getTxButton() {
+    const { offline, useScheduling } = this.props;
+
+    if (useScheduling) {
+      if (offline) {
+        return <GenerateScheduleTransactionButton />;
+      }
+
+      return <SendScheduleTransactionButton signing={true} />;
+    }
+
+    if (offline) {
+      return <GenerateTransaction />;
+    }
+
+    return <SendButton signing={true} />;
+  }
 }
 
-export const Fields = connect((state: AppState) => ({
-  shouldDisplay: !isAnyOfflineWithWeb3(state)
-}))(FieldsClass);
+export const Fields = connect(
+  (state: AppState) => ({
+    schedulingAvailable:
+      getNetworkConfig(state).name === 'Kovan' && selectors.getUnit(state) === 'ETH',
+    shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
+    offline: getOffline(state),
+    useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
+  }),
+  {
+    showNotification: notificationsActions.showNotification
+  }
+)(FieldsClass);

@@ -1,130 +1,80 @@
+import React, { Component } from 'react';
+import { MapStateToProps, connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import classnames from 'classnames';
+
+import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+import { NetworkConfig } from 'types/network';
+import { getKeyByValue } from 'utils/helpers';
+import logo from 'assets/images/logo-mycrypto.svg';
+import { OldDropDown } from 'components/ui';
 import {
-  TChangeLanguage,
-  TChangeNodeIntent,
-  TAddCustomNode,
-  TRemoveCustomNode,
-  TAddCustomNetwork,
   AddCustomNodeAction,
+  TAddCustomNetwork,
+  TAddCustomNode,
+  TChangeLanguage,
+  TChangeNodeRequestedOneTime,
+  TRemoveCustomNode,
+  getLanguageSelection,
+  getNetworkConfig,
+  getOffline,
+  isNodeChanging,
+  isStaticNodeId,
   changeLanguage,
-  changeNodeIntent,
+  changeNodeRequestedOneTime,
   addCustomNode,
   removeCustomNode,
   addCustomNetwork
-} from 'actions/config';
-import logo from 'assets/images/logo-mycrypto.svg';
-import { Dropdown, ColorDropdown } from 'components/ui';
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-import { TSetGasPriceField, setGasPriceField } from 'actions/transaction';
-import { ANNOUNCEMENT_MESSAGE, ANNOUNCEMENT_TYPE, languages } from 'config';
+} from 'features/config';
+import { AppState } from 'features/reducers';
+import { transactionFieldsActions } from 'features/transaction';
+import CustomNodeModal from 'components/CustomNodeModal';
+import NetworkDropdown from './components/NetworkDropdown';
 import Navigation from './components/Navigation';
-import CustomNodeModal from './components/CustomNodeModal';
 import OnlineStatus from './components/OnlineStatus';
-import { getKeyByValue } from 'utils/helpers';
-import { NodeConfig } from 'types/node';
 import './index.scss';
-import { AppState } from 'reducers';
-import {
-  getOffline,
-  isNodeChanging,
-  getLanguageSelection,
-  getNodeId,
-  getNodeConfig,
-  CustomNodeOption,
-  NodeOption,
-  getNodeOptions,
-  getNetworkConfig
-} from 'selectors/config';
-import { NetworkConfig } from 'types/network';
-import { connect } from 'react-redux';
+
+interface OwnProps {
+  networkParam: string | null;
+}
 
 interface DispatchProps {
   changeLanguage: TChangeLanguage;
-  changeNodeIntent: TChangeNodeIntent;
-  setGasPriceField: TSetGasPriceField;
+  changeNodeRequestedOneTime: TChangeNodeRequestedOneTime;
+  setGasPriceField: transactionFieldsActions.TSetGasPriceField;
   addCustomNode: TAddCustomNode;
   removeCustomNode: TRemoveCustomNode;
   addCustomNetwork: TAddCustomNetwork;
 }
 
 interface StateProps {
+  shouldSetNodeFromQS: boolean;
   network: NetworkConfig;
-  languageSelection: AppState['config']['meta']['languageSelection'];
-  node: NodeConfig;
-  nodeSelection: AppState['config']['nodes']['selectedNode']['nodeId'];
-  isChangingNode: AppState['config']['nodes']['selectedNode']['pending'];
-  isOffline: AppState['config']['meta']['offline'];
-  nodeOptions: (CustomNodeOption | NodeOption)[];
+  languageSelection: ReturnType<typeof getLanguageSelection>;
+  isChangingNode: ReturnType<typeof isNodeChanging>;
+  isOffline: ReturnType<typeof getOffline>;
 }
-
-const mapStateToProps = (state: AppState): StateProps => ({
-  isOffline: getOffline(state),
-  isChangingNode: isNodeChanging(state),
-  languageSelection: getLanguageSelection(state),
-  nodeSelection: getNodeId(state),
-  node: getNodeConfig(state),
-  nodeOptions: getNodeOptions(state),
-  network: getNetworkConfig(state)
-});
-
-const mapDispatchToProps: DispatchProps = {
-  setGasPriceField,
-  changeLanguage,
-  changeNodeIntent,
-  addCustomNode,
-  removeCustomNode,
-  addCustomNetwork
-};
 
 interface State {
   isAddingCustomNode: boolean;
 }
 
-type Props = StateProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 class Header extends Component<Props, State> {
   public state = {
     isAddingCustomNode: false
   };
 
+  public componentDidMount() {
+    this.attemptSetNodeFromQueryParameter();
+  }
+
   public render() {
-    const {
-      languageSelection,
-      node,
-      nodeSelection,
-      isChangingNode,
-      isOffline,
-      nodeOptions,
-      network
-    } = this.props;
+    const { languageSelection, isChangingNode, isOffline, network } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
-    const LanguageDropDown = Dropdown as new () => Dropdown<typeof selectedLanguage>;
-    const options = nodeOptions.map(n => {
-      if (n.isCustom) {
-        const { name: { networkId, nodeId }, isCustom, id, ...rest } = n;
-        return {
-          ...rest,
-          name: (
-            <span>
-              {networkId} - {nodeId} <small>(custom)</small>
-            </span>
-          ),
-          onRemove: () => this.props.removeCustomNode({ id })
-        };
-      } else {
-        const { name: { networkId, service }, isCustom, ...rest } = n;
-        return {
-          ...rest,
-          name: (
-            <span>
-              {networkId} <small>({service})</small>
-            </span>
-          )
-        };
-      }
-    });
+    const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
 
     return (
       <div className="Header">
@@ -155,56 +105,33 @@ class Header extends Component<Props, State> {
                   ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
                   options={Object.values(languages)}
                   value={languages[selectedLanguage]}
-                  extra={
-                    <li key="disclaimer">
-                      <a data-toggle="modal" data-target="#disclaimerModal">
-                        Disclaimer
-                      </a>
-                    </li>
-                  }
                   onChange={this.changeLanguage}
                   size="smr"
                   color="white"
                 />
               </div>
-
               <div
                 className={classnames({
                   'Header-branding-right-dropdown': true,
                   'is-flashing': isChangingNode
                 })}
               >
-                <ColorDropdown
-                  ariaLabel={`
-                    change node. current node is on the ${node.network} network
-                    provided by ${node.service}
-                  `}
-                  options={options}
-                  value={nodeSelection || ''}
-                  extra={
-                    <li>
-                      <a onClick={this.openCustomNodeModal}>Add Custom Node</a>
-                    </li>
-                  }
-                  disabled={nodeSelection === 'web3'}
-                  onChange={this.props.changeNodeIntent}
-                  size="smr"
-                  color="white"
-                  menuAlign="right"
-                />
+                <NetworkDropdown openCustomNodeModal={this.openCustomNodeModal} />
               </div>
             </div>
           </section>
         </section>
 
-        <Navigation color={!network.isCustom && network.color} />
+        <Navigation
+          color={!network.isCustom && network.color}
+          unsupportedTabs={network.unsupportedTabs}
+        />
 
-        {isAddingCustomNode && (
-          <CustomNodeModal
-            addCustomNode={this.addCustomNode}
-            handleClose={this.closeCustomNodeModal}
-          />
-        )}
+        <CustomNodeModal
+          isOpen={isAddingCustomNode}
+          addCustomNode={this.addCustomNode}
+          handleClose={this.closeCustomNodeModal}
+        />
       </div>
     );
   }
@@ -228,6 +155,33 @@ class Header extends Component<Props, State> {
     this.setState({ isAddingCustomNode: false });
     this.props.addCustomNode(payload);
   };
+
+  private attemptSetNodeFromQueryParameter() {
+    const { shouldSetNodeFromQS, networkParam } = this.props;
+    if (shouldSetNodeFromQS) {
+      this.props.changeNodeRequestedOneTime(networkParam!);
+    }
+  }
 }
+
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
+  state,
+  { networkParam }
+): StateProps => ({
+  shouldSetNodeFromQS: !!(networkParam && isStaticNodeId(state, networkParam)),
+  isOffline: getOffline(state),
+  isChangingNode: isNodeChanging(state),
+  languageSelection: getLanguageSelection(state),
+  network: getNetworkConfig(state)
+});
+
+const mapDispatchToProps: DispatchProps = {
+  setGasPriceField: transactionFieldsActions.setGasPriceField,
+  changeLanguage,
+  changeNodeRequestedOneTime,
+  addCustomNode,
+  removeCustomNode,
+  addCustomNetwork
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

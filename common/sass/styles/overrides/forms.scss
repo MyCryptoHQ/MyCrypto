@@ -1,21 +1,15 @@
 // Form overrides
 @import 'common/sass/variables';
+@import 'common/sass/mixins';
 
 label {
   margin-bottom: $space-xs;
-  font-size: $font-size-bump-more;
 
   &.is-required:after {
     content: '*';
     padding-left: 2px;
-    color: $brand-warning;
+    color: color(brand-warning);
   }
-}
-
-label + .form-control,
-label + input,
-label + textarea {
-  margin-top: 0;
 }
 
 input[type='radio'],
@@ -25,31 +19,12 @@ input[type='checkbox'] {
 }
 
 input[readonly] {
-  background-color: #fafafa;
+  background-color: color(control-disabled-bg);
   cursor: text !important;
-}
-
-.form-control {
-  margin-bottom: $space-sm;
-  transition: $transition;
-  padding: $input-padding;
-
-  &:focus {
-    border-color: $input-border-focus;
-    outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px rgba($brand-primary, 0.5);
-  }
-}
-
-input.form-control,
-select.form-control {
-  padding-top: 0;
-  padding-bottom: 0;
 }
 
 .form-group {
   display: block;
-  margin-top: $form-group-margin-bottom * 2;
   margin-bottom: $form-group-margin-bottom;
 }
 
@@ -59,41 +34,16 @@ select.form-control {
   font-weight: 500;
 }
 
-// Custom feedback classes
-@mixin form-control-state($color) {
-  border-color: lighten($color, 20%);
-  @include input-shadow($color);
-
-  &:focus {
-    border-color: lighten($color, 5%);
-    @include input-focus-shadow($color);
-  }
-}
-
-.form-control {
-  &.is-valid {
-    @include form-control-state($brand-success);
-  }
-
-  &.is-invalid {
-    @include form-control-state($brand-danger);
-  }
-
-  &.is-semivalid {
-    @include form-control-state($brand-warning);
-  }
-}
-
 .help-block {
   &.is-valid {
-    color: $brand-success;
+    color: color(brand-success);
   }
 
   &.is-invalid {
-    color: $brand-danger;
+    color: color(brand-danger);
   }
 
   &.is-semivalid {
-    color: $brand-warning;
+    color: color(brand-warning);
   }
 }

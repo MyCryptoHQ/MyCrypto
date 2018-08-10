@@ -1,66 +1,67 @@
 import React, { Component } from 'react';
-import { setUnitMeta, TSetUnitMeta } from 'actions/transaction';
-import Dropdown from 'components/ui/Dropdown';
-import { withConditional } from 'components/hocs';
-import { TokenBalance, MergedToken, getShownTokenBalances, getTokens } from 'selectors/wallet';
-import { Query } from 'components/renderCbs';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getUnit } from 'selectors/transaction';
-import { getNetworkConfig } from 'selectors/config';
-import { NetworkConfig } from 'types/network';
+import { Option } from 'react-select';
+
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { transactionMetaActions } from 'features/transaction';
+import { getNetworkUnit } from 'features/config';
+import { walletTypes } from 'features/wallet';
+import { Query } from 'components/renderCbs';
+import { Dropdown } from 'components/ui';
 
 interface DispatchProps {
-  setUnitMeta: TSetUnitMeta;
+  setUnitMeta: transactionMetaActions.TSetUnitMeta;
 }
 
 interface StateProps {
   unit: string;
-  tokens: TokenBalance[];
-  allTokens: MergedToken[];
+  tokens: walletTypes.TokenBalance[];
+  allTokens: walletTypes.MergedToken[];
   showAllTokens?: boolean;
-  network: NetworkConfig;
+  networkUnit: string;
 }
-
-const StringDropdown = Dropdown as new () => Dropdown<string>;
-const ConditionalStringDropDown = withConditional(StringDropdown);
 
 class UnitDropdownClass extends Component<DispatchProps & StateProps> {
   public render() {
-    const { tokens, allTokens, showAllTokens, unit, network } = this.props;
+    const { tokens, allTokens, showAllTokens, unit, networkUnit } = this.props;
     const focusedTokens = showAllTokens ? allTokens : tokens;
+    const options = [networkUnit, ...getTokenSymbols(focusedTokens)];
     return (
-      <div className="input-group-btn">
-        <Query
-          params={['readOnly']}
-          withQuery={({ readOnly }) => (
-            <ConditionalStringDropDown
-              options={[network.unit, ...getTokenSymbols(focusedTokens)]}
-              value={unit === 'ether' ? network.unit : unit}
-              condition={!readOnly}
-              conditionalProps={{
-                onChange: this.handleOnChange
-              }}
-              ariaLabel={'dropdown'}
-            />
-          )}
-        />
-      </div>
+      <Query
+        params={['readOnly']}
+        withQuery={({ readOnly }) => (
+          <Dropdown
+            options={options}
+            value={unit === 'ether' ? networkUnit : unit}
+            onChange={this.handleOnChange}
+            clearable={false}
+            searchable={options.length > 10}
+            disabled={!!readOnly}
+          />
+        )}
+      />
     );
   }
-  private handleOnChange = (unit: string) => {
-    this.props.setUnitMeta(unit);
+  private handleOnChange = (unit: Option<string>) => {
+    if (!unit.value) {
+      throw Error('No unit value found');
+    }
+    this.props.setUnitMeta(unit.value);
   };
 }
-const getTokenSymbols = (tokens: (TokenBalance | MergedToken)[]) => tokens.map(t => t.symbol);
+const getTokenSymbols = (tokens: (walletTypes.TokenBalance | walletTypes.MergedToken)[]) =>
+  tokens.map(t => t.symbol);
 
 function mapStateToProps(state: AppState) {
   return {
-    tokens: getShownTokenBalances(state, true),
-    allTokens: getTokens(state),
-    unit: getUnit(state),
-    network: getNetworkConfig(state)
+    tokens: selectors.getShownTokenBalances(state, true),
+    allTokens: selectors.getTokens(state),
+    unit: selectors.getUnit(state),
+    networkUnit: getNetworkUnit(state)
   };
 }
 
-export const UnitDropDown = connect(mapStateToProps, { setUnitMeta })(UnitDropdownClass);
+export const UnitDropDown = connect(mapStateToProps, {
+  setUnitMeta: transactionMetaActions.setUnitMeta
+})(UnitDropdownClass);

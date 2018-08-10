@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import translate, { TranslateType } from 'translations';
-import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
+
+import translate from 'translations';
 import { IWallet } from 'libs/wallet/IWallet';
+import { AppState } from 'features/reducers';
 import closeIcon from 'assets/images/close.svg';
+import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import './UnlockHeader.scss';
 
 interface Props {
-  title: TranslateType;
+  title?: string;
   wallet: IWallet;
   disabledWallets?: DisabledWallets;
   showGenerateLink?: boolean;
@@ -25,7 +26,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
 
   public componentDidUpdate(prevProps: Props) {
     if (this.props.wallet !== prevProps.wallet) {
-      this.setState({ isExpanded: !this.state.isExpanded });
+      this.setState({ isExpanded: !this.props.wallet });
     }
   }
 
@@ -35,7 +36,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
 
     return (
       <article className="UnlockHeader">
-        <h1 className="UnlockHeader-title">{title}</h1>
+        {title && <h1 className="UnlockHeader-title">{title}</h1>}
         {wallet &&
           !isExpanded && (
             <button
@@ -44,7 +45,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
             >
               <span>
                 <span className="hidden-xs UnlockHeader-open-text">
-                  {translate('Change Wallet')}
+                  {translate('CHANGE_WALLET')}
                 </span>
                 <i className="fa fa-refresh" />
               </span>

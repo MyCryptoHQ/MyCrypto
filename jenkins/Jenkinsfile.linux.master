@@ -1,0 +1,46 @@
+pipeline {
+    agent {
+        dockerfile {
+            filename 'Dockerfile'
+            dir 'jenkins/Docker'
+            args '--env ETH_SIGNING_KEY=$ETH_SIGNING_KEY --env S3_BUCKET_NAME=$S3_BUCKET_NAME --env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --env CSC_LINK=$CSC_LINK --env CSC_KEY_PASSWORD=$CSC_KEY_PASSWORD'
+        }
+    }
+    stages {
+        stage('Install') { 
+            environment {
+                AWS_ACCESS_KEY_ID = 'REDACTED'
+                AWS_SECRET_ACCESS_KEY = 'REDACTED'
+                ETH_SIGNING_KEY = 'REDACTED'
+                S3_BUCKET_NAME = 'REDACTED'
+                CSC_LINK = 'REDACTED'
+                CSC_KEY_PASSWORD = 'REDACTED'
+            }
+            steps {
+                sh 'rm -rf node_modules'
+                sh 'yarn'
+            }
+        }
+        stage('Build') { 
+            environment {
+                ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = 1
+                AWS_ACCESS_KEY_ID = 'REDACTED'
+                AWS_SECRET_ACCESS_KEY = 'REDACTED'
+                ETH_SIGNING_KEY = 'REDACTED'
+                S3_BUCKET_NAME = 'REDACTED'
+            }
+            steps {
+                sh 'yarn run jenkins:build:linux'
+            }
+        }
+        stage('Upload') {
+            environment {
+                CSC_LINK = 'REDACTED'
+                CSC_KEY_PASSWORD = 'REDACTED'
+            }
+            steps {
+                sh 'npm run jenkins:upload'
+            }
+        }
+    }
+}

@@ -1,12 +1,13 @@
 import { BrowserWindow, Menu, shell } from 'electron';
 import { URL } from 'url';
+import path from 'path';
 import MENU from './menu';
-import updater from './updater';
+import popupContextMenu from './contextMenu';
 import { APP_TITLE } from '../constants';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Cached reference, preventing recreations
-let window;
+let window: BrowserWindow | null;
 
 // Construct new BrowserWindow
 export default function getWindow() {
@@ -18,28 +19,26 @@ export default function getWindow() {
     title: APP_TITLE,
     backgroundColor: '#fbfbfb',
     width: 1220,
-    height: 800,
-    minWidth: 320,
+    height: process.platform === 'darwin' ? 680 : 720,
+    minWidth: 480,
     minHeight: 400,
-    // TODO - Implement styles for custom title bar in components/ui/TitleBar.scss
-    // frame: false,
-    // titleBarStyle: 'hidden',
+    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
-  const port = process.env.HTTPS ? '3443' : '3000';
-  const appUrl = isDevelopment ? `http://localhost:${port}` : `file://${__dirname}/index.html`;
+  const appUrl = isDevelopment ? `http://localhost:3000` : `file://${__dirname}/index.html`;
   window.loadURL(appUrl);
 
   window.on('closed', () => {
     window = null;
   });
 
-  window.webContents.on('new-window', (ev, urlStr) => {
+  window.webContents.on('new-window', (ev: any, urlStr: string) => {
     // Kill all new window requests by default
     ev.preventDefault();
 
@@ -52,15 +51,24 @@ export default function getWindow() {
     }
   });
 
-  window.webContents.on('did-finish-load', () => {
-    updater(window);
+  window.webContents.on('context-menu', (_, props) => {
+    popupContextMenu(window!, isDevelopment, props);
   });
 
+  // TODO: Figure out updater release process
+  // window.webContents.on('did-finish-load', () => {
+  //   updater(window!);
+  // });
+
   window.webContents.on('devtools-opened', () => {
-    window.focus();
+    window!.focus();
     setImmediate(() => {
-      window.focus();
+      window!.focus();
     });
+  });
+
+  window.webContents.on('will-navigate', (event: any) => {
+    event.preventDefault();
   });
 
   if (isDevelopment) {

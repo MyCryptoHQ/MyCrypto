@@ -13,6 +13,8 @@ const jsConfig = makeConfig({
 });
 
 // Redefine plugins with prod specific stuff
+electronConfig.mode = 'production';
+
 electronConfig.plugins = [
   new ClearDistPlugin(),
   new webpack.DefinePlugin({
@@ -20,5 +22,12 @@ electronConfig.plugins = [
   }),
   new DelayPlugin(500)
 ];
+
+// Many native node modules don't like being uglified since they often aren't
+// for most use cases, and this way logging is a lot easier too.
+electronConfig.devtool = undefined;
+electronConfig.optimization = {
+  minimize: false
+};
 
 module.exports = [electronConfig, jsConfig];

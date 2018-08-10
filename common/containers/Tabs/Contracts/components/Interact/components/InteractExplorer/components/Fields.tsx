@@ -1,12 +1,14 @@
-import { AmountField } from './AmountField';
 import React, { Component } from 'react';
-import { SendButton, SigningStatus, TXMetaDataPanel } from 'components';
+
+import { SendButton, TXMetaDataPanel } from 'components';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
 import { FullWalletOnly } from 'components/renderCbs';
+import { AmountField } from './AmountField';
 
 interface OwnProps {
   button: React.ReactElement<any>;
 }
+
 export class Fields extends Component<OwnProps> {
   public render() {
     const makeContent = () => (
@@ -19,7 +21,6 @@ export class Fields extends Component<OwnProps> {
           advancedGasOptions={{ dataField: false }}
         />
         {this.props.button}
-        <SigningStatus />
         <SendButton />
       </React.Fragment>
     );

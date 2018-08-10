@@ -1,21 +1,22 @@
 import React from 'react';
+
 import translate from 'translations';
-import OnboardSlide from './OnboardSlide';
 import onboardIconSeven from 'assets/images/onboarding/slide-07.svg';
+import OnboardSlide from './OnboardSlide';
 
 const SecureSlideOne = () => {
-  const header = translate('ONBOARD_secure_1_title');
+  const header = translate('ONBOARD_SECURE_1_TITLE');
 
   const content = (
     <div>
-      <p>{translate('ONBOARD_secure_1_content__1')}</p>
+      <p>{translate('ONBOARD_SECURE_1_CONTENT__1')}</p>
       <ul>
-        <li>{translate('ONBOARD_secure_1_content__2')}</li>
-        <li>{translate('ONBOARD_secure_1_content__3')} </li>
-        <li>{translate('ONBOARD_secure_1_content__4')}</li>
-        <li>{translate('ONBOARD_secure_1_content__5')}</li>
-        <li>{translate('ONBOARD_secure_1_content__6')}</li>
-        <li>{translate('ONBOARD_secure_1_content__7')}</li>
+        <li>{translate('ONBOARD_SECURE_1_CONTENT__2')}</li>
+        <li>{translate('ONBOARD_SECURE_1_CONTENT__3')}</li>
+        <li>{translate('ONBOARD_SECURE_1_CONTENT__4')}</li>
+        <li>{translate('ONBOARD_SECURE_1_CONTENT__5')}</li>
+        <li>{translate('ONBOARD_SECURE_1_CONTENT__6')}</li>
+        <li>{translate('ONBOARD_SECURE_1_CONTENT__7')}</li>
       </ul>
     </div>
   );

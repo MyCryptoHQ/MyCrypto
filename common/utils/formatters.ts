@@ -1,6 +1,8 @@
 import BN from 'bn.js';
+import { toChecksumAddress as toETHChecksumAddress } from 'ethereumjs-util';
+import { toChecksumAddress as toRSKChecksumAddress } from 'rskjs-util';
 import { Wei } from 'libs/units';
-import { stripHexPrefix } from 'libs/values';
+import { stripHexPrefix } from 'libs/formatters';
 
 export function toFixedIfLarger(num: number, fixedSize: number = 6): string {
   return parseFloat(num.toFixed(fixedSize)).toString();
@@ -73,13 +75,13 @@ export function formatNumber(num: string, digits?: number): string {
 }
 
 // TODO: Comment up this function to make it clear what's happening here.
-export function formatGasLimit(limit: Wei, transactionUnit: string = 'ether') {
+export function formatGasLimit(limit: Wei, transactionUnit: string = 'ETH') {
   let limitStr = limit.toString();
 
   // I'm guessing this is some known off-by-one-error from the node?
   // 21k is only the limit for ethereum though, so make sure they're
   // sending ether if we're going to fix it for them.
-  if (limitStr === '21001' && transactionUnit === 'ether') {
+  if (limitStr === '21001' && transactionUnit === 'ETH') {
     limitStr = '21000';
   }
 
@@ -113,9 +115,21 @@ export function bytesToHuman(bytes: number) {
 }
 
 export function ensV3Url(name: string) {
-  return `https://mycrypto.com/?ensname=${name}#ens`;
+  return `https://legacy.mycrypto.com/?ensname=${name}#ens`;
 }
 
 export function hexToNumber(hex: string) {
   return new BN(stripHexPrefix(hex)).toNumber();
+}
+
+// Checksumming split into two functions so it's shared by network selector
+export function getChecksumAddressFunction(chainId: number) {
+  if (chainId === 30 || chainId === 31) {
+    return (addr: string) => toRSKChecksumAddress(addr, chainId);
+  }
+  return toETHChecksumAddress;
+}
+
+export function toChecksumAddressByChainId(address: string, chainId: number) {
+  return getChecksumAddressFunction(chainId)(address);
 }

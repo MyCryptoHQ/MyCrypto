@@ -1,5 +1,6 @@
-import { donationAddressMap } from 'config';
 import React from 'react';
+
+import { donationAddressMap } from 'config';
 import translate from 'translations';
 
 interface Props {
@@ -15,12 +16,12 @@ export default class Donate extends React.Component<Props, State> {
   public render() {
     return (
       <div className="well">
-        <p>{translate('sidebar_donation')}</p>
+        <p>{translate('SIDEBAR_DONATION')}</p>
         <a className="btn btn-primary btn-block" onClick={this.onClick}>
-          {translate('sidebar_donate')}
+          {translate('SIDEBAR_DONATE')}
         </a>
         {this.state.clicked && (
-          <div className="text-success text-center marg-v-sm">{translate('sidebar_thanks')}</div>
+          <div className="text-success text-center marg-v-sm">{translate('SIDEBAR_THANKS')}</div>
         )}
       </div>
     );

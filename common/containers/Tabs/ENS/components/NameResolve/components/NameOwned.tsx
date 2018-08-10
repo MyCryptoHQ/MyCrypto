@@ -1,7 +1,9 @@
 import React from 'react';
 import { IOwnedDomainRequest } from 'libs/ens';
-import { NewTabLink } from 'components/ui';
-const lookupLink = name => `https://etherscan.io/enslookup?q=${name}`;
+import { fromWei, Wei } from 'libs/units';
+import { NewTabLink, Address } from 'components/ui';
+import translate from 'translations';
+const lookupLink = (name: string) => `https://etherscan.io/enslookup?q=${name}`;
 
 type ChildrenProps = any;
 
@@ -17,40 +19,42 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
 }) => (
   <section>
     <div className="ens-title">
-      <h1 className="text-center">
-        <strong>{name}.eth</strong> is already owned
-      </h1>
+      <h1 className="text-center">{translate('ENS_DOMAIN_OWNED', { $name: name + '.eth' })}</h1>
     </div>
     <div className="ens-table-wrapper">
       <table className="table table-striped">
         <tbody>
           <tr>
-            <td>Name: </td>
+            <td>{translate('NAME_OWNED_NAME')}:</td>
             <MonoTd>
               <NewTabLink content={`${name}.eth`} href={lookupLink(`${name}.eth`)} />
             </MonoTd>
           </tr>
           <tr>
-            <td>Labelhash ({name}): </td>
+            <td>{translate('NAME_OWNED_LABELHASH', { name })}:</td>
             <MonoTd>{labelHash}</MonoTd>
           </tr>
           <tr>
-            <td>Namehash ({name}.eth): </td>
+            <td>{translate('NAME_OWNED_NAMEHASH', { name })}: </td>
             <MonoTd>{nameHash}</MonoTd>
           </tr>
           <tr>
-            <td>Owner:</td>
-            <MonoTd>{ownerAddress}</MonoTd>
-          </tr>
-          <tr>
-            <td>Highest Bidder (Deed Owner): </td>
+            <td>{translate('NAME_OWNED_OWNER')}:</td>
             <MonoTd>
-              <span>{highestBid}</span>
+              <Address address={ownerAddress} />
             </MonoTd>
           </tr>
           <tr>
-            <td>Resolved Address: </td>
-            <MonoTd>{resolvedAddress}</MonoTd>
+            <td>{translate('NAME_OWNED_HIGHEST_BID')}:</td>
+            <MonoTd>
+              <span>{fromWei(Wei(highestBid), 'ether')} ETH</span>
+            </MonoTd>
+          </tr>
+          <tr>
+            <td>{translate('NAME_OWNED_RESOLVED_ADDR')}:</td>
+            <MonoTd>
+              <Address address={resolvedAddress} />
+            </MonoTd>
           </tr>
         </tbody>
       </table>

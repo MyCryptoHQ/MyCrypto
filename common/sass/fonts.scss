@@ -65,25 +65,25 @@
     font-size: 48px;
   }
   // Refer to docs for updating icon-fonts
-  &.sm-logo-facebook:before {
+  &.sm-logo-medium:before {
     content: '\ea02';
   }
-  &.sm-logo-reddit:before {
+  &.sm-logo-discord:before {
     content: '\ea03';
   }
-  &.sm-logo-github:before {
+  &.sm-logo-linkedin:before {
     content: '\ea04';
   }
-  &.sm-logo-twitter:before {
+  &.sm-logo-reddit:before {
     content: '\ea05';
   }
-  &.sm-logo-linkedin:before {
+  &.sm-logo-facebook:before {
     content: '\ea06';
   }
-  &.sm-logo-slack:before {
+  &.sm-logo-twitter:before {
     content: '\ea07';
   }
-  &.sm-logo-medium:before {
+  &.sm-logo-github:before {
     content: '\ea08';
   }
 }

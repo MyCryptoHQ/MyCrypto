@@ -41,6 +41,11 @@ $small-size: 900px;
     font-weight: 300;
     color: #fff;
     transition: background-color 80ms ease;
+    background: color(gray-darker);
+
+    @include theme(dark) {
+      background: color(gray-lighter);
+    }
 
     a {
       color: #fff;
@@ -54,26 +59,25 @@ $small-size: 900px;
     }
 
     // Colors
-    &,
     &.is-primary {
-      background: $brand-primary;
+      background: color(brand-primary);
     }
 
     &.is-warning {
-      background: $brand-warning;
+      background: color(brand-warning);
     }
 
     &.is-danger {
-      background: $brand-danger;
+      background: color(brand-danger);
     }
 
     &.is-success {
-      background: $brand-success;
+      background: color(brand-success);
     }
 
     &.is-info {
-      background: $brand-info;
-      border-bottom: 1px solid rgba(#fff, 0.6);
+      background: color(brand-info);
+      border-bottom: 1px solid rgba(#fff, 0.4);
     }
   }
 
@@ -81,8 +85,7 @@ $small-size: 900px;
     color: white;
     padding: 0;
     background: #274e7e;
-    background-image: url('~assets/images/header-bg.jpg'),
-                      linear-gradient(130deg, #37709e, #274e7e);
+    background-image: url('~assets/images/header-bg.jpg'), linear-gradient(130deg, #37709e, #274e7e);
     background-size: cover;
     background-position: left;
 
@@ -111,15 +114,14 @@ $small-size: 900px;
         width: auto;
         padding: 8px;
         padding-right: 0;
-        filter: drop-shadow(0 1px 0 rgba(#000, 0.12))
-                drop-shadow(1px 1px 0 rgba(#000, 0.12));
+        filter: drop-shadow(0 1px 0 rgba(#000, 0.12)) drop-shadow(1px 1px 0 rgba(#000, 0.12));
       }
     }
 
     &-right {
       font-size: 18px;
       font-weight: 300;
-      color: white;
+      color: color(text-color-inverted);
       flex: 1 auto;
       text-align: right;
       padding: 0 0 5px;

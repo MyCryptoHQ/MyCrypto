@@ -1,13 +1,16 @@
+import configuredStore from 'features/store';
 import CONTRACTS from 'config/contracts';
 import { isValidETHAddress } from 'libs/validators';
+
+configuredStore.getState();
 
 describe('Contracts JSON', () => {
   Object.keys(CONTRACTS).forEach(network => {
     it(`${network} contracts array properly formatted`, () => {
-      const contracts = CONTRACTS[network];
-      const addressCollisionMap = {};
+      const contracts: any = (CONTRACTS as any)[network];
+      const addressCollisionMap: any = {};
 
-      contracts.forEach(contract => {
+      contracts.forEach((contract: any) => {
         if (contract.address && !isValidETHAddress(contract.address)) {
           throw Error(`Contract '${contract.name}' has invalid address '${contract.address}'`);
         }

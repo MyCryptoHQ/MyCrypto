@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
-import { Identicon, Spinner } from 'components/ui';
-import translate from 'translations';
-import { Query } from 'components/renderCbs';
-import { ICurrentTo, getCurrentTo, isValidCurrentTo } from 'selectors/transaction';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { CallbackProps } from 'components/AddressFieldFactory';
 import { addHexPrefix } from 'ethereumjs-util';
-import { getResolvingDomain } from 'selectors/ens';
+
+import translate, { translateRaw } from 'translations';
 import { isValidENSAddress } from 'libs/validators';
+import { Address } from 'libs/units';
+import { ICurrentTo } from 'features/types';
+import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { walletSelectors } from 'features/wallet';
+import { ensSelectors } from 'features/ens';
+import { Identicon, Spinner } from 'components/ui';
+import { Query } from 'components/renderCbs';
+import { CallbackProps } from 'components/AddressFieldFactory';
+import AddressFieldDropdown from './AddressFieldDropdown';
+import './AddressInputFactory.scss';
 
 interface StateProps {
   currentTo: ICurrentTo;
+  label: string | null;
   isValid: boolean;
+  isLabelEntry: boolean;
   isResolving: boolean;
 }
 
 interface OwnProps {
+  isSelfAddress?: boolean;
+  showLabelMatch?: boolean;
+  isFocused?: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
+  onFocus(ev: React.FormEvent<HTMLInputElement>): void;
+  onBlur(ev: React.FormEvent<HTMLInputElement>): void;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
@@ -27,15 +40,16 @@ const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress:
   rawAddress
 }) => {
   const isENS = isValidENSAddress(ensAddress);
-  const text = 'Loading ENS address...';
+  const text = translate('LOADING_ENS_ADDRESS');
+
   if (isLoading) {
     return (
-      <>
+      <React.Fragment>
         <Spinner /> {text}
-      </>
+      </React.Fragment>
     );
   } else {
-    return isENS ? <>{`Resolved Address: ${rawAddress}`}</> : null;
+    return isENS ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
   }
 };
 
@@ -43,27 +57,53 @@ type Props = OwnProps & StateProps;
 
 class AddressInputFactoryClass extends Component<Props> {
   public render() {
-    const { currentTo, onChange, isValid, withProps, isResolving } = this.props;
+    const {
+      label,
+      currentTo,
+      onChange,
+      onFocus,
+      onBlur,
+      isValid,
+      isLabelEntry,
+      withProps,
+      showLabelMatch,
+      isSelfAddress,
+      isResolving,
+      isFocused
+    } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
+    const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
+    const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
+    const isENSAddress = currentTo.raw.includes('.eth');
+
     return (
-      <div className="row form-group">
-        <div className="col-xs-11">
-          <label>{translate('SEND_addr')}:</label>
+      <div className="AddressInput form-group">
+        <div className={inputClassName}>
           <Query
             params={['readOnly']}
             withQuery={({ readOnly }) =>
               withProps({
                 currentTo,
                 isValid,
+                isLabelEntry,
                 onChange,
-                readOnly: !!readOnly || this.props.isResolving
+                onFocus,
+                onBlur,
+                readOnly: !!(readOnly || this.props.isResolving || isSelfAddress)
               })
             }
           />
           <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
+          {isFocused && !isENSAddress && <AddressFieldDropdown />}
+          {showLabelMatch &&
+            label && (
+              <div title={sendingTo} className="AddressInput-input-label">
+                <i className="fa fa-check" /> {sendingTo}
+              </div>
+            )}
         </div>
-        <div className="col-xs-1" style={{ padding: 0 }}>
+        <div className="AddressInput-identicon">
           <Identicon address={addr} />
         </div>
       </div>
@@ -71,8 +111,24 @@ class AddressInputFactoryClass extends Component<Props> {
   }
 }
 
-export const AddressInputFactory = connect((state: AppState) => ({
-  currentTo: getCurrentTo(state),
-  isResolving: getResolvingDomain(state),
-  isValid: isValidCurrentTo(state)
-}))(AddressInputFactoryClass);
+export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps) => {
+  let currentTo: ICurrentTo;
+  if (ownProps.isSelfAddress) {
+    const wallet = walletSelectors.getWalletInst(state);
+    const addr = wallet ? wallet.getAddressString() : '';
+    currentTo = {
+      raw: addr,
+      value: Address(addr)
+    };
+  } else {
+    currentTo = selectors.getCurrentTo(state);
+  }
+
+  return {
+    currentTo,
+    label: selectors.getCurrentToLabel(state),
+    isResolving: ensSelectors.getResolvingDomain(state),
+    isValid: selectors.isValidCurrentTo(state),
+    isLabelEntry: selectors.isCurrentToLabelEntry(state)
+  };
+})(AddressInputFactoryClass);

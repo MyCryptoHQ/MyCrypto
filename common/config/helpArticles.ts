@@ -9,6 +9,7 @@ export enum HELP_ARTICLE {
   ADDING_NEW_TOKENS = 'tokens/adding-new-token-and-sending-custom-tokens.html',
   HARDWARE_WALLET_RECOMMENDATIONS = 'hardware-wallets/hardware-wallet-recommendations.html',
   SENDING_TO_TREZOR = 'hardware-wallets/trezor-sending-to-trezor-device.html',
+  HOW_TO_USE_LEDGER = 'accessing-your-wallet/how-to-use-your-ledger-with-mycrypto.html',
   SECURING_YOUR_ETH = 'security/securing-your-ethereum.html',
   PROTECT_YOUR_FUNDS = 'getting-started/protecting-yourself-and-your-funds.html',
   WHAT_IS_NONCE = 'transactions/what-is-nonce.html',

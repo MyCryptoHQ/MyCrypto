@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Tooltip } from 'components/ui';
 import './OnlineStatus.scss';
 
@@ -7,8 +8,8 @@ interface Props {
 }
 
 const OnlineStatus: React.SFC<Props> = ({ isOffline }) => (
-  <div className={`OnlineStatus fa-stack ${isOffline ? 'is-offline' : 'is-online'}`}>
-    <Tooltip>{isOffline ? 'Offline' : 'Online'}</Tooltip>
+  <div className={`OnlineStatus ${isOffline ? 'is-offline' : 'is-online'}`}>
+    <Tooltip direction="left">{isOffline ? 'Offline' : 'Online'}</Tooltip>
   </div>
 );
 

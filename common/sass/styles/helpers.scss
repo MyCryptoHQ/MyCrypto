@@ -1,0 +1,10 @@
+@import 'common/sass/mixins';
+
+.mono {
+  @include mono;
+}
+
+.no-scroll {
+  height: 100%;
+  overflow: hidden;
+}

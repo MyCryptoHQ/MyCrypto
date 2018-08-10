@@ -1,123 +1,63 @@
-import React, { PureComponent } from 'react';
-import classnames from 'classnames';
-import DropdownShell from './DropdownShell';
+import React from 'react';
+import Select, { ReactSelectProps, Option } from 'react-select';
 
-interface Props<T> {
-  value: T | undefined;
-  options: T[];
-  ariaLabel: string;
-  label?: string;
-  extra?: any;
-  size?: string;
-  color?: string;
-  menuAlign?: string;
-  formatTitle?(option: T): any;
-  onChange?(value: T): void;
+interface Props extends ReactSelectProps {
+  className?: string;
+  options: any;
+  onChange: any;
 }
 
-interface State {
-  search: string;
-}
-
-export default class DropdownComponent<T> extends PureComponent<Props<T>, State> {
+export default class Dropdown extends React.Component<Props> {
   public state = {
-    search: ''
+    selectedOption: { value: undefined, label: '' },
+    hasBlurred: false
   };
 
-  private dropdownShell: DropdownShell | null;
+  public handleChange = (selectedOption: Option) => {
+    this.setState({ selectedOption });
+  };
+
+  public formatOptions = (options: Option[]) => {
+    if (typeof options[0] === 'object') {
+      return options;
+    }
+    const formatted = options.map(opt => {
+      return { value: opt, label: opt };
+    });
+    return formatted;
+  };
 
   public render() {
-    const { ariaLabel, color, size } = this.props;
+    const { onChange } = this.props;
+    const { selectedOption } = this.state;
+    const value = selectedOption && selectedOption.value;
+    const options = this.formatOptions(this.props.options);
 
     return (
-      <DropdownShell
-        renderLabel={this.renderLabel}
-        renderOptions={this.renderOptions}
-        size={size}
-        color={color}
-        ariaLabel={ariaLabel}
-        ref={el => (this.dropdownShell = el)}
+      <Select
+        // use ref to prevent <label /> from stealing focus when used inline with an input
+        ref={el => {
+          if (!!el && !!(el as any).control) {
+            (el as any).control.addEventListener('click', (e: React.FormEvent<any>) => {
+              e.preventDefault();
+            });
+          }
+        }}
+        {...this.props}
+        className={`${this.props.className} ${this.state.hasBlurred ? 'has-blurred' : ''}`}
+        value={value}
+        onChange={obj => {
+          this.handleChange(obj as any);
+          onChange(obj as any);
+        }}
+        onBlur={e => {
+          this.setState({ hasBlurred: true });
+          if (this.props && this.props.onBlur) {
+            this.props.onBlur(e);
+          }
+        }}
+        options={options as any}
       />
     );
   }
-
-  private renderLabel = () => {
-    const { value } = this.props;
-    const labelStr = this.props.label ? `${this.props.label}:` : '';
-    return (
-      <span>
-        {labelStr} {this.formatTitle(value)}
-      </span>
-    );
-  };
-
-  private renderOptions = () => {
-    const { options, value, menuAlign, extra } = this.props;
-    const { search } = this.state;
-    const searchable = options.length > 20;
-    const menuClass = classnames({
-      'dropdown-menu': true,
-      [`dropdown-menu-${menuAlign || ''}`]: !!menuAlign
-    });
-    const searchableStyle = {
-      maxHeight: '300px',
-      overflowY: 'auto'
-    };
-    const searchRegex = new RegExp(search, 'gi');
-    const onSearchChange = e => {
-      this.setState({ search: e.target.value });
-    };
-
-    return (
-      <ul className={menuClass} style={searchable ? searchableStyle : {}}>
-        {searchable && (
-          <input
-            className="form-control"
-            placeholder={'Search'}
-            onChange={onSearchChange}
-            value={search}
-          />
-        )}
-
-        {options
-          .filter(option => {
-            if (searchable && search.length) {
-              return option.toString().match(searchRegex);
-            }
-            return true;
-          })
-          .map((option, i) => {
-            return (
-              <li key={i}>
-                <a
-                  className={option === value ? 'active' : ''}
-                  onClick={this.onChange.bind(null, option)}
-                >
-                  {this.props.formatTitle ? this.formatTitle(option) : option}
-                </a>
-              </li>
-            );
-          })}
-        {extra && <li key={'separator'} role="separator" className="divider" />}
-        {extra}
-      </ul>
-    );
-  };
-
-  private formatTitle = (option: any) => {
-    if (this.props.formatTitle) {
-      return this.props.formatTitle(option);
-    } else {
-      return option;
-    }
-  };
-
-  private onChange = (value: any) => {
-    if (this.props.onChange) {
-      this.props.onChange(value);
-    }
-    if (this.dropdownShell) {
-      this.dropdownShell.close();
-    }
-  };
 }

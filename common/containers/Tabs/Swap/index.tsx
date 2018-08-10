@@ -1,71 +1,29 @@
-import { showNotification as dShowNotification, TShowNotification } from 'actions/notifications';
-import {
-  initSwap as dInitSwap,
-  bityOrderCreateRequestedSwap as dBityOrderCreateRequestedSwap,
-  shapeshiftOrderCreateRequestedSwap as dShapeshiftOrderCreateRequestedSwap,
-  changeStepSwap as dChangeStepSwap,
-  destinationAddressSwap as dDestinationAddressSwap,
-  loadBityRatesRequestedSwap as dLoadBityRatesRequestedSwap,
-  loadShapeshiftRatesRequestedSwap as dLoadShapeshiftRatesRequestedSwap,
-  restartSwap as dRestartSwap,
-  startOrderTimerSwap as dStartOrderTimerSwap,
-  startPollBityOrderStatus as dStartPollBityOrderStatus,
-  startPollShapeshiftOrderStatus as dStartPollShapeshiftOrderStatus,
-  stopLoadBityRatesSwap as dStopLoadBityRatesSwap,
-  stopLoadShapeshiftRatesSwap as dStopLoadShapeshiftRatesSwap,
-  stopOrderTimerSwap as dStopOrderTimerSwap,
-  stopPollBityOrderStatus as dStopPollBityOrderStatus,
-  stopPollShapeshiftOrderStatus as dStopPollShapeshiftOrderStatus,
-  changeSwapProvider as dChangeSwapProvider,
-  TInitSwap,
-  TBityOrderCreateRequestedSwap,
-  TChangeStepSwap,
-  TDestinationAddressSwap,
-  TLoadBityRatesRequestedSwap,
-  TShapeshiftOrderCreateRequestedSwap,
-  TLoadShapeshiftRequestedSwap,
-  TRestartSwap,
-  TStartOrderTimerSwap,
-  TStartPollBityOrderStatus,
-  TStartPollShapeshiftOrderStatus,
-  TStopLoadBityRatesSwap,
-  TStopOrderTimerSwap,
-  TStopPollBityOrderStatus,
-  TStopPollShapeshiftOrderStatus,
-  TChangeSwapProvider,
-  TStopLoadShapeshiftRatesSwap,
-  ProviderName
-} from 'actions/swap';
-import {
-  SwapInput,
-  NormalizedOptions,
-  NormalizedBityRates,
-  NormalizedShapeshiftRates
-} from 'reducers/swap/types';
 import React, { Component } from 'react';
+import { Switch, Route, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
+import { merge } from 'lodash';
+
+import { AppState } from 'features/reducers';
+import { getOffline } from 'features/config';
+import { notificationsActions } from 'features/notifications';
+import { swapTypes, swapActions } from 'features/swap';
+import TabSection from 'containers/TabSection';
+import { RouteNotFound } from 'components/RouteNotFound';
 import CurrencySwap from './components/CurrencySwap';
 import CurrentRates from './components/CurrentRates';
 import PartThree from './components/PartThree';
 import SupportFooter from './components/SupportFooter';
 import ReceivingAddress from './components/ReceivingAddress';
 import SwapInfoHeader from './components/SwapInfoHeader';
-import ShapeshiftBanner from './components/ShapeshiftBanner';
-import TabSection from 'containers/TabSection';
-import { merge } from 'lodash';
-import { RouteNotFound } from 'components/RouteNotFound';
-import { Switch, Route, RouteComponentProps } from 'react-router';
-import { getOffline } from 'selectors/config';
 
 interface ReduxStateProps {
   step: number;
-  origin: SwapInput;
-  destination: SwapInput;
-  bityRates: NormalizedBityRates;
-  shapeshiftRates: NormalizedShapeshiftRates;
-  options: NormalizedOptions;
-  provider: ProviderName;
+  origin: swapTypes.SwapInput;
+  destination: swapTypes.SwapInput;
+  bityRates: swapTypes.NormalizedBityRates;
+  shapeshiftRates: swapTypes.NormalizedShapeshiftRates;
+  options: swapTypes.NormalizedOptions;
+  provider: swapTypes.ProviderName;
   bityOrder: any;
   shapeshiftOrder: any;
   destinationAddress: string;
@@ -76,51 +34,32 @@ interface ReduxStateProps {
   bityOrderStatus: string | null;
   shapeshiftOrderStatus: string | null;
   paymentAddress: string | null;
+  paymentId: string | null;
+  xmrPaymentAddress: string | null;
   isOffline: boolean;
 }
 
 interface ReduxActionProps {
-  changeStepSwap: TChangeStepSwap;
-  loadBityRatesRequestedSwap: TLoadBityRatesRequestedSwap;
-  loadShapeshiftRatesRequestedSwap: TLoadShapeshiftRequestedSwap;
-  destinationAddressSwap: TDestinationAddressSwap;
-  restartSwap: TRestartSwap;
-  stopLoadBityRatesSwap: TStopLoadBityRatesSwap;
-  stopLoadShapeshiftRatesSwap: TStopLoadShapeshiftRatesSwap;
-  shapeshiftOrderCreateRequestedSwap: TShapeshiftOrderCreateRequestedSwap;
-  bityOrderCreateRequestedSwap: TBityOrderCreateRequestedSwap;
-  startPollShapeshiftOrderStatus: TStartPollShapeshiftOrderStatus;
-  startPollBityOrderStatus: TStartPollBityOrderStatus;
-  startOrderTimerSwap: TStartOrderTimerSwap;
-  stopOrderTimerSwap: TStopOrderTimerSwap;
-  stopPollBityOrderStatus: TStopPollBityOrderStatus;
-  stopPollShapeshiftOrderStatus: TStopPollShapeshiftOrderStatus;
-  showNotification: TShowNotification;
-  initSwap: TInitSwap;
-  swapProvider: TChangeSwapProvider;
+  changeStepSwap: swapActions.TChangeStepSwap;
+  destinationAddressSwap: swapActions.TDestinationAddressSwap;
+  restartSwap: swapActions.TRestartSwap;
+  stopLoadBityRatesSwap: swapActions.TStopLoadBityRatesSwap;
+  stopLoadShapeshiftRatesSwap: swapActions.TStopLoadShapeshiftRatesSwap;
+  shapeshiftOrderCreateRequestedSwap: swapActions.TShapeshiftOrderCreateRequestedSwap;
+  bityOrderCreateRequestedSwap: swapActions.TBityOrderCreateRequestedSwap;
+  startPollShapeshiftOrderStatus: swapActions.TStartPollShapeshiftOrderStatus;
+  startPollBityOrderStatus: swapActions.TStartPollBityOrderStatus;
+  startOrderTimerSwap: swapActions.TStartOrderTimerSwap;
+  stopOrderTimerSwap: swapActions.TStopOrderTimerSwap;
+  stopPollBityOrderStatus: swapActions.TStopPollBityOrderStatus;
+  stopPollShapeshiftOrderStatus: swapActions.TStopPollShapeshiftOrderStatus;
+  showNotification: notificationsActions.TShowNotification;
+  showNotificationWithComponent: notificationsActions.TShowNotificationWithComponent;
+  initSwap: swapActions.TInitSwap;
+  swapProvider: swapActions.TChangeSwapProvider;
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponentProps<{}>, {}> {
-  public componentDidMount() {
-    if (!this.props.isOffline) {
-      this.loadRates();
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: ReduxStateProps) {
-    if (this.props.isOffline && !nextProps.isOffline) {
-      this.loadRates();
-    }
-  }
-
-  public componentWillUnmount() {
-    this.props.stopLoadShapeshiftRatesSwap();
-  }
-
-  public loadRates() {
-    this.props.loadShapeshiftRatesRequestedSwap();
-  }
-
   public render() {
     const {
       // STATE
@@ -140,6 +79,8 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       shapeshiftOrderStatus,
       isPostingOrder,
       outputTx,
+      paymentId,
+      xmrPaymentAddress,
       // ACTIONS
       initSwap,
       restartSwap,
@@ -149,6 +90,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       bityOrderCreateRequestedSwap,
       shapeshiftOrderCreateRequestedSwap,
       showNotification,
+      showNotificationWithComponent,
       startOrderTimerSwap,
       startPollBityOrderStatus,
       stopPollShapeshiftOrderStatus,
@@ -165,7 +107,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
     const ReceivingAddressProps = {
       isPostingOrder,
       origin,
-      destinationId: destination.id,
+      destinationId: destination.label,
       destinationKind: destination.amount as number,
       destinationAddressSwap,
       destinationAddress,
@@ -219,9 +161,11 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       startPollShapeshiftOrderStatus,
       stopPollBityOrderStatus,
       stopPollShapeshiftOrderStatus,
-      showNotification,
+      showNotificationWithComponent,
       destinationAddress,
-      outputTx
+      outputTx,
+      paymentId,
+      xmrPaymentAddress
     };
 
     const SupportProps = {
@@ -235,8 +179,6 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       bityRates
     };
 
-    const CurrentRatesProps = { provider, bityRates, shapeshiftRates };
-
     return (
       <TabSection isUnavailableOffline={true}>
         <section className="Tab-content swap-tab">
@@ -246,8 +188,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
               path={`${currentPath}`}
               render={() => (
                 <React.Fragment>
-                  {step === 1 && <CurrentRates {...CurrentRatesProps} />}
-                  {step === 1 && <ShapeshiftBanner />}
+                  {step === 1 && <CurrentRates />}
                   {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
                   <main className="Tab-content-pane">
                     {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
@@ -285,27 +226,28 @@ function mapStateToProps(state: AppState) {
     bityOrderStatus: state.swap.bityOrderStatus,
     shapeshiftOrderStatus: state.swap.shapeshiftOrderStatus,
     paymentAddress: state.swap.paymentAddress,
+    paymentId: state.swap.paymentId,
+    xmrPaymentAddress: state.swap.xmrPaymentAddress,
     isOffline: getOffline(state)
   };
 }
 
 export default connect(mapStateToProps, {
-  changeStepSwap: dChangeStepSwap,
-  initSwap: dInitSwap,
-  bityOrderCreateRequestedSwap: dBityOrderCreateRequestedSwap,
-  shapeshiftOrderCreateRequestedSwap: dShapeshiftOrderCreateRequestedSwap,
-  loadBityRatesRequestedSwap: dLoadBityRatesRequestedSwap,
-  loadShapeshiftRatesRequestedSwap: dLoadShapeshiftRatesRequestedSwap,
-  destinationAddressSwap: dDestinationAddressSwap,
-  restartSwap: dRestartSwap,
-  startOrderTimerSwap: dStartOrderTimerSwap,
-  startPollBityOrderStatus: dStartPollBityOrderStatus,
-  startPollShapeshiftOrderStatus: dStartPollShapeshiftOrderStatus,
-  stopLoadBityRatesSwap: dStopLoadBityRatesSwap,
-  stopLoadShapeshiftRatesSwap: dStopLoadShapeshiftRatesSwap,
-  stopOrderTimerSwap: dStopOrderTimerSwap,
-  stopPollBityOrderStatus: dStopPollBityOrderStatus,
-  stopPollShapeshiftOrderStatus: dStopPollShapeshiftOrderStatus,
-  showNotification: dShowNotification,
-  swapProvider: dChangeSwapProvider
+  changeStepSwap: swapActions.changeStepSwap,
+  initSwap: swapActions.initSwap,
+  bityOrderCreateRequestedSwap: swapActions.bityOrderCreateRequestedSwap,
+  shapeshiftOrderCreateRequestedSwap: swapActions.shapeshiftOrderCreateRequestedSwap,
+  destinationAddressSwap: swapActions.destinationAddressSwap,
+  restartSwap: swapActions.restartSwap,
+  startOrderTimerSwap: swapActions.startOrderTimerSwap,
+  startPollBityOrderStatus: swapActions.startPollBityOrderStatus,
+  startPollShapeshiftOrderStatus: swapActions.startPollShapeshiftOrderStatus,
+  stopLoadBityRatesSwap: swapActions.stopLoadBityRatesSwap,
+  stopLoadShapeshiftRatesSwap: swapActions.stopLoadShapeshiftRatesSwap,
+  stopOrderTimerSwap: swapActions.stopOrderTimerSwap,
+  stopPollBityOrderStatus: swapActions.stopPollBityOrderStatus,
+  stopPollShapeshiftOrderStatus: swapActions.stopPollShapeshiftOrderStatus,
+  showNotification: notificationsActions.showNotification,
+  showNotificationWithComponent: notificationsActions.showNotificationWithComponent,
+  swapProvider: swapActions.changeSwapProvider
 })(Swap);

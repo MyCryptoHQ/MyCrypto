@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import Spinner from './Spinner';
+import './SimpleButton.scss';
 
 const DEFAULT_BUTTON_TYPE = 'primary';
 const DEFAULT_BUTTON_SIZE = 'lg';
@@ -8,7 +10,7 @@ type ButtonType = 'default' | 'primary' | 'success' | 'info' | 'warning' | 'dang
 type ButtonSize = 'lg' | 'sm' | 'xs';
 
 interface Props {
-  text: React.ReactElement<any> | string;
+  text: string;
   loading?: boolean;
   disabled?: boolean;
   loadingText?: string;
@@ -29,8 +31,8 @@ export default class SimpleButton extends Component<Props, {}> {
       <div>
         <button onClick={onClick} disabled={loading || disabled} className={this.computedClass()}>
           {loading ? (
-            <div>
-              <Spinner /> {loadingText || text}
+            <div className="SimpleButton">
+              <Spinner light={true} /> {loadingText || text}
             </div>
           ) : (
             <div>{text}</div>

@@ -1,21 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import translate from 'translations';
 import Stepper from 'react-stepper-horizontal';
-import { showNotification, TShowNotification } from 'actions/notifications';
-import { AppState } from 'reducers';
+
+import translate, { translateRaw } from 'translations';
+import { ONBOARD_LOCAL_STORAGE_KEY, NUMBER_OF_ONBOARD_SLIDES } from 'utils/localStorage';
+import { AppState } from 'features/reducers';
+import { notificationsActions } from 'features/notifications';
+import { onboardStatusActions } from 'features/onboardStatus';
 import Modal, { IButton } from 'components/ui/Modal';
-import './index.scss';
-import {
-  startOnboardSession,
-  TStartOnboardSession,
-  decrementSlide,
-  TDecrementSlide,
-  incrementSlide,
-  TIncrementSlide,
-  resumeSlide,
-  TResumeSlide
-} from 'actions/onboardStatus';
 import {
   WelcomeSlide,
   NotABankSlide,
@@ -28,9 +20,7 @@ import {
   SecureSlideThree,
   FinalSlide
 } from './components';
-
-const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
-const NUMBER_OF_SLIDES = 10;
+import './index.scss';
 
 interface State {
   isOpen: boolean;
@@ -39,17 +29,17 @@ interface State {
 interface Props {
   sessionStarted: boolean;
   slideNumber: number;
-  startOnboardSession: TStartOnboardSession;
-  resumeSlide: TResumeSlide;
-  decrementSlide: TDecrementSlide;
-  incrementSlide: TIncrementSlide;
-  showNotification: TShowNotification;
+  startOnboardSession: onboardStatusActions.TStartOnboardSession;
+  resumeSlide: onboardStatusActions.TResumeSlide;
+  decrementSlide: onboardStatusActions.TDecrementSlide;
+  incrementSlide: onboardStatusActions.TIncrementSlide;
+  showNotification: notificationsActions.TShowNotification;
 }
 
 class OnboardModal extends React.Component<Props, State> {
   private modal: Modal | null = null;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       isOpen: false
@@ -58,7 +48,6 @@ class OnboardModal extends React.Component<Props, State> {
 
   public componentDidMount() {
     const { sessionStarted } = this.props;
-
     const currentSlide = Number(localStorage.getItem(ONBOARD_LOCAL_STORAGE_KEY)) || 0;
 
     if (!sessionStarted) {
@@ -68,13 +57,13 @@ class OnboardModal extends React.Component<Props, State> {
           isOpen: true
         });
       }
-      if (currentSlide > 0 && currentSlide < NUMBER_OF_SLIDES) {
+      if (currentSlide > 0 && currentSlide < NUMBER_OF_ONBOARD_SLIDES) {
         this.props.resumeSlide(currentSlide);
         this.setState({
           isOpen: true
         });
 
-        const onboardResumeMessage = translate('ONBOARD_resume');
+        const onboardResumeMessage = translateRaw('ONBOARD_RESUME');
 
         // Wait a sec so it doesn't get lost in the page-load
         setTimeout(() => {
@@ -90,37 +79,37 @@ class OnboardModal extends React.Component<Props, State> {
 
     const firstButtons: IButton[] = [
       {
-        disabled: slideNumber === NUMBER_OF_SLIDES,
-        text: 'Next',
+        disabled: slideNumber === NUMBER_OF_ONBOARD_SLIDES,
+        text: translate('ACTION_6'),
         type: 'primary',
         onClick: this.handleNextSlide
       },
       {
         disabled: slideNumber === 1,
-        text: 'Back',
+        text: translate('ACTION_4'),
         type: 'default',
         onClick: this.handlePreviousSlide
       }
     ];
     const lastButtons: IButton[] = [
       {
-        text: 'Finish',
+        text: translate('ACTION_10'),
         type: 'primary',
         onClick: this.closeModal
       },
       {
-        text: 'Back',
+        text: translate('ACTION_4'),
         type: 'default',
         onClick: this.handlePreviousSlide
       }
     ];
 
-    const buttons = slideNumber === NUMBER_OF_SLIDES ? lastButtons : firstButtons;
-    const steps = new Array(NUMBER_OF_SLIDES).fill({});
+    const buttons = slideNumber === NUMBER_OF_ONBOARD_SLIDES ? lastButtons : firstButtons;
+    const steps = new Array(NUMBER_OF_ONBOARD_SLIDES).fill({});
 
     return (
       <div className="OnboardModal">
-        <Modal isOpen={isOpen} buttons={buttons} ref={el => (this.modal = el)}>
+        <Modal isOpen={isOpen} buttons={buttons} maxWidth={800} handleClose={this.closeModal}>
           <div className="OnboardModal-stepper">
             <Stepper
               steps={steps}
@@ -158,8 +147,8 @@ class OnboardModal extends React.Component<Props, State> {
       <FinalSlide key={10} closeModal={this.closeModal} />
     ];
 
-    if (slides.length !== NUMBER_OF_SLIDES) {
-      console.log('Slides length do not match const NUMBER_OF_SLIDES');
+    if (slides.length !== NUMBER_OF_ONBOARD_SLIDES) {
+      console.log('Slides length do not match const NUMBER_OF_ONBOARD_SLIDES');
     }
     const currentSlideIndex = this.props.slideNumber - 1;
 
@@ -171,7 +160,7 @@ class OnboardModal extends React.Component<Props, State> {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(prevSlideNum));
     this.props.decrementSlide();
     if (this.modal) {
-      this.modal.scrollContentToTop();
+      this.modal.modalBody.scrollContentToTop();
     }
   };
 
@@ -180,7 +169,7 @@ class OnboardModal extends React.Component<Props, State> {
     localStorage.setItem(ONBOARD_LOCAL_STORAGE_KEY, String(nextSlideNum));
     this.props.incrementSlide();
     if (this.modal) {
-      this.modal.scrollContentToTop();
+      this.modal.modalBody.scrollContentToTop();
     }
   };
 }
@@ -193,9 +182,9 @@ function mapStateToProps(state: AppState) {
 }
 
 export default connect(mapStateToProps, {
-  startOnboardSession,
-  resumeSlide,
-  decrementSlide,
-  incrementSlide,
-  showNotification
+  startOnboardSession: onboardStatusActions.startOnboardSession,
+  resumeSlide: onboardStatusActions.resumeSlide,
+  decrementSlide: onboardStatusActions.decrementSlide,
+  incrementSlide: onboardStatusActions.incrementSlide,
+  showNotification: notificationsActions.showNotification
 })(OnboardModal);

@@ -1,92 +1,123 @@
-// This syntax is necessary to override css styles in react-select
-.Select {
-  font-size: 1rem;
-  .Select-control {
-    height: $input-height-base;
-    display: block;
-    box-sizing: border-box;
-    font-weight: 400;
-    border-radius: 0px;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    border: 1px solid $input-border;
-    transition: $transition;
-    &:hover {
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      border: 1px solid $input-border;
-    }
-    .Select-value {
-      padding-left: $input-padding-x;
-      padding-right: $input-padding-x;
-      .Select-value-label {
-        vertical-align: middle;
-      }
-    }
-    .Select-arrow-zone {
-      float: right;
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-  .Select-menu-outer {
-    box-sizing: content-box;
-    font-weight: 400;
-    border: 1px solid $input-border;
-    width: calc(100% - 1px);
-  }
-  .Select-placeholder {
-    color: #d3d3d3;
-    padding: 0px $input-padding-x;
-    line-height: $input-height-base;
-  }
-  .Select-input {
-    opacity: 0;
-  }
-  &.is-open {
-    .Select-control {
-      border: 1px solid $input-border;
-    }
-  }
-  &.is-focused {
-    &:not(.is-open):not(.is-invalid) {
-      .Select-control {
-        border-color: $brand-primary;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 1px rgba(14, 151, 192, 0.5);
-      }
-    }
-  }
+@import 'common/sass/variables';
 
-  @mixin react-select-control-state($color) {
-    .Select-control {
-      border-color: lighten($color, 20%);
-      @include input-shadow($color);
+.Select {
+  border-radius: 2px;
+  background-color: color(control-bg);
+  border: 1px solid color(control-border);
+  border-radius: 2px;
+  font-weight: 400;
+  font-size: 1rem;
+  box-shadow: inset 0 1px 0 0 color(control-inset-shadow);
+  transition: border-color 120ms, box-shadow 120ms;
+  height: $input-height-base;
+
+  &-control {
+    min-width: 7.5rem;
+    height: inherit;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    &:hover {
+      box-shadow: none;
     }
-    .Select-menu-outer {
-      border-color: lighten($color, 20%);
-      @include input-shadow($color);
+  }
+  &-placeholder {
+    line-height: $line-height-base;
+    color: color(control-placeholder);
+  }
+  &-input {
+    position: absolute;
+    > input {
+      line-height: $line-height-base;
+      padding: 0;
+    }
+  }
+  &-placeholder,
+  &-input {
+    padding-left: 0;
+    padding-right: 0;
+    padding: 0rem 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    height: auto;
+  }
+  &-option {
+    padding: 0.75rem 1rem;
+    background: color(control-bg);
+    color: shade-dark(0.8);
+
+    &.is-selected {
+      background: shade-dark(0.03);
+      color: color(text-color);
     }
 
     &.is-focused {
-      .Select-control {
-        border-color: lighten($color, 5%);
-        @include input-focus-shadow($color);
-      }
-      .Select-menu-outer {
-        border-color: lighten($color, 5%);
-        @include input-focus-shadow($color);
-      }
+      background: color(brand-primary);
+      color: color(text-color-inverted);
     }
   }
+  &-menu-outer {
+    z-index: 3;
+    width: calc(100% + 2px);
+    left: -1px;
+    background-color: color(control-bg);
+    border: 2px solid color(brand-primary);
+    border-top: none;
+    border-radius: $input-border-radius;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-color: inherit;
+  }
+  &-menu {
+    max-height: 10.0625rem;
+  }
+  // Selects should never have invalid input
+  // &.invalid {
+  //   border-color: color(brand-danger);
+  //   box-shadow: inset 0px 0px 0px 1px color(brand-danger);
+  // }
+  &.is-focused {
+    border-color: color(brand-primary);
+    box-shadow: inset 0px 0px 0px 1px color(brand-primary);
+    &.valid {
+      border-color: color(brand-success);
+      box-shadow: inset 0px 0px 0px 1px color(brand-success);
+    }
+  }
+  &-value {
+    line-height: $line-height-base !important;
+    padding-left: 0 !important;
+    padding: 0.75rem 1rem !important;
+    height: inherit !important;
 
-  &.is-valid {
-    @include react-select-control-state($brand-success);
+    &-label {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      display: block;
+    }
+  }
+  &-multi-value-wrapper {
+    display: block;
+    position: relative;
+    height: inherit;
   }
 
-  &.is-invalid {
-    @include react-select-control-state($brand-danger);
+  // This shitty selector is the text color of the select, no joke.
+  &.has-value.Select--single > .Select-control .Select-value,
+	&.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
+		.Select-value-label {
+			color: color(control-color);
+		}
   }
 
-  &.is-warning {
-    @include react-select-control-state($brand-warning);
+  // Identicons need to fit into the select
+  .Identicon {
+    display: inline-block;
+    width: 22px !important;
+    height: 22px !important;
+    top: -1px;
   }
 }

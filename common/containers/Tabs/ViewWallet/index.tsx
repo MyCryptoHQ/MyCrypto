@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import translate from 'translations';
 import TabSection from 'containers/TabSection';
 
@@ -11,10 +12,10 @@ export default class ViewWallet extends Component {
             <article className="tab-pane active">
               <article className="collapse-container">
                 <div>
-                  <h1>View Wallet Info</h1>
+                  <h1>{translate('NAV_VIEWWALLET')}</h1>
                 </div>
                 <div>
-                  <p>{translate('VIEWWALLET_Subtitle')}</p>
+                  <p>{translate('VIEWWALLET_SUBTITLE')}</p>
                 </div>
               </article>
             </article>

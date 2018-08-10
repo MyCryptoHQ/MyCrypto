@@ -1,4 +1,5 @@
 import React from 'react';
+
 import wifiOn from 'assets/images/wifi-on.svg';
 import wifiOff from 'assets/images/wifi-off.svg';
 
@@ -26,7 +27,7 @@ const OfflineSymbol = ({ offline, size }: OfflineSymbolProps) => {
       break;
   }
 
-  return <img src={offline ? wifiOff : wifiOn} width={width} height={height} />;
+  return <img src={offline ? wifiOff : wifiOn} alt="wifi status" width={width} height={height} />;
 };
 
 export default OfflineSymbol;

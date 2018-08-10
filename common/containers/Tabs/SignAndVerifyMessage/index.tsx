@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import translate from 'translations';
-import SignMessage from './components/SignMessage';
-import VerifyMessage from './components/VerifyMessage';
-import TabSection from 'containers/TabSection';
-import './index.scss';
 import { RouteComponentProps, Switch, Route, Redirect } from 'react-router';
+
+import translate from 'translations';
+import TabSection from 'containers/TabSection';
 import SubTabs from 'components/SubTabs';
 import { RouteNotFound } from 'components/RouteNotFound';
+import SignMessage from './components/SignMessage';
+import VerifyMessage from './components/VerifyMessage';
 
 interface State {
   activeTab: 'sign' | 'verify';
@@ -20,24 +20,24 @@ export default class SignAndVerifyMessage extends Component<RouteComponentProps<
   public changeTab = (activeTab: State['activeTab']) => () => this.setState({ activeTab });
 
   public render() {
-    const { match } = this.props;
+    const { match, location, history } = this.props;
     const currentPath = match.url;
 
     const tabs = [
       {
         path: 'sign',
-        name: translate('NAV_SignMsg')
+        name: translate('NAV_SIGNMSG')
       },
       {
         path: 'verify',
-        name: translate('MSG_verify')
+        name: translate('MSG_VERIFY')
       }
     ];
 
     return (
       <TabSection>
         <section className="Tab-content SignAndVerifyMsg">
-          <SubTabs tabs={tabs} match={match} />
+          <SubTabs tabs={tabs} match={match} location={location} history={history} />
           <Switch>
             <Route
               exact={true}

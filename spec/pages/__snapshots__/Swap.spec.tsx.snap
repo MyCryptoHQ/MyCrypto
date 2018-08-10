@@ -15,7 +15,7 @@ exports[`render snapshot 1`] = `
   destination={
     Object {
       "amount": NaN,
-      "id": "ETH",
+      "label": "ETH",
     }
   }
   destinationAddress=""
@@ -45,8 +45,6 @@ exports[`render snapshot 1`] = `
   isFetchingRates={null}
   isOffline={false}
   isPostingOrder={false}
-  loadBityRatesRequestedSwap={[Function]}
-  loadShapeshiftRatesRequestedSwap={[Function]}
   location={
     Object {
       "hash": "",
@@ -73,11 +71,12 @@ exports[`render snapshot 1`] = `
   origin={
     Object {
       "amount": NaN,
-      "id": "BTC",
+      "label": "BTC",
     }
   }
   outputTx={null}
   paymentAddress={null}
+  paymentId={null}
   provider="shapeshift"
   restartSwap={[Function]}
   secondsRemaining={null}
@@ -91,6 +90,7 @@ exports[`render snapshot 1`] = `
     }
   }
   showNotification={[Function]}
+  showNotificationWithComponent={[Function]}
   startOrderTimerSwap={[Function]}
   startPollBityOrderStatus={[Function]}
   startPollShapeshiftOrderStatus={[Function]}
@@ -101,5 +101,6 @@ exports[`render snapshot 1`] = `
   stopPollBityOrderStatus={[Function]}
   stopPollShapeshiftOrderStatus={[Function]}
   swapProvider={[Function]}
+  xmrPaymentAddress={null}
 />
 `;

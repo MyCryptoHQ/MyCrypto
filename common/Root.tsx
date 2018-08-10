@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import { withRouter, Switch, Redirect, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import { Store } from 'redux';
+import { Provider, connect } from 'react-redux';
+import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+
+import { AppState } from 'features/reducers';
+import { getNetworkUnit, getTheme } from 'features/config';
+import { transactionMetaActions } from 'features/transaction';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -10,36 +15,58 @@ import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
+import SupportPage from 'containers/Tabs/SupportPage';
 import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
-import { TitleBar } from 'components/ui';
-import { Store } from 'redux';
-import { pollOfflineStatus } from 'actions/config';
-import { AppState } from 'reducers';
+import QrSignerModal from 'containers/QrSignerModal';
+import OnboardModal from 'containers/OnboardModal';
+import WelcomeModal from 'components/WelcomeModal';
+import NewAppReleaseModal from 'components/NewAppReleaseModal';
+import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
+import { Theme } from 'config';
 import 'what-input';
 
-interface Props {
+interface OwnProps {
   store: Store<AppState>;
 }
+
+interface StateProps {
+  networkUnit: ReturnType<typeof getNetworkUnit>;
+  theme: ReturnType<typeof getTheme>;
+}
+
+interface DispatchProps {
+  setUnitMeta: transactionMetaActions.TSetUnitMeta;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
 }
 
-export default class Root extends Component<Props, State> {
+class RootClass extends Component<Props, State> {
   public state = {
     error: null
   };
 
   public componentDidMount() {
-    this.props.store.dispatch(pollOfflineStatus());
+    this.props.setUnitMeta(this.props.networkUnit);
+    this.addBodyClasses();
+    this.updateTheme(this.props.theme);
   }
 
   public componentDidCatch(error: Error) {
     this.setState({ error });
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (this.props.theme !== prevProps.theme) {
+      this.updateTheme(this.props.theme, prevProps.theme);
+    }
   }
 
   public render() {
@@ -50,18 +77,9 @@ export default class Root extends Component<Props, State> {
       return <ErrorScreen error={error} />;
     }
 
-    const CaptureRouteNotFound = withRouter(({ children, location }) => {
-      return location && location.state && location.state.error ? (
-        <PageNotFound />
-      ) : (
-        (children as JSX.Element)
-      );
-    });
-
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          <Redirect exact={true} from="/" to="/account" />
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/swap" component={Swap} />
@@ -70,6 +88,11 @@ export default class Root extends Component<Props, State> {
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
           <Route path="/tx-status" component={CheckTransaction} exact={true} />
           <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/support-us" component={SupportPage} exact={true} />
+          {process.env.NODE_ENV !== 'production' && (
+            <Route path="/dev/palette" component={PalettePage} exact={true} />
+          )}
+          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
           <RouteNotFound />
         </Switch>
       </CaptureRouteNotFound>
@@ -81,17 +104,53 @@ export default class Root extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <Provider store={store} key={Math.random()}>
-        <Router key={Math.random()}>
-          <React.Fragment>
-            {process.env.BUILD_ELECTRON && <TitleBar />}
-            {routes}
-            <LegacyRoutes />
-            <LogOutPrompt />
-          </React.Fragment>
-        </Router>
-      </Provider>
+      <React.Fragment>
+        <Provider store={store}>
+          <Router>
+            <React.Fragment>
+              {routes}
+              <LegacyRoutes />
+              <LogOutPrompt />
+              <QrSignerModal />
+              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+              {!process.env.DOWNLOADABLE_BUILD && (
+                <React.Fragment>
+                  <OnboardModal />
+                  {!process.env.BUILD_ELECTRON && <WelcomeModal />}
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          </Router>
+        </Provider>
+        <div id="ModalContainer" />
+      </React.Fragment>
     );
+  }
+
+  private addBodyClasses() {
+    const classes = [];
+
+    if (process.env.BUILD_ELECTRON) {
+      classes.push('is-electron');
+
+      if (navigator.appVersion.includes('Win')) {
+        classes.push('is-windows');
+      } else if (navigator.appVersion.includes('Mac')) {
+        classes.push('is-osx');
+      } else {
+        classes.push('is-linux');
+      }
+    }
+
+    document.body.className += ` ${classes.join(' ')}`;
+  }
+
+  private updateTheme(theme: Theme, oldTheme?: Theme) {
+    const root = document.documentElement;
+    if (oldTheme) {
+      root.classList.remove(`theme--${oldTheme}`);
+    }
+    root.classList.add(`theme--${theme}`);
   }
 }
 
@@ -134,3 +193,20 @@ const LegacyRoutes = withRouter(props => {
     </Switch>
   );
 });
+
+const CaptureRouteNotFound = withRouter(({ children, location }) => {
+  return location && location.state && location.state.error ? (
+    <PageNotFound />
+  ) : (
+    (children as JSX.Element)
+  );
+});
+
+const mapStateToProps = (state: AppState): StateProps => ({
+  networkUnit: getNetworkUnit(state),
+  theme: getTheme(state)
+});
+
+export default connect(mapStateToProps, {
+  setUnitMeta: transactionMetaActions.setUnitMeta
+})(RootClass);

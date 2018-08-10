@@ -1,7 +1,12 @@
-export const REDUX_STATE = 'REDUX_STATE';
-import { State as SwapState } from 'reducers/swap';
-import { IWallet, WalletConfig } from 'libs/wallet';
 import { sha256 } from 'ethereumjs-util';
+
+import { AppState } from 'features/reducers';
+import { SwapState } from 'features/swap/types';
+import { IWallet, WalletConfig } from 'libs/wallet';
+
+export const REDUX_STATE = 'REDUX_STATE';
+export const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
+export const NUMBER_OF_ONBOARD_SLIDES = 10;
 
 export function loadState<T>(): T | undefined {
   try {
@@ -26,8 +31,8 @@ export const saveState = (state: any) => {
 
 export type SwapLocalStorage = SwapState;
 
-export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
-  const localStorageState = loadState();
+export function loadStatePropertyOrEmptyObject<T>(key: keyof AppState): T | undefined {
+  const localStorageState: Partial<AppState> | undefined = loadState();
   if (localStorageState) {
     if (localStorageState.hasOwnProperty(key)) {
       return localStorageState[key] as T;
@@ -36,20 +41,17 @@ export function loadStatePropertyOrEmptyObject<T>(key: string): T | undefined {
   return undefined;
 }
 
-export async function saveWalletConfig(
-  wallet: IWallet,
-  state: Partial<WalletConfig>
-): Promise<WalletConfig> {
-  const oldState = await loadWalletConfig(wallet);
+export function saveWalletConfig(wallet: IWallet, state: Partial<WalletConfig>): WalletConfig {
+  const oldState = loadWalletConfig(wallet);
   const newState = { ...oldState, ...state };
-  const key = await getWalletConfigKey(wallet);
+  const key = getWalletConfigKey(wallet);
   localStorage.setItem(key, JSON.stringify(newState));
   return newState;
 }
 
-export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {
+export function loadWalletConfig(wallet: IWallet): WalletConfig {
   try {
-    const key = await getWalletConfigKey(wallet);
+    const key = getWalletConfigKey(wallet);
     const state = localStorage.getItem(key);
     return state ? JSON.parse(state) : {};
   } catch (err) {
@@ -58,7 +60,22 @@ export async function loadWalletConfig(wallet: IWallet): Promise<WalletConfig> {
   }
 }
 
-async function getWalletConfigKey(wallet: IWallet): Promise<string> {
-  const address = await wallet.getAddressString();
+function getWalletConfigKey(wallet: IWallet): string {
+  const address = wallet.getAddressString();
   return sha256(`${address}-mycrypto`).toString('hex');
+}
+
+export function isLegacyUser() {
+  // All devs are legacy users!
+  const oldLSValue = localStorage.getItem('gasPrice') || process.env.NODE_ENV !== 'production';
+  const onboardProgress = localStorage.getItem(ONBOARD_LOCAL_STORAGE_KEY);
+
+  if (oldLSValue && onboardProgress && parseInt(onboardProgress, 10) >= NUMBER_OF_ONBOARD_SLIDES) {
+    return true;
+  }
+  return false;
+}
+
+export function isBetaUser() {
+  return !!localStorage.getItem('acknowledged-beta');
 }

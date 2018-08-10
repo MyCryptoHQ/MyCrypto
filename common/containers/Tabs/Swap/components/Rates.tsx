@@ -1,9 +1,10 @@
-import { NormalizedRates } from 'reducers/swap/types';
 import React, { Component } from 'react';
-import { toFixedIfLarger } from 'utils/formatters';
-import './CurrentRates.scss';
-import { ProviderName } from 'actions/swap';
+
+import { Input } from 'components/ui';
 import { objectContainsObjectKeys } from 'utils/helpers';
+import { toFixedIfLarger } from 'utils/formatters';
+import { NormalizedRates, ProviderName } from 'features/swap/types';
+import './CurrentRates.scss';
 
 interface RateInputProps {
   rate: number;
@@ -24,11 +25,13 @@ export const RateInput: React.SFC<RateInputProps> = ({
 }) => {
   return amount || amount === 0 || amount === '' ? (
     <div className="SwapRates-panel-rate">
-      <input
+      <Input
         className="SwapRates-panel-rate-input"
         onChange={onChange}
         value={amount}
         name={pair}
+        isValid={true}
+        type="number"
       />
       <span className="SwapRates-panel-rate-amount">
         {` ${origin} = ${toFixedIfLarger(+amount * rate, 6)} ${destination}`}
@@ -47,7 +50,7 @@ interface State {
 }
 
 export default class Rates extends Component<Props, State> {
-  public state = {
+  public state: State = {
     pairs: {}
   };
 
@@ -72,7 +75,7 @@ export default class Rates extends Component<Props, State> {
   public getPairs = () => {
     const { rates } = this.props;
     const { allIds } = rates;
-    return allIds.reduce((acc, cur) => {
+    return allIds.reduce<{ [id: string]: 1 }>((acc, cur) => {
       acc[cur] = 1;
       return acc;
     }, {});

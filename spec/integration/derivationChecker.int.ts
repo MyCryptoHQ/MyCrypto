@@ -1,5 +1,7 @@
 import { generate, IFullWallet } from 'ethereumjs-wallet';
-import { stripHexPrefix } from '../../common/libs/values';
+
+import { stripHexPrefix } from '../../common/libs/formatters';
+
 const { exec } = require('child_process');
 
 // FIXME pick a less magic number
@@ -9,7 +11,7 @@ const dockerTag = 'latest';
 
 function promiseFromChildProcess(command: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    return exec(command, (err, stdout) => {
+    return exec(command, (err: string, stdout: string) => {
       err ? reject(err) : resolve(stdout);
     });
   });

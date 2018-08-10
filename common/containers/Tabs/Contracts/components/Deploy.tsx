@@ -1,49 +1,54 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import translate from 'translations';
-import classnames from 'classnames';
+import { transactionFieldsActions } from 'features/transaction';
+import { walletActions } from 'features/wallet';
+import { NonceField, TXMetaDataPanel, SigningStatus } from 'components';
+import { FullWalletOnly } from 'components/renderCbs';
+import { TextArea } from 'components/ui';
 import { DataFieldFactory } from 'components/DataFieldFactory';
 import { SendButtonFactory } from 'components/SendButtonFactory';
-import { SigningStatus } from 'components/SigningStatus';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
-import { GenerateTransaction } from 'components/GenerateTransaction';
-import React, { Component } from 'react';
-import { setToField, TSetToField } from 'actions/transaction';
-import { resetWallet, TResetWallet } from 'actions/wallet';
-import { connect } from 'react-redux';
-import { FullWalletOnly } from 'components/renderCbs';
-import { NonceField, TXMetaDataPanel } from 'components';
-import './Deploy.scss';
 import { ConfirmationModal } from 'components/ConfirmationModal';
+import './Deploy.scss';
 
 interface DispatchProps {
-  setToField: TSetToField;
-  resetWallet: TResetWallet;
+  resetWallet: walletActions.TResetWallet;
+  resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
 }
 
 class DeployClass extends Component<DispatchProps> {
+  public componentDidMount() {
+    this.props.resetTransactionRequested();
+  }
+
   public render() {
     const makeContent = () => (
       <main className="Deploy Tab-content-pane" role="main">
-        <div className="Deploy-field form-group">
-          <h3 className="Deploy-field-label">{translate('CONTRACT_ByteCode')}</h3>
-          <button className="Deploy-field-reset btn btn-default btn-sm" onClick={this.changeWallet}>
-            <i className="fa fa-refresh" />
-            {translate('Change Wallet')}
-          </button>
-          <DataFieldFactory
-            withProps={({ data: { raw, value }, onChange, readOnly }) => (
-              <textarea
-                name="byteCode"
-                placeholder="0x8f87a973e..."
-                rows={6}
-                onChange={onChange}
-                disabled={readOnly}
-                className={classnames('Deploy-field-input', 'form-control', {
-                  'is-valid': value && value.length > 0
-                })}
-                value={raw}
-              />
-            )}
-          />
+        <button className="Deploy-field-reset btn btn-default btn-sm" onClick={this.changeWallet}>
+          <i className="fa fa-refresh" />
+          {translate('CHANGE_WALLET')}
+        </button>
+
+        <div className="input-group-wrapper Deploy-field">
+          <label className="input-group">
+            <div className="input-group-header">{translate('CONTRACT_BYTECODE')}</div>
+            <DataFieldFactory
+              withProps={({ data: { raw }, onChange, readOnly, validData }) => (
+                <TextArea
+                  isValid={validData && !!raw}
+                  name="byteCode"
+                  placeholder="0x8f87a973e..."
+                  rows={6}
+                  onChange={onChange}
+                  disabled={readOnly}
+                  className="Deploy-field-input"
+                  value={raw}
+                />
+              )}
+            />
+          </label>
         </div>
 
         <div className="row form-group">
@@ -62,20 +67,23 @@ class DeployClass extends Component<DispatchProps> {
           </div>
         </div>
 
-        <div className="row form-group">
-          <div className="col-xs-12 clearfix">
-            <GenerateTransaction />
-          </div>
-        </div>
-        <SigningStatus />
         <SendButtonFactory
+          signing={true}
           Modal={ConfirmationModal}
-          withProps={({ onClick }) => (
-            <button className="Deploy-submit btn btn-primary" onClick={onClick}>
-              {translate('NAV_DeployContract')}
+          withProps={({ disabled, signTx, openModal }) => (
+            <button
+              disabled={disabled}
+              className="Deploy-submit btn btn-primary btn-block"
+              onClick={() => {
+                signTx();
+                openModal();
+              }}
+            >
+              {translate('NAV_DEPLOYCONTRACT')}
             </button>
           )}
         />
+        <SigningStatus />
       </main>
     );
 
@@ -90,6 +98,6 @@ class DeployClass extends Component<DispatchProps> {
 }
 
 export const Deploy = connect(null, {
-  setToField,
-  resetWallet
+  resetWallet: walletActions.resetWallet,
+  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested
 })(DeployClass);

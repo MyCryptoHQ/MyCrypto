@@ -30,7 +30,7 @@
       width: 100%;
       margin: 0.5rem 0rem;
       margin-bottom: 0.75rem;
-      background-color: #ececec;
+      background-color: color(control-border);
       background-position: center;
       background-size: 1px 1px;
     }
@@ -41,7 +41,6 @@
       flex-wrap: nowrap;
       align-items: center;
       &-fiat-symbol {
-        height: 18px;
         width: 18px;
         margin-right: 0.5rem;
         text-align: center;
@@ -57,7 +56,7 @@
         white-space: pre-wrap;
         display: inline-block;
         min-width: 36px;
-        opacity: 0.54;
+        color: shade-dark(0.5);
       }
       &-value {
         font-weight: 600;

@@ -1,6 +1,8 @@
-import removeIcon from 'assets/images/icon-remove.svg';
 import React from 'react';
+
+import { translateRaw } from 'translations';
 import { TokenValue } from 'libs/units';
+import removeIcon from 'assets/images/icon-remove.svg';
 import { UnitDisplay } from 'components/ui';
 import './TokenRow.scss';
 
@@ -30,9 +32,15 @@ export default class TokenRow extends React.PureComponent<Props, State> {
 
     return (
       <tr className="TokenRow" onClick={this.handleToggleTracked}>
+        {/* Only allow to toggle tracking on non custom tokens
+        because the user can just remove the custom token instead */}
         {this.props.toggleTracked && (
           <td className="TokenRow-toggled">
-            <input type="checkbox" checked={tracked} />
+            <input
+              type="checkbox"
+              checked={tracked || this.props.custom}
+              disabled={this.props.custom}
+            />
           </td>
         )}
         <td
@@ -54,8 +62,9 @@ export default class TokenRow extends React.PureComponent<Props, State> {
           {!!custom && (
             <img
               src={removeIcon}
+              alt={translateRaw('REMOVE')}
               className="TokenRow-symbol-remove"
-              title="Remove Token"
+              title={translateRaw('REMOVE_TOKEN')}
               onClick={this.onRemove}
               tabIndex={0}
             />

@@ -1,8 +1,9 @@
-import { toTokenBase } from 'libs/units';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from 'reducers';
-import { getDecimal } from 'selectors/transaction';
+
+import { toTokenBase } from 'libs/units';
+import { AppState } from 'features/reducers';
+import { transactionMetaSelectors } from 'features/transaction';
 
 interface IChildren {
   onUserInput: UnitConverterClass['onUserInput'];
@@ -29,7 +30,7 @@ const initialState = { userInput: '' };
 class UnitConverterClass extends Component<Props, State> {
   public state: State = initialState;
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { userInput } = this.state;
 
     if (this.props.decimal !== nextProps.decimal) {
@@ -63,7 +64,7 @@ class UnitConverterClass extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    decimal: getDecimal(state)
+    decimal: transactionMetaSelectors.getDecimal(state)
   };
 };
 
