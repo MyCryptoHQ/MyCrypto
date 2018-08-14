@@ -1,11 +1,11 @@
 import BN from 'bn.js';
 import abi from 'ethereumjs-abi';
 import { toBuffer } from 'ethereumjs-util';
-
 import { ICurrentValue } from 'features/types';
-import { toWei, Units, gasPriceToBase, Address, Wei } from '../units';
+import { toWei, gasPriceToBase, Address, Wei, getDecimalFromEtherUnit } from '../units';
 import RequestFactory from './contracts/RequestFactory';
 
+const ETHER_DECIMALS = getDecimalFromEtherUnit('ether');
 const TIME_BOUNTY_MIN = Wei('1');
 
 export const EAC_SCHEDULING_CONFIG = {
@@ -17,9 +17,10 @@ export const EAC_SCHEDULING_CONFIG = {
   SCHEDULING_GAS_LIMIT: Wei('1500000'),
   WINDOW_SIZE_DEFAULT_TIME: 10,
   WINDOW_SIZE_DEFAULT_BLOCK: 90,
+  PRESET_TIME_BOUNTIES: ['0.02', '0.04', '0.08'],
   TIME_BOUNTY_MIN,
-  TIME_BOUNTY_DEFAULT: TIME_BOUNTY_MIN,
-  TIME_BOUNTY_MAX: toWei('900', Units.ether.length - 1), // 900 ETH
+  TIME_BOUNTY_DEFAULT: toWei('0.02', ETHER_DECIMALS),
+  TIME_BOUNTY_MAX: toWei('900', ETHER_DECIMALS), // 900 ETH
   SCHEDULE_TIMESTAMP_FORMAT: 'YYYY-MM-DD HH:mm:ss',
   DEFAULT_SCHEDULING_METHOD: 'time',
   ALLOW_SCHEDULING_MIN_AFTER_NOW: 5
