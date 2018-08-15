@@ -25,3 +25,10 @@ export function signMessageFailed(): types.SignMessageFailedAction {
     type: types.MessageActions.SIGN_FAILED
   };
 }
+
+export type TResetMessage = typeof resetMessage;
+export function resetMessage(): types.ResetMessageAction {
+  return {
+    type: types.MessageActions.RESET
+  };
+}

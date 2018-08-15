@@ -21,6 +21,12 @@ function signMessageFailed(state: types.MessageState): types.MessageState {
   };
 }
 
+function resetMessage(): types.MessageState {
+  return {
+    ...INITIAL_STATE
+  };
+}
+
 export function messageReducer(
   state: types.MessageState = INITIAL_STATE,
   action: types.MessageAction
@@ -30,6 +36,8 @@ export function messageReducer(
       return signLocalMessageSucceeded(state, action);
     case types.MessageActions.SIGN_FAILED:
       return signMessageFailed(state);
+    case types.MessageActions.RESET:
+      return resetMessage();
     default:
       return state;
   }
