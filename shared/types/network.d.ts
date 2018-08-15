@@ -18,6 +18,7 @@ type StaticNetworkIds =
   | 'RSK'
   | 'RSK_TESTNET'
   | 'GO'
+  | 'GO_TESTNET'
   | 'EOSC'
   | 'ESN';
 
