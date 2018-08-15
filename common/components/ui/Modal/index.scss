@@ -23,7 +23,7 @@ $m-anim-speed: 400ms;
   max-height: 95%;
   max-height: calc(100% - #{$m-window-padding-h * 2});
   background: $m-background;
-  border-radius: 2px;
+  border-radius: 3px;
   transform: translateX(-50%);
   z-index: $zindex-modal;
   overflow: hidden;

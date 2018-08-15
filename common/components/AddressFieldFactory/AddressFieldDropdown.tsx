@@ -45,7 +45,10 @@ class AddressFieldDropdown extends React.Component<Props> {
     );
 
     return this.props.currentTo.length > 1 ? (
-      <ul className="AddressFieldDropdown" role="listbox">
+      <ul
+        className={`${this.getFilteredLabels().length > 0 && 'visible'} AddressFieldDropdown`}
+        role="listbox"
+      >
         {this.getFilteredLabels().length > 0 ? this.renderDropdownItems() : noMatchContent}
       </ul>
     ) : null;

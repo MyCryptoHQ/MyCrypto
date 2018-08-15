@@ -7,6 +7,7 @@ import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import { getIsValidAddressFn } from 'features/config';
 import { walletSelectors } from 'features/wallet';
+import { PrimaryButton, SecondaryButton } from 'components';
 import { Input, Identicon } from 'components/ui';
 import './ViewOnly.scss';
 
@@ -48,7 +49,8 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="ViewOnly">
-        <form className="form-group" onSubmit={this.openWallet}>
+        <h2 className="ViewOnly-decrypt-title">{translate('VIEW_ADDR')}</h2>
+        <form className="input-group" onSubmit={this.openWallet}>
           {!!recentOptions.length && (
             <div className="ViewOnly-recent">
               <Select
@@ -68,10 +70,20 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
             onChange={this.changeAddress}
             placeholder={translateRaw('VIEW_ONLY_ENTER')}
           />
-
-          <button className="ViewOnly-submit btn btn-primary btn-block" disabled={!isValid}>
-            {translate('VIEW_ADDR')}
-          </button>
+          <div className="ViewOnly-btn-wrapper">
+            <SecondaryButton
+              text="Back"
+              onClick={(this.props as any).clearWalletChoice}
+              className="ViewOnly-btn"
+            />
+            <div className="flex-spacer" />
+            <PrimaryButton
+              text={translateRaw('VIEW_ADDR')}
+              onClick={() => null}
+              disabled={!isValid}
+              className="ViewOnly-btn"
+            />
+          </div>
         </form>
       </div>
     );

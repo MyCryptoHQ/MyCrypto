@@ -34,7 +34,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
         <div className="ScheduleFields-description">{translate('SCHEDULING_DESCRIPTION')}</div>
 
-        <div className="row form-group vcenter-sm">
+        <div className="row input-group vcenter-sm">
           <div className="col-lg-3 col-lg-push-9">
             <ScheduleType />
             <hr className="hidden-lg" />
@@ -68,7 +68,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
           </div>
         </div>
 
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-6">
             <TimeBountyField />
           </div>
@@ -77,7 +77,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
           </div>
         </div>
 
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-6">
             <ScheduleGasPriceField />
           </div>
@@ -86,7 +86,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
           </div>
         </div>
 
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-12 AdvancedGas-data">
             <DataField />
           </div>

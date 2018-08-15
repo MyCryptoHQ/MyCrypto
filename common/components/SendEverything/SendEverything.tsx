@@ -7,7 +7,6 @@ import { AppState } from 'features/reducers';
 import { sendEverythingRequested, TSendEverythingRequested } from 'features/transaction/actions';
 import * as selectors from 'features/selectors';
 import { Query } from 'components/renderCbs';
-import { Tooltip } from 'components/ui';
 import './SendEverything.scss';
 
 interface DispatchProps {
@@ -29,11 +28,13 @@ class SendEverythingClass extends Component<Props> {
           <button
             className="SendEverything"
             disabled={!!readOnly || !currentBalance}
-            onClick={this.onSendEverything}
+            onClick={e => {
+              e.preventDefault();
+              this.onSendEverything();
+            }}
             aria-label={translateRaw('SEND_TRANSFERTOTAL')}
           >
-            <i className="SendEverything-icon fa fa-angle-double-up" />
-            <Tooltip>{translate('SEND_TRANSFERTOTAL')}</Tooltip>
+            {translate('SEND_TRANSFERTOTAL')}
           </button>
         )}
       />

@@ -15,7 +15,7 @@ export class Fields extends Component<OwnProps> {
       <React.Fragment>
         <AmountField />
         <TXMetaDataPanel
-          className="form-group"
+          className="input-group"
           initialState="advanced"
           disableToggle={true}
           advancedGasOptions={{ dataField: false }}

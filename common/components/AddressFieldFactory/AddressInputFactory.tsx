@@ -27,6 +27,7 @@ interface StateProps {
 interface OwnProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
+  showBlockies?: boolean;
   isFocused?: boolean;
   onChange(ev: React.FormEvent<HTMLInputElement>): void;
   onFocus(ev: React.FormEvent<HTMLInputElement>): void;
@@ -73,12 +74,12 @@ class AddressInputFactoryClass extends Component<Props> {
     } = this.props;
     const { value } = currentTo;
     const addr = addHexPrefix(value ? value.toString('hex') : '0');
-    const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
+    const inputClassName = `AddressInput-input`;
     const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
     const isENSAddress = currentTo.raw.includes('.eth');
 
     return (
-      <div className="AddressInput form-group">
+      <div className="AddressInput">
         <div className={inputClassName}>
           <Query
             params={['readOnly']}
@@ -103,9 +104,11 @@ class AddressInputFactoryClass extends Component<Props> {
               </div>
             )}
         </div>
-        <div className="AddressInput-identicon">
-          <Identicon address={addr} />
-        </div>
+        {this.props.showBlockies && (
+          <div className="AddressInput-identicon">
+            <Identicon address={addr} />
+          </div>
+        )}
       </div>
     );
   }

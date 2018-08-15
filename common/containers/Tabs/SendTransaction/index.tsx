@@ -4,26 +4,28 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { isNetworkUnit } from 'features/config';
 import { walletSelectors } from 'features/wallet';
 import TabSection from 'containers/TabSection';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { UnlockHeader } from 'components/ui';
-import SubTabs, { Tab } from 'components/SubTabs';
-import { RouteNotFound } from 'components/RouteNotFound';
 import {
   WalletInfo,
   RequestPayment,
   RecentTransactions,
   AddressBook,
-  Fields,
   UnavailableWallets,
   SideBar
 } from './components';
+import { ETHFields, XMRFields } from './components/Fields';
+import SubTabs, { Tab } from 'components/SubTabs';
+import { RouteNotFound } from 'components/RouteNotFound';
+import { getNetworkConfig, isNetworkUnit } from 'features/config';
+import { NetworkConfig } from 'shared/types/network';
+import { Recieve } from './components/Recieve';
 
-const Send = () => (
+const Send = (props: any) => (
   <React.Fragment>
-    <Fields />
+    {props.network.id === 'XMR' ? <XMRFields /> : <ETHFields />}
     <UnavailableWallets />
   </React.Fragment>
 );
@@ -31,22 +33,23 @@ const Send = () => (
 interface StateProps {
   wallet: AppState['wallet']['inst'];
   requestDisabled: boolean;
+  network: NetworkConfig;
 }
 
 type Props = StateProps & RouteComponentProps<{}>;
 
 class SendTransaction extends React.Component<Props> {
   public render() {
-    const { wallet, match, location, history } = this.props;
+    const { wallet, match, location, history, network } = this.props;
     const currentPath = match.url;
-    const tabs: Tab[] = [
+    const ETHtabs: Tab[] = [
       {
         path: 'send',
         name: translate('NAV_SENDETHER'),
         disabled: !!wallet && !!wallet.isReadOnly
       },
       {
-        path: 'request',
+        path: 'receive',
         name: translate('NAV_REQUESTPAYMENT'),
         disabled: this.props.requestDisabled
       },
@@ -63,6 +66,17 @@ class SendTransaction extends React.Component<Props> {
         name: translate('NAV_ADDRESS_BOOK')
       }
     ];
+    const XMRtabs: Tab[] = [
+      {
+        path: 'send',
+        name: translate('NAV_SENDETHER'),
+        disabled: !!wallet && !!wallet.isReadOnly
+      },
+      {
+        path: 'receive',
+        name: translate('NAV_REQUESTPAYMENT')
+      }
+    ];
 
     return (
       <TabSection>
@@ -71,7 +85,12 @@ class SendTransaction extends React.Component<Props> {
           {wallet && (
             <div className="SubTabs row">
               <div className="col-sm-8">
-                <SubTabs tabs={tabs} match={match} location={location} history={history} />
+                <SubTabs
+                  tabs={network.id === 'XMR' ? XMRtabs : ETHtabs}
+                  match={match}
+                  location={location}
+                  history={history}
+                />
               </div>
               <div className="col-sm-8">
                 <Switch>
@@ -89,7 +108,11 @@ class SendTransaction extends React.Component<Props> {
                     exact={true}
                     path={`${currentPath}/send`}
                     render={() => {
-                      return wallet.isReadOnly ? <Redirect to={`${currentPath}/info`} /> : <Send />;
+                      return wallet.isReadOnly ? (
+                        <Redirect to={`${currentPath}/info`} />
+                      ) : (
+                        <Send network={this.props.network} />
+                      );
                     }}
                   />
                   <Route
@@ -98,9 +121,11 @@ class SendTransaction extends React.Component<Props> {
                     render={() => <WalletInfo wallet={wallet} />}
                   />
                   <Route
-                    path={`${currentPath}/request`}
+                    path={`${currentPath}/receive`}
                     exact={true}
-                    render={() => <RequestPayment wallet={wallet} />}
+                    render={() =>
+                      network.id === 'XMR' ? <Recieve /> : <RequestPayment wallet={wallet} />
+                    }
                   />
                   <Route
                     path={`${currentPath}/recent-txs`}
@@ -124,7 +149,10 @@ class SendTransaction extends React.Component<Props> {
   }
 }
 
-export default connect((state: AppState) => ({
+const mapStateToProps = (state: AppState) => ({
   wallet: walletSelectors.getWalletInst(state),
-  requestDisabled: !isNetworkUnit(state, 'ETH')
-}))(SendTransaction);
+  requestDisabled: !isNetworkUnit(state, 'ETH'),
+  network: getNetworkConfig(state)
+});
+
+export default connect(mapStateToProps)(SendTransaction);

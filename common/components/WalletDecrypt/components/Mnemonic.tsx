@@ -52,7 +52,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     return (
       <React.Fragment>
         <div id="selectedTypeKey">
-          <div className="form-group">
+          <div className="input-group">
             <TogglablePassword
               value={phrase}
               rows={4}
@@ -63,7 +63,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               onEnter={isValidMnemonic ? this.onDWModalOpen : undefined}
             />
           </div>
-          <div className="form-group">
+          <div className="input-group">
             <p>{translate('ADD_LABEL_8')}</p>
             <Input
               isValid={true}
@@ -74,7 +74,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               type="password"
             />
           </div>
-          <div className="form-group">
+          <div className="input-group">
             <button
               style={{ width: '100%' }}
               onClick={this.onDWModalOpen}

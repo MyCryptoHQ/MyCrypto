@@ -2,6 +2,7 @@
 @import 'common/sass/variables';
 
 .Tab {
+  max-width: 1216px;
   &-content {
     min-height: 50%;
 
@@ -11,7 +12,7 @@
       padding: 1.5rem 2rem;
       margin: 0 auto 1rem;
       box-shadow: $tab-box-shadow;
-      border-radius: 2px;
+      border-radius: 3px;
 
       &.is-full-width {
         background: none;

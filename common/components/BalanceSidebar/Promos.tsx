@@ -1,9 +1,8 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
-
 import { AppState } from 'features/reducers';
-import { HardwareWallets, Coinbase, Shapeshift, Simplex } from './PromoComponents';
+import { HardwareWallets, Coinbase, Shapeshift, Simplex, MoneroVision } from './PromoComponents';
 import './Promos.scss';
 
 const CarouselAnimation = ({ children, ...props }: any) => (
@@ -13,7 +12,7 @@ const CarouselAnimation = ({ children, ...props }: any) => (
 );
 
 // Don't change Coinbase index
-const promos = [HardwareWallets, Coinbase, Shapeshift, Simplex];
+const promos = [HardwareWallets, Coinbase, Shapeshift, Simplex, MoneroVision];
 
 interface State {
   activePromo: number;
@@ -30,7 +29,7 @@ class PromosClass extends React.PureComponent<StateProps, State> {
   };
 
   public componentDidMount() {
-    this.timer = setInterval(() => this.rotate(), 10000);
+    this.timer = setInterval(() => this.rotate(), 7500);
   }
 
   public componentWillUnmount() {

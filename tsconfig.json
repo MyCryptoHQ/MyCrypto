@@ -27,9 +27,9 @@
     "./common/",
     "./electron-app/",
     "./shared/",
-    "spec",
-    "./node_modules/types-rlp/index.d.ts",
-    "./node_modules/mycrypto-shepherd/dist/lib/types/btoa.d.ts"
+    "spec"
+    // "./node_modules/types-rlp/index.d.ts",
+    // "./node_modules/mycrypto-shepherd/dist/lib/types/btoa.d.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true

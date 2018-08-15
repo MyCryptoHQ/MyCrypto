@@ -31,7 +31,6 @@ import { transactionFieldsActions } from 'features/transaction';
 import CustomNodeModal from 'components/CustomNodeModal';
 import NetworkDropdown from './components/NetworkDropdown';
 import Navigation from './components/Navigation';
-import OnlineStatus from './components/OnlineStatus';
 import './index.scss';
 
 interface OwnProps {
@@ -71,7 +70,7 @@ class Header extends Component<Props, State> {
   }
 
   public render() {
-    const { languageSelection, isChangingNode, isOffline, network } = this.props;
+    const { languageSelection, isChangingNode, network } = this.props;
     const { isAddingCustomNode } = this.state;
     const selectedLanguage = languageSelection;
     const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
@@ -96,10 +95,6 @@ class Header extends Component<Props, State> {
               />
             </Link>
             <div className="Header-branding-right">
-              <div className="Header-branding-right-online">
-                <OnlineStatus isOffline={isOffline} />
-              </div>
-
               <div className="Header-branding-right-dropdown">
                 <LanguageDropDown
                   ariaLabel={`change language. current language ${languages[selectedLanguage]}`}

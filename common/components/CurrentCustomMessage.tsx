@@ -41,7 +41,7 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
     const message = this.getMessage();
     if (message) {
       return (
-        <div className="clearfix form-group">
+        <div className="clearfix input-group">
           <div className={`alert alert-${message.severity} col-xs-12`}>{message.message}</div>
         </div>
       );

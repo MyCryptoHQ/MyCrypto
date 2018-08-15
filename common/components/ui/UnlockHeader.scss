@@ -6,9 +6,9 @@
 
   &-open {
     position: absolute;
-    top: 0;
+    top: -0.5rem;
     right: 0;
-    padding-right: none;
+    padding: 0.5rem 1rem !important;
 
     &-text {
       padding-right: 8px;
@@ -30,10 +30,6 @@
     > img {
       height: 26px;
       width: 26px;
-    }
-
-    &:hover {
-      opacity: 0.87;
     }
   }
 }

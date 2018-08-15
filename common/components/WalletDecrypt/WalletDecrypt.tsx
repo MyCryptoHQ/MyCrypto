@@ -43,6 +43,7 @@ import {
   InsecureWalletWarning
 } from './components';
 import './WalletDecrypt.scss';
+import { getNetworkConfig } from 'features/config';
 
 interface OwnProps {
   hidden?: boolean;
@@ -64,6 +65,7 @@ interface StateProps {
   computedDisabledWallets: DisabledWallets;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
+  networkName: string;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -73,6 +75,7 @@ interface State {
   selectedWalletKey: WalletName | null;
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
+  wallets: Wallets;
 }
 
 interface BaseWalletInfo {
@@ -81,6 +84,7 @@ interface BaseWalletInfo {
   initialParams: object;
   unlock: any;
   helpLink: string;
+  render: boolean;
   isReadOnly?: boolean;
   attemptUnlock?: boolean;
   redirect?: string;
@@ -113,101 +117,110 @@ const WalletDecrypt = withRouter<Props>(
   class WalletDecryptClass extends Component<RouteComponentProps<{}> & Props, State> {
     // https://github.com/Microsoft/TypeScript/issues/13042
     // index signature should become [key: Wallets] (from config) once typescript bug is fixed
-    public WALLETS: Wallets = {
-      [SecureWalletName.WEB3]: {
-        lid: web3info.lid,
-        icon: web3info.icon,
-        description: 'ADD_WEB3DESC',
-        component: Web3Decrypt,
-        initialParams: {},
-        unlock: this.props.unlockWeb3,
-        attemptUnlock: true,
-        helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
-      },
-      [SecureWalletName.LEDGER_NANO_S]: {
-        lid: 'X_LEDGER',
-        icon: LedgerIcon,
-        description: 'ADD_HARDWAREDESC',
-        component: LedgerNanoSDecrypt,
-        initialParams: {},
-        unlock: this.props.setWallet,
-        helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009'
-      },
-      [SecureWalletName.TREZOR]: {
-        lid: 'X_TREZOR',
-        icon: TrezorIcon,
-        description: 'ADD_HARDWAREDESC',
-        component: TrezorDecrypt,
-        initialParams: {},
-        unlock: this.props.setWallet,
-        helpLink:
-          'https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html'
-      },
-      [SecureWalletName.SAFE_T]: {
-        lid: 'X_SAFE_T',
-        icon: SafeTIcon,
-        description: 'ADD_HARDWAREDESC',
-        component: SafeTminiDecrypt,
-        initialParams: {},
-        unlock: this.props.setWallet,
-        // TODO - Update with the right id once available
-        helpLink: 'https://www.archos.com/fr/products/crypto/faq.html'
-      },
-      [SecureWalletName.PARITY_SIGNER]: {
-        lid: 'X_PARITYSIGNER',
-        icon: ParitySignerIcon,
-        description: 'ADD_PARITY_DESC',
-        component: ParitySignerDecrypt,
-        initialParams: {},
-        unlock: this.props.setWallet,
-        helpLink: paritySignerHelpLink
-      },
-      [InsecureWalletName.KEYSTORE_FILE]: {
-        lid: 'X_KEYSTORE2',
-        example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
-        component: KeystoreDecrypt,
-        initialParams: {
-          file: '',
-          password: ''
-        },
-        unlock: this.props.unlockKeystore,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-      },
-      [InsecureWalletName.MNEMONIC_PHRASE]: {
-        lid: 'X_MNEMONIC',
-        example: 'brain surround have swap horror cheese file distinct',
-        component: MnemonicDecrypt,
-        initialParams: {},
-        unlock: this.props.unlockMnemonic,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-      },
-      [InsecureWalletName.PRIVATE_KEY]: {
-        lid: 'X_PRIVKEY2',
-        example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
-        component: PrivateKeyDecrypt,
-        initialParams: {
-          key: '',
-          password: ''
-        },
-        unlock: this.props.unlockPrivateKey,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
-      },
-      [MiscWalletName.VIEW_ONLY]: {
-        lid: 'VIEW_ADDR',
-        example: donationAddressMap.ETH,
-        component: ViewOnlyDecrypt,
-        initialParams: {},
-        unlock: this.props.setWallet,
-        helpLink: '',
-        isReadOnly: true,
-        redirect: '/account/info'
-      }
-    };
 
     public state: State = {
       selectedWalletKey: null,
       isInsecureOverridden: false,
-      value: null
+      value: null,
+      wallets: {
+        [SecureWalletName.WEB3]: {
+          lid: web3info.lid,
+          icon: web3info.icon,
+          description: 'ADD_WEB3DESC',
+          component: Web3Decrypt,
+          initialParams: {},
+          unlock: this.props.unlockWeb3,
+          attemptUnlock: true,
+          helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`,
+          render: !(this.props.networkName === 'Monero')
+        },
+        [SecureWalletName.LEDGER_NANO_S]: {
+          lid: 'X_LEDGER',
+          icon: LedgerIcon,
+          description: 'ADD_HARDWAREDESC',
+          component: LedgerNanoSDecrypt,
+          initialParams: {},
+          unlock: this.props.setWallet,
+          helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009',
+          render: true
+        },
+        [SecureWalletName.TREZOR]: {
+          lid: 'X_TREZOR',
+          icon: TrezorIcon,
+          description: 'ADD_HARDWAREDESC',
+          component: TrezorDecrypt,
+          initialParams: {},
+          unlock: this.props.setWallet,
+          helpLink:
+            'https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html',
+          render: true
+        },
+        [SecureWalletName.SAFE_T]: {
+          lid: 'X_SAFE_T',
+          icon: SafeTIcon,
+          description: 'ADD_HARDWAREDESC',
+          component: SafeTminiDecrypt,
+          initialParams: {},
+          unlock: this.props.setWallet,
+          // TODO - Update with the right id once available
+          helpLink: 'https://www.archos.com/fr/products/crypto/faq.html',
+          render: !(this.props.networkName === 'Monero')
+        },
+        [SecureWalletName.PARITY_SIGNER]: {
+          lid: 'X_PARITYSIGNER',
+          icon: ParitySignerIcon,
+          description: 'ADD_PARITY_DESC',
+          component: ParitySignerDecrypt,
+          initialParams: {},
+          unlock: this.props.setWallet,
+          helpLink: paritySignerHelpLink,
+          render: !(this.props.networkName === 'Monero')
+        },
+        [InsecureWalletName.KEYSTORE_FILE]: {
+          lid: 'X_KEYSTORE2',
+          example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
+          component: KeystoreDecrypt,
+          initialParams: {
+            file: '',
+            password: ''
+          },
+          unlock: this.props.unlockKeystore,
+          helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`,
+          render: !(this.props.networkName === 'Monero')
+        },
+        [InsecureWalletName.MNEMONIC_PHRASE]: {
+          lid: 'X_MNEMONIC',
+          example: 'brain surround have swap horror cheese file distinct',
+          component: MnemonicDecrypt,
+          initialParams: {},
+          unlock: this.props.unlockMnemonic,
+          helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`,
+          render: !(this.props.networkName === 'Monero')
+        },
+        [InsecureWalletName.PRIVATE_KEY]: {
+          lid: 'X_PRIVKEY2',
+          example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
+          component: PrivateKeyDecrypt,
+          initialParams: {
+            key: '',
+            password: ''
+          },
+          unlock: this.props.unlockPrivateKey,
+          helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`,
+          render: !(this.props.networkName === 'Monero')
+        },
+        [MiscWalletName.VIEW_ONLY]: {
+          lid: 'VIEW_ADDR',
+          example: donationAddressMap.ETH,
+          component: ViewOnlyDecrypt,
+          initialParams: {},
+          unlock: this.props.setWallet,
+          helpLink: '',
+          isReadOnly: true,
+          redirect: '/account/info',
+          render: !(this.props.networkName === 'Monero')
+        }
+      }
     };
 
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
@@ -220,13 +233,60 @@ const WalletDecrypt = withRouter<Props>(
       }
     }
 
+    public componentDidUpdate(prevProps: Props) {
+      if (prevProps.networkName !== this.props.networkName) {
+        this.setState({
+          ...this.state,
+          wallets: {
+            ...this.state.wallets,
+            [SecureWalletName.WEB3]: {
+              ...this.state.wallets[SecureWalletName.WEB3],
+              render: !(this.props.networkName === 'Monero')
+            },
+            [SecureWalletName.LEDGER_NANO_S]: {
+              ...this.state.wallets[SecureWalletName.LEDGER_NANO_S],
+              render: true
+            },
+            [SecureWalletName.TREZOR]: {
+              ...this.state.wallets[SecureWalletName.TREZOR],
+              render: true
+            },
+            [SecureWalletName.SAFE_T]: {
+              ...this.state.wallets[SecureWalletName.SAFE_T],
+              render: !(this.props.networkName === 'Monero')
+            },
+            [SecureWalletName.PARITY_SIGNER]: {
+              ...this.state.wallets[SecureWalletName.PARITY_SIGNER],
+              render: !(this.props.networkName === 'Monero')
+            },
+            [InsecureWalletName.KEYSTORE_FILE]: {
+              ...this.state.wallets[InsecureWalletName.KEYSTORE_FILE],
+              render: !(this.props.networkName === 'Monero')
+            },
+            [InsecureWalletName.MNEMONIC_PHRASE]: {
+              ...this.state.wallets[InsecureWalletName.MNEMONIC_PHRASE],
+              render: !(this.props.networkName === 'Monero')
+            },
+            [InsecureWalletName.PRIVATE_KEY]: {
+              ...this.state.wallets[InsecureWalletName.PRIVATE_KEY],
+              render: !(this.props.networkName === 'Monero')
+            },
+            [MiscWalletName.VIEW_ONLY]: {
+              ...this.state.wallets[MiscWalletName.VIEW_ONLY],
+              render: !(this.props.networkName === 'Monero')
+            }
+          }
+        });
+      }
+    }
+
     public getSelectedWallet() {
       const { selectedWalletKey } = this.state;
       if (!selectedWalletKey) {
         return null;
       }
 
-      return this.WALLETS[selectedWalletKey];
+      return this.state.wallets[selectedWalletKey];
     }
 
     public getDecryptionComponent() {
@@ -258,23 +318,17 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-decrypt">
-          <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
-            <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
-          </button>
-          <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly && translate('UNLOCK_WALLET')}{' '}
-            {translate(selectedWallet.lid)}
-          </h2>
           <section className="WalletDecrypt-decrypt-form">
             <Errorable
-              errorMessage={`Oops, looks like ${translateRaw(
-                selectedWallet.lid
-              )} is not supported by your browser`}
+              errorMessage={`${translate('ERROR_DEVICE_NOT_SUPPORTED', {
+                $device: translateRaw(selectedWallet.lid)
+              })}`}
               onError={this.clearWalletChoice}
-              shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
+              shouldCatch={selectedWallet.lid === this.state.wallets.paritySigner.lid}
             >
               <selectedWallet.component
                 value={this.state.value}
+                clearWalletChoice={this.clearWalletChoice}
                 onChange={this.onChange}
                 onUnlock={(value: any) => {
                   if (selectedWallet.redirect) {
@@ -306,15 +360,27 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-wallets">
-          <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
+          <div className="WalletDecrypt-header">
+            <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
+            {this.props.showGenerateLink && (
+              <p className="WalletDecrypt-wallets-desc">
+                {translate('DONT_HAVE_WALLET_PROMPT')}{' '}
+                <span>
+                  <Link to="/generate">{translate('Create One.')}</Link>
+                </span>
+              </p>
+            )}
+          </div>
 
           <div className="WalletDecrypt-wallets-row">
             {SECURE_WALLETS.map((walletType: SecureWalletName) => {
-              const wallet = this.WALLETS[walletType];
+              const wallet = this.state.wallets[walletType];
+              // console.log(translateRaw(wallet.lid), wallet.render);
               return (
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
+                  render={wallet.render}
                   description={translateRaw(wallet.description)}
                   icon={wallet.icon}
                   helpLink={wallet.helpLink}
@@ -329,11 +395,12 @@ const WalletDecrypt = withRouter<Props>(
           </div>
           <div className="WalletDecrypt-wallets-row">
             {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
-              const wallet = this.WALLETS[walletType];
+              const wallet = this.state.wallets[walletType];
               return (
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
+                  render={wallet.render}
                   example={wallet.example}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
@@ -346,11 +413,12 @@ const WalletDecrypt = withRouter<Props>(
             })}
 
             {MISC_WALLETS.map((walletType: MiscWalletName) => {
-              const wallet = this.WALLETS[walletType];
+              const wallet = this.state.wallets[walletType];
               return (
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
+                  render={!!wallet.render}
                   example={wallet.example}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
@@ -362,18 +430,12 @@ const WalletDecrypt = withRouter<Props>(
               );
             })}
           </div>
-
-          {this.props.showGenerateLink && (
-            <div className="WalletDecrypt-wallets-generate">
-              <Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link>
-            </div>
-          )}
         </div>
       );
     }
 
     public handleWalletChoice = async (walletType: WalletName) => {
-      const wallet = this.WALLETS[walletType];
+      const wallet = this.state.wallets[walletType];
 
       if (!wallet) {
         return;
@@ -442,11 +504,11 @@ const WalletDecrypt = withRouter<Props>(
         return;
       }
 
-      // some components (TrezorDecrypt) don't take an onChange prop, and thus
-      // this.state.value will remain unpopulated. in this case, we can expect
+      // some components (TrezorDecrypt) don't take an onChange prop, so
+      // this.state.value will remain unpopulated. In this case, we can expect
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
-      this.WALLETS[selectedWalletKey].unlock(unlockValue);
+      this.state.wallets[selectedWalletKey].unlock(unlockValue);
       this.props.resetTransactionRequested();
     };
 
@@ -479,7 +541,8 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   return {
     computedDisabledWallets,
     isWalletPending: state.wallet.isWalletPending,
-    isPasswordPending: state.wallet.isPasswordPending
+    isPasswordPending: state.wallet.isPasswordPending,
+    networkName: getNetworkConfig(state).name
   };
 }
 

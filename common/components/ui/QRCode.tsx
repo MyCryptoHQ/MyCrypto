@@ -7,6 +7,7 @@ const cache: { [key: string]: string } = {};
 
 interface Props {
   data: string;
+  className?: string;
 }
 
 interface State {
@@ -32,16 +33,8 @@ export default class QRCode extends React.PureComponent<Props, State> {
     if (!qr) {
       return null;
     }
-    return (
-      <img
-        src={qr}
-        alt="QR Code"
-        style={{
-          width: '100%',
-          height: '100%'
-        }}
-      />
-    );
+    const { className } = this.props;
+    return <img className={className} src={qr} alt="QR Code" />;
   }
 
   private generateQrCode(value: string) {

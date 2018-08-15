@@ -1,8 +1,51 @@
 @import 'common/sass/variables';
 
+$speed: 500ms;
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 .LedgerDecrypt {
   text-align: center;
 
+  &-header {
+    margin-bottom: 3rem;
+  }
+  &-buy {
+    text-align: center;
+    font-size: 16px;
+    line-height: 1;
+    margin: 0;
+    margin-top: 0.5rem;
+    font-weight: 400;
+    animation: decrypt-enter 500ms ease 1;
+    margin-bottom: 3rem;
+  }
+
+  &-title {
+    text-align: center;
+    font-size: 24px;
+    line-height: 1;
+    margin: 0;
+    font-weight: normal;
+    animation: enter $speed ease 1;
+  }
+  &-desc {
+    text-align: center;
+    font-size: 16px;
+    line-height: 1;
+    margin: 0;
+    margin-top: 0.5rem;
+    font-weight: 400;
+    animation: enter $speed ease 1;
+  }
   &-tip {
     font-size: $font-size-xs-bump;
     opacity: 0.7;
@@ -17,14 +60,12 @@
   &-error {
     opacity: 0;
     transition: none;
+    border-radius: 3px;
+    margin-bottom: 2.5rem;
 
     &.is-showing {
       opacity: 1;
     }
-  }
-
-  &-buy {
-    margin: 10px 0;
   }
 
   &-message {
@@ -34,6 +75,39 @@
 
     .Spinner {
       margin-right: 16px;
+    }
+  }
+
+  &-illustration {
+    margin-bottom: 2rem;
+    width: 160px;
+  }
+
+  &-tip {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin: auto;
+      margin-bottom: 3rem;
+      max-width: 360px;
+      > p {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #a8adb3;
+        text-align: left;
+        &:first-child {
+          color: #333;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+  &-btn {
+    &-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
     }
   }
 }

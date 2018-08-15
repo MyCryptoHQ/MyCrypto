@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import classnames from 'classnames';
 
 import { NavigationLink } from 'config';
 import translate, { translateRaw } from 'translations';
@@ -8,18 +7,14 @@ import translate, { translateRaw } from 'translations';
 interface Props extends RouteComponentProps<{}> {
   link: NavigationLink;
   isHomepage: boolean;
-  className: string;
-  isNotEnabled?: boolean;
+  className?: string;
+  disabled?: boolean;
 }
 
 class NavigationLinkClass extends React.PureComponent<Props, {}> {
   public render() {
-    const { link, location, isHomepage, className, isNotEnabled } = this.props;
+    const { link, location, isHomepage, className, disabled } = this.props;
     let isActive = false;
-
-    if (isNotEnabled) {
-      return null;
-    }
 
     if (!link.external) {
       // isActive if
@@ -31,27 +26,27 @@ class NavigationLinkClass extends React.PureComponent<Props, {}> {
         location.pathname === link.to || isSubRoute || (isHomepage && location.pathname === '/');
     }
 
-    const linkClasses = classnames({
-      [`${className}-link`]: true,
-      'is-disabled': !link.to,
-      'is-active': isActive
-    });
     const linkLabel = `nav item: ${translateRaw(link.name)}`;
 
     const linkEl =
       link.external || !link.to ? (
         <a
-          className={linkClasses}
+          className={`${className}-link ${!link.to || (disabled && 'is-disabled')} ${isActive &&
+            'is-active'}`}
           href={link.to}
           aria-label={linkLabel}
           target="_blank"
           rel="noopener noreferrer"
         >
           {translate(link.name)}
-          <i className={`${className}-link-icon fa fa-external-link`} />
         </a>
       ) : (
-        <Link className={linkClasses} to={(link as any).to} aria-label={linkLabel}>
+        <Link
+          className={`${className}-link ${!link.to || (disabled && 'is-disabled')} ${isActive &&
+            'is-active'}`}
+          to={(link as any).to}
+          aria-label={linkLabel}
+        >
           {translate(link.name)}
         </Link>
       );

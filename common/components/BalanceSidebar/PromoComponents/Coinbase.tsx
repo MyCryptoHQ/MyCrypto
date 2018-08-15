@@ -15,8 +15,7 @@ export const Coinbase: React.SFC<Props> = ({ address }) => (
   >
     <div className="Promos-promo-inner">
       <div className="Promos-promo-text">
-        <p key="1">{translate('COINBASE_PROMO_SMALL')}</p>
-        <h5 key="2">{translate('COINBASE_PROMO')}</h5>
+        <h5 key="1">{translate('COINBASE_PROMO')}</h5>
       </div>
       <div className="Promos-promo-images">
         <img src={CoinbaseLogo} alt="Coinbase logo" />

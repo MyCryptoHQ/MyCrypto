@@ -1,0 +1,16 @@
+.XMR-qr {
+  display: block;
+  height: 192px;
+  width: 192px;
+  margin: auto;
+  margin-bottom: 2rem;
+}
+
+.qr-input {
+  max-width: 30rem;
+  margin: auto;
+  margin-bottom: 3rem;
+  > input {
+    padding-right: 3rem;
+  }
+}

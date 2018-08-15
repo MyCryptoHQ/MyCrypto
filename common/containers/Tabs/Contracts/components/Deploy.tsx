@@ -51,13 +51,13 @@ class DeployClass extends Component<DispatchProps> {
           </label>
         </div>
 
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-12 clearfix">
             <NonceField alwaysDisplay={false} />
           </div>
         </div>
 
-        <div className="row form-group">
+        <div className="row input-group">
           <div className="col-xs-12 clearfix">
             <TXMetaDataPanel
               initialState="advanced"

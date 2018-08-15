@@ -1,3 +1,4 @@
+export * from './PaymentIdField';
 export * from './DataField';
 export * from './GasLimitField';
 export * from './AmountField';
@@ -24,3 +25,5 @@ export { default as ParityQrSigner } from './ParityQrSigner';
 export { default as ElectronNav } from './ElectronNav';
 export { default as AddressBookTable } from './AddressBookTable';
 export { default as Errorable } from './Errorable';
+export { default as PrimaryButton } from './PrimaryButton';
+export { default as SecondaryButton } from './SecondaryButton';

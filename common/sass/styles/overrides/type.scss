@@ -83,12 +83,11 @@ strong,
   font-weight: 600;
 }
 
-a {
+a:not(.PrimaryButton) {
   color: color(link-color);
   text-decoration: none;
   cursor: pointer;
   transition: $transition;
-
   &:hover {
     opacity: 0.8;
     color: color(link-hover-color);

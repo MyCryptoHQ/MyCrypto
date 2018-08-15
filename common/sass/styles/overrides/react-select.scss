@@ -1,10 +1,10 @@
 @import 'common/sass/variables';
 
 .Select {
-  border-radius: 2px;
-  background-color: color(control-bg);
-  border: 1px solid color(control-border);
-  border-radius: 2px;
+  border-radius: 3px;
+  background-color: white;
+  border: 1px solid #e5ecf3;
+  border-radius: 3px;
   font-weight: 400;
   font-size: 1rem;
   box-shadow: inset 0 1px 0 0 color(control-inset-shadow);
@@ -62,10 +62,12 @@
     z-index: 3;
     width: calc(100% + 2px);
     left: -1px;
-    background-color: color(control-bg);
-    border: 2px solid color(brand-primary);
-    border-top: none;
-    border-radius: $input-border-radius;
+    border-radius: 3px;
+    background-color: white;
+    border: none;
+    border-left: 2px solid #5694b8;
+    border-right: 2px solid #5694b8;
+    border-bottom: 2px solid #5694b8;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-color: inherit;
@@ -107,10 +109,10 @@
 
   // This shitty selector is the text color of the select, no joke.
   &.has-value.Select--single > .Select-control .Select-value,
-	&.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
-		.Select-value-label {
-			color: color(control-color);
-		}
+  &.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
+    .Select-value-label {
+      color: color(control-color);
+    }
   }
 
   // Identicons need to fit into the select

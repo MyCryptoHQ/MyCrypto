@@ -87,7 +87,7 @@ class SimpleGas extends React.Component<Props> {
     const actualGasPrice = Math.max(this.getGasPriceGwei(gasPrice.value), bounds.min);
 
     return (
-      <div className="SimpleGas row form-group">
+      <div className="SimpleGas row ">
         <div className="SimpleGas-title">
           <div className="flex-wrapper">
             <label>{translate('CONFIRM_TX_FEE')} </label>

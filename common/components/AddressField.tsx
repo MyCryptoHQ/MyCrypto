@@ -11,8 +11,10 @@ import { AddressFieldFactory } from './AddressFieldFactory';
 interface OwnProps {
   isReadOnly?: boolean;
   isSelfAddress?: boolean;
+  showBlockies?: boolean;
   isCheckSummed?: boolean;
   showLabelMatch?: boolean;
+  placeholder?: string;
 }
 
 interface StateProps {
@@ -25,10 +27,13 @@ const AddressField: React.SFC<Props> = ({
   isReadOnly,
   isSelfAddress,
   isCheckSummed,
+  showBlockies,
   showLabelMatch,
+  placeholder,
   toChecksumAddress
 }) => (
   <AddressFieldFactory
+    showBlockies={showBlockies}
     isSelfAddress={isSelfAddress}
     showLabelMatch={showLabelMatch}
     withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
@@ -42,7 +47,7 @@ const AddressField: React.SFC<Props> = ({
             isValid={isValid}
             type="text"
             value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
-            placeholder={donationAddressMap.ETH}
+            placeholder={placeholder || donationAddressMap.ETH}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
             onChange={onChange}

@@ -25,12 +25,6 @@ export default class Navigation extends PureComponent<Props, State> {
     showRightArrow: false
   };
 
-  /*
-   *   public scrollLeft() {}
-      public scrollRight() {}
-   *
-   */
-
   public render() {
     const { color, unsupportedTabs } = this.props;
     const borderStyle: BorderStyle = {};
@@ -60,7 +54,7 @@ export default class Navigation extends PureComponent<Props, State> {
                 link={link}
                 isHomepage={link === navigationLinks[0]}
                 className="NavigationLink"
-                isNotEnabled={
+                disabled={
                   unsupportedTabs && unsupportedTabs.map(tab => tab.toString()).includes(link.name)
                 }
               />

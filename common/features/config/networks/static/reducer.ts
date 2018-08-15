@@ -66,6 +66,32 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     gasPriceSettings: gasPriceDefaults,
     shouldEstimateGasPrice: true
   },
+  XMR: {
+    id: 'XMR',
+    name: 'Monero',
+    unit: 'XMR',
+    chainId: 1,
+    isCustom: false,
+    color: '#007896',
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://etherscan.io'
+    }),
+    tokenExplorer: {
+      name: ethPlorer,
+      address: ETHTokenExplorer
+    },
+    tokens: require('config/tokens/eth.json'),
+    contracts: require('config/contracts/eth.json'),
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TREZOR,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
+    },
+    gasPriceSettings: gasPriceDefaults,
+    shouldEstimateGasPrice: true,
+    unsupportedTabs: [TAB.CREATE, TAB.CONTRACTS, TAB.ENS, TAB.SIGN, TAB.TXSTATUS, TAB.BROADCAST]
+  },
   Ropsten: {
     id: 'Ropsten',
     name: 'Ropsten',

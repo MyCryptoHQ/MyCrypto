@@ -1,0 +1,62 @@
+.Truncated {
+  position: relative;
+  width: calc(100% - 9ch);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 400;
+
+  &-target {
+    display: block;
+    position: absolute;
+    width: calc(100% + 9ch);
+    height: 100%;
+    z-index: 1;
+  }
+
+  > .fa-check {
+    opacity: 0;
+    transition: opacity 250ms ease;
+    color: #6bb169;
+    &.visible {
+      opacity: 1;
+    }
+  }
+
+  > .fa-copy {
+    opacity: 0;
+    transition: opacity 250ms ease;
+    &.visible {
+      opacity: 1;
+    }
+  }
+
+  > p {
+    width: calc(100% + 9ch);
+  }
+  > p,
+  span,
+  a {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0;
+  }
+  > i {
+    position: absolute;
+    left: calc(100% + 4px + 8ch);
+  }
+
+  &:after {
+    content: attr(data-last6);
+    position: absolute;
+    left: calc(100% - 2px);
+    top: 0;
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,50 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.PriorityRadio {
+  &-button {
+    &-wrapper {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      width: 100%;
+      > button {
+        border: solid 1px #e5ecf3;
+      }
+    }
+    &.selected {
+      border: solid 1px rgba(16, 151, 192, 0.3);
+      border-radius: 3px;
+      box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5), 0 2px 4px 0 rgba(232, 234, 237, 0.5);
+      background-color: #fafbfc;
+      .PriorityRadio-button-level {
+        color: #4295bc;
+      }
+    }
+    width: 31%;
+    border: solid 1px transparent;
+    border-radius: 3px;
+    transition: box-shadow 150ms ease, border 150ms ease, color 150ms ease,
+      background-color 150ms ease;
+    background-color: white;
+    @include reset-button;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &-level {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 2px;
+      color: #9a9a9a;
+      transition: $transition;
+      text-transform: capitalize;
+    }
+    &-ringsize {
+      color: #9a9a9a;
+      font-size: 0.8125rem;
+    }
+  }
+}
