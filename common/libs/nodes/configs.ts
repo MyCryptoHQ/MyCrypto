@@ -195,6 +195,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  GO_TESTNET: [
+    {
+      name: makeNodeName('GO_TESTNET', 'go_testnet'),
+      type: 'rpc',
+      service: 'testnet-rpc.gochain.io',
+      url: 'https://testnet-rpc.gochain.io/'
+    }
+  ],
+
   EOSC: [
     {
       name: makeNodeName('EOSC', 'eosc'),
