@@ -244,6 +244,8 @@
     "ADD_METAMASK": "Collegati a MetaMask ",
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Collegati al TREZOR ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Collegati al Safe-T mini ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Riapri MyCrypto su una connessione sicura (SSL) ",
     "ADD_DIGITALBITBOX_0B": "Riapri MyCrypto utilizzando [Chrome](https://www.google.com/chrome/browser/desktop/) o [Opera](https://www.opera.com/) ",

@@ -9,12 +9,17 @@ interface Props extends RouteComponentProps<{}> {
   link: NavigationLink;
   isHomepage: boolean;
   className: string;
+  isNotEnabled?: boolean;
 }
 
 class NavigationLinkClass extends React.PureComponent<Props, {}> {
   public render() {
-    const { link, location, isHomepage, className } = this.props;
+    const { link, location, isHomepage, className, isNotEnabled } = this.props;
     let isActive = false;
+
+    if (isNotEnabled) {
+      return null;
+    }
 
     if (!link.external) {
       // isActive if

@@ -16,6 +16,7 @@ configuredStore.getState();
 const VALID_BTC_ADDRESS = '1MEWT2SGbqtz6mPCgFcnea8XmWV5Z4Wc6';
 const VALID_ETH_ADDRESS = '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8';
 const VALID_RSK_TESTNET_ADDRESS = '0x5aAeb6053F3e94c9b9A09F33669435E7EF1BEaEd';
+const VALID_RSK_MAINNET_ADDRESS = '0x5aaEB6053f3e94c9b9a09f33669435E7ef1bEAeD';
 const VALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5c782';
 const INVALID_ETH_PRIVATE_KEY = '3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6301578e1a3c5ZZZZ';
 const VALID_ETH_PRIVATE_BUFFER = Buffer.from(VALID_ETH_PRIVATE_KEY, 'hex');
@@ -49,6 +50,12 @@ describe('Validator', () => {
   });
   it('should validate correct RSK address in RSK mainnet network as false', () => {
     expect(isValidAddress(VALID_RSK_TESTNET_ADDRESS, RSK_MAINNET_CHAIN_ID)).toBeFalsy();
+  });
+  it('should validate correct RSK address in RSK mainnet network as true', () => {
+    expect(isValidAddress(VALID_RSK_MAINNET_ADDRESS, RSK_MAINNET_CHAIN_ID)).toBeTruthy();
+  });
+  it('should validate correct RSK mainnet address in RSK testnet network as false', () => {
+    expect(isValidAddress(VALID_RSK_MAINNET_ADDRESS, RSK_TESTNET_CHAIN_ID)).toBeFalsy();
   });
   it('should validate an incorrect DPath as false', () => {
     expect(isValidPath('m/44/60/0/0')).toBeFalsy();
