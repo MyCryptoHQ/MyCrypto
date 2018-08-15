@@ -467,6 +467,32 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     }
   },
 
+  GO_TESTNET: {
+    id: 'GO_TESTNET',
+    name: 'GO',
+    unit: 'GO',
+    chainId: 31337,
+    isCustom: false,
+    color: '#00b04a',
+    blockExplorer: makeExplorer({
+      name: 'GoChain Testnet Explorer',
+      origin: 'https://testnet-explorer.gochain.io'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: GO_DEFAULT,
+      [SecureWalletName.SAFE_T]: GO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: GO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 2,
+      max: 60,
+      initial: 2
+    }
+  },
+
   EOSC: {
     id: 'EOSC',
     name: 'EOS Classic',
@@ -491,6 +517,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       initial: 20
     }
   },
+
   ESN: {
     id: 'ESN',
     name: 'EthersocialNetwork',
