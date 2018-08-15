@@ -78,12 +78,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'Ethereum Commonwealth',
       url: 'https://etc-geth.0xinfra.com/'
-    },
-    {
-      name: makeNodeName('ETC', 'chainkorea'),
-      type: 'rpc',
-      service: 'Chainkorea',
-      url: 'https://node.classicexplorer.org/'
     }
   ],
 
@@ -165,6 +159,12 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: '0xinfra.com',
       url: 'https://clo-geth.0xinfra.com/'
+    },
+    {
+      name: makeNodeName('CLO', 'chainkorea'),
+      type: 'rpc',
+      service: 'Chainkorea',
+      url: 'https://node.clopool.net/'
     }
   ],
 
@@ -192,6 +192,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'gochain.io',
       url: 'https://rpc.gochain.io/'
+    }
+  ],
+
+  GO_TESTNET: [
+    {
+      name: makeNodeName('GO_TESTNET', 'go_testnet'),
+      type: 'rpc',
+      service: 'testnet-rpc.gochain.io',
+      url: 'https://testnet-rpc.gochain.io/'
     }
   ],
 
