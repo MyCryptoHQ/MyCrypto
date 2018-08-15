@@ -252,7 +252,13 @@ class CustomNodeModal extends React.Component<Props, State> {
   }
 
   private pollForDefaultNodes() {
+    return null;
+    // @ts-ignore
     const pollingInterval = 3000;
+    // console.warning in production to explain to users why we are making a call to localhost
+    console.warn(
+      "Don't panic! MyCrypto is going to start a poll for default nodes on port 8545. If you don't like this feature, send us a ping at support@mycrypto.com and we'll walk you through disabling it."
+    );
     this.timer = window.setInterval(async () => {
       const results = await exists(
         [

@@ -13,7 +13,7 @@
     position: relative;
     height: inherit;
     display: block;
-    color: #fff;
+    color: color(text-color-inverted);
     text-decoration: none;
     text-align: center;
     box-shadow: 0 1px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.12);
@@ -24,7 +24,7 @@
     &:hover,
     &:focus,
     &:active {
-      color: #fff;
+      color: color(text-color-inverted);
       opacity: 0.92;
     }
 
@@ -82,10 +82,10 @@
       @include reset-button;
       display: inline-block;
       margin: 0 $space-xs;
-      background: $gray-dark;
+      background: color(gray-dark);
       width: 12px;
       height: 12px;
-      border: 3px solid $gray-lightest;
+      border: 3px solid color(gray-lightest);
       border-radius: 100%;
       opacity: 0.6;
 

@@ -11,20 +11,20 @@
     border-radius: 100%;
 
     &.is-online {
-      background: $brand-success;
+      background: color(brand-success);
     }
 
     &.is-offline {
-      background: $brand-danger;
+      background: color(brand-danger);
     }
 
     &.is-connecting {
-      background: $brand-warning;
+      background: color(brand-warning);
     }
   }
 
   &-text {
-    color: $gray-dark;
+    color: shade-dark(0.4);
     font-size: 9px;
   }
 }

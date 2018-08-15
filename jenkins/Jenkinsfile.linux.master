@@ -30,7 +30,7 @@ pipeline {
                 S3_BUCKET_NAME = 'REDACTED'
             }
             steps {
-                sh 'npm run jenkins:build:linux'
+                sh 'yarn run jenkins:build:linux'
             }
         }
         stage('Upload') {

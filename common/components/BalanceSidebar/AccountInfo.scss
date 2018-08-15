@@ -5,7 +5,7 @@
   &-copy {
     display: inline-block;
     cursor: pointer;
-    color: $text-color;
+    color: color(text-color);
     font-size: $font-size-xs;
     opacity: 0.5;
     transition: $transition;
@@ -15,7 +15,7 @@
     }
 
     &.is-copied {
-      color: $brand-success;
+      color: color(brand-success);
       opacity: 1;
     }
 
@@ -27,7 +27,7 @@
   &-label {
     display: inline-block;
     cursor: pointer;
-    color: $text-color;
+    color: color(text-color);
     font-size: $font-size-xs;
     opacity: 0.5;
 
@@ -91,7 +91,7 @@
       max-width: calc(100% - 44px - 24px);
 
       &-error {
-        color: $brand-danger;
+        color: color(brand-danger);
         margin-bottom: $space-md;
       }
     }
@@ -149,29 +149,6 @@
         cursor: pointer;
         text-decoration: underline;
       }
-    }
-  }
-}
-
-.account-info {
-  padding-left: 1em;
-  margin: 0;
-  table {
-    font-weight: 300;
-    border-bottom: 0;
-    min-width: 200px;
-    td {
-      padding: 4px 5px;
-      line-height: 1;
-    }
-    td:first-child {
-      max-width: 115px;
-      word-wrap: break-word;
-      padding-left: 1em;
-    }
-    tr:nth-last-child(2),
-    tr:last-child {
-      background-color: white !important;
     }
   }
 }

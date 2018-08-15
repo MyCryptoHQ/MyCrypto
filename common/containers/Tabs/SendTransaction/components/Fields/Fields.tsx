@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { getOffline, getNetworkConfig } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
+import { notificationsActions } from 'features/notifications';
 import {
   AddressField,
   AmountField,
@@ -38,7 +39,26 @@ interface StateProps {
   useScheduling: scheduleSelectors.ICurrentSchedulingToggle['value'];
 }
 
-class FieldsClass extends Component<StateProps> {
+interface DispatchProps {
+  showNotification: notificationsActions.TShowNotification;
+}
+
+class FieldsClass extends Component<StateProps & DispatchProps> {
+  public componentDidCatch(error: Error) {
+    if (error.message === 'Serialized transaction not found') {
+      /**
+       * @desc Occasionally, when a new signed transaction matches a previous transaction,
+       * the nonce does not update, since the transaction has not yet been confirmed. This triggers
+       * the <Amounts /> component inside the <ConfirmationModal /> of <TXMetaDataPanel /> to throw
+       * an error when selecting the current transaction's serialized parameters.
+       * A longer term fix will involve finding a better way to calculate nonces to avoid
+       * nonce duplication on serial transactions.
+       */
+      this.props.showNotification('danger', translateRaw('SIMILAR_TRANSACTION_ERROR'));
+      this.forceUpdate();
+    }
+  }
+
   public render() {
     const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
 
@@ -54,7 +74,11 @@ class FieldsClass extends Component<StateProps> {
                   <div
                     className={schedulingAvailable ? 'col-sm-9 col-md-10' : 'col-sm-12 col-md-12'}
                   >
-                    <AmountField hasUnitDropdown={true} hasSendEverything={true} />
+                    <AmountField
+                      hasUnitDropdown={true}
+                      hasSendEverything={true}
+                      showInvalidWithoutValue={true}
+                    />
                   </div>
                   {schedulingAvailable && (
                     <div className="col-sm-3 col-md-2">
@@ -102,10 +126,15 @@ class FieldsClass extends Component<StateProps> {
   }
 }
 
-export const Fields = connect((state: AppState) => ({
-  schedulingAvailable:
-    getNetworkConfig(state).name === 'Kovan' && selectors.getUnit(state) === 'ETH',
-  shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
-  offline: getOffline(state),
-  useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
-}))(FieldsClass);
+export const Fields = connect(
+  (state: AppState) => ({
+    schedulingAvailable:
+      getNetworkConfig(state).name === 'Kovan' && selectors.getUnit(state) === 'ETH',
+    shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
+    offline: getOffline(state),
+    useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
+  }),
+  {
+    showNotification: notificationsActions.showNotification
+  }
+)(FieldsClass);

@@ -10,7 +10,7 @@ interface State {
   newRelease?: string;
 }
 
-export default class NewAppReleaseModal extends React.Component<{}, State> {
+export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   public state: State = {
     isOpen: false
   };

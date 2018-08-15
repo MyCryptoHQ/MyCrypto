@@ -7,6 +7,7 @@ import { WalletLib } from 'shared/enclave/types';
 import { padLeftEven } from 'libs/values';
 import { stripHexPrefixAndLower } from 'libs/formatters';
 import { showPinPrompt } from '../views/pin';
+import { showPassphrasePrompt } from '../views/passphrase';
 
 const deviceList = new DeviceList({ debug: false });
 
@@ -32,6 +33,16 @@ async function getSession() {
       })
       .catch(err => {
         console.error('PIN entry failed', err);
+        cb(err);
+      });
+  });
+  device.on('passphrase', (cb: (err?: Error, passphrase?: string) => void) => {
+    showPassphrasePrompt()
+      .then(passphrase => {
+        cb(undefined, passphrase);
+      })
+      .catch(err => {
+        console.error('Passphrase entry failed', err);
         cb(err);
       });
   });

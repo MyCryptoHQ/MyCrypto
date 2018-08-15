@@ -8,6 +8,11 @@ export const ETH_TREZOR: DPath = {
   value: "m/44'/60'/0'/0"
 };
 
+export const ETH_SAFE_T: DPath = {
+  label: 'Safe-T (ETH)',
+  value: "m/44'/60'/0'/0"
+};
+
 export const ETH_LEDGER: DPath = {
   label: 'Ledger (ETH)',
   value: "m/44'/60'/0'"
@@ -20,6 +25,11 @@ export const ETC_LEDGER: DPath = {
 
 export const ETC_TREZOR: DPath = {
   label: 'TREZOR (ETC)',
+  value: "m/44'/61'/0'/0"
+};
+
+export const ETC_SAFE_T: DPath = {
+  label: 'Safe-T (ETC)',
   value: "m/44'/61'/0'/0"
 };
 
@@ -83,6 +93,11 @@ export const RSK_TESTNET: DPath = {
   value: "m/44'/37310'/0'/0"
 };
 
+export const RSK_MAINNET: DPath = {
+  label: 'Mainnet (RSK)',
+  value: "m/44'/137'/0'/0"
+};
+
 export const GO_DEFAULT: DPath = {
   label: 'Default (GO)',
   value: "m/44'/6060'/0'/0"
@@ -101,9 +116,11 @@ export const ESN_DEFAULT: DPath = {
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
+  ETH_SAFE_T,
   ETH_LEDGER,
   ETC_LEDGER,
   ETC_TREZOR,
+  ETC_SAFE_T,
   ETH_TESTNET,
   EXP_DEFAULT,
   UBQ_DEFAULT,
@@ -114,6 +131,7 @@ export const DPaths: DPath[] = [
   ETSC_DEFAULT,
   EGEM_DEFAULT,
   CLO_DEFAULT,
+  RSK_MAINNET,
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,

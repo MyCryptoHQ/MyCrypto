@@ -1,8 +1,31 @@
+@import 'common/sass/mixins';
+
 .SupportFooter {
   text-align: center;
   padding-top: 80px;
+
+  &-button {
+    @include theme(dark) {
+      background: shade-dark(0.1);
+    }
+  }
+
   &-fallback {
     padding: 20px 0;
+    cursor: pointer;
+
+    &-button {
+      @include reset-button;
+      display: block;
+      margin: 0 auto 10px;
+      opacity: 0.3;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
     textarea {
       max-width: 35rem;
       margin: auto;

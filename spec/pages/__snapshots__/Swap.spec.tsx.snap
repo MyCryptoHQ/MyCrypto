@@ -76,6 +76,7 @@ exports[`render snapshot 1`] = `
   }
   outputTx={null}
   paymentAddress={null}
+  paymentId={null}
   provider="shapeshift"
   restartSwap={[Function]}
   secondsRemaining={null}
@@ -100,5 +101,6 @@ exports[`render snapshot 1`] = `
   stopPollBityOrderStatus={[Function]}
   stopPollShapeshiftOrderStatus={[Function]}
   swapProvider={[Function]}
+  xmrPaymentAddress={null}
 />
 `;

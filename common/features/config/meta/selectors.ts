@@ -21,6 +21,10 @@ export function getLanguageSelection(state: AppState): string {
   return getMeta(state).languageSelection;
 }
 
+export function getTheme(state: AppState) {
+  return getMeta(state).theme;
+}
+
 export function getLatestBlock(state: AppState) {
   return getMeta(state).latestBlock;
 }

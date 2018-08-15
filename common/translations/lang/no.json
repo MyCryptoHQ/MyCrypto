@@ -155,6 +155,8 @@
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Koble til TREZOR ",
     "ADD_TREZOR_SELECT": "Dette er en TREZOR seed ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Koble til Safe-T mini ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Åpne MyCrypto på nytt på en sikker (SSL) forbindelse. ",
     "ADD_DIGITALBITBOX_0B": "Åpne MyCrypto på nytt med [Chrome](https://www.google.com/chrome/browser/desktop/) eller [Opera](https://www.opera.com/) ",
