@@ -76,7 +76,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     {
       name: makeNodeName('ETC', 'gastracker'),
       type: 'rpc',
-      service: 'GasTracker (ETCDEV)',
+      service: 'GasTracker',
       url: 'https://web3.gastracker.io'
     },
     {
