@@ -272,11 +272,12 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       name: 'Ellaism Explorer',
       origin: 'https://explorer.ellaism.org'
     }),
-    tokens: [],
+    tokens: require('config/tokens/ella.json'),
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
       [SecureWalletName.SAFE_T]: ELLA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
     },
     gasPriceSettings: {
