@@ -2,24 +2,24 @@
 @import 'common/sass/mixins';
 
 .ViewOnly {
-  &-recent {
-    text-align: left;
+  &-fields {
+    display: flex;
+    flex-direction: column;
 
-    &-separator {
-      display: block;
-      margin: $space-sm 0;
-      text-align: center;
-      color: shade-dark(0.3);
-    }
+    &-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
 
-    .Select {
-      &-option {
-        @include ellipsis;
+      &:nth-of-type(2) {
+        margin-bottom: calc(1rem + 15px);
+        font-size: 1.2rem;
       }
 
-      .Identicon {
-        display: inline-block;
-        margin-right: $space-sm;
+      & .AddressField {
+        width: 100%;
       }
     }
   }
