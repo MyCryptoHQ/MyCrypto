@@ -341,6 +341,7 @@ const WalletDecrypt = withRouter<Props>(
                   key={walletType}
                   name={translateRaw(wallet.lid)}
                   description={translateRaw(wallet.description)}
+                  icon={wallet.icon}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
                   isSecure={true}
