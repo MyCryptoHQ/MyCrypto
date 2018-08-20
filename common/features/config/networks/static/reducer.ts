@@ -411,7 +411,8 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       max: 1.5,
       initial: 0.183
     },
-    unsupportedTabs: [TAB.ENS]
+    unsupportedTabs: [TAB.ENS],
+    hideEquivalentValues: true
   },
 
   RSK_TESTNET: {
