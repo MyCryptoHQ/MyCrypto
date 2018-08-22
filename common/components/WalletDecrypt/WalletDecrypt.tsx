@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 
 import {
+  HardwareWalletName,
   SecureWalletName,
   InsecureWalletName,
   MiscWalletName,
@@ -98,12 +99,17 @@ export interface InsecureWalletInfo extends BaseWalletInfo {
 // tslint:disable-next-line:no-empty-interface
 interface MiscWalletInfo extends InsecureWalletInfo {}
 
+type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
 type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
 type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
-type Wallets = SecureWallets & InsecureWallets & MiscWallet;
+type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallet;
 
-const SECURE_WALLETS = Object.values(SecureWalletName);
+const HARDWARE_WALLETS = Object.values(HardwareWalletName);
+/** @desc Hardware wallets are secure too, but we want to avoid duplication. */
+const SECURE_WALLETS = Object.values(SecureWalletName).filter(
+  value => !HARDWARE_WALLETS.includes(value)
+);
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
 const MISC_WALLETS = Object.values(MiscWalletName);
 
@@ -309,7 +315,7 @@ const WalletDecrypt = withRouter<Props>(
           <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
 
           <div className="WalletDecrypt-wallets-row">
-            {SECURE_WALLETS.map((walletType: SecureWalletName) => {
+            {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];
               return (
                 <WalletButton
@@ -328,23 +334,23 @@ const WalletDecrypt = withRouter<Props>(
             })}
           </div>
           <div className="WalletDecrypt-wallets-row">
-            {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
+            {SECURE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];
               return (
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
-                  example={wallet.example}
+                  description={translateRaw(wallet.description)}
+                  icon={wallet.icon}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
-                  isSecure={false}
+                  isSecure={true}
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
                 />
               );
             })}
-
             {MISC_WALLETS.map((walletType: MiscWalletName) => {
               const wallet = this.WALLETS[walletType];
               return (
@@ -355,6 +361,26 @@ const WalletDecrypt = withRouter<Props>(
                   helpLink={wallet.helpLink}
                   walletType={walletType}
                   isReadOnly={true}
+                  isSecure={true}
+                  isDisabled={this.isWalletDisabled(walletType)}
+                  disableReason={reasons[walletType]}
+                  onClick={this.handleWalletChoice}
+                />
+              );
+            })}
+          </div>
+
+          <div className="WalletDecrypt-wallets-row">
+            {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
+              const wallet = this.WALLETS[walletType];
+              return (
+                <WalletButton
+                  key={walletType}
+                  name={translateRaw(wallet.lid)}
+                  example={wallet.example}
+                  helpLink={wallet.helpLink}
+                  walletType={walletType}
+                  isSecure={false}
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
