@@ -55,6 +55,9 @@ export const MINIMUM_PASSWORD_LENGTH = 12;
 export const knowledgeBaseURL = 'https://support.mycrypto.com';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io?a=mycrypto.com';
+// TODO - Update url
+export const safeTReferralURL =
+  'https://www.archos.com/fr/products/crypto/archos_safetmini/index.html';
 export const bitboxReferralURL = 'https://digitalbitbox.com/?ref=mycrypto';
 // TODO - Update url, this is MEW's
 export const bityReferralURL = 'https://bity.com/af/jshkb37v';
@@ -69,12 +72,14 @@ export enum SecureWalletName {
   WEB3 = 'web3',
   LEDGER_NANO_S = 'ledgerNanoS',
   TREZOR = 'trezor',
+  SAFE_T = 'safeTmini',
   PARITY_SIGNER = 'paritySigner'
 }
 
 export enum HardwareWalletName {
   LEDGER_NANO_S = 'ledgerNanoS',
-  TREZOR = 'trezor'
+  TREZOR = 'trezor',
+  SAFE_T = 'safeTmini'
 }
 
 export enum InsecureWalletName {

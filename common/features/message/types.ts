@@ -3,7 +3,8 @@ import { ISignedMessage } from 'libs/signing';
 export enum MessageActions {
   SIGN_REQUESTED = 'MESSAGE_SIGN_REQUESTED',
   SIGN_LOCAL_SUCCEEDED = 'MESSAGE_SIGN_LOCAL_SUCCEEDED',
-  SIGN_FAILED = 'MESSAGE_SIGN_FAILED'
+  SIGN_FAILED = 'MESSAGE_SIGN_FAILED',
+  RESET = 'MESSAGE_RESET'
 }
 
 export interface MessageState {
@@ -24,7 +25,12 @@ export interface SignMessageFailedAction {
   type: MessageActions.SIGN_FAILED;
 }
 
+export interface ResetMessageAction {
+  type: MessageActions.RESET;
+}
+
 export type MessageAction =
   | SignMessageRequestedAction
   | SignLocalMessageSucceededAction
-  | SignMessageFailedAction;
+  | SignMessageFailedAction
+  | ResetMessageAction;

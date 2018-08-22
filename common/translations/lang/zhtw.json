@@ -136,6 +136,8 @@
     "ADD_METAMASK": "Connect to MetaMask ",
     "X_TREZOR": "TREZOR 錢包 ",
     "ADD_TREZOR_SCAN": "連接至 TREZOR ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "連接至 Safe-T mini ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Re-open MyCrypto on a secure (SSL) connection ",
     "ADD_DIGITALBITBOX_0B": "以 [Chrome](https://www.google.com/chrome/browser/desktop/) 或 [Opera](https://www.opera.com/) 瀏覽器重新開啟MyCrypto",

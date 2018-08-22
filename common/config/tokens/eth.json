@@ -2310,7 +2310,7 @@
     "decimal": 8
   },
   {
-    "address": "0xE94327D07Fc17907b4DB788E5aDf2ed424adDff6",
+    "address": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
     "symbol": "REP",
     "decimal": 18
   },
@@ -2462,7 +2462,7 @@
   {
     "address": "0x12fCd6463E66974cF7bBC24FFC4d40d6bE458283",
     "symbol": "GBX",
-    "decimal": 18
+    "decimal": 8
   },
   {
     "address": "0x7728dFEF5aBd468669EB7f9b48A7f70a501eD29D",

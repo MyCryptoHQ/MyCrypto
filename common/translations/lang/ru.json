@@ -297,6 +297,8 @@
     "X_TREZOR": "TREZOR ",
     "ADD_TREZOR_SCAN": "Подключиться к TREZOR ",
     "ADD_TREZOR_SELECT": "Это код восстановления TREZOR ",
+    "X_SAFE_T": "Safe-T mini ",
+    "ADD_SAFE_T_SCAN": "Подключиться к Safe-T mini ",
     "X_DIGITALBITBOX": "Digital Bitbox ",
     "ADD_DIGITALBITBOX_0A": "Перезапустите MyCrypto через безопасное (SSL) соединение ",
     "ADD_DIGITALBITBOX_0B": "Перезапустите MyCrypto с браузере [Chrome](https://www.google.com/chrome/browser/desktop/) или [Opera](https://www.opera.com/) ",
