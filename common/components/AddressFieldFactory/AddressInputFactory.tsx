@@ -81,7 +81,11 @@ class AddressInputFactoryClass extends Component<Props> {
       dropdownThreshold
     } = this.props;
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
-    const sendingTo = `${translateRaw('SENDING_TO')} ${label}`;
+    const sendingTo = label
+      ? translateRaw('SENDING_TO', {
+          $label: label
+        })
+      : '';
     const isENSAddress = currentTo.raw.includes('.eth');
 
     /**

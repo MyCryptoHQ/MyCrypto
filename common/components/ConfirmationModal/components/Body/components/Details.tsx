@@ -25,9 +25,9 @@ class DetailsClass extends Component<StateProps> {
             isValid={true}
             showValidAsPlain={true}
             readOnly={true}
-            value={`${network} ${translateRaw('NETWORK_2')} - ${translateRaw(
-              'PROVIDED_BY'
-            )} ${service}`}
+            value={`${translateRaw('NETWORK_2', {
+              $network: network
+            })} - ${translateRaw('PROVIDED_BY', { $service: service })}`}
           />
         </label>
 
