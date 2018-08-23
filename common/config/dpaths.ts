@@ -113,6 +113,11 @@ export const ESN_DEFAULT: DPath = {
   value: "m/44'/31102'/0'/0"
 };
 
+export const AQUA_DEFAULT: DPath = {
+  label: 'Default (AQUA)',
+  value: "m/44'/60'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -135,7 +140,8 @@ export const DPaths: DPath[] = [
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
-  ESN_DEFAULT
+  ESN_DEFAULT,
+  AQUA_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
