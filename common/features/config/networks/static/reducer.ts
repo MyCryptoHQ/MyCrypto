@@ -27,7 +27,8 @@ import {
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
-  ESN_DEFAULT
+  ESN_DEFAULT,
+  AQUA_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { StaticNetworksState } from './types';
@@ -540,6 +541,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       min: 1,
       max: 60,
       initial: 20
+    }
+  },
+  AQUA: {
+    id: 'AQUA',
+    name: 'Aquachain',
+    unit: 'AQUA',
+    chainId: 61717561,
+    isCustom: false,
+    color: '#00ffff',
+    blockExplorer: makeExplorer({
+      name: 'AQUA Explorer',
+      origin: 'https://aquachain.github.io/explorer/#'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: AQUA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: AQUA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: AQUA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 10,
+      initial: 0.1
     }
   }
 };
