@@ -22,6 +22,7 @@ export const WindowStartField: React.SFC<Props> = ({ isReadOnly }) => (
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
             onChange={onChange}
+            showInvalidWithoutValue={true}
           />
         </label>
       </div>

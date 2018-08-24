@@ -377,6 +377,7 @@ export const getValidateScheduleParamsCallPayload = (
     !scheduleGasPrice.value ||
     !wallet ||
     !windowSize.value ||
+    !deposit.value ||
     // we need either windowStart or scheduleTimestamp for scheduling
     !(windowStart.value || scheduleTimestamp.value)
   ) {

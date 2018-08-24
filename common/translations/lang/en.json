@@ -138,7 +138,7 @@
     "SCHEDULING_DESCRIPTION": "This allows you to schedule a transaction for sending at a later time. Due to unforeseen circumstances (like the state of the network), we cannot 100% guarantee that your transaction is sent in the time period you specify.",
     "SCHEDULE_BLOCK": "Block Number ",
     "SCHEDULE_BLOCK_PLACEHOLDER": "Enter Block Number ",
-    "SCHEDULE_DEPOSIT": "Require Deposit (optional) ",
+    "SCHEDULE_DEPOSIT": "Require Deposit ",
     "SCHEDULE_DEPOSIT_TOOLTIP": "Require TimeNode to deposit a given amount of ETH in order to gain an exclusive time window for execution.",
     "SCHEDULE_TIMESTAMP": "Date & Time ",
     "SCHEDULE_TIMEZONE": "Timezone ",

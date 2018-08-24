@@ -72,6 +72,7 @@ class TimeBountyFieldClass extends Component<Props, State> {
                     readOnly={isReadOnly}
                     spellCheck={false}
                     onChange={this.handleOnChange}
+                    showInvalidWithoutValue={true}
                   />
                 ) : (
                   <GroupedRadioToggle
