@@ -110,6 +110,22 @@ $button-primary: #067997;
 
     button {
       margin-top: 1.33rem;
+
+      &.first {
+        visibility: hidden;
+      }
+      &.second {
+        visibility: visible;
+      }
+    }
+
+    @media (min-width: 512px) {
+      button.first {
+        visibility: visible;
+      }
+      button.second {
+        visibility: hidden;
+      }
     }
     @media (min-width: 512px) {
       flex-direction: row;
@@ -135,27 +151,51 @@ $button-primary: #067997;
   }
 }
 
+.ThirdSlide {
+  @include perfectly-centered;
+  @include slide-inner;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+
+    section {
+      flex: 1;
+    }
+    h1 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 10px;
+    }
+  }
+  @media (min-width: 512px) {
+    button {
+      margin-top: 1.33rem;
+    }
+    h1 {
+      font-size: 20px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 820px) {
+    h1 {
+      font-size: 30px;
+    }
+    p {
+      font-size: 18px;
+    }
+  }
+}
+
 .Button {
   width: 120px;
   height: 50px;
   border-radius: 2px;
   background: $button-primary;
   color: #fff;
-
-  &.first {
-    visibility: hidden;
-  }
-  &.second {
-    visibility: visible;
-  }
-  @media (min-width: 512px) {
-    &.first {
-      visibility: visible;
-    }
-    &.second {
-      visibility: hidden;
-    }
-  }
 }
 
 .OnboardingModal {

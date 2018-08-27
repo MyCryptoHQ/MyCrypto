@@ -71,12 +71,50 @@ function SecondSlide() {
   );
 }
 
-export default function OnboardingModal({ currentSlide = 2 }) {
+function ThirdSlide() {
+  return (
+    <Slide>
+      <section className="ThirdSlide">
+        <section className="ThirdSlide-content">
+          <section>
+            <h1>Please understand that we can't...</h1>
+            <ul>
+              <li>Access your funds for you</li>
+              <li>Recover, reset, or modify ANY of your information</li>
+              <li>Reverse, cancel, or refund transactions</li>
+              <li>Freeze accounts</li>
+            </ul>
+          </section>
+          <section>
+            <section>
+              <h1>You're responsible for...</h1>
+              <ul>
+                <li>
+                  Keeping your informatin sage. This includes:{' '}
+                  <ul>
+                    <li>Private Keys/Mnemonic Phrases</li>
+                    <li>JSON files</li>
+                    <li>Hardware wallet PINs</li>
+                  </ul>
+                </li>
+                <li>Making sure you're not on a phishing site</li>
+                <li>Reducing risk by using the MyCrypto downloadable app</li>
+              </ul>
+            </section>
+            <button className="Button second">Next</button>
+          </section>
+        </section>
+      </section>
+    </Slide>
+  );
+}
+
+export default function OnboardingModal({ currentSlide = 3 }) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
   const dots = <ProgressDots currentStep={currentSlide} totalSteps={4} />;
-  const slides = [<FirstSlide />, <SecondSlide />];
+  const slides = [<FirstSlide />, <SecondSlide />, <ThirdSlide />];
   const slide = slides[currentSlide - 1];
 
   return (
