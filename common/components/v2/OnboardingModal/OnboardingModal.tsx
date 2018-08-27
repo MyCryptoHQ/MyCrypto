@@ -19,11 +19,34 @@ function ProgressDots({ currentStep = 1, totalSteps = 4 }) {
   );
 }
 
+function Slide({ children }) {
+  return <section className="Slide">{children}</section>;
+}
+
+function FirstSlide() {
+  return (
+    <Slide>
+      <section className="FirstSlide">
+        <section className="FirstSlide-content">
+          <h1>Welcome to MyCrypto.com</h1>
+          <p>
+            Please read the next few screens for your own safety. Your funds could be stolen if you
+            do not pay attention to these warnings.
+          </p>
+          <button className="Button">Next</button>
+        </section>
+      </section>
+    </Slide>
+  );
+}
+
 export default function OnboardingModal({ currentSlide = 1 }) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
-  const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
+  const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
   const dots = <ProgressDots currentStep={currentSlide} totalSteps={4} />;
+  const slides = [<FirstSlide />];
+  const slide = slides[currentSlide - 1];
 
   return (
     <Modal>
@@ -34,7 +57,7 @@ export default function OnboardingModal({ currentSlide = 1 }) {
           <section className="OnboardingModal-side-content">{slideImage}</section>
           <section className="OnboardingModal-side-bottom">{dots}</section>
         </section>
-        <section className="OnboardingModal-content">Stuff</section>
+        <section className="OnboardingModal-content">{slide}</section>
         <section className="OnboardingModal-bottom">
           <section>{slideImage}</section>
           <section>{dots}</section>

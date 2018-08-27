@@ -1,4 +1,6 @@
 $baby-blue: #1097c0;
+$heading-text-color: #4a4a4a;
+$button-primary: #067997;
 
 @mixin perfectly-centered {
   display: flex;
@@ -30,6 +32,66 @@ $baby-blue: #1097c0;
       border: 3px solid #fff;
     }
   }
+}
+
+.Slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  h1 {
+    font-size: 20px;
+    font-family: Lato, sans-serif;
+    font-weight: 900;
+    color: $heading-text-color;
+  }
+  p {
+    font-size: 14px;
+    line-height: 24px;
+    color: #000;
+  }
+
+  @media (min-width: 512px) {
+    h1 {
+      font-size: 24px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+  @media (min-width: 820px) {
+    h1 {
+      font-size: 30px;
+    }
+    p {
+      font-size: 18px;
+    }
+  }
+}
+
+.FirstSlide {
+  @include perfectly-centered;
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0 2rem;
+
+  button {
+    margin-top: 1.33rem;
+  }
+
+  @media (min-width: 820px) {
+    padding: 0 8rem;
+  }
+}
+
+.Button {
+  width: 120px;
+  height: 50px;
+  border-radius: 2px;
+  background: $button-primary;
+  color: #fff;
 }
 
 .OnboardingModal {
@@ -71,6 +133,7 @@ $baby-blue: #1097c0;
     }
   }
   &-content {
+    position: relative;
     flex: 5;
   }
   &-bottom {
