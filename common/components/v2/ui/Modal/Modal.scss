@@ -1,0 +1,30 @@
+.Modalz {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.2);
+
+  &-content {
+    position: absolute;
+    width: 90%;
+    height: 95%;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+  }
+  @media (min-width: 512px) {
+    &-content {
+      width: 80%;
+      height: 40%;
+    }
+  }
+  @media (min-width: 820px) {
+    &-content {
+      height: 60%;
+    }
+  }
+}
