@@ -1,5 +1,5 @@
 import { CustomNodeConfig } from 'types/node';
-import { addCustomNode, removeCustomNode } from './actions';
+import * as actions from './actions';
 import { customNodesReducer } from './reducer';
 
 export const firstCustomNode: CustomNodeConfig = {
@@ -26,10 +26,10 @@ const expectedState = {
   removeFirstCustomNode: { [secondCustomNode.id]: secondCustomNode }
 };
 
-const actions = {
-  addFirstCustomNode: addCustomNode(firstCustomNode),
-  addSecondCustomNode: addCustomNode(secondCustomNode),
-  removeFirstCustomNode: removeCustomNode(firstCustomNode.id)
+const actionsToDispatch = {
+  addFirstCustomNode: actions.addCustomNode(firstCustomNode),
+  addSecondCustomNode: actions.addCustomNode(secondCustomNode),
+  removeFirstCustomNode: actions.removeCustomNode(firstCustomNode.id)
 };
 
 describe('custom nodes reducer', () => {
@@ -37,16 +37,16 @@ describe('custom nodes reducer', () => {
     expect(customNodesReducer(undefined, {} as any)).toEqual({}));
 
   it('should handle adding the first custom node', () =>
-    expect(customNodesReducer(expectedState.initialState, actions.addFirstCustomNode)).toEqual(
-      expectedState.addFirstCustomNode
-    ));
+    expect(
+      customNodesReducer(expectedState.initialState, actionsToDispatch.addFirstCustomNode)
+    ).toEqual(expectedState.addFirstCustomNode));
   it('should handle adding a second custom node', () =>
     expect(
-      customNodesReducer(expectedState.addFirstCustomNode, actions.addSecondCustomNode)
+      customNodesReducer(expectedState.addFirstCustomNode, actionsToDispatch.addSecondCustomNode)
     ).toEqual(expectedState.addSecondCustomNode));
   it('should handle removing the first custom node', () =>
     expect(
-      customNodesReducer(expectedState.addSecondCustomNode, actions.removeFirstCustomNode)
+      customNodesReducer(expectedState.addSecondCustomNode, actionsToDispatch.removeFirstCustomNode)
     ).toEqual(expectedState.removeFirstCustomNode));
 });
 

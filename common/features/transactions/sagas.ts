@@ -8,9 +8,7 @@ import { getTransactionFields } from 'libs/transaction';
 import { NetworkConfig } from 'types/network';
 import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/transactions';
 import { AppState } from 'features/reducers';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as configSelectors from 'features/config/selectors';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors, configNodesSelectors } from 'features/config';
 import { walletSelectors } from 'features/wallet';
 import { transactionBroadcastTypes } from 'features/transaction';
 import * as types from './types';
@@ -93,7 +91,7 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
       from = wallet.getAddressString();
     }
   }
-  const toChecksumAddress = yield select(getChecksumAddressFn);
+  const toChecksumAddress = yield select(configSelectors.getChecksumAddressFn);
   const savableTx: SavedTransaction = {
     hash,
     from,

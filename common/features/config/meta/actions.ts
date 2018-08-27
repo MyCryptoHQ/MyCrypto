@@ -1,53 +1,45 @@
-import {
-  CONFIG_META,
-  ChangeLanguageAction,
-  SetLatestBlockAction,
-  SetOfflineAction,
-  SetOnlineAction,
-  ToggleAutoGasLimitAction,
-  ChangeThemeAction
-} from './types';
 import { Theme } from 'config';
+import * as types from './types';
 
-export function setOnline(): SetOnlineAction {
+export function setOnline(): types.SetOnlineAction {
   return {
-    type: CONFIG_META.SET_ONLINE
+    type: types.ConfigMetaActions.SET_ONLINE
   };
 }
 
-export function setOffline(): SetOfflineAction {
+export function setOffline(): types.SetOfflineAction {
   return {
-    type: CONFIG_META.SET_OFFLINE
+    type: types.ConfigMetaActions.SET_OFFLINE
   };
 }
 
 export type TToggleAutoGasLimit = typeof toggleAutoGasLimit;
-export function toggleAutoGasLimit(): ToggleAutoGasLimitAction {
+export function toggleAutoGasLimit(): types.ToggleAutoGasLimitAction {
   return {
-    type: CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
+    type: types.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT
   };
 }
 
 export type TChangeLanguage = typeof changeLanguage;
-export function changeLanguage(sign: string): ChangeLanguageAction {
+export function changeLanguage(sign: string): types.ChangeLanguageAction {
   return {
-    type: CONFIG_META.LANGUAGE_CHANGE,
+    type: types.ConfigMetaActions.LANGUAGE_CHANGE,
     payload: sign
   };
 }
 
 export type TChangeTheme = typeof changeTheme;
-export function changeTheme(theme: Theme): ChangeThemeAction {
+export function changeTheme(theme: Theme): types.ChangeThemeAction {
   return {
-    type: CONFIG_META.THEME_CHANGE,
+    type: types.ConfigMetaActions.THEME_CHANGE,
     payload: theme
   };
 }
 
 export type TSetLatestBlock = typeof setLatestBlock;
-export function setLatestBlock(payload: string): SetLatestBlockAction {
+export function setLatestBlock(payload: string): types.SetLatestBlockAction {
   return {
-    type: CONFIG_META.SET_LATEST_BLOCK,
+    type: types.ConfigMetaActions.SET_LATEST_BLOCK,
     payload
   };
 }

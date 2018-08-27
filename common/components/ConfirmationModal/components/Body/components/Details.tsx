@@ -6,7 +6,7 @@ import translate, { translateRaw } from 'translations';
 import { NodeConfig } from 'types/node';
 import { CodeBlock, Input } from 'components/ui';
 import { AppState } from 'features/reducers';
-import { getNodeConfig } from 'features/config';
+import { configNodesSelectors } from 'features/config';
 import { SerializedTransaction } from 'components/renderCbs';
 import './Details.scss';
 
@@ -52,6 +52,6 @@ class DetailsClass extends Component<StateProps> {
   }
 }
 
-const mapStateToProps = (state: AppState) => ({ node: getNodeConfig(state) });
+const mapStateToProps = (state: AppState) => ({ node: configNodesSelectors.getNodeConfig(state) });
 
 export const Details = connect(mapStateToProps)(DetailsClass);

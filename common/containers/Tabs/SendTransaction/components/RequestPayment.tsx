@@ -9,7 +9,7 @@ import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { ICurrentTo, ICurrentValue } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { getNetworkConfig, isNetworkUnit } from 'features/config';
+import { configSelectors } from 'features/config';
 import {
   transactionFieldsTypes,
   transactionFieldsActions,
@@ -191,10 +191,10 @@ function mapStateToProps(state: AppState): StateProps {
     currentTo: derivedSelectors.getCurrentTo(state),
     currentValue: derivedSelectors.getCurrentValue(state),
     gasLimit: transactionFieldsSelectors.getGasLimit(state),
-    networkConfig: getNetworkConfig(state),
+    networkConfig: configSelectors.getNetworkConfig(state),
     decimal: transactionMetaSelectors.getDecimal(state),
     tokenContractAddress: derivedSelectors.getSelectedTokenContractAddress(state),
-    isNetworkUnit: isNetworkUnit(state, derivedSelectors.getUnit(state))
+    isNetworkUnit: configSelectors.isNetworkUnit(state, derivedSelectors.getUnit(state))
   };
 }
 

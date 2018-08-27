@@ -1,36 +1,30 @@
-import {
-  CONFIG_NODES_CUSTOM,
-  RemoveCustomNodeAction,
-  AddCustomNodeAction,
-  CustomNodesState,
-  CustomNodeAction
-} from './types';
+import * as types from './types';
 
 const addCustomNode = (
-  state: CustomNodesState,
-  { payload }: AddCustomNodeAction
-): CustomNodesState => ({
+  state: types.ConfigCustomNodesState,
+  { payload }: types.AddCustomNodeAction
+): types.ConfigCustomNodesState => ({
   ...state,
   [payload.id]: payload
 });
 
 function removeCustomNode(
-  state: CustomNodesState,
-  { payload }: RemoveCustomNodeAction
-): CustomNodesState {
+  state: types.ConfigCustomNodesState,
+  { payload }: types.RemoveCustomNodeAction
+): types.ConfigCustomNodesState {
   const stateCopy = { ...state };
   Reflect.deleteProperty(stateCopy, payload);
   return stateCopy;
 }
 
 export function customNodesReducer(
-  state: CustomNodesState = {},
-  action: CustomNodeAction
-): CustomNodesState {
+  state: types.ConfigCustomNodesState = {},
+  action: types.CustomNodeAction
+): types.ConfigCustomNodesState {
   switch (action.type) {
-    case CONFIG_NODES_CUSTOM.ADD:
+    case types.ConfigNodesCustomActions.ADD:
       return addCustomNode(state, action);
-    case CONFIG_NODES_CUSTOM.REMOVE:
+    case types.ConfigNodesCustomActions.REMOVE:
       return removeCustomNode(state, action);
     default:
       return state;
