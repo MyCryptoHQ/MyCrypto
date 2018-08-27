@@ -40,12 +40,43 @@ function FirstSlide() {
   );
 }
 
-export default function OnboardingModal({ currentSlide = 1 }) {
+function SecondSlide() {
+  return (
+    <Slide>
+      <section className="SecondSlide">
+        <section className="SecondSlide-content">
+          <section>
+            <h1>With Banks...</h1>
+            <p>
+              They control your account <br />
+              They own your info <br />
+              They add fees <br />
+              They tell you what you can do <br />
+            </p>
+            <button className="Button first">Next</button>
+          </section>
+          <section>
+            <h1>With MyCrypto...</h1>
+            <p>
+              You control your ”account” <br />
+              You own your info <br />
+              No fees are added <br />
+              You do whatever you want <br />
+            </p>
+            <button className="Button second">Next</button>
+          </section>
+        </section>
+      </section>
+    </Slide>
+  );
+}
+
+export default function OnboardingModal({ currentSlide = 2 }) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
   const dots = <ProgressDots currentStep={currentSlide} totalSteps={4} />;
-  const slides = [<FirstSlide />];
+  const slides = [<FirstSlide />, <SecondSlide />];
   const slide = slides[currentSlide - 1];
 
   return (

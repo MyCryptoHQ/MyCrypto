@@ -13,6 +13,13 @@ $button-primary: #067997;
   color: #fff;
 }
 
+@mixin slide-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0 2rem;
+}
+
 .ProgressDots {
   display: flex;
   align-items: center;
@@ -71,11 +78,7 @@ $button-primary: #067997;
 
 .FirstSlide {
   @include perfectly-centered;
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 0 2rem;
+  @include slide-inner;
 
   button {
     margin-top: 1.33rem;
@@ -86,12 +89,73 @@ $button-primary: #067997;
   }
 }
 
+.SecondSlide {
+  @include perfectly-centered;
+  @include slide-inner;
+
+  display: flex;
+  flex-direction: column;
+
+  &-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    section {
+      margin: 1rem;
+    }
+
+    button {
+      margin-top: 1.33rem;
+    }
+    @media (min-width: 512px) {
+      flex-direction: row;
+      justify-content: space-evenly;
+      padding: 0;
+
+      h1 {
+        font-size: 16px;
+      }
+      p {
+        font-size: 12px;
+      }
+    }
+    @media (min-width: 820px) {
+      h1 {
+        font-size: 30px;
+      }
+      p {
+        font-size: 18px;
+        line-height: 33px;
+      }
+    }
+  }
+}
+
 .Button {
   width: 120px;
   height: 50px;
   border-radius: 2px;
   background: $button-primary;
   color: #fff;
+
+  &.first {
+    visibility: hidden;
+  }
+  &.second {
+    visibility: visible;
+  }
+  @media (min-width: 512px) {
+    &.first {
+      visibility: visible;
+    }
+    &.second {
+      visibility: hidden;
+    }
+  }
 }
 
 .OnboardingModal {
