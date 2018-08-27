@@ -29,7 +29,7 @@ import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { Theme } from 'config';
 import 'what-input';
 
-import { Modal } from 'components/v2/ui';
+import { OnboardingModal } from 'components/v2';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -110,7 +110,7 @@ class RootClass extends Component<Props, State> {
         <Provider store={store}>
           <Router>
             <React.Fragment>
-              <Modal />
+              <OnboardingModal />
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />

@@ -1,0 +1,107 @@
+$baby-blue: #1097c0;
+
+@mixin perfectly-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin baby-blue {
+  background: $baby-blue;
+  color: #fff;
+}
+
+.ProgressDots {
+  display: flex;
+  align-items: center;
+
+  &-dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 0.5rem;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+
+    &--active {
+      width: 12px;
+      height: 12px;
+      background: $baby-blue;
+      border: 3px solid #fff;
+    }
+  }
+}
+
+.OnboardingModal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  &-top {
+    @include baby-blue;
+    @include perfectly-centered;
+
+    flex: 1;
+  }
+  &-side {
+    @include baby-blue;
+    @include perfectly-centered;
+
+    display: none;
+    flex: 1;
+    flex-direction: column;
+
+    &-top {
+      @include perfectly-centered;
+
+      flex: 1;
+    }
+    &-content {
+      @include perfectly-centered;
+
+      flex: 3;
+      padding: 2rem;
+    }
+    &-bottom {
+      @include perfectly-centered;
+
+      flex: 1;
+    }
+  }
+  &-content {
+    flex: 5;
+  }
+  &-bottom {
+    @include baby-blue;
+
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
+
+    img {
+      transform: scale(0.5);
+    }
+    section {
+      @include perfectly-centered;
+
+      flex: 1;
+    }
+  }
+  @media (min-width: 512px) {
+    flex-direction: row;
+
+    &-top,
+    &-bottom {
+      display: none;
+    }
+    &-side {
+      display: flex;
+    }
+    &-content {
+      flex: 2;
+    }
+  }
+}
