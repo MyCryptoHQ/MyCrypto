@@ -21,6 +21,31 @@ $light-gray: #979797;
   padding: 0 2rem;
 }
 
+@mixin onboarding-modal-slide-heading {
+  font-size: 20px;
+  font-family: Lato, sans-serif;
+  font-weight: 900;
+  color: $heading-text-color;
+
+  @media (min-width: 450px) {
+    font-size: 24px;
+  }
+  @media (min-width: 820px) {
+    font-size: 30px;
+  }
+}
+
+@mixin onboarding-modal-slide-text {
+  font-size: 14px;
+
+  @media (min-width: 450px) {
+    font-size: 18px;
+  }
+  @media (min-width: 820px) {
+    font-size: 20px;
+  }
+}
+
 .ProgressDots {
   display: flex;
   align-items: center;
@@ -85,12 +110,17 @@ $light-gray: #979797;
   @include perfectly-centered;
   @include slide-inner;
 
-  button {
-    margin-top: 1.33rem;
+  &-content {
+    &-heading {
+      @include onboarding-modal-slide-heading;
+    }
+    &-text {
+      @include onboarding-modal-slide-text;
+    }
   }
 
   @media (min-width: 820px) {
-    padding: 0 8rem;
+    padding: 0 4rem;
   }
 }
 
@@ -98,44 +128,38 @@ $light-gray: #979797;
   @include perfectly-centered;
   @include slide-inner;
 
-  display: flex;
-  flex-direction: column;
-
+  button {
+    margin-top: 2rem;
+  }
+  .vertical {
+    display: block;
+  }
+  .horizontal {
+    display: none;
+  }
   &-content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-
-    section {
-      margin: 1rem;
+    &-heading {
+      @include onboarding-modal-slide-heading;
     }
-
-    button {
-      margin-top: 1.33rem;
-
-      &.first {
-        visibility: hidden;
-      }
-      &.second {
-        visibility: visible;
-      }
+    &-text {
+      @include onboarding-modal-slide-text;
     }
-
-    @media (min-width: 512px) {
-      button.first {
-        visibility: visible;
-      }
-      button.second {
-        visibility: hidden;
-      }
+    &-segment {
+      margin-bottom: 2rem;
     }
-    @media (min-width: 512px) {
-      flex-direction: row;
-      justify-content: space-evenly;
-      padding: 0;
+  }
+
+  @media (min-width: 450px) {
+    .vertical {
+      display: none;
+    }
+    .horizontal {
+      display: block;
+    }
+    &-content {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
     }
   }
 }
@@ -160,13 +184,10 @@ $light-gray: #979797;
 
   &-content {
     &-heading {
-      font-size: 20px;
-      font-family: Lato, sans-serif;
-      font-weight: 900;
-      color: $heading-text-color;
+      @include onboarding-modal-slide-heading;
     }
     &-text {
-      font-size: 14px;
+      @include onboarding-modal-slide-text;
     }
     &-wallets {
       display: flex;
@@ -176,12 +197,6 @@ $light-gray: #979797;
   }
   @media (min-width: 450px) {
     &-content {
-      &-heading {
-        font-size: 24px;
-      }
-      &-text {
-        font-size: 18px;
-      }
       &-wallets {
         flex-direction: row;
       }
@@ -190,13 +205,6 @@ $light-gray: #979797;
   @media (min-width: 820px) {
     &-content {
       padding: 0 4rem;
-
-      &-heading {
-        font-size: 30px;
-      }
-      &-text {
-        font-size: 20px;
-      }
     }
   }
 }

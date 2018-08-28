@@ -38,8 +38,8 @@ function FirstSlide() {
   return (
     <section className="FirstSlide">
       <section className="FirstSlide-content">
-        <h1>Welcome to MyCrypto.com</h1>
-        <p>
+        <h1 className="FirstSlide-content-heading">Welcome to MyCrypto.com</h1>
+        <p className="FirstSlide-content-text">
           Please read the next few screens for your own safety. Your funds could be stolen if you do
           not pay attention to these warnings.
         </p>
@@ -53,26 +53,26 @@ function SecondSlide() {
   return (
     <section className="SecondSlide">
       <section className="SecondSlide-content">
-        <section>
-          <h1>With Banks...</h1>
-          <p>
+        <section className="SecondSlide-content-segment">
+          <h1 className="SecondSlide-content-heading">With Banks...</h1>
+          <p className="SecondSlide-content-text">
             They control your account <br />
             They own your info <br />
             They add fees <br />
             They tell you what you can do <br />
           </p>
-          <button className="Button first">Next</button>
+          <button className="Button horizontal">Next</button>
         </section>
-        <section>
-          <h1>With MyCrypto...</h1>
-          <p>
+        <section className="SecondSlide-content-segment">
+          <h1 className="SecondSlide-content-heading">With MyCrypto...</h1>
+          <p className="SecondSlide-content-text">
             You control your ”account” <br />
             You own your info <br />
             No fees are added <br />
             You do whatever you want <br />
           </p>
-          <button className="Button second">Next</button>
         </section>
+        <button className="Button vertical">Next</button>
       </section>
     </section>
   );
@@ -136,7 +136,7 @@ function FourthSlide() {
   );
 }
 
-export default function OnboardingModal({ currentSlide = 4 }) {
+export default function OnboardingModal({ currentSlide = 2 }) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
