@@ -182,21 +182,47 @@ $light-gray: #979797;
   }
   &-content {
     &-heading {
-      @include onboarding-modal-slide-heading;
-
+      font-family: Lato, sans-serif;
+      font-weight: 900;
       font-size: 16px;
+      color: $heading-text-color;
     }
     &-text {
-      @include onboarding-modal-slide-text;
+      font-size: 14px;
     }
   }
 
-  @media (min-width: 450px) {
+  @media (min-width: 450px) and (min-height: 740px) {
     h1 {
       margin: 1rem;
     }
     button {
       margin-top: 1.33rem;
+    }
+    &-content {
+      &-heading {
+        font-size: 24px;
+      }
+      &-text {
+        font-size: 18px;
+      }
+    }
+  }
+  @media (min-width: 600px) and (max-width: 840px) {
+    &-content {
+      &-heading {
+        font-size: 18px;
+      }
+      &-text {
+        font-size: 14px;
+      }
+    }
+  }
+  @media (min-width: 820px) {
+    &-content {
+      &-heading {
+        font-size: 30px;
+      }
     }
   }
 }
@@ -299,7 +325,7 @@ $light-gray: #979797;
       flex: 1;
     }
   }
-  @media (min-width: 512px) {
+  @media (min-width: 600px) {
     flex-direction: row;
 
     &-top,
