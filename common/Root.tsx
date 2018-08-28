@@ -21,7 +21,6 @@ import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
 import OnboardModal from 'containers/OnboardModal';
-import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
@@ -113,12 +112,7 @@ class RootClass extends Component<Props, State> {
               <LogOutPrompt />
               <QrSignerModal />
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-              {!process.env.DOWNLOADABLE_BUILD && (
-                <React.Fragment>
-                  <OnboardModal />
-                  {!process.env.BUILD_ELECTRON && <WelcomeModal />}
-                </React.Fragment>
-              )}
+              {!process.env.DOWNLOADABLE_BUILD && <OnboardModal />}
             </React.Fragment>
           </Router>
         </Provider>

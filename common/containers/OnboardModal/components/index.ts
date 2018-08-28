@@ -1,10 +1,5 @@
-export { default as WelcomeSlide } from './WelcomeSlide';
-export { default as NotABankSlide } from './NotABankSlide';
-export { default as InterfaceSlide } from './InterfaceSlide';
-export { default as BlockchainSlide } from './BlockchainSlide';
-export { default as WhySlide } from './WhySlide';
-export { default as WhyMyCrypto } from './WhyMyCryptoSlide';
-export { default as SecureSlideOne } from './SecureSlideOne';
-export { default as SecureSlideTwo } from './SecureSlideTwo';
-export { default as SecureSlideThree } from './SecureSlideThree';
-export { default as FinalSlide } from './FinalSlide';
+export { Stepper } from './Stepper';
+export { Slide1 } from './Slide1';
+export { Slide2 } from './Slide2';
+export { Slide3 } from './Slide3';
+export { Slide4 } from './Slide4';
