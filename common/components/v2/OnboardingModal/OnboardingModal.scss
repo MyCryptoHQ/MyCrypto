@@ -44,55 +44,39 @@ $light-gray: #979797;
 
 .HardwareWalletChoice {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem 1rem 0 1rem;
   border: 1px solid $light-gray;
 
+  &:not(:last-of-type) {
+    border-bottom: none;
+  }
   &-image {
-    @include perfectly-centered;
-
-    flex: 3;
-    margin-bottom: 1rem;
+    display: none;
   }
   &-text {
     @include perfectly-centered;
 
-    flex: 1;
-  }
-}
+    flex: 3;
+    padding: 0.5rem;
 
-.Slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  h1 {
-    font-size: 20px;
-    font-family: Lato, sans-serif;
-    font-weight: 900;
-    color: $heading-text-color;
-  }
-  p {
-    font-size: 14px;
-    line-height: 24px;
-    color: #000;
-  }
-
-  @media (min-width: 512px) {
-    h1 {
-      font-size: 24px;
-    }
     p {
-      font-size: 14px;
-    }
-  }
-  @media (min-width: 820px) {
-    h1 {
-      font-size: 30px;
-    }
-    p {
+      margin: 0;
       font-size: 18px;
+    }
+  }
+
+  @media (min-height: 600px) {
+    &-image {
+      display: block;
+      flex: 1;
+      padding: 0.5rem;
+    }
+  }
+  @media (min-width: 450px) {
+    flex-direction: column;
+
+    &:not(:last-of-type) {
+      margin-right: 1rem;
+      border-bottom: 1px solid $light-gray;
     }
   }
 }
@@ -152,22 +136,6 @@ $light-gray: #979797;
       flex-direction: row;
       justify-content: space-evenly;
       padding: 0;
-
-      h1 {
-        font-size: 16px;
-      }
-      p {
-        font-size: 12px;
-      }
-    }
-    @media (min-width: 820px) {
-      h1 {
-        font-size: 30px;
-      }
-      p {
-        font-size: 18px;
-        line-height: 33px;
-      }
     }
   }
 }
@@ -183,31 +151,6 @@ $light-gray: #979797;
     section {
       flex: 1;
     }
-    h1 {
-      font-size: 14px;
-    }
-    p {
-      font-size: 10px;
-    }
-  }
-  @media (min-width: 512px) {
-    button {
-      margin-top: 1.33rem;
-    }
-    h1 {
-      font-size: 20px;
-    }
-    p {
-      font-size: 14px;
-    }
-  }
-  @media (min-width: 820px) {
-    h1 {
-      font-size: 30px;
-    }
-    p {
-      font-size: 18px;
-    }
   }
 }
 
@@ -216,23 +159,44 @@ $light-gray: #979797;
   @include slide-inner;
 
   &-content {
+    &-heading {
+      font-size: 20px;
+      font-family: Lato, sans-serif;
+      font-weight: 900;
+      color: $heading-text-color;
+    }
+    &-text {
+      font-size: 14px;
+    }
     &-wallets {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       margin: 1rem 0;
-
-      img {
-        height: 112px;
-        width: 100px;
+    }
+  }
+  @media (min-width: 450px) {
+    &-content {
+      &-heading {
+        font-size: 24px;
       }
-      section:not(:last-child) {
-        margin-right: 1rem;
+      &-text {
+        font-size: 18px;
+      }
+      &-wallets {
+        flex-direction: row;
       }
     }
   }
   @media (min-width: 820px) {
     &-content {
       padding: 0 4rem;
+
+      &-heading {
+        font-size: 30px;
+      }
+      &-text {
+        font-size: 20px;
+      }
     }
   }
 }
