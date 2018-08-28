@@ -6,6 +6,8 @@ import chest from 'assets/images/v2-icn-chest.png';
 import bankVsMyCrypto from 'assets/images/v2-icn-bank-vs-mycrypto.png';
 import vault from 'assets/images/v2-icn-vault.png';
 import champagne from 'assets/images/v2-icn-champagne.png';
+import trezor from 'assets/images/v2-icn-trezor.png';
+import ledger from 'assets/images/v2-icn-ledger.png';
 import './OnboardingModal.scss';
 
 function ProgressDots({ currentStep = 1, totalSteps = 4 }) {
@@ -21,6 +23,15 @@ function ProgressDots({ currentStep = 1, totalSteps = 4 }) {
 
 function Slide({ children }) {
   return <section className="Slide">{children}</section>;
+}
+
+function HardwareWalletChoice({ image, text }) {
+  return (
+    <section className="HardwareWalletChoice">
+      <img className="HardwareWalletChoice-image" src={image} alt={text} />
+      <p className="HardwareWalletChoice-text">{text}</p>
+    </section>
+  );
 }
 
 function FirstSlide() {
@@ -90,7 +101,7 @@ function ThirdSlide() {
               <h1>You're responsible for...</h1>
               <ul>
                 <li>
-                  Keeping your informatin sage. This includes:{' '}
+                  Keeping your information safe. This includes:
                   <ul>
                     <li>Private Keys/Mnemonic Phrases</li>
                     <li>JSON files</li>
@@ -101,7 +112,7 @@ function ThirdSlide() {
                 <li>Reducing risk by using the MyCrypto downloadable app</li>
               </ul>
             </section>
-            <button className="Button second">Next</button>
+            <button className="Button">Next</button>
           </section>
         </section>
       </section>
@@ -109,12 +120,34 @@ function ThirdSlide() {
   );
 }
 
-export default function OnboardingModal({ currentSlide = 3 }) {
+function FourthSlide() {
+  return (
+    <Slide>
+      <section className="FourthSlide">
+        <section className="FourthSlide-content">
+          <h1>You're ready to get started!</h1>
+          <p>
+            Pro-Tip: in order for your funds to be the most secure, we recommend getting a hardware
+            wallet to use with MyCrypto. Here are a few options we love:
+          </p>
+          <section className="FourthSlide-content-wallets">
+            <HardwareWalletChoice image={trezor} text="Get a Trezor" />
+            <HardwareWalletChoice image={ledger} text="Get a Ledger" />
+          </section>
+          <p>Need more info before you dive in? See Support Center</p>
+          <button className="Button second">Get Started</button>
+        </section>
+      </section>
+    </Slide>
+  );
+}
+
+export default function OnboardingModal({ currentSlide = 4 }) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
   const dots = <ProgressDots currentStep={currentSlide} totalSteps={4} />;
-  const slides = [<FirstSlide />, <SecondSlide />, <ThirdSlide />];
+  const slides = [<FirstSlide />, <SecondSlide />, <ThirdSlide />, <FourthSlide />];
   const slide = slides[currentSlide - 1];
 
   return (

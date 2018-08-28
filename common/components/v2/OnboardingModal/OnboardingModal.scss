@@ -1,6 +1,7 @@
 $baby-blue: #1097c0;
 $heading-text-color: #4a4a4a;
 $button-primary: #067997;
+$light-gray: #979797;
 
 @mixin perfectly-centered {
   display: flex;
@@ -38,6 +39,26 @@ $button-primary: #067997;
       background: $baby-blue;
       border: 3px solid #fff;
     }
+  }
+}
+
+.HardwareWalletChoice {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem 1rem 0 1rem;
+  border: 1px solid $light-gray;
+
+  &-image {
+    @include perfectly-centered;
+
+    flex: 3;
+    margin-bottom: 1rem;
+  }
+  &-text {
+    @include perfectly-centered;
+
+    flex: 1;
   }
 }
 
@@ -190,6 +211,32 @@ $button-primary: #067997;
   }
 }
 
+.FourthSlide {
+  @include perfectly-centered;
+  @include slide-inner;
+
+  &-content {
+    &-wallets {
+      display: flex;
+      flex-direction: row;
+      margin: 1rem 0;
+
+      img {
+        height: 112px;
+        width: 100px;
+      }
+      section:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
+  @media (min-width: 820px) {
+    &-content {
+      padding: 0 4rem;
+    }
+  }
+}
+
 .Button {
   width: 120px;
   height: 50px;
@@ -269,6 +316,11 @@ $button-primary: #067997;
     }
     &-content {
       flex: 2;
+    }
+  }
+  @media (min-width: 820px) {
+    &-content {
+      flex: 3;
     }
   }
 }
