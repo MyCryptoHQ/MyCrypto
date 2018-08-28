@@ -168,12 +168,35 @@ $light-gray: #979797;
   @include perfectly-centered;
   @include slide-inner;
 
-  &-content {
-    display: flex;
-    flex-direction: column;
+  padding: 0 0.3rem;
 
-    section {
-      flex: 1;
+  ul,
+  li {
+    margin: 0;
+  }
+  h1 {
+    margin: 0.2rem;
+  }
+  button {
+    margin-top: 0.5rem;
+  }
+  &-content {
+    &-heading {
+      @include onboarding-modal-slide-heading;
+
+      font-size: 16px;
+    }
+    &-text {
+      @include onboarding-modal-slide-text;
+    }
+  }
+
+  @media (min-width: 450px) {
+    h1 {
+      margin: 1rem;
+    }
+    button {
+      margin-top: 1.33rem;
     }
   }
 }

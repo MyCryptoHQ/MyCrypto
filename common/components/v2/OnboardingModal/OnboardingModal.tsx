@@ -83,8 +83,8 @@ function ThirdSlide() {
     <section className="ThirdSlide">
       <section className="ThirdSlide-content">
         <section>
-          <h1>Please understand that we can't...</h1>
-          <ul>
+          <h1 className="ThirdSlide-content-heading">Please understand that we can't...</h1>
+          <ul className="ThirdSlide-content-text">
             <li>Access your funds for you</li>
             <li>Recover, reset, or modify ANY of your information</li>
             <li>Reverse, cancel, or refund transactions</li>
@@ -93,8 +93,8 @@ function ThirdSlide() {
         </section>
         <section>
           <section>
-            <h1>You're responsible for...</h1>
-            <ul>
+            <h1 className="ThirdSlide-content-heading">You're responsible for...</h1>
+            <ul className="ThirdSlide-content-text">
               <li>
                 Keeping your information safe. This includes:
                 <ul>
@@ -136,7 +136,7 @@ function FourthSlide() {
   );
 }
 
-export default function OnboardingModal({ currentSlide = 2 }) {
+export default function OnboardingModal({ currentSlide = 3 }) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
