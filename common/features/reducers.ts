@@ -17,8 +17,8 @@ import { MessageState } from './message/types';
 import { messageReducer } from './message/reducer';
 import { NotificationState } from './notifications/types';
 import { notificationsReducer } from './notifications/reducer';
-import { OnboardStatusState } from './onboardStatus/types';
-import { onboardStatusReducer } from './onboardStatus/reducer';
+import { OnboardingState } from './onboarding/types';
+import { onboardingReducer } from './onboarding/reducer';
 import { ParitySignerState } from './paritySigner/types';
 import { paritySignerReducer } from './paritySigner/reducer';
 import { RatesState } from './rates/types';
@@ -38,7 +38,7 @@ export interface AppState {
   // Custom reducers
   config: ConfigState;
   notifications: NotificationState;
-  onboardStatus: OnboardStatusState;
+  onboarding: OnboardingState;
   ens: ENSState;
   wallet: WalletState;
   customTokens: CustomTokensState;
@@ -60,7 +60,7 @@ export default combineReducers<AppState>({
   config: configReducer,
   swap: swapReducer,
   notifications: notificationsReducer,
-  onboardStatus: onboardStatusReducer,
+  onboarding: onboardingReducer,
   ens: ensReducer,
   wallet: walletReducer,
   customTokens: customTokensReducer,

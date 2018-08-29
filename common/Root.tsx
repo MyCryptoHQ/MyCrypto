@@ -6,6 +6,7 @@ import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-rout
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
+import { onboardingSelectors } from 'features/onboarding';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -20,7 +21,7 @@ import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
-import OnboardModal from 'containers/OnboardModal';
+// import OnboardModal from 'containers/OnboardModal';
 import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
@@ -36,6 +37,8 @@ interface OwnProps {
 }
 
 interface StateProps {
+  onboardingActive: ReturnType<typeof onboardingSelectors.getActive>;
+  onboardingSlide: ReturnType<typeof onboardingSelectors.getSlide>;
   networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
   theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
@@ -72,7 +75,7 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store } = this.props;
+    const { store, onboardingActive, onboardingSlide } = this.props;
     const { error } = this.state;
 
     if (error) {
@@ -110,7 +113,7 @@ class RootClass extends Component<Props, State> {
         <Provider store={store}>
           <Router>
             <React.Fragment>
-              <OnboardingModal />
+              {onboardingActive && <OnboardingModal currentSlide={onboardingSlide} />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
@@ -118,7 +121,7 @@ class RootClass extends Component<Props, State> {
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
               {!process.env.DOWNLOADABLE_BUILD && (
                 <React.Fragment>
-                  <OnboardModal />
+                  {/* <OnboardModal /> */}
                   {!process.env.BUILD_ELECTRON && <WelcomeModal />}
                 </React.Fragment>
               )}
@@ -206,6 +209,8 @@ const CaptureRouteNotFound = withRouter(({ children, location }) => {
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
+  onboardingActive: onboardingSelectors.getActive(state),
+  onboardingSlide: onboardingSelectors.getSlide(state),
   networkUnit: configSelectors.getNetworkUnit(state),
   theme: configMetaSelectors.getTheme(state)
 });

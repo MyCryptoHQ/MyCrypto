@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
+import { AppState } from 'features/reducers';
+import { onboardingActions, onboardingSelectors } from 'features/onboarding';
 import { Modal } from 'components/v2';
 import logo from 'assets/images/v2-logo.png';
 import chest from 'assets/images/v2-icn-chest.png';
@@ -10,16 +13,62 @@ import trezor from 'assets/images/v2-icn-trezor.png';
 import ledger from 'assets/images/v2-icn-ledger.png';
 import './OnboardingModal.scss';
 
-function ProgressDots({ currentStep = 1, totalSteps = 4 }) {
-  const dots = new Array(totalSteps).fill('ProgressDots-dot');
+function UnconnectedProgressDots({ currentStep, setSlide }) {
+  const dots = new Array(4).fill('ProgressDots-dot');
 
   // Replace the active page with a different dot.
   dots[currentStep - 1] = 'ProgressDots-dot ProgressDots-dot--active';
 
   return (
-    <section className="ProgressDots">{dots.map(dot => <div key={dot} className={dot} />)}</section>
+    <section className="ProgressDots">
+      {dots.map((dot, index) => (
+        <div key={index} className={dot} onClick={() => setSlide(index + 1)} />
+      ))}
+    </section>
   );
 }
+
+const ProgressDots = connect(
+  (state: AppState) => ({
+    currentStep: onboardingSelectors.getSlide(state)
+  }),
+  {
+    setSlide: onboardingActions.setOnboardingSlide
+  }
+)(UnconnectedProgressDots);
+
+function UnconnectedOnboardingButton({
+  className = '',
+  currentSlide,
+  completeOnboarding,
+  setSlide
+}) {
+  const fullClassName = `Button ${className || ''}`;
+  const nextSlide = currentSlide + 1;
+  let onClick = () => setSlide(nextSlide);
+  let text = 'Next';
+
+  if (nextSlide > 4) {
+    onClick = completeOnboarding;
+    text = 'Get Started';
+  }
+
+  return (
+    <button className={fullClassName} onClick={onClick}>
+      {text}
+    </button>
+  );
+}
+
+const OnboardingButton = connect(
+  (state: AppState) => ({
+    currentSlide: onboardingSelectors.getSlide(state)
+  }),
+  {
+    completeOnboarding: onboardingActions.completeOnboarding,
+    setSlide: onboardingActions.setOnboardingSlide
+  }
+)(UnconnectedOnboardingButton);
 
 function HardwareWalletChoice({ image, text }) {
   return (
@@ -43,7 +92,7 @@ function FirstSlide() {
           Please read the next few screens for your own safety. <br />
           Your funds could be stolen if you do not pay attention to these warnings.
         </p>
-        <button className="Button">Next</button>
+        <OnboardingButton />
       </section>
     </section>
   );
@@ -61,7 +110,7 @@ function SecondSlide() {
             They add fees <br />
             They tell you what you can do <br />
           </p>
-          <button className="Button horizontal">Next</button>
+          <OnboardingButton className="horizontal" />
         </section>
         <section className="SecondSlide-content-segment">
           <h1 className="SecondSlide-content-heading">With MyCrypto...</h1>
@@ -72,7 +121,7 @@ function SecondSlide() {
             You do whatever you want <br />
           </p>
         </section>
-        <button className="Button vertical">Next</button>
+        <OnboardingButton className="vertical" />
       </section>
     </section>
   );
@@ -107,7 +156,7 @@ function ThirdSlide() {
               <li>Reducing risk by using the MyCrypto downloadable app</li>
             </ul>
           </section>
-          <button className="Button">Next</button>
+          <OnboardingButton />
         </section>
       </section>
     </section>
@@ -130,17 +179,16 @@ function FourthSlide() {
         <p className="FourthSlide-content-text">
           Need more info before you dive in? See Support Center
         </p>
-        <button className="Button">Get Started</button>
+        <OnboardingButton />
       </section>
     </section>
   );
 }
 
-export default function OnboardingModal({ currentSlide = 3 }) {
+function OnboardingModal({ currentSlide }) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
-  const dots = <ProgressDots currentStep={currentSlide} totalSteps={4} />;
   const slides = [<FirstSlide />, <SecondSlide />, <ThirdSlide />, <FourthSlide />];
   const slide = slides[currentSlide - 1];
 
@@ -151,14 +199,22 @@ export default function OnboardingModal({ currentSlide = 3 }) {
         <section className="OnboardingModal-side">
           <section className="OnboardingModal-side-top">{logoImage}</section>
           <section className="OnboardingModal-side-content">{slideImage}</section>
-          <section className="OnboardingModal-side-bottom">{dots}</section>
+          <section className="OnboardingModal-side-bottom">
+            <ProgressDots />
+          </section>
         </section>
         <section className="OnboardingModal-content">{slide}</section>
         <section className="OnboardingModal-bottom">
           <section>{slideImage}</section>
-          <section>{dots}</section>
+          <section>
+            <ProgressDots />
+          </section>
         </section>
       </section>
     </Modal>
   );
 }
+
+export default connect((state: AppState) => ({
+  currentSlide: onboardingSelectors.getSlide(state)
+}))(OnboardingModal);
