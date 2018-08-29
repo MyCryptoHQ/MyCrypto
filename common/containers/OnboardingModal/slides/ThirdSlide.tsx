@@ -1,5 +1,6 @@
 import React from 'react';
 
+import translate from 'translations';
 import { OnboardingButton } from '../components';
 import './ThirdSlide.scss';
 
@@ -8,28 +9,36 @@ export default function ThirdSlide() {
     <section className="ThirdSlide">
       <section className="ThirdSlide-content">
         <section>
-          <h1 className="ThirdSlide-content-heading">Please understand that we can't...</h1>
+          <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_13')}</h1>
           <ul className="ThirdSlide-content-text">
-            <li>Access your funds for you</li>
-            <li>Recover, reset, or modify ANY of your information</li>
-            <li>Reverse, cancel, or refund transactions</li>
-            <li>Freeze accounts</li>
+            <li>{translate('ONBOARDING_TEXT_14')}</li>
+            <li>{translate('ONBOARDING_TEXT_15')}</li>
+            <li>{translate('ONBOARDING_TEXT_16')}</li>
+            <li>{translate('ONBOARDING_TEXT_17')}</li>
           </ul>
         </section>
         <section>
           <section>
-            <h1 className="ThirdSlide-content-heading">You're responsible for...</h1>
+            <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_18')}</h1>
             <ul className="ThirdSlide-content-text">
               <li>
-                Keeping your information safe. This includes:
+                {translate('ONBOARDING_TEXT_19')}
                 <ul>
-                  <li>Private Keys/Mnemonic Phrases</li>
-                  <li>JSON files</li>
-                  <li>Hardware wallet PINs</li>
+                  <li>{translate('ONBOARDING_TEXT_20')}</li>
+                  <li>{translate('ONBOARDING_TEXT_21')}</li>
+                  <li>{translate('ONBOARDING_TEXT_22')}</li>
                 </ul>
               </li>
-              <li>Making sure you're not on a phishing site</li>
-              <li>Reducing risk by using the MyCrypto downloadable app</li>
+              <li>
+                {translate('ONBOARDING_TEXT_23', {
+                  $link: 'https://etherscamdb.info/'
+                })}
+              </li>
+              <li>
+                {translate('ONBOARDING_TEXT_24', {
+                  $link: 'https://download.mycrypto.com/'
+                })}
+              </li>
             </ul>
           </section>
           <OnboardingButton />

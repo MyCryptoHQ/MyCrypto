@@ -105,14 +105,12 @@ class RootClass extends Component<Props, State> {
         ? HashRouter
         : BrowserRouter;
 
-    console.log();
-
     return (
       <React.Fragment>
         <Provider store={store}>
           <Router>
             <React.Fragment>
-              {!process.env.BUILD_DOWNLOADABLE && <OnboardingModal />}
+              {!process.env.BUILD_DOWNLOADABLE && !onboardingActive && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
