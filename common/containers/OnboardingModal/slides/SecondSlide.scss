@@ -4,9 +4,6 @@
   @include perfectly-centered;
   @include slide-inner;
 
-  button {
-    margin-top: 2rem;
-  }
   .vertical {
     display: block;
   }
@@ -15,17 +12,22 @@
   }
   &-content {
     &-heading {
-      @include onboarding-modal-slide-heading;
+      font-size: 22px;
+      font-family: Lato, sans-serif;
+      font-weight: 900;
+      color: $heading-text-color;
     }
     &-text {
-      @include onboarding-modal-slide-text;
+      font-size: 18px;
     }
     &-segment {
-      margin-bottom: 2rem;
+      &:first-of-type {
+        margin-bottom: 2rem;
+      }
     }
   }
 
-  @media (min-width: 450px) {
+  @media (min-width: 900px) {
     .vertical {
       display: none;
     }
@@ -34,8 +36,15 @@
     }
     &-content {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-evenly;
       width: 100%;
+    }
+  }
+  @media (min-height: 680px) {
+    &-content {
+      &-heading {
+        font-size: 30px;
+      }
     }
   }
 }

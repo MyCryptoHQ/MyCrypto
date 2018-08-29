@@ -5,9 +5,6 @@
   display: flex;
   border: 1px solid $light-gray;
 
-  &:not(:last-of-type) {
-    border-bottom: none;
-  }
   &-image {
     display: none;
   }
@@ -19,15 +16,22 @@
 
     p {
       margin: 0;
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 
-  @media (min-height: 600px) {
+  @media (min-height: 350px) {
+    padding: 0.5rem;
+
     &-image {
-      display: block;
       flex: 1;
-      padding: 0.5rem;
+      display: block;
+    }
+  }
+  @media (min-width: 600px) and (max-width: 730px) {
+    &-image {
+      width: 79px;
+      height: 70px;
     }
   }
   @media (min-width: 450px) {
@@ -35,7 +39,6 @@
 
     &:not(:last-of-type) {
       margin-right: 1rem;
-      border-bottom: 1px solid $light-gray;
     }
   }
 }

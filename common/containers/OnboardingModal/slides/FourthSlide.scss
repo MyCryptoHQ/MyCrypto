@@ -1,4 +1,5 @@
 @import 'common/sass/mixins.scss';
+@import 'common/sass/variables.scss';
 
 .FourthSlide {
   @include perfectly-centered;
@@ -6,10 +7,13 @@
 
   &-content {
     &-heading {
-      @include onboarding-modal-slide-heading;
+      font-family: Lato, sans-serif;
+      font-weight: 900;
+      font-size: 17px;
+      color: $heading-text-color;
     }
     &-text {
-      @include onboarding-modal-slide-text;
+      font-size: 12px;
     }
     &-wallets {
       display: flex;
@@ -27,6 +31,33 @@
   @media (min-width: 820px) {
     &-content {
       padding: 0 4rem;
+    }
+  }
+  @media (min-height: 600px) {
+    &-content {
+      &-text {
+        font-size: 14px;
+      }
+    }
+  }
+  @media (min-height: 770px) {
+    &-content {
+      &-heading {
+        font-size: 20px;
+      }
+      &-text {
+        font-size: 16px;
+      }
+    }
+  }
+  @media (min-width: 900px), (min-height: 1000px) {
+    &-content {
+      &-heading {
+        font-size: 30px;
+      }
+      &-text {
+        font-size: 18px;
+      }
     }
   }
 }

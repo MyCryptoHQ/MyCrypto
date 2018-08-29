@@ -105,23 +105,19 @@ class RootClass extends Component<Props, State> {
         ? HashRouter
         : BrowserRouter;
 
+    console.log();
+
     return (
       <React.Fragment>
         <Provider store={store}>
           <Router>
             <React.Fragment>
-              {onboardingActive && <OnboardingModal />}
+              {!process.env.BUILD_DOWNLOADABLE && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-              {!process.env.DOWNLOADABLE_BUILD && (
-                <React.Fragment>
-                  {/* <OnboardModal /> */}
-                  {!process.env.BUILD_ELECTRON && <WelcomeModal />}
-                </React.Fragment>
-              )}
             </React.Fragment>
           </Router>
         </Provider>

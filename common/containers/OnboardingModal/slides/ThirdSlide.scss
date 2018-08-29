@@ -5,7 +5,7 @@
   @include perfectly-centered;
   @include slide-inner;
 
-  padding: 0 0.3rem;
+  padding: 0 0.5rem;
 
   ul,
   li {
@@ -29,19 +29,19 @@
     }
   }
 
-  @media (min-width: 450px) and (min-height: 740px) {
+  @media (min-width: 450px) and (min-height: 860px) {
     h1 {
       margin: 1rem;
     }
     button {
-      margin-top: 1.33rem;
+      margin-top: 1rem;
     }
     &-content {
       &-heading {
-        font-size: 24px;
+        font-size: 18px;
       }
       &-text {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
   }

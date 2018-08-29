@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { AppState } from 'features/reducers';
 import { onboardingSelectors } from 'features/onboarding';
 import { Modal } from 'components/v2';
-import logo from 'assets/images/v2-logo.png';
-import chest from 'assets/images/v2-icn-chest.png';
-import bankVsMyCrypto from 'assets/images/v2-icn-bank-vs-mycrypto.png';
-import vault from 'assets/images/v2-icn-vault.png';
-import champagne from 'assets/images/v2-icn-champagne.png';
+import logo from 'assets/images/logo-mycrypto-white.svg';
+import chest from 'assets/images/icn-chest.svg';
+import bankVsMyCrypto from 'assets/images/icn-bank-vs-mycrypto.svg';
+import vault from 'assets/images/icn-vault.svg';
+import champagne from 'assets/images/icn-champagne.svg';
 import { ProgressDots } from './components';
 import { FirstSlide, SecondSlide, ThirdSlide, FourthSlide } from './slides';
 import './OnboardingModal.scss';
@@ -42,7 +42,7 @@ function OnboardingModal({ currentSlide }: StateProps) {
         </section>
         <section className="OnboardingModal-content">{slide}</section>
         <section className="OnboardingModal-bottom">
-          <section>{slideImage}</section>
+          <section className="OnboardingModal-bottom-image">{slideImage}</section>
           <section>
             <ProgressDots />
           </section>

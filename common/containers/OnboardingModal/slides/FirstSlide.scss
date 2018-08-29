@@ -1,4 +1,5 @@
 @import 'common/sass/mixins.scss';
+@import 'common/sass/variables.scss';
 
 .FirstSlide {
   @include perfectly-centered;
@@ -6,10 +7,13 @@
 
   &-content {
     &-heading {
-      @include onboarding-modal-slide-heading;
+      font-size: 26px;
+      font-family: Lato, sans-serif;
+      font-weight: 900;
+      color: $heading-text-color;
     }
     &-text {
-      @include onboarding-modal-slide-text;
+      font-size: 18px;
     }
   }
 

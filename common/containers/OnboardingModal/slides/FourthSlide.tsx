@@ -1,7 +1,7 @@
 import React from 'react';
 
-import trezor from 'assets/images/v2-icn-trezor.png';
-import ledger from 'assets/images/v2-icn-ledger.png';
+import trezor from 'assets/images/icn-trezor-new.svg';
+import ledger from 'assets/images/icn-ledger-nano.svg';
 import { HardwareWalletChoice, OnboardingButton } from '../components';
 import './FourthSlide.scss';
 
