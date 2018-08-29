@@ -13,8 +13,16 @@ export default function FourthSlide() {
         <h1 className="FourthSlide-content-heading">{translate('ONBOARDING_TEXT_25')}</h1>
         <p className="FourthSlide-content-text">{translate('ONBOARDING_TEXT_26')}</p>
         <section className="FourthSlide-content-wallets">
-          <HardwareWalletChoice image={trezor} text={translateRaw('ONBOARDING_TEXT_27')} />
-          <HardwareWalletChoice image={ledger} text={translateRaw('ONBOARDING_TEXT_28')} />
+          <HardwareWalletChoice
+            image={trezor}
+            text={translateRaw('ONBOARDING_TEXT_27')}
+            link="https://shop.trezor.io/?a=mycrypto.com"
+          />
+          <HardwareWalletChoice
+            image={ledger}
+            text={translateRaw('ONBOARDING_TEXT_28')}
+            link="https://www.ledgerwallet.com/r/1985?path=/products/"
+          />
         </section>
         <p className="FourthSlide-content-text">
           {translate('ONBOARDING_TEXT_29', {

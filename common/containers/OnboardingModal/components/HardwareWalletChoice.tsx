@@ -5,17 +5,18 @@ import './HardwareWalletChoice.scss';
 interface Props {
   image: string;
   text: string;
+  link: string;
 }
 
-export default function HardwareWalletChoice({ image, text }: Props) {
+export default function HardwareWalletChoice({ image, text, link }: Props) {
   return (
-    <section className="HardwareWalletChoice">
+    <a href={link} className="HardwareWalletChoice">
       <section className="HardwareWalletChoice-image">
         <img src={image} alt={text} />
       </section>
       <section className="HardwareWalletChoice-text">
         <p>{text}</p>
       </section>
-    </section>
+    </a>
   );
 }

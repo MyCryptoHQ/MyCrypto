@@ -2,6 +2,7 @@
 @import 'common/sass/variables.scss';
 
 .HardwareWalletChoice {
+  position: relative;
   display: flex;
   border: 1px solid $light-gray;
 
@@ -17,6 +18,7 @@
     p {
       margin: 0;
       font-size: 16px;
+      color: $light-gray;
     }
   }
 
@@ -28,17 +30,18 @@
       display: block;
     }
   }
-  @media (min-width: 600px) and (max-width: 730px) {
-    &-image {
-      width: 79px;
-      height: 70px;
-    }
-  }
-  @media (min-width: 450px) {
+  @media (min-width: 450px) and (min-height: 780px) {
     flex-direction: column;
 
     &:not(:last-of-type) {
       margin-right: 1rem;
+    }
+    &-image {
+      margin-bottom: 2rem;
+    }
+    &-text {
+      position: absolute;
+      bottom: 0;
     }
   }
 }
