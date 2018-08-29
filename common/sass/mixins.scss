@@ -117,3 +117,48 @@
     @content;
   }
 }
+
+/* --- */
+
+@mixin perfectly-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin baby-blue {
+  background: $baby-blue;
+  color: #fff;
+}
+
+@mixin slide-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0 2rem;
+}
+
+@mixin onboarding-modal-slide-heading {
+  font-size: 20px;
+  font-family: Lato, sans-serif;
+  font-weight: 900;
+  color: $heading-text-color;
+
+  @media (min-width: 450px) {
+    font-size: 24px;
+  }
+  @media (min-width: 820px) {
+    font-size: 30px;
+  }
+}
+
+@mixin onboarding-modal-slide-text {
+  font-size: 14px;
+
+  @media (min-width: 450px) {
+    font-size: 18px;
+  }
+  @media (min-width: 820px) {
+    font-size: 20px;
+  }
+}

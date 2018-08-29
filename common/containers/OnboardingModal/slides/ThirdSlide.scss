@@ -1,0 +1,65 @@
+@import 'common/sass/mixins.scss';
+@import 'common/sass/variables.scss';
+
+.ThirdSlide {
+  @include perfectly-centered;
+  @include slide-inner;
+
+  padding: 0 0.3rem;
+
+  ul,
+  li {
+    margin: 0;
+  }
+  h1 {
+    margin: 0.2rem;
+  }
+  button {
+    margin-top: 0.5rem;
+  }
+  &-content {
+    &-heading {
+      font-family: Lato, sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      color: $heading-text-color;
+    }
+    &-text {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 450px) and (min-height: 740px) {
+    h1 {
+      margin: 1rem;
+    }
+    button {
+      margin-top: 1.33rem;
+    }
+    &-content {
+      &-heading {
+        font-size: 24px;
+      }
+      &-text {
+        font-size: 18px;
+      }
+    }
+  }
+  @media (min-width: 600px) and (max-width: 840px) {
+    &-content {
+      &-heading {
+        font-size: 18px;
+      }
+      &-text {
+        font-size: 14px;
+      }
+    }
+  }
+  @media (min-width: 820px) {
+    &-content {
+      &-heading {
+        font-size: 30px;
+      }
+    }
+  }
+}

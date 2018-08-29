@@ -1,0 +1,41 @@
+@import 'common/sass/mixins.scss';
+@import 'common/sass/variables.scss';
+
+.HardwareWalletChoice {
+  display: flex;
+  border: 1px solid $light-gray;
+
+  &:not(:last-of-type) {
+    border-bottom: none;
+  }
+  &-image {
+    display: none;
+  }
+  &-text {
+    @include perfectly-centered;
+
+    flex: 3;
+    padding: 0.5rem;
+
+    p {
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+
+  @media (min-height: 600px) {
+    &-image {
+      display: block;
+      flex: 1;
+      padding: 0.5rem;
+    }
+  }
+  @media (min-width: 450px) {
+    flex-direction: column;
+
+    &:not(:last-of-type) {
+      margin-right: 1rem;
+      border-bottom: 1px solid $light-gray;
+    }
+  }
+}

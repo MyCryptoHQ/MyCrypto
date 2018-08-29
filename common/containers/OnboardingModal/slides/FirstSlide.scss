@@ -1,0 +1,19 @@
+@import 'common/sass/mixins.scss';
+
+.FirstSlide {
+  @include perfectly-centered;
+  @include slide-inner;
+
+  &-content {
+    &-heading {
+      @include onboarding-modal-slide-heading;
+    }
+    &-text {
+      @include onboarding-modal-slide-text;
+    }
+  }
+
+  @media (min-width: 820px) {
+    padding: 0 4rem;
+  }
+}

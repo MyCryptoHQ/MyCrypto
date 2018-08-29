@@ -8,7 +8,7 @@ export function completeOnboarding(): types.CompleteOnboardingAction {
 }
 
 export type TSetOnboardingSlide = typeof setOnboardingSlide;
-export function setOnboardingSlide(slideNumber: types.slideNumber): types.SetOnboardingSlideAction {
+export function setOnboardingSlide(slideNumber: number): types.SetOnboardingSlideAction {
   return {
     type: types.OnboardingActions.SET_SLIDE,
     payload: slideNumber

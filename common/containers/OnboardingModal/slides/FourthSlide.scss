@@ -1,0 +1,32 @@
+@import 'common/sass/mixins.scss';
+
+.FourthSlide {
+  @include perfectly-centered;
+  @include slide-inner;
+
+  &-content {
+    &-heading {
+      @include onboarding-modal-slide-heading;
+    }
+    &-text {
+      @include onboarding-modal-slide-text;
+    }
+    &-wallets {
+      display: flex;
+      flex-direction: column;
+      margin: 1rem 0;
+    }
+  }
+  @media (min-width: 450px) {
+    &-content {
+      &-wallets {
+        flex-direction: row;
+      }
+    }
+  }
+  @media (min-width: 820px) {
+    &-content {
+      padding: 0 4rem;
+    }
+  }
+}

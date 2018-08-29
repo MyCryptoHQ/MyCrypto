@@ -1,5 +1,3 @@
-export type slideNumber = 1 | 2 | 3 | 4;
-
 export interface OnboardingState {
   active: boolean;
   slide: number;
@@ -16,7 +14,7 @@ export interface CompleteOnboardingAction {
 
 export interface SetOnboardingSlideAction {
   type: OnboardingActions.SET_SLIDE;
-  payload: slideNumber;
+  payload: number;
 }
 
 export type OnboardingAction = CompleteOnboardingAction | SetOnboardingSlideAction;

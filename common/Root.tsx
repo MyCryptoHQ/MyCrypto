@@ -21,7 +21,7 @@ import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
-// import OnboardModal from 'containers/OnboardModal';
+import OnboardingModal from 'containers/OnboardingModal';
 import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
@@ -29,8 +29,6 @@ import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { Theme } from 'config';
 import 'what-input';
-
-import { OnboardingModal } from 'components/v2';
 
 interface OwnProps {
   store: Store<AppState>;
