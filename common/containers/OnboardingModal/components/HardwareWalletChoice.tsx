@@ -2,10 +2,10 @@ import React from 'react';
 
 import './HardwareWalletChoice.scss';
 
-type Props = {
+interface Props {
   image: string;
   text: string;
-};
+}
 
 export default function HardwareWalletChoice({ image, text }: Props) {
   return (

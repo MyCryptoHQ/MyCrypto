@@ -5,13 +5,13 @@ import { AppState } from 'features/reducers';
 import { onboardingActions, onboardingSelectors } from 'features/onboarding';
 import './ProgressDots.scss';
 
-type StateProps = {
+interface StateProps {
   currentStep: ReturnType<typeof onboardingSelectors.getSlide>;
-};
+}
 
-type DispatchProps = {
+interface DispatchProps {
   setSlide: onboardingActions.TSetOnboardingSlide;
-};
+}
 
 type Props = StateProps & DispatchProps;
 

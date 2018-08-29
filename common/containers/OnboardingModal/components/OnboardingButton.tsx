@@ -5,18 +5,18 @@ import { AppState } from 'features/reducers';
 import { onboardingActions, onboardingSelectors } from 'features/onboarding';
 import './OnboardingButton.scss';
 
-type OwnProps = {
+interface OwnProps {
   className?: string;
-};
+}
 
-type StateProps = {
+interface StateProps {
   currentSlide: ReturnType<typeof onboardingSelectors.getSlide>;
-};
+}
 
-type DispatchProps = {
+interface DispatchProps {
   completeOnboarding: onboardingActions.TCompleteOnboarding;
   setSlide: onboardingActions.TSetOnboardingSlide;
-};
+}
 
 type Props = OwnProps & StateProps & DispatchProps;
 

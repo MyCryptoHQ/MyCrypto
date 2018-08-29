@@ -36,7 +36,6 @@ interface OwnProps {
 
 interface StateProps {
   onboardingActive: ReturnType<typeof onboardingSelectors.getActive>;
-  onboardingSlide: ReturnType<typeof onboardingSelectors.getSlide>;
   networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
   theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
@@ -73,7 +72,7 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store, onboardingActive, onboardingSlide } = this.props;
+    const { store, onboardingActive } = this.props;
     const { error } = this.state;
 
     if (error) {
@@ -111,7 +110,7 @@ class RootClass extends Component<Props, State> {
         <Provider store={store}>
           <Router>
             <React.Fragment>
-              {onboardingActive && <OnboardingModal currentSlide={onboardingSlide} />}
+              {onboardingActive && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
@@ -208,7 +207,6 @@ const CaptureRouteNotFound = withRouter(({ children, location }) => {
 
 const mapStateToProps = (state: AppState): StateProps => ({
   onboardingActive: onboardingSelectors.getActive(state),
-  onboardingSlide: onboardingSelectors.getSlide(state),
   networkUnit: configSelectors.getNetworkUnit(state),
   theme: configMetaSelectors.getTheme(state)
 });

@@ -13,15 +13,20 @@ import { ProgressDots } from './components';
 import { FirstSlide, SecondSlide, ThirdSlide, FourthSlide } from './slides';
 import './OnboardingModal.scss';
 
-type StateProps = {
+interface StateProps {
   currentSlide: ReturnType<typeof onboardingSelectors.getSlide>;
-};
+}
 
 function OnboardingModal({ currentSlide }: StateProps) {
   const images = [chest, bankVsMyCrypto, vault, champagne];
   const logoImage = <img src={logo} alt="MyCrypto logo" />;
   const slideImage = <img src={images[currentSlide - 1]} alt="Slide art" />;
-  const slides = [<FirstSlide />, <SecondSlide />, <ThirdSlide />, <FourthSlide />];
+  const slides = [
+    <FirstSlide key={1} />,
+    <SecondSlide key={2} />,
+    <ThirdSlide key={3} />,
+    <FourthSlide key={4} />
+  ];
   const slide = slides[currentSlide - 1];
 
   return (
