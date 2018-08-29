@@ -10,7 +10,7 @@ import { NetworkConfig } from 'types/network';
 import { Balance } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { ratesActions } from 'features/rates';
 import { walletTypes } from 'features/wallet';
 import { UnitDisplay, Spinner } from 'components/ui';
@@ -324,10 +324,10 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
     tokenBalances: selectors.getShownTokenBalances(state, true),
-    network: getNetworkConfig(state),
+    network: configSelectors.getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,
-    isOffline: getOffline(state)
+    isOffline: configMetaSelectors.getOffline(state)
   };
 }
 

@@ -20,7 +20,7 @@ import {
   stopLoadShapeshiftRatesSwap,
   TStopLoadShapeshiftRatesSwap
 } from 'features/swap/actions';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
@@ -181,7 +181,7 @@ class CurrentRates extends PureComponent<Props> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    isOffline: getOffline(state),
+    isOffline: configMetaSelectors.getOffline(state),
     provider: state.swap.provider,
     bityRates: state.swap.bityRates,
     shapeshiftRates: state.swap.shapeshiftRates

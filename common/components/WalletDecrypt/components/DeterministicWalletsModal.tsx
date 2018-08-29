@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 import * as selectors from 'features/selectors';
 import {
   deterministicWalletsTypes,
@@ -31,7 +31,7 @@ interface StateProps {
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
   desiredToken: AppState['deterministicWallets']['desiredToken'];
-  network: ReturnType<typeof getNetworkConfig>;
+  network: ReturnType<typeof configSelectors.getNetworkConfig>;
   tokens: ReturnType<typeof selectors.getTokens>;
 }
 
@@ -342,7 +342,7 @@ function mapStateToProps(state: AppState): StateProps {
     addressLabels: addressBookSelectors.getAddressLabels(state),
     wallets: state.deterministicWallets.wallets,
     desiredToken: state.deterministicWallets.desiredToken,
-    network: getNetworkConfig(state),
+    network: configSelectors.getNetworkConfig(state),
     tokens: selectors.getTokens(state)
   };
 }
