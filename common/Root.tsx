@@ -4,7 +4,7 @@ import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 
 import { AppState } from 'features/reducers';
-import { getNetworkUnit, getTheme } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
@@ -34,8 +34,8 @@ interface OwnProps {
 }
 
 interface StateProps {
-  networkUnit: ReturnType<typeof getNetworkUnit>;
-  theme: ReturnType<typeof getTheme>;
+  networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
+  theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
 
 interface DispatchProps {
@@ -203,8 +203,8 @@ const CaptureRouteNotFound = withRouter(({ children, location }) => {
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  networkUnit: getNetworkUnit(state),
-  theme: getTheme(state)
+  networkUnit: configSelectors.getNetworkUnit(state),
+  theme: configMetaSelectors.getTheme(state)
 });
 
 export default connect(mapStateToProps, {

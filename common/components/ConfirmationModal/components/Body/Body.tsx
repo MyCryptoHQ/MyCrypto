@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 import { Addresses } from './components/Addresses';
 import { Amounts } from './components/Amounts';
 import { Details } from './components/Details';
@@ -55,7 +55,7 @@ class BodyClass extends React.Component<StateProps, State> {
 
 const mapStateToProps = (state: AppState): StateProps => {
   return {
-    network: getNetworkConfig(state)
+    network: configSelectors.getNetworkConfig(state)
   };
 };
 

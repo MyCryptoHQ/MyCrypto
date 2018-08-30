@@ -6,7 +6,7 @@ import translate, { translateRaw } from 'translations';
 import { LedgerWallet } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig, getPaths, getSingleDPath } from 'features/config';
+import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { Spinner, NewTabLink, HelpLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
@@ -172,9 +172,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    dPath: getSingleDPath(state, SecureWalletName.LEDGER_NANO_S),
-    dPaths: getPaths(state, SecureWalletName.LEDGER_NANO_S),
-    network: getNetworkConfig(state)
+    dPath: configSelectors.getSingleDPath(state, SecureWalletName.LEDGER_NANO_S),
+    dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.LEDGER_NANO_S),
+    network: configSelectors.getNetworkConfig(state)
   };
 }
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { StaticNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
-import { getNodeConfig } from 'features/config';
+import { configNodesSelectors } from 'features/config';
 
 interface StateProps {
   node: StaticNodeConfig;
@@ -24,5 +24,5 @@ class NodeClass extends Component<StateProps, {}> {
 }
 
 export const Node = connect((state: AppState) => ({
-  node: getNodeConfig(state)
+  node: configNodesSelectors.getNodeConfig(state)
 }))(NodeClass);

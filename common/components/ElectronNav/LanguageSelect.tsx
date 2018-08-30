@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { languages } from 'config';
 import { AppState } from 'features/reducers';
-import { getLanguageSelection, TChangeLanguage, changeLanguage } from 'features/config';
+import { configMetaActions, configMetaSelectors } from 'features/config';
 import './LanguageSelect.scss';
 
 interface OwnProps {
@@ -16,7 +16,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  changeLanguage: TChangeLanguage;
+  changeLanguage: configMetaActions.TChangeLanguage;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -50,9 +50,9 @@ class LanguageSelect extends React.Component<Props> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    languageSelection: getLanguageSelection(state)
+    languageSelection: configMetaSelectors.getLanguageSelection(state)
   }),
   {
-    changeLanguage
+    changeLanguage: configMetaActions.changeLanguage
   }
 )(LanguageSelect);

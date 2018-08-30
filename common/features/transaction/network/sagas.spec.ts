@@ -16,9 +16,7 @@ import { cloneableGenerator, SagaIteratorClone, createMockTask } from 'redux-sag
 import { Wei, Nonce } from 'libs/units';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import * as derivedSelectors from 'features/selectors';
-import * as configMetaTypes from 'features/config/meta/types';
-import * as configMetaSelectors from 'features/config/meta/selectors';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
+import { configMetaTypes, configMetaSelectors, configNodesSelectors } from 'features/config';
 import { walletTypes, walletSelectors } from 'features/wallet';
 import { scheduleActions, scheduleSelectors } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
@@ -116,7 +114,7 @@ describe('Network Sagas', () => {
             transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP,
             transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP,
             transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP,
-            configMetaTypes.CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
+            configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT
           ])
         );
       });

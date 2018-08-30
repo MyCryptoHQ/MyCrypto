@@ -31,8 +31,8 @@ import {
   AQUA_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
-import { StaticNetworksState } from './types';
 import { TAB } from 'components/Header/components/constants';
+import * as types from './types';
 
 const testnetDefaultGasPrice = {
   min: 0.1,
@@ -40,7 +40,7 @@ const testnetDefaultGasPrice = {
   initial: 4
 };
 
-export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
+export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
   ETH: {
     id: 'ETH',
     name: 'Ethereum',
@@ -571,7 +571,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
 };
 
 export function staticNetworksReducer(
-  state: StaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
+  state: types.ConfigStaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
   action: any
 ) {
   switch (action.type) {
