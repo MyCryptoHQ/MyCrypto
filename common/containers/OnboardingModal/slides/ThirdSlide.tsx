@@ -2,14 +2,13 @@ import React from 'react';
 
 import translate from 'translations';
 import { OnboardingButton } from '../components';
-import './ThirdSlide.scss';
 
 export default function ThirdSlide() {
   return (
     <section className="ThirdSlide">
       <section>
-        <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_13')}</h1>
-        <ul className="ThirdSlide-content-text">
+        <h1>{translate('ONBOARDING_TEXT_13')}</h1>
+        <ul>
           <li>{translate('ONBOARDING_TEXT_14')}</li>
           <li>{translate('ONBOARDING_TEXT_15')}</li>
           <li>{translate('ONBOARDING_TEXT_16')}</li>
@@ -18,8 +17,8 @@ export default function ThirdSlide() {
       </section>
       <section>
         <section>
-          <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_18')}</h1>
-          <ul className="ThirdSlide-content-text">
+          <h1>{translate('ONBOARDING_TEXT_18')}</h1>
+          <ul>
             <li>
               {translate('ONBOARDING_TEXT_19')}
               <ul>

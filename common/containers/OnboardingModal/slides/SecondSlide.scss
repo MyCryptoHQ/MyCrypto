@@ -1,4 +1,22 @@
 @import 'common/sass/mixins.scss';
 
 .SecondSlide {
+  .horizontal {
+    display: none;
+  }
+
+  @media (min-width: 700px) {
+    display: flex;
+    justify-content: space-between;
+
+    section:first-of-type {
+      margin-right: 1rem;
+    }
+    .horizontal {
+      display: block;
+    }
+    .vertical {
+      display: none;
+    }
+  }
 }
