@@ -46,23 +46,6 @@ function OnboardingModal({ currentSlide }: StateProps) {
           <ProgressDots />
         </section>
       </section>
-      {/* <section className="OnboardingModal">
-        <section className="OnboardingModal-top">{logoImage}</section>
-        <section className="OnboardingModal-side">
-          <section className="OnboardingModal-side-top">{logoImage}</section>
-          <section className="OnboardingModal-side-content">{slideImage}</section>
-          <section className="OnboardingModal-side-bottom">
-            <ProgressDots />
-          </section>
-        </section>
-        <section className="OnboardingModal-content">{slide}</section>
-        <section className="OnboardingModal-bottom">
-          <section className="OnboardingModal-bottom-image">{slideImage}</section>
-          <section>
-            <ProgressDots />
-          </section>
-        </section>
-      </section> */}
     </Modal>
   );
 }
