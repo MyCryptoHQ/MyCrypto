@@ -4,9 +4,23 @@ import { toBuffer } from 'ethereumjs-util';
 import { ICurrentValue } from 'features/types';
 import { toWei, gasPriceToBase, Address, Wei, getDecimalFromEtherUnit } from '../units';
 import RequestFactory from './contracts/RequestFactory';
+import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
 
 const ETHER_DECIMALS = getDecimalFromEtherUnit('ether');
 const TIME_BOUNTY_MIN = Wei('1');
+
+interface IEacContracts {
+  blockScheduler: string;
+  requestFactory: string;
+  timestampScheduler: string;
+}
+
+interface IEacAddresses {
+  ETHEREUM: IEacContracts;
+  KOVAN: IEacContracts;
+  ROPSTEN: IEacContracts;
+  [key: string]: IEacContracts;
+}
 
 export const EAC_SCHEDULING_CONFIG = {
   DAPP_ADDRESS: 'https://app.chronologic.network',
@@ -27,12 +41,26 @@ export const EAC_SCHEDULING_CONFIG = {
   BOUNTY_TO_DEPOSIT_MULTIPLIER: 2
 };
 
-export const EAC_ADDRESSES = {
+export const EAC_ADDRESSES: IEacAddresses = {
+  ETHEREUM: {
+    blockScheduler: '0x56efae8a6d07fb29c24e67d76f3eccac180cf527',
+    requestFactory: '0xff5c4b7ec93dd70b862af027bb7f3d9900002c4d',
+    timestampScheduler: '0x09e0c54ed4cffca45d691d5eb7b976d650f5904c'
+  },
   KOVAN: {
     blockScheduler: '0x394ce9fe06c72f18e5a845842974f0c1224b1ff5',
     requestFactory: '0x98c128b3d8a0ac240f7b7dd4969ea0ad54f9d330',
     timestampScheduler: '0x31bbbf5180f2bd9c213e2e1d91a439677243268a'
+  },
+  ROPSTEN: {
+    blockScheduler: '0x8f10f41122dfc5ac376f0ffada2d6279b4edfefd',
+    requestFactory: '0x4fa38929055dc881f656532ff778c501c4be9825',
+    timestampScheduler: '0xccba4b0187191a040bd9f9e4d00f1dbe49c68aad'
   }
+};
+
+export const networkSupportsScheduling = (network: string) => {
+  return EAC_ADDRESSES.hasOwnProperty(network.toUpperCase());
 };
 
 export const calcEACFutureExecutionCost = (
@@ -210,9 +238,14 @@ export const getTXDetailsCheckURL = (txHash: string) => {
   return `${EAC_SCHEDULING_CONFIG.DAPP_ADDRESS}/awaiting/scheduler/${txHash}`;
 };
 
-export const getSchedulerAddress = (scheduleType: string | null): Address =>
-  Address(
+export const getSchedulerAddress = (
+  scheduleType: string | null,
+  network: CustomNetworkConfig | StaticNetworkConfig
+): Address => {
+  const networkName = network.name.toUpperCase();
+  return Address(
     scheduleType === 'time'
-      ? EAC_ADDRESSES.KOVAN.timestampScheduler
-      : EAC_ADDRESSES.KOVAN.blockScheduler
+      ? EAC_ADDRESSES[networkName].timestampScheduler
+      : EAC_ADDRESSES[networkName].blockScheduler
   );
+};

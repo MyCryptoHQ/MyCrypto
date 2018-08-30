@@ -301,7 +301,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   }
 
   const transactionOptions = {
-    to: getSchedulerAddress(scheduleType.value),
+    to: getSchedulerAddress(scheduleType.value, configSelectors.getNetworkConfig(state)),
     data: transactionData,
     gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
     gasPrice: gasPrice.value,
@@ -354,6 +354,8 @@ export interface IGetValidateScheduleParamsCallPayload {
 export const getValidateScheduleParamsCallPayload = (
   state: AppState
 ): IGetValidateScheduleParamsCallPayload | undefined => {
+  const currentNetworkName = configSelectors.getNetworkConfig(state).name;
+
   const wallet = walletSelectors.getWalletInst(state);
   const currentTo = getCurrentTo(state);
   const currentValue = getCurrentValue(state);
@@ -415,7 +417,7 @@ export const getValidateScheduleParamsCallPayload = (
   );
 
   return {
-    to: EAC_ADDRESSES.KOVAN.requestFactory,
+    to: EAC_ADDRESSES[currentNetworkName.toUpperCase()].requestFactory,
     data
   };
 };
