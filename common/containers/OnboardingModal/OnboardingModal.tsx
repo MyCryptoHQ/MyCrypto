@@ -33,12 +33,18 @@ function OnboardingModal({ currentSlide }: StateProps) {
     <Modal>
       <section className="OnboardingModal">
         <section className="OnboardingModal-top">{logoImage}</section>
+        <section className="OnboardingModal-side">
+          <section className="OnboardingModal-side-top">{logoImage}</section>
+          <section className="OnboardingModal-side-middle">{slideImage}</section>
+          <section className="OnboardingModal-side-bottom">
+            <ProgressDots />
+          </section>
+        </section>
         <section className="OnboardingModal-middle">{slide}</section>
         <section className="OnboardingModal-bottom">
           {slideImage}
           <ProgressDots />
         </section>
-        <section className="OnboardingModal-full">2</section>
       </section>
       {/* <section className="OnboardingModal">
         <section className="OnboardingModal-top">{logoImage}</section>

@@ -29,6 +29,46 @@
     img {
       transform: scale(0.5);
     }
+
+    @media (min-width: 500px) {
+      display: none;
+    }
+  }
+  &-side {
+    display: none;
+
+    @media (min-width: 500px) {
+      @include baby-blue;
+
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px 0 0 6px;
+
+      &-top {
+        @include perfectly-centered;
+
+        flex: 1;
+
+        img {
+          transform: scale(0.7);
+        }
+      }
+      &-middle {
+        @include perfectly-centered;
+
+        flex: 3;
+
+        img {
+          transform: scale(0.7);
+        }
+      }
+      &-bottom {
+        @include perfectly-centered;
+
+        flex: 1;
+      }
+    }
   }
   &-middle {
     flex: 4;
@@ -44,6 +84,7 @@
     }
     // A couple of slides that require scrolling need to overcome
     // the inability for padding to take effect.
+    .SecondSlide,
     .ThirdSlide,
     .FourthSlide {
       button {
@@ -63,133 +104,15 @@
       width: 60px;
       height: 60px;
     }
+
+    @media (min-width: 500px) {
+      display: none;
+    }
   }
 
   @media (min-width: 500px) {
-    display: none;
-  }
-  &-full {
-    display: none;
-
-    @media (min-width: 500px) {
-      display: flex;
-    }
+    flex-direction: row;
+    max-width: 1000px;
+    max-height: 600px;
   }
 }
-
-// .OnboardingModal {
-//   display: flex;
-//   flex-direction: column;
-//   width: 80vw;
-//   height: 90vh;
-
-//   &-top {
-//     @include baby-blue;
-//     @include perfectly-centered;
-
-//     flex: 1;
-
-//     img {
-//       transform: scale(0.5);
-//     }
-//   }
-//   &-side {
-//     display: none;
-//   }
-//   &-content {
-//     flex: 3;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     justify-content: center;
-//     overflow-y: auto;
-
-//     h1 {
-//       @include onboarding-modal-slide-heading;
-//     }
-//     p {
-//       @include onboarding-modal-slide-text;
-//     }
-//     ul {
-//       padding-left: 20px;
-//     }
-//     > section {
-//       flex: 1;
-//       padding: 2rem;
-
-//       > section {
-//         @include perfectly-centered;
-
-//         flex: 1;
-//       }
-//     }
-//   }
-//   &-bottom {
-//     @include baby-blue;
-
-//     display: flex;
-//     align-items: center;
-
-//     flex: 1;
-
-//     img {
-//       width: auto;
-//       height: 70px;
-//     }
-//     section {
-//       @include perfectly-centered;
-
-//       flex: 1;
-//     }
-//   }
-//   @media (min-width: 550px) {
-//     flex-direction: row;
-
-//     &-top,
-//     &-bottom {
-//       display: none;
-//     }
-//     &-side {
-//       @include baby-blue;
-//       @include perfectly-centered;
-
-//       display: flex;
-//       min-width: 25vw;
-//       min-height: 90vh;
-//       flex: 1;
-//       flex-direction: column;
-
-//       &-top {
-//         @include perfectly-centered;
-
-//         flex: 1;
-
-//         img {
-//           width: auto;
-//           height: 30px;
-//         }
-//       }
-//       &-content {
-//         @include perfectly-centered;
-
-//         flex: 3;
-//         padding: 2rem;
-//       }
-//       &-bottom {
-//         @include perfectly-centered;
-
-//         flex: 1;
-//       }
-//     }
-//     &-content {
-//       flex: 2;
-//       min-width: 40vw;
-//       min-height: 90vh;
-//     }
-//   }
-//   @media (min-width: 820px) {
-//     &-content {
-//       flex: 3;
-//     }
-//   }
-// }
