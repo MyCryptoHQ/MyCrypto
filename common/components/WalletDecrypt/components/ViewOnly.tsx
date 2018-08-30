@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getIsValidAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import { Input } from 'components/ui';
 import { AddressField } from 'components';
 import './ViewOnly.scss';
@@ -14,7 +14,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  isValidAddress: ReturnType<typeof getIsValidAddressFn>;
+  isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
 }
 
 type Props = OwnProps & StateProps;
@@ -106,5 +106,5 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 }
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
-  isValidAddress: getIsValidAddressFn(state)
+  isValidAddress: configSelectors.getIsValidAddressFn(state)
 }))(ViewOnlyDecryptClass);

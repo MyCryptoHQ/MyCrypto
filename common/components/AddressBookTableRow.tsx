@@ -77,7 +77,9 @@ class AddressBookTableRow extends React.Component<Props> {
               </label>
               <Input
                 name={labelName}
-                title={`${translateRaw('EDIT_LABEL_FOR')} ${address}`}
+                title={translateRaw('EDIT_LABEL_FOR', {
+                  $address: address
+                })}
                 value={temporaryLabel}
                 onChange={this.handleLabelChange}
                 onKeyDown={this.handleKeyDown}

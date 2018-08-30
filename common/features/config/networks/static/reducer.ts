@@ -27,11 +27,12 @@ import {
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
-  ESN_DEFAULT
+  ESN_DEFAULT,
+  AQUA_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
-import { StaticNetworksState } from './types';
 import { TAB } from 'components/Header/components/constants';
+import * as types from './types';
 
 const testnetDefaultGasPrice = {
   min: 0.1,
@@ -39,7 +40,7 @@ const testnetDefaultGasPrice = {
   initial: 4
 };
 
-export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
+export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
   ETH: {
     id: 'ETH',
     name: 'Ethereum',
@@ -272,11 +273,12 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       name: 'Ellaism Explorer',
       origin: 'https://explorer.ellaism.org'
     }),
-    tokens: [],
+    tokens: require('config/tokens/ella.json'),
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
       [SecureWalletName.SAFE_T]: ELLA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
     },
     gasPriceSettings: {
@@ -541,11 +543,35 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       max: 60,
       initial: 20
     }
+  },
+  AQUA: {
+    id: 'AQUA',
+    name: 'Aquachain',
+    unit: 'AQUA',
+    chainId: 61717561,
+    isCustom: false,
+    color: '#00ffff',
+    blockExplorer: makeExplorer({
+      name: 'AQUA Explorer',
+      origin: 'https://aquachain.github.io/explorer/#'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: AQUA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: AQUA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: AQUA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 10,
+      initial: 0.1
+    }
   }
 };
 
 export function staticNetworksReducer(
-  state: StaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
+  state: types.ConfigStaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
   action: any
 ) {
   switch (action.type) {

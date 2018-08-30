@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { NetworkConfig } from 'types/network';
 import { calcEACTotalCost } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { gasSelectors } from 'features/gas';
 import { transactionFieldsSelectors } from 'features/transaction';
 import { scheduleSelectors } from 'features/schedule';
@@ -146,8 +146,8 @@ function mapStateToProps(state: AppState): ReduxStateProps {
   return {
     gasLimit: transactionFieldsSelectors.getGasLimit(state),
     rates: state.rates.rates,
-    network: getNetworkConfig(state),
-    isOffline: getOffline(state),
+    network: configSelectors.getNetworkConfig(state),
+    isOffline: configMetaSelectors.getOffline(state),
     isGasEstimating: gasSelectors.getIsEstimating(state),
     scheduling: scheduleSelectors.getSchedulingToggle(state).value,
     scheduleGasLimit: scheduleSelectors.getScheduleGasLimit(state),

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import { ElectronNav } from 'components';
 import OfflineTab from './OfflineTab';
 import Notifications from './Notifications';
@@ -42,7 +42,7 @@ class ElectronTemplate extends Component<Props, {}> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    isOffline: getOffline(state)
+    isOffline: configMetaSelectors.getOffline(state)
   };
 }
 
