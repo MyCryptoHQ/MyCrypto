@@ -14,9 +14,7 @@ export default function HardwareWalletChoice({ image, text, link }: Props) {
       <section className="HardwareWalletChoice-image">
         <img src={image} alt={text} />
       </section>
-      <section className="HardwareWalletChoice-text">
-        <p>{text}</p>
-      </section>
+      <p>{text}</p>
     </a>
   );
 }

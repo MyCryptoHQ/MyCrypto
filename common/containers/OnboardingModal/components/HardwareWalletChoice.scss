@@ -2,46 +2,50 @@
 @import 'common/sass/variables.scss';
 
 .HardwareWalletChoice {
-  position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  padding: 1rem;
   border: 1px solid $light-gray;
 
+  &:first-of-type {
+    @media (min-width: 500px) {
+      border-bottom: none;
+      border-bottom: 1px solid $light-gray;
+    }
+  }
   &-image {
-    display: none;
+    flex: 1;
+
+    img {
+      width: 50px;
+      height: 50px;
+
+      @media (min-width: 500px) {
+        width: 75px;
+        height: 75px;
+      }
+      @media (min-width: 800px) {
+        width: 100px;
+        height: 100px;
+      }
+    }
   }
-  &-text {
-    @include perfectly-centered;
+  p {
+    @include onboarding-modal-slide-text;
 
-    flex: 3;
-    padding: 0.5rem;
+    flex: 1;
+    margin: 0;
+    color: $light-gray;
 
-    p {
-      margin: 0;
-      font-size: 16px;
-      color: $light-gray;
+    @media (min-width: 500px) {
+      margin-top: 1rem;
     }
   }
 
-  @media (min-height: 350px) {
-    padding: 0.5rem;
-
-    &-image {
-      flex: 1;
-      display: block;
-    }
-  }
-  @media (min-width: 450px) and (min-height: 780px) {
+  @media (min-width: 500px) {
     flex-direction: column;
-
-    &:not(:last-of-type) {
-      margin-right: 1rem;
-    }
-    &-image {
-      margin-bottom: 2rem;
-    }
-    &-text {
-      position: absolute;
-      bottom: 0;
-    }
+    margin-right: 1rem;
   }
 }
