@@ -144,8 +144,8 @@ export default class Footer extends React.PureComponent<Props, State> {
   }
 
   private toggleModal = () => {
-    this.setState(state => {
-      this.setState({ isDisclaimerOpen: !state.isDisclaimerOpen });
-    });
+    this.setState(state => ({
+      isDisclaimerOpen: !state.isDisclaimerOpen
+    }));
   };
 }
