@@ -110,7 +110,7 @@ class RootClass extends Component<Props, State> {
         <Provider store={store}>
           <Router>
             <React.Fragment>
-              {!process.env.BUILD_DOWNLOADABLE && !onboardingActive && <OnboardingModal />}
+              {!process.env.BUILD_DOWNLOADABLE && onboardingActive && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />

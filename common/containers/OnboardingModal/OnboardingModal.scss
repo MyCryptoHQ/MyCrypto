@@ -1,92 +1,195 @@
 @import 'common/sass/mixins.scss';
 
 .OnboardingModal {
-  position: absolute;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
+  width: 90vw;
+  height: 90vh;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+
+  h1 {
+    @include onboarding-modal-slide-heading;
+  }
+  p {
+    @include onboarding-modal-slide-text;
+  }
+  ul {
+    padding-left: 20px;
+  }
 
   &-top {
-    @include baby-blue;
     @include perfectly-centered;
+    @include baby-blue;
 
     flex: 1;
+    border-radius: 6px 6px 0 0;
 
     img {
       transform: scale(0.5);
     }
   }
-  &-side {
-    @include baby-blue;
-    @include perfectly-centered;
-
-    display: none;
-    flex: 1;
+  &-middle {
+    flex: 4;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+    overflow-y: auto;
 
-    &-top {
-      @include perfectly-centered;
-
-      flex: 1;
-
-      img {
-        width: auto;
-        height: 30px;
+    > section {
+      min-height: 0;
+    }
+    // A couple of slides that require scrolling need to overcome
+    // the inability for padding to take effect.
+    .ThirdSlide,
+    .FourthSlide {
+      button {
+        margin-bottom: 2rem;
       }
     }
-    &-content {
-      @include perfectly-centered;
-
-      flex: 3;
-      padding: 2rem;
-    }
-    &-bottom {
-      @include perfectly-centered;
-
-      flex: 1;
-    }
-  }
-  &-content {
-    position: relative;
-    flex: 5;
   }
   &-bottom {
+    @include perfectly-centered;
     @include baby-blue;
 
-    display: flex;
     flex: 1;
-    align-items: center;
-    justify-content: flex-start;
+    justify-content: space-around;
+    border-radius: 0 0 6px 6px;
 
     img {
-      width: auto;
-      height: 70px;
-    }
-    section {
-      @include perfectly-centered;
-
-      flex: 1;
+      width: 60px;
+      height: 60px;
     }
   }
-  @media (min-width: 600px) {
-    flex-direction: row;
 
-    &-top,
-    &-bottom {
-      display: none;
-    }
-    &-side {
+  @media (min-width: 500px) {
+    display: none;
+  }
+  &-full {
+    display: none;
+
+    @media (min-width: 500px) {
       display: flex;
-    }
-    &-content {
-      flex: 2;
-    }
-  }
-  @media (min-width: 820px) {
-    &-content {
-      flex: 3;
     }
   }
 }
+
+// .OnboardingModal {
+//   display: flex;
+//   flex-direction: column;
+//   width: 80vw;
+//   height: 90vh;
+
+//   &-top {
+//     @include baby-blue;
+//     @include perfectly-centered;
+
+//     flex: 1;
+
+//     img {
+//       transform: scale(0.5);
+//     }
+//   }
+//   &-side {
+//     display: none;
+//   }
+//   &-content {
+//     flex: 3;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     overflow-y: auto;
+
+//     h1 {
+//       @include onboarding-modal-slide-heading;
+//     }
+//     p {
+//       @include onboarding-modal-slide-text;
+//     }
+//     ul {
+//       padding-left: 20px;
+//     }
+//     > section {
+//       flex: 1;
+//       padding: 2rem;
+
+//       > section {
+//         @include perfectly-centered;
+
+//         flex: 1;
+//       }
+//     }
+//   }
+//   &-bottom {
+//     @include baby-blue;
+
+//     display: flex;
+//     align-items: center;
+
+//     flex: 1;
+
+//     img {
+//       width: auto;
+//       height: 70px;
+//     }
+//     section {
+//       @include perfectly-centered;
+
+//       flex: 1;
+//     }
+//   }
+//   @media (min-width: 550px) {
+//     flex-direction: row;
+
+//     &-top,
+//     &-bottom {
+//       display: none;
+//     }
+//     &-side {
+//       @include baby-blue;
+//       @include perfectly-centered;
+
+//       display: flex;
+//       min-width: 25vw;
+//       min-height: 90vh;
+//       flex: 1;
+//       flex-direction: column;
+
+//       &-top {
+//         @include perfectly-centered;
+
+//         flex: 1;
+
+//         img {
+//           width: auto;
+//           height: 30px;
+//         }
+//       }
+//       &-content {
+//         @include perfectly-centered;
+
+//         flex: 3;
+//         padding: 2rem;
+//       }
+//       &-bottom {
+//         @include perfectly-centered;
+
+//         flex: 1;
+//       }
+//     }
+//     &-content {
+//       flex: 2;
+//       min-width: 40vw;
+//       min-height: 90vh;
+//     }
+//   }
+//   @media (min-width: 820px) {
+//     &-content {
+//       flex: 3;
+//     }
+//   }
+// }

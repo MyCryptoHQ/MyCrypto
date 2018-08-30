@@ -2,22 +2,4 @@
 @import 'common/sass/variables.scss';
 
 .FirstSlide {
-  @include perfectly-centered;
-  @include slide-inner;
-
-  &-content {
-    &-heading {
-      font-size: 26px;
-      font-family: Lato, sans-serif;
-      font-weight: 900;
-      color: $heading-text-color;
-    }
-    &-text {
-      font-size: 18px;
-    }
-  }
-
-  @media (min-width: 820px) {
-    padding: 0 4rem;
-  }
 }

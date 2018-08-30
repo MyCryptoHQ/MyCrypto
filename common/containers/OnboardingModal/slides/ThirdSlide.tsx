@@ -7,42 +7,40 @@ import './ThirdSlide.scss';
 export default function ThirdSlide() {
   return (
     <section className="ThirdSlide">
-      <section className="ThirdSlide-content">
+      <section>
+        <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_13')}</h1>
+        <ul className="ThirdSlide-content-text">
+          <li>{translate('ONBOARDING_TEXT_14')}</li>
+          <li>{translate('ONBOARDING_TEXT_15')}</li>
+          <li>{translate('ONBOARDING_TEXT_16')}</li>
+          <li>{translate('ONBOARDING_TEXT_17')}</li>
+        </ul>
+      </section>
+      <section>
         <section>
-          <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_13')}</h1>
+          <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_18')}</h1>
           <ul className="ThirdSlide-content-text">
-            <li>{translate('ONBOARDING_TEXT_14')}</li>
-            <li>{translate('ONBOARDING_TEXT_15')}</li>
-            <li>{translate('ONBOARDING_TEXT_16')}</li>
-            <li>{translate('ONBOARDING_TEXT_17')}</li>
+            <li>
+              {translate('ONBOARDING_TEXT_19')}
+              <ul>
+                <li>{translate('ONBOARDING_TEXT_20')}</li>
+                <li>{translate('ONBOARDING_TEXT_21')}</li>
+                <li>{translate('ONBOARDING_TEXT_22')}</li>
+              </ul>
+            </li>
+            <li>
+              {translate('ONBOARDING_TEXT_23', {
+                $link: 'https://etherscamdb.info/'
+              })}
+            </li>
+            <li>
+              {translate('ONBOARDING_TEXT_24', {
+                $link: 'https://download.mycrypto.com/'
+              })}
+            </li>
           </ul>
         </section>
-        <section>
-          <section>
-            <h1 className="ThirdSlide-content-heading">{translate('ONBOARDING_TEXT_18')}</h1>
-            <ul className="ThirdSlide-content-text">
-              <li>
-                {translate('ONBOARDING_TEXT_19')}
-                <ul>
-                  <li>{translate('ONBOARDING_TEXT_20')}</li>
-                  <li>{translate('ONBOARDING_TEXT_21')}</li>
-                  <li>{translate('ONBOARDING_TEXT_22')}</li>
-                </ul>
-              </li>
-              <li>
-                {translate('ONBOARDING_TEXT_23', {
-                  $link: 'https://etherscamdb.info/'
-                })}
-              </li>
-              <li>
-                {translate('ONBOARDING_TEXT_24', {
-                  $link: 'https://download.mycrypto.com/'
-                })}
-              </li>
-            </ul>
-          </section>
-          <OnboardingButton />
-        </section>
+        <OnboardingButton />
       </section>
     </section>
   );
