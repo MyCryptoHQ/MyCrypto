@@ -22,7 +22,6 @@ import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
 import OnboardingModal from 'containers/OnboardingModal';
-import WelcomeModal from 'components/WelcomeModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
