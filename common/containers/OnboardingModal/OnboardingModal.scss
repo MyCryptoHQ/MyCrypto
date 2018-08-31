@@ -13,14 +13,12 @@
   h1 {
     @include onboarding-modal-slide-heading;
   }
-  p {
+  p,
+  li {
     @include onboarding-modal-slide-text;
   }
   ul {
     padding-left: 20px;
-  }
-  li {
-    @include onboarding-modal-slide-text;
   }
 
   &-top {
