@@ -1,0 +1,120 @@
+@import 'common/sass/mixins.scss';
+
+.OnboardingModal {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  height: 90vh;
+  min-height: 300px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+
+  h1 {
+    @include onboarding-modal-slide-heading;
+  }
+  p,
+  li {
+    @include onboarding-modal-slide-text;
+  }
+  ul {
+    padding-left: 20px;
+  }
+
+  &-top {
+    @include perfectly-centered;
+    @include baby-blue;
+
+    flex: 1;
+    border-radius: 6px 6px 0 0;
+
+    img {
+      transform: scale(0.5);
+    }
+
+    @media (min-width: 500px) {
+      display: none;
+    }
+  }
+  &-side {
+    display: none;
+
+    @media (min-width: 500px) {
+      @include baby-blue;
+
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px 0 0 6px;
+
+      &-top {
+        @include perfectly-centered;
+
+        flex: 1;
+
+        img {
+          transform: scale(0.7);
+        }
+      }
+      &-middle {
+        @include perfectly-centered;
+
+        flex: 3;
+
+        img {
+          transform: scale(0.7);
+        }
+      }
+      &-bottom {
+        @include perfectly-centered;
+
+        flex: 1;
+      }
+    }
+  }
+  &-middle {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+    overflow-y: auto;
+
+    > section {
+      min-height: 0;
+    }
+    // A couple of slides that require scrolling need to overcome
+    // the inability for padding to take effect.
+    .SecondSlide,
+    .ThirdSlide,
+    .FourthSlide {
+      button {
+        margin-bottom: 2rem;
+      }
+    }
+  }
+  &-bottom {
+    @include perfectly-centered;
+    @include baby-blue;
+
+    flex: 1;
+    justify-content: space-around;
+    border-radius: 0 0 6px 6px;
+
+    img {
+      width: 60px;
+      height: 60px;
+    }
+
+    @media (min-width: 500px) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 500px) {
+    flex-direction: row;
+    max-width: 1000px;
+    max-height: 600px;
+  }
+}
