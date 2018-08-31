@@ -295,6 +295,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             name="selectedAddress"
             checked={selectedAddress === wallet.address}
             value={wallet.address}
+            readOnly={true}
           />
           <div>
             {label && <label className="DWModal-addresses-table-address-label">{label}</label>}

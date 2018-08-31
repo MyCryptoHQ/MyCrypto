@@ -67,10 +67,12 @@ class RecentTransactions extends React.Component<Props> {
         {recentTransactions.length ? (
           <table className="RecentTxs-txs">
             <thead>
-              <td>{translate('SEND_ADDR')}</td>
-              <td>{translate('SEND_AMOUNT_SHORT')}</td>
-              <td>{translate('SENT')}</td>
-              <td />
+              <tr>
+                <td>{translate('SEND_ADDR')}</td>
+                <td>{translate('SEND_AMOUNT_SHORT')}</td>
+                <td>{translate('SENT')}</td>
+                <td />
+              </tr>
             </thead>
             <tbody>
               {recentTransactions.map(tx => (
