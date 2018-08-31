@@ -10,7 +10,7 @@ interface Props {
 
 export default function HardwareWalletChoice({ image, text, link }: Props) {
   return (
-    <a href={link} className="HardwareWalletChoice">
+    <a href={link} className="HardwareWalletChoice" target="_blank">
       <section className="HardwareWalletChoice-image">
         <img src={image} alt={text} />
       </section>
