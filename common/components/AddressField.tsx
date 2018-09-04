@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { donationAddressMap } from 'config';
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import { Input } from 'components/ui';
 import { AddressFieldFactory } from './AddressFieldFactory';
 
@@ -13,10 +13,16 @@ interface OwnProps {
   isSelfAddress?: boolean;
   isCheckSummed?: boolean;
   showLabelMatch?: boolean;
+  showIdenticon?: boolean;
+  showInputLabel?: boolean;
+  placeholder?: string;
+  value?: string;
+  dropdownThreshold?: number;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
 interface StateProps {
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 type Props = OwnProps & StateProps;
@@ -26,26 +32,42 @@ const AddressField: React.SFC<Props> = ({
   isSelfAddress,
   isCheckSummed,
   showLabelMatch,
-  toChecksumAddress
+  toChecksumAddress,
+  showIdenticon,
+  placeholder = donationAddressMap.ETH,
+  showInputLabel = true,
+  onChangeOverride,
+  value,
+  dropdownThreshold
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
     showLabelMatch={showLabelMatch}
+    showIdenticon={showIdenticon}
+    onChangeOverride={onChangeOverride}
+    value={value}
+    dropdownThreshold={dropdownThreshold}
     withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
         <label className="input-group">
-          <div className="input-group-header">
-            {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
-          </div>
+          {showInputLabel && (
+            <div className="input-group-header">
+              {translate(isSelfAddress ? 'X_ADDRESS' : 'SEND_ADDR')}
+            </div>
+          )}
           <Input
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"
-            value={isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw}
-            placeholder={donationAddressMap.ETH}
+            value={
+              value != null
+                ? value
+                : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
+            }
+            placeholder={placeholder}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
-            onChange={onChange}
+            onChange={onChangeOverride || onChange}
             onFocus={onFocus}
             onBlur={onBlur}
           />
@@ -56,5 +78,5 @@ const AddressField: React.SFC<Props> = ({
 );
 
 export default connect((state: AppState): StateProps => ({
-  toChecksumAddress: getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
 }))(AddressField);
