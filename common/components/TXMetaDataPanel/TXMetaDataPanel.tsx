@@ -6,7 +6,7 @@ import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import {
   transactionFieldsActions,
   transactionFieldsSelectors,
@@ -144,8 +144,8 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     gasPrice: transactionFieldsSelectors.getGasPrice(state),
-    offline: getOffline(state),
-    network: getNetworkConfig(state)
+    offline: configMetaSelectors.getOffline(state),
+    network: configSelectors.getNetworkConfig(state)
   };
 }
 

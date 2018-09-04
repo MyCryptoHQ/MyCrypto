@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import { NewTabLink } from 'components/ui';
 
 interface StateProps {
@@ -15,9 +15,9 @@ class OfflineBroadcastClass extends Component<StateProps> {
   }
 }
 
-export const OfflineBroadcast = connect((state: AppState) => ({ offline: getOffline(state) }))(
-  OfflineBroadcastClass
-);
+export const OfflineBroadcast = connect((state: AppState) => ({
+  offline: configMetaSelectors.getOffline(state)
+}))(OfflineBroadcastClass);
 const BroadCast: React.SFC<{}> = () => (
   <p>
     To broadcast this transaction, paste the above into the{' '}
