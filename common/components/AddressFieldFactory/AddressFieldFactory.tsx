@@ -15,7 +15,11 @@ interface OwnProps {
   to: string | null;
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
+  showIdenticon?: boolean;
+  value?: string;
+  dropdownThreshold?: number;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
 interface State {
@@ -56,16 +60,30 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   }
 
   public render() {
+    const {
+      isSelfAddress,
+      showLabelMatch,
+      withProps,
+      showIdenticon,
+      onChangeOverride,
+      value,
+      dropdownThreshold
+    } = this.props;
+
     return (
       <div className="AddressField">
         <AddressInputFactory
-          isSelfAddress={this.props.isSelfAddress}
-          showLabelMatch={this.props.showLabelMatch}
+          isSelfAddress={isSelfAddress}
+          showLabelMatch={showLabelMatch}
+          withProps={withProps}
+          showIdenticon={showIdenticon}
+          onChangeOverride={onChangeOverride}
+          value={value}
+          dropdownThreshold={dropdownThreshold}
           isFocused={this.state.isFocused}
           onChange={this.setAddress}
           onFocus={this.focus}
           onBlur={this.setBlurTimeout}
-          withProps={this.props.withProps}
         />
       </div>
     );
@@ -76,8 +94,10 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   private blur = () => this.setState({ isFocused: false });
 
   private setAddress = (ev: React.FormEvent<HTMLInputElement>) => {
+    const { onChangeOverride, setCurrentTo } = this.props;
     const { value } = ev.currentTarget;
-    this.props.setCurrentTo(value);
+
+    onChangeOverride ? onChangeOverride(ev) : setCurrentTo(value);
   };
 
   private setBlurTimeout = () => (this.goingToBlur = window.setTimeout(this.blur, 150));
@@ -90,13 +110,21 @@ const AddressFieldFactory = connect(null, { setCurrentTo: transactionActions.set
 interface DefaultAddressFieldProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
+  showIdenticon?: boolean;
+  value?: string;
+  dropdownThreshold?: number;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
+  onChangeOverride?(ev: React.FormEvent<HTMLInputElement>): void;
 }
 
 const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
   isSelfAddress,
   showLabelMatch,
-  withProps
+  showIdenticon,
+  value,
+  withProps,
+  onChangeOverride,
+  dropdownThreshold
 }) => (
   <Query
     params={['to']}
@@ -106,6 +134,10 @@ const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
         isSelfAddress={isSelfAddress}
         showLabelMatch={showLabelMatch}
         withProps={withProps}
+        showIdenticon={showIdenticon}
+        onChangeOverride={onChangeOverride}
+        value={value}
+        dropdownThreshold={dropdownThreshold}
       />
     )}
   />

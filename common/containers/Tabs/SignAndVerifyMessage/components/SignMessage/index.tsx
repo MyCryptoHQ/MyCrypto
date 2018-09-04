@@ -18,6 +18,7 @@ interface Props {
   signMessageRequested: messageActions.TSignMessageRequested;
   signedMessage: ISignedMessage | null;
   resetWallet: walletActions.TResetWallet;
+  resetMessage: messageActions.TResetMessage;
 }
 
 interface State {
@@ -35,6 +36,7 @@ export class SignMessage extends Component<Props, State> {
 
   public componentWillUnmount() {
     this.props.resetWallet();
+    this.props.resetMessage();
   }
 
   public render() {
@@ -97,6 +99,8 @@ export class SignMessage extends Component<Props, State> {
 
   private changeWallet = () => {
     this.props.resetWallet();
+    this.props.resetMessage();
+    this.setState(initialState);
   };
 }
 
@@ -107,5 +111,6 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(mapStateToProps, {
   signMessageRequested: messageActions.signMessageRequested,
-  resetWallet: walletActions.resetWallet
+  resetWallet: walletActions.resetWallet,
+  resetMessage: messageActions.resetMessage
 })(SignMessage);

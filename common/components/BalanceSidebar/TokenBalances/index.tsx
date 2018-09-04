@@ -5,7 +5,7 @@ import translate from 'translations';
 import { Token } from 'types/network';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getAllTokens, getOffline } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { customTokensActions } from 'features/customTokens';
 import { walletTypes, walletActions, walletSelectors } from 'features/wallet';
 import Spinner from 'components/ui/Spinner';
@@ -111,12 +111,12 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     wallet: walletSelectors.getWalletInst(state),
     walletConfig: walletSelectors.getWalletConfig(state),
-    tokens: getAllTokens(state),
+    tokens: configSelectors.getAllTokens(state),
     tokenBalances: selectors.getTokenBalances(state),
     tokensError: state.wallet.tokensError,
     isTokensLoading: state.wallet.isTokensLoading,
     hasSavedWalletTokens: state.wallet.hasSavedWalletTokens,
-    isOffline: getOffline(state)
+    isOffline: configMetaSelectors.getOffline(state)
   };
 }
 

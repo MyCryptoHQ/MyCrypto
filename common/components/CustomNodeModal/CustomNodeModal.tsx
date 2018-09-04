@@ -7,12 +7,11 @@ import { CustomNetworkConfig } from 'types/network';
 import { CustomNodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
 import {
-  getCustomNetworkConfigs,
-  getStaticNetworkConfigs,
-  getCustomNodeConfigs,
-  AddCustomNodeAction,
-  TAddCustomNetwork,
-  addCustomNetwork
+  configNodesCustomSelectors,
+  configNetworksStaticSelectors,
+  configNetworksCustomSelectors,
+  configNetworksCustomActions,
+  configNodesCustomTypes
 } from 'features/config';
 import { Input, Dropdown } from 'components/ui';
 import Modal, { IButton } from 'components/ui/Modal';
@@ -22,12 +21,12 @@ const CUSTOM = { label: 'Custom', value: 'custom' };
 
 interface OwnProps {
   isOpen: boolean;
-  addCustomNode(payload: AddCustomNodeAction['payload']): void;
+  addCustomNode(payload: configNodesCustomTypes.AddCustomNodeAction['payload']): void;
   handleClose(): void;
 }
 
 interface DispatchProps {
-  addCustomNetwork: TAddCustomNetwork;
+  addCustomNetwork: configNetworksCustomActions.TAddCustomNetwork;
 }
 
 interface StateProps {
@@ -252,7 +251,13 @@ class CustomNodeModal extends React.Component<Props, State> {
   }
 
   private pollForDefaultNodes() {
+    return null;
+    // @ts-ignore
     const pollingInterval = 3000;
+    // console.warning in production to explain to users why we are making a call to localhost
+    console.warn(
+      "Don't panic! MyCrypto is going to start a poll for default nodes on port 8545. If you don't like this feature, send us a ping at support@mycrypto.com and we'll walk you through disabling it."
+    );
     this.timer = window.setInterval(async () => {
       const results = await exists(
         [
@@ -441,13 +446,13 @@ class CustomNodeModal extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  customNetworks: getCustomNetworkConfigs(state),
-  customNodes: getCustomNodeConfigs(state),
-  staticNetworks: getStaticNetworkConfigs(state)
+  customNetworks: configNetworksCustomSelectors.getCustomNetworkConfigs(state),
+  customNodes: configNodesCustomSelectors.getCustomNodeConfigs(state),
+  staticNetworks: configNetworksStaticSelectors.getStaticNetworkConfigs(state)
 });
 
 const mapDispatchToProps: DispatchProps = {
-  addCustomNetwork
+  addCustomNetwork: configNetworksCustomActions.addCustomNetwork
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomNodeModal);

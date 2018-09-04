@@ -3,6 +3,7 @@ import {
   discordURL,
   ledgerReferralURL,
   trezorReferralURL,
+  safeTReferralURL,
   ethercardReferralURL,
   keepkeyReferralURL,
   steelyReferralURL
@@ -83,6 +84,10 @@ export const affiliateLinks: Link[] = [
   {
     link: trezorReferralURL,
     text: translateRaw('TREZOR_REFERAL')
+  },
+  {
+    link: safeTReferralURL,
+    text: translateRaw('SAFE_T_REFERAL')
   },
   {
     link: keepkeyReferralURL,

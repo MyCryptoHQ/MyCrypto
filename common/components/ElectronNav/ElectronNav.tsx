@@ -7,16 +7,16 @@ import NavigationLink from 'components/NavigationLink';
 import NetworkSelect from './NetworkSelect';
 import LanguageSelect from './LanguageSelect';
 import NetworkStatus from './NetworkStatus';
-import { changeTheme, getTheme } from 'features/config';
+import { configMetaActions, configMetaSelectors } from 'features/config';
 import { AppState } from 'features/reducers';
 import './ElectronNav.scss';
 
 interface StateProps {
-  theme: ReturnType<typeof getTheme>;
+  theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
 
 interface ActionProps {
-  changeTheme: typeof changeTheme;
+  changeTheme: typeof configMetaActions.changeTheme;
 }
 
 type Props = StateProps & ActionProps;
@@ -44,7 +44,6 @@ class ElectronNav extends React.Component<Props, State> {
       >
         <div className="ElectronNav-branding">
           <div className="ElectronNav-branding-logo" onClick={this.toggleTheme} />
-          <div className="ElectronNav-branding-beta">Alpha Release</div>
         </div>
 
         <ul className="ElectronNav-links">
@@ -54,6 +53,7 @@ class ElectronNav extends React.Component<Props, State> {
               link={link}
               isHomepage={link === navigationLinks[0]}
               className="ElectronNavLink"
+              isNotEnabled={false}
             />
           ))}
         </ul>
@@ -122,9 +122,9 @@ class ElectronNav extends React.Component<Props, State> {
 
 export default connect(
   (state: AppState) => ({
-    theme: getTheme(state)
+    theme: configMetaSelectors.getTheme(state)
   }),
   {
-    changeTheme
+    changeTheme: configMetaActions.changeTheme
   }
 )(ElectronNav);

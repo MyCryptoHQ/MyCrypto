@@ -1,5 +1,4 @@
 export * from './DeterministicWalletsModal';
-export * from './DigitalBitbox';
 export * from './InsecureWalletWarning';
 export * from './Keystore';
 export * from './LedgerNano';
@@ -7,6 +6,7 @@ export * from './Mnemonic';
 export * from './ParitySigner';
 export * from './PrivateKey';
 export * from './Trezor';
+export * from './SafeT';
 export * from './ViewOnly';
 export * from './WalletButton';
 export * from './Web3';
