@@ -93,11 +93,7 @@ class TimeBountyFieldClass extends Component<Props, State> {
             </div>
           </label>
         </div>
-        <a
-          href="#"
-          onClick={() => this.setState({ advanced: !advanced })}
-          className="TimeBountyField-advanced-toggle"
-        >
+        <a href="#" onClick={this.toggleAdvanced} className="TimeBountyField-advanced-toggle">
           {advanced ? `- ${translateRaw('TRANS_SIMPLE')}` : `+ ${translateRaw('TRANS_ADVANCED')}`}
         </a>
       </>
@@ -125,6 +121,11 @@ class TimeBountyFieldClass extends Component<Props, State> {
 
     return usd;
   }
+
+  private toggleAdvanced = () =>
+    this.setState(prevState => ({
+      advanced: !prevState.advanced
+    }));
 
   private handleOnChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = ev.currentTarget;
