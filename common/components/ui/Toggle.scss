@@ -1,6 +1,9 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
 $slider-radius: 26px;
 $transition-time: .4s;
-$toggle-color: #0C6482;
+$toggle-color: color(brand-primary);
 $travel-distance: 38px;
 
 .Toggle {
@@ -40,6 +43,10 @@ $travel-distance: 38px;
     background-color: #ccc;
     -webkit-transition: $transition-time;
     transition: $transition-time;
+
+    @include theme('dark') {
+      background: #393f4c;
+    }
 
     &.round {
       border-radius: 34px;
