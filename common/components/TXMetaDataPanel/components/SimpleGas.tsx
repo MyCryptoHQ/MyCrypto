@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Slider, { createSliderWithTooltip } from 'rc-slider';
+import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 
 import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
@@ -43,6 +43,10 @@ interface State {
   hasSetRecommendedGasPrice: boolean;
 }
 
+interface GasRecommendations {
+  [recommendationLevel: string]: number;
+}
+
 class SimpleGas extends React.Component<Props> {
   public state: State = {
     hasSetRecommendedGasPrice: false
@@ -76,21 +80,17 @@ class SimpleGas extends React.Component<Props> {
       min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
     };
 
-    const gasNotches: any = {};
+    const gasNotches: Marks = {};
 
     if (gasEstimates) {
-      const gasRecommendations: any = {
+      const gasRecommendations: GasRecommendations = {
         fast: gasEstimates.fast,
         fastest: gasEstimates.fastest,
         safeLow: gasEstimates.safeLow,
         standard: gasEstimates.standard
       };
 
-      for (const notch in gasRecommendations) {
-        if (gasRecommendations.hasOwnProperty(notch)) {
-          gasNotches[gasRecommendations[notch]] = '';
-        }
-      }
+      Object.keys(gasRecommendations).forEach(key => (gasNotches[gasRecommendations[key]] = ''));
     }
 
     /**
