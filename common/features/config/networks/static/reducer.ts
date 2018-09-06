@@ -511,6 +511,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: EOSC_DEFAULT,
       [SecureWalletName.SAFE_T]: EOSC_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: EOSC_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EOSC_DEFAULT
     },
     gasPriceSettings: {
