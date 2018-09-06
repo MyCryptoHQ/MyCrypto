@@ -168,7 +168,7 @@ class SimpleGas extends React.Component<Props> {
     let recommended = '';
 
     if (gasEstimates && !gasEstimates.isDefault) {
-      let gasTooltips = {
+      const gasTooltips = {
         [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
         [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
         [gasEstimates.safeLow]: translateRaw('TX_FEE_RECOMMENDED_SAFELOW'),
