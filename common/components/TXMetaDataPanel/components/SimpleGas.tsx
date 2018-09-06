@@ -170,11 +170,11 @@ class SimpleGas extends React.Component<Props> {
     if (gasEstimates && !gasEstimates.isDefault) {
       switch (gas) {
         case gasEstimates.fast: {
-          recommended = '(fast)';
+          recommended = '(Fast)';
           break;
         }
         case gasEstimates.fastest: {
-          recommended = '(fastest)';
+          recommended = '(Fastest)';
           break;
         }
         case gasEstimates.safeLow: {
