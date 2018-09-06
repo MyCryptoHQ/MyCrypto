@@ -76,6 +76,21 @@ class SimpleGas extends React.Component<Props> {
       min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
     };
 
+    const gasNotches: any = {};
+
+    if (gasEstimates) {
+      const gasRecommendations: any = {
+        fast: gasEstimates.fast,
+        fastest: gasEstimates.fastest,
+        safeLow: gasEstimates.safeLow,
+        standard: gasEstimates.standard
+      };
+
+      for (let notch in gasRecommendations) {
+        gasNotches[gasRecommendations[notch]] = '';
+      }
+    }
+
     /**
      * @desc On retrieval of gas estimates,
      *  the current gas price may be lower than the lowest recommended price.
@@ -112,6 +127,8 @@ class SimpleGas extends React.Component<Props> {
               onChange={this.handleSlider}
               min={bounds.min}
               max={bounds.max}
+              marks={gasNotches}
+              included={false}
               step={bounds.min < 1 ? 0.1 : 1}
               value={actualGasPrice}
               tipFormatter={this.formatTooltip}
@@ -147,8 +164,30 @@ class SimpleGas extends React.Component<Props> {
   private formatTooltip = (gas: number) => {
     const { gasEstimates } = this.props;
     let recommended = '';
-    if (gasEstimates && !gasEstimates.isDefault && gas === gasEstimates.fast) {
-      recommended = '(Recommended)';
+
+    if (gasEstimates && !gasEstimates.isDefault) {
+      switch (gas) {
+        case gasEstimates.fast: {
+          recommended = '(fast)';
+          break;
+        }
+        case gasEstimates.fastest: {
+          recommended = '(fastest)';
+          break;
+        }
+        case gasEstimates.safeLow: {
+          recommended = '(Safe Low)';
+          break;
+        }
+        case gasEstimates.standard: {
+          recommended = '(Standard)';
+          break;
+        }
+        default: {
+          recommended = '';
+          break;
+        }
+      }
     }
 
     return `${gas} Gwei ${recommended}`;

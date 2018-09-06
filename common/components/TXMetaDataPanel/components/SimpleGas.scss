@@ -9,6 +9,11 @@
     > .SimpleGas-slider {
       flex-grow: 1;
       margin-right: $space;
+
+      > .rc-slider > .rc-slider-step > .rc-slider-dot {
+        height: 18px;
+        bottom: -8px
+      }
     }
 
     > .FeeSummary {
