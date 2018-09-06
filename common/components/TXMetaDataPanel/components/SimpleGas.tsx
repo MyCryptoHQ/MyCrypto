@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Slider, { createSliderWithTooltip } from 'rc-slider';
 
 import { gasPriceDefaults } from 'config';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { Wei, fromWei } from 'libs/units';
 import { AppState } from 'features/reducers';
 import { configNodesSelectors } from 'features/config';
@@ -168,31 +168,16 @@ class SimpleGas extends React.Component<Props> {
     let recommended = '';
 
     if (gasEstimates && !gasEstimates.isDefault) {
-      switch (gas) {
-        case gasEstimates.fast: {
-          recommended = '(Fast)';
-          break;
-        }
-        case gasEstimates.fastest: {
-          recommended = '(Fastest)';
-          break;
-        }
-        case gasEstimates.safeLow: {
-          recommended = '(Safe Low)';
-          break;
-        }
-        case gasEstimates.standard: {
-          recommended = '(Standard)';
-          break;
-        }
-        default: {
-          recommended = '';
-          break;
-        }
-      }
+      let gasTooltips = {
+        [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
+        [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
+        [gasEstimates.safeLow]: translateRaw('TX_FEE_RECOMMENDED_SAFELOW'),
+        [gasEstimates.standard]: translateRaw('TX_FEE_RECOMMENDED_STANDARD')
+      };
+      recommended = gasTooltips[gas];
     }
 
-    return `${gas} Gwei ${recommended}`;
+    return `${gas} Gwei ${recommended ? recommended : ''}`;
   };
 }
 
