@@ -409,9 +409,9 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_MAINNET
     },
     gasPriceSettings: {
-      min: 0.183,
+      min: 0.06,
       max: 1.5,
-      initial: 0.183
+      initial: 0.06
     },
     unsupportedTabs: [TAB.ENS]
   },
@@ -437,9 +437,9 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },
     gasPriceSettings: {
-      min: 0.183,
+      min: 0.06,
       max: 1.5,
-      initial: 0.183
+      initial: 0.06
     },
     unsupportedTabs: [TAB.ENS]
   },
