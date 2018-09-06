@@ -86,8 +86,10 @@ class SimpleGas extends React.Component<Props> {
         standard: gasEstimates.standard
       };
 
-      for (let notch in gasRecommendations) {
-        gasNotches[gasRecommendations[notch]] = '';
+      for (const notch in gasRecommendations) {
+        if (gasRecommendations.hasOwnProperty(notch)) {
+          gasNotches[gasRecommendations[notch]] = '';
+        }
       }
     }
 
