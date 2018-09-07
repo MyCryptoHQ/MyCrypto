@@ -30,11 +30,7 @@ export const isValidScheduleGasLimit = (state: AppState): boolean =>
 export const isValidScheduleDeposit = (state: AppState): boolean => {
   const depositValue = getScheduleDeposit(state).value;
 
-  if (!depositValue) {
-    return true;
-  }
-
-  return depositValue.gte(new BN('0')) && depositValue.bitLength() <= 256;
+  return Boolean(depositValue && depositValue.gte(new BN('0')) && depositValue.bitLength() <= 256);
 };
 
 export const isSchedulingEnabled = (state: AppState): boolean => {

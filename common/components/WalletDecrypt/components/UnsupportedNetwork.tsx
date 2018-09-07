@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 
 interface StateProps {
   network: NetworkConfig;
@@ -24,5 +24,5 @@ const UnsupportedNetwork: React.SFC<Props> = ({ walletType, network }) => {
 };
 
 export default connect((state: AppState): StateProps => ({
-  network: getNetworkConfig(state)
+  network: configSelectors.getNetworkConfig(state)
 }))(UnsupportedNetwork);

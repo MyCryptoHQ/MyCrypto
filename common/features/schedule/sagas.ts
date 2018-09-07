@@ -2,7 +2,7 @@ import { SagaIterator, delay } from 'redux-saga';
 import { select, take, call, apply, fork, put, all, takeLatest } from 'redux-saga/effects';
 import BN from 'bn.js';
 
-import { toTokenBase, Wei } from 'libs/units';
+import { toTokenBase, Wei, fromWei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
@@ -97,6 +97,25 @@ export const currentTimeBounty = takeLatest(
   setCurrentTimeBountySaga
 );
 //#endregion Time Bounty
+
+//#region Deposit
+export function* copyTimeBountyToDeposit({
+  payload: { value }
+}: types.SetTimeBountyFieldAction): SagaIterator {
+  if (value && value.gte(new BN(0))) {
+    const multipliedValue = value.mul(new BN(EAC_SCHEDULING_CONFIG.BOUNTY_TO_DEPOSIT_MULTIPLIER));
+
+    const raw = fromWei(multipliedValue, 'ether');
+
+    yield put(actions.setScheduleDepositField({ raw, value: multipliedValue }));
+  }
+}
+
+export const mirrorTimeBountyToDeposit = takeLatest(
+  [types.ScheduleActions.TIME_BOUNTY_FIELD_SET],
+  copyTimeBountyToDeposit
+);
+//#endregion
 
 //#region Window Size
 export function* setCurrentWindowSizeSaga({
@@ -205,6 +224,7 @@ export function* scheduleSaga(): SagaIterator {
     currentTimeBounty,
     currentSchedulingToggle,
     currentScheduleTimezone,
+    mirrorTimeBountyToDeposit,
     schedulingParamsValidity
   ]);
 }

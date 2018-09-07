@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { walletSelectors } from 'features/wallet';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 import { configureLiteSend, TConfigureLiteSend } from 'features/swap/actions';
 import { shouldDisplayLiteSend } from 'features/swap/selectors';
 import WalletDecrypt, { DISABLE_WALLETS } from 'components/WalletDecrypt';
@@ -57,7 +57,7 @@ export const LiteSend = connect(
   (state: AppState) => ({
     shouldDisplay: shouldDisplayLiteSend(state),
     isUnlocked: walletSelectors.isUnlocked(state),
-    network: getNetworkConfig(state)
+    network: configSelectors.getNetworkConfig(state)
   }),
   { configureLiteSend }
 )(LiteSendClass);

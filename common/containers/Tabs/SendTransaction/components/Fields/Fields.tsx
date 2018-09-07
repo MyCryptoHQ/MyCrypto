@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
+import { networkSupportsScheduling } from 'libs/scheduling';
 import {
   AddressField,
   AmountField,
@@ -129,9 +130,10 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
 export const Fields = connect(
   (state: AppState) => ({
     schedulingAvailable:
-      getNetworkConfig(state).name === 'Kovan' && selectors.getUnit(state) === 'ETH',
+      networkSupportsScheduling(configSelectors.getNetworkConfig(state).name) &&
+      selectors.getUnit(state) === 'ETH',
     shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
-    offline: getOffline(state),
+    offline: configMetaSelectors.getOffline(state),
     useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
   }),
   {

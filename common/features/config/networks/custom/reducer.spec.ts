@@ -1,5 +1,5 @@
 import { CustomNetworkConfig } from 'types/network';
-import { addCustomNetwork, removeCustomNetwork } from './actions';
+import * as actions from './actions';
 import { customNetworksReducer } from './reducer';
 
 const firstCustomNetwork: CustomNetworkConfig = {
@@ -28,10 +28,10 @@ const expectedState = {
   removeFirstCustomNetwork: { [secondCustomNetwork.id]: secondCustomNetwork }
 };
 
-const actions = {
-  addFirstCustomNetwork: addCustomNetwork(firstCustomNetwork),
-  addSecondCustomNetwork: addCustomNetwork(secondCustomNetwork),
-  removeFirstCustomNetwork: removeCustomNetwork(firstCustomNetwork.id)
+const actionsToDispatch = {
+  addFirstCustomNetwork: actions.addCustomNetwork(firstCustomNetwork),
+  addSecondCustomNetwork: actions.addCustomNetwork(secondCustomNetwork),
+  removeFirstCustomNetwork: actions.removeCustomNetwork(firstCustomNetwork.id)
 };
 
 describe('custom networks reducer', () => {
@@ -40,17 +40,23 @@ describe('custom networks reducer', () => {
 
   it('should handle adding the first custom network', () =>
     expect(
-      customNetworksReducer(expectedState.initialState, actions.addFirstCustomNetwork)
+      customNetworksReducer(expectedState.initialState, actionsToDispatch.addFirstCustomNetwork)
     ).toEqual(expectedState.addFirstCustomNetwork));
 
   it('should handle adding the second custom network', () =>
     expect(
-      customNetworksReducer(expectedState.addFirstCustomNetwork, actions.addSecondCustomNetwork)
+      customNetworksReducer(
+        expectedState.addFirstCustomNetwork,
+        actionsToDispatch.addSecondCustomNetwork
+      )
     ).toEqual(expectedState.addSecondCustomNetwork));
 
   it('should handle removing the first custom network', () =>
     expect(
-      customNetworksReducer(expectedState.addSecondCustomNetwork, actions.removeFirstCustomNetwork)
+      customNetworksReducer(
+        expectedState.addSecondCustomNetwork,
+        actionsToDispatch.removeFirstCustomNetwork
+      )
     ).toEqual(expectedState.removeFirstCustomNetwork));
 });
 

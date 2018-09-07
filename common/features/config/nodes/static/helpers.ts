@@ -1,10 +1,10 @@
 import { NODE_CONFIGS, makeAutoNodeName } from 'libs/nodes';
 import { RawNodeConfig } from 'types/node';
 import { StaticNetworkIds } from 'types/network';
-import { StaticNodesState } from './types';
+import * as types from './types';
 
 export function makeStateFromNodeConfigs(
-  prev: Partial<StaticNodesState>,
+  prev: Partial<types.ConfigStaticNodesState>,
   network: StaticNetworkIds
 ) {
   // Auto network

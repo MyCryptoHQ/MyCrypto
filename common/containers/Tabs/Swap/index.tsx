@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import { swapTypes, swapActions } from 'features/swap';
 import TabSection from 'containers/TabSection';
@@ -228,7 +228,7 @@ function mapStateToProps(state: AppState) {
     paymentAddress: state.swap.paymentAddress,
     paymentId: state.swap.paymentId,
     xmrPaymentAddress: state.swap.xmrPaymentAddress,
-    isOffline: getOffline(state)
+    isOffline: configMetaSelectors.getOffline(state)
   };
 }
 

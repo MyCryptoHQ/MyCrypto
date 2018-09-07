@@ -6,7 +6,7 @@ import { gasPriceDefaults } from 'config';
 import translate from 'translations';
 import { Wei, fromWei } from 'libs/units';
 import { AppState } from 'features/reducers';
-import { getIsWeb3Node } from 'features/config';
+import { configNodesSelectors } from 'features/config';
 import { transactionFieldsActions, transactionNetworkSelectors } from 'features/transaction';
 import { gasActions, gasSelectors } from 'features/gas';
 import { scheduleSelectors } from 'features/schedule';
@@ -162,7 +162,7 @@ export default connect(
     noncePending: transactionNetworkSelectors.nonceRequestPending(state),
     gasLimitPending: transactionNetworkSelectors.getGasEstimationPending(state),
     gasLimitEstimationTimedOut: transactionNetworkSelectors.getGasLimitEstimationTimedOut(state),
-    isWeb3Node: getIsWeb3Node(state),
+    isWeb3Node: configNodesSelectors.getIsWeb3Node(state),
     scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state)
   }),
   {

@@ -5,7 +5,7 @@ import { SecureWalletName, safeTReferralURL } from 'config';
 import translate, { translateRaw } from 'translations';
 import { SafeTWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getSingleDPath, getPaths } from 'features/config';
+import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
@@ -145,8 +145,8 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    dPath: getSingleDPath(state, SecureWalletName.SAFE_T),
-    dPaths: getPaths(state, SecureWalletName.SAFE_T)
+    dPath: configSelectors.getSingleDPath(state, SecureWalletName.SAFE_T),
+    dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.SAFE_T)
   };
 }
 

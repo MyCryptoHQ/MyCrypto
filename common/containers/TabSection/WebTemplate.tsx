@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
-import { getOffline, getLatestBlock } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import { Footer, Header } from 'components';
 import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
@@ -47,8 +47,8 @@ class WebTemplate extends Component<Props, {}> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    isOffline: getOffline(state),
-    latestBlock: getLatestBlock(state)
+    isOffline: configMetaSelectors.getOffline(state),
+    latestBlock: configMetaSelectors.getLatestBlock(state)
   };
 }
 

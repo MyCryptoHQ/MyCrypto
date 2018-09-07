@@ -1,7 +1,7 @@
 {
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "main.js",
   "description": "MyCrypto web and electron app",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
@@ -98,7 +98,7 @@
     "core-js": "2.5.5",
     "coveralls": "3.0.0",
     "css-loader": "0.28.11",
-    "electron": "2.0.1",
+    "electron": "2.0.8",
     "electron-builder": "20.13.4",
     "electron-rebuild": "1.7.3",
     "empty": "0.10.1",

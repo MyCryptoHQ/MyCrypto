@@ -1,0 +1,9 @@
+@import 'common/sass/variables.scss';
+
+.OnboardingButton {
+  width: 120px;
+  height: 50px;
+  border-radius: 2px;
+  background: $button-primary;
+  color: #fff;
+}

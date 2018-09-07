@@ -1,49 +1,44 @@
-import {
-  ChangeNodeRequestedAction,
-  ChangeNodeSucceededAction,
-  ChangeNodeFailedAction,
-  ChangeNodeRequestedOneTimeAction,
-  ChangeNodeForceAction,
-  CONFIG_NODES_SELECTED
-} from './types';
+import * as types from './types';
 
 export type TChangeNodeRequested = typeof changeNodeRequested;
-export function changeNodeRequested(payload: string): ChangeNodeRequestedAction {
+export function changeNodeRequested(payload: string): types.ChangeNodeRequestedAction {
   return {
-    type: CONFIG_NODES_SELECTED.CHANGE_REQUESTED,
+    type: types.ConfigNodesSelectedActions.CHANGE_REQUESTED,
     payload
   };
 }
 
 export type TChangeNodeSucceeded = typeof changeNodeSucceeded;
 export function changeNodeSucceeded(
-  payload: ChangeNodeSucceededAction['payload']
-): ChangeNodeSucceededAction {
+  payload: types.ChangeNodeSucceededAction['payload']
+): types.ChangeNodeSucceededAction {
   return {
-    type: CONFIG_NODES_SELECTED.CHANGE_SUCCEEDED,
+    type: types.ConfigNodesSelectedActions.CHANGE_SUCCEEDED,
     payload
   };
 }
 
 export type TChangeNodeFailed = typeof changeNodeFailed;
-export function changeNodeFailed(): ChangeNodeFailedAction {
+export function changeNodeFailed(): types.ChangeNodeFailedAction {
   return {
-    type: CONFIG_NODES_SELECTED.CHANGE_FAILED
+    type: types.ConfigNodesSelectedActions.CHANGE_FAILED
   };
 }
 
 export type TChangeNodeRequestedOneTime = typeof changeNodeRequestedOneTime;
-export function changeNodeRequestedOneTime(payload: string): ChangeNodeRequestedOneTimeAction {
+export function changeNodeRequestedOneTime(
+  payload: string
+): types.ChangeNodeRequestedOneTimeAction {
   return {
-    type: CONFIG_NODES_SELECTED.CHANGE_REQUESTED_ONETIME,
+    type: types.ConfigNodesSelectedActions.CHANGE_REQUESTED_ONETIME,
     payload
   };
 }
 
 export type TChangeNodeForce = typeof changeNodeForce;
-export function changeNodeForce(payload: string): ChangeNodeForceAction {
+export function changeNodeForce(payload: string): types.ChangeNodeForceAction {
   return {
-    type: CONFIG_NODES_SELECTED.CHANGE_FORCE,
+    type: types.ConfigNodesSelectedActions.CHANGE_FORCE,
     payload
   };
 }

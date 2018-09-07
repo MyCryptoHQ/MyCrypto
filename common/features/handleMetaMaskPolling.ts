@@ -43,12 +43,12 @@ export default async function handleMetaMaskPolling(store: Store<AppState>): Pro
       actualNetwork &&
       (web3Wallet as Web3Wallet).network !== actualNetwork.id
     ) {
-      window.location.reload();
+      // window.location.reload();
 
       return true;
     }
   } catch (error) {
-    window.location.reload();
+    // window.location.reload();
 
     return true;
   }
