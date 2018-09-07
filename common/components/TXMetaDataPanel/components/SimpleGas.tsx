@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Slider, { createSliderWithTooltip } from 'rc-slider';
+import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
 
 import { gasPriceDefaults } from 'config';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { Wei, fromWei } from 'libs/units';
 import { AppState } from 'features/reducers';
 import { configNodesSelectors } from 'features/config';
@@ -43,6 +43,10 @@ interface State {
   hasSetRecommendedGasPrice: boolean;
 }
 
+interface GasTooltips {
+  [estimationLevel: string]: string;
+}
+
 class SimpleGas extends React.Component<Props> {
   public state: State = {
     hasSetRecommendedGasPrice: false
@@ -75,6 +79,8 @@ class SimpleGas extends React.Component<Props> {
       max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.max,
       min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
     };
+
+    const gasNotches = this.makeGasNotches();
 
     /**
      * @desc On retrieval of gas estimates,
@@ -112,6 +118,8 @@ class SimpleGas extends React.Component<Props> {
               onChange={this.handleSlider}
               min={bounds.min}
               max={bounds.max}
+              marks={gasNotches}
+              included={false}
               step={bounds.min < 1 ? 0.1 : 1}
               value={actualGasPrice}
               tipFormatter={this.formatTooltip}
@@ -144,14 +152,39 @@ class SimpleGas extends React.Component<Props> {
     return parseFloat(fromWei(gasPriceValue, 'gwei'));
   }
 
+  private makeGasNotches = (): Marks => {
+    const { gasEstimates } = this.props;
+
+    return gasEstimates
+      ? {
+          [gasEstimates.safeLow]: '',
+          [gasEstimates.standard]: '',
+          [gasEstimates.fast]: '',
+          [gasEstimates.fastest]: ''
+        }
+      : {};
+  };
+
   private formatTooltip = (gas: number) => {
     const { gasEstimates } = this.props;
-    let recommended = '';
-    if (gasEstimates && !gasEstimates.isDefault && gas === gasEstimates.fast) {
-      recommended = '(Recommended)';
+
+    if (!(gasEstimates && !gasEstimates.isDefault)) {
+      return '';
     }
 
-    return `${gas} Gwei ${recommended}`;
+    const gasTooltips: GasTooltips = {
+      [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
+      [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
+      [gasEstimates.safeLow]: translateRaw('TX_FEE_RECOMMENDED_SAFELOW'),
+      [gasEstimates.standard]: translateRaw('TX_FEE_RECOMMENDED_STANDARD')
+    };
+
+    const recommended = gasTooltips[gas] || '';
+
+    return translateRaw('GAS_GWEI_COST', {
+      $gas: gas.toString(),
+      $recommended: recommended
+    });
   };
 }
 
