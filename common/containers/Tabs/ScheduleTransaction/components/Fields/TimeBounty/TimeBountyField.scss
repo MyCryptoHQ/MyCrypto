@@ -1,0 +1,55 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.TimeBountyField {
+  &-wrapper {
+    @media screen and (min-width: 390px) {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  &-preview {
+    font-weight: normal;
+    flex-grow: 1;
+    line-height: 45px;
+    font-family: $font-family-monospace;
+    text-align: center;
+    font-size: 14px;
+
+    @media screen and (max-width: 389px) {
+      margin-top: 10px;
+    }
+
+    @media screen and (min-width: $screen-md) and (max-width: 1200px) {
+      font-size: 12px;
+    }
+
+    &-display {
+      background: rgba(var(--color-dark-rgb), 0.08);
+      padding: 0 12px;
+      height: 48px;
+      line-height: 48px;
+      display: block;
+      width: 100%;
+      max-width: initial;
+      margin-left: 0;
+
+      @media screen and (min-width: 390px) {
+        max-width: 140px;
+        margin-left: 10px;
+        width: auto;
+      }
+    }
+  }
+
+  &-advanced-toggle {
+    display: block;
+    font-weight: normal;
+
+    &:focus {
+      color: color(link-color);
+    }
+  }
+}

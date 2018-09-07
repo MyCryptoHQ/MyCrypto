@@ -7,6 +7,7 @@ import * as selectors from 'features/selectors';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
+import { networkSupportsScheduling } from 'libs/scheduling';
 import {
   AddressField,
   AmountField,
@@ -129,7 +130,7 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
 export const Fields = connect(
   (state: AppState) => ({
     schedulingAvailable:
-      configSelectors.getNetworkConfig(state).name === 'Kovan' &&
+      networkSupportsScheduling(configSelectors.getNetworkConfig(state).name) &&
       selectors.getUnit(state) === 'ETH',
     shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
     offline: configMetaSelectors.getOffline(state),
