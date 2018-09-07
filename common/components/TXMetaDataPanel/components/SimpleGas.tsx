@@ -43,10 +43,6 @@ interface State {
   hasSetRecommendedGasPrice: boolean;
 }
 
-interface GasRecommendations {
-  [recommendationLevel: string]: number;
-}
-
 interface GasTooltips {
   [estimationLevel: string]: string;
 }
@@ -186,7 +182,7 @@ class SimpleGas extends React.Component<Props> {
     const recommended = gasTooltips[gas] || '';
 
     return translateRaw('GAS_GWEI_COST', {
-      $gas: gas,
+      $gas: gas.toString(),
       $recommended: recommended
     });
   };
