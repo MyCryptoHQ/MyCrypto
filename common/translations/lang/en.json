@@ -543,6 +543,7 @@
     "TX_FEE_RECOMMENDED_FASTEST": "(Fastest)",
     "TX_FEE_RECOMMENDED_SAFELOW": "(Safe Low)",
     "TX_FEE_RECOMMENDED_STANDARD": "(Standard)",
+    "GAS_GWEI_COST": "$gas Gwei $recommended",
     "CHANGE_WALLET": "Change Wallet",
     "REQUEST_PAYMENT_QR_TITLE": "Payment QR & Code",
     "ACCOUNT": "Account",

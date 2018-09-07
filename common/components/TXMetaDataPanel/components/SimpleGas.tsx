@@ -47,6 +47,10 @@ interface GasRecommendations {
   [recommendationLevel: string]: number;
 }
 
+interface GasTooltips {
+  [estimationLevel: string]: string;
+}
+
 class SimpleGas extends React.Component<Props> {
   public state: State = {
     hasSetRecommendedGasPrice: false
@@ -80,18 +84,7 @@ class SimpleGas extends React.Component<Props> {
       min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
     };
 
-    const gasNotches: Marks = {};
-
-    if (gasEstimates) {
-      const gasRecommendations: GasRecommendations = {
-        fast: gasEstimates.fast,
-        fastest: gasEstimates.fastest,
-        safeLow: gasEstimates.safeLow,
-        standard: gasEstimates.standard
-      };
-
-      Object.keys(gasRecommendations).forEach(key => (gasNotches[gasRecommendations[key]] = ''));
-    }
+    const gasNotches = this.makeGasNotches();
 
     /**
      * @desc On retrieval of gas estimates,
@@ -163,21 +156,39 @@ class SimpleGas extends React.Component<Props> {
     return parseFloat(fromWei(gasPriceValue, 'gwei'));
   }
 
+  private makeGasNotches = (): Marks => {
+    const { gasEstimates } = this.props;
+
+    return gasEstimates
+      ? {
+          [gasEstimates.safeLow]: '',
+          [gasEstimates.standard]: '',
+          [gasEstimates.fast]: '',
+          [gasEstimates.fastest]: ''
+        }
+      : {};
+  };
+
   private formatTooltip = (gas: number) => {
     const { gasEstimates } = this.props;
-    let recommended = '';
 
-    if (gasEstimates && !gasEstimates.isDefault) {
-      const gasTooltips = {
-        [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
-        [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
-        [gasEstimates.safeLow]: translateRaw('TX_FEE_RECOMMENDED_SAFELOW'),
-        [gasEstimates.standard]: translateRaw('TX_FEE_RECOMMENDED_STANDARD')
-      };
-      recommended = gasTooltips[gas];
+    if (!(gasEstimates && !gasEstimates.isDefault)) {
+      return '';
     }
 
-    return `${gas} Gwei ${recommended ? recommended : ''}`;
+    const gasTooltips: GasTooltips = {
+      [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
+      [gasEstimates.fastest]: translateRaw('TX_FEE_RECOMMENDED_FASTEST'),
+      [gasEstimates.safeLow]: translateRaw('TX_FEE_RECOMMENDED_SAFELOW'),
+      [gasEstimates.standard]: translateRaw('TX_FEE_RECOMMENDED_STANDARD')
+    };
+
+    const recommended = gasTooltips[gas] || '';
+
+    return translateRaw('GAS_GWEI_COST', {
+      $gas: gas,
+      $recommended: recommended
+    });
   };
 }
 
