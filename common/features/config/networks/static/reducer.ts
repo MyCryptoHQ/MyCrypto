@@ -28,7 +28,8 @@ import {
   GO_DEFAULT,
   EOSC_DEFAULT,
   ESN_DEFAULT,
-  AQUA_DEFAULT
+  AQUA_DEFAULT,
+  AKA_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -569,6 +570,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 0.1,
       max: 10,
       initial: 0.1
+    }
+  },
+  AKA: {
+    id: 'AKA',
+    name: 'Akroma',
+    unit: 'AKA',
+    chainId: 200625,
+    isCustom: false,
+    color: '#aa0087',
+    blockExplorer: makeExplorer({
+      name: 'Akroma Explorer',
+      origin: 'https://akroma.io/explorer'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: AKA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: AKA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: AKA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
     }
   }
 };
