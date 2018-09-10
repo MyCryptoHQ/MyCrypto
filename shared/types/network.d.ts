@@ -76,6 +76,7 @@ interface StaticNetworkConfig {
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice?: boolean;
   unsupportedTabs?: TAB[];
+  hideEquivalentValues?: boolean;
 }
 
 interface CustomNetworkConfig {
@@ -87,6 +88,7 @@ interface CustomNetworkConfig {
   chainId: number;
   dPathFormats: DPathFormats | null;
   unsupportedTabs?: TAB[];
+  hideEquivalentValues?: boolean;
 }
 
 type NetworkConfig = CustomNetworkConfig | StaticNetworkConfig;

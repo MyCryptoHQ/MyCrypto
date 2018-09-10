@@ -191,6 +191,10 @@ class EquivalentValues extends React.Component<Props, State> {
           <div className="text-center">
             <h5 style={{ color: 'red' }}>{translate('EQUIV_VALS_TESTNET')}</h5>
           </div>
+        ) : network.hideEquivalentValues ? (
+          <div className="text-center">
+            <h5 style={{ color: 'red' }}>{translate('EQUIV_VALS_UNSUPPORTED_UNIT')}</h5>
+          </div>
         ) : ratesError ? (
           <h5>{ratesError}</h5>
         ) : isFetching ? (
