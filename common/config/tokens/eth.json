@@ -135,6 +135,11 @@
     "decimal": 18
   },
   {
+    "address": "0x954b890704693af242613edef1b603825afcd708",
+    "symbol": "CARD",
+    "decimal": 18
+  },
+  {
     "address": "0xD8912C10681D8B21Fd3742244f44658dBA12264E",
     "symbol": "PLU",
     "decimal": 18
