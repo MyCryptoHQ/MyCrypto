@@ -256,6 +256,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'rpc.akroma.io',
       url: 'https://rpc.akroma.io'
     }
+  ],
+
+  PIRL: [
+    {
+      name: makeNodeName('PIRL', 'wallrpc.pirl.io'),
+      type: 'rpc',
+      service: 'wallrpc.pirl.io',
+      url: 'https://wallrpc.pirl.io'
+    }
   ]
 };
 
