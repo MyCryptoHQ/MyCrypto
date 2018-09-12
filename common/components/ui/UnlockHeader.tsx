@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { IWallet } from 'libs/wallet/IWallet';
 import { AppState } from 'features/reducers';
-import closeIcon from 'assets/images/close.svg';
 import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import './UnlockHeader.scss';
 
@@ -49,12 +48,6 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
                 </span>
                 <i className="fa fa-refresh" />
               </span>
-            </button>
-          )}
-        {wallet &&
-          isExpanded && (
-            <button className="UnlockHeader-close" onClick={this.toggleisExpanded}>
-              <img src={closeIcon} alt="close" />
             </button>
           )}
         <WalletDecrypt
