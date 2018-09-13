@@ -156,6 +156,28 @@ export const validDecimal = (input: string, decimal: number) => {
   return decimalLength <= decimal;
 };
 
+export const isValidNumberOrDecimal = (input: number | string): boolean => {
+  const convertedInput = input.toString();
+  const parsedInput = parseFloat(convertedInput);
+  const digits = '.0123456789';
+
+  // Input contains no numbers.
+  if (!parsedInput) {
+    return false;
+  }
+
+  // Input contains one number and other characters.
+  if (convertedInput.split('').some(character => !digits.includes(character))) {
+    return false;
+  }
+
+  const isValid = convertedInput.includes('.')
+    ? validDecimal(convertedInput, Infinity)
+    : validPositiveNumber(parsedInput);
+
+  return isValid;
+};
+
 export function isPositiveIntegerOrZero(num: number): boolean {
   if (isNaN(num) || !isFinite(num)) {
     return false;
