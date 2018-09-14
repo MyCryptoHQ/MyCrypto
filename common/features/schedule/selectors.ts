@@ -120,9 +120,6 @@ export interface ICurrentWindowSize {
 export const isValidCurrentWindowSize = (state: AppState) => {
   const currentWindowSize = getWindowSize(state);
 
-  const isValid = isValidNumberOrDecimal(currentWindowSize.raw);
-  console.log('\n\n\n', 'isValid', isValid, '\n\n\n');
-
   return (
     currentWindowSize &&
     currentWindowSize.raw &&
