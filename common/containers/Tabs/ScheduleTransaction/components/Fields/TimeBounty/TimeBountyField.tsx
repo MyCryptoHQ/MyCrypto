@@ -90,6 +90,12 @@ class TimeBountyFieldClass extends Component<Props, State> {
                   </span>
                 </div>
               </div>
+
+              {!isValid && (
+                <div className="alert alert-warning small">
+                  {translate('SCHEDULE_TIMEBOUNTY_WARNING')}
+                </div>
+              )}
             </div>
           </label>
         </div>
