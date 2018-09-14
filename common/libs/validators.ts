@@ -156,6 +156,11 @@ export const validDecimal = (input: string, decimal: number) => {
   return decimalLength <= decimal;
 };
 
+/**
+ * @desc
+ * NOTE: Do not use this for anything related to Ether units.
+ * This is strictly for ensuring a text entry only contains 0-9 and/or a decimal point.
+ */
 export const isValidNumberOrDecimal = (input: number | string): boolean => {
   const convertedInput = input.toString();
   const parsedInput = parseFloat(convertedInput);
