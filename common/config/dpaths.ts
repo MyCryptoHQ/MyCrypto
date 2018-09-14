@@ -118,6 +118,11 @@ export const AQUA_DEFAULT: DPath = {
   value: "m/44'/60'/0'/0"
 };
 
+export const AKA_DEFAULT: DPath = {
+  label: 'Default (AKA)',
+  value: "m/44'/200625'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -141,7 +146,8 @@ export const DPaths: DPath[] = [
   GO_DEFAULT,
   EOSC_DEFAULT,
   ESN_DEFAULT,
-  AQUA_DEFAULT
+  AQUA_DEFAULT,
+  AKA_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
