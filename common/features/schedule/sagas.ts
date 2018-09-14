@@ -81,7 +81,7 @@ export function* setCurrentTimeBountySaga({
   const unit: string = yield select(derivedSelectors.getUnit);
 
   if (!validNumber(parseInt(raw, 10)) || !validDecimal(raw, decimal)) {
-    yield put(actions.setTimeBountyField({ raw, value: null }));
+    yield put(actions.setTimeBountyField({ raw, value: new BN(0) }));
   }
 
   const value = toTokenBase(raw, decimal);
@@ -89,7 +89,7 @@ export function* setCurrentTimeBountySaga({
 
   const isValid = isInputValid && value.gte(Wei('0'));
 
-  yield put(actions.setTimeBountyField({ raw, value: isValid ? value : null }));
+  yield put(actions.setTimeBountyField({ raw, value: isValid ? value : new BN(0) }));
 }
 
 export const currentTimeBounty = takeLatest(
