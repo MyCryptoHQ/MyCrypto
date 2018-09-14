@@ -55,6 +55,7 @@ export const currentScheduleTimezone = takeLatest(
 export function* setGasLimitForSchedulingSaga({
   payload: { value: useScheduling }
 }: types.SetSchedulingToggleAction): SagaIterator {
+  // setGasLimitForSchedulingSaga
   const gasLimit = useScheduling
     ? EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
     : EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK;
@@ -65,6 +66,13 @@ export function* setGasLimitForSchedulingSaga({
       value: gasLimit
     })
   );
+
+  // setDefaultTimeBounty
+  if (useScheduling) {
+    yield put(
+      actions.setCurrentTimeBounty(fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'))
+    );
+  }
 }
 
 export const currentSchedulingToggle = takeLatest(
