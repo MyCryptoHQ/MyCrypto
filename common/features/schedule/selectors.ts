@@ -1,7 +1,12 @@
 import BN from 'bn.js';
 
 import { Wei } from 'libs/units';
-import { gasPriceValidator, gasLimitValidator, timeBountyValidator } from 'libs/validators';
+import {
+  gasPriceValidator,
+  gasLimitValidator,
+  timeBountyValidator,
+  isValidNumberOrDecimal
+} from 'libs/validators';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import * as helpers from './helpers';
@@ -117,6 +122,8 @@ export const isValidCurrentWindowSize = (state: AppState) => {
 
   return (
     currentWindowSize &&
+    currentWindowSize.raw &&
+    isValidNumberOrDecimal(currentWindowSize.raw) &&
     currentWindowSize.value &&
     currentWindowSize.value.gt(new BN(0)) &&
     currentWindowSize.value.bitLength() <= 256
