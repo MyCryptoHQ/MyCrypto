@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import translate from 'translations';
 import { IWallet } from 'libs/wallet/IWallet';
@@ -7,7 +8,7 @@ import { AppState } from 'features/reducers';
 import WalletDecrypt, { DisabledWallets } from 'components/WalletDecrypt';
 import './UnlockHeader.scss';
 
-interface Props {
+interface OwnProps {
   title?: string;
   wallet: IWallet;
   disabledWallets?: DisabledWallets;
@@ -18,6 +19,7 @@ interface State {
   isExpanded: boolean;
 }
 
+type Props = OwnProps & RouteComponentProps<{}>;
 export class UnlockHeader extends React.PureComponent<Props, State> {
   public state = {
     isExpanded: !this.props.wallet
@@ -30,7 +32,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { title, wallet, disabledWallets, showGenerateLink } = this.props;
+    const { title, wallet, disabledWallets, showGenerateLink, history } = this.props;
     const { isExpanded } = this.state;
 
     return (
@@ -40,7 +42,7 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
           !isExpanded && (
             <button
               className="UnlockHeader-open btn btn-default btn-smr"
-              onClick={this.toggleisExpanded}
+              onClick={() => history.push('/')}
             >
               <span>
                 <span className="hidden-xs UnlockHeader-open-text">
@@ -58,12 +60,6 @@ export class UnlockHeader extends React.PureComponent<Props, State> {
       </article>
     );
   }
-
-  public toggleisExpanded = (_: React.FormEvent<HTMLButtonElement>) => {
-    this.setState(state => {
-      return { isExpanded: !state.isExpanded };
-    });
-  };
 }
 
 function mapStateToProps(state: AppState) {
@@ -72,4 +68,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(UnlockHeader);
+export default withRouter(connect(mapStateToProps)(UnlockHeader));
