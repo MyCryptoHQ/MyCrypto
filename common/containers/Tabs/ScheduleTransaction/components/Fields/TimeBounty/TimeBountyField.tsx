@@ -99,7 +99,7 @@ class TimeBountyFieldClass extends Component<Props, State> {
             </div>
           </label>
         </div>
-        <a href="#" onClick={this.toggleAdvanced} className="TimeBountyField-advanced-toggle">
+        <a onClick={this.toggleAdvanced} className="TimeBountyField-advanced-toggle">
           {advanced ? `- ${translateRaw('TRANS_SIMPLE')}` : `+ ${translateRaw('TRANS_ADVANCED')}`}
         </a>
       </>
