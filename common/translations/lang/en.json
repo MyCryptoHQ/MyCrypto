@@ -142,7 +142,7 @@
     "SCHEDULE_TIMEBOUNTY": "Time Bounty ",
     "SCHEDULE_TIMEBOUNTY_PLACEHOLDER": "Enter Time Bounty ",
     "SCHEDULE_TIMEBOUNTY_TOOLTIP": "The amount of ETH you wish to offer to TimeNodes in exchange for execution. The higher the Time Bounty, the likelier your transaction will get executed. ",
-    "SCHEDULE_TIMEBOUNTY_WARNING": "You don't have enough funds.",
+    "SCHEDULE_TIMEBOUNTY_WARNING": "You don't have enough funds or the value is invalid.",
     "SCHEDULE_CHECK": "Check on Chronos ",
     "SCHEDULE_SCHEDULE": "Schedule transaction ",
     "SCHEDULE_TYPE_TIME": "Minutes ",
