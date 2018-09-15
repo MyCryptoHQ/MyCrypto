@@ -29,7 +29,8 @@ import {
   EOSC_DEFAULT,
   ESN_DEFAULT,
   AQUA_DEFAULT,
-  AKA_DEFAULT
+  AKA_DEFAULT,
+  PIRL_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -589,6 +590,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: AKA_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: AKA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: AKA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  PIRL: {
+    id: 'PIRL',
+    name: 'Pirl',
+    unit: 'PIRL',
+    chainId: 3125659152,
+    isCustom: false,
+    color: '#a2d729',
+    blockExplorer: makeExplorer({
+      name: 'Poseidon Explorer',
+      origin: 'https://poseidon.pirl.io/explorer'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: PIRL_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: PIRL_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: PIRL_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
