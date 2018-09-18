@@ -77,6 +77,10 @@ class InteractForm extends Component<Props, State> {
     }
   }
 
+  public componentWillUnmount() {
+    this.props.setCurrentTo('');
+  }
+
   public isContractsValid = () => {
     const { contracts } = this.props;
     return contracts && contracts.length;
