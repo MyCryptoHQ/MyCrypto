@@ -10,7 +10,7 @@ import { NetworkConfig } from 'types/network';
 import { Balance } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getOffline, getNetworkConfig } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { ratesActions } from 'features/rates';
 import { walletTypes } from 'features/wallet';
 import { UnitDisplay, Spinner } from 'components/ui';
@@ -191,6 +191,10 @@ class EquivalentValues extends React.Component<Props, State> {
           <div className="text-center">
             <h5 style={{ color: 'red' }}>{translate('EQUIV_VALS_TESTNET')}</h5>
           </div>
+        ) : network.hideEquivalentValues ? (
+          <div className="text-center">
+            <h5 style={{ color: 'red' }}>{translate('EQUIV_VALS_UNSUPPORTED_UNIT')}</h5>
+          </div>
         ) : ratesError ? (
           <h5>{ratesError}</h5>
         ) : isFetching ? (
@@ -324,10 +328,10 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
     tokenBalances: selectors.getShownTokenBalances(state, true),
-    network: getNetworkConfig(state),
+    network: configSelectors.getNetworkConfig(state),
     rates: state.rates.rates,
     ratesError: state.rates.ratesError,
-    isOffline: getOffline(state)
+    isOffline: configMetaSelectors.getOffline(state)
   };
 }
 

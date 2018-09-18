@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 
 import { shepherdProvider, getShepherdPending, getShepherdOffline } from 'libs/nodes';
-import { setOffline, setOnline, getOffline } from 'features/config';
+import { configMetaActions, configMetaSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import handleMetaMaskPolling, { METAMASK_POLLING_INTERVAL } from './handleMetaMaskPolling';
 import configureStore from './configureStore';
@@ -16,8 +16,8 @@ window.addEventListener('load', () => {
 
   const { online, offline, lostNetworkNotif, offlineNotif, restoreNotif } = bindActionCreators(
     {
-      offline: setOffline,
-      online: setOnline,
+      offline: configMetaActions.setOffline,
+      online: configMetaActions.setOnline,
       restoreNotif: () =>
         notificationsActions.showNotification(
           'success',
@@ -43,7 +43,7 @@ window.addEventListener('load', () => {
     store.dispatch
   );
 
-  const getAppOnline = () => !getOffline(store.getState());
+  const getAppOnline = () => !configMetaSelectors.getOffline(store.getState());
 
   /**
    * @description Repeatedly polls itself to check for online state conflict occurs, implemented in recursive style for flexible polling times

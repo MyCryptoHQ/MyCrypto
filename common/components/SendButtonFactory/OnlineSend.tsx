@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import {
   transactionBroadcastTypes,
   transactionSignActions,
@@ -87,7 +87,7 @@ class OnlineSendClass extends Component<Props, State> {
 
 export const OnlineSend = connect(
   (state: AppState) => ({
-    offline: getOffline(state),
+    offline: configMetaSelectors.getOffline(state),
     currentTransaction: transactionSelectors.getCurrentTransactionStatus(state),
     transactionBroadcasted: transactionSelectors.currentTransactionBroadcasted(state),
     signaturePending: derivedSelectors.signaturePending(state).isSignaturePending,

@@ -5,14 +5,38 @@
 }
 
 .rdtPicker {
+  background: color(control-bg);
+  border-color: color(control-border);
+
+  th, tfoot {
+    border-color: color(gray-lightest);
+  }
+
+  thead {
+    tr:first-child {
+      th:hover {
+        background: color(gray-lightest);
+      }
+    }
+  }
+
   td {
     &.rdtActive,
     &.rdtActive:hover {
       background-color: color(brand-primary);
     }
+
+    &.rdtDay:hover {
+      background: color(gray-lightest);
+    }
+
+    &.rdtToday::before {
+      border-bottom: 7px solid color(brand-primary);
+    }
   }
-  td.rdtToday::before {
-    border-bottom: 7px solid color(brand-primary);
+
+  .rdtTimeToggle:hover {
+    background: color(gray-lightest);
   }
 }
 
@@ -20,4 +44,10 @@
 .rdtNext,
 .rdtPrev {
   color: color(brand-primary);
+}
+
+.rdtCounter {
+  .rdtBtn:hover {
+    background: color(gray-lightest);
+  }
 }

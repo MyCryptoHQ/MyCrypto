@@ -44,6 +44,7 @@ export const WindowSizeField: React.SFC<Props> = ({ isReadOnly }) => (
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
             onChange={onChange}
+            showInvalidWithoutValue={true}
           />
         </label>
       </div>

@@ -1,36 +1,30 @@
-import {
-  CONFIG_NETWORKS_CUSTOM,
-  AddCustomNetworkAction,
-  RemoveCustomNetworkAction,
-  CustomNetworkAction,
-  CustomNetworksState
-} from './types';
+import * as types from './types';
 
 const addCustomNetwork = (
-  state: CustomNetworksState,
-  { payload }: AddCustomNetworkAction
-): CustomNetworksState => ({
+  state: types.ConfigCustomNetworksState,
+  { payload }: types.AddCustomNetworkAction
+): types.ConfigCustomNetworksState => ({
   ...state,
   [payload.id]: payload
 });
 
 function removeCustomNetwork(
-  state: CustomNetworksState,
-  { payload }: RemoveCustomNetworkAction
-): CustomNetworksState {
+  state: types.ConfigCustomNetworksState,
+  { payload }: types.RemoveCustomNetworkAction
+): types.ConfigCustomNetworksState {
   const stateCopy = { ...state };
   Reflect.deleteProperty(stateCopy, payload);
   return stateCopy;
 }
 
 export function customNetworksReducer(
-  state: CustomNetworksState = {},
-  action: CustomNetworkAction
+  state: types.ConfigCustomNetworksState = {},
+  action: types.CustomNetworkAction
 ) {
   switch (action.type) {
-    case CONFIG_NETWORKS_CUSTOM.ADD:
+    case types.ConfigNetworksCustomActions.ADD:
       return addCustomNetwork(state, action);
-    case CONFIG_NETWORKS_CUSTOM.REMOVE:
+    case types.ConfigNetworksCustomActions.REMOVE:
       return removeCustomNetwork(state, action);
     default:
       return state;

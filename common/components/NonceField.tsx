@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import translate from 'translations';
 import { AppState } from 'features/reducers';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import { transactionNetworkActions, transactionNetworkSelectors } from 'features/transaction';
 import { Spinner, Input } from 'components/ui';
 import Help from 'components/ui/Help';
@@ -82,7 +82,7 @@ class NonceField extends React.Component<Props> {
 
 const mapStateToProps = (state: AppState): StateProps => {
   return {
-    isOffline: getOffline(state),
+    isOffline: configMetaSelectors.getOffline(state),
     noncePending: transactionNetworkSelectors.nonceRequestPending(state)
   };
 };

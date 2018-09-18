@@ -5,6 +5,11 @@ import { gasPriceToBase, fromWei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import * as types from './types';
 import * as helpers from './helpers';
+import BN from 'bn.js';
+
+const scheduleDeposit = EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT.mul(
+  new BN(EAC_SCHEDULING_CONFIG.BOUNTY_TO_DEPOSIT_MULTIPLIER)
+);
 
 const INITIAL_STATE: types.ScheduleState = {
   schedulingToggle: { value: false },
@@ -31,7 +36,10 @@ const INITIAL_STATE: types.ScheduleState = {
     raw: EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK.toString(),
     value: gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK)
   },
-  scheduleDeposit: { raw: '', value: null },
+  scheduleDeposit: {
+    raw: fromWei(scheduleDeposit, 'ether'),
+    value: scheduleDeposit
+  },
   scheduleParamsValidity: { value: true }
 };
 

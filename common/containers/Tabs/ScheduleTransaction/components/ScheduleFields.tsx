@@ -12,11 +12,11 @@ import {
 } from 'components';
 import {
   WindowSizeField,
-  TimeBountyField,
   WindowStartField,
   ScheduleGasPriceField,
   ScheduleGasLimitField,
-  ScheduleDepositField
+  ScheduleDepositField,
+  TimeBountyField
 } from '.';
 import './ScheduleFields.scss';
 
@@ -61,7 +61,7 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
           <div
             className={`${
-              schedulingType.value === 'block' ? 'col-md-6 col-lg-3' : 'col-md-2 col-lg-2'
+              schedulingType.value === 'block' ? 'col-md-6 col-lg-2' : 'col-md-2 col-lg-2'
             } col-lg-pull-3`}
           >
             <WindowSizeField />
@@ -69,10 +69,11 @@ class ScheduleFieldsClass extends React.Component<Props> {
         </div>
 
         <div className="row form-group">
-          <div className="col-xs-6">
+          <div className="col-xs-12 col-md-6">
             <TimeBountyField />
+            <hr className="hidden-md hidden-lg" />
           </div>
-          <div className="col-xs-6">
+          <div className="col-xs-12 col-md-6">
             <ScheduleDepositField />
           </div>
         </div>

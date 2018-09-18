@@ -7,7 +7,7 @@ import translate from 'translations';
 import { getParamFromURL } from 'utils/helpers';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig } from 'features/config';
+import { configSelectors } from 'features/config';
 import { TransactionStatus as TransactionStatusComponent } from 'components';
 import TabSection from 'containers/TabSection';
 import TxHashInput from './components/TxHashInput';
@@ -88,5 +88,5 @@ class CheckTransaction extends React.Component<Props, State> {
 }
 
 export default connect((state: AppState): StateProps => ({
-  network: getNetworkConfig(state)
+  network: configSelectors.getNetworkConfig(state)
 }))(CheckTransaction);
