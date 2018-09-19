@@ -62,7 +62,11 @@ export class SendButtonFactoryClass extends Component<Props> {
           withOnClick={({ openModal, signer }) =>
             this.props.withProps({
               disabled: signing
-                ? networkRequestPending || !validGasPrice || !validGasLimit || balance.isPending
+                ? !isFullTransaction ||
+                  networkRequestPending ||
+                  !validGasPrice ||
+                  !validGasLimit ||
+                  balance.isPending
                 : !!(signing && !serializedTransaction),
               signTx: () => signer(transaction),
               openModal
