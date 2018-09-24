@@ -21,7 +21,9 @@ type StaticNetworkIds =
   | 'GO_TESTNET'
   | 'EOSC'
   | 'ESN'
-  | 'AQUA';
+  | 'AQUA'
+  | 'AKA'
+  | 'PIRL';
 
 export interface BlockExplorerConfig {
   name: string;
