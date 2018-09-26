@@ -74,8 +74,10 @@ export default function NewFooter() {
       <section className="NewFooter-actions-container">
         <section className="NewFooter-actions-container-donation">
           <p>Donate</p>
-          <button>Ethereum</button>
-          <button>Bitcoin</button>
+          <section className="NewFooter-actions-container-donation-buttons">
+            <button>Ethereum</button>
+            <button>Bitcoin</button>
+          </section>
         </section>
         <section className="NewFooter-actions-container-subscribe">
           <h2>Subscribe to MyCrypto</h2>
