@@ -34,6 +34,9 @@ export default function NewFooter() {
           <ThemeToggle />
         </section>
       </section>
+      <section className="NewFooter-divider-wrapper">
+        <section className="NewFooter-divider" />
+      </section>
       {/* Actions */}
       <section className="NewFooter-actions-container">
         <section className="NewFooter-actions-container-donation">
@@ -50,6 +53,10 @@ export default function NewFooter() {
           </section>
         </section>
       </section>
+      <section className="NewFooter-divider-wrapper">
+        <section className="NewFooter-divider" />
+      </section>
+      {/* Links */}
       <section className="NewFooter-links-container">
         <section className="NewFooter-links-container-blocks">
           <section className="NewFooter-links-container-company">
@@ -79,7 +86,6 @@ export default function NewFooter() {
             </ul>
           </section>
         </section>
-
         <section className="NewFooter-links-container-linkset">
           {socialMediaLinks.map((socialMediaItem, idx) => (
             <SocialMediaLink link={socialMediaItem.link} key={idx} text={socialMediaItem.text} />
