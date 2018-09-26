@@ -7,6 +7,7 @@ import './NewFooter.scss';
 export default function NewFooter() {
   return (
     <section className="NewFooter">
+      {/* Logo */}
       <section className="NewFooter-logo-container">
         <section className="NewFooter-logo-container-image">
           <img src={logo} alt="Logo" />
@@ -21,7 +22,22 @@ export default function NewFooter() {
           <ThemeToggle />
         </section>
       </section>
-      <section className="NewFooter-actions-container">Actions</section>
+      {/* Actions */}
+      <section className="NewFooter-actions-container">
+        <section className="NewFooter-actions-container-donation">
+          <p>Donate</p>
+          <button>Ethereum</button>
+          <button>Bitcoin</button>
+        </section>
+        <section className="NewFooter-actions-container-subscribe">
+          <h2>Subscribe to MyCrypto</h2>
+          <p>Get updates from MyCrypto straight to your inbox!</p>
+          <section className="NewFooter-actions-container-subscribe-input">
+            <input type="text" placeholder="Email address" />
+            <button>Get Updates</button>
+          </section>
+        </section>
+      </section>
       <section className="NewFooter-links-container">Links</section>
     </section>
   );

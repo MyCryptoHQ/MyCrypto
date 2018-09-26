@@ -10,6 +10,7 @@ $footer-text-color: #fff;
   &-logo-container {
     display: flex;
     flex-direction: column;
+    margin-bottom: 25px;
 
     &-image {
       display: flex;
@@ -31,6 +32,59 @@ $footer-text-color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+  }
+  &-actions-container {
+    &-donation {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+
+      button {
+        width: 103px;
+        height: 32px;
+        border: 1px solid #495d75;
+        border-radius: 6px;
+        box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5), inset 0 1px 3px 0 rgba(232, 234, 237, 0.5);
+        background-color: rgba(255, 255, 255, 0.15);
+        margin-bottom: 8px;
+      }
+    }
+    &-subscribe {
+      h2 {
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+      }
+      p {
+        font-size: 14px;
+        text-align: center;
+        color: #c0c7cf;
+      }
+      &-input {
+        display: flex;
+        align-items: center;
+        padding: 0 32px;
+
+        input {
+          width: 215px;
+          height: 40px;
+          border-radius: 3px;
+          background-color: #132b47;
+          border: solid 1px #4c5f75;
+          padding-left: 3px;
+        }
+        button {
+          width: 100px;
+          height: 40px;
+          border: none;
+          border-radius: 3px;
+          background-color: #027796;
+          font-size: 12px;
+        }
+      }
     }
   }
 }
