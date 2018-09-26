@@ -15,12 +15,30 @@ const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
 };
 
 export default function NewFooter() {
+  const linksAndLegal = (
+    <React.Fragment>
+      <section className="NewFooter-links-container-linkset">
+        {socialMediaLinks.map((socialMediaItem, idx) => (
+          <SocialMediaLink link={socialMediaItem.link} key={idx} text={socialMediaItem.text} />
+        ))}
+      </section>
+      <section className="NewFooter-links-container-legal">
+        <p>© 2018 MyCrypto, Inc.</p>
+        <p>Disclaimer</p>
+        <p>v1.3.1</p>
+      </section>
+    </React.Fragment>
+  );
+
   return (
     <section className="NewFooter">
       {/* Logo */}
       <section className="NewFooter-logo-container">
         <section className="NewFooter-logo-container-image">
           <img src={logo} alt="Logo" />
+          <section className="NewFooter-desktop-only">
+            <ThemeToggle />
+          </section>
         </section>
         <section className="NewFooter-logo-container-text">
           <p>
@@ -30,13 +48,28 @@ export default function NewFooter() {
             people’s hands.
           </p>
         </section>
-        <section className="NewFooter-logo-container-toggle">
-          <ThemeToggle />
+        <section className="NewFooter-desktop-only">
+          <section className="NewFooter-links-container-linkset">
+            {socialMediaLinks.map((socialMediaItem, idx) => (
+              <SocialMediaLink link={socialMediaItem.link} key={idx} text={socialMediaItem.text} />
+            ))}
+          </section>
+          <section className="NewFooter-links-container-legal">
+            <p>© 2018 MyCrypto, Inc.</p>
+            <p>Disclaimer</p>
+            <p>v1.3.1</p>
+          </section>
+        </section>
+        <section className="NewFooter-mobile-only">
+          <section className="NewFooter-logo-container-toggle">
+            <ThemeToggle />
+          </section>
+          <section className="NewFooter-divider-wrapper">
+            <section className="NewFooter-divider" />
+          </section>
         </section>
       </section>
-      <section className="NewFooter-divider-wrapper">
-        <section className="NewFooter-divider" />
-      </section>
+
       {/* Actions */}
       <section className="NewFooter-actions-container">
         <section className="NewFooter-actions-container-donation">
@@ -52,10 +85,11 @@ export default function NewFooter() {
             <button>Get Updates</button>
           </section>
         </section>
+        <section className="NewFooter-divider-wrapper">
+          <section className="NewFooter-divider" />
+        </section>
       </section>
-      <section className="NewFooter-divider-wrapper">
-        <section className="NewFooter-divider" />
-      </section>
+
       {/* Links */}
       <section className="NewFooter-links-container">
         <section className="NewFooter-links-container-blocks">
@@ -86,16 +120,7 @@ export default function NewFooter() {
             </ul>
           </section>
         </section>
-        <section className="NewFooter-links-container-linkset">
-          {socialMediaLinks.map((socialMediaItem, idx) => (
-            <SocialMediaLink link={socialMediaItem.link} key={idx} text={socialMediaItem.text} />
-          ))}
-        </section>
-        <section className="NewFooter-links-container-legal">
-          <p>© 2018 MyCrypto, Inc.</p>
-          <p>Disclaimer</p>
-          <p>v1.3.1</p>
-        </section>
+        {linksAndLegal}
       </section>
     </section>
   );
