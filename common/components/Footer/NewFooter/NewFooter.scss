@@ -27,6 +27,10 @@ $footer-text-color: #fff;
       font-family: Lato, sans-serif;
       font-size: 10px;
       padding: 15px;
+
+      p {
+        text-align: center;
+      }
     }
     &-toggle {
       display: flex;
@@ -62,6 +66,7 @@ $footer-text-color: #fff;
         font-size: 14px;
         text-align: center;
         color: #c0c7cf;
+        padding: 0 30px;
       }
       &-input {
         display: flex;
@@ -74,7 +79,7 @@ $footer-text-color: #fff;
           border-radius: 3px;
           background-color: #132b47;
           border: solid 1px #4c5f75;
-          padding-left: 3px;
+          padding-left: 7px;
         }
         button {
           width: 100px;
@@ -85,6 +90,43 @@ $footer-text-color: #fff;
           font-size: 12px;
         }
       }
+    }
+  }
+  &-links-container {
+    ul,
+    li {
+      margin: 0;
+      margin-bottom: 3px;
+      padding: 0;
+    }
+    h2 {
+      font-size: 16px;
+      text-align: center;
+    }
+    li {
+      font-size: 14px;
+      text-align: center;
+      color: #c0c7cf;
+    }
+    ul {
+      list-style-type: none;
+    }
+    &-blocks {
+      margin-bottom: 15px;
+    }
+    &-linkset {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    &-legal {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-bottom: 30px;
+      font-size: 10px;
+      padding: 0 30px;
     }
   }
 }
