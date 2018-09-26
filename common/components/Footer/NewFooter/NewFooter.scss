@@ -77,6 +77,8 @@ $footer-text-color: #fff;
     }
   }
   &-actions-container {
+    order: 1;
+
     &-donation {
       display: flex;
       flex-direction: column;
@@ -169,9 +171,12 @@ $footer-text-color: #fff;
 
     @media (min-width: 600px) {
       flex: 1;
+      order: 2;
     }
   }
   &-links-container {
+    order: 2;
+
     ul,
     li {
       margin: 0;
@@ -200,6 +205,11 @@ $footer-text-color: #fff;
       > section {
         margin-bottom: 30px;
       }
+
+      @media (min-width: 600px) {
+        display: flex;
+        justify-content: space-around;
+      }
     }
     &-linkset {
       display: flex;
@@ -218,6 +228,7 @@ $footer-text-color: #fff;
 
     @media (min-width: 600px) {
       flex: 1;
+      order: 1;
     }
   }
 

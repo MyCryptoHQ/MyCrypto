@@ -87,8 +87,10 @@ export default function NewFooter() {
             <button>Get Updates</button>
           </section>
         </section>
-        <section className="NewFooter-divider-wrapper">
-          <section className="NewFooter-divider" />
+        <section className="NewFooter-mobile-only">
+          <section className="NewFooter-divider-wrapper">
+            <section className="NewFooter-divider" />
+          </section>
         </section>
       </section>
 
@@ -122,7 +124,7 @@ export default function NewFooter() {
             </ul>
           </section>
         </section>
-        {linksAndLegal}
+        <section className="NewFooter-mobile-only">{linksAndLegal}</section>
       </section>
     </section>
   );
