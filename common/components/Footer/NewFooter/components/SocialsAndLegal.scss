@@ -1,3 +1,8 @@
+@mixin no-margin-padding {
+  margin: 0;
+  padding: 0;
+}
+
 @mixin text {
   font-family: Lato;
   font-size: 10px;
@@ -22,6 +27,12 @@ $spacing-md: 15px;
   align-items: center;
   justify-content: space-around;
 
+  p,
+  a {
+    @include text;
+    @include no-margin-padding;
+  }
+  a,
   p:not(:last-of-type) {
     @media (min-width: 800px) {
       margin-right: $spacing-md;

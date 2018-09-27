@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import { socialMediaLinks } from 'config';
+import { socialMediaLinks, VERSION } from 'config';
+import { translateRaw } from 'translations';
 import { NewTabLink } from 'components/ui';
+import DisclaimerModal from 'components/DisclaimerModal';
 import './SocialsAndLegal.scss';
 
 const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
@@ -22,14 +24,30 @@ function Socials() {
   );
 }
 
-function Legal() {
-  return (
-    <section className="Legal">
-      <p>© 2018 MyCrypto, Inc.</p>
-      <p>Disclaimer</p>
-      <p>v1.3.1</p>
-    </section>
-  );
+class Legal extends Component {
+  state = {
+    modalOpen: false
+  };
+
+  toggleModal = () =>
+    this.setState(prevState => ({
+      modalOpen: !prevState.modalOpen
+    }));
+
+  render() {
+    const { modalOpen } = this.state;
+
+    return (
+      <React.Fragment>
+        <section className="Legal">
+          <p>© {new Date().getFullYear()} MyCrypto, Inc.</p>
+          <a onClick={this.toggleModal}>{translateRaw('DISCLAIMER')}</a>
+          <p>{VERSION}</p>
+        </section>
+        <DisclaimerModal isOpen={modalOpen} handleClose={this.toggleModal} />
+      </React.Fragment>
+    );
+  }
 }
 
 export default function SocialsAndLegal() {
