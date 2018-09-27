@@ -99,13 +99,14 @@ export const calcEACTotalCost = (
   callGas: Wei,
   gasPrice: Wei,
   callGasPrice: Wei | null,
-  timeBounty: Wei | null
+  timeBounty: Wei | null,
+  gasLimit: Wei | null
 ) => {
   if (!callGasPrice) {
     callGasPrice = gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK);
   }
 
-  const deployCost = gasPrice.mul(EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT);
+  const deployCost = gasPrice.mul(gasLimit || new BN('0'));
 
   const futureExecutionCost = calcEACFutureExecutionCost(callGas, callGasPrice, timeBounty);
 

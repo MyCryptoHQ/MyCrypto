@@ -18,7 +18,7 @@ import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import * as derivedSelectors from 'features/selectors';
 import { configMetaTypes, configMetaSelectors, configNodesSelectors } from 'features/config';
 import { walletTypes, walletSelectors } from 'features/wallet';
-import { scheduleActions, scheduleSelectors } from 'features/schedule';
+import { scheduleSelectors } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
 import * as transactionTypes from '../types';
@@ -141,8 +141,14 @@ describe('Network Sagas', () => {
         expect(gen.next(tx).value).toEqual(call(getTransactionFields, transaction));
       });
 
+      it('should select isSchedulingEnabled', () => {
+        expect(gen.next(transactionFields).value).toEqual(
+          select(scheduleSelectors.isSchedulingEnabled)
+        );
+      });
+
       it('should put estimatedGasRequested with rest', () => {
-        expect(gen.next(transactionFields).value).toEqual(put(actions.estimateGasRequested(rest)));
+        expect(gen.next(false).value).toEqual(put(actions.estimateGasRequested(rest)));
       });
     });
 
@@ -241,25 +247,10 @@ describe('Network Sagas', () => {
         );
       });
 
-      it('should select isSchedulingEnabled', () => {
+      it('should put setGasLimitField', () => {
         gens.timeOutCase = gens.successCase.clone();
         expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
-          select(scheduleSelectors.isSchedulingEnabled)
-        );
-      });
-
-      it('should put setGasLimitField', () => {
-        gens.scheduleCase = gens.successCase.clone();
-        const notScheduling = null as any;
-        expect(gens.successCase.next(notScheduling).value).toEqual(
           put(transactionFieldsActions.setGasLimitField(gasSetOptions))
-        );
-      });
-
-      it('should put setScheduleGasLimitField', () => {
-        const scheduling = { value: true } as any;
-        expect(gens.scheduleCase.next(scheduling).value).toEqual(
-          put(scheduleActions.setScheduleGasLimitField(gasSetOptions))
         );
       });
 

@@ -158,13 +158,13 @@ class AdvancedGas extends React.Component<Props, State> {
     );
   }
 
-  private getScheduleFeeFormula({ gasPriceWei, scheduleGasLimit, fee, usd }: RenderData) {
+  private getScheduleFeeFormula({ gasLimit, gasPriceWei, scheduleGasLimit, fee, usd }: RenderData) {
     const { scheduleGasPrice, timeBounty } = this.props;
 
     return (
       <div>
         {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei} *{' '}
-        {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
+        {gasLimit.toString()} +{' '}
         {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()} * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()}{' '}
         + {scheduleGasLimit}) =&nbsp;{fee}&nbsp;{usd && <span>~=&nbsp;${usd}&nbsp;USD</span>}
       </div>
