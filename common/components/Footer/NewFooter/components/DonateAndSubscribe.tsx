@@ -65,9 +65,13 @@ function Subscribe() {
     <section className="Subscribe">
       <h2>Subscribe to MyCrypto</h2>
       <p>Get updates from MyCrypto straight to your inbox!</p>
-      <section className="Subscribe-input">
-        <input type="email" placeholder="Email address" />
-        <button>Get Updates</button>
+      <section className="Subscribe-input-wrapper">
+        <section className="Subscribe-input-wrapper-input">
+          <input type="email" placeholder="Email address" />
+        </section>
+        <section className="Subscribe-input-wrapper-button">
+          <button>Get Updates</button>
+        </section>
       </section>
     </section>
   );

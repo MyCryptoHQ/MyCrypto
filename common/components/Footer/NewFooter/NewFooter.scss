@@ -41,7 +41,7 @@ $footer-text-color: #fff;
 
 .VerticalRule {
   display: none;
-  margin: 0 55px;
+  margin: 0 20px;
 
   &-line {
     width: 2px;
@@ -51,6 +51,9 @@ $footer-text-color: #fff;
 
   @media (min-width: 800px) {
     display: block;
+  }
+  @media (min-width: 1200px) {
+    margin: 0 55px;
   }
 }
 

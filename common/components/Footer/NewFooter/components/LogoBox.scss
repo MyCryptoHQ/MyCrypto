@@ -44,7 +44,7 @@ $spacing-md: 15px;
     p {
       @include logo-text;
 
-      width: $logo-text-width;
+      max-width: $logo-text-width;
     }
 
     @media (min-width: 800px) {
@@ -65,6 +65,7 @@ $spacing-md: 15px;
   }
 
   @media (min-width: 800px) {
+    min-width: 240px;
     text-align: left;
   }
 }

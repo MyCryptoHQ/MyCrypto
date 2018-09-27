@@ -115,20 +115,31 @@ $input-border-radius: 3px;
 
     margin-bottom: 10px;
   }
-  &-input {
-    input {
-      height: $input-height;
-      padding-left: $spacing-sm;
-      background: #142c46;
-      border: 1px solid #4d5f74;
-      border-radius: $input-border-radius;
+  &-input-wrapper {
+    display: flex;
+    align-items: center;
+
+    &-input {
+      flex: 1 1 50%;
+
+      input {
+        height: $input-height;
+        padding-left: $spacing-sm;
+        background: #142c46;
+        border: 1px solid #4d5f74;
+        border-radius: $input-border-radius;
+      }
     }
-    button {
-      height: $input-height;
-      background: #027796;
-      border: none;
-      border-radius: $input-border-radius;
-      color: #fff;
+    &-button {
+      flex: 1 1 50%;
+
+      button {
+        height: $input-height;
+        background: #027796;
+        border: none;
+        border-radius: $input-border-radius;
+        color: #fff;
+      }
     }
   }
 
