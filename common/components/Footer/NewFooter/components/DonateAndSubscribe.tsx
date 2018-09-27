@@ -14,8 +14,10 @@ function Donate() {
   return (
     <section className="Donate">
       <h2>Donate</h2>
-      <DonationButton title="Ethereum" />
-      <DonationButton title="Bitcoin" />
+      <section className="Donate-buttons">
+        <DonationButton title="Ethereum" />
+        <DonationButton title="Bitcoin" />
+      </section>
     </section>
   );
 }

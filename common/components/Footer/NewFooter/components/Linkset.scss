@@ -14,16 +14,16 @@
   font-family: Lato;
   font-size: 14px;
   font-weight: 300;
-  color: #697a8d;
+  color: #bbc2cb;
 }
 
 $spacing-sm: 8px;
 $spacing-md: 32px;
+$spacing-lg: 55px;
 
 .Linkset {
   display: flex;
   flex-direction: column;
-  order: 2;
   text-align: center;
   margin-bottom: $spacing-md;
 
@@ -65,6 +65,5 @@ $spacing-md: 32px;
 
   @media (min-width: 800px) {
     flex-direction: row;
-    order: 1;
   }
 }

@@ -14,7 +14,7 @@
   font-family: Lato;
   font-size: 14px;
   font-weight: 300;
-  color: #697a8d;
+  color: #bbc2cb;
 }
 
 @mixin perfectly-centered {
@@ -31,7 +31,7 @@ $input-border-radius: 3px;
 
 .DonationButton {
   max-width: 100px;
-  padding: 7px;
+  height: 32px;
   box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5), inset 0 1px 3px 0 rgba(232, 234, 237, 0.5);
   background-color: #344b64;
   border: 1px solid #4a5d75;
@@ -40,6 +40,14 @@ $input-border-radius: 3px;
 
   &:not(:last-of-type) {
     margin-bottom: $spacing-md;
+
+    @media (min-width: 800px) {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (min-width: 800px) {
+    margin-right: $spacing-md;
   }
 }
 
@@ -54,6 +62,18 @@ $input-border-radius: 3px;
     @include no-margin-padding;
 
     margin-bottom: $spacing-sm;
+  }
+  &-buttons {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 800px) {
+      flex-direction: row;
+    }
+  }
+
+  @media (min-width: 800px) {
+    text-align: left;
   }
 }
 
@@ -87,6 +107,10 @@ $input-border-radius: 3px;
       color: #fff;
     }
   }
+
+  @media (min-width: 800px) {
+    text-align: left;
+  }
 }
 
 .DonateAndSubscribe {
@@ -94,9 +118,9 @@ $input-border-radius: 3px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  order: 1;
 
   @media (min-width: 800px) {
-    order: 2;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 }

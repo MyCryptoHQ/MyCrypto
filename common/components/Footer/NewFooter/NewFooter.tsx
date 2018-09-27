@@ -9,14 +9,32 @@ const HorizontalRule = () => (
   </section>
 );
 
+const VerticalRule = () => (
+  <section className="VerticalRule">
+    <section className="VerticalRule-line" />
+  </section>
+);
+
 export default function NewFooter() {
   return (
     <section className="NewFooter">
       <LogoBox />
       <HorizontalRule />
-      <DonateAndSubscribe />
+      <VerticalRule />
+      <section className="desktop-only">
+        <Linkset />
+      </section>
+      <section className="mobile-only">
+        <DonateAndSubscribe />
+      </section>
       <HorizontalRule />
-      <Linkset />
+      <VerticalRule />
+      <section className="desktop-only">
+        <DonateAndSubscribe />
+      </section>
+      <section className="mobile-only">
+        <Linkset />
+      </section>
       <section className="NewFooter-socials-legal">
         <SocialsAndLegal />
       </section>

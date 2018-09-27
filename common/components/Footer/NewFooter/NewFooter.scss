@@ -7,6 +7,22 @@
 $footer-background: #163150;
 $footer-text-color: #fff;
 
+.mobile-only {
+  display: block;
+
+  @media (min-width: 800px) {
+    display: none;
+  }
+}
+
+.desktop-only {
+  display: none;
+
+  @media (min-width: 800px) {
+    display: block;
+  }
+}
+
 .HorizontalRule {
   @include perfectly-centered;
 
@@ -20,6 +36,21 @@ $footer-text-color: #fff;
 
   @media (min-width: 800px) {
     display: none;
+  }
+}
+
+.VerticalRule {
+  display: none;
+  margin: 0 55px;
+
+  &-line {
+    width: 2px;
+    height: 220px;
+    background: #3f546c;
+  }
+
+  @media (min-width: 800px) {
+    display: block;
   }
 }
 
@@ -37,5 +68,6 @@ $footer-text-color: #fff;
 
   @media (min-width: 800px) {
     flex-direction: row;
+    padding-bottom: 0;
   }
 }
