@@ -1,0 +1,56 @@
+@mixin no-margin-padding {
+  margin: 0;
+  padding: 0;
+}
+
+@mixin heading {
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+@mixin text {
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 300;
+  color: #697a8d;
+}
+
+$spacing-sm: 8px;
+$spacing-md: 32px;
+
+.Linkset {
+  display: flex;
+  flex-direction: column;
+
+  &-column {
+    &:not(:last-child) {
+      margin-bottom: $spacing-md;
+    }
+
+    h2 {
+      @include heading;
+      @include no-margin-padding;
+
+      margin-bottom: $spacing-sm;
+    }
+    ul {
+      @include no-margin-padding;
+
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        @include no-margin-padding;
+
+        margin-bottom: $spacing-sm;
+
+        a {
+          @include text;
+        }
+      }
+    }
+  }
+}
