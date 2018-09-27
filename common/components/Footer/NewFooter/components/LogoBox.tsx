@@ -10,6 +10,9 @@ export default function LogoBox() {
     <section className="LogoBox">
       <section className="LogoBox-image">
         <img src={logo} alt="Logo" />
+        <section className="LogoBox-image-toggle">
+          <ThemeToggle />
+        </section>
       </section>
       <section className="LogoBox-text">
         <p>
@@ -21,6 +24,9 @@ export default function LogoBox() {
       </section>
       <section className="LogoBox-toggle">
         <ThemeToggle />
+      </section>
+      <section className="LogoBox-socials-legal">
+        <SocialsAndLegal />
       </section>
     </section>
   );

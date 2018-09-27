@@ -23,6 +23,7 @@ $spacing-md: 32px;
 .Linkset {
   display: flex;
   flex-direction: column;
+  order: 2;
   text-align: center;
   margin-bottom: $spacing-md;
 
@@ -54,5 +55,16 @@ $spacing-md: 32px;
         }
       }
     }
+
+    @media (min-width: 800px) {
+      &:not(:last-child) {
+        margin-right: $spacing-md;
+      }
+    }
+  }
+
+  @media (min-width: 800px) {
+    flex-direction: row;
+    order: 1;
   }
 }

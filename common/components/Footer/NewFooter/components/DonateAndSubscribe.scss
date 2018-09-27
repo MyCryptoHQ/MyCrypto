@@ -94,4 +94,9 @@ $input-border-radius: 3px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  order: 1;
+
+  @media (min-width: 800px) {
+    order: 2;
+  }
 }

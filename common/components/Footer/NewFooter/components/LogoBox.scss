@@ -17,11 +17,23 @@ $spacing-md: 15px;
   text-align: center;
 
   &-image {
+    @include perfectly-centered;
     margin-bottom: $spacing-md;
 
     img {
       width: 152px;
       height: 38px;
+    }
+    &-toggle {
+      display: none;
+
+      @media (min-width: 800px) {
+        display: block;
+      }
+    }
+
+    @media (min-width: 800px) {
+      justify-content: space-between;
     }
   }
   &-text {
@@ -34,5 +46,25 @@ $spacing-md: 15px;
 
       width: $logo-text-width;
     }
+
+    @media (min-width: 800px) {
+      justify-content: flex-start;
+    }
+  }
+  &-toggle {
+    @media (min-width: 800px) {
+      display: none;
+    }
+  }
+  &-socials-legal {
+    display: none;
+
+    @media (min-width: 800px) {
+      display: block;
+    }
+  }
+
+  @media (min-width: 800px) {
+    text-align: left;
   }
 }
