@@ -2,6 +2,7 @@ import React from 'react';
 
 import logo from 'assets/images/logo-mycrypto.svg';
 import ThemeToggle from 'components/Footer/ThemeToggle';
+import SocialsAndLegal from './SocialsAndLegal';
 import './LogoBox.scss';
 
 export default function LogoBox() {

@@ -7,7 +7,7 @@ import ThemeToggle from 'components/Footer/ThemeToggle';
 import './NewFooter.scss';
 
 //
-import { DonateAndSubscribe, Linkset, LogoBox } from './components';
+import { DonateAndSubscribe, Linkset, LogoBox, SocialsAndLegal } from './components';
 
 //
 
@@ -23,8 +23,9 @@ export default function NewFooter() {
   return (
     <section className="NewFooter">
       <LogoBox />
-      <Linkset />
       <DonateAndSubscribe />
+      <Linkset />
+      <SocialsAndLegal />
     </section>
   );
 }

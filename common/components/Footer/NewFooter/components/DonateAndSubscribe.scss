@@ -17,8 +17,15 @@
   color: #697a8d;
 }
 
+@mixin perfectly-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 $spacing-sm: 7px;
 $spacing-md: 15px;
+$spacing-lg: 57px;
 $input-height: 40px;
 $input-border-radius: 3px;
 
@@ -39,6 +46,8 @@ $input-border-radius: 3px;
 .Donate {
   display: flex;
   flex-direction: column;
+  margin-bottom: $spacing-lg;
+  text-align: center;
 
   h2 {
     @include heading;
@@ -49,16 +58,23 @@ $input-border-radius: 3px;
 }
 
 .Subscribe {
+  text-align: center;
+
   h2 {
     @include heading;
     @include no-margin-padding;
+
+    margin-bottom: 5px;
   }
   p {
     @include text;
+
+    margin-bottom: 10px;
   }
   &-input {
     input {
       height: $input-height;
+      padding-left: $spacing-sm;
       background: #142c46;
       border: 1px solid #4d5f74;
       border-radius: $input-border-radius;
@@ -71,4 +87,11 @@ $input-border-radius: 3px;
       color: #fff;
     }
   }
+}
+
+.DonateAndSubscribe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

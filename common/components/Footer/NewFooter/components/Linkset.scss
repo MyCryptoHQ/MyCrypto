@@ -23,6 +23,7 @@ $spacing-md: 32px;
 .Linkset {
   display: flex;
   flex-direction: column;
+  text-align: center;
 
   &-column {
     &:not(:last-child) {
