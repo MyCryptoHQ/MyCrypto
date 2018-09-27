@@ -7,7 +7,7 @@ import ThemeToggle from 'components/Footer/ThemeToggle';
 import './NewFooter.scss';
 
 //
-import { Linkset, DonateAndSubscribe } from './components';
+import { DonateAndSubscribe, Linkset, LogoBox } from './components';
 
 //
 
@@ -22,6 +22,7 @@ const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
 export default function NewFooter() {
   return (
     <section className="NewFooter">
+      <LogoBox />
       <Linkset />
       <DonateAndSubscribe />
     </section>

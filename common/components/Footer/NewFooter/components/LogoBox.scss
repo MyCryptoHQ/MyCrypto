@@ -1,0 +1,38 @@
+@mixin logo-text {
+  font-family: Lato;
+  font-size: 10px;
+  color: #fff;
+}
+
+@mixin perfectly-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+$logo-text-width: 375px;
+$spacing-md: 15px;
+
+.LogoBox {
+  text-align: center;
+
+  &-image {
+    margin-bottom: $spacing-md;
+
+    img {
+      width: 152px;
+      height: 38px;
+    }
+  }
+  &-text {
+    @include perfectly-centered;
+
+    margin-bottom: $spacing-md;
+
+    p {
+      @include logo-text;
+
+      width: $logo-text-width;
+    }
+  }
+}
