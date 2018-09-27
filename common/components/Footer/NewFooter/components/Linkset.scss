@@ -24,6 +24,7 @@ $spacing-md: 32px;
   display: flex;
   flex-direction: column;
   text-align: center;
+  margin-bottom: $spacing-md;
 
   &-column {
     &:not(:last-child) {

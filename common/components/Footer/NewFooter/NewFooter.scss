@@ -1,7 +1,26 @@
+@mixin perfectly-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 $footer-background: #163150;
 $footer-text-color: #fff;
 
+.HorizontalRule {
+  @include perfectly-centered;
+
+  margin: 30px 0;
+
+  &-line {
+    width: 150px;
+    height: 2px;
+    background: #3f546c;
+  }
+}
+
 .NewFooter {
+  padding: 41px 33px;
   background: $footer-background;
 }
 

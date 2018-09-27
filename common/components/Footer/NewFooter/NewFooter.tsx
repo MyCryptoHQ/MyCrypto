@@ -19,11 +19,19 @@ const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
   );
 };
 
+const HorizontalRule = () => (
+  <section className="HorizontalRule">
+    <section className="HorizontalRule-line" />
+  </section>
+);
+
 export default function NewFooter() {
   return (
     <section className="NewFooter">
       <LogoBox />
+      <HorizontalRule />
       <DonateAndSubscribe />
+      <HorizontalRule />
       <Linkset />
       <SocialsAndLegal />
     </section>
