@@ -19,7 +19,6 @@
 
 $spacing-sm: 8px;
 $spacing-md: 32px;
-$spacing-lg: 55px;
 
 .Linkset {
   display: flex;
@@ -30,6 +29,11 @@ $spacing-lg: 55px;
   &-column {
     &:not(:last-child) {
       margin-bottom: $spacing-md;
+
+      @media (min-width: 800px) {
+        margin-right: $spacing-md;
+        margin-bottom: 0;
+      }
     }
 
     h2 {
@@ -57,13 +61,12 @@ $spacing-lg: 55px;
     }
 
     @media (min-width: 800px) {
-      &:not(:last-child) {
-        margin-right: $spacing-md;
-      }
+      padding: $spacing-md 0;
     }
   }
 
   @media (min-width: 800px) {
     flex-direction: row;
+    margin-bottom: 0;
   }
 }

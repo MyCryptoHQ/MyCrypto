@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import classnames from 'classnames';
 
+import { donationAddressMap } from 'config';
 import './DonateAndSubscribe.scss';
 
 function DonationButton({ title, ...rest }) {
@@ -10,16 +13,51 @@ function DonationButton({ title, ...rest }) {
   );
 }
 
-function Donate() {
-  return (
-    <section className="Donate">
-      <h2>Donate</h2>
-      <section className="Donate-buttons">
-        <DonationButton title="Ethereum" />
-        <DonationButton title="Bitcoin" />
+class Donate extends Component {
+  state = {
+    displayingMessage: false
+  };
+
+  displayMessage = () =>
+    this.setState(
+      {
+        displayingMessage: true
+      },
+      () =>
+        setTimeout(
+          () =>
+            this.setState({
+              displayingMessage: false
+            }),
+          3000
+        )
+    );
+
+  render() {
+    const { displayingMessage } = this.state;
+    const messageClassName = classnames({
+      'Donate-buttons-message': true,
+      visible: displayingMessage
+    });
+
+    return (
+      <section className="Donate">
+        <h2>Donate</h2>
+        <section className="Donate-buttons">
+          <CopyToClipboard text={donationAddressMap.ETH} onCopy={this.displayMessage}>
+            <DonationButton title="Ethereum" />
+          </CopyToClipboard>
+          <CopyToClipboard text={donationAddressMap.BTC} onCopy={this.displayMessage}>
+            <DonationButton title="Bitcoin" />
+          </CopyToClipboard>
+          <p className={messageClassName}>
+            <span className="check">✓</span>
+            Address Copied to Clipboard!
+          </p>
+        </section>
       </section>
-    </section>
-  );
+    );
+  }
 }
 
 function Subscribe() {

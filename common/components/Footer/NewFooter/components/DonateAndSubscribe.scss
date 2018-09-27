@@ -54,7 +54,7 @@ $input-border-radius: 3px;
 .Donate {
   display: flex;
   flex-direction: column;
-  margin-bottom: $spacing-lg;
+  margin-bottom: 40px;
   text-align: center;
 
   h2 {
@@ -66,6 +66,30 @@ $input-border-radius: 3px;
   &-buttons {
     display: flex;
     flex-direction: column;
+    align-items: center;
+
+    .visible {
+      visibility: visible;
+    }
+    &-message {
+      @include text;
+      @include no-margin-padding;
+
+      margin-top: $spacing-md;
+      visibility: hidden;
+
+      .check {
+        width: 14px;
+        height: 14px;
+        margin-right: $spacing-sm;
+        font-size: 14px;
+        color: #7ad832;
+      }
+
+      @media (min-width: 800px) {
+        margin-top: 0;
+      }
+    }
 
     @media (min-width: 800px) {
       flex-direction: row;
