@@ -1,0 +1,74 @@
+@mixin no-margin-padding {
+  margin: 0;
+  padding: 0;
+}
+
+@mixin heading {
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+@mixin text {
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 300;
+  color: #697a8d;
+}
+
+$spacing-sm: 7px;
+$spacing-md: 15px;
+$input-height: 40px;
+$input-border-radius: 3px;
+
+.DonationButton {
+  max-width: 100px;
+  padding: 7px;
+  box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5), inset 0 1px 3px 0 rgba(232, 234, 237, 0.5);
+  background-color: #344b64;
+  border: 1px solid #4a5d75;
+  border-radius: 6px;
+  color: #fff;
+
+  &:not(:last-of-type) {
+    margin-bottom: $spacing-md;
+  }
+}
+
+.Donate {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    @include heading;
+    @include no-margin-padding;
+
+    margin-bottom: $spacing-sm;
+  }
+}
+
+.Subscribe {
+  h2 {
+    @include heading;
+    @include no-margin-padding;
+  }
+  p {
+    @include text;
+  }
+  &-input {
+    input {
+      height: $input-height;
+      background: #142c46;
+      border: 1px solid #4d5f74;
+      border-radius: $input-border-radius;
+    }
+    button {
+      height: $input-height;
+      background: #027796;
+      border: none;
+      border-radius: $input-border-radius;
+      color: #fff;
+    }
+  }
+}
