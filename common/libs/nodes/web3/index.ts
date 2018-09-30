@@ -122,3 +122,20 @@ export async function isWeb3NodeAvailable(): Promise<boolean> {
     return false;
   }
 }
+
+export async function ensureWeb3NodeStillAvailable(): Promise<boolean> {
+  try {
+    const { ethereum } = window as any;
+
+    // Legacy handling; will become unavailable 11/2.
+    if (!ethereum) {
+      return true;
+    }
+
+    await ethereum.enable();
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
