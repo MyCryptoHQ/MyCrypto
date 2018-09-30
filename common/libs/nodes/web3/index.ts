@@ -58,38 +58,50 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
 
 export const Web3Service = 'MetaMask / Mist';
 
+export async function getChainIdAndLib() {
+  const lib = new Web3Node();
+  const chainId = await lib.getNetVersion();
+  const accounts = await lib.getAccounts();
+
+  if (!accounts.length) {
+    throw new Error('No accounts found in MetaMask / Mist.');
+  }
+
+  if (chainId === 'loading') {
+    throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
+  }
+
+  return { chainId, lib };
+}
+
 export async function setupWeb3Node() {
   // Handle the following MetaMask breaking change:
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-  if (window.ethereum) {
+  const { ethereum } = window as any;
+
+  if (ethereum) {
     // Overwrite the legacy Web3 with the newer version.
-    window.web3 = new Web3(window.ethereum);
+    (window as any).web3 = new (window as any).Web3(ethereum);
 
     try {
       // Request permission to access MetaMask accounts.
-      await window.ethereum.enable();
-
-      const lib = new Web3Node();
-      const chainId = await lib.getNetVersion();
-      const accounts = await lib.getAccounts();
-
-      if (!accounts.length) {
-        throw new Error('No accounts found in MetaMask / Mist.');
-      }
-
-      if (chainId === 'loading') {
-        throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
-      }
-
-      return { chainId, lib };
+      await ethereum.enable();
 
       // Permission was granted; proceed.
+      return getChainIdAndLib();
     } catch (e) {
       // Permission was denied; handle appropriately.
       throw new Error(METAMASK_PERMISSION_DENIED_ERROR);
     }
-  } else if (window.web3) {
+  } else if ((window as any).web3) {
     // Legacy handling; will become unavailable 11/2.
+    const { web3 } = window as any;
+
+    if (!web3 || !web3.currentProvider || !web3.currentProvider.sendAsync) {
+      throw new Error('Web3 not found. Please check that MetaMask is installed');
+    }
+
+    return getChainIdAndLib();
   } else {
     throw new Error('Web3 not found. Please check that MetaMask is installed');
   }
