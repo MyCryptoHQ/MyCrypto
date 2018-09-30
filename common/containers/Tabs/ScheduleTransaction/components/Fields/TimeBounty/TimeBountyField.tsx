@@ -90,10 +90,16 @@ class TimeBountyFieldClass extends Component<Props, State> {
                   </span>
                 </div>
               </div>
+
+              {!isValid && (
+                <div className="alert alert-warning small">
+                  {translate('SCHEDULE_TIMEBOUNTY_WARNING')}
+                </div>
+              )}
             </div>
           </label>
         </div>
-        <a href="#" onClick={this.toggleAdvanced} className="TimeBountyField-advanced-toggle">
+        <a onClick={this.toggleAdvanced} className="TimeBountyField-advanced-toggle">
           {advanced ? `- ${translateRaw('TRANS_SIMPLE')}` : `+ ${translateRaw('TRANS_ADVANCED')}`}
         </a>
       </>
