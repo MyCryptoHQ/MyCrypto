@@ -682,6 +682,7 @@
     "ONBOARDING_TEXT_26": "Pro-Tip: in order for your funds to be the most secure, we recommend getting a hardware wallet to use with MyCrypto. Here are a few options we love:",
     "ONBOARDING_TEXT_27": "Get a Trezor",
     "ONBOARDING_TEXT_28": "Get a Ledger",
-    "ONBOARDING_TEXT_29": "Need more info before you dive in? See [Support Center]($link)"
+    "ONBOARDING_TEXT_29": "Need more info before you dive in? See [Support Center]($link)",
+    "METAMASK_PERMISSION_DENIED": "You denied the request for permission to access MetaMask, but permission is required to unlock your wallet. Please click \"Connect to MetaMask\", and then click \"Approve\" when the dialog opens."
   }
 }
