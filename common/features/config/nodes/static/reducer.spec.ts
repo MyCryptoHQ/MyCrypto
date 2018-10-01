@@ -1,8 +1,8 @@
 import { Web3Service } from 'libs/nodes/web3';
 import { StaticNodeConfig } from 'types/node';
 import configuredStore from 'features/store';
-import { web3SetNode, web3UnsetNode } from './actions';
-import { staticNodesReducer, STATIC_NODES_INITIAL_STATE } from './reducer';
+import * as actions from './actions';
+import * as reducer from './reducer';
 
 configuredStore.getState();
 
@@ -16,26 +16,29 @@ const web3Node: StaticNodeConfig = {
 };
 
 const expectedState = {
-  initialState: staticNodesReducer(undefined, {} as any),
-  setWeb3: { ...STATIC_NODES_INITIAL_STATE, [web3Id]: web3Node },
-  unsetWeb3: { ...STATIC_NODES_INITIAL_STATE }
+  initialState: reducer.staticNodesReducer(undefined, {} as any),
+  setWeb3: { ...reducer.CONFIG_STATIC_NODES_INITIAL_STATE, [web3Id]: web3Node },
+  unsetWeb3: { ...reducer.CONFIG_STATIC_NODES_INITIAL_STATE }
 };
 
-const actions = {
-  web3SetNode: web3SetNode({ id: web3Id, config: web3Node }),
-  web3UnsetNode: web3UnsetNode()
+const actionsToDispatch = {
+  web3SetNode: actions.web3SetNode({ id: web3Id, config: web3Node }),
+  web3UnsetNode: actions.web3UnsetNode()
 };
 
 describe('static nodes reducer', () => {
   it('should handle setting the web3 node', () =>
-    expect(staticNodesReducer(STATIC_NODES_INITIAL_STATE, actions.web3SetNode)).toEqual(
-      expectedState.setWeb3
-    ));
+    expect(
+      reducer.staticNodesReducer(
+        reducer.CONFIG_STATIC_NODES_INITIAL_STATE,
+        actionsToDispatch.web3SetNode
+      )
+    ).toEqual(expectedState.setWeb3));
 
   it('should handle unsetting the web3 node', () =>
-    expect(staticNodesReducer(expectedState.setWeb3, actions.web3UnsetNode)).toEqual(
-      expectedState.unsetWeb3
-    ));
+    expect(
+      reducer.staticNodesReducer(expectedState.setWeb3, actionsToDispatch.web3UnsetNode)
+    ).toEqual(expectedState.unsetWeb3));
 });
 
 export { actions as staticNodesActions, expectedState as staticNodesExpectedState };

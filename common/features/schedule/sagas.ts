@@ -2,7 +2,7 @@ import { SagaIterator, delay } from 'redux-saga';
 import { select, take, call, apply, fork, put, all, takeLatest } from 'redux-saga/effects';
 import BN from 'bn.js';
 
-import { toTokenBase, Wei } from 'libs/units';
+import { toTokenBase, Wei, fromWei } from 'libs/units';
 import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
@@ -55,6 +55,7 @@ export const currentScheduleTimezone = takeLatest(
 export function* setGasLimitForSchedulingSaga({
   payload: { value: useScheduling }
 }: types.SetSchedulingToggleAction): SagaIterator {
+  // setGasLimitForSchedulingSaga
   const gasLimit = useScheduling
     ? EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
     : EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK;
@@ -65,6 +66,13 @@ export function* setGasLimitForSchedulingSaga({
       value: gasLimit
     })
   );
+
+  // setDefaultTimeBounty
+  if (useScheduling) {
+    yield put(
+      actions.setCurrentTimeBounty(fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'))
+    );
+  }
 }
 
 export const currentSchedulingToggle = takeLatest(
@@ -81,7 +89,7 @@ export function* setCurrentTimeBountySaga({
   const unit: string = yield select(derivedSelectors.getUnit);
 
   if (!validNumber(parseInt(raw, 10)) || !validDecimal(raw, decimal)) {
-    yield put(actions.setTimeBountyField({ raw, value: null }));
+    yield put(actions.setTimeBountyField({ raw, value: new BN(0) }));
   }
 
   const value = toTokenBase(raw, decimal);
@@ -89,7 +97,7 @@ export function* setCurrentTimeBountySaga({
 
   const isValid = isInputValid && value.gte(Wei('0'));
 
-  yield put(actions.setTimeBountyField({ raw, value: isValid ? value : null }));
+  yield put(actions.setTimeBountyField({ raw, value: isValid ? value : new BN(0) }));
 }
 
 export const currentTimeBounty = takeLatest(
@@ -97,6 +105,25 @@ export const currentTimeBounty = takeLatest(
   setCurrentTimeBountySaga
 );
 //#endregion Time Bounty
+
+//#region Deposit
+export function* copyTimeBountyToDeposit({
+  payload: { value }
+}: types.SetTimeBountyFieldAction): SagaIterator {
+  if (value && value.gte(new BN(0))) {
+    const multipliedValue = value.mul(new BN(EAC_SCHEDULING_CONFIG.BOUNTY_TO_DEPOSIT_MULTIPLIER));
+
+    const raw = fromWei(multipliedValue, 'ether');
+
+    yield put(actions.setScheduleDepositField({ raw, value: multipliedValue }));
+  }
+}
+
+export const mirrorTimeBountyToDeposit = takeLatest(
+  [types.ScheduleActions.TIME_BOUNTY_FIELD_SET],
+  copyTimeBountyToDeposit
+);
+//#endregion
 
 //#region Window Size
 export function* setCurrentWindowSizeSaga({
@@ -205,6 +232,7 @@ export function* scheduleSaga(): SagaIterator {
     currentTimeBounty,
     currentSchedulingToggle,
     currentScheduleTimezone,
+    mirrorTimeBountyToDeposit,
     schedulingParamsValidity
   ]);
 }

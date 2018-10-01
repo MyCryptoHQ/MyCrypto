@@ -1,6 +1,14 @@
 import { Theme } from 'config';
 
-export enum CONFIG_META {
+export interface ConfigMetaState {
+  languageSelection: string;
+  offline: boolean;
+  autoGasLimit: boolean;
+  latestBlock: string;
+  theme: Theme;
+}
+
+export enum ConfigMetaActions {
   LANGUAGE_CHANGE = 'CONFIG_META_LANGUAGE_CHANGE',
   SET_ONLINE = 'CONFIG_META_SET_ONLINE',
   SET_OFFLINE = 'CONFIG_META_SET_OFFLINE',
@@ -10,38 +18,30 @@ export enum CONFIG_META {
   THEME_CHANGE = 'CONFIG_THEME_CHANGE'
 }
 
-export interface MetaState {
-  languageSelection: string;
-  offline: boolean;
-  autoGasLimit: boolean;
-  latestBlock: string;
-  theme: Theme;
-}
-
 export interface SetLatestBlockAction {
-  type: CONFIG_META.SET_LATEST_BLOCK;
+  type: ConfigMetaActions.SET_LATEST_BLOCK;
   payload: string;
 }
 
 export interface SetOnlineAction {
-  type: CONFIG_META.SET_ONLINE;
+  type: ConfigMetaActions.SET_ONLINE;
 }
 
 export interface SetOfflineAction {
-  type: CONFIG_META.SET_OFFLINE;
+  type: ConfigMetaActions.SET_OFFLINE;
 }
 
 export interface ToggleAutoGasLimitAction {
-  type: CONFIG_META.TOGGLE_AUTO_GAS_LIMIT;
+  type: ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT;
 }
 
 export interface ChangeLanguageAction {
-  type: CONFIG_META.LANGUAGE_CHANGE;
+  type: ConfigMetaActions.LANGUAGE_CHANGE;
   payload: string;
 }
 
 export interface ChangeThemeAction {
-  type: CONFIG_META.THEME_CHANGE;
+  type: ConfigMetaActions.THEME_CHANGE;
   payload: Theme;
 }
 

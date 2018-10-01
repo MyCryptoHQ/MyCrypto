@@ -1,7 +1,12 @@
 import BN from 'bn.js';
 
 import { Wei } from 'libs/units';
-import { gasPriceValidator, gasLimitValidator, timeBountyValidator } from 'libs/validators';
+import {
+  gasPriceValidator,
+  gasLimitValidator,
+  timeBountyValidator,
+  isValidNumberOrDecimal
+} from 'libs/validators';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import * as helpers from './helpers';
@@ -30,11 +35,7 @@ export const isValidScheduleGasLimit = (state: AppState): boolean =>
 export const isValidScheduleDeposit = (state: AppState): boolean => {
   const depositValue = getScheduleDeposit(state).value;
 
-  if (!depositValue) {
-    return true;
-  }
-
-  return depositValue.gte(new BN('0')) && depositValue.bitLength() <= 256;
+  return Boolean(depositValue && depositValue.gte(new BN('0')) && depositValue.bitLength() <= 256);
 };
 
 export const isSchedulingEnabled = (state: AppState): boolean => {
@@ -121,6 +122,8 @@ export const isValidCurrentWindowSize = (state: AppState) => {
 
   return (
     currentWindowSize &&
+    currentWindowSize.raw &&
+    isValidNumberOrDecimal(currentWindowSize.raw) &&
     currentWindowSize.value &&
     currentWindowSize.value.gt(new BN(0)) &&
     currentWindowSize.value.bitLength() <= 256
