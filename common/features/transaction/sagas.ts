@@ -19,6 +19,7 @@ import { IGetTransaction, ICurrentValue } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
+import * as scheduleSelectors from 'features/schedule/selectors';
 import { ensTypes, ensActions, ensSelectors } from 'features/ens';
 import { walletTypes, walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
@@ -35,6 +36,7 @@ import { transactionSignTypes, transactionSignSagas } from './sign';
 import * as types from './types';
 import * as actions from './actions';
 import * as helpers from './helpers';
+import { calcEACFutureExecutionCost, EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 
 //#region Current
 
@@ -209,7 +211,32 @@ export function* handleSendEverything(): SagaIterator {
     return yield put(setter({ raw: '0', value: null }));
   }
   if (etherTransaction) {
-    const remainder = currentBalance.sub(totalCost);
+    let remainder = currentBalance.sub(totalCost);
+
+    const isSchedulingEnabled: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+
+    if (isSchedulingEnabled) {
+      const scheduleGasLimit = yield select(scheduleSelectors.getScheduleGasLimit);
+      const scheduleGasPrice = yield select(scheduleSelectors.getScheduleGasPrice);
+      const timeBounty = yield select(scheduleSelectors.getTimeBounty);
+
+      let gasLimit = scheduleGasLimit.value as BN;
+
+      if (gasLimit.gt(new BN('100000'))) {
+        gasLimit = gasLimit.add(EAC_SCHEDULING_CONFIG.SEND_ALL_ESTIMATION_MARGIN);
+      } else {
+        gasLimit = EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT;
+      }
+
+      const futureExecutionSchedulingCost = calcEACFutureExecutionCost(
+        gasLimit,
+        scheduleGasPrice.value,
+        timeBounty.value
+      );
+
+      remainder = remainder.sub(futureExecutionSchedulingCost);
+    }
+
     const rawVersion = fromWei(remainder, 'ether');
     yield put(setter({ raw: rawVersion, value: remainder }));
 
