@@ -31,6 +31,7 @@
     > input {
       line-height: $line-height-base;
       padding: 0;
+      color: color(control-color);
     }
   }
   &-placeholder,

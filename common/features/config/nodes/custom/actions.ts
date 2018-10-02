@@ -1,19 +1,21 @@
-import { AddCustomNodeAction, RemoveCustomNodeAction, CONFIG_NODES_CUSTOM } from './types';
+import * as types from './types';
 
 export type TAddCustomNode = typeof addCustomNode;
-export function addCustomNode(payload: AddCustomNodeAction['payload']): AddCustomNodeAction {
+export function addCustomNode(
+  payload: types.AddCustomNodeAction['payload']
+): types.AddCustomNodeAction {
   return {
-    type: CONFIG_NODES_CUSTOM.ADD,
+    type: types.ConfigNodesCustomActions.ADD,
     payload
   };
 }
 
 export type TRemoveCustomNode = typeof removeCustomNode;
 export function removeCustomNode(
-  payload: RemoveCustomNodeAction['payload']
-): RemoveCustomNodeAction {
+  payload: types.RemoveCustomNodeAction['payload']
+): types.RemoveCustomNodeAction {
   return {
-    type: CONFIG_NODES_CUSTOM.REMOVE,
+    type: types.ConfigNodesCustomActions.REMOVE,
     payload
   };
 }

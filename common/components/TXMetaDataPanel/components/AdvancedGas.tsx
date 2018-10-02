@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
-import { TToggleAutoGasLimit, toggleAutoGasLimit, getAutoGasLimitEnabled } from 'features/config';
+import { configMetaActions, configMetaSelectors } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
 import { transactionFieldsActions, transactionSelectors } from 'features/transaction';
 import { NonceField, GasLimitField, DataField } from 'components';
@@ -35,7 +35,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  toggleAutoGasLimit: TToggleAutoGasLimit;
+  toggleAutoGasLimit: configMetaActions.TToggleAutoGasLimit;
 }
 
 interface State {
@@ -183,10 +183,10 @@ class AdvancedGas extends React.Component<Props, State> {
 
 export default connect(
   (state: AppState) => ({
-    autoGasLimitEnabled: getAutoGasLimitEnabled(state),
+    autoGasLimitEnabled: configMetaSelectors.getAutoGasLimitEnabled(state),
     scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state),
     timeBounty: scheduleSelectors.getTimeBounty(state),
     validGasPrice: transactionSelectors.isValidGasPrice(state)
   }),
-  { toggleAutoGasLimit }
+  { toggleAutoGasLimit: configMetaActions.toggleAutoGasLimit }
 )(AdvancedGas);

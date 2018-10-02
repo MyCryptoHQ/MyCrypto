@@ -6,7 +6,7 @@ import translate, { translateRaw } from 'translations';
 import { IWallet, HardwareWallet, Balance } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { getNetworkConfig, getOffline, getChecksumAddressFn } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { walletActions } from 'features/wallet';
 import Spinner from 'components/ui/Spinner';
 import { UnitDisplay, NewTabLink } from 'components/ui';
@@ -19,9 +19,9 @@ interface OwnProps {
 
 interface StateProps {
   balance: Balance;
-  network: ReturnType<typeof getNetworkConfig>;
-  isOffline: ReturnType<typeof getOffline>;
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  network: ReturnType<typeof configSelectors.getNetworkConfig>;
+  isOffline: ReturnType<typeof configMetaSelectors.getOffline>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 interface State {
@@ -199,9 +199,9 @@ function isHardwareWallet(wallet: IWallet): wallet is HardwareWallet {
 function mapStateToProps(state: AppState): StateProps {
   return {
     balance: state.wallet.balance,
-    network: getNetworkConfig(state),
-    isOffline: getOffline(state),
-    toChecksumAddress: getChecksumAddressFn(state)
+    network: configSelectors.getNetworkConfig(state),
+    isOffline: configMetaSelectors.getOffline(state),
+    toChecksumAddress: configSelectors.getChecksumAddressFn(state)
   };
 }
 const mapDispatchToProps: DispatchProps = {
