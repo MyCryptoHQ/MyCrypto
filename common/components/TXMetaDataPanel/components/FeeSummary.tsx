@@ -80,15 +80,16 @@ class FeeSummary extends React.Component<Props> {
     const usdBig = network.isTestnet
       ? new BN(0)
       : feeBig && rates[network.unit] && feeBig.muln(rates[network.unit].USD);
-    const usd = isOffline ? null : (
-      <UnitDisplay
-        value={usdBig}
-        unit="ether"
-        displayShortBalance={2}
-        displayTrailingZeroes={true}
-        checkOffline={true}
-      />
-    );
+    const usd =
+      isOffline || network.hideEquivalentValues ? null : (
+        <UnitDisplay
+          value={usdBig}
+          unit="ether"
+          displayShortBalance={2}
+          displayTrailingZeroes={true}
+          checkOffline={true}
+        />
+      );
 
     const feeSummaryClasses = classNames({
       FeeSummary: true,

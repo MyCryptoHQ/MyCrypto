@@ -55,6 +55,7 @@ export const currentScheduleTimezone = takeLatest(
 export function* setGasLimitForSchedulingSaga({
   payload: { value: useScheduling }
 }: types.SetSchedulingToggleAction): SagaIterator {
+  // setGasLimitForSchedulingSaga
   const gasLimit = useScheduling
     ? EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
     : EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK;
@@ -65,6 +66,13 @@ export function* setGasLimitForSchedulingSaga({
       value: gasLimit
     })
   );
+
+  // setDefaultTimeBounty
+  if (useScheduling) {
+    yield put(
+      actions.setCurrentTimeBounty(fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'))
+    );
+  }
 }
 
 export const currentSchedulingToggle = takeLatest(
@@ -81,7 +89,7 @@ export function* setCurrentTimeBountySaga({
   const unit: string = yield select(derivedSelectors.getUnit);
 
   if (!validNumber(parseInt(raw, 10)) || !validDecimal(raw, decimal)) {
-    yield put(actions.setTimeBountyField({ raw, value: null }));
+    yield put(actions.setTimeBountyField({ raw, value: new BN(0) }));
   }
 
   const value = toTokenBase(raw, decimal);
@@ -89,7 +97,7 @@ export function* setCurrentTimeBountySaga({
 
   const isValid = isInputValid && value.gte(Wei('0'));
 
-  yield put(actions.setTimeBountyField({ raw, value: isValid ? value : null }));
+  yield put(actions.setTimeBountyField({ raw, value: isValid ? value : new BN(0) }));
 }
 
 export const currentTimeBounty = takeLatest(
