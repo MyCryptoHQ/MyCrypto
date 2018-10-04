@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { makeAutoNodeName } from 'libs/nodes';
+// import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
 import NewHeader from 'components/Header/NewHeader/NewHeader';
-import { Footer, Header } from 'components';
-import { Query } from 'components/renderCbs';
+import { Footer } from 'components';
+// import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
 import './WebTemplate.scss';

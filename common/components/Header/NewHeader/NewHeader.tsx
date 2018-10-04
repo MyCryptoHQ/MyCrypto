@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from 'assets/images/logo-mycrypto.svg';
-import { NewTabLink } from 'components/ui';
 import { navigationLinks } from 'config';
 import NavigationLink from 'components/NavigationLink';
 import './NewHeader.scss';
@@ -42,7 +41,7 @@ export default class NewHeader extends Component {
   };
 
   public render() {
-    const { sendMenuVisible, buyMenuVisible, toolsMenuVisible, LanguageMenuVisible } = this.state;
+    const { sendMenuVisible, buyMenuVisible } = this.state;
     return (
       <React.Fragment>
         <section className="NewHeader">
