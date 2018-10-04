@@ -18,30 +18,30 @@ const HorizontalRule = () => (
 );
 
 export default class NewHeader extends Component {
-  state = {
+  public state = {
     sendMenuVisible: false,
     buyMenuVisible: false,
     toolsMenuVisible: false,
     LanguageMenuVisible: false
   };
 
-  toggleSendMenu = () => {
+  public toggleSendMenu = () => {
     this.setState({ sendMenuVisible: !this.state.sendMenuVisible });
   };
 
-  toggleBuyMenu = () => {
+  public toggleBuyMenu = () => {
     this.setState({ buyMenuVisible: !this.state.buyMenuVisible });
   };
 
-  toggleToolsMenu = () => {
+  public toggleToolsMenu = () => {
     this.setState({ toolsMenuVisible: !this.state.toolsMenuVisible });
   };
 
-  toggleLanguageMenu = () => {
+  public toggleLanguageMenu = () => {
     this.setState({ LanguageMenuVisible: !this.state.LanguageMenuVisible });
   };
 
-  render() {
+  public render() {
     const { sendMenuVisible, buyMenuVisible, toolsMenuVisible, LanguageMenuVisible } = this.state;
     return (
       <React.Fragment>
