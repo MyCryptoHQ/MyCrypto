@@ -43,12 +43,14 @@ const TabletFooter = () => (
 
 const DesktopFooter = () => (
   <section className="desktop-only">
-    <section className="NewFooter">
-      <LogoBox />
-      <VerticalRule />
-      <Linkset />
-      <VerticalRule />
-      <DonateAndSubscribe />
+    <section className="NewFooter-wrapper">
+      <section className="NewFooter">
+        <LogoBox />
+        <VerticalRule />
+        <Linkset />
+        <VerticalRule />
+        <DonateAndSubscribe />
+      </section>
     </section>
   </section>
 );

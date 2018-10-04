@@ -1,5 +1,6 @@
 import React from 'react';
 
+import translate from 'translations';
 import logo from 'assets/images/logo-mycrypto.svg';
 import ThemeToggle from 'components/Footer/ThemeToggle';
 import SocialsAndLegal from './SocialsAndLegal';
@@ -15,12 +16,7 @@ export default function LogoBox() {
         </section>
       </section>
       <section className="LogoBox-text">
-        <p>
-          MyCrypto is an open-source, client-side tool for generating ether wallets, handling ERC-20
-          tokens, and interacting with the blockchain more easily. Developed by and for the
-          community since 2015, we’re focused on building awesome products that put the power in
-          people’s hands.
-        </p>
+        <p>{translate('NEW_FOOTER_TEXT_13')}</p>
       </section>
       <section className="LogoBox-toggle">
         <ThemeToggle />

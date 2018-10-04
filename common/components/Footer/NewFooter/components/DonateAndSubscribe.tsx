@@ -3,9 +3,14 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 
 import { donationAddressMap } from 'config';
+import translate from 'translations';
 import './DonateAndSubscribe.scss';
 
-function DonationButton({ title, ...rest }) {
+interface DonationButtonProps {
+  title: string;
+}
+
+function DonationButton({ title, ...rest }: DonationButtonProps) {
   return (
     <button className="DonationButton" {...rest}>
       {title}
@@ -42,7 +47,7 @@ class Donate extends Component {
 
     return (
       <section className="Donate">
-        <h2>Donate</h2>
+        <h2>{translate('NEW_FOOTER_TEXT_1')}</h2>
         <section className="Donate-buttons">
           <CopyToClipboard text={donationAddressMap.ETH} onCopy={this.displayMessage}>
             <DonationButton title="Ethereum" />
@@ -53,7 +58,7 @@ class Donate extends Component {
         </section>
         <p className={messageClassName}>
           <span className="check">✓</span>
-          Address Copied to Clipboard!
+          {translate('NEW_FOOTER_TEXT_2')}
         </p>
       </section>
     );
@@ -63,14 +68,14 @@ class Donate extends Component {
 function Subscribe() {
   return (
     <section className="Subscribe">
-      <h2>Subscribe to MyCrypto</h2>
-      <p>Get updates from MyCrypto straight to your inbox!</p>
+      <h2>{translate('NEW_FOOTER_TEXT_3')}</h2>
+      <p>{translate('NEW_FOOTER_TEXT_4')}</p>
       <section className="Subscribe-input-wrapper">
         <section className="Subscribe-input-wrapper-input">
           <input type="email" placeholder="Email address" />
         </section>
         <section className="Subscribe-input-wrapper-button">
-          <button>Subscribe</button>
+          <button>{translate('NEW_FOOTER_TEXT_5')}</button>
         </section>
       </section>
     </section>

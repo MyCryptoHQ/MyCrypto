@@ -682,6 +682,19 @@
     "ONBOARDING_TEXT_26": "Pro-Tip: in order for your funds to be the most secure, we recommend getting a hardware wallet to use with MyCrypto. Here are a few options we love:",
     "ONBOARDING_TEXT_27": "Get a Trezor",
     "ONBOARDING_TEXT_28": "Get a Ledger",
-    "ONBOARDING_TEXT_29": "Need more info before you dive in? See [Support Center]($link)"
+    "ONBOARDING_TEXT_29": "Need more info before you dive in? See [Support Center]($link)",
+    "NEW_FOOTER_TEXT_1": "Donate",
+    "NEW_FOOTER_TEXT_2": "Address Copied to Clipboard!",
+    "NEW_FOOTER_TEXT_3": "Subscribe to MyCrypto",
+    "NEW_FOOTER_TEXT_4": "Get updates from MyCrypto straight to your inbox!",
+    "NEW_FOOTER_TEXT_5": "Subscribe",
+    "NEW_FOOTER_TEXT_6": "Company",
+    "NEW_FOOTER_TEXT_7": "Help & Support",
+    "NEW_FOOTER_TEXT_8": "Our Team",
+    "NEW_FOOTER_TEXT_9": "Press",
+    "NEW_FOOTER_TEXT_10": "Privacy Policy",
+    "NEW_FOOTER_TEXT_11": "Support Us",
+    "NEW_FOOTER_TEXT_12": "Other Products",
+    "NEW_FOOTER_TEXT_13": "MyCrypto is an open-source, client-side tool for generating ether wallets, handling ERC-20 tokens, and interacting with the blockchain more easily. Developed by and for the community since 2015, we’re focused on building awesome products that put the power in people’s hands."
   }
 }

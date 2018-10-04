@@ -1,35 +1,36 @@
 import React from 'react';
 
+import translate, { translateRaw } from 'translations';
 import './Linkset.scss';
 
 const LINK_COLUMNS = [
   {
-    heading: 'Company',
+    heading: translate('NEW_FOOTER_TEXT_6'),
     links: [
       {
         title: 'MyCrypto.com',
         link: 'https://www.mycrypto.com/'
       },
       {
-        title: 'Help & Support',
+        title: translateRaw('NEW_FOOTER_TEXT_7'),
         link: 'https://support.mycrypto.com/'
       },
       {
-        title: 'Our Team',
+        title: translateRaw('NEW_FOOTER_TEXT_8'),
         link: 'https://about.mycrypto.com/'
       },
       {
-        title: 'Press',
+        title: translateRaw('NEW_FOOTER_TEXT_9'),
         link: 'mailto://press@mycrypto.com'
       },
       {
-        title: 'Privacy Policy',
+        title: translateRaw('NEW_FOOTER_TEXT_10'),
         link: 'https://about.mycrypto.com/privacy/'
       }
     ]
   },
   {
-    heading: 'Support Us',
+    heading: translate('NEW_FOOTER_TEXT_11'),
     links: [
       {
         title: 'Ledger Wallet',
@@ -46,7 +47,7 @@ const LINK_COLUMNS = [
     ]
   },
   {
-    heading: 'Other Products',
+    heading: translate('NEW_FOOTER_TEXT_12'),
     links: [
       {
         title: 'EtherAddressLookup',

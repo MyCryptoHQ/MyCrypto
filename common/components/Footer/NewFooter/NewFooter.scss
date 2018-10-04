@@ -68,6 +68,13 @@ $footer-text-color: #fff;
   }
 }
 
+.NewFooter-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $footer-background;
+}
+
 .NewFooter {
   display: flex;
   flex-direction: column;
