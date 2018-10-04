@@ -1,11 +1,11 @@
 import React from 'react';
 
-import translate, { translateRaw } from 'translations';
+import { translateRaw } from 'translations';
 import './Linkset.scss';
 
 const LINK_COLUMNS = [
   {
-    heading: translate('NEW_FOOTER_TEXT_6'),
+    heading: translateRaw('NEW_FOOTER_TEXT_6'),
     links: [
       {
         title: 'MyCrypto.com',
@@ -30,7 +30,7 @@ const LINK_COLUMNS = [
     ]
   },
   {
-    heading: translate('NEW_FOOTER_TEXT_11'),
+    heading: translateRaw('NEW_FOOTER_TEXT_11'),
     links: [
       {
         title: 'Ledger Wallet',
@@ -47,7 +47,7 @@ const LINK_COLUMNS = [
     ]
   },
   {
-    heading: translate('NEW_FOOTER_TEXT_12'),
+    heading: translateRaw('NEW_FOOTER_TEXT_12'),
     links: [
       {
         title: 'EtherAddressLookup',
@@ -70,7 +70,7 @@ export default function Linkset() {
   return (
     <section className="Linkset">
       {LINK_COLUMNS.map(({ heading, links }) => (
-        <section className="Linkset-column">
+        <section key={heading} className="Linkset-column">
           <h2>{heading}</h2>
           <ul>
             {links.map(({ title, link }) => (

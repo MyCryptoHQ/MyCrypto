@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
-import { Footer, Header } from 'components';
+import { Header } from 'components';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
 import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
@@ -25,7 +25,7 @@ type Props = OwnProps & StateProps;
 
 class WebTemplate extends Component<Props, {}> {
   public render() {
-    const { isUnavailableOffline, children, isOffline, latestBlock } = this.props;
+    const { isUnavailableOffline, children, isOffline } = this.props;
 
     return (
       <React.Fragment>

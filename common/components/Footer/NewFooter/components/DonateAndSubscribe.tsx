@@ -4,26 +4,55 @@ import classnames from 'classnames';
 
 import { donationAddressMap } from 'config';
 import translate from 'translations';
+import ether from 'assets/images/ether.png';
+import bitcoin from 'assets/images/bitcoin.png';
 import './DonateAndSubscribe.scss';
 
 interface DonationButtonProps {
+  icon: string;
   title: string;
 }
 
-function DonationButton({ title, ...rest }: DonationButtonProps) {
+function DonationButton({ icon, title, ...rest }: DonationButtonProps) {
   return (
     <button className="DonationButton" {...rest}>
-      {title}
+      <img src={icon} alt={`Icon for ${title}`} /> {title}
     </button>
   );
 }
 
 class Donate extends Component {
-  state = {
+  public state = {
     displayingMessage: false
   };
 
-  displayMessage = () =>
+  public render() {
+    const { displayingMessage } = this.state;
+    const messageClassName = classnames({
+      'Donate-buttons-message': true,
+      visible: displayingMessage
+    });
+
+    return (
+      <section className="Donate">
+        <h2>{translate('NEW_FOOTER_TEXT_1')}</h2>
+        <section className="Donate-buttons">
+          <CopyToClipboard text={donationAddressMap.ETH} onCopy={this.displayMessage}>
+            <DonationButton icon={ether} title="Ethereum" />
+          </CopyToClipboard>
+          <CopyToClipboard text={donationAddressMap.BTC} onCopy={this.displayMessage}>
+            <DonationButton icon={bitcoin} title="Bitcoin" />
+          </CopyToClipboard>
+        </section>
+        <p className={messageClassName}>
+          <span className="check">✓</span>
+          {translate('NEW_FOOTER_TEXT_2')}
+        </p>
+      </section>
+    );
+  }
+
+  private displayMessage = () =>
     this.setState(
       {
         displayingMessage: true
@@ -37,32 +66,6 @@ class Donate extends Component {
           3000
         )
     );
-
-  render() {
-    const { displayingMessage } = this.state;
-    const messageClassName = classnames({
-      'Donate-buttons-message': true,
-      visible: displayingMessage
-    });
-
-    return (
-      <section className="Donate">
-        <h2>{translate('NEW_FOOTER_TEXT_1')}</h2>
-        <section className="Donate-buttons">
-          <CopyToClipboard text={donationAddressMap.ETH} onCopy={this.displayMessage}>
-            <DonationButton title="Ethereum" />
-          </CopyToClipboard>
-          <CopyToClipboard text={donationAddressMap.BTC} onCopy={this.displayMessage}>
-            <DonationButton title="Bitcoin" />
-          </CopyToClipboard>
-        </section>
-        <p className={messageClassName}>
-          <span className="check">✓</span>
-          {translate('NEW_FOOTER_TEXT_2')}
-        </p>
-      </section>
-    );
-  }
 }
 
 function Subscribe() {

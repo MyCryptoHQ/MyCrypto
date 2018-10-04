@@ -24,17 +24,16 @@ function Socials() {
   );
 }
 
+interface LegalState {
+  modalOpen: boolean;
+}
+
 class Legal extends Component {
-  state = {
+  public state: LegalState = {
     modalOpen: false
   };
 
-  toggleModal = () =>
-    this.setState(prevState => ({
-      modalOpen: !prevState.modalOpen
-    }));
-
-  render() {
+  public render() {
     const { modalOpen } = this.state;
 
     return (
@@ -48,6 +47,11 @@ class Legal extends Component {
       </React.Fragment>
     );
   }
+
+  private toggleModal = () =>
+    this.setState((prevState: LegalState) => ({
+      modalOpen: !prevState.modalOpen
+    }));
 }
 
 export default function SocialsAndLegal() {
