@@ -70,7 +70,7 @@ function Subscribe() {
           <input type="email" placeholder="Email address" />
         </section>
         <section className="Subscribe-input-wrapper-button">
-          <button>Get Updates</button>
+          <button>Subscribe</button>
         </section>
       </section>
     </section>

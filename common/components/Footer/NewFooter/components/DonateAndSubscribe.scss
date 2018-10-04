@@ -129,6 +129,8 @@ $input-border-radius: 3px;
     justify-content: center;
 
     &-input {
+      min-width: 0;
+
       input {
         height: $input-height;
         padding-left: $spacing-sm;
@@ -174,7 +176,7 @@ $input-border-radius: 3px;
     justify-content: flex-start;
   }
   @media (min-width: 1050px) {
-    flex: 1;
+    flex: 2;
     flex-direction: column;
   }
 }

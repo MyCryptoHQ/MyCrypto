@@ -29,7 +29,7 @@ class WebTemplate extends Component<Props, {}> {
 
     return (
       <React.Fragment>
-        {/* <div className="WebTemplate">
+        <div className="WebTemplate">
           <Query
             params={['network']}
             withQuery={({ network }) => (
@@ -40,10 +40,10 @@ class WebTemplate extends Component<Props, {}> {
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
           <div className="WebTemplate-spacer" />
-          <Footer latestBlock={latestBlock} />
+          {/* <Footer latestBlock={latestBlock} /> */}
+          <NewFooter />
           <Notifications />
-        </div> */}
-        <NewFooter />
+        </div>
       </React.Fragment>
     );
   }

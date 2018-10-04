@@ -62,36 +62,3 @@ export default function NewFooter() {
     </React.Fragment>
   );
 }
-
-// export default function NewFooter() {
-//   return (
-//     <section className="NewFooter">
-//       <LogoBox />
-//       <HorizontalRule />
-//       <VerticalRule />
-//       <section className="desktop-only">
-//         <Linkset />
-//       </section>
-//       <section className="tablet-only">
-//         <Linkset />
-//         <DonateAndSubscribe />
-//       </section>
-//       <section className="mobile-only">
-//         <DonateAndSubscribe />
-//       </section>
-//       <HorizontalRule />
-//       <section className="desktop-only">
-//         <VerticalRule />
-//       </section>
-//       <section className="desktop-only">
-//         <DonateAndSubscribe />
-//       </section>
-//       <section className="mobile-only">
-//         <Linkset />
-//       </section>
-//       <section className="NewFooter-socials-legal">
-//         <SocialsAndLegal />
-//       </section>
-//     </section>
-//   );
-// }

@@ -63,14 +63,15 @@ $footer-text-color: #fff;
   @media (min-width: 800px) {
     display: block;
   }
-  @media (min-width: 1200px) {
-    margin: 0 55px;
+  @media (min-width: 1050px) {
+    margin: 0 30px;
   }
 }
 
 .NewFooter {
   display: flex;
   flex-direction: column;
+  min-width: 320px;
   padding: 41px 33px;
   background: $footer-background;
 
