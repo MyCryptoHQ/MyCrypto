@@ -1,0 +1,41 @@
+.Sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  width: 375px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: -2px 0 6px 0 rgba(0, 0, 0, 0.1);
+
+  &-controls {
+    button {
+      border: none;
+      background: none;
+    }
+  }
+}
+
+.SidebarScreen {
+  &-image {
+    text-align: center;
+  }
+  &-heading {
+    padding: 0 24px;
+    font-family: Lato;
+    font-size: 25px;
+    font-weight: 900;
+    text-align: center;
+    color: #163150;
+    margin-bottom: 5px;
+  }
+  &-text {
+    padding: 0 28px;
+    font-family: Lato;
+    font-size: 16px;
+    line-height: 1.31;
+    text-align: center;
+    color: #000000;
+  }
+}
