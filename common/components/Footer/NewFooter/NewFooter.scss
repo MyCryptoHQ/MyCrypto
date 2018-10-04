@@ -15,10 +15,21 @@ $footer-text-color: #fff;
   }
 }
 
-.desktop-only {
+.tablet-only {
   display: none;
 
   @media (min-width: 800px) {
+    display: block;
+  }
+  @media (min-width: 1050px) {
+    display: none;
+  }
+}
+
+.desktop-only {
+  display: none;
+
+  @media (min-width: 1050px) {
     display: block;
   }
 }
@@ -71,6 +82,8 @@ $footer-text-color: #fff;
 
   @media (min-width: 800px) {
     flex-direction: row;
+  }
+  @media (min-width: 1050px) {
     padding-bottom: 0;
   }
 }

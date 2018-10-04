@@ -50,11 +50,11 @@ class Donate extends Component {
           <CopyToClipboard text={donationAddressMap.BTC} onCopy={this.displayMessage}>
             <DonationButton title="Bitcoin" />
           </CopyToClipboard>
-          <p className={messageClassName}>
-            <span className="check">✓</span>
-            Address Copied to Clipboard!
-          </p>
         </section>
+        <p className={messageClassName}>
+          <span className="check">✓</span>
+          Address Copied to Clipboard!
+        </p>
       </section>
     );
   }

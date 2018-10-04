@@ -29,6 +29,10 @@ $spacing-lg: 57px;
 $input-height: 40px;
 $input-border-radius: 3px;
 
+.visible {
+  visibility: visible !important;
+}
+
 .DonationButton {
   max-width: 100px;
   height: 32px;
@@ -41,7 +45,7 @@ $input-border-radius: 3px;
   &:not(:last-of-type) {
     margin-bottom: $spacing-md;
 
-    @media (min-width: 800px) {
+    @media (min-width: 1050px) {
       margin-bottom: 0;
     }
   }
@@ -68,9 +72,6 @@ $input-border-radius: 3px;
     flex-direction: column;
     align-items: center;
 
-    .visible {
-      visibility: visible;
-    }
     &-message {
       @include text;
       @include no-margin-padding;
@@ -89,14 +90,21 @@ $input-border-radius: 3px;
       @media (min-width: 800px) {
         margin-top: 0;
       }
+      @media (min-width: 1050px) {
+        margin-top: 0;
+      }
     }
 
     @media (min-width: 800px) {
       flex-direction: row;
+      align-items: flex-start;
+    }
+    @media (min-width: 1050px) {
     }
   }
 
   @media (min-width: 800px) {
+    margin-bottom: 0;
     text-align: left;
   }
 }
@@ -118,10 +126,9 @@ $input-border-radius: 3px;
   &-input-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
 
     &-input {
-      flex: 1 1 50%;
-
       input {
         height: $input-height;
         padding-left: $spacing-sm;
@@ -131,8 +138,6 @@ $input-border-radius: 3px;
       }
     }
     &-button {
-      flex: 1 1 50%;
-
       button {
         height: $input-height;
         background: #027796;
@@ -141,9 +146,14 @@ $input-border-radius: 3px;
         color: #fff;
       }
     }
+
+    @media (min-width: 800px) {
+      justify-content: flex-start;
+    }
   }
 
   @media (min-width: 800px) {
+    padding-left: 20px;
     text-align: left;
   }
 }
@@ -155,6 +165,7 @@ $input-border-radius: 3px;
   justify-content: center;
 
   @media (min-width: 800px) {
+    flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
   }

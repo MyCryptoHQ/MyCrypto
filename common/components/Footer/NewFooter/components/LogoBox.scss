@@ -65,6 +65,7 @@ $spacing-md: 15px;
   }
 
   @media (min-width: 800px) {
+    flex: 1;
     min-width: 240px;
     text-align: left;
   }

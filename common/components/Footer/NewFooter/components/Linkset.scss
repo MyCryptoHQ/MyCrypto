@@ -60,13 +60,13 @@ $spacing-md: 32px;
       }
     }
 
-    @media (min-width: 800px) {
+    @media (min-width: 1050px) {
       padding: $spacing-md 0;
     }
   }
 
   @media (min-width: 800px) {
     flex-direction: row;
-    margin-bottom: 0;
+    margin-bottom: 40px;
   }
 }
