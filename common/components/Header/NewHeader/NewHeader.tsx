@@ -23,7 +23,7 @@ interface State {
   languageMenuVisible: boolean;
 }
 
-export default class NewHeader extends Component<State> {
+export default class NewHeader extends Component {
   public state: State = {
     sendMenuVisible: false,
     buyMenuVisible: false,
@@ -31,23 +31,19 @@ export default class NewHeader extends Component<State> {
     languageMenuVisible: false
   };
 
-  public toggleSendMenu = (prevState: State) => {
-    this.setState(prevState => ({
+  public toggleSendMenu = () =>
+    this.setState((prevState: State) => ({
       sendMenuVisible: !prevState.sendMenuVisible
     }));
-  };
 
-  public toggleBuyMenu = (prevState: State) => {
-    this.setState({ buyMenuVisible: !prevState.buyMenuVisible });
-  };
+  public toggleBuyMenu = () =>
+    this.setState((prevState: State) => ({ buyMenuVisible: !prevState.buyMenuVisible }));
 
-  public toggleToolsMenu = (prevState: State) => {
-    this.setState({ toolsMenuVisible: !prevState.toolsMenuVisible });
-  };
+  public toggleToolsMenu = () =>
+    this.setState((prevState: State) => ({ toolsMenuVisible: !prevState.toolsMenuVisible }));
 
-  public toggleLanguageMenu = (prevState: State) => {
-    this.setState({ languageMenuVisible: !prevState.languageMenuVisible });
-  };
+  public toggleLanguageMenu = () =>
+    this.setState((prevState: State) => ({ languageMenuVisible: !prevState.languageMenuVisible }));
 
   public render() {
     const { sendMenuVisible, buyMenuVisible } = this.state;
