@@ -16,28 +16,37 @@ const HorizontalRule = () => (
   </section>
 );
 
-export default class NewHeader extends Component {
-  public state = {
+interface State {
+  sendMenuVisible: boolean;
+  buyMenuVisible: boolean;
+  toolsMenuVisible: boolean;
+  languageMenuVisible: boolean;
+}
+
+export default class NewHeader extends Component<State> {
+  public state: State = {
     sendMenuVisible: false,
     buyMenuVisible: false,
     toolsMenuVisible: false,
-    LanguageMenuVisible: false
+    languageMenuVisible: false
   };
 
-  public toggleSendMenu = () => {
-    this.setState({ sendMenuVisible: !this.state.sendMenuVisible });
+  public toggleSendMenu = (prevState: State) => {
+    this.setState(prevState => ({
+      sendMenuVisible: !prevState.sendMenuVisible
+    }));
   };
 
-  public toggleBuyMenu = () => {
-    this.setState({ buyMenuVisible: !this.state.buyMenuVisible });
+  public toggleBuyMenu = (prevState: State) => {
+    this.setState({ buyMenuVisible: !prevState.buyMenuVisible });
   };
 
-  public toggleToolsMenu = () => {
-    this.setState({ toolsMenuVisible: !this.state.toolsMenuVisible });
+  public toggleToolsMenu = (prevState: State) => {
+    this.setState({ toolsMenuVisible: !prevState.toolsMenuVisible });
   };
 
-  public toggleLanguageMenu = () => {
-    this.setState({ LanguageMenuVisible: !this.state.LanguageMenuVisible });
+  public toggleLanguageMenu = (prevState: State) => {
+    this.setState({ languageMenuVisible: !prevState.languageMenuVisible });
   };
 
   public render() {
