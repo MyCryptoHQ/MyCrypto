@@ -44,12 +44,11 @@ const TabletFooter = () => (
 const DesktopFooter = () => (
   <section className="desktop-only">
     <section className="NewFooter">
-      <p style={{ color: 'white' }}>Logo</p>
-      <p style={{ color: 'white' }}>Legal</p>
+      <LogoBox />
       <VerticalRule />
-      <p style={{ color: 'white' }}>Linkset</p>
+      <Linkset />
       <VerticalRule />
-      <p style={{ color: 'white' }}>Donate / Subscribe</p>
+      <DonateAndSubscribe />
     </section>
   </section>
 );

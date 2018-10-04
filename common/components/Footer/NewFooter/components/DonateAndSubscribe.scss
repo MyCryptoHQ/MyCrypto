@@ -91,7 +91,7 @@ $input-border-radius: 3px;
         margin-top: 0;
       }
       @media (min-width: 1050px) {
-        margin-top: 0;
+        margin-top: 10px;
       }
     }
 
@@ -156,6 +156,10 @@ $input-border-radius: 3px;
     padding-left: 20px;
     text-align: left;
   }
+  @media (min-width: 1050px) {
+    margin-top: 20px;
+    padding-left: 0px;
+  }
 }
 
 .DonateAndSubscribe {
@@ -168,5 +172,9 @@ $input-border-radius: 3px;
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
+  }
+  @media (min-width: 1050px) {
+    flex: 1;
+    flex-direction: column;
   }
 }
