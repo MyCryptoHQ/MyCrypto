@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 
 import { NodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
@@ -9,6 +10,8 @@ import {
   configNetworksActions,
   configSelectors
 } from 'features/config';
+import show from 'assets/images/icn-show.svg';
+import add from 'assets/images/icn-add.svg';
 
 const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby'];
 
@@ -56,11 +59,14 @@ function splitUpNetworkOptions(networksToNodes: NetworkOptions): PrioritizedNetw
   );
 }
 
-const NetworkOption = ({ onClick, name, isToggled, nodes }) => (
-  <li onClick={onClick}>
-    {name}
+const NetworkOption = ({ onClick, name, isToggled, nodes, isSecondary }) => (
+  <li className={classnames('NewNetworkOption', { 'is-secondary': isSecondary })} onClick={onClick}>
+    <section className="NewNetworkOption-name">
+      <CustomRadio enabled={isToggled} />
+      {name}
+    </section>
     {isToggled && (
-      <ul>
+      <ul className="NewNetworkOption-list">
         {nodes.map(node => (
           <NodeOption
             key={node.id}
@@ -74,7 +80,15 @@ const NetworkOption = ({ onClick, name, isToggled, nodes }) => (
   </li>
 );
 
-const NodeOption = ({ onClick, name }) => <li onClick={onClick}>{name}</li>;
+const NodeOption = ({ onClick, name }) => (
+  <li className="NewNodeOption" onClick={onClick}>
+    <CustomRadio enabled={false} /> {name}
+  </li>
+);
+
+const CustomRadio = ({ enabled = false }) => (
+  <section className="CustomRadio">{enabled && <section className="CustomRadio-inner" />}</section>
+);
 
 class SelectNetworkAndNode extends Component {
   state = {
@@ -102,13 +116,15 @@ class SelectNetworkAndNode extends Component {
 
     return (
       <section className="SidebarScreen">
-        <h1 className="SidebarScreen-heading">Select Your Preferred Network and Node</h1>
-        <p className="SidebarScreen-text">
-          You can access your MyCrypto funds on different Networks and Nodes, simply choose one
-          below or add a custom node.
-        </p>
+        <section className="SidebarScreen-upper">
+          <h1 className="SidebarScreen-heading">Select Your Preferred Network and Node</h1>
+          <p className="SidebarScreen-text">
+            You can access your MyCrypto funds on different Networks and Nodes, simply choose one
+            below or add a custom node.
+          </p>
+        </section>
         {/*  */}
-        <ul>
+        <ul className="SidebarScreen-list">
           {primaryNetworks.map(({ network, nodes }) => (
             <NetworkOption
               key={network}
@@ -120,7 +136,12 @@ class SelectNetworkAndNode extends Component {
           ))}
           {/*  */}
           <li onClick={this.toggleShowingSecondaryNetworks}>
-            {showingSecondaryNetworks ? 'Hide' : 'Show'} Other Networks
+            <section className="NewNetworkOption no-top-border">
+              <section className="NewNetworkOption-name">
+                <img src={show} alt="Toggle showing all networks" />
+                {showingSecondaryNetworks ? 'Hide' : 'Show'} Other Networks
+              </section>
+            </section>
             {showingSecondaryNetworks &&
               secondaryNetworks.map(({ network, nodes }) => (
                 <NetworkOption
@@ -129,10 +150,16 @@ class SelectNetworkAndNode extends Component {
                   name={allNetworks[network].name}
                   isToggled={toggledNetworks.includes(network)}
                   nodes={nodes}
+                  isSecondary={true}
                 />
               ))}
           </li>
         </ul>
+        <section className="SidebarScreen-action">
+          <section className="SidebarScreen-action-content">
+            <img src={add} alt="Add custom node" />Add custom node
+          </section>
+        </section>
       </section>
     );
   }
