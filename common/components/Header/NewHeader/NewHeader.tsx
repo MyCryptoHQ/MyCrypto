@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { MapStateToProps, connect } from 'react-redux';
 import logo from 'assets/images/logo-mycrypto.svg';
-import { languages } from 'config';
 import { getKeyByValue } from 'utils/helpers';
-import { navigationLinks } from 'config';
+import { navigationLinks, languages } from 'config';
 import NavigationLink from 'components/NavigationLink';
 import { OldDropDown } from 'components/ui';
 import './NewHeader.scss';
@@ -69,22 +68,6 @@ class NewHeader extends Component<Props, State> {
       language: false
     }
   };
-
-  private toggleSendMenu = () => this.toggleDropdown('send');
-
-  private toggleBuyMenu = () => this.toggleDropdown('buy');
-
-  private toggleToolsMenu = () => this.toggleDropdown('tools');
-
-  private toggleLanguageMenu = () => this.toggleDropdown('language');
-
-  private toggleDropdown = (name: string) =>
-    this.setState((prevState: State) => ({
-      visibleDropdowns: {
-        ...prevState.visibleDropdowns,
-        [name]: !prevState.visibleDropdowns[name]
-      }
-    }));
 
   public render() {
     const { languageSelection, isChangingNode, isOffline, network } = this.props;
@@ -309,6 +292,22 @@ class NewHeader extends Component<Props, State> {
       this.props.changeLanguage(key);
     }
   };
+
+  private toggleSendMenu = () => this.toggleDropdown('send');
+
+  private toggleBuyMenu = () => this.toggleDropdown('buy');
+
+  private toggleToolsMenu = () => this.toggleDropdown('tools');
+
+  private toggleLanguageMenu = () => this.toggleDropdown('language');
+
+  private toggleDropdown = (name: string) =>
+    this.setState((prevState: State) => ({
+      visibleDropdowns: {
+        ...prevState.visibleDropdowns,
+        [name]: !prevState.visibleDropdowns[name]
+      }
+    }));
 }
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
