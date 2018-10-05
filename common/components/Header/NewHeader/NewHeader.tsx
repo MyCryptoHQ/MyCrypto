@@ -70,7 +70,7 @@ class NewHeader extends Component<Props, State> {
   };
 
   public render() {
-    const { languageSelection, isChangingNode, isOffline, network } = this.props;
+    const { languageSelection } = this.props;
     const { visibleDropdowns } = this.state;
     const selectedLanguage = languageSelection;
     const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;

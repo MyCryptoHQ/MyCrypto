@@ -21,7 +21,6 @@ $header-text-color: #fff;
 }
 
 .NewHeader {
-  display: flex;
   flex-direction: column;
   background: $header-background;
   color: $header-text-color;
@@ -177,7 +176,7 @@ $header-text-color: #fff;
   }
 
   &-sidebar {
-    background-color: #163150;
+    background-color: $header-background;
     border-top: solid 1px #2a435f;
     color: $header-text-color;
     height: 100%;
