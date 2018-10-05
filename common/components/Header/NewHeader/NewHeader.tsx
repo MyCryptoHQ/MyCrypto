@@ -1,10 +1,25 @@
 import React, { Component } from 'react';
+import { MapStateToProps, connect } from 'react-redux';
 import logo from 'assets/images/logo-mycrypto.svg';
+import { languages } from 'config';
+import { getKeyByValue } from 'utils/helpers';
 import { navigationLinks } from 'config';
 import NavigationLink from 'components/NavigationLink';
+import { OldDropDown } from 'components/ui';
 import './NewHeader.scss';
 import { sendLinks, buyLinks, toolsLinks } from 'config/newNavigation';
-import LanguageSelect from 'components/ElectronNav/LanguageSelect';
+import { NetworkConfig } from 'types/network';
+import { AppState } from 'features/reducers';
+import {
+  configSelectors,
+  configMetaSelectors,
+  configNodesCustomActions,
+  configMetaActions,
+  configNetworksCustomActions,
+  configNodesSelectedActions,
+  configNodesSelectedSelectors,
+  configNodesStaticSelectors
+} from 'features/config';
 
 const generateLink = {
   name: 'NAV_GENERATEWALLET',
@@ -23,7 +38,29 @@ interface State {
   };
 }
 
-export default class NewHeader extends Component<{}, State> {
+interface StateProps {
+  shouldSetNodeFromQS: boolean;
+  network: NetworkConfig;
+  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
+  isChangingNode: ReturnType<typeof configNodesSelectedSelectors.isNodeChanging>;
+  isOffline: ReturnType<typeof configMetaSelectors.getOffline>;
+}
+
+interface DispatchProps {
+  changeLanguage: configMetaActions.TChangeLanguage;
+  changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
+  addCustomNode: configNodesCustomActions.TAddCustomNode;
+  removeCustomNode: configNodesCustomActions.TRemoveCustomNode;
+  addCustomNetwork: configNetworksCustomActions.TAddCustomNetwork;
+}
+
+interface OwnProps {
+  networkParam: string | null;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
+
+class NewHeader extends Component<Props, State> {
   public state: State = {
     visibleDropdowns: {
       buy: false,
@@ -50,17 +87,20 @@ export default class NewHeader extends Component<{}, State> {
     }));
 
   public render() {
+    const { languageSelection, isChangingNode, isOffline, network } = this.props;
     const { visibleDropdowns } = this.state;
+    const selectedLanguage = languageSelection;
+    const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
     return (
       <React.Fragment>
         <section className="NewHeader">
           <section className="NewHeader-TopRow ">
             <ul className="NewHeader-TopRow-Container">
               <li className="NewHeader-Support-Container desktop-only">
-                <a href="https://support.mycrypto.com/">
+                <a href="https://support.mycrypto.com/" aria-label="MyCrypto Support">
                   Help & Support <i className="fa fa-angle-right" />
                 </a>
-                <a href="https://medium.com/@mycrypto">
+                <a href="https://medium.com/@mycrypto" aria-label="MyCrypto Medium Account">
                   Latest News <i className="fa fa-angle-right" />
                 </a>
               </li>
@@ -70,10 +110,14 @@ export default class NewHeader extends Component<{}, State> {
                 </section>
               </li>
               <li className="NewHeader-Feature-Container desktop-only ">
-                <a className="langauge-picker" onClick={this.toggleLanguageMenu}>
-                  English <i className="fa fa-angle-down" />
-                  {/* <LanguageSelect className="Language-Picker"/> */}
-                </a>
+                <LanguageDropDown
+                  ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
+                  options={Object.values(languages)}
+                  value={languages[selectedLanguage]}
+                  onChange={this.changeLanguage}
+                  size="smr"
+                  color="white"
+                />
               </li>
             </ul>
           </section>
@@ -84,7 +128,7 @@ export default class NewHeader extends Component<{}, State> {
 
           <section className="NewHeader-BottomRow desktop-only">
             <section className="NewHeader-BottomRow-Navigation-Container">
-              <section
+              <button
                 className="NewHeader-menu-container-links NewHeader-menu-container-send NewHeader-BottomRow-Navigation-Link"
                 onMouseEnter={this.toggleSendMenu}
                 onMouseLeave={this.toggleSendMenu}
@@ -109,9 +153,9 @@ export default class NewHeader extends Component<{}, State> {
                     </ul>
                   )}
                 </div>
-              </section>
+              </button>
 
-              <section
+              <button
                 className="NewHeader-menu-container-links NewHeader-menu-container-send NewHeader-BottomRow-Navigation-Link"
                 onMouseEnter={this.toggleBuyMenu}
                 onMouseLeave={this.toggleBuyMenu}
@@ -134,9 +178,9 @@ export default class NewHeader extends Component<{}, State> {
                     ))}
                   </ul>
                 )}
-              </section>
+              </button>
               {''}
-              <section
+              <button
                 className="NewHeader-menu-container-links NewHeader-menu-container-send NewHeader-BottomRow-Navigation-Link"
                 onMouseEnter={this.toggleToolsMenu}
                 onMouseLeave={this.toggleToolsMenu}
@@ -159,7 +203,7 @@ export default class NewHeader extends Component<{}, State> {
                     ))}
                   </ul>
                 )}
-              </section>
+              </button>
               <section className="NewHeader-menu-container-links NewHeader-menu-container-send">
                 <i className="fa fa-plus" />{' '}
                 <NavigationLink
@@ -186,7 +230,7 @@ export default class NewHeader extends Component<{}, State> {
               )}
             </section>
             {visibleDropdowns.send && (
-              <div>
+              <div className="NewHeader-menu-container-links-container">
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
                   {sendLinks.map(link => (
                     <NavigationLink
@@ -211,7 +255,7 @@ export default class NewHeader extends Component<{}, State> {
               )}
             </section>
             {visibleDropdowns.buy && (
-              <div>
+              <div className="NewHeader-menu-container-links-container">
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
                   {buyLinks.map(link => (
                     <NavigationLink
@@ -258,4 +302,34 @@ export default class NewHeader extends Component<{}, State> {
       </React.Fragment>
     );
   }
+
+  public changeLanguage = (value: string) => {
+    const key = getKeyByValue(languages, value);
+    if (key) {
+      this.props.changeLanguage(key);
+    }
+  };
 }
+
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
+  state,
+  { networkParam }
+): StateProps => ({
+  shouldSetNodeFromQS: !!(
+    networkParam && configNodesStaticSelectors.isStaticNodeId(state, networkParam)
+  ),
+  isOffline: configMetaSelectors.getOffline(state),
+  isChangingNode: configNodesSelectedSelectors.isNodeChanging(state),
+  languageSelection: configMetaSelectors.getLanguageSelection(state),
+  network: configSelectors.getNetworkConfig(state)
+});
+
+const mapDispatchToProps: DispatchProps = {
+  changeLanguage: configMetaActions.changeLanguage,
+  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
+  addCustomNode: configNodesCustomActions.addCustomNode,
+  removeCustomNode: configNodesCustomActions.removeCustomNode,
+  addCustomNetwork: configNetworksCustomActions.addCustomNetwork
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewHeader);

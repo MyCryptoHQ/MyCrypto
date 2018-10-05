@@ -36,7 +36,7 @@ $header-text-color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 950%;
+    width: 100%;
     padding: 0;
     list-style: none;
     margin-bottom: 0;
@@ -47,7 +47,7 @@ $header-text-color: #fff;
     margin-left: 49px;
     a {
       font-weight: bold;
-      color: white;
+      color: $header-text-color;
       margin-right: 38px;
     }
   }
@@ -57,14 +57,35 @@ $header-text-color: #fff;
     text-align: right;
     margin-right: 49px;
     a {
-      color: white;
+      color: $header-text-color;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 1.1px;
     }
+    .Language-Picker {
+      display: inline-block;
+      position: relative;
+      &-Menu {
+        // visibility: hidden;
+        position: absolute;
+        z-index: 2000;
+      }
+    }
+
+    .dropdown {
+      a {
+        border: none;
+        background: none;
+      }
+    }
+
   }
 
   &-logo-container {
     display: flex;
 
     &-image {
+      margin: auto;
       align-items: center;
       justify-content: center;
       padding: 15px 0;
@@ -85,7 +106,10 @@ $header-text-color: #fff;
       justify-content: center;
     }
 
-    
+    @media (max-width: 800px) {
+      width: 100%;
+    }
+
   }
   &-menu-container {
     display: flex;
@@ -101,12 +125,18 @@ $header-text-color: #fff;
 
     &-links {
       margin-top: 5px;
-      padding-left: 35px;
+      background: $header-background;
+      border: none;
+      padding-right: 0;
 
       @media (min-width: 800px) {
         margin-top: 0;
         position: relative;
         padding-left: 0px;
+        text-align: center;
+      }
+
+      &-container {
         text-align: center;
       }
 
@@ -126,7 +156,7 @@ $header-text-color: #fff;
           list-style: none;
 
           a {
-            color: #ffffff;
+            color: $header-text-color;
           }
         }
 
@@ -149,7 +179,7 @@ $header-text-color: #fff;
   &-sidebar {
     background-color: #163150;
     border-top: solid 1px #2a435f;
-    color: white;
+    color: $header-text-color;
     height: 100%;
     position: absolute;
     left: 0px;
@@ -233,11 +263,6 @@ $header-text-color: #fff;
   list-style: none;
 
   a {
-    color: white;
+    color: $header-text-color;
   }
-}
-
-.Language-Picker {
-  visibility: hidden;
-
 }
