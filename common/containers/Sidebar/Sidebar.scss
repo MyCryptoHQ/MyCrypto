@@ -9,7 +9,11 @@
   box-shadow: -2px 0 6px 0 rgba(0, 0, 0, 0.1);
 
   &-controls {
+    padding-top: 22px;
+    padding-left: 22px;
+
     button {
+      padding: 0;
       border: none;
       background: none;
     }
@@ -104,6 +108,7 @@
 .NewNodeOption {
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   .CustomRadio {
     transform: scale(0.7);
@@ -134,4 +139,9 @@
 
 .is-secondary {
   background: #f7f7f7;
+}
+
+.plain-ul {
+  list-style-type: none;
+  padding: 0;
 }

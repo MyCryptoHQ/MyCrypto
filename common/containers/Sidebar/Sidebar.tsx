@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { AppState } from 'features/reducers';
 import { sidebarActions } from 'features/sidebar';
 import backArrow from 'assets/images/back-arrow.svg';
 import { AddCustomNode, SelectNetworkAndNode } from './components';
@@ -22,7 +21,6 @@ interface Props {
 
 function Sidebar({ close }: Props) {
   const Screen = screens.selectNetworkAndNode;
-  // const Screen = screens.addCustomNode;
 
   return (
     <section className="Sidebar">
@@ -36,10 +34,8 @@ function Sidebar({ close }: Props) {
   );
 }
 
-const mapStateToProps = (state: AppState) => ({});
-
 const mapDispatchToProps = {
   close: sidebarActions.closeSidebar
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default connect(null, mapDispatchToProps)(Sidebar);
