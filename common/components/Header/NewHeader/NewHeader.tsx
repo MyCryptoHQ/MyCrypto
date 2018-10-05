@@ -4,6 +4,7 @@ import { navigationLinks } from 'config';
 import NavigationLink from 'components/NavigationLink';
 import './NewHeader.scss';
 import { sendLinks, buyLinks, toolsLinks } from 'config/newNavigation';
+import LanguageSelect from 'components/ElectronNav/LanguageSelect';
 
 const generateLink = {
   name: 'NAV_GENERATEWALLET',
@@ -17,56 +18,64 @@ const HorizontalRule = () => (
 );
 
 interface State {
-  sendMenuVisible: boolean;
-  buyMenuVisible: boolean;
-  toolsMenuVisible: boolean;
-  languageMenuVisible: boolean;
+  visibleDropdowns: {
+    [key: string]: boolean;
+  };
 }
 
-export default class NewHeader extends Component {
+export default class NewHeader extends Component<{}, State> {
   public state: State = {
-    sendMenuVisible: false,
-    buyMenuVisible: false,
-    toolsMenuVisible: false,
-    languageMenuVisible: false
+    visibleDropdowns: {
+      buy: false,
+      send: false,
+      tools: false,
+      language: false
+    }
   };
 
-  public toggleSendMenu = () =>
+  private toggleSendMenu = () => this.toggleDropdown('send');
+
+  private toggleBuyMenu = () => this.toggleDropdown('buy');
+
+  private toggleToolsMenu = () => this.toggleDropdown('tools');
+
+  private toggleLanguageMenu = () => this.toggleDropdown('language');
+
+  private toggleDropdown = (name: string) =>
     this.setState((prevState: State) => ({
-      sendMenuVisible: !prevState.sendMenuVisible
+      visibleDropdowns: {
+        ...prevState.visibleDropdowns,
+        [name]: !prevState.visibleDropdowns[name]
+      }
     }));
 
-  public toggleBuyMenu = () =>
-    this.setState((prevState: State) => ({ buyMenuVisible: !prevState.buyMenuVisible }));
-
-  public toggleToolsMenu = () =>
-    this.setState((prevState: State) => ({ toolsMenuVisible: !prevState.toolsMenuVisible }));
-
-  public toggleLanguageMenu = () =>
-    this.setState((prevState: State) => ({ languageMenuVisible: !prevState.languageMenuVisible }));
-
   public render() {
-    const { sendMenuVisible, buyMenuVisible } = this.state;
+    const { visibleDropdowns } = this.state;
     return (
       <React.Fragment>
         <section className="NewHeader">
           <section className="NewHeader-TopRow ">
-            <section className="NewHeader-Support-Container desktop-only">
-              <a href="https://support.mycrypto.com/">
-                Help & Support <i className="fa fa-angle-right" />
-              </a>
-              <a href="https://medium.com/@mycrypto">
-                Latest News <i className="fa fa-angle-right" />
-              </a>
-            </section>
-            <section className="NewHeader-logo-container">
-              <section className="NewHeader-logo-container-image">
-                <img src={logo} alt="Logo" />
-              </section>
-            </section>
-            <section className="NewHeader-Support-Container desktop-only">
-              English <i className="fa fa-angle-down" />
-            </section>
+            <ul className="NewHeader-TopRow-Container">
+              <li className="NewHeader-Support-Container desktop-only">
+                <a href="https://support.mycrypto.com/">
+                  Help & Support <i className="fa fa-angle-right" />
+                </a>
+                <a href="https://medium.com/@mycrypto">
+                  Latest News <i className="fa fa-angle-right" />
+                </a>
+              </li>
+              <li className="NewHeader-logo-container">
+                <section className="NewHeader-logo-container-image">
+                  <img src={logo} alt="Logo" />
+                </section>
+              </li>
+              <li className="NewHeader-Feature-Container desktop-only ">
+                <a className="langauge-picker" onClick={this.toggleLanguageMenu}>
+                  English <i className="fa fa-angle-down" />
+                  {/* <LanguageSelect className="Language-Picker"/> */}
+                </a>
+              </li>
+            </ul>
           </section>
 
           <div className="desktop-only">
@@ -81,7 +90,7 @@ export default class NewHeader extends Component {
                 onMouseLeave={this.toggleSendMenu}
               >
                 Send & Recieve{' '}
-                {sendMenuVisible ? (
+                {visibleDropdowns.send ? (
                   <i className="fa fa-angle-up" />
                 ) : (
                   <i className="fa fa-angle-down" />
@@ -104,11 +113,11 @@ export default class NewHeader extends Component {
 
               <section
                 className="NewHeader-menu-container-links NewHeader-menu-container-send NewHeader-BottomRow-Navigation-Link"
-                onMouseEnter={this.toggleSendMenu}
-                onMouseLeave={this.toggleSendMenu}
+                onMouseEnter={this.toggleBuyMenu}
+                onMouseLeave={this.toggleBuyMenu}
               >
                 Buy & Exchange{' '}
-                {buyMenuVisible ? (
+                {visibleDropdowns.buy ? (
                   <i className="fa fa-angle-up" />
                 ) : (
                   <i className="fa fa-angle-down" />
@@ -129,11 +138,11 @@ export default class NewHeader extends Component {
               {''}
               <section
                 className="NewHeader-menu-container-links NewHeader-menu-container-send NewHeader-BottomRow-Navigation-Link"
-                onMouseEnter={this.toggleSendMenu}
-                onMouseLeave={this.toggleSendMenu}
+                onMouseEnter={this.toggleToolsMenu}
+                onMouseLeave={this.toggleToolsMenu}
               >
                 Tools{' '}
-                {buyMenuVisible ? (
+                {visibleDropdowns.tools ? (
                   <i className="fa fa-angle-up" />
                 ) : (
                   <i className="fa fa-angle-down" />
@@ -157,7 +166,7 @@ export default class NewHeader extends Component {
                   key={generateLink.name}
                   link={generateLink}
                   isHomepage={generateLink === navigationLinks[0]}
-                  className="NavigationLink"
+                  className="NewHeader-link"
                 />
               </section>
             </section>
@@ -170,13 +179,13 @@ export default class NewHeader extends Component {
               onClick={this.toggleSendMenu}
             >
               Send & Recieve{' '}
-              {sendMenuVisible ? (
+              {visibleDropdowns.send ? (
                 <i className="fa fa-angle-up" />
               ) : (
                 <i className="fa fa-angle-down" />
               )}
             </section>
-            {sendMenuVisible && (
+            {visibleDropdowns.send && (
               <div>
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
                   {sendLinks.map(link => (
@@ -195,13 +204,13 @@ export default class NewHeader extends Component {
               onClick={this.toggleBuyMenu}
             >
               Buy & Exchange{' '}
-              {buyMenuVisible ? (
+              {visibleDropdowns.buy ? (
                 <i className="fa fa-angle-up" />
               ) : (
                 <i className="fa fa-angle-down" />
               )}
             </section>
-            {buyMenuVisible && (
+            {visibleDropdowns.buy && (
               <div>
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
                   {buyLinks.map(link => (

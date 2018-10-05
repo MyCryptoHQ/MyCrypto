@@ -71,14 +71,14 @@ export const sendLinks: NavigationLink[] = [
   },
   {
     name: 'NAV_ADDRESS_BOOK',
-    to: '/address-book'
+    to: '/account/address-book'
   }
 ];
 
 export const buyLinks: NavigationLink[] = [
   {
-    name: 'NAV_SENDETHER',
-    to: '/'
+    name: 'NAV_SWAP',
+    to: '/swap'
   }
 ];
 

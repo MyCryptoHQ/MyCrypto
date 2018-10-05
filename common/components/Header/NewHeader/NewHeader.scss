@@ -26,7 +26,36 @@ $header-text-color: #fff;
   background: $header-background;
   color: $header-text-color;
 
+  i {
+    padding-left: 5px;
+    font-size: 10px;
+    color: #1eb8e7;
+  }
+
+  &-TopRow-Container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 950%;
+    padding: 0;
+    list-style: none;
+    margin-bottom: 0;
+  }
+
   &-Support-Container {
+    flex: 1;
+    margin-left: 49px;
+    a {
+      font-weight: bold;
+      color: white;
+      margin-right: 38px;
+    }
+  }
+
+  &-Feature-Container {
+    flex: 1;
+    text-align: right;
+    margin-right: 49px;
     a {
       color: white;
     }
@@ -34,10 +63,8 @@ $header-text-color: #fff;
 
   &-logo-container {
     display: flex;
-    flex-direction: column;
 
     &-image {
-      display: flex;
       align-items: center;
       justify-content: center;
       padding: 15px 0;
@@ -58,10 +85,7 @@ $header-text-color: #fff;
       justify-content: center;
     }
 
-    @media (min-width: 800px) {
-      margin-left: auto;
-      margin-right: auto;
-    }
+    
   }
   &-menu-container {
     display: flex;
@@ -90,6 +114,7 @@ $header-text-color: #fff;
         margin-top: 10px;
         padding-left: 35px;
         margin-bottom: 0;
+
         &-links {
           font-family: Lato;
           font-size: 14px;
@@ -99,6 +124,7 @@ $header-text-color: #fff;
           line-height: normal;
           letter-spacing: normal;
           list-style: none;
+
           a {
             color: #ffffff;
           }
@@ -107,12 +133,12 @@ $header-text-color: #fff;
         @media (min-width: 800px) {
           position: absolute;
           left: 0;
-          top: 29px;
+          top: 48px;
           background-color: #0f253f;
           width: 195px;
           text-align: left;
           z-index: 1000;
-          display: none;
+          visibility: hidden;
           transition: opacity 0.3s ease-in;
           opacity: 0;
         }
@@ -142,6 +168,7 @@ $header-text-color: #fff;
 
   &-TopRow {
     align-items: center;
+
     @media (min-width: 800px) {
       display: flex;
     }
@@ -188,7 +215,7 @@ $header-text-color: #fff;
 }
 
 .NewHeader-menu-container-links:hover .Navigation-links {
-  display: block;
+  visibility: visible;
   opacity: 1;
 }
 
@@ -198,4 +225,19 @@ $header-text-color: #fff;
   align-items: center;
   height: 58px;
   transition: opacity 0.3s ease-in;
+}
+
+.NewHeader-link {
+  margin-bottom: 0;
+  margin-left: 5px;
+  list-style: none;
+
+  a {
+    color: white;
+  }
+}
+
+.Language-Picker {
+  visibility: hidden;
+
 }
