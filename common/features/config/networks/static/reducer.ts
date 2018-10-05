@@ -30,7 +30,9 @@ import {
   ESN_DEFAULT,
   AQUA_DEFAULT,
   AKA_DEFAULT,
-  PIRL_DEFAULT
+  PIRL_DEFAULT,
+  ATH_DEFAULT,
+  ETHO_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -618,6 +620,54 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: PIRL_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: PIRL_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: PIRL_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ATH: {
+    id: 'ATH',
+    name: 'Atheios',
+    unit: 'ATH',
+    chainId: 1620,
+    isCustom: false,
+    color: '#0093c5',
+    blockExplorer: makeExplorer({
+      name: 'Atheios Explorer',
+      origin: 'https://explorer.atheios.com'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ATH_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ATH_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ATH_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ETHO: {
+    id: 'ETHO',
+    name: 'Ether-1',
+    unit: 'ETHO',
+    chainId: 1313114,
+    isCustom: false,
+    color: '#7a1336',
+    blockExplorer: makeExplorer({
+      name: 'Ether-1 Explorer',
+      origin: 'https://explorer.ether1.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETHO_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETHO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETHO_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
