@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 
+import { NetworkConfig } from 'types/network';
 import { NodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
 import {
@@ -16,135 +16,34 @@ import { sidebarActions } from 'features/sidebar';
 import show from 'assets/images/icn-show.svg';
 import add from 'assets/images/icn-add.svg';
 import CustomNodeModal from 'components/CustomNodeModal';
-
-const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby'];
-
-interface NodeEntities {
-  [key: string]: NodeConfig;
-}
-
-interface NetworkOptions {
-  [key: string]: NodeConfig[];
-}
-
-interface PrioritizedNetworkOptions {
-  primaryNetworks: any[];
-  secondaryNetworks: any[];
-}
-
-function generateNetworksToNodes(nodes: NodeEntities): NetworkOptions {
-  return Object.values(nodes).reduce((networksToNodes: NetworkOptions, nextNode) => {
-    const { network } = nextNode;
-    const newNetworkEntry = (networksToNodes[network] || []).concat(nextNode);
-
-    networksToNodes[network] = newNetworkEntry;
-
-    return networksToNodes;
-  }, {});
-}
-
-function splitUpNetworkOptions(networksToNodes: NetworkOptions): PrioritizedNetworkOptions {
-  return Object.entries(networksToNodes).reduce(
-    (networkOptions, [network, nodes]) => {
-      const { primaryNetworks, secondaryNetworks } = networkOptions;
-      const collection = CORE_NETWORKS.includes(network) ? primaryNetworks : secondaryNetworks;
-
-      collection.push({
-        network,
-        nodes
-      });
-
-      return networkOptions;
-    },
-    {
-      primaryNetworks: [],
-      secondaryNetworks: []
-    } as PrioritizedNetworkOptions
-  );
-}
-
-class NetworkOption extends Component {
-  node = React.createRef();
-
-  componentDidMount() {
-    const { isSelected } = this.props;
-
-    if (isSelected) {
-      this.node.current.scrollIntoView();
-    }
-  }
-
-  render() {
-    const {
-      onSelect,
-      onNodeSelect,
-      onClick,
-      name,
-      isToggled,
-      nodes,
-      isSecondary,
-      isSelected,
-      selectedNode
-    } = this.props;
-
-    return (
-      <li
-        className={classnames('NewNetworkOption', { 'is-secondary': isSecondary })}
-        onClick={onClick}
-        ref={this.node}
-      >
-        <section className="NewNetworkOption-name">
-          <CustomRadio onClick={onSelect} enabled={isSelected} />
-          {name}
-        </section>
-        {isToggled && (
-          <ul className="NewNetworkOption-list">
-            {nodes.map(
-              node =>
-                console.log('nodezzz', node.id, selectedNode) || (
-                  <NodeOption
-                    key={node.id}
-                    name={node.service}
-                    onClick={e => e.stopPropagation() || onNodeSelect(node.id)}
-                    isSelected={selectedNode.id === node.id}
-                    {...node}
-                  />
-                )
-            )}
-          </ul>
-        )}
-      </li>
-    );
-  }
-}
-
-const NodeOption = ({ onClick, name, isSelected }) => (
-  <li className="NewNodeOption" onClick={onClick}>
-    <CustomRadio enabled={isSelected} /> {name}
-  </li>
-);
-
-const CustomRadio = ({ onClick, enabled = false }) => (
-  <section className="CustomRadio" onClick={enabled ? () => {} : onClick}>
-    {enabled && <section className="CustomRadio-inner" />}
-  </section>
-);
+import { CORE_NETWORKS, generateNetworksToNodes, splitUpNetworkOptions } from '../helpers';
+import NetworkOption from './NetworkOption';
 
 interface Props {
+  selectedNode: NodeConfig;
+  selectedNetwork: NetworkConfig;
+  allNodes: NodeConfig[];
+  allNetworks: { [key: string]: NetworkConfig };
   changeNodeRequested: configNodesSelectedActions.TChangeNodeRequested;
   changeNetworkRequested: configNetworksActions.TChangeNetworkRequested;
   addCustomNode: configNodesCustomActions.TAddCustomNode;
   closeSidebar: sidebarActions.TCloseSidebar;
 }
 
-class SelectNetworkAndNode extends Component<Props> {
-  state = {
+interface State {
+  toggledNetworks: string[];
+  showingSecondaryNetworks: boolean;
+  showingCustomNodeModal: boolean;
+}
+
+class SelectNetworkAndNode extends Component<Props, State> {
+  public state: State = {
     toggledNetworks: [],
     showingSecondaryNetworks: false,
     showingCustomNodeModal: false
   };
 
-  componentDidMount() {
+  public componentDidMount() {
     const { selectedNode } = this.props;
     const showingSecondaryNetworks = !CORE_NETWORKS.includes(selectedNode.network);
     const toggledNetworks =
@@ -156,32 +55,8 @@ class SelectNetworkAndNode extends Component<Props> {
     });
   }
 
-  toggleNetwork = network =>
-    this.setState(prevState => ({
-      toggledNetworks: prevState.toggledNetworks.includes(network)
-        ? prevState.toggledNetworks.filter(toggledNetwork => toggledNetwork !== network)
-        : prevState.toggledNetworks.concat(network)
-    }));
-
-  toggleShowingSecondaryNetworks = () =>
-    this.setState(prevState => ({
-      showingSecondaryNetworks: !prevState.showingSecondaryNetworks
-    }));
-
-  toggleShowingCustomNodeModal = () =>
-    this.setState(prevState => ({
-      showingCustomNodeModal: !prevState.showingCustomNodeModal
-    }));
-
-  render() {
-    const {
-      selectedNode,
-      selectedNetwork,
-      allNodes,
-      allNetworks,
-      changeNetworkRequested,
-      changeNodeRequested
-    } = this.props;
+  public render() {
+    const { selectedNode, selectedNetwork, allNodes, allNetworks } = this.props;
     const { toggledNetworks, showingSecondaryNetworks, showingCustomNodeModal } = this.state;
     const networksToNodes = generateNetworksToNodes(allNodes);
     const { primaryNetworks, secondaryNetworks } = splitUpNetworkOptions(networksToNodes);
@@ -196,26 +71,27 @@ class SelectNetworkAndNode extends Component<Props> {
           </p>
         </section>
         <ul className="SidebarScreen-list">
-          {primaryNetworks.map(({ network, nodes }) => {
+          {primaryNetworks.map(({ network, nodes }: { network: string; nodes: NodeConfig[] }) => {
             const isSelected = selectedNetwork.id === network;
             const onSelect = () => this.handleNetworkSelect(allNetworks[network].id);
-            const onNodeSelect = node => this.handleNodeSelect(node);
-            const onClick = e => e.stopPropagation() || this.toggleNetwork(network);
+            const onNodeSelect = (node: string) => this.handleNodeSelect(node);
+            const onClick = (e: React.MouseEvent<HTMLElement>) =>
+              e.stopPropagation() || this.toggleNetwork(network);
             const name = allNetworks[network].name;
             const isToggled = toggledNetworks.includes(network);
 
             return (
               <NetworkOption
                 key={network}
-                isSelected={isSelected}
                 onSelect={onSelect}
                 onNodeSelect={onNodeSelect}
-                selectedNode={selectedNode}
                 onClick={onClick}
                 name={name}
                 isToggled={isToggled}
                 nodes={nodes}
                 isSecondary={false}
+                isSelected={isSelected}
+                selectedNode={selectedNode}
               />
             );
           })}
@@ -234,7 +110,7 @@ class SelectNetworkAndNode extends Component<Props> {
                     isSelected={selectedNetwork.id === network}
                     onSelect={() => this.handleNetworkSelect(allNetworks[network].id)}
                     selectedNode={selectedNode}
-                    onNodeSelect={node => this.handleNodeSelect(node)}
+                    onNodeSelect={(node: string) => this.handleNodeSelect(node)}
                     onClick={e => e.stopPropagation() || this.toggleNetwork(network)}
                     name={allNetworks[network].name}
                     isToggled={toggledNetworks.includes(network)}
@@ -265,14 +141,31 @@ class SelectNetworkAndNode extends Component<Props> {
     );
   }
 
-  private handleNetworkSelect = network => {
+  private toggleNetwork = (network: string) =>
+    this.setState((prevState: State) => ({
+      toggledNetworks: prevState.toggledNetworks.includes(network)
+        ? prevState.toggledNetworks.filter(toggledNetwork => toggledNetwork !== network)
+        : prevState.toggledNetworks.concat(network)
+    }));
+
+  private toggleShowingSecondaryNetworks = () =>
+    this.setState(prevState => ({
+      showingSecondaryNetworks: !prevState.showingSecondaryNetworks
+    }));
+
+  private toggleShowingCustomNodeModal = () =>
+    this.setState(prevState => ({
+      showingCustomNodeModal: !prevState.showingCustomNodeModal
+    }));
+
+  private handleNetworkSelect = (network: string) => {
     const { changeNetworkRequested, closeSidebar } = this.props;
 
     changeNetworkRequested(network);
     closeSidebar();
   };
 
-  private handleNodeSelect = node => {
+  private handleNodeSelect = (node: string) => {
     const { changeNodeRequested, closeSidebar } = this.props;
 
     changeNodeRequested(node);
@@ -301,4 +194,4 @@ const mapDispatchToProps = {
   addCustomNode: configNodesCustomActions.addCustomNode
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectNetworkAndNode);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectNetworkAndNode as any);

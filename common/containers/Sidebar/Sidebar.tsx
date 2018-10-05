@@ -6,11 +6,7 @@ import backArrow from 'assets/images/back-arrow.svg';
 import { AddCustomNode, SelectNetworkAndNode } from './components';
 import './Sidebar.scss';
 
-interface SidebarScreens {
-  [screen: string]: () => JSX.Element;
-}
-
-const screens: SidebarScreens = {
+const screens: any = {
   addCustomNode: AddCustomNode,
   selectNetworkAndNode: SelectNetworkAndNode
 };
