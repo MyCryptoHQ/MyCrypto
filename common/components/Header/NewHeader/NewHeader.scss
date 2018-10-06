@@ -24,6 +24,8 @@ $header-text-color: #fff;
   flex-direction: column;
   background: $header-background;
   color: $header-text-color;
+  z-index: 2000;
+  text-transform: uppercase;
 
   i {
     padding-left: 5px;
@@ -43,11 +45,25 @@ $header-text-color: #fff;
 
   &-Support-Container {
     flex: 1;
-    margin-left: 49px;
+    margin-left: 20px;
     a {
       font-weight: bold;
       color: $header-text-color;
       margin-right: 38px;
+    }
+
+    button {
+      background: none;
+      border: none;
+    }
+
+    .hamburger {
+      font-size: 40px;
+      width: 22px;
+    }
+
+    @media (min-width: 800px) {
+      margin-left: 49px;
     }
   }
 
@@ -65,7 +81,6 @@ $header-text-color: #fff;
       display: inline-block;
       position: relative;
       &-Menu {
-        // visibility: hidden;
         position: absolute;
         z-index: 2000;
       }
@@ -77,7 +92,6 @@ $header-text-color: #fff;
         background: none;
       }
     }
-
   }
 
   &-logo-container {
@@ -108,7 +122,6 @@ $header-text-color: #fff;
     @media (max-width: 800px) {
       width: 100%;
     }
-
   }
   &-menu-container {
     display: flex;
@@ -127,6 +140,8 @@ $header-text-color: #fff;
       background: $header-background;
       border: none;
       padding-right: 0;
+      padding-left: 35px;
+      text-transform: uppercase;
 
       @media (min-width: 800px) {
         margin-top: 0;
@@ -135,9 +150,7 @@ $header-text-color: #fff;
         text-align: center;
       }
 
-      &-container {
-        text-align: center;
-      }
+    
 
       &-submenu {
         margin-top: 10px;
@@ -156,6 +169,7 @@ $header-text-color: #fff;
 
           a {
             color: $header-text-color;
+            line-height: 2.4;
           }
         }
 
@@ -184,12 +198,11 @@ $header-text-color: #fff;
     left: 0px;
     width: 280px;
     transition: all 0.3s ease;
-
+    padding-top: 69px;
+    box-shadow: 2px 0 6px 0 rgba(0, 0, 0, 0.1);
     z-index: 1000;
-
-    &-visible {
-      left: 0px;
-    }
+    text-transform: uppercase;
+    
   }
 
   @media (min-width: 800px) {
@@ -219,6 +232,12 @@ $header-text-color: #fff;
     &-Navigation-Link {
       width: 195px;
     }
+  }
+
+  @media (max-width: 800px) {
+    border-bottom: 1px solid #3f546c;
+    position: fixed;
+    width: 100%;
   }
 }
 
@@ -250,10 +269,19 @@ $header-text-color: #fff;
 
 .NewHeader-menu-container-links {
   display: flex;
-  justify-content: center;
   align-items: center;
+  letter-spacing: 1.1px;
   height: 58px;
   transition: opacity 0.3s ease-in;
+
+  i {
+    color: #1eb8e7;
+    margin-left: 5px;
+  }
+
+  @media (min-width: 800px) {
+    justify-content: center;
+  }
 }
 
 .NewHeader-link {
@@ -263,5 +291,34 @@ $header-text-color: #fff;
 
   a {
     color: $header-text-color;
+    font-weight: bold;
   }
+}
+
+.CreateWallet-Link {
+  margin-bottom: 1px;
+  margin-left: 5px;
+  a {
+    color: $header-text-color;
+  }
+}
+
+.sidebar-support-links {
+  flex-direction: column;
+  align-items: flex-start;
+  display: flex;
+}
+
+.sidebar-link {
+  display: block;
+  margin-top: 25px;
+  color: $header-text-color;
+}
+
+.hidden {
+  left: -280px;
+}
+
+.visible {
+  left: 0px;
 }

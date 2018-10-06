@@ -35,6 +35,7 @@ interface State {
   visibleDropdowns: {
     [key: string]: boolean;
   };
+  sidebarVisible: boolean;
 }
 
 interface StateProps {
@@ -66,12 +67,13 @@ class NewHeader extends Component<Props, State> {
       send: false,
       tools: false,
       language: false
-    }
+    },
+    sidebarVisible: false
   };
 
   public render() {
     const { languageSelection } = this.props;
-    const { visibleDropdowns } = this.state;
+    const { visibleDropdowns, sidebarVisible } = this.state;
     const selectedLanguage = languageSelection;
     const LanguageDropDown = OldDropDown as new () => OldDropDown<typeof selectedLanguage>;
     return (
@@ -87,11 +89,21 @@ class NewHeader extends Component<Props, State> {
                   Latest News <i className="fa fa-angle-right" />
                 </a>
               </li>
+              <li className="NewHeader-Support-Container mobile-only">
+                <button onClick={this.toggleSidebar}>
+                  {sidebarVisible ? (
+                    <i className="fa fa-close hamburger" />
+                  ) : (
+                    <i className="fa fa-bars hamburger" />
+                  )}
+                </button>
+              </li>
               <li className="NewHeader-logo-container">
                 <section className="NewHeader-logo-container-image">
                   <img src={logo} alt="Logo" />
                 </section>
               </li>
+              <li className="NewHeader-Feature-Container mobile-only" />
               <li className="NewHeader-Feature-Container desktop-only ">
                 <LanguageDropDown
                   ariaLabel={`change language. current language ${languages[selectedLanguage]}`}
@@ -199,9 +211,16 @@ class NewHeader extends Component<Props, State> {
             </section>
           </section>
         </section>
-        <section className="NewHeader-sidebar mobile-only">
+
+        <section
+          className={
+            sidebarVisible
+              ? 'NewHeader-sidebar mobile-only visible'
+              : 'NewHeader-sidebar mobile-only hidden'
+          }
+        >
           <section className="NewHeader-menu-container">
-            <section
+            <button
               className="NewHeader-menu-container-links NewHeader-menu-container-send"
               onClick={this.toggleSendMenu}
             >
@@ -211,7 +230,7 @@ class NewHeader extends Component<Props, State> {
               ) : (
                 <i className="fa fa-angle-down" />
               )}
-            </section>
+            </button>
             {visibleDropdowns.send && (
               <div className="NewHeader-menu-container-links-container">
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
@@ -226,7 +245,7 @@ class NewHeader extends Component<Props, State> {
                 </ul>
               </div>
             )}
-            <section
+            <button
               className="NewHeader-menu-container-links NewHeader-menu-container-buy"
               onClick={this.toggleBuyMenu}
             >
@@ -236,7 +255,7 @@ class NewHeader extends Component<Props, State> {
               ) : (
                 <i className="fa fa-angle-down" />
               )}
-            </section>
+            </button>
             {visibleDropdowns.buy && (
               <div className="NewHeader-menu-container-links-container">
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
@@ -251,35 +270,70 @@ class NewHeader extends Component<Props, State> {
                 </ul>
               </div>
             )}
-            <section
+            <button
               className="NewHeader-menu-container-links NewHeader-menu-container-send"
               onClick={this.toggleToolsMenu}
             >
-              Tools
-            </section>
-            <section className="NewHeader-menu-container-links NewHeader-menu-container-send">
+              Tools{' '}
+              {visibleDropdowns.tools ? (
+                <i className="fa fa-angle-up" />
+              ) : (
+                <i className="fa fa-angle-down" />
+              )}
+            </button>
+            {visibleDropdowns.tools && (
+              <div className="NewHeader-menu-container-links-container">
+                <ul className="Navigation-links NewHeader-menu-container-links-submenu">
+                  {toolsLinks.map(link => (
+                    <NavigationLink
+                      key={link.name}
+                      link={link}
+                      isHomepage={link === navigationLinks[0]}
+                      className="NewHeader-menu-container-links-submenu-links"
+                    />
+                  ))}
+                </ul>
+              </div>
+            )}
+            <button className="NewHeader-menu-container-links NewHeader-menu-container-send">
               <i className="fa fa-plus" />{' '}
               <NavigationLink
                 key={generateLink.name}
                 link={generateLink}
                 isHomepage={generateLink === navigationLinks[0]}
-                className="NavigationLink"
+                className="NavigationLink CreateWallet-Link"
               />
-            </section>
+            </button>
 
             <HorizontalRule />
 
-            <section className="NewHeader-menu-container-links NewHeader-menu-container-send">
+            <button className="NewHeader-menu-container-links NewHeader-menu-container-send">
               Ethereum (Auto)
-            </section>
+            </button>
 
-            <section
+            <button
               className="NewHeader-menu-container-links NewHeader-menu-container-send"
               onClick={this.toggleLanguageMenu}
             >
               English
-            </section>
+            </button>
             <HorizontalRule />
+            <button className="NewHeader-menu-container-links sidebar-support-links NewHeader-menu-container-send">
+              <a
+                className="sidebar-link"
+                href="https://support.mycrypto.com/"
+                aria-label="MyCrypto Support"
+              >
+                Help & Support <i className="fa fa-angle-right" />
+              </a>
+              <a
+                className="sidebar-link"
+                href="https://medium.com/@mycrypto"
+                aria-label="MyCrypto Medium Account"
+              >
+                Latest News <i className="fa fa-angle-right" />
+              </a>
+            </button>
           </section>
         </section>
       </React.Fragment>
@@ -308,6 +362,9 @@ class NewHeader extends Component<Props, State> {
         [name]: !prevState.visibleDropdowns[name]
       }
     }));
+
+  private toggleSidebar = () =>
+    this.setState((prevState: State) => ({ sidebarVisible: !prevState.sidebarVisible }));
 }
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, AppState> = (
