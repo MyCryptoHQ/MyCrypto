@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
-import { Footer, Header } from 'components';
+import NewHeader from 'components/Header/NewHeader/NewHeader';
+import { Footer } from 'components';
 import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
@@ -27,20 +28,22 @@ class WebTemplate extends Component<Props, {}> {
     const { isUnavailableOffline, children, isOffline, latestBlock } = this.props;
 
     return (
-      <div className="WebTemplate">
-        <Query
-          params={['network']}
-          withQuery={({ network }) => (
-            <Header networkParam={network && makeAutoNodeName(network)} />
-          )}
-        />
-        <div className="Tab container">
-          {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+      <React.Fragment>
+        <div className="WebTemplate">
+          <Query
+            params={['network']}
+            withQuery={({ network }) => (
+              <NewHeader networkParam={network && makeAutoNodeName(network)} />
+            )}
+          />
+          <div className="Tab container">
+            {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+          </div>
+          <div className="WebTemplate-spacer" />
+          <Footer latestBlock={latestBlock} />
+          <Notifications />
         </div>
-        <div className="WebTemplate-spacer" />
-        <Footer latestBlock={latestBlock} />
-        <Notifications />
-      </div>
+      </React.Fragment>
     );
   }
 }

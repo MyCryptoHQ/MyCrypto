@@ -35,7 +35,7 @@
     "NAV_SENDETHER": "Send Ether & Tokens ",
     "NAV_REQUESTPAYMENT": "Request Payment",
     "NAV_SIGNMSG": "Sign Message ",
-    "NAV_SWAP": "Swap ",
+    "NAV_SWAP": "Swap ETH & Tokens",
     "NAV_VIEWWALLET": "Wallet Info ",
     "NAV_RECENT_TX": "Recent Transactions",
     "NAV_ADDRESS_BOOK": "Address Book",
