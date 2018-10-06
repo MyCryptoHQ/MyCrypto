@@ -150,8 +150,6 @@ $header-text-color: #fff;
         text-align: center;
       }
 
-    
-
       &-submenu {
         margin-top: 10px;
         padding-left: 35px;
@@ -202,7 +200,17 @@ $header-text-color: #fff;
     box-shadow: 2px 0 6px 0 rgba(0, 0, 0, 0.1);
     z-index: 1000;
     text-transform: uppercase;
-    
+    overflow: auto;
+  }
+
+  .hidden {
+    left: -280px;
+    transition: left 1s linear;
+  }
+
+  .visible {
+    left: 0px;
+    transition: left 1s linear;
   }
 
   @media (min-width: 800px) {
@@ -260,6 +268,12 @@ $header-text-color: #fff;
 
 .Navigation-links {
   height: 100;
+
+  button {
+    display: list-item;
+    background: none;
+    border: none;
+  }
 }
 
 .NewHeader-menu-container-links:hover .Navigation-links {
@@ -313,12 +327,8 @@ $header-text-color: #fff;
   display: block;
   margin-top: 25px;
   color: $header-text-color;
-}
 
-.hidden {
-  left: -280px;
-}
-
-.visible {
-  left: 0px;
+  &:last-child {
+    margin-bottom: 50px;
+  }
 }

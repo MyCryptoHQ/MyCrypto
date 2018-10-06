@@ -235,12 +235,14 @@ class NewHeader extends Component<Props, State> {
               <div className="NewHeader-menu-container-links-container">
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
                   {sendLinks.map(link => (
-                    <NavigationLink
-                      key={link.name}
-                      link={link}
-                      isHomepage={link === navigationLinks[0]}
-                      className="NewHeader-menu-container-links-submenu-links"
-                    />
+                    <button onClick={this.toggleSidebar}>
+                      <NavigationLink
+                        key={link.name}
+                        link={link}
+                        isHomepage={link === navigationLinks[0]}
+                        className="NewHeader-menu-container-links-submenu-links"
+                      />
+                    </button>
                   ))}
                 </ul>
               </div>
@@ -260,12 +262,14 @@ class NewHeader extends Component<Props, State> {
               <div className="NewHeader-menu-container-links-container">
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
                   {buyLinks.map(link => (
-                    <NavigationLink
-                      key={link.name}
-                      link={link}
-                      isHomepage={link === navigationLinks[0]}
-                      className="NewHeader-menu-container-links-submenu-links"
-                    />
+                    <button onClick={this.toggleSidebar}>
+                      <NavigationLink
+                        key={link.name}
+                        link={link}
+                        isHomepage={link === navigationLinks[0]}
+                        className="NewHeader-menu-container-links-submenu-links"
+                      />
+                    </button>
                   ))}
                 </ul>
               </div>
@@ -285,12 +289,14 @@ class NewHeader extends Component<Props, State> {
               <div className="NewHeader-menu-container-links-container">
                 <ul className="Navigation-links NewHeader-menu-container-links-submenu">
                   {toolsLinks.map(link => (
-                    <NavigationLink
-                      key={link.name}
-                      link={link}
-                      isHomepage={link === navigationLinks[0]}
-                      className="NewHeader-menu-container-links-submenu-links"
-                    />
+                    <button onClick={this.toggleSidebar}>
+                      <NavigationLink
+                        key={link.name}
+                        link={link}
+                        isHomepage={link === navigationLinks[0]}
+                        className="NewHeader-menu-container-links-submenu-links"
+                      />
+                    </button>
                   ))}
                 </ul>
               </div>
@@ -323,6 +329,7 @@ class NewHeader extends Component<Props, State> {
                 className="sidebar-link"
                 href="https://support.mycrypto.com/"
                 aria-label="MyCrypto Support"
+                onClick={this.toggleSidebar}
               >
                 Help & Support <i className="fa fa-angle-right" />
               </a>
@@ -330,6 +337,7 @@ class NewHeader extends Component<Props, State> {
                 className="sidebar-link"
                 href="https://medium.com/@mycrypto"
                 aria-label="MyCrypto Medium Account"
+                onClick={this.toggleSidebar}
               >
                 Latest News <i className="fa fa-angle-right" />
               </a>
