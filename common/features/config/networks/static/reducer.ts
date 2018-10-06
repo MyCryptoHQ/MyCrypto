@@ -588,7 +588,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#aa0087',
     blockExplorer: makeExplorer({
       name: 'Akroma Explorer',
-      origin: 'https://akroma.io/explorer'
+      origin: 'https://explorer.akroma.io'
     }),
     tokens: [],
     contracts: [],
