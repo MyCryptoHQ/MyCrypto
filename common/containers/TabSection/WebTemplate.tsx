@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
+import { sidebarSelectors } from 'features/sidebar';
+import Sidebar from 'containers/Sidebar';
 import { Header } from 'components';
 import NewHeader from 'components/Header/NewHeader/NewHeader';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
@@ -15,6 +17,7 @@ import './WebTemplate.scss';
 interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
   latestBlock: AppState['config']['meta']['latestBlock'];
+  sidebarVisible: ReturnType<typeof sidebarSelectors.getSidebarVisible>;
 }
 
 interface OwnProps {
@@ -26,7 +29,7 @@ type Props = OwnProps & StateProps;
 
 class WebTemplate extends Component<Props, {}> {
   public render() {
-    const { isUnavailableOffline, children, isOffline } = this.props;
+    const { isUnavailableOffline, children, isOffline, sidebarVisible } = this.props;
 
     return (
       <React.Fragment>
@@ -38,6 +41,7 @@ class WebTemplate extends Component<Props, {}> {
             )}
           /> */}
           <NewHeader />
+          {sidebarVisible && <Sidebar />}
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
@@ -53,7 +57,8 @@ class WebTemplate extends Component<Props, {}> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     isOffline: configMetaSelectors.getOffline(state),
-    latestBlock: configMetaSelectors.getLatestBlock(state)
+    latestBlock: configMetaSelectors.getLatestBlock(state),
+    sidebarVisible: sidebarSelectors.getSidebarVisible(state)
   };
 }
 
