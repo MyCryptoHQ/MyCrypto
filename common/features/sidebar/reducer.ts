@@ -1,7 +1,8 @@
 import * as types from './types';
 
 const INITIAL_STATE: types.SidebarState = {
-  visible: false
+  visible: false,
+  screen: 'selectNetworkAndNode'
 };
 
 export function sidebarReducer(
@@ -9,11 +10,17 @@ export function sidebarReducer(
   action: types.SidebarAction
 ) {
   switch (action.type) {
-    case types.SidebarActions.TOGGLE:
+    case types.SidebarActions.TOGGLE: {
       const { visible: previouslyVisible } = state;
-      return { ...state, visible: !previouslyVisible };
-    case types.SidebarActions.OPEN:
-      return { ...state, visible: true };
+      const { payload: screen } = action;
+
+      return { ...state, visible: !previouslyVisible, screen };
+    }
+    case types.SidebarActions.OPEN: {
+      const { payload: screen } = action;
+
+      return { ...state, visible: true, screen };
+    }
     case types.SidebarActions.CLOSE:
       return { ...state, visible: false };
     default:

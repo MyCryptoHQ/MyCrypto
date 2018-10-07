@@ -97,7 +97,9 @@ class SelectNetworkAndNode extends Component<Props, State> {
             <section className="NewNetworkOption no-top-border">
               <section className="NewNetworkOption-name">
                 <img src={show} alt="Toggle showing all networks" />
-                {showingSecondaryNetworks ? 'Hide' : 'Show'} Other Networks
+                {translateRaw(
+                  showingSecondaryNetworks ? 'NEW_SIDEBAR_TEXT_7' : 'NEW_SIDEBAR_TEXT_8'
+                )}
               </section>
             </section>
             {showingSecondaryNetworks && (
@@ -110,7 +112,7 @@ class SelectNetworkAndNode extends Component<Props, State> {
                     selectedNode={selectedNode}
                     onNodeSelect={(node: string) => this.handleNodeSelect(node)}
                     onClick={e => e.stopPropagation() || this.toggleNetwork(network)}
-                    name={allNetworks[network].name}
+                    name={(allNetworks[network] || {}).name}
                     isToggled={toggledNetworks.includes(network)}
                     nodes={nodes}
                     isSecondary={true}
@@ -125,7 +127,8 @@ class SelectNetworkAndNode extends Component<Props, State> {
             className="SidebarScreen-action-content"
             onClick={this.toggleShowingCustomNodeModal}
           >
-            <img src={add} alt="Add custom node" />Add custom node
+            <img src={add} alt="Add custom node" />
+            {translateRaw('NEW_SIDEBAR_TEXT_6')}
           </section>
         </section>
         {showingCustomNodeModal && (

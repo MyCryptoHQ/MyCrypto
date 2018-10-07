@@ -120,12 +120,17 @@ class MobileHeader extends Component<Props> {
               </li>
             </ul>
             <ul className="MobileHeader-menu-mid">
-              <li onClick={this.toggleMenu}>
+              <li
+                onClick={() => {
+                  openSidebar('selectLanguage');
+                  this.toggleMenu();
+                }}
+              >
                 {languages[languageSelection]} <i className="fa fa-caret-down" />
               </li>
               <li
                 onClick={() => {
-                  openSidebar();
+                  openSidebar('selectNetworkAndNode');
                   this.toggleMenu();
                 }}
               >

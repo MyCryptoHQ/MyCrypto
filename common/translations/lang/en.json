@@ -717,6 +717,9 @@
     "NEW_SIDEBAR_TEXT_2": "Select Your Preferred Network and Node",
     "NEW_SIDEBAR_TEXT_3": "You can access your MyCrypto funds on different Networks and Nodes, simply choose one below or add a custom node.",
     "NEW_SIDEBAR_TEXT_4": "Add Custom Node",
-    "NEW_SIDEBAR_TEXT_5": "Your node must be HTTPS in order to connect to it via MyCrypto.com. You can download the MyCrypto repo & run it locally to connect to any node. Or, get free SSL certificate via LetsEncrypt"
+    "NEW_SIDEBAR_TEXT_5": "Your node must be HTTPS in order to connect to it via MyCrypto.com. You can download the MyCrypto repo & run it locally to connect to any node. Or, get free SSL certificate via LetsEncrypt",
+    "NEW_SIDEBAR_TEXT_6": "Add custom node",
+    "NEW_SIDEBAR_TEXT_7": "Hide Other Networks",
+    "NEW_SIDEBAR_TEXT_8": "Show Other Networks"
   }
 }

@@ -85,10 +85,10 @@ class DesktopHeader extends Component<Props> {
             </section>
             <section className="DesktopHeader-top-right">
               <ul className="DesktopHeader-top-links">
-                <li>
+                <li onClick={() => openSidebar('selectLanguage')}>
                   {languages[languageSelection]} <i className="fa fa-caret-down" />
                 </li>
-                <li onClick={openSidebar}>
+                <li onClick={() => openSidebar('selectNetworkAndNode')}>
                   {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
                 </li>
               </ul>

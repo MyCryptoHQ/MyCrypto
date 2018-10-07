@@ -1,5 +1,6 @@
 export interface SidebarState {
   visible: boolean;
+  screen: SidebarScreen;
 }
 
 export enum SidebarActions {
@@ -8,12 +9,16 @@ export enum SidebarActions {
   CLOSE = 'SIDEBAR_CLOSE'
 }
 
+export type SidebarScreen = 'selectNetworkAndNode' | 'selectLanguage';
+
 export interface ToggleSidebarAction {
   type: SidebarActions.TOGGLE;
+  payload: SidebarScreen;
 }
 
 export interface OpenSidebarAction {
   type: SidebarActions.OPEN;
+  payload: SidebarScreen;
 }
 
 export interface CloseSidebarAction {
