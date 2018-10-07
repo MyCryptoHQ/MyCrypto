@@ -3,22 +3,32 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { AppState } from 'features/reducers';
-import { configSelectors } from 'features/config';
+import {
+  configSelectors,
+  configNodesStaticSelectors,
+  configNodesSelectedActions
+} from 'features/config';
 import { sidebarActions } from 'features/sidebar';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { LINKSET } from '../constants';
 import { generateMenuIcon, generateCaretIcon } from '../helpers';
 import './MobileHeader.scss';
 
+interface OwnProps {
+  networkParam: string | null;
+}
+
 interface StateProps {
+  shouldSetNodeFromQS: boolean;
   nodeLabel: ReturnType<typeof configSelectors.getSelectedNodeLabel>;
 }
 
 interface DispatchProps {
   openSidebar: sidebarActions.TOpenSidebar;
+  changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
 }
 
-type Props = StateProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   menuVisible: boolean;
@@ -36,6 +46,10 @@ class MobileHeader extends Component<Props> {
       tools: false
     }
   };
+
+  public componentDidMount() {
+    this.attemptSetNodeFromQueryParameter();
+  }
 
   public render() {
     const { nodeLabel, openSidebar } = this.props;
@@ -147,14 +161,26 @@ class MobileHeader extends Component<Props> {
   private toggleSendAndReceive = () => this.toggleDropdown('sendAndReceive');
   private toggleBuyAndExchange = () => this.toggleDropdown('buyAndExchange');
   private toggleTools = () => this.toggleDropdown('tools');
+
+  private attemptSetNodeFromQueryParameter = () => {
+    const { shouldSetNodeFromQS, networkParam, changeNodeRequestedOneTime } = this.props;
+
+    if (shouldSetNodeFromQS) {
+      changeNodeRequestedOneTime(networkParam!);
+    }
+  };
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState, { networkParam }: any) => ({
+  shouldSetNodeFromQS: !!(
+    networkParam && configNodesStaticSelectors.isStaticNodeId(state, networkParam)
+  ),
   nodeLabel: configSelectors.getSelectedNodeLabel(state)
 });
 
 const mapDispatchToProps = {
-  openSidebar: sidebarActions.openSidebar
+  openSidebar: sidebarActions.openSidebar,
+  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MobileHeader);

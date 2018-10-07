@@ -6,7 +6,6 @@ import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
 import { sidebarSelectors } from 'features/sidebar';
 import Sidebar from 'containers/Sidebar';
-import { Header } from 'components';
 import NewHeader from 'components/Header/NewHeader/NewHeader';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
 import { Query } from 'components/renderCbs';
@@ -34,13 +33,12 @@ class WebTemplate extends Component<Props, {}> {
     return (
       <React.Fragment>
         <div className="WebTemplate">
-          {/* <Query
+          <Query
             params={['network']}
             withQuery={({ network }) => (
-              <Header networkParam={network && makeAutoNodeName(network)} />
+              <NewHeader networkParam={network && makeAutoNodeName(network)} />
             )}
-          /> */}
-          <NewHeader />
+          />
           {sidebarVisible && <Sidebar />}
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
