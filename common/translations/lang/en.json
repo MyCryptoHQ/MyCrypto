@@ -12,6 +12,7 @@
     "LABEL_CANNOT_CONTAIN_ENS_SUFFIX": "Address labels may not contain \".eth\", \".test\" or \".reverse\".",
     "SENDING_TO": "Sending to $label",
     "NEW_ADDRESS": "New address",
+    "PRINT": "Print",
     "NEW_LABEL": "New label",
     "X_TXHASH": "TX Hash",
     "X_PASSWORDDESC": "This password * encrypts * your private key. This does not act as a seed to generate your keys. **You will need this password + your keystore file to unlock your wallet.**",
