@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import {
   configSelectors,
@@ -64,12 +65,12 @@ class DesktopHeader extends Component<Props> {
               <ul className="DesktopHeader-top-links">
                 <li>
                   <a href="https://support.mycrypto.com/">
-                    Help & Support <i className="fa fa-caret-right" />
+                    {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
                   </a>
                 </li>
                 <li>
                   <a href="https://medium.com/@mycrypto">
-                    Latest News <i className="fa fa-caret-right" />
+                    {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
                   </a>
                 </li>
               </ul>
@@ -97,7 +98,7 @@ class DesktopHeader extends Component<Props> {
                 onMouseEnter={this.toggleSendAndReceive}
                 onMouseLeave={this.toggleSendAndReceive}
               >
-                Send & Receive <i className={sendAndReceiveIcon} />
+                {translateRaw('NEW_HEADER_TEXT_3')} <i className={sendAndReceiveIcon} />
                 {sendAndReceive && (
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.SEND_AND_RECEIVE.map(item => (
@@ -113,7 +114,7 @@ class DesktopHeader extends Component<Props> {
                 onMouseEnter={this.toggleBuyAndExchange}
                 onMouseLeave={this.toggleBuyAndExchange}
               >
-                Buy & Exchange <i className={buyAndExchangeIcon} />
+                {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
                 {buyAndExchange && (
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.BUY_AND_EXCHANGE.map(item => (
@@ -129,7 +130,7 @@ class DesktopHeader extends Component<Props> {
                 onMouseEnter={this.toggleTools}
                 onMouseLeave={this.toggleTools}
               >
-                Tools <i className={toolsIcon} />
+                {translateRaw('NEW_HEADER_TEXT_5')} <i className={toolsIcon} />
                 {tools && (
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.TOOLS.map(item => (
@@ -142,7 +143,7 @@ class DesktopHeader extends Component<Props> {
               </li>
               <li className="DesktopHeader-bottom-links-item">
                 <Link to="/generate">
-                  <i className="fa fa-plus create-icon" /> Create Wallet
+                  <i className="fa fa-plus create-icon" /> {translateRaw('NEW_HEADER_TEXT_6')}
                 </Link>
               </li>
             </ul>

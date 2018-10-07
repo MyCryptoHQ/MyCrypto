@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import {
   configSelectors,
@@ -75,7 +76,7 @@ class MobileHeader extends Component<Props> {
           <section className="MobileHeader-menu">
             <ul className="MobileHeader-menu-top">
               <li onClick={this.toggleSendAndReceive}>
-                Send & Receive <i className={sendAndReceiveIcon} />
+                {translateRaw('NEW_HEADER_TEXT_3')} <i className={sendAndReceiveIcon} />
                 {sendAndReceive && (
                   <ul className="MobileHeader-menu-subitems">
                     {LINKSET.SEND_AND_RECEIVE.map(item => (
@@ -87,7 +88,7 @@ class MobileHeader extends Component<Props> {
                 )}
               </li>
               <li onClick={this.toggleBuyAndExchange}>
-                Buy & Exchange <i className={buyAndExchangeIcon} />
+                {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
                 {buyAndExchange && (
                   <ul className="MobileHeader-menu-subitems">
                     {LINKSET.BUY_AND_EXCHANGE.map(item => (
@@ -99,7 +100,8 @@ class MobileHeader extends Component<Props> {
                 )}
               </li>
               <li onClick={this.toggleTools}>
-                Tools <i className={toolsIcon} />
+                {translateRaw('NEW_HEADER_TEXT_5')}
+                <i className={toolsIcon} />
                 {tools && (
                   <ul className="MobileHeader-menu-subitems">
                     {LINKSET.TOOLS.map(item => (
@@ -111,7 +113,7 @@ class MobileHeader extends Component<Props> {
                 )}
               </li>
               <li onClick={this.toggleMenu}>
-                <i className="fa fa-plus" /> Create Wallet
+                <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
               </li>
             </ul>
             <ul className="MobileHeader-menu-mid">
@@ -130,12 +132,12 @@ class MobileHeader extends Component<Props> {
             <ul className="MobileHeader-menu-bottom">
               <li>
                 <a href="https://support.mycrypto.com/">
-                  Help & Support <i className="fa fa-caret-right" />
+                  {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
                 </a>
               </li>
               <li>
                 <a href="https://medium.com/@mycrypto">
-                  Latest News <i className="fa fa-caret-right" />
+                  {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
                 </a>
               </li>
             </ul>

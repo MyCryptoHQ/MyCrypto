@@ -1,52 +1,54 @@
+import { translateRaw } from 'translations';
+
 export const LINKSET = {
   SEND_AND_RECEIVE: [
     {
       to: '/account',
-      title: 'Send Ether & Tokens'
+      title: translateRaw('NEW_HEADER_TEXT_7')
     },
     {
       to: '/account/request',
-      title: 'Request Payment'
+      title: translateRaw('NEW_HEADER_TEXT_8')
     },
     {
       to: '/account/info',
-      title: 'Wallet Info'
+      title: translateRaw('NEW_HEADER_TEXT_9')
     },
     {
       to: '/account/recent-txs',
-      title: 'View Recent Transactions'
+      title: translateRaw('NEW_HEADER_TEXT_10')
     },
     {
       to: '/account/address-book',
-      title: 'Address Book'
+      title: translateRaw('NEW_HEADER_TEXT_11')
     }
   ],
   BUY_AND_EXCHANGE: [
     {
       to: '/swap',
-      title: 'Swap ETH & Tokens'
+      title: translateRaw('NEW_HEADER_TEXT_12')
     }
   ],
   TOOLS: [
     {
       to: '/sign-and-verify-message',
-      title: 'Sign & Verify Message'
+      title: translateRaw('NEW_HEADER_TEXT_13')
     },
     {
       to: '/contracts',
-      title: 'Interact with Contracts'
+      title: translateRaw('NEW_HEADER_TEXT_14')
     },
     {
       to: '/tx-status',
-      title: 'Check Transaction Status'
+      title: translateRaw('NEW_HEADER_TEXT_15')
     },
     {
       to: '/pushTx',
-      title: 'Broadcast Transaction'
+      title: translateRaw('NEW_HEADER_TEXT_16')
     },
     {
       to: '/ens',
-      title: 'ENS Domains'
+      title: translateRaw('NEW_HEADER_TEXT_17')
     }
   ]
 };
