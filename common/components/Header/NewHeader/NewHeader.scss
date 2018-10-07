@@ -1,0 +1,61 @@
+$header-background-color: #163150;
+
+.NewHeader {
+  display: flex;
+  flex-direction: column;
+  background: $header-background-color;
+  color: #fff;
+
+  ul,
+  li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    list-style-type: none;
+  }
+  &-top {
+    display: flex;
+    align-items: center;
+    padding: 12px 50px;
+    border-bottom: 1px solid #3e546d;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    ul > li:first-of-type {
+      margin-right: 38px;
+    }
+    &-left {
+      flex: 1;
+    }
+    &-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 160px;
+        height: 39px;
+      }
+    }
+    &-right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  &-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    ul > li {
+      padding: 0 22px;
+    }
+  }
+}

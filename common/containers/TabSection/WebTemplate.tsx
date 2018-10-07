@@ -5,6 +5,7 @@ import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
 import { Header } from 'components';
+import NewHeader from 'components/Header/NewHeader/NewHeader';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
 import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
@@ -30,17 +31,17 @@ class WebTemplate extends Component<Props, {}> {
     return (
       <React.Fragment>
         <div className="WebTemplate">
-          <Query
+          {/* <Query
             params={['network']}
             withQuery={({ network }) => (
               <Header networkParam={network && makeAutoNodeName(network)} />
             )}
-          />
+          /> */}
+          <NewHeader />
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
           <div className="WebTemplate-spacer" />
-          {/* <Footer latestBlock={latestBlock} /> */}
           <NewFooter />
           <Notifications />
         </div>
