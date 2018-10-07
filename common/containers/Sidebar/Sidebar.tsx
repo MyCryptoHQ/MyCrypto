@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 
 import { sidebarActions } from 'features/sidebar';
 import backArrow from 'assets/images/back-arrow.svg';
-import { AddCustomNode, SelectNetworkAndNode } from './components';
+import { AddCustomNode, SelectLanguage, SelectNetworkAndNode } from './components';
 import './Sidebar.scss';
 
 const screens: any = {
   addCustomNode: AddCustomNode,
-  selectNetworkAndNode: SelectNetworkAndNode
+  selectNetworkAndNode: SelectNetworkAndNode,
+  selectLanguage: SelectLanguage
 };
 
 interface Props {
@@ -16,7 +17,8 @@ interface Props {
 }
 
 function Sidebar({ close }: Props) {
-  const Screen = screens.selectNetworkAndNode;
+  // const Screen = screens.selectNetworkAndNode;
+  const Screen = screens.selectLanguage;
 
   return (
     <section className="Sidebar">

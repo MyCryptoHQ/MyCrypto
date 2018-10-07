@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { translateRaw } from 'translations';
 import node from 'assets/images/icn-node.svg';
 
 export default function AddCustomNode() {
@@ -8,12 +9,8 @@ export default function AddCustomNode() {
       <section className="SidebarScreen-image">
         <img src={node} alt="Node cartoon" />
       </section>
-      <h1 className="SidebarScreen-heading">Add Custom Node</h1>
-      <p className="SidebarScreen-text">
-        Your node must be HTTPS in order to connect to it via MyCrypto.com. You can download the
-        MyCrypto repo & run it locally to connect to any node. Or, get free SSL certificate via
-        LetsEncrypt
-      </p>
+      <h1 className="SidebarScreen-heading">{translateRaw('NEW_SIDEBAR_TEXT_4')}</h1>
+      <p className="SidebarScreen-text">{translateRaw('NEW_SIDEBAR_TEXT_5')}</p>
     </section>
   );
 }

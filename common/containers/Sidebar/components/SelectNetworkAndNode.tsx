@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { NodeConfig } from 'types/node';
 import { AppState } from 'features/reducers';
@@ -64,11 +65,8 @@ class SelectNetworkAndNode extends Component<Props, State> {
     return (
       <section className="SidebarScreen">
         <section className="SidebarScreen-upper">
-          <h1 className="SidebarScreen-heading">Select Your Preferred Network and Node</h1>
-          <p className="SidebarScreen-text">
-            You can access your MyCrypto funds on different Networks and Nodes, simply choose one
-            below or add a custom node.
-          </p>
+          <h1 className="SidebarScreen-heading">{translateRaw('NEW_SIDEBAR_TEXT_2')}</h1>
+          <p className="SidebarScreen-text">{translateRaw('NEW_SIDEBAR_TEXT_3')}</p>
         </section>
         <ul className="SidebarScreen-list">
           {primaryNetworks.map(({ network, nodes }: { network: string; nodes: NodeConfig[] }) => {
