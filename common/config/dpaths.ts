@@ -128,6 +128,16 @@ export const PIRL_DEFAULT: DPath = {
   value: "m/44'/164'/0'/0"
 };
 
+export const ATH_DEFAULT: DPath = {
+  label: 'Default (ATH)',
+  value: "m/44'/1620'/0'/0"
+};
+
+export const ETHO_DEFAULT: DPath = {
+  label: 'Default (ETHO)',
+  value: "m/44'/1313114'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -153,7 +163,9 @@ export const DPaths: DPath[] = [
   ESN_DEFAULT,
   AQUA_DEFAULT,
   AKA_DEFAULT,
-  PIRL_DEFAULT
+  PIRL_DEFAULT,
+  ATH_DEFAULT,
+  ETHO_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

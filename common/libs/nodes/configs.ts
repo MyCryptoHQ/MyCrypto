@@ -265,6 +265,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'wallrpc.pirl.io',
       url: 'https://wallrpc.pirl.io'
     }
+  ],
+
+  ATH: [
+    {
+      name: makeNodeName('ATH', 'wallet.atheios.com'),
+      type: 'rpc',
+      service: 'wallet.atheios.com',
+      url: 'https://wallet.atheios.com:8797'
+    }
+  ],
+
+  ETHO: [
+    {
+      name: makeNodeName('ETHO', 'ether1.org'),
+      type: 'rpc',
+      service: 'ether1.org',
+      url: 'https://rpc.ether1.org'
+    }
   ]
 };
 
