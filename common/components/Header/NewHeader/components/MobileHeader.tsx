@@ -15,7 +15,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  toggleSidebar: sidebarActions.TToggleSidebar;
+  openSidebar: sidebarActions.TOpenSidebar;
 }
 
 type Props = StateProps & DispatchProps;
@@ -38,7 +38,7 @@ class MobileHeader extends Component<Props> {
   };
 
   public render() {
-    const { nodeLabel, toggleSidebar } = this.props;
+    const { nodeLabel, openSidebar } = this.props;
     const { menuVisible, visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const menuIcon = generateMenuIcon(menuVisible);
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
@@ -106,7 +106,7 @@ class MobileHeader extends Component<Props> {
               </li>
               <li
                 onClick={() => {
-                  toggleSidebar();
+                  openSidebar();
                   this.toggleMenu();
                 }}
               >
@@ -154,7 +154,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = {
-  toggleSidebar: sidebarActions.toggleSidebar
+  openSidebar: sidebarActions.openSidebar
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MobileHeader);

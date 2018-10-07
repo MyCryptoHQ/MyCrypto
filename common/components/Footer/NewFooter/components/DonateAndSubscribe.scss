@@ -36,7 +36,8 @@ $input-border-radius: 3px;
 .DonationButton {
   display: flex;
   align-items: center;
-  // max-width: 100px;
+  justify-content: center;
+  min-width: 110px;
   height: 32px;
   box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5), inset 0 1px 3px 0 rgba(232, 234, 237, 0.5);
   background-color: #344b64;
@@ -50,6 +51,10 @@ $input-border-radius: 3px;
     @media (min-width: 1050px) {
       margin-bottom: 0;
     }
+  }
+  span {
+    display: flex;
+    align-items: center;
   }
   img {
     width: 20px;

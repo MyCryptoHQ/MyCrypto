@@ -12,6 +12,8 @@ export function sidebarReducer(
     case types.SidebarActions.TOGGLE:
       const { visible: previouslyVisible } = state;
       return { ...state, visible: !previouslyVisible };
+    case types.SidebarActions.OPEN:
+      return { ...state, visible: true };
     case types.SidebarActions.CLOSE:
       return { ...state, visible: false };
     default:

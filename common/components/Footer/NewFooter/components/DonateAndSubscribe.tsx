@@ -16,7 +16,9 @@ interface DonationButtonProps {
 function DonationButton({ icon, title, ...rest }: DonationButtonProps) {
   return (
     <button className="DonationButton" {...rest}>
-      <img src={icon} alt={`Icon for ${title}`} /> {title}
+      <span>
+        <img src={icon} alt={`Icon for ${title}`} /> {title}
+      </span>
     </button>
   );
 }

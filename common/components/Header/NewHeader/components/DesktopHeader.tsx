@@ -15,7 +15,7 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  toggleSidebar: sidebarActions.TToggleSidebar;
+  openSidebar: sidebarActions.TOpenSidebar;
 }
 
 type Props = StateProps & DispatchProps;
@@ -36,7 +36,7 @@ class DesktopHeader extends Component<Props> {
   };
 
   public render() {
-    const { nodeLabel, toggleSidebar } = this.props;
+    const { nodeLabel, openSidebar } = this.props;
     const { visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
     const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
@@ -70,7 +70,7 @@ class DesktopHeader extends Component<Props> {
                 <li>
                   English <i className="fa fa-caret-down" />
                 </li>
-                <li onClick={toggleSidebar}>
+                <li onClick={openSidebar}>
                   {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
                 </li>
               </ul>
@@ -156,7 +156,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapDispatchToProps = {
-  toggleSidebar: sidebarActions.toggleSidebar
+  openSidebar: sidebarActions.openSidebar
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DesktopHeader);
