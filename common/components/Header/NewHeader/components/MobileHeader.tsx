@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import classnames from 'classnames';
 
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { LINKSET } from '../constants';
+import { generateMenuIcon, generateCaretIcon } from '../helpers';
 import './MobileHeader.scss';
 
 interface StateProps {
@@ -39,11 +39,11 @@ class MobileHeader extends Component<Props> {
 
   public render() {
     const { nodeLabel, toggleSidebar } = this.props;
-    const { menuVisible } = this.state;
-    const menuIcon = classnames('fa', {
-      'fa-bars': !menuVisible,
-      'fa-close': menuVisible
-    });
+    const { menuVisible, visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
+    const menuIcon = generateMenuIcon(menuVisible);
+    const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
+    const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
+    const toolsIcon = generateCaretIcon(tools);
 
     return (
       <section className="MobileHeader">
@@ -60,24 +60,56 @@ class MobileHeader extends Component<Props> {
         {menuVisible && (
           <section className="MobileHeader-menu">
             <ul className="MobileHeader-menu-top">
-              <li>
-                Send & Receive <i className="fa fa-caret-down" />
+              <li onClick={this.toggleSendAndReceive}>
+                Send & Receive <i className={sendAndReceiveIcon} />
+                {sendAndReceive && (
+                  <ul className="MobileHeader-menu-subitems">
+                    {LINKSET.SEND_AND_RECEIVE.map(item => (
+                      <li key={item.to} onClick={this.toggleMenu}>
+                        <Link to={item.to}>{item.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
-              <li>
-                Buy & Exchange <i className="fa fa-caret-down" />
+              <li onClick={this.toggleBuyAndExchange}>
+                Buy & Exchange <i className={buyAndExchangeIcon} />
+                {buyAndExchange && (
+                  <ul className="MobileHeader-menu-subitems">
+                    {LINKSET.BUY_AND_EXCHANGE.map(item => (
+                      <li key={item.to} onClick={this.toggleMenu}>
+                        <Link to={item.to}>{item.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
-              <li>
-                Tools <i className="fa fa-caret-down" />
+              <li onClick={this.toggleTools}>
+                Tools <i className={toolsIcon} />
+                {tools && (
+                  <ul className="MobileHeader-menu-subitems">
+                    {LINKSET.TOOLS.map(item => (
+                      <li key={item.to} onClick={this.toggleMenu}>
+                        <Link to={item.to}>{item.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
-              <li>
+              <li onClick={this.toggleMenu}>
                 <i className="fa fa-plus" /> Create Wallet
               </li>
             </ul>
             <ul className="MobileHeader-menu-mid">
-              <li>
+              <li onClick={this.toggleMenu}>
                 English <i className="fa fa-caret-down" />
               </li>
-              <li onClick={toggleSidebar}>
+              <li
+                onClick={() => {
+                  toggleSidebar();
+                  this.toggleMenu();
+                }}
+              >
                 {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
               </li>
             </ul>

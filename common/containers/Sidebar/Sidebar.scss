@@ -1,6 +1,7 @@
 .Sidebar {
   position: fixed;
-  top: 0;
+  // Make room for sidebar.
+  top: 80px;
   right: 0;
   bottom: 0;
   z-index: 100;
@@ -21,6 +22,9 @@
 
   @media (min-width: 500px) {
     width: 375px;
+  }
+  @media (min-width: 1000px) {
+    top: 0;
   }
 }
 

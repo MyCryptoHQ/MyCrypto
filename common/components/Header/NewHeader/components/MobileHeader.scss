@@ -84,9 +84,17 @@ $dropdown-background-color: #0f253f;
 
       border-bottom: 1px solid #3e546d;
     }
-
     &-bottom {
       @include mobile-header-menu-segment;
+    }
+    &-subitems {
+      margin: 15px 0;
+      padding: 0;
+      text-transform: initial;
+
+      li {
+        margin-bottom: 5px !important;
+      }
     }
   }
 }

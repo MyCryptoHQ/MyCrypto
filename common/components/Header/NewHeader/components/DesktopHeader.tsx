@@ -7,6 +7,7 @@ import { configSelectors } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { LINKSET } from '../constants';
+import { generateCaretIcon } from '../helpers';
 import './DesktopHeader.scss';
 
 interface StateProps {
@@ -37,6 +38,9 @@ class DesktopHeader extends Component<Props> {
   public render() {
     const { nodeLabel, toggleSidebar } = this.props;
     const { visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
+    const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
+    const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
+    const toolsIcon = generateCaretIcon(tools);
 
     return (
       <section className="desktop-only-header">
@@ -79,7 +83,7 @@ class DesktopHeader extends Component<Props> {
                 onMouseEnter={this.toggleSendAndReceive}
                 onMouseLeave={this.toggleSendAndReceive}
               >
-                Send & Receive <i className="fa fa-caret-down" />
+                Send & Receive <i className={sendAndReceiveIcon} />
                 {sendAndReceive && (
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.SEND_AND_RECEIVE.map(item => (
@@ -95,7 +99,7 @@ class DesktopHeader extends Component<Props> {
                 onMouseEnter={this.toggleBuyAndExchange}
                 onMouseLeave={this.toggleBuyAndExchange}
               >
-                Buy & Exchange <i className="fa fa-caret-down" />
+                Buy & Exchange <i className={buyAndExchangeIcon} />
                 {buyAndExchange && (
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.BUY_AND_EXCHANGE.map(item => (
@@ -111,7 +115,7 @@ class DesktopHeader extends Component<Props> {
                 onMouseEnter={this.toggleTools}
                 onMouseLeave={this.toggleTools}
               >
-                Tools <i className="fa fa-caret-down" />
+                Tools <i className={toolsIcon} />
                 {tools && (
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.TOOLS.map(item => (
