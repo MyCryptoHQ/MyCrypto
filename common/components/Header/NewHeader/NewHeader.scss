@@ -1,4 +1,5 @@
 $header-background-color: #163150;
+$dropdown-background-color: #0f253f;
 
 .NewHeader {
   display: flex;
@@ -6,13 +7,16 @@ $header-background-color: #163150;
   background: $header-background-color;
   color: #fff;
 
-  ul,
-  li {
-    display: inline;
+  &-top-links {
     margin: 0;
     padding: 0;
-    font-weight: bold;
     list-style-type: none;
+
+    li {
+      display: inline;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
   }
   &-top {
     display: flex;
@@ -20,7 +24,6 @@ $header-background-color: #163150;
     padding: 12px 50px;
     border-bottom: 1px solid #3e546d;
     font-size: 14px;
-    letter-spacing: 1px;
     text-transform: uppercase;
 
     ul > li:first-of-type {
@@ -49,13 +52,51 @@ $header-background-color: #163150;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 0;
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1px;
 
-    ul > li {
-      padding: 0 22px;
+    &-links {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      & > li {
+        display: inline-flex;
+        height: 58px;
+        margin: 0;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+      &-item {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 22px;
+        height: 58px;
+      }
+      &-dropdown {
+        position: absolute;
+        z-index: 200;
+        top: 100%;
+        width: 200px;
+        margin: 0;
+        padding: 8px 16px;
+        background: $dropdown-background-color;
+        text-transform: initial;
+        list-style-type: none;
+
+        li {
+          font-size: 12px;
+          padding: 8px 0;
+
+          a {
+            color: #fff;
+            font-weight: normal;
+          }
+        }
+      }
     }
   }
 }
