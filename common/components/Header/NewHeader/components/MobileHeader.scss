@@ -36,9 +36,6 @@ $dropdown-background-color: #0f253f;
     &-menu-button {
       position: relative;
       font-size: 30px;
-
-      i {
-      }
     }
     &-logo {
       display: flex;
@@ -64,6 +61,7 @@ $dropdown-background-color: #0f253f;
     border-right: 1px solid #3e546d;
     background: $header-background-color;
     color: #fff;
+    overflow: auto;
 
     i {
       color: $header-icon-color;

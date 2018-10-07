@@ -104,7 +104,7 @@ class MobileHeader extends Component<Props> {
               </li>
               <li onClick={this.toggleTools}>
                 {translateRaw('NEW_HEADER_TEXT_5')}
-                <i className={toolsIcon} />
+                <i className={toolsIcon} style={{ marginLeft: '3px' }} />
                 {tools && (
                   <ul className="MobileHeader-menu-subitems">
                     {LINKSET.TOOLS.map(item => (
@@ -185,7 +185,8 @@ const mapStateToProps = (state: AppState, { networkParam }: any) => ({
   shouldSetNodeFromQS: !!(
     networkParam && configNodesStaticSelectors.isStaticNodeId(state, networkParam)
   ),
-  nodeLabel: configSelectors.getSelectedNodeLabel(state)
+  nodeLabel: configSelectors.getSelectedNodeLabel(state),
+  languageSelection: configMetaSelectors.getLanguageSelection(state)
 });
 
 const mapDispatchToProps = {
