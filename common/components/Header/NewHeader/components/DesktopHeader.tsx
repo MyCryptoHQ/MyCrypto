@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import {
   configSelectors,
+  configMetaSelectors,
   configNodesStaticSelectors,
   configNodesSelectedActions
 } from 'features/config';
@@ -22,6 +24,7 @@ interface OwnProps {
 interface StateProps {
   shouldSetNodeFromQS: boolean;
   nodeLabel: ReturnType<typeof configSelectors.getSelectedNodeLabel>;
+  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
 }
 
 interface DispatchProps {
@@ -51,7 +54,7 @@ class DesktopHeader extends Component<Props> {
   }
 
   public render() {
-    const { nodeLabel, openSidebar } = this.props;
+    const { nodeLabel, openSidebar, languageSelection } = this.props;
     const { visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
     const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
@@ -83,7 +86,7 @@ class DesktopHeader extends Component<Props> {
             <section className="DesktopHeader-top-right">
               <ul className="DesktopHeader-top-links">
                 <li>
-                  English <i className="fa fa-caret-down" />
+                  {languages[languageSelection]} <i className="fa fa-caret-down" />
                 </li>
                 <li onClick={openSidebar}>
                   {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
@@ -178,7 +181,8 @@ const mapStateToProps = (state: AppState, { networkParam }: any) => ({
   shouldSetNodeFromQS: !!(
     networkParam && configNodesStaticSelectors.isStaticNodeId(state, networkParam)
   ),
-  nodeLabel: configSelectors.getSelectedNodeLabel(state)
+  nodeLabel: configSelectors.getSelectedNodeLabel(state),
+  languageSelection: configMetaSelectors.getLanguageSelection(state)
 });
 
 const mapDispatchToProps = {

@@ -145,10 +145,11 @@ $input-border-radius: 3px;
 
       input {
         height: $input-height;
-        padding-left: $spacing-sm;
+        padding: $spacing-sm;
         background: #142c46;
         border: 1px solid #4d5f74;
         border-radius: $input-border-radius;
+        color: #fff;
       }
     }
     &-button {

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import {
   configSelectors,
+  configMetaSelectors,
   configNodesStaticSelectors,
   configNodesSelectedActions
 } from 'features/config';
@@ -22,6 +24,7 @@ interface OwnProps {
 interface StateProps {
   shouldSetNodeFromQS: boolean;
   nodeLabel: ReturnType<typeof configSelectors.getSelectedNodeLabel>;
+  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
 }
 
 interface DispatchProps {
@@ -53,7 +56,7 @@ class MobileHeader extends Component<Props> {
   }
 
   public render() {
-    const { nodeLabel, openSidebar } = this.props;
+    const { nodeLabel, openSidebar, languageSelection } = this.props;
     const { menuVisible, visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const menuIcon = generateMenuIcon(menuVisible);
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
@@ -118,7 +121,7 @@ class MobileHeader extends Component<Props> {
             </ul>
             <ul className="MobileHeader-menu-mid">
               <li onClick={this.toggleMenu}>
-                English <i className="fa fa-caret-down" />
+                {languages[languageSelection]} <i className="fa fa-caret-down" />
               </li>
               <li
                 onClick={() => {
