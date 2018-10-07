@@ -33,6 +33,8 @@ import { TransactionsState } from './transactions/types';
 import { transactionsReducer } from './transactions/reducer';
 import { WalletState } from './wallet/types';
 import { walletReducer } from './wallet/reducer';
+import { SidebarState } from './sidebar/types';
+import { sidebarReducer } from './sidebar/reducer';
 
 export interface AppState {
   // Custom reducers
@@ -52,6 +54,7 @@ export interface AppState {
   addressBook: AddressBookState;
   gas: GasState;
   schedule: ScheduleState;
+  sidebar: SidebarState;
   // Third party reducers (TODO: Fill these out)
   routing: any;
 }
@@ -73,5 +76,6 @@ export default combineReducers<AppState>({
   addressBook: addressBookReducer,
   gas: gasReducer,
   schedule: scheduleReducer,
+  sidebar: sidebarReducer,
   routing: routerReducer
 });
