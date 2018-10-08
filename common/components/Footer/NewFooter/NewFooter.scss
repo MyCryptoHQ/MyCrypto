@@ -73,6 +73,7 @@ $footer-text-color: #fff;
   align-items: center;
   justify-content: center;
   background: $footer-background;
+  border-top: 1px solid #3e546d;
 }
 
 .NewFooter {
@@ -81,7 +82,6 @@ $footer-text-color: #fff;
   min-width: 320px;
   padding: 41px 33px;
   background: $footer-background;
-  border-top: 1px solid #3e546d;
 
   &-socials-legal {
     @media (min-width: 800px) {
