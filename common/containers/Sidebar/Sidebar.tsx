@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { sidebarActions, sidebarSelectors } from 'features/sidebar';
-import backArrow from 'assets/images/back-arrow.svg';
+import closeIcon from 'assets/images/exit.svg';
 import { AddCustomNode, SelectLanguage, SelectNetworkAndNode } from './components';
 import './Sidebar.scss';
 
@@ -26,7 +26,7 @@ function Sidebar({ close, screen, style }: Props) {
     <section className="Sidebar" style={style}>
       <section className="Sidebar-controls">
         <button onClick={close}>
-          <img src={backArrow} alt="Close sidebar" />
+          <img src={closeIcon} alt="Close sidebar" />
         </button>
       </section>
       <Screen />

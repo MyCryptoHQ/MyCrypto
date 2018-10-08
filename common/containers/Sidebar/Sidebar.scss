@@ -18,8 +18,10 @@
   color: #333;
 
   &-controls {
-    padding-top: 22px;
-    padding-left: 22px;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 12px;
+    padding-right: 12px;
 
     button {
       padding: 0;

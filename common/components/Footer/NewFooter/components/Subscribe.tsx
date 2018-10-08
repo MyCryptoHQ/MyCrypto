@@ -13,21 +13,19 @@ export default class Subscribe extends Component {
       <section className="Subscribe">
         <h2>{translate('NEW_FOOTER_TEXT_3')}</h2>
         <p>{translate('NEW_FOOTER_TEXT_4')}</p>
-        <section className="Subscribe-input-wrapper">
-          <form onSubmit={this.subscribe}>
-            <section className="Subscribe-input-wrapper-input">
-              <input
-                type="email"
-                placeholder="Email address"
-                onChange={this.handleChange}
-                value={email}
-              />
-            </section>
-            <section className="Subscribe-input-wrapper-button">
-              <button type="submit">{translate('NEW_FOOTER_TEXT_5')}</button>
-            </section>
-          </form>
-        </section>
+        <form onSubmit={this.subscribe} className="Subscribe-input-wrapper">
+          <section className="Subscribe-input-wrapper-input">
+            <input
+              type="email"
+              placeholder="Email address"
+              onChange={this.handleChange}
+              value={email}
+            />
+          </section>
+          <section className="Subscribe-input-wrapper-button">
+            <button type="submit">{translate('NEW_FOOTER_TEXT_5')}</button>
+          </section>
+        </form>
       </section>
     );
   }

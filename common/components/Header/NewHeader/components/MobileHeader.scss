@@ -26,6 +26,7 @@ $dropdown-background-color: #0f253f;
   min-width: 340px;
   padding: 19px 40px;
   background: $header-background-color;
+  border-bottom: 1px solid #3e546d;
   color: #fff;
 
   &-top {
@@ -88,10 +89,11 @@ $dropdown-background-color: #0f253f;
     &-subitems {
       margin: 15px 0;
       padding: 0;
+      padding-left: 10px;
       text-transform: initial;
 
       li {
-        margin-bottom: 5px !important;
+        margin-bottom: 10px !important;
       }
     }
   }

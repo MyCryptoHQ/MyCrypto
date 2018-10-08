@@ -81,6 +81,7 @@ $footer-text-color: #fff;
   min-width: 320px;
   padding: 41px 33px;
   background: $footer-background;
+  border-top: 1px solid #3e546d;
 
   &-socials-legal {
     @media (min-width: 800px) {

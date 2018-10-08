@@ -71,7 +71,9 @@ class MobileHeader extends Component<Props> {
             <i className={menuIcon} />
           </section>
           <section className="MobileHeader-top-logo">
-            <img src={logo} alt="Our logo" />
+            <Link to="/">
+              <img src={logo} alt="Our logo" />
+            </Link>
           </section>
           {/* Dummy <div /> for flex spacing */}
           <div />
