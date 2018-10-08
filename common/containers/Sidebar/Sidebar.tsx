@@ -16,13 +16,14 @@ const screens: any = {
 interface Props {
   close: sidebarActions.TCloseSidebar;
   screen: ReturnType<typeof sidebarSelectors.getSidebarScreen>;
+  style: { [declaration: string]: string | number };
 }
 
-function Sidebar({ close, screen }: Props) {
+function Sidebar({ close, screen, style }: Props) {
   const Screen = screens[screen];
 
   return (
-    <section className="Sidebar">
+    <section className="Sidebar" style={style}>
       <section className="Sidebar-controls">
         <button onClick={close}>
           <img src={backArrow} alt="Close sidebar" />
