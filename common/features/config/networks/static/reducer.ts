@@ -31,7 +31,8 @@ import {
   AQUA_DEFAULT,
   AKA_DEFAULT,
   PIRL_DEFAULT,
-  ATH_DEFAULT
+  ATH_DEFAULT,
+  ETHO_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -587,7 +588,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#aa0087',
     blockExplorer: makeExplorer({
       name: 'Akroma Explorer',
-      origin: 'https://akroma.io/explorer'
+      origin: 'https://explorer.akroma.io'
     }),
     tokens: [],
     contracts: [],
@@ -643,6 +644,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: ATH_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: ATH_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ATH_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ETHO: {
+    id: 'ETHO',
+    name: 'Ether-1',
+    unit: 'ETHO',
+    chainId: 1313114,
+    isCustom: false,
+    color: '#7a1336',
+    blockExplorer: makeExplorer({
+      name: 'Ether-1 Explorer',
+      origin: 'https://explorer.ether1.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETHO_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETHO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETHO_DEFAULT
     },
     gasPriceSettings: {
       min: 1,
