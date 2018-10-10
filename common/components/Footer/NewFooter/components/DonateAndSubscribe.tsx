@@ -6,6 +6,7 @@ import { donationAddressMap } from 'config';
 import translate from 'translations';
 import ether from 'assets/images/ether.png';
 import bitcoin from 'assets/images/bitcoin.png';
+import Subscribe from './Subscribe';
 import './DonateAndSubscribe.scss';
 
 interface DonationButtonProps {
@@ -68,23 +69,6 @@ class Donate extends Component {
           3000
         )
     );
-}
-
-function Subscribe() {
-  return (
-    <section className="Subscribe">
-      <h2>{translate('NEW_FOOTER_TEXT_3')}</h2>
-      <p>{translate('NEW_FOOTER_TEXT_4')}</p>
-      <section className="Subscribe-input-wrapper">
-        <section className="Subscribe-input-wrapper-input">
-          <input type="email" placeholder="Email address" />
-        </section>
-        <section className="Subscribe-input-wrapper-button">
-          <button>{translate('NEW_FOOTER_TEXT_5')}</button>
-        </section>
-      </section>
-    </section>
-  );
 }
 
 export default function DonateAndSubscribe() {
