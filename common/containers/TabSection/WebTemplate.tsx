@@ -40,7 +40,11 @@ class WebTemplate extends Component<Props, {}> {
               <NewHeader networkParam={network && makeAutoNodeName(network)} />
             )}
           />
-          <Transition from={{ right: '-375px' }} enter={{ right: '0' }} leave={{ right: '-375px' }}>
+          <Transition
+            from={{ right: '-375px' }}
+            enter={{ right: '0' }}
+            leave={{ right: '-1000px' }}
+          >
             {sidebarVisible && (style => <Sidebar style={style} />)}
           </Transition>
           <div className="Tab container">

@@ -697,6 +697,7 @@
     "NEW_FOOTER_TEXT_11": "Support Us",
     "NEW_FOOTER_TEXT_12": "Other Products",
     "NEW_FOOTER_TEXT_13": "MyCrypto is an open-source, client-side tool for generating ether wallets, handling ERC-20 tokens, and interacting with the blockchain more easily. Developed by and for the community since 2015, we’re focused on building awesome products that put the power in people’s hands.",
+    "NEW_FOOTER_TEXT_14": "Your email was added to our mailing list!",
     "NEW_HEADER_TEXT_1": "Help & Support",
     "NEW_HEADER_TEXT_2": "Latest News",
     "NEW_HEADER_TEXT_3": "Send & Receive",
@@ -722,5 +723,6 @@
     "NEW_SIDEBAR_TEXT_6": "Add custom node",
     "NEW_SIDEBAR_TEXT_7": "Hide Other Networks",
     "NEW_SIDEBAR_TEXT_8": "Show Other Networks"
+    
   }
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Transition } from 'react-spring';
 
 import { languages } from 'config';
 import { translateRaw } from 'translations';
@@ -103,18 +102,15 @@ class DesktopHeader extends Component<Props> {
                 onMouseLeave={this.toggleSendAndReceive}
               >
                 {translateRaw('NEW_HEADER_TEXT_3')} <i className={sendAndReceiveIcon} />
-                <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
-                  {sendAndReceive &&
-                    (props => (
-                      <ul className="DesktopHeader-bottom-links-dropdown" style={props}>
-                        {LINKSET.SEND_AND_RECEIVE.map(item => (
-                          <li key={item.to} onClick={this.toggleSendAndReceive}>
-                            <Link to={item.to}>{item.title}</Link>
-                          </li>
-                        ))}
-                      </ul>
+                {sendAndReceive && (
+                  <ul className="DesktopHeader-bottom-links-dropdown">
+                    {LINKSET.SEND_AND_RECEIVE.map(item => (
+                      <li key={item.to} onClick={this.toggleSendAndReceive}>
+                        <Link to={item.to}>{item.title}</Link>
+                      </li>
                     ))}
-                </Transition>
+                  </ul>
+                )}
               </li>
               <li
                 className="DesktopHeader-bottom-links-item"
@@ -122,18 +118,15 @@ class DesktopHeader extends Component<Props> {
                 onMouseLeave={this.toggleBuyAndExchange}
               >
                 {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
-                <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
-                  {buyAndExchange &&
-                    (props => (
-                      <ul className="DesktopHeader-bottom-links-dropdown" style={props}>
-                        {LINKSET.BUY_AND_EXCHANGE.map(item => (
-                          <li key={item.to}>
-                            <Link to={item.to}>{item.title}</Link>
-                          </li>
-                        ))}
-                      </ul>
+                {buyAndExchange && (
+                  <ul className="DesktopHeader-bottom-links-dropdown">
+                    {LINKSET.BUY_AND_EXCHANGE.map(item => (
+                      <li key={item.to}>
+                        <Link to={item.to}>{item.title}</Link>
+                      </li>
                     ))}
-                </Transition>
+                  </ul>
+                )}
               </li>
               <li
                 className="DesktopHeader-bottom-links-item"
@@ -141,18 +134,15 @@ class DesktopHeader extends Component<Props> {
                 onMouseLeave={this.toggleTools}
               >
                 {translateRaw('NEW_HEADER_TEXT_5')} <i className={toolsIcon} />
-                <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
-                  {tools &&
-                    (props => (
-                      <ul className="DesktopHeader-bottom-links-dropdown" style={props}>
-                        {LINKSET.TOOLS.map(item => (
-                          <li key={item.to} onClick={this.toggleTools}>
-                            <Link to={item.to}>{item.title}</Link>
-                          </li>
-                        ))}
-                      </ul>
+                {tools && (
+                  <ul className="DesktopHeader-bottom-links-dropdown">
+                    {LINKSET.TOOLS.map(item => (
+                      <li key={item.to} onClick={this.toggleTools}>
+                        <Link to={item.to}>{item.title}</Link>
+                      </li>
                     ))}
-                </Transition>
+                  </ul>
+                )}
               </li>
               <li className="DesktopHeader-bottom-links-item">
                 <Link to="/generate">

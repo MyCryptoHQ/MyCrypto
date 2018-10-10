@@ -4,10 +4,10 @@ import translate from 'translations';
 import subscribeToMailingList from 'api/emails';
 
 export default class Subscribe extends Component {
-  public state = { email: '' };
+  public state = { email: '', submitted: false };
 
   public render() {
-    const { email } = this.state;
+    const { email, submitted } = this.state;
 
     return (
       <section className="Subscribe">
@@ -19,13 +19,17 @@ export default class Subscribe extends Component {
               type="email"
               placeholder="Email address"
               onChange={this.handleChange}
-              value={email}
+              disabled={submitted}
+              value={submitted ? '' : email}
             />
           </section>
           <section className="Subscribe-input-wrapper-button">
-            <button type="submit">{translate('NEW_FOOTER_TEXT_5')}</button>
+            <button disabled={submitted} type="submit">
+              {translate('NEW_FOOTER_TEXT_5')}
+            </button>
           </section>
         </form>
+        {submitted && <p style={{ marginTop: '6px' }}>{translate('NEW_FOOTER_TEXT_14')}</p>}
       </section>
     );
   }
@@ -38,8 +42,6 @@ export default class Subscribe extends Component {
 
     e.preventDefault();
 
-    subscribeToMailingList(email)
-      .then(() => console.info('Yay'))
-      .catch(() => console.error('Aw...'));
+    subscribeToMailingList(email).catch(() => this.setState({ submitted: true }));
   };
 }

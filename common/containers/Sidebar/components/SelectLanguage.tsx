@@ -25,7 +25,9 @@ class LanguageSelect extends Component<Props> {
 
     return (
       <section className="SidebarScreen">
-        <h1 className="SidebarScreen-heading">{translateRaw('NEW_SIDEBAR_TEXT_1')}</h1>
+        <h1 className="SidebarScreen-heading" style={{ marginBottom: '30px' }}>
+          {translateRaw('NEW_SIDEBAR_TEXT_1')}
+        </h1>
         <ul className="SidebarScreen-list-full">
           {Object.entries(languages).map(([code, language]) => (
             <li

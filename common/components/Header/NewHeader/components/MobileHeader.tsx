@@ -78,7 +78,7 @@ class MobileHeader extends Component<Props> {
           {/* Dummy <div /> for flex spacing */}
           <div />
         </section>
-        <Transition from={{ left: '-280px' }} enter={{ left: '0' }} leave={{ left: '-280px' }}>
+        <Transition from={{ left: '-320px' }} enter={{ left: '0' }} leave={{ left: '-500px' }}>
           {menuVisible &&
             (props => (
               <section className="MobileHeader-menu" style={props}>
