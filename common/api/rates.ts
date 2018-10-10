@@ -21,7 +21,6 @@ interface ISymbol {
   CHF: number;
   BTC: number;
   ETH: number;
-  REP: number;
 }
 interface IFiatSymbols {
   USD: number;
@@ -32,11 +31,10 @@ interface IFiatSymbols {
 interface ICoinAndTokenSymbols {
   BTC: number;
   ETH: number;
-  REP: number;
 }
 
 const fiat: TFiatSymbols = ['USD', 'EUR', 'GBP', 'CHF'];
-const coinAndToken: TCoinAndTokenSymbols = ['BTC', 'ETH', 'REP'];
+const coinAndToken: TCoinAndTokenSymbols = ['BTC', 'ETH'];
 export const rateSymbols: IRateSymbols = {
   symbols: {
     all: [...fiat, ...coinAndToken],
@@ -110,8 +108,7 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
             GBP: rates.GBP,
             CHF: rates.CHF,
             BTC: rates.BTC,
-            ETH: 1,
-            REP: rates.REP
+            ETH: 1
           }
         } as CCResponse
       );
