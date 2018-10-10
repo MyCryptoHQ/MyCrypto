@@ -5,7 +5,7 @@ import ethUtil from 'ethereumjs-util';
 import networkConfigs from 'libs/ens/networkConfigs';
 import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';
-import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
+import { IDomainData, NameState, getNameHash, IBaseDomainRequest, extractDomain } from 'libs/ens';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 
 //#region Make & Decode
@@ -89,9 +89,10 @@ const modeMap: IModeMap = {
   [NameState.NotYetAvailable]: (_: IDomainData<NameState.NotYetAvailable>) => ({})
 };
 
-export function* resolveDomainRequest(name: string): SagaIterator {
-  const hash = ethUtil.sha3(name);
-  const nameHash = getNameHash(`${name}.eth`);
+export function* resolveDomainRequest(fullDomain: string): SagaIterator {
+  const domain = extractDomain(fullDomain);
+  const hash = ethUtil.sha3(domain);
+  const nameHash = getNameHash(fullDomain);
 
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {
     to: main.public.ethAuction,
@@ -102,7 +103,7 @@ export function* resolveDomainRequest(name: string): SagaIterator {
   const result = yield call(nameStateHandler, domainData, nameHash);
 
   const returnValue: IBaseDomainRequest = {
-    name,
+    domain,
     ...domainData,
     ...result,
     labelHash: ethUtil.addHexPrefix(hash.toString('hex')),
