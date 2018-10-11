@@ -15,10 +15,12 @@ interface State {
   signature: string;
   verifiedAddress?: string;
   verifiedMessage?: string;
+  isButtonDisabled: boolean;
 }
 
 const initialState: State = {
-  signature: ''
+  signature: '',
+  isButtonDisabled: true
 };
 
 const signatureExample: ISignedMessage = {
@@ -33,7 +35,7 @@ export class VerifyMessage extends Component<Props, State> {
   public state: State = initialState;
 
   public render() {
-    const { verifiedAddress, verifiedMessage, signature } = this.state;
+    const { verifiedAddress, verifiedMessage, signature, isButtonDisabled } = this.state;
 
     return (
       <div>
@@ -55,7 +57,7 @@ export class VerifyMessage extends Component<Props, State> {
           <button
             className="VerifyMessage-sign btn btn-primary btn-lg"
             onClick={this.handleVerifySignedMessage}
-            disabled={false}
+            disabled={isButtonDisabled}
           >
             {translate('MSG_VERIFY')}
           </button>
@@ -98,8 +100,19 @@ export class VerifyMessage extends Component<Props, State> {
     }
   };
 
+  private checkIfSignatureIsValid = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    console.log(e);
+    try {
+      JSON.parse(e.currentTarget.value);
+    } catch (error) {
+      console.log(error);
+      this.props.showNotification('danger', translateRaw('ERROR_38'));
+    }
+  };
+
   private handleSignatureChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const signature = e.currentTarget.value;
+    this.checkIfSignatureIsValid(e);
     this.setState({ signature });
   };
 
