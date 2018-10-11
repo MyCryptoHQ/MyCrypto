@@ -100,20 +100,16 @@ export class VerifyMessage extends Component<Props, State> {
     }
   };
 
-  private checkIfSignatureIsValid = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    console.log(e);
-    try {
-      JSON.parse(e.currentTarget.value);
-    } catch (error) {
-      console.log(error);
-      this.props.showNotification('danger', translateRaw('ERROR_38'));
-    }
+  private checkIfSignatureIsValid = (signature: string, didUserSubmit = false) => {
+    const parsedSignature: ISignedMessage = JSON.parse(signature);
+
+    return !verifySignedMessage(parsedSignature);
   };
 
   private handleSignatureChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const signature = e.currentTarget.value;
-    this.checkIfSignatureIsValid(e);
     this.setState({ signature });
+    // this.checkIfSignatureIsValid(signature);
   };
 
   private handleSignaturePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
@@ -122,6 +118,9 @@ export class VerifyMessage extends Component<Props, State> {
       try {
         const signature = JSON.stringify(JSON.parse(text), null, 2);
         this.setState({ signature });
+        this.setState({
+          isButtonDisabled: this.checkIfSignatureIsValid(signature, false)
+        });
         e.preventDefault();
       } catch (err) {
         // Do nothing, it wasn't json they pasted
