@@ -74,7 +74,6 @@ interface State {
   selectedWalletKey: WalletName | null;
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
-  walletTimeoutID: number | undefined;
 }
 
 interface BaseWalletInfo {
@@ -214,9 +213,10 @@ const WalletDecrypt = withRouter<Props>(
     public state: State = {
       selectedWalletKey: null,
       isInsecureOverridden: false,
-      value: null,
-      walletTimeoutID: undefined
+      value: null
     };
+
+    private walletTimeoutID: number | null = null;
 
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
       // Reset state when unlock is hidden / revealed
@@ -229,7 +229,7 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public componentWillUnmount() {
-      window.clearTimeout(this.state.walletTimeoutID);
+      window.clearTimeout(this.walletTimeoutID);
     }
 
     public getSelectedWallet() {
@@ -425,10 +425,10 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       const walletTimeout = window.setTimeout(() => {
+        this.walletTimeoutID = walletTimeout;
         this.setState({
           selectedWalletKey: walletType,
-          value: wallet.initialParams,
-          walletTimeoutID: walletTimeout
+          value: wallet.initialParams
         });
       }, timeout);
     };
