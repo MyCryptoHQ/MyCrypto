@@ -32,7 +32,8 @@ import {
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
-  ETHO_DEFAULT
+  ETHO_DEFAULT,
+  ILT_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -668,6 +669,34 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: ETHO_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: ETHO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETHO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+
+  ILT: {
+    id: 'ILT',
+    name: 'iOlite',
+    unit: 'ILT',
+    chainId: 18289463,
+    isCustom: false,
+    color: '#33c4ff',
+    blockExplorer: makeExplorer({
+      name: 'iOlite Explorer',
+      origin: 'https://scan.iolite.io',
+      txPath: 'txs',
+      addressPath: 'addrs',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ILT_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ILT_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ILT_DEFAULT
     },
     gasPriceSettings: {
       min: 1,

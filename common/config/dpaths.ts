@@ -138,6 +138,11 @@ export const ETHO_DEFAULT: DPath = {
   value: "m/44'/1313114'/0'/0"
 };
 
+export const ILT_DEFAULT: DPath = {
+  label: 'Default (ILT)',
+  value: "m/44'/1171337'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -165,7 +170,8 @@ export const DPaths: DPath[] = [
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
-  ETHO_DEFAULT
+  ETHO_DEFAULT,
+  ILT_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

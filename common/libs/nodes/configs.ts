@@ -283,6 +283,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'ether1.org',
       url: 'https://rpc.ether1.org'
     }
+  ],
+
+  ILT: [
+    {
+      name: makeNodeName('ILT', 'iolite.io'),
+      type: 'rpc',
+      service: 'iolite.io',
+      url: 'https://net.iolite.io'
+    }
   ]
 };
 

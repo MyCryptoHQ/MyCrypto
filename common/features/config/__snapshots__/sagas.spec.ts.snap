@@ -5,7 +5,7 @@ Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {
     "args": Array [
-      "ETHO",
+      "ILT",
     ],
     "selector": [Function],
   },
