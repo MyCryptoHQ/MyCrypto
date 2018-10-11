@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Transition } from 'react-spring';
 
 import { languages } from 'config';
 import { translateRaw } from 'translations';
@@ -70,87 +71,92 @@ class MobileHeader extends Component<Props> {
             <i className={menuIcon} />
           </section>
           <section className="MobileHeader-top-logo">
-            <img src={logo} alt="Our logo" />
+            <Link to="/">
+              <img src={logo} alt="Our logo" />
+            </Link>
           </section>
           {/* Dummy <div /> for flex spacing */}
           <div />
         </section>
-        {menuVisible && (
-          <section className="MobileHeader-menu">
-            <ul className="MobileHeader-menu-top">
-              <li onClick={this.toggleSendAndReceive}>
-                {translateRaw('NEW_HEADER_TEXT_3')} <i className={sendAndReceiveIcon} />
-                {sendAndReceive && (
-                  <ul className="MobileHeader-menu-subitems">
-                    {LINKSET.SEND_AND_RECEIVE.map(item => (
-                      <li key={item.to} onClick={this.toggleMenu}>
-                        <Link to={item.to}>{item.title}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-              <li onClick={this.toggleBuyAndExchange}>
-                {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
-                {buyAndExchange && (
-                  <ul className="MobileHeader-menu-subitems">
-                    {LINKSET.BUY_AND_EXCHANGE.map(item => (
-                      <li key={item.to} onClick={this.toggleMenu}>
-                        <Link to={item.to}>{item.title}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-              <li onClick={this.toggleTools}>
-                {translateRaw('NEW_HEADER_TEXT_5')}
-                <i className={toolsIcon} style={{ marginLeft: '3px' }} />
-                {tools && (
-                  <ul className="MobileHeader-menu-subitems">
-                    {LINKSET.TOOLS.map(item => (
-                      <li key={item.to} onClick={this.toggleMenu}>
-                        <Link to={item.to}>{item.title}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-              <li onClick={this.toggleMenu}>
-                <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
-              </li>
-            </ul>
-            <ul className="MobileHeader-menu-mid">
-              <li
-                onClick={() => {
-                  openSidebar('selectLanguage');
-                  this.toggleMenu();
-                }}
-              >
-                {languages[languageSelection]} <i className="fa fa-caret-down" />
-              </li>
-              <li
-                onClick={() => {
-                  openSidebar('selectNetworkAndNode');
-                  this.toggleMenu();
-                }}
-              >
-                {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
-              </li>
-            </ul>
-            <ul className="MobileHeader-menu-bottom">
-              <li>
-                <a href="https://support.mycrypto.com/">
-                  {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
-                </a>
-              </li>
-              <li>
-                <a href="https://medium.com/@mycrypto">
-                  {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
-                </a>
-              </li>
-            </ul>
-          </section>
-        )}
+        <Transition from={{ left: '-320px' }} enter={{ left: '0' }} leave={{ left: '-500px' }}>
+          {menuVisible &&
+            (props => (
+              <section className="MobileHeader-menu" style={props}>
+                <ul className="MobileHeader-menu-top">
+                  <li onClick={this.toggleSendAndReceive}>
+                    {translateRaw('NEW_HEADER_TEXT_3')} <i className={sendAndReceiveIcon} />
+                    {sendAndReceive && (
+                      <ul className="MobileHeader-menu-subitems">
+                        {LINKSET.SEND_AND_RECEIVE.map(item => (
+                          <li key={item.to} onClick={this.toggleMenu}>
+                            <Link to={item.to}>{item.title}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                  <li onClick={this.toggleBuyAndExchange}>
+                    {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
+                    {buyAndExchange && (
+                      <ul className="MobileHeader-menu-subitems">
+                        {LINKSET.BUY_AND_EXCHANGE.map(item => (
+                          <li key={item.to} onClick={this.toggleMenu}>
+                            <Link to={item.to}>{item.title}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                  <li onClick={this.toggleTools}>
+                    {translateRaw('NEW_HEADER_TEXT_5')}
+                    <i className={toolsIcon} style={{ marginLeft: '3px' }} />
+                    {tools && (
+                      <ul className="MobileHeader-menu-subitems">
+                        {LINKSET.TOOLS.map(item => (
+                          <li key={item.to} onClick={this.toggleMenu}>
+                            <Link to={item.to}>{item.title}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                  <li onClick={this.toggleMenu}>
+                    <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
+                  </li>
+                </ul>
+                <ul className="MobileHeader-menu-mid">
+                  <li
+                    onClick={() => {
+                      openSidebar('selectLanguage');
+                      this.toggleMenu();
+                    }}
+                  >
+                    {languages[languageSelection]} <i className="fa fa-caret-down" />
+                  </li>
+                  <li
+                    onClick={() => {
+                      openSidebar('selectNetworkAndNode');
+                      this.toggleMenu();
+                    }}
+                  >
+                    {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
+                  </li>
+                </ul>
+                <ul className="MobileHeader-menu-bottom">
+                  <li>
+                    <a href="https://support.mycrypto.com/">
+                      {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://medium.com/@mycrypto">
+                      {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
+                    </a>
+                  </li>
+                </ul>
+              </section>
+            ))}
+        </Transition>
       </section>
     );
   }
