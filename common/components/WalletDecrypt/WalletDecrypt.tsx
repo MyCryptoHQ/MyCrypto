@@ -424,7 +424,7 @@ const WalletDecrypt = withRouter<Props>(
         }
       }
 
-      let walletTimeout = window.setTimeout(() => {
+      const walletTimeout = window.setTimeout(() => {
         this.setState({
           selectedWalletKey: walletType,
           value: wallet.initialParams,
