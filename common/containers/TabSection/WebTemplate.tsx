@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Transition } from 'react-spring';
 
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
-import { Footer, Header } from 'components';
+import { sidebarSelectors } from 'features/sidebar';
+import Sidebar from 'containers/Sidebar';
+import NewHeader from 'components/Header/NewHeader/NewHeader';
+import NewFooter from 'components/Footer/NewFooter/NewFooter';
 import { Query } from 'components/renderCbs';
 import Notifications from './Notifications';
 import OfflineTab from './OfflineTab';
@@ -13,6 +17,7 @@ import './WebTemplate.scss';
 interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
   latestBlock: AppState['config']['meta']['latestBlock'];
+  sidebarVisible: ReturnType<typeof sidebarSelectors.getSidebarVisible>;
 }
 
 interface OwnProps {
@@ -24,23 +29,32 @@ type Props = OwnProps & StateProps;
 
 class WebTemplate extends Component<Props, {}> {
   public render() {
-    const { isUnavailableOffline, children, isOffline, latestBlock } = this.props;
+    const { isUnavailableOffline, children, isOffline, sidebarVisible } = this.props;
 
     return (
-      <div className="WebTemplate">
-        <Query
-          params={['network']}
-          withQuery={({ network }) => (
-            <Header networkParam={network && makeAutoNodeName(network)} />
-          )}
-        />
-        <div className="Tab container">
-          {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+      <React.Fragment>
+        <div className="WebTemplate">
+          <Query
+            params={['network']}
+            withQuery={({ network }) => (
+              <NewHeader networkParam={network && makeAutoNodeName(network)} />
+            )}
+          />
+          <Transition
+            from={{ right: '-375px' }}
+            enter={{ right: '0' }}
+            leave={{ right: '-1000px' }}
+          >
+            {sidebarVisible && (style => <Sidebar style={style} />)}
+          </Transition>
+          <div className="Tab container">
+            {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
+          </div>
+          <div className="WebTemplate-spacer" />
+          <NewFooter />
+          <Notifications />
         </div>
-        <div className="WebTemplate-spacer" />
-        <Footer latestBlock={latestBlock} />
-        <Notifications />
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -48,8 +62,9 @@ class WebTemplate extends Component<Props, {}> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     isOffline: configMetaSelectors.getOffline(state),
-    latestBlock: configMetaSelectors.getLatestBlock(state)
+    latestBlock: configMetaSelectors.getLatestBlock(state),
+    sidebarVisible: sidebarSelectors.getSidebarVisible(state)
   };
 }
 
-export default connect(mapStateToProps, {})(WebTemplate);
+export default connect(mapStateToProps)(WebTemplate);

@@ -54,8 +54,7 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
   } else if (validEns) {
     yield call(setField, { value, raw });
 
-    const [domain] = raw.split('.');
-    yield put(ensActions.resolveDomainRequested(domain));
+    yield put(ensActions.resolveDomainRequested(raw));
     yield take([
       ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
       ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
