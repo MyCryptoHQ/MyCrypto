@@ -121,7 +121,7 @@ $m-anim-speed: 400ms;
 
   // Mobile styles
   @media (max-width: $screen-sm) {
-    top: $m-window-padding-h-mobile;
+    top: 100px;
     width: calc(100% - #{$m-window-padding-w-mobile}) !important;
     max-width: calc(100% - #{$m-window-padding-w-mobile * 2});
     max-height: calc(100% - #{$m-window-padding-h-mobile * 2});

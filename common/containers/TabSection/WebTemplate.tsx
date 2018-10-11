@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Transition } from 'react-spring';
 
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';
@@ -39,7 +40,13 @@ class WebTemplate extends Component<Props, {}> {
               <NewHeader networkParam={network && makeAutoNodeName(network)} />
             )}
           />
-          {sidebarVisible && <Sidebar />}
+          <Transition
+            from={{ right: '-375px' }}
+            enter={{ right: '0' }}
+            leave={{ right: '-1000px' }}
+          >
+            {sidebarVisible && (style => <Sidebar style={style} />)}
+          </Transition>
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}
           </div>
