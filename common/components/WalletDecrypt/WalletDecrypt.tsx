@@ -229,7 +229,7 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public componentWillUnmount() {
-      window.clearTimeout(this.walletTimeoutID);
+      window.clearTimeout(this.walletTimeoutID as number);
     }
 
     public getSelectedWallet() {
