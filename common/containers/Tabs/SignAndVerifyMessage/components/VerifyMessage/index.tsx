@@ -100,7 +100,7 @@ export class VerifyMessage extends Component<Props, State> {
     }
   };
 
-  private checkIfSignatureIsValid = (signature: string, didUserSubmit = false) => {
+  private checkIfSignatureIsValid = (signature: string) => {
     const parsedSignature: ISignedMessage = JSON.parse(signature);
 
     return !verifySignedMessage(parsedSignature);
@@ -119,7 +119,7 @@ export class VerifyMessage extends Component<Props, State> {
         const signature = JSON.stringify(JSON.parse(text), null, 2);
         this.setState({ signature });
         this.setState({
-          isButtonDisabled: this.checkIfSignatureIsValid(signature, false)
+          isButtonDisabled: this.checkIfSignatureIsValid(signature)
         });
         e.preventDefault();
       } catch (err) {
