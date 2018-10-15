@@ -144,12 +144,20 @@ class MobileHeader extends Component<Props> {
                 </ul>
                 <ul className="MobileHeader-menu-bottom">
                   <li>
-                    <a href="https://support.mycrypto.com/">
+                    <a
+                      href="https://support.mycrypto.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
                     </a>
                   </li>
                   <li>
-                    <a href="https://medium.com/@mycrypto">
+                    <a
+                      href="https://medium.com/@mycrypto"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
                     </a>
                   </li>
