@@ -29,6 +29,8 @@ class Donate extends Component {
     displayingMessage: false
   };
 
+  private timeout: NodeJS.Timer | null = null;
+
   public render() {
     const { displayingMessage } = this.state;
     const messageClassName = classnames({
@@ -55,20 +57,23 @@ class Donate extends Component {
     );
   }
 
-  private displayMessage = () =>
+  private displayMessage = () => {
+    clearTimeout(this.timeout as NodeJS.Timer);
+
     this.setState(
       {
         displayingMessage: true
       },
       () =>
-        setTimeout(
+        (this.timeout = setTimeout(
           () =>
             this.setState({
               displayingMessage: false
             }),
           3000
-        )
+        ))
     );
+  };
 }
 
 export default function DonateAndSubscribe() {
