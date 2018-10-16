@@ -1,8 +1,16 @@
 import * as types from './types';
 
 export const INITIAL_STATE: types.MessageState = {
-  signed: null
+  signed: null,
+  signing: false
 };
+
+function signMessageRequested(state: types.MessageState): types.MessageState {
+  return {
+    ...state,
+    signing: true
+  };
+}
 
 function signLocalMessageSucceeded(
   state: types.MessageState,
@@ -10,14 +18,16 @@ function signLocalMessageSucceeded(
 ): types.MessageState {
   return {
     ...state,
-    signed: action.payload
+    signed: action.payload,
+    signing: false
   };
 }
 
 function signMessageFailed(state: types.MessageState): types.MessageState {
   return {
     ...state,
-    signed: null
+    signed: null,
+    signing: false
   };
 }
 
@@ -32,6 +42,8 @@ export function messageReducer(
   action: types.MessageAction
 ): types.MessageState {
   switch (action.type) {
+    case types.MessageActions.SIGN_REQUESTED:
+      return signMessageRequested(state);
     case types.MessageActions.SIGN_LOCAL_SUCCEEDED:
       return signLocalMessageSucceeded(state, action);
     case types.MessageActions.SIGN_FAILED:

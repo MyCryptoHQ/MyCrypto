@@ -9,6 +9,7 @@ export enum MessageActions {
 
 export interface MessageState {
   signed?: ISignedMessage | null;
+  signing: boolean;
 }
 
 export interface SignMessageRequestedAction {

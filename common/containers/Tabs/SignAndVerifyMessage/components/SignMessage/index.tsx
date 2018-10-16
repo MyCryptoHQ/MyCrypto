@@ -17,6 +17,7 @@ interface Props {
   unlocked: boolean;
   signMessageRequested: messageActions.TSignMessageRequested;
   signedMessage: ISignedMessage | null;
+  signing: boolean;
   resetWallet: walletActions.TResetWallet;
   resetMessage: messageActions.TResetMessage;
 }
@@ -72,6 +73,7 @@ export class SignMessage extends Component<Props, State> {
             <SignButton
               message={this.state.message}
               signMessageRequested={this.props.signMessageRequested}
+              signing={this.props.signing}
             />
 
             {signedMessage && (
@@ -106,6 +108,7 @@ export class SignMessage extends Component<Props, State> {
 
 const mapStateToProps = (state: AppState) => ({
   signedMessage: state.message.signed,
+  signing: state.message.signing,
   unlocked: walletSelectors.isWalletFullyUnlocked(state)
 });
 
