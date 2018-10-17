@@ -508,7 +508,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     id: 'EOSC',
     name: 'EOS Classic',
     unit: 'EOSC',
-    chainId: 20,
+    chainId: 2018,
     isCustom: false,
     color: '#926565',
     blockExplorer: makeExplorer({
