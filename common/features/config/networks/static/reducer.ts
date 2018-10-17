@@ -32,7 +32,8 @@ import {
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
-  ETHO_DEFAULT
+  ETHO_DEFAULT,
+  WEB_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -673,6 +674,31 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 1,
       max: 60,
       initial: 20
+    }
+  },
+  WEB: {
+    id: 'WEB',
+    name: 'Webchain',
+    unit: 'WEB',
+    chainId: 101,
+    isCustom: false,
+    color: '#0092ee',
+    blockExplorer: makeExplorer({
+      name: 'Webchain Explorer',
+      origin: 'https://explorer.webchain.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: WEB_DEFAULT,
+      [SecureWalletName.SAFE_T]: WEB_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: WEB_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: WEB_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 100,
+      max: 400,
+      initial: 200
     }
   }
 };
