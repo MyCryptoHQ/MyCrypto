@@ -67,6 +67,7 @@ describe('transaction: Sagas', () => {
       describe('with invalid Ethereum address, valid ENS address', () => {
         const raw = 'testing.eth';
         const resolvedAddress = '0xa';
+        const [domain] = raw.split('.');
         const ensAddrPayload = {
           raw,
           value: null
@@ -96,7 +97,7 @@ describe('transaction: Sagas', () => {
 
         it('should put resolveDomainRequested', () => {
           expect(data.validEnsGen.next().value).toEqual(
-            put(ensActions.resolveDomainRequested(raw))
+            put(ensActions.resolveDomainRequested(domain))
           );
         });
 
