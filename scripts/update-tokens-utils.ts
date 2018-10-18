@@ -119,7 +119,7 @@ function renameSymbolCollisions(tokens: NormalizedTokenJSON[], duplicatedNames: 
   }
 
   return tokens.reduce((prev, curr, idx) => {
-    var newName;
+    let newName;
     if (idx) {
       newName = `${curr.symbol}`;
     } else {
