@@ -3,11 +3,15 @@ import { Token } from '../shared/types/network';
 interface StrIdx<T> {
   [key: string]: T;
 }
+const excludedTokens: string[] = ['0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2'];
 
 function processTokenJson(tokensJson: RawTokenJSON[]): Token[] {
   const normalizedTokens = tokensJson.map(validateTokenJSON).map(normalizeTokenJSON);
   checkForDuplicateAddresses(normalizedTokens);
-  return handleDuplicateSymbols(normalizedTokens).map(({ name: _, ...rest }) => rest);
+  return handleDuplicateSymbols(normalizedTokens)
+    .map(({ name: _, ...rest }) => rest)
+    .filter(filterExcludedTokens)
+    .sort((a, b) => a.symbol.localeCompare(b.symbol));
 }
 
 function validateTokenJSON(token: RawTokenJSON): ValidatedTokenJSON {
@@ -115,7 +119,12 @@ function renameSymbolCollisions(tokens: NormalizedTokenJSON[], duplicatedNames: 
   }
 
   return tokens.reduce((prev, curr, idx) => {
-    const newName = `${curr.symbol} (${duplicatedNames[curr.name] ? idx + 1 : curr.name})`;
+    let newName;
+    if (idx === 0) {
+      newName = `${curr.symbol}`;
+    } else {
+      newName = `${curr.symbol} (${duplicatedNames[curr.name] ? idx : curr.name})`;
+    }
     const tokenToInsert: NormalizedTokenJSON = {
       ...curr,
       symbol: newName
@@ -123,6 +132,24 @@ function renameSymbolCollisions(tokens: NormalizedTokenJSON[], duplicatedNames: 
     console.warn(`WARN: "${curr.symbol}" has a duplicate symbol, renaming to "${newName}"`);
     return [...prev, tokenToInsert];
   }, renamedTokens);
+}
+
+/**
+ *
+ * @description Finds any of the excludedTokens in the fetched token json
+ * @param {NormalizedTokenJSON} tokens
+ * @returns {boolean}
+ */
+function filterExcludedTokens(token: NormalizedTokenJSON) {
+  for (const excludedToken of excludedTokens) {
+    if (excludedToken === token.address) {
+      console.warn(
+        `WARN: "${token.symbol}" was found on the exclude list. Removing it from the input now.`
+      );
+      return false;
+    }
+  }
+  return true;
 }
 
 module.exports = { processTokenJson };
