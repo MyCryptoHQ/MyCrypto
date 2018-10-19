@@ -81,7 +81,7 @@
     "X_KEEPKEY": "KeepKey",
     "UNLOCK_WALLET": "Unlock your $wallet",
     "SIGNER_SELECT_WALLET": "Select an account from your Parity Signer",
-    "SIGNER_SELECT_WALLET_QR": "or scan a QR with address to add a new one",
+    "SIGNER_SELECT_WALLET_QR": "or scan a QR code with an address to use a new account",
     "SIGNER_SELECT_WALLET_LIST": "Use a recent account",
     "X_SAFE_T": "Safe-T mini ",
     "ADD_SAFE_T_SCAN": "Connect to Safe-T mini ",
