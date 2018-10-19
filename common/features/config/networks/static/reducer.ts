@@ -221,10 +221,10 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'POA Explorer',
-      origin: 'https://poaexplorer.com',
-      addressPath: 'address/search',
-      blockPath: 'blocks/block'
+      name: 'BlockScout',
+      origin: 'https://blockscout.com/poa/core',
+      addressPath: 'address',
+      blockPath: 'blocks'
     }),
     tokens: [],
     contracts: [],
