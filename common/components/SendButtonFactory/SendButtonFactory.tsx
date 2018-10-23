@@ -58,7 +58,8 @@ export class SendButtonFactoryClass extends Component<Props> {
       currentTransaction
     } = this.props;
 
-    let broadcasted: boolean, broadcasting: boolean;
+    let broadcasted: boolean;
+    let broadcasting: boolean;
     if (currentTransaction) {
       broadcasted = currentTransaction.broadcastSuccessful;
       broadcasting = currentTransaction.isBroadcasting;
