@@ -7,6 +7,7 @@ import * as derivedSelectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
 import { Balance } from 'libs/wallet';
 import {
+  transactionBroadcastTypes,
   transactionNetworkSelectors,
   transactionSignSelectors,
   transactionSelectors
@@ -29,6 +30,7 @@ interface StateProps {
   validGasPrice: boolean;
   validGasLimit: boolean;
   signedTx: boolean;
+  currentTransaction: false | transactionBroadcastTypes.ITransactionStatus | null;
 }
 
 interface OwnProps {
@@ -52,8 +54,15 @@ export class SendButtonFactoryClass extends Component<Props> {
       networkRequestPending,
       validGasPrice,
       validGasLimit,
-      balance
+      balance,
+      currentTransaction
     } = this.props;
+
+    let broadcasted: boolean, broadcasting: boolean;
+    if (currentTransaction) {
+      broadcasted = currentTransaction.broadcastSuccessful;
+      broadcasting = currentTransaction.isBroadcasting;
+    }
 
     // return signing ? true : signedTx ? true : false
     return (
@@ -66,7 +75,9 @@ export class SendButtonFactoryClass extends Component<Props> {
                   networkRequestPending ||
                   !validGasPrice ||
                   !validGasLimit ||
-                  balance.isPending
+                  balance.isPending ||
+                  broadcasting ||
+                  broadcasted
                 : !!(signing && !serializedTransaction),
               signTx: () => signer(transaction),
               openModal
@@ -89,7 +100,8 @@ const mapStateToProps = (state: AppState) => {
     validGasPrice: transactionSelectors.isValidGasPrice(state),
     validGasLimit: transactionSelectors.isValidGasLimit(state),
     signedTx:
-      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state)
+      !!transactionSignSelectors.getSignedTx(state) || !!transactionSignSelectors.getWeb3Tx(state),
+    currentTransaction: transactionSelectors.getCurrentTransactionStatus(state)
   };
 };
 
