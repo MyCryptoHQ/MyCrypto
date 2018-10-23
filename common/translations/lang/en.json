@@ -153,6 +153,12 @@
     "SCHEDULE_WINDOW_SIZE": "Window ",
     "SCHEDULE_WINDOW_SIZE_TOOLTIP_TIME": "Range of minutes during which the transaction may be executed. ",
     "SCHEDULE_WINDOW_SIZE_TOOLTIP_BLOCK": "Range of blocks during which the transaction may be executed. ",
+    "SCHEDULE_TRANSACTION_MINING_PART_1": "Your transaction is being mined. Please wait. ",
+    "SCHEDULE_TRANSACTION_MINING_PART_2": "Click to see it in block explorer.",
+    "SCHEDULE_TOKEN_TRANSFER_MINING_PART_1": "You need to wait to approve token transfer, it is required for scheduling token transfer transaction.",
+    "SCHEDULE_TOKEN_TRANSFER_MINING_PART_2": "Alternatively, you can come back later and approve it in Chronos Dapp using this link: ",
+    "SCHEDULE_TOKEN_TRANSFER_NOTICE": "You are scheduling the send of a token. This requires 2 transactions. Please complete both or your transaction will be executed on time but your token transfer won't take place. You will be automatically redirected after the first tx completes.",
+    "SCHEDULE_TOKEN_TRANSFER_APPROVE": "Token transfer has been scheduled. Now you need to approve this transaction.",
     "SEND_GAS": "Gas ",
     "SEND_TRANSFERTOTAL": "Send Entire Balance ",
     "SEND_GENERATE": "Generate Transaction ",
@@ -722,7 +728,7 @@
     "NEW_SIDEBAR_TEXT_5": "Your node must be HTTPS in order to connect to it via MyCrypto.com. You can download the MyCrypto repo & run it locally to connect to any node. Or, get free SSL certificate via LetsEncrypt",
     "NEW_SIDEBAR_TEXT_6": "Add custom node",
     "NEW_SIDEBAR_TEXT_7": "Hide Other Networks",
-    "NEW_SIDEBAR_TEXT_8": "Show Other Networks"
-    
+    "NEW_SIDEBAR_TEXT_8": "Show Other Networks",
+    "AWAITING_MINING": "Awaiting Mining"
   }
 }

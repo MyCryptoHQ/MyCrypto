@@ -18,7 +18,7 @@ import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import * as derivedSelectors from 'features/selectors';
 import { configMetaTypes, configMetaSelectors, configNodesSelectors } from 'features/config';
 import { walletTypes, walletSelectors } from 'features/wallet';
-import { scheduleSelectors } from 'features/schedule';
+import { scheduleSelectors, scheduleTypes } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
 import * as transactionTypes from '../types';
@@ -114,7 +114,8 @@ describe('Network Sagas', () => {
             transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP,
             transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP,
             transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP,
-            configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT
+            configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT,
+            scheduleTypes.ScheduleActions.TOGGLE_SET
           ])
         );
       });

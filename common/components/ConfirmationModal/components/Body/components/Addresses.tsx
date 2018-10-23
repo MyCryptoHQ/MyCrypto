@@ -6,16 +6,20 @@ import translate from 'translations';
 import ERC20 from 'libs/erc20';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
+import { scheduleSelectors } from 'features/schedule';
 import { configSelectors } from 'features/config';
 import arrow from 'assets/images/tail-triangle-down.svg';
 import { SerializedTransaction } from 'components/renderCbs';
 import { Identicon } from 'components/ui';
 import './Addresses.scss';
+import Scheduler from 'libs/scheduling/contracts/Scheduler';
+import { bufferToHex } from 'ethereumjs-util';
 
 interface StateProps {
   from: ReturnType<typeof selectors.getFrom>;
   unit: ReturnType<typeof selectors.getUnit>;
   isToken: boolean;
+  isSchedulingEnabled: boolean;
   toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
@@ -23,13 +27,28 @@ const size = '3rem';
 
 class AddressesClass extends Component<StateProps> {
   public render() {
-    const { from, isToken, unit, toChecksumAddress } = this.props;
+    const { from, isSchedulingEnabled, isToken, unit, toChecksumAddress } = this.props;
+
     return (
       <SerializedTransaction
         withSerializedTransaction={(_, { to, data }) => {
-          const toFormatted = toChecksumAddress(
-            isToken ? ERC20.transfer.decodeInput(data)._to : to
-          );
+          let toFormatted = '';
+          let tokenAddress = to;
+
+          if (isSchedulingEnabled) {
+            if (isToken) {
+              const scheduledTxParams = Scheduler.schedule.decodeInput(data);
+              const scheduledTxCallData = bufferToHex(scheduledTxParams._callData as Buffer);
+
+              toFormatted = ERC20.transferFrom.decodeInput(scheduledTxCallData)._to;
+              tokenAddress = scheduledTxParams._toAddress;
+            } else {
+              toFormatted = toChecksumAddress(to);
+            }
+          } else {
+            toFormatted = toChecksumAddress(isToken ? ERC20.transfer.decodeInput(data)._to : to);
+          }
+
           return (
             <div className="tx-modal-address">
               <div className="tx-modal-address-from">
@@ -60,9 +79,9 @@ class AddressesClass extends Component<StateProps> {
                     </p>
                     <a
                       className="small tx-modal-address-tkn-contract-link"
-                      href={ETHAddressExplorer(to)}
+                      href={ETHAddressExplorer(tokenAddress)}
                     >
-                      {toChecksumAddress(to)}
+                      {toChecksumAddress(tokenAddress)}
                     </a>
                   </div>
                 </div>
@@ -94,7 +113,8 @@ const mapStateToProps = (state: AppState): StateProps => ({
   from: selectors.getFrom(state),
   isToken: !selectors.isEtherTransaction(state),
   unit: selectors.getUnit(state),
-  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state),
+  isSchedulingEnabled: scheduleSelectors.isSchedulingEnabled(state)
 });
 
 export const Addresses = connect(mapStateToProps)(AddressesClass);
