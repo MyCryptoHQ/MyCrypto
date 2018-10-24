@@ -13,6 +13,7 @@ import { SendButtonFactoryClass } from 'components/SendButtonFactory';
 const mapStateToProps = (state: AppState) => {
   return {
     balance: state.wallet.balance,
+    currentTransaction: transactionSelectors.getCurrentTransactionStatus(state),
     walletType: walletSelectors.getWalletType(state),
     serializedTransaction: derivedSelectors.getSerializedTransaction(state),
     ...derivedSelectors.getSchedulingTransaction(state),
