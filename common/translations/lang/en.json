@@ -49,6 +49,7 @@
     "X_KEYSTOREDESC": "This Keystore file matches the format used by Mist so you can easily import it in the future. It is the recommended file to download and back up. ",
     "X_METAMASK": "MetaMask",
     "X_MIST": "Mist",
+    "X_TRUST": "Trust Wallet",
     "X_WEB3": "Web3",
     "X_MNEMONIC": "Mnemonic Phrase ",
     "X_SAVE_PAPER": "Save Paper Wallet ",
