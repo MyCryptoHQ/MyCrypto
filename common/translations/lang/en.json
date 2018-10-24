@@ -685,7 +685,7 @@
     "ONBOARDING_TEXT_27": "Get a Trezor",
     "ONBOARDING_TEXT_28": "Get a Ledger",
     "ONBOARDING_TEXT_29": "Need more info before you dive in? See [Support Center]($link)",
-    "METAMASK_PERMISSION_DENIED": "You denied the request for permission to access MetaMask, but permission is required to unlock your wallet. Please click \"Connect to MetaMask\", and then click \"Approve\" when the dialog opens."
+    "METAMASK_PERMISSION_DENIED": "You denied the request for permission to access MetaMask, but permission is required to unlock your wallet. Please click \"Connect to MetaMask\", and then click \"Approve\" when the dialog opens.",
     "NEW_FOOTER_TEXT_1": "Donate",
     "NEW_FOOTER_TEXT_2": "Address Copied to Clipboard!",
     "NEW_FOOTER_TEXT_3": "Subscribe to MyCrypto",
