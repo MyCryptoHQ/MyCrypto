@@ -1,6 +1,7 @@
 import MetamaskIcon from 'assets/images/wallets/metamask.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
+import TrustIcon from 'assets/images/wallets/trust.svg';
 
 interface Web3ProviderInfo {
   lid: string;
@@ -21,6 +22,10 @@ const WEB3_CONFIGS: {
   EthereumProvider: {
     lid: 'X_MIST',
     icon: MistIcon
+  },
+  TrustWeb3Provider: {
+    lid: 'X_TRUST',
+    icon: TrustIcon
   }
 };
 
