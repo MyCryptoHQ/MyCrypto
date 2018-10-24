@@ -32,7 +32,8 @@ import {
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
-  ETHO_DEFAULT
+  ETHO_DEFAULT,
+  MIX_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -221,10 +222,10 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'POA Explorer',
-      origin: 'https://poaexplorer.com',
-      addressPath: 'address/search',
-      blockPath: 'blocks/block'
+      name: 'BlockScout',
+      origin: 'https://blockscout.com/poa/core',
+      addressPath: 'address',
+      blockPath: 'blocks'
     }),
     tokens: [],
     contracts: [],
@@ -668,6 +669,29 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: ETHO_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: ETHO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETHO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  MIX: {
+    id: 'MIX',
+    name: 'Mix',
+    unit: 'MIX',
+    chainId: 76,
+    isCustom: false,
+    color: '#e59b2b',
+    blockExplorer: makeExplorer({
+      name: 'MIX Blockchain Explorer',
+      origin: 'https://blocks.mix-blockchain.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: MIX_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: MIX_DEFAULT
     },
     gasPriceSettings: {
       min: 1,

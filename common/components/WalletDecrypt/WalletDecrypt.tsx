@@ -401,6 +401,7 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public handleWalletChoice = async (walletType: WalletName) => {
+      const { showNotification } = this.props;
       const wallet = this.WALLETS[walletType];
 
       if (!wallet) {
@@ -409,12 +410,17 @@ const WalletDecrypt = withRouter<Props>(
 
       let timeout = 0;
       if (wallet.attemptUnlock) {
-        const web3Available = await isWeb3NodeAvailable();
-        if (web3Available) {
-          // timeout is only the maximum wait time before secondary view is shown
-          // send view will be shown immediately on web3 resolve
-          timeout = 1500;
-          wallet.unlock();
+        try {
+          const web3Available = await isWeb3NodeAvailable();
+          if (web3Available) {
+            // timeout is only the maximum wait time before secondary view is shown
+            // send view will be shown immediately on web3 resolve
+            timeout = 1500;
+            wallet.unlock();
+          }
+        } catch (e) {
+          // The permissions request for MetaMask was displayed, but permission was denied.
+          showNotification('danger', translateRaw('METAMASK_PERMISSION_DENIED'));
         }
       }
 
