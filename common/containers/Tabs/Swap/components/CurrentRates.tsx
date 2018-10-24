@@ -122,7 +122,7 @@ class CurrentRates extends PureComponent<Props> {
 
   public swapEl = (providerURL: string, providerLogo: string, children: any) => {
     return (
-      <article className="SwapRates">
+      <article className="SwapRates" style={{ marginTop: '3rem' }}>
         <h3 className="SwapRates-title">{translate('SWAP_RATES')}</h3>
 
         <section className="SwapRates-panel row">
