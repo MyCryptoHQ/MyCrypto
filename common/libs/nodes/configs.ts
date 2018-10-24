@@ -283,6 +283,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'ether1.org',
       url: 'https://rpc.ether1.org'
     }
+  ],
+
+  MIX: [
+    {
+      name: makeNodeName('MIX', 'mix-blockchain.org'),
+      type: 'rpc',
+      service: 'rpc2.mix-blockchain.org',
+      url: 'https://rpc2.mix-blockchain.org:8647'
+    }
   ]
 };
 
