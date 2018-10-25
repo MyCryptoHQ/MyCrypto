@@ -24,6 +24,7 @@ const VALID_ETH_PRIVATE_0X = '0x3f4fd89ea4970cc77bfd2d07a95786575ea62e183857afe6
 const RSK_TESTNET_CHAIN_ID = 31;
 const RSK_MAINNET_CHAIN_ID = 30;
 const ETH_CHAIN_ID = 1;
+const BIP49_DPATH = "m/49'/0'/0'";
 
 describe('Validator', () => {
   it('should validate correct BTC address as true', () => {
@@ -89,6 +90,9 @@ describe('Validator', () => {
     DPaths.forEach(DPath => {
       expect(isValidPath(DPath.value)).toBeTruthy();
     });
+  });
+  it('should validate BIP49 DPaths as true', () => {
+    expect(isValidPath(BIP49_DPATH)).toBeTruthy();
   });
 });
 

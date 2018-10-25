@@ -188,5 +188,5 @@ export const EXTRA_PATHS = [ETH_SINGULAR];
 
 // whitespace strings are evaluated the same way as nospace strings, except they allow optional spaces between each portion of the string
 // ie. "m / 44' / 0' / 0'" is valid, "m / 4 4' / 0' / 0'" is invalid
-export const dPathRegex = /m\/44'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
+export const dPathRegex = /m\/4[4,9]'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
 // export const whitespaceDPathRegex = /m\s*\/\s*44'\s*\/\s*[0-9]+\'\s*\/\s*[0-9]+(\'+$|\'+\s*(\/\s*[0-1]+$))/;
