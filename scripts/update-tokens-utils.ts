@@ -3,7 +3,10 @@ import { Token } from '../shared/types/network';
 interface StrIdx<T> {
   [key: string]: T;
 }
-const excludedTokens: string[] = ['0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2'];
+const excludedTokens: string[] = [
+  '0x5a276Aeb77bCfDAc8Ac6f31BBC7416AE1A85eEF2',
+  '0xE94327D07Fc17907b4DB788E5aDf2ed424adDff6'
+];
 
 function processTokenJson(tokensJson: RawTokenJSON[]): Token[] {
   const normalizedTokens = tokensJson.map(validateTokenJSON).map(normalizeTokenJSON);
