@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
-import queryString from 'query-string';
 
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
@@ -29,11 +28,6 @@ import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { Theme } from 'config';
 import 'what-input';
-
-//
-import { sendUserToAuthorize, requestAccessToken } from 'config/shapeshift';
-
-//
 
 interface OwnProps {
   store: Store<AppState>;
@@ -64,16 +58,6 @@ class RootClass extends Component<Props, State> {
     this.props.setUnitMeta(this.props.networkUnit);
     this.addBodyClasses();
     this.updateTheme(this.props.theme);
-
-    const query = queryString.parse(window.location.search);
-
-    if (query.code) {
-      requestAccessToken(query.code).then(token => {
-        // Store token and use.
-      });
-    } else {
-      sendUserToAuthorize();
-    }
   }
 
   public componentDidCatch(error: Error) {

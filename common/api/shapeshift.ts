@@ -1,13 +1,13 @@
+import axios from 'axios';
 import flatten from 'lodash/flatten';
 import uniqBy from 'lodash/uniqBy';
+import queryString from 'query-string';
 
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
 export const SHAPESHIFT_API_KEY =
   '8abde0f70ca69d5851702d57b10305705d7333e93263124cc2a2649dab7ff9cf86401fc8de7677e8edcd0e7f1eed5270b1b49be8806937ef95d64839e319e6d9';
-
 export const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
-
 export const SHAPESHIFT_TOKEN_WHITELIST = [
   'OMG',
   'REP',
@@ -30,6 +30,11 @@ export const SHAPESHIFT_TOKEN_WHITELIST = [
   'GUP'
 ];
 export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC', 'BTC', 'XMR'];
+export const SHAPESHIFT_ACCESS_TOKEN = 'ShapeShift Access Token';
+export const SHAPESHIFT_API_URL = 'https://auth.shapeshift.io/oauth/authorize';
+export const SHAPESHIFT_CLIENT_ID = 'fcbbb372-4221-4436-b345-024d91384652';
+export const SHAPESHIFT_CLIENT_SECRET = '2pQu4eqU8YreBYQebby4pxNjCCnJN5YL6norqCPEewj3';
+export const SHAPESHIFT_REDIRECT_URI = 'https://mycrypto.com/swap';
 
 interface IPairData {
   limit: number;
@@ -101,6 +106,11 @@ class ShapeshiftService {
   };
   private supportedCoinsAndTokens: ShapeshiftCoinInfoMap = {};
   private fetchedSupportedCoinsAndTokens = false;
+  private token: string | null = null;
+
+  public constructor() {
+    this.retrieveAccessTokenFromStorage();
+  }
 
   public checkStatus(address: string) {
     return fetch(`${this.url}/txStat/${address}`)
@@ -300,6 +310,55 @@ class ShapeshiftService {
     });
     return tokenMap;
   }
+
+  //
+  private saveAccessTokenToStorage = (token: string) => {
+    if (window && window.localStorage) {
+      window.localStorage.setItem(SHAPESHIFT_ACCESS_TOKEN, token);
+    }
+  };
+
+  private retrieveAccessTokenFromStorage = () => {
+    if (window && window.localStorage) {
+      const token = window.localStorage.getItem(SHAPESHIFT_ACCESS_TOKEN);
+      this.token = token;
+    }
+  };
+
+  private sendUserToAuthorize = () => {
+    const query = queryString.stringify({
+      client_id: SHAPESHIFT_CLIENT_ID,
+      scope: 'users:read',
+      response_type: 'code',
+      redirect_uri: SHAPESHIFT_REDIRECT_URI
+    });
+    const url = `${SHAPESHIFT_API_URL}?${query}`;
+
+    window.location.href = '';
+  };
+
+  private requestAccessToken = async () => {
+    const { code } = queryString.parse(window.location.search);
+    const authorization = new Buffer(
+      `${SHAPESHIFT_CLIENT_ID}:${SHAPESHIFT_CLIENT_SECRET}`
+    ).toString('base64');
+    const { data: { token } } = await axios.post(
+      'https://auth.shapeshift.io/oauth/token',
+      {
+        code,
+        grant_type: 'authorization_code'
+      },
+      {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Basic ${authorization}`
+        }
+      }
+    );
+
+    this.token = token;
+    this.saveAccessTokenToStorage(token);
+  };
 }
 
 const shapeshift = new ShapeshiftService();
