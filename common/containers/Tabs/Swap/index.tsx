@@ -3,6 +3,7 @@ import { Switch, Route, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
+import shapeshift from 'api/shapeshift';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
@@ -60,6 +61,10 @@ interface ReduxActionProps {
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponentProps<{}>, {}> {
+  public componentDidMount() {
+    this.handleTokenRetrieval();
+  }
+
   public render() {
     const {
       // STATE
@@ -205,6 +210,26 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       </TabSection>
     );
   }
+
+  private handleTokenRetrieval = async () => {
+    // 1. The user has an access token available; all is good.
+    if (shapeshift.hasToken()) {
+      return;
+    }
+
+    // 2. The user has a ?code in the URL search.
+    if (shapeshift.urlHasCodeParam()) {
+      await shapeshift.requestAccessToken();
+      return;
+    }
+
+    // 3. The user has not started the authorization process.
+    const confirmed = window.confirm(
+      'Swapping tokens on MyCrypto requires authorization via ShapeShift. Continue?'
+    );
+
+    confirmed ? shapeshift.sendUserToAuthorize() : (window.location.href = 'https://mycrypto.com/');
+  };
 }
 
 function mapStateToProps(state: AppState) {

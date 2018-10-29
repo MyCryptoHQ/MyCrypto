@@ -120,8 +120,10 @@ class MobileHeader extends Component<Props> {
                       </ul>
                     )}
                   </li>
-                  <li onClick={this.toggleMenu}>
-                    <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
+                  <li>
+                    <Link to="/generate">
+                      <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
+                    </Link>
                   </li>
                 </ul>
                 <ul className="MobileHeader-menu-mid">

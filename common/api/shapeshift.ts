@@ -33,7 +33,6 @@ export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC'
 export const SHAPESHIFT_ACCESS_TOKEN = 'ShapeShift Access Token';
 export const SHAPESHIFT_API_URL = 'https://auth.shapeshift.io/oauth/authorize';
 export const SHAPESHIFT_CLIENT_ID = 'fcbbb372-4221-4436-b345-024d91384652';
-export const SHAPESHIFT_CLIENT_SECRET = '2pQu4eqU8YreBYQebby4pxNjCCnJN5YL6norqCPEewj3';
 export const SHAPESHIFT_REDIRECT_URI = 'https://mycrypto.com/swap';
 
 interface IPairData {
@@ -101,15 +100,20 @@ class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
   private apiKey = SHAPESHIFT_API_KEY;
-  private postHeaders = {
-    'Content-Type': 'application/json'
-  };
   private supportedCoinsAndTokens: ShapeshiftCoinInfoMap = {};
   private fetchedSupportedCoinsAndTokens = false;
   private token: string | null = null;
 
   public constructor() {
     this.retrieveAccessTokenFromStorage();
+  }
+
+  public hasToken() {
+    return !!this.token;
+  }
+
+  public urlHasCodeParam() {
+    return !!queryString.parse(window.location.search).code;
   }
 
   public checkStatus(address: string) {
@@ -134,7 +138,7 @@ class ShapeshiftService {
         apiKey: this.apiKey,
         withdrawal
       }),
-      headers: new Headers(this.postHeaders)
+      headers: new Headers(this.getPostHeaders())
     })
       .then(checkHttpStatus)
       .then(parseJSON)
@@ -162,6 +166,29 @@ class ShapeshiftService {
     const allRates = this.addUnavailableCoinsAndTokens(mappedRates);
 
     return allRates;
+  };
+
+  public sendUserToAuthorize = () => {
+    const query = queryString.stringify({
+      client_id: SHAPESHIFT_CLIENT_ID,
+      scope: 'users:read',
+      response_type: 'code',
+      redirect_uri: SHAPESHIFT_REDIRECT_URI
+    });
+    const url = `${SHAPESHIFT_API_URL}?${query}`;
+
+    window.location.href = url;
+  };
+
+  public requestAccessToken = async () => {
+    const { code } = queryString.parse(window.location.search);
+    const { data: { access_token: token } } = await axios.post(
+      'https://proxy.mycryptoapi.com/request-shapeshift-token',
+      { code, grant_type: 'authorization_code' }
+    );
+
+    this.token = token;
+    this.saveAccessTokenToStorage(token);
   };
 
   public addUnavailableCoinsAndTokens = (availableCoinsAndTokens: TokenMap) => {
@@ -220,6 +247,11 @@ class ShapeshiftService {
 
     return availableCoinsAndTokens;
   };
+
+  private getPostHeaders = () => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${this.token}`
+  });
 
   private filterPairs(marketInfo: ShapeshiftMarketInfo[]) {
     return marketInfo.filter(obj => {
@@ -311,7 +343,6 @@ class ShapeshiftService {
     return tokenMap;
   }
 
-  //
   private saveAccessTokenToStorage = (token: string) => {
     if (window && window.localStorage) {
       window.localStorage.setItem(SHAPESHIFT_ACCESS_TOKEN, token);
@@ -323,41 +354,6 @@ class ShapeshiftService {
       const token = window.localStorage.getItem(SHAPESHIFT_ACCESS_TOKEN);
       this.token = token;
     }
-  };
-
-  private sendUserToAuthorize = () => {
-    const query = queryString.stringify({
-      client_id: SHAPESHIFT_CLIENT_ID,
-      scope: 'users:read',
-      response_type: 'code',
-      redirect_uri: SHAPESHIFT_REDIRECT_URI
-    });
-    const url = `${SHAPESHIFT_API_URL}?${query}`;
-
-    window.location.href = '';
-  };
-
-  private requestAccessToken = async () => {
-    const { code } = queryString.parse(window.location.search);
-    const authorization = new Buffer(
-      `${SHAPESHIFT_CLIENT_ID}:${SHAPESHIFT_CLIENT_SECRET}`
-    ).toString('base64');
-    const { data: { token } } = await axios.post(
-      'https://auth.shapeshift.io/oauth/token',
-      {
-        code,
-        grant_type: 'authorization_code'
-      },
-      {
-        headers: {
-          'content-type': 'application/json',
-          Authorization: `Basic ${authorization}`
-        }
-      }
-    );
-
-    this.token = token;
-    this.saveAccessTokenToStorage(token);
   };
 }
 
