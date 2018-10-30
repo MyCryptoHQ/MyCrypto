@@ -61,14 +61,27 @@ interface ReduxActionProps {
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponentProps<{}>, {}> {
+  public state = {
+    authorized: shapeshift.hasToken(),
+    authorizing: false
+  };
+
   private pollingForAccessTokenAvailable: NodeJS.Timer | null = null;
+  private pollingForAccessTokenStillAvailable: NodeJS.Timer | null = null;
 
   public componentDidMount() {
-    this.handleTokenRetrieval();
+    const { authorized } = this.state;
+
+    if (shapeshift.urlHasCodeParam()) {
+      this.requestAccessToken();
+    } else if (authorized) {
+      this.pollForAccessTokenStillAvailable();
+    }
   }
 
   public componentWillUnmount() {
     clearInterval(this.pollingForAccessTokenAvailable as NodeJS.Timer);
+    clearInterval(this.pollingForAccessTokenStillAvailable as NodeJS.Timer);
   }
 
   public render() {
@@ -110,6 +123,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
       stopPollBityOrderStatus,
       swapProvider
     } = this.props;
+    const { authorized, authorizing } = this.state;
 
     const currentPath = this.props.match.url;
 
@@ -192,52 +206,79 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
 
     return (
       <TabSection isUnavailableOffline={true}>
-        <section className="Tab-content swap-tab">
-          <Switch>
-            <Route
-              exact={true}
-              path={`${currentPath}`}
-              render={() => (
-                <React.Fragment>
-                  {step === 1 && <CurrentRates />}
-                  {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
-                  <main className="Tab-content-pane">
-                    {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
-                    {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
-                    {step === 3 && <PartThree {...PartThreeProps} />}
-                  </main>
-                </React.Fragment>
-              )}
-            />
-            <RouteNotFound />
-          </Switch>
-        </section>
-        <SupportFooter {...SupportProps} />
+        {authorized ? (
+          <React.Fragment>
+            <section className="Tab-content swap-tab">
+              <Switch>
+                <Route
+                  exact={true}
+                  path={`${currentPath}`}
+                  render={() => (
+                    <React.Fragment>
+                      {step === 1 && <CurrentRates />}
+                      {(step === 2 || step === 3) && <SwapInfoHeader {...SwapInfoHeaderProps} />}
+                      <main className="Tab-content-pane">
+                        {step === 1 && <CurrencySwap {...CurrencySwapProps} />}
+                        {step === 2 && <ReceivingAddress {...ReceivingAddressProps} />}
+                        {step === 3 && <PartThree {...PartThreeProps} />}
+                      </main>
+                    </React.Fragment>
+                  )}
+                />
+                <RouteNotFound />
+              </Switch>
+            </section>
+            <SupportFooter {...SupportProps} />)
+          </React.Fragment>
+        ) : (
+          <section className="Tab-content">
+            <section className="Tab-content-pane">
+              Aenean id metus id velit ullamcorper pulvinar. Praesent vitae arcu tempor neque
+              lacinia pretium. Cras elementum. In sem justo, commodo ut, suscipit at, pharetra
+              vitae, orci. Fusce consectetuer risus a nunc. Aliquam erat volutpat. Cum sociis
+              natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras
+              elementum. In rutrum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
+              sapien sem, ornare ac, nonummy non, lobortis a enim. Aliquam erat volutpat.
+              <button
+                className="btn btn-primary"
+                style={{ marginTop: '2rem' }}
+                disabled={authorizing}
+                onClick={this.sendUserToAuthorize}
+              >
+                Authorize with ShapeShift
+              </button>
+              {authorizing && <p>Attempting to authorize with ShapeShift...</p>}
+            </section>
+          </section>
+        )}
       </TabSection>
     );
   }
 
-  private handleTokenRetrieval = async () => {
-    // 1. The user has an access token available; all is good.
-    if (shapeshift.hasToken()) {
-      return;
-    }
+  private setAuthorized = (authorized: boolean) => this.setState({ authorized });
 
-    // 2. The user has a ?code in the URL search.
-    if (shapeshift.urlHasCodeParam()) {
-      await shapeshift.requestAccessToken();
-      // window.close();
-      // return;
-      return this.pollForAccessTokenAvailable();
-    }
+  private setAuthorizing = (authorizing: boolean) => this.setState({ authorizing });
 
-    // 3. The user has not started the authorization process.
+  private sendUserToAuthorize = () => {
     shapeshift.sendUserToAuthorize();
     this.pollForAccessTokenAvailable();
   };
 
-  private pollForAccessTokenAvailable = () =>
-    (this.pollingForAccessTokenAvailable = setInterval(this.checkAccessTokenAvailable, 100));
+  private requestAccessToken = async () => {
+    await shapeshift.requestAccessToken();
+    return window.close();
+  };
+
+  private pollForAccessTokenAvailable = () => {
+    this.pollingForAccessTokenAvailable = setInterval(this.checkAccessTokenAvailable, 100);
+    this.setAuthorizing(true);
+  };
+
+  private pollForAccessTokenStillAvailable = () =>
+    (this.pollingForAccessTokenStillAvailable = setInterval(
+      this.checkAccessTokenStillAvailable,
+      500
+    ));
 
   private checkAccessTokenAvailable = () => {
     const { showNotification } = this.props;
@@ -245,6 +286,19 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
     if (shapeshift.hasToken()) {
       clearInterval(this.pollingForAccessTokenAvailable as NodeJS.Timer);
       showNotification('info', 'Successfully authorized with ShapeShift.');
+      this.setAuthorizing(false);
+      this.setAuthorized(true);
+      this.pollForAccessTokenStillAvailable();
+    }
+  };
+
+  private checkAccessTokenStillAvailable = () => {
+    const { showNotification } = this.props;
+
+    if (!shapeshift.hasToken()) {
+      clearInterval(this.pollingForAccessTokenStillAvailable as NodeJS.Timer);
+      showNotification('danger', 'Lost ShapeShift access token. Please reauthorize.');
+      this.setAuthorized(false);
     }
   };
 }

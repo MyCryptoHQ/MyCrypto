@@ -5,8 +5,6 @@ import queryString from 'query-string';
 
 import { checkHttpStatus, parseJSON } from 'api/utils';
 
-export const SHAPESHIFT_API_KEY =
-  '8abde0f70ca69d5851702d57b10305705d7333e93263124cc2a2649dab7ff9cf86401fc8de7677e8edcd0e7f1eed5270b1b49be8806937ef95d64839e319e6d9';
 export const SHAPESHIFT_BASE_URL = 'https://shapeshift.io';
 export const SHAPESHIFT_TOKEN_WHITELIST = [
   'OMG',
@@ -99,7 +97,6 @@ interface ShapeshiftOptionMap {
 class ShapeshiftService {
   public whitelist = SHAPESHIFT_WHITELIST;
   private url = SHAPESHIFT_BASE_URL;
-  private apiKey = SHAPESHIFT_API_KEY;
   private supportedCoinsAndTokens: ShapeshiftCoinInfoMap = {};
   private fetchedSupportedCoinsAndTokens = false;
   private token: string | null = null;
@@ -109,7 +106,7 @@ class ShapeshiftService {
   }
 
   public hasToken() {
-    return !!this.token;
+    return !!window.localStorage.getItem(SHAPESHIFT_ACCESS_TOKEN);
   }
 
   public urlHasCodeParam() {
@@ -135,7 +132,6 @@ class ShapeshiftService {
       body: JSON.stringify({
         amount: destinationAmount,
         pair,
-        apiKey: this.apiKey,
         withdrawal
       }),
       headers: new Headers(this.getPostHeaders())
