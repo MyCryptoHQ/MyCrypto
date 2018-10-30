@@ -3,6 +3,7 @@ import { Switch, Route, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { merge } from 'lodash';
 
+import translate, { translateRaw } from 'translations';
 import shapeshift from 'api/shapeshift';
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
@@ -231,23 +232,18 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
             <SupportFooter {...SupportProps} />)
           </React.Fragment>
         ) : (
-          <section className="Tab-content">
+          <section className="Tab-content" style={{ margin: 'auto 8rem' }}>
             <section className="Tab-content-pane">
-              Aenean id metus id velit ullamcorper pulvinar. Praesent vitae arcu tempor neque
-              lacinia pretium. Cras elementum. In sem justo, commodo ut, suscipit at, pharetra
-              vitae, orci. Fusce consectetuer risus a nunc. Aliquam erat volutpat. Cum sociis
-              natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras
-              elementum. In rutrum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
-              sapien sem, ornare ac, nonummy non, lobortis a enim. Aliquam erat volutpat.
+              <p>{translate('SWAP_1')}</p>
               <button
                 className="btn btn-primary"
                 style={{ marginTop: '2rem' }}
                 disabled={authorizing}
                 onClick={this.sendUserToAuthorize}
               >
-                Authorize with ShapeShift
+                {translate('SWAP_2')}
               </button>
-              {authorizing && <p>Attempting to authorize with ShapeShift...</p>}
+              {authorizing && <p>{translate('SWAP_3')}</p>}
             </section>
           </section>
         )}
@@ -285,7 +281,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
 
     if (shapeshift.hasToken()) {
       clearInterval(this.pollingForAccessTokenAvailable as NodeJS.Timer);
-      showNotification('info', 'Successfully authorized with ShapeShift.');
+      showNotification('info', translateRaw('SWAP_4'));
       this.setAuthorizing(false);
       this.setAuthorized(true);
       this.pollForAccessTokenStillAvailable();
@@ -297,7 +293,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
 
     if (!shapeshift.hasToken()) {
       clearInterval(this.pollingForAccessTokenStillAvailable as NodeJS.Timer);
-      showNotification('danger', 'Lost ShapeShift access token. Please reauthorize.');
+      showNotification('danger', translateRaw('SWAP_5'));
       this.setAuthorized(false);
     }
   };
