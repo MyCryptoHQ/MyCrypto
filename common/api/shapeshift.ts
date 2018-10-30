@@ -177,7 +177,7 @@ class ShapeshiftService {
     });
     const url = `${SHAPESHIFT_API_URL}?${query}`;
 
-    window.location.href = url;
+    window.open(url, '_blank', 'width=800, height=600, menubar=yes');
   };
 
   public requestAccessToken = async () => {

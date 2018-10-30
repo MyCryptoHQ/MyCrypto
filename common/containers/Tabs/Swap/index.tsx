@@ -61,8 +61,14 @@ interface ReduxActionProps {
 }
 
 class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponentProps<{}>, {}> {
+  private pollingForAccessTokenAvailable: NodeJS.Timer | null = null;
+
   public componentDidMount() {
     this.handleTokenRetrieval();
+  }
+
+  public componentWillUnmount() {
+    clearInterval(this.pollingForAccessTokenAvailable as NodeJS.Timer);
   }
 
   public render() {
@@ -220,15 +226,26 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
     // 2. The user has a ?code in the URL search.
     if (shapeshift.urlHasCodeParam()) {
       await shapeshift.requestAccessToken();
-      return;
+      // window.close();
+      // return;
+      return this.pollForAccessTokenAvailable();
     }
 
     // 3. The user has not started the authorization process.
-    const confirmed = window.confirm(
-      'Swapping tokens on MyCrypto requires authorization via ShapeShift. Continue?'
-    );
+    shapeshift.sendUserToAuthorize();
+    this.pollForAccessTokenAvailable();
+  };
 
-    confirmed ? shapeshift.sendUserToAuthorize() : (window.location.href = 'https://mycrypto.com/');
+  private pollForAccessTokenAvailable = () =>
+    (this.pollingForAccessTokenAvailable = setInterval(this.checkAccessTokenAvailable, 100));
+
+  private checkAccessTokenAvailable = () => {
+    const { showNotification } = this.props;
+
+    if (shapeshift.hasToken()) {
+      clearInterval(this.pollingForAccessTokenAvailable as NodeJS.Timer);
+      showNotification('info', 'Successfully authorized with ShapeShift.');
+    }
   };
 }
 
