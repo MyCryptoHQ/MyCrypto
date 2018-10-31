@@ -28,7 +28,7 @@ export const SHAPESHIFT_TOKEN_WHITELIST = [
   'GUP'
 ];
 export const SHAPESHIFT_WHITELIST = [...SHAPESHIFT_TOKEN_WHITELIST, 'ETH', 'ETC', 'BTC', 'XMR'];
-export const SHAPESHIFT_ACCESS_TOKEN = 'ShapeShift Access Token';
+export const SHAPESHIFT_ACCESS_TOKEN = 'c640aa85-dd01-4db1-a6f2-ed57e6fd6c54';
 export const SHAPESHIFT_API_URL = 'https://auth.shapeshift.io/oauth/authorize';
 export const SHAPESHIFT_CLIENT_ID = 'fcbbb372-4221-4436-b345-024d91384652';
 export const SHAPESHIFT_REDIRECT_URI = 'https://mycrypto.com/swap';
