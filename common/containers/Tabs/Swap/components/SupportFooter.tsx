@@ -68,7 +68,7 @@ Amount to send: ${origin.amount || ''} ${origin.label}
 Amount to receive: ${destination.amount || ''} ${destination.label}
 Payment Address: ${paymentAddress || ''}
 Receiving Address: ${destinationAddress || ''}
-Rate: ${rates[pair].rate} ${origin.label}/${destination.label}`;
+Rate: ${rates[pair].rate} ${destination.label}/${origin.label}`;
     }
     return (
       <section className="SupportFooter">
