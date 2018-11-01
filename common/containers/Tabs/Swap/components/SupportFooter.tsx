@@ -57,7 +57,7 @@ Payment Address: ${paymentAddress || ''}
 
 Receiving Address: ${destinationAddress || ''}
 
-Rate: ${rates[pair].rate} ${origin.label}/${destination.label}
+Rate: ${rates[pair].rate} ${destination.label}/${origin.label}
         `);
       fallbackBody = `To: ${emailTo}
 Subject: Issue regarding my Swap via MyCrypto
