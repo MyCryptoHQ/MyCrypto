@@ -229,7 +229,7 @@ class Swap extends Component<ReduxActionProps & ReduxStateProps & RouteComponent
                 <RouteNotFound />
               </Switch>
             </section>
-            <SupportFooter {...SupportProps} />)
+            <SupportFooter {...SupportProps} />
           </React.Fragment>
         ) : (
           <section className="Tab-content" style={{ margin: 'auto 8rem' }}>
