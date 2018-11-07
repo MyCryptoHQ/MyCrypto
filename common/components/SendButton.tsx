@@ -1,7 +1,6 @@
 import React from 'react';
 
 import translate from 'translations';
-import { SigningStatus } from 'components';
 import { ConfirmationModal } from 'components/ConfirmationModal';
 import { SendButtonFactory } from './SendButtonFactory';
 import './SendButton.scss';
@@ -29,6 +28,5 @@ export const SendButton: React.SFC<{
         </React.Fragment>
       )}
     />
-    <SigningStatus />
   </React.Fragment>
 );
