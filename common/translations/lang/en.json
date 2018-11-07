@@ -729,6 +729,8 @@
     "SWAP_2": "Authorize with ShapeShift",
     "SWAP_3": "Attempting to authorize with ShapeShift...",
     "SWAP_4": "Successfully authorized with ShapeShift.",
-    "SWAP_5": "Lost ShapeShift access token. Please reauthorize."
+    "SWAP_5": "Lost ShapeShift access token. Please reauthorize.",
+    "CUSTOM_TOKEN_1": "A token with this address already exists.",
+    "CUSTOM_TOKEN_2": "A token with this symbol already exists."
   }
 }

@@ -1,5 +1,10 @@
 import { Token } from 'types/network';
 
+interface AddressesAndSymbols {
+  addresses: { [address: string]: true };
+  symbols: { [symbol: string]: true };
+}
+
 export function dedupeCustomTokens(networkTokens: Token[], customTokens: Token[]): Token[] {
   if (!customTokens.length) {
     return [];
@@ -15,4 +20,18 @@ export function dedupeCustomTokens(networkTokens: Token[], customTokens: Token[]
   return customTokens.filter(token => {
     return !tokenCollisionMap[token.address] && !tokenCollisionMap[token.symbol];
   });
+}
+
+export function getAddressesAndSymbols(tokenList: any): AddressesAndSymbols {
+  return tokenList.reduce(
+    (prev: AddressesAndSymbols, next: any) => {
+      prev.addresses[next.address] = true;
+      prev.symbols[next.symbol] = true;
+      return prev;
+    },
+    {
+      addresses: {},
+      symbols: {}
+    }
+  );
 }
