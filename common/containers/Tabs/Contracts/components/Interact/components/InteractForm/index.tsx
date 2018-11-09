@@ -9,6 +9,7 @@ import { isValidAbiJson } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { configSelectors } from 'features/config';
+import { transactionSignSelectors } from 'features/transaction';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
@@ -22,6 +23,7 @@ interface StateProps {
   currentTo: ReturnType<typeof selectors.getCurrentTo>;
   contracts: NetworkContract[];
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
+  isPending: ReturnType<typeof transactionSignSelectors.getSignPending>;
 }
 
 interface OwnProps {
@@ -77,7 +79,7 @@ class InteractForm extends Component<Props, State> {
   };
 
   public render() {
-    const { contracts, accessContract, currentTo, isValidAddress } = this.props;
+    const { contracts, accessContract, currentTo, isValidAddress, isPending } = this.props;
     const { abiJson, contract } = this.state;
     const validEthAddress = isValidAddress(
       currentTo.value ? addHexPrefix(currentTo.value.toString('hex')) : ''
@@ -113,6 +115,7 @@ class InteractForm extends Component<Props, State> {
                 searchable={true}
                 clearable={true}
                 labelKey="name"
+                disabled={isPending}
               />
             </label>
           </div>
@@ -131,6 +134,7 @@ class InteractForm extends Component<Props, State> {
                     className="InteractForm-address-field-input"
                     spellCheck={false}
                     onChange={onChange}
+                    disabled={isPending}
                   />
                 </label>
               )}
@@ -149,6 +153,7 @@ class InteractForm extends Component<Props, State> {
                 onChange={this.handleInput('abiJson')}
                 value={abiJson}
                 rows={6}
+                disabled={isPending}
               />
             ) : (
               <CodeBlock className="wrap">{abiJson}</CodeBlock>
@@ -161,6 +166,7 @@ class InteractForm extends Component<Props, State> {
               onChange={this.handleInput('abiJson')}
               value={abiJson}
               rows={6}
+              disabled={isPending}
             />
           )}
         </label>
@@ -212,7 +218,8 @@ class InteractForm extends Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
   contracts: configSelectors.getNetworkContracts(state) || [],
   currentTo: selectors.getCurrentTo(state),
-  isValidAddress: configSelectors.getIsValidAddressFn(state)
+  isValidAddress: configSelectors.getIsValidAddressFn(state),
+  isPending: transactionSignSelectors.getSignPending(state)
 });
 
 export default connect(mapStateToProps, { setCurrentTo })(InteractForm);
