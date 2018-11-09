@@ -349,18 +349,6 @@ export function* unlockWeb3(): SagaIterator {
     }
     const wallet = new Web3Wallet(address, stripWeb3Network(network));
     yield put(walletActions.setWallet(wallet));
-
-    // Though unlikely, it is possible that a user revokes permission while logged in.
-    // The following will prompt them with another dialog.
-    if (!(window as any).ensuringWeb3Availability) {
-      (window as any).ensuringWeb3Availability = (window as any).setInterval(async () => {
-        const web3StillAvailable = await ensureWeb3NodeStillAvailable();
-
-        if (!web3StillAvailable) {
-          window.location.reload();
-        }
-      }, 500);
-    }
   } catch (err) {
     console.error(err);
     // unset web3 node so node dropdown isn't disabled
@@ -383,8 +371,6 @@ export function* unsetWeb3NodeOnWalletEvent(action: walletTypes.SetWalletAction)
 
   // forcefully switch back to a node with the same network as MetaMask/Mist
   yield put(configNodesSelectedActions.changeNodeForce(prevNodeId));
-
-  clearInterval((window as any).ensuringWeb3Availability);
 }
 
 export function* unsetWeb3Node(): SagaIterator {
@@ -398,8 +384,6 @@ export function* unsetWeb3Node(): SagaIterator {
 
   // forcefully switch back to a node with the same network as MetaMask/Mist
   yield put(configNodesSelectedActions.changeNodeForce(prevNodeId));
-
-  clearInterval((window as any).ensuringWeb3Availability);
 }
 //#endregion Web3
 
