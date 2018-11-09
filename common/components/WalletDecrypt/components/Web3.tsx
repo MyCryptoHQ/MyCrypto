@@ -23,5 +23,9 @@ export const Web3Decrypt: React.SFC<Props> = ({ onUnlock }) => (
         href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
       />
     </div>
+
+    <p style={{ marginTop: '1rem' }}>
+      In order to use MetaMask with MyCrypto, your ad blocker must be disabled.
+    </p>
   </div>
 );

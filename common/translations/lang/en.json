@@ -49,6 +49,7 @@
     "X_KEYSTOREDESC": "This Keystore file matches the format used by Mist so you can easily import it in the future. It is the recommended file to download and back up. ",
     "X_METAMASK": "MetaMask",
     "X_MIST": "Mist",
+    "X_TRUST": "Trust Wallet",
     "X_WEB3": "Web3",
     "X_MNEMONIC": "Mnemonic Phrase ",
     "X_SAVE_PAPER": "Save Paper Wallet ",
@@ -690,6 +691,7 @@
     "ONBOARDING_TEXT_27": "Get a Trezor",
     "ONBOARDING_TEXT_28": "Get a Ledger",
     "ONBOARDING_TEXT_29": "Need more info before you dive in? See [Support Center]($link)",
+    "METAMASK_PERMISSION_DENIED": "You denied the request for permission to access MetaMask, but permission is required to unlock your wallet. Please click \"Connect to MetaMask\", and then click \"Approve\" when the dialog opens.",
     "NEW_FOOTER_TEXT_1": "Donate",
     "NEW_FOOTER_TEXT_2": "Address Copied to Clipboard!",
     "NEW_FOOTER_TEXT_3": "Subscribe to MyCrypto",
@@ -729,6 +731,11 @@
     "NEW_SIDEBAR_TEXT_6": "Add custom node",
     "NEW_SIDEBAR_TEXT_7": "Hide Other Networks",
     "NEW_SIDEBAR_TEXT_8": "Show Other Networks",
-    "AWAITING_MINING": "Awaiting Mining"
+    "AWAITING_MINING": "Awaiting Mining",
+    "SWAP_1": "The ability to exchange currency on MyCrypto is provided through ShapeShift. To enable the functionality of this page, please authorize your account. For more information, please visit our [Knowledge Base article](https://support.mycrypto.com/faq/why-do-i-need-to-sign-in-with-shapeshift-now.html). Don't have a ShapeShift account? Create one [here](https://auth.shapeshift.io/signup).",
+    "SWAP_2": "Authorize with ShapeShift",
+    "SWAP_3": "Attempting to authorize with ShapeShift...",
+    "SWAP_4": "Successfully authorized with ShapeShift.",
+    "SWAP_5": "Lost ShapeShift access token. Please reauthorize."
   }
 }
