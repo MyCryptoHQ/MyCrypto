@@ -64,7 +64,7 @@ export class VerifyMessage extends Component<Props, State> {
             !!verifiedMessage && (
               <div className="VerifyMessage-success alert alert-success">
                 <strong>{verifiedAddress}</strong>
-                {` ${translate('SIGNED')} `}
+                {` ${translateRaw('SIGNED')} `}
                 <strong>{verifiedMessage}</strong>.
               </div>
             )}
