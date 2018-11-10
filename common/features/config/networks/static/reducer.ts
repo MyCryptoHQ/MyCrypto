@@ -33,7 +33,8 @@ import {
   PIRL_DEFAULT,
   ATH_DEFAULT,
   ETHO_DEFAULT,
-  MIX_DEFAULT
+  MIX_DEFAULT,
+  ETI_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -696,6 +697,58 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     gasPriceSettings: {
       min: 1,
       max: 60,
+      initial: 20
+    }
+  },
+
+  ETI: {
+    id: 'ETI',
+    name: 'ETI',
+    unit: 'ETI',
+    chainId: 101,
+    isCustom: false,
+    color: '#3560bf',
+    blockExplorer: makeExplorer({
+      name: 'EtherInc Explorer',
+      origin: 'https://explorer.einc.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETI_DEFAULT,
+      [SecureWalletName.SAFE_T]: ETI_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETI_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETI_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 80,
+      initial: 20
+    }
+  },
+
+  ETI_TESTNET: {
+    id: 'ETI_TESTNET',
+    name: 'ETI',
+    unit: 'ETI',
+    chainId: 103,
+    isCustom: false,
+    color: '#3560bf',
+    blockExplorer: makeExplorer({
+      name: 'EtherInc Ropsten Explorer',
+      origin: 'https://ropstenexplorer.gochain.io'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETI_DEFAULT,
+      [SecureWalletName.SAFE_T]: ETI_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETI_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 80,
       initial: 20
     }
   }
