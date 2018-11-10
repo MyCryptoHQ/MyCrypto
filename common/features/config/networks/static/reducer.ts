@@ -736,7 +736,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#3560bf',
     blockExplorer: makeExplorer({
       name: 'EtherInc Ropsten Explorer',
-      origin: 'https://ropstenexplorer.gochain.io'
+      origin: 'https://ropstenexplorer.einc.io'
     }),
     tokens: [],
     contracts: [],
