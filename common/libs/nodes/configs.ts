@@ -292,6 +292,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'rpc2.mix-blockchain.org',
       url: 'https://rpc2.mix-blockchain.org:8647'
     }
+  ],
+
+  ETI: [
+    {
+      name: makeNodeName('ETI', 'eti'),
+      type: 'rpc',
+      service: 'api.einc.io',
+      url: 'https://api.einc.io/jsonrpc/mainnet/'
+    }
+  ],
+
+  ETI_TESTNET: [
+    {
+      name: makeNodeName('ETI_TESTNET', 'eti_testnet'),
+      type: 'rpc',
+      service: 'api.einc.io',
+      url: 'https://api.einc.io/jsonrpc/ropsten/'
+    }
   ]
 };
 
