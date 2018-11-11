@@ -145,7 +145,7 @@ export const MIX_DEFAULT: DPath = {
 
 export const ETI_DEFAULT: DPath = {
   label: 'Default (ETI)',
-  value: "m/44'/60'/0'/0"
+  value: "m/44'/464'/0'/0"
 };
 
 export const DPaths: DPath[] = [
