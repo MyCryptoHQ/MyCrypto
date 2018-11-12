@@ -20,7 +20,6 @@ import {
   setupWeb3Node,
   Web3Service,
   isWeb3Node,
-  ensureWeb3NodeStillAvailable
 } from 'libs/nodes/web3';
 import { AppState } from 'features/reducers';
 import { notificationsActions } from 'features/notifications';
