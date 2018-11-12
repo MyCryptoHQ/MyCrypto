@@ -690,6 +690,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     tokens: [],
     contracts: [],
     dPathFormats: {
+      [SecureWalletName.TREZOR]: MIX_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: MIX_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: MIX_DEFAULT
     },
