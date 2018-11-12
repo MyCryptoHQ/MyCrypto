@@ -297,7 +297,7 @@ class ENSDebug extends React.Component<Props, State> {
         nameHash
       });
     } catch (error) {
-      null;
+      return;
     }
   }
 
