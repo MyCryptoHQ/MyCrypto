@@ -45,7 +45,7 @@ const AddressField: React.SFC<Props> = ({
     showLabelMatch={showLabelMatch}
     showIdenticon={showIdenticon}
     onChangeOverride={onChangeOverride}
-    value={value}
+    value={(value || '').trim()}
     dropdownThreshold={dropdownThreshold}
     withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
@@ -59,11 +59,10 @@ const AddressField: React.SFC<Props> = ({
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"
-            value={
-              value != null
-                ? value
-                : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
-            }
+            value={(value != null
+              ? value
+              : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
+            ).trim()}
             placeholder={placeholder}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}

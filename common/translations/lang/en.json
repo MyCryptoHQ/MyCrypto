@@ -724,6 +724,11 @@
     "NEW_SIDEBAR_TEXT_5": "Your node must be HTTPS in order to connect to it via MyCrypto.com. You can download the MyCrypto repo & run it locally to connect to any node. Or, get free SSL certificate via LetsEncrypt",
     "NEW_SIDEBAR_TEXT_6": "Add custom node",
     "NEW_SIDEBAR_TEXT_7": "Hide Other Networks",
-    "NEW_SIDEBAR_TEXT_8": "Show Other Networks"
+    "NEW_SIDEBAR_TEXT_8": "Show Other Networks",
+    "SWAP_1": "The ability to exchange currency on MyCrypto is provided through ShapeShift. To enable the functionality of this page, please authorize your account. For more information, please visit our [Knowledge Base article](https://support.mycrypto.com/faq/why-do-i-need-to-sign-in-with-shapeshift-now.html). Don't have a ShapeShift account? Create one [here](https://auth.shapeshift.io/signup).",
+    "SWAP_2": "Authorize with ShapeShift",
+    "SWAP_3": "Attempting to authorize with ShapeShift...",
+    "SWAP_4": "Successfully authorized with ShapeShift.",
+    "SWAP_5": "Lost ShapeShift access token. Please reauthorize."
   }
 }
