@@ -94,7 +94,7 @@ export default class RecoverPK extends React.Component<State> {
                 value={address}
                 type="text"
                 onChange={this.onChange}
-                isValid={isValidETHAddress(address)}
+                isValid={isValidETHAddress(address.toLowerCase())}
                 name="address"
               />
             </label>
@@ -102,7 +102,7 @@ export default class RecoverPK extends React.Component<State> {
             <button
               className="btn btn-primary"
               onClick={this.searchPK}
-              disabled={!isValidPrivKey(pk) || !isValidETHAddress(address)}
+              disabled={!isValidPrivKey(pk) || !isValidETHAddress(address.toLowerCase())}
             >
               Start the Search!
             </button>

@@ -22,7 +22,7 @@ const unitNames: UnitNames = {
 };
 
 interface Units {
-  [propName: string]: number;
+  [propName: string]: number | '';
 }
 
 interface State {
@@ -76,7 +76,7 @@ export default class ConvertUnits extends React.Component<State> {
     const currentValues: Units = { ...this.state.units };
 
     Object.keys(unitNames).forEach((unitName: UnitKey) => {
-      currentValues[unitName] = Number(fromWei(weiValue, unitName));
+      currentValues[unitName] = !weiValue.isZero() ? Number(fromWei(weiValue, unitName)) : '';
     });
 
     this.setState({

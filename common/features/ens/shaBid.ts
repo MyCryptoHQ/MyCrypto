@@ -1,4 +1,3 @@
-// import { ShaBidRequested, ShaBidAction, ShaBidSucceeded, ShaBidFailed } from 'actions/ens';
 import * as types from './types';
 import BN from 'bn.js';
 
