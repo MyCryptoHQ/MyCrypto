@@ -65,7 +65,7 @@ export const ELLA_DEFAULT: DPath = {
 
 export const MUSIC_DEFAULT: DPath = {
   label: 'Default (MUSIC)',
-  value: "m/44'/60'/0'/0"
+  value: "m/44'/184'/0'/0"
 };
 
 export const ETSC_DEFAULT: DPath = {
