@@ -59,6 +59,12 @@ export function isValidBTCAddress(address: string): boolean {
   return WalletAddressValidator.validate(address, 'BTC');
 }
 
+export function isValidXMRAddress(address: string): boolean {
+  return !!address.match(
+    /4[0-9AB][123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{93}/
+  );
+}
+
 export function isValidHex(str: string): boolean {
   if (str === '') {
     return true;
@@ -148,6 +154,33 @@ export const validDecimal = (input: string, decimal: number) => {
   const decimalLength = fractionPortion.length;
 
   return decimalLength <= decimal;
+};
+
+/**
+ * @desc
+ * NOTE: Do not use this for anything related to Ether units.
+ * This is strictly for ensuring a text entry only contains 0-9 and/or a decimal point.
+ */
+export const isValidNumberOrDecimal = (input: number | string): boolean => {
+  const convertedInput = input.toString();
+  const parsedInput = parseFloat(convertedInput);
+  const digits = '.0123456789';
+
+  // Input contains no numbers.
+  if (!parsedInput) {
+    return false;
+  }
+
+  // Input contains one number and other characters.
+  if (convertedInput.split('').some(character => !digits.includes(character))) {
+    return false;
+  }
+
+  const isValid = convertedInput.includes('.')
+    ? validDecimal(convertedInput, Infinity)
+    : validPositiveNumber(parsedInput);
+
+  return isValid;
 };
 
 export function isPositiveIntegerOrZero(num: number): boolean {

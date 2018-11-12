@@ -69,7 +69,7 @@ export function getDisabledWallets(state: AppState): any {
   // Some wallets are unavailable offline
   if (isOffline) {
     addReason(
-      [SecureWalletName.WEB3, SecureWalletName.TREZOR],
+      [SecureWalletName.WEB3, SecureWalletName.TREZOR, SecureWalletName.SAFE_T],
       'This wallet cannot be accessed offline'
     );
   }
@@ -77,6 +77,10 @@ export function getDisabledWallets(state: AppState): any {
   // Some wallets are disabled on certain platforms
   if (process.env.BUILD_ELECTRON) {
     addReason([SecureWalletName.WEB3], 'This wallet is not supported in the MyCrypto app');
+    addReason(
+      [SecureWalletName.SAFE_T],
+      'Coming soon. Please use the MyCrypto.com website in the meantime'
+    );
   }
 
   // Dedupe and sort for consistency
@@ -169,9 +173,9 @@ export function getShownTokenBalances(
 }
 
 const getUSDConversionRate = (state: AppState, unit: string) => {
-  const { isTestnet } = configSelectors.getNetworkConfig(state);
+  const { isTestnet, hideEquivalentValues } = configSelectors.getNetworkConfig(state);
   const { rates } = ratesSelectors.getRates(state);
-  if (isTestnet) {
+  if (isTestnet || hideEquivalentValues) {
     return null;
   }
 
@@ -297,7 +301,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   }
 
   const transactionOptions = {
-    to: getSchedulerAddress(scheduleType.value),
+    to: getSchedulerAddress(scheduleType.value, configSelectors.getNetworkConfig(state)),
     data: transactionData,
     gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
     gasPrice: gasPrice.value,
@@ -350,6 +354,8 @@ export interface IGetValidateScheduleParamsCallPayload {
 export const getValidateScheduleParamsCallPayload = (
   state: AppState
 ): IGetValidateScheduleParamsCallPayload | undefined => {
+  const currentNetworkName = configSelectors.getNetworkConfig(state).name;
+
   const wallet = walletSelectors.getWalletInst(state);
   const currentTo = getCurrentTo(state);
   const currentValue = getCurrentValue(state);
@@ -373,6 +379,7 @@ export const getValidateScheduleParamsCallPayload = (
     !scheduleGasPrice.value ||
     !wallet ||
     !windowSize.value ||
+    !deposit.value ||
     // we need either windowStart or scheduleTimestamp for scheduling
     !(windowStart.value || scheduleTimestamp.value)
   ) {
@@ -410,7 +417,7 @@ export const getValidateScheduleParamsCallPayload = (
   );
 
   return {
-    to: EAC_ADDRESSES.KOVAN.requestFactory,
+    to: EAC_ADDRESSES[currentNetworkName.toUpperCase()].requestFactory,
     data
   };
 };

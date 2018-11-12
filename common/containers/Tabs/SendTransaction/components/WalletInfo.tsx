@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import { QRCode, Modal } from 'components/ui';
 import {
   GenerateKeystoreModal,
@@ -19,7 +19,7 @@ interface OwnProps {
 }
 
 interface StateProps {
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 type Props = OwnProps & StateProps;
@@ -88,6 +88,9 @@ class WalletInfo extends React.PureComponent<Props, State> {
               <div className="WalletInfo-qr well well-lg">
                 <QRCode data={address} />
               </div>
+              <button className="btn btn-primary" onClick={(window as any).print}>
+                <i className="fa fa-print" /> {translate('PRINT')}
+              </button>
             </div>
             {privateKey && (
               <div>
@@ -151,5 +154,5 @@ class WalletInfo extends React.PureComponent<Props, State> {
 }
 
 export default connect((state: AppState): StateProps => ({
-  toChecksumAddress: getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
 }))(WalletInfo);

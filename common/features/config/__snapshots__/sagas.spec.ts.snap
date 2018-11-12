@@ -5,14 +5,16 @@ Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {
     "args": Array [
-      "ESN",
+      "MIX",
     ],
     "selector": [Function],
   },
 }
 `;
 
-exports[`handleChangeNodeRequested* should select getCustomNodeConfig and match race snapshot 1`] = `
+exports[
+  `handleChangeNodeRequested* should select getCustomNodeConfig and match race snapshot 1`
+] = `
 Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {

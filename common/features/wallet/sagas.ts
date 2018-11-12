@@ -19,10 +19,12 @@ import {
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import * as configMetaTypes from 'features/config/meta/types';
-import * as configMetaSelectors from 'features/config/meta/selectors';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as configSelectors from 'features/config/selectors';
+import {
+  configMetaTypes,
+  configMetaSelectors,
+  configNodesSelectors,
+  configSelectors
+} from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import { customTokensTypes, customTokensSelectors } from 'features/customTokens';
 import * as types from './types';
@@ -313,7 +315,7 @@ export function* walletSaga(): SagaIterator {
     takeEvery(types.WalletActions.REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
     takeEvery(types.WalletActions.REFRESH_TOKEN_BALANCES, retryTokenBalances),
     // Foreign actions
-    takeEvery(configMetaTypes.CONFIG_META.TOGGLE_OFFLINE, updateBalances),
+    takeEvery(configMetaTypes.ConfigMetaActions.TOGGLE_OFFLINE, updateBalances),
     takeEvery(customTokensTypes.CustomTokensActions.ADD, handleCustomTokenAdd)
   ];
 }

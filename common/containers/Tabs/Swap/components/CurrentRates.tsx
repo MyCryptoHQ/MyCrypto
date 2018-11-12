@@ -20,7 +20,7 @@ import {
   stopLoadShapeshiftRatesSwap,
   TStopLoadShapeshiftRatesSwap
 } from 'features/swap/actions';
-import { getOffline } from 'features/config';
+import { configMetaSelectors } from 'features/config';
 import bityLogoWhite from 'assets/images/logo-bity-white.svg';
 import shapeshiftLogoWhite from 'assets/images/logo-shapeshift.svg';
 import Spinner from 'components/ui/Spinner';
@@ -122,7 +122,7 @@ class CurrentRates extends PureComponent<Props> {
 
   public swapEl = (providerURL: string, providerLogo: string, children: any) => {
     return (
-      <article className="SwapRates">
+      <article className="SwapRates" style={{ marginTop: '3rem' }}>
         <h3 className="SwapRates-title">{translate('SWAP_RATES')}</h3>
 
         <section className="SwapRates-panel row">
@@ -181,7 +181,7 @@ class CurrentRates extends PureComponent<Props> {
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    isOffline: getOffline(state),
+    isOffline: configMetaSelectors.getOffline(state),
     provider: state.swap.provider,
     bityRates: state.swap.bityRates,
     shapeshiftRates: state.swap.shapeshiftRates

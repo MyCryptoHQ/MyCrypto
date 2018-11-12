@@ -6,7 +6,7 @@ import translate from 'translations';
 import ERC20 from 'libs/erc20';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import arrow from 'assets/images/tail-triangle-down.svg';
 import { SerializedTransaction } from 'components/renderCbs';
 import { Identicon } from 'components/ui';
@@ -16,7 +16,7 @@ interface StateProps {
   from: ReturnType<typeof selectors.getFrom>;
   unit: ReturnType<typeof selectors.getUnit>;
   isToken: boolean;
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 const size = '3rem';
@@ -94,7 +94,7 @@ const mapStateToProps = (state: AppState): StateProps => ({
   from: selectors.getFrom(state),
   isToken: !selectors.isEtherTransaction(state),
   unit: selectors.getUnit(state),
-  toChecksumAddress: getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
 });
 
 export const Addresses = connect(mapStateToProps)(AddressesClass);

@@ -8,6 +8,11 @@ export const ETH_TREZOR: DPath = {
   value: "m/44'/60'/0'/0"
 };
 
+export const ETH_SAFE_T: DPath = {
+  label: 'Safe-T (ETH)',
+  value: "m/44'/60'/0'/0"
+};
+
 export const ETH_LEDGER: DPath = {
   label: 'Ledger (ETH)',
   value: "m/44'/60'/0'"
@@ -20,6 +25,11 @@ export const ETC_LEDGER: DPath = {
 
 export const ETC_TREZOR: DPath = {
   label: 'TREZOR (ETC)',
+  value: "m/44'/61'/0'/0"
+};
+
+export const ETC_SAFE_T: DPath = {
+  label: 'Safe-T (ETC)',
   value: "m/44'/61'/0'/0"
 };
 
@@ -103,12 +113,44 @@ export const ESN_DEFAULT: DPath = {
   value: "m/44'/31102'/0'/0"
 };
 
+export const AQUA_DEFAULT: DPath = {
+  label: 'Default (AQUA)',
+  value: "m/44'/60'/0'/0"
+};
+
+export const AKA_DEFAULT: DPath = {
+  label: 'Default (AKA)',
+  value: "m/44'/200625'/0'/0"
+};
+
+export const PIRL_DEFAULT: DPath = {
+  label: 'Default (PIRL)',
+  value: "m/44'/164'/0'/0"
+};
+
+export const ATH_DEFAULT: DPath = {
+  label: 'Default (ATH)',
+  value: "m/44'/1620'/0'/0"
+};
+
+export const ETHO_DEFAULT: DPath = {
+  label: 'Default (ETHO)',
+  value: "m/44'/1313114'/0'/0"
+};
+
+export const MIX_DEFAULT: DPath = {
+  label: 'Default (MIX)',
+  value: "m/44'/76'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
+  ETH_SAFE_T,
   ETH_LEDGER,
   ETC_LEDGER,
   ETC_TREZOR,
+  ETC_SAFE_T,
   ETH_TESTNET,
   EXP_DEFAULT,
   UBQ_DEFAULT,
@@ -123,7 +165,13 @@ export const DPaths: DPath[] = [
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
-  ESN_DEFAULT
+  ESN_DEFAULT,
+  AQUA_DEFAULT,
+  AKA_DEFAULT,
+  PIRL_DEFAULT,
+  ATH_DEFAULT,
+  ETHO_DEFAULT,
+  MIX_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
