@@ -427,7 +427,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
 
   RSK_TESTNET: {
     id: 'RSK_TESTNET',
-    name: 'RSK',
+    name: 'RSK Testnet',
     unit: 'SBTC',
     chainId: 31,
     color: '#58A052',
