@@ -17,7 +17,7 @@ import {
   transactionMetaSelectors,
   transactionActions
 } from 'features/transaction';
-import { AddressField, AmountField, TXMetaDataPanel } from 'components';
+import { AddressField, AmountField } from 'components';
 import { QRCode, CodeBlock } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './RequestPayment.scss';
