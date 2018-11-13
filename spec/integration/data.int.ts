@@ -49,13 +49,9 @@ const RPCTests: RPCTestList = {
 function testRpcRequests(node: INode, service: string) {
   Object.keys(RPCTests).forEach(testType => {
     describe(`RPC (${service}) should work`, () => {
-      it(
-        `RPC: ${testType} ${service}`,
-        () => {
-          return RPCTests[testType](node).then(d => expect(d.valid).toBeTruthy());
-        },
-        10000
-      );
+      it(`RPC: ${testType} ${service}`, () => {
+        return RPCTests[testType](node).then(d => expect(d.valid).toBeTruthy());
+      }, 10000);
     });
   });
 }
