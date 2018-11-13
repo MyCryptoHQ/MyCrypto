@@ -107,21 +107,6 @@ class RequestPayment extends React.Component<Props, {}> {
             </div>
           </div>
 
-          <div className="row form-group">
-            <div className="col-xs-12">
-              <TXMetaDataPanel
-                initialState="advanced"
-                disableToggle={true}
-                advancedGasOptions={{
-                  gasPriceField: false,
-                  nonceField: false,
-                  dataField: false,
-                  feeSummary: false
-                }}
-              />
-            </div>
-          </div>
-
           {!!eip681String.length && (
             <div className="row form-group">
               <label className="RequestPayment-title">
