@@ -263,11 +263,11 @@ export default class CurrencySwap extends PureComponent<Props, State> {
     const { origin, destination } = this.state;
     const { initSwap } = this.props;
 
-    const newOrigin = { ...origin, label: newOption.label, value: newOption.value, amount: 0 };
+    const newOrigin = { ...origin, label: newOption.label, value: newOption.value, amount: NaN };
     const newDest = {
       label: newOption.label === destination.label ? origin.label : destination.label,
       value: newOption.value === destination.value ? origin.value : destination.value,
-      amount: 0,
+      amount: NaN,
       status: '',
       image: ''
     };
@@ -286,10 +286,10 @@ export default class CurrencySwap extends PureComponent<Props, State> {
 
     const newOrigin = {
       ...origin,
-      amount: 0
+      amount: NaN
     };
 
-    const newDest = { ...destination, label: newOption.label, value: newOption.value, amount: 0 };
+    const newDest = { ...destination, label: newOption.label, value: newOption.value, amount: NaN };
     this.setState({
       origin: newOrigin,
       destination: newDest
