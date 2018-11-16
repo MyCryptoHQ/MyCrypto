@@ -216,6 +216,8 @@ const WalletDecrypt = withRouter<Props>(
       value: null
     };
 
+    public exists: boolean = true;
+
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
@@ -224,6 +226,10 @@ const WalletDecrypt = withRouter<Props>(
           selectedWalletKey: null
         });
       }
+    }
+
+    public componentWillUnmount() {
+      this.exists = false;
     }
 
     public getSelectedWallet() {
@@ -425,10 +431,12 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       window.setTimeout(() => {
-        this.setState({
-          selectedWalletKey: walletType,
-          value: wallet.initialParams
-        });
+        if (this.exists) {
+          this.setState({
+            selectedWalletKey: walletType,
+            value: wallet.initialParams
+          });
+        }
       }, timeout);
     };
 
