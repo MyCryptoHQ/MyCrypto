@@ -23,7 +23,7 @@ interface StateProps {
   isOffline: AppState['config']['meta']['offline'];
 }
 interface ActionProps {
-  addCustomToken: customTokensActions.TAddCustomToken;
+  attemptAddCustomToken: customTokensActions.TAttemptAddCustomToken;
   removeCustomToken: customTokensActions.TRemoveCustomToken;
   scanWalletForTokens: walletActions.TScanWalletForTokens;
   setWalletTokens: walletActions.TSetWalletTokens;
@@ -85,7 +85,7 @@ class TokenBalances extends React.Component<Props> {
           hasSavedWalletTokens={hasSavedWalletTokens}
           scanWalletForTokens={this.scanWalletForTokens}
           setWalletTokens={this.props.setWalletTokens}
-          onAddCustomToken={this.props.addCustomToken}
+          onAddCustomToken={this.props.attemptAddCustomToken}
           onRemoveCustomToken={this.props.removeCustomToken}
         />
       );
@@ -121,7 +121,7 @@ function mapStateToProps(state: AppState): StateProps {
 }
 
 export default connect(mapStateToProps, {
-  addCustomToken: customTokensActions.addCustomToken,
+  attemptAddCustomToken: customTokensActions.attemptAddCustomToken,
   removeCustomToken: customTokensActions.removeCustomToken,
   scanWalletForTokens: walletActions.scanWalletForTokens,
   setWalletTokens: walletActions.setWalletTokens,
