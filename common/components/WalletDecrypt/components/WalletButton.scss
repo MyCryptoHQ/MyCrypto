@@ -89,7 +89,7 @@
         filter: invert(1);
 
         // Kind of hacky, but we don't want to invert metamask
-        &[src*="metamask"] {
+        &[src*='metamask'] {
           filter: none;
         }
       }

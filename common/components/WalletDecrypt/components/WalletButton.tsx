@@ -31,9 +31,17 @@ interface Icon {
   arialabel: string;
 }
 
+interface State {
+  hoveringIcon: string | null;
+}
+
 type Props = OwnProps & StateProps;
 
-export class WalletButton extends React.PureComponent<Props> {
+export class WalletButton extends React.PureComponent<Props, State> {
+  public state = {
+    hoveringIcon: null
+  };
+
   public render() {
     const {
       name,
@@ -107,40 +115,25 @@ export class WalletButton extends React.PureComponent<Props> {
           )}
 
           <div className="WalletButton-icons">
-            {icons.map(i => {
-              const IconWrapper = (props: any) => {
-                if (isDisabled) {
-                  return <React.Fragment>{props.children}</React.Fragment>;
-                }
-
-                if (i.href) {
-                  return (
-                    <NewTabLink
-                      href={i.href}
-                      onClick={this.stopPropagation}
-                      aria-label={i.arialabel}
-                    >
-                      {props.children}
-                    </NewTabLink>
-                  );
-                }
-
-                return props.children;
-              };
-
-              return (
-                <span
-                  className="WalletButton-icons-icon"
-                  key={i.icon}
-                  onClick={this.stopPropagation}
-                >
-                  <IconWrapper>
-                    <i className={`fa fa-${i.icon}`} aria-label={i.arialabel} />
-                  </IconWrapper>
-                  {!isDisabled && <Tooltip size="sm">{i.tooltip}</Tooltip>}
-                </span>
-              );
-            })}
+            {icons.map(i => (
+              <span
+                className="WalletButton-icons-icon"
+                key={i.icon}
+                onClick={this.stopPropagation}
+                onMouseEnter={() => this.setHoveringIcon(i.icon)}
+                onMouseLeave={this.clearHoveringIcon}
+              >
+                {i.href ? (
+                  <NewTabLink href={i.href} onClick={this.stopPropagation} aria-label={i.arialabel}>
+                    <i className={`fa fa-${i.icon}`} />
+                  </NewTabLink>
+                ) : (
+                  <i className={`fa fa-${i.icon}`} aria-label={i.arialabel} />
+                )}
+                {!isDisabled &&
+                  this.state.hoveringIcon === i.icon && <Tooltip size="sm">{i.tooltip}</Tooltip>}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -148,6 +141,10 @@ export class WalletButton extends React.PureComponent<Props> {
       </div>
     );
   }
+
+  private setHoveringIcon = (hoveringIcon: string | null) => this.setState({ hoveringIcon });
+
+  private clearHoveringIcon = () => this.setHoveringIcon(null);
 
   private handleClick = () => {
     if (this.props.isDisabled || this.props.isFormatDisabled) {
