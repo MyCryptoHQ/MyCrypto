@@ -119,12 +119,12 @@ export class WalletButton extends React.PureComponent<Props, State> {
               <span
                 className="WalletButton-icons-icon"
                 key={i.icon}
-                onClick={this.stopPropogation}
+                onClick={this.stopPropagation}
                 onMouseEnter={() => this.setHoveringIcon(i.icon)}
                 onMouseLeave={this.clearHoveringIcon}
               >
                 {i.href ? (
-                  <NewTabLink href={i.href} onClick={this.stopPropogation} aria-label={i.arialabel}>
+                  <NewTabLink href={i.href} onClick={this.stopPropagation} aria-label={i.arialabel}>
                     <i className={`fa fa-${i.icon}`} />
                   </NewTabLink>
                 ) : (
@@ -154,7 +154,7 @@ export class WalletButton extends React.PureComponent<Props, State> {
     this.props.onClick(this.props.walletType);
   };
 
-  private stopPropogation = (ev: React.FormEvent<HTMLAnchorElement | HTMLSpanElement>) => {
+  private stopPropagation = (ev: React.FormEvent<HTMLAnchorElement | HTMLSpanElement>) => {
     ev.stopPropagation();
   };
 }
