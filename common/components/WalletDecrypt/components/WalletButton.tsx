@@ -31,9 +31,17 @@ interface Icon {
   arialabel: string;
 }
 
+interface State {
+  hoveringIcon: string | null;
+}
+
 type Props = OwnProps & StateProps;
 
-export class WalletButton extends React.PureComponent<Props> {
+export class WalletButton extends React.PureComponent<Props, State> {
+  public state = {
+    hoveringIcon: null
+  };
+
   public render() {
     const {
       name,
@@ -108,15 +116,22 @@ export class WalletButton extends React.PureComponent<Props> {
 
           <div className="WalletButton-icons">
             {icons.map(i => (
-              <span className="WalletButton-icons-icon" key={i.icon} onClick={this.stopPropogation}>
+              <span
+                className="WalletButton-icons-icon"
+                key={i.icon}
+                onClick={this.stopPropagation}
+                onMouseEnter={() => this.setHoveringIcon(i.icon)}
+                onMouseLeave={this.clearHoveringIcon}
+              >
                 {i.href ? (
-                  <NewTabLink href={i.href} onClick={this.stopPropogation} aria-label={i.arialabel}>
+                  <NewTabLink href={i.href} onClick={this.stopPropagation} aria-label={i.arialabel}>
                     <i className={`fa fa-${i.icon}`} />
                   </NewTabLink>
                 ) : (
                   <i className={`fa fa-${i.icon}`} aria-label={i.arialabel} />
                 )}
-                {!isDisabled && <Tooltip size="sm">{i.tooltip}</Tooltip>}
+                {!isDisabled &&
+                  this.state.hoveringIcon === i.icon && <Tooltip size="sm">{i.tooltip}</Tooltip>}
               </span>
             ))}
           </div>
@@ -127,6 +142,10 @@ export class WalletButton extends React.PureComponent<Props> {
     );
   }
 
+  private setHoveringIcon = (hoveringIcon: string | null) => this.setState({ hoveringIcon });
+
+  private clearHoveringIcon = () => this.setHoveringIcon(null);
+
   private handleClick = () => {
     if (this.props.isDisabled || this.props.isFormatDisabled) {
       return;
@@ -135,7 +154,7 @@ export class WalletButton extends React.PureComponent<Props> {
     this.props.onClick(this.props.walletType);
   };
 
-  private stopPropogation = (ev: React.FormEvent<HTMLAnchorElement | HTMLSpanElement>) => {
+  private stopPropagation = (ev: React.FormEvent<HTMLAnchorElement | HTMLSpanElement>) => {
     ev.stopPropagation();
   };
 }
