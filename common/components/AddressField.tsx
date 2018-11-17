@@ -45,7 +45,7 @@ const AddressField: React.SFC<Props> = ({
     showLabelMatch={showLabelMatch}
     showIdenticon={showIdenticon}
     onChangeOverride={onChangeOverride}
-    value={(value || '').trim()}
+    value={value}
     dropdownThreshold={dropdownThreshold}
     withProps={({ currentTo, isValid, isLabelEntry, onChange, onFocus, onBlur, readOnly }) => (
       <div className="input-group-wrapper">
