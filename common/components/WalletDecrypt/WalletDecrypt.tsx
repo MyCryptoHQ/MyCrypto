@@ -216,6 +216,8 @@ const WalletDecrypt = withRouter<Props>(
       value: null
     };
 
+    public exists: boolean = true;
+
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
@@ -224,6 +226,10 @@ const WalletDecrypt = withRouter<Props>(
           selectedWalletKey: null
         });
       }
+    }
+
+    public componentWillUnmount() {
+      this.exists = false;
     }
 
     public getSelectedWallet() {
@@ -401,6 +407,7 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public handleWalletChoice = async (walletType: WalletName) => {
+      const { showNotification } = this.props;
       const wallet = this.WALLETS[walletType];
 
       if (!wallet) {
@@ -409,20 +416,27 @@ const WalletDecrypt = withRouter<Props>(
 
       let timeout = 0;
       if (wallet.attemptUnlock) {
-        const web3Available = await isWeb3NodeAvailable();
-        if (web3Available) {
-          // timeout is only the maximum wait time before secondary view is shown
-          // send view will be shown immediately on web3 resolve
-          timeout = 1500;
-          wallet.unlock();
+        try {
+          const web3Available = await isWeb3NodeAvailable();
+          if (web3Available) {
+            // timeout is only the maximum wait time before secondary view is shown
+            // send view will be shown immediately on web3 resolve
+            timeout = 1500;
+            wallet.unlock();
+          }
+        } catch (e) {
+          // The permissions request for MetaMask was displayed, but permission was denied.
+          showNotification('danger', translateRaw('METAMASK_PERMISSION_DENIED'));
         }
       }
 
       window.setTimeout(() => {
-        this.setState({
-          selectedWalletKey: walletType,
-          value: wallet.initialParams
-        });
+        if (this.exists) {
+          this.setState({
+            selectedWalletKey: walletType,
+            value: wallet.initialParams
+          });
+        }
       }, timeout);
     };
 

@@ -59,11 +59,10 @@ const AddressField: React.SFC<Props> = ({
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"
-            value={
-              value != null
-                ? value
-                : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
-            }
+            value={(value != null
+              ? value
+              : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
+            ).trim()}
             placeholder={placeholder}
             readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}

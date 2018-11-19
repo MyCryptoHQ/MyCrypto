@@ -9,7 +9,7 @@ interface Props extends ReactSelectProps {
 
 export default class Dropdown extends React.Component<Props> {
   public state = {
-    selectedOption: { value: undefined, label: '' },
+    selectedOption: this.props.value || '',
     hasBlurred: false
   };
 
@@ -30,7 +30,6 @@ export default class Dropdown extends React.Component<Props> {
   public render() {
     const { onChange } = this.props;
     const { selectedOption } = this.state;
-    const value = selectedOption && selectedOption.value;
     const options = this.formatOptions(this.props.options);
 
     return (
@@ -45,7 +44,7 @@ export default class Dropdown extends React.Component<Props> {
         }}
         {...this.props}
         className={`${this.props.className} ${this.state.hasBlurred ? 'has-blurred' : ''}`}
-        value={value}
+        value={selectedOption}
         onChange={obj => {
           this.handleChange(obj as any);
           onChange(obj as any);
