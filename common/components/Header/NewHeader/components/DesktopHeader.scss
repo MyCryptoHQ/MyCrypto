@@ -107,7 +107,7 @@ $dropdown-background-color: #0f253f;
         top: 100%;
         width: 200px;
         margin: 0;
-        padding: 8px 16px;
+        padding: 0;
         background: $dropdown-background-color;
         border: 1px solid #3e546d;
         text-transform: initial;
@@ -115,12 +115,18 @@ $dropdown-background-color: #0f253f;
         cursor: initial;
 
         li {
+          margin: 0;
           font-size: 12px;
-          padding: 8px 0;
 
           a {
+            display: block;
             color: #fff;
             font-weight: normal;
+            padding: 12px 8px;
+
+            &:hover {
+              background: #293f59;
+            }
           }
         }
       }
