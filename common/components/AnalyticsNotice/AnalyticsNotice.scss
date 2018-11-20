@@ -52,5 +52,25 @@
     flex-direction: column;
     justify-content: flex-end;
     padding-left: 48px;
+
+    &-levels {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+
+      label {
+        display: flex;
+        align-content: center;
+        margin: 0;
+
+        input {
+          margin-right: 5px;
+        }
+      }
+      a {
+        color: #1eb8e7;
+      }
+    }
   }
 }

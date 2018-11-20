@@ -8,6 +8,11 @@ import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
 import { onboardingSelectors } from 'features/onboarding';
 // Components
+import {
+  AnalyticsProvider,
+  AnalyticsContext,
+  AnalyticsAcknowledgementInteractions
+} from 'providers';
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
@@ -106,7 +111,7 @@ class RootClass extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <React.Fragment>
+      <AnalyticsProvider>
         <Provider store={store}>
           <Router>
             <React.Fragment>
@@ -115,13 +120,17 @@ class RootClass extends Component<Props, State> {
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
-              <AnalyticsNotice />
+              <AnalyticsContext.Consumer>
+                {({ acknowledgement, setAcknowledgement }: AnalyticsAcknowledgementInteractions) =>
+                  !acknowledgement && <AnalyticsNotice setAcknowledgement={setAcknowledgement} />
+                }
+              </AnalyticsContext.Consumer>
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
             </React.Fragment>
           </Router>
         </Provider>
         <div id="ModalContainer" />
-      </React.Fragment>
+      </AnalyticsProvider>
     );
   }
 

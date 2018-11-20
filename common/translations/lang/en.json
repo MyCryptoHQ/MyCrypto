@@ -734,6 +734,9 @@
     "CUSTOM_TOKEN_2": "A token with this symbol already exists.",
     "ANALYTICS_NOTICE_1": "For the Best MyCrypto Experience…",
     "ANALYTICS_NOTICE_2": "We use cookies to give you the best experience possible. Please read our Cookie Policy for more information. By clicking “Accept Cookies,” you agree to the storing of cookies on your device to enhance site navigation and analyze site usage.",
-    "ANALYTICS_NOTICE_3": "Accept"
+    "ANALYTICS_NOTICE_3": "Accept",
+    "ANALYTICS_NOTICE_4": "Basic",
+    "ANALYTICS_NOTICE_5": "Analytics",
+    "ANALYTICS_NOTICE_6": "[What is this?](https://www.google.com/)"
   }
 }
