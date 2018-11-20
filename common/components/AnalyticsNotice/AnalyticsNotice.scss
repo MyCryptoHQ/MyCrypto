@@ -1,0 +1,56 @@
+.AnalyticsNotice-wrapper {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 155px;
+  background: #313131;
+  border-top: 1px solid #3e546d;
+  color: #fff;
+}
+
+.AnalyticsNotice {
+  display: flex;
+  max-width: 1200px;
+  padding: 0 23px 23px 23px;
+
+  &-image {
+    flex: 0 0 160px;
+    position: relative;
+
+    img {
+      position: absolute;
+      bottom: 0.3rem;
+      width: 161px;
+      height: 168px;
+      max-width: initial;
+    }
+  }
+  &-text {
+    flex: 6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14px 23px 0 14px;
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    p {
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+  &-controls {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-left: 48px;
+  }
+}

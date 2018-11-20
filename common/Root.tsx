@@ -26,6 +26,7 @@ import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
+import { AnalyticsNotice } from 'components';
 import { Theme } from 'config';
 import 'what-input';
 
@@ -114,6 +115,7 @@ class RootClass extends Component<Props, State> {
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
+              <AnalyticsNotice />
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
             </React.Fragment>
           </Router>
