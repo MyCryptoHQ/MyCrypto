@@ -12,7 +12,8 @@ export const INITIAL_STATE: types.WalletState = {
   isTokensLoading: false,
   tokensError: null,
   hasSavedWalletTokens: true,
-  recentAddresses: []
+  recentAddresses: [],
+  accessMessage: 'Wo'
 };
 
 export const RECENT_ADDRESS_LIMIT = 10;
@@ -155,6 +156,16 @@ function resetWallet(state: types.WalletState): types.WalletState {
   };
 }
 
+function setAccessMessage(
+  state: types.WalletState,
+  action: types.SetAccessMessageAction
+): types.WalletState {
+  return {
+    ...state,
+    accessMessage: action.payload
+  };
+}
+
 export function walletReducer(
   state: types.WalletState = INITIAL_STATE,
   action: types.WalletAction
@@ -192,6 +203,8 @@ export function walletReducer(
       return setWalletConfig(state, action);
     case types.WalletActions.SET_PASSWORD_PENDING:
       return setPasswordPending(state);
+    case types.WalletActions.SET_ACCESS_MESSAGE:
+      return setAccessMessage(state, action);
     default:
       return state;
   }

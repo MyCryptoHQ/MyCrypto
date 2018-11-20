@@ -19,7 +19,7 @@ import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { walletActions } from 'features/wallet';
+import { walletActions, walletSelectors } from 'features/wallet';
 import { transactionFieldsActions } from 'features/transaction';
 import { notificationsActions } from 'features/notifications';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
@@ -65,6 +65,7 @@ interface StateProps {
   computedDisabledWallets: DisabledWallets;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
+  accessMessage: ReturnType<typeof walletSelectors.getWalletAccessMessage>;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -244,6 +245,7 @@ const WalletDecrypt = withRouter<Props>(
     public getDecryptionComponent() {
       const { selectedWalletKey, isInsecureOverridden } = this.state;
       const selectedWallet = this.getSelectedWallet();
+
       if (!selectedWalletKey || !selectedWallet) {
         return null;
       }
@@ -315,13 +317,13 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public buildWalletOptions() {
-      const { computedDisabledWallets } = this.props;
+      const { computedDisabledWallets, accessMessage } = this.props;
       const { reasons } = computedDisabledWallets;
 
       return (
         <div className="WalletDecrypt-wallets">
           <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
-
+          <h3>{accessMessage}</h3>
           <div className="WalletDecrypt-wallets-row">
             {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];
@@ -451,6 +453,7 @@ const WalletDecrypt = withRouter<Props>(
       const { hidden } = this.props;
       const selectedWallet = this.getSelectedWallet();
       const decryptionComponent = this.getDecryptionComponent();
+
       return (
         <div>
           {!hidden && (
@@ -521,7 +524,8 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   return {
     computedDisabledWallets,
     isWalletPending: state.wallet.isWalletPending,
-    isPasswordPending: state.wallet.isPasswordPending
+    isPasswordPending: state.wallet.isPasswordPending,
+    accessMessage: walletSelectors.getWalletAccessMessage(state)
   };
 }
 
