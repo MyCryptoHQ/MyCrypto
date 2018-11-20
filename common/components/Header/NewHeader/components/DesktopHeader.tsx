@@ -12,6 +12,7 @@ import {
   configNodesSelectedActions
 } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
+import { walletActions } from 'features/wallet';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { LINKSET } from '../constants';
 import { generateCaretIcon } from '../helpers';
@@ -30,6 +31,7 @@ interface StateProps {
 interface DispatchProps {
   openSidebar: sidebarActions.TOpenSidebar;
   changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
+  setAccessMessage: walletActions.TSetAccessMessage;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -54,7 +56,7 @@ class DesktopHeader extends Component<Props> {
   }
 
   public render() {
-    const { nodeLabel, openSidebar, languageSelection } = this.props;
+    const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
     const { visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
     const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
@@ -79,7 +81,7 @@ class DesktopHeader extends Component<Props> {
               </ul>
             </section>
             <section className="DesktopHeader-top-center">
-              <Link to="/">
+              <Link to="/" onClick={() => setAccessMessage('')}>
                 <img src={logo} alt="Our logo" />
               </Link>
             </section>
@@ -106,7 +108,9 @@ class DesktopHeader extends Component<Props> {
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.SEND_AND_RECEIVE.map(item => (
                       <li key={item.to} onClick={this.toggleSendAndReceive}>
-                        <Link to={item.to}>{item.title}</Link>
+                        <Link to={item.to} onClick={() => setAccessMessage(item.accessMessage)}>
+                          {item.title}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -187,7 +191,8 @@ const mapStateToProps = (state: AppState, { networkParam }: any) => ({
 
 const mapDispatchToProps = {
   openSidebar: sidebarActions.openSidebar,
-  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime
+  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
+  setAccessMessage: walletActions.setAccessMessage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DesktopHeader);
