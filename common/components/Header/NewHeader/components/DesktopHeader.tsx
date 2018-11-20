@@ -81,7 +81,7 @@ class DesktopHeader extends Component<Props> {
               </ul>
             </section>
             <section className="DesktopHeader-top-center">
-              <Link to="/">
+              <Link to="/" onClick={() => setAccessMessage('')}>
                 <img src={logo} alt="Our logo" />
               </Link>
             </section>
