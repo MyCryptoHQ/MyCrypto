@@ -4,23 +4,28 @@ export const LINKSET = {
   SEND_AND_RECEIVE: [
     {
       to: '/account',
-      title: translateRaw('NEW_HEADER_TEXT_7')
+      title: translateRaw('NEW_HEADER_TEXT_7'),
+      accessMessage: 'You must access your wallet in order to send a transaction.'
     },
     {
       to: '/account/request',
-      title: translateRaw('NEW_HEADER_TEXT_8')
+      title: translateRaw('NEW_HEADER_TEXT_8'),
+      accessMessage: 'You must access your wallet in order to request a payment.'
     },
     {
       to: '/account/info',
-      title: translateRaw('NEW_HEADER_TEXT_9')
+      title: translateRaw('NEW_HEADER_TEXT_9'),
+      accessMessage: "You must access your wallet in order to view your wallet's information."
     },
     {
       to: '/account/recent-txs',
-      title: translateRaw('NEW_HEADER_TEXT_10')
+      title: translateRaw('NEW_HEADER_TEXT_10'),
+      accessMessage: 'You must access your wallet in order to view your recent transactions.'
     },
     {
       to: '/account/address-book',
-      title: translateRaw('NEW_HEADER_TEXT_11')
+      title: translateRaw('NEW_HEADER_TEXT_11'),
+      accessMessage: 'You must access your wallet in order to view your address book.'
     }
   ],
   BUY_AND_EXCHANGE: [

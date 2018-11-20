@@ -27,6 +27,7 @@ import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
+import { Warning } from 'components/ui';
 import { DisabledWallets } from './disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
@@ -323,7 +324,11 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="WalletDecrypt-wallets">
           <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
-          <h3>{accessMessage}</h3>
+          {accessMessage && (
+            <div className="WalletDecrypt-wallets-row">
+              <Warning>{accessMessage}</Warning>
+            </div>
+          )}
           <div className="WalletDecrypt-wallets-row">
             {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];

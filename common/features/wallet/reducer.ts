@@ -13,7 +13,7 @@ export const INITIAL_STATE: types.WalletState = {
   tokensError: null,
   hasSavedWalletTokens: true,
   recentAddresses: [],
-  accessMessage: 'Wo'
+  accessMessage: ''
 };
 
 export const RECENT_ADDRESS_LIMIT = 10;
