@@ -88,6 +88,9 @@ class WalletInfo extends React.PureComponent<Props, State> {
               <div className="WalletInfo-qr well well-lg">
                 <QRCode data={address} />
               </div>
+              <button className="btn btn-primary" onClick={(window as any).print}>
+                <i className="fa fa-print" /> {translate('PRINT')}
+              </button>
             </div>
             {privateKey && (
               <div>

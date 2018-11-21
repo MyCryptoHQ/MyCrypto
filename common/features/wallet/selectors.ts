@@ -16,6 +16,10 @@ export function getWalletConfig(state: AppState): WalletConfig | null | undefine
   return state.wallet.config;
 }
 
+export function getWalletAccessMessage(state: AppState): string {
+  return state.wallet.accessMessage;
+}
+
 export function isWalletFullyUnlocked(state: AppState): boolean | null | undefined {
   return state.wallet.inst && !state.wallet.inst.isReadOnly;
 }

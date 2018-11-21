@@ -9,7 +9,7 @@ interface Props extends ReactSelectProps {
 
 export default class Dropdown extends React.Component<Props> {
   public state = {
-    selectedOption: undefined,
+    selectedOption: this.props.value || '',
     hasBlurred: false
   };
 
