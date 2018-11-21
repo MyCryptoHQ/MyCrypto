@@ -502,7 +502,7 @@
     "CREATE_FINAL_STEP_4_MNEMONIC": "Enter your phrase",
     "CREATE_FINAL_STEP_4_KEYSTORE": "Provide file & password",
     "VIEW_ONLY_RECENT": "Select a recent address",
-    "VIEW_ONLY_ENTER": "Enter an address (e.g. 0x4bbeEB066eD09...)",
+    "VIEW_ONLY_ENTER": "Enter an address (e.g. 0x4bbeEB066eD09...) or an ENS address (example.eth)",
     "GO_TO_ACCOUNT": "Go to Account",
     "INSECURE_WALLET_TYPE_TITLE": "$wallet_type wallets are disabled online",
     "INSECURE_WALLET_TYPE_DESC": "Entering your $wallet_type on any website is dangerous. If MyCrypto.com was compromised, or you accidentally visited a phishing website, you could lose your funds. Because of that, we have disabled the use of $wallet_type wallets through the website. In order to access your account, please download MyCrypto and run it locally.",
