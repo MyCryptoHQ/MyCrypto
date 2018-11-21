@@ -1,2 +1,2 @@
 export * from './BuyAndExchange';
-export { ZeroX } from './BuyAndExchange';
+export { ZeroEx } from './BuyAndExchange';

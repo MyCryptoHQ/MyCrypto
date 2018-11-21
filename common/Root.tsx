@@ -30,7 +30,7 @@ import { Theme } from 'config';
 import 'what-input';
 
 // v2
-import { BuyAndExchange, ZeroX } from 'v2';
+import { BuyAndExchange, ZeroEx } from 'v2';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -88,7 +88,7 @@ class RootClass extends Component<Props, State> {
           <Route path="/generate" component={GenerateWallet} />
           <Route exact={true} path="/swap" component={BuyAndExchange} />
           <Route path="/swap/shapeshift" component={Swap} />
-          <Route path="/swap/0x" component={ZeroX} />
+          <Route path="/swap/0x" component={ZeroEx} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
