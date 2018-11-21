@@ -28,6 +28,7 @@ interface OwnProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
   showIdenticon?: boolean;
+  showEnsResolution?: boolean;
   isFocused?: boolean;
   className?: string;
   value?: string;
@@ -78,7 +79,8 @@ class AddressInputFactoryClass extends Component<Props> {
       showIdenticon = true,
       onChangeOverride,
       value,
-      dropdownThreshold
+      dropdownThreshold,
+      showEnsResolution
     } = this.props;
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
     const sendingTo = label
@@ -121,7 +123,9 @@ class AddressInputFactoryClass extends Component<Props> {
               })
             }
           />
-          <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
+          {showEnsResolution && (
+            <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
+          )}
           {isFocused &&
             !isENSAddress && (
               <AddressFieldDropdown
