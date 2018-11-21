@@ -152,8 +152,13 @@ class RootClass extends Component<Props, State> {
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
-  const { pathname } = props.location;
+  const { pathname, search } = props.location;
   let { hash } = props.location;
+
+  if (search.includes('redirectToSignMessage')) {
+    history.push('/sign-and-verify-message');
+    return null;
+  }
 
   if (pathname === '/') {
     hash = hash.split('?')[0];
