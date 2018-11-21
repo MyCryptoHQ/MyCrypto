@@ -26,7 +26,7 @@ export default function getWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: false,
-      contextIsolation: true,
+      contextIsolation: false,
       preload: path.join(__dirname, 'preload.js')
     }
   });
@@ -54,11 +54,6 @@ export default function getWindow() {
   window.webContents.on('context-menu', (_, props) => {
     popupContextMenu(window!, isDevelopment, props);
   });
-
-  // TODO: Figure out updater release process
-  // window.webContents.on('did-finish-load', () => {
-  //   updater(window!);
-  // });
 
   window.webContents.on('devtools-opened', () => {
     window!.focus();
