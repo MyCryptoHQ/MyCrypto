@@ -11,7 +11,7 @@ interface Props {
 
 export default class AnalyticsNotice extends Component<Props> {
   public state = {
-    analytics: true
+    analytics: false
   };
 
   public render() {
