@@ -3,10 +3,15 @@ import { Link } from 'react-router-dom';
 
 import './BuyAndExchangeOption.scss';
 
-export default function BuyAndExchangeOption(props) {
+interface Props {
+  route: string;
+  option: string;
+}
+
+export default function BuyAndExchangeOption({ route, option }: Props) {
   return (
-    <Link to={props.route} className="BuyAndExchangeOption">
-      <h1>{props.option}</h1>
+    <Link to={route} className="BuyAndExchangeOption">
+      <h1>{option}</h1>
     </Link>
   );
 }
