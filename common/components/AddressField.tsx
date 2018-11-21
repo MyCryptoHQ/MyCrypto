@@ -15,6 +15,7 @@ interface OwnProps {
   showLabelMatch?: boolean;
   showIdenticon?: boolean;
   showInputLabel?: boolean;
+  showEnsResolution?: boolean;
   placeholder?: string;
   value?: string;
   dropdownThreshold?: number;
@@ -38,12 +39,14 @@ const AddressField: React.SFC<Props> = ({
   showInputLabel = true,
   onChangeOverride,
   value,
-  dropdownThreshold
+  dropdownThreshold,
+  showEnsResolution = true
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
     showLabelMatch={showLabelMatch}
     showIdenticon={showIdenticon}
+    showEnsResolution={showEnsResolution}
     onChangeOverride={onChangeOverride}
     value={value}
     dropdownThreshold={dropdownThreshold}

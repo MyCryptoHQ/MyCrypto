@@ -5,7 +5,7 @@ import translate, { translateRaw } from 'translations';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
-import { Input } from 'components/ui';
+import { ensSelectors } from 'features/ens';
 import { AddressField } from 'components';
 import './ViewOnly.scss';
 
@@ -15,6 +15,7 @@ interface OwnProps {
 
 interface StateProps {
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
+  resolvedAddress: ReturnType<typeof ensSelectors.getResolvedAddress>;
 }
 
 type Props = OwnProps & StateProps;
@@ -26,9 +27,17 @@ interface State {
 
 class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   public state = {
-    address: '',
+    address: this.props.resolvedAddress || '',
     addressFromBook: ''
   };
+
+  public componentDidUpdate({ resolvedAddress: prevResolvedAddress }: Props) {
+    const { resolvedAddress } = this.props;
+
+    if (resolvedAddress !== prevResolvedAddress) {
+      this.setState({ address: resolvedAddress || '' });
+    }
+  }
 
   public render() {
     const { isValidAddress } = this.props;
@@ -44,6 +53,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
                 value={addressFromBook}
                 showInputLabel={false}
                 showIdenticon={false}
+                showEnsResolution={false}
                 placeholder={translateRaw('SELECT_FROM_ADDRESS_BOOK')}
                 onChangeOverride={this.handleSelectAddressFromBook}
                 dropdownThreshold={0}
@@ -53,11 +63,9 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
               <em>{translate('OR')}</em>
             </section>
             <section className="ViewOnly-fields-field">
-              <Input
-                isValid={isValid}
-                className="ViewOnly-input"
-                value={address}
-                onChange={this.changeAddress}
+              <AddressField
+                showInputLabel={false}
+                showIdenticon={false}
                 placeholder={translateRaw('VIEW_ONLY_ENTER')}
               />
               <button className="ViewOnly-submit btn btn-primary btn-block" disabled={!isValid}>
@@ -69,10 +77,6 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
       </div>
     );
   }
-
-  private changeAddress = (ev: React.FormEvent<HTMLInputElement>) => {
-    this.setState({ address: ev.currentTarget.value });
-  };
 
   private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
     const { currentTarget: { value: addressFromBook } } = ev;
@@ -106,5 +110,6 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 }
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
-  isValidAddress: configSelectors.getIsValidAddressFn(state)
+  isValidAddress: configSelectors.getIsValidAddressFn(state),
+  resolvedAddress: ensSelectors.getResolvedAddress(state)
 }))(ViewOnlyDecryptClass);
