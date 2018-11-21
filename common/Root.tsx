@@ -10,9 +10,9 @@ import { onboardingSelectors } from 'features/onboarding';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
+import Swap from 'containers/Tabs/Swap';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import SendTransaction from 'containers/Tabs/SendTransaction';
-import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
@@ -28,6 +28,9 @@ import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { Theme } from 'config';
 import 'what-input';
+
+// v2
+import { BuyAndExchange, ZeroX } from 'v2';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -83,7 +86,9 @@ class RootClass extends Component<Props, State> {
         <Switch>
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
-          <Route path="/swap" component={Swap} />
+          <Route exact={true} path="/swap" component={BuyAndExchange} />
+          <Route path="/swap/shapeshift" component={Swap} />
+          <Route path="/swap/0x" component={ZeroX} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
