@@ -105,7 +105,9 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.BUY_AND_EXCHANGE.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to}>{item.title}</Link>
+                            <Link to={item.to} onClick={() => setAccessMessage('')}>
+                              {item.title}
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -118,7 +120,9 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.TOOLS.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to}>{item.title}</Link>
+                            <Link to={item.to} onClick={() => setAccessMessage('')}>
+                              {item.title}
+                            </Link>
                           </li>
                         ))}
                       </ul>

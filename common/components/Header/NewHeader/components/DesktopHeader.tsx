@@ -126,7 +126,9 @@ class DesktopHeader extends Component<Props> {
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.BUY_AND_EXCHANGE.map(item => (
                       <li key={item.to}>
-                        <Link to={item.to}>{item.title}</Link>
+                        <Link to={item.to} onClick={() => setAccessMessage('')}>
+                          {item.title}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -142,7 +144,9 @@ class DesktopHeader extends Component<Props> {
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.TOOLS.map(item => (
                       <li key={item.to} onClick={this.toggleTools}>
-                        <Link to={item.to}>{item.title}</Link>
+                        <Link to={item.to} onClick={() => setAccessMessage('')}>
+                          {item.title}
+                        </Link>
                       </li>
                     ))}
                   </ul>
