@@ -11,20 +11,33 @@ interface Props {
 
 export default class AnalyticsNotice extends Component<Props> {
   public state = {
-    basic: true,
     analytics: true
   };
 
   public render() {
-    const { basic, analytics } = this.state;
+    const { analytics } = this.state;
+
+    const image = <img src={milkAndCookie} alt="Milk and cookies" />;
+    const text = (
+      <React.Fragment>
+        <h2>{translate('ANALYTICS_NOTICE_1')}</h2>
+        <p>{translate('ANALYTICS_NOTICE_2')}</p>
+      </React.Fragment>
+    );
 
     return (
       <section className="AnalyticsNotice-wrapper">
         <section className="AnalyticsNotice">
-          <section className="AnalyticsNotice-image">
+          <div className="only-mobile">
+            <div className="AnalyticsNotice-inner-wrapper">
+              <section className="AnalyticsNotice-image">{image}</section>
+              <section className="AnalyticsNotice-text">{text}</section>
+            </div>
+          </div>
+          <section className="AnalyticsNotice-image only-desktop">
             <img src={milkAndCookie} alt="Milk and cookies" />
           </section>
-          <section className="AnalyticsNotice-text">
+          <section className="AnalyticsNotice-text only-desktop">
             <h2>{translate('ANALYTICS_NOTICE_1')}</h2>
             <p>{translate('ANALYTICS_NOTICE_2')}</p>
           </section>
@@ -35,8 +48,8 @@ export default class AnalyticsNotice extends Component<Props> {
                   id="analytics_basic"
                   name="basic"
                   type="checkbox"
-                  checked={basic}
-                  onChange={this.handleCheck}
+                  checked={true}
+                  disabled={true}
                 />
                 {translate('ANALYTICS_NOTICE_4')}
               </label>
@@ -66,8 +79,8 @@ export default class AnalyticsNotice extends Component<Props> {
 
   private handleAccept = () => {
     const { setAcknowledgement } = this.props;
-    const { basic, analytics } = this.state;
+    const { analytics } = this.state;
 
-    setAcknowledgement({ basic, analytics });
+    setAcknowledgement({ basic: true, analytics });
   };
 }

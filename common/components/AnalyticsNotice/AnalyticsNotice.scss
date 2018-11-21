@@ -14,36 +14,71 @@
 
 .AnalyticsNotice {
   display: flex;
-  max-width: 1200px;
-  padding: 0 23px 23px 23px;
+  flex-direction: column;
+  min-width: 380px;
+  max-width: 1400px;
+  padding: 18px;
 
+  &-inner-wrapper {
+    display: flex;
+    margin-bottom: 1rem;
+  }
   &-image {
-    flex: 0 0 160px;
+    flex: 1;
     position: relative;
 
     img {
-      position: absolute;
-      bottom: 0.3rem;
-      width: 161px;
-      height: 168px;
+      position: relative;
+      width: 101px;
+      height: 108px;
       max-width: initial;
+
+      @media (min-width: 768px) {
+        position: absolute;
+        top: -2rem;
+        width: 161px;
+        height: 168px;
+      }
+      @media (min-width: 1100px) {
+        top: initial;
+        bottom: 0.3rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      flex: 0 0 160px;
     }
   }
   &-text {
-    flex: 6;
+    flex: 3;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 14px 23px 0 14px;
+    margin-bottom: 35px;
+    padding: 0 5px;
 
     h2 {
       margin: 0;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
+
+      @media (min-width: 768px) {
+        font-size: 22px;
+      }
     }
     p {
       margin: 0;
-      font-size: 18px;
+      font-size: 12px;
+
+      @media (min-width: 768px) {
+        font-size: 18px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      flex: 6;
+      margin-bottom: 0;
+      padding: 14px 23px 0 14px;
     }
   }
   &-controls {
@@ -51,7 +86,6 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding-left: 48px;
 
     &-levels {
       display: flex;
@@ -61,16 +95,65 @@
 
       label {
         display: flex;
-        align-content: center;
+        align-items: center;
         margin: 0;
 
         input {
+          margin-top: 0;
+          margin-bottom: 0;
           margin-right: 5px;
+        }
+
+        @media (min-width: 768px) {
+          &:first-of-type {
+            margin-top: 12px;
+          }
+
+          margin-bottom: 12px;
+        }
+        @media (min-width: 1100px) {
+          &:first-of-type {
+            margin-top: 0;
+          }
+
+          margin-bottom: 0;
         }
       }
       a {
         color: #1eb8e7;
       }
+
+      @media (min-width: 768px) {
+        flex-direction: column;
+      }
+      @media (min-width: 1100px) {
+        flex-direction: row;
+      }
     }
+
+    @media (min-width: 768px) {
+      padding-left: 48px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    padding: 0 23px 23px 23px;
+  }
+}
+
+.only-mobile {
+  display: initial;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.only-desktop {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: initial;
   }
 }
