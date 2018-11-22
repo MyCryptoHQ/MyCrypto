@@ -7,6 +7,9 @@ export const API_SERVICE_DEFAULT_HEADERS = {
   'Content-Type': 'application/json'
 };
 
+// How long should fetches stay alive in cache?
+export const CACHE_TIME_TO_LIVE = 1000 * 5;
+
 // All tokens ShapeShift carries that MyCrypto agrees to support.
 export const SHAPESHIFT_TOKEN_WHITELIST = [
   'OMG',

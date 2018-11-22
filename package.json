@@ -34,6 +34,7 @@
     "jsonschema": "1.2.4",
     "lodash": "4.17.5",
     "lodash.flatten": "^4.4.0",
+    "lodash.get": "^4.4.2",
     "moment": "2.22.1",
     "moment-timezone": "0.5.14",
     "mycrypto-eth-exists": "1.0.0",

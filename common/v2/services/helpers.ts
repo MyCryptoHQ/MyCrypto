@@ -1,4 +1,11 @@
-import { SHAPESHIFT_ASSET_WHITELIST } from './constants';
+import { CACHE_TIME_TO_LIVE, SHAPESHIFT_ASSET_WHITELIST } from './constants';
+
+export interface Cache {
+  [entry: string]: {
+    value: any;
+    ttl: number;
+  };
+}
 
 export const createAssetMap = (pairs: any[]) =>
   pairs.reduce((prev, next) => {
@@ -16,3 +23,17 @@ export const getAssetIntersection = (assets: any[]) => {
   const whitelistedAssetMap = createAssetMap(SHAPESHIFT_ASSET_WHITELIST);
   return assets.filter(asset => whitelistedAssetMap[asset]);
 };
+
+export const addValueToCache = (cache: Cache, entry: string, value: any) =>
+  (cache[entry] = {
+    value,
+    ttl: Date.now() + CACHE_TIME_TO_LIVE
+  });
+
+export const removeValueFromCache = (cache: Cache, entry: string) => {
+  const { [entry]: _, ...newCache } = cache;
+
+  return newCache;
+};
+
+export const cachedValueIsFresh = (cached: any): boolean => cached && Date.now() < cached.ttl;

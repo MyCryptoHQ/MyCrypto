@@ -1,2 +1,2 @@
-export { default as APIService } from './APIService';
+export { default as APIService } from './API';
 export { default as ShapeShiftService } from './ShapeShift';

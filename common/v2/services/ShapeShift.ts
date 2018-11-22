@@ -1,10 +1,21 @@
-import APIService from './APIService';
-import { createAssetMap, getAssetIntersection } from './helpers';
+import get from 'lodash/get';
+
+import APIService from './API';
+import {
+  Cache,
+  cachedValueIsFresh,
+  addValueToCache,
+  removeValueFromCache,
+  createAssetMap,
+  getAssetIntersection
+} from './helpers';
 
 let instantiated = false;
 
 export default class ShapeShiftService {
   public static instance = new ShapeShiftService();
+
+  private cache: Cache = {};
 
   private service = APIService.generateInstance({
     baseURL: 'https://shapeshift.io'
@@ -20,9 +31,19 @@ export default class ShapeShiftService {
 
   public async getValidPairs() {
     try {
+      const cachedPairs = get(this.cache, 'validPairs', {});
+
+      if (cachedValueIsFresh(cachedPairs)) {
+        return get(cachedPairs, 'value');
+      } else {
+        removeValueFromCache(this.cache, 'validPairs');
+      }
+
       const { data } = await this.service.get(`/validpairs`);
       const assetMap = createAssetMap(data);
       const validPairs = getAssetIntersection(Object.keys(assetMap));
+
+      addValueToCache(this.cache, 'validPairs', validPairs);
 
       return validPairs;
     } catch (error) {
