@@ -103,6 +103,14 @@ class ShapeshiftService {
 
   public constructor() {
     this.retrieveAccessTokenFromStorage();
+
+    if (process.env.BUILD_ELECTRON) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.on('shapeshift-set-token', (_: any, token: string) =>
+        this.saveAccessTokenToStorage(token)
+      );
+    }
   }
 
   public hasToken() {
@@ -173,7 +181,13 @@ class ShapeshiftService {
     });
     const url = `${SHAPESHIFT_API_URL}?${query}`;
 
-    window.open(url, '_blank', 'width=800, height=600, menubar=yes');
+    if (process.env.BUILD_ELECTRON) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.send('shapeshift-authorize', url);
+    } else {
+      window.open(url, '_blank', 'width=800, height=600, menubar=yes');
+    }
   };
 
   public requestAccessToken = async () => {
@@ -185,6 +199,12 @@ class ShapeshiftService {
 
     this.token = token;
     this.saveAccessTokenToStorage(token);
+
+    if (process.env.BUILD_ELECTRON) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.send('shapeshift-token-retrieved', token);
+    }
   };
 
   public addUnavailableCoinsAndTokens = (availableCoinsAndTokens: TokenMap) => {
