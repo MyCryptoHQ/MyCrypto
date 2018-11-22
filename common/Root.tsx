@@ -83,7 +83,6 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          {console.log(gatherFeatureRoutes())}
           {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />

@@ -1,8 +1,5 @@
 import BuyAndExchange from './BuyAndExchange';
-import { ZeroEx } from './containers';
-
-// Legacy
-import Swap from 'containers/Tabs/Swap';
+import { ShapeShift, ZeroEx } from './containers';
 
 export default [
   {
@@ -14,7 +11,7 @@ export default [
   {
     name: 'Buy and Exchange | ShapeShift',
     path: '/swap/shapeshift',
-    component: Swap
+    component: ShapeShift
   },
   {
     name: 'Buy and Exchange | 0x Instant',
