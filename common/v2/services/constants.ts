@@ -1,5 +1,5 @@
 // How long should the APIService wait before abandoning a request?
-export const API_SERVICE_TIMEOUT = 1000;
+export const API_SERVICE_TIMEOUT = 10000;
 
 // These are the headers all request start with.
 export const API_SERVICE_DEFAULT_HEADERS = {
@@ -8,7 +8,7 @@ export const API_SERVICE_DEFAULT_HEADERS = {
 };
 
 // How long should fetches stay alive in cache?
-export const CACHE_TIME_TO_LIVE = 1000 * 5;
+export const CACHE_TIME_TO_LIVE = 1000 * 60 * 5;
 
 // All tokens ShapeShift carries that MyCrypto agrees to support.
 export const SHAPESHIFT_TOKEN_WHITELIST = [

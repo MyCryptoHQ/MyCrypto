@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { ShapeShiftService } from 'v2/services';
+import { ShapeShiftPairForm } from '../components';
 import './ShapeShift.scss';
 
 // Legacy
@@ -40,13 +41,7 @@ export default class ShapeShift extends Component<State> {
       <TabSection>
         <section className="ShapeShift">
           <section className="Tab-content-pane">
-            <select>
-              {buy.map((asset, id) => (
-                <option key={id} value={asset}>
-                  {asset}
-                </option>
-              ))}
-            </select>
+            <ShapeShiftPairForm />
           </section>
         </section>
       </TabSection>
