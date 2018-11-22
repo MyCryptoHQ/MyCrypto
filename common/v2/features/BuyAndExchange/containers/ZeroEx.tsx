@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 
-// Legacy
-import TabSection from 'containers/TabSection';
-
 import { replaceZeroExContainer } from '../helpers';
+import { ZEROEX_CONTAINER_ID, ZEROEX_RELAYER } from '../constants';
 import './ZeroEx.scss';
 
-export const ZEROEX_CONTAINER_ID = 'ZeroEx';
-export const RELAYER = 'https://api.radarrelay.com/0x/v2/';
+// Legacy
+import TabSection from 'containers/TabSection';
 
 export default class ZeroEx extends Component {
   public componentDidMount() {
@@ -30,7 +28,7 @@ export default class ZeroEx extends Component {
     if (zeroExInstant) {
       zeroExInstant.render(
         {
-          orderSource: RELAYER
+          orderSource: ZEROEX_RELAYER
         },
         `#${ZEROEX_CONTAINER_ID}`
       );

@@ -1,4 +1,4 @@
-import { ZEROEX_CONTAINER_ID } from './components';
+import { ZEROEX_CONTAINER_ID } from './constants';
 
 /**
  * Warning!

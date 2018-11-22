@@ -1,10 +1,10 @@
 import React from 'react';
 
-// Legacy
-import TabSection from 'containers/TabSection';
-
 import { BuyAndExchangeOption } from './components';
 import './BuyAndExchange.scss';
+
+// Legacy
+import TabSection from 'containers/TabSection';
 
 export default function BuyAndExchange() {
   return (
