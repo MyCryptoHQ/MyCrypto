@@ -22,8 +22,7 @@
     "classnames": "2.2.5",
     "electron-updater": "2.21.10",
     "ethereum-blockies-base64": "1.0.2",
-    "ethereumjs-abi":
-      "git://github.com/ethereumjs/ethereumjs-abi.git#09c3c48fd3bed143df7fa8f36f6f164205e23796",
+    "ethereumjs-abi": "git://github.com/ethereumjs/ethereumjs-abi.git#09c3c48fd3bed143df7fa8f36f6f164205e23796",
     "ethereumjs-tx": "1.3.4",
     "ethereumjs-util": "5.1.5",
     "ethereumjs-wallet": "0.6.0",
@@ -33,6 +32,7 @@
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.4",
     "lodash": "4.17.5",
+    "lodash.flatten": "^4.4.0",
     "moment": "2.22.1",
     "moment-timezone": "0.5.14",
     "mycrypto-eth-exists": "1.0.0",
@@ -169,19 +169,13 @@
     "prebuild": "check-node-version --package",
     "build:downloadable": "webpack --mode=production --config webpack_config/webpack.html.js",
     "prebuild:downloadable": "check-node-version --package",
-    "build:electron":
-      "webpack --config webpack_config/webpack.electron-prod.js && node webpack_config/buildElectron.js",
-    "build:electron:osx":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=osx node webpack_config/buildElectron.js",
-    "build:electron:windows":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=windows node webpack_config/buildElectron.js",
-    "build:electron:linux":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=linux node webpack_config/buildElectron.js",
+    "build:electron": "webpack --config webpack_config/webpack.electron-prod.js && node webpack_config/buildElectron.js",
+    "build:electron:osx": "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=osx node webpack_config/buildElectron.js",
+    "build:electron:windows": "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=windows node webpack_config/buildElectron.js",
+    "build:electron:linux": "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=linux node webpack_config/buildElectron.js",
     "prebuild:electron": "check-node-version --package",
-    "jenkins:build:linux":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_LINUX node webpack_config/buildElectron.js",
-    "jenkins:build:mac":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_MAC node webpack_config/buildElectron.js",
+    "jenkins:build:linux": "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_LINUX node webpack_config/buildElectron.js",
+    "jenkins:build:mac": "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_MAC node webpack_config/buildElectron.js",
     "jenkins:upload": "node jenkins/upload",
     "test:coverage": "jest --config=jest_config/jest.config.json --coverage",
     "test": "jest --config=jest_config/jest.config.json",
@@ -194,16 +188,13 @@
     "predev": "check-node-version --package",
     "dev:https": "HTTPS=true node webpack_config/devServer.js",
     "predev:https": "check-node-version --package",
-    "dev:electron":
-      "concurrently --kill-others --names 'webpack,electron' 'BUILD_ELECTRON=true node webpack_config/devServer.js' 'webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js'",
+    "dev:electron": "concurrently --kill-others --names 'webpack,electron' 'BUILD_ELECTRON=true node webpack_config/devServer.js' 'webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js'",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
     "precommit": "lint-staged",
-    "formatAll":
-      "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
-    "prettier:diff":
-      "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
+    "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
+    "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
     "prepush": "npm run tslint && npm run tscheck",
     "update:tokens": "ts-node scripts/update-tokens",
     "postinstall": "electron-rebuild --force"

@@ -29,7 +29,7 @@ import { Theme } from 'config';
 import 'what-input';
 
 // v2
-import { buyAndExchangeRoutes } from 'v2/features/BuyAndExchange';
+import { gatherFeatureRoutes } from 'v2';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -83,9 +83,10 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
+          {console.log(gatherFeatureRoutes())}
+          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
-          {buyAndExchangeRoutes.map(config => <Route key={config.name} {...config} />)}
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
