@@ -3,45 +3,39 @@ import { Formik, Form, Field } from 'formik';
 
 import './ShapeShiftPairForm.scss';
 
-export default function ShapeShiftPairForm({ onAssetChange }) {
+export default function ShapeShiftPairForm({
+  onAssetChange,
+  onAmountChange,
+  deposit,
+  depositAmount,
+  withdraw,
+  withdrawAmount
+}) {
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={{
-        depositAsset: '',
-        depositAmount: '0',
-        receiveAsset: '',
-        receiveAmount: '0'
+        deposit,
+        depositAmount,
+        withdraw,
+        withdrawAmount
       }}
       onSubmit={console.log}
-      render={({ handleChange }) => (
+      render={() => (
         <Form>
           <fieldset>
             <label htmlFor="deposit">I will deposit</label>
-            <Field name="depositAmount" />
-            <Field
-              component="select"
-              name="depositAsset"
-              onChange={e => {
-                handleChange(e);
-                onAssetChange(e);
-              }}
-            >
+            <Field name="depositAmount" onChange={onAmountChange} />
+            <Field component="select" name="deposit" onChange={onAssetChange}>
               <option value="">Select an asset</option>
               <option value="BTC">BTC</option>
               <option value="ETH">ETH</option>
             </Field>
           </fieldset>
           <fieldset>
-            <label htmlFor="withdraw">I will receive</label>
-            <Field name="withdrawAmount" />
-            <Field
-              component="select"
-              name="withdrawAsset"
-              onChange={e => {
-                handleChange(e);
-                onAssetChange(e);
-              }}
-            >
+            <label htmlFor="withdraw">I will withdraw</label>
+            <Field name="withdrawAmount" onChange={onAmountChange} />
+            <Field component="select" name="withdraw" onChange={onAssetChange}>
               <option value="">Select an asset</option>
               <option value="BTC">BTC</option>
               <option value="ETH">ETH</option>

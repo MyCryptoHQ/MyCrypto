@@ -39,7 +39,7 @@ interface MarketPair {
   min: number;
   minerFee: number;
   pair: string;
-  rate: string;
+  rate: number;
 }
 
 interface RatesResponse {
@@ -86,7 +86,7 @@ export default class ShapeShiftService {
   private service = APIService.generateInstance({
     baseURL: 'https://shapeshift.io',
     headers: {
-      Authorization: `Bearer D7RsJUp2AQ92UJgsZa43ujekScZ7rZDic5oMDzyYEkaZ`
+      Authorization: `Bearer FSa39bx1MY683L9FvYcjWCBSZBg7hUinbGwoqu5wwAma`
     }
   });
 

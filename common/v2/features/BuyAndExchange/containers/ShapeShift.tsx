@@ -7,26 +7,33 @@ import './ShapeShift.scss';
 // Legacy
 import TabSection from 'containers/TabSection';
 
+type Field = 'deposit' | 'withdraw';
+
+interface AssetField {
+  selected: string;
+    amount: string;
+    options: string[];
+    lastUpdateWasAutomatic: boolean;
+}
+
 interface State {
-  selected: {
-    deposit: string | null;
-    withdraw: string | null;
-  };
-  options: {
-    deposit: string[];
-    withdraw: string[];
-  };
+  deposit: AssetField;
+  withdraw: AssetField;
 }
 
 export default class ShapeShift extends Component {
   public state: State = {
-    selected: {
-      deposit: null,
-      withdraw: null
+    deposit: {
+      selected: 'ETH',
+      amount: '0.00',
+      options: [],
+      lastUpdateWasAutomatic: false
     },
-    options: {
-      deposit: [],
-      withdraw: []
+    withdraw: {
+      selected: 'BTC',
+      amount: '0.00',
+      options: [],
+      lastUpdateWasAutomatic: false
     }
   };
 
@@ -35,24 +42,40 @@ export default class ShapeShift extends Component {
   }
 
   public componentDidUpdate(_, prevState: State) {
-    const { selected: { deposit, withdraw } } = this.state;
-    const { selected: { deposit: prevDeposit, withdraw: prevWithdraw } } = prevState;
-    const pair = `${withdraw}_${deposit}`;
-    const prevPair = `${prevWithdraw}_${prevDeposit}`;
+    const {
+      deposit: { selected: depositSelected, amount: depositAmount, lastUpdateWasAutomatic: depositLastUpdateWasAutomatic },
+      withdraw: { selected: withdrawSelected, amount: withdrawAmount, lastUpdateWasAutomatic: withdrawLastUpdateWasAutomatic }
+    } = this.state;
+    const {
+      deposit: { selected: prevDepositSelected, amount: prevDepositAmount },
+      withdraw: { selected: prevWithdrawSelected, amount: prevWithdrawAmount }
+    } = prevState;
 
-    if (deposit && withdraw && pair !== prevPair) {
-      this.setRates();
+    if ((depositSelected !== prevDepositSelected || depositAmount !== prevDepositAmount) && !depositLastUpdateWasAutomatic) {
+      this.setOtherAmount('deposit');
+    } else if ((withdrawSelected !== prevWithdrawSelected || withdrawAmount !== prevWithdrawAmount) && !withdrawLastUpdateWasAutomatic) {
+      this.setOtherAmount('withdraw');
     }
   }
 
   public render() {
-    console.log('\n\n\n', 'this.state.selected', this.state.selected, '\n\n\n');
+    const {
+      deposit: { selected: depositSelected, amount: depositAmount },
+      withdraw: { selected: withdrawSelected, amount: withdrawAmount }
+    } = this.state;
 
     return (
       <TabSection>
         <section className="ShapeShift">
           <section className="Tab-content-pane">
-            <ShapeShiftPairForm onAssetChange={this.setAssets} />
+            <ShapeShiftPairForm
+              onAssetChange={this.setSelected}
+              onAmountChange={this.setAmount}
+              deposit={depositSelected}
+              depositAmount={depositAmount}
+              withdraw={withdrawSelected}
+              withdrawAmount={withdrawAmount}
+            />
             <div>
               <p>Rate</p>
             </div>
@@ -62,54 +85,71 @@ export default class ShapeShift extends Component {
     );
   }
 
-  private setDepositOptions = (options: string[]) =>
-    this.setState((prevState: State) => ({
-      options: {
-        ...prevState.options,
-        deposit: options
+  private setSelected = ({ target: { name, value: selected } }: any) =>
+    this.setState((prevState: any) => ({
+      [name]: {
+        ...prevState[name],
+        selected
       }
     }));
 
-  private setWithdrawOptions = (options: string[]) =>
+  private setAmount = ({ target: { name, value: amount } }: any) => {
+    const fields = {
+      depositAmount: 'deposit',
+      withdrawAmount: 'withdraw'
+    };
+    const field = fields[name];
+
+    this.setState((prevState: any) => ({
+      [field]: {
+        ...prevState[field],
+        amount,
+        lastUpdateWasAutomatic: false
+      }
+    }));
+  };
+
+  private setOptions = (field: Field, options: string[]) =>
     this.setState((prevState: State) => ({
-      options: {
-        ...prevState.options,
-        withdraw: options
+      [field]: {
+        ...prevState[field],
+        options
       }
     }));
 
   private populateDropdowns = async () => {
     const pairs = await ShapeShiftService.instance.getValidPairs();
 
-    this.setDepositOptions(pairs);
-    this.setWithdrawOptions(pairs);
+    this.setOptions('deposit', pairs);
+    this.setOptions('withdraw', pairs);
   };
 
-  private setAssets = async ({ target: { name, value } }) => {
-    if (name === 'depositAsset') {
-      this.setState(prevState => ({
-        selected: {
-          ...prevState.selected,
-          deposit: value
+  private setOtherAmount = async (field: Field) => {
+    const {
+      deposit: { selected: depositSelected },
+      withdraw: { selected: withdrawSelected }
+    } = this.state;
+    const pair = `${withdrawSelected}_${depositSelected}`;
+    const oppositeFields = {
+      deposit: 'withdraw',
+      withdraw: 'deposit'
+    };
+    const marketInfo = await ShapeShiftService.instance.getMarketInfo(pair);
+
+    if (marketInfo && !(marketInfo instanceof Array)) {
+      const { [field]: { amount: staticAmount } } = this.state;
+      const { rate } = marketInfo;
+      const fieldToChange = oppositeFields[field];
+      const numericalAmount = parseFloat(staticAmount);
+      const newAmount = (numericalAmount * rate).toString();
+
+      this.setState((prevState: any) => ({
+        [fieldToChange]: {
+          ...prevState[fieldToChange],
+          amount: newAmount,
+          lastUpdateWasAutomatic: true
         }
       }));
     }
-
-    if (name === 'withdrawAsset') {
-      this.setState(prevState => ({
-        selected: {
-          ...prevState.selected,
-          withdraw: value
-        }
-      }));
-    }
-  };
-
-  private setRates = async () => {
-    const { selected: { deposit, withdraw } } = this.state;
-    const pair = `${withdraw}_${deposit}`;
-    const rates = await ShapeShiftService.instance.getRates(pair);
-
-    console.log('\n\n\n', 'rates', rates, '\n\n\n');
   };
 }
