@@ -9,24 +9,24 @@ import TabSection from 'containers/TabSection';
 
 interface State {
   selected: {
-    buy: string | null;
-    trade: string | null;
+    deposit: string | null;
+    withdraw: string | null;
   };
   options: {
-    buy: string[];
-    trade: string[];
+    deposit: string[];
+    withdraw: string[];
   };
 }
 
-export default class ShapeShift extends Component<State> {
-  public state = {
+export default class ShapeShift extends Component {
+  public state: State = {
     selected: {
-      buy: null,
-      trade: null
+      deposit: null,
+      withdraw: null
     },
     options: {
-      buy: [],
-      trade: []
+      deposit: [],
+      withdraw: []
     }
   };
 
@@ -34,40 +34,82 @@ export default class ShapeShift extends Component<State> {
     this.populateDropdowns();
   }
 
+  public componentDidUpdate(_, prevState: State) {
+    const { selected: { deposit, withdraw } } = this.state;
+    const { selected: { deposit: prevDeposit, withdraw: prevWithdraw } } = prevState;
+    const pair = `${withdraw}_${deposit}`;
+    const prevPair = `${prevWithdraw}_${prevDeposit}`;
+
+    if (deposit && withdraw && pair !== prevPair) {
+      this.setRates();
+    }
+  }
+
   public render() {
-    const { options: { buy } } = this.state;
+    console.log('\n\n\n', 'this.state.selected', this.state.selected, '\n\n\n');
 
     return (
       <TabSection>
         <section className="ShapeShift">
           <section className="Tab-content-pane">
-            <ShapeShiftPairForm />
+            <ShapeShiftPairForm onAssetChange={this.setAssets} />
+            <div>
+              <p>Rate</p>
+            </div>
           </section>
         </section>
       </TabSection>
     );
   }
 
-  private setBuyOptions = (options: string[]) =>
+  private setDepositOptions = (options: string[]) =>
     this.setState((prevState: State) => ({
       options: {
         ...prevState.options,
-        buy: options
+        deposit: options
       }
     }));
 
-  private setTradeOptions = (options: string[]) =>
+  private setWithdrawOptions = (options: string[]) =>
     this.setState((prevState: State) => ({
       options: {
         ...prevState.options,
-        trade: options
+        withdraw: options
       }
     }));
 
   private populateDropdowns = async () => {
     const pairs = await ShapeShiftService.instance.getValidPairs();
 
-    this.setBuyOptions(pairs);
-    this.setTradeOptions(pairs);
+    this.setDepositOptions(pairs);
+    this.setWithdrawOptions(pairs);
+  };
+
+  private setAssets = async ({ target: { name, value } }) => {
+    if (name === 'depositAsset') {
+      this.setState(prevState => ({
+        selected: {
+          ...prevState.selected,
+          deposit: value
+        }
+      }));
+    }
+
+    if (name === 'withdrawAsset') {
+      this.setState(prevState => ({
+        selected: {
+          ...prevState.selected,
+          withdraw: value
+        }
+      }));
+    }
+  };
+
+  private setRates = async () => {
+    const { selected: { deposit, withdraw } } = this.state;
+    const pair = `${withdraw}_${deposit}`;
+    const rates = await ShapeShiftService.instance.getRates(pair);
+
+    console.log('\n\n\n', 'rates', rates, '\n\n\n');
   };
 }

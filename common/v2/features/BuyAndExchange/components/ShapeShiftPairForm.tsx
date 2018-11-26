@@ -3,30 +3,46 @@ import { Formik, Form, Field } from 'formik';
 
 import './ShapeShiftPairForm.scss';
 
-export default function ShapeShiftPairForm() {
+export default function ShapeShiftPairForm({ onAssetChange }) {
   return (
     <Formik
       initialValues={{
-        depositAsset: 'ETH',
+        depositAsset: '',
         depositAmount: '0',
-        receiveAsset: 'BTC',
+        receiveAsset: '',
         receiveAmount: '0'
       }}
       onSubmit={console.log}
-      render={props => (
+      render={({ handleChange }) => (
         <Form>
           <fieldset>
             <label htmlFor="deposit">I will deposit</label>
             <Field name="depositAmount" />
-            <Field component="select" name="depositAsset">
+            <Field
+              component="select"
+              name="depositAsset"
+              onChange={e => {
+                handleChange(e);
+                onAssetChange(e);
+              }}
+            >
+              <option value="">Select an asset</option>
               <option value="BTC">BTC</option>
               <option value="ETH">ETH</option>
             </Field>
           </fieldset>
           <fieldset>
-            <label htmlFor="deposit">I will receive</label>
-            <Field name="receiveAmount" />
-            <Field component="select" name="receiveAsset">
+            <label htmlFor="withdraw">I will receive</label>
+            <Field name="withdrawAmount" />
+            <Field
+              component="select"
+              name="withdrawAsset"
+              onChange={e => {
+                handleChange(e);
+                onAssetChange(e);
+              }}
+            >
+              <option value="">Select an asset</option>
               <option value="BTC">BTC</option>
               <option value="ETH">ETH</option>
             </Field>
