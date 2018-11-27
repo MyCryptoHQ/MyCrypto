@@ -10,13 +10,14 @@ import TabSection from 'containers/TabSection';
 enum Stages {
   Pair,
   Address,
-  Confirmation
+  Send
 }
 
 interface State {
   options: string[];
   pair: any | null;
   address: any | null;
+  transaction: any | null;
   pairHash: MarketPairHash | null;
   stage: Stages;
 }
@@ -26,6 +27,7 @@ export default class ShapeShift extends Component {
     options: [],
     pair: null,
     address: null,
+    transaction: null,
     pairHash: null,
     stage: Stages.Pair
   };
@@ -36,7 +38,7 @@ export default class ShapeShift extends Component {
   }
 
   public render() {
-    const { pairHash, stage, pair } = this.state;
+    const { pairHash, stage, pair, transaction } = this.state;
 
     return (
       <TabSection>
@@ -46,9 +48,25 @@ export default class ShapeShift extends Component {
               <ShapeShiftPairForm rates={pairHash} onSubmit={this.loadAddressForm} />
             )}
             {stage === Stages.Address && (
-              <ShapeShiftAddressForm asset={pair.withdraw} onSubmit={this.loadConfirmationForm} />
+              <ShapeShiftAddressForm asset={pair.withdraw} onSubmit={this.loadSendScreen} />
             )}
-            {stage === Stages.Confirmation && <div>Confirmation</div>}
+            {stage === Stages.Send && (
+              <React.Fragment>
+                <ul>
+                  <li>Reference number: {transaction.orderId}</li>
+                  <li>
+                    Amount of {pair.withdraw} to receive: {transaction.withdrawalAmount}
+                  </li>
+                  <li>
+                    Rate: {transaction.quotedRate} {pair.withdraw}/{pair.deposit}
+                  </li>
+                </ul>
+                <p>
+                  Send {transaction.depositAmount} {pair.deposit} to{' '}
+                </p>
+                <input type="text" disabled={true} value={transaction.deposit} />
+              </React.Fragment>
+            )}
           </section>
         </section>
       </TabSection>
@@ -73,9 +91,19 @@ export default class ShapeShift extends Component {
       stage: Stages.Address
     });
 
-  private loadConfirmationForm = (values: any) =>
+  private loadSendScreen = async (values: any) => {
+    const { pair, address } = this.state;
+    const config = {
+      amount: pair.withdrawAmount,
+      withdrawal: address,
+      pair: `${pair.deposit}_${pair.withdraw}`
+    };
+    const transaction = await ShapeShiftService.instance.sendAmount(config);
+
     this.setState({
       address: values.address,
-      stage: Stages.Confirmation
+      stage: Stages.Send,
+      transaction
     });
+  };
 }
