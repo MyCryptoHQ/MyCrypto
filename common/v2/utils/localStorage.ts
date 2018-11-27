@@ -1,5 +1,16 @@
-export const storageGet = (key: string): any => {
-  if (window && window.localStorage) {
+const attemptStorageInteraction = (fn: () => any) => {
+  try {
+    return fn();
+  } catch {
+    throw new Error(`LocalStorage is not available on window.`);
+  }
+};
+
+// tslint:disable-next-line
+const noop = () => {};
+
+export const storageGet = (key: string): any =>
+  attemptStorageInteraction(() => {
     const stored = window.localStorage.getItem(key);
 
     if (stored) {
@@ -11,15 +22,24 @@ export const storageGet = (key: string): any => {
     }
 
     return null;
-  }
+  });
 
-  throw new Error(`LocalStorage is not available on window.`);
-};
-
-export const storageSet = (key: string, value: any) => {
-  if (window && window.localStorage) {
+export const storageSet = (key: string, value: any) =>
+  attemptStorageInteraction(() => {
     return window.localStorage.setItem(key, JSON.stringify(value));
-  }
+  });
 
-  throw new Error(`LocalStorage is not available on window.`);
-};
+export const storageListen = (
+  key: string,
+  setCallback: () => void,
+  clearCallback: () => void = noop
+) =>
+  attemptStorageInteraction(() => {
+    return window.addEventListener('storage', e => {
+      const { key: eventKey, isTrusted, newValue } = e;
+
+      if (key === eventKey && isTrusted) {
+        newValue ? setCallback() : clearCallback();
+      }
+    });
+  });

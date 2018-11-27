@@ -11,16 +11,16 @@ export interface NewCacheEntry {
 
 export type DepositStatus = 'error' | 'complete' | 'no_deposits';
 
-export interface DepositStatusResponse {
+export interface DepositStatusResponseBase {
   status: DepositStatus;
   address: string;
 }
 
-export interface DepositStatusIncompleteResponse extends DepositStatusResponse {
+export interface DepositStatusIncompleteResponse extends DepositStatusResponseBase {
   error: string;
 }
 
-export interface DepositStatusCompleteResponse extends DepositStatusResponse {
+export interface DepositStatusCompleteResponse extends DepositStatusResponseBase {
   withdraw: string;
   incomingCoin: number;
   incomingType: string;
@@ -29,7 +29,12 @@ export interface DepositStatusCompleteResponse extends DepositStatusResponse {
   transaction: string;
 }
 
-export type DepositStatusNoneResponse = DepositStatusResponse;
+export type DepositStatusNoneResponse = DepositStatusResponseBase;
+
+export type DepositStatusResponse =
+  | DepositStatusNoneResponse
+  | DepositStatusIncompleteResponse
+  | DepositStatusCompleteResponse;
 
 export interface MarketPair {
   limit: number;

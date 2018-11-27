@@ -52,6 +52,8 @@ export const SHAPESHIFT_ASSET_WHITELIST_HASH: ShapeShiftAssetWhitelistHash = SHA
   {} as ShapeShiftAssetWhitelistHash
 );
 
+export const SHAPESHIFT_API_URL = 'https://shapeshift.io';
+
 export const SHAPESHIFT_ACCESS_TOKEN = 'c640aa85-dd01-4db1-a6f2-ed57e6fd6c54';
 
 export const SHAPESHIFT_CLIENT_ID = 'fcbbb372-4221-4436-b345-024d91384652';

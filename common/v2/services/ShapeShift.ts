@@ -1,9 +1,10 @@
 import { AxiosInstance } from 'axios';
 import queryString from 'query-string';
 
-import { logError, storageGet, storageSet, isDesktop } from 'v2/utils';
+import { logError, storageGet, storageSet, storageListen, isDesktop } from 'v2/utils';
 import APIService from './API';
 import {
+  SHAPESHIFT_API_URL,
   SHAPESHIFT_ACCESS_TOKEN,
   SHAPESHIFT_CLIENT_ID,
   SHAPESHIFT_REDIRECT_URI,
@@ -22,9 +23,7 @@ import {
   Cache,
   MarketPair,
   MarketPairHash,
-  DepositStatusCompleteResponse,
-  DepositStatusIncompleteResponse,
-  DepositStatusNoneResponse,
+  DepositStatusResponse,
   TimeRemainingResponse,
   RatesResponse,
   SendAmountRequest,
@@ -33,13 +32,13 @@ import {
 
 let instantiated = false;
 
-export default class ShapeShiftService {
-  public static instance = new ShapeShiftService();
-
+class ShapeShiftServiceBase {
   private cache: Cache = {};
   private token: string | null = null;
+  private authorizationInterval: number | null = null;
+  private deauthorizationInterval: number | null = null;
   private service: AxiosInstance = APIService.generateInstance({
-    baseURL: 'https://shapeshift.io'
+    baseURL: SHAPESHIFT_API_URL
   });
 
   private cacheGrab = cacheGrab.bind(this, this.cache);
@@ -48,13 +47,9 @@ export default class ShapeShiftService {
   public constructor() {
     const { code } = queryString.parse(window.location.search);
 
-    if (instantiated) {
-      throw new Error(`ShapeShiftService has already been instantiated.`);
-    }
-
-    instantiated = true;
-
     code ? this.requestAccessToken(code) : this.authorize();
+
+    storageListen(SHAPESHIFT_ACCESS_TOKEN, this.authorize, this.deauthorize);
   }
 
   public async getValidPairs(): Promise<string[]> {
@@ -123,14 +118,7 @@ export default class ShapeShiftService {
     }
   }
 
-  public async getDepositStatus(
-    depositAddress: string
-  ): Promise<
-    | DepositStatusNoneResponse
-    | DepositStatusIncompleteResponse
-    | DepositStatusCompleteResponse
-    | null
-  > {
+  public async getDepositStatus(depositAddress: string): Promise<DepositStatusResponse | null> {
     try {
       const url = `/txstat/${depositAddress}`;
       const { data: status } = await this.service.get(url);
@@ -191,6 +179,10 @@ export default class ShapeShiftService {
     }
   }
 
+  public isAuthorized(): boolean {
+    return Boolean(this.token);
+  }
+
   public openAuthorizationWindow() {
     const query = queryString.stringify({
       client_id: SHAPESHIFT_CLIENT_ID,
@@ -208,6 +200,29 @@ export default class ShapeShiftService {
       window.open(url, '_blank', 'width=800, height=600, menubar=yes');
     }
   }
+
+  public listenForAuthorization(callback: () => void) {
+    this.authorizationInterval = setInterval(() => {
+      if (this.isAuthorized()) {
+        callback();
+        this.stopListeningForAuthorization();
+      }
+    });
+  }
+
+  public stopListeningForAuthorization = () => clearInterval(this.authorizationInterval as number);
+
+  public listenForDeauthorization(callback: () => void) {
+    this.deauthorizationInterval = setInterval(() => {
+      if (!this.isAuthorized()) {
+        callback();
+        this.stopListeningForDeauthorization();
+      }
+    });
+  }
+
+  public stopListeningForDeauthorization = () =>
+    clearInterval(this.deauthorizationInterval as number);
 
   private async requestAccessToken(code: string) {
     const { data: { access_token: token } } = await this.service.post(SHAPESHIFT_TOKEN_PROXY_URL, {
@@ -239,10 +254,32 @@ export default class ShapeShiftService {
     });
   }
 
-  private authorize(token = storageGet(SHAPESHIFT_ACCESS_TOKEN)) {
+  private authorize = (passedToken?: string) => {
+    const token = passedToken || storageGet(SHAPESHIFT_ACCESS_TOKEN);
+
     if (token) {
       this.token = token;
       this.updateService();
     }
+  };
+
+  private deauthorize = () => {
+    this.token = null;
+    this.updateService();
+  };
+}
+
+// tslint:disable-next-line
+export default class ShapeShiftService extends ShapeShiftServiceBase {
+  public static instance = new ShapeShiftService();
+
+  constructor() {
+    super();
+
+    if (instantiated) {
+      throw new Error(`ShapeShiftService has already been instantiated.`);
+    }
+
+    instantiated = true;
   }
 }
