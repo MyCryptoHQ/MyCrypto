@@ -1,5 +1,15 @@
-import { logError } from 'v2/utils';
+import { AxiosInstance } from 'axios';
+import queryString from 'query-string';
+
+import { logError, storageGet, storageSet, isDesktop } from 'v2/utils';
 import APIService from './API';
+import {
+  SHAPESHIFT_ACCESS_TOKEN,
+  SHAPESHIFT_CLIENT_ID,
+  SHAPESHIFT_REDIRECT_URI,
+  SHAPESHIFT_AUTHORIZATION_URL,
+  SHAPESHIFT_TOKEN_PROXY_URL
+} from './constants';
 import {
   addValueToCache,
   createAssetMap,
@@ -27,28 +37,24 @@ export default class ShapeShiftService {
   public static instance = new ShapeShiftService();
 
   private cache: Cache = {};
-
-  private service = APIService.generateInstance({
-    baseURL: 'https://shapeshift.io',
-    headers: {
-      Authorization: `Bearer FSa39bx1MY683L9FvYcjWCBSZBg7hUinbGwoqu5wwAma`
-    }
+  private token: string | null = null;
+  private service: AxiosInstance = APIService.generateInstance({
+    baseURL: 'https://shapeshift.io'
   });
 
   private cacheGrab = cacheGrab.bind(this, this.cache);
-
   private cacheAdd = addValueToCache.bind(this, this.cache);
 
   public constructor() {
+    const { code } = queryString.parse(window.location.search);
+
     if (instantiated) {
       throw new Error(`ShapeShiftService has already been instantiated.`);
     }
 
     instantiated = true;
 
-    this.getValidPairs();
-
-    setTimeout(() => this.getValidPairs(), 5000);
+    code ? this.requestAccessToken(code) : this.authorize();
   }
 
   public async getValidPairs(): Promise<string[]> {
@@ -56,7 +62,6 @@ export default class ShapeShiftService {
       const cachedPairs = this.cacheGrab('validPairs');
 
       if (cachedPairs) {
-        console.log('cached');
         return cachedPairs;
       }
 
@@ -65,7 +70,7 @@ export default class ShapeShiftService {
       const validPairs = getAssetIntersection(Object.keys(assetMap));
 
       this.cacheAdd({ validPairs });
-      console.log('not cached');
+
       return validPairs;
     } catch (error) {
       logError('ShapeShift#getValidPairs', error);
@@ -183,6 +188,61 @@ export default class ShapeShiftService {
       logError('ShapeShift#sendAmount', error);
 
       return null;
+    }
+  }
+
+  public openAuthorizationWindow() {
+    const query = queryString.stringify({
+      client_id: SHAPESHIFT_CLIENT_ID,
+      scope: 'users:read',
+      response_type: 'code',
+      redirect_uri: SHAPESHIFT_REDIRECT_URI
+    });
+    const url = `${SHAPESHIFT_AUTHORIZATION_URL}?${query}`;
+
+    if (isDesktop()) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.send('shapeshift-authorize', url);
+    } else {
+      window.open(url, '_blank', 'width=800, height=600, menubar=yes');
+    }
+  }
+
+  private async requestAccessToken(code: string) {
+    const { data: { access_token: token } } = await this.service.post(SHAPESHIFT_TOKEN_PROXY_URL, {
+      code,
+      grant_type: 'authorization_code'
+    });
+
+    storageSet(SHAPESHIFT_ACCESS_TOKEN, token);
+
+    this.authorize(token);
+
+    if (isDesktop()) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.send('shapeshift-token-retrieved', token);
+    }
+  }
+
+  private updateService() {
+    const headers = this.token
+      ? {
+          Authorization: `Bearer ${this.token}`
+        }
+      : {};
+
+    this.service = APIService.generateInstance({
+      baseURL: 'https://shapeshift.io',
+      headers
+    });
+  }
+
+  private authorize(token = storageGet(SHAPESHIFT_ACCESS_TOKEN)) {
+    if (token) {
+      this.token = token;
+      this.updateService();
     }
   }
 }

@@ -76,3 +76,7 @@ export interface TimeRemainingResponse {
   status: string;
   seconds_remaining: string;
 }
+
+export interface ShapeShiftAssetWhitelistHash {
+  [asset: string]: true;
+}
