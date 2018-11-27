@@ -11,14 +11,15 @@ type Field = 'deposit' | 'withdraw';
 
 interface AssetField {
   selected: string;
-    amount: string;
-    options: string[];
-    lastUpdateWasAutomatic: boolean;
+  amount: string;
+  options: string[];
+  lastUpdateWasAutomatic: boolean;
 }
 
 interface State {
   deposit: AssetField;
   withdraw: AssetField;
+  pairInfo: any;
 }
 
 export default class ShapeShift extends Component {
@@ -34,26 +35,38 @@ export default class ShapeShift extends Component {
       amount: '0.00',
       options: [],
       lastUpdateWasAutomatic: false
-    }
+    },
+    pairInfo: null
   };
 
   public componentDidMount() {
     this.populateDropdowns();
+    this.populatePairInfo();
   }
 
   public componentDidUpdate(_, prevState: State) {
     const {
-      deposit: { selected: depositSelected, amount: depositAmount, lastUpdateWasAutomatic: depositLastUpdateWasAutomatic },
-      withdraw: { selected: withdrawSelected, amount: withdrawAmount, lastUpdateWasAutomatic: withdrawLastUpdateWasAutomatic }
+      deposit: {
+        selected: depositSelected,
+        amount: depositAmount,
+        lastUpdateWasAutomatic: depositLastUpdateWasAutomatic
+      },
+      withdraw: {
+        selected: withdrawSelected,
+        amount: withdrawAmount,
+        lastUpdateWasAutomatic: withdrawLastUpdateWasAutomatic
+      }
     } = this.state;
     const {
       deposit: { selected: prevDepositSelected, amount: prevDepositAmount },
       withdraw: { selected: prevWithdrawSelected, amount: prevWithdrawAmount }
     } = prevState;
 
-    if ((depositSelected !== prevDepositSelected || depositAmount !== prevDepositAmount) && !depositLastUpdateWasAutomatic) {
+    if (depositSelected !== prevDepositSelected || withdrawSelected !== prevWithdrawSelected) {
+      this.clearAmounts();
+    } else if (depositAmount !== prevDepositAmount && !depositLastUpdateWasAutomatic) {
       this.setOtherAmount('deposit');
-    } else if ((withdrawSelected !== prevWithdrawSelected || withdrawAmount !== prevWithdrawAmount) && !withdrawLastUpdateWasAutomatic) {
+    } else if (withdrawAmount !== prevWithdrawAmount && !withdrawLastUpdateWasAutomatic) {
       this.setOtherAmount('withdraw');
     }
   }
@@ -109,6 +122,20 @@ export default class ShapeShift extends Component {
     }));
   };
 
+  private clearAmounts = () =>
+    this.setState((prevState: State) => ({
+      deposit: {
+        ...prevState.deposit,
+        amount: '0.00',
+        lastUpdateWasAutomatic: true
+      },
+      withdraw: {
+        ...prevState.withdraw,
+        amount: '0.00',
+        lastUpdateWasAutomatic: true
+      }
+    }));
+
   private setOptions = (field: Field, options: string[]) =>
     this.setState((prevState: State) => ({
       [field]: {
@@ -124,32 +151,41 @@ export default class ShapeShift extends Component {
     this.setOptions('withdraw', pairs);
   };
 
+  private populatePairInfo = async () => {
+    const pairInfo = await ShapeShiftService.instance.getPairInfo();
+
+    this.setState({ pairInfo });
+  };
+
   private setOtherAmount = async (field: Field) => {
     const {
       deposit: { selected: depositSelected },
-      withdraw: { selected: withdrawSelected }
+      withdraw: { selected: withdrawSelected },
+      pairInfo
     } = this.state;
-    const pair = `${withdrawSelected}_${depositSelected}`;
+
+    // Determine the going rate for the chosen pair.
+    const pair = `${depositSelected}_${withdrawSelected}`;
+    const { rate } = pairInfo[pair.toUpperCase()];
+
+    // Determine which field is the "other asset."
     const oppositeFields = {
       deposit: 'withdraw',
       withdraw: 'deposit'
     };
-    const marketInfo = await ShapeShiftService.instance.getMarketInfo(pair);
+    const fieldToChange = oppositeFields[field];
 
-    if (marketInfo && !(marketInfo instanceof Array)) {
-      const { [field]: { amount: staticAmount } } = this.state;
-      const { rate } = marketInfo;
-      const fieldToChange = oppositeFields[field];
-      const numericalAmount = parseFloat(staticAmount);
-      const newAmount = (numericalAmount * rate).toString();
+    // Determine the rate of the "other asset" based on the changed asset.
+    const { [field]: { amount: staticAmount } } = this.state;
+    const numericalAmount = parseFloat(staticAmount);
+    const newAmount = (numericalAmount * rate).toString();
 
-      this.setState((prevState: any) => ({
-        [fieldToChange]: {
-          ...prevState[fieldToChange],
-          amount: newAmount,
-          lastUpdateWasAutomatic: true
-        }
-      }));
-    }
+    this.setState((prevState: any) => ({
+      [fieldToChange]: {
+        ...prevState[fieldToChange],
+        amount: newAmount,
+        lastUpdateWasAutomatic: true
+      }
+    }));
   };
 }

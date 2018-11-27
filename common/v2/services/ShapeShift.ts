@@ -8,7 +8,9 @@ import {
   addValueToCache,
   removeValueFromCache,
   createAssetMap,
-  getAssetIntersection
+  getAssetIntersection,
+  isSupportedPair,
+  createPairHash
 } from './helpers';
 
 type DepositStatus = 'error' | 'complete' | 'no_deposits';
@@ -40,6 +42,10 @@ interface MarketPair {
   minerFee: number;
   pair: string;
   rate: number;
+}
+
+interface MarketPairHash {
+  [pair: string]: MarketPair;
 }
 
 interface RatesResponse {
@@ -132,6 +138,39 @@ export default class ShapeShiftService {
       logError('ShapeShift#getMarketInfo', error);
 
       return pair ? null : [];
+    }
+  }
+
+  public async getPairInfo(): Promise<MarketPairHash | null> {
+    try {
+      const cachedPairInfo = get(this.cache, 'pairInfo', {});
+
+      if (cachedValueIsFresh(cachedPairInfo)) {
+        return get(cachedPairInfo, 'value');
+      } else {
+        removeValueFromCache(this.cache, 'pairInfo');
+      }
+
+      const allAssets = await this.getMarketInfo();
+
+      if (allAssets instanceof Array) {
+        const supportedAssets = allAssets.filter((asset: MarketPair) =>
+          isSupportedPair(asset.pair)
+        );
+        const pairInfo = supportedAssets.reduce((prev, next) => createPairHash(prev, next), {});
+
+        addValueToCache(this.cache, 'pairInfo', pairInfo);
+
+        return pairInfo;
+      }
+
+      throw new Error(
+        `ShapeShift#getPairInfo should have received an array, but got ${typeof allAssets}.`
+      );
+    } catch (error) {
+      logError('ShapeShift#getPairInfo', error);
+
+      return null;
     }
   }
 

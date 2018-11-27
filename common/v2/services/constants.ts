@@ -41,3 +41,15 @@ export const SHAPESHIFT_ASSET_WHITELIST = [
   'BTC',
   'XMR'
 ];
+
+interface ShapeShiftAssetWhitelistHash {
+  [asset: string]: true;
+}
+
+export const SHAPESHIFT_ASSET_WHITELIST_HASH: ShapeShiftAssetWhitelistHash = SHAPESHIFT_ASSET_WHITELIST.reduce(
+  (prev, next) => {
+    prev[next] = true;
+    return prev;
+  },
+  {} as ShapeShiftAssetWhitelistHash
+);

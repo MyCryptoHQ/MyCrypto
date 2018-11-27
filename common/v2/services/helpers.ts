@@ -1,4 +1,8 @@
-import { CACHE_TIME_TO_LIVE, SHAPESHIFT_ASSET_WHITELIST } from './constants';
+import {
+  CACHE_TIME_TO_LIVE,
+  SHAPESHIFT_ASSET_WHITELIST,
+  SHAPESHIFT_ASSET_WHITELIST_HASH
+} from './constants';
 
 export interface Cache {
   [entry: string]: {
@@ -37,3 +41,18 @@ export const removeValueFromCache = (cache: Cache, entry: string) => {
 };
 
 export const cachedValueIsFresh = (cached: any): boolean => cached && Date.now() < cached.ttl;
+
+export const isSupportedPair = (pair: string): boolean => {
+  const [comparableAsset, comparedAsset] = pair.split('_');
+
+  return (
+    SHAPESHIFT_ASSET_WHITELIST_HASH[comparableAsset.toUpperCase()] &&
+    SHAPESHIFT_ASSET_WHITELIST_HASH[comparedAsset.toUpperCase()]
+  );
+};
+
+export const createPairHash = (prev: any, next: any) => {
+  const { pair } = next;
+  prev[pair] = next;
+  return prev;
+};
