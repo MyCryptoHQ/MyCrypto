@@ -1,86 +1,25 @@
-import get from 'lodash/get';
-
 import { logError } from 'v2/utils';
 import APIService from './API';
 import {
-  Cache,
-  cachedValueIsFresh,
   addValueToCache,
-  removeValueFromCache,
   createAssetMap,
   getAssetIntersection,
   isSupportedPair,
-  createPairHash
+  createPairHash,
+  cacheGrab
 } from './helpers';
-
-type DepositStatus = 'error' | 'complete' | 'no_deposits';
-
-interface DepositStatusResponse {
-  status: DepositStatus;
-  address: string;
-}
-
-interface DepositStatusIncompleteResponse extends DepositStatusResponse {
-  error: string;
-}
-
-interface DepositStatusCompleteResponse extends DepositStatusResponse {
-  withdraw: string;
-  incomingCoin: number;
-  incomingType: string;
-  outcoingCoin: number;
-  outgoingType: string;
-  transaction: string;
-}
-
-type DepositStatusNoneResponse = DepositStatusResponse;
-
-interface MarketPair {
-  limit: number;
-  maxLimit: number;
-  min: number;
-  minerFee: number;
-  pair: string;
-  rate: number;
-}
-
-interface MarketPairHash {
-  [pair: string]: MarketPair;
-}
-
-interface RatesResponse {
-  pair: string;
-  limit: string;
-  min: string;
-}
-
-interface SendAmountRequest {
-  amount: string;
-  withdrawal: string;
-  pair: string;
-  returnAddress: string;
-}
-
-interface SendAmountResponse {
-  apiPubKey: string;
-  deposit: string;
-  depositAmount: string;
-  expiration: number;
-  maxLimit: number;
-  minerFee: string;
-  orderId: string;
-  pair: string;
-  quotedRate: string;
-  returnAddress: string;
-  userId: string;
-  withdrawal: string;
-  withdrawalAmount: string;
-}
-
-interface TimeRemainingResponse {
-  status: string;
-  seconds_remaining: string;
-}
+import {
+  Cache,
+  MarketPair,
+  MarketPairHash,
+  DepositStatusCompleteResponse,
+  DepositStatusIncompleteResponse,
+  DepositStatusNoneResponse,
+  TimeRemainingResponse,
+  RatesResponse,
+  SendAmountRequest,
+  SendAmountResponse
+} from './types';
 
 let instantiated = false;
 
@@ -96,30 +35,37 @@ export default class ShapeShiftService {
     }
   });
 
+  private cacheGrab = cacheGrab.bind(this, this.cache);
+
+  private cacheAdd = addValueToCache.bind(this, this.cache);
+
   public constructor() {
     if (instantiated) {
       throw new Error(`ShapeShiftService has already been instantiated.`);
     }
 
     instantiated = true;
+
+    this.getValidPairs();
+
+    setTimeout(() => this.getValidPairs(), 5000);
   }
 
   public async getValidPairs(): Promise<string[]> {
     try {
-      const cachedPairs = get(this.cache, 'validPairs', {});
+      const cachedPairs = this.cacheGrab('validPairs');
 
-      if (cachedValueIsFresh(cachedPairs)) {
-        return get(cachedPairs, 'value');
-      } else {
-        removeValueFromCache(this.cache, 'validPairs');
+      if (cachedPairs) {
+        console.log('cached');
+        return cachedPairs;
       }
 
       const { data } = await this.service.get(`/validpairs`);
       const assetMap = createAssetMap(data);
       const validPairs = getAssetIntersection(Object.keys(assetMap));
 
-      addValueToCache(this.cache, 'validPairs', validPairs);
-
+      this.cacheAdd({ validPairs });
+      console.log('not cached');
       return validPairs;
     } catch (error) {
       logError('ShapeShift#getValidPairs', error);
@@ -143,12 +89,10 @@ export default class ShapeShiftService {
 
   public async getPairInfo(): Promise<MarketPairHash | null> {
     try {
-      const cachedPairInfo = get(this.cache, 'pairInfo', {});
+      const cachedPairInfo = this.cacheGrab('pairInfo');
 
-      if (cachedValueIsFresh(cachedPairInfo)) {
-        return get(cachedPairInfo, 'value');
-      } else {
-        removeValueFromCache(this.cache, 'pairInfo');
+      if (cachedPairInfo) {
+        return cachedPairInfo;
       }
 
       const allAssets = await this.getMarketInfo();
@@ -159,7 +103,7 @@ export default class ShapeShiftService {
         );
         const pairInfo = supportedAssets.reduce((prev, next) => createPairHash(prev, next), {});
 
-        addValueToCache(this.cache, 'pairInfo', pairInfo);
+        this.cacheAdd({ pairInfo });
 
         return pairInfo;
       }
@@ -222,14 +166,17 @@ export default class ShapeShiftService {
 
   public async sendAmount(config: SendAmountRequest): Promise<SendAmountResponse | null> {
     try {
-      const { amount, withdrawal, pair, returnAddress } = config;
+      const { amount, withdrawal, pair } = config;
       const url = '/sendamount';
-      const { data: { success } } = await this.service.post(url, {
+      const { data: { success, error } } = await this.service.post(url, {
         amount,
         withdrawal,
-        pair,
-        returnAddress
+        pair
       });
+
+      if (error) {
+        throw new Error(error);
+      }
 
       return success;
     } catch (error) {

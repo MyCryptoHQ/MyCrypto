@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { ShapeShiftService } from 'v2/services';
-import { ShapeShiftPairForm } from '../components';
+import { ShapeShiftAddressForm, ShapeShiftPairForm } from '../components';
 import './ShapeShift.scss';
 
 // Legacy
@@ -19,6 +19,7 @@ interface AssetField {
 interface State {
   deposit: AssetField;
   withdraw: AssetField;
+  withdrawalAddress: string;
   pairInfo: any;
 }
 
@@ -36,6 +37,7 @@ export default class ShapeShift extends Component {
       options: [],
       lastUpdateWasAutomatic: false
     },
+    withdrawalAddress: '',
     pairInfo: null
   };
 
@@ -74,7 +76,8 @@ export default class ShapeShift extends Component {
   public render() {
     const {
       deposit: { selected: depositSelected, amount: depositAmount },
-      withdraw: { selected: withdrawSelected, amount: withdrawAmount }
+      withdraw: { selected: withdrawSelected, amount: withdrawAmount },
+      withdrawalAddress
     } = this.state;
 
     return (
@@ -88,10 +91,16 @@ export default class ShapeShift extends Component {
               depositAmount={depositAmount}
               withdraw={withdrawSelected}
               withdrawAmount={withdrawAmount}
+              onSubmit={() => {}}
             />
-            <div>
-              <p>Rate</p>
-            </div>
+          </section>
+          <section className="Tab-content-pane">
+            <ShapeShiftAddressForm
+              onAddressChange={this.setWithdrawalAddress}
+              withdrawalAsset={withdrawSelected}
+              withdrawalAddress={withdrawalAddress}
+              onSubmit={() => this.beginShift()}
+            />
           </section>
         </section>
       </TabSection>
@@ -144,6 +153,11 @@ export default class ShapeShift extends Component {
       }
     }));
 
+  private setWithdrawalAddress = ({ target: { value: withdrawalAddress } }: any) =>
+    this.setState({
+      withdrawalAddress
+    });
+
   private populateDropdowns = async () => {
     const pairs = await ShapeShiftService.instance.getValidPairs();
 
@@ -187,5 +201,23 @@ export default class ShapeShift extends Component {
         lastUpdateWasAutomatic: true
       }
     }));
+  };
+
+  private beginShift = async () => {
+    const {
+      deposit: { selected: depositSelected, amount },
+      withdraw: { selected: withdrawSelected },
+      withdrawalAddress: withdrawal
+    } = this.state;
+    const pair = `${depositSelected}_${withdrawSelected}`;
+    const config = {
+      amount,
+      withdrawal,
+      pair
+    };
+
+    const response = await ShapeShiftService.instance.sendAmount(config);
+
+    console.log('\n\n\n', 'response', response, '\n\n\n');
   };
 }

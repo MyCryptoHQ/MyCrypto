@@ -9,7 +9,8 @@ export default function ShapeShiftPairForm({
   deposit,
   depositAmount,
   withdraw,
-  withdrawAmount
+  withdrawAmount,
+  onSubmit
 }) {
   return (
     <Formik
@@ -20,7 +21,7 @@ export default function ShapeShiftPairForm({
         withdraw,
         withdrawAmount
       }}
-      onSubmit={console.log}
+      onSubmit={onSubmit}
       render={() => (
         <Form>
           <fieldset>
