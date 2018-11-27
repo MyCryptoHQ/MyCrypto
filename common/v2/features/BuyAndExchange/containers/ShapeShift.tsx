@@ -1,38 +1,54 @@
 import React, { Component } from 'react';
 
-import { ShapeShiftService } from 'v2/services';
-import { ShapeShiftPairForm } from '../components';
+import { ShapeShiftService, MarketPairHash } from 'v2/services';
+import { ShapeShiftPairForm, ShapeShiftAddressForm } from '../components';
 import './ShapeShift.scss';
 
 // Legacy
 import TabSection from 'containers/TabSection';
 
+enum Stages {
+  Pair,
+  Address,
+  Confirmation
+}
+
 interface State {
   options: string[];
-  withdrawalAddress: string;
-  pairInfo: any;
+  pair: any | null;
+  address: any | null;
+  pairHash: MarketPairHash | null;
+  stage: Stages;
 }
 
 export default class ShapeShift extends Component {
   public state: State = {
     options: [],
-    withdrawalAddress: '',
-    pairInfo: null
+    pair: null,
+    address: null,
+    pairHash: null,
+    stage: Stages.Pair
   };
 
   public componentDidMount() {
     this.populateOptions();
-    this.populatePairInfo();
+    this.populatePairHash();
   }
 
   public render() {
-    const { pairInfo } = this.state;
+    const { pairHash, stage, pair } = this.state;
 
     return (
       <TabSection>
         <section className="ShapeShift">
           <section className="Tab-content-pane">
-            <ShapeShiftPairForm rates={pairInfo} onSubmit={(values: any) => console.info(values)} />
+            {stage === Stages.Pair && (
+              <ShapeShiftPairForm rates={pairHash} onSubmit={this.loadAddressForm} />
+            )}
+            {stage === Stages.Address && (
+              <ShapeShiftAddressForm asset={pair.withdraw} onSubmit={this.loadConfirmationForm} />
+            )}
+            {stage === Stages.Confirmation && <div>Confirmation</div>}
           </section>
         </section>
       </TabSection>
@@ -45,9 +61,21 @@ export default class ShapeShift extends Component {
     this.setState({ options });
   };
 
-  private populatePairInfo = async () => {
-    const pairInfo = await ShapeShiftService.instance.getPairInfo();
+  private populatePairHash = async () => {
+    const pairHash = await ShapeShiftService.instance.getPairInfo();
 
-    this.setState({ pairInfo });
+    this.setState({ pairHash });
   };
+
+  private loadAddressForm = (values: any) =>
+    this.setState({
+      pair: values,
+      stage: Stages.Address
+    });
+
+  private loadConfirmationForm = (values: any) =>
+    this.setState({
+      address: values.address,
+      stage: Stages.Confirmation
+    });
 }

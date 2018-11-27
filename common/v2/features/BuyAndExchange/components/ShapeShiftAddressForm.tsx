@@ -1,24 +1,23 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 
-export default function ShapeShiftAddressForm({
-  onAddressChange,
-  withdrawalAsset,
-  withdrawalAddress,
-  onSubmit
-}) {
+interface Props {
+  asset: string;
+  onSubmit(values: any, bag: any): void;
+}
+
+export default function ShapeShiftAddressForm({ asset, onSubmit }: Props) {
   return (
     <Formik
-      enableReinitialize={true}
       initialValues={{
-        withdrawalAddress
+        address: ''
       }}
       onSubmit={onSubmit}
       render={() => (
         <Form>
           <fieldset>
-            <label htmlFor="withdrawalAddress">Your Receiving Address ({withdrawalAsset})</label>
-            <Field name="withdrawalAddress" onChange={onAddressChange} />
+            <label htmlFor="address">Your Receiving Address ({asset})</label>
+            <Field name="address" />
           </fieldset>
           <fieldset>
             <button type="submit" className="btn btn-primary">
