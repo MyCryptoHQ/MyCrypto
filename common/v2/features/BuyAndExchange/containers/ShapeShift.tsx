@@ -92,10 +92,10 @@ export default class ShapeShift extends Component {
     });
 
   private loadSendScreen = async (values: any) => {
-    const { pair, address } = this.state;
+    const { pair } = this.state;
     const config = {
       amount: pair.withdrawAmount,
-      withdrawal: address,
+      withdrawal: values.address,
       pair: `${pair.deposit}_${pair.withdraw}`
     };
     const transaction = await ShapeShiftService.instance.sendAmount(config);
