@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import { SendAmountResponse } from 'v2/services';
-import { getSecondsRemaining, getTimeRemaining } from '../helpers';
+import { ShapeShiftService, SendAmountResponse, DepositStatuses } from 'v2/services';
+import { SHAPESHIFT_STATUS_PING_RATE } from '../constants';
+import { getSecondsRemaining, getTimeRemaining, getStatusWording } from '../helpers';
 
 interface Props {
   transaction: SendAmountResponse;
@@ -9,36 +10,41 @@ interface Props {
 
 interface State {
   timeRemaining: string;
+  status: DepositStatuses;
 }
 
 export default class ShapeShiftSend extends Component<Props> {
   public state: State = {
-    timeRemaining: getTimeRemaining(this.props.transaction.expiration)
+    timeRemaining: getTimeRemaining(this.props.transaction.expiration),
+    status: DepositStatuses.no_deposits
   };
 
-  private interval: NodeJS.Timer | null = null;
+  private timeRemainingInterval: NodeJS.Timer | null = null;
+  private statusInterval: NodeJS.Timer | null = null;
 
   public componentDidMount() {
-    this.interval = setInterval(this.tick, 1000);
+    this.timeRemainingInterval = setInterval(this.tick, 1000);
+    this.statusInterval = setInterval(this.checkStatus, SHAPESHIFT_STATUS_PING_RATE);
   }
 
   public componentDidUpdate() {
     const secondsRemaining = getSecondsRemaining(this.props.transaction.expiration);
 
     if (secondsRemaining <= 0) {
-      clearInterval(this.interval as NodeJS.Timer);
+      this.stopIntervals();
+      this.setState({ status: DepositStatuses.out_of_time });
     }
   }
 
   public componentWillUnmount() {
-    clearInterval(this.interval as NodeJS.Timer);
+    this.stopIntervals();
   }
 
   public render() {
     const {
       transaction: { orderId, withdrawalAmount, depositAmount, quotedRate, pair, deposit }
     } = this.props;
-    const { timeRemaining } = this.state;
+    const { timeRemaining, status } = this.state;
     const [depositAsset, withdrawAsset] = pair.toUpperCase().split('_');
 
     return (
@@ -57,6 +63,7 @@ export default class ShapeShiftSend extends Component<Props> {
           Send {depositAmount} {depositAsset} to{' '}
         </p>
         <input type="text" disabled={true} value={deposit} />
+        <div>Status: {getStatusWording(status)}</div>
       </section>
     );
   }
@@ -65,4 +72,20 @@ export default class ShapeShiftSend extends Component<Props> {
     this.setState({
       timeRemaining: getTimeRemaining(this.props.transaction.expiration)
     });
+
+  private checkStatus = async () => {
+    const { transaction: { deposit } } = this.props;
+    const status = await ShapeShiftService.instance.getDepositStatus(deposit);
+
+    if (status === DepositStatuses.complete) {
+      this.stopIntervals();
+    }
+
+    this.setState({ status });
+  };
+
+  private stopIntervals = () => {
+    clearInterval(this.timeRemainingInterval as NodeJS.Timer);
+    clearInterval(this.statusInterval as NodeJS.Timer);
+  };
 }

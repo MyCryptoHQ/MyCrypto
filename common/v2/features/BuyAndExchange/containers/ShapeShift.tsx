@@ -39,14 +39,18 @@ export default class ShapeShift extends Component {
   }
 
   public render() {
-    const { pairHash, stage, pair, transaction } = this.state;
+    const { pairHash, stage, pair, transaction, options } = this.state;
 
     return (
       <TabSection>
         <section className="ShapeShift">
           <section className="Tab-content-pane">
             {stage === Stages.Pair && (
-              <ShapeShiftPairForm rates={pairHash} onSubmit={this.loadAddressForm} />
+              <ShapeShiftPairForm
+                rates={pairHash}
+                options={options}
+                onSubmit={this.loadAddressForm}
+              />
             )}
             {stage === Stages.Address && (
               <ShapeShiftAddressForm asset={pair.withdraw} onSubmit={this.loadSendScreen} />

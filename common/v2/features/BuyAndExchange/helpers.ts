@@ -1,3 +1,4 @@
+import { DepositStatuses } from 'v2/services';
 import { ZEROEX_CONTAINER_ID } from './constants';
 
 /**
@@ -33,4 +34,21 @@ export const getTimeRemaining = (expiration: number): string => {
   const secondsSide = seconds < 10 ? `0${seconds}` : seconds;
 
   return `${minutesSide}:${secondsSide}`;
+};
+
+export const getStatusWording = (status: DepositStatuses): string => {
+  switch (status) {
+    case DepositStatuses.error:
+      return 'There was an error with this ShapeShift transaction.';
+    case DepositStatuses.out_of_time:
+      return 'The time has run out for this transaction.';
+    case DepositStatuses.no_deposits:
+      return 'Waiting on a deposit.';
+    case DepositStatuses.received:
+      return 'Deposit received.';
+    case DepositStatuses.complete:
+      return 'Transaction completed.';
+    default:
+      return '';
+  }
 };

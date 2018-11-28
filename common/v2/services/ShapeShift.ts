@@ -23,7 +23,7 @@ import {
   Cache,
   MarketPair,
   MarketPairHash,
-  DepositStatusResponse,
+  DepositStatuses,
   TimeRemainingResponse,
   RatesResponse,
   SendAmountRequest,
@@ -118,10 +118,10 @@ class ShapeShiftServiceBase {
     }
   }
 
-  public async getDepositStatus(depositAddress: string): Promise<DepositStatusResponse | null> {
+  public async getDepositStatus(depositAddress: string): Promise<DepositStatuses | null> {
     try {
       const url = `/txstat/${depositAddress}`;
-      const { data: status } = await this.service.get(url);
+      const { data: { status } } = await this.service.get(url);
 
       return status;
     } catch (error) {

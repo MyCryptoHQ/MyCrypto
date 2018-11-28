@@ -9,31 +9,43 @@ export interface NewCacheEntry {
   [key: string]: any;
 }
 
-export type DepositStatus = 'error' | 'complete' | 'no_deposits';
+export enum DepositStatuses {
+  error = 'error',
+  no_deposits = 'no_deposits',
+  received = 'received',
+  complete = 'complete',
+  out_of_time = 'out_of_time'
+}
 
 export interface DepositStatusResponseBase {
-  status: DepositStatus;
+  status: DepositStatuses;
   address: string;
 }
 
-export interface DepositStatusIncompleteResponse extends DepositStatusResponseBase {
+export interface DepositStatusErrorResponse extends DepositStatusResponseBase {
   error: string;
 }
 
-export interface DepositStatusCompleteResponse extends DepositStatusResponseBase {
+export interface DepositStatusReceivedResponse extends DepositStatusResponseBase {
+  userId: string;
   withdraw: string;
   incomingCoin: number;
   incomingType: string;
+}
+
+export interface DepositStatusCompleteResponse extends DepositStatusReceivedResponse {
   outcoingCoin: number;
   outgoingType: string;
   transaction: string;
+  transactionURL: string;
 }
 
 export type DepositStatusNoneResponse = DepositStatusResponseBase;
 
 export type DepositStatusResponse =
   | DepositStatusNoneResponse
-  | DepositStatusIncompleteResponse
+  | DepositStatusErrorResponse
+  | DepositStatusReceivedResponse
   | DepositStatusCompleteResponse;
 
 export interface MarketPair {
