@@ -28,11 +28,15 @@ export default class ShapeShiftSend extends Component<Props> {
   }
 
   public componentDidUpdate() {
-    const secondsRemaining = getSecondsRemaining(this.props.transaction.expiration);
+    const { status } = this.state;
 
-    if (secondsRemaining <= 0) {
-      this.stopIntervals();
-      this.setState({ status: DepositStatuses.out_of_time });
+    if (![DepositStatuses.out_of_time, DepositStatuses.error].includes(status)) {
+      const secondsRemaining = getSecondsRemaining(this.props.transaction.expiration);
+
+      if (secondsRemaining <= 0) {
+        this.stopIntervals();
+        this.setState({ status: DepositStatuses.out_of_time });
+      }
     }
   }
 
