@@ -10,12 +10,16 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    opacity: 0.7;
 
     &.dark {
       background: rgb(51, 51, 51);
       color: white;
-      opacity: 1;
+    }
+    label {
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      opacity: 0.7;
     }
     select {
       flex: 1;
@@ -43,9 +47,11 @@
     border-style: none;
     font-size: 38px;
     overflow: auto;
+    opacity: 0.7;
 
     &.dark {
       color: rgb(51, 51, 51);
+      opacity: 1;
     }
   }
   &-button {

@@ -3,6 +3,9 @@ import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
 
 import { addressValidatorHash } from 'v2/utils';
 
+// Legacy
+import { Warning } from 'components/ui';
+
 interface Values {
   address: string;
 }
@@ -33,19 +36,28 @@ export default function ShapeShiftAddressForm({ asset, onSubmit }: Props) {
       }}
       validate={values => validate(values, asset)}
       onSubmit={onSubmit}
-      render={() => (
-        <Form>
-          <fieldset>
-            <label htmlFor="address">Your Receiving Address ({asset})</label>
-            <Field name="address" />
-            <ErrorMessage name="address" />
-          </fieldset>
-          <fieldset>
-            <button type="submit" className="btn btn-primary">
-              Continue
-            </button>
-          </fieldset>
-        </Form>
+      render={props => (
+        <section className="ShapeShiftWidget">
+          <Form>
+            <fieldset className="dark">
+              <label htmlFor="address">Your Receiving Address ({asset})</label>
+              <section className="ShapeShiftWidget-input-wrapper">
+                <Field name="address" className="ShapeShiftWidget-input" />
+              </section>
+            </fieldset>
+            <fieldset>
+              <button type="submit" className="btn btn-primary ShapeShiftWidget-button">
+                Continue
+              </button>
+            </fieldset>
+          </Form>
+          {props.touched.address &&
+            props.errors.address && (
+              <Warning highlighted={true}>
+                <ErrorMessage name="address" />
+              </Warning>
+            )}
+        </section>
       )}
     />
   );
