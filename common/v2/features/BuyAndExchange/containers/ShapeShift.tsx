@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import { ShapeShiftService, MarketPairHash } from 'v2/services';
+import { ShapeShiftService, MarketPairHash, SendAmountResponse } from 'v2/services';
 import { ShapeShiftPairForm, ShapeShiftAddressForm } from '../components';
+import ShapeShiftSend from './ShapeShiftSend';
 import './ShapeShift.scss';
 
 // Legacy
@@ -17,7 +18,7 @@ interface State {
   options: string[];
   pair: any | null;
   address: any | null;
-  transaction: any | null;
+  transaction: SendAmountResponse | null;
   pairHash: MarketPairHash | null;
   stage: Stages;
 }
@@ -50,23 +51,7 @@ export default class ShapeShift extends Component {
             {stage === Stages.Address && (
               <ShapeShiftAddressForm asset={pair.withdraw} onSubmit={this.loadSendScreen} />
             )}
-            {stage === Stages.Send && (
-              <React.Fragment>
-                <ul>
-                  <li>Reference number: {transaction.orderId}</li>
-                  <li>
-                    Amount of {pair.withdraw} to receive: {transaction.withdrawalAmount}
-                  </li>
-                  <li>
-                    Rate: {transaction.quotedRate} {pair.withdraw}/{pair.deposit}
-                  </li>
-                </ul>
-                <p>
-                  Send {transaction.depositAmount} {pair.deposit} to{' '}
-                </p>
-                <input type="text" disabled={true} value={transaction.deposit} />
-              </React.Fragment>
-            )}
+            {stage === Stages.Send && <ShapeShiftSend transaction={transaction!} />}
           </section>
         </section>
       </TabSection>

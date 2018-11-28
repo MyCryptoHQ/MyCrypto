@@ -50,6 +50,8 @@ export default function ShapeShiftPairForm({ rates, onSubmit }: Props) {
             <label htmlFor="deposit">I will deposit</label>
             <Field
               name="depositAmount"
+              type="number"
+              step="0.01"
               onChange={(e: React.ChangeEvent<any>) =>
                 changeOtherAmountField(e, props, rates, ['deposit', 'withdraw'], 'withdrawAmount')
               }
@@ -68,6 +70,8 @@ export default function ShapeShiftPairForm({ rates, onSubmit }: Props) {
             <label htmlFor="withdraw">I will withdraw</label>
             <Field
               name="withdrawAmount"
+              type="number"
+              step="0.01"
               onChange={(e: React.ChangeEvent<any>) =>
                 changeOtherAmountField(e, props, rates, ['withdraw', 'deposit'], 'depositAmount')
               }

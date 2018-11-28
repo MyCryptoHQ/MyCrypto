@@ -18,3 +18,19 @@ export const replaceZeroExContainer = (): void => {
     (grandparent as any).remove();
   }
 };
+
+export const getSecondsRemaining = (expiration: number): number => {
+  const secondsRemaining = Math.floor((+new Date(expiration) - Date.now()) / 1000);
+
+  return secondsRemaining;
+};
+
+export const getTimeRemaining = (expiration: number): string => {
+  const secondsRemaining = getSecondsRemaining(expiration);
+  const minutes = Math.floor(secondsRemaining / 60);
+  const seconds = secondsRemaining - minutes * 60;
+  const minutesSide = minutes < 10 ? `0${minutes}` : minutes;
+  const secondsSide = seconds < 10 ? `0${seconds}` : seconds;
+
+  return `${minutesSide}:${secondsSide}`;
+};
