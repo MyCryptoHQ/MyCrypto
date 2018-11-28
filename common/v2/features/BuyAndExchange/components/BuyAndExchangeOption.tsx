@@ -1,17 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import './BuyAndExchangeOption.scss';
 
 interface Props {
   route: string;
   option: string;
+  children: any;
 }
 
-export default function BuyAndExchangeOption({ route, option }: Props) {
+function BuyAndExchangeOption({
+  route,
+  option,
+  history,
+  children
+}: Props & RouteComponentProps<any>) {
   return (
-    <Link to={route} className="BuyAndExchangeOption">
+    <section className="BuyAndExchangeOption" onClick={() => history.push(route)}>
       <h1>{option}</h1>
-    </Link>
+      {children}
+    </section>
   );
 }
+
+export default withRouter(BuyAndExchangeOption);
