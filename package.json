@@ -64,7 +64,7 @@
     "semver": "5.5.0",
     "trezor.js": "6.17.5",
     "uuid": "3.2.1",
-    "wallet-address-validator": "0.1.6",
+    "wallet-address-validator": "^0.2.4",
     "whatwg-fetch": "2.0.3",
     "zxcvbn": "4.4.2"
   },
