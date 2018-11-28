@@ -4,6 +4,9 @@ import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
 import { MarketPairHash } from 'v2/services/types';
 import './ShapeShiftPairForm.scss';
 
+// Legacy
+import { Warning } from 'components/ui';
+
 interface Values {
   deposit: string;
   depositAmount: string;
@@ -26,11 +29,11 @@ const validate = (values: Values, rates: MarketPairHash): FormikErrors<Values> =
 
   // Deposit Amount
   if (amount <= min) {
-    errors.depositAmount = `The minimum amount you can deposit is ${min}.`;
+    errors.depositAmount = `The minimum amount you can deposit is ${min} ${deposit}.`;
   }
 
   if (amount >= maxLimit) {
-    errors.depositAmount = `The maximum amount you can deposit is ${maxLimit}.`;
+    errors.depositAmount = `The maximum amount you can deposit is ${maxLimit} ${deposit}.`;
   }
 
   return errors;
@@ -54,7 +57,7 @@ const changeOtherAmountField = (
     .join('_')
     .toUpperCase();
   const { rate } = rates[pair];
-  const amount = (value * rate).toString();
+  const amount = (value * rate).toFixed(7).toString();
 
   props.setTouched({
     depositAmount: true,
@@ -83,6 +86,10 @@ const handleAssetSelect = (e: React.ChangeEvent<any>, props: any) => {
     depositAmount: false,
     withdrawAmount: false
   });
+  props.setErrors({
+    depositAmount: undefined,
+    withdrawAmount: undefined
+  });
   props.handleChange(e);
 };
 
@@ -91,69 +98,97 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
     <Formik
       initialValues={{
         deposit: options[0],
-        depositAmount: '0.00',
+        depositAmount: '0.0000000',
         withdraw: options[1],
-        withdrawAmount: '0.00'
+        withdrawAmount: '0.0000000'
       }}
       validate={values => validate(values, rates)}
       onSubmit={onSubmit}
       render={props => {
         return (
-          <Form>
-            <fieldset>
-              <label htmlFor="deposit">I will deposit</label>
-              <Field
-                name="depositAmount"
-                type="number"
-                step="0.01"
-                onChange={(e: React.ChangeEvent<any>) =>
-                  changeOtherAmountField(e, props, rates, ['deposit', 'withdraw'], 'withdrawAmount')
-                }
-              />
-              <ErrorMessage name="depositAmount" />
-              <Field
-                component="select"
-                name="deposit"
-                onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
-              >
-                {options.map(option => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </Field>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="withdraw">I will withdraw</label>
-              <Field
-                name="withdrawAmount"
-                type="number"
-                step="0.01"
-                onChange={(e: React.ChangeEvent<any>) =>
-                  changeOtherAmountField(e, props, rates, ['withdraw', 'deposit'], 'depositAmount')
-                }
-              />
-              <Field
-                component="select"
-                name="withdraw"
-                onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
-              >
-                {options.map(option => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </Field>
-            </fieldset>
-            <fieldset>
-              <button type="button" className="btn btn-secondary" onClick={() => props.resetForm()}>
-                Reset
-              </button>
-              <button type="submit" className="btn btn-primary">
-                Continue
-              </button>
-            </fieldset>
-          </Form>
+          <section className="ShapeShiftWidget">
+            <Form>
+              <fieldset className="dark">
+                <label htmlFor="deposit">I want to deposit</label>
+                <section className="ShapeShiftWidget-controls">
+                  <section className="ShapeShiftWidget-input-wrapper">
+                    <Field
+                      name="depositAmount"
+                      className="ShapeShiftWidget-input"
+                      type="number"
+                      step="any"
+                      min="0.0000000"
+                      onChange={(e: React.ChangeEvent<any>) =>
+                        changeOtherAmountField(
+                          e,
+                          props,
+                          rates,
+                          ['deposit', 'withdraw'],
+                          'withdrawAmount'
+                        )
+                      }
+                    />
+                  </section>
+                  <Field
+                    component="select"
+                    name="deposit"
+                    onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
+                  >
+                    {options.map(option => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </Field>
+                </section>
+              </fieldset>
+              <fieldset>
+                <label htmlFor="withdraw">I want to withdraw</label>
+                <section className="ShapeShiftWidget-controls">
+                  <section className="ShapeShiftWidget-input-wrapper dark">
+                    <Field
+                      name="withdrawAmount"
+                      className="ShapeShiftWidget-input dark"
+                      type="number"
+                      step="any"
+                      min="0.0000000"
+                      onChange={(e: React.ChangeEvent<any>) =>
+                        changeOtherAmountField(
+                          e,
+                          props,
+                          rates,
+                          ['withdraw', 'deposit'],
+                          'depositAmount'
+                        )
+                      }
+                    />
+                  </section>
+                  <Field
+                    component="select"
+                    name="withdraw"
+                    onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
+                  >
+                    {options.map(option => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </Field>
+                </section>
+              </fieldset>
+              <fieldset>
+                <button type="submit" className="btn btn-primary ShapeShiftWidget-button">
+                  Continue
+                </button>
+              </fieldset>
+            </Form>
+            {props.touched.depositAmount &&
+              props.errors.depositAmount && (
+                <Warning highlighted={true}>
+                  <ErrorMessage name="depositAmount" />
+                </Warning>
+              )}
+          </section>
         );
       }}
     />

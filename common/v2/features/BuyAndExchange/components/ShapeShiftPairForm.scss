@@ -2,6 +2,68 @@
   width: 350px;
   border: 1px solid #e5ecf3;
   border-radius: 3px;
-  color: #c1c1c1;
-  background: #333;
+  color: rgb(51, 51, 51);
+  background: #fff;
+  box-shadow: 0 1px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.12);
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    opacity: 0.7;
+
+    &.dark {
+      background: rgb(51, 51, 51);
+      color: white;
+      opacity: 1;
+    }
+    select {
+      flex: 1;
+      color: rgb(51, 51, 51);
+    }
+  }
+  &-controls {
+    display: flex;
+    align-items: center;
+  }
+  &-input-wrapper {
+    flex: 2;
+    display: flex;
+    min-width: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+    &.dark {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    }
+  }
+  &-input {
+    color: white;
+    padding: 0.1rem 0;
+    background: transparent;
+    border-style: none;
+    font-size: 38px;
+    overflow: auto;
+
+    &.dark {
+      color: rgb(51, 51, 51);
+    }
+  }
+  &-button {
+    border-radius: 3px;
+    background-color: rgb(51, 51, 51);
+    width: 100%;
+    color: white;
+    transition: background-color 0s ease 0s, opacity 0.5s ease 0s;
+    padding: 0.82em 1.2em;
+    font-size: 16px;
+
+    &:hover {
+      background-color: rgb(29, 29, 29);
+    }
+  }
+
+  .Warning {
+    width: 350px;
+    margin: 0;
+  }
 }
