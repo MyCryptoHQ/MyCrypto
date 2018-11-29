@@ -59,6 +59,14 @@ export default class ShapeShift extends Component {
               <ShapeShiftAddressForm asset={pair.withdraw} onSubmit={this.loadSendScreen} />
             )}
             {stage === Stages.Send && <ShapeShiftSend transaction={transaction!} />}
+            <a
+              href="https://shapeshift.io"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="ShapeShift-powered-by"
+            >
+              Powered by ShapeShift
+            </a>
           </section>
         </section>
       </TabSection>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { ShapeShiftService } from 'v2/services';
 import ShapeShift from './ShapeShift';
+import './ShapeShift.scss';
 
 // Legacy
 import TabSection from 'containers/TabSection';
@@ -32,22 +33,34 @@ export default class ShapeShiftAuthorization extends Component {
       <ShapeShift />
     ) : (
       <TabSection>
-        <section className="ShapeShiftAuthorization Tab-content-pane">
-          {authorizationWindowOpened
-            ? "Please complete ShapeShift's authorization process in the new window."
-            : 'You need to authorize with ShapeShift.'}
-          <button
-            className="btn btn-primary"
-            onClick={this.attemptToAuthorize}
-            disabled={authorizationWindowOpened}
-          >
-            Authorize
-          </button>
-          {authorizationWindowOpened && (
-            <button className="btn btn-secondary" onClick={this.reset}>
-              Reset
-            </button>
-          )}
+        <section className="ShapeShift">
+          <section className="Tab-content-pane">
+            <form className="ShapeShiftWidget">
+              <fieldset className="dark">
+                <p>
+                  {authorizationWindowOpened
+                    ? "Please complete ShapeShift's authorization process in the new window."
+                    : 'You need to authorize with ShapeShift.'}
+                </p>
+              </fieldset>
+              {authorizationWindowOpened && (
+                <fieldset>
+                  <button className="btn ShapeShiftWidget-button" onClick={this.reset}>
+                    Reset
+                  </button>
+                </fieldset>
+              )}
+              <fieldset>
+                <button
+                  className="btn ShapeShiftWidget-button"
+                  onClick={this.attemptToAuthorize}
+                  disabled={authorizationWindowOpened}
+                >
+                  Authorize
+                </button>
+              </fieldset>
+            </form>
+          </section>
         </section>
       </TabSection>
     );

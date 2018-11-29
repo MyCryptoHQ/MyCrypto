@@ -1,0 +1,24 @@
+.ShapeShift {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .Tab-content-pane {
+    padding: 1.5rem 4rem;
+  }
+
+  &-powered-by {
+    color: rgb(51, 51, 51);
+    display: block;
+    margin: 0.5rem 0 0 0;
+    text-align: center;
+    transition: color 0.4s ease-in;
+
+    &:hover,
+    &:link,
+    &:active,
+    &:focus {
+      color: rgb(39, 39, 39);
+    }
+  }
+}

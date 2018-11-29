@@ -40,8 +40,8 @@ const validate = (values: Values, rates: MarketPairHash): FormikErrors<Values> =
 };
 
 const clearAmountFields = (_: React.ChangeEvent<any>, props: any) => {
-  props.setFieldValue('depositAmount', '0.00');
-  props.setFieldValue('withdrawAmount', '0.00');
+  props.setFieldValue('depositAmount', '0.0000000');
+  props.setFieldValue('withdrawAmount', '0.0000000');
 };
 
 const changeOtherAmountField = (
@@ -93,6 +93,12 @@ const handleAssetSelect = (e: React.ChangeEvent<any>, props: any) => {
   props.handleChange(e);
 };
 
+const setFixedFloat = (e: React.ChangeEvent<any>, props: any) => {
+  const { target: { name, value } } = e;
+
+  props.setFieldValue(name, parseFloat(value).toFixed(7));
+};
+
 export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) {
   return rates ? (
     <Formik
@@ -105,6 +111,10 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
       validate={values => validate(values, rates)}
       onSubmit={onSubmit}
       render={props => {
+        // I know... just don't even.
+        const depositAmountRef = document.getElementById('depositAmount') as any;
+        const withdrawAmountRef = document.getElementById('withdrawAmount') as any;
+
         return (
           <section className="ShapeShiftWidget">
             <Form>
@@ -113,11 +123,14 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                 <section className="ShapeShiftWidget-controls">
                   <section className="ShapeShiftWidget-input-wrapper">
                     <Field
+                      id="depositAmount"
                       name="depositAmount"
                       className="ShapeShiftWidget-input"
                       type="number"
                       step="any"
                       min="0.0000000"
+                      ref={depositAmountRef}
+                      onClick={() => depositAmountRef && depositAmountRef.select()}
                       onChange={(e: React.ChangeEvent<any>) =>
                         changeOtherAmountField(
                           e,
@@ -127,6 +140,7 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                           'withdrawAmount'
                         )
                       }
+                      onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
                     />
                   </section>
                   <Field
@@ -147,11 +161,14 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                 <section className="ShapeShiftWidget-controls">
                   <section className="ShapeShiftWidget-input-wrapper">
                     <Field
+                      id="withdrawAmount"
                       name="withdrawAmount"
                       className="ShapeShiftWidget-input"
                       type="number"
                       step="any"
                       min="0.0000000"
+                      ref={withdrawAmountRef}
+                      onClick={() => withdrawAmountRef && withdrawAmountRef.select()}
                       onChange={(e: React.ChangeEvent<any>) =>
                         changeOtherAmountField(
                           e,
@@ -161,6 +178,7 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                           'depositAmount'
                         )
                       }
+                      onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
                     />
                   </section>
                   <Field

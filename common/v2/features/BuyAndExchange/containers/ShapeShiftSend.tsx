@@ -63,9 +63,9 @@ export default class ShapeShiftSend extends Component<Props> {
           value={deposit}
           className="smallest"
         />
-        <ShapeShiftSendField label="Time remaining" value={timeRemaining} />
-        <ShapeShiftSendField label="Amount to receive" value={withdrawalAmount}>
-          <h2>{withdrawAsset}</h2>
+        <ShapeShiftSendField label="Time remaining" value={timeRemaining} className="smaller" />
+        <ShapeShiftSendField label="Amount to receive" value={withdrawalAmount} className="smaller">
+          <h3>{withdrawAsset}</h3>
         </ShapeShiftSendField>
         <ShapeShiftSendField label="Rate" value={quotedRate} className="smaller">
           <h3>
