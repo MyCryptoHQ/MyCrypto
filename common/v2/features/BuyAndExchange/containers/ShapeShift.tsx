@@ -19,6 +19,7 @@ interface State {
   pair: any | null;
   address: any | null;
   transaction: SendAmountResponse | null;
+  imageHash: any | null;
   pairHash: MarketPairHash | null;
   stage: Stages;
 }
@@ -29,6 +30,7 @@ export default class ShapeShift extends Component {
     pair: null,
     address: null,
     transaction: null,
+    imageHash: null,
     pairHash: null,
     stage: Stages.Pair
   };
@@ -36,6 +38,7 @@ export default class ShapeShift extends Component {
   public componentDidMount() {
     this.populateOptions();
     this.populatePairHash();
+    this.populateImages();
   }
 
   public render() {
@@ -72,6 +75,12 @@ export default class ShapeShift extends Component {
     const pairHash = await ShapeShiftService.instance.getPairInfo();
 
     this.setState({ pairHash });
+  };
+
+  private populateImages = async () => {
+    const imageHash = await ShapeShiftService.instance.getImages();
+
+    this.setState({ imageHash });
   };
 
   private loadAddressForm = (values: any) =>

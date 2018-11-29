@@ -118,6 +118,29 @@ class ShapeShiftServiceBase {
     }
   }
 
+  public async getImages(): Promise<any | null> {
+    try {
+      const cachedImages = this.cacheGrab('images');
+
+      if (cachedImages) {
+        return cachedImages;
+      }
+
+      const url = '/getcoins';
+      const { data: coinsList } = await this.service.get(url);
+      const images = Object.entries(coinsList).reduce((prev: any, [key, value]: any) => {
+        prev[key] = value.imageSmall;
+        return prev;
+      }, {});
+
+      return images;
+    } catch (error) {
+      logError('ShapeShift#getImages', error);
+
+      return null;
+    }
+  }
+
   public async getDepositStatus(depositAddress: string): Promise<DepositStatuses | null> {
     try {
       const url = `/txstat/${depositAddress}`;
