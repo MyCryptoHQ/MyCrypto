@@ -1,7 +1,6 @@
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
 
-import configTokens from 'config/tokens';
 import { translateRaw } from 'translations';
 import { INode } from 'libs/nodes/INode';
 import { Wei } from 'libs/units';
@@ -36,6 +35,7 @@ import {
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import { StaticNetworkConfig } from 'types/network';
 
 export function* getTokenBalancesSaga(wallet: IWallet, tokens: Token[]) {
   const node: INode = yield select(configNodesSelectors.getNodeLib);
@@ -295,9 +295,9 @@ export function* handleCustomTokenAdd(
   action: customTokensTypes.AddCustomTokenAction
 ): SagaIterator {
   // Ensure the added token address and symbol doesn't exist in the static tokens.
-  const { id } = yield select(configSelectors.getNetworkConfig);
+  const network: StaticNetworkConfig = yield select(configSelectors.getNetworkConfig);
   const { address, symbol } = action.payload;
-  const tokenList = (configTokens as any)[id];
+  const tokenList = network.tokens;
   const usedAddressesAndSymbols = getAddressesAndSymbols(tokenList);
   if (usedAddressesAndSymbols.addresses[address]) {
     yield put(notificationsActions.showNotification('danger', translateRaw('CUSTOM_TOKEN_1')));
