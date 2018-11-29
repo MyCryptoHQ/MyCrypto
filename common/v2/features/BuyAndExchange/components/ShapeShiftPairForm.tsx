@@ -145,10 +145,10 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
               <fieldset>
                 <label htmlFor="withdraw">I want to withdraw</label>
                 <section className="ShapeShiftWidget-controls">
-                  <section className="ShapeShiftWidget-input-wrapper dark">
+                  <section className="ShapeShiftWidget-input-wrapper">
                     <Field
                       name="withdrawAmount"
-                      className="ShapeShiftWidget-input dark"
+                      className="ShapeShiftWidget-input"
                       type="number"
                       step="any"
                       min="0.0000000"
@@ -177,7 +177,7 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                 </section>
               </fieldset>
               <fieldset>
-                <button type="submit" className="btn btn-primary ShapeShiftWidget-button">
+                <button type="submit" className="btn ShapeShiftWidget-button">
                   Continue
                 </button>
               </fieldset>

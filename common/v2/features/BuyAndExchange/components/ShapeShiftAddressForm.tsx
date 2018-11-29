@@ -42,11 +42,11 @@ export default function ShapeShiftAddressForm({ asset, onSubmit }: Props) {
             <fieldset className="dark">
               <label htmlFor="address">Your Receiving Address ({asset})</label>
               <section className="ShapeShiftWidget-input-wrapper">
-                <Field name="address" className="ShapeShiftWidget-input" />
+                <Field name="address" className="ShapeShiftWidget-input smallest" />
               </section>
             </fieldset>
             <fieldset>
-              <button type="submit" className="btn btn-primary ShapeShiftWidget-button">
+              <button type="submit" className="btn ShapeShiftWidget-button">
                 Continue
               </button>
             </fieldset>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { ShapeShiftService, SendAmountResponse, DepositStatuses } from 'v2/services';
+import { ShapeShiftSendField } from '../components';
 import { SHAPESHIFT_STATUS_PING_RATE } from '../constants';
 import { getSecondsRemaining, getTimeRemaining, getStatusWording } from '../helpers';
 
@@ -52,23 +53,32 @@ export default class ShapeShiftSend extends Component<Props> {
     const [depositAsset, withdrawAsset] = pair.toUpperCase().split('_');
 
     return (
-      <section className="ShapeShiftSend">
-        <ul>
-          <li>Reference number: {orderId}</li>
-          <li>Time remaining: {timeRemaining}</li>
-          <li>
-            Amount of {withdrawAsset} to receive: {withdrawalAmount}
-          </li>
-          <li>
-            Rate: {quotedRate} {withdrawAsset}/{depositAsset}
-          </li>
-        </ul>
-        <p>
-          Send {depositAmount} {depositAsset} to{' '}
-        </p>
-        <input type="text" disabled={true} value={deposit} />
-        <div>Status: {getStatusWording(status)}</div>
-      </section>
+      <form className="ShapeShiftSend ShapeShiftWidget">
+        <ShapeShiftSendField dark={true} label="Send" value={depositAmount}>
+          <h2>{depositAsset}</h2>
+        </ShapeShiftSendField>
+        <ShapeShiftSendField
+          dark={true}
+          label="to this address"
+          value={deposit}
+          className="smallest"
+        />
+        <ShapeShiftSendField label="Time remaining" value={timeRemaining} />
+        <ShapeShiftSendField label="Amount to receive" value={withdrawalAmount}>
+          <h2>{withdrawAsset}</h2>
+        </ShapeShiftSendField>
+        <ShapeShiftSendField label="Rate" value={quotedRate} className="smaller">
+          <h3>
+            {withdrawAsset}/{depositAsset}
+          </h3>
+        </ShapeShiftSendField>
+        <ShapeShiftSendField label="Reference number" value={orderId} className="smallest" />
+        <ShapeShiftSendField
+          label="Status"
+          value={getStatusWording(status)}
+          className="smaller uppercase"
+        />
+      </form>
     );
   }
 

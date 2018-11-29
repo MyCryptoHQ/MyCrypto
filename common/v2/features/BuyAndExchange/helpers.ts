@@ -33,15 +33,15 @@ export const getTimeRemaining = (expiration: number): string => {
 export const getStatusWording = (status: DepositStatuses): string => {
   switch (status) {
     case DepositStatuses.error:
-      return 'There was an error with this ShapeShift transaction.';
+      return 'There was an error with this ShapeShift transaction';
     case DepositStatuses.out_of_time:
-      return 'The time has run out for this transaction.';
+      return 'The time has run out for this transaction';
     case DepositStatuses.no_deposits:
-      return 'Waiting on a deposit.';
+      return 'Waiting on deposit';
     case DepositStatuses.received:
-      return 'Deposit received.';
+      return 'Deposit received';
     case DepositStatuses.complete:
-      return 'Transaction completed.';
+      return 'Transaction complete';
     default:
       return '';
   }
