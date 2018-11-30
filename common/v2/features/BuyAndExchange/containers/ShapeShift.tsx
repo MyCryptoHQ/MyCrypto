@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { ShapeShiftService, MarketPairHash, SendAmountResponse } from 'v2/services';
 import { ShapeShiftPairForm, ShapeShiftAddressForm } from '../components';
+import { buildAssets } from '../helpers';
 import ShapeShiftSend from './ShapeShiftSend';
 import './ShapeShift.scss';
 
@@ -42,7 +43,7 @@ export default class ShapeShift extends Component {
   }
 
   public render() {
-    const { pairHash, stage, pair, transaction, options } = this.state;
+    const { pairHash, imageHash, stage, pair, transaction, options } = this.state;
 
     return (
       <TabSection>
@@ -51,7 +52,7 @@ export default class ShapeShift extends Component {
             {stage === Stages.Pair && (
               <ShapeShiftPairForm
                 rates={pairHash}
-                options={options}
+                assets={buildAssets(options, imageHash)}
                 onSubmit={this.loadAddressForm}
               />
             )}

@@ -2,6 +2,8 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
 
 import { MarketPairHash } from 'v2/services/types';
+import { AssetOption } from '../types';
+import AssetSelection from './AssetSelection';
 import './ShapeShiftPairForm.scss';
 
 // Legacy
@@ -16,7 +18,7 @@ interface Values {
 
 interface Props {
   rates: MarketPairHash | null;
-  options: string[];
+  assets: AssetOption[];
   onSubmit(values: any, bag: any): void;
 }
 
@@ -99,13 +101,13 @@ const setFixedFloat = (e: React.ChangeEvent<any>, props: any) => {
   props.setFieldValue(name, parseFloat(value).toFixed(7));
 };
 
-export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) {
-  return rates ? (
+export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
+  return rates && assets.length > 0 ? (
     <Formik
       initialValues={{
-        deposit: options[0],
+        deposit: assets[0].ticker,
         depositAmount: '0.0000000',
-        withdraw: options[1],
+        withdraw: assets[1].ticker,
         withdrawAmount: '0.0000000'
       }}
       validate={values => validate(values, rates)}
@@ -143,7 +145,7 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                       onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
                     />
                   </section>
-                  <Field
+                  {/* <Field
                     component="select"
                     name="deposit"
                     onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
@@ -153,7 +155,8 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                         {option}
                       </option>
                     ))}
-                  </Field>
+                  </Field> */}
+                  <AssetSelection name="deposit" assets={assets} />
                 </section>
               </fieldset>
               <fieldset>
@@ -181,7 +184,7 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                       onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
                     />
                   </section>
-                  <Field
+                  {/* <Field
                     component="select"
                     name="withdraw"
                     onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
@@ -191,7 +194,8 @@ export default function ShapeShiftPairForm({ rates, options, onSubmit }: Props) 
                         {option}
                       </option>
                     ))}
-                  </Field>
+                  </Field> */}
+                  <AssetSelection name="deposit" assets={assets} />
                 </section>
               </fieldset>
               <fieldset>

@@ -1,5 +1,6 @@
 import { DepositStatuses } from 'v2/services';
 import { ZEROEX_CONTAINER_ID } from './constants';
+import { AssetOption } from './types';
 
 export const replaceZeroExContainer = (): void => {
   const originalContainer = document.querySelector('.zeroExInstantMainContainer');
@@ -46,3 +47,10 @@ export const getStatusWording = (status: DepositStatuses): string => {
       return '';
   }
 };
+
+export const buildAssets = (options: string[], images: any): AssetOption[] =>
+  options.map(option => ({
+    logo: images[option],
+    ticker: option,
+    name: ''
+  }));
