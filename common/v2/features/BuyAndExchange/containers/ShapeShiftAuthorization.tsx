@@ -43,21 +43,25 @@ export default class ShapeShiftAuthorization extends Component {
                     : 'You need to authorize with ShapeShift.'}
                 </p>
               </fieldset>
-              {authorizationWindowOpened && (
-                <fieldset>
-                  <button className="btn ShapeShiftWidget-button" onClick={this.reset}>
+              <fieldset>
+                {authorizationWindowOpened ? (
+                  <button
+                    type="button"
+                    className="btn ShapeShiftWidget-button"
+                    onClick={this.reset}
+                  >
                     Reset
                   </button>
-                </fieldset>
-              )}
-              <fieldset>
-                <button
-                  className="btn ShapeShiftWidget-button"
-                  onClick={this.attemptToAuthorize}
-                  disabled={authorizationWindowOpened}
-                >
-                  Authorize
-                </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn ShapeShiftWidget-button"
+                    onClick={this.attemptToAuthorize}
+                    disabled={authorizationWindowOpened}
+                  >
+                    Authorize
+                  </button>
+                )}
               </fieldset>
             </form>
           </section>

@@ -1,3 +1,6 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
 .ShapeShift {
   display: flex;
   align-items: center;
@@ -8,21 +11,15 @@
   }
 
   &-powered-by {
-    color: rgb(51, 51, 51);
+    color: color(text-color);
     display: block;
-    margin: 0.5rem 0 0 0;
+    margin: 1rem 0 0 0;
     text-align: center;
     transition: color 0.4s ease-in;
 
     img {
       width: 20px;
       height: 20px;
-    }
-    &:hover,
-    &:link,
-    &:active,
-    &:focus {
-      color: rgb(39, 39, 39);
     }
   }
 }

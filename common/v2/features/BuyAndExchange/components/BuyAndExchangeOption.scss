@@ -2,14 +2,17 @@
 @import 'common/sass/mixins';
 
 .BuyAndExchangeOption {
+  flex: 1 1 320px;
   display: flex;
   flex-direction: column;
-  width: 320px;
   margin: 0 1rem 2rem;
   padding: 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-top: 3px solid #17314f;
+  min-width: 300px;
+  max-width: 340px;
+  border: 1px solid shade-dark(0.12);
+  border-top: 3px solid lighten(#17314f, 15%);
   border-radius: 4px;
+  background: color(control-bg);
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.12);
   transition: transform 100ms ease, box-shadow 100ms ease;
 
