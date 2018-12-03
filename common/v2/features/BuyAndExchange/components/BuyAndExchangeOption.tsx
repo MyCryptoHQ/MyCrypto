@@ -6,19 +6,26 @@ import './BuyAndExchangeOption.scss';
 interface Props {
   route: string;
   option: string;
+  logo: string;
   children: any;
 }
 
 function BuyAndExchangeOption({
   route,
   option,
+  logo,
   history,
   children
 }: Props & RouteComponentProps<any>) {
   return (
     <section className="BuyAndExchangeOption" onClick={() => history.push(route)}>
-      <h1>{option}</h1>
-      {children}
+      <section className="BuyAndExchangeOption-name">
+        <h3>
+          <img src={logo} /> {option}
+        </h3>
+      </section>
+      <section className="BuyAndExchangeOption-content">{children}</section>
+      <button className="btn btn-default">Use {option}</button>
     </section>
   );
 }

@@ -7,6 +7,7 @@ import ShapeShiftSend from './ShapeShiftSend';
 import './ShapeShift.scss';
 
 // Legacy
+import shapeshiftLogo from 'assets/images/logo-shapeshift-no-text.svg';
 import TabSection from 'containers/TabSection';
 
 enum Stages {
@@ -66,7 +67,7 @@ export default class ShapeShift extends Component {
               target="_blank"
               className="ShapeShift-powered-by"
             >
-              Powered by ShapeShift
+              Powered by <img src={shapeshiftLogo} /> ShapeShift
             </a>
           </section>
         </section>
