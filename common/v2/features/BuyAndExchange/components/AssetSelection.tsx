@@ -28,25 +28,41 @@ export default class AssetSelect extends Component<Props> {
     filter: ''
   };
 
+  private filterInput: any | null = React.createRef();
+
+  public componentDidUpdate(_: Props, prevState: State) {
+    const { mode } = this.state;
+    const { mode: prevMode } = prevState;
+    const filterInputReady = this.filterInput && this.filterInput.current;
+
+    if (mode === Modes.Screen && prevMode === Modes.Button && filterInputReady) {
+      this.filterInput.current.focus();
+    }
+  }
+
   public render() {
     const { name, value, assets = [] } = this.props;
     const { mode, filter } = this.state;
+    const matchedAssets = assets.filter(asset => assetContainsFilter(filter, asset));
 
     return mode === Modes.Button ? (
-      <button onClick={this.toggleMode}>{value}</button>
+      <button className="AssetSelection-selector" type="button" onClick={this.toggleMode}>
+        {value} <i className="fa fa-caret-down" />
+      </button>
     ) : (
       <Field
         name={name}
         render={({ field, form }) => (
           <section className="AssetSelection">
             <section className="AssetSelection-head">
-              <button onClick={this.toggleMode} className="AssetSelection-head-close">
+              <button type="button" onClick={this.toggleMode} className="AssetSelection-head-close">
                 <i className="fa fa-close" />
               </button>
               <h4>Select Asset</h4>
               <section className="AssetSelection-head-filter">
                 <i className="fa fa-search" />
                 <input
+                  ref={this.filterInput}
                   type="text"
                   placeholder="Search assets..."
                   value={filter}
@@ -55,15 +71,22 @@ export default class AssetSelect extends Component<Props> {
               </section>
             </section>
             <section className="AssetSelection-assets">
-              {assets.filter(asset => assetContainsFilter(filter, asset)).map(asset => (
-                <section
-                  className="AssetSelection-assets-asset"
-                  onClick={() => this.handleAssetSelection(asset)}
-                >
-                  <img src={asset.logo} />
-                  <p>{asset.ticker}</p>
+              {matchedAssets.length > 0 ? (
+                matchedAssets.map(asset => (
+                  <section
+                    key={asset.ticker}
+                    className="AssetSelection-assets-asset"
+                    onClick={() => this.handleAssetSelection(asset)}
+                  >
+                    <img src={asset.logo} />
+                    <p>{asset.ticker}</p>
+                  </section>
+                ))
+              ) : (
+                <section className="AssetSelection-assets-asset">
+                  No assets match the filter.
                 </section>
-              ))}
+              )}
             </section>
           </section>
         )}
