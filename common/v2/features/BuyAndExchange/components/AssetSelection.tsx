@@ -38,6 +38,10 @@ export default class AssetSelect extends Component<Props> {
     if (mode === Modes.Screen && prevMode === Modes.Button && filterInputReady) {
       this.filterInput.current.focus();
     }
+
+    if (mode === Modes.Button && prevMode === Modes.Screen) {
+      this.clearFilter();
+    }
   }
 
   public render() {
@@ -52,7 +56,7 @@ export default class AssetSelect extends Component<Props> {
     ) : (
       <Field
         name={name}
-        render={({ field, form }) => (
+        render={() => (
           <section className="AssetSelection">
             <section className="AssetSelection-head">
               <button type="button" onClick={this.toggleMode} className="AssetSelection-head-close">
@@ -103,6 +107,8 @@ export default class AssetSelect extends Component<Props> {
     this.setState({
       filter
     });
+
+  private clearFilter = () => this.setState({ filter: '' });
 
   private handleAssetSelection = (asset: AssetOption) => {
     const { onChange } = this.props;
