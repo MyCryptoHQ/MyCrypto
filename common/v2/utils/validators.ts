@@ -15,7 +15,27 @@ export const isValidBitcoinAddress = (address: string): boolean =>
 export const addressValidatorHash: ValidatorHash = {
   ETH: isValidEthereumAddress,
   BTC: isValidBitcoinAddress,
-  ...SHAPESHIFT_TOKEN_WHITELIST.reduce((prev: ValidatorHash, next) => {
+  ...[
+    'OMG',
+    'REP',
+    'SNT',
+    'SNGLS',
+    'ZRX',
+    'SWT',
+    'ANT',
+    'BAT',
+    'BNT',
+    'CVC',
+    'DNT',
+    '1ST',
+    'GNO',
+    'GNT',
+    'EDG',
+    'FUN',
+    'RLC',
+    'TRST',
+    'GUP'
+  ].reduce((prev: ValidatorHash, next) => {
     prev[next] = isValidEthereumAddress;
     return prev;
   }, {})

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field } from 'formik';
 
+import { assetContainsFilter } from '../helpers';
 import { AssetOption } from '../types';
 import './AssetSelection.scss';
 
@@ -16,16 +17,18 @@ interface Props {
 
 interface State {
   mode: Modes;
+  filter: string;
 }
 
 export default class AssetSelect extends Component<Props> {
   public state: State = {
-    mode: Modes.Button
+    mode: Modes.Button,
+    filter: ''
   };
 
   public render() {
     const { name, assets = [] } = this.props;
-    const { mode } = this.state;
+    const { mode, filter } = this.state;
 
     return mode === Modes.Button ? (
       <button onClick={this.toggleMode}>ETH</button>
@@ -41,11 +44,16 @@ export default class AssetSelect extends Component<Props> {
               <h4>Select Asset</h4>
               <section className="AssetSelection-head-filter">
                 <i className="fa fa-search" />
-                <input type="text" placeholder="Search assets..." />
+                <input
+                  type="text"
+                  placeholder="Search assets..."
+                  value={filter}
+                  onChange={this.handleFilterChange}
+                />
               </section>
             </section>
             <section className="AssetSelection-assets">
-              {assets.map(asset => (
+              {assets.filter(asset => assetContainsFilter(filter, asset)).map(asset => (
                 <section className="AssetSelection-assets-asset">
                   <img src={asset.logo} />
                   <p>{asset.ticker}</p>
@@ -62,4 +70,9 @@ export default class AssetSelect extends Component<Props> {
     this.setState((prevState: State) => ({
       mode: prevState.mode === Modes.Button ? Modes.Screen : Modes.Button
     }));
+
+  private handleFilterChange = ({ target: { value: filter } }: React.ChangeEvent<any>) =>
+    this.setState({
+      filter
+    });
 }

@@ -54,3 +54,11 @@ export const buildAssets = (options: string[], images: any): AssetOption[] =>
     ticker: option,
     name: ''
   }));
+
+export const assetContainsFilter = (filter: string, asset: AssetOption): boolean => {
+  const actualFilter = filter.toLowerCase();
+  const tickerMatches = asset.ticker.toLowerCase().includes(actualFilter);
+  const nameMatches = asset.name.toLowerCase().includes(actualFilter);
+
+  return tickerMatches || nameMatches;
+};
