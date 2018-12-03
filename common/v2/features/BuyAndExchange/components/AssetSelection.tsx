@@ -12,7 +12,9 @@ enum Modes {
 
 interface Props {
   name: string;
+  value: string;
   assets: AssetOption[];
+  onChange(asset: AssetOption): void;
 }
 
 interface State {
@@ -27,11 +29,11 @@ export default class AssetSelect extends Component<Props> {
   };
 
   public render() {
-    const { name, assets = [] } = this.props;
+    const { name, value, assets = [] } = this.props;
     const { mode, filter } = this.state;
 
     return mode === Modes.Button ? (
-      <button onClick={this.toggleMode}>ETH</button>
+      <button onClick={this.toggleMode}>{value}</button>
     ) : (
       <Field
         name={name}
@@ -54,7 +56,10 @@ export default class AssetSelect extends Component<Props> {
             </section>
             <section className="AssetSelection-assets">
               {assets.filter(asset => assetContainsFilter(filter, asset)).map(asset => (
-                <section className="AssetSelection-assets-asset">
+                <section
+                  className="AssetSelection-assets-asset"
+                  onClick={() => this.handleAssetSelection(asset)}
+                >
                   <img src={asset.logo} />
                   <p>{asset.ticker}</p>
                 </section>
@@ -75,4 +80,10 @@ export default class AssetSelect extends Component<Props> {
     this.setState({
       filter
     });
+
+  private handleAssetSelection = (asset: AssetOption) => {
+    const { onChange } = this.props;
+    onChange(asset);
+    this.toggleMode();
+  };
 }

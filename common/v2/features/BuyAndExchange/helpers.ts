@@ -48,9 +48,9 @@ export const getStatusWording = (status: DepositStatuses): string => {
   }
 };
 
-export const buildAssets = (options: string[], images: any): AssetOption[] =>
+export const buildAssets = (options: string[], images: any = {}): AssetOption[] =>
   options.map(option => ({
-    logo: images[option],
+    logo: images != null ? images[option] : '',
     ticker: option,
     name: ''
   }));

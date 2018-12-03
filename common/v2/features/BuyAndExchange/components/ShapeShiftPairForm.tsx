@@ -41,7 +41,7 @@ const validate = (values: Values, rates: MarketPairHash): FormikErrors<Values> =
   return errors;
 };
 
-const clearAmountFields = (_: React.ChangeEvent<any>, props: any) => {
+const clearAmountFields = (props: any) => {
   props.setFieldValue('depositAmount', '0.0000000');
   props.setFieldValue('withdrawAmount', '0.0000000');
 };
@@ -69,8 +69,7 @@ const changeOtherAmountField = (
   props.handleChange(e);
 };
 
-const handleAssetSelect = (e: React.ChangeEvent<any>, props: any) => {
-  const { target: { name, value } } = e;
+const handleAssetSelect = (name: string, value: string, props: any) => {
   const previousValue = props.values[name];
   const opposites: { [field: string]: string } = {
     deposit: 'withdraw',
@@ -83,7 +82,9 @@ const handleAssetSelect = (e: React.ChangeEvent<any>, props: any) => {
     props.setFieldValue(opposite, previousValue);
   }
 
-  clearAmountFields(e, props);
+  clearAmountFields(props);
+
+  props.setFieldValue(name, value);
   props.setTouched({
     depositAmount: false,
     withdrawAmount: false
@@ -92,7 +93,6 @@ const handleAssetSelect = (e: React.ChangeEvent<any>, props: any) => {
     depositAmount: undefined,
     withdrawAmount: undefined
   });
-  props.handleChange(e);
 };
 
 const setFixedFloat = (e: React.ChangeEvent<any>, props: any) => {
@@ -113,10 +113,6 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
       validate={values => validate(values, rates)}
       onSubmit={onSubmit}
       render={props => {
-        // I know... just don't even.
-        const depositAmountRef = document.getElementById('depositAmount') as any;
-        const withdrawAmountRef = document.getElementById('withdrawAmount') as any;
-
         return (
           <section className="ShapeShiftWidget">
             <Form>
@@ -131,8 +127,6 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                       type="number"
                       step="any"
                       min="0.0000000"
-                      ref={depositAmountRef}
-                      onClick={() => depositAmountRef && depositAmountRef.select()}
                       onChange={(e: React.ChangeEvent<any>) =>
                         changeOtherAmountField(
                           e,
@@ -145,18 +139,14 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                       onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
                     />
                   </section>
-                  {/* <Field
-                    component="select"
+                  <AssetSelection
                     name="deposit"
-                    onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
-                  >
-                    {options.map(option => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </Field> */}
-                  <AssetSelection name="deposit" assets={assets} />
+                    assets={assets}
+                    value={props.values.deposit}
+                    onChange={asset => {
+                      handleAssetSelect('deposit', asset.ticker, props);
+                    }}
+                  />
                 </section>
               </fieldset>
               <fieldset>
@@ -170,8 +160,6 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                       type="number"
                       step="any"
                       min="0.0000000"
-                      ref={withdrawAmountRef}
-                      onClick={() => withdrawAmountRef && withdrawAmountRef.select()}
                       onChange={(e: React.ChangeEvent<any>) =>
                         changeOtherAmountField(
                           e,
@@ -184,18 +172,14 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                       onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
                     />
                   </section>
-                  {/* <Field
-                    component="select"
-                    name="withdraw"
-                    onChange={(e: React.ChangeEvent<any>) => handleAssetSelect(e, props)}
-                  >
-                    {options.map(option => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </Field> */}
-                  <AssetSelection name="deposit" assets={assets} />
+                  <AssetSelection
+                    name="deposit"
+                    assets={assets}
+                    value={props.values.withdraw}
+                    onChange={asset => {
+                      handleAssetSelect('withdraw', asset.ticker, props);
+                    }}
+                  />
                 </section>
               </fieldset>
               <fieldset>
