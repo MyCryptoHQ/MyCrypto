@@ -38,7 +38,7 @@ const LINK_COLUMNS = [
       },
       {
         title: 'TREZOR',
-        link: 'https://shop.trezor.io/?a=mycrypto.com'
+        link: 'https://shop.trezor.io/?offer_id=10&aff_id=1735'
       },
       {
         title: 'ether.card',
