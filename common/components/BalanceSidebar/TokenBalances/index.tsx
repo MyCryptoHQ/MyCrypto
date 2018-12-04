@@ -46,11 +46,7 @@ class TokenBalances extends React.Component<Props> {
     const walletTokens = walletConfig ? walletConfig.tokens : [];
 
     let content;
-    if (isOffline) {
-      content = (
-        <div className="TokenBalances-offline well well-sm">{translate('SCAN_TOKENS_OFFLINE')}</div>
-      );
-    } else if (tokensError) {
+    if (tokensError) {
       content = (
         <div className="TokenBalances-error well well-md">
           <h5 className="TokenBalances-error-message">{tokensError}</h5>
@@ -66,7 +62,7 @@ class TokenBalances extends React.Component<Props> {
           <Spinner size="x3" />
         </div>
       );
-    } else if (!walletTokens) {
+    } else if (!walletTokens && !isOffline) {
       content = (
         <button
           className="TokenBalances-scan btn btn-primary btn-block"
@@ -76,7 +72,8 @@ class TokenBalances extends React.Component<Props> {
         </button>
       );
     } else {
-      const shownBalances = tokenBalances.filter(t => walletTokens.includes(t.symbol));
+      const shownBalances =
+        (walletTokens && tokenBalances.filter(t => walletTokens.includes(t.symbol))) || [];
 
       content = (
         <Balances
@@ -87,6 +84,7 @@ class TokenBalances extends React.Component<Props> {
           setWalletTokens={this.props.setWalletTokens}
           onAddCustomToken={this.props.attemptAddCustomToken}
           onRemoveCustomToken={this.props.removeCustomToken}
+          isOffline={isOffline}
         />
       );
     }

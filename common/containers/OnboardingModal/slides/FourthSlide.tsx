@@ -16,7 +16,7 @@ export default function FourthSlide() {
           <HardwareWalletChoice
             image={trezor}
             text={translateRaw('ONBOARDING_TEXT_27')}
-            link="https://shop.trezor.io/?a=mycrypto.com"
+            link="https://shop.trezor.io/?offer_id=10&aff_id=1735"
           />
           <HardwareWalletChoice
             image={ledger}
