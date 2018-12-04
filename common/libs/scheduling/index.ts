@@ -1,10 +1,11 @@
 import BN from 'bn.js';
-import abi from 'ethereumjs-abi';
 import { toBuffer } from 'ethereumjs-util';
 import { ICurrentValue } from 'features/types';
 import { toWei, gasPriceToBase, Address, Wei, getDecimalFromEtherUnit } from '../units';
 import RequestFactory from './contracts/RequestFactory';
 import { CustomNetworkConfig, StaticNetworkConfig } from 'types/network';
+import Scheduler from './contracts/Scheduler';
+import { TransactionReceipt } from 'shared/types/transactions';
 
 const ETHER_DECIMALS = getDecimalFromEtherUnit('ether');
 const TIME_BOUNTY_MIN = Wei('1');
@@ -58,6 +59,10 @@ export const EAC_ADDRESSES: IEacAddresses = {
     requestFactory: '0x4fa38929055dc881f656532ff778c501c4be9825',
     timestampScheduler: '0xccba4b0187191a040bd9f9e4d00f1dbe49c68aad'
   }
+};
+
+export const EAC_LOGS_TOPICS = {
+  NEW_REQUEST: '0x2749295aa7ffdbd4d16719dc03d592cd081eebd9bb790ceedce201a40675fc03'
 };
 
 export const networkSupportsScheduling = (network: string) => {
@@ -152,16 +157,22 @@ export const getScheduleData = (
     return;
   }
 
-  return abi.simpleEncode('schedule(address,bytes,uint[8]):(address)', toAddress, callData, [
-    callGas,
-    callValue,
-    windowSize,
-    windowStart,
-    callGasPrice,
-    EAC_SCHEDULING_CONFIG.FEE,
-    timeBounty,
-    requiredDeposit
-  ]);
+  return toBuffer(
+    Scheduler.schedule.encodeInput({
+      _toAddress: toAddress,
+      _callData: callData,
+      _uintArgs: [
+        callGas,
+        callValue,
+        windowSize,
+        windowStart,
+        callGasPrice,
+        EAC_SCHEDULING_CONFIG.FEE,
+        timeBounty,
+        requiredDeposit
+      ]
+    })
+  );
 };
 
 enum SchedulingParamsError {
@@ -250,4 +261,16 @@ export const getSchedulerAddress = (
       ? EAC_ADDRESSES[networkName].timestampScheduler
       : EAC_ADDRESSES[networkName].blockScheduler
   );
+};
+
+export const getScheduledTransactionAddressFromReceipt = (receipt: TransactionReceipt) => {
+  const newRequestLog: any = receipt.logs.find(
+    (log: any) => log.topics[0] === EAC_LOGS_TOPICS.NEW_REQUEST
+  );
+
+  if (newRequestLog) {
+    return '0x'.concat(newRequestLog.data.slice(-40));
+  }
+
+  return null;
 };

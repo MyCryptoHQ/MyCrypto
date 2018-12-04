@@ -1,10 +1,5 @@
 import Contract from 'libs/contracts';
-
-interface ABIFunc<T, K = void> {
-  encodeInput(x: T): string;
-  decodeInput(argStr: string): T;
-  decodeOutput(argStr: string): K;
-}
+import { ABIFunc } from '../../erc20';
 
 type address = any;
 type uint256 = any;

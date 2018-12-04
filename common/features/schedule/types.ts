@@ -13,6 +13,7 @@ export interface ScheduleState {
   scheduleGasPrice: SetScheduleGasPriceFieldAction['payload'];
   scheduleDeposit: SetScheduleDepositFieldAction['payload'];
   scheduleParamsValidity: SetScheduleParamsValidityAction['payload'];
+  scheduledTransactionHash: SetScheduledTransactionHashAction['payload'];
 }
 
 export enum ScheduleActions {
@@ -22,7 +23,6 @@ export enum ScheduleActions {
   CURRENT_SCHEDULE_TIMESTAMP_SET = 'SCHEDULE_CURRENT_SCHEDULE_TIMESTAMP_SET',
   CURRENT_SCHEDULE_TIMEZONE_SET = 'SCHEDULE_CURRENT_SCHEDULE_TIMEZONE_SET',
   CURRENT_SCHEDULE_TYPE = 'SCHEDULE_CURRENT_SCHEDULE_TYPE',
-  CURRENT_SCHEDULING_TOGGLE = 'SCHEDULE_CURRENT_SCHEDULING_TOGGLE',
   TIME_BOUNTY_FIELD_SET = 'SCHEDULE_TIME_BOUNTY_FIELD_SET',
   WINDOW_SIZE_FIELD_SET = 'SCHEDULE_WINDOW_SIZE_FIELD_SET',
   WINDOW_START_FIELD_SET = 'SCHEDULE_WINDOW_START_FIELD_SET',
@@ -37,7 +37,8 @@ export enum ScheduleActions {
   ESTIMATE_SCHEDULING_GAS_REQUESTED = 'ESTIMATE_SCHEDULING_GAS_REQUESTED',
   ESTIMATE_SCHEDULING_GAS_SUCCEEDED = 'ESTIMATE_SCHEDULING_GAS_SUCCEEDED',
   ESTIMATE_SCHEDULING_GAS_FAILED = 'ESTIMATE_SCHEDULING_GAS_FAILED',
-  ESTIMATE_SCHEDULING_GAS_TIMEDOUT = 'ESTIMATE_SCHEDULING_GAS_TIMEDOUT'
+  ESTIMATE_SCHEDULING_GAS_TIMEDOUT = 'ESTIMATE_SCHEDULING_GAS_TIMEDOUT',
+  SCHEDULED_TRANSACTION_HASH_SET = 'SCHEDULED_TRANSACTION_HASH_SET'
 }
 
 //#region Fields
@@ -138,7 +139,8 @@ export type ScheduleFieldAction =
   | SetScheduleGasLimitFieldAction
   | SetScheduleDepositFieldAction
   | SetScheduleTimezoneAction
-  | SetScheduleParamsValidityAction;
+  | SetScheduleParamsValidityAction
+  | SetScheduledTransactionHashAction;
 //#endregion Fields
 
 //#region Schedule Timestamp
@@ -163,15 +165,6 @@ export interface SetCurrentScheduleTypeAction {
 
 export type ScheduleTypeCurrentAction = SetCurrentScheduleTypeAction;
 //#endregion Schedule Type
-
-//#region Schedule Toggle
-export interface SetCurrentSchedulingToggleAction {
-  type: ScheduleActions.CURRENT_SCHEDULING_TOGGLE;
-  payload: string;
-}
-
-export type SchedulingToggleCurrentAction = SetCurrentSchedulingToggleAction;
-//#endregion Schedule Toggle
 
 //#region Time Bounty
 export interface SetCurrentTimeBountyAction {
@@ -218,5 +211,15 @@ export interface EstimateSchedulingGasTimeoutAction {
   type: ScheduleActions.ESTIMATE_SCHEDULING_GAS_TIMEDOUT;
 }
 //#endregion Estimate Scheduling Gas
+
+//#region Scheduled Transaction Hash
+export interface SetScheduledTransactionHashAction {
+  type: ScheduleActions.SCHEDULED_TRANSACTION_HASH_SET;
+  payload: {
+    raw: string;
+    value: string;
+  };
+}
+//#endregion
 
 export type ScheduleAction = ScheduleFieldAction;
