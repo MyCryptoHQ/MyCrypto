@@ -115,7 +115,13 @@ export function* shouldEstimateGas(): SagaIterator {
       rest.to = undefined as any;
     }
 
-    yield put(actions.estimateGasRequested(rest));
+    const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+
+    if (scheduling) {
+      yield put(scheduleActions.estimateSchedulingGasRequested(rest));
+    } else {
+      yield put(actions.estimateGasRequested(rest));
+    }
   }
 }
 
@@ -152,13 +158,7 @@ export function* estimateGas(): SagaIterator {
           value: gasLimit
         };
 
-        const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
-
-        if (scheduling) {
-          yield put(scheduleActions.setScheduleGasLimitField(gasSetOptions));
-        } else {
-          yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
-        }
+        yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
 
         yield put(actions.estimateGasSucceeded());
       } else {

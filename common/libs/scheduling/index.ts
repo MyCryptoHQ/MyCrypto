@@ -38,7 +38,8 @@ export const EAC_SCHEDULING_CONFIG = {
   SCHEDULE_TIMESTAMP_FORMAT: 'YYYY-MM-DD HH:mm:ss',
   DEFAULT_SCHEDULING_METHOD: 'time',
   ALLOW_SCHEDULING_MIN_AFTER_NOW: 5,
-  BOUNTY_TO_DEPOSIT_MULTIPLIER: 2
+  BOUNTY_TO_DEPOSIT_MULTIPLIER: 2,
+  SEND_ALL_ESTIMATION_MARGIN: Wei('30000')
 };
 
 export const EAC_ADDRESSES: IEacAddresses = {
@@ -99,13 +100,14 @@ export const calcEACTotalCost = (
   callGas: Wei,
   gasPrice: Wei,
   callGasPrice: Wei | null,
-  timeBounty: Wei | null
+  timeBounty: Wei | null,
+  gasLimit: Wei | null
 ) => {
   if (!callGasPrice) {
     callGasPrice = gasPriceToBase(EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_PRICE_FALLBACK);
   }
 
-  const deployCost = gasPrice.mul(EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT);
+  const deployCost = gasPrice.mul(gasLimit || new BN('0'));
 
   const futureExecutionCost = calcEACFutureExecutionCost(callGas, callGasPrice, timeBounty);
 
