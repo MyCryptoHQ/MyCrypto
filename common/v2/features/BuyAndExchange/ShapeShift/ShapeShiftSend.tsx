@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 import { ShapeShiftService, SendAmountResponse, DepositStatuses } from 'v2/services';
-import { ShapeShiftSendField } from '../components';
-import { SHAPESHIFT_STATUS_PING_RATE } from '../constants';
-import { getSecondsRemaining, getTimeRemaining, getStatusWording } from '../helpers';
+import { ShapeShiftSendField } from './components';
+import { SHAPESHIFT_STATUS_PING_RATE } from './constants';
+import { getSecondsRemaining, getTimeRemaining, getStatusWording } from './helpers';
 
 interface Props {
   transaction: SendAmountResponse;

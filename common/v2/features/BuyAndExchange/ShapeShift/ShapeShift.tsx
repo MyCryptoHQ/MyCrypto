@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import { ShapeShiftService, MarketPairHash, SendAmountResponse } from 'v2/services';
-import { ShapeShiftPairForm, ShapeShiftAddressForm } from '../components';
-import { buildAssets } from '../helpers';
+import { ShapeShiftPairForm, ShapeShiftAddressForm } from './components';
+import { buildAssets } from './helpers';
 import ShapeShiftSend from './ShapeShiftSend';
 import './ShapeShift.scss';
 

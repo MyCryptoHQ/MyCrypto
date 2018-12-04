@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import { replaceZeroExContainer } from '../helpers';
-import { ZEROEX_CONTAINER_ID, ZEROEX_RELAYER } from '../constants';
+import { replaceZeroExContainer } from './helpers';
+import { ZEROEX_CONTAINER_ID, ZEROEX_RELAYER } from './constants';
 import './ZeroEx.scss';
 
 // Legacy

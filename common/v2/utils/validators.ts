@@ -1,20 +1,24 @@
 import AddressValidator from 'wallet-address-validator';
 
-import { SHAPESHIFT_TOKEN_WHITELIST } from 'v2/services';
+// import { SHAPESHIFT_TOKEN_WHITELIST } from 'v2/services';
 
 interface ValidatorHash {
   [asset: string]: (address: string) => boolean;
 }
 
-export const isValidEthereumAddress = (address: string): boolean =>
-  (AddressValidator as any).validate(address, 'ETH');
+export const isValidAddress = (address: string, ticker: string) =>
+  (AddressValidator as any).validate(address, ticker);
 
-export const isValidBitcoinAddress = (address: string): boolean =>
-  (AddressValidator as any).validate(address, 'BTC');
+export const isValidEthereumAddress = (address: string): boolean => isValidAddress(address, 'ETH');
+
+export const isValidBitcoinAddress = (address: string): boolean => isValidAddress(address, 'BTC');
+
+export const isValidMoneroAddress = (address: string): boolean => isValidAddress(address, 'XMR');
 
 export const addressValidatorHash: ValidatorHash = {
   ETH: isValidEthereumAddress,
   BTC: isValidBitcoinAddress,
+  XMR: isValidMoneroAddress,
   ...[
     'OMG',
     'REP',

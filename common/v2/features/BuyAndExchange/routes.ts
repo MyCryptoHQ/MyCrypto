@@ -1,5 +1,6 @@
 import BuyAndExchange from './BuyAndExchange';
-import { ShapeShiftAuthorization, ZeroEx } from './containers';
+import { ShapeShiftAuthorization } from './ShapeShift';
+import { ZeroEx } from './ZeroEx';
 
 export default [
   {

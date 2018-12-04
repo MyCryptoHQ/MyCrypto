@@ -190,6 +190,8 @@ class ShapeShiftServiceBase {
         pair
       });
 
+      console.log('\n\n\n', 'success', success, '\n\n\n');
+
       if (error) {
         throw new Error(error);
       }

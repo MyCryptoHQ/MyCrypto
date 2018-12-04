@@ -1,19 +1,5 @@
 import { DepositStatuses } from 'v2/services';
-import { ZEROEX_CONTAINER_ID } from './constants';
 import { AssetOption } from './types';
-
-export const replaceZeroExContainer = (): void => {
-  const originalContainer = document.querySelector('.zeroExInstantMainContainer');
-
-  if (originalContainer) {
-    const wrapper = document.getElementById(ZEROEX_CONTAINER_ID);
-    const grandparent = originalContainer.parentNode!.parentNode;
-
-    wrapper!.appendChild(originalContainer);
-
-    (grandparent as any).remove();
-  }
-};
 
 export const getSecondsRemaining = (expiration: number): number => {
   const secondsRemaining = Math.floor((+new Date(expiration) - Date.now()) / 1000);
