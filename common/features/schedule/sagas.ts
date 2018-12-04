@@ -1,5 +1,16 @@
-import { SagaIterator, delay } from 'redux-saga';
-import { select, take, call, apply, fork, put, all, takeLatest } from 'redux-saga/effects';
+import { SagaIterator, buffers, delay } from 'redux-saga';
+import {
+  select,
+  take,
+  call,
+  apply,
+  fork,
+  put,
+  all,
+  takeLatest,
+  actionChannel,
+  race
+} from 'redux-saga/effects';
 import BN from 'bn.js';
 
 import { toTokenBase, Wei, fromWei } from 'libs/units';
@@ -18,6 +29,13 @@ import {
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
+import { IGetTransaction } from 'features/types';
+import * as networkActions from '../transaction/network/actions';
+import { getTransactionFields, IHexStrTransaction } from 'libs/transaction';
+import { localGasEstimation } from '../transaction/network/sagas';
+import { INode } from 'libs/nodes/INode';
+import { IWallet } from 'libs/wallet';
+import { walletSelectors } from 'features/wallet';
 
 //#region Schedule Timestamp
 export function* setCurrentScheduleTimestampSaga({
@@ -55,22 +73,20 @@ export const currentScheduleTimezone = takeLatest(
 export function* setGasLimitForSchedulingSaga({
   payload: { value: useScheduling }
 }: types.SetSchedulingToggleAction): SagaIterator {
-  // setGasLimitForSchedulingSaga
-  const gasLimit = useScheduling
-    ? EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT
-    : EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK;
-
-  yield put(
-    transactionFieldsActions.setGasLimitField({
-      raw: gasLimit.toString(),
-      value: gasLimit
-    })
-  );
-
-  // setDefaultTimeBounty
   if (useScheduling) {
+    // setDefaultTimeBounty
     yield put(
       actions.setCurrentTimeBounty(fromWei(EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT, 'ether'))
+    );
+  } else {
+    // setGasLimitForSchedulingSaga
+    const gasLimit = EAC_SCHEDULING_CONFIG.SCHEDULE_GAS_LIMIT_FALLBACK;
+
+    yield put(
+      transactionFieldsActions.setGasLimitField({
+        raw: gasLimit.toString(),
+        value: gasLimit
+      })
     );
   }
 }
@@ -189,6 +205,8 @@ export function* shouldValidateParams(): SagaIterator {
       continue;
     }
 
+    yield call(estimateGasForScheduling);
+
     yield call(checkSchedulingParametersValidity);
   }
 }
@@ -221,8 +239,82 @@ function* checkSchedulingParametersValidity() {
   );
 }
 
+function* estimateGasForScheduling() {
+  const { transaction }: IGetTransaction = yield select(derivedSelectors.getSchedulingTransaction);
+
+  const { gasLimit, gasPrice, nonce, chainId, ...rest }: IHexStrTransaction = yield call(
+    getTransactionFields,
+    transaction
+  );
+
+  yield put(networkActions.estimateGasRequested(rest));
+}
+
 export const schedulingParamsValidity = fork(shouldValidateParams);
 //#endregion Params Validity
+
+//#region Estimate Scheduling Gas
+export function* estimateSchedulingGas(): SagaIterator {
+  const requestChan = yield actionChannel(
+    types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_REQUESTED,
+    buffers.sliding(1)
+  );
+
+  while (true) {
+    const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
+    const isOffline = yield select(configMetaSelectors.getOffline);
+
+    if (!autoGasLimitEnabled) {
+      continue;
+    }
+
+    if (isOffline) {
+      const gasLimit = EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT;
+      const gasSetOptions = {
+        raw: gasLimit.toString(),
+        value: gasLimit
+      };
+
+      yield put(actions.setScheduleGasLimitField(gasSetOptions));
+
+      yield put(actions.estimateSchedulingGasSucceeded());
+
+      continue;
+    }
+
+    const { payload }: types.EstimateSchedulingGasRequestedAction = yield take(requestChan);
+    // debounce 250 ms
+    yield call(delay, 250);
+    const node: INode = yield select(configNodesSelectors.getNodeLib);
+    const walletInst: IWallet = yield select(walletSelectors.getWalletInst);
+    try {
+      const from: string = yield apply(walletInst, walletInst.getAddressString);
+      const txObj = { ...payload, from };
+
+      const { gasLimit } = yield race({
+        gasLimit: apply(node, node.estimateGas, [txObj]),
+        timeout: call(delay, 10000)
+      });
+      if (gasLimit) {
+        const gasSetOptions = {
+          raw: gasLimit.toString(),
+          value: gasLimit
+        };
+
+        yield put(actions.setScheduleGasLimitField(gasSetOptions));
+
+        yield put(actions.estimateSchedulingGasSucceeded());
+      } else {
+        yield put(actions.estimateSchedulingGasTimedout());
+        yield call(localGasEstimation, payload);
+      }
+    } catch (e) {
+      yield put(actions.estimateSchedulingGasFailed());
+      yield call(localGasEstimation, payload);
+    }
+  }
+}
+//#endregion Estimate Scheduling Gas
 
 export function* scheduleSaga(): SagaIterator {
   yield all([
@@ -233,6 +325,7 @@ export function* scheduleSaga(): SagaIterator {
     currentSchedulingToggle,
     currentScheduleTimezone,
     mirrorTimeBountyToDeposit,
+    fork(estimateSchedulingGas),
     schedulingParamsValidity
   ]);
 }

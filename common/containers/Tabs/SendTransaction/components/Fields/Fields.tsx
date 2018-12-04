@@ -61,7 +61,7 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
   }
 
   public render() {
-    const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
+    const { shouldDisplay, schedulingAvailable, useScheduling, offline } = this.props;
 
     return (
       <OnlyUnlocked
@@ -79,6 +79,7 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
                       hasUnitDropdown={true}
                       hasSendEverything={true}
                       showInvalidWithoutValue={true}
+                      showAllTokens={offline}
                     />
                   </div>
                   {schedulingAvailable && (
