@@ -19,7 +19,7 @@ import { isWeb3NodeAvailable } from 'libs/nodes/web3';
 import { wikiLink as paritySignerHelpLink } from 'libs/wallet/non-deterministic/parity';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { walletActions } from 'features/wallet';
+import { walletActions, walletSelectors } from 'features/wallet';
 import { transactionFieldsActions } from 'features/transaction';
 import { notificationsActions } from 'features/notifications';
 import LedgerIcon from 'assets/images/wallets/ledger.svg';
@@ -27,6 +27,7 @@ import TrezorIcon from 'assets/images/wallets/trezor.svg';
 import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
+import { Warning } from 'components/ui';
 import { DisabledWallets } from './disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
@@ -65,6 +66,7 @@ interface StateProps {
   computedDisabledWallets: DisabledWallets;
   isWalletPending: AppState['wallet']['isWalletPending'];
   isPasswordPending: AppState['wallet']['isPasswordPending'];
+  accessMessage: ReturnType<typeof walletSelectors.getWalletAccessMessage>;
 }
 
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
@@ -216,6 +218,8 @@ const WalletDecrypt = withRouter<Props>(
       value: null
     };
 
+    public exists: boolean = true;
+
     public UNSAFE_componentWillReceiveProps(nextProps: Props) {
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
@@ -224,6 +228,10 @@ const WalletDecrypt = withRouter<Props>(
           selectedWalletKey: null
         });
       }
+    }
+
+    public componentWillUnmount() {
+      this.exists = false;
     }
 
     public getSelectedWallet() {
@@ -238,6 +246,7 @@ const WalletDecrypt = withRouter<Props>(
     public getDecryptionComponent() {
       const { selectedWalletKey, isInsecureOverridden } = this.state;
       const selectedWallet = this.getSelectedWallet();
+
       if (!selectedWalletKey || !selectedWallet) {
         return null;
       }
@@ -268,7 +277,7 @@ const WalletDecrypt = withRouter<Props>(
             <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly &&
+            {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
               translate('UNLOCK_WALLET', {
                 $wallet: translateRaw(selectedWallet.lid)
               })}
@@ -309,13 +318,17 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public buildWalletOptions() {
-      const { computedDisabledWallets } = this.props;
+      const { computedDisabledWallets, accessMessage } = this.props;
       const { reasons } = computedDisabledWallets;
 
       return (
         <div className="WalletDecrypt-wallets">
           <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
-
+          {accessMessage && (
+            <div className="WalletDecrypt-wallets-row">
+              <Warning>{accessMessage}</Warning>
+            </div>
+          )}
           <div className="WalletDecrypt-wallets-row">
             {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
               const wallet = this.WALLETS[walletType];
@@ -425,10 +438,12 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       window.setTimeout(() => {
-        this.setState({
-          selectedWalletKey: walletType,
-          value: wallet.initialParams
-        });
+        if (this.exists) {
+          this.setState({
+            selectedWalletKey: walletType,
+            value: wallet.initialParams
+          });
+        }
       }, timeout);
     };
 
@@ -443,6 +458,7 @@ const WalletDecrypt = withRouter<Props>(
       const { hidden } = this.props;
       const selectedWallet = this.getSelectedWallet();
       const decryptionComponent = this.getDecryptionComponent();
+
       return (
         <div>
           {!hidden && (
@@ -513,7 +529,8 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   return {
     computedDisabledWallets,
     isWalletPending: state.wallet.isWalletPending,
-    isPasswordPending: state.wallet.isPasswordPending
+    isPasswordPending: state.wallet.isPasswordPending,
+    accessMessage: walletSelectors.getWalletAccessMessage(state)
   };
 }
 

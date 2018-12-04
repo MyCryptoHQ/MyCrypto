@@ -401,7 +401,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
   RSK: {
     id: 'RSK',
     name: 'RSK',
-    unit: 'SBTC',
+    unit: 'RBTC',
     chainId: 30,
     color: '#58A052',
     isCustom: false,
@@ -428,8 +428,8 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
 
   RSK_TESTNET: {
     id: 'RSK_TESTNET',
-    name: 'RSK',
-    unit: 'SBTC',
+    name: 'RSK Testnet',
+    unit: 'RBTC',
     chainId: 31,
     color: '#58A052',
     isCustom: false,
@@ -677,7 +677,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 20
     }
   },
-
   ILT: {
     id: 'ILT',
     name: 'iOlite',
@@ -705,7 +704,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 20
     }
   },
-
   MIX: {
     id: 'MIX',
     name: 'Mix',
@@ -720,6 +718,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     tokens: [],
     contracts: [],
     dPathFormats: {
+      [SecureWalletName.TREZOR]: MIX_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: MIX_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: MIX_DEFAULT
     },
