@@ -34,17 +34,21 @@ class AddressesClass extends Component<StateProps> {
         withSerializedTransaction={(_, { to, data }) => {
           let toFormatted = '';
           let tokenAddress = to;
+          let schedulerAddress = '';
 
           if (isSchedulingEnabled) {
+            const scheduledTxParams = Scheduler.schedule.decodeInput(data);
+
             if (isToken) {
-              const scheduledTxParams = Scheduler.schedule.decodeInput(data);
               const scheduledTxCallData = bufferToHex(scheduledTxParams._callData as Buffer);
 
               toFormatted = ERC20.transferFrom.decodeInput(scheduledTxCallData)._to;
               tokenAddress = scheduledTxParams._toAddress;
             } else {
-              toFormatted = toChecksumAddress(to);
+              toFormatted = scheduledTxParams._toAddress;
             }
+
+            schedulerAddress = to;
           } else {
             toFormatted = toChecksumAddress(isToken ? ERC20.transfer.decodeInput(data)._to : to);
           }
@@ -80,8 +84,32 @@ class AddressesClass extends Component<StateProps> {
                     <a
                       className="small tx-modal-address-tkn-contract-link"
                       href={ETHAddressExplorer(tokenAddress)}
+                      target="_blank"
+                      rel="noreferrer noopener"
                     >
                       {toChecksumAddress(tokenAddress)}
+                    </a>
+                  </div>
+                </div>
+              )}
+              {isSchedulingEnabled && (
+                <div className="tx-modal-address-tkn-contract">
+                  <div className="tx-modal-address-tkn-contract-icon">
+                    <img src={arrow} alt="arrow" />
+                  </div>
+                  <div className="tx-modal-address-tkn-contract-content">
+                    <p className="tx-modal-address-tkn-contract-title">
+                      {translate('CONFIRM_TX_VIA_CONTRACT', {
+                        $unit: 'SCHEDULER'
+                      })}
+                    </p>
+                    <a
+                      className="small tx-modal-address-tkn-contract-link"
+                      href={ETHAddressExplorer(schedulerAddress)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {toChecksumAddress(schedulerAddress)}
                     </a>
                   </div>
                 </div>
