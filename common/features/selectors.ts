@@ -262,6 +262,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const scheduleGasPrice = scheduleSelectors.getScheduleGasPrice(state);
   const scheduleGasLimit = scheduleSelectors.getScheduleGasLimit(state);
   const scheduleType = scheduleSelectors.getScheduleType(state);
+  const gasLimit = transactionFieldsSelectors.getGasLimit(state);
 
   const endowment = calcEACEndowment(
     scheduleGasLimit.value,
@@ -303,7 +304,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const transactionOptions = {
     to: getSchedulerAddress(scheduleType.value, configSelectors.getNetworkConfig(state)),
     data: transactionData,
-    gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
+    gasLimit: gasLimit.value || new BN('0'),
     gasPrice: gasPrice.value,
     nonce: Nonce('0'),
     value: endowment

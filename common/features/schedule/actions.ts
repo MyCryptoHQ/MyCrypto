@@ -157,3 +157,28 @@ export const setCurrentWindowStart = (
   payload
 });
 //#endregion Window Size
+
+//#region Estimate Scheduling Gas
+export type TEstimateSchedulingGasRequested = typeof estimateSchedulingGasRequested;
+export const estimateSchedulingGasRequested = (
+  payload: types.EstimateSchedulingGasRequestedAction['payload']
+): types.EstimateSchedulingGasRequestedAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_REQUESTED,
+  payload
+});
+
+export type TEstimateSchedulingGasSucceeded = typeof estimateSchedulingGasSucceeded;
+export const estimateSchedulingGasSucceeded = (): types.EstimateSchedulingGasSucceededAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_SUCCEEDED
+});
+
+export type TEstimateSchedulingGasFailed = typeof estimateSchedulingGasFailed;
+export const estimateSchedulingGasFailed = (): types.EstimateSchedulingGasFailedAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_FAILED
+});
+
+export type TEstimateSchedulingGasTimedout = typeof estimateSchedulingGasTimedout;
+export const estimateSchedulingGasTimedout = (): types.EstimateSchedulingGasTimeoutAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_TIMEDOUT
+});
+//#endregion Estimate Scheduling Gas
