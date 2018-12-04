@@ -33,6 +33,7 @@ import * as transactionMetaSelectors from './transaction/meta/selectors';
 import * as transactionSignTypes from './transaction/sign/types';
 import * as transactionSignSelectors from './transaction/sign/selectors';
 import { reduceToValues, isFullTx } from './helpers';
+import Scheduler from 'libs/scheduling/contracts/Scheduler';
 
 export const isAnyOfflineWithWeb3 = (state: AppState): boolean => {
   const { isWeb3Wallet } = walletSelectors.getWalletType(state);
@@ -262,13 +263,9 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const scheduleGasPrice = scheduleSelectors.getScheduleGasPrice(state);
   const scheduleGasLimit = scheduleSelectors.getScheduleGasLimit(state);
   const scheduleType = scheduleSelectors.getScheduleType(state);
+  const gasLimit = transactionFieldsSelectors.getGasLimit(state);
 
-  const endowment = calcEACEndowment(
-    scheduleGasLimit.value,
-    currentValue.value,
-    scheduleGasPrice.value,
-    timeBounty.value
-  );
+  let endowment = Wei('0');
 
   let transactionData = null;
 
@@ -281,12 +278,37 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
     const callData = transactionFieldsSelectors.getData(state);
     const scheduleTimezone = scheduleSelectors.getScheduleTimezone(state);
     const windowStart = scheduleSelectors.getWindowStart(state);
+    let to = currentTo.raw;
+    let etherValue = currentValue.value;
+    let data = callData.raw;
+
+    if (!isEtherTransaction(state)) {
+      to = getSelectedTokenContractAddress(state);
+      etherValue = Wei('0');
+
+      const wallet = walletSelectors.getWalletInst(state);
+
+      if (wallet && currentValue.value) {
+        data = erc20.transferFrom.encodeInput({
+          _from: wallet.getAddressString(),
+          _to: currentTo.raw,
+          _value: currentValue.value
+        });
+      }
+    }
+
+    endowment = calcEACEndowment(
+      scheduleGasLimit.value,
+      etherValue,
+      scheduleGasPrice.value,
+      timeBounty.value
+    );
 
     transactionData = getScheduleData(
-      currentTo.raw,
-      callData.raw,
+      to,
+      data,
       scheduleGasLimit.value,
-      currentValue.value,
+      etherValue,
       scheduleHelpers.windowSizeBlockToMin(windowSize.value, scheduleType.value),
       scheduleHelpers.calculateWindowStart(
         scheduleType.value,
@@ -303,7 +325,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
   const transactionOptions = {
     to: getSchedulerAddress(scheduleType.value, configSelectors.getNetworkConfig(state)),
     data: transactionData,
-    gasLimit: EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT,
+    gasLimit: gasLimit.value || new BN('0'),
     gasPrice: gasPrice.value,
     nonce: Nonce('0'),
     value: endowment
@@ -536,14 +558,24 @@ export const getParamsFromSerializedTx = (
   const tx = getSerializedTransaction(state);
   const isEther = isEtherTransaction(state);
   const decimal = transactionMetaSelectors.getDecimal(state);
+  const isSchedulingEnabled = scheduleSelectors.isSchedulingEnabled(state);
 
   if (!tx) {
     throw Error('Serialized transaction not found');
   }
   const fields = getTransactionFields(makeTransaction(tx));
   const { value, data, gasLimit, gasPrice, to } = fields;
-  const currentValue = isEther ? Wei(value) : TokenValue(erc20.transfer.decodeInput(data)._value);
-  const currentTo = isEther ? Address(to) : Address(erc20.transfer.decodeInput(data)._to);
+  let currentValue = isEther ? Wei(value) : TokenValue(erc20.transfer.decodeInput(data)._value);
+  let currentTo = isEther ? Address(to) : Address(erc20.transfer.decodeInput(data)._to);
+
+  if (isSchedulingEnabled && !isEther) {
+    const scheduledTxParams = Scheduler.schedule.decodeInput(data);
+    const scheduledTxCallData = bufferToHex(scheduledTxParams._callData as Buffer);
+
+    currentValue = TokenValue(erc20.transferFrom.decodeInput(scheduledTxCallData)._value);
+    currentTo = Address(erc20.transferFrom.decodeInput(scheduledTxCallData)._to);
+  }
+
   const unit = getUnit(state);
   const fee = Wei(gasLimit).mul(Wei(gasPrice));
   const total = fee.add(Wei(value));
