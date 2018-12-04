@@ -13,6 +13,7 @@ import './AddCustomTokenForm.scss';
 
 interface Props {
   allTokens: Token[];
+  isOffline: boolean;
   onSave(params: Token): void;
   toggleForm(): void;
 }
@@ -50,13 +51,18 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
           addressLookup={this.tokenAddressLookup}
           onChange={this.handleFieldChange('address')}
         />
-        <DecimalField address={address} onChange={this.handleFieldChange('decimal')} />
+        <DecimalField
+          address={address}
+          isOffline={this.props.isOffline}
+          onChange={this.handleFieldChange('decimal')}
+        />
         <SymbolField
           address={address}
           symbolLookup={this.tokenSymbolLookup}
+          isOffline={this.props.isOffline}
           onChange={this.handleFieldChange('symbol')}
         />
-        <BalanceField address={address} />
+        {!this.props.isOffline && <BalanceField address={address} />}
         <HelpLink article={HELP_ARTICLE.ADDING_NEW_TOKENS} className="AddCustom-buttons-help">
           {translate('ADD_CUSTOM_TKN_HELP')}
         </HelpLink>
