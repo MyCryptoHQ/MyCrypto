@@ -508,7 +508,7 @@
     "CREATE_FINAL_STEP_4_MNEMONIC": "Enter your phrase",
     "CREATE_FINAL_STEP_4_KEYSTORE": "Provide file & password",
     "VIEW_ONLY_RECENT": "Select a recent address",
-    "VIEW_ONLY_ENTER": "Enter an address (e.g. 0x4bbeEB066eD09...)",
+    "VIEW_ONLY_ENTER": "Enter an address (e.g. 0x4bbeEB066eD09...) or an ENS address (example.eth)",
     "GO_TO_ACCOUNT": "Go to Account",
     "INSECURE_WALLET_TYPE_TITLE": "$wallet_type wallets are disabled online",
     "INSECURE_WALLET_TYPE_DESC": "Entering your $wallet_type on any website is dangerous. If MyCrypto.com was compromised, or you accidentally visited a phishing website, you could lose your funds. Because of that, we have disabled the use of $wallet_type wallets through the website. In order to access your account, please download MyCrypto and run it locally.",
@@ -736,6 +736,13 @@
     "SWAP_2": "Authorize with ShapeShift",
     "SWAP_3": "Attempting to authorize with ShapeShift...",
     "SWAP_4": "Successfully authorized with ShapeShift.",
-    "SWAP_5": "Lost ShapeShift access token. Please reauthorize."
+    "SWAP_5": "Lost ShapeShift access token. Please reauthorize.",
+    "CUSTOM_TOKEN_1": "A token with this address already exists.",
+    "CUSTOM_TOKEN_2": "A token with this symbol already exists.",
+    "ACCESS_MESSAGE_1": "You must access your wallet in order to send a transaction.",
+    "ACCESS_MESSAGE_2": "You must access your wallet in order to request a payment.",
+    "ACCESS_MESSAGE_3": "You must access your wallet in order to view your wallet's information.",
+    "ACCESS_MESSAGE_4": "You must access your wallet in order to view your recent transactions.",
+    "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book."
   }
 }

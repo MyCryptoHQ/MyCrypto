@@ -10,6 +10,7 @@ interface OwnProps {
   fieldToFetch: keyof Pick<typeof ERC20, 'symbol' | 'decimals'>;
   fieldName: string;
   address?: string;
+  isOffline: boolean;
   userInputValidator(input: string): Result<string>;
   fetchedFieldValidator?(input: any): Result<string>;
   shouldEnableAutoField(input: Result<string>): boolean;
@@ -29,7 +30,11 @@ export class FieldInput extends React.Component<OwnProps, State> {
     nextProps: OwnProps,
     prevState: State
   ): Partial<State> | null {
-    if (nextProps.address && nextProps.address !== prevState.addressToLoad) {
+    if (
+      !nextProps.isOffline &&
+      nextProps.address &&
+      nextProps.address !== prevState.addressToLoad
+    ) {
       return { loading: true, autoField: true, addressToLoad: nextProps.address };
     }
     return null;
@@ -45,7 +50,7 @@ export class FieldInput extends React.Component<OwnProps, State> {
   private currentRequest: Promise<any> | null;
 
   public componentDidUpdate() {
-    if (this.state.addressToLoad && this.state.loading) {
+    if (!this.props.isOffline && this.state.addressToLoad && this.state.loading) {
       this.attemptToLoadField(this.state.addressToLoad);
     }
   }
@@ -70,7 +75,7 @@ export class FieldInput extends React.Component<OwnProps, State> {
             className="input-group-input-small"
             type="text"
             name={this.props.fieldName}
-            readOnly={autoField}
+            readOnly={!this.props.isOffline && autoField}
             value={field.ok() ? field.unwrap() : userInput}
             onChange={this.handleFieldChange}
           />
