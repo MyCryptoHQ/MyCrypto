@@ -89,11 +89,19 @@ $dropdown-background-color: #0f253f;
     &-subitems {
       margin: 15px 0;
       padding: 0;
-      padding-left: 10px;
       text-transform: initial;
 
       li {
-        margin-bottom: 10px !important;
+        margin-bottom: 0 !important;
+
+        a {
+          display: block;
+          padding: 10px;
+
+          &:hover {
+            background: #293f59;
+          }
+        }
       }
     }
   }
