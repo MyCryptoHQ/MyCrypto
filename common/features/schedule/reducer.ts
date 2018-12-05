@@ -40,7 +40,11 @@ const INITIAL_STATE: types.ScheduleState = {
     raw: fromWei(scheduleDeposit, 'ether'),
     value: scheduleDeposit
   },
-  scheduleParamsValidity: { value: true }
+  scheduleParamsValidity: { value: true },
+  scheduledTransactionHash: {
+    raw: '',
+    value: ''
+  }
 };
 
 const updateScheduleField = (key: keyof types.ScheduleState): Reducer<types.ScheduleState> => (
@@ -78,6 +82,8 @@ export function scheduleReducer(
       return updateScheduleField('scheduleDeposit')(state, action);
     case types.ScheduleActions.PARAMS_VALIDITY_SET:
       return updateScheduleField('scheduleParamsValidity')(state, action);
+    case types.ScheduleActions.SCHEDULED_TRANSACTION_HASH_SET:
+      return updateScheduleField('scheduledTransactionHash')(state, action);
     default:
       return state;
   }

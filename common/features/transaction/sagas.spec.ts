@@ -17,6 +17,7 @@ import { transactionMetaActions, transactionMetaSelectors } from './meta';
 import * as actions from './actions';
 import * as sagas from './sagas';
 import * as helpers from './helpers';
+import * as scheduleSelectors from 'features/schedule/selectors';
 
 configuredStore.getState();
 
@@ -620,8 +621,14 @@ describe('transaction: Sagas', () => {
           const remainder = currentBalance.sub(totalCost);
           const rawVersion = fromWei(remainder, 'ether');
 
-          it('should put setValueField', () => {
+          it('should select isSchedulingEnabled', () => {
             expect(gens.gen.next(totalCost).value).toEqual(
+              select(scheduleSelectors.isSchedulingEnabled)
+            );
+          });
+
+          it('should put setValueField', () => {
+            expect(gens.gen.next(false).value).toEqual(
               put(
                 transactionFieldsActions.setValueField({
                   raw: rawVersion,

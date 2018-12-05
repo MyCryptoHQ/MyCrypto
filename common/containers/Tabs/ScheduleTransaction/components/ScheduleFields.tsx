@@ -4,20 +4,8 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { AppState } from 'features/reducers';
 import { scheduleSelectors } from 'features/schedule';
-import {
-  ScheduleTimezoneDropDown,
-  ScheduleTimestampField,
-  ScheduleType,
-  DataField
-} from 'components';
-import {
-  WindowSizeField,
-  WindowStartField,
-  ScheduleGasPriceField,
-  ScheduleGasLimitField,
-  ScheduleDepositField,
-  TimeBountyField
-} from '.';
+import { ScheduleTimezoneDropDown, ScheduleTimestampField } from 'components';
+import { WindowStartField, ScheduleGasPriceField, ScheduleGasLimitField, TimeBountyField } from '.';
 import './ScheduleFields.scss';
 
 interface Props {
@@ -34,47 +22,28 @@ class ScheduleFieldsClass extends React.Component<Props> {
 
         <div className="ScheduleFields-description">{translate('SCHEDULING_DESCRIPTION')}</div>
 
-        <div className="row form-group vcenter-sm">
-          <div className="col-lg-3 col-lg-push-9">
-            <ScheduleType />
-            <hr className="hidden-lg" />
-          </div>
-
+        <div className="row form-group">
           {schedulingType.value === 'time' && (
             <>
-              <div className="col-md-6 col-lg-4 col-lg-pull-3">
+              <div className="col-md-6">
                 <ScheduleTimestampField />
               </div>
-              <div className="col-md-4 col-lg-3 col-lg-pull-3">
+              <div className="col-md-6">
                 <ScheduleTimezoneDropDown />
               </div>
             </>
           )}
 
           {schedulingType.value === 'block' && (
-            <>
-              <div className="col-md-6 col-lg-6 col-lg-pull-3">
-                <WindowStartField />
-              </div>
-            </>
+            <div className="col-md-12">
+              <WindowStartField />
+            </div>
           )}
-
-          <div
-            className={`${
-              schedulingType.value === 'block' ? 'col-md-6 col-lg-2' : 'col-md-2 col-lg-2'
-            } col-lg-pull-3`}
-          >
-            <WindowSizeField />
-          </div>
         </div>
 
         <div className="row form-group">
-          <div className="col-xs-12 col-md-6">
+          <div className="col-xs-12 col-md-12">
             <TimeBountyField />
-            <hr className="hidden-md hidden-lg" />
-          </div>
-          <div className="col-xs-12 col-md-6">
-            <ScheduleDepositField />
           </div>
         </div>
 
@@ -84,12 +53,6 @@ class ScheduleFieldsClass extends React.Component<Props> {
           </div>
           <div className="col-xs-6">
             <ScheduleGasLimitField />
-          </div>
-        </div>
-
-        <div className="row form-group">
-          <div className="col-xs-12 AdvancedGas-data">
-            <DataField />
           </div>
         </div>
 

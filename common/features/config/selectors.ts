@@ -132,12 +132,10 @@ export function tokenExists(state: AppState, token: string): boolean {
 }
 
 export function isSupportedUnit(state: AppState, unit: string) {
-  const isToken: boolean = tokenExists(state, unit);
-  const isEther: boolean = isNetworkUnit(state, unit);
-  if (!isToken && !isEther) {
-    return false;
-  }
-  return true;
+  const isToken = tokenExists(state, unit);
+  const isEther = isNetworkUnit(state, unit);
+
+  return isToken || isEther;
 }
 
 export function isANetworkUnit(state: AppState, unit: string) {
