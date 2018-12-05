@@ -1,5 +1,4 @@
 import { DepositStatuses, SendAmountResponse } from 'v2/services';
-import { SHAPESHIFT_SUPPORT_EMAILS } from './constants';
 import { AssetOption } from './types';
 
 export const getSecondsRemaining = (expiration: number): number => {
