@@ -1,15 +1,9 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-.TimeBountyField {
-  &-wrapper {
-    @media screen and (min-width: 390px) {
-      display: flex;
-      justify-content: center;
-      text-align: center;
-    }
-  }
+$small-screen: 390px;
 
+.TimeBountyField {
   &-preview {
     font-weight: normal;
     flex-grow: 1;
@@ -18,7 +12,7 @@
     text-align: center;
     font-size: 14px;
 
-    @media screen and (max-width: 389px) {
+    @media screen and (max-width: $small-screen) {
       margin-top: 10px;
     }
 
@@ -36,20 +30,28 @@
       max-width: initial;
       margin-left: 0;
 
-      @media screen and (min-width: 390px) {
-        max-width: 140px;
-        margin-left: 10px;
+      @media screen and (min-width: $small-screen) {
         width: auto;
       }
+    }
+
+    &-input {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 
   &-advanced-toggle {
     display: block;
     font-weight: normal;
+    margin-top: 10px;
 
     &:focus {
       color: color(link-color);
     }
+  }
+
+  .TimeBountyField-preview {
+    padding-bottom: 16px;
   }
 }

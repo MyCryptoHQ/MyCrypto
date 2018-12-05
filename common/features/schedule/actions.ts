@@ -118,16 +118,6 @@ export const setCurrentScheduleType = (
 });
 //#endregion Schedule Type
 
-//#region Scheduling Toggle
-export type TSetCurrentSchedulingToggle = typeof setCurrentSchedulingToggle;
-export const setCurrentSchedulingToggle = (
-  payload: types.SetCurrentSchedulingToggleAction['payload']
-): types.SetCurrentSchedulingToggleAction => ({
-  type: types.ScheduleActions.CURRENT_SCHEDULING_TOGGLE,
-  payload
-});
-//#endregion Scheduling Toggle
-
 //#region Time Bounty
 export type TSetCurrentTimeBounty = typeof setCurrentTimeBounty;
 export const setCurrentTimeBounty = (
@@ -182,3 +172,13 @@ export const estimateSchedulingGasTimedout = (): types.EstimateSchedulingGasTime
   type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_TIMEDOUT
 });
 //#endregion Estimate Scheduling Gas
+
+//#region Scheduled Transaction Hash
+export type TSetScheduledTransactionHash = typeof setScheduledTransactionHash;
+export const setScheduledTransactionHash = (
+  payload: types.SetScheduledTransactionHashAction['payload']
+): types.SetScheduledTransactionHashAction => ({
+  type: types.ScheduleActions.SCHEDULED_TRANSACTION_HASH_SET,
+  payload
+});
+//#endregion

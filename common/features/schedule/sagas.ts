@@ -14,7 +14,11 @@ import {
 import BN from 'bn.js';
 
 import { toTokenBase, Wei, fromWei } from 'libs/units';
-import { EAC_SCHEDULING_CONFIG, parseSchedulingParametersValidity } from 'libs/scheduling';
+import {
+  EAC_SCHEDULING_CONFIG,
+  parseSchedulingParametersValidity,
+  getScheduledTransactionAddressFromReceipt
+} from 'libs/scheduling';
 import RequestFactory from 'libs/scheduling/contracts/RequestFactory';
 import { validDecimal, validNumber } from 'libs/validators';
 import * as derivedSelectors from 'features/selectors';
@@ -24,7 +28,9 @@ import {
   transactionFieldsTypes,
   transactionFieldsActions,
   transactionMetaSelectors,
-  transactionHelpers
+  transactionHelpers,
+  transactionBroadcastTypes,
+  transactionActions
 } from 'features/transaction';
 import * as types from './types';
 import * as actions from './actions';
@@ -36,6 +42,12 @@ import { localGasEstimation } from '../transaction/network/sagas';
 import { INode } from 'libs/nodes/INode';
 import { IWallet } from 'libs/wallet';
 import { walletSelectors } from 'features/wallet';
+import { notificationsActions } from 'features/notifications';
+import { toBuffer } from 'ethereumjs-util';
+import erc20 from 'libs/erc20';
+import { BroadcastTransactionSucceededAction } from 'features/transaction/broadcast/types';
+import { TransactionReceipt } from 'shared/types/transactions';
+import { translateRaw } from 'translations';
 
 //#region Schedule Timestamp
 export function* setCurrentScheduleTimestampSaga({
@@ -316,6 +328,90 @@ export function* estimateSchedulingGas(): SagaIterator {
 }
 //#endregion Estimate Scheduling Gas
 
+//#region Prepare Approve Token Transaction
+export function* prepareApproveTokenTransaction(): SagaIterator {
+  while (true) {
+    const action: BroadcastTransactionSucceededAction = yield take([
+      transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED
+    ]);
+
+    const isSchedulingEnabled: boolean = yield select(selectors.isSchedulingEnabled);
+    const isEtherTransaction: boolean = yield select(derivedSelectors.isEtherTransaction);
+    const tokenTransferAmount: { raw: string; value: BN | null } = yield select(
+      transactionMetaSelectors.getTokenValue
+    );
+    const tokenAddress: string = yield select(derivedSelectors.getSelectedTokenContractAddress);
+    const node: INode = yield select(configNodesSelectors.getNodeLib);
+
+    if (isSchedulingEnabled && !isEtherTransaction) {
+      yield put(
+        actions.setScheduledTransactionHash({
+          raw: action.payload.broadcastedHash,
+          value: action.payload.broadcastedHash
+        })
+      );
+
+      let receipt: TransactionReceipt | null = null;
+
+      while (!receipt) {
+        yield call(delay, 5000);
+
+        try {
+          receipt = yield call(node.getTransactionReceipt, action.payload.broadcastedHash);
+        } catch (error) {
+          continue;
+        }
+      }
+
+      yield put(actions.setSchedulingToggle({ value: false }));
+
+      yield call(delay, 100);
+
+      yield put(
+        notificationsActions.showNotification(
+          'info',
+          translateRaw('SCHEDULE_TOKEN_TRANSFER_APPROVE'),
+          20000
+        )
+      );
+
+      const scheduledTransactionAddress: string | null = yield call(
+        getScheduledTransactionAddressFromReceipt,
+        receipt
+      );
+
+      yield put(
+        transactionActions.swapTokenToEther({
+          decimal: 18,
+          to: {
+            raw: tokenAddress,
+            value: toBuffer(tokenAddress)
+          },
+          value: {
+            raw: '0',
+            value: new BN('0')
+          }
+        })
+      );
+
+      const approveTokensData = erc20.approve.encodeInput({
+        _spender: scheduledTransactionAddress,
+        _value: tokenTransferAmount.value
+      });
+
+      yield put(
+        transactionFieldsActions.setDataField({
+          raw: approveTokensData,
+          value: toBuffer(approveTokensData)
+        })
+      );
+
+      yield put(networkActions.getNonceRequested());
+    }
+  }
+}
+//#endregion Prepare Approve Token Transaction
+
 export function* scheduleSaga(): SagaIterator {
   yield all([
     currentWindowSize,
@@ -326,6 +422,7 @@ export function* scheduleSaga(): SagaIterator {
     currentScheduleTimezone,
     mirrorTimeBountyToDeposit,
     fork(estimateSchedulingGas),
-    schedulingParamsValidity
+    schedulingParamsValidity,
+    fork(prepareApproveTokenTransaction)
   ]);
 }
