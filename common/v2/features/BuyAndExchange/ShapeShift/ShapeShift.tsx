@@ -38,10 +38,21 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
     stage: Stages.Pair
   };
 
+  public addressInput: React.RefObject<any> = React.createRef();
+
   public componentDidMount() {
     this.populateOptions();
     this.populatePairHash();
     this.populateImages();
+  }
+
+  public componentDidUpdate(_: any, prevState: State) {
+    const { stage } = this.state;
+    const { stage: prevStage } = prevState;
+
+    if (stage === Stages.Address && prevStage !== Stages.Address && this.addressInput) {
+      this.addressInput.current.focus();
+    }
   }
 
   public render() {
@@ -59,7 +70,11 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
               />
             )}
             {stage === Stages.Address && (
-              <ShapeShiftAddressForm asset={pair.withdraw} onSubmit={this.loadSendScreen} />
+              <ShapeShiftAddressForm
+                addressInputRef={this.addressInput}
+                asset={pair.withdraw}
+                onSubmit={this.loadSendScreen}
+              />
             )}
             {stage === Stages.Send && <ShapeShiftSend transaction={transaction!} />}
             <a

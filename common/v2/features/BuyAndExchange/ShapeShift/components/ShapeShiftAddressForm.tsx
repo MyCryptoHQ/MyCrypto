@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
 
+import { donationAddressHash } from 'v2/config';
 import { addressValidatorHash } from 'v2/utils';
 
 // Legacy
@@ -11,6 +12,7 @@ interface Values {
 }
 
 interface Props {
+  addressInputRef: React.RefObject<any>;
   asset: string;
   onSubmit(values: any, bag: any): void;
 }
@@ -28,7 +30,7 @@ const validate = (values: Values, asset: string): FormikErrors<Values> => {
   return errors;
 };
 
-export default function ShapeShiftAddressForm({ asset, onSubmit }: Props) {
+export default function ShapeShiftAddressForm({ addressInputRef, asset, onSubmit }: Props) {
   return (
     <Formik
       initialValues={{
@@ -42,7 +44,18 @@ export default function ShapeShiftAddressForm({ asset, onSubmit }: Props) {
             <fieldset className="dark">
               <label htmlFor="address">Your Receiving Address ({asset})</label>
               <section className="ShapeShiftWidget-input-wrapper">
-                <Field name="address" className="ShapeShiftWidget-input smallest" />
+                <Field
+                  name="address"
+                  render={({ field, form }: any) => (
+                    <input
+                      ref={addressInputRef}
+                      className="ShapeShiftWidget-input smallest"
+                      {...field}
+                      placeholder={donationAddressHash[asset] || ''}
+                      onChange={form.handleChange}
+                    />
+                  )}
+                />
               </section>
             </fieldset>
             <fieldset>
