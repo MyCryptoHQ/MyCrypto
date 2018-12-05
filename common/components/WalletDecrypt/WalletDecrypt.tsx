@@ -277,7 +277,7 @@ const WalletDecrypt = withRouter<Props>(
             <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!selectedWallet.isReadOnly &&
+            {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
               translate('UNLOCK_WALLET', {
                 $wallet: translateRaw(selectedWallet.lid)
               })}
