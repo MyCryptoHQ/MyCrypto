@@ -5,14 +5,14 @@ import { ShapeShiftSendRenderProps } from '../types';
 
 export const generateSendScreenLayout = (props: ShapeShiftSendRenderProps) => {
   const {
+    transaction: { deposit, depositAmount },
     sendField,
     addressField,
     timeField,
     receiveAmountField,
     rateField,
     referenceNumberField,
-    statusField,
-    transaction: { deposit, depositAmount }
+    statusField
   } = props;
 
   return (

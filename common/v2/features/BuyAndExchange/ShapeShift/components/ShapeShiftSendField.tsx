@@ -24,7 +24,7 @@ export default function ShapeShiftSendField({
     <fieldset className={fieldsetClassName}>
       {label && <label>{label}</label>}
       <section className="ShapeShiftWidget-input-wrapper">
-        {value && <input className={inputClassName} value={value} disabled={true} />}
+        {value && <p className={inputClassName}>{value}</p>}
         {children}
       </section>
     </fieldset>

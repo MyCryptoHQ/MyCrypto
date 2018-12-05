@@ -76,6 +76,13 @@ export interface SendAmountResponse {
   userId: string;
   withdrawal: string;
   withdrawalAmount: string;
+
+  /** @desc
+   * For XMR swaps,
+   * the `deposit` property acts as the Payment ID,
+   * while the `sAddress` property is the actual receiving address.
+   */
+  sAddress?: string;
 }
 
 export interface TimeRemainingResponse {

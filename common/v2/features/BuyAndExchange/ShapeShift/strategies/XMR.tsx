@@ -9,8 +9,8 @@ import { Warning } from 'components/ui';
 
 export const generateSendScreenLayout = (props: ShapeShiftSendRenderProps) => {
   const {
+    transaction: { deposit, sAddress },
     sendField,
-    addressField,
     timeField,
     receiveAmountField,
     rateField,
@@ -24,13 +24,18 @@ export const generateSendScreenLayout = (props: ShapeShiftSendRenderProps) => {
       <ShapeShiftSendField
         dark={true}
         label={translateRaw('USING_PAYMENT_ID')}
-        value="123"
+        value={deposit}
         className="smallest"
       />
       <ShapeShiftSendField dark={true}>
         <Warning highlighted={true}>{translate('PAYMENT_ID_WARNING')}</Warning>
       </ShapeShiftSendField>
-      {addressField}
+      <ShapeShiftSendField
+        dark={true}
+        label="to this address"
+        value={sAddress}
+        className="smallest"
+      />
       {timeField}
       {receiveAmountField}
       {rateField}
