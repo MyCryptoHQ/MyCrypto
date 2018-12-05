@@ -1,0 +1,25 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.BitcoinQR {
+  &-qr {
+    max-width: 13rem;
+    margin: auto;
+
+    @include theme(dark) {
+      background: #fff;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+    }
+  }
+  &-warning {
+    margin: 1rem 0;
+    padding: 0 20px;
+  }
+}

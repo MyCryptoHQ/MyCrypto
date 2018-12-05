@@ -1,8 +1,10 @@
 import React from 'react';
 
+import './ShapeShiftSendField.scss';
+
 interface Props {
-  label: string;
-  value: string;
+  label?: string;
+  value?: string;
   children?: any;
   dark?: boolean;
   className?: string;
@@ -15,14 +17,14 @@ export default function ShapeShiftSendField({
   className = '',
   children
 }: Props) {
-  const fieldsetClassName = dark ? 'dark' : '';
+  const fieldsetClassName = `ShapeShiftSendField ${dark ? 'dark' : ''}`;
   const inputClassName = `ShapeShiftWidget-input ${className}`;
 
   return (
     <fieldset className={fieldsetClassName}>
-      <label>{label}</label>
+      {label && <label>{label}</label>}
       <section className="ShapeShiftWidget-input-wrapper">
-        <input className={inputClassName} value={value} disabled={true} />
+        {value && <input className={inputClassName} value={value} disabled={true} />}
         {children}
       </section>
     </fieldset>
