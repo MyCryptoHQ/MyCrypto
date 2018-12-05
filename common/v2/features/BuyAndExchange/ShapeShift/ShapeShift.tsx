@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 import { ShapeShiftService, MarketPairHash, SendAmountResponse } from 'v2/services';
 import { ShapeShiftPairForm, ShapeShiftAddressForm } from './components';
@@ -26,7 +27,7 @@ interface State {
   stage: Stages;
 }
 
-export default class ShapeShift extends Component {
+export class ShapeShift extends Component<RouteComponentProps<any>> {
   public state: State = {
     options: [],
     pair: null,
@@ -78,17 +79,29 @@ export default class ShapeShift extends Component {
   private populateOptions = async () => {
     const options = await ShapeShiftService.instance.getValidPairs();
 
+    if (options === null) {
+      return this.handleError();
+    }
+
     this.setState({ options });
   };
 
   private populatePairHash = async () => {
     const pairHash = await ShapeShiftService.instance.getPairInfo();
 
+    if (pairHash === null) {
+      return this.handleError();
+    }
+
     this.setState({ pairHash });
   };
 
   private populateImages = async () => {
     const imageHash = await ShapeShiftService.instance.getImages();
+
+    if (imageHash === null) {
+      return this.handleError();
+    }
 
     this.setState({ imageHash });
   };
@@ -108,10 +121,24 @@ export default class ShapeShift extends Component {
     };
     const transaction = await ShapeShiftService.instance.sendAmount(config);
 
+    if (transaction === null) {
+      return this.handleError();
+    }
+
     this.setState({
       address: values.address,
       stage: Stages.Send,
       transaction
     });
   };
+
+  private handleError = () => {
+    const { history } = this.props;
+
+    history.push('/swap?error=shapeshift');
+
+    ShapeShiftService.instance.clearCache();
+  };
 }
+
+export default withRouter(ShapeShift);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
 
-import { MarketPairHash } from 'v2/services/types';
+import { MarketPairHash } from 'v2/services';
 import { AssetOption } from '../types';
 import AssetSelection from './AssetSelection';
 import './ShapeShiftPairForm.scss';

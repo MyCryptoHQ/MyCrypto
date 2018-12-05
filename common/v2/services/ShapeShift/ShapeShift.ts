@@ -40,6 +40,10 @@ class ShapeShiftServiceBase {
     CacheService.instance,
     SHAPESHIFT_CACHE_IDENTIFIER
   );
+  private cacheClear = CacheService.instance.clearEntry.bind(
+    CacheService.instance,
+    SHAPESHIFT_CACHE_IDENTIFIER
+  );
 
   public constructor() {
     const { code } = queryString.parse(window.location.search);
@@ -245,6 +249,12 @@ class ShapeShiftServiceBase {
 
   public stopListeningForDeauthorization = () =>
     clearInterval(this.deauthorizationInterval as number);
+
+  public clearCache = () => {
+    this.cacheClear('validPairs');
+    this.cacheClear('pairInfo');
+    this.cacheClear('images');
+  };
 
   private async requestAccessToken(code: string) {
     const { data: { access_token: token } } = await this.service.post(SHAPESHIFT_TOKEN_PROXY_URL, {
