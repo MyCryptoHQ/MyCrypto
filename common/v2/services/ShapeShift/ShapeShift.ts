@@ -189,8 +189,6 @@ class ShapeShiftServiceBase {
         pair
       });
 
-      console.log('\n\n\n', 'success', success, '\n\n\n');
-
       if (error) {
         throw new Error(error);
       }
@@ -278,7 +276,7 @@ class ShapeShiftServiceBase {
   }
 
   private authorize = (passedToken?: string) => {
-    const token = passedToken || this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
+    const token = passedToken || StorageService.instance.getEntry(SHAPESHIFT_ACCESS_TOKEN);
 
     if (token) {
       this.token = token;
