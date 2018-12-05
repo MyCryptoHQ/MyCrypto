@@ -4,7 +4,7 @@ import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-s
 import { translateRaw } from 'translations';
 import { INode } from 'libs/nodes/INode';
 import { Wei } from 'libs/units';
-import { Token } from 'types/network';
+import { Token, StaticNetworkConfig } from 'types/network';
 import {
   IWallet,
   MnemonicWallet,
@@ -35,7 +35,6 @@ import {
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
-import { StaticNetworkConfig } from 'types/network';
 
 export function* getTokenBalancesSaga(wallet: IWallet, tokens: Token[]) {
   const node: INode = yield select(configNodesSelectors.getNodeLib);
