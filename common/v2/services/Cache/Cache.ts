@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 
-import { isDevelopment, storageGet, storageSet } from 'v2/utils';
+import { isDevelopment } from 'v2/utils';
+import StorageService from '../Storage/Storage';
 import { CACHE_TIME_TO_LIVE, CACHE_LOCALSTORAGE_KEY } from './constants';
 import { cachedValueIsFresh } from './helpers';
 import { Cache, NewCacheEntry } from './types';
@@ -9,7 +10,7 @@ export class CacheServiceBase {
   private cache: Cache = {};
 
   public constructor() {
-    const persistedCache = storageGet(CACHE_LOCALSTORAGE_KEY);
+    const persistedCache = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
 
     if (persistedCache) {
       this.initializeCache(persistedCache);
@@ -67,7 +68,7 @@ export class CacheServiceBase {
   }
 
   private updatePersistedCache() {
-    storageSet(CACHE_LOCALSTORAGE_KEY, this.cache);
+    StorageService.instance.setEntry(CACHE_LOCALSTORAGE_KEY, this.cache);
   }
 }
 

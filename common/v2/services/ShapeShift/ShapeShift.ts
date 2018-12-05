@@ -1,8 +1,10 @@
 import { AxiosInstance } from 'axios';
 import queryString from 'query-string';
 
-import { APIService, CacheService } from 'v2/services';
-import { logError, storageGet, storageSet, storageListen, isDesktop } from 'v2/utils';
+import { logError, isDesktop } from 'v2/utils';
+import { APIService } from '../API';
+import { CacheService } from '../Cache';
+import { StorageService } from '../Storage';
 import {
   SHAPESHIFT_API_URL,
   SHAPESHIFT_ACCESS_TOKEN,
@@ -44,7 +46,7 @@ class ShapeShiftServiceBase {
 
     code ? this.requestAccessToken(code) : this.authorize();
 
-    storageListen(SHAPESHIFT_ACCESS_TOKEN, this.authorize, this.deauthorize);
+    StorageService.instance.listen(SHAPESHIFT_ACCESS_TOKEN, this.authorize, this.deauthorize);
   }
 
   public async getValidPairs(): Promise<string[]> {
@@ -252,8 +254,7 @@ class ShapeShiftServiceBase {
       grant_type: 'authorization_code'
     });
 
-    storageSet(SHAPESHIFT_ACCESS_TOKEN, token);
-
+    this.cacheSet(SHAPESHIFT_ACCESS_TOKEN, token);
     this.authorize(token);
 
     if (isDesktop()) {
@@ -277,7 +278,7 @@ class ShapeShiftServiceBase {
   }
 
   private authorize = (passedToken?: string) => {
-    const token = passedToken || storageGet(SHAPESHIFT_ACCESS_TOKEN);
+    const token = passedToken || this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
 
     if (token) {
       this.token = token;
