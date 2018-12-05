@@ -1,26 +1,19 @@
 import { AxiosInstance } from 'axios';
 import queryString from 'query-string';
 
+import { APIService, CacheService } from 'v2/services';
 import { logError, storageGet, storageSet, storageListen, isDesktop } from 'v2/utils';
-import APIService from './API';
 import {
   SHAPESHIFT_API_URL,
   SHAPESHIFT_ACCESS_TOKEN,
+  SHAPESHIFT_AUTHORIZATION_URL,
+  SHAPESHIFT_CACHE_IDENTIFIER,
   SHAPESHIFT_CLIENT_ID,
   SHAPESHIFT_REDIRECT_URI,
-  SHAPESHIFT_AUTHORIZATION_URL,
   SHAPESHIFT_TOKEN_PROXY_URL
 } from './constants';
+import { createAssetMap, getAssetIntersection, isSupportedPair, createPairHash } from './helpers';
 import {
-  addValueToCache,
-  createAssetMap,
-  getAssetIntersection,
-  isSupportedPair,
-  createPairHash,
-  cacheGrab
-} from './helpers';
-import {
-  Cache,
   MarketPair,
   MarketPairHash,
   DepositStatuses,
@@ -30,19 +23,21 @@ import {
   SendAmountResponse
 } from './types';
 
-let instantiated = false;
-
 class ShapeShiftServiceBase {
-  private cache: Cache = {};
   private token: string | null = null;
   private authorizationInterval: number | null = null;
   private deauthorizationInterval: number | null = null;
   private service: AxiosInstance = APIService.generateInstance({
     baseURL: SHAPESHIFT_API_URL
   });
-
-  private cacheGrab = cacheGrab.bind(this, this.cache);
-  private cacheAdd = addValueToCache.bind(this, this.cache);
+  private cacheGet = CacheService.instance.getEntry.bind(
+    CacheService.instance,
+    SHAPESHIFT_CACHE_IDENTIFIER
+  );
+  private cacheSet = CacheService.instance.setEntry.bind(
+    CacheService.instance,
+    SHAPESHIFT_CACHE_IDENTIFIER
+  );
 
   public constructor() {
     const { code } = queryString.parse(window.location.search);
@@ -54,7 +49,7 @@ class ShapeShiftServiceBase {
 
   public async getValidPairs(): Promise<string[]> {
     try {
-      const cachedPairs = this.cacheGrab('validPairs');
+      const cachedPairs = this.cacheGet('validPairs');
 
       if (cachedPairs) {
         return cachedPairs;
@@ -64,7 +59,7 @@ class ShapeShiftServiceBase {
       const assetMap = createAssetMap(data);
       const validPairs = getAssetIntersection(Object.keys(assetMap));
 
-      this.cacheAdd({ validPairs });
+      this.cacheSet({ validPairs });
 
       return validPairs;
     } catch (error) {
@@ -89,7 +84,7 @@ class ShapeShiftServiceBase {
 
   public async getPairInfo(): Promise<MarketPairHash | null> {
     try {
-      const cachedPairInfo = this.cacheGrab('pairInfo');
+      const cachedPairInfo = this.cacheGet('pairInfo');
 
       if (cachedPairInfo) {
         return cachedPairInfo;
@@ -103,7 +98,7 @@ class ShapeShiftServiceBase {
         );
         const pairInfo = supportedAssets.reduce((prev, next) => createPairHash(prev, next), {});
 
-        this.cacheAdd({ pairInfo });
+        this.cacheSet({ pairInfo });
 
         return pairInfo;
       }
@@ -120,7 +115,7 @@ class ShapeShiftServiceBase {
 
   public async getImages(): Promise<any | null> {
     try {
-      const cachedImages = this.cacheGrab('images');
+      const cachedImages = this.cacheGet('images');
 
       if (cachedImages) {
         return cachedImages;
@@ -132,6 +127,8 @@ class ShapeShiftServiceBase {
         prev[key] = value.imageSmall;
         return prev;
       }, {});
+
+      this.cacheSet({ images });
 
       return images;
     } catch (error) {
@@ -294,6 +291,8 @@ class ShapeShiftServiceBase {
   };
 }
 
+let instantiated = false;
+
 // tslint:disable-next-line
 export default class ShapeShiftService extends ShapeShiftServiceBase {
   public static instance = new ShapeShiftService();
@@ -303,8 +302,8 @@ export default class ShapeShiftService extends ShapeShiftServiceBase {
 
     if (instantiated) {
       throw new Error(`ShapeShiftService has already been instantiated.`);
+    } else {
+      instantiated = true;
     }
-
-    instantiated = true;
   }
 }

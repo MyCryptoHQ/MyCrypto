@@ -1,5 +1,7 @@
+import { isDevelopment } from './environment';
+
 export const logError = (name: string, error: Error): void => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (isDevelopment()) {
     console.error(name, error);
   }
 };

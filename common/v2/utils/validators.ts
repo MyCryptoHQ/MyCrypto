@@ -1,6 +1,6 @@
 import AddressValidator from 'wallet-address-validator';
 
-// import { SHAPESHIFT_TOKEN_WHITELIST } from 'v2/services';
+import { SHAPESHIFT_ASSET_WHITELIST } from 'v2/services/ShapeShift/constants';
 
 interface ValidatorHash {
   [asset: string]: (address: string) => boolean;
@@ -19,27 +19,7 @@ export const addressValidatorHash: ValidatorHash = {
   ETH: isValidEthereumAddress,
   BTC: isValidBitcoinAddress,
   XMR: isValidMoneroAddress,
-  ...[
-    'OMG',
-    'REP',
-    'SNT',
-    'SNGLS',
-    'ZRX',
-    'SWT',
-    'ANT',
-    'BAT',
-    'BNT',
-    'CVC',
-    'DNT',
-    '1ST',
-    'GNO',
-    'GNT',
-    'EDG',
-    'FUN',
-    'RLC',
-    'TRST',
-    'GUP'
-  ].reduce((prev: ValidatorHash, next) => {
+  ...SHAPESHIFT_ASSET_WHITELIST.reduce((prev: ValidatorHash, next) => {
     prev[next] = isValidEthereumAddress;
     return prev;
   }, {})

@@ -1,14 +1,3 @@
-export interface Cache {
-  [entry: string]: {
-    value: any;
-    ttl: number;
-  };
-}
-
-export interface NewCacheEntry {
-  [key: string]: any;
-}
-
 export enum DepositStatuses {
   error = 'error',
   no_deposits = 'no_deposits',

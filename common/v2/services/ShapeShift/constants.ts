@@ -1,16 +1,7 @@
 import { ShapeShiftAssetWhitelistHash } from './types';
 
-// How long should the APIService wait before abandoning a request?
-export const API_SERVICE_TIMEOUT = 10000;
-
-// These are the headers all request start with.
-export const API_SERVICE_DEFAULT_HEADERS = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
-};
-
-// How long should fetches stay alive in cache?
-export const CACHE_TIME_TO_LIVE = 1000 * 60 * 5;
+// The identifier to interact with CacheService.
+export const SHAPESHIFT_CACHE_IDENTIFIER = 'ShapeShift';
 
 // All tokens ShapeShift carries that MyCrypto agrees to support.
 export const SHAPESHIFT_TOKEN_WHITELIST = [
@@ -44,6 +35,7 @@ export const SHAPESHIFT_ASSET_WHITELIST = [
   'XMR'
 ];
 
+// A dictionary form of ShapeShift assets, optimized for lookup speed.
 export const SHAPESHIFT_ASSET_WHITELIST_HASH: ShapeShiftAssetWhitelistHash = SHAPESHIFT_ASSET_WHITELIST.reduce(
   (prev, next) => {
     prev[next] = true;
@@ -52,14 +44,20 @@ export const SHAPESHIFT_ASSET_WHITELIST_HASH: ShapeShiftAssetWhitelistHash = SHA
   {} as ShapeShiftAssetWhitelistHash
 );
 
+// The root URL for ShapeShift API requests.
 export const SHAPESHIFT_API_URL = 'https://shapeshift.io';
 
+// The key in LocalStorage for ShapeShift credentials.
 export const SHAPESHIFT_ACCESS_TOKEN = 'c640aa85-dd01-4db1-a6f2-ed57e6fd6c54';
 
+// The ShapeShift ID unique to MyCrypto.
 export const SHAPESHIFT_CLIENT_ID = 'fcbbb372-4221-4436-b345-024d91384652';
 
+// The URI that ShapeShift redirects to post-authorization.
 export const SHAPESHIFT_REDIRECT_URI = 'https://mycrypto.com/swap';
 
+// The URL that a new window opens in for the ShapeShift authorization process.
 export const SHAPESHIFT_AUTHORIZATION_URL = 'https://auth.shapeshift.io/oauth/authorize';
 
+// The URL for MyCrypto's proxy to conserve secret information.
 export const SHAPESHIFT_TOKEN_PROXY_URL = 'https://proxy.mycryptoapi.com/request-shapeshift-token';
