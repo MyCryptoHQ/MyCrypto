@@ -92,6 +92,9 @@ $shapeshift-brand: #1d2734;
       background-color: darken($shapeshift-brand, 20%);
       color: rgba(255, 255, 255, 0.7);
     }
+    &.separated {
+      margin-bottom: 1rem;
+    }
   }
 
   .Warning {

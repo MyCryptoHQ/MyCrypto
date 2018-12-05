@@ -44,6 +44,7 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
     this.populateOptions();
     this.populatePairHash();
     this.populateImages();
+    this.loadActiveShift();
   }
 
   public componentDidUpdate(_: any, prevState: State) {
@@ -62,6 +63,15 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
       <TabSection>
         <section className="ShapeShift">
           <section className="Tab-content-pane">
+            {[Stages.Address, Stages.Send].includes(stage) && (
+              <button
+                type="button"
+                className="btn ShapeShiftWidget-button separated"
+                onClick={this.startOver}
+              >
+                Start New Exchange
+              </button>
+            )}
             {stage === Stages.Pair && (
               <ShapeShiftPairForm
                 rates={pairHash}
@@ -147,12 +157,38 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
     });
   };
 
+  private loadActiveShift = () => {
+    const activeShift = ShapeShiftService.instance.getActiveShift();
+
+    if (activeShift) {
+      const { pair, withdrawal: address } = activeShift;
+
+      this.setState({
+        pair: pair.toUpperCase(),
+        address,
+        stage: Stages.Send,
+        transaction: activeShift
+      });
+    }
+  };
+
   private handleError = () => {
     const { history } = this.props;
 
     history.push('/swap?error=shapeshift');
 
     ShapeShiftService.instance.clearCache();
+  };
+
+  private startOver = () => {
+    ShapeShiftService.instance.clearActiveShift();
+
+    this.setState({
+      pair: null,
+      address: null,
+      transaction: null,
+      stage: Stages.Pair
+    });
   };
 }
 

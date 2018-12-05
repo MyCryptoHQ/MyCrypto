@@ -25,7 +25,7 @@ import {
   SendAmountResponse
 } from './types';
 
-class ShapeShiftServiceBase {
+export class ShapeShiftServiceBase {
   private token: string | null = null;
   private authorizationInterval: number | null = null;
   private deauthorizationInterval: number | null = null;
@@ -187,7 +187,10 @@ class ShapeShiftServiceBase {
     try {
       const { amount, withdrawal, pair } = config;
       const url = '/sendamount';
-      const { data: { success, error } } = await this.service.post(url, {
+
+      this.cacheClear('shift');
+
+      const { data: { success: activeShift, error } } = await this.service.post(url, {
         amount,
         withdrawal,
         pair
@@ -197,7 +200,9 @@ class ShapeShiftServiceBase {
         throw new Error(error);
       }
 
-      return success;
+      this.cacheSet({ activeShift });
+
+      return activeShift;
     } catch (error) {
       logError('ShapeShift#sendAmount', error);
 
@@ -207,6 +212,14 @@ class ShapeShiftServiceBase {
 
   public isAuthorized(): boolean {
     return Boolean(this.token);
+  }
+
+  public getActiveShift(): SendAmountResponse {
+    return this.cacheGet('activeShift');
+  }
+
+  public clearActiveShift() {
+    return this.cacheClear('activeShift');
   }
 
   public openAuthorizationWindow() {
@@ -254,6 +267,7 @@ class ShapeShiftServiceBase {
     this.cacheClear('validPairs');
     this.cacheClear('pairInfo');
     this.cacheClear('images');
+    this.cacheClear('activeShift');
   };
 
   private async requestAccessToken(code: string) {
