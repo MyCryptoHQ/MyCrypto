@@ -5,6 +5,7 @@ import { ShapeShiftSendField } from './components';
 import { SHAPESHIFT_STATUS_PING_RATE } from './constants';
 import { getSecondsRemaining, getTimeRemaining, getStatusWording } from './helpers';
 import strategies from './strategies';
+import './ShapeShiftSend.scss';
 
 interface Props {
   transaction: SendAmountResponse;
@@ -54,53 +55,59 @@ export default class ShapeShiftSend extends Component<Props> {
     const { generateSendScreenLayout } = strategies[depositAsset] || strategies.default;
 
     return (
-      <form className="ShapeShiftSend ShapeShiftWidget">
-        {generateSendScreenLayout({
-          transaction,
-          sendField: (
-            <ShapeShiftSendField dark={true} label="Send" value={depositAmount}>
-              <h2>{depositAsset}</h2>
-            </ShapeShiftSendField>
-          ),
-          addressField: (
-            <ShapeShiftSendField
-              dark={true}
-              label="to this address"
-              value={deposit}
-              className="smallest"
-            />
-          ),
-          timeField: (
-            <ShapeShiftSendField label="Time remaining" value={timeRemaining} className="smaller" />
-          ),
-          receiveAmountField: (
-            <ShapeShiftSendField
-              label="Amount to receive"
-              value={withdrawalAmount}
-              className="smaller"
-            >
-              <h3>{withdrawAsset}</h3>
-            </ShapeShiftSendField>
-          ),
-          rateField: (
-            <ShapeShiftSendField label="Rate" value={quotedRate} className="smaller">
-              <h3>
-                {withdrawAsset}/{depositAsset}
-              </h3>
-            </ShapeShiftSendField>
-          ),
-          referenceNumberField: (
-            <ShapeShiftSendField label="Reference number" value={orderId} className="smallest" />
-          ),
-          statusField: (
-            <ShapeShiftSendField
-              label="Status"
-              value={getStatusWording(status)}
-              className="smaller uppercase"
-            />
-          )
-        })}
-      </form>
+      <section className="ShapeShiftSend-wrapper">
+        <form className="ShapeShiftSend ShapeShiftWidget">
+          {generateSendScreenLayout({
+            transaction,
+            sendField: (
+              <ShapeShiftSendField dark={true} label="Send" value={depositAmount}>
+                <h2>{depositAsset}</h2>
+              </ShapeShiftSendField>
+            ),
+            addressField: (
+              <ShapeShiftSendField
+                dark={true}
+                label="to this address"
+                value={deposit}
+                className="smallest"
+              />
+            ),
+            timeField: (
+              <ShapeShiftSendField
+                label="Time remaining"
+                value={timeRemaining}
+                className="smaller"
+              />
+            ),
+            receiveAmountField: (
+              <ShapeShiftSendField
+                label="Amount to receive"
+                value={withdrawalAmount}
+                className="smaller"
+              >
+                <h3>{withdrawAsset}</h3>
+              </ShapeShiftSendField>
+            ),
+            rateField: (
+              <ShapeShiftSendField label="Rate" value={quotedRate} className="smaller">
+                <h3>
+                  {withdrawAsset}/{depositAsset}
+                </h3>
+              </ShapeShiftSendField>
+            ),
+            referenceNumberField: (
+              <ShapeShiftSendField label="Reference number" value={orderId} className="smallest" />
+            ),
+            statusField: (
+              <ShapeShiftSendField
+                label="Status"
+                value={getStatusWording(status)}
+                className="smaller uppercase"
+              />
+            )
+          })}
+        </form>
+      </section>
     );
   }
 

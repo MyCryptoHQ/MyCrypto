@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { ShapeShiftService, MarketPairHash, SendAmountResponse } from 'v2/services';
-import { ShapeShiftPairForm, ShapeShiftAddressForm } from './components';
+import { ShapeShiftPairForm, ShapeShiftAddressForm, Support } from './components';
 import { buildAssets } from './helpers';
 import ShapeShiftSend from './ShapeShiftSend';
 import './ShapeShift.scss';
@@ -62,16 +62,7 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
     return (
       <TabSection>
         <section className="ShapeShift">
-          <section className="Tab-content-pane">
-            {[Stages.Address, Stages.Send].includes(stage) && (
-              <button
-                type="button"
-                className="btn ShapeShiftWidget-button separated"
-                onClick={this.startOver}
-              >
-                Start New Exchange
-              </button>
-            )}
+          <section className="Tab-content-pane ShapeShift-wrapper">
             {stage === Stages.Pair && (
               <ShapeShiftPairForm
                 rates={pairHash}
@@ -95,6 +86,16 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
             >
               Powered by <img src={shapeshiftLogo} /> ShapeShift
             </a>
+            {[Stages.Address, Stages.Send].includes(stage) && (
+              <button
+                type="button"
+                className="btn ShapeShiftWidget-button separated"
+                onClick={this.startOver}
+              >
+                Start New Exchange
+              </button>
+            )}
+            {stage === Stages.Send && <Support transaction={transaction!} />}
           </section>
         </section>
       </TabSection>

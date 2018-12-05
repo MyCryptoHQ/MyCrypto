@@ -93,7 +93,11 @@ $shapeshift-brand: #1d2734;
       color: rgba(255, 255, 255, 0.7);
     }
     &.separated {
-      margin-bottom: 1rem;
+      margin: 0.5rem 0;
+
+      &:first-of-type {
+        margin-top: 1rem;
+      }
     }
   }
 

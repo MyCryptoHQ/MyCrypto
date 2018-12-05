@@ -15,7 +15,6 @@ export const generateSendScreenLayout = (props: ShapeShiftSendRenderProps) => {
 
   return (
     <React.Fragment>
-      <p>Default</p>
       {sendField}
       {addressField}
       {timeField}

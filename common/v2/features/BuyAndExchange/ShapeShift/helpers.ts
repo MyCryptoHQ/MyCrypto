@@ -1,4 +1,5 @@
-import { DepositStatuses } from 'v2/services';
+import { DepositStatuses, SendAmountResponse } from 'v2/services';
+import { SHAPESHIFT_SUPPORT_EMAILS } from './constants';
 import { AssetOption } from './types';
 
 export const getSecondsRemaining = (expiration: number): number => {
@@ -47,4 +48,32 @@ export const assetContainsFilter = (filter: string, asset: AssetOption): boolean
   const nameMatches = asset.name.toLowerCase().includes(actualFilter);
 
   return tickerMatches || nameMatches;
+};
+
+export const formatShapeShiftSupportEmail = (
+  transaction: SendAmountResponse
+): { subject: string; body: string; fallbackBody: string } => {
+  const {
+    orderId,
+    depositAmount,
+    withdrawalAmount,
+    deposit,
+    withdrawal,
+    pair,
+    quotedRate
+  } = transaction;
+  const [depositAsset, withdrawalAsset] = pair.toUpperCase().split('_');
+  const pertinentInformation = `Provider: ShapeShift
+Reference #: ${orderId}
+Amount to send: ${depositAmount}
+Amount to receive: ${withdrawalAmount}
+Payment address: ${deposit}
+Receiving address: ${withdrawal}
+Rate: ${quotedRate} ${withdrawalAsset}/${depositAsset}`;
+  const subject = encodeURI('Issue regarding my Swap via MyCrypto');
+  const body = encodeURI(`Please include the information below if this issue is regarding your order:
+${pertinentInformation}
+`);
+
+  return { subject, body, fallbackBody: pertinentInformation };
 };
