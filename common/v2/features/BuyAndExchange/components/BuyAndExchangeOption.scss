@@ -1,0 +1,50 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.BuyAndExchangeOption {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 1rem 2rem;
+  padding: 1rem;
+  min-width: 300px;
+  max-width: 340px;
+  border: 1px solid shade-dark(0.12);
+  border-top: 3px solid lighten(#17314f, 15%);
+  border-radius: 4px;
+  background: color(control-bg);
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.12);
+  transition: transform 100ms ease, box-shadow 100ms ease;
+
+  &-name {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0.25rem 0 1rem;
+
+    h3 {
+      margin: 0;
+    }
+    img {
+      width: 28px;
+      height: 28px;
+      margin-right: 0.2rem;
+    }
+  }
+  &-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    padding: 1rem 0;
+    font-weight: 300;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  }
+}
