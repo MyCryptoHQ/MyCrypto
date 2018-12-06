@@ -441,7 +441,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     contracts: require('config/contracts/rsk_testnet.json'),
     isTestnet: true,
     dPathFormats: {
-      [SecureWalletName.TREZOR]: RSK_TESTNET,
+      [SecureWalletName.TREZOR]: RSK_TESTNET,      
       [SecureWalletName.LEDGER_NANO_S]: RSK_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },

@@ -118,16 +118,6 @@ export const setCurrentScheduleType = (
 });
 //#endregion Schedule Type
 
-//#region Scheduling Toggle
-export type TSetCurrentSchedulingToggle = typeof setCurrentSchedulingToggle;
-export const setCurrentSchedulingToggle = (
-  payload: types.SetCurrentSchedulingToggleAction['payload']
-): types.SetCurrentSchedulingToggleAction => ({
-  type: types.ScheduleActions.CURRENT_SCHEDULING_TOGGLE,
-  payload
-});
-//#endregion Scheduling Toggle
-
 //#region Time Bounty
 export type TSetCurrentTimeBounty = typeof setCurrentTimeBounty;
 export const setCurrentTimeBounty = (
@@ -157,3 +147,38 @@ export const setCurrentWindowStart = (
   payload
 });
 //#endregion Window Size
+
+//#region Estimate Scheduling Gas
+export type TEstimateSchedulingGasRequested = typeof estimateSchedulingGasRequested;
+export const estimateSchedulingGasRequested = (
+  payload: types.EstimateSchedulingGasRequestedAction['payload']
+): types.EstimateSchedulingGasRequestedAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_REQUESTED,
+  payload
+});
+
+export type TEstimateSchedulingGasSucceeded = typeof estimateSchedulingGasSucceeded;
+export const estimateSchedulingGasSucceeded = (): types.EstimateSchedulingGasSucceededAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_SUCCEEDED
+});
+
+export type TEstimateSchedulingGasFailed = typeof estimateSchedulingGasFailed;
+export const estimateSchedulingGasFailed = (): types.EstimateSchedulingGasFailedAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_FAILED
+});
+
+export type TEstimateSchedulingGasTimedout = typeof estimateSchedulingGasTimedout;
+export const estimateSchedulingGasTimedout = (): types.EstimateSchedulingGasTimeoutAction => ({
+  type: types.ScheduleActions.ESTIMATE_SCHEDULING_GAS_TIMEDOUT
+});
+//#endregion Estimate Scheduling Gas
+
+//#region Scheduled Transaction Hash
+export type TSetScheduledTransactionHash = typeof setScheduledTransactionHash;
+export const setScheduledTransactionHash = (
+  payload: types.SetScheduledTransactionHashAction['payload']
+): types.SetScheduledTransactionHashAction => ({
+  type: types.ScheduleActions.SCHEDULED_TRANSACTION_HASH_SET,
+  payload
+});
+//#endregion
