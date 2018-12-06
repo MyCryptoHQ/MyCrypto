@@ -9,17 +9,6 @@ export function normalise(name: string): string {
   }
 }
 
-export const extractDomain = (fullDomain: string): string => {
-  const labels = fullDomain.split('.');
-  if (labels.length === 0) {
-    return '';
-  } else if (labels.length === 1) {
-    return labels[0];
-  } else {
-    return labels[labels.length - 2];
-  }
-};
-
 export const getNameHash = (name: string = ''): string => {
   if (name === '') {
     throw new Error('Empty string provided');

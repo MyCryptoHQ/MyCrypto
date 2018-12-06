@@ -25,7 +25,9 @@ type StaticNetworkIds =
   | 'AKA'
   | 'PIRL'
   | 'ATH'
-  | 'ETHO';
+  | 'ETHO'
+  | 'ILT'
+  | 'MIX';
 
 export interface BlockExplorerConfig {
   name: string;

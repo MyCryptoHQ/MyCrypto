@@ -283,6 +283,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'ether1.org',
       url: 'https://rpc.ether1.org'
     }
+  ],
+
+  ILT: [
+    {
+      name: makeNodeName('ILT', 'iolite.io'),
+      type: 'rpc',
+      service: 'iolite.io',
+      url: 'https://net.iolite.io'
+    }
+  ],
+
+  MIX: [
+    {
+      name: makeNodeName('MIX', 'mix-blockchain.org'),
+      type: 'rpc',
+      service: 'rpc2.mix-blockchain.org',
+      url: 'https://rpc2.mix-blockchain.org:8647'
+    }
   ]
 };
 

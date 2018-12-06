@@ -32,7 +32,9 @@ import {
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
-  ETHO_DEFAULT
+  ETHO_DEFAULT,
+  ILT_DEFAULT,
+  MIX_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -221,10 +223,10 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'POA Explorer',
-      origin: 'https://poaexplorer.com',
-      addressPath: 'address/search',
-      blockPath: 'blocks/block'
+      name: 'BlockScout',
+      origin: 'https://blockscout.com/poa/core',
+      addressPath: 'address',
+      blockPath: 'blocks'
     }),
     tokens: [],
     contracts: [],
@@ -399,7 +401,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
   RSK: {
     id: 'RSK',
     name: 'RSK',
-    unit: 'SBTC',
+    unit: 'RBTC',
     chainId: 30,
     color: '#58A052',
     isCustom: false,
@@ -426,8 +428,8 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
 
   RSK_TESTNET: {
     id: 'RSK_TESTNET',
-    name: 'RSK',
-    unit: 'SBTC',
+    name: 'RSK Testnet',
+    unit: 'RBTC',
     chainId: 31,
     color: '#58A052',
     isCustom: false,
@@ -668,6 +670,57 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: ETHO_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: ETHO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETHO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ILT: {
+    id: 'ILT',
+    name: 'iOlite',
+    unit: 'ILT',
+    chainId: 18289463,
+    isCustom: false,
+    color: '#33c4ff',
+    blockExplorer: makeExplorer({
+      name: 'iOlite Explorer',
+      origin: 'https://scan.iolite.io',
+      txPath: 'txs',
+      addressPath: 'addrs',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ILT_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ILT_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ILT_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  MIX: {
+    id: 'MIX',
+    name: 'Mix',
+    unit: 'MIX',
+    chainId: 76,
+    isCustom: false,
+    color: '#e59b2b',
+    blockExplorer: makeExplorer({
+      name: 'MIX Blockchain Explorer',
+      origin: 'https://blocks.mix-blockchain.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: MIX_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: MIX_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: MIX_DEFAULT
     },
     gasPriceSettings: {
       min: 1,

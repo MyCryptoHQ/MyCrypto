@@ -1,0 +1,78 @@
+.AssetSelection {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: white;
+  color: rgb(51, 51, 51);
+
+  &-selector {
+    font-size: 24px;
+    border: none;
+    background: transparent;
+  }
+  &-head {
+    &-close {
+      position: absolute;
+      top: 25px;
+      right: 0;
+      background: transparent;
+      border: none;
+
+      i {
+        padding: 0 12px;
+      }
+    }
+    h4 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    &-filter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 40px;
+      padding: 0.5rem;
+      background: rgb(238, 238, 238);
+
+      input {
+        width: 100%;
+        padding: 0.1rem 0.5rem;
+        background: transparent;
+        border: none;
+        color: rgb(102, 102, 102);
+        font-size: 14px;
+      }
+    }
+  }
+  &-assets {
+    margin-top: 10px;
+    overflow: auto;
+
+    &-asset {
+      display: flex;
+      align-items: center;
+      padding: 12px 0 12px 5px;
+      border-bottom: 1px solid #ddd;
+
+      img {
+        margin-right: 10px;
+      }
+      p {
+        margin: 0;
+        font-weight: 700;
+      }
+      &:hover {
+        background: rgb(238, 238, 238);
+        cursor: pointer;
+      }
+    }
+  }
+}
