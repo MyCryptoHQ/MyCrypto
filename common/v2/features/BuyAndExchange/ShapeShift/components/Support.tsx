@@ -5,6 +5,9 @@ import { SHAPESHIFT_SUPPORT_EMAILS } from '../constants';
 import { formatShapeShiftSupportEmail } from '../helpers';
 import './Support.scss';
 
+// Legacy
+import { TextArea } from 'components/ui';
+
 interface Props {
   transaction: SendAmountResponse;
 }
@@ -48,7 +51,13 @@ export default class Support extends Component<Props> {
             </section>
             <section>
               <label>Body</label>
-              <textarea>{fallbackBody}</textarea>
+              <TextArea
+                isValid={true}
+                showValidAsPlain={true}
+                defaultValue={fallbackBody}
+                className="input-sm"
+                rows={9}
+              />
             </section>
           </section>
         )}
