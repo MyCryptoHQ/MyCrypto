@@ -101,7 +101,7 @@ class RootClass extends Component<Props, State> {
       </CaptureRouteNotFound>
     );
 
-    const Router =
+    const Router: any =
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;

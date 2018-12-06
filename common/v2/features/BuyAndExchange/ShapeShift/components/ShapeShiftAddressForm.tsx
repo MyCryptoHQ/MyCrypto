@@ -36,9 +36,9 @@ export default function ShapeShiftAddressForm({ addressInputRef, asset, onSubmit
       initialValues={{
         address: ''
       }}
-      validate={values => validate(values, asset)}
+      validate={(values: any) => validate(values, asset)}
       onSubmit={onSubmit}
-      render={props => (
+      render={(props: any) => (
         <section className="ShapeShiftWidget">
           <Form>
             <fieldset className="dark">

@@ -110,9 +110,9 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
         withdraw: assets[1].ticker,
         withdrawAmount: '0.0000000'
       }}
-      validate={values => validate(values, rates)}
+      validate={(values: any) => validate(values, rates)}
       onSubmit={onSubmit}
-      render={props => {
+      render={(props: any) => {
         return (
           <section className="ShapeShiftWidget">
             <Form>
