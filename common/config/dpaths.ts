@@ -138,6 +138,11 @@ export const ETHO_DEFAULT: DPath = {
   value: "m/44'/1313114'/0'/0"
 };
 
+export const ILT_DEFAULT: DPath = {
+  label: 'Default (ILT)',
+  value: "m/44'/1171337'/0'/0"
+};
+
 export const MIX_DEFAULT: DPath = {
   label: 'Default (MIX)',
   value: "m/44'/76'/0'/0"
@@ -171,6 +176,7 @@ export const DPaths: DPath[] = [
   PIRL_DEFAULT,
   ATH_DEFAULT,
   ETHO_DEFAULT,
+  ILT_DEFAULT,
   MIX_DEFAULT
 ];
 
