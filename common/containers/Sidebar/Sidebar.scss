@@ -44,6 +44,10 @@
   @media (min-width: 1000px) {
     top: 0;
   }
+
+  .is-selected {
+    background: #f2f2f2;
+  }
 }
 
 .SidebarScreen {
@@ -180,8 +184,4 @@
 .plain-ul {
   list-style-type: none;
   padding: 0;
-}
-
-.is-selected {
-  background: #f2f2f2;
 }
