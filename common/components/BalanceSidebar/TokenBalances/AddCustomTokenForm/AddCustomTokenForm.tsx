@@ -99,7 +99,7 @@ export class AddCustomTokenForm extends React.PureComponent<Props, State> {
   };
 
   private handleFieldChange = (fieldName: keyof State) => (res: Result<string>) => {
-    this.setState({ [fieldName as any]: res });
+    this.setState({ [fieldName as any]: res } as any);
   };
 
   private isValid() {

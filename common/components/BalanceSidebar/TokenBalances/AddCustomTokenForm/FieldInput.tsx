@@ -122,7 +122,7 @@ export class FieldInput extends React.Component<OwnProps, State> {
     return shepherdProvider
       .sendCallRequest({ data: ERC20[fieldToFetch].encodeInput(), to: address })
       .then(ERC20[fieldToFetch].decodeOutput as any)
-      .then(({ [fieldToFetch]: field }) => {
+      .then(({ [fieldToFetch]: field }: any) => {
         let result: Result<string>;
         if (this.props.fetchedFieldValidator) {
           result = this.props.fetchedFieldValidator(field);
