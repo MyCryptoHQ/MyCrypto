@@ -11,8 +11,6 @@ import RootReducer, { AppState } from './reducers';
 import sagas from './sagas';
 import { TransactionState } from './transaction/types';
 import { INITIAL_STATE as transactionInitialState } from './transaction/reducer';
-import { SwapState } from './swap/types';
-import { INITIAL_STATE as initialSwapState } from './swap/reducer';
 import { AddressBookState } from './addressBook/types';
 import { TransactionsState } from './transactions/types';
 import { INITIAL_STATE as initialTransactionsState } from './transactions/reducer';
@@ -42,16 +40,6 @@ export default function configureStore() {
     middleware = applyMiddleware(sagaMiddleware, routerMiddleware(history as any));
   }
 
-  // ONLY LOAD SWAP STATE FROM LOCAL STORAGE IF STEP WAS 3
-  const localSwapState = loadStatePropertyOrEmptyObject<SwapState>('swap');
-  const swapState =
-    localSwapState && localSwapState.step === 3
-      ? {
-          ...initialSwapState,
-          ...localSwapState
-        }
-      : { ...initialSwapState };
-
   const savedTransactionState = loadStatePropertyOrEmptyObject<TransactionState>('transaction');
   const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
   const savedAddressBook = loadStatePropertyOrEmptyObject<AddressBookState>('addressBook');
@@ -72,7 +60,6 @@ export default function configureStore() {
             : transactionInitialState.fields.gasPrice
       }
     },
-    swap: swapState,
     transactions: {
       ...initialTransactionsState,
       ...savedTransactionsState
@@ -104,21 +91,6 @@ export default function configureStore() {
         transaction: {
           fields: {
             gasPrice: state.transaction.fields.gasPrice
-          }
-        },
-        swap: {
-          ...state.swap,
-          options: {
-            byId: {},
-            allIds: []
-          },
-          bityRates: {
-            byId: {},
-            allIds: []
-          },
-          shapeshiftRates: {
-            byId: {},
-            allIds: []
           }
         },
         transactions: {
