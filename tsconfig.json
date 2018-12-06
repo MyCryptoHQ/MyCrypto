@@ -15,6 +15,7 @@
     "lib": ["es2017", "dom"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "noEmitOnError": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -32,6 +33,7 @@
     "./node_modules/types-rlp/index.d.ts",
     "./node_modules/mycrypto-shepherd/dist/lib/types/btoa.d.ts"
   ],
+  "exclude": ["./jest_config/**/*"],
   "awesomeTypescriptLoaderOptions": {
     "transpileOnly": true
   }
