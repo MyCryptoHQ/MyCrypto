@@ -23,7 +23,7 @@ import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import { configMetaTypes, configMetaSelectors, configNodesSelectors } from 'features/config';
 import { walletTypes, walletSelectors } from 'features/wallet';
-import { scheduleActions, scheduleSelectors } from 'features/schedule';
+import { scheduleActions, scheduleSelectors, scheduleTypes } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
 import * as transactionTypes from '../types';
@@ -67,14 +67,15 @@ export function* shouldEstimateGas(): SagaIterator {
       | transactionTypes.SwapTokenToTokenAction
       | transactionTypes.SwapTokenToEtherAction
       | configMetaTypes.ToggleAutoGasLimitAction
-      | transactionFieldsTypes.SetValueFieldAction = yield take([
+      | scheduleTypes.SetSchedulingToggleAction = yield take([
       transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
       transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP,
       transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP,
       transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP,
-      configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT
+      configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT,
+      scheduleTypes.ScheduleActions.TOGGLE_SET
     ]);
 
     const isOffline: boolean = yield select(configMetaSelectors.getOffline);
@@ -115,7 +116,13 @@ export function* shouldEstimateGas(): SagaIterator {
       rest.to = undefined as any;
     }
 
-    yield put(actions.estimateGasRequested(rest));
+    const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+
+    if (scheduling) {
+      yield put(scheduleActions.estimateSchedulingGasRequested(rest));
+    } else {
+      yield put(actions.estimateGasRequested(rest));
+    }
   }
 }
 
@@ -152,13 +159,7 @@ export function* estimateGas(): SagaIterator {
           value: gasLimit
         };
 
-        const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
-
-        if (scheduling) {
-          yield put(scheduleActions.setScheduleGasLimitField(gasSetOptions));
-        } else {
-          yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
-        }
+        yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
 
         yield put(actions.estimateGasSucceeded());
       } else {

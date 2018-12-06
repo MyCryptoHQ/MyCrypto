@@ -127,7 +127,7 @@ class FeeSummary extends React.Component<Props> {
   }
 
   private calculateSchedulingFee() {
-    const { gasPrice, scheduleGasLimit, scheduleGasPrice, timeBounty } = this.props;
+    const { gasLimit, gasPrice, scheduleGasLimit, scheduleGasPrice, timeBounty } = this.props;
 
     return (
       gasPrice.value &&
@@ -137,7 +137,8 @@ class FeeSummary extends React.Component<Props> {
         scheduleGasLimit.value,
         gasPrice.value,
         scheduleGasPrice.value,
-        timeBounty.value
+        timeBounty.value,
+        gasLimit.value
       )
     );
   }
