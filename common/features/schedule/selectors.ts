@@ -43,6 +43,9 @@ export const isSchedulingEnabled = (state: AppState): boolean => {
 
   return schedulingToggle && schedulingToggle.value;
 };
+
+export const getScheduledTransactionHash = (state: AppState): string =>
+  getScheduleState(state).scheduledTransactionHash.value;
 //#endregion Fields
 
 //#region Current
@@ -86,15 +89,6 @@ export interface ICurrentScheduleType {
 export const getCurrentScheduleType = (state: AppState): ICurrentScheduleType =>
   getScheduleType(state);
 //#endregion Schedule Type
-
-//#region Scheduling Toggle
-export interface ICurrentSchedulingToggle {
-  value: boolean;
-}
-
-export const getCurrentSchedulingToggle = (state: AppState): ICurrentSchedulingToggle =>
-  getSchedulingToggle(state);
-//#endregion Scheduling Toggle
 
 //#region Time Bounty
 export interface ICurrentTimeBounty {
