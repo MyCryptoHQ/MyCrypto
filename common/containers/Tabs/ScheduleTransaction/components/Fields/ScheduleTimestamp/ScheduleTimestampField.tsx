@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DateTime from 'react-datetime';
 import moment from 'moment';
 
 import { AppState } from 'features/reducers';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import translate from 'translations';
 import { scheduleActions, scheduleSelectors, scheduleHelpers } from 'features/schedule';
+import DateTime from 'components/ui/DateTime/DateTime';
 
 interface DispatchProps {
   setCurrentScheduleTimestamp: scheduleActions.TSetCurrentScheduleTimestamp;
@@ -29,7 +29,7 @@ class ScheduleTimestampClass extends Component<Props> {
           <div className="input-group-header">{translate('SCHEDULE_TIMESTAMP')}</div>
         </label>
         <DateTime
-          value={currentScheduleTimestamp.value}
+          defaultValue={currentScheduleTimestamp.value}
           onChange={this.handleOnChange}
           isValidDate={this.isValidDate}
           inputProps={{
@@ -50,8 +50,12 @@ class ScheduleTimestampClass extends Component<Props> {
   };
 
   private handleOnChange = (val: any) => {
-    const value = moment(val).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT);
-    this.props.setCurrentScheduleTimestamp(value);
+    const parsedDate = moment(val);
+
+    if (parsedDate.isValid()) {
+      const value = parsedDate.format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT);
+      this.props.setCurrentScheduleTimestamp(value);
+    }
   };
 }
 

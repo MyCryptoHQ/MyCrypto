@@ -23,9 +23,6 @@
 // --- React Select ---
 @import '~react-select/dist/react-select.css';
 
-// --- React DateTime
-@import '~react-datetime/css/react-datetime.css';
-
 // --- CUSTOM ---
 @import './styles/badbrowser';
 @import './styles/noscript';
@@ -40,6 +37,7 @@
 @import './styles/alerts';
 @import './styles/themes';
 @import './fonts';
+@import './styles/react-datetime';
 
 [data-whatintent='mouse'] *:focus {
   outline: none;
