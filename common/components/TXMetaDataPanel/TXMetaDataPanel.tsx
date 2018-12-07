@@ -142,7 +142,7 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  var networkConfig = configSelectors.getNetworkConfig(state) as StaticNetworkConfig;
+  const networkConfig = configSelectors.getNetworkConfig(state) as StaticNetworkConfig;
   return {
     gasPrice: networkConfig.isCustom
       ? transactionFieldsSelectors.getGasPrice(state)
