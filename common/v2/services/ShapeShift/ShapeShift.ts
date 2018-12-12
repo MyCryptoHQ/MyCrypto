@@ -264,6 +264,7 @@ export class ShapeShiftServiceBase {
     clearInterval(this.deauthorizationInterval as number);
 
   public clearCache = () => {
+    this.cacheClear(SHAPESHIFT_ACCESS_TOKEN);
     this.cacheClear('validPairs');
     this.cacheClear('pairInfo');
     this.cacheClear('images');
@@ -276,13 +277,15 @@ export class ShapeShiftServiceBase {
       grant_type: 'authorization_code'
     });
 
-    this.cacheSet(SHAPESHIFT_ACCESS_TOKEN, token);
+    this.cacheSet({ [SHAPESHIFT_ACCESS_TOKEN]: token });
     this.authorize(token);
 
     if (isDesktop()) {
       const { ipcRenderer } = (window as any).require('electron');
 
       ipcRenderer.send('shapeshift-token-retrieved', token);
+    } else {
+      (window as any).close();
     }
   }
 
@@ -300,7 +303,7 @@ export class ShapeShiftServiceBase {
   }
 
   private authorize = (passedToken?: string) => {
-    const token = passedToken || StorageService.instance.getEntry(SHAPESHIFT_ACCESS_TOKEN);
+    const token = passedToken || this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
 
     if (token) {
       this.token = token;
