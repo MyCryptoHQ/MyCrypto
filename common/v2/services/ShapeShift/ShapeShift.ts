@@ -264,6 +264,7 @@ export class ShapeShiftServiceBase {
     clearInterval(this.deauthorizationInterval as number);
 
   public clearCache = () => {
+    this.cacheClear(SHAPESHIFT_ACCESS_TOKEN);
     this.cacheClear('validPairs');
     this.cacheClear('pairInfo');
     this.cacheClear('images');
