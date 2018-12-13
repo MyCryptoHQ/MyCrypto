@@ -73,8 +73,10 @@ class SelectNetworkAndNode extends Component<Props, State> {
             const isSelected = selectedNetwork.id === network;
             const onSelect = () => this.handleNetworkSelect(allNetworks[network].id);
             const onNodeSelect = (node: string) => this.handleNodeSelect(node);
-            const onClick = (e: React.MouseEvent<HTMLElement>) =>
-              e.stopPropagation() || this.toggleNetwork(network);
+            const onClick = (e: React.MouseEvent<HTMLElement>) => {
+              e.stopPropagation();
+              this.toggleNetwork(network);
+            };
             const name = allNetworks[network].name;
             const isToggled = toggledNetworks.includes(network);
 
@@ -111,7 +113,10 @@ class SelectNetworkAndNode extends Component<Props, State> {
                     onSelect={() => this.handleNetworkSelect(allNetworks[network].id)}
                     selectedNode={selectedNode}
                     onNodeSelect={(node: string) => this.handleNodeSelect(node)}
-                    onClick={e => e.stopPropagation() || this.toggleNetwork(network)}
+                    onClick={e => {
+                      e.stopPropagation();
+                      this.toggleNetwork(network);
+                    }}
                     name={(allNetworks[network] || {}).name}
                     isToggled={toggledNetworks.includes(network)}
                     nodes={nodes}
