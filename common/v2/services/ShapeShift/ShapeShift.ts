@@ -46,6 +46,12 @@ export class ShapeShiftServiceBase {
     const { code } = queryString.parse(window.location.search);
 
     code ? this.requestAccessToken(code) : this.authorize();
+
+    if (isDesktop()) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.on('shapeshift-set-token', (_: any, token: string) => this.authorize(token));
+    }
   }
 
   public async getValidPairs(): Promise<string[]> {
@@ -244,14 +250,20 @@ export class ShapeShiftServiceBase {
   };
 
   public authorize = (passedToken?: string) => {
-    const wasAuthorized = this.isAuthorized();
-    const token = passedToken || this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
-
-    if (token && !wasAuthorized) {
-      this.token = token;
+    if (passedToken) {
+      this.cacheSet({ [SHAPESHIFT_ACCESS_TOKEN]: passedToken });
+      this.token = passedToken;
       this.updateService();
-    } else if (!token && wasAuthorized) {
-      this.deauthorize();
+    } else {
+      const wasAuthorized = this.isAuthorized();
+      const token = this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
+
+      if (token && !wasAuthorized) {
+        this.token = token;
+        this.updateService();
+      } else if (!token && wasAuthorized) {
+        this.deauthorize();
+      }
     }
   };
 
@@ -261,7 +273,6 @@ export class ShapeShiftServiceBase {
       grant_type: 'authorization_code'
     });
 
-    this.cacheSet({ [SHAPESHIFT_ACCESS_TOKEN]: token });
     this.authorize(token);
 
     if (isDesktop()) {
