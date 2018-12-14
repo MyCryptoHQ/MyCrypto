@@ -10,7 +10,8 @@ import { TransactionData, TransactionReceipt, SavedTransaction } from 'types/tra
 import { AppState } from 'features/reducers';
 import { configSelectors, configNodesSelectors } from 'features/config';
 import { walletSelectors } from 'features/wallet';
-import { transactionBroadcastTypes } from 'features/transaction';
+import { transactionBroadcastTypes, transactionTypes } from 'features/transaction';
+import * as networkActions from '../transaction/network/actions';
 import * as types from './types';
 import * as actions from './actions';
 
@@ -110,6 +111,10 @@ export function* resetTxData() {
   yield put(actions.resetTransactionData());
 }
 
+export function* getNonce() {
+  yield put(networkActions.getNonceRequested());
+}
+
 export function* transactionsSaga(): SagaIterator {
   yield takeEvery(types.TransactionsActions.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(
@@ -117,4 +122,5 @@ export function* transactionsSaga(): SagaIterator {
     saveBroadcastedTx
   );
   yield takeEvery(types.TransactionsActions.RESET_TRANSACTION_DATA, resetTxData);
+  yield takeEvery(transactionTypes.TransactionActions.RESET_SUCCESSFUL, getNonce);
 }
