@@ -4,7 +4,6 @@ import queryString from 'query-string';
 import { logError, isDesktop } from 'v2/utils';
 import { APIService } from '../API';
 import { CacheService } from '../Cache';
-import { StorageService } from '../Storage';
 import {
   SHAPESHIFT_API_URL,
   SHAPESHIFT_ACCESS_TOKEN,
@@ -27,8 +26,6 @@ import {
 
 export class ShapeShiftServiceBase {
   private token: string | null = null;
-  private authorizationInterval: number | null = null;
-  private deauthorizationInterval: number | null = null;
   private service: AxiosInstance = APIService.generateInstance({
     baseURL: SHAPESHIFT_API_URL
   });
@@ -50,7 +47,11 @@ export class ShapeShiftServiceBase {
 
     code ? this.requestAccessToken(code) : this.authorize();
 
-    StorageService.instance.listen(SHAPESHIFT_ACCESS_TOKEN, this.authorize, this.deauthorize);
+    if (isDesktop()) {
+      const { ipcRenderer } = (window as any).require('electron');
+
+      ipcRenderer.on('shapeshift-set-token', (_: any, token: string) => this.authorize(token));
+    }
   }
 
   public async getValidPairs(): Promise<string[]> {
@@ -240,29 +241,6 @@ export class ShapeShiftServiceBase {
     }
   }
 
-  public listenForAuthorization(callback: () => void) {
-    this.authorizationInterval = setInterval(() => {
-      if (this.isAuthorized()) {
-        callback();
-        this.stopListeningForAuthorization();
-      }
-    });
-  }
-
-  public stopListeningForAuthorization = () => clearInterval(this.authorizationInterval as number);
-
-  public listenForDeauthorization(callback: () => void) {
-    this.deauthorizationInterval = setInterval(() => {
-      if (!this.isAuthorized()) {
-        callback();
-        this.stopListeningForDeauthorization();
-      }
-    });
-  }
-
-  public stopListeningForDeauthorization = () =>
-    clearInterval(this.deauthorizationInterval as number);
-
   public clearCache = () => {
     this.cacheClear(SHAPESHIFT_ACCESS_TOKEN);
     this.cacheClear('validPairs');
@@ -271,13 +249,29 @@ export class ShapeShiftServiceBase {
     this.cacheClear('activeShift');
   };
 
+  public authorize = (passedToken?: string) => {
+    if (passedToken) {
+      this.cacheSet({ [SHAPESHIFT_ACCESS_TOKEN]: passedToken });
+      this.token = passedToken;
+      this.updateService();
+    } else {
+      const wasAuthorized = this.isAuthorized();
+      const token = this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
+
+      if (token && !wasAuthorized) {
+        this.authorize(token);
+      } else if (!token && wasAuthorized) {
+        this.deauthorize();
+      }
+    }
+  };
+
   private async requestAccessToken(code: string) {
     const { data: { access_token: token } } = await this.service.post(SHAPESHIFT_TOKEN_PROXY_URL, {
       code,
       grant_type: 'authorization_code'
     });
 
-    this.cacheSet({ [SHAPESHIFT_ACCESS_TOKEN]: token });
     this.authorize(token);
 
     if (isDesktop()) {
@@ -301,15 +295,6 @@ export class ShapeShiftServiceBase {
       headers
     });
   }
-
-  private authorize = (passedToken?: string) => {
-    const token = passedToken || this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
-
-    if (token) {
-      this.token = token;
-      this.updateService();
-    }
-  };
 
   private deauthorize = () => {
     this.token = null;
