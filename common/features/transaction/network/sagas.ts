@@ -26,6 +26,7 @@ import { walletTypes, walletSelectors } from 'features/wallet';
 import { scheduleActions, scheduleSelectors, scheduleTypes } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
+import { transactionsSelectors } from 'features/transactions';
 import * as transactionTypes from '../types';
 import * as types from './types';
 import * as actions from './actions';
@@ -207,6 +208,9 @@ export const gas = [
 export function* handleNonceRequest(): SagaIterator {
   const nodeLib: INode = yield select(configNodesSelectors.getNodeLib);
   const walletInst: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
+  const recentTransactions: AppState['transactions']['recent'] = yield select(
+    transactionsSelectors.getRecentTransactions
+  );
   const isOffline: boolean = yield select(configMetaSelectors.getOffline);
   try {
     if (isOffline || !walletInst) {
@@ -215,7 +219,22 @@ export function* handleNonceRequest(): SagaIterator {
 
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
 
-    const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);
+    const recentNonce: number =
+      Math.max.apply(
+        Math,
+        recentTransactions
+          .filter(entry => entry.from !== fromAddress)
+          .filter(entry => entry.nonce)
+          .filter(entry => typeof entry.nonce === 'number')
+          .map(entry => entry.nonce)
+      ) + 1;
+
+    const transactionCount: number = parseInt(
+      yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]),
+      16
+    );
+    const maxNonce: number = Math.max(transactionCount, recentNonce);
+    const retrievedNonce: string = maxNonce.toString();
     const base10Nonce = Nonce(retrievedNonce);
     yield put(transactionFieldsActions.inputNonce(base10Nonce.toString()));
     yield put(actions.getNonceSucceeded(retrievedNonce));

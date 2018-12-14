@@ -74,6 +74,8 @@ export function* saveBroadcastedTx(
 // Given a serialized transaction, return a transaction we could save in LS
 export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
   const fields = getTransactionFields(tx);
+  const nonceHex: string = tx.toJSON()[0];
+  const nonce: number = parseInt(nonceHex, 16);
   let from: string = '';
   let chainId: number = 0;
 
@@ -96,6 +98,7 @@ export function* getSaveableTransaction(tx: EthTx, hash: string): SagaIterator {
     hash,
     from,
     chainId,
+    nonce,
     to: toChecksumAddress(fields.to),
     value: fields.value,
     time: Date.now()
