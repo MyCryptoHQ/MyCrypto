@@ -110,7 +110,7 @@ export function* resetTxData() {
 export function* transactionsSaga(): SagaIterator {
   yield takeEvery(types.TransactionsActions.FETCH_TRANSACTION_DATA, fetchTxData);
   yield takeEvery(
-    transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED,
+    transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_QUEUED,
     saveBroadcastedTx
   );
   yield takeEvery(types.TransactionsActions.RESET_TRANSACTION_DATA, resetTxData);
