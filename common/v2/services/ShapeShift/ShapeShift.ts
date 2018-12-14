@@ -259,8 +259,7 @@ export class ShapeShiftServiceBase {
       const token = this.cacheGet(SHAPESHIFT_ACCESS_TOKEN);
 
       if (token && !wasAuthorized) {
-        this.token = token;
-        this.updateService();
+        this.authorize(token);
       } else if (!token && wasAuthorized) {
         this.deauthorize();
       }
