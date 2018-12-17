@@ -85,7 +85,7 @@
     "X_KEYSTORE": "Keystore Fil (UTC / JSON · Rekomenderad · Krypterad) ",
     "X_KEYSTORE2": "Keystore Fil ",
     "X_KEYSTOREDESC": "Den här Keystore filen matchar formatet som används av Mist så du kan enkelt importera det i framtiden. Det är det rekommenderade format att hämta för backup. ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Mnemonic Phrase ",
     "X_PASSWORD": "Lösenord ",
     "X_PRINT": "Skriv Ut Pappers Plånbok ",

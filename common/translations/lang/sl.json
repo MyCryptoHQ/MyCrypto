@@ -85,7 +85,7 @@
     "X_KEYSTORE": "Datoteka za Shrambo ključa Keystore (UTC / JSON · Priporočeno · Kriptirano) ",
     "X_KEYSTORE2": "Datoteka za Shrambo ključa Keystore ",
     "X_KEYSTOREDESC": "Ta datoteka za shrambo osebnega ključa Keystore se ujema s formatom datoteke, ki jo uporabljata programa Mist, kar pomeni da ga lahko v prihodnosti enostavno izvozite iz te internetne strani in uvozite v Mist ali Geth. Priporočamo vam da to datoteko prenesete na vaš računalnik in jo shranite na varnem mestu. Za dodatno varnost priporočamo, da datoteko shranite na večih napravah. ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Mnemonic Phrase ",
     "X_PARITYPHRASE": "Parity Phrase ",
     "X_PASSWORD": "Geslo ",

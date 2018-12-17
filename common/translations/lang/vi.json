@@ -84,7 +84,7 @@
     "X_KEYSTORE": "Định Dạng Keystore (UTC / JSON) (Đã mã hoá. Định Dạng này sử dụng cho Mist) ",
     "X_KEYSTORE2": "Định Dạng Keystore ",
     "X_KEYSTOREDESC": "Định dạng Keystore là tập một tin chứa dữ liệu ví đã được mã hoá của Private Key và sử dụng cho Mist. Do đó bạn có thể dễ dàng bỏ nó vào bên trong Mist và tiếp tục sử dụng ví của bạn. Đây là một tập tin được đề xuất nhằm sao lưu dữ liệu ví cá nhân. ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Cụm từ dễ nhớ ",
     "X_PARITYPHRASE": "Parity Phrase ",
     "X_PASSWORD": "Mật Khẩu ",

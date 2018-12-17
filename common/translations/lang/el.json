@@ -85,7 +85,7 @@
     "X_KEYSTORE": "Αρχείο Keystore (UTC / JSON · Συνιστάται · Κρυπτογραφημένο) ",
     "X_KEYSTORE2": "Αρχείο Keystore ",
     "X_KEYSTOREDESC": "Αυτό το αρχείο Keystore έχει την ίδια μορφή που χρησιμοποιείται από το Mist ώστε να μπορείτε εύκολα να το εισάγετε στο μέλλον. Είναι το συνιστώμενο αρχείο για λήψη και δημιουργία αντιγράφου ασφαλείας. ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Μνημονικό ",
     "X_PARITYPHRASE": "Parity Phrase ",
     "X_PASSWORD": "Συνθηματικό ",
