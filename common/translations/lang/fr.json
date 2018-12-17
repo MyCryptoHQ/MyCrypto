@@ -83,6 +83,7 @@
     "X_KEEPKEY": "KeepKey",
     "UNLOCK_WALLET": "Déverrouillez votre",
     "X_PARITYSIGNER": "Parity Signer ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_PARITY_DESC": "Connectez-vous grâce à votre application mobile Parity Signer ",
     "ADD_PARITY_1": "Transaction annulée ",
     "ADD_PARITY_2": "Téléchargez l'application ",

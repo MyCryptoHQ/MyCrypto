@@ -142,6 +142,7 @@
     "ADD_DIGITALBITBOX_0A": "Re-open MyCrypto on a secure (SSL) connection ",
     "ADD_DIGITALBITBOX_0B": "Re-open MyCrypto using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Connect your Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_LABEL_1": "What would you like to do? ",
     "ADD_RADIO_1": "Generate New Wallet ",
     "ADD_RADIO_2": "Select Your Wallet File (Keystore / JSON) ",

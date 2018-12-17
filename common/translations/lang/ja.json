@@ -61,6 +61,7 @@
     "X_SAFE_T": "Safe-T mini ",
     "ADD_SAFE_T_SCAN": "Safe-T miniに接続する ",
     "X_PARITYSIGNER": "Parity Signer ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_PARITY_DESC": "Parity Signerモバイルアプリ経由で接続て署名 ",
     "ADD_PARITY_1": "処理が取り消されました ",
     "ADD_PARITY_2": "アプリをダウンロード ",
@@ -554,6 +555,6 @@
     "NO_CONTRACTS_AVAILABLE": "契約がありません",
     "NETWORK_STATUS_ONLINE": "$network ネットワークに接続されました",
     "NETWORK_STATUS_OFFLINE": "$network ネットワークから切断されました",
-    "NETWORK_STATUS_CONNECTING": "接続中..."  
+    "NETWORK_STATUS_CONNECTING": "接続中..."
   }
 }

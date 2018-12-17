@@ -119,6 +119,7 @@
     "DECRYPT_TITLE": "Selecione o formato da sua chave privada: ",
     "DECRYPT_SELECT": "Selecione uma Carteira: ",
     "ADD_LABEL_1": "O que você gostaria de fazer? ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_RADIO_1": "Gerar Nova Carteira ",
     "ADD_RADIO_2": "Selecione seu arquivo da Carteira (Keystore / JSON) ",
     "ADD_RADIO_2_ALT": "Selecione seu arquivo da Carteira ",

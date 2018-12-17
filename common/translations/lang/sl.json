@@ -165,6 +165,7 @@
     "ADD_DIGITALBITBOX_0A": "Re-open MyCrypto on a secure (SSL) connection ",
     "ADD_DIGITALBITBOX_0B": "Re-open MyCrypto using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Connect your Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "MYCRYPTO_WARNING_1": "Vedno preverite naslov - URL te strani preden dostopate do svoje denarnice ali ko želite ustvariti novo denarnico. Bodite pazljivi da niste žrtev ribarjenja - phising! ",
     "CX_WARNING_1": "Vedno, ko ustvarite denarnico na tej strani, zagotovite da imate shanjeno **varnostno kopijo na svojem računalniku**. Zgodi se lahko veliko stvari, ki lahko pomenijo da boste izgubili podatke v tem Chrome Dodatku, med drugim, če deinštalirate in reinštalirate ta dodatek. Ta dodatek je namenjen lažjemu dostopanju vaših denarnic, in **ni** menjen kot varnostna kopija vaše denarnice. ",
     "MYCRYPTO_TAGLINE": "Odprto-kodni JavaScript Ether Denarnica za splošno uporabo ",

@@ -299,6 +299,7 @@
     "ADD_DIGITALBITBOX_0A": "Re-open MyCrypto on a secure (SSL) connection ",
     "ADD_DIGITALBITBOX_0B": "Re-open MyCrypto using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Connect your Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ERROR_0": "Παρακαλούμε εισαγάγετε έγκυρο ποσό. ",
     "ERROR_1": "Το συνθηματικό σας πρέπει να αποτελείται απο τουλάχιστον 9 χαρακτήρες. Παρακαλούμε σιγουρευτείτε ότι είναι ισχυρό συνθηματικό. ",
     "ERROR_2": "Λυπούμαστε! Δεν αναγνωρίζουμε αυτού του είδους αρχεία πορτοφολιού ",
