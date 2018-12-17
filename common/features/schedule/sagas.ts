@@ -172,6 +172,26 @@ export const currentWindowSize = takeLatest(
   [types.ScheduleActions.CURRENT_WINDOW_SIZE_SET],
   setCurrentWindowSizeSaga
 );
+
+export const setDefaultWindowSize = takeLatest(
+  [types.ScheduleActions.TYPE_SET],
+  function* setDefaultWindowSizeFn(): SagaIterator {
+    const currentScheduleType: selectors.ICurrentScheduleType = yield select(
+      selectors.getCurrentScheduleType
+    );
+
+    if (currentScheduleType.value === 'time') {
+      yield put(
+        actions.setCurrentWindowSize(EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_TIME.toString())
+      );
+    } else {
+      yield put(
+        actions.setCurrentWindowSize(EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_BLOCK.toString())
+      );
+    }
+  }
+);
+
 //#endregion Window Size
 
 //#region Window Start
@@ -423,6 +443,7 @@ export function* scheduleSaga(): SagaIterator {
     mirrorTimeBountyToDeposit,
     fork(estimateSchedulingGas),
     schedulingParamsValidity,
-    fork(prepareApproveTokenTransaction)
+    fork(prepareApproveTokenTransaction),
+    setDefaultWindowSize
   ]);
 }
