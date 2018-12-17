@@ -98,8 +98,9 @@ export interface InsecureWalletInfo extends BaseWalletInfo {
   example: string;
 }
 
-// tslint:disable-next-line:no-empty-interface
-interface MiscWalletInfo extends InsecureWalletInfo {}
+export interface MiscWalletInfo extends BaseWalletInfo {
+  description: string;
+}
 
 type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
@@ -202,7 +203,7 @@ const WalletDecrypt = withRouter<Props>(
       },
       [MiscWalletName.VIEW_ONLY]: {
         lid: 'VIEW_ADDR',
-        example: donationAddressMap.ETH,
+        description: 'ADD_VIEW_ADDRESS_DESC',
         component: ViewOnlyDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
@@ -372,7 +373,7 @@ const WalletDecrypt = withRouter<Props>(
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
-                  example={wallet.example}
+                  description={translateRaw(wallet.description)}
                   helpLink={wallet.helpLink}
                   walletType={walletType}
                   isReadOnly={true}
