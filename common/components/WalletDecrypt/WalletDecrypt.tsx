@@ -11,8 +11,7 @@ import {
   InsecureWalletName,
   MiscWalletName,
   WalletName,
-  knowledgeBaseURL,
-  donationAddressMap
+  knowledgeBaseURL
 } from 'config';
 import translate, { translateRaw } from 'translations';
 import { isWeb3NodeAvailable } from 'libs/nodes/web3';
