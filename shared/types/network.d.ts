@@ -5,6 +5,7 @@ type StaticNetworkIds =
   | 'Ropsten'
   | 'Kovan'
   | 'Rinkeby'
+  | 'Gangnam'
   | 'ETC'
   | 'UBQ'
   | 'EXP'
