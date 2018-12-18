@@ -138,6 +138,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     },
     gasPriceSettings: testnetDefaultGasPrice
   },
+  Gangnam: {
+    id: 'Gangnam',
+    name: 'Gangnam',
+    unit: 'ETH',
+    chainId: 43568,
+    isCustom: false,
+    color: '#adc101',
+    blockExplorer: makeExplorer({
+      name: 'Gangnam Explorer',
+      origin: 'https://explorer.progtest.net'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
   ETC: {
     id: 'ETC',
     name: 'Ethereum Classic',
