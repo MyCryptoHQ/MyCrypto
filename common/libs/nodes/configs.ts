@@ -109,8 +109,8 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     {
       name: makeNodeName('POA', 'core'),
       type: 'infura',
-      service: 'poa.infura.io',
-      url: 'https://poa.infura.io'
+      service: 'core.poa.network',
+      url: 'https://core.poa.network'
     }
   ],
 
