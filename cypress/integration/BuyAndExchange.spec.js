@@ -44,6 +44,12 @@ describe('ShapeShift', () => {
     cy.getOur('shapeshift-authorize-button').should('be.visible');
     cy.getOur('shapeshift-reset-button').should('not.be.visible');
   });
+
+  it('loads directly into the usable widget when the cache contains cached data', () => {
+    // This click represents the user having cached data.
+    cy.getOur('shapeshift-authorize-override-button').click();
+    cy.getOur('shapeshift-widget').should('be.visible');
+  });
 });
 
 describe('0x Instant', () => {

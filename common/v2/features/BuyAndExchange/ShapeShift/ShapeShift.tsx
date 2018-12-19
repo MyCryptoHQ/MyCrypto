@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { ShapeShiftService, MarketPairHash, SendAmountResponse } from 'v2/services';
+import { isEndToEndTest } from 'v2/utils';
 import { ShapeShiftPairForm, ShapeShiftAddressForm, Support } from './components';
+import { SHAPESHIFT_FAKE_DATA } from './constants';
 import { buildAssets } from './helpers';
 import ShapeShiftSend from './ShapeShiftSend';
 import './ShapeShift.scss';
@@ -41,10 +43,14 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
   public addressInput: React.RefObject<any> = React.createRef();
 
   public componentDidMount() {
-    this.populateOptions();
-    this.populatePairHash();
-    this.populateImages();
-    this.loadActiveShift();
+    if (isEndToEndTest()) {
+      this.setupMockData();
+    } else {
+      this.populateOptions();
+      this.populatePairHash();
+      this.populateImages();
+      this.loadActiveShift();
+    }
   }
 
   public componentDidUpdate(_: any, prevState: State) {
@@ -61,7 +67,7 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
 
     return (
       <TabSection>
-        <section className="ShapeShift">
+        <section className="ShapeShift" data-testid="shapeshift-widget">
           <section className="Tab-content-pane ShapeShift-wrapper">
             {stage === Stages.Pair && (
               <ShapeShiftPairForm
@@ -191,6 +197,8 @@ export class ShapeShift extends Component<RouteComponentProps<any>> {
       stage: Stages.Pair
     });
   };
+
+  private setupMockData = () => this.setState(SHAPESHIFT_FAKE_DATA);
 }
 
 export default withRouter(ShapeShift);

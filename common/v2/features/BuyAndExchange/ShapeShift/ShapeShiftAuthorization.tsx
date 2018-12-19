@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ShapeShiftService } from 'v2/services';
 import { isEndToEndTest } from 'v2/utils';
 import ShapeShift from './ShapeShift';
-import { SHAPESHIFT_AUTHORIZATION_CHECK_RATE } from './constants';
+import { SHAPESHIFT_AUTHORIZATION_CHECK_RATE, SHAPESHIFT_FAKE_TOKEN } from './constants';
 import './ShapeShift.scss';
 
 // Legacy
@@ -63,6 +63,13 @@ export default class ShapeShiftAuthorization extends Component {
                     Authorize
                   </button>
                 )}
+                {isEndToEndTest() && (
+                  <button
+                    type="button"
+                    onClick={this.performAuthorizationOverride}
+                    data-testid="shapeshift-authorize-override-button"
+                  />
+                )}
               </fieldset>
             </form>
           </section>
@@ -108,4 +115,7 @@ export default class ShapeShiftAuthorization extends Component {
       });
     }
   };
+
+  private performAuthorizationOverride = () =>
+    ShapeShiftService.instance.authorize(SHAPESHIFT_FAKE_TOKEN);
 }
