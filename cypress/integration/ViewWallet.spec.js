@@ -23,9 +23,10 @@ const openAndEnterAddress = (address = VIEW_ONLY_TEST_ADDRESS) => {
 };
 
 describe('Viewing an account', () => {
-  beforeEach(cy.skipOnboarding);
+  beforeEach(() => cy.visit(config.URL));
 
   it('successfully opens a wallet for viewing (pressing enter)', () => {
+    cy.skipOnboarding();
     openAndEnterAddress().type('{enter}');
     cy.getOur('account-info').should('be.visible');
   });
@@ -42,6 +43,7 @@ describe('Viewing an account', () => {
   });
 
   it('should navigate back to the home screen when the back button is pressed', () => {
+    cy.skipOnboarding();
     openAndEnterAddress();
     cy.getOur('wallet-decrypt-back-button').click();
     cy.getOur('wallet-option-view-only').should('be.visible');
