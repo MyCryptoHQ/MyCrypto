@@ -7,8 +7,6 @@
  *  4. Click the "View Address" button
  *  5. Expect to be navigated to the "Send Transaction" page.
  */
-import config from '../fixtures/config';
-
 const VIEW_ONLY_TEST_ADDRESS = '0x1b2aE33190215D27eD60e3130590321B35EAefb0';
 const VIEW_ONLY_BAD_TEST_ADDRESS = '0x1b2aE33190215D27eD60e3130590321B35EAefb1';
 
@@ -23,7 +21,7 @@ const openAndEnterAddress = (address = VIEW_ONLY_TEST_ADDRESS) => {
 };
 
 describe('Viewing an account', () => {
-  beforeEach(() => cy.visit(config.URL));
+  beforeEach(() => cy.visit('/'));
 
   it('successfully opens a wallet for viewing (pressing enter)', () => {
     cy.skipOnboarding();

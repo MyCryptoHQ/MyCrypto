@@ -8,6 +8,7 @@ interface Props {
   option: string;
   logo: string;
   children: any;
+  testId?: string;
 }
 
 function BuyAndExchangeOption({
@@ -15,10 +16,15 @@ function BuyAndExchangeOption({
   option,
   logo,
   history,
-  children
+  children,
+  testId
 }: Props & RouteComponentProps<any>) {
   return (
-    <section className="BuyAndExchangeOption" onClick={() => history.push(route)}>
+    <section
+      className="BuyAndExchangeOption"
+      onClick={() => history.push(route)}
+      data-testid={testId}
+    >
       <section className="BuyAndExchangeOption-name">
         <h3>
           <img src={logo} /> {option}

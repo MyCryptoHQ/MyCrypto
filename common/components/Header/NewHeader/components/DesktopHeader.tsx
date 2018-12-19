@@ -18,6 +18,9 @@ import { LINKSET } from '../constants';
 import { generateCaretIcon } from '../helpers';
 import './DesktopHeader.scss';
 
+// v2
+import { isEndToEndTest } from 'v2/utils';
+
 interface OwnProps {
   networkParam: string | null;
 }
@@ -122,10 +125,10 @@ class DesktopHeader extends Component<Props> {
                 onMouseLeave={this.toggleBuyAndExchange}
               >
                 {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
-                {buyAndExchange && (
+                {(buyAndExchange || isEndToEndTest()) && (
                   <ul className="DesktopHeader-bottom-links-dropdown">
                     {LINKSET.BUY_AND_EXCHANGE.map(item => (
-                      <li key={item.to}>
+                      <li key={item.to} data-testid={item.testId}>
                         <Link to={item.to} onClick={() => setAccessMessage('')}>
                           {item.title}
                         </Link>

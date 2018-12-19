@@ -9,7 +9,7 @@ Cypress.Commands.add('getOur', automationId =>
 
 /** Navigate through the onboarding modal. */
 Cypress.Commands.add('skipOnboarding', () => {
-  cy.visit(config.URL);
+  cy.visit('/');
 
   cy.times(config.ONBOARDING_SLIDE_COUNT, () => {
     const button = cy.getOur('onboarding-button').then($button => {

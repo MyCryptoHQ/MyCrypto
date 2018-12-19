@@ -31,7 +31,8 @@ export const LINKSET = {
   BUY_AND_EXCHANGE: [
     {
       to: '/swap',
-      title: translateRaw('NEW_HEADER_TEXT_12')
+      title: translateRaw('NEW_HEADER_TEXT_12'),
+      testId: 'swap-link'
     }
   ],
   TOOLS: [

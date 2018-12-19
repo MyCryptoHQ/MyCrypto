@@ -1,5 +1,4 @@
 {
-  "URL": "http://localhost:3000",
   "REDUX_STATE_LOCALSTORAGE_KEY": "REDUX_STATE",
   "ONBOARDING_SLIDE_COUNT": 4,
   "SELECTION_ATTRIBUTE": "data-testid"
