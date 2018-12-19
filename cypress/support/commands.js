@@ -19,3 +19,6 @@ Cypress.Commands.add('skipOnboarding', () => {
     });
   });
 });
+
+/** Navigate to the Swap page */
+Cypress.Commands.add('goToSwap', () => cy.getOur('swap-link').click());
