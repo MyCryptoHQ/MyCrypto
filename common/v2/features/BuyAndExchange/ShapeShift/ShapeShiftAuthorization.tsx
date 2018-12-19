@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { ShapeShiftService } from 'v2/services';
+import { isEndToEndTest } from 'v2/utils';
 import ShapeShift from './ShapeShift';
 import { SHAPESHIFT_AUTHORIZATION_CHECK_RATE } from './constants';
 import './ShapeShift.scss';
@@ -47,6 +48,7 @@ export default class ShapeShiftAuthorization extends Component {
                     type="button"
                     className="btn ShapeShiftWidget-button"
                     onClick={this.reset}
+                    data-testid="shapeshift-reset-button"
                   >
                     Reset
                   </button>
@@ -56,6 +58,7 @@ export default class ShapeShiftAuthorization extends Component {
                     className="btn ShapeShiftWidget-button"
                     onClick={this.attemptToAuthorize}
                     disabled={authorizationWindowOpened}
+                    data-testid="shapeshift-authorize-button"
                   >
                     Authorize
                   </button>
@@ -71,7 +74,9 @@ export default class ShapeShiftAuthorization extends Component {
   private attemptToAuthorize = () => {
     this.setState({ authorizationWindowOpened: true });
 
-    ShapeShiftService.instance.openAuthorizationWindow();
+    if (!isEndToEndTest()) {
+      ShapeShiftService.instance.openAuthorizationWindow();
+    }
   };
 
   private reset = () => {

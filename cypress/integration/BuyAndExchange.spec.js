@@ -23,6 +23,29 @@ describe('Buy and Exchange landing page', () => {
   });
 });
 
+describe('ShapeShift', () => {
+  beforeEach(() => {
+    cy.goToSwap();
+    cy.getOur('shapeshift-option').click();
+  });
+
+  it('renders the authorization screen when no cache entry exists', () =>
+    cy.getOur('shapeshift-authorize-button').should('be.visible'));
+
+  it('replaces the Authorize button with Reset once the authorization window has opened', () => {
+    cy.getOur('shapeshift-authorize-button').click();
+    cy.getOur('shapeshift-authorize-button').should('not.be.visible');
+    cy.getOur('shapeshift-reset-button').should('be.visible');
+  });
+
+  it('restarts the process when the Reset button is clicked', () => {
+    cy.getOur('shapeshift-authorize-button').click();
+    cy.getOur('shapeshift-reset-button').click();
+    cy.getOur('shapeshift-authorize-button').should('be.visible');
+    cy.getOur('shapeshift-reset-button').should('not.be.visible');
+  });
+});
+
 describe('0x Instant', () => {
   beforeEach(() => {
     cy.goToSwap();
