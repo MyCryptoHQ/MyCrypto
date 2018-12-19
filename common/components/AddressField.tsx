@@ -40,7 +40,8 @@ const AddressField: React.SFC<Props> = ({
   onChangeOverride,
   value,
   dropdownThreshold,
-  showEnsResolution = true
+  showEnsResolution = true,
+  ...rest
 }) => (
   <AddressFieldFactory
     isSelfAddress={isSelfAddress}
@@ -59,6 +60,7 @@ const AddressField: React.SFC<Props> = ({
             </div>
           )}
           <Input
+            {...rest}
             className={`input-group-input ${!isValid && !isLabelEntry ? 'invalid' : ''}`}
             isValid={isValid}
             type="text"

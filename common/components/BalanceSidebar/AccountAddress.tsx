@@ -69,7 +69,7 @@ class AccountAddress extends React.Component<Props, State> {
     }`;
 
     return (
-      <div className="AccountInfo">
+      <div className="AccountInfo" data-testid="account-info">
         <h5 className="AccountInfo-section-header">{translate('SIDEBAR_ACCOUNTADDR')}</h5>
         <div className="AccountInfo-section AccountInfo-address-section">
           <div className="AccountInfo-address-icon">

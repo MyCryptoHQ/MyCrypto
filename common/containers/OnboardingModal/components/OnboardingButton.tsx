@@ -29,7 +29,7 @@ function OnboardingButton({ className = '', currentSlide, completeOnboarding, se
   const text = isOnFinalSlide ? 'Get Started' : 'Next';
 
   return (
-    <button className={fullClassName} onClick={onClick}>
+    <button className={fullClassName} onClick={onClick} data-testid="onboarding-button">
       {text}
     </button>
   );

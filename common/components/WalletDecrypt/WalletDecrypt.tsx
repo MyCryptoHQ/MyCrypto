@@ -87,6 +87,7 @@ interface BaseWalletInfo {
   isReadOnly?: boolean;
   attemptUnlock?: boolean;
   redirect?: string;
+  testId?: string;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -208,7 +209,8 @@ const WalletDecrypt = withRouter<Props>(
         unlock: this.props.setWallet,
         helpLink: '',
         isReadOnly: true,
-        redirect: '/account/info'
+        redirect: '/account/info',
+        testId: 'wallet-option-view-only'
       }
     };
 
@@ -273,7 +275,11 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-decrypt">
-          <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
+          <button
+            className="WalletDecrypt-decrypt-back"
+            onClick={this.clearWalletChoice}
+            data-testid="wallet-decrypt-back-button"
+          >
             <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
           </button>
           <h2 className="WalletDecrypt-decrypt-title">
@@ -344,6 +350,7 @@ const WalletDecrypt = withRouter<Props>(
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
+                  data-testid={wallet.testId || ''}
                 />
               );
             })}
@@ -363,6 +370,7 @@ const WalletDecrypt = withRouter<Props>(
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
+                  data-testid={wallet.testId || ''}
                 />
               );
             })}
@@ -380,6 +388,7 @@ const WalletDecrypt = withRouter<Props>(
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
+                  data-testid={wallet.testId || ''}
                 />
               );
             })}
@@ -399,6 +408,7 @@ const WalletDecrypt = withRouter<Props>(
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
+                  data-testid={wallet.testId || ''}
                 />
               );
             })}

@@ -44,7 +44,8 @@ export class WalletButton extends React.PureComponent<Props> {
       isSecure,
       isReadOnly,
       isDisabled,
-      disableReason
+      disableReason,
+      ...rest
     } = this.props;
 
     const icons: Icon[] = [];
@@ -80,6 +81,7 @@ export class WalletButton extends React.PureComponent<Props> {
 
     return (
       <div
+        {...rest}
         className={classnames({
           WalletButton: true,
           'WalletButton--small': !isSecure,
