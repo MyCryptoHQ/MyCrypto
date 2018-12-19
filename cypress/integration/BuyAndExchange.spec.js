@@ -29,26 +29,46 @@ describe('ShapeShift', () => {
     cy.getOur('shapeshift-option').click();
   });
 
-  it('renders the authorization screen when no cache entry exists', () =>
-    cy.getOur('shapeshift-authorize-button').should('be.visible'));
+  describe('Authorization process', () => {
+    it('renders the authorization screen when no cache entry exists', () =>
+      cy.getOur('shapeshift-authorize-button').should('be.visible'));
 
-  it('replaces the Authorize button with Reset once the authorization window has opened', () => {
-    cy.getOur('shapeshift-authorize-button').click();
-    cy.getOur('shapeshift-authorize-button').should('not.be.visible');
-    cy.getOur('shapeshift-reset-button').should('be.visible');
+    it('replaces the Authorize button with Reset once the authorization window has opened', () => {
+      cy.getOur('shapeshift-authorize-button').click();
+      cy.getOur('shapeshift-authorize-button').should('not.be.visible');
+      cy.getOur('shapeshift-reset-button').should('be.visible');
+    });
+
+    it('restarts the process when the Reset button is clicked', () => {
+      cy.getOur('shapeshift-authorize-button').click();
+      cy.getOur('shapeshift-reset-button').click();
+      cy.getOur('shapeshift-authorize-button').should('be.visible');
+      cy.getOur('shapeshift-reset-button').should('not.be.visible');
+    });
+
+    it('loads directly into the usable widget when the cache contains cached data', () => {
+      // This click represents the user having cached data.
+      cy.getOur('shapeshift-authorize-override-button').click();
+      cy.getOur('shapeshift-widget').should('be.visible');
+    });
   });
 
-  it('restarts the process when the Reset button is clicked', () => {
-    cy.getOur('shapeshift-authorize-button').click();
-    cy.getOur('shapeshift-reset-button').click();
-    cy.getOur('shapeshift-authorize-button').should('be.visible');
-    cy.getOur('shapeshift-reset-button').should('not.be.visible');
-  });
+  describe('Pair Screen', () => {
+    it('automatically inputs a withdraw amount based on an entered deposit amount', () => {
+      cy
+        .getOur('pair-form-deposit-input')
+        .clear()
+        .type('1');
+      cy.getOur('pair-form-withdraw-input').should('have.value', '0.5000000');
+    });
 
-  it('loads directly into the usable widget when the cache contains cached data', () => {
-    // This click represents the user having cached data.
-    cy.getOur('shapeshift-authorize-override-button').click();
-    cy.getOur('shapeshift-widget').should('be.visible');
+    it('automatically inputs a deposit amount based on an entered withdraw amount', () => {
+      cy
+        .getOur('pair-form-withdraw-input')
+        .clear()
+        .type('0.5000000');
+      cy.getOur('pair-form-deposit-input').should('have.value', '0.2500000');
+    });
   });
 });
 

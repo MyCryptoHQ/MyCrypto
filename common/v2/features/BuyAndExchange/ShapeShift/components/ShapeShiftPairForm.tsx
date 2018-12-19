@@ -137,6 +137,7 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                         )
                       }
                       onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
+                      data-testid="pair-form-deposit-input"
                     />
                   </section>
                   <AssetSelection
@@ -170,6 +171,7 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                         )
                       }
                       onBlur={(e: React.ChangeEvent<any>) => setFixedFloat(e, props)}
+                      data-testid="pair-form-withdraw-input"
                     />
                   </section>
                   <AssetSelection
