@@ -18,7 +18,7 @@ export class SymbolField extends React.Component<OwnProps> {
       <FieldInput
         fieldName={translateRaw('TOKEN_SYMBOL')}
         fieldToFetch={'symbol'}
-        shouldEnableAutoField={req => !req.err()}
+        shouldEnableAutoField={() => false}
         address={this.props.address}
         userInputValidator={this.isValidUserInput}
         fetchedFieldValidator={field =>

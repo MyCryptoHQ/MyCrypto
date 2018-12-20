@@ -13,7 +13,10 @@ const scheduleDeposit = EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULT.mul(
 
 const INITIAL_STATE: types.ScheduleState = {
   schedulingToggle: { value: false },
-  windowSize: { raw: '', value: null },
+  windowSize: {
+    raw: EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_TIME.toString(),
+    value: new BN(EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_TIME)
+  },
   windowStart: { raw: '', value: null },
   scheduleTimestamp: {
     raw: moment(helpers.minFromNow(60)).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT),
