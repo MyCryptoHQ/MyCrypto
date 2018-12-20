@@ -17,7 +17,7 @@ export class DecimalField extends React.Component<OwnProps> {
       <FieldInput
         fieldName={translateRaw('TOKEN_DEC')}
         fieldToFetch={'decimals'}
-        shouldEnableAutoField={req => !(req.toVal().res === '0')}
+        shouldEnableAutoField={() => false}
         address={this.props.address}
         isOffline={this.props.isOffline}
         userInputValidator={this.isValidUserInput}
