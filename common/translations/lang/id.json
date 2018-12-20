@@ -163,6 +163,7 @@
     "ADD_DIGITALBITBOX_0A": "Buka kembali MyCrypto melalui koneksi (SSL) yang aman ",
     "ADD_DIGITALBITBOX_0B": "Buka kembali MyCrypto menggunakan [Chrome](https://www.google.com/chrome/browser/desktop/) atau [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Hubungkan ke Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "GEN_DESC": "Jika Anda memerlukan lebih dari satu dompet, Anda dapat memakai fitur ",
     "GEN_LABEL_1": "Masukkan password yang kuat (setidaknya 9 karakter) ",
     "GEN_PLACEHOLDER_1": "JANGAN LUPA untuk mengingat dan menyimpannya! ",

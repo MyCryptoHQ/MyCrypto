@@ -298,6 +298,7 @@
     "ADD_DIGITALBITBOX_0A": "Volver a abrir MyCrypto en una conexión segura (SSL) ",
     "ADD_DIGITALBITBOX_0B": "Volver a abrir MyCrypto usando [Chrome](https://www.google.com/chrome/browser/desktop/) u [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Conectar a Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ERROR_0": "Introduce una cantidad válida. ",
     "ERROR_1": "Tu contraseña debe tener al menos 9 caracteres. Por favor utiliza una contraseña fuerte. ",
     "ERROR_2": "Lo sentimos. No reconocemos este tipo de archivo de cartera. ",

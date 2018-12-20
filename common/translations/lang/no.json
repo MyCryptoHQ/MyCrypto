@@ -158,6 +158,7 @@
     "ADD_DIGITALBITBOX_0A": "Åpne MyCrypto på nytt på en sikker (SSL) forbindelse. ",
     "ADD_DIGITALBITBOX_0B": "Åpne MyCrypto på nytt med [Chrome](https://www.google.com/chrome/browser/desktop/) eller [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Connect your Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "GEN_DESC": "Hvis du vil opprette flere lommebøker, kan du gjøre det her ",
     "GEN_LABEL_1": "Oppgi et sterkt passord (minst 9 tegn) ",
     "GEN_PLACEHOLDER_1": "Glem IKKE å ta vare på dette! ",

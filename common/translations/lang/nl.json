@@ -138,6 +138,7 @@
     "ADD_DIGITALBITBOX_0A": "Her-open MyCrypto met een veilige (SSL) verbinding ",
     "ADD_DIGITALBITBOX_0B": "Her-open MyCrypto door gebruik te maken van [Chrome](https://www.google.com/chrome/browser/desktop/) of [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Verbind met Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_LABEL_1": "Wat wil je doen? ",
     "ADD_RADIO_1": "Genereer nieuwe wallet ",
     "ADD_RADIO_2": "Selecteer je wallet bestand (Keystore / JSON) ",

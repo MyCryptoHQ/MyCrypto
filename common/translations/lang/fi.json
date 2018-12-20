@@ -299,6 +299,7 @@
     "ADD_DIGITALBITBOX_0A": "Re-open MyCrypto on a secure (SSL) connection ",
     "ADD_DIGITALBITBOX_0B": "Re-open MyCrypto using [Chrome](https://www.google.com/chrome/browser/desktop/) or [Opera](https://www.opera.com/) ",
     "ADD_DIGITALBITBOX_SCAN": "Connect your Digital Bitbox ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ERROR_0": "Ole hyvä ja syötä kelpaava summa. ",
     "ERROR_1": "Salasanasi pitää olla vähintään 9 merkkiä pitkä. Ole hyvä ja varmista että käytät vahvaa salasanaa. ",
     "ERROR_2": "Pahoittelut! Emme tunnista tämänlaista lompakko tiedostoa. ",

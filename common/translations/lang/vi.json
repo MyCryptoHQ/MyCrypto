@@ -566,6 +566,7 @@
     "HELP_SEC_DESC_8": "Nếu bạn cảm thấy không an tâm khi sử dụng công cụ của chúng tôi, bạn có quyền không sử dụng nó. Chúng tôi tạo ra ứng dụng này nhằm giúp người sử dụng dễ dàng tạo Ví mới và lập giao dịch mà không cần dùng đến những câu lệnh trên Terminal hoặc tải về đầy đủ các node. Một lần nữa xin nhắc lại, bạn hoàn toàn có thể ngưng sử dụng và báo lại với chúng tôi nếu bạn có một mối quan ngại nào đó, chúng tôi sẽ chịu trách nhiệm chỉnh sửa hoặc giải đáp thắc mắc từ nơi bạn một cách sớm nhất có thể. Xin Chân Thành Cảm Ơn! ",
     "HELP_FAQ_TITLE": "Lời giãi đáp cho những câu hỏi thường gặp: ",
     "HELP_CONTACT_TITLE": "Những cách đễ liên lạc với chúng tôi:",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ONBOARD_WELCOME_TITLE": "Welcome to MyCrypto.com",
     "ONBOARD_WELCOME_CONTENT__1": "Please take some time to understand this for your own safety. 🙏",
     "ONBOARD_WELCOME_CONTENT__2": "Your funds will be stolen if you do not heed these warnings.",
