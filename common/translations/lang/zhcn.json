@@ -85,7 +85,7 @@
     "X_KEYSTORE": "Keystore File (UTC / JSON · 推荐加密的) ",
     "X_KEYSTORE2": "Keystore File ",
     "X_KEYSTOREDESC": "这个Keystore/JSON文件和Mist、Geth使用的钱包文件是一样的，所以将来你可以非常容易地导入。 It is the recommended file to download and back up.推荐下载和备份这个文件。 ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Mnemonic Phrase ",
     "X_PARITYPHRASE": "Parity Phrase ",
     "X_PASSWORD": "密码 ",

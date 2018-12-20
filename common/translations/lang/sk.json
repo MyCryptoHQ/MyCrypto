@@ -102,7 +102,7 @@
     "X_KEYSTORE2": "Keystore Súbor ",
     "X_KEYSTOREDESC":
       "Tento Keystore súbor je rovnakého formatu ako  Mist takže ho budete môcť jednoducho importovať. Tento subor odporúčame stiahnuť a zálohovať. ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Mnemonic Phrase (MetaMask / Jaxx ) ",
     "X_PARITYPHRASE": "Parity Phrase ",
     "X_PASSWORD": "Heslo ",

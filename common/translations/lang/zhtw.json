@@ -85,7 +85,7 @@
     "X_KEYSTORE": "Keystore 檔 (UTC / JSON · 推薦 · 經過加密) ",
     "X_KEYSTORE2": "Keystore 檔 ",
     "X_KEYSTOREDESC": "此Keystore檔和Mist錢包相容，因此你可以輕鬆地匯入錢包。我們推薦你下載並備份此檔案。 ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "助憶口令 ",
     "X_PARITYPHRASE": "Parity口令 ",
     "X_PASSWORD": "密碼 ",

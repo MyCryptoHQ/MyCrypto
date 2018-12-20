@@ -84,7 +84,7 @@
     "X_KEYSTORE": "Archivo Keystore (UTC / JSON · Recomendado · Encriptado) ",
     "X_KEYSTORE2": "Archivo Keystore ",
     "X_KEYSTOREDESC": "Este archivo Keystore/JSON concuerda con el formato usado por Mist para una fácil importación en el futuro. Es el archivo recomendado para descargar y guardar como copia de seguridad. ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Mnemonic Phrase ",
     "X_PARITYPHRASE": "Parity Phrase ",
     "X_PASSWORD": "Contraseña ",
