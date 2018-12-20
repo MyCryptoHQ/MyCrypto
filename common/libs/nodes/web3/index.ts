@@ -56,7 +56,7 @@ export function isWeb3Node(nodeLib: INode | Web3Node): nodeLib is Web3Node {
   return nodeLib instanceof Web3Node;
 }
 
-export const Web3Service = 'MetaMask / Mist';
+export const Web3Service = 'MetaMask / Web3';
 
 export async function getChainIdAndLib() {
   const lib = new Web3Node();
@@ -64,11 +64,11 @@ export async function getChainIdAndLib() {
   const accounts = await lib.getAccounts();
 
   if (!accounts.length) {
-    throw new Error('No accounts found in MetaMask / Mist.');
+    throw new Error('No accounts found in MetaMask / Web3.');
   }
 
   if (chainId === 'loading') {
-    throw new Error('MetaMask / Mist is still loading. Please refresh the page and try again.');
+    throw new Error('MetaMask / Web3 is still loading. Please refresh the page and try again.');
   }
 
   return { chainId, lib };

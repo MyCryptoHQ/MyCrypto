@@ -69,6 +69,7 @@
     "SIDEBAR_DISPLAY_ADDR": "$wallet 주소 보기",
     "DECRYPT_ACCESS": "지갑 접근 방법 선택하기 ",
     "X_LEDGER": "Ledger 지갑",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_LEDGER_SCAN": "Ledger 지갑에 연결하기 ",
     "ADD_METAMASK": "MetaMask에 연결하기 ",
     "X_TREZOR": "TREZOR 지갑",
