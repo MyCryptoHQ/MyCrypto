@@ -83,7 +83,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
   };
 
   private openWallet = () => {
-    const { isValidAddress, currentAddress, resolvedAddress } = this.props;
+    const { isValidAddress, currentAddress, resolvedAddress, onUnlock } = this.props;
     const { addressFromBook } = this.state;
 
     let wallet;
@@ -97,7 +97,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
     }
 
     if (wallet) {
-      this.props.onUnlock(new AddressOnlyWallet(wallet));
+      onUnlock(new AddressOnlyWallet(wallet));
     }
   };
 }
