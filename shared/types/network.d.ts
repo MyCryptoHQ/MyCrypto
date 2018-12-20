@@ -26,7 +26,8 @@ type StaticNetworkIds =
   | 'PIRL'
   | 'ATH'
   | 'ETHO'
-  | 'MIX';
+  | 'MIX'
+  | 'REOSC';
 
 export interface BlockExplorerConfig {
   name: string;

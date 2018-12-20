@@ -292,6 +292,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'rpc2.mix-blockchain.org',
       url: 'https://rpc2.mix-blockchain.org:8647'
     }
+  ],
+
+  REOSC: [
+    {
+      name: makeNodeName('REOSC', 'reosc.io'),
+      type: 'rpc',
+      service: 'remote.reosc.io',
+      url: 'https://remote.reosc.io:3000'
+    }
   ]
 };
 

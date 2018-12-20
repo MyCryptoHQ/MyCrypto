@@ -8,7 +8,6 @@ import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
 import { walletTypes } from 'features/wallet';
-import { scheduleActions } from 'features/schedule';
 import { transactionFieldsActions, transactionFieldsSelectors } from '../fields';
 import * as transactionActions from '../actions';
 import * as transactionSelectors from '../selectors';
@@ -127,12 +126,6 @@ export function* handleSetUnitMeta({
     };
     // need to set meta fields for tokenTo and tokenValue
     if (etherToToken) {
-      yield put(
-        scheduleActions.setSchedulingToggle({
-          value: false
-        })
-      );
-
       return yield put(
         transactionActions.swapEtherToToken({
           ...basePayload,
