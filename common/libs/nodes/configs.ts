@@ -66,6 +66,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  Gangnam: [
+    {
+      name: makeNodeName('Gangnam', 'progtest'),
+      type: 'rpc',
+      service: 'Gangnam ProgPoW',
+      url: 'https://rpc.progtest.net'
+    }
+  ],
+
   ETC: [
     {
       name: makeNodeName('ETC', 'epool'),
