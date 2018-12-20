@@ -24,7 +24,20 @@ export class CacheServiceBase {
   public getEntry(identifier: string, entryKey: string): any {
     this.ensureSubcache(identifier);
 
-    const entry = get(this.cache, `${identifier}.${entryKey}`);
+    // First, try retrieving the value from the in-memory cache.
+    let entry = get(this.cache, `${identifier}.${entryKey}`);
+
+    // If that fails, try retrieving it from LocalStorage.
+    if (!entry) {
+      const storage = StorageService.instance.getEntry(CACHE_LOCALSTORAGE_KEY);
+
+      if (storage && storage[identifier]) {
+        entry = storage[identifier][entryKey];
+
+        // If it existed in LocalStorage but not in memory, add it to memory.
+        (this.cache as any)[identifier][entryKey] = entry;
+      }
+    }
 
     if (cachedValueIsFresh(entry)) {
       return entry.value;
