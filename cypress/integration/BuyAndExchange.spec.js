@@ -69,10 +69,15 @@ describe('ShapeShift', () => {
         .type('0.5000000');
       cy.getOur('pair-form-deposit-input').should('have.value', '0.2500000');
     });
-    it('verifies that desposit coin dropdown works', () => {
+    it('verifies that desposit coin selection takes you to appropraite screen on click', () => {
       cy.getOur('shapeshift-depositAssetSelection').click();
-      cy.getOur('shapeshift-depositAssetForm').should('be.visible');
-    })
+      cy.getOur('shapeshift-AssetForm').should('be.visible');
+    });
+    it('verifies that withdraw coin selection takes you to appropraite screen on click', () => {
+      cy.getOur('shapeshift-withdrawAssetSelection').click();
+      cy.getOur('shapeshift-AssetForm').should('be.visible');
+    });
+    
   });
 });
 

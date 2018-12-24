@@ -77,6 +77,7 @@ export default class AssetSelect extends Component<Props> {
                   placeholder="Search assets..."
                   value={filter}
                   onChange={this.handleFilterChange}
+                  data-testid="shapeshift-searchAssetsField"
                 />
               </section>
             </section>
