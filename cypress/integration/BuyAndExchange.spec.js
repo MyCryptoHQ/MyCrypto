@@ -69,6 +69,10 @@ describe('ShapeShift', () => {
         .type('0.5000000');
       cy.getOur('pair-form-deposit-input').should('have.value', '0.2500000');
     });
+    it('verifies that desposit coin dropdown works', () => {
+      cy.getOur('shapeshift-depositAssetSelection').click();
+      cy.getOur('shapeshift-depositAssetForm').should('be.visible');
+    })
   });
 });
 

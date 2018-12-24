@@ -14,6 +14,7 @@ interface Props {
   name: string;
   value: string;
   assets: AssetOption[];
+  testId: string;
   onChange(asset: AssetOption): void;
 }
 
@@ -45,19 +46,24 @@ export default class AssetSelect extends Component<Props> {
   }
 
   public render() {
-    const { name, value, assets = [] } = this.props;
+    const { name, value, assets = [], testId } = this.props;
     const { mode, filter } = this.state;
     const matchedAssets = assets.filter(asset => assetContainsFilter(filter, asset));
 
     return mode === Modes.Button ? (
-      <button className="AssetSelection-selector" type="button" onClick={this.toggleMode}>
+      <button
+        className="AssetSelection-selector"
+        data-testid={testId}
+        type="button"
+        onClick={this.toggleMode}
+      >
         {value} <i className="fa fa-caret-down" />
       </button>
     ) : (
       <Field
         name={name}
         render={() => (
-          <section className="AssetSelection">
+          <section className="AssetSelection" data-testid="shapeshift-AssetForm">
             <section className="AssetSelection-head">
               <button type="button" onClick={this.toggleMode} className="AssetSelection-head-close">
                 <i className="fa fa-close" />
