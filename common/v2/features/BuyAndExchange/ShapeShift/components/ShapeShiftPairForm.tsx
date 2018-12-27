@@ -187,7 +187,11 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                 </section>
               </fieldset>
               <fieldset>
-                <button type="submit" className="btn ShapeShiftWidget-button">
+                <button
+                  type="submit"
+                  className="btn ShapeShiftWidget-button"
+                  data-testid="shapeshift-assetSelectionContinueButton"
+                >
                   Continue
                 </button>
               </fieldset>

@@ -69,6 +69,10 @@ describe('ShapeShift', () => {
         .type('0.5000000');
       cy.getOur('pair-form-deposit-input').should('have.value', '0.2500000');
     });
+    it('verifies that continuation of swap is not possible if fields are not filled in to minimum', () => {
+      cy.getOur('shapeshift-assetSelectionContinueButton').click();
+      cy.getOur('shapeshift-minimumAmountWarning').should('be.visible')
+    });
     it('verifies that desposit coin selection takes you to appropraite screen on click', () => {
       cy.getOur('shapeshift-depositAssetSelection').click();
       cy.getOur('shapeshift-AssetForm').should('be.visible');
@@ -77,7 +81,7 @@ describe('ShapeShift', () => {
       cy.getOur('shapeshift-withdrawAssetSelection').click();
       cy.getOur('shapeshift-AssetForm').should('be.visible');
     });
-    
+
   });
 });
 
