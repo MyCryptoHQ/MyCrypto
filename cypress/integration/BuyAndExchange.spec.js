@@ -71,17 +71,26 @@ describe('ShapeShift', () => {
     });
     it('verifies that continuation of swap is not possible if fields are not filled in to minimum', () => {
       cy.getOur('shapeshift-assetSelectionContinueButton').click();
-      cy.getOur('shapeshift-minimumAmountWarning').should('be.visible')
+      cy.getOur('shapeshift-minimumAmountWarning').should('be.visible');
     });
     it('verifies that desposit coin selection takes you to appropraite screen on click', () => {
       cy.getOur('shapeshift-depositAssetSelection').click();
-      cy.getOur('shapeshift-AssetForm').should('be.visible');
+      cy.getOur('shapeshift-assetForm').should('be.visible');
     });
     it('verifies that withdraw coin selection takes you to appropraite screen on click', () => {
       cy.getOur('shapeshift-withdrawAssetSelection').click();
-      cy.getOur('shapeshift-AssetForm').should('be.visible');
+      cy.getOur('shapeshift-assetForm').should('be.visible');
     });
-
+    it('automatically inputs an asset name into the search deposit asset field', () => {
+      cy.getOur('shapeshift-depositAssetSelection').click();
+      cy.getOur('shapeshift-searchAssetField').type('ETH');
+      cy.getOur('shapeshift-assetSelectionAssetOption-ETH').should('be.visible');
+    });
+    it('automatically inputs an asset name into the search withdraw asset field', () => {
+      cy.getOur('shapeshift-withdrawAssetSelection').click();
+      cy.getOur('shapeshift-searchAssetField').type('ETH');
+      cy.getOur('shapeshift-assetSelectionAssetOption-ETH').should('be.visible');
+    });
   });
 });
 
