@@ -95,7 +95,10 @@ export default class AssetSelect extends Component<Props> {
                   </section>
                 ))
               ) : (
-                <section className="AssetSelection-assets-asset">
+                <section
+                  className="AssetSelection-assets-asset"
+                  data-testid="shapeshift-invalidAssetSeachValue"
+                >
                   No assets match the filter.
                 </section>
               )}

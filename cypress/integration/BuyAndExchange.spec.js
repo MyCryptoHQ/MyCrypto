@@ -91,6 +91,16 @@ describe('ShapeShift', () => {
       cy.getOur('shapeshift-searchAssetField').type('ETH');
       cy.getOur('shapeshift-assetSelectionAssetOption-ETH').should('be.visible');
     });
+    it('automatically inputs invalid value into the search asset field', () => {
+      cy.getOur('shapeshift-withdrawAssetSelection').click();
+      cy.getOur('shapeshift-searchAssetField').type('TEST');
+      cy.getOur('shapeshift-invalidAssetSeachValue').should('be.visible');
+    });
+    it('verifies that the correct deposit asset is selected in main pair form window', () => {
+      cy.getOur('shapeshift-withdrawAssetSelection').click();
+      cy.getOur('shapeshift-assetSelectionAssetOption-ETH').click();
+      //checking for correct values 
+    })
   });
 });
 
