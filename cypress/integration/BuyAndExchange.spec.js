@@ -94,7 +94,7 @@ describe('ShapeShift', () => {
     it('automatically inputs invalid value into the search asset field', () => {
       cy.getOur('shapeshift-withdrawAssetSelection').click();
       cy.getOur('shapeshift-searchAssetField').type('TEST');
-      cy.getOur('shapeshift-invalidAssetSeachValue').should('be.visible');
+      cy.getOur('shapeshift-invalidAssetSearchValue').should('be.visible');
     });
     it('verifies that the correct deposit asset is selected in main pair form window', () => {
       cy.getOur('shapeshift-depositAssetSelection').click();
