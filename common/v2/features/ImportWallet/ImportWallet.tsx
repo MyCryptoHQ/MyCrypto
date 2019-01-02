@@ -1,5 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default function ImportWallet() {
-  return <div>Import Wallet</div>;
+import { ImportWalletStages, importWalletStageToComponentHash } from './constants';
+
+export default class CreateWallet extends Component {
+  public state = {
+    stage: ImportWalletStages.SelectMethod
+  };
+
+  public render() {
+    const { stage } = this.state;
+    const ActivePanel = importWalletStageToComponentHash[stage];
+
+    return (
+      <section className="ImportWallet">
+        <ActivePanel />
+      </section>
+    );
+  }
 }
