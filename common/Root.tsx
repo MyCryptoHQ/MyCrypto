@@ -76,7 +76,7 @@ class RootClass extends Component<Props, State> {
 
   public render() {
     const { store, onboardingActive } = this.props;
-    const { error } = this.state;
+    const { error, developmentMode } = this.state;
 
     if (error) {
       return <ErrorScreen error={error} />;
@@ -85,7 +85,8 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
+          {developmentMode &&
+            gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
@@ -123,16 +124,20 @@ class RootClass extends Component<Props, State> {
           </Router>
         </Provider>
         <div id="ModalContainer" />
-        {/* {process.env.NODE_ENV !== 'production' && (
+        {process.env.NODE_ENV !== 'production' && (
           <button
             onClick={this.handleDevelopmentModeButtonClick}
             style={{
+              position: 'fixed',
+              bottom: 0,
+              right: 0,
+              zIndex: 99,
               height: '5rem'
             }}
           >
-            Development Mode
+            Development Mode {developmentMode ? 'Off' : 'On'}
           </button>
-        )} */}
+        )}
       </React.Fragment>
     );
   }
@@ -168,8 +173,10 @@ class RootClass extends Component<Props, State> {
 
     if (isDevelopmentMode) {
       window.localStorage.removeItem('MyCrypto Dev Mode');
+      this.setState({ developmentMode: false });
     } else {
       window.localStorage.setItem('MyCrypto Dev Mode', 'true');
+      this.setState({ developmentMode: true });
     }
   };
 }
