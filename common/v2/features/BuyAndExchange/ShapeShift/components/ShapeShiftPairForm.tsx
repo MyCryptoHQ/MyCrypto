@@ -144,7 +144,7 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                     name="deposit"
                     assets={assets}
                     value={props.values.deposit}
-                    testId="shapeshift-depositAssetSelection"
+                    testId="shapeshift-deposit-asset-selection"
                     onChange={asset => {
                       handleAssetSelect('deposit', asset.ticker, props);
                     }}
@@ -179,7 +179,7 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                     name="withdraw"
                     assets={assets}
                     value={props.values.withdraw}
-                    testId="shapeshift-withdrawAssetSelection"
+                    testId="shapeshift-withdraw-asset-selection"
                     onChange={asset => {
                       handleAssetSelect('withdraw', asset.ticker, props);
                     }}
@@ -190,7 +190,7 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                 <button
                   type="submit"
                   className="btn ShapeShiftWidget-button"
-                  data-testid="shapeshift-assetSelectionContinueButton"
+                  data-testid="shapeshift-asset-selection-continue-button"
                 >
                   Continue
                 </button>

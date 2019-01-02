@@ -14,7 +14,7 @@ interface Props {
   name: string;
   value: string;
   assets: AssetOption[];
-  testId: string;
+  testId?: string;
   onChange(asset: AssetOption): void;
 }
 
@@ -63,7 +63,7 @@ export default class AssetSelect extends Component<Props> {
       <Field
         name={name}
         render={() => (
-          <section className="AssetSelection" data-testid="shapeshift-assetForm">
+          <section className="AssetSelection" data-testid="shapeshift-asset-form">
             <section className="AssetSelection-head">
               <button type="button" onClick={this.toggleMode} className="AssetSelection-head-close">
                 <i className="fa fa-close" />
@@ -77,7 +77,7 @@ export default class AssetSelect extends Component<Props> {
                   placeholder="Search assets..."
                   value={filter}
                   onChange={this.handleFilterChange}
-                  data-testid="shapeshift-searchAssetField"
+                  data-testid="shapeshift-search-asset-field"
                 />
               </section>
             </section>
@@ -87,7 +87,7 @@ export default class AssetSelect extends Component<Props> {
                   <section
                     key={asset.ticker}
                     className="AssetSelection-assets-asset"
-                    data-testid={`shapeshift-assetSelectionAssetOption-${asset.ticker}`}
+                    data-testid={`shapeshift-asset-selection-asset-option-${asset.ticker}`}
                     onClick={() => this.handleAssetSelection(asset)}
                   >
                     <img src={asset.logo} />

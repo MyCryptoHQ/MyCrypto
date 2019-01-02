@@ -10,7 +10,7 @@ const Warning: React.SFC<WarningProps> = ({ highlighted, children }) => {
   const className = `Warning ${highlighted ? 'highlighted' : ''}`;
 
   return (
-    <section className={className} data-testid="shapeshift-minimumAmountWarning">
+    <section className={className} data-testid="shapeshift-minimum-amount-warning">
       <section className="Warning-icon">
         <i className="fa fa-exclamation-triangle" />
       </section>
