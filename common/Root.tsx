@@ -49,11 +49,13 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
+  developmentMode: boolean;
 }
 
 class RootClass extends Component<Props, State> {
   public state = {
-    error: null
+    error: null,
+    developmentMode: Boolean(window.localStorage.getItem('MyCrypto Dev Mode'))
   };
 
   public componentDidMount() {
@@ -121,6 +123,16 @@ class RootClass extends Component<Props, State> {
           </Router>
         </Provider>
         <div id="ModalContainer" />
+        {/* {process.env.NODE_ENV !== 'production' && (
+          <button
+            onClick={this.handleDevelopmentModeButtonClick}
+            style={{
+              height: '5rem'
+            }}
+          >
+            Development Mode
+          </button>
+        )} */}
       </React.Fragment>
     );
   }
@@ -150,6 +162,16 @@ class RootClass extends Component<Props, State> {
     }
     root.classList.add(`theme--${theme}`);
   }
+
+  private handleDevelopmentModeButtonClick = () => {
+    const isDevelopmentMode = window.localStorage.getItem('MyCrypto Dev Mode');
+
+    if (isDevelopmentMode) {
+      window.localStorage.removeItem('MyCrypto Dev Mode');
+    } else {
+      window.localStorage.setItem('MyCrypto Dev Mode', 'true');
+    }
+  };
 }
 
 const LegacyRoutes = withRouter(props => {

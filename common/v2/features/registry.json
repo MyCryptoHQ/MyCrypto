@@ -2,5 +2,17 @@
   {
     "name": "Buy and Exchange",
     "key": "buyAndExchange"
+  },
+  {
+    "name": "Create Wallet",
+    "key": "createWallet"
+  },
+  {
+    "name": "Dashboard",
+    "key": "dashboard"
+  },
+  {
+    "name": "Home",
+    "key": "home"
   }
 ]
