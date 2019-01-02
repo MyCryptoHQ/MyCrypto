@@ -1,0 +1,11 @@
+.GetStartedPanel {
+  text-align: center;
+
+  &-options {
+    display: flex;
+
+    &-option {
+      flex: 1;
+    }
+  }
+}

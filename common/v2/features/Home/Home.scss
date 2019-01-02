@@ -1,0 +1,10 @@
+.Home {
+  display: flex;
+
+  &-copy {
+    flex: 1;
+  }
+  &-getStarted {
+    flex: 1;
+  }
+}

@@ -14,5 +14,9 @@
   {
     "name": "Home",
     "key": "home"
+  },
+  {
+    "name": "Import Wallet",
+    "key": "importWallet"
   }
 ]

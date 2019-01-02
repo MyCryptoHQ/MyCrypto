@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function ImportWallet() {
-  return <div>Impot Wallet</div>;
+  return <div>Import Wallet</div>;
 }
