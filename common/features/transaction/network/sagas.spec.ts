@@ -27,6 +27,7 @@ import * as transactionTypes from '../types';
 import * as types from './types';
 import * as actions from './actions';
 import * as sagas from './sagas';
+import { isSchedulingEnabled } from 'features/schedule/selectors';
 
 describe('Network Sagas', () => {
   describe('From', () => {
@@ -250,9 +251,21 @@ describe('Network Sagas', () => {
         );
       });
 
-      it('should put setGasLimitField', () => {
+      it('should select isSchedulingEnabled', () => {
         gens.timeOutCase = gens.successCase.clone();
         expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
+          select(isSchedulingEnabled)
+        );
+      });
+
+      it('should select isEtherTransaction', () => {
+        expect(gens.successCase.next(false).value).toEqual(
+          select(derivedSelectors.isEtherTransaction)
+        );
+      });
+
+      it('should put setGasLimitField', () => {
+        expect(gens.successCase.next(false).value).toEqual(
           put(transactionFieldsActions.setGasLimitField(gasSetOptions))
         );
       });
