@@ -210,3 +210,4 @@ export default connect(
   }),
   { toggleAutoGasLimit: configMetaActions.toggleAutoGasLimit }
 )(AdvancedGas);
+
