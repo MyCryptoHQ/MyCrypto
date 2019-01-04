@@ -106,6 +106,16 @@ describe('ShapeShift', () => {
       cy.getOur('shapeshift-asset-selection-asset-option-ETH').click();
       cy.getOur('shapeshift-withdraw-asset-selection').contains('ETH');
     });
+    it('verifies that withdraw assest selection updates when deposit asset is selected ', () => {
+      cy.getOur('shapeshift-deposit-asset-selection').click();
+      cy.getOur('shapeshift-asset-selection-asset-option-BTC').click();
+      cy.getOur('shapeshift-withdraw-asset-selection').contains('ETH');
+    });
+    it('verifies that deposit assest selection updates when withdraw asset is selected ', () => {
+      cy.getOur('shapeshift-withdraw-asset-selection').click();
+      cy.getOur('shapeshift-asset-selection-asset-option-ETH').click();
+      cy.getOur('shapeshift-deposit-asset-selection').contains('BTC');
+    });
   });
 });
 
