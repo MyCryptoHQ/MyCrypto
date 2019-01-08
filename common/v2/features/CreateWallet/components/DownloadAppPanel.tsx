@@ -1,18 +1,37 @@
 import React from 'react';
+import { Button, Panel, Heading, Typography } from '@mycrypto/ui';
+
+import './DownloadAppPanel.scss';
 
 export default function DownloadAppPanel() {
   return (
-    <section className="DownloadAppPanel">
-      <h1>Download App</h1>
-      <p>
+    <Panel className="DownloadAppPanel">
+      <Heading className="DownloadAppPanel-heading">Download App</Heading>
+      <Typography>
         Please download the MyCrypto Desktop app so you can securely complete creating your new
         account and start managing your funds.
-      </p>
-      <button>Download for Linux (64-bit)</button>
-      <button>Linux (32-bit)</button>
-      <button>Mac</button>
-      <button>Windows</button>
-      <button>Stand Alone</button>
-    </section>
+      </Typography>
+      <img className="DownloadAppPanel-icon" src="https://placehold.it/135x135" alt="Desktop" />
+      <Button className="DownloadAppPanel-option">Download for Linux (64-bit)</Button>
+      <div className="DownloadAppPanel-optionGroup">
+        <Button className="DownloadAppPanel-optionGroup-option" secondary={true}>
+          Linux (32-bit)
+        </Button>
+        <Button className="DownloadAppPanel-optionGroup-option" secondary={true}>
+          Mac
+        </Button>
+      </div>
+      <div className="DownloadAppPanel-optionGroup">
+        <Button className="DownloadAppPanel-optionGroup-option" secondary={true}>
+          Windows
+        </Button>
+        <Button className="DownloadAppPanel-optionGroup-option" secondary={true}>
+          Stand Alone
+        </Button>
+      </div>
+      <Typography>
+        Not sure what this is? <a href="#">Learn more about our desktop app.</a>
+      </Typography>
+    </Panel>
   );
 }
