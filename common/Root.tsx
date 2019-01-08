@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { light } from '@mycrypto/ui';
 
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
@@ -110,35 +112,37 @@ class RootClass extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <React.Fragment>
-        <Provider store={store}>
-          <Router>
-            <React.Fragment>
-              {onboardingActive && <OnboardingModal />}
-              {routes}
-              <LegacyRoutes />
-              <LogOutPrompt />
-              <QrSignerModal />
-              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-            </React.Fragment>
-          </Router>
-        </Provider>
-        <div id="ModalContainer" />
-        {process.env.NODE_ENV !== 'production' && (
-          <button
-            onClick={this.handleDevelopmentModeButtonClick}
-            style={{
-              position: 'fixed',
-              bottom: 0,
-              right: 0,
-              zIndex: 99,
-              height: '5rem'
-            }}
-          >
-            Development Mode {developmentMode ? 'Off' : 'On'}
-          </button>
-        )}
-      </React.Fragment>
+      <ThemeProvider theme={light}>
+        <React.Fragment>
+          <Provider store={store}>
+            <Router>
+              <React.Fragment>
+                {onboardingActive && <OnboardingModal />}
+                {routes}
+                <LegacyRoutes />
+                <LogOutPrompt />
+                <QrSignerModal />
+                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+              </React.Fragment>
+            </Router>
+          </Provider>
+          <div id="ModalContainer" />
+          {process.env.NODE_ENV !== 'production' && (
+            <button
+              onClick={this.handleDevelopmentModeButtonClick}
+              style={{
+                position: 'fixed',
+                bottom: 0,
+                right: 0,
+                zIndex: 99,
+                height: '5rem'
+              }}
+            >
+              Development Mode {developmentMode ? 'Off' : 'On'}
+            </button>
+          )}
+        </React.Fragment>
+      </ThemeProvider>
     );
   }
 

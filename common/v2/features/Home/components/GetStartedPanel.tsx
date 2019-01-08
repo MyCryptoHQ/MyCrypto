@@ -1,23 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
+
+// Legacy
+import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
+import existingWalletIcon from 'common/assets/images/icn-existing-wallet.svg';
+import signInIcon from 'common/assets/images/icn-sign-in.svg';
 
 import './GetStartedPanel.scss';
 
 export default function GetStartedPanel() {
   return (
-    <section className="GetStartedPanel">
-      <h1>
+    <Panel className="GetStartedPanel">
+      <Heading as="h1" className="GetStartedPanel-heading">
         Let's get started! <br /> Select an option below:
-      </h1>
+      </Heading>
       <div className="GetStartedPanel-options">
-        <Link to="/create-wallet" className="GetStartedPanel-options-option">
-          I'm new! Create new wallet
+        <Link to="/create-wallet">
+          <Panel noPadding={true} className="GetStartedPanel-options-option">
+            <div className="GetStartedPanel-options-option-image">
+              <img src={newWalletIcon} alt="Create new wallet" />
+            </div>
+            <Typography>I'm new! Create wallet (Download App to Create Wallet)</Typography>
+          </Panel>
         </Link>
-        <Link to="/import-wallet" className="GetStartedPanel-options-option">
-          I need to import an existing wallet
+        <Link to="/import-wallet">
+          <Panel noPadding={true} className="GetStartedPanel-options-option">
+            <div className="GetStartedPanel-options-option-image">
+              <img src={existingWalletIcon} alt="Existing wallet" />
+            </div>
+            <Typography>I need to import an existing wallet</Typography>
+          </Panel>
         </Link>
       </div>
-      <div className="GetStartedPanel-alreadyHaveAccount">I have a MyCrypto Account</div>
-    </section>
+      <Link to="/" className="GetStartedPanel-alreadyHaveAccount">
+        <Button basic={true}>
+          <img src={signInIcon} alt="Sign in" />
+          <Typography>I have a MyCrypto Account</Typography>
+        </Button>
+      </Link>
+    </Panel>
   );
 }

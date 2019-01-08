@@ -1,10 +1,18 @@
 .Home {
   display: flex;
+  flex-direction: column;
 
-  &-copy {
-    flex: 1;
+  @media (min-width: 700px) {
+    flex-direction: row;
   }
   &-getStarted {
+    flex: 1;
+
+    @media (min-width: 700px) {
+      order: 1;
+    }
+  }
+  &-copy {
     flex: 1;
   }
 }

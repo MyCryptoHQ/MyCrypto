@@ -90,7 +90,10 @@ module.exports = function(opts = {}) {
     rules.push(
       {
         test: /\.css$/,
-        include: path.resolve(config.path.src, 'vendor'),
+        include: [
+          path.resolve(config.path.src, 'vendor'),
+          path.resolve(__dirname, '../node_modules/typeface-lato')
+        ],
         use: ['style-loader', 'css-loader']
       },
       {
