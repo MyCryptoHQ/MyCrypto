@@ -1,9 +1,15 @@
 .Layout {
   &-content {
-    padding: 50px 20px;
+    padding: 100px 30px 50px 30px;
 
     @media (min-width: 700px) {
       padding: 50px 80px;
+
+      &.centered {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
 }

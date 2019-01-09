@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import './Layout.scss';
 
@@ -9,10 +10,15 @@ import NewHeader from 'components/Header/NewHeader/NewHeader';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
 
 interface Props {
+  centered: boolean;
   children: any;
 }
 
-export default function Layout({ children }: Props) {
+export default function Layout({ centered, children }: Props) {
+  const contentClassName = classnames('Layout-content', {
+    centered
+  });
+
   return (
     <main className="Layout">
       <Query
@@ -21,7 +27,7 @@ export default function Layout({ children }: Props) {
           <NewHeader networkParam={network && makeAutoNodeName(network)} />
         )}
       />
-      <div className="Layout-content">{children}</div>
+      <div className={contentClassName}>{children}</div>
       <NewFooter />
     </main>
   );

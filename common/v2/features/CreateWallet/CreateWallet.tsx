@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { Layout } from 'v2/components';
 import { isDesktop } from 'v2/utils';
 import { CreateWalletStages, createWalletStageToComponentHash } from './constants';
 
@@ -13,9 +14,11 @@ export default class CreateWallet extends Component {
     const ActivePanel = createWalletStageToComponentHash[stage];
 
     return (
-      <section className="CreateWallet">
-        <ActivePanel />
-      </section>
+      <Layout centered={true}>
+        <section className="CreateWallet">
+          <ActivePanel />
+        </section>
+      </Layout>
     );
   }
 }

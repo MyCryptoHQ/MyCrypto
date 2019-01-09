@@ -1,14 +1,16 @@
 import React from 'react';
-import { Button, Panel, Heading, Typography } from '@mycrypto/ui';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Button, Heading, Typography } from '@mycrypto/ui';
 
+import { ContentPanel } from 'v2/components';
 import './DownloadAppPanel.scss';
 
 // Legacy
 import desktopAppIcon from 'common/assets/images/icn-desktop-app.svg';
 
-export default function DownloadAppPanel() {
+export function DownloadAppPanel({ history }: RouteComponentProps<{}>) {
   return (
-    <Panel className="DownloadAppPanel">
+    <ContentPanel onBack={history.goBack} className="DownloadAppPanel">
       <Heading className="DownloadAppPanel-heading">Download App</Heading>
       <Typography>
         Please download the MyCrypto Desktop app so you can securely complete creating your new
@@ -35,6 +37,8 @@ export default function DownloadAppPanel() {
       <Typography>
         Not sure what this is? <a href="#">Learn more about our desktop app.</a>
       </Typography>
-    </Panel>
+    </ContentPanel>
   );
 }
+
+export default withRouter(DownloadAppPanel);
