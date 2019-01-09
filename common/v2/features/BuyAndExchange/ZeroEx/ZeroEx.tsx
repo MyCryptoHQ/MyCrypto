@@ -21,8 +21,8 @@ export default class ZeroEx extends Component {
       <TabSection>
         {isDesktop() ? (
           <Warning>
-            Unfortunately, 0x Instant functionality is currently unavailable for Desktop App users.
-            This functionality will be available in a future update -- stay tuned!
+            0x Instant functionality is currently unavailable on the MyCrypto Desktop App. This
+            functionality will be available in a future update -- stay tuned!
           </Warning>
         ) : (
           <section className="ZeroEx">
