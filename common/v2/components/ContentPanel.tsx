@@ -8,10 +8,11 @@ import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 interface Props {
   children: any;
+  className: string;
   onBack?(): void;
 }
 
-export default function ContentPanel({ onBack, children, ...rest }: Props) {
+export default function ContentPanel({ onBack, children, className = '', ...rest }: Props) {
   return (
     <div className="ContentPanel">
       {onBack && (
@@ -19,7 +20,9 @@ export default function ContentPanel({ onBack, children, ...rest }: Props) {
           <img src={backArrowIcon} alt="Back arrow" /> Back
         </Button>
       )}
-      <Panel {...rest}>{children}</Panel>
+      <Panel className={className} {...rest}>
+        {children}
+      </Panel>
     </div>
   );
 }
