@@ -1,0 +1,18 @@
+.SelectMethodPanel {
+  &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    &-icon {
+      width: 150px;
+      height: 150px;
+      margin: 46px 0 80px 0;
+    }
+    &-button {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+}
