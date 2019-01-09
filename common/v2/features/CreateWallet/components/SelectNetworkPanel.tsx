@@ -1,12 +1,17 @@
 import React from 'react';
-import { ComboBox, Heading, Panel, Typography } from '@mycrypto/ui';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { ComboBox, Heading, Typography } from '@mycrypto/ui';
 
+import { ContentPanel, Stepper } from 'v2/components';
 import './SelectNetworkPanel.scss';
 
-export default function SelectNetworkPanel() {
+export function SelectNetworkPanel({ history }: RouteComponentProps<{}>) {
   return (
-    <Panel className="SelectNetworkPanel">
-      <Heading className="SelectNetworkPanel-heading">Select Network</Heading>
+    <ContentPanel onBack={history.goBack} className="SelectNetworkPanel">
+      <div className="SelectNetworkPanel-top">
+        <Stepper current={1} total={4} className="SelectNetworkPanel-top-stepper" />
+        <Heading className="SelectNetworkPanel-top-heading">Select Network</Heading>
+      </div>
       <Typography>
         Not sure what to choose? Leave displayed defaults below and just click next!
       </Typography>
@@ -14,6 +19,8 @@ export default function SelectNetworkPanel() {
       <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
       <label>Node</label>
       <ComboBox value="Automatic" items={new Set(['Automatic'])} />
-    </Panel>
+    </ContentPanel>
   );
 }
+
+export default withRouter(SelectNetworkPanel);
