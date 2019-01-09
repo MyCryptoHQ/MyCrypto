@@ -14,5 +14,9 @@
   }
   &-copy {
     flex: 1;
+
+    @media (min-width: 700px) {
+      margin-right: 1rem;
+    }
   }
 }

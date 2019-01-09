@@ -1,0 +1,9 @@
+.Layout {
+  &-content {
+    padding: 50px 20px;
+
+    @media (min-width: 700px) {
+      padding: 50px 80px;
+    }
+  }
+}
