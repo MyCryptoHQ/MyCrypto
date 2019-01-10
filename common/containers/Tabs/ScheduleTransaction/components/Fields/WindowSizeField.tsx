@@ -1,18 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import translate, { translateRaw } from 'translations';
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
-import { Input, Tooltip } from 'components/ui';
+import { AppState } from 'features/reducers';
+import { scheduleActions, scheduleSelectors } from 'features/schedule';
+import translate, { translateRaw } from 'translations';
+import { Tooltip, Input } from 'components/ui';
 import Help from 'components/ui/Help';
-import { WindowSizeFieldFactory } from './WindowSizeFieldFactory';
 
 interface Props {
-  isReadOnly?: boolean;
+  currentScheduleType: scheduleSelectors.ICurrentScheduleType;
+  currentWindowSize: scheduleSelectors.ICurrentWindowSize;
+  isValid: boolean;
+
+  setCurrentWindowSize: scheduleActions.TSetCurrentWindowSize;
 }
 
-export const WindowSizeField: React.SFC<Props> = ({ isReadOnly }) => (
-  <WindowSizeFieldFactory
-    withProps={({ currentWindowSize, currentScheduleType, isValid, onChange, readOnly }) => (
+class WindowSizeFieldClass extends React.Component<Props> {
+  public render() {
+    const { currentScheduleType, isValid, currentWindowSize } = this.props;
+
+    return (
       <div className="input-group-wrapper">
         <label className="input-group">
           <div className="input-group-header">
@@ -41,13 +49,26 @@ export const WindowSizeField: React.SFC<Props> = ({ isReadOnly }) => (
                 ? EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_TIME.toString()
                 : EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_BLOCK.toString()
             }
-            readOnly={!!(isReadOnly || readOnly)}
             spellCheck={false}
-            onChange={onChange}
+            onChange={this.setWindowSize}
             showInvalidWithoutValue={true}
           />
         </label>
       </div>
-    )}
-  />
-);
+    );
+  }
+
+  private setWindowSize = (ev: React.FormEvent<HTMLInputElement>) => {
+    const { value } = ev.currentTarget;
+    this.props.setCurrentWindowSize(value);
+  };
+}
+
+export const WindowSizeField = connect(
+  (state: AppState) => ({
+    currentScheduleType: scheduleSelectors.getCurrentScheduleType(state),
+    currentWindowSize: scheduleSelectors.getCurrentWindowSize(state),
+    isValid: scheduleSelectors.isValidCurrentWindowSize(state)
+  }),
+  { setCurrentWindowSize: scheduleActions.setCurrentWindowSize }
+)(WindowSizeFieldClass);

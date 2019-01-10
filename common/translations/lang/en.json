@@ -88,6 +88,7 @@
     "ADD_SAFE_T_SCAN": "Connect to Safe-T mini ",
     "ORDER_SAFE_T": "Don’t have a Safe-T mini? Order one now!",
     "X_PARITYSIGNER": "Parity Signer ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_PARITY_DESC": "Connect & sign via your Parity Signer mobile app ",
     "ADD_PARITY_1": "Transaction canceled ",
     "ADD_PARITY_2": "Download the app ",

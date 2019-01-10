@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import translate, { translateRaw } from 'translations';
 import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
+import * as selectors from 'features/selectors';
+import { ICurrentTo } from 'features/types';
 import { configSelectors } from 'features/config';
 import { ensSelectors } from 'features/ens';
 import { AddressField } from 'components';
@@ -15,38 +17,30 @@ interface OwnProps {
 
 interface StateProps {
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
+  currentAddress: ICurrentTo;
   resolvedAddress: ReturnType<typeof ensSelectors.getResolvedAddress>;
 }
 
 type Props = OwnProps & StateProps;
 
 interface State {
-  address: string;
   addressFromBook: string;
 }
 
 class ViewOnlyDecryptClass extends PureComponent<Props, State> {
-  public state = {
-    address: this.props.resolvedAddress || '',
+  public state: State = {
     addressFromBook: ''
   };
 
-  public componentDidUpdate({ resolvedAddress: prevResolvedAddress }: Props) {
-    const { resolvedAddress } = this.props;
-
-    if (resolvedAddress !== prevResolvedAddress) {
-      this.setState({ address: resolvedAddress || '' });
-    }
-  }
-
   public render() {
-    const { isValidAddress } = this.props;
-    const { address, addressFromBook } = this.state;
-    const isValid = isValidAddress(address);
+    const { isValidAddress, currentAddress, resolvedAddress } = this.props;
+    const { addressFromBook } = this.state;
+    const isValid =
+      isValidAddress(currentAddress.raw) || (resolvedAddress && isValidAddress(resolvedAddress));
 
     return (
       <div className="ViewOnly">
-        <form className="form-group" onSubmit={this.openWalletWithAddress}>
+        <form className="form-group" onSubmit={this.openWallet}>
           <section className="ViewOnly-fields">
             <section className="ViewOnly-fields-field">
               <AddressField
@@ -67,8 +61,13 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
                 showInputLabel={false}
                 showIdenticon={false}
                 placeholder={translateRaw('VIEW_ONLY_ENTER')}
+                data-testid="view-only-input"
               />
-              <button className="ViewOnly-submit btn btn-primary btn-block" disabled={!isValid}>
+              <button
+                className="ViewOnly-submit btn btn-primary btn-block"
+                disabled={!isValid}
+                data-testid="view-only-button"
+              >
                 {translate('VIEW_ADDR')}
               </button>
             </section>
@@ -80,36 +79,31 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
   private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
     const { currentTarget: { value: addressFromBook } } = ev;
-    this.setState({ addressFromBook }, this.openWalletWithAddressBook);
+    this.setState({ addressFromBook }, this.openWallet);
   };
 
-  private openWalletWithAddress = (ev?: React.FormEvent<HTMLElement>) => {
-    const { address } = this.state;
-
-    if (ev) {
-      ev.preventDefault();
-    }
-
-    this.openWallet(address);
-  };
-
-  private openWalletWithAddressBook = () => {
+  private openWallet = () => {
+    const { isValidAddress, currentAddress, resolvedAddress, onUnlock } = this.props;
     const { addressFromBook } = this.state;
 
-    this.openWallet(addressFromBook);
-  };
+    let wallet;
 
-  private openWallet = (address: string) => {
-    const { isValidAddress } = this.props;
+    if (isValidAddress(addressFromBook)) {
+      wallet = addressFromBook;
+    } else if (isValidAddress(currentAddress.raw)) {
+      wallet = currentAddress.raw;
+    } else if (resolvedAddress && isValidAddress(resolvedAddress)) {
+      wallet = resolvedAddress;
+    }
 
-    if (isValidAddress(address)) {
-      const wallet = new AddressOnlyWallet(address);
-      this.props.onUnlock(wallet);
+    if (wallet) {
+      onUnlock(new AddressOnlyWallet(wallet));
     }
   };
 }
 
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
+  currentAddress: selectors.getCurrentTo(state),
   isValidAddress: configSelectors.getIsValidAddressFn(state),
   resolvedAddress: ensSelectors.getResolvedAddress(state)
 }))(ViewOnlyDecryptClass);
