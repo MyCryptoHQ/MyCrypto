@@ -182,3 +182,43 @@ export const setScheduledTransactionHash = (
   payload
 });
 //#endregion
+
+//#region Scheduled Transaction Address
+export type TSetScheduledTransactionAddress = typeof setScheduledTransactionAddress;
+export const setScheduledTransactionAddress = (
+  payload: types.SetScheduledTransactionAddressAction['payload']
+): types.SetScheduledTransactionAddressAction => ({
+  type: types.ScheduleActions.SCHEDULED_TRANSACTION_ADDRESS_SET,
+  payload
+});
+//#endregion
+
+//#region Scheduled Tokens Approve Transaction
+export type TSetScheduledTokensApproveTransaction = typeof setScheduledTokensApproveTransaction;
+export const setScheduledTokensApproveTransaction = (
+  payload: types.SetScheduledTokensApproveTransactionAction['payload']
+): types.SetScheduledTokensApproveTransactionAction => ({
+  type: types.ScheduleActions.SCHEDULED_TOKENS_APPROVE_TRANSACTION_SET,
+  payload
+});
+//#endregion
+
+//#region Scheduled Transaction Hash
+export type TSetScheduledTokenTransferSymbol = typeof setScheduledTokenTransferSymbol;
+export const setScheduledTokenTransferSymbol = (
+  payload: types.SetScheduledTokenTransferSymbolAction['payload']
+): types.SetScheduledTokenTransferSymbolAction => ({
+  type: types.ScheduleActions.SCHEDULED_TOKEN_TRANSFER_SYMBOL_SET,
+  payload
+});
+//#endregion
+
+//#region Scheduled Transaction Hash
+export type TSetSendingTokenApproveTransaction = typeof setSendingTokenApproveTransaction;
+export const setSendingTokenApproveTransaction = (
+  payload: types.SetSendingTokenApproveTransactionAction['payload']
+): types.SetSendingTokenApproveTransactionAction => ({
+  type: types.ScheduleActions.SENDING_TOKEN_APPROVE_TRANSACTION_SET,
+  payload
+});
+//#endregion

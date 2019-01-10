@@ -465,7 +465,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: RSK_TESTNET,
-      [SecureWalletName.SAFE_T]: RSK_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: RSK_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },
