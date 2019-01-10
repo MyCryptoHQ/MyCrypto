@@ -1,5 +1,6 @@
 import { Wei } from 'libs/units';
 import { IHexStrTransaction } from 'libs/transaction';
+import { TxObj } from 'ethereumjs-tx';
 
 export interface ScheduleState {
   schedulingToggle: SetSchedulingToggleAction['payload'];
@@ -14,6 +15,10 @@ export interface ScheduleState {
   scheduleDeposit: SetScheduleDepositFieldAction['payload'];
   scheduleParamsValidity: SetScheduleParamsValidityAction['payload'];
   scheduledTransactionHash: SetScheduledTransactionHashAction['payload'];
+  scheduledTransactionAddress: SetScheduledTransactionAddressAction['payload'];
+  scheduledTokensApproveTransaction: SetScheduledTokensApproveTransactionAction['payload'];
+  sendingTokenApproveTransaction: SetSendingTokenApproveTransactionAction['payload'];
+  scheduledTokenTransferSymbol: SetScheduledTokenTransferSymbolAction['payload'];
 }
 
 export enum ScheduleActions {
@@ -38,7 +43,11 @@ export enum ScheduleActions {
   ESTIMATE_SCHEDULING_GAS_SUCCEEDED = 'ESTIMATE_SCHEDULING_GAS_SUCCEEDED',
   ESTIMATE_SCHEDULING_GAS_FAILED = 'ESTIMATE_SCHEDULING_GAS_FAILED',
   ESTIMATE_SCHEDULING_GAS_TIMEDOUT = 'ESTIMATE_SCHEDULING_GAS_TIMEDOUT',
-  SCHEDULED_TRANSACTION_HASH_SET = 'SCHEDULED_TRANSACTION_HASH_SET'
+  SCHEDULED_TRANSACTION_HASH_SET = 'SCHEDULED_TRANSACTION_HASH_SET',
+  SCHEDULED_TRANSACTION_ADDRESS_SET = 'SCHEDULED_TRANSACTION_ADDRESS_SET',
+  SCHEDULED_TOKENS_APPROVE_TRANSACTION_SET = 'SCHEDULED_TOKENS_APPROVE_TRANSACTION_SET',
+  SCHEDULED_TOKEN_TRANSFER_SYMBOL_SET = 'SCHEDULED_TOKEN_TRANSFER_SYMBOL_SET',
+  SENDING_TOKEN_APPROVE_TRANSACTION_SET = 'SENDING_TOKEN_APPROVE_TRANSACTION_SET'
 }
 
 //#region Fields
@@ -140,7 +149,11 @@ export type ScheduleFieldAction =
   | SetScheduleDepositFieldAction
   | SetScheduleTimezoneAction
   | SetScheduleParamsValidityAction
-  | SetScheduledTransactionHashAction;
+  | SetScheduledTransactionHashAction
+  | SetScheduledTransactionAddressAction
+  | SetScheduledTokensApproveTransactionAction
+  | SetScheduledTokenTransferSymbolAction
+  | SetSendingTokenApproveTransactionAction;
 //#endregion Fields
 
 //#region Schedule Timestamp
@@ -219,6 +232,40 @@ export interface SetScheduledTransactionHashAction {
     raw: string;
     value: string;
   };
+}
+//#endregion
+
+//#region Scheduled Transaction Address
+export interface SetScheduledTransactionAddressAction {
+  type: ScheduleActions.SCHEDULED_TRANSACTION_ADDRESS_SET;
+  payload: {
+    raw: string;
+    value: string;
+  };
+}
+//#endregion
+
+//#region Scheduled Token Transaction Symbol
+export interface SetScheduledTokenTransferSymbolAction {
+  type: ScheduleActions.SCHEDULED_TOKEN_TRANSFER_SYMBOL_SET;
+  payload: {
+    raw: string;
+    value: string;
+  };
+}
+//#endregion
+
+//#region Scheduled Tokens Approve Transaction
+export interface SetScheduledTokensApproveTransactionAction {
+  type: ScheduleActions.SCHEDULED_TOKENS_APPROVE_TRANSACTION_SET;
+  payload: TxObj | undefined;
+}
+//#endregion
+
+//#region Sending Token Approve Transaction
+export interface SetSendingTokenApproveTransactionAction {
+  type: ScheduleActions.SENDING_TOKEN_APPROVE_TRANSACTION_SET;
+  payload: boolean;
 }
 //#endregion
 
