@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { ShapeShiftService } from 'v2/services';
 import ShapeShift from './ShapeShift';
+import { SHAPESHIFT_AUTHORIZATION_CHECK_RATE } from './constants';
 import './ShapeShift.scss';
 
 // Legacy
@@ -13,17 +14,14 @@ export default class ShapeShiftAuthorization extends Component {
     authorizationWindowOpened: false
   };
 
-  public componentDidMount() {
-    const { authorized } = this.state;
+  private checkingForAuthorization: NodeJS.Timer | null = null;
 
-    if (authorized) {
-      this.authorize();
-    }
+  public componentDidMount() {
+    this.startCheckingForAuthorization();
   }
 
   public componentWillUnmount() {
-    ShapeShiftService.instance.stopListeningForAuthorization();
-    ShapeShiftService.instance.stopListeningForDeauthorization();
+    this.stopCheckingForAuthorization();
   }
 
   public render() {
@@ -74,7 +72,6 @@ export default class ShapeShiftAuthorization extends Component {
     this.setState({ authorizationWindowOpened: true });
 
     ShapeShiftService.instance.openAuthorizationWindow();
-    ShapeShiftService.instance.listenForAuthorization(this.authorize);
   };
 
   private reset = () => {
@@ -82,13 +79,28 @@ export default class ShapeShiftAuthorization extends Component {
       authorized: ShapeShiftService.instance.isAuthorized(),
       authorizationWindowOpened: false
     });
-
-    ShapeShiftService.instance.stopListeningForAuthorization();
   };
 
-  private authorize = () => {
-    ShapeShiftService.instance.listenForDeauthorization(this.reset);
+  private startCheckingForAuthorization = () =>
+    (this.checkingForAuthorization = setInterval(
+      this.checkForAuthorization,
+      SHAPESHIFT_AUTHORIZATION_CHECK_RATE
+    ));
 
-    this.setState({ authorized: true });
+  private stopCheckingForAuthorization = () =>
+    clearInterval(this.checkingForAuthorization as NodeJS.Timer);
+
+  private checkForAuthorization = () => {
+    const { authorized: storedAuthorized } = this.state;
+
+    ShapeShiftService.instance.authorize();
+
+    const authorized = ShapeShiftService.instance.isAuthorized();
+
+    if (storedAuthorized !== authorized) {
+      this.setState({
+        authorized
+      });
+    }
   };
 }
