@@ -133,3 +133,7 @@ export function getChecksumAddressFunction(chainId: number) {
 export function toChecksumAddressByChainId(address: string, chainId: number) {
   return getChecksumAddressFunction(chainId)(address);
 }
+
+export function hexStringToNumber(str: string): number {
+  return parseInt(str, 16);
+}

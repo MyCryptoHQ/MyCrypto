@@ -5,6 +5,7 @@ type StaticNetworkIds =
   | 'Ropsten'
   | 'Kovan'
   | 'Rinkeby'
+  | 'Gangnam'
   | 'ETC'
   | 'UBQ'
   | 'EXP'
@@ -26,7 +27,8 @@ type StaticNetworkIds =
   | 'PIRL'
   | 'ATH'
   | 'ETHO'
-  | 'MIX';
+  | 'MIX'
+  | 'REOSC';
 
 export interface BlockExplorerConfig {
   name: string;
