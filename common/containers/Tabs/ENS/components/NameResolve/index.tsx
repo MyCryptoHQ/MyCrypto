@@ -37,7 +37,8 @@ const NameResolve: React.SFC<Props> = props => {
   let content;
 
   if (domainData) {
-    const Component = modeResult[domainData.mode];
+    const Component: any = modeResult[domainData.mode];
+
     content = <Component {...domainData} />;
   } else {
     content = (

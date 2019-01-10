@@ -33,8 +33,8 @@ import {
   PIRL_DEFAULT,
   ATH_DEFAULT,
   ETHO_DEFAULT,
-  ILT_DEFAULT,
-  MIX_DEFAULT
+  MIX_DEFAULT,
+  REOSC_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -293,7 +293,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 20
     }
   },
-
+  Gangnam: {
+    id: 'Gangnam',
+    name: 'Gangnam',
+    unit: 'ETH',
+    chainId: 43568,
+    isCustom: false,
+    color: '#adc101',
+    blockExplorer: makeExplorer({
+      name: 'Gangnam Explorer',
+      origin: 'https://explorer.progtest.net'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
   MUSIC: {
     id: 'MUSIC',
     name: 'Musicoin',
@@ -442,7 +465,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: RSK_TESTNET,
-      [SecureWalletName.SAFE_T]: RSK_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: RSK_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },
@@ -677,33 +699,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 20
     }
   },
-  ILT: {
-    id: 'ILT',
-    name: 'iOlite',
-    unit: 'ILT',
-    chainId: 18289463,
-    isCustom: false,
-    color: '#33c4ff',
-    blockExplorer: makeExplorer({
-      name: 'iOlite Explorer',
-      origin: 'https://scan.iolite.io',
-      txPath: 'txs',
-      addressPath: 'addrs',
-      blockPath: 'blocks'
-    }),
-    tokens: [],
-    contracts: [],
-    dPathFormats: {
-      [SecureWalletName.TREZOR]: ILT_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: ILT_DEFAULT,
-      [InsecureWalletName.MNEMONIC_PHRASE]: ILT_DEFAULT
-    },
-    gasPriceSettings: {
-      min: 1,
-      max: 60,
-      initial: 20
-    }
-  },
   MIX: {
     id: 'MIX',
     name: 'Mix',
@@ -721,6 +716,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: MIX_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: MIX_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: MIX_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  REOSC: {
+    id: 'REOSC',
+    name: 'REOSC',
+    unit: 'REOSC',
+    chainId: 2894,
+    isCustom: false,
+    color: '#1500db',
+    blockExplorer: makeExplorer({
+      name: 'REOSC Explorer',
+      origin: 'https://explorer.reosc.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: REOSC_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: REOSC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: REOSC_DEFAULT
     },
     gasPriceSettings: {
       min: 1,

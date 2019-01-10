@@ -17,6 +17,7 @@ import { AddressMessage } from 'config';
 import { INode } from 'libs/nodes/INode';
 import { IWallet } from 'libs/wallet';
 import { Nonce } from 'libs/units';
+import { hexStringToNumber } from 'utils/formatters';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { IGetTransaction } from 'features/types';
 import { AppState } from 'features/reducers';
@@ -26,6 +27,7 @@ import { walletTypes, walletSelectors } from 'features/wallet';
 import { scheduleActions, scheduleSelectors, scheduleTypes } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
+import { transactionsSelectors } from 'features/transactions';
 import * as transactionTypes from '../types';
 import * as types from './types';
 import * as actions from './actions';
@@ -212,10 +214,20 @@ export function* handleNonceRequest(): SagaIterator {
     if (isOffline || !walletInst) {
       return;
     }
-
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
-
-    const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);
+    const transactionCountString: string = yield apply(nodeLib, nodeLib.getTransactionCount, [
+      fromAddress
+    ]);
+    const transactionCount: number = yield call(hexStringToNumber, transactionCountString);
+    const recentTransactions: AppState['transactions']['recent'] = yield select(
+      transactionsSelectors.getRecentTransactions
+    );
+    const retrievedNonce = yield call(
+      conductMaxNonceCheck,
+      transactionCount,
+      fromAddress,
+      recentTransactions
+    );
     const base10Nonce = Nonce(retrievedNonce);
     yield put(transactionFieldsActions.inputNonce(base10Nonce.toString()));
     yield put(actions.getNonceSucceeded(retrievedNonce));
@@ -225,6 +237,28 @@ export function* handleNonceRequest(): SagaIterator {
     );
     yield put(actions.getNonceFailed());
   }
+}
+
+export function* conductMaxNonceCheck(
+  transactionCount: number,
+  fromAddress: string,
+  recentTransactions: AppState['transactions']['recent']
+): SagaIterator {
+  // Selects the maximum nonce from the maximum of the recent-transaction nonces with the same `from` address and the transaction count of the address
+  const selectedNonce = Math.max(
+    transactionCount,
+    Math.max(
+      Math.max(
+        ...recentTransactions
+          .filter(entry => entry.from === fromAddress.toLowerCase())
+          .filter(entry => entry.nonce)
+          .filter(entry => typeof entry.nonce === 'number')
+          .map(entry => entry.nonce + 1)
+      ),
+      0
+    )
+  ).toString();
+  return selectedNonce;
 }
 
 export function* handleNonceRequestWrapper(): SagaIterator {
