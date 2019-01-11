@@ -102,7 +102,7 @@
     "X_KEYSTORE2": "Keystore Súbor ",
     "X_KEYSTOREDESC":
       "Tento Keystore súbor je rovnakého formatu ako  Mist takže ho budete môcť jednoducho importovať. Tento subor odporúčame stiahnuť a zálohovať. ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MNEMONIC": "Mnemonic Phrase (MetaMask / Jaxx ) ",
     "X_PARITYPHRASE": "Parity Phrase ",
     "X_PASSWORD": "Heslo ",
@@ -141,6 +141,7 @@
     "DECRYPT_TITLE": "Select the format of your private key: ",
     "DECRYPT_SELECT": "Select a Wallet: ",
     "ADD_LABEL_1": "What would you like to do? ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_RADIO_1": "Generate New Wallet ",
     "ADD_RADIO_2": "Select Your Wallet File (Keystore / JSON) ",
     "ADD_RADIO_2_ALT": "Select Your Wallet File ",

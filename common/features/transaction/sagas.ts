@@ -23,7 +23,7 @@ import * as scheduleSelectors from 'features/schedule/selectors';
 import { ensTypes, ensActions, ensSelectors } from 'features/ens';
 import { walletTypes, walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
-import { transactionBroadcastSagas } from './broadcast';
+import { transactionBroadcastSagas, transactionBroadcastTypes } from './broadcast';
 import { transactionFieldsTypes, transactionFieldsActions, transactionFieldsSagas } from './fields';
 import {
   transactionMetaTypes,
@@ -291,6 +291,7 @@ export function* watchTransactionState(): SagaIterator {
       wipeState: take([
         types.TransactionActions.CURRENT_TO_SET,
         types.TransactionActions.CURRENT_VALUE_SET,
+        transactionBroadcastTypes.TransactionBroadcastActions.TRANSACTION_SUCCEEDED,
         transactionFieldsTypes.TransactionFieldsActions.GAS_LIMIT_FIELD_SET,
         transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_FIELD_SET,
         transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
