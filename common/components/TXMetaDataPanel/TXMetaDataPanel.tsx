@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import BN from 'bn.js';
 
 import { translateRaw } from 'translations';
-import { NetworkConfig, StaticNetworkConfig } from 'types/network';
+import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
@@ -142,14 +142,8 @@ class TXMetaDataPanel extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: AppState): StateProps {
-  const networkConfig = configSelectors.getNetworkConfig(state) as StaticNetworkConfig;
   return {
-    gasPrice: networkConfig.isCustom
-      ? transactionFieldsSelectors.getGasPrice(state)
-      : {
-          raw: networkConfig.gasPriceSettings.initial.toString(),
-          value: new BN(networkConfig.gasPriceSettings.initial)
-        },
+    gasPrice: transactionFieldsSelectors.getGasPrice(state),
     offline: configMetaSelectors.getOffline(state),
     network: configSelectors.getNetworkConfig(state)
   };
