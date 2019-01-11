@@ -14,7 +14,7 @@ import {
 } from 'redux-saga/effects';
 
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei, TokenValue } from 'libs/units';
-import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
+import { validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
 import { IGetTransaction, ICurrentValue } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
@@ -45,6 +45,10 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
   const isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn> = yield select(
     configSelectors.getIsValidAddressFn
   );
+  const isValidENSAddress: ReturnType<typeof configSelectors.getIsValidENSAddressFn> = yield select(
+    configSelectors.getIsValidENSAddressFn
+  );
+
   const validAddress: boolean = yield call(isValidAddress, raw);
   const validEns: boolean = yield call(isValidENSAddress, raw);
 
