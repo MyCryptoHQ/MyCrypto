@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { addHexPrefix } from 'ethereumjs-util';
 
 import translate, { translateRaw } from 'translations';
-import { isValidENSAddress } from 'libs/validators';
 import { Address } from 'libs/units';
 import { ICurrentTo } from 'features/types';
 import { AppState } from 'features/reducers';
@@ -15,6 +14,9 @@ import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
 import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
+import { configSelectors } from 'features/config';
+import { getIsValidENSAddressFunction } from 'libs/validators';
+import { getENSTLDForChain } from 'libs/ens/networkConfigs';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -22,6 +24,7 @@ interface StateProps {
   isValid: boolean;
   isLabelEntry: boolean;
   isResolving: boolean;
+  chainId: number;
 }
 
 interface OwnProps {
@@ -40,12 +43,15 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const ENSStatus: React.SFC<{ isLoading: boolean; ensAddress: string; rawAddress: string }> = ({
-  isLoading,
-  ensAddress,
-  rawAddress
-}) => {
-  const isENS = isValidENSAddress(ensAddress);
+const ENSStatus: React.SFC<{
+  isLoading: boolean;
+  ensAddress: string;
+  rawAddress: string;
+  chainId: number;
+}> = ({ isLoading, ensAddress, rawAddress, chainId }) => {
+  const isValidENS = getIsValidENSAddressFunction(chainId);
+  const isENS = isValidENS(ensAddress);
+
   const text = translate('LOADING_ENS_ADDRESS');
 
   if (isLoading) {
@@ -80,7 +86,8 @@ class AddressInputFactoryClass extends Component<Props> {
       onChangeOverride,
       value,
       dropdownThreshold,
-      showEnsResolution
+      showEnsResolution,
+      chainId
     } = this.props;
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
     const sendingTo = label
@@ -88,7 +95,8 @@ class AddressInputFactoryClass extends Component<Props> {
           $label: label
         })
       : '';
-    const isENSAddress = currentTo.raw.includes('.eth');
+    const ensTLD = getENSTLDForChain(chainId);
+    const isENSAddress = currentTo.raw.endsWith(`.${ensTLD}`);
 
     /**
      * @desc Initially set the address to the passed value.
@@ -124,7 +132,12 @@ class AddressInputFactoryClass extends Component<Props> {
             }
           />
           {showEnsResolution && (
-            <ENSStatus ensAddress={currentTo.raw} isLoading={isResolving} rawAddress={addr} />
+            <ENSStatus
+              ensAddress={currentTo.raw}
+              isLoading={isResolving}
+              rawAddress={addr}
+              chainId={chainId}
+            />
           )}
           {isFocused &&
             !isENSAddress && (
@@ -170,6 +183,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
     label: selectors.getCurrentToLabel(state),
     isResolving: ensSelectors.getResolvingDomain(state),
     isValid: selectors.isValidCurrentTo(state),
-    isLabelEntry: selectors.isCurrentToLabelEntry(state)
+    isLabelEntry: selectors.isCurrentToLabelEntry(state),
+    chainId: configSelectors.getNetworkChainId(state)
   };
 })(AddressInputFactoryClass);

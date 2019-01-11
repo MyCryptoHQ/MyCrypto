@@ -3,7 +3,7 @@ import difference from 'lodash/difference';
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { stripWeb3Network, isAutoNodeConfig } from 'libs/nodes';
-import { getIsValidAddressFunction } from 'libs/validators';
+import { getIsValidAddressFunction, getIsValidENSAddressFunction } from 'libs/validators';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
 import {
   CustomNetworkConfig,
@@ -90,6 +90,11 @@ export const getNetworkChainId = (state: AppState) => {
 export const getIsValidAddressFn = (state: AppState) => {
   const chainId = getNetworkChainId(state);
   return getIsValidAddressFunction(chainId);
+};
+
+export const getIsValidENSAddressFn = (state: AppState) => {
+  const chainId = getNetworkChainId(state);
+  return getIsValidENSAddressFunction(chainId);
 };
 
 export const getChecksumAddressFn = (state: AppState) => {
