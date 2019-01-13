@@ -24,12 +24,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'infura',
       service: 'Infura',
       url: 'https://mainnet.infura.io/mycrypto'
-    },
-    {
-      name: makeNodeName('ETH', 'blockscale'),
-      type: 'rpc',
-      service: 'Blockscale',
-      url: 'https://api.dev.blockscale.net/dev/parity'
     }
   ],
 
