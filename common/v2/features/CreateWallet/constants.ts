@@ -21,8 +21,8 @@ export enum CreateWalletStages {
 }
 
 export const createWalletStageToComponentHash = {
-  [CreateWalletStages.DownloadApp]: ConfirmPhrasePanel,
-  [CreateWalletStages.SelectNetwork]: SelectNetworkPanel,
+  [CreateWalletStages.DownloadApp]: DownloadAppPanel,
+  [CreateWalletStages.SelectNetwork]: GeneratePhrasePanel,
   [CreateWalletStages.SelectMethod]: SelectMethodPanel,
   [CreateWalletStages.GeneratePhrase]: GeneratePhrasePanel,
   [CreateWalletStages.ConfirmPhrase]: ConfirmPhrasePanel,

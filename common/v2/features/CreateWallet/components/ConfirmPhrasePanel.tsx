@@ -5,7 +5,12 @@ import { Button, Typography } from '@mycrypto/ui';
 import SteppedPanel from './SteppedPanel';
 import './ConfirmPhrasePanel.scss';
 
-export function ConfirmPhrasePanel({ history }: RouteComponentProps<{}>) {
+interface Props {
+  words: string[];
+  generateWords(): void;
+}
+
+export function ConfirmPhrasePanel({ history }: Props & RouteComponentProps<{}>) {
   return (
     <SteppedPanel
       heading="Confirm Phrase"

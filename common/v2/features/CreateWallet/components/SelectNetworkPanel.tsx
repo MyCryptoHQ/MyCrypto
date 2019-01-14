@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { ComboBox } from '@mycrypto/ui';
+import { Button, ComboBox } from '@mycrypto/ui';
 
 import SteppedPanel from './SteppedPanel';
 import './SelectNetworkPanel.scss';
@@ -19,6 +19,7 @@ export function SelectNetworkPanel({ history }: RouteComponentProps<{}>) {
       <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
       <label>Node</label>
       <ComboBox value="Automatic" items={new Set(['Automatic'])} />
+      <Button className="SelectNetworkPanel-next">Next</Button>
     </SteppedPanel>
   );
 }
