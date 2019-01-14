@@ -1,0 +1,45 @@
+@mixin word {
+  width: 88px;
+  height: 28px;
+  padding: 6px 14px;
+  border-radius: 1.4px;
+  background-color: rgba(122, 129, 135, 0.75);
+  color: #fff;
+
+  &:not(:last-of-type) {
+    margin-right: 9px;
+  }
+}
+
+.ConfirmPhrasePanel {
+  &-activeWords {
+    height: 200px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #e5ecf3;
+
+    &-word {
+      @include word;
+    }
+  }
+  &-selectableWords {
+    margin-bottom: 18px;
+
+    &-row {
+      display: flex;
+      align-items: center;
+
+      &-entry {
+        @include word;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+  &-next {
+    width: 100%;
+  }
+}
