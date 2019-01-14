@@ -113,9 +113,9 @@
   dependencies:
     events "^2.0.0"
 
-"@mycrypto/ui@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.7.0.tgz#7384c17a26c7411068715d95a57e14b00aeb282c"
+"@mycrypto/ui@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.8.0.tgz#32ebb60544e9a5dcd27f7e361f4f569494b7e16e"
   dependencies:
     "@types/lodash.throttle" "^4.1.4"
     ethereum-blockies-base64 "^1.0.2"
