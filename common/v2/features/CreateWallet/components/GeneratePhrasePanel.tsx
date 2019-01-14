@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Typography } from '@mycrypto/ui';
 
+import { PanelProps } from '../CreateWallet';
 import SteppedPanel from './SteppedPanel';
 import './GeneratePhrasePanel.scss';
 
@@ -13,7 +13,7 @@ interface Props {
   generateWords(): void;
 }
 
-export class GeneratePhrasePanel extends Component<Props & RouteComponentProps<{}>> {
+export default class GeneratePhrasePanel extends Component<Props & PanelProps> {
   public componentDidMount() {
     const { generateWords } = this.props;
 
@@ -21,7 +21,7 @@ export class GeneratePhrasePanel extends Component<Props & RouteComponentProps<{
   }
 
   public render() {
-    const { history, words } = this.props;
+    const { words, generateWords, onBack, onNext } = this.props;
 
     return (
       <SteppedPanel
@@ -29,13 +29,19 @@ export class GeneratePhrasePanel extends Component<Props & RouteComponentProps<{
         description="Generate a mnemonic phrase and write these words down. To keep your funds safe, do not copy them to your clipboard or save them anywhere online."
         currentStep={3}
         totalSteps={4}
-        onBack={history.goBack}
+        onBack={onBack}
         className="GeneratePhrasePanel"
       >
         <Typography className="GeneratePhrasePanel-words">{words.join(' ')}</Typography>
-        <Button className="GeneratePhrasePanel-next">Next</Button>
+        <Button onClick={onNext} className="GeneratePhrasePanel-next">
+          Next
+        </Button>
         <div className="GeneratePhrasePanel-actions">
-          <Button className="GeneratePhrasePanel-actions-action" secondary={true}>
+          <Button
+            onClick={generateWords}
+            className="GeneratePhrasePanel-actions-action"
+            secondary={true}
+          >
             <img src={reloadIcon} alt="Reload" /> Regenerate Phrase
           </Button>
         </div>
@@ -43,5 +49,3 @@ export class GeneratePhrasePanel extends Component<Props & RouteComponentProps<{
     );
   }
 }
-
-export default withRouter(GeneratePhrasePanel);

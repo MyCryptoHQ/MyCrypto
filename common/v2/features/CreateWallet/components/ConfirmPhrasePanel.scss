@@ -1,4 +1,14 @@
+@mixin row {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 9px;
+}
+
 @mixin word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 88px;
   height: 28px;
   padding: 6px 14px;
@@ -19,23 +29,31 @@
     padding: 15px;
     border: 1px solid #e5ecf3;
 
-    &-word {
-      @include word;
+    &-row {
+      @include row;
+
+      justify-content: flex-start;
+
+      &-word {
+        @include word;
+      }
     }
   }
   &-selectableWords {
     margin-bottom: 18px;
 
     &-row {
-      display: flex;
-      align-items: center;
+      @include row;
 
-      &-entry {
+      &-word {
         @include word;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        &.confirmed {
+          background-color: #a682ff;
+        }
+        &.wrong {
+          background-color: #ef4747;
+        }
       }
     }
   }
