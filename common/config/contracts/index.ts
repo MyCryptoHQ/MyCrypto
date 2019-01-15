@@ -6,6 +6,8 @@ import Ropsten from './ropsten.json';
 import RSK from './rsk.json';
 import UBQ from './ubq.json';
 import ESN from './esn.json';
+import ARTIS_SIGMA1 from './artis_sigma1.json';
+import ARTIS_TAU1 from './artis_tau1.json';
 
 export default {
   ETC,
@@ -15,5 +17,7 @@ export default {
   Ropsten,
   RSK,
   UBQ,
-  ESN
+  ESN,
+  ARTIS_SIGMA1,
+  ARTIS_TAU1
 };
