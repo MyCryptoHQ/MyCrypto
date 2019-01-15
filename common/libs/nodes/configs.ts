@@ -322,7 +322,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'rpc.tau1.artis.network',
       url: 'http://rpc.tau1.artis.network'
     }
-  ],
+  ]
 };
 
 export default NODE_CONFIGS;
