@@ -320,7 +320,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ARTIS_TAU1', 'artis_tau1'),
       type: 'rpc',
       service: 'rpc.tau1.artis.network',
-      url: 'http://rpc.tau1.artis.network'
+      url: 'https://rpc.tau1.artis.network'
     }
   ]
 };

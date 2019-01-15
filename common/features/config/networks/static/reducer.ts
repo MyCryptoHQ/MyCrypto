@@ -786,7 +786,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#238006',
     blockExplorer: makeExplorer({
       name: 'BlockScout',
-      origin: 'http://explorer.tau1.artis.network',
+      origin: 'https://explorer.tau1.artis.network',
       addressPath: 'address',
       blockPath: 'blocks'
     }),
