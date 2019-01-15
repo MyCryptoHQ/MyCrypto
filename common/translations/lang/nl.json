@@ -17,7 +17,7 @@
     "TX_NOTFOUND_1": "Deze TX werd niet gevonden in de TX Pool van de node waarmee je bent verbonden.",
     "TX_NOTFOUND_2": "Als je deze transactie zojuist hebt verzonden, wacht dan eerst 15 seconden en druk nogmaals op de \"Check TX Status\" knop. ",
     "TX_NOTFOUND_3": "De transactie zou nog steeds in de TX Pool van een andere node kunnen zitten, in afwachting om ge-mined te worden.",
-    "TX_NOTFOUND_4": "Gebruik het drop-down menu in de rechterbovenhoek & selecteer een andere ETH node (bijvoobeeld `ETH (Etherscan.io)` of `ETH (Infura.io)` of `ETH (MyCrypto)`) en check opnieuw.",
+    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different node and check again.",
     "TX_FOUNDINPENDING": "Pending Transactie Gevonden",
     "TX_FOUNDINPENDING_1": "Je transactie is gevonden in de TX Pool van de node waarmee je bent verbonden. ",
     "TX_FOUNDINPENDING_2": "Je transactie is momenteel \"pending\" (in afwachting om ge-mined te worden). ",
