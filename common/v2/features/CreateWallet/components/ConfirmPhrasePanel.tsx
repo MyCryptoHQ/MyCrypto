@@ -33,7 +33,7 @@ export default class ConfirmPhrasePanel extends Component<Props & PanelProps> {
     return (
       <SteppedPanel
         heading="Confirm Phrase"
-        description="Confirm your mnemonic phrase by selecting each phrase in order to make sure it is correct. Drag and drop to arrange the word."
+        description="Confirm your mnemonic phrase by selecting each phrase in order to make sure it is correct."
         currentStep={4}
         totalSteps={4}
         onBack={onBack}

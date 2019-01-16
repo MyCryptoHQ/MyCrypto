@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { Layout } from 'v2/components';
 import { isDesktop } from 'v2/utils';
@@ -14,7 +15,7 @@ export interface PanelProps {
   onNext(): void;
 }
 
-export default class CreateWallet extends Component {
+export default class CreateWallet extends Component<RouteComponentProps<{}>> {
   public state = {
     stage: isDesktop() ? CreateWalletStages.SelectNetwork : CreateWalletStages.SelectNetwork
   };
@@ -51,12 +52,15 @@ export default class CreateWallet extends Component {
   }
 
   private regressToPreviousStage = () => {
+    const { history } = this.props;
     const { stage } = this.state;
     const currentIndex = createWalletMnemonicFlow.indexOf(stage);
     const previousStage = createWalletMnemonicFlow[currentIndex - 1];
 
     if (previousStage != null) {
       this.setState({ stage: previousStage });
+    } else {
+      history.push('/');
     }
   };
 
