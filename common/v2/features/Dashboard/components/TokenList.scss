@@ -1,0 +1,52 @@
+.TokenList {
+  max-height: 320px;
+  padding: 15px;
+  overflow-y: auto;
+
+  &-headingWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    &-heading {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+      color: #424242;
+    }
+    &-button {
+      font-size: 18px;
+    }
+  }
+  &-tokens {
+    display: flex;
+    flex-direction: column;
+
+    &-token {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 0;
+
+      &-asset {
+        display: flex;
+        align-items: center;
+
+        &-name {
+          margin: 0;
+          margin-left: 30px;
+        }
+      }
+      &-value {
+        display: flex;
+        align-items: center;
+
+        &-amount {
+          margin: 0;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

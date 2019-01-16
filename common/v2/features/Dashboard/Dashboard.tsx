@@ -2,7 +2,7 @@ import React from 'react';
 import chunk from 'lodash/chunk';
 
 import { Layout } from 'v2/components';
-import { ActionTile, WalletBreakdown } from './components';
+import { ActionTile, TokenList, WalletBreakdown } from './components';
 import { actions } from './constants';
 import './Dashboard.scss';
 
@@ -23,6 +23,9 @@ export default function Dashboard() {
       <div className="Dashboard-divider" />
       <div className="Dashboard-walletBreakdown">
         <WalletBreakdown />
+      </div>
+      <div className="Dashboard-tokenList">
+        <TokenList />
       </div>
     </Layout>
   );
