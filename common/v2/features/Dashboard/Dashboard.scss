@@ -1,0 +1,13 @@
+.Dashboard {
+  background: #e8eaed;
+
+  &-actions {
+    display: flex;
+    flex-direction: column;
+
+    &-row {
+      display: flex;
+      margin-bottom: 15px;
+    }
+  }
+}

@@ -10,7 +10,7 @@ import NewHeader from 'components/Header/NewHeader/NewHeader';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
 
 interface Props {
-  centered: boolean;
+  centered?: boolean;
   children: any;
 }
 

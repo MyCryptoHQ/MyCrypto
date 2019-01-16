@@ -1,5 +1,23 @@
 import React from 'react';
+import chunk from 'lodash/chunk';
+
+import { Layout } from 'v2/components';
+import { ActionTile } from './components';
+import { actions } from './constants';
+import './Dashboard.scss';
 
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  const [topRow, bottomRow] = chunk(actions, 3);
+  return (
+    <Layout className="Dashboard">
+      <div className="Dashboard-actions">
+        <div className="Dashboard-actions-row">
+          {topRow.map(action => <ActionTile key={action.title} {...action} />)}
+        </div>
+        <div className="Dashboard-actions-row">
+          {bottomRow.map(action => <ActionTile key={action.title} {...action} />)}
+        </div>
+      </div>
+    </Layout>
+  );
 }

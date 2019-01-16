@@ -1,0 +1,30 @@
+.ActionTile {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 105px;
+  height: 105px;
+  margin-right: 15px;
+  background: #fff;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+
+  &-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-icon {
+      display: block;
+      margin-top: 9px;
+    }
+    &-title {
+      margin: 0;
+      margin-bottom: 9px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #163150;
+      word-spacing: 9999px;
+    }
+  }
+}
