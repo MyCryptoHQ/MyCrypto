@@ -1,0 +1,80 @@
+.WalletBreakdown {
+  &-select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  &-panel {
+    margin-top: 5px;
+    padding: 15px;
+
+    &-headingWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &-heading {
+      margin: 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #424242;
+    }
+    &-more {
+      display: block;
+    }
+    &-figures {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      margin: 30px 0;
+
+      &-figure {
+        &-value {
+          margin: 0;
+          font-size: 18px;
+          font-weight: bold;
+        }
+        &-label {
+          margin: 0;
+          font-size: 12px;
+        }
+      }
+    }
+    &-divider {
+      height: 1px;
+      margin-bottom: 15px;
+      background: #ddd;
+    }
+    &-balances {
+      display: flex;
+      flex-direction: column;
+      color: #282d32;
+      font-size: 16px;
+
+      &-balance {
+        display: flex;
+        justify-content: space-between;
+        margin: 11px 0;
+
+        &:first-of-type {
+          margin-top: 16px;
+        }
+        &-asset {
+          &-name {
+            margin: 0;
+          }
+          &-amount {
+            margin: 0;
+
+            a {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      &-total {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

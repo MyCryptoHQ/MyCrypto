@@ -13,5 +13,9 @@
         justify-content: center;
       }
     }
+    &.fluid {
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 }

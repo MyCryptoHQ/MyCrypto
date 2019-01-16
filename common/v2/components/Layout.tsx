@@ -11,12 +11,14 @@ import NewFooter from 'components/Footer/NewFooter/NewFooter';
 
 interface Props {
   centered?: boolean;
+  fluid?: boolean;
   children: any;
 }
 
-export default function Layout({ centered, children }: Props) {
+export default function Layout({ centered, fluid, children }: Props) {
   const contentClassName = classnames('Layout-content', {
-    centered
+    centered,
+    fluid
   });
 
   return (
