@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
+import { Typography } from '@mycrypto/ui';
 
+import DashboardPanel from './DashboardPanel';
 import './TokenList.scss';
 
 // Legacy
@@ -22,11 +23,12 @@ const tokens = [
 
 export default function TokenList() {
   return (
-    <Panel className="TokenList">
-      <div className="TokenList-headingWrapper">
-        <Heading className="TokenList-headingWrapper-heading">Token</Heading>
-        <Button className="TokenList-headingWrapper-button">Add Tokens</Button>
-      </div>
+    <DashboardPanel
+      heading="Token"
+      action="Add Tokens"
+      actionLink="/dashboard/add-tokens"
+      className="TokenList"
+    >
       <div className="TokenList-tokens">
         {tokens.map(({ image, name, value }) => (
           <div key={name} className="TokenList-tokens-token">
@@ -41,6 +43,6 @@ export default function TokenList() {
           </div>
         ))}
       </div>
-    </Panel>
+    </DashboardPanel>
   );
 }
