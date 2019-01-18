@@ -1,5 +1,5 @@
 import React from 'react';
-import { Address, CollapsibleTable, Copyable, Icon, Network, Typography } from '@mycrypto/ui';
+import { Address, CollapsibleTable, Icon, Network, Typography } from '@mycrypto/ui';
 
 import DashboardPanel from './DashboardPanel';
 import './AccountList.scss';
@@ -27,19 +27,18 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 const accountTable = {
-  head: ['Favorite', 'Label', 'Address', 'Network', 'Value'],
+  head: ['Favorite', 'Address', 'Network', 'Value'],
   body: accounts.map(({ address, name, network, value }) => [
     <Icon key={0} icon="star" />,
     <Address key={1} title={name} address={address} onSubmit={() => {}} truncate={truncate} />,
-    <Copyable key={2} text={address} truncate={truncate} />,
     <Network key={3} color="#a682ff">
       {network}
     </Network>,
     <Typography key={4}>{value}</Typography>
   ]),
   config: {
-    primaryColumn: 'Label',
-    sortableColumn: 'Label',
+    primaryColumn: 'Address',
+    sortableColumn: 'Address',
     sortFunction: (a: any, b: any) => {
       const aLabel = a.props.title;
       const bLabel = b.props.title;
