@@ -37,11 +37,13 @@ export default function WalletBreakdown() {
       <ComboBox
         className="WalletBreakdown-select"
         value="3 of 9 Accounts"
+        onChange={() => {}}
         items={new Set(['3 of 9 Accounts'])}
       />
       <ComboBox
         className="WalletBreakdown-select"
         value="US Dollars"
+        onChange={() => {}}
         items={new Set(['US Dollars'])}
       />
       <Panel className="WalletBreakdown-panel">

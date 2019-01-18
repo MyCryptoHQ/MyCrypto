@@ -1,0 +1,24 @@
+.Amount {
+  display: flex;
+  align-items: center;
+
+  @media (min-width: 1000px) {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  &-asset {
+    margin: 0;
+    margin-right: 11px;
+    font-size: 20px;
+    color: #424242;
+
+    @media (min-width: 1000px) {
+      margin-right: 0;
+    }
+  }
+  &-fiat {
+    margin: 0;
+    font-size: 16px;
+    color: #b5bfc7;
+  }
+}

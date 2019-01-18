@@ -1,5 +1,5 @@
 import React from 'react';
-import { CollapsibleTable, Copyable, Icon, Identicon, Typography } from '@mycrypto/ui';
+import { Address, CollapsibleTable, Copyable, Icon, Network, Typography } from '@mycrypto/ui';
 
 import DashboardPanel from './DashboardPanel';
 import './AccountList.scss';
@@ -23,38 +23,26 @@ const accounts = [
     favorite: false
   }
 ];
-const truncate = (text: string): string => text.substr(0, 6);
+const truncate = (children: string) => {
+  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
+};
 const accountTable = {
   head: ['Favorite', 'Label', 'Address', 'Network', 'Value'],
   body: accounts.map(({ address, name, network, value }) => [
     <Icon key={0} icon="star" />,
-    <div
-      key={1}
-      style={{
-        display: 'flex',
-        alignItems: 'center'
-      }}
-    >
-      <Identicon
-        address={address}
-        style={{
-          width: '35px',
-          height: '35px',
-          marginRight: '1rem'
-        }}
-      />
-      <Typography>{name}</Typography>
-    </div>,
+    <Address key={1} title={name} address={address} onSubmit={() => {}} truncate={truncate} />,
     <Copyable key={2} text={address} truncate={truncate} />,
-    <Typography key={3}>{network}</Typography>,
+    <Network key={3} color="#a682ff">
+      {network}
+    </Network>,
     <Typography key={4}>{value}</Typography>
   ]),
   config: {
-    primaryColumn: 'label',
+    primaryColumn: 'Label',
     sortableColumn: 'Label',
     sortFunction: (a: any, b: any) => {
-      const aLabel = a.props.children[1].props.children;
-      const bLabel = b.props.children[1].props.children;
+      const aLabel = a.props.title;
+      const bLabel = b.props.title;
 
       return aLabel.localeCompare(bLabel);
     },
