@@ -92,10 +92,15 @@ const modeMap: IModeMap = {
 export function* resolveDomainRequest(name: string): SagaIterator {
   const ensAddresses = yield select(getENSAddresses);
   const ensTLD = yield select(getENSTLD);
+  const splitName = name.split('.');
+  let hash: Buffer;
+  const nameHash: string = getNameHash(`${name}.${ensTLD}`);
 
-  const hash = ethUtil.sha3(name);
-  const nameHash = getNameHash(`${name}.${ensTLD}`);
-
+  if (splitName.length === 2) {
+    hash = ethUtil.sha3(splitName[1]);
+  } else {
+    hash = ethUtil.sha3(splitName[0]);
+  }
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {
     to: ensAddresses.public.ethAuction,
     data: ENS.auction.entries.encodeInput({ _hash: hash }),
