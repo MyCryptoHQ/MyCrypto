@@ -53,12 +53,22 @@ export default function Dashboard() {
             <div className="Dashboard-desktop-top-left-actions">
               {actions.map(action => <ActionTile key={action.title} {...action} />)}
             </div>
+            <div>
+              <TokenList />
+            </div>
           </div>
           <div className="Dashboard-desktop-top-right">
-            <WalletBreakdown />
+            <div>
+              <WalletBreakdown />
+            </div>
+            <div>
+              <AccountList className="Dashboard-desktop-modifiedPanel" />
+            </div>
           </div>
         </div>
-        <div className="Dashboard-desktop-bottom">{/*  */}</div>
+        <div className="Dashboard-desktop-bottom">
+          <RecentTransactionList className="Dashboard-desktop-modifiedPanel" />
+        </div>
       </Layout>
     </>
   );

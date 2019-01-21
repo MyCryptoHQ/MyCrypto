@@ -10,6 +10,10 @@ import './RecentTransactionList.scss';
 // Legacy
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 
+interface Props {
+  className?: string;
+}
+
 // Fake Data
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -92,13 +96,13 @@ const recentTransactionsTable = {
   }
 };
 
-export default function RecentTransactionList() {
+export default function RecentTransactionList({ className = '' }: Props) {
   return (
     <DashboardPanel
       heading="Recent Transactions"
-      action="Expand"
+      action="Export"
       actionLink="/dashboard/recent-transactions"
-      className="RecentTransactionsList"
+      className={`RecentTransactionsList ${className}`}
     >
       <CollapsibleTable breakpoint={1000} {...recentTransactionsTable} />
     </DashboardPanel>

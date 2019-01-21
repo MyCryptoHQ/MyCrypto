@@ -51,6 +51,17 @@
     }
     &-right {
       flex: 2;
+
+      > div {
+        margin-bottom: 18px;
+      }
+    }
+  }
+  &-modifiedPanel {
+    padding: 0;
+
+    .DashboardPanel-headingWrapper {
+      padding: 15px;
     }
   }
 }

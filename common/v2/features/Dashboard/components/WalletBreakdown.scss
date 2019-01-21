@@ -21,6 +21,7 @@
 
     @media (min-width: 700px) {
       flex-direction: row;
+      margin-top: 0;
 
       > div {
         flex: 1;
@@ -37,6 +38,9 @@
       font-weight: bold;
       color: #424242;
 
+      @media (min-width: 700px) {
+        font-size: 24px;
+      }
       &-extra {
         display: inline;
 

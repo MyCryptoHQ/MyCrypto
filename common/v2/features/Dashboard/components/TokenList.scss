@@ -3,6 +3,9 @@
   padding: 15px;
   overflow-y: auto;
 
+  @media (min-width: 700px) {
+    margin-right: 21px;
+  }
   &-tokens {
     display: flex;
     flex-direction: column;

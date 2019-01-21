@@ -4,6 +4,10 @@ import { Address, CollapsibleTable, Icon, Network, Typography } from '@mycrypto/
 import DashboardPanel from './DashboardPanel';
 import './AccountList.scss';
 
+interface Props {
+  className?: string;
+}
+
 // Fake Data
 const accounts = [
   {
@@ -50,13 +54,13 @@ const accountTable = {
   }
 };
 
-export default function AccountList() {
+export default function AccountList({ className = '' }: Props) {
   return (
     <DashboardPanel
       heading="Your Accounts"
       action="Add Account"
       actionLink="/dashboard/add-account"
-      className="AccountList"
+      className={`AccountList ${className}`}
     >
       <CollapsibleTable breakpoint={450} {...accountTable} />
     </DashboardPanel>
