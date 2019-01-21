@@ -28,11 +28,11 @@
       text-align: left;
     }
     &-icon {
-      order: 1;
       display: block;
       margin-top: 9px;
 
       @media (min-width: 700px) {
+        order: 1;
         margin-top: 0;
       }
     }

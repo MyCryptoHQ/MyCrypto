@@ -54,7 +54,9 @@ export default function Dashboard() {
               {actions.map(action => <ActionTile key={action.title} {...action} />)}
             </div>
           </div>
-          <div className="Dashboard-desktop-top-right">{/*  */}</div>
+          <div className="Dashboard-desktop-top-right">
+            <WalletBreakdown />
+          </div>
         </div>
         <div className="Dashboard-desktop-bottom">{/*  */}</div>
       </Layout>

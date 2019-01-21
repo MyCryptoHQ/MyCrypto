@@ -38,12 +38,13 @@
   }
   &-top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     &-left {
       flex: 1;
 
       &-heading {
+        margin-top: 0;
         margin-bottom: 25px;
         font-weight: bold;
       }

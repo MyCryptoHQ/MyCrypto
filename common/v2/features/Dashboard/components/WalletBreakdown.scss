@@ -1,12 +1,31 @@
 .WalletBreakdown {
-  &-select {
-    width: 100%;
-    margin-bottom: 10px;
+  &-selectWrapper {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 700px) {
+      flex-direction: row;
+      align-items: center;
+      padding-left: 150px;
+    }
+    &-select {
+      width: 100%;
+      margin-bottom: 10px;
+    }
   }
   &-panel {
+    display: flex;
+    flex-direction: column;
     margin-top: 5px;
     padding: 15px;
 
+    @media (min-width: 700px) {
+      flex-direction: row;
+
+      > div {
+        flex: 1;
+      }
+    }
     &-headingWrapper {
       display: flex;
       align-items: center;
@@ -17,6 +36,14 @@
       font-size: 20px;
       font-weight: bold;
       color: #424242;
+
+      &-extra {
+        display: inline;
+
+        @media (min-width: 700px) {
+          display: none;
+        }
+      }
     }
     &-more {
       display: block;
@@ -43,6 +70,14 @@
       height: 1px;
       margin-bottom: 15px;
       background: #ddd;
+
+      &.mobile-only {
+        display: block;
+
+        @media (min-width: 700px) {
+          display: none;
+        }
+      }
     }
     &-balances {
       display: flex;
