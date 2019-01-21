@@ -10,19 +10,20 @@ import NewHeader from 'components/Header/NewHeader/NewHeader';
 import NewFooter from 'components/Footer/NewFooter/NewFooter';
 
 interface Props {
+  className?: string;
   centered?: boolean;
   fluid?: boolean;
   children: any;
 }
 
-export default function Layout({ centered, fluid, children }: Props) {
+export default function Layout({ centered, fluid, className = '', children }: Props) {
   const contentClassName = classnames('Layout-content', {
     centered,
     fluid
   });
 
   return (
-    <main className="Layout">
+    <main className={`Layout ${className}`}>
       <Query
         params={['network']}
         withQuery={({ network }) => (

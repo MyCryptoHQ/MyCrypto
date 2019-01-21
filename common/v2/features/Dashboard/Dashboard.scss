@@ -1,6 +1,9 @@
-.Dashboard {
+.Dashboard-mobile {
   background: #e8eaed;
 
+  @media (min-width: 700px) {
+    display: none;
+  }
   &-actions {
     display: flex;
     align-items: center;
@@ -23,5 +26,30 @@
   }
   &-section {
     padding: 0 15px;
+  }
+}
+
+.Dashboard-desktop {
+  display: none;
+  background: #e8eaed;
+
+  @media (min-width: 700px) {
+    display: block;
+  }
+  &-top {
+    display: flex;
+    align-items: center;
+
+    &-left {
+      flex: 1;
+
+      &-heading {
+        margin-bottom: 25px;
+        font-weight: bold;
+      }
+    }
+    &-right {
+      flex: 2;
+    }
   }
 }

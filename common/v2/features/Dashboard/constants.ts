@@ -11,26 +11,31 @@ export const actions: Action[] = [
   {
     icon: buyIcon,
     title: 'Buy Assets',
-    link: '/dashboard/buy'
+    link: '/dashboard/buy',
+    description: 'Purchase New Assets'
   },
   {
     icon: swapIcon,
     title: 'Swap Assets',
-    link: '/dashboard/swap'
+    link: '/dashboard/swap',
+    description: 'Exchange Assets for Other Assets'
   },
   {
     icon: sendIcon,
     title: 'Send Assets',
-    link: '/dashboard/send'
+    link: '/dashboard/send',
+    description: 'Transfer Assets to Another Wallet'
   },
   {
     icon: receiveIcon,
     title: 'Request Assets',
-    link: '/dashboard/request'
+    link: '/dashboard/request',
+    description: 'Transfer Assets to Your Wallet'
   },
   {
     icon: hardwareWalletIcon,
     title: 'Get_Hardware Wallet',
-    link: '/dashboard/get-hardware-wallet'
+    link: '/dashboard/get-hardware-wallet',
+    description: 'Keep Your Funds Safe Offline'
   }
 ];

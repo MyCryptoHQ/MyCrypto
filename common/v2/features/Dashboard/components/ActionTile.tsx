@@ -7,12 +7,15 @@ import './ActionTile.scss';
 
 type Props = Action;
 
-export default function ActionTile({ icon, title, link }: Props) {
+export default function ActionTile({ icon, title, description, link }: Props) {
   return (
     <Link to={link} className="ActionTile">
       <Button basic={true} className="ActionTile-button">
         <img className="ActionTile-button-icon" src={icon} alt={title} />
-        <Typography className="ActionTile-button-title">{title}</Typography>
+        <Typography as="div" className="ActionTile-button-title">
+          {title}
+          <span className="ActionTile-button-title-description">{description}</span>
+        </Typography>
       </Button>
     </Link>
   );
