@@ -33,6 +33,15 @@ export function getParamFromURL(url: string, param: string): string | undefined 
   return qs.parse(qs.extract(url))[param];
 }
 
+export function isAdvancedQueryTransaction(query: string): boolean {
+  const params = qs.parse(query.toLowerCase());
+  if ('data' in params) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export function isPositiveInteger(n: number) {
   return Number.isInteger(n) && n > 0;
 }

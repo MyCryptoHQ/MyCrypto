@@ -5,6 +5,7 @@ import BN from 'bn.js';
 import { translateRaw } from 'translations';
 import { NetworkConfig } from 'types/network';
 import { Units } from 'libs/units';
+import { isAdvancedQueryTransaction } from 'utils/helpers';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import {
@@ -44,6 +45,7 @@ interface OwnProps {
   advancedGasOptions?: AdvancedOptions;
   className?: string;
   scheduling?: boolean;
+  queryTransaction?: boolean;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
@@ -91,7 +93,8 @@ class TXMetaDataPanel extends React.Component<Props, State> {
   public render() {
     const { offline, disableToggle, advancedGasOptions, className = '', scheduling } = this.props;
     const { gasPrice } = this.state;
-    const showAdvanced = this.state.sliderState === 'advanced' || offline;
+    const queryTransaction = isAdvancedQueryTransaction(location.search);
+    const showAdvanced = this.state.sliderState === 'advanced' || queryTransaction || offline;
 
     return (
       <div className={`Gas col-md-12 ${className}`}>
