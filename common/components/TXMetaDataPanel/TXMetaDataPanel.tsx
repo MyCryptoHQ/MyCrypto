@@ -45,7 +45,6 @@ interface OwnProps {
   advancedGasOptions?: AdvancedOptions;
   className?: string;
   scheduling?: boolean;
-  queryTransaction?: boolean;
 }
 
 type Props = DispatchProps & OwnProps & StateProps;
