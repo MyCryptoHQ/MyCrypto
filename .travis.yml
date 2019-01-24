@@ -34,7 +34,7 @@ before_install:
       sh -e /etc/init.d/xvfb start
       # uncomment once integration tests are included in CI
       # docker pull dternyak/eth-priv-to-addr:latest
-      sudo apt-get install libusb-1.0 libusb-1.0-dev
+      sudo apt-get install libusb-1.0
     fi
 
 install:
