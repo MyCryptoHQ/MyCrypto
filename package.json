@@ -6,8 +6,7 @@
   "description": "MyCrypto web and electron app",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
   "engines": {
-    "node": ">= 8.0.0",
-    "npm": ">= 5.0.0"
+    "node": ">= 8.0.0"
   },
   "dependencies": {
     "@ledgerhq/hw-app-eth": "4.32.0",
