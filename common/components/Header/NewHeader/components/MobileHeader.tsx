@@ -13,6 +13,7 @@ import {
   configNodesSelectedActions
 } from 'features/config';
 import { sidebarActions } from 'features/sidebar';
+import { walletActions } from 'features/wallet';
 import logo from 'assets/images/logo-mycrypto.svg';
 import { LINKSET } from '../constants';
 import { generateMenuIcon, generateCaretIcon } from '../helpers';
@@ -31,6 +32,7 @@ interface StateProps {
 interface DispatchProps {
   openSidebar: sidebarActions.TOpenSidebar;
   changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
+  setAccessMessage: walletActions.TSetAccessMessage;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -57,7 +59,7 @@ class MobileHeader extends Component<Props> {
   }
 
   public render() {
-    const { nodeLabel, openSidebar, languageSelection } = this.props;
+    const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
     const { menuVisible, visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const menuIcon = generateMenuIcon(menuVisible);
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
@@ -71,7 +73,7 @@ class MobileHeader extends Component<Props> {
             <i className={menuIcon} />
           </section>
           <section className="MobileHeader-top-logo">
-            <Link to="/">
+            <Link to="/" onClick={() => setAccessMessage('')}>
               <img src={logo} alt="Our logo" />
             </Link>
           </section>
@@ -89,7 +91,9 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.SEND_AND_RECEIVE.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to}>{item.title}</Link>
+                            <Link to={item.to} onClick={() => setAccessMessage(item.accessMessage)}>
+                              {item.title}
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -101,7 +105,9 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.BUY_AND_EXCHANGE.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to}>{item.title}</Link>
+                            <Link to={item.to} onClick={() => setAccessMessage('')}>
+                              {item.title}
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -114,14 +120,18 @@ class MobileHeader extends Component<Props> {
                       <ul className="MobileHeader-menu-subitems">
                         {LINKSET.TOOLS.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to}>{item.title}</Link>
+                            <Link to={item.to} onClick={() => setAccessMessage('')}>
+                              {item.title}
+                            </Link>
                           </li>
                         ))}
                       </ul>
                     )}
                   </li>
-                  <li onClick={this.toggleMenu}>
-                    <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
+                  <li>
+                    <Link to="/generate">
+                      <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
+                    </Link>
                   </li>
                 </ul>
                 <ul className="MobileHeader-menu-mid">
@@ -144,12 +154,20 @@ class MobileHeader extends Component<Props> {
                 </ul>
                 <ul className="MobileHeader-menu-bottom">
                   <li>
-                    <a href="https://support.mycrypto.com/">
+                    <a
+                      href="https://support.mycrypto.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
                     </a>
                   </li>
                   <li>
-                    <a href="https://medium.com/@mycrypto">
+                    <a
+                      href="https://medium.com/@mycrypto"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
                     </a>
                   </li>
@@ -197,7 +215,8 @@ const mapStateToProps = (state: AppState, { networkParam }: any) => ({
 
 const mapDispatchToProps = {
   openSidebar: sidebarActions.openSidebar,
-  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime
+  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
+  setAccessMessage: walletActions.setAccessMessage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MobileHeader);

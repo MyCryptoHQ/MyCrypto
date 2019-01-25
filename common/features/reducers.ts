@@ -25,8 +25,6 @@ import { RatesState } from './rates/types';
 import { ratesReducer } from './rates/reducer';
 import { ScheduleState } from './schedule/types';
 import { scheduleReducer } from './schedule/reducer';
-import { SwapState } from './swap/types';
-import { swapReducer } from './swap/reducer';
 import { TransactionState } from './transaction/types';
 import { transactionReducer } from './transaction/reducer';
 import { TransactionsState } from './transactions/types';
@@ -46,7 +44,6 @@ export interface AppState {
   customTokens: CustomTokensState;
   rates: RatesState;
   deterministicWallets: DeterministicWalletsState;
-  swap: SwapState;
   transaction: TransactionState;
   transactions: TransactionsState;
   message: MessageState;
@@ -61,7 +58,6 @@ export interface AppState {
 
 export default combineReducers<AppState>({
   config: configReducer,
-  swap: swapReducer,
   notifications: notificationsReducer,
   onboarding: onboardingReducer,
   ens: ensReducer,

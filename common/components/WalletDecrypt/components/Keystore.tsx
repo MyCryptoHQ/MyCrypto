@@ -111,15 +111,15 @@ export class KeystoreDecrypt extends PureComponent {
 
     fileReader.onload = () => {
       const keystore = fileReader.result;
-      const passReq = isPassRequired(keystore);
+      const passReq = isPassRequired(keystore as any);
 
       this.props.onChange({
         ...this.props.value,
         file: keystore,
-        valid: keystore.length && !passReq,
+        valid: (keystore as any).length && !passReq,
         password: '',
         filename: fileName
-      });
+      } as any);
       this.props.onUnlock();
     };
     if (isValidFile(inputFile)) {

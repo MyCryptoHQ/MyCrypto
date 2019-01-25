@@ -1,0 +1,15 @@
+.Support {
+  &-button {
+    margin: 0.5rem 0;
+    width: 100%;
+    background: none;
+    border: none;
+  }
+  &-fallback {
+    overflow: auto;
+
+    section {
+      width: 350px;
+    }
+  }
+}

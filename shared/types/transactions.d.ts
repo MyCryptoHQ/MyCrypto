@@ -4,6 +4,7 @@ export interface SavedTransaction {
   hash: string;
   to: string;
   from: string;
+  nonce: number;
   value: string;
   chainId: number;
   time: number;

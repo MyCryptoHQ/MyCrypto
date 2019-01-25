@@ -2,11 +2,11 @@ import { SagaIterator } from 'redux-saga';
 import { select, apply, call } from 'redux-saga/effects';
 import ethUtil from 'ethereumjs-util';
 
-import networkConfigs from 'libs/ens/networkConfigs';
 import { INode } from 'libs/nodes/INode';
 import ENS from 'libs/ens/contracts';
-import { IDomainData, NameState, getNameHash, IBaseDomainRequest, extractDomain } from 'libs/ens';
+import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
+import { getENSTLD, getENSAddresses } from './selectors';
 
 //#region Make & Decode
 interface Params {
@@ -24,9 +24,9 @@ export function* makeEthCallAndDecode({ to, data, decoder }: Params): SagaIterat
 //#endregion Make & Decode
 
 //#region Mode Map
-const { main } = networkConfigs;
-
 function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash: string) {
+  const ensAddresses = yield select(getENSAddresses);
+
   // Return the owner's address, and the resolved address if it exists
   const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
     to: deedAddress,
@@ -37,7 +37,7 @@ function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash
   const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
     makeEthCallAndDecode,
     {
-      to: main.registry,
+      to: ensAddresses.registry,
       decoder: ENS.registry.resolver.decodeOutput,
       data: ENS.registry.resolver.encodeInput({
         node: nameHash
@@ -89,13 +89,15 @@ const modeMap: IModeMap = {
   [NameState.NotYetAvailable]: (_: IDomainData<NameState.NotYetAvailable>) => ({})
 };
 
-export function* resolveDomainRequest(fullDomain: string): SagaIterator {
-  const domain = extractDomain(fullDomain);
-  const hash = ethUtil.sha3(domain);
-  const nameHash = getNameHash(fullDomain);
+export function* resolveDomainRequest(name: string): SagaIterator {
+  const ensAddresses = yield select(getENSAddresses);
+  const ensTLD = yield select(getENSTLD);
+
+  const hash = ethUtil.sha3(name);
+  const nameHash = getNameHash(`${name}.${ensTLD}`);
 
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {
-    to: main.public.ethAuction,
+    to: ensAddresses.public.ethAuction,
     data: ENS.auction.entries.encodeInput({ _hash: hash }),
     decoder: ENS.auction.entries.decodeOutput
   });
@@ -103,7 +105,7 @@ export function* resolveDomainRequest(fullDomain: string): SagaIterator {
   const result = yield call(nameStateHandler, domainData, nameHash);
 
   const returnValue: IBaseDomainRequest = {
-    domain,
+    name,
     ...domainData,
     ...result,
     labelHash: ethUtil.addHexPrefix(hash.toString('hex')),

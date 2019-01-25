@@ -55,9 +55,10 @@ export default class NetworkOption extends Component<Props> {
               <NodeOption
                 key={node.id}
                 name={node.service}
-                onClick={(e: React.MouseEvent<HTMLElement>) =>
-                  e.stopPropagation() || onNodeSelect(node.id)
-                }
+                onClick={(e: React.MouseEvent<HTMLElement>) => {
+                  e.stopPropagation();
+                  onNodeSelect(node.id);
+                }}
                 isSelected={selectedNode.id === node.id}
                 {...node}
               />
