@@ -10,7 +10,11 @@
     }
     &-select {
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+
+      &:first-of-type {
+        margin-right: 15px;
+      }
     }
   }
   &-panel {
@@ -66,7 +70,7 @@
         }
         &-label {
           margin: 0;
-          font-size: 12px;
+          font-size: 16px;
         }
       }
     }
@@ -105,7 +109,7 @@
             margin: 0;
 
             a {
-              font-size: 12px;
+              color: #1eb8e7;
             }
           }
         }
