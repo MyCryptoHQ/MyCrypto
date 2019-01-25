@@ -1,13 +1,21 @@
 .Dashboard-mobile {
+  margin-top: 20px;
   background: #e8eaed;
 
   @media (min-width: 700px) {
+    margin-top: 60px;
+  }
+  @media (min-width: 1000px) {
+    margin-top: 0;
+  }
+  @media (min-width: 1080px) {
     display: none;
   }
   &-actions {
+    flex: 1;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
     padding: 0 15px;
 
     &-row {
@@ -20,9 +28,28 @@
     width: 100vw;
     background: #ddd;
   }
+  &-group {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 900px) {
+      flex-direction: row;
+    }
+  }
   &-walletBreakdown {
-    margin-bottom: 13px;
     padding: 15px 15px 0 15px;
+
+    @media (min-width: 900px) {
+      order: 1;
+      flex: 2;
+    }
+  }
+  &-tokenList {
+    @media (min-width: 900px) {
+      order: 0;
+      flex: 1;
+      margin-top: 15px;
+    }
   }
   &-section {
     padding: 0 15px;
@@ -33,7 +60,7 @@
   display: none;
   background: #e8eaed;
 
-  @media (min-width: 700px) {
+  @media (min-width: 1080px) {
     display: block;
   }
   &-top {
@@ -42,11 +69,22 @@
 
     &-left {
       flex: 1;
+      min-width: 241px;
 
       &-heading {
         margin-top: 0;
         margin-bottom: 25px;
         font-weight: bold;
+      }
+      &-actions {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 400px;
+
+        @media (min-width: 1370px) {
+          display: block;
+          margin-right: 21px;
+        }
       }
     }
     &-right {

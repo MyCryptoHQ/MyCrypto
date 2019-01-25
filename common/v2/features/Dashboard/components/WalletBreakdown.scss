@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
 
-    @media (min-width: 700px) {
+    @media (min-width: 1080px) {
       flex-direction: row;
       align-items: center;
       padding-left: 150px;
@@ -19,7 +19,7 @@
     margin-top: 5px;
     padding: 15px;
 
-    @media (min-width: 700px) {
+    @media (min-width: 1080px) {
       flex-direction: row;
       margin-top: 0;
 
@@ -38,13 +38,13 @@
       font-weight: bold;
       color: #424242;
 
-      @media (min-width: 700px) {
+      @media (min-width: 1080px) {
         font-size: 24px;
       }
       &-extra {
         display: inline;
 
-        @media (min-width: 700px) {
+        @media (min-width: 1080px) {
           display: none;
         }
       }
@@ -78,7 +78,7 @@
       &.mobile-only {
         display: block;
 
-        @media (min-width: 700px) {
+        @media (min-width: 1080px) {
           display: none;
         }
       }

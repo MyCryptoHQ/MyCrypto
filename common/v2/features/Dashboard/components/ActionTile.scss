@@ -1,18 +1,24 @@
 .ActionTile {
-  flex-shrink: 0;
+  flex: 0 0 105px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 105px;
+  min-width: 105px;
   height: 105px;
   margin-right: 15px;
+  margin-bottom: 15px;
   background: #fff;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
 
-  @media (min-width: 700px) {
-    width: auto;
+  @media (min-width: 640px) {
+    flex: 1 0 105px;
+  }
+  @media (min-width: 1080px) {
+    flex: 0 0 105px;
+  }
+  @media (min-width: 1370px) {
+    width: 100%;
     height: 110px;
-    margin-right: 21px;
     margin-bottom: 20px;
     padding-left: 40px;
     padding-right: 40px;
@@ -22,7 +28,7 @@
     flex-direction: column;
     align-items: center;
 
-    @media (min-width: 700px) {
+    @media (min-width: 1370px) {
       flex-direction: row;
       justify-content: space-between;
       width: 100%;
@@ -32,7 +38,7 @@
       display: block;
       margin-top: 9px;
 
-      @media (min-width: 700px) {
+      @media (min-width: 1370px) {
         order: 1;
         margin-top: 0;
       }
@@ -45,7 +51,7 @@
       color: #163150;
       word-spacing: 9999px;
 
-      @media (min-width: 700px) {
+      @media (min-width: 1370px) {
         margin-bottom: 0;
         font-size: 24px;
         word-spacing: inherit;
@@ -55,7 +61,7 @@
         font-size: 16px;
         font-weight: normal;
 
-        @media (min-width: 700px) {
+        @media (min-width: 1370px) {
           display: block;
         }
       }

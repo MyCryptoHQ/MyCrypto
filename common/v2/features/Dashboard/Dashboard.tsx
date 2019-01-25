@@ -1,5 +1,4 @@
 import React from 'react';
-import chunk from 'lodash/chunk';
 import { Heading } from '@mycrypto/ui';
 
 import { Layout } from 'v2/components';
@@ -14,27 +13,21 @@ import { actions } from './constants';
 import './Dashboard.scss';
 
 export default function Dashboard() {
-  const [topRow, bottomRow] = chunk(actions, 3);
   return (
     <>
       {/* MOBILE */}
       <Layout className="Dashboard-mobile" fluid={true}>
         <div className="Dashboard-mobile-actions">
-          <div>
-            <div className="Dashboard-mobile-actions-row">
-              {topRow.map(action => <ActionTile key={action.title} {...action} />)}
-            </div>
-            <div className="Dashboard-mobile-actions-row">
-              {bottomRow.map(action => <ActionTile key={action.title} {...action} />)}
-            </div>
-          </div>
+          {actions.map(action => <ActionTile key={action.title} {...action} />)}
         </div>
         <div className="Dashboard-mobile-divider" />
-        <div className="Dashboard-mobile-walletBreakdown">
-          <WalletBreakdown />
-        </div>
-        <div className="Dashboard-mobile-section">
-          <TokenList />
+        <div className="Dashboard-mobile-group">
+          <div className="Dashboard-mobile-walletBreakdown">
+            <WalletBreakdown />
+          </div>
+          <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
+            <TokenList />
+          </div>
         </div>
         <div className="Dashboard-mobile-section">
           <AccountList />
