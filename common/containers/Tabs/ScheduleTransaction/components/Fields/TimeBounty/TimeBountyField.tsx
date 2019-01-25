@@ -62,32 +62,42 @@ class TimeBountyFieldClass extends Component<Props, State> {
               </span>
             </div>
             <div className="TimeBountyField">
-              <div className="TimeBountyField-wrapper">
-                {advanced ? (
-                  <Input
-                    isValid={isValid}
-                    className="TimeBountyField-input"
-                    type="text"
-                    value={currentTimeBounty.raw}
-                    placeholder={translateRaw('X_CUSTOM')}
-                    readOnly={isReadOnly}
-                    spellCheck={false}
-                    onChange={this.handleOnChange}
-                    showInvalidWithoutValue={true}
-                  />
-                ) : (
-                  <GroupedRadioToggle
-                    options={EAC_SCHEDULING_CONFIG.PRESET_TIME_BOUNTIES}
-                    isValid={isValid}
-                    onChangeHandler={this.handleOnChange}
-                    selectedValue={currentTimeBounty.raw}
-                  />
-                )}
-
-                <div className="TimeBountyField-preview">
-                  <span className="TimeBountyField-preview-display">
-                    ${this.getUSDEstimation(currentTimeBounty)}
-                  </span>
+              <div className="row">
+                <div className="col-md-4">
+                  <div className="TimeBountyField-preview">
+                    <span className="TimeBountyField-preview-display">
+                      ${this.getUSDEstimation(currentTimeBounty)}
+                    </span>
+                  </div>
+                </div>
+                <div className="col-md-8">
+                  <div className="TimeBountyField-input">
+                    {advanced ? (
+                      <Input
+                        isValid={isValid}
+                        className="TimeBountyField-input"
+                        type="text"
+                        value={currentTimeBounty.raw}
+                        placeholder={translateRaw('X_CUSTOM')}
+                        readOnly={isReadOnly}
+                        spellCheck={false}
+                        onChange={this.handleOnChange}
+                        showInvalidWithoutValue={true}
+                      />
+                    ) : (
+                      <GroupedRadioToggle
+                        options={EAC_SCHEDULING_CONFIG.PRESET_TIME_BOUNTIES}
+                        isValid={isValid}
+                        onChangeHandler={this.handleOnChange}
+                        selectedValue={currentTimeBounty.raw}
+                      />
+                    )}
+                    <a onClick={this.toggleAdvanced} className="TimeBountyField-advanced-toggle">
+                      {advanced
+                        ? `- ${translateRaw('TRANS_SIMPLE')}`
+                        : `+ ${translateRaw('TRANS_ADVANCED')}`}
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -99,9 +109,6 @@ class TimeBountyFieldClass extends Component<Props, State> {
             </div>
           </label>
         </div>
-        <a onClick={this.toggleAdvanced} className="TimeBountyField-advanced-toggle">
-          {advanced ? `- ${translateRaw('TRANS_SIMPLE')}` : `+ ${translateRaw('TRANS_ADVANCED')}`}
-        </a>
       </>
     );
   }

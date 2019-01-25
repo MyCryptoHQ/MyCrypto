@@ -66,13 +66,16 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
-  ETC: [
+  Gangnam: [
     {
-      name: makeNodeName('ETC', 'epool'),
+      name: makeNodeName('Gangnam', 'progtest'),
       type: 'rpc',
-      service: 'Epool.io',
-      url: 'https://cry.epool.io'
-    },
+      service: 'Gangnam ProgPoW',
+      url: 'https://rpc.progtest.net'
+    }
+  ],
+
+  ETC: [
     {
       name: makeNodeName('ETC', 'gastracker'),
       type: 'rpc',
@@ -282,6 +285,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'ether1.org',
       url: 'https://rpc.ether1.org'
+    }
+  ],
+
+  MIX: [
+    {
+      name: makeNodeName('MIX', 'mix-blockchain.org'),
+      type: 'rpc',
+      service: 'rpc2.mix-blockchain.org',
+      url: 'https://rpc2.mix-blockchain.org:8647'
+    }
+  ],
+
+  REOSC: [
+    {
+      name: makeNodeName('REOSC', 'reosc.io'),
+      type: 'rpc',
+      service: 'remote.reosc.io',
+      url: 'https://remote.reosc.io:3000'
     }
   ]
 };
