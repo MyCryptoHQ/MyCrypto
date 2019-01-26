@@ -1,3 +1,4 @@
+export { default as AccountDropdown } from './AccountDropdown';
 export { default as AccountList } from './AccountList';
 export { default as ActionTile } from './ActionTile';
 export { default as Amount } from './Amount';

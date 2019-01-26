@@ -1,6 +1,7 @@
 .Dashboard-mobile {
   margin-top: 20px;
   background: #e8eaed;
+  font-weight: 300;
 
   @media (min-width: 700px) {
     margin-top: 60px;
@@ -59,6 +60,7 @@
 .Dashboard-desktop {
   display: none;
   background: #e8eaed;
+  font-weight: 300;
 
   @media (min-width: 1080px) {
     display: block;

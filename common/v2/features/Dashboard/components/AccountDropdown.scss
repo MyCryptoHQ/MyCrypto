@@ -1,0 +1,49 @@
+.AccountDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 9px 15px;
+  border: 0.125em solid #e5ecf3;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5), inset 0 1px 3px 0 rgba(232, 234, 237, 0.5);
+  background-color: #ffffff;
+  color: #1d2732;
+  cursor: pointer;
+
+  &-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 0 20px 14px 20px;
+    background: #ffffff;
+    border: 1px solid #e5ecf3;
+
+    label {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 16px 0;
+      font-weight: 300;
+
+      &:first-of-type,
+      &:last-of-type {
+        border-bottom: 1px solid #e5ecf3;
+      }
+    }
+    input[type='checkbox'] {
+      margin: 0;
+      margin-right: 15px;
+    }
+    &-identicon {
+      width: 30px;
+      height: 30px;
+      margin-right: 15px;
+    }
+    &-apply {
+      width: 100%;
+      margin-top: 15px;
+    }
+  }
+}

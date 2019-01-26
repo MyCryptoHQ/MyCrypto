@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ComboBox, Heading, Panel, Typography } from '@mycrypto/ui';
 
+import AccountDropdown from './AccountDropdown';
 import './WalletBreakdown.scss';
 
 // Legacy
@@ -41,12 +42,9 @@ export default function WalletBreakdown() {
           onChange={() => {}}
           items={new Set(['US Dollars'])}
         />
-        <ComboBox
-          className="WalletBreakdown-selectWrapper-select"
-          value="3 of 9 Accounts"
-          onChange={() => {}}
-          items={new Set(['3 of 9 Accounts'])}
-        />
+        <div className="WalletBreakdown-selectWrapper-select">
+          <AccountDropdown />
+        </div>
       </div>
       <Panel className="WalletBreakdown-panel">
         <div>
