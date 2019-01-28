@@ -1,4 +1,5 @@
 import Dashboard from './Dashboard';
+import { SendAssets } from './SendAssets';
 
 export default [
   {
@@ -6,5 +7,11 @@ export default [
     path: '/dashboard',
     exact: true,
     component: Dashboard
+  },
+  {
+    name: 'Send Assets',
+    path: '/dashboard/send',
+    exact: true,
+    component: SendAssets
   }
 ];
