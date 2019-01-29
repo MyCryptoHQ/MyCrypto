@@ -35,7 +35,7 @@ export function getParamFromURL(url: string, param: string): string | undefined 
 
 export function isAdvancedQueryTransaction(query: string): boolean {
   const params = qs.parse(query.toLowerCase());
-  if ('data' in params) {
+  if ('data' in params || 'gaslimit' in params) {
     return true;
   } else {
     return false;
