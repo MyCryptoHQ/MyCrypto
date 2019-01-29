@@ -1070,6 +1070,11 @@
     "decimal": 18
   },
   {
+    "address": "0xf75fBfa2f681860B9A6D19FC3FF3D34CB322E2D6",
+    "symbol": "CIYA",
+    "decimal": 18
+  },
+  {
     "address": "0x3abdfF32F76b42E7635bdb7e425f0231A5F3aB17",
     "symbol": "CJT",
     "decimal": 18
@@ -3320,8 +3325,13 @@
     "decimal": 8
   },
   {
+    "address": "0xec67005c4E498Ec7f55E092bd1d35cbC47C91892",
+    "symbol": "MLN (new)",
+    "decimal": 18
+  },
+  {
     "address": "0xBEB9eF514a379B997e0798FDcC901Ee474B6D9A1",
-    "symbol": "MLN",
+    "symbol": "MLN (old)",
     "decimal": 18
   },
   {
@@ -4023,6 +4033,11 @@
     "address": "0x779B7b713C86e3E6774f5040D9cCC2D43ad375F8",
     "symbol": "POOL",
     "decimal": 8
+  },
+  {
+    "address": "0x5D858bcd53E085920620549214a8b27CE2f04670",
+    "symbol": "POP",
+    "decimal": 18
   },
   {
     "address": "0xEe609fE292128Cad03b786DBb9Bc2634Ccdbe7fC",
@@ -5642,6 +5657,11 @@
   {
     "address": "0x4d829f8C92a6691c56300D020c9e0dB984Cfe2BA",
     "symbol": "XCC",
+    "decimal": 18
+  },
+  {
+    "address": "0xB4272071eCAdd69d933AdcD19cA99fe80664fc08",
+    "symbol": "XCHF",
     "decimal": 18
   },
   {
