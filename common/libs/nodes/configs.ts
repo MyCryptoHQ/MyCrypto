@@ -74,12 +74,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       url: 'https://cry.epool.io'
     },
     {
-      name: makeNodeName('ETC', 'gastracker'),
-      type: 'rpc',
-      service: 'GasTracker',
-      url: 'https://web3.gastracker.io'
-    },
-    {
       name: makeNodeName('ETC', 'etccooperative'),
       type: 'rpc',
       service: 'ETC Cooperative',
