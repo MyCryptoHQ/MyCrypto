@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { Button, Heading, Panel } from '@mycrypto/ui';
 
 import Stepper from './Stepper';
@@ -15,7 +16,7 @@ interface Props {
     current: number;
     total: number;
   };
-  onBack?(): void;
+  onBack(): void;
 }
 
 export default function ContentPanel({
@@ -26,10 +27,14 @@ export default function ContentPanel({
   stepper,
   ...rest
 }: Props) {
+  const topClassName = classnames('ContentPanel-top', {
+    'ContentPanel-stepperOnly': stepper && !onBack
+  });
+
   return (
     <div className="ContentPanel">
       {(onBack || stepper) && (
-        <div className="ContentPanel-top">
+        <div className={topClassName}>
           {onBack && (
             <Button basic={true} className="ContentPanel-top-back" onClick={onBack}>
               <img src={backArrowIcon} alt="Back arrow" /> Back

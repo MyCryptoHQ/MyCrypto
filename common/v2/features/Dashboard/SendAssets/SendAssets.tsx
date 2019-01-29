@@ -24,28 +24,32 @@ interface State {
   transaction: Transaction;
 }
 
+const getInitialState = (): State => ({
+  step: 0,
+  transaction: {
+    senderAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+    recipientAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+    amount: '0.00',
+    asset: 'ETH',
+    transactionFee: '',
+    advancedMode: false,
+    automaticallyCalculateGasLimit: true,
+    gasPrice: '',
+    gasLimit: '',
+    nonce: '',
+    data: ''
+  }
+});
+
 export class SendAssets extends Component<RouteComponentProps<{}>> {
-  public state: State = {
-    step: 0,
-    transaction: {
-      senderAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      recipientAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      amount: '0.00',
-      asset: 'ETH',
-      transactionFee: '',
-      advancedMode: false,
-      automaticallyCalculateGasLimit: true,
-      gasPrice: '',
-      gasLimit: '',
-      nonce: '',
-      data: ''
-    }
-  };
+  public state: State = getInitialState();
 
   public render() {
     const { history } = this.props;
     const { step, transaction } = this.state;
-    const onBack = step === 0 ? history.goBack : this.regressStep;
+    const backOptions = [history.goBack, this.regressStep];
+    // Step 3, ConfirmTransaction, cannot go back (as backOptions[2] is undefined)
+    const onBack = backOptions[step];
     const Step = steps[step];
 
     return (
@@ -63,6 +67,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
             transaction={transaction}
             onNext={this.advanceStep}
             onSubmit={this.updateTransaction}
+            onReset={this.handleReset}
           />
         </ContentPanel>
       </Layout>
@@ -83,6 +88,8 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
     this.setState({
       transaction
     });
+
+  private handleReset = () => this.setState(getInitialState());
 }
 
 export default withRouter(SendAssets);

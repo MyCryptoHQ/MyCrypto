@@ -7,6 +7,9 @@
     justify-content: space-between;
     margin-bottom: 10px;
 
+    &.ContentPanel-stepperOnly {
+      justify-content: flex-end;
+    }
     &-back {
       color: #007a99;
       font-weight: bold;

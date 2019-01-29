@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { Address, Button, Copyable, Network } from '@mycrypto/ui';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Address, Button, Copyable } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
 import { Transaction } from '../SendAssets';
@@ -10,7 +11,7 @@ import sentIcon from 'common/assets/images/icn-sent.svg';
 
 interface Props {
   transaction: Transaction;
-  onNext(): void;
+  onReset(): void;
 }
 
 const truncate = (children: string) => {
@@ -18,7 +19,8 @@ const truncate = (children: string) => {
 };
 
 export default function TransactionComplete({
-  transaction: { recipientAddress, senderAddress }
+  transaction: { recipientAddress, senderAddress },
+  onReset
 }: Props) {
   return (
     <div className="TransactionComplete">
@@ -64,8 +66,10 @@ export default function TransactionComplete({
           </div>
         </div>
       </div>
-      <Button className="TransactionComplete-back">Back to Dashboard</Button>
-      <Button secondary={true} className="TransactionComplete-another">
+      <Link to="/dashboard">
+        <Button className="TransactionComplete-back">Back to Dashboard</Button>
+      </Link>
+      <Button secondary={true} onClick={onReset} className="TransactionComplete-another">
         Send Another Transaction
       </Button>
     </div>
