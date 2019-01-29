@@ -1,13 +1,19 @@
 .ContentPanel {
-  &-back {
+  max-width: 560px;
+
+  &-top {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 10px;
-    color: #007a99;
-    font-weight: bold;
 
-    img {
-      margin-right: 13px;
+    &-back {
+      color: #007a99;
+      font-weight: bold;
+
+      img {
+        margin-right: 13px;
+      }
     }
   }
 }

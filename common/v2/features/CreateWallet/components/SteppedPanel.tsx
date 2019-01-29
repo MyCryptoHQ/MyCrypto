@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Heading, Typography } from '@mycrypto/ui';
 
-import { ContentPanel, Stepper } from 'v2/components';
+import { ContentPanel } from 'v2/components';
 import './SteppedPanel.scss';
 
 interface Props {
@@ -27,11 +27,15 @@ export default function SteppedPanel({
   const steppedPanelClassName = classnames('SteppedPanel', className);
 
   return (
-    <ContentPanel onBack={onBack} className={steppedPanelClassName}>
-      <div className="SteppedPanel-top">
-        <Stepper current={currentStep} total={totalSteps} className="SteppedPanel-top-stepper" />
-        <Heading className="SteppedPanel-top-heading">{heading}</Heading>
-      </div>
+    <ContentPanel
+      onBack={onBack}
+      stepper={{
+        current: currentStep,
+        total: totalSteps
+      }}
+      className={steppedPanelClassName}
+    >
+      <Heading className="SteppedPanel-heading">{heading}</Heading>
       <Typography>{description}</Typography>
       {children}
     </ContentPanel>

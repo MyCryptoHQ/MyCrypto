@@ -1,25 +1,10 @@
 .SteppedPanel {
-  max-width: 560px;
+  width: 100%;
   padding: 42px 71px 50px 71px;
 
-  &-top {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    @media (min-width: 700px) {
-      flex-direction: row;
-      justify-content: space-between;
-    }
-    &-heading {
-      margin-top: 0;
-      font-size: 32px;
-      font-weight: bold;
-    }
-    &-stepper {
-      @media (min-width: 700px) {
-        order: 2;
-      }
-    }
+  &-heading {
+    margin-top: 0;
+    font-size: 32px;
+    font-weight: bold;
   }
 }
