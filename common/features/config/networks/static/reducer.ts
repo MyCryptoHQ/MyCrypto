@@ -766,9 +766,9 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     contracts: [],
     isTestnet: false,
     dPathFormats: {
-      //[SecureWalletName.TREZOR]: ARTIS_SIGMA1,
-      //[SecureWalletName.SAFE_T]: ARTIS_SIGMA1,
-      //[SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [SecureWalletName.TREZOR]: ARTIS_SIGMA1,
+      [SecureWalletName.SAFE_T]: ARTIS_SIGMA1,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_SIGMA1
     },
     gasPriceSettings: {
