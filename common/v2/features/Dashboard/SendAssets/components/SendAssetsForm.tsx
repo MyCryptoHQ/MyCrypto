@@ -188,6 +188,22 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                       />
                     </div>
                   </div>
+                  <fieldset className="SendAssetsForm-fieldset">
+                    <label htmlFor="data">Data</label>
+                    <Field
+                      name="data"
+                      render={({ field, form }) => (
+                        <Input
+                          value={field.value}
+                          onChange={({ target: { value } }) =>
+                            form.setFieldValue(field.name, value)
+                          }
+                          placeholder="0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520"
+                          className="SendAssetsForm-fieldset-input"
+                        />
+                      )}
+                    />
+                  </fieldset>
                   <div className="SendAssetsForm-advancedOptions-content-output">
                     0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~=
                     $2.67 USD

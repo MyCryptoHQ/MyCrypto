@@ -17,6 +17,7 @@ export interface Transaction {
   gasPrice: string;
   gasLimit: string;
   nonce: string;
+  data: string;
 }
 
 interface State {
@@ -37,7 +38,8 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
       automaticallyCalculateGasLimit: true,
       gasPrice: '',
       gasLimit: '',
-      nonce: ''
+      nonce: '',
+      data: ''
     }
   };
 
