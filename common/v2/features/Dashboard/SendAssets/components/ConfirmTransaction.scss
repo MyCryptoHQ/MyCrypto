@@ -1,0 +1,64 @@
+.ConfirmTransaction {
+  &-row {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 550px) {
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    &-column {
+      flex: 1;
+      margin-right: 13px;
+      margin-bottom: 24px;
+
+      @media (min-width: 550px) {
+        margin-bottom: 0;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+    }
+  }
+  &-addressWrapper {
+    margin-top: 10px;
+    padding: 12px;
+    background: #f8f8f8;
+  }
+  &-divider {
+    height: 1px;
+    margin-bottom: 20px;
+    background: #e3edff;
+  }
+  &-detailButton {
+    width: 100%;
+    margin-bottom: 15px;
+    color: #1eb8e7;
+  }
+  &-details {
+    margin-bottom: 25px;
+
+    &-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      &-column {
+        flex: 1;
+
+        &:first-child {
+          font-weight: bold;
+        }
+        &:nth-child(2) {
+          text-align: right;
+        }
+      }
+    }
+  }
+  &-button {
+    width: 100%;
+  }
+}

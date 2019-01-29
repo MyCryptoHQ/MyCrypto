@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Address, CollapsibleTable } from '@mycrypto/ui';
 
-import Amount from './Amount';
+import { Amount } from 'v2/components';
 import DashboardPanel from './DashboardPanel';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';

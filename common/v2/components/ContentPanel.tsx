@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Panel } from '@mycrypto/ui';
+import { Button, Heading, Panel } from '@mycrypto/ui';
 
 import Stepper from './Stepper';
 import './ContentPanel.scss';
@@ -10,6 +10,7 @@ import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 interface Props {
   children: any;
   className: string;
+  heading: string;
   stepper?: {
     current: number;
     total: number;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function ContentPanel({
+  heading,
   onBack,
   children,
   className = '',
@@ -37,6 +39,7 @@ export default function ContentPanel({
         </div>
       )}
       <Panel className={className} {...rest}>
+        <Heading className="ContentPanel-heading">{heading}</Heading>
         {children}
       </Panel>
     </div>

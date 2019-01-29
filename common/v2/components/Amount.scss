@@ -9,8 +9,9 @@
   &-asset {
     margin: 0;
     margin-right: 11px;
+    color: #282d32;
     font-size: 20px;
-    color: #424242;
+    font-weight: bold;
 
     @media (min-width: 1000px) {
       margin-right: 0;

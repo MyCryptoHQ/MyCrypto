@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Heading } from '@mycrypto/ui';
 
 import { ContentPanel, Layout } from 'v2/components';
 import { headings, steps } from './constants';
@@ -29,8 +28,8 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   public state: State = {
     step: 0,
     transaction: {
-      senderAddress: '',
-      recipientAddress: '',
+      senderAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+      recipientAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       amount: '0.00',
       asset: 'ETH',
       transactionFee: '',
@@ -54,12 +53,12 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
         <ContentPanel
           onBack={onBack}
           className="SendAssets-panel"
+          heading={headings[step]}
           stepper={{
             current: step + 1,
             total: steps.length
           }}
         >
-          <Heading className="SendAssetsForm-panel-heading">{headings[step]}</Heading>
           <Step
             transaction={transaction}
             onNext={this.advanceStep}
