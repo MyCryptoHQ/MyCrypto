@@ -24,7 +24,7 @@ export class AccountDropdown extends Component<Props> {
     open: false
   };
 
-  public handleClickOutside = () => this.toggleOpen();
+  public handleClickOutside = () => this.state.open && this.toggleOpen();
 
   public render() {
     const { accounts, visibleCount, allVisible, onSelectAll, onSelect } = this.props;
