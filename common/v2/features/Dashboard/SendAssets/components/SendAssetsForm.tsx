@@ -22,11 +22,11 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
         onSubmit(values);
         onNext();
       }}
-      render={({ handleSubmit, setFieldValue, values: { advancedMode } }) => {
+      render={({ setFieldValue, values: { advancedMode } }) => {
         const toggleAdvancedOptions = () => setFieldValue('advancedMode', !advancedMode);
 
         return (
-          <Form onSubmit={handleSubmit} className="SendAssetsForm">
+          <Form className="SendAssetsForm">
             {/* Sender Address */}
             <fieldset className="SendAssetsForm-fieldset">
               <label htmlFor="senderAddress">Select an Existing Address</label>

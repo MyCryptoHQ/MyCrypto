@@ -1,17 +1,21 @@
 .Layout {
+  min-width: 350px;
   background: #f6f8fa;
 
   &-content {
-    padding: 100px 30px 50px 30px;
+    padding: 100px 0 50px 0;
 
     @media (min-width: 700px) {
-      padding: 50px 80px;
+      padding: 150px 80px 50px 80px;
 
       &.centered {
         display: flex;
         align-items: center;
         justify-content: center;
       }
+    }
+    @media (min-width: 1000px) {
+      padding: 50px 80px;
     }
     &.fluid {
       padding-left: 0;

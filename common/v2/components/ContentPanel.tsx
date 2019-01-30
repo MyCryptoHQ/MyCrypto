@@ -12,6 +12,7 @@ interface Props {
   children: any;
   className: string;
   heading: string;
+  icon?: string;
   stepper?: {
     current: number;
     total: number;
@@ -21,6 +22,7 @@ interface Props {
 
 export default function ContentPanel({
   heading,
+  icon,
   onBack,
   children,
   className = '',
@@ -44,7 +46,10 @@ export default function ContentPanel({
         </div>
       )}
       <Panel className={className} {...rest}>
-        <Heading className="ContentPanel-heading">{heading}</Heading>
+        <Heading className="ContentPanel-heading">
+          {heading}
+          {icon && <img src={icon} alt="Icon" className="ContentPanel-heading-icon" />}
+        </Heading>
         {children}
       </Panel>
     </div>

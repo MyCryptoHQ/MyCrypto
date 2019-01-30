@@ -5,6 +5,9 @@ import { ContentPanel, Layout } from 'v2/components';
 import { headings, steps } from './constants';
 import './SendAssets.scss';
 
+// Legacy
+import sendIcon from 'common/assets/images/icn-send.svg';
+
 export interface Transaction {
   senderAddress: string;
   recipientAddress: string;
@@ -58,6 +61,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
           onBack={onBack}
           className="SendAssets-panel"
           heading={headings[step]}
+          icon={sendIcon}
           stepper={{
             current: step + 1,
             total: steps.length
