@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Heading, Panel } from '@mycrypto/ui';
+import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
 
 import Stepper from './Stepper';
 import './ContentPanel.scss';
@@ -13,6 +13,7 @@ interface Props {
   className: string;
   heading: string;
   icon?: string;
+  description?: string;
   stepper?: {
     current: number;
     total: number;
@@ -21,12 +22,13 @@ interface Props {
 }
 
 export default function ContentPanel({
+  onBack,
+  stepper,
   heading,
   icon,
-  onBack,
+  description,
   children,
   className = '',
-  stepper,
   ...rest
 }: Props) {
   const topClassName = classnames('ContentPanel-top', {
@@ -50,6 +52,7 @@ export default function ContentPanel({
           {heading}
           {icon && <img src={icon} alt="Icon" className="ContentPanel-heading-icon" />}
         </Heading>
+        {description && <Typography className="ContentPanel-description">{description}</Typography>}
         {children}
       </Panel>
     </div>

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import chunk from 'lodash/chunk';
 import shuffle from 'lodash/shuffle';
-import { Button } from '@mycrypto/ui';
+import { Button, Typography } from '@mycrypto/ui';
 
+import { ContentPanel } from 'v2/components';
 import { PanelProps } from '../CreateWallet';
-import SteppedPanel from './SteppedPanel';
 import './ConfirmPhrasePanel.scss';
 
 interface Props {
@@ -31,12 +31,14 @@ export default class ConfirmPhrasePanel extends Component<Props & PanelProps> {
     const { confirmedWords, shuffledWords, wrongWord } = this.state;
 
     return (
-      <SteppedPanel
+      <ContentPanel
+        onBack={onBack}
+        stepper={{
+          current: 4,
+          total: 4
+        }}
         heading="Confirm Phrase"
         description="Confirm your mnemonic phrase by selecting each phrase in order to make sure it is correct."
-        currentStep={4}
-        totalSteps={4}
-        onBack={onBack}
         className="ConfirmPhrasePanel"
       >
         <div className="ConfirmPhrasePanel-activeWords">
@@ -75,7 +77,7 @@ export default class ConfirmPhrasePanel extends Component<Props & PanelProps> {
         >
           Confirm Phrase
         </Button>
-      </SteppedPanel>
+      </ContentPanel>
     );
   }
 

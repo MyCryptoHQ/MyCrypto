@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 
+import { ContentPanel } from 'v2/components';
 import { PanelProps } from '../CreateWallet';
-import SteppedPanel from './SteppedPanel';
 import './GeneratePhrasePanel.scss';
 
 // Legacy
@@ -24,12 +24,14 @@ export default class GeneratePhrasePanel extends Component<Props & PanelProps> {
     const { words, generateWords, onBack, onNext } = this.props;
 
     return (
-      <SteppedPanel
+      <ContentPanel
+        onBack={onBack}
+        stepper={{
+          current: 3,
+          total: 4
+        }}
         heading="Generate Phrase"
         description="Generate a mnemonic phrase and write these words down. To keep your funds safe, do not copy them to your clipboard or save them anywhere online."
-        currentStep={3}
-        totalSteps={4}
-        onBack={onBack}
         className="GeneratePhrasePanel"
       >
         <Typography className="GeneratePhrasePanel-words">{words.join(' ')}</Typography>
@@ -45,7 +47,7 @@ export default class GeneratePhrasePanel extends Component<Props & PanelProps> {
             <img src={reloadIcon} alt="Reload" /> Regenerate Phrase
           </Button>
         </div>
-      </SteppedPanel>
+      </ContentPanel>
     );
   }
 }
