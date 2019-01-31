@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
+import { DrawerProvider } from 'v2/providers';
 import './Layout.scss';
 
 // Legacy
@@ -23,15 +24,17 @@ export default function Layout({ centered, fluid, className = '', children }: Pr
   });
 
   return (
-    <main className={`Layout ${className}`}>
-      <Query
-        params={['network']}
-        withQuery={({ network }) => (
-          <NewHeader networkParam={network && makeAutoNodeName(network)} />
-        )}
-      />
-      <div className={contentClassName}>{children}</div>
-      <NewFooter />
-    </main>
+    <DrawerProvider>
+      <main className={`Layout ${className}`}>
+        <Query
+          params={['network']}
+          withQuery={({ network }) => (
+            <NewHeader networkParam={network && makeAutoNodeName(network)} />
+          )}
+        />
+        <div className={contentClassName}>{children}</div>
+        <NewFooter />
+      </main>
+    </DrawerProvider>
   );
 }

@@ -1,0 +1,54 @@
+.DrawerOverlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.Drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+
+  width: 379px;
+  height: 100vh;
+  min-height: 480px;
+  background: #ffffff;
+
+  &-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 26px 0;
+    padding: 0 21px;
+
+    &-heading {
+      margin: 0;
+      text-transform: uppercase;
+      font-size: 18px;
+      font-weight: bold;
+      color: #424242;
+    }
+  }
+  &-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &-inside {
+      flex: 2;
+      padding: 0 21px;
+    }
+    &-actions {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+  }
+}

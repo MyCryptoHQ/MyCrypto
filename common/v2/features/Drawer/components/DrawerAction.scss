@@ -1,0 +1,24 @@
+.DrawerAction {
+  display: flex;
+  align-items: center;
+  padding: 27px 24px;
+
+  &:first-of-type {
+    border-top: 1px solid #d7dadc;
+  }
+  &:not(:last-of-type) {
+    border-bottom: 1px solid #d7dadc;
+  }
+  &-icon {
+    width: 34px;
+    height: 34px;
+    margin-right: 14px;
+  }
+  &-text {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #1d2732;
+  }
+}
