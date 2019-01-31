@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Layout } from 'v2/components';
+import { Layout } from 'v2/features';
 import { isDesktop } from 'v2/utils';
 import { MnemonicProvider, MnemonicContext } from './components';
 import {

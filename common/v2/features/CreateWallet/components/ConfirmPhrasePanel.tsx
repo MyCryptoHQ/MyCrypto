@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import chunk from 'lodash/chunk';
 import shuffle from 'lodash/shuffle';
-import { Button, Typography } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
 import { PanelProps } from '../CreateWallet';

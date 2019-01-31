@@ -27,7 +27,7 @@ export const DrawerContext = React.createContext();
 
 export default class DrawerProvider extends Component {
   public state: State = {
-    visible: true,
+    visible: false,
     screen: {},
     toggleVisible: () =>
       this.setState((prevState: State) => ({

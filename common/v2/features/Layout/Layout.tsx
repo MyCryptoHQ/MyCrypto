@@ -2,13 +2,13 @@ import React from 'react';
 import classnames from 'classnames';
 
 import { DrawerProvider } from 'v2/providers';
+import Header from './Header';
+import Footer from './Footer';
 import './Layout.scss';
 
 // Legacy
 import { makeAutoNodeName } from 'libs/nodes';
 import { Query } from 'components/renderCbs';
-import NewHeader from 'components/Header/NewHeader/NewHeader';
-import NewFooter from 'components/Footer/NewFooter/NewFooter';
 
 interface Props {
   className?: string;
@@ -29,11 +29,11 @@ export default function Layout({ centered, fluid, className = '', children }: Pr
         <Query
           params={['network']}
           withQuery={({ network }) => (
-            <NewHeader networkParam={network && makeAutoNodeName(network)} />
+            <Header networkParam={network && makeAutoNodeName(network)} />
           )}
         />
         <div className={contentClassName}>{children}</div>
-        <NewFooter />
+        <Footer />
       </main>
     </DrawerProvider>
   );

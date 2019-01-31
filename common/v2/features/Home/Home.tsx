@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layout } from 'v2/components';
+import { Layout } from 'v2/features';
 import { GetStartedPanel } from './components';
 import './Home.scss';
 

@@ -3,7 +3,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { ComboBox, Copyable, Input } from '@mycrypto/ui';
 
-import { ContentPanel, Layout } from 'v2/components';
+import { ContentPanel } from 'v2/components';
+import { Layout } from 'v2/features';
 import './RequestAssets.scss';
 
 // Legacy

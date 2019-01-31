@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { ContentPanel, Layout } from 'v2/components';
+import { ContentPanel } from 'v2/components';
+import { Layout } from 'v2/features';
 import { headings, steps } from './constants';
 import './SendAssets.scss';
 

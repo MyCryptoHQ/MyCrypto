@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heading } from '@mycrypto/ui';
 
-import { Layout } from 'v2/components';
+import { Layout } from 'v2/features';
 import {
   AccountList,
   ActionTile,
