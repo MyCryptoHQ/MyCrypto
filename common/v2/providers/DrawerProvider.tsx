@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Transition } from 'react-spring';
 
+import { Overlay } from 'v2/components';
 import { Drawer } from 'v2/features';
 
 export interface Action {
@@ -26,7 +27,7 @@ export const DrawerContext = React.createContext();
 
 export default class DrawerProvider extends Component {
   public state: State = {
-    visible: false,
+    visible: true,
     screen: {},
     toggleVisible: () =>
       this.setState((prevState: State) => ({
@@ -42,10 +43,10 @@ export default class DrawerProvider extends Component {
     return (
       <DrawerContext.Provider value={this.state}>
         {children}
+        {visible && <Overlay onClick={toggleVisible} />}
         <Transition from={{ right: '-350px' }} enter={{ right: '0' }} leave={{ right: '-500px' }}>
           {visible &&
-            ((style: any) =>
-              screen && <Drawer {...screen} onClose={toggleVisible} style={style} />)}
+            ((style: any) => <Drawer {...screen} onClose={toggleVisible} style={style} />)}
         </Transition>
       </DrawerContext.Provider>
     );
