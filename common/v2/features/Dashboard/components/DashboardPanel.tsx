@@ -7,10 +7,10 @@ import './DashboardPanel.scss';
 
 interface Props {
   heading: string;
-  action: string;
-  actionLink: string;
-  className?: string;
   children: any;
+  action?: string;
+  actionLink?: string;
+  className?: string;
 }
 
 export default function DashboardPanel({
@@ -25,9 +25,12 @@ export default function DashboardPanel({
     <Panel className={classnames('DashboardPanel', className)} {...rest}>
       <div className="DashboardPanel-headingWrapper">
         <Heading className="DashboardPanel-headingWrapper-heading">{heading}</Heading>
-        <Link to={actionLink}>
-          <Button className="DashboardPanel-headingWrapper-button">{action}</Button>
-        </Link>
+        {action &&
+          actionLink && (
+            <Link to={actionLink}>
+              <Button className="DashboardPanel-headingWrapper-button">{action}</Button>
+            </Link>
+          )}
       </div>
       {children}
     </Panel>
