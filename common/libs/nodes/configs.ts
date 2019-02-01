@@ -23,7 +23,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ETH', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://mainnet.infura.io/mycrypto'
+      url: 'https://mainnet.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     }
   ],
 
@@ -32,7 +32,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Ropsten', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://ropsten.infura.io/mycrypto'
+      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     }
   ],
 
@@ -50,7 +50,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Rinkeby', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://rinkeby.infura.io/mycrypto'
+      url: 'https://rinkeby.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     },
     {
       name: makeNodeName('Rinkeby', 'ethscan'),
@@ -70,12 +70,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ],
 
   ETC: [
-    {
-      name: makeNodeName('ETC', 'gastracker'),
-      type: 'rpc',
-      service: 'GasTracker',
-      url: 'https://web3.gastracker.io'
-    },
     {
       name: makeNodeName('ETC', 'etccooperative'),
       type: 'rpc',
@@ -106,8 +100,8 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     {
       name: makeNodeName('POA', 'core'),
       type: 'infura',
-      service: 'poa.infura.io',
-      url: 'https://poa.infura.io'
+      service: 'core.poa.network',
+      url: 'https://core.poa.network'
     }
   ],
 
