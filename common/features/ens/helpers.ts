@@ -92,9 +92,10 @@ const modeMap: IModeMap = {
 export function* resolveDomainRequest(name: string): SagaIterator {
   const ensAddresses = yield select(getENSAddresses);
   const ensTLD = yield select(getENSTLD);
-  const splitName = name.split('.');
+  const lowercaseName = name.toLowerCase();
+  const splitName = lowercaseName.split('.');
   let hash: Buffer;
-  const nameHash: string = getNameHash(`${name}.${ensTLD}`);
+  const nameHash: string = getNameHash(`${lowercaseName}.${ensTLD}`);
 
   if (splitName.length === 2) {
     hash = ethUtil.sha3(splitName[1]);
