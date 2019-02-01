@@ -1,6 +1,8 @@
 .DrawerAction {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
+  height: 78px;
   padding: 27px 24px;
 
   &:first-of-type {

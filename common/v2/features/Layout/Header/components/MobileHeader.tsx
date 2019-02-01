@@ -1,41 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Transition } from 'react-spring';
+import { Identicon } from '@mycrypto/ui';
 
-import { languages } from 'config';
-import { translateRaw } from 'translations';
-import { AppState } from 'features/reducers';
-import {
-  configSelectors,
-  configMetaSelectors,
-  configNodesStaticSelectors,
-  configNodesSelectedActions
-} from 'features/config';
-import { sidebarActions } from 'features/sidebar';
-import { walletActions } from 'features/wallet';
 import logo from 'assets/images/logo-mycrypto.svg';
-import { LINKSET } from '../constants';
+import { linkset } from '../constants';
 import { generateMenuIcon, generateCaretIcon } from '../helpers';
 import './MobileHeader.scss';
-
-interface OwnProps {
-  networkParam: string | null;
-}
-
-interface StateProps {
-  shouldSetNodeFromQS: boolean;
-  nodeLabel: ReturnType<typeof configSelectors.getSelectedNodeLabel>;
-  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
-}
-
-interface DispatchProps {
-  openSidebar: sidebarActions.TOpenSidebar;
-  changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
-  setAccessMessage: walletActions.TSetAccessMessage;
-}
-
-type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   menuVisible: boolean;
@@ -44,7 +15,7 @@ interface State {
   };
 }
 
-class MobileHeader extends Component<Props> {
+export default class MobileHeader extends Component {
   public state: State = {
     menuVisible: false,
     visibleDropdowns: {
@@ -54,12 +25,7 @@ class MobileHeader extends Component<Props> {
     }
   };
 
-  public componentDidMount() {
-    this.attemptSetNodeFromQueryParameter();
-  }
-
   public render() {
-    const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
     const { menuVisible, visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const menuIcon = generateMenuIcon(menuVisible);
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
@@ -67,99 +33,93 @@ class MobileHeader extends Component<Props> {
     const toolsIcon = generateCaretIcon(tools);
 
     return (
-      <section className="MobileHeader">
-        <section className="MobileHeader-top">
-          <section className="MobileHeader-top-menu-button" onClick={this.toggleMenu}>
+      <section className="_MobileHeader">
+        <section className="_MobileHeader-top">
+          <section className="_MobileHeader-top-menu-button" onClick={this.toggleMenu}>
             <i className={menuIcon} />
           </section>
-          <section className="MobileHeader-top-logo">
-            <Link to="/" onClick={() => setAccessMessage('')}>
+          <section className="_MobileHeader-top-logo">
+            <Link to="/">
               <img src={logo} alt="Our logo" />
             </Link>
           </section>
-          {/* Dummy <div /> for flex spacing */}
+          <section className="_MobileHeader-top-menu-account">
+            <Identicon address="0x80200997f095da94E404F7E0d581AAb1fFba9f7d" />
+          </section>
           <div />
         </section>
         <Transition from={{ left: '-320px' }} enter={{ left: '0' }} leave={{ left: '-500px' }}>
           {menuVisible &&
             (props => (
-              <section className="MobileHeader-menu" style={props}>
-                <ul className="MobileHeader-menu-top">
+              <section className="_MobileHeader-menu" style={props}>
+                <ul className="_MobileHeader-menu-top">
                   <li onClick={this.toggleSendAndReceive}>
-                    {translateRaw('NEW_HEADER_TEXT_3')} <i className={sendAndReceiveIcon} />
+                    Send & Receive <i className={sendAndReceiveIcon} />
                     {sendAndReceive && (
-                      <ul className="MobileHeader-menu-subitems">
-                        {LINKSET.SEND_AND_RECEIVE.map(item => (
+                      <ul className="_MobileHeader-menu-subitems">
+                        {linkset.sendAndReceive.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to} onClick={() => setAccessMessage(item.accessMessage)}>
-                              {item.title}
-                            </Link>
+                            <Link to={item.to}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
                     )}
                   </li>
                   <li onClick={this.toggleBuyAndExchange}>
-                    {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
+                    Buy & Exchange <i className={buyAndExchangeIcon} />
                     {buyAndExchange && (
-                      <ul className="MobileHeader-menu-subitems">
-                        {LINKSET.BUY_AND_EXCHANGE.map(item => (
+                      <ul className="_MobileHeader-menu-subitems">
+                        {linkset.buyAndExchange.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to} onClick={() => setAccessMessage('')}>
-                              {item.title}
-                            </Link>
+                            <Link to={item.to}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
                     )}
                   </li>
                   <li onClick={this.toggleTools}>
-                    {translateRaw('NEW_HEADER_TEXT_5')}
+                    Tools
                     <i className={toolsIcon} style={{ marginLeft: '3px' }} />
                     {tools && (
-                      <ul className="MobileHeader-menu-subitems">
-                        {LINKSET.TOOLS.map(item => (
+                      <ul className="_MobileHeader-menu-subitems">
+                        {linkset.tools.map(item => (
                           <li key={item.to} onClick={this.toggleMenu}>
-                            <Link to={item.to} onClick={() => setAccessMessage('')}>
-                              {item.title}
-                            </Link>
+                            <Link to={item.to}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
                     )}
                   </li>
                   <li>
-                    <Link to="/generate">
-                      <i className="fa fa-plus" /> {translateRaw('NEW_HEADER_TEXT_6')}
+                    <Link to="/create-wallet">
+                      <i className="fa fa-plus" /> Create Wallet
                     </Link>
                   </li>
                 </ul>
-                <ul className="MobileHeader-menu-mid">
+                <ul className="_MobileHeader-menu-mid">
                   <li
                     onClick={() => {
-                      openSidebar('selectLanguage');
                       this.toggleMenu();
                     }}
                   >
-                    {languages[languageSelection]} <i className="fa fa-caret-down" />
+                    English <i className="fa fa-caret-down" />
                   </li>
                   <li
                     onClick={() => {
-                      openSidebar('selectNetworkAndNode');
                       this.toggleMenu();
                     }}
                   >
-                    {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
+                    Ethereum (Auto) <i className="fa fa-caret-down" />
                   </li>
                 </ul>
-                <ul className="MobileHeader-menu-bottom">
+                <ul className="_MobileHeader-menu-bottom">
                   <li>
                     <a
                       href="https://support.mycrypto.com/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
+                      Help & Support <i className="fa fa-caret-right" />
                     </a>
                   </li>
                   <li>
@@ -168,7 +128,7 @@ class MobileHeader extends Component<Props> {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
+                      Latest News <i className="fa fa-caret-right" />
                     </a>
                   </li>
                 </ul>
@@ -195,28 +155,4 @@ class MobileHeader extends Component<Props> {
   private toggleSendAndReceive = () => this.toggleDropdown('sendAndReceive');
   private toggleBuyAndExchange = () => this.toggleDropdown('buyAndExchange');
   private toggleTools = () => this.toggleDropdown('tools');
-
-  private attemptSetNodeFromQueryParameter = () => {
-    const { shouldSetNodeFromQS, networkParam, changeNodeRequestedOneTime } = this.props;
-
-    if (shouldSetNodeFromQS) {
-      changeNodeRequestedOneTime(networkParam!);
-    }
-  };
 }
-
-const mapStateToProps = (state: AppState, { networkParam }: any) => ({
-  shouldSetNodeFromQS: !!(
-    networkParam && configNodesStaticSelectors.isStaticNodeId(state, networkParam)
-  ),
-  nodeLabel: configSelectors.getSelectedNodeLabel(state),
-  languageSelection: configMetaSelectors.getLanguageSelection(state)
-});
-
-const mapDispatchToProps = {
-  openSidebar: sidebarActions.openSidebar,
-  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
-  setAccessMessage: walletActions.setAccessMessage
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MobileHeader);

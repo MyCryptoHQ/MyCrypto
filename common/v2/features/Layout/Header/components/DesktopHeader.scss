@@ -2,7 +2,7 @@ $header-background-color: #163150;
 $header-icon-color: #1eb8e7;
 $dropdown-background-color: #0f253f;
 
-.DesktopHeader {
+._DesktopHeader {
   display: flex;
   flex-direction: column;
   background: $header-background-color;
@@ -17,7 +17,8 @@ $dropdown-background-color: #0f253f;
   &-top {
     display: flex;
     align-items: center;
-    padding: 12px 50px;
+    height: 64px;
+    padding: 0 50px;
     border-bottom: 1px solid #3e546d;
     font-size: 14px;
     text-transform: uppercase;
@@ -37,6 +38,17 @@ $dropdown-background-color: #0f253f;
 
         a {
           color: #fff;
+        }
+        &:nth-child(2) {
+          margin-right: 30px;
+        }
+      }
+      &-account {
+        img {
+          width: 30px;
+          height: 30px;
+          margin-right: 8px;
+          border: 2px solid #ffffff;
         }
       }
     }

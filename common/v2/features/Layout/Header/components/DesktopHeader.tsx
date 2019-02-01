@@ -1,40 +1,15 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Identicon } from '@mycrypto/ui';
 
-import { languages } from 'config';
-import { translateRaw } from 'translations';
-import { AppState } from 'features/reducers';
-import {
-  configSelectors,
-  configMetaSelectors,
-  configNodesStaticSelectors,
-  configNodesSelectedActions
-} from 'features/config';
-import { sidebarActions } from 'features/sidebar';
-import { walletActions } from 'features/wallet';
-import logo from 'assets/images/logo-mycrypto.svg';
-import { LINKSET } from '../constants';
+import { AccountScreen } from 'v2/features';
+import { DrawerContext } from 'v2/providers';
+import { linkset } from '../constants';
 import { generateCaretIcon } from '../helpers';
 import './DesktopHeader.scss';
 
-interface OwnProps {
-  networkParam: string | null;
-}
-
-interface StateProps {
-  shouldSetNodeFromQS: boolean;
-  nodeLabel: ReturnType<typeof configSelectors.getSelectedNodeLabel>;
-  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
-}
-
-interface DispatchProps {
-  openSidebar: sidebarActions.TOpenSidebar;
-  changeNodeRequestedOneTime: configNodesSelectedActions.TChangeNodeRequestedOneTime;
-  setAccessMessage: walletActions.TSetAccessMessage;
-}
-
-type Props = OwnProps & StateProps & DispatchProps;
+// Legacy
+import logo from 'assets/images/logo-mycrypto.svg';
 
 interface State {
   visibleDropdowns: {
@@ -42,7 +17,7 @@ interface State {
   };
 }
 
-class DesktopHeader extends Component<Props> {
+export default class DesktopHeader extends Component {
   public state: State = {
     visibleDropdowns: {
       sendAndReceive: false,
@@ -51,12 +26,7 @@ class DesktopHeader extends Component<Props> {
     }
   };
 
-  public componentDidMount() {
-    this.attemptSetNodeFromQueryParameter();
-  }
-
   public render() {
-    const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
     const { visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
     const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
@@ -64,97 +34,102 @@ class DesktopHeader extends Component<Props> {
 
     return (
       <section className="desktop-only-header">
-        <section className="DesktopHeader">
-          <section className="DesktopHeader-top">
-            <section className="DesktopHeader-top-left">
-              <ul className="DesktopHeader-top-links">
+        <section className="_DesktopHeader">
+          <section className="_DesktopHeader-top">
+            <section className="_DesktopHeader-top-left">
+              <ul className="_DesktopHeader-top-links">
                 <li>
                   <a href="https://support.mycrypto.com/" target="_blank" rel="noopener noreferrer">
-                    {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
+                    Help & Support <i className="fa fa-caret-right" />
                   </a>
                 </li>
                 <li>
                   <a href="https://medium.com/@mycrypto" target="_blank" rel="noopener noreferrer">
-                    {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
+                    Latest News <i className="fa fa-caret-right" />
                   </a>
                 </li>
               </ul>
             </section>
-            <section className="DesktopHeader-top-center">
-              <Link to="/" onClick={() => setAccessMessage('')}>
+            <section className="_DesktopHeader-top-center">
+              <Link to="/">
                 <img src={logo} alt="Our logo" />
               </Link>
             </section>
-            <section className="DesktopHeader-top-right">
-              <ul className="DesktopHeader-top-links">
-                <li onClick={() => openSidebar('selectLanguage')}>
-                  {languages[languageSelection]} <i className="fa fa-caret-down" />
+            <section className="_DesktopHeader-top-right">
+              <ul className="_DesktopHeader-top-links">
+                <li>
+                  English <i className="fa fa-caret-down" />
                 </li>
-                <li onClick={() => openSidebar('selectNetworkAndNode')}>
-                  {nodeLabel.network} ({nodeLabel.info}) <i className="fa fa-caret-down" />
+                <li>
+                  Ethereum (Auto) <i className="fa fa-caret-down" />
                 </li>
+                <DrawerContext.Consumer>
+                  {({ setScreen }) => (
+                    <li
+                      onClick={() => setScreen(AccountScreen)}
+                      className="_DesktopHeader-top-links-account"
+                    >
+                      <Identicon address="0x80200997f095da94E404F7E0d581AAb1fFba9f7d" />
+                      <span>Example #1</span>
+                    </li>
+                  )}
+                </DrawerContext.Consumer>
               </ul>
             </section>
           </section>
-          <section className="DesktopHeader-bottom">
-            <ul className="DesktopHeader-bottom-links">
+          <section className="_DesktopHeader-bottom">
+            <ul className="_DesktopHeader-bottom-links">
               <li
-                className="DesktopHeader-bottom-links-item"
+                className="_DesktopHeader-bottom-links-item"
                 onMouseEnter={this.toggleSendAndReceive}
                 onMouseLeave={this.toggleSendAndReceive}
               >
-                {translateRaw('NEW_HEADER_TEXT_3')} <i className={sendAndReceiveIcon} />
+                Send & Receive <i className={sendAndReceiveIcon} />
                 {sendAndReceive && (
-                  <ul className="DesktopHeader-bottom-links-dropdown">
-                    {LINKSET.SEND_AND_RECEIVE.map(item => (
+                  <ul className="_DesktopHeader-bottom-links-dropdown">
+                    {linkset.sendAndReceive.map(item => (
                       <li key={item.to} onClick={this.toggleSendAndReceive}>
-                        <Link to={item.to} onClick={() => setAccessMessage(item.accessMessage)}>
-                          {item.title}
-                        </Link>
+                        <Link to={item.to}>{item.title}</Link>
                       </li>
                     ))}
                   </ul>
                 )}
               </li>
               <li
-                className="DesktopHeader-bottom-links-item"
+                className="_DesktopHeader-bottom-links-item"
                 onMouseEnter={this.toggleBuyAndExchange}
                 onMouseLeave={this.toggleBuyAndExchange}
               >
-                {translateRaw('NEW_HEADER_TEXT_4')} <i className={buyAndExchangeIcon} />
+                Buy & Exchange <i className={buyAndExchangeIcon} />
                 {buyAndExchange && (
-                  <ul className="DesktopHeader-bottom-links-dropdown">
-                    {LINKSET.BUY_AND_EXCHANGE.map(item => (
-                      <li key={item.to}>
-                        <Link to={item.to} onClick={() => setAccessMessage('')}>
-                          {item.title}
-                        </Link>
+                  <ul className="_DesktopHeader-bottom-links-dropdown">
+                    {linkset.buyAndExchange.map(item => (
+                      <li key={item.to} onClick={this.toggleBuyAndExchange}>
+                        <Link to={item.to}>{item.title}</Link>
                       </li>
                     ))}
                   </ul>
                 )}
               </li>
               <li
-                className="DesktopHeader-bottom-links-item"
+                className="_DesktopHeader-bottom-links-item"
                 onMouseEnter={this.toggleTools}
                 onMouseLeave={this.toggleTools}
               >
-                {translateRaw('NEW_HEADER_TEXT_5')} <i className={toolsIcon} />
+                Tools <i className={toolsIcon} />
                 {tools && (
-                  <ul className="DesktopHeader-bottom-links-dropdown">
-                    {LINKSET.TOOLS.map(item => (
+                  <ul className="_DesktopHeader-bottom-links-dropdown">
+                    {linkset.tools.map(item => (
                       <li key={item.to} onClick={this.toggleTools}>
-                        <Link to={item.to} onClick={() => setAccessMessage('')}>
-                          {item.title}
-                        </Link>
+                        <Link to={item.to}>{item.title}</Link>
                       </li>
                     ))}
                   </ul>
                 )}
               </li>
-              <li className="DesktopHeader-bottom-links-item">
-                <Link to="/generate">
-                  <i className="fa fa-plus create-icon" /> {translateRaw('NEW_HEADER_TEXT_6')}
+              <li className="_DesktopHeader-bottom-links-item">
+                <Link to="/create-wallet">
+                  <i className="fa fa-plus create-icon" /> Create Wallet
                 </Link>
               </li>
             </ul>
@@ -175,28 +150,4 @@ class DesktopHeader extends Component<Props> {
   private toggleSendAndReceive = () => this.toggleDropdown('sendAndReceive');
   private toggleBuyAndExchange = () => this.toggleDropdown('buyAndExchange');
   private toggleTools = () => this.toggleDropdown('tools');
-
-  private attemptSetNodeFromQueryParameter = () => {
-    const { shouldSetNodeFromQS, networkParam, changeNodeRequestedOneTime } = this.props;
-
-    if (shouldSetNodeFromQS) {
-      changeNodeRequestedOneTime(networkParam!);
-    }
-  };
 }
-
-const mapStateToProps = (state: AppState, { networkParam }: any) => ({
-  shouldSetNodeFromQS: !!(
-    networkParam && configNodesStaticSelectors.isStaticNodeId(state, networkParam)
-  ),
-  nodeLabel: configSelectors.getSelectedNodeLabel(state),
-  languageSelection: configMetaSelectors.getLanguageSelection(state)
-});
-
-const mapDispatchToProps = {
-  openSidebar: sidebarActions.openSidebar,
-  changeNodeRequestedOneTime: configNodesSelectedActions.changeNodeRequestedOneTime,
-  setAccessMessage: walletActions.setAccessMessage
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DesktopHeader);

@@ -1,7 +1,7 @@
 import { translateRaw } from 'translations';
 
-export const LINKSET = {
-  SEND_AND_RECEIVE: [
+export const linkset = {
+  sendAndReceive: [
     {
       to: '/account',
       title: translateRaw('NEW_HEADER_TEXT_7'),
@@ -28,13 +28,13 @@ export const LINKSET = {
       accessMessage: translateRaw('ACCESS_MESSAGE_5')
     }
   ],
-  BUY_AND_EXCHANGE: [
+  buyAndExchange: [
     {
       to: '/swap',
       title: translateRaw('NEW_HEADER_TEXT_12')
     }
   ],
-  TOOLS: [
+  tools: [
     {
       to: '/sign-and-verify-message',
       title: translateRaw('NEW_HEADER_TEXT_13')

@@ -33,7 +33,7 @@ export default class DrawerProvider extends Component {
       this.setState((prevState: State) => ({
         visible: !prevState.visible
       })),
-    setScreen: (screen: Screen) => this.setState({ screen })
+    setScreen: (screen: Screen) => this.setState({ visible: true, screen })
   };
 
   public render() {

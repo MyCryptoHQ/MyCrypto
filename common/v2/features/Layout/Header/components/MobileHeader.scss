@@ -18,7 +18,7 @@ $dropdown-background-color: #0f253f;
   }
 }
 
-.MobileHeader {
+._MobileHeader {
   position: fixed;
   top: 0;
   z-index: 200;
@@ -32,13 +32,15 @@ $dropdown-background-color: #0f253f;
   &-top {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 
     &-menu-button {
+      flex: 1;
       position: relative;
       font-size: 30px;
     }
     &-logo {
+      flex: 2;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -48,8 +50,15 @@ $dropdown-background-color: #0f253f;
         height: 39px;
       }
     }
-    div {
-      width: 20px;
+    &-menu-account {
+      flex: 1;
+      text-align: right;
+
+      img {
+        width: 34px;
+        height: 34px;
+        border: 2px solid #ffffff;
+      }
     }
   }
   &-menu {
