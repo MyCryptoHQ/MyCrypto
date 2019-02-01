@@ -32,7 +32,9 @@ import {
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
-  ETHO_DEFAULT
+  ETHO_DEFAULT,
+  MIX_DEFAULT,
+  REOSC_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -221,10 +223,10 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'POA Explorer',
-      origin: 'https://poaexplorer.com',
-      addressPath: 'address/search',
-      blockPath: 'blocks/block'
+      name: 'BlockScout',
+      origin: 'https://blockscout.com/poa/core',
+      addressPath: 'address',
+      blockPath: 'blocks'
     }),
     tokens: [],
     contracts: [],
@@ -291,7 +293,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 20
     }
   },
-
+  Gangnam: {
+    id: 'Gangnam',
+    name: 'Gangnam',
+    unit: 'ETH',
+    chainId: 43568,
+    isCustom: false,
+    color: '#adc101',
+    blockExplorer: makeExplorer({
+      name: 'Gangnam Explorer',
+      origin: 'https://explorer.progtest.net'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
   MUSIC: {
     id: 'MUSIC',
     name: 'Musicoin',
@@ -399,7 +424,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
   RSK: {
     id: 'RSK',
     name: 'RSK',
-    unit: 'SBTC',
+    unit: 'RBTC',
     chainId: 30,
     color: '#58A052',
     isCustom: false,
@@ -426,8 +451,8 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
 
   RSK_TESTNET: {
     id: 'RSK_TESTNET',
-    name: 'RSK',
-    unit: 'SBTC',
+    name: 'RSK Testnet',
+    unit: 'RBTC',
     chainId: 31,
     color: '#58A052',
     isCustom: false,
@@ -440,7 +465,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: RSK_TESTNET,
-      [SecureWalletName.SAFE_T]: RSK_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: RSK_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },
@@ -668,6 +692,54 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       [SecureWalletName.TREZOR]: ETHO_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: ETHO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETHO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  MIX: {
+    id: 'MIX',
+    name: 'Mix',
+    unit: 'MIX',
+    chainId: 76,
+    isCustom: false,
+    color: '#e59b2b',
+    blockExplorer: makeExplorer({
+      name: 'MIX Blockchain Explorer',
+      origin: 'https://blocks.mix-blockchain.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: MIX_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: MIX_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: MIX_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  REOSC: {
+    id: 'REOSC',
+    name: 'REOSC',
+    unit: 'REOSC',
+    chainId: 2894,
+    isCustom: false,
+    color: '#1500db',
+    blockExplorer: makeExplorer({
+      name: 'REOSC Explorer',
+      origin: 'https://explorer.reosc.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: REOSC_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: REOSC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: REOSC_DEFAULT
     },
     gasPriceSettings: {
       min: 1,

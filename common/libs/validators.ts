@@ -17,12 +17,18 @@ import {
 import { JsonRpcResponse } from './nodes/rpc/types';
 import { normalise } from './ens';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
+import { getValidTLDsForChain, ITLDCollection } from './ens/networkConfigs';
 
 export function getIsValidAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {
     return (address: string) => isValidRSKAddress(address, chainId);
   }
   return isValidETHAddress;
+}
+export function getIsValidENSAddressFunction(chainId: number) {
+  const validTLDs = getValidTLDsForChain(chainId);
+
+  return (address: string) => isValidENSAddress(address, validTLDs);
 }
 
 export function isValidAddress(address: string, chainId: number) {
@@ -74,10 +80,6 @@ export function isValidHex(str: string): boolean {
   return re.test(str);
 }
 
-export function isValidENSorEtherAddress(address: string): boolean {
-  return isValidETHAddress(address) || isValidENSAddress(address);
-}
-
 export function isValidENSName(str: string) {
   try {
     return (
@@ -88,16 +90,12 @@ export function isValidENSName(str: string) {
   }
 }
 
-export function isValidENSAddress(address: string): boolean {
+export function isValidENSAddress(address: string, validTLDs: ITLDCollection): boolean {
   try {
     const normalized = normalise(address);
     const tld = normalized.substr(normalized.lastIndexOf('.') + 1);
-    const validTLDs = {
-      eth: true,
-      test: true,
-      reverse: true
-    };
-    if (validTLDs[tld as keyof typeof validTLDs]) {
+
+    if (validTLDs[tld]) {
       return true;
     }
   } catch (e) {
@@ -387,10 +385,10 @@ export function isValidLabelLength(label: string, options: { allowEmpty?: boolea
   return meetsMinimumLengthRequirement && meetsMaximumLengthRequirement;
 }
 
-export function isLabelWithoutENS(label: string): boolean {
-  const ensTlds = ['.eth', '.test', '.reverse'];
+export function isLabelWithoutENS(label: string, chainId: number): boolean {
+  const tlds = getValidTLDsForChain(chainId);
 
-  for (const tld of ensTlds) {
+  for (const tld in tlds) {
     if (label.includes(tld)) {
       return false;
     }
@@ -424,8 +422,11 @@ export function isValidAddressLabel(
     result.labelError = translateRaw('INVALID_LABEL_LENGTH');
   }
 
-  if (!isLabelWithoutENS(label)) {
-    result.labelError = translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
+  if (!isLabelWithoutENS(label, chainId)) {
+    result.labelError =
+      chainId === 30
+        ? translateRaw('LABEL_CANNOT_CONTAIN_RNS_SUFFIX')
+        : translateRaw('LABEL_CANNOT_CONTAIN_ENS_SUFFIX');
   }
 
   if (labelAlreadyExists) {
