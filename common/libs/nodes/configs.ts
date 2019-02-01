@@ -66,13 +66,16 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
-  ETC: [
+  Gangnam: [
     {
-      name: makeNodeName('ETC', 'epool'),
+      name: makeNodeName('Gangnam', 'progtest'),
       type: 'rpc',
-      service: 'Epool.io',
-      url: 'https://cry.epool.io'
-    },
+      service: 'Gangnam ProgPoW',
+      url: 'https://rpc.progtest.net'
+    }
+  ],
+
+  ETC: [
     {
       name: makeNodeName('ETC', 'etccooperative'),
       type: 'rpc',
@@ -219,6 +222,81 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'ethersocial.org',
       url: 'https://api.esn.gonspool.com'
+    }
+  ],
+
+  AQUA: [
+    {
+      name: makeNodeName('AQUA', 'aquachain'),
+      type: 'rpc',
+      service: 'aquacha.in',
+      url: 'https://tx.aquacha.in/api'
+    },
+    {
+      name: makeNodeName('AQUA', 'uncan.onical'),
+      type: 'rpc',
+      service: 'uncan.onical.org',
+      url: 'https://c.onical.org'
+    }
+  ],
+
+  AKA: [
+    {
+      name: makeNodeName('AKA', 'remote.akroma.io'),
+      type: 'rpc',
+      service: 'remote.akroma.io',
+      url: 'https://remote.akroma.io'
+    },
+    {
+      name: makeNodeName('AKA', 'rpc.akroma.io'),
+      type: 'rpc',
+      service: 'rpc.akroma.io',
+      url: 'https://rpc.akroma.io'
+    }
+  ],
+
+  PIRL: [
+    {
+      name: makeNodeName('PIRL', 'wallrpc.pirl.io'),
+      type: 'rpc',
+      service: 'wallrpc.pirl.io',
+      url: 'https://wallrpc.pirl.io'
+    }
+  ],
+
+  ATH: [
+    {
+      name: makeNodeName('ATH', 'wallet.atheios.com'),
+      type: 'rpc',
+      service: 'wallet.atheios.com',
+      url: 'https://wallet.atheios.com:8797'
+    }
+  ],
+
+  ETHO: [
+    {
+      name: makeNodeName('ETHO', 'ether1.org'),
+      type: 'rpc',
+      service: 'ether1.org',
+      url: 'https://rpc.ether1.org'
+    }
+  ],
+
+  MIX: [
+    {
+      name: makeNodeName('MIX', 'mix-blockchain.org'),
+      type: 'rpc',
+      service: 'rpc2.mix-blockchain.org',
+      url: 'https://rpc2.mix-blockchain.org:8647'
+    }
+  ],
+
+  REOSC: [
+    {
+      name: makeNodeName('REOSC', 'reosc.io'),
+      type: 'rpc',
+      service: 'remote.reosc.io',
+      url: 'https://remote.reosc.io:3000'
     }
   ]
 };

@@ -16,6 +16,8 @@
 <sub>**npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
 <br/>
 <sub>\***Python 3 is **not** supported, since our dependencies use `node-gyp`.</sub>
+<br/>
+<sub>\***For users trying to build with WSL, you'll need to have install libpng via `sudo apt-get install libpng16-dev`.</sub>
 
 ## Running the App
 
@@ -112,30 +114,43 @@ yarn test:int
 ```
 │
 ├── common
-│   ├── actions - Application actions
 │   ├── api - Services and XHR utils
 │   ├── assets - Images, fonts, etc.
 │   ├── components - Components according to "Redux philosophy"
 │   ├── config - Various config data and hard-coded json
 │   ├── containers - Containers according to "Redux philosophy"
+|   ├── features - State management and async operations, organized per "feature", follows "ducks" philosophy, see: https://github.com/MyCryptoHQ/MyCrypto/issues/1435
 │   ├── libs - Framework-agnostic libraries and business logic
-│   ├── reducers - Redux reducers
-│   ├── sagas - Redux sagas
+|       ├── contracts - Takes in a contract interface ABI and returns an object with keys equivalent to the ABI function names that each have `.encodeInput`,  `.decodeInput`, `decodeOutput` methods. 
+|       ├── ens - Basic ENS functions for getting a name hash and mapping returned ENS contract values to human-readable strings
+|       ├── nodes - Configures Shepherd (https://github.com/MyCryptoHQ/shepherd) and exports a singleton provider
+|       ├── scheduling - Functionality for enabling Ethereum Alarm Clock usage for scheduled transactions. See https://github.com/MyCryptoHQ/MyCrypto/pull/1343
+|       ├── transaction - Utilities for signing / parsing / validating transactions
+|       ├── wallet - Wallet implementations for deterministic (hw wallets, mnemonic wallets, etc), and non-deterministic (web3, parity signer, etc.) wallets.
+|       ├── web-workers - Web-worker implementation of generateKeystore + fromV3 for non-blocking encrypt/decryption
+|       ├── erc20 - `libs/contracts` instance of erc20 abi
+|       ├── formatters - Hex string formatters
+|       ├── signing - Message signing and signature verification
+|       ├── units - Helper functions for working with Ethereum / Token units in both base and unit form. Use these instead of using bn.js directly
+|       ├── validators - Validation functions for addresses, hex strings, keys, numbers, derivation paths, EAC values, Ethereum values, etc.
+|       ├── values - Functions for building EIP681 requests, numberical sanitization, string padding, bn.js conversion
 │   ├── sass - SCSS styles, variables, mixins
-│   ├── selectors - Redux selectors
 │   ├── translations - Language JSON dictionaries
 │   ├── typescript - Typescript definition files
 │   ├── utils - Common use utility functions
 │   ├── index.tsx - Entry point for app
 │   ├── index.html - Html template file for html-webpack-plugin
 │   ├── Root.tsx - Root component for React
-│   └── store.ts - Redux reducer combiner and middleware injector
 ├── electron-app - Code for the native electron app
 ├── jest_config - Jest testing configuration
 ├── spec - Jest unit tests, mirror's common's structure
 ├── static - Files that don't get compiled, just moved to build
 └── webpack_config - Webpack configuration
 ```
+
+## Typescript Resources:
+- https://basarat.gitbooks.io/typescript/
+- https://blog.mariusschulz.com/series/typescript-evolution
 
 ### More information is available on the [Wiki Pages](https://github.com/MyCryptoHQ/MyCrypto/wiki)
 

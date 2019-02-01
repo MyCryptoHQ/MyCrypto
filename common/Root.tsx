@@ -4,14 +4,14 @@ import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 
 import { AppState } from 'features/reducers';
-import { getNetworkUnit, getTheme } from 'features/config';
+import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
+import { onboardingSelectors } from 'features/onboarding';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import SendTransaction from 'containers/Tabs/SendTransaction';
-import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
@@ -20,8 +20,7 @@ import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
-import OnboardModal from 'containers/OnboardModal';
-import WelcomeModal from 'components/WelcomeModal';
+import OnboardingModal from 'containers/OnboardingModal';
 import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
@@ -29,13 +28,17 @@ import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { Theme } from 'config';
 import 'what-input';
 
+// v2
+import { gatherFeatureRoutes } from 'v2';
+
 interface OwnProps {
   store: Store<AppState>;
 }
 
 interface StateProps {
-  networkUnit: ReturnType<typeof getNetworkUnit>;
-  theme: ReturnType<typeof getTheme>;
+  onboardingActive: ReturnType<typeof onboardingSelectors.getActive>;
+  networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
+  theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
 
 interface DispatchProps {
@@ -70,7 +73,7 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store } = this.props;
+    const { store, onboardingActive } = this.props;
     const { error } = this.state;
 
     if (error) {
@@ -80,9 +83,9 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
+          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
-          <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
@@ -98,7 +101,7 @@ class RootClass extends Component<Props, State> {
       </CaptureRouteNotFound>
     );
 
-    const Router =
+    const Router: any =
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
@@ -108,17 +111,12 @@ class RootClass extends Component<Props, State> {
         <Provider store={store}>
           <Router>
             <React.Fragment>
+              {onboardingActive && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-              {!process.env.DOWNLOADABLE_BUILD && (
-                <React.Fragment>
-                  <OnboardModal />
-                  {!process.env.BUILD_ELECTRON && <WelcomeModal />}
-                </React.Fragment>
-              )}
             </React.Fragment>
           </Router>
         </Provider>
@@ -156,8 +154,13 @@ class RootClass extends Component<Props, State> {
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
-  const { pathname } = props.location;
+  const { pathname, search } = props.location;
   let { hash } = props.location;
+
+  if (search.includes('redirectToSignMessage')) {
+    history.push('/sign-and-verify-message');
+    return null;
+  }
 
   if (pathname === '/') {
     hash = hash.split('?')[0];
@@ -203,8 +206,9 @@ const CaptureRouteNotFound = withRouter(({ children, location }) => {
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  networkUnit: getNetworkUnit(state),
-  theme: getTheme(state)
+  onboardingActive: onboardingSelectors.getActive(state),
+  networkUnit: configSelectors.getNetworkUnit(state),
+  theme: configMetaSelectors.getTheme(state)
 });
 
 export default connect(mapStateToProps, {

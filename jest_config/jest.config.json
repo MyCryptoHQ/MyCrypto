@@ -1,7 +1,7 @@
 {
   "rootDir": "../",
   "transform": {
-    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    "^.+\\.tsx?$": "ts-jest"
   },
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   "moduleDirectories": ["node_modules", "common"],

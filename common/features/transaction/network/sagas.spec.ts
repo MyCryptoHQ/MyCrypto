@@ -12,21 +12,22 @@ import {
   fork
 } from 'redux-saga/effects';
 import { cloneableGenerator, SagaIteratorClone, createMockTask } from 'redux-saga/utils';
-
-import { Wei, Nonce } from 'libs/units';
+import { Wei } from 'libs/units';
+import { hexStringToNumber } from 'utils/formatters';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import * as derivedSelectors from 'features/selectors';
-import * as configMetaTypes from 'features/config/meta/types';
-import * as configMetaSelectors from 'features/config/meta/selectors';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
+import { configMetaTypes, configMetaSelectors, configNodesSelectors } from 'features/config';
 import { walletTypes, walletSelectors } from 'features/wallet';
-import { scheduleActions, scheduleSelectors } from 'features/schedule';
+import { scheduleSelectors, scheduleTypes } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
+import { transactionsSelectors } from 'features/transactions';
+import { SavedTransaction } from 'types/transactions';
 import * as transactionTypes from '../types';
 import * as types from './types';
 import * as actions from './actions';
 import * as sagas from './sagas';
+import { isSchedulingEnabled } from 'features/schedule/selectors';
 
 describe('Network Sagas', () => {
   describe('From', () => {
@@ -116,7 +117,8 @@ describe('Network Sagas', () => {
             transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP,
             transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP,
             transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP,
-            configMetaTypes.CONFIG_META.TOGGLE_AUTO_GAS_LIMIT
+            configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT,
+            scheduleTypes.ScheduleActions.TOGGLE_SET
           ])
         );
       });
@@ -143,8 +145,14 @@ describe('Network Sagas', () => {
         expect(gen.next(tx).value).toEqual(call(getTransactionFields, transaction));
       });
 
+      it('should select isSchedulingEnabled', () => {
+        expect(gen.next(transactionFields).value).toEqual(
+          select(scheduleSelectors.isSchedulingEnabled)
+        );
+      });
+
       it('should put estimatedGasRequested with rest', () => {
-        expect(gen.next(transactionFields).value).toEqual(put(actions.estimateGasRequested(rest)));
+        expect(gen.next(false).value).toEqual(put(actions.estimateGasRequested(rest)));
       });
     });
 
@@ -246,22 +254,19 @@ describe('Network Sagas', () => {
       it('should select isSchedulingEnabled', () => {
         gens.timeOutCase = gens.successCase.clone();
         expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
-          select(scheduleSelectors.isSchedulingEnabled)
+          select(isSchedulingEnabled)
+        );
+      });
+
+      it('should select isEtherTransaction', () => {
+        expect(gens.successCase.next(false).value).toEqual(
+          select(derivedSelectors.isEtherTransaction)
         );
       });
 
       it('should put setGasLimitField', () => {
-        gens.scheduleCase = gens.successCase.clone();
-        const notScheduling = null as any;
-        expect(gens.successCase.next(notScheduling).value).toEqual(
+        expect(gens.successCase.next(false).value).toEqual(
           put(transactionFieldsActions.setGasLimitField(gasSetOptions))
-        );
-      });
-
-      it('should put setScheduleGasLimitField', () => {
-        const scheduling = { value: true } as any;
-        expect(gens.scheduleCase.next(scheduling).value).toEqual(
-          put(scheduleActions.setScheduleGasLimitField(gasSetOptions))
         );
       });
 
@@ -376,9 +381,29 @@ describe('Network Sagas', () => {
         getAddressString: jest.fn()
       };
       const offline = false;
-      const fromAddress = 'fromAddress';
-      const retrievedNonce = '0xa';
-      const base10Nonce = Nonce(retrievedNonce);
+      const recentTransactions: SavedTransaction[] = JSON.parse(
+        JSON.stringify([
+          {
+            hash: '0x286e4e3bc55f58175da474058359ddbb6db09efc7f94e1741c42ba7e278b0ede',
+            from: 'fromaddress',
+            chainId: 1,
+            nonce: 9,
+            to: '0x4f1F9d958AFa2e94dab3f3Ce7192b87daEa39017',
+            value: '0x0',
+            time: 1544888892465
+          },
+          {
+            hash: '0xecc044b81a794fc567dd389b7709b89a3a0a001dcdd151fc442c57982cfa012b',
+            from: 'fromaddress',
+            chainId: 1,
+            nonce: 8,
+            to: '0x3d1F9d958AFa2e94dab3f3Ce7362b87daEa39017',
+            value: '0x0',
+            time: 1544811728723
+          }
+        ])
+      );
+      const transactionCountString = '0x9';
 
       const gens: any = {};
       gens.gen = cloneableGenerator(sagas.handleNonceRequest)();
@@ -423,19 +448,21 @@ describe('Network Sagas', () => {
       });
 
       it('should apply nodeLib.getTransactionCount', () => {
-        expect(gens.gen.next(fromAddress).value).toEqual(
-          apply(nodeLib, nodeLib.getTransactionCount, [fromAddress])
+        expect(gens.gen.next(transactionCountString).value).toEqual(
+          apply(nodeLib, nodeLib.getTransactionCount, [transactionCountString])
         );
       });
 
-      it('should put inputNonce', () => {
-        expect(gens.gen.next(retrievedNonce).value).toEqual(
-          put(transactionFieldsActions.inputNonce(base10Nonce.toString()))
+      it('should call hexStringToNumber', () => {
+        expect(gens.gen.next(transactionCountString).value).toEqual(
+          call(hexStringToNumber, transactionCountString)
         );
       });
 
-      it('should put getNonceSucceeded', () => {
-        expect(gens.gen.next().value).toEqual(put(actions.getNonceSucceeded(retrievedNonce)));
+      it('should select transactionSelectors', () => {
+        expect(gens.gen.next(recentTransactions).value).toEqual(
+          select(transactionsSelectors.getRecentTransactions)
+        );
       });
     });
 

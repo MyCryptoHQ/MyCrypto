@@ -1,12 +1,10 @@
 import { sha256 } from 'ethereumjs-util';
 
 import { AppState } from 'features/reducers';
-import { SwapState } from 'features/swap/types';
 import { IWallet, WalletConfig } from 'libs/wallet';
 
 export const REDUX_STATE = 'REDUX_STATE';
 export const ONBOARD_LOCAL_STORAGE_KEY = 'onboardStatus';
-export const NUMBER_OF_ONBOARD_SLIDES = 10;
 
 export function loadState<T>(): T | undefined {
   try {
@@ -28,8 +26,6 @@ export const saveState = (state: any) => {
     console.warn(' Warning: failed to set to local storage', state);
   }
 };
-
-export type SwapLocalStorage = SwapState;
 
 export function loadStatePropertyOrEmptyObject<T>(key: keyof AppState): T | undefined {
   const localStorageState: Partial<AppState> | undefined = loadState();
@@ -63,17 +59,6 @@ export function loadWalletConfig(wallet: IWallet): WalletConfig {
 function getWalletConfigKey(wallet: IWallet): string {
   const address = wallet.getAddressString();
   return sha256(`${address}-mycrypto`).toString('hex');
-}
-
-export function isLegacyUser() {
-  // All devs are legacy users!
-  const oldLSValue = localStorage.getItem('gasPrice') || process.env.NODE_ENV !== 'production';
-  const onboardProgress = localStorage.getItem(ONBOARD_LOCAL_STORAGE_KEY);
-
-  if (oldLSValue && onboardProgress && parseInt(onboardProgress, 10) >= NUMBER_OF_ONBOARD_SLIDES) {
-    return true;
-  }
-  return false;
 }
 
 export function isBetaUser() {

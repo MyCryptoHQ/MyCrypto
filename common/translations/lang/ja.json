@@ -33,7 +33,7 @@
     "X_KEYSTORE": "Keystore ファイル (UTC / JSON · 推奨 · 暗号化) ",
     "X_KEYSTORE2": "Keystore ファイル ",
     "X_KEYSTOREDESC": "この Keystore / JSON ファイルは、後で容易にインポートするため、Mistで使われているフォーマットと一致させる必要があります。ダウンロードしてバックアップを取ることをおすすめします。 ",
-    "X_METAMASK": "Metamask / Mist ",
+    "X_METAMASK": "MetaMask / Web3 ",
     "X_MIST": "Mist",
     "X_WEB3": "Web3",
     "X_MNEMONIC": "ニーモニック文節 ",
@@ -51,9 +51,6 @@
     "SIDEBAR_TOKENBAL": "トークン残高 ",
     "SIDEBAR_EQUIV": "等価 ",
     "SIDEBAR_TRANSHISTORY": "トランザクション履歴 ",
-    "SIDEBAR_DONATION": "MyCryptoは、プライバシーとセキュリティのための無料のオープンソースサービスです。　寄付が増えることによって、新機能やフィードバックの反映を行い、よりユーザーの皆様のご希望に沿った制作の時間を増やす事が可能になります。私たちは、たった二人で世界を変えようとしています。お手伝いいただけますか? ",
-    "SIDEBAR_DONATE": "寄付する ",
-    "SIDEBAR_THANKS": "感謝します!!! ",
     "SIDEBAR_DISPLAY_ADDR": "$wallet でアドレス表示 ",
     "DECRYPT_ACCESS": "どの方法でお財布を操作しますか？ ",
     "X_LEDGER": "Ledger ",
@@ -64,6 +61,7 @@
     "X_SAFE_T": "Safe-T mini ",
     "ADD_SAFE_T_SCAN": "Safe-T miniに接続する ",
     "X_PARITYSIGNER": "Parity Signer ",
+    "ADD_VIEW_ADDRESS_DESC": "View your account & balances using only your address ",
     "ADD_PARITY_DESC": "Parity Signerモバイルアプリ経由で接続て署名 ",
     "ADD_PARITY_1": "処理が取り消されました ",
     "ADD_PARITY_2": "アプリをダウンロード ",
@@ -557,6 +555,6 @@
     "NO_CONTRACTS_AVAILABLE": "契約がありません",
     "NETWORK_STATUS_ONLINE": "$network ネットワークに接続されました",
     "NETWORK_STATUS_OFFLINE": "$network ネットワークから切断されました",
-    "NETWORK_STATUS_CONNECTING": "接続中..."  
+    "NETWORK_STATUS_CONNECTING": "接続中..."
   }
 }

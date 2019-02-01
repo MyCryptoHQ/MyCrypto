@@ -9,7 +9,7 @@ import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'libs/values';
 import { ICurrentTo, ICurrentValue } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import { getNetworkConfig, isNetworkUnit } from 'features/config';
+import { configSelectors } from 'features/config';
 import {
   transactionFieldsTypes,
   transactionFieldsActions,
@@ -17,7 +17,7 @@ import {
   transactionMetaSelectors,
   transactionActions
 } from 'features/transaction';
-import { AddressField, AmountField, TXMetaDataPanel } from 'components';
+import { AddressField, AmountField } from 'components';
 import { QRCode, CodeBlock } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './RequestPayment.scss';
@@ -107,21 +107,6 @@ class RequestPayment extends React.Component<Props, {}> {
             </div>
           </div>
 
-          <div className="row form-group">
-            <div className="col-xs-12">
-              <TXMetaDataPanel
-                initialState="advanced"
-                disableToggle={true}
-                advancedGasOptions={{
-                  gasPriceField: false,
-                  nonceField: false,
-                  dataField: false,
-                  feeSummary: false
-                }}
-              />
-            </div>
-          </div>
-
           {!!eip681String.length && (
             <div className="row form-group">
               <label className="RequestPayment-title">
@@ -191,10 +176,10 @@ function mapStateToProps(state: AppState): StateProps {
     currentTo: derivedSelectors.getCurrentTo(state),
     currentValue: derivedSelectors.getCurrentValue(state),
     gasLimit: transactionFieldsSelectors.getGasLimit(state),
-    networkConfig: getNetworkConfig(state),
+    networkConfig: configSelectors.getNetworkConfig(state),
     decimal: transactionMetaSelectors.getDecimal(state),
     tokenContractAddress: derivedSelectors.getSelectedTokenContractAddress(state),
-    isNetworkUnit: isNetworkUnit(state, derivedSelectors.getUnit(state))
+    isNetworkUnit: configSelectors.isNetworkUnit(state, derivedSelectors.getUnit(state))
   };
 }
 

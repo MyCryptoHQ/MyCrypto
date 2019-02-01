@@ -65,7 +65,7 @@ export const ELLA_DEFAULT: DPath = {
 
 export const MUSIC_DEFAULT: DPath = {
   label: 'Default (MUSIC)',
-  value: "m/44'/60'/0'/0"
+  value: "m/44'/184'/0'/0"
 };
 
 export const ETSC_DEFAULT: DPath = {
@@ -113,6 +113,41 @@ export const ESN_DEFAULT: DPath = {
   value: "m/44'/31102'/0'/0"
 };
 
+export const AQUA_DEFAULT: DPath = {
+  label: 'Default (AQUA)',
+  value: "m/44'/60'/0'/0"
+};
+
+export const AKA_DEFAULT: DPath = {
+  label: 'Default (AKA)',
+  value: "m/44'/200625'/0'/0"
+};
+
+export const PIRL_DEFAULT: DPath = {
+  label: 'Default (PIRL)',
+  value: "m/44'/164'/0'/0"
+};
+
+export const ATH_DEFAULT: DPath = {
+  label: 'Default (ATH)',
+  value: "m/44'/1620'/0'/0"
+};
+
+export const ETHO_DEFAULT: DPath = {
+  label: 'Default (ETHO)',
+  value: "m/44'/1313114'/0'/0"
+};
+
+export const MIX_DEFAULT: DPath = {
+  label: 'Default (MIX)',
+  value: "m/44'/76'/0'/0"
+};
+
+export const REOSC_DEFAULT: DPath = {
+  label: 'Default (REOSC)',
+  value: "m/44'/2894'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -135,7 +170,14 @@ export const DPaths: DPath[] = [
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
-  ESN_DEFAULT
+  ESN_DEFAULT,
+  AQUA_DEFAULT,
+  AKA_DEFAULT,
+  PIRL_DEFAULT,
+  ATH_DEFAULT,
+  ETHO_DEFAULT,
+  MIX_DEFAULT,
+  REOSC_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

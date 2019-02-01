@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import translate from 'translations';
 import { AppState } from 'features/reducers';
 import { scheduleActions, scheduleSelectors } from 'features/schedule';
+import PrimaryToggle, { RadioOption } from 'components/ui/PrimaryToggle';
 
 interface DispatchProps {
   setScheduleType: scheduleActions.TSetScheduleType;
@@ -18,42 +18,23 @@ type Props = DispatchProps & StateProps;
 class ScheduleTypeClass extends Component<Props> {
   public render() {
     const { currentScheduleType } = this.props;
+    const options: RadioOption[] = [
+      {
+        label: translate('SCHEDULE_TYPE_TIME'),
+        value: 'time'
+      },
+      {
+        label: translate('SCHEDULE_TYPE_BLOCK'),
+        value: 'block'
+      }
+    ];
 
     return (
-      <div className="input-group-wrapper">
-        <label className="input-group">
-          <div className="row">
-            <div className="col-xs-6">
-              <div className="radio">
-                <label>
-                  <input
-                    type="radio"
-                    name="scheduleType"
-                    value="time"
-                    onChange={this.handleOnChange}
-                    checked={currentScheduleType.value === 'time'}
-                  />
-                  {translate('SCHEDULE_TYPE_TIME')}
-                </label>
-              </div>
-            </div>
-            <div className="col-xs-6">
-              <div className="radio">
-                <label>
-                  <input
-                    type="radio"
-                    name="scheduleType"
-                    value="block"
-                    onChange={this.handleOnChange}
-                    checked={currentScheduleType.value === 'block'}
-                  />
-                  {translate('SCHEDULE_TYPE_BLOCK')}
-                </label>
-              </div>
-            </div>
-          </div>
-        </label>
-      </div>
+      <PrimaryToggle
+        options={options}
+        selectedValue={currentScheduleType.value}
+        onChangeHandler={this.handleOnChange}
+      />
     );
   }
 
