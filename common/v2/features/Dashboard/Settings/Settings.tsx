@@ -1,8 +1,15 @@
 import React from 'react';
 import { Heading } from '@mycrypto/ui';
 
+import { FlippablePanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import { AddressBook, YourAccounts } from './components';
+import {
+  AddAccount,
+  AddressBook,
+  YourAccounts,
+  AddToAddressBook,
+  GeneralSettings
+} from './components';
 import './Settings.scss';
 
 // Legacy
@@ -15,8 +22,25 @@ export default function Settings() {
         <img src={settingsIcon} alt="Settings" className="Settings-heading-icon" />
         Settings
       </Heading>
-      <YourAccounts />
-      <AddressBook />
+      <FlippablePanel>
+        {({ flipped, toggleFlipped }) =>
+          flipped ? (
+            <AddAccount toggleFlipped={toggleFlipped} />
+          ) : (
+            <YourAccounts toggleFlipped={toggleFlipped} />
+          )
+        }
+      </FlippablePanel>
+      <FlippablePanel>
+        {({ flipped, toggleFlipped }) =>
+          flipped ? (
+            <AddToAddressBook toggleFlipped={toggleFlipped} />
+          ) : (
+            <AddressBook toggleFlipped={toggleFlipped} />
+          )
+        }
+      </FlippablePanel>
+      <GeneralSettings />
     </Layout>
   );
 }

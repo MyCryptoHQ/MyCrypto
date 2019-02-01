@@ -6,7 +6,7 @@ import { Button, Heading, Panel } from '@mycrypto/ui';
 import './DashboardPanel.scss';
 
 interface Props {
-  heading: string;
+  heading: any;
   children: any;
   action?: string;
   actionLink?: string;

@@ -1,0 +1,23 @@
+.GeneralSettings {
+  &-divider {
+    height: 2px;
+    margin-bottom: 15px;
+    background: #e8eaed;
+  }
+  &-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 29px;
+    padding: 0 30px;
+
+    &-label {
+      font-size: 20px;
+    }
+    &-control {
+      button {
+        margin-left: 15px;
+      }
+    }
+  }
+}

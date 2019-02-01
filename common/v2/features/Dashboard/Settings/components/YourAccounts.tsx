@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Address, Icon, CollapsibleTable, Network, Typography } from '@mycrypto/ui';
 
 import { DashboardPanel } from '../../components';
+
+interface Props {
+  toggleFlipped(): void;
+}
 
 // Fake Data
 const accounts = [
@@ -50,12 +54,11 @@ const accountTable = {
   }
 };
 
-export default class YourAccounts extends Component {
-  public render() {
-    return (
-      <DashboardPanel heading="Your Accounts" className="AddressBook">
-        <CollapsibleTable breakpoint={450} {...accountTable} />
-      </DashboardPanel>
-    );
-  }
+export default function YourAccounts({ toggleFlipped }: Props) {
+  return (
+    <DashboardPanel heading="Your Accounts" className="AddressBook">
+      <CollapsibleTable breakpoint={450} {...accountTable} />
+      <button onClick={toggleFlipped}>Flip</button>
+    </DashboardPanel>
+  );
 }
