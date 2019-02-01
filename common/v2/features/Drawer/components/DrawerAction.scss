@@ -5,12 +5,6 @@
   height: 78px;
   padding: 27px 24px;
 
-  &:first-of-type {
-    border-top: 1px solid #d7dadc;
-  }
-  &:not(:last-of-type) {
-    border-bottom: 1px solid #d7dadc;
-  }
   &-icon {
     width: 34px;
     height: 34px;

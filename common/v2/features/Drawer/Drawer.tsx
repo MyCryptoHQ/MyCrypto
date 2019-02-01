@@ -10,7 +10,8 @@ import closeIcon from 'common/assets/images/icn-close.svg';
 interface Action {
   icon: string;
   title: string;
-  onClick(): void;
+  link?: string;
+  onClick?(): void;
 }
 
 interface Props {
@@ -37,7 +38,12 @@ export default function Drawer({ style, title, content, actions, onClose }: Prop
       <div className="Drawer-content">
         <div className="Drawer-content-inside">{content}</div>
         <div className="Drawer-content-actions">
-          {actions && actions.map(action => <DrawerAction key={action.title} {...action} />)}
+          {actions &&
+            actions.map(action => (
+              <div className="Drawer-content-actions-action">
+                <DrawerAction key={action.title} {...action} />
+              </div>
+            ))}
         </div>
       </div>
     </section>

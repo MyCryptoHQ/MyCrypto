@@ -46,7 +46,7 @@ export default {
     {
       icon: settingsIcon,
       title: 'Settings',
-      onClick: () => {}
+      link: '/dashboard/settings'
     },
     {
       icon: unlockIcon,
