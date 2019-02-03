@@ -11,7 +11,7 @@ export function getDeterministicWallets(
       dPath,
       publicKey,
       chainCode,
-      limit: limit || 5,
+      limit: 50,
       offset: offset || 0
     }
   };
