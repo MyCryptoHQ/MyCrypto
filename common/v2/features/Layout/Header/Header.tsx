@@ -4,7 +4,7 @@ import { Transition } from 'react-spring';
 import classnames from 'classnames';
 import { Icon } from '@mycrypto/ui';
 
-import { AccountScreen } from 'v2/features';
+import { UnlockScreen } from 'v2/features';
 import { links } from './constants';
 import './Header.scss';
 
@@ -45,7 +45,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
     const { menuOpen, visibleMenuDropdowns, visibleDropdowns } = this.state;
     const onUnlockClick = () => {
       this.closeMenu();
-      drawerVisible ? toggleDrawerVisible() : setDrawerScreen(AccountScreen);
+      drawerVisible ? toggleDrawerVisible() : setDrawerScreen(UnlockScreen);
     };
 
     return (
