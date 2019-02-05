@@ -1,14 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { DrawerProvider } from 'v2/providers';
+import { DrawerProvider, DrawerContext } from 'v2/providers';
 import Header from './Header';
 import Footer from './Footer';
 import './Layout.scss';
-
-// Legacy
-import { makeAutoNodeName } from 'libs/nodes';
-import { Query } from 'components/renderCbs';
 
 interface Props {
   className?: string;
@@ -26,12 +22,15 @@ export default function Layout({ centered, fluid, className = '', children }: Pr
   return (
     <DrawerProvider>
       <main className={`Layout ${className}`}>
-        <Query
-          params={['network']}
-          withQuery={({ network }) => (
-            <Header networkParam={network && makeAutoNodeName(network)} />
+        <DrawerContext.Consumer>
+          {({ visible, toggleVisible, setScreen }) => (
+            <Header
+              drawerVisible={visible}
+              toggleDrawerVisible={toggleVisible}
+              setDrawerScreen={setScreen}
+            />
           )}
-        />
+        </DrawerContext.Consumer>
         <div className={contentClassName}>{children}</div>
         <Footer />
       </main>

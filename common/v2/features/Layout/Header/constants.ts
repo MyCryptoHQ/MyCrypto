@@ -57,3 +57,64 @@ export const linkset = {
     }
   ]
 };
+
+export const links = {
+  'Manage Assets': [
+    {
+      to: '/dashboard/send',
+      title: 'Send Assets'
+    },
+    {
+      to: '/dashboard/receive',
+      title: 'Receive Assets'
+    },
+    {
+      to: '/dashboard/request',
+      title: 'Request Assets'
+    },
+    {
+      to: '/dashboard/swap',
+      title: 'Swap Assets'
+    },
+    {
+      to: '/dashboard/info',
+      title: 'Wallet Info'
+    },
+    {
+      to: '/dashboard/recent',
+      title: 'Recent Transactions'
+    }
+  ],
+  Tools: [
+    {
+      to: '/sign-message',
+      title: 'Sign Message'
+    },
+    {
+      to: '/verify-message',
+      title: 'Verify Message'
+    },
+    {
+      to: '/contracts',
+      title: 'Interact with Contracts'
+    },
+    {
+      to: '/transaction-status',
+      title: 'Check Transaction Status'
+    },
+    {
+      to: '/broadcast-transaction',
+      title: 'Broadcast Transaction'
+    },
+    {
+      to: '/ens',
+      title: 'ENS Domains'
+    },
+    {
+      to: '/helpers',
+      title: 'Helpers'
+    }
+  ],
+  Settings: '/dashboard/settings',
+  Dashboard: '/dashboard'
+};
