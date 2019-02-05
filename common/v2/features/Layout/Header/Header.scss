@@ -10,6 +10,7 @@
     height: 100%;
     margin: 0;
     padding: 0 25px;
+    font-weight: 500;
   }
 }
 
@@ -45,6 +46,9 @@
   width: 100%;
   background: #163150;
 
+  @media (min-width: 850px) {
+    position: initial;
+  }
   &-menu {
     position: fixed;
     top: 77px;
@@ -177,6 +181,7 @@
 
           li {
             padding: 13px;
+            font-weight: 300;
           }
         }
       }
