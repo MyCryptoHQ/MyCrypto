@@ -1,7 +1,7 @@
 {
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "main": "main.js",
   "description": "MyCrypto web and electron app",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
@@ -33,7 +33,7 @@
     "html2canvas": "1.0.0-alpha.12",
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.4",
-    "lodash": "4.17.5",
+    "lodash": "4.17.11",
     "lodash.flatten": "4.4.0",
     "lodash.get": "4.4.2",
     "moment": "2.22.1",
