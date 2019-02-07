@@ -73,6 +73,7 @@ export function* shouldEstimateGas(): SagaIterator {
       transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
+      transactionFieldsTypes.TransactionFieldsActions.GAS_PRICE_FIELD_SET,
       transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP,
       transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP,
       transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP,
@@ -136,11 +137,13 @@ export function* estimateGas(): SagaIterator {
 
   while (true) {
     const autoGasLimitEnabled: boolean = yield select(configMetaSelectors.getAutoGasLimitEnabled);
+    const { transaction }: IGetTransaction = yield select(derivedSelectors.getTransaction);
     const isOffline = yield select(configMetaSelectors.getOffline);
 
     if (isOffline || !autoGasLimitEnabled) {
       continue;
     }
+    const { gasPrice }: IHexStrTransaction = yield call(getTransactionFields, transaction);
 
     const { payload }: types.EstimateGasRequestedAction = yield take(requestChan);
     // debounce 250 ms
@@ -149,8 +152,7 @@ export function* estimateGas(): SagaIterator {
     const walletInst: IWallet = yield select(walletSelectors.getWalletInst);
     try {
       const from: string = yield apply(walletInst, walletInst.getAddressString);
-      const txObj = { ...payload, from };
-
+      const txObj = { ...payload, from, gasPrice };
       let { gasLimit }: { gasLimit: BN } = yield race({
         gasLimit: apply(node, node.estimateGas, [txObj]),
         timeout: call(delay, 10000)
