@@ -292,6 +292,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'remote.reosc.io',
       url: 'https://remote.reosc.io:3000'
     }
+  ],
+
+  ARTIS_SIGMA1: [
+    {
+      name: makeNodeName('ARTIS_SIGMA1', 'artis_sigma1'),
+      type: 'rpc',
+      service: 'rpc.sigma1.artis.network',
+      url: 'https://rpc.sigma1.artis.network'
+    }
+  ],
+
+  ARTIS_TAU1: [
+    {
+      name: makeNodeName('ARTIS_TAU1', 'artis_tau1'),
+      type: 'rpc',
+      service: 'rpc.tau1.artis.network',
+      url: 'https://rpc.tau1.artis.network'
+    }
   ]
 };
 
