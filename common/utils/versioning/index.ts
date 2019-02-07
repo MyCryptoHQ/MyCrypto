@@ -22,7 +22,6 @@ export function parseAssetName(assetName: string) {
   }
 
   const [rawPlatform, verNum, rawName] = electronAssetRaw;
-  console.log([rawPlatform, verNum, rawName]);
   if (validPlatform(rawPlatform) && verNum && validName(rawName)) {
     const platform = rawPlatform;
     const versionNumber = verNum;

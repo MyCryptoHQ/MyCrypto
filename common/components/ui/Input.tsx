@@ -50,7 +50,6 @@ class Input extends React.Component<Props, State> {
       validClass = '';
     }
     if ((!isStateless || showInvalidBeforeBlur) && !hasValue && showInvalidWithoutValue) {
-      console.log(4);
       validClass = 'invalid';
     }
 
