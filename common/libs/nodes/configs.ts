@@ -23,13 +23,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('ETH', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://mainnet.infura.io/mycrypto'
-    },
-    {
-      name: makeNodeName('ETH', 'blockscale'),
-      type: 'rpc',
-      service: 'Blockscale',
-      url: 'https://api.dev.blockscale.net/dev/parity'
+      url: 'https://mainnet.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     }
   ],
 
@@ -38,7 +32,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Ropsten', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://ropsten.infura.io/mycrypto'
+      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     }
   ],
 
@@ -56,7 +50,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('Rinkeby', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://rinkeby.infura.io/mycrypto'
+      url: 'https://rinkeby.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
     },
     {
       name: makeNodeName('Rinkeby', 'ethscan'),
@@ -76,12 +70,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ],
 
   ETC: [
-    {
-      name: makeNodeName('ETC', 'gastracker'),
-      type: 'rpc',
-      service: 'GasTracker',
-      url: 'https://web3.gastracker.io'
-    },
     {
       name: makeNodeName('ETC', 'etccooperative'),
       type: 'rpc',
@@ -112,8 +100,8 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     {
       name: makeNodeName('POA', 'core'),
       type: 'infura',
-      service: 'poa.infura.io',
-      url: 'https://poa.infura.io'
+      service: 'core.poa.network',
+      url: 'https://core.poa.network'
     }
   ],
 
@@ -303,6 +291,24 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'remote.reosc.io',
       url: 'https://remote.reosc.io:3000'
+    }
+  ],
+
+  ARTIS_SIGMA1: [
+    {
+      name: makeNodeName('ARTIS_SIGMA1', 'artis_sigma1'),
+      type: 'rpc',
+      service: 'rpc.sigma1.artis.network',
+      url: 'https://rpc.sigma1.artis.network'
+    }
+  ],
+
+  ARTIS_TAU1: [
+    {
+      name: makeNodeName('ARTIS_TAU1', 'artis_tau1'),
+      type: 'rpc',
+      service: 'rpc.tau1.artis.network',
+      url: 'https://rpc.tau1.artis.network'
     }
   ]
 };

@@ -17,7 +17,7 @@
     "TX_NOTFOUND_1": "Die TX kann nicht in dem TX Pool der Node mit der Sie verbunden gefunden werden.",
     "TX_NOTFOUND_2": "Wenn du die Transaktion erst gesendet hast, warte 15 Sekunden und drücke den \"Check TX Status\" Button erneut. ",
     "TX_NOTFOUND_3": "Sie könnte noch in dem TX Pool einer anderen Node sein und wartet gemined zu werden.",
-    "TX_NOTFOUND_4": "Bitte benutzen Sie das DropDown Menü oben-rechts & wählen Sie eine andere Node aus (z.B. `ETH (Etherscan.io)` oder `ETH (Infura.io)` oder `ETH (MyCrypto)`) und prüfen es erneut.",
+    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different node and check again.",
     "TX_FOUNDINPENDING": "Wartende Transaktion gefunden",
     "TX_FOUNDINPENDING_1": "Ihre Transaktion wurde in dem TX Pool der Node mit der Sie verbunden sind gefunden. ",
     "TX_FOUNDINPENDING_2": "Sie steht derzeit aus (wartet gemined zu werden). ",
