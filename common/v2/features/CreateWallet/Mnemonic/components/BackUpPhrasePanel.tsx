@@ -2,15 +2,14 @@ import React from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
+import { PanelProps } from '../../CreateWallet';
 import './BackUpPhrasePanel.scss';
 
 // Legacy
 import printerIcon from 'common/assets/images/icn-printer.svg';
 
-interface Props {
+interface Props extends PanelProps {
   words: string[];
-  onBack(): void;
-  onNext(): void;
 }
 
 export default function BackUpPhrasePanel({ words, onBack, onNext }: Props) {

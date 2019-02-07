@@ -5,11 +5,6 @@ import { Layout } from 'v2/features';
 import { MnemonicProvider, MnemonicContext } from './components';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 
-export interface PanelProps {
-  onBack(): void;
-  onNext(): void;
-}
-
 export default class CreateWallet extends Component<RouteComponentProps<{}>> {
   public state = {
     stage: MnemonicStages.SelectNetwork
@@ -39,7 +34,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
                 )}
               </MnemonicContext.Consumer>
             ) : (
-              <ActivePanel {...actions} />
+              <ActivePanel totalSteps={4} {...actions} />
             )}
           </section>
         </Layout>

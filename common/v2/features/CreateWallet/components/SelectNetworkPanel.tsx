@@ -2,20 +2,20 @@ import React from 'react';
 import { Button, ComboBox } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
+import { PanelProps } from '../CreateWallet';
 import './SelectNetworkPanel.scss';
 
-interface Props {
-  onBack(): void;
-  onNext(): void;
+interface Props extends PanelProps {
+  totalSteps: number;
 }
 
-export default function SelectNetworkPanel({ onBack, onNext }: Props) {
+export default function SelectNetworkPanel({ totalSteps, onBack, onNext }: Props) {
   return (
     <ContentPanel
       onBack={onBack}
       stepper={{
         current: 1,
-        total: 4
+        total: totalSteps
       }}
       heading="Select Network"
       description="Not sure what to choose? Leave displayed defaults below and just click next!"

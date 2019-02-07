@@ -9,6 +9,11 @@ import './CreateWallet.scss';
 // Legacy
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
 
+export interface PanelProps {
+  onBack(): void;
+  onNext(): void;
+}
+
 export function CreateWallet({ history }: RouteComponentProps<{}>) {
   return (
     <Layout centered={true}>
