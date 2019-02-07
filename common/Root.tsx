@@ -12,7 +12,6 @@ import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import SendTransaction from 'containers/Tabs/SendTransaction';
-import Swap from 'containers/Tabs/Swap';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
@@ -28,6 +27,9 @@ import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { Theme } from 'config';
 import 'what-input';
+
+// v2
+import { gatherFeatureRoutes } from 'v2';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -81,9 +83,9 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
+          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
-          <Route path="/swap" component={Swap} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
           <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
@@ -99,7 +101,7 @@ class RootClass extends Component<Props, State> {
       </CaptureRouteNotFound>
     );
 
-    const Router =
+    const Router: any =
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
@@ -152,8 +154,13 @@ class RootClass extends Component<Props, State> {
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
-  const { pathname } = props.location;
+  const { pathname, search } = props.location;
   let { hash } = props.location;
+
+  if (search.includes('redirectToSignMessage')) {
+    history.push('/sign-and-verify-message');
+    return null;
+  }
 
   if (pathname === '/') {
     hash = hash.split('?')[0];

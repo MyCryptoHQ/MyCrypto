@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { etherChainExplorerInst } from 'config/data';
 import translate from 'translations';
 import { BlockExplorerConfig } from 'types/network';
-import { getTXDetailsCheckURL } from 'libs/scheduling';
+import { getAwaitingMiningURL } from 'libs/scheduling';
 import { NewTabLink } from 'components/ui';
 
 export interface TransactionSucceededProps {
@@ -36,7 +36,7 @@ const TransactionSucceeded = ({ txHash, blockExplorer, scheduling }: Transaction
   let scheduleDetailsBtn: React.ReactElement<string> | undefined;
   if (scheduling) {
     scheduleDetailsBtn = (
-      <NewTabLink className="btn btn-xs" href={getTXDetailsCheckURL(txHash)}>
+      <NewTabLink className="btn btn-xs" href={getAwaitingMiningURL(txHash)}>
         {translate('SCHEDULE_CHECK')}
       </NewTabLink>
     );

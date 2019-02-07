@@ -242,6 +242,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
   private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
     this.props.setDesiredToken(ev.currentTarget.value || undefined);
+    this.refreshPage();
   };
 
   private handleConfirmAddress = () => {
@@ -253,6 +254,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private selectAddress(selectedAddress: string, selectedAddrIndex: number) {
     this.setState({ selectedAddress, selectedAddrIndex });
   }
+
+  private refreshPage = () => {
+    this.setState({ page: this.state.page }, this.getAddresses);
+  };
 
   private nextPage = () => {
     this.setState({ page: this.state.page + 1 }, this.getAddresses);
@@ -279,6 +284,17 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
     const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
+
+    let blockExplorer;
+    if (!network.isCustom) {
+      blockExplorer = network.blockExplorer;
+    } else {
+      blockExplorer = {
+        addressUrl: (address: string) => {
+          return `https://ethplorer.io/address/${address}`;
+        }
+      };
+    }
 
     // Get renderable values, but keep 'em short
     const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
@@ -327,7 +343,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
         <td>
           <a
             target="_blank"
-            href={`https://ethplorer.io/address/${wallet.address}`}
+            href={blockExplorer.addressUrl(wallet.address)}
             rel="noopener noreferrer"
           >
             <i className="DWModal-addresses-table-more" />

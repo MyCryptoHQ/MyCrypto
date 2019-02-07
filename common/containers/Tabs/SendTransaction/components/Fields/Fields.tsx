@@ -18,7 +18,8 @@ import {
   SchedulingToggle,
   ScheduleFields,
   GenerateScheduleTransactionButton,
-  SendScheduleTransactionButton
+  SendScheduleTransactionButton,
+  SchedulingModals
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import { NonStandardTransaction } from './components';
@@ -37,7 +38,7 @@ interface StateProps {
   schedulingAvailable: boolean;
   shouldDisplay: boolean;
   offline: boolean;
-  useScheduling: scheduleSelectors.ICurrentSchedulingToggle['value'];
+  useScheduling: boolean;
 }
 
 interface DispatchProps {
@@ -61,7 +62,7 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
   }
 
   public render() {
-    const { shouldDisplay, schedulingAvailable, useScheduling } = this.props;
+    const { shouldDisplay, schedulingAvailable, useScheduling, offline } = this.props;
 
     return (
       <OnlyUnlocked
@@ -79,6 +80,7 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
                       hasUnitDropdown={true}
                       hasSendEverything={true}
                       showInvalidWithoutValue={true}
+                      showAllTokens={offline}
                     />
                   </div>
                   {schedulingAvailable && (
@@ -100,6 +102,8 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
                 <NonStandardTransaction />
 
                 {this.getTxButton()}
+
+                <SchedulingModals />
               </div>
             )}
           </React.Fragment>
@@ -129,12 +133,10 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
 
 export const Fields = connect(
   (state: AppState) => ({
-    schedulingAvailable:
-      networkSupportsScheduling(configSelectors.getNetworkConfig(state).name) &&
-      selectors.getUnit(state) === 'ETH',
+    schedulingAvailable: networkSupportsScheduling(configSelectors.getNetworkConfig(state).name),
     shouldDisplay: !selectors.isAnyOfflineWithWeb3(state),
     offline: configMetaSelectors.getOffline(state),
-    useScheduling: scheduleSelectors.getCurrentSchedulingToggle(state).value
+    useScheduling: scheduleSelectors.getSchedulingToggle(state).value
   }),
   {
     showNotification: notificationsActions.showNotification

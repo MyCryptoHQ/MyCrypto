@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import translate, { translateRaw } from 'translations';
 import { ISignedMessage } from 'libs/signing';
@@ -31,7 +32,7 @@ const initialState: State = {
 
 const messagePlaceholder = translateRaw('SIGN_MSG_PLACEHOLDER');
 
-export class SignMessage extends Component<Props, State> {
+export class SignMessage extends Component<Props & RouteComponentProps<{}>, State> {
   public state: State = initialState;
 
   public componentWillUnmount() {
@@ -97,11 +98,7 @@ export class SignMessage extends Component<Props, State> {
     this.setState({ message });
   };
 
-  private changeWallet = () => {
-    this.props.resetWallet();
-    this.props.resetMessage();
-    this.setState(initialState);
-  };
+  private changeWallet = () => this.props.history.push('/?redirectToSignMessage');
 }
 
 const mapStateToProps = (state: AppState) => ({
@@ -113,4 +110,4 @@ export default connect(mapStateToProps, {
   signMessageRequested: messageActions.signMessageRequested,
   resetWallet: walletActions.resetWallet,
   resetMessage: messageActions.resetMessage
-})(SignMessage);
+})(withRouter(SignMessage));

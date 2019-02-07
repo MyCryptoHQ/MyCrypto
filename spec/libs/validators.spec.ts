@@ -98,12 +98,19 @@ describe('Validator', () => {
 
 describe('isLabelWithoutENS', () => {
   it('should return false if the label contains an ENS TLD', () => {
-    expect(isLabelWithoutENS('Foo.eth')).toEqual(false);
-    expect(isLabelWithoutENS('Foo.test')).toEqual(false);
-    expect(isLabelWithoutENS('Foo.reverse')).toEqual(false);
+    expect(isLabelWithoutENS('Foo.eth', ETH_CHAIN_ID)).toEqual(false);
+    expect(isLabelWithoutENS('Foo.test', ETH_CHAIN_ID)).toEqual(false);
+    expect(isLabelWithoutENS('Foo.reverse', ETH_CHAIN_ID)).toEqual(false);
   });
   it('should return true if a label does not contain an ENS TLD', () => {
-    expect(isLabelWithoutENS('Foo')).toEqual(true);
+    expect(isLabelWithoutENS('Foo', ETH_CHAIN_ID)).toEqual(true);
+  });
+
+  it('should return false if the label contains an RNS TLD', () => {
+    expect(isLabelWithoutENS('Foo.rsk', RSK_MAINNET_CHAIN_ID)).toEqual(false);
+  });
+  it('should return true if a label does not contain an ENS TLD', () => {
+    expect(isLabelWithoutENS('Foo', RSK_MAINNET_CHAIN_ID)).toEqual(true);
   });
 });
 

@@ -45,7 +45,7 @@ class WebTemplate extends Component<Props, {}> {
             enter={{ right: '0' }}
             leave={{ right: '-1000px' }}
           >
-            {sidebarVisible && (style => <Sidebar style={style} />)}
+            {sidebarVisible && ((style: any) => <Sidebar style={style} />)}
           </Transition>
           <div className="Tab container">
             {isUnavailableOffline && isOffline ? <OfflineTab /> : children}

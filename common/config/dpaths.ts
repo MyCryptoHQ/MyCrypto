@@ -65,7 +65,7 @@ export const ELLA_DEFAULT: DPath = {
 
 export const MUSIC_DEFAULT: DPath = {
   label: 'Default (MUSIC)',
-  value: "m/44'/60'/0'/0"
+  value: "m/44'/184'/0'/0"
 };
 
 export const ETSC_DEFAULT: DPath = {
@@ -143,6 +143,11 @@ export const MIX_DEFAULT: DPath = {
   value: "m/44'/76'/0'/0"
 };
 
+export const REOSC_DEFAULT: DPath = {
+  label: 'Default (REOSC)',
+  value: "m/44'/2894'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -171,7 +176,8 @@ export const DPaths: DPath[] = [
   PIRL_DEFAULT,
   ATH_DEFAULT,
   ETHO_DEFAULT,
-  MIX_DEFAULT
+  MIX_DEFAULT,
+  REOSC_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
