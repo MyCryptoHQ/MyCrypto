@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { AnalyticsService } from 'v2/services';
 import translate from 'translations';
 import subscribeToMailingList from 'api/emails';
 
@@ -43,5 +44,7 @@ export default class Subscribe extends Component {
     e.preventDefault();
 
     subscribeToMailingList(email).catch(() => this.setState({ submitted: true }));
+
+    AnalyticsService.instance.track({ action_name: 'Legacy_User subscribed' });
   };
 }
