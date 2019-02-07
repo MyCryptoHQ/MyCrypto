@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
-import { PanelProps } from '../CreateWallet';
 import './BackUpPhrasePanel.scss';
 
 // Legacy
@@ -10,15 +9,17 @@ import printerIcon from 'common/assets/images/icn-printer.svg';
 
 interface Props {
   words: string[];
+  onBack(): void;
+  onNext(): void;
 }
 
-export default function BackUpPhrasePanel({ words, onBack, onNext }: Props & PanelProps) {
+export default function BackUpPhrasePanel({ words, onBack, onNext }: Props) {
   return (
     <ContentPanel
       onBack={onBack}
       stepper={{
-        current: 4,
-        total: 5
+        current: 3,
+        total: 4
       }}
       heading="Back Up Phrase"
       description="Write your phrase down or print it out for safekeeping. You will be asked to verify your phrase on the next screen. "

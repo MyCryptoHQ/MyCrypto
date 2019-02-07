@@ -5,12 +5,13 @@ import shuffle from 'lodash/shuffle';
 import { Button } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
-import { PanelProps } from '../CreateWallet';
 import './ConfirmPhrasePanel.scss';
 
 interface Props {
   words: string[];
   generateWords(): void;
+  onBack(): void;
+  onNext(): void;
 }
 
 interface State {
@@ -19,7 +20,7 @@ interface State {
   wrongWord: string;
 }
 
-export default class ConfirmPhrasePanel extends Component<Props & PanelProps> {
+export default class ConfirmPhrasePanel extends Component<Props> {
   public state: State = {
     shuffledWords: shuffle(this.props.words),
     confirmedWords: [],
@@ -34,8 +35,8 @@ export default class ConfirmPhrasePanel extends Component<Props & PanelProps> {
       <ContentPanel
         onBack={onBack}
         stepper={{
-          current: 5,
-          total: 5
+          current: 4,
+          total: 4
         }}
         heading="Confirm Phrase"
         description="Confirm your mnemonic phrase by selecting each phrase in order to make sure it is correct."
