@@ -113,16 +113,16 @@
   dependencies:
     events "^2.0.0"
 
-"@mycrypto/ui@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.8.0.tgz#32ebb60544e9a5dcd27f7e361f4f569494b7e16e"
+"@mycrypto/ui@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.12.0.tgz#3378e65fb54da8a9b35d9874c98e9de106dd674e"
   dependencies:
     "@types/lodash.throttle" "^4.1.4"
+    "@types/react-inlinesvg" "^0.8.0"
     ethereum-blockies-base64 "^1.0.2"
     lodash.throttle "^4.1.1"
     polished "^2.2.0"
     react-inlinesvg "^0.8.3"
-    typeface-lato "^0.0.54"
 
 "@parity/erc681@0.1.1":
   version "0.1.1"
@@ -255,6 +255,12 @@
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.5.tgz#a757457662e3819409229e8f86795ff37b371f96"
   dependencies:
     "@types/node" "*"
+    "@types/react" "*"
+
+"@types/react-inlinesvg@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@types/react-inlinesvg/-/react-inlinesvg-0.8.0.tgz#0347931da1b7744561ab6e96a7252a2a78b63f2e"
+  dependencies:
     "@types/react" "*"
 
 "@types/react-redux@5.0.15":
@@ -11911,10 +11917,6 @@ type-is@~1.6.15:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
-
-typeface-lato@^0.0.54:
-  version "0.0.54"
-  resolved "https://registry.yarnpkg.com/typeface-lato/-/typeface-lato-0.0.54.tgz#6ea56309a8b0cfdb7e8246e05de4b58b8272b47c"
 
 typeforce@^1.11.3:
   version "1.12.0"
