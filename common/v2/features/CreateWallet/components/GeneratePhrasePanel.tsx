@@ -28,7 +28,7 @@ export default class GeneratePhrasePanel extends Component<Props & PanelProps> {
         onBack={onBack}
         stepper={{
           current: 3,
-          total: 4
+          total: 5
         }}
         heading="Generate Phrase"
         description="Generate a mnemonic phrase and write these words down. To keep your funds safe, do not copy them to your clipboard or save them anywhere online."

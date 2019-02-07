@@ -34,8 +34,8 @@ export default class ConfirmPhrasePanel extends Component<Props & PanelProps> {
       <ContentPanel
         onBack={onBack}
         stepper={{
-          current: 4,
-          total: 4
+          current: 5,
+          total: 5
         }}
         heading="Confirm Phrase"
         description="Confirm your mnemonic phrase by selecting each phrase in order to make sure it is correct."

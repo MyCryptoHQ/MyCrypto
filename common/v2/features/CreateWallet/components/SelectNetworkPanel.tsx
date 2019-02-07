@@ -11,7 +11,7 @@ export default function SelectNetworkPanel({ onBack, onNext }: PanelProps) {
       onBack={onBack}
       stepper={{
         current: 1,
-        total: 4
+        total: 5
       }}
       heading="Select Network"
       description="Not sure what to choose? Leave displayed defaults below and just click next!"

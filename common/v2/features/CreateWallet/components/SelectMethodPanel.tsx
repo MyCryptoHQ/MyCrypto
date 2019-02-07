@@ -14,7 +14,7 @@ export default function SelectMethodPanel({ onBack, onNext }: PanelProps) {
       onBack={onBack}
       stepper={{
         current: 2,
-        total: 4
+        total: 5
       }}
       heading="Create New Wallet"
       description="Creating a mnemonic phrase - a list of 12 words -  will enable you to keep your funds safe and unlock your wallet."

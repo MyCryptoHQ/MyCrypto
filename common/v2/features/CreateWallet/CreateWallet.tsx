@@ -29,6 +29,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
     };
     const isMnemonicPanel = [
       CreateWalletStages.GeneratePhrase,
+      CreateWalletStages.BackUpPhrase,
       CreateWalletStages.ConfirmPhrase
     ].includes(stage);
 
