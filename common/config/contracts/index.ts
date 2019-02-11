@@ -3,6 +3,7 @@ import ETH from './eth.json';
 import EXP from './exp.json';
 import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
+import Goerli from './goerli.json';
 import RSK from './rsk.json';
 import UBQ from './ubq.json';
 import ESN from './esn.json';
@@ -15,6 +16,7 @@ export default {
   EXP,
   Rinkeby,
   Ropsten,
+  Goerli,
   RSK,
   UBQ,
   ESN,
