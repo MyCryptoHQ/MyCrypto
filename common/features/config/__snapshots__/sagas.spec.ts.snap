@@ -5,7 +5,7 @@ Object {
   "@@redux-saga/IO": true,
   "SELECT": Object {
     "args": Array [
-      "REOSC",
+      "ARTIS_TAU1",
     ],
     "selector": [Function],
   },

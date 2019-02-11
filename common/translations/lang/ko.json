@@ -22,7 +22,7 @@
     "TX_NOTFOUND_1": "연결된 노드의 TX풀에서 이 TX를 찾을 수 없습니다.",
     "TX_NOTFOUND_2": "방금 전송하셨다면 30초간 기다렸다가 다시 시도하세요. ",
     "TX_NOTFOUND_3": "여전히 다른 노드의 TX풀에서 채굴을 기다리고 있을 수 있습니다.",
-    "TX_NOTFOUND_4": "오른쪽 상단에 있는 드롭 다운 목록을 사용하여 다른 ETH노드를 선택합니다 (예. `ETH (Etherscan.io)` 혹은 `ETH (Infura.io)` 혹은 `ETH (MyCrypto)`) 그리고 다시 확인합니다.",
+    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different node and check again.",
     "TX_NOTFOUND_5": "트랜잭션 해시를 정확히 복사했는지 확인하세요",
     "GEN_LABEL_5": "개인 키 저장하기. ",
     "NAV_CONTRACTS": "컨트랙트 ",
