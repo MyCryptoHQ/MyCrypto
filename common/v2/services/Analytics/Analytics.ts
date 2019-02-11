@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 
 import { ANALYTICS_API_URL, ANALYTICS_ID_SITE, ANALYTICS_REC } from './constants';
 import { APIService } from '../API';
+import { isDevelopment, isDesktop } from 'v2/utils';
 
 let instantiated: boolean = false;
 export default class AnalyticsService {
@@ -19,11 +20,27 @@ export default class AnalyticsService {
     }
   }
 
-  public track(eventParams: object): void {
-    const params: object = Object.assign(
-      { idsite: ANALYTICS_ID_SITE, rec: ANALYTICS_REC },
-      eventParams
-    );
+  public track(eventName: string, eventParams: object | undefined): void {
+    const customParams: object = {
+      local: isDevelopment().toString(),
+      desktop: isDesktop().toString(),
+      ...eventParams
+    };
+
+    const cvar: object = Object.keys(customParams).reduce((tempObject, key, index) => {
+      tempObject[index + 1] = [key, customParams[key].toString()];
+      return tempObject;
+    }, {});
+
+    const params: object = {
+      action_name: eventName,
+      e_c: 'MyCrypto',
+      e_a: eventName,
+      e_n: eventName,
+      idsite: ANALYTICS_ID_SITE,
+      rec: ANALYTICS_REC,
+      cvar: JSON.stringify(cvar)
+    };
 
     this.service.get('', { params }).catch();
   }

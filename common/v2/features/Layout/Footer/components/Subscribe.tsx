@@ -45,6 +45,6 @@ export default class Subscribe extends Component {
 
     subscribeToMailingList(email).catch(() => this.setState({ submitted: true }));
 
-    AnalyticsService.instance.track({ action_name: 'User subscribed' });
+    AnalyticsService.instance.track('User subscribed');
   };
 }
