@@ -59,13 +59,19 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       url: 'https://rinkeby.etherscan.io/api'
     }
   ],
-  
+
   Goerli: [
     {
       name: makeNodeName('Goerli', 'mycrypto'),
       type: 'rpc',
       service: 'MyCrypto',
       url: 'https://goerli.mycryptoapi.com'
+    },
+    {
+      name: makeNodeName('Goerli', 'etherscan'),
+      type: 'etherscan',
+      service: 'Etherscan',
+      url: 'https://api-goerli.etherscan.io/api'
     }
   ],
 
