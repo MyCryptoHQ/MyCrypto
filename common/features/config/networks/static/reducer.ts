@@ -142,7 +142,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     gasPriceSettings: testnetDefaultGasPrice
   },
   Goerli: {
-    id: 'Rinkeby',
+    id: 'Goerli',
     name: 'Goerli',
     unit: 'ETH',
     chainId: 5,
