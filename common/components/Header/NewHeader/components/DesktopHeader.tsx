@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { AnalyticsService } from 'v2/services';
 import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
@@ -69,19 +70,35 @@ class DesktopHeader extends Component<Props> {
             <section className="DesktopHeader-top-left">
               <ul className="DesktopHeader-top-links">
                 <li>
-                  <a href="https://support.mycrypto.com/" target="_blank" rel="noopener noreferrer">
+                  <a
+                    onClick={this.trackHelpSupportClick}
+                    href="https://support.mycrypto.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {translateRaw('NEW_HEADER_TEXT_1')} <i className="fa fa-caret-right" />
                   </a>
                 </li>
                 <li>
-                  <a href="https://medium.com/@mycrypto" target="_blank" rel="noopener noreferrer">
+                  <a
+                    onClick={this.trackLatestNewsClick}
+                    href="https://medium.com/@mycrypto"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {translateRaw('NEW_HEADER_TEXT_2')} <i className="fa fa-caret-right" />
                   </a>
                 </li>
               </ul>
             </section>
             <section className="DesktopHeader-top-center">
-              <Link to="/" onClick={() => setAccessMessage('')}>
+              <Link
+                to="/"
+                onClick={() => {
+                  setAccessMessage('');
+                  this.trackHomeIconClick();
+                }}
+              >
                 <img src={logo} alt="Our logo" />
               </Link>
             </section>
@@ -182,6 +199,18 @@ class DesktopHeader extends Component<Props> {
     if (shouldSetNodeFromQS) {
       changeNodeRequestedOneTime(networkParam!);
     }
+  };
+
+  private trackHelpSupportClick = (): void => {
+    AnalyticsService.instance.track('Legacy_Help & Support clicked');
+  };
+
+  private trackLatestNewsClick = (): void => {
+    AnalyticsService.instance.track('Legacy_Latest News clicked');
+  };
+
+  private trackHomeIconClick = (): void => {
+    AnalyticsService.instance.track('Legacy_Home Icon clicked');
   };
 }
 
