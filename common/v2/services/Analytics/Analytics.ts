@@ -21,7 +21,11 @@ export default class AnalyticsService {
     }
   }
 
-  public track(eventName: string, eventParams?: object): void {
+  public trackLegacy(category: string, eventName: string, eventParams?: object): void {
+    this.track(category, `Legacy_${eventName}`, eventParams);
+  }
+
+  public track(category: string, eventName: string, eventParams?: object): void {
     const customParams: CustomParams = {
       local: isDevelopment().toString(),
       desktop: isDesktop().toString(),
@@ -35,9 +39,8 @@ export default class AnalyticsService {
 
     const params: object = {
       action_name: eventName,
-      e_c: 'MyCrypto',
+      e_c: category,
       e_a: eventName,
-      e_n: eventName,
       idsite: ANALYTICS_ID_SITE,
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)

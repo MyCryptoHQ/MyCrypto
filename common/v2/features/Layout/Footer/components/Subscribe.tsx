@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { AnalyticsService } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import translate from 'translations';
 import subscribeToMailingList from 'api/emails';
 
@@ -45,6 +45,6 @@ export default class Subscribe extends Component {
 
     subscribeToMailingList(email).catch(() => this.setState({ submitted: true }));
 
-    AnalyticsService.instance.track('User subscribed');
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.FOOTER, 'Subscribed to MyCrypto');
   };
 }
