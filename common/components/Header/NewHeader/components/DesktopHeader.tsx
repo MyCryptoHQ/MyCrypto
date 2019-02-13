@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { AnalyticsService } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
@@ -202,15 +202,15 @@ class DesktopHeader extends Component<Props> {
   };
 
   private trackHelpSupportClick = (): void => {
-    AnalyticsService.instance.track('Legacy_Help & Support clicked');
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
   };
 
   private trackLatestNewsClick = (): void => {
-    AnalyticsService.instance.track('Legacy_Latest News clicked');
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Latest News clicked');
   };
 
   private trackHomeIconClick = (): void => {
-    AnalyticsService.instance.track('Legacy_Home Icon clicked');
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Home Icon clicked');
   };
 }
 
