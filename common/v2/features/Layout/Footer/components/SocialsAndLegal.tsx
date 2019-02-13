@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { AnalyticsService } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { socialMediaLinks, VERSION } from 'config';
 import { translateRaw } from 'translations';
 import { NewTabLink } from 'components/ui';
@@ -23,6 +23,7 @@ const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
 
 const trackSocialIconClicked = (socialNetworkName: string): void => {
   AnalyticsService.instance.track(
+    ANALYTICS_CATEGORIES.FOOTER,
     `${socialNetworkName.charAt(0).toUpperCase()}${socialNetworkName.slice(1)} social icon clicked`
   );
 };
