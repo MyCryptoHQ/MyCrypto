@@ -1,5 +1,5 @@
 // The root URL for Analytics API requests.
-export const ANALYTICS_API_URL = 'https://proxy.mycryptoapi.com/analytics';
+export const ANALYTICS_API_URL = 'https://analytics.mycryptoapi.com/piwik.php';
 
 // The ID of the analytic website.
 export const ANALYTICS_ID_SITE = 4;

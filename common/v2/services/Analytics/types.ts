@@ -1,4 +1,4 @@
-export interface CustomParams {
+export interface Params {
   [key: string]: any;
 }
 
