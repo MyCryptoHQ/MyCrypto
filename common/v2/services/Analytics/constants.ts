@@ -11,5 +11,6 @@ export const ANALYTICS_REC = 1;
 export enum ANALYTICS_CATEGORIES {
   HEADER = 'Header',
   FOOTER = 'Footer',
-  SIDEBAR = 'Sidebar'
+  SIDEBAR = 'Sidebar',
+  ROOT = 'Root'
 }
