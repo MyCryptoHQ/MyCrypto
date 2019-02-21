@@ -23,7 +23,7 @@
     "TX_NOTFOUND_1": "This TX cannot be found in the TX Pool of the node you are connected to.",
     "TX_NOTFOUND_2": "If you just sent the transaction, wait 30 seconds then try again. ",
     "TX_NOTFOUND_3": "It could still be in the TX Pool of a different node, waiting to be mined.",
-    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different ETH node (e.g. `ETH (Etherscan.io)` or `ETH (Infura.io)` or `ETH (MyCrypto)`) and check again.",
+    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different node and check again.",
     "TX_NOTFOUND_5": "Make sure you copied the Transaction Hash correctly",
     "GEN_LABEL_5": "Save Your Private Key",
     "NAV_CONTRACTS": "Contracts ",

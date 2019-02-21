@@ -34,7 +34,9 @@ import {
   ATH_DEFAULT,
   ETHO_DEFAULT,
   MIX_DEFAULT,
-  REOSC_DEFAULT
+  REOSC_DEFAULT,
+  ARTIS_SIGMA1,
+  ARTIS_TAU1
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -745,6 +747,62 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 1,
       max: 60,
       initial: 20
+    }
+  },
+  ARTIS_SIGMA1: {
+    id: 'ARTIS_SIGMA1',
+    name: 'ARTIS sigma1',
+    unit: 'ATS',
+    chainId: 246529,
+    isCustom: false,
+    color: '#238006',
+    blockExplorer: makeExplorer({
+      name: 'BlockScout',
+      origin: 'https://explorer.sigma1.artis.network',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: false,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ARTIS_SIGMA1,
+      [SecureWalletName.SAFE_T]: ARTIS_SIGMA1,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_SIGMA1
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 1,
+      initial: 1
+    }
+  },
+  ARTIS_TAU1: {
+    id: 'ARTIS_TAU1',
+    name: 'ARTIS tau1',
+    unit: 'ATS',
+    chainId: 246785,
+    isCustom: false,
+    color: '#238006',
+    blockExplorer: makeExplorer({
+      name: 'BlockScout',
+      origin: 'https://explorer.tau1.artis.network',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      //[SecureWalletName.TREZOR]: ARTIS_TAU1,
+      //[SecureWalletName.SAFE_T]: ARTIS_TAU1,
+      //[SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_TAU1
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 1,
+      initial: 1
     }
   }
 };

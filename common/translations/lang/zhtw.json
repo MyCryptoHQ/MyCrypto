@@ -18,7 +18,7 @@
     "TX_NOTFOUND_1": "無法在您所連接的節點之交易池找到這筆交易。",
     "TX_NOTFOUND_2": "如果您才剛送出交易，請等待 15 秒鐘後再按下 \"檢查交易狀態\" 按鈕。 ",
     "TX_NOTFOUND_3": "這筆交易可能仍在在其他節點的交易池中等待被確認。",
-    "TX_NOTFOUND_4": "請用右上角的下拉式選單來選取其他 ETH 節點 (例如： `ETH (Etherscan.io)` 、 `ETH (Infura.io)` 或 `ETH (MyCrypto)`) 並再檢查一次。",
+    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different node and check again.",
     "TX_FOUNDINPENDING": "找到等待中的交易",
     "TX_FOUNDINPENDING_1": "您的交易存在於你所連接的節點交易池中。 ",
     "TX_FOUNDINPENDING_2": "此筆交易正在等待中 (等待確認). ",
