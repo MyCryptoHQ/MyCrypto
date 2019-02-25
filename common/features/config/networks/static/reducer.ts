@@ -141,6 +141,28 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     },
     gasPriceSettings: testnetDefaultGasPrice
   },
+  Goerli: {
+    id: 'Goerli',
+    name: 'Goerli',
+    unit: 'ETH',
+    chainId: 5,
+    isCustom: false,
+    color: '#adc101',
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://goerli.etherscan.io/'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.SAFE_T]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
+    },
+    gasPriceSettings: testnetDefaultGasPrice
+  },
   ETC: {
     id: 'ETC',
     name: 'Ethereum Classic',

@@ -4,6 +4,7 @@ import EXP from './exp.json';
 import Kovan from './kovan.json';
 import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
+import Goerli from './goerli.json';
 import RSK from './rsk.json';
 import UBQ from './ubq.json';
 import ESN from './esn.json';
@@ -17,6 +18,7 @@ export default {
   Kovan,
   Rinkeby,
   Ropsten,
+  Goerli,
   RSK,
   UBQ,
   ESN,
