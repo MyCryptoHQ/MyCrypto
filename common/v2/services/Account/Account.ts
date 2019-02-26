@@ -14,7 +14,6 @@ export default class AccountServiceBase {
   }*/
 
   createAccount = account => {
-    const AccountList = localStorage.getItem(`AccountList`);
     localStorage.setItem(`account.${utils.generateUUID()}`, JSON.stringify(account));
   };
 
