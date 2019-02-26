@@ -116,6 +116,7 @@
 "@mycrypto/ui@^0.12.0":
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.12.0.tgz#3378e65fb54da8a9b35d9874c98e9de106dd674e"
+  integrity sha512-7UABVkRI7M0as3tq3Nnb+aQH8Xw3ws9YYGWO/3BJqpnqupCagCM/Od9STwaFNdL3sZqec+U5KVjQPrPB2hmSEQ==
   dependencies:
     "@types/lodash.throttle" "^4.1.4"
     "@types/react-inlinesvg" "^0.8.0"
