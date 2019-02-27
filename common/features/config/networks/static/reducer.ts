@@ -270,12 +270,12 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     id: 'TOMO',
     name: 'TomoChain',
     unit: 'TOMO',
-    chainId: 40686,
+    chainId: 88,
     isCustom: false,
     color: '#6a488d',
     blockExplorer: makeExplorer({
       name: 'Tomochain Explorer',
-      origin: 'https://explorer.tomocoin.io/#'
+      origin: 'https://scan.tomochain.com'
     }),
     tokens: [],
     contracts: [],
