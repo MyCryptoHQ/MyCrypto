@@ -32,6 +32,7 @@ const DevToolsInput = styled(Input)`
 
 export default function DevTools() {
   const Account = new AccountServiceBase();
+  Account.init();
   const accounts: extendedAccount[] = Account.readAccounts() || [];
 
   const list = accounts.map((account: extendedAccount) => {
