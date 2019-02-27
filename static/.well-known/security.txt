@@ -1,4 +1,6 @@
-Contact: security@mycrypto.com
+# If you would like to report a security issue
+# please open a report on HackerOne
+Contact: https://hackerone.com/mycrypto
 Acknowledgments: https://hackerone.com/mycrypto/thanks
 Preferred-Languages: en
 Canonical: https://mycrypto.com/.well-known/security.txt
