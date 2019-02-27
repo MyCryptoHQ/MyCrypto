@@ -1,13 +1,29 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { List, Address } from '@mycrypto/ui';
 
 import './DevTools.scss';
 import AccountServiceBase from 'v2/services/Account/Account';
+import { account, extendedAccount } from 'v2/services/Account';
+import { truncate } from 'v2/libs';
 
 export default function DevTools() {
+  const Account = new AccountServiceBase();
+  const accounts: extendedAccount[] = Account.readAccounts() || [];
+
+  const list = accounts.map((account: extendedAccount) => {
+    return (
+      <p>
+        <Address title={account.label} address={account.address} truncate={truncate} />{' '}
+        <button onClick={() => Account.deleteAccount(account.uuid)}> x </button>
+      </p>
+    );
+  });
+
   return (
     <div className="DevToolsAccount">
       <div className="DevToolsAccount-Wrapper">
+        <List>{list}</List>
         <div className="Settings-heading">Enter a new Account</div>
         <Formik
           initialValues={{
@@ -15,34 +31,12 @@ export default function DevTools() {
             label: 'test1',
             network: 'ETH'
           }}
-          onSubmit={(values, { setSubmitting }) => {
-            console.log('New account add: ' + JSON.stringify(values, null, 4));
-            const newAccount = new AccountServiceBase();
-            newAccount.createAccount(values);
+          onSubmit={(values: account, { setSubmitting }) => {
+            Account.createAccount(values);
             setSubmitting(false);
           }}
-          /*validate={values => {
-            let errors = {};
-            if (!values.address) {
-              errors['address'] = 'Required';
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.address)
-            ) {
-              errors['address'] = 'Invalid email address';
-            }
-            return errors;
-          }}*/
         >
-          {({
-            values,
-            //errors,
-            //touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting
-            /* and other goodies */
-          }) => (
+          {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
             <form onSubmit={handleSubmit}>
               Address:{' '}
               <input
@@ -53,7 +47,6 @@ export default function DevTools() {
                 value={values['address']}
               />
               <br />
-              {/*errors.address && touched.address && errors.address*/}
               Label:{' '}
               <input
                 type="label"

@@ -21,7 +21,7 @@
     "noUnusedParameters": true,
     "pretty": true,
     "noErrorTruncation": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "skipLibCheck": true
   },
   "include": [
