@@ -193,7 +193,7 @@ You should use `feature/foo` to implement and commit all changed required for yo
 
 When your feature is complete, push it to your remote repo and prepare it for a pull request.
 
-When you are creating a pull request, make sure the base is `MyCryptoHQ/mycrypto/master` and compare to `feature/foo`.
+When you are creating a pull request, make sure the base is `MyCryptoHQ/mycrypto/develop` and compare to `feature/foo`.
 
 ## Thanks & Support
 
