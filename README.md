@@ -154,6 +154,47 @@ yarn test:int
 
 ### More information is available on the [Wiki Pages](https://github.com/MyCryptoHQ/MyCrypto/wiki)
 
+## Branching Model
+
+MyCrypto is open-source and encourages pull-requests from third-parties. Our branching model is described below.
+
+To start, fork this repository and have your own remote repository on GitHub.
+
+### Naming Convention
+
+Your branch name must meet our naming conventions to help with administration and identify what type of branch it is.
+
+We name our branches like `<type>/<name>` - examples below;
+
+* `feature/foo` - A feature branch for a feature to do with foo.
+* `enhancement/foo` - An enhancement branch to an already built feature called foo.
+* `hotfix/foo` - A hotfix branch called foo (something affecting current production)
+* `bugfix/foo` - A bugfix branch called foo (something affecting current staging)
+* `release/1.4.2` - A release branch for tag 1.4.2
+* `revert/foo` - A branch to revert a logic to do with foo.
+
+### Feature branches
+
+Feature branches are used to implement new enhancements for upcoming releases. A feature branch should be ephemeral (only lasting as long as the feature itself is in development. Once the feature is completed, it must be merged back into the `develop` branch and/or discarded.)
+
+We begin on the latest `develop` branch and branch off with the naming convention of `feature/foo`.
+
+Please also make yourself familiar with our [Contributor Guidelines](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributor-Guidelines).
+
+```sh
+$ git checkout -b feature/foo develop
+```
+
+You should use `feature/foo` to implement and commit all changed required for your new feature.
+
+* Make many small commits so that the history of development for you feature branch is clear and so that it is easy to pinpoint and edit or cherry-pick specific commits if necessary.
+* Avoid merging your feature branch with out feature branches being developed in parallel.
+* Add neccessary unit tests for your features code.
+
+When your feature is complete, push it to your remote repo and prepare it for a pull request.
+
+When you are creating a pull request, make sure the base is `MyCryptoHQ/mycrypto/master` and compare to `feature/foo`.
+
 ## Thanks & Support
 
 <a href="https://browserstack.com/">
