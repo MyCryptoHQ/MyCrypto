@@ -29,7 +29,6 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
             amount: '0.00',
             asset: 'ETH'
           }}
-          onSubmit={() => {}}
           render={({ values: { amount } }) => (
             <Form>
               <fieldset className="RequestAssets-panel-fieldset">
