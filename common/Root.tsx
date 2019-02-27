@@ -125,6 +125,7 @@ class RootClass extends Component<Props, State> {
             </Router>
           </Provider>
           <div id="ModalContainer" />
+          <DevTools />
         </React.Fragment>
       </ThemeProvider>
     );
