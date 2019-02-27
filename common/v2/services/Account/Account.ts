@@ -3,103 +3,97 @@ import { account, extendedAccount } from './types';
 
 export default class AccountServiceBase {
   // TODO: Add duplication/validation handling.
+  init = () => {
+    const check = localStorage.getItem('MyCryptoCache');
+    if (!check || check === '[]' || check === '{}') {
+      let newCache = {
+        Account: {},
+        AccountList: []
+      };
+      localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
+    }
+  };
+
   createAccount = (account: account) => {
+    this.init();
     // Handle Account
     const uuid = utils.generateUUID();
 
-    const AccountState = localStorage.getItem('Account') || '{}';
-    let parsedAccountState;
+    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
+    let parsedLocalCache;
     try {
-      parsedAccountState = JSON.parse(AccountState);
+      parsedLocalCache = JSON.parse(localCache);
     } catch (e) {
-      parsedAccountState = AccountState;
+      parsedLocalCache = localCache;
     }
-    const newAccountCache = parsedAccountState;
-    newAccountCache[uuid] = account;
-    localStorage.setItem('Account', JSON.stringify(newAccountCache));
+    const newAccountCache = parsedLocalCache;
+    newAccountCache.Account[uuid] = account;
 
-    // Handle AccountList
-    const AccountListState = localStorage.getItem('AccountList') || '[]';
-    let parsedAccountListState;
-    try {
-      parsedAccountListState = JSON.parse(AccountListState);
-    } catch {
-      parsedAccountListState = AccountListState;
-    }
-    const newAccountList = [...parsedAccountListState, uuid];
-    localStorage.setItem('AccountList', JSON.stringify(newAccountList));
+    newAccountCache.AccountList = [...newAccountCache.AccountList, uuid];
+    localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
   };
 
   readAccount = (uuid: string) => {
-    const AccountState = localStorage.getItem('Account') || '{}';
-    let parsedAccountState;
+    this.init();
+    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
+    let parsedLocalCache;
     try {
-      parsedAccountState = JSON.parse(AccountState);
+      parsedLocalCache = JSON.parse(localCache);
     } catch {
-      parsedAccountState = AccountState;
+      parsedLocalCache = localCache;
     }
-    return parsedAccountState[uuid];
+    return parsedLocalCache.Account[uuid];
   };
 
   updateAccount = (uuid: string, account: account) => {
-    const AccountState = localStorage.getItem('Account') || '{}';
-    let parsedAccountState;
+    this.init();
+    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
+    let parsedLocalCache;
     try {
-      parsedAccountState = JSON.parse(AccountState);
+      parsedLocalCache = JSON.parse(localCache);
     } catch {
-      parsedAccountState = AccountState;
+      parsedLocalCache = localCache;
     }
-    const newAccountCache = Object.assign({}, parsedAccountState[uuid], account);
+    const newAccountCache = Object.assign({}, parsedLocalCache.Account[uuid], account);
 
-    localStorage.setItem('Account', JSON.stringify(newAccountCache));
+    localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
   };
 
   deleteAccount = (uuid: string) => {
+    this.init();
     // Handle Account
-    const AccountState = localStorage.getItem('Account') || '{}';
-    let parsedAccountState;
+    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
+    let parsedLocalCache;
     try {
-      parsedAccountState = JSON.parse(AccountState);
+      parsedLocalCache = JSON.parse(localCache);
     } catch {
-      parsedAccountState = AccountState;
+      parsedLocalCache = localCache;
     }
-    delete parsedAccountState[uuid];
-    localStorage.setItem('Account', JSON.stringify(parsedAccountState));
-
-    // Handle AccountList
-    const AccountListState = localStorage.getItem('AccountList') || '[]';
-    let parsedAccountListState;
-    try {
-      parsedAccountListState = JSON.parse(AccountListState);
-    } catch {
-      parsedAccountListState = AccountListState;
-    }
-
-    const newAccountListState = parsedAccountListState.filter((obj: string) => obj !== uuid);
-    localStorage.setItem('AccountList', JSON.stringify(newAccountListState));
+    delete parsedLocalCache.Account[uuid];
+    const newAccountList = parsedLocalCache.AccountList.filter((obj: string) => obj !== uuid);
+    parsedLocalCache.AccountList = newAccountList;
+    const newCache = parsedLocalCache;
+    localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
   };
 
   readAccounts = (): extendedAccount[] => {
-    const AccountListState = localStorage.getItem('AccountList') || '[]';
-    const AccountState = localStorage.getItem('Account') || '{}';
-    let parsedAccountState: any;
-    let parsedAccountListState: any;
-    const out: extendedAccount[] = [];
+    this.init();
+    const localCache = localStorage.getItem('MyCryptoCache') || '[]';
+    let parsedLocalCache: any;
+    let out: extendedAccount[] = [];
     try {
-      parsedAccountState = JSON.parse(AccountState);
+      parsedLocalCache = JSON.parse(localCache);
     } catch (e) {
-      parsedAccountState = AccountState;
+      parsedLocalCache = localCache;
+    }
+    if (parsedLocalCache.AccountList && parsedLocalCache.AccountList.length >= 1) {
+      parsedLocalCache.AccountList.map((uuid: string) => {
+        out.push({ ...parsedLocalCache.Account[uuid], uuid });
+      });
+    } else {
+      out = [];
     }
 
-    try {
-      parsedAccountListState = JSON.parse(AccountListState);
-    } catch {
-      parsedAccountListState = AccountListState;
-    }
-
-    parsedAccountListState.map((uuid: string) => {
-      out.push({ ...parsedAccountState[uuid], uuid });
-    });
     return out;
   };
 }
