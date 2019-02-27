@@ -1,11 +1,34 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { List, Address, Icon } from '@mycrypto/ui';
+import { List, Address, Panel, Button, Input } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import './DevTools.scss';
 import AccountServiceBase from 'v2/services/Account/Account';
 import { account, extendedAccount } from 'v2/services/Account';
 import { truncate } from 'v2/libs';
+
+const DevToolsWidget = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  border: 1px solid gray;
+`;
+
+const AccountContainer = styled.div`
+  display: flex;
+  font-size: 18px;
+`;
+
+const DeleteButton = styled(Button)`
+  align-self: flex-start;
+  margin-left: 1em;
+`;
+
+const DevToolsInput = styled(Input)`
+  font-size: 1em;
+`;
 
 export default function DevTools() {
   const Account = new AccountServiceBase();
@@ -13,19 +36,17 @@ export default function DevTools() {
 
   const list = accounts.map((account: extendedAccount) => {
     return (
-      <div className="list-item">
+      <AccountContainer>
         <Address title={account.label} address={account.address} truncate={truncate} />
-        <button className="list-item-button" onClick={() => Account.deleteAccount(account.uuid)}>
-          <Icon icon="exit" />
-        </button>
-      </div>
+        <DeleteButton onClick={() => Account.deleteAccount(account.uuid)} icon="exit" />
+      </AccountContainer>
     );
   });
 
   return (
-    <div className="DevToolsAccount">
-      <div className="DevToolsAccount-Wrapper">
-        <List>{list}</List>
+    <DevToolsWidget>
+      <Panel>
+        <List group>{list}</List>
         <div className="Settings-heading">Enter a new Account</div>
         <Formik
           initialValues={{
@@ -41,39 +62,29 @@ export default function DevTools() {
           {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
             <form onSubmit={handleSubmit}>
               Address:{' '}
-              <input
-                type="address"
-                name="address"
+              <DevToolsInput
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values['address']}
               />
               <br />
               Label:{' '}
-              <input
-                type="label"
-                name="label"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values['label']}
-              />
+              <DevToolsInput onChange={handleChange} onBlur={handleBlur} value={values['label']} />
               <br />
               Network:{' '}
-              <input
-                type="network"
-                name="network"
+              <DevToolsInput
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values['network']}
               />
               <br />
-              <button type="submit" disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Submit
-              </button>
+              </Button>
             </form>
           )}
         </Formik>
-      </div>
-    </div>
+      </Panel>
+    </DevToolsWidget>
   );
 }

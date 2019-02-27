@@ -116,7 +116,6 @@
 "@mycrypto/ui@^0.12.0":
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.12.0.tgz#3378e65fb54da8a9b35d9874c98e9de106dd674e"
-  integrity sha512-7UABVkRI7M0as3tq3Nnb+aQH8Xw3ws9YYGWO/3BJqpnqupCagCM/Od9STwaFNdL3sZqec+U5KVjQPrPB2hmSEQ==
   dependencies:
     "@types/lodash.throttle" "^4.1.4"
     "@types/react-inlinesvg" "^0.8.0"
@@ -229,6 +228,10 @@
   version "8.10.8"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.8.tgz#794cba23cc9f8d9715f6543fa8827433b5f5cd3b"
 
+"@types/prop-types@*":
+  version "15.5.9"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.9.tgz#f2d14df87b0739041bc53a7d75e3d77d726a3ec0"
+
 "@types/qrcode.react@0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@types/qrcode.react/-/qrcode.react-0.6.3.tgz#c0950902987b12bce342802adcf6d5ce7ad07294"
@@ -262,6 +265,13 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/react-inlinesvg/-/react-inlinesvg-0.8.0.tgz#0347931da1b7744561ab6e96a7252a2a78b63f2e"
   dependencies:
+    "@types/react" "*"
+
+"@types/react-native@*":
+  version "0.57.38"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.57.38.tgz#2ff6ed1a7cc207afbfd87bf496513d96931d1446"
+  dependencies:
+    "@types/prop-types" "*"
     "@types/react" "*"
 
 "@types/react-redux@5.0.15":
@@ -328,6 +338,14 @@
 "@types/semver@5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-5.5.0.tgz#146c2a29ee7d3bae4bf2fcb274636e264c813c45"
+
+"@types/styled-components@^4.1.11":
+  version "4.1.11"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.11.tgz#1bd97988a69be550ef8a967b87827ff943f21c4e"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+    csstype "^2.2.0"
 
 "@types/url-search-params@^0.10.1":
   version "0.10.1"
@@ -11310,7 +11328,7 @@ style-loader@0.20.3:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
 
-styled-components@^4.0.2:
+styled-components@^4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.1.3.tgz#4472447208e618b57e84deaaeb6acd34a5e0fe9b"
   dependencies:
