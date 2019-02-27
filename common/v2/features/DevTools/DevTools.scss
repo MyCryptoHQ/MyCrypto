@@ -3,7 +3,6 @@
   bottom: 0;
   left: 0;
   height: '5rem';
-  width: 275px;
   z-Index: 99;
   padding: 1px 6px;
   background-color: #dddddd;
@@ -14,5 +13,15 @@
   box-sizing: border-box;
   &-wrapper {
     position: center;
+  }
+}
+.list-item {
+  display: flex;
+  flex-direction: row;
+  font-size: 18px;
+
+  &-button {
+    position: absolute;
+    right: 0;
   }
 }

@@ -13,12 +13,12 @@ export default function DevTools() {
 
   const list = accounts.map((account: extendedAccount) => {
     return (
-      <p>
-        <Address title={account.label} address={account.address} truncate={truncate} />{' '}
-        <button onClick={() => Account.deleteAccount(account.uuid)}>
+      <div className="list-item">
+        <Address title={account.label} address={account.address} truncate={truncate} />
+        <button className="list-item-button" onClick={() => Account.deleteAccount(account.uuid)}>
           <Icon icon="exit" />
         </button>
-      </p>
+      </div>
     );
   });
 
