@@ -40,8 +40,7 @@ export default {
   actions: [
     {
       icon: addIcon,
-      title: 'Add New Account',
-      onClick: () => {}
+      title: 'Add New Account'
     },
     {
       icon: settingsIcon,
@@ -50,8 +49,7 @@ export default {
     },
     {
       icon: unlockIcon,
-      title: 'Lock Wallet',
-      onClick: () => {}
+      title: 'Lock Wallet'
     }
   ]
 };

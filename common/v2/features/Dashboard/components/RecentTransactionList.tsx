@@ -58,7 +58,7 @@ const recentTransactions = [
 ];
 const pending = recentTransactions.filter(tx => tx.stage === 'pending');
 const completed = recentTransactions.filter(tx => tx.stage === 'completed');
-const createEntries = (stage, collection) =>
+const createEntries = (_, collection) =>
   collection.map(({ label, stage, date, from, to, amount, fiat, uuid }) => [
     <TransactionLabel
       key={0}
@@ -67,8 +67,8 @@ const createEntries = (stage, collection) =>
       stage={stage}
       date={date}
     />,
-    <Address key={1} title="No Label" truncate={truncate} onSubmit={() => {}} address={from} />,
-    <Address key={2} title="No Label" truncate={truncate} onSubmit={() => {}} address={to} />,
+    <Address key={1} title="No Label" truncate={truncate} address={from} />,
+    <Address key={2} title="No Label" truncate={truncate} address={to} />,
     <Amount key={3} assetValue={amount} fiatValue={fiat.USD} />,
     <Link key={4} to={`/dashboard/transactions/${uuid}`}>
       <img src={newWindowIcon} alt="View more information about this transaction" />

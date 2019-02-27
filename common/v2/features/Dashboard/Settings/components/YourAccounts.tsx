@@ -33,7 +33,7 @@ const accountTable = {
   head: ['Favorite', 'Address', 'Network', 'Value', 'Delete'],
   body: accounts.map(({ address, name, network, value }) => [
     <Icon key={0} icon="star" />,
-    <Address key={1} title={name} address={address} onSubmit={() => {}} truncate={truncate} />,
+    <Address key={1} title={name} address={address} truncate={truncate} />,
     <Network key={3} color="#a682ff">
       {network}
     </Network>,
