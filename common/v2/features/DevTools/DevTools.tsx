@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { List, Address } from '@mycrypto/ui';
+import { List, Address, Icon } from '@mycrypto/ui';
 
 import './DevTools.scss';
 import AccountServiceBase from 'v2/services/Account/Account';
@@ -15,7 +15,9 @@ export default function DevTools() {
     return (
       <p>
         <Address title={account.label} address={account.address} truncate={truncate} />{' '}
-        <button onClick={() => Account.deleteAccount(account.uuid)}> x </button>
+        <button onClick={() => Account.deleteAccount(account.uuid)}>
+          <Icon icon="exit" />
+        </button>
       </p>
     );
   });

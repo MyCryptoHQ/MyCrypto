@@ -51,7 +51,7 @@ export default class AccountServiceBase {
     }
     const newAccountCache = Object.assign({}, parsedAccountState[uuid], account);
 
-    localStorage.setItem(`account.${uuid}`, JSON.stringify(newAccountCache));
+    localStorage.setItem('Account', JSON.stringify(newAccountCache));
   };
 
   deleteAccount = (uuid: string) => {
@@ -63,9 +63,8 @@ export default class AccountServiceBase {
     } catch {
       parsedAccountState = AccountState;
     }
-    const newAccountCache = delete parsedAccountState[uuid];
-
-    localStorage.setItem('Account', JSON.stringify(newAccountCache));
+    delete parsedAccountState[uuid];
+    localStorage.setItem('Account', JSON.stringify(parsedAccountState));
 
     // Handle AccountList
     const AccountListState = localStorage.getItem('AccountList') || '[]';
@@ -75,9 +74,9 @@ export default class AccountServiceBase {
     } catch {
       parsedAccountListState = AccountListState;
     }
-    const findIndex = parsedAccountListState.indexOf(uuid);
-    const newAccountList = parsedAccountListState.splice(findIndex, 1);
-    localStorage.setItem('AccountList', JSON.stringify(newAccountList));
+
+    const newAccountListState = parsedAccountListState.filter((obj: string) => obj !== uuid);
+    localStorage.setItem('AccountList', JSON.stringify(newAccountListState));
   };
 
   readAccounts = (): extendedAccount[] => {
