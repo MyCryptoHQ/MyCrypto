@@ -214,12 +214,19 @@ export const gasLimitValidator = (gasLimit: number | string) => {
   );
 };
 
+function getLength(number: number) {
+  return number.toString().length;
+}
+
 export const gasPriceValidator = (gasPrice: number | string): boolean => {
-  const gasPriceFloat = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
+  const gasPriceFloat: number = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
+  const decimalLength: string = gasPriceFloat.toString().split('.')[1];
   return (
     validNumber(gasPriceFloat) &&
     gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
-    gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND
+    gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND &&
+    getLength(gasPriceFloat) <= 10 &&
+    getLength(Number(decimalLength)) <= 6
   );
 };
 
