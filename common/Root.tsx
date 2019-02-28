@@ -32,6 +32,7 @@ import 'what-input';
 
 // v2
 import { gatherFeatureRoutes } from 'v2';
+import DevTools from 'v2/features/DevTools';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -124,6 +125,7 @@ class RootClass extends Component<Props, State> {
             </Router>
           </Provider>
           <div id="ModalContainer" />
+          <DevTools />
         </React.Fragment>
       </ThemeProvider>
     );
