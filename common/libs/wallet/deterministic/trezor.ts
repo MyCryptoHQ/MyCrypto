@@ -10,7 +10,7 @@ import { HardwareWallet, ChainCodeResponse } from './hardware';
 
 // read more: https://github.com/trezor/connect/blob/develop/docs/index.md#trezor-connect-manifest
 TrezorConnect.manifest({
-  email: 'info@mycrypto.com',
+  email: 'support@mycrypto.com',
   appUrl: 'https://mycrypto.com/'
 });
 
