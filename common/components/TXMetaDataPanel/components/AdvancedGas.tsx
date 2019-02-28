@@ -107,6 +107,7 @@ class AdvancedGas extends React.Component<Props, State> {
                   or invalid exponent notation does not fire the onchange handler
                   so the component will not display as invalid for such things */}
                   <Input
+                    maxLength={10}
                     isValid={validGasPrice}
                     placeholder="40"
                     value={gasPrice.raw}
