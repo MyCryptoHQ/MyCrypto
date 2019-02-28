@@ -214,8 +214,8 @@ export const gasLimitValidator = (gasLimit: number | string) => {
   );
 };
 
-function getLength(number: number) {
-  return number.toString().length;
+function getLength(num: number) {
+  return num.toString().length;
 }
 
 export const gasPriceValidator = (gasPrice: number | string): boolean => {
