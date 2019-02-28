@@ -2,13 +2,17 @@ import EthTx, { TxObj } from 'ethereumjs-tx';
 import mapValues from 'lodash/mapValues';
 
 import { translateRaw } from 'translations';
-import TrezorConnect from 'vendor/trezor-connect';
+import TrezorConnect from 'trezor-connect';
 import { getTransactionFields } from 'libs/transaction';
 import { padLeftEven } from 'libs/values';
 import { stripHexPrefixAndLower } from 'libs/formatters';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
 
-export const TREZOR_MINIMUM_FIRMWARE = '1.5.2';
+// read more: https://github.com/trezor/connect/blob/develop/docs/index.md#trezor-connect-manifest
+TrezorConnect.manifest({
+  email: 'support@mycrypto.com',
+  appUrl: 'https://mycrypto.com/'
+});
 
 export class TrezorWallet extends HardwareWallet {
   public static getChainCode(dpath: string): Promise<ChainCodeResponse> {
