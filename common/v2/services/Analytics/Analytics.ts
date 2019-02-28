@@ -21,11 +21,11 @@ export default class AnalyticsService {
     }
   }
 
-  public trackLegacy(category: string, eventName: string, eventParams?: object): Promise<any> {
-    return this.track(category, `Legacy_${eventName}`, eventParams);
+  public trackLegacy(category: string, eventAction: string, eventParams?: object): Promise<any> {
+    return this.track(category, `Legacy_${eventAction}`, eventParams);
   }
 
-  public track(category: string, eventName: string, eventParams?: object): Promise<any> {
+  public track(category: string, eventAction: string, eventParams?: object): Promise<any> {
     const customParams: Params = {
       local: isDevelopment().toString(),
       desktop: isDesktop().toString(),
@@ -35,9 +35,9 @@ export default class AnalyticsService {
     const cvar: object = this.mapParamsToCvars(customParams);
 
     const params: object = {
-      action_name: eventName,
+      action_name: eventAction,
       e_c: category,
-      e_a: eventName,
+      e_a: eventAction,
       idsite: ANALYTICS_ID_SITE,
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
