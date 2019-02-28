@@ -3,7 +3,7 @@ import difference from 'lodash/difference';
 import { InsecureWalletName, SecureWalletName, WalletName, walletNames } from 'config';
 import { SHAPESHIFT_TOKEN_WHITELIST } from 'api/shapeshift';
 import { stripWeb3Network, isAutoNodeConfig } from 'libs/nodes';
-import { getIsValidAddressFunction } from 'libs/validators';
+import { getIsValidAddressFunction, getIsValidENSAddressFunction } from 'libs/validators';
 import { CustomNodeConfig, StaticNodeConfig, StaticNodeId, NodeConfig } from 'types/node';
 import {
   CustomNetworkConfig,
@@ -92,6 +92,11 @@ export const getIsValidAddressFn = (state: AppState) => {
   return getIsValidAddressFunction(chainId);
 };
 
+export const getIsValidENSAddressFn = (state: AppState) => {
+  const chainId = getNetworkChainId(state);
+  return getIsValidENSAddressFunction(chainId);
+};
+
 export const getChecksumAddressFn = (state: AppState) => {
   const chainId = getNetworkChainId(state);
   return getChecksumAddressFunction(chainId);
@@ -173,7 +178,7 @@ export function isWalletFormatSupportedOnNetwork(state: AppState, format: Wallet
   }
 
   // Parity signer on RSK
-  if (chainId === 30 || (chainId === 31 && format === SecureWalletName.PARITY_SIGNER)) {
+  if ((chainId === 30 || chainId === 31) && format === SecureWalletName.PARITY_SIGNER) {
     return false;
   }
 

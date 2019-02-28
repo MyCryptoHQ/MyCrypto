@@ -10,6 +10,7 @@ import {
 import { EAC_SCHEDULING_CONFIG } from 'libs/scheduling';
 import { AppState } from 'features/reducers';
 import * as helpers from './helpers';
+import { TxObj } from 'ethereumjs-tx';
 
 //#region Fields
 export const getScheduleState = (state: AppState) => state.schedule;
@@ -46,6 +47,18 @@ export const isSchedulingEnabled = (state: AppState): boolean => {
 
 export const getScheduledTransactionHash = (state: AppState): string =>
   getScheduleState(state).scheduledTransactionHash.value;
+
+export const getScheduledTransactionAddress = (state: AppState): string =>
+  getScheduleState(state).scheduledTransactionAddress.value;
+
+export const getScheduledTokenTransferSymbol = (state: AppState): string =>
+  getScheduleState(state).scheduledTokenTransferSymbol.value;
+
+export const getScheduledTokensApproveTransaction = (state: AppState): TxObj | undefined =>
+  getScheduleState(state).scheduledTokensApproveTransaction;
+
+export const getSendingTokenApproveTransaction = (state: AppState): boolean =>
+  getScheduleState(state).sendingTokenApproveTransaction;
 //#endregion Fields
 
 //#region Current
@@ -62,7 +75,7 @@ export const isValidCurrentScheduleTimestamp = (state: AppState) => {
 
   return (
     currentScheduleDatetime >=
-    helpers.minFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW)
+    helpers.minsFromNow(EAC_SCHEDULING_CONFIG.ALLOW_SCHEDULING_MIN_AFTER_NOW)
   );
 };
 

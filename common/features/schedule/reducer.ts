@@ -19,8 +19,8 @@ const INITIAL_STATE: types.ScheduleState = {
   },
   windowStart: { raw: '', value: null },
   scheduleTimestamp: {
-    raw: moment(helpers.minFromNow(60)).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT),
-    value: helpers.minFromNow(60)
+    raw: moment(helpers.daysFromNow(1)).format(EAC_SCHEDULING_CONFIG.SCHEDULE_TIMESTAMP_FORMAT),
+    value: helpers.daysFromNow(1)
   },
   scheduleTimezone: { raw: moment.tz.guess(), value: moment.tz.guess() },
   timeBounty: {
@@ -47,16 +47,41 @@ const INITIAL_STATE: types.ScheduleState = {
   scheduledTransactionHash: {
     raw: '',
     value: ''
-  }
+  },
+  scheduledTransactionAddress: {
+    raw: '',
+    value: ''
+  },
+  scheduledTokenTransferSymbol: {
+    raw: '',
+    value: ''
+  },
+  scheduledTokensApproveTransaction: undefined,
+  sendingTokenApproveTransaction: false
 };
 
 const updateScheduleField = (key: keyof types.ScheduleState): Reducer<types.ScheduleState> => (
   state: types.ScheduleState,
   action: types.ScheduleFieldAction
-) => ({
-  ...state,
-  [key]: { ...state[key], ...action.payload }
-});
+) => {
+  if (key === 'sendingTokenApproveTransaction' || key === 'scheduledTokensApproveTransaction') {
+    return {
+      ...state,
+      [key]: action.payload
+    };
+  } else {
+    if (typeof action.payload === 'boolean') {
+      return {
+        ...state
+      };
+    }
+
+    return {
+      ...state,
+      [key]: { ...state[key], ...action.payload }
+    };
+  }
+};
 
 export function scheduleReducer(
   state: types.ScheduleState = INITIAL_STATE,
@@ -87,6 +112,14 @@ export function scheduleReducer(
       return updateScheduleField('scheduleParamsValidity')(state, action);
     case types.ScheduleActions.SCHEDULED_TRANSACTION_HASH_SET:
       return updateScheduleField('scheduledTransactionHash')(state, action);
+    case types.ScheduleActions.SCHEDULED_TRANSACTION_ADDRESS_SET:
+      return updateScheduleField('scheduledTransactionAddress')(state, action);
+    case types.ScheduleActions.SCHEDULED_TOKENS_APPROVE_TRANSACTION_SET:
+      return updateScheduleField('scheduledTokensApproveTransaction')(state, action);
+    case types.ScheduleActions.SENDING_TOKEN_APPROVE_TRANSACTION_SET:
+      return updateScheduleField('sendingTokenApproveTransaction')(state, action);
+    case types.ScheduleActions.SCHEDULED_TOKEN_TRANSFER_SYMBOL_SET:
+      return updateScheduleField('scheduledTokenTransferSymbol')(state, action);
     default:
       return state;
   }
