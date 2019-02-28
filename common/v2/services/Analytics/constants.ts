@@ -1,5 +1,5 @@
 // The root URL for Analytics API requests.
-export const ANALYTICS_API_URL = 'https://analytics.mycryptoapi.com/piwik.php';
+export const ANALYTICS_API_URL = 'https://d2xxi6ebw5.execute-api.us-west-2.amazonaws.com/latest';
 
 // The ID of the analytic website.
 export const ANALYTICS_ID_SITE = 4;

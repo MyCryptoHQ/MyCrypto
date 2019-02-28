@@ -52,13 +52,11 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
-  developmentMode: boolean;
 }
 
 class RootClass extends Component<Props, State> {
   public state = {
-    error: null,
-    developmentMode: Boolean(window.localStorage.getItem('MyCrypto Dev Mode'))
+    error: null
   };
 
   public componentDidMount() {
@@ -79,7 +77,7 @@ class RootClass extends Component<Props, State> {
 
   public render() {
     const { store, onboardingActive } = this.props;
-    const { error, developmentMode } = this.state;
+    const { error } = this.state;
 
     if (error) {
       return <ErrorScreen error={error} />;
@@ -88,8 +86,7 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          {developmentMode &&
-            gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
+          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
@@ -128,20 +125,6 @@ class RootClass extends Component<Props, State> {
             </Router>
           </Provider>
           <div id="ModalContainer" />
-          {process.env.NODE_ENV !== 'production' && (
-            <button
-              onClick={this.handleDevelopmentModeButtonClick}
-              style={{
-                position: 'fixed',
-                bottom: 0,
-                right: 0,
-                zIndex: 99,
-                height: '5rem'
-              }}
-            >
-              Development Mode {developmentMode ? 'Off' : 'On'}
-            </button>
-          )}
         </React.Fragment>
       </ThemeProvider>
     );
@@ -172,18 +155,6 @@ class RootClass extends Component<Props, State> {
     }
     root.classList.add(`theme--${theme}`);
   }
-
-  private handleDevelopmentModeButtonClick = () => {
-    const isDevelopmentMode = window.localStorage.getItem('MyCrypto Dev Mode');
-
-    if (isDevelopmentMode) {
-      window.localStorage.removeItem('MyCrypto Dev Mode');
-      this.setState({ developmentMode: false });
-    } else {
-      window.localStorage.setItem('MyCrypto Dev Mode', 'true');
-      this.setState({ developmentMode: true });
-    }
-  };
 }
 
 let previousURL = '';

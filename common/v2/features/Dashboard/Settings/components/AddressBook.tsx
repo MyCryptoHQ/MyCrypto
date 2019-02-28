@@ -29,7 +29,7 @@ const addressBookTable = {
   head: ['Favorite', 'Address', 'Notes', 'Delete'],
   body: accounts.map(({ address, name, notes }) => [
     <Icon key={0} icon="star" />,
-    <Address key={1} title={name} address={address} onSubmit={() => {}} truncate={truncate} />,
+    <Address key={1} title={name} address={address} truncate={truncate} />,
     <Typography key={2}>{notes}</Typography>,
     <Icon key={5} icon="exit" />
   ]),
