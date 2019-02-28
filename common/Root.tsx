@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { light } from '@mycrypto/ui';
 
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
@@ -30,6 +32,7 @@ import 'what-input';
 
 // v2
 import { gatherFeatureRoutes } from 'v2';
+import DevTools from 'v2/features/DevTools';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -107,21 +110,24 @@ class RootClass extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <React.Fragment>
-        <Provider store={store}>
-          <Router>
-            <React.Fragment>
-              {onboardingActive && <OnboardingModal />}
-              {routes}
-              <LegacyRoutes />
-              <LogOutPrompt />
-              <QrSignerModal />
-              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-            </React.Fragment>
-          </Router>
-        </Provider>
-        <div id="ModalContainer" />
-      </React.Fragment>
+      <ThemeProvider theme={light}>
+        <React.Fragment>
+          <Provider store={store}>
+            <Router>
+              <React.Fragment>
+                {onboardingActive && <OnboardingModal />}
+                {routes}
+                <LegacyRoutes />
+                <LogOutPrompt />
+                <QrSignerModal />
+                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+              </React.Fragment>
+            </Router>
+          </Provider>
+          <div id="ModalContainer" />
+          <DevTools />
+        </React.Fragment>
+      </ThemeProvider>
     );
   }
 
