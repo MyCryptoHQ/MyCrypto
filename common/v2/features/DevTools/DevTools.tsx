@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Formik } from 'formik';
+import { Formik, Field, Form } from 'formik';
 import { List, Address, Panel, Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import AccountServiceBase from 'v2/services/Account/Account';
 import { account, extendedAccount } from 'v2/services/Account';
 import { truncate } from 'v2/libs';
-import console = require('console');
 
 // const AccountsContext = React.createContext({});
 
@@ -35,7 +34,7 @@ const DevToolsInput = styled(Input)`
 const Account = new AccountServiceBase();
 
 export default class DevTools extends Component {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     Account.init();
     const accounts: extendedAccount[] = Account.readAccounts() || [];
@@ -52,7 +51,7 @@ export default class DevTools extends Component {
     this.getAccounts();
   };
 
-  handleDelete = uuid => {
+  handleDelete = (uuid: string) => {
     Account.deleteAccount(uuid);
     this.getAccounts();
   };
@@ -84,33 +83,66 @@ export default class DevTools extends Component {
               setSubmitting(false);
             }}
           >
-            {({ values, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-              <form onSubmit={handleSubmit}>
-                Address:{' '}
-                <DevToolsInput
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values['address']}
-                />
+            {({ values, handleChange, handleBlur, isSubmitting }) => (
+              <Form>
+                <fieldset>
+                  Address:{' '}
+                  <Field
+                    name="address"
+                    render={({ field }: { field: any }) => (
+                      <DevToolsInput
+                        {...field}
+                        component={DevToolsInput}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values['address']}
+                      />
+                    )}
+                  />
+                </fieldset>
+
                 <br />
-                Label:{' '}
-                <DevToolsInput
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values['label']}
-                />
+
+                <fieldset>
+                  Label:{' '}
+                  <Field
+                    name="label"
+                    render={({ field }: { field: any }) => (
+                      <DevToolsInput
+                        {...field}
+                        component={DevToolsInput}
+                        onChange={handleChange} //({ target: { value } }: { target: { value: any }}) => form.setFieldValue(field.name, value)}
+                        onBlur={handleBlur}
+                        value={values['label']}
+                      />
+                    )}
+                  />
+                </fieldset>
+
                 <br />
-                Network:{' '}
-                <DevToolsInput
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values['network']}
-                />
+
+                <fieldset>
+                  Network:{' '}
+                  <Field
+                    name="network"
+                    render={({ field }: { field: any }) => (
+                      <DevToolsInput
+                        {...field}
+                        component={DevToolsInput}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values['network']}
+                      />
+                    )}
+                  />
+                </fieldset>
+
                 <br />
+
                 <Button type="submit" disabled={isSubmitting}>
                   Submit
                 </Button>
-              </form>
+              </Form>
             )}
           </Formik>
         </Panel>
