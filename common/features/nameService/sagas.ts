@@ -2,17 +2,17 @@ import { SagaIterator, delay, buffers } from 'redux-saga';
 import { call, put, select, all, actionChannel, take, fork, race } from 'redux-saga/effects';
 
 import { INode } from 'libs/nodes/INode';
-import { IBaseDomainRequest } from 'libs/ens';
+import { IENSBaseDomainRequest } from 'libs/nameServices/ens';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
 import { notificationsActions } from 'features/notifications';
-import { ensDomainSelectorSelectors } from './domainSelector';
+import { nameServiceDomainSelectorSelectors } from './domainSelector';
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
 import * as helpers from './helpers';
 
 function* shouldResolveDomain(domain: string) {
-  const currentDomainName = yield select(ensDomainSelectorSelectors.getCurrentDomainName);
+  const currentDomainName = yield select(nameServiceDomainSelectorSelectors.getCurrentDomainName);
   if (currentDomainName === domain) {
     const currentDomainData = yield select(selectors.getCurrentDomainData);
     if (currentDomainData) {
@@ -24,7 +24,7 @@ function* shouldResolveDomain(domain: string) {
 
 function* resolveDomain(): SagaIterator {
   const requestChan = yield actionChannel(
-    types.ENSActions.RESOLVE_DOMAIN_REQUESTED,
+    types.NameServiceActions.RESOLVE_DOMAIN_REQUESTED,
     buffers.sliding(1)
   );
 
@@ -42,7 +42,7 @@ function* resolveDomain(): SagaIterator {
 
       const node: INode = yield select(configNodesSelectors.getNodeLib);
 
-      const result: { domainData: IBaseDomainRequest; error: any } = yield race({
+      const result: { domainData: IENSBaseDomainRequest; error: any } = yield race({
         domainData: call(helpers.resolveDomainRequest, domain, node),
         err: call(delay, 10000)
       });
@@ -68,6 +68,6 @@ function* resolveDomain(): SagaIterator {
   }
 }
 
-export function* ensSaga(): SagaIterator {
+export function* nameServiceSaga(): SagaIterator {
   yield all([fork(resolveDomain)]);
 }

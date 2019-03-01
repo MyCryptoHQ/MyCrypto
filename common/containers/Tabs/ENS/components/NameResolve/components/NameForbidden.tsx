@@ -1,8 +1,8 @@
 import React from 'react';
 
 import translate from 'translations';
-import { IBaseDomainRequest } from 'libs/ens';
+import { IENSBaseDomainRequest } from 'libs/nameServices/ens';
 
-export const NameForbidden: React.SFC<IBaseDomainRequest> = props => (
+export const NameForbidden: React.SFC<IENSBaseDomainRequest> = props => (
   <h1>{translate('ENS_DOMAIN_FORBIDDEN', { $name: props.name + '.eth' })}</h1>
 );

@@ -15,9 +15,9 @@ import {
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'config/constants';
 import { JsonRpcResponse } from './nodes/rpc/types';
-import { normalise } from './ens';
+import { normalise } from './nameServices/ens';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
-import { getValidTLDsForChain, ITLDCollection } from './ens/networkConfigs';
+import { getValidTLDsForChain, ITLDCollection } from './nameServices/ens/networkConfigs';
 
 export function getIsValidAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { NameState } from 'libs/ens';
+import { NameState } from 'libs/nameServices/ens';
 import { AppState } from 'features/reducers';
 import { Spinner } from 'components/ui';
 import {
@@ -14,7 +14,7 @@ import {
 } from './components';
 import './NameResolve.scss';
 
-type Props = AppState['ens'];
+type Props = AppState['nameService'];
 
 const modeResult = {
   [NameState.Auction]: NameAuction,
@@ -51,4 +51,4 @@ const NameResolve: React.SFC<Props> = props => {
   return <div className="Tab-content-pane">{content}</div>;
 };
 
-export default connect((state: AppState): Props => ({ ...state.ens }))(NameResolve);
+export default connect((state: AppState): Props => ({ ...state.nameService }))(NameResolve);

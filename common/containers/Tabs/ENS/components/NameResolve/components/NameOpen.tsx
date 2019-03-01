@@ -1,11 +1,11 @@
 import React from 'react';
 
 import translate from 'translations';
-import { IBaseDomainRequest } from 'libs/ens';
+import { IENSBaseDomainRequest } from 'libs/nameServices/ens';
 import { ensV3Url } from 'utils/formatters';
 import { NewTabLink } from 'components/ui';
 
-export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
+export const NameOpen: React.SFC<IENSBaseDomainRequest> = props => (
   <section className="row">
     <section className="auction-info text-center">
       <div className="ens-title">

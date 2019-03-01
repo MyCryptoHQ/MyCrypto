@@ -2,12 +2,12 @@ import React from 'react';
 
 import translate from 'translations';
 import { Wei } from 'libs/units';
-import { IRevealDomainRequest } from 'libs/ens';
+import { IENSRevealDomainRequest } from 'libs/nameServices/ens';
 import { ensV3Url } from 'utils/formatters';
 import { UnitDisplay } from 'components/ui';
 import ENSTime from './components/ENSTime';
 
-export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
+export const NameReveal: React.SFC<IENSRevealDomainRequest> = props => (
   <section className="row text-center">
     <div className="auction-info text-center">
       <div className="ens-title">

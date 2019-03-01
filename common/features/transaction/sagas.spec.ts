@@ -9,7 +9,7 @@ import configuredStore from 'features/store';
 import { ICurrentValue } from 'features/types';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
-import { ensTypes, ensActions, ensSelectors } from 'features/ens';
+import { nameServiceTypes, nameServiceActions, nameServiceSelectors } from 'features/nameService';
 import { walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsActions } from './fields';
@@ -75,7 +75,6 @@ describe('transaction: Sagas', () => {
       describe('with invalid Ethereum address, valid ENS address', () => {
         const raw = 'testing.eth';
         const resolvedAddress = '0xa';
-        const [domain] = raw.split('.');
         const ensAddrPayload = {
           raw,
           value: null
@@ -111,23 +110,23 @@ describe('transaction: Sagas', () => {
 
         it('should put resolveDomainRequested', () => {
           expect(data.validEnsGen.next().value).toEqual(
-            put(ensActions.resolveDomainRequested(domain))
+            put(nameServiceActions.resolveDomainRequested(raw))
           );
         });
 
         it('should take ENS type keys', () => {
           expect(data.validEnsGen.next().value).toEqual(
             take([
-              ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
-              ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
-              ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED
+              nameServiceTypes.NameServiceActions.RESOLVE_DOMAIN_FAILED,
+              nameServiceTypes.NameServiceActions.RESOLVE_DOMAIN_SUCCEEDED,
+              nameServiceTypes.NameServiceActions.RESOLVE_DOMAIN_CACHED
             ])
           );
         });
 
         it('should select getResolvedAddress', () => {
-          expect(data.validEnsGen.next().value).toEqual(
-            select(ensSelectors.getResolvedAddress, true)
+          expect(JSON.stringify(data.validEnsGen.next().value)).toEqual(
+            JSON.stringify(select(nameServiceSelectors.getResolvedAddress, true))
           );
         });
 

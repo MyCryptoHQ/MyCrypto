@@ -1,4 +1,4 @@
-import * as ens from 'libs/ens';
+import * as ens from 'libs/nameServices/ens';
 
 // TODO: write tests for:
 // ens.placeBid

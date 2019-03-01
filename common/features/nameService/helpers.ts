@@ -1,12 +1,12 @@
 import { SagaIterator } from 'redux-saga';
 import { select, apply, call } from 'redux-saga/effects';
 import ethUtil from 'ethereumjs-util';
-
+import { Namicorn } from 'namicorn';
 import { INode } from 'libs/nodes/INode';
-import ENS from 'libs/ens/contracts';
-import { IDomainData, NameState, getNameHash, IBaseDomainRequest } from 'libs/ens';
+import ENS from 'libs/nameServices/ens/contracts';
+import { IDomainData, NameState, getNameHash, IENSBaseDomainRequest } from 'libs/nameServices/ens';
 import * as configNodesSelectors from 'features/config/nodes/selectors';
-import { getENSTLD, getENSAddresses } from './selectors';
+import { getENSAddresses } from './selectors';
 
 //#region Make & Decode
 interface Params {
@@ -24,39 +24,12 @@ export function* makeEthCallAndDecode({ to, data, decoder }: Params): SagaIterat
 //#endregion Make & Decode
 
 //#region Mode Map
-function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash: string) {
-  const ensAddresses = yield select(getENSAddresses);
-
-  // Return the owner's address, and the resolved address if it exists
-  const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
-    to: deedAddress,
-    data: ENS.deed.owner.encodeInput(),
-    decoder: ENS.deed.owner.decodeOutput
-  });
-
-  const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
-    makeEthCallAndDecode,
-    {
-      to: ensAddresses.registry,
-      decoder: ENS.registry.resolver.decodeOutput,
-      data: ENS.registry.resolver.encodeInput({
-        node: nameHash
-      })
-    }
-  );
-
-  let resolvedAddress = '0x0';
-
-  if (resolverAddress !== '0x0') {
-    const result: typeof ENS.resolver.addr.outputType = yield call(makeEthCallAndDecode, {
-      to: resolverAddress,
-      data: ENS.resolver.addr.encodeInput({ node: nameHash }),
-      decoder: ENS.resolver.addr.decodeOutput
-    });
-
-    resolvedAddress = result.ret;
-  }
-
+function* nameStateOwned({}, domain: string) {
+  const namicorn = new Namicorn({ debug: true, disableMatcher: true });
+  namicorn.use(namicorn.middleware.ens({ url: 'https://mainnet.infura.io/mycrypto' }));
+  const domainInfo = yield call(namicorn.resolve, domain);
+  const ownerAddress = domainInfo.basic.owner;
+  const resolvedAddress = domainInfo.resolver.addr;
   return { ownerAddress, resolvedAddress };
 }
 
@@ -89,29 +62,22 @@ const modeMap: IModeMap = {
   [NameState.NotYetAvailable]: (_: IDomainData<NameState.NotYetAvailable>) => ({})
 };
 
-export function* resolveDomainRequest(name: string): SagaIterator {
+export function* resolveEthDomainRequest(domain: string): SagaIterator {
+  const [label] = domain.split('.');
+  const hash = ethUtil.sha3(label);
+  const nameHash = getNameHash(domain);
   const ensAddresses = yield select(getENSAddresses);
-  const ensTLD = yield select(getENSTLD);
-  const lowercaseName = name.toLowerCase();
-  const splitName = lowercaseName.split('.');
-  let hash: Buffer;
-  const nameHash: string = getNameHash(`${lowercaseName}.${ensTLD}`);
 
-  if (splitName.length === 2) {
-    hash = ethUtil.sha3(splitName[1]);
-  } else {
-    hash = ethUtil.sha3(splitName[0]);
-  }
   const domainData: typeof ENS.auction.entries.outputType = yield call(makeEthCallAndDecode, {
     to: ensAddresses.public.ethAuction,
     data: ENS.auction.entries.encodeInput({ _hash: hash }),
     decoder: ENS.auction.entries.decodeOutput
   });
   const nameStateHandler = modeMap[domainData.mode];
-  const result = yield call(nameStateHandler, domainData, nameHash);
+  const result = yield call(nameStateHandler, domainData, domain);
 
-  const returnValue: IBaseDomainRequest = {
-    name,
+  const returnValue: IENSBaseDomainRequest = {
+    name: label,
     ...domainData,
     ...result,
     labelHash: ethUtil.addHexPrefix(hash.toString('hex')),
@@ -119,4 +85,15 @@ export function* resolveDomainRequest(name: string): SagaIterator {
   };
   return returnValue;
 }
+
+export function* resolveDomainRequest(domain: string): SagaIterator {
+  const [, tld] = domain.split('.');
+  switch (tld) {
+    case 'eth':
+      return yield call(resolveEthDomainRequest, domain);
+    default:
+      return {};
+  }
+}
+
 //#endregion Mode Map

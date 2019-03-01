@@ -25,7 +25,7 @@ export const getNameHash = (name: string = ''): string => {
   return `0x${rawNode.toString('hex')}`;
 };
 
-export interface IBaseDomainRequest {
+export interface IENSBaseDomainRequest {
   name: string;
   labelHash: string;
   mode: NameState;
@@ -37,19 +37,23 @@ export interface IBaseDomainRequest {
   mappedMode: string;
 }
 
-export interface IOwnedDomainRequest extends IBaseDomainRequest {
+export interface IENSOwnedDomainRequest extends IENSBaseDomainRequest {
   ownerAddress: string;
   resolvedAddress: string;
 }
 
-export interface IRevealDomainRequest extends IBaseDomainRequest {
+export interface IENSRevealDomainRequest extends IENSBaseDomainRequest {
   ownerAddress: string;
 }
 
-export type DomainRequest = IOwnedDomainRequest | IRevealDomainRequest | IBaseDomainRequest;
+export type ENSDomainRequest =
+  | IENSOwnedDomainRequest
+  | IENSRevealDomainRequest
+  | IENSBaseDomainRequest;
 
 export interface IDomainData<Mode> {
   mode: Mode;
+  domain: string;
   deedAddress: string;
   registrationDate: string;
   value: string;

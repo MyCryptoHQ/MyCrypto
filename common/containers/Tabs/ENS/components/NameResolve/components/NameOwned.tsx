@@ -1,5 +1,5 @@
 import React from 'react';
-import { IOwnedDomainRequest } from 'libs/ens';
+import { IENSOwnedDomainRequest } from 'libs/nameServices/ens';
 import { fromWei, Wei } from 'libs/units';
 import { NewTabLink, Address } from 'components/ui';
 import translate from 'translations';
@@ -9,7 +9,7 @@ type ChildrenProps = any;
 
 const MonoTd = ({ children }: ChildrenProps) => <td className="mono">{children}</td>;
 
-export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
+export const NameOwned: React.SFC<IENSOwnedDomainRequest> = ({
   highestBid,
   labelHash,
   nameHash,

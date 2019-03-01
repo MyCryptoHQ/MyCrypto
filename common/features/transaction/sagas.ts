@@ -20,7 +20,7 @@ import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import * as configSelectors from 'features/config/selectors';
 import * as scheduleSelectors from 'features/schedule/selectors';
-import { ensTypes, ensActions, ensSelectors } from 'features/ens';
+import { nameServiceTypes, nameServiceActions, nameServiceSelectors } from 'features/nameService';
 import { walletTypes, walletSelectors } from 'features/wallet';
 import { notificationsActions } from 'features/notifications';
 import { transactionBroadcastSagas, transactionBroadcastTypes } from './broadcast';
@@ -57,19 +57,17 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
     value = Address(raw);
   } else if (validEns) {
     yield call(setField, { value, raw });
-    const domain = raw.split('.');
-    if (domain.length === 2) {
-      yield put(ensActions.resolveDomainRequested(domain[0]));
-    } else if (domain.length === 3) {
-      yield put(ensActions.resolveDomainRequested(`${domain[0]}.${domain[1]}`));
-    }
-
+    const domain = raw;
+    yield put(nameServiceActions.resolveDomainRequested(domain));
     yield take([
-      ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
-      ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,
-      ensTypes.ENSActions.RESOLVE_DOMAIN_CACHED
+      nameServiceTypes.NameServiceActions.RESOLVE_DOMAIN_FAILED,
+      nameServiceTypes.NameServiceActions.RESOLVE_DOMAIN_SUCCEEDED,
+      nameServiceTypes.NameServiceActions.RESOLVE_DOMAIN_CACHED
     ]);
-    const resolvedAddress: string | null = yield select(ensSelectors.getResolvedAddress, true);
+    const resolvedAddress: string | null = yield select(
+      nameServiceSelectors.getResolvedAddress,
+      true
+    );
     if (resolvedAddress) {
       value = Address(resolvedAddress);
     }

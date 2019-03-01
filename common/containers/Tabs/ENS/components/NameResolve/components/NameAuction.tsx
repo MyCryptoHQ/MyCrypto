@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 import translate from 'translations';
-import { IBaseDomainRequest } from 'libs/ens';
+import { IENSBaseDomainRequest } from 'libs/nameServices/ens';
 import { ensV3Url } from 'utils/formatters';
 import { NewTabLink } from 'components/ui';
 import ENSTime from './components/ENSTime';
@@ -15,7 +15,7 @@ const getDeadlines = (registrationDate: string) => {
   return { auctionCloseTime, revealBidTime };
 };
 
-export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
+export const NameAuction: React.SFC<IENSBaseDomainRequest> = props => {
   const { registrationDate, name } = props;
   const { auctionCloseTime, revealBidTime } = getDeadlines(registrationDate);
   return (

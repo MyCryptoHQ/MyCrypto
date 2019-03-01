@@ -7,7 +7,7 @@ import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { ICurrentTo } from 'features/types';
 import { configSelectors } from 'features/config';
-import { ensSelectors } from 'features/ens';
+import { nameServiceSelectors } from 'features/nameService';
 import { AddressField } from 'components';
 import './ViewOnly.scss';
 
@@ -18,7 +18,7 @@ interface OwnProps {
 interface StateProps {
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
   currentAddress: ICurrentTo;
-  resolvedAddress: ReturnType<typeof ensSelectors.getResolvedAddress>;
+  resolvedAddress: ReturnType<typeof nameServiceSelectors.getResolvedAddress>;
 }
 
 type Props = OwnProps & StateProps;
@@ -105,5 +105,5 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 export const ViewOnlyDecrypt = connect((state: AppState): StateProps => ({
   currentAddress: selectors.getCurrentTo(state),
   isValidAddress: configSelectors.getIsValidAddressFn(state),
-  resolvedAddress: ensSelectors.getResolvedAddress(state)
+  resolvedAddress: nameServiceSelectors.getResolvedAddress(state)
 }))(ViewOnlyDecryptClass);

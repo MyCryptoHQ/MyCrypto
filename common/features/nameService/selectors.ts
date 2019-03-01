@@ -1,20 +1,23 @@
-import { IOwnedDomainRequest, IBaseDomainRequest } from 'libs/ens';
+import { IENSOwnedDomainRequest, IENSBaseDomainRequest } from 'libs/nameServices/ens';
 import { isCreationAddress } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { ensDomainRequestsTypes, ensDomainRequestsSelectors } from './domainRequests';
-import { ensDomainSelectorSelectors } from './domainSelector';
+import {
+  nameServiceDomainRequestsTypes,
+  nameServiceDomainRequestsSelectors
+} from './domainRequests';
+import { nameServiceDomainSelectorSelectors } from './domainSelector';
 import { getNetworkChainId } from 'features/config/selectors';
-import { getENSTLDForChain, getENSAddressesForChain } from 'libs/ens/networkConfigs';
+import { getENSTLDForChain, getENSAddressesForChain } from 'libs/nameServices/ens/networkConfigs';
 
-const isOwned = (data: IBaseDomainRequest): data is IOwnedDomainRequest => {
-  return !!(data as IOwnedDomainRequest).ownerAddress;
+const isOwned = (data: IENSBaseDomainRequest): data is IENSOwnedDomainRequest => {
+  return !!(data as IENSOwnedDomainRequest).ownerAddress;
 };
 
-export const getEns = (state: AppState) => state.ens;
+export const getEns = (state: AppState) => state.nameService;
 
 export const getCurrentDomainData = (state: AppState) => {
-  const currentDomain = ensDomainSelectorSelectors.getCurrentDomainName(state);
-  const domainRequests = ensDomainRequestsSelectors.getDomainRequests(state);
+  const currentDomain = nameServiceDomainSelectorSelectors.getCurrentDomainName(state);
+  const domainRequests = nameServiceDomainRequestsSelectors.getDomainRequests(state);
 
   if (!currentDomain || !domainRequests[currentDomain] || domainRequests[currentDomain].error) {
     return null;
@@ -42,14 +45,16 @@ export const getResolvedAddress = (state: AppState, noGenesisAddress: boolean = 
 };
 
 export const getResolvingDomain = (state: AppState) => {
-  const currentDomain = ensDomainSelectorSelectors.getCurrentDomainName(state);
-  const domainRequests = ensDomainRequestsSelectors.getDomainRequests(state);
+  const currentDomain = nameServiceDomainSelectorSelectors.getCurrentDomainName(state);
+  const domainRequests = nameServiceDomainRequestsSelectors.getDomainRequests(state);
 
   if (!currentDomain || !domainRequests[currentDomain]) {
     return null;
   }
 
-  return domainRequests[currentDomain].state === ensDomainRequestsTypes.RequestStates.pending;
+  return (
+    domainRequests[currentDomain].state === nameServiceDomainRequestsTypes.RequestStates.pending
+  );
 };
 
 export const getENSTLD = (state: AppState) => {

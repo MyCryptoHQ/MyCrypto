@@ -1,4 +1,4 @@
-import { ensSaga as ens } from './ens/sagas';
+import { nameServiceSaga as nameService } from './nameService/sagas';
 import { configSaga as config } from './config/sagas';
 import { notificationsSaga as notifications } from './notifications/sagas';
 import { walletSaga as wallet } from './wallet/sagas';
@@ -12,7 +12,7 @@ import { scheduleSaga as schedule } from './schedule/sagas';
 import { addressBookSaga as addressBook } from './addressBook/sagas';
 
 export default {
-  ens,
+  nameService,
   config,
   notifications,
   wallet,

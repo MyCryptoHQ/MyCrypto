@@ -8,7 +8,7 @@ import { ICurrentTo } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { walletSelectors } from 'features/wallet';
-import { ensSelectors } from 'features/ens';
+import { nameServiceSelectors } from 'features/nameService';
 import { Identicon, Spinner } from 'components/ui';
 import { Query } from 'components/renderCbs';
 import { CallbackProps } from 'components/AddressFieldFactory';
@@ -16,7 +16,7 @@ import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 import { configSelectors } from 'features/config';
 import { getIsValidENSAddressFunction } from 'libs/validators';
-import { getENSTLDForChain } from 'libs/ens/networkConfigs';
+import { getENSTLDForChain } from 'libs/nameServices/ens/networkConfigs';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -181,7 +181,7 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
   return {
     currentTo,
     label: selectors.getCurrentToLabel(state),
-    isResolving: ensSelectors.getResolvingDomain(state),
+    isResolving: nameServiceSelectors.getResolvingDomain(state),
     isValid: selectors.isValidCurrentTo(state),
     isLabelEntry: selectors.isCurrentToLabelEntry(state),
     chainId: configSelectors.getNetworkChainId(state)

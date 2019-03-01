@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'translations';
 import { isValidENSName } from 'libs/validators';
 import { AppState } from 'features/reducers';
-import { ensActions } from 'features/ens';
+import { nameServiceActions } from 'features/nameService';
 import { Input } from 'components/ui';
 import './NameInput.scss';
 
@@ -15,8 +15,8 @@ interface State {
 }
 
 interface Props {
-  domainRequests: AppState['ens']['domainRequests'];
-  resolveDomainRequested: ensActions.TResolveDomainRequested;
+  domainRequests: AppState['nameService']['domainRequests'];
+  resolveDomainRequested: nameServiceActions.TResolveDomainRequested;
 }
 
 class NameInput extends Component<Props, State> {
@@ -37,7 +37,7 @@ class NameInput extends Component<Props, State> {
         <div className="input-group-wrapper">
           <label className="input-group input-group-inline ENSInput-name">
             <Input
-              value={domainToCheck}
+              value={domainToCheck.replace('.eth', '')}
               isValid={!!domainToCheck && isValidDomain}
               className="border-rad-right-0"
               type="text"
@@ -77,7 +77,7 @@ class NameInput extends Component<Props, State> {
   private onSubmit = (ev: React.FormEvent<HTMLElement>) => {
     ev.preventDefault();
     const { isValidDomain, domainToCheck } = this.state;
-    return isValidDomain && this.props.resolveDomainRequested(domainToCheck);
+    return isValidDomain && this.props.resolveDomainRequested(domainToCheck + '.eth');
   };
 
   private onFocus = () => this.setState({ isFocused: true });
@@ -86,10 +86,10 @@ class NameInput extends Component<Props, State> {
 
 function mapStateToProps(state: AppState) {
   return {
-    domainRequests: state.ens.domainRequests
+    domainRequests: state.nameService.domainRequests
   };
 }
 
 export default connect(mapStateToProps, {
-  resolveDomainRequested: ensActions.resolveDomainRequested
+  resolveDomainRequested: nameServiceActions.resolveDomainRequested
 })(NameInput);

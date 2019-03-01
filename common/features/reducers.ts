@@ -9,8 +9,8 @@ import { CustomTokensState } from './customTokens/types';
 import { customTokensReducer } from './customTokens/reducer';
 import { DeterministicWalletsState } from './deterministicWallets/types';
 import { deterministicWalletsReducer } from './deterministicWallets/reducer';
-import { ENSState } from './ens/types';
-import { ensReducer } from './ens/reducer';
+import { NameServiceState } from './nameService/types';
+import { nameServiceReducer } from './nameService/reducer';
 import { GasState } from './gas/types';
 import { gasReducer } from './gas/reducer';
 import { MessageState } from './message/types';
@@ -39,7 +39,7 @@ export interface AppState {
   config: ConfigState;
   notifications: NotificationState;
   onboarding: OnboardingState;
-  ens: ENSState;
+  nameService: NameServiceState;
   wallet: WalletState;
   customTokens: CustomTokensState;
   rates: RatesState;
@@ -60,7 +60,7 @@ export default combineReducers<AppState>({
   config: configReducer,
   notifications: notificationsReducer,
   onboarding: onboardingReducer,
-  ens: ensReducer,
+  nameService: nameServiceReducer,
   wallet: walletReducer,
   customTokens: customTokensReducer,
   rates: ratesReducer,
