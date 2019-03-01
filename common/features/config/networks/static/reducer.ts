@@ -36,7 +36,8 @@ import {
   MIX_DEFAULT,
   REOSC_DEFAULT,
   ARTIS_SIGMA1,
-  ARTIS_TAU1
+  ARTIS_TAU1,
+  THUNDERCORE_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -824,6 +825,29 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     gasPriceSettings: {
       min: 1,
       max: 1,
+      initial: 1
+    }
+  },
+  THUNDERCORE: {
+    id: 'THUNDERCORE',
+    name: 'ThunderCore',
+    unit: 'TT',
+    chainId: 108,
+    isCustom: false,
+    color: '#ffe81c',
+    blockExplorer: makeExplorer({
+      name: 'ThunderScan',
+      origin: 'https://scan.thundercore.com'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: THUNDERCORE_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: THUNDERCORE_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
       initial: 1
     }
   }
