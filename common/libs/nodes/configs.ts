@@ -122,10 +122,10 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
 
   TOMO: [
     {
-      name: makeNodeName('TOMO', 'tomocoin'),
+      name: makeNodeName('TOMO', 'tomochain'),
       type: 'rpc',
-      service: 'tomocoin.io',
-      url: 'https://core.tomocoin.io'
+      service: 'tomochain.com',
+      url: 'https://rpc.tomochain.com'
     }
   ],
 

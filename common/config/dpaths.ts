@@ -55,7 +55,7 @@ export const POA_DEFAULT: DPath = {
 
 export const TOMO_DEFAULT: DPath = {
   label: 'Default (TOMO)',
-  value: "m/44'/1'/0'/0"
+  value: "m/44'/889'/0'/0"
 };
 
 export const ELLA_DEFAULT: DPath = {
