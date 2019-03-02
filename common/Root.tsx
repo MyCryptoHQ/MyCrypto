@@ -33,6 +33,7 @@ import 'what-input';
 // v2
 import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
+import { AccountProvider } from './v2/providers/AccountProvider';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -113,19 +114,21 @@ class RootClass extends Component<Props, State> {
       <ThemeProvider theme={light}>
         <React.Fragment>
           <Provider store={store}>
-            <Router>
-              <React.Fragment>
-                {onboardingActive && <OnboardingModal />}
-                {routes}
-                <LegacyRoutes />
-                <LogOutPrompt />
-                <QrSignerModal />
-                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-              </React.Fragment>
-            </Router>
+            <AccountProvider>
+              <Router>
+                <React.Fragment>
+                  {onboardingActive && <OnboardingModal />}
+                  {routes}
+                  <LegacyRoutes />
+                  <LogOutPrompt />
+                  <QrSignerModal />
+                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                </React.Fragment>
+              </Router>
+              <DevTools />
+            </AccountProvider>
           </Provider>
           <div id="ModalContainer" />
-          <DevTools />
         </React.Fragment>
       </ThemeProvider>
     );
