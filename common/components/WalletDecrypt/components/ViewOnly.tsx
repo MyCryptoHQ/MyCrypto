@@ -47,7 +47,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
                 value={addressFromBook}
                 showInputLabel={false}
                 showIdenticon={false}
-                showEnsResolution={false}
+                showNameServiceResolution={false}
                 placeholder={translateRaw('SELECT_FROM_ADDRESS_BOOK')}
                 onChangeOverride={this.handleSelectAddressFromBook}
                 dropdownThreshold={0}

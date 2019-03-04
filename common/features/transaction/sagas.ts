@@ -45,12 +45,12 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
   const isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn> = yield select(
     configSelectors.getIsValidAddressFn
   );
-  const isValidENSAddress: ReturnType<typeof configSelectors.getIsValidENSAddressFn> = yield select(
-    configSelectors.getIsValidENSAddressFn
-  );
+  const isValidNameServiceAddress: ReturnType<
+    typeof configSelectors.getIsValidENSAddressFn
+  > = yield select(configSelectors.getIsValidENSAddressFn);
 
   const validAddress: boolean = yield call(isValidAddress, raw);
-  const validEns: boolean = yield call(isValidENSAddress, raw);
+  const validEns: boolean = yield call(isValidNameServiceAddress, raw);
 
   let value: Buffer | null = null;
   if (validAddress) {

@@ -15,8 +15,8 @@ import { CallbackProps } from 'components/AddressFieldFactory';
 import AddressFieldDropdown from './AddressFieldDropdown';
 import './AddressInputFactory.scss';
 import { configSelectors } from 'features/config';
-import { getIsValidENSAddressFunction } from 'libs/validators';
-import { getENSTLDForChain } from 'libs/nameServices/ens/networkConfigs';
+import { getNameServiceTLD } from 'libs/validators';
+import { getValidTLDsForChain } from 'libs/nameServices/ens/networkConfigs';
 
 interface StateProps {
   currentTo: ICurrentTo;
@@ -31,7 +31,7 @@ interface OwnProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
   showIdenticon?: boolean;
-  showEnsResolution?: boolean;
+  showNameServiceResolution?: boolean;
   isFocused?: boolean;
   className?: string;
   value?: string;
@@ -43,17 +43,16 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const ENSStatus: React.SFC<{
+const NameServiceStatus: React.SFC<{
   isLoading: boolean;
-  ensAddress: string;
+  nameServiceAddress: string;
   rawAddress: string;
   chainId: number;
-}> = ({ isLoading, ensAddress, rawAddress, chainId }) => {
-  const isValidENS = getIsValidENSAddressFunction(chainId);
-  const isENS = isValidENS(ensAddress);
-
+}> = ({ isLoading, nameServiceAddress, rawAddress, chainId }) => {
+  const validTLDs = getValidTLDsForChain(chainId);
+  const tld = getNameServiceTLD(nameServiceAddress, validTLDs);
   const text = translate('LOADING_ENS_ADDRESS');
-
+  // console.log('TLD', tld);
   if (isLoading) {
     return (
       <React.Fragment>
@@ -61,7 +60,17 @@ const ENSStatus: React.SFC<{
       </React.Fragment>
     );
   } else {
-    return isENS ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
+    switch (tld) {
+      case 'eth':
+        return <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment>;
+      // Can add affiliate links for .zil pre-orders
+      case 'zil':
+        return <React.Fragment>.zil domains coming soon</React.Fragment>;
+      case 'luxe':
+        return <React.Fragment>.luxe domains coming soon</React.Fragment>;
+      default:
+        return null;
+    }
   }
 };
 
@@ -86,7 +95,7 @@ class AddressInputFactoryClass extends Component<Props> {
       onChangeOverride,
       value,
       dropdownThreshold,
-      showEnsResolution,
+      showNameServiceResolution,
       chainId
     } = this.props;
     const inputClassName = `AddressInput-input ${label ? 'AddressInput-input-with-label' : ''}`;
@@ -95,8 +104,8 @@ class AddressInputFactoryClass extends Component<Props> {
           $label: label
         })
       : '';
-    const ensTLD = getENSTLDForChain(chainId);
-    const isENSAddress = currentTo.raw.endsWith(`.${ensTLD}`);
+    const validTLDs = getValidTLDsForChain(chainId);
+    const isNameServiceAddress = getNameServiceTLD(currentTo.raw, validTLDs);
 
     /**
      * @desc Initially set the address to the passed value.
@@ -131,16 +140,16 @@ class AddressInputFactoryClass extends Component<Props> {
               })
             }
           />
-          {showEnsResolution && (
-            <ENSStatus
-              ensAddress={currentTo.raw}
+          {showNameServiceResolution && (
+            <NameServiceStatus
+              nameServiceAddress={currentTo.raw}
               isLoading={isResolving}
               rawAddress={addr}
               chainId={chainId}
             />
           )}
           {isFocused &&
-            !isENSAddress && (
+            !isNameServiceAddress && (
               <AddressFieldDropdown
                 controlled={controlled}
                 value={value}
@@ -177,7 +186,6 @@ export const AddressInputFactory = connect((state: AppState, ownProps: OwnProps)
   } else {
     currentTo = selectors.getCurrentTo(state);
   }
-
   return {
     currentTo,
     label: selectors.getCurrentToLabel(state),

@@ -25,10 +25,10 @@ export function getIsValidAddressFunction(chainId: number) {
   }
   return isValidETHAddress;
 }
-export function getIsValidENSAddressFunction(chainId: number) {
+export function getIsValidNameServiceAddressFunction(chainId: number) {
   const validTLDs = getValidTLDsForChain(chainId);
 
-  return (address: string) => isValidENSAddress(address, validTLDs);
+  return (address: string) => isValidNameServiceAddress(address, validTLDs);
 }
 
 export function isValidAddress(address: string, chainId: number) {
@@ -90,7 +90,7 @@ export function isValidENSName(str: string) {
   }
 }
 
-export function isValidENSAddress(address: string, validTLDs: ITLDCollection): boolean {
+export function isValidNameServiceAddress(address: string, validTLDs: ITLDCollection): boolean {
   try {
     const normalized = normalise(address);
     const tld = normalized.substr(normalized.lastIndexOf('.') + 1);
@@ -102,6 +102,20 @@ export function isValidENSAddress(address: string, validTLDs: ITLDCollection): b
     return false;
   }
   return false;
+}
+
+export function getNameServiceTLD(address: string, validTLDs: ITLDCollection): string {
+  try {
+    const normalized = normalise(address);
+    const tld = normalized.substr(normalized.lastIndexOf('.') + 1);
+
+    if (validTLDs[tld]) {
+      return tld;
+    }
+  } catch (e) {
+    return '';
+  }
+  return '';
 }
 
 function isChecksumAddress(address: string): boolean {

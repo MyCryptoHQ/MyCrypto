@@ -29,7 +29,6 @@ export function getENSTLDForChain(chainId: number): string {
   if (chainId === 30) {
     return 'rsk';
   }
-
   return 'eth';
 }
 
@@ -39,6 +38,8 @@ export function getValidTLDsForChain(chainId: number): ITLDCollection {
   }
 
   return {
+    luxe: true,
+    zil: true,
     eth: true,
     test: true,
     reverse: true
