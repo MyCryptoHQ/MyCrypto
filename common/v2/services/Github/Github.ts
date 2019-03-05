@@ -37,7 +37,9 @@ export default class GithubService {
 
       Object.entries(ASSET_REG_EXPS).forEach(([key, regex]) => {
         const asset = assets.find((a: any) => regex.test(a.name));
-        if (asset) releasesURLs[key] = asset.browser_download_url;
+        if (asset) {
+          releasesURLs[key] = asset.browser_download_url;
+        }
       });
 
       return releasesURLs;

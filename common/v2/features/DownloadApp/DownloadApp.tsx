@@ -5,10 +5,9 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { ContentPanel } from 'v2/components';
 import { GithubService } from 'v2/services';
-import { DOWNLOAD_PAGE_URL } from './constants';
+import { DOWNLOAD_PAGE_URL, GITHUB_RELEASE_NOTES_URL } from './constants';
 import { getFeaturedOS } from './helpers';
 import { Layout } from 'v2/features';
-import { GITHUB_RELEASE_NOTES_URL } from './constants';
 import { AppDownloadItem } from './types';
 import './DownloadApp.scss';
 
@@ -25,7 +24,7 @@ interface State {
 }
 
 export class DownloadApp extends Component<Props, State> {
-  state: State = {
+  public state: State = {
     downloadItems: [
       {
         OS: 'windows',
@@ -69,11 +68,6 @@ export class DownloadApp extends Component<Props, State> {
       console.error(e);
     }
   }
-
-  private openDownloadLink = (link: string) => {
-    const target = link === DEFAULT_LINK ? '_blank' : '_self';
-    window.open(link, target);
-  };
 
   public render() {
     const { downloadItems } = this.state;
@@ -129,7 +123,7 @@ export class DownloadApp extends Component<Props, State> {
           </div>
           <Typography>
             Not sure what this is?{' '}
-            <a href={DOWNLOAD_PAGE_URL} target="_blank">
+            <a href={DOWNLOAD_PAGE_URL} target="_blank" rel="noreferrer">
               Learn more about our desktop app.
             </a>
           </Typography>
@@ -137,6 +131,11 @@ export class DownloadApp extends Component<Props, State> {
       </Layout>
     );
   }
+
+  private openDownloadLink = (link: string) => {
+    const target = link === DEFAULT_LINK ? '_blank' : '_self';
+    window.open(link, target);
+  };
 }
 
 export default withRouter<Props>(DownloadApp);
