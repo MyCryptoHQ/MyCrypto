@@ -9,11 +9,33 @@
   &-heading {
     font-size: 32px;
     font-weight: bold;
+    line-height: normal;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  &-description {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.5;
+    padding: 0 30px 0 30px;
+  }
+  &-learnMore {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: normal;
+    margin: 0;
+    &-link {
+      font-size: 16px;
+      display: inline;
+      font-weight: normal;
+      line-height: normal;
+      color: #1eb8e7;
+    }
   }
   &-icon {
     width: 135px;
     height: 135px;
-    margin: 24px 0;
+    margin: 21px 0 28px 0;
   }
   &-optionGroup {
     display: flex;

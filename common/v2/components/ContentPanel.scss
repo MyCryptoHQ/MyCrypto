@@ -18,7 +18,9 @@
     &-back {
       color: #007a99;
       font-weight: bold;
-
+      display: flex;
+      align-items: center;
+      font-size: 20px;
       img {
         margin-right: 13px;
       }

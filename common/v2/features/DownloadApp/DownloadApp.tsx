@@ -78,7 +78,7 @@ export class DownloadApp extends Component<Props, State> {
       <Layout centered={true}>
         <ContentPanel onBack={this.props.history.goBack} className="DownloadApp">
           <Heading className="DownloadApp-heading">Download App</Heading>
-          <Typography>
+          <Typography className="DownloadApp-description">
             Please download the MyCrypto Desktop app so you can securely complete creating your new
             account and start managing your funds.
           </Typography>
@@ -121,10 +121,12 @@ export class DownloadApp extends Component<Props, State> {
               {secondaryDownloads[3].name}
             </Button>
           </div>
-          <Typography>
+          <Typography className="DownloadApp-learnMore">
             Not sure what this is?{' '}
             <a href={DOWNLOAD_PAGE_URL} target="_blank" rel="noreferrer">
-              Learn more about our desktop app.
+              <Typography className="DownloadApp-learnMore-link">
+                Learn more about our desktop app.
+              </Typography>
             </a>
           </Typography>
         </ContentPanel>
