@@ -33,7 +33,7 @@ import 'what-input';
 // v2
 import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
-import { AccountProvider } from './v2/providers/AccountProvider';
+import { AccountProvider } from 'v2/providers/AccountProvider';
 
 interface OwnProps {
   store: Store<AppState>;

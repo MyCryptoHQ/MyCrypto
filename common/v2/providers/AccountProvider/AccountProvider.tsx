@@ -5,7 +5,8 @@ import { account, extendedAccount } from 'v2/services/Account';
 export const AccountContext = createContext({
   accounts: [],
   addAccount: (accountData: account) => {},
-  removeAccount: (uuid: string) => {}
+  removeAccount: (uuid: string) => {},
+  updateAccount: (uuid: string, accountData: account) => {}
 });
 
 const Account = new AccountServiceBase();
@@ -16,29 +17,34 @@ export class AccountProvider extends Component {
     Account.init();
   }
 
-  getAccounts = () => {
+  public getAccounts = () => {
     const accounts: extendedAccount[] = Account.readAccounts() || [];
     this.setState({ accounts: accounts });
   };
 
-  removeAccount = (uuid: string) => {
+  public removeAccount = (uuid: string) => {
     Account.deleteAccount(uuid);
     this.getAccounts();
   };
 
-  addAccount = (accountData: account) => {
-    console.log('adding account');
+  public createAccount = (accountData: account) => {
     Account.createAccount(accountData);
     this.getAccounts();
   };
 
-  state = {
+  public updateAccount = (uuid: string, accountData: account) => {
+    Account.updateAccount(uuid, accountData);
+    this.getAccounts();
+  };
+
+  public state = {
     accounts: Account.readAccounts() || [],
-    addAccount: this.addAccount,
+    createAccount: this.createAccount,
     removeAccount: this.removeAccount
   };
 
   render() {
+    console.log(this.state.accounts);
     const { children } = this.props;
     return <AccountContext.Provider value={this.state}>{children}</AccountContext.Provider>;
   }
