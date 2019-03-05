@@ -123,7 +123,12 @@ export class DownloadApp extends Component<Props, State> {
           </div>
           <Typography>
             Not sure what this is?{' '}
-            <a href={DOWNLOAD_PAGE_URL} target="_blank" rel="noreferrer">
+            <a
+              onClick={this.trackLearnMoreClick}
+              href={DOWNLOAD_PAGE_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
               Learn more about our desktop app.
             </a>
           </Typography>
@@ -138,6 +143,13 @@ export class DownloadApp extends Component<Props, State> {
     AnalyticsService.instance.track(
       ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
       `${item.name} download button clicked`
+    );
+  };
+
+  private trackLearnMoreClick = () => {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
+      `Learn more link clicked`
     );
   };
 }
