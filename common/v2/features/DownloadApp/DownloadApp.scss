@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   max-width: 565px;
-  padding: 42px 71px 50px 71px;
+  padding: 42px 40px 50px 40px;
   text-align: center;
 
   &-heading {
@@ -25,6 +25,7 @@
     &-option {
       width: 320px;
       margin-bottom: 15px;
+      font-size: 17px;
 
       @media (min-width: 700px) {
         width: 200px;
@@ -38,6 +39,7 @@
   &-option {
     width: 320px;
     margin-bottom: 15px;
+    font-size: 18px;
 
     @media (min-width: 700px) {
       width: 420px;
