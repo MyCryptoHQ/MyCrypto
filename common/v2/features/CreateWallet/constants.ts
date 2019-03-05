@@ -3,6 +3,7 @@ import {
   SelectNetworkPanel,
   SelectMethodPanel,
   GeneratePhrasePanel,
+  BackUpPhrasePanel,
   ConfirmPhrasePanel,
   GeneratePasswordPanel,
   DownloadKeystorePanel,
@@ -14,6 +15,7 @@ export enum CreateWalletStages {
   SelectNetwork,
   SelectMethod,
   GeneratePhrase,
+  BackUpPhrase,
   ConfirmPhrase,
   GeneratePassword,
   DownloadKeystore,
@@ -25,6 +27,7 @@ export const createWalletStageToComponentHash = {
   [CreateWalletStages.SelectNetwork]: SelectNetworkPanel,
   [CreateWalletStages.SelectMethod]: SelectMethodPanel,
   [CreateWalletStages.GeneratePhrase]: GeneratePhrasePanel,
+  [CreateWalletStages.BackUpPhrase]: BackUpPhrasePanel,
   [CreateWalletStages.ConfirmPhrase]: ConfirmPhrasePanel,
   [CreateWalletStages.GeneratePassword]: GeneratePasswordPanel,
   [CreateWalletStages.DownloadKeystore]: DownloadKeystorePanel,
@@ -35,5 +38,6 @@ export const createWalletMnemonicFlow = [
   CreateWalletStages.SelectNetwork,
   CreateWalletStages.SelectMethod,
   CreateWalletStages.GeneratePhrase,
+  CreateWalletStages.BackUpPhrase,
   CreateWalletStages.ConfirmPhrase
 ];

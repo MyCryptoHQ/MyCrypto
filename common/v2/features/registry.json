@@ -18,5 +18,9 @@
   {
     "name": "Import Wallet",
     "key": "importWallet"
+  },
+  {
+    "name": "Download App",
+    "key": "downloadApp"
   }
 ]

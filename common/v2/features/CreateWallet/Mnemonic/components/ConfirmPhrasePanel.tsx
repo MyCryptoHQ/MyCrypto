@@ -5,10 +5,10 @@ import shuffle from 'lodash/shuffle';
 import { Button } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
-import { PanelProps } from '../CreateWallet';
+import { PanelProps } from '../../CreateWallet';
 import './ConfirmPhrasePanel.scss';
 
-interface Props {
+interface Props extends PanelProps {
   words: string[];
   generateWords(): void;
 }
@@ -19,7 +19,7 @@ interface State {
   wrongWord: string;
 }
 
-export default class ConfirmPhrasePanel extends Component<Props & PanelProps> {
+export default class ConfirmPhrasePanel extends Component<Props> {
   public state: State = {
     shuffledWords: shuffle(this.props.words),
     confirmedWords: [],

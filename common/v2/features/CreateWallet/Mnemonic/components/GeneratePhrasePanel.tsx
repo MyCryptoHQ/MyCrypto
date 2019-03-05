@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
-import { PanelProps } from '../CreateWallet';
+import { PanelProps } from '../../CreateWallet';
 import './GeneratePhrasePanel.scss';
 
 // Legacy
 import reloadIcon from 'common/assets/images/icn-reload.svg';
 
-interface Props {
+interface Props extends PanelProps {
   words: string[];
   generateWords(): void;
 }
 
-export default class GeneratePhrasePanel extends Component<Props & PanelProps> {
+export default class GeneratePhrasePanel extends Component<Props> {
   public componentDidMount() {
     const { generateWords } = this.props;
 
@@ -27,7 +27,7 @@ export default class GeneratePhrasePanel extends Component<Props & PanelProps> {
       <ContentPanel
         onBack={onBack}
         stepper={{
-          current: 3,
+          current: 2,
           total: 4
         }}
         heading="Generate Phrase"
