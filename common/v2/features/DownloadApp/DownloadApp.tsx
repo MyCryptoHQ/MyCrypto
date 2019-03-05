@@ -64,6 +64,9 @@ export class DownloadApp extends Component<Props, State> {
       });
 
       this.setState({ downloadItems });
+      this.trackUserLandsOnComponent(
+        downloadItems.find(x => x.OS === featuredOS) || downloadItems[0]
+      );
     } catch (e) {
       console.error(e);
     }
@@ -149,7 +152,14 @@ export class DownloadApp extends Component<Props, State> {
   private trackLearnMoreClick = () => {
     AnalyticsService.instance.track(
       ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
-      `Learn more link clicked`
+      'Learn more link clicked'
+    );
+  };
+
+  private trackUserLandsOnComponent = (item: AppDownloadItem) => {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
+      `${item.name} user lands on this component`
     );
   };
 }
