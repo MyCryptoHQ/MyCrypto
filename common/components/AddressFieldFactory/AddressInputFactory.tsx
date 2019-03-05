@@ -63,7 +63,9 @@ const NameServiceStatus: React.SFC<{
     switch (tld) {
       case 'eth':
         return <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment>;
-      // Can add affiliate links for .zil pre-orders
+      // Potential to add affiliate links for domain names
+      case 'crypto':
+        return <React.Fragment>.crypto domains coming soon</React.Fragment>;
       case 'zil':
         return <React.Fragment>.zil domains coming soon</React.Fragment>;
       case 'luxe':

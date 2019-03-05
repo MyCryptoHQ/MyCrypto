@@ -39,6 +39,7 @@ export function getValidTLDsForChain(chainId: number): ITLDCollection {
 
   return {
     luxe: true,
+    crypto: true,
     zil: true,
     eth: true,
     test: true,
