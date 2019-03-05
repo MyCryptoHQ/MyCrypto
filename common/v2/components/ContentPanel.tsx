@@ -48,10 +48,12 @@ export default function ContentPanel({
         </div>
       )}
       <Panel className={className} {...rest}>
-        <Heading className="ContentPanel-heading">
-          {heading}
-          {icon && <img src={icon} alt="Icon" className="ContentPanel-heading-icon" />}
-        </Heading>
+        {heading && (
+          <Heading className="ContentPanel-heading">
+            {heading}
+            {icon && <img src={icon} alt="Icon" className="ContentPanel-heading-icon" />}
+          </Heading>
+        )}
         {description && <Typography className="ContentPanel-description">{description}</Typography>}
         {children}
       </Panel>
