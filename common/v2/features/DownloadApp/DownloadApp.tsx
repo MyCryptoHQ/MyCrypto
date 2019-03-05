@@ -4,7 +4,7 @@ import { Button, Heading, Typography } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { ContentPanel } from 'v2/components';
-import { GithubService } from 'v2/services';
+import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { DOWNLOAD_PAGE_URL, GITHUB_RELEASE_NOTES_URL } from './constants';
 import { getFeaturedOS } from './helpers';
 import { Layout } from 'v2/features';
@@ -71,7 +71,7 @@ export class DownloadApp extends Component<Props, State> {
 
   public render() {
     const { downloadItems } = this.state;
-    const primaryDownload = downloadItems.find(x => x.OS === featuredOS);
+    const primaryDownload = downloadItems.find(x => x.OS === featuredOS) || downloadItems[0];
     const secondaryDownloads = downloadItems.filter(x => x !== primaryDownload);
 
     return (
@@ -85,7 +85,7 @@ export class DownloadApp extends Component<Props, State> {
           <img className="DownloadApp-icon" src={desktopAppIcon} alt="Desktop" />
           <Button
             className="DownloadApp-option"
-            onClick={() => this.openDownloadLink(primaryDownload.link)}
+            onClick={() => this.openDownloadLink(primaryDownload)}
           >
             {primaryDownload.name}
           </Button>
@@ -93,14 +93,14 @@ export class DownloadApp extends Component<Props, State> {
             <Button
               className="DownloadApp-optionGroup-option"
               secondary={true}
-              onClick={() => this.openDownloadLink(secondaryDownloads[0].link)}
+              onClick={() => this.openDownloadLink(secondaryDownloads[0])}
             >
               {secondaryDownloads[0].name}
             </Button>
             <Button
               className="DownloadApp-optionGroup-option"
               secondary={true}
-              onClick={() => this.openDownloadLink(secondaryDownloads[1].link)}
+              onClick={() => this.openDownloadLink(secondaryDownloads[1])}
             >
               {secondaryDownloads[1].name}
             </Button>
@@ -109,14 +109,14 @@ export class DownloadApp extends Component<Props, State> {
             <Button
               className="DownloadApp-optionGroup-option"
               secondary={true}
-              onClick={() => this.openDownloadLink(secondaryDownloads[2].link)}
+              onClick={() => this.openDownloadLink(secondaryDownloads[2])}
             >
               {secondaryDownloads[2].name}
             </Button>
             <Button
               className="DownloadApp-optionGroup-option"
               secondary={true}
-              onClick={() => this.openDownloadLink(secondaryDownloads[3].link)}
+              onClick={() => this.openDownloadLink(secondaryDownloads[3])}
             >
               {secondaryDownloads[3].name}
             </Button>
@@ -132,9 +132,13 @@ export class DownloadApp extends Component<Props, State> {
     );
   }
 
-  private openDownloadLink = (link: string) => {
-    const target = link === DEFAULT_LINK ? '_blank' : '_self';
-    window.open(link, target);
+  private openDownloadLink = (item: AppDownloadItem) => {
+    const target = item.link === DEFAULT_LINK ? '_blank' : '_self';
+    window.open(item.link, target);
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.DOWNLOAD_DESKTOP,
+      `${item.name} download button clicked`
+    );
   };
 }
 
