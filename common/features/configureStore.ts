@@ -5,6 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import throttle from 'lodash/throttle';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { loadStatePropertyOrEmptyObject, saveState } from 'utils/localStorage';
 import { gasPriceToBase } from 'libs/units';
 import RootReducer, { AppState } from './reducers';
@@ -77,6 +78,9 @@ export default function configureStore() {
   };
 
   store = createStore<AppState>(RootReducer, persistedInitialState as any, middleware);
+  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.ROOT, 'Language initially loaded', {
+    lang: persistedInitialState.config && persistedInitialState.config.meta.languageSelection
+  });
 
   // Add all of the sagas to the middleware
   Object.keys(sagas).forEach((saga: keyof typeof sagas) => {
