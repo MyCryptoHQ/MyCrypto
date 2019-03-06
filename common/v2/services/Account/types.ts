@@ -1,10 +1,10 @@
-export interface account {
+export interface Account {
   label: string;
   address: string;
   network: string;
 }
 
-export interface extendedAccount {
+export interface ExtendedAccount {
   label: string;
   address: string;
   network: string;

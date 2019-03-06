@@ -1,17 +1,17 @@
 import React, { Component, createContext } from 'react';
 import AccountServiceBase from 'v2/services/Account/Account';
-import { account, extendedAccount } from 'v2/services/Account';
+import { Account, ExtendedAccount } from 'v2/services/Account';
 
 interface State {
-  accounts: extendedAccount[];
-  createAccount(accountData: account): void;
+  accounts: ExtendedAccount[];
+  createAccount(accountData: Account): void;
   deleteAccount(uuid: string): void;
-  updateAccount(uuid: string, accountData: account): void;
+  updateAccount(uuid: string, accountData: Account): void;
 }
 
 export const AccountContext = createContext({
   accounts: [],
-  createAccount: (accountData: account) => undefined,
+  createAccount: (accountData: Account) => undefined,
   deleteAccount: () => undefined,
   updateAccount: () => undefined
 });
@@ -19,14 +19,9 @@ export const AccountContext = createContext({
 const Account = new AccountServiceBase();
 
 export class AccountProvider extends Component {
-  constructor(props: any) {
-    super(props);
-    Account.init();
-  }
-
   public state: State = {
     accounts: Account.readAccounts() || [],
-    createAccount: (accountData: account) => {
+    createAccount: (accountData: Account) => {
       Account.createAccount(accountData);
       this.getAccounts();
     },
@@ -34,20 +29,24 @@ export class AccountProvider extends Component {
       Account.deleteAccount(uuid);
       this.getAccounts();
     },
-    updateAccount: (uuid: string, accountData: account) => {
+    updateAccount: (uuid: string, accountData: Account) => {
       Account.updateAccount(uuid, accountData);
       this.getAccounts();
     }
   };
-
-  private getAccounts = () => {
-    const accounts: extendedAccount[] = Account.readAccounts() || [];
-    this.setState({ accounts });
-  };
+  constructor(props: any) {
+    super(props);
+    Account.init();
+  }
 
   public render() {
     console.log(this.state.accounts);
     const { children } = this.props;
     return <AccountContext.Provider value={this.state}>{children}</AccountContext.Provider>;
   }
+
+  private getAccounts = () => {
+    const accounts: ExtendedAccount[] = Account.readAccounts() || [];
+    this.setState({ accounts });
+  };
 }

@@ -1,12 +1,12 @@
 import * as utils from 'v2/libs';
-import { account, extendedAccount } from './types';
+import { Account, ExtendedAccount } from './types';
 
 export default class AccountServiceBase {
   // TODO: Add duplication/validation handling.
-  init = () => {
+  public init = () => {
     const check = localStorage.getItem('MyCryptoCache');
     if (!check || check === '[]' || check === '{}') {
-      let newCache = {
+      const newCache = {
         Account: {},
         AccountList: []
       };
@@ -14,7 +14,7 @@ export default class AccountServiceBase {
     }
   };
 
-  createAccount = (account: account) => {
+  public createAccount = (account: Account) => {
     this.init();
     // Handle Account
     const uuid = utils.generateUUID();
@@ -33,7 +33,7 @@ export default class AccountServiceBase {
     localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
   };
 
-  readAccount = (uuid: string) => {
+  public readAccount = (uuid: string) => {
     this.init();
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
     let parsedLocalCache;
@@ -45,7 +45,7 @@ export default class AccountServiceBase {
     return parsedLocalCache.Account[uuid];
   };
 
-  updateAccount = (uuid: string, account: account) => {
+  public updateAccount = (uuid: string, account: Account) => {
     this.init();
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
     let parsedLocalCache;
@@ -59,7 +59,7 @@ export default class AccountServiceBase {
     localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
   };
 
-  deleteAccount = (uuid: string) => {
+  public deleteAccount = (uuid: string) => {
     this.init();
     // Handle Account
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
@@ -76,11 +76,11 @@ export default class AccountServiceBase {
     localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
   };
 
-  readAccounts = (): extendedAccount[] => {
+  public readAccounts = (): ExtendedAccount[] => {
     this.init();
     const localCache = localStorage.getItem('MyCryptoCache') || '[]';
     let parsedLocalCache: any;
-    let out: extendedAccount[] = [];
+    let out: ExtendedAccount[] = [];
     try {
       parsedLocalCache = JSON.parse(localCache);
     } catch (e) {

@@ -3,7 +3,7 @@ import { Formik, Field, Form } from 'formik';
 import { Panel, Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { account } from 'v2/services/Account';
+import { Account } from 'v2/services/Account';
 import { AccountContext } from 'v2/providers/AccountProvider';
 
 import ToolsAccountList from './ToolsAccountList';
@@ -34,7 +34,7 @@ const DevTools = () => {
                 label: 'test1',
                 network: 'ETH'
               }}
-              onSubmit={(values: account, { setSubmitting }) => {
+              onSubmit={(values: Account, { setSubmitting }) => {
                 createAccount(values);
                 setSubmitting(false);
               }}
