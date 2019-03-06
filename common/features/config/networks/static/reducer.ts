@@ -834,7 +834,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     unit: 'TT',
     chainId: 108,
     isCustom: false,
-    color: '#ffe81c',
+    color: '#ffc000',
     blockExplorer: makeExplorer({
       name: 'ThunderScan',
       origin: 'https://scan.thundercore.com'
