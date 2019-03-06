@@ -16,15 +16,15 @@ const DeleteButton = styled(Button)`
 `;
 
 const ToolsAccountList = props => {
-  const { accounts, removeAccount } = props;
+  const { accounts, deleteAccount } = props;
   const list = accounts.map((account: extendedAccount) => (
     <AccountContainer>
       <Address title={account.label} address={account.address} truncate={truncate} />
-      <DeleteButton onClick={() => removeAccount(account.uuid)} icon="exit" />
+      <DeleteButton onClick={() => deleteAccount(account.uuid)} icon="exit" />
     </AccountContainer>
   ));
 
-  return <List group>{list}</List>;
+  return <List group={true}>{list}</List>;
 };
 
 export default ToolsAccountList;

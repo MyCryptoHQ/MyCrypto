@@ -23,10 +23,10 @@ const DevToolsInput = styled(Input)`
 const DevTools = () => {
   return (
     <AccountContext.Consumer>
-      {({ accounts, createAccount, removeAccount }) => (
+      {({ accounts, createAccount, deleteAccount }) => (
         <DevToolsContainer>
           <Panel>
-            <ToolsAccountList accounts={accounts} removeAccount={removeAccount} />
+            <ToolsAccountList accounts={accounts} deleteAccount={deleteAccount} />
             <div className="Settings-heading">Enter a new Account</div>
             <Formik
               initialValues={{
@@ -51,7 +51,7 @@ const DevTools = () => {
                           component={DevToolsInput}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values['address']}
+                          value={values.address}
                         />
                       )}
                     />
@@ -69,7 +69,7 @@ const DevTools = () => {
                           component={DevToolsInput}
                           onChange={handleChange} //({ target: { value } }: { target: { value: any }}) => form.setFieldValue(field.name, value)}
                           onBlur={handleBlur}
-                          value={values['label']}
+                          value={values.label}
                         />
                       )}
                     />
@@ -87,7 +87,7 @@ const DevTools = () => {
                           component={DevToolsInput}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={values['network']}
+                          value={values.network}
                         />
                       )}
                     />
