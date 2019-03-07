@@ -11,9 +11,9 @@ interface State {
 
 export const AccountContext = createContext({
   accounts: [],
-  createAccount: (accountData: Account) => undefined,
-  deleteAccount: () => undefined,
-  updateAccount: () => undefined
+  createAccount: (): void => undefined,
+  deleteAccount: (): void => undefined,
+  updateAccount: (): void => undefined
 });
 
 const Account = new AccountServiceBase();
