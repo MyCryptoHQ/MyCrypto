@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Transition } from 'react-spring';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
 import { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
@@ -73,7 +74,13 @@ class MobileHeader extends Component<Props> {
             <i className={menuIcon} />
           </section>
           <section className="MobileHeader-top-logo">
-            <Link to="/" onClick={() => setAccessMessage('')}>
+            <Link
+              to="/"
+              onClick={() => {
+                setAccessMessage('');
+                this.trackHomeIconClick();
+              }}
+            >
               <img src={logo} alt="Our logo" />
             </Link>
           </section>
@@ -155,6 +162,7 @@ class MobileHeader extends Component<Props> {
                 <ul className="MobileHeader-menu-bottom">
                   <li>
                     <a
+                      onClick={this.trackHelpSupportClick}
                       href="https://support.mycrypto.com/"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -164,6 +172,7 @@ class MobileHeader extends Component<Props> {
                   </li>
                   <li>
                     <a
+                      onClick={this.trackLatestNewsClick}
                       href="https://medium.com/@mycrypto"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -202,6 +211,18 @@ class MobileHeader extends Component<Props> {
     if (shouldSetNodeFromQS) {
       changeNodeRequestedOneTime(networkParam!);
     }
+  };
+
+  private trackHelpSupportClick = (): void => {
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
+  };
+
+  private trackLatestNewsClick = (): void => {
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Latest News clicked');
+  };
+
+  private trackHomeIconClick = (): void => {
+    AnalyticsService.instance.trackLegacy(ANALYTICS_CATEGORIES.HEADER, 'Home Icon clicked');
   };
 }
 

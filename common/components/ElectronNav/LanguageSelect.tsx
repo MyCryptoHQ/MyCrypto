@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
 import { AppState } from 'features/reducers';
 import { configMetaActions, configMetaSelectors } from 'features/config';
@@ -45,6 +46,7 @@ class LanguageSelect extends React.Component<Props> {
   private handleLanguageSelect = (lang: string) => {
     this.props.changeLanguage(lang);
     this.props.closePanel();
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SIDEBAR, 'Language changed', { lang });
   };
 }
 

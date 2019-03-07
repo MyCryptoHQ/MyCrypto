@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import classnames from 'classnames';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { donationAddressMap } from 'config';
 import translate from 'translations';
 import ether from 'assets/images/ether.png';
@@ -42,10 +43,22 @@ class Donate extends Component {
       <section className="Donate">
         <h2>{translate('NEW_FOOTER_TEXT_1')}</h2>
         <section className="Donate-buttons">
-          <CopyToClipboard text={donationAddressMap.ETH} onCopy={this.displayMessage}>
+          <CopyToClipboard
+            text={donationAddressMap.ETH}
+            onCopy={() => {
+              this.displayMessage();
+              this.trackDonationClicked('Ethereum');
+            }}
+          >
             <DonationButton icon={ether} title="Ethereum" />
           </CopyToClipboard>
-          <CopyToClipboard text={donationAddressMap.BTC} onCopy={this.displayMessage}>
+          <CopyToClipboard
+            text={donationAddressMap.BTC}
+            onCopy={() => {
+              this.displayMessage();
+              this.trackDonationClicked('Bitcoin');
+            }}
+          >
             <DonationButton icon={bitcoin} title="Bitcoin" />
           </CopyToClipboard>
         </section>
@@ -56,6 +69,10 @@ class Donate extends Component {
       </section>
     );
   }
+
+  private trackDonationClicked = (title: string): void => {
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.FOOTER, `Donate ${title} clicked`);
+  };
 
   private displayMessage = () => {
     clearTimeout(this.timeout as NodeJS.Timer);

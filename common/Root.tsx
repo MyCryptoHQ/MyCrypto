@@ -5,6 +5,7 @@ import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-rout
 import { ThemeProvider } from 'styled-components';
 import { light } from '@mycrypto/ui';
 
+import { AnalyticsService } from 'v2/services';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
@@ -116,14 +117,14 @@ class RootClass extends Component<Props, State> {
           <Provider store={store}>
             <AccountProvider>
               <Router>
-                <React.Fragment>
+                <PageVisitsAnalytics>
                   {onboardingActive && <OnboardingModal />}
                   {routes}
                   <LegacyRoutes />
                   <LogOutPrompt />
                   <QrSignerModal />
                   {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                </React.Fragment>
+                </PageVisitsAnalytics>
               </Router>
               <DevTools />
             </AccountProvider>
@@ -160,6 +161,17 @@ class RootClass extends Component<Props, State> {
     root.classList.add(`theme--${theme}`);
   }
 }
+
+let previousURL = '';
+const PageVisitsAnalytics = withRouter(({ history, children }) => {
+  history.listen(() => {
+    if (previousURL !== window.location.href) {
+      AnalyticsService.instance.trackPageVisit(window.location.href);
+      previousURL = window.location.href;
+    }
+  });
+  return <React.Fragment>{children}</React.Fragment>;
+});
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
