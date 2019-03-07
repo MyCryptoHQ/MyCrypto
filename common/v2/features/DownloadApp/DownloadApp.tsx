@@ -5,6 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { ContentPanel } from 'v2/components';
 import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { OS } from 'v2/services/Github';
 import { DOWNLOAD_PAGE_URL, GITHUB_RELEASE_NOTES_URL } from './constants';
 import { getFeaturedOS } from './helpers';
 import { Layout } from 'v2/features';
@@ -28,27 +29,27 @@ export class DownloadApp extends Component<Props, State> {
   public state: State = {
     downloadItems: [
       {
-        OS: 'windows',
+        OS: OS.WINDOWS,
         name: 'Windows',
         link: DEFAULT_LINK
       },
       {
-        OS: 'mac',
+        OS: OS.MAC,
         name: 'Mac',
         link: DEFAULT_LINK
       },
       {
-        OS: 'linux64',
+        OS: OS.LINUX64,
         name: 'Linux (64-bit)',
         link: DEFAULT_LINK
       },
       {
-        OS: 'linux32',
+        OS: OS.LINUX32,
         name: 'Linux (32-bit)',
         link: DEFAULT_LINK
       },
       {
-        OS: 'standalone',
+        OS: OS.STANDALONE,
         name: 'Stand Alone',
         link: DEFAULT_LINK
       }
