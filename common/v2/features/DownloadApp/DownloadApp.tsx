@@ -9,6 +9,7 @@ import { DOWNLOAD_PAGE_URL, GITHUB_RELEASE_NOTES_URL } from './constants';
 import { getFeaturedOS } from './helpers';
 import { Layout } from 'v2/features';
 import { AppDownloadItem } from './types';
+import translate from 'translations';
 import './DownloadApp.scss';
 
 // Legacy
@@ -80,10 +81,9 @@ export class DownloadApp extends Component<Props, State> {
     return (
       <Layout centered={true}>
         <ContentPanel onBack={this.props.history.goBack} className="DownloadApp">
-          <Heading className="DownloadApp-heading">Download App</Heading>
+          <Heading className="DownloadApp-heading"> {translate('DOWNLOAD_APP_TITLE')}</Heading>
           <Typography className="DownloadApp-description">
-            Please download the MyCrypto Desktop app so you can securely complete creating your new
-            account and start managing your funds.
+            {translate('DOWNLOAD_APP_DESCRIPTION')}
           </Typography>
           <img className="DownloadApp-icon" src={desktopAppIcon} alt="Desktop" />
           <Button
@@ -125,16 +125,14 @@ export class DownloadApp extends Component<Props, State> {
             </Button>
           </div>
           <Typography className="DownloadApp-learnMore">
-            Not sure what this is?{' '}
+            {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
             <a
               onClick={this.trackLearnMoreClick}
               href={DOWNLOAD_PAGE_URL}
               target="_blank"
               rel="noreferrer"
             >
-              <Typography className="DownloadApp-learnMore-link">
-                Learn more about our desktop app.
-              </Typography>
+              {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
             </a>
           </Typography>
         </ContentPanel>
