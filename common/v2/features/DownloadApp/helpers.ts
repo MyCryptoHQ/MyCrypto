@@ -1,12 +1,14 @@
+import { OS } from 'v2/services/Github';
+
 export const getFeaturedOS = (): string => {
-  let OS: string = 'linux64';
+  let featuredOS: string = OS.LINUX64;
   if (
     /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent) ||
     navigator.appVersion.includes('Mac')
   ) {
-    OS = 'mac';
+    featuredOS = OS.MAC;
   } else if (navigator.appVersion.includes('Win')) {
-    OS = 'windows';
+    featuredOS = OS.WINDOWS;
   }
-  return OS;
+  return featuredOS;
 };

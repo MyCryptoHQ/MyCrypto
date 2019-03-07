@@ -747,6 +747,10 @@
     "ACCESS_MESSAGE_2": "You must access your wallet in order to request a payment.",
     "ACCESS_MESSAGE_3": "You must access your wallet in order to view your wallet's information.",
     "ACCESS_MESSAGE_4": "You must access your wallet in order to view your recent transactions.",
-    "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book."
+    "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book.",
+    "DOWNLOAD_APP_TITLE": "Download App",
+    "DOWNLOAD_APP_DESCRIPTION": "Please download the MyCrypto Desktop app so you can securely complete creating your new account and start managing your funds.",
+    "DOWNLOAD_APP_FOOTER_INFO": "Not sure what this is?",
+    "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app."
   }
 }

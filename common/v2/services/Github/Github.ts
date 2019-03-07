@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import { GITHUB_RELEASES_URL } from './constants';
+import { GITHUB_RELEASES_URL, OS } from './constants';
 import { APIService } from '../API';
 import { ReleaseURLs } from './types';
 
@@ -22,11 +22,11 @@ export default class GithubService {
 
   public getReleasesURLs = async () => {
     const ASSET_REG_EXPS = {
-      mac: /^mac.*\.dmg$/,
-      windows: /^windows.*\.exe$/,
-      linux32: /^linux-i386.*\.AppImage$/,
-      linux64: /^linux-x86-64.*\.AppImage$/,
-      standalone: /^standalone.*\.zip$/
+      [OS.MAC]: /^mac.*\.dmg$/,
+      [OS.WINDOWS]: /^windows.*\.exe$/,
+      [OS.LINUX32]: /^linux-i386.*\.AppImage$/,
+      [OS.LINUX64]: /^linux-x86-64.*\.AppImage$/,
+      [OS.STANDALONE]: /^standalone.*\.zip$/
     };
 
     try {
