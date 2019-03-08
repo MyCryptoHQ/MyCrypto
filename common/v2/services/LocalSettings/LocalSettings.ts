@@ -9,7 +9,7 @@ export default class LocalSettingsServiceBase {
     initializeCache();
   };
 
-  public createLocalSetting = (LocalSetting: LocalSetting) => {
+  public createLocalSetting = (LocalSettings: LocalSetting) => {
     this.init();
     // Handle LocalSetting
     const uuid = utils.generateUUID();
@@ -22,7 +22,7 @@ export default class LocalSettingsServiceBase {
       parsedLocalCache = localCache;
     }
     const newLocalSettingCache = parsedLocalCache;
-    newLocalSettingCache.LocalSetting[uuid] = LocalSetting;
+    newLocalSettingCache.LocalSetting[uuid] = LocalSettings;
 
     newLocalSettingCache.LocalSettingList = [...newLocalSettingCache.LocalSettingList, uuid];
     localStorage.setItem('MyCryptoCache', JSON.stringify(newLocalSettingCache));
@@ -40,7 +40,7 @@ export default class LocalSettingsServiceBase {
     return parsedLocalCache.LocalSetting[uuid];
   };
 
-  public updateLocalSetting = (uuid: string, LocalSetting: LocalSetting) => {
+  public updateLocalSetting = (uuid: string, LocalSettings: LocalSetting) => {
     this.init();
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
     let parsedLocalCache;
@@ -52,7 +52,7 @@ export default class LocalSettingsServiceBase {
     const newLocalSettingCache = Object.assign(
       {},
       parsedLocalCache.LocalSetting[uuid],
-      LocalSetting
+      LocalSettings
     );
 
     localStorage.setItem('MyCryptoCache', JSON.stringify(newLocalSettingCache));
