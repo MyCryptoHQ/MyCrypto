@@ -127,7 +127,7 @@ export default class DateTimePickerDays extends Component<Props> {
         };
 
         if (!isDisabled) {
-          (dayProps as any).onClick = (event: any) => this.updateSelectedDate(event);
+          dayProps.onClick = (event: any) => this.updateSelectedDate(event);
         }
 
         days.push(renderer(dayProps, currentDate, selected));
