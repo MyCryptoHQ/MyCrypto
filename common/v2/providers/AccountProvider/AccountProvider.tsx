@@ -2,24 +2,19 @@ import React, { Component, createContext } from 'react';
 import AccountServiceBase from 'v2/services/Account/Account';
 import { Account, ExtendedAccount } from 'v2/services/Account';
 
-interface State {
+interface ProviderState {
   accounts: ExtendedAccount[];
   createAccount(accountData: Account): void;
   deleteAccount(uuid: string): void;
   updateAccount(uuid: string, accountData: Account): void;
 }
 
-export const AccountContext = createContext({
-  accounts: [],
-  createAccount: (accountData: Account) => undefined,
-  deleteAccount: () => undefined,
-  updateAccount: () => undefined
-});
+export const AccountContext = createContext({} as ProviderState);
 
 const Account = new AccountServiceBase();
 
 export class AccountProvider extends Component {
-  public state: State = {
+  public readonly state: ProviderState = {
     accounts: Account.readAccounts() || [],
     createAccount: (accountData: Account) => {
       Account.createAccount(accountData);
@@ -34,13 +29,8 @@ export class AccountProvider extends Component {
       this.getAccounts();
     }
   };
-  constructor(props: any) {
-    super(props);
-    Account.init();
-  }
 
   public render() {
-    console.log(this.state.accounts);
     const { children } = this.props;
     return <AccountContext.Provider value={this.state}>{children}</AccountContext.Provider>;
   }
