@@ -74,8 +74,8 @@ export default class DateTimePickerDays extends Component<Props> {
     const prevMonth = date.clone().subtract(1, 'months');
     const currentYear = date.year();
     const currentMonth = date.month();
-    const weeks = [];
-    let days = [];
+    const weeks: JSX.Element[] = [];
+    let days: JSX.Element[] = [];
     const renderer = this.props.renderDay || this.renderDay;
     const isValid = this.props.isValidDate || this.alwaysValidDate;
     let classes;

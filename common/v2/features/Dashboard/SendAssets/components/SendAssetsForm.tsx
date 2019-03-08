@@ -35,7 +35,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                 render={({ field }) => (
                   <ComboBox
                     value={field.value}
-                    items={['a', 'b', 'c']}
+                    items={new Set(['a', 'b', 'c'])}
                     className="SendAssetsForm-fieldset-input"
                   />
                 )}
@@ -82,7 +82,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                   render={({ field }) => (
                     <ComboBox
                       value={field.value}
-                      items={['ETH', 'ZRX']}
+                      items={new Set(['ETH', 'ZRX'])}
                       className="SendAssetsForm-fieldset-input"
                     />
                   )}

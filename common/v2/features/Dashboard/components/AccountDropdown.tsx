@@ -19,7 +19,7 @@ interface Props {
   onSelect(uuid: string): void;
 }
 
-export class AccountDropdown extends Component<Props> {
+export class AccountDropdown extends Component<Props, { open: boolean }> {
   public state = {
     open: false
   };
@@ -77,7 +77,14 @@ export class AccountDropdown extends Component<Props> {
 const ModifiedAccountDropdown = onClickOutside(AccountDropdown);
 
 // tslint:disable-next-line
-export default class MockContext extends Component {
+export default class MockContext extends Component<
+  {},
+  {
+    accountsById: Record<string, { uuid: string; name: string; address: string }>;
+    allAccounts: string[];
+    visibleAccounts: string[];
+  }
+> {
   public state = {
     accountsById: {
       '1': {

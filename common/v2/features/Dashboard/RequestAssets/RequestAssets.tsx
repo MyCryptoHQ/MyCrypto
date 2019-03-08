@@ -68,7 +68,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                     render={({ field }) => (
                       <ComboBox
                         value={field.value}
-                        items={['ETH', 'ZRX']}
+                        items={new Set(['ETH', 'ZRX'])}
                         className="SendAssetsForm-fieldset-input"
                       />
                     )}

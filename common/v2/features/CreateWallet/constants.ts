@@ -1,14 +1,4 @@
-import {
-  DownloadAppPanel,
-  SelectNetworkPanel,
-  SelectMethodPanel,
-  GeneratePhrasePanel,
-  BackUpPhrasePanel,
-  ConfirmPhrasePanel,
-  GeneratePasswordPanel,
-  DownloadKeystorePanel,
-  SavePrivateKeyPanel
-} from './components';
+import { SelectNetworkPanel } from './components';
 
 export enum CreateWalletStages {
   DownloadApp,
@@ -23,15 +13,15 @@ export enum CreateWalletStages {
 }
 
 export const createWalletStageToComponentHash = {
-  [CreateWalletStages.DownloadApp]: DownloadAppPanel,
+  [CreateWalletStages.DownloadApp]: undefined,
   [CreateWalletStages.SelectNetwork]: SelectNetworkPanel,
-  [CreateWalletStages.SelectMethod]: SelectMethodPanel,
-  [CreateWalletStages.GeneratePhrase]: GeneratePhrasePanel,
-  [CreateWalletStages.BackUpPhrase]: BackUpPhrasePanel,
-  [CreateWalletStages.ConfirmPhrase]: ConfirmPhrasePanel,
-  [CreateWalletStages.GeneratePassword]: GeneratePasswordPanel,
-  [CreateWalletStages.DownloadKeystore]: DownloadKeystorePanel,
-  [CreateWalletStages.SavePrivateKey]: SavePrivateKeyPanel
+  [CreateWalletStages.SelectMethod]: undefined,
+  [CreateWalletStages.GeneratePhrase]: undefined,
+  [CreateWalletStages.BackUpPhrase]: undefined,
+  [CreateWalletStages.ConfirmPhrase]: undefined,
+  [CreateWalletStages.GeneratePassword]: undefined,
+  [CreateWalletStages.DownloadKeystore]: undefined,
+  [CreateWalletStages.SavePrivateKey]: undefined
 };
 
 export const createWalletMnemonicFlow = [
