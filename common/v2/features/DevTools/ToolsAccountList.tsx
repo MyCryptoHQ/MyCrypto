@@ -15,10 +15,10 @@ const DeleteButton = styled(Button)`
   margin-left: 1em;
 `;
 
-type AccountListProps = {
+export interface AccountListProps {
   accounts: ExtendedAccount[];
   deleteAccount(uuid: string): void;
-};
+}
 
 const ToolsAccountList: React.FC<AccountListProps> = props => {
   const { accounts, deleteAccount } = props;
