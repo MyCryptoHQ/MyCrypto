@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { socialMediaLinks, VERSION } from 'config';
 import { translateRaw } from 'translations';
 import { NewTabLink } from 'components/ui';
@@ -8,9 +9,22 @@ import './SocialsAndLegal.scss';
 
 const SocialMediaLink = ({ link, text }: { link: string; text: string }) => {
   return (
-    <NewTabLink className="SocialMediaLink" key={link} href={link} aria-label={text}>
+    <NewTabLink
+      className="SocialMediaLink"
+      key={link}
+      href={link}
+      aria-label={text}
+      onClick={() => trackSocialIconClicked(text)}
+    >
       <i className={`sm-icon sm-logo-${text}`} />
     </NewTabLink>
+  );
+};
+
+const trackSocialIconClicked = (socialNetworkName: string): void => {
+  AnalyticsService.instance.trackLegacy(
+    ANALYTICS_CATEGORIES.FOOTER,
+    `${socialNetworkName.charAt(0).toUpperCase()}${socialNetworkName.slice(1)} social icon clicked`
   );
 };
 
