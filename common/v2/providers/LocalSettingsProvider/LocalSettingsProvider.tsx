@@ -2,24 +2,19 @@ import React, { Component, createContext } from 'react';
 import LocalSettingsServiceBase from 'v2/services/LocalSettings/LocalSettings';
 import { LocalSetting, ExtendedLocalSetting } from 'v2/services/LocalSettings';
 
-interface State {
+interface ProviderState {
   LocalSettings: ExtendedLocalSetting[];
   createLocalSetting(LocalSettingData: LocalSetting): void;
   deleteLocalSetting(uuid: string): void;
   updateLocalSetting(uuid: string, LocalSettingData: LocalSetting): void;
 }
 
-export const LocalSettingsContext = createContext({
-  LocalSettings: [],
-  createLocalSetting: () => undefined,
-  deleteLocalSetting: () => undefined,
-  updateLocalSetting: () => undefined
-});
+export const LocalSettingsContext = createContext({} as ProviderState);
 
 const LocalSetting = new LocalSettingsServiceBase();
 
 export class LocalSettingProvider extends Component {
-  public state: State = {
+  public readonly state: ProviderState = {
     LocalSettings: LocalSetting.readLocalSettings() || [],
     createLocalSetting: (localSettingData: LocalSetting) => {
       LocalSetting.createLocalSetting(localSettingData);
@@ -34,13 +29,8 @@ export class LocalSettingProvider extends Component {
       this.getLocalSettings();
     }
   };
-  constructor(props: any) {
-    super(props);
-    LocalSetting.init();
-  }
 
   public render() {
-    console.log(this.state.LocalSettings);
     const { children } = this.props;
     return (
       <LocalSettingsContext.Provider value={this.state}>{children}</LocalSettingsContext.Provider>
