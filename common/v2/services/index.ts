@@ -7,3 +7,5 @@ export * from './Storage';
 export * from './Account';
 export * from './LocalSettings';
 export * from './Transaction';
+export * from './FiatCurrency';
+export * from './AssetOption';

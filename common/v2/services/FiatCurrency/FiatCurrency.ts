@@ -1,16 +1,16 @@
 import * as utils from 'v2/libs';
 import { initializeCache } from 'v2/services/LocalCache';
-import { Transaction, ExtendedTransaction } from './types';
+import { FiatCurrency, ExtendedFiatCurrency } from './types';
 
-export default class TransactionServiceBase {
+export default class FiatCurrencyServiceBase {
   // TODO: Add duplication/validation handling.
   public init = () => {
     initializeCache();
   };
 
-  public createTransaction = (Transactions: Transaction) => {
+  public createFiatCurrency = (FiatCurrencies: FiatCurrency) => {
     this.init();
-    // Handle Transaction
+    // Handle FiatCurrency
     const uuid = utils.generateUUID();
 
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
@@ -20,14 +20,14 @@ export default class TransactionServiceBase {
     } catch (e) {
       parsedLocalCache = localCache;
     }
-    const newTransactionCache = parsedLocalCache;
-    newTransactionCache.Transactions[uuid] = Transactions;
+    const newFiatCurrencyCache = parsedLocalCache;
+    newFiatCurrencyCache.FiatCurrencys[uuid] = FiatCurrencies;
 
-    newTransactionCache.allTransactions = [...newTransactionCache.allTransactions, uuid];
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newTransactionCache));
+    newFiatCurrencyCache.allFiatCurrencies = [...newFiatCurrencyCache.allFiatCurrencies, uuid];
+    localStorage.setItem('MyCryptoCache', JSON.stringify(newFiatCurrencyCache));
   };
 
-  public readTransaction = (uuid: string) => {
+  public readFiatCurrency = (uuid: string) => {
     this.init();
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
     let parsedLocalCache;
@@ -36,10 +36,10 @@ export default class TransactionServiceBase {
     } catch {
       parsedLocalCache = localCache;
     }
-    return parsedLocalCache.Transactions[uuid];
+    return parsedLocalCache.FiatCurrencys[uuid];
   };
 
-  public updateTransaction = (uuid: string, Transactions: Transaction) => {
+  public updateFiatCurrency = (uuid: string, FiatCurrencies: FiatCurrency) => {
     this.init();
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
     let parsedLocalCache;
@@ -48,18 +48,18 @@ export default class TransactionServiceBase {
     } catch {
       parsedLocalCache = localCache;
     }
-    const newTransactionCache = Object.assign(
+    const newFiatCurrencyCache = Object.assign(
       {},
-      parsedLocalCache.Transactions[uuid],
-      Transactions
+      parsedLocalCache.FiatCurrencys[uuid],
+      FiatCurrencies
     );
 
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newTransactionCache));
+    localStorage.setItem('MyCryptoCache', JSON.stringify(newFiatCurrencyCache));
   };
 
-  public deleteTransaction = (uuid: string) => {
+  public deleteFiatCurrency = (uuid: string) => {
     this.init();
-    // Handle Transaction
+    // Handle FiatCurrency
     const localCache = localStorage.getItem('MyCryptoCache') || '{}';
     let parsedLocalCache;
     try {
@@ -67,28 +67,28 @@ export default class TransactionServiceBase {
     } catch {
       parsedLocalCache = localCache;
     }
-    delete parsedLocalCache.Transactions[uuid];
-    const newallTransactions = parsedLocalCache.allTransactions.filter(
+    delete parsedLocalCache.FiatCurrencys[uuid];
+    const newallFiatCurrencies = parsedLocalCache.allFiatCurrencies.filter(
       (obj: string) => obj !== uuid
     );
-    parsedLocalCache.allTransactions = newallTransactions;
+    parsedLocalCache.allFiatCurrencies = newallFiatCurrencies;
     const newCache = parsedLocalCache;
     localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
   };
 
-  public readTransactions = (): ExtendedTransaction[] => {
+  public readFiatCurrencys = (): ExtendedFiatCurrency[] => {
     this.init();
     const localCache = localStorage.getItem('MyCryptoCache') || '[]';
     let parsedLocalCache: any;
-    let out: ExtendedTransaction[] = [];
+    let out: ExtendedFiatCurrency[] = [];
     try {
       parsedLocalCache = JSON.parse(localCache);
     } catch (e) {
       parsedLocalCache = localCache;
     }
-    if (parsedLocalCache.allTransactions && parsedLocalCache.allTransactions.length >= 1) {
-      parsedLocalCache.allTransactions.map((uuid: string) => {
-        out.push({ ...parsedLocalCache.Transactions[uuid], uuid });
+    if (parsedLocalCache.allFiatCurrencies && parsedLocalCache.allFiatCurrencies.length >= 1) {
+      parsedLocalCache.allFiatCurrencies.map((uuid: string) => {
+        out.push({ ...parsedLocalCache.FiatCurrencys[uuid], uuid });
       });
     } else {
       out = [];
