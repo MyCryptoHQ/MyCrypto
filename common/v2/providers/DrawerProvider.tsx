@@ -23,7 +23,7 @@ interface State {
   setScreen(screen: Screen): void;
 }
 
-export const DrawerContext = React.createContext();
+export const DrawerContext = React.createContext({});
 
 export default class DrawerProvider extends Component {
   public state: State = {

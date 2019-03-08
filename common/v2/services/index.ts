@@ -6,3 +6,4 @@ export * from './ShapeShift';
 export * from './Storage';
 export * from './Account';
 export * from './LocalSettings';
+export * from './Transaction';
