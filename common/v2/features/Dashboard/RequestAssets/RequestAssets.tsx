@@ -1,3 +1,4 @@
+import noop from 'lodash/noop';
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
@@ -29,6 +30,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
             amount: '0.00',
             asset: 'ETH'
           }}
+          onSubmit={noop}
           render={({ values: { amount } }) => (
             <Form>
               <fieldset className="RequestAssets-panel-fieldset">

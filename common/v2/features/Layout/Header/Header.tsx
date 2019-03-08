@@ -147,18 +147,16 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
           <div>
             <ul className="_Header-bottom-links">
               {Object.entries(links).map(([key, value]) => {
-                const onlyLink = typeof value === 'string';
                 const iconClassName = classnames('_Header-icon', {
-                  '_Header-caret': onlyLink
+                  '_Header-caret': typeof value === 'string'
                 });
-                const liProps = onlyLink
-                  ? {
-                      onClick: () => history.push(value)
-                    }
-                  : {
-                      onMouseEnter: () => this.toggleDropdown(key),
-                      onMouseLeave: () => this.toggleDropdown(key)
-                    };
+                const liProps =
+                  typeof value === 'string'
+                    ? { onClick: () => history.push(value) }
+                    : {
+                        onMouseEnter: () => this.toggleDropdown(key),
+                        onMouseLeave: () => this.toggleDropdown(key)
+                      };
 
                 return (
                   <li key={key} {...liProps}>

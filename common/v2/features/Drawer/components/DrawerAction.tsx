@@ -8,7 +8,7 @@ interface Props {
   icon: string;
   title: string;
   link?: string;
-  onClick(): void;
+  onClick?(): void;
 }
 
 export default function DrawerAction({ icon, title, link, onClick }: Props) {
