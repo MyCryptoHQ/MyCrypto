@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export const KeystoreContext = React.createContext();
+export const KeystoreContext = React.createContext({});
 
 export default class KeystoreProvider extends Component {
   public state = {};

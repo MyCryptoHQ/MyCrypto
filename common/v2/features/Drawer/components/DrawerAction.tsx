@@ -12,20 +12,19 @@ interface Props {
 }
 
 export default function DrawerAction({ icon, title, link, onClick }: Props) {
-  const Render = link ? Link : Button;
-  const props = link
-    ? {
-        to: link
-      }
-    : {
-        basic: true,
-        onClick
-      };
+  const sharedProps = {
+    className: 'DrawerAction',
+    children: (
+      <>
+        <img src={icon} alt={title} className="DrawerAction-icon" />
+        <Typography className="DrawerAction-text">{title}</Typography>
+      </>
+    )
+  };
 
-  return (
-    <Render className="DrawerAction" {...props}>
-      <img src={icon} alt={title} className="DrawerAction-icon" />
-      <Typography className="DrawerAction-text">{title}</Typography>
-    </Render>
+  return link ? (
+    <Link to={link} {...sharedProps} />
+  ) : (
+    <Button basic={true} onClick={onClick} {...sharedProps} />
   );
 }

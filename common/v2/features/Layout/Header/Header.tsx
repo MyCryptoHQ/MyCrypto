@@ -27,8 +27,8 @@ interface State {
   };
 }
 
-export class Header extends Component<Props & RouteComponentProps<{}>> {
-  public state: State = {
+export class Header extends Component<Props & RouteComponentProps<{}>, State> {
+  public state = {
     menuOpen: false,
     visibleMenuDropdowns: {
       'Manage Assets': false,
@@ -57,9 +57,8 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
               <div style={style} className="_Header-menu">
                 <ul className="_Header-menu-links">
                   {Object.entries(links).map(([key, value]) => {
-                    const onlyLink = typeof value === 'string';
                     const iconClassName = classnames('_Header-icon', {
-                      '_Header-caret': onlyLink
+                      '_Header-caret': typeof value === 'string'
                     });
 
                     return (
@@ -68,7 +67,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
                         onClick={e => {
                           e.stopPropagation();
 
-                          if (onlyLink) {
+                          if (typeof value === 'string') {
                             history.push(value);
                             this.toggleMenu();
                           } else {
@@ -77,20 +76,21 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
                         }}
                       >
                         {key} <Icon icon="navDownCaret" className={iconClassName} />
-                        {visibleMenuDropdowns[key] && (
-                          <ul>
-                            {value.map(({ to, title }) => (
-                              <li
-                                onClick={() => {
-                                  this.toggleMenu();
-                                  history.push(to);
-                                }}
-                              >
-                                {title}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
+                        {typeof value !== 'string' &&
+                          visibleMenuDropdowns[key] && (
+                            <ul>
+                              {value.map(({ to, title }) => (
+                                <li
+                                  onClick={() => {
+                                    this.toggleMenu();
+                                    history.push(to);
+                                  }}
+                                >
+                                  {title}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                       </li>
                     );
                   })}
@@ -161,13 +161,14 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
                 return (
                   <li key={key} {...liProps}>
                     {key} <Icon icon="navDownCaret" className={iconClassName} />
-                    {visibleDropdowns[key] && (
-                      <ul>
-                        {value.map(({ to, title }) => (
-                          <li onClick={() => history.push(to)}>{title}</li>
-                        ))}
-                      </ul>
-                    )}
+                    {typeof value !== 'string' &&
+                      visibleDropdowns[key] && (
+                        <ul>
+                          {value.map(({ to, title }) => (
+                            <li onClick={() => history.push(to)}>{title}</li>
+                          ))}
+                        </ul>
+                      )}
                   </li>
                 );
               })}
@@ -185,7 +186,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
       toggleDrawerVisible();
     }
 
-    this.setState((prevState: State) => ({
+    this.setState(prevState => ({
       menuOpen: !prevState.menuOpen
     }));
   };
@@ -196,7 +197,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
     });
 
   private toggleMenuDropdown = (dropdown: string) =>
-    this.setState((prevState: State) => ({
+    this.setState(prevState => ({
       visibleMenuDropdowns: {
         ...prevState.visibleMenuDropdowns,
         [dropdown]: !prevState.visibleMenuDropdowns[dropdown]
@@ -204,7 +205,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>> {
     }));
 
   private toggleDropdown = (dropdown: string) =>
-    this.setState((prevState: State) => ({
+    this.setState(prevState => ({
       visibleDropdowns: {
         ...prevState.visibleDropdowns,
         [dropdown]: !prevState.visibleDropdowns[dropdown]
