@@ -59,9 +59,10 @@
     core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
 
-"@babel/runtime@^7.0.0":
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.1.2.tgz#81c89935f4647706fc54541145e6b4ecfef4b8e3"
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.2.0":
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
+  integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
   dependencies:
     regenerator-runtime "^0.12.0"
 
@@ -113,11 +114,12 @@
   dependencies:
     events "^2.0.0"
 
-"@mycrypto/ui@0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.12.0.tgz#3378e65fb54da8a9b35d9874c98e9de106dd674e"
-  integrity sha512-7UABVkRI7M0as3tq3Nnb+aQH8Xw3ws9YYGWO/3BJqpnqupCagCM/Od9STwaFNdL3sZqec+U5KVjQPrPB2hmSEQ==
+"@mycrypto/ui@0.12.2":
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.12.2.tgz#0ad86b1279fe254fc610639345dea7efc507c30d"
+  integrity sha512-b4Hr8vBr6CKjr6DQbHSNcXx7MQxp08MEQ9ioFKCQf5gMg6SycZ3zsZQ9fne0pCcvHnwX6+8rC2woqxfwg8gEHw==
   dependencies:
+    "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"
     "@types/react-inlinesvg" "^0.8.0"
     ethereum-blockies-base64 "^1.0.2"
@@ -155,7 +157,7 @@
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.3.tgz#3f0ff6873da793870e20a260cada55982f38a9e5"
 
-"@types/dom-clipboard-api@1.0.1":
+"@types/dom-clipboard-api@1.0.1", "@types/dom-clipboard-api@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/dom-clipboard-api/-/dom-clipboard-api-1.0.1.tgz#e08b96ee9b590f487bacaafbd03944687969dae4"
   integrity sha512-tELeN5A5SeB1CMv8g+z76Ryi2x/HqcdTTAAIpLz/iB1ObkYniQ/xbn1YoDHgKX7E65w5TvJLvbiBosQ6hoR5wQ==
@@ -208,14 +210,16 @@
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.2.tgz#8700226bdde24b6f98e3a60126dbaab3b2a3ab41"
 
 "@types/lodash.throttle@^4.1.4":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@types/lodash.throttle/-/lodash.throttle-4.1.4.tgz#db210627eb05ef68af99344669818c5baad24039"
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.throttle/-/lodash.throttle-4.1.6.tgz#f5ba2c22244ee42ff6c2c49e614401a870c1009c"
+  integrity sha512-/UIH96i/sIRYGC60NoY72jGkCJtFN5KVPhEMMMTjol65effe1gPn0tycJqV5tlSwMTzX8FqzB5yAj0rfGHTPNg==
   dependencies:
     "@types/lodash" "*"
 
 "@types/lodash@*":
-  version "4.14.119"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.119.tgz#be847e5f4bc3e35e46d041c394ead8b603ad8b39"
+  version "4.14.123"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
+  integrity sha512-pQvPkc4Nltyx7G1Ww45OjVqUsJP4UsZm+GWJpigXgkikZqJgRm4c48g027o6tdgubWHwFRF15iFd+Y4Pmqv6+Q==
 
 "@types/lodash@4.14.107":
   version "4.14.107"
@@ -276,6 +280,7 @@
 "@types/react-inlinesvg@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/react-inlinesvg/-/react-inlinesvg-0.8.0.tgz#0347931da1b7744561ab6e96a7252a2a78b63f2e"
+  integrity sha512-C67E7ssAaIG2bMphWmhu2TZyMQaaulLKZLPi0O3hgjLyj7oa4frNWiRFzmaDNFFS579uYpnrn78dt9owuqAiyg==
   dependencies:
     "@types/react" "*"
 
@@ -5702,6 +5707,7 @@ http-signature@~1.2.0:
 httpplease@^0.16.4:
   version "0.16.4"
   resolved "https://registry.yarnpkg.com/httpplease/-/httpplease-0.16.4.tgz#d382ebe230ef5079080b4e9ffebf316a9e75c0da"
+  integrity sha1-04Lr4jDvUHkIC06f/r8xap51wNo=
   dependencies:
     urllite "~0.5.0"
     xmlhttprequest "*"
@@ -7670,6 +7676,7 @@ lodash.templatesettings@^3.0.0:
 lodash.throttle@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
 lodash.topath@4.5.2:
   version "4.5.2"
@@ -9186,6 +9193,7 @@ pngjs@^3.0.0, pngjs@^3.2.0, pngjs@^3.3.0:
 pnglib@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/pnglib/-/pnglib-0.0.1.tgz#f9ab6f9c688f4a9d579ad8be28878a716e30c096"
+  integrity sha1-+atvnGiPSp1Xmti+KIeKcW4wwJY=
 
 pngquant-bin@^4.0.0:
   version "4.0.0"
@@ -9197,10 +9205,11 @@ pngquant-bin@^4.0.0:
     logalot "^2.0.0"
 
 polished@^2.2.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/polished/-/polished-2.3.1.tgz#557ea07e5bcb1b9c7d71935a01d0315831234d48"
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-2.3.3.tgz#bdbaba962ba8271b0e11aa287f2befd4c87be99a"
+  integrity sha512-59V4fDbdxtH4I1m9TWxFsoGJbC8nnOpUYo5uFmvMfKp9Qh+6suo4VMUle1TGIIUZIGxfkW+Rs485zPk0wcwR2Q==
   dependencies:
-    "@babel/runtime" "^7.0.0"
+    "@babel/runtime" "^7.2.0"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -9917,8 +9926,9 @@ react-hot-loader@4.0.0:
     shallowequal "^1.0.2"
 
 react-inlinesvg@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-0.8.3.tgz#866f4db92a84a30d0f0d076439a980fd000b0693"
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/react-inlinesvg/-/react-inlinesvg-0.8.4.tgz#5cdcece95c633d924092fdcabbf4dcab8baef1bd"
+  integrity sha512-pMkYa09gsP+5mA5uYDon5TxJbu76rJqdPSQ9nTRZbVacH58Eo3tFxD0Z382cioxNrpeqWHI/hquzt00GaahnkA==
   dependencies:
     httpplease "^0.16.4"
     once "^1.4.0"
@@ -10299,6 +10309,7 @@ regenerator-runtime@^0.11.0, regenerator-runtime@^0.11.1:
 regenerator-runtime@^0.12.0:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
+  integrity sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
 
 regenerator-transform@^0.10.0:
   version "0.10.1"
@@ -12486,6 +12497,7 @@ url@^0.11.0:
 urllite@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/urllite/-/urllite-0.5.0.tgz#1b7bb9ca3fb0db9520de113466bbcf7cc341451a"
+  integrity sha1-G3u5yj+w25Ug3hE0ZrvPfMNBRRo=
   dependencies:
     xtend "~4.0.0"
 
@@ -12984,6 +12996,7 @@ wrap-fn@^0.1.0:
 wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
+  integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
 write-file-atomic@^1.2.0:
   version "1.3.4"
@@ -13086,6 +13099,7 @@ xmldom@0.1.x:
 xmlhttprequest@*:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
+  integrity sha1-Z/4HXFwk/vOfnWX197f+dRcZaPw=
 
 "xtend@>=4.0.0 <4.1.0-0", xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.0, xtend@~4.0.1:
   version "4.0.1"
@@ -13100,6 +13114,7 @@ xtend@~2.1.1:
 xtend@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-3.0.0.tgz#5cce7407baf642cba7becda568111c493f59665a"
+  integrity sha1-XM50B7r2Qsunvs2laBEcST9ZZlo=
 
 y18n@^3.2.0, y18n@^3.2.1:
   version "3.2.1"
