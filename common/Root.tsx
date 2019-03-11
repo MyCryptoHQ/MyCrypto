@@ -35,6 +35,7 @@ import 'what-input';
 import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
+import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -115,19 +116,21 @@ class RootClass extends Component<Props, State> {
       <ThemeProvider theme={light}>
         <React.Fragment>
           <Provider store={store}>
-            <AccountProvider>
-              <Router>
-                <PageVisitsAnalytics>
-                  {onboardingActive && <OnboardingModal />}
-                  {routes}
-                  <LegacyRoutes />
-                  <LogOutPrompt />
-                  <QrSignerModal />
-                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                </PageVisitsAnalytics>
-              </Router>
-              <DevTools />
-            </AccountProvider>
+            <AddressMetadataProvider>
+              <AccountProvider>
+                <Router>
+                  <PageVisitsAnalytics>
+                    {onboardingActive && <OnboardingModal />}
+                    {routes}
+                    <LegacyRoutes />
+                    <LogOutPrompt />
+                    <QrSignerModal />
+                    {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                  </PageVisitsAnalytics>
+                </Router>
+                <DevTools />
+              </AccountProvider>
+            </AddressMetadataProvider>
           </Provider>
           <div id="ModalContainer" />
         </React.Fragment>

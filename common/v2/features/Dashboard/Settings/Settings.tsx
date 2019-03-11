@@ -3,17 +3,13 @@ import { Heading } from '@mycrypto/ui';
 
 import { FlippablePanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import {
-  AddAccount,
-  AddressBook,
-  YourAccounts,
-  AddToAddressBook,
-  GeneralSettings
-} from './components';
+import { AddAccount, AddressBook, AddToAddressBook, GeneralSettings } from './components';
 import './Settings.scss';
 
 // Legacy
 import settingsIcon from 'common/assets/images/icn-settings.svg';
+import { AccountList } from '../components';
+import { AccountContext, AddressMetadataContext } from 'v2/providers';
 
 export default function Settings() {
   return (
@@ -25,21 +21,36 @@ export default function Settings() {
       <FlippablePanel>
         {({ flipped, toggleFlipped }) =>
           flipped ? (
-            <AddAccount toggleFlipped={toggleFlipped} />
+            <AddressMetadataContext.Consumer>
+              {({}) => <AddAccount />}
+            </AddressMetadataContext.Consumer>
           ) : (
-            <YourAccounts toggleFlipped={toggleFlipped} />
+            <AccountContext.Consumer>
+              {({ accounts }) => <AccountList accounts={accounts} toggleFlipped={toggleFlipped} />}
+            </AccountContext.Consumer>
           )
         }
       </FlippablePanel>
-      <FlippablePanel>
-        {({ flipped, toggleFlipped }) =>
-          flipped ? (
-            <AddToAddressBook toggleFlipped={toggleFlipped} />
-          ) : (
-            <AddressBook toggleFlipped={toggleFlipped} />
-          )
-        }
-      </FlippablePanel>
+      <AddressMetadataContext.Consumer>
+        {({ createAddressMetadatas, AddressMetadata, deleteAddressMetadatas }) => (
+          <FlippablePanel>
+            {({ flipped, toggleFlipped }) =>
+              flipped ? (
+                <AddToAddressBook
+                  toggleFlipped={toggleFlipped}
+                  createAddressMetadatas={createAddressMetadatas}
+                />
+              ) : (
+                <AddressBook
+                  addressMetadata={AddressMetadata}
+                  toggleFlipped={toggleFlipped}
+                  deleteAddressMetadatas={deleteAddressMetadatas}
+                />
+              )
+            }
+          </FlippablePanel>
+        )}
+      </AddressMetadataContext.Consumer>
       <GeneralSettings />
     </Layout>
   );

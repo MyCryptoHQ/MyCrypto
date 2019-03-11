@@ -9,3 +9,4 @@ export * from './LocalSettings';
 export * from './Transaction';
 export * from './FiatCurrency';
 export * from './AssetOption';
+export * from './AddressMetadata';

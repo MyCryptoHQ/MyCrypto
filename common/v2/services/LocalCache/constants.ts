@@ -15,6 +15,7 @@ export const CACHE_INIT_DEV = {
       localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
       assets: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
       accountType: 'MetaMask',
+      value: 1e18,
       transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882'
     }
   },
@@ -121,11 +122,13 @@ export const CACHE_INIT_DEV = {
   allDerivationPathOptions: [],
 
   addressMetadata: {
-    '0x80200997f095da94E404F7E0d581AAb1fFba9f7d': {
+    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
+      address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       label: 'My Wallet',
       notes: 'This is my wallet.'
     }
   },
+  allAddressMetadata: ['6e1c322c-aea6-4484-8fdc-7b3227a9d359'],
 
   recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
 
@@ -184,6 +187,7 @@ export const CACHE_INIT = {
   allDerivationPathOptions: [],
 
   addressMetadata: {},
+  allAddressMetadata: [],
 
   recentAccounts: [],
 

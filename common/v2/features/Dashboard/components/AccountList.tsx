@@ -9,6 +9,7 @@ interface Props {
 }
 
 // Fake Data
+/*
 const accounts = [
   {
     name: 'Wallet #1',
@@ -53,8 +54,46 @@ const accountTable = {
     iconColumns: ['Favorite']
   }
 };
+*/
 
-export default function AccountList({ className = '' }: Props) {
+export default function AccountList(accountList: any, { className = '' }: Props) {
+  const { accounts } = accountList;
+  console.log('props: ' + JSON.stringify(accountList, null, 4));
+  console.log('accounts: ' + JSON.stringify(accounts, null, 4));
+  const truncate = (children: string) => {
+    return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
+  };
+  const accountTable = {
+    head: ['Favorite', 'Address', 'Network', 'Value'],
+    body: accounts.map((account: any) => {
+      console.log('value2: ' + account.value);
+      return [
+        <Icon key={0} icon="star" />,
+        <Address
+          key={1}
+          title={`${account.label} - (${account.accountType})`}
+          address={account.address}
+          truncate={truncate}
+        />,
+        <Network key={3} color="#a682ff">
+          {account.network}
+        </Network>,
+        <Typography key={4}>{account.value}</Typography>
+      ];
+    }),
+    config: {
+      primaryColumn: 'Address',
+      sortableColumn: 'Address',
+      sortFunction: (a: any, b: any) => {
+        const aLabel = a.props.label;
+        const bLabel = b.props.label;
+        console.log('comparing ' + aLabel + ' to ' + bLabel);
+        return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
+      },
+      hiddenHeadings: ['Favorite'],
+      iconColumns: ['Favorite']
+    }
+  };
   return (
     <DashboardPanel
       heading="Your Accounts"
