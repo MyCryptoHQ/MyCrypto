@@ -229,11 +229,14 @@ export function* handleNonceRequest(): SagaIterator {
     const recentTransactions: AppState['transactions']['recent'] = yield select(
       transactionsSelectors.getRecentTransactions
     );
+    const { transaction }: IGetTransaction = yield select(derivedSelectors.getTransaction);
+    const { chainId }: IHexStrTransaction = yield call(getTransactionFields, transaction);
     const retrievedNonce = yield call(
       conductMaxNonceCheck,
       transactionCount,
       fromAddress,
-      recentTransactions
+      recentTransactions,
+      chainId
     );
     const base10Nonce = Nonce(retrievedNonce);
     yield put(transactionFieldsActions.inputNonce(base10Nonce.toString()));
@@ -249,7 +252,8 @@ export function* handleNonceRequest(): SagaIterator {
 export function* conductMaxNonceCheck(
   transactionCount: number,
   fromAddress: string,
-  recentTransactions: AppState['transactions']['recent']
+  recentTransactions: AppState['transactions']['recent'],
+  chainId: number
 ): SagaIterator {
   // Selects the maximum nonce from the maximum of the recent-transaction nonces with the same `from` address and the transaction count of the address
   const selectedNonce = Math.max(
@@ -260,6 +264,7 @@ export function* conductMaxNonceCheck(
           .filter(entry => entry.from === fromAddress.toLowerCase())
           .filter(entry => entry.nonce)
           .filter(entry => typeof entry.nonce === 'number')
+          .filter(entry => entry.chainId === chainId)
           .map(entry => entry.nonce + 1)
       ),
       0
