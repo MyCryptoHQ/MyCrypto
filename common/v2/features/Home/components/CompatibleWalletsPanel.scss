@@ -1,0 +1,22 @@
+.CompatibleWalletsPanel {
+  padding: 50px 70px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+
+  &-heading {
+    margin-right: 100px;
+  }
+
+  &-wallets {
+    &-WalletCard {
+      width: 140px;
+      height: 140px;
+
+      img {
+        width: 53px;
+        height: 53px;
+      }
+    }
+  }
+}
