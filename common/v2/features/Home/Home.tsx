@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Layout } from 'v2/features';
-import { GetStartedPanel } from './components';
+import { GetStartedPanel, DownloadAppPanel } from './components';
 import './Home.scss';
 
 export default function Home() {
@@ -10,6 +10,9 @@ export default function Home() {
       <section className="Home">
         <section className="LimitedWidth">
           <GetStartedPanel />
+        </section>
+        <section className="Home-DownloadApp">
+          <DownloadAppPanel />
         </section>
       </section>
     </Layout>
