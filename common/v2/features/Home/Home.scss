@@ -3,7 +3,12 @@
 .Home {
   display: flex;
   flex: 1;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  &-compatibleWallets {
+    width: 100%;
+  }
 }
 
 .LimitedWidth {

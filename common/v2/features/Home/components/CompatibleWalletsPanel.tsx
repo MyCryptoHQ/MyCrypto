@@ -30,16 +30,29 @@ export default function CompatibleWalletsPanel() {
     infinite: false,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1,
+    swipeToSlide: true,
     arrows: false,
-    variableWidth: true
+    variableWidth: true,
+    centerMode: true,
+    initialSlide: 2,
+    swipe: false,
+    responsive: [
+      {
+        breakpoint: 820,
+        settings: {
+          swipe: true
+        }
+      }
+    ]
   };
 
   return (
-    <Panel className="CompatibleWalletsPanel">
+    <Panel basic className="CompatibleWalletsPanel">
       <div className="CompatibleWalletsPanel-heading">
-        <Typography>Fully Compatible</Typography>
-        <Typography>Use with your favorite hardware and software wallets:</Typography>
+        <Typography className="CompatibleWalletsPanel-heading-name">Fully Compatible</Typography>
+        <Typography className="CompatibleWalletsPanel-heading-description">
+          Use with your favorite hardware and software wallets:
+        </Typography>
       </div>
       <div className="CompatibleWalletsPanel-wallets">
         <Slider {...settings}>
