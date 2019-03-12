@@ -6,7 +6,7 @@ import './Home.scss';
 
 export default function Home() {
   return (
-    <Layout className="WhiteBackgrond" fluid>
+    <Layout className="WhiteBackground" fluid>
       <section className="Home">
         <section className="LimitedWidth">
           <GetStartedPanel />
