@@ -1,22 +1,15 @@
+@import 'common/sass/variables';
+
 .Home {
   display: flex;
-  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+}
 
-  @media (min-width: 700px) {
-    flex-direction: row;
-  }
-  &-getStarted {
-    flex: 1;
+.LimitedWidth {
+  max-width: $screen-xxl;
+}
 
-    @media (min-width: 700px) {
-      order: 1;
-    }
-  }
-  &-copy {
-    flex: 1;
-
-    @media (min-width: 700px) {
-      margin-right: 1rem;
-    }
-  }
+.WhiteBackgrond {
+  background-color: #fff;
 }

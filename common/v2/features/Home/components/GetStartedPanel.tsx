@@ -1,44 +1,71 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
+import { Panel, Typography } from '@mycrypto/ui';
 
 // Legacy
+import titleIllustration from 'common/assets/images/title-illustration.png';
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
 import existingWalletIcon from 'common/assets/images/icn-existing-wallet.svg';
-import signInIcon from 'common/assets/images/icn-sign-in.svg';
+import signInIcon from 'common/assets/images/returning.svg';
 
 import './GetStartedPanel.scss';
 
+interface ActionCardProps {
+  name: string;
+  description: string;
+  icon: string;
+}
+
+const ActionCard: React.SFC<ActionCardProps> = props => {
+  const { name, description, icon } = props;
+  return (
+    <Panel basic className={'GetStartedPanel-actionsWrapper-card'}>
+      <div className={'GetStartedPanel-actionsWrapper-card-captionsWrapper'}>
+        <Typography className="GetStartedPanel-actionsWrapper-card-name">{name}</Typography>
+        <Typography className="GetStartedPanel-actionsWrapper-card-description">
+          {description}
+        </Typography>
+      </div>
+      <img src={icon} alt={name} className="GetStartedPanel-actionsWrapper-card-icon" />
+    </Panel>
+  );
+};
+
 export default function GetStartedPanel() {
   return (
-    <Panel className="GetStartedPanel">
-      <Heading as="h1" className="GetStartedPanel-heading">
-        Let's get started! <br /> Select an option below:
-      </Heading>
-      <div className="GetStartedPanel-options">
-        <Link to="/create-wallet">
-          <Panel noPadding={true} className="GetStartedPanel-options-option">
-            <div className="GetStartedPanel-options-option-image">
-              <img src={newWalletIcon} alt="Create new wallet" />
-            </div>
-            <Typography>I'm new! Create wallet (Download App to Create Wallet)</Typography>
-          </Panel>
-        </Link>
-        <Link to="/import-wallet">
-          <Panel noPadding={true} className="GetStartedPanel-options-option">
-            <div className="GetStartedPanel-options-option-image">
-              <img src={existingWalletIcon} alt="Existing wallet" />
-            </div>
-            <Typography>I need to import an existing wallet</Typography>
-          </Panel>
-        </Link>
-      </div>
-      <Link to="/" className="GetStartedPanel-alreadyHaveAccount">
-        <Button basic={true}>
-          <img src={signInIcon} alt="Sign in" />
-          <Typography>I have a MyCrypto Account</Typography>
-        </Button>
-      </Link>
+    <Panel basic className="GetStartedPanel">
+      <Panel basic className="GetStartedPanel-actionsWrapper">
+        <Typography className="GetStartedPanel-actionsWrapper-title">
+          You're In The Right Place.
+        </Typography>
+        <Typography className="GetStartedPanel-actionsWrapper-description">
+          It's Time To Use MyCrypto For Your Crypto.
+        </Typography>
+        <img
+          className="GetStartedPanel-actionsWrapper-image"
+          src={titleIllustration}
+          alt="Title Illustration"
+        />
+        <div className={'GetStartedPanel-actionsWrapper-cardsWrapper'}>
+          <ActionCard
+            name="I need a wallet"
+            description="Download app to create wallet"
+            icon={newWalletIcon}
+          />
+          <ActionCard
+            name="I have a wallet"
+            description="Connect wallet to MyCrypto"
+            icon={existingWalletIcon}
+          />
+          <ActionCard
+            name="I've used MyCrypto"
+            description="Continue to Dashboard"
+            icon={signInIcon}
+          />
+        </div>
+      </Panel>
+      <Panel basic className="GetStartedPanel-titleImageWrapper">
+        <img src={titleIllustration} alt="Title Illustration" />
+      </Panel>
     </Panel>
   );
 }

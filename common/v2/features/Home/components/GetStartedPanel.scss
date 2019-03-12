@@ -1,65 +1,143 @@
-.GetStartedPanel {
-  padding: 50px 70px;
-  text-align: center;
+@import 'common/sass/variables';
 
-  &-heading {
-    margin-bottom: 30px;
-    font-size: 35px;
-    font-weight: bold;
+.GetStartedPanel {
+  padding: 0;
+  display: flex;
+
+  &-titleImageWrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 55%;
+    background-color: #fff;
+
+    @media (max-width: $screen-sm) {
+      display: none;
+    }
   }
-  &-options {
+  &-actionsWrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-
-    @media (min-width: 700px) {
-      flex-direction: row;
-      justify-content: space-evenly;
-    }
-    &-option {
-      display: flex;
-      flex-direction: column;
+    width: 45%;
+    background-color: #fff;
+    padding-left: 8vw;
+    padding-top: 30px;
+    @media (max-width: $screen-sm) {
+      flex: 1;
+      padding: 0;
       align-items: center;
-      justify-content: space-around;
-      height: 200px;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 0 rgba(0, 0, 0, 0.05),
-        0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+    &-title {
+      font-weight: bold;
+      font-size: 3.1vw;
+      font-weight: 900;
+      line-height: normal;
 
-      @media (min-width: 700px) {
-        flex: 1;
-        width: 200px;
+      @media (max-width: $screen-sm) {
+        font-size: 25px;
       }
-      &-image {
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        width: 90px;
-        height: 90px;
-        margin: 10px 0;
-        padding-top: 10px;
+
+      @media (min-width: $screen-xl) {
+        font-size: 45px;
       }
-      p {
+    }
+    &-description {
+      font-family: Lato;
+      font-size: 2vw;
+      letter-spacing: normal;
+      margin-top: 8px;
+      font-weight: normal;
+      max-width: 400px;
+
+      @media (max-width: $screen-sm) {
+        margin-top: 0;
+        font-size: 20px;
+        text-align: center;
+        max-width: 250px;
+      }
+
+      @media (min-width: $screen-xl) {
+        font-size: 30px;
+      }
+    }
+    &-image {
+      max-width: 400px;
+      @media (min-width: $screen-sm) {
+        display: none;
+      }
+    }
+    &-cardsWrapper {
+      margin-top: 1.2vw;
+
+      @media (max-width: $screen-sm) {
         display: flex;
+        flex-direction: row;
+      }
+    }
+    &-card {
+      padding: 1vw 2vw;
+      margin-bottom: 15px;
+      border-radius: 3px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+      border: solid 1px #f7f7f7;
+      cursor: pointer;
+      width: 30vw;
+      max-width: 450px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      @media (max-width: $screen-sm) {
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: 0 20px;
-
-        @media (min-width: 700px) {
-          flex: 1;
-          padding: 0;
+        max-width: 105px;
+        margin-left: 6px;
+        margin-right: 6px;
+        padding: 14px 6px 14px 6px;
+      }
+      &-captionsWrapper {
+        order: 1;
+        @media (max-width: $screen-sm) {
+          order: 2;
+          text-align: center;
+          margin-top: 9px;
         }
       }
-    }
-  }
-  &-alreadyHaveAccount {
-    button {
-      margin-top: 23px;
-
-      img {
-        margin-right: 15px;
+      &-name {
+        font-size: 1.6vw;
+        font-weight: bold;
+        margin-bottom: 0;
+        @media (max-width: $screen-sm) {
+          font-size: 16px;
+          line-height: normal;
+        }
+        @media (min-width: $screen-xl) {
+          font-size: 26px;
+        }
       }
-      p {
-        display: inline;
+      &-description {
+        font-size: 1.1vw;
+        font-weight: normal;
+        @media (max-width: $screen-sm) {
+          margin-top: 5px;
+          font-size: 12px;
+          line-height: 1.2;
+        }
+        @media (min-width: $screen-xl) {
+          font-size: 20px;
+        }
+      }
+      &-icon {
+        width: 4vw;
+        height: 4vw;
+        max-width: 60px;
+        max-height: 60px;
+        order: 2;
+        @media (max-width: $screen-sm) {
+          order: 1;
+          width: 50px;
+          height: 50px;
+        }
       }
     }
   }
