@@ -27,7 +27,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
           <section className="CreateWallet">
             {isKeystorePanel ? (
               <KeystoreContext.Consumer>
-                {({}) => <ActivePanel {...actions} />}
+                {({}) => <ActivePanel totalSteps={3} {...actions} />}
               </KeystoreContext.Consumer>
             ) : (
               <ActivePanel totalSteps={3} {...actions} />
