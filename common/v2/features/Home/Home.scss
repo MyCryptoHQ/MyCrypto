@@ -1,11 +1,15 @@
 @import 'common/sass/variables';
 
 .Home {
-  max-width: $screen-xxl;
-}
-
-.HomeWrapper {
   display: flex;
   flex: 1;
   justify-content: center;
+}
+
+.LimitedWidth {
+  max-width: $screen-xxl;
+}
+
+.WhiteBackgrond {
+  background-color: #fff;
 }
