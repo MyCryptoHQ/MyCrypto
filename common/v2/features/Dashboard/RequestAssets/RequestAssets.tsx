@@ -1,7 +1,7 @@
 import noop from 'lodash/noop';
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import { ComboBox, Copyable, Input } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
@@ -10,6 +10,12 @@ import './RequestAssets.scss';
 
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
+
+const initialValues = {
+  recipientAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+  amount: '0.00',
+  asset: 'ETH'
+};
 
 const truncate = (children: string) => {
   return [children.substring(0, 15), '…', children.substring(children.length - 10)].join('');
@@ -24,12 +30,8 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
         onBack={history.goBack}
         className="RequestAssets-panel"
       >
-        <Formik
-          initialValues={{
-            recipientAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-            amount: '0.00',
-            asset: 'ETH'
-          }}
+        <Formik<typeof initialValues>
+          initialValues={initialValues}
           onSubmit={noop}
           render={({ values: { amount } }) => (
             <Form>
@@ -37,7 +39,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                 <label htmlFor="recipientAddress">Recipient Address</label>
                 <Field
                   name="recipientAddress"
-                  render={({ field }) => (
+                  render={({ field }: FieldProps<typeof initialValues>) => (
                     <Input
                       {...field}
                       disabled={true}
@@ -53,7 +55,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                   </label>
                   <Field
                     name="amount"
-                    render={({ field, form }) => (
+                    render={({ field, form }: FieldProps<typeof initialValues>) => (
                       <Input
                         value={field.value}
                         onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
@@ -67,7 +69,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
                   <label htmlFor="asset">Asset</label>
                   <Field
                     name="asset"
-                    render={({ field }) => (
+                    render={({ field }: FieldProps<typeof initialValues>) => (
                       <ComboBox
                         value={field.value}
                         items={new Set(['ETH', 'ZRX'])}

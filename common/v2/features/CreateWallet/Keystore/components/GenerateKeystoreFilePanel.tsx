@@ -1,10 +1,15 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Input, Typography } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
 import './GenerateKeystoreFilePanel.scss';
+
+const initialValues = {
+  password: '',
+  confirmPassword: ''
+};
 
 export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps) {
   return (
@@ -17,11 +22,8 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
       heading="Generate a Keystore File"
       className="GenerateKeystoreFilePanel"
     >
-      <Formik
-        initialValues={{
-          password: '',
-          confirmPassword: ''
-        }}
+      <Formik<typeof initialValues>
+        initialValues={initialValues}
         onSubmit={console.info}
         render={() => (
           <Form>
@@ -31,7 +33,7 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
               </label>
               <Field
                 name="password"
-                render={({ field, form }) => (
+                render={({ field, form }: FieldProps<typeof initialValues>) => (
                   <Input
                     {...field}
                     onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
@@ -47,7 +49,7 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
               </label>
               <Field
                 name="confirmPassword"
-                render={({ field, form }) => (
+                render={({ field, form }: FieldProps<typeof initialValues>) => (
                   <Input
                     {...field}
                     onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
