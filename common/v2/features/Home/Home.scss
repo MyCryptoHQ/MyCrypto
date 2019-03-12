@@ -1,22 +1,11 @@
+@import 'common/sass/variables';
+
 .Home {
+  max-width: $screen-xxl;
+}
+
+.HomeWrapper {
   display: flex;
-  flex-direction: column;
-
-  @media (min-width: 700px) {
-    flex-direction: row;
-  }
-  &-getStarted {
-    flex: 1;
-
-    @media (min-width: 700px) {
-      order: 1;
-    }
-  }
-  &-copy {
-    flex: 1;
-
-    @media (min-width: 700px) {
-      margin-right: 1rem;
-    }
-  }
+  flex: 1;
+  justify-content: center;
 }
