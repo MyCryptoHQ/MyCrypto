@@ -106,7 +106,7 @@ export default class DateTimePickerMonths extends Component<Props> {
       };
 
       if (!isDisabled) {
-        props.onClick = this.props.setDate('month');
+        (props as any).onClick = this.props.setDate('month');
       }
 
       months.push(renderer(props, i, year, date && date.clone()));
