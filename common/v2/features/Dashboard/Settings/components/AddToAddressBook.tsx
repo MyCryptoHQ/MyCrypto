@@ -9,12 +9,6 @@ import './AddToAddressBook.scss';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 import { AddressMetadata } from 'v2/services/AddressMetadata';
 
-const initialValues = {
-  label: '',
-  address: '',
-  notes: ''
-};
-
 interface Props {
   toggleFlipped(): void;
   createAddressMetadatas(values: any): void;
@@ -51,7 +45,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas
               <label htmlFor="label">Label</label>
               <Field
                 name="label"
-                render={({ field }: any) => (
+                render={({ field }: FieldProps<AddressMetadata>) => (
                   <Input {...field} placeholder="Enter Name of Address" />
                 )}
               />
@@ -60,7 +54,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas
               <label htmlFor="address">Address</label>
               <Field
                 name="address"
-                render={({ field }: any) => (
+                render={({ field }: FieldProps<AddressMetadata>) => (
                   <Input {...field} placeholder="Enter Your Token Address" />
                 )}
               />
@@ -69,7 +63,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas
               <label htmlFor="notes">Notes</label>
               <Field
                 name="notes"
-                render={({ field }: any) => (
+                render={({ field }: FieldProps<AddressMetadata>) => (
                   <Textarea {...field} placeholder="Enter a Note for this Address" />
                 )}
               />

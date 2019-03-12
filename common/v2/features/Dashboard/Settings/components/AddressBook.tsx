@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Address, Icon, CollapsibleTable, Typography, Button } from '@mycrypto/ui';
 
 import { DashboardPanel } from '../../components';
@@ -30,7 +30,7 @@ export default function AddressBook({
       <Icon key={0} icon="star" />,
       <Address key={1} title={label} address={address} truncate={truncate} />,
       <Typography key={2}>{notes}</Typography>,
-      <DeleteButton key={3} onClick={deleteAddressMetadatas(uuid)} icon="exit" />
+      <DeleteButton key={3} onClick={() => deleteAddressMetadatas(uuid)} icon="exit" />
     ]),
     config: {
       primaryColumn: 'Address',
