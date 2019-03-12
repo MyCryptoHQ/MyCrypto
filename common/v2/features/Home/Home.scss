@@ -9,6 +9,13 @@
   &-compatibleWallets {
     width: 100%;
   }
+
+  &-DownloadApp {
+    width: 100%;
+    background-color: #163150;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .LimitedWidth {
