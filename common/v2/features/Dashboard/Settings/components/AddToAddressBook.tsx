@@ -32,7 +32,7 @@ export default function AddToAddressBook({ toggleFlipped }: Props) {
       className="AddToAddressBook"
     >
       <div className="AddToAddressBook-form">
-        <Formik<typeof initialValues>
+        <Formik
           initialValues={initialValues}
           onSubmit={console.log}
           render={() => (

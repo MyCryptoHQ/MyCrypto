@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikErrors,
-  FieldProps,
-  FormikActions
-} from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikErrors, FieldProps, FormikActions } from 'formik';
 
 import { donationAddressHash } from 'v2/config';
 import { addressValidatorHash } from 'v2/utils';
@@ -43,9 +35,9 @@ const validate = (
 
 export default function ShapeShiftAddressForm({ addressInputRef, asset, onSubmit }: Props) {
   return (
-    <Formik<typeof initialValues>
+    <Formik
       initialValues={initialValues}
-      validate={values => validate(values, asset)}
+      validate={(values: typeof initialValues) => validate(values, asset)}
       onSubmit={onSubmit}
       render={props => (
         <section className="ShapeShiftWidget">

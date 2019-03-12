@@ -1,7 +1,7 @@
 import noop from 'lodash/noop';
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Formik, Form, Field, FieldProps } from 'formik';
+import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { ComboBox, Copyable, Input } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
@@ -30,10 +30,10 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
         onBack={history.goBack}
         className="RequestAssets-panel"
       >
-        <Formik<typeof initialValues>
+        <Formik
           initialValues={initialValues}
           onSubmit={noop}
-          render={({ values: { amount } }) => (
+          render={({ values: { amount } }: FormikProps<typeof initialValues>) => (
             <Form>
               <fieldset className="RequestAssets-panel-fieldset">
                 <label htmlFor="recipientAddress">Recipient Address</label>

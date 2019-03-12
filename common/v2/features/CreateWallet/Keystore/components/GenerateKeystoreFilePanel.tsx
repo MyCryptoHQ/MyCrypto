@@ -22,7 +22,7 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
       heading="Generate a Keystore File"
       className="GenerateKeystoreFilePanel"
     >
-      <Formik<typeof initialValues>
+      <Formik
         initialValues={initialValues}
         onSubmit={console.info}
         render={() => (

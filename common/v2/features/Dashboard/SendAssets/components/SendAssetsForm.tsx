@@ -16,7 +16,7 @@ interface Props {
 
 export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props) {
   return (
-    <Formik<Transaction>
+    <Formik
       initialValues={transaction}
       onSubmit={values => {
         onSubmit(values);

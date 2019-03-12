@@ -103,14 +103,14 @@ const setFixedFloat = (e: React.ChangeEvent<any>, props: any) => {
 
 export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
   return rates && assets.length > 0 ? (
-    <Formik<Values>
+    <Formik
       initialValues={{
         deposit: assets[0].ticker,
         depositAmount: '0.0000000',
         withdraw: assets[1].ticker,
         withdrawAmount: '0.0000000'
       }}
-      validate={values => validate(values, rates)}
+      validate={(values: Values) => validate(values, rates)}
       onSubmit={onSubmit}
       render={props => {
         return (
