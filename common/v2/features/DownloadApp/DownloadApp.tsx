@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Button, Heading, Typography } from '@mycrypto/ui';
+import { Button, Typography } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
@@ -12,8 +12,7 @@ import desktopAppIcon from 'common/assets/images/icn-desktop-app.svg';
 export function DownloadApp({ history }: RouteComponentProps<{}>) {
   return (
     <Layout centered={true}>
-      <ContentPanel onBack={history.goBack} className="DownloadApp">
-        <Heading className="DownloadApp-heading">Download App</Heading>
+      <ContentPanel onBack={history.goBack} className="DownloadApp" heading="Download App">
         <Typography>
           Please download the MyCrypto Desktop app so you can securely complete creating your new
           account and start managing your funds.

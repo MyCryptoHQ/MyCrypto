@@ -13,7 +13,7 @@ const dependencies = Object.entries({
 const nonExactPrefixes = /^(~|\^|>|>=|<|<=)/;
 
 describe('package.json', () => {
-  it.each(dependencies)('%s should have an exact version', (dep, depVersion) => {
+  it.each(dependencies)('%s should have an exact version', (_, depVersion) => {
     expect(depVersion).not.toMatch(nonExactPrefixes);
   });
 });

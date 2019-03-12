@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, ComboBox, Heading, Input, Typography } from '@mycrypto/ui';
 
 import { Transaction } from '../SendAssets';
@@ -18,7 +18,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
   return (
     <Formik
       initialValues={transaction}
-      onSubmit={(values: Transaction) => {
+      onSubmit={values => {
         onSubmit(values);
         onNext();
       }}
@@ -32,10 +32,10 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
               <label htmlFor="senderAddress">Select an Existing Address</label>
               <Field
                 name="senderAddress"
-                render={({ field }) => (
+                render={({ field }: FieldProps<Transaction>) => (
                   <ComboBox
                     value={field.value}
-                    items={['a', 'b', 'c']}
+                    items={new Set(['a', 'b', 'c'])}
                     className="SendAssetsForm-fieldset-input"
                   />
                 )}
@@ -46,7 +46,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
               <label htmlFor="recipientAddress">Recipient Address</label>
               <Field
                 name="recipientAddress"
-                render={({ field, form }) => (
+                render={({ field, form }: FieldProps<Transaction>) => (
                   <Input
                     value={field.value}
                     onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
@@ -65,7 +65,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                 </label>
                 <Field
                   name="amount"
-                  render={({ field, form }) => (
+                  render={({ field, form }: FieldProps<Transaction>) => (
                     <Input
                       value={field.value}
                       onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
@@ -79,10 +79,10 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                 <label htmlFor="asset">Asset</label>
                 <Field
                   name="asset"
-                  render={({ field }) => (
+                  render={({ field }: FieldProps<Transaction>) => (
                     <ComboBox
                       value={field.value}
-                      items={['ETH', 'ZRX']}
+                      items={new Set(['ETH', 'ZRX'])}
                       className="SendAssetsForm-fieldset-input"
                     />
                   )}
@@ -143,7 +143,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                       <label htmlFor="gasPrice">Gas Price (gwei)</label>
                       <Field
                         name="gasPrice"
-                        render={({ field, form }) => (
+                        render={({ field, form }: FieldProps<Transaction>) => (
                           <Input
                             value={field.value}
                             onChange={({ target: { value } }) =>
@@ -159,7 +159,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                       <label htmlFor="gasLimit">Gas Limit</label>
                       <Field
                         name="gasLimit"
-                        render={({ field, form }) => (
+                        render={({ field, form }: FieldProps<Transaction>) => (
                           <Input
                             value={field.value}
                             onChange={({ target: { value } }) =>
@@ -175,7 +175,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                       <label htmlFor="nonce">Nonce (?)</label>
                       <Field
                         name="nonce"
-                        render={({ field, form }) => (
+                        render={({ field, form }: FieldProps<Transaction>) => (
                           <Input
                             value={field.value}
                             onChange={({ target: { value } }) =>
@@ -192,7 +192,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                     <label htmlFor="data">Data</label>
                     <Field
                       name="data"
-                      render={({ field, form }) => (
+                      render={({ field, form }: FieldProps<Transaction>) => (
                         <Input
                           value={field.value}
                           onChange={({ target: { value } }) =>

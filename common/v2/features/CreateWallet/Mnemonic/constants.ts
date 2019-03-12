@@ -1,5 +1,7 @@
 import { SelectNetworkPanel } from '../components';
 import { GeneratePhrasePanel, BackUpPhrasePanel, ConfirmPhrasePanel } from './components';
+import { ComponentType } from 'react';
+import { PanelProps } from '../CreateWallet';
 
 export enum MnemonicStages {
   SelectNetwork,
@@ -8,7 +10,16 @@ export enum MnemonicStages {
   ConfirmPhrase
 }
 
-export const mnemonicStageToComponentHash = {
+export interface MnemonicStageProps extends PanelProps {
+  totalSteps: number;
+  words?: string[];
+  generateWords?(): void;
+}
+
+export const mnemonicStageToComponentHash: Record<
+  MnemonicStages,
+  ComponentType<MnemonicStageProps>
+> = {
   [MnemonicStages.SelectNetwork]: SelectNetworkPanel,
   [MnemonicStages.GeneratePhrase]: GeneratePhrasePanel,
   [MnemonicStages.BackUpPhrase]: BackUpPhrasePanel,

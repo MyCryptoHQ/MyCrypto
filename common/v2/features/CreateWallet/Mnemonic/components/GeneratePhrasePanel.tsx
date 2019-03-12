@@ -2,18 +2,15 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
-import { PanelProps } from '../../CreateWallet';
 import './GeneratePhrasePanel.scss';
 
 // Legacy
 import reloadIcon from 'common/assets/images/icn-reload.svg';
+import { MnemonicStageProps } from '../constants';
 
-interface Props extends PanelProps {
-  words: string[];
-  generateWords(): void;
-}
-
-export default class GeneratePhrasePanel extends Component<Props> {
+export default class GeneratePhrasePanel extends Component<
+  { words: string[]; generateWords(): void } & MnemonicStageProps
+> {
   public componentDidMount() {
     const { generateWords } = this.props;
 
@@ -21,14 +18,14 @@ export default class GeneratePhrasePanel extends Component<Props> {
   }
 
   public render() {
-    const { words, generateWords, onBack, onNext } = this.props;
+    const { totalSteps, words, generateWords, onBack, onNext } = this.props;
 
     return (
       <ContentPanel
         onBack={onBack}
         stepper={{
           current: 2,
-          total: 4
+          total: totalSteps
         }}
         heading="Generate Phrase"
         description="Generate a mnemonic phrase and write these words down. To keep your funds safe, do not copy them to your clipboard or save them anywhere online."

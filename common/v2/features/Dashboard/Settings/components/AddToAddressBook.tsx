@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Input, Textarea } from '@mycrypto/ui';
 
 import { DashboardPanel } from '../../components';
@@ -8,6 +8,12 @@ import './AddToAddressBook.scss';
 // Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 import { AddressMetadata } from 'v2/services/AddressMetadata';
+
+const initialValues = {
+  label: '',
+  address: '',
+  notes: ''
+};
 
 interface Props {
   toggleFlipped(): void;

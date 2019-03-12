@@ -139,7 +139,7 @@ class RootClass extends Component<Props, State> {
   }
 
   private addBodyClasses() {
-    const classes = [];
+    const classes: string[] = [];
 
     if (process.env.BUILD_ELECTRON) {
       classes.push('is-electron');
