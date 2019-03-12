@@ -28,7 +28,7 @@ interface State {
 }
 
 export class Header extends Component<Props & RouteComponentProps<{}>, State> {
-  public state = {
+  public state: State = {
     menuOpen: false,
     visibleMenuDropdowns: {
       'Manage Assets': false,
