@@ -19,8 +19,7 @@ export interface LocalCache {
   transactionHistories: Record<
     string,
     {
-      internal: string[];
-      external: string[];
+      transaction: string;
     }
   >;
   allTransactionHistories: string[];
@@ -120,7 +119,8 @@ export interface LocalCache {
   allFiatCurrencies: string[];
 }
 
-export const CACHE_INIT_DEV: LocalCache = {
+export const CACHE_INIT_DEV = {
+  //: LocalCache
   currents: {
     account: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
     fiatCurrency: 'USD',
@@ -143,8 +143,7 @@ export const CACHE_INIT_DEV: LocalCache = {
 
   transactionHistories: {
     '76b50f76-afb2-4185-ab7d-4d62c0654882': {
-      internal: ['76b50f76-afb2-4185-ab7d-4d62c0654883'],
-      external: []
+      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654882'
     }
   },
   allTransactionHistories: ['76b50f76-afb2-4185-ab7d-4d62c0654882'],
@@ -268,7 +267,8 @@ export const CACHE_INIT_DEV: LocalCache = {
   allFiatCurrencies: ['USD']
 };
 
-export const CACHE_INIT: LocalCache = {
+export const CACHE_INIT = {
+  // : LocalCache
   currents: {},
 
   accounts: {},

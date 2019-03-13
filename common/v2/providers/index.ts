@@ -5,3 +5,7 @@ export { FiatCurrencyContext, FiatCurrencyProvider } from './FiatCurrencyProvide
 export { TransactionContext, TransactionProvider } from './TransactionProvider';
 export { AssetOptionsContext, AssetOptionsProvider } from './AssetOptionsProvider';
 export { AddressMetadataContext, AddressMetadataProvider } from './AddressMetadataProvider';
+export {
+  TransactionHistoryContext,
+  TransactionHistoryProvider
+} from './TransactionHistoryProvider';

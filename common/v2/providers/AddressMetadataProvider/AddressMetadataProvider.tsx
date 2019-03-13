@@ -40,8 +40,8 @@ export class AddressMetadataProvider extends Component {
   }
 
   private getAddressMetadatas = () => {
-    const AddressMetadata: ExtendedAddressMetadata[] =
+    const newAddressMetadata: ExtendedAddressMetadata[] =
       AddressMetadataService.readAddressMetadatas() || [];
-    this.setState({ AddressMetadata });
+    this.setState({ newAddressMetadata });
   };
 }
