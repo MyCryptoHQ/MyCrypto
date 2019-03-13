@@ -38,7 +38,7 @@ export default class DateTimePickerTime extends Component<Props, State> {
 
   public calculateState(props: Props): State {
     const date = props.selectedDate || props.viewDate;
-    const counters = [];
+    const counters: string[] = [];
 
     const { timeFormat } = this.props;
 

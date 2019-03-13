@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { generateMnemonic } from 'bip39';
 
-export const MnemonicContext = React.createContext();
+export const MnemonicContext = React.createContext({} as { words: never[]; generateWords(): void });
 
 export default class MnemonicProvider extends Component {
   public state = {
