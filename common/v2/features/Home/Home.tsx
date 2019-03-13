@@ -1,7 +1,12 @@
 import React from 'react';
 
 import { Layout } from 'v2/features';
-import { GetStartedPanel, DownloadAppPanel, CompatibleWalletsPanel } from './components';
+import {
+  GetStartedPanel,
+  DownloadAppPanel,
+  CompatibleWalletsPanel,
+  PeaceOfMindPanel
+} from './components';
 import './Home.scss';
 
 export default function Home() {
@@ -14,8 +19,11 @@ export default function Home() {
         <section className="Home-compatibleWallets">
           <CompatibleWalletsPanel />
         </section>
-        <section className="Home-DownloadApp">
+        <section className="Home-downloadApp">
           <DownloadAppPanel />
+        </section>
+        <section className="Home-peaceOfMind">
+          <PeaceOfMindPanel />
         </section>
       </section>
     </Layout>
