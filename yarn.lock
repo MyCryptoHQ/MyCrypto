@@ -318,7 +318,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-slick@^0.23.3":
+"@types/react-slick@0.23.3":
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.3.tgz#c9d14323a75f54f46a652fb745fe553aad091ce0"
   dependencies:
@@ -10001,7 +10001,7 @@ react-select@1.2.1:
     prop-types "^15.5.8"
     react-input-autosize "^2.1.2"
 
-react-slick@^0.23.2:
+react-slick@0.23.2:
   version "0.23.2"
   resolved "https://registry.yarnpkg.com/react-slick/-/react-slick-0.23.2.tgz#8d8bdbc77a6678e8ad36f50c32578c7c0f1c54f6"
   dependencies:
