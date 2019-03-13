@@ -27,14 +27,12 @@ const WalletCard = ({ src, alt, text }: WalletCardProps) => {
 export default function CompatibleWalletsPanel() {
   const settings = {
     dots: true,
-    infinite: false,
-    speed: 500,
+    infinite: true,
+    speed: 50,
     slidesToShow: 1,
-    swipeToSlide: true,
     arrows: false,
     variableWidth: true,
     centerMode: true,
-    initialSlide: 2,
     swipe: false,
     responsive: [
       {
@@ -47,7 +45,7 @@ export default function CompatibleWalletsPanel() {
   };
 
   return (
-    <Panel basic className="CompatibleWalletsPanel">
+    <Panel basic={true} className="CompatibleWalletsPanel">
       <div className="CompatibleWalletsPanel-heading">
         <Typography className="CompatibleWalletsPanel-heading-name">Fully Compatible</Typography>
         <Typography className="CompatibleWalletsPanel-heading-description">
