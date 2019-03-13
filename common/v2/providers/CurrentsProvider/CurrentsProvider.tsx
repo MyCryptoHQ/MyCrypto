@@ -4,7 +4,8 @@ import { Currents } from 'v2/services/Currents';
 
 interface ProviderState {
   currents: Currents;
-  updateCurrents(CurrentsData: Currents): void;
+  updateCurrents(currentsData: Currents): void;
+  readCurrents(): void;
 }
 
 export const CurrentsContext = createContext({} as ProviderState);
@@ -14,9 +15,12 @@ const Currents = new CurrentsServiceBase();
 export class CurrentsProvider extends Component {
   public readonly state: ProviderState = {
     currents: Currents.readCurrents() || [],
-    updateCurrents: (CurrentsData: Currents) => {
-      Currents.updateCurrents(CurrentsData);
+    updateCurrents: (currentsData: Currents) => {
+      Currents.updateCurrents(currentsData);
       this.getCurrents();
+    },
+    readCurrents: () => {
+      Currents.readCurrents();
     }
   };
 

@@ -4,7 +4,8 @@ import { GlobalSettings } from 'v2/services/GlobalSettings';
 
 interface ProviderState {
   globalSettings: GlobalSettings;
-  updateGlobalSettings(GlobalSettingsData: GlobalSettings): void;
+  updateGlobalSettings(globalSettingsData: GlobalSettings): void;
+  readGlobalSettings(): void;
 }
 
 export const GlobalSettingsContext = createContext({} as ProviderState);
@@ -17,6 +18,10 @@ export class GlobalSettingsProvider extends Component {
     updateGlobalSettings: (globalSettingsData: GlobalSettings) => {
       GlobalSettings.updateGlobalSettings(globalSettingsData);
       this.getGlobalSettings();
+    },
+    readGlobalSettings: () => {
+      GlobalSettings.readGlobalSettings();
+      this.getGlobalSettings();
     }
   };
 
@@ -26,7 +31,6 @@ export class GlobalSettingsProvider extends Component {
       <GlobalSettingsContext.Provider value={this.state}>{children}</GlobalSettingsContext.Provider>
     );
   }
-
   private getGlobalSettings = () => {
     const globalSettings: GlobalSettings = GlobalSettings.readGlobalSettings() || [];
     this.setState({ globalSettings });

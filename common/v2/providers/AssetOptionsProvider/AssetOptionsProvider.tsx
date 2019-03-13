@@ -3,10 +3,10 @@ import AssetOptionsServiceBase from 'v2/services/AssetOption/AssetOption';
 import { AssetOption, ExtendedAssetOption } from 'v2/services/AssetOption';
 
 interface ProviderState {
-  AssetOptions: ExtendedAssetOption[];
-  createAssetOptions(AssetOptionsData: AssetOption): void;
+  assetOptions: ExtendedAssetOption[];
+  createAssetOptions(assetOptionsData: AssetOption): void;
   deleteAssetOptions(uuid: string): void;
-  updateAssetOptions(uuid: string, AssetOptionsData: AssetOption): void;
+  updateAssetOptions(uuid: string, assetOptionsData: AssetOption): void;
 }
 
 export const AssetOptionsContext = createContext({} as ProviderState);
@@ -15,17 +15,17 @@ const AssetOption = new AssetOptionsServiceBase();
 
 export class AssetOptionsProvider extends Component {
   public readonly state: ProviderState = {
-    AssetOptions: AssetOption.readAssetOptions() || [],
-    createAssetOptions: (AssetOptionsData: AssetOption) => {
-      AssetOption.createAssetOption(AssetOptionsData);
+    assetOptions: AssetOption.readAssetOptions() || [],
+    createAssetOptions: (assetOptionsData: AssetOption) => {
+      AssetOption.createAssetOption(assetOptionsData);
       this.getAssetOptions();
     },
     deleteAssetOptions: (uuid: string) => {
       AssetOption.deleteAssetOption(uuid);
       this.getAssetOptions();
     },
-    updateAssetOptions: (uuid: string, AssetOptionsData: AssetOption) => {
-      AssetOption.updateAssetOption(uuid, AssetOptionsData);
+    updateAssetOptions: (uuid: string, assetOptionsData: AssetOption) => {
+      AssetOption.updateAssetOption(uuid, assetOptionsData);
       this.getAssetOptions();
     }
   };
@@ -38,7 +38,7 @@ export class AssetOptionsProvider extends Component {
   }
 
   private getAssetOptions = () => {
-    const AssetOptions: ExtendedAssetOption[] = AssetOption.readAssetOptions() || [];
-    this.setState({ AssetOptions });
+    const assetOptions: ExtendedAssetOption[] = AssetOption.readAssetOptions() || [];
+    this.setState({ assetOptions });
   };
 }

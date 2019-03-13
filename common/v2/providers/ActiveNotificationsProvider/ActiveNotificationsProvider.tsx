@@ -4,11 +4,11 @@ import { ExtendedActiveNotifications } from 'v2/services/ActiveNotifications';
 
 export interface ProviderState {
   activeNotifications: ExtendedActiveNotifications[];
-  createActiveNotifications(ActiveNotificationsData: ExtendedActiveNotifications): void;
+  createActiveNotifications(activeNotificationsData: ExtendedActiveNotifications): void;
   deleteActiveNotifications(uuid: string): void;
   updateActiveNotifications(
     uuid: string,
-    ActiveNotificationsData: ExtendedActiveNotifications
+    activeNotificationsData: ExtendedActiveNotifications
   ): void;
 }
 

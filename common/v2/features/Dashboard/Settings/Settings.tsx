@@ -32,7 +32,7 @@ export default function Settings() {
         }
       </FlippablePanel>
       <AddressMetadataContext.Consumer>
-        {({ createAddressMetadatas, AddressMetadata, deleteAddressMetadatas }) => (
+        {({ createAddressMetadatas, addressMetadata, deleteAddressMetadatas }) => (
           <FlippablePanel>
             {({ flipped, toggleFlipped }) =>
               flipped ? (
@@ -42,7 +42,7 @@ export default function Settings() {
                 />
               ) : (
                 <AddressBook
-                  addressMetadata={AddressMetadata}
+                  addressMetadata={addressMetadata}
                   toggleFlipped={toggleFlipped}
                   deleteAddressMetadatas={deleteAddressMetadatas}
                 />

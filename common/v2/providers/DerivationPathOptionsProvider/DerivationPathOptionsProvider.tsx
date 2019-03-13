@@ -8,7 +8,7 @@ export interface ProviderState {
   deleteDerivationPathOptions(uuid: string): void;
   updateDerivationPathOptions(
     uuid: string,
-    DerivationPathOptionsData: ExtendedDerivationPathOptions
+    derivationPathOptionsData: ExtendedDerivationPathOptions
   ): void;
 }
 

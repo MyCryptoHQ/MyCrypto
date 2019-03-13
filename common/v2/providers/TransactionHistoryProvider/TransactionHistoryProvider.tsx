@@ -3,10 +3,10 @@ import TransactionHistoryServiceBase from 'v2/services/TransactionHistory/Transa
 import { TransactionHistory, ExtendedTransactionHistory } from 'v2/services/TransactionHistory';
 
 interface ProviderState {
-  TransactionHistories: ExtendedTransactionHistory[];
-  createTransactionHistory(TransactionHistoryData: TransactionHistory): void;
+  transactionHistories: ExtendedTransactionHistory[];
+  createTransactionHistory(transactionHistoryData: TransactionHistory): void;
   deleteTransactionHistory(uuid: string): void;
-  updateTransactionHistory(uuid: string, TransactionHistoryData: TransactionHistory): void;
+  updateTransactionHistory(uuid: string, transactionHistoryData: TransactionHistory): void;
 }
 
 export const TransactionHistoryContext = createContext({} as ProviderState);
@@ -15,17 +15,17 @@ const TransactionHistory = new TransactionHistoryServiceBase();
 
 export class TransactionHistoryProvider extends Component {
   public readonly state: ProviderState = {
-    TransactionHistories: TransactionHistory.readTransactionHistories() || [],
-    createTransactionHistory: (TransactionHistoryData: TransactionHistory) => {
-      TransactionHistory.createTransactionHistory(TransactionHistoryData);
+    transactionHistories: TransactionHistory.readTransactionHistories() || [],
+    createTransactionHistory: (transactionHistoryData: TransactionHistory) => {
+      TransactionHistory.createTransactionHistory(transactionHistoryData);
       this.getTransactionHistories();
     },
     deleteTransactionHistory: (uuid: string) => {
       TransactionHistory.deleteTransactionHistory(uuid);
       this.getTransactionHistories();
     },
-    updateTransactionHistory: (uuid: string, TransactionHistoryData: TransactionHistory) => {
-      TransactionHistory.updateTransactionHistory(uuid, TransactionHistoryData);
+    updateTransactionHistory: (uuid: string, transactionHistoryData: TransactionHistory) => {
+      TransactionHistory.updateTransactionHistory(uuid, transactionHistoryData);
       this.getTransactionHistories();
     }
   };
@@ -40,8 +40,8 @@ export class TransactionHistoryProvider extends Component {
   }
 
   private getTransactionHistories = () => {
-    const Transactions: ExtendedTransactionHistory[] =
+    const transactionHistories: ExtendedTransactionHistory[] =
       TransactionHistory.readTransactionHistories() || [];
-    this.setState({ Transactions });
+    this.setState({ transactionHistories });
   };
 }

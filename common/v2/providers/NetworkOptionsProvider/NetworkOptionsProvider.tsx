@@ -4,9 +4,9 @@ import { ExtendedNetworkOptions } from 'v2/services/NetworkOptions';
 
 export interface ProviderState {
   networkOptions: ExtendedNetworkOptions[];
-  createNetworkOptions(NetworkOptionsData: ExtendedNetworkOptions): void;
+  createNetworkOptions(networkOptionsData: ExtendedNetworkOptions): void;
   deleteNetworkOptions(uuid: string): void;
-  updateNetworkOptions(uuid: string, NetworkOptionsData: ExtendedNetworkOptions): void;
+  updateNetworkOptions(uuid: string, networkOptionsData: ExtendedNetworkOptions): void;
 }
 
 export const NetworkOptionsContext = createContext({} as ProviderState);

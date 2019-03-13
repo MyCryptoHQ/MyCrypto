@@ -4,9 +4,9 @@ import { ExtendedContractOptions } from 'v2/services/ContractOptions';
 
 export interface ProviderState {
   contractOptions: ExtendedContractOptions[];
-  createContractOptions(ContractOptionsData: ExtendedContractOptions): void;
+  createContractOptions(contractOptionsData: ExtendedContractOptions): void;
   deleteContractOptions(uuid: string): void;
-  updateContractOptions(uuid: string, ContractOptionsData: ExtendedContractOptions): void;
+  updateContractOptions(uuid: string, contractOptionsData: ExtendedContractOptions): void;
 }
 
 export const ContractOptionsContext = createContext({} as ProviderState);

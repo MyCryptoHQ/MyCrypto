@@ -3,10 +3,10 @@ import AddressMetadatasServiceBase from 'v2/services/AddressMetadata/AddressMeta
 import { AddressMetadata, ExtendedAddressMetadata } from 'v2/services/AddressMetadata';
 
 interface ProviderState {
-  AddressMetadata: ExtendedAddressMetadata[];
-  createAddressMetadatas(AddressMetadatasData: AddressMetadata): void;
+  addressMetadata: ExtendedAddressMetadata[];
+  createAddressMetadatas(addressMetadatasData: AddressMetadata): void;
   deleteAddressMetadatas(uuid: string): void;
-  updateAddressMetadatas(uuid: string, AddressMetadatasData: AddressMetadata): void;
+  updateAddressMetadatas(uuid: string, addressMetadatasData: AddressMetadata): void;
 }
 
 export const AddressMetadataContext = createContext({} as ProviderState);
@@ -15,17 +15,17 @@ const AddressMetadataService = new AddressMetadatasServiceBase();
 
 export class AddressMetadataProvider extends Component {
   public readonly state: ProviderState = {
-    AddressMetadata: AddressMetadataService.readAddressMetadatas() || [],
-    createAddressMetadatas: (AddressMetadatasData: AddressMetadata) => {
-      AddressMetadataService.createAddressMetadata(AddressMetadatasData);
+    addressMetadata: AddressMetadataService.readAddressMetadatas() || [],
+    createAddressMetadatas: (addressMetadatasData: AddressMetadata) => {
+      AddressMetadataService.createAddressMetadata(addressMetadatasData);
       this.getAddressMetadatas();
     },
     deleteAddressMetadatas: (uuid: string) => {
       AddressMetadataService.deleteAddressMetadata(uuid);
       this.getAddressMetadatas();
     },
-    updateAddressMetadatas: (uuid: string, AddressMetadatasData: AddressMetadata) => {
-      AddressMetadataService.updateAddressMetadata(uuid, AddressMetadatasData);
+    updateAddressMetadatas: (uuid: string, addressMetadatasData: AddressMetadata) => {
+      AddressMetadataService.updateAddressMetadata(uuid, addressMetadatasData);
       this.getAddressMetadatas();
     }
   };
@@ -40,8 +40,8 @@ export class AddressMetadataProvider extends Component {
   }
 
   private getAddressMetadatas = () => {
-    const newAddressMetadata: ExtendedAddressMetadata[] =
+    const addressMetadata: ExtendedAddressMetadata[] =
       AddressMetadataService.readAddressMetadatas() || [];
-    this.setState({ newAddressMetadata });
+    this.setState({ addressMetadata });
   };
 }

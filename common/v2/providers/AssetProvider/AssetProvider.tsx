@@ -4,9 +4,9 @@ import { ExtendedAsset } from 'v2/services/Asset';
 
 export interface ProviderState {
   assets: ExtendedAsset[];
-  createAsset(AssetData: ExtendedAsset): void;
+  createAsset(assetData: ExtendedAsset): void;
   deleteAsset(uuid: string): void;
-  updateAsset(uuid: string, AssetData: ExtendedAsset): void;
+  updateAsset(uuid: string, assetData: ExtendedAsset): void;
 }
 
 export const AssetContext = createContext({} as ProviderState);
@@ -16,16 +16,16 @@ const Asset = new AssetServiceBase();
 export class AssetProvider extends Component {
   public readonly state: ProviderState = {
     assets: Asset.readAssets() || [],
-    createAsset: (AssetData: ExtendedAsset) => {
-      Asset.createAsset(AssetData);
+    createAsset: (assetData: ExtendedAsset) => {
+      Asset.createAsset(assetData);
       this.getAssets();
     },
     deleteAsset: (uuid: string) => {
       Asset.deleteAsset(uuid);
       this.getAssets();
     },
-    updateAsset: (uuid: string, AssetData: ExtendedAsset) => {
-      Asset.updateAsset(uuid, AssetData);
+    updateAsset: (uuid: string, assetData: ExtendedAsset) => {
+      Asset.updateAsset(uuid, assetData);
       this.getAssets();
     }
   };

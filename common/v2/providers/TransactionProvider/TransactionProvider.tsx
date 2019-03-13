@@ -3,10 +3,10 @@ import TransactionServiceBase from 'v2/services/Transaction/Transaction';
 import { Transaction, ExtendedTransaction } from 'v2/services/Transaction';
 
 interface ProviderState {
-  Transactions: ExtendedTransaction[];
-  createTransaction(TransactionData: Transaction): void;
+  transactions: ExtendedTransaction[];
+  createTransaction(transactionData: Transaction): void;
   deleteTransaction(uuid: string): void;
-  updateTransaction(uuid: string, TransactionData: Transaction): void;
+  updateTransaction(uuid: string, transactionData: Transaction): void;
 }
 
 export const TransactionContext = createContext({} as ProviderState);
@@ -15,17 +15,17 @@ const Transaction = new TransactionServiceBase();
 
 export class TransactionProvider extends Component {
   public readonly state: ProviderState = {
-    Transactions: Transaction.readTransactions() || [],
-    createTransaction: (TransactionData: Transaction) => {
-      Transaction.createTransaction(TransactionData);
+    transactions: Transaction.readTransactions() || [],
+    createTransaction: (transactionData: Transaction) => {
+      Transaction.createTransaction(transactionData);
       this.getTransactions();
     },
     deleteTransaction: (uuid: string) => {
       Transaction.deleteTransaction(uuid);
       this.getTransactions();
     },
-    updateTransaction: (uuid: string, TransactionData: Transaction) => {
-      Transaction.updateTransaction(uuid, TransactionData);
+    updateTransaction: (uuid: string, transactionData: Transaction) => {
+      Transaction.updateTransaction(uuid, transactionData);
       this.getTransactions();
     }
   };
@@ -36,7 +36,7 @@ export class TransactionProvider extends Component {
   }
 
   private getTransactions = () => {
-    const Transactions: ExtendedTransaction[] = Transaction.readTransactions() || [];
-    this.setState({ Transactions });
+    const transactions: ExtendedTransaction[] = Transaction.readTransactions() || [];
+    this.setState({ transactions });
   };
 }

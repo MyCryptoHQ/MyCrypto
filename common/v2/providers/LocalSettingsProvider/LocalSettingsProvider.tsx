@@ -3,8 +3,8 @@ import LocalSettingsServiceBase from 'v2/services/LocalSettings/LocalSettings';
 import { LocalSetting, ExtendedLocalSetting } from 'v2/services/LocalSettings';
 
 interface ProviderState {
-  LocalSettings: ExtendedLocalSetting[];
-  createLocalSetting(LocalSettingData: LocalSetting): void;
+  localSettings: ExtendedLocalSetting[];
+  createLocalSetting(localSettingData: LocalSetting): void;
   deleteLocalSetting(uuid: string): void;
   updateLocalSetting(uuid: string, LocalSettingData: LocalSetting): void;
 }
@@ -15,7 +15,7 @@ const LocalSetting = new LocalSettingsServiceBase();
 
 export class LocalSettingProvider extends Component {
   public readonly state: ProviderState = {
-    LocalSettings: LocalSetting.readLocalSettings() || [],
+    localSettings: LocalSetting.readLocalSettings() || [],
     createLocalSetting: (localSettingData: LocalSetting) => {
       LocalSetting.createLocalSetting(localSettingData);
       this.getLocalSettings();
@@ -24,8 +24,8 @@ export class LocalSettingProvider extends Component {
       LocalSetting.deleteLocalSetting(uuid);
       this.getLocalSettings();
     },
-    updateLocalSetting: (uuid: string, LocalSettingData: LocalSetting) => {
-      LocalSetting.updateLocalSetting(uuid, LocalSettingData);
+    updateLocalSetting: (uuid: string, localSettingData: LocalSetting) => {
+      LocalSetting.updateLocalSetting(uuid, localSettingData);
       this.getLocalSettings();
     }
   };
@@ -38,7 +38,7 @@ export class LocalSettingProvider extends Component {
   }
 
   private getLocalSettings = () => {
-    const LocalSettings: ExtendedLocalSetting[] = LocalSetting.readLocalSettings() || [];
-    this.setState({ LocalSettings });
+    const localSettings: ExtendedLocalSetting[] = LocalSetting.readLocalSettings() || [];
+    this.setState({ localSettings });
   };
 }
