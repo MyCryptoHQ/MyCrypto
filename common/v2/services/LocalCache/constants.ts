@@ -92,8 +92,15 @@ export interface LocalCache {
   >;
   allContractOptions: string[];
 
-  derivationPathOptions: {};
-  allDerivationPathOptions: [];
+  derivationPathOptions: Record<
+    string,
+    {
+      name: string;
+      derivationPath: string;
+      active: boolean;
+    }
+  >;
+  allDerivationPathOptions: string[];
 
   addressMetadata: Record<
     string,
