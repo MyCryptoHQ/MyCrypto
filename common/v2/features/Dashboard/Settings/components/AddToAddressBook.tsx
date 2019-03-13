@@ -11,7 +11,7 @@ import { AddressMetadata } from 'v2/services/AddressMetadata';
 
 interface Props {
   toggleFlipped(): void;
-  createAddressMetadatas(values: any): void;
+  createAddressMetadatas(values: AddressMetadata): void;
 }
 
 export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas }: Props) {

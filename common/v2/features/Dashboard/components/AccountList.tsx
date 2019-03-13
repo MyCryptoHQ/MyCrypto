@@ -3,8 +3,10 @@ import { Address, CollapsibleTable, Icon, Network, Typography } from '@mycrypto/
 
 import DashboardPanel from './DashboardPanel';
 import './AccountList.scss';
+import { ExtendedAccount } from 'v2/services';
 
 interface Props {
+  accounts: ExtendedAccount[];
   className?: string;
 }
 
@@ -56,16 +58,14 @@ const accountTable = {
 };
 */
 
-export default function AccountList(accountList: any, { className = '' }: Props) {
-  const { accounts } = accountList;
-  console.log('props: ' + JSON.stringify(accountList, null, 4));
+export default function AccountList({ accounts, className = '' }: Props) {
   console.log('accounts: ' + JSON.stringify(accounts, null, 4));
   const truncate = (children: string) => {
     return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
   };
   const accountTable = {
     head: ['Favorite', 'Address', 'Network', 'Value'],
-    body: accounts.map((account: any) => {
+    body: accounts.map(account => {
       console.log('value2: ' + account.value);
       return [
         <Icon key={0} icon="star" />,

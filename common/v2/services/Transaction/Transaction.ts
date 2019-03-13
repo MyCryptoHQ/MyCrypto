@@ -1,5 +1,5 @@
 import * as utils from 'v2/libs';
-import { initializeCache } from 'v2/services/LocalCache';
+import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { Transaction, ExtendedTransaction } from './types';
 
 export default class TransactionServiceBase {
@@ -13,15 +13,9 @@ export default class TransactionServiceBase {
     // Handle Transaction
     const uuid = utils.generateUUID();
 
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newTransactionCache = parsedLocalCache;
-    newTransactionCache.Transactions[uuid] = Transactions;
+    newTransactionCache.transactions[uuid] = Transactions;
 
     newTransactionCache.allTransactions = [...newTransactionCache.allTransactions, uuid];
     localStorage.setItem('MyCryptoCache', JSON.stringify(newTransactionCache));
@@ -29,28 +23,16 @@ export default class TransactionServiceBase {
 
   public readTransaction = (uuid: string) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    return parsedLocalCache.Transactions[uuid];
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    return parsedLocalCache.transactions[uuid];
   };
 
   public updateTransaction = (uuid: string, Transactions: Transaction) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newTransactionCache = Object.assign(
       {},
-      parsedLocalCache.Transactions[uuid],
+      parsedLocalCache.transactions[uuid],
       Transactions
     );
 
@@ -60,14 +42,8 @@ export default class TransactionServiceBase {
   public deleteTransaction = (uuid: string) => {
     this.init();
     // Handle Transaction
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    delete parsedLocalCache.Transactions[uuid];
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    delete parsedLocalCache.transactions[uuid];
     const newallTransactions = parsedLocalCache.allTransactions.filter(
       (obj: string) => obj !== uuid
     );
@@ -78,17 +54,11 @@ export default class TransactionServiceBase {
 
   public readTransactions = (): ExtendedTransaction[] => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '[]';
-    let parsedLocalCache: any;
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
     let out: ExtendedTransaction[] = [];
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
     if (parsedLocalCache.allTransactions && parsedLocalCache.allTransactions.length >= 1) {
       parsedLocalCache.allTransactions.map((uuid: string) => {
-        out.push({ ...parsedLocalCache.Transactions[uuid], uuid });
+        out.push({ ...parsedLocalCache.transactions[uuid], uuid });
       });
     } else {
       out = [];

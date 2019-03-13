@@ -1,9 +1,9 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Field, Form, FieldProps } from 'formik';
 import { Panel, Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Account } from 'v2/services/Account';
+import { Account, ExtendedAccount } from 'v2/services/Account';
 import { AccountContext } from 'v2/providers/AccountProvider';
 
 import ToolsAccountList from './ToolsAccountList';
@@ -30,11 +30,17 @@ const DevTools = () => {
             <div className="Settings-heading">Enter a new Account</div>
             <Formik
               initialValues={{
+                label: 'Foo',
                 address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-                label: 'test1',
-                network: 'ETH'
+                network: 'Ethereum',
+                localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
+                assets: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
+                accountType: 'MetaMask',
+                value: 1e18,
+                transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
+                uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'
               }}
-              onSubmit={(values: Account, { setSubmitting }) => {
+              onSubmit={(values: ExtendedAccount, { setSubmitting }) => {
                 createAccount(values);
                 setSubmitting(false);
               }}
@@ -45,10 +51,9 @@ const DevTools = () => {
                     Address:{' '}
                     <Field
                       name="address"
-                      render={({ field }: { field: any }) => (
+                      render={({ field }: FieldProps<Account>) => (
                         <DevToolsInput
                           {...field}
-                          component={DevToolsInput}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.address}
@@ -63,10 +68,9 @@ const DevTools = () => {
                     Label:{' '}
                     <Field
                       name="label"
-                      render={({ field }: { field: any }) => (
+                      render={({ field }: FieldProps<Account>) => (
                         <DevToolsInput
                           {...field}
-                          component={DevToolsInput}
                           onChange={handleChange} //({ target: { value } }: { target: { value: any }}) => form.setFieldValue(field.name, value)}
                           onBlur={handleBlur}
                           value={values.label}
@@ -81,10 +85,9 @@ const DevTools = () => {
                     Network:{' '}
                     <Field
                       name="network"
-                      render={({ field }: { field: any }) => (
+                      render={({ field }: FieldProps<Account>) => (
                         <DevToolsInput
                           {...field}
-                          component={DevToolsInput}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.network}

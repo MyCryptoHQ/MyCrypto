@@ -1,6 +1,7 @@
 import * as utils from 'v2/libs';
 import { initializeCache } from 'v2/services/LocalCache';
 import { AssetOption, ExtendedAssetOption } from './types';
+import { LocalCache } from '../LocalCache';
 
 export default class AssetOptionserviceBase {
   // TODO: Add duplication/validation handling.
@@ -13,15 +14,9 @@ export default class AssetOptionserviceBase {
     // Handle AssetOptions
     const uuid = utils.generateUUID();
 
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newAssetOptionsCache = parsedLocalCache;
-    newAssetOptionsCache.AssetOptions[uuid] = AssetOptions;
+    newAssetOptionsCache.assetOptions[uuid] = AssetOptions;
 
     newAssetOptionsCache.allAssetOptions = [...newAssetOptionsCache.allAssetOptions, uuid];
     localStorage.setItem('MyCryptoCache', JSON.stringify(newAssetOptionsCache));
@@ -29,28 +24,16 @@ export default class AssetOptionserviceBase {
 
   public readAssetOption = (uuid: string) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    return parsedLocalCache.AssetOptions[uuid];
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    return parsedLocalCache.assetOptions[uuid];
   };
 
   public updateAssetOption = (uuid: string, AssetOptions: AssetOption) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newAssetOptionsCache = Object.assign(
       {},
-      parsedLocalCache.AssetOptions[uuid],
+      parsedLocalCache.assetOptions[uuid],
       AssetOptions
     );
 
@@ -60,14 +43,8 @@ export default class AssetOptionserviceBase {
   public deleteAssetOption = (uuid: string) => {
     this.init();
     // Handle AssetOptions
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    delete parsedLocalCache.AssetOptions[uuid];
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    delete parsedLocalCache.assetOptions[uuid];
     const newallAssetOptions = parsedLocalCache.allAssetOptions.filter(
       (obj: string) => obj !== uuid
     );
@@ -78,17 +55,11 @@ export default class AssetOptionserviceBase {
 
   public readAssetOptions = (): ExtendedAssetOption[] => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '[]';
-    let parsedLocalCache: any;
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
     let out: ExtendedAssetOption[] = [];
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
     if (parsedLocalCache.allAssetOptions && parsedLocalCache.allAssetOptions.length >= 1) {
       parsedLocalCache.allAssetOptions.map((uuid: string) => {
-        out.push({ ...parsedLocalCache.AssetOptions[uuid], uuid });
+        out.push({ ...parsedLocalCache.assetOptions[uuid], uuid });
       });
     } else {
       out = [];
