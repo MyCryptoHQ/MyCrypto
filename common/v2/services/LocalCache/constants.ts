@@ -1,6 +1,126 @@
+import { Account } from '../Account';
+import { AssetOption } from '../AssetOption';
+import { LocalSetting } from '../LocalSettings';
+import { Transaction } from '../Transaction';
+import { FiatCurrency } from '../FiatCurrency';
+
 export const CACHE_KEY = 'MyCryptoCache';
 
-export const CACHE_INIT_DEV = {
+export interface LocalCache {
+  currents: Partial<{
+    account: string;
+    fiatCurrency: string;
+    activeWallet: string;
+  }>;
+
+  accounts: Record<string, Account>;
+  allAccounts: string[];
+
+  transactionHistories: Record<
+    string,
+    {
+      internal: string[];
+      external: string[];
+    }
+  >;
+  allTransactionHistories: string[];
+
+  transactions: Record<string, Transaction>;
+  allTransactions: string[];
+
+  accountTypes: Record<
+    string,
+    {
+      name: string;
+      key: string;
+      secure: boolean;
+      derivationPath: string;
+    }
+  >;
+  allAccountTypes: string[];
+
+  assets: Record<
+    string,
+    {
+      option: string;
+      amount: string;
+    }
+  >;
+  allAssets: string[];
+
+  localSettings: Record<string, LocalSetting>;
+  allLocalSettings: string[];
+
+  globalSettings: Partial<{
+    fiatCurrency: string;
+    darkMode: true;
+  }>;
+
+  networkOptions: Record<
+    string,
+    {
+      name: string;
+      blockExplorer: string;
+      tokenExplorer: string;
+      chainId: number;
+      contracts: string[];
+      derivationPaths: string[];
+      assets: string[];
+      nodes: string[];
+    }
+  >;
+  allNetworkOptions: string[];
+
+  nodeOptions: Record<
+    string,
+    {
+      name: string;
+    }
+  >;
+  allNodeOptions: string[];
+
+  assetOptions: Record<string, AssetOption>;
+  allAssetOptions: string[];
+
+  contractOptions: Record<
+    string,
+    {
+      name: string;
+      network: string;
+      address: string;
+      abi: string;
+    }
+  >;
+  allContractOptions: string[];
+
+  derivationPathOptions: {};
+  allDerivationPathOptions: [];
+
+  addressMetadata: Record<
+    string,
+    {
+      address: string;
+      label: string;
+      notes: string;
+    }
+  >;
+  allAddressMetadata: string[];
+
+  recentAccounts: string[];
+
+  activeNotifications: Record<
+    string,
+    {
+      template: string;
+    }
+  >;
+  allActiveNotifications: string[];
+
+  fiatCurrencies: Record<string, FiatCurrency>;
+  allFiatCurrencies: string[];
+}
+
+export const CACHE_INIT_DEV: LocalCache = {
   currents: {
     account: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
     fiatCurrency: 'USD',
@@ -148,7 +268,7 @@ export const CACHE_INIT_DEV = {
   allFiatCurrencies: ['USD']
 };
 
-export const CACHE_INIT = {
+export const CACHE_INIT: LocalCache = {
   currents: {},
 
   accounts: {},

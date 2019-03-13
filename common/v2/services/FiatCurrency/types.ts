@@ -1,12 +1,8 @@
 export interface FiatCurrency {
-  label: string;
-  address: string;
-  network: string;
+  code: string;
+  name: string;
 }
 
-export interface ExtendedFiatCurrency {
-  label: string;
-  address: string;
-  network: string;
+export interface ExtendedFiatCurrency extends FiatCurrency {
   uuid: string;
 }

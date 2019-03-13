@@ -19,14 +19,14 @@ export default function Settings() {
         Settings
       </Heading>
       <FlippablePanel>
-        {({ flipped, toggleFlipped }) =>
+        {({ flipped }) =>
           flipped ? (
             <AddressMetadataContext.Consumer>
               {({}) => <AddAccount />}
             </AddressMetadataContext.Consumer>
           ) : (
             <AccountContext.Consumer>
-              {({ accounts }) => <AccountList accounts={accounts} toggleFlipped={toggleFlipped} />}
+              {({ accounts }) => <AccountList accounts={accounts} />}
             </AccountContext.Consumer>
           )
         }

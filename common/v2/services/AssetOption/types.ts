@@ -1,12 +1,12 @@
 export interface AssetOption {
-  label: string;
-  address: string;
+  name: string;
   network: string;
+  ticker: string;
+  type: string;
+  decimal: number;
+  contractAddress: null;
 }
 
-export interface ExtendedAssetOption {
-  label: string;
-  address: string;
-  network: string;
+export interface ExtendedAssetOption extends AssetOption {
   uuid: string;
 }

@@ -1,12 +1,8 @@
 export interface LocalSetting {
-  label: string;
-  address: string;
-  network: string;
+  fiatCurrency: string;
+  favorite: boolean;
 }
 
-export interface ExtendedLocalSetting {
-  label: string;
-  address: string;
-  network: string;
+export interface ExtendedLocalSetting extends LocalSetting {
   uuid: string;
 }

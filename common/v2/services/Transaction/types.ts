@@ -1,12 +1,12 @@
 export interface Transaction {
+  stage: string;
   label: string;
-  address: string;
-  network: string;
+  date: string;
+  from: string;
+  to: string;
+  fiatValue: { USD: string };
 }
 
-export interface ExtendedTransaction {
-  label: string;
-  address: string;
-  network: string;
+export interface ExtendedTransaction extends Transaction {
   uuid: string;
 }

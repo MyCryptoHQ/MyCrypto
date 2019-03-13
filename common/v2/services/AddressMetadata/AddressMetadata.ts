@@ -1,5 +1,5 @@
 import * as utils from 'v2/libs';
-import { initializeCache } from 'v2/services/LocalCache';
+import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { AddressMetadata, ExtendedAddressMetadata } from './types';
 
 export default class AddressMetadataServiceBase {
@@ -13,13 +13,7 @@ export default class AddressMetadataServiceBase {
     // Handle AddressMetadata
     const uuid = utils.generateUUID();
 
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newAddressMetadataCache = parsedLocalCache;
     newAddressMetadataCache.addressMetadata[uuid] = AddressMetadatas;
 
@@ -32,25 +26,13 @@ export default class AddressMetadataServiceBase {
 
   public readAddressMetadata = (uuid: string) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     return parsedLocalCache.addressMetadata[uuid];
   };
 
   public updateAddressMetadata = (uuid: string, AddressMetadatas: AddressMetadata) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newAddressMetadataCache = Object.assign(
       {},
       parsedLocalCache.addressMetadata[uuid],
@@ -63,13 +45,7 @@ export default class AddressMetadataServiceBase {
   public deleteAddressMetadata = (uuid: string) => {
     this.init();
     // Handle AddressMetadata
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     delete parsedLocalCache.addressMetadata[uuid];
     const newallAddressMetadata = parsedLocalCache.allAddressMetadata.filter(
       (obj: string) => obj !== uuid
@@ -81,14 +57,8 @@ export default class AddressMetadataServiceBase {
 
   public readAddressMetadatas = (): ExtendedAddressMetadata[] => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '[]';
-    let parsedLocalCache: any;
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
     let out: ExtendedAddressMetadata[] = [];
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
     if (parsedLocalCache.allAddressMetadata && parsedLocalCache.allAddressMetadata.length >= 1) {
       parsedLocalCache.allAddressMetadata.map((uuid: string) => {
         out.push({ ...parsedLocalCache.addressMetadata[uuid], uuid });

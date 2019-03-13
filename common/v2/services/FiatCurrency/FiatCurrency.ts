@@ -1,5 +1,5 @@
 import * as utils from 'v2/libs';
-import { initializeCache } from 'v2/services/LocalCache';
+import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { FiatCurrency, ExtendedFiatCurrency } from './types';
 
 export default class FiatCurrencyServiceBase {
@@ -13,15 +13,9 @@ export default class FiatCurrencyServiceBase {
     // Handle FiatCurrency
     const uuid = utils.generateUUID();
 
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newFiatCurrencyCache = parsedLocalCache;
-    newFiatCurrencyCache.FiatCurrencys[uuid] = FiatCurrencies;
+    newFiatCurrencyCache.fiatCurrencies[uuid] = FiatCurrencies;
 
     newFiatCurrencyCache.allFiatCurrencies = [...newFiatCurrencyCache.allFiatCurrencies, uuid];
     localStorage.setItem('MyCryptoCache', JSON.stringify(newFiatCurrencyCache));
@@ -29,28 +23,16 @@ export default class FiatCurrencyServiceBase {
 
   public readFiatCurrency = (uuid: string) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    return parsedLocalCache.FiatCurrencys[uuid];
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    return parsedLocalCache.fiatCurrencies[uuid];
   };
 
   public updateFiatCurrency = (uuid: string, FiatCurrencies: FiatCurrency) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newFiatCurrencyCache = Object.assign(
       {},
-      parsedLocalCache.FiatCurrencys[uuid],
+      parsedLocalCache.fiatCurrencies[uuid],
       FiatCurrencies
     );
 
@@ -60,14 +42,8 @@ export default class FiatCurrencyServiceBase {
   public deleteFiatCurrency = (uuid: string) => {
     this.init();
     // Handle FiatCurrency
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    delete parsedLocalCache.FiatCurrencys[uuid];
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    delete parsedLocalCache.fiatCurrencies[uuid];
     const newallFiatCurrencies = parsedLocalCache.allFiatCurrencies.filter(
       (obj: string) => obj !== uuid
     );
@@ -78,17 +54,11 @@ export default class FiatCurrencyServiceBase {
 
   public readFiatCurrencys = (): ExtendedFiatCurrency[] => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '[]';
-    let parsedLocalCache: any;
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
     let out: ExtendedFiatCurrency[] = [];
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
     if (parsedLocalCache.allFiatCurrencies && parsedLocalCache.allFiatCurrencies.length >= 1) {
       parsedLocalCache.allFiatCurrencies.map((uuid: string) => {
-        out.push({ ...parsedLocalCache.FiatCurrencys[uuid], uuid });
+        out.push({ ...parsedLocalCache.fiatCurrencies[uuid], uuid });
       });
     } else {
       out = [];

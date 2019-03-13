@@ -1,5 +1,5 @@
 import * as utils from 'v2/libs';
-import { initializeCache } from 'v2/services/LocalCache';
+import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { LocalSetting, ExtendedLocalSetting } from './types';
 
 export default class LocalSettingsServiceBase {
@@ -14,44 +14,26 @@ export default class LocalSettingsServiceBase {
     // Handle LocalSetting
     const uuid = utils.generateUUID();
 
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newLocalSettingCache = parsedLocalCache;
-    newLocalSettingCache.LocalSetting[uuid] = LocalSettings;
+    newLocalSettingCache.localSettings[uuid] = LocalSettings;
 
-    newLocalSettingCache.LocalSettingList = [...newLocalSettingCache.LocalSettingList, uuid];
+    newLocalSettingCache.allLocalSettings = [...newLocalSettingCache.allLocalSettings, uuid];
     localStorage.setItem('MyCryptoCache', JSON.stringify(newLocalSettingCache));
   };
 
   public readLocalSetting = (uuid: string) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    return parsedLocalCache.LocalSetting[uuid];
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    return parsedLocalCache.localSettings[uuid];
   };
 
   public updateLocalSetting = (uuid: string, LocalSettings: LocalSetting) => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newLocalSettingCache = Object.assign(
       {},
-      parsedLocalCache.LocalSetting[uuid],
+      parsedLocalCache.localSettings[uuid],
       LocalSettings
     );
 
@@ -61,35 +43,23 @@ export default class LocalSettingsServiceBase {
   public deleteLocalSetting = (uuid: string) => {
     this.init();
     // Handle LocalSetting
-    const localCache = localStorage.getItem('MyCryptoCache') || '{}';
-    let parsedLocalCache;
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch {
-      parsedLocalCache = localCache;
-    }
-    delete parsedLocalCache.LocalSetting[uuid];
-    const newLocalSettingList = parsedLocalCache.LocalSettingList.filter(
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    delete parsedLocalCache.localSettings[uuid];
+    const newallLocalSettings = parsedLocalCache.allLocalSettings.filter(
       (obj: string) => obj !== uuid
     );
-    parsedLocalCache.LocalSettingList = newLocalSettingList;
+    parsedLocalCache.allLocalSettings = newallLocalSettings;
     const newCache = parsedLocalCache;
     localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
   };
 
   public readLocalSettings = (): ExtendedLocalSetting[] => {
     this.init();
-    const localCache = localStorage.getItem('MyCryptoCache') || '[]';
-    let parsedLocalCache: any;
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     let out: ExtendedLocalSetting[] = [];
-    try {
-      parsedLocalCache = JSON.parse(localCache);
-    } catch (e) {
-      parsedLocalCache = localCache;
-    }
-    if (parsedLocalCache.LocalSettingList && parsedLocalCache.LocalSettingList.length >= 1) {
-      parsedLocalCache.LocalSettingList.map((uuid: string) => {
-        out.push({ ...parsedLocalCache.LocalSetting[uuid], uuid });
+    if (parsedLocalCache.allLocalSettings && parsedLocalCache.allLocalSettings.length >= 1) {
+      parsedLocalCache.allLocalSettings.map((uuid: string) => {
+        out.push({ ...parsedLocalCache.localSettings[uuid], uuid });
       });
     } else {
       out = [];
