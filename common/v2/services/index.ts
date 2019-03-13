@@ -9,6 +9,8 @@ export * from './AccountType';
 export * from './Asset';
 export * from './DerivationPathOptions';
 export * from './LocalSettings';
+export * from './NetworkOptions';
+export * from './NodeOptions';
 export * from './Transaction';
 export * from './TransactionHistory';
 export * from './FiatCurrency';
