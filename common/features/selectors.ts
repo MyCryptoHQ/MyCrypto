@@ -267,7 +267,7 @@ export const getSchedulingTransaction = (state: AppState): IGetTransaction => {
 
   let endowment = Wei('0');
 
-  let transactionData = null;
+  let transactionData;
 
   const transactionFullAndValid = isFullTransaction && isSchedulingTransactionValid(state);
 

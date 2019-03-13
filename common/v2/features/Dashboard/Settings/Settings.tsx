@@ -24,11 +24,7 @@ export default function Settings() {
       </Heading>
       <FlippablePanel>
         {({ flipped, toggleFlipped }) =>
-          flipped ? (
-            <AddAccount toggleFlipped={toggleFlipped} />
-          ) : (
-            <YourAccounts toggleFlipped={toggleFlipped} />
-          )
+          flipped ? <AddAccount /> : <YourAccounts toggleFlipped={toggleFlipped} />
         }
       </FlippablePanel>
       <FlippablePanel>

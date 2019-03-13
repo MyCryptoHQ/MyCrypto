@@ -536,7 +536,7 @@ export default class DateTime extends Component<Props, State> {
 
   public localMoment(date?: any, format?: any, props?: any) {
     props = props || this.props;
-    let m = null;
+    let m: moment.Moment;
 
     if (props.utc) {
       m = moment.utc(date, format, props.strictParsing);
