@@ -1,6 +1,7 @@
 export * from './Analytics';
 export * from './API';
 export * from './Cache';
+export * from './ContractOptions';
 export * from './LocalCache';
 export * from './ShapeShift';
 export * from './Storage';
@@ -15,4 +16,5 @@ export * from './Transaction';
 export * from './TransactionHistory';
 export * from './FiatCurrency';
 export * from './AssetOption';
+export * from './RecentAccounts';
 export * from './AddressMetadata';
