@@ -8,9 +8,9 @@ export const CACHE_KEY = 'MyCryptoCache';
 
 export interface LocalCache {
   currents: Partial<{
-    account: string;
-    fiatCurrency: string;
-    activeWallet: string;
+    account?: string;
+    fiatCurrency?: string;
+    activeWallet?: string;
   }>;
 
   accounts: Record<string, Account>;
@@ -51,8 +51,8 @@ export interface LocalCache {
   allLocalSettings: string[];
 
   globalSettings: Partial<{
-    fiatCurrency: string;
-    darkMode: true;
+    fiatCurrency?: string;
+    darkMode?: boolean;
   }>;
 
   networkOptions: Record<

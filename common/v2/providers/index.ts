@@ -8,6 +8,8 @@ export {
   DerivationPathOptionsProvider
 } from './DerivationPathOptionsProvider';
 export { LocalSettingsContext, LocalSettingProvider } from './LocalSettingsProvider';
+export { GlobalSettingsContext, GlobalSettingsProvider } from './GlobalSettingsProvider';
+export { CurrentsContext, CurrentsProvider } from './CurrentsProvider';
 export { FiatCurrencyContext, FiatCurrencyProvider } from './FiatCurrencyProvider';
 export { TransactionContext, TransactionProvider } from './TransactionProvider';
 export { AssetOptionsContext, AssetOptionsProvider } from './AssetOptionsProvider';
