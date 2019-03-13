@@ -6,11 +6,11 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
-  padding: 120px 113px 180px 120px;
+  padding: 120px 120px 120px 120px;
   max-width: $screen-xxl;
 
   @media (max-width: $screen-md) {
-    padding: 50px 12px 42px 12px;
+    padding: 42px 12px 42px 12px;
   }
 
   &-titleArea {
