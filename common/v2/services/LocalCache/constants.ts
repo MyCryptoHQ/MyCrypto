@@ -8,10 +8,17 @@ export const CACHE_KEY = 'MyCryptoCache';
 
 export interface LocalCache {
   currents: Partial<{
-    account?: string;
+    account?: string[];
     fiatCurrency?: string;
     activeWallet?: string;
   }>;
+
+  globalSettings: Partial<{
+    fiatCurrency?: string;
+    darkMode?: boolean;
+  }>;
+
+  recentAccounts: string[];
 
   accounts: Record<string, Account>;
   allAccounts: string[];
@@ -49,11 +56,6 @@ export interface LocalCache {
 
   localSettings: Record<string, LocalSetting>;
   allLocalSettings: string[];
-
-  globalSettings: Partial<{
-    fiatCurrency?: string;
-    darkMode?: boolean;
-  }>;
 
   networkOptions: Record<
     string,
@@ -112,8 +114,6 @@ export interface LocalCache {
   >;
   allAddressMetadata: string[];
 
-  recentAccounts: string[];
-
   activeNotifications: Record<
     string,
     {
@@ -126,12 +126,18 @@ export interface LocalCache {
   allFiatCurrencies: string[];
 }
 
-export const CACHE_INIT_DEV = {
-  //: LocalCache
+export const CACHE_INIT_DEV: LocalCache = {
   currents: {
-    account: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
+    account: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
     fiatCurrency: 'USD',
     activeWallet: 'all'
+  },
+
+  recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
+
+  globalSettings: {
+    fiatCurrency: 'USD',
+    darkMode: true
   },
 
   accounts: {
@@ -195,11 +201,6 @@ export const CACHE_INIT_DEV = {
   },
   allLocalSettings: ['17ed6f49-ff23-4bef-a676-69174c266b37'],
 
-  globalSettings: {
-    fiatCurrency: 'USD',
-    darkMode: true
-  },
-
   networkOptions: {
     Ethereum: {
       name: 'Ethereum',
@@ -256,8 +257,6 @@ export const CACHE_INIT_DEV = {
   },
   allAddressMetadata: ['6e1c322c-aea6-4484-8fdc-7b3227a9d359'],
 
-  recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
-
   activeNotifications: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dd': {
       template: 'wallet-created'
@@ -274,9 +273,13 @@ export const CACHE_INIT_DEV = {
   allFiatCurrencies: ['USD']
 };
 
-export const CACHE_INIT = {
+export const CACHE_INIT: LocalCache = {
   // : LocalCache
   currents: {},
+
+  recentAccounts: [],
+
+  globalSettings: {},
 
   accounts: {},
   allAccounts: [],
@@ -296,8 +299,6 @@ export const CACHE_INIT = {
   localSettings: {},
   allLocalSettings: [],
 
-  globalSettings: {},
-
   networkOptions: {},
   allNetworkOptions: [],
 
@@ -315,8 +316,6 @@ export const CACHE_INIT = {
 
   addressMetadata: {},
   allAddressMetadata: [],
-
-  recentAccounts: [],
 
   activeNotifications: {},
   allActiveNotifications: [],
