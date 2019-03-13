@@ -5,7 +5,8 @@ import {
   GetStartedPanel,
   DownloadAppPanel,
   CompatibleWalletsPanel,
-  PeaceOfMindPanel
+  PeaceOfMindPanel,
+  TestimonialsPanel
 } from './components';
 import './Home.scss';
 
@@ -24,6 +25,9 @@ export default function Home() {
         </section>
         <section className="Home-peaceOfMind">
           <PeaceOfMindPanel />
+        </section>
+        <section className="Home-testimonials">
+          <TestimonialsPanel />
         </section>
       </section>
     </Layout>

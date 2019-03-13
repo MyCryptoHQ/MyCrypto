@@ -1,0 +1,61 @@
+@import 'common/sass/variables';
+
+.TestimonialsPanel {
+  padding: 148px 120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f7f7;
+
+  .slick-slider {
+    width: 100%;
+
+    .slick-prev {
+      left: 0px;
+    }
+
+    .slick-next {
+      right: 5px;
+    }
+
+    button::before {
+      opacity: 1;
+      font-size: 24px;
+      color: black;
+    }
+  }
+
+  @media (max-width: $screen-sm) {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  &-TestimonialCard {
+    padding-right: 40px;
+    padding-left: 40px;
+    max-width: 400px;
+    margin: auto;
+
+    @media (max-width: $screen-xs) {
+      height: auto;
+    }
+
+    &-text {
+      font-size: 21px;
+      line-height: 1.4;
+      font-weight: normal;
+      color: #333333;
+    }
+
+    &-author {
+      font-size: 26px;
+      font-weight: bold;
+      line-height: 1.5;
+      color: #333333;
+      margin-top: 31px;
+    }
+  }
+}
