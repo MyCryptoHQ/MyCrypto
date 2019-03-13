@@ -1,0 +1,77 @@
+@import 'common/sass/variables';
+
+.DownloadAppPanel {
+  padding: 0;
+  display: flex;
+  flex: 1;
+  padding: 148px 168px 180px 148px;
+  max-width: $screen-xxl;
+
+  @media (max-width: $screen-sm) {
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 12px 42px 12px;
+  }
+
+  &-callToAction {
+    display: flex;
+    flex-direction: column;
+    order: 1;
+
+    @media (max-width: $screen-sm) {
+      order: 2;
+      align-items: center;
+      text-align: center;
+    }
+    &-title {
+      font-size: 2vw;
+      font-weight: bold;
+      color: white;
+      line-height: normal;
+      max-width: 559px;
+
+      @media (min-width: $screen-xl) {
+        font-size: 35px;
+      }
+      @media (max-width: $screen-sm) {
+        font-size: 23px;
+      }
+    }
+    &-description {
+      max-width: 646px;
+      font-size: 1.8vw;
+      line-height: 1.5;
+      margin-top: 8px;
+      color: white;
+
+      @media (min-width: $screen-xl) {
+        font-size: 30px;
+      }
+      @media (max-width: $screen-sm) {
+        font-size: 16px;
+      }
+    }
+    &-button {
+      max-width: 300px;
+      font-size: 18px;
+      font-weight: normal;
+      margin-top: 26px;
+    }
+  }
+
+  &-image {
+    margin-left: 10vw;
+    width: 17vw;
+    order: 2;
+    @media (min-width: $screen-xl) {
+      width: 256px;
+    }
+    @media (max-width: $screen-sm) {
+      order: 1;
+      margin-left: 0;
+      margin-bottom: 50px;
+      margin-right: 40px;
+      width: 127px;
+    }
+  }
+}

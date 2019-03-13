@@ -1,22 +1,23 @@
+@import 'common/sass/variables';
+
 .Home {
   display: flex;
+  flex: 1;
+  align-items: center;
   flex-direction: column;
 
-  @media (min-width: 700px) {
-    flex-direction: row;
+  &-compatibleWallets {
+    width: 100%;
   }
-  &-getStarted {
-    flex: 1;
 
-    @media (min-width: 700px) {
-      order: 1;
-    }
+  &-DownloadApp {
+    width: 100%;
+    background-color: #163150;
+    display: flex;
+    justify-content: center;
   }
-  &-copy {
-    flex: 1;
+}
 
-    @media (min-width: 700px) {
-      margin-right: 1rem;
-    }
-  }
+.LimitedWidth {
+  max-width: $screen-xxl;
 }
