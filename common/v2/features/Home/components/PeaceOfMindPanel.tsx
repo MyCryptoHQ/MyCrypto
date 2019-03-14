@@ -22,7 +22,7 @@ const ContentItem: React.SFC<ContentItemProps> = props => {
 
 export default function PeaceOfMindPanel() {
   return (
-    <Panel basic className="PeaceOfMindPanel">
+    <Panel basic={true} className="PeaceOfMindPanel">
       <div className="PeaceOfMindPanel-titleArea">
         <Typography className="PeaceOfMindPanel-titleArea-title">
           Finally Enjoy Peace of Mind
