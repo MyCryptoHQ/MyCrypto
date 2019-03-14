@@ -112,10 +112,10 @@
   dependencies:
     events "^2.0.0"
 
-"@mycrypto/ui@0.12.2":
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.12.2.tgz#0ad86b1279fe254fc610639345dea7efc507c30d"
-  integrity sha512-b4Hr8vBr6CKjr6DQbHSNcXx7MQxp08MEQ9ioFKCQf5gMg6SycZ3zsZQ9fne0pCcvHnwX6+8rC2woqxfwg8gEHw==
+"@mycrypto/ui@0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.13.0.tgz#73a6b901b21dc8d3d4930ab817413d2bd9c5e4a7"
+  integrity sha512-gUZxcUU+ZOQuEeX6vFKgO3FyiX8Q+OABjvNCPJ5/bvq8k9HYjsfe+jJdzq+be5h+zCHMZk9wx1R0YjBB2UB2/Q==
   dependencies:
     "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"
