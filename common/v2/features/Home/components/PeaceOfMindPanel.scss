@@ -1,0 +1,119 @@
+@import 'common/sass/variables';
+
+.PeaceOfMindPanel {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 120px 120px 120px 120px;
+  max-width: $screen-xxl;
+
+  @media (max-width: $screen-md) {
+    padding: 42px 12px 42px 12px;
+  }
+
+  &-titleArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    order: 1;
+    &-title {
+      font-size: 2vw;
+      font-weight: bold;
+      color: #424242;
+      line-height: normal;
+      max-width: 559px;
+
+      @media (min-width: $screen-xl) {
+        font-size: 35px;
+      }
+      @media (max-width: $screen-md) {
+        font-size: 23px;
+      }
+    }
+    &-description {
+      max-width: 646px;
+      font-size: 1.8vw;
+      line-height: 1;
+      margin-top: 2px;
+      font-weight: normal;
+      color: #424242;
+
+      @media (min-width: $screen-xl) {
+        font-size: 30px;
+      }
+      @media (max-width: $screen-md) {
+        font-size: 16px;
+      }
+    }
+  }
+  &-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 96px;
+    order: 2;
+
+    @media (max-width: $screen-md) {
+      flex-direction: column;
+      margin-top: 18px;
+      order: 3;
+    }
+
+    &-item {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-left: 50px;
+      margin-right: 50px;
+
+      @media (max-width: $screen-md) {
+        margin-top: 44px;
+      }
+
+      &-image {
+        width: 112px;
+        height: 98px;
+      }
+      &-description {
+        font-size: 1.8vw;
+        font-weight: normal;
+        line-height: 1.5;
+        margin-top: 25px;
+        color: #424242;
+
+        @media (min-width: $screen-xl) {
+          font-size: 30px;
+        }
+        @media (max-width: $screen-md) {
+          margin-top: 17px;
+          font-size: 16px;
+          max-width: 244px;
+        }
+      }
+    }
+  }
+  &-actions {
+    margin-top: 90px;
+    display: flex;
+    order: 3;
+    @media (max-width: $screen-md) {
+      margin-top: 20px;
+      flex-direction: column;
+      order: 2;
+    }
+    &-button {
+      font-size: 18px;
+      margin-left: 50px;
+      margin-right: 50px;
+      width: 300px;
+      max-width: 300px;
+
+      @media (max-width: $screen-md) {
+        margin-top: 15px;
+      }
+    }
+  }
+}
