@@ -429,7 +429,7 @@ describe('Network Sagas', () => {
       it('should exit if being called without a wallet inst', () => {
         gens.noWallet = gens.gen.clone();
         gens.noWallet.next(null); // No wallet inst
-        expect(gens.noWallet.next(offline).done).toEqual(true);
+        expect(gens.noWallet.next(offline).done).toEqual(false);
       });
 
       it('should select getOffline', () => {
@@ -438,7 +438,7 @@ describe('Network Sagas', () => {
 
       it('should exit if being called while offline', () => {
         gens.offline = gens.gen.clone();
-        expect(gens.offline.next(true).done).toEqual(true);
+        expect(gens.offline.next(true).done).toEqual(false);
       });
 
       it('should apply walletInst.getAddressString', () => {
