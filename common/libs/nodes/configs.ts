@@ -325,6 +325,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'rpc.tau1.artis.network',
       url: 'https://rpc.tau1.artis.network'
     }
+  ],
+
+  THUNDERCORE: [
+    {
+      name: makeNodeName('THUNDERCORE', 'thundercore'),
+      type: 'rpc',
+      service: 'thundercore.com',
+      url: 'https://mainnet-rpc.thundercore.com'
+    }
   ]
 };
 

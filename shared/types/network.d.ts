@@ -31,7 +31,8 @@ type StaticNetworkIds =
   | 'MIX'
   | 'REOSC'
   | 'ARTIS_SIGMA1'
-  | 'ARTIS_TAU1';
+  | 'ARTIS_TAU1'
+  | 'THUNDERCORE';
 
 export interface BlockExplorerConfig {
   name: string;
