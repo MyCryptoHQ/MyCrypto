@@ -2,7 +2,7 @@ import React from 'react';
 import { Panel, Typography } from '@mycrypto/ui';
 
 // Legacy
-import titleIllustration from 'common/assets/images/title-illustration.png';
+import titleIllustration from 'common/assets/images/title-illustration.svg';
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
 import existingWalletIcon from 'common/assets/images/icn-existing-wallet.svg';
 import signInIcon from 'common/assets/images/returning.svg';

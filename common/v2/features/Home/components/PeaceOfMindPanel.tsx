@@ -4,6 +4,8 @@ import { Panel, Typography, Button } from '@mycrypto/ui';
 import './PeaceOfMindPanel.scss';
 
 import vaultIcon from 'common/assets/images/icn-vault2.svg';
+import protectIcon from 'common/assets/images/icn-protect.svg';
+import openSourceIcon from 'common/assets/images/icn-opensource.svg';
 
 interface ContentItemProps {
   icon: string;
@@ -37,11 +39,11 @@ export default function PeaceOfMindPanel() {
           description="Get your information out of other people's hands and back into yours."
         />
         <ContentItem
-          icon={vaultIcon}
+          icon={protectIcon}
           description="Protect yourself from phishing attacks and malicious extensions."
         />
         <ContentItem
-          icon={vaultIcon}
+          icon={openSourceIcon}
           description="Open-source, fully audited, and fully verifiable."
         />
       </div>
