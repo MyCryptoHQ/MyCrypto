@@ -219,7 +219,7 @@ export function* handleNonceRequest(): SagaIterator {
   const isOffline: boolean = yield select(configMetaSelectors.getOffline);
   try {
     if (isOffline || !walletInst) {
-      return;
+      throw Error();
     }
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
     const transactionCountString: string = yield apply(nodeLib, nodeLib.getTransactionCount, [
