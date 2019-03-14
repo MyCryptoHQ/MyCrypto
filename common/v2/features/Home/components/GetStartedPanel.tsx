@@ -18,7 +18,7 @@ interface ActionCardProps {
 const ActionCard: React.SFC<ActionCardProps> = props => {
   const { name, description, icon } = props;
   return (
-    <Panel basic className={'GetStartedPanel-actionsWrapper-card'}>
+    <Panel basic={true} className={'GetStartedPanel-actionsWrapper-card'}>
       <div className={'GetStartedPanel-actionsWrapper-card-captionsWrapper'}>
         <Typography className="GetStartedPanel-actionsWrapper-card-name">{name}</Typography>
         <Typography className="GetStartedPanel-actionsWrapper-card-description">
@@ -32,8 +32,8 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
 
 export default function GetStartedPanel() {
   return (
-    <Panel basic className="GetStartedPanel">
-      <Panel basic className="GetStartedPanel-actionsWrapper">
+    <Panel basic={true} className="GetStartedPanel">
+      <Panel basic={true} className="GetStartedPanel-actionsWrapper">
         <Typography className="GetStartedPanel-actionsWrapper-title">
           You're In The Right Place.
         </Typography>
@@ -63,7 +63,7 @@ export default function GetStartedPanel() {
           />
         </div>
       </Panel>
-      <Panel basic className="GetStartedPanel-titleImageWrapper">
+      <Panel basic={true} className="GetStartedPanel-titleImageWrapper">
         <img src={titleIllustration} alt="Title Illustration" />
       </Panel>
     </Panel>

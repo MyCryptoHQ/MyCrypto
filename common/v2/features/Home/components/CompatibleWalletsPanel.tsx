@@ -15,7 +15,7 @@ interface WalletCardProps {
   text: string;
 }
 
-const WalletCard = ({ src, alt, text }: WalletCardProps) => {
+const WalletCard: React.SFC<WalletCardProps> = ({ src, alt, text }) => {
   return (
     <div className="CompatibleWalletsPanel-wallets-WalletCard">
       <img src={src} alt={alt} />

@@ -7,7 +7,7 @@ import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
 
 export default function DownloadAppPanel() {
   return (
-    <Panel basic className="DownloadAppPanel">
+    <Panel basic={true} className="DownloadAppPanel">
       <div className="DownloadAppPanel-callToAction">
         <Typography className="DownloadAppPanel-callToAction-title">
           Everything is Even More Secure with our Desktop App
