@@ -71,7 +71,7 @@ const DevTools = () => {
                       render={({ field }: FieldProps<Account>) => (
                         <DevToolsInput
                           {...field}
-                          onChange={handleChange} //({ target: { value } }: { target: { value: any }}) => form.setFieldValue(field.name, value)}
+                          onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.label}
                         />

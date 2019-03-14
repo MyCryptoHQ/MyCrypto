@@ -55,11 +55,13 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
+  developmentMode: boolean;
 }
 
 class RootClass extends Component<Props, State> {
   public state = {
-    error: null
+    error: null,
+    developmentMode: Boolean(window.localStorage.getItem('MyCrypto Dev Mode'))
   };
 
   public componentDidMount() {
@@ -80,7 +82,7 @@ class RootClass extends Component<Props, State> {
 
   public render() {
     const { store, onboardingActive } = this.props;
-    const { error } = this.state;
+    const { error, developmentMode } = this.state;
 
     if (error) {
       return <ErrorScreen error={error} />;
@@ -128,11 +130,25 @@ class RootClass extends Component<Props, State> {
                     {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
                   </PageVisitsAnalytics>
                 </Router>
-                <DevTools />
+                {developmentMode && <DevTools />}
+                <div id="ModalContainer" />
               </AccountProvider>
             </AddressMetadataProvider>
           </Provider>
-          <div id="ModalContainer" />
+          {process.env.NODE_ENV !== 'production' && (
+            <button
+              onClick={this.handleDevelopmentModeButtonClick}
+              style={{
+                position: 'fixed',
+                bottom: 0,
+                right: 0,
+                zIndex: 99,
+                height: '5rem'
+              }}
+            >
+              Development Mode {developmentMode ? 'Off' : 'On'}
+            </button>
+          )}
         </React.Fragment>
       </ThemeProvider>
     );
@@ -163,6 +179,17 @@ class RootClass extends Component<Props, State> {
     }
     root.classList.add(`theme--${theme}`);
   }
+  private handleDevelopmentModeButtonClick = () => {
+    const isDevelopmentMode = window.localStorage.getItem('MyCrypto Dev Mode');
+
+    if (isDevelopmentMode) {
+      window.localStorage.removeItem('MyCrypto Dev Mode');
+      this.setState({ developmentMode: false });
+    } else {
+      window.localStorage.setItem('MyCrypto Dev Mode', 'true');
+      this.setState({ developmentMode: true });
+    }
+  };
 }
 
 let previousURL = '';
