@@ -4,9 +4,9 @@ import Slider from 'react-slick';
 
 import './CompatibleWalletsPanel.scss';
 import metamaskIcon from 'common/assets/images/wallets/metamask.png';
-import ledgerIcon from 'common/assets/images/wallets/ledger.png';
-import trezorIcon from 'common/assets/images/wallets/trezor.png';
-import paritySignerIcon from 'common/assets/images/wallets/parity-signer.png';
+import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
+import trezorIcon from 'common/assets/images/wallets/trezor.svg';
+import paritySignerIcon from 'common/assets/images/wallets/parity-signer-2.svg';
 import safeTIcon from 'common/assets/images/wallets/safe-t.png';
 
 interface WalletCardProps {
@@ -27,18 +27,20 @@ const WalletCard = ({ src, alt, text }: WalletCardProps) => {
 export default function CompatibleWalletsPanel() {
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 50,
-    slidesToShow: 1,
+    slidesToShow: 5,
     arrows: false,
-    variableWidth: true,
-    centerMode: true,
     swipe: false,
+    variableWidth: true,
     responsive: [
       {
         breakpoint: 820,
         settings: {
-          swipe: true
+          swipe: true,
+          slidesToShow: 1,
+          centerMode: true,
+          swipeToSlide: true
         }
       }
     ]
