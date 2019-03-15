@@ -1,0 +1,42 @@
+@import 'common/sass/variables';
+
+.BottomActionPanel {
+  /*   padding-top: 84px;
+  padding-bottom: 84px; */
+  padding: 84px 84px 46px 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &-title {
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+    color: #163150;
+    line-height: normal;
+
+    @media (max-width: $screen-sm) {
+      font-size: 25px;
+    }
+  }
+
+  &-button {
+    font-size: 18px;
+    margin-top: 60px;
+    width: 300px;
+    max-width: 300px;
+
+    @media (max-width: $screen-sm) {
+      margin-top: 15px;
+    }
+  }
+
+  &-link {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 18px;
+    font-weight: bold;
+    color: #1eb8e7;
+    line-height: normal;
+  }
+}
