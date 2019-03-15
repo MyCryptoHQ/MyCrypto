@@ -5,23 +5,34 @@
   flex: 1;
   align-items: center;
   flex-direction: column;
+
   &-compatibleWallets {
     width: 100%;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
   }
+
   &-featuresPanel {
     width: 100%;
     display: flex;
     justify-content: center;
   }
+
   &-testimonials {
     width: 100%;
+    background-color: #f7f7f7;
+    display: flex;
+    justify-content: center;
   }
+
   &-downloadApp {
     width: 100%;
     background-color: #163150;
     display: flex;
     justify-content: center;
   }
+
   &-peaceOfMind {
     width: 100%;
     background-color: white;

@@ -9,7 +9,7 @@ interface TestimonialCardProps {
   author: string;
 }
 
-const TestimonialCard = ({ text, author }: TestimonialCardProps) => {
+const TestimonialCard: React.SFC<TestimonialCardProps> = ({ text, author }) => {
   return (
     <div className="TestimonialsPanel-TestimonialCard">
       <Typography className="TestimonialsPanel-TestimonialCard-text">{text}</Typography>
@@ -18,9 +18,9 @@ const TestimonialCard = ({ text, author }: TestimonialCardProps) => {
   );
 };
 
-const text =
+const randomText =
   '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.“';
-const author = 'Mary Myers';
+const randomAuthor = 'Mary Myers';
 
 export default function TestimonialsPanel() {
   const settings = {
@@ -29,7 +29,7 @@ export default function TestimonialsPanel() {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
-    arrows: false,
+    arrows: true,
     swipe: true,
     responsive: [
       {
@@ -52,9 +52,9 @@ export default function TestimonialsPanel() {
   return (
     <Panel basic={true} className="TestimonialsPanel">
       <Slider {...settings}>
-        <TestimonialCard text={text} author={author + ' 1'} />
-        <TestimonialCard text={text} author={author + ' 2'} />
-        <TestimonialCard text={text} author={author + ' 3'} />
+        <TestimonialCard text={randomText} author={randomAuthor + ' 1'} />
+        <TestimonialCard text={randomText} author={randomAuthor + ' 2'} />
+        <TestimonialCard text={randomText} author={randomAuthor + ' 3'} />
       </Slider>
     </Panel>
   );

@@ -747,6 +747,25 @@
     "ACCESS_MESSAGE_2": "You must access your wallet in order to request a payment.",
     "ACCESS_MESSAGE_3": "You must access your wallet in order to view your wallet's information.",
     "ACCESS_MESSAGE_4": "You must access your wallet in order to view your recent transactions.",
-    "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book."
+    "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book.",
+    "HOME_WALLETS_HEADER": "Fully Compatible",
+    "HOME_WALLETS_DESCRIPTION": "Use with your favorite hardware and software wallets:",
+    "HOME_PEACE_OF_MIND_HEADER" :"Finally Enjoy Peace of Mind",
+    "HOME_PEACE_OF_MIND_DESCRIPTION" :"MyCrypto puts your safety & security first.",
+    "HOME_PEACE_OF_MIND_VAULT" :"Get your information out of other people's hands and back into yours.",
+    "HOME_PEACE_OF_MIND_PROTECT" :"Protect yourself from phishing attacks and malicious extensions.",
+    "HOME_PEACE_OF_MIND_OPENSOURCE" :"Open-source, fully audited, and fully verifiable.",
+    "HOME_PEACE_OF_MIND_GET_STARTED" :"Get Started on Web",
+    "HOME_PEACE_OF_MIND_DOWNLOAD" :"Download the Desktop App",
+    "HOME_DOWNLOAD_TITLE" :"Everything is Even More Secure with our Desktop App",
+    "HOME_DOWNLOAD_DESCRIPTION" :"Keep your keys out of the browser with the MyCrypto Desktop App. You get more access to your funds, and scammers get less access to you.",
+    "HOME_GET_STARTED_TITLE" :"You're In The Right Place.",
+    "HOME_GET_STARTED_DESCRIPTION" :"It's Time To Use MyCrypto For Your Crypto.",
+    "HOME_GET_STARTED_NEED_WALLET_TITLE" :"I need a wallet",
+    "HOME_GET_STARTED_NEED_WALLET_DESCRIPTION" :"Download app to create wallet",
+    "HOME_GET_STARTED_HAVE_WALLET_TITLE" :"I have a wallet",
+    "HOME_GET_STARTED_HAVE_WALLET_DESCRIPTION" :"Connect wallet to MyCrypto",
+    "HOME_GET_STARTED_USED_TITLE" :"I've used MyCrypto",
+    "HOME_GET_STARTED_USED_DESCRIPTION" :"Continue to Dashboard"
   }
 }

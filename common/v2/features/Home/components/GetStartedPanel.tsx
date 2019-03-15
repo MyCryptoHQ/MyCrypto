@@ -1,6 +1,8 @@
 import React from 'react';
 import { Panel, Typography } from '@mycrypto/ui';
 
+import translate, { translateRaw } from 'translations';
+
 // Legacy
 import titleIllustration from 'common/assets/images/title-illustration.svg';
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
@@ -11,14 +13,14 @@ import './GetStartedPanel.scss';
 
 interface ActionCardProps {
   name: string;
-  description: string;
+  description: React.ReactElement<any>;
   icon: string;
 }
 
 const ActionCard: React.SFC<ActionCardProps> = props => {
   const { name, description, icon } = props;
   return (
-    <Panel basic className={'GetStartedPanel-actionsWrapper-card'}>
+    <Panel basic={true} className={'GetStartedPanel-actionsWrapper-card'}>
       <div className={'GetStartedPanel-actionsWrapper-card-captionsWrapper'}>
         <Typography className="GetStartedPanel-actionsWrapper-card-name">{name}</Typography>
         <Typography className="GetStartedPanel-actionsWrapper-card-description">
@@ -32,13 +34,13 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
 
 export default function GetStartedPanel() {
   return (
-    <Panel basic className="GetStartedPanel">
-      <Panel basic className="GetStartedPanel-actionsWrapper">
+    <Panel basic={true} className="GetStartedPanel">
+      <Panel basic={true} className="GetStartedPanel-actionsWrapper">
         <Typography className="GetStartedPanel-actionsWrapper-title">
-          You're In The Right Place.
+          {translate('HOME_GET_STARTED_TITLE')}
         </Typography>
         <Typography className="GetStartedPanel-actionsWrapper-description">
-          It's Time To Use MyCrypto For Your Crypto.
+          {translate('HOME_GET_STARTED_DESCRIPTION')}
         </Typography>
         <img
           className="GetStartedPanel-actionsWrapper-image"
@@ -47,23 +49,23 @@ export default function GetStartedPanel() {
         />
         <div className={'GetStartedPanel-actionsWrapper-cardsWrapper'}>
           <ActionCard
-            name="I need a wallet"
-            description="Download app to create wallet"
+            name={translateRaw('HOME_GET_STARTED_NEED_WALLET_TITLE')}
+            description={translate('HOME_GET_STARTED_NEED_WALLET_DESCRIPTION')}
             icon={newWalletIcon}
           />
           <ActionCard
-            name="I have a wallet"
-            description="Connect wallet to MyCrypto"
+            name={translateRaw('HOME_GET_STARTED_HAVE_WALLET_TITLE')}
+            description={translate('HOME_GET_STARTED_HAVE_WALLET_DESCRIPTION')}
             icon={existingWalletIcon}
           />
           <ActionCard
-            name="I've used MyCrypto"
-            description="Continue to Dashboard"
+            name={translateRaw('HOME_GET_STARTED_USED_TITLE')}
+            description={translate('HOME_GET_STARTED_USED_DESCRIPTION')}
             icon={signInIcon}
           />
         </div>
       </Panel>
-      <Panel basic className="GetStartedPanel-titleImageWrapper">
+      <Panel basic={true} className="GetStartedPanel-titleImageWrapper">
         <img src={titleIllustration} alt="Title Illustration" />
       </Panel>
     </Panel>
