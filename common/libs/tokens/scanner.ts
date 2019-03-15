@@ -5,7 +5,7 @@ const tokenScannerABI = [
     constant: true,
     inputs: [
       {
-        name: '_address',
+        name: '_owner',
         type: 'address'
       },
       {
