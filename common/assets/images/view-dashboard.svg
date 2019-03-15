@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="977px" height="526px" viewBox="0 0 977 526" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 53.2 (72643) - https://sketchapp.com -->
+    <title>6E329D03-6FCB-46CA-BD25-94616A7E0BD5</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <rect id="path-1" x="1.13686838e-13" y="0" width="840" height="368"></rect>
+        <filter x="-1.4%" y="-2.4%" width="102.9%" height="106.5%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.19370083 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="3" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.0930397727 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+            </feMerge>
+        </filter>
+        <rect id="path-4" x="-1.13686838e-13" y="0" width="840" height="369.6" rx="4.2"></rect>
+        <filter x="-1.5%" y="-2.2%" width="103.1%" height="107.0%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.196078431   0 0 0 0 0.196078431   0 0 0 0 0.364705882  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.07 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+            </feMerge>
+        </filter>
+        <rect id="path-7" x="0" y="0" width="241.5" height="28" rx="4.2"></rect>
+        <filter x="-1.0%" y="-4.8%" width="101.9%" height="116.8%" filterUnits="objectBoundingBox" id="filter-8">
+            <feMorphology radius="0.35" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="1" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.909803922   0 0 0 0 0.917647059   0 0 0 0 0.929411765  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <filter x="-1.2%" y="-6.6%" width="102.4%" height="120.4%" filterUnits="objectBoundingBox" id="filter-9">
+            <feGaussianBlur stdDeviation="1" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.909803922   0 0 0 0 0.917647059   0 0 0 0 0.929411765  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Homepage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Homepage-V7" transform="translate(-83.000000, -1900.000000)">
+            <g id="view-dashboard" transform="translate(83.000000, 1900.000000)">
+                <circle id="Oval" fill-opacity="0.263193837" fill="#1EB8E7" cx="211.5" cy="211.5" r="211.5"></circle>
+                <g id="Group-26" transform="translate(85.000000, 102.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Rectangle" fill="black" fill-opacity="1">
+                        <use filter="url(#filter-3)" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="Group-7" mask="url(#mask-2)">
+                        <g id="Group-6">
+                            <g id="Group">
+                                <g id="recent-transactions">
+                                    <mask id="mask-5" fill="white">
+                                        <use xlink:href="#path-4"></use>
+                                    </mask>
+                                    <g id="Mask">
+                                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-4"></use>
+                                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-4"></use>
+                                    </g>
+                                </g>
+                                <g id="Group-21" transform="translate(584.500000, 10.500000)">
+                                    <g id="dropdown">
+                                        <g id="Rectangle">
+                                            <use fill="black" fill-opacity="1" filter="url(#filter-8)" xlink:href="#path-7"></use>
+                                            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-7"></use>
+                                            <use fill="black" fill-opacity="1" filter="url(#filter-9)" xlink:href="#path-7"></use>
+                                            <use stroke="#E8EAED" stroke-width="0.7" xlink:href="#path-7"></use>
+                                        </g>
+                                        <text id="Ethereum" font-family="Lato-Regular, Lato" font-size="12.6" font-weight="normal" fill="#424242">
+                                            <tspan x="10.5" y="18.3">October 01 - October 29, 2018</tspan>
+                                        </text>
+                                    </g>
+                                    <g id="calendar" transform="translate(219.800000, 8.400000)" fill="#1EB8E7">
+                                        <path d="M10.5,11.2 L0.7,11.2 C0.3143,11.2 0,10.88605 0,10.5 L0,1.75 C0,1.36395 0.3143,1.05 0.7,1.05 L3.5,1.05 L3.5,0.35 C3.5,0.1568 3.65645,0 3.85,0 C4.04355,0 4.2,0.1568 4.2,0.35 L4.2,1.05 L7,1.05 L7,0.35 C7,0.1568 7.15645,0 7.35,0 C7.54355,0 7.7,0.1568 7.7,0.35 L7.7,1.05 L10.5,1.05 C10.8857,1.05 11.2,1.36395 11.2,1.75 L11.2,10.5 C11.2,10.88605 10.8857,11.2 10.5,11.2 Z M7.7,1.75 L7.7,2.1 C7.7,2.2932 7.54355,2.45 7.35,2.45 C7.15645,2.45 7,2.2932 7,2.1 L7,1.75 L4.2,1.75 L4.2,2.1 C4.2,2.2932 4.04355,2.45 3.85,2.45 C3.65645,2.45 3.5,2.2932 3.5,2.1 L3.5,1.75 L0.7,1.75 L0.7,10.5 L10.49895,10.5 L10.5,1.75 L7.7,1.75 Z M8.75,8.4 L8.05,8.4 C7.85645,8.4 7.7,8.2432 7.7,8.05 L7.7,7.35 C7.7,7.1568 7.85645,7 8.05,7 L8.75,7 C8.94355,7 9.1,7.1568 9.1,7.35 L9.1,8.05 C9.1,8.2432 8.94355,8.4 8.75,8.4 Z M8.75,5.6 L8.05,5.6 C7.85645,5.6 7.7,5.4432 7.7,5.25 L7.7,4.55 C7.7,4.3568 7.85645,4.2 8.05,4.2 L8.75,4.2 C8.94355,4.2 9.1,4.3568 9.1,4.55 L9.1,5.25 C9.1,5.4432 8.94355,5.6 8.75,5.6 Z M5.95,8.4 L5.25,8.4 C5.05645,8.4 4.9,8.2432 4.9,8.05 L4.9,7.35 C4.9,7.1568 5.05645,7 5.25,7 L5.95,7 C6.14355,7 6.3,7.1568 6.3,7.35 L6.3,8.05 C6.3,8.2432 6.14355,8.4 5.95,8.4 Z M5.95,5.6 L5.25,5.6 C5.05645,5.6 4.9,5.4432 4.9,5.25 L4.9,4.55 C4.9,4.3568 5.05645,4.2 5.25,4.2 L5.95,4.2 C6.14355,4.2 6.3,4.3568 6.3,4.55 L6.3,5.25 C6.3,5.4432 6.14355,5.6 5.95,5.6 Z M3.15,8.4 L2.45,8.4 C2.25645,8.4 2.1,8.2432 2.1,8.05 L2.1,7.35 C2.1,7.1568 2.25645,7 2.45,7 L3.15,7 C3.34355,7 3.5,7.1568 3.5,7.35 L3.5,8.05 C3.5,8.2432 3.34355,8.4 3.15,8.4 Z M3.15,5.6 L2.45,5.6 C2.25645,5.6 2.1,5.4432 2.1,5.25 L2.1,4.55 C2.1,4.3568 2.25645,4.2 2.45,4.2 L3.15,4.2 C3.34355,4.2 3.5,4.3568 3.5,4.55 L3.5,5.25 C3.5,5.4432 3.34355,5.6 3.15,5.6 Z" id="Shape"></path>
+                                    </g>
+                                </g>
+                                <g id="graph/light-mode" transform="translate(17.500000, 105.700000)">
+                                    <g id="graph" stroke-width="1" fill-rule="evenodd" transform="translate(2.000000, 0.000000)">
+                                        <path d="M84.578392,172.508005 L802.778392,172.508005" id="Line-5" stroke="#ECEDF4" stroke-width="1.34840871" stroke-linecap="square"></path>
+                                        <path d="M84.578392,130.707335 L802.778392,130.707335" id="Line-5-Copy-2" stroke="#ECEDF4" stroke-width="1.34840871" stroke-linecap="square"></path>
+                                        <path d="M84.578392,88.9066649 L802.778392,88.9066649" id="Line-5-Copy-4" stroke="#ECEDF4" stroke-width="1.34840871" stroke-linecap="square"></path>
+                                        <path d="M84.578392,47.1059949 L802.778392,47.1059949" id="Line-5-Copy-6" stroke="#ECEDF4" stroke-width="1.34840871" stroke-linecap="square"></path>
+                                        <path d="M84.578392,5.30532487 L802.778392,5.30532487" id="Line-5-Copy-7" stroke="#ECEDF4" stroke-width="1.34840871" stroke-linecap="square"></path>
+                                        <text id="-$1,000-USD" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="23.3008" y="179.7">$0 USD</tspan>
+                                        </text>
+                                        <text id="$0-USD" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="1.0384" y="137.842678">$1,000 USD</tspan>
+                                        </text>
+                                        <text id="$1,000-USD" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="1.6384" y="96.0420083">$2,000 USD</tspan>
+                                        </text>
+                                        <text id="$2,000-USD" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="1.6384" y="52.8929296">$3,000 USD</tspan>
+                                        </text>
+                                        <text id="$3,000-USD" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="1.6384" y="11.0922595">$4,000 USD</tspan>
+                                        </text>
+                                        <text id="Oct-01" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="92.2" y="216.1">Oct 01</tspan>
+                                        </text>
+                                        <text id="Oct-07" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="247.25" y="216.1">Oct 07</tspan>
+                                        </text>
+                                        <text id="Oct-14" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="402.3" y="216.1">Oct 14</tspan>
+                                        </text>
+                                        <text id="Oct-21" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="557.35" y="216.1">Oct 21</tspan>
+                                        </text>
+                                        <text id="Oct-28" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="712.4" y="216.1">Oct 28</tspan>
+                                        </text>
+                                        <text id="Oct-29" font-family="Lato-Regular, Lato" font-size="11.2" font-weight="normal" fill="#B5BFC7">
+                                            <tspan x="769.01206" y="216.050383">Oct 29</tspan>
+                                        </text>
+                                    </g>
+                                    <polyline id="Path-15" stroke="#A682FF" stroke-width="1.4" points="111.198828 63.7 189 110.3466 264.657422 154.7 414.905859 112.531878 434.798437 93.6481212 492.682422 93.1 575.264648 83.2611111 699.231641 109.136192 789.012109 108.158704"></polyline>
+                                    <circle id="Oval-5" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="265.3" cy="154.7" r="3.5"></circle>
+                                    <circle id="Oval-5" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="111.3" cy="63.7" r="3.5"></circle>
+                                    <circle id="Oval-5" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="145.6" cy="84" r="3.5"></circle>
+                                    <circle id="Oval-5" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="415.1" cy="112.7" r="3.5"></circle>
+                                    <circle id="Oval-5" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="434.7" cy="93.1" r="3.5"></circle>
+                                    <circle id="Oval-5-Copy" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="492.8" cy="93.1" r="3.5"></circle>
+                                    <circle id="Oval-5-Copy-2" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="575.4" cy="83.3" r="3.5"></circle>
+                                    <circle id="Oval-5-Copy-2" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="698.6" cy="109.2" r="3.5"></circle>
+                                    <circle id="Oval-5-Copy-2" stroke="#A682FF" stroke-width="1.4" fill="#FFFFFF" fill-rule="evenodd" cx="789.6" cy="108.5" r="3.5"></circle>
+                                </g>
+                                <g id="top-numbers/normal-mode" transform="translate(17.500000, 49.700000)" font-family="Lato-Regular, Lato" font-weight="normal">
+                                    <g id="top-numbers">
+                                        <text id="$21,401.94" font-size="18.2" fill="#424242">
+                                            <tspan x="0" y="34.8">$21,404.94 USD</tspan>
+                                        </text>
+                                        <text id="Balance" font-size="11.2" fill="#B5BFC7">
+                                            <tspan x="0" y="11">Balance</tspan>
+                                        </text>
+                                    </g>
+                                </g>
+                                <g id="top-numbers/normal-mode" transform="translate(235.666667, 49.700000)" font-family="Lato-Regular, Lato" font-weight="normal">
+                                    <g id="top-numbers">
+                                        <text id="$21,401.94" font-size="18.2" fill="#424242">
+                                            <tspan x="0" y="34.8">$6,572.50 USD</tspan>
+                                        </text>
+                                        <text id="Balance" font-size="11.2" fill="#B5BFC7">
+                                            <tspan x="0" y="11">Rate</tspan>
+                                        </text>
+                                    </g>
+                                </g>
+                                <g id="top-numbers/normal-mode" transform="translate(453.833333, 49.700000)" font-family="Lato-Regular, Lato" font-weight="normal">
+                                    <g id="top-numbers">
+                                        <text id="$21,401.94" font-size="18.2" fill="#424242">
+                                            <tspan x="0" y="34.8">$9,358.12 USD</tspan>
+                                        </text>
+                                        <text id="Balance" font-size="11.2" fill="#B5BFC7">
+                                            <tspan x="0" y="11">Received</tspan>
+                                        </text>
+                                    </g>
+                                </g>
+                                <g id="top-numbers/normal-mode" transform="translate(672.000000, 49.700000)" font-family="Lato-Regular, Lato" font-weight="normal">
+                                    <g id="top-numbers">
+                                        <text id="$21,401.94" font-size="18.2" fill="#424242">
+                                            <tspan x="0" y="34.8">$8,114.12 USD</tspan>
+                                        </text>
+                                        <text id="Balance" font-size="11.2" fill="#B5BFC7">
+                                            <tspan x="0" y="11">Sent</tspan>
+                                        </text>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                        <text id="sales" font-family="Lato-Bold, Lato" font-size="16.8" font-weight="bold" fill="#424242">
+                            <tspan x="16" y="34">Your Transactions</tspan>
+                        </text>
+                    </g>
+                </g>
+                <g id="Group-4" transform="translate(79.000000, 71.000000) rotate(-81.000000) translate(-79.000000, -71.000000) translate(38.000000, 32.000000)" fill="#FFD166" fill-rule="nonzero">
+                    <polygon id="Rectangle-path-3" transform="translate(43.627179, 30.806077) rotate(-45.000000) translate(-43.627179, -30.806077) " points="28.8485988 25.4935035 58.4057597 25.4935035 58.4057597 36.1186499 28.8485988 36.1186499"></polygon>
+                    <polygon id="Rectangle-path-4" transform="translate(65.688249, 66.332769) rotate(-20.180000) translate(-65.688249, -66.332769) " points="50.9119695 61.0201953 80.4645278 61.0201953 80.4645278 71.6453417 50.9119695 71.6453417"></polygon>
+                    <polygon id="Rectangle-path-5" transform="translate(7.083860, 9.257804) rotate(-69.820000) translate(-7.083860, -9.257804) " points="-1.26027707 6.25780352 15.4279966 6.25780352 15.4279966 12.2578035 -1.26027707 12.2578035"></polygon>
+                </g>
+                <polygon id="Shape-9" fill="#FFD166" fill-rule="nonzero" points="959.942219 444 951.057781 444 951.057781 450.059107 945 450.059107 945 458.94549 951.057781 458.94549 951.057781 465 959.942219 465 959.942219 458.94549 966 458.94549 966 450.059107 959.942219 450.059107"></polygon>
+                <polygon id="Shape-10" fill="#FFD166" fill-rule="nonzero" points="934.942219 490 926.057781 490 926.057781 496.057781 920 496.057781 920 504.942219 926.057781 504.942219 926.057781 511 934.942219 511 934.942219 504.942219 941 504.942219 941 496.057781 934.942219 496.057781"></polygon>
+                <polygon id="Rectangle-path-7" fill="#FFD166" fill-rule="nonzero" points="966 479 977 479 977 490 966 490"></polygon>
+                <path d="M78.93461,540.972284 C87.7333334,520.000491 85.1147565,495.976087 72.00461,477.392284" id="Path" stroke="#FFB200" stroke-width="7.34817814" opacity="0.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(78.039502, 509.182284) rotate(124.000000) translate(-78.039502, -509.182284) "></path>
+                <path d="M33.9254027,470.708098 C39.8460731,467.036292 45.1436406,462.444242 49.6187361,457.104765" id="Path" stroke="#FFD166" stroke-width="7.34817814" opacity="0.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(41.772069, 463.906431) rotate(124.000000) translate(-41.772069, -463.906431) "></path>
+            </g>
+        </g>
+    </g>
+</svg>
