@@ -8,11 +8,14 @@
   &-compatibleWallets {
     width: 100%;
   }
-
+  &-featuresPanel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
   &-testimonials {
     width: 100%;
   }
-
   &-downloadApp {
     width: 100%;
     background-color: #163150;

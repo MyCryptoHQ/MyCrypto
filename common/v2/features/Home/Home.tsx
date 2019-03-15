@@ -7,7 +7,8 @@ import {
   CompatibleWalletsPanel,
   PeaceOfMindPanel,
   TestimonialsPanel,
-  BottomActionPanel
+  BottomActionPanel,
+  FeaturesPanel
 } from './components';
 import './Home.scss';
 
@@ -20,6 +21,9 @@ export default function Home() {
         </section>
         <section className="Home-compatibleWallets">
           <CompatibleWalletsPanel />
+        </section>
+        <section className="Home-featuresPanel">
+          <FeaturesPanel />
         </section>
         <section className="Home-downloadApp">
           <DownloadAppPanel />
