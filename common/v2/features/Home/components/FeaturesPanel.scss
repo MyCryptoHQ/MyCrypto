@@ -1,0 +1,139 @@
+@import 'common/sass/variables';
+
+.FeaturesPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 88px 168px 88px 148px;
+  max-width: $screen-xxl;
+
+  @media (max-width: $screen-sm) {
+    padding: 42px 0 42px 0;
+  }
+
+  .titleArea {
+    text-align: center;
+
+    @media (max-width: $screen-sm) {
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 2vw;
+      font-weight: bold;
+      color: #163150;
+      line-height: normal;
+
+      @media (min-width: $screen-xl) {
+        font-size: 35px;
+      }
+      @media (max-width: $screen-sm) {
+        font-size: 23px;
+      }
+    }
+    .description {
+      font-size: 1.5vw;
+      line-height: 1.5;
+      margin-top: 8px;
+      font-weight: normal;
+      color: #163150;
+
+      @media (min-width: $screen-xl) {
+        font-size: 28px;
+      }
+      @media (max-width: $screen-sm) {
+        font-size: 16px;
+      }
+    }
+  }
+  .featuresSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 32px;
+
+    @media (max-width: $screen-sm) {
+      margin-top: 0;
+    }
+
+    .feature {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      margin-bottom: 80px;
+
+      @media (max-width: $screen-lg) {
+        flex-direction: column;
+        margin-bottom: 0;
+      }
+
+      .captions {
+        max-width: 500px;
+        width: 50%;
+        @media (max-width: $screen-lg) {
+          width: 100%;
+          order: 1;
+        }
+        .title {
+          font-size: 30px;
+          font-weight: bold;
+          color: #163150;
+          line-height: normal;
+
+          @media (min-width: $screen-xl) {
+            font-size: 30px;
+          }
+          @media (max-width: $screen-lg) {
+            margin-top: 80px;
+            text-align: center;
+          }
+          @media (max-width: $screen-sm) {
+            margin-top: 30px;
+            font-size: 20px;
+            text-align: center;
+            width: 100%;
+          }
+        }
+        .description {
+          font-size: 21px;
+          line-height: 1.5;
+          margin-top: 8px;
+          font-weight: normal;
+          color: #163150;
+
+          @media (min-width: $screen-xl) {
+            font-size: 21px;
+          }
+          @media (max-width: $screen-lg) {
+            text-align: center;
+          }
+          @media (max-width: $screen-sm) {
+            font-size: 16px;
+          }
+        }
+      }
+      .image {
+        width: 70%;
+        max-height: 550px;
+
+        @media (max-width: $screen-lg) {
+          width: 100%;
+          margin-top: 24px;
+          order: 2;
+        }
+
+        @media (max-width: $screen-sm) {
+          display: none;
+        }
+      }
+      .mobileImage {
+        display: none;
+
+        @media (max-width: $screen-sm) {
+          display: block;
+          order: 2;
+        }
+      }
+    }
+  }
+}
