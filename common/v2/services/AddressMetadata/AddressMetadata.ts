@@ -1,4 +1,3 @@
-import * as utils from 'v2/libs';
 import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { AddressMetadata, ExtendedAddressMetadata } from './types';
 
@@ -11,7 +10,7 @@ export default class AddressMetadataServiceBase {
   public createAddressMetadata = (AddressMetadatas: AddressMetadata) => {
     this.init();
     // Handle AddressMetadata
-    const uuid = utils.generateUUID();
+    const uuid = AddressMetadatas.address.toLowerCase();
 
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newAddressMetadataCache = parsedLocalCache;

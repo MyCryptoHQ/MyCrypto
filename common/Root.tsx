@@ -36,6 +36,8 @@ import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
+import { TransactionProvider } from 'v2/providers/TransactionProvider';
+import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -120,18 +122,22 @@ class RootClass extends Component<Props, State> {
           <Provider store={store}>
             <AddressMetadataProvider>
               <AccountProvider>
-                <Router>
-                  <PageVisitsAnalytics>
-                    {onboardingActive && <OnboardingModal />}
-                    {routes}
-                    <LegacyRoutes />
-                    <LogOutPrompt />
-                    <QrSignerModal />
-                    {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                  </PageVisitsAnalytics>
-                </Router>
-                {developmentMode && <DevTools />}
-                <div id="ModalContainer" />
+                <TransactionProvider>
+                  <TransactionHistoryProvider>
+                    <Router>
+                      <PageVisitsAnalytics>
+                        {onboardingActive && <OnboardingModal />}
+                        {routes}
+                        <LegacyRoutes />
+                        <LogOutPrompt />
+                        <QrSignerModal />
+                        {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                      </PageVisitsAnalytics>
+                    </Router>
+                    {developmentMode && <DevTools />}
+                    <div id="ModalContainer" />
+                  </TransactionHistoryProvider>
+                </TransactionProvider>
               </AccountProvider>
             </AddressMetadataProvider>
           </Provider>
@@ -146,7 +152,7 @@ class RootClass extends Component<Props, State> {
                 height: '5rem'
               }}
             >
-              Development Mode {developmentMode ? 'Off' : 'On'}
+              Development Mode {developmentMode ? 'On' : 'Off'}
             </button>
           )}
         </React.Fragment>

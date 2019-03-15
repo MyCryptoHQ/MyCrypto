@@ -38,7 +38,6 @@ export default function AddressBook({
       sortFunction: (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;
-        console.log('comparing ' + aLabel + ' to ' + bLabel);
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
       },
       hiddenHeadings: ['Favorite', 'Delete'],
@@ -48,7 +47,7 @@ export default function AddressBook({
   return (
     <DashboardPanel heading="Address Book" className="AddressBook">
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
-      <button onClick={toggleFlipped}>Flip</button>
+      <button onClick={toggleFlipped}>Add Address</button>
     </DashboardPanel>
   );
 }

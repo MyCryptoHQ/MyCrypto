@@ -69,7 +69,6 @@ export default class TransactionHistoryServiceBase {
     } else {
       out = [];
     }
-
     return out;
   };
 }

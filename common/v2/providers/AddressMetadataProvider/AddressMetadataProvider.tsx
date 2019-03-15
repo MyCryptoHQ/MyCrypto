@@ -4,6 +4,7 @@ import { AddressMetadata, ExtendedAddressMetadata } from 'v2/services/AddressMet
 
 interface ProviderState {
   addressMetadata: ExtendedAddressMetadata[];
+  readAddressMetadata(uuid: string): AddressMetadata;
   createAddressMetadatas(addressMetadatasData: AddressMetadata): void;
   deleteAddressMetadatas(uuid: string): void;
   updateAddressMetadatas(uuid: string, addressMetadatasData: AddressMetadata): void;
@@ -16,6 +17,9 @@ const AddressMetadataService = new AddressMetadatasServiceBase();
 export class AddressMetadataProvider extends Component {
   public readonly state: ProviderState = {
     addressMetadata: AddressMetadataService.readAddressMetadatas() || [],
+    readAddressMetadata: (uuid: string) => {
+      return AddressMetadataService.readAddressMetadata(uuid);
+    },
     createAddressMetadatas: (addressMetadatasData: AddressMetadata) => {
       AddressMetadataService.createAddressMetadata(addressMetadatasData);
       this.getAddressMetadatas();

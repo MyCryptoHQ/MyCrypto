@@ -9,94 +9,95 @@ import './RecentTransactionList.scss';
 
 // Legacy
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
+import { TransactionHistory, ExtendedTransaction, AddressMetadata } from 'v2/services';
 
 interface Props {
+  transactionHistories: TransactionHistory[];
   className?: string;
+  transactions: ExtendedTransaction[];
+  readAddressMetadata(uuid: string): AddressMetadata;
 }
 
-// Fake Data
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
-const recentTransactions = [
-  {
-    uuid: '76b50f76-afb2-4185-ab7d-4d62c0654883',
-    stage: 'pending',
-    label: 'OmiseGO Sent',
-    date: 1547768373,
-    from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    amount: '42.69 OMG',
-    fiat: {
-      USD: '$13.37'
-    }
-  },
-  {
-    uuid: '76b50f76-afb2-4185-ab7d-4d62c0654884',
-    stage: 'pending',
-    label: 'EOS Received',
-    date: 1547730000,
-    from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    amount: '513.20 EOS',
-    fiat: {
-      USD: '$201.45'
-    }
-  },
-  {
-    uuid: '76b50f76-afb2-4185-ab7d-4d62c0654885',
-    stage: 'completed',
-    label: 'Ethereum Purchased',
-    date: 1547720000,
-    from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    amount: '4.123 ETH',
-    fiat: {
-      USD: '$161.45'
-    }
-  }
-];
-const pending = recentTransactions.filter(tx => tx.stage === 'pending');
-const completed = recentTransactions.filter(tx => tx.stage === 'completed');
-const createEntries = (_: string, collection: typeof recentTransactions) =>
-  collection.map(({ label, stage, date, from, to, amount, fiat, uuid }) => [
-    <TransactionLabel
-      key={0}
-      image="https://placehold.it/45x45"
-      label={label}
-      stage={stage}
-      date={date}
-    />,
-    <Address key={1} title="No Label" truncate={truncate} address={from} />,
-    <Address key={2} title="No Label" truncate={truncate} address={to} />,
-    <Amount key={3} assetValue={amount} fiatValue={fiat.USD} />,
-    <Link key={4} to={`/dashboard/transactions/${uuid}`}>
-      <img src={newWindowIcon} alt="View more information about this transaction" />
-    </Link>
-  ]);
-const recentTransactionsTable = {
-  head: ['Date', 'From Address', 'To Address', 'Amount', 'View More'],
-  body: [],
-  groups: [
-    {
-      title: 'Pending',
-      entries: createEntries('pending', pending)
-    },
-    {
-      title: 'Completed',
-      entries: createEntries('completed', completed)
-    }
-  ],
-  config: {
-    primaryColumn: 'Date',
-    sortableColumn: 'Date',
-    sortFunction: (a: any, b: any) => a.props.date - b.props.date,
-    hiddenHeadings: ['View More'],
-    iconColumns: ['View More']
-  }
-};
+export default function RecentTransactionList({
+  transactions,
+  readAddressMetadata,
+  className = ''
+}: Props) {
+  const recentTransactions: ExtendedTransaction[] = transactions;
 
-export default function RecentTransactionList({ className = '' }: Props) {
+  // TODO: Sort by relevant transactions
+  //const recentTransactionHistories = transactionHistories;
+  /*recentTransactionHistories.map((en: TransactionHistory) => {
+    const relevantEntries = Object.keys(transactions).find(entry => entry === en.transaction);
+    console.log("RelevantEntries: " + JSON.stringify(relevantEntries, null,4));
+    recentTransactions.push(txKeys);
+  })*/
+
+  const truncate = (children: string) => {
+    return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
+  };
+  const pending = recentTransactions.filter(tx => tx.stage === 'pending');
+  const completed = recentTransactions.filter(tx => tx.stage === 'completed');
+  /*recentTransactions.map(en => {
+    console.log('Looking for ' + en.address + ' in meta: ' + JSON.stringify(readAddressMetadata(en.address), null, 4));
+    const meta = readAddressMetadata(en.address);
+    en.label = (meta !== undefined && 'label' in meta) ? meta.label : 'No Label';
+  })*/
+  const createEntries = (_: string, collection: typeof recentTransactions) =>
+    collection.map(({ label, stage, date, from, to, value, fiatValue, uuid }) => [
+      <TransactionLabel
+        key={0}
+        image="https://placehold.it/45x45"
+        label={label}
+        stage={stage}
+        date={date}
+      />,
+      <Address
+        key={1}
+        title={
+          readAddressMetadata(from.toLowerCase())
+            ? readAddressMetadata(from.toLowerCase()).label
+            : 'No Label'
+        }
+        truncate={truncate}
+        address={from}
+      />,
+      <Address
+        key={2}
+        title={
+          readAddressMetadata(to.toLowerCase())
+            ? readAddressMetadata(to.toLowerCase()).label
+            : 'No Label'
+        }
+        truncate={truncate}
+        address={to}
+      />,
+      <Amount key={3} assetValue={value.toString()} fiatValue={fiatValue.USD} />,
+      <Link key={4} to={`/dashboard/transactions/${uuid}`}>
+        <img src={newWindowIcon} alt="View more information about this transaction" />
+      </Link>
+    ]);
+  const recentTransactionsTable = {
+    head: ['Date', 'From Address', 'To Address', 'Amount', 'View More'],
+    body: [],
+    groups: [
+      {
+        title: 'Pending',
+        entries: createEntries('pending', pending)
+      },
+      {
+        title: 'Completed',
+        entries: createEntries('completed', completed)
+      }
+    ],
+    config: {
+      primaryColumn: 'Date',
+      sortableColumn: 'Date',
+      sortFunction: (a: any, b: any) => a.props.date - b.props.date,
+      hiddenHeadings: ['View More'],
+      iconColumns: ['View More']
+    }
+  };
   return (
     <DashboardPanel
       heading="Recent Transactions"

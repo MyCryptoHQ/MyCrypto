@@ -18,19 +18,19 @@ export default function Settings() {
         <img src={settingsIcon} alt="Settings" className="Settings-heading-icon" />
         Settings
       </Heading>
-      <FlippablePanel>
-        {({ flipped }) =>
-          flipped ? (
-            <AddressMetadataContext.Consumer>
-              {({}) => <AddAccount />}
-            </AddressMetadataContext.Consumer>
-          ) : (
-            <AccountContext.Consumer>
-              {({ accounts }) => <AccountList accounts={accounts} />}
-            </AccountContext.Consumer>
-          )
-        }
-      </FlippablePanel>
+      <AccountContext.Consumer>
+        {({ accounts, deleteAccount }) => (
+          <FlippablePanel>
+            {({ flipped }) =>
+              flipped ? (
+                <AddAccount />
+              ) : (
+                <AccountList accounts={accounts} deleteAccount={deleteAccount} />
+              )
+            }
+          </FlippablePanel>
+        )}
+      </AccountContext.Consumer>
       <AddressMetadataContext.Consumer>
         {({ createAddressMetadatas, addressMetadata, deleteAddressMetadatas }) => (
           <FlippablePanel>

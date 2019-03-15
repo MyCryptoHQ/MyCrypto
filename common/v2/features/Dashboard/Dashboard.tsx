@@ -11,14 +11,19 @@ import {
 } from './components';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { AccountContext } from 'v2/providers';
+import {
+  AccountContext,
+  TransactionHistoryContext,
+  TransactionContext,
+  AddressMetadataContext
+} from 'v2/providers';
 
 export default function Dashboard() {
   return (
     <>
       {/* MOBILE */}
       <AccountContext.Consumer>
-        {({ accounts }) => (
+        {({ accounts, deleteAccount }) => (
           <Layout className="Dashboard-mobile" fluid={true}>
             <div className="Dashboard-mobile-actions">
               {actions.map(action => <ActionTile key={action.title} {...action} />)}
@@ -33,17 +38,37 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="Dashboard-mobile-section">
-              <AccountList accounts={accounts} className="Dashboard-mobile-modifiedPanel" />
+              <AccountList
+                accounts={accounts}
+                deleteAccount={deleteAccount}
+                className="Dashboard-mobile-modifiedPanel"
+              />
             </div>
-            <div className="Dashboard-mobile-section">
-              <RecentTransactionList />
-            </div>
+            <AddressMetadataContext.Consumer>
+              {({ readAddressMetadata }) => (
+                <TransactionContext.Consumer>
+                  {({ transactions }) => (
+                    <TransactionHistoryContext.Consumer>
+                      {({ transactionHistories }) => (
+                        <div className="Dashboard-mobile-section">
+                          <RecentTransactionList
+                            transactions={transactions}
+                            readAddressMetadata={readAddressMetadata}
+                            transactionHistories={transactionHistories}
+                          />
+                        </div>
+                      )}
+                    </TransactionHistoryContext.Consumer>
+                  )}
+                </TransactionContext.Consumer>
+              )}
+            </AddressMetadataContext.Consumer>
           </Layout>
         )}
       </AccountContext.Consumer>
       {/* DESKTOP */}
       <AccountContext.Consumer>
-        {({ accounts }) => (
+        {({ accounts, deleteAccount }) => (
           <Layout className="Dashboard-desktop">
             <div className="Dashboard-desktop-top">
               <div className="Dashboard-desktop-top-left">
@@ -62,13 +87,38 @@ export default function Dashboard() {
                   <WalletBreakdown />
                 </div>
                 <div>
-                  <AccountList accounts={accounts} className="Dashboard-desktop-modifiedPanel" />
+                  <AccountList
+                    accounts={accounts}
+                    deleteAccount={deleteAccount}
+                    className="Dashboard-desktop-modifiedPanel"
+                  />
                 </div>
               </div>
             </div>
-            <div className="Dashboard-desktop-bottom">
-              <RecentTransactionList className="Dashboard-desktop-modifiedPanel" />
-            </div>
+            <AddressMetadataContext.Consumer>
+              {({ readAddressMetadata }) => (
+                <TransactionContext.Consumer>
+                  {({ transactions }) => {
+                    return (
+                      <TransactionHistoryContext.Consumer>
+                        {({ transactionHistories }) => {
+                          return (
+                            <div className="Dashboard-desktop-bottom">
+                              <RecentTransactionList
+                                transactionHistories={transactionHistories}
+                                readAddressMetadata={readAddressMetadata}
+                                transactions={transactions}
+                                className="Dashboard-desktop-modifiedPanel"
+                              />
+                            </div>
+                          );
+                        }}
+                      </TransactionHistoryContext.Consumer>
+                    );
+                  }}
+                </TransactionContext.Consumer>
+              )}
+            </AddressMetadataContext.Consumer>
           </Layout>
         )}
       </AccountContext.Consumer>

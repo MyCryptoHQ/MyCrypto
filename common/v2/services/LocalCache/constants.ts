@@ -155,25 +155,62 @@ export const CACHE_INIT_DEV: LocalCache = {
   allAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
 
   transactionHistories: {
-    '76b50f76-afb2-4185-ab7d-4d62c0654882': {
-      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654882'
+    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
+      transaction: '6e1c322c-aea6-4484-8fdc-7b3227a9d359'
+    },
+    '76b50f76-afb2-4185-ab7d-4d62c0654881': {
+      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654881'
+    },
+    '76b50f76-afb2-4185-ab7d-4d62c0654885': {
+      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654885'
     }
   },
-  allTransactionHistories: ['76b50f76-afb2-4185-ab7d-4d62c0654882'],
+  allTransactionHistories: [
+    '6e1c322c-aea6-4484-8fdc-7b3227a9d359',
+    '76b50f76-afb2-4185-ab7d-4d62c0654881',
+    '76b50f76-afb2-4185-ab7d-4d62c0654885'
+  ],
 
   transactions: {
-    '76b50f76-afb2-4185-ab7d-4d62c0654883': {
+    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
       stage: 'pending',
       label: 'Example',
-      date: '1547768373',
+      date: 1547768373,
+      value: 0,
       from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       fiatValue: {
-        USD: '13.37'
+        USD: '0'
+      }
+    },
+    '76b50f76-afb2-4185-ab7d-4d62c0654881': {
+      stage: 'completed',
+      label: 'Example',
+      date: 1547769373,
+      value: 0,
+      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+      fiatValue: {
+        USD: '0'
+      }
+    },
+    '76b50f76-afb2-4185-ab7d-4d62c0654885': {
+      stage: 'completed',
+      label: 'Example',
+      date: 1548769373,
+      value: 0,
+      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+      fiatValue: {
+        USD: '0'
       }
     }
   },
-  allTransactions: ['76b50f76-afb2-4185-ab7d-4d62c0654883'],
+  allTransactions: [
+    '6e1c322c-aea6-4484-8fdc-7b3227a9d359',
+    '76b50f76-afb2-4185-ab7d-4d62c0654885',
+    '76b50f76-afb2-4185-ab7d-4d62c0654881'
+  ],
 
   accountTypes: {
     MetaMask: {
@@ -249,13 +286,13 @@ export const CACHE_INIT_DEV: LocalCache = {
   allDerivationPathOptions: [],
 
   addressMetadata: {
-    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
-      address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+    '0x80200997f095da94e404f7e0d581aab1ffba9f7d': {
+      address: '0x80200997f095da94e404f7e0d581aab1ffba9f7d',
       label: 'My Wallet',
       notes: 'This is my wallet.'
     }
   },
-  allAddressMetadata: ['6e1c322c-aea6-4484-8fdc-7b3227a9d359'],
+  allAddressMetadata: ['0x80200997f095da94e404f7e0d581aab1ffba9f7d'],
 
   activeNotifications: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dd': {

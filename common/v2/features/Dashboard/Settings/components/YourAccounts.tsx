@@ -58,7 +58,7 @@ export default function YourAccounts({ toggleFlipped }: Props) {
   return (
     <DashboardPanel heading="Your Accounts" className="AddressBook">
       <CollapsibleTable breakpoint={450} {...accountTable} />
-      <button onClick={toggleFlipped}>Flip</button>
+      <button onClick={toggleFlipped}>Add Account</button>
     </DashboardPanel>
   );
 }

@@ -1,9 +1,10 @@
 export interface Transaction {
   stage: string;
   label: string;
-  date: string;
+  date: number;
   from: string;
   to: string;
+  value: number;
   fiatValue: { USD: string };
 }
 

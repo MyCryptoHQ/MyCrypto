@@ -2,7 +2,7 @@ import React, { Component, createContext } from 'react';
 import TransactionHistoryServiceBase from 'v2/services/TransactionHistory/TransactionHistory';
 import { TransactionHistory, ExtendedTransactionHistory } from 'v2/services/TransactionHistory';
 
-interface ProviderState {
+export interface ProviderState {
   transactionHistories: ExtendedTransactionHistory[];
   createTransactionHistory(transactionHistoryData: TransactionHistory): void;
   deleteTransactionHistory(uuid: string): void;
