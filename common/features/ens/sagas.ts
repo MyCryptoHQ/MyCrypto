@@ -1,9 +1,6 @@
 import { SagaIterator, delay, buffers } from 'redux-saga';
 import { call, put, select, all, actionChannel, take, fork, race } from 'redux-saga/effects';
-
-import { INode } from 'libs/nodes/INode';
 import { IBaseDomainRequest } from 'libs/ens';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
 import { notificationsActions } from 'features/notifications';
 import { ensDomainSelectorSelectors } from './domainSelector';
 import * as types from './types';
@@ -40,10 +37,8 @@ function* resolveDomain(): SagaIterator {
         continue;
       }
 
-      const node: INode = yield select(configNodesSelectors.getNodeLib);
-
       const result: { domainData: IBaseDomainRequest; error: any } = yield race({
-        domainData: call(helpers.resolveDomainRequest, domain, node),
+        domainData: call(helpers.resolveDomainRequest, domain),
         err: call(delay, 10000)
       });
 

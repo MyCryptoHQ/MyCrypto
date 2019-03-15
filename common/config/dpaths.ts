@@ -55,7 +55,7 @@ export const POA_DEFAULT: DPath = {
 
 export const TOMO_DEFAULT: DPath = {
   label: 'Default (TOMO)',
-  value: "m/44'/1'/0'/0"
+  value: "m/44'/889'/0'/0"
 };
 
 export const ELLA_DEFAULT: DPath = {
@@ -158,6 +158,11 @@ export const ARTIS_TAU1: DPath = {
   value: "m/44'/60'/0'/0"
 };
 
+export const THUNDERCORE_DEFAULT: DPath = {
+  label: 'Default (THUNDERCORE)',
+  value: "m/44'/1001'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -189,7 +194,8 @@ export const DPaths: DPath[] = [
   MIX_DEFAULT,
   REOSC_DEFAULT,
   ARTIS_SIGMA1,
-  ARTIS_TAU1
+  ARTIS_TAU1,
+  THUNDERCORE_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

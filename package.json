@@ -1,7 +1,7 @@
 {
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
-  "version": "1.5.9",
+  "version": "1.6.1",
   "main": "main.js",
   "description": "MyCrypto web and electron app",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
@@ -62,6 +62,7 @@
     "rskjs-util": "1.0.3",
     "scryptsy": "2.0.0",
     "semver": "5.5.0",
+    "trezor-connect": "7.0.1",
     "trezor.js": "6.17.5",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.2.4",

@@ -1,4 +1,4 @@
-declare module 'vendor/trezor-connect' {
+declare module 'trezor-connect' {
   type Path = number[] | string;
 
   interface TxSignature {
@@ -50,6 +50,8 @@ declare module 'vendor/trezor-connect' {
   type Response<T> = ErrorResponse | SuccessResponse<T>;
 
   namespace TrezorConnect {
+    export function manifest(data): void;
+
     export function getPublicKey(pathObj): any;
 
     export function ethereumSignTransaction(signTransactionMessage): any;

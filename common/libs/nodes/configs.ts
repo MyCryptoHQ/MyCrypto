@@ -122,10 +122,10 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
 
   TOMO: [
     {
-      name: makeNodeName('TOMO', 'tomocoin'),
+      name: makeNodeName('TOMO', 'tomochain'),
       type: 'rpc',
-      service: 'tomocoin.io',
-      url: 'https://core.tomocoin.io'
+      service: 'tomochain.com',
+      url: 'https://rpc.tomochain.com'
     }
   ],
 
@@ -324,6 +324,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'rpc.tau1.artis.network',
       url: 'https://rpc.tau1.artis.network'
+    }
+  ],
+
+  THUNDERCORE: [
+    {
+      name: makeNodeName('THUNDERCORE', 'thundercore'),
+      type: 'rpc',
+      service: 'thundercore.com',
+      url: 'https://mainnet-rpc.thundercore.com'
     }
   ]
 };
