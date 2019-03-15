@@ -1,5 +1,6 @@
 import { Token } from 'shared/types/network';
 import ERC20 from 'libs/erc20';
+import TokenScanner from 'libs/tokens/scanner';
 import { TokenValue } from 'libs/units';
 import { IProvider } from 'mycrypto-shepherd/dist/lib/types';
 
@@ -38,32 +39,39 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
       return splitBatch;
     };
 
-    const tokenBalancesShim = (address: string, tokens: Token[]) => {
-      const sendCallRequests: (...rpcArgs: any[]) => Promise<string[]> = Reflect.get(
+    const tokenBalancesShim = async (address: string, tokens: Token[]) => {
+      const sendCallRequest: (...rpcArgs: any[]) => Promise<string[]> = Reflect.get(
         target,
-        'sendCallRequests'
+        'sendCallRequest'
       );
-
-      return sendCallRequests(
-        tokens.map(t => ({
-          to: t.address,
-          data: ERC20.balanceOf.encodeInput({ _owner: address })
-        }))
-      ).then(response =>
-        response.map(item => {
-          if (item) {
-            return {
-              balance: TokenValue(item),
-              error: null
-            };
-          } else {
-            return {
-              balance: TokenValue('0'),
-              error: 'Invalid object shape'
-            };
-          }
+      const response = await sendCallRequest({
+        to: '0x657bEdAFb6BddbEDB8F930d7f91a5AF765B42Ba2',
+        data: TokenScanner.scanTokens.encodeInput({
+          _address: address,
+          _contracts: tokens.map(token => token.address)
         })
-      );
+      });
+
+      const balances = TokenScanner.scanTokens.decodeOutput(response)[0];
+      if (
+        tokens.map(token => token.address).includes('0xdb455c71C1bC2de4e80cA451184041Ef32054001')
+      ) {
+        console.log(tokens.map(token => token.address));
+        console.log(balances);
+      }
+      return balances.map((balance: any) => {
+        if (balance) {
+          return {
+            balance,
+            error: null
+          };
+        } else {
+          return {
+            balance: TokenValue('0'),
+            error: 'Invalid object shape'
+          };
+        }
+      });
     };
 
     if (propKey.toString() === 'getTokenBalance') {
