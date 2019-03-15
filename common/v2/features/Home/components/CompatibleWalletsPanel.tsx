@@ -33,6 +33,7 @@ export default function CompatibleWalletsPanel() {
     arrows: false,
     swipe: false,
     variableWidth: true,
+    initialSlide: 2,
     responsive: [
       {
         breakpoint: 820,
@@ -40,7 +41,18 @@ export default function CompatibleWalletsPanel() {
           swipe: true,
           slidesToShow: 1,
           centerMode: true,
-          swipeToSlide: true
+          swipeToSlide: false,
+          initialSlide: 1
+        }
+      },
+      {
+        breakpoint: 470,
+        settings: {
+          swipe: true,
+          slidesToShow: 1,
+          centerMode: true,
+          swipeToSlide: true,
+          initialSlide: 0
         }
       }
     ]

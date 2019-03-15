@@ -6,7 +6,8 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #f7f7f7;
+  max-width: $screen-xxl;
+  width: 100%;
 
   @media (max-width: $screen-lg) {
     flex-direction: column;
