@@ -200,7 +200,7 @@
     "dev:https": "cross-env HTTPS=true node webpack_config/devServer.js",
     "predev:https": "check-node-version --package",
     "dev:electron":
-      "concurrently --kill-others --names 'webpack,electron' 'cross-env BUILD_ELECTRON=true node webpack_config/devServer.js' 'webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js'",
+      "concurrently --kill-others --names \"webpack,electron\" \"cross-env BUILD_ELECTRON=true node webpack_config/devServer.js\" \"webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js\"",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
