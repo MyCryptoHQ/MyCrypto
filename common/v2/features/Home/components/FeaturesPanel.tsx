@@ -46,7 +46,7 @@ const Feature: React.SFC<FeatureProps> = props => {
 
 export default function FeaturesPanel() {
   return (
-    <Panel basic className="FeaturesPanel">
+    <Panel basic={true} className="FeaturesPanel">
       <div className="titleArea">
         <Typography className="title">
           Managing and storing your assets has never been easier.

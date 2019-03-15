@@ -5,7 +5,7 @@ import './BottomActionPanel.scss';
 
 export default function BottomActionPanel() {
   return (
-    <Panel basic className="BottomActionPanel">
+    <Panel basic={true} className="BottomActionPanel">
       <Typography className="BottomActionPanel-title">
         Ready to start managing your funds safely and confidently?
       </Typography>
