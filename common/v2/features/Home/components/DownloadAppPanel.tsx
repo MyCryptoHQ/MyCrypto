@@ -2,6 +2,7 @@ import React from 'react';
 import { Panel, Typography, Button } from '@mycrypto/ui';
 
 import './DownloadAppPanel.scss';
+import translate from 'translations';
 
 import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
 
@@ -10,11 +11,10 @@ export default function DownloadAppPanel() {
     <Panel basic={true} className="DownloadAppPanel">
       <div className="DownloadAppPanel-callToAction">
         <Typography className="DownloadAppPanel-callToAction-title">
-          Everything is Even More Secure with our Desktop App
+          {translate('HOME_DOWNLOAD_TITLE')}
         </Typography>
         <Typography className="DownloadAppPanel-callToAction-description">
-          Keep your keys out of the browser with the MyCrypto Desktop App. You get more access to
-          your funds, and scammers get less access to you.
+          {translate('HOME_DOWNLOAD_DESCRIPTION')}
         </Typography>
         <Button className="DownloadAppPanel-callToAction-button">Download for macOS</Button>
       </div>

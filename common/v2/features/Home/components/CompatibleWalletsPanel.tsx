@@ -3,6 +3,8 @@ import { Panel, Typography } from '@mycrypto/ui';
 import Slider from 'react-slick';
 
 import './CompatibleWalletsPanel.scss';
+import translate, { translateRaw } from 'translations';
+
 import metamaskIcon from 'common/assets/images/wallets/metamask.png';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
@@ -11,14 +13,13 @@ import safeTIcon from 'common/assets/images/wallets/safe-t.png';
 
 interface WalletCardProps {
   src: string;
-  alt: string;
   text: string;
 }
 
-const WalletCard: React.SFC<WalletCardProps> = ({ src, alt, text }) => {
+const WalletCard: React.SFC<WalletCardProps> = ({ src, text }) => {
   return (
     <div className="CompatibleWalletsPanel-wallets-WalletCard">
-      <img src={src} alt={alt} />
+      <img src={src} alt={text} />
       <Typography>{text}</Typography>
     </div>
   );
@@ -61,18 +62,20 @@ export default function CompatibleWalletsPanel() {
   return (
     <Panel basic={true} className="CompatibleWalletsPanel">
       <div className="CompatibleWalletsPanel-heading">
-        <Typography className="CompatibleWalletsPanel-heading-name">Fully Compatible</Typography>
+        <Typography className="CompatibleWalletsPanel-heading-name">
+          {translate('HOME_WALLETS_HEADER')}
+        </Typography>
         <Typography className="CompatibleWalletsPanel-heading-description">
-          Use with your favorite hardware and software wallets:
+          {translate('HOME_WALLETS_DESCRIPTION')}
         </Typography>
       </div>
       <div className="CompatibleWalletsPanel-wallets">
         <Slider {...settings}>
-          <WalletCard src={metamaskIcon} alt={'metamask'} text={'Metamask'} />
-          <WalletCard src={ledgerIcon} alt={'ledger'} text={'Ledger'} />
-          <WalletCard src={trezorIcon} alt={'trezor'} text={'Trezor'} />
-          <WalletCard src={paritySignerIcon} alt={'parity signer'} text={'Parity Signer'} />
-          <WalletCard src={safeTIcon} alt={'safe t'} text={'Safe-T Mini'} />
+          <WalletCard src={metamaskIcon} text={translateRaw('X_METAMASK')} />
+          <WalletCard src={ledgerIcon} text={translateRaw('X_LEDGER')} />
+          <WalletCard src={trezorIcon} text={translateRaw('X_TREZOR')} />
+          <WalletCard src={paritySignerIcon} text={translateRaw('X_PARITYSIGNER')} />
+          <WalletCard src={safeTIcon} text={translateRaw('X_SAFE_T')} />
         </Slider>
       </div>
     </Panel>
