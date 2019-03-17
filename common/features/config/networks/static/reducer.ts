@@ -664,7 +664,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       origin: 'https://devexplorer.pirl.io'
     }),
     tokens: [],
-    contracts: [],
+    contracts: require('config/contracts/pirl.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: PIRL_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: PIRL_DEFAULT,
