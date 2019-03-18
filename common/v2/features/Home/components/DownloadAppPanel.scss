@@ -5,54 +5,51 @@
   display: flex;
   justify-content: space-between;
   flex: 1;
-  padding: 148px 168px 180px 148px;
+  padding: 88px 148px 88px 148px;
   max-width: $screen-xxl;
 
-  @media (max-width: $screen-sm) {
+  @media (max-width: $screen-md) {
     flex-direction: column;
     align-items: center;
+  }
+
+  @media (max-width: $screen-sm) {
     padding: 50px 12px 42px 12px;
   }
 
-  &-callToAction {
+  .callToAction {
     display: flex;
     flex-direction: column;
     order: 1;
 
-    @media (max-width: $screen-sm) {
+    @media (max-width: $screen-md) {
       order: 2;
       align-items: center;
       text-align: center;
     }
-    &-title {
-      font-size: 2vw;
+    .title {
+      font-size: 35px;
       font-weight: bold;
       color: white;
       line-height: normal;
       max-width: 559px;
 
-      @media (min-width: $screen-xl) {
-        font-size: 35px;
-      }
       @media (max-width: $screen-sm) {
         font-size: 23px;
       }
     }
-    &-description {
+    .description {
       max-width: 646px;
-      font-size: 1.8vw;
+      font-size: 30px;
       line-height: 1.5;
       margin-top: 8px;
       color: white;
 
-      @media (min-width: $screen-xl) {
-        font-size: 30px;
-      }
       @media (max-width: $screen-sm) {
         font-size: 16px;
       }
     }
-    &-button {
+    .button {
       max-width: 300px;
       font-size: 18px;
       font-weight: normal;
@@ -60,18 +57,17 @@
     }
   }
 
-  &-image {
-    margin-left: 10vw;
-    width: 17vw;
+  .image {
+    margin-left: 50px;
+    width: 244px;
     order: 2;
-    @media (min-width: $screen-xl) {
-      width: 256px;
-    }
-    @media (max-width: $screen-sm) {
+
+    @media (max-width: $screen-md) {
       order: 1;
-      margin-left: 0;
-      margin-bottom: 50px;
-      margin-right: 40px;
+      margin: 0 42px 42px 0;
+    }
+
+    @media (max-width: $screen-sm) {
       width: 127px;
     }
   }
