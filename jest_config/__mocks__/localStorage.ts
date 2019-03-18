@@ -1,5 +1,5 @@
 class LocalStorageMock {
-  private store: object;
+  private store: Record<string, string>;
 
   constructor() {
     this.store = {};
@@ -9,15 +9,15 @@ class LocalStorageMock {
     this.store = {};
   }
 
-  public getItem(key) {
+  public getItem(key: string): string | null {
     return this.store[key];
   }
 
-  public setItem(key, value) {
+  public setItem(key: string, value: string) {
     this.store[key] = value.toString();
   }
 
-  public removeItem(key) {
+  public removeItem(key: string) {
     delete this.store[key];
   }
 }

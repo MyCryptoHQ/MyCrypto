@@ -85,12 +85,16 @@ const runShCommand = (cmd: string): Promise<string> =>
     const stdout: string[] = [];
     const stderr: string[] = [];
 
-    sh.stdout.on('data', data => {
-      stdout.push(data.toString());
-    });
-    sh.stderr.on('data', data => {
-      stderr.push(data.toString());
-    });
+    if (sh.stdout) {
+      sh.stdout.on('data', data => {
+        stdout.push(data.toString());
+      });
+    }
+    if (sh.stderr) {
+      sh.stderr.on('data', data => {
+        stderr.push(data.toString());
+      });
+    }
     sh.on('close', code => {
       if (code !== 0) {
         console.error(stderr.join(''));
