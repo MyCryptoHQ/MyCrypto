@@ -88,9 +88,24 @@
       border-radius: 3px;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
 
+      .mobile {
+        display: none;
+      }
+
+      @media (max-width: $screen-sm) {
+        .mobile {
+          display: block;
+        }
+
+        .non-mobile {
+          display: none;
+        }
+      }
+
       img {
         width: 53px;
         height: 53px;
+        display: inline;
       }
 
       p {
