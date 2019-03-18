@@ -28,6 +28,7 @@ import * as types from './types';
 import * as actions from './actions';
 import * as sagas from './sagas';
 import { isSchedulingEnabled } from 'features/schedule/selectors';
+import { conductMaxNonceCheck } from './sagas';
 
 describe('Network Sagas', () => {
   describe('From', () => {
@@ -395,7 +396,7 @@ describe('Network Sagas', () => {
           {
             hash: '0xecc044b81a794fc567dd389b7709b89a3a0a001dcdd151fc442c57982cfa012b',
             from: 'fromaddress',
-            chainId: 1,
+            chainId: 11,
             nonce: 8,
             to: '0x3d1F9d958AFa2e94dab3f3Ce7362b87daEa39017',
             value: '0x0',
@@ -404,6 +405,18 @@ describe('Network Sagas', () => {
         ])
       );
       const transactionCountString = '0x9';
+      const transactionCount = 9;
+      const fromAddress = 'fromaddress';
+      const transaction: any = {
+        hash: '0xecc044b81a794fc567dd389b7709b89a3a0a001dcdd151fc442c57982cfa012b',
+        from: 'fromaddress',
+        chainId: 11,
+        nonce: 8,
+        to: '0x3d1F9d958AFa2e94dab3f3Ce7362b87daEa39017',
+        value: '0x0',
+        time: 1544811728723
+      };
+      const tx = { transaction };
 
       const gens: any = {};
       gens.gen = cloneableGenerator(sagas.handleNonceRequest)();
@@ -460,9 +473,19 @@ describe('Network Sagas', () => {
       });
 
       it('should select transactionSelectors', () => {
-        expect(gens.gen.next(recentTransactions).value).toEqual(
+        expect(gens.gen.next(transactionCount).value).toEqual(
           select(transactionsSelectors.getRecentTransactions)
         );
+      });
+
+      it('should select transactionSelectors', () => {
+        expect(gens.gen.next(recentTransactions).value).toEqual(
+          select(derivedSelectors.getTransaction)
+        );
+      });
+
+      it('should call getTransactionFields', () => {
+        expect(gens.gen.next(tx).value).toEqual(call(getTransactionFields, transaction));
       });
     });
 
