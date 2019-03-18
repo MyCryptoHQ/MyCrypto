@@ -766,6 +766,9 @@
     "HOME_GET_STARTED_HAVE_WALLET_TITLE" :"I have a wallet",
     "HOME_GET_STARTED_HAVE_WALLET_DESCRIPTION" :"Connect wallet to MyCrypto",
     "HOME_GET_STARTED_USED_TITLE" :"I've used MyCrypto",
-    "HOME_GET_STARTED_USED_DESCRIPTION" :"Continue to Dashboard"
+    "HOME_GET_STARTED_USED_DESCRIPTION" :"Continue to Dashboard",
+    "HOME_BOTTOM_TITLE" :"Ready to start managing your funds safely and confidently?",
+    "HOME_BOTTOM_GET_STARTED" :"Get Started",
+    "HOME_BOTTOM_HELP" :"Have Questions? We're Here to Help!"
   }
 }
