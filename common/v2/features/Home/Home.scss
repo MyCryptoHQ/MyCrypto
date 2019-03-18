@@ -8,7 +8,7 @@
 
   &-compatibleWallets {
     width: 100%;
-    background-color: #f7f7f7;
+    background-color: $silver;
     display: flex;
     justify-content: center;
   }
@@ -21,14 +21,14 @@
 
   &-testimonials {
     width: 100%;
-    background-color: #f7f7f7;
+    background-color: $silver;
     display: flex;
     justify-content: center;
   }
 
   &-downloadApp {
     width: 100%;
-    background-color: #163150;
+    background-color: $dark-slate-blue;
     display: flex;
     justify-content: center;
   }

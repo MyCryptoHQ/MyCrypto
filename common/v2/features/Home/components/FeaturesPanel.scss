@@ -22,7 +22,7 @@
     .title {
       font-size: 35px;
       font-weight: bold;
-      color: #163150;
+      color: $dark-slate-blue;
       line-height: 1.5;
 
       @media (max-width: $screen-sm) {
@@ -34,7 +34,7 @@
       line-height: 1.5;
       margin-top: 8px;
       font-weight: normal;
-      color: #163150;
+      color: $dark-slate-blue;
 
       @media (max-width: $screen-sm) {
         font-size: 16px;
@@ -76,7 +76,7 @@
         .title {
           font-size: 30px;
           font-weight: bold;
-          color: #163150;
+          color: $dark-slate-blue;
           line-height: normal;
 
           @media (min-width: $screen-xl) {
@@ -98,7 +98,7 @@
           line-height: 1.5;
           margin-top: 8px;
           font-weight: normal;
-          color: #163150;
+          color: $dark-slate-blue;
 
           @media (min-width: $screen-xl) {
             font-size: 21px;

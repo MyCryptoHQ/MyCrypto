@@ -10,7 +10,7 @@
     font-size: 30px;
     text-align: center;
     font-weight: bold;
-    color: #163150;
+    color: $dark-slate-blue;
     line-height: normal;
 
     @media (max-width: $screen-sm) {
@@ -34,7 +34,7 @@
     text-align: center;
     margin-top: 18px;
     font-weight: bold;
-    color: #1eb8e7;
+    color: $bright-sky-blue;
     line-height: normal;
   }
 }
