@@ -1,14 +1,12 @@
 @import 'common/sass/variables';
 
 .BottomActionPanel {
-  /*   padding-top: 84px;
-  padding-bottom: 84px; */
   padding: 84px 84px 46px 84px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  &-title {
+  .title {
     font-size: 30px;
     text-align: center;
     font-weight: bold;
@@ -20,7 +18,7 @@
     }
   }
 
-  &-button {
+  .button {
     font-size: 18px;
     margin-top: 60px;
     width: 300px;
@@ -31,7 +29,7 @@
     }
   }
 
-  &-link {
+  .link {
     font-size: 18px;
     text-align: center;
     margin-top: 18px;
