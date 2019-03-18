@@ -5,10 +5,11 @@
   display: flex;
   justify-content: space-between;
   flex: 1;
-  padding: 88px 148px 88px 148px;
+  padding: 148px;
   max-width: $screen-xxl;
 
   @media (max-width: $screen-md) {
+    padding: 88px 148px;
     flex-direction: column;
     align-items: center;
   }
@@ -50,6 +51,7 @@
       }
     }
     .button {
+      width: 100%;
       max-width: 300px;
       font-size: 18px;
       font-weight: normal;
