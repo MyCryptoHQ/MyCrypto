@@ -60,7 +60,8 @@ const accountTable = {
       return aLabel.localeCompare(bLabel);
     },
     hiddenHeadings: ['Favorite'],
-    iconColumns: ['Favorite']
+    iconColumns: ['Favorite'],
+    reversedColumns: ['Value']
   }
 };
 */
