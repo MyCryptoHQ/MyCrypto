@@ -57,6 +57,12 @@
       align-items: center;
       margin-bottom: 80px;
 
+      &.right {
+        @media (min-width: $screen-lg) {
+          flex-direction: row-reverse;
+        }
+      }
+
       @media (max-width: $screen-lg) {
         flex-direction: column;
         margin-bottom: 0;
