@@ -1,10 +1,14 @@
 import React, { Component, createContext } from 'react';
 import DerivationPathOptionsServiceBase from 'v2/services/DerivationPathOptions/DerivationPathOptions';
-import { ExtendedDerivationPathOptions } from 'v2/services/DerivationPathOptions';
+import {
+  ExtendedDerivationPathOptions,
+  DerivationPathOptions
+} from 'v2/services/DerivationPathOptions';
 
 export interface ProviderState {
   derivationPathOptions: ExtendedDerivationPathOptions[];
   createDerivationPathOptions(derivationPathOptionsData: ExtendedDerivationPathOptions): void;
+  readDerivationPathOptions(uuid: string): DerivationPathOptions;
   deleteDerivationPathOptions(uuid: string): void;
   updateDerivationPathOptions(
     uuid: string,
@@ -22,6 +26,9 @@ export class DerivationPathOptionsProvider extends Component {
     createDerivationPathOptions: (derivationPathOptionsData: ExtendedDerivationPathOptions) => {
       DerivationPathOptions.createDerivationPathOptions(derivationPathOptionsData);
       this.getDerivationPathOptions();
+    },
+    readDerivationPathOptions: (uuid: string): DerivationPathOptions => {
+      return DerivationPathOptions.readDerivationPathOptions(uuid);
     },
     deleteDerivationPathOptions: (uuid: string) => {
       DerivationPathOptions.deleteDerivationPathOptions(uuid);

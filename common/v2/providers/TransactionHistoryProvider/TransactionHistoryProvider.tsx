@@ -5,6 +5,7 @@ import { TransactionHistory, ExtendedTransactionHistory } from 'v2/services/Tran
 export interface ProviderState {
   transactionHistories: ExtendedTransactionHistory[];
   createTransactionHistory(transactionHistoryData: TransactionHistory): void;
+  readTransactionHistory(uuid: string): TransactionHistory;
   deleteTransactionHistory(uuid: string): void;
   updateTransactionHistory(uuid: string, transactionHistoryData: TransactionHistory): void;
 }
@@ -19,6 +20,9 @@ export class TransactionHistoryProvider extends Component {
     createTransactionHistory: (transactionHistoryData: TransactionHistory) => {
       TransactionHistory.createTransactionHistory(transactionHistoryData);
       this.getTransactionHistories();
+    },
+    readTransactionHistory: (uuid: string): TransactionHistory => {
+      return TransactionHistory.readTransactionHistory(uuid);
     },
     deleteTransactionHistory: (uuid: string) => {
       TransactionHistory.deleteTransactionHistory(uuid);

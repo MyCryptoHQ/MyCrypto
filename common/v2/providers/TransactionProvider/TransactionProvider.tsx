@@ -5,6 +5,7 @@ import { Transaction, ExtendedTransaction } from 'v2/services/Transaction';
 export interface ProviderState {
   transactions: ExtendedTransaction[];
   createTransaction(transactionData: ExtendedTransaction): void;
+  readTransaction(uuid: string): Transaction;
   deleteTransaction(uuid: string): void;
   updateTransaction(uuid: string, transactionData: ExtendedTransaction): void;
 }
@@ -20,7 +21,9 @@ export class TransactionProvider extends Component {
       Transaction.createTransaction(transactionData);
       this.getTransactions();
     },
-
+    readTransaction: (uuid: string): Transaction => {
+      return Transaction.readTransaction(uuid);
+    },
     deleteTransaction: (uuid: string) => {
       Transaction.deleteTransaction(uuid);
       this.getTransactions();

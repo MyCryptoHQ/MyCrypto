@@ -5,6 +5,7 @@ import { LocalSetting, ExtendedLocalSetting } from 'v2/services/LocalSettings';
 interface ProviderState {
   localSettings: ExtendedLocalSetting[];
   createLocalSetting(localSettingData: LocalSetting): void;
+  readLocalSetting(uuid: string): LocalSetting;
   deleteLocalSetting(uuid: string): void;
   updateLocalSetting(uuid: string, LocalSettingData: LocalSetting): void;
 }
@@ -19,6 +20,9 @@ export class LocalSettingProvider extends Component {
     createLocalSetting: (localSettingData: LocalSetting) => {
       LocalSetting.createLocalSetting(localSettingData);
       this.getLocalSettings();
+    },
+    readLocalSetting: (uuid: string): LocalSetting => {
+      return LocalSetting.readLocalSetting(uuid);
     },
     deleteLocalSetting: (uuid: string) => {
       LocalSetting.deleteLocalSetting(uuid);

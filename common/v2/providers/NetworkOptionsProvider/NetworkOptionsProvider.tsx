@@ -1,10 +1,11 @@
 import React, { Component, createContext } from 'react';
 import NetworkOptionsServiceBase from 'v2/services/NetworkOptions/NetworkOptions';
-import { ExtendedNetworkOptions } from 'v2/services/NetworkOptions';
+import { NetworkOptions, ExtendedNetworkOptions } from 'v2/services/NetworkOptions';
 
 export interface ProviderState {
   networkOptions: ExtendedNetworkOptions[];
   createNetworkOptions(networkOptionsData: ExtendedNetworkOptions): void;
+  readNetworkOptions(uuid: string): NetworkOptions;
   deleteNetworkOptions(uuid: string): void;
   updateNetworkOptions(uuid: string, networkOptionsData: ExtendedNetworkOptions): void;
 }
@@ -19,6 +20,9 @@ export class NetworkOptionsProvider extends Component {
     createNetworkOptions: (networkOptionsData: ExtendedNetworkOptions) => {
       NetworkOptions.createNetworkOptions(networkOptionsData);
       this.getNetworkOptions();
+    },
+    readNetworkOptions: (uuid: string) => {
+      return NetworkOptions.readNetworkOptions(uuid);
     },
     deleteNetworkOptions: (uuid: string) => {
       NetworkOptions.deleteNetworkOptions(uuid);

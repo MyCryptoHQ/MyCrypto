@@ -1,10 +1,11 @@
 import React, { Component, createContext } from 'react';
 import NodeOptionsServiceBase from 'v2/services/NodeOptions/NodeOptions';
-import { ExtendedNodeOptions } from 'v2/services/NodeOptions';
+import { NodeOptions, ExtendedNodeOptions } from 'v2/services/NodeOptions';
 
 export interface ProviderState {
   nodeOptions: ExtendedNodeOptions[];
   createNodeOptions(nodeOptionsData: ExtendedNodeOptions): void;
+  readNodeOptions(uuid: string): NodeOptions;
   deleteNodeOptions(uuid: string): void;
   updateNodeOptions(uuid: string, nodeOptionsData: ExtendedNodeOptions): void;
 }
@@ -19,6 +20,9 @@ export class NodeOptionsProvider extends Component {
     createNodeOptions: (nodeOptionsData: ExtendedNodeOptions) => {
       NodeOptions.createNodeOptions(nodeOptionsData);
       this.getNodeOptions();
+    },
+    readNodeOptions: (uuid: string): NodeOptions => {
+      return NodeOptions.readNodeOptions(uuid);
     },
     deleteNodeOptions: (uuid: string) => {
       NodeOptions.deleteNodeOptions(uuid);

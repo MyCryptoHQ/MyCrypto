@@ -1,10 +1,11 @@
 import React, { Component, createContext } from 'react';
 import ContractOptionsServiceBase from 'v2/services/ContractOptions/ContractOptions';
-import { ExtendedContractOptions } from 'v2/services/ContractOptions';
+import { ContractOptions, ExtendedContractOptions } from 'v2/services/ContractOptions';
 
 export interface ProviderState {
   contractOptions: ExtendedContractOptions[];
   createContractOptions(contractOptionsData: ExtendedContractOptions): void;
+  readContractOptions(uuid: string): ContractOptions;
   deleteContractOptions(uuid: string): void;
   updateContractOptions(uuid: string, contractOptionsData: ExtendedContractOptions): void;
 }
@@ -19,6 +20,9 @@ export class ContractOptionsProvider extends Component {
     createContractOptions: (contractOptionsData: ExtendedContractOptions) => {
       ContractOptions.createContractOptions(contractOptionsData);
       this.getContractOptions();
+    },
+    readContractOptions: (uuid: string) => {
+      return ContractOptions.readContractOptions(uuid);
     },
     deleteContractOptions: (uuid: string) => {
       ContractOptions.deleteContractOptions(uuid);
