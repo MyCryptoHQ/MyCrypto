@@ -1,10 +1,10 @@
 @import 'common/sass/variables';
 
 .CompatibleWalletsPanel {
-  padding: 25px 0px;
+  padding: 25px 148px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   max-width: $screen-xxl;
   width: 100%;
@@ -15,7 +15,7 @@
   }
 
   @media (max-width: $screen-sm) {
-    padding-bottom: 50px;
+    padding: 25px 12px 50px 12px;
   }
 
   &-heading {
@@ -43,7 +43,7 @@
   }
 
   &-wallets {
-    max-width: 100vw;
+    max-width: 800px;
 
     .slick-dots {
       bottom: -35px;

@@ -1,14 +1,27 @@
 @import 'common/sass/variables';
 
 .GetStartedPanel {
-  padding: 0;
+  padding-left: 148px;
+  padding-bottom: 24px;
   display: flex;
+
+  @media (min-width: $screen-xxl) {
+    padding: 0 148px 24px 148px;
+  }
+
+  @media (max-width: $screen-lg) {
+    padding-left: 64px;
+  }
+
+  @media (max-width: $screen-sm) {
+    padding: 0 12px;
+  }
 
   .titleImageWrapper {
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
-    width: 55%;
+    width: 60%;
     background-color: white;
 
     @media (max-width: $screen-sm) {
@@ -18,13 +31,12 @@
   .actionsWrapper {
     display: flex;
     flex-direction: column;
-    width: 45%;
+    width: 40%;
     background-color: white;
-    padding-left: 8vw;
     padding-top: 30px;
     @media (max-width: $screen-sm) {
       flex: 1;
-      padding: 0;
+      padding: 0 0 24px 0;
       align-items: center;
     }
     .title {
