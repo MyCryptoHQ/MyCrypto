@@ -2,6 +2,7 @@ import React from 'react';
 import { Panel, Typography } from '@mycrypto/ui';
 
 import './FeaturesPanel.scss';
+import translate from 'translations';
 
 import manageWalletsImage from 'common/assets/images/manage-your-wallets.svg';
 import viewDashboardImage from 'common/assets/images/view-dashboard.svg';
@@ -12,8 +13,8 @@ import viewDashboardImageMobile from 'common/assets/images/view-dashboard-mobile
 import yourCryptoImageMobile from 'common/assets/images/control-crypto-mobile.svg';
 
 interface FeatureProps {
-  name: string;
-  description: string;
+  name: React.ReactElement<any>;
+  description: React.ReactElement<any>;
   image: string;
   mobileImage: string;
   captionLeft: boolean;
@@ -48,31 +49,27 @@ export default function FeaturesPanel() {
   return (
     <Panel basic={true} className="FeaturesPanel">
       <div className="titleArea">
-        <Typography className="title">
-          Managing and storing your assets has never been easier.
-        </Typography>
-        <Typography className="description">
-          The MyCrypto apps put your safety & security first.
-        </Typography>
+        <Typography className="title">{translate('HOME_FEATURES_TITLE')}</Typography>
+        <Typography className="description">{translate('HOME_FEATURES_DESCRIPTION')}</Typography>
       </div>
       <div className="featuresSection">
         <Feature
-          name="Manage Your Wallets"
-          description="MyCrypto allows you to create, import, and manage all the wallets you'll ever need."
+          name={translate('HOME_FEATURES_MANAGE_TITLE')}
+          description={translate('HOME_FEATURES_MANAGE_DESCRIPTION')}
           image={manageWalletsImage}
           mobileImage={manageWalletsImageMobile}
           captionLeft={true}
         />
         <Feature
-          name="View Your Dashboard"
-          description="See a detailed breakdown of all your wallets, tokens, and transactions."
+          name={translate('HOME_FEATURES_VIEW_TITLE')}
+          description={translate('HOME_FEATURES_VIEW_DESCRIPTION')}
           image={viewDashboardImage}
           mobileImage={viewDashboardImageMobile}
           captionLeft={false}
         />
         <Feature
-          name="Control Your Crypto"
-          description="Manage your information and your cryptocurrency easily and without fear."
+          name={translate('HOME_FEATURES_CONTROL_TITLE')}
+          description={translate('HOME_FEATURES_CONTROL_DESCRIPTION')}
           image={yourCryptoImage}
           mobileImage={yourCryptoImageMobile}
           captionLeft={true}

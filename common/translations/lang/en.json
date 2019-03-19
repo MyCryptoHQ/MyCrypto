@@ -769,6 +769,14 @@
     "HOME_GET_STARTED_USED_DESCRIPTION" :"Continue to Dashboard",
     "HOME_BOTTOM_TITLE" :"Ready to start managing your funds safely and confidently?",
     "HOME_BOTTOM_GET_STARTED" :"Get Started",
-    "HOME_BOTTOM_HELP" :"Have Questions? We're Here to Help!"
+    "HOME_BOTTOM_HELP" :"Have Questions? We're Here to Help!",
+    "HOME_FEATURES_TITLE" :"Managing and storing your assets has never been easier.",
+    "HOME_FEATURES_DESCRIPTION" :"The MyCrypto apps put your safety & security first.",
+    "HOME_FEATURES_MANAGE_TITLE" :"Manage Your Wallets",
+    "HOME_FEATURES_MANAGE_DESCRIPTION" :"MyCrypto allows you to create, import, and manage all the wallets you'll ever need.",
+    "HOME_FEATURES_VIEW_TITLE" :"View Your Dashboard",
+    "HOME_FEATURES_VIEW_DESCRIPTION" :"See a detailed breakdown of all your wallets, tokens, and transactions.",
+    "HOME_FEATURES_CONTROL_TITLE" :"Control Your Crypto",
+    "HOME_FEATURES_CONTROL_DESCRIPTION" :"Manage your information and your cryptocurrency easily and without fear."
   }
 }
