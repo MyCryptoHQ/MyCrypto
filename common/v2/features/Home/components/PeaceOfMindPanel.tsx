@@ -16,9 +16,9 @@ interface ContentItemProps {
 const ContentItem: React.SFC<ContentItemProps> = props => {
   const { icon, description } = props;
   return (
-    <div className="PeaceOfMindPanel-content-item">
-      <img src={icon} className="PeaceOfMindPanel-content-item-image" />
-      <Typography className="PeaceOfMindPanel-content-item-description">{description}</Typography>
+    <div className="item">
+      <img src={icon} className="image" />
+      <Typography className="description">{description}</Typography>
     </div>
   );
 };
@@ -26,15 +26,13 @@ const ContentItem: React.SFC<ContentItemProps> = props => {
 export default function PeaceOfMindPanel() {
   return (
     <Panel basic={true} className="PeaceOfMindPanel">
-      <div className="PeaceOfMindPanel-titleArea">
-        <Typography className="PeaceOfMindPanel-titleArea-title">
-          {translate('HOME_PEACE_OF_MIND_HEADER')}
-        </Typography>
-        <Typography className="PeaceOfMindPanel-titleArea-description">
+      <div className="titleArea">
+        <Typography className="title">{translate('HOME_PEACE_OF_MIND_HEADER')}</Typography>
+        <Typography className="description">
           {translate('HOME_PEACE_OF_MIND_DESCRIPTION')}
         </Typography>
       </div>
-      <div className="PeaceOfMindPanel-content">
+      <div className="content">
         <ContentItem icon={vaultIcon} description={translate('HOME_PEACE_OF_MIND_VAULT')} />
         <ContentItem icon={protectIcon} description={translate('HOME_PEACE_OF_MIND_PROTECT')} />
         <ContentItem
@@ -42,13 +40,9 @@ export default function PeaceOfMindPanel() {
           description={translate('HOME_PEACE_OF_MIND_OPENSOURCE')}
         />
       </div>
-      <div className="PeaceOfMindPanel-actions">
-        <Button className="PeaceOfMindPanel-actions-button">
-          {translate('HOME_PEACE_OF_MIND_GET_STARTED')}
-        </Button>
-        <Button className="PeaceOfMindPanel-actions-button">
-          {translate('HOME_PEACE_OF_MIND_DOWNLOAD')}
-        </Button>
+      <div className="actions">
+        <Button className="button">{translate('HOME_PEACE_OF_MIND_GET_STARTED')}</Button>
+        <Button className="button">{translate('HOME_PEACE_OF_MIND_DOWNLOAD')}</Button>
       </div>
     </Panel>
   );

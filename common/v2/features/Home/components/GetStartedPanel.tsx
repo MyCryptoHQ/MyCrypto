@@ -20,14 +20,12 @@ interface ActionCardProps {
 const ActionCard: React.SFC<ActionCardProps> = props => {
   const { name, description, icon } = props;
   return (
-    <Panel basic={true} className={'GetStartedPanel-actionsWrapper-card'}>
-      <div className={'GetStartedPanel-actionsWrapper-card-captionsWrapper'}>
-        <Typography className="GetStartedPanel-actionsWrapper-card-name">{name}</Typography>
-        <Typography className="GetStartedPanel-actionsWrapper-card-description">
-          {description}
-        </Typography>
+    <Panel basic={true} className={'card'}>
+      <div className={'captionsWrapper'}>
+        <Typography className="name">{name}</Typography>
+        <Typography className="description">{description}</Typography>
       </div>
-      <img src={icon} alt={name} className="GetStartedPanel-actionsWrapper-card-icon" />
+      <img src={icon} alt={name} className="icon" />
     </Panel>
   );
 };
@@ -35,19 +33,11 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
 export default function GetStartedPanel() {
   return (
     <Panel basic={true} className="GetStartedPanel">
-      <Panel basic={true} className="GetStartedPanel-actionsWrapper">
-        <Typography className="GetStartedPanel-actionsWrapper-title">
-          {translate('HOME_GET_STARTED_TITLE')}
-        </Typography>
-        <Typography className="GetStartedPanel-actionsWrapper-description">
-          {translate('HOME_GET_STARTED_DESCRIPTION')}
-        </Typography>
-        <img
-          className="GetStartedPanel-actionsWrapper-image"
-          src={titleIllustration}
-          alt="Title Illustration"
-        />
-        <div className={'GetStartedPanel-actionsWrapper-cardsWrapper'}>
+      <Panel basic={true} className="actionsWrapper">
+        <Typography className="title">{translate('HOME_GET_STARTED_TITLE')}</Typography>
+        <Typography className="description">{translate('HOME_GET_STARTED_DESCRIPTION')}</Typography>
+        <img className="image" src={titleIllustration} alt="Title Illustration" />
+        <div className={'cardsWrapper'}>
           <ActionCard
             name={translateRaw('HOME_GET_STARTED_NEED_WALLET_TITLE')}
             description={translate('HOME_GET_STARTED_NEED_WALLET_DESCRIPTION')}
@@ -65,7 +55,7 @@ export default function GetStartedPanel() {
           />
         </div>
       </Panel>
-      <Panel basic={true} className="GetStartedPanel-titleImageWrapper">
+      <Panel basic={true} className="titleImageWrapper">
         <img src={titleIllustration} alt="Title Illustration" />
       </Panel>
     </Panel>

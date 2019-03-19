@@ -7,9 +7,9 @@ import translate from 'translations';
 export default function BottomActionPanel() {
   return (
     <Panel basic={true} className="BottomActionPanel">
-      <Typography className="BottomActionPanel-title">{translate('HOME_BOTTOM_TITLE')}</Typography>
-      <Button className="BottomActionPanel-button">{translate('HOME_BOTTOM_GET_STARTED')}</Button>
-      <Typography className="BottomActionPanel-link">{translate('HOME_BOTTOM_HELP')}</Typography>
+      <Typography className="title">{translate('HOME_BOTTOM_TITLE')}</Typography>
+      <Button className="button">{translate('HOME_BOTTOM_GET_STARTED')}</Button>
+      <Typography className="link">{translate('HOME_BOTTOM_HELP')}</Typography>
     </Panel>
   );
 }

@@ -1,214 +1,728 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="375px" height="932px" viewBox="0 0 375 932" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: sketchtool 53.2 (72643) - https://sketchapp.com -->
-    <title>0EFC2C9C-4B99-4A38-BD8F-E4DD90E57515</title>
-    <desc>Created with sketchtool.</desc>
-    <defs>
-        <rect id="path-1" x="0" y="0" width="335" height="820" rx="2.349"></rect>
-        <filter x="-4.5%" y="-1.8%" width="109.0%" height="103.7%" filterUnits="objectBoundingBox" id="filter-2">
-            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0.196078431   0 0 0 0 0.196078431   0 0 0 0 0.364705882  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
-            <feOffset dx="0" dy="3" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
-            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.07 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
-            <feMerge>
-                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
-                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
-            </feMerge>
-        </filter>
-        <circle id="path-3" cx="118.4625" cy="118.4625" r="84.6160714"></circle>
-        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="169.232143" height="169.232143" fill="white">
-            <use xlink:href="#path-3"></use>
-        </mask>
-        <circle id="path-5" cx="118.4625" cy="118.4625" r="84.6160714"></circle>
-        <mask id="mask-6" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="169.232143" height="169.232143" fill="white">
-            <use xlink:href="#path-5"></use>
-        </mask>
-        <circle id="path-7" cx="118.4625" cy="118.4625" r="84.6160714"></circle>
-        <mask id="mask-8" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="169.232143" height="169.232143" fill="white">
-            <use xlink:href="#path-7"></use>
-        </mask>
-        <circle id="path-9" cx="118.4625" cy="118.4625" r="84.6160714"></circle>
-        <mask id="mask-10" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="169.232143" height="169.232143" fill="white">
-            <use xlink:href="#path-9"></use>
-        </mask>
-        <path d="M118.4625,223.202082 C177.033481,223.202082 224.514643,176.028842 224.514643,117.837701 C224.514643,82.759456 207.080457,51.3728366 180.544491,32.2218 C170.565106,46.4715489 149.871109,75.0101825 118.4625,117.837701 C118.4625,175.73969 118.4625,210.86115 118.4625,223.202082 Z" id="path-11"></path>
-        <filter x="-38.2%" y="-18.6%" width="166.9%" height="137.2%" filterUnits="objectBoundingBox" id="filter-12">
-            <feOffset dx="-5" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="11" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0.117647059   0 0 0 0 0.117647059   0 0 0 0 0.117647059  0 0 0 0.25 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
-        </filter>
-    </defs>
-    <g id="Homepage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Homepage---Mobile" transform="translate(0.000000, -1358.000000)">
-            <g id="Group-23" transform="translate(-70.000000, 1358.000000)">
-                <circle id="Oval" fill="#FFD166" cx="82.5" cy="849.5" r="82.5"></circle>
-                <circle id="Oval" fill-opacity="0.263193837" fill="#1EB8E7" cx="419" cy="52" r="52"></circle>
-                <g id="Group-10" transform="translate(89.000000, 30.000000)">
-                    <g id="card">
-                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
-                    </g>
-                </g>
-                <g id="Piechart" transform="translate(138.000000, 102.000000)">
-                    <g id="piechart">
-                        <use id="very-unsatisfied" stroke-opacity="0.25" stroke="#A682FF" mask="url(#mask-4)" stroke-width="169.232143" stroke-dasharray="79.78086967468262,846.1605895996094" transform="translate(118.462500, 118.462500) rotate(-306.000000) translate(-118.462500, -118.462500) " xlink:href="#path-3"></use>
-                        <use id="unsatisfied" stroke-opacity="0.35" stroke="#A682FF" mask="url(#mask-6)" stroke-width="169.232143" stroke-dasharray="79.78086967468262,846.1605895996094" transform="translate(118.462500, 118.462500) rotate(-252.000000) translate(-118.462500, -118.462500) " xlink:href="#path-5"></use>
-                        <use id="neutral" stroke-opacity="0.55" stroke="#A682FF" mask="url(#mask-8)" stroke-width="169.232143" stroke-dasharray="79.78086967468262,846.1605895996094" transform="translate(118.462500, 118.462500) rotate(-198.000000) translate(-118.462500, -118.462500) " xlink:href="#path-7"></use>
-                        <use id="satisfied" stroke-opacity="0.8" stroke="#A682FF" mask="url(#mask-10)" stroke-width="169.232143" stroke-dasharray="79.78086967468262,846.1605895996094" transform="translate(118.462500, 118.462500) rotate(-144.000000) translate(-118.462500, -118.462500) " xlink:href="#path-9"></use>
-                        <g id="very-satisfied">
-                            <use fill="black" fill-opacity="1" filter="url(#filter-12)" xlink:href="#path-11"></use>
-                            <use fill="#A682FF" fill-rule="evenodd" xlink:href="#path-11"></use>
-                        </g>
-                    </g>
-                    <text id="ETH" font-family="Lato-Bold, Lato" font-size="13.2678" font-weight="bold" fill="#FFFFFF">
-                        <tspan x="154.216087" y="140.9395">ETH</tspan>
-                    </text>
-                    <text id="OMG" font-family="Lato-Bold, Lato" font-size="13.2678" font-weight="bold" fill="#FFFFFF">
-                        <tspan x="107.444221" y="76.4959">OMG</tspan>
-                    </text>
-                    <text id="STK" font-family="Lato-Bold, Lato" font-size="13.2678" font-weight="bold" fill="#FFFFFF">
-                        <tspan x="67.1809599" y="92.6068">STK</tspan>
-                    </text>
-                    <text id="ZRX" font-family="Lato-Bold, Lato" font-size="13.2678" font-weight="bold" fill="#FFFFFF">
-                        <tspan x="53.2832222" y="134.3056">ZRX</tspan>
-                    </text>
-                    <text id="STK" font-family="Lato-Bold, Lato" font-size="13.2678" font-weight="bold" fill="#FFFFFF">
-                        <tspan x="83.2918599" y="173.1613">STK</tspan>
-                    </text>
-                </g>
-                <text id="43%-of-Your-Funds" font-family="Lato-Regular, Lato" font-size="12.48" font-weight="normal" fill="#282D32">
-                    <tspan x="119.25216" y="394">43% of Your Funds </tspan>
-                </text>
-                <text id="Value-in-US-Dollars" font-family="Lato-Regular, Lato" font-size="12.48" font-weight="normal" fill="#282D32">
-                    <tspan x="287" y="394">Value in US Dollars  </tspan>
-                </text>
-                <text id="Ethereum" font-family="Lato-Bold, Lato" font-size="18.72" font-weight="bold" fill="#282D32">
-                    <tspan x="116.33248" y="373">Ethereum</tspan>
-                </text>
-                <text id="$5,204.12" font-family="Lato-Bold, Lato" font-size="18.72" font-weight="bold" fill="#282D32">
-                    <tspan x="287" y="374">$5,204.12</tspan>
-                </text>
-                <text id="Wallet-Breakdown" font-family="Lato-Bold, Lato" font-size="18.72" font-weight="bold" fill="#424242">
-                    <tspan x="106" y="78">Wallet Breakdown</tspan>
-                </text>
-                <text id="Balance" font-family="Lato-Bold, Lato" font-size="18.792" font-weight="bold" fill="#424242">
-                    <tspan x="151" y="472">Balance</tspan>
-                </text>
-                <g id="balance-/-regular-mode" transform="translate(151.000000, 501.000000)" font-family="Lato-Regular, Lato" font-size="12.528" font-weight="normal">
-                    <g id="Group-3">
-                        <text id="14.13-ETH" fill="#000000">
-                            <tspan x="0" y="27.66">14.13 ETH</tspan>
-                        </text>
-                        <text id="$-3,037.95" fill="#282D32">
-                            <tspan x="147.393544" y="12">$ 3,037.95</tspan>
-                        </text>
-                        <text id="Ethereum" fill="#282D32">
-                            <tspan x="0" y="12.783">Ethereum</tspan>
-                        </text>
-                    </g>
-                </g>
-                <g id="Group-3" transform="translate(151.000000, 806.000000)" fill="#282D32" font-family="Lato-Regular, Lato" font-size="12.528" font-weight="normal">
-                    <text id="$-3,037.95">
-                        <tspan x="149.290448" y="12">$2,974.41</tspan>
-                    </text>
-                    <text id="Ethereum">
-                        <tspan x="0" y="12.783">Total</tspan>
-                    </text>
-                </g>
-                <g id="balance-/-regular-mode" transform="translate(151.000000, 540.000000)" font-family="Lato-Regular, Lato" font-size="12.528" font-weight="normal">
-                    <g id="Group-3">
-                        <text id="14.13-ETH" fill="#000000">
-                            <tspan x="0" y="27.66">208.321234 OMG</tspan>
-                        </text>
-                        <text id="$-3,037.95" fill="#282D32">
-                            <tspan x="159.733624" y="12">$646.80</tspan>
-                        </text>
-                        <text id="Ethereum" fill="#282D32">
-                            <tspan x="0" y="12.783">OmiseGO</tspan>
-                        </text>
-                    </g>
-                </g>
-                <g id="balance-/-regular-mode" transform="translate(151.000000, 578.000000)" font-family="Lato-Regular, Lato" font-size="12.528" font-weight="normal">
-                    <g id="Group-3">
-                        <text id="14.13-ETH" fill="#000000">
-                            <tspan x="0" y="27.66">200 ANT</tspan>
-                        </text>
-                        <text id="$-3,037.95" fill="#282D32">
-                            <tspan x="159.733624" y="12">$159.63</tspan>
-                        </text>
-                        <text id="Ethereum" fill="#282D32">
-                            <tspan x="0" y="12.783">Aragon</tspan>
-                        </text>
-                    </g>
-                </g>
-                <g id="balance-/-regular-mode" transform="translate(151.000000, 657.000000)" font-family="Lato-Regular, Lato" font-size="12.528" font-weight="normal">
-                    <g id="Group-3">
-                        <text id="14.13-ETH" fill="#000000">
-                            <tspan x="0" y="27.66">200 ANT</tspan>
-                        </text>
-                        <text id="$-3,037.95" fill="#282D32">
-                            <tspan x="159.733624" y="12">$159.63</tspan>
-                        </text>
-                        <text id="Ethereum" fill="#282D32">
-                            <tspan x="0" y="12.783">Aragon</tspan>
-                        </text>
-                    </g>
-                </g>
-                <g id="balance-/-regular-mode" transform="translate(151.000000, 616.000000)" font-family="Lato-Regular, Lato" font-size="12.528" font-weight="normal">
-                    <g id="Group-3">
-                        <text id="14.13-ETH" fill="#000000">
-                            <tspan x="0" y="27.66">200 ANT</tspan>
-                        </text>
-                        <text id="$-3,037.95" fill="#282D32">
-                            <tspan x="159.733624" y="12">$159.63</tspan>
-                        </text>
-                        <text id="Ethereum" fill="#282D32">
-                            <tspan x="0" y="12.783">Aragon</tspan>
-                        </text>
-                    </g>
-                </g>
-                <g id="balance-/-regular-mode" transform="translate(151.000000, 699.000000)" font-family="Lato-Regular, Lato" font-size="12.528" font-weight="normal">
-                    <g id="Group-3">
-                        <text id="14.13-ETH" fill="#000000">
-                            <tspan x="0" y="27.66">200 ANT</tspan>
-                        </text>
-                        <text id="$-3,037.95" fill="#282D32">
-                            <tspan x="159.733624" y="12">$159.63</tspan>
-                        </text>
-                        <text id="Ethereum" fill="#282D32">
-                            <tspan x="0" y="12.783">Aragon</tspan>
-                        </text>
-                    </g>
-                </g>
-                <g id="Group-3" transform="translate(151.000000, 747.000000)" font-family="Lato-Regular, Lato" font-weight="normal">
-                    <text id="View-Details" font-size="9.396" fill="#1EB8E7">
-                        <tspan x="0" y="27.792">View Details</tspan>
-                    </text>
-                    <text id="$-3,037.95" font-size="12.528" fill="#282D32">
-                        <tspan x="159.478624" y="12">$140.03</tspan>
-                    </text>
-                    <text id="Ethereum" font-size="12.528" fill="#282D32">
-                        <tspan x="0" y="12.783">Other Tokens</tspan>
-                    </text>
-                </g>
-                <g id="icn-more" transform="translate(342.000000, 455.000000)" fill="#163150" fill-rule="nonzero">
-                    <path d="M9.5,1.58333333 C13.86525,1.58333333 17.4166667,5.13475 17.4166667,9.5 C17.4166667,13.86525 13.86525,17.4166667 9.5,17.4166667 C5.13475,17.4166667 1.58333333,13.86525 1.58333333,9.5 C1.58333333,5.13475 5.13475,1.58333333 9.5,1.58333333 Z M9.5,0 C4.253625,0 0,4.253625 0,9.5 C0,14.746375 4.253625,19 9.5,19 C14.746375,19 19,14.746375 19,9.5 C19,4.253625 14.746375,0 9.5,0 Z M11.0833333,9.5 L7.52083333,13.0625 L8.72970833,14.25 L13.4583333,9.5 L8.72970833,4.75 L7.52083333,5.9375 L11.0833333,9.5 L11.0833333,9.5 Z" id="Shape"></path>
-                </g>
-                <path d="M250,296 L250,571" id="Line" stroke="#E8EAED" stroke-width="0.783" stroke-linecap="square" transform="translate(250.000000, 433.000000) rotate(90.000000) translate(-250.000000, -433.000000) "></path>
-                <path d="M257,688 L257,894.218868" id="Line" stroke="#E8EAED" stroke-width="0.783" stroke-linecap="square" transform="translate(257.000000, 791.500000) rotate(90.000000) translate(-257.000000, -791.500000) "></path>
-                <polygon id="Shape-10" fill="#FFD166" fill-rule="nonzero" points="114.673014 30 108.326986 30 108.326986 34.3269862 104 34.3269862 104 40.6730138 108.326986 40.6730138 108.326986 45 114.673014 45 114.673014 40.6730138 119 40.6730138 119 34.3269862 114.673014 34.3269862"></polygon>
-                <polygon id="Shape-9" fill="#FFD166" fill-rule="nonzero" points="93.9422193 13 85.0577807 13 85.0577807 19.0591068 79 19.0591068 79 27.9454904 85.0577807 27.9454904 85.0577807 34 93.9422193 34 93.9422193 27.9454904 100 27.9454904 100 19.0591068 93.9422193 19.0591068"></polygon>
-            </g>
-            <text id="MyCrypto-allows-you" font-family="Lato-Regular, Lato" font-size="16" font-weight="normal" line-spacing="20" fill="#253E5B">
-                <tspan x="43.172" y="1338">MyCrypto allows you to create, import, and </tspan>
-                <tspan x="58.804" y="1358">manage all the wallets you'll ever need.</tspan>
-            </text>
-            <path d="M291,2270 C303.557557,2289.13476 325.095636,2300.46506 348,2299.98535" id="Path" stroke="#C8B2FF" stroke-width="7.34817814" opacity="0.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(319.500000, 2285.000000) rotate(180.000000) translate(-319.500000, -2285.000000) "></path>
-            <text id="View-Your-Dashboard" font-family="Lato-Bold, Lato" font-size="25" font-weight="bold" line-spacing="45" fill="#163150">
-                <tspan x="56.38125" y="2310">View Your Dashboard</tspan>
-            </text>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   id="svg4071"
+   version="1.1"
+   viewBox="0 0 375 932"
+   height="932px"
+   width="375px">
+  <metadata
+     id="metadata4075">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <!-- Generator: sketchtool 53.2 (72643) - https://sketchapp.com -->
+  <desc
+     id="desc3835">Created with sketchtool.</desc>
+  <defs
+     id="defs3881">
+    <rect
+       rx="2.349"
+       height="820"
+       width="335"
+       y="0"
+       x="0"
+       id="path-1" />
+    <filter
+       id="filter-2"
+       filterUnits="objectBoundingBox"
+       height="103.7%"
+       width="109.0%"
+       y="-1.8%"
+       x="-4.5%">
+      <feOffset
+         id="feOffset3838"
+         result="shadowOffsetOuter1"
+         in="SourceAlpha"
+         dy="0"
+         dx="0" />
+      <feGaussianBlur
+         id="feGaussianBlur3840"
+         result="shadowBlurOuter1"
+         in="shadowOffsetOuter1"
+         stdDeviation="5" />
+      <feColorMatrix
+         id="feColorMatrix3842"
+         result="shadowMatrixOuter1"
+         in="shadowBlurOuter1"
+         type="matrix"
+         values="0 0 0 0 0.196078431   0 0 0 0 0.196078431   0 0 0 0 0.364705882  0 0 0 0.1 0" />
+      <feOffset
+         id="feOffset3844"
+         result="shadowOffsetOuter2"
+         in="SourceAlpha"
+         dy="3"
+         dx="0" />
+      <feGaussianBlur
+         id="feGaussianBlur3846"
+         result="shadowBlurOuter2"
+         in="shadowOffsetOuter2"
+         stdDeviation="2" />
+      <feColorMatrix
+         id="feColorMatrix3848"
+         result="shadowMatrixOuter2"
+         in="shadowBlurOuter2"
+         type="matrix"
+         values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.07 0" />
+      <feMerge
+         id="feMerge3854">
+        <feMergeNode
+           id="feMergeNode3850"
+           in="shadowMatrixOuter1" />
+        <feMergeNode
+           id="feMergeNode3852"
+           in="shadowMatrixOuter2" />
+      </feMerge>
+    </filter>
+    <circle
+       r="84.6160714"
+       cy="118.4625"
+       cx="118.4625"
+       id="path-3" />
+    <mask
+       fill="white"
+       height="169.232143"
+       width="169.232143"
+       y="0"
+       x="0"
+       maskUnits="objectBoundingBox"
+       maskContentUnits="userSpaceOnUse"
+       id="mask-4">
+      <use
+         id="use3858"
+         xlink:href="#path-3" />
+    </mask>
+    <circle
+       r="84.6160714"
+       cy="118.4625"
+       cx="118.4625"
+       id="path-5" />
+    <mask
+       fill="white"
+       height="169.232143"
+       width="169.232143"
+       y="0"
+       x="0"
+       maskUnits="objectBoundingBox"
+       maskContentUnits="userSpaceOnUse"
+       id="mask-6">
+      <use
+         id="use3862"
+         xlink:href="#path-5" />
+    </mask>
+    <circle
+       r="84.6160714"
+       cy="118.4625"
+       cx="118.4625"
+       id="path-7" />
+    <mask
+       fill="white"
+       height="169.232143"
+       width="169.232143"
+       y="0"
+       x="0"
+       maskUnits="objectBoundingBox"
+       maskContentUnits="userSpaceOnUse"
+       id="mask-8">
+      <use
+         id="use3866"
+         xlink:href="#path-7" />
+    </mask>
+    <circle
+       r="84.6160714"
+       cy="118.4625"
+       cx="118.4625"
+       id="path-9" />
+    <mask
+       fill="white"
+       height="169.232143"
+       width="169.232143"
+       y="0"
+       x="0"
+       maskUnits="objectBoundingBox"
+       maskContentUnits="userSpaceOnUse"
+       id="mask-10">
+      <use
+         id="use3870"
+         xlink:href="#path-9" />
+    </mask>
+    <path
+       id="path-11"
+       d="M118.4625,223.202082 C177.033481,223.202082 224.514643,176.028842 224.514643,117.837701 C224.514643,82.759456 207.080457,51.3728366 180.544491,32.2218 C170.565106,46.4715489 149.871109,75.0101825 118.4625,117.837701 C118.4625,175.73969 118.4625,210.86115 118.4625,223.202082 Z" />
+    <filter
+       id="filter-12"
+       filterUnits="objectBoundingBox"
+       height="137.2%"
+       width="166.9%"
+       y="-18.6%"
+       x="-38.2%">
+      <feOffset
+         id="feOffset3874"
+         result="shadowOffsetOuter1"
+         in="SourceAlpha"
+         dy="0"
+         dx="-5" />
+      <feGaussianBlur
+         id="feGaussianBlur3876"
+         result="shadowBlurOuter1"
+         in="shadowOffsetOuter1"
+         stdDeviation="11" />
+      <feColorMatrix
+         id="feColorMatrix3878"
+         in="shadowBlurOuter1"
+         type="matrix"
+         values="0 0 0 0 0.117647059   0 0 0 0 0.117647059   0 0 0 0 0.117647059  0 0 0 0.25 0" />
+    </filter>
+  </defs>
+  <g
+     transform="translate(0,4)"
+     style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1"
+     id="Homepage">
+    <g
+       transform="matrix(1.0167692,0,0,1.0140385,-0.7753068,-1391.5238)"
+       id="Homepage---Mobile">
+      <g
+         transform="translate(-70,1358)"
+         id="Group-23">
+        <circle
+           style="fill:#ffd166"
+           r="82.5"
+           cy="849.5"
+           cx="82.5"
+           id="Oval" />
+        <circle
+           style="fill:#1eb8e7;fill-opacity:0.26319389"
+           r="52"
+           cy="52"
+           cx="419"
+           id="circle3884" />
+        <g
+           transform="translate(89,30)"
+           id="Group-10">
+          <g
+             id="card">
+            <use
+               height="100%"
+               width="100%"
+               y="0"
+               x="0"
+               style="fill:#000000;fill-opacity:1;filter:url(#filter-2)"
+               id="use3886"
+               xlink:href="#path-1" />
+            <use
+               height="100%"
+               width="100%"
+               y="0"
+               x="0"
+               style="fill:#ffffff;fill-rule:evenodd"
+               id="use3888"
+               xlink:href="#path-1" />
+          </g>
         </g>
+        <g
+           transform="translate(138,102)"
+           id="Piechart">
+          <g
+             id="piechart">
+            <use
+               height="100%"
+               width="100%"
+               y="0"
+               x="0"
+               style="stroke:#a682ff;stroke-width:169.23214722;stroke-dasharray:79.78086967, 846.1605896;stroke-opacity:0.25"
+               xlink:href="#path-3"
+               transform="rotate(54,118.4625,118.4625)"
+               mask="url(#mask-4)"
+               id="very-unsatisfied" />
+            <use
+               height="100%"
+               width="100%"
+               y="0"
+               x="0"
+               style="stroke:#a682ff;stroke-width:169.23214722;stroke-dasharray:79.78086967, 846.1605896;stroke-opacity:0.35"
+               xlink:href="#path-5"
+               transform="rotate(108,118.4625,118.4625)"
+               mask="url(#mask-6)"
+               id="unsatisfied" />
+            <use
+               height="100%"
+               width="100%"
+               y="0"
+               x="0"
+               style="stroke:#a682ff;stroke-width:169.23214722;stroke-dasharray:79.78086967, 846.1605896;stroke-opacity:0.55"
+               xlink:href="#path-7"
+               transform="rotate(162,118.4625,118.4625)"
+               mask="url(#mask-8)"
+               id="neutral" />
+            <use
+               height="100%"
+               width="100%"
+               y="0"
+               x="0"
+               style="stroke:#a682ff;stroke-width:169.23214722;stroke-dasharray:79.78086967, 846.1605896;stroke-opacity:0.8"
+               xlink:href="#path-9"
+               transform="rotate(-144,118.4625,118.4625)"
+               mask="url(#mask-10)"
+               id="satisfied" />
+            <g
+               id="very-satisfied">
+              <use
+                 height="100%"
+                 width="100%"
+                 y="0"
+                 x="0"
+                 style="fill:#000000;fill-opacity:1;filter:url(#filter-12)"
+                 id="use3896"
+                 xlink:href="#path-11" />
+              <use
+                 height="100%"
+                 width="100%"
+                 y="0"
+                 x="0"
+                 style="fill:#a682ff;fill-rule:evenodd"
+                 id="use3898"
+                 xlink:href="#path-11" />
+            </g>
+          </g>
+          <text
+             style="font-weight:bold;font-size:13.26780033px;font-family:Lato-Bold, Lato;fill:#ffffff"
+             font-weight="bold"
+             font-size="13.2678"
+             id="ETH">
+            <tspan
+               id="tspan3902"
+               y="140.9395"
+               x="154.21608">ETH</tspan>
+          </text>
+          <text
+             style="font-weight:bold;font-size:13.26780033px;font-family:Lato-Bold, Lato;fill:#ffffff"
+             font-weight="bold"
+             font-size="13.2678"
+             id="OMG">
+            <tspan
+               id="tspan3905"
+               y="76.495903"
+               x="107.44422">OMG</tspan>
+          </text>
+          <text
+             style="font-weight:bold;font-size:13.26780033px;font-family:Lato-Bold, Lato;fill:#ffffff"
+             font-weight="bold"
+             font-size="13.2678"
+             id="STK">
+            <tspan
+               id="tspan3908"
+               y="92.606796"
+               x="67.180962">STK</tspan>
+          </text>
+          <text
+             style="font-weight:bold;font-size:13.26780033px;font-family:Lato-Bold, Lato;fill:#ffffff"
+             font-weight="bold"
+             font-size="13.2678"
+             id="ZRX">
+            <tspan
+               id="tspan3911"
+               y="134.3056"
+               x="53.283222">ZRX</tspan>
+          </text>
+          <text
+             style="font-weight:bold;font-size:13.26780033px;font-family:Lato-Bold, Lato;fill:#ffffff"
+             font-weight="bold"
+             font-size="13.2678"
+             id="text3916">
+            <tspan
+               id="tspan3914"
+               y="173.1613"
+               x="83.291862">STK</tspan>
+          </text>
+        </g>
+        <text
+           style="font-weight:normal;font-size:12.47999954px;font-family:Lato-Regular, Lato;fill:#282d32"
+           font-weight="normal"
+           font-size="12.48"
+           id="43%-of-Your-Funds">
+          <tspan
+             id="tspan3919"
+             y="394"
+             x="119.25216">43% of Your Funds</tspan>
+        </text>
+        <text
+           style="font-weight:normal;font-size:12.47999954px;font-family:Lato-Regular, Lato;fill:#282d32"
+           font-weight="normal"
+           font-size="12.48"
+           id="Value-in-US-Dollars">
+          <tspan
+             id="tspan3922"
+             y="394"
+             x="287">Value in US Dollars</tspan>
+        </text>
+        <text
+           style="font-weight:bold;font-size:18.71999931px;font-family:Lato-Bold, Lato;fill:#282d32"
+           font-weight="bold"
+           font-size="18.72"
+           id="Ethereum">
+          <tspan
+             id="tspan3925"
+             y="373"
+             x="116.33248">Ethereum</tspan>
+        </text>
+        <text
+           style="font-weight:bold;font-size:18.71999931px;font-family:Lato-Bold, Lato;fill:#282d32"
+           font-weight="bold"
+           font-size="18.72"
+           id="$5,204.12">
+          <tspan
+             id="tspan3928"
+             y="374"
+             x="287">$5,204.12</tspan>
+        </text>
+        <text
+           style="font-weight:bold;font-size:18.71999931px;font-family:Lato-Bold, Lato;fill:#424242"
+           font-weight="bold"
+           font-size="18.72"
+           id="Wallet-Breakdown">
+          <tspan
+             id="tspan3931"
+             y="78"
+             x="106">Wallet Breakdown</tspan>
+        </text>
+        <text
+           style="font-weight:bold;font-size:18.79199982px;font-family:Lato-Bold, Lato;fill:#424242"
+           font-weight="bold"
+           font-size="18.792"
+           id="Balance">
+          <tspan
+             id="tspan3934"
+             y="472"
+             x="151">Balance</tspan>
+        </text>
+        <g
+           style="font-weight:normal;font-size:12.52799988px;font-family:Lato-Regular, Lato"
+           font-weight="normal"
+           font-size="12.528"
+           transform="translate(151,501)"
+           id="balance-/-regular-mode">
+          <g
+             id="Group-3">
+            <text
+               style="fill:#000000"
+               id="14.13-ETH">
+              <tspan
+                 id="tspan3937"
+                 y="27.66"
+                 x="0">14.13 ETH</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="$-3,037.95">
+              <tspan
+                 id="tspan3940"
+                 y="12"
+                 x="147.39354">$ 3,037.95</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text3945">
+              <tspan
+                 id="tspan3943"
+                 y="12.783"
+                 x="0">Ethereum</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           style="font-weight:normal;font-size:12.52799988px;font-family:Lato-Regular, Lato;fill:#282d32"
+           font-weight="normal"
+           font-size="12.528"
+           transform="translate(151,806)"
+           id="g3957">
+          <text
+             id="text3951">
+            <tspan
+               id="tspan3949"
+               y="12"
+               x="149.29045">$2,974.41</tspan>
+          </text>
+          <text
+             id="text3955">
+            <tspan
+               id="tspan3953"
+               y="12.783"
+               x="0">Total</tspan>
+          </text>
+        </g>
+        <g
+           style="font-weight:normal;font-size:12.52799988px;font-family:Lato-Regular, Lato"
+           font-weight="normal"
+           font-size="12.528"
+           transform="translate(151,540)"
+           id="g3973">
+          <g
+             id="g3971">
+            <text
+               style="fill:#000000"
+               id="text3961">
+              <tspan
+                 id="tspan3959"
+                 y="27.66"
+                 x="0">208.321234 OMG</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text3965">
+              <tspan
+                 id="tspan3963"
+                 y="12"
+                 x="159.73363">$646.80</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text3969">
+              <tspan
+                 id="tspan3967"
+                 y="12.783"
+                 x="0">OmiseGO</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           style="font-weight:normal;font-size:12.52799988px;font-family:Lato-Regular, Lato"
+           font-weight="normal"
+           font-size="12.528"
+           transform="translate(151,578)"
+           id="g3989">
+          <g
+             id="g3987">
+            <text
+               style="fill:#000000"
+               id="text3977">
+              <tspan
+                 id="tspan3975"
+                 y="27.66"
+                 x="0">200 ANT</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text3981">
+              <tspan
+                 id="tspan3979"
+                 y="12"
+                 x="159.73363">$159.63</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text3985">
+              <tspan
+                 id="tspan3983"
+                 y="12.783"
+                 x="0">Aragon</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           style="font-weight:normal;font-size:12.52799988px;font-family:Lato-Regular, Lato"
+           font-weight="normal"
+           font-size="12.528"
+           transform="translate(151,657)"
+           id="g4005">
+          <g
+             id="g4003">
+            <text
+               style="fill:#000000"
+               id="text3993">
+              <tspan
+                 id="tspan3991"
+                 y="27.66"
+                 x="0">200 ANT</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text3997">
+              <tspan
+                 id="tspan3995"
+                 y="12"
+                 x="159.73363">$159.63</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text4001">
+              <tspan
+                 id="tspan3999"
+                 y="12.783"
+                 x="0">Aragon</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           style="font-weight:normal;font-size:12.52799988px;font-family:Lato-Regular, Lato"
+           font-weight="normal"
+           font-size="12.528"
+           transform="translate(151,616)"
+           id="g4021">
+          <g
+             id="g4019">
+            <text
+               style="fill:#000000"
+               id="text4009">
+              <tspan
+                 id="tspan4007"
+                 y="27.66"
+                 x="0">200 ANT</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text4013">
+              <tspan
+                 id="tspan4011"
+                 y="12"
+                 x="159.73363">$159.63</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text4017">
+              <tspan
+                 id="tspan4015"
+                 y="12.783"
+                 x="0">Aragon</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           style="font-weight:normal;font-size:12.52799988px;font-family:Lato-Regular, Lato"
+           font-weight="normal"
+           font-size="12.528"
+           transform="translate(151,699)"
+           id="g4037">
+          <g
+             id="g4035">
+            <text
+               style="fill:#000000"
+               id="text4025">
+              <tspan
+                 id="tspan4023"
+                 y="27.66"
+                 x="0">200 ANT</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text4029">
+              <tspan
+                 id="tspan4027"
+                 y="12"
+                 x="159.73363">$159.63</tspan>
+            </text>
+            <text
+               style="fill:#282d32"
+               id="text4033">
+              <tspan
+                 id="tspan4031"
+                 y="12.783"
+                 x="0">Aragon</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           style="font-weight:normal;font-family:Lato-Regular, Lato"
+           font-weight="normal"
+           transform="translate(151,747)"
+           id="g4050">
+          <text
+             style="font-size:9.39599991px;fill:#1eb8e7"
+             font-size="9.396"
+             id="View-Details">
+            <tspan
+               id="tspan4039"
+               y="27.792"
+               x="0">View Details</tspan>
+          </text>
+          <text
+             style="font-size:12.52799988px;fill:#282d32"
+             font-size="12.528"
+             id="text4044">
+            <tspan
+               id="tspan4042"
+               y="12"
+               x="159.47862">$140.03</tspan>
+          </text>
+          <text
+             style="font-size:12.52799988px;fill:#282d32"
+             font-size="12.528"
+             id="text4048">
+            <tspan
+               id="tspan4046"
+               y="12.783"
+               x="0">Other Tokens</tspan>
+          </text>
+        </g>
+        <g
+           style="fill:#163150;fill-rule:nonzero"
+           transform="translate(342,455)"
+           id="icn-more">
+          <path
+             id="Shape"
+             d="m 9.5,1.5833333 c 4.36525,0 7.916667,3.5514167 7.916667,7.9166667 0,4.36525 -3.551417,7.916667 -7.916667,7.916667 C 5.13475,17.416667 1.5833333,13.86525 1.5833333,9.5 1.5833333,5.13475 5.13475,1.5833333 9.5,1.5833333 Z M 9.5,0 C 4.253625,0 0,4.253625 0,9.5 0,14.746375 4.253625,19 9.5,19 14.746375,19 19,14.746375 19,9.5 19,4.253625 14.746375,0 9.5,0 Z M 11.083333,9.5 7.5208333,13.0625 8.7297083,14.25 13.458333,9.5 8.7297083,4.75 7.5208333,5.9375 Z" />
+        </g>
+        <path
+           style="stroke:#e8eaed;stroke-width:0.78299999;stroke-linecap:square"
+           transform="rotate(90,250,433)"
+           id="Line"
+           d="M 250,296 V 571" />
+        <path
+           style="stroke:#e8eaed;stroke-width:0.78299999;stroke-linecap:square"
+           transform="rotate(90,257,791.5)"
+           id="path4055"
+           d="M 257,688 V 894.21887" />
+        <polygon
+           style="fill:#ffd166;fill-rule:nonzero"
+           points="104,40.673014 108.32699,40.673014 108.32699,45 114.67301,45 114.67301,40.673014 119,40.673014 119,34.326986 114.67301,34.326986 114.67301,30 108.32699,30 108.32699,34.326986 104,34.326986 "
+           id="Shape-10" />
+        <polygon
+           style="fill:#ffd166;fill-rule:nonzero"
+           points="79,27.94549 85.057781,27.94549 85.057781,34 93.942219,34 93.942219,27.94549 100,27.94549 100,19.059107 93.942219,19.059107 93.942219,13 85.057781,13 85.057781,19.059107 79,19.059107 "
+           id="Shape-9" />
+      </g>
+      <text
+         style="font-weight:normal;font-size:16px;font-family:Lato-Regular, Lato;fill:#253e5b"
+         line-spacing="20"
+         font-weight="normal"
+         font-size="16"
+         id="MyCrypto-allows-you">
+        <tspan
+           id="tspan4060"
+           y="1338"
+           x="43.172001">MyCrypto allows you to create, import, and</tspan>
+        <tspan
+           id="tspan4062"
+           y="1358"
+           x="58.804001">manage all the wallets you'll ever need.</tspan>
+      </text>
+      <path
+         style="opacity:0.4;stroke:#c8b2ff;stroke-width:7.34817791;stroke-linecap:round;stroke-linejoin:round"
+         transform="rotate(180,319.5,2285)"
+         id="Path"
+         d="m 291,2270 c 12.55756,19.1348 34.09564,30.4651 57,29.9854" />
+      <text
+         style="font-weight:bold;font-size:25px;font-family:Lato-Bold, Lato;fill:#163150"
+         line-spacing="45"
+         font-weight="bold"
+         font-size="25"
+         id="View-Your-Dashboard">
+        <tspan
+           id="tspan4066"
+           y="2310"
+           x="56.381248">View Your Dashboard</tspan>
+      </text>
     </g>
+  </g>
 </svg>

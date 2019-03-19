@@ -1,33 +1,45 @@
 @import 'common/sass/variables';
 
 .GetStartedPanel {
-  padding: 0;
+  padding-left: 148px;
+  padding-bottom: 24px;
   display: flex;
 
-  &-titleImageWrapper {
+  @media (min-width: $screen-xxl) {
+    padding: 0 148px 24px 148px;
+  }
+
+  @media (max-width: $screen-lg) {
+    padding-left: 64px;
+  }
+
+  @media (max-width: $screen-sm) {
+    padding: 0 12px;
+  }
+
+  .titleImageWrapper {
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
-    width: 55%;
-    background-color: #fff;
+    width: 60%;
+    background-color: white;
 
     @media (max-width: $screen-sm) {
       display: none;
     }
   }
-  &-actionsWrapper {
+  .actionsWrapper {
     display: flex;
     flex-direction: column;
-    width: 45%;
-    background-color: #fff;
-    padding-left: 8vw;
+    width: 40%;
+    background-color: white;
     padding-top: 30px;
     @media (max-width: $screen-sm) {
       flex: 1;
-      padding: 0;
+      padding: 0 0 24px 0;
       align-items: center;
     }
-    &-title {
+    .title {
       font-weight: bold;
       font-size: 3.1vw;
       font-weight: 900;
@@ -41,8 +53,7 @@
         font-size: 45px;
       }
     }
-    &-description {
-      font-family: Lato;
+    .description {
       font-size: 2vw;
       letter-spacing: normal;
       margin-top: 8px;
@@ -60,13 +71,13 @@
         font-size: 30px;
       }
     }
-    &-image {
+    .image {
       max-width: 400px;
       @media (min-width: $screen-sm) {
         display: none;
       }
     }
-    &-cardsWrapper {
+    .cardsWrapper {
       margin-top: 1.2vw;
 
       @media (max-width: $screen-sm) {
@@ -74,12 +85,12 @@
         flex-direction: row;
       }
     }
-    &-card {
+    .card {
       padding: 1vw 2vw;
       margin-bottom: 15px;
       border-radius: 3px;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
-      border: solid 1px #f7f7f7;
+      border: solid 1px $silver;
       cursor: pointer;
       width: 30vw;
       max-width: 450px;
@@ -91,11 +102,10 @@
         flex-direction: column;
         align-items: center;
         max-width: 105px;
-        margin-left: 6px;
-        margin-right: 6px;
-        padding: 14px 6px 14px 6px;
+        margin: 0 6px;
+        padding: 14px 6px;
       }
-      &-captionsWrapper {
+      .captionsWrapper {
         order: 1;
         @media (max-width: $screen-sm) {
           order: 2;
@@ -103,7 +113,7 @@
           margin-top: 9px;
         }
       }
-      &-name {
+      .name {
         font-size: 1.6vw;
         font-weight: bold;
         margin-bottom: 0;
@@ -115,7 +125,7 @@
           font-size: 26px;
         }
       }
-      &-description {
+      .description {
         font-size: 1.1vw;
         font-weight: normal;
         @media (max-width: $screen-sm) {
@@ -127,7 +137,7 @@
           font-size: 20px;
         }
       }
-      &-icon {
+      .icon {
         width: 4vw;
         height: 4vw;
         max-width: 60px;
