@@ -45,6 +45,10 @@
   &-wallets {
     max-width: 800px;
 
+    @media (max-width: $screen-sm) {
+      max-width: 100vw;
+    }
+
     .slick-dots {
       bottom: -35px;
 

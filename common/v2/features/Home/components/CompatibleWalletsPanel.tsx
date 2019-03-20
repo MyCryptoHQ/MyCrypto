@@ -6,7 +6,7 @@ import './CompatibleWalletsPanel.scss';
 import translate, { translateRaw } from 'translations';
 
 import metamaskIcon from 'common/assets/images/wallets/metamask.png';
-import trustIcon from 'common/assets/images/wallets/trust.svg';
+import trustIcon from 'common/assets/images/wallets/trust-2.png';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
 import paritySignerIcon from 'common/assets/images/wallets/parity-signer-2.svg';
