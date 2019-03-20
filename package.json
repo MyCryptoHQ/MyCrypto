@@ -214,7 +214,6 @@
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
       "npm run tslint",
-      "npm test",
       "git add"
     ]
   },
@@ -227,7 +226,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run tscheck"
+      "pre-commit": "lint-staged && npm run tscheck && npm test"
     }
   }
 }
