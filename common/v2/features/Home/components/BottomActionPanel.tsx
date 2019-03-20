@@ -10,7 +10,7 @@ export default function BottomActionPanel() {
     <Panel basic={true} className="BottomActionPanel">
       <Typography className="title">{translate('HOME_BOTTOM_TITLE')}</Typography>
       <Button className="button">{translate('HOME_BOTTOM_GET_STARTED')}</Button>
-      <a href={MYCRYPTO_SUPPORT_URL} target="_blank">
+      <a href={MYCRYPTO_SUPPORT_URL} target="_blank" rel="noreferrer">
         <Typography className="link">{translate('HOME_BOTTOM_HELP')}</Typography>
       </a>
     </Panel>

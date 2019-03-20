@@ -24,12 +24,12 @@ const OSNames: { [key: string]: string } = {
 const featuredOS = getFeaturedOS();
 
 export default class Home extends Component {
-  state = {
+  public state = {
     appDownloadLink: DEFAULT_LINK,
     OSName: OSNames[featuredOS]
   };
 
-  componentDidMount = async () => {
+  public componentDidMount = async () => {
     try {
       const releaseURLs = await GithubService.instance.getReleasesURLs();
       const currentPlatformURL = releaseURLs[featuredOS] || DEFAULT_LINK;
@@ -59,10 +59,7 @@ export default class Home extends Component {
             />
           </section>
           <section className="Home-peaceOfMind">
-            <PeaceOfMindPanel
-              downloadLink={this.state.appDownloadLink}
-              OSName={this.state.OSName}
-            />
+            <PeaceOfMindPanel downloadLink={this.state.appDownloadLink} />
           </section>
           <section className="Home-testimonials">
             <TestimonialsPanel />
