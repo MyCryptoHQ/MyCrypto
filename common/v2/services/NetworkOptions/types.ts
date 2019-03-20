@@ -1,12 +1,21 @@
+import { GasPriceSetting } from 'types/network';
+
 export interface NetworkOptions {
-  name: string;
-  blockExplorer: string;
-  tokenExplorer: string;
-  chainId: number;
   contracts: string[];
-  derivationPaths: string[];
-  assets: string[];
-  nodes: string[];
+  assets?: string[];
+  nodes?: string[];
+  id: string;
+  name: string;
+  unit: string;
+  chainId: number;
+  isCustom: boolean;
+  color: string;
+  blockExplorer: {};
+  tokenExplorer: {};
+  tokens: {};
+  dPathFormats: {};
+  gasPriceSettings: GasPriceSetting;
+  shouldEstimateGasPrice: boolean;
 }
 
 export interface ExtendedNetworkOptions extends NetworkOptions {

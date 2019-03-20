@@ -3,6 +3,8 @@ export interface AccountType {
   key: string;
   secure: boolean;
   derivationPath: string;
+  web3: boolean;
+  hardware: boolean;
 }
 
 export interface ExtendedAccountType extends AccountType {

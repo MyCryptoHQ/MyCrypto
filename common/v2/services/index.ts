@@ -20,3 +20,5 @@ export * from './FiatCurrency';
 export * from './AssetOption';
 export * from './RecentAccounts';
 export * from './AddressMetadata';
+
+export * from './types';

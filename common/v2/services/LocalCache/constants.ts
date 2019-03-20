@@ -1,128 +1,54 @@
-import { Account } from '../Account';
-import { AssetOption } from '../AssetOption';
-import { LocalSetting } from '../LocalSettings';
-import { Transaction } from '../Transaction';
-import { FiatCurrency } from '../FiatCurrency';
+import * as serviceTypes from 'v2/services/types';
 
 export const CACHE_KEY = 'MyCryptoCache';
 
 export interface LocalCache {
-  currents: Partial<{
-    account?: string[];
-    fiatCurrency?: string;
-    activeWallet?: string;
-  }>;
+  currents: Partial<serviceTypes.Currents>;
 
-  globalSettings: Partial<{
-    fiatCurrency?: string;
-    darkMode?: boolean;
-  }>;
+  globalSettings: Partial<serviceTypes.GlobalSettings>;
 
   recentAccounts: string[];
 
-  accounts: Record<string, Account>;
+  accounts: Record<string, serviceTypes.Account>;
   allAccounts: string[];
 
-  transactionHistories: Record<
-    string,
-    {
-      transaction: string;
-    }
-  >;
+  transactionHistories: Record<string, serviceTypes.TransactionHistory>;
   allTransactionHistories: string[];
 
-  transactions: Record<string, Transaction>;
+  transactions: Record<string, serviceTypes.Transaction>;
   allTransactions: string[];
 
-  accountTypes: Record<
-    string,
-    {
-      name: string;
-      key: string;
-      secure: boolean;
-      derivationPath: string;
-    }
-  >;
+  accountTypes: Record<string, serviceTypes.AccountType>;
   allAccountTypes: string[];
 
-  assets: Record<
-    string,
-    {
-      option: string;
-      amount: string;
-    }
-  >;
+  assets: Record<string, serviceTypes.Asset>;
   allAssets: string[];
 
-  localSettings: Record<string, LocalSetting>;
+  localSettings: Record<string, serviceTypes.LocalSetting>;
   allLocalSettings: string[];
 
-  networkOptions: Record<
-    string,
-    {
-      name: string;
-      blockExplorer: string;
-      tokenExplorer: string;
-      chainId: number;
-      contracts: string[];
-      derivationPaths: string[];
-      assets: string[];
-      nodes: string[];
-    }
-  >;
+  networkOptions: Record<string, serviceTypes.NetworkOptions>;
   allNetworkOptions: string[];
 
-  nodeOptions: Record<
-    string,
-    {
-      name: string;
-    }
-  >;
+  nodeOptions: Record<string, serviceTypes.NodeOptions>;
   allNodeOptions: string[];
 
-  assetOptions: Record<string, AssetOption>;
+  assetOptions: Record<string, serviceTypes.AssetOption>;
   allAssetOptions: string[];
 
-  contractOptions: Record<
-    string,
-    {
-      name: string;
-      network: string;
-      address: string;
-      abi: string;
-    }
-  >;
+  contractOptions: Record<string, serviceTypes.ContractOptions>;
   allContractOptions: string[];
 
-  derivationPathOptions: Record<
-    string,
-    {
-      name: string;
-      derivationPath: string;
-      active: boolean;
-    }
-  >;
+  derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   allDerivationPathOptions: string[];
 
-  addressMetadata: Record<
-    string,
-    {
-      address: string;
-      label: string;
-      notes: string;
-    }
-  >;
+  addressMetadata: Record<string, serviceTypes.AddressMetadata>;
   allAddressMetadata: string[];
 
-  activeNotifications: Record<
-    string,
-    {
-      template: string;
-    }
-  >;
+  activeNotifications: Record<string, serviceTypes.ActiveNotifications>;
   allActiveNotifications: string[];
 
-  fiatCurrencies: Record<string, FiatCurrency>;
+  fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
   allFiatCurrencies: string[];
 }
 
@@ -217,7 +143,9 @@ export const CACHE_INIT_DEV: LocalCache = {
       name: 'MetaMask',
       key: 'metamask',
       secure: true,
-      derivationPath: ''
+      derivationPath: '',
+      web3: true,
+      hardware: false
     }
   },
   allAccountTypes: ['MetaMask'],
@@ -238,19 +166,8 @@ export const CACHE_INIT_DEV: LocalCache = {
   },
   allLocalSettings: ['17ed6f49-ff23-4bef-a676-69174c266b37'],
 
-  networkOptions: {
-    Ethereum: {
-      name: 'Ethereum',
-      blockExplorer: 'etherscan',
-      tokenExplorer: '',
-      chainId: 1,
-      contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
-      derivationPaths: ['17ed6f49-ff23-4bef-a676-69174c266b39'],
-      assets: ['17ed6f49-ff23-4bef-a676-69174c266b30'],
-      nodes: ['Ethereum (Auto)']
-    }
-  },
-  allNetworkOptions: ['Ethereum'],
+  networkOptions: {},
+  allNetworkOptions: [],
 
   nodeOptions: {
     'Ethereum (Auto)': {

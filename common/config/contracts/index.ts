@@ -7,6 +7,16 @@ import RSK from './rsk.json';
 import UBQ from './ubq.json';
 import ESN from './esn.json';
 
+export interface Network {
+  name: string;
+  address: string;
+  abi: string;
+}
+
+export interface Networks {
+  [key: string]: [Network];
+}
+
 export default {
   ETC,
   ETH,
@@ -16,4 +26,4 @@ export default {
   RSK,
   UBQ,
   ESN
-};
+} as Networks;
