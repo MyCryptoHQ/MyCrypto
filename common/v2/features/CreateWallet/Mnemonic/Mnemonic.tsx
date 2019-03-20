@@ -30,7 +30,12 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
             {isMnemonicPanel ? (
               <MnemonicContext.Consumer>
                 {({ words, generateWords }) => (
-                  <ActivePanel words={words} generateWords={generateWords} {...actions} />
+                  <ActivePanel
+                    totalSteps={4}
+                    words={words}
+                    generateWords={generateWords}
+                    {...actions}
+                  />
                 )}
               </MnemonicContext.Consumer>
             ) : (

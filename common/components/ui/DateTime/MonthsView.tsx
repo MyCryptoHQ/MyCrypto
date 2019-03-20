@@ -58,9 +58,9 @@ export default class DateTimePickerMonths extends Component<Props> {
     const date = this.props.selectedDate;
     const month = this.props.viewDate.month();
     const year = this.props.viewDate.year();
-    const rows = [];
+    const rows: JSX.Element[] = [];
     let i = 0;
-    let months = [];
+    let months: JSX.Element[] = [];
     const renderer = this.props.renderMonth || this.renderMonth;
     const isValid = this.props.isValidDate || this.alwaysValidDate;
     let classes;

@@ -19,7 +19,7 @@ interface Props {
   onSelect(uuid: string): void;
 }
 
-export class AccountDropdown extends Component<Props> {
+export class AccountDropdown extends Component<Props, { open: boolean }> {
   public state = {
     open: false
   };
@@ -76,9 +76,15 @@ export class AccountDropdown extends Component<Props> {
 
 const ModifiedAccountDropdown = onClickOutside(AccountDropdown);
 
+interface State {
+  accountsById: Record<string, { uuid: string; name: string; address: string }>;
+  allAccounts: string[];
+  visibleAccounts: string[];
+}
+
 // tslint:disable-next-line
-export default class MockContext extends Component {
-  public state = {
+export default class MockContext extends Component<{}, State> {
+  public state: State = {
     accountsById: {
       '1': {
         uuid: '1',
@@ -121,7 +127,7 @@ export default class MockContext extends Component {
           : []
     }));
 
-  private toggleSingleAccount = uuid =>
+  private toggleSingleAccount = (uuid: string) =>
     this.setState(prevState => ({
       visibleAccounts: prevState.visibleAccounts.includes(uuid)
         ? prevState.visibleAccounts.filter(entry => entry !== uuid)

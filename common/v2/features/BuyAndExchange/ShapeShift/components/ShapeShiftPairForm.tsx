@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage, FormikErrors } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikErrors, FormikActions } from 'formik';
 
 import { MarketPairHash } from 'v2/services';
 import { AssetOption } from '../types';
@@ -19,7 +19,7 @@ interface Values {
 interface Props {
   rates: MarketPairHash | null;
   assets: AssetOption[];
-  onSubmit(values: any, bag: any): void;
+  onSubmit(values: Values, bag: FormikActions<Values>): void;
 }
 
 const validate = (values: Values, rates: MarketPairHash): FormikErrors<Values> => {
@@ -110,9 +110,9 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
         withdraw: assets[1].ticker,
         withdrawAmount: '0.0000000'
       }}
-      validate={(values: any) => validate(values, rates)}
+      validate={(values: Values) => validate(values, rates)}
       onSubmit={onSubmit}
-      render={(props: any) => {
+      render={props => {
         return (
           <section className="ShapeShiftWidget">
             <Form>

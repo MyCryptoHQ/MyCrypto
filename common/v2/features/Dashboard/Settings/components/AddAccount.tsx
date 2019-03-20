@@ -1,9 +1,5 @@
 import React from 'react';
 
-interface Props {
-  toggleFlipped(): void;
-}
-
-export default function AddAccount({ toggleFlipped }: Props) {
+export default function AddAccount() {
   return <p>Add Account</p>;
 }

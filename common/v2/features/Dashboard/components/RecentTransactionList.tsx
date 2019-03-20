@@ -23,7 +23,7 @@ const recentTransactions = [
     uuid: '76b50f76-afb2-4185-ab7d-4d62c0654883',
     stage: 'pending',
     label: 'OmiseGO Sent',
-    date: '1547768373',
+    date: 1547768373,
     from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
     to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
     amount: '42.69 OMG',
@@ -35,7 +35,7 @@ const recentTransactions = [
     uuid: '76b50f76-afb2-4185-ab7d-4d62c0654884',
     stage: 'pending',
     label: 'EOS Received',
-    date: '1547730000',
+    date: 1547730000,
     from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
     to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
     amount: '513.20 EOS',
@@ -47,7 +47,7 @@ const recentTransactions = [
     uuid: '76b50f76-afb2-4185-ab7d-4d62c0654885',
     stage: 'completed',
     label: 'Ethereum Purchased',
-    date: '1547720000',
+    date: 1547720000,
     from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
     to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
     amount: '4.123 ETH',
@@ -58,7 +58,7 @@ const recentTransactions = [
 ];
 const pending = recentTransactions.filter(tx => tx.stage === 'pending');
 const completed = recentTransactions.filter(tx => tx.stage === 'completed');
-const createEntries = (_, collection) =>
+const createEntries = (_: string, collection: typeof recentTransactions) =>
   collection.map(({ label, stage, date, from, to, amount, fiat, uuid }) => [
     <TransactionLabel
       key={0}
@@ -92,7 +92,8 @@ const recentTransactionsTable = {
     sortableColumn: 'Date',
     sortFunction: (a: any, b: any) => a.props.date - b.props.date,
     hiddenHeadings: ['View More'],
-    iconColumns: ['View More']
+    iconColumns: ['View More'],
+    reversedColumns: ['Amount']
   }
 };
 
