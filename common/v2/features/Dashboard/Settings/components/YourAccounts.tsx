@@ -50,7 +50,8 @@ const accountTable = {
       return aLabel.localeCompare(bLabel);
     },
     hiddenHeadings: ['Favorite', 'Delete'],
-    iconColumns: ['Favorite', 'Delete']
+    iconColumns: ['Favorite', 'Delete'],
+    reversedColumns: ['Value']
   }
 };
 
