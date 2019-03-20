@@ -39,7 +39,7 @@ export default class Home extends Component {
     }
   };
 
-  render() {
+  public render() {
     return (
       <Layout className="WhiteBackground" fluid={true}>
         <section className="Home">
