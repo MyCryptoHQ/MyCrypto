@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 
 import './CompatibleWalletsPanel.scss';
 import translate, { translateRaw } from 'translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 import metamaskIcon from 'common/assets/images/wallets/metamask.png';
 import trustIcon from 'common/assets/images/wallets/trust-2.png';
@@ -19,15 +20,19 @@ interface WalletCardProps {
   mobileText?: string;
 }
 
+const trackWalletLink = (wallet: string) => {
+  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${wallet} wallet button clicked`);
+};
+
 const WalletCard: React.SFC<WalletCardProps> = ({ src, text, mobileSrc, mobileText }) => {
   return (
     <div className="CompatibleWalletsPanel-wallets-WalletCard">
-      <div className={mobileSrc ? 'non-mobile' : ''}>
+      <div className={mobileSrc ? 'non-mobile' : ''} onClick={() => trackWalletLink(text)}>
         <img src={src} alt={text} />
         <Typography>{text}</Typography>
       </div>
       {mobileSrc && (
-        <div className="mobile">
+        <div className="mobile" onClick={() => trackWalletLink(mobileText || text)}>
           <img src={mobileSrc} alt={mobileText} />
           <Typography>{mobileText}</Typography>
         </div>

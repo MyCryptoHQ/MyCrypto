@@ -4,6 +4,7 @@ import { Panel, Typography, Button } from '@mycrypto/ui';
 import './PeaceOfMindPanel.scss';
 import translate from 'translations';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/features/constants';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 import vaultIcon from 'common/assets/images/icn-vault2.svg';
 import protectIcon from 'common/assets/images/icn-protect.svg';
@@ -48,7 +49,9 @@ export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
         />
       </div>
       <div className="actions">
-        <Button className="button">{translate('HOME_PEACE_OF_MIND_GET_STARTED')}</Button>
+        <Button className="button" onClick={trackGetStartedClick}>
+          {translate('HOME_PEACE_OF_MIND_GET_STARTED')}
+        </Button>
         <Button className="button" onClick={() => openDownloadLink(downloadLink)}>
           {translate('HOME_PEACE_OF_MIND_DOWNLOAD')}
         </Button>
@@ -57,7 +60,15 @@ export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
   );
 }
 
+const trackGetStartedClick = () => {
+  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `Get Started on Web button clicked`);
+};
+
 const openDownloadLink = (link: string) => {
   const target = link === DEFAULT_LINK ? '_blank' : '_self';
   window.open(link, target);
+  AnalyticsService.instance.track(
+    ANALYTICS_CATEGORIES.HOME,
+    `Download the Desktop App button clicked`
+  );
 };
