@@ -74,7 +74,7 @@ export const makeAutoNodeName = (network: string) => makeNodeName(network, autoN
 /**
  * Assemble shepherd providers from node configs. Includes pseudo-configs
  */
-const WEB3_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'ETC'];
+const WEB3_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'ETC', 'Goerli'];
 Object.entries(NODE_CONFIGS).forEach(([network, nodes]) => {
   const nodeProviderConf = makeProviderConfig({ network });
   const web3ProviderConf = WEB3_NETWORKS.includes(network)

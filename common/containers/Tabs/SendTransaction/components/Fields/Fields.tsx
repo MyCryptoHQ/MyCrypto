@@ -18,7 +18,8 @@ import {
   SchedulingToggle,
   ScheduleFields,
   GenerateScheduleTransactionButton,
-  SendScheduleTransactionButton
+  SendScheduleTransactionButton,
+  SchedulingModals
 } from 'components';
 import { OnlyUnlocked, WhenQueryExists } from 'components/renderCbs';
 import { NonStandardTransaction } from './components';
@@ -101,6 +102,8 @@ class FieldsClass extends Component<StateProps & DispatchProps> {
                 <NonStandardTransaction />
 
                 {this.getTxButton()}
+
+                <SchedulingModals />
               </div>
             )}
           </React.Fragment>

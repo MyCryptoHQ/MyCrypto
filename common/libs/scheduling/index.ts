@@ -247,7 +247,7 @@ export const getValidateRequestParamsData = (
   });
 };
 
-export const getTXDetailsCheckURL = (txHash: string) => {
+export const getAwaitingMiningURL = (txHash: string) => {
   return `${EAC_SCHEDULING_CONFIG.DAPP_ADDRESS}/awaiting/scheduler/${txHash}`;
 };
 
