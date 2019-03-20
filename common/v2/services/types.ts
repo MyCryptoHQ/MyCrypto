@@ -13,26 +13,5 @@ export * from 'v2/services/LocalSettings/types';
 export * from 'v2/services/NetworkOptions/types';
 export * from 'v2/services/NodeOptions/types';
 export * from 'v2/services/RecentAccounts/types';
-export * from 'v2/services/ShapeShift/types';
 export * from 'v2/services/Transaction/types';
 export * from 'v2/services/TransactionHistory/types';
-/*
-export {
-  AccountTypes,
-  AccountTypeTypes,
-  ActiveNotificationsTypes,
-  AddressMetadataTypes,
-  AssetTypes,
-  AssetOptionTypes,
-  ContractOptionsTypes,
-  DerivationPathOptionsTypes,
-  FiatCurrencyTypes,
-  GlobalSettingsTypes,
-  LocalSettingsTypes,
-  NetworkOptionsTypes,
-  NodeOptionsTypes,
-  RecentAccountsTypes,
-  ShapeShiftTypes,
-  TransactionTypes,
-  TransactionHistoryTypes
-}*/
