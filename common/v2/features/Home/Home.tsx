@@ -59,7 +59,10 @@ export default class Home extends Component {
             />
           </section>
           <section className="Home-peaceOfMind">
-            <PeaceOfMindPanel />
+            <PeaceOfMindPanel
+              downloadLink={this.state.appDownloadLink}
+              OSName={this.state.OSName}
+            />
           </section>
           <section className="Home-testimonials">
             <TestimonialsPanel />
