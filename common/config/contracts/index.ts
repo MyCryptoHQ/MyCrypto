@@ -33,4 +33,3 @@ export default {
   ARTIS_SIGMA1,
   ARTIS_TAU1
 } as Networks;
-
