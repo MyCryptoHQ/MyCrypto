@@ -153,10 +153,22 @@ export const CACHE_INIT_DEV: LocalCache = {
   assets: {
     '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
       option: 'Ethereum',
-      amount: '14.13'
+      amount: '14.13',
+      network: 'ETH',
+      type: 'base',
+      symbol: 'ETH'
+    },
+    '10e14757-78bb-4bb2-a17a-8333830f6698': {
+      option: 'OmiseGo',
+      amount: '2',
+      network: 'ETH',
+      type: 'call',
+      symbol: 'OMG',
+      contractAddress: '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07',
+      decimal: 18
     }
   },
-  allAssets: ['12d3cbf2-de3a-4050-a0c6-521592e4b85a'],
+  allAssets: ['12d3cbf2-de3a-4050-a0c6-521592e4b85a', '10e14757-78bb-4bb2-a17a-8333830f6698'],
 
   localSettings: {
     '17ed6f49-ff23-4bef-a676-69174c266b37': {
@@ -166,15 +178,39 @@ export const CACHE_INIT_DEV: LocalCache = {
   },
   allLocalSettings: ['17ed6f49-ff23-4bef-a676-69174c266b37'],
 
-  networkOptions: {},
-  allNetworkOptions: [],
-
-  nodeOptions: {
-    'Ethereum (Auto)': {
-      name: 'Ethereum (Auto)'
+  networkOptions: {
+    ETH: {
+      id: 'ETH',
+      name: 'Ethereum',
+      unit: 'ETH',
+      chainId: 1,
+      isCustom: false,
+      color: '#007896',
+      blockExplorer: {},
+      tokenExplorer: {},
+      tokens: [],
+      contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
+      nodes: ['eth_mycrypto'],
+      dPathFormats: {},
+      gasPriceSettings: {
+        min: 1,
+        max: 100,
+        initial: 15
+      },
+      shouldEstimateGasPrice: true
     }
   },
-  allNodeOptions: ['Ethereum (Auto)'],
+  allNetworkOptions: ['ETH'],
+
+  nodeOptions: {
+    eth_mycrypto: {
+      name: 'eth_mycrypto',
+      type: 'rpc',
+      service: 'MyCrypto',
+      url: 'https://api.mycryptoapi.com/eth'
+    }
+  },
+  allNodeOptions: ['eth_mycrypto'],
 
   assetOptions: {
     Ethereum: {

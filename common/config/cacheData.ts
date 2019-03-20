@@ -1,5 +1,6 @@
 import * as contracts from 'config/contracts';
 import * as utils from 'v2/libs';
+import * as types from 'v2/services';
 
 export interface Fiat {
   code: string;
@@ -21,20 +22,12 @@ export const GBP = {
 
 export const Fiats: Fiat[] = [USD, EUR, GBP];
 
-export interface Contract {
-  name: string;
-  network: string;
-  address: string;
-  abi: string;
-}
-
-export const ContractsData = (): any => {
+export const ContractsData = (): Record<string, types.ContractOptions> => {
   const data: any = Object.keys(contracts.default);
-  const outData = {} as Record<string, Contract>;
+  const outData = {} as Record<string, types.ContractOptions>;
   data.map((en: string) => {
     const nextData = contracts.default[en];
     nextData.map((entry: contracts.Network) => {
-      //const newData = {} as Contract;
       const uuid: string = utils.generateUUID();
       outData[uuid] = {
         name: entry.name,
