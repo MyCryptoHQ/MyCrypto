@@ -17,30 +17,19 @@ interface FeatureProps {
   description: React.ReactElement<any>;
   image: string;
   mobileImage: string;
-  captionLeft: boolean;
+  captionRight?: boolean;
 }
 
 const Feature: React.SFC<FeatureProps> = props => {
-  const { name, description, image, mobileImage, captionLeft } = props;
+  const { name, description, image, mobileImage, captionRight } = props;
   return (
-    <div className="feature">
-      {captionLeft && (
-        <div className="captions">
-          <Typography className="title">{name}</Typography>
-          <Typography className="description">{description}</Typography>
-        </div>
-      )}
+    <div className={captionRight ? 'feature right' : 'feature'}>
+      <div className="captions">
+        <Typography className="title">{name}</Typography>
+        <Typography className="description">{description}</Typography>
+      </div>
       <img className="image" src={image} />
       <img className="mobileImage" src={mobileImage} />
-
-      {!captionLeft && (
-        <div className="captions">
-          <div style={{ textAlign: 'right' }}>
-            <Typography className="title">{name}</Typography>
-            <Typography className="description">{description}</Typography>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
@@ -58,21 +47,19 @@ export default function FeaturesPanel() {
           description={translate('HOME_FEATURES_MANAGE_DESCRIPTION')}
           image={manageWalletsImage}
           mobileImage={manageWalletsImageMobile}
-          captionLeft={true}
         />
         <Feature
           name={translate('HOME_FEATURES_VIEW_TITLE')}
           description={translate('HOME_FEATURES_VIEW_DESCRIPTION')}
           image={viewDashboardImage}
           mobileImage={viewDashboardImageMobile}
-          captionLeft={false}
+          captionRight={true}
         />
         <Feature
           name={translate('HOME_FEATURES_CONTROL_TITLE')}
           description={translate('HOME_FEATURES_CONTROL_DESCRIPTION')}
           image={yourCryptoImage}
           mobileImage={yourCryptoImageMobile}
-          captionLeft={true}
         />
       </div>
     </Panel>

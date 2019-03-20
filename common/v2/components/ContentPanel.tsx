@@ -11,7 +11,7 @@ import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 interface Props {
   children: any;
   className: string;
-  heading: string;
+  heading?: string;
   icon?: string;
   description?: string;
   stepper?: {
@@ -48,10 +48,12 @@ export default function ContentPanel({
         </div>
       )}
       <Panel className={className} {...rest}>
-        <Heading className="ContentPanel-heading">
-          {heading}
-          {icon && <img src={icon} alt="Icon" className="ContentPanel-heading-icon" />}
-        </Heading>
+        {heading && (
+          <Heading className="ContentPanel-heading">
+            {heading}
+            {icon && <img src={icon} alt="Icon" className="ContentPanel-heading-icon" />}
+          </Heading>
+        )}
         {description && <Typography className="ContentPanel-description">{description}</Typography>}
         {children}
       </Panel>

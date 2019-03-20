@@ -759,6 +759,7 @@
     "HOME_PEACE_OF_MIND_DOWNLOAD" :"Download the Desktop App",
     "HOME_DOWNLOAD_TITLE" :"Everything is Even More Secure with our Desktop App",
     "HOME_DOWNLOAD_DESCRIPTION" :"Keep your keys out of the browser with the MyCrypto Desktop App. You get more access to your funds, and scammers get less access to you.",
+    "HOME_DOWNLOAD_BUTTON": "Download for",
     "HOME_GET_STARTED_TITLE" :"You're In The Right Place.",
     "HOME_GET_STARTED_DESCRIPTION" :"It's Time To Use MyCrypto For Your Crypto.",
     "HOME_GET_STARTED_NEED_WALLET_TITLE" :"I need a wallet",
@@ -777,6 +778,10 @@
     "HOME_FEATURES_VIEW_TITLE" :"View Your Dashboard",
     "HOME_FEATURES_VIEW_DESCRIPTION" :"See a detailed breakdown of all your wallets, tokens, and transactions.",
     "HOME_FEATURES_CONTROL_TITLE" :"Control Your Crypto",
-    "HOME_FEATURES_CONTROL_DESCRIPTION" :"Manage your information and your cryptocurrency easily and without fear."
+    "HOME_FEATURES_CONTROL_DESCRIPTION" :"Manage your information and your cryptocurrency easily and without fear.",
+    "DOWNLOAD_APP_TITLE": "Download App",
+    "DOWNLOAD_APP_DESCRIPTION": "Please download the MyCrypto Desktop app so you can securely complete creating your new account and start managing your funds.",
+    "DOWNLOAD_APP_FOOTER_INFO": "Not sure what this is?",
+    "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app."
   }
 }

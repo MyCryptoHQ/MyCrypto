@@ -3,6 +3,7 @@ import { Panel, Typography, Button } from '@mycrypto/ui';
 
 import './PeaceOfMindPanel.scss';
 import translate from 'translations';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/features/constants';
 
 import vaultIcon from 'common/assets/images/icn-vault2.svg';
 import protectIcon from 'common/assets/images/icn-protect.svg';
@@ -23,7 +24,13 @@ const ContentItem: React.SFC<ContentItemProps> = props => {
   );
 };
 
-export default function PeaceOfMindPanel() {
+interface PeaceOfMindPanelProps {
+  downloadLink: string;
+}
+
+export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
+  const { downloadLink } = props;
+
   return (
     <Panel basic={true} className="PeaceOfMindPanel">
       <div className="titleArea">
@@ -42,8 +49,15 @@ export default function PeaceOfMindPanel() {
       </div>
       <div className="actions">
         <Button className="button">{translate('HOME_PEACE_OF_MIND_GET_STARTED')}</Button>
-        <Button className="button">{translate('HOME_PEACE_OF_MIND_DOWNLOAD')}</Button>
+        <Button className="button" onClick={() => openDownloadLink(downloadLink)}>
+          {translate('HOME_PEACE_OF_MIND_DOWNLOAD')}
+        </Button>
       </div>
     </Panel>
   );
 }
+
+const openDownloadLink = (link: string) => {
+  const target = link === DEFAULT_LINK ? '_blank' : '_self';
+  window.open(link, target);
+};
