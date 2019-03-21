@@ -3,7 +3,6 @@ import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
-import './TestimonialsPanel.scss';
 import { BREAK_POINTS } from 'v2/features/constants';
 
 const { SCREEN_XS, SCREEN_SM, SCREEN_XXL } = BREAK_POINTS;
@@ -17,6 +16,56 @@ const MainPanel = styled(Panel)`
     padding-right: 0px;
     padding-top: 80px;
     padding-bottom: 80px;
+  }
+
+  .slick-slider {
+    width: 100%;
+
+    .slick-disabled {
+      display: none !important;
+    }
+
+    .slick-prev {
+      z-index: 9999;
+      left: 0px;
+      background: url(/common/assets/images/icn-more.svg) top left;
+      background-size: cover;
+      background-repeat: no-repeat;
+      transform: translate(0, -50%) rotate(180deg);
+
+      @media (min-width: ${SCREEN_XS}) and (max-width: ${SCREEN_SM}) {
+        left: calc(50% - 250px);
+      }
+
+      @media (max-width: ${SCREEN_XS}) {
+        left: 5px;
+      }
+    }
+
+    .slick-next {
+      right: 0px;
+      background: url(/common/assets/images/icn-more.svg) top left;
+      background-size: cover;
+      background-repeat: no-repeat;
+
+      @media (min-width: ${SCREEN_XS}) and (max-width: ${SCREEN_SM}) {
+        left: calc(50% + 200px);
+      }
+
+      @media (max-width: ${SCREEN_XS}) {
+        right: 5px;
+      }
+    }
+
+    button {
+      width: 24px;
+      height: 24px;
+
+      &:before {
+        opacity: 1;
+        content: '';
+      }
+    }
   }
 `;
 
@@ -90,7 +139,7 @@ export default function TestimonialsPanel() {
   };
 
   return (
-    <MainPanel basic={true} className="TestimonialsPanel">
+    <MainPanel basic={true}>
       <Slider {...settings}>
         <TestimonialCard text={randomText} author={randomAuthor + ' 1'} />
         <TestimonialCard text={randomText} author={randomAuthor + ' 2'} />
