@@ -3,16 +3,16 @@
   "author": "MyCryptoHQ",
   "version": "1.6.1",
   "main": "main.js",
-  "description": "MyCrypto web and electron app",
+  "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
   "engines": {
     "node": ">= 8.0.0",
     "npm": ">= 5.0.0"
   },
   "dependencies": {
-    "@ledgerhq/hw-app-eth": "4.7.3",
-    "@ledgerhq/hw-transport-node-hid": "4.7.6",
-    "@ledgerhq/hw-transport-u2f": "4.12.0",
+    "@ledgerhq/hw-app-eth": "4.46.1",
+    "@ledgerhq/hw-transport-node-hid": "4.46.0",
+    "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@parity/qr-signer": "0.3.1",
     "axios": "0.18.0",
     "babel-polyfill": "6.26.0",
@@ -99,6 +99,7 @@
     "@types/webpack-env": "1.13.4",
     "@types/zxcvbn": "4.4.0",
     "autodll-webpack-plugin": "0.3.9",
+    "aws-sdk": "2.424.0",
     "check-node-version": "3.2.0",
     "concurrently": "3.5.1",
     "copy-webpack-plugin": "4.5.1",
@@ -203,10 +204,18 @@
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
+<<<<<<< HEAD
+=======
+    "precommit": "lint-staged",
+>>>>>>> develop
     "formatAll":
       "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff":
       "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
+<<<<<<< HEAD
+=======
+    "prepush": "npm run tslint && npm run tscheck",
+>>>>>>> develop
     "update:tokens": "ts-node scripts/update-tokens",
     "postinstall": "electron-rebuild --force"
   },
@@ -223,10 +232,14 @@
     "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
+<<<<<<< HEAD
   ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm run tscheck && npm test"
     }
   }
+=======
+  ]
+>>>>>>> develop
 }
