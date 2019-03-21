@@ -148,7 +148,7 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: `$${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-trezor`
+        helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-trezor`
       },
       [SecureWalletName.SAFE_T]: {
         lid: 'X_SAFE_T',
