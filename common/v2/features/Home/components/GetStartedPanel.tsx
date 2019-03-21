@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Panel, Typography } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { COLORS, BREAK_POINTS } from 'v2/features/constants';
 
 // Legacy
 import titleIllustration from 'common/assets/images/title-illustration.svg';
@@ -11,7 +13,176 @@ import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
 import existingWalletIcon from 'common/assets/images/icn-existing-wallet.svg';
 import signInIcon from 'common/assets/images/returning.svg';
 
-import './GetStartedPanel.scss';
+const { SCREEN_SM, SCREEN_LG, SCREEN_XL, SCREEN_XXL } = BREAK_POINTS;
+const { GREYISH_BROWN, SILVER } = COLORS;
+
+const MainPanel = styled(Panel)`
+  padding-left: 148px;
+  padding-bottom: 24px;
+  display: flex;
+
+  @media (min-width: ${SCREEN_XXL}) {
+    padding: 0 148px 24px 148px;
+  }
+
+  @media (max-width: ${SCREEN_LG}) {
+    padding-left: 64px;
+  }
+
+  @media (max-width: ${SCREEN_SM}) {
+    padding: 0 12px;
+  }
+`;
+
+const TitleImageWrapper = styled(Panel)`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 60%;
+  background-color: white;
+
+  @media (max-width: ${SCREEN_SM}) {
+    display: none;
+  }
+`;
+
+const ActionsWrapper = styled(Panel)`
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  background-color: white;
+  padding-top: 30px;
+  @media (max-width: ${SCREEN_SM}) {
+    flex: 1;
+    padding: 0 0 24px 0;
+    align-items: center;
+  }
+`;
+
+const Title = styled.p`
+  font-weight: bold;
+  font-size: 3.1vw;
+  font-weight: 900;
+  line-height: normal;
+  color: ${GREYISH_BROWN};
+  @media (max-width: ${SCREEN_SM}) {
+    font-size: 25px;
+  }
+
+  @media (min-width: ${SCREEN_XL}) {
+    font-size: 45px;
+  }
+`;
+
+const Description = styled.p`
+  font-size: 2vw;
+  letter-spacing: normal;
+  margin-top: 8px;
+  font-weight: normal;
+  max-width: 400px;
+  color: ${GREYISH_BROWN};
+
+  @media (max-width: ${SCREEN_SM}) {
+    margin-top: 0;
+    font-size: 20px;
+    text-align: center;
+    max-width: 250px;
+  }
+
+  @media (min-width: ${SCREEN_XL}) {
+    font-size: 30px;
+  }
+`;
+
+const MobileImage = styled.img`
+  max-width: 400px;
+  @media (min-width: ${SCREEN_SM}) {
+    display: none;
+  }
+`;
+
+const ActionCardsWrapper = styled.div`
+  margin-top: 1.2vw;
+
+  @media (max-width: ${SCREEN_SM}) {
+    display: flex;
+    flex-direction: row;
+  }
+`;
+
+const ActionCardWrapper = styled(Panel)`
+  padding: 1vw 2vw;
+  margin-bottom: 15px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
+  border: solid 1px ${SILVER};
+  cursor: pointer;
+  width: 30vw;
+  max-width: 450px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: ${SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+    max-width: 105px;
+    margin: 0 6px;
+    padding: 14px 6px;
+  }
+`;
+
+const ActionCaptions = styled.div`
+  order: 1;
+  @media (max-width: ${SCREEN_SM}) {
+    order: 2;
+    text-align: center;
+    margin-top: 9px;
+  }
+`;
+
+const ActionName = styled.p`
+  font-size: 1.6vw;
+  font-weight: bold;
+  margin-bottom: 0;
+  color: ${GREYISH_BROWN};
+
+  @media (max-width: ${SCREEN_SM}) {
+    font-size: 16px;
+    line-height: normal;
+  }
+  @media (min-width: ${SCREEN_XL}) {
+    font-size: 26px;
+  }
+`;
+
+const ActionDescription = styled.p`
+  font-size: 1.1vw;
+  font-weight: normal;
+  color: ${GREYISH_BROWN};
+
+  @media (max-width: ${SCREEN_SM}) {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  @media (min-width: ${SCREEN_XL}) {
+    font-size: 20px;
+  }
+`;
+
+const ActionIcon = styled.img`
+  width: 4vw;
+  height: 4vw;
+  max-width: 60px;
+  max-height: 60px;
+  order: 2;
+  @media (max-width: ${SCREEN_SM}) {
+    order: 1;
+    width: 50px;
+    height: 50px;
+  }
+`;
 
 interface ActionCardProps {
   name: string;
@@ -30,13 +201,13 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
   return (
     <Link to={link}>
       <div onClick={() => trackButtonClick(eventAction)}>
-        <Panel basic={true} className={'card'}>
-          <div className={'captionsWrapper'}>
-            <Typography className="name">{name}</Typography>
-            <Typography className="description">{description}</Typography>
-          </div>
-          <img src={icon} alt={name} className="icon" />
-        </Panel>
+        <ActionCardWrapper basic={true}>
+          <ActionCaptions>
+            <ActionName>{name}</ActionName>
+            <ActionDescription>{description}</ActionDescription>
+          </ActionCaptions>
+          <ActionIcon src={icon} alt={name} className="icon" />
+        </ActionCardWrapper>
       </div>
     </Link>
   );
@@ -44,12 +215,12 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
 
 export default function GetStartedPanel() {
   return (
-    <Panel basic={true} className="GetStartedPanel">
-      <Panel basic={true} className="actionsWrapper">
-        <Typography className="title">{translate('HOME_GET_STARTED_TITLE')}</Typography>
-        <Typography className="description">{translate('HOME_GET_STARTED_DESCRIPTION')}</Typography>
-        <img className="image" src={titleIllustration} alt="Title Illustration" />
-        <div className={'cardsWrapper'}>
+    <MainPanel basic={true}>
+      <ActionsWrapper basic={true}>
+        <Title>{translate('HOME_GET_STARTED_TITLE')}</Title>
+        <Description>{translate('HOME_GET_STARTED_DESCRIPTION')}</Description>
+        <MobileImage src={titleIllustration} alt="Title Illustration" />
+        <ActionCardsWrapper>
           <ActionCard
             name={translateRaw('HOME_GET_STARTED_NEED_WALLET_TITLE')}
             description={translate('HOME_GET_STARTED_NEED_WALLET_DESCRIPTION')}
@@ -71,11 +242,11 @@ export default function GetStartedPanel() {
             link={'/dashboard'}
             eventAction="I've used MyCrypto"
           />
-        </div>
-      </Panel>
-      <Panel basic={true} className="titleImageWrapper">
+        </ActionCardsWrapper>
+      </ActionsWrapper>
+      <TitleImageWrapper basic={true}>
         <img src={titleIllustration} alt="Title Illustration" />
-      </Panel>
-    </Panel>
+      </TitleImageWrapper>
+    </MainPanel>
   );
 }
