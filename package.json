@@ -118,7 +118,7 @@
     "friendly-errors-webpack-plugin": "1.6.1",
     "hard-source-webpack-plugin": "0.6.4",
     "html-webpack-plugin": "3.0.6",
-    "husky": "0.14.3",
+    "husky": "1.3.1",
     "image-webpack-loader": "4.2.0",
     "isomorphic-fetch": "2.2.1",
     "jest": "22.1.4",
@@ -204,18 +204,17 @@
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
-    "precommit": "lint-staged",
     "formatAll":
       "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff":
       "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
-    "prepush": "npm run tslint && npm run tscheck",
     "update:tokens": "ts-node scripts/update-tokens",
     "postinstall": "electron-rebuild --force"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
+      "npm run tslint",
       "git add"
     ]
   },
@@ -225,5 +224,10 @@
     "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run tscheck && npm test"
+    }
+  }
 }
