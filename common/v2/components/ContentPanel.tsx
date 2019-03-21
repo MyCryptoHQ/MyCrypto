@@ -1,12 +1,24 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import Stepper from './Stepper';
 import './ContentPanel.scss';
 
 // Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+
+const BackButton = styled(Button)`
+  color: #007a99;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  img {
+    margin-right: 13px;
+  }
+`;
 
 interface Props {
   children: any;
@@ -40,9 +52,9 @@ export default function ContentPanel({
       {(onBack || stepper) && (
         <div className={topClassName}>
           {onBack && (
-            <Button basic={true} className="ContentPanel-top-back" onClick={onBack}>
+            <BackButton basic={true} onClick={onBack}>
               <img src={backArrowIcon} alt="Back arrow" /> Back
-            </Button>
+            </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}
         </div>
