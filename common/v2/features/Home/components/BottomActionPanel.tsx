@@ -2,6 +2,7 @@ import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from 'translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { COLORS, BREAK_POINTS, MYCRYPTO_SUPPORT_URL } from 'v2/features/constants';
 
 const { SCREEN_SM } = BREAK_POINTS;
@@ -49,10 +50,18 @@ export default function BottomActionPanel() {
   return (
     <MainPanel basic={true}>
       <Title>{translate('HOME_BOTTOM_TITLE')}</Title>
-      <GetStartedButton>{translate('HOME_BOTTOM_GET_STARTED')}</GetStartedButton>
+      <GetStartedButton onClick={() => trackButtonClick('Get Started')}>
+        {translate('HOME_BOTTOM_GET_STARTED')}
+      </GetStartedButton>
       <a href={MYCRYPTO_SUPPORT_URL} target="_blank" rel="noreferrer">
-        <SupportLink>{translate('HOME_BOTTOM_HELP')}</SupportLink>
+        <SupportLink onClick={() => trackButtonClick('Have Questions?')}>
+          {translate('HOME_BOTTOM_HELP')}
+        </SupportLink>
       </a>
     </MainPanel>
   );
 }
+
+const trackButtonClick = (button: string) => {
+  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${button} button clicked`);
+};

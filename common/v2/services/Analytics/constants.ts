@@ -13,5 +13,6 @@ export enum ANALYTICS_CATEGORIES {
   FOOTER = 'Footer',
   SIDEBAR = 'Sidebar',
   ROOT = 'Root',
-  DOWNLOAD_DESKTOP = 'Download Desktop App'
+  DOWNLOAD_DESKTOP = 'Download Desktop App',
+  HOME = 'Homepage'
 }
