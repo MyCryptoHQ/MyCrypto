@@ -242,6 +242,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
   private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
     this.props.setDesiredToken(ev.currentTarget.value || undefined);
+    this.refreshPage();
   };
 
   private handleConfirmAddress = () => {
@@ -253,6 +254,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private selectAddress(selectedAddress: string, selectedAddrIndex: number) {
     this.setState({ selectedAddress, selectedAddrIndex });
   }
+
+  private refreshPage = () => {
+    this.setState({ page: this.state.page }, this.getAddresses);
+  };
 
   private nextPage = () => {
     this.setState({ page: this.state.page + 1 }, this.getAddresses);

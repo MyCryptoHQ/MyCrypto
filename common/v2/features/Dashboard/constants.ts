@@ -34,7 +34,7 @@ export const actions: Action[] = [
   },
   {
     icon: hardwareWalletIcon,
-    title: 'Get_Hardware Wallet',
+    title: 'Get Hardware Wallet',
     link: '/dashboard/get-hardware-wallet',
     description: 'Keep Your Funds Safe Offline'
   }

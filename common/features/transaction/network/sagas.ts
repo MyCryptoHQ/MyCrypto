@@ -151,11 +151,18 @@ export function* estimateGas(): SagaIterator {
       const from: string = yield apply(walletInst, walletInst.getAddressString);
       const txObj = { ...payload, from };
 
-      const { gasLimit } = yield race({
+      let { gasLimit }: { gasLimit: BN } = yield race({
         gasLimit: apply(node, node.estimateGas, [txObj]),
         timeout: call(delay, 10000)
       });
       if (gasLimit) {
+        const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+        const isEtherTransaction: boolean = yield select(derivedSelectors.isEtherTransaction);
+
+        if (scheduling && !isEtherTransaction) {
+          gasLimit = gasLimit.add(new BN('40000'));
+        }
+
         const gasSetOptions = {
           raw: gasLimit.toString(),
           value: gasLimit
