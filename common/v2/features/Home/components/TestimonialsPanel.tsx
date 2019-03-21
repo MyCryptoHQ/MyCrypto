@@ -1,8 +1,48 @@
 import React from 'react';
-import { Panel, Typography } from '@mycrypto/ui';
+import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
+import styled from 'styled-components';
 
 import './TestimonialsPanel.scss';
+import { BREAK_POINTS } from 'v2/features/constants';
+
+const { SCREEN_XS, SCREEN_SM, SCREEN_XXL } = BREAK_POINTS;
+
+const MainPanel = styled(Panel)`
+  padding: 148px 120px;
+  max-width: ${SCREEN_XXL};
+  width: 100%;
+  @media (max-width: ${SCREEN_SM}) {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+`;
+
+const TestimonialCardWrapper = styled.div`
+  padding-right: 40px;
+  padding-left: 40px;
+  max-width: 400px;
+  margin: auto;
+
+  @media (max-width: ${SCREEN_XS}) {
+    height: auto;
+  }
+`;
+
+const TestimonialCardText = styled.p`
+  font-size: 21px;
+  line-height: 1.4;
+  font-weight: normal;
+`;
+
+const TestimonialCardAuthor = styled.p`
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin-top: 31px;
+`;
 
 interface TestimonialCardProps {
   text: string;
@@ -11,10 +51,10 @@ interface TestimonialCardProps {
 
 const TestimonialCard: React.SFC<TestimonialCardProps> = ({ text, author }) => {
   return (
-    <div className="TestimonialsPanel-TestimonialCard">
-      <Typography className="TestimonialsPanel-TestimonialCard-text">{text}</Typography>
-      <Typography className="TestimonialsPanel-TestimonialCard-author">{author}</Typography>
-    </div>
+    <TestimonialCardWrapper>
+      <TestimonialCardText>{text}</TestimonialCardText>
+      <TestimonialCardAuthor>{author}</TestimonialCardAuthor>
+    </TestimonialCardWrapper>
   );
 };
 
@@ -50,12 +90,12 @@ export default function TestimonialsPanel() {
   };
 
   return (
-    <Panel basic={true} className="TestimonialsPanel">
+    <MainPanel basic={true} className="TestimonialsPanel">
       <Slider {...settings}>
         <TestimonialCard text={randomText} author={randomAuthor + ' 1'} />
         <TestimonialCard text={randomText} author={randomAuthor + ' 2'} />
         <TestimonialCard text={randomText} author={randomAuthor + ' 3'} />
       </Slider>
-    </Panel>
+    </MainPanel>
   );
 }
