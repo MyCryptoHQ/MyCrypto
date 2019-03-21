@@ -204,10 +204,18 @@
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
+<<<<<<< HEAD
+    "precommit": "lint-staged",
+=======
+>>>>>>> f6b6a3daebee5ea96d6b5d48921d5f534f363586
     "formatAll":
       "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff":
       "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
+<<<<<<< HEAD
+    "prepush": "npm run tslint && npm run tscheck",
+=======
+>>>>>>> f6b6a3daebee5ea96d6b5d48921d5f534f363586
     "update:tokens": "ts-node scripts/update-tokens",
     "postinstall": "electron-rebuild --force"
   },
@@ -224,10 +232,14 @@
     "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
+<<<<<<< HEAD
+  ]
+=======
   ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm run tscheck && npm test"
     }
   }
+>>>>>>> f6b6a3daebee5ea96d6b5d48921d5f534f363586
 }
