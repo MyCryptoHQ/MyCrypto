@@ -1,11 +1,9 @@
 import React from 'react';
-import { Panel, Typography, Button } from '@mycrypto/ui';
+import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
-
 import './BottomActionPanel.scss';
 import translate from 'translations';
-import { MYCRYPTO_SUPPORT_URL } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS, MYCRYPTO_SUPPORT_URL } from 'v2/features/constants';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { DARK_SLATE_BLUE, BRIGHT_SKY_BLUE } = COLORS;
