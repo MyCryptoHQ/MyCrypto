@@ -3,7 +3,7 @@
   "author": "MyCryptoHQ",
   "version": "1.6.1",
   "main": "main.js",
-  "description": "MyCrypto web and electron app",
+  "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
   "engines": {
     "node": ">= 8.0.0",
