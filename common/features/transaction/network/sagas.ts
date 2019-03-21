@@ -248,7 +248,10 @@ export function* handleNonceRequest(): SagaIterator {
   } catch (e) {
     if (e === 'offline') {
       yield put(
-        notificationsActions.showNotification('warning', 'Your addresses nonce could not be fetched')
+        notificationsActions.showNotification(
+          'warning',
+          'Your addresses nonce could not be fetched'
+        )
       );
     }
     yield put(actions.getNonceFailed());
