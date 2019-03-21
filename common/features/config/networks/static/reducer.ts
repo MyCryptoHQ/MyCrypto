@@ -34,7 +34,10 @@ import {
   ATH_DEFAULT,
   ETHO_DEFAULT,
   MIX_DEFAULT,
-  REOSC_DEFAULT
+  REOSC_DEFAULT,
+  ARTIS_SIGMA1,
+  ARTIS_TAU1,
+  THUNDERCORE_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -130,6 +133,28 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     }),
     tokens: require('config/tokens/rinkeby.json'),
     contracts: require('config/contracts/rinkeby.json'),
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.SAFE_T]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
+    },
+    gasPriceSettings: testnetDefaultGasPrice
+  },
+  Goerli: {
+    id: 'Goerli',
+    name: 'Goerli',
+    unit: 'ETH',
+    chainId: 5,
+    isCustom: false,
+    color: '#adc101',
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://goerli.etherscan.io/'
+    }),
+    tokens: [],
+    contracts: [],
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETH_TESTNET,
@@ -246,12 +271,12 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     id: 'TOMO',
     name: 'TomoChain',
     unit: 'TOMO',
-    chainId: 40686,
+    chainId: 88,
     isCustom: false,
     color: '#6a488d',
     blockExplorer: makeExplorer({
       name: 'Tomochain Explorer',
-      origin: 'https://explorer.tomocoin.io/#'
+      origin: 'https://scan.tomochain.com'
     }),
     tokens: [],
     contracts: [],
@@ -745,6 +770,85 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 1,
       max: 60,
       initial: 20
+    }
+  },
+  ARTIS_SIGMA1: {
+    id: 'ARTIS_SIGMA1',
+    name: 'ARTIS sigma1',
+    unit: 'ATS',
+    chainId: 246529,
+    isCustom: false,
+    color: '#238006',
+    blockExplorer: makeExplorer({
+      name: 'BlockScout',
+      origin: 'https://explorer.sigma1.artis.network',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: false,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ARTIS_SIGMA1,
+      [SecureWalletName.SAFE_T]: ARTIS_SIGMA1,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_SIGMA1
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 1,
+      initial: 1
+    }
+  },
+  ARTIS_TAU1: {
+    id: 'ARTIS_TAU1',
+    name: 'ARTIS tau1',
+    unit: 'ATS',
+    chainId: 246785,
+    isCustom: false,
+    color: '#238006',
+    blockExplorer: makeExplorer({
+      name: 'BlockScout',
+      origin: 'https://explorer.tau1.artis.network',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      //[SecureWalletName.TREZOR]: ARTIS_TAU1,
+      //[SecureWalletName.SAFE_T]: ARTIS_TAU1,
+      //[SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_TAU1
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 1,
+      initial: 1
+    }
+  },
+  THUNDERCORE: {
+    id: 'THUNDERCORE',
+    name: 'ThunderCore',
+    unit: 'TT',
+    chainId: 108,
+    isCustom: false,
+    color: '#ffc000',
+    blockExplorer: makeExplorer({
+      name: 'ThunderScan',
+      origin: 'https://scan.thundercore.com'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: THUNDERCORE_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: THUNDERCORE_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 1
     }
   }
 };
