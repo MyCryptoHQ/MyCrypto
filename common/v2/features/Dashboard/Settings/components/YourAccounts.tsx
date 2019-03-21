@@ -50,7 +50,8 @@ const accountTable = {
       return aLabel.localeCompare(bLabel);
     },
     hiddenHeadings: ['Favorite', 'Delete'],
-    iconColumns: ['Favorite', 'Delete']
+    iconColumns: ['Favorite', 'Delete'],
+    reversedColumns: ['Value']
   }
 };
 
@@ -58,7 +59,7 @@ export default function YourAccounts({ toggleFlipped }: Props) {
   return (
     <DashboardPanel heading="Your Accounts" className="AddressBook">
       <CollapsibleTable breakpoint={450} {...accountTable} />
-      <button onClick={toggleFlipped}>Flip</button>
+      <button onClick={toggleFlipped}>Add Account</button>
     </DashboardPanel>
   );
 }

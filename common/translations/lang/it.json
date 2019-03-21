@@ -17,7 +17,7 @@
     "TX_NOTFOUND_1": "Impossibile trovare questa transazione nel *pool* delle transazioni del nodo a cui sei connesso.",
     "TX_NOTFOUND_2": "Se l'hai appena inviata, attendi 15 secondi e premi di nuovo il pulsante \"Controlla lo stato della transazione\". ",
     "TX_NOTFOUND_3": "Potrebbe trovarsi ancora nel *pool* delle transazioni di un altro nodo, in attesa di essere inclusa in un blocco.",
-    "TX_NOTFOUND_4": "Utilizza il menu a discesa in alto a destra e scegli un altro nodo ETH (ad esempio `ETH (Etherscan.io)` o `ETH (Infura.io)` o `ETH (MyCrypto)`) e ricontrolla.",
+    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different node and check again.",
     "TX_FOUNDINPENDING": "Transazione in sospeso trovata",
     "TX_FOUNDINPENDING_1": "La transazione è stata individuata nel *pool* delle transazioni del nodo a cui sei connesso. ",
     "TX_FOUNDINPENDING_2": "Al momento è in sospeso (in attesa di essere inclusa in un blocco). ",

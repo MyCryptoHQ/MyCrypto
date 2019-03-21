@@ -73,6 +73,16 @@ const LINK_COLUMNS = [
         title: 'MoneroVision',
         link: 'https://monerovision.com/',
         analytics_event: 'MoneroVision'
+      },
+      {
+        title: 'MyCrypto Desktop App',
+        link: 'https://download.mycrypto.com',
+        analytics_event: 'MyCrypto Desktop App'
+      },
+      {
+        title: 'Ambo Mobile App',
+        link: 'https://ambo.io',
+        analytics_event: 'Ambo Mobile App'
       }
     ]
   }
