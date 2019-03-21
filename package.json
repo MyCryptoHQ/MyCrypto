@@ -161,8 +161,8 @@
     "what-input": "5.0.5",
     "worker-loader": "1.1.1"
   },
-  "resolutions":{
-  "*/**/@types/react":"16.3.11"
+  "resolutions": {
+    "*/**/@types/react": "16.3.11"
   },
   "scripts": {
     "freezer": "webpack --config=./webpack_config/webpack.freezer.js && node ./dist/freezer.js",
@@ -202,17 +202,17 @@
     "update:tokens": "ts-node scripts/update-tokens",
     "postinstall": "electron-rebuild --force"
   },
-  "lint-staged":{
-  "*.{ts,tsx}":[
-  "prettier --write --config ./.prettierrc --config-precedence file-override",
-  "git add"
-  ]
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write --config ./.prettierrc --config-precedence file-override",
+      "git add"
+    ]
   },
-  "freezer":[
-  "package.json",
-  "common/freezer.ts",
-  "common/store.ts",
-  "common/libs/decrypt.ts",
-  "common/libs/signing.ts"
+  "freezer": [
+    "package.json",
+    "common/freezer.ts",
+    "common/store.ts",
+    "common/libs/decrypt.ts",
+    "common/libs/signing.ts"
   ]
 }
