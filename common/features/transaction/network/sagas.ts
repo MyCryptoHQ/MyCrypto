@@ -219,7 +219,11 @@ export function* handleNonceRequest(): SagaIterator {
   const isOffline: boolean = yield select(configMetaSelectors.getOffline);
   try {
     if (isOffline || !walletInst) {
-      throw Error();
+      if (isOffline) {
+        throw Error('offline');
+      } else {
+        throw Error('wallet');
+      }
     }
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
     const transactionCountString: string = yield apply(nodeLib, nodeLib.getTransactionCount, [
@@ -241,10 +245,12 @@ export function* handleNonceRequest(): SagaIterator {
     const base10Nonce = Nonce(retrievedNonce);
     yield put(transactionFieldsActions.inputNonce(base10Nonce.toString()));
     yield put(actions.getNonceSucceeded(retrievedNonce));
-  } catch {
-    yield put(
-      notificationsActions.showNotification('warning', 'Your addresses nonce could not be fetched')
-    );
+  } catch (e) {
+    if (e === 'offline') {
+      yield put(
+        notificationsActions.showNotification('warning', 'Your addresses nonce could not be fetched')
+      );
+    }
     yield put(actions.getNonceFailed());
   }
 }
@@ -255,6 +261,7 @@ export function* conductMaxNonceCheck(
   recentTransactions: AppState['transactions']['recent'],
   chainId: number
 ): SagaIterator {
+  console.log('got hur12')
   // Selects the maximum nonce from the maximum of the recent-transaction nonces with the same `from` address and the transaction count of the address
   const selectedNonce = Math.max(
     transactionCount,
@@ -270,6 +277,7 @@ export function* conductMaxNonceCheck(
       0
     )
   ).toString();
+  console.log('got hur13')
   return selectedNonce;
 }
 
