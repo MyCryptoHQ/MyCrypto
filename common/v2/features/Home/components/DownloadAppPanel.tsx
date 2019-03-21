@@ -1,11 +1,92 @@
 import React from 'react';
-import { Panel, Typography, Button } from '@mycrypto/ui';
+import { Panel, Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import './DownloadAppPanel.scss';
 import translate from 'translations';
-import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/features/constants';
+import { BREAK_POINTS, GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/features/constants';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+
 import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
+
+const { SCREEN_SM, SCREEN_MD, SCREEN_XXL } = BREAK_POINTS;
+
+const MainPanel = styled(Panel)`
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  padding: 148px;
+  max-width: ${SCREEN_XXL};
+
+  @media (max-width: ${SCREEN_MD}) {
+    padding: 88px 148px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: ${SCREEN_SM}) {
+    padding: 50px 12px 42px 12px;
+  }
+`;
+
+const CallToAction = styled.div`
+  display: flex;
+  flex-direction: column;
+  order: 1;
+
+  @media (max-width: ${SCREEN_MD}) {
+    order: 2;
+    align-items: center;
+    text-align: center;
+  }
+`;
+
+const Title = styled.p`
+  font-size: 35px;
+  font-weight: bold;
+  color: white;
+  line-height: normal;
+  max-width: 559px;
+
+  @media (max-width: ${SCREEN_SM}) {
+    font-size: 23px;
+  }
+`;
+
+const Description = styled.p`
+  max-width: 646px;
+  font-size: 30px;
+  line-height: 1.5;
+  margin-top: 8px;
+  color: white;
+
+  @media (max-width: ${SCREEN_SM}) {
+    font-size: 16px;
+  }
+`;
+
+const DownloadButton = styled(Button)`
+  width: 100%;
+  max-width: 300px;
+  font-size: 18px;
+  font-weight: normal;
+  margin-top: 26px;
+`;
+
+const Image = styled.img`
+  margin-left: 50px;
+  width: 244px;
+  order: 2;
+
+  @media (max-width: ${SCREEN_MD}) {
+    order: 1;
+    margin: 0 42px 42px 0;
+  }
+
+  @media (max-width: ${SCREEN_SM}) {
+    width: 127px;
+  }
+`;
 
 interface Props {
   OSName: string;
@@ -14,16 +95,16 @@ interface Props {
 
 export default function DownloadAppPanel({ OSName, downloadLink }: Props) {
   return (
-    <Panel basic={true} className="DownloadAppPanel">
-      <div className="callToAction">
-        <Typography className="title">{translate('HOME_DOWNLOAD_TITLE')}</Typography>
-        <Typography className="description">{translate('HOME_DOWNLOAD_DESCRIPTION')}</Typography>
-        <Button className="button" onClick={() => openDownloadLink(downloadLink, OSName)}>
+    <MainPanel basic={true}>
+      <CallToAction>
+        <Title>{translate('HOME_DOWNLOAD_TITLE')}</Title>
+        <Description>{translate('HOME_DOWNLOAD_DESCRIPTION')}</Description>
+        <DownloadButton onClick={() => openDownloadLink(downloadLink, OSName)}>
           {translate('HOME_DOWNLOAD_BUTTON')} {OSName}
-        </Button>
-      </div>
-      <img className="image" src={champagneIcon} />
-    </Panel>
+        </DownloadButton>
+      </CallToAction>
+      <Image className="image" src={champagneIcon} />
+    </MainPanel>
   );
 }
 
