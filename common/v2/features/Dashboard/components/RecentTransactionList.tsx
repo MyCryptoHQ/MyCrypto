@@ -92,7 +92,8 @@ const recentTransactionsTable = {
     sortableColumn: 'Date',
     sortFunction: (a: any, b: any) => a.props.date - b.props.date,
     hiddenHeadings: ['View More'],
-    iconColumns: ['View More']
+    iconColumns: ['View More'],
+    reversedColumns: ['Amount']
   }
 };
 
