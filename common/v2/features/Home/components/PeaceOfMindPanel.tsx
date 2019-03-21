@@ -1,10 +1,13 @@
 import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
 
 import translate from 'translations';
-import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/features/constants';
+import {
+  COLORS,
+  BREAK_POINTS,
+  GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK
+} from 'v2/features/constants';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 import vaultIcon from 'common/assets/images/icn-vault2.svg';
