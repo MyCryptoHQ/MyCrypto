@@ -34,7 +34,7 @@ const MainPanel = styled(Panel)`
   }
 `;
 
-const TitleImageWrapper = styled(Panel)`
+const TitleImageWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
@@ -46,7 +46,7 @@ const TitleImageWrapper = styled(Panel)`
   }
 `;
 
-const ActionsWrapper = styled(Panel)`
+const ActionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 40%;
@@ -110,7 +110,7 @@ const ActionCardsWrapper = styled.div`
   }
 `;
 
-const ActionCardWrapper = styled(Panel)`
+const ActionCardWrapper = styled.div`
   padding: 1vw 2vw;
   margin-bottom: 15px;
   border-radius: 3px;
@@ -201,7 +201,7 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
   return (
     <Link to={link}>
       <div onClick={() => trackButtonClick(eventAction)}>
-        <ActionCardWrapper basic={true}>
+        <ActionCardWrapper>
           <ActionCaptions>
             <ActionName>{name}</ActionName>
             <ActionDescription>{description}</ActionDescription>
@@ -216,7 +216,7 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
 export default function GetStartedPanel() {
   return (
     <MainPanel basic={true}>
-      <ActionsWrapper basic={true}>
+      <ActionsWrapper>
         <Title>{translate('HOME_GET_STARTED_TITLE')}</Title>
         <Description>{translate('HOME_GET_STARTED_DESCRIPTION')}</Description>
         <MobileImage src={titleIllustration} alt="Title Illustration" />
@@ -244,7 +244,7 @@ export default function GetStartedPanel() {
           />
         </ActionCardsWrapper>
       </ActionsWrapper>
-      <TitleImageWrapper basic={true}>
+      <TitleImageWrapper>
         <img src={titleIllustration} alt="Title Illustration" />
       </TitleImageWrapper>
     </MainPanel>
