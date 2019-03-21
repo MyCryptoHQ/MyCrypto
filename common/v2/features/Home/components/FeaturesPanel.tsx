@@ -2,7 +2,6 @@ import React from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import './FeaturesPanel.scss';
 import translate from 'translations';
 import { COLORS, BREAK_POINTS } from 'v2/features/constants';
 
