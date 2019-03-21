@@ -17,7 +17,7 @@
     "TX_NOTFOUND_1": "Denne transaksjonen finnes ikke i transaksjonskøen til noden du er tilkoblet.",
     "TX_NOTFOUND_2": "Hvis du nettopp har sendt transaksjonen, vennligst vent 15 sekunder og trykk \"Sjekk transaksjonsstatus\"-knappen igjen. ",
     "TX_NOTFOUND_3": "Den kan fortsatt befinne seg i transaksjonskøen til en annen node, i påvente av å bli behandlet (inkludert i blokkjeden). ",
-    "TX_NOTFOUND_4": "Bruk rullegardinmenyen øverst til høyre og velg en annen ETH-node. (f.eks. `ETH (Etherscan.io)` eller `ETH (Infura.io)` eller `ETH (MyCrypto)`), og sjekk igjen.",
+    "TX_NOTFOUND_4": "Please use the dropdown in the top-right & select a different node and check again.",
     "TX_FOUNDINPENDING": "Ventende transaksjon funnet",
     "TX_FOUNDINPENDING_1": "Din transaksjon ble funnet i transaksjonskøen til noden du er tilkoblet. ",
     "TX_FOUNDINPENDING_2": "Den står for øyeblikket på vent (på å bli inkludert i blokkjeden). ",
