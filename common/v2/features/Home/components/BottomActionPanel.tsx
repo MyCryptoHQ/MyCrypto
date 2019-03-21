@@ -1,7 +1,6 @@
 import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import './BottomActionPanel.scss';
 import translate from 'translations';
 import { COLORS, BREAK_POINTS, MYCRYPTO_SUPPORT_URL } from 'v2/features/constants';
 
