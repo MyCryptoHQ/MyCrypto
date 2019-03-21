@@ -130,7 +130,7 @@ const WalletDecrypt = withRouter<Props>(
         initialParams: {},
         unlock: this.props.unlockWeb3,
         attemptUnlock: true,
-        helpLink: `${knowledgeBaseURL}/migration/moving-from-private-key-to-metamask`
+        helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-metamask`
       },
       [SecureWalletName.LEDGER_NANO_S]: {
         lid: 'X_LEDGER',
@@ -139,7 +139,7 @@ const WalletDecrypt = withRouter<Props>(
         component: LedgerNanoSDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: 'https://support.ledgerwallet.com/hc/en-us/articles/115005200009'
+        helpLink: 'https://support.ledger.com/hc/en-us/articles/360008268594'
       },
       [SecureWalletName.TREZOR]: {
         lid: 'X_TREZOR',
@@ -148,7 +148,7 @@ const WalletDecrypt = withRouter<Props>(
         component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
-        helpLink: 'https://support.mycrypto.com/how-to/migrating/moving-from-mycrypto-to-trezor'
+        helpLink: `$${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-trezor`
       },
       [SecureWalletName.SAFE_T]: {
         lid: 'X_SAFE_T',
@@ -178,7 +178,7 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockKeystore,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [InsecureWalletName.MNEMONIC_PHRASE]: {
         lid: 'X_MNEMONIC',
@@ -186,7 +186,7 @@ const WalletDecrypt = withRouter<Props>(
         component: MnemonicDecrypt,
         initialParams: {},
         unlock: this.props.unlockMnemonic,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [InsecureWalletName.PRIVATE_KEY]: {
         lid: 'X_PRIVKEY2',
@@ -197,7 +197,7 @@ const WalletDecrypt = withRouter<Props>(
           password: ''
         },
         unlock: this.props.unlockPrivateKey,
-        helpLink: `${knowledgeBaseURL}/private-keys-passwords/difference-beween-private-key-and-keystore-file.html`
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [MiscWalletName.VIEW_ONLY]: {
         lid: 'VIEW_ADDR',
