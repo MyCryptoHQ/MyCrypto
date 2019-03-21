@@ -3825,6 +3825,11 @@
     "decimal": 8
   },
   {
+    "address": "0xc2494604e9dcefa2a70dcebf81e6d7be064a334e",
+    "symbol": "OWT",
+    "decimal": 18
+  },
+  {
     "address": "0x4355fC160f74328f9b383dF2EC589bB3dFd82Ba0",
     "symbol": "OPT",
     "decimal": 18
