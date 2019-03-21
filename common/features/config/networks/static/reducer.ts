@@ -199,7 +199,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     color: '#b37aff',
     blockExplorer: makeExplorer({
       name: 'Ubiqscan',
-      origin: 'https://ubiqscan.io/en'
+      origin: 'https://ubiqscan.io'
     }),
     tokens: require('config/tokens/ubq.json'),
     contracts: require('config/contracts/ubq.json'),

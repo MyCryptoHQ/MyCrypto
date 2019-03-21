@@ -45,7 +45,7 @@ class NonceField extends React.Component<Props> {
                   {translate('OFFLINE_STEP2_LABEL_5')}
                   <Help
                     size="x1"
-                    link="https://support.mycrypto.com/transactions/what-is-nonce.html"
+                    link="https://support.mycrypto.com/general-knowledge/ethereum-blockchain/what-is-nonce"
                   />
                 </div>
                 <Input

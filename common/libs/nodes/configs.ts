@@ -98,7 +98,7 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       name: makeNodeName('UBQ', 'ubiqscan'),
       type: 'rpc',
       service: 'ubiqscan.io',
-      url: 'https://pyrus2.ubiqscan.io'
+      url: 'https://rpc1.ubiqscan.io'
     }
   ],
 
