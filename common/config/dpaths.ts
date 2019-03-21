@@ -55,7 +55,7 @@ export const POA_DEFAULT: DPath = {
 
 export const TOMO_DEFAULT: DPath = {
   label: 'Default (TOMO)',
-  value: "m/44'/1'/0'/0"
+  value: "m/44'/889'/0'/0"
 };
 
 export const ELLA_DEFAULT: DPath = {
@@ -148,6 +148,21 @@ export const REOSC_DEFAULT: DPath = {
   value: "m/44'/2894'/0'/0"
 };
 
+export const ARTIS_SIGMA1: DPath = {
+  label: 'Sigma1 (ATS)',
+  value: "m/44'/60'/0'/0"
+};
+
+export const ARTIS_TAU1: DPath = {
+  label: 'Tau1 (ATS)',
+  value: "m/44'/60'/0'/0"
+};
+
+export const THUNDERCORE_DEFAULT: DPath = {
+  label: 'Default (THUNDERCORE)',
+  value: "m/44'/1001'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -177,7 +192,10 @@ export const DPaths: DPath[] = [
   ATH_DEFAULT,
   ETHO_DEFAULT,
   MIX_DEFAULT,
-  REOSC_DEFAULT
+  REOSC_DEFAULT,
+  ARTIS_SIGMA1,
+  ARTIS_TAU1,
+  THUNDERCORE_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
@@ -194,5 +212,5 @@ export const EXTRA_PATHS = [ETH_SINGULAR];
 
 // whitespace strings are evaluated the same way as nospace strings, except they allow optional spaces between each portion of the string
 // ie. "m / 44' / 0' / 0'" is valid, "m / 4 4' / 0' / 0'" is invalid
-export const dPathRegex = /m\/44'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
+export const dPathRegex = /m\/4[4,9]'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
 // export const whitespaceDPathRegex = /m\s*\/\s*44'\s*\/\s*[0-9]+\'\s*\/\s*[0-9]+(\'+$|\'+\s*(\/\s*[0-1]+$))/;

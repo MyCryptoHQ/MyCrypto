@@ -15,6 +15,7 @@ import { transactionFieldsActions } from '../fields';
 import { transactionNetworkTypes, transactionNetworkActions } from '../network';
 import * as types from './types';
 import * as actions from './actions';
+import { scheduleSelectors } from 'features/schedule';
 
 //#region Signing
 export interface IFullWalletAndTransaction {
@@ -156,14 +157,21 @@ function* verifyTransaction({
 }:
   | types.SignWeb3TransactionSucceededAction
   | types.SignLocalTransactionSucceededAction): SagaIterator {
-  if (noVerify) {
+  const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+  const sendingTokenApproveTransaction: boolean = yield select(
+    scheduleSelectors.getSendingTokenApproveTransaction
+  );
+
+  if (noVerify || scheduling || sendingTokenApproveTransaction) {
     return;
   }
+
   const transactionsMatch: boolean = yield select(
     derivedSelectors.serializedAndTransactionFieldsMatch,
     type === types.TransactionSignActions.SIGN_LOCAL_TRANSACTION_SUCCEEDED,
     noVerify
   );
+
   if (!transactionsMatch) {
     yield put(
       notificationsActions.showNotification(
