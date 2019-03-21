@@ -660,11 +660,11 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     isCustom: false,
     color: '#a2d729',
     blockExplorer: makeExplorer({
-      name: 'Poseidon Explorer',
-      origin: 'https://poseidon.pirl.io/explorer'
+      name: 'Pirl Poseidon Explorer',
+      origin: 'https://devexplorer.pirl.io'
     }),
     tokens: [],
-    contracts: [],
+    contracts: require('config/contracts/pirl.json'),
     dPathFormats: {
       [SecureWalletName.TREZOR]: PIRL_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: PIRL_DEFAULT,
