@@ -33,6 +33,11 @@ import 'what-input';
 
 // v2
 import { gatherFeatureRoutes } from 'v2';
+import DevTools from 'v2/features/DevTools';
+import { AccountProvider } from 'v2/providers/AccountProvider';
+import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
+import { TransactionProvider } from 'v2/providers/TransactionProvider';
+import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -52,11 +57,13 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
+  developmentMode: boolean;
 }
 
 class RootClass extends Component<Props, State> {
   public state = {
-    error: null
+    error: null,
+    developmentMode: Boolean(window.localStorage.getItem('MyCrypto Dev Mode'))
   };
 
   public componentDidMount() {
@@ -77,7 +84,7 @@ class RootClass extends Component<Props, State> {
 
   public render() {
     const { store, onboardingActive } = this.props;
-    const { error } = this.state;
+    const { error, developmentMode } = this.state;
 
     if (error) {
       return <ErrorScreen error={error} />;
@@ -113,18 +120,41 @@ class RootClass extends Component<Props, State> {
       <ThemeProvider theme={light}>
         <React.Fragment>
           <Provider store={store}>
-            <Router>
-              <PageVisitsAnalytics>
-                {onboardingActive && <OnboardingModal />}
-                {routes}
-                <LegacyRoutes />
-                <LogOutPrompt />
-                <QrSignerModal />
-                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-              </PageVisitsAnalytics>
-            </Router>
+            <AddressMetadataProvider>
+              <AccountProvider>
+                <TransactionProvider>
+                  <TransactionHistoryProvider>
+                    <Router>
+                      <PageVisitsAnalytics>
+                        {onboardingActive && <OnboardingModal />}
+                        {routes}
+                        <LegacyRoutes />
+                        <LogOutPrompt />
+                        <QrSignerModal />
+                        {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                      </PageVisitsAnalytics>
+                    </Router>
+                    {developmentMode && <DevTools />}
+                    <div id="ModalContainer" />
+                  </TransactionHistoryProvider>
+                </TransactionProvider>
+              </AccountProvider>
+            </AddressMetadataProvider>
           </Provider>
-          <div id="ModalContainer" />
+          {process.env.NODE_ENV !== 'production' && (
+            <button
+              onClick={this.handleDevelopmentModeButtonClick}
+              style={{
+                position: 'fixed',
+                bottom: 0,
+                right: 0,
+                zIndex: 99,
+                height: '5rem'
+              }}
+            >
+              Development Mode {developmentMode ? 'On' : 'Off'}
+            </button>
+          )}
         </React.Fragment>
       </ThemeProvider>
     );
@@ -155,6 +185,17 @@ class RootClass extends Component<Props, State> {
     }
     root.classList.add(`theme--${theme}`);
   }
+  private handleDevelopmentModeButtonClick = () => {
+    const isDevelopmentMode = window.localStorage.getItem('MyCrypto Dev Mode');
+
+    if (isDevelopmentMode) {
+      window.localStorage.removeItem('MyCrypto Dev Mode');
+      this.setState({ developmentMode: false });
+    } else {
+      window.localStorage.setItem('MyCrypto Dev Mode', 'true');
+      this.setState({ developmentMode: true });
+    }
+  };
 }
 
 let previousURL = '';

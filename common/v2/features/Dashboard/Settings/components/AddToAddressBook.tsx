@@ -7,18 +7,14 @@ import './AddToAddressBook.scss';
 
 // Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
-
-const initialValues = {
-  label: '',
-  address: '',
-  notes: ''
-};
+import { AddressMetadata } from 'v2/services/AddressMetadata';
 
 interface Props {
   toggleFlipped(): void;
+  createAddressMetadatas(values: AddressMetadata): void;
 }
 
-export default function AddToAddressBook({ toggleFlipped }: Props) {
+export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas }: Props) {
   return (
     <DashboardPanel
       heading={
@@ -31,49 +27,58 @@ export default function AddToAddressBook({ toggleFlipped }: Props) {
       }
       className="AddToAddressBook"
     >
-      <div className="AddToAddressBook-form">
-        <Formik
-          initialValues={initialValues}
-          onSubmit={console.log}
-          render={() => (
-            <Form>
-              <fieldset className="AddToAddressBook-form-fieldset">
-                <label htmlFor="label">Label</label>
-                <Field
-                  name="label"
-                  render={({ field }: FieldProps<typeof initialValues>) => (
-                    <Input {...field} placeholder="Enter Name of Address" />
-                  )}
-                />
-              </fieldset>
-              <fieldset className="AddToAddressBook-form-fieldset">
-                <label htmlFor="address">Address</label>
-                <Field
-                  name="address"
-                  render={({ field }: FieldProps<typeof initialValues>) => (
-                    <Input {...field} placeholder="Enter Your Token Address" />
-                  )}
-                />
-              </fieldset>
-              <fieldset className="AddToAddressBook-form-fieldset">
-                <label htmlFor="notes">Notes</label>
-                <Field
-                  name="notes"
-                  render={({ field }: FieldProps<typeof initialValues>) => (
-                    <Textarea {...field} placeholder="Enter a Note for this Address" />
-                  )}
-                />
-              </fieldset>
-            </Form>
-          )}
-        />
-      </div>
-      <div className="AddToAddressBook-buttons">
-        <Button secondary={true} onClick={toggleFlipped}>
-          Cancel
-        </Button>
-        <Button>Add Address</Button>
-      </div>
+      <Formik
+        initialValues={{
+          label: '',
+          address: '',
+          notes: ''
+        }}
+        onSubmit={(values: AddressMetadata, { setSubmitting }) => {
+          createAddressMetadatas(values);
+          setSubmitting(false);
+          toggleFlipped();
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <fieldset className="AddToAddressBook-form-fieldset">
+              <label htmlFor="label">Label</label>
+              <Field
+                name="label"
+                render={({ field }: FieldProps<AddressMetadata>) => (
+                  <Input {...field} placeholder="Enter Name of Address" />
+                )}
+              />
+            </fieldset>
+            <fieldset className="AddToAddressBook-form-fieldset">
+              <label htmlFor="address">Address</label>
+              <Field
+                name="address"
+                render={({ field }: FieldProps<AddressMetadata>) => (
+                  <Input {...field} placeholder="Enter Your Token Address" />
+                )}
+              />
+            </fieldset>
+            <fieldset className="AddToAddressBook-form-fieldset">
+              <label htmlFor="notes">Notes</label>
+              <Field
+                name="notes"
+                render={({ field }: FieldProps<AddressMetadata>) => (
+                  <Textarea {...field} placeholder="Enter a Note for this Address" />
+                )}
+              />
+            </fieldset>
+            <div className="AddToAddressBook-buttons">
+              <Button type="button" secondary={true} onClick={toggleFlipped}>
+                Cancel
+              </Button>
+              <Button type="Submit" disabled={isSubmitting}>
+                Add Address
+              </Button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </DashboardPanel>
   );
 }
