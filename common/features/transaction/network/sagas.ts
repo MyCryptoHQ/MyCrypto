@@ -261,7 +261,6 @@ export function* conductMaxNonceCheck(
   recentTransactions: AppState['transactions']['recent'],
   chainId: number
 ): SagaIterator {
-  console.log('got hur12')
   // Selects the maximum nonce from the maximum of the recent-transaction nonces with the same `from` address and the transaction count of the address
   const selectedNonce = Math.max(
     transactionCount,
@@ -277,7 +276,6 @@ export function* conductMaxNonceCheck(
       0
     )
   ).toString();
-  console.log('got hur13')
   return selectedNonce;
 }
 
