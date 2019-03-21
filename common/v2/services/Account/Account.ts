@@ -1,14 +1,15 @@
 import * as utils from 'v2/libs';
 import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from './types';
+import { Service } from 'v2/providers';
 
-export default class AccountServiceBase {
+export default class AccountServiceBase implements Service<Account> {
   // TODO: Add duplication/validation handling.
   public init = () => {
     initializeCache();
   };
 
-  public createAccount = (account: Account) => {
+  public create = (account: Account) => {
     this.init();
     // Handle Account
     const uuid = utils.generateUUID();
@@ -21,13 +22,13 @@ export default class AccountServiceBase {
     localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
   };
 
-  public readAccount = (uuid: string) => {
+  public read = (uuid: string) => {
     this.init();
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     return parsedLocalCache.accounts[uuid];
   };
 
-  public updateAccount = (uuid: string, account: Account) => {
+  public update = (uuid: string, account: Account) => {
     this.init();
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newAccountCache = Object.assign({}, parsedLocalCache.accounts[uuid], account);
@@ -35,7 +36,7 @@ export default class AccountServiceBase {
     localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
   };
 
-  public deleteAccount = (uuid: string) => {
+  public destroy = (uuid: string) => {
     this.init();
     // Handle Account
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
@@ -46,7 +47,7 @@ export default class AccountServiceBase {
     localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
   };
 
-  public readAccounts = (): ExtendedAccount[] => {
+  public readAll = () => {
     this.init();
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
     let out: ExtendedAccount[] = [];

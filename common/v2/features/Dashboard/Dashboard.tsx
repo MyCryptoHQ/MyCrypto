@@ -12,18 +12,18 @@ import {
 import { actions } from './constants';
 import './Dashboard.scss';
 import {
-  AccountContext,
   TransactionHistoryContext,
   TransactionContext,
-  AddressMetadataContext
+  AddressMetadataContext,
+  AccountProvider
 } from 'v2/providers';
 
 export default function Dashboard() {
   return (
     <>
       {/* MOBILE */}
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
+      <AccountProvider.Context.Consumer>
+        {({ resource, destroy }) => (
           <Layout className="Dashboard-mobile" fluid={true}>
             <div className="Dashboard-mobile-actions">
               {actions.map(action => <ActionTile key={action.title} {...action} />)}
@@ -39,8 +39,8 @@ export default function Dashboard() {
             </div>
             <div className="Dashboard-mobile-section">
               <AccountList
-                accounts={accounts}
-                deleteAccount={deleteAccount}
+                accounts={resource}
+                deleteAccount={destroy}
                 className="Dashboard-mobile-modifiedPanel"
               />
             </div>
@@ -65,10 +65,10 @@ export default function Dashboard() {
             </AddressMetadataContext.Consumer>
           </Layout>
         )}
-      </AccountContext.Consumer>
+      </AccountProvider.Context.Consumer>
       {/* DESKTOP */}
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
+      <AccountProvider.Context.Consumer>
+        {({ resource, destroy }) => (
           <Layout className="Dashboard-desktop">
             <div className="Dashboard-desktop-top">
               <div className="Dashboard-desktop-top-left">
@@ -88,8 +88,8 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <AccountList
-                    accounts={accounts}
-                    deleteAccount={deleteAccount}
+                    accounts={resource}
+                    deleteAccount={destroy}
                     className="Dashboard-desktop-modifiedPanel"
                   />
                 </div>
@@ -121,7 +121,7 @@ export default function Dashboard() {
             </AddressMetadataContext.Consumer>
           </Layout>
         )}
-      </AccountContext.Consumer>
+      </AccountProvider.Context.Consumer>
     </>
   );
 }

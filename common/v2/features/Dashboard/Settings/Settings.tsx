@@ -9,7 +9,7 @@ import './Settings.scss';
 // Legacy
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { AccountList } from '../components';
-import { AccountContext, AddressMetadataContext } from 'v2/providers';
+import { AccountProvider, AddressMetadataContext } from 'v2/providers';
 
 export default function Settings() {
   return (
@@ -18,19 +18,15 @@ export default function Settings() {
         <img src={settingsIcon} alt="Settings" className="Settings-heading-icon" />
         Settings
       </Heading>
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
+      <AccountProvider.Context.Consumer>
+        {({ resource, destroy }) => (
           <FlippablePanel>
             {({ flipped }) =>
-              flipped ? (
-                <AddAccount />
-              ) : (
-                <AccountList accounts={accounts} deleteAccount={deleteAccount} />
-              )
+              flipped ? <AddAccount /> : <AccountList accounts={resource} deleteAccount={destroy} />
             }
           </FlippablePanel>
         )}
-      </AccountContext.Consumer>
+      </AccountProvider.Context.Consumer>
       <AddressMetadataContext.Consumer>
         {({ createAddressMetadatas, addressMetadata, deleteAddressMetadatas }) => (
           <FlippablePanel>

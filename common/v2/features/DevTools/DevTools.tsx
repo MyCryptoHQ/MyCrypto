@@ -4,7 +4,7 @@ import { Panel, Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { Account, ExtendedAccount } from 'v2/services/Account';
-import { AccountContext } from 'v2/providers/AccountProvider';
+import { AccountProvider } from 'v2/providers/AccountProvider';
 
 import ToolsAccountList from './ToolsAccountList';
 
@@ -22,11 +22,11 @@ const DevToolsInput = styled(Input)`
 
 const DevTools = () => {
   return (
-    <AccountContext.Consumer>
-      {({ accounts, createAccount, deleteAccount }) => (
+    <AccountProvider.Context.Consumer>
+      {({ resource, create, destroy }) => (
         <DevToolsContainer>
           <Panel>
-            <ToolsAccountList accounts={accounts} deleteAccount={deleteAccount} />
+            <ToolsAccountList accounts={resource} deleteAccount={destroy} />
             <div className="Settings-heading">Enter a new Account</div>
             <Formik
               initialValues={{
@@ -41,7 +41,7 @@ const DevTools = () => {
                 uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'
               }}
               onSubmit={(values: ExtendedAccount, { setSubmitting }) => {
-                createAccount(values);
+                create(values);
                 setSubmitting(false);
               }}
             >
@@ -107,7 +107,7 @@ const DevTools = () => {
           </Panel>
         </DevToolsContainer>
       )}
-    </AccountContext.Consumer>
+    </AccountProvider.Context.Consumer>
   );
 };
 

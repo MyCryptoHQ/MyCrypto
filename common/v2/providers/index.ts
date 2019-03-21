@@ -1,6 +1,6 @@
 export { DrawerContext, default as DrawerProvider } from './DrawerProvider';
-export { AccountContext, AccountProvider } from './AccountProvider';
-export { AccountTypeContext, AccountTypeProvider } from './AccountTypeProvider';
+export { AccountProvider } from './AccountProvider';
+export { AccountTypeProvider } from './AccountTypeProvider';
 export { AssetContext, AssetProvider } from './AssetProvider';
 export { ContractOptionsContext, ContractOptionsProvider } from './ContractOptionsProvider';
 export {
