@@ -1,13 +1,17 @@
 import React from 'react';
-import classnames from 'classnames';
 import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import Stepper from './Stepper';
-import './ContentPanel.scss';
 
 // Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+
+const ContentPanelWrapper = styled.div`
+  @media (min-width: 700px) {
+    max-width: 560px;
+  }
+`;
 
 const BackButton = styled(Button)`
   color: #007a99;
@@ -17,6 +21,43 @@ const BackButton = styled(Button)`
   font-size: 20px;
   img {
     margin-right: 13px;
+  }
+`;
+
+const ContentPanelHeading = styled(Heading)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #303030;
+  font-size: 25px;
+  font-weight: bold;
+`;
+
+const ContentPanelHeadingIcon = styled.img`
+  width: 45px;
+  height: 45px;
+`;
+
+const ContentPanelDescription = styled(Typography)`
+  margin: 0;
+  margin-bottom: 15px;
+`;
+
+interface ContentPanelTopProps {
+  stepperOnly: boolean;
+}
+
+const ContentPanelTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: ${(props: ContentPanelTopProps) =>
+    props.stepperOnly ? 'flex-end' : 'space-between'};
+  margin-bottom: 10px;
+  padding: 0 30px;
+
+  @media (min-width: 700px) {
+    padding: 0;
   }
 `;
 
@@ -43,32 +84,28 @@ export default function ContentPanel({
   className = '',
   ...rest
 }: Props) {
-  const topClassName = classnames('ContentPanel-top', {
-    'ContentPanel-stepperOnly': stepper && !onBack
-  });
-
   return (
-    <div className="ContentPanel">
+    <ContentPanelWrapper>
       {(onBack || stepper) && (
-        <div className={topClassName}>
+        <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
             <BackButton basic={true} onClick={onBack}>
               <img src={backArrowIcon} alt="Back arrow" /> Back
             </BackButton>
           )}
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}
-        </div>
+        </ContentPanelTop>
       )}
       <Panel className={className} {...rest}>
         {heading && (
-          <Heading className="ContentPanel-heading">
+          <ContentPanelHeading>
             {heading}
-            {icon && <img src={icon} alt="Icon" className="ContentPanel-heading-icon" />}
-          </Heading>
+            {icon && <ContentPanelHeadingIcon src={icon} alt="Icon" />}
+          </ContentPanelHeading>
         )}
-        {description && <Typography className="ContentPanel-description">{description}</Typography>}
+        {description && <ContentPanelDescription>{description}</ContentPanelDescription>}
         {children}
       </Panel>
-    </div>
+    </ContentPanelWrapper>
   );
 }
