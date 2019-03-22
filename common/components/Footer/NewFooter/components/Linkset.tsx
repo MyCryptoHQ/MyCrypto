@@ -25,7 +25,7 @@ const LINK_COLUMNS = [
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_9'),
-        link: 'mailto://press@mycrypto.com',
+        link: 'mailto:press@mycrypto.com',
         analytics_event: 'Press'
       },
       {

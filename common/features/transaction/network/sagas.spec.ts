@@ -395,7 +395,7 @@ describe('Network Sagas', () => {
           {
             hash: '0xecc044b81a794fc567dd389b7709b89a3a0a001dcdd151fc442c57982cfa012b',
             from: 'fromaddress',
-            chainId: 1,
+            chainId: 11,
             nonce: 8,
             to: '0x3d1F9d958AFa2e94dab3f3Ce7362b87daEa39017',
             value: '0x0',
@@ -404,6 +404,17 @@ describe('Network Sagas', () => {
         ])
       );
       const transactionCountString = '0x9';
+      const transactionCount = 9;
+      const transaction: any = {
+        hash: '0xecc044b81a794fc567dd389b7709b89a3a0a001dcdd151fc442c57982cfa012b',
+        from: 'fromaddress',
+        chainId: 11,
+        nonce: 8,
+        to: '0x3d1F9d958AFa2e94dab3f3Ce7362b87daEa39017',
+        value: '0x0',
+        time: 1544811728723
+      };
+      const tx = { transaction };
 
       const gens: any = {};
       gens.gen = cloneableGenerator(sagas.handleNonceRequest)();
@@ -429,7 +440,7 @@ describe('Network Sagas', () => {
       it('should exit if being called without a wallet inst', () => {
         gens.noWallet = gens.gen.clone();
         gens.noWallet.next(null); // No wallet inst
-        expect(gens.noWallet.next(offline).done).toEqual(true);
+        expect(gens.noWallet.next(offline).done).toEqual(false);
       });
 
       it('should select getOffline', () => {
@@ -438,7 +449,7 @@ describe('Network Sagas', () => {
 
       it('should exit if being called while offline', () => {
         gens.offline = gens.gen.clone();
-        expect(gens.offline.next(true).done).toEqual(true);
+        expect(gens.offline.next(true).done).toEqual(false);
       });
 
       it('should apply walletInst.getAddressString', () => {
@@ -460,9 +471,19 @@ describe('Network Sagas', () => {
       });
 
       it('should select transactionSelectors', () => {
-        expect(gens.gen.next(recentTransactions).value).toEqual(
+        expect(gens.gen.next(transactionCount).value).toEqual(
           select(transactionsSelectors.getRecentTransactions)
         );
+      });
+
+      it('should select transactionSelectors', () => {
+        expect(gens.gen.next(recentTransactions).value).toEqual(
+          select(derivedSelectors.getTransaction)
+        );
+      });
+
+      it('should call getTransactionFields', () => {
+        expect(gens.gen.next(tx).value).toEqual(call(getTransactionFields, transaction));
       });
     });
 
