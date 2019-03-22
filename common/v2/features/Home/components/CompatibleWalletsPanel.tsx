@@ -7,8 +7,8 @@ import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/features/constants';
 
-import metamaskIcon from 'common/assets/images/wallets/metamask.png';
-import trustIcon from 'common/assets/images/wallets/trust-2.png';
+import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
+import trustIcon from 'common/assets/images/wallets/trust-2.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
 import paritySignerIcon from 'common/assets/images/wallets/parity-signer-2.svg';
