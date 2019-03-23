@@ -1,8 +1,10 @@
 import { Token } from 'shared/types/network';
 import ERC20 from 'libs/erc20';
-import TokenScanner from 'libs/tokens/scanner';
+import TokenScanner from 'libs/tokens/scannerContract';
 import { TokenValue } from 'libs/units';
+import { getShepherdOffline, getShepherdNetwork } from 'libs/nodes';
 import { IProvider } from 'mycrypto-shepherd/dist/lib/types';
+import scannerConfig from 'libs/tokens/scannerConfig';
 
 export const tokenBalanceHandler: ProxyHandler<IProvider> = {
   get(target, propKey) {
@@ -40,7 +42,10 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
     };
 
     const tokenBalancesShim = async (address: string, tokens: Token[]): Promise<any> => {
-      if (false) {
+      const network = getShepherdNetwork();
+      const scannerContract = scannerConfig.find(entry => entry.networks.includes(network));
+
+      if (!scannerContract) {
         return await slowTokenBalancesShim(address, tokens);
       } else {
         const sendCallRequest: (...rpcArgs: any[]) => Promise<string[]> = Reflect.get(
@@ -48,7 +53,7 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
           'sendCallRequest'
         );
         const response = await sendCallRequest({
-          to: '0x657bEdAFb6BddbEDB8F930d7f91a5AF765B42Ba2',
+          to: scannerContract.address,
           data: TokenScanner.scanTokens.encodeInput({
             _owner: address,
             _contracts: tokens.map(token => token.address)
