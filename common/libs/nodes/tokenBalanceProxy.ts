@@ -49,6 +49,7 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
       const network = getShepherdNetwork();
       const scannerContract = scannerConfig.find(entry => entry.networks.includes(network));
       if (!scannerContract) {
+        console.warn(`Warning: No token scanner contract deployed on current network (${network})`);
         return await slowTokenBalancesShim(address, tokens);
       } else {
         const { store } = redux;
@@ -57,20 +58,16 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
         const hash = keccak256(code).toString('hex');
         if (code === '0x') {
           console.warn(
-            "Warning: Couldn't find token scanner contract (expected code at " +
-              scannerContract.address +
-              ' for network ' +
-              network +
-              ')'
+            `Warning: Couldn't find token scanner contract (expected code at ${
+              scannerContract.address
+            } for network ${network})`
           );
           return await slowTokenBalancesShim(address, tokens);
         } else if (hash !== scannerContract.hash) {
           console.error(
-            'Error: Token scanner contract hash mismatch (expected ' +
-              scannerContract.hash +
-              '; got ' +
-              hash +
-              ')'
+            `Error: Token scanner contract hash mismatch (expected ${
+              scannerContract.hash
+            }; got ${hash})`
           );
           return await slowTokenBalancesShim(address, tokens);
         } else {
@@ -101,9 +98,7 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
           if (balances.length === 0) {
             if (tokens.length > 1) {
               console.warn(
-                'Token scanner failed; splitting up batch... (contained ' +
-                  tokens.length +
-                  ' tokens)'
+                `Token scanner failed; splitting up batch... (contained ${tokens.length} tokens)`
               );
               return [
                 ...(await tokenBalancesShim(
@@ -114,7 +109,7 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
               ];
             } else if (tokens.length === 1) {
               console.warn(
-                'Warning: Invalid or selfdestructed ERC20 contract: ' + tokens[0].address
+                `Warning: Invalid or selfdestructed ERC20 contract: ${tokens[0].address}`
               );
               return [
                 {
