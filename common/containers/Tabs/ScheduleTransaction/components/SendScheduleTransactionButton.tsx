@@ -6,22 +6,18 @@ import { AppState } from 'features/reducers';
 import { scheduleSelectors } from 'features/schedule';
 import { SendScheduleTransactionButtonFactory } from 'containers/Tabs/ScheduleTransaction/components/SendScheduleTransactionButtonFactory';
 import { ConfirmationModal } from 'components/ConfirmationModal';
-import { SigningStatus, AwaitingMiningModal } from 'components';
-import { getTXDetailsCheckURL } from 'libs/scheduling';
+import { SigningStatus } from 'components';
 
 interface Props {
   className?: string;
   signing?: boolean;
   customModal?: typeof ConfirmationModal;
   paramsValidity: boolean;
-  transactionHash: string;
 }
 
 class SendScheduleTransactionButtonClass extends Component<Props> {
   public render() {
-    const { className, customModal, paramsValidity, signing, transactionHash } = this.props;
-
-    const awaitingMiningLink = transactionHash ? getTXDetailsCheckURL(transactionHash) : '';
+    const { className, customModal, paramsValidity, signing } = this.props;
 
     return (
       <React.Fragment>
@@ -43,27 +39,11 @@ class SendScheduleTransactionButtonClass extends Component<Props> {
           )}
         />
         <SigningStatus />
-        <AwaitingMiningModal
-          isOpen={Boolean(transactionHash)}
-          transactionHash={transactionHash}
-          message={
-            <span>
-              {translate('SCHEDULE_TOKEN_TRANSFER_MINING_PART_1')}
-              <br />
-              <br />
-              {translate('SCHEDULE_TOKEN_TRANSFER_MINING_PART_2')}{' '}
-              <a href={awaitingMiningLink} rel="noopener noreferrer" target="_blank">
-                {awaitingMiningLink}
-              </a>
-            </span>
-          }
-        />
       </React.Fragment>
     );
   }
 }
 
 export const SendScheduleTransactionButton = connect((state: AppState) => ({
-  paramsValidity: scheduleSelectors.getScheduleParamsValidity(state).value,
-  transactionHash: scheduleSelectors.getScheduledTransactionHash(state)
+  paramsValidity: scheduleSelectors.getScheduleParamsValidity(state).value
 }))(SendScheduleTransactionButtonClass);

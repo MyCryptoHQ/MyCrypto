@@ -79,7 +79,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
         <div className="TrezorDecrypt-help">
-          <NewTabLink href="https://support.mycrypto.com/accessing-your-wallet/how-to-use-your-trezor-with-mycrypto.html">
+          <NewTabLink href="https://support.mycrypto.com/how-to/migrating/moving-from-mycrypto-to-trezor">
             {translate('HOWTO_TREZOR')}
           </NewTabLink>
         </div>
