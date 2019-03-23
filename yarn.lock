@@ -7814,9 +7814,10 @@ mycrypto-nano-result@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/mycrypto-nano-result/-/mycrypto-nano-result-0.0.1.tgz#c1d3208458dc485441b0230c69948f62344f9d5a"
 
-mycrypto-shepherd@1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.4.0.tgz#ad86e0f18040da524631bf471bce03ba65c165a3"
+mycrypto-shepherd@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/mycrypto-shepherd/-/mycrypto-shepherd-1.5.0.tgz#bb218bc1715510f36f61e9d9f4057604d93b07cd"
+  integrity sha512-grfwczwkFkE/4ezNC9/3X4RsRxFRCbBvaybiX+IEt1FT863X5Pkwk/UG4OB9g5bszud/GemXz1sodhD+DRCpzg==
   dependencies:
     "@types/jest" "^22.2.2"
     "@types/node" "^9.6.2"

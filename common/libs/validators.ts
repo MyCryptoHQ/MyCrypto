@@ -312,7 +312,8 @@ enum API_NAME {
   Get_Accounts = 'Get Accounts',
   Net_Version = 'Net Version',
   Transaction_By_Hash = 'Transaction By Hash',
-  Transaction_Receipt = 'Transaction Receipt'
+  Transaction_Receipt = 'Transaction Receipt',
+  Get_Code = 'Get Code'
 }
 
 const isValidEthCall = (response: JsonRpcResponse, schemaType: typeof schema.RpcNode) => (
@@ -356,6 +357,9 @@ export const isValidCurrentBlock = (response: JsonRpcResponse) =>
 
 export const isValidRawTxApi = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Raw_Tx);
+
+export const isValidGetCode = (response: JsonRpcResponse) =>
+  isValidEthCall(response, schema.RpcNode)(API_NAME.Get_Code);
 
 export const isValidSendTransaction = (response: JsonRpcResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Send_Transaction);

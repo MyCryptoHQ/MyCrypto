@@ -25,6 +25,7 @@ export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): 
       getTransactionCount: true,
       getCurrentBlock: true,
       sendRawTx: true,
+      getCode: true,
 
       getTransactionByHash: true,
       getTransactionReceipt: true,

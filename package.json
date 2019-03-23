@@ -39,7 +39,7 @@
     "moment": "2.22.1",
     "moment-timezone": "0.5.14",
     "mycrypto-eth-exists": "1.0.0",
-    "mycrypto-shepherd": "1.4.0",
+    "mycrypto-shepherd": "1.5.0",
     "normalizr": "3.2.4",
     "qrcode": "1.2.0",
     "qrcode.react": "0.8.0",

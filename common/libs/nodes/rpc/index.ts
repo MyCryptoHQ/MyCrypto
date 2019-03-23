@@ -15,7 +15,8 @@ import {
   isValidTransactionByHash,
   isValidTransactionReceipt,
   isValidCurrentBlock,
-  isValidRawTxApi
+  isValidRawTxApi,
+  isValidGetCode
 } from 'libs/validators';
 import { Token } from 'types/network';
 import { TransactionData, TransactionReceipt } from 'types/transactions';
@@ -153,5 +154,12 @@ export default class RpcNode implements INode {
       .then(({ result }) => {
         return result;
       });
+  }
+
+  public getCode(address: string): Promise<string> {
+    return this.client
+      .call(this.requests.getCode(address))
+      .then(isValidGetCode)
+      .then(({ result }) => result);
   }
 }

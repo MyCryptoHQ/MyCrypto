@@ -2,9 +2,13 @@ import { Token } from 'shared/types/network';
 import ERC20 from 'libs/erc20';
 import TokenScanner from 'libs/tokens/scannerContract';
 import { TokenValue } from 'libs/units';
-import { getShepherdOffline, getShepherdNetwork } from 'libs/nodes';
+import { getShepherdNetwork } from 'libs/nodes';
 import { IProvider } from 'mycrypto-shepherd/dist/lib/types';
+import { configNodesSelectors } from 'features/config';
+import { redux } from 'mycrypto-shepherd';
 import scannerConfig from 'libs/tokens/scannerConfig';
+import scannerBlacklist from 'libs/tokens/scannerBlacklist';
+import { sha3 as keccak256 } from 'ethereumjs-util';
 
 export const tokenBalanceHandler: ProxyHandler<IProvider> = {
   get(target, propKey) {
@@ -25,7 +29,7 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
     };
 
     const splitBatches = (address: string, tokens: Token[]) => {
-      const batchSize = 200;
+      const batchSize = 400;
       type SplitBatch = { address: string; tokens: Token[] }[];
       const splitBatch: SplitBatch = [];
       for (let i = 0; i < tokens.length; i++) {
@@ -44,43 +48,87 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
     const tokenBalancesShim = async (address: string, tokens: Token[]): Promise<any> => {
       const network = getShepherdNetwork();
       const scannerContract = scannerConfig.find(entry => entry.networks.includes(network));
-
       if (!scannerContract) {
         return await slowTokenBalancesShim(address, tokens);
       } else {
-        const sendCallRequest: (...rpcArgs: any[]) => Promise<string[]> = Reflect.get(
-          target,
-          'sendCallRequest'
-        );
-        const response = await sendCallRequest({
-          to: scannerContract.address,
-          data: TokenScanner.scanTokens.encodeInput({
-            _owner: address,
-            _contracts: tokens.map(token => token.address)
-          })
-        });
-
-        const balances = TokenScanner.scanTokens.decodeOutput(response)[0];
-        if (balances.length === 0) {
-          if (tokens.length > 1) {
-            return [
-              ...(await tokenBalancesShim(address, tokens.splice(0, Math.ceil(tokens.length / 2)))),
-              ...(await tokenBalancesShim(address, tokens))
-            ];
-          } else if (tokens.length === 1) {
-            console.error('Broken ERC20 contract: ' + tokens[0].address);
-            return [
-              {
-                balance: TokenValue('0'),
-                error: 'Invalid object shape'
-              }
-            ];
-          }
+        const { store } = redux;
+        const nodeLib = configNodesSelectors.getNodeLib(store.getState());
+        const code = await nodeLib.getCode(scannerContract.address);
+        const hash = keccak256(code).toString('hex');
+        if (code === '0x') {
+          console.warn(
+            "Warning: Couldn't find token scanner contract (expected code at " +
+              scannerContract.address +
+              ' for network ' +
+              network +
+              ')'
+          );
+          return await slowTokenBalancesShim(address, tokens);
+        } else if (hash !== scannerContract.hash) {
+          console.error(
+            'Error: Token scanner contract hash mismatch (expected ' +
+              scannerContract.hash +
+              '; got ' +
+              hash +
+              ')'
+          );
+          return await slowTokenBalancesShim(address, tokens);
         } else {
-          return balances.map((balance: any) => ({
-            balance,
-            error: null
-          }));
+          const sendCallRequest: (...rpcArgs: any[]) => Promise<string[]> = Reflect.get(
+            target,
+            'sendCallRequest'
+          );
+          const contracts = tokens.map(token => {
+            const { address } = token;
+            const blacklisted = scannerBlacklist.find(
+              entry => entry.networks.includes(network) && entry.address === address
+            );
+            if (blacklisted) {
+              return '0x0000000000000000000000000000000000000000';
+            } else {
+              return address;
+            }
+          });
+          const response = await sendCallRequest({
+            to: scannerContract.address,
+            data: TokenScanner.scanTokens.encodeInput({
+              _owner: address,
+              _contracts: contracts
+            })
+          });
+
+          const balances = TokenScanner.scanTokens.decodeOutput(response)[0];
+          if (balances.length === 0) {
+            if (tokens.length > 1) {
+              console.warn(
+                'Token scanner failed; splitting up batch... (contained ' +
+                  tokens.length +
+                  ' tokens)'
+              );
+              return [
+                ...(await tokenBalancesShim(
+                  address,
+                  tokens.splice(0, Math.ceil(tokens.length / 2))
+                )),
+                ...(await tokenBalancesShim(address, tokens))
+              ];
+            } else if (tokens.length === 1) {
+              console.warn(
+                'Warning: Invalid or selfdestructed ERC20 contract: ' + tokens[0].address
+              );
+              return [
+                {
+                  balance: TokenValue('0'),
+                  error: 'Invalid object shape'
+                }
+              ];
+            }
+          } else {
+            return balances.map((balance: any) => ({
+              balance,
+              error: null
+            }));
+          }
         }
       }
     };

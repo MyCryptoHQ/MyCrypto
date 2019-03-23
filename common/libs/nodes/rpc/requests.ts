@@ -8,7 +8,8 @@ import {
   SendRawTxRequest,
   GetCurrentBlockRequest,
   GetTransactionByHashRequest,
-  GetTransactionReceiptRequest
+  GetTransactionReceiptRequest,
+  GetCodeRequest
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
@@ -85,6 +86,13 @@ export default class RPCRequests {
   public getCurrentBlock(): GetCurrentBlockRequest | any {
     return {
       method: 'eth_blockNumber'
+    };
+  }
+
+  public getCode(address: string): GetCodeRequest | any {
+    return {
+      method: 'eth_getCode',
+      params: [hexEncodeData(address), 'pending']
     };
   }
 }
