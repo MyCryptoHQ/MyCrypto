@@ -44,6 +44,11 @@ const blacklist: BlacklistEntry[] = [
     networks: ['ETH', 'WEB3_ETH'],
     address: '0x1ed2B1eaEd8e968bc36EB90a914660A71827A5E9',
     description: 'Broken'
+  },
+  {
+    networks: ['ETH', 'WEB3_ETH'],
+    address: '0x614b9802D45Aa1bC2282651dC1408632F9027A6e',
+    description: 'Invalid'
   }
 ];
 
