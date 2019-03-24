@@ -6,5 +6,5 @@ export * from './DownloadApp';
 export * from './Drawer';
 export { AccountScreen, UnlockScreen } from './Drawer';
 export * from './Home';
-export * from './ImportWallet';
+export * from './AddAccount';
 export * from './Layout';

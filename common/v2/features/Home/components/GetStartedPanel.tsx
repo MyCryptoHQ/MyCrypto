@@ -24,7 +24,7 @@ export default function GetStartedPanel() {
             <Typography>I'm new! Create wallet (Download App to Create Wallet)</Typography>
           </Panel>
         </Link>
-        <Link to="/import-wallet">
+        <Link to="/add-account">
           <Panel noPadding={true} className="GetStartedPanel-options-option">
             <div className="GetStartedPanel-options-option-image">
               <img src={existingWalletIcon} alt="Existing wallet" />
