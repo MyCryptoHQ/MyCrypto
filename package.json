@@ -128,7 +128,7 @@
     "isomorphic-fetch": "2.2.1",
     "jest": "23.6.0",
     "klaw-sync": "3.0.2",
-    "lint-staged": "7.0.4",
+    "lint-staged": "7.0.5",
     "mini-css-extract-plugin": "0.4.0",
     "minimist": "1.2.0",
     "mycrypto-nano-result": "0.0.1",
