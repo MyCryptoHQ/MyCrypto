@@ -76,6 +76,7 @@ const DownloadButton = styled(Button)`
 const Image = styled.img`
   margin-left: 50px;
   width: 244px;
+  height: 244px;
   order: 2;
 
   @media (max-width: ${SCREEN_MD}) {

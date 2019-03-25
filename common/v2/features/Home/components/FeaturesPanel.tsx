@@ -1,6 +1,6 @@
 import React from 'react';
-import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { Panel } from '@mycrypto/ui';
 
 import translate from 'translations';
 import { COLORS, BREAK_POINTS } from 'v2/features/constants';
@@ -143,7 +143,8 @@ const FeatureDescription = styled.p`
 `;
 
 const FeatureImage = styled.img`
-  width: 70%;
+  width: auto;
+  max-width: 70%;
   max-height: 550px;
 
   @media (max-width: ${SCREEN_LG}) {

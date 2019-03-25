@@ -134,7 +134,8 @@ const WalletCardContent = styled.div`
 `;
 
 const WalletCardImg = styled.img`
-  width: 53px;
+  width: auto;
+  max-width: 53px;
   height: 53px;
   display: inline;
 `;
