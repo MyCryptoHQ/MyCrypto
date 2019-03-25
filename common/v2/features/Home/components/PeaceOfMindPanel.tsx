@@ -96,15 +96,18 @@ const ContentItemWrapper = styled.div`
 const ContentItemImage = styled.img`
   width: 112px;
   height: 112px;
+  object-fit: contain;
 
   @media (max-width: ${SCREEN_MD}) {
     margin-top: 32px;
     width: 150px;
+    height: 150px;
   }
 
   @media (max-width: ${SCREEN_SM}) {
     margin-top: 0;
     width: 112px;
+    height: 112px;
   }
 `;
 

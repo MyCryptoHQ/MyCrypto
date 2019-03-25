@@ -86,6 +86,7 @@ const Image = styled.img`
 
   @media (max-width: ${SCREEN_SM}) {
     width: 127px;
+    height: 127px;
   }
 `;
 

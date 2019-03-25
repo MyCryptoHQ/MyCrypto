@@ -176,6 +176,7 @@ const ActionIcon = styled.img`
   height: auto;
   max-width: 60px;
   max-height: 60px;
+  object-fit: contain;
   order: 2;
   @media (max-width: ${SCREEN_SM}) {
     order: 1;
