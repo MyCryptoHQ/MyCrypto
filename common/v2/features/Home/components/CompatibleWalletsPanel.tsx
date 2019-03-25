@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/features/constants';
+import './SliderImports.scss';
 
 import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
 import trustIcon from 'common/assets/images/wallets/trust-2.svg';

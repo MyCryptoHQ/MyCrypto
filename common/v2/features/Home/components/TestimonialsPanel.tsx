@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import styled from 'styled-components';
 
 import { BREAK_POINTS } from 'v2/features/constants';
+import './SliderImports.scss';
 
 const { SCREEN_XS, SCREEN_SM, SCREEN_XXL } = BREAK_POINTS;
 
