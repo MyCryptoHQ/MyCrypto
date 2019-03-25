@@ -19,8 +19,10 @@ interface Service<R> {
 }
 
 export function serviceProvider<R>(service: Service<R>) {
-  return class ResourceProvider extends Component<{}, State<R>> {
+  return class ServiceProvider extends Component<{}, State<R>> {
     public static Context = createContext({} as State<R>);
+
+    public static displayName = `ServiceProvider(${service.constructor.name || 'Service'})`;
 
     public readonly state: State<R> = {
       resource: service.readAll() || [],
@@ -41,9 +43,9 @@ export function serviceProvider<R>(service: Service<R>) {
     public render() {
       const { children } = this.props;
       return (
-        <ResourceProvider.Context.Provider value={this.state}>
+        <ServiceProvider.Context.Provider value={this.state}>
           {children}
-        </ResourceProvider.Context.Provider>
+        </ServiceProvider.Context.Provider>
       );
     }
 
