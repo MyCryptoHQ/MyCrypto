@@ -219,7 +219,7 @@ export default function CompatibleWalletsPanel() {
   };
 
   return (
-    <MainPanel basic={true} className="CompatibleWalletsPanel">
+    <MainPanel basic={true}>
       <Header>
         <HeaderTitle>{translate('HOME_WALLETS_HEADER')}</HeaderTitle>
         <HeaderDescription>{translate('HOME_WALLETS_DESCRIPTION')}</HeaderDescription>
