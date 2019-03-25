@@ -168,7 +168,7 @@ export class DownloadApp extends Component<Props, State> {
             <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
             <ImgIcon src={desktopAppIcon} alt="Desktop" />
             <PrimaryButton onClick={() => this.openDownloadLink(primaryDownload)}>
-              {primaryDownload.name}
+              {translate('DOWNLOAD_APP_DOWNLOAD_BUTTON')} {primaryDownload.name}
             </PrimaryButton>
             <OptionGroup>
               <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[0])}>

@@ -753,6 +753,7 @@
     "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book.",
     "DOWNLOAD_APP_TITLE": "Download App",
     "DOWNLOAD_APP_DESCRIPTION": "Please download the MyCrypto Desktop app so you can securely complete creating your new account and start managing your funds.",
+    "DOWNLOAD_APP_DOWNLOAD_BUTTON": "Download for",
     "DOWNLOAD_APP_FOOTER_INFO": "Not sure what this is?",
     "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app."
   }
