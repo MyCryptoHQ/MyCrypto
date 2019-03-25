@@ -22,7 +22,7 @@ export function serviceProvider<R>(service: Service<R>) {
   return class ServiceProvider extends Component<{}, State<R>> {
     public static Context = createContext({} as State<R>);
 
-    public static displayName = `ServiceProvider(${service.constructor.name || 'Service'})`;
+    public static displayName = `ServiceProvider(${service.constructor.name})`;
 
     public readonly state: State<R> = {
       resource: service.readAll() || [],
