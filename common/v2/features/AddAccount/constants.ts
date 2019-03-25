@@ -1,6 +1,7 @@
 import {
   SelectMethodPanel,
   SelectNetworkPanel,
+  SelectAddressPanel,
   ConnectMetaMaskPanel,
   ConnectLedgerPanel,
   ConnectTrezorPanel,
@@ -11,6 +12,7 @@ import {
 export enum ImportAddAccountStages {
   SelectMethod,
   SelectNetwork,
+  SelectAddress,
   ConnectMetaMask,
   ConnectLedger,
   ConnectTrezor,
@@ -21,6 +23,7 @@ export enum ImportAddAccountStages {
 export const importAddAccountStageToComponentHash = {
   [ImportAddAccountStages.SelectMethod]: SelectMethodPanel,
   [ImportAddAccountStages.SelectNetwork]: SelectNetworkPanel,
+  [ImportAddAccountStages.SelectAddress]: SelectAddressPanel,
   [ImportAddAccountStages.ConnectMetaMask]: ConnectMetaMaskPanel,
   [ImportAddAccountStages.ConnectLedger]: ConnectLedgerPanel,
   [ImportAddAccountStages.ConnectTrezor]: ConnectTrezorPanel,

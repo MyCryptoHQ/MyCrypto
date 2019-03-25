@@ -61,6 +61,10 @@
   &.is-disabled {
     cursor: not-allowed;
     @include show-tooltip-on-hover;
+
+    .WalletButton-inner {
+      opacity: 0.3;
+    }
   }
 
   &-inner {

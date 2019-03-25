@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default function ConnectLedgerPanel() {
-  return <section className="ConnectLedgerPanel">Connect Ledger</section>;
+export default class ConnectLedgerPanel extends Component {
+  public render() {
+    return <section className="ConnectLedgerPanel">ConnectLedger </section>;
+  }
 }
