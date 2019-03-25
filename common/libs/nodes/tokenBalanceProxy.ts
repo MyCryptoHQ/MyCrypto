@@ -4,8 +4,6 @@ import TokenScanner from 'libs/tokens/scannerContract';
 import { TokenValue } from 'libs/units';
 import { getShepherdNetwork } from 'libs/nodes';
 import { IProvider } from 'mycrypto-shepherd/dist/lib/types';
-import { configNodesSelectors } from 'features/config';
-import { redux } from 'mycrypto-shepherd';
 import scannerConfig from 'libs/tokens/scannerConfig';
 import scannerBlacklist from 'libs/tokens/scannerBlacklist';
 import { sha3 as keccak256 } from 'ethereumjs-util';
@@ -52,9 +50,11 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
         console.warn(`Warning: No token scanner contract deployed on current network (${network})`);
         return await slowTokenBalancesShim(address, tokens);
       } else {
-        const { store } = redux;
-        const nodeLib = configNodesSelectors.getNodeLib(store.getState());
-        const code = await nodeLib.getCode(scannerContract.address);
+        const getCode: (...rpcArgs: any[]) => Promise<string> = Reflect.get(
+          target,
+          'getCode'
+        );
+        const code = await getCode(scannerContract.address);
         const hash = keccak256(code).toString('hex');
         if (code === '0x') {
           console.warn(
