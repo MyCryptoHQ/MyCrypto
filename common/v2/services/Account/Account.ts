@@ -1,9 +1,8 @@
 import * as utils from 'v2/libs';
 import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from './types';
-import { Service } from 'v2/providers';
 
-export default class AccountServiceBase implements Service<Account> {
+export default class AccountServiceBase {
   // TODO: Add duplication/validation handling.
   public init = () => {
     initializeCache();

@@ -25,4 +25,4 @@ export {
   TransactionHistoryContext,
   TransactionHistoryProvider
 } from './TransactionHistoryProvider';
-export { Service, serviceProvider } from './serviceProvider';
+export { serviceProvider } from './serviceProvider';

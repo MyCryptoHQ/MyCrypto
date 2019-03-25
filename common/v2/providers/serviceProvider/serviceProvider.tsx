@@ -9,7 +9,7 @@ interface State<R> {
   destroy(uuid: string): void;
 }
 
-export interface Service<R> {
+interface Service<R> {
   init(): void;
   create(resource: R): void;
   read(uuid: string): R;
