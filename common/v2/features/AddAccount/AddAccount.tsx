@@ -43,6 +43,7 @@ import 'common/v2/features/AddAccount/components/WalletDecrypt.scss';
 import { Typography, Button, Panel } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import { ContentPanel } from 'v2/components';
 
 interface OwnProps {
   hidden?: boolean;
@@ -274,7 +275,7 @@ const WalletDecrypt = withRouter<Props>(
           <h2 className="WalletDecrypt-decrypt-title">
             {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER')}
           </h2>
-          <section className="WalletDecrypt-decrypt-form">
+          <Panel>
             <Errorable
               errorMessage={`Oops, looks like ${translateRaw(
                 selectedWallet.lid
@@ -304,7 +305,7 @@ const WalletDecrypt = withRouter<Props>(
                 }
               />
             </Errorable>
-          </section>
+          </Panel>
         </div>
       );
     }
