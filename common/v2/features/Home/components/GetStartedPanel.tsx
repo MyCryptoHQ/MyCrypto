@@ -173,7 +173,7 @@ const ActionDescription = styled.p`
 
 const ActionIcon = styled.img`
   width: 4vw;
-  height: 4vw;
+  height: auto;
   max-width: 60px;
   max-height: 60px;
   order: 2;
