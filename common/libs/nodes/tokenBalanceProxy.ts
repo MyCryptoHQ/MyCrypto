@@ -50,10 +50,7 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
         console.warn(`Warning: No token scanner contract deployed on current network (${network})`);
         return await slowTokenBalancesShim(address, tokens);
       } else {
-        const getCode: (...rpcArgs: any[]) => Promise<string> = Reflect.get(
-          target,
-          'getCode'
-        );
+        const getCode: (...rpcArgs: any[]) => Promise<string> = Reflect.get(target, 'getCode');
         const code = await getCode(scannerContract.address);
         const hash = keccak256(code).toString('hex');
         if (code === '0x') {
@@ -76,14 +73,13 @@ export const tokenBalanceHandler: ProxyHandler<IProvider> = {
             'sendCallRequest'
           );
           const contracts = tokens.map(token => {
-            const { address } = token;
             const blacklisted = scannerBlacklist.find(
-              entry => entry.networks.includes(network) && entry.address === address
+              entry => entry.networks.includes(network) && entry.address === token.address
             );
             if (blacklisted) {
               return '0x0000000000000000000000000000000000000000';
             } else {
-              return address;
+              return token.address;
             }
           });
           const response = await sendCallRequest({
