@@ -39,9 +39,10 @@ import {
   SelectAddressPanel
 } from 'common/v2/features/AddAccount/components';
 import { WalletButton } from 'common/v2/features/AddAccount/components/WalletButton.tsx';
-import 'common/components/WalletDecrypt/WalletDecrypt.scss';
-import { Typography } from '@mycrypto/ui';
+import 'common/v2/features/AddAccount/components/WalletDecrypt.scss';
+import { Typography, Button, Panel } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
+import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 interface OwnProps {
   hidden?: boolean;
@@ -109,7 +110,6 @@ const SECURE_WALLETS = Object.values(SecureWalletName).filter(
   value => !HARDWARE_WALLETS.includes(value)
 );
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
-const MISC_WALLETS = Object.values(MiscWalletName);
 
 const web3info = getWeb3ProviderInfo();
 
@@ -268,14 +268,11 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-decrypt">
-          <button className="WalletDecrypt-decrypt-back" onClick={this.clearWalletChoice}>
-            <i className="fa fa-arrow-left" /> {translate('CHANGE_WALLET')}
-          </button>
+          <Button basic={true} onClick={this.clearWalletChoice}>
+            <img src={backArrowIcon} /> Back
+          </Button>
           <h2 className="WalletDecrypt-decrypt-title">
-            {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
-              translate('UNLOCK_WALLET', {
-                $wallet: translateRaw(selectedWallet.lid)
-              })}
+            {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER')}
           </h2>
           <section className="WalletDecrypt-decrypt-form">
             <Errorable
@@ -414,9 +411,9 @@ const WalletDecrypt = withRouter<Props>(
       const decryptionComponent = this.getDecryptionComponent();
 
       return (
-        <Layout>
+        <Layout centered={true}>
           {!hidden && (
-            <article className="Tab-content-pane">
+            <Panel>
               <div className="WalletDecrypt">
                 <TransitionGroup>
                   {decryptionComponent && selectedWallet ? (
@@ -430,7 +427,7 @@ const WalletDecrypt = withRouter<Props>(
                   )}
                 </TransitionGroup>
               </div>
-            </article>
+            </Panel>
           )}
         </Layout>
       );

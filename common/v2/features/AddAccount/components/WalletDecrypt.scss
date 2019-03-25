@@ -1,0 +1,112 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+$speed: 500ms;
+
+@keyframes decrypt-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@mixin decrypt-title {
+  text-align: center;
+  line-height: 1;
+  margin: $space 0 2rem;
+  font-weight: normal;
+  animation: decrypt-enter $speed ease 1;
+}
+
+.WalletDecrypt {
+  width: 750px;
+
+  &-wallets {
+    margin: 0 -$space-md;
+
+    &-title {
+      @include decrypt-title;
+    }
+
+    &-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+
+      .Warning {
+        width: 40rem;
+      }
+
+      @media screen and (max-width: $screen-xs) {
+        margin: 0;
+      }
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+
+  &-decrypt {
+    display: flex;
+    position: relative;
+    text-align: center;
+    padding-bottom: $space;
+
+    @media (max-width: $screen-md) {
+      padding-bottom: $space * 2;
+    }
+
+    @media (max-width: $screen-md) {
+      top: auto;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    // &:hover,
+    // &:focus {
+    //   opacity: 0.8;
+    // }
+
+    // &:active {
+    //   opacity: 1;
+
+    .fa {
+      position: relative;
+      top: -2px;
+      font-size: 11px;
+    }
+  }
+
+  &-title {
+    @include decrypt-title;
+  }
+
+  &-form {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  &-label {
+    opacity: 0.8;
+    font-weight: 300;
+    white-space: nowrap;
+    width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-override {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0.3;
+  }
+}
+
+// Animation between two slides

@@ -22,12 +22,6 @@ interface StateProps {
   isFormatDisabled?: boolean;
 }
 
-interface Icon {
-  icon: string;
-  href?: string;
-  arialabel: string;
-}
-
 type Props = OwnProps & StateProps;
 
 export class WalletButton extends React.PureComponent<Props> {
