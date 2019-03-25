@@ -1,5 +1,4 @@
-# MyCrypto Web & Desktop Apps
-
+# MyCrypto Web & Desktop App
 
 
 [![Build Status](https://travis-ci.org/MyCryptoHQ/MyCrypto.svg?branch=develop)](https://travis-ci.org/MyCryptoHQ/MyCrypto)
