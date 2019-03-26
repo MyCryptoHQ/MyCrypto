@@ -6,7 +6,7 @@ import CreateWallet from './CreateWallet';
 import { Mnemonic } from './Mnemonic';
 import { Keystore } from './Keystore';
 
-const DownloadAppRedirect = () => <Redirect to="/download-app" />;
+const DownloadAppRedirect = () => <Redirect to="/download-desktop-app" />;
 const requiresDesktopApp = (component: ComponentType): ComponentType =>
   !isDesktop() ? component : DownloadAppRedirect;
 
