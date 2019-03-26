@@ -7,6 +7,11 @@ import './SendAssetsForm.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
+import { AccountContext, AssetOptionsContext } from 'v2/providers';
+import { WhenQueryExists } from 'components/renderCbs';
+import translate from 'translations';
+import { AddressField } from 'components';
+import { RecipientAddressField } from '.';
 
 interface Props {
   transaction: Transaction;
@@ -14,47 +19,75 @@ interface Props {
   onSubmit(values: Transaction): void;
 }
 
+const QueryWarning: React.SFC<{}> = () => (
+  <WhenQueryExists
+    whenQueryExists={
+      <div className="alert alert-info">
+        <p>{translate('WARN_SEND_LINK')}</p>
+      </div>
+    }
+  />
+);
+
 export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props) {
   return (
+    
     <Formik
       initialValues={transaction}
       onSubmit={values => {
         onSubmit(values);
+        console.log('values: ' + JSON.stringify(values, null, 4))
         onNext();
       }}
-      render={({ setFieldValue, values: { advancedMode } }) => {
+      render={({ setFieldValue, values: { advancedMode }, handleChange }) => {
         const toggleAdvancedOptions = () => setFieldValue('advancedMode', !advancedMode);
 
         return (
+          
           <Form className="SendAssetsForm">
             {/* Sender Address */}
+            <QueryWarning />
             <fieldset className="SendAssetsForm-fieldset">
               <label htmlFor="senderAddress">Select an Existing Address</label>
-              <Field
-                name="senderAddress"
-                render={({ field }: FieldProps<Transaction>) => (
-                  <ComboBox
-                    value={field.value}
-                    items={new Set(['a', 'b', 'c'])}
-                    className="SendAssetsForm-fieldset-input"
-                  />
-                )}
-              />
+              <AccountContext.Consumer>
+                {({ accounts }) => {
+                  const accountlist: string[] = []; 
+                  accounts.map(en => {
+                    accountlist.push(en.address);
+                  })
+                  return(
+                    <Field
+                      name="senderAddress"
+                      id={'1'}
+                      render={({ field }: FieldProps<Transaction>) => (
+                        <ComboBox
+                          {...field}
+                          id={'2'}
+                          onChange={handleChange}
+                          value={field.value}
+                          items={new Set(accountlist)}
+                          className="SendAssetsForm-fieldset-input"
+                        />
+                      )}
+                    />
+                  )
+                }}
+              </AccountContext.Consumer>
             </fieldset>
             {/* Recipient Address */}
+            
             <fieldset className="SendAssetsForm-fieldset">
-              <label htmlFor="recipientAddress">Recipient Address</label>
-              <Field
-                name="recipientAddress"
-                render={({ field, form }: FieldProps<Transaction>) => (
-                  <Input
-                    value={field.value}
-                    onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
-                    placeholder="Enter an Address or Contact"
-                    className="SendAssetsForm-fieldset-input"
-                  />
-                )}
-              />
+            <Field
+              id={'3'}
+              name="recipientAddress"
+              render={({ field, form }: FieldProps<Transaction>) => (
+                <RecipientAddressField
+                  {...field}
+                  value={field.value}
+                  placeholder="Enter an Address or Contact"
+                  showLabelMatch={true}
+                />
+              )} />
             </fieldset>
             {/* Amount / Asset */}
             <div className="SendAssetsForm-fieldset SendAssetsForm-amountAsset">
@@ -63,30 +96,49 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                   <div>Amount</div>
                   <div className="SendAssetsForm-amountAsset-amount-label-sendMax">send max</div>
                 </label>
-                <Field
-                  name="amount"
-                  render={({ field, form }: FieldProps<Transaction>) => (
-                    <Input
-                      value={field.value}
-                      onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
-                      placeholder="0.00"
-                      className="SendAssetsForm-fieldset-input"
-                    />
-                  )}
-                />
+                
+                      <Field
+                        id={'5'}
+                        name="amount"
+                        render={({ field, form }: FieldProps<Transaction>) => (
+                          <Input
+                            {...field}
+                            id={'6'}
+                            value={field.value}
+                            onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
+                            placeholder="0.00"
+                            className="SendAssetsForm-fieldset-input"
+                          />
+                        )}
+                      />
+
               </div>
               <div className="SendAssetsForm-amountAsset-asset">
                 <label htmlFor="asset">Asset</label>
-                <Field
-                  name="asset"
-                  render={({ field }: FieldProps<Transaction>) => (
-                    <ComboBox
-                      value={field.value}
-                      items={new Set(['ETH', 'ZRX'])}
-                      className="SendAssetsForm-fieldset-input"
-                    />
-                  )}
-                />
+                <AssetOptionsContext.Consumer>
+                  {({ assetOptions = [] }) => {
+                    const assetslist: string[] = []; 
+                    assetOptions.map(en => {
+                      assetslist.push(en.ticker);
+                    })
+                    return(
+                      <Field
+                        id={'7'}
+                        name="asset"
+                        render={({ field }: FieldProps<Transaction>) => (
+                          <ComboBox
+                            {...field}
+                            id={'8'}
+                            onChange={handleChange}
+                            value={field.value}
+                            items={new Set(assetslist)}
+                            className="SendAssetsForm-fieldset-input"
+                          />
+                        )}
+                      />
+                    )
+                  }}
+                </AssetOptionsContext.Consumer>
               </div>
             </div>
             {/* You'll Send */}
@@ -145,6 +197,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                         name="gasPrice"
                         render={({ field, form }: FieldProps<Transaction>) => (
                           <Input
+                            {...field}
                             value={field.value}
                             onChange={({ target: { value } }) =>
                               form.setFieldValue(field.name, value)
@@ -161,6 +214,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                         name="gasLimit"
                         render={({ field, form }: FieldProps<Transaction>) => (
                           <Input
+                            {...field}
                             value={field.value}
                             onChange={({ target: { value } }) =>
                               form.setFieldValue(field.name, value)
@@ -177,6 +231,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                         name="nonce"
                         render={({ field, form }: FieldProps<Transaction>) => (
                           <Input
+                            {...field}
                             value={field.value}
                             onChange={({ target: { value } }) =>
                               form.setFieldValue(field.name, value)
@@ -194,6 +249,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                       name="data"
                       render={({ field, form }: FieldProps<Transaction>) => (
                         <Input
+                          {...field}
                           value={field.value}
                           onChange={({ target: { value } }) =>
                             form.setFieldValue(field.name, value)

@@ -33,7 +33,7 @@ export default function GetStartedPanel() {
           </Panel>
         </Link>
       </div>
-      <Link to="/" className="GetStartedPanel-alreadyHaveAccount">
+      <Link to="/dashboard" className="GetStartedPanel-alreadyHaveAccount">
         <Button basic={true}>
           <img src={signInIcon} alt="Sign in" />
           <Typography>I have a MyCrypto Account</Typography>

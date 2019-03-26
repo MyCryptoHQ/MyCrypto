@@ -8,6 +8,9 @@ import './SendAssets.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
+import { WhenQueryExists } from 'components/renderCbs';
+import translate from 'translations';
+import { isAdvancedQueryTransaction } from 'utils/helpers';
 
 export interface Transaction {
   senderAddress: string;
@@ -28,22 +31,26 @@ interface State {
   transaction: Transaction;
 }
 
-const getInitialState = (): State => ({
-  step: 0,
-  transaction: {
-    senderAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    recipientAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-    amount: '0.00',
-    asset: 'ETH',
-    transactionFee: '',
-    advancedMode: false,
-    automaticallyCalculateGasLimit: true,
-    gasPrice: '',
-    gasLimit: '',
-    nonce: '',
-    data: ''
-  }
-});
+
+
+const getInitialState = (): State => {
+  return ({
+    step: 0,
+    transaction: {
+      senderAddress: 'blah' || '',
+      recipientAddress: 'blahrecipient' || '',
+      amount: '0.00',
+      asset: 'ETH',
+      transactionFee: '',
+      advancedMode: isAdvancedQueryTransaction(location.search) || false,
+      automaticallyCalculateGasLimit: true,
+      gasPrice: '20',
+      gasLimit: '21000',
+      nonce: '0',
+      data: '' 
+    }
+  })
+};
 
 export class SendAssets extends Component<RouteComponentProps<{}>> {
   public state: State = getInitialState();
@@ -58,6 +65,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
 
     return (
       <Layout className="SendAssets" centered={true}>
+      
         <ContentPanel
           onBack={onBack}
           className="SendAssets-panel"
