@@ -9,7 +9,6 @@ import {
   HardwareWalletName,
   SecureWalletName,
   InsecureWalletName,
-  MiscWalletName,
   WalletName,
   knowledgeBaseURL
 } from 'config';
