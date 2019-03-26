@@ -66,7 +66,7 @@
     "rskjs-util": "1.0.3",
     "scryptsy": "2.0.0",
     "semver": "5.5.0",
-    "slick-carousel": "^1.8.1",
+    "slick-carousel": "1.8.1",
     "styled-components": "4.0.2",
     "trezor-connect": "7.0.1",
     "trezor.js": "6.17.5",
