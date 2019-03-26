@@ -8,10 +8,10 @@ const ModalWrapper = styled.section`
   justify-content: center;
   width: 100vw;
   min-height: 100vh;
-  z-index: 20;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   z-index: 9999;
+  top: 0px;
 `;
 
 interface Props {
