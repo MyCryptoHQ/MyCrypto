@@ -1,10 +1,15 @@
 import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import semver from 'semver';
 
 import Modal from './Modal';
-import { getLatestElectronRelease } from 'utils/versioning';
 import { BREAK_POINTS } from 'v2/features/constants';
+import { getFeaturedOS } from 'v2/features/helpers';
+import { GithubService } from 'v2/services';
+import { VERSION as currentVersion } from 'config';
+import { OS } from 'v2/services/Github';
+import translate from 'translations';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
@@ -14,7 +19,7 @@ const { SCREEN_SM } = BREAK_POINTS;
 
 const MainPanel = styled(Panel)`
   background-color: white;
-  padding: 50px 90px;
+  padding: 50px 65px;
   max-width: 750px;
   display: flex;
   flex-direction: column;
@@ -86,21 +91,39 @@ const SecondaryActionButton = styled(ActionButton)`
   }
 `;
 
+const OSNames: { [key: string]: string } = {
+  [OS.WINDOWS]: 'Windows',
+  [OS.MAC]: 'macOS',
+  [OS.LINUX64]: 'Linux'
+};
+
+const featuredOS = getFeaturedOS();
+
 interface State {
   isOpen: boolean;
-  newRelease?: string;
+  OSName: string;
+  nextVersion: string;
+  nextVersionUrl?: string;
 }
 
 export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   public state: State = {
-    isOpen: false
+    isOpen: false,
+    OSName: OSNames[featuredOS],
+    nextVersion: 'v'
   };
 
   public async componentDidMount() {
     try {
-      const newRelease = await getLatestElectronRelease();
-      if (newRelease) {
-        this.setState({ isOpen: true, newRelease });
+      const releasesWithVersion = await GithubService.instance.getReleasesURLs();
+      const { version: nextVersion } = releasesWithVersion;
+      const nextVersionUrl = releasesWithVersion[featuredOS];
+      if (semver.lt(currentVersion, nextVersion)) {
+        this.setState({
+          isOpen: true,
+          nextVersion: `v${releasesWithVersion.version}`,
+          nextVersionUrl
+        });
       }
     } catch (err) {
       console.error('Failed to fetch latest release from GitHub:', err);
@@ -108,7 +131,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   }
 
   public render() {
-    const { isOpen } = this.state;
+    const { isOpen, OSName, nextVersion } = this.state;
 
     return (
       isOpen && (
@@ -118,16 +141,15 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
               <img src={closeIcon} alt="Close" />
             </CloseButton>
             <UpdateImg src={updateIcon} />
-            <Header>There’s a new & improved version of MyCrypto available!</Header>
-            <Description>
-              We know it’s annoying, but updating your app fixes bugs, enables fun features, and
-              ensures your app is secure.
-            </Description>
+            <Header>{translate('APP_UPDATE_TITLE')}</Header>
+            <Description>{translate('APP_UPDATE_BODY')}</Description>
             <ActionsWrapper>
               <SecondaryActionButton secondary={true} onClick={this.onClose}>
-                Not Right Now
+                {translate('APP_UPDATE_CANCEL')}
               </SecondaryActionButton>
-              <ActionButton onClick={this.openRelease}>Download MacOS v1.5.7 Now</ActionButton>
+              <ActionButton onClick={this.downloadRelease}>
+                {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: nextVersion })}
+              </ActionButton>
             </ActionsWrapper>
           </MainPanel>
         </Modal>
@@ -139,7 +161,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
     this.setState({ isOpen: false });
   };
 
-  private openRelease() {
-    window.open('https://github.com/MyCryptoHQ/MyCrypto/releases/latest');
-  }
+  private downloadRelease = () => {
+    window.open(this.state.nextVersionUrl, '_self');
+  };
 }

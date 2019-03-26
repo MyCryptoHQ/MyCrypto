@@ -31,9 +31,10 @@ export default class GithubService {
 
     try {
       const response = await this.service.get('');
-      const assets = response.data.assets;
+      const { assets, tag_name: version } = response.data;
 
       const releasesURLs: ReleaseURLs = {};
+      releasesURLs.version = version;
 
       Object.entries(ASSET_REG_EXPS).forEach(([key, regex]) => {
         const asset = assets.find((a: any) => regex.test(a.name));
