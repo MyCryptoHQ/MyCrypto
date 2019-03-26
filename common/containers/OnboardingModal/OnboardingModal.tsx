@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'features/reducers';
 import { onboardingSelectors } from 'features/onboarding';
-import { Modal } from 'components/v2';
+import { Modal } from 'v2/components';
 import logo from 'assets/images/logo-mycrypto-white.svg';
 import chest from 'assets/images/icn-chest.svg';
 import bankVsMyCrypto from 'assets/images/icn-bank-vs-mycrypto.svg';
