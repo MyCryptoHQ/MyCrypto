@@ -37,7 +37,8 @@ import {
   REOSC_DEFAULT,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
-  THUNDERCORE_DEFAULT
+  THUNDERCORE_DEFAULT,
+  ETI_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -851,7 +852,33 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 1
     }
   }
-};
+},
+
+  ETI: {
+    id: 'ETI',
+    name: 'Etherinc',
+    unit: 'ETI',
+    chainId: 101,
+    isCustom: false,
+    color: '#3560bf',
+    blockExplorer: makeExplorer({
+      name: 'Etherinc Explorer',
+      origin: 'https://explorer.einc.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETI_DEFAULT,
+      [SecureWalletName.SAFE_T]: ETI_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETI_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETI_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 2,
+      max: 60,
+      initial: 2
+    }
+  };
 
 export function staticNetworksReducer(
   state: types.ConfigStaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
