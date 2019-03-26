@@ -1,9 +1,23 @@
 import React from 'react';
+import styled from 'styled-components';
 
-import './Modal.scss';
+const ModalWrapper = styled.section`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  z-index: 9999;
+`;
 
-const Modal: React.StatelessComponent<{}> = ({ children }) => {
-  return <section className="Modalz">{children}</section>;
-};
+interface Props {
+  children: any;
+}
 
-export default Modal;
+export default function Modal({ children }: Props) {
+  return <ModalWrapper>{children}</ModalWrapper>;
+}
