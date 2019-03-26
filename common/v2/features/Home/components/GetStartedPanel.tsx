@@ -20,6 +20,8 @@ const MainPanel = styled(Panel)`
   padding-left: 148px;
   padding-bottom: 24px;
   display: flex;
+  width: 100%;
+  max-width: ${SCREEN_XXL};
 
   @media (min-width: ${SCREEN_XXL}) {
     padding: 0 148px 24px 148px;
