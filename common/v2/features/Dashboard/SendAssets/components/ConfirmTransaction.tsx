@@ -8,6 +8,7 @@ import './ConfirmTransaction.scss';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import feeIcon from 'common/assets/images/icn-fee.svg';
+import { AddressMetadataContext } from 'v2/providers';
 
 interface Props {
   transaction: Transaction;
@@ -33,20 +34,36 @@ export default class ConfirmTransaction extends Component<Props> {
 
     return (
       <div className="ConfirmTransaction">
-        <div className="ConfirmTransaction-row">
-          <div className="ConfirmTransaction-row-column">
-            To:
-            <div className="ConfirmTransaction-addressWrapper">
-              <Address address={recipientAddress} title="Example #2" truncate={truncate} />
+        <AddressMetadataContext.Consumer>
+          {({ addressMetadata }) => {
+            let recipientLabel: string = 'Unknown';
+            let senderLabel: string = 'Unknown';
+            addressMetadata.map(en => {
+              if (en.address.toLowerCase() === recipientAddress.toLowerCase()) {
+                recipientLabel = en.label;
+              } 
+              if (en.address.toLowerCase() === senderAddress.toLowerCase()) {
+                senderLabel = en.label;
+              }
+            })
+            return (
+            <div className="ConfirmTransaction-row">
+              <div className="ConfirmTransaction-row-column">
+                To:
+                <div className="ConfirmTransaction-addressWrapper">
+                  <Address address={recipientAddress} title={recipientLabel} truncate={truncate} />
+                </div>
+              </div>
+              <div className="ConfirmTransaction-row-column">
+                From:
+                <div className="ConfirmTransaction-addressWrapper">
+                  <Address address={senderAddress} title={senderLabel} truncate={truncate} />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="ConfirmTransaction-row-column">
-            From:
-            <div className="ConfirmTransaction-addressWrapper">
-              <Address address={senderAddress} title="Example #1" truncate={truncate} />
-            </div>
-          </div>
-        </div>
+            )}
+          }
+        </AddressMetadataContext.Consumer>
         <div className="ConfirmTransaction-row">
           <div className="ConfirmTransaction-row-column">
             <img src={sendIcon} alt="Send" /> Send Amount:
