@@ -334,6 +334,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'thundercore.com',
       url: 'https://mainnet-rpc.thundercore.com'
     }
+  ],
+
+  ETI: [
+    {
+      name: makeNodeName('ETI', 'eti'),
+      type: 'rpc',
+      service: 'api.einc.io',
+      url: 'https://api.einc.io/jsonrpc/mainnet/'
+    }
   ]
 };
 
