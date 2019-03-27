@@ -26,9 +26,12 @@ const MainPanel = styled(Panel)`
   align-items: center;
   text-align: center;
   position: relative;
+  max-height: 90%;
+  overflow: auto;
 
   @media (max-width: ${SCREEN_SM}) {
     padding: 40px 20px;
+    width: 90%;
   }
 `;
 
