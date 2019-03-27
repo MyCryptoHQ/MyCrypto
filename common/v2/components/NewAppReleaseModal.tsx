@@ -1,10 +1,10 @@
 import React from 'react';
-import { Panel, Button } from '@mycrypto/ui';
+import { Panel, Button, Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 import semver from 'semver';
 
 import Modal from './Modal';
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS, GITHUB_RELEASE_NOTES_URL, COLORS } from 'v2/features/constants';
 import { getFeaturedOS } from 'v2/features/helpers';
 import { GithubService } from 'v2/services';
 import { VERSION as currentVersion } from 'config';
@@ -14,13 +14,15 @@ import translate from 'translations';
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
 import updateIcon from 'common/assets/images/icn-update.svg';
+import updateImportantIcon from 'common/assets/images/icn-important-update.svg';
 
 const { SCREEN_SM } = BREAK_POINTS;
+const { PASTEL_RED } = COLORS;
 
 const MainPanel = styled(Panel)`
   background-color: white;
   padding: 50px 65px;
-  max-width: 750px;
+  max-width: 770px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,16 +63,26 @@ const Header = styled.p`
   color: ${props => props.theme.headline};
 `;
 
+interface DescriptionProps {
+  warning?: boolean;
+  noMargin?: boolean;
+}
+
 const Description = styled.p`
   font-size: 18px;
   font-weight: normal;
-  line-height: 1.5;
-  padding: 0 30px 0 30px;
-  color: ${props => props.theme.text};
+  line-height: 27px;
+  padding: ${(props: DescriptionProps) => (props.warning ? '0 30px 20px 30px' : '0 30px')};
+  color: ${props => (props.warning ? PASTEL_RED : props.theme.text)};
+  ${props => (props.noMargin ? 'margin: 0;' : '')};
 `;
 
+interface ActionsWrapperProps {
+  marginTop?: string;
+}
+
 const ActionsWrapper = styled.div`
-  margin-top: 54px;
+  margin-top: ${(props: ActionsWrapperProps) => (props.marginTop ? props.marginTop : '54px')};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -94,6 +106,19 @@ const SecondaryActionButton = styled(ActionButton)`
   }
 `;
 
+const ReleaseLink = styled.a`
+  word-break: break-all;
+`;
+
+const WarningIcon = styled(Icon)`
+  margin-right: 5px;
+  vertical-align: middle;
+
+  svg {
+    color: ${PASTEL_RED};
+  }
+`;
+
 const OSNames: { [key: string]: string } = {
   [OS.WINDOWS]: 'Windows',
   [OS.MAC]: 'macOS',
@@ -106,6 +131,7 @@ interface State {
   isOpen: boolean;
   OSName: string;
   nextVersion: string;
+  isCritical: boolean;
   nextVersionUrl?: string;
 }
 
@@ -113,7 +139,8 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   public state: State = {
     isOpen: false,
     OSName: OSNames[featuredOS],
-    nextVersion: 'v'
+    nextVersion: 'v',
+    isCritical: false
   };
 
   public async componentDidMount() {
@@ -134,31 +161,62 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   }
 
   public render() {
-    const { isOpen, OSName, nextVersion } = this.state;
+    const { isOpen, isCritical } = this.state;
 
     return (
       isOpen && (
         <Modal>
-          <MainPanel>
-            <CloseButton basic={true} onClick={this.onClose}>
-              <img src={closeIcon} alt="Close" />
-            </CloseButton>
-            <UpdateImg src={updateIcon} />
-            <Header>{translate('APP_UPDATE_TITLE')}</Header>
-            <Description>{translate('APP_UPDATE_BODY')}</Description>
-            <ActionsWrapper>
-              <SecondaryActionButton secondary={true} onClick={this.onClose}>
-                {translate('APP_UPDATE_CANCEL')}
-              </SecondaryActionButton>
-              <ActionButton onClick={this.downloadRelease}>
-                {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: nextVersion })}
-              </ActionButton>
-            </ActionsWrapper>
-          </MainPanel>
+          <MainPanel>{isCritical ? this.getCriticalModal() : this.getNonCriticalModal()}</MainPanel>
         </Modal>
       )
     );
   }
+
+  private getNonCriticalModal = () => {
+    const { OSName, nextVersion } = this.state;
+
+    return (
+      <>
+        <CloseButton basic={true} onClick={this.onClose}>
+          <img src={closeIcon} alt="Close" />
+        </CloseButton>
+        <UpdateImg src={updateIcon} />
+        <Header>{translate('APP_UPDATE_TITLE')}</Header>
+        <Description>{translate('APP_UPDATE_BODY')}</Description>
+        <ActionsWrapper>
+          <SecondaryActionButton secondary={true} onClick={this.onClose}>
+            {translate('APP_UPDATE_CANCEL')}
+          </SecondaryActionButton>
+          <ActionButton onClick={this.downloadRelease}>
+            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: nextVersion })}
+          </ActionButton>
+        </ActionsWrapper>
+      </>
+    );
+  };
+
+  private getCriticalModal = () => {
+    const { OSName, nextVersion } = this.state;
+
+    return (
+      <>
+        <UpdateImg src={updateImportantIcon} />
+        <Header>{translate('APP_UPDATE_TITLE_CRITICAL')}</Header>
+        <Description warning={true}>
+          <WarningIcon icon="warning" /> {translate('APP_UPDATE_WARNING')}
+        </Description>
+        <Description noMargin={true}>{translate('APP_UPDATE_BODY_CRITICAL')}</Description>
+        <ReleaseLink href={GITHUB_RELEASE_NOTES_URL} target="_blank" rel="noreferrer">
+          {GITHUB_RELEASE_NOTES_URL}.
+        </ReleaseLink>
+        <ActionsWrapper marginTop="41px">
+          <ActionButton onClick={this.downloadRelease}>
+            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: nextVersion })}
+          </ActionButton>
+        </ActionsWrapper>
+      </>
+    );
+  };
 
   private onClose = () => {
     this.setState({ isOpen: false });
