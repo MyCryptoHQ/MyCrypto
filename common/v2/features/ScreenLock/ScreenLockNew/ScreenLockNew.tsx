@@ -8,7 +8,7 @@ import { Layout } from 'v2/features';
 import { InputField } from '../components/InputField';
 
 // Legacy
-import desktopAppIcon from 'common/assets/images/icn-create-pw.svg';
+import mainImage from 'common/assets/images/icn-create-pw.svg';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -67,7 +67,7 @@ export class ScreenLockNew extends Component<Props> {
           onBack={this.props.history.goBack}
           heading="Create Password to Lock Your Wallet"
           description="We want to help you keep your funds safe! Please create a password so you can securly view your wallet when you come back to MyCrypto."
-          image={desktopAppIcon}
+          image={mainImage}
           showImageOnTop={true}
           centered={true}
           className=""

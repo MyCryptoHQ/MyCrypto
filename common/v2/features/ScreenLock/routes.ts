@@ -1,5 +1,7 @@
 import { ScreenLockNew } from './ScreenLockNew';
 import { ScreenLockLocked } from './ScreenLockLocked';
+import { ScreenLockForgotPassword } from './ScreenLockForgotPassword';
+
 export default [
   {
     name: 'Screen Lock New',
@@ -12,5 +14,11 @@ export default [
     path: '/screen-lock/locked',
     exact: true,
     component: ScreenLockLocked
+  },
+  {
+    name: 'Screen Lock Forgot Password',
+    path: '/screen-lock/forgot-password',
+    exact: true,
+    component: ScreenLockForgotPassword
   }
 ];

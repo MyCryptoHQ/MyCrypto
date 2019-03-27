@@ -7,7 +7,7 @@ import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import { InputField } from '../components/InputField';
 
-import desktopAppIcon from 'common/assets/images/icn-unlock-wallet.svg';
+import mainImage from 'common/assets/images/icn-unlock-wallet.svg';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ export class ScreenLockLocked extends Component<Props> {
           onBack={this.props.history.goBack}
           heading="Unlock Your Screen"
           description="We’ve detected that you have a MyCrypto wallet already.  Type in your password to continue."
-          image={desktopAppIcon}
+          image={mainImage}
           showImageOnTop={true}
           centered={true}
           className=""
