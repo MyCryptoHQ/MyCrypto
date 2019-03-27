@@ -8,7 +8,7 @@ import { Layout } from 'v2/features';
 import { InputField } from '../components/InputField';
 
 // Legacy
-import desktopAppIcon from 'common/assets/images/icn-desktop-app.svg';
+import desktopAppIcon from 'common/assets/images/icn-unlock-wallet.svg';
 
 const MainWrapper = styled.div`
   display: flex;
