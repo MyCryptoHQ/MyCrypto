@@ -1,0 +1,21 @@
+.Web3Decrypt {
+  text-align: center;
+
+  &-help {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  &-error {
+    opacity: 0;
+    transition: none;
+
+    &.is-showing {
+      opacity: 1;
+    }
+  }
+
+  &-install {
+    margin-top: 10px;
+  }
+}

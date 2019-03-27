@@ -2,17 +2,15 @@ import React from 'react';
 import classnames from 'classnames';
 
 import { WalletName } from 'config';
-import { translateRaw } from 'translations';
-import { NewTabLink, Tooltip } from 'components/ui';
+import { Tooltip } from 'components/ui';
 import './WalletButton.scss';
 
 interface OwnProps {
   name: string;
   description?: string;
   example?: string;
-  icon?: string;
-  helpLink: string;
   walletType: WalletName;
+  isSecure?: boolean;
   isDisabled?: boolean;
   disableReason?: string;
   onClick(walletType: string): void;
@@ -22,16 +20,24 @@ interface StateProps {
   isFormatDisabled?: boolean;
 }
 
+interface Icon {
+  icon: string;
+  tooltip: string;
+  href?: string;
+  arialabel: string;
+}
+
 type Props = OwnProps & StateProps;
 
 export class WalletButton extends React.PureComponent<Props> {
   public render() {
-    const { name, description, example, icon, isDisabled, disableReason } = this.props;
+    const { name, description, example, icon, isSecure, isDisabled, disableReason } = this.props;
 
     return (
       <div
         className={classnames({
           WalletButton: true,
+          'WalletButton--small': !isSecure,
           'is-disabled': isDisabled
         })}
         onClick={this.handleClick}
@@ -54,9 +60,9 @@ export class WalletButton extends React.PureComponent<Props> {
               {example}
             </div>
           )}
-        </div>
 
-        {isDisabled && disableReason && <Tooltip>{disableReason}</Tooltip>}
+          {isDisabled && disableReason && <Tooltip>{disableReason}</Tooltip>}
+        </div>
       </div>
     );
   }
@@ -67,9 +73,5 @@ export class WalletButton extends React.PureComponent<Props> {
     }
 
     this.props.onClick(this.props.walletType);
-  };
-
-  private stopPropagation = (ev: React.FormEvent<HTMLAnchorElement | HTMLSpanElement>) => {
-    ev.stopPropagation();
   };
 }

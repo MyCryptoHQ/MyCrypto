@@ -9,6 +9,7 @@ import {
   HardwareWalletName,
   SecureWalletName,
   InsecureWalletName,
+  MiscWalletName,
   WalletName,
   knowledgeBaseURL
 } from 'config';
@@ -26,23 +27,28 @@ import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
 import { Warning } from 'components/ui';
-import { DisabledWallets } from 'common/components/WalletDecrypt/disables';
+import { DisabledWallets } from './disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
-  ConnectLedgerPanel,
-  ConnectMetaMaskPanel,
-  ConnectParitySignerPanel,
-  ConnectTrezorPanel,
-  ConnectSafeTMiniPanel,
-  SelectNetworkPanel,
-  SelectAddressPanel
-} from 'common/v2/features/AddAccount/components';
-import { WalletButton } from 'common/v2/features/AddAccount/components/WalletButton.tsx';
-import 'common/v2/features/AddAccount/components/WalletDecrypt.scss';
-import { Typography, Button, Panel } from '@mycrypto/ui';
+  KeystoreDecrypt,
+  LedgerNanoSDecrypt,
+  MnemonicDecrypt,
+  PrivateKeyDecrypt,
+  PrivateKeyValue,
+  TrezorDecrypt,
+  SafeTminiDecrypt,
+  Web3Decrypt,
+  WalletButton,
+  ParitySignerDecrypt,
+  InsecureWalletWarning
+} from './components';
+import './AddAccountStyles.scss';
+import { Panel, Button, Typography } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 import { ContentPanel } from 'v2/components';
+import backArrow from 'common/assets/images/icn-back-arrow.svg';
+
+import styled from 'styled-components';
 
 interface OwnProps {
   hidden?: boolean;
@@ -102,7 +108,9 @@ export interface MiscWalletInfo extends BaseWalletInfo {
 
 type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
-type Wallets = HardwareWallets & SecureWallets;
+type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
+type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
+type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallet;
 
 const HARDWARE_WALLETS = Object.values(HardwareWalletName);
 /** @desc Hardware wallets are secure too, but we want to avoid duplication. */
@@ -122,7 +130,7 @@ const WalletDecrypt = withRouter<Props>(
         lid: web3info.lid,
         icon: web3info.icon,
         description: 'ADD_WEB3DESC',
-        component: ConnectMetaMaskPanel,
+        component: Web3Decrypt,
         initialParams: {},
         unlock: this.props.unlockWeb3,
         attemptUnlock: true,
@@ -132,7 +140,7 @@ const WalletDecrypt = withRouter<Props>(
         lid: 'X_LEDGER',
         icon: LedgerIcon,
         description: 'ADD_HARDWAREDESC',
-        component: ConnectLedgerPanel,
+        component: LedgerNanoSDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: 'https://support.ledger.com/hc/en-us/articles/360008268594'
@@ -141,7 +149,7 @@ const WalletDecrypt = withRouter<Props>(
         lid: 'X_TREZOR',
         icon: TrezorIcon,
         description: 'ADD_HARDWAREDESC',
-        component: ConnectTrezorPanel,
+        component: TrezorDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-trezor`
@@ -150,7 +158,7 @@ const WalletDecrypt = withRouter<Props>(
         lid: 'X_SAFE_T',
         icon: SafeTIcon,
         description: 'ADD_HARDWAREDESC',
-        component: ConnectSafeTMiniPanel,
+        component: SafeTminiDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
         // TODO - Update with the right id once available
@@ -160,51 +168,41 @@ const WalletDecrypt = withRouter<Props>(
         lid: 'X_PARITYSIGNER',
         icon: ParitySignerIcon,
         description: 'ADD_PARITY_DESC',
-        component: ConnectParitySignerPanel,
+        component: ParitySignerDecrypt,
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: paritySignerHelpLink
+      },
+      [InsecureWalletName.KEYSTORE_FILE]: {
+        lid: 'X_KEYSTORE2',
+        example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
+        component: KeystoreDecrypt,
+        initialParams: {
+          file: '',
+          password: ''
+        },
+        unlock: this.props.unlockKeystore,
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
+      },
+      [InsecureWalletName.MNEMONIC_PHRASE]: {
+        lid: 'X_MNEMONIC',
+        example: 'brain surround have swap horror cheese file distinct',
+        component: MnemonicDecrypt,
+        initialParams: {},
+        unlock: this.props.unlockMnemonic,
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
+      },
+      [InsecureWalletName.PRIVATE_KEY]: {
+        lid: 'X_PRIVKEY2',
+        example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
+        component: PrivateKeyDecrypt,
+        initialParams: {
+          key: '',
+          password: ''
+        },
+        unlock: this.props.unlockPrivateKey,
+        helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       }
-      //   [InsecureWalletName.KEYSTORE_FILE]: {
-      //     lid: 'X_KEYSTORE2',
-      //     example: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
-      //     component: KeystoreDecrypt,
-      //     initialParams: {
-      //       file: '',
-      //       password: ''
-      //     },
-      //     unlock: this.props.unlockKeystore,
-      //     helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
-      //   },
-      //   [InsecureWalletName.MNEMONIC_PHRASE]: {
-      //     lid: 'X_MNEMONIC',
-      //     example: 'brain surround have swap horror cheese file distinct',
-      //     component: MnemonicDecrypt,
-      //     initialParams: {},
-      //     unlock: this.props.unlockMnemonic,
-      //     helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
-      //   },
-      //   [InsecureWalletName.PRIVATE_KEY]: {
-      //     lid: 'X_PRIVKEY2',
-      //     example: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
-      //     component: PrivateKeyDecrypt,
-      //     initialParams: {
-      //       key: '',
-      //       password: ''
-      //     },
-      //     unlock: this.props.unlockPrivateKey,
-      //     helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
-      //   },
-      //   [MiscWalletName.VIEW_ONLY]: {
-      //     lid: 'VIEW_ADDR',
-      //     description: 'ADD_VIEW_ADDRESS_DESC',
-      //     component: ViewOnlyDecrypt,
-      //     initialParams: {},
-      //     unlock: this.props.setWallet,
-      //     helpLink: '',
-      //     isReadOnly: true,
-      //     redirect: '/account/info'
-      //   }
     };
 
     public state: State = {
@@ -267,44 +265,55 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       return (
-        <div className="WalletDecrypt-decrypt">
-          <Button basic={true} onClick={this.clearWalletChoice}>
-            <img src={backArrowIcon} /> Back
-          </Button>
-          <h2 className="WalletDecrypt-decrypt-title">
-            {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER')}
-          </h2>
-          <Panel>
-            <Errorable
-              errorMessage={`Oops, looks like ${translateRaw(
-                selectedWallet.lid
-              )} is not supported by your browser`}
-              onError={this.clearWalletChoice}
-              shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
-            >
-              <selectedWallet.component
-                value={this.state.value}
-                onChange={this.onChange}
-                onUnlock={(value: any) => {
-                  if (selectedWallet.redirect) {
-                    this.props.history.push(selectedWallet.redirect);
+        <div>
+          <div className="ContentPanelTop">
+            <Button basic={true} onClick={this.clearWalletChoice}>
+              <Typography>
+                {' '}
+                <img src={backArrow} />
+                {translate('CHANGE_WALLET')}
+              </Typography>
+            </Button>
+          </div>
+          <div className="WalletDecrypt-decrypt">
+            <h2 className="WalletDecrypt-decrypt-title">
+              {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
+                translate('UNLOCK_WALLET', {
+                  $wallet: translateRaw(selectedWallet.lid)
+                })}
+            </h2>
+            <section className="WalletDecrypt-decrypt-form">
+              <Errorable
+                errorMessage={`Oops, looks like ${translateRaw(
+                  selectedWallet.lid
+                )} is not supported by your browser`}
+                onError={this.clearWalletChoice}
+                shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
+              >
+                <selectedWallet.component
+                  value={this.state.value}
+                  onChange={this.onChange}
+                  onUnlock={(value: any) => {
+                    if (selectedWallet.redirect) {
+                      this.props.history.push(selectedWallet.redirect);
+                    }
+                    this.onUnlock(value);
+                  }}
+                  showNotification={this.props.showNotification}
+                  isWalletPending={
+                    this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                      ? this.props.isWalletPending
+                      : undefined
                   }
-                  this.onUnlock(value);
-                }}
-                showNotification={this.props.showNotification}
-                isWalletPending={
-                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                    ? this.props.isWalletPending
-                    : undefined
-                }
-                isPasswordPending={
-                  this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                    ? this.props.isPasswordPending
-                    : undefined
-                }
-              />
-            </Errorable>
-          </Panel>
+                  isPasswordPending={
+                    this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                      ? this.props.isPasswordPending
+                      : undefined
+                  }
+                />
+              </Errorable>
+            </section>
+          </div>
         </div>
       );
     }
@@ -315,9 +324,7 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="WalletDecrypt-wallets">
-          <Typography className="WalletDecrypt-wallets-title">
-            {translate('DECRYPT_ACCESS')}
-          </Typography>
+          <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
           {accessMessage && (
             <div className="WalletDecrypt-wallets-row">
               <Warning>{accessMessage}</Warning>
@@ -330,8 +337,11 @@ const WalletDecrypt = withRouter<Props>(
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
+                  //description={translateRaw(wallet.description)}
                   icon={wallet.icon}
+                  //helpLink={wallet.helpLink}
                   walletType={walletType}
+                  //isSecure={true}
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
@@ -346,8 +356,11 @@ const WalletDecrypt = withRouter<Props>(
                 <WalletButton
                   key={walletType}
                   name={translateRaw(wallet.lid)}
+                  //description={translateRaw(wallet.description)}
                   icon={wallet.icon}
+                  //helpLink={wallet.helpLink}
                   walletType={walletType}
+                  //isSecure={true}
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
                   onClick={this.handleWalletChoice}
@@ -355,11 +368,28 @@ const WalletDecrypt = withRouter<Props>(
               );
             })}
           </div>
-          {this.props.showGenerateLink && (
-            <div className="WalletDecrypt-wallets-generate">
-              <Link to="/generate">{translate('DONT_HAVE_WALLET_PROMPT')}</Link>
-            </div>
-          )}
+
+          <div className="WalletDecrypt-wallets-row">
+            {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
+              const wallet = this.WALLETS[walletType];
+              return (
+                <WalletButton
+                  key={walletType}
+                  name={translateRaw(wallet.lid)}
+                  example={wallet.example}
+                  //helpLink={wallet.helpLink}
+                  walletType={walletType}
+                  //isSecure={false}
+                  isDisabled={this.isWalletDisabled(walletType)}
+                  disableReason={reasons[walletType]}
+                  onClick={this.handleWalletChoice}
+                />
+              );
+            })}
+          </div>
+          <div className="WalletDecrypt-info">
+            <Typography>Don't have an account? Create new account now.</Typography>
+          </div>
         </div>
       );
     }
@@ -411,25 +441,23 @@ const WalletDecrypt = withRouter<Props>(
       const decryptionComponent = this.getDecryptionComponent();
 
       return (
-        <Layout centered={true}>
+        <div>
           {!hidden && (
-            <Panel>
-              <div className="WalletDecrypt">
-                <TransitionGroup>
-                  {decryptionComponent && selectedWallet ? (
-                    <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
-                      {decryptionComponent}
-                    </CSSTransition>
-                  ) : (
-                    <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
-                      {this.buildWalletOptions()}
-                    </CSSTransition>
-                  )}
-                </TransitionGroup>
-              </div>
-            </Panel>
+            <div className="WalletDecrypt">
+              <TransitionGroup>
+                {decryptionComponent && selectedWallet ? (
+                  <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
+                    {decryptionComponent}
+                  </CSSTransition>
+                ) : (
+                  <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
+                    {this.buildWalletOptions()}
+                  </CSSTransition>
+                )}
+              </TransitionGroup>
+            </div>
           )}
-        </Layout>
+        </div>
       );
     }
 
