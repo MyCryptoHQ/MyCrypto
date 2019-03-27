@@ -73,7 +73,8 @@ export class ScreenLockLocked extends Component<Props> {
             </FormWrapper>
             <BottomActions>
               <div>
-                Forgot Password? <Link to="/dashboard">Import your settings.</Link>
+                Forgot Password?{' '}
+                <Link to="/screen-lock/forgot-password">Import your settings.</Link>
               </div>
               <div>
                 Why do we recommend screen lock? <Link to="/dashboard">Learn more.</Link>
