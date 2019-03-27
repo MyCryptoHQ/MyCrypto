@@ -3,10 +3,11 @@ import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS, COLORS } from 'v2/features/constants';
 import './SliderImports.scss';
 
 const { SCREEN_XS, SCREEN_SM, SCREEN_XXL } = BREAK_POINTS;
+const { GREYISH_BROWN } = COLORS;
 
 const MainPanel = styled(Panel)`
   padding: 148px 120px;
@@ -75,6 +76,7 @@ const TestimonialCardWrapper = styled.div`
   padding-left: 40px;
   max-width: 400px;
   margin: auto;
+  color: ${GREYISH_BROWN};
 
   @media (max-width: ${SCREEN_XS}) {
     height: auto;

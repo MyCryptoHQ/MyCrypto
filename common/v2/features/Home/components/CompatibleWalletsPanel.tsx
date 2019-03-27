@@ -16,7 +16,7 @@ import paritySignerIcon from 'common/assets/images/wallets/parity-signer-2.svg';
 import safeTIcon from 'common/assets/images/wallets/safe-t.png';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
-const { DARK_SLATE_BLUE } = COLORS;
+const { DARK_SLATE_BLUE, GREYISH_BROWN } = COLORS;
 
 const MainPanel = styled(Panel)`
   padding: 25px 148px;
@@ -73,6 +73,7 @@ const MainPanel = styled(Panel)`
 
 const Header = styled.div`
   margin-right: 40px;
+  color: ${GREYISH_BROWN};
 
   @media (max-width: ${SCREEN_LG}) {
     margin-right: 0px;
