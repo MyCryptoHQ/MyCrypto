@@ -95,6 +95,12 @@ const ContentPanelTop = styled.div`
   }
 `;
 
+const StyledPanel = styled(Panel)`
+  @media (max-width: 700px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+`;
 interface Props {
   children: any;
   className: string;
@@ -136,7 +142,7 @@ export default function ExtendedContentPanel({
           {stepper && <Stepper current={stepper.current} total={stepper.total} />}
         </ContentPanelTop>
       )}
-      <Panel className={className} {...rest}>
+      <StyledPanel className={className} {...rest}>
         {image && showImageOnTop && <ImgIcon src={image} alt="Image" />}
         {heading && (
           <ContentPanelHeading centered={centered}>
@@ -149,7 +155,7 @@ export default function ExtendedContentPanel({
         )}
         {image && !showImageOnTop && <ImgIcon src={image} alt="Image" />}
         {children}
-      </Panel>
+      </StyledPanel>
     </ContentPanelWrapper>
   );
 }

@@ -49,7 +49,7 @@ interface Props {
   value: string;
   inputError?: string | undefined;
   onChange(event: any): void;
-  validate(): void | undefined;
+  validate?(): void | undefined;
 }
 
 let validatorTimeout: any = null;
