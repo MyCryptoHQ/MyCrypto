@@ -5,6 +5,7 @@ import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
 import { WalletLib } from 'shared/enclave/types';
+import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 
 let transport: LedgerTransport<string> | null;
 
@@ -49,6 +50,13 @@ const Ledger: WalletLib = {
       r: toBuffer(0),
       s: toBuffer(0)
     });
+
+    if (ethTx.getChainId() === 1) {
+      const tokenInfo = byContractAddress(ethTx.to.toString('hex'));
+      if (tokenInfo) {
+        await app.provideERC20TokenInformation(tokenInfo);
+      }
+    }
 
     const rsv = await app.signTransaction(path, ethTx.serialize().toString('hex'));
     const signedTx = new EthTx({
