@@ -131,7 +131,7 @@ interface State {
   isOpen: boolean;
   OSName: string;
   nextVersion: string;
-  isCritical: boolean;
+  isCritical?: boolean;
   nextVersionUrl?: string;
 }
 
@@ -139,20 +139,22 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   public state: State = {
     isOpen: false,
     OSName: OSNames[featuredOS],
-    nextVersion: 'v',
-    isCritical: false
+    nextVersion: 'v'
   };
 
   public async componentDidMount() {
     try {
-      const releasesWithVersion = await GithubService.instance.getReleasesURLs();
-      const { version: nextVersion } = releasesWithVersion;
-      const nextVersionUrl = releasesWithVersion[featuredOS];
+      const releasesInfo = await GithubService.instance.getReleasesInfo();
+      const { version: nextVersion, name, releaseUrls } = releasesInfo;
+
+      const isCritical = name.includes('[Critical]');
+      const nextVersionUrl = releaseUrls[featuredOS];
       if (semver.lt(currentVersion, nextVersion)) {
         this.setState({
           isOpen: true,
-          nextVersion: `v${releasesWithVersion.version}`,
-          nextVersionUrl
+          nextVersion: `v${nextVersion}`,
+          nextVersionUrl,
+          isCritical
         });
       }
     } catch (err) {
