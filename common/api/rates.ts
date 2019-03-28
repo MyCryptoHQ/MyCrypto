@@ -52,7 +52,7 @@ const CCApi = 'https://proxy.mycryptoapi.com/cc';
 
 const CCRates = (symbols: string[]) => {
   const tsyms = rateSymbols.symbols.all.concat(symbols as any).join(',');
-  return `${CCApi}/price?fsym=ETH&tsyms=${tsyms}`;
+  return `${CCApi}?fsym=ETH&tsyms=${tsyms}`;
 };
 
 export interface CCResponse {
