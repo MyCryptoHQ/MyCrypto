@@ -39,6 +39,12 @@ const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
         than you are willing to lose, and please be careful.
       </p>
       <p>
+        <b>Default Network Endorsements: </b>
+        MyCrypto supports all EVM based blockchains and our network selector has a bunch of pre-configured
+        networks available to use. Some of the networks are nodes not managed by MyCrypto. A network in this
+        selection group does not mean MyCrypto endorses/supports the network.
+      </p>    
+      <p>
         <b>Translations of MyCrypto: </b>
         The community has done an amazing job translating MyCrypto into a variety of languages.
         However, MyCrypto can only verify the validity and accuracy of the information provided in
