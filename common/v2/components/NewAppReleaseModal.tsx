@@ -74,7 +74,7 @@ const Description = styled.p`
   line-height: 27px;
   padding: ${(props: DescriptionProps) => (props.warning ? '0 30px 20px 30px' : '0 30px')};
   color: ${props => (props.warning ? PASTEL_RED : props.theme.text)};
-  ${props => (props.noMargin ? 'margin: 0;' : '')};
+  ${(props: DescriptionProps) => props.noMargin && 'margin: 0;'};
 `;
 
 interface ActionsWrapperProps {
