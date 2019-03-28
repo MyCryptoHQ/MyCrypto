@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, ComboBox, Typography } from '@mycrypto/ui';
 
 import styled from 'styled-components';
+import { PanelProps } from '@mycrypto/ui/dist/atoms/Panel/Panel';
+import { render } from 'enzyme';
 
 // const SelectNetworkStyled = styled.div`
 //   width: 100%;
@@ -21,25 +23,23 @@ const TitleTypography = styled(Typography)`
   color: var(--dark-slate-blue);
 `;
 
-interface Props extends PanelProps {
-  totalSteps: number;
-}
+export default class SelectNetworkPanel extends Component {
+  public render() {
+    return (
+      <div>
+        <TitleTypography>Select Network</TitleTypography>
+        <Typography>
+          Select the blockchain that you want to operate with. Not sure what to choose? Stick with
+          the default choices below and click next.
+        </Typography>
 
-export default function SelectNetworkPanel({ onBack, onNext }: Props) {
-  return (
-    <div>
-      <TitleTypography>Select Network</TitleTypography>
-      <Typography>
-        Select the blockchain that you want to operate with. Not sure what to choose? Stick with the
-        default choices below and click next.
-      </Typography>
+        <label>Network</label>
+        <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
 
-      <label>Network</label>
-      <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
-
-      <Button className="SelectNetworkPanel-next" onClick={onNext}>
-        Next
-      </Button>
-    </div>
-  );
+        <Button className="SelectNetworkPanel-next" onClick={console.log}>
+          Next
+        </Button>
+      </div>
+    );
+  }
 }

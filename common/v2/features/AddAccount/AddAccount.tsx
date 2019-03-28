@@ -44,7 +44,7 @@ import {
   SelectNetworkPanel
 } from './components';
 import './AddAccountStyles.scss';
-import { Panel, Button, Typography } from '@mycrypto/ui';
+import { Panel, Button, Typography, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
 import { ContentPanel } from 'v2/components';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
@@ -81,6 +81,7 @@ interface State {
   selectedWalletKey: WalletName | null;
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
+  hasSelectedNetwork: boolean;
 }
 
 interface BaseWalletInfo {
@@ -88,8 +89,6 @@ interface BaseWalletInfo {
   component: any;
   initialParams: object;
   unlock: any;
-  helpLink: string;
-  isReadOnly?: boolean;
   attemptUnlock?: boolean;
   redirect?: string;
 }
@@ -110,7 +109,6 @@ export interface MiscWalletInfo extends BaseWalletInfo {
 type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
 type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
-type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
 type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallet;
 
 const HARDWARE_WALLETS = Object.values(HardwareWalletName);
@@ -209,7 +207,8 @@ const WalletDecrypt = withRouter<Props>(
     public state: State = {
       selectedWalletKey: null,
       isInsecureOverridden: false,
-      value: null
+      value: null,
+      hasSelectedNetwork: false
     };
 
     public exists: boolean = true;
@@ -395,6 +394,39 @@ const WalletDecrypt = withRouter<Props>(
       );
     }
 
+    public selectNetworkComponent() {
+      return (
+        <div>
+          <div className="ContentPanelTop">
+            <Button basic={true} onClick={this.clearWalletChoice}>
+              <Typography>
+                {' '}
+                <img src={backArrow} />
+                {translate('CHANGE_WALLET')}
+              </Typography>
+            </Button>
+          </div>
+          <Typography>Select Network</Typography>
+          <Typography>
+            Select the blockchain that you want to operate with. Not sure what to choose? Stick with
+            the default choices below and click next.
+          </Typography>
+
+          <label>Network</label>
+          <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
+
+          <Button className="SelectNetworkPanel-next" onClick={this.handleNetworkSelect}>
+            Next
+          </Button>
+        </div>
+      );
+    }
+
+    public handleNetworkSelect = () => {
+      console.log('[handleNetworkSelect]');
+      this.setState({ hasSelectedNetwork: true });
+    };
+
     public handleWalletChoice = async (walletType: WalletName) => {
       const { showNotification } = this.props;
       const wallet = this.WALLETS[walletType];
@@ -432,7 +464,8 @@ const WalletDecrypt = withRouter<Props>(
     public clearWalletChoice = () => {
       this.setState({
         selectedWalletKey: null,
-        value: null
+        value: null,
+        hasSelectedNetwork: false
       });
     };
 
@@ -440,7 +473,8 @@ const WalletDecrypt = withRouter<Props>(
       const { hidden } = this.props;
       const selectedWallet = this.getSelectedWallet();
       const decryptionComponent = this.getDecryptionComponent();
-
+      const selectNetworkComponent = this.selectNetworkComponent();
+      console.log('[render]', this.state.hasSelectedNetwork);
       return (
         <Layout centered={true}>
           {!hidden && (
@@ -448,8 +482,7 @@ const WalletDecrypt = withRouter<Props>(
               <TransitionGroup>
                 {decryptionComponent && selectedWallet ? (
                   <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
-                    {SelectNetworkPanel}
-                    {/* {decryptionComponent} */}
+                    {this.state.hasSelectedNetwork ? decryptionComponent : selectNetworkComponent}
                   </CSSTransition>
                 ) : (
                   <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
