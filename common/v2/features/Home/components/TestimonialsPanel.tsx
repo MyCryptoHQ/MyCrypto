@@ -90,9 +90,9 @@ const TestimonialCardText = styled.p`
 `;
 
 const TestimonialCardAuthor = styled.p`
-  font-size: 26px;
+  font-size: 30px;
   font-weight: bold;
-  line-height: 1.5;
+  line-height: 45px;
   margin-top: 31px;
 `;
 

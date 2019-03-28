@@ -41,7 +41,6 @@ const SupportLink = styled.div`
   font-size: 18px;
   text-align: center;
   margin-top: 18px;
-  font-weight: bold;
   color: ${BRIGHT_SKY_BLUE};
   line-height: normal;
 `;

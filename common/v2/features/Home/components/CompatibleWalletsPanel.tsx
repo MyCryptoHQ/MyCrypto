@@ -12,7 +12,7 @@ import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
 import trustIcon from 'common/assets/images/wallets/trust-2.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
-import paritySignerIcon from 'common/assets/images/wallets/parity-signer-2.svg';
+import paritySignerIcon from 'common/assets/images/wallets/parity-signer.svg';
 import safeTIcon from 'common/assets/images/wallets/safe-t.png';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;

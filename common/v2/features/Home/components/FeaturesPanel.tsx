@@ -80,6 +80,7 @@ const FeatureWrapper = styled.div`
   width: 100%;
   align-items: center;
   margin-bottom: 80px;
+  ${(props: FeatureWrapperProps) => props.captionRight && 'text-align: right;'}
 
   @media (min-width: ${SCREEN_LG}) {
     flex-direction: ${(props: FeatureWrapperProps) => (props.captionRight ? 'row-reverse' : 'row')};
