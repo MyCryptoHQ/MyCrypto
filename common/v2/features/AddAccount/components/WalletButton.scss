@@ -69,7 +69,7 @@
   }
 
   &-title {
-    display: flex;
+    position: relative;
     justify-content: center;
     align-items: center;
     font-size: $font-size-medium;
@@ -91,18 +91,6 @@
         }
       }
     }
-  }
-
-  &-description {
-    color: shade-dark(0.65);
-    font-size: $font-size-small;
-    font-weight: lighter;
-  }
-
-  &-example {
-    font-size: $font-size-xs;
-    color: color(brand-danger-light);
-    @include ellipsis;
   }
 
   &-icons {

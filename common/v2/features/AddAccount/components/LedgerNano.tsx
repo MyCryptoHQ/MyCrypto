@@ -14,8 +14,13 @@ import './LedgerNano.scss';
 import styled from 'styled-components';
 import { Button, Typography } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
+
 const LedgerDecrypt = styled.div`
   text-align: center;
+`;
+
+const LedgerImage = styled.div`
+  padding: 50px;
 `;
 
 interface OwnProps {
@@ -77,7 +82,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
         <div className="LedgerDecrypt-tip">
           <Typography>{translate('LEDGER_TIP')}</Typography>
         </div>
-        <img src={ledgerIcon} />
+        <LedgerImage>
+          <img src={ledgerIcon} />
+        </LedgerImage>
 
         <Button
           className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
@@ -96,10 +103,12 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
 
+        <Typography>{translate('LEDGER_REFERRAL_2')}</Typography>
         <div className="LedgerDecrypt-help">
-          <HelpLink article={HELP_ARTICLE.HOW_TO_USE_LEDGER}>
+          <Typography>
+            {/* article={HELP_ARTICLE.HOW_TO_USE_LEDGER} */}
             {translate('HELP_ARTICLE_1')}
-          </HelpLink>
+          </Typography>
         </div>
 
         <DeterministicWalletsModal

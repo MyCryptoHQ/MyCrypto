@@ -40,7 +40,8 @@ import {
   Web3Decrypt,
   WalletButton,
   ParitySignerDecrypt,
-  InsecureWalletWarning
+  InsecureWalletWarning,
+  SelectNetworkPanel
 } from './components';
 import './AddAccountStyles.scss';
 import { Panel, Button, Typography } from '@mycrypto/ui';
@@ -441,13 +442,14 @@ const WalletDecrypt = withRouter<Props>(
       const decryptionComponent = this.getDecryptionComponent();
 
       return (
-        <div>
+        <Layout centered={true}>
           {!hidden && (
             <div className="WalletDecrypt">
               <TransitionGroup>
                 {decryptionComponent && selectedWallet ? (
                   <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
-                    {decryptionComponent}
+                    {SelectNetworkPanel}
+                    {/* {decryptionComponent} */}
                   </CSSTransition>
                 ) : (
                   <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
@@ -457,7 +459,7 @@ const WalletDecrypt = withRouter<Props>(
               </TransitionGroup>
             </div>
           )}
-        </div>
+        </Layout>
       );
     }
 

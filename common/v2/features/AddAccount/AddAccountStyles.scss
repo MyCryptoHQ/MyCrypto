@@ -202,6 +202,7 @@ $speed: 500ms;
   margin: $space 0 2rem;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
+  padding-top: 45px;
 }
 
 .WalletDecrypt {

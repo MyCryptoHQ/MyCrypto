@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { WalletName } from 'config';
 import { Tooltip } from 'components/ui';
 import './WalletButton.scss';
+import { Typography } from '@mycrypto/ui';
 
 interface OwnProps {
   name: string;
@@ -45,9 +46,9 @@ export class WalletButton extends React.PureComponent<Props> {
         aria-disabled={isDisabled}
       >
         <div className="WalletButton-inner">
+          {icon && <img className="WalletButton-title-icon" src={icon} alt={name + ' logo'} />}
           <div className="WalletButton-title">
-            {icon && <img className="WalletButton-title-icon" src={icon} alt={name + ' logo'} />}
-            <span>{name}</span>
+            <Typography>{name}</Typography>
           </div>
 
           {description && (
