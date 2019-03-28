@@ -6,7 +6,7 @@ import semver from 'semver';
 import Modal from './Modal';
 import { BREAK_POINTS, GITHUB_RELEASE_NOTES_URL, COLORS } from 'v2/features/constants';
 import { getFeaturedOS } from 'v2/features/helpers';
-import { GithubService } from 'v2/services';
+import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { VERSION as currentVersion } from 'config';
 import { OS } from 'v2/services/Github';
 import translate from 'translations';
@@ -130,30 +130,29 @@ const featuredOS = getFeaturedOS();
 interface State {
   isOpen: boolean;
   OSName: string;
-  nextVersion: string;
+  newVersion?: string;
+  newVersionUrl?: string;
   isCritical?: boolean;
-  nextVersionUrl?: string;
 }
 
 export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   public state: State = {
     isOpen: false,
-    OSName: OSNames[featuredOS],
-    nextVersion: 'v'
+    OSName: OSNames[featuredOS]
   };
 
   public async componentDidMount() {
     try {
       const releasesInfo = await GithubService.instance.getReleasesInfo();
-      const { version: nextVersion, name, releaseUrls } = releasesInfo;
+      const { version: newVersion, name, releaseUrls } = releasesInfo;
 
       const isCritical = name.includes('[Critical]');
-      const nextVersionUrl = releaseUrls[featuredOS];
-      if (semver.lt(currentVersion, nextVersion)) {
+      const newVersionUrl = releaseUrls[featuredOS];
+      if (semver.lt(currentVersion, newVersion)) {
         this.setState({
           isOpen: true,
-          nextVersion: `v${nextVersion}`,
-          nextVersionUrl,
+          newVersion,
+          newVersionUrl,
           isCritical
         });
       }
@@ -175,7 +174,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   }
 
   private getNonCriticalModal = () => {
-    const { OSName, nextVersion } = this.state;
+    const { OSName, newVersion } = this.state;
 
     return (
       <>
@@ -190,7 +189,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
             {translate('APP_UPDATE_CANCEL')}
           </SecondaryActionButton>
           <ActionButton onClick={this.downloadRelease}>
-            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: nextVersion })}
+            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: `v${newVersion}` })}
           </ActionButton>
         </ActionsWrapper>
       </>
@@ -198,7 +197,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   };
 
   private getCriticalModal = () => {
-    const { OSName, nextVersion } = this.state;
+    const { OSName, newVersion } = this.state;
 
     return (
       <>
@@ -213,7 +212,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
         </ReleaseLink>
         <ActionsWrapper marginTop="41px">
           <ActionButton onClick={this.downloadRelease}>
-            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: nextVersion })}
+            {translate('APP_UPDATE_CONFIRM', { $osName: OSName, $appVersion: `v${newVersion}` })}
           </ActionButton>
         </ActionsWrapper>
       </>
@@ -221,10 +220,22 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
   };
 
   private onClose = () => {
+    const { OSName, newVersion } = this.state;
     this.setState({ isOpen: false });
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
+      'Not Right Now button clicked',
+      { current_version: currentVersion, new_version: newVersion, os: OSName }
+    );
   };
 
   private downloadRelease = () => {
-    window.open(this.state.nextVersionUrl, '_self');
+    const { OSName, newVersion, newVersionUrl } = this.state;
+    window.open(newVersionUrl, '_self');
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.UPDATE_DESKTOP,
+      'Get New Version button clicked',
+      { current_version: currentVersion, new_version: newVersion, os: OSName }
+    );
   };
 }
