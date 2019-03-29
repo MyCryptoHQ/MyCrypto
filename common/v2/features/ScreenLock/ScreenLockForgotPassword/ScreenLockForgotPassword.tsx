@@ -8,15 +8,7 @@ import { Layout } from 'v2/features';
 
 import mainImage from 'common/assets/images/icn-forgot-password.svg';
 
-const MainWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 18px 4px 26px 4px;
-  text-align: center;
-`;
-
-const PrimaryButton = styled(Button)`
+const ActionButton = styled(Button)`
   width: 320px;
   margin-top: 10px;
   font-size: 18px;
@@ -29,7 +21,7 @@ const PrimaryButton = styled(Button)`
 `;
 
 const FormWrapper = styled.div`
-  margin-top: 14px;
+  margin: 14px 0;
 `;
 
 const AditionalDescription = styled.p`
@@ -64,12 +56,10 @@ export class ScreenLockForgotPassword extends Component<Props> {
             You can import your MyCrypto Settings to regain access to your wallet. If you don't have
             your MyCrypto Settings, you can start from scratch and re-import your accounts.
           </AditionalDescription>
-          <MainWrapper>
-            <FormWrapper>
-              <PrimaryButton>Import Wallet Settings</PrimaryButton>
-              <PrimaryButton>Start Over & Import an Account</PrimaryButton>
-            </FormWrapper>
-          </MainWrapper>
+          <FormWrapper>
+            <ActionButton>Import Wallet Settings</ActionButton>
+            <ActionButton>Start Over & Import an Account</ActionButton>
+          </FormWrapper>
         </ExtendedContentPanel>
       </Layout>
     );

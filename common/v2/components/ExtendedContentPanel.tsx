@@ -101,6 +101,7 @@ const StyledPanel = styled(Panel)`
     padding-right: 15px;
   }
 `;
+
 interface Props {
   children: any;
   className: string;

@@ -10,15 +10,14 @@ import { InputField } from '../components/InputField';
 // Legacy
 import mainImage from 'common/assets/images/icn-create-pw.svg';
 
-const MainWrapper = styled.div`
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 18px 4px 26px 4px;
-  text-align: center;
 `;
 
-const PrimaryButton = styled(Button)`
+const ActionButton = styled(Button)`
   width: 320px;
   margin-top: 10px;
   font-size: 18px;
@@ -30,6 +29,7 @@ const PrimaryButton = styled(Button)`
 
 const FormWrapper = styled.div`
   margin-top: 35px;
+  max-width: 420px;
 `;
 type Props = RouteComponentProps<{}>;
 
@@ -60,6 +60,10 @@ export class ScreenLockNew extends Component<Props> {
     this.setState({ password2: event.target.value });
   };
 
+  public handleCreatePasswordClick = () => {
+    //TODO: Create password action
+  };
+
   public render() {
     return (
       <Layout centered={true}>
@@ -72,7 +76,7 @@ export class ScreenLockNew extends Component<Props> {
           centered={true}
           className=""
         >
-          <MainWrapper>
+          <ContentWrapper>
             <FormWrapper>
               <InputField
                 label={'Password (min 8 characters)'}
@@ -90,9 +94,9 @@ export class ScreenLockNew extends Component<Props> {
                 inputError={this.state.password2Error}
                 type={'password'}
               />
-              <PrimaryButton>Create Password</PrimaryButton>
+              <ActionButton onClick={this.handleCreatePasswordClick}>Create Password</ActionButton>
             </FormWrapper>
-          </MainWrapper>
+          </ContentWrapper>
         </ExtendedContentPanel>
       </Layout>
     );

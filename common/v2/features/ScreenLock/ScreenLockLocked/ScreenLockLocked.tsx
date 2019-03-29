@@ -9,12 +9,11 @@ import { InputField } from '../components/InputField';
 
 import mainImage from 'common/assets/images/icn-unlock-wallet.svg';
 
-const MainWrapper = styled.div`
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 18px 4px 26px 4px;
-  text-align: center;
 `;
 
 const PrimaryButton = styled(Button)`
@@ -60,7 +59,7 @@ export class ScreenLockLocked extends Component<Props> {
           centered={true}
           className=""
         >
-          <MainWrapper>
+          <ContentWrapper>
             <FormWrapper>
               <InputField
                 label={'Password'}
@@ -80,7 +79,7 @@ export class ScreenLockLocked extends Component<Props> {
                 Why do we recommend screen lock? <Link to="/dashboard">Learn more.</Link>
               </div>
             </BottomActions>
-          </MainWrapper>
+          </ContentWrapper>
         </ExtendedContentPanel>
       </Layout>
     );

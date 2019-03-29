@@ -7,6 +7,7 @@ const { PASTEL_RED } = COLORS;
 
 const MainWrapper = styled.div`
   margin-bottom: 15px;
+  width: 100%;
 `;
 
 const Label = styled.p`
