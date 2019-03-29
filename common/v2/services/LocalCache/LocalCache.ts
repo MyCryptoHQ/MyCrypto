@@ -10,7 +10,7 @@ import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/r
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
   if (!check || check === '[]' || check === '{}') {
-    if (isDevelopment) {
+    if (!isDevelopment) {
       localStorage.setItem(CACHE_KEY, JSON.stringify(CACHE_INIT_DEV));
     } else {
       hardRefreshCache();

@@ -36,6 +36,7 @@ import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
+import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
 import { AddAccount } from 'common/v2/features/AddAccount/AddAccount';
@@ -125,18 +126,20 @@ class RootClass extends Component<Props, State> {
               <AccountProvider>
                 <TransactionProvider>
                   <TransactionHistoryProvider>
-                    <Router>
-                      <PageVisitsAnalytics>
-                        {onboardingActive && <OnboardingModal />}
-                        {routes}
-                        <LegacyRoutes />
-                        <LogOutPrompt />
-                        <QrSignerModal />
-                        {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                      </PageVisitsAnalytics>
-                    </Router>
-                    {developmentMode && <DevTools />}
-                    <div id="ModalContainer" />
+                    <NetworkOptionsProvider>
+                      <Router>
+                        <PageVisitsAnalytics>
+                          {onboardingActive && <OnboardingModal />}
+                          {routes}
+                          <LegacyRoutes />
+                          <LogOutPrompt />
+                          <QrSignerModal />
+                          {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                        </PageVisitsAnalytics>
+                      </Router>
+                      {developmentMode && <DevTools />}
+                      <div id="ModalContainer" />
+                    </NetworkOptionsProvider>
                   </TransactionHistoryProvider>
                 </TransactionProvider>
               </AccountProvider>

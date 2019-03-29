@@ -27,6 +27,7 @@ import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
 import { Warning } from 'components/ui';
+import { NetworkOptions } from 'v2/services';
 import { DisabledWallets } from './disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
@@ -50,6 +51,7 @@ import { ContentPanel } from 'v2/components';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
 
 import styled from 'styled-components';
+import { NetworkOptionsContext } from 'v2/providers';
 
 interface OwnProps {
   hidden?: boolean;
@@ -413,8 +415,15 @@ const WalletDecrypt = withRouter<Props>(
           </Typography>
 
           <label>Network</label>
-          <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
-
+          <NetworkOptionsContext.Consumer>
+            {({ networkOptions = [] }) => {
+              const networkNames: any[] = [];
+              networkOptions.map(en => {
+                networkNames.push(en.name);
+              });
+              return <ComboBox value="" items={new Set(networkNames)} onChange={this.onChange} />;
+            }}
+          </NetworkOptionsContext.Consumer>
           <Button className="SelectNetworkPanel-next" onClick={this.handleNetworkSelect}>
             Next
           </Button>
