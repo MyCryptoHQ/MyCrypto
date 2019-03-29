@@ -6,17 +6,21 @@ import styled from 'styled-components';
 import { BREAK_POINTS, COLORS } from 'v2/features/constants';
 import './SliderImports.scss';
 
+import sparkles1Icon from 'common/assets/images/icn-sparkles-1.svg';
+import sparkles2Icon from 'common/assets/images/icn-sparkles-2.svg';
+import sparkles3Icon from 'common/assets/images/icn-sparkles-3.svg';
+
 const { SCREEN_XS, SCREEN_SM, SCREEN_XXL } = BREAK_POINTS;
 const { GREYISH_BROWN } = COLORS;
 
 const MainPanel = styled(Panel)`
-  padding: 148px 120px;
+  padding: 98px 120px 93px 120px;
   max-width: ${SCREEN_XXL};
   width: 100%;
   @media (max-width: ${SCREEN_SM}) {
     padding-left: 0px;
     padding-right: 0px;
-    padding-top: 80px;
+    padding-top: 30px;
     padding-bottom: 80px;
   }
 
@@ -72,9 +76,10 @@ const MainPanel = styled(Panel)`
 `;
 
 const TestimonialCardWrapper = styled.div`
-  padding-right: 40px;
-  padding-left: 40px;
-  max-width: 400px;
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 50px;
+  max-width: 420px;
   margin: auto;
   color: ${GREYISH_BROWN};
 
@@ -83,10 +88,18 @@ const TestimonialCardWrapper = styled.div`
   }
 `;
 
+const TestimonialCardTextWrapper = styled.p`
+  position: relative;
+`;
+
 const TestimonialCardText = styled.p`
   font-size: 21px;
   line-height: 1.4;
   font-weight: normal;
+
+  @media (max-width: ${SCREEN_XS}) {
+    font-size: 16px;
+  }
 `;
 
 const TestimonialCardAuthor = styled.p`
@@ -94,18 +107,63 @@ const TestimonialCardAuthor = styled.p`
   font-weight: bold;
   line-height: 45px;
   margin-top: 31px;
+  margin-bottom: 35px;
+  display: inline-block;
+  position: relative;
+
+  @media (max-width: ${SCREEN_XS}) {
+    font-size: 20px;
+  }
+`;
+
+const Sparkles1 = styled.img`
+  width: 82px;
+  height: 78px;
+  position: absolute;
+  top: -45px;
+  left: -55px;
+`;
+
+const Sparkles2 = styled.img`
+  width: 57px;
+  height: 67px;
+  position: absolute;
+  top: 10px;
+  right: -55px;
+`;
+
+const Sparkles3 = styled.img`
+  width: 41px;
+  height: 39px;
+  position: absolute;
+  bottom: -30px;
+  right: -15px;
 `;
 
 interface TestimonialCardProps {
   text: string;
   author: string;
+  sparkles: JSX.Element;
+  sparklesPosition: string;
 }
 
-const TestimonialCard: React.SFC<TestimonialCardProps> = ({ text, author }) => {
+const TestimonialCard: React.SFC<TestimonialCardProps> = ({
+  text,
+  author,
+  sparkles,
+  sparklesPosition
+}) => {
   return (
     <TestimonialCardWrapper>
-      <TestimonialCardText>{text}</TestimonialCardText>
-      <TestimonialCardAuthor>{author}</TestimonialCardAuthor>
+      <TestimonialCardTextWrapper>
+        {sparklesPosition === 'top' && sparkles}
+        <TestimonialCardText>{text}</TestimonialCardText>
+        {sparklesPosition === 'middle' && sparkles}
+      </TestimonialCardTextWrapper>
+      <TestimonialCardAuthor>
+        {author}
+        {sparklesPosition === 'bottom' && sparkles}
+      </TestimonialCardAuthor>
     </TestimonialCardWrapper>
   );
 };
@@ -144,9 +202,24 @@ export default function TestimonialsPanel() {
   return (
     <MainPanel basic={true}>
       <Slider {...settings}>
-        <TestimonialCard text={randomText} author={randomAuthor + ' 1'} />
-        <TestimonialCard text={randomText} author={randomAuthor + ' 2'} />
-        <TestimonialCard text={randomText} author={randomAuthor + ' 3'} />
+        <TestimonialCard
+          text={randomText}
+          author={randomAuthor + ' 1'}
+          sparkles={<Sparkles1 src={sparkles1Icon} />}
+          sparklesPosition="top"
+        />
+        <TestimonialCard
+          text={randomText}
+          author={randomAuthor + ' 2'}
+          sparkles={<Sparkles2 src={sparkles2Icon} />}
+          sparklesPosition="bottom"
+        />
+        <TestimonialCard
+          text={randomText}
+          author={randomAuthor + ' 3'}
+          sparkles={<Sparkles3 src={sparkles3Icon} />}
+          sparklesPosition="middle"
+        />
       </Slider>
     </MainPanel>
   );
