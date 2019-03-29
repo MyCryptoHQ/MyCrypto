@@ -2,13 +2,13 @@ import * as utils from 'v2/libs';
 import { initializeCache, LocalCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from './types';
 
-export default class AccountServiceBase {
+export default {
   // TODO: Add duplication/validation handling.
-  public init = () => {
+  init() {
     initializeCache();
-  };
+  },
 
-  public createAccount = (account: Account) => {
+  createAccount(account: Account) {
     this.init();
     // Handle Account
     const uuid = utils.generateUUID();
@@ -19,23 +19,23 @@ export default class AccountServiceBase {
 
     newAccountCache.allAccounts = [...newAccountCache.allAccounts, uuid];
     localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
-  };
+  },
 
-  public readAccount = (uuid: string) => {
+  readAccount(uuid: string) {
     this.init();
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     return parsedLocalCache.accounts[uuid];
-  };
+  },
 
-  public updateAccount = (uuid: string, account: Account) => {
+  updateAccount(uuid: string, account: Account) {
     this.init();
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     const newAccountCache = Object.assign({}, parsedLocalCache.accounts[uuid], account);
 
     localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
-  };
+  },
 
-  public deleteAccount = (uuid: string) => {
+  deleteAccount(uuid: string) {
     this.init();
     // Handle Account
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
@@ -44,9 +44,9 @@ export default class AccountServiceBase {
     parsedLocalCache.allAccounts = newallAccounts;
     const newCache = parsedLocalCache;
     localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
-  };
+  },
 
-  public readAccounts = (): ExtendedAccount[] => {
+  readAccounts(): ExtendedAccount[] {
     this.init();
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
     let out: ExtendedAccount[] = [];
@@ -59,5 +59,5 @@ export default class AccountServiceBase {
     }
 
     return out;
-  };
-}
+  }
+};

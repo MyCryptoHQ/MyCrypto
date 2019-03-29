@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import AccountServiceBase from 'v2/services/Account/Account';
+import Account from 'v2/services/Account/Account';
 import { ExtendedAccount } from 'v2/services/Account';
 
 export interface ProviderState {
@@ -10,8 +10,6 @@ export interface ProviderState {
 }
 
 export const AccountContext = createContext({} as ProviderState);
-
-const Account = new AccountServiceBase();
 
 export class AccountProvider extends Component {
   public readonly state: ProviderState = {
