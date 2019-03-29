@@ -8147,7 +8147,7 @@ node-gyp@^3.6.0:
     tar "^2.0.0"
     which "1"
 
-node-hid@0.7.7, node-hid@^0.7.7:
+node-hid@^0.7.7:
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/node-hid/-/node-hid-0.7.7.tgz#3341630231b534226b86d6758caba48a646799ed"
   dependencies:
