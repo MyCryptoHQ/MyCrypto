@@ -37,7 +37,7 @@ const electronConfig = {
   ],
   externals: {
     'node-hid': 'commonjs node-hid',
-    usb: 'commonjs usb'
+    'usb-detection' : 'commonjs usb-detection'
   },
   node: {
     __dirname: false,
