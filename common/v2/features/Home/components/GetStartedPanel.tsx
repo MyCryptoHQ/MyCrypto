@@ -83,6 +83,7 @@ const Description = styled.p`
   font-weight: normal;
   max-width: 400px;
   color: ${GREYISH_BROWN};
+  white-space: pre-line;
 
   @media (max-width: ${SCREEN_SM}) {
     margin-top: 0;
