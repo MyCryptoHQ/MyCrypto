@@ -146,7 +146,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
       const releasesInfo = await GithubService.instance.getReleasesInfo();
       const { version: newVersion, name, releaseUrls } = releasesInfo;
 
-      const isCritical = name.includes('[Critical]');
+      const isCritical = name.toLowerCase().includes('[critical]');
       const newVersionUrl = releaseUrls[featuredOS];
       if (semver.lt(currentVersion, newVersion)) {
         this.setState({
