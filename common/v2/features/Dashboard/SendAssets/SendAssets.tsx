@@ -8,8 +8,6 @@ import './SendAssets.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
-import { WhenQueryExists } from 'components/renderCbs';
-import translate from 'translations';
 import { isAdvancedQueryTransaction } from 'utils/helpers';
 
 export interface Transaction {
@@ -31,14 +29,12 @@ interface State {
   transaction: Transaction;
 }
 
-
-
 const getInitialState = (): State => {
-  return ({
+  return {
     step: 0,
     transaction: {
-      senderAddress: 'blah' || '',
-      recipientAddress: 'blahrecipient' || '',
+      senderAddress: '',
+      recipientAddress: '',
       amount: '0.00',
       asset: 'ETH',
       transactionFee: '',
@@ -47,9 +43,9 @@ const getInitialState = (): State => {
       gasPrice: '20',
       gasLimit: '21000',
       nonce: '0',
-      data: '' 
+      data: ''
     }
-  })
+  };
 };
 
 export class SendAssets extends Component<RouteComponentProps<{}>> {
@@ -65,7 +61,6 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
 
     return (
       <Layout className="SendAssets" centered={true}>
-      
         <ContentPanel
           onBack={onBack}
           className="SendAssets-panel"

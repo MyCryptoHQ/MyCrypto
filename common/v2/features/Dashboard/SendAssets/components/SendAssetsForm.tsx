@@ -1,17 +1,22 @@
 import React from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button, ComboBox, Heading, Input, Typography } from '@mycrypto/ui';
+import { Button, Heading, Input, Typography } from '@mycrypto/ui';
 
 import { Transaction } from '../SendAssets';
 import './SendAssetsForm.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
-import { AccountContext, AssetOptionsContext } from 'v2/providers';
 import { WhenQueryExists } from 'components/renderCbs';
 import translate from 'translations';
-import { AddressField } from 'components';
-import { RecipientAddressField } from '.';
+import {
+  RecipientAddressField,
+  AmountField,
+  SenderAddressField,
+  GasPriceField,
+  GasLimitField,
+  DataField
+} from './fields';
 
 interface Props {
   transaction: Transaction;
@@ -31,128 +36,48 @@ const QueryWarning: React.SFC<{}> = () => (
 
 export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props) {
   return (
-    
     <Formik
       initialValues={transaction}
       onSubmit={values => {
         onSubmit(values);
-        console.log('values: ' + JSON.stringify(values, null, 4))
+        console.log('values: ' + JSON.stringify(values, null, 4));
         onNext();
       }}
       render={({ setFieldValue, values: { advancedMode }, handleChange }) => {
         const toggleAdvancedOptions = () => setFieldValue('advancedMode', !advancedMode);
 
         return (
-          
           <Form className="SendAssetsForm">
-            {/* Sender Address */}
             <QueryWarning />
+            {/* Sender Address */}
+
             <fieldset className="SendAssetsForm-fieldset">
-              <label htmlFor="senderAddress">Select an Existing Address</label>
-              <AccountContext.Consumer>
-                {({ accounts }) => {
-                  const accountlist: string[] = []; 
-                  accounts.map(en => {
-                    accountlist.push(en.address);
-                  })
-                  return(
-                    <Field
-                      name="senderAddress"
-                      id={'1'}
-                      render={({ field }: FieldProps<Transaction>) => (
-                        <ComboBox
-                          {...field}
-                          id={'2'}
-                          onChange={handleChange}
-                          value={field.value}
-                          items={new Set(accountlist)}
-                          className="SendAssetsForm-fieldset-input"
-                        />
-                      )}
-                    />
-                  )
-                }}
-              </AccountContext.Consumer>
+              <div className="input-group-header">{translate('X_ADDRESS')}</div>
+              <SenderAddressField handleChange={handleChange} />
             </fieldset>
             {/* Recipient Address */}
-            
+
             <fieldset className="SendAssetsForm-fieldset">
-            <Field
-              id={'3'}
-              name="recipientAddress"
-              render={({ field, form }: FieldProps<Transaction>) => (
-                <RecipientAddressField
-                  {...field}
-                  value={field.value}
-                  placeholder="Enter an Address or Contact"
-                  showLabelMatch={true}
-                />
-              )} />
+              <div className="input-group-header">{translate('SEND_ADDR')}</div>
+              <RecipientAddressField />
             </fieldset>
             {/* Amount / Asset */}
-            <div className="SendAssetsForm-fieldset SendAssetsForm-amountAsset">
-              <div className="SendAssetsForm-amountAsset-amount">
-                <label htmlFor="amount" className="SendAssetsForm-amountAsset-amount-label">
-                  <div>Amount</div>
-                  <div className="SendAssetsForm-amountAsset-amount-label-sendMax">send max</div>
-                </label>
-                
-                      <Field
-                        id={'5'}
-                        name="amount"
-                        render={({ field, form }: FieldProps<Transaction>) => (
-                          <Input
-                            {...field}
-                            id={'6'}
-                            value={field.value}
-                            onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
-                            placeholder="0.00"
-                            className="SendAssetsForm-fieldset-input"
-                          />
-                        )}
-                      />
-
-              </div>
-              <div className="SendAssetsForm-amountAsset-asset">
-                <label htmlFor="asset">Asset</label>
-                <AssetOptionsContext.Consumer>
-                  {({ assetOptions = [] }) => {
-                    const assetslist: string[] = []; 
-                    assetOptions.map(en => {
-                      assetslist.push(en.ticker);
-                    })
-                    return(
-                      <Field
-                        id={'7'}
-                        name="asset"
-                        render={({ field }: FieldProps<Transaction>) => (
-                          <ComboBox
-                            {...field}
-                            id={'8'}
-                            onChange={handleChange}
-                            value={field.value}
-                            items={new Set(assetslist)}
-                            className="SendAssetsForm-fieldset-input"
-                          />
-                        )}
-                      />
-                    )
-                  }}
-                </AssetOptionsContext.Consumer>
-              </div>
-            </div>
+            <AmountField handleChange={handleChange} />
             {/* You'll Send */}
             <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
               <label>You'll Send</label>
               <div className="SendAssetsForm-fieldset-youllSend-box">
                 <Heading as="h2" className="SendAssetsForm-fieldset-youllSend-box-crypto">
-                  <img src={sendIcon} alt="Send" /> 13.233333 ETH
+                  <img src={sendIcon} alt="Send" /> 13.233333 ETH{/* TRANSLATE THIS */}
                 </Heading>
-                <small className="SendAssetsForm-fieldset-youllSend-box-fiat">≈ $1440.00 USD</small>
+                <small className="SendAssetsForm-fieldset-youllSend-box-fiat">
+                  {/* TRANSLATE THIS */}≈ $1440.00 USD
+                </small>
                 <div className="SendAssetsForm-fieldset-youllSend-box-conversion">
                   <Typography>
                     Conversion Rate <br />
-                    1 ETH ≈ $109.41 USD
+                    {/* TRANSLATE THIS */}
+                    1 ETH ≈ $109.41 USD{/* TRANSLATE THIS */}
                   </Typography>
                 </div>
               </div>
@@ -161,7 +86,9 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
             <fieldset className="SendAssetsForm-fieldset">
               <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
                 <div>Transaction Fee</div>
+                {/* TRANSLATE THIS */}
                 <div>0.000273 / $0.03 USD</div>
+                {/* TRANSLATE THIS */}
               </label>
               <div className="SendAssetsForm-fieldset-rangeWrapper">
                 <div className="SendAssetsForm-fieldset-rangeWrapper-cheap" />
@@ -170,7 +97,9 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
               </div>
               <div className="SendAssetsForm-fieldset-cheapFast">
                 <div>Cheap</div>
+                {/* TRANSLATE THIS */}
                 <div>Fast</div>
+                {/* TRANSLATE THIS */}
               </div>
             </fieldset>
             {/* Advanced Options */}
@@ -187,43 +116,17 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                   <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
                     <Field name="automaticallyCalculateGasLimit" type="checkbox" />
                     <label htmlFor="automaticallyCalculateGasLimit">
-                      Automatically Calculate Gas Limit
+                      Automatically Calculate Gas Limit{/* TRANSLATE THIS */}
                     </label>
                   </div>
                   <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
-                      <label htmlFor="gasPrice">Gas Price (gwei)</label>
-                      <Field
-                        name="gasPrice"
-                        render={({ field, form }: FieldProps<Transaction>) => (
-                          <Input
-                            {...field}
-                            value={field.value}
-                            onChange={({ target: { value } }) =>
-                              form.setFieldValue(field.name, value)
-                            }
-                            placeholder="0"
-                            className="SendAssetsForm-fieldset-input"
-                          />
-                        )}
-                      />
+                      <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
+                      <GasPriceField handleChange={handleChange} />
                     </div>
-                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-limit">
-                      <label htmlFor="gasLimit">Gas Limit</label>
-                      <Field
-                        name="gasLimit"
-                        render={({ field, form }: FieldProps<Transaction>) => (
-                          <Input
-                            {...field}
-                            value={field.value}
-                            onChange={({ target: { value } }) =>
-                              form.setFieldValue(field.name, value)
-                            }
-                            placeholder="150000000"
-                            className="SendAssetsForm-fieldset-input"
-                          />
-                        )}
-                      />
+                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
+                      <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
+                      <GasLimitField handleChange={handleChange} />
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                       <label htmlFor="nonce">Nonce (?)</label>
@@ -244,31 +147,18 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                     </div>
                   </div>
                   <fieldset className="SendAssetsForm-fieldset">
-                    <label htmlFor="data">Data</label>
-                    <Field
-                      name="data"
-                      render={({ field, form }: FieldProps<Transaction>) => (
-                        <Input
-                          {...field}
-                          value={field.value}
-                          onChange={({ target: { value } }) =>
-                            form.setFieldValue(field.name, value)
-                          }
-                          placeholder="0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520"
-                          className="SendAssetsForm-fieldset-input"
-                        />
-                      )}
-                    />
+                    <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
+                    <DataField handleChange={handleChange} />
                   </fieldset>
                   <div className="SendAssetsForm-advancedOptions-content-output">
-                    0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~=
-                    $2.67 USD
+                    0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~={/* TRANSLATE THIS */}
+                    $2.67 USD{/* TRANSLATE THIS */}
                   </div>
                 </div>
               )}
             </div>
             <Button type="submit" className="SendAssetsForm-next">
-              Next
+              Next{/* TRANSLATE THIS */}
             </Button>
           </Form>
         );
