@@ -108,7 +108,6 @@
     "css-loader": "0.28.11",
     "electron": "2.0.8",
     "electron-builder": "20.13.4",
-    "electron-rebuild": "1.7.3",
     "empty": "0.10.1",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
@@ -200,7 +199,7 @@
     "formatAll": "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff": "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
     "update:tokens": "ts-node scripts/update-tokens",
-    "postinstall": "electron-rebuild --force"
+    "postinstall": "electron-builder install-app-deps"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
