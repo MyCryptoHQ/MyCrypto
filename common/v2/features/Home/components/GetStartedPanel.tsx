@@ -133,6 +133,10 @@ const ActionCardWrapper = styled.div`
     margin: 0 6px;
     padding: 14px 6px;
   }
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const ActionCaptions = styled.div`
@@ -204,15 +208,13 @@ const ActionCard: React.SFC<ActionCardProps> = props => {
   const { name, description, icon, link, eventAction } = props;
   return (
     <Link to={link}>
-      <div onClick={() => trackButtonClick(eventAction)}>
-        <ActionCardWrapper>
-          <ActionCaptions>
-            <ActionName>{name}</ActionName>
-            <ActionDescription>{description}</ActionDescription>
-          </ActionCaptions>
-          <ActionIcon src={icon} alt={name} className="icon" />
-        </ActionCardWrapper>
-      </div>
+      <ActionCardWrapper onClick={() => trackButtonClick(eventAction)}>
+        <ActionCaptions>
+          <ActionName>{name}</ActionName>
+          <ActionDescription>{description}</ActionDescription>
+        </ActionCaptions>
+        <ActionIcon src={icon} alt={name} className="icon" />
+      </ActionCardWrapper>
     </Link>
   );
 };

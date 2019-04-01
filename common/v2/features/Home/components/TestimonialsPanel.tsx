@@ -88,7 +88,7 @@ const TestimonialCardWrapper = styled.div`
   }
 `;
 
-const TestimonialCardTextWrapper = styled.p`
+const TestimonialCardTextWrapper = styled.div`
   position: relative;
 `;
 

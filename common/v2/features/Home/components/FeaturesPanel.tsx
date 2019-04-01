@@ -75,15 +75,16 @@ interface FeatureWrapperProps {
   captionRight: boolean;
 }
 
-const FeatureWrapper = styled.div`
+// prettier-ignore
+const FeatureWrapper = styled.div<FeatureWrapperProps>`
   display: flex;
   width: 100%;
   align-items: center;
   margin-bottom: 80px;
-  ${(props: FeatureWrapperProps) => props.captionRight && 'text-align: right;'}
+  ${props => props.captionRight && 'text-align: right;'}
 
   @media (min-width: ${SCREEN_LG}) {
-    flex-direction: ${(props: FeatureWrapperProps) => (props.captionRight ? 'row-reverse' : 'row')};
+    flex-direction: ${props => (props.captionRight ? 'row-reverse' : 'row')};
   }
 
   @media (max-width: ${SCREEN_LG}) {
