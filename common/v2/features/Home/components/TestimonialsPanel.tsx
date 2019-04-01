@@ -21,7 +21,7 @@ const MainPanel = styled(Panel)`
     padding-left: 0px;
     padding-right: 0px;
     padding-top: 30px;
-    padding-bottom: 80px;
+    padding-bottom: 20px;
   }
 
   .slick-slider {
