@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@ledgerhq/hw-app-eth": "4.48.0",
-    "@ledgerhq/hw-transport-node-hid": "4.46.0",
+    "@ledgerhq/hw-transport-node-hid-noevents": "4.48.0",
     "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@parity/qr-signer": "0.3.1",
     "axios": "0.18.0",
