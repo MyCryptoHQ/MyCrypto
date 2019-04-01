@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import translate, { translateRaw } from 'translations';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
@@ -42,12 +43,16 @@ export class ScreenLockNew extends Component<Props> {
     const minLength = 8;
 
     if (password1.length > 0 && password1.length < minLength) {
-      this.setState({ password1Error: 'Password must be at least 8 characters long' });
+      this.setState({
+        password1Error: translate('SCREEN_LOCK_NEW_PASSWORD_TOO_SHORT')
+      });
     }
 
     if (password1 !== password2) {
       if (password2.length > 0) {
-        this.setState({ password2Error: "Passwords don't match" });
+        this.setState({
+          password2Error: translate('SCREEN_LOCK_NEW_PASSWORDS_DONT_MATCH')
+        });
       }
     }
   };
@@ -69,8 +74,8 @@ export class ScreenLockNew extends Component<Props> {
       <Layout centered={true}>
         <ExtendedContentPanel
           onBack={this.props.history.goBack}
-          heading="Create Password to Lock Your Wallet"
-          description="We want to help you keep your funds safe! Please create a password so you can securly view your wallet when you come back to MyCrypto."
+          heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
+          description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
           image={mainImage}
           showImageOnTop={true}
           centered={true}
@@ -79,7 +84,7 @@ export class ScreenLockNew extends Component<Props> {
           <ContentWrapper>
             <FormWrapper>
               <InputField
-                label={'Password (min 8 characters)'}
+                label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
                 value={this.state.password1}
                 onChange={this.onPassword1Changed}
                 validate={this.validateForm}
@@ -87,14 +92,16 @@ export class ScreenLockNew extends Component<Props> {
                 type={'password'}
               />
               <InputField
-                label={'Confirm password'}
+                label={translateRaw('SCREEN_LOCK_NEW_CONFIRM_PASSWORD_LABEL')}
                 value={this.state.password2}
                 onChange={this.onPassword2Changed}
                 validate={this.validateForm}
                 inputError={this.state.password2Error}
                 type={'password'}
               />
-              <ActionButton onClick={this.handleCreatePasswordClick}>Create Password</ActionButton>
+              <ActionButton onClick={this.handleCreatePasswordClick}>
+                {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
+              </ActionButton>
             </FormWrapper>
           </ContentWrapper>
         </ExtendedContentPanel>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import translate, { translateRaw } from 'translations';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
@@ -45,20 +46,23 @@ export class ScreenLockForgotPassword extends Component<Props> {
       <Layout centered={true}>
         <ExtendedContentPanel
           onBack={this.props.history.goBack}
-          heading="Forgot Screen Lock Password?"
-          description="Unlike the traditional, centralized web, we cannot recover your password."
+          heading={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_HEADING')}
+          description={translateRaw('SCREEN_LOCK_FORGOT_PASSWORD_DESCRIPTION')}
           image={mainImage}
           showImageOnTop={true}
           centered={true}
           className=""
         >
           <AditionalDescription>
-            You can import your MyCrypto Settings to regain access to your wallet. If you don't have
-            your MyCrypto Settings, you can start from scratch and re-import your accounts.
+            {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_DESCRIPTION')}
           </AditionalDescription>
           <FormWrapper>
-            <ActionButton>Import Wallet Settings</ActionButton>
-            <ActionButton>Start Over & Import an Account</ActionButton>
+            <ActionButton>
+              {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_IMPORT')}
+            </ActionButton>
+            <ActionButton>
+              {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_START_OVER')}t
+            </ActionButton>
           </FormWrapper>
         </ExtendedContentPanel>
       </Layout>

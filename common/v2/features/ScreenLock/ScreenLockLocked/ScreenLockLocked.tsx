@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import translate, { translateRaw } from 'translations';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
@@ -44,7 +45,7 @@ export class ScreenLockLocked extends Component<Props> {
   };
 
   public handleUnlockWalletClick = () => {
-    this.setState({ passwordError: 'The password you have entered is incorrect.' });
+    this.setState({ passwordError: translate('SCREEN_LOCK_LOCKED_WRONG_PASSWORD') });
   };
 
   public render() {
@@ -52,8 +53,8 @@ export class ScreenLockLocked extends Component<Props> {
       <Layout centered={true}>
         <ExtendedContentPanel
           onBack={this.props.history.goBack}
-          heading="Unlock Your Screen"
-          description="We’ve detected that you have a MyCrypto wallet already.  Type in your password to continue."
+          heading={translateRaw('SCREEN_LOCK_LOCKED_HEADING')}
+          description={translateRaw('SCREEN_LOCK_LOCKED_DESCRIPTION')}
           image={mainImage}
           showImageOnTop={true}
           centered={true}
@@ -62,21 +63,26 @@ export class ScreenLockLocked extends Component<Props> {
           <ContentWrapper>
             <FormWrapper>
               <InputField
-                label={'Password'}
+                label={translateRaw('SCREEN_LOCK_LOCKED_PASSWORD_LABEL')}
                 value={this.state.password}
                 onChange={this.onPasswordChanged}
                 inputError={this.state.passwordError}
                 type={'password'}
               />
-              <PrimaryButton onClick={this.handleUnlockWalletClick}>Unlock Wallet</PrimaryButton>
+              <PrimaryButton onClick={this.handleUnlockWalletClick}>
+                {translate('SCREEN_LOCK_LOCKED_UNLOCK')}
+              </PrimaryButton>
             </FormWrapper>
             <BottomActions>
               <div>
-                Forgot Password?{' '}
-                <Link to="/screen-lock/forgot-password">Import your settings.</Link>
+                {translate('SCREEN_LOCK_LOCKED_FORGOT_PASSWORD')}{' '}
+                <Link to="/screen-lock/forgot-password">
+                  {translate('SCREEN_LOCK_LOCKED_IMPORT_SETTINGS')}
+                </Link>
               </div>
               <div>
-                Why do we recommend screen lock? <Link to="/dashboard">Learn more.</Link>
+                {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
+                <Link to="/dashboard">{translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}</Link>
               </div>
             </BottomActions>
           </ContentWrapper>

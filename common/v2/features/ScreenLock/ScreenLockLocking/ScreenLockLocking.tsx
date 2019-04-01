@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import translate, { translateRaw } from 'translations';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -108,16 +109,20 @@ export class ScreenLockLocking extends Component<Props> {
     return (
       <MainWrapper>
         <ContentWrapper>
-          <Title>Are you still using MyCrypto?</Title>
+          <Title>{translate('SCREEN_LOCK_LOCKING_HEADING')}</Title>
           <Description>
-            You’ve been inactive for 5 minutes. In order to keep your funds safe, Your Wallet will
-            be automatically locked in <b>{this.state.counter} seconds</b>.
+            {translate('SCREEN_LOCK_LOCKING_DESCRIPTION')}{' '}
+            <b>
+              {translate('SCREEN_LOCK_LOCKING_SECONDS', {
+                $time_left: this.state.counter.toString()
+              })}
+            </b>
           </Description>
           <PrimaryButton onClick={this.handleKeepUsingDashboardClicked}>
-            Keep Using MyCrypto
+            {translateRaw('SCREEN_LOCK_LOCKING_KEEP_USING')}
           </PrimaryButton>
           <SecondaryButton onClick={this.handleTurnOnScreenLockClick}>
-            Turn on Screen Lock
+            {translate('SCREEN_LOCK_LOCKING_TURN_ON_LOCK')}
           </SecondaryButton>
         </ContentWrapper>
       </MainWrapper>
