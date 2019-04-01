@@ -68,21 +68,23 @@ interface DescriptionProps {
   noMargin?: boolean;
 }
 
-const Description = styled.p`
+// prettier-ignore
+const Description = styled.p<DescriptionProps>`
   font-size: 18px;
   font-weight: normal;
   line-height: 27px;
-  padding: ${(props: DescriptionProps) => (props.warning ? '0 30px 20px 30px' : '0 30px')};
+  padding: ${props => (props.warning ? '0 30px 20px 30px' : '0 30px')};
   color: ${props => (props.warning ? PASTEL_RED : props.theme.text)};
-  ${(props: DescriptionProps) => props.noMargin && 'margin: 0;'};
+  ${props => props.noMargin && 'margin: 0;'};
 `;
 
 interface ActionsWrapperProps {
   marginTop?: string;
 }
 
-const ActionsWrapper = styled.div`
-  margin-top: ${(props: ActionsWrapperProps) => (props.marginTop ? props.marginTop : '54px')};
+// prettier-ignore
+const ActionsWrapper = styled.div<ActionsWrapperProps>`
+  margin-top: ${props => (props.marginTop ? props.marginTop : '54px')};
   display: flex;
   flex-direction: row;
   justify-content: center;
