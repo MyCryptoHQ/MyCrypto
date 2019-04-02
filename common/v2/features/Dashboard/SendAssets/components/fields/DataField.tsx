@@ -20,13 +20,13 @@ interface OwnProps {
 type Props = OwnProps; // & StateProps;
 
 export default class DataField extends Component<Props> {
-  public isValidDataInput = (value: any) => {
+  public isValidDataInput = () => {
     const valid = true;
     this.setState({ isValidDataInput: valid });
     return valid;
   };
 
-  render() {
+  public render() {
     //const { handleChange } = this.props;
     return (
       <Field

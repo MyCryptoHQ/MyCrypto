@@ -26,8 +26,7 @@ export default class GasPriceField extends Component<Props> {
     return valid;
   };
 
-  render() {
-    const { handleChange } = this.props;
+  public render() {
     return (
       <Field
         name="gasPrice"

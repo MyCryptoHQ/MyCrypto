@@ -53,7 +53,6 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
           isDefault: true,
           safeLow: 4
         };
-        console.log('gas Price: ' + gasPrice);
         return (
           <Form className="SendAssetsForm">
             <QueryWarning />
