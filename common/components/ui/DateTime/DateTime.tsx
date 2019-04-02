@@ -57,7 +57,7 @@ interface DatepickerComponentProps {
   utc?: boolean;
   viewMode?: viewModes;
 
-  onFocus?(e: any): void;
+  onFocus?(): void;
   onBlur?(e: any): void;
   onChange(e: any): void;
   onViewModeChange?(viewMode: viewModes): void;
@@ -357,7 +357,7 @@ export default class DateTime extends Component<Props, State> {
       update.selectedDate = null;
     }
 
-    return this.setState(update, () => {
+    return this.setState(update, function() {
       return this.props.onChange(localMoment.isValid() ? localMoment : this.state.inputValue);
     });
   }
@@ -509,15 +509,15 @@ export default class DateTime extends Component<Props, State> {
 
   public openCalendar(e: any) {
     if (!this.state.open) {
-      this.setState({ open: true }, () => {
-        this.props.onFocus!(e);
+      this.setState({ open: true }, function() {
+        this.props.onFocus(e);
       });
     }
   }
 
   public closeCalendar() {
-    this.setState({ open: false }, () => {
-      this.props.onBlur!(this.state.selectedDate || this.state.inputValue);
+    this.setState({ open: false }, function() {
+      this.props.onBlur(this.state.selectedDate || this.state.inputValue);
     });
   }
 
@@ -528,8 +528,8 @@ export default class DateTime extends Component<Props, State> {
       this.props.open === undefined &&
       !this.props.disableCloseOnClickOutside
     ) {
-      this.setState({ open: false }, () => {
-        this.props.onBlur!(this.state.selectedDate || this.state.inputValue);
+      this.setState({ open: false }, function() {
+        this.props.onBlur(this.state.selectedDate || this.state.inputValue);
       });
     }
   }

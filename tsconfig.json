@@ -22,8 +22,7 @@
     "pretty": true,
     "noErrorTruncation": true,
     "noImplicitAny": true,
-    "skipLibCheck": true,
-    "noImplicitThis": true
+    "skipLibCheck": true
   },
   "include": [
     "./scripts",
