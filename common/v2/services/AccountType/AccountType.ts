@@ -1,65 +1,51 @@
 import * as utils from 'v2/libs';
-import { initializeCache, LocalCache } from 'v2/services/LocalCache';
+import { getCache, setCache } from 'v2/services/LocalCache';
 import { AccountType, ExtendedAccountType } from './types';
 
-export default class AccountTypeServiceBase {
-  // TODO: Add duplication/validation handling.
-  public init = () => {
-    initializeCache();
-  };
+export const createAccountType = (accountType: AccountType) => {
+  // Handle AccountType
+  const uuid = utils.generateUUID();
 
-  public createAccountType = (accountType: AccountType) => {
-    this.init();
-    // Handle AccountType
-    const uuid = utils.generateUUID();
+  const parsedLocalCache = getCache();
+  const newAccountTypeCache = parsedLocalCache;
+  newAccountTypeCache.accountTypes[uuid] = accountType;
 
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
-    const newAccountTypeCache = parsedLocalCache;
-    newAccountTypeCache.accountTypes[uuid] = accountType;
+  newAccountTypeCache.allAccountTypes = [...newAccountTypeCache.allAccountTypes, uuid];
+  setCache(newAccountTypeCache);
+};
 
-    newAccountTypeCache.allAccountTypes = [...newAccountTypeCache.allAccountTypes, uuid];
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountTypeCache));
-  };
+export const readAccountType = (uuid: string) => {
+  const parsedLocalCache = getCache();
+  return parsedLocalCache.accountTypes[uuid];
+};
 
-  public readAccountType = (uuid: string) => {
-    this.init();
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
-    return parsedLocalCache.accountTypes[uuid];
-  };
+export const updateAccountType = (uuid: string, accountType: AccountType) => {
+  const parsedLocalCache = getCache();
+  parsedLocalCache.accountTypes[uuid] = accountType;
 
-  public updateAccountType = (uuid: string, accountType: AccountType) => {
-    this.init();
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
-    const newAccountTypeCache = Object.assign({}, parsedLocalCache.accountTypes[uuid], accountType);
+  setCache(parsedLocalCache);
+};
 
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountTypeCache));
-  };
+export const deleteAccountType = (uuid: string) => {
+  // Handle AccountType
+  const parsedLocalCache = getCache();
+  delete parsedLocalCache.accountTypes[uuid];
+  const newallAccountTypes = parsedLocalCache.allAccountTypes.filter((obj: string) => obj !== uuid);
+  parsedLocalCache.allAccountTypes = newallAccountTypes;
+  const newCache = parsedLocalCache;
+  setCache(newCache);
+};
 
-  public deleteAccountType = (uuid: string) => {
-    this.init();
-    // Handle AccountType
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
-    delete parsedLocalCache.accountTypes[uuid];
-    const newallAccountTypes = parsedLocalCache.allAccountTypes.filter(
-      (obj: string) => obj !== uuid
-    );
-    parsedLocalCache.allAccountTypes = newallAccountTypes;
-    const newCache = parsedLocalCache;
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
-  };
+export const readAccountTypes = (): ExtendedAccountType[] => {
+  const parsedLocalCache = getCache();
+  let out: ExtendedAccountType[] = [];
+  if (parsedLocalCache.allAccountTypes && parsedLocalCache.allAccountTypes.length >= 1) {
+    parsedLocalCache.allAccountTypes.map((uuid: string) => {
+      out.push({ ...parsedLocalCache.accountTypes[uuid], uuid });
+    });
+  } else {
+    out = [];
+  }
 
-  public readAccountTypes = (): ExtendedAccountType[] => {
-    this.init();
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
-    let out: ExtendedAccountType[] = [];
-    if (parsedLocalCache.allAccountTypes && parsedLocalCache.allAccountTypes.length >= 1) {
-      parsedLocalCache.allAccountTypes.map((uuid: string) => {
-        out.push({ ...parsedLocalCache.accountTypes[uuid], uuid });
-      });
-    } else {
-      out = [];
-    }
-
-    return out;
-  };
-}
+  return out;
+};
