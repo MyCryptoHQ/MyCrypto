@@ -10,6 +10,10 @@ function getCache(): LocalCache {
   return JSON.parse(text);
 }
 
+function setCache(newCache: LocalCache) {
+  localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
+}
+
 export default {
   createAccount(account: Account) {
     // Handle Account
@@ -19,7 +23,7 @@ export default {
     newAccountCache.accounts[uuid] = account;
 
     newAccountCache.allAccounts = [...newAccountCache.allAccounts, uuid];
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
+    setCache(newAccountCache);
   },
 
   readAccount(uuid: string) {
@@ -29,7 +33,7 @@ export default {
   updateAccount(uuid: string, account: Account) {
     const newAccountCache = Object.assign({}, this.readAccount(uuid), account);
 
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newAccountCache));
+    setCache(newAccountCache);
   },
 
   deleteAccount(uuid: string) {
@@ -39,7 +43,7 @@ export default {
     const newallAccounts = parsedLocalCache.allAccounts.filter((obj: string) => obj !== uuid);
     parsedLocalCache.allAccounts = newallAccounts;
     const newCache = parsedLocalCache;
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
+    setCache(newCache);
   },
 
   readAccounts(): ExtendedAccount[] {
