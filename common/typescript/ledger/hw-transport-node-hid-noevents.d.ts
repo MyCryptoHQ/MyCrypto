@@ -1,31 +1,14 @@
-declare module '@ledgerhq/hw-transport-node-hid' {
+declare module '@ledgerhq/hw-transport-node-hid-noevents' {
   import LedgerTransport, { Observer, DescriptorEvent, Subscription } from '@ledgerhq/hw-transport';
   import { HID, Device } from 'node-hid';
 
-  export default class TransportNodeHid extends LedgerTransport<string> {
-    /**
-     * @description Creates an instance of TransportNodeHid.
-     * @example
-     *
-     * ```ts
-     * import TransportNodeHid from "@ledgerhq/hw-transport-node-u2f";
-     * TransportNodeHid.create().then(transport => ...);
-     * ```
-     *
-     * @param {HID} device
-     * @param {boolean} [ledgerTransport]
-     * @param {number} [timeout]
-     * @param {boolean} [debug]
-     * @memberof TransportNodeHid
-     */
-    constructor(device: HID, ledgerTransport?: boolean, timeout?: number, debug?: boolean);
-
+  export default class TransportNodeHidNoEvents extends LedgerTransport<string> {
     /**
      *
      * @description Check if an HID instance is active
      * @static
      * @returns {Promise<boolean>}
-     * @memberof TransportNodeHid
+     * @memberof TransportNodeHidNoEvents
      */
     public static isSupported(): Promise<boolean>;
 
@@ -34,7 +17,7 @@ declare module '@ledgerhq/hw-transport-node-hid' {
      * @description Lists all available HID device's paths
      * @static
      * @returns {Promise<string[]>}
-     * @memberof TransportNodeHid
+     * @memberof TransportNodeHidNoEvents
      */
     public static list<Descriptor = string>(): Promise<Descriptor[]>;
 
@@ -53,7 +36,7 @@ declare module '@ledgerhq/hw-transport-node-hid' {
      * @template Err
      * @param {Observer<DescriptorEvent<Descriptor, Device>, Err>} observer
      * @returns {Subscription}
-     * @memberof TransportNodeHid
+     * @memberof TransportNodeHidNoEvents
      */
     public static listen<Descriptor = string, Device = HID, Err = void>(
       observer: Observer<DescriptorEvent<Descriptor, Device>, Err>
@@ -65,24 +48,43 @@ declare module '@ledgerhq/hw-transport-node-hid' {
      * @static
      * @template Descriptor
      * @param {Descriptor} devicePath
-     * @returns {Promise<TransportNodeHid>}
-     * @memberof TransportNodeHid
+     * @returns {Promise<TransportNodeHidNoEvents>}
+     * @memberof TransportNodeHidNoEvents
      */
-    public static open<Descriptor = string>(devicePath: Descriptor): Promise<TransportNodeHid>;
+    public static open<Descriptor = string>(
+      devicePath: Descriptor
+    ): Promise<TransportNodeHidNoEvents>;
+
+    /**
+     * @description Creates an instance of TransportNodeHidNoEvents.
+     * @example
+     *
+     * ```ts
+     * import TransportNodeHidNoEvents from "@ledgerhq/hw-transport-node-u2f";
+     * TransportNodeHidNoEvents.create().then(transport => ...);
+     * ```
+     *
+     * @param {HID} device
+     * @param {boolean} [ledgerTransport]
+     * @param {number} [timeout]
+     * @param {boolean} [debug]
+     * @memberof TransportNodeHidNoEvents
+     */
+    constructor(device: HID, ledgerTransport?: boolean, timeout?: number, debug?: boolean);
 
     /**
      *
      * @description Low level api to communicate with the device.
      * @param {Buffer} apdu
      * @returns {Promise<Buffer>}
-     * @memberof TransportNodeHid
+     * @memberof TransportNodeHidNoEvents
      */
     public exchange(apdu: Buffer): Promise<Buffer>;
 
     /**
      *
      * @description Does nothing
-     * @memberof TransportNodeHid
+     * @memberof TransportNodeHidNoEvents
      */
     public setScrambleKey(): void;
 
@@ -90,7 +92,7 @@ declare module '@ledgerhq/hw-transport-node-hid' {
      *
      * @description Close the exchange with the device.
      * @returns {Promise<void>}
-     * @memberof TransportNodeHid
+     * @memberof TransportNodeHidNoEvents
      */
     public close(): Promise<void>;
   }
