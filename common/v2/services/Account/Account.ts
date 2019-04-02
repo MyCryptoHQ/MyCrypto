@@ -31,7 +31,8 @@ export default {
   },
 
   updateAccount(uuid: string, account: Account) {
-    const newAccountCache = Object.assign({}, this.readAccount(uuid), account);
+    const newAccountCache = getCache();
+    newAccountCache.accounts[uuid] = account;
 
     setCache(newAccountCache);
   },
