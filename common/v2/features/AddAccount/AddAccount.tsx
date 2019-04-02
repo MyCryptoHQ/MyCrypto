@@ -398,8 +398,8 @@ const WalletDecrypt = withRouter<Props>(
 
     public selectNetworkComponent() {
       return (
-        <div>
-          <div className="ContentPanelTop">
+        <div className="SelectNetworkPanel">
+          <div className="SelectNetworkPanel-top">
             <Button basic={true} onClick={this.clearWalletChoice}>
               <Typography>
                 {' '}
@@ -408,25 +408,26 @@ const WalletDecrypt = withRouter<Props>(
               </Typography>
             </Button>
           </div>
-          <Typography>Select Network</Typography>
-          <Typography>
-            Select the blockchain that you want to operate with. Not sure what to choose? Stick with
-            the default choices below and click next.
-          </Typography>
+          <div className="SelectNetworkPanel-content">
+            <div className="SelectNetworkPanel-title">Select Network</div>
 
-          <label>Network</label>
-          <NetworkOptionsContext.Consumer>
-            {({ networkOptions = [] }) => {
-              const networkNames: any[] = [];
-              networkOptions.map(en => {
-                networkNames.push(en.name);
-              });
-              return <ComboBox value="" items={new Set(networkNames)} onChange={this.onChange} />;
-            }}
-          </NetworkOptionsContext.Consumer>
-          <Button className="SelectNetworkPanel-next" onClick={this.handleNetworkSelect}>
-            Next
-          </Button>
+            <div className="SelectNetworkPanel-description">
+              Select the blockchain that you want to operate with. Not sure what to choose? Stick
+              with the default choices below and click next.
+            </div>
+
+            <label className="SelectNetworkPanel-networkLabel">Network</label>
+            <NetworkOptionsContext.Consumer>
+              {({ networkOptions = [] }) => {
+                const networkNames: any[] = [];
+                networkOptions.map(en => {
+                  networkNames.push(en.name);
+                });
+                return <ComboBox value="" items={new Set(networkNames)} onChange={this.onChange} />;
+              }}
+            </NetworkOptionsContext.Consumer>
+            <Button onClick={this.handleNetworkSelect}>Next</Button>
+          </div>
         </div>
       );
     }
@@ -491,20 +492,18 @@ const WalletDecrypt = withRouter<Props>(
         componentToRender = (
           <>
             <Layout centered={true}>
-              <div className="WalletDecrypt">
-                <TransitionGroup>
-                  <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
-                    {selectNetworkComponent}
-                  </CSSTransition>
-                </TransitionGroup>
-              </div>
+              <TransitionGroup>
+                <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
+                  {selectNetworkComponent}
+                </CSSTransition>
+              </TransitionGroup>
             </Layout>
           </>
         );
       } else if (!hidden && decryptionComponent && selectedWallet) {
         componentToRender = (
           <Layout centered={true}>
-            <div className="WalletDecrypt">
+            <div className="ConnectDevicePanel">
               <TransitionGroup>
                 <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
                   {decryptionComponent}

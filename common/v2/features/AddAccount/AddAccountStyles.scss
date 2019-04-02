@@ -21,9 +21,71 @@ $speed: 500ms;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
 }
-.ContentPanelTop {
+
+.SelectNetworkPanel {
+  width: 562px;
   display: flex;
+  flex-direction: column;
+  position: relative;
+  &-content {
+    height: 629px;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    padding-top: 40px;
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+  &-title {
+    width: 421px;
+    height: 39px;
+    font-family: Lato;
+    font-size: 32px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: var(--dark-slate-blue);
+  }
+  &-description {
+    width: 417px;
+    height: 108px;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #333333;
+    padding-top: 16px;
+  }
+  &-networkLabel {
+    width: 62px;
+    height: 18px;
+    font-family: Lato;
+    font-size: 15px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: var(--dark-slate-blue);
+  }
+  &-top {
+    display: flex;
+  }
 }
+
+.ConnectDevicePanel {
+  width: 562px;
+  height: 644px;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+}
+
 .WalletDecrypt {
   display: flex;
   justify-content: center;
