@@ -3,13 +3,38 @@ import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Transition } from 'react-spring';
 import classnames from 'classnames';
 import { Icon } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import { UnlockScreen } from 'v2/features';
 import { links } from './constants';
 import './Header.scss';
+import { COLORS } from 'v2/features/constants';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
+
+const { BRIGHT_SKY_BLUE } = COLORS;
+
+interface PrefixIconProps {
+  width: string;
+  height: string;
+}
+
+const TitleIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+// prettier-ignore
+const PrefixIcon = styled.img<PrefixIconProps>`
+  ${props => props.width && `width: ${props.width};`}
+  ${props => props.height && `height: ${props.height};`}
+  margin-right: 3px;
+
+  svg {
+    color: ${BRIGHT_SKY_BLUE};
+  }
+`;
 
 interface Props {
   drawerVisible: boolean;
@@ -25,6 +50,12 @@ interface State {
   visibleDropdowns: {
     [dropdown: string]: boolean;
   };
+}
+
+interface LinkElement {
+  to: string;
+  title?: string;
+  subItems?: LinkElement;
 }
 
 export class Header extends Component<Props & RouteComponentProps<{}>, State> {
@@ -56,37 +87,41 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
             ((style: any) => (
               <div style={style} className="_Header-menu">
                 <ul className="_Header-menu-links">
-                  {Object.entries(links).map(([key, value]) => {
+                  {links.map(({ title, to, subItems, icon }) => {
                     const iconClassName = classnames('_Header-icon', {
-                      '_Header-caret': typeof value === 'string'
+                      '_Header-caret': !subItems
                     });
 
                     return (
                       <li
-                        key={key}
+                        key={title}
                         onClick={e => {
                           e.stopPropagation();
 
-                          if (typeof value === 'string') {
-                            history.push(value);
+                          if (to) {
+                            history.push(to);
                             this.toggleMenu();
                           } else {
-                            this.toggleMenuDropdown(key);
+                            this.toggleMenuDropdown(title);
                           }
                         }}
                       >
-                        {key} <Icon icon="navDownCaret" className={iconClassName} />
-                        {typeof value !== 'string' &&
-                          visibleMenuDropdowns[key] && (
+                        <TitleIconWrapper>
+                          {icon && <PrefixIcon {...icon} />}
+                          {title} <Icon icon="navDownCaret" className={iconClassName} />
+                        </TitleIconWrapper>
+                        {subItems &&
+                          visibleMenuDropdowns[title] && (
                             <ul>
-                              {value.map(({ to, title }) => (
+                              {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
                                 <li
+                                  key={innerTitle}
                                   onClick={() => {
                                     this.toggleMenu();
-                                    history.push(to);
+                                    history.push(innerTo);
                                   }}
                                 >
-                                  {title}
+                                  {innerTitle}
                                 </li>
                               ))}
                             </ul>
@@ -146,26 +181,28 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
         <div className="_Header-bottom">
           <div>
             <ul className="_Header-bottom-links">
-              {Object.entries(links).map(([key, value]) => {
+              {links.map(({ title, to, subItems, icon }) => {
                 const iconClassName = classnames('_Header-icon', {
-                  '_Header-caret': typeof value === 'string'
+                  '_Header-caret': !subItems
                 });
-                const liProps =
-                  typeof value === 'string'
-                    ? { onClick: () => history.push(value) }
-                    : {
-                        onMouseEnter: () => this.toggleDropdown(key),
-                        onMouseLeave: () => this.toggleDropdown(key)
-                      };
+                const liProps = to
+                  ? { onClick: () => history.push(to) }
+                  : {
+                      onMouseEnter: () => this.toggleDropdown(title),
+                      onMouseLeave: () => this.toggleDropdown(title)
+                    };
 
                 return (
-                  <li key={key} {...liProps}>
-                    {key} <Icon icon="navDownCaret" className={iconClassName} />
-                    {typeof value !== 'string' &&
-                      visibleDropdowns[key] && (
+                  <li key={title} {...liProps}>
+                    {icon && <PrefixIcon {...icon} />} {title}{' '}
+                    <Icon icon="navDownCaret" className={iconClassName} />
+                    {subItems &&
+                      visibleDropdowns[title] && (
                         <ul>
-                          {value.map(({ to, title }) => (
-                            <li onClick={() => history.push(to)}>{title}</li>
+                          {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                            <li key={innerTitle} onClick={() => history.push(innerTo)}>
+                              {innerTitle}
+                            </li>
                           ))}
                         </ul>
                       )}

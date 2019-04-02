@@ -94,8 +94,11 @@
   &-icon {
     margin: 0;
     margin-left: 6px;
-    color: #1eb8e7;
     font-size: 0.75rem;
+
+    svg {
+      color: #1eb8e7;
+    }
   }
   &-caret {
     svg {
@@ -118,6 +121,10 @@
       display: block;
       color: #ffffff;
       font-size: 1.5rem;
+
+      svg {
+        color: #ffffff;
+      }
 
       @media (min-width: 850px) {
         display: none;

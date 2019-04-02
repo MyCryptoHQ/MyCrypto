@@ -126,6 +126,11 @@ const ActionCardWrapper = styled.div`
   width: 30vw;
   max-width: 450px;
 
+  @media (max-width: ${SCREEN_SM}) {
+    margin: 0 6px;
+    max-width: 105px;
+  }
+
   &:hover {
     opacity: 0.8;
   }
@@ -138,12 +143,10 @@ const LinkWrapper = styled(Link)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  
+
   @media (max-width: ${SCREEN_SM}) {
     flex-direction: column;
     align-items: center;
-    max-width: 105px;
-    margin: 0 6px;
     padding: 14px 6px;
   }
 `;
