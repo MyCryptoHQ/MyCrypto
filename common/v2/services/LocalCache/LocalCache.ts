@@ -143,3 +143,15 @@ export const initDerivationPathOptions = () => {
   });
   localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
 };
+
+export const getCache = (): LocalCache => {
+  initializeCache();
+
+  // We can assume that the MyCryptoCache key exists because it's created in initialCache
+  const text = localStorage.getItem('MyCryptoCache') as string;
+  return JSON.parse(text);
+};
+
+export const setCache = (newCache: LocalCache) => {
+  localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
+};

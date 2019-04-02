@@ -1,18 +1,6 @@
 import * as utils from 'v2/libs';
-import { initializeCache, LocalCache } from 'v2/services/LocalCache';
+import { getCache, setCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from './types';
-
-const getCache = (): LocalCache => {
-  initializeCache();
-
-  // We can assume that the MyCryptoCache key exists because it's created in initialCache
-  const text = localStorage.getItem('MyCryptoCache') as string;
-  return JSON.parse(text);
-};
-
-const setCache = (newCache: LocalCache) => {
-  localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
-};
 
 export const createAccount = (account: Account) => {
   // Handle Account
