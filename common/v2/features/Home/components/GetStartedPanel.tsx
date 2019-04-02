@@ -46,6 +46,10 @@ const TitleImageWrapper = styled.div`
   @media (max-width: ${SCREEN_SM}) {
     display: none;
   }
+
+  img {
+    max-width: 88%;
+  }
 `;
 
 const ActionsWrapper = styled.div`
@@ -98,7 +102,7 @@ const Description = styled.p`
 `;
 
 const MobileImage = styled.img`
-  max-width: 400px;
+  max-width: 375px;
   @media (min-width: ${SCREEN_SM}) {
     display: none;
   }
@@ -114,7 +118,6 @@ const ActionCardsWrapper = styled.div`
 `;
 
 const ActionCardWrapper = styled.div`
-  padding: 1vw 2vw;
   margin-bottom: 15px;
   border-radius: 3px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
@@ -122,20 +125,26 @@ const ActionCardWrapper = styled.div`
   cursor: pointer;
   width: 30vw;
   max-width: 450px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const LinkWrapper = styled(Link)`
+  padding: 1vw 2vw
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  
   @media (max-width: ${SCREEN_SM}) {
     flex-direction: column;
     align-items: center;
     max-width: 105px;
     margin: 0 6px;
     padding: 14px 6px;
-  }
-
-  &:hover {
-    opacity: 0.8;
   }
 `;
 
@@ -185,6 +194,7 @@ const ActionIcon = styled.img`
   max-height: 60px;
   object-fit: contain;
   order: 2;
+
   @media (max-width: ${SCREEN_SM}) {
     order: 1;
     width: 50px;
@@ -207,15 +217,15 @@ const trackButtonClick = (button: string) => {
 const ActionCard: React.SFC<ActionCardProps> = props => {
   const { name, description, icon, link, eventAction } = props;
   return (
-    <Link to={link}>
-      <ActionCardWrapper onClick={() => trackButtonClick(eventAction)}>
+    <ActionCardWrapper onClick={() => trackButtonClick(eventAction)}>
+      <LinkWrapper to={link}>
         <ActionCaptions>
           <ActionName>{name}</ActionName>
           <ActionDescription>{description}</ActionDescription>
         </ActionCaptions>
         <ActionIcon src={icon} alt={name} className="icon" />
-      </ActionCardWrapper>
-    </Link>
+      </LinkWrapper>
+    </ActionCardWrapper>
   );
 };
 
