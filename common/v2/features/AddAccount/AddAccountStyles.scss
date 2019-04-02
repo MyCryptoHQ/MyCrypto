@@ -22,11 +22,14 @@ $speed: 500ms;
   animation: decrypt-enter $speed ease 1;
 }
 
-.SelectNetworkPanel {
+.Panel {
   width: 562px;
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   position: relative;
+  &-top {
+    display: flex;
+  }
   &-content {
     height: 629px;
     border-radius: 3px;
@@ -35,6 +38,7 @@ $speed: 500ms;
     padding-top: 40px;
     padding-left: 70px;
     padding-right: 70px;
+    position: relative;
   }
   &-title {
     width: 421px;
@@ -47,7 +51,28 @@ $speed: 500ms;
     line-height: normal;
     letter-spacing: normal;
     color: var(--dark-slate-blue);
+
+    &-connectDevice {
+      justify-content: center;
+      text-align: center;
+      width: 421px;
+      height: auto;
+      font-family: Lato;
+      font-size: 32px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: var(--dark-slate-blue);
+      position: relative;
+    }
   }
+  &-image {
+    align-content: center;
+    justify-content: center;
+  }
+
   &-description {
     width: 417px;
     height: 108px;
@@ -60,21 +85,23 @@ $speed: 500ms;
     letter-spacing: normal;
     color: #333333;
     padding-top: 16px;
+    position: relative;
+    &-button {
+      width: 417px;
+      position: absolute;
+      bottom: 50px;
+    }
   }
   &-networkLabel {
     width: 62px;
     height: 18px;
     font-family: Lato;
     font-size: 15px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
     color: var(--dark-slate-blue);
+    padding: 16px;
   }
-  &-top {
-    display: flex;
+  &-dropdown {
+    padding-top: 10px;
   }
 }
 
@@ -191,10 +218,6 @@ $speed: 500ms;
       @include decrypt-title;
     }
 
-    &-form {
-      max-width: 480px;
-      margin: 0 auto;
-    }
     &-label {
       opacity: 0.8;
       font-weight: 300;
@@ -256,15 +279,6 @@ $speed: 500ms;
     opacity: 1;
     transform: translateY(0px);
   }
-}
-
-@mixin decrypt-title {
-  text-align: center;
-  line-height: 1;
-  margin: $space 0 2rem;
-  font-weight: normal;
-  animation: decrypt-enter $speed ease 1;
-  padding-top: 45px;
 }
 
 .WalletDecrypt {

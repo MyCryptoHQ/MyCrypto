@@ -11,17 +11,8 @@ import { Spinner, NewTabLink, HelpLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './LedgerNano.scss';
-import styled from 'styled-components';
 import { Button, Typography } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
-
-const LedgerDecrypt = styled.div`
-  text-align: center;
-`;
-
-const LedgerImage = styled.div`
-  padding: 50px;
-`;
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -68,48 +59,40 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
       return (
-        <LedgerDecrypt>
+        <div className="Panel">
           <div className="alert alert-danger">
             Unlocking a Ledger hardware wallet is only possible on pages served over HTTPS. You can
             unlock your wallet at <NewTabLink href="https://mycrypto.com">MyCrypto.com</NewTabLink>
           </div>
-        </LedgerDecrypt>
+        </div>
       );
     }
 
     return (
-      <LedgerDecrypt>
-        <div className="LedgerDecrypt-tip">
-          <Typography>{translate('LEDGER_TIP')}</Typography>
-        </div>
-        <LedgerImage>
-          <img src={ledgerIcon} />
-        </LedgerImage>
+      <div className="ConnectPanel">
+        <div className="ConnectPanel-description">
+          {translate('LEDGER_TIP')}
+          <div className="Panel-image">
+            <img src={ledgerIcon} />
+          </div>
 
-        <Button
-          className="LedgerDecrypt-decrypt btn btn-primary btn-lg btn-block"
-          onClick={this.handleNullConnect}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <div className="LedgerDecrypt-message">
-              <Spinner light={true} />
-              {translate('WALLET_UNLOCKING')}
-            </div>
-          ) : (
-            translate('ADD_LEDGER_SCAN')
-          )}
-        </Button>
+          <Button
+            className="Panel-description-button"
+            onClick={this.handleNullConnect}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="LedgerDecrypt-message">
+                <Spinner light={true} />
+                {translate('WALLET_UNLOCKING')}
+              </div>
+            ) : (
+              translate('ADD_LEDGER_SCAN')
+            )}
+          </Button>
+        </div>
 
         <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        <Typography>{translate('LEDGER_REFERRAL_2')}</Typography>
-        <div className="LedgerDecrypt-help">
-          <Typography>
-            {/* article={HELP_ARTICLE.HOW_TO_USE_LEDGER} */}
-            {translate('HELP_ARTICLE_1')}
-          </Typography>
-        </div>
 
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}
@@ -121,7 +104,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
         />
-      </LedgerDecrypt>
+      </div>
     );
   }
 

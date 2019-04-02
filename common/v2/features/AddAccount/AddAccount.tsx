@@ -267,8 +267,8 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       return (
-        <div>
-          <div className="ContentPanelTop">
+        <div className="Panel">
+          <div className="Panel-top">
             <Button basic={true} onClick={this.clearWalletChoice}>
               <Typography>
                 {' '}
@@ -277,13 +277,13 @@ const WalletDecrypt = withRouter<Props>(
               </Typography>
             </Button>
           </div>
-          <div className="WalletDecrypt-decrypt">
-            <h2 className="WalletDecrypt-decrypt-title">
+          <div className="Panel-content">
+            <div className="Panel-title-connectDevice">
               {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
                 translate('UNLOCK_WALLET', {
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
-            </h2>
+            </div>
             <section className="WalletDecrypt-decrypt-form">
               <Errorable
                 errorMessage={`Oops, looks like ${translateRaw(
@@ -398,7 +398,7 @@ const WalletDecrypt = withRouter<Props>(
 
     public selectNetworkComponent() {
       return (
-        <div className="SelectNetworkPanel">
+        <div className="Panel">
           <div className="SelectNetworkPanel-top">
             <Button basic={true} onClick={this.clearWalletChoice}>
               <Typography>
@@ -408,25 +408,35 @@ const WalletDecrypt = withRouter<Props>(
               </Typography>
             </Button>
           </div>
-          <div className="SelectNetworkPanel-content">
-            <div className="SelectNetworkPanel-title">Select Network</div>
+          <div className="Panel-content">
+            <div className="Panel-title">Select Network</div>
 
-            <div className="SelectNetworkPanel-description">
+            <div className="Panel-description">
               Select the blockchain that you want to operate with. Not sure what to choose? Stick
               with the default choices below and click next.
             </div>
 
-            <label className="SelectNetworkPanel-networkLabel">Network</label>
+            <label className="Panel-networkLabel">Network</label>
             <NetworkOptionsContext.Consumer>
               {({ networkOptions = [] }) => {
                 const networkNames: any[] = [];
                 networkOptions.map(en => {
                   networkNames.push(en.name);
                 });
-                return <ComboBox value="" items={new Set(networkNames)} onChange={this.onChange} />;
+                return (
+                  <ComboBox
+                    className="Panel-dropdown"
+                    value=""
+                    items={new Set(networkNames)}
+                    onChange={this.onChange}
+                    placeholder="Ethereum"
+                  />
+                );
               }}
             </NetworkOptionsContext.Consumer>
-            <Button onClick={this.handleNetworkSelect}>Next</Button>
+            <Button className="Panel-description-button" onClick={this.handleNetworkSelect}>
+              Next
+            </Button>
           </div>
         </div>
       );

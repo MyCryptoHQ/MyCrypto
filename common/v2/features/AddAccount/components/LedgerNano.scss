@@ -1,39 +1,94 @@
 @import 'common/sass/variables';
 
-.LedgerDecrypt {
-  text-align: center;
+// .LedgerDecrypt {
+//   text-align: center;
 
-  &-tip {
-    font-size: $font-size-xs-bump;
-    opacity: 0.7;
-    margin-bottom: $space;
-  }
+//   &-tip {
+//     font-size: $font-size-xs-bump;
+//     opacity: 0.7;
+//     margin-bottom: $space;
+//   }
 
-  &-help {
-    margin-top: 10px;
-    font-size: 13px;
-  }
+//   &-help {
+//     margin-top: 10px;
+//     font-size: 13px;
+//   }
 
-  &-error {
-    opacity: 0;
-    transition: none;
+//   &-error {
+//     opacity: 0;
+//     transition: none;
 
-    &.is-showing {
-      opacity: 1;
-    }
-  }
+//     &.is-showing {
+//       opacity: 1;
+//     }
+//   }
 
-  &-buy {
-    margin: 10px 0;
-  }
+//   &-buy {
+//     margin: 10px 0;
+//   }
 
-  &-message {
+//   &-message {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+
+//     .Spinner {
+//       margin-right: 16px;
+//     }
+//   }
+// }
+
+.ConnectPanel {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  position: relative;
+  align-content: center;
+
+  &-top {
     display: flex;
+  }
+  &-content {
+    height: 629px;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+    background-color: #ffffff;
+    padding-top: 40px;
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+  &-title {
+    width: 421px;
+    height: 39px;
+    font-family: Lato;
+    font-size: 32px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: var(--dark-slate-blue);
+  }
+  &-description {
+    width: 417px;
+    height: 108px;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #333333;
+    padding-top: 16px;
     justify-content: center;
-    align-items: center;
-
-    .Spinner {
-      margin-right: 16px;
+    text-align: center;
+    &-button {
+      width: 417px;
     }
+  }
+  &-image {
+    vertical-align: center;
   }
 }

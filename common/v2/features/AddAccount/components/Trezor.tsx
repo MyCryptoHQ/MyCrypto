@@ -1,15 +1,16 @@
+import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
+import { Spinner } from 'components/ui';
+import { SecureWalletName } from 'config';
+import { configNetworksStaticSelectors, configSelectors } from 'features/config';
+import { AppState } from 'features/reducers';
+import { TrezorWallet } from 'libs/wallet';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-
-import { SecureWalletName, trezorReferralURL } from 'config';
 import translate, { translateRaw } from 'translations';
-import { TrezorWallet } from 'libs/wallet';
-import { AppState } from 'features/reducers';
-import { configSelectors, configNetworksStaticSelectors } from 'features/config';
-import { Spinner, NewTabLink } from 'components/ui';
-import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './Trezor.scss';
+import UnsupportedNetwork from './UnsupportedNetwork';
+import { Button } from '@mycrypto/ui';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -57,8 +58,14 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="TrezorDecrypt">
-        <button
-          className="TrezorDecrypt-decrypt btn btn-primary btn-lg btn-block"
+        <div className="Trezor-description">
+          {translate('TREZOR_TIP')}
+          <div className="Panel-image">
+            <img src={ConnectTrezor} />
+          </div>
+        </div>
+        <Button
+          className="TrezorDecrypt-button"
           onClick={this.handleNullConnect}
           disabled={isLoading}
         >
@@ -70,19 +77,9 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           ) : (
             translate('ADD_TREZOR_SCAN')
           )}
-        </button>
-
-        <NewTabLink className="TrezorDecrypt-buy btn btn-sm btn-default" href={trezorReferralURL}>
-          {translate('ORDER_TREZOR')}
-        </NewTabLink>
+        </Button>
 
         <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        <div className="TrezorDecrypt-help">
-          <NewTabLink href="https://support.mycrypto.com/how-to/migrating/moving-from-mycrypto-to-trezor">
-            {translate('HOWTO_TREZOR')}
-          </NewTabLink>
-        </div>
 
         <DeterministicWalletsModal
           isOpen={!!publicKey && !!chainCode}

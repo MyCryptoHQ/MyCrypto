@@ -1,5 +1,7 @@
 .TrezorDecrypt {
   text-align: center;
+  position: relative;
+  height: 100%;
 
   &-help {
     margin-top: 10px;
@@ -27,5 +29,9 @@
     .Spinner {
       margin-right: 16px;
     }
+  }
+  &-button {
+    position: absolute;
+    bottom: 50px;
   }
 }
