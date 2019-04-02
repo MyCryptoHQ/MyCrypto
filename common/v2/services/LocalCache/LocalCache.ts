@@ -49,9 +49,6 @@ export const initAccountTypes = () => {
   const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
   const accountTypes: Record<string, types.AccountType> = ACCOUNTTYPES;
   newStorage.accountTypes = accountTypes;
-  Object.keys(accountTypes).map((en: string) => {
-    newStorage.allAccountTypes.push(en);
-  });
   localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
 };
 

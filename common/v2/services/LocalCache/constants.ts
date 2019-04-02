@@ -10,7 +10,6 @@ export interface LocalCache {
   recentAccounts: string[];
 
   accounts: Record<string, serviceTypes.Account>;
-  allAccounts: string[];
 
   transactionHistories: Record<string, serviceTypes.TransactionHistory>;
   allTransactionHistories: string[];
@@ -19,7 +18,6 @@ export interface LocalCache {
   allTransactions: string[];
 
   accountTypes: Record<string, serviceTypes.AccountType>;
-  allAccountTypes: string[];
 
   assets: Record<string, serviceTypes.Asset>;
   allAssets: string[];
@@ -78,7 +76,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882'
     }
   },
-  allAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
 
   transactionHistories: {
     '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
@@ -148,7 +145,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       hardware: false
     }
   },
-  allAccountTypes: ['MetaMask'],
 
   assets: {
     '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
@@ -272,7 +268,6 @@ export const CACHE_INIT: LocalCache = {
   globalSettings: {},
 
   accounts: {},
-  allAccounts: [],
 
   transactionHistories: {},
   allTransactionHistories: [],
@@ -281,7 +276,6 @@ export const CACHE_INIT: LocalCache = {
   allTransactions: [],
 
   accountTypes: {},
-  allAccountTypes: [],
 
   assets: {},
   allAssets: [],
