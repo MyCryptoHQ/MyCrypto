@@ -91,15 +91,28 @@
   dependencies:
     "@ledgerhq/errors" "^4.46.0"
 
+"@ledgerhq/devices@^4.48.0":
+  version "4.48.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.48.0.tgz#b62cce08dd49a8bd4cbf0eda0e09bf8610e42b56"
+  integrity sha512-Rs0zhkjzJTps1hoHlwGLhPM8Poo8EzE55QGLWk4Q6oXoO/Nk6MRUrFaz2UuCBVQU5RaI2JPhDbwO9bPd9cVH1Q==
+  dependencies:
+    "@ledgerhq/errors" "^4.48.0"
+
 "@ledgerhq/errors@^4.46.0":
   version "4.46.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-4.46.0.tgz#534dd376b9de0e5fe07fcf6b35f5731f6c03e725"
 
-"@ledgerhq/hw-app-eth@4.46.1":
-  version "4.46.1"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-app-eth/-/hw-app-eth-4.46.1.tgz#cc298cfb23dd9e27a3c795f8a80ace43fd36f89c"
+"@ledgerhq/errors@^4.48.0":
+  version "4.48.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-4.48.0.tgz#3a2a65862de72641095db8ef72739d105524a68f"
+  integrity sha512-MM5Tvo+KBr+dQyc6F2d93eyepZdHCmrR9KjwuB2W8pjPBG9jYmtPM/+I72k9o22YXQ9FIyd1WJJaARJoOzWXOA==
+
+"@ledgerhq/hw-app-eth@4.48.0":
+  version "4.48.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-app-eth/-/hw-app-eth-4.48.0.tgz#230f67c2c06ba6bd4176b7b2b1ad46e5efdde505"
+  integrity sha512-lNdQOFDeAda8f/X6qP27FCtfhUX5eMuaL23aqfqu5Pfp92/FiHTkE2SOTcO0bjQK3/KsIF/ZSDzxtWvv8vkgkA==
   dependencies:
-    "@ledgerhq/hw-transport" "^4.46.0"
+    "@ledgerhq/hw-transport" "^4.48.0"
 
 "@ledgerhq/hw-transport-node-hid@4.46.0":
   version "4.46.0"
@@ -128,6 +141,7 @@
     "@ledgerhq/errors" "^4.46.0"
     events "^3.0.0"
 
+<<<<<<< HEAD
 "@mycrypto/ui@0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.13.0.tgz#73a6b901b21dc8d3d4930ab817413d2bd9c5e4a7"
@@ -140,6 +154,16 @@
     lodash.throttle "^4.1.1"
     polished "^2.2.0"
     react-inlinesvg "^0.8.3"
+=======
+"@ledgerhq/hw-transport@^4.48.0":
+  version "4.48.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.48.0.tgz#8fa09e46d9d9aab35db5679e0970e7fed2ee73bf"
+  integrity sha512-dZH/3dTXlhe3IFl+MRFePcC0TnSeQcaBuiq5t3yDA68qw7WZCbON9GKSO5Rex4yNx5v6BCHyzz1myBFJ7895iw==
+  dependencies:
+    "@ledgerhq/devices" "^4.48.0"
+    "@ledgerhq/errors" "^4.48.0"
+    events "^3.0.0"
+>>>>>>> develop
 
 "@parity/erc681@0.1.1":
   version "0.1.1"
