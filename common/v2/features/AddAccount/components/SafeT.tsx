@@ -10,6 +10,7 @@ import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './SafeT.scss';
+import SafeTIcon from 'common/assets/images/icn-safet-mini-new.svg';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -58,6 +59,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
     // todo: update help link
     return (
       <div className="SafeTminiDecrypt">
+        <img src={SafeTIcon} />
         <button
           className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
           onClick={this.handleNullConnect}

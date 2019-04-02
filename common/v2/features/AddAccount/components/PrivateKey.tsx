@@ -5,6 +5,7 @@ import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
 import { stripHexPrefix } from 'libs/formatters';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 
 export interface PrivateKeyValue {
   key: string;
@@ -55,6 +56,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
 
     return (
       <form id="selectedTypeKey" onSubmit={this.unlock}>
+        <img src={PrivateKeyicon} />
         <div className="input-group-wrapper">
           <label className="input-group">
             <TogglablePassword

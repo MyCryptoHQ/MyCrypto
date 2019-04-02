@@ -69,15 +69,15 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     }
 
     return (
-      <div className="ConnectPanel">
-        <div className="ConnectPanel-description">
+      <div className="LedgerPanel-description-content">
+        <div className="LedgerPanel-description">
           {translate('LEDGER_TIP')}
           <div className="Panel-image">
             <img src={ledgerIcon} />
           </div>
 
           <Button
-            className="Panel-description-button"
+            className="LedgerPanel-description-button"
             onClick={this.handleNullConnect}
             disabled={isLoading}
           >
