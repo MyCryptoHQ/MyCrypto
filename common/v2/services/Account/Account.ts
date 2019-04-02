@@ -1,36 +1,46 @@
 import * as utils from 'v2/libs';
-import { getCache, setCache } from 'v2/services/LocalCache';
-import { Account, ExtendedAccount } from './types';
+import { getCache, setCache, LocalCache } from 'v2/services/LocalCache';
 
-export const createAccount = (account: Account) => {
-  // Handle Account
+type Key = 'accounts' | 'accountTypes';
+
+const create = <K extends Key>(key: K) => (value: LocalCache[K][keyof LocalCache[K]]) => {
   const uuid = utils.generateUUID();
 
-  const newAccountCache = getCache();
-  newAccountCache.accounts[uuid] = account;
+  const newCache = getCache();
+  newCache[key][uuid] = value;
 
-  setCache(newAccountCache);
+  setCache(newCache);
 };
 
-export const readAccount = (uuid: string) => {
-  return getCache().accounts[uuid];
+const read = <K extends Key>(key: K) => (uuid: string) => {
+  return getCache()[key][uuid];
 };
 
-export const updateAccount = (uuid: string, account: Account) => {
-  const newAccountCache = getCache();
-  newAccountCache.accounts[uuid] = account;
+const update = <K extends Key>(key: K) => (
+  uuid: string,
+  value: LocalCache[K][keyof LocalCache[K]]
+) => {
+  const newCache = getCache();
+  newCache[key][uuid] = value;
 
-  setCache(newAccountCache);
+  setCache(newCache);
 };
 
-export const deleteAccount = (uuid: string) => {
-  // Handle Account
+const destroy = <K extends Key>(key: K) => (uuid: string) => {
   const parsedLocalCache = getCache();
-  delete parsedLocalCache.accounts[uuid];
+  delete parsedLocalCache[key][uuid];
   const newCache = parsedLocalCache;
   setCache(newCache);
 };
 
-export const readAccounts = (): ExtendedAccount[] => {
-  return Object.entries(getCache().accounts).map(([uuid, account]) => ({ ...account, uuid }));
+const readAll = <K extends Key>(key: K) => () => {
+  const section: LocalCache[K] = getCache()[key];
+  const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
+  return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
 };
+
+export const createAccount = create('accounts');
+export const readAccount = read('accounts');
+export const updateAccount = update('accounts');
+export const deleteAccount = destroy('accounts');
+export const readAccounts = readAll('accounts');
