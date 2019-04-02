@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import Account from 'v2/services/Account/Account';
+import * as Account from 'v2/services/Account/Account';
 import { ExtendedAccount } from 'v2/services/Account';
 
 export interface ProviderState {
