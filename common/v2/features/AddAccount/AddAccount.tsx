@@ -484,25 +484,49 @@ const WalletDecrypt = withRouter<Props>(
       const decryptionComponent = this.getDecryptionComponent();
       const selectNetworkComponent = this.selectNetworkComponent();
       console.log('[render]', this.state.hasSelectedNetwork);
-      return (
-        <Layout centered={true}>
-          {!hidden && (
+
+      let componentToRender: JSX.Element;
+
+      if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
+        componentToRender = (
+          <>
+            <Layout centered={true}>
+              <div className="WalletDecrypt">
+                <TransitionGroup>
+                  <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
+                    {selectNetworkComponent}
+                  </CSSTransition>
+                </TransitionGroup>
+              </div>
+            </Layout>
+          </>
+        );
+      } else if (!hidden && decryptionComponent && selectedWallet) {
+        componentToRender = (
+          <Layout centered={true}>
             <div className="WalletDecrypt">
               <TransitionGroup>
-                {decryptionComponent && selectedWallet ? (
-                  <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
-                    {this.state.hasSelectedNetwork ? decryptionComponent : selectNetworkComponent}
-                  </CSSTransition>
-                ) : (
-                  <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
-                    {this.buildWalletOptions()}
-                  </CSSTransition>
-                )}
+                <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
+                  {decryptionComponent}
+                </CSSTransition>
               </TransitionGroup>
             </div>
-          )}
-        </Layout>
-      );
+          </Layout>
+        );
+      } else {
+        componentToRender = (
+          <Layout centered={true}>
+            <div className="WalletDecrypt">
+              <TransitionGroup>
+                <CSSTransition classNames="DecryptContent" timeout={500} key="wallets">
+                  {this.buildWalletOptions()}
+                </CSSTransition>
+              </TransitionGroup>
+            </div>
+          </Layout>
+        );
+      }
+      return componentToRender;
     }
 
     public onChange = (value: UnlockParams) => {
