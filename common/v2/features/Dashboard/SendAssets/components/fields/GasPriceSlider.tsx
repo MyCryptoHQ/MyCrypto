@@ -78,7 +78,6 @@ export default class SimpleGas extends React.Component<Props> {
     return (
       <Field
         name="gasPrice"
-        type="range"
         render={({ field, form }: FieldProps<Transaction>) => {
           return (
             <div className="SimpleGas row form-group">
@@ -125,13 +124,9 @@ export default class SimpleGas extends React.Component<Props> {
 
   private formatTooltip = (gas: number) => {
     const { gasEstimates } = this.props;
-    console.log('gasEstimates: ' + JSON.stringify(gasEstimates, null, 2));
-    console.log('out: ' + gasEstimates + ' and ' + !gasEstimates.isDefault);
     if (!(gasEstimates && !gasEstimates.isDefault)) {
-      console.log('got here3');
       return '';
     }
-    console.log('gas: ' + gas);
 
     const gasTooltips: GasTooltips = {
       [gasEstimates.fast]: translateRaw('TX_FEE_RECOMMENDED_FAST'),
@@ -145,7 +140,6 @@ export default class SimpleGas extends React.Component<Props> {
       $gas: gas.toString(),
       $recommended: recommended
     });
-    console.log('x: ' + x);
     return x;
   };
 }

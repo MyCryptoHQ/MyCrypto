@@ -26,7 +26,7 @@ export default class GasLimitField extends Component<Props> {
     return valid;
   };
 
-  render() {
+  public render() {
     //const { handleChange } = this.props;
     return (
       <Field

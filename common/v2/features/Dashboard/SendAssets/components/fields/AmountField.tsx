@@ -27,7 +27,7 @@ export default class AmountField extends Component<Props> {
     return valid;
   };
 
-  render() {
+  public render() {
     const { handleChange } = this.props;
     return (
       <div className="SendAssetsForm-fieldset SendAssetsForm-amountAsset">
