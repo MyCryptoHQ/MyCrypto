@@ -3,6 +3,7 @@ import { Field, FieldProps } from 'formik';
 import { Transaction } from '../../SendAssets';
 import { ComboBox } from '@mycrypto/ui';
 import { AccountContext } from 'v2/providers';
+import { isValidETHAddress } from 'libs/validators';
 
 interface OwnProps {
   handleChange: {
@@ -20,8 +21,8 @@ interface OwnProps {
 type Props = OwnProps; // & StateProps;
 
 export default class SenderAddressField extends Component<Props> {
-  public isValidateSender = (value: any) => {
-    return true;
+  public isValidSender = (value: any) => {
+    return isValidETHAddress(value);
   };
 
   public render() {
@@ -37,7 +38,7 @@ export default class SenderAddressField extends Component<Props> {
             <Field
               name="senderAddress"
               id={'1'}
-              validate={this.isValidateSender}
+              validate={this.isValidSender}
               render={({ field }: FieldProps<Transaction>) => (
                 <ComboBox
                   {...field}
