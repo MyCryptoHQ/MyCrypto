@@ -21,7 +21,7 @@ interface OwnProps {
 type Props = OwnProps; // & StateProps;
 
 export default class AmountField extends Component<Props> {
-  public isValidateAmount = (value: any) => {
+  public isValidAmount = (value: any) => {
     const valid = value >= 0; // && value <= (this.balance - this.gasCost);
     this.setState({ isValidAmount: valid });
     return valid;
@@ -41,7 +41,7 @@ export default class AmountField extends Component<Props> {
           <Field
             id={'5'}
             name="amount"
-            validate={this.isValidateAmount}
+            validate={this.isValidAmount}
             render={({ field, form }: FieldProps<Transaction>) => (
               <Input
                 {...field}

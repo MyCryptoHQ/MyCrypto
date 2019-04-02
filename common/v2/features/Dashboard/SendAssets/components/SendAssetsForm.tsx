@@ -1,6 +1,6 @@
 import React from 'react';
-import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button, Heading, Input, Typography } from '@mycrypto/ui';
+import { Formik, Form, Field } from 'formik';
+import { Button, Heading, Typography } from '@mycrypto/ui';
 
 import { Transaction } from '../SendAssets';
 import './SendAssetsForm.scss';
@@ -14,8 +14,10 @@ import {
   AmountField,
   SenderAddressField,
   GasPriceField,
+  GasPriceSlider,
   GasLimitField,
-  DataField
+  DataField,
+  NonceField
 } from './fields';
 
 interface Props {
@@ -40,12 +42,18 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
       initialValues={transaction}
       onSubmit={values => {
         onSubmit(values);
-        console.log('values: ' + JSON.stringify(values, null, 4));
         onNext();
       }}
-      render={({ setFieldValue, values: { advancedMode }, handleChange }) => {
+      render={({ setFieldValue, values: { advancedMode, gasPrice }, handleChange }) => {
         const toggleAdvancedOptions = () => setFieldValue('advancedMode', !advancedMode);
-
+        const gasEstimates = {
+          fastest: 20,
+          fast: 18,
+          standard: 12,
+          isDefault: true,
+          safeLow: 4
+        };
+        console.log('gas Price: ' + gasPrice);
         return (
           <Form className="SendAssetsForm">
             <QueryWarning />
@@ -90,11 +98,11 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                 <div>0.000273 / $0.03 USD</div>
                 {/* TRANSLATE THIS */}
               </label>
-              <div className="SendAssetsForm-fieldset-rangeWrapper">
-                <div className="SendAssetsForm-fieldset-rangeWrapper-cheap" />
-                <Field name="transactionFee" type="range" min="0" max="100" />
-                <div className="SendAssetsForm-fieldset-rangeWrapper-fast" />
-              </div>
+              <GasPriceSlider
+                gasEstimates={gasEstimates}
+                handleChange={handleChange}
+                gasPrice={gasPrice}
+              />
               <div className="SendAssetsForm-fieldset-cheapFast">
                 <div>Cheap</div>
                 {/* TRANSLATE THIS */}
@@ -114,7 +122,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
               {advancedMode && (
                 <div className="SendAssetsForm-advancedOptions-content">
                   <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
-                    <Field name="automaticallyCalculateGasLimit" type="checkbox" />
+                    <Field name="automaticallyCalculateGasLimit" type="checkbox" value={true} />
                     <label htmlFor="automaticallyCalculateGasLimit">
                       Automatically Calculate Gas Limit{/* TRANSLATE THIS */}
                     </label>
@@ -130,20 +138,7 @@ export default function SendAssetsForm({ transaction, onNext, onSubmit }: Props)
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                       <label htmlFor="nonce">Nonce (?)</label>
-                      <Field
-                        name="nonce"
-                        render={({ field, form }: FieldProps<Transaction>) => (
-                          <Input
-                            {...field}
-                            value={field.value}
-                            onChange={({ target: { value } }) =>
-                              form.setFieldValue(field.name, value)
-                            }
-                            placeholder="0"
-                            className="SendAssetsForm-fieldset-input"
-                          />
-                        )}
-                      />
+                      <NonceField handleChange={handleChange} />
                     </div>
                   </div>
                   <fieldset className="SendAssetsForm-fieldset">
