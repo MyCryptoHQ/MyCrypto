@@ -1,4 +1,4 @@
-import { LocalCache, setCache, getCache } from 'v2/services/LocalCache';
+import { LocalCache, setCache, getCache, read } from 'v2/services/LocalCache';
 import { ExtendedRecentAccounts } from './types';
 
 export const createRecentAccounts = (uuid: string) => {
@@ -10,9 +10,7 @@ export const createRecentAccounts = (uuid: string) => {
   setCache(newRecentAccountsCache);
 };
 
-export const readRecentAccounts = (uuid: string) => {
-  return getCache().addressMetadata[uuid];
-};
+export const addressMetadata = read('addressMetadata');
 
 export const deleteRecentAccounts = (uuid: string) => {
   // Handle RecentAccounts
