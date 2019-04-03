@@ -155,9 +155,24 @@ export const setCache = (newCache: LocalCache) => {
   localStorage.setItem(CACHE_KEY, JSON.stringify(newCache));
 };
 
-// CRUD operations
+// Settings operations
 
-type Key =
+type SettingsKey = 'currents' | 'globalSettings';
+
+export const readSettings = <K extends SettingsKey>(key: K) => () => {
+  return getCache()[key];
+};
+
+export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCache[K]) => {
+  const newCache = getCache();
+  newCache[key] = value;
+
+  setCache(newCache);
+};
+
+// Collection operations
+
+type CollectionKey =
   | 'accounts'
   | 'accountTypes'
   | 'activeNotifications'
@@ -173,7 +188,9 @@ type Key =
   | 'transactionHistories'
   | 'transactions';
 
-export const create = <K extends Key>(key: K) => (value: LocalCache[K][keyof LocalCache[K]]) => {
+export const create = <K extends CollectionKey>(key: K) => (
+  value: LocalCache[K][keyof LocalCache[K]]
+) => {
   const uuid = utils.generateUUID();
 
   const newCache = getCache();
@@ -182,11 +199,11 @@ export const create = <K extends Key>(key: K) => (value: LocalCache[K][keyof Loc
   setCache(newCache);
 };
 
-export const read = <K extends Key>(key: K) => (uuid: string): LocalCache[K][string] => {
+export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {
   return getCache()[key][uuid];
 };
 
-export const update = <K extends Key>(key: K) => (
+export const update = <K extends CollectionKey>(key: K) => (
   uuid: string,
   value: LocalCache[K][keyof LocalCache[K]]
 ) => {
@@ -196,14 +213,14 @@ export const update = <K extends Key>(key: K) => (
   setCache(newCache);
 };
 
-export const destroy = <K extends Key>(key: K) => (uuid: string) => {
+export const destroy = <K extends CollectionKey>(key: K) => (uuid: string) => {
   const parsedLocalCache = getCache();
   delete parsedLocalCache[key][uuid];
   const newCache = parsedLocalCache;
   setCache(newCache);
 };
 
-export const readAll = <K extends Key>(key: K) => () => {
+export const readAll = <K extends CollectionKey>(key: K) => () => {
   const section: LocalCache[K] = getCache()[key];
   const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
   return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));

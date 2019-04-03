@@ -1,12 +1,4 @@
-import { getCache, setCache } from 'v2/services/LocalCache';
-import { GlobalSettings } from './types';
+import { readSettings, updateSettings } from 'v2/services/LocalCache';
 
-export const updateGlobalSettings = (newGlobalSettings: GlobalSettings) => {
-  const newLocalCache = getCache();
-  newLocalCache.globalSettings = newGlobalSettings;
-  setCache(newLocalCache);
-};
-
-export const readGlobalSettings = (): GlobalSettings => {
-  return getCache().globalSettings;
-};
+export const updateGlobalSettings = updateSettings('globalSettings');
+export const readGlobalSettings = readSettings('globalSettings');
