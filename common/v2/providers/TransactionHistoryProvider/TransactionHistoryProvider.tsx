@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import TransactionHistoryServiceBase from 'v2/services/TransactionHistory/TransactionHistory';
+import * as service from 'v2/services/TransactionHistory/TransactionHistory';
 import { TransactionHistory, ExtendedTransactionHistory } from 'v2/services/TransactionHistory';
 
 export interface ProviderState {
@@ -12,24 +12,22 @@ export interface ProviderState {
 
 export const TransactionHistoryContext = createContext({} as ProviderState);
 
-const TransactionHistory = new TransactionHistoryServiceBase();
-
 export class TransactionHistoryProvider extends Component {
   public readonly state: ProviderState = {
-    transactionHistories: TransactionHistory.readTransactionHistories() || [],
+    transactionHistories: service.readTransactionHistories() || [],
     createTransactionHistory: (transactionHistoryData: TransactionHistory) => {
-      TransactionHistory.createTransactionHistory(transactionHistoryData);
+      service.createTransactionHistory(transactionHistoryData);
       this.getTransactionHistories();
     },
     readTransactionHistory: (uuid: string): TransactionHistory => {
-      return TransactionHistory.readTransactionHistory(uuid);
+      return service.readTransactionHistory(uuid);
     },
     deleteTransactionHistory: (uuid: string) => {
-      TransactionHistory.deleteTransactionHistory(uuid);
+      service.deleteTransactionHistory(uuid);
       this.getTransactionHistories();
     },
     updateTransactionHistory: (uuid: string, transactionHistoryData: TransactionHistory) => {
-      TransactionHistory.updateTransactionHistory(uuid, transactionHistoryData);
+      service.updateTransactionHistory(uuid, transactionHistoryData);
       this.getTransactionHistories();
     }
   };
@@ -45,7 +43,7 @@ export class TransactionHistoryProvider extends Component {
 
   private getTransactionHistories = () => {
     const transactionHistories: ExtendedTransactionHistory[] =
-      TransactionHistory.readTransactionHistories() || [];
+      service.readTransactionHistories() || [];
     this.setState({ transactionHistories });
   };
 }

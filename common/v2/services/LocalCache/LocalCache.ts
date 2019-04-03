@@ -66,7 +66,6 @@ export const initNodeOptions = () => {
         url: entry.url
       };
       newStorage.nodeOptions[newNode.name] = newNode;
-      newStorage.allNodeOptions.push(newNode.name);
       newStorage.networkOptions[en].nodes.push(newNode.name);
     });
   });
@@ -101,7 +100,6 @@ export const initNetworkOptions = () => {
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
     newStorage.networkOptions[en] = newLocalNetwork;
-    newStorage.allNetworkOptions.push(en);
   });
   localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
 };
@@ -111,7 +109,6 @@ export const initContractOptions = () => {
   const contracts = ContractsData();
   Object.keys(contracts).map(en => {
     newStorage.contractOptions[en] = contracts[en];
-    newStorage.allContractOptions.push(en);
     newStorage.networkOptions[contracts[en].network].contracts.push(en);
   });
   localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
@@ -124,7 +121,6 @@ export const initFiatCurrencies = () => {
       code: en.code,
       name: en.name
     };
-    newStorage.allFiatCurrencies.push(en.code);
   });
   localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
 };
@@ -137,7 +133,6 @@ export const initDerivationPathOptions = () => {
       derivationPath: en.value,
       active: false
     };
-    newStorage.allDerivationPathOptions.push(en.label);
   });
   localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
 };
@@ -154,7 +149,21 @@ export const setCache = (newCache: LocalCache) => {
   localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
 };
 
-type Key = 'accounts' | 'accountTypes';
+type Key =
+  | 'accounts'
+  | 'accountTypes'
+  | 'activeNotifications'
+  | 'addressMetadata'
+  | 'assetOptions'
+  | 'assets'
+  | 'contractOptions'
+  | 'derivationPathOptions'
+  | 'fiatCurrencies'
+  | 'localSettings'
+  | 'networkOptions'
+  | 'nodeOptions'
+  | 'transactionHistories'
+  | 'transactions';
 
 export const create = <K extends Key>(key: K) => (value: LocalCache[K][keyof LocalCache[K]]) => {
   const uuid = utils.generateUUID();

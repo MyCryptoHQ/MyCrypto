@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import AssetOptionsServiceBase from 'v2/services/AssetOption/AssetOption';
+import * as service from 'v2/services/AssetOption/AssetOption';
 import { AssetOption, ExtendedAssetOption } from 'v2/services/AssetOption';
 
 interface ProviderState {
@@ -11,21 +11,19 @@ interface ProviderState {
 
 export const AssetOptionsContext = createContext({} as ProviderState);
 
-const AssetOption = new AssetOptionsServiceBase();
-
 export class AssetOptionsProvider extends Component {
   public readonly state: ProviderState = {
-    assetOptions: AssetOption.readAssetOptions() || [],
+    assetOptions: service.readAssetOptions() || [],
     createAssetOptions: (assetOptionsData: AssetOption) => {
-      AssetOption.createAssetOption(assetOptionsData);
+      service.createAssetOption(assetOptionsData);
       this.getAssetOptions();
     },
     deleteAssetOptions: (uuid: string) => {
-      AssetOption.deleteAssetOption(uuid);
+      service.deleteAssetOption(uuid);
       this.getAssetOptions();
     },
     updateAssetOptions: (uuid: string, assetOptionsData: AssetOption) => {
-      AssetOption.updateAssetOption(uuid, assetOptionsData);
+      service.updateAssetOption(uuid, assetOptionsData);
       this.getAssetOptions();
     }
   };
@@ -38,7 +36,7 @@ export class AssetOptionsProvider extends Component {
   }
 
   private getAssetOptions = () => {
-    const assetOptions: ExtendedAssetOption[] = AssetOption.readAssetOptions() || [];
+    const assetOptions: ExtendedAssetOption[] = service.readAssetOptions() || [];
     this.setState({ assetOptions });
   };
 }

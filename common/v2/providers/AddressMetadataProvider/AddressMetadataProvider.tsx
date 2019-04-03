@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import AddressMetadatasServiceBase from 'v2/services/AddressMetadata/AddressMetadata';
+import * as service from 'v2/services/AddressMetadata/AddressMetadata';
 import { AddressMetadata, ExtendedAddressMetadata } from 'v2/services/AddressMetadata';
 
 interface ProviderState {
@@ -12,24 +12,22 @@ interface ProviderState {
 
 export const AddressMetadataContext = createContext({} as ProviderState);
 
-const AddressMetadataService = new AddressMetadatasServiceBase();
-
 export class AddressMetadataProvider extends Component {
   public readonly state: ProviderState = {
-    addressMetadata: AddressMetadataService.readAddressMetadatas() || [],
+    addressMetadata: service.readAddressMetadatas() || [],
     readAddressMetadata: (uuid: string) => {
-      return AddressMetadataService.readAddressMetadata(uuid);
+      return service.readAddressMetadata(uuid);
     },
     createAddressMetadatas: (addressMetadatasData: AddressMetadata) => {
-      AddressMetadataService.createAddressMetadata(addressMetadatasData);
+      service.createAddressMetadata(addressMetadatasData);
       this.getAddressMetadatas();
     },
     deleteAddressMetadatas: (uuid: string) => {
-      AddressMetadataService.deleteAddressMetadata(uuid);
+      service.deleteAddressMetadata(uuid);
       this.getAddressMetadatas();
     },
     updateAddressMetadatas: (uuid: string, addressMetadatasData: AddressMetadata) => {
-      AddressMetadataService.updateAddressMetadata(uuid, addressMetadatasData);
+      service.updateAddressMetadata(uuid, addressMetadatasData);
       this.getAddressMetadatas();
     }
   };
@@ -44,8 +42,7 @@ export class AddressMetadataProvider extends Component {
   }
 
   private getAddressMetadatas = () => {
-    const addressMetadata: ExtendedAddressMetadata[] =
-      AddressMetadataService.readAddressMetadatas() || [];
+    const addressMetadata: ExtendedAddressMetadata[] = service.readAddressMetadatas() || [];
     this.setState({ addressMetadata });
   };
 }
