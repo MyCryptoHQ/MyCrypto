@@ -7,6 +7,7 @@ import translate, { translateRaw } from 'translations';
 import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import { InputField } from '../components/InputField';
+import { LockScreenContext } from 'v2/providers/LockScreenProvider/LockScreenProvider';
 
 // Legacy
 import mainImage from 'common/assets/images/icn-create-pw.svg';
@@ -65,46 +66,46 @@ export class ScreenLockNew extends Component<Props> {
     this.setState({ password2: event.target.value });
   };
 
-  public handleCreatePasswordClick = () => {
-    //TODO: Create password action
-  };
-
   public render() {
     return (
       <Layout centered={true}>
-        <ExtendedContentPanel
-          onBack={this.props.history.goBack}
-          heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
-          description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
-          image={mainImage}
-          showImageOnTop={true}
-          centered={true}
-          className=""
-        >
-          <ContentWrapper>
-            <FormWrapper>
-              <InputField
-                label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
-                value={this.state.password1}
-                onChange={this.onPassword1Changed}
-                validate={this.validateForm}
-                inputError={this.state.password1Error}
-                type={'password'}
-              />
-              <InputField
-                label={translateRaw('SCREEN_LOCK_NEW_CONFIRM_PASSWORD_LABEL')}
-                value={this.state.password2}
-                onChange={this.onPassword2Changed}
-                validate={this.validateForm}
-                inputError={this.state.password2Error}
-                type={'password'}
-              />
-              <ActionButton onClick={this.handleCreatePasswordClick}>
-                {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
-              </ActionButton>
-            </FormWrapper>
-          </ContentWrapper>
-        </ExtendedContentPanel>
+        <LockScreenContext.Consumer>
+          {({ createPassword }) => (
+            <ExtendedContentPanel
+              onBack={this.props.history.goBack}
+              heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
+              description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
+              image={mainImage}
+              showImageOnTop={true}
+              centered={true}
+              className=""
+            >
+              <ContentWrapper>
+                <FormWrapper>
+                  <InputField
+                    label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
+                    value={this.state.password1}
+                    onChange={this.onPassword1Changed}
+                    validate={this.validateForm}
+                    inputError={this.state.password1Error}
+                    type={'password'}
+                  />
+                  <InputField
+                    label={translateRaw('SCREEN_LOCK_NEW_CONFIRM_PASSWORD_LABEL')}
+                    value={this.state.password2}
+                    onChange={this.onPassword2Changed}
+                    validate={this.validateForm}
+                    inputError={this.state.password2Error}
+                    type={'password'}
+                  />
+                  <ActionButton onClick={() => createPassword(this.state.password1)}>
+                    {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
+                  </ActionButton>
+                </FormWrapper>
+              </ContentWrapper>
+            </ExtendedContentPanel>
+          )}
+        </LockScreenContext.Consumer>
       </Layout>
     );
   }

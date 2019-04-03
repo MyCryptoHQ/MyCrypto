@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate, { translateRaw } from 'translations';
@@ -10,7 +9,7 @@ const MainWrapper = styled.div`
   position: fixed;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  z-index: 10;
   width: 100%;
   height: 100%;
   background-color: rgba(66, 66, 66, 0.8);
@@ -60,49 +59,21 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
-type Props = RouteComponentProps<{}>;
+interface LockScreenProps {
+  timeLeft: number;
+  lockScreen(): void;
+  cancelLockCountdown(): void;
+}
 
-let countDownTimer: any = null;
-const countDownDuration: number = 59;
-export class ScreenLockLocking extends Component<Props> {
-  public state = { counter: countDownDuration };
+type Props = LockScreenProps;
 
-  public componentDidMount() {
-    this.setState({ counter: countDownDuration });
-    this.startCountDown();
-  }
-
-  public componentWillUnmount() {
-    clearInterval(countDownTimer);
-  }
-
-  public startCountDown = () => {
-    const appContext = this;
-
-    countDownTimer = setInterval(() => {
-      if (appContext.state.counter === 1) {
-        clearInterval(countDownTimer);
-        document.title = 'MyCrypto (Locked)';
-        appContext.lockScreen();
-        return;
-      }
-
-      document.title = `Locking Screen in ${appContext.state.counter - 1}`;
-      appContext.setState({ counter: appContext.state.counter - 1 });
-    }, 1000);
-  };
-
-  public lockScreen = () => {
-    //TODO: Check if user has already set up the password, navigate to correct route (/screen-lock/locked or /screen-lock/new)
-    this.props.history.push('/screen-lock/locked');
-  };
-
+export default class ScreenLockLocking extends Component<Props> {
   public handleKeepUsingDashboardClicked = () => {
-    //TODO: Handle "keep using my crypto" button click
+    this.props.cancelLockCountdown();
   };
 
   public handleTurnOnScreenLockClick = () => {
-    this.lockScreen();
+    this.props.lockScreen();
   };
 
   public render() {
@@ -114,7 +85,7 @@ export class ScreenLockLocking extends Component<Props> {
             {translate('SCREEN_LOCK_LOCKING_DESCRIPTION')}{' '}
             <b>
               {translate('SCREEN_LOCK_LOCKING_SECONDS', {
-                $time_left: this.state.counter.toString()
+                $time_left: this.props.timeLeft.toString()
               })}
             </b>
           </Description>
@@ -129,5 +100,3 @@ export class ScreenLockLocking extends Component<Props> {
     );
   }
 }
-
-export default withRouter<Props>(ScreenLockLocking);
