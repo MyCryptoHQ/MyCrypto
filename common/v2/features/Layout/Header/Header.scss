@@ -39,16 +39,6 @@
 }
 
 ._Header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 4;
-  width: 100%;
-  background: #163150;
-
-  @media (min-width: 850px) {
-    position: initial;
-  }
   &-menu {
     position: fixed;
     top: 77px;
@@ -91,15 +81,6 @@
       text-transform: uppercase;
     }
   }
-  &-icon {
-    margin: 0;
-    margin-left: 6px;
-    font-size: 0.75rem;
-
-    svg {
-      color: #1eb8e7;
-    }
-  }
   &-caret {
     svg {
       transform: rotate(270deg);
@@ -115,23 +96,6 @@
 
     @media (min-width: 850px) {
       padding: 0;
-    }
-    &-mobileLeft,
-    &-mobileRight {
-      display: block;
-      color: #ffffff;
-      font-size: 1.5rem;
-
-      svg {
-        color: #ffffff;
-      }
-
-      @media (min-width: 850px) {
-        display: none;
-      }
-      &:hover {
-        cursor: pointer;
-      }
     }
     &-desktopLeft,
     &-desktopRight {

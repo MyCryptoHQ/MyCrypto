@@ -15,6 +15,46 @@ import logo from 'assets/images/logo-mycrypto.svg';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 
+const Navbar = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  width: 100%;
+  background: #163150;
+
+  @media (min-width: 850px) {
+    position: initial;
+  }
+`;
+
+const MobileTopLeft = styled.div`
+  display: block;
+  color: #ffffff;
+  font-size: 1.5rem;
+
+  svg {
+    color: #ffffff;
+  }
+
+  @media (min-width: 850px) {
+    display: none;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const IconWrapper = styled(Icon)`
+  margin: 0;
+  margin-left: 6px;
+  font-size: 0.75rem;
+
+  svg {
+    color: ${BRIGHT_SKY_BLUE};
+  }
+`;
+
 interface PrefixIconProps {
   width: string;
   height: string;
@@ -80,7 +120,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
     };
 
     return (
-      <nav className="_Header">
+      <Navbar className="_Header">
         {/* Mobile Menu */}
         <Transition from={{ left: '-375px' }} enter={{ left: '0' }} leave={{ left: '-500px' }}>
           {menuOpen &&
@@ -108,7 +148,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                       >
                         <TitleIconWrapper>
                           {icon && <PrefixIcon {...icon} />}
-                          {title} <Icon icon="navDownCaret" className={iconClassName} />
+                          {title} <IconWrapper icon="navDownCaret" className={iconClassName} />
                         </TitleIconWrapper>
                         {subItems &&
                           visibleMenuDropdowns[title] && (
@@ -131,15 +171,16 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                   })}
                 </ul>
                 <div className="_Header-menu-mid">
-                  English <Icon icon="navDownCaret" className="_Header-icon _Header-caret" />
+                  English <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
                 </div>
                 <ul className="_Header-menu-links">
                   <li>
                     Help & Support{' '}
-                    <Icon icon="navDownCaret" className="_Header-icon _Header-caret" />
+                    <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
                   </li>
                   <li>
-                    Latest News <Icon icon="navDownCaret" className="_Header-icon _Header-caret" />
+                    Latest News{' '}
+                    <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
                   </li>
                 </ul>
               </div>
@@ -147,16 +188,17 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
         </Transition>
         <div className="_Header-top">
           {/* Mobile Left */}
-          <div className="_Header-top-mobileLeft" role="button" onClick={this.toggleMenu}>
+          <MobileTopLeft role="button" onClick={this.toggleMenu}>
             <Icon icon={menuOpen ? 'exit' : 'combinedShape'} />
-          </div>
+          </MobileTopLeft>
           {/* Desktop Left */}
           <ul className="_Header-top-desktopLeft">
             <li>
-              Help & Support <Icon icon="navDownCaret" className="_Header-icon _Header-caret" />
+              Help & Support{' '}
+              <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
             </li>
             <li>
-              Latest News <Icon icon="navDownCaret" className="_Header-icon _Header-caret" />
+              Latest News <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
             </li>
           </ul>
           <div className="_Header-top-center">
@@ -165,16 +207,16 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
             </Link>
           </div>
           {/* Mobile Right */}
-          <div className="_Header-top-mobileLeft" onClick={onUnlockClick}>
+          <MobileTopLeft onClick={onUnlockClick}>
             <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
-          </div>
+          </MobileTopLeft>
           {/* Desktop Right */}
           <ul className="_Header-top-desktopRight">
             <li>
-              English <Icon icon="navDownCaret" className="_Header-icon _Header-caret" />
+              English <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
             </li>
             <li className="_Header-top-desktopRight-unlock" onClick={onUnlockClick}>
-              <Icon icon="unlock" /> Unlock
+              <IconWrapper icon="unlock" /> Unlock
             </li>
           </ul>
         </div>
@@ -195,7 +237,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                 return (
                   <li key={title} {...liProps}>
                     {icon && <PrefixIcon {...icon} />} {title}{' '}
-                    <Icon icon="navDownCaret" className={iconClassName} />
+                    <IconWrapper icon="navDownCaret" className={iconClassName} />
                     {subItems &&
                       visibleDropdowns[title] && (
                         <ul>
@@ -212,7 +254,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
             </ul>
           </div>
         </div>
-      </nav>
+      </Navbar>
     );
   }
 
