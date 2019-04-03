@@ -11,8 +11,7 @@ export const createRecentAccounts = (uuid: string) => {
 };
 
 export const readRecentAccounts = (uuid: string) => {
-  const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
-  return parsedLocalCache.addressMetadata[uuid];
+  return getCache().addressMetadata[uuid];
 };
 
 export const deleteRecentAccounts = (uuid: string) => {
