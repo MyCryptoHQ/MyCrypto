@@ -8,11 +8,13 @@ import { ACCOUNTTYPES } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 
+// Initialization
+
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
   if (!check || check === '[]' || check === '{}') {
     if (isDevelopment) {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(CACHE_INIT_DEV));
+      setCache(CACHE_INIT_DEV);
     } else {
       hardRefreshCache();
 
@@ -34,27 +36,27 @@ export const initializeCache = () => {
 };
 
 export const hardRefreshCache = () => {
-  localStorage.setItem(CACHE_KEY, JSON.stringify(CACHE_INIT));
+  setCache(CACHE_INIT);
 };
 
 export const initGlobalSettings = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
     darkMode: false
   };
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initAccountTypes = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const accountTypes: Record<string, types.AccountType> = ACCOUNTTYPES;
   newStorage.accountTypes = accountTypes;
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initNodeOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const nodeData: Record<string, types.NodeOptions[]> = NODE_CONFIGS;
   Object.keys(nodeData).map(en => {
     const networkNodes = nodeData[en];
@@ -69,11 +71,11 @@ export const initNodeOptions = () => {
       newStorage.networkOptions[en].nodes.push(newNode.name);
     });
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initNetworkOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const length: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
   length.map((en: any) => {
     const newContracts: string[] = [];
@@ -101,32 +103,32 @@ export const initNetworkOptions = () => {
     };
     newStorage.networkOptions[en] = newLocalNetwork;
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initContractOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const contracts = ContractsData();
   Object.keys(contracts).map(en => {
     newStorage.contractOptions[en] = contracts[en];
     newStorage.networkOptions[contracts[en].network].contracts.push(en);
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initFiatCurrencies = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   Fiats.map(en => {
     newStorage.fiatCurrencies[en.code] = {
       code: en.code,
       name: en.name
     };
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initDerivationPathOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   DPaths.map(en => {
     newStorage.derivationPathOptions[en.label] = {
       name: en.label,
@@ -134,20 +136,26 @@ export const initDerivationPathOptions = () => {
       active: false
     };
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
+};
+
+// Low level operations
+
+const getCacheRaw = (): LocalCache => {
+  const text = localStorage.getItem(CACHE_KEY);
+  return text ? JSON.parse(text) : CACHE_INIT;
 };
 
 export const getCache = (): LocalCache => {
   initializeCache();
-
-  // We can assume that the MyCryptoCache key exists because it's created in initialCache
-  const text = localStorage.getItem('MyCryptoCache') as string;
-  return JSON.parse(text);
+  return getCacheRaw();
 };
 
 export const setCache = (newCache: LocalCache) => {
-  localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
+  localStorage.setItem(CACHE_KEY, JSON.stringify(newCache));
 };
+
+// CRUD operations
 
 type Key =
   | 'accounts'
