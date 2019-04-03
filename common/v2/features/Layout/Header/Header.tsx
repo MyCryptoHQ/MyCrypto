@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Transition } from 'react-spring';
-import classnames from 'classnames';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { UnlockScreen } from 'v2/features';
 import { links } from './constants';
-import './Header.scss';
 import { COLORS } from 'v2/features/constants';
 
 // Legacy
@@ -28,6 +26,169 @@ const Navbar = styled.nav`
   }
 `;
 
+const Menu = styled.div`
+  position: fixed;
+  top: 77px;
+  left: 0;
+  overflow: auto;
+  width: 375px;
+  height: calc(100vh - 77px);
+  background: #163150;
+`;
+
+const HeaderTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 77px;
+  padding: 0 40px;
+  border-bottom: 1px solid #3e546d;
+
+  @media (min-width: 850px) {
+    padding: 0;
+  }
+`;
+
+const HeaderBottom = styled.div`
+  display: none;
+  height: 77px;
+  border-bottom: 1px solid #3e546d;
+
+  @media (min-width: 850px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const HeaderBottomLinks = styled.ul`
+  display: none;
+
+  li {
+    position: relative;
+
+    ul {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      margin: 0;
+      padding: 0;
+      background: #163150;
+      border: 1px solid #3e546d;
+      text-transform: none;
+
+      li {
+        padding: 13px;
+        font-weight: 300;
+      }
+    }
+  }
+
+  @media (min-width: 850px) {
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: bold;
+    list-style-type: none;
+
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    li {
+      height: 100%;
+      margin: 0;
+      padding: 0 25px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+
+      transition: background 0.2s ease-in;
+
+      &:hover {
+        background: #304b6a;
+        cursor: pointer;
+      }
+    }
+  }
+`;
+
+const HeaderTopLeft = styled.div`
+  display: none;
+
+  @media (min-width: 850px) {
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: bold;
+    list-style-type: none;
+
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    li {
+      height: 100%;
+      margin: 0;
+      padding: 0 25px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+
+      transition: background 0.2s ease-in;
+
+      &:hover {
+        background: #304b6a;
+        cursor: pointer;
+      }
+    }
+  }
+`;
+
+const MenuLinks = styled.ul`
+  margin: 0;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: bold;
+  list-style-type: none;
+
+  padding: 15px 0;
+  border-bottom: 1px solid #3e546d;
+
+  li {
+    height: 100%;
+    margin: 0;
+    font-weight: 500;
+    padding: 20px 35px;
+
+    ul {
+      list-style-type: none;
+      margin: 15px 0;
+      padding: 0;
+
+      li {
+        margin: 0;
+        padding: 0;
+        text-transform: none;
+
+        &:not(:last-of-type) {
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+`;
+
+const MenuMid = styled.div`
+  padding: 35px;
+  border-bottom: 1px solid #3e546d;
+  color: #ffffff;
+  text-transform: uppercase;
+`;
+
 const MobileTopLeft = styled.div`
   display: block;
   color: #ffffff;
@@ -45,25 +206,47 @@ const MobileTopLeft = styled.div`
   }
 `;
 
-const IconWrapper = styled(Icon)`
+const CenterImg = styled.img`
+  width: 160px;
+  height: 39px;
+`;
+
+const Unlock = styled.li`
+  display: flex;
+  align-items: center;
+  border-left: 1px solid #3e546d;
+
+  svg {
+    margin-right: 6px;
+    color: #1eb8e7;
+  }
+`;
+
+interface IconWrapperProps {
+  subItems?: boolean;
+}
+
+// prettier-ignore
+const IconWrapper = styled(Icon)<IconWrapperProps>`
   margin: 0;
   margin-left: 6px;
   font-size: 0.75rem;
 
   svg {
     color: ${BRIGHT_SKY_BLUE};
+    ${props => props.subItems && 'transform: rotate(270deg);'};
   }
+`;
+
+const TitleIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 interface PrefixIconProps {
   width: string;
   height: string;
 }
-
-const TitleIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 // prettier-ignore
 const PrefixIcon = styled.img<PrefixIconProps>`
@@ -120,18 +303,14 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
     };
 
     return (
-      <Navbar className="_Header">
+      <Navbar>
         {/* Mobile Menu */}
         <Transition from={{ left: '-375px' }} enter={{ left: '0' }} leave={{ left: '-500px' }}>
           {menuOpen &&
             ((style: any) => (
-              <div style={style} className="_Header-menu">
-                <ul className="_Header-menu-links">
+              <Menu style={style}>
+                <MenuLinks>
                   {links.map(({ title, to, subItems, icon }) => {
-                    const iconClassName = classnames('_Header-icon', {
-                      '_Header-caret': !subItems
-                    });
-
                     return (
                       <li
                         key={title}
@@ -148,7 +327,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                       >
                         <TitleIconWrapper>
                           {icon && <PrefixIcon {...icon} />}
-                          {title} <IconWrapper icon="navDownCaret" className={iconClassName} />
+                          {title} <IconWrapper subItems={!subItems} icon="navDownCaret" />
                         </TitleIconWrapper>
                         {subItems &&
                           visibleMenuDropdowns[title] && (
@@ -169,41 +348,38 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                       </li>
                     );
                   })}
-                </ul>
-                <div className="_Header-menu-mid">
-                  English <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
-                </div>
-                <ul className="_Header-menu-links">
+                </MenuLinks>
+                <MenuMid>
+                  English <IconWrapper subItems={true} icon="navDownCaret" />
+                </MenuMid>
+                <MenuLinks>
                   <li>
-                    Help & Support{' '}
-                    <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
+                    Help & Support <IconWrapper subItems={true} icon="navDownCaret" />
                   </li>
                   <li>
-                    Latest News{' '}
-                    <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
+                    Latest News <IconWrapper subItems={true} icon="navDownCaret" />
                   </li>
-                </ul>
-              </div>
+                </MenuLinks>
+              </Menu>
             ))}
         </Transition>
-        <div className="_Header-top">
+        <HeaderTop>
           {/* Mobile Left */}
           <MobileTopLeft role="button" onClick={this.toggleMenu}>
             <Icon icon={menuOpen ? 'exit' : 'combinedShape'} />
           </MobileTopLeft>
           {/* Desktop Left */}
-          <ul className="_Header-top-desktopLeft">
+          <HeaderTopLeft>
             <li>
-              Help & Support{' '}
-              <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
+              Help & Support <IconWrapper subItems={true} icon="navDownCaret" />
             </li>
             <li>
-              Latest News <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
+              Latest News <IconWrapper subItems={true} icon="navDownCaret" />
             </li>
-          </ul>
-          <div className="_Header-top-center">
+          </HeaderTopLeft>
+          <div>
             <Link to="/">
-              <img src={logo} alt="Our logo" />
+              <CenterImg src={logo} alt="Our logo" />
             </Link>
           </div>
           {/* Mobile Right */}
@@ -211,49 +387,44 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
             <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
           </MobileTopLeft>
           {/* Desktop Right */}
-          <ul className="_Header-top-desktopRight">
+          <HeaderTopLeft>
             <li>
-              English <IconWrapper icon="navDownCaret" className="_Header-icon _Header-caret" />
+              English <IconWrapper subItems={true} icon="navDownCaret" />
             </li>
-            <li className="_Header-top-desktopRight-unlock" onClick={onUnlockClick}>
+            <Unlock onClick={onUnlockClick}>
               <IconWrapper icon="unlock" /> Unlock
-            </li>
-          </ul>
-        </div>
-        <div className="_Header-bottom">
-          <div>
-            <ul className="_Header-bottom-links">
-              {links.map(({ title, to, subItems, icon }) => {
-                const iconClassName = classnames('_Header-icon', {
-                  '_Header-caret': !subItems
-                });
-                const liProps = to
-                  ? { onClick: () => history.push(to) }
-                  : {
-                      onMouseEnter: () => this.toggleDropdown(title),
-                      onMouseLeave: () => this.toggleDropdown(title)
-                    };
+            </Unlock>
+          </HeaderTopLeft>
+        </HeaderTop>
+        <HeaderBottom>
+          <HeaderBottomLinks>
+            {links.map(({ title, to, subItems, icon }) => {
+              const liProps = to
+                ? { onClick: () => history.push(to) }
+                : {
+                    onMouseEnter: () => this.toggleDropdown(title),
+                    onMouseLeave: () => this.toggleDropdown(title)
+                  };
 
-                return (
-                  <li key={title} {...liProps}>
-                    {icon && <PrefixIcon {...icon} />} {title}{' '}
-                    <IconWrapper icon="navDownCaret" className={iconClassName} />
-                    {subItems &&
-                      visibleDropdowns[title] && (
-                        <ul>
-                          {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                            <li key={innerTitle} onClick={() => history.push(innerTo)}>
-                              {innerTitle}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
+              return (
+                <li key={title} {...liProps}>
+                  {icon && <PrefixIcon {...icon} />} {title}{' '}
+                  <IconWrapper subItems={!subItems} icon="navDownCaret" />
+                  {subItems &&
+                    visibleDropdowns[title] && (
+                      <ul>
+                        {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                          <li key={innerTitle} onClick={() => history.push(innerTo)}>
+                            {innerTitle}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                </li>
+              );
+            })}
+          </HeaderBottomLinks>
+        </HeaderBottom>
       </Navbar>
     );
   }
