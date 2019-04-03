@@ -1,3 +1,4 @@
+import * as utils from 'v2/libs';
 import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_INIT_DEV, CACHE_KEY, LocalCache } from './constants';
 import { isDevelopment } from 'v2/utils';
@@ -151,4 +152,42 @@ export const getCache = (): LocalCache => {
 
 export const setCache = (newCache: LocalCache) => {
   localStorage.setItem('MyCryptoCache', JSON.stringify(newCache));
+};
+
+type Key = 'accounts' | 'accountTypes';
+
+export const create = <K extends Key>(key: K) => (value: LocalCache[K][keyof LocalCache[K]]) => {
+  const uuid = utils.generateUUID();
+
+  const newCache = getCache();
+  newCache[key][uuid] = value;
+
+  setCache(newCache);
+};
+
+export const read = <K extends Key>(key: K) => (uuid: string): LocalCache[K][string] => {
+  return getCache()[key][uuid];
+};
+
+export const update = <K extends Key>(key: K) => (
+  uuid: string,
+  value: LocalCache[K][keyof LocalCache[K]]
+) => {
+  const newCache = getCache();
+  newCache[key][uuid] = value;
+
+  setCache(newCache);
+};
+
+export const destroy = <K extends Key>(key: K) => (uuid: string) => {
+  const parsedLocalCache = getCache();
+  delete parsedLocalCache[key][uuid];
+  const newCache = parsedLocalCache;
+  setCache(newCache);
+};
+
+export const readAll = <K extends Key>(key: K) => () => {
+  const section: LocalCache[K] = getCache()[key];
+  const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
+  return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
 };
