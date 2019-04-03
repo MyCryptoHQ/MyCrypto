@@ -326,8 +326,8 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                         }}
                       >
                         <TitleIconWrapper>
-                          {icon && <PrefixIcon {...icon} />}
-                          {title} <IconWrapper subItems={!subItems} icon="navDownCaret" />
+                          {icon && <PrefixIcon {...icon} />} {title}
+                          {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
                         </TitleIconWrapper>
                         {subItems &&
                           visibleMenuDropdowns[title] && (
@@ -409,7 +409,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
               return (
                 <li key={title} {...liProps}>
                   {icon && <PrefixIcon {...icon} />} {title}{' '}
-                  <IconWrapper subItems={!subItems} icon="navDownCaret" />
+                  {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
                   {subItems &&
                     visibleDropdowns[title] && (
                       <ul>
