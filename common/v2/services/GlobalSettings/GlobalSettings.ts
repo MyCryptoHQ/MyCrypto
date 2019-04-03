@@ -1,24 +1,12 @@
-import { initializeCache, LocalCache } from 'v2/services/LocalCache';
+import { getCache, setCache } from 'v2/services/LocalCache';
 import { GlobalSettings } from './types';
 
-export default class GlobalSettingsServiceBase {
-  // TODO: Add duplication/validation handling.
-  public init = () => {
-    initializeCache();
-  };
+export const updateGlobalSettings = (newGlobalSettings: GlobalSettings) => {
+  const newLocalCache = getCache();
+  newLocalCache.globalSettings = newGlobalSettings;
+  setCache(newLocalCache);
+};
 
-  public updateGlobalSettings = (newGlobalSettings: GlobalSettings) => {
-    this.init();
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
-    const newLocalCache = parsedLocalCache;
-    newLocalCache.globalSettings = newGlobalSettings;
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newLocalCache));
-  };
-
-  public readGlobalSettings = (): GlobalSettings => {
-    this.init();
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
-
-    return parsedLocalCache.globalSettings;
-  };
-}
+export const readGlobalSettings = (): GlobalSettings => {
+  return getCache().globalSettings;
+};

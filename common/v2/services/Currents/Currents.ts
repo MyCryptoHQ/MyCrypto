@@ -1,24 +1,12 @@
-import { initializeCache, LocalCache } from 'v2/services/LocalCache';
+import { getCache, setCache } from 'v2/services/LocalCache';
 import { Currents } from './types';
 
-export default class CurrentsServiceBase {
-  // TODO: Add duplication/validation handling.
-  public init = () => {
-    initializeCache();
-  };
+export const updateCurrents = (newCurrents: Currents) => {
+  const newLocalCache = getCache();
+  newLocalCache.currents = newCurrents;
+  setCache(newLocalCache);
+};
 
-  public updateCurrents = (newCurrents: Currents) => {
-    this.init();
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
-    const newLocalCache = parsedLocalCache;
-    newLocalCache.currents = newCurrents;
-    localStorage.setItem('MyCryptoCache', JSON.stringify(newLocalCache));
-  };
-
-  public readCurrents = (): Currents => {
-    this.init();
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
-
-    return parsedLocalCache.currents;
-  };
-}
+export const readCurrents = (): Currents => {
+  return getCache().currents;
+};
