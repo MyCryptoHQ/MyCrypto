@@ -38,7 +38,7 @@ const MainPanel = styled(Panel)`
 
 const TitleImageWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
   width: 60%;
   background-color: white;
