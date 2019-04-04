@@ -77,7 +77,7 @@ export default class SimpleGas extends React.Component<Props> {
     const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
     return (
       <Field
-        name="gasPrice"
+        name="transactionFee"
         render={({ field, form }: FieldProps<Transaction>) => {
           return (
             <div className="SimpleGas row form-group">
