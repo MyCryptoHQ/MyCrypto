@@ -70,7 +70,7 @@ export class ScreenLockNew extends Component<Props> {
     return (
       <Layout centered={true}>
         <LockScreenContext.Consumer>
-          {({ createPassword }) => (
+          {({ encryptWithPassword }) => (
             <ExtendedContentPanel
               onBack={this.props.history.goBack}
               heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
@@ -98,7 +98,7 @@ export class ScreenLockNew extends Component<Props> {
                     inputError={this.state.password2Error}
                     type={'password'}
                   />
-                  <ActionButton onClick={() => createPassword(this.state.password1)}>
+                  <ActionButton onClick={() => encryptWithPassword(this.state.password1)}>
                     {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
                   </ActionButton>
                 </FormWrapper>

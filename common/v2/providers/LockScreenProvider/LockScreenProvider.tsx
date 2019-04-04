@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { StorageService } from 'v2/services';
+import { LocalCache } from 'v2/services/LocalCache';
+import CryptoJS from 'crypto-js';
+import AES from 'crypto-js/AES';
 
 import { ScreenLockLocking } from 'v2/features/ScreenLock';
 
@@ -7,34 +11,73 @@ interface State {
   locking: boolean;
   locked: boolean;
   timeLeft: number;
-  password: string;
-  createPassword(password: string): void;
+  encryptWithPassword(password: string): void;
+  decryptWithPassword(password: string): void;
 }
-
 export const LockScreenContext = React.createContext({} as State);
 
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
 const countDownDuration: number = 59;
+const inactivityTime: number = 300000; // After this time (ms) the screen lock count down will start
 
-type Props = RouteComponentProps<{}>;
-
-export class LockScreenProvider extends Component<Props, State> {
+export class LockScreenProvider extends Component<RouteComponentProps<{}>, State> {
   public state: State = {
     locking: false,
     locked: false,
     timeLeft: countDownDuration,
-    password: '',
-    createPassword: (password: string) => this.createPassword(password)
+    encryptWithPassword: (password: string) => this.encryptWithPassword(password),
+    decryptWithPassword: (password: string) => this.decryptWithPassword(password)
   };
 
-  public createPassword = (password: string) => {
-    // TODO: Encrypt data with password
-    console.log('Encrypt with ', password);
+  public encryptWithPassword = async (password: string) => {
+    try {
+      // Store the password into the local cache
+      const parsedLocalCache: LocalCache = JSON.parse(
+        localStorage.getItem('MyCryptoCache') || '{}'
+      );
+      parsedLocalCache.password = password;
+      localStorage.setItem('MyCryptoCache', JSON.stringify(parsedLocalCache));
+
+      // Encrypt the local cache
+      const encryptedData = await AES.encrypt(
+        JSON.stringify(StorageService.instance.getEntry('MyCryptoCache')),
+        password
+      ).toString();
+      StorageService.instance.setEntry('ENCRYPTED_CACHE', encryptedData);
+      window.localStorage.removeItem('MyCryptoCache');
+      this.lockScreen();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  public decryptWithPassword = async (password: string): Promise<boolean> => {
+    try {
+      // Decrypt the data and store it to the MyCryptoCache
+      const decryptedData = await AES.decrypt(
+        StorageService.instance.getEntry('ENCRYPTED_CACHE'),
+        password
+      ).toString(CryptoJS.enc.Utf8);
+      StorageService.instance.setEntry('MyCryptoCache', JSON.parse(decryptedData));
+      window.localStorage.removeItem('ENCRYPTED_CACHE');
+
+      // Navigate to the dashboard and reset inactivity timer
+      this.setState({ locked: false });
+      this.props.history.replace('/dashboard');
+      this.resetInactivityTimer();
+      document.title = 'MyCrypto';
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
   public componentDidMount() {
-    //TODO: Determine if screen is locked and set this.state.locked accordingly
+    //Determine if screen is locked and set "locked" state accordingly
+    if (StorageService.instance.getEntry('ENCRYPTED_CACHE')) {
+      this.lockScreen();
+    }
     this.trackInactivity();
   }
 
@@ -48,18 +91,14 @@ export class LockScreenProvider extends Component<Props, State> {
 
   public resetInactivityTimer = () => {
     clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, 300000);
+    inactivityTimer = setTimeout(this.startLockCountdown, inactivityTime);
   };
 
   public startLockCountdown = () => {
-    // TODO: If current path is an exception do not start the lock count down
-    if (
-      window.location.pathname === '/screen-lock/new' ||
-      window.location.pathname === '/screen-lock/locked'
-    ) {
+    //Start the lock screen countdown only if user is on one of the dashboard pages
+    if (!window.location.pathname.includes('/dashboard')) {
       return;
     }
-
     if (this.state.locked || this.state.locking) {
       return;
     }
@@ -68,7 +107,7 @@ export class LockScreenProvider extends Component<Props, State> {
     const appContext = this;
     countDownTimer = setInterval(() => {
       if (appContext.state.timeLeft === 1) {
-        appContext.lockScreen();
+        appContext.handleCountdownEnded();
       } else {
         document.title = `Locking Screen in ${appContext.state.timeLeft - 1}`;
         appContext.setState({ timeLeft: appContext.state.timeLeft - 1 });
@@ -83,26 +122,47 @@ export class LockScreenProvider extends Component<Props, State> {
     document.title = 'MyCrypto';
   };
 
-  public lockScreen = () => {
-    /*  TODO: Check if user has already set up the password, navigate to correct route (/screen-lock/locked or /screen-lock/new)
-     Set document title to "MyCrypto (Locked) only if password is actually set, otherwise just navigate to create password */
+  public handleCountdownEnded = () => {
+    /*Check if user has already set up the password. In that case encrypt the cache and navigate to "/screen-lock/locked".
+      If user has not setup the password yet, just navigate to "/screen-lock/new. */
+
+    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
     clearInterval(countDownTimer);
-    this.setState({ locking: false, locked: false });
+
+    if (parsedLocalCache.password) {
+      this.setState({ locking: false, locked: true });
+      this.encryptWithPassword(parsedLocalCache.password);
+    } else {
+      this.setState({ locking: false, locked: false });
+      document.title = 'MyCrypto';
+      this.props.history.push('/screen-lock/new');
+    }
+  };
+
+  public lockScreen = () => {
+    /* Navigate to /screen-lock/locked everytime the user tries to navigate to one of the dashboard pages */
+    this.setState({ locking: false, locked: true });
     document.title = 'MyCrypto (Locked)';
-    this.props.history.push('/screen-lock/new');
+    this.props.history.push('/screen-lock/locked');
+
+    this.props.history.listen(() => {
+      if (this.state.locked === true && window.location.pathname.includes('/dashboard')) {
+        this.props.history.replace('/screen-lock/locked');
+      }
+    });
   };
 
   public render() {
     const { children } = this.props;
-    const { locking } = this.state;
+    const { locking, timeLeft } = this.state;
 
     return (
       <LockScreenContext.Provider value={this.state}>
         {locking && (
           <ScreenLockLocking
-            lockScreen={() => this.lockScreen()}
-            cancelLockCountdown={() => this.cancelLockCountdown()}
-            timeLeft={this.state.timeLeft}
+            onScreenLockClicked={() => this.handleCountdownEnded()}
+            onCancelLockCountdown={() => this.cancelLockCountdown()}
+            timeLeft={timeLeft}
           />
         )}
         {children}

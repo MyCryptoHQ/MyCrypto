@@ -115,7 +115,7 @@ interface Props {
     total: number;
   };
   centered?: boolean;
-  onBack(): void;
+  onBack?(): void;
 }
 
 export default function ExtendedContentPanel({

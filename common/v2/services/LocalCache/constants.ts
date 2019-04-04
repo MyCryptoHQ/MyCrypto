@@ -50,6 +50,8 @@ export interface LocalCache {
 
   fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
   allFiatCurrencies: string[];
+
+  password?: string;
 }
 
 export const CACHE_INIT_DEV: LocalCache = {

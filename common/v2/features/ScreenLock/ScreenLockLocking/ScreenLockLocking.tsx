@@ -61,19 +61,19 @@ const SecondaryButton = styled(Button)`
 
 interface LockScreenProps {
   timeLeft: number;
-  lockScreen(): void;
-  cancelLockCountdown(): void;
+  onScreenLockClicked(): void;
+  onCancelLockCountdown(): void;
 }
 
 type Props = LockScreenProps;
 
 export default class ScreenLockLocking extends Component<Props> {
   public handleKeepUsingDashboardClicked = () => {
-    this.props.cancelLockCountdown();
+    this.props.onCancelLockCountdown();
   };
 
   public handleTurnOnScreenLockClick = () => {
-    this.props.lockScreen();
+    this.props.onScreenLockClicked();
   };
 
   public render() {
