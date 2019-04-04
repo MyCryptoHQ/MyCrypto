@@ -13,7 +13,9 @@ describe('rates reducer', () => {
         CHF: 4,
         ETH: 5,
         RUB: 6,
-        JPY: 7
+        JPY: 7,
+        KRW: 8,
+        INR: 9
       }
     };
 

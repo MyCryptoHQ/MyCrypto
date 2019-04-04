@@ -135,7 +135,9 @@ class EquivalentValues extends React.Component<Props, State> {
       GBP: '£',
       CHF: '₣',
       RUB: '₽',
-      JPY: '¥'
+      JPY: '¥',
+      KRW: '₩',
+      INR: '₹'
     };
     const coinAndTokenSymbols: any = {
       BTC: btcIco,
