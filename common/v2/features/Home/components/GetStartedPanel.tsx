@@ -49,6 +49,7 @@ const TitleImageWrapper = styled.div`
 
   img {
     max-width: 88%;
+    margin-right: 32px;
   }
 `;
 
@@ -103,6 +104,8 @@ const Description = styled.p`
 
 const MobileImage = styled.img`
   max-width: 375px;
+  width: 100%;
+
   @media (min-width: ${SCREEN_SM}) {
     display: none;
   }
