@@ -37,7 +37,7 @@ const getInitialState = (): State => {
       recipientAddress: '',
       amount: '0.00',
       asset: 'ETH',
-      transactionFee: '',
+      transactionFee: '20',
       advancedMode: isAdvancedQueryTransaction(location.search) || false,
       automaticallyCalculateGasLimit: true,
       gasPrice: '20',
