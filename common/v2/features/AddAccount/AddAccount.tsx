@@ -110,8 +110,8 @@ export interface MiscWalletInfo extends BaseWalletInfo {
 type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
 type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
-type MiscWallets = { [key in MiscWalletName]: MiscWalletInfo };
-type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallets;
+type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
+type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallet;
 
 const HARDWARE_WALLETS = Object.values(HardwareWalletName);
 /** @desc Hardware wallets are secure too, but we want to avoid duplication. */
