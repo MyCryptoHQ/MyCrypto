@@ -82,6 +82,7 @@ interface AddAccountData {
   accountType: WalletName | null;
   label: string | null;
   network: string;
+  derivationPath: string | null;
 }
 
 interface State {
@@ -235,7 +236,8 @@ const WalletDecrypt = withRouter<Props>(
         address: null,
         network: 'Ethereum',
         label: '',
-        accountType: null
+        accountType: null,
+        derivationPath: null
       }
     };
 
