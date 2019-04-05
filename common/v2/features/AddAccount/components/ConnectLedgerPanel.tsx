@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { ContentPanel } from 'v2/components';
-//import { Typography, Panel } from '@mycrypto/ui';
 
 import LedgerNanoIcon from 'common/assets/images/icn-ledger-nano.svg';
-//import styled from 'styled-components';
 
 export default class ConnectLedgerPanel extends Component {
   public render() {

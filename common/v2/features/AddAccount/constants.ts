@@ -1,5 +1,4 @@
 import {
-  //SelectMethodPanel,
   SelectNetworkPanel,
   SelectAddressPanel,
   ConnectMetaMaskPanel,
@@ -21,7 +20,6 @@ export enum ImportAddAccountStages {
 }
 
 export const importAddAccountStageToComponentHash = {
-  //[ImportAddAccountStages.SelectMethod]: SelectMethodPanel,
   [ImportAddAccountStages.SelectNetwork]: SelectNetworkPanel,
   [ImportAddAccountStages.SelectAddress]: SelectAddressPanel,
   [ImportAddAccountStages.ConnectMetaMask]: ConnectMetaMaskPanel,

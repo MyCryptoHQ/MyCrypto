@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-//import { Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 
 import {
   HardwareWalletName,
   SecureWalletName,
   InsecureWalletName,
-  //MiscWalletName,
   WalletName,
   knowledgeBaseURL,
   MiscWalletName
@@ -28,7 +26,6 @@ import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
 import { Warning } from 'components/ui';
-//import { NetworkOptions } from 'v2/services';
 import { DisabledWallets } from './components/disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
@@ -44,15 +41,12 @@ import {
   ParitySignerDecrypt,
   InsecureWalletWarning,
   ViewOnlyDecrypt
-  ////SelectNetworkPanel
 } from './components';
 import './AddAccountStyles.scss';
-import { /*Panel,*/ Button, Typography, ComboBox } from '@mycrypto/ui';
+import { Button, Typography, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
-//import { ContentPanel } from 'v2/components';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
 
-//import styled from 'styled-components';
 import { NetworkOptionsContext } from 'v2/providers';
 //import { fieldsReducer } from 'features/transaction/fields/reducer';
 
@@ -116,8 +110,8 @@ export interface MiscWalletInfo extends BaseWalletInfo {
 type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
 type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
-type MiscWallets = { [key in MiscWalletName]: MiscWalletInfo };
-type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallets;
+type MiscWallet = { [key in MiscWalletName]: MiscWalletInfo };
+type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallet;
 
 const HARDWARE_WALLETS = Object.values(HardwareWalletName);
 /** @desc Hardware wallets are secure too, but we want to avoid duplication. */
