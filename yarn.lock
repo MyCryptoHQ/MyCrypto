@@ -141,7 +141,15 @@
     "@ledgerhq/errors" "^4.46.0"
     events "^3.0.0"
 
-<<<<<<< HEAD
+"@ledgerhq/hw-transport@^4.48.0":
+  version "4.48.0"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.48.0.tgz#8fa09e46d9d9aab35db5679e0970e7fed2ee73bf"
+  integrity sha512-dZH/3dTXlhe3IFl+MRFePcC0TnSeQcaBuiq5t3yDA68qw7WZCbON9GKSO5Rex4yNx5v6BCHyzz1myBFJ7895iw==
+  dependencies:
+    "@ledgerhq/devices" "^4.48.0"
+    "@ledgerhq/errors" "^4.48.0"
+    events "^3.0.0"
+
 "@mycrypto/ui@0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.13.0.tgz#73a6b901b21dc8d3d4930ab817413d2bd9c5e4a7"
@@ -154,16 +162,6 @@
     lodash.throttle "^4.1.1"
     polished "^2.2.0"
     react-inlinesvg "^0.8.3"
-=======
-"@ledgerhq/hw-transport@^4.48.0":
-  version "4.48.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport/-/hw-transport-4.48.0.tgz#8fa09e46d9d9aab35db5679e0970e7fed2ee73bf"
-  integrity sha512-dZH/3dTXlhe3IFl+MRFePcC0TnSeQcaBuiq5t3yDA68qw7WZCbON9GKSO5Rex4yNx5v6BCHyzz1myBFJ7895iw==
-  dependencies:
-    "@ledgerhq/devices" "^4.48.0"
-    "@ledgerhq/errors" "^4.48.0"
-    events "^3.0.0"
->>>>>>> develop
 
 "@parity/erc681@0.1.1":
   version "0.1.1"
