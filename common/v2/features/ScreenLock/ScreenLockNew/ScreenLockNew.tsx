@@ -66,6 +66,13 @@ export class ScreenLockNew extends Component<Props> {
     this.setState({ password2: event.target.value });
   };
 
+  public handleCreatePasswordClicked = (encryptWithPassword: ((password: string) => void)) => {
+    const { password1, password2, password1Error, password2Error } = this.state;
+    if (!(password1Error && password2Error) && password1 === password2) {
+      encryptWithPassword(password1);
+    }
+  };
+
   public render() {
     return (
       <Layout centered={true}>
@@ -98,7 +105,9 @@ export class ScreenLockNew extends Component<Props> {
                     inputError={this.state.password2Error}
                     type={'password'}
                   />
-                  <ActionButton onClick={() => encryptWithPassword(this.state.password1)}>
+                  <ActionButton
+                    onClick={() => this.handleCreatePasswordClicked(encryptWithPassword)}
+                  >
                     {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
                   </ActionButton>
                 </FormWrapper>
