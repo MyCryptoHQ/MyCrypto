@@ -812,7 +812,9 @@
     "SCREEN_LOCK_LOCKING_DESCRIPTION": "You’ve been inactive for 5 minutes. In order to keep your funds safe, Your Wallet will be automatically locked in",
     "SCREEN_LOCK_LOCKING_SECONDS": "$time_left seconds.",
     "SCREEN_LOCK_LOCKING_KEEP_USING": "Keep Using MyCrypto",
-    "SCREEN_LOCK_LOCKING_TURN_ON_LOCK": "Turn on Screen Lock"
-
+    "SCREEN_LOCK_LOCKING_TURN_ON_LOCK": "Turn on Screen Lock",
+    "SCREEN_LOCK_TAB_TITLE": "MyCrypto",
+    "SCREEN_LOCK_TAB_TITLE_LOCKED": "MyCrypto (Locked)",
+    "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in"
   }
 }
