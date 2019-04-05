@@ -6,7 +6,7 @@
 * **Just looking to download?** Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases).
 * **Looking for the old site?** Check out [https://legacy.mycrypto.com](https://legacy.mycrypto.com) or the source at [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com)
 
-## Requirements
+## Development / Build Requirements
 
 * Node 8.9.4\*
 * Yarn >= 1.7.0\*\*
@@ -22,7 +22,9 @@
 
 ## Running the App
 
-After `yarn`ing all dependencies you can run various commands depending on what you want to do:
+First, you must run `yarn` to grab all the dependencies. If you are ever having trouble with something, a good place to start is by trying `rm -rf node_modules/ && yarn` which will completely clear all your previously installs dependencies and re-install them from scratch.
+
+Then, you can run various commands depending on what you want to do:
 
 #### Development
 
@@ -74,7 +76,7 @@ yarn test:int
 
 #### Dev (HTTPS):
 
-Some parts of the site, such as the Ledger wallet, require an HTTPS environment to work. To develop on HTTPS, do the following:
+Some parts of the site, such as interacting with a Ledger hardware wallet, require an HTTPS environment to work. To develop on HTTPS:
 
 1.  Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
 2.  Move the `.key` and `.crt` files into `webpack_config/server.*`
@@ -153,15 +155,19 @@ yarn test:int
 - https://basarat.gitbooks.io/typescript/
 - https://blog.mariusschulz.com/series/typescript-evolution
 
-### More information is available on the [Wiki Pages](https://github.com/MyCryptoHQ/MyCrypto/wiki)
-
+## More information is available on the [Wiki Pages](https://github.com/MyCryptoHQ/MyCrypto/wiki)
+- [Getting your token added to MyCrypto](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Adding-Tokens)
+- [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
+- [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
+- [MyCryptoBuilds](https://github.com/MyCryptoHQ/MyCrypto/wiki/MyCryptoBuilds) - access a build by commithash, PR number, or branch name without building it yourself!
+ 
 ## Branching Model
 
 MyCrypto is open-source and encourages pull-requests from third-parties. Our branching model is described below.
 
 To start, fork this repository and have your own remote repository on GitHub.
 
-### Naming Convention
+#### Naming Convention
 
 Your branch name must meet our naming conventions to help with administration and identify what type of branch it is.
 
@@ -174,7 +180,7 @@ We name our branches like `<type>/<name>` - examples below;
 * `release/1.4.2` - A release branch for tag 1.4.2
 * `revert/foo` - A branch to revert a logic to do with foo.
 
-### Feature branches
+#### Feature branches
 
 Feature branches are used to implement new enhancements for upcoming releases. A feature branch should be ephemeral (only lasting as long as the feature itself is in development. Once the feature is completed, it must be merged back into the `develop` branch and/or discarded.)
 
@@ -195,11 +201,3 @@ You should use `feature/foo` to implement and commit all changed required for yo
 When your feature is complete, push it to your remote repo and prepare it for a pull request.
 
 When you are creating a pull request, make sure the base is `MyCryptoHQ/mycrypto/develop` and compare to `feature/foo`.
-
-## Thanks & Support
-
-<a href="https://browserstack.com/">
-<img src="https://i.imgur.com/Rib9y9E.png" align="left" />
-</a>
-
-Cross browser testing and debugging provided by the very lovely team at BrowserStack.
