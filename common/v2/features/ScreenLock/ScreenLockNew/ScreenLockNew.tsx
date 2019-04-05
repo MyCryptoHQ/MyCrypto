@@ -66,10 +66,12 @@ export class ScreenLockNew extends Component<Props> {
     this.setState({ password2: event.target.value });
   };
 
-  public handleCreatePasswordClicked = (encryptWithPassword: ((password: string) => void)) => {
+  public handleCreatePasswordClicked = (
+    encryptWithPassword: ((password: string, hashed: boolean) => void)
+  ) => {
     const { password1, password2, password1Error, password2Error } = this.state;
     if (!(password1Error && password2Error) && password1 === password2) {
-      encryptWithPassword(password1);
+      encryptWithPassword(password1, false);
     }
   };
 

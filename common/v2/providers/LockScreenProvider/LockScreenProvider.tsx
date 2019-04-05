@@ -4,6 +4,7 @@ import { StorageService } from 'v2/services';
 import { LocalCache } from 'v2/services/LocalCache';
 import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/AES';
+import SHA256 from 'crypto-js/SHA256';
 import { translateRaw } from 'translations';
 
 import { ScreenLockLocking } from 'v2/features/ScreenLock';
@@ -12,7 +13,7 @@ interface State {
   locking: boolean;
   locked: boolean;
   timeLeft: number;
-  encryptWithPassword(password: string): void;
+  encryptWithPassword(password: string, hashed: boolean): void;
   decryptWithPassword(password: string): void;
 }
 export const LockScreenContext = React.createContext({} as State);
@@ -27,23 +28,33 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
     locking: false,
     locked: false,
     timeLeft: countDownDuration,
-    encryptWithPassword: (password: string) => this.encryptWithPassword(password),
+    encryptWithPassword: (password: string, hashed: boolean) =>
+      this.encryptWithPassword(password, hashed),
     decryptWithPassword: (password: string) => this.decryptWithPassword(password)
   };
 
-  public encryptWithPassword = async (password: string) => {
+  public encryptWithPassword = async (password: string, hashed: boolean) => {
     try {
+      let passwordHash;
+
+      // If password is not hashed yet, hash it
+      if (!hashed) {
+        passwordHash = SHA256(password).toString();
+      } else {
+        passwordHash = password;
+      }
+
       // Store the password into the local cache
       const parsedLocalCache: LocalCache = JSON.parse(
         localStorage.getItem('MyCryptoCache') || '{}'
       );
-      parsedLocalCache.password = password;
+      parsedLocalCache.password = passwordHash;
       localStorage.setItem('MyCryptoCache', JSON.stringify(parsedLocalCache));
 
       // Encrypt the local cache
       const encryptedData = await AES.encrypt(
         JSON.stringify(StorageService.instance.getEntry('MyCryptoCache')),
-        password
+        passwordHash
       ).toString();
       StorageService.instance.setEntry('ENCRYPTED_CACHE', encryptedData);
       window.localStorage.removeItem('MyCryptoCache');
@@ -55,10 +66,11 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
 
   public decryptWithPassword = async (password: string): Promise<boolean> => {
     try {
+      const passwordHash = SHA256(password).toString();
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = await AES.decrypt(
         StorageService.instance.getEntry('ENCRYPTED_CACHE'),
-        password
+        passwordHash
       ).toString(CryptoJS.enc.Utf8);
       StorageService.instance.setEntry('MyCryptoCache', JSON.parse(decryptedData));
       window.localStorage.removeItem('ENCRYPTED_CACHE');
@@ -134,7 +146,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
 
     if (parsedLocalCache.password) {
       this.setState({ locking: false, locked: true });
-      this.encryptWithPassword(parsedLocalCache.password);
+      this.encryptWithPassword(parsedLocalCache.password, true);
     } else {
       this.setState({ locking: false, locked: false });
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
