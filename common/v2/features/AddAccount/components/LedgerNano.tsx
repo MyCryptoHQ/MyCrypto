@@ -1,17 +1,17 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { SecureWalletName /*, ledgerReferralURL, HELP_ARTICLE*/ } from 'config';
+import { SecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
 import { LedgerWallet } from 'libs/wallet';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import { configSelectors, configNetworksStaticSelectors } from 'features/config';
-import { Spinner, NewTabLink /*, HelpLink*/ } from 'components/ui';
+import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWalletsModal from './DeterministicWalletsModal';
 import './LedgerNano.scss';
-import { Button /*, Typography*/ } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {

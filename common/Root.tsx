@@ -39,7 +39,6 @@ import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
-//import { AddAccount } from 'common/v2/features/AddAccount/AddAccount';
 
 interface OwnProps {
   store: Store<AppState>;
