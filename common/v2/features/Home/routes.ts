@@ -6,5 +6,11 @@ export default [
     path: '/',
     exact: true,
     component: Home
+  },
+  {
+    name: 'Home',
+    path: '/home',
+    exact: true,
+    component: Home
   }
 ];
