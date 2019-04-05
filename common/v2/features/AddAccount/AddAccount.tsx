@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import isEmpty from 'lodash/isEmpty';
 
 import {
   HardwareWalletName,
   SecureWalletName,
   InsecureWalletName,
-  MiscWalletName,
+  //MiscWalletName,
   WalletName,
-  knowledgeBaseURL
+  knowledgeBaseURL,
+  MiscWalletName
 } from 'config';
 import translate, { translateRaw } from 'translations';
 import { isWeb3NodeAvailable } from 'libs/nodes/web3';
@@ -27,8 +28,8 @@ import SafeTIcon from 'assets/images/wallets/safe-t.svg';
 import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
 import { Warning } from 'components/ui';
-import { NetworkOptions } from 'v2/services';
-import { DisabledWallets } from './disables';
+//import { NetworkOptions } from 'v2/services';
+import { DisabledWallets } from './components/disables';
 import { getWeb3ProviderInfo } from 'utils/web3';
 import {
   KeystoreDecrypt,
@@ -42,16 +43,18 @@ import {
   WalletButton,
   ParitySignerDecrypt,
   InsecureWalletWarning,
-  SelectNetworkPanel
+  ViewOnlyDecrypt
+  ////SelectNetworkPanel
 } from './components';
 import './AddAccountStyles.scss';
-import { Panel, Button, Typography, ComboBox } from '@mycrypto/ui';
+import { /*Panel,*/ Button, Typography, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
-import { ContentPanel } from 'v2/components';
+//import { ContentPanel } from 'v2/components';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
 
-import styled from 'styled-components';
+//import styled from 'styled-components';
 import { NetworkOptionsContext } from 'v2/providers';
+//import { fieldsReducer } from 'features/transaction/fields/reducer';
 
 interface OwnProps {
   hidden?: boolean;
@@ -93,6 +96,8 @@ interface BaseWalletInfo {
   unlock: any;
   attemptUnlock?: boolean;
   redirect?: string;
+  helpLink: string;
+  isReadOnly?: boolean;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -111,7 +116,8 @@ export interface MiscWalletInfo extends BaseWalletInfo {
 type HardwareWallets = { [key in HardwareWalletName]: SecureWalletInfo };
 type SecureWallets = { [key in SecureWalletName]: SecureWalletInfo };
 type InsecureWallets = { [key in InsecureWalletName]: InsecureWalletInfo };
-type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallet;
+type MiscWallets = { [key in MiscWalletName]: MiscWalletInfo };
+type Wallets = HardwareWallets & SecureWallets & InsecureWallets & MiscWallets;
 
 const HARDWARE_WALLETS = Object.values(HardwareWalletName);
 /** @desc Hardware wallets are secure too, but we want to avoid duplication. */
@@ -203,6 +209,16 @@ const WalletDecrypt = withRouter<Props>(
         },
         unlock: this.props.unlockPrivateKey,
         helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
+      },
+      [MiscWalletName.VIEW_ONLY]: {
+        lid: 'VIEW_ADDR',
+        description: 'ADD_VIEW_ADDRESS_DESC',
+        component: ViewOnlyDecrypt,
+        initialParams: {},
+        unlock: this.props.setWallet,
+        helpLink: '',
+        isReadOnly: true,
+        redirect: '/account/info'
       }
     };
 
@@ -426,8 +442,7 @@ const WalletDecrypt = withRouter<Props>(
                 return (
                   <ComboBox
                     className="Panel-dropdown"
-                    value=""
-                    items={new Set(networkNames)}
+                    items={new Set(networkNames.sort())}
                     onChange={this.onChange}
                     placeholder="Ethereum"
                   />
@@ -442,8 +457,8 @@ const WalletDecrypt = withRouter<Props>(
       );
     }
 
-    public handleNetworkSelect = () => {
-      console.log('[handleNetworkSelect]');
+    public handleNetworkSelect = (e: any) => {
+      console.log('[handleNetworkSelect] ' + e.value);
       this.setState({ hasSelectedNetwork: true });
     };
 
@@ -539,6 +554,7 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public onChange = (value: UnlockParams) => {
+      console.log('got here: ' + value);
       this.setState({ value });
     };
 

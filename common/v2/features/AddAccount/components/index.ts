@@ -17,3 +17,4 @@ export * from './SafeT';
 export * from './ViewOnly';
 export * from './WalletButton';
 export * from './Web3';
+export * from './disables';

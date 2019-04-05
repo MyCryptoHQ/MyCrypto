@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Button, ComboBox, Typography } from '@mycrypto/ui';
 
 import styled from 'styled-components';
-import { PanelProps } from '@mycrypto/ui/dist/atoms/Panel/Panel';
-import { render } from 'enzyme';
+//import { PanelProps } from '@mycrypto/ui/dist/atoms/Panel/Panel';
+//import { render } from 'enzyme';
 
 // const SelectNetworkStyled = styled.div`
 //   width: 100%;

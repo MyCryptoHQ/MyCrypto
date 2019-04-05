@@ -22,13 +22,13 @@ interface StateProps {
 }
 
 interface Icon {
-  icon: string;
-  tooltip: string;
+  icon?: string;
+  tooltip?: string;
   href?: string;
-  arialabel: string;
+  arialabel?: string;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps & StateProps & Icon;
 
 export class WalletButton extends React.PureComponent<Props> {
   public render() {
