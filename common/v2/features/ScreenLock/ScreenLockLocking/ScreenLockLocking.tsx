@@ -12,10 +12,12 @@ const MainWrapper = styled.div`
   z-index: 10;
   width: 100%;
   height: 100%;
+  padding: 12px;
   background-color: rgba(66, 66, 66, 0.8);
 `;
 
 const ContentWrapper = styled.div`
+  width: 100%;
   max-width: 540px;
   text-align: center;
 `;
@@ -33,17 +35,15 @@ const Description = styled.p`
 `;
 
 const PrimaryButton = styled(Button)`
-  width: 420px;
+  width: 100%;
+  max-width: 420px;
   margin-top: 10px;
   font-size: 18px;
-
-  @media (min-width: 700px) {
-    width: 420px;
-  }
 `;
 
 const SecondaryButton = styled(Button)`
-  width: 420px;
+  width: 100%;
+  max-width: 420px;
   margin-top: 10px;
   font-size: 18px;
   color: white;
@@ -52,10 +52,6 @@ const SecondaryButton = styled(Button)`
 
   hover: {
     background: #fff;
-  }
-
-  @media (min-width: 700px) {
-    width: 420px;
   }
 `;
 

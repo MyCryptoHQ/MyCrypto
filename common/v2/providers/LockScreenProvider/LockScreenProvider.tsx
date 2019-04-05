@@ -4,7 +4,7 @@ import { StorageService } from 'v2/services';
 import { LocalCache } from 'v2/services/LocalCache';
 import CryptoJS from 'crypto-js';
 import AES from 'crypto-js/AES';
-import translateRaw from 'translations';
+import { translateRaw } from 'translations';
 
 import { ScreenLockLocking } from 'v2/features/ScreenLock';
 
@@ -67,7 +67,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
       this.setState({ locked: false });
       this.props.history.replace('/dashboard');
       this.resetInactivityTimer();
-      document.title = String(translateRaw('SCREEN_LOCK_TAB_TITLE'));
+      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       return true;
     } catch (error) {
       return false;
@@ -106,6 +106,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
 
     this.setState({ locking: true, timeLeft: countDownDuration });
     const appContext = this;
+
     countDownTimer = setInterval(() => {
       if (appContext.state.timeLeft === 1) {
         appContext.handleCountdownEnded();
@@ -121,7 +122,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
     clearInterval(countDownTimer);
     this.resetInactivityTimer();
     this.setState({ locking: false });
-    document.title = String(translateRaw('SCREEN_LOCK_TAB_TITLE'));
+    document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
   };
 
   public handleCountdownEnded = () => {
@@ -136,7 +137,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
       this.encryptWithPassword(parsedLocalCache.password);
     } else {
       this.setState({ locking: false, locked: false });
-      document.title = String(translateRaw('SCREEN_LOCK_TAB_TITLE'));
+      document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       this.props.history.push('/screen-lock/new');
     }
   };
@@ -144,7 +145,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
   public lockScreen = () => {
     /* Navigate to /screen-lock/locked everytime the user tries to navigate to one of the dashboard pages */
     this.setState({ locking: false, locked: true });
-    document.title = String(translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED'));
+    document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
     this.props.history.push('/screen-lock/locked');
 
     this.props.history.listen(() => {
