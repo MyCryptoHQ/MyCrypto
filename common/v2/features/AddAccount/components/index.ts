@@ -5,7 +5,7 @@ export { default as ConnectSafeTMiniPanel } from './ConnectSafeTMiniPanel';
 export { default as ConnectTrezorPanel } from './ConnectTrezorPanel';
 export { default as SelectNetworkPanel } from './SelectNetworkPanel';
 export { default as SelectAddressPanel } from './SelectAddressPanel';
-export * from './DeterministicWalletsModal';
+export * from './DeterministicWallets';
 export * from './InsecureWalletWarning';
 export * from './Keystore';
 export * from './LedgerNano';
