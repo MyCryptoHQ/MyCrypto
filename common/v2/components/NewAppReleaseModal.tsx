@@ -109,7 +109,14 @@ const SecondaryActionButton = styled(ActionButton)`
 `;
 
 const ReleaseLink = styled.a`
+  font-size: 18px;
   word-break: break-all;
+  color: ${props => props.theme.link};
+  text-decoration: none;
+
+  :hover {
+    color: ${props => props.theme.linkHover};
+  }
 `;
 
 const WarningIcon = styled(Icon)`

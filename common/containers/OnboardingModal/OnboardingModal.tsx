@@ -30,7 +30,7 @@ function OnboardingModal({ currentSlide }: StateProps) {
   const slide = slides[currentSlide - 1];
 
   return (
-    <Modal>
+    <Modal backgroundOpacity="0.2">
       <section className="OnboardingModal">
         <section className="OnboardingModal-top">{logoImage}</section>
         <section className="OnboardingModal-side">
