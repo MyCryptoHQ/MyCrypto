@@ -14,8 +14,13 @@ import {
 } from './components';
 import { getFeaturedOS } from 'v2/features/helpers';
 import { GithubService } from 'v2/services';
-import { COLORS, GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/features/constants';
+import {
+  COLORS,
+  BREAK_POINTS,
+  GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK
+} from 'v2/features/constants';
 
+const { SCREEN_SM } = BREAK_POINTS;
 const { SILVER, DARK_SLATE_BLUE } = COLORS;
 
 interface SectionProps {
@@ -34,6 +39,13 @@ const Section = styled.section`
   background-color: ${(props: SectionProps) => props.color};
   display: flex;
   justify-content: center;
+`;
+
+const BottomSection = styled(Section)`
+  @media (max-width: ${SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const OSNames: { [key: string]: string } = {
@@ -85,9 +97,9 @@ export default class Home extends Component {
           <Section color={SILVER}>
             <TestimonialsPanel />
           </Section>
-          <Section>
+          <BottomSection>
             <BottomActionPanel />
-          </Section>
+          </BottomSection>
         </HomeWrapper>
       </Layout>
     );
