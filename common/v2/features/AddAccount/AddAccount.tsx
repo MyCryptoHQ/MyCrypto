@@ -46,6 +46,7 @@ import './AddAccountStyles.scss';
 import { Button, Typography, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
+import * as WalletActions from 'v2/features/Wallets';
 
 import { NetworkOptionsContext } from 'v2/providers';
 //import { fieldsReducer } from 'features/transaction/fields/reducer';
@@ -57,9 +58,9 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  unlockKeystore: walletActions.TUnlockKeystore;
-  unlockMnemonic: walletActions.TUnlockMnemonic;
-  unlockPrivateKey: walletActions.TUnlockPrivateKey;
+  unlockKeystore: WalletActions.TUnlockKeystore;
+  unlockMnemonic: WalletActions.TUnlockMnemonic;
+  unlockPrivateKey: WalletActions.TUnlockPrivateKey;
   unlockWeb3: walletActions.TUnlockWeb3;
   setWallet: walletActions.TSetWallet;
   resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
@@ -90,6 +91,7 @@ interface State {
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
   hasSelectedNetwork: boolean;
+  hasSelectedAddress: boolean;
   accountData: AddAccountData;
 }
 
@@ -232,6 +234,7 @@ const WalletDecrypt = withRouter<Props>(
       isInsecureOverridden: false,
       value: null,
       hasSelectedNetwork: false,
+      hasSelectedAddress: false,
       accountData: {
         address: null,
         network: 'Ethereum',
@@ -514,7 +517,22 @@ const WalletDecrypt = withRouter<Props>(
       this.setState({
         selectedWalletKey: null,
         value: null,
-        hasSelectedNetwork: false
+        hasSelectedNetwork: false,
+        accountData: {
+          ...this.state.accountData,
+          network: ''
+        }
+      });
+    };
+
+    public clearAddressChoice = () => {
+      this.setState({
+        hasSelectedAddress: false,
+        accountData: {
+          ...this.state.accountData,
+          address: null,
+          derivationPath: null
+        }
       });
     };
 
@@ -525,6 +543,7 @@ const WalletDecrypt = withRouter<Props>(
       const selectNetworkComponent = this.selectNetworkComponent();
 
       let componentToRender: JSX.Element;
+      console.log('state: ' + JSON.stringify(this.state,null,2))
 
       if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
         componentToRender = (
@@ -581,7 +600,11 @@ const WalletDecrypt = withRouter<Props>(
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
       this.WALLETS[selectedWalletKey].unlock(unlockValue);
-      this.props.resetTransactionRequested();
+      console.log('unlockValue2: ' + unlockValue)
+      console.log(unlockValue)
+      console.log('unlockValu: ' + JSON.stringify(unlockValue,null,2))
+      this.setState({ hasSelectedAddress: true, accountData: { ...this.state.accountData, derivationPath: unlockValue.path, address: unlockValue.address } })
+      //this.props.resetTransactionRequested();
     };
 
     private isWalletDisabled = (walletKey: WalletName) => {
@@ -619,10 +642,10 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 }
 
 export default connect(mapStateToProps, {
-  unlockKeystore: walletActions.unlockKeystore,
-  unlockMnemonic: walletActions.unlockMnemonic,
-  unlockPrivateKey: walletActions.unlockPrivateKey,
-  unlockWeb3: walletActions.unlockWeb3,
+  unlockKeystore: WalletActions.unlockKeystore,
+  unlockMnemonic: WalletActions.unlockMnemonic,
+  unlockPrivateKey: WalletActions.unlockPrivateKey,
+  unlockWeb3: WalletActions.unlockWeb3,
   setWallet: walletActions.setWallet,
   resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification
