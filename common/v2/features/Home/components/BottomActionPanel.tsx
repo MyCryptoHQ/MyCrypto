@@ -5,6 +5,10 @@ import translate from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { COLORS, BREAK_POINTS, MYCRYPTO_SUPPORT_URL } from 'v2/features/constants';
 
+import ovalIcon from 'common/assets/images/icn-oval.svg';
+import swooshIcon from 'common/assets/images/icn-purple-swoosh.svg';
+import sparklesIcon from 'common/assets/images/icn-sparkles-4.svg';
+
 const { SCREEN_SM } = BREAK_POINTS;
 const { DARK_SLATE_BLUE, BRIGHT_SKY_BLUE } = COLORS;
 
@@ -21,9 +25,19 @@ const Title = styled.div`
   font-weight: bold;
   line-height: normal;
   color: ${DARK_SLATE_BLUE};
+  position: relative;
+
   @media (max-width: ${SCREEN_SM}) {
     font-size: 25px;
   }
+`;
+
+const Sparkles = styled.img`
+  width: 44px;
+  height: 132px;
+  position: absolute;
+  top: -40px;
+  right: -30px;
 `;
 
 const GetStartedButton = styled(Button)`
@@ -41,24 +55,55 @@ const SupportLink = styled.div`
   font-size: 18px;
   text-align: center;
   margin-top: 18px;
-  font-weight: bold;
   color: ${BRIGHT_SKY_BLUE};
   line-height: normal;
 `;
 
+const GraphicsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: -50px;
+
+  @media (min-width: ${SCREEN_SM}) {
+    display: none;
+  }
+`;
+
+const Swoosh = styled.img`
+  width: 47px;
+  height: 48px;
+  margin-left: 35px;
+  margin-top: 40px;
+`;
+
+const Oval = styled.img`
+  width: 145px;
+  height: 123px;
+`;
+
 export default function BottomActionPanel() {
   return (
-    <MainPanel basic={true}>
-      <Title>{translate('HOME_BOTTOM_TITLE')}</Title>
-      <GetStartedButton onClick={() => trackButtonClick('Get Started')}>
-        {translate('HOME_BOTTOM_GET_STARTED')}
-      </GetStartedButton>
-      <a href={MYCRYPTO_SUPPORT_URL} target="_blank" rel="noreferrer">
-        <SupportLink onClick={() => trackButtonClick('Have Questions?')}>
-          {translate('HOME_BOTTOM_HELP')}
-        </SupportLink>
-      </a>
-    </MainPanel>
+    <>
+      <MainPanel basic={true}>
+        <Title>
+          {translate('HOME_BOTTOM_TITLE')}
+          <Sparkles src={sparklesIcon} />
+        </Title>
+        <GetStartedButton onClick={() => trackButtonClick('Get Started')}>
+          {translate('HOME_BOTTOM_GET_STARTED')}
+        </GetStartedButton>
+        <a href={MYCRYPTO_SUPPORT_URL} target="_blank" rel="noreferrer">
+          <SupportLink onClick={() => trackButtonClick('Have Questions?')}>
+            {translate('HOME_BOTTOM_HELP')}
+          </SupportLink>
+        </a>
+      </MainPanel>
+      <GraphicsWrapper>
+        <Swoosh src={swooshIcon} />
+        <Oval src={ovalIcon} />
+      </GraphicsWrapper>
+    </>
   );
 }
 

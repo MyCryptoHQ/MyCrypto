@@ -12,11 +12,11 @@ import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
 import trustIcon from 'common/assets/images/wallets/trust-2.svg';
 import ledgerIcon from 'common/assets/images/wallets/ledger.svg';
 import trezorIcon from 'common/assets/images/wallets/trezor.svg';
-import paritySignerIcon from 'common/assets/images/wallets/parity-signer-2.svg';
+import paritySignerIcon from 'common/assets/images/wallets/parity-signer.svg';
 import safeTIcon from 'common/assets/images/wallets/safe-t.png';
 
 const { SCREEN_SM, SCREEN_LG, SCREEN_XXL } = BREAK_POINTS;
-const { DARK_SLATE_BLUE } = COLORS;
+const { DARK_SLATE_BLUE, GREYISH_BROWN } = COLORS;
 
 const MainPanel = styled(Panel)`
   padding: 25px 148px;
@@ -73,6 +73,7 @@ const MainPanel = styled(Panel)`
 
 const Header = styled.div`
   margin-right: 40px;
+  color: ${GREYISH_BROWN};
 
   @media (max-width: ${SCREEN_LG}) {
     margin-right: 0px;
@@ -106,30 +107,34 @@ const Wallets = styled.div`
 
 const WalletCardWrapper = styled.div`
   background-color: white;
-  width: 140px;
-  height: 140px;
-  margin-right: 9px;
-  margin-left: 9px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin: 3px 9px;
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 0 rgba(0, 0, 0, 0.05),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 3px;
-  cursor: pointer;
-  text-align: center;
 `;
 
-const WalletCardContent = styled.div`
+interface WalletCardContentProps {
+  isMobile: boolean;
+  showMobile?: boolean;
+}
+
+// prettier-ignore
+const WalletCardContent = styled.div<WalletCardContentProps>`
   flex-direction: column;
   align-items: center;
-  display: ${(props: WalletCardContentProps) => (props.showMobile ? 'none' : 'flex')};
+  justify-content: center;
+  width: 140px;
+  height: 140px;
+  cursor: pointer;
+  display: ${props => (props.showMobile ? 'none' : 'flex')};
 
   @media (max-width: ${SCREEN_SM}) {
-    display: ${(props: WalletCardContentProps) =>
+    display: ${props =>
       (props.showMobile && props.isMobile) || !props.isMobile ? 'flex' : 'none'};
+  }
+
+  &:hover {
+    opacity: 0.7;
   }
 `;
 
@@ -147,11 +152,6 @@ const WalletCardDescription = styled.p`
   margin-top: 5px;
 `;
 
-interface WalletCardContentProps {
-  isMobile: boolean;
-  showMobile?: boolean;
-}
-
 interface WalletCardProps {
   src: string;
   text: string;
@@ -165,7 +165,7 @@ const trackWalletLink = (wallet: string) => {
 
 const WalletCard: React.SFC<WalletCardProps> = ({ src, text, mobileSrc, mobileText }) => {
   return (
-    <WalletCardWrapper className="CompatibleWalletsPanel-wallets-WalletCard">
+    <WalletCardWrapper>
       <WalletCardContent isMobile={!!mobileSrc} onClick={() => trackWalletLink(text)}>
         <WalletCardImg src={src} alt={text} />
         <WalletCardDescription>{text}</WalletCardDescription>

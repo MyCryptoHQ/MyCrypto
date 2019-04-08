@@ -1,29 +1,29 @@
-If you're contributing translations, please follow the contributor guidelines
-at https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributor-Guidelines#providing-translations
+*To help us understand & test your amazing contribution, please include the below information with your PR. 🙏 Thanks!*
 
----
 
-If you're contributing code, please link to the issue it resolves and follow the
-contributor guidelines at https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributor-Guidelines#contributing-code and fill out the following template:
+### Closes #ISSUE_NUMBER_GOES_HERE
 
-Closes #(issue number goes here)
+🎉 🎉 🎉
 
 ### Description
 
-(Description goes here)
+......
+
 
 ### Changes
 
 * High level
-* Changes that
-* You Made
+* changes that
+* you made
+
 
 ### Steps to Test
 
 1. Steps
-2. To
-3. Test
+2. to
+3. test
+
 
 ### Screenshots
 
-(Only if applicable)
+...only if applicable...
