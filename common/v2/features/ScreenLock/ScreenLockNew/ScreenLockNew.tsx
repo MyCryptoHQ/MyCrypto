@@ -8,6 +8,7 @@ import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import { InputField } from '../components/InputField';
 import { LockScreenContext } from 'v2/providers/LockScreenProvider/LockScreenProvider';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 // Legacy
 import mainImage from 'common/assets/images/icn-create-pw.svg';
@@ -78,7 +79,16 @@ export class ScreenLockNew extends Component<Props> {
       password1 === password2
     ) {
       encryptWithPassword(password1, false);
+      AnalyticsService.instance.track(
+        ANALYTICS_CATEGORIES.SCREEN_LOCK,
+        'User created a screenlock'
+      );
     }
+  };
+
+  public onBack = () => {
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SCREEN_LOCK, 'Back button clicked');
+    this.props.history.goBack();
   };
 
   public render() {
@@ -87,7 +97,7 @@ export class ScreenLockNew extends Component<Props> {
         <LockScreenContext.Consumer>
           {({ encryptWithPassword }) => (
             <ExtendedContentPanel
-              onBack={this.props.history.goBack}
+              onBack={this.onBack}
               heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
               description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
               image={mainImage}

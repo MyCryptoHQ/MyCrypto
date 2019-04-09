@@ -807,7 +807,7 @@
     "SCREEN_LOCK_LOCKED_IMPORT_SETTINGS":"Import your settings.",
     "SCREEN_LOCK_LOCKED_RECOMMEND_LOCK":"Why do we recommend screen lock?",
     "SCREEN_LOCK_LOCKED_LEARN_MORE":"Learn more.",
-    "SCREEN_LOCK_LOCKED_WRONG_PASSWORD":"The password you have entered is incorrect.",
+    "SCREEN_LOCK_LOCKED_WRONG_PASSWORD":"Sorry, that is not the correct screen lock password. You created this password on MyCrypto when you first set up your Screen Lock. It is not the password you use for your keystore file or mnemonic phrase.",
     "SCREEN_LOCK_LOCKING_HEADING": "Are you still using MyCrypto?",
     "SCREEN_LOCK_LOCKING_DESCRIPTION": "You’ve been inactive for 5 minutes. In order to keep your funds safe, Your Wallet will be automatically locked in",
     "SCREEN_LOCK_LOCKING_SECONDS": "$time_left seconds.",

@@ -68,7 +68,7 @@ export default class ScreenLockLocking extends Component<LockScreenProps> {
     this.props.onCancelLockCountdown();
     AnalyticsService.instance.track(
       ANALYTICS_CATEGORIES.SCREEN_LOCK,
-      `Keep Using MyCrypto button clicked`
+      'Keep Using MyCrypto button clicked'
     );
   };
 
@@ -76,7 +76,7 @@ export default class ScreenLockLocking extends Component<LockScreenProps> {
     this.props.onScreenLockClicked();
     AnalyticsService.instance.track(
       ANALYTICS_CATEGORIES.SCREEN_LOCK,
-      `Turn On Screenlock button clicked`
+      'Turn On Screenlock button clicked'
     );
   };
 

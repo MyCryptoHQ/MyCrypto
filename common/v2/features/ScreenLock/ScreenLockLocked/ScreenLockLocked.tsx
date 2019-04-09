@@ -8,6 +8,7 @@ import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import { InputField } from '../components/InputField';
 import { LockScreenContext } from 'v2/providers/LockScreenProvider/LockScreenProvider';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 import mainImage from 'common/assets/images/icn-unlock-wallet.svg';
 
@@ -53,6 +54,13 @@ export class ScreenLockLocked extends Component<Props> {
     }
   };
 
+  public trackRecomendationClick = () => {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.SCREEN_LOCK,
+      'Why do we recommend link clicked'
+    );
+  };
+
   public render() {
     return (
       <LockScreenContext.Consumer>
@@ -88,7 +96,9 @@ export class ScreenLockLocked extends Component<Props> {
                   </div>
                   <div>
                     {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-                    <Link to="/dashboard">{translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}</Link>
+                    <Link onClick={this.trackRecomendationClick} to="/dashboard">
+                      {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
+                    </Link>
                   </div>
                 </BottomActions>
               </ContentWrapper>

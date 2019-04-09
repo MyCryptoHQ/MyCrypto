@@ -6,6 +6,7 @@ import translate, { translateRaw } from 'translations';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 import mainImage from 'common/assets/images/icn-forgot-password.svg';
 
@@ -41,6 +42,17 @@ const AditionalDescription = styled.p`
 type Props = RouteComponentProps<{}>;
 
 export class ScreenLockForgotPassword extends Component<Props> {
+  public handleImportWalletSettingsClick = () => {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.SCREEN_LOCK,
+      'Import Wallet Settings button clicked'
+    );
+  };
+
+  public handleStartOverClick = () => {
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.SCREEN_LOCK, 'Start Over button clicked');
+  };
+
   public render() {
     return (
       <Layout centered={true}>
@@ -57,10 +69,10 @@ export class ScreenLockForgotPassword extends Component<Props> {
             {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_DESCRIPTION')}
           </AditionalDescription>
           <FormWrapper>
-            <ActionButton>
+            <ActionButton onClick={this.handleImportWalletSettingsClick}>
               {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_IMPORT')}
             </ActionButton>
-            <ActionButton>
+            <ActionButton onClick={this.handleStartOverClick}>
               {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_START_OVER')}t
             </ActionButton>
           </FormWrapper>
