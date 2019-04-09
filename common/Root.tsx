@@ -38,6 +38,7 @@ import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
+import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -125,14 +126,16 @@ class RootClass extends Component<Props, State> {
                 <TransactionProvider>
                   <TransactionHistoryProvider>
                     <Router>
-                      <PageVisitsAnalytics>
-                        {onboardingActive && <OnboardingModal />}
-                        {routes}
-                        <LegacyRoutes />
-                        <LogOutPrompt />
-                        <QrSignerModal />
-                        {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                      </PageVisitsAnalytics>
+                      <LockScreenProvider>
+                        <PageVisitsAnalytics>
+                          {onboardingActive && <OnboardingModal />}
+                          {routes}
+                          <LegacyRoutes />
+                          <LogOutPrompt />
+                          <QrSignerModal />
+                          {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                        </PageVisitsAnalytics>
+                      </LockScreenProvider>
                     </Router>
                     {developmentMode && <DevTools />}
                     <div id="ModalContainer" />
