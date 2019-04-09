@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+
 import translate, { translateRaw } from 'translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -61,15 +63,21 @@ interface LockScreenProps {
   onCancelLockCountdown(): void;
 }
 
-type Props = LockScreenProps;
-
-export default class ScreenLockLocking extends Component<Props> {
+export default class ScreenLockLocking extends Component<LockScreenProps> {
   public handleKeepUsingDashboardClicked = () => {
     this.props.onCancelLockCountdown();
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.SCREEN_LOCK,
+      `Keep Using MyCrypto button clicked`
+    );
   };
 
   public handleTurnOnScreenLockClick = () => {
     this.props.onScreenLockClicked();
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.SCREEN_LOCK,
+      `Turn On Screenlock button clicked`
+    );
   };
 
   public render() {
