@@ -1,1 +1,1 @@
-export * from './LockScreenProvider';
+export { default as LockScreenProvider, LockScreenContext } from './LockScreenProvider';
