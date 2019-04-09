@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { StorageService } from 'v2/services';
 import { LocalCache } from 'v2/services/LocalCache';
-import CryptoJS from 'crypto-js';
-import AES from 'crypto-js/AES';
-import SHA256 from 'crypto-js/SHA256';
+import CryptoJS, { SHA256, AES } from 'crypto-js';
 import { translateRaw } from 'translations';
 
 import { ScreenLockLocking } from 'v2/features/ScreenLock';
