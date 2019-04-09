@@ -37,7 +37,8 @@ import {
   REOSC_DEFAULT,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
-  THUNDERCORE_DEFAULT
+  THUNDERCORE_DEFAULT,
+  WEB_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -850,7 +851,31 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       max: 60,
       initial: 1
     }
-  }
+  },
+  WEB: {
+    id: 'WEB',
+    name: 'Webchain',
+    unit: 'WEB',
+    chainId: 24484,
+    isCustom: false,
+    color: '#0092ee',
+    blockExplorer: makeExplorer({
+      name: 'Webchain Explorer',
+      origin: 'https://explorer.webchain.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: WEB_DEFAULT,
+      [SecureWalletName.SAFE_T]: WEB_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: WEB_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: WEB_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 100,
+      max: 400,
+      initial: 200
+    }
 };
 
 export function staticNetworksReducer(

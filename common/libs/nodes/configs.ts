@@ -334,6 +334,21 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'thundercore.com',
       url: 'https://mainnet-rpc.thundercore.com'
     }
+  ],
+
+  WEB: [
+    {
+      name: makeNodeName('WEB', 'node1.webchain.network'),
+      type: 'rpc',
+      service: 'node1.webchain.network',
+      url: 'https://node1.webchain.network'
+    },
+    {
+      name: makeNodeName('WEB', 'node2.webchain.network'),
+      type: 'rpc',
+      service: 'node2.webchain.network',
+      url: 'https://node2.webchain.network'
+    }
   ]
 };
 
