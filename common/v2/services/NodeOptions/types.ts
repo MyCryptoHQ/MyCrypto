@@ -1,4 +1,4 @@
-import { StaticNetworkIds } from "shared/types/network";
+import { StaticNetworkIds } from 'shared/types/network';
 
 export interface NodeOptions {
   name: string;

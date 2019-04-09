@@ -1,4 +1,3 @@
-
 import { addHexPrefix } from 'ethereumjs-util';
 import { toTokenBase, Wei } from './units';
 import { AppState } from 'features/reducers';

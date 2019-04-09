@@ -1,12 +1,18 @@
-import { isWeb3Node, setupWeb3Node, Web3Service } from "libs/nodes/web3";
-import { Web3Wallet } from "libs/wallet";
-import { stripWeb3Network, makeWeb3Network, getShepherdManualMode, shepherd, makeProviderConfig } from "libs/nodes";
-import { configNodesSelectedActions, configNodesStaticActions } from "features/config";
-import { StaticNodeConfig } from "v2/services/NodeOptions/types";
-import { getNetworkByChainId, NetworkSelect } from "v2/libs";
-import { translateRaw } from "translations";
-import { LocalCache } from "v2/services/LocalCache/constants";
-import NodeOptionsServiceBase from "v2/services/NodeOptions/NodeOptions";
+import { isWeb3Node, setupWeb3Node, Web3Service } from 'libs/nodes/web3';
+import { Web3Wallet } from 'libs/wallet';
+import {
+  stripWeb3Network,
+  makeWeb3Network,
+  getShepherdManualMode,
+  shepherd,
+  makeProviderConfig
+} from 'libs/nodes';
+import { configNodesSelectedActions, configNodesStaticActions } from 'features/config';
+import { StaticNodeConfig } from 'v2/services/NodeOptions/types';
+import { getNetworkByChainId, NetworkSelect } from 'v2/libs';
+import { translateRaw } from 'translations';
+import { LocalCache } from 'v2/services/LocalCache/constants';
+import NodeOptionsServiceBase from 'v2/services/NodeOptions/NodeOptions';
 
 const NodeOptions = new NodeOptionsServiceBase();
 
@@ -16,8 +22,8 @@ let web3Added = false;
 
 export const initWeb3Node = async () => {
   const { chainId, lib } = await setupWeb3Node();
-  const network: NetworkSelect = await getNetworkByChainId(chainId)
-    
+  const network: NetworkSelect = await getNetworkByChainId(chainId);
+
   if (!network) {
     throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
   }
@@ -45,10 +51,9 @@ export const initWeb3Node = async () => {
 
   setNode(id, config);
   return lib;
-}
+};
 
 export const unlockWeb3 = async () => {
-
   try {
     const nodeLib = await initWeb3Node();
 
@@ -76,14 +81,14 @@ export const unlockWeb3 = async () => {
     if (!address) {
       throw new Error('No accounts found in MetaMask / Web3.');
     }
-    return (new Web3Wallet(address, stripWeb3Network(network)));
+    return new Web3Wallet(address, stripWeb3Network(network));
   } catch (err) {
     console.error(err);
     // unset web3 node so node dropdown isn't disabled
     configNodesStaticActions.web3UnsetNode();
     console.log('Error ' + translateRaw(err.message));
   }
-}
+};
 
 export const getWeb3Node = async () => {
   const isWeb3Node = (nodeId: string) => nodeId === 'web3';
@@ -93,17 +98,12 @@ export const getWeb3Node = async () => {
     return currNode;
   }
   return null;
-}
+};
 
-export const getNodes = async () => {
+export const getNodes = async () => {};
 
-}
-
-export const getCurrentNode = async () => {
-  
-}
+export const getCurrentNode = async () => {};
 
 export const createNewWeb3Node = async (id: string, newNode: StaticNodeConfig) => {
-  NodeOptions.createNodeOptions({ ...newNode, name: id, type: 'web3', })
-}
-
+  NodeOptions.createNodeOptions({ ...newNode, name: id, type: 'web3' });
+};
