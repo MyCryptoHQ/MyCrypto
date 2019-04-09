@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
-
 import Stepper from './Stepper';
 
 // Legacy
@@ -33,13 +32,15 @@ interface ContentPanelHeadingProps {
   centered: boolean | undefined;
 }
 
-const ContentPanelHeading = styled.p`
+const ContentPanelHeading =
+  styled.p <
+  ContentPanelHeadingProps >
+  `
   font-size: 36px;
   width: 100%;
   display: flex;
-  padding: ${(props: ContentPanelHeadingProps) => (props.centered ? '0 40px' : '0')};
-  justify-content: ${(props: ContentPanelHeadingProps) =>
-    props.centered ? 'center' : 'space-between'};
+  padding: ${props => (props.centered ? '0 40px' : '0')};
+  justify-content: ${props => (props.centered ? 'center' : 'space-between')};
   font-weight: bold;
   line-height: normal;
   margin-top: 0;
@@ -82,11 +83,13 @@ interface ContentPanelTopProps {
   stepperOnly: boolean;
 }
 
-const ContentPanelTop = styled.div`
+const ContentPanelTop =
+  styled.div <
+  ContentPanelTopProps >
+  `
   display: flex;
   align-items: center;
-  justify-content: ${(props: ContentPanelTopProps) =>
-    props.stepperOnly ? 'flex-end' : 'space-between'};
+  justify-content: ${props => (props.stepperOnly ? 'flex-end' : 'space-between')};
   margin-bottom: 10px;
   padding: 0 30px;
 

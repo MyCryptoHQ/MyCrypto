@@ -28,7 +28,7 @@ const PrimaryButton = styled(Button)`
   }
 `;
 
-const FormWrapper = styled.div`
+const FormWrapper = styled.form`
   margin-top: 14px;
 `;
 
@@ -45,7 +45,8 @@ export class ScreenLockLocked extends Component<Props> {
     this.setState({ password: event.target.value, passwordError: '' });
   };
 
-  public handleUnlockWalletClick = async (decryptWithPassword: any) => {
+  public handleUnlockWalletClick = async (decryptWithPassword: any, e: any) => {
+    e.preventDefault();
     const response = await decryptWithPassword(this.state.password);
     if (response === false) {
       this.setState({ passwordError: translate('SCREEN_LOCK_LOCKED_WRONG_PASSWORD') });
@@ -66,7 +67,7 @@ export class ScreenLockLocked extends Component<Props> {
               className=""
             >
               <ContentWrapper>
-                <FormWrapper>
+                <FormWrapper onSubmit={e => this.handleUnlockWalletClick(decryptWithPassword, e)}>
                   <InputField
                     label={translateRaw('SCREEN_LOCK_LOCKED_PASSWORD_LABEL')}
                     value={this.state.password}
@@ -74,7 +75,7 @@ export class ScreenLockLocked extends Component<Props> {
                     inputError={this.state.passwordError}
                     type={'password'}
                   />
-                  <PrimaryButton onClick={() => this.handleUnlockWalletClick(decryptWithPassword)}>
+                  <PrimaryButton type="submit">
                     {translate('SCREEN_LOCK_LOCKED_UNLOCK')}
                   </PrimaryButton>
                 </FormWrapper>

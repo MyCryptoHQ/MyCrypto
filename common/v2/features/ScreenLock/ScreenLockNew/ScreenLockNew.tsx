@@ -29,7 +29,7 @@ const ActionButton = styled(Button)`
   }
 `;
 
-const FormWrapper = styled.div`
+const FormWrapper = styled.form`
   margin-top: 35px;
   max-width: 420px;
 `;
@@ -68,9 +68,15 @@ export class ScreenLockNew extends Component<Props> {
 
   public handleCreatePasswordClicked = (
     encryptWithPassword: ((password: string, hashed: boolean) => void)
-  ) => {
+  ) => (e: any) => {
+    e.preventDefault();
+
     const { password1, password2, password1Error, password2Error } = this.state;
-    if (!(password1Error && password2Error) && password1 === password2) {
+    if (
+      !(password1Error || password2Error) &&
+      !(password1.length === 0 || password2.length === 0) &&
+      password1 === password2
+    ) {
       encryptWithPassword(password1, false);
     }
   };
@@ -90,7 +96,7 @@ export class ScreenLockNew extends Component<Props> {
               className=""
             >
               <ContentWrapper>
-                <FormWrapper>
+                <FormWrapper onSubmit={this.handleCreatePasswordClicked(encryptWithPassword)}>
                   <InputField
                     label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
                     value={this.state.password1}
@@ -107,9 +113,7 @@ export class ScreenLockNew extends Component<Props> {
                     inputError={this.state.password2Error}
                     type={'password'}
                   />
-                  <ActionButton
-                    onClick={() => this.handleCreatePasswordClicked(encryptWithPassword)}
-                  >
+                  <ActionButton type="submit">
                     {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
                   </ActionButton>
                 </FormWrapper>
