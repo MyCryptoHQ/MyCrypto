@@ -9,7 +9,7 @@ import { AppState } from 'features/reducers';
 import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
+import DeterministicWallets from './DeterministicWallets';
 
 interface OwnProps {
   onUnlock(param: any): void;
@@ -49,8 +49,19 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     const { phrase, formattedPhrase, seed, dPath, pass } = this.state;
     const isValidMnemonic = validateMnemonic(formattedPhrase);
 
-    return (
-      <React.Fragment>
+    if (seed) {
+      return (
+        <DeterministicWallets
+          seed={seed}
+          dPath={dPath}
+          dPaths={this.props.dPaths}
+          onCancel={this.handleCancel}
+          onConfirmAddress={this.handleUnlock}
+          onPathChange={this.handlePathChange}
+        />
+      );
+    } else {
+      return (
         <div id="selectedTypeKey">
           <div className="form-group">
             <TogglablePassword
@@ -85,18 +96,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             </button>
           </div>
         </div>
-
-        <DeterministicWalletsModal
-          isOpen={!!seed}
-          seed={seed}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
-        />
-      </React.Fragment>
-    );
+      );
+    }
   }
 
   public onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {

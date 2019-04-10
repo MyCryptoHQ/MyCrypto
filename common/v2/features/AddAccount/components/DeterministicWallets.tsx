@@ -13,13 +13,11 @@ import {
 } from 'features/deterministicWallets';
 import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
-import Modal, { IButton } from 'components/ui/Modal';
 import './DeterministicWalletsModal.scss';
 
 const WALLETS_PER_PAGE = 5;
 
 interface OwnProps {
-  isOpen?: boolean;
   dPath: DPath;
   dPaths: DPath[];
   publicKey?: string;
@@ -91,27 +89,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     const { wallets, desiredToken, network, tokens, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
 
-    const buttons: IButton[] = [
-      {
-        text: translate('ACTION_3'),
-        type: 'primary',
-        onClick: this.handleConfirmAddress,
-        disabled: !selectedAddress
-      },
-      {
-        text: translate('ACTION_2'),
-        type: 'default',
-        onClick: onCancel
-      }
-    ];
-
     return (
-      <Modal
-        title={translateRaw('DECRYPT_PROMPT_SELECT_ADDRESS')}
-        isOpen={this.props.isOpen}
-        buttons={buttons}
-        handleClose={onCancel}
-      >
+      <>
+        <h2>{translateRaw('DECRYPT_PROMPT_SELECT_ADDRESS')}</h2>
+
         <div className="DWModal">
           <form
             className="DWModal-path form-group-sm flex-wrapper"
@@ -193,7 +174,18 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             </button>
           </div>
         </div>
-      </Modal>
+
+        <button
+          className="Modal-footer-btn btn btn-primary"
+          onClick={this.handleConfirmAddress}
+          disabled={!selectedAddress}
+        >
+          {translate('ACTION_3')}
+        </button>
+        <button className="Modal-footer-btn btn btn-default" onClick={onCancel}>
+          {translate('ACTION_2')}
+        </button>
+      </>
     );
   }
 
