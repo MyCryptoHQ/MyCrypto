@@ -6,6 +6,7 @@ import LedgerEth from '@ledgerhq/hw-app-eth';
 import { translateRaw } from 'translations';
 import { getTransactionFields } from 'libs/transaction';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
+import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 
 // Ledger throws a few types of errors
 interface U2FError {
@@ -51,6 +52,14 @@ export class LedgerWallet extends HardwareWallet {
 
     try {
       const ethApp = await makeApp();
+
+      if (t.getChainId() === 1) {
+        const tokenInfo = byContractAddress(t.to.toString('hex'));
+        if (tokenInfo) {
+          await ethApp.provideERC20TokenInformation(tokenInfo);
+        }
+      }
+
       const result = await ethApp.signTransaction(this.getPath(), t.serialize().toString('hex'));
 
       let v = result.v;
