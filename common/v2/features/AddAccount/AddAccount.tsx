@@ -76,11 +76,22 @@ interface StateProps {
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
 
 type UnlockParams = {} | PrivateKeyValue;
+
+interface AddAccountData {
+  address: string | null;
+  accountType: WalletName | null;
+  label: string | null;
+  network: string;
+  derivationPath: string | null;
+}
+
 interface State {
   selectedWalletKey: WalletName | null;
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
   hasSelectedNetwork: boolean;
+  hasSelectedAddress: boolean;
+  accountData: AddAccountData;
 }
 
 interface BaseWalletInfo {
@@ -92,6 +103,7 @@ interface BaseWalletInfo {
   redirect?: string;
   helpLink: string;
   isReadOnly?: boolean;
+  accountType?: WalletName;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -220,7 +232,15 @@ const WalletDecrypt = withRouter<Props>(
       selectedWalletKey: null,
       isInsecureOverridden: false,
       value: null,
-      hasSelectedNetwork: false
+      hasSelectedNetwork: false,
+      hasSelectedAddress: false,
+      accountData: {
+        address: null,
+        network: 'Ethereum',
+        label: '',
+        accountType: null,
+        derivationPath: null
+      }
     };
 
     public exists: boolean = true;
@@ -436,8 +456,11 @@ const WalletDecrypt = withRouter<Props>(
                 return (
                   <ComboBox
                     className="Panel-dropdown"
+                    value={this.state.accountData.network}
                     items={new Set(networkNames.sort())}
-                    onChange={this.onChange}
+                    onChange={({ target: { value } }) =>
+                      this.setState({ accountData: { ...this.state.accountData, network: value } })
+                    }
                     placeholder="Ethereum"
                   />
                 );
@@ -451,15 +474,14 @@ const WalletDecrypt = withRouter<Props>(
       );
     }
 
-    public handleNetworkSelect = (e: any) => {
-      console.log('[handleNetworkSelect] ' + e.value);
+    public handleNetworkSelect = () => {
       this.setState({ hasSelectedNetwork: true });
     };
 
     public handleWalletChoice = async (walletType: WalletName) => {
       const { showNotification } = this.props;
       const wallet = this.WALLETS[walletType];
-
+      this.setState({ accountData: { ...this.state.accountData, accountType: walletType } });
       if (!wallet) {
         return;
       }
@@ -494,7 +516,22 @@ const WalletDecrypt = withRouter<Props>(
       this.setState({
         selectedWalletKey: null,
         value: null,
-        hasSelectedNetwork: false
+        hasSelectedNetwork: false,
+        accountData: {
+          ...this.state.accountData,
+          network: ''
+        }
+      });
+    };
+
+    public clearAddressChoice = () => {
+      this.setState({
+        hasSelectedAddress: false,
+        accountData: {
+          ...this.state.accountData,
+          address: null,
+          derivationPath: null
+        }
       });
     };
 
@@ -503,7 +540,6 @@ const WalletDecrypt = withRouter<Props>(
       const selectedWallet = this.getSelectedWallet();
       const decryptionComponent = this.getDecryptionComponent();
       const selectNetworkComponent = this.selectNetworkComponent();
-      console.log('[render]', this.state.hasSelectedNetwork);
 
       let componentToRender: JSX.Element;
 
@@ -548,7 +584,6 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public onChange = (value: UnlockParams) => {
-      console.log('got here: ' + value);
       this.setState({ value });
     };
 
@@ -563,7 +598,14 @@ const WalletDecrypt = withRouter<Props>(
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
       this.WALLETS[selectedWalletKey].unlock(unlockValue);
-      this.props.resetTransactionRequested();
+      this.setState({
+        hasSelectedAddress: true,
+        accountData: {
+          ...this.state.accountData,
+          derivationPath: unlockValue.path,
+          address: unlockValue.address
+        }
+      });
     };
 
     private isWalletDisabled = (walletKey: WalletName) => {
