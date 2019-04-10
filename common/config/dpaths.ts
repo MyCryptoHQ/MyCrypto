@@ -55,7 +55,7 @@ export const POA_DEFAULT: DPath = {
 
 export const TOMO_DEFAULT: DPath = {
   label: 'Default (TOMO)',
-  value: "m/44'/1'/0'/0"
+  value: "m/44'/889'/0'/0"
 };
 
 export const ELLA_DEFAULT: DPath = {
@@ -65,7 +65,7 @@ export const ELLA_DEFAULT: DPath = {
 
 export const MUSIC_DEFAULT: DPath = {
   label: 'Default (MUSIC)',
-  value: "m/44'/60'/0'/0"
+  value: "m/44'/184'/0'/0"
 };
 
 export const ETSC_DEFAULT: DPath = {
@@ -113,6 +113,56 @@ export const ESN_DEFAULT: DPath = {
   value: "m/44'/31102'/0'/0"
 };
 
+export const AQUA_DEFAULT: DPath = {
+  label: 'Default (AQUA)',
+  value: "m/44'/60'/0'/0"
+};
+
+export const AKA_DEFAULT: DPath = {
+  label: 'Default (AKA)',
+  value: "m/44'/200625'/0'/0"
+};
+
+export const PIRL_DEFAULT: DPath = {
+  label: 'Default (PIRL)',
+  value: "m/44'/164'/0'/0"
+};
+
+export const ATH_DEFAULT: DPath = {
+  label: 'Default (ATH)',
+  value: "m/44'/1620'/0'/0"
+};
+
+export const ETHO_DEFAULT: DPath = {
+  label: 'Default (ETHO)',
+  value: "m/44'/1313114'/0'/0"
+};
+
+export const MIX_DEFAULT: DPath = {
+  label: 'Default (MIX)',
+  value: "m/44'/76'/0'/0"
+};
+
+export const REOSC_DEFAULT: DPath = {
+  label: 'Default (REOSC)',
+  value: "m/44'/2894'/0'/0"
+};
+
+export const ARTIS_SIGMA1: DPath = {
+  label: 'Sigma1 (ATS)',
+  value: "m/44'/60'/0'/0"
+};
+
+export const ARTIS_TAU1: DPath = {
+  label: 'Tau1 (ATS)',
+  value: "m/44'/60'/0'/0"
+};
+
+export const THUNDERCORE_DEFAULT: DPath = {
+  label: 'Default (THUNDERCORE)',
+  value: "m/44'/1001'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -135,7 +185,17 @@ export const DPaths: DPath[] = [
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
-  ESN_DEFAULT
+  ESN_DEFAULT,
+  AQUA_DEFAULT,
+  AKA_DEFAULT,
+  PIRL_DEFAULT,
+  ATH_DEFAULT,
+  ETHO_DEFAULT,
+  MIX_DEFAULT,
+  REOSC_DEFAULT,
+  ARTIS_SIGMA1,
+  ARTIS_TAU1,
+  THUNDERCORE_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
@@ -152,5 +212,5 @@ export const EXTRA_PATHS = [ETH_SINGULAR];
 
 // whitespace strings are evaluated the same way as nospace strings, except they allow optional spaces between each portion of the string
 // ie. "m / 44' / 0' / 0'" is valid, "m / 4 4' / 0' / 0'" is invalid
-export const dPathRegex = /m\/44'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
+export const dPathRegex = /m\/4[4,9]'\/[0-9]+\'\/[0-9]+(\'+$|\'+(\/[0-1]+$))/;
 // export const whitespaceDPathRegex = /m\s*\/\s*44'\s*\/\s*[0-9]+\'\s*\/\s*[0-9]+(\'+$|\'+\s*(\/\s*[0-1]+$))/;

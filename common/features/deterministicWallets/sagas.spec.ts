@@ -8,8 +8,7 @@ import { TokenValue, Wei } from 'libs/units';
 import { getChecksumAddressFunction } from 'utils/formatters';
 import configuredStore from 'features/store';
 import * as derivedSelectors from 'features/selectors';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors, configNodesSelectors } from 'features/config';
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
@@ -57,7 +56,7 @@ describe('getDeterministicWallets*', () => {
     const gen = sagas.getDeterministicWalletsSaga(action);
 
     it('should select getChecksumAddressFn', () => {
-      expect(gen.next().value).toEqual(select(getChecksumAddressFn));
+      expect(gen.next().value).toEqual(select(configSelectors.getChecksumAddressFn));
     });
 
     it('should match put snapshot', () => {
@@ -86,7 +85,7 @@ describe('getDeterministicWallets*', () => {
     const gen = sagas.getDeterministicWalletsSaga(action);
 
     it('should select getChecksumAddressFn', () => {
-      expect(gen.next().value).toEqual(select(getChecksumAddressFn));
+      expect(gen.next().value).toEqual(select(configSelectors.getChecksumAddressFn));
     });
 
     it('should match put snapshot', () => {

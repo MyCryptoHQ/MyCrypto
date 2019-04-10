@@ -43,6 +43,7 @@ class ScheduleDepositFieldClass extends Component<Props> {
             placeholder="0.00001"
             value={scheduleDeposit.raw}
             onChange={this.handleDepositChange}
+            showInvalidWithoutValue={true}
           />
         </label>
       </div>

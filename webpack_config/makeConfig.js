@@ -95,7 +95,7 @@ module.exports = function(opts = {}) {
       },
       {
         test: /\.scss$/,
-        include: ['components', 'containers', 'sass']
+        include: ['components', 'containers', 'sass', 'v2']
           .map(dir => path.resolve(config.path.src, dir))
           .concat([config.path.modules]),
 
@@ -167,9 +167,9 @@ module.exports = function(opts = {}) {
         site: config.twitter.creator,
         creator: config.twitter.creator
       },
-      metaCsp: options.isProduction 
-        ? "default-src 'none'; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; font-src 'self'; img-src 'self' data: https://shapeshift.io; connect-src *;"
-        :  ""
+      metaCsp: options.isProduction
+        ? "default-src 'none'; script-src 'self' https://0x.mycrypto.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://0x.mycrypto.com; manifest-src 'self'; font-src 'self' https://0x.mycrypto.com; img-src 'self' data: https://shapeshift.io; connect-src *; frame-src 'self' https://connect.trezor.io;"
+        : ''
     }),
 
     new CopyWebpackPlugin([

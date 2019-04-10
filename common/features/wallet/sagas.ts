@@ -1,6 +1,7 @@
 import { SagaIterator, delay, Task } from 'redux-saga';
 import { apply, call, fork, put, select, takeEvery, take, cancel } from 'redux-saga/effects';
 
+import configTokens from 'config/tokens';
 import { translateRaw } from 'translations';
 import { INode } from 'libs/nodes/INode';
 import { Wei } from 'libs/units';
@@ -17,14 +18,21 @@ import {
   WalletConfig
 } from 'libs/wallet';
 import { loadWalletConfig, saveWalletConfig } from 'utils/localStorage';
+import { getAddressesAndSymbols } from 'utils/tokens';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
-import * as configMetaTypes from 'features/config/meta/types';
-import * as configMetaSelectors from 'features/config/meta/selectors';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as configSelectors from 'features/config/selectors';
+import {
+  configMetaTypes,
+  configMetaSelectors,
+  configNodesSelectors,
+  configSelectors
+} from 'features/config';
 import { notificationsActions } from 'features/notifications';
-import { customTokensTypes, customTokensSelectors } from 'features/customTokens';
+import {
+  customTokensTypes,
+  customTokensActions,
+  customTokensSelectors
+} from 'features/customTokens';
 import * as types from './types';
 import * as actions from './actions';
 import * as selectors from './selectors';
@@ -286,6 +294,22 @@ export function* unlockMnemonicSaga(action: types.UnlockMnemonicAction): SagaIte
 export function* handleCustomTokenAdd(
   action: customTokensTypes.AddCustomTokenAction
 ): SagaIterator {
+  // Ensure the added token address and symbol doesn't exist in the static tokens.
+  const { id } = yield select(configSelectors.getNetworkConfig);
+  const { address, symbol } = action.payload;
+  const tokenList = (configTokens as any)[id];
+  const usedAddressesAndSymbols = getAddressesAndSymbols(tokenList);
+  if (usedAddressesAndSymbols.addresses[address]) {
+    yield put(notificationsActions.showNotification('danger', translateRaw('CUSTOM_TOKEN_1')));
+    return;
+  }
+  if (usedAddressesAndSymbols.symbols[symbol]) {
+    yield put(notificationsActions.showNotification('danger', translateRaw('CUSTOM_TOKEN_2')));
+    return;
+  }
+  // Add the custom token.
+  yield put(customTokensActions.addCustomToken(action.payload));
+
   // Add the custom token to our current wallet's config
   const wallet: null | IWallet = yield select(selectors.getWalletInst);
   if (!wallet) {
@@ -313,7 +337,7 @@ export function* walletSaga(): SagaIterator {
     takeEvery(types.WalletActions.REFRESH_ACCOUNT_BALANCE, updateAccountBalance),
     takeEvery(types.WalletActions.REFRESH_TOKEN_BALANCES, retryTokenBalances),
     // Foreign actions
-    takeEvery(configMetaTypes.CONFIG_META.TOGGLE_OFFLINE, updateBalances),
-    takeEvery(customTokensTypes.CustomTokensActions.ADD, handleCustomTokenAdd)
+    takeEvery(configMetaTypes.ConfigMetaActions.TOGGLE_OFFLINE, updateBalances),
+    takeEvery(customTokensTypes.CustomTokensActions.ATTEMPT_ADD, handleCustomTokenAdd)
   ];
 }

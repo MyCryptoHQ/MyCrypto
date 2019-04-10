@@ -27,11 +27,21 @@ import {
   RSK_TESTNET,
   GO_DEFAULT,
   EOSC_DEFAULT,
-  ESN_DEFAULT
+  ESN_DEFAULT,
+  AQUA_DEFAULT,
+  AKA_DEFAULT,
+  PIRL_DEFAULT,
+  ATH_DEFAULT,
+  ETHO_DEFAULT,
+  MIX_DEFAULT,
+  REOSC_DEFAULT,
+  ARTIS_SIGMA1,
+  ARTIS_TAU1,
+  THUNDERCORE_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
-import { StaticNetworksState } from './types';
 import { TAB } from 'components/Header/components/constants';
+import * as types from './types';
 
 const testnetDefaultGasPrice = {
   min: 0.1,
@@ -39,7 +49,7 @@ const testnetDefaultGasPrice = {
   initial: 4
 };
 
-export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
+export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
   ETH: {
     id: 'ETH',
     name: 'Ethereum',
@@ -132,6 +142,28 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     },
     gasPriceSettings: testnetDefaultGasPrice
   },
+  Goerli: {
+    id: 'Goerli',
+    name: 'Goerli',
+    unit: 'ETH',
+    chainId: 5,
+    isCustom: false,
+    color: '#adc101',
+    blockExplorer: makeExplorer({
+      name: 'Etherscan',
+      origin: 'https://goerli.etherscan.io/'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.SAFE_T]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
+    },
+    gasPriceSettings: testnetDefaultGasPrice
+  },
   ETC: {
     id: 'ETC',
     name: 'Ethereum Classic',
@@ -167,7 +199,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     color: '#b37aff',
     blockExplorer: makeExplorer({
       name: 'Ubiqscan',
-      origin: 'https://ubiqscan.io/en'
+      origin: 'https://ubiqscan.io'
     }),
     tokens: require('config/tokens/ubq.json'),
     contracts: require('config/contracts/ubq.json'),
@@ -216,10 +248,10 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     isCustom: false,
     color: '#6d2eae',
     blockExplorer: makeExplorer({
-      name: 'POA Explorer',
-      origin: 'https://poaexplorer.com',
-      addressPath: 'address/search',
-      blockPath: 'blocks/block'
+      name: 'BlockScout',
+      origin: 'https://blockscout.com/poa/core',
+      addressPath: 'address',
+      blockPath: 'blocks'
     }),
     tokens: [],
     contracts: [],
@@ -239,12 +271,12 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     id: 'TOMO',
     name: 'TomoChain',
     unit: 'TOMO',
-    chainId: 40686,
+    chainId: 88,
     isCustom: false,
     color: '#6a488d',
     blockExplorer: makeExplorer({
       name: 'Tomochain Explorer',
-      origin: 'https://explorer.tomocoin.io/#'
+      origin: 'https://scan.tomochain.com'
     }),
     tokens: [],
     contracts: [],
@@ -272,11 +304,12 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       name: 'Ellaism Explorer',
       origin: 'https://explorer.ellaism.org'
     }),
-    tokens: [],
+    tokens: require('config/tokens/ella.json'),
     contracts: [],
     dPathFormats: {
       [SecureWalletName.TREZOR]: ELLA_DEFAULT,
       [SecureWalletName.SAFE_T]: ELLA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ELLA_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ELLA_DEFAULT
     },
     gasPriceSettings: {
@@ -285,7 +318,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       initial: 20
     }
   },
-
+  Gangnam: {
+    id: 'Gangnam',
+    name: 'Gangnam',
+    unit: 'ETH',
+    chainId: 43568,
+    isCustom: false,
+    color: '#adc101',
+    blockExplorer: makeExplorer({
+      name: 'Gangnam Explorer',
+      origin: 'https://explorer.progtest.net'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETH_TESTNET,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_TESTNET,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_TESTNET
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
   MUSIC: {
     id: 'MUSIC',
     name: 'Musicoin',
@@ -303,6 +359,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: MUSIC_DEFAULT,
       [SecureWalletName.SAFE_T]: MUSIC_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: MUSIC_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: MUSIC_DEFAULT
     },
     gasPriceSettings: {
@@ -353,6 +410,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: EGEM_DEFAULT,
       [SecureWalletName.SAFE_T]: EGEM_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: EGEM_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EGEM_DEFAULT
     },
     gasPriceSettings: {
@@ -378,6 +436,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: CLO_DEFAULT,
       [SecureWalletName.SAFE_T]: CLO_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: CLO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: CLO_DEFAULT
     },
     gasPriceSettings: {
@@ -390,7 +449,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
   RSK: {
     id: 'RSK',
     name: 'RSK',
-    unit: 'SBTC',
+    unit: 'RBTC',
     chainId: 30,
     color: '#58A052',
     isCustom: false,
@@ -407,17 +466,18 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_MAINNET
     },
     gasPriceSettings: {
-      min: 0.183,
+      min: 0.06,
       max: 1.5,
-      initial: 0.183
+      initial: 0.06
     },
-    unsupportedTabs: [TAB.ENS]
+    unsupportedTabs: [TAB.ENS],
+    hideEquivalentValues: true
   },
 
   RSK_TESTNET: {
     id: 'RSK_TESTNET',
-    name: 'RSK',
-    unit: 'SBTC',
+    name: 'RSK Testnet',
+    unit: 'RBTC',
     chainId: 31,
     color: '#58A052',
     isCustom: false,
@@ -430,14 +490,13 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     isTestnet: true,
     dPathFormats: {
       [SecureWalletName.TREZOR]: RSK_TESTNET,
-      [SecureWalletName.SAFE_T]: RSK_TESTNET,
       [SecureWalletName.LEDGER_NANO_S]: RSK_TESTNET,
       [InsecureWalletName.MNEMONIC_PHRASE]: RSK_TESTNET
     },
     gasPriceSettings: {
-      min: 0.183,
+      min: 0.06,
       max: 1.5,
-      initial: 0.183
+      initial: 0.06
     },
     unsupportedTabs: [TAB.ENS]
   },
@@ -458,6 +517,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: GO_DEFAULT,
       [SecureWalletName.SAFE_T]: GO_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: GO_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: GO_DEFAULT
     },
     gasPriceSettings: {
@@ -509,6 +569,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: EOSC_DEFAULT,
       [SecureWalletName.SAFE_T]: EOSC_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: EOSC_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: EOSC_DEFAULT
     },
     gasPriceSettings: {
@@ -534,6 +595,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: ESN_DEFAULT,
       [SecureWalletName.SAFE_T]: ESN_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ESN_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ESN_DEFAULT
     },
     gasPriceSettings: {
@@ -541,11 +603,258 @@ export const STATIC_NETWORKS_INITIAL_STATE: StaticNetworksState = {
       max: 60,
       initial: 20
     }
+  },
+  AQUA: {
+    id: 'AQUA',
+    name: 'Aquachain',
+    unit: 'AQUA',
+    chainId: 61717561,
+    isCustom: false,
+    color: '#00ffff',
+    blockExplorer: makeExplorer({
+      name: 'AQUA Explorer',
+      origin: 'https://aquachain.github.io/explorer/#'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: AQUA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: AQUA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: AQUA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 10,
+      initial: 0.1
+    }
+  },
+  AKA: {
+    id: 'AKA',
+    name: 'Akroma',
+    unit: 'AKA',
+    chainId: 200625,
+    isCustom: false,
+    color: '#aa0087',
+    blockExplorer: makeExplorer({
+      name: 'Akroma Explorer',
+      origin: 'https://explorer.akroma.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: AKA_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: AKA_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: AKA_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  PIRL: {
+    id: 'PIRL',
+    name: 'Pirl',
+    unit: 'PIRL',
+    chainId: 3125659152,
+    isCustom: false,
+    color: '#a2d729',
+    blockExplorer: makeExplorer({
+      name: 'Pirl Poseidon Explorer',
+      origin: 'https://devexplorer.pirl.io'
+    }),
+    tokens: [],
+    contracts: require('config/contracts/pirl.json'),
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: PIRL_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: PIRL_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: PIRL_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ATH: {
+    id: 'ATH',
+    name: 'Atheios',
+    unit: 'ATH',
+    chainId: 1620,
+    isCustom: false,
+    color: '#0093c5',
+    blockExplorer: makeExplorer({
+      name: 'Atheios Explorer',
+      origin: 'https://explorer.atheios.com'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ATH_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ATH_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ATH_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ETHO: {
+    id: 'ETHO',
+    name: 'Ether-1',
+    unit: 'ETHO',
+    chainId: 1313114,
+    isCustom: false,
+    color: '#7a1336',
+    blockExplorer: makeExplorer({
+      name: 'Ether-1 Explorer',
+      origin: 'https://explorer.ether1.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETHO_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETHO_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETHO_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  MIX: {
+    id: 'MIX',
+    name: 'Mix',
+    unit: 'MIX',
+    chainId: 76,
+    isCustom: false,
+    color: '#e59b2b',
+    blockExplorer: makeExplorer({
+      name: 'MIX Blockchain Explorer',
+      origin: 'https://blocks.mix-blockchain.org'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: MIX_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: MIX_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: MIX_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  REOSC: {
+    id: 'REOSC',
+    name: 'REOSC',
+    unit: 'REOSC',
+    chainId: 2894,
+    isCustom: false,
+    color: '#1500db',
+    blockExplorer: makeExplorer({
+      name: 'REOSC Explorer',
+      origin: 'https://explorer.reosc.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: REOSC_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: REOSC_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: REOSC_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  ARTIS_SIGMA1: {
+    id: 'ARTIS_SIGMA1',
+    name: 'ARTIS sigma1',
+    unit: 'ATS',
+    chainId: 246529,
+    isCustom: false,
+    color: '#238006',
+    blockExplorer: makeExplorer({
+      name: 'BlockScout',
+      origin: 'https://explorer.sigma1.artis.network',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: false,
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ARTIS_SIGMA1,
+      [SecureWalletName.SAFE_T]: ARTIS_SIGMA1,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_SIGMA1
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 1,
+      initial: 1
+    }
+  },
+  ARTIS_TAU1: {
+    id: 'ARTIS_TAU1',
+    name: 'ARTIS tau1',
+    unit: 'ATS',
+    chainId: 246785,
+    isCustom: false,
+    color: '#238006',
+    blockExplorer: makeExplorer({
+      name: 'BlockScout',
+      origin: 'https://explorer.tau1.artis.network',
+      addressPath: 'address',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    isTestnet: true,
+    dPathFormats: {
+      //[SecureWalletName.TREZOR]: ARTIS_TAU1,
+      //[SecureWalletName.SAFE_T]: ARTIS_TAU1,
+      //[SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_TAU1
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 1,
+      initial: 1
+    }
+  },
+  THUNDERCORE: {
+    id: 'THUNDERCORE',
+    name: 'ThunderCore',
+    unit: 'TT',
+    chainId: 108,
+    isCustom: false,
+    color: '#ffc000',
+    blockExplorer: makeExplorer({
+      name: 'ThunderScan',
+      origin: 'https://scan.thundercore.com'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: THUNDERCORE_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: THUNDERCORE_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 1
+    }
   }
 };
 
 export function staticNetworksReducer(
-  state: StaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
+  state: types.ConfigStaticNetworksState = STATIC_NETWORKS_INITIAL_STATE,
   action: any
 ) {
   switch (action.type) {

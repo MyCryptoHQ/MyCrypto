@@ -6,19 +6,15 @@ import { NodeConfig } from 'types/node';
 import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
 import {
-  TChangeNodeRequested,
-  changeNodeRequested,
-  TChangeNetworkRequested,
-  changeNetworkRequested,
-  getNodeConfig,
-  getNetworkConfig,
-  getAllNodes,
-  getAllNetworkConfigs
+  configNodesSelectors,
+  configNodesSelectedActions,
+  configNetworksActions,
+  configSelectors
 } from 'features/config';
 import NetworkOption from './NetworkOption';
 import './NetworkSelector.scss';
 
-const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby'];
+const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli'];
 
 interface OwnProps {
   openCustomNodeModal(): void;
@@ -34,8 +30,8 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  changeNodeRequested: TChangeNodeRequested;
-  changeNetworkRequested: TChangeNetworkRequested;
+  changeNodeRequested: configNodesSelectedActions.TChangeNodeRequested;
+  changeNetworkRequested: configNetworksActions.TChangeNetworkRequested;
 }
 
 interface State {
@@ -162,13 +158,13 @@ class NetworkSelector extends React.Component<Props> {
 
 export default connect(
   (state: AppState): StateProps => ({
-    node: getNodeConfig(state),
-    network: getNetworkConfig(state),
-    allNodes: getAllNodes(state),
-    allNetworks: getAllNetworkConfigs(state)
+    node: configNodesSelectors.getNodeConfig(state),
+    network: configSelectors.getNetworkConfig(state),
+    allNodes: configSelectors.getAllNodes(state),
+    allNetworks: configSelectors.getAllNetworkConfigs(state)
   }),
   {
-    changeNodeRequested,
-    changeNetworkRequested
+    changeNodeRequested: configNodesSelectedActions.changeNodeRequested,
+    changeNetworkRequested: configNetworksActions.changeNetworkRequested
   }
 )(NetworkSelector);

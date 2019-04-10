@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import { customNetworksReducer } from './custom/reducer';
-import { staticNetworksReducer } from './static/reducer';
-import { NetworksState } from './types';
+import * as configNetworksCustomReducer from './custom/reducer';
+import * as configStaticCustomReducer from './static/reducer';
+import * as types from './types';
 
-export const networksReducer = combineReducers<NetworksState>({
-  customNetworks: customNetworksReducer,
-  staticNetworks: staticNetworksReducer
+export const networksReducer = combineReducers<types.ConfigNetworksState>({
+  customNetworks: configNetworksCustomReducer.customNetworksReducer,
+  staticNetworks: configStaticCustomReducer.staticNetworksReducer
 });

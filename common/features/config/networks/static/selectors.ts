@@ -4,7 +4,7 @@ import { EXTRA_PATHS } from 'config/dpaths';
 import { stripWeb3Network } from 'libs/nodes';
 import { StaticNetworkIds } from 'types/network';
 import { AppState } from 'features/reducers';
-import { PathType } from './types';
+import * as types from './types';
 
 function getNetworks(state: AppState) {
   return state.config.networks;
@@ -21,7 +21,7 @@ export function isStaticNetworkId(
   return Object.keys(getStaticNetworkConfigs(state)).includes(stripWeb3Network(networkId));
 }
 
-export function getPaths(state: AppState, pathType: PathType): DPath[] {
+export function getPaths(state: AppState, pathType: types.PathType): DPath[] {
   const paths = Object.values(getStaticNetworkConfigs(state))
     .reduce((networkPaths: DPath[], { dPathFormats }): DPath[] => {
       if (dPathFormats && dPathFormats[pathType]) {

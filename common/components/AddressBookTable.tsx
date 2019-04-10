@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import translate, { translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
-import { getChecksumAddressFn } from 'features/config';
+import { configSelectors } from 'features/config';
 import {
   addressBookConstants,
   addressBookActions,
@@ -25,7 +25,7 @@ interface StateProps {
   entry: ReturnType<typeof addressBookSelectors.getAddressBookTableEntry>;
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   labelAddresses: ReturnType<typeof addressBookSelectors.getLabelAddresses>;
-  toChecksumAddress: ReturnType<typeof getChecksumAddressFn>;
+  toChecksumAddress: ReturnType<typeof configSelectors.getChecksumAddressFn>;
 }
 
 type Props = DispatchProps & StateProps;
@@ -302,7 +302,7 @@ const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = state => ({
   entry: addressBookSelectors.getAddressBookTableEntry(state),
   addressLabels: addressBookSelectors.getAddressLabels(state),
   labelAddresses: addressBookSelectors.getLabelAddresses(state),
-  toChecksumAddress: getChecksumAddressFn(state)
+  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
 });
 
 const mapDispatchToProps: DispatchProps = {

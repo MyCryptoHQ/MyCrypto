@@ -11,11 +11,14 @@ import Web3Node from 'libs/nodes/web3';
 import { INode } from 'libs/nodes/INode';
 import { Token } from 'types/network';
 import * as derivedSelectors from 'features/selectors';
-import * as configMetaSelectors from 'features/config/meta/selectors';
-import * as configNodesSelectors from 'features/config/nodes/selectors';
-import * as configNodesStaticActions from 'features/config/nodes/static/actions';
-import * as configNodesSelectedActions from 'features/config/nodes/selected';
-import * as configSagas from 'features/config/sagas';
+import {
+  configMetaSelectors,
+  configNodesSelectors,
+  configNodesStaticActions,
+  configNodesSelectedTypes,
+  configNodesSelectedActions,
+  configSagas
+} from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import * as types from './types';
 import * as actions from './actions';
@@ -319,7 +322,7 @@ describe('unlockWeb3*', () => {
   it('should yield take on node change', () => {
     const expected = take(
       (action: any) =>
-        action.type === configNodesSelectedActions.CONFIG_NODES_SELECTED.CHANGE_SUCCEEDED &&
+        action.type === configNodesSelectedTypes.ConfigNodesSelectedActions.CHANGE_SUCCEEDED &&
         action.payload.nodeSelection === 'web3'
     );
     const result = data.gen.next().value;
@@ -358,7 +361,7 @@ describe('unlockWeb3*', () => {
       put(
         notificationsActions.showNotification(
           'danger',
-          translateRaw('No accounts found in MetaMask / Mist.')
+          translateRaw('No accounts found in MetaMask / Web3.')
         )
       )
     );

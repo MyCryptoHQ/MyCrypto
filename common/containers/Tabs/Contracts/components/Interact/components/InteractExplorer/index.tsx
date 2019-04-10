@@ -6,7 +6,7 @@ import translate from 'translations';
 import { Data } from 'libs/units';
 import { INode } from 'libs/nodes';
 import { AppState } from 'features/reducers';
-import { getNodeLib } from 'features/config';
+import { configNodesSelectors, configSelectors } from 'features/config';
 import { notificationsActions } from 'features/notifications';
 import {
   transactionFieldsActions,
@@ -23,6 +23,7 @@ interface StateProps {
   nodeLib: INode;
   to: AppState['transaction']['fields']['to'];
   dataExists: boolean;
+  chainId: number;
 }
 
 interface DispatchProps {
@@ -226,7 +227,7 @@ class InteractExplorerClass extends Component<Props, State> {
   private handleFunctionCall = async (_: React.FormEvent<HTMLButtonElement>) => {
     try {
       const data = this.encodeData();
-      const { nodeLib, to } = this.props;
+      const { nodeLib, to, chainId } = this.props;
       const { selectedFunction } = this.state;
 
       if (!to.value) {
@@ -236,7 +237,7 @@ class InteractExplorerClass extends Component<Props, State> {
       const callData = { to: to.raw, data };
       const results = await nodeLib.sendCallRequest(callData);
 
-      const parsedResult = selectedFunction!.contract.decodeOutput(results);
+      const parsedResult = selectedFunction!.contract.decodeOutput(results, chainId);
 
       this.setState({ outputs: parsedResult });
     } catch (e) {
@@ -316,9 +317,10 @@ class InteractExplorerClass extends Component<Props, State> {
 
 export const InteractExplorer = connect(
   (state: AppState) => ({
-    nodeLib: getNodeLib(state),
+    nodeLib: configNodesSelectors.getNodeLib(state),
     to: transactionFieldsSelectors.getTo(state),
-    dataExists: transactionSelectors.getDataExists(state)
+    dataExists: transactionSelectors.getDataExists(state),
+    chainId: configSelectors.getNetworkChainId(state)
   }),
   {
     showNotification: notificationsActions.showNotification,

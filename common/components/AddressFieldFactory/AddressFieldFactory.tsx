@@ -16,6 +16,7 @@ interface OwnProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
   showIdenticon?: boolean;
+  showEnsResolution?: boolean;
   value?: string;
   dropdownThreshold?: number;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
@@ -67,7 +68,8 @@ class AddressFieldFactoryClass extends React.Component<Props> {
       showIdenticon,
       onChangeOverride,
       value,
-      dropdownThreshold
+      dropdownThreshold,
+      showEnsResolution
     } = this.props;
 
     return (
@@ -77,6 +79,7 @@ class AddressFieldFactoryClass extends React.Component<Props> {
           showLabelMatch={showLabelMatch}
           withProps={withProps}
           showIdenticon={showIdenticon}
+          showEnsResolution={showEnsResolution}
           onChangeOverride={onChangeOverride}
           value={value}
           dropdownThreshold={dropdownThreshold}
@@ -111,6 +114,7 @@ interface DefaultAddressFieldProps {
   isSelfAddress?: boolean;
   showLabelMatch?: boolean;
   showIdenticon?: boolean;
+  showEnsResolution?: boolean;
   value?: string;
   dropdownThreshold?: number;
   withProps(props: CallbackProps): React.ReactElement<any> | null;
@@ -121,6 +125,7 @@ const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
   isSelfAddress,
   showLabelMatch,
   showIdenticon,
+  showEnsResolution,
   value,
   withProps,
   onChangeOverride,
@@ -138,6 +143,7 @@ const DefaultAddressField: React.SFC<DefaultAddressFieldProps> = ({
         onChangeOverride={onChangeOverride}
         value={value}
         dropdownThreshold={dropdownThreshold}
+        showEnsResolution={showEnsResolution}
       />
     )}
   />
