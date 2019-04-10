@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import NetworkOptionsServiceBase from 'v2/services/NetworkOptions/NetworkOptions';
+import * as service from 'v2/services/NetworkOptions/NetworkOptions';
 import { NetworkOptions, ExtendedNetworkOptions } from 'v2/services/NetworkOptions';
 
 export interface ProviderState {
@@ -12,24 +12,22 @@ export interface ProviderState {
 
 export const NetworkOptionsContext = createContext({} as ProviderState);
 
-const NetworkOptions = new NetworkOptionsServiceBase();
-
 export class NetworkOptionsProvider extends Component {
   public readonly state: ProviderState = {
-    networkOptions: NetworkOptions.readAllNetworkOptions() || [],
+    networkOptions: service.readAllNetworkOptions() || [],
     createNetworkOptions: (networkOptionsData: ExtendedNetworkOptions) => {
-      NetworkOptions.createNetworkOptions(networkOptionsData);
+      service.createNetworkOptions(networkOptionsData);
       this.getNetworkOptions();
     },
     readNetworkOptions: (uuid: string) => {
-      return NetworkOptions.readNetworkOptions(uuid);
+      return service.readNetworkOptions(uuid);
     },
     deleteNetworkOptions: (uuid: string) => {
-      NetworkOptions.deleteNetworkOptions(uuid);
+      service.deleteNetworkOptions(uuid);
       this.getNetworkOptions();
     },
     updateNetworkOptions: (uuid: string, networkOptionsData: ExtendedNetworkOptions) => {
-      NetworkOptions.updateNetworkOptions(uuid, networkOptionsData);
+      service.updateNetworkOptions(uuid, networkOptionsData);
       this.getNetworkOptions();
     }
   };
@@ -42,7 +40,7 @@ export class NetworkOptionsProvider extends Component {
   }
 
   private getNetworkOptions = () => {
-    const networkOptions: ExtendedNetworkOptions[] = NetworkOptions.readAllNetworkOptions() || [];
+    const networkOptions: ExtendedNetworkOptions[] = service.readAllNetworkOptions() || [];
     this.setState({ networkOptions });
   };
 }

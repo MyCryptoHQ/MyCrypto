@@ -6,6 +6,7 @@ export * from './Currents';
 export * from './LocalCache';
 export * from './GlobalSettings';
 export * from './Storage';
+export * from './Github';
 export * from './Account';
 export * from './AccountType';
 export * from './Asset';

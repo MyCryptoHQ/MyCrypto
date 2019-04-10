@@ -1,28 +1,107 @@
-import React from 'react';
+import React, { Component } from 'react';
+import styled from 'styled-components';
 
+import { OS } from 'v2/services/Github';
 import { Layout } from 'v2/features';
-import { GetStartedPanel } from './components';
-import './Home.scss';
+import {
+  GetStartedPanel,
+  DownloadAppPanel,
+  CompatibleWalletsPanel,
+  PeaceOfMindPanel,
+  TestimonialsPanel,
+  BottomActionPanel,
+  FeaturesPanel
+} from './components';
+import { getFeaturedOS } from 'v2/features/helpers';
+import { GithubService } from 'v2/services';
+import {
+  COLORS,
+  BREAK_POINTS,
+  GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK
+} from 'v2/features/constants';
 
-export default function Home() {
-  return (
-    <Layout>
-      <section className="Home">
-        <section className="Home-getStarted">
-          <GetStartedPanel />
-        </section>
-        <section className="Home-copy">
-          <h1>Awesome Sales Copy</h1>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.
-          </p>
-        </section>
-      </section>
-    </Layout>
-  );
+const { SCREEN_SM } = BREAK_POINTS;
+const { SILVER, DARK_SLATE_BLUE } = COLORS;
+
+interface SectionProps {
+  color?: string;
+}
+
+const HomeWrapper = styled.section`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const Section = styled.section`
+  width: 100%;
+  background-color: ${(props: SectionProps) => props.color};
+  display: flex;
+  justify-content: center;
+`;
+
+const BottomSection = styled(Section)`
+  @media (max-width: ${SCREEN_SM}) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const OSNames: { [key: string]: string } = {
+  [OS.WINDOWS]: 'Windows',
+  [OS.MAC]: 'macOS',
+  [OS.LINUX64]: 'Linux (64-bit)'
+};
+
+const featuredOS = getFeaturedOS();
+
+export default class Home extends Component {
+  public state = {
+    appDownloadLink: DEFAULT_LINK,
+    OSName: OSNames[featuredOS]
+  };
+
+  public componentDidMount = async () => {
+    try {
+      const releaseURLs = await GithubService.instance.getReleasesURLs();
+      const currentPlatformURL = releaseURLs[featuredOS] || DEFAULT_LINK;
+      this.setState({ appDownloadLink: currentPlatformURL });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  public render() {
+    return (
+      <Layout className="WhiteBackground" fluid={true}>
+        <HomeWrapper>
+          <Section>
+            <GetStartedPanel />
+          </Section>
+          <Section color={SILVER}>
+            <CompatibleWalletsPanel />
+          </Section>
+          <Section>
+            <FeaturesPanel />
+          </Section>
+          <Section color={DARK_SLATE_BLUE}>
+            <DownloadAppPanel
+              downloadLink={this.state.appDownloadLink}
+              OSName={this.state.OSName}
+            />
+          </Section>
+          <Section>
+            <PeaceOfMindPanel downloadLink={this.state.appDownloadLink} />
+          </Section>
+          <Section color={SILVER}>
+            <TestimonialsPanel />
+          </Section>
+          <BottomSection>
+            <BottomActionPanel />
+          </BottomSection>
+        </HomeWrapper>
+      </Layout>
+    );
+  }
 }

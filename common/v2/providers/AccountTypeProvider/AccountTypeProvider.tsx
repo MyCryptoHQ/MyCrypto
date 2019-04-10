@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import AccountTypeServiceBase from 'v2/services/AccountType/AccountType';
+import * as service from 'v2/services/AccountType/AccountType';
 import { AccountType, ExtendedAccountType } from 'v2/services/AccountType';
 
 export interface ProviderState {
@@ -12,24 +12,22 @@ export interface ProviderState {
 
 export const AccountTypeContext = createContext({} as ProviderState);
 
-const AccountType = new AccountTypeServiceBase();
-
 export class AccountTypeProvider extends Component {
   public readonly state: ProviderState = {
-    accountTypes: AccountType.readAccountTypes() || [],
+    accountTypes: service.readAccountTypes() || [],
     createAccountType: (accountTypeData: ExtendedAccountType) => {
-      AccountType.createAccountType(accountTypeData);
+      service.createAccountType(accountTypeData);
       this.getAccountTypes();
     },
     readAccountType: (uuid: string) => {
-      return AccountType.readAccountType(uuid);
+      return service.readAccountType(uuid);
     },
     deleteAccountType: (uuid: string) => {
-      AccountType.deleteAccountType(uuid);
+      service.deleteAccountType(uuid);
       this.getAccountTypes();
     },
     updateAccountType: (uuid: string, accountTypeData: ExtendedAccountType) => {
-      AccountType.updateAccountType(uuid, accountTypeData);
+      service.updateAccountType(uuid, accountTypeData);
       this.getAccountTypes();
     }
   };
@@ -40,7 +38,7 @@ export class AccountTypeProvider extends Component {
   }
 
   private getAccountTypes = () => {
-    const accountTypes: ExtendedAccountType[] = AccountType.readAccountTypes() || [];
+    const accountTypes: ExtendedAccountType[] = service.readAccountTypes() || [];
     this.setState({ accountTypes });
   };
 }

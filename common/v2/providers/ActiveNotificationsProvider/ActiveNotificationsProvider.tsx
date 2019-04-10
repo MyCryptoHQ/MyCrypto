@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import ActiveNotificationsServiceBase from 'v2/services/ActiveNotifications/ActiveNotifications';
+import * as service from 'v2/services/ActiveNotifications/ActiveNotifications';
 import { ExtendedActiveNotifications } from 'v2/services/ActiveNotifications';
 
 export interface ProviderState {
@@ -14,24 +14,22 @@ export interface ProviderState {
 
 export const ActiveNotificationsContext = createContext({} as ProviderState);
 
-const ActiveNotifications = new ActiveNotificationsServiceBase();
-
 export class ActiveNotificationsProvider extends Component {
   public readonly state: ProviderState = {
-    activeNotifications: ActiveNotifications.readAllActiveNotifications() || [],
+    activeNotifications: service.readAllActiveNotifications() || [],
     createActiveNotifications: (activeNotificationsData: ExtendedActiveNotifications) => {
-      ActiveNotifications.createActiveNotifications(activeNotificationsData);
+      service.createActiveNotifications(activeNotificationsData);
       this.getActiveNotifications();
     },
     deleteActiveNotifications: (uuid: string) => {
-      ActiveNotifications.deleteActiveNotifications(uuid);
+      service.deleteActiveNotifications(uuid);
       this.getActiveNotifications();
     },
     updateActiveNotifications: (
       uuid: string,
       activeNotificationsData: ExtendedActiveNotifications
     ) => {
-      ActiveNotifications.updateActiveNotifications(uuid, activeNotificationsData);
+      service.updateActiveNotifications(uuid, activeNotificationsData);
       this.getActiveNotifications();
     }
   };
@@ -47,7 +45,7 @@ export class ActiveNotificationsProvider extends Component {
 
   private getActiveNotifications = () => {
     const activeNotifications: ExtendedActiveNotifications[] =
-      ActiveNotifications.readAllActiveNotifications() || [];
+      service.readAllActiveNotifications() || [];
     this.setState({ activeNotifications });
   };
 }

@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import CurrentsServiceBase from 'v2/services/Currents/Currents';
+import * as service from 'v2/services/Currents/Currents';
 import { Currents } from 'v2/services/Currents';
 
 interface ProviderState {
@@ -9,13 +9,11 @@ interface ProviderState {
 
 export const CurrentsContext = createContext({} as ProviderState);
 
-const Currents = new CurrentsServiceBase();
-
 export class CurrentsProvider extends Component {
   public readonly state: ProviderState = {
-    currents: Currents.readCurrents() || [],
+    currents: service.readCurrents() || [],
     updateCurrents: (currentsData: Currents) => {
-      Currents.updateCurrents(currentsData);
+      service.updateCurrents(currentsData);
       this.getCurrents();
     }
   };
@@ -26,7 +24,7 @@ export class CurrentsProvider extends Component {
   }
 
   private getCurrents = () => {
-    const currents: Currents = Currents.readCurrents() || [];
+    const currents: Currents = service.readCurrents() || [];
     this.setState({ currents });
   };
 }
