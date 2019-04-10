@@ -31,6 +31,11 @@ const PrimaryButton = styled(Button)`
 
 const FormWrapper = styled.form`
   margin-top: 14px;
+  max-width: 320px;
+
+  @media (min-width: 700px) {
+    max-width: 420px;
+  }
 `;
 
 const BottomActions = styled.div`

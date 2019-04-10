@@ -40,8 +40,8 @@ const CustomInput = styled.input`
 
 const ErrorMessage = styled.div`
   width: 100%;
-  text-align: left;
   color: ${PASTEL_RED};
+  text-align: justify;
 `;
 
 interface Props {

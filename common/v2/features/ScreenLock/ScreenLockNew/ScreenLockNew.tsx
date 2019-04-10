@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate, { translateRaw } from 'translations';
@@ -34,6 +34,12 @@ const FormWrapper = styled.form`
   margin-top: 35px;
   max-width: 420px;
 `;
+
+const BottomActions = styled.div`
+  margin-top: 30px;
+  line-height: 2.5;
+`;
+
 type Props = RouteComponentProps<{}>;
 
 export class ScreenLockNew extends Component<Props> {
@@ -91,6 +97,13 @@ export class ScreenLockNew extends Component<Props> {
     this.props.history.goBack();
   };
 
+  public trackRecomendationClick = () => {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.SCREEN_LOCK,
+      'Why do we recommend link clicked'
+    );
+  };
+
   public render() {
     return (
       <Layout centered={true}>
@@ -127,6 +140,14 @@ export class ScreenLockNew extends Component<Props> {
                     {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
                   </ActionButton>
                 </FormWrapper>
+                <BottomActions>
+                  <div>
+                    {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
+                    <Link onClick={this.trackRecomendationClick} to="/dashboard">
+                      {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
+                    </Link>
+                  </div>
+                </BottomActions>
               </ContentWrapper>
             </ExtendedContentPanel>
           )}
