@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="111" height="103" viewBox="0 0 111 103">
+    <g fill="none" fill-rule="evenodd">
+        <g fill-rule="nonzero">
+            <path fill="#DFDFE3" d="M69.683 100.87H41.317l2.767-13.492h22.832zM1.85 1.285h107.3v86.093H1.85z"/>
+            <path fill="#1EB8E7" stroke="#005268" stroke-width="1.492" d="M3.083 2.57H107.3v68.746H3.083z"/>
+            <ellipse cx="55.5" cy="78.383" fill="#005268" rx="3.083" ry="3.212"/>
+            <path fill="#005268" d="M111 89.272V0H0v89.272h41.972L39.89 99.19h-3.47v3.607h38.157V99.19H71.11l-2.08-9.92H111zM43.36 99.19l2.08-9.92h20.12l2.08 9.92H43.36zM3.468 3.607h13.354v57.486h77.18V3.607h13.528v82.058H3.47V3.607z"/>
+            <path fill="#A682FF" stroke="#005268" stroke-width="3.492" d="M2 2h107v69H2z"/>
+            <path fill="#005268" d="M39.467 76.456h3.7v3.855h-3.7zM67.833 76.456h3.7v3.855h-3.7z"/>
+        </g>
+        <path stroke="#FFF" stroke-width="1.119" d="M10 18.28h25.9v16.062H10zM43 18.28h25.9v16.062H43zM76 18.28h25.9v16.062H76zM10 40h25.9v16.062H10zM43 40h25.9v16.062H43zM76 40h25.9v16.062H76zM22.95 8h79v4.497h-79zM10 62h92v3H10zM10 8h7.4v4.497H10z"/>
+    </g>
+</svg>

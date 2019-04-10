@@ -2,8 +2,8 @@ import DownloadApp from './DownloadApp';
 
 export default [
   {
-    name: 'Download App',
-    path: '/download-app',
+    name: 'Download Desktop App',
+    path: '/download-desktop-app',
     exact: true,
     component: DownloadApp
   }

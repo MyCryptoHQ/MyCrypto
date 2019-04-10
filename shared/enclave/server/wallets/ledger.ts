@@ -1,7 +1,7 @@
 import EthTx from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
 import LedgerTransport from '@ledgerhq/hw-transport';
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
+import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-noevents';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
 import { WalletLib } from 'shared/enclave/types';
