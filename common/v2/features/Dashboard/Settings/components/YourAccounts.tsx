@@ -57,7 +57,7 @@ const accountTable = {
 
 export default function YourAccounts({ toggleFlipped }: Props) {
   return (
-    <DashboardPanel heading="Your Accounts" className="AddressBook">
+    <DashboardPanel heading="Your Accounts">
       <CollapsibleTable breakpoint={450} {...accountTable} />
       <button onClick={toggleFlipped}>Add Account</button>
     </DashboardPanel>

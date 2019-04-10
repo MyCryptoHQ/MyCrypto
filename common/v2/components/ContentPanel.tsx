@@ -10,7 +10,7 @@ import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 interface Props {
   children: any;
-  className: string;
+  className?: string;
   heading: string;
   icon?: string;
   description?: string;

@@ -45,7 +45,7 @@ export default function AddressBook({
     }
   };
   return (
-    <DashboardPanel heading="Address Book" className="AddressBook">
+    <DashboardPanel heading="Address Book">
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
       <button onClick={toggleFlipped}>Add Address</button>
     </DashboardPanel>

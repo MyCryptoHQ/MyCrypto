@@ -2,6 +2,7 @@ import Dashboard from './Dashboard';
 import { RequestAssets } from './RequestAssets';
 import { SendAssets } from './SendAssets';
 import { Settings } from './Settings';
+import { Import } from './Settings/Import';
 
 export default [
   {
@@ -27,5 +28,11 @@ export default [
     path: '/dashboard/settings',
     exact: true,
     component: Settings
+  },
+  {
+    name: 'Import',
+    path: '/dashboard/settings/import',
+    exact: true,
+    component: Import
   }
 ];

@@ -1,23 +1,34 @@
 import React from 'react';
 import { Heading } from '@mycrypto/ui';
+import styled from 'styled-components';
 
 import { FlippablePanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import { AddAccount, AddressBook, AddToAddressBook, GeneralSettings } from './components';
-import './Settings.scss';
 
 // Legacy
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { AccountList } from '../components';
 import { AccountContext, AddressMetadataContext } from 'v2/providers';
 
+const SettingsHeading = styled(Heading)`
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+  color: #163150;
+`;
+
+const SettingsHeadingIcon = styled.img`
+  margin-right: 12px;
+`;
+
 export default function Settings() {
   return (
     <Layout className="Settings">
-      <Heading className="Settings-heading">
-        <img src={settingsIcon} alt="Settings" className="Settings-heading-icon" />
+      <SettingsHeading>
+        <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
         Settings
-      </Heading>
+      </SettingsHeading>
       <AccountContext.Consumer>
         {({ accounts, deleteAccount }) => (
           <FlippablePanel>
