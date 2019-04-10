@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import ContractOptionsServiceBase from 'v2/services/ContractOptions/ContractOptions';
+import * as service from 'v2/services/ContractOptions/ContractOptions';
 import { ContractOptions, ExtendedContractOptions } from 'v2/services/ContractOptions';
 
 export interface ProviderState {
@@ -12,24 +12,22 @@ export interface ProviderState {
 
 export const ContractOptionsContext = createContext({} as ProviderState);
 
-const ContractOptions = new ContractOptionsServiceBase();
-
 export class ContractOptionsProvider extends Component {
   public readonly state: ProviderState = {
-    contractOptions: ContractOptions.readAllContractOptions() || [],
+    contractOptions: service.readAllContractOptions() || [],
     createContractOptions: (contractOptionsData: ExtendedContractOptions) => {
-      ContractOptions.createContractOptions(contractOptionsData);
+      service.createContractOptions(contractOptionsData);
       this.getContractOptions();
     },
     readContractOptions: (uuid: string) => {
-      return ContractOptions.readContractOptions(uuid);
+      return service.readContractOptions(uuid);
     },
     deleteContractOptions: (uuid: string) => {
-      ContractOptions.deleteContractOptions(uuid);
+      service.deleteContractOptions(uuid);
       this.getContractOptions();
     },
     updateContractOptions: (uuid: string, contractOptionsData: ExtendedContractOptions) => {
-      ContractOptions.updateContractOptions(uuid, contractOptionsData);
+      service.updateContractOptions(uuid, contractOptionsData);
       this.getContractOptions();
     }
   };
@@ -44,8 +42,7 @@ export class ContractOptionsProvider extends Component {
   }
 
   private getContractOptions = () => {
-    const contractOptions: ExtendedContractOptions[] =
-      ContractOptions.readAllContractOptions() || [];
+    const contractOptions: ExtendedContractOptions[] = service.readAllContractOptions() || [];
     this.setState({ contractOptions });
   };
 }

@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import DerivationPathOptionsServiceBase from 'v2/services/DerivationPathOptions/DerivationPathOptions';
+import * as service from 'v2/services/DerivationPathOptions/DerivationPathOptions';
 import {
   ExtendedDerivationPathOptions,
   DerivationPathOptions
@@ -18,27 +18,25 @@ export interface ProviderState {
 
 export const DerivationPathOptionsContext = createContext({} as ProviderState);
 
-const DerivationPathOptions = new DerivationPathOptionsServiceBase();
-
 export class DerivationPathOptionsProvider extends Component {
   public readonly state: ProviderState = {
-    derivationPathOptions: DerivationPathOptions.readAllDerivationPathOptions() || [],
+    derivationPathOptions: service.readAllDerivationPathOptions() || [],
     createDerivationPathOptions: (derivationPathOptionsData: ExtendedDerivationPathOptions) => {
-      DerivationPathOptions.createDerivationPathOptions(derivationPathOptionsData);
+      service.createDerivationPathOptions(derivationPathOptionsData);
       this.getDerivationPathOptions();
     },
     readDerivationPathOptions: (uuid: string): DerivationPathOptions => {
-      return DerivationPathOptions.readDerivationPathOptions(uuid);
+      return service.readDerivationPathOptions(uuid);
     },
     deleteDerivationPathOptions: (uuid: string) => {
-      DerivationPathOptions.deleteDerivationPathOptions(uuid);
+      service.deleteDerivationPathOptions(uuid);
       this.getDerivationPathOptions();
     },
     updateDerivationPathOptions: (
       uuid: string,
       derivationPathOptionsData: ExtendedDerivationPathOptions
     ) => {
-      DerivationPathOptions.updateDerivationPathOptions(uuid, derivationPathOptionsData);
+      service.updateDerivationPathOptions(uuid, derivationPathOptionsData);
       this.getDerivationPathOptions();
     }
   };
@@ -54,7 +52,7 @@ export class DerivationPathOptionsProvider extends Component {
 
   private getDerivationPathOptions = () => {
     const derivationPathOptions: ExtendedDerivationPathOptions[] =
-      DerivationPathOptions.readAllDerivationPathOptions() || [];
+      service.readAllDerivationPathOptions() || [];
     this.setState({ derivationPathOptions });
   };
 }

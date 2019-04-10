@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import FiatCurrencyServiceBase from 'v2/services/FiatCurrency/FiatCurrency';
+import * as service from 'v2/services/FiatCurrency/FiatCurrency';
 import { FiatCurrency, ExtendedFiatCurrency } from 'v2/services/FiatCurrency';
 
 interface ProviderState {
@@ -11,21 +11,19 @@ interface ProviderState {
 
 export const FiatCurrencyContext = createContext({} as ProviderState);
 
-const FiatCurrency = new FiatCurrencyServiceBase();
-
 export class FiatCurrencyProvider extends Component {
   public readonly state: ProviderState = {
-    fiatCurrencies: FiatCurrency.readFiatCurrencys() || [],
+    fiatCurrencies: service.readFiatCurrencys() || [],
     createFiatCurrency: (fiatCurrencyData: FiatCurrency) => {
-      FiatCurrency.createFiatCurrency(fiatCurrencyData);
+      service.createFiatCurrency(fiatCurrencyData);
       this.getFiatCurrencys();
     },
     deleteFiatCurrency: (uuid: string) => {
-      FiatCurrency.deleteFiatCurrency(uuid);
+      service.deleteFiatCurrency(uuid);
       this.getFiatCurrencys();
     },
     updateFiatCurrency: (uuid: string, fiatCurrencyData: FiatCurrency) => {
-      FiatCurrency.updateFiatCurrency(uuid, fiatCurrencyData);
+      service.updateFiatCurrency(uuid, fiatCurrencyData);
       this.getFiatCurrencys();
     }
   };
@@ -38,7 +36,7 @@ export class FiatCurrencyProvider extends Component {
   }
 
   private getFiatCurrencys = () => {
-    const fiatCurrencies: ExtendedFiatCurrency[] = FiatCurrency.readFiatCurrencys() || [];
+    const fiatCurrencies: ExtendedFiatCurrency[] = service.readFiatCurrencys() || [];
     this.setState({ fiatCurrencies });
   };
 }

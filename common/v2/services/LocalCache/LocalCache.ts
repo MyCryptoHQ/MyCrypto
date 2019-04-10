@@ -1,3 +1,4 @@
+import * as utils from 'v2/libs';
 import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_INIT_DEV, CACHE_KEY, LocalCache } from './constants';
 import { isDevelopment } from 'v2/utils';
@@ -7,11 +8,13 @@ import { ACCOUNTTYPES } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 
+// Initialization
+
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
   if (!check || check === '[]' || check === '{}') {
-    if (!isDevelopment) {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(CACHE_INIT_DEV));
+    if (isDevelopment) {
+      setCache(CACHE_INIT_DEV);
     } else {
       hardRefreshCache();
 
@@ -33,30 +36,27 @@ export const initializeCache = () => {
 };
 
 export const hardRefreshCache = () => {
-  localStorage.setItem(CACHE_KEY, JSON.stringify(CACHE_INIT));
+  setCache(CACHE_INIT);
 };
 
 export const initGlobalSettings = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
     darkMode: false
   };
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initAccountTypes = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const accountTypes: Record<string, types.AccountType> = ACCOUNTTYPES;
   newStorage.accountTypes = accountTypes;
-  Object.keys(accountTypes).map((en: string) => {
-    newStorage.allAccountTypes.push(en);
-  });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initNodeOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const nodeData: Record<string, types.NodeOptions[]> = NODE_CONFIGS;
   Object.keys(nodeData).map(en => {
     const networkNodes = nodeData[en];
@@ -68,15 +68,14 @@ export const initNodeOptions = () => {
         url: entry.url
       };
       newStorage.nodeOptions[newNode.name] = newNode;
-      newStorage.allNodeOptions.push(newNode.name);
       newStorage.networkOptions[en].nodes.push(newNode.name);
     });
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initNetworkOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const length: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
   length.map((en: any) => {
     const newContracts: string[] = [];
@@ -103,43 +102,126 @@ export const initNetworkOptions = () => {
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
     newStorage.networkOptions[en] = newLocalNetwork;
-    newStorage.allNetworkOptions.push(en);
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initContractOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   const contracts = ContractsData();
   Object.keys(contracts).map(en => {
     newStorage.contractOptions[en] = contracts[en];
-    newStorage.allContractOptions.push(en);
     newStorage.networkOptions[contracts[en].network].contracts.push(en);
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initFiatCurrencies = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   Fiats.map(en => {
     newStorage.fiatCurrencies[en.code] = {
       code: en.code,
       name: en.name
     };
-    newStorage.allFiatCurrencies.push(en.code);
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
 };
 
 export const initDerivationPathOptions = () => {
-  const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+  const newStorage = getCacheRaw();
   DPaths.map(en => {
     newStorage.derivationPathOptions[en.label] = {
       name: en.label,
       derivationPath: en.value,
       active: false
     };
-    newStorage.allDerivationPathOptions.push(en.label);
   });
-  localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
+  setCache(newStorage);
+};
+
+// Low level operations
+
+const getCacheRaw = (): LocalCache => {
+  const text = localStorage.getItem(CACHE_KEY);
+  return text ? JSON.parse(text) : CACHE_INIT;
+};
+
+export const getCache = (): LocalCache => {
+  initializeCache();
+  return getCacheRaw();
+};
+
+export const setCache = (newCache: LocalCache) => {
+  localStorage.setItem(CACHE_KEY, JSON.stringify(newCache));
+};
+
+// Settings operations
+
+type SettingsKey = 'currents' | 'globalSettings';
+
+export const readSettings = <K extends SettingsKey>(key: K) => () => {
+  return getCache()[key];
+};
+
+export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCache[K]) => {
+  const newCache = getCache();
+  newCache[key] = value;
+
+  setCache(newCache);
+};
+
+// Collection operations
+
+type CollectionKey =
+  | 'accounts'
+  | 'accountTypes'
+  | 'activeNotifications'
+  | 'addressMetadata'
+  | 'assetOptions'
+  | 'assets'
+  | 'contractOptions'
+  | 'derivationPathOptions'
+  | 'fiatCurrencies'
+  | 'localSettings'
+  | 'networkOptions'
+  | 'nodeOptions'
+  | 'transactionHistories'
+  | 'transactions';
+
+export const create = <K extends CollectionKey>(key: K) => (
+  value: LocalCache[K][keyof LocalCache[K]]
+) => {
+  const uuid = utils.generateUUID();
+
+  const newCache = getCache();
+  newCache[key][uuid] = value;
+
+  setCache(newCache);
+};
+
+export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {
+  return getCache()[key][uuid];
+};
+
+export const update = <K extends CollectionKey>(key: K) => (
+  uuid: string,
+  value: LocalCache[K][keyof LocalCache[K]]
+) => {
+  const newCache = getCache();
+  newCache[key][uuid] = value;
+
+  setCache(newCache);
+};
+
+export const destroy = <K extends CollectionKey>(key: K) => (uuid: string) => {
+  const parsedLocalCache = getCache();
+  delete parsedLocalCache[key][uuid];
+  const newCache = parsedLocalCache;
+  setCache(newCache);
+};
+
+export const readAll = <K extends CollectionKey>(key: K) => () => {
+  const section: LocalCache[K] = getCache()[key];
+  const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
+  return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
 };

@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import AccountServiceBase from 'v2/services/Account/Account';
+import * as service from 'v2/services/Account/Account';
 import { ExtendedAccount } from 'v2/services/Account';
 
 export interface ProviderState {
@@ -11,21 +11,19 @@ export interface ProviderState {
 
 export const AccountContext = createContext({} as ProviderState);
 
-const Account = new AccountServiceBase();
-
 export class AccountProvider extends Component {
   public readonly state: ProviderState = {
-    accounts: Account.readAccounts() || [],
+    accounts: service.readAccounts() || [],
     createAccount: (accountData: ExtendedAccount) => {
-      Account.createAccount(accountData);
+      service.createAccount(accountData);
       this.getAccounts();
     },
     deleteAccount: (uuid: string) => {
-      Account.deleteAccount(uuid);
+      service.deleteAccount(uuid);
       this.getAccounts();
     },
     updateAccount: (uuid: string, accountData: ExtendedAccount) => {
-      Account.updateAccount(uuid, accountData);
+      service.updateAccount(uuid, accountData);
       this.getAccounts();
     }
   };
@@ -36,7 +34,7 @@ export class AccountProvider extends Component {
   }
 
   private getAccounts = () => {
-    const accounts: ExtendedAccount[] = Account.readAccounts() || [];
+    const accounts: ExtendedAccount[] = service.readAccounts() || [];
     this.setState({ accounts });
   };
 }
