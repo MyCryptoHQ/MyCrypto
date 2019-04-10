@@ -334,6 +334,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'thundercore.com',
       url: 'https://mainnet-rpc.thundercore.com'
     }
+  ],
+
+  METADIUM: [
+    {
+      name: makeNodeName('METADIUM', 'metadium'),
+      type: 'rpc',
+      service: 'api.metadium.com',
+      url: 'https://api.metadium.com/prod'
+    }
   ]
 };
 

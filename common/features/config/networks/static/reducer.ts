@@ -37,7 +37,8 @@ import {
   REOSC_DEFAULT,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
-  THUNDERCORE_DEFAULT
+  THUNDERCORE_DEFAULT,
+  METADIUM_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -849,6 +850,29 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 1,
       max: 60,
       initial: 1
+    }
+  },
+  METADIUM: {
+    id: 'METADIUM',
+    name: 'Metadium',
+    unit: 'META',
+    chainId: 11,
+    isCustom: false,
+    color: '#ffc000',
+    blockExplorer: makeExplorer({
+      name: 'Metadium Explorer',
+      origin: 'https://explorer.metadium.com/'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [InsecureWalletName.MNEMONIC_PHRASE]: METADIUM_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 80,
+      max: 80,
+      initial: 80
     }
   }
 };
