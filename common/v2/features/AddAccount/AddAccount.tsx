@@ -81,6 +81,7 @@ interface State {
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
   hasSelectedNetwork: boolean;
+  seed: string;
 }
 
 interface BaseWalletInfo {
@@ -220,7 +221,8 @@ const WalletDecrypt = withRouter<Props>(
       selectedWalletKey: null,
       isInsecureOverridden: false,
       value: null,
-      hasSelectedNetwork: false
+      hasSelectedNetwork: false,
+      seed: ''
     };
 
     public exists: boolean = true;
@@ -290,7 +292,7 @@ const WalletDecrypt = withRouter<Props>(
           <div className="Panel-content">
             <div className="Panel-title-connectDevice">
               {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
-                translate('UNLOCK_WALLET', {
+                translateRaw(this.state.seed ? 'DECRYPT_PROMPT_SELECT_ADDRESS' : 'UNLOCK_WALLET', {
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
             </div>
@@ -322,6 +324,8 @@ const WalletDecrypt = withRouter<Props>(
                       ? this.props.isPasswordPending
                       : undefined
                   }
+                  seed={this.state.seed}
+                  onSeed={this.handleSeed}
                 />
               </Errorable>
             </section>
@@ -575,6 +579,8 @@ const WalletDecrypt = withRouter<Props>(
         this.setState({ isInsecureOverridden: true });
       }
     };
+
+    private handleSeed = (seed: string) => this.setState({ seed });
   }
 );
 

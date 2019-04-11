@@ -2,7 +2,7 @@ import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
 
-import translate, { translateRaw } from 'translations';
+import translate from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
@@ -91,8 +91,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <h2>{translateRaw('DECRYPT_PROMPT_SELECT_ADDRESS')}</h2>
-
         <div className="DWModal">
           <form
             className="DWModal-path form-group-sm flex-wrapper"

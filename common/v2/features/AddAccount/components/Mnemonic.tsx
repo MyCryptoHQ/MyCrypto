@@ -12,6 +12,8 @@ import { Input } from 'components/ui';
 import DeterministicWallets from './DeterministicWallets';
 
 interface OwnProps {
+  seed: string;
+  onSeed(seed: string): void;
   onUnlock(param: any): void;
 }
 
@@ -26,7 +28,6 @@ interface State {
   phrase: string;
   formattedPhrase: string;
   pass: string;
-  seed: string;
   dPath: DPath;
 }
 
@@ -35,7 +36,6 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     phrase: '',
     formattedPhrase: '',
     pass: '',
-    seed: '',
     dPath: this.props.dPath
   };
 
@@ -46,7 +46,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
   }
 
   public render() {
-    const { phrase, formattedPhrase, seed, dPath, pass } = this.state;
+    const { phrase, formattedPhrase, dPath, pass } = this.state;
+    const { seed } = this.props;
     const isValidMnemonic = validateMnemonic(formattedPhrase);
 
     if (seed) {
@@ -123,14 +124,14 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
     try {
       const seed = mnemonicToSeed(formattedPhrase, pass).toString('hex');
-      this.setState({ seed });
+      this.props.onSeed(seed);
     } catch (err) {
       console.log(err);
     }
   };
 
   private handleCancel = () => {
-    this.setState({ seed: '' });
+    this.props.onSeed('');
   };
 
   private handlePathChange = (dPath: DPath) => {
@@ -148,11 +149,12 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     });
 
     this.setState({
-      seed: '',
       pass: '',
       phrase: '',
       formattedPhrase: ''
     });
+
+    this.props.onSeed('');
   };
 }
 
