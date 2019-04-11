@@ -73,7 +73,7 @@ export class ScreenLockForgotPassword extends Component<Props> {
               {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_IMPORT')}
             </ActionButton>
             <ActionButton onClick={this.handleStartOverClick}>
-              {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_START_OVER')}t
+              {translate('SCREEN_LOCK_FORGOT_PASSWORD_ADDITIONAL_START_OVER')}
             </ActionButton>
           </FormWrapper>
         </ExtendedContentPanel>

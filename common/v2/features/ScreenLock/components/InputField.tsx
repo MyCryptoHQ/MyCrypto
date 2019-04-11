@@ -53,9 +53,9 @@ interface Props {
   validate?(): void | undefined;
 }
 
-let validatorTimeout: any = null;
-
 export class InputField extends Component<Props> {
+  private validatorTimeout: any = null;
+
   public render() {
     const { value, label, onChange, inputError, type } = this.props;
     return (
@@ -75,10 +75,10 @@ export class InputField extends Component<Props> {
 
   public handleKeyUp = () => {
     const { validate } = this.props;
-    clearTimeout(validatorTimeout);
+    clearTimeout(this.validatorTimeout);
 
     // Call validation function 500ms after the user stops typing
-    validatorTimeout = setTimeout(() => {
+    this.validatorTimeout = setTimeout(() => {
       if (validate) {
         validate();
       }
