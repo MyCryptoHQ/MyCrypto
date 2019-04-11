@@ -349,6 +349,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'node2.webchain.network',
       url: 'https://node2.webchain.network'
     }
+  ],
+
+  METADIUM: [
+    {
+      name: makeNodeName('METADIUM', 'metadium'),
+      type: 'rpc',
+      service: 'api.metadium.com',
+      url: 'https://api.metadium.com/prod'
+    }
   ]
 };
 
