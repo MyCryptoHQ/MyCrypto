@@ -20,7 +20,7 @@ export interface LocalCache {
   addressMetadata: Record<string, serviceTypes.AddressMetadata>;
   activeNotifications: Record<string, serviceTypes.ActiveNotifications>;
   fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
-  password?: string;
+  screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
 }
 
 export const CACHE_INIT_DEV: LocalCache = {

@@ -155,9 +155,25 @@ export const setCache = (newCache: LocalCache) => {
   localStorage.setItem(CACHE_KEY, JSON.stringify(newCache));
 };
 
+export const destroyCache = () => {
+  localStorage.removeItem(CACHE_KEY);
+};
+
+export const getEncryptedCache = (): string => {
+  return localStorage.getItem('ENCRYPTED_CACHE') || '';
+};
+
+export const setEncryptedCache = (newEncryptedCache: string) => {
+  localStorage.setItem('ENCRYPTED_CACHE', newEncryptedCache);
+};
+
+export const destroyEncryptedCache = () => {
+  localStorage.removeItem('ENCRYPTED_CACHE');
+};
+
 // Settings operations
 
-type SettingsKey = 'currents' | 'globalSettings';
+type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings';
 
 export const readSettings = <K extends SettingsKey>(key: K) => () => {
   return getCache()[key];

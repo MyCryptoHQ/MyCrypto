@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { StorageService } from 'v2/services';
-import { LocalCache } from 'v2/services/LocalCache';
 import CryptoJS, { SHA256, AES } from 'crypto-js';
-import { translateRaw } from 'translations';
 
+import * as localCacheService from 'v2/services/LocalCache/LocalCache';
+import * as screenLockService from 'v2/services/ScreenLockSettings/ScreenLockSettings';
+import { translateRaw } from 'translations';
 import { ScreenLockLocking } from 'v2/features/ScreenLock';
 
 interface State {
@@ -43,19 +43,15 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
       }
 
       // Store the password into the local cache
-      const parsedLocalCache: LocalCache = JSON.parse(
-        localStorage.getItem('MyCryptoCache') || '{}'
-      );
-      parsedLocalCache.password = passwordHash;
-      localStorage.setItem('MyCryptoCache', JSON.stringify(parsedLocalCache));
+      screenLockService.updateScreenLockSettings({ password: passwordHash });
 
       // Encrypt the local cache
       const encryptedData = await AES.encrypt(
-        JSON.stringify(StorageService.instance.getEntry('MyCryptoCache')),
+        JSON.stringify(localCacheService.getCache()),
         passwordHash
       ).toString();
-      StorageService.instance.setEntry('ENCRYPTED_CACHE', encryptedData);
-      window.localStorage.removeItem('MyCryptoCache');
+      localCacheService.setEncryptedCache(encryptedData);
+      localCacheService.destroyCache();
       this.lockScreen();
     } catch (error) {
       console.error(error);
@@ -67,11 +63,12 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
       const passwordHash = SHA256(password).toString();
       // Decrypt the data and store it to the MyCryptoCache
       const decryptedData = await AES.decrypt(
-        StorageService.instance.getEntry('ENCRYPTED_CACHE'),
+        localCacheService.getEncryptedCache(),
         passwordHash
       ).toString(CryptoJS.enc.Utf8);
-      StorageService.instance.setEntry('MyCryptoCache', JSON.parse(decryptedData));
-      window.localStorage.removeItem('ENCRYPTED_CACHE');
+
+      localCacheService.setCache(JSON.parse(decryptedData));
+      localCacheService.destroyEncryptedCache();
 
       // Navigate to the dashboard and reset inactivity timer
       this.setState({ locked: false });
@@ -80,13 +77,14 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       return true;
     } catch (error) {
+      console.error('pp', error);
       return false;
     }
   };
 
   public componentDidMount() {
     //Determine if screen is locked and set "locked" state accordingly
-    if (StorageService.instance.getEntry('ENCRYPTED_CACHE')) {
+    if (localCacheService.getEncryptedCache()) {
       this.lockScreen();
     }
     this.trackInactivity();
@@ -138,13 +136,12 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
   public handleCountdownEnded = () => {
     /*Check if user has already set up the password. In that case encrypt the cache and navigate to "/screen-lock/locked".
       If user has not setup the password yet, just navigate to "/screen-lock/new. */
-
-    const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '{}');
+    const screenLockSettings = screenLockService.readScreenLockSettings();
     clearInterval(countDownTimer);
 
-    if (parsedLocalCache.password) {
+    if (screenLockSettings && screenLockSettings.password) {
       this.setState({ locking: false, locked: true });
-      this.encryptWithPassword(parsedLocalCache.password, true);
+      this.encryptWithPassword(screenLockSettings.password, true);
     } else {
       this.setState({ locking: false, locked: false });
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
