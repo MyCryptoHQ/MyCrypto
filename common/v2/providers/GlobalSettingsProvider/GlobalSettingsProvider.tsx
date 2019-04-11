@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import GlobalSettingsServiceBase from 'v2/services/GlobalSettings/GlobalSettings';
+import * as service from 'v2/services/GlobalSettings/GlobalSettings';
 import { GlobalSettings } from 'v2/services/GlobalSettings';
 
 interface ProviderState {
@@ -10,17 +10,15 @@ interface ProviderState {
 
 export const GlobalSettingsContext = createContext({} as ProviderState);
 
-const GlobalSettings = new GlobalSettingsServiceBase();
-
 export class GlobalSettingsProvider extends Component {
   public readonly state: ProviderState = {
-    globalSettings: GlobalSettings.readGlobalSettings() || [],
+    globalSettings: service.readGlobalSettings() || [],
     updateGlobalSettings: (globalSettingsData: GlobalSettings) => {
-      GlobalSettings.updateGlobalSettings(globalSettingsData);
+      service.updateGlobalSettings(globalSettingsData);
       this.getGlobalSettings();
     },
     readGlobalSettings: () => {
-      GlobalSettings.readGlobalSettings();
+      service.readGlobalSettings();
       this.getGlobalSettings();
     }
   };
@@ -32,7 +30,7 @@ export class GlobalSettingsProvider extends Component {
     );
   }
   private getGlobalSettings = () => {
-    const globalSettings: GlobalSettings = GlobalSettings.readGlobalSettings() || [];
+    const globalSettings: GlobalSettings = service.readGlobalSettings() || [];
     this.setState({ globalSettings });
   };
 }

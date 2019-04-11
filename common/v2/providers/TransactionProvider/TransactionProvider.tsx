@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import TransactionServiceBase from 'v2/services/Transaction/Transaction';
+import * as service from 'v2/services/Transaction/Transaction';
 import { Transaction, ExtendedTransaction } from 'v2/services/Transaction';
 
 export interface ProviderState {
@@ -12,24 +12,22 @@ export interface ProviderState {
 
 export const TransactionContext = createContext({} as ProviderState);
 
-const Transaction = new TransactionServiceBase();
-
 export class TransactionProvider extends Component {
   public readonly state: ProviderState = {
-    transactions: Transaction.readTransactions() || [],
+    transactions: service.readTransactions() || [],
     createTransaction: (transactionData: Transaction) => {
-      Transaction.createTransaction(transactionData);
+      service.createTransaction(transactionData);
       this.getTransactions();
     },
     readTransaction: (uuid: string): Transaction => {
-      return Transaction.readTransaction(uuid);
+      return service.readTransaction(uuid);
     },
     deleteTransaction: (uuid: string) => {
-      Transaction.deleteTransaction(uuid);
+      service.deleteTransaction(uuid);
       this.getTransactions();
     },
     updateTransaction: (uuid: string, transactionData: Transaction) => {
-      Transaction.updateTransaction(uuid, transactionData);
+      service.updateTransaction(uuid, transactionData);
       this.getTransactions();
     }
   };
@@ -40,7 +38,7 @@ export class TransactionProvider extends Component {
   }
 
   private getTransactions = () => {
-    const transactions: ExtendedTransaction[] = Transaction.readTransactions() || [];
+    const transactions: ExtendedTransaction[] = service.readTransactions() || [];
     this.setState({ transactions });
   };
 }

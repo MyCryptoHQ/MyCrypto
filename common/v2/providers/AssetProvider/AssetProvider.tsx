@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import AssetServiceBase from 'v2/services/Asset/Asset';
+import * as service from 'v2/services/Asset/Asset';
 import { Asset, ExtendedAsset } from 'v2/services/Asset';
 
 export interface ProviderState {
@@ -12,24 +12,22 @@ export interface ProviderState {
 
 export const AssetContext = createContext({} as ProviderState);
 
-const Asset = new AssetServiceBase();
-
 export class AssetProvider extends Component {
   public readonly state: ProviderState = {
-    assets: Asset.readAssets() || [],
+    assets: service.readAssets() || [],
     createAsset: (assetData: ExtendedAsset) => {
-      Asset.createAsset(assetData);
+      service.createAsset(assetData);
       this.getAssets();
     },
     readAsset: (uuid: string) => {
-      return Asset.readAsset(uuid);
+      return service.readAsset(uuid);
     },
     deleteAsset: (uuid: string) => {
-      Asset.deleteAsset(uuid);
+      service.deleteAsset(uuid);
       this.getAssets();
     },
     updateAsset: (uuid: string, assetData: ExtendedAsset) => {
-      Asset.updateAsset(uuid, assetData);
+      service.updateAsset(uuid, assetData);
       this.getAssets();
     }
   };
@@ -40,7 +38,7 @@ export class AssetProvider extends Component {
   }
 
   private getAssets = () => {
-    const assets: ExtendedAsset[] = Asset.readAssets() || [];
+    const assets: ExtendedAsset[] = service.readAssets() || [];
     this.setState({ assets });
   };
 }

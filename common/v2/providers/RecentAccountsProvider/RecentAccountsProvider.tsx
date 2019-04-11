@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import RecentAccountsServiceBase from 'v2/services/RecentAccounts/RecentAccounts';
+import * as service from 'v2/services/RecentAccounts/RecentAccounts';
 import { ExtendedRecentAccounts } from 'v2/services/RecentAccounts';
 
 export interface ProviderState {
@@ -10,17 +10,15 @@ export interface ProviderState {
 
 export const RecentAccountsContext = createContext({} as ProviderState);
 
-const RecentAccounts = new RecentAccountsServiceBase();
-
 export class RecentAccountsProvider extends Component {
   public readonly state: ProviderState = {
-    recentAccounts: RecentAccounts.readAllRecentAccounts() || [],
+    recentAccounts: service.readAllRecentAccounts() || [],
     createRecentAccounts: (uuid: string) => {
-      RecentAccounts.createRecentAccounts(uuid);
+      service.createRecentAccounts(uuid);
       this.getRecentAccounts();
     },
     deleteRecentAccounts: (uuid: string) => {
-      RecentAccounts.deleteRecentAccounts(uuid);
+      service.deleteRecentAccounts(uuid);
       this.getRecentAccounts();
     }
   };
@@ -33,7 +31,7 @@ export class RecentAccountsProvider extends Component {
   }
 
   private getRecentAccounts = () => {
-    const recentAccounts: ExtendedRecentAccounts[] = RecentAccounts.readAllRecentAccounts() || [];
+    const recentAccounts: ExtendedRecentAccounts[] = service.readAllRecentAccounts() || [];
     this.setState({ recentAccounts });
   };
 }
