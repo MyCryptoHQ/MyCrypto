@@ -105,7 +105,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
 
   public startLockCountdown = () => {
     //Start the lock screen countdown only if user is on one of the dashboard pages
-    if (!window.location.pathname.includes('/dashboard')) {
+    if (!window.location.href.includes('/dashboard')) {
       return;
     }
     if (this.state.locked || this.state.locking) {
@@ -150,13 +150,19 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
   };
 
   public lockScreen = () => {
-    /* Navigate to /screen-lock/locked everytime the user tries to navigate to one of the dashboard pages */
+    /* Navigate to /screen-lock/locked everytime the user tries to navigate to one of the dashboard pages or to the set new password page*/
     this.setState({ locking: false, locked: true });
     document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
-    this.props.history.push('/screen-lock/locked');
+
+    if (
+      window.location.href.includes('/dashboard') ||
+      window.location.href.includes('/screen-lock/new')
+    ) {
+      this.props.history.push('/screen-lock/locked');
+    }
 
     this.props.history.listen(() => {
-      if (this.state.locked === true && window.location.pathname.includes('/dashboard')) {
+      if (this.state.locked === true && window.location.href.includes('/dashboard')) {
         this.props.history.replace('/screen-lock/locked');
       }
     });
