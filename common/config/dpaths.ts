@@ -163,6 +163,11 @@ export const THUNDERCORE_DEFAULT: DPath = {
   value: "m/44'/1001'/0'/0"
 };
 
+export const WEB_DEFAULT: DPath = {
+  label: 'Default (WEB)',
+  value: "m/44'/227'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -195,7 +200,8 @@ export const DPaths: DPath[] = [
   REOSC_DEFAULT,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
-  THUNDERCORE_DEFAULT
+  THUNDERCORE_DEFAULT,
+  WEB_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT
