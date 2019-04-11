@@ -47,7 +47,9 @@ import { Button, Typography, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
 
-import { NetworkOptionsContext } from 'v2/providers';
+import { NetworkOptionsContext, AccountContext } from 'v2/providers';
+import { Link } from 'react-router-dom';
+import { Account } from 'v2/services/Account/types';
 //import { fieldsReducer } from 'features/transaction/fields/reducer';
 
 interface OwnProps {
@@ -237,7 +239,7 @@ const WalletDecrypt = withRouter<Props>(
       accountData: {
         address: null,
         network: 'Ethereum',
-        label: '',
+        label: 'New Account',
         accountType: null,
         derivationPath: null
       }
@@ -266,6 +268,47 @@ const WalletDecrypt = withRouter<Props>(
       }
 
       return this.WALLETS[selectedWalletKey];
+    }
+
+    public handleCreateAccount = (createAccount: any) => {
+      const { accountData } = this.state;
+      //const network = accountData.network;
+      //const asset = getBaseAsset(network);
+      const newAccount: Account = {
+        ...accountData,
+        assets: '',
+        value: 0,
+        label: 'New Account',
+        localSettings: '',
+        transactionHistory: ''
+      };
+      console.log('handling Create Account');
+      createAccount(newAccount);
+    };
+
+    public handleCompleteFlow() {
+      const { accountData } = this.state;
+      return (
+        <AccountContext.Consumer>
+          {({ createAccount }) => (
+            <div>
+              <Typography>
+                You're trying to add an {accountData.network} address {accountData.address} to your
+                dashboard.{<br />}
+              </Typography>
+              <Button>
+                <Link
+                  to="/dashboard"
+                  color="white"
+                  onClick={() => this.handleCreateAccount(createAccount)}
+                >
+                  {'Confirm address: '}
+                </Link>
+              </Button>
+            </div>
+          )}
+        </AccountContext.Consumer>
+      );
     }
 
     public getDecryptionComponent() {
@@ -540,7 +583,8 @@ const WalletDecrypt = withRouter<Props>(
       const selectedWallet = this.getSelectedWallet();
       const decryptionComponent = this.getDecryptionComponent();
       const selectNetworkComponent = this.selectNetworkComponent();
-
+      const confirmComponent = this.handleCompleteFlow();
+      console.log('state: ' + JSON.stringify(this.state, null, 2));
       let componentToRender: JSX.Element;
 
       if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
@@ -554,6 +598,18 @@ const WalletDecrypt = withRouter<Props>(
               </TransitionGroup>
             </Layout>
           </>
+        );
+      } else if (this.state.hasSelectedNetwork && this.state.hasSelectedAddress) {
+        componentToRender = (
+          <Layout centered={true}>
+            <div className="confirm">
+              <TransitionGroup>
+                <CSSTransition classNames="DecryptContent" timeout={500} key="confirm">
+                  {confirmComponent}
+                </CSSTransition>
+              </TransitionGroup>
+            </div>
+          </Layout>
         );
       } else if (!hidden && decryptionComponent && selectedWallet) {
         componentToRender = (

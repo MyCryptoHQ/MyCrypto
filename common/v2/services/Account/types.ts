@@ -1,10 +1,10 @@
 export interface Account {
-  label: string;
-  address: string;
+  label: string | null;
+  address: string | null;
   network: string;
   localSettings: string;
   assets: string;
-  accountType: string;
+  accountType: string | null;
   value: number;
   transactionHistory: string;
 }
