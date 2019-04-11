@@ -818,9 +818,9 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     contracts: [],
     isTestnet: true,
     dPathFormats: {
-      //[SecureWalletName.TREZOR]: ARTIS_TAU1,
-      //[SecureWalletName.SAFE_T]: ARTIS_TAU1,
-      //[SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
+      [SecureWalletName.TREZOR]: ARTIS_TAU1,
+      [SecureWalletName.SAFE_T]: ARTIS_TAU1,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_LEDGER,
       [InsecureWalletName.MNEMONIC_PHRASE]: ARTIS_TAU1
     },
     gasPriceSettings: {
