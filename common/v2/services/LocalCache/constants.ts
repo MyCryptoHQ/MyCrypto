@@ -1,6 +1,7 @@
 import * as serviceTypes from 'v2/services/types';
 
 export const CACHE_KEY = 'MyCryptoCache';
+export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 
 export interface LocalCache {
   currents: Partial<serviceTypes.Currents>;

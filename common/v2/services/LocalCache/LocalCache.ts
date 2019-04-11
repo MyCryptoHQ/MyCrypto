@@ -1,6 +1,12 @@
 import * as utils from 'v2/libs';
 import * as types from 'v2/services';
-import { CACHE_INIT, CACHE_INIT_DEV, CACHE_KEY, LocalCache } from './constants';
+import {
+  CACHE_INIT,
+  CACHE_INIT_DEV,
+  CACHE_KEY,
+  ENCRYPTED_CACHE_KEY,
+  LocalCache
+} from './constants';
 import { isDevelopment } from 'v2/utils';
 import { DPaths, Fiats } from 'config';
 import { ContractsData } from 'config/cacheData';
@@ -160,15 +166,15 @@ export const destroyCache = () => {
 };
 
 export const getEncryptedCache = (): string => {
-  return localStorage.getItem('ENCRYPTED_CACHE') || '';
+  return localStorage.getItem(ENCRYPTED_CACHE_KEY) || '';
 };
 
 export const setEncryptedCache = (newEncryptedCache: string) => {
-  localStorage.setItem('ENCRYPTED_CACHE', newEncryptedCache);
+  localStorage.setItem(ENCRYPTED_CACHE_KEY, newEncryptedCache);
 };
 
 export const destroyEncryptedCache = () => {
-  localStorage.removeItem('ENCRYPTED_CACHE');
+  localStorage.removeItem(ENCRYPTED_CACHE_KEY);
 };
 
 // Settings operations
