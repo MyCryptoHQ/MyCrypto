@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import NodeOptionsServiceBase from 'v2/services/NodeOptions/NodeOptions';
+import * as service from 'v2/services/NodeOptions/NodeOptions';
 import { NodeOptions, ExtendedNodeOptions } from 'v2/services/NodeOptions';
 
 export interface ProviderState {
@@ -12,24 +12,22 @@ export interface ProviderState {
 
 export const NodeOptionsContext = createContext({} as ProviderState);
 
-const NodeOptions = new NodeOptionsServiceBase();
-
 export class NodeOptionsProvider extends Component {
   public readonly state: ProviderState = {
-    nodeOptions: NodeOptions.readAllNodeOptions() || [],
+    nodeOptions: service.readAllNodeOptions() || [],
     createNodeOptions: (nodeOptionsData: ExtendedNodeOptions) => {
-      NodeOptions.createNodeOptions(nodeOptionsData);
+      service.createNodeOptions(nodeOptionsData);
       this.getNodeOptions();
     },
     readNodeOptions: (uuid: string): NodeOptions => {
-      return NodeOptions.readNodeOptions(uuid);
+      return service.readNodeOptions(uuid);
     },
     deleteNodeOptions: (uuid: string) => {
-      NodeOptions.deleteNodeOptions(uuid);
+      service.deleteNodeOptions(uuid);
       this.getNodeOptions();
     },
     updateNodeOptions: (uuid: string, nodeOptionsData: ExtendedNodeOptions) => {
-      NodeOptions.updateNodeOptions(uuid, nodeOptionsData);
+      service.updateNodeOptions(uuid, nodeOptionsData);
       this.getNodeOptions();
     }
   };
@@ -40,7 +38,7 @@ export class NodeOptionsProvider extends Component {
   }
 
   private getNodeOptions = () => {
-    const nodeOptions: ExtendedNodeOptions[] = NodeOptions.readAllNodeOptions() || [];
+    const nodeOptions: ExtendedNodeOptions[] = service.readAllNodeOptions() || [];
     this.setState({ nodeOptions });
   };
 }
