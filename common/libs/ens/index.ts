@@ -43,7 +43,7 @@ export interface IOwnedDomainRequest extends IBaseDomainRequest {
 }
 
 export interface IRevealDomainRequest extends IBaseDomainRequest {
-  ownerAddress: string;
+  deedOwnerAddress: string;
 }
 
 export type DomainRequest = IOwnedDomainRequest | IRevealDomainRequest | IBaseDomainRequest;
