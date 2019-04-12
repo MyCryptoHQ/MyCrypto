@@ -131,13 +131,11 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
             )}
           </form>
 
-          <div className="DWModal-addresses">
-            <Table
-              head={['#', 'Address', network.unit, 'Token', translateRaw('ACTION_5')]}
-              body={wallets.map(wallet => this.renderWalletRow(wallet))}
-              config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
-            />
-          </div>
+          <Table
+            head={['#', 'Address', network.unit, 'Token', translateRaw('ACTION_5')]}
+            body={wallets.map(wallet => this.renderWalletRow(wallet))}
+            config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
+          />
           <div className="DWModal-addresses-nav">
             <button
               className="DWModal-addresses-nav-btn btn btn-sm btn-default"
