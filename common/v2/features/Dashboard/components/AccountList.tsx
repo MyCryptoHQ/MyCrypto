@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Address, CollapsibleTable, Icon, Network, Typography, Button } from '@mycrypto/ui';
 
 import DashboardPanel from './DashboardPanel';
@@ -15,6 +16,16 @@ interface Props {
 const DeleteButton = styled(Button)`
   align-self: flex-start;
   margin-left: 1em;
+`;
+
+const AddAccountButton = styled(Button)`
+  color: #1eb8e7;
+  font-weight: bold;
+`;
+
+const BottomRow = styled.div`
+  margin-top: 0.875rem;
+  text-align: center;
 `;
 
 export default function AccountList({ accounts, deleteAccount, className = '' }: Props) {
@@ -59,6 +70,11 @@ export default function AccountList({ accounts, deleteAccount, className = '' }:
       className={`AccountList ${className}`}
     >
       <CollapsibleTable breakpoint={450} {...accountTable} />
+      <Link to='/dashboard'>
+        <BottomRow>
+          <AddAccountButton basic>+ Add Account</AddAccountButton>
+        </BottomRow>
+      </Link>
     </DashboardPanel>
   );
 }

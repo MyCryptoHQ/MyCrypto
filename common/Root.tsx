@@ -38,6 +38,7 @@ import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
+import { GlobalSettingsProvider } from 'v2/providers/GlobalSettingsProvider';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -124,18 +125,20 @@ class RootClass extends Component<Props, State> {
               <AccountProvider>
                 <TransactionProvider>
                   <TransactionHistoryProvider>
-                    <Router>
-                      <PageVisitsAnalytics>
-                        {onboardingActive && <OnboardingModal />}
-                        {routes}
-                        <LegacyRoutes />
-                        <LogOutPrompt />
-                        <QrSignerModal />
-                        {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                      </PageVisitsAnalytics>
-                    </Router>
-                    {developmentMode && <DevTools />}
-                    <div id="ModalContainer" />
+                    <GlobalSettingsProvider>
+                      <Router>
+                        <PageVisitsAnalytics>
+                          {onboardingActive && <OnboardingModal />}
+                          {routes}
+                          <LegacyRoutes />
+                          <LogOutPrompt />
+                          <QrSignerModal />
+                          {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                        </PageVisitsAnalytics>
+                      </Router>
+                      {developmentMode && <DevTools />}
+                      <div id="ModalContainer" />
+                    </GlobalSettingsProvider>
                   </TransactionHistoryProvider>
                 </TransactionProvider>
               </AccountProvider>

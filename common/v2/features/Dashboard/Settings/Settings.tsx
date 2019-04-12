@@ -9,7 +9,7 @@ import { AddAccount, AddressBook, AddToAddressBook, GeneralSettings } from './co
 // Legacy
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { AccountList } from '../components';
-import { AccountContext, AddressMetadataContext } from 'v2/providers';
+import { AccountContext, AddressMetadataContext, GlobalSettingsContext } from 'v2/providers';
 
 const SettingsHeading = styled(Heading)`
   display: flex;
@@ -62,7 +62,13 @@ export default function Settings() {
           </FlippablePanel>
         )}
       </AddressMetadataContext.Consumer>
-      <GeneralSettings />
+      <GlobalSettingsContext.Consumer>
+        {({ updateGlobalSettings }) => (
+          <GeneralSettings
+            updateGlobalSettings={updateGlobalSettings}
+          />
+        )}
+      </GlobalSettingsContext.Consumer>
     </Layout>
   );
 }

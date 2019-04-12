@@ -34,7 +34,6 @@ const AddressFieldset = styled.fieldset`
 
 const AddressBookButtons = styled.div`
   button {
-    height: 50px;
 
     &:first-of-type {
       margin-right: 12px;

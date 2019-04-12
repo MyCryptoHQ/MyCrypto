@@ -27,13 +27,20 @@ const SettingsControl = styled.div`
   button {
     margin-left: 15px;
   }
-
-  select {
-    height: 2em;
-  }
 `;
 
-export default function GeneralSettings() {
+const SelectContainer = styled.div`
+  border: 0.125em solid #007896;
+  padding: 0.6rem;
+
+  select {
+    border: none;
+    height: 2em;
+    background: none;
+  }
+`;
+export default function GeneralSettings(props) {
+  const { updateGlobalSettings } = props;
   return (
     <DashboardPanel heading="General Settings">
       <Divider />
@@ -43,11 +50,13 @@ export default function GeneralSettings() {
           <Link to="/dashboard/settings/import">
             <Button secondary={true}>Import</Button>
           </Link>
-          <Button secondary={true}>Export</Button>
+          <Link to="/dashboard/settings/export">
+            <Button secondary={true}>Export</Button>
+          </Link>
         </SettingsControl>
       </SettingsField>
       <SettingsField>
-        <SettingsLabel>Account Settings</SettingsLabel>
+        <SettingsLabel>Paper Wallet</SettingsLabel>
         <SettingsControl>
           <Button secondary={true}>Download</Button>
           <Button secondary={true}>Print</Button>
@@ -56,13 +65,15 @@ export default function GeneralSettings() {
       <SettingsField>
         <SettingsLabel>Inactivity Timer</SettingsLabel>
         <SettingsControl>
-          <select>
-            <option value="1 Minutes">1 Minutes</option>
-            <option value="2 Minutes">2 Minutes</option>
-            <option value="3 Minutes">3 Minutes</option>
-            <option value="4 Minutes">4 Minutes</option>
-            <option value="5 Minutes">5 Minutes</option>
-          </select>
+          <SelectContainer>
+            <select>
+              <option value="1 Minutes">1 Minutes</option>
+              <option value="2 Minutes">2 Minutes</option>
+              <option value="3 Minutes">3 Minutes</option>
+              <option value="4 Minutes">4 Minutes</option>
+              <option value="5 Minutes">5 Minutes</option>
+            </select>
+          </SelectContainer>
         </SettingsControl>
       </SettingsField>
     </DashboardPanel>

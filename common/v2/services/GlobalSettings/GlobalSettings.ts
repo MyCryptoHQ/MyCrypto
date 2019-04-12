@@ -18,7 +18,17 @@ export default class GlobalSettingsServiceBase {
   public readGlobalSettings = (): GlobalSettings => {
     this.init();
     const parsedLocalCache: LocalCache = JSON.parse(localStorage.getItem('MyCryptoCache') || '[]');
-
     return parsedLocalCache.globalSettings;
   };
+
+  public readCache = () => {
+    this.init();
+    const localCache: string = localStorage.getItem('MyCryptoCache') || '[]';
+    return localCache;
+  };
+
+  public importCache = (importedCache: string) => {
+    this.init();
+    localStorage.setItem('MyCryptoCache', importedCache);
+  }
 }

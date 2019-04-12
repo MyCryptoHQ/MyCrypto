@@ -4,7 +4,7 @@ import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ContentPanel } from 'v2/components';
-import { ImportBox } from './components';
+import { ImportBox, ImportSuccess } from './components';
 import { Layout } from 'v2/features';
 
 const Content = styled.div`
@@ -14,12 +14,17 @@ const Content = styled.div`
   text-align: center;
 `;
 
+const CenteredContentPanel = styled(ContentPanel)`
+  width: 35rem;
+`;
+
 export interface PanelProps {
   onBack(): void;
   onNext(): void;
 }
 
-const steps = [ImportBox, ImportBox];
+const steps = [ImportBox, ImportSuccess];
+const headings = ['Import', 'Import Complete'];
 
 export class Import extends React.Component<RouteComponentProps<{}>> {
   public state = { step: 0 };
@@ -32,9 +37,9 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     const Step = steps[step];
     return (
       <Layout centered={true}>
-        <ContentPanel
+        <CenteredContentPanel
           onBack={onBack}
-          heading="Import"
+          heading={headings[step]}
           stepper={{
             current: step + 1,
             total: steps.length
@@ -43,7 +48,7 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
           <Content>
             <Step onNext={this.advanceStep} />
           </Content>
-        </ContentPanel>
+        </CenteredContentPanel>
       </Layout>
     );
   }
