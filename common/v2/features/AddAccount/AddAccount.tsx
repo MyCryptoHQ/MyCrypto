@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -289,14 +290,18 @@ const WalletDecrypt = withRouter<Props>(
               </Typography>
             </Button>
           </div>
-          <div className="Panel-content">
+          <div className={classNames('Panel-content', { 'no-padding': Boolean(this.state.seed) })}>
             <div className="Panel-title-connectDevice">
               {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
                 translateRaw(this.state.seed ? 'DECRYPT_PROMPT_SELECT_ADDRESS' : 'UNLOCK_WALLET', {
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
             </div>
-            <section className="WalletDecrypt-decrypt-form">
+            <section
+              className={classNames('WalletDecrypt-decrypt-form', {
+                'no-margin': Boolean(this.state.seed)
+              })}
+            >
               <Errorable
                 errorMessage={`Oops, looks like ${translateRaw(
                   selectedWallet.lid
