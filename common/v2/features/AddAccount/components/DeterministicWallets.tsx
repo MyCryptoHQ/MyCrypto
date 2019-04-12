@@ -15,6 +15,7 @@ import {
 import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWalletsModal.scss';
+import { truncate } from 'v2/libs';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -274,7 +275,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
           onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
         />
         {label && <label className="DWModal-addresses-table-address-label">{label}</label>}
-        <span className={spanClassName}>{wallet.address}</span>
+        <span className={spanClassName}>{truncate(wallet.address)}</span>
       </>,
       <UnitDisplay
         unit={'ether'}
