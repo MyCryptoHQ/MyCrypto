@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Route, withRouter, RouteComponentProps } from 'react-router';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 
 import { InsecureWalletName } from 'config';
@@ -31,7 +32,7 @@ interface State {
   dPath: DPath;
 }
 
-class MnemonicDecryptClass extends PureComponent<Props, State> {
+class MnemonicDecryptClass extends PureComponent<Props & RouteComponentProps<{}>, State> {
   public state: State = {
     phrase: '',
     formattedPhrase: '',
@@ -50,55 +51,65 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     const { seed } = this.props;
     const isValidMnemonic = validateMnemonic(formattedPhrase);
 
-    if (seed) {
-      return (
-        <DeterministicWallets
-          seed={seed}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
+    return (
+      <>
+        <Route
+          exact={true}
+          path="/add-account"
+          render={() => (
+            <div id="selectedTypeKey">
+              <div className="form-group">
+                <TogglablePassword
+                  value={phrase}
+                  rows={4}
+                  placeholder={translateRaw('X_MNEMONIC')}
+                  isValid={isValidMnemonic}
+                  isTextareaWhenVisible={true}
+                  onChange={this.onMnemonicChange}
+                  onEnter={isValidMnemonic ? this.onDWModalOpen : undefined}
+                />
+              </div>
+              <div className="form-group">
+                <p>{translate('ADD_LABEL_8')}</p>
+                <Input
+                  isValid={true}
+                  showValidAsPlain={true}
+                  value={pass}
+                  onChange={this.onPasswordChange}
+                  placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+                  type="password"
+                />
+              </div>
+              <div className="form-group">
+                <button
+                  style={{ width: '100%' }}
+                  onClick={this.onDWModalOpen}
+                  className="btn btn-primary btn-lg"
+                  disabled={!isValidMnemonic}
+                >
+                  {translate('MNEMONIC_CHOOSE_ADDR')}
+                </button>
+              </div>
+            </div>
+          )}
         />
-      );
-    } else {
-      return (
-        <div id="selectedTypeKey">
-          <div className="form-group">
-            <TogglablePassword
-              value={phrase}
-              rows={4}
-              placeholder={translateRaw('X_MNEMONIC')}
-              isValid={isValidMnemonic}
-              isTextareaWhenVisible={true}
-              onChange={this.onMnemonicChange}
-              onEnter={isValidMnemonic ? this.onDWModalOpen : undefined}
+
+        <Route
+          exact={true}
+          path="/add-account/select-mnemonic-address"
+          render={() => (
+            <DeterministicWallets
+              seed={seed}
+              dPath={dPath}
+              dPaths={this.props.dPaths}
+              onCancel={this.handleCancel}
+              onConfirmAddress={this.handleUnlock}
+              onPathChange={this.handlePathChange}
             />
-          </div>
-          <div className="form-group">
-            <p>{translate('ADD_LABEL_8')}</p>
-            <Input
-              isValid={true}
-              showValidAsPlain={true}
-              value={pass}
-              onChange={this.onPasswordChange}
-              placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-              type="password"
-            />
-          </div>
-          <div className="form-group">
-            <button
-              style={{ width: '100%' }}
-              onClick={this.onDWModalOpen}
-              className="btn btn-primary btn-lg"
-              disabled={!isValidMnemonic}
-            >
-              {translate('MNEMONIC_CHOOSE_ADDR')}
-            </button>
-          </div>
-        </div>
-      );
-    }
+          )}
+        />
+      </>
+    );
   }
 
   public onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -125,6 +136,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     try {
       const seed = mnemonicToSeed(formattedPhrase, pass).toString('hex');
       this.props.onSeed(seed);
+      this.props.history.push('/add-account/select-mnemonic-address');
     } catch (err) {
       console.log(err);
     }
@@ -166,4 +178,4 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export const MnemonicDecrypt = connect(mapStateToProps)(MnemonicDecryptClass);
+export const MnemonicDecrypt = withRouter(connect(mapStateToProps)(MnemonicDecryptClass));
