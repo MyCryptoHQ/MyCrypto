@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel, Button, Icon } from '@mycrypto/ui';
+import { Panel, Button, Icon, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 import semver from 'semver';
 
@@ -54,7 +54,7 @@ const UpdateImg = styled.img`
   margin-bottom: 15px;
 `;
 
-const Header = styled.p`
+const Header = styled(Typography)`
   font-size: 32px;
   font-weight: bold;
   line-height: normal;
@@ -69,10 +69,9 @@ interface DescriptionProps {
 }
 
 // prettier-ignore
-const Description = styled.p<DescriptionProps>`
-  font-size: 18px;
+const Description = styled(Typography)<DescriptionProps>`
+  margin-top: 5px;
   font-weight: normal;
-  line-height: 27px;
   padding: ${props => (props.warning ? '0 30px 20px 30px' : '0 30px')};
   color: ${props => (props.warning ? PASTEL_RED : props.theme.text)};
   ${props => props.noMargin && 'margin: 0;'};
@@ -108,15 +107,8 @@ const SecondaryActionButton = styled(ActionButton)`
   }
 `;
 
-const ReleaseLink = styled.a`
-  font-size: 18px;
+const ReleaseLink = styled(Typography)`
   word-break: break-all;
-  color: ${props => props.theme.link};
-  text-decoration: none;
-
-  :hover {
-    color: ${props => props.theme.linkHover};
-  }
 `;
 
 const WarningIcon = styled(Icon)`
@@ -191,7 +183,7 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
           <img src={closeIcon} alt="Close" />
         </CloseButton>
         <UpdateImg src={updateIcon} />
-        <Header>{translate('APP_UPDATE_TITLE')}</Header>
+        <Header as="h2">{translate('APP_UPDATE_TITLE')}</Header>
         <Description>{translate('APP_UPDATE_BODY')}</Description>
         <ActionsWrapper>
           <SecondaryActionButton secondary={true} onClick={this.onClose}>
@@ -211,13 +203,15 @@ export default class NewAppReleaseModal extends React.PureComponent<{}, State> {
     return (
       <>
         <UpdateImg src={updateImportantIcon} />
-        <Header>{translate('APP_UPDATE_TITLE_CRITICAL')}</Header>
+        <Header as="h2">{translate('APP_UPDATE_TITLE_CRITICAL')}</Header>
         <Description warning={true}>
           <WarningIcon icon="warning" /> {translate('APP_UPDATE_WARNING')}
         </Description>
         <Description noMargin={true}>{translate('APP_UPDATE_BODY_CRITICAL')}</Description>
-        <ReleaseLink href={GITHUB_RELEASE_NOTES_URL} target="_blank" rel="noreferrer">
-          {GITHUB_RELEASE_NOTES_URL}.
+        <ReleaseLink>
+          <a href={GITHUB_RELEASE_NOTES_URL} target="_blank" rel="noreferrer">
+            {GITHUB_RELEASE_NOTES_URL}.
+          </a>
         </ReleaseLink>
         <ActionsWrapper marginTop="41px">
           <ActionButton onClick={this.downloadRelease}>
