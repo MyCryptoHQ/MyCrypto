@@ -1,8 +1,9 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
+import { Table } from '@mycrypto/ui';
 
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
@@ -86,7 +87,7 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { wallets, desiredToken, network, tokens, dPaths, onCancel } = this.props;
+    const { wallets, network, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
 
     return (
@@ -130,31 +131,10 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
           </form>
 
           <div className="DWModal-addresses">
-            <table className="DWModal-addresses-table table table-striped table-hover">
-              <thead>
-                <tr>
-                  <td>#</td>
-                  <td>Address</td>
-                  <td>{network.unit}</td>
-                  <td>
-                    <select
-                      className="DWModal-addresses-table-token"
-                      value={desiredToken}
-                      onChange={this.handleChangeToken}
-                    >
-                      <option value="">-Token-</option>
-                      {tokens.map(t => (
-                        <option key={t.symbol} value={t.symbol}>
-                          {t.symbol}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td>{translate('ACTION_5')}</td>
-                </tr>
-              </thead>
-              <tbody>{wallets.map(wallet => this.renderWalletRow(wallet))}</tbody>
-            </table>
+            <Table
+              head={['#', 'Address', network.unit, 'Token', translateRaw('ACTION_5')]}
+              body={wallets.map(wallet => this.renderWalletRow(wallet))}
+            />
           </div>
           <div className="DWModal-addresses-nav">
             <button
@@ -230,11 +210,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     }
   };
 
-  private handleChangeToken = (ev: React.FormEvent<HTMLSelectElement>) => {
-    this.props.setDesiredToken(ev.currentTarget.value || undefined);
-    this.refreshPage();
-  };
-
   private handleConfirmAddress = () => {
     if (this.state.selectedAddress) {
       this.props.onConfirmAddress(this.state.selectedAddress, this.state.selectedAddrIndex);
@@ -244,10 +219,6 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
   private selectAddress(selectedAddress: string, selectedAddrIndex: number) {
     this.setState({ selectedAddress, selectedAddrIndex });
   }
-
-  private refreshPage = () => {
-    this.setState({ page: this.state.page }, this.getAddresses);
-  };
 
   private nextPage = () => {
     this.setState({ page: this.state.page + 1 }, this.getAddresses);
@@ -289,58 +260,44 @@ class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
     // Get renderable values, but keep 'em short
     const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
 
-    return (
-      <tr
-        key={wallet.address}
-        onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
-      >
-        <td>{wallet.index + 1}</td>
-        <td className="DWModal-addresses-table-address">
-          <input
-            type="radio"
-            name="selectedAddress"
-            checked={selectedAddress === wallet.address}
-            value={wallet.address}
-            readOnly={true}
-          />
-          <div>
-            {label && <label className="DWModal-addresses-table-address-label">{label}</label>}
-            <span className={spanClassName}>{wallet.address}</span>
-          </div>
-        </td>
-        <td>
-          <UnitDisplay
-            unit={'ether'}
-            value={wallet.value}
-            symbol={network.unit}
-            displayShortBalance={true}
-            checkOffline={true}
-          />
-        </td>
-        <td>
-          {desiredToken ? (
-            <UnitDisplay
-              decimal={token ? token.decimal : 0}
-              value={token ? token.value : null}
-              symbol={desiredToken}
-              displayShortBalance={true}
-              checkOffline={true}
-            />
-          ) : (
-            <span className="DWModal-addresses-table-na">N/A</span>
-          )}
-        </td>
-        <td>
-          <a
-            target="_blank"
-            href={blockExplorer.addressUrl(wallet.address)}
-            rel="noopener noreferrer"
-          >
-            <i className="DWModal-addresses-table-more" />
-          </a>
-        </td>
-      </tr>
-    );
+    // tslint:disable:jsx-key
+    return [
+      wallet.index + 1,
+      <>
+        <input
+          type="radio"
+          name="selectedAddress"
+          checked={selectedAddress === wallet.address}
+          value={wallet.address}
+          readOnly={true}
+          onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
+        />
+        {label && <label className="DWModal-addresses-table-address-label">{label}</label>}
+        <span className={spanClassName}>{wallet.address}</span>
+      </>,
+      <UnitDisplay
+        unit={'ether'}
+        value={wallet.value}
+        symbol={network.unit}
+        displayShortBalance={true}
+        checkOffline={true}
+      />,
+      desiredToken ? (
+        <UnitDisplay
+          decimal={token ? token.decimal : 0}
+          value={token ? token.value : null}
+          symbol={desiredToken}
+          displayShortBalance={true}
+          checkOffline={true}
+        />
+      ) : (
+        <span className="DWModal-addresses-table-na">N/A</span>
+      ),
+      <a target="_blank" href={blockExplorer.addressUrl(wallet.address)} rel="noopener noreferrer">
+        <i className="DWModal-addresses-table-more" />
+      </a>
+    ];
+    // tslint:enable:jsx-key
   }
 }
 
