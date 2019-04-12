@@ -21,19 +21,27 @@ interface ISymbol {
   CHF: number;
   BTC: number;
   ETH: number;
+  RUB: number;
+  JPY: number;
+  KRW: number;
+  INR: number;
 }
 interface IFiatSymbols {
   USD: number;
   EUR: number;
   GBP: number;
   CHF: number;
+  RUB: number;
+  JPY: number;
+  KRW: number;
+  INR: number;
 }
 interface ICoinAndTokenSymbols {
   BTC: number;
   ETH: number;
 }
 
-const fiat: TFiatSymbols = ['USD', 'EUR', 'GBP', 'CHF'];
+const fiat: TFiatSymbols = ['USD', 'EUR', 'GBP', 'CHF', 'RUB', 'JPY', 'KRW', 'INR'];
 const coinAndToken: TCoinAndTokenSymbols = ['BTC', 'ETH'];
 export const rateSymbols: IRateSymbols = {
   symbols: {
@@ -107,6 +115,10 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
             EUR: rates.EUR,
             GBP: rates.GBP,
             CHF: rates.CHF,
+            RUB: rates.RUB,
+            JPY: rates.JPY,
+            KRW: rates.KRW,
+            INR: rates.INR,
             BTC: rates.BTC,
             ETH: 1
           }
