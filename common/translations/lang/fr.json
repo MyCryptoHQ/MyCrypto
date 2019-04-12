@@ -601,6 +601,7 @@
     "NAME_OWNED_LABELHASH": "Labelhash $name",
     "NAME_OWNED_NAMEHASH": "Namehash $name.eth",
     "NAME_OWNED_OWNER": "Propriétaire",
+    "NAME_OWNED_DEEDOWNER": "Propriétaire de l'acte",
     "NAME_OWNED_HIGHEST_BIDDER": "Meilleur enchérisseur",
     "NAME_OWNED_HIGHEST_BID": "Meilleure enchère",
     "NAME_OWNED_RESOLVED_ADDR": "Adresse résolue",

@@ -602,6 +602,7 @@
     "NAME_OWNED_LABELHASH": "Labelhash $name",
     "NAME_OWNED_NAMEHASH": "Namehash $name.eth",
     "NAME_OWNED_OWNER": "Owner",
+    "NAME_OWNED_DEEDOWNER": "Deed Owner",
     "NAME_OWNED_HIGHEST_BIDDER": "Highest Bidder",
     "NAME_OWNED_HIGHEST_BID": "Highest Bid",
     "NAME_OWNED_RESOLVED_ADDR": "Resolved Address",

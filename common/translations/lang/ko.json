@@ -604,6 +604,7 @@
     "NAME_OWNED_LABELHASH": "라벨해시 $name",
     "NAME_OWNED_NAMEHASH": "이름해시 $name.eth",
     "NAME_OWNED_OWNER": "소유자",
+    "NAME_OWNED_DEEDOWNER": "증서 주인",
     "NAME_OWNED_HIGHEST_BIDDER": "최고가 입찰자",
     "NAME_OWNED_HIGHEST_BID": "최고가 입찰",
     "NAME_OWNED_RESOLVED_ADDR": "분석된 주소",
