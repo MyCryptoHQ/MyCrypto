@@ -14,7 +14,7 @@ import {
 } from 'features/deterministicWallets';
 import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
-import './DeterministicWalletsModal.scss';
+import './DeterministicWallets.scss';
 import { truncate } from 'v2/libs';
 
 const WALLETS_PER_PAGE = 5;
@@ -61,7 +61,7 @@ const customDPath: DPath = {
   value: 'custom'
 };
 
-class DeterministicWalletsModalClass extends React.PureComponent<Props, State> {
+class DeterministicWalletsClass extends React.PureComponent<Props, State> {
   public state: State = {
     selectedAddress: '',
     selectedAddrIndex: 0,
@@ -311,9 +311,9 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-const DeterministicWalletsModal = connect(mapStateToProps, {
+const DeterministicWallets = connect(mapStateToProps, {
   getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets,
   setDesiredToken: deterministicWalletsActions.setDesiredToken
-})(DeterministicWalletsModalClass);
+})(DeterministicWalletsClass);
 
-export default DeterministicWalletsModal;
+export default DeterministicWallets;
