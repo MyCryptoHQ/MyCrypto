@@ -27,7 +27,9 @@ export const CACHE_INIT_DEV: LocalCache = {
   currents: {
     account: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
     fiatCurrency: 'USD',
-    activeWallet: 'all'
+    activeWallet: 'all',
+    node: 'eth_mycrypto',
+    network: 'ETH'
   },
   recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
   globalSettings: {
@@ -38,7 +40,7 @@ export const CACHE_INIT_DEV: LocalCache = {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
       label: 'Foo',
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      network: 'Ethereum',
+      network: 'ETH',
       localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
       assets: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
       accountType: SecureWalletName.WEB3,

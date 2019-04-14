@@ -46,6 +46,7 @@ import './AddAccountStyles.scss';
 import { Button, Typography, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
+import * as WalletActions from 'v2/features/Wallets';
 
 import { NetworkOptionsContext, AccountContext } from 'v2/providers';
 import { Link } from 'react-router-dom';
@@ -59,9 +60,9 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  unlockKeystore: walletActions.TUnlockKeystore;
-  unlockMnemonic: walletActions.TUnlockMnemonic;
-  unlockPrivateKey: walletActions.TUnlockPrivateKey;
+  unlockKeystore: WalletActions.TUnlockKeystore;
+  unlockMnemonic: WalletActions.TUnlockMnemonic;
+  unlockPrivateKey: WalletActions.TUnlockPrivateKey;
   unlockWeb3: walletActions.TUnlockWeb3;
   setWallet: walletActions.TSetWallet;
   resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
@@ -583,6 +584,7 @@ const WalletDecrypt = withRouter<Props>(
       const confirmComponent = this.handleCompleteFlow();
       console.log('state: ' + JSON.stringify(this.state, null, 2));
       let componentToRender: JSX.Element;
+      console.log('state: ' + JSON.stringify(this.state,null,2))
 
       if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
         componentToRender = (
@@ -659,6 +661,7 @@ const WalletDecrypt = withRouter<Props>(
           address: unlockValue.address
         }
       });
+      //this.props.resetTransactionRequested();
     };
 
     private isWalletDisabled = (walletKey: WalletName) => {
@@ -696,10 +699,10 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 }
 
 export default connect(mapStateToProps, {
-  unlockKeystore: walletActions.unlockKeystore,
-  unlockMnemonic: walletActions.unlockMnemonic,
-  unlockPrivateKey: walletActions.unlockPrivateKey,
-  unlockWeb3: walletActions.unlockWeb3,
+  unlockKeystore: WalletActions.unlockKeystore,
+  unlockMnemonic: WalletActions.unlockMnemonic,
+  unlockPrivateKey: WalletActions.unlockPrivateKey,
+  unlockWeb3: WalletActions.unlockWeb3,
   setWallet: walletActions.setWallet,
   resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification

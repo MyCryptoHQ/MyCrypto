@@ -157,7 +157,7 @@ export const setCache = (newCache: LocalCache) => {
 
 // Settings operations
 
-type SettingsKey = 'currents' | 'globalSettings';
+type SettingsKey = 'currents' | 'globalSettings' | 'networkOptions';
 
 export const readSettings = <K extends SettingsKey>(key: K) => () => {
   return getCache()[key];

@@ -1,3 +1,5 @@
+import { StaticNetworkIds } from 'shared/types/network';
+
 export interface NodeOptions {
   name: string;
   type: 'rpc' | 'etherscan' | 'infura' | 'web3' | 'myccustom';
@@ -27,7 +29,7 @@ export interface StaticNodeConfig {
   id: string;
   isCustom: false;
   isAuto?: boolean;
-  network: string;
+  network: StaticNetworkIds;
   service: string;
   hidden?: boolean;
 }
