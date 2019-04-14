@@ -870,7 +870,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     dPathFormats: {
       [SecureWalletName.TREZOR]: ETI_DEFAULT,
       [SecureWalletName.SAFE_T]: ETI_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: ETI_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: ETI_DEFAULT
     },
     gasPriceSettings: {
