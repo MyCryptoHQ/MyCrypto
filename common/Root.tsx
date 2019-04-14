@@ -3,6 +3,7 @@ import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 
+import { AnalyticsService } from 'v2/services';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
@@ -110,14 +111,14 @@ class RootClass extends Component<Props, State> {
       <React.Fragment>
         <Provider store={store}>
           <Router>
-            <React.Fragment>
+            <PageVisitsAnalytics>
               {onboardingActive && <OnboardingModal />}
               {routes}
               <LegacyRoutes />
               <LogOutPrompt />
               <QrSignerModal />
               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-            </React.Fragment>
+            </PageVisitsAnalytics>
           </Router>
         </Provider>
         <div id="ModalContainer" />
@@ -151,6 +152,17 @@ class RootClass extends Component<Props, State> {
     root.classList.add(`theme--${theme}`);
   }
 }
+
+let previousURL = '';
+const PageVisitsAnalytics = withRouter(({ history, children }) => {
+  history.listen(() => {
+    if (previousURL !== window.location.href) {
+      AnalyticsService.instance.trackPageVisit(window.location.href);
+      previousURL = window.location.href;
+    }
+  });
+  return <React.Fragment>{children}</React.Fragment>;
+});
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
