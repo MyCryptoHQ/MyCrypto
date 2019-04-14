@@ -27,7 +27,6 @@ export function* makeEthCallAndDecode({ to, data, decoder }: Params): SagaIterat
 function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash: string) {
   const ensAddresses = yield select(getENSAddresses);
 
-
   // Return the owner's address, and the resolved address if it exists
   // NOTE: THE DEED OWNER IS NOT THE OWNER
   // CHECK LEGACY.MYCRYPTO.COM FOR THE DIFFERENCE BETWEEN DEED OWNER AND OWNER
