@@ -80,11 +80,11 @@ type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
 type UnlockParams = {} | PrivateKeyValue;
 
 interface AddAccountData {
-  address: string | null;
-  accountType: WalletName | null;
+  address: string;
+  accountType: WalletName;
   label: string | null;
   network: string;
-  derivationPath: string | null;
+  derivationPath: string;
 }
 
 interface State {
@@ -237,11 +237,11 @@ const WalletDecrypt = withRouter<Props>(
       hasSelectedNetwork: false,
       hasSelectedAddress: false,
       accountData: {
-        address: null,
+        address: '',
         network: 'Ethereum',
         label: 'New Account',
-        accountType: null,
-        derivationPath: null
+        accountType: MiscWalletName.VIEW_ONLY,
+        derivationPath: ''
       }
     };
 
@@ -251,7 +251,7 @@ const WalletDecrypt = withRouter<Props>(
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
         this.setState({
-          value: null,
+          value: 0,
           selectedWalletKey: null
         });
       }
@@ -292,19 +292,15 @@ const WalletDecrypt = withRouter<Props>(
         <AccountContext.Consumer>
           {({ createAccount }) => (
             <div>
-              <Typography>
-                You're trying to add an {accountData.network} address {accountData.address} to your
-                dashboard.{<br />}
-              </Typography>
-              <Button>
-                <Link
-                  to="/dashboard"
-                  color="white"
-                  onClick={() => this.handleCreateAccount(createAccount)}
-                >
-                  {'Confirm address: '}
-                </Link>
-              </Button>
+              {`You're trying to add an ${accountData.network} address ${
+                accountData.address
+              } to your
+                dashboard.`}
+              <Link to="/dashboard" color="white">
+                <Button onClick={() => this.handleCreateAccount(createAccount)}>
+                  {'Confirm address'}
+                </Button>
+              </Link>
             </div>
           )}
         </AccountContext.Consumer>
@@ -536,7 +532,8 @@ const WalletDecrypt = withRouter<Props>(
           if (web3Available) {
             // timeout is only the maximum wait time before secondary view is shown
             // send view will be shown immediately on web3 resolve
-            timeout = 1500;
+            timeout = 1000;
+            console.log('got here?');
             wallet.unlock();
           }
         } catch (e) {
@@ -558,7 +555,7 @@ const WalletDecrypt = withRouter<Props>(
     public clearWalletChoice = () => {
       this.setState({
         selectedWalletKey: null,
-        value: null,
+        value: 0,
         hasSelectedNetwork: false,
         accountData: {
           ...this.state.accountData,
@@ -572,8 +569,8 @@ const WalletDecrypt = withRouter<Props>(
         hasSelectedAddress: false,
         accountData: {
           ...this.state.accountData,
-          address: null,
-          derivationPath: null
+          address: '',
+          derivationPath: ''
         }
       });
     };

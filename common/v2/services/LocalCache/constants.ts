@@ -1,4 +1,5 @@
 import * as serviceTypes from 'v2/services/types';
+import { SecureWalletName } from 'config/data';
 
 export const CACHE_KEY = 'MyCryptoCache';
 
@@ -40,7 +41,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       network: 'Ethereum',
       localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
       assets: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
-      accountType: 'MetaMask',
+      accountType: SecureWalletName.WEB3,
       value: 1e18,
       transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882'
     }
