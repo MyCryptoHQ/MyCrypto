@@ -1,7 +1,7 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
-import { Table } from '@mycrypto/ui';
+import { Table, Copyable } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
@@ -263,7 +263,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     // tslint:disable:jsx-key
     return [
       wallet.index + 1,
-      <>
+      <div className="DWModal-addresses-table-address-select">
         <input
           type="radio"
           name="selectedAddress"
@@ -273,8 +273,10 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
           onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
         />
         {label && <label className="DWModal-addresses-table-address-label">{label}</label>}
-        <span className={spanClassName}>{truncate(wallet.address)}</span>
-      </>,
+        <span className={spanClassName}>
+          <Copyable text={wallet.address} truncate={truncate} />
+        </span>
+      </div>,
       <UnitDisplay
         unit={'ether'}
         value={wallet.value}

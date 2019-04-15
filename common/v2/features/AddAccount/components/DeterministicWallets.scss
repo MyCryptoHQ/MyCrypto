@@ -71,6 +71,11 @@
         &-text {
           font-size: 10px;
         }
+
+        &-select {
+          display: flex;
+          align-items: center;
+        }
       }
 
       &-more {
