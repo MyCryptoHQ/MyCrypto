@@ -1,5 +1,4 @@
 import React from 'react';
-import { Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS } from 'v2/features/constants';
@@ -10,7 +9,7 @@ import howBuyIcon from 'common/assets/images/icn-how-do-i-buy-crypto.svg';
 import dontLoseCryptoIcon from 'common/assets/images/icn-don-t-lose-crypto.svg';
 import questionsIcon from 'common/assets/images/icn-questions.svg';
 
-const { SCREEN_MD } = BREAK_POINTS;
+const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
 
 const NotificationWrapper = styled.div`
   display: flex;
@@ -35,6 +34,25 @@ const Content = styled.div`
   flex-direction: column;
 `;
 
+const Title = styled.p`
+  font-weight: bold;
+  font-size: 24px;
+
+  @media (max-width: ${SCREEN_XS}) {
+    font-size: 20px;
+  }
+`;
+
+const Description = styled.p`
+  font-weight: normal;
+  word-break: break-word;
+  font-size: 16px;
+
+  @media (max-width: ${SCREEN_XS}) {
+    font-size: 14px;
+  }
+`;
+
 const ChampagneImage = styled.img`
   width: 71px;
   height: 70px;
@@ -48,6 +66,11 @@ const ChampagneImage = styled.img`
 
 const Resources = styled.div`
   display: flex;
+  align-items: baseline;
+
+  @media (max-width: ${SCREEN_MD}) {
+    margin-top: 20px;
+  }
 `;
 
 const ResourceItemWrapper = styled.a`
@@ -56,8 +79,14 @@ const ResourceItemWrapper = styled.a`
   text-align: center;
   justify-content: center;
   align-items: center;
-  max-width: 140px;
+  width: 140px;
+  font-weight: normal;
   font-size: 16px;
+
+  @media (max-width: ${SCREEN_XS}) {
+    font-size: 12px;
+    max-width: 105px;
+  }
 `;
 
 const Image = styled.img`
@@ -87,15 +116,15 @@ export default function WalletCreatedNotification() {
       <Info>
         <ChampagneImage src={champagneIcon} />
         <Content>
-          <Typography as="h3">Your wallet has been created.</Typography>
-          <Typography>
-            The address of your new MyCrypto wallet account is:
-            0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520.
-          </Typography>
-          <Typography>
-            You can now add funds to your wallet and start using MyCrypto. Need help getting
-            started? Check out our resources.
-          </Typography>
+          <Title>Your wallet has been created.</Title>
+          <Description>
+            Your account with the address 0x06A85356DCb5b307096726FB86A78c59D38e08ee has been
+            successfully created!
+          </Description>
+          <Description>
+            Your dashboard now shows all your accounts and their balances. Use the “All Accounts”
+            dropdown to filter your accounts. Or, check out some other helpful resources.
+          </Description>
         </Content>
       </Info>
       <Resources>
