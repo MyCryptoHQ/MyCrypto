@@ -358,6 +358,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'api.metadium.com',
       url: 'https://api.metadium.com/prod'
     }
+  ],
+
+  SOLIDUM: [
+    {
+      name: makeNodeName('SOLIDUM', 'rpc.solidum.network'),
+      type: 'rpc',
+      service: 'rpc.solidum.network',
+      url: 'https://rpc.solidum.network'
+    }
   ]
 };
 

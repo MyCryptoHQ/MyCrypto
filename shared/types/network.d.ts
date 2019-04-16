@@ -35,6 +35,7 @@ type StaticNetworkIds =
   | 'THUNDERCORE'
   | 'WEB'
   | 'METADIUM';
+  | 'SOLIDUM';
 
 export interface BlockExplorerConfig {
   name: string;

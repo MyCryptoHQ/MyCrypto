@@ -173,6 +173,11 @@ export const METADIUM_DEFAULT: DPath = {
   value: "m/44'/916'/0'/0"
 };
 
+export const SOLIDUM_DEFAULT: DPath = {
+  label: 'Default (SOLIDUM)',
+  value: "m/44'/997'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -208,6 +213,7 @@ export const DPaths: DPath[] = [
   THUNDERCORE_DEFAULT,
   WEB_DEFAULT,
   METADIUM_DEFAULT
+  SOLIDUM_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

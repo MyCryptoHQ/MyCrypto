@@ -39,7 +39,8 @@ import {
   ARTIS_TAU1,
   THUNDERCORE_DEFAULT,
   WEB_DEFAULT,
-  METADIUM_DEFAULT
+  METADIUM_DEFAULT,
+  SOLIDUM_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -896,6 +897,31 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 80,
       max: 80,
       initial: 80
+    }
+  },
+  SOLIDUM: {
+    id: 'SOLIDUM',
+    name: 'Solidum',
+    unit: 'SUM',
+    chainId: 72106,
+    isCustom: false,
+    color: '#1e87f0',
+    blockExplorer: makeExplorer({
+      name: 'Solidum Explorer',
+      origin: 'https://explorer.solidum.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: SOLIDUM_DEFAULT,
+      [SecureWalletName.SAFE_T]: SOLIDUM_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: SOLIDUM_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: SOLIDUM_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
     }
   }
 };
