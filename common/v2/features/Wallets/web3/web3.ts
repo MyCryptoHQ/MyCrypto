@@ -8,13 +8,12 @@ import {
   makeProviderConfig
 } from 'libs/nodes';
 import { configNodesSelectedActions, configNodesStaticActions } from 'features/config';
-import { StaticNodeConfig } from 'v2/services/NodeOptions/types';
+import { StaticNodeConfig, CustomNodeConfig } from 'v2/services/NodeOptions/types';
 import { getNetworkByChainId, NetworkSelect } from 'v2/libs';
 import { translateRaw } from 'translations';
 import { LocalCache } from 'v2/services/LocalCache/constants';
-import NodeOptionsServiceBase from 'v2/services/NodeOptions/NodeOptions';
+import { createNodeOptions }  from 'v2/services/NodeOptions/NodeOptions';
 
-const NodeOptions = new NodeOptionsServiceBase();
 
 //#region Web3
 
@@ -104,6 +103,6 @@ export const getNodes = async () => {};
 
 export const getCurrentNode = async () => {};
 
-export const createNewWeb3Node = async (id: string, newNode: StaticNodeConfig) => {
-  NodeOptions.createNodeOptions({ ...newNode, name: id, type: 'web3' });
+export const createNewWeb3Node = async (id: string, newNode: CustomNodeConfig) => {
+  createNodeOptions({ ...newNode, name: id, type: 'web3' });
 };
