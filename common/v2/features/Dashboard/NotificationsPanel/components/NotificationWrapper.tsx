@@ -48,6 +48,7 @@ const Description = styled.p`
   font-weight: normal;
   word-break: break-word;
   font-size: 16px;
+  white-space: pre-line;
 
   @media (max-width: ${SCREEN_XS}) {
     font-size: 14px;
@@ -65,9 +66,9 @@ const Resources = styled.div`
 
 interface NotificationWrapperProps {
   leftImg: React.ReactElement<any>;
-  title: string;
-  description: string;
-  additionalDescription?: string;
+  title: React.ReactElement<any>;
+  description: React.ReactElement<any>;
+  additionalDescription?: React.ReactElement<any>;
   resources: React.ReactElement<any>;
   alignCenterOnSmallScreen?: boolean;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
+import translate from 'translations';
 import { BREAK_POINTS } from 'v2/features/constants';
 import NotificationWrapper from './NotificationWrapper';
 
@@ -32,9 +33,13 @@ export default function WalletCreatedNotification() {
   return (
     <NotificationWrapper
       leftImg={<SaveImage src={saveIcon} />}
-      title="Save Your Dashboard Settings"
-      description="You've spent a lot of time customizing your dashboard. Make sure to back it up so you don’t lose your settings."
-      resources={<ResourceItem secondary={true}>Export Settings Now</ResourceItem>}
+      title={translate('NOTIFICATIONS_SAVE_DASHBOARD_TITLE')}
+      description={translate('NOTIFICATIONS_SAVE_DASHBOARD_DESCRIPTION')}
+      resources={
+        <ResourceItem secondary={true}>
+          {translate('NOTIFICATIONS_SAVE_DASHBOARD_RESOURCE')}
+        </ResourceItem>
+      }
     />
   );
 }

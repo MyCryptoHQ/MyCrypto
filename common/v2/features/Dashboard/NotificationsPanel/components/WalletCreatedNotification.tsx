@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import translate from 'translations';
 import { BREAK_POINTS } from 'v2/features/constants';
 import NotificationWrapper from './NotificationWrapper';
 
@@ -47,7 +48,7 @@ const Image = styled.img`
 
 interface ResourceItemProps {
   src: string;
-  title: string;
+  title: React.ReactElement<any>;
   link: string;
 }
 
@@ -63,13 +64,21 @@ const ResourceItem: React.SFC<ResourceItemProps> = ({ src, title, link }) => {
 const getResources = () => {
   return (
     <>
-      <ResourceItem src={howBuyIcon} title="How do I buy crypto?" link="/how-to-buy" />
+      <ResourceItem
+        src={howBuyIcon}
+        title={translate('NOTIFICATIONS_WALLET_RESOURCE_BUY')}
+        link="/how-to-buy"
+      />
       <ResourceItem
         src={dontLoseCryptoIcon}
-        title="How do I make sure I don't lose crypto?"
+        title={translate('NOTIFICATIONS_WALLET_RESOURCE_LOSE')}
         link="/dont-lose-crypto"
       />
-      <ResourceItem src={questionsIcon} title="Support Center" link="/support-center" />
+      <ResourceItem
+        src={questionsIcon}
+        title={translate('NOTIFICATIONS_WALLET_RESOURCE_SUPPORT')}
+        link="/support-center"
+      />
     </>
   );
 };
@@ -79,9 +88,11 @@ export default function WalletCreatedNotification() {
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
       leftImg={<ChampagneImage src={champagneIcon} />}
-      title="Your wallet has been created."
-      description="Your account with the address 0x06A85356DCb5b307096726FB86A78c59D38e08ee has been successfully created!"
-      additionalDescription="Your dashboard now shows all your accounts and their balances. Use the “All Accounts” dropdown to filter your accounts. Or, check out some other helpful resources."
+      title={translate('NOTIFICATIONS_WALLET_CREATED_TITLE')}
+      description={translate('NOTIFICATIONS_WALLET_CREATED_DESCRIPTION', {
+        $address: '0x06A85356DCb5b307096726FB86A78c59D38e08ee'
+      })}
+      additionalDescription={translate('NOTIFICATIONS_WALLET_DESCRIPTION_ADD')}
       resources={getResources()}
     />
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
+import translate from 'translations';
 import { BREAK_POINTS } from 'v2/features/constants';
 import NotificationWrapper from './NotificationWrapper';
 
@@ -48,12 +49,12 @@ export default function PrintPaperWalletNotification() {
   return (
     <NotificationWrapper
       leftImg={<WalletImage src={walletIcon} />}
-      title="Back it up!"
-      description="Ensure you never lose access to your assets."
-      additionalDescription="Print your paper wallet and store it somewhere safe."
+      title={translate('NOTIFICATIONS_PRINT_WALLET_TITLE')}
+      description={translate('NOTIFICATIONS_PRINT_WALLET_DESCRIPTION')}
       resources={
         <ResourceItem secondary={true}>
-          <PrinterImage src={printerIcon} />Print Paper Wallet
+          <PrinterImage src={printerIcon} />
+          {translate('NOTIFICATIONS_PRINT_WALLET_RESOURCE')}
         </ResourceItem>
       }
     />

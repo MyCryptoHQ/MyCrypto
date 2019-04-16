@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
+import translate from 'translations';
 import { BREAK_POINTS } from 'v2/features/constants';
 import NotificationWrapper from './NotificationWrapper';
 
@@ -39,8 +40,12 @@ const ResourceItem = styled(Button)`
 const getResources = () => {
   return (
     <>
-      <ResourceItem secondary={true}>Get a Trezor</ResourceItem>
-      <ResourceItem secondary={true}>Get a Ledger</ResourceItem>
+      <ResourceItem secondary={true}>
+        {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
+      </ResourceItem>
+      <ResourceItem secondary={true}>
+        {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
+      </ResourceItem>
     </>
   );
 };
@@ -49,8 +54,8 @@ export default function GetHardwareWalletNotification() {
   return (
     <NotificationWrapper
       leftImg={<WalletImage src={walletIcon} />}
-      title="Get a Hardware Wallet!"
-      description="Keep your funds safe offline with Trezor or Ledger."
+      title={translate('NOTIFICATIONS_GET_WALLET_TITLE')}
+      description={translate('NOTIFICATIONS_GET_WALLET_DESCRIPTION')}
       resources={getResources()}
     />
   );
