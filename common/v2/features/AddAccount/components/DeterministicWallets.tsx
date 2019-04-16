@@ -98,18 +98,21 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
             className="DWModal-path form-group-sm flex-wrapper"
             onSubmit={this.handleSubmitCustomPath}
           >
-            <div className="DWModal-path-select">
-              <Select
-                name="fieldDPath"
-                value={this.state.currentDPath}
-                onChange={this.handleChangePath}
-                options={dPaths.concat([customDPath])}
-                optionRenderer={this.renderDPathOption}
-                valueRenderer={this.renderDPathOption}
-                clearable={false}
-                searchable={false}
-              />
-            </div>
+            <header>
+              {translate('DECRYPT_PROMPT_SELECT_ADDRESS')}
+              <div className="DWModal-path-select">
+                <Select
+                  name="fieldDPath"
+                  value={this.state.currentDPath}
+                  onChange={this.handleChangePath}
+                  options={dPaths.concat([customDPath])}
+                  optionRenderer={this.renderDPathOption}
+                  valueRenderer={this.renderDPathOption}
+                  clearable={false}
+                  searchable={false}
+                />
+              </div>
+            </header>
             {this.state.currentDPath.label === customDPath.label && (
               <React.Fragment>
                 <div className="DWModal-path-custom">

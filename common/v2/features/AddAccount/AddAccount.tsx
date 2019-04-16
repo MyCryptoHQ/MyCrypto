@@ -292,8 +292,12 @@ const WalletDecrypt = withRouter<Props>(
           </div>
           <div className={classNames('Panel-content', { 'no-padding': Boolean(this.state.seed) })}>
             <div className="Panel-title-connectDevice">
-              {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
-                translateRaw(this.state.seed ? 'DECRYPT_PROMPT_SELECT_ADDRESS' : 'UNLOCK_WALLET', {
+              {!(
+                selectedWallet.isReadOnly ||
+                selectedWallet.lid === 'X_PARITYSIGNER' ||
+                this.state.seed
+              ) &&
+                translate('UNLOCK_WALLET', {
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
             </div>

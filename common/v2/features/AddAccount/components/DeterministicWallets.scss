@@ -2,6 +2,13 @@
 @import 'common/sass/mixins';
 
 .DWModal {
+  header {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 1em;
+    width: 100%;
+  }
+
   &-path {
     margin-bottom: 20px;
 
