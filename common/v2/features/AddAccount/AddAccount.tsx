@@ -322,7 +322,7 @@ const WalletDecrypt = withRouter<Props>(
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
               walletType={translateRaw(selectedWallet.lid)}
-              onCancel={this.clearWalletChoice}
+              onCancel={this.returnToSender}
             />
             {process.env.NODE_ENV !== 'production' && (
               <button
@@ -339,7 +339,7 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="Panel">
           <div className="Panel-top">
-            <Button basic={true} onClick={this.clearWalletChoice}>
+            <Button basic={true} onClick={this.returnToSender}>
               <Typography>
                 {' '}
                 <img src={backArrow} />
@@ -359,7 +359,7 @@ const WalletDecrypt = withRouter<Props>(
                 errorMessage={`Oops, looks like ${translateRaw(
                   selectedWallet.lid
                 )} is not supported by your browser`}
-                onError={this.clearWalletChoice}
+                onError={this.returnToSender}
                 shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
               >
                 <selectedWallet.component
@@ -470,7 +470,7 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="Panel">
           <div className="SelectNetworkPanel-top">
-            <Button basic={true} onClick={this.clearWalletChoice}>
+            <Button basic={true} onClick={this.returnToSender}>
               <Typography>
                 {' '}
                 <img src={backArrow} />
@@ -553,6 +553,23 @@ const WalletDecrypt = withRouter<Props>(
       }, timeout);
     };
 
+    public returnToSender = () => {
+      this.setState({
+        selectedWalletKey: null,
+        isInsecureOverridden: false,
+        value: null,
+        hasSelectedNetwork: false,
+        hasSelectedAddress: false,
+        accountData: {
+          address: '',
+          network: 'Ethereum',
+          label: 'New Account',
+          accountType: MiscWalletName.VIEW_ONLY,
+          derivationPath: ''
+        }
+      });
+    }
+    /*
     public clearWalletChoice = () => {
       this.setState({
         selectedWalletKey: null,
@@ -574,7 +591,7 @@ const WalletDecrypt = withRouter<Props>(
           derivationPath: ''
         }
       });
-    };
+    };*/
 
     public render() {
       const { hidden } = this.props;
@@ -702,7 +719,7 @@ export default connect(mapStateToProps, {
   unlockKeystore: WalletActions.unlockKeystore,
   unlockMnemonic: WalletActions.unlockMnemonic,
   unlockPrivateKey: WalletActions.unlockPrivateKey,
-  unlockWeb3: WalletActions.unlockWeb3,
+  unlockWeb3: walletActions.unlockWeb3,
   setWallet: walletActions.setWallet,
   resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification
