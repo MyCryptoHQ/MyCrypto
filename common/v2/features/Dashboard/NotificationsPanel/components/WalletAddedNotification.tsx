@@ -79,8 +79,8 @@ export default function WalletCreatedNotification() {
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
       leftImg={<ChampagneImage src={champagneIcon} />}
-      title="Your wallet has been created."
-      description="Your account with the address 0x06A85356DCb5b307096726FB86A78c59D38e08ee has been successfully created!"
+      title="Your wallet has been added."
+      description="Your account with the address 0x06A85356DCb5b307096726FB86A78c59D38e08ee has been successfully added!"
       additionalDescription="Your dashboard now shows all your accounts and their balances. Use the “All Accounts” dropdown to filter your accounts. Or, check out some other helpful resources."
       resources={getResources()}
     />
