@@ -98,7 +98,6 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
             className="DWModal-path form-group-sm flex-wrapper"
             onSubmit={this.handleSubmitCustomPath}
           >
-            <span className="DWModal-path-label">{translate('DECRYPT_DROPDOWN_LABEL')} </span>
             <div className="DWModal-path-select">
               <Select
                 name="fieldDPath"
