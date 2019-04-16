@@ -134,6 +134,7 @@ const SECURE_WALLETS = Object.values(SecureWalletName).filter(
   value => !HARDWARE_WALLETS.includes(value)
 );
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
+const MISC_WALLETS = Object.values(MiscWalletName);
 
 const web3info = getWeb3ProviderInfo();
 
@@ -439,6 +440,23 @@ const WalletDecrypt = withRouter<Props>(
                 />
               );
             })}
+            {MISC_WALLETS.map((walletType: MiscWalletName) => {
+              const wallet = this.WALLETS[walletType];
+              return (
+                <WalletButton
+                  key={walletType}
+                  name={translateRaw(wallet.lid)}
+                  //description={translateRaw(wallet.description)}
+                  //helpLink={wallet.helpLink}
+                  walletType={walletType}
+                  //isReadOnly={true}
+                  //isSecure={true}
+                  isDisabled={this.isWalletDisabled(walletType)}
+                  disableReason={reasons[walletType]}
+                  onClick={this.handleWalletChoice}
+                />
+              );
+            })}
           </div>
 
           <div className="WalletDecrypt-wallets-row">
@@ -568,7 +586,7 @@ const WalletDecrypt = withRouter<Props>(
           derivationPath: ''
         }
       });
-    }
+    };
     /*
     public clearWalletChoice = () => {
       this.setState({
@@ -601,7 +619,7 @@ const WalletDecrypt = withRouter<Props>(
       const confirmComponent = this.handleCompleteFlow();
       console.log('state: ' + JSON.stringify(this.state, null, 2));
       let componentToRender: JSX.Element;
-      console.log('state: ' + JSON.stringify(this.state,null,2))
+      console.log('state: ' + JSON.stringify(this.state, null, 2));
 
       if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
         componentToRender = (
