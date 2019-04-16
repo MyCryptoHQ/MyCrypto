@@ -913,8 +913,6 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     tokens: [],
     contracts: [],
     dPathFormats: {
-      [SecureWalletName.TREZOR]: SOLIDUM_DEFAULT,
-      [SecureWalletName.SAFE_T]: SOLIDUM_DEFAULT,
       [SecureWalletName.LEDGER_NANO_S]: SOLIDUM_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: SOLIDUM_DEFAULT
     },
