@@ -297,11 +297,7 @@ const WalletDecrypt = withRouter<Props>(
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
             </div>
-            <section
-              className={classNames('WalletDecrypt-decrypt-form', {
-                'no-margin': Boolean(this.state.seed)
-              })}
-            >
+            <section className="WalletDecrypt-decrypt-form">
               <Errorable
                 errorMessage={`Oops, looks like ${translateRaw(
                   selectedWallet.lid
