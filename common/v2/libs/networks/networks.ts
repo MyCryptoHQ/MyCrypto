@@ -7,7 +7,7 @@ export const getNetworkByChainId = (chainId: string): NetworkSelect => {
 
   let networkToSelect = null;
   networks.map((network: NetworkOptions) => {
-    if (network.chainId === parseInt(chainId)) {
+    if (network.chainId === parseInt(chainId, 16)) {
       networkToSelect = network;
     }
   });

@@ -40,9 +40,4 @@ export class Web3DecryptClass extends PureComponent<Props, State> {
       </div>
     )
   };
-
-  private handleUnlock = () => {
-    const x = this.props.onUnlock();
-    console.log(x);
-  }
 }

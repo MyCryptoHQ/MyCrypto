@@ -7,7 +7,7 @@ import {
   shepherd,
   makeProviderConfig
 } from 'libs/nodes';
-import { StaticNodeConfig, CustomNodeConfig, NodeOptions } from 'v2/services/NodeOptions/types';
+import { CustomNodeConfig, NodeOptions } from 'v2/services/NodeOptions/types';
 import { getNetworkByChainId, NetworkSelect } from 'v2/libs';
 import { translateRaw } from 'translations';
 import { createNodeOptions, readNodeOptions, createNodeOptionsWithID } from 'v2/services/NodeOptions/NodeOptions';
@@ -34,6 +34,7 @@ export const initWeb3Node = async () => {
   const config: NodeOptions = {
     name: id,
     isCustom: false,
+    type: 'web3',
     service: Web3Service,
     hidden: true,
     network: web3Network
@@ -100,20 +101,20 @@ export const unlockWeb3 = async () => {
 };
 
 export const getWeb3Node = async () => {
-  const isWeb3Node = (nodeId: string) => nodeId === 'web3';
+  
   console.log('getWeb3 1')
   const currNode = readNodeOptions('web3');
   console.log('getWeb3 2')
   const currNodeId = readCurrents().node;
   console.log('getWeb3 4')
-  console.log('next - ' + (currNode && currNodeId && isWeb3Node(currNodeId)) + ' - ' + currNode + ' - ' + currNodeId)
-  if (currNode && currNodeId && isWeb3Node(currNodeId)) {
+  console.log('next - ' + (currNode && currNodeId && isWeb3NodeId(currNodeId)) + ' - ' + currNode + ' - ' + currNodeId)
+  if (currNode && currNodeId && isWeb3NodeId(currNodeId)) {
     console.log('getWeb3 5')
     return currNode;
   }
   return null;
 };
-
+export const isWeb3NodeId = (nodeId: string) => nodeId === 'web3';
 export const getNodes = async () => {};
 
 export const getCurrentNode = async () => {};
