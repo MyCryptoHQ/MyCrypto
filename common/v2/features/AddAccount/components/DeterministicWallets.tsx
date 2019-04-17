@@ -260,8 +260,8 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 
     // tslint:disable:jsx-key
     return [
-      wallet.index + 1,
       <div className="DW-addresses-table-address-select">
+        {wallet.index + 1}
         <input
           type="radio"
           name="selectedAddress"
@@ -270,8 +270,8 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
           readOnly={true}
           onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
         />
-        <Address title={label} address={wallet.address} truncate={truncate} />
       </div>,
+      <Address title={label} address={wallet.address} truncate={truncate} />,
       <UnitDisplay
         unit={'ether'}
         value={wallet.value}
