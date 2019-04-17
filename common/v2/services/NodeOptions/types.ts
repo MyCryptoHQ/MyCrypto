@@ -5,10 +5,10 @@ export interface NodeOptions {
   type?: 'rpc' | 'etherscan' | 'infura' | 'web3' | 'myccustom';
   service: string;
   url?: string;
-  hidden?: boolean;
   isCustom?: boolean;
   isAuto?: boolean;
   network?: string;
+  hidden?: boolean;
 }
 
 export interface ExtendedNodeOptions extends NodeOptions {
