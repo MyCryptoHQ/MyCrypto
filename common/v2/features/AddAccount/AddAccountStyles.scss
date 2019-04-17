@@ -31,7 +31,7 @@ $speed: 500ms;
     display: flex;
   }
   &-content {
-    height: 629px;
+    min-height: 629px;
     border-radius: 3px;
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
     background-color: #ffffff;
