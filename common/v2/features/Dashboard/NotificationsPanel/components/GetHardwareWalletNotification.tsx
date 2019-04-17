@@ -5,6 +5,7 @@ import { Button } from '@mycrypto/ui';
 import translate from 'translations';
 import { BREAK_POINTS } from 'v2/features/constants';
 import NotificationWrapper from './NotificationWrapper';
+import { ledgerReferralURL, trezorReferralURL } from 'config';
 
 // Legacy
 import walletIcon from 'common/assets/images/icn-new-wallet.svg';
@@ -37,15 +38,30 @@ const ResourceItem = styled(Button)`
   }
 `;
 
+interface ResourceItemWrapperProps {
+  title: React.ReactElement<any>;
+  link: string;
+}
+
+const ResourceItemWrapper: React.SFC<ResourceItemWrapperProps> = ({ title, link }) => {
+  return (
+    <a href={link} target="_blank" rel="noopener noreferrer">
+      <ResourceItem secondary={true}>{title}</ResourceItem>
+    </a>
+  );
+};
+
 const getResources = () => {
   return (
     <>
-      <ResourceItem secondary={true}>
-        {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
-      </ResourceItem>
-      <ResourceItem secondary={true}>
-        {translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
-      </ResourceItem>
+      <ResourceItemWrapper
+        title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR')}
+        link={trezorReferralURL}
+      />
+      <ResourceItemWrapper
+        title={translate('NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER')}
+        link={ledgerReferralURL}
+      />
     </>
   );
 };
