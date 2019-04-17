@@ -1,4 +1,4 @@
-import { IFullWallet } from "libs/wallet";
+import { IFullWallet } from 'libs/wallet';
 
 export interface KeystoreUnlockParams {
   file: string;

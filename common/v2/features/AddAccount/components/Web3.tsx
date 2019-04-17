@@ -16,12 +16,14 @@ export class Web3DecryptClass extends PureComponent<Props, State> {
     address: ''
   };
 
-
-  public render () {
-    return(
+  public render() {
+    return (
       <div className="Web3Decrypt">
         <div>
-          <button className="Web3Decrypt-decrypt btn btn-primary btn-lg btn-block" onClick={this.props.onUnlock}>
+          <button
+            className="Web3Decrypt-decrypt btn btn-primary btn-lg btn-block"
+            onClick={this.props.onUnlock}
+          >
             {translate('ADD_METAMASK')}
           </button>
         </div>
@@ -38,6 +40,6 @@ export class Web3DecryptClass extends PureComponent<Props, State> {
           In order to use MetaMask with MyCrypto, your ad blocker must be disabled.
         </p>
       </div>
-    )
-  };
+    );
+  }
 }

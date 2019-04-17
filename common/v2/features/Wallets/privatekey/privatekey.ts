@@ -1,9 +1,10 @@
-import { IWallet, getPrivKeyWallet, IFullWallet } from "libs/wallet";
-import { translateRaw } from "translations";
-import { PrivateKeyUnlockParams } from "./types";
+import { IWallet, getPrivKeyWallet, IFullWallet } from 'libs/wallet';
+import { translateRaw } from 'translations';
+import { PrivateKeyUnlockParams } from './types';
 
-
-export const unlockPrivateKey = async (payload: PrivateKeyUnlockParams): Promise<IFullWallet | undefined> => {
+export const unlockPrivateKey = async (
+  payload: PrivateKeyUnlockParams
+): Promise<IFullWallet | undefined> => {
   let wallet: IWallet | null = null;
   const { key, password } = payload;
 
@@ -13,5 +14,5 @@ export const unlockPrivateKey = async (payload: PrivateKeyUnlockParams): Promise
     console.log('Error: ' + translateRaw('INVALID_PKEY'));
     return;
   }
-  return(wallet);
-}
+  return wallet;
+};

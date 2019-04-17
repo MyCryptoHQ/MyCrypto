@@ -678,7 +678,7 @@ const WalletDecrypt = withRouter<Props>(
     };
 
     public onUnlock = (payload: any) => {
-      console.log('got here?!@?!?@')
+      console.log('got here?!@?!?@');
       console.log(payload);
       const { value, selectedWalletKey } = this.state;
       if (!selectedWalletKey) {
@@ -689,10 +689,10 @@ const WalletDecrypt = withRouter<Props>(
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
 
-      console.log('this.state.accountType ' + this.state.accountData.accountType)
+      console.log('this.state.accountType ' + this.state.accountData.accountType);
       if (this.state.accountData.accountType === 'web3') {
         const x = this.WALLETS[selectedWalletKey].unlock(unlockValue);
-        console.log('went web3 route')
+        console.log('went web3 route');
         console.log(x);
         this.setState({
           hasSelectedAddress: true,

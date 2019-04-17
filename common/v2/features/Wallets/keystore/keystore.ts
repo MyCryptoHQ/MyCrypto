@@ -1,7 +1,13 @@
-import { KeystoreUnlockParams } from "./types";
-import { determineKeystoreType, KeystoreTypes, signWrapper, getKeystoreWallet, getUtcWallet, IWallet } from "libs/wallet";
-import { translateRaw } from "translations";
-
+import { KeystoreUnlockParams } from './types';
+import {
+  determineKeystoreType,
+  KeystoreTypes,
+  signWrapper,
+  getKeystoreWallet,
+  getUtcWallet,
+  IWallet
+} from 'libs/wallet';
+import { translateRaw } from 'translations';
 
 export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
   const { file, password } = payload;
@@ -25,5 +31,5 @@ export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
   }
 
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
-  return(wallet);
-}
+  return wallet;
+};
