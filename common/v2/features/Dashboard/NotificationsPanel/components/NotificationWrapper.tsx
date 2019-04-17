@@ -71,6 +71,7 @@ interface NotificationWrapperProps {
   additionalDescription?: React.ReactElement<any>;
   resources: React.ReactElement<any>;
   alignCenterOnSmallScreen?: boolean;
+  children?: any;
 }
 
 export default function NotificationWrapper({
@@ -79,7 +80,8 @@ export default function NotificationWrapper({
   description,
   additionalDescription,
   resources,
-  alignCenterOnSmallScreen
+  alignCenterOnSmallScreen,
+  children
 }: NotificationWrapperProps) {
   return (
     <Wrapper alignCenterOnSmallScreen={alignCenterOnSmallScreen}>
@@ -92,6 +94,7 @@ export default function NotificationWrapper({
         </Content>
       </Info>
       <Resources>{resources}</Resources>
+      {children}
     </Wrapper>
   );
 }
