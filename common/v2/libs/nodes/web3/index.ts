@@ -78,15 +78,17 @@ export async function setupWeb3Node() {
   // Handle the following MetaMask breaking change:
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   const { ethereum } = window as any;
-
+  console.log('hur1')
   if (ethereum) {
+    
     // Overwrite the legacy Web3 with the newer version.
     (window as any).web3 = new (window as any).Web3(ethereum);
-
+    console.log('hur2')
     try {
+      console.log(ethereum)
       // Request permission to access MetaMask accounts.
       await ethereum.enable();
-
+      console.log('hur3')
       // Permission was granted; proceed.
       return getChainIdAndLib();
     } catch (e) {

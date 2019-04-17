@@ -36,7 +36,7 @@ import {
   PrivateKeyValue,
   TrezorDecrypt,
   SafeTminiDecrypt,
-  Web3Decrypt,
+  Web3DecryptClass,
   WalletButton,
   ParitySignerDecrypt,
   InsecureWalletWarning,
@@ -63,7 +63,7 @@ interface DispatchProps {
   unlockKeystore: WalletActions.TUnlockKeystore;
   unlockMnemonic: WalletActions.TUnlockMnemonic;
   unlockPrivateKey: WalletActions.TUnlockPrivateKey;
-  unlockWeb3: walletActions.TUnlockWeb3;
+  unlockWeb3: WalletActions.TUnlockWeb3;
   setWallet: walletActions.TSetWallet;
   resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
   showNotification: notificationsActions.TShowNotification;
@@ -146,7 +146,7 @@ const WalletDecrypt = withRouter<Props>(
         lid: web3info.lid,
         icon: web3info.icon,
         description: 'ADD_WEB3DESC',
-        component: Web3Decrypt,
+        component: Web3DecryptClass,
         initialParams: {},
         unlock: this.props.unlockWeb3,
         attemptUnlock: true,
@@ -660,24 +660,41 @@ const WalletDecrypt = withRouter<Props>(
     };
 
     public onUnlock = (payload: any) => {
+      console.log('got here?!@?!?@')
+      console.log(payload);
       const { value, selectedWalletKey } = this.state;
       if (!selectedWalletKey) {
         return;
       }
-
       // some components (TrezorDecrypt) don't take an onChange prop, and thus
       // this.state.value will remain unpopulated. in this case, we can expect
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
-      this.WALLETS[selectedWalletKey].unlock(unlockValue);
-      this.setState({
-        hasSelectedAddress: true,
-        accountData: {
-          ...this.state.accountData,
-          derivationPath: unlockValue.path,
-          address: unlockValue.address
-        }
-      });
+
+      console.log('this.state.accountType ' + this.state.accountData.accountType)
+      if (this.state.accountData.accountType === 'web3') {
+        const x = this.WALLETS[selectedWalletKey].unlock(unlockValue);
+        console.log('went web3 route')
+        console.log(x);
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            derivationPath: '',
+            address: x.getAddressString()
+          }
+        });
+      } else {
+        this.WALLETS[selectedWalletKey].unlock(unlockValue);
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            derivationPath: unlockValue.path,
+            address: unlockValue.address
+          }
+        });
+      }
       //this.props.resetTransactionRequested();
     };
 
@@ -719,8 +736,7 @@ export default connect(mapStateToProps, {
   unlockKeystore: WalletActions.unlockKeystore,
   unlockMnemonic: WalletActions.unlockMnemonic,
   unlockPrivateKey: WalletActions.unlockPrivateKey,
-  unlockWeb3: walletActions.unlockWeb3,
-  setWallet: walletActions.setWallet,
+  unlockWeb3: WalletActions.unlockWeb3,
   resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;
