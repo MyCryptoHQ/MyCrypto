@@ -61,16 +61,8 @@
         display: flex;
         align-items: center;
 
-        &-label {
-          font-weight: bold;
-        }
-
         input {
           margin-right: 10px;
-        }
-
-        &-text {
-          font-size: 10px;
         }
 
         &-select {

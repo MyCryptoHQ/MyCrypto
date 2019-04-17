@@ -1,7 +1,7 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
-import { Table, Copyable } from '@mycrypto/ui';
+import { Table, Address } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
@@ -246,7 +246,6 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     const { desiredToken, network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
-    const spanClassName = label ? 'DWModal-addresses-table-address-text' : '';
 
     let blockExplorer;
     if (!network.isCustom) {
@@ -274,10 +273,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
           readOnly={true}
           onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
         />
-        {label && <label className="DWModal-addresses-table-address-label">{label}</label>}
-        <span className={spanClassName}>
-          <Copyable text={wallet.address} truncate={truncate} />
-        </span>
+        <Address title={label} address={wallet.address} truncate={truncate} />
       </div>,
       <UnitDisplay
         unit={'ether'}
