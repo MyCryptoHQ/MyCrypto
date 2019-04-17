@@ -93,14 +93,14 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <div className="DWModal">
+        <div className="DW">
           <form
-            className="DWModal-path form-group-sm flex-wrapper"
+            className="DW-path form-group-sm flex-wrapper"
             onSubmit={this.handleSubmitCustomPath}
           >
             <header>
               {translate('DECRYPT_PROMPT_SELECT_ADDRESS')}
-              <div className="DWModal-path-select">
+              <div className="DW-path-select">
                 <Select
                   name="fieldDPath"
                   value={this.state.currentDPath}
@@ -115,7 +115,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
             </header>
             {this.state.currentDPath.label === customDPath.label && (
               <React.Fragment>
-                <div className="DWModal-path-custom">
+                <div className="DW-path-custom">
                   <Input
                     isValid={customPath ? isValidPath(customPath) : true}
                     value={customPath}
@@ -124,7 +124,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
                   />
                 </div>
                 <button
-                  className="DWModal-path-submit btn btn-success"
+                  className="DW-path-submit btn btn-success"
                   disabled={!isValidPath(customPath)}
                 >
                   <i className="fa fa-check" />
@@ -138,18 +138,15 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
             body={wallets.map(wallet => this.renderWalletRow(wallet))}
             config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
           />
-          <div className="DWModal-addresses-nav">
+          <div className="DW-addresses-nav">
             <button
-              className="DWModal-addresses-nav-btn btn btn-sm btn-default"
+              className="DW-addresses-nav-btn btn btn-sm btn-default"
               disabled={page === 0}
               onClick={this.prevPage}
             >
               ← {translate('ACTION_4')}
             </button>
-            <button
-              className="DWModal-addresses-nav-btn btn btn-sm btn-default"
-              onClick={this.nextPage}
-            >
+            <button className="DW-addresses-nav-btn btn btn-sm btn-default" onClick={this.nextPage}>
               {translate('ACTION_5')} →
             </button>
           </div>
@@ -264,7 +261,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     // tslint:disable:jsx-key
     return [
       wallet.index + 1,
-      <div className="DWModal-addresses-table-address-select">
+      <div className="DW-addresses-table-address-select">
         <input
           type="radio"
           name="selectedAddress"
@@ -291,10 +288,10 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
           checkOffline={true}
         />
       ) : (
-        <span className="DWModal-addresses-table-na">N/A</span>
+        <span className="DW-addresses-table-na">N/A</span>
       ),
       <a target="_blank" href={blockExplorer.addressUrl(wallet.address)} rel="noopener noreferrer">
-        <i className="DWModal-addresses-table-more" />
+        <i className="DW-addresses-table-more" />
       </a>
     ];
     // tslint:enable:jsx-key
