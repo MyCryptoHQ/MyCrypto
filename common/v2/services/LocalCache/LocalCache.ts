@@ -199,6 +199,20 @@ export const create = <K extends CollectionKey>(key: K) => (
   setCache(newCache);
 };
 
+export const createWithID = <K extends CollectionKey>(key: K) => (
+  value: LocalCache[K][keyof LocalCache[K]],
+  id: string
+) => {
+  const uuid = id;
+  if (getCache()[key][uuid] === undefined) {
+    const newCache = getCache();
+    newCache[key][uuid] = value;
+    setCache(newCache);
+  } else {
+    console.log('Error: key already exists in createWithID');
+  }
+};
+
 export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {
   return getCache()[key][uuid];
 };

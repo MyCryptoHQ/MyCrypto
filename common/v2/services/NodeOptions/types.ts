@@ -2,7 +2,7 @@ import { StaticNetworkIds } from 'shared/types/network';
 
 export interface NodeOptions {
   name: string;
-  type: 'rpc' | 'etherscan' | 'infura' | 'web3' | 'myccustom';
+  type?: 'rpc' | 'etherscan' | 'infura' | 'web3' | 'myccustom';
   service: string;
   url?: string;
   isCustom?: boolean;
