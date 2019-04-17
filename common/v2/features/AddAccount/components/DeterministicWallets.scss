@@ -49,31 +49,13 @@
       margin: auto;
       margin-bottom: 10px;
 
-      &-token {
-        width: 82px;
-        background: color(control-bg);
-        color: control(control-color);
-      }
-
-      &-address {
-        font-size: 13px;
-        text-align: left;
-        font-family: $font-family-monospace;
+      &-address-select {
         display: flex;
         align-items: center;
 
-        input {
-          margin-right: 10px;
-        }
-
-        &-select {
-          display: flex;
-          align-items: center;
-
-          input[type='radio'] {
-            margin-top: 0;
-            margin-left: 0.5em;
-          }
+        input[type='radio'] {
+          margin-top: 0;
+          margin-left: 0.5em;
         }
       }
 
@@ -85,7 +67,6 @@
       }
 
       &-na {
-        font-size: $font-size-xs;
         opacity: 0.3;
       }
 
@@ -107,19 +88,14 @@
     }
 
     &-nav {
-      &-btn {
-        display: inline-block;
-        margin: 0;
-        width: 49.9%;
-        width: calc(50% - 5px);
-        margin: 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.5em;
 
-        &:first-child {
-          margin-left: 0;
-        }
-        &:last-child {
-          margin-right: 0;
-        }
+      &-page {
+        color: #9a978a;
+        font-size: 12px;
       }
     }
   }

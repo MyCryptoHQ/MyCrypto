@@ -16,6 +16,8 @@ import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWallets.scss';
 import { truncate } from 'v2/libs';
+import nextIcon from 'assets/images/next-page-button.svg';
+import prevIcon from 'assets/images/previous-page-button.svg';
 
 const WALLETS_PER_PAGE = 5;
 
@@ -92,77 +94,66 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     const { selectedAddress, customPath, page } = this.state;
 
     return (
-      <>
-        <div className="DW">
-          <form
-            className="DW-path form-group-sm flex-wrapper"
-            onSubmit={this.handleSubmitCustomPath}
-          >
-            <header>
-              {translate('DECRYPT_PROMPT_SELECT_ADDRESS')}
-              <div className="DW-path-select">
-                <Select
-                  name="fieldDPath"
-                  value={this.state.currentDPath}
-                  onChange={this.handleChangePath}
-                  options={dPaths.concat([customDPath])}
-                  optionRenderer={this.renderDPathOption}
-                  valueRenderer={this.renderDPathOption}
-                  clearable={false}
-                  searchable={false}
+      <div className="DW">
+        <form className="DW-path form-group-sm flex-wrapper" onSubmit={this.handleSubmitCustomPath}>
+          <header>
+            {translate('DECRYPT_PROMPT_SELECT_ADDRESS')}
+            <div className="DW-path-select">
+              <Select
+                name="fieldDPath"
+                value={this.state.currentDPath}
+                onChange={this.handleChangePath}
+                options={dPaths.concat([customDPath])}
+                optionRenderer={this.renderDPathOption}
+                valueRenderer={this.renderDPathOption}
+                clearable={false}
+                searchable={false}
+              />
+            </div>
+          </header>
+          {this.state.currentDPath.label === customDPath.label && (
+            <React.Fragment>
+              <div className="DW-path-custom">
+                <Input
+                  isValid={customPath ? isValidPath(customPath) : true}
+                  value={customPath}
+                  placeholder="m/44'/60'/0'/0"
+                  onChange={this.handleChangeCustomPath}
                 />
               </div>
-            </header>
-            {this.state.currentDPath.label === customDPath.label && (
-              <React.Fragment>
-                <div className="DW-path-custom">
-                  <Input
-                    isValid={customPath ? isValidPath(customPath) : true}
-                    value={customPath}
-                    placeholder="m/44'/60'/0'/0"
-                    onChange={this.handleChangeCustomPath}
-                  />
-                </div>
-                <button
-                  className="DW-path-submit btn btn-success"
-                  disabled={!isValidPath(customPath)}
-                >
-                  <i className="fa fa-check" />
-                </button>
-              </React.Fragment>
-            )}
-          </form>
+              <button
+                className="DW-path-submit btn btn-success"
+                disabled={!isValidPath(customPath)}
+              >
+                <i className="fa fa-check" />
+              </button>
+            </React.Fragment>
+          )}
+        </form>
 
-          <Table
-            head={['#', 'Address', network.unit, 'Token', translateRaw('ACTION_5')]}
-            body={wallets.map(wallet => this.renderWalletRow(wallet))}
-            config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
-          />
-          <div className="DW-addresses-nav">
-            <button
-              className="DW-addresses-nav-btn btn btn-sm btn-default"
-              disabled={page === 0}
-              onClick={this.prevPage}
-            >
-              ← {translate('ACTION_4')}
-            </button>
-            <button className="DW-addresses-nav-btn btn btn-sm btn-default" onClick={this.nextPage}>
-              {translate('ACTION_5')} →
-            </button>
-          </div>
+        <Table
+          head={['#', 'Address', network.unit, 'Token', translateRaw('ACTION_5')]}
+          body={wallets.map(wallet => this.renderWalletRow(wallet))}
+          config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
+        />
+
+        <div className="DW-addresses-nav">
+          <img src={prevIcon} onClick={this.prevPage} />
+          <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
+          <img src={nextIcon} onClick={this.nextPage} />
+
+          <button className="Modal-footer-btn btn btn-default" onClick={onCancel}>
+            {translate('ACTION_2')}
+          </button>
+          <button
+            className="Modal-footer-btn btn btn-primary"
+            onClick={this.handleConfirmAddress}
+            disabled={!selectedAddress}
+          >
+            {translate('ACTION_3')}
+          </button>
         </div>
-
-        <button
-          className="Modal-footer-btn btn btn-primary"
-          onClick={this.handleConfirmAddress}
-          disabled={!selectedAddress}
-        >
-          {translate('ACTION_3')}
-        </button>
-        <button className="Modal-footer-btn btn btn-default" onClick={onCancel}>
-          {translate('ACTION_2')}
-        </button>
-      </>
+      </div>
     );
   }
 
