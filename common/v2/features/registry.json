@@ -22,5 +22,9 @@
   {
     "name": "Download App",
     "key": "downloadApp"
+  },
+  {
+    "name": "No Accounts",
+    "key": "noAccounts"
   }
 ]
