@@ -359,7 +359,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       url: 'https://node2.webchain.network'
     }
   ]
-
 };
 
 export default NODE_CONFIGS;
