@@ -54,7 +54,7 @@ interface ResourceItemProps {
 
 const ResourceItem: React.SFC<ResourceItemProps> = ({ src, title, link }) => {
   return (
-    <ResourceItemWrapper href={link}>
+    <ResourceItemWrapper href={link} target="_blank" rel="noopener noreferrer">
       <Image src={src} />
       {title}
     </ResourceItemWrapper>
@@ -77,7 +77,7 @@ const getResources = () => {
       <ResourceItem
         src={questionsIcon}
         title={translate('NOTIFICATIONS_WALLET_RESOURCE_SUPPORT')}
-        link="/support-center"
+        link="https://support.mycrypto.com/"
       />
     </>
   );

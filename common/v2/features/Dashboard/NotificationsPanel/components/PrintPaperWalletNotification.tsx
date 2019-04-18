@@ -40,6 +40,7 @@ const ResourceItem = styled(Button)`
     font-size: 15px;
   }
 
+  &:focus,
   &:hover {
     embed {
       filter: brightness(0) invert(1);
