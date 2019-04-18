@@ -74,7 +74,7 @@ const ContentPanelDescription = styled.p`
 `;
 
 const ImgIcon = styled.img`
-  width: 150px;
+  width: 125px;
   height: auto;
   margin: 21px 0 28px 0;
 `;

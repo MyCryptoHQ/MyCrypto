@@ -31,7 +31,7 @@ const ActionButton = styled(Button)`
 `;
 
 const FormWrapper = styled.form`
-  margin-top: 35px;
+  margin-top: 15px;
   max-width: 420px;
 `;
 

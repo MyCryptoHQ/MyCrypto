@@ -30,7 +30,7 @@ const PrimaryButton = styled(Button)`
 `;
 
 const FormWrapper = styled.form`
-  margin-top: 14px;
+  margin-top: 15px;
   max-width: 320px;
 
   @media (min-width: 700px) {
