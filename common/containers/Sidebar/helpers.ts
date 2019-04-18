@@ -9,7 +9,7 @@ interface PrioritizedNetworkOptions {
   secondaryNetworks: any[];
 }
 
-export const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby', 'RSK'];
+export const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli', 'RSK'];
 
 export function generateNetworksToNodes(nodes: NodeConfig[]): NetworkOptions {
   return Object.values(nodes).reduce((networksToNodes: NetworkOptions, nextNode) => {
