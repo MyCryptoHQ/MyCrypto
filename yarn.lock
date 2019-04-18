@@ -149,7 +149,7 @@
     "@ledgerhq/errors" "^4.48.0"
     events "^3.0.0"
 
-"@mycrypto/ui@^0.15.0-optional-address-title":
+"@mycrypto/ui@0.15.0-optional-address-title":
   version "0.15.0-optional-address-title"
   resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.15.0-optional-address-title.tgz#a8984af4b2b8d986dae3b48b0e00accf896ac5bc"
   integrity sha512-VdW5tR12l39sZ6oM897DmZVOa8A2KSEj5z147r/m4lS6iJ+3XcYVfWUcICDOegtvA833ruZOmCzR6F55rkQfuA==
