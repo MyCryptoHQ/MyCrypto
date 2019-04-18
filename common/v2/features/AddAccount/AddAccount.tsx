@@ -36,7 +36,6 @@ import {
   PrivateKeyValue,
   TrezorDecrypt,
   SafeTminiDecrypt,
-  Web3DecryptClass,
   WalletButton,
   ParitySignerDecrypt,
   InsecureWalletWarning,
@@ -51,7 +50,7 @@ import * as WalletActions from 'v2/features/Wallets';
 import { NetworkOptionsContext, AccountContext } from 'v2/providers';
 import { Link } from 'react-router-dom';
 import { Account } from 'v2/services/Account/types';
-//import { fieldsReducer } from 'features/transaction/fields/reducer';
+import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
 
 interface OwnProps {
   hidden?: boolean;
@@ -147,7 +146,7 @@ const WalletDecrypt = withRouter<Props>(
         lid: web3info.lid,
         icon: web3info.icon,
         description: 'ADD_WEB3DESC',
-        component: Web3DecryptClass,
+        component: Web3Decrypt,
         initialParams: {},
         unlock: this.props.unlockWeb3,
         attemptUnlock: true,
@@ -227,8 +226,7 @@ const WalletDecrypt = withRouter<Props>(
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: '',
-        isReadOnly: true,
-        redirect: '/account/info'
+        isReadOnly: true
       }
     };
 
@@ -242,7 +240,7 @@ const WalletDecrypt = withRouter<Props>(
         address: '',
         network: 'Ethereum',
         label: 'New Account',
-        accountType: MiscWalletName.VIEW_ONLY,
+        accountType: InsecureWalletName.PRIVATE_KEY,
         derivationPath: ''
       }
     };
@@ -284,7 +282,6 @@ const WalletDecrypt = withRouter<Props>(
         localSettings: '',
         transactionHistory: ''
       };
-      console.log('handling Create Account');
       createAccount(newAccount);
     };
 
@@ -552,7 +549,6 @@ const WalletDecrypt = withRouter<Props>(
             // timeout is only the maximum wait time before secondary view is shown
             // send view will be shown immediately on web3 resolve
             timeout = 1000;
-            console.log('got here?');
             wallet.unlock();
           }
         } catch (e) {
@@ -617,9 +613,7 @@ const WalletDecrypt = withRouter<Props>(
       const decryptionComponent = this.getDecryptionComponent();
       const selectNetworkComponent = this.selectNetworkComponent();
       const confirmComponent = this.handleCompleteFlow();
-      console.log('state: ' + JSON.stringify(this.state, null, 2));
       let componentToRender: JSX.Element;
-      console.log('state: ' + JSON.stringify(this.state, null, 2));
 
       if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
         componentToRender = (
@@ -678,8 +672,6 @@ const WalletDecrypt = withRouter<Props>(
     };
 
     public onUnlock = (payload: any) => {
-      console.log('got here?!@?!?@');
-      console.log(payload);
       const { value, selectedWalletKey } = this.state;
       if (!selectedWalletKey) {
         return;
@@ -689,31 +681,34 @@ const WalletDecrypt = withRouter<Props>(
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
 
-      console.log('this.state.accountType ' + this.state.accountData.accountType);
       if (this.state.accountData.accountType === 'web3') {
-        const x = this.WALLETS[selectedWalletKey].unlock(unlockValue);
-        console.log('went web3 route');
-        console.log(x);
         this.setState({
           hasSelectedAddress: true,
           accountData: {
             ...this.state.accountData,
             derivationPath: '',
-            address: x.getAddressString()
+            address: unlockValue.getAddressString()
           }
         });
-      } else {
-        this.WALLETS[selectedWalletKey].unlock(unlockValue);
+      } else if (this.state.accountData.accountType === 'viewOnly') {
         this.setState({
           hasSelectedAddress: true,
           accountData: {
             ...this.state.accountData,
-            derivationPath: unlockValue.path,
+            address: unlockValue.getAddressString()
+          }
+        });
+      } else {
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            derivationPath:
+              unlockValue.path || unlockValue.dPath + '/' + unlockValue.index.toString(),
             address: unlockValue.address
           }
         });
       }
-      //this.props.resetTransactionRequested();
     };
 
     private isWalletDisabled = (walletKey: WalletName) => {
