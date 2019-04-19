@@ -7,7 +7,6 @@ import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
-import * as selectors from 'features/selectors';
 import {
   deterministicWalletsTypes,
   deterministicWalletsActions
@@ -32,16 +31,13 @@ interface OwnProps {
 interface StateProps {
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
-  desiredToken: AppState['deterministicWallets']['desiredToken'];
   network: ReturnType<typeof configSelectors.getNetworkConfig>;
-  tokens: ReturnType<typeof selectors.getTokens>;
 }
 
 interface DispatchProps {
   getDeterministicWallets(
     args: deterministicWalletsTypes.GetDeterministicWalletsArgs
   ): deterministicWalletsTypes.GetDeterministicWalletsAction;
-  setDesiredToken(tkn: string | undefined): deterministicWalletsTypes.SetDesiredTokenAction;
   onCancel(): void;
   onConfirmAddress(address: string, addressIndex: number): void;
   onPathChange(dPath: DPath): void;
@@ -139,7 +135,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         </form>
 
         <Table
-          head={['#', 'Address', network.unit, 'Token', translateRaw('ACTION_5')]}
+          head={['#', 'Address', network.unit, translateRaw('ACTION_5')]}
           body={wallets.map(wallet => this.renderWalletRow(wallet))}
           config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
         />
@@ -238,7 +234,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
   }
 
   private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData) {
-    const { desiredToken, network, addressLabels } = this.props;
+    const { network, addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
 
@@ -252,9 +248,6 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         }
       };
     }
-
-    // Get renderable values, but keep 'em short
-    const token = desiredToken ? wallet.tokenValues[desiredToken] : null;
 
     // tslint:disable:jsx-key
     return [
@@ -277,17 +270,6 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         displayShortBalance={true}
         checkOffline={true}
       />,
-      desiredToken ? (
-        <UnitDisplay
-          decimal={token ? token.decimal : 0}
-          value={token ? token.value : null}
-          symbol={desiredToken}
-          displayShortBalance={true}
-          checkOffline={true}
-        />
-      ) : (
-        <span className="DW-addresses-table-na">N/A</span>
-      ),
       <a target="_blank" href={blockExplorer.addressUrl(wallet.address)} rel="noopener noreferrer">
         <i className="DW-addresses-table-more" />
       </a>
@@ -300,15 +282,12 @@ function mapStateToProps(state: AppState): StateProps {
   return {
     addressLabels: addressBookSelectors.getAddressLabels(state),
     wallets: state.deterministicWallets.wallets,
-    desiredToken: state.deterministicWallets.desiredToken,
-    network: configSelectors.getNetworkConfig(state),
-    tokens: selectors.getTokens(state)
+    network: configSelectors.getNetworkConfig(state)
   };
 }
 
 const DeterministicWallets = connect(mapStateToProps, {
-  getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets,
-  setDesiredToken: deterministicWalletsActions.setDesiredToken
+  getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets
 })(DeterministicWalletsClass);
 
 export default DeterministicWallets;
