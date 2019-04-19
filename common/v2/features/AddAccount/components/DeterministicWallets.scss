@@ -5,13 +5,17 @@
   padding: 1.5em;
 
   header {
-    font-size: 32px;
-    font-weight: bold;
     width: 100%;
   }
 
   &-path {
     margin-bottom: 20px;
+
+    &-title {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
 
     &-select {
       flex: 1;

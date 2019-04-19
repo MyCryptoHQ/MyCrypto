@@ -1,7 +1,7 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
-import { Table, Address } from '@mycrypto/ui';
+import { Table, Address, IconLink, Typography } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
@@ -97,7 +97,14 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
       <div className="DW">
         <form className="DW-path form-group-sm flex-wrapper" onSubmit={this.handleSubmitCustomPath}>
           <header>
-            {translate('DECRYPT_PROMPT_SELECT_ADDRESS')}
+            <div className="DW-path-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
+            <Typography>
+              Derivation Path{' '}
+              <IconLink
+                icon="shape"
+                href="https://support.mycrypto.com/how-to/hardware-wallets/multiple-addresses-showing-on-hardware-wallet"
+              />
+            </Typography>
             <div className="DW-path-select">
               <Select
                 name="fieldDPath"
