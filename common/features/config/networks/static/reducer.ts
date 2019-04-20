@@ -39,7 +39,8 @@ import {
   ARTIS_TAU1,
   THUNDERCORE_DEFAULT,
   WEB_DEFAULT,
-  METADIUM_DEFAULT
+  METADIUM_DEFAULT,
+  DEXON_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -896,6 +897,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 80,
       max: 80,
       initial: 80
+    }
+  },
+  DEXON: {
+    id: 'DEXON',
+    name: 'DEXON Network',
+    unit: 'DXN',
+    chainId: 237,
+    isCustom: false,
+    color: '#954a97',
+    blockExplorer: makeExplorer({
+      name: 'DEXON Scan',
+      origin: 'https://dexonscan.app',
+      txPath: 'transaction'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: DEXON_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: DEXON_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 24,
+      max: 100,
+      initial: 24
     }
   }
 };

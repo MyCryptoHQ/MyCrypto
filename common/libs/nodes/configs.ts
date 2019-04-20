@@ -358,6 +358,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'api.metadium.com',
       url: 'https://api.metadium.com/prod'
     }
+  ],
+
+  DEXON: [
+    {
+      name: makeNodeName('DEXON', 'dexon'),
+      type: 'rpc',
+      service: 'dexon.org',
+      url: 'https://mainnet-rpc.dexon.org'
+    }
   ]
 };
 

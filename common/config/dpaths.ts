@@ -173,6 +173,11 @@ export const METADIUM_DEFAULT: DPath = {
   value: "m/44'/916'/0'/0"
 };
 
+export const DEXON_DEFAULT: DPath = {
+  label: 'Default (DEXON)',
+  value: "m/44'/237'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -207,7 +212,8 @@ export const DPaths: DPath[] = [
   ARTIS_TAU1,
   THUNDERCORE_DEFAULT,
   WEB_DEFAULT,
-  METADIUM_DEFAULT
+  METADIUM_DEFAULT,
+  DEXON_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

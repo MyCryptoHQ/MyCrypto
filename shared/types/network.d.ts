@@ -34,7 +34,8 @@ type StaticNetworkIds =
   | 'ARTIS_TAU1'
   | 'THUNDERCORE'
   | 'WEB'
-  | 'METADIUM';
+  | 'METADIUM'
+  | 'DEXON';
 
 export interface BlockExplorerConfig {
   name: string;
