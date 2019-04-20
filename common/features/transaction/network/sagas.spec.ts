@@ -12,8 +12,8 @@ import {
   fork
 } from 'redux-saga/effects';
 import { cloneableGenerator, SagaIteratorClone, createMockTask } from 'redux-saga/utils';
-
-import { Wei, Nonce } from 'libs/units';
+import { Wei } from 'libs/units';
+import { hexStringToNumber } from 'utils/formatters';
 import { makeTransaction, getTransactionFields } from 'libs/transaction';
 import * as derivedSelectors from 'features/selectors';
 import { configMetaTypes, configMetaSelectors, configNodesSelectors } from 'features/config';
@@ -21,10 +21,13 @@ import { walletTypes, walletSelectors } from 'features/wallet';
 import { scheduleSelectors, scheduleTypes } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
+import { transactionsSelectors } from 'features/transactions';
+import { SavedTransaction } from 'types/transactions';
 import * as transactionTypes from '../types';
 import * as types from './types';
 import * as actions from './actions';
 import * as sagas from './sagas';
+import { isSchedulingEnabled } from 'features/schedule/selectors';
 
 describe('Network Sagas', () => {
   describe('From', () => {
@@ -248,9 +251,21 @@ describe('Network Sagas', () => {
         );
       });
 
-      it('should put setGasLimitField', () => {
+      it('should select isSchedulingEnabled', () => {
         gens.timeOutCase = gens.successCase.clone();
         expect(gens.successCase.next(successfulGasEstimationResult).value).toEqual(
+          select(isSchedulingEnabled)
+        );
+      });
+
+      it('should select isEtherTransaction', () => {
+        expect(gens.successCase.next(false).value).toEqual(
+          select(derivedSelectors.isEtherTransaction)
+        );
+      });
+
+      it('should put setGasLimitField', () => {
+        expect(gens.successCase.next(false).value).toEqual(
           put(transactionFieldsActions.setGasLimitField(gasSetOptions))
         );
       });
@@ -366,9 +381,40 @@ describe('Network Sagas', () => {
         getAddressString: jest.fn()
       };
       const offline = false;
-      const fromAddress = 'fromAddress';
-      const retrievedNonce = '0xa';
-      const base10Nonce = Nonce(retrievedNonce);
+      const recentTransactions: SavedTransaction[] = JSON.parse(
+        JSON.stringify([
+          {
+            hash: '0x286e4e3bc55f58175da474058359ddbb6db09efc7f94e1741c42ba7e278b0ede',
+            from: 'fromaddress',
+            chainId: 1,
+            nonce: 9,
+            to: '0x4f1F9d958AFa2e94dab3f3Ce7192b87daEa39017',
+            value: '0x0',
+            time: 1544888892465
+          },
+          {
+            hash: '0xecc044b81a794fc567dd389b7709b89a3a0a001dcdd151fc442c57982cfa012b',
+            from: 'fromaddress',
+            chainId: 11,
+            nonce: 8,
+            to: '0x3d1F9d958AFa2e94dab3f3Ce7362b87daEa39017',
+            value: '0x0',
+            time: 1544811728723
+          }
+        ])
+      );
+      const transactionCountString = '0x9';
+      const transactionCount = 9;
+      const transaction: any = {
+        hash: '0xecc044b81a794fc567dd389b7709b89a3a0a001dcdd151fc442c57982cfa012b',
+        from: 'fromaddress',
+        chainId: 11,
+        nonce: 8,
+        to: '0x3d1F9d958AFa2e94dab3f3Ce7362b87daEa39017',
+        value: '0x0',
+        time: 1544811728723
+      };
+      const tx = { transaction };
 
       const gens: any = {};
       gens.gen = cloneableGenerator(sagas.handleNonceRequest)();
@@ -394,7 +440,7 @@ describe('Network Sagas', () => {
       it('should exit if being called without a wallet inst', () => {
         gens.noWallet = gens.gen.clone();
         gens.noWallet.next(null); // No wallet inst
-        expect(gens.noWallet.next(offline).done).toEqual(true);
+        expect(gens.noWallet.next(offline).done).toEqual(false);
       });
 
       it('should select getOffline', () => {
@@ -403,7 +449,7 @@ describe('Network Sagas', () => {
 
       it('should exit if being called while offline', () => {
         gens.offline = gens.gen.clone();
-        expect(gens.offline.next(true).done).toEqual(true);
+        expect(gens.offline.next(true).done).toEqual(false);
       });
 
       it('should apply walletInst.getAddressString', () => {
@@ -413,19 +459,31 @@ describe('Network Sagas', () => {
       });
 
       it('should apply nodeLib.getTransactionCount', () => {
-        expect(gens.gen.next(fromAddress).value).toEqual(
-          apply(nodeLib, nodeLib.getTransactionCount, [fromAddress])
+        expect(gens.gen.next(transactionCountString).value).toEqual(
+          apply(nodeLib, nodeLib.getTransactionCount, [transactionCountString])
         );
       });
 
-      it('should put inputNonce', () => {
-        expect(gens.gen.next(retrievedNonce).value).toEqual(
-          put(transactionFieldsActions.inputNonce(base10Nonce.toString()))
+      it('should call hexStringToNumber', () => {
+        expect(gens.gen.next(transactionCountString).value).toEqual(
+          call(hexStringToNumber, transactionCountString)
         );
       });
 
-      it('should put getNonceSucceeded', () => {
-        expect(gens.gen.next().value).toEqual(put(actions.getNonceSucceeded(retrievedNonce)));
+      it('should select transactionSelectors', () => {
+        expect(gens.gen.next(transactionCount).value).toEqual(
+          select(transactionsSelectors.getRecentTransactions)
+        );
+      });
+
+      it('should select transactionSelectors', () => {
+        expect(gens.gen.next(recentTransactions).value).toEqual(
+          select(derivedSelectors.getTransaction)
+        );
+      });
+
+      it('should call getTransactionFields', () => {
+        expect(gens.gen.next(tx).value).toEqual(call(getTransactionFields, transaction));
       });
     });
 

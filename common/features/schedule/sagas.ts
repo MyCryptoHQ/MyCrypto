@@ -29,8 +29,7 @@ import {
   transactionFieldsActions,
   transactionMetaSelectors,
   transactionHelpers,
-  transactionBroadcastTypes,
-  transactionActions
+  transactionBroadcastTypes
 } from 'features/transaction';
 import * as types from './types';
 import * as actions from './actions';
@@ -42,12 +41,10 @@ import { localGasEstimation } from '../transaction/network/sagas';
 import { INode } from 'libs/nodes/INode';
 import { IWallet } from 'libs/wallet';
 import { walletSelectors } from 'features/wallet';
-import { notificationsActions } from 'features/notifications';
-import { toBuffer } from 'ethereumjs-util';
 import erc20 from 'libs/erc20';
 import { BroadcastTransactionSucceededAction } from 'features/transaction/broadcast/types';
 import { TransactionReceipt } from 'shared/types/transactions';
-import { translateRaw } from 'translations';
+import { getNonce, getGasPrice } from 'features/transaction/fields/selectors';
 
 //#region Schedule Timestamp
 export function* setCurrentScheduleTimestampSaga({
@@ -172,6 +169,26 @@ export const currentWindowSize = takeLatest(
   [types.ScheduleActions.CURRENT_WINDOW_SIZE_SET],
   setCurrentWindowSizeSaga
 );
+
+export const setDefaultWindowSize = takeLatest(
+  [types.ScheduleActions.TYPE_SET],
+  function* setDefaultWindowSizeFn(): SagaIterator {
+    const currentScheduleType: selectors.ICurrentScheduleType = yield select(
+      selectors.getCurrentScheduleType
+    );
+
+    if (currentScheduleType.value === 'time') {
+      yield put(
+        actions.setCurrentWindowSize(EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_TIME.toString())
+      );
+    } else {
+      yield put(
+        actions.setCurrentWindowSize(EAC_SCHEDULING_CONFIG.WINDOW_SIZE_DEFAULT_BLOCK.toString())
+      );
+    }
+  }
+);
+
 //#endregion Window Size
 
 //#region Window Start
@@ -307,6 +324,7 @@ export function* estimateSchedulingGas(): SagaIterator {
         gasLimit: apply(node, node.estimateGas, [txObj]),
         timeout: call(delay, 10000)
       });
+
       if (gasLimit) {
         const gasSetOptions = {
           raw: gasLimit.toString(),
@@ -341,13 +359,28 @@ export function* prepareApproveTokenTransaction(): SagaIterator {
       transactionMetaSelectors.getTokenValue
     );
     const tokenAddress: string = yield select(derivedSelectors.getSelectedTokenContractAddress);
+    const tokenSymbol: string = yield select(derivedSelectors.getUnit);
     const node: INode = yield select(configNodesSelectors.getNodeLib);
 
     if (isSchedulingEnabled && !isEtherTransaction) {
       yield put(
+        actions.setScheduledTokenTransferSymbol({
+          raw: tokenSymbol,
+          value: tokenSymbol
+        })
+      );
+
+      yield put(
         actions.setScheduledTransactionHash({
           raw: action.payload.broadcastedHash,
           value: action.payload.broadcastedHash
+        })
+      );
+
+      yield put(
+        actions.setScheduledTransactionAddress({
+          raw: '',
+          value: ''
         })
       );
 
@@ -363,16 +396,24 @@ export function* prepareApproveTokenTransaction(): SagaIterator {
         }
       }
 
+      const transactionBlockNumber = receipt.blockNumber;
+
+      let currentBlock: number | null = null;
+
+      while (!currentBlock || transactionBlockNumber + 1 >= currentBlock) {
+        currentBlock = parseInt(yield call(node.getCurrentBlock), 10);
+        yield call(delay, 2000);
+      }
+
       yield put(actions.setSchedulingToggle({ value: false }));
 
       yield call(delay, 100);
 
       yield put(
-        notificationsActions.showNotification(
-          'info',
-          translateRaw('SCHEDULE_TOKEN_TRANSFER_APPROVE'),
-          20000
-        )
+        transactionFieldsActions.setValueField({
+          raw: '0',
+          value: new BN('0')
+        })
       );
 
       const scheduledTransactionAddress: string | null = yield call(
@@ -380,17 +421,14 @@ export function* prepareApproveTokenTransaction(): SagaIterator {
         receipt
       );
 
+      if (!scheduledTransactionAddress) {
+        return;
+      }
+
       yield put(
-        transactionActions.swapTokenToEther({
-          decimal: 18,
-          to: {
-            raw: tokenAddress,
-            value: toBuffer(tokenAddress)
-          },
-          value: {
-            raw: '0',
-            value: new BN('0')
-          }
+        actions.setScheduledTransactionAddress({
+          raw: scheduledTransactionAddress,
+          value: scheduledTransactionAddress
         })
       );
 
@@ -399,14 +437,26 @@ export function* prepareApproveTokenTransaction(): SagaIterator {
         _value: tokenTransferAmount.value
       });
 
-      yield put(
-        transactionFieldsActions.setDataField({
-          raw: approveTokensData,
-          value: toBuffer(approveTokensData)
-        })
-      );
+      const { value: nonce } = yield select(getNonce);
+      const { value: gasPrice } = yield select(getGasPrice);
 
-      yield put(networkActions.getNonceRequested());
+      const scheduledTokensApproveTransaction = {
+        to: tokenAddress,
+        value: '',
+        data: approveTokensData,
+        nonce,
+        gasLimit: undefined,
+        gasPrice
+      };
+
+      const { gasLimit } = yield race({
+        gasLimit: apply(node, node.estimateGas, [scheduledTokensApproveTransaction]),
+        timeout: call(delay, 10000)
+      });
+
+      scheduledTokensApproveTransaction.gasLimit = gasLimit;
+
+      yield put(actions.setScheduledTokensApproveTransaction(scheduledTokensApproveTransaction));
     }
   }
 }
@@ -423,6 +473,7 @@ export function* scheduleSaga(): SagaIterator {
     mirrorTimeBountyToDeposit,
     fork(estimateSchedulingGas),
     schedulingParamsValidity,
-    fork(prepareApproveTokenTransaction)
+    fork(prepareApproveTokenTransaction),
+    setDefaultWindowSize
   ]);
 }

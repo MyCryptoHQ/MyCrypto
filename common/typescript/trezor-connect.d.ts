@@ -1,4 +1,4 @@
-declare module 'vendor/trezor-connect' {
+declare module 'trezor-connect' {
   type Path = number[] | string;
 
   interface TxSignature {
@@ -20,6 +20,25 @@ declare module 'vendor/trezor-connect' {
     publicKey: string;
   }
 
+  interface signTransactionMessage {
+    path: Path;
+    transaction: Transaction;
+  }
+
+  interface Transaction {
+    nonce: string;
+    gasPrice: string;
+    gasLimit: string;
+    to: string;
+    value: string;
+    data: string | null;
+    chainId: number | null;
+  }
+
+  interface pathObj {
+    path: Path;
+  }
+
   interface ErrorResponse {
     success: false;
     error: string;
@@ -31,24 +50,11 @@ declare module 'vendor/trezor-connect' {
   type Response<T> = ErrorResponse | SuccessResponse<T>;
 
   namespace TrezorConnect {
-    export function getXPubKey(
-      path: Path,
-      cb: (res: Response<PublicKey>) => void,
-      minFirmware?: string
-    ): void;
+    export function manifest(data): void;
 
-    export function ethereumSignTx(
-      path: Path,
-      nonce: string,
-      gasPrice: string,
-      gasLimit: string,
-      to: string,
-      value: string,
-      data: string | null,
-      chainId: number | null,
-      cb: (signature: Response<TxSignature>) => void,
-      minFirmware?: string
-    ): void;
+    export function getPublicKey(pathObj): any;
+
+    export function ethereumSignTransaction(signTransactionMessage): any;
 
     export function signMessage(
       path: Path,
@@ -56,13 +62,9 @@ declare module 'vendor/trezor-connect' {
       cb: (res: Response<MessageSignature>) => void,
       coin?: string,
       minFirmware?: string
-    ): void;
+    ): any;
 
-    export function ethereumGetAddress(
-      path: Path,
-      cb: (res: Response<{ address: string }>) => void,
-      minFirmware?: string
-    ): void;
+    export function ethereumGetAddress(pathObj): any;
   }
 
   export default TrezorConnect;

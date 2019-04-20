@@ -1,18 +1,18 @@
 {
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
-  "version": "1.5.0",
+  "version": "1.6.4",
   "main": "main.js",
-  "description": "MyCrypto web and electron app",
+  "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
   "engines": {
     "node": ">= 8.0.0",
     "npm": ">= 5.0.0"
   },
   "dependencies": {
-    "@ledgerhq/hw-app-eth": "4.7.3",
-    "@ledgerhq/hw-transport-node-hid": "4.7.6",
-    "@ledgerhq/hw-transport-u2f": "4.12.0",
+    "@ledgerhq/hw-app-eth": "4.48.0",
+    "@ledgerhq/hw-transport-node-hid-noevents": "4.48.0",
+    "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@parity/qr-signer": "0.3.1",
     "axios": "0.18.0",
     "babel-polyfill": "6.26.0",
@@ -33,7 +33,7 @@
     "html2canvas": "1.0.0-alpha.12",
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.4",
-    "lodash": "4.17.5",
+    "lodash": "4.17.11",
     "lodash.flatten": "4.4.0",
     "lodash.get": "4.4.2",
     "moment": "2.22.1",
@@ -63,6 +63,7 @@
     "rskjs-util": "1.0.3",
     "scryptsy": "2.0.0",
     "semver": "5.5.0",
+    "trezor-connect": "7.0.1",
     "trezor.js": "6.17.5",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.2.4",
@@ -98,15 +99,16 @@
     "@types/webpack-env": "1.13.4",
     "@types/zxcvbn": "4.4.0",
     "autodll-webpack-plugin": "0.3.9",
+    "aws-sdk": "2.424.0",
     "check-node-version": "3.2.0",
     "concurrently": "3.5.1",
     "copy-webpack-plugin": "4.5.1",
     "core-js": "2.5.5",
     "coveralls": "3.0.0",
+    "cross-env": "5.2.0",
     "css-loader": "0.28.11",
     "electron": "2.0.8",
     "electron-builder": "20.13.4",
-    "electron-rebuild": "1.7.3",
     "empty": "0.10.1",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
@@ -116,16 +118,15 @@
     "friendly-errors-webpack-plugin": "1.6.1",
     "hard-source-webpack-plugin": "0.6.4",
     "html-webpack-plugin": "3.0.6",
-    "husky": "0.14.3",
+    "husky": "1.3.1",
     "image-webpack-loader": "4.2.0",
     "isomorphic-fetch": "2.2.1",
     "jest": "22.1.4",
     "klaw-sync": "3.0.2",
-    "lint-staged": "7.0.4",
+    "lint-staged": "7.0.5",
     "mini-css-extract-plugin": "0.4.0",
     "minimist": "1.2.0",
     "mycrypto-nano-result": "0.0.1",
-    "node-hid": "0.7.2",
     "node-sass": "4.8.3",
     "nodemon": "1.17.3",
     "null-loader": "0.1.1",
@@ -175,16 +176,16 @@
     "build:electron":
       "webpack --config webpack_config/webpack.electron-prod.js && node webpack_config/buildElectron.js",
     "build:electron:osx":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=osx node webpack_config/buildElectron.js",
+      "webpack --config webpack_config/webpack.electron-prod.js && cross-env ELECTRON_OS=osx node webpack_config/buildElectron.js",
     "build:electron:windows":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=windows node webpack_config/buildElectron.js",
+      "webpack --config webpack_config/webpack.electron-prod.js && cross-env ELECTRON_OS=windows node webpack_config/buildElectron.js",
     "build:electron:linux":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=linux node webpack_config/buildElectron.js",
+      "webpack --config webpack_config/webpack.electron-prod.js && cross-env ELECTRON_OS=linux node webpack_config/buildElectron.js",
     "prebuild:electron": "check-node-version --package",
     "jenkins:build:linux":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_LINUX node webpack_config/buildElectron.js",
+      "webpack --config webpack_config/webpack.electron-prod.js && cross-env ELECTRON_OS=JENKINS_LINUX node webpack_config/buildElectron.js",
     "jenkins:build:mac":
-      "webpack --config webpack_config/webpack.electron-prod.js && ELECTRON_OS=JENKINS_MAC node webpack_config/buildElectron.js",
+      "webpack --config webpack_config/webpack.electron-prod.js && cross-env ELECTRON_OS=JENKINS_MAC node webpack_config/buildElectron.js",
     "jenkins:upload": "node jenkins/upload",
     "test:coverage": "jest --config=jest_config/jest.config.json --coverage",
     "test": "jest --config=jest_config/jest.config.json",
@@ -195,10 +196,10 @@
     "pretest": "check-node-version --package",
     "dev": "node webpack_config/devServer.js",
     "predev": "check-node-version --package",
-    "dev:https": "HTTPS=true node webpack_config/devServer.js",
+    "dev:https": "cross-env HTTPS=true node webpack_config/devServer.js",
     "predev:https": "check-node-version --package",
     "dev:electron":
-      "concurrently --kill-others --names 'webpack,electron' 'BUILD_ELECTRON=true node webpack_config/devServer.js' 'webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js'",
+      "concurrently --kill-others --names \"webpack,electron\" \"cross-env BUILD_ELECTRON=true node webpack_config/devServer.js\" \"webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js\"",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "tscheck": "tsc --noEmit",
     "start": "npm run dev",
@@ -207,13 +208,13 @@
       "find ./common/ -name '*.ts*' | xargs prettier --write --config ./.prettierrc --config-precedence file-override",
     "prettier:diff":
       "prettier --write --config ./.prettierrc --list-different \"common/**/*.ts\" \"common/**/*.tsx\"",
-    "prepush": "npm run tslint && npm run tscheck",
     "update:tokens": "ts-node scripts/update-tokens",
-    "postinstall": "electron-rebuild --force"
+    "postinstall": "electron-builder install-app-deps"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
+      "npm run tslint",
       "git add"
     ]
   },
@@ -223,5 +224,10 @@
     "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run tscheck && npm test"
+    }
+  }
 }

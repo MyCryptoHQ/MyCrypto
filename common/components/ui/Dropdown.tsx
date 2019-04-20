@@ -7,11 +7,25 @@ interface Props extends ReactSelectProps {
   onChange: any;
 }
 
+interface State {
+  selectedOption: any;
+  hasBlurred: boolean;
+}
+
 export default class Dropdown extends React.Component<Props> {
-  public state = {
+  public state: State = {
     selectedOption: this.props.value || '',
     hasBlurred: false
   };
+
+  public componentDidUpdate(_: Props, prevState: State) {
+    const { value } = this.props;
+    const { selectedOption } = prevState;
+
+    if (selectedOption !== value) {
+      this.setState({ selectedOption: value });
+    }
+  }
 
   public handleChange = (selectedOption: Option) => {
     this.setState({ selectedOption });

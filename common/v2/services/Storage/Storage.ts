@@ -1,3 +1,5 @@
+import { isDevelopment } from 'v2/utils';
+
 // tslint:disable-next-line
 const noop = () => {};
 
@@ -58,6 +60,10 @@ export default class StorageService extends StorageServiceBase {
       throw new Error(`StorageService has already been instantiated.`);
     } else {
       instantiated = true;
+    }
+
+    if (isDevelopment()) {
+      (window as any).StorageService = this;
     }
   }
 }
