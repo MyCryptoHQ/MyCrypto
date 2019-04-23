@@ -4,7 +4,7 @@ import { Layout } from 'v2/features';
 import sadWallet from 'common/assets/images/icn-sad-wallet.svg';
 import { Button } from '@mycrypto/ui';
 import translate from 'translations';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const NoAccountsContainer = styled.div`
   display: flex;
@@ -102,9 +102,6 @@ export default class NoAccounts extends Component {
     this.setState({ redirect: true });
   }
   public render() {
-    if (this.state.redirect) {
-      return <Redirect push={true} to="/add-account" />;
-    }
     return (
       <Layout centered={true}>
         <NoAccountsContainer>
@@ -114,7 +111,7 @@ export default class NoAccounts extends Component {
             <Description>{translate('NO_ACCOUNTS_DESCRIPTION')}</Description>
             <ButtonGroup>
               <WhiteButtonFirst secondary={true} onClick={this.handleClick}>
-                Add Existing Account
+                <Link to="/add-account">Add Existing Account</Link>
               </WhiteButtonFirst>
               <WhiteButtonSecond secondary={true}>Import MyCrypto Settings</WhiteButtonSecond>
             </ButtonGroup>
