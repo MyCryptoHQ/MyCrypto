@@ -2,7 +2,7 @@
 @import 'common/sass/mixins';
 
 .DW {
-  padding: 1.5em;
+  padding: 1.5rem;
 
   header {
     width: 100%;
@@ -59,7 +59,7 @@
 
         input[type='radio'] {
           margin-top: 0;
-          margin-left: 0.5em;
+          margin-left: 0.5rem;
         }
       }
 
@@ -91,7 +91,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 1.5em;
+      padding-top: 1.5rem;
 
       &-page {
         color: #9a978a;
