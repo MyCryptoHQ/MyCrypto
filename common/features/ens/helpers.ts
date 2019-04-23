@@ -28,6 +28,10 @@ function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash
   const ensAddresses = yield select(getENSAddresses);
 
   // Return the owner's address, and the resolved address if it exists
+  // NOTE: THE DEED OWNER IS NOT THE OWNER
+  // CHECK LEGACY.MYCRYPTO.COM FOR THE DIFFERENCE BETWEEN DEED OWNER AND OWNER
+  // THIS WILL CAUSE MASS CONFUSION IF WE USE THIS AS THE 'OWNER' FOR MIGRATING TO NEW REGISTRAR
+  // - TAYLOR
   const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
     to: deedAddress,
     data: ENS.deed.owner.encodeInput(),
