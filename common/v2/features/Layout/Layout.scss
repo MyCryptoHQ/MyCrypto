@@ -6,15 +6,13 @@
     padding: 100px 0 50px 0;
 
     @media (min-width: 700px) {
-      padding: 150px 80px 50px 80px;
-
       &.centered {
         display: flex;
         align-items: center;
         justify-content: center;
       }
     }
-    @media (min-width: 1000px) {
+    @media (min-width: 850px) {
       padding: 50px 80px;
     }
     &.fluid {
@@ -22,4 +20,8 @@
       padding-right: 0;
     }
   }
+}
+
+.WhiteBackground {
+  background: #fff;
 }

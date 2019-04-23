@@ -14,7 +14,7 @@ import {
 } from 'redux-saga/effects';
 
 import { Address, toTokenBase, Wei, fromTokenBase, fromWei, TokenValue } from 'libs/units';
-import { isValidENSAddress, validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
+import { validNumber, validPositiveNumber, validDecimal } from 'libs/validators';
 import { IGetTransaction, ICurrentValue } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
@@ -45,6 +45,10 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
   const isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn> = yield select(
     configSelectors.getIsValidAddressFn
   );
+  const isValidENSAddress: ReturnType<typeof configSelectors.getIsValidENSAddressFn> = yield select(
+    configSelectors.getIsValidENSAddressFn
+  );
+
   const validAddress: boolean = yield call(isValidAddress, raw);
   const validEns: boolean = yield call(isValidENSAddress, raw);
 
@@ -53,10 +57,13 @@ export function* setCurrentToSaga({ payload: raw }: types.SetCurrentToAction): S
     value = Address(raw);
   } else if (validEns) {
     yield call(setField, { value, raw });
+    const domain = raw.split('.');
+    if (domain.length === 2) {
+      yield put(ensActions.resolveDomainRequested(domain[0]));
+    } else if (domain.length === 3) {
+      yield put(ensActions.resolveDomainRequested(`${domain[0]}.${domain[1]}`));
+    }
 
-    const [domain] = raw.split('.');
-
-    yield put(ensActions.resolveDomainRequested(domain));
     yield take([
       ensTypes.ENSActions.RESOLVE_DOMAIN_FAILED,
       ensTypes.ENSActions.RESOLVE_DOMAIN_SUCCEEDED,

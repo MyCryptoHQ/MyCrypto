@@ -20,6 +20,7 @@ interface StateProps {
   isToken: boolean;
   isSchedulingEnabled: boolean;
   network: NetworkConfig;
+  sendingTokenApproveTransaction: boolean;
 }
 
 class BodyClass extends React.Component<StateProps, State> {
@@ -47,6 +48,13 @@ class BodyClass extends React.Component<StateProps, State> {
               {translate('SCHEDULE_TOKEN_TRANSFER_NOTICE')}
             </p>
           )}
+
+        {this.props.sendingTokenApproveTransaction && (
+          <p className="tx-modal-testnet-warn small">
+            {translate('SCHEDULE_TOKEN_TRANSFER_APPROVE')}
+          </p>
+        )}
+
         <Addresses />
         <Amounts />
         <button
@@ -67,7 +75,8 @@ const mapStateToProps = (state: AppState): StateProps => {
   return {
     isSchedulingEnabled: scheduleSelectors.isSchedulingEnabled(state),
     isToken: !selectors.isEtherTransaction(state),
-    network: configSelectors.getNetworkConfig(state)
+    network: configSelectors.getNetworkConfig(state),
+    sendingTokenApproveTransaction: scheduleSelectors.getSendingTokenApproveTransaction(state)
   };
 };
 

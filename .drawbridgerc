@@ -3,7 +3,7 @@
         "develop": {
             "gitUrl": "git@github.com:MyCryptoHQ/MyCrypto.git",
             "distFolder": "dist/prod",
-            "buildCommand": "yarn && npm run build"
+            "buildCommand": "rm -rf node_modules && yarn && yarn build"
         },
         "beta": {
             "gitUrl": "git@github.com:MyCryptoHQ/MyCrypto-Beta.git",

@@ -25,7 +25,7 @@ const LINK_COLUMNS = [
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_9'),
-        link: 'mailto://press@mycrypto.com',
+        link: 'mailto:press@mycrypto.com',
         analytics_event: 'Press'
       },
       {
@@ -73,6 +73,16 @@ const LINK_COLUMNS = [
         title: 'MoneroVision',
         link: 'https://monerovision.com/',
         analytics_event: 'MoneroVision'
+      },
+      {
+        title: 'MyCrypto Desktop App',
+        link: 'https://download.mycrypto.com',
+        analytics_event: 'MyCrypto Desktop App'
+      },
+      {
+        title: 'Ambo Mobile App',
+        link: 'https://ambo.io',
+        analytics_event: 'Ambo Mobile App'
       }
     ]
   }

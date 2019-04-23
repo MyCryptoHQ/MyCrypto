@@ -1,6 +1,17 @@
 
 language: node_js
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - g++-4.8-multilib
+      - gcc-multilib
+      - libusb-1.0-0-dev
+      - libudev-dev
+
 matrix:
   include:
     - os: osx
