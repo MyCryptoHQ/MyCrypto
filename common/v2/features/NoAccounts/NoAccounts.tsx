@@ -15,6 +15,8 @@ const NoAccountsContainer = styled.div`
   border-radius: 3px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
   background-color: #ffffff;
+  margin-top: 6.5em;
+  margin-bottom: 6.5em;
 `;
 
 const NoAccountsContent = styled.div`
@@ -103,19 +105,24 @@ export default class NoAccounts extends Component {
   }
   public render() {
     return (
-      <Layout centered={true}>
+      <Layout centered={true} fluid={true}>
         <NoAccountsContainer>
           <NoAccountsContent className="no-accounts">
             <ImgIcon src={sadWallet} />
             <Header>{translate('NO_ACCOUNTS_HEADER')}</Header>
             <Description>{translate('NO_ACCOUNTS_DESCRIPTION')}</Description>
             <ButtonGroup>
-              <WhiteButtonFirst secondary={true} onClick={this.handleClick}>
-                <Link to="/add-account">Add Existing Account</Link>
-              </WhiteButtonFirst>
+              <Link to="/add-account">
+                <WhiteButtonFirst secondary={true} onClick={this.handleClick}>
+                  Add Existing Account
+                </WhiteButtonFirst>
+              </Link>
+              {/* Link to import settings page */}
               <WhiteButtonSecond secondary={true}>Import MyCrypto Settings</WhiteButtonSecond>
             </ButtonGroup>
-            <PrimaryButton>Create New Account</PrimaryButton>
+            <Link to="/create-wallet">
+              <PrimaryButton>Create New Account</PrimaryButton>
+            </Link>
           </NoAccountsContent>
         </NoAccountsContainer>
       </Layout>
