@@ -10,22 +10,35 @@ const NoAccountsContainer = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
-  width: 1245px;
-  height: 505px;
+  width: 345px;
+  height: 506px;
   border-radius: 3px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
   background-color: #ffffff;
-  margin-top: 6.5em;
-  margin-bottom: 6.5em;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (min-width: 700px) {
+    width: 1245px;
+    height: 505px;
+    margin-top: 6.5em;
+    margin-bottom: 6.5em;
+  }
 `;
 
 const NoAccountsContent = styled.div`
-  margin-top: 45px;
-  width: 503px;
+  width: 340px;
   flex-direction: column;
   align-items: center;
   padding: 18px 4px 26px 4px;
   text-align: center;
+  justify-content: center;
+
+  @media (min-width: 700px) {
+    width: 503px;
+    margin-top: 45px;
+  }
 `;
 const Header = styled.p`
   font-size: 24px;
@@ -37,11 +50,16 @@ const Header = styled.p`
 `;
 
 const Description = styled.p`
-  font-size: 18px;
-  font-weight: normal;
-  line-height: 1.5;
+  height: 48px;
+  font-size: 16px;
   padding: 0 30px 0 30px;
   color: ${props => props.theme.text};
+
+  @media (min-width: 700px) {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.5;
+  }
 `;
 
 const ImgIcon = styled.img`
@@ -51,7 +69,7 @@ const ImgIcon = styled.img`
 `;
 
 const PrimaryButton = styled(Button)`
-  width: 230px;
+  width: 315px;
   margin-bottom: 15px;
   font-size: 17px;
   text-align: center;
@@ -63,7 +81,7 @@ const PrimaryButton = styled(Button)`
 `;
 
 const WhiteButtonFirst = styled(Button)`
-  width: 230px;
+  width: 315px;
   margin-bottom: 15px;
   font-size: 17px;
   white-space: nowrap;
@@ -79,7 +97,7 @@ const WhiteButtonFirst = styled(Button)`
 `;
 
 const WhiteButtonSecond = styled(Button)`
-  width: 230px;
+  width: 315px;
   margin-bottom: 15px;
   font-size: 17px;
   white-space: nowrap;
@@ -93,7 +111,13 @@ const WhiteButtonSecond = styled(Button)`
 
 const ButtonGroup = styled.div`
   justify-content: center;
-  width: 503px;
+  width: 340px;
+  flex-direction: column;
+  margin-top: 20px;
+
+  @media (min-width: 700px) {
+    width: 503px;
+  }
 `;
 
 export default class NoAccounts extends Component {
