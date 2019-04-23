@@ -32,13 +32,15 @@ import { Theme } from 'config';
 import 'what-input';
 
 // v2
-import { gatherFeatureRoutes } from 'v2';
+// import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
+import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import Dashboard from 'v2/features/Dashboard';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -90,11 +92,12 @@ class RootClass extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
-
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
+          {/* {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)} */}
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
