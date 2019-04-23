@@ -1,7 +1,6 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import { Table, Address, IconLink, Typography } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
@@ -20,12 +19,6 @@ import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
 
 const WALLETS_PER_PAGE = 5;
-
-const MonospaceAddress = styled(Address)`
-  * {
-    font-family: 'Roboto Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
-  }
-`;
 
 interface OwnProps {
   dPath: DPath;
@@ -269,7 +262,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
           onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
         />
       </div>,
-      <MonospaceAddress title={label} address={wallet.address} truncate={truncate} />,
+      <Address title={label} address={wallet.address} truncate={truncate} />,
       <UnitDisplay
         unit={'ether'}
         value={wallet.value}
