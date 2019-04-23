@@ -32,7 +32,7 @@ import { Theme } from 'config';
 import 'what-input';
 
 // v2
-// import { gatherFeatureRoutes } from 'v2';
+import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
@@ -95,10 +95,9 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          {/* {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)} */}
           <PrivateRoute path="/dashboard" component={Dashboard} />
-
-          <Route path="/account" component={SendTransaction} />
+          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
+          <Route path="/account" component={SendTransaction} exact={true} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
