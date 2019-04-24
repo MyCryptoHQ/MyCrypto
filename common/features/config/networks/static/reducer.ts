@@ -28,7 +28,6 @@ import {
   GO_DEFAULT,
   EOSC_DEFAULT,
   ESN_DEFAULT,
-  AQUA_DEFAULT,
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
@@ -620,9 +619,9 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     tokens: [],
     contracts: [],
     dPathFormats: {
-      [SecureWalletName.TREZOR]: AQUA_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: AQUA_DEFAULT,
-      [InsecureWalletName.MNEMONIC_PHRASE]: AQUA_DEFAULT
+      [SecureWalletName.TREZOR]: ETH_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
     },
     gasPriceSettings: {
       min: 0.1,
