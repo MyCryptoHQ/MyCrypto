@@ -91,7 +91,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 
     return (
       <div className="DW">
-        <form className="DW-path form-group-sm flex-wrapper" onSubmit={this.handleSubmitCustomPath}>
+        <form className="DW-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
           <header>
             <div className="DW-path-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
             <Typography>
@@ -115,7 +115,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
             </div>
           </header>
           {this.state.currentDPath.label === customDPath.label && (
-            <React.Fragment>
+            <div className="flex-wrapper">
               <div className="DW-path-custom">
                 <Input
                   isValid={customPath ? isValidPath(customPath) : true}
@@ -130,7 +130,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
               >
                 <i className="fa fa-check" />
               </button>
-            </React.Fragment>
+            </div>
           )}
         </form>
 

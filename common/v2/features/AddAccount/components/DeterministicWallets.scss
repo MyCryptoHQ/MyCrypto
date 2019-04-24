@@ -6,6 +6,7 @@
 
   header {
     width: 100%;
+    margin-bottom: 20px;
   }
 
   &-path {
@@ -30,7 +31,6 @@
 
     &-custom {
       flex: 1;
-      margin-left: $space-md;
 
       .input-group-input {
         margin: 0;
