@@ -23,7 +23,8 @@ $speed: 500ms;
 }
 
 .Panel {
-  width: 562px;
+  width: 760px;
+  min-height: 790px;
   // display: flex;
   // flex-direction: column;
   position: relative;
@@ -110,7 +111,7 @@ $speed: 500ms;
   justify-content: center;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
   width: 760px;
-  height: 790px;
+  min-height: 790px;
   border-radius: 3px;
 
   &-connectWallet {
