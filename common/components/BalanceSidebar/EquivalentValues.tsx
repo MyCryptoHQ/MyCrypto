@@ -16,7 +16,6 @@ import { walletTypes } from 'features/wallet';
 import { UnitDisplay, Spinner } from 'components/ui';
 import btcIco from 'assets/images/bitcoin.png';
 import ethIco from 'assets/images/ether.png';
-import repIco from 'assets/images/augur.png';
 import './EquivalentValues.scss';
 
 interface AllValue {
@@ -134,12 +133,15 @@ class EquivalentValues extends React.Component<Props, State> {
       USD: '$',
       EUR: '€',
       GBP: '£',
-      CHF: ' '
+      CHF: '₣',
+      RUB: '₽',
+      JPY: '¥',
+      KRW: '₩',
+      INR: '₹'
     };
     const coinAndTokenSymbols: any = {
       BTC: btcIco,
-      ETH: ethIco,
-      REP: repIco
+      ETH: ethIco
     };
     interface ValueProps {
       className: string;
