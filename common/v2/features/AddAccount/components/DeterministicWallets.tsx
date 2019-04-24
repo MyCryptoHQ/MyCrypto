@@ -1,7 +1,7 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
-import { Table, Address, IconLink, Typography } from '@mycrypto/ui';
+import { Table, Address, IconLink, Typography, Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
@@ -145,16 +145,12 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
           <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
           <img src={nextIcon} onClick={this.nextPage} />
 
-          <button className="Modal-footer-btn btn btn-default" onClick={onCancel}>
+          <Button onClick={onCancel} secondary={true}>
             {translate('ACTION_2')}
-          </button>
-          <button
-            className="Modal-footer-btn btn btn-primary"
-            onClick={this.handleConfirmAddress}
-            disabled={!selectedAddress}
-          >
+          </Button>
+          <Button onClick={this.handleConfirmAddress} disabled={!selectedAddress}>
             {translate('ACTION_3')}
-          </button>
+          </Button>
         </div>
       </div>
     );
