@@ -22,5 +22,10 @@
   "automock": false,
   "snapshotSerializers": ["enzyme-to-json/serializer"],
   "browser": true,
-  "collectCoverage": true
+  "collectCoverage": true,
+  "globals": {
+    "ts-jest": {
+      "diagnostics": false
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router';
@@ -92,6 +93,7 @@ interface State {
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
   hasSelectedNetwork: boolean;
+  seed: string;
   hasSelectedAddress: boolean;
   accountData: AddAccountData;
 }
@@ -235,6 +237,7 @@ const WalletDecrypt = withRouter<Props>(
       isInsecureOverridden: false,
       value: null,
       hasSelectedNetwork: false,
+      seed: '',
       hasSelectedAddress: false,
       accountData: {
         address: '',
@@ -345,9 +348,13 @@ const WalletDecrypt = withRouter<Props>(
               </Typography>
             </Button>
           </div>
-          <div className="Panel-content">
+          <div className={classNames('Panel-content', { 'no-padding': Boolean(this.state.seed) })}>
             <div className="Panel-title-connectDevice">
-              {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
+              {!(
+                selectedWallet.isReadOnly ||
+                selectedWallet.lid === 'X_PARITYSIGNER' ||
+                this.state.seed
+              ) &&
                 translate('UNLOCK_WALLET', {
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
@@ -380,6 +387,8 @@ const WalletDecrypt = withRouter<Props>(
                       ? this.props.isPasswordPending
                       : undefined
                   }
+                  seed={this.state.seed}
+                  onSeed={this.handleSeed}
                 />
               </Errorable>
             </section>
@@ -720,6 +729,8 @@ const WalletDecrypt = withRouter<Props>(
         this.setState({ isInsecureOverridden: true });
       }
     };
+
+    private handleSeed = (seed: string) => this.setState({ seed });
   }
 );
 

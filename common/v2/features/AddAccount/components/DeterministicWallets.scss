@@ -1,14 +1,21 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-.DWModal {
+.DW {
+  padding: 1rem 0.5rem;
+
+  header {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
   &-path {
     margin-bottom: 20px;
 
-    &-label {
-      font-size: $font-size-medium;
-      margin-right: $space-md;
-      line-height: $input-height-base;
+    &-title {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
     }
 
     &-select {
@@ -24,7 +31,6 @@
 
     &-custom {
       flex: 1;
-      margin-left: $space-md;
 
       .input-group-input {
         margin: 0;
@@ -47,29 +53,13 @@
       margin: auto;
       margin-bottom: 10px;
 
-      &-token {
-        width: 82px;
-        background: color(control-bg);
-        color: control(control-color);
-      }
-
-      &-address {
-        font-size: 13px;
-        text-align: left;
-        font-family: $font-family-monospace;
+      &-address-select {
         display: flex;
         align-items: center;
 
-        &-label {
-          font-weight: bold;
-        }
-
-        input {
-          margin-right: 10px;
-        }
-
-        &-text {
-          font-size: 10px;
+        input[type='radio'] {
+          margin-top: 0;
+          margin-left: 0.5rem;
         }
       }
 
@@ -78,11 +68,6 @@
         width: 16px;
         height: 16px;
         background-image: url('~assets/images/icon-external-link.svg');
-      }
-
-      &-na {
-        font-size: $font-size-xs;
-        opacity: 0.3;
       }
 
       // Specific selectors to override bootstrap
@@ -103,19 +88,14 @@
     }
 
     &-nav {
-      &-btn {
-        display: inline-block;
-        margin: 0;
-        width: 49.9%;
-        width: calc(50% - 5px);
-        margin: 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.5rem;
 
-        &:first-child {
-          margin-left: 0;
-        }
-        &:last-child {
-          margin-right: 0;
-        }
+      &-page {
+        color: #9a978a;
+        font-size: 12px;
       }
     }
   }
