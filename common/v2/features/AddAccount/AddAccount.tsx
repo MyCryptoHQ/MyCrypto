@@ -237,7 +237,7 @@ const WalletDecrypt = withRouter<Props>(
       isInsecureOverridden: false,
       value: null,
       hasSelectedNetwork: false,
-      seed: ''
+      seed: '',
       hasSelectedAddress: false,
       accountData: {
         address: '',
