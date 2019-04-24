@@ -37,7 +37,6 @@ import {
   PrivateKeyValue,
   TrezorDecrypt,
   SafeTminiDecrypt,
-  Web3Decrypt,
   WalletButton,
   ParitySignerDecrypt,
   InsecureWalletWarning,
@@ -47,9 +46,12 @@ import './AddAccountStyles.scss';
 import { Button, Typography, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
 import backArrow from 'common/assets/images/icn-back-arrow.svg';
+import * as WalletActions from 'v2/features/Wallets';
 
-import { NetworkOptionsContext } from 'v2/providers';
-//import { fieldsReducer } from 'features/transaction/fields/reducer';
+import { NetworkOptionsContext, AccountContext } from 'v2/providers';
+import { Link } from 'react-router-dom';
+import { Account } from 'v2/services/Account/types';
+import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
 
 interface OwnProps {
   hidden?: boolean;
@@ -58,10 +60,10 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  unlockKeystore: walletActions.TUnlockKeystore;
-  unlockMnemonic: walletActions.TUnlockMnemonic;
-  unlockPrivateKey: walletActions.TUnlockPrivateKey;
-  unlockWeb3: walletActions.TUnlockWeb3;
+  unlockKeystore: WalletActions.TUnlockKeystore;
+  unlockMnemonic: WalletActions.TUnlockMnemonic;
+  unlockPrivateKey: WalletActions.TUnlockPrivateKey;
+  unlockWeb3: WalletActions.TUnlockWeb3;
   setWallet: walletActions.TSetWallet;
   resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
   showNotification: notificationsActions.TShowNotification;
@@ -77,12 +79,23 @@ interface StateProps {
 type Props = OwnProps & StateProps & DispatchProps & RouteComponentProps<{}>;
 
 type UnlockParams = {} | PrivateKeyValue;
+
+interface AddAccountData {
+  address: string;
+  accountType: WalletName;
+  label: string | null;
+  network: string;
+  derivationPath: string;
+}
+
 interface State {
   selectedWalletKey: WalletName | null;
   isInsecureOverridden: boolean;
   value: UnlockParams | null;
   hasSelectedNetwork: boolean;
   seed: string;
+  hasSelectedAddress: boolean;
+  accountData: AddAccountData;
 }
 
 interface BaseWalletInfo {
@@ -94,6 +107,7 @@ interface BaseWalletInfo {
   redirect?: string;
   helpLink: string;
   isReadOnly?: boolean;
+  accountType?: WalletName;
 }
 
 export interface SecureWalletInfo extends BaseWalletInfo {
@@ -121,6 +135,7 @@ const SECURE_WALLETS = Object.values(SecureWalletName).filter(
   value => !HARDWARE_WALLETS.includes(value)
 );
 const INSECURE_WALLETS = Object.values(InsecureWalletName);
+const MISC_WALLETS = Object.values(MiscWalletName);
 
 const web3info = getWeb3ProviderInfo();
 
@@ -213,8 +228,7 @@ const WalletDecrypt = withRouter<Props>(
         initialParams: {},
         unlock: this.props.setWallet,
         helpLink: '',
-        isReadOnly: true,
-        redirect: '/account/info'
+        isReadOnly: true
       }
     };
 
@@ -224,6 +238,14 @@ const WalletDecrypt = withRouter<Props>(
       value: null,
       hasSelectedNetwork: false,
       seed: ''
+      hasSelectedAddress: false,
+      accountData: {
+        address: '',
+        network: 'Ethereum',
+        label: 'New Account',
+        accountType: InsecureWalletName.PRIVATE_KEY,
+        derivationPath: ''
+      }
     };
 
     public exists: boolean = true;
@@ -232,7 +254,7 @@ const WalletDecrypt = withRouter<Props>(
       // Reset state when unlock is hidden / revealed
       if (nextProps.hidden !== this.props.hidden) {
         this.setState({
-          value: null,
+          value: 0,
           selectedWalletKey: null
         });
       }
@@ -251,6 +273,42 @@ const WalletDecrypt = withRouter<Props>(
       return this.WALLETS[selectedWalletKey];
     }
 
+    public handleCreateAccount = (createAccount: any) => {
+      const { accountData } = this.state;
+      //const network = accountData.network;
+      //const asset = getBaseAsset(network);
+      const newAccount: Account = {
+        ...accountData,
+        assets: '',
+        value: 0,
+        label: 'New Account',
+        localSettings: '',
+        transactionHistory: ''
+      };
+      createAccount(newAccount);
+    };
+
+    public handleCompleteFlow() {
+      const { accountData } = this.state;
+      return (
+        <AccountContext.Consumer>
+          {({ createAccount }) => (
+            <div>
+              {`You're trying to add an ${accountData.network} address ${
+                accountData.address
+              } to your
+                dashboard.`}
+              <Link to="/dashboard" color="white">
+                <Button onClick={() => this.handleCreateAccount(createAccount)}>
+                  {'Confirm address'}
+                </Button>
+              </Link>
+            </div>
+          )}
+        </AccountContext.Consumer>
+      );
+    }
+
     public getDecryptionComponent() {
       const { selectedWalletKey, isInsecureOverridden } = this.state;
       const selectedWallet = this.getSelectedWallet();
@@ -265,7 +323,7 @@ const WalletDecrypt = withRouter<Props>(
           <div className="WalletDecrypt-decrypt">
             <InsecureWalletWarning
               walletType={translateRaw(selectedWallet.lid)}
-              onCancel={this.clearWalletChoice}
+              onCancel={this.returnToSender}
             />
             {process.env.NODE_ENV !== 'production' && (
               <button
@@ -282,7 +340,7 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="Panel">
           <div className="Panel-top">
-            <Button basic={true} onClick={this.clearWalletChoice}>
+            <Button basic={true} onClick={this.returnToSender}>
               <Typography>
                 {' '}
                 <img src={backArrow} />
@@ -306,7 +364,7 @@ const WalletDecrypt = withRouter<Props>(
                 errorMessage={`Oops, looks like ${translateRaw(
                   selectedWallet.lid
                 )} is not supported by your browser`}
-                onError={this.clearWalletChoice}
+                onError={this.returnToSender}
                 shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
               >
                 <selectedWallet.component
@@ -388,6 +446,23 @@ const WalletDecrypt = withRouter<Props>(
                 />
               );
             })}
+            {MISC_WALLETS.map((walletType: MiscWalletName) => {
+              const wallet = this.WALLETS[walletType];
+              return (
+                <WalletButton
+                  key={walletType}
+                  name={translateRaw(wallet.lid)}
+                  //description={translateRaw(wallet.description)}
+                  //helpLink={wallet.helpLink}
+                  walletType={walletType}
+                  //isReadOnly={true}
+                  //isSecure={true}
+                  isDisabled={this.isWalletDisabled(walletType)}
+                  disableReason={reasons[walletType]}
+                  onClick={this.handleWalletChoice}
+                />
+              );
+            })}
           </div>
 
           <div className="WalletDecrypt-wallets-row">
@@ -419,7 +494,7 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="Panel">
           <div className="SelectNetworkPanel-top">
-            <Button basic={true} onClick={this.clearWalletChoice}>
+            <Button basic={true} onClick={this.returnToSender}>
               <Typography>
                 {' '}
                 <img src={backArrow} />
@@ -445,8 +520,11 @@ const WalletDecrypt = withRouter<Props>(
                 return (
                   <ComboBox
                     className="Panel-dropdown"
+                    value={this.state.accountData.network}
                     items={new Set(networkNames.sort())}
-                    onChange={this.onChange}
+                    onChange={({ target: { value } }) =>
+                      this.setState({ accountData: { ...this.state.accountData, network: value } })
+                    }
                     placeholder="Ethereum"
                   />
                 );
@@ -460,15 +538,14 @@ const WalletDecrypt = withRouter<Props>(
       );
     }
 
-    public handleNetworkSelect = (e: any) => {
-      console.log('[handleNetworkSelect] ' + e.value);
+    public handleNetworkSelect = () => {
       this.setState({ hasSelectedNetwork: true });
     };
 
     public handleWalletChoice = async (walletType: WalletName) => {
       const { showNotification } = this.props;
       const wallet = this.WALLETS[walletType];
-
+      this.setState({ accountData: { ...this.state.accountData, accountType: walletType } });
       if (!wallet) {
         return;
       }
@@ -480,7 +557,7 @@ const WalletDecrypt = withRouter<Props>(
           if (web3Available) {
             // timeout is only the maximum wait time before secondary view is shown
             // send view will be shown immediately on web3 resolve
-            timeout = 1500;
+            timeout = 1000;
             wallet.unlock();
           }
         } catch (e) {
@@ -499,21 +576,52 @@ const WalletDecrypt = withRouter<Props>(
       }, timeout);
     };
 
+    public returnToSender = () => {
+      this.setState({
+        selectedWalletKey: null,
+        isInsecureOverridden: false,
+        value: null,
+        hasSelectedNetwork: false,
+        hasSelectedAddress: false,
+        accountData: {
+          address: '',
+          network: 'Ethereum',
+          label: 'New Account',
+          accountType: MiscWalletName.VIEW_ONLY,
+          derivationPath: ''
+        }
+      });
+    };
+    /*
     public clearWalletChoice = () => {
       this.setState({
         selectedWalletKey: null,
-        value: null,
-        hasSelectedNetwork: false
+        value: 0,
+        hasSelectedNetwork: false,
+        accountData: {
+          ...this.state.accountData,
+          network: ''
+        }
       });
     };
+
+    public clearAddressChoice = () => {
+      this.setState({
+        hasSelectedAddress: false,
+        accountData: {
+          ...this.state.accountData,
+          address: '',
+          derivationPath: ''
+        }
+      });
+    };*/
 
     public render() {
       const { hidden } = this.props;
       const selectedWallet = this.getSelectedWallet();
       const decryptionComponent = this.getDecryptionComponent();
       const selectNetworkComponent = this.selectNetworkComponent();
-      console.log('[render]', this.state.hasSelectedNetwork);
-
+      const confirmComponent = this.handleCompleteFlow();
       let componentToRender: JSX.Element;
 
       if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
@@ -527,6 +635,18 @@ const WalletDecrypt = withRouter<Props>(
               </TransitionGroup>
             </Layout>
           </>
+        );
+      } else if (this.state.hasSelectedNetwork && this.state.hasSelectedAddress) {
+        componentToRender = (
+          <Layout centered={true}>
+            <div className="confirm">
+              <TransitionGroup>
+                <CSSTransition classNames="DecryptContent" timeout={500} key="confirm">
+                  {confirmComponent}
+                </CSSTransition>
+              </TransitionGroup>
+            </div>
+          </Layout>
         );
       } else if (!hidden && decryptionComponent && selectedWallet) {
         componentToRender = (
@@ -557,7 +677,6 @@ const WalletDecrypt = withRouter<Props>(
     }
 
     public onChange = (value: UnlockParams) => {
-      console.log('got here: ' + value);
       this.setState({ value });
     };
 
@@ -566,13 +685,39 @@ const WalletDecrypt = withRouter<Props>(
       if (!selectedWalletKey) {
         return;
       }
-
       // some components (TrezorDecrypt) don't take an onChange prop, and thus
       // this.state.value will remain unpopulated. in this case, we can expect
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
-      this.WALLETS[selectedWalletKey].unlock(unlockValue);
-      this.props.resetTransactionRequested();
+
+      if (this.state.accountData.accountType === 'web3') {
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            derivationPath: '',
+            address: unlockValue.getAddressString()
+          }
+        });
+      } else if (this.state.accountData.accountType === 'viewOnly') {
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            address: unlockValue.getAddressString()
+          }
+        });
+      } else {
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            derivationPath:
+              unlockValue.path || unlockValue.dPath + '/' + unlockValue.index.toString(),
+            address: unlockValue.address
+          }
+        });
+      }
     };
 
     private isWalletDisabled = (walletKey: WalletName) => {
@@ -612,11 +757,10 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 }
 
 export default connect(mapStateToProps, {
-  unlockKeystore: walletActions.unlockKeystore,
-  unlockMnemonic: walletActions.unlockMnemonic,
-  unlockPrivateKey: walletActions.unlockPrivateKey,
-  unlockWeb3: walletActions.unlockWeb3,
-  setWallet: walletActions.setWallet,
+  unlockKeystore: WalletActions.unlockKeystore,
+  unlockMnemonic: WalletActions.unlockMnemonic,
+  unlockPrivateKey: WalletActions.unlockPrivateKey,
+  unlockWeb3: WalletActions.unlockWeb3,
   resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;
