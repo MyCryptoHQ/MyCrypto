@@ -6,7 +6,7 @@ import {
   getKeystoreWallet,
   getUtcWallet,
   IWallet
-} from 'libs/wallet';
+} from 'v2/libs/wallet';
 import { translateRaw } from 'translations';
 
 export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
@@ -29,7 +29,6 @@ export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
     }
     return;
   }
-
   // TODO: provide a more descriptive error than the two 'ERROR_6' (invalid pass) messages above
   return wallet;
 };

@@ -1,7 +1,6 @@
 import * as utils from 'v2/libs';
 import * as types from 'v2/services';
-import { CACHE_INIT, CACHE_INIT_DEV, CACHE_KEY, LocalCache } from './constants';
-import { isDevelopment } from 'v2/utils';
+import { CACHE_INIT, CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
 import { ContractsData } from 'config/cacheData';
 import { ACCOUNTTYPES } from 'v2/config';
@@ -9,29 +8,24 @@ import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 
 // Initialization
-
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
   if (!check || check === '[]' || check === '{}') {
-    if (isDevelopment) {
-      setCache(CACHE_INIT_DEV);
-    } else {
-      hardRefreshCache();
+    hardRefreshCache();
 
-      initDerivationPathOptions();
+    initDerivationPathOptions();
 
-      initFiatCurrencies();
+    initFiatCurrencies();
 
-      initNetworkOptions();
+    initNetworkOptions();
 
-      initNodeOptions();
+    initNodeOptions();
 
-      initAccountTypes();
+    initAccountTypes();
 
-      initGlobalSettings();
+    initGlobalSettings();
 
-      initContractOptions();
-    }
+    initContractOptions();
   }
 };
 

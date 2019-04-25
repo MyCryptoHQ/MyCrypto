@@ -23,6 +23,7 @@ export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
   Object.assign(walletToWrap, {
     signRawTransaction: (t: Tx) => signRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
     signMessage: (msg: string) => signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),
+    getPublicKeyString: () => walletToWrap.getPublicKeyString(),
     unlock: () => Promise.resolve()
   });
 

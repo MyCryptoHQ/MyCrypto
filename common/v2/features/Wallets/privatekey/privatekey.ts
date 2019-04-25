@@ -1,4 +1,4 @@
-import { IWallet, getPrivKeyWallet, IFullWallet } from 'libs/wallet';
+import { IWallet, getPrivKeyWallet, IFullWallet } from 'v2/libs/wallet';
 import { translateRaw } from 'translations';
 import { PrivateKeyUnlockParams } from './types';
 
@@ -7,7 +7,6 @@ export const unlockPrivateKey = async (
 ): Promise<IFullWallet | undefined> => {
   let wallet: IWallet | null = null;
   const { key, password } = payload;
-
   try {
     wallet = getPrivKeyWallet(key, password);
   } catch (e) {

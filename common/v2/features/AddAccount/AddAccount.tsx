@@ -199,7 +199,7 @@ const WalletDecrypt = withRouter<Props>(
           file: '',
           password: ''
         },
-        unlock: this.props.unlockKeystore,
+        unlock: WalletActions.unlockKeystore,
         helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [InsecureWalletName.MNEMONIC_PHRASE]: {
@@ -218,7 +218,7 @@ const WalletDecrypt = withRouter<Props>(
           key: '',
           password: ''
         },
-        unlock: this.props.unlockPrivateKey,
+        unlock: WalletActions.unlockPrivateKey,
         helpLink: `${knowledgeBaseURL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
       },
       [MiscWalletName.VIEW_ONLY]: {
@@ -680,7 +680,7 @@ const WalletDecrypt = withRouter<Props>(
       this.setState({ value });
     };
 
-    public onUnlock = (payload: any) => {
+    public onUnlock = async (payload: any) => {
       const { value, selectedWalletKey } = this.state;
       if (!selectedWalletKey) {
         return;
@@ -705,6 +705,18 @@ const WalletDecrypt = withRouter<Props>(
           accountData: {
             ...this.state.accountData,
             address: unlockValue.getAddressString()
+          }
+        });
+      } else if (
+        this.state.accountData.accountType === 'keystoreFile' ||
+        this.state.accountData.accountType === 'privateKey'
+      ) {
+        const wallet = await this.WALLETS[selectedWalletKey].unlock(unlockValue);
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            address: wallet.getAddressString()
           }
         });
       } else {
@@ -757,9 +769,7 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 }
 
 export default connect(mapStateToProps, {
-  unlockKeystore: WalletActions.unlockKeystore,
   unlockMnemonic: WalletActions.unlockMnemonic,
-  unlockPrivateKey: WalletActions.unlockPrivateKey,
   unlockWeb3: WalletActions.unlockWeb3,
   resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification
