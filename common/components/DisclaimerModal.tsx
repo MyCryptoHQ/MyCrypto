@@ -40,21 +40,18 @@ const DisclaimerModal: React.SFC<Props> = ({ isOpen, handleClose }) => {
       </p>
       <p>
         <b>Default Network Endorsements: </b>
-        MyCrypto, by default, supports all Ethereum-based blockchains
-        ("networks") through the adding of custom nodes. To save time and
-        provide a convenience factor to users, if an Ethereum-based network has
-        enough perceived interest or users, MyCrypto will accept GitHub pull
-        requests to add that network as one of the default supported networks.
-        This will bypass the user's need to add that blockchain as a custom node
-        in the MyCrypto network selector. <br />
+        MyCrypto, by default, supports all Ethereum-based blockchains ("networks") through the
+        adding of custom nodes. To save time and provide a convenience factor to users, if an
+        Ethereum-based network has enough perceived interest or users, MyCrypto will accept GitHub
+        pull requests to add that network as one of the default supported networks. This will bypass
+        the user's need to add that blockchain as a custom node in the MyCrypto network selector.{' '}
         <br />
-        If MyCrypto chooses to implement support for a specific network, it
-        should be noted that MyCrypto does not assume the responsibility of
-        managing that network. <br />
-        <br />A network being added to MyCrypto's default supported networks
-        list does not mean that MyCrypto has a partnership with said network,
-        and is not an endorsement of said network.
-      </p>  
+        <br />
+        If MyCrypto chooses to implement support for a specific network, it should be noted that
+        MyCrypto does not assume the responsibility of managing that network. <br />
+        <br />A network being added to MyCrypto's default supported networks list does not mean that
+        MyCrypto has a partnership with said network, and is not an endorsement of said network.
+      </p>
       <p>
         <b>Translations of MyCrypto: </b>
         The community has done an amazing job translating MyCrypto into a variety of languages.
