@@ -3,8 +3,8 @@ import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { light } from '@mycrypto/ui';
 
+import GAU_THEME from 'v2/theme';
 import { AnalyticsService } from 'v2/services';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
@@ -38,6 +38,7 @@ import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
+import { CurrentsProvider } from 'v2/providers';
 import { NewAppReleaseModal } from 'v2/components';
 
 interface OwnProps {
@@ -118,29 +119,31 @@ class RootClass extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <ThemeProvider theme={light}>
+      <ThemeProvider theme={GAU_THEME}>
         <React.Fragment>
           <Provider store={store}>
             <AddressMetadataProvider>
               <AccountProvider>
-                <TransactionProvider>
-                  <TransactionHistoryProvider>
-                    <Router>
-                      <LockScreenProvider>
-                        <PageVisitsAnalytics>
-                          {onboardingActive && <OnboardingModal />}
-                          {routes}
-                          <LegacyRoutes />
-                          <LogOutPrompt />
-                          <QrSignerModal />
-                          {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                        </PageVisitsAnalytics>
-                      </LockScreenProvider>
-                    </Router>
-                    {developmentMode && <DevTools />}
-                    <div id="ModalContainer" />
-                  </TransactionHistoryProvider>
-                </TransactionProvider>
+                <CurrentsProvider>
+                  <TransactionProvider>
+                    <TransactionHistoryProvider>
+                      <Router>
+                        <LockScreenProvider>
+                          <PageVisitsAnalytics>
+                            {onboardingActive && <OnboardingModal />}
+                            {routes}
+                            <LegacyRoutes />
+                            <LogOutPrompt />
+                            <QrSignerModal />
+                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                          </PageVisitsAnalytics>
+                        </LockScreenProvider>
+                      </Router>
+                      {developmentMode && <DevTools />}
+                      <div id="ModalContainer" />
+                    </TransactionHistoryProvider>
+                  </TransactionProvider>
+                </CurrentsProvider>
               </AccountProvider>
             </AddressMetadataProvider>
           </Provider>
