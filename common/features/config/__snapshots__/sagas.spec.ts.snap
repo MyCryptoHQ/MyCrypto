@@ -6,7 +6,6 @@ Object {
   "SELECT": Object {
     "args": Array [
       "WEB",
-      "DEXON",
     ],
     "selector": [Function],
   },
