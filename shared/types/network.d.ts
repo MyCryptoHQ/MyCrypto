@@ -14,6 +14,7 @@ type StaticNetworkIds =
   | 'ARTIS_TAU1'
   | 'ATH'
   | 'CLO'
+  | 'DEXON'
   | 'EGEM'
   | 'ELLA'
   | 'EOSC'
