@@ -533,6 +533,7 @@
     "NAME_OWNED_LABELHASH": "ラベルハッシュ $name",
     "NAME_OWNED_NAMEHASH": "名前ハッシュ $name.eth",
     "NAME_OWNED_OWNER": "所有者",
+    "NAME_OWNED_DEEDOWNER": "行為の所有者",
     "NAME_OWNED_HIGHEST_BIDDER": "最高額入札者",
     "NAME_OWNED_RESOLVED_ADDR": "解決されたアドレス",
     "LINK": "[$name]($link)",

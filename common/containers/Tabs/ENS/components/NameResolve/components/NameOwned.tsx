@@ -15,6 +15,7 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
   nameHash,
   resolvedAddress,
   ownerAddress,
+  deedOwnerAddress,
   name
 }) => (
   <section>
@@ -42,6 +43,12 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
             <td>{translate('NAME_OWNED_OWNER')}:</td>
             <MonoTd>
               <Address address={ownerAddress} />
+            </MonoTd>
+          </tr>
+          <tr>
+            <td>{translate('NAME_OWNED_DEEDOWNER')}:</td>
+            <MonoTd>
+              <Address address={deedOwnerAddress} />
             </MonoTd>
           </tr>
           <tr>
