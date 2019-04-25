@@ -36,6 +36,7 @@ import {
   REOSC_DEFAULT,
   RSK_MAINNET,
   RSK_TESTNET,
+  SOLIDUM_DEFAULT,
   THUNDERCORE_DEFAULT,
   TOMO_DEFAULT,
   UBQ_DEFAULT,
@@ -896,6 +897,29 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 80,
       max: 80,
       initial: 80
+    }
+  },
+  SOLIDUM: {
+    id: 'SOLIDUM',
+    name: 'Solidum',
+    unit: 'SUM',
+    chainId: 72106,
+    isCustom: false,
+    color: '#1e87f0',
+    blockExplorer: makeExplorer({
+      name: 'Solidum Explorer',
+      origin: 'https://explorer.solidum.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: SOLIDUM_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: SOLIDUM_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
     }
   }
 };

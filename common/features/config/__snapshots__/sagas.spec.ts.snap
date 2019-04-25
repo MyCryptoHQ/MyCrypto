@@ -6,6 +6,7 @@ Object {
   "SELECT": Object {
     "args": Array [
       "WEB",
+      "SOLIDUM",
     ],
     "selector": [Function],
   },

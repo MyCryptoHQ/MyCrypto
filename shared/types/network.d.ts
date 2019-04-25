@@ -31,6 +31,7 @@ type StaticNetworkIds =
   | 'POA'
   | 'REOSC'
   | 'RSK_TESTNET'
+  | 'SOLIDUM'
   | 'THUNDERCORE'
   | 'TOMO'
   | 'UBQ'

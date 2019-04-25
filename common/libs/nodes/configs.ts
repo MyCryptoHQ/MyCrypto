@@ -318,6 +318,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  SOLIDUM: [
+    {
+      name: makeNodeName('SOLIDUM', 'rpc.solidum.network'),
+      type: 'rpc',
+      service: 'rpc.solidum.network',
+      url: 'https://rpc.solidum.network'
+    }
+  ],
+
   THUNDERCORE: [
     {
       name: makeNodeName('THUNDERCORE', 'thundercore'),
