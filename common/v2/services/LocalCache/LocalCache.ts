@@ -25,6 +25,8 @@ export const initializeCache = () => {
 
     initGlobalSettings();
 
+    initLocalSettings();
+
     initContractOptions();
   }
 };
@@ -38,6 +40,17 @@ export const initGlobalSettings = () => {
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
     darkMode: false
+  };
+  setCache(newStorage);
+};
+
+export const initLocalSettings = () => {
+  const newStorage = getCacheRaw();
+  newStorage.localSettings = {
+    default: {
+      fiatCurrency: 'USD',
+      favorite: false
+    }
   };
   setCache(newStorage);
 };

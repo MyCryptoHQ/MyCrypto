@@ -284,7 +284,7 @@ const WalletDecrypt = withRouter<Props>(
           assets: network.unit,
           value: 0,
           label: 'New Account',
-          localSettings: '',
+          localSettings: 'default',
           transactionHistory: ''
         };
         createAccount(newAccount);
@@ -294,7 +294,7 @@ const WalletDecrypt = withRouter<Props>(
           assets: 'DefaultAsset',
           value: 0,
           label: 'New Account',
-          localSettings: '',
+          localSettings: 'default',
           transactionHistory: ''
         };
         createAccount(newAccount);
