@@ -80,7 +80,7 @@ export const initNetworkOptions = () => {
     });
     const newLocalNetwork: types.NetworkOptions = {
       contracts: newContracts,
-      assets: [],
+      assets: [STATIC_NETWORKS_INITIAL_STATE[en].id],
       nodes: [],
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
@@ -95,7 +95,16 @@ export const initNetworkOptions = () => {
       gasPriceSettings: STATIC_NETWORKS_INITIAL_STATE[en].gasPriceSettings,
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
+    const newLocalAssetOption: types.AssetOption = {
+      name: STATIC_NETWORKS_INITIAL_STATE[en].name,
+      network: en,
+      ticker: en,
+      type: 'base',
+      decimal: 18,
+      contractAddress: null
+    };
     newStorage.networkOptions[en] = newLocalNetwork;
+    newStorage.assetOptions[STATIC_NETWORKS_INITIAL_STATE[en].id] = newLocalAssetOption;
   });
   setCache(newStorage);
 };

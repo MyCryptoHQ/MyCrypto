@@ -52,6 +52,8 @@ import { NetworkOptionsContext, AccountContext } from 'v2/providers';
 import { Link } from 'react-router-dom';
 import { Account } from 'v2/services/Account/types';
 import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
+import { getNetworkByName } from 'v2/libs';
+import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 
 interface OwnProps {
   hidden?: boolean;
@@ -273,19 +275,30 @@ const WalletDecrypt = withRouter<Props>(
       return this.WALLETS[selectedWalletKey];
     }
 
-    public handleCreateAccount = (createAccount: any) => {
+    public handleCreateAccount = async (createAccount: any) => {
       const { accountData } = this.state;
-      //const network = accountData.network;
-      //const asset = getBaseAsset(network);
-      const newAccount: Account = {
-        ...accountData,
-        assets: '',
-        value: 0,
-        label: 'New Account',
-        localSettings: '',
-        transactionHistory: ''
-      };
-      createAccount(newAccount);
+      try {
+        const network: NetworkOptions = await getNetworkByName(accountData.network);
+        const newAccount: Account = {
+          ...accountData,
+          assets: network.unit,
+          value: 0,
+          label: 'New Account',
+          localSettings: '',
+          transactionHistory: ''
+        };
+        createAccount(newAccount);
+      } catch {
+        const newAccount: Account = {
+          ...accountData,
+          assets: 'DefaultAsset',
+          value: 0,
+          label: 'New Account',
+          localSettings: '',
+          transactionHistory: ''
+        };
+        createAccount(newAccount);
+      }
     };
 
     public handleCompleteFlow() {
@@ -522,9 +535,9 @@ const WalletDecrypt = withRouter<Props>(
                     className="Panel-dropdown"
                     value={this.state.accountData.network}
                     items={new Set(networkNames.sort())}
-                    onChange={({ target: { value } }) =>
-                      this.setState({ accountData: { ...this.state.accountData, network: value } })
-                    }
+                    onChange={({ target: { value } }) => {
+                      this.setState({ accountData: { ...this.state.accountData, network: value } });
+                    }}
                     placeholder="Ethereum"
                   />
                 );
