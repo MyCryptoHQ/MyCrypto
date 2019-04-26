@@ -23,7 +23,8 @@ $speed: 500ms;
 }
 
 .Panel {
-  width: 562px;
+  width: 760px;
+  min-height: 790px;
   // display: flex;
   // flex-direction: column;
   position: relative;
@@ -31,7 +32,7 @@ $speed: 500ms;
     display: flex;
   }
   &-content {
-    height: 629px;
+    min-height: 629px;
     border-radius: 3px;
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
     background-color: #ffffff;
@@ -110,7 +111,7 @@ $speed: 500ms;
   justify-content: center;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
   width: 760px;
-  height: 790px;
+  min-height: 790px;
   border-radius: 3px;
 
   &-connectWallet {
@@ -355,7 +356,6 @@ $speed: 500ms;
     }
 
     &-form {
-      max-width: 480px;
       margin: 0 auto;
     }
     &-label {
@@ -404,4 +404,8 @@ $speed: 500ms;
       opacity: 0;
     }
   }
+}
+
+.no-padding {
+  padding: 0;
 }

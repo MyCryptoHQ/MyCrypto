@@ -9,7 +9,7 @@ import { AppState } from 'features/reducers';
 import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
+import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
 import { Button } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
@@ -68,34 +68,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       );
     }
 
-    return (
-      <div className="LedgerPanel-description-content">
-        <div className="LedgerPanel-description">
-          {translate('LEDGER_TIP')}
-          <div className="Panel-image">
-            <img src={ledgerIcon} />
-          </div>
-
-          <Button
-            className="LedgerPanel-description-button"
-            onClick={this.handleNullConnect}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <div className="LedgerDecrypt-message">
-                <Spinner light={true} />
-                {translate('WALLET_UNLOCKING')}
-              </div>
-            ) : (
-              translate('ADD_LEDGER_SCAN')
-            )}
-          </Button>
-        </div>
-
-        <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        <DeterministicWalletsModal
-          isOpen={!!publicKey && !!chainCode}
+    if (publicKey && chainCode) {
+      return (
+        <DeterministicWallets
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
@@ -104,8 +79,36 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
         />
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="LedgerPanel-description-content">
+          <div className="LedgerPanel-description">
+            {translate('LEDGER_TIP')}
+            <div className="Panel-image">
+              <img src={ledgerIcon} />
+            </div>
+
+            <Button
+              className="LedgerPanel-description-button"
+              onClick={this.handleNullConnect}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="LedgerDecrypt-message">
+                  <Spinner light={true} />
+                  {translate('WALLET_UNLOCKING')}
+                </div>
+              ) : (
+                translate('ADD_LEDGER_SCAN')
+              )}
+            </Button>
+          </div>
+
+          <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
+        </div>
+      );
+    }
   }
 
   private handlePathChange = (dPath: DPath) => {

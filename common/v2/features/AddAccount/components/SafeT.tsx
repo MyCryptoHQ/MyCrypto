@@ -8,7 +8,7 @@ import { AppState } from 'features/reducers';
 import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
-import DeterministicWalletsModal from './DeterministicWalletsModal';
+import DeterministicWallets from './DeterministicWallets';
 import './SafeT.scss';
 import SafeTIcon from 'common/assets/images/icn-safet-mini-new.svg';
 
@@ -56,33 +56,9 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
       return <UnsupportedNetwork walletType={translateRaw('X_SAFE_T')} />;
     }
 
-    // todo: update help link
-    return (
-      <div className="SafeTminiDecrypt">
-        <img src={SafeTIcon} />
-        <button
-          className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
-          onClick={this.handleNullConnect}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <div className="SafeTminiDecrypt-message">
-              <Spinner light={true} />
-              {translate('WALLET_UNLOCKING')}
-            </div>
-          ) : (
-            translate('ADD_SAFE_T_SCAN')
-          )}
-        </button>
-
-        <NewTabLink className="SafeTminiDecrypt-buy btn btn-sm btn-default" href={safeTReferralURL}>
-          {translate('ORDER_SAFE_T')}
-        </NewTabLink>
-
-        <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-
-        <DeterministicWalletsModal
-          isOpen={!!publicKey && !!chainCode}
+    if (publicKey && chainCode) {
+      return (
+        <DeterministicWallets
           publicKey={publicKey}
           chainCode={chainCode}
           dPath={dPath}
@@ -91,8 +67,40 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
           onConfirmAddress={this.handleUnlock}
           onPathChange={this.handlePathChange}
         />
-      </div>
-    );
+      );
+    } else {
+      // todo: update help link
+      return (
+        <div className="SafeTminiDecrypt">
+          <img src={SafeTIcon} />
+          <button
+            className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
+            onClick={this.handleNullConnect}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="SafeTminiDecrypt-message">
+                <Spinner light={true} />
+                {translate('WALLET_UNLOCKING')}
+              </div>
+            ) : (
+              translate('ADD_SAFE_T_SCAN')
+            )}
+          </button>
+
+          <NewTabLink
+            className="SafeTminiDecrypt-buy btn btn-sm btn-default"
+            href={safeTReferralURL}
+          >
+            {translate('ORDER_SAFE_T')}
+          </NewTabLink>
+
+          <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
+            {error || '-'}
+          </div>
+        </div>
+      );
+    }
   }
 
   private handlePathChange = (dPath: DPath) => {

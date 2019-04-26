@@ -4,6 +4,7 @@ import { Address, Icon, CollapsibleTable, Typography, Button } from '@mycrypto/u
 import { DashboardPanel } from '../../components';
 import { ExtendedAddressMetadata } from 'v2/services';
 import styled from 'styled-components';
+import { truncate } from 'v2/libs';
 
 interface Props {
   addressMetadata: ExtendedAddressMetadata[];
@@ -21,9 +22,6 @@ export default function AddressBook({
   toggleFlipped,
   deleteAddressMetadatas
 }: Props) {
-  const truncate = (children: string) => {
-    return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-  };
   const addressBookTable = {
     head: ['Favorite', 'Address', 'Notes', 'Delete'],
     body: addressMetadata.map(({ address, label, notes, uuid }: ExtendedAddressMetadata) => [
