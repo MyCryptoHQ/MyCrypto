@@ -1,2 +1,2 @@
 export { default } from './AddAccount';
-export { default as importWalletRoutes } from './routes';
+export { default as addAccountRoutes } from './routes';
