@@ -430,10 +430,10 @@
     "@ledgerhq/errors" "^4.48.0"
     events "^3.0.0"
 
-"@mycrypto/ui@0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.13.0.tgz#73a6b901b21dc8d3d4930ab817413d2bd9c5e4a7"
-  integrity sha512-gUZxcUU+ZOQuEeX6vFKgO3FyiX8Q+OABjvNCPJ5/bvq8k9HYjsfe+jJdzq+be5h+zCHMZk9wx1R0YjBB2UB2/Q==
+"@mycrypto/ui@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/ui/-/ui-0.16.0.tgz#45bf9ab2065a8260c299e7b4585d054053b2f55d"
+  integrity sha512-9033oRz0B4jCk7C134isaDAMP+Mg/n6GR4qjeHk+vdpjN0qwIbrQrZmNpNMFmslV9Q86tl1OK9aKmvnQNimsgg==
   dependencies:
     "@types/dom-clipboard-api" "^1.0.1"
     "@types/lodash.throttle" "^4.1.4"

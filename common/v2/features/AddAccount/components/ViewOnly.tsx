@@ -12,7 +12,7 @@ import { AddressField } from 'components';
 import './ViewOnly.scss';
 
 interface OwnProps {
-  onUnlock(param: any): void;
+  onUnlock(param: any): AddressOnlyWallet;
 }
 
 interface StateProps {
@@ -40,7 +40,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="ViewOnly">
-        <form className="form-group" onSubmit={this.openWallet}>
+        <form className="form-group" onSubmit={this.handleSubmit}>
           <section className="ViewOnly-fields">
             <section className="ViewOnly-fields-field">
               <AddressField
@@ -79,13 +79,12 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
   private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
     const { currentTarget: { value: addressFromBook } } = ev;
-    this.setState({ addressFromBook }, this.openWallet);
+    this.setState({ addressFromBook });
   };
 
-  private openWallet = () => {
-    const { isValidAddress, currentAddress, resolvedAddress, onUnlock } = this.props;
+  private handleSubmit = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { isValidAddress, currentAddress, resolvedAddress } = this.props;
     const { addressFromBook } = this.state;
-
     let wallet;
 
     if (isValidAddress(addressFromBook)) {
@@ -97,7 +96,9 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
     }
 
     if (wallet) {
-      onUnlock(new AddressOnlyWallet(wallet));
+      e.preventDefault();
+      e.stopPropagation();
+      this.props.onUnlock(new AddressOnlyWallet(wallet));
     }
   };
 }

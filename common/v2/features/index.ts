@@ -8,4 +8,5 @@ export { AccountScreen, UnlockScreen } from './Drawer';
 export * from './Home';
 export * from './AddAccount';
 export * from './Layout';
+export * from './Wallets';
 export * from './constants';

@@ -120,7 +120,6 @@ export class KeystoreDecrypt extends PureComponent {
         password: '',
         filename: fileName
       } as any);
-      this.props.onUnlock();
     };
     if (isValidFile(inputFile)) {
       fileReader.readAsText(inputFile, 'utf-8');
