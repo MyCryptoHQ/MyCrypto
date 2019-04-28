@@ -1,6 +1,11 @@
 import { AxiosInstance } from 'axios';
 
-import { ANALYTICS_API_URL, ANALYTICS_ID_SITE, ANALYTICS_REC } from './constants';
+import {
+  ANALYTICS_API_URL,
+  ANALYTICS_ID_SITE,
+  ANALYTICS_ID_DESKTOP,
+  ANALYTICS_REC
+} from './constants';
 import { APIService } from '../API';
 import { isDevelopment, isDesktop } from 'v2/utils';
 import { Params, CvarEntry } from './types';
@@ -23,19 +28,17 @@ export default class AnalyticsService {
 
   public trackPageVisit(pageUrl: string): Promise<any> {
     const customParams: Params = {
-      local: isDevelopment().toString(),
-      desktop: isDesktop().toString()
+      local: isDevelopment().toString()
     };
 
     const cvar: object = this.mapParamsToCvars(customParams);
 
-    console.log('trackPageVisit');
-    console.log(navigator.userAgent);
+    const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
     const params: object = {
       action_name: 'Page navigation',
       url: pageUrl,
-      idsite: ANALYTICS_ID_SITE,
+      idsite: analyticsId,
       rec: ANALYTICS_REC,
       cvar: JSON.stringify(cvar)
     };
@@ -44,8 +47,6 @@ export default class AnalyticsService {
   }
 
   private mapParamsToCvars(params: Params): object {
-    console.log('mapParamsToCvars');
-
     return Object.keys(params).reduce((tempObject: CvarEntry, key, index) => {
       tempObject[index + 1] = [key, params[key].toString()];
       return tempObject;
