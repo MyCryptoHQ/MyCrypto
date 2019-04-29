@@ -15,3 +15,4 @@ export * from 'v2/services/NodeOptions/types';
 export * from 'v2/services/RecentAccounts/types';
 export * from 'v2/services/Transaction/types';
 export * from 'v2/services/TransactionHistory/types';
+export * from 'v2/services/ScreenLockSettings/types';

@@ -2,7 +2,8 @@ export const COLORS = {
   DARK_SLATE_BLUE: '#163150',
   GREYISH_BROWN: '#424242',
   BRIGHT_SKY_BLUE: '#1eb8e7',
-  SILVER: '#f7f7f7'
+  SILVER: '#f7f7f7',
+  PASTEL_RED: '#ef4747'
 };
 
 export const BREAK_POINTS = {
