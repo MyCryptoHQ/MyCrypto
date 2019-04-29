@@ -2,8 +2,16 @@ import React, { Component } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { WalletCreatedNotification } from './components';
+import {
+  WalletCreatedNotification,
+  WalletAddedNotification,
+  SaveDashboardNotification,
+  PrintPaperWalletNotification,
+  GetHardwareWalletNotification
+} from './components';
 import { BREAK_POINTS } from 'v2/features/constants';
+import { NotificationsContext, NotificationsProvider } from 'v2/providers';
+import { Notification, NotificationTemplates } from 'v2/services/Notifications';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
@@ -36,26 +44,101 @@ class NotificationsPanel extends Component {
   };
 
   public render() {
-    const { isOpen } = this.state;
-
     return (
-      isOpen && (
-        <MainPanel>
-          <CloseButton basic={true} onClick={this.onClose}>
-            <img src={closeIcon} alt="Close" />
-          </CloseButton>
-          {this.getFirstVisibleNotification()}
-        </MainPanel>
-      )
+      <NotificationsProvider>
+        <NotificationsContext.Consumer>
+          {({ createNotification, currentNotification, dismissCurrentNotification }) => (
+            <React.Fragment>
+              <div style={{ marginBottom: '18px' }}>
+                <button
+                  onClick={() => {
+                    createNotification(NotificationTemplates.walletCreated, {
+                      templateData: { address: 'N3WAddre3ssCreated' }
+                    });
+                  }}
+                >
+                  New Wallet Created
+                </button>{' '}
+                <button
+                  onClick={() => {
+                    createNotification(NotificationTemplates.walletAdded, {
+                      templateData: { address: 'N3WAddr3ssAdd3d' }
+                    });
+                  }}
+                >
+                  New Wallet Added
+                </button>{' '}
+                <button
+                  onClick={() => {
+                    createNotification(NotificationTemplates.saveSettings);
+                  }}
+                >
+                  Save Settings
+                </button>{' '}
+                <button
+                  onClick={() => {
+                    createNotification(NotificationTemplates.printPaperWallet, {
+                      dismissOnOverwrite: false,
+                      templateData: { address: 'N3WAddre3ssCreatedPap3r' }
+                    });
+                  }}
+                >
+                  Print Paper Wallet
+                </button>{' '}
+                <button
+                  onClick={() => {
+                    createNotification(NotificationTemplates.getHardwareWallet, {
+                      dismissOnOverwrite: false
+                    });
+                  }}
+                >
+                  Get Hardware Wallet
+                </button>
+              </div>
+              {currentNotification && (
+                <MainPanel>
+                  <CloseButton basic={true} onClick={dismissCurrentNotification}>
+                    <img src={closeIcon} alt="Close" />
+                  </CloseButton>
+                  {this.getNotification(currentNotification)}
+                </MainPanel>
+              )}
+            </React.Fragment>
+          )}
+        </NotificationsContext.Consumer>
+      </NotificationsProvider>
     );
   }
 
-  private onClose = () => {
-    this.setState({ isOpen: false });
-  };
+  private getNotification(currentNotification: Notification) {
+    const template = currentNotification.template;
+    const templateData = currentNotification.options.templateData;
 
-  private getFirstVisibleNotification() {
-    return <WalletCreatedNotification />;
+    switch (template) {
+      case NotificationTemplates.walletCreated:
+        return <WalletCreatedNotification />;
+        break;
+      case NotificationTemplates.walletAdded:
+        return <WalletAddedNotification />;
+        break;
+      case NotificationTemplates.saveSettings:
+        return <SaveDashboardNotification />;
+        break;
+      case NotificationTemplates.printPaperWallet:
+        return (
+          <PrintPaperWalletNotification
+            address={templateData && templateData.address}
+            privateKey={'023o1j23iohfse'}
+          />
+        );
+        break;
+      case NotificationTemplates.getHardwareWallet:
+        return <GetHardwareWalletNotification />;
+        break;
+      default:
+        return <WalletCreatedNotification />;
+        break;
+    }
   }
 }
 
