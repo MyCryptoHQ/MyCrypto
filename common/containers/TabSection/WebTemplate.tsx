@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Transition } from 'react-spring/renderprops';
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import { makeAutoNodeName } from 'libs/nodes';
 import { AppState } from 'features/reducers';

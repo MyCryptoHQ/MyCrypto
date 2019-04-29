@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Transition } from 'react-spring/renderprops';
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import { Overlay } from 'v2/components';
 import { Drawer } from 'v2/features';
