@@ -1,6 +1,6 @@
 export * from 'v2/services/Account/types';
 export * from 'v2/services/AccountType/types';
-export * from 'v2/services/ActiveNotifications/types';
+export * from 'v2/services/Notifications/types';
 export * from 'v2/services/AddressMetadata/types';
 export * from 'v2/services/Asset/types';
 export * from 'v2/services/AssetOption/types';
