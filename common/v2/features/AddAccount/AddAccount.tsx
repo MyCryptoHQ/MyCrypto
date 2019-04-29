@@ -275,30 +275,18 @@ const WalletDecrypt = withRouter<Props>(
       return this.WALLETS[selectedWalletKey];
     }
 
-    public handleCreateAccount = (createAccount: any) => {
+    public handleCreateAccount = (createAccount: ((newAccount: Account) => void)) => {
       const { accountData } = this.state;
       const network: NetworkOptions | undefined = getNetworkByName(accountData.network);
-      if (!network) {
-        const newAccount: Account = {
-          ...accountData,
-          assets: 'DefaultAsset',
-          value: 0,
-          label: 'New Account',
-          localSettings: 'default',
-          transactionHistory: ''
-        };
-        createAccount(newAccount);
-      } else {
-        const newAccount: Account = {
-          ...accountData,
-          assets: network.unit,
-          value: 0,
-          label: 'New Account',
-          localSettings: 'default',
-          transactionHistory: ''
-        };
-        createAccount(newAccount);
-      }
+      const newAccount: Account = {
+        ...accountData,
+        assets: network ? network.unit : 'DefaultAsset',
+        value: 0,
+        label: 'New Account',
+        localSettings: 'default',
+        transactionHistory: ''
+      };
+      createAccount(newAccount);
     };
 
     public handleCompleteFlow() {
