@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-import { Transition } from 'react-spring';
+import { Transition } from 'react-spring/renderprops';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -305,8 +305,14 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
     return (
       <Navbar>
         {/* Mobile Menu */}
-        <Transition from={{ left: '-375px' }} enter={{ left: '0' }} leave={{ left: '-500px' }}>
-          {menuOpen &&
+        <Transition
+          items={menuOpen}
+          from={{ left: '-375px' }}
+          enter={{ left: '0' }}
+          leave={{ left: '-500px' }}
+        >
+          {open =>
+            open &&
             ((style: any) => (
               <Menu style={style}>
                 <MenuLinks>
@@ -361,7 +367,8 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                   </li>
                 </MenuLinks>
               </Menu>
-            ))}
+            ))
+          }
         </Transition>
         <HeaderTop>
           {/* Mobile Left */}
