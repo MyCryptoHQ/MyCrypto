@@ -9,6 +9,7 @@ export interface Account {
   accountType: WalletName;
   value: number;
   transactionHistory: string;
+  derivationPath: string;
 }
 
 export interface ExtendedAccount extends Account {

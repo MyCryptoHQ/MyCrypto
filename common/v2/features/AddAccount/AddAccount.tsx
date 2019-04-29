@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { withRouter, RouteComponentProps, Redirect, Route } from 'react-router';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 
@@ -49,9 +49,10 @@ import backArrow from 'common/assets/images/icn-back-arrow.svg';
 import * as WalletActions from 'v2/features/Wallets';
 
 import { NetworkOptionsContext, AccountContext } from 'v2/providers';
-import { Link } from 'react-router-dom';
 import { Account } from 'v2/services/Account/types';
 import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
+import { getNetworkByName } from 'v2/libs';
+import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 
 interface OwnProps {
   hidden?: boolean;
@@ -273,38 +274,31 @@ const WalletDecrypt = withRouter<Props>(
       return this.WALLETS[selectedWalletKey];
     }
 
-    public handleCreateAccount = (createAccount: any) => {
+    public handleCreateAccount = (createAccount: ((newAccount: Account) => void)) => {
       const { accountData } = this.state;
-      //const network = accountData.network;
-      //const asset = getBaseAsset(network);
+      const network: NetworkOptions | undefined = getNetworkByName(accountData.network);
       const newAccount: Account = {
         ...accountData,
-        assets: '',
+        assets: network ? network.unit : 'DefaultAsset',
         value: 0,
         label: 'New Account',
-        localSettings: '',
+        localSettings: 'default',
         transactionHistory: ''
       };
       createAccount(newAccount);
     };
 
     public handleCompleteFlow() {
-      const { accountData } = this.state;
       return (
         <AccountContext.Consumer>
-          {({ createAccount }) => (
-            <div>
-              {`You're trying to add an ${accountData.network} address ${
-                accountData.address
-              } to your
-                dashboard.`}
-              <Link to="/dashboard" color="white">
-                <Button onClick={() => this.handleCreateAccount(createAccount)}>
-                  {'Confirm address'}
-                </Button>
-              </Link>
-            </div>
-          )}
+          {({ createAccount }) => {
+            this.handleCreateAccount(createAccount);
+            return (
+              <Route>
+                <Redirect to="/dashboard" />
+              </Route>
+            );
+          }}
         </AccountContext.Consumer>
       );
     }
@@ -522,9 +516,9 @@ const WalletDecrypt = withRouter<Props>(
                     className="Panel-dropdown"
                     value={this.state.accountData.network}
                     items={new Set(networkNames.sort())}
-                    onChange={({ target: { value } }) =>
-                      this.setState({ accountData: { ...this.state.accountData, network: value } })
-                    }
+                    onChange={({ target: { value } }) => {
+                      this.setState({ accountData: { ...this.state.accountData, network: value } });
+                    }}
                     placeholder="Ethereum"
                   />
                 );
