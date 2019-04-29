@@ -275,23 +275,23 @@ const WalletDecrypt = withRouter<Props>(
       return this.WALLETS[selectedWalletKey];
     }
 
-    public handleCreateAccount = async (createAccount: any) => {
+    public handleCreateAccount = (createAccount: any) => {
       const { accountData } = this.state;
-      try {
-        const network: NetworkOptions = await getNetworkByName(accountData.network);
+      const network: NetworkOptions | undefined = getNetworkByName(accountData.network);
+      if (!network) {
         const newAccount: Account = {
           ...accountData,
-          assets: network.unit,
+          assets: 'DefaultAsset',
           value: 0,
           label: 'New Account',
           localSettings: 'default',
           transactionHistory: ''
         };
         createAccount(newAccount);
-      } catch {
+      } else {
         const newAccount: Account = {
           ...accountData,
-          assets: 'DefaultAsset',
+          assets: network.unit,
           value: 0,
           label: 'New Account',
           localSettings: 'default',

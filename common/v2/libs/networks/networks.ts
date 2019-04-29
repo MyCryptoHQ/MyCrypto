@@ -5,36 +5,12 @@ export const getAllNetworks = () => {
   return Object.values(getCache().networkOptions);
 };
 
-export const getNetworkByChainId = (chainId: string): Promise<NetworkOptions> => {
-  return new Promise((resolve, reject) => {
-    try {
-      const networks = getAllNetworks();
-
-      networks.map((network: NetworkOptions) => {
-        if (network.chainId === parseInt(chainId, 16)) {
-          resolve(network);
-        }
-      });
-      reject();
-    } catch (e) {
-      reject();
-    }
-  });
+export const getNetworkByChainId = (chainId: string): NetworkOptions | undefined => {
+  const networks = getAllNetworks() || [];
+  return networks.find((network: NetworkOptions) => network.chainId === parseInt(chainId, 16));
 };
 
-export const getNetworkByName = async (name: string): Promise<NetworkOptions> => {
-  return new Promise((resolve, reject) => {
-    try {
-      const networks = getAllNetworks();
-
-      networks.map((network: NetworkOptions) => {
-        if (network.name === name) {
-          resolve(network);
-        }
-      });
-      reject();
-    } catch (e) {
-      reject();
-    }
-  });
+export const getNetworkByName = (name: string): NetworkOptions | undefined => {
+  const networks = getAllNetworks() || [];
+  return networks.find((network: NetworkOptions) => network.name === name);
 };
