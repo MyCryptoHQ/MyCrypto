@@ -497,11 +497,11 @@ const WalletDecrypt = withRouter<Props>(
             </Button>
           </div>
           <div className="Panel-content">
-            <div className="Panel-title">Select Network and Node</div>
+            <div className="Panel-title">Select Network</div>
 
             <div className="Panel-description">
-              Select the blockchain that you want to operate with and the node it connects through.
-              Not sure what to choose? Stick with the default choices below and click next.
+              Select the blockchain that you want to operate with. Not sure what to choose? Stick
+              with the default choice below and click next.
             </div>
 
             <label className="Panel-networkLabel">Network</label>
