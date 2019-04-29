@@ -159,11 +159,11 @@ export const CACHE_INIT_DEV: LocalCache = {
     }
   },
   assetOptions: {
-    Ethereum: {
+    ETH: {
       name: 'Ethereum',
-      network: 'Ethereum',
+      network: 'ETH',
       ticker: 'ETH',
-      type: 'coin',
+      type: 'base',
       decimal: 18,
       contractAddress: null
     }

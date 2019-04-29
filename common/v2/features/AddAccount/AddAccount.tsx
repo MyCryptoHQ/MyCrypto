@@ -52,6 +52,8 @@ import { NetworkOptionsContext, AccountContext } from 'v2/providers';
 import { Link } from 'react-router-dom';
 import { Account } from 'v2/services/Account/types';
 import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
+import { getNetworkByName } from 'v2/libs';
+import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 
 interface OwnProps {
   hidden?: boolean;
@@ -273,16 +275,15 @@ const WalletDecrypt = withRouter<Props>(
       return this.WALLETS[selectedWalletKey];
     }
 
-    public handleCreateAccount = (createAccount: any) => {
+    public handleCreateAccount = (createAccount: ((newAccount: Account) => void)) => {
       const { accountData } = this.state;
-      //const network = accountData.network;
-      //const asset = getBaseAsset(network);
+      const network: NetworkOptions | undefined = getNetworkByName(accountData.network);
       const newAccount: Account = {
         ...accountData,
-        assets: '',
+        assets: network ? network.unit : 'DefaultAsset',
         value: 0,
         label: 'New Account',
-        localSettings: '',
+        localSettings: 'default',
         transactionHistory: ''
       };
       createAccount(newAccount);
@@ -522,9 +523,9 @@ const WalletDecrypt = withRouter<Props>(
                     className="Panel-dropdown"
                     value={this.state.accountData.network}
                     items={new Set(networkNames.sort())}
-                    onChange={({ target: { value } }) =>
-                      this.setState({ accountData: { ...this.state.accountData, network: value } })
-                    }
+                    onChange={({ target: { value } }) => {
+                      this.setState({ accountData: { ...this.state.accountData, network: value } });
+                    }}
                     placeholder="Ethereum"
                   />
                 );
