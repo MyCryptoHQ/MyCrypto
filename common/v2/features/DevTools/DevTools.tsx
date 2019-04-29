@@ -39,7 +39,8 @@ const DevTools = () => {
                 accountType: SecureWalletName.WEB3,
                 value: 0,
                 transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
-                uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'
+                uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
+                derivationPath: `m/44'/60'/0'/0/0`
               }}
               onSubmit={(values: ExtendedAccount, { setSubmitting }) => {
                 createAccount(values);
