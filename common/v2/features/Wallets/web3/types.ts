@@ -1,3 +1,7 @@
-import { Web3Wallet } from 'v2/libs/wallet';
+export enum WalletActions {
+  UNLOCK_WEB3 = 'WALLET_UNLOCK_WEB3'
+}
 
-export type TUnlockWeb3 = () => Promise<Web3Wallet | undefined>;
+export interface UnlockWeb3Action {
+  type: WalletActions.UNLOCK_WEB3;
+}

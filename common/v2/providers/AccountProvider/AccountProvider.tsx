@@ -7,6 +7,7 @@ export interface ProviderState {
   createAccount(accountData: ExtendedAccount): void;
   deleteAccount(uuid: string): void;
   updateAccount(uuid: string, accountData: ExtendedAccount): void;
+  syncAccounts(): void;
 }
 
 export const AccountContext = createContext({} as ProviderState);
@@ -24,6 +25,9 @@ export class AccountProvider extends Component {
     },
     updateAccount: (uuid: string, accountData: ExtendedAccount) => {
       service.updateAccount(uuid, accountData);
+      this.getAccounts();
+    },
+    syncAccounts: () => {
       this.getAccounts();
     }
   };

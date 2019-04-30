@@ -31,20 +31,6 @@ class LogOutPromptClass extends React.Component<Props, State> {
       nextLocation: null,
       openModal: false
     };
-
-    this.props.history.block(nextLocation => {
-      if (this.props.wallet && nextLocation.pathname !== this.props.location.pathname) {
-        const isSubTab =
-          nextLocation.pathname.split('/')[1] === this.props.location.pathname.split('/')[1];
-        if (!isSubTab) {
-          this.setState({
-            openModal: true,
-            nextLocation
-          });
-          return false;
-        }
-      }
-    });
   }
 
   public render() {

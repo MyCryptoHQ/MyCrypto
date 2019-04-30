@@ -52,6 +52,9 @@ import { Link } from 'react-router-dom';
 import { Account } from 'v2/services/Account/types';
 import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
 
+// import { setupWeb3Node } from 'v2/libs/nodes/web3';
+//import { fieldsReducer } from 'features/transaction/fields/reducer';
+
 interface OwnProps {
   hidden?: boolean;
   disabledWallets?: DisabledWallets;
@@ -62,7 +65,7 @@ interface DispatchProps {
   unlockKeystore: WalletActions.TUnlockKeystore;
   unlockMnemonic: WalletActions.TUnlockMnemonic;
   unlockPrivateKey: WalletActions.TUnlockPrivateKey;
-  unlockWeb3: WalletActions.TUnlockWeb3;
+  unlockWeb3: walletActions.TUnlockWeb3;
   setWallet: walletActions.TSetWallet;
   resetTransactionRequested: transactionFieldsActions.TResetTransactionRequested;
   showNotification: notificationsActions.TShowNotification;
@@ -433,7 +436,7 @@ const WalletDecrypt = withRouter<Props>(
                   //isSecure={true}
                   isDisabled={this.isWalletDisabled(walletType)}
                   disableReason={reasons[walletType]}
-                  onClick={this.handleWalletChoice}
+                  onClick={() => this.handleWalletChoice(walletType)}
                 />
               );
             })}

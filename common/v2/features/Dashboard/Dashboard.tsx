@@ -18,12 +18,27 @@ import {
   AddressMetadataContext
 } from 'v2/providers';
 
+interface AccountListProps {
+  syncAccounts: Function;
+}
+
+class AccountListContainer extends React.Component<AccountListProps, {}> {
+  componentDidMount() {
+    this.props.syncAccounts();
+  }
+
+  render() {
+    const { children } = this.props;
+    return <>{children}</>;
+  }
+}
+
 export default function Dashboard() {
   return (
     <>
       {/* MOBILE */}
       <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
+        {({ accounts, deleteAccount, syncAccounts }) => (
           <Layout className="Dashboard-mobile" fluid={true}>
             <div className="Dashboard-mobile-actions">
               {actions.map(action => <ActionTile key={action.title} {...action} />)}
@@ -38,11 +53,13 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="Dashboard-mobile-section">
-              <AccountList
-                accounts={accounts}
-                deleteAccount={deleteAccount}
-                className="Dashboard-mobile-modifiedPanel"
-              />
+              <AccountListContainer syncAccounts={syncAccounts}>
+                <AccountList
+                  accounts={accounts}
+                  deleteAccount={deleteAccount}
+                  className="Dashboard-mobile-modifiedPanel"
+                />
+              </AccountListContainer>
             </div>
             <AddressMetadataContext.Consumer>
               {({ readAddressMetadata }) => (
@@ -68,7 +85,7 @@ export default function Dashboard() {
       </AccountContext.Consumer>
       {/* DESKTOP */}
       <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
+        {({ accounts, deleteAccount, syncAccounts }) => (
           <Layout className="Dashboard-desktop">
             <div className="Dashboard-desktop-top">
               <div className="Dashboard-desktop-top-left">
@@ -87,11 +104,13 @@ export default function Dashboard() {
                   <WalletBreakdown />
                 </div>
                 <div>
-                  <AccountList
-                    accounts={accounts}
-                    deleteAccount={deleteAccount}
-                    className="Dashboard-desktop-modifiedPanel"
-                  />
+                  <AccountListContainer syncAccounts={syncAccounts}>
+                    <AccountList
+                      accounts={accounts}
+                      deleteAccount={deleteAccount}
+                      className="Dashboard-desktop-modifiedPanel"
+                    />
+                  </AccountListContainer>
                 </div>
               </div>
             </div>

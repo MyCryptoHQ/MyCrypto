@@ -1,6 +1,9 @@
 import { translateRaw } from 'translations';
 import { IWallet } from 'libs/wallet';
 import * as types from './types';
+import * as service from 'v2/services/Account/Account';
+import { ExtendedAccount } from 'v2/services/Account';
+import { SecureWalletName } from 'config';
 
 export const INITIAL_STATE: types.WalletState = {
   inst: null,
@@ -31,6 +34,21 @@ function addRecentAddress(addresses: string[], newWallet: IWallet | null) {
 }
 
 function setWallet(state: types.WalletState, action: types.SetWalletAction): types.WalletState {
+  const { address, network } = action.payload;
+
+  const accountData = {
+    label: 'Web3',
+    address: address,
+    network: network,
+    localSettings: 'default',
+    assets: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
+    accountType: SecureWalletName.WEB3,
+    value: 0,
+    transactionHistory: '',
+    uuid: address
+  };
+  service.createAccount(accountData);
+
   return {
     ...state,
     inst: action.payload,
@@ -49,6 +67,9 @@ function setBalanceFullfilled(
   state: types.WalletState,
   action: types.SetBalanceFullfilledAction
 ): types.WalletState {
+  let accountsList = service.readAccounts();
+  let latestAccount = accountsList[accountsList.length - 1];
+  service.updateAccount(latestAccount.uuid, { ...latestAccount, balance: action.payload });
   return {
     ...state,
     balance: { wei: action.payload, isPending: false }

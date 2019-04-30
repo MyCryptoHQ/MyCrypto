@@ -16,7 +16,8 @@ import {
   createNodeOptionsWithID
 } from 'v2/services/NodeOptions/NodeOptions';
 import { updateCurrents, readCurrents } from 'v2/services/Currents/Currents';
-
+import * as types from './types';
+import { createBrowserHistory } from 'history';
 //#region Web3
 
 let web3Added = true;
@@ -62,47 +63,11 @@ export const initWeb3Node = async () => {
   return lib;
 };
 
-export const unlockWeb3 = async () => {
-  try {
-    console.log('did i get here?');
-    const nodeLib = await initWeb3Node();
-
-    console.log('did i get here?1');
-    /*await (action: any) => {
-      action.type === configNodesSelectedTypes.ConfigNodesSelectedActions.CHANGE_SUCCEEDED &&
-        action.payload.nodeId === 'web3'
-    }*/
-
-    const web3Node: any | null = await getWeb3Node();
-    console.log('did i get here?1.1');
-    if (!web3Node) {
-      throw Error('Web3 node config not found!');
-    }
-    console.log(web3Node);
-    const network = web3Node.network;
-
-    if (!isWeb3Node(nodeLib)) {
-      throw new Error('Cannot use Web3 wallet without a Web3 node.');
-    }
-
-    const accounts: string = await nodeLib.getAccounts();
-    console.log('accounts: ' + accounts);
-    const address = accounts[0];
-    console.log('did i get here?3');
-    if (!address) {
-      throw new Error('No accounts found in MetaMask / Web3.');
-    }
-    console.log('did i get here?4 ' + network);
-    console.log(new Web3Wallet(address, stripWeb3Network(network)));
-    console.log('did i get here?6');
-    return new Web3Wallet(address, stripWeb3Network(network));
-  } catch (err) {
-    console.error(err);
-    // unset web3 node so node dropdown isn't disabled
-    //configNodesStaticActions.web3UnsetNode();
-    console.log('Error ' + translateRaw(err.message));
-  }
-};
+export function unlockWeb3(): types.UnlockWeb3Action {
+  return {
+    type: types.WalletActions.UNLOCK_WEB3
+  };
+}
 
 export const getWeb3Node = async () => {
   console.log('getWeb3 1');
