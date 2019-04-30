@@ -13,10 +13,7 @@ export { CurrentsContext, CurrentsProvider } from './CurrentsProvider';
 export { FiatCurrencyContext, FiatCurrencyProvider } from './FiatCurrencyProvider';
 export { TransactionContext, TransactionProvider } from './TransactionProvider';
 export { AssetOptionsContext, AssetOptionsProvider } from './AssetOptionsProvider';
-export {
-  ActiveNotificationsContext,
-  ActiveNotificationsProvider
-} from './ActiveNotificationsProvider';
+export { NotificationsContext, NotificationsProvider } from './NotificationsProvider';
 export { AddressMetadataContext, AddressMetadataProvider } from './AddressMetadataProvider';
 export { NetworkOptionsContext, NetworkOptionsProvider } from './NetworkOptionsProvider';
 export { NodeOptionsContext, NodeOptionsProvider } from './NodeOptionsProvider';
