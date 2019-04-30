@@ -64,8 +64,8 @@ export default class Home extends Component {
 
   public componentDidMount = async () => {
     try {
-      const releaseURLs = await GithubService.instance.getReleasesURLs();
-      const currentPlatformURL = releaseURLs[featuredOS] || DEFAULT_LINK;
+      const { releaseUrls } = await GithubService.instance.getReleasesInfo();
+      const currentPlatformURL = releaseUrls[featuredOS] || DEFAULT_LINK;
       this.setState({ appDownloadLink: currentPlatformURL });
     } catch (e) {
       console.error(e);

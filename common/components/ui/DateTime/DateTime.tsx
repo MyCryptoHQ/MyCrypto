@@ -265,7 +265,7 @@ export default class DateTime extends Component<Props, State> {
     return formats as DatepickerFormats;
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const formats = this.getFormats(nextProps);
 
     let updatedState: Partial<State> = {};
