@@ -32,11 +32,7 @@ const notificationsStrings: NotificationsStringsProps = {
 export interface ProviderState {
   currentNotification: ExtendedNotification | undefined;
   notifications: ExtendedNotification[];
-  createNotification(
-    templateName: string,
-    templateData?: object,
-    options?: NotificationOptions
-  ): void;
+  createNotification(templateName: string, options?: NotificationOptions): void;
   dismissCurrentNotification(): void;
 }
 
