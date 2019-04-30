@@ -10,6 +10,8 @@ import { configSelectors, configNetworksStaticSelectors } from 'features/config'
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWallets from './DeterministicWallets';
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import './Mnemonic.scss';
 
 interface OwnProps {
   seed: string;
@@ -63,38 +65,44 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       );
     } else {
       return (
-        <div id="selectedTypeKey">
-          <div className="form-group">
-            <TogglablePassword
-              value={phrase}
-              rows={4}
-              placeholder={translateRaw('X_MNEMONIC')}
-              isValid={isValidMnemonic}
-              isTextareaWhenVisible={true}
-              onChange={this.onMnemonicChange}
-              onEnter={isValidMnemonic ? this.onDWModalOpen : undefined}
-            />
-          </div>
-          <div className="form-group">
-            <p>{translate('ADD_LABEL_8')}</p>
-            <Input
-              isValid={true}
-              showValidAsPlain={true}
-              value={pass}
-              onChange={this.onPasswordChange}
-              placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-              type="password"
-            />
-          </div>
-          <div className="form-group">
-            <button
-              style={{ width: '100%' }}
-              onClick={this.onDWModalOpen}
-              className="btn btn-primary btn-lg"
-              disabled={!isValidMnemonic}
-            >
-              {translate('MNEMONIC_CHOOSE_ADDR')}
-            </button>
+        <div className="Mnemonic">
+          <div id="selectedTypeKey">
+            <div className="Mnemonic-img">
+              <img src={PrivateKeyicon} />
+            </div>
+
+            <div className="form-group">
+              <TogglablePassword
+                value={phrase}
+                rows={4}
+                placeholder={translateRaw('X_MNEMONIC')}
+                isValid={isValidMnemonic}
+                isTextareaWhenVisible={true}
+                onChange={this.onMnemonicChange}
+                onEnter={isValidMnemonic ? this.onDWModalOpen : undefined}
+              />
+            </div>
+            <div className="form-group">
+              <p>{translate('ADD_LABEL_8')}</p>
+              <Input
+                isValid={true}
+                showValidAsPlain={true}
+                value={pass}
+                onChange={this.onPasswordChange}
+                placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+                type="password"
+              />
+            </div>
+            <div className="form-group">
+              <button
+                style={{ width: '100%' }}
+                onClick={this.onDWModalOpen}
+                className="btn btn-primary btn-lg"
+                disabled={!isValidMnemonic}
+              >
+                {translate('MNEMONIC_CHOOSE_ADDR')}
+              </button>
+            </div>
           </div>
         </div>
       );

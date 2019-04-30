@@ -1,6 +1,16 @@
 .SafeTminiDecrypt {
   text-align: center;
 
+  &-description {
+    margin: 2em;
+    height: 54px;
+    font-family: Lato;
+    font-size: 18px;
+  }
+  &-img {
+    margin: 4em;
+  }
+
   &-help {
     margin-top: 10px;
     font-size: 13px;

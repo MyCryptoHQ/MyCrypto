@@ -71,12 +71,13 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     } else {
       return (
         <div className="TrezorDecrypt">
-          <div className="Trezor-description">
+          <div className="TrezorDecrypt-description">
             {translate('TREZOR_TIP')}
-            <div className="Panel-image">
+            <div className="TrezorDecrypt-img">
               <img src={ConnectTrezor} />
             </div>
           </div>
+          <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
           <Button
             className="TrezorDecrypt-button"
             onClick={this.handleNullConnect}
@@ -91,8 +92,6 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
               translate('ADD_TREZOR_SCAN')
             )}
           </Button>
-
-          <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
         </div>
       );
     }

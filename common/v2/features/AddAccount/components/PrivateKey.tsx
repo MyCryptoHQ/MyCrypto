@@ -6,7 +6,7 @@ import { stripHexPrefix } from 'libs/formatters';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-
+import './PrivateKey.scss';
 export interface PrivateKeyValue {
   key: string;
   password: string;
@@ -48,6 +48,8 @@ interface Props {
   onUnlock(): void;
 }
 
+const privateKeyHelpLink =
+  'https://support.mycrypto.com/troubleshooting/accessing-wallet/private-key-not-working';
 export class PrivateKeyDecrypt extends PureComponent<Props> {
   public render() {
     const { key, password } = this.props.value;
@@ -55,40 +57,48 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
     const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
     return (
-      <form id="selectedTypeKey" onSubmit={this.unlock}>
-        <img src={PrivateKeyicon} />
-        <div className="input-group-wrapper">
-          <label className="input-group">
-            <TogglablePassword
-              value={key}
-              rows={4}
-              placeholder={translateRaw('X_PRIVKEY2')}
-              isValid={isValidPkey}
-              onChange={this.onPkeyChange}
-              onEnter={this.props.onUnlock}
-            />
-          </label>
+      <div className="PrivateKey">
+        <form id="selectedTypeKey" onSubmit={this.unlock}>
+          <div className="PrivateKey-img">
+            <img src={PrivateKeyicon} />
+          </div>
+
+          <div className="input-group-wrapper">
+            <label className="input-group">
+              <TogglablePassword
+                value={key}
+                rows={4}
+                placeholder={translateRaw('X_PRIVKEY2')}
+                isValid={isValidPkey}
+                onChange={this.onPkeyChange}
+                onEnter={this.props.onUnlock}
+              />
+            </label>
+          </div>
+          {isValidPkey &&
+            isPassRequired && (
+              <div className="input-group-wrapper">
+                <label className="input-group">
+                  <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
+                  <Input
+                    isValid={password.length > 0}
+                    value={password}
+                    onChange={this.onPasswordChange}
+                    onKeyDown={this.onKeyDown}
+                    placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+                    type="password"
+                  />
+                </label>
+              </div>
+            )}
+          <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
+            {translate('ADD_LABEL_6_SHORT')}
+          </button>
+        </form>
+        <div className="PrivateKey-help">
+          {translate('PRIVATE_KEY_HELP', { $wiki_link: privateKeyHelpLink })}
         </div>
-        {isValidPkey &&
-          isPassRequired && (
-            <div className="input-group-wrapper">
-              <label className="input-group">
-                <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
-                <Input
-                  isValid={password.length > 0}
-                  value={password}
-                  onChange={this.onPasswordChange}
-                  onKeyDown={this.onKeyDown}
-                  placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-                  type="password"
-                />
-              </label>
-            </div>
-          )}
-        <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
-          {translate('ADD_LABEL_6_SHORT')}
-        </button>
-      </form>
+      </div>
     );
   }
 

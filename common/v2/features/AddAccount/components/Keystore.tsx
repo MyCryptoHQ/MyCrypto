@@ -5,6 +5,8 @@ import { isKeystorePassRequired } from 'libs/wallet';
 import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import './Keystore.scss';
 
 export interface KeystoreValue {
   file: string;
@@ -44,41 +46,47 @@ export class KeystoreDecrypt extends PureComponent {
     const unlockDisabled = !file || (passReq && !password);
 
     return (
-      <form onSubmit={this.unlock}>
-        <div className="form-group">
-          <input
-            className="hidden"
-            type="file"
-            id="fselector"
-            onChange={this.handleFileSelection}
-          />
-          <label htmlFor="fselector" style={{ width: '100%' }}>
-            <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
-              {translate('ADD_RADIO_2_SHORT')}
-            </a>
-          </label>
+      <div className="Keystore">
+        <form onSubmit={this.unlock}>
+          <div className="form-group">
+            <div className="Keystore-img">
+              <img src={PrivateKeyicon} />
+            </div>
 
-          <label className="WalletDecrypt-decrypt-label" hidden={!file}>
-            <span>{filename}</span>
-          </label>
+            <input
+              className="hidden"
+              type="file"
+              id="fselector"
+              onChange={this.handleFileSelection}
+            />
+            <label htmlFor="fselector" style={{ width: '100%' }}>
+              <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
+                {translate('ADD_RADIO_2_SHORT')}
+              </a>
+            </label>
 
-          {isWalletPending ? <Spinner /> : ''}
-          <Input
-            isValid={password.length > 0}
-            className={`${file.length && isWalletPending ? 'hidden' : ''}`}
-            disabled={!file}
-            value={password}
-            onChange={this.onPasswordChange}
-            onKeyDown={this.onKeyDown}
-            placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-            type="password"
-          />
-        </div>
+            <label className="WalletDecrypt-decrypt-label" hidden={!file}>
+              <span>{filename}</span>
+            </label>
 
-        <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-          {translate('ADD_LABEL_6_SHORT')}
-        </button>
-      </form>
+            {isWalletPending ? <Spinner /> : ''}
+            <Input
+              isValid={password.length > 0}
+              className={`${file.length && isWalletPending ? 'hidden' : ''}`}
+              disabled={!file}
+              value={password}
+              onChange={this.onPasswordChange}
+              onKeyDown={this.onKeyDown}
+              placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+              type="password"
+            />
+          </div>
+
+          <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
+            {translate('ADD_LABEL_6_SHORT')}
+          </button>
+        </form>
+      </div>
     );
   }
 

@@ -72,7 +72,11 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
       // todo: update help link
       return (
         <div className="SafeTminiDecrypt">
-          <img src={SafeTIcon} />
+          <div className="SafeTminiDecrypt-description">{translate('SAFET_MINI_DESCRIPTION')}</div>
+          <div className="SafeTminiDecrypt-img">
+            <img src={SafeTIcon} />
+          </div>
+
           <button
             className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
             onClick={this.handleNullConnect}

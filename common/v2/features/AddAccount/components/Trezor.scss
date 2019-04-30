@@ -3,6 +3,15 @@
   position: relative;
   height: 100%;
 
+  &-description {
+    margin: 2em;
+    margin-bottom: 2em;
+  }
+
+  &-img {
+    margin: 4em;
+  }
+
   &-help {
     margin-top: 10px;
     font-size: 13px;
@@ -32,5 +41,7 @@
   }
   &-button {
     width: 417px;
+    position: relative;
+    width: calc(100% - 140px);
   }
 }

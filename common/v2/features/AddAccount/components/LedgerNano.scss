@@ -12,7 +12,6 @@
   }
 
   &-description {
-    width: 417px;
     height: 500px;
     font-family: Lato;
     font-size: 18px;
@@ -28,11 +27,12 @@
     align-content: center;
     &-button {
       width: 417px;
-      bottom: 50px;
-      position: absolute;
+      position: relative;
+      width: calc(100% - 140px);
     }
   }
   &-image {
     vertical-align: center;
+    margin: 4em;
   }
 }

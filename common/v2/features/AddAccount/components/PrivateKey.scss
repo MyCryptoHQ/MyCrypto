@@ -1,0 +1,13 @@
+.PrivateKey {
+  position: relative;
+  &-img {
+    display: flex;
+    justify-content: center;
+    margin: 4em;
+  }
+  &-help {
+    display: flex;
+    justify-content: center;
+    margin: 2rem;
+  }
+}

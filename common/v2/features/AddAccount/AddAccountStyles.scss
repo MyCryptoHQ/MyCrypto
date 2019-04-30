@@ -16,6 +16,7 @@ $speed: 500ms;
 
 @mixin decrypt-title {
   text-align: center;
+  justify-content: center;
   line-height: 1;
   margin: $space 0 2rem;
   font-weight: normal;
@@ -56,7 +57,7 @@ $speed: 500ms;
     &-connectDevice {
       justify-content: center;
       text-align: center;
-      width: 421px;
+      // width: 421px;
       height: auto;
       font-family: Lato;
       font-size: 32px;

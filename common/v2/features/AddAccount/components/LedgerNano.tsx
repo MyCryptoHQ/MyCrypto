@@ -85,7 +85,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
         <div className="LedgerPanel-description-content">
           <div className="LedgerPanel-description">
             {translate('LEDGER_TIP')}
-            <div className="Panel-image">
+            <div className="LedgerPanel-image">
               <img src={ledgerIcon} />
             </div>
 

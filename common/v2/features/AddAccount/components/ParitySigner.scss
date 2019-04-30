@@ -1,10 +1,14 @@
 @import 'common/sass/variables';
 
 .ParitySigner {
+  position: relative;
+  justify-content: center;
+  text-align: center;
   &-badge {
     display: inline-block;
     height: 3em;
     margin: 0 0.4em;
+    margin-bottom: 2em;
   }
   &-fields {
     display: flex;
@@ -31,7 +35,9 @@
     text-align: center;
     line-height: 1;
     margin: $space 0 2rem;
-    font-weight: normal;
     animation: decrypt-enter 500ms ease 1;
+    font-family: Lato;
+    font-size: 32px;
+    font-weight: bold;
   }
 }
