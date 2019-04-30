@@ -9,3 +9,4 @@ export * from './Home';
 export * from './ImportWallet';
 export * from './Layout';
 export * from './constants';
+export * from './ScreenLock';

@@ -2,9 +2,10 @@ import { AxiosInstance } from 'axios';
 
 import { GITHUB_RELEASES_URL, OS } from './constants';
 import { APIService } from '../API';
-import { ReleaseURLs } from './types';
+import { ReleaseURLs, ReleaseInfo } from './types';
 
 let instantiated: boolean = false;
+let releaseInfo: ReleaseInfo;
 export default class GithubService {
   public static instance = new GithubService();
 
@@ -20,7 +21,11 @@ export default class GithubService {
     }
   }
 
-  public getReleasesURLs = async () => {
+  public getReleasesInfo = async () => {
+    if (releaseInfo) {
+      return releaseInfo;
+    }
+
     const ASSET_REG_EXPS = {
       [OS.MAC]: /^mac.*\.dmg$/,
       [OS.WINDOWS]: /^windows.*\.exe$/,
@@ -31,18 +36,18 @@ export default class GithubService {
 
     try {
       const response = await this.service.get('');
-      const assets = response.data.assets;
+      const { assets, tag_name: version, name } = response.data;
 
-      const releasesURLs: ReleaseURLs = {};
-
+      const releaseUrls: ReleaseURLs = {};
       Object.entries(ASSET_REG_EXPS).forEach(([key, regex]) => {
         const asset = assets.find((a: any) => regex.test(a.name));
         if (asset) {
-          releasesURLs[key] = asset.browser_download_url;
+          releaseUrls[key] = asset.browser_download_url;
         }
       });
 
-      return releasesURLs;
+      releaseInfo = { version, name, releaseUrls };
+      return releaseInfo;
     } catch (e) {
       throw e;
     }

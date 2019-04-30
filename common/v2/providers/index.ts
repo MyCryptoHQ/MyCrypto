@@ -22,3 +22,4 @@ export {
   TransactionHistoryContext,
   TransactionHistoryProvider
 } from './TransactionHistoryProvider';
+export { LockScreenContext, LockScreenProvider } from './LockScreenProvider';

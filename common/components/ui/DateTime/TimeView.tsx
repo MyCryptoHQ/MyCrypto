@@ -215,7 +215,7 @@ export default class DateTimePickerTime extends Component<Props, State> {
     this.setState(this.calculateState(this.props));
   }
 
-  public componentWillReceiveProps(nextProps: Props) {
+  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.setState(this.calculateState(nextProps));
   }
 
