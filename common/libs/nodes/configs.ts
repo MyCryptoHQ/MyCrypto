@@ -24,7 +24,13 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'infura',
       service: 'Infura',
       url: 'https://mainnet.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
-    }
+    },
+    {
+      name: makeNodeName('ETH', 'apitest'),
+      type: 'rpc',
+      service: 'APITEST',
+      url: 'https://16eg3oeoc1.execute-api.us-east-1.amazonaws.com/beta/eth'
+    },
   ],
 
   Ropsten: [
