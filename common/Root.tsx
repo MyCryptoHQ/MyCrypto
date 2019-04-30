@@ -39,6 +39,8 @@ import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
+import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import Dashboard from 'v2/features/Dashboard';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -90,12 +92,12 @@ class RootClass extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
-
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
           {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-          <Route path="/account" component={SendTransaction} />
+          <Route path="/account" component={SendTransaction} exact={true} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />

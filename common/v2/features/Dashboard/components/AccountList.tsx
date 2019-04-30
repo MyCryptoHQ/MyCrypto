@@ -5,6 +5,7 @@ import DashboardPanel from './DashboardPanel';
 import './AccountList.scss';
 import { ExtendedAccount } from 'v2/services';
 import styled from 'styled-components';
+import { truncate } from 'v2/libs';
 
 interface Props {
   accounts: ExtendedAccount[];
@@ -18,9 +19,6 @@ const DeleteButton = styled(Button)`
 `;
 
 export default function AccountList({ accounts, deleteAccount, className = '' }: Props) {
-  const truncate = (children: string) => {
-    return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-  };
   const accountTable = {
     head: ['Favorite', 'Address', 'Network', 'Value', 'Delete'],
     body: accounts.map(account => {
