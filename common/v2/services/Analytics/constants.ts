@@ -15,5 +15,6 @@ export enum ANALYTICS_CATEGORIES {
   ROOT = 'Root',
   DOWNLOAD_DESKTOP = 'Download Desktop App',
   HOME = 'Homepage',
-  SCREEN_LOCK = 'Screen Lock'
+  SCREEN_LOCK = 'Screen Lock',
+  UPDATE_DESKTOP = 'Update Desktop App'
 }
