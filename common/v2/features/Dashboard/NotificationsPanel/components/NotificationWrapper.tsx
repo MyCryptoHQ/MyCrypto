@@ -53,6 +53,10 @@ const Description = styled.p`
   @media (max-width: ${SCREEN_XS}) {
     font-size: 14px;
   }
+
+  strong {
+    font-weight: 600;
+  }
 `;
 
 const Resources = styled.div`

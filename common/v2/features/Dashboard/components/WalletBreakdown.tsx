@@ -38,7 +38,7 @@ export default function WalletBreakdown() {
       <div className="WalletBreakdown-selectWrapper">
         <ComboBox
           className="WalletBreakdown-selectWrapper-select"
-          value="US Dollars"
+          defaultValue="US Dollars"
           items={new Set(['US Dollars'])}
         />
         <div className="WalletBreakdown-selectWrapper-select">

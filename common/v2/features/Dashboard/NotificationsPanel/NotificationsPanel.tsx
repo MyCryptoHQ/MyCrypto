@@ -39,10 +39,6 @@ const CloseButton = styled(Button)`
 `;
 
 class NotificationsPanel extends Component {
-  public state = {
-    isOpen: true
-  };
-
   public render() {
     return (
       <NotificationsProvider>
@@ -117,13 +113,10 @@ class NotificationsPanel extends Component {
     switch (template) {
       case NotificationTemplates.walletCreated:
         return <WalletCreatedNotification />;
-        break;
       case NotificationTemplates.walletAdded:
         return <WalletAddedNotification />;
-        break;
       case NotificationTemplates.saveSettings:
         return <SaveDashboardNotification />;
-        break;
       case NotificationTemplates.printPaperWallet:
         return (
           <PrintPaperWalletNotification
@@ -131,13 +124,10 @@ class NotificationsPanel extends Component {
             privateKey={'023o1j23iohfse'}
           />
         );
-        break;
       case NotificationTemplates.getHardwareWallet:
         return <GetHardwareWalletNotification />;
-        break;
       default:
         return <WalletCreatedNotification />;
-        break;
     }
   }
 }

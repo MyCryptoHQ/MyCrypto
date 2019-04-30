@@ -1,16 +1,38 @@
 import React, { Component, createContext } from 'react';
 
 import * as service from 'v2/services/Notifications/Notifications';
-import { ExtendedNotification, Notification, NotificationOptions } from 'v2/services/Notifications';
+import {
+  ExtendedNotification,
+  Notification,
+  NotificationOptions,
+  NotificationTemplates
+} from 'v2/services/Notifications';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+
+const {
+  walletCreated,
+  walletAdded,
+  saveSettings,
+  printPaperWallet,
+  getHardwareWallet
+} = NotificationTemplates;
+
+interface NotificationsStringsProps {
+  [key: string]: string;
+}
+
+const notificationsStrings: NotificationsStringsProps = {
+  [walletCreated]: 'New Account (Wallet) Created',
+  [walletAdded]: 'New Account (Wallet) Added',
+  [saveSettings]: 'Save Your Dashboard Settings',
+  [printPaperWallet]: 'Print Your Paper Wallet',
+  [getHardwareWallet]: 'Get a Hardware Wallet'
+};
 
 export interface ProviderState {
   currentNotification: ExtendedNotification | undefined;
   notifications: ExtendedNotification[];
-  createNotification(
-    templateName: string,
-    templateData?: object,
-    options?: NotificationOptions
-  ): void;
+  createNotification(templateName: string, options?: NotificationOptions): void;
   dismissCurrentNotification(): void;
 }
 
@@ -20,12 +42,15 @@ export class NotificationsProvider extends Component {
   public state: ProviderState = {
     currentNotification: undefined,
     notifications: service.readAllNotifications() || [],
-    createNotification: (templateName: string, options?: NotificationOptions) =>
+    createNotification: (templateName: NotificationTemplates, options?: NotificationOptions) =>
       this.createNotification(templateName, options),
     dismissCurrentNotification: () => this.dismissCurrentNotification()
   };
 
-  public createNotification = (templateName: string, options?: NotificationOptions) => {
+  public createNotification = (
+    templateName: NotificationTemplates,
+    options?: NotificationOptions
+  ) => {
     // Dismiss old notifications that need to be dismissed
     const notificationsToDismiss = this.state.notifications.filter(
       x => x.options.dismissOnOverwrite === true && x.dismissed === false
@@ -63,8 +88,10 @@ export class NotificationsProvider extends Component {
       service.createNotification(notification);
     }
 
+    // track notification displayed event
+    this.trackNotificationDisplayed(notificationsStrings[templateName]);
+
     this.getNotifications();
-    return;
   };
 
   public dismissCurrentNotification = () => {
@@ -95,8 +122,15 @@ export class NotificationsProvider extends Component {
     const sortedNotifications = notifications.sort((a, b) => {
       return new Date(a.dateDisplayed).getTime() - new Date(b.dateDisplayed).getTime();
     });
-    const visibleNotifications = sortedNotifications.filter(x => x.dismissed === false);
+    const visibleNotifications = sortedNotifications.filter(x => !x.dismissed);
 
     this.setState({ currentNotification: visibleNotifications[visibleNotifications.length - 1] });
+  };
+
+  private trackNotificationDisplayed = (notification: string) => {
+    AnalyticsService.instance.track(
+      ANALYTICS_CATEGORIES.NOTIFICATION,
+      `${notification} notification displayed`
+    );
   };
 }
