@@ -10,6 +10,8 @@ import Root from './Root';
 import consoleAdvertisement from 'utils/consoleAdvertisement';
 import configuredStore from 'features/store';
 
+Create syntax error for testing
+
 const appEl = document.getElementById('app');
 
 render(<Root store={configuredStore} />, appEl);
