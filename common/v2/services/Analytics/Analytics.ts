@@ -15,7 +15,8 @@ export default class AnalyticsService {
   public static instance = new AnalyticsService();
 
   private service: AxiosInstance = APIService.generateInstance({
-    baseURL: ANALYTICS_API_URL
+    baseURL: ANALYTICS_API_URL,
+    timeout: 5000
   });
 
   constructor() {
