@@ -789,6 +789,14 @@
     "DOWNLOAD_APP_FOOTER_INFO": "Not sure what this is?",
     "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app.", 
     "NO_ACCOUNTS_HEADER":"You don't have any accounts in your wallet.",
-    "NO_ACCOUNTS_DESCRIPTION":"To access your funds add one of your existing \n accounts or create a new account now."
+    "NO_ACCOUNTS_DESCRIPTION":"To access your funds add one of your existing \n accounts or create a new account now.",
+    "ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS":"Your Accounts", 
+    "ACCOUNT_LIST_TABLE_ADD_ACCOUNT": "Add Account", 
+    "ACCOUNT_LIST_FAVOURITE": "Favorite", 
+    "ACCOUNT_LIST_ADDRESS": "Address", 
+    "ACCOUNT_LIST_NETWORK":"Network", 
+    "ACCOUNT_LIST_VALUE": "Value", 
+    "ACCOUNT_LIST_DELETE": "Delete"
+
   }
 }
