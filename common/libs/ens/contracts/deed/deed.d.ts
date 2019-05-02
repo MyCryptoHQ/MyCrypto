@@ -5,7 +5,7 @@ export interface IDeed {
   destroyDeed: ABIFuncParamless;
   setOwner: ABIFunc<{ newOwner: address }>;
   registrar: ABIFuncParamless<{ registrarAddress: address }>;
-  owner: ABIFuncParamless<{ ownerAddress: address }>;
+  owner: ABIFuncParamless<{ deedOwnerAddress: address }>;
   closeDeed: ABIFunc<{ refundRatio: uint256 }>;
   setRegistrar: ABIFunc<{ newRegistrar: address }>;
   setBalance: ABIFunc<{ newValue: uint256 }>;

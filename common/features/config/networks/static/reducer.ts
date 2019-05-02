@@ -6,40 +6,41 @@ import {
   SecureWalletName
 } from 'config/data';
 import {
-  ELLA_DEFAULT,
-  ETC_LEDGER,
-  ETC_TREZOR,
-  ETC_SAFE_T,
-  ETH_DEFAULT,
-  ETH_LEDGER,
-  ETH_TESTNET,
-  ETH_TREZOR,
-  ETH_SAFE_T,
-  EXP_DEFAULT,
-  POA_DEFAULT,
-  TOMO_DEFAULT,
-  UBQ_DEFAULT,
-  MUSIC_DEFAULT,
-  ETSC_DEFAULT,
-  EGEM_DEFAULT,
-  CLO_DEFAULT,
-  RSK_MAINNET,
-  RSK_TESTNET,
-  GO_DEFAULT,
-  EOSC_DEFAULT,
-  ESN_DEFAULT,
-  AQUA_DEFAULT,
   AKA_DEFAULT,
-  PIRL_DEFAULT,
-  ATH_DEFAULT,
-  ETHO_DEFAULT,
-  MIX_DEFAULT,
-  REOSC_DEFAULT,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
+  ATH_DEFAULT,
+  CLO_DEFAULT,
+  EGEM_DEFAULT,
+  ELLA_DEFAULT,
+  EOSC_DEFAULT,
+  ESN_DEFAULT,
+  ETC_LEDGER,
+  ETC_SAFE_T,
+  ETC_TREZOR,
+  ETH_DEFAULT,
+  ETH_LEDGER,
+  ETH_SAFE_T,
+  ETH_TESTNET,
+  ETH_TREZOR,
+  ETHO_DEFAULT,
+  ETSC_DEFAULT,
+  EXP_DEFAULT,
+  GO_DEFAULT,
+  METADIUM_DEFAULT,
+  MIX_DEFAULT,
+  MUSIC_DEFAULT,
+  PIRL_DEFAULT,
+  POA_DEFAULT,
+  REOSC_DEFAULT,
+  RSK_MAINNET,
+  RSK_TESTNET,
+  SOLIDUM_DEFAULT,
   THUNDERCORE_DEFAULT,
+  TOMO_DEFAULT,
+  UBQ_DEFAULT,
   WEB_DEFAULT,
-  METADIUM_DEFAULT
+  DEXON_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import { TAB } from 'components/Header/components/constants';
@@ -531,7 +532,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
 
   GO_TESTNET: {
     id: 'GO_TESTNET',
-    name: 'GO',
+    name: 'GO Testnet',
     unit: 'GO',
     chainId: 31337,
     isCustom: false,
@@ -620,9 +621,9 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     tokens: [],
     contracts: [],
     dPathFormats: {
-      [SecureWalletName.TREZOR]: AQUA_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: AQUA_DEFAULT,
-      [InsecureWalletName.MNEMONIC_PHRASE]: AQUA_DEFAULT
+      [SecureWalletName.TREZOR]: ETH_DEFAULT,
+      [SecureWalletName.LEDGER_NANO_S]: ETH_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
     },
     gasPriceSettings: {
       min: 0.1,
@@ -896,6 +897,53 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 80,
       max: 80,
       initial: 80
+    }
+  },
+  SOLIDUM: {
+    id: 'SOLIDUM',
+    name: 'Solidum',
+    unit: 'SUM',
+    chainId: 72106,
+    isCustom: false,
+    color: '#1e87f0',
+    blockExplorer: makeExplorer({
+      name: 'Solidum Explorer',
+      origin: 'https://explorer.solidum.network'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: SOLIDUM_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: SOLIDUM_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 1,
+      max: 60,
+      initial: 20
+    }
+  },
+  DEXON: {
+    id: 'DEXON',
+    name: 'DEXON Network',
+    unit: 'DXN',
+    chainId: 237,
+    isCustom: false,
+    color: '#954a97',
+    blockExplorer: makeExplorer({
+      name: 'DEXON Scan',
+      origin: 'https://dexonscan.app',
+      txPath: 'transaction'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.LEDGER_NANO_S]: DEXON_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: DEXON_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 24,
+      max: 100,
+      initial: 24
     }
   }
 };
