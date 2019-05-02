@@ -501,7 +501,7 @@ const WalletDecrypt = withRouter<Props>(
 
             <div className="Panel-description">
               Select the blockchain that you want to operate with. Not sure what to choose? Stick
-              with the default choices below and click next.
+              with the default choice below and click next.
             </div>
 
             <label className="Panel-networkLabel">Network</label>

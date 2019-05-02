@@ -42,7 +42,6 @@ $speed: 500ms;
     position: relative;
   }
   &-title {
-    width: 421px;
     height: 39px;
     font-family: Lato;
     font-size: 32px;
@@ -52,6 +51,7 @@ $speed: 500ms;
     line-height: normal;
     letter-spacing: normal;
     color: var(--dark-slate-blue);
+    text-align: center;
 
     &-connectDevice {
       justify-content: center;
@@ -75,7 +75,6 @@ $speed: 500ms;
   }
 
   &-description {
-    width: 417px;
     height: 108px;
     font-family: Lato;
     font-size: 18px;
@@ -87,10 +86,11 @@ $speed: 500ms;
     color: #333333;
     padding-top: 16px;
     position: relative;
+    text-align: center;
     &-button {
-      width: 417px;
       position: absolute;
       bottom: 50px;
+      width: calc(100% - 140px);
     }
   }
   &-networkLabel {
@@ -99,7 +99,6 @@ $speed: 500ms;
     font-family: Lato;
     font-size: 15px;
     color: var(--dark-slate-blue);
-    padding: 16px;
   }
   &-dropdown {
     padding-top: 10px;
