@@ -398,6 +398,9 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="WalletDecrypt-wallets">
           <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
+          <div className="WalletDecrypt-wallets-description">
+            {translate('ADD_ACCOUNT_DESCRIPTION')}
+          </div>
           {accessMessage && (
             <div className="WalletDecrypt-wallets-row">
               <Warning>{accessMessage}</Warning>
@@ -497,10 +500,7 @@ const WalletDecrypt = withRouter<Props>(
           <div className="Panel-content">
             <div className="Panel-title">Select Network</div>
 
-            <div className="Panel-description">
-              Select the blockchain that you want to operate with and the node it connects through.
-              Not sure what to choose? Stick with the default choices below and click next.
-            </div>
+            <div className="Panel-description">{translate('ADD_ACCOUNT_NETWORK_SELCT')}</div>
 
             <label className="Panel-networkLabel">Network</label>
             <NetworkOptionsContext.Consumer>

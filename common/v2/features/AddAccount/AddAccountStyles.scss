@@ -21,6 +21,7 @@ $speed: 500ms;
   margin: $space 0 2rem;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
+  padding-top: 0.75em;
 }
 
 .Panel {
@@ -90,7 +91,7 @@ $speed: 500ms;
     text-align: center;
     &-button {
       position: absolute;
-      bottom: 50px;
+      bottom: 2em;
       width: calc(100% - 140px);
     }
   }
@@ -100,6 +101,7 @@ $speed: 500ms;
     font-family: Lato;
     font-size: 15px;
     color: var(--dark-slate-blue);
+    padding-top: 1.25em;
   }
   &-dropdown {
     padding-top: 10px;
@@ -107,11 +109,10 @@ $speed: 500ms;
 }
 
 .WalletDecrypt {
-  display: flex;
   justify-content: center;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
   width: 760px;
-  min-height: 790px;
+  min-height: 850px;
   border-radius: 3px;
 
   @media (max-width: $screen-md) {
@@ -280,13 +281,26 @@ $speed: 500ms;
 }
 
 .WalletDecrypt {
-  position: relative;
+  display: flex;
 
   &-wallets {
     margin: 0 -$space-md;
+    justify-content: center;
+    text-align: center;
 
     &-title {
       @include decrypt-title;
+    }
+
+    &-description {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+
+      height: 54px;
+      font-family: Lato;
+      font-size: 18px;
+      line-height: 1.5;
     }
 
     &-row {

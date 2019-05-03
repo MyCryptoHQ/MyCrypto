@@ -1,7 +1,7 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
-import { Table, Address, IconLink, Typography, Button } from '@mycrypto/ui';
+import { Table, Address, Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
@@ -92,16 +92,15 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     return (
       <div className="DW">
         <form className="DW-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
-          <header>
-            <div className="DW-path-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
-            <Typography>
-              Derivation Path{' '}
+          <div className="DW-header">
+            {' '}
+            <div className="DW-header-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
+            <div className="DW-header-select">
+              {/* Derivation Path{' '}
               <IconLink
                 icon="shape"
                 href="https://support.mycrypto.com/how-to/hardware-wallets/multiple-addresses-showing-on-hardware-wallet"
-              />
-            </Typography>
-            <div className="DW-path-select">
+              /> */}
               <Select
                 name="fieldDPath"
                 value={this.state.currentDPath}
@@ -113,7 +112,8 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
                 searchable={false}
               />
             </div>
-          </header>
+          </div>
+
           {this.state.currentDPath.label === customDPath.label && (
             <div className="flex-wrapper">
               <div className="DW-path-custom">
@@ -149,7 +149,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
             {translate('ACTION_2')}
           </Button>
           <Button onClick={this.handleConfirmAddress} disabled={!selectedAddress}>
-            {translate('ACTION_3')}
+            {translate('ACTION_6')}
           </Button>
         </div>
       </div>
