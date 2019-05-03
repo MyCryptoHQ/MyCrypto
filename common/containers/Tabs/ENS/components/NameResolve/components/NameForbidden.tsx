@@ -11,7 +11,7 @@ export const NameForbidden: React.SFC<IBaseDomainRequest> = props => (
       <div className="ens-title">
         <h1>{translate('ENS_DOMAIN_FORBIDDEN', { $name: props.name + '.eth' })}</h1>
         <h3>
-          <NewTabLink className="text-center" href={ensV3Url(props.name)}>
+          <NewTabLink className="text-center" href={ensV3Url(props.name + '.eth')}>
             {translate('ENS_SEND_TO_MANAGER', { $name: props.name + '.eth' })}
           </NewTabLink>
         </h3>
