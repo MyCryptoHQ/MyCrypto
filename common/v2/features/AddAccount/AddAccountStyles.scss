@@ -114,13 +114,18 @@ $speed: 500ms;
   min-height: 790px;
   border-radius: 3px;
 
+  @media (max-width: $screen-md) {
+    width: 375px;
+    height: 769px;
+  }
+
   &-connectWallet {
     width: 562px;
     height: 629px;
   }
 
   &-info {
-    width: 512px;
+    justify-content: center;
     height: 19px;
     font-family: Lato;
     font-size: 16px;

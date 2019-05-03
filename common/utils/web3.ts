@@ -1,4 +1,4 @@
-import MetamaskIcon from 'assets/images/wallets/metamask.svg';
+import MetamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import TrustIcon from 'assets/images/wallets/trust.svg';

@@ -791,6 +791,7 @@
     "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app.", 
     "NO_ACCOUNTS_HEADER":"You don't have any accounts in your wallet.",
     "NO_ACCOUNTS_DESCRIPTION":"To access your funds add one of your existing \n accounts or create a new account now.", 
-    "PRIVATE_KEY_HELP":"Not working?  [Here's some troubleshooting tips to try.] ($link)"
+    "PRIVATE_KEY_HELP":"Not working?  [Here's some troubleshooting tips to try.] ($link)", 
+    "ADD_ACCOUNT_FOOTER_LINK": "Don't have an account? [Create a new account now.](https://MyCrypto.com/download-desktop-app)"
   }
 }

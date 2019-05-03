@@ -21,10 +21,10 @@ import * as derivedSelectors from 'features/selectors';
 import { walletActions, walletSelectors } from 'features/wallet';
 import { transactionFieldsActions } from 'features/transaction';
 import { notificationsActions } from 'features/notifications';
-import LedgerIcon from 'assets/images/wallets/ledger.svg';
-import TrezorIcon from 'assets/images/wallets/trezor.svg';
-import SafeTIcon from 'assets/images/wallets/safe-t.svg';
-import ParitySignerIcon from 'assets/images/wallets/parity-signer.svg';
+import LedgerIcon from 'common/assets/images/wallets/ledger.svg';
+import TrezorIcon from 'common/assets/images/wallets/trezor.svg';
+import SafeTIcon from 'common/assets/images/wallets/safe-t.png';
+import ParitySignerIcon from 'common/assets/images/wallets/parity-signer.svg';
 import { Errorable } from 'components';
 import { Warning } from 'components/ui';
 import { DisabledWallets } from './components/disables';
@@ -477,9 +477,7 @@ const WalletDecrypt = withRouter<Props>(
               );
             })}
           </div>
-          <div className="WalletDecrypt-info">
-            <Typography>Don't have an account? Create new account now.</Typography>
-          </div>
+          <div className="WalletDecrypt-info">{translate('ADD_ACCOUNT_FOOTER_LINK')}</div>
         </div>
       );
     }
@@ -621,7 +619,7 @@ const WalletDecrypt = withRouter<Props>(
       if (!hidden && decryptionComponent && selectedWallet && !this.state.hasSelectedNetwork) {
         componentToRender = (
           <>
-            <Layout centered={true}>
+            <Layout centered={true} fluid={true}>
               <TransitionGroup>
                 <CSSTransition classNames="DecryptContent" timeout={500} key="decrypt">
                   {selectNetworkComponent}
