@@ -35,7 +35,7 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
   public render() {
     return (
       <div className="ParitySigner">
-        <h3 className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</h3>
+        <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div>
         <section className="ParitySigner-fields">
           <section className="ParitySigner-fields-field-margin">
             {translate('SIGNER_SELECT_WALLET_QR')}
