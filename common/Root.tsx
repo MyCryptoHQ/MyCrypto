@@ -24,7 +24,6 @@ import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
 import OnboardingModal from 'containers/OnboardingModal';
-import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
@@ -41,6 +40,8 @@ import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
 import Dashboard from 'v2/features/Dashboard';
+import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
+import { NewAppReleaseModal } from 'v2/components';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -129,14 +130,16 @@ class RootClass extends Component<Props, State> {
                   <TransactionHistoryProvider>
                     <NetworkOptionsProvider>
                       <Router>
-                        <PageVisitsAnalytics>
-                          {onboardingActive && <OnboardingModal />}
-                          {routes}
-                          <LegacyRoutes />
-                          <LogOutPrompt />
-                          <QrSignerModal />
-                          {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                        </PageVisitsAnalytics>
+                        <LockScreenProvider>
+                          <PageVisitsAnalytics>
+                            {onboardingActive && <OnboardingModal />}
+                            {routes}
+                            <LegacyRoutes />
+                            <LogOutPrompt />
+                            <QrSignerModal />
+                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                          </PageVisitsAnalytics>
+                        </LockScreenProvider>
                       </Router>
                       {developmentMode && <DevTools />}
                       <div id="ModalContainer" />

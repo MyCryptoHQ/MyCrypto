@@ -151,7 +151,7 @@ const WalletDecrypt = withRouter<Props>(
         description: 'ADD_WEB3DESC',
         component: Web3Decrypt,
         initialParams: {},
-        unlock: this.props.unlockWeb3,
+        unlock: WalletActions.unlockWeb3,
         attemptUnlock: true,
         helpLink: `${knowledgeBaseURL}/how-to/migrating/moving-from-mycrypto-to-metamask`
       },
@@ -681,14 +681,14 @@ const WalletDecrypt = withRouter<Props>(
       // this.state.value will remain unpopulated. in this case, we can expect
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
-
       if (this.state.accountData.accountType === 'web3') {
+        const wallet = await this.WALLETS[selectedWalletKey].unlock(unlockValue);
         this.setState({
           hasSelectedAddress: true,
           accountData: {
             ...this.state.accountData,
             derivationPath: '',
-            address: unlockValue.getAddressString()
+            address: wallet.getAddressString()
           }
         });
       } else if (this.state.accountData.accountType === 'viewOnly') {
@@ -762,7 +762,6 @@ function mapStateToProps(state: AppState, ownProps: Props) {
 
 export default connect(mapStateToProps, {
   unlockMnemonic: WalletActions.unlockMnemonic,
-  unlockWeb3: WalletActions.unlockWeb3,
   resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
   showNotification: notificationsActions.showNotification
 })(WalletDecrypt) as React.ComponentClass<OwnProps>;

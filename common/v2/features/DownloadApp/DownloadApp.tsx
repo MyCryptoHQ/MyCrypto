@@ -140,11 +140,11 @@ export class DownloadApp extends Component<Props, State> {
 
   public async componentDidMount() {
     try {
-      const releaseURLs = await GithubService.instance.getReleasesURLs();
+      const { releaseUrls } = await GithubService.instance.getReleasesInfo();
       const downloadItems: AppDownloadItem[] = cloneDeep(this.state.downloadItems);
 
       downloadItems.forEach(downloadItem => {
-        downloadItem.link = releaseURLs[downloadItem.OS] || DEFAULT_LINK;
+        downloadItem.link = releaseUrls[downloadItem.OS] || DEFAULT_LINK;
       });
 
       this.setState({ downloadItems });

@@ -26,5 +26,9 @@
   {
     "name": "No Accounts",
     "key": "noAccounts"
+  },
+  {
+    "name": "Sceen Lock",
+    "key": "screenLock"
   }
 ]
