@@ -69,7 +69,6 @@
     "trezor.js": "6.17.5",
     "uuid": "3.2.1",
     "wallet-address-validator": "0.2.4",
-    "webpack-dev-server": "3.2.1",
     "whatwg-fetch": "2.0.3",
     "zxcvbn": "4.4.2"
   },
@@ -166,6 +165,7 @@
     "webpack": "4.5.0",
     "webpack-cli": "2.0.13",
     "webpack-dev-middleware": "3.1.0",
+    "webpack-dev-server": "3.3.1",
     "webpack-hot-middleware": "2.21.2",
     "webpack-merge": "4.2.1",
     "webpack-sources": "1.1.0",
