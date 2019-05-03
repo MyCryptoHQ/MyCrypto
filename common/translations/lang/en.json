@@ -790,7 +790,6 @@
     "DOWNLOAD_APP_DESCRIPTION": "Please download the MyCrypto Desktop app so you can securely complete creating your new account and start managing your funds.",
     "DOWNLOAD_APP_DOWNLOAD_BUTTON": "Download for",
     "DOWNLOAD_APP_FOOTER_INFO": "Not sure what this is?",
-    "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app.", 
     "NO_ACCOUNTS_HEADER":"You don't have any accounts in your wallet.",
     "NO_ACCOUNTS_DESCRIPTION":"To access your funds add one of your existing \n accounts or create a new account now.",
     "ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS":"Your Accounts", 
@@ -799,7 +798,7 @@
     "ACCOUNT_LIST_ADDRESS": "Address", 
     "ACCOUNT_LIST_NETWORK":"Network", 
     "ACCOUNT_LIST_VALUE": "Value", 
-    "ACCOUNT_LIST_DELETE": "Delete"
+    "ACCOUNT_LIST_DELETE": "Delete",
     "DOWNLOAD_APP_FOOTER_INFO_LINK": "Learn more about our desktop app.",
     "SCREEN_LOCK_NEW_HEADING":"Create Password to Lock Your Wallet",
     "SCREEN_LOCK_NEW_DESCRIPTION":"We want to help you keep your funds safe! Please create a password so you can securly view your wallet when you come back to MyCrypto.",
