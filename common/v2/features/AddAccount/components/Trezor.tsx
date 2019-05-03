@@ -92,6 +92,10 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
               translate('ADD_TREZOR_SCAN')
             )}
           </Button>
+          <div className="LederPanel-description-footer">
+            {translate('ORDER_TREZOR')} <br />
+            {translate('HOWTO_TREZOR')}
+          </div>
         </div>
       );
     }

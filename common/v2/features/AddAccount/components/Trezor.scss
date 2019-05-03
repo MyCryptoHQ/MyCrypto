@@ -4,12 +4,22 @@
   height: 100%;
 
   &-description {
-    margin: 2em;
-    margin-bottom: 2em;
+    font-family: Lato;
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #333333;
+    padding-top: 16px;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
   }
 
   &-img {
-    margin: 4em;
+    margin: 2em;
   }
 
   &-help {
@@ -42,6 +52,7 @@
   &-button {
     width: 417px;
     position: relative;
-    width: calc(100% - 140px);
+    bottom: 2em;
+    width: 420px;
   }
 }
