@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ComboBox, Heading, Panel, Typography } from '@mycrypto/ui';
 
+import { AccountContext, CurrentsContext } from 'v2/providers';
 import AccountDropdown from './AccountDropdown';
 import './WalletBreakdown.scss';
 
@@ -32,7 +33,10 @@ const balances = [
   }
 ];
 
-export default function WalletBreakdown() {
+function WalletBreakdown() {
+  const { accounts } = useContext(AccountContext);
+  const { currents, updateCurrentsAccounts } = useContext(CurrentsContext);
+
   return (
     <div className="WalletBreakdown">
       <div className="WalletBreakdown-selectWrapper">
@@ -42,7 +46,11 @@ export default function WalletBreakdown() {
           items={new Set(['US Dollars'])}
         />
         <div className="WalletBreakdown-selectWrapper-select">
-          <AccountDropdown />
+          <AccountDropdown
+            accounts={accounts}
+            selected={currents.accounts}
+            onSubmit={(selected: string[]) => updateCurrentsAccounts(selected)}
+          />
         </div>
       </div>
       <Panel className="WalletBreakdown-panel">
@@ -103,3 +111,5 @@ export default function WalletBreakdown() {
     </div>
   );
 }
+
+export default WalletBreakdown;
