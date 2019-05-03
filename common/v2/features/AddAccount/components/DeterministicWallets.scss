@@ -2,7 +2,16 @@
 @import 'common/sass/mixins';
 
 .DW {
+  width: 935px;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
   padding: 1rem 0.5rem;
+  top: 50%;
+  left: 50%;
+  height: 800px;
+  margin-top: -125px;
+  margin-left: -225px;
 
   header {
     width: 100%;
