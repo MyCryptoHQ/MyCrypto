@@ -88,7 +88,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
             <div className="LedgerPanel-image">
               <img src={ledgerIcon} />
             </div>
-
+            <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
+              {error || '-'}
+            </div>
             <Button
               className="LedgerPanel-description-button"
               onClick={this.handleNullConnect}
@@ -104,8 +106,10 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
               )}
             </Button>
           </div>
-
-          <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
+          <div className="LederPanel-description-footer">
+            {translate('LEDGER_REFERRAL_2')} <br />
+            {translate('LEDGER_HELP_LINK')}
+          </div>
         </div>
       );
     }

@@ -1,18 +1,17 @@
 @import 'common/sass/variables';
 
 .LedgerPanel {
-  width: auto;
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 400px;
   position: relative;
+  justify-content: center;
 
   &-top {
     display: flex;
   }
 
   &-description {
-    height: 500px;
     font-family: Lato;
     font-size: 18px;
     font-weight: normal;
@@ -25,14 +24,21 @@
     justify-content: center;
     text-align: center;
     align-content: center;
+
+    &-content {
+      justify-content: center;
+      text-align: center;
+      align-content: center;
+    }
     &-button {
       width: 417px;
       position: relative;
-      width: calc(100% - 140px);
+      bottom: 2em;
+      width: 420px;
     }
   }
   &-image {
     vertical-align: center;
-    margin: 4em;
+    margin: 2em;
   }
 }

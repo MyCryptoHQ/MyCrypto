@@ -451,7 +451,8 @@
     "ETHER_ADDRESS_LOOKUP": "EtherAddressLookup",
     "OLD_MYCRYPTO": "MyCrypto (Legacy Site)",
     "LEDGER_REFERRAL_1": "Buy a Ledger Wallet",
-    "LEDGER_REFERRAL_2": "Don’t have a Ledger? Get one now!",
+    "LEDGER_HELP_LINK":"[Learn how Ledger works with MyCrypto] (https://support.mycrypto.com/how-to/migrating/moving-from-mycrypto-to-ledger)",
+    "LEDGER_REFERRAL_2": "Don’t have a Ledger? [Get one now!](https://www.ledgerwallet.com/r/1985?path=/products/)",
     "LEDGER_TIP": "After you've connected, follow the instructions on screen to access your account.",
     "ENABLED": "enabled",
     "DISABLED": "disabled",
@@ -795,5 +796,6 @@
     "ADD_ACCOUNT_FOOTER_LINK": "Don't have an account? [Create a new account now.](https://MyCrypto.com/download-desktop-app)", 
     "ADD_ACCOUNT_DESCRIPTION": "Select from the options below to unlock your account and manage your assets.", 
     "ADD_ACCOUNT_NETWORK_SELCT":"Select the blockchain that you want to operate with and the network it connects through. Not sure what to choose? Stick with the default choices below and click next."
+
   }
 }
