@@ -96,10 +96,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
             </div>
           </div>
 
-          <div className="SafeTminiDecrypt-description-footer">
-            {translate('ORDER_SAFE_T')} <br />
-            {translate('SAFET_MINI_HELP')}
-          </div>
+          <div className="SafeTminiDecrypt-description-footer">{translate('SAFET_MINI_HELP')}</div>
         </div>
       );
     }
