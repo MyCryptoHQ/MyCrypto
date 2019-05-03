@@ -544,7 +544,7 @@
     "ENS_INVALID_INPUT": "Names must be at least 7 characters and contain no special characters. Auctions for ENS names with less than 7 characters will be open in the summer of 2019.",
     "ENS_SEND_TO_MANAGER": "Head over to the ENS Manager to register, update, or migrate **$name** now.",
     "LINK": "[$name]($link)",
-    "NAME_AUCTION_PROMPT_BID": "Want to place a bid on {name}.eth? ",
+    "NAME_AUCTION_PROMPT_BID": "Want to place a bid on **$name.eth**?",
     "NAME_OWNED_DEEDOWNER": "Highest Bidder / Deed Owner",
     "NAME_OWNED_HIGHEST_BID": "Highest Bid",
     "NAME_OWNED_HIGHEST_BIDDER": "Highest Bidder",

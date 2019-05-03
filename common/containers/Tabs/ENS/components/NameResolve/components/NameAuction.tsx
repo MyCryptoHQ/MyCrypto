@@ -34,7 +34,7 @@ export const NameAuction: React.SFC<IBaseDomainRequest> = props => {
           </section>
         </div>
 
-        <h1>{translate('NAME_AUCTION_PROMPT_BID')}</h1>
+        <h1>{translate('NAME_AUCTION_PROMPT_BID', { $name: name })}</h1>
         <h3>
           <NewTabLink className="text-center" href={ensV3Url(name + '.eth')}>
             {translate('ENS_SEND_TO_MANAGER', { $name: name + '.eth' })}
