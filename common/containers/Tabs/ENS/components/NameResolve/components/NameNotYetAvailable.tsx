@@ -14,7 +14,7 @@ export const NameNotYetAvailable: React.SFC<IBaseDomainRequest> = props => (
           {translate('ENS_INVALID_INPUT')}.
         </h1>
         <h3>
-          <NewTabLink className="text-center" href={ensV3Url(props.name)}>
+          <NewTabLink className="text-center" href={ensV3Url(props.name + '.eth')}>
             {translate('ENS_SEND_TO_MANAGER', { $name: props.name + '.eth' })}
           </NewTabLink>
         </h3>
