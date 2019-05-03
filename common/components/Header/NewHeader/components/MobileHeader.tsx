@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Transition } from 'react-spring';
+
+// Default import breaks jest so we use `.cjs` instead.
+// https://github.com/react-spring/react-spring/issues/601
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { languages } from 'config';
@@ -87,8 +90,14 @@ class MobileHeader extends Component<Props> {
           {/* Dummy <div /> for flex spacing */}
           <div />
         </section>
-        <Transition from={{ left: '-320px' }} enter={{ left: '0' }} leave={{ left: '-500px' }}>
-          {menuVisible &&
+        <Transition
+          items={menuVisible}
+          from={{ left: '-320px' }}
+          enter={{ left: '0' }}
+          leave={{ left: '-500px' }}
+        >
+          {visible =>
+            visible &&
             (props => (
               <section className="MobileHeader-menu" style={props}>
                 <ul className="MobileHeader-menu-top">
@@ -182,7 +191,8 @@ class MobileHeader extends Component<Props> {
                   </li>
                 </ul>
               </section>
-            ))}
+            ))
+          }
         </Transition>
       </section>
     );

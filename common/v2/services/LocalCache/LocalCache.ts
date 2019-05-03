@@ -1,6 +1,13 @@
 import * as utils from 'v2/libs';
 import * as types from 'v2/services';
-import { CACHE_INIT, CACHE_KEY, LocalCache } from './constants';
+import {
+  CACHE_INIT,
+  CACHE_INIT_DEV,
+  CACHE_KEY,
+  ENCRYPTED_CACHE_KEY,
+  LocalCache
+} from './constants';
+import { isDevelopment } from 'v2/utils';
 import { DPaths, Fiats } from 'config';
 import { ContractsData } from 'config/cacheData';
 import { ACCOUNTTYPES } from 'v2/config';
@@ -171,9 +178,25 @@ export const setCache = (newCache: LocalCache) => {
   localStorage.setItem(CACHE_KEY, JSON.stringify(newCache));
 };
 
+export const destroyCache = () => {
+  localStorage.removeItem(CACHE_KEY);
+};
+
+export const getEncryptedCache = (): string => {
+  return localStorage.getItem(ENCRYPTED_CACHE_KEY) || '';
+};
+
+export const setEncryptedCache = (newEncryptedCache: string) => {
+  localStorage.setItem(ENCRYPTED_CACHE_KEY, newEncryptedCache);
+};
+
+export const destroyEncryptedCache = () => {
+  localStorage.removeItem(ENCRYPTED_CACHE_KEY);
+};
+
 // Settings operations
 
-type SettingsKey = 'currents' | 'globalSettings' | 'networkOptions';
+type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings' | 'networkOptions';
 
 export const readSettings = <K extends SettingsKey>(key: K) => () => {
   return getCache()[key];

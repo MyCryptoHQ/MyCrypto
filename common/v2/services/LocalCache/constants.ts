@@ -2,6 +2,7 @@ import * as serviceTypes from 'v2/services/types';
 import { SecureWalletName } from 'config/data';
 
 export const CACHE_KEY = 'MyCryptoCache';
+export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 
 export interface LocalCache {
   currents: Partial<serviceTypes.Currents>;
@@ -21,6 +22,7 @@ export interface LocalCache {
   addressMetadata: Record<string, serviceTypes.AddressMetadata>;
   activeNotifications: Record<string, serviceTypes.ActiveNotifications>;
   fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
+  screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
 }
 
 export const CACHE_INIT_DEV: LocalCache = {
