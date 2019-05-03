@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import translate, { translateRaw } from 'translations';
+import { translate } from 'translations';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
 import { ParitySignerWallet } from 'libs/wallet';
@@ -9,7 +9,7 @@ import { wikiLink } from 'libs/wallet/non-deterministic/parity';
 import { notificationsActions } from 'features/notifications';
 import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
-import { ParityQrSigner, AddressField } from 'components';
+import { ParityQrSigner } from 'components';
 import { NewTabLink } from 'components/ui';
 
 import './ParitySigner.scss';
@@ -32,26 +32,11 @@ interface SignerAddress {
 type SignerQrContent = SignerAddress | string;
 
 class ParitySignerDecryptClass extends PureComponent<Props> {
-  public state = {
-    addressFromBook: ''
-  };
-
   public render() {
-    const { addressFromBook } = this.state;
     return (
       <div className="ParitySigner">
         <h3 className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</h3>
         <section className="ParitySigner-fields">
-          <section className="ParitySigner-fields-field">
-            <AddressField
-              value={addressFromBook}
-              showInputLabel={false}
-              showIdenticon={false}
-              placeholder={translateRaw('SIGNER_SELECT_WALLET_LIST')}
-              onChangeOverride={this.handleSelectAddressFromBook}
-              dropdownThreshold={0}
-            />
-          </section>
           <section className="ParitySigner-fields-field-margin">
             {translate('SIGNER_SELECT_WALLET_QR')}
           </section>
@@ -72,13 +57,6 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
       </div>
     );
   }
-
-  private handleSelectAddressFromBook = (ev: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value: addressFromBook } } = ev;
-    this.setState({ addressFromBook }, () => {
-      this.props.onUnlock(new ParitySignerWallet(addressFromBook));
-    });
-  };
 
   private unlockAddress = (content: SignerQrContent) => {
     if (typeof content === 'string' || !this.props.isValidAddress(content.address)) {

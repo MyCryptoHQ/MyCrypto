@@ -83,7 +83,7 @@
     "X_KEEPKEY": "KeepKey",
     "UNLOCK_WALLET": "Connect and Unlock Your $wallet",
     "SIGNER_SELECT_WALLET": "Connect and Unlock with Parity Signer",
-    "SIGNER_SELECT_WALLET_QR": "Open your Parity Signer app on your phone and scane the QR code.",
+    "SIGNER_SELECT_WALLET_QR": "Open your Parity Signer app on your phone and scan the QR code.",
     "SIGNER_SELECT_WALLET_LIST": "Use a recent account",
     "X_SAFE_T": "Safe-T Mini ",
     "ADD_SAFE_T_SCAN": "Connect to Safe-T Mini ",
