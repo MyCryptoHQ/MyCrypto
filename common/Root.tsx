@@ -130,15 +130,15 @@ class RootClass extends Component<Props, State> {
                   <TransactionHistoryProvider>
                     <NetworkOptionsProvider>
                       <Router>
-                      <LockScreenProvider>
-                        <PageVisitsAnalytics>
-                          {onboardingActive && <OnboardingModal />}
-                          {routes}
-                          <LegacyRoutes />
-                          <LogOutPrompt />
-                          <QrSignerModal />
-                          {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                        </PageVisitsAnalytics>
+                        <LockScreenProvider>
+                          <PageVisitsAnalytics>
+                            {onboardingActive && <OnboardingModal />}
+                            {routes}
+                            <LegacyRoutes />
+                            <LogOutPrompt />
+                            <QrSignerModal />
+                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                          </PageVisitsAnalytics>
                         </LockScreenProvider>
                       </Router>
                       {developmentMode && <DevTools />}

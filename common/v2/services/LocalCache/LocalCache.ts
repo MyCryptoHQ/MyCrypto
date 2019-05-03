@@ -1,13 +1,6 @@
 import * as utils from 'v2/libs';
 import * as types from 'v2/services';
-import {
-  CACHE_INIT,
-  CACHE_INIT_DEV,
-  CACHE_KEY,
-  ENCRYPTED_CACHE_KEY,
-  LocalCache
-} from './constants';
-import { isDevelopment } from 'v2/utils';
+import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
 import { ContractsData } from 'config/cacheData';
 import { ACCOUNTTYPES } from 'v2/config';
