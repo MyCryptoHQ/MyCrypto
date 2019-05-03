@@ -2,13 +2,30 @@
   text-align: center;
 
   &-description {
-    margin: 2em;
-    height: 54px;
-    font-family: Lato;
     font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    color: #333333;
+    padding-top: 16px;
+    justify-content: center;
+    text-align: center;
+    align-content: center;
+
+    &-footer {
+      margin-top: -20px;
+    }
   }
   &-img {
-    margin: 4em;
+    margin: 3em;
+  }
+
+  &-unlockButton {
+    position: relative;
+    width: 420px;
+    bottom: -25px;
   }
 
   &-help {
