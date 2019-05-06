@@ -6,11 +6,9 @@ $speed: 500ms;
 @keyframes decrypt-enter {
   0% {
     opacity: 0;
-    transform: translateY(8px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0px);
   }
 }
 
@@ -162,7 +160,6 @@ $speed: 500ms;
 
   &-decrypt {
     text-align: center;
-    padding-bottom: $space;
 
     @media (max-width: $screen-md) {
       padding-bottom: $space * 2;
@@ -182,7 +179,6 @@ $speed: 500ms;
         top: auto;
         bottom: -10px;
         left: 50%;
-        transform: translateX(-50%);
       }
 
       &:hover,
@@ -320,7 +316,6 @@ $speed: 500ms;
   &-decrypt {
     position: relative;
     text-align: center;
-    padding-bottom: $space;
 
     @media (max-width: $screen-md) {
       padding-bottom: $space * 2;
@@ -339,7 +334,6 @@ $speed: 500ms;
         top: auto;
         bottom: -10px;
         left: 50%;
-        transform: translateX(-50%);
       }
 
       &:hover,

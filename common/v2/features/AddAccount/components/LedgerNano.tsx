@@ -91,22 +91,21 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
             <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
               {error || '-'}
             </div>
-            <Button
-              className="LedgerPanel-description-button"
-              onClick={this.handleNullConnect}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="LedgerDecrypt-message">
-                  <Spinner light={true} />
-                  {translate('WALLET_UNLOCKING')}
-                </div>
-              ) : (
-                translate('ADD_LEDGER_SCAN')
-              )}
-            </Button>
+            {isLoading ? (
+              <div className="LedgerPanel-loading">
+                <Spinner /> {translate('WALLET_UNLOCKING')}
+              </div>
+            ) : (
+              <Button
+                className="LedgerPanel-description-button"
+                onClick={this.handleNullConnect}
+                disabled={isLoading}
+              >
+                {translate('ADD_LEDGER_SCAN')}
+              </Button>
+            )}
           </div>
-          <div className="LederPanel-description-footer">
+          <div className="LedgerPanel-footer">
             {translate('LEDGER_REFERRAL_2')} <br />
             {translate('LEDGER_HELP_LINK')}
           </div>

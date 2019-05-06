@@ -64,14 +64,13 @@ export class KeystoreDecrypt extends PureComponent {
               <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
                 {translate('ADD_RADIO_2_SHORT')}
               </a>
-            </label>
-
-            <label className="WalletDecrypt-decrypt-label" hidden={!file}>
-              <span>{filename}</span>
+              <label className="WalletDecrypt-decrypt-label" hidden={!file}>
+                <span>{filename}</span>
+              </label>
             </label>
 
             {isWalletPending ? <Spinner /> : ''}
-            <label>Your Password</label>
+            <label className="Keystore-password">Your Password</label>
             <Input
               isValid={password.length > 0}
               className={`${file.length && isWalletPending ? 'hidden' : ''}`}

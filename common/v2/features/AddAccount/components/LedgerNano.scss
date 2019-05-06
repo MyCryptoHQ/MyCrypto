@@ -10,6 +10,12 @@
   &-top {
     display: flex;
   }
+  &-loading {
+    padding-bottom: 2em;
+  }
+  &-footer {
+    padding-bottom: 2em;
+  }
 
   &-description {
     font-family: Lato;
@@ -32,12 +38,13 @@
     }
     &-button {
       position: relative;
-      bottom: 2em;
+      bottom: 3em;
       width: 420px;
     }
   }
   &-image {
     vertical-align: center;
     margin: 2em;
+    padding-top: 2em;
   }
 }

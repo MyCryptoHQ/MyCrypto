@@ -77,20 +77,20 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
             <img src={SafeTIcon} />
           </div>
           <div className="SafeTminiDecrypt-unlockButton">
-            <button
-              className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
-              onClick={this.handleNullConnect}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="SafeTminiDecrypt-message">
-                  <Spinner light={true} />
-                  {translate('WALLET_UNLOCKING')}
-                </div>
-              ) : (
-                translate('ADD_SAFE_T_SCAN')
-              )}
-            </button>
+            {isLoading ? (
+              <div className="SafeTminiDecrypt-message">
+                <Spinner />
+                {translate('WALLET_UNLOCKING')}
+              </div>
+            ) : (
+              <button
+                className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
+                onClick={this.handleNullConnect}
+                disabled={isLoading}
+              >
+                {translate('ADD_SAFE_T_SCAN')}
+              </button>
+            )}
             <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
               {error || '-'}
             </div>

@@ -58,15 +58,17 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <DeterministicWallets
-          publicKey={publicKey}
-          chainCode={chainCode}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
-        />
+        <div className="Mnemoinc-dpath">
+          <DeterministicWallets
+            publicKey={publicKey}
+            chainCode={chainCode}
+            dPath={dPath}
+            dPaths={this.props.dPaths}
+            onCancel={this.handleCancel}
+            onConfirmAddress={this.handleUnlock}
+            onPathChange={this.handlePathChange}
+          />
+        </div>
       );
     } else {
       return (
@@ -78,21 +80,21 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
             </div>
           </div>
           <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
-          <Button
-            className="TrezorDecrypt-button"
-            onClick={this.handleNullConnect}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <div className="TrezorDecrypt-message">
-                <Spinner light={true} />
-                {translate('WALLET_UNLOCKING')}
-              </div>
-            ) : (
-              translate('ADD_TREZOR_SCAN')
-            )}
-          </Button>
-          <div className="TrezorDecrypt-description-footer">
+
+          {isLoading ? (
+            <div className="TrezorDecrypt-loading">
+              <Spinner /> {translate('WALLET_UNLOCKING')}
+            </div>
+          ) : (
+            <Button
+              className="TrezorDecrypt-button"
+              onClick={this.handleNullConnect}
+              disabled={isLoading}
+            >
+              {translate('ADD_TREZOR_SCAN')}
+            </Button>
+          )}
+          <div className="TrezorDecrypt-footer">
             {translate('ORDER_TREZOR')} <br />
             {translate('HOWTO_TREZOR')}
           </div>

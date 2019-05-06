@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React, { Component } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter, RouteComponentProps, Redirect, Route } from 'react-router';
@@ -342,7 +341,7 @@ const WalletDecrypt = withRouter<Props>(
               </Typography>
             </Button>
           </div>
-          <div className={classNames('Panel-content', { 'no-padding': Boolean(this.state.seed) })}>
+          <div className="Panel-content">
             <div className="Panel-title-connectDevice">
               {!(
                 selectedWallet.isReadOnly ||
@@ -353,7 +352,7 @@ const WalletDecrypt = withRouter<Props>(
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
             </div>
-            <section className="WalletDecrypt-decrypt-form">
+            <div className="WalletDecrypt-decrypt-form-main">
               <Errorable
                 errorMessage={`Oops, looks like ${translateRaw(
                   selectedWallet.lid
@@ -385,7 +384,7 @@ const WalletDecrypt = withRouter<Props>(
                   onSeed={this.handleSeed}
                 />
               </Errorable>
-            </section>
+            </div>
           </div>
         </div>
       );
