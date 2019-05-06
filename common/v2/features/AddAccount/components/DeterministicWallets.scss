@@ -20,7 +20,7 @@
     justify-content: space-around;
     align-content: center;
     position: relative;
-    z-index: -1;
+    z-index: 2;
     width: 100%;
     margin-bottom: 20px;
     background-color: #ffffff;
@@ -44,6 +44,7 @@
 
     &-custom {
       flex: 1;
+      z-index: 1;
 
       .input-group-input {
         margin: 0;

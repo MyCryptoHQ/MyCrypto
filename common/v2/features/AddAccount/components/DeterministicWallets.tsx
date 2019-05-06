@@ -111,7 +111,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 
           {this.state.currentDPath.label === customDPath.label && (
             <div className="flex-wrapper">
-              <div className="DW-path-custom">
+              <div className="DW-custom">
                 <Input
                   isValid={customPath ? isValidPath(customPath) : true}
                   value={customPath}
