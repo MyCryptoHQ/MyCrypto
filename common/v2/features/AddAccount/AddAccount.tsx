@@ -683,17 +683,7 @@ const WalletDecrypt = withRouter<Props>(
       // this.state.value will remain unpopulated. in this case, we can expect
       // the payload to contain the unlocked wallet info.
       const unlockValue = value && !isEmpty(value) ? value : payload;
-      if (this.state.accountData.accountType === 'web3') {
-        const wallet = await this.WALLETS[selectedWalletKey].unlock(unlockValue);
-        this.setState({
-          hasSelectedAddress: true,
-          accountData: {
-            ...this.state.accountData,
-            derivationPath: '',
-            address: wallet.getAddressString()
-          }
-        });
-      } else if (this.state.accountData.accountType === 'viewOnly') {
+      if (this.state.accountData.accountType === 'viewOnly') {
         this.setState({
           hasSelectedAddress: true,
           accountData: {
@@ -703,7 +693,8 @@ const WalletDecrypt = withRouter<Props>(
         });
       } else if (
         this.state.accountData.accountType === 'keystoreFile' ||
-        this.state.accountData.accountType === 'privateKey'
+        this.state.accountData.accountType === 'privateKey' ||
+        this.state.accountData.accountType === 'web3'
       ) {
         const wallet = await this.WALLETS[selectedWalletKey].unlock(unlockValue);
         this.setState({
@@ -711,6 +702,15 @@ const WalletDecrypt = withRouter<Props>(
           accountData: {
             ...this.state.accountData,
             address: wallet.getAddressString()
+          }
+        });
+      } else if (this.state.accountData.accountType === 'paritySigner') {
+        this.setState({
+          hasSelectedAddress: true,
+          accountData: {
+            ...this.state.accountData,
+            derivationPath: '',
+            address: unlockValue.address
           }
         });
       } else {
