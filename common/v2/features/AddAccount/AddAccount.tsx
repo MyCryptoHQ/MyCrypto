@@ -343,16 +343,12 @@ const WalletDecrypt = withRouter<Props>(
           </div>
           <div className="Panel-content">
             <div className="Panel-title-connectDevice">
-              {!(
-                selectedWallet.isReadOnly ||
-                selectedWallet.lid === 'X_PARITYSIGNER' ||
-                this.state.seed
-              ) &&
+              {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
                 translate('UNLOCK_WALLET', {
                   $wallet: translateRaw(selectedWallet.lid)
                 })}
             </div>
-            <div className="WalletDecrypt-decrypt-form-main">
+            <div className="WalletDecrypt-decrypt-form">
               <Errorable
                 errorMessage={`Oops, looks like ${translateRaw(
                   selectedWallet.lid

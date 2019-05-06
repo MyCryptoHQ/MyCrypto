@@ -1,10 +1,6 @@
 @import 'common/sass/variables';
 @import 'common/sass/mixins';
 
-.Mnemoinc-dpath {
-  margin-top: 90px;
-}
-
 .DW {
   width: 935px;
   border-radius: 3px;
@@ -14,7 +10,7 @@
   top: 50%;
   left: 50%;
   height: 800px;
-  margin-top: -135px;
+  margin-top: -130px;
   margin-left: -425px;
   position: relative;
   z-index: 1;
@@ -24,7 +20,7 @@
     justify-content: space-around;
     align-content: center;
     position: relative;
-    z-index: 1;
+    z-index: -1;
     width: 100%;
     margin-bottom: 20px;
     background-color: #ffffff;

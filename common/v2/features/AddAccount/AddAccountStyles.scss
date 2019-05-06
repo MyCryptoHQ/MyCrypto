@@ -161,10 +161,6 @@ $speed: 500ms;
   &-decrypt {
     text-align: center;
 
-    @media (max-width: $screen-md) {
-      padding-bottom: $space * 2;
-    }
-
     &-back {
       @include reset-button;
       display: flex;
@@ -354,10 +350,6 @@ $speed: 500ms;
 
     &-title {
       @include decrypt-title;
-    }
-
-    &-form {
-      margin: 0 auto;
     }
     &-label {
       opacity: 0.8;

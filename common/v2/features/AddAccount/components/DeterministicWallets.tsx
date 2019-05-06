@@ -96,11 +96,6 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
             {' '}
             <div className="DW-header-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
             <div className="DW-header-select">
-              {/* Derivation Path{' '}
-              <IconLink
-                icon="shape"
-                href="https://support.mycrypto.com/how-to/hardware-wallets/multiple-addresses-showing-on-hardware-wallet"
-              /> */}
               <Select
                 name="fieldDPath"
                 value={this.state.currentDPath}
