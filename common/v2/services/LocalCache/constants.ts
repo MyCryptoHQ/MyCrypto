@@ -1,5 +1,7 @@
 import * as serviceTypes from 'v2/services/types';
 import { SecureWalletName } from 'config/data';
+import { InsecureWalletName } from 'v2/features/Wallets/types';
+import { ETH_DEFAULT } from 'config/dpaths';
 
 export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
@@ -144,7 +146,9 @@ export const CACHE_INIT_DEV: LocalCache = {
       tokens: [],
       contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
       nodes: ['eth_mycrypto'],
-      dPathFormats: {},
+      dPathFormats: {
+        [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
+      },
       gasPriceSettings: {
         min: 1,
         max: 100,

@@ -51,7 +51,7 @@ import * as WalletActions from 'v2/features/Wallets';
 import { NetworkOptionsContext, AccountContext } from 'v2/providers';
 import { Account } from 'v2/services/Account/types';
 import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
-import { getNetworkByName } from 'v2/libs';
+import { getNetworkByName, isWalletFormatSupportedOnNetwork } from 'v2/libs';
 import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 
 interface OwnProps {
@@ -509,8 +509,11 @@ const WalletDecrypt = withRouter<Props>(
               {({ networkOptions = [] }) => {
                 const networkNames: any[] = [];
                 networkOptions.map(en => {
-                  networkNames.push(en.name);
+                  if (isWalletFormatSupportedOnNetwork(en, this.state.accountData.accountType)) {
+                    networkNames.push(en.name);
+                  }
                 });
+                console.log(networkNames);
                 return (
                   <ComboBox
                     className="Panel-dropdown"
