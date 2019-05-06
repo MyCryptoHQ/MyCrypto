@@ -48,8 +48,6 @@ interface Props {
   onUnlock(): void;
 }
 
-const privateKeyHelpLink =
-  'https://support.mycrypto.com/troubleshooting/accessing-wallet/private-key-not-working';
 export class PrivateKeyDecrypt extends PureComponent<Props> {
   public render() {
     const { key, password } = this.props.value;
@@ -65,6 +63,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
 
           <div className="input-group-wrapper">
             <label className="input-group">
+              <label className="PrivateKey-label">Your Private Key</label>
               <TogglablePassword
                 value={key}
                 rows={4}
@@ -80,6 +79,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
               <div className="input-group-wrapper">
                 <label className="input-group">
                   <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
+
                   <Input
                     isValid={password.length > 0}
                     value={password}
@@ -95,9 +95,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
             {translate('ADD_LABEL_6_SHORT')}
           </button>
         </form>
-        <div className="PrivateKey-help">
-          {translate('PRIVATE_KEY_HELP', { $wiki_link: privateKeyHelpLink })}
-        </div>
+        <div className="PrivateKey-help">{translate('PRIVATE_KEY_HELP')}</div>
       </div>
     );
   }
