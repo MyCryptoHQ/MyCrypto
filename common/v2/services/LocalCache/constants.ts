@@ -162,7 +162,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       name: 'Ethereum',
       network: 'Ethereum',
       ticker: 'ETH',
-      type: 'coin',
+      type: 'base',
       decimal: 18,
       contractAddress: null
     }

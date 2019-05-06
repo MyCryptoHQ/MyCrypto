@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
-import { Transaction } from '../SendAssets';
+import { SendState } from '../SendAssets';
 import './TransactionComplete.scss';
 
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 
 interface Props {
-  transaction: Transaction;
+  values: SendState;
   onReset(): void;
 }
 
@@ -19,7 +19,7 @@ const truncate = (children: string) => {
 };
 
 export default function TransactionComplete({
-  transaction: { recipientAddress, senderAddress },
+  values: { transactionFields: { recipientAddress, senderAddress } },
   onReset
 }: Props) {
   return (

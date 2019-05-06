@@ -1,22 +1,20 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Transaction } from '../../SendAssets';
+import { TransactionFields, SendState } from '../../SendAssets';
 import { ComboBox } from '@mycrypto/ui';
 import { AccountContext } from 'v2/providers';
 import { isValidETHAddress } from 'libs/validators';
 
 interface OwnProps {
+  values: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
       ? void
       : (e: string | ChangeEvent<any>) => void;
   };
+  updateState(values: SendState): void;
 }
-
-/*interface StateProps {
-  name: string;
-}*/
 
 type Props = OwnProps; // & StateProps;
 
@@ -24,9 +22,26 @@ export default class SenderAddressField extends Component<Props> {
   public isValidSender = (value: any) => {
     return isValidETHAddress(value);
   };
+  public handleSenderAddress = (e: ChangeEvent<any>) => {
+    const { values } = this.props;
+    this.props.updateState({
+      ...values,
+      transactionFields: {
+        ...values.transactionFields,
+        senderAddress: e.target.value
+      },
+      rawTransactionValues: {
+        ...values.rawTransactionValues,
+        from: e.target.value
+      }
+    });
+
+    // Conduct max nonce check
+    // Conduct estimateGas
+    this.props.handleChange(e);
+  };
 
   public render() {
-    const { handleChange } = this.props;
     return (
       <AccountContext.Consumer>
         {({ accounts }) => {
@@ -39,11 +54,11 @@ export default class SenderAddressField extends Component<Props> {
               name="senderAddress"
               id={'1'}
               validate={this.isValidSender}
-              render={({ field }: FieldProps<Transaction>) => (
+              render={({ field }: FieldProps<TransactionFields>) => (
                 <ComboBox
                   {...field}
                   id={'2'}
-                  onChange={handleChange}
+                  onChange={this.handleSenderAddress}
                   value={field.value}
                   items={new Set(accountlist)}
                   //placeholder={translate('VIEW_ONLY_ENTERVIEW_ONLY_ENTER')}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Address, Button, Network } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
-import { Transaction } from '../SendAssets';
+import { SendState } from '../SendAssets';
 import './ConfirmTransaction.scss';
 
 // Legacy
@@ -11,7 +11,7 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import { AddressMetadataContext } from 'v2/providers';
 
 interface Props {
-  transaction: Transaction;
+  values: SendState;
   onNext(): void;
 }
 
@@ -29,7 +29,10 @@ export default class ConfirmTransaction extends Component<Props> {
   };
 
   public render() {
-    const { transaction: { senderAddress, recipientAddress }, onNext } = this.props;
+    const {
+      values: { transactionFields: { senderAddress, recipientAddress } },
+      onNext
+    } = this.props;
     const { showingDetails } = this.state;
 
     return (

@@ -2,7 +2,7 @@ export interface AssetOption {
   name: string;
   network: string;
   ticker: string;
-  type: string;
+  type: assetType;
   decimal: number;
   contractAddress: null;
 }
@@ -10,3 +10,5 @@ export interface AssetOption {
 export interface ExtendedAssetOption extends AssetOption {
   uuid: string;
 }
+
+export type assetType = 'base' | 'erc20';

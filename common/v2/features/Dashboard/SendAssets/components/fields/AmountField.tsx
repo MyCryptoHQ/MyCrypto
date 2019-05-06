@@ -1,17 +1,18 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Transaction } from '../../SendAssets';
-import { Input, ComboBox } from '@mycrypto/ui';
-import { AssetOptionsContext } from 'v2/providers';
+import { TransactionFields, SendState } from 'v2/features/Dashboard/SendAssets/SendAssets';
+import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
+  values: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
       ? void
       : (e: string | ChangeEvent<any>) => void;
   };
+  updateState(values: SendState): void;
 }
 
 /*interface StateProps {
@@ -21,14 +22,29 @@ interface OwnProps {
 type Props = OwnProps; // & StateProps;
 
 export default class AmountField extends Component<Props> {
+  public values = this.props.values;
   public isValidAmount = (value: any) => {
     const valid = value >= 0; // && value <= (this.balance - this.gasCost);
     this.setState({ isValidAmount: valid });
     return valid;
   };
 
+  public handleAmountField = (e: ChangeEvent<any>) => {
+    this.props.updateState({
+      ...this.values,
+      transactionFields: {
+        ...this.values.transactionFields,
+        amount: e.target.value
+      },
+      rawTransactionValues: {
+        ...this.values.rawTransactionValues,
+        value: e.target.value
+      }
+    });
+    this.props.handleChange(e);
+  };
+
   public render() {
-    const { handleChange } = this.props;
     return (
       <div className="SendAssetsForm-fieldset SendAssetsForm-amountAsset">
         <div className="SendAssetsForm-amountAsset-amount">
@@ -42,44 +58,17 @@ export default class AmountField extends Component<Props> {
             id={'5'}
             name="amount"
             validate={this.isValidAmount}
-            render={({ field, form }: FieldProps<Transaction>) => (
+            render={({ field }: FieldProps<TransactionFields>) => (
               <Input
                 {...field}
                 id={'6'}
                 value={field.value}
-                onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
+                onChange={this.handleAmountField}
                 placeholder="0.00"
                 className="SendAssetsForm-fieldset-input"
               />
             )}
           />
-        </div>
-        <div className="SendAssetsForm-amountAsset-asset">
-          <label htmlFor="asset">Asset</label>
-          <AssetOptionsContext.Consumer>
-            {({ assetOptions = [] }) => {
-              const assetslist: string[] = [];
-              assetOptions.map(en => {
-                assetslist.push(en.ticker);
-              });
-              return (
-                <Field
-                  id={'7'}
-                  name="asset"
-                  render={({ field }: FieldProps<Transaction>) => (
-                    <ComboBox
-                      {...field}
-                      id={'8'}
-                      onChange={handleChange}
-                      value={field.value}
-                      items={new Set(assetslist)}
-                      className="SendAssetsForm-fieldset-input"
-                    />
-                  )}
-                />
-              );
-            }}
-          </AssetOptionsContext.Consumer>
         </div>
       </div>
     );

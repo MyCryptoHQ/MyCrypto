@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps } from 'formik';
-import { Transaction } from '../../SendAssets';
+import { TransactionFields } from '../../SendAssets';
 import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
@@ -30,7 +30,7 @@ export default class GasPriceField extends Component<Props> {
     return (
       <Field
         name="gasPrice"
-        render={({ field, form }: FieldProps<Transaction>) => (
+        render={({ field, form }: FieldProps<TransactionFields>) => (
           <Input
             {...field}
             value={field.value}

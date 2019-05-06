@@ -9,51 +9,99 @@ import './SendAssets.scss';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { isAdvancedQueryTransaction } from 'utils/helpers';
+import { AssetOption, assetType } from 'v2/services/AssetOption/types';
 
-export interface Transaction {
+export interface TransactionFields {
+  asset: string;
   senderAddress: string;
   recipientAddress: string;
   amount: string;
-  asset: string;
-  transactionFee: string;
-  advancedMode: boolean;
-  automaticallyCalculateGasLimit: boolean;
-  gasPrice: string;
-  gasLimit: string;
-  nonce: string;
   data: string;
+  gasLimitEstimated: string;
+  gasPriceSlider: string;
+  nonceEstimated: string;
+  gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
+  gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
+  nonceField: string; // Use only if user has input a manual nonce value.
 }
 
-interface State {
+export interface RawTransactionValues {
+  from: string;
+  to: string;
+  value: string;
+  data: string;
+  gasLimit: string;
+  gasPrice: string;
+  nonce: string;
+}
+
+export interface SendState {
   step: number;
-  transaction: Transaction;
+  transactionFields: TransactionFields;
+  rawTransactionValues: RawTransactionValues;
+
+  isFetchingAccountValue: boolean; // Used to indicate looking up user's balance of currently-selected asset.
+  isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+  isAddressLabelValid: boolean; // Used to indicate if recipient-address is found in the address book.
+  isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
+  isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
+  isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+
+  resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
+  recipientAddressLabel: string; //  Recipient-address label found in address book.
+  asset: AssetOption | undefined;
+  network: string;
+  assetType: assetType; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
 }
 
-const getInitialState = (): State => {
+const getInitialState = (): SendState => {
   return {
     step: 0,
-    transaction: {
+    transactionFields: {
       senderAddress: '',
       recipientAddress: '',
       amount: '0.00',
       asset: 'ETH',
-      transactionFee: '20',
-      advancedMode: isAdvancedQueryTransaction(location.search) || false,
-      automaticallyCalculateGasLimit: true,
-      gasPrice: '20',
-      gasLimit: '21000',
-      nonce: '0',
+      gasPriceSlider: '20',
+      gasPriceField: '20',
+      gasLimitField: '21000',
+      gasLimitEstimated: '21000',
+      nonceEstimated: '0',
+      nonceField: '0',
       data: ''
-    }
+    },
+    rawTransactionValues: {
+      from: '',
+      to: '',
+      value: '',
+      data: '',
+      gasLimit: '',
+      gasPrice: '',
+      nonce: ''
+    },
+    isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
+    isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+    isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
+    isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
+    isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
+    isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+    isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+
+    resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
+    recipientAddressLabel: '', //  Recipient-address label found in address book.
+    asset: undefined,
+    network: 'ETH',
+    assetType: 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
   };
 };
 
 export class SendAssets extends Component<RouteComponentProps<{}>> {
-  public state: State = getInitialState();
+  public state: SendState = getInitialState();
 
   public render() {
     const { history } = this.props;
-    const { step, transaction } = this.state;
+    const { step } = this.state;
     const backOptions = [history.goBack, this.regressStep];
     // Step 3, ConfirmTransaction, cannot go back (as backOptions[2] is undefined)
     const onBack = backOptions[step];
@@ -72,9 +120,10 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
           }}
         >
           <Step
-            transaction={transaction}
+            values={this.state}
+            updateState={this.updateState}
             onNext={this.advanceStep}
-            onSubmit={this.updateTransaction}
+            onSubmit={this.updateState}
             onReset={this.handleReset}
           />
         </ContentPanel>
@@ -83,19 +132,20 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   }
 
   private advanceStep = () =>
-    this.setState((prevState: State) => ({
+    this.setState((prevState: SendState) => ({
       step: Math.min(prevState.step + 1, steps.length - 1)
     }));
 
   private regressStep = () =>
-    this.setState((prevState: State) => ({
+    this.setState((prevState: SendState) => ({
       step: Math.min(0, prevState.step - 1)
     }));
 
-  private updateTransaction = (transaction: Transaction) =>
+  private updateState = (state: SendState) => {
     this.setState({
-      transaction
+      ...state
     });
+  };
 
   private handleReset = () => this.setState(getInitialState());
 }
