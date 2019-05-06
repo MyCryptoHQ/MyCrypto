@@ -102,7 +102,7 @@
     "ADD_PARITY_ERROR_UNKNOWN": "Unable to access your webcam, please refresh or try another browser",
     "ADD_RADIO_2": "Select Your Wallet File (Keystore / JSON) ",
     "ADD_RADIO_2_ALT": "Select Your Wallet File ",
-    "ADD_RADIO_2_SHORT": "SELECT WALLET FILE",
+    "ADD_RADIO_2_SHORT": "UPLOAD KEYSTORE FILE",
     "REMOVE_LABEL": "Remove Label",
     "ADD_LABEL": "Add Label ",
     "ADD_LABEL_3": "Your wallet is encrypted. Please enter the password. ",
@@ -834,6 +834,7 @@
     "SCREEN_LOCK_LOCKING_TURN_ON_LOCK": "Turn on Screen Lock",
     "SCREEN_LOCK_TAB_TITLE": "MyCrypto",
     "SCREEN_LOCK_TAB_TITLE_LOCKED": "MyCrypto (Locked)",
-    "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in"
+    "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in", 
+    "KEYSTORE_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-keystore-file)"
   }
 }

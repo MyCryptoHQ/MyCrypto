@@ -59,6 +59,7 @@ export class KeystoreDecrypt extends PureComponent {
               id="fselector"
               onChange={this.handleFileSelection}
             />
+            <label>Your Keystore File</label>
             <label htmlFor="fselector" style={{ width: '100%' }}>
               <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
                 {translate('ADD_RADIO_2_SHORT')}
@@ -70,6 +71,7 @@ export class KeystoreDecrypt extends PureComponent {
             </label>
 
             {isWalletPending ? <Spinner /> : ''}
+            <label>Your Password</label>
             <Input
               isValid={password.length > 0}
               className={`${file.length && isWalletPending ? 'hidden' : ''}`}
@@ -86,6 +88,7 @@ export class KeystoreDecrypt extends PureComponent {
             {translate('ADD_LABEL_6_SHORT')}
           </button>
         </form>
+        <div className="Keystore-help">{translate('KEYSTORE_HELP')}</div>
       </div>
     );
   }
