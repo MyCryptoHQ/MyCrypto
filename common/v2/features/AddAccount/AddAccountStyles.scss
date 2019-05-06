@@ -21,7 +21,9 @@ $speed: 500ms;
   margin: $space 0 2rem;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
-  padding-top: 0.75em;
+  padding-top: 1em;
+  font-size: 32px;
+  font-weight: bold;
 }
 
 .Panel {
@@ -48,10 +50,6 @@ $speed: 500ms;
     font-family: Lato;
     font-size: 32px;
     font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
     color: var(--dark-slate-blue);
     text-align: center;
 
@@ -63,10 +61,6 @@ $speed: 500ms;
       font-family: Lato;
       font-size: 32px;
       font-weight: bold;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
       color: var(--dark-slate-blue);
       position: relative;
     }
@@ -80,11 +74,7 @@ $speed: 500ms;
     height: 108px;
     font-family: Lato;
     font-size: 18px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
     line-height: 1.5;
-    letter-spacing: normal;
     color: #333333;
     padding-top: 16px;
     position: relative;
@@ -114,6 +104,7 @@ $speed: 500ms;
   width: 760px;
   min-height: 850px;
   border-radius: 3px;
+  background-color: #ffffff;
 
   @media (max-width: $screen-md) {
     width: 375px;
@@ -130,13 +121,10 @@ $speed: 500ms;
     height: 19px;
     font-family: Lato;
     font-size: 16px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
     text-align: center;
     color: #093053;
+    margin: 2em;
+    padding-bottom: 2em;
   }
 
   &-wallets {
