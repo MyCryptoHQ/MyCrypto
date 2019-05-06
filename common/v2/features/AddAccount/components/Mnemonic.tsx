@@ -72,6 +72,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             </div>
 
             <div className="form-group">
+              <label>Your Mnemonic Phrase</label>
               <TogglablePassword
                 value={phrase}
                 rows={4}
@@ -83,7 +84,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               />
             </div>
             <div className="form-group">
-              <p>{translate('ADD_LABEL_8')}</p>
+              <label>{translate('ADD_LABEL_8')}</label>
               <Input
                 isValid={true}
                 showValidAsPlain={true}
@@ -103,6 +104,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
                 {translate('MNEMONIC_CHOOSE_ADDR')}
               </button>
             </div>
+            <div className="Mnemonic-help">{translate('KEYSTORE_HELP')}</div>
           </div>
         </div>
       );

@@ -110,7 +110,7 @@
     "ADD_LABEL_6": "Unlock your Wallet ",
     "ADD_LABEL_6_SHORT": "Unlock ",
     "ADD_LABEL_7": "Add Account ",
-    "ADD_LABEL_8": "Password (optional): ",
+    "ADD_LABEL_8": "Your Password (optional): ",
     "ADD_LABEL_9": "add label",
     "ADD_WEB3DESC": "Connect & sign via your browser or extension",
     "ADD_HARDWAREDESC": "Connect & sign via your hardware wallet",
@@ -835,6 +835,7 @@
     "SCREEN_LOCK_TAB_TITLE": "MyCrypto",
     "SCREEN_LOCK_TAB_TITLE_LOCKED": "MyCrypto (Locked)",
     "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in", 
-    "KEYSTORE_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-keystore-file)"
+    "KEYSTORE_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-keystore-file)", 
+    "MNEMONIC_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-mnemonic-phrase)]"
   }
 }
