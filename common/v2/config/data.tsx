@@ -1,6 +1,6 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 import { getValues, makeExplorer } from 'utils/helpers';
-import packageJson from '../../package.json';
+import packageJson from '../../../package.json';
 import { GasPriceSetting } from 'types/network';
 import translate from 'translations';
 
