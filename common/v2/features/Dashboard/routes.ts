@@ -1,6 +1,6 @@
 import Dashboard from './Dashboard';
 import { RequestAssets } from './RequestAssets';
-import { SendAssets } from './SendAssets';
+import { SendAssets } from 'v2/features/SendAssets';
 import { Settings } from './Settings';
 
 export default [

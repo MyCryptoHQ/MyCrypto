@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from 'v2/features/Dashboard/SendAssets/SendAssets';
+import { TransactionFields, SendState } from 'v2/features/SendAssets/SendAssets';
 import { Input } from '@mycrypto/ui';
 import { isValidETHAddress } from 'libs/validators';
 import { getAssetByTicker } from 'v2/libs';

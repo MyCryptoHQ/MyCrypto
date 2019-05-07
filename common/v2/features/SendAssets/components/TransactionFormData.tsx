@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
 import { SendState, TransactionFields } from '../SendAssets';
-import './SendAssetsForm.scss';
+import './TransactionFormData.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
@@ -53,6 +53,7 @@ export default function SendAssetsForm({
         <br />
         {JSON.stringify(stateValues.rawTransactionValues, null, 2)}
       </React.Fragment>
+
       <Formik
         initialValues={transactionFields}
         onSubmit={(fields: TransactionFields) => {

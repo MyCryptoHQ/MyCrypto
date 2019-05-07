@@ -4,7 +4,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import { headings, steps } from './constants';
-import './SendAssets.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';

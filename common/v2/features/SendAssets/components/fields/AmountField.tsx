@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from 'v2/features/Dashboard/SendAssets/SendAssets';
+import { TransactionFields, SendState } from 'v2/features/SendAssets/SendAssets';
 import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 

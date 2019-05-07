@@ -3,7 +3,7 @@ import { Field, FieldProps } from 'formik';
 import { TransactionFields } from '../../SendAssets';
 import { ComboBox } from '@mycrypto/ui';
 import { AssetOptionsContext } from 'v2/providers';
-import { SendState } from 'v2/features/Dashboard/SendAssets/SendAssets';
+import { SendState } from 'v2/features/SendAssets/SendAssets';
 import { getAssetByTicker } from 'v2/libs';
 import { AssetOption } from 'v2/services/AssetOption/types';
 //import { donationAddressMap } from '';

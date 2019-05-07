@@ -10,3 +10,4 @@ export * from './ImportWallet';
 export * from './Layout';
 export * from './constants';
 export * from './ScreenLock';
+export * from './SendAssets';
