@@ -55,12 +55,7 @@
 
       &-address-select {
         display: flex;
-        align-items: center;
-
-        input[type='radio'] {
-          margin-top: 0;
-          margin-left: 0.5rem;
-        }
+        justify-content: space-between;
       }
 
       &-more {

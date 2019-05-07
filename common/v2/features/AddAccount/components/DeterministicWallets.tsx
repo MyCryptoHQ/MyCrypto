@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
 import { Table, Address, IconLink, Typography, Button } from '@mycrypto/ui';
@@ -17,6 +17,18 @@ import './DeterministicWallets.scss';
 import { truncate } from 'v2/libs';
 import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
+import radio from 'assets/images/radio.svg';
+import radioChecked from 'assets/images/radio-checked.svg';
+
+function Radio({
+  checked,
+  onClick
+}: {
+  checked: boolean;
+  onClick(event: MouseEvent<HTMLImageElement>): void;
+}) {
+  return <img src={checked ? radioChecked : radio} onClick={onClick} />;
+}
 
 const WALLETS_PER_PAGE = 5;
 
@@ -249,12 +261,8 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     return [
       <div className="DW-addresses-table-address-select">
         {wallet.index + 1}
-        <input
-          type="radio"
-          name="selectedAddress"
+        <Radio
           checked={selectedAddress === wallet.address}
-          value={wallet.address}
-          readOnly={true}
           onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
         />
       </div>,
