@@ -836,6 +836,6 @@
     "SCREEN_LOCK_TAB_TITLE_LOCKED": "MyCrypto (Locked)",
     "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in", 
     "KEYSTORE_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-keystore-file)", 
-    "MNEMONIC_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-mnemonic-phrase)]"
+    "MNEMONIC_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-mnemonic-phrase)"
   }
 }
