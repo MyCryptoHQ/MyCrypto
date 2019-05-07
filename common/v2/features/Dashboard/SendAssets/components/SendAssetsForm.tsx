@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
-import { SendState } from '../SendAssets';
+import { SendState, TransactionFields } from '../SendAssets';
 import './SendAssetsForm.scss';
 
 // Legacy
@@ -22,10 +22,11 @@ import {
 } from './fields';
 
 interface Props {
-  values: SendState;
+  stateValues: SendState;
+  transactionFields: TransactionFields;
   onNext(): void;
-  onSubmit(values: SendState): void;
-  updateState(values: SendState): void;
+  onSubmit(transactionFields: TransactionFields): void;
+  updateState(state: SendState): void;
 }
 
 const QueryWarning: React.SFC<{}> = () => (
@@ -38,13 +39,19 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-export default function SendAssetsForm({ values, onNext, onSubmit, updateState }: Props) {
+export default function SendAssetsForm({
+  stateValues,
+  transactionFields,
+  onNext,
+  onSubmit,
+  updateState
+}: Props) {
   return (
     <div>
       <React.Fragment>
         {'RawValues: '}
         <br />
-        {JSON.stringify(values.rawTransactionValues, null, 2)}
+        {JSON.stringify(stateValues.rawTransactionValues, null, 2)}
       </React.Fragment>
       <br />
       <br />
@@ -52,17 +59,17 @@ export default function SendAssetsForm({ values, onNext, onSubmit, updateState }
       <React.Fragment>
         {'Fields: '}
         <br />
-        {JSON.stringify(values.transactionFields, null, 2)}
+        {JSON.stringify(stateValues.transactionFields, null, 2)}
       </React.Fragment>
       <Formik
-        initialValues={values}
-        onSubmit={fields => {
+        initialValues={transactionFields}
+        onSubmit={(fields: TransactionFields) => {
           onSubmit(fields);
           onNext();
         }}
         render={({
           setFieldValue,
-          values: { transactionFields: { gasPriceField }, isAdvancedTransaction },
+          values: { gasPriceField, isAdvancedTransaction },
           handleChange
         }) => {
           const toggleAdvancedOptions = () =>
@@ -77,17 +84,19 @@ export default function SendAssetsForm({ values, onNext, onSubmit, updateState }
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
-
-              {/* Amount / Asset */}
-              <AssetField handleChange={handleChange} updateState={updateState} values={values} />
-              <AmountField handleChange={handleChange} updateState={updateState} values={values} />
+              {/* Asset */}
+              <AssetField
+                handleChange={handleChange}
+                updateState={updateState}
+                values={stateValues}
+              />
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
                 <SenderAddressField
                   handleChange={handleChange}
                   updateState={updateState}
-                  values={values}
+                  values={stateValues}
                 />
               </fieldset>
               {/* Recipient Address */}
@@ -96,9 +105,15 @@ export default function SendAssetsForm({ values, onNext, onSubmit, updateState }
                 <RecipientAddressField
                   handleChange={handleChange}
                   updateState={updateState}
-                  values={values}
+                  values={stateValues}
                 />
               </fieldset>
+              {/* Amount */}
+              <AmountField
+                handleChange={handleChange}
+                updateState={updateState}
+                values={stateValues}
+              />
               {/* You'll Send */}
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
                 <label>You'll Send</label>
@@ -158,20 +173,36 @@ export default function SendAssetsForm({ values, onNext, onSubmit, updateState }
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
-                        <GasPriceField handleChange={handleChange} />
+                        <GasPriceField
+                          handleChange={handleChange}
+                          updateState={updateState}
+                          values={stateValues}
+                        />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
-                        <GasLimitField handleChange={handleChange} />
+                        <GasLimitField
+                          handleChange={handleChange}
+                          updateState={updateState}
+                          values={stateValues}
+                        />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce">Nonce (?)</label>
-                        <NonceField handleChange={handleChange} />
+                        <NonceField
+                          handleChange={handleChange}
+                          updateState={updateState}
+                          values={stateValues}
+                        />
                       </div>
                     </div>
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
-                      <DataField handleChange={handleChange} />
+                      <DataField
+                        handleChange={handleChange}
+                        updateState={updateState}
+                        values={stateValues}
+                      />
                     </fieldset>
                     <div className="SendAssetsForm-advancedOptions-content-output">
                       0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~={/* TRANSLATE THIS */}

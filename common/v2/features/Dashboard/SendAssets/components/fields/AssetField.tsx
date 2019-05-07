@@ -37,20 +37,6 @@ export default class AssetField extends Component<Props> {
     const assetType: AssetOption | undefined = getAssetByTicker(e.target.value);
     this.props.updateState({
       ...values,
-      transactionFields: {
-        ...values.transactionFields,
-        asset: e.target.value,
-        senderAddress: '',
-        recipientAddress: '',
-        amount: '0.00',
-        gasPriceSlider: '20',
-        gasPriceField: '20',
-        gasLimitField: '21000',
-        gasLimitEstimated: '21000',
-        nonceEstimated: '0',
-        nonceField: '0',
-        data: ''
-      },
       rawTransactionValues: {
         from: '',
         to: '',

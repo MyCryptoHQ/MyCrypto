@@ -1,16 +1,18 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps } from 'formik';
-import { TransactionFields } from '../../SendAssets';
+import { TransactionFields, SendState } from '../../SendAssets';
 import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
+  values: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
       ? void
       : (e: string | ChangeEvent<any>) => void;
   };
+  updateState(values: SendState): void;
 }
 
 /*interface StateProps {
@@ -26,15 +28,27 @@ export default class GasPriceField extends Component<Props> {
     return valid;
   };
 
+  public handleGasPriceField = (e: ChangeEvent<any>) => {
+    const { values } = this.props;
+    this.props.updateState({
+      ...values,
+      rawTransactionValues: {
+        ...values.rawTransactionValues,
+        gasPrice: e.target.value
+      }
+    });
+    this.props.handleChange(e);
+  };
+
   public render() {
     return (
       <Field
         name="gasPrice"
-        render={({ field, form }: FieldProps<TransactionFields>) => (
+        render={({ field }: FieldProps<TransactionFields>) => (
           <Input
             {...field}
             value={field.value}
-            onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
+            onChange={this.handleGasPriceField}
             placeholder="20"
             className="SendAssetsForm-fieldset-input"
           />

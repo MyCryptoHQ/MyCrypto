@@ -10,7 +10,7 @@ import './TransactionComplete.scss';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 
 interface Props {
-  values: SendState;
+  stateValues: SendState;
   onReset(): void;
 }
 
@@ -19,7 +19,7 @@ const truncate = (children: string) => {
 };
 
 export default function TransactionComplete({
-  values: { transactionFields: { recipientAddress, senderAddress } },
+  stateValues: { transactionFields: { recipientAddress, senderAddress } },
   onReset
 }: Props) {
   return (

@@ -11,7 +11,7 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import { AddressMetadataContext } from 'v2/providers';
 
 interface Props {
-  values: SendState;
+  stateValues: SendState;
   onNext(): void;
 }
 
@@ -30,7 +30,7 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public render() {
     const {
-      values: { transactionFields: { senderAddress, recipientAddress } },
+      stateValues: { transactionFields: { senderAddress, recipientAddress } },
       onNext
     } = this.props;
     const { showingDetails } = this.state;

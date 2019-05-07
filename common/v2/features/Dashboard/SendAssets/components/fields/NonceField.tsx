@@ -1,16 +1,18 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps } from 'formik';
-import { TransactionFields } from '../../SendAssets';
+import { TransactionFields, SendState } from '../../SendAssets';
 import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
+  values: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
       ? void
       : (e: string | ChangeEvent<any>) => void;
   };
+  updateState(values: SendState): void;
 }
 
 /*interface StateProps {
@@ -26,16 +28,28 @@ export default class NonceField extends Component<Props> {
     return valid;
   };
 
+  public handleNonceField = (e: ChangeEvent<any>) => {
+    const { values } = this.props;
+    this.props.updateState({
+      ...values,
+      rawTransactionValues: {
+        ...values.rawTransactionValues,
+        nonce: e.target.value
+      }
+    });
+    this.props.handleChange(e);
+  };
+
   public render() {
     return (
       <Field
         name="nonce"
         validate={this.isValidNonce}
-        render={({ field, form }: FieldProps<TransactionFields>) => (
+        render={({ field }: FieldProps<TransactionFields>) => (
           <Input
             {...field}
             value={field.value}
-            onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
+            onChange={this.handleNonceField}
             placeholder="0"
             className="SendAssetsForm-fieldset-input"
           />

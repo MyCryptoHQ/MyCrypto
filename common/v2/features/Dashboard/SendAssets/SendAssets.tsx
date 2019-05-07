@@ -23,6 +23,7 @@ export interface TransactionFields {
   gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
   gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
   nonceField: string; // Use only if user has input a manual nonce value.
+  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
 }
 
 export interface RawTransactionValues {
@@ -46,7 +47,6 @@ export interface SendState {
   isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
   isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
   isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
 
   resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
   recipientAddressLabel: string; //  Recipient-address label found in address book.
@@ -69,7 +69,8 @@ const getInitialState = (): SendState => {
       gasLimitEstimated: '21000',
       nonceEstimated: '0',
       nonceField: '0',
-      data: ''
+      data: '',
+      isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
     },
     rawTransactionValues: {
       from: '',
@@ -86,7 +87,6 @@ const getInitialState = (): SendState => {
     isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
     isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
     isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-    isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
 
     resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
     recipientAddressLabel: '', //  Recipient-address label found in address book.
@@ -120,10 +120,11 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
           }}
         >
           <Step
-            values={this.state}
+            stateValues={this.state}
+            transactionFields={this.state.transactionFields}
             updateState={this.updateState}
             onNext={this.advanceStep}
-            onSubmit={this.updateState}
+            onSubmit={this.updateTransactionFields}
             onReset={this.handleReset}
           />
         </ContentPanel>
@@ -140,6 +141,13 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
     this.setState((prevState: SendState) => ({
       step: Math.min(0, prevState.step - 1)
     }));
+
+  private updateTransactionFields = (transactionFields: TransactionFields) => {
+    this.setState({
+      ...this.state,
+      transactionFields
+    });
+  };
 
   private updateState = (state: SendState) => {
     this.setState({

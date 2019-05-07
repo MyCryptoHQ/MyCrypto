@@ -22,7 +22,6 @@ interface OwnProps {
 type Props = OwnProps; // & StateProps;
 
 export default class AmountField extends Component<Props> {
-  public values = this.props.values;
   public isValidAmount = (value: any) => {
     const valid = value >= 0; // && value <= (this.balance - this.gasCost);
     this.setState({ isValidAmount: valid });
@@ -30,14 +29,11 @@ export default class AmountField extends Component<Props> {
   };
 
   public handleAmountField = (e: ChangeEvent<any>) => {
+    const { values } = this.props;
     this.props.updateState({
-      ...this.values,
-      transactionFields: {
-        ...this.values.transactionFields,
-        amount: e.target.value
-      },
+      ...values,
       rawTransactionValues: {
-        ...this.values.rawTransactionValues,
+        ...values.rawTransactionValues,
         value: e.target.value
       }
     });
