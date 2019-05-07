@@ -1,1 +1,2 @@
-export { default as SendAssets } from './SendAssets';
+export { default } from './SendAssets';
+export { default as sendAssetsRoutes } from './routes';

@@ -26,5 +26,9 @@
   {
     "name": "Sceen Lock",
     "key": "screenLock"
+  },
+  {
+    "name": "Send Assets",
+    "key": "sendAssets"
   }
 ]
