@@ -5,7 +5,7 @@ import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
-  values: SendState;
+  stateValues: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
@@ -29,11 +29,11 @@ export default class AmountField extends Component<Props> {
   };
 
   public handleAmountField = (e: ChangeEvent<any>) => {
-    const { values } = this.props;
+    const { stateValues } = this.props;
     this.props.updateState({
-      ...values,
+      ...stateValues,
       rawTransactionValues: {
-        ...values.rawTransactionValues,
+        ...stateValues.rawTransactionValues,
         value: e.target.value
       }
     });

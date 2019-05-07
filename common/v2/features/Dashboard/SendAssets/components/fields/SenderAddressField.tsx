@@ -6,7 +6,7 @@ import { AccountContext } from 'v2/providers';
 import { isValidETHAddress } from 'libs/validators';
 
 interface OwnProps {
-  values: SendState;
+  stateValues: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
@@ -23,15 +23,15 @@ export default class SenderAddressField extends Component<Props> {
     return isValidETHAddress(value);
   };
   public handleSenderAddress = (e: ChangeEvent<any>) => {
-    const { values } = this.props;
+    const { stateValues } = this.props;
     this.props.updateState({
-      ...values,
+      ...stateValues,
       transactionFields: {
-        ...values.transactionFields,
+        ...stateValues.transactionFields,
         senderAddress: e.target.value
       },
       rawTransactionValues: {
-        ...values.rawTransactionValues,
+        ...stateValues.rawTransactionValues,
         from: e.target.value
       }
     });

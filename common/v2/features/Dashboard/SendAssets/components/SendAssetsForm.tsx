@@ -53,27 +53,15 @@ export default function SendAssetsForm({
         <br />
         {JSON.stringify(stateValues.rawTransactionValues, null, 2)}
       </React.Fragment>
-      <br />
-      <br />
-      <br />
-      <React.Fragment>
-        {'Fields: '}
-        <br />
-        {JSON.stringify(stateValues.transactionFields, null, 2)}
-      </React.Fragment>
       <Formik
         initialValues={transactionFields}
         onSubmit={(fields: TransactionFields) => {
           onSubmit(fields);
           onNext();
         }}
-        render={({
-          setFieldValue,
-          values: { gasPriceField, isAdvancedTransaction },
-          handleChange
-        }) => {
+        render={({ setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
-            setFieldValue('isAdvancedTransaction', !isAdvancedTransaction);
+            setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           const gasEstimates = {
             fastest: 20,
             fast: 18,
@@ -84,11 +72,20 @@ export default function SendAssetsForm({
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
+
+              <React.Fragment>
+                <br />
+                <br />
+                <br />
+                {'Formik Fields: '}
+                <br />
+                {JSON.stringify(values, null, 2)}
+              </React.Fragment>
               {/* Asset */}
               <AssetField
                 handleChange={handleChange}
                 updateState={updateState}
-                values={stateValues}
+                stateValues={stateValues}
               />
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
@@ -96,7 +93,7 @@ export default function SendAssetsForm({
                 <SenderAddressField
                   handleChange={handleChange}
                   updateState={updateState}
-                  values={stateValues}
+                  stateValues={stateValues}
                 />
               </fieldset>
               {/* Recipient Address */}
@@ -105,14 +102,14 @@ export default function SendAssetsForm({
                 <RecipientAddressField
                   handleChange={handleChange}
                   updateState={updateState}
-                  values={stateValues}
+                  stateValues={stateValues}
                 />
               </fieldset>
               {/* Amount */}
               <AmountField
                 handleChange={handleChange}
                 updateState={updateState}
-                values={stateValues}
+                stateValues={stateValues}
               />
               {/* You'll Send */}
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
@@ -144,7 +141,7 @@ export default function SendAssetsForm({
                 <GasPriceSlider
                   gasEstimates={gasEstimates}
                   handleChange={handleChange}
-                  gasPrice={gasPriceField}
+                  gasPrice={values.gasPriceField}
                 />
                 <div className="SendAssetsForm-fieldset-cheapFast">
                   <div>Cheap</div>
@@ -160,9 +157,9 @@ export default function SendAssetsForm({
                   onClick={toggleAdvancedOptions}
                   className="SendAssetsForm-advancedOptions-button"
                 >
-                  {isAdvancedTransaction ? 'Hide' : 'Show'} Advanced Options
+                  {values.isAdvancedTransaction ? 'Hide' : 'Show'} Advanced Options
                 </Button>
-                {isAdvancedTransaction && (
+                {values.isAdvancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
                       <Field name="automaticallyCalculateGasLimit" type="checkbox" value={true} />
@@ -176,7 +173,7 @@ export default function SendAssetsForm({
                         <GasPriceField
                           handleChange={handleChange}
                           updateState={updateState}
-                          values={stateValues}
+                          stateValues={stateValues}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
@@ -184,7 +181,7 @@ export default function SendAssetsForm({
                         <GasLimitField
                           handleChange={handleChange}
                           updateState={updateState}
-                          values={stateValues}
+                          stateValues={stateValues}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
@@ -192,7 +189,7 @@ export default function SendAssetsForm({
                         <NonceField
                           handleChange={handleChange}
                           updateState={updateState}
-                          values={stateValues}
+                          stateValues={stateValues}
                         />
                       </div>
                     </div>

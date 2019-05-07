@@ -9,7 +9,7 @@ import { AssetOption } from 'v2/services/AssetOption/types';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
-  values: SendState;
+  stateValues: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
@@ -33,10 +33,10 @@ export default class AssetField extends Component<Props> {
   };
 
   public handleAssetField = (e: ChangeEvent<any>) => {
-    const { values } = this.props;
+    const { stateValues } = this.props;
     const assetType: AssetOption | undefined = getAssetByTicker(e.target.value);
     this.props.updateState({
-      ...values,
+      ...stateValues,
       rawTransactionValues: {
         from: '',
         to: '',

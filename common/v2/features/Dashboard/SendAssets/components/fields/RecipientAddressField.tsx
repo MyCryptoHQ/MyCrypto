@@ -7,7 +7,7 @@ import { getAssetByTicker } from 'v2/libs';
 import { AssetOption } from 'v2/services/AssetOption/types';
 
 interface OwnProps {
-  values: SendState;
+  stateValues: SendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
@@ -27,16 +27,18 @@ export default class RecipientAddressField extends Component<Props> {
   };
 
   public handleRecipientAddress = (e: ChangeEvent<any>) => {
-    const { values } = this.props;
-    const assetType: AssetOption | undefined = getAssetByTicker(values.transactionFields.asset);
+    const { stateValues } = this.props;
+    const assetType: AssetOption | undefined = getAssetByTicker(
+      stateValues.transactionFields.asset
+    );
     this.props.updateState({
-      ...values,
+      ...stateValues,
       transactionFields: {
-        ...values.transactionFields,
+        ...stateValues.transactionFields,
         recipientAddress: e.target.value
       },
       rawTransactionValues: {
-        ...values.rawTransactionValues,
+        ...stateValues.rawTransactionValues,
         to: assetType
           ? assetType.type === 'base' ? e.target.value : assetType.contractAddress
           : 'base'
