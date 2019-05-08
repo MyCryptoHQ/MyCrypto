@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
 import { Table, Address, IconLink, Typography, Button } from '@mycrypto/ui';
@@ -20,14 +20,8 @@ import prevIcon from 'assets/images/previous-page-button.svg';
 import radio from 'assets/images/radio.svg';
 import radioChecked from 'assets/images/radio-checked.svg';
 
-function Radio({
-  checked,
-  onClick
-}: {
-  checked: boolean;
-  onClick(event: MouseEvent<HTMLImageElement>): void;
-}) {
-  return <img className="radio-image" src={checked ? radioChecked : radio} onClick={onClick} />;
+function Radio({ checked }: { checked: boolean }) {
+  return <img className="clickable" src={checked ? radioChecked : radio} />;
 }
 
 const WALLETS_PER_PAGE = 5;
@@ -261,10 +255,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     return [
       <div className="DW-addresses-table-address-select">
         {wallet.index + 1}
-        <Radio
-          checked={selectedAddress === wallet.address}
-          onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
-        />
+        <Radio checked={selectedAddress === wallet.address} />
       </div>,
       <Address title={label} address={wallet.address} truncate={truncate} />,
       <UnitDisplay
@@ -274,10 +265,22 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         displayShortBalance={true}
         checkOffline={true}
       />,
-      <a target="_blank" href={blockExplorer.addressUrl(wallet.address)} rel="noopener noreferrer">
+      <a
+        target="_blank"
+        href={blockExplorer.addressUrl(wallet.address)}
+        rel="noopener noreferrer"
+        onClick={event => event.stopPropagation()}
+      >
         <i className="DW-addresses-table-more" />
       </a>
-    ];
+    ].map(element => (
+      <div
+        className="clickable"
+        onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
+      >
+        {element}
+      </div>
+    ));
     // tslint:enable:jsx-key
   }
 }
