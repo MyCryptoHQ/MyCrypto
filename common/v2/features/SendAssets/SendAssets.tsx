@@ -7,8 +7,14 @@ import { headings, steps } from './constants';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
-import { isAdvancedQueryTransaction } from 'utils/helpers';
 import { AssetOption, assetType } from 'v2/services/AssetOption/types';
+import {
+  isQueryTransaction,
+  getQueryParamWithKey,
+  getQueryTransactionData,
+  isAdvancedQueryTransaction
+} from 'v2/libs/preFillTx';
+import { queryObject } from 'v2/libs/preFillTx/types';
 
 export interface TransactionFields {
   asset: string;
@@ -55,44 +61,92 @@ export interface SendState {
 }
 
 const getInitialState = (): SendState => {
-  return {
-    step: 0,
-    transactionFields: {
-      senderAddress: '',
-      recipientAddress: '',
-      amount: '0.00',
-      asset: 'ETH',
-      gasPriceSlider: '20',
-      gasPriceField: '20',
-      gasLimitField: '21000',
-      gasLimitEstimated: '21000',
-      nonceEstimated: '0',
-      nonceField: '0',
-      data: '',
-      isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-    },
-    rawTransactionValues: {
-      from: '',
-      to: '',
-      value: '',
-      data: '',
-      gasLimit: '',
-      gasPrice: '',
-      nonce: ''
-    },
-    isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
-    isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-    isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
-    isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
-    isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-    isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+  if (isQueryTransaction(location.search)) {
+    const params: queryObject = getQueryTransactionData(location.search);
+    return {
+      step: 0,
+      transactionFields: {
+        senderAddress: '',
+        recipientAddress: getQueryParamWithKey(params, 'to') || '',
+        amount: getQueryParamWithKey(params, 'value') || '0.00',
+        asset:
+          getQueryParamWithKey(params, 'sendmode') === 'token'
+            ? getQueryParamWithKey(params, 'tokensymbol') || 'ETH'
+            : 'ETH',
+        gasPriceSlider: '20',
+        gasPriceField: getQueryParamWithKey(params, 'gasprice') || '20',
+        gasLimitField:
+          getQueryParamWithKey(params, 'gaslimit') ||
+          getQueryParamWithKey(params, 'gas') ||
+          '21000',
+        gasLimitEstimated: '21000',
+        nonceEstimated: '0',
+        nonceField: '0',
+        data: getQueryParamWithKey(params, 'data') || '',
+        isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+      },
+      rawTransactionValues: {
+        from: '',
+        to: '',
+        value: '',
+        data: '',
+        gasLimit: '',
+        gasPrice: '',
+        nonce: ''
+      },
+      isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
+      isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+      isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
+      isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
+      isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
+      isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
 
-    resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
-    recipientAddressLabel: '', //  Recipient-address label found in address book.
-    asset: undefined,
-    network: 'ETH',
-    assetType: 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
-  };
+      resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
+      recipientAddressLabel: '', //  Recipient-address label found in address book.
+      asset: undefined,
+      network: 'ETH',
+      assetType: getQueryParamWithKey(params, 'sendmode') === 'token' ? 'erc20' : 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
+    };
+  } else {
+    return {
+      step: 0,
+      transactionFields: {
+        senderAddress: '',
+        recipientAddress: '',
+        amount: '0.00',
+        asset: 'ETH',
+        gasPriceSlider: '20',
+        gasPriceField: '20',
+        gasLimitField: '21000',
+        gasLimitEstimated: '21000',
+        nonceEstimated: '0',
+        nonceField: '0',
+        data: '',
+        isAdvancedTransaction: false // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+      },
+      rawTransactionValues: {
+        from: '',
+        to: '',
+        value: '',
+        data: '',
+        gasLimit: '',
+        gasPrice: '',
+        nonce: ''
+      },
+      isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
+      isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+      isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
+      isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
+      isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
+      isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+
+      resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
+      recipientAddressLabel: '', //  Recipient-address label found in address book.
+      asset: undefined,
+      network: 'ETH',
+      assetType: 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
+    };
+  }
 };
 
 export class SendAssets extends Component<RouteComponentProps<{}>> {
