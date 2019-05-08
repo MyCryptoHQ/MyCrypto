@@ -83,14 +83,18 @@ const getResources = () => {
   );
 };
 
-export default function WalletCreatedNotification() {
+interface NotificationProps {
+  address: string;
+}
+
+export default function WalletCreatedNotification({ address }: NotificationProps) {
   return (
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
       leftImg={<ChampagneImage src={champagneIcon} />}
       title={translate('NOTIFICATIONS_WALLET_ADDED_TITLE')}
       description={translate('NOTIFICATIONS_WALLET_ADDED_DESCRIPTION', {
-        $address: '0x06A85356DCb5b307096726FB86A78c59D38e08ee'
+        $address: address
       })}
       additionalDescription={translate('NOTIFICATIONS_WALLET_DESCRIPTION_ADD')}
       resources={getResources()}
