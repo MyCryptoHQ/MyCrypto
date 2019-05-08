@@ -10,7 +10,7 @@ export const links = [
     title: 'Manage Assets',
     subItems: [
       {
-        to: '/dashboard/send',
+        to: '/send',
         title: 'Send Assets'
       },
       {
