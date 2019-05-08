@@ -27,7 +27,7 @@ function Radio({
   checked: boolean;
   onClick(event: MouseEvent<HTMLImageElement>): void;
 }) {
-  return <img src={checked ? radioChecked : radio} onClick={onClick} />;
+  return <img className="radio-image" src={checked ? radioChecked : radio} onClick={onClick} />;
 }
 
 const WALLETS_PER_PAGE = 5;
