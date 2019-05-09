@@ -74,18 +74,6 @@ yarn test
 yarn test:int
 ```
 
-#### Dev (HTTPS):
-
-Some parts of the site, such as interacting with a Ledger hardware wallet, require an HTTPS environment to work. To develop on HTTPS:
-
-1.  Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
-2.  Move the `.key` and `.crt` files into `webpack_config/server.*`
-3.  Run the following command:
-
-```bash
-yarn dev:https
-```
-
 #### Address Derivation Checker:
 
 EthereumJS-Util previously contained a bug that would incorrectly derive addresses from private keys with a 1/128 probability of occurring. A summary of this issue can be found [here](https://www.reddit.com/r/ethereum/comments/48rt6n/using_myetherwalletcom_just_burned_me_for/d0m4c6l/).
