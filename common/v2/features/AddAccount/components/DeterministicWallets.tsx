@@ -24,7 +24,7 @@ function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable" src={checked ? radioChecked : radio} />;
 }
 
-const WALLETS_PER_PAGE = 5;
+const WALLETS_PER_PAGE = 8;
 
 interface OwnProps {
   dPath: DPath;
