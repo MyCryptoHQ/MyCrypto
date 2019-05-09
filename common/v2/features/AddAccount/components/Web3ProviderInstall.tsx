@@ -1,0 +1,81 @@
+import React, { PureComponent } from 'react';
+import styled from 'styled-components';
+
+import { Typography } from '@mycrypto/ui';
+import translate from 'translations';
+import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
+import { NewTabLink, HelpLink } from 'components/ui';
+import { IS_MOBILE } from '../flags';
+
+interface Props {
+  wallet: object;
+  onUnlock(): void;
+}
+
+function InstallTrunk({ wallet, onUnlock }: Props) {
+  return (
+    <div className="Panel">
+      <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>
+      <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC')}</div>
+      <div className="Panel-content">
+        <div>
+          <div className="Panel-content-img">
+            <img src={MetamaskSVG} />
+          </div>
+          <button className="btn btn-primary btn-lg btn-block" onClick={onUnlock}>
+            {translate('ADD_METAMASK')}
+          </button>
+        </div>
+      </div>
+      <div className="Panel-footer">
+        <div>
+          {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')}{' '}
+          <NewTabLink
+            content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
+            href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
+          />
+        </div>
+        <div>
+          <NewTabLink content={translate('ADD_ACCOUNT_METAMASK_HELP')} href={wallet.helpLink} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InstallMetaMask({ wallet, onUnlock }: Props) {
+  return (
+    <div className="Panel">
+      <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>
+      <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_DESC')}</div>
+      <div className="Panel-content">
+        <div>
+          <div className="Panel-content-img">
+            <img src={MetamaskSVG} />
+          </div>
+          <button className="btn btn-primary btn-lg btn-block" onClick={onUnlock}>
+            {translate('ADD_METAMASK')}
+          </button>
+        </div>
+      </div>
+      <div className="Panel-footer">
+        <div>
+          {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')}{' '}
+          <NewTabLink
+            content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
+            href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
+          />
+        </div>
+        <div>
+          <NewTabLink content={translate('ADD_ACCOUNT_METAMASK_HELP')} href={wallet.helpLink} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Web3ProviderInstall(props: Props) {
+  return <>{IS_MOBILE ? <InstallTrunk /> : <InstallMetaMask />}</>;
+}
+
+export default Web3ProviderInstall;

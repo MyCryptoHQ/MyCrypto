@@ -41,7 +41,7 @@ import {
   InsecureWalletWarning,
   ViewOnlyDecrypt
 } from './components';
-import './AddAccountStyles.scss';
+import './AddAccount.scss';
 import { Button, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
 import * as WalletActions from 'v2/features/Wallets';

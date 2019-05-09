@@ -71,7 +71,7 @@ interface Props {
     current: number;
     total: number;
   };
-  onBack(): void;
+  onBack?(): void | null;
 }
 
 export default function ContentPanel({
