@@ -333,47 +333,49 @@ const WalletDecrypt = withRouter<Props>(
       return (
         <div className="Panel">
           {/* Possibily use a ternary operator to determine which panels to render? */}
-          <div className="Panel-content">
-            <div className="Panel-title-connectDevice">
-              <div className="Title-Wallets">
-                {!selectedWallet.isReadOnly && translate('UNLOCK_WALLET')}
+          <ContentPanel onBack={this.props.history.goBack} className="">
+            <div className="Panel-content">
+              <div className="Panel-title-connectDevice">
+                <div className="Title-Wallets">
+                  {!selectedWallet.isReadOnly && translate('UNLOCK_WALLET')}
+                </div>
+                {!selectedWallet.isReadOnly && `Your ${translateRaw(selectedWallet.lid)}`}
               </div>
-              {!selectedWallet.isReadOnly && `Your ${translateRaw(selectedWallet.lid)}`}
-            </div>
-            <div className="WalletDecrypt-decrypt-form">
-              <Errorable
-                errorMessage={`Oops, looks like ${translateRaw(
-                  selectedWallet.lid
-                )} is not supported by your browser`}
-                onError={this.returnToSender}
-                shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
-              >
-                <selectedWallet.component
-                  value={this.state.value}
-                  onChange={this.onChange}
-                  onUnlock={(value: any) => {
-                    if (selectedWallet.redirect) {
-                      this.props.history.push(selectedWallet.redirect);
+              <div className="WalletDecrypt-decrypt-form">
+                <Errorable
+                  errorMessage={`Oops, looks like ${translateRaw(
+                    selectedWallet.lid
+                  )} is not supported by your browser`}
+                  onError={this.returnToSender}
+                  shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
+                >
+                  <selectedWallet.component
+                    value={this.state.value}
+                    onChange={this.onChange}
+                    onUnlock={(value: any) => {
+                      if (selectedWallet.redirect) {
+                        this.props.history.push(selectedWallet.redirect);
+                      }
+                      this.onUnlock(value);
+                    }}
+                    showNotification={this.props.showNotification}
+                    isWalletPending={
+                      this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                        ? this.props.isWalletPending
+                        : undefined
                     }
-                    this.onUnlock(value);
-                  }}
-                  showNotification={this.props.showNotification}
-                  isWalletPending={
-                    this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                      ? this.props.isWalletPending
-                      : undefined
-                  }
-                  isPasswordPending={
-                    this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                      ? this.props.isPasswordPending
-                      : undefined
-                  }
-                  seed={this.state.seed}
-                  onSeed={this.handleSeed}
-                />
-              </Errorable>
+                    isPasswordPending={
+                      this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                        ? this.props.isPasswordPending
+                        : undefined
+                    }
+                    seed={this.state.seed}
+                    onSeed={this.handleSeed}
+                  />
+                </Errorable>
+              </div>
             </div>
-          </div>
+          </ContentPanel>
         </div>
       );
     }
