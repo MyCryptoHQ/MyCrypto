@@ -40,6 +40,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
 
     return (
       <div className="ViewOnly">
+        <div className="ViewOnly-title"> Select or Input Your Address</div>
         <form className="form-group" onSubmit={this.handleSubmit}>
           <section className="ViewOnly-fields">
             <section className="ViewOnly-fields-field">

@@ -2,9 +2,22 @@
 @import 'common/sass/mixins';
 
 .ViewOnly {
+  width: 425px;
+  height: 600px;
+
+  &-title {
+    font-size: 32px;
+    font-weight: bold;
+  }
+  &-submit {
+    position: relative;
+    bottom: -4em;
+    width: 420px;
+  }
   &-fields {
     display: flex;
     flex-direction: column;
+    padding-top: 2em;
 
     &-field {
       display: flex;

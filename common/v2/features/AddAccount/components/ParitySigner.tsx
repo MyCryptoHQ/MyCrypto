@@ -35,7 +35,7 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
   public render() {
     return (
       <div className="ParitySigner">
-        <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div>
+        {/* <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div> */}
         <section className="ParitySigner-fields">
           <section className="ParitySigner-fields-field-margin">
             {translate('SIGNER_SELECT_WALLET_QR')}
@@ -46,14 +46,14 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
         </section>
         <p>{translate('ADD_PARITY_4', { $wiki_link: wikiLink })}</p>
         <p>{translate('ADD_PARITY_2')}</p>
-        <p>
+        <div className="ParitySigner-app-links">
           <NewTabLink href="https://itunes.apple.com/us/app/parity-signer/id1218174838">
             <img className="ParitySigner-badge" src={AppStoreBadge} alt="App Store" />
           </NewTabLink>
           <NewTabLink href="https://play.google.com/store/apps/details?id=com.nativesigner">
             <img className="ParitySigner-badge" src={GooglePlayBadge} alt="Google Play" />
           </NewTabLink>
-        </p>
+        </div>
       </div>
     );
   }

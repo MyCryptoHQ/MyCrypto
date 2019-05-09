@@ -11,6 +11,8 @@ import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWallets from './DeterministicWallets';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import { Tooltip } from '@mycrypto/ui';
+import questionToolTip from 'common/assets/images/icn-question.svg';
 import './Mnemonic.scss';
 
 interface OwnProps {
@@ -84,7 +86,15 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               />
             </div>
             <div className="form-group">
-              <label>{translate('ADD_LABEL_8')}</label>
+              <label className="Mnemonic-label">
+                {translate('ADD_LABEL_8')}
+                <div className="Mnemoinc-toolTip">
+                  {' '}
+                  <Tooltip tooltip={translate('MNEMONIC_TOOL_TIP')}>
+                    {props => <img src={questionToolTip} {...props} />}
+                  </Tooltip>
+                </div>
+              </label>
               <Input
                 isValid={true}
                 showValidAsPlain={true}

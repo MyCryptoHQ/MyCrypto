@@ -42,9 +42,8 @@ import {
   ViewOnlyDecrypt
 } from './components';
 import './AddAccountStyles.scss';
-import { Button, Typography, ComboBox } from '@mycrypto/ui';
+import { Button, ComboBox } from '@mycrypto/ui';
 import { Layout } from 'v2/features';
-import backArrow from 'common/assets/images/icn-back-arrow.svg';
 import * as WalletActions from 'v2/features/Wallets';
 
 import { NetworkOptionsContext, AccountContext } from 'v2/providers';
@@ -52,6 +51,7 @@ import { Account } from 'v2/services/Account/types';
 import { Web3Decrypt } from 'components/WalletDecrypt/components/Web3';
 import { getNetworkByName } from 'v2/libs';
 import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { ContentPanel } from 'v2/components';
 
 interface OwnProps {
   hidden?: boolean;
@@ -332,56 +332,49 @@ const WalletDecrypt = withRouter<Props>(
 
       return (
         <div className="Panel">
-          <div className="Panel-top">
-            <Button basic={true} onClick={this.returnToSender}>
-              <Typography>
-                {' '}
-                <img src={backArrow} />
-                {translate('CHANGE_WALLET')}
-              </Typography>
-            </Button>
-          </div>
-          <div className="Panel-content">
-            <div className="Panel-title-connectDevice">
-              {!(selectedWallet.isReadOnly || selectedWallet.lid === 'X_PARITYSIGNER') &&
-                translate('UNLOCK_WALLET', {
-                  $wallet: translateRaw(selectedWallet.lid)
-                })}
-            </div>
-            <div className="WalletDecrypt-decrypt-form">
-              <Errorable
-                errorMessage={`Oops, looks like ${translateRaw(
-                  selectedWallet.lid
-                )} is not supported by your browser`}
-                onError={this.returnToSender}
-                shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
-              >
-                <selectedWallet.component
-                  value={this.state.value}
-                  onChange={this.onChange}
-                  onUnlock={(value: any) => {
-                    if (selectedWallet.redirect) {
-                      this.props.history.push(selectedWallet.redirect);
+          <ContentPanel onBack={this.props.history.goBack} className="">
+            <div className="Panel-content">
+              <div className="Panel-title-connectDevice">
+                <div className="Title-Wallets">
+                  {!selectedWallet.isReadOnly && translate('UNLOCK_WALLET')}
+                </div>
+                {!selectedWallet.isReadOnly && `Your ${translateRaw(selectedWallet.lid)}`}
+              </div>
+              <div className="WalletDecrypt-decrypt-form">
+                <Errorable
+                  errorMessage={`Oops, looks like ${translateRaw(
+                    selectedWallet.lid
+                  )} is not supported by your browser`}
+                  onError={this.returnToSender}
+                  shouldCatch={selectedWallet.lid === this.WALLETS.paritySigner.lid}
+                >
+                  <selectedWallet.component
+                    value={this.state.value}
+                    onChange={this.onChange}
+                    onUnlock={(value: any) => {
+                      if (selectedWallet.redirect) {
+                        this.props.history.push(selectedWallet.redirect);
+                      }
+                      this.onUnlock(value);
+                    }}
+                    showNotification={this.props.showNotification}
+                    isWalletPending={
+                      this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                        ? this.props.isWalletPending
+                        : undefined
                     }
-                    this.onUnlock(value);
-                  }}
-                  showNotification={this.props.showNotification}
-                  isWalletPending={
-                    this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                      ? this.props.isWalletPending
-                      : undefined
-                  }
-                  isPasswordPending={
-                    this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
-                      ? this.props.isPasswordPending
-                      : undefined
-                  }
-                  seed={this.state.seed}
-                  onSeed={this.handleSeed}
-                />
-              </Errorable>
+                    isPasswordPending={
+                      this.state.selectedWalletKey === InsecureWalletName.KEYSTORE_FILE
+                        ? this.props.isPasswordPending
+                        : undefined
+                    }
+                    seed={this.state.seed}
+                    onSeed={this.handleSeed}
+                  />
+                </Errorable>
+              </div>
             </div>
-          </div>
+          </ContentPanel>
         </div>
       );
     }
@@ -401,80 +394,83 @@ const WalletDecrypt = withRouter<Props>(
               <Warning>{accessMessage}</Warning>
             </div>
           )}
-          <div className="WalletDecrypt-wallets-row">
-            {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
-              const wallet = this.WALLETS[walletType];
-              return (
-                <WalletButton
-                  key={walletType}
-                  name={translateRaw(wallet.lid)}
-                  //description={translateRaw(wallet.description)}
-                  icon={wallet.icon}
-                  //helpLink={wallet.helpLink}
-                  walletType={walletType}
-                  //isSecure={true}
-                  isDisabled={this.isWalletDisabled(walletType)}
-                  disableReason={reasons[walletType]}
-                  onClick={this.handleWalletChoice}
-                />
-              );
-            })}
-          </div>
-          <div className="WalletDecrypt-wallets-row">
-            {SECURE_WALLETS.map((walletType: SecureWalletName) => {
-              const wallet = this.WALLETS[walletType];
-              return (
-                <WalletButton
-                  key={walletType}
-                  name={translateRaw(wallet.lid)}
-                  //description={translateRaw(wallet.description)}
-                  icon={wallet.icon}
-                  //helpLink={wallet.helpLink}
-                  walletType={walletType}
-                  //isSecure={true}
-                  isDisabled={this.isWalletDisabled(walletType)}
-                  disableReason={reasons[walletType]}
-                  onClick={this.handleWalletChoice}
-                />
-              );
-            })}
-            {MISC_WALLETS.map((walletType: MiscWalletName) => {
-              const wallet = this.WALLETS[walletType];
-              return (
-                <WalletButton
-                  key={walletType}
-                  name={translateRaw(wallet.lid)}
-                  //description={translateRaw(wallet.description)}
-                  //helpLink={wallet.helpLink}
-                  walletType={walletType}
-                  //isReadOnly={true}
-                  //isSecure={true}
-                  isDisabled={this.isWalletDisabled(walletType)}
-                  disableReason={reasons[walletType]}
-                  onClick={this.handleWalletChoice}
-                />
-              );
-            })}
+          <div className="WalletDecrypt-container">
+            <div className="WalletDecrypt-wallets-row">
+              {HARDWARE_WALLETS.map((walletType: SecureWalletName) => {
+                const wallet = this.WALLETS[walletType];
+                return (
+                  <WalletButton
+                    key={walletType}
+                    name={translateRaw(wallet.lid)}
+                    //description={translateRaw(wallet.description)}
+                    icon={wallet.icon}
+                    //helpLink={wallet.helpLink}
+                    walletType={walletType}
+                    //isSecure={true}
+                    isDisabled={this.isWalletDisabled(walletType)}
+                    disableReason={reasons[walletType]}
+                    onClick={this.handleWalletChoice}
+                  />
+                );
+              })}
+            </div>
+            <div className="WalletDecrypt-wallets-row">
+              {SECURE_WALLETS.map((walletType: SecureWalletName) => {
+                const wallet = this.WALLETS[walletType];
+                return (
+                  <WalletButton
+                    key={walletType}
+                    name={translateRaw(wallet.lid)}
+                    //description={translateRaw(wallet.description)}
+                    icon={wallet.icon}
+                    //helpLink={wallet.helpLink}
+                    walletType={walletType}
+                    //isSecure={true}
+                    isDisabled={this.isWalletDisabled(walletType)}
+                    disableReason={reasons[walletType]}
+                    onClick={this.handleWalletChoice}
+                  />
+                );
+              })}
+              {MISC_WALLETS.map((walletType: MiscWalletName) => {
+                const wallet = this.WALLETS[walletType];
+                return (
+                  <WalletButton
+                    key={walletType}
+                    name={translateRaw(wallet.lid)}
+                    //description={translateRaw(wallet.description)}
+                    //helpLink={wallet.helpLink}
+                    walletType={walletType}
+                    //isReadOnly={true}
+                    //isSecure={true}
+                    isDisabled={this.isWalletDisabled(walletType)}
+                    disableReason={reasons[walletType]}
+                    onClick={this.handleWalletChoice}
+                  />
+                );
+              })}
+            </div>
+
+            <div className="WalletDecrypt-wallets-row">
+              {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
+                const wallet = this.WALLETS[walletType];
+                return (
+                  <WalletButton
+                    key={walletType}
+                    name={translateRaw(wallet.lid)}
+                    example={wallet.example}
+                    //helpLink={wallet.helpLink}
+                    walletType={walletType}
+                    //isSecure={false}
+                    isDisabled={this.isWalletDisabled(walletType)}
+                    disableReason={reasons[walletType]}
+                    onClick={this.handleWalletChoice}
+                  />
+                );
+              })}
+            </div>
           </div>
 
-          <div className="WalletDecrypt-wallets-row">
-            {INSECURE_WALLETS.map((walletType: InsecureWalletName) => {
-              const wallet = this.WALLETS[walletType];
-              return (
-                <WalletButton
-                  key={walletType}
-                  name={translateRaw(wallet.lid)}
-                  example={wallet.example}
-                  //helpLink={wallet.helpLink}
-                  walletType={walletType}
-                  //isSecure={false}
-                  isDisabled={this.isWalletDisabled(walletType)}
-                  disableReason={reasons[walletType]}
-                  onClick={this.handleWalletChoice}
-                />
-              );
-            })}
-          </div>
           <div className="WalletDecrypt-info">{translate('ADD_ACCOUNT_FOOTER_LINK')}</div>
         </div>
       );
@@ -482,21 +478,10 @@ const WalletDecrypt = withRouter<Props>(
 
     public selectNetworkComponent() {
       return (
-        <div className="Panel">
-          <div className="SelectNetworkPanel-top">
-            <Button basic={true} onClick={this.returnToSender}>
-              <Typography>
-                {' '}
-                <img src={backArrow} />
-                {translate('CHANGE_WALLET')}
-              </Typography>
-            </Button>
-          </div>
-          <div className="Panel-content">
+        <ContentPanel onBack={this.props.history.goBack} className="">
+          <div className="Panel">
             <div className="Panel-title">Select Network</div>
-
             <div className="Panel-description">{translate('ADD_ACCOUNT_NETWORK_SELCT')}</div>
-
             <label className="Panel-networkLabel">Network</label>
             <NetworkOptionsContext.Consumer>
               {({ networkOptions = [] }) => {
@@ -521,7 +506,7 @@ const WalletDecrypt = withRouter<Props>(
               Next
             </Button>
           </div>
-        </div>
+        </ContentPanel>
       );
     }
 

@@ -3,6 +3,9 @@
 
 $speed: 500ms;
 
+.Title-Wallets {
+  position: relative;
+}
 @keyframes decrypt-enter {
   0% {
     opacity: 0;
@@ -25,23 +28,24 @@ $speed: 500ms;
 }
 
 .Panel {
-  width: 562px;
-  min-height: 790px;
+  min-height: 629px;
   // display: flex;
   // flex-direction: column;
   position: relative;
+  padding: 2.5em;
   &-top {
     display: flex;
   }
+
   &-content {
-    min-height: 629px;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
-    background-color: #ffffff;
-    padding-top: 40px;
-    padding-left: 70px;
-    padding-right: 70px;
-    position: relative;
+    margin: 2em;
+  }
+  &-back {
+    width: 150px;
+    height: 29px;
+    font-family: Lato;
+    font-size: 20px;
+    font-weight: bold;
   }
   &-title {
     height: 39px;
@@ -79,8 +83,8 @@ $speed: 500ms;
     text-align: center;
     &-button {
       position: absolute;
-      bottom: 2em;
-      width: calc(100% - 140px);
+      bottom: 1em;
+      width: 420px;
     }
   }
   &-networkLabel {
@@ -107,6 +111,16 @@ $speed: 500ms;
   @media (max-width: $screen-md) {
     width: 375px;
     height: 769px;
+  }
+
+  &-container {
+    // display: flex;
+
+    @media (max-width: 700px) {
+      width: 375px;
+      height: 769px;
+      // flex-wrap: wrap;
+    }
   }
 
   &-connectWallet {

@@ -31,7 +31,7 @@
   animation: wallet-button-enter 400ms ease 1;
   animation-fill-mode: backwards;
 
-  @media screen and (max-width: 700px) {
+  @media only screen and (max-width: 700px) {
     height: 159.7px;
     max-width: 159.7px;
     min-width: 159.7px;

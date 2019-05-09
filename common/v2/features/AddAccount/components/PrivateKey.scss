@@ -6,14 +6,13 @@
     margin: 4em;
   }
   &-label {
-    width: 110px;
     height: 18px;
     font-family: Lato;
     font-size: 15px;
+    margin-bottom: 10px;
   }
   &-help {
-    display: flex;
-    justify-content: center;
+    text-align: center;
     margin-top: 2rem;
   }
 }

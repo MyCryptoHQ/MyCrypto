@@ -4,11 +4,13 @@
   position: relative;
   justify-content: center;
   text-align: center;
+
+  &-app-links {
+    margin: 1em;
+  }
   &-badge {
     display: inline-block;
-    height: 3em;
     margin: 0 0.4em;
-    margin-bottom: 2em;
   }
   &-fields {
     display: flex;
@@ -22,6 +24,7 @@
       flex: 1;
 
       &-margin {
+        margin-top: calc(1rem + 15px);
         margin-bottom: calc(1rem + 15px);
         font-size: 1.2rem;
       }

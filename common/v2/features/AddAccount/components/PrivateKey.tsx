@@ -95,7 +95,9 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
             {translate('ADD_LABEL_6_SHORT')}
           </button>
         </form>
-        <div className="PrivateKey-help">{translate('PRIVATE_KEY_HELP')}</div>
+        <div className="PrivateKey-help">
+          <div>{translate('PRIVATE_KEY_HELP')}</div>
+        </div>
       </div>
     );
   }

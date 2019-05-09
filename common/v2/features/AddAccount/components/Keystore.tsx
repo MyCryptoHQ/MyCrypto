@@ -52,7 +52,6 @@ export class KeystoreDecrypt extends PureComponent {
             <div className="Keystore-img">
               <img src={PrivateKeyicon} />
             </div>
-
             <input
               className="hidden"
               type="file"
@@ -82,7 +81,6 @@ export class KeystoreDecrypt extends PureComponent {
               type="password"
             />
           </div>
-
           <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
             {translate('ADD_LABEL_6_SHORT')}
           </button>

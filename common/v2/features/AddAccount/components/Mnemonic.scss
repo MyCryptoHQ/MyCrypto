@@ -7,9 +7,17 @@
     margin: 3em;
   }
   &-help {
-    display: flex;
     justify-content: center;
+    text-align: center;
     margin-top: 2rem;
-    padding-bottom: 2em;
+  }
+
+  &-label {
+    display: flex;
+    height: 22px;
+  }
+
+  &-toolTip {
+    float: right;
   }
 }
