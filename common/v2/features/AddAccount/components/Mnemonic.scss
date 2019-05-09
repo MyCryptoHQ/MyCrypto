@@ -17,7 +17,12 @@
     height: 22px;
   }
 
-  &-toolTip {
+  &-tool-tip {
     float: right;
+    margin-left: 5px;
   }
+}
+
+.Tool-tip-img {
+  padding-left: 5px;
 }

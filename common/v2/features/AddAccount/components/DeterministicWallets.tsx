@@ -138,7 +138,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         <div className="DW-addresses-nav">
           <img src={prevIcon} onClick={this.prevPage} />
           <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
-          <img src={nextIcon} onClick={this.nextPage} />
+          <img className="Identicon-img" src={nextIcon} onClick={this.nextPage} />
 
           <Button onClick={onCancel} secondary={true}>
             {translate('ACTION_2')}
