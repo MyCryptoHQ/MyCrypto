@@ -1,38 +1,15 @@
 import React, { Component, createContext } from 'react';
+import moment from 'moment';
 
 import * as service from 'v2/services/Notifications/Notifications';
-import {
-  ExtendedNotification,
-  Notification,
-  NotificationOptions,
-  NotificationTemplates
-} from 'v2/services/Notifications';
+import { ExtendedNotification, Notification } from 'v2/services/Notifications';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-
-const {
-  walletCreated,
-  walletAdded,
-  saveSettings,
-  printPaperWallet,
-  getHardwareWallet
-} = NotificationTemplates;
-
-interface NotificationsStringsProps {
-  [key: string]: string;
-}
-
-const notificationsStrings: NotificationsStringsProps = {
-  [walletCreated]: 'New Account (Wallet) Created',
-  [walletAdded]: 'New Account (Wallet) Added',
-  [saveSettings]: 'Save Your Dashboard Settings',
-  [printPaperWallet]: 'Print Your Paper Wallet',
-  [getHardwareWallet]: 'Get a Hardware Wallet'
-};
+import { notificationsConfigs } from './constants';
 
 export interface ProviderState {
   currentNotification: ExtendedNotification | undefined;
   notifications: ExtendedNotification[];
-  createNotification(templateName: string, options?: NotificationOptions): void;
+  displayNotification(templateName: string, templateData?: object): void;
   dismissCurrentNotification(): void;
 }
 
@@ -42,42 +19,35 @@ export class NotificationsProvider extends Component {
   public state: ProviderState = {
     currentNotification: undefined,
     notifications: service.readAllNotifications() || [],
-    createNotification: (templateName: NotificationTemplates, options?: NotificationOptions) =>
-      this.createNotification(templateName, options),
+    displayNotification: (templateName: string, templateData?: object) =>
+      this.displayNotification(templateName, templateData),
     dismissCurrentNotification: () => this.dismissCurrentNotification()
   };
 
-  public createNotification = (
-    templateName: NotificationTemplates,
-    options?: NotificationOptions
-  ) => {
-    // Dismiss old notifications that need to be dismissed
+  public componentDidMount() {
+    this.refreshNotifications();
+    this.getNotifications();
+  }
+
+  public displayNotification = (templateName: string, templateData?: object) => {
+    // Dismiss previous notifications that need to be dismissed
     const notificationsToDismiss = this.state.notifications.filter(
-      x => x.options.dismissOnOverwrite === true && x.dismissed === false
+      x => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed
     );
     notificationsToDismiss.forEach(dismissableNotification => {
       this.dismissNotification(dismissableNotification);
     });
 
-    // Apply notification options
-    const defaultNotificationOptions: NotificationOptions = {
-      showOneTime: false,
-      dismissOnOverwrite: true,
-      repeating: false,
-      templateData: {}
-    };
-    const notificationOptions = Object.assign(defaultNotificationOptions, options);
-
     // Create the notification object
     const notification: Notification = {
       template: templateName,
-      options: notificationOptions,
+      templateData,
       dateDisplayed: new Date(),
       dismissed: false,
       dateDismissed: undefined
     };
 
-    // If notification already exists update it, otherwise create a new one
+    // If notification with this template already exists update it, otherwise create a new one
     const existingNotification = this.state.notifications.find(
       x => x.template === notification.template
     );
@@ -88,9 +58,8 @@ export class NotificationsProvider extends Component {
       service.createNotification(notification);
     }
 
-    // track notification displayed event
-    this.trackNotificationDisplayed(notificationsStrings[templateName]);
-
+    // Track notification displayed event
+    this.trackNotificationDisplayed(notificationsConfigs[templateName].analyticsEvent);
     this.getNotifications();
   };
 
@@ -100,6 +69,38 @@ export class NotificationsProvider extends Component {
       this.dismissNotification(notification);
       this.getNotifications();
     }
+  };
+
+  public refreshNotifications = () => {
+    this.state.notifications.forEach(notification => {
+      const notificationConfig = notificationsConfigs[notification.template];
+
+      // Dismiss one-time notifications
+      if (notificationConfig.showOneTime) {
+        this.dismissNotification(notification);
+        return;
+      }
+
+      // Check conditions for repeating and non-repeating notifications, show notification if needed
+      const shouldShowRepeatingNotification =
+        notificationConfig.repeatInterval &&
+        notification.dismissed &&
+        notificationConfig.repeatInterval <=
+          moment.duration(moment(new Date()).diff(moment(notification.dateDismissed))).asSeconds();
+
+      const isNonrepeatingNotification =
+        !notificationConfig.repeatInterval && !notification.dismissed;
+
+      // Return if there is a condition and it is not met
+      if (shouldShowRepeatingNotification || isNonrepeatingNotification) {
+        if (notificationConfig.condition !== undefined && !notificationConfig.condition()) {
+          return;
+        }
+        notification.dismissed = false;
+        notification.dateDisplayed = new Date();
+        service.updateNotification(notification.uuid, notification);
+      }
+    });
   };
 
   public dismissNotification = (notification: ExtendedNotification) => {
