@@ -1,27 +1,35 @@
+const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const { spawn } = require('child_process');
+
 const LogPlugin = require('./plugins/serverLog');
+const ClearDistPlugin = require('./plugins/clearDist');
+
 // @TODO: replace these definitions by a simple
 // webpack.common.js import
 const makeConfig = require('./makeConfig');
 const projectConfig = require('./config');
 const devConfig = makeConfig({
   isProduction: false,
-  isElectronBuild: !!process.env.BUILD_ELECTRON
+  isElectronBuild: true
 });
+const HTTP_PORT = 3000;
 
-const HTTPS_PORT = 3443;
-// Take the common config and adapt it for dev purposes
-const rhlConfig = merge.smartStrategy({
-  'module.rules.use': 'replace'
+// Transpile the files that are needed by the electron renderer
+// process and watch their changes.
+const electronRendererConfig = merge.smartStrategy({
+  'module.rules.use': 'replace',
 })(devConfig, {
+  mode: 'development',
+  devtool: 'eval',
   devServer: {
-    contentBase: projectConfig.path.output,
+    contentBase: path.resolve(projectConfig.path.output),
     historyApiFallback: true,
-    progress: true,
+    progress: false,
     hot: true,
-    https: true,
-    port: HTTPS_PORT,
+    https: false,
+    port: HTTP_PORT,
     noInfo: true,               // Silence bundle information
     clientLogLevel: 'warning',  // Silence [WDS] && [HMR] output in console
     headers: {
@@ -39,7 +47,7 @@ const rhlConfig = merge.smartStrategy({
         test: /\.(ts|tsx)$/,
         include: [
           projectConfig.path.src,
-          projectConfig.path.shared
+          projectConfig.path.shared,
         ],
         use: [{
           loader: 'babel-loader',
@@ -48,20 +56,25 @@ const rhlConfig = merge.smartStrategy({
             cacheCompression: false,
           }
         }],
-      }
+      },
     ],
   },
 
   resolve: {
     // Allow react ^16.3 features with RHL
     // https://github.com/gaearon/react-hot-loader/issues/1227#issuecomment-482514844
-    alias: { 'react-dom': '@hot-loader/react-dom' }
+    // @TODO: move too shared config to share with electron.
+    alias: { 'react-dom': '@hot-loader/react-dom' },
   },
 
   plugins: [
+    new ClearDistPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new LogPlugin(HTTPS_PORT),
+    new LogPlugin(HTTP_PORT),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development')
+    })
   ]
 })
 
-module.exports = rhlConfig;
+module.exports = electronRendererConfig;
