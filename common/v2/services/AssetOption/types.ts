@@ -4,7 +4,7 @@ export interface AssetOption {
   ticker: string;
   type: assetType;
   decimal: number;
-  contractAddress: null;
+  contractAddress: string | null;
 }
 
 export interface ExtendedAssetOption extends AssetOption {
