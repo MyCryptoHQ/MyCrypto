@@ -42,7 +42,7 @@ class NotificationsPanel extends Component {
                 <CloseButton basic={true} onClick={dismissCurrentNotification}>
                   <img src={closeIcon} alt="Close" />
                 </CloseButton>
-                {this.getNotification(currentNotification)}
+                {this.getNotificationBody(currentNotification)}
               </MainPanel>
             )}
           </React.Fragment>
@@ -51,7 +51,7 @@ class NotificationsPanel extends Component {
     );
   }
 
-  private getNotification(currentNotification: Notification) {
+  private getNotificationBody(currentNotification: Notification) {
     const template = currentNotification.template;
     const templateData = currentNotification.templateData;
     const NotificationComponent = notificationsConfigs[template].layout;

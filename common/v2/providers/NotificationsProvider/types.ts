@@ -3,6 +3,7 @@ export interface NotificationConfig {
   showOneTime: boolean;
   dismissOnOverwrite: boolean;
   layout: any;
+  dismissForever?: boolean;
   repeatInterval?: number;
   condition?(): boolean;
 }

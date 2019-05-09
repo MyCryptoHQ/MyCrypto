@@ -25,11 +25,18 @@ export class NotificationsProvider extends Component {
   };
 
   public componentDidMount() {
-    this.refreshNotifications();
+    this.checkConditions();
     this.getNotifications();
   }
 
-  public displayNotification = (templateName: string, templateData?: object) => {
+  public render() {
+    const { children } = this.props;
+    return (
+      <NotificationsContext.Provider value={this.state}>{children}</NotificationsContext.Provider>
+    );
+  }
+
+  private displayNotification = (templateName: string, templateData?: object) => {
     // Dismiss previous notifications that need to be dismissed
     const notificationsToDismiss = this.state.notifications.filter(
       x => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed
@@ -53,6 +60,16 @@ export class NotificationsProvider extends Component {
     );
 
     if (existingNotification) {
+      /* Prevent displaying  notifications that have been dismissed forever and repeating notifications
+         before their waiting period is over.*/
+      if (
+        notificationsConfigs[templateName].repeatInterval ||
+        notificationsConfigs[templateName].dismissForever
+      ) {
+        notification.dismissed = existingNotification.dismissed;
+        notification.dateDismissed = existingNotification.dateDismissed;
+      }
+
       service.updateNotification(existingNotification.uuid, notification);
     } else {
       service.createNotification(notification);
@@ -63,7 +80,7 @@ export class NotificationsProvider extends Component {
     this.getNotifications();
   };
 
-  public dismissCurrentNotification = () => {
+  private dismissCurrentNotification = () => {
     const notification = this.state.currentNotification;
     if (notification) {
       this.dismissNotification(notification);
@@ -71,7 +88,13 @@ export class NotificationsProvider extends Component {
     }
   };
 
-  public refreshNotifications = () => {
+  private dismissNotification = (notification: ExtendedNotification) => {
+    notification.dismissed = true;
+    notification.dateDismissed = new Date();
+    service.updateNotification(notification.uuid, notification);
+  };
+
+  private checkConditions = () => {
     this.state.notifications.forEach(notification => {
       const notificationConfig = notificationsConfigs[notification.template];
 
@@ -93,7 +116,7 @@ export class NotificationsProvider extends Component {
 
       // Return if there is a condition and it is not met
       if (shouldShowRepeatingNotification || isNonrepeatingNotification) {
-        if (notificationConfig.condition !== undefined && !notificationConfig.condition()) {
+        if (notificationConfig.condition && !notificationConfig.condition()) {
           return;
         }
         notification.dismissed = false;
@@ -103,19 +126,6 @@ export class NotificationsProvider extends Component {
     });
   };
 
-  public dismissNotification = (notification: ExtendedNotification) => {
-    notification.dismissed = true;
-    notification.dateDismissed = new Date();
-    service.updateNotification(notification.uuid, notification);
-  };
-
-  public render() {
-    const { children } = this.props;
-    return (
-      <NotificationsContext.Provider value={this.state}>{children}</NotificationsContext.Provider>
-    );
-  }
-
   private getNotifications = () => {
     const notifications: ExtendedNotification[] = service.readAllNotifications() || [];
 
@@ -123,7 +133,13 @@ export class NotificationsProvider extends Component {
     const sortedNotifications = notifications.sort((a, b) => {
       return new Date(a.dateDisplayed).getTime() - new Date(b.dateDisplayed).getTime();
     });
-    const visibleNotifications = sortedNotifications.filter(x => !x.dismissed);
+    const visibleNotifications = sortedNotifications.filter(
+      x =>
+        !x.dismissed &&
+        (notificationsConfigs[x.template].condition
+          ? notificationsConfigs[x.template].condition!()
+          : true)
+    );
 
     this.setState({ currentNotification: visibleNotifications[visibleNotifications.length - 1] });
   };

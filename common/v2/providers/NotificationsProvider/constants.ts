@@ -34,6 +34,7 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     layout: SaveDashboardNotification,
     showOneTime: false,
     dismissOnOverwrite: false,
+    repeatInterval: 60,
     condition: saveSettingsCheck
   },
   [NotificationTemplates.printPaperWallet]: {
@@ -49,7 +50,7 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     layout: GetHardwareWalletNotification,
     showOneTime: false,
     dismissOnOverwrite: false,
-    repeatInterval: 60,
+    dismissForever: true,
     condition: getHardwareWalletCheck
   }
 };
