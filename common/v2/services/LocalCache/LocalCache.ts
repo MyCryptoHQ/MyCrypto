@@ -104,7 +104,7 @@ export const initNetworkOptions = () => {
       blockExplorer: {},
       tokenExplorer: {},
       tokens: {},
-      dPathFormats: {},
+      dPathFormats: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
       gasPriceSettings: STATIC_NETWORKS_INITIAL_STATE[en].gasPriceSettings,
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };

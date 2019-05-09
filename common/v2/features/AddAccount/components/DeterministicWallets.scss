@@ -69,12 +69,7 @@
 
       &-address-select {
         display: flex;
-        align-items: center;
-
-        input[type='radio'] {
-          margin-top: 0;
-          margin-left: 0.5rem;
-        }
+        justify-content: space-between;
       }
 
       &-more {
@@ -119,4 +114,7 @@
 .Identicon-img {
   width: 30px;
   height: 30.6px;
+}
+.clickable {
+  cursor: pointer;
 }

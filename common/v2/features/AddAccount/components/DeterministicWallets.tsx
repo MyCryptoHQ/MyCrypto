@@ -17,6 +17,12 @@ import './DeterministicWallets.scss';
 import { truncate } from 'v2/libs';
 import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
+import radio from 'assets/images/radio.svg';
+import radioChecked from 'assets/images/radio-checked.svg';
+
+function Radio({ checked }: { checked: boolean }) {
+  return <img className="clickable" src={checked ? radioChecked : radio} />;
+}
 
 const WALLETS_PER_PAGE = 5;
 
@@ -244,14 +250,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     return [
       <div className="DW-addresses-table-address-select">
         {wallet.index + 1}
-        <input
-          type="radio"
-          name="selectedAddress"
-          checked={selectedAddress === wallet.address}
-          value={wallet.address}
-          readOnly={true}
-          onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
-        />
+        <Radio checked={selectedAddress === wallet.address} />
       </div>,
       <Address title={label} address={wallet.address} truncate={truncate} />,
       <UnitDisplay
@@ -261,10 +260,22 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         displayShortBalance={true}
         checkOffline={true}
       />,
-      <a target="_blank" href={blockExplorer.addressUrl(wallet.address)} rel="noopener noreferrer">
+      <a
+        target="_blank"
+        href={blockExplorer.addressUrl(wallet.address)}
+        rel="noopener noreferrer"
+        onClick={event => event.stopPropagation()}
+      >
         <i className="DW-addresses-table-more" />
       </a>
-    ];
+    ].map(element => (
+      <div
+        className="clickable"
+        onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
+      >
+        {element}
+      </div>
+    ));
     // tslint:enable:jsx-key
   }
 }
