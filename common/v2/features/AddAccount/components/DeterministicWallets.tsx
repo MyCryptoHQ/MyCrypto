@@ -21,7 +21,7 @@ import radio from 'assets/images/radio.svg';
 import radioChecked from 'assets/images/radio-checked.svg';
 
 function Radio({ checked }: { checked: boolean }) {
-  return <img className="clickable" src={checked ? radioChecked : radio} />;
+  return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
 }
 
 const WALLETS_PER_PAGE = 8;
