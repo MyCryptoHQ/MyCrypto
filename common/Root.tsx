@@ -1,3 +1,5 @@
+import { hot } from 'react-hot-loader/root';
+import { setConfig } from 'react-hot-loader';
 import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
@@ -274,6 +276,11 @@ const mapStateToProps = (state: AppState): StateProps => ({
   theme: configMetaSelectors.getTheme(state)
 });
 
-export default connect(mapStateToProps, {
+const ConnectedRoot = connect(mapStateToProps, {
   setUnitMeta: transactionMetaActions.setUnitMeta
 })(RootClass);
+
+// Silence RHL 'reconciliation failed' errors
+// https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021
+setConfig({ logLevel: 'no-errors-please' });
+export default hot(ConnectedRoot);
