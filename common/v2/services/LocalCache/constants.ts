@@ -4,7 +4,7 @@ export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 
 export interface LocalCache {
-  currents: Partial<serviceTypes.Currents>;
+  currents: serviceTypes.Currents;
   globalSettings: Partial<serviceTypes.GlobalSettings>;
   recentAccounts: string[];
   accounts: Record<string, serviceTypes.Account>;
@@ -26,7 +26,7 @@ export interface LocalCache {
 
 export const CACHE_INIT_DEV: LocalCache = {
   currents: {
-    account: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
+    accounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
     fiatCurrency: 'USD',
     activeWallet: 'all'
   },
@@ -195,7 +195,9 @@ export const CACHE_INIT_DEV: LocalCache = {
 
 export const CACHE_INIT: LocalCache = {
   // : LocalCache
-  currents: {},
+  currents: {
+    accounts: []
+  },
   recentAccounts: [],
   globalSettings: {},
   accounts: {},
