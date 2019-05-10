@@ -29,8 +29,6 @@ const DevTools = () => {
           <DevToolsContainer>
             <Panel>
               <ToolsNotifications />
-            </Panel>
-            <Panel>
               <ToolsAccountList accounts={accounts} deleteAccount={deleteAccount} />
               <div className="Settings-heading">Enter a new Account</div>
               <Formik

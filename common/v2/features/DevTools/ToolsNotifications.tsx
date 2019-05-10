@@ -7,7 +7,10 @@ const ToolWrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  width: 200px;
+  width: 100%;
+  backround: white;
+  padding: 8px;
+  border: 1px solid silver;
 `;
 
 const ToolsNotifications = () => {
