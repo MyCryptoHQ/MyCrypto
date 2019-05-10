@@ -1,8 +1,8 @@
 export interface NotificationConfig {
   analyticsEvent: string;
-  showOneTime: boolean;
-  dismissOnOverwrite: boolean;
   layout: any;
+  showOneTime?: boolean;
+  dismissOnOverwrite?: boolean;
   dismissForever?: boolean;
   repeatInterval?: number;
   condition?(): boolean;

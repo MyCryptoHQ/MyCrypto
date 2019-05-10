@@ -32,24 +32,18 @@ export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.saveSettings]: {
     analyticsEvent: 'Save Your Dashboard Settings',
     layout: SaveDashboardNotification,
-    showOneTime: false,
-    dismissOnOverwrite: false,
     repeatInterval: 60,
     condition: saveSettingsCheck
   },
   [NotificationTemplates.printPaperWallet]: {
     analyticsEvent: 'Print Your Paper Wallet',
     layout: PrintPaperWalletNotification,
-    showOneTime: false,
-    dismissOnOverwrite: false,
     repeatInterval: 60,
     condition: printPaperWalletCheck
   },
   [NotificationTemplates.getHardwareWallet]: {
     analyticsEvent: 'Get a Hardware Wallet',
     layout: GetHardwareWalletNotification,
-    showOneTime: false,
-    dismissOnOverwrite: false,
     dismissForever: true,
     condition: getHardwareWalletCheck
   }
