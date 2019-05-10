@@ -16,13 +16,12 @@ import {
   AccountContext,
   TransactionHistoryContext,
   TransactionContext,
-  AddressMetadataContext,
-  NotificationsProvider
+  AddressMetadataContext
 } from 'v2/providers';
 
 export default function Dashboard() {
   return (
-    <NotificationsProvider>
+    <>
       {/* MOBILE */}
       <AccountContext.Consumer>
         {({ accounts, deleteAccount }) => (
@@ -126,6 +125,6 @@ export default function Dashboard() {
           </Layout>
         )}
       </AccountContext.Consumer>
-    </NotificationsProvider>
+    </>
   );
 }
