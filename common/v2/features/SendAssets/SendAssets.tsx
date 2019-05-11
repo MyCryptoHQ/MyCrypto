@@ -1,14 +1,18 @@
-import React, { Component } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-
-import { ContentPanel } from 'v2/components';
-import { Layout } from 'v2/features';
-import { headings, steps } from './constants';
-
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
+import React, { Component } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { isAdvancedQueryTransaction } from 'utils/helpers';
+import { ContentPanel } from 'v2/components';
+import { Layout } from 'v2/features';
 import { AssetOption, assetType } from 'v2/services/AssetOption/types';
+import {
+  createConfirmTransactionComponent,
+  createSendAssetsForm,
+  createTransactionReceipt,
+  SignTransaction
+} from './components';
+import { headings, steps } from './constants';
 
 export interface TransactionFields {
   asset: string;
@@ -104,8 +108,26 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
     const backOptions = [history.goBack, this.regressStep];
     // Step 3, ConfirmTransaction, cannot go back (as backOptions[2] is undefined)
     const onBack = backOptions[step];
-    const Step = steps[step];
 
+    const SendAssetsForm = createSendAssetsForm({
+      transactionFields: this.state.transactionFields,
+      onNext: this.advanceStep,
+      updateState: this.updateState,
+      onSubmit: this.updateTransactionFields
+    });
+    const ConfirmTransaction = createConfirmTransactionComponent({ onNext: this.advanceStep });
+    const TransactionReceipt = createTransactionReceipt({ onReset: this.handleReset });
+
+    const sendAssetsSteps = [
+      SendAssetsForm,
+      ConfirmTransaction,
+      SignTransaction,
+      TransactionReceipt
+    ];
+    const Step = sendAssetsSteps[step];
+
+    // const onBack = backOptions[step];
+    // const Step = steps[step];
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
@@ -118,14 +140,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
             total: steps.length
           }}
         >
-          <Step
-            stateValues={this.state}
-            transactionFields={this.state.transactionFields}
-            updateState={this.updateState}
-            onNext={this.advanceStep}
-            onSubmit={this.updateTransactionFields}
-            onReset={this.handleReset}
-          />
+          <Step stateValues={this.state} />
         </ContentPanel>
       </Layout>
     );

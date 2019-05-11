@@ -18,7 +18,13 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default function TransactionComplete({
+export default function createTransactionReceipt(outterProps: Pick<Props, 'onReset'>) {
+  return (props: Pick<Props, 'stateValues'>) => {
+    return <TransactionComplete onReset={outterProps.onReset} stateValues={props.stateValues} />;
+  };
+}
+
+export function TransactionComplete({
   stateValues: { transactionFields: { recipientAddress, senderAddress } },
   onReset
 }: Props) {
