@@ -180,6 +180,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  DEXON: [
+    {
+      name: makeNodeName('DEXON', 'dexon'),
+      type: 'rpc',
+      service: 'dexon.org',
+      url: 'https://mainnet-rpc.dexon.org'
+    }
+  ],
+
   RSK: [
     {
       name: makeNodeName('RSK', 'rsk_mainnet'),
@@ -324,6 +333,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'rpc.tau1.artis.network',
       url: 'https://rpc.tau1.artis.network'
+    }
+  ],
+
+  SOLIDUM: [
+    {
+      name: makeNodeName('SOLIDUM', 'rpc.solidum.network'),
+      type: 'rpc',
+      service: 'rpc.solidum.network',
+      url: 'https://rpc.solidum.network'
     }
   ],
 

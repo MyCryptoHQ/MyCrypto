@@ -32,10 +32,18 @@ function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash
   // CHECK LEGACY.MYCRYPTO.COM FOR THE DIFFERENCE BETWEEN DEED OWNER AND OWNER
   // THIS WILL CAUSE MASS CONFUSION IF WE USE THIS AS THE 'OWNER' FOR MIGRATING TO NEW REGISTRAR
   // - TAYLOR
-  const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
+  const { deedOwnerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
     to: deedAddress,
     data: ENS.deed.owner.encodeInput(),
     decoder: ENS.deed.owner.decodeOutput
+  });
+
+  const { ownerAddress }: typeof ENS.registry.owner.outputType = yield call(makeEthCallAndDecode, {
+    to: ensAddresses.registry,
+    data: ENS.registry.resolver.encodeInput({
+      node: nameHash
+    }),
+    decoder: ENS.registry.owner.decodeOutput
   });
 
   const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
@@ -61,16 +69,16 @@ function* nameStateOwned({ deedAddress }: IDomainData<NameState.Owned>, nameHash
     resolvedAddress = result.ret;
   }
 
-  return { ownerAddress, resolvedAddress };
+  return { ownerAddress, deedOwnerAddress, resolvedAddress };
 }
 
 function* nameStateReveal({ deedAddress }: IDomainData<NameState.Reveal>): SagaIterator {
-  const { ownerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
+  const { deedOwnerAddress }: typeof ENS.deed.owner.outputType = yield call(makeEthCallAndDecode, {
     to: deedAddress,
     data: ENS.deed.owner.encodeInput(),
     decoder: ENS.deed.owner.decodeOutput
   });
-  return { ownerAddress };
+  return { deedOwnerAddress };
 }
 
 interface IModeMap {
@@ -80,7 +88,7 @@ interface IModeMap {
     hash?: Buffer
   ) =>
     | {}
-    | { ownerAddress: string; resolvedAddress: string }
+    | { deedOwnerAddress: string; resolvedAddress: string }
     | { auctionCloseTime: string; revealBidTime: string };
 }
 
@@ -114,6 +122,24 @@ export function* resolveDomainRequest(name: string): SagaIterator {
   const nameStateHandler = modeMap[domainData.mode];
   const result = yield call(nameStateHandler, domainData, nameHash);
 
+  if (!result.hasOwnProperty('resolvedAddress')) {
+    const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
+      makeEthCallAndDecode,
+      {
+        to: ensAddresses.registry,
+        decoder: ENS.registry.resolver.decodeOutput,
+        data: ENS.registry.resolver.encodeInput({
+          node: nameHash
+        })
+      }
+    );
+    const resolvedAddress: typeof ENS.resolver.addr.outputType = yield call(makeEthCallAndDecode, {
+      to: resolverAddress,
+      data: ENS.resolver.addr.encodeInput({ node: nameHash }),
+      decoder: ENS.resolver.addr.decodeOutput
+    });
+    result.resolvedAddress = resolvedAddress.ret;
+  }
   const returnValue: IBaseDomainRequest = {
     name,
     ...domainData,

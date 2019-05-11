@@ -4,9 +4,9 @@ export interface AssetOption {
   ticker: string;
   type: assetOptionMethod;
   decimal: number;
-  contractAddress: null;
+  contractAddress: string | null;
 }
-export type assetOptionMethod = 'base' | 'call';
+export type assetOptionMethod = 'base' | 'erc20';
 export interface ExtendedAssetOption extends AssetOption {
   uuid: string;
 }

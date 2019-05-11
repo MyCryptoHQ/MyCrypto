@@ -3,6 +3,7 @@ export * from './API';
 export * from './Cache';
 export * from './ContractOptions';
 export * from './Currents';
+export * from './Effects';
 export * from './LocalCache';
 export * from './GlobalSettings';
 export * from './Storage';

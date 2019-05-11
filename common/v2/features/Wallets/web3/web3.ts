@@ -46,7 +46,7 @@ export const initWeb3Node = async () => {
   }
   web3Added = true;
   createNodeOptionsWithID(config, id);
-  updateCurrents({ node: 'web3' });
+  updateCurrents({ ...readCurrents(), node: 'web3' });
   return lib;
 };
 
