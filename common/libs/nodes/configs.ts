@@ -75,15 +75,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
-  Gangnam: [
-    {
-      name: makeNodeName('Gangnam', 'progtest'),
-      type: 'rpc',
-      service: 'Gangnam ProgPoW',
-      url: 'https://rpc.progtest.net'
-    }
-  ],
-
   ETC: [
     {
       name: makeNodeName('ETC', 'etccooperative'),
@@ -93,159 +84,12 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
-  UBQ: [
-    {
-      name: makeNodeName('UBQ', 'ubiqscan'),
-      type: 'rpc',
-      service: 'ubiqscan.io',
-      url: 'https://rpc1.ubiqscan.io'
-    }
-  ],
-
-  EXP: [
-    {
-      name: makeNodeName('EXP', 'tech'),
-      type: 'rpc',
-      service: 'expanse.tech',
-      url: 'https://node.expanse.tech/'
-    }
-  ],
-
-  POA: [
-    {
-      name: makeNodeName('POA', 'core'),
-      type: 'infura',
-      service: 'core.poa.network',
-      url: 'https://core.poa.network'
-    }
-  ],
-
-  TOMO: [
-    {
-      name: makeNodeName('TOMO', 'tomochain'),
-      type: 'rpc',
-      service: 'tomochain.com',
-      url: 'https://rpc.tomochain.com'
-    }
-  ],
-
-  ELLA: [
-    {
-      name: makeNodeName('ELLA', 'ellaism'),
-      type: 'rpc',
-      service: 'ellaism.org',
-      url: 'https://jsonrpc.ellaism.org'
-    }
-  ],
-
-  MUSIC: [
-    {
-      name: makeNodeName('MUSIC', 'music'),
-      type: 'rpc',
-      service: 'musicoin.tw',
-      url: 'https://mewapi.musicoin.tw'
-    }
-  ],
-
-  ETSC: [
-    {
-      name: makeNodeName('ETSC', 'etsc'),
-      type: 'rpc',
-      service: 'ethereumsocial.kr',
-      url: 'https://node.ethereumsocial.kr'
-    }
-  ],
-
-  EGEM: [
-    {
-      name: makeNodeName('EGEM', 'egem'),
-      type: 'rpc',
-      service: 'egem.io',
-      url: 'https://jsonrpc.egem.io/custom'
-    }
-  ],
-
-  CLO: [
-    {
-      name: makeNodeName('CLO', 'clo'),
-      type: 'rpc',
-      service: '0xinfra.com',
-      url: 'https://clo-geth.0xinfra.com/'
-    },
-    {
-      name: makeNodeName('CLO', 'chainkorea'),
-      type: 'rpc',
-      service: 'Chainkorea',
-      url: 'https://node.clopool.net/'
-    }
-  ],
-
   RSK: [
     {
       name: makeNodeName('RSK', 'rsk_mainnet'),
       type: 'rpc',
       service: 'mycrypto.rsk.co',
       url: 'https://mycrypto.rsk.co/'
-    }
-  ],
-
-  RSK_TESTNET: [
-    {
-      name: makeNodeName('RSK_TESTNET', 'rsk_testnet'),
-      type: 'rpc',
-      service: 'mycrypto.testnet.rsk.co',
-      url: 'https://mycrypto.testnet.rsk.co/'
-    }
-  ],
-
-  GO: [
-    {
-      name: makeNodeName('GO', 'go'),
-      type: 'rpc',
-      service: 'gochain.io',
-      url: 'https://rpc.gochain.io/'
-    }
-  ],
-
-  GO_TESTNET: [
-    {
-      name: makeNodeName('GO_TESTNET', 'go_testnet'),
-      type: 'rpc',
-      service: 'testnet-rpc.gochain.io',
-      url: 'https://testnet-rpc.gochain.io/'
-    }
-  ],
-
-  EOSC: [
-    {
-      name: makeNodeName('EOSC', 'eosc'),
-      type: 'rpc',
-      service: 'eos-classic.io',
-      url: 'https://node.eos-classic.io/'
-    }
-  ],
-
-  ESN: [
-    {
-      name: makeNodeName('ESN', 'esn'),
-      type: 'rpc',
-      service: 'ethersocial.org',
-      url: 'https://api.esn.gonspool.com'
-    }
-  ],
-
-  AQUA: [
-    {
-      name: makeNodeName('AQUA', 'aquachain'),
-      type: 'rpc',
-      service: 'aquacha.in',
-      url: 'https://tx.aquacha.in/api'
-    },
-    {
-      name: makeNodeName('AQUA', 'uncan.onical'),
-      type: 'rpc',
-      service: 'uncan.onical.org',
-      url: 'https://c.onical.org'
     }
   ],
 
@@ -264,48 +108,18 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
-  PIRL: [
+  AQUA: [
     {
-      name: makeNodeName('PIRL', 'wallrpc.pirl.io'),
+      name: makeNodeName('AQUA', 'aquachain'),
       type: 'rpc',
-      service: 'wallrpc.pirl.io',
-      url: 'https://wallrpc.pirl.io'
-    }
-  ],
-
-  ATH: [
+      service: 'aquacha.in',
+      url: 'https://tx.aquacha.in/api'
+    },
     {
-      name: makeNodeName('ATH', 'wallet.atheios.com'),
+      name: makeNodeName('AQUA', 'uncan.onical'),
       type: 'rpc',
-      service: 'wallet.atheios.com',
-      url: 'https://wallet.atheios.com:8797'
-    }
-  ],
-
-  ETHO: [
-    {
-      name: makeNodeName('ETHO', 'ether1.org'),
-      type: 'rpc',
-      service: 'ether1.org',
-      url: 'https://rpc.ether1.org'
-    }
-  ],
-
-  MIX: [
-    {
-      name: makeNodeName('MIX', 'mix-blockchain.org'),
-      type: 'rpc',
-      service: 'rpc2.mix-blockchain.org',
-      url: 'https://rpc2.mix-blockchain.org:8647'
-    }
-  ],
-
-  REOSC: [
-    {
-      name: makeNodeName('REOSC', 'reosc.io'),
-      type: 'rpc',
-      service: 'remote.reosc.io',
-      url: 'https://remote.reosc.io:3000'
+      service: 'uncan.onical.org',
+      url: 'https://c.onical.org'
     }
   ],
 
@@ -327,12 +141,225 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  ATH: [
+    {
+      name: makeNodeName('ATH', 'wallet.atheios.com'),
+      type: 'rpc',
+      service: 'wallet.atheios.com',
+      url: 'https://wallet.atheios.com:8797'
+    }
+  ],
+
+  CLO: [
+    {
+      name: makeNodeName('CLO', 'clo'),
+      type: 'rpc',
+      service: '0xinfra.com',
+      url: 'https://clo-geth.0xinfra.com/'
+    },
+    {
+      name: makeNodeName('CLO', 'chainkorea'),
+      type: 'rpc',
+      service: 'Chainkorea',
+      url: 'https://node.clopool.net/'
+    }
+  ],
+
+  DEXON: [
+    {
+      name: makeNodeName('DEXON', 'dexon'),
+      type: 'rpc',
+      service: 'dexon.org',
+      url: 'https://mainnet-rpc.dexon.org'
+    }
+  ],
+
+  EGEM: [
+    {
+      name: makeNodeName('EGEM', 'egem'),
+      type: 'rpc',
+      service: 'egem.io',
+      url: 'https://jsonrpc.egem.io/custom'
+    }
+  ],
+
+  ELLA: [
+    {
+      name: makeNodeName('ELLA', 'ellaism'),
+      type: 'rpc',
+      service: 'ellaism.org',
+      url: 'https://jsonrpc.ellaism.org'
+    }
+  ],
+
+  EOSC: [
+    {
+      name: makeNodeName('EOSC', 'eosc'),
+      type: 'rpc',
+      service: 'eos-classic.io',
+      url: 'https://node.eos-classic.io/'
+    }
+  ],
+
+  ESN: [
+    {
+      name: makeNodeName('ESN', 'esn'),
+      type: 'rpc',
+      service: 'ethersocial.org',
+      url: 'https://api.esn.gonspool.com'
+    }
+  ],
+
+  ETHO: [
+    {
+      name: makeNodeName('ETHO', 'ether1.org'),
+      type: 'rpc',
+      service: 'ether1.org',
+      url: 'https://rpc.ether1.org'
+    }
+  ],
+
+  ETSC: [
+    {
+      name: makeNodeName('ETSC', 'etsc'),
+      type: 'rpc',
+      service: 'ethereumsocial.kr',
+      url: 'https://node.ethereumsocial.kr'
+    }
+  ],
+
+  EXP: [
+    {
+      name: makeNodeName('EXP', 'tech'),
+      type: 'rpc',
+      service: 'expanse.tech',
+      url: 'https://node.expanse.tech/'
+    }
+  ],
+
+  Gangnam: [
+    {
+      name: makeNodeName('Gangnam', 'progtest'),
+      type: 'rpc',
+      service: 'Gangnam ProgPoW',
+      url: 'https://rpc.progtest.net'
+    }
+  ],
+
+  GO: [
+    {
+      name: makeNodeName('GO', 'go'),
+      type: 'rpc',
+      service: 'gochain.io',
+      url: 'https://rpc.gochain.io/'
+    }
+  ],
+
+  GO_TESTNET: [
+    {
+      name: makeNodeName('GO_TESTNET', 'go_testnet'),
+      type: 'rpc',
+      service: 'testnet-rpc.gochain.io',
+      url: 'https://testnet-rpc.gochain.io/'
+    }
+  ],
+
+  METADIUM: [
+    {
+      name: makeNodeName('METADIUM', 'metadium'),
+      type: 'rpc',
+      service: 'api.metadium.com',
+      url: 'https://api.metadium.com/prod'
+    }
+  ],
+
+  MIX: [
+    {
+      name: makeNodeName('MIX', 'mix-blockchain.org'),
+      type: 'rpc',
+      service: 'rpc2.mix-blockchain.org',
+      url: 'https://rpc2.mix-blockchain.org:8647'
+    }
+  ],
+
+  MUSIC: [
+    {
+      name: makeNodeName('MUSIC', 'music'),
+      type: 'rpc',
+      service: 'musicoin.tw',
+      url: 'https://mewapi.musicoin.tw'
+    }
+  ],
+
+  PIRL: [
+    {
+      name: makeNodeName('PIRL', 'wallrpc.pirl.io'),
+      type: 'rpc',
+      service: 'wallrpc.pirl.io',
+      url: 'https://wallrpc.pirl.io'
+    }
+  ],
+
+  POA: [
+    {
+      name: makeNodeName('POA', 'core'),
+      type: 'infura',
+      service: 'core.poa.network',
+      url: 'https://core.poa.network'
+    }
+  ],
+
+  REOSC: [
+    {
+      name: makeNodeName('REOSC', 'reosc.io'),
+      type: 'rpc',
+      service: 'remote.reosc.io',
+      url: 'https://remote.reosc.io:3000'
+    }
+  ],
+
+  RSK_TESTNET: [
+    {
+      name: makeNodeName('RSK_TESTNET', 'rsk_testnet'),
+      type: 'rpc',
+      service: 'mycrypto.testnet.rsk.co',
+      url: 'https://mycrypto.testnet.rsk.co/'
+    }
+  ],
+
+  SOLIDUM: [
+    {
+      name: makeNodeName('SOLIDUM', 'rpc.solidum.network'),
+      type: 'rpc',
+      service: 'rpc.solidum.network',
+      url: 'https://rpc.solidum.network'
+    }
+  ],
+
   THUNDERCORE: [
     {
       name: makeNodeName('THUNDERCORE', 'thundercore'),
       type: 'rpc',
       service: 'thundercore.com',
       url: 'https://mainnet-rpc.thundercore.com'
+    }
+  ],
+
+  TOMO: [
+    {
+      name: makeNodeName('TOMO', 'tomochain'),
+      type: 'rpc',
+      service: 'tomochain.com',
+      url: 'https://rpc.tomochain.com'
+    }
+  ],
+
+  UBQ: [
+    {
+      name: makeNodeName('UBQ', 'ubiqscan'),
+      type: 'rpc',
+      service: 'ubiqscan.io',
+      url: 'https://rpc1.ubiqscan.io'
     }
   ],
 
@@ -348,15 +375,6 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'node2.webchain.network',
       url: 'https://node2.webchain.network'
-    }
-  ],
-
-  METADIUM: [
-    {
-      name: makeNodeName('METADIUM', 'metadium'),
-      type: 'rpc',
-      service: 'api.metadium.com',
-      url: 'https://api.metadium.com/prod'
     }
   ]
 };

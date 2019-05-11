@@ -2,7 +2,7 @@ import * as utils from 'v2/libs';
 import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
-import { ContractsData } from 'config/cacheData';
+import { ContractsData, AssetOptionsData } from 'v2/config/cacheData';
 import { ACCOUNTTYPES } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
@@ -28,6 +28,8 @@ export const initializeCache = () => {
     initLocalSettings();
 
     initContractOptions();
+
+    initAssetOptions();
   }
 };
 
@@ -83,17 +85,23 @@ export const initNodeOptions = () => {
 
 export const initNetworkOptions = () => {
   const newStorage = getCacheRaw();
-  const length: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
-  length.map((en: any) => {
+  const allNetworks: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
+  allNetworks.map((en: any) => {
     const newContracts: string[] = [];
+    const newAssetOptions: string[] = [];
     Object.keys(newStorage.contractOptions).map(entry => {
       if (newStorage.contractOptions[entry].network === en) {
         newContracts.push(entry);
       }
     });
+    Object.keys(newStorage.assetOptions).map(entry => {
+      if (newStorage.assetOptions[entry].network === en) {
+        newAssetOptions.push(entry);
+      }
+    });
     const newLocalNetwork: types.NetworkOptions = {
       contracts: newContracts,
-      assets: [STATIC_NETWORKS_INITIAL_STATE[en].id],
+      assets: [STATIC_NETWORKS_INITIAL_STATE[en].id, ...newAssetOptions],
       nodes: [],
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
@@ -118,6 +126,16 @@ export const initNetworkOptions = () => {
     };
     newStorage.networkOptions[en] = newLocalNetwork;
     newStorage.assetOptions[STATIC_NETWORKS_INITIAL_STATE[en].id] = newLocalAssetOption;
+  });
+  setCache(newStorage);
+};
+
+export const initAssetOptions = () => {
+  const newStorage = getCacheRaw();
+  const contracts = AssetOptionsData();
+  Object.keys(contracts).map(en => {
+    newStorage.assetOptions[en] = contracts[en];
+    newStorage.networkOptions[contracts[en].network].contracts.push(en);
   });
   setCache(newStorage);
 };

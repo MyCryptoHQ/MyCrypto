@@ -1,5 +1,5 @@
 export interface Currents {
-  account?: string[];
+  accounts: string[];
   fiatCurrency?: string;
   activeWallet?: string;
   node?: string;

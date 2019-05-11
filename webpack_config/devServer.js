@@ -1,4 +1,8 @@
 'use strict';
+
+// @TODO currenlty only used as a watcher for
+// electron development `dev:electron`. Should switch to
+// webpack.rhl.js ASAP
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
