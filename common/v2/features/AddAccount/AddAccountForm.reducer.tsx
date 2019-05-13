@@ -1,12 +1,10 @@
 import { FormDataAction, FormData, FormDataActionType as ActionType } from './types';
 
-
 export const initialState: FormData = {
   network: 'Ethereum' // @ADD_ACCOUNT_TODO this should have the same type as networkOptions in NetworkOptionsContext
 };
 
 export const formReducer = (formData: FormData, action: FormDataAction) => {
-  console.debug('REDUCER', action);
   switch (action.type) {
     case ActionType.SELECT_NETWORK:
       const { network } = action.payload;
@@ -18,7 +16,8 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
       const { accountType } = action.payload;
       return { ...formData, accountType };
     case ActionType.ON_UNLOCK:
-      return { ...formData };
+      const accountAndDerivationPath = handleUnlock(formData.accountType, action.payload);
+      return { ...formData, ...accountAndDerivationPath };
     case ActionType.SET_LABEL:
       const { label } = action.payload;
       return { ...formData, label };
@@ -28,6 +27,41 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
     case ActionType.RESET_FORM:
       return initialState;
     default:
-      throw new Error(`[AddAccountReducer]: Type ${action.type} is not recognized by this reducer`);
+      return formData;
   }
 };
+
+const handleUnlock = (walletType, payload) => {
+  switch(walletType) {
+    case WalletName.VIEW_ONLY:
+      return {
+        account: payload.getAddressString(),
+        derivationPath: ''
+      }
+    case WalletName.PARITY_SIGNER:
+      return {
+        account: payload.address,
+        derivationPath: ''
+      }
+    case WalletName.KEYSTORE_FILE:
+    case WalletName.PRIVATE_KEY:
+    case WalletName.WEB3PROVIDER:
+      // Here it would be for each component to call unlock itself and to have
+      // an identical payload format as view_only
+      const wallet = await STORIES[walletType].unlock(payload);
+      return {
+        account: wallet.getAddressString(),
+        derivationPath: ''
+      }
+    case WalletName.MNEMONIC_PHRASE:
+    case WalletName.LEDGER:
+    case WalletName.TREZOR:
+    case WalletName.SAFE_T:
+      return {
+        account: payload.address,
+        derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()
+      }
+    default:
+      throw new Error(`[AddAccountReducer]: UNLOCK with wallet ${walletType} and payload ${payload} is invalid`);
+  }
+}
