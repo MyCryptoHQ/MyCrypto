@@ -12,12 +12,6 @@ import walletIcon from 'common/assets/images/icn-new-wallet.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-const WalletImage = styled.img`
-  width: 73px;
-  height: 80px;
-  margin-right: 30px;
-`;
-
 const ResourceItem = styled(Button)`
   width: 200px;
   font-weight: normal;
@@ -69,7 +63,7 @@ const getResources = () => {
 export default function GetHardwareWalletNotification() {
   return (
     <NotificationWrapper
-      leftImg={<WalletImage src={walletIcon} />}
+      leftImg={{ src: walletIcon, width: '73px', height: '80px' }}
       title={translate('NOTIFICATIONS_GET_WALLET_TITLE')}
       description={translate('NOTIFICATIONS_GET_WALLET_DESCRIPTION')}
       resources={getResources()}

@@ -11,18 +11,7 @@ import howBuyIcon from 'common/assets/images/icn-how-do-i-buy-crypto.svg';
 import dontLoseCryptoIcon from 'common/assets/images/icn-don-t-lose-crypto.svg';
 import questionsIcon from 'common/assets/images/icn-questions.svg';
 
-const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
-
-const ChampagneImage = styled.img`
-  width: 71px;
-  height: 70px;
-  transform: rotateY(180deg);
-  margin-right: 30px;
-
-  @media (max-width: ${SCREEN_MD}) {
-    display: none;
-  }
-`;
+const { SCREEN_XS } = BREAK_POINTS;
 
 const ResourceItemWrapper = styled.a`
   display: flex;
@@ -91,7 +80,13 @@ export default function WalletCreatedNotification({ address }: NotificationProps
   return (
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
-      leftImg={<ChampagneImage src={champagneIcon} />}
+      leftImg={{
+        src: champagneIcon,
+        width: '71px',
+        height: '70px',
+        transform: 'rotateY(180deg)',
+        hideOnMobile: true
+      }}
       title={translate('NOTIFICATIONS_WALLET_CREATED_TITLE')}
       description={translate('NOTIFICATIONS_WALLET_CREATED_DESCRIPTION', {
         $address: address
