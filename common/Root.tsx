@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
-import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
+import {
+  withRouter,
+  Switch,
+  HashRouter,
+  Route,
+  BrowserRouter,
+  RouteComponentProps
+} from 'react-router-dom';
 
 import { AnalyticsService } from 'v2/services';
 import { AppState } from 'features/reducers';
@@ -154,15 +161,23 @@ class RootClass extends Component<Props, State> {
 }
 
 let previousURL = '';
-const PageVisitsAnalytics = withRouter(({ history, children }) => {
-  history.listen(() => {
-    if (previousURL !== window.location.href) {
-      AnalyticsService.instance.trackPageVisit(window.location.href);
-      previousURL = window.location.href;
+const PageVisitsAnalytics = withRouter(
+  // tslint:disable-next-line: max-classes-per-file
+  class extends Component<RouteComponentProps<{}>> {
+    public componentDidMount() {
+      this.props.history.listen(() => {
+        if (previousURL !== window.location.href) {
+          AnalyticsService.instance.trackPageVisit(window.location.href);
+          previousURL = window.location.href;
+        }
+      });
     }
-  });
-  return <React.Fragment>{children}</React.Fragment>;
-});
+
+    public render() {
+      return this.props.children;
+    }
+  }
+);
 
 const LegacyRoutes = withRouter(props => {
   const { history } = props;
