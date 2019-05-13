@@ -15,8 +15,7 @@ interface Props {
 class WalletList extends PureComponent<Props> {
   public render() {
     const { wallets, onSelect, formDataDispatch } = this.props;
-    const validWallets = wallets; // @TODO Filter here according to electronOnly
-
+    const validWallets = wallets.filter(w => !w.hideFromWalletList); // @TODO Filter here according to electronOnly
     return (
       <div className="WalletDecrypt-wallets">
         <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>

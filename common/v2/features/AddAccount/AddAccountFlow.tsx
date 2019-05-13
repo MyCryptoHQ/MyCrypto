@@ -11,14 +11,17 @@ import './AddAccount.scss';
 import './AddAccountFlow.scss';
 
 interface State {
-  story: WalletName;
+  storyName: WalletName;
   step: number;
   formData: FormData;
 }
 
+const getStory = (storyName: WalletName) => {
+  return STORIES.filter(selected => selected.name === storyName)[0];
+}
+
 const getStorySteps = (storyName: WalletName) => {
-  const story = STORIES.filter(selected => selected.name === storyName)[0];
-  return story.steps;
+  return getStory(storyName).steps;
 };
 
 /*
@@ -30,20 +33,20 @@ const getStorySteps = (storyName: WalletName) => {
     story.
 */
 function AddAccountFlow() {
-  const [story, setStory] = useState(WalletName.DEFAULT); // The Wallet Story that we are tracking.
+  const [storyName, setStoryName] = useState(WalletName.DEFAULT); // The Wallet Story that we are tracking.
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
 
-  const isDefaultView = story === WalletName.DEFAULT;
+  const isDefaultView = storyName === WalletName.DEFAULT;
 
   const goToStart = () => {
     setStep(0);
-    setStory(WalletName.DEFAULT);
+    setStoryName(WalletName.DEFAULT);
     updateFormState({ type: ActionType.RESET_FORM });
   };
 
   const goToNextStep = () => {
-    const nextStep = Math.min(step + 1, getStorySteps(story).length - 1);
+    const nextStep = Math.min(step + 1, getStorySteps(storyName).length - 1);
     setStep(nextStep);
   };
 
@@ -55,7 +58,7 @@ function AddAccountFlow() {
   };
 
   const onWalletSelection = (name: WalletName) => {
-    setStory(name);
+    setStoryName(name);
     // @ADD_ACCOUNT_TODO: This is equivalent to formDispatch call.
     // Maybe we can merge story and accountType to use only one?
     updateFormState({ type: ActionType.SELECT_ACCOUNT_TYPE, payload: { accountType: name } });
@@ -72,7 +75,7 @@ function AddAccountFlow() {
   );
 
   const renderStep = () => {
-    const steps = getStorySteps(story);
+    const steps = getStorySteps(storyName);
     const Step = steps[step];
 
     return (
@@ -84,7 +87,7 @@ function AddAccountFlow() {
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
             <Step
-              wallet={story}
+              wallet={getStory(storyName)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
               onUnlock={() => console.log('UNLOCK CALLED')}

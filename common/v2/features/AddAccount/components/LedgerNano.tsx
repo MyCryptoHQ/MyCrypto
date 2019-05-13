@@ -15,6 +15,7 @@ import { Button } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
+  wallet: object,
   onUnlock(param: any): void;
 }
 
@@ -82,32 +83,39 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       );
     } else {
       return (
-        <div className="LedgerPanel-description-content">
-          <div className="LedgerPanel-description">
-            {translate('LEDGER_TIP')}
-            <div className="LedgerPanel-image">
-              <img src={ledgerIcon} />
-            </div>
-            <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
-              {error || '-'}
-            </div>
-            {isLoading ? (
-              <div className="LedgerPanel-loading">
-                <Spinner /> {translate('WALLET_UNLOCKING')}
-              </div>
-            ) : (
-              <Button
-                className="LedgerPanel-description-button"
-                onClick={this.handleNullConnect}
-                disabled={isLoading}
-              >
-                {translate('ADD_LEDGER_SCAN')}
-              </Button>
-            )}
+        <div className="Panel">
+          <div className="Panel-title">
+            {translate('UNLOCK_WALLET')}
+            {' '}
+            {`Your ${translateRaw(this.props.wallet.lid)}`}
           </div>
-          <div className="LedgerPanel-footer">
-            {translate('LEDGER_REFERRAL_2')} <br />
-            {translate('LEDGER_HELP_LINK')}
+          <div className="LedgerPanel-description-content">
+            <div className="LedgerPanel-description">
+              {translate('LEDGER_TIP')}
+              <div className="LedgerPanel-image">
+                <img src={ledgerIcon} />
+              </div>
+              <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
+                {error || '-'}
+              </div>
+              {isLoading ? (
+                <div className="LedgerPanel-loading">
+                  <Spinner /> {translate('WALLET_UNLOCKING')}
+                </div>
+              ) : (
+                <Button
+                  className="LedgerPanel-description-button"
+                  onClick={this.handleNullConnect}
+                  disabled={isLoading}
+                >
+                  {translate('ADD_LEDGER_SCAN')}
+                </Button>
+              )}
+            </div>
+            <div className="LedgerPanel-footer">
+              {translate('LEDGER_REFERRAL_2')} <br />
+              {translate('LEDGER_HELP_LINK')}
+            </div>
           </div>
         </div>
       );

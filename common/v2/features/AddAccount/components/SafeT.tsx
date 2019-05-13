@@ -71,32 +71,39 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
     } else {
       // todo: update help link
       return (
-        <div className="SafeTminiDecrypt">
-          <div className="SafeTminiDecrypt-description">{translate('SAFET_MINI_DESCRIPTION')}</div>
-          <div className="SafeTminiDecrypt-img">
-            <img src={SafeTIcon} />
+        <div className="Panel">
+          <div className="Panel-title">
+            {translate('UNLOCK_WALLET')}
+            {' '}
+            {`Your ${translateRaw(this.props.wallet.lid)}`}
           </div>
-          <div className="SafeTminiDecrypt-unlockButton">
-            {isLoading ? (
-              <div className="SafeTminiDecrypt-message">
-                <Spinner />
-                {translate('WALLET_UNLOCKING')}
-              </div>
-            ) : (
-              <button
-                className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
-                onClick={this.handleNullConnect}
-                disabled={isLoading}
-              >
-                {translate('ADD_SAFE_T_SCAN')}
-              </button>
-            )}
-            <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
-              {error || '-'}
+          <div className="SafeTminiDecrypt">
+            <div className="SafeTminiDecrypt-description">{translate('SAFET_MINI_DESCRIPTION')}</div>
+            <div className="SafeTminiDecrypt-img">
+              <img src={SafeTIcon} />
             </div>
-          </div>
+            <div className="SafeTminiDecrypt-unlockButton">
+              {isLoading ? (
+                <div className="SafeTminiDecrypt-message">
+                  <Spinner />
+                  {translate('WALLET_UNLOCKING')}
+                </div>
+              ) : (
+                <button
+                  className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
+                  onClick={this.handleNullConnect}
+                  disabled={isLoading}
+                >
+                  {translate('ADD_SAFE_T_SCAN')}
+                </button>
+              )}
+              <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
+                {error || '-'}
+              </div>
+            </div>
 
-          <div className="SafeTminiDecrypt-description-footer">{translate('SAFET_MINI_HELP')}</div>
+            <div className="SafeTminiDecrypt-description-footer">{translate('SAFET_MINI_HELP')}</div>
+          </div>
         </div>
       );
     }

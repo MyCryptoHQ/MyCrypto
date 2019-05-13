@@ -1,4 +1,5 @@
 import { knowledgeBaseURL as KB_URL } from 'config';
+import { getWeb3ProviderInfo } from 'utils/web3';
 import { IS_DEV, IS_ELECTRON } from './flags';
 import { WalletName, WalletType } from './types';
 import {
@@ -34,16 +35,18 @@ import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 // step length.
 // 2. Merge enums and names with the ones in common/v2/config/accountTypes.ts
 
+const web3ProviderInfo = getWeb3ProviderInfo();
 export const STORIES = [
   {
     name: WalletName.DEFAULT,
-    steps: [WalletList]
+    steps: [WalletList],
+    hideFromWalletList: true,
   },
   {
     name: WalletName.WEB3PROVIDER,
     type: WalletType.SECURE,
-    lid: '',
-    icon: '',
+    lid: web3ProviderInfo.lid,
+    icon: web3ProviderInfo.icon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
     // steps: [NetworkSelectPanel, Web3ProviderDecrypt, SaveAndRedirect],
@@ -95,7 +98,7 @@ export const STORIES = [
       SaveAndRedirect
     ],
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
-    elctronOnly: true
+    hideFromWalletList: !IS_ELECTRON
   },
   {
     name: WalletName.MNEMONIC_PHRASE,
@@ -108,7 +111,7 @@ export const STORIES = [
       IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    elctronOnly: true
+    hideFromWalletList: !IS_ELECTRON
   },
   {
     name: WalletName.PRIVATE_KEY,
@@ -121,7 +124,7 @@ export const STORIES = [
       IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    elctronOnly: true
+    hideFromWalletList: !IS_ELECTRON
   },
   {
     name: WalletName.VIEW_ONLY,
