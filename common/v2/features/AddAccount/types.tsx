@@ -25,6 +25,7 @@ export enum FormDataActionType {
   SELECT_ACCOUNT_TYPE,
   SET_LABEL,
   SET_DERIVATION_PATH,
+  ON_UNLOCK,
   RESET_FORM
 }
 
