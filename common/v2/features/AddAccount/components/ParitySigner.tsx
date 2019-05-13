@@ -36,9 +36,7 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate('UNLOCK_WALLET')}
-          {' '}
-          {`Your ${translateRaw(this.props.wallet.lid)}`}
+          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
         </div>
         <div className="ParitySigner">
           {/* <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div> */}

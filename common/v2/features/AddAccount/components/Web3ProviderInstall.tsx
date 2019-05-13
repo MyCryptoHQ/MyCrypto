@@ -23,32 +23,26 @@ function InstallTrunk({ wallet, onUnlock }: Props) {
       <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC')}</div>
       <div className="Panel-content">
         <div className="download-option">
-          <NewTabLink
-            href="https://trustwallet.com/dapp">
+          <NewTabLink href="https://trustwallet.com/dapp">
             <img src={TrustWalletWEBP} />
           </NewTabLink>
           <Typography>TrustWallet App</Typography>
-          <NewTabLink
-            href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409">
+          <NewTabLink href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409">
             <img src={AppStoreBadgeIMG} />
           </NewTabLink>
-          <NewTabLink
-            href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp">
+          <NewTabLink href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp">
             <img src={GooglePlayBadgeIMG} />
           </NewTabLink>
         </div>
         <div className="download-option">
-          <NewTabLink
-            href="https://www.coinbase.com/mobile" target="_black" >
+          <NewTabLink href="https://www.coinbase.com/mobile" target="_black">
             <img src={CoinbaseWalletJPG} />
           </NewTabLink>
           <Typography>Coinbase App</Typography>
-          <NewTabLink
-            href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8">
+          <NewTabLink href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8">
             <img src={AppStoreBadgeIMG} />
           </NewTabLink>
-          <NewTabLink
-            href="https://play.google.com/store/apps/details?id=com.coinbase.android">
+          <NewTabLink href="https://play.google.com/store/apps/details?id=com.coinbase.android">
             <img src={GooglePlayBadgeIMG} />
           </NewTabLink>
         </div>

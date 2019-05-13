@@ -57,9 +57,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate('UNLOCK_WALLET')}
-          {' '}
-          {`Your ${translateRaw(this.props.wallet.lid)}`}
+          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
         </div>
         <div className="PrivateKey">
           <form id="selectedTypeKey" onSubmit={this.unlock}>

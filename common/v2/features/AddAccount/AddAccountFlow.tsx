@@ -18,7 +18,7 @@ interface State {
 
 const getStory = (storyName: WalletName) => {
   return STORIES.filter(selected => selected.name === storyName)[0];
-}
+};
 
 const getStorySteps = (storyName: WalletName) => {
   return getStory(storyName).steps;

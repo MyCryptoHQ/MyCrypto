@@ -74,9 +74,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')}
-            {' '}
-            {`Your ${translateRaw(this.props.wallet.lid)}`}
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
           </div>
           <div className="TrezorDecrypt">
             <div className="TrezorDecrypt-description">
@@ -85,7 +83,9 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
                 <img src={ConnectTrezor} />
               </div>
             </div>
-            <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
+            <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
+              {error || '-'}
+            </div>
 
             {isLoading ? (
               <div className="TrezorDecrypt-loading">

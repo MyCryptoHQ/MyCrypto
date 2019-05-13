@@ -15,7 +15,7 @@ import { Button } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
-  wallet: object,
+  wallet: object;
   onUnlock(param: any): void;
 }
 
@@ -85,9 +85,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')}
-            {' '}
-            {`Your ${translateRaw(this.props.wallet.lid)}`}
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
           </div>
           <div className="LedgerPanel-description-content">
             <div className="LedgerPanel-description">

@@ -73,12 +73,12 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')}
-            {' '}
-            {`Your ${translateRaw(this.props.wallet.lid)}`}
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
           </div>
           <div className="SafeTminiDecrypt">
-            <div className="SafeTminiDecrypt-description">{translate('SAFET_MINI_DESCRIPTION')}</div>
+            <div className="SafeTminiDecrypt-description">
+              {translate('SAFET_MINI_DESCRIPTION')}
+            </div>
             <div className="SafeTminiDecrypt-img">
               <img src={SafeTIcon} />
             </div>
@@ -102,7 +102,9 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
               </div>
             </div>
 
-            <div className="SafeTminiDecrypt-description-footer">{translate('SAFET_MINI_HELP')}</div>
+            <div className="SafeTminiDecrypt-description-footer">
+              {translate('SAFET_MINI_HELP')}
+            </div>
           </div>
         </div>
       );

@@ -40,7 +40,7 @@ export const STORIES = [
   {
     name: WalletName.DEFAULT,
     steps: [WalletList],
-    hideFromWalletList: true,
+    hideFromWalletList: true
   },
   {
     name: WalletName.WEB3PROVIDER,
