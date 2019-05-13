@@ -10,6 +10,7 @@ import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
 
+
 interface State {
   storyName: WalletName;
   step: number;
@@ -42,7 +43,7 @@ function AddAccountFlow() {
   const goToStart = () => {
     setStep(0);
     setStoryName(WalletName.DEFAULT);
-    updateFormState({ type: ActionType.RESET_FORM });
+    updateFormState({ type: ActionType.RESET_FORM, payload: '' });
   };
 
   const goToNextStep = () => {
@@ -56,6 +57,42 @@ function AddAccountFlow() {
     }
     setStep(step - 1);
   };
+
+  const onUnlock = async (payload: any) => {
+    console.log('UNLOCK CALLED')
+      // some components (TrezorDecrypt) don't take an onChange prop, and thus
+      // this.state.value will remain unpopulated. in this case, we can expect
+      // the payload to contain the unlocked wallet info.
+      const unlockValue = payload;
+      console.log(unlockValue)
+
+      console.log(payload);
+      console.log(formData)
+      if (formData.accountType === 9) {
+        updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: unlockValue.getAddressString() }})
+        updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: '' }})
+      } else if (
+        formData.accountType === 6 ||
+        formData.accountType === 8 ||
+        formData.accountType === 1
+      ) {
+        console.log('got here??')
+        const wallet = await STORIES[formData.accountType].unlock(unlockValue);
+        updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: wallet.getAddressString() }})
+        updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: '' }})
+      } else if (formData.accountType === 5) {
+        updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: unlockValue.address }})
+        updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: '' }})
+      } else if (formData.accountType === 7 || formData.accountType === 2 || formData.accountType === 3 || formData.accountType === 4) {
+        updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: unlockValue.address }})
+        updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: unlockValue.path || unlockValue.dPath + '/' + unlockValue.index.toString() }})
+      }
+      console.log('got here?')
+    //updateFormState({ type: ActionType.ON_UNLOCK, payload: '' })
+    
+    console.log(formData);
+    goToNextStep();
+  }
 
   const onWalletSelection = (name: WalletName) => {
     setStoryName(name);
@@ -90,7 +127,7 @@ function AddAccountFlow() {
               wallet={getStory(storyName)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
-              onUnlock={() => console.log('UNLOCK CALLED')}
+              onUnlock={onUnlock}
               formData={formData}
               formDispatch={updateFormState}
             />

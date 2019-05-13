@@ -25,6 +25,7 @@ import LedgerSVG from 'common/assets/images/wallets/ledger.svg';
 import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
 import SafeTSVG from 'common/assets/images/wallets/safe-t.png';
 import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
+import { WalletActions } from 'features/wallet/types';
 
 // STORIES serve the double purpose of generating the wallet options and
 // providing a declarative way to determine the flow for each wallet.
