@@ -29,18 +29,29 @@ $speed: 500ms;
 
 .Panel {
   width: 562px;
-height: 629px;
-justify-content: center; 
+  height: 629px;
+  justify-content: center; 
   // display: flex;
   // flex-direction: column;
   position: relative;
   padding: 2.5em;
+
+  @media only screen and (max-width: 700px) {
+    width: 375px;
+    height: 450px;
+    padding: 1em; 
+  }
+
   &-top {
     display: flex;
   }
 
   &-content {
     margin: 2em;
+
+    @media (max-width: 700px) {
+      margin: 0px; 
+    }
   }
   &-back {
     width: 150px;
@@ -55,6 +66,10 @@ justify-content: center;
     font-weight: bold;
     color: var(--dark-slate-blue);
     text-align: center;
+
+    @media (max-width: 700px){
+      font-size: 25px;
+    }
 
     &-connectDevice {
       justify-content: center;
@@ -82,6 +97,11 @@ justify-content: center;
     padding-top: 16px;
     position: relative;
     text-align: center;
+
+    // @media (max-width: 700px) {
+    //   height: 50px; 
+    // }
+
     &-button {
       position: absolute;
       bottom: 1em;
@@ -119,7 +139,6 @@ justify-content: center;
 
     @media (max-width: 700px) {
       width: 375px;
-      height: 769px;
       // flex-wrap: wrap;
     }
   }

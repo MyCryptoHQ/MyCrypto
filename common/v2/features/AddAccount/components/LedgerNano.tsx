@@ -95,9 +95,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
               <div className="LedgerPanel-image">
                 <img src={ledgerIcon} />
               </div>
-              <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
+              {/* <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
                 {error || '-'}
-              </div>
+              </div> */}
               {isLoading ? (
                 <div className="LedgerPanel-loading">
                   <Spinner /> {translate('WALLET_UNLOCKING')}

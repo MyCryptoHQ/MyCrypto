@@ -35,7 +35,9 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   return (
     <div className="Panel">
       <div className="Panel-title">{translate('ADD_ACCOUNT_NETWORK_TITLE')}</div>
-      <div className="Panel-description">{translate('ADD_ACCOUNT_NETWORK_SELCT')}</div>
+      <div className="Panel-description" id="NetworkPanel-description">
+        {translate('ADD_ACCOUNT_NETWORK_SELCT')}
+      </div>
       <label className="Panel-networkLabel">Network</label>
       <ComboBox
         className="Panel-dropdown"

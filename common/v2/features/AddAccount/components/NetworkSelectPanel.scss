@@ -9,4 +9,17 @@
     display: flex; 
     justify-content: center; 
     align-content: center; 
+
+    @media only screen and (max-width: 700px) {
+        width: 345px;
+        height: 40px;
+    }
+}
+
+#NetworkPanel-description {
+    @media only screen and (max-width: 700px) {
+        width: 345px;
+        height: 150px;
+    }
+
 }

@@ -2,6 +2,9 @@
   text-align: center;
   position: relative;
   height: 100%;
+  @media (max-width: 700px) {
+    height: 350px; 
+  }
 
   &-description {
     font-family: Lato;
@@ -19,8 +22,13 @@
   }
 
   &-img {
-    margin: 2em;
+    margin: 4em;
     padding-top: 1em;
+
+    @media (max-width: 700px) {
+      margin: 0.25em; 
+      padding-top: 0.5em; 
+    }
   }
 
   &-loading {
@@ -58,6 +66,19 @@
     position: relative;
     bottom: 2em;
     width: 420px;
+
+    @media (max-width: 700px) {
+      width:345px;
+      bottom: 0em; 
+    }
   }
 }
 
+.TrezorDecrypt-footer {
+  @media (max-width: 700px) {
+    width:345px; 
+  text-align: center;  
+  position: absolute; 
+  bottom: -2em; 
+}
+}

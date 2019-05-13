@@ -20,6 +20,11 @@
   }
   &-img {
     margin: 3em;
+    @media (max-width: 700px) {
+      margin: 0.25em; 
+      padding-top: 0.5em;
+    }
+
   }
 
   &-unlockButton {

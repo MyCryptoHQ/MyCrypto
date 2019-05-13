@@ -8,6 +8,11 @@
     display: flex; 
     justify-content: center; 
     align-content: center;
+
+    @media (max-width: 700px) {
+        padding-bottom: 1em; 
+    }
+
 }
 
 .MetaMask-footer {
