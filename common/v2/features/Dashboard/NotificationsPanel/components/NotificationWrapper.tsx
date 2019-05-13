@@ -30,6 +30,29 @@ const Info = styled.div`
   max-width: 700px;
 `;
 
+interface LeftImageProps {
+  width: string;
+  height: string;
+  transform?: string;
+  hideOnMobile?: boolean;
+  marginRight?: string;
+}
+
+const LeftImage =
+  styled.img <
+  LeftImageProps >
+  `
+${props => `width: ${props.width};`};
+${props => `height: ${props.height};`};
+${props => props.transform && `transform: ${props.transform};`};
+${props =>
+    props.hideOnMobile &&
+    `@media (max-width: ${SCREEN_MD}) {
+      display: none;
+    }`};
+    ${props => (props.marginRight ? `margin-right: ${props.marginRight};` : 'margin-right: 30px;')};
+`;
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,7 +92,7 @@ const Resources = styled.div`
 `;
 
 interface NotificationWrapperProps {
-  leftImg: React.ReactElement<any>;
+  leftImg: LeftImageProps;
   title: React.ReactElement<any>;
   description: React.ReactElement<any>;
   additionalDescription?: React.ReactElement<any>;
@@ -90,7 +113,7 @@ export default function NotificationWrapper({
   return (
     <Wrapper alignCenterOnSmallScreen={alignCenterOnSmallScreen}>
       <Info>
-        {leftImg}
+        <LeftImage {...leftImg} />
         <Content>
           <Title>{title}</Title>
           <Description>{description}</Description>

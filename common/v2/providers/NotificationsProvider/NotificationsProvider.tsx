@@ -60,7 +60,7 @@ export class NotificationsProvider extends Component {
     );
 
     if (existingNotification) {
-      /* Prevent displaying  notifications that have been dismissed forever and repeating notifications
+      /* Prevent displaying notifications that have been dismissed forever and repeating notifications
          before their waiting period is over.*/
       if (
         notificationsConfigs[templateName].repeatInterval ||
@@ -75,8 +75,6 @@ export class NotificationsProvider extends Component {
       service.createNotification(notification);
     }
 
-    // Track notification displayed event
-    this.trackNotificationDisplayed(notificationsConfigs[templateName].analyticsEvent);
     this.getNotifications();
   };
 
@@ -141,7 +139,15 @@ export class NotificationsProvider extends Component {
           : true)
     );
 
-    this.setState({ currentNotification: visibleNotifications[visibleNotifications.length - 1] });
+    const currentNotification = visibleNotifications[visibleNotifications.length - 1];
+    this.setState({ currentNotification });
+
+    // Track notification displayed event if there is current notification
+    if (currentNotification) {
+      this.trackNotificationDisplayed(
+        notificationsConfigs[currentNotification.template].analyticsEvent
+      );
+    }
   };
 
   private trackNotificationDisplayed = (notification: string) => {

@@ -13,12 +13,6 @@ import printerIcon from 'common/assets/images/icn-printer.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-const WalletImage = styled.img`
-  width: 100px;
-  height: 81px;
-  margin-right: 18px;
-`;
-
 const PrinterImage = styled.embed`
   width: 20px;
   height: 20px;
@@ -85,7 +79,7 @@ export default class PrintPaperWalletNotification extends React.Component<Props,
 
     return (
       <NotificationWrapper
-        leftImg={<WalletImage src={walletIcon} />}
+        leftImg={{ src: walletIcon, width: '100px', height: '81px', marginRight: '18px' }}
         title={translate('NOTIFICATIONS_PRINT_WALLET_TITLE')}
         description={translate('NOTIFICATIONS_PRINT_WALLET_DESCRIPTION')}
         resources={
