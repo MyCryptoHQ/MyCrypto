@@ -32,11 +32,11 @@ export default class AnalyticsService {
       local: isDevelopment().toString()
     };
 
-    const cvar: object = this.mapParamsToCvars(customParams);
+    const cvar = this.mapParamsToCvars(customParams);
 
     const analyticsId = isDesktop() ? ANALYTICS_ID_DESKTOP : ANALYTICS_ID_SITE;
 
-    const params: object = {
+    const params = {
       action_name: 'Page navigation',
       url: pageUrl,
       idsite: analyticsId,
@@ -47,10 +47,13 @@ export default class AnalyticsService {
     return this.service.get('', { params }).catch();
   }
 
-  private mapParamsToCvars(params: Params): object {
-    return Object.keys(params).reduce((tempObject: CvarEntry, key, index) => {
-      tempObject[index + 1] = [key, params[key].toString()];
-      return tempObject;
-    }, {});
+  private mapParamsToCvars(params: Params) {
+    return Object.keys(params).reduce(
+      (tempObject: CvarEntry, key, index) => {
+        tempObject[index + 1] = [key, params[key].toString()];
+        return tempObject;
+      },
+      {} as CvarEntry
+    );
   }
 }

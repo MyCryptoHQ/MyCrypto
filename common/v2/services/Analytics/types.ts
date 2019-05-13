@@ -1,7 +1,7 @@
 export interface Params {
-  [key: string]: any;
+  [key: string]: string;
 }
 
 export interface CvarEntry {
-  [key: string]: [string, string];
+  [key: number]: [string, string];
 }
