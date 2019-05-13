@@ -1,13 +1,43 @@
 import React from 'react';
 import { Button, Typography } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import { ContentPanel } from 'v2/components';
+import { ExtendedContentPanel } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
-import './SaveKeystoreFilePanel.scss';
+import translate from 'translations';
+import keystoreIcon from 'common/assets/images/icn-keystore.svg';
+
+const DescriptionItem = styled(Typography)`
+  margin-top: 18px;
+  font-weight: normal;
+  font-size: 18px !important;
+
+  strong {
+    font-weight: 900;
+  }
+`;
+
+const ButtonsWrapper = styled.div`
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+`;
+const StyledButton = styled(Button)`
+  font-size: 18px;
+  margin-bottom: 16px;
+  width: 100%;
+`;
+
+const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 33px;
+  margin-bottom: 25px;
+`;
 
 export default function SaveKeystoreFilePanel({ onBack, onNext }: PanelProps) {
   return (
-    <ContentPanel
+    <ExtendedContentPanel
       onBack={onBack}
       stepper={{
         current: 3,
@@ -16,32 +46,19 @@ export default function SaveKeystoreFilePanel({ onBack, onNext }: PanelProps) {
       heading="Save Your Keystore File"
       className="SaveKeystoreFilePanel"
     >
-      <img src="https://placehold.it/150x150" className="SaveKeystoreFilePanel-image" />
-      <Typography>
-        <strong>Don't lose it.</strong> It can't be recovered if you lose it.
-      </Typography>
-      <Typography>
-        <strong>Don't share it.</strong> Your funds will be stolen if you use this on a malicious
-        site.
-      </Typography>
-      <Typography>
-        <strong>Keep it offline.</strong> Your funds are safest offline (on a USB drive or something
-        similar). We don't recommend keeping your file on any cloud services like Dropbox, Google
-        Drive, etc.
-      </Typography>
-      <Typography>
-        <strong>Make a backup.</strong> Secure it like it's the millions of dollars it may one day
-        be worth.
-      </Typography>
-      <Button secondary={true} onClick={onNext} className="SaveKeystoreFilePanel-button">
-        Download Keystore File
-      </Button>
-      <Button secondary={true} onClick={onNext} className="SaveKeystoreFilePanel-button">
-        Print Paper Wallet
-      </Button>
-      <Button onClick={onNext} className="SaveKeystoreFilePanel-button">
-        Next
-      </Button>
-    </ContentPanel>
+      <ImageWrapper>
+        <img src={keystoreIcon} />
+      </ImageWrapper>
+
+      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
+      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
+      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
+      <ButtonsWrapper>
+        <StyledButton secondary={true} onClick={onNext}>
+          {translate('SAVE_KEYSTORE_BUTTON')}
+        </StyledButton>
+        <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
+      </ButtonsWrapper>
+    </ExtendedContentPanel>
   );
 }

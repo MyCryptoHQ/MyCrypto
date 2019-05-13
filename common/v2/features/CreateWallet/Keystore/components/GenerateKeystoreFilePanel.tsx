@@ -1,36 +1,68 @@
 import React from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button, Input, Typography } from '@mycrypto/ui';
+import styled from 'styled-components';
+import { Button, Input } from '@mycrypto/ui';
 
-import { ContentPanel } from 'v2/components';
+import { ExtendedContentPanel } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
-import './GenerateKeystoreFilePanel.scss';
+import translate, { translateRaw } from 'translations';
 
 const initialValues = {
   password: '',
   confirmPassword: ''
 };
 
+const DescriptionItem = styled.div`
+  margin-top: 18px;
+  font-weight: normal;
+  font-size: 18px;
+
+  strong {
+    font-weight: 900;
+  }
+`;
+
+const PasswordForm = styled(Form)`
+  margin-top: 22px;
+`;
+
+const FormItem = styled.fieldset`
+  margin-top: 15px;
+`;
+
+const SubmitButton = styled(Button)`
+  width: 100%;
+  margin-top: 30px;
+  font-size: 18px;
+`;
+
+const Description = () => {
+  return (
+    <React.Fragment>
+      <DescriptionItem>{translate('NEW_WALLET_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
+      <DescriptionItem>{translate('NEW_WALLET_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
+    </React.Fragment>
+  );
+};
+
 export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps) {
   return (
-    <ContentPanel
+    <ExtendedContentPanel
       onBack={onBack}
       stepper={{
         current: 1,
         total: 3
       }}
-      heading="Generate a Keystore File"
-      className="GenerateKeystoreFilePanel"
+      heading={translateRaw('NEW_WALLET_KEYSTORE_TITLE')}
+      description={<Description />}
     >
       <Formik
         initialValues={initialValues}
         onSubmit={console.info}
         render={() => (
-          <Form>
-            <fieldset className="GenerateKeystoreFilePanel-fieldset">
-              <label htmlFor="password" className="GenerateKeystoreFilePanel-fieldset-label">
-                Password
-              </label>
+          <PasswordForm>
+            <FormItem>
+              <label htmlFor="password">{translate('INPUT_PASSWORD_LABEL')}</label>
               <Field
                 name="password"
                 render={({ field, form }: FieldProps<typeof initialValues>) => (
@@ -42,11 +74,9 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
                   />
                 )}
               />
-            </fieldset>
-            <fieldset className="GenerateKeystoreFilePanel-fieldset">
-              <label htmlFor="confirmPassword" className="GenerateKeystoreFilePanel-fieldset-label">
-                Confirm Password
-              </label>
+            </FormItem>
+            <FormItem>
+              <label htmlFor="confirmPassword">{translate('INPUT_CONFIRM_PASSWORD_LABEL')}</label>
               <Field
                 name="confirmPassword"
                 render={({ field, form }: FieldProps<typeof initialValues>) => (
@@ -58,25 +88,12 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
                   />
                 )}
               />
-            </fieldset>
-            <Typography>
-              This password encrypts your private key. This does not act as a seed to generate your
-              keys.
-            </Typography>
-            <Typography>
-              <strong>
-                You will need this password + your keystore file to unlock your wallet.
-              </strong>
-            </Typography>
-            <Button onClick={onNext} className="GenerateKeystoreFilePanel-button">
-              Create Keystore File
-            </Button>
-            <Typography className="GenerateKeystoreFilePanel-bottom">
-              Don’t know what a keystore file is? <a href="">Learn more.</a>
-            </Typography>
-          </Form>
+            </FormItem>
+            <DescriptionItem>{translate('NEW_WALLET_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
+            <SubmitButton onClick={onNext}>{translate('NEW_WALLET_KEYSTORE_BUTTON')}</SubmitButton>
+          </PasswordForm>
         )}
       />
-    </ContentPanel>
+    </ExtendedContentPanel>
   );
 }
