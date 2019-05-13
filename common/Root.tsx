@@ -38,7 +38,7 @@ import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
-import { CurrentsProvider } from 'v2/providers';
+import { CurrentsProvider, NotificationsProvider } from 'v2/providers';
 import { NewAppReleaseModal } from 'v2/components';
 
 interface OwnProps {
@@ -127,20 +127,22 @@ class RootClass extends Component<Props, State> {
                 <CurrentsProvider>
                   <TransactionProvider>
                     <TransactionHistoryProvider>
-                      <Router>
-                        <LockScreenProvider>
-                          <PageVisitsAnalytics>
-                            {onboardingActive && <OnboardingModal />}
-                            {routes}
-                            <LegacyRoutes />
-                            <LogOutPrompt />
-                            <QrSignerModal />
-                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                          </PageVisitsAnalytics>
-                        </LockScreenProvider>
-                      </Router>
-                      {developmentMode && <DevTools />}
-                      <div id="ModalContainer" />
+                      <NotificationsProvider>
+                        <Router>
+                          <LockScreenProvider>
+                            <PageVisitsAnalytics>
+                              {onboardingActive && <OnboardingModal />}
+                              {routes}
+                              <LegacyRoutes />
+                              <LogOutPrompt />
+                              <QrSignerModal />
+                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                            </PageVisitsAnalytics>
+                          </LockScreenProvider>
+                        </Router>
+                        {developmentMode && <DevTools />}
+                        <div id="ModalContainer" />
+                      </NotificationsProvider>
                     </TransactionHistoryProvider>
                   </TransactionProvider>
                 </CurrentsProvider>

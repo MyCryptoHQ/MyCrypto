@@ -1,5 +1,6 @@
 import { RawTokenJSON, ValidatedTokenJSON, NormalizedTokenJSON } from './types/TokensJson';
 import { Token } from '../shared/types/network';
+import { ExtendedToken } from 'v2/config/tokens';
 interface StrIdx<T> {
   [key: string]: T;
 }
@@ -8,13 +9,21 @@ const excludedTokens: string[] = [
   '0xE94327D07Fc17907b4DB788E5aDf2ed424adDff6'
 ];
 
-function processTokenJson(tokensJson: RawTokenJSON[]): Token[] {
+function processTokenJson(
+  tokensJson: RawTokenJSON[]
+): { tokens: Token[]; extendedTokens: ExtendedToken[] } {
   const normalizedTokens = tokensJson.map(validateTokenJSON).map(normalizeTokenJSON);
   checkForDuplicateAddresses(normalizedTokens);
-  return handleDuplicateSymbols(normalizedTokens)
-    .map(({ name: _, ...rest }) => rest)
-    .filter(filterExcludedTokens)
-    .sort((a, b) => a.symbol.localeCompare(b.symbol));
+  return {
+    tokens: handleDuplicateSymbols(normalizedTokens)
+      .map(({ name: _, ...rest }) => rest)
+      .filter(filterExcludedTokens)
+      .sort((a, b) => a.symbol.localeCompare(b.symbol)),
+    extendedTokens: handleDuplicateSymbols(normalizedTokens)
+      .map(({ ...rest }) => rest)
+      .filter(filterExcludedTokens)
+      .sort((a, b) => a.symbol.localeCompare(b.symbol))
+  };
 }
 
 function validateTokenJSON(token: RawTokenJSON): ValidatedTokenJSON {
