@@ -58,15 +58,17 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <DeterministicWallets
-          publicKey={publicKey}
-          chainCode={chainCode}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
-        />
+        <div className="Mnemoinc-dpath">
+          <DeterministicWallets
+            publicKey={publicKey}
+            chainCode={chainCode}
+            dPath={dPath}
+            dPaths={this.props.dPaths}
+            onCancel={this.handleCancel}
+            onConfirmAddress={this.handleUnlock}
+            onPathChange={this.handlePathChange}
+          />
+        </div>
       );
     } else {
       // todo: update help link
@@ -82,23 +84,25 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
             <div className="SafeTminiDecrypt-img">
               <img src={SafeTIcon} />
             </div>
-            <div className="SafeTminiDecrypt-unlockButton">
-              {isLoading ? (
-                <div className="SafeTminiDecrypt-message">
-                  <Spinner />
-                  {translate('WALLET_UNLOCKING')}
+            <div className="SafeTMini-button-container">
+              <div className="SafeTminiDecrypt-unlockButton">
+                {isLoading ? (
+                  <div className="SafeTminiDecrypt-message">
+                    <Spinner />
+                    {translate('WALLET_UNLOCKING')}
+                  </div>
+                ) : (
+                  <button
+                    className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
+                    onClick={this.handleNullConnect}
+                    disabled={isLoading}
+                  >
+                    {translate('ADD_SAFE_T_SCAN')}
+                  </button>
+                )}
+                <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
+                  {error || '-'}
                 </div>
-              ) : (
-                <button
-                  className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
-                  onClick={this.handleNullConnect}
-                  disabled={isLoading}
-                >
-                  {translate('ADD_SAFE_T_SCAN')}
-                </button>
-              )}
-              <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
-                {error || '-'}
               </div>
             </div>
 

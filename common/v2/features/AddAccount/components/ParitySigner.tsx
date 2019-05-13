@@ -34,16 +34,14 @@ type SignerQrContent = SignerAddress | string;
 class ParitySignerDecryptClass extends PureComponent<Props> {
   public render() {
     return (
-      <div className="Panel">
+      <div className="ParityPanel">
         <div className="Panel-title">
           {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
         </div>
         <div className="ParitySigner">
           {/* <div className="ParitySigner-title">{translate('SIGNER_SELECT_WALLET')}</div> */}
           <section className="ParitySigner-fields">
-            <section className="ParitySigner-fields-field-margin">
-              {translate('SIGNER_SELECT_WALLET_QR')}
-            </section>
+            <section className="Panel-description">{translate('SIGNER_SELECT_WALLET_QR')}</section>
             <section className="ParitySigner-fields-field">
               <ParityQrSigner scan={true} onScan={this.unlockAddress} />
             </section>

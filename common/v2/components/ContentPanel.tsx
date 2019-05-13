@@ -8,7 +8,7 @@ import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const ContentPanelWrapper = styled.div`
-  @media (min-width: 700px) {
+  @media (max-width: 700px) {
     max-width: 560px;
   }
 `;

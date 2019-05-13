@@ -6,7 +6,7 @@ import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { unlockKeystore } from 'v2/features/wallets';
+import { unlockKeystore } from '/home/sharon/Documents/MyCrypto/common/v2/features/Wallets/keystore/keystore';
 import './Keystore.scss';
 
 export interface KeystoreValue {

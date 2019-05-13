@@ -1,4 +1,5 @@
 import { FormDataAction, FormData, FormDataActionType as ActionType, WalletName } from './types';
+import { STORIES } from './stories';
 
 export const initialState: FormData = {
   network: 'Ethereum' // @ADD_ACCOUNT_TODO this should have the same type as networkOptions in NetworkOptionsContext
@@ -31,7 +32,7 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
   }
 };
 
-const handleUnlock = (walletType, payload) => {
+const handleUnlock = async (walletType, payload) => {
   switch (walletType) {
     case WalletName.VIEW_ONLY:
     case WalletName.KEYSTORE_FILE:

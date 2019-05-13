@@ -71,15 +71,17 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <DeterministicWallets
-          publicKey={publicKey}
-          chainCode={chainCode}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
-        />
+        <div className="Mnemoinc-dpath">
+          <DeterministicWallets
+            publicKey={publicKey}
+            chainCode={chainCode}
+            dPath={dPath}
+            dPaths={this.props.dPaths}
+            onCancel={this.handleCancel}
+            onConfirmAddress={this.handleUnlock}
+            onPathChange={this.handlePathChange}
+          />
+        </div>
       );
     } else {
       return (

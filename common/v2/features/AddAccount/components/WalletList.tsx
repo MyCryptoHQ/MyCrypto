@@ -17,7 +17,7 @@ class WalletList extends PureComponent<Props> {
     const { wallets, onSelect, formDataDispatch } = this.props;
     const validWallets = wallets.filter(w => !w.hideFromWalletList); // @TODO Filter here according to electronOnly
     return (
-      <div className="WalletDecrypt-wallets">
+      <div className="WalletDecrypt-container">
         <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
         <div className="WalletDecrypt-wallets-description">
           {translate('ADD_ACCOUNT_DESCRIPTION')}

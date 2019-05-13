@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Button, ComboBox } from '@mycrypto/ui';
+import './NetworkSelectPanel.scss';
 
 import { translate } from 'translations';
 import { NetworkOptionsContext } from 'v2/providers';
@@ -36,9 +37,11 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }) {
         placeholder="Ethereum"
         onChange={({ target: { value } }) => setNetwork(value)}
       />
-      <Button className="Panel-description-button" onClick={onSubmit}>
-        {translate('ADD_ACCOUNT_NETWORK_ACTION')}
-      </Button>
+      <div className="SelectNetworkPanel-button-container">
+        <Button className="SelectNetworkPanel-button" onClick={onSubmit}>
+          {translate('ADD_ACCOUNT_NETWORK_ACTION')}
+        </Button>
+      </div>
     </div>
   );
 }

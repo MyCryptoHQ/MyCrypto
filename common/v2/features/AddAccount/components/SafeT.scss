@@ -23,6 +23,7 @@
   }
 
   &-unlockButton {
+    justify-content: center;  
     position: relative;
     width: 420px;
     bottom: -25px;
@@ -55,4 +56,9 @@
       margin-right: 16px;
     }
   }
+}
+
+.SafeTMini-button-container {
+  display: flex; 
+  justify-content: center; 
 }

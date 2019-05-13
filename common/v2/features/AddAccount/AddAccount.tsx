@@ -479,38 +479,36 @@ const WalletDecrypt = withRouter<Props>(
 
     public selectNetworkComponent() {
       return (
-        <ContentPanel onBack={this.props.history.goBack} className="">
-          <div className="Panel">
-            <div className="Panel-title">Select Network</div>
-            <div className="Panel-description">{translate('ADD_ACCOUNT_NETWORK_SELCT')}</div>
-            <label className="Panel-networkLabel">Network</label>
-            <NetworkOptionsContext.Consumer>
-              {({ networkOptions = [] }) => {
-                const networkNames: any[] = [];
-                networkOptions.map(en => {
-                  if (isWalletFormatSupportedOnNetwork(en, this.state.accountData.accountType)) {
-                    networkNames.push(en.name);
-                  }
-                });
-                console.log(networkNames);
-                return (
-                  <ComboBox
-                    className="Panel-dropdown"
-                    value={this.state.accountData.network}
-                    items={new Set(networkNames.sort())}
-                    onChange={({ target: { value } }) => {
-                      this.setState({ accountData: { ...this.state.accountData, network: value } });
-                    }}
-                    placeholder="Ethereum"
-                  />
-                );
-              }}
-            </NetworkOptionsContext.Consumer>
-            <Button className="Panel-description-button" onClick={this.handleNetworkSelect}>
-              Next
-            </Button>
-          </div>
-        </ContentPanel>
+        <div className="SelectNetwork-panel">
+          <div className="Panel-title">Select Network</div>
+          <div className="Panel-description">{translate('ADD_ACCOUNT_NETWORK_SELCT')}</div>
+          <label className="Panel-networkLabel">Network</label>
+          <NetworkOptionsContext.Consumer>
+            {({ networkOptions = [] }) => {
+              const networkNames: any[] = [];
+              networkOptions.map(en => {
+                if (isWalletFormatSupportedOnNetwork(en, this.state.accountData.accountType)) {
+                  networkNames.push(en.name);
+                }
+              });
+              console.log(networkNames);
+              return (
+                <ComboBox
+                  className="Panel-dropdown"
+                  value={this.state.accountData.network}
+                  items={new Set(networkNames.sort())}
+                  onChange={({ target: { value } }) => {
+                    this.setState({ accountData: { ...this.state.accountData, network: value } });
+                  }}
+                  placeholder="Ethereum"
+                />
+              );
+            }}
+          </NetworkOptionsContext.Consumer>
+          <Button className="Panel-description-button" onClick={this.handleNetworkSelect}>
+            Next
+          </Button>
+        </div>
       );
     }
 
