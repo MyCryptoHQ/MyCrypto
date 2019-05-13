@@ -14,7 +14,7 @@ export const keystoreStageToComponentHash = {
 };
 
 export const keystoreFlow = [
-  KeystoreStages.SelectNetwork,
   KeystoreStages.GenerateKeystore,
+  KeystoreStages.SelectNetwork,
   KeystoreStages.SaveKeystore
 ];

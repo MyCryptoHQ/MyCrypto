@@ -16,7 +16,7 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
     <ContentPanel
       onBack={onBack}
       stepper={{
-        current: 2,
+        current: 1,
         total: 3
       }}
       heading="Generate a Keystore File"

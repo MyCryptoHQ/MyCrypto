@@ -14,7 +14,7 @@ export default function SelectNetworkPanel({ totalSteps, onBack, onNext }: Props
     <ContentPanel
       onBack={onBack}
       stepper={{
-        current: 1,
+        current: 2,
         total: totalSteps
       }}
       heading="Select Network"
