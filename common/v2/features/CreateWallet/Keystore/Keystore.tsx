@@ -17,9 +17,12 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
       onBack: this.regressToPreviousStage,
       onNext: this.advanceToNextStage
     };
-    const isKeystorePanel = [KeystoreStages.GenerateKeystore, KeystoreStages.SaveKeystore].includes(
-      stage
-    );
+    const isKeystorePanel = [
+      KeystoreStages.GenerateKeystore,
+      KeystoreStages.SaveKeystore,
+      KeystoreStages.MakeBackup,
+      KeystoreStages.VerifyKeystore
+    ].includes(stage);
 
     return (
       <KeystoreProvider>
@@ -27,10 +30,10 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
           <section className="CreateWallet">
             {isKeystorePanel ? (
               <KeystoreContext.Consumer>
-                {({}) => <ActivePanel totalSteps={3} {...actions} />}
+                {({}) => <ActivePanel totalSteps={5} {...actions} />}
               </KeystoreContext.Consumer>
             ) : (
-              <ActivePanel totalSteps={3} {...actions} />
+              <ActivePanel totalSteps={5} {...actions} />
             )}
           </section>
         </Layout>

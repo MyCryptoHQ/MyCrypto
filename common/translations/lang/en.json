@@ -836,8 +836,17 @@
     "SAVE_KEYSTORE_DESCRIPTION_1":"**Don't lose it.** It can't be recovered if you lose it.",
     "SAVE_KEYSTORE_DESCRIPTION_2":"**Don't share it.** Your funds will be stolen if you use this on a malicious site.",
     "SAVE_KEYSTORE_DESCRIPTION_3":"**Keep it offline.** Your funds are safest offline (on a USB drive or something similar). We don't recommend keeping your file on any cloud services like Dropbox, Google Drive, etc.",
-    "SAVE_KEYSTORE_BUTTON":"Download Keystore File"
-
-
+    "SAVE_KEYSTORE_BUTTON":"Download Keystore File",
+    "MAKE_BACKUP_TITLE": "Make a Backup",
+    "MAKE_BACKUP_DESCRIPTION_1": "Remember, a **private key** + a **password** = a **keystore file.**",
+    "MAKE_BACKUP_DESCRIPTION_2": "Make a backup of your **private key** in case you ever lose your **keystore file.**",
+    "MAKE_BACKUP_DESCRIPTION_3": "We recommend you print it out twice and store them in two separate, safe, and secret locations. Do not share them with others, save them online, or take a photo of them.",
+    "MAKE_BACKUP_PRINT_BUTTON": "Print Private Key",
+    "YOUR_PRIVATE_KEY_LABEL": "Your Private Key",
+    "VERIFY_KEYSTORE_TITLE": "Verify Keystore File or Private Key",
+    "VERIFY_KEYSTORE_DESCRIPTION": "Select your keystore file or enter your private key to ensure you have it backed up properly.",
+    "YOUR_KEYSTORE_LABEL":"Your Keystore File",
+    "UPLOAD_KEYSTORE_LABEL": "Upload Keystore File",
+    "DONE_AND_RETURN_LABEL": "Done: Return to Dashboard"
   }
 }

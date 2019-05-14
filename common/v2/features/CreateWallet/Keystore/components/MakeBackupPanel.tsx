@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ExtendedContentPanel } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
-import keystoreIcon from 'common/assets/images/icn-keystore.svg';
+import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;
@@ -35,26 +35,49 @@ const ImageWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
-export default function SaveKeystoreFilePanel({ onBack, onNext }: PanelProps) {
+const PrivateKeyWrapper = styled.div`
+  font-size: 20px;
+  margin-top: 18px;
+`;
+
+const PrivateKeyField = styled.div`
+  width: 100%;
+  font-size: 18px;
+  border: solid 1px #e5ecf3;
+  background-color: rgba(247, 247, 247, 0.4);
+  word-wrap: break-word;
+  padding: 8px 18px;
+  margin-top: 8px;
+`;
+
+export default function MakeBackupPanel({ onBack, onNext }: PanelProps) {
   return (
     <ExtendedContentPanel
       onBack={onBack}
       stepper={{
-        current: 3,
+        current: 4,
         total: 5
       }}
-      heading={translateRaw('SAVE_KEYSTORE_TITLE')}
+      heading={translateRaw('MAKE_BACKUP_TITLE')}
+      className="SaveKeystoreFilePanel"
     >
       <ImageWrapper>
-        <img src={keystoreIcon} />
+        <img src={lockSafetyIcon} />
       </ImageWrapper>
 
-      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
-      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
-      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
+      <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_1')}</DescriptionItem>
+      <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_2')}</DescriptionItem>
+      <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_3')}</DescriptionItem>
+
+      <PrivateKeyWrapper>
+        {translate('YOUR_PRIVATE_KEY_LABEL')}
+        <PrivateKeyField>
+          afdfd9c3d2095ef696594f6cedcae59e72dcd697e2a7521b1578140422a4f890
+        </PrivateKeyField>
+      </PrivateKeyWrapper>
       <ButtonsWrapper>
         <StyledButton secondary={true} onClick={onNext}>
-          {translate('SAVE_KEYSTORE_BUTTON')}
+          {translate('MAKE_BACKUP_PRINT_BUTTON')}
         </StyledButton>
         <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
       </ButtonsWrapper>

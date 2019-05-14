@@ -51,7 +51,7 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
       onBack={onBack}
       stepper={{
         current: 1,
-        total: 3
+        total: 5
       }}
       heading={translateRaw('NEW_WALLET_KEYSTORE_TITLE')}
       description={<Description />}
