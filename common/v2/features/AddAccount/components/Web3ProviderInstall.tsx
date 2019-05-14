@@ -77,7 +77,7 @@ function InstallMetaMask() {
         {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')} <br />
         <NewTabLink
           content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
-          href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
+          href="https://download.mycrypto.com/"
         />
       </div>
     </div>
