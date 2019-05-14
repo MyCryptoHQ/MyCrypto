@@ -9,6 +9,7 @@ import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from 'components/ui';
 import { IS_MOBILE } from '../flags';
+import './Web3ProviderInstall.scss';
 
 interface Props {
   wallet: object;
@@ -21,29 +22,39 @@ function InstallTrunk() {
       <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>
       <div className="Panel-description">{translate('ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC')}</div>
       <div className="Panel-content">
-        <div className="download-option">
-          <NewTabLink href="https://trustwallet.com/dapp">
-            <img src={TrustWalletWEBP} />
-          </NewTabLink>
-          <Typography>TrustWallet App</Typography>
-          <NewTabLink href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409">
-            <img src={AppStoreBadgeIMG} />
-          </NewTabLink>
-          <NewTabLink href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp">
-            <img src={GooglePlayBadgeIMG} />
-          </NewTabLink>
-        </div>
-        <div className="download-option">
-          <NewTabLink href="https://www.coinbase.com/mobile" target="_blank">
-            <img src={CoinbaseWalletJPG} />
-          </NewTabLink>
-          <Typography>Coinbase App</Typography>
-          <NewTabLink href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8">
-            <img src={AppStoreBadgeIMG} />
-          </NewTabLink>
-          <NewTabLink href="https://play.google.com/store/apps/details?id=com.coinbase.android">
-            <img src={GooglePlayBadgeIMG} />
-          </NewTabLink>
+        <div className="Web3-options">
+          <div className="TrustWallet-container">
+            <NewTabLink href="https://trustwallet.com/dapp">
+              <div className="TrustWallet-img">
+                <img src={TrustWalletWEBP} />
+              </div>
+            </NewTabLink>
+
+            <Typography>TrustWallet App</Typography>
+            <NewTabLink href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409">
+              <img src={AppStoreBadgeIMG} />
+            </NewTabLink>
+            <NewTabLink href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp">
+              <img src={GooglePlayBadgeIMG} />
+            </NewTabLink>
+          </div>
+
+          <div className="CoinbaseWallet-container">
+            <div className="download-option">
+              <NewTabLink href="https://www.coinbase.com/mobile" target="_blank">
+                <div className="CoinbaseWallet-img">
+                  <img src={CoinbaseWalletJPG} />
+                </div>
+              </NewTabLink>
+              <Typography>Coinbase App</Typography>
+              <NewTabLink href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8">
+                <img src={AppStoreBadgeIMG} />
+              </NewTabLink>
+              <NewTabLink href="https://play.google.com/store/apps/details?id=com.coinbase.android">
+                <img src={GooglePlayBadgeIMG} />
+              </NewTabLink>
+            </div>
+          </div>
         </div>
       </div>
     </div>
