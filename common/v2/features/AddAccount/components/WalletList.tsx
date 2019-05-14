@@ -17,7 +17,7 @@ export default class WalletList extends PureComponent<Props> {
     console.log(wallets);
     console.log(validWallets);
     return (
-      <div className="WalletDecrypt-wallets">
+      <div className="WalletDecrypt-container">
         <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
         <div className="WalletDecrypt-wallets-description">
           {translate('ADD_ACCOUNT_DESCRIPTION')}

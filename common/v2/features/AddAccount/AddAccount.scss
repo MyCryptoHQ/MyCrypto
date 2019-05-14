@@ -28,7 +28,9 @@ $speed: 500ms;
 }
 
 .Panel {
-  min-height: 629px;
+  width: 562px;
+height: 629px;
+justify-content: center; 
   // display: flex;
   // flex-direction: column;
   position: relative;
@@ -414,4 +416,13 @@ $speed: 500ms;
 
 .no-padding {
   padding: 0;
+}
+
+.SelectNetwork-panel {
+  width: 420px; 
+}
+
+.Mnemoinc-dpath{
+  width: 935px;
+  height: 757px;
 }

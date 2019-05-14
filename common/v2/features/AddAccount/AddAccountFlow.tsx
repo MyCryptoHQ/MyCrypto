@@ -108,12 +108,14 @@ function AddAccountFlow() {
   };
 
   const renderDefault = () => (
-    <ContentPanel className="">
-      <TransitionGroup>
-        <CSSTransition classNames="DecryptContent" timeout={500}>
-          <WalletList wallets={STORIES} onSelect={onWalletSelection} />
-        </CSSTransition>
-      </TransitionGroup>
+    <ContentPanel className="" data-testid="Main-panel">
+      <div className="MainPanel">
+        <TransitionGroup>
+          <CSSTransition classNames="DecryptContent" timeout={500}>
+            <WalletList wallets={STORIES} onSelect={onWalletSelection} />
+          </CSSTransition>
+        </TransitionGroup>
+      </div>
     </ContentPanel>
   );
 
