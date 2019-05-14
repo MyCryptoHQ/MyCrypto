@@ -39,7 +39,6 @@ const ContentPanelHeading =
   font-size: 36px;
   width: 100%;
   display: flex;
-  padding: ${props => (props.centered ? '0 40px' : '0')};
   justify-content: ${props => (props.centered ? 'center' : 'space-between')};
   font-weight: bold;
   line-height: normal;
@@ -57,18 +56,19 @@ const ContentPanelHeadingIcon = styled.img`
   height: 45px;
 `;
 
-interface ContentPanelDescriptionProps {
-  centered: boolean | undefined;
-}
-
 const ContentPanelDescription = styled.p`
   font-size: 18px;
-  font-weight: normal;
   line-height: 1.5;
-  padding: ${(props: ContentPanelDescriptionProps) => (props.centered ? '0 43px' : '0')};
-  color: ${props => props.theme.text};
+  font-weight: normal;
 
-  @media (max-width: 700px) {
+  color: ${props => props.theme.text};
+  white-space: pre-line;
+
+  strong {
+    font-weight: 900;
+  }
+  @media (max-w
+ idth: 700px) {
     padding: 0 8px;
   }
 `;
@@ -76,7 +76,7 @@ const ContentPanelDescription = styled.p`
 const ImgIcon = styled.img`
   width: 125px;
   height: auto;
-  margin: 21px 0 28px 0;
+  margin-bottom: 28px;
 `;
 
 interface ContentPanelTopProps {
@@ -99,6 +99,8 @@ const ContentPanelTop =
 `;
 
 const StyledPanel = styled(Panel)`
+  padding: 42px 70px 42px 70px;
+
   @media (max-width: 700px) {
     padding-left: 15px;
     padding-right: 15px;
@@ -107,12 +109,12 @@ const StyledPanel = styled(Panel)`
 
 interface Props {
   children: any;
-  className: string;
+  className?: string;
   heading?: string;
   icon?: string;
   image?: string;
   showImageOnTop?: boolean;
-  description?: string;
+  description?: string | JSX.Element;
   stepper?: {
     current: number;
     total: number;
@@ -154,9 +156,7 @@ export default function ExtendedContentPanel({
             {icon && <ContentPanelHeadingIcon src={icon} alt="Icon" />}
           </ContentPanelHeading>
         )}
-        {description && (
-          <ContentPanelDescription centered={centered}>{description}</ContentPanelDescription>
-        )}
+        {description && <ContentPanelDescription>{description}</ContentPanelDescription>}
         {image && !showImageOnTop && <ImgIcon src={image} alt="Image" />}
         {children}
       </StyledPanel>

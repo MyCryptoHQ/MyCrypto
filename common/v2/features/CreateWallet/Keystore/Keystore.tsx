@@ -7,7 +7,7 @@ import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './co
 
 export default class CreateWallet extends Component<RouteComponentProps<{}>> {
   public state = {
-    stage: KeystoreStages.SelectNetwork
+    stage: KeystoreStages.GenerateKeystore
   };
 
   public render() {

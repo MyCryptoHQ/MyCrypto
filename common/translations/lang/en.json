@@ -823,6 +823,21 @@
     "SCREEN_LOCK_LOCKING_TURN_ON_LOCK": "Turn on Screen Lock",
     "SCREEN_LOCK_TAB_TITLE": "MyCrypto",
     "SCREEN_LOCK_TAB_TITLE_LOCKED": "MyCrypto (Locked)",
-    "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in"
+    "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in",
+    "NEW_WALLET_KEYSTORE_TITLE":"Create Keystore File",
+    "NEW_WALLET_KEYSTORE_BUTTON":"Create Keystore File",
+    "NEW_WALLET_KEYSTORE_DESCRIPTION_1":"A **private key** + a **password** = a **keystore file.**",
+    "NEW_WALLET_KEYSTORE_DESCRIPTION_2": "Enter a strong, easy-to-remember **password** to create your **keystore file.** This password will encrypt your **private key.** It is not used as a seed.",
+    "NEW_WALLET_KEYSTORE_DESCRIPTION_3": "**Don’t forget your password.** You will need the password and your keystore file to access your account in the future.",
+    "SELECT_NETWORK_TITLE":"Select Network",
+    "SELECT_NETWORK_DESCRIPTION":"Select the blockchain that you want to operate with. Not sure what to choose? Stick with the default choice below and click next.",
+    "SELECT_NETWORK_LABEL":"Network",
+    "SAVE_KEYSTORE_TITLE":"Save Your Keystore File",
+    "SAVE_KEYSTORE_DESCRIPTION_1":"**Don't lose it.** It can't be recovered if you lose it.",
+    "SAVE_KEYSTORE_DESCRIPTION_2":"**Don't share it.** Your funds will be stolen if you use this on a malicious site.",
+    "SAVE_KEYSTORE_DESCRIPTION_3":"**Keep it offline.** Your funds are safest offline (on a USB drive or something similar). We don't recommend keeping your file on any cloud services like Dropbox, Google Drive, etc.",
+    "SAVE_KEYSTORE_BUTTON":"Download Keystore File"
+
+
   }
 }
