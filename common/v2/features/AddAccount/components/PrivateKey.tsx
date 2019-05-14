@@ -144,10 +144,10 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
     }
   };
 
-  private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
+  private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const wallet = unlockPrivateKey({ key: this.state.key, password: this.state.password });
+    const wallet = await unlockPrivateKey({ key: this.state.key, password: this.state.password });
     this.props.onUnlock(wallet);
   };
 }
