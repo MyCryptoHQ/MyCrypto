@@ -56,7 +56,7 @@ const UploadZone = styled.div`
 type Props = PanelProps & RouteComponentProps<{}>;
 
 function VerifyKeystorePanel(props: Props) {
-  const { history, onBack, onNext } = props;
+  const { history, onBack } = props;
   return (
     <ExtendedContentPanel
       onBack={onBack}
@@ -82,9 +82,6 @@ function VerifyKeystorePanel(props: Props) {
         <Input icon="showNetworks" iconSide="right" />
       </FormItemWrapper>
       <ButtonsWrapper>
-        <StyledButton secondary={true} onClick={onNext}>
-          {translate('MAKE_BACKUP_PRINT_BUTTON')}
-        </StyledButton>
         <StyledButton onClick={() => history.replace('/dashboard')}>
           {translate('DONE_AND_RETURN_LABEL')}
         </StyledButton>

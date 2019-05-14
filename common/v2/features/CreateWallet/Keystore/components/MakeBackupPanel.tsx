@@ -7,6 +7,16 @@ import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 
+import printerIcon from 'common/assets/images/icn-printer.svg';
+
+const PrinterImage = styled.embed`
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  pointer-events: none;
+  display: inline;
+`;
+
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;
   font-weight: normal;
@@ -26,6 +36,16 @@ const StyledButton = styled(Button)`
   font-size: 18px;
   margin-bottom: 16px;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:focus,
+  &:hover {
+    embed {
+      filter: brightness(0) invert(1);
+    }
+  }
 `;
 
 const ImageWrapper = styled.div`
@@ -76,7 +96,8 @@ export default function MakeBackupPanel({ onBack, onNext }: PanelProps) {
         </PrivateKeyField>
       </PrivateKeyWrapper>
       <ButtonsWrapper>
-        <StyledButton secondary={true} onClick={onNext}>
+        <StyledButton secondary={true}>
+          <PrinterImage src={printerIcon} />
           {translate('MAKE_BACKUP_PRINT_BUTTON')}
         </StyledButton>
         <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
