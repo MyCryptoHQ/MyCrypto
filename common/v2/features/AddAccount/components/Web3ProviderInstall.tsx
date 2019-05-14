@@ -11,11 +11,6 @@ import { NewTabLink } from 'components/ui';
 import { IS_MOBILE } from '../flags';
 import './Web3ProviderInstall.scss';
 
-interface Props {
-  wallet: object;
-  onUnlock(): void;
-}
-
 function InstallTrunk() {
   return (
     <div className="Panel">
@@ -61,7 +56,7 @@ function InstallTrunk() {
   );
 }
 
-function InstallMetaMask({ onUnlock }: Props) {
+function InstallMetaMask() {
   return (
     <div className="Panel">
       <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>
@@ -71,9 +66,11 @@ function InstallMetaMask({ onUnlock }: Props) {
           <div className="Panel-content-img">
             <img src={MetamaskSVG} />
           </div>
-          <button className="btn btn-primary btn-lg btn-block" onClick={onUnlock}>
-            {translate('METAMASK_DOWNLOAD')}
-          </button>
+          <a href="https://metamask.io/" target="_blank" rel="noreferrer">
+            <button className="btn btn-primary btn-lg btn-block">
+              {translate('METAMASK_DOWNLOAD')}
+            </button>
+          </a>
         </div>
       </div>
       <div className="MetaMaskPanel-footer">
@@ -87,8 +84,8 @@ function InstallMetaMask({ onUnlock }: Props) {
   );
 }
 
-function Web3ProviderInstall(props: Props) {
-  return <>{IS_MOBILE ? <InstallTrunk /> : <InstallMetaMask {...props} />}</>;
+function Web3ProviderInstall() {
+  return <>{IS_MOBILE ? <InstallTrunk /> : <InstallMetaMask />}</>;
 }
 
 export default Web3ProviderInstall;
