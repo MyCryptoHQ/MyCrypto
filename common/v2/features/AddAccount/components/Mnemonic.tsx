@@ -34,15 +34,14 @@ interface State {
   selectedDPath: DPath;
 }
 
-
 class MnemonicDecryptClass extends PureComponent<Props, State> {
-  public state:State = {
+  public state: State = {
     seed: undefined,
     phrase: undefined,
     formattedPhrase: undefined,
     pass: undefined,
     selectedDPath: this.props.dPath
-  }
+  };
 
   public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
@@ -51,7 +50,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
   }
 
   public render() {
-    const { seed, phrase, formattedPhrase, pass, selectedDPath} = this.state;
+    const { seed, phrase, formattedPhrase, pass, selectedDPath } = this.state;
     const isValidMnemonic = validateMnemonic(formattedPhrase || '');
 
     if (seed) {
@@ -144,7 +143,9 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
   public onDWModalOpen = async () => {
     const { formattedPhrase, pass = '' } = this.state;
-    if (!formattedPhrase || !validateMnemonic(formattedPhrase)) { return; }
+    if (!formattedPhrase || !validateMnemonic(formattedPhrase)) {
+      return;
+    }
 
     const seed = await mnemonicToSeed(formattedPhrase, pass).toString('hex');
     this.setState({ seed });
