@@ -5,5 +5,15 @@
 .Panel-content-img {
   margin: 2em;
   padding-top: 2em;
+  display: flex; 
+  justify-content: center; 
 
+  @media (max-width: 700px) {
+    margin: 0.5em; 
+    padding-top: 0.5em; 
+  }
+}
+
+.MetaMaskPanel-footer{
+  text-align: center; 
 }

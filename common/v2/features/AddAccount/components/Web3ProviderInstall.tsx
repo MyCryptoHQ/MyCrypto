@@ -61,18 +61,16 @@ function InstallMetaMask({ onUnlock }: Props) {
             <img src={MetamaskSVG} />
           </div>
           <button className="btn btn-primary btn-lg btn-block" onClick={onUnlock}>
-            {translate('ADD_METAMASK')}
+            {translate('METAMASK_DOWNLOAD')}
           </button>
         </div>
       </div>
-      <div className="Panel-footer">
-        <div>
-          {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')}{' '}
-          <NewTabLink
-            content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
-            href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
-          />
-        </div>
+      <div className="MetaMaskPanel-footer">
+        {translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER')} <br />
+        <NewTabLink
+          content={translate('ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK')}
+          href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
+        />
       </div>
     </div>
   );

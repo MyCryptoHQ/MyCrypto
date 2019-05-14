@@ -855,6 +855,7 @@
     "SCREEN_LOCK_TAB_TITLE_LOCKING": "Locking Screen in",
     "KEYSTORE_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-keystore-file)",
     "MNEMONIC_HELP":"Not working? [Here's some troubleshooting tips to try](https://support.mycrypto.com/how-to/accessing-wallet/how-to-access-your-wallet-with-mnemonic-phrase)",
-    "MNEMONIC_TOOL_TIP": "If you created a Mnemonic Phrase on another website, you may have a password for this account"
+    "MNEMONIC_TOOL_TIP": "If you created a Mnemonic Phrase on another website, you may have a password for this account", 
+    "METAMASK_DOWNLOAD": "Download MetaMask"
   }
 }
