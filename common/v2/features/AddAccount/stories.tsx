@@ -1,6 +1,6 @@
 import { knowledgeBaseURL as KB_URL } from 'config';
 import { getWeb3ProviderInfo } from 'utils/web3';
-import { IS_DEV, IS_ELECTRON } from './flags';
+import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from './flags';
 import { WalletName, WalletType } from './types';
 import {
   InsecureWalletWarning,
@@ -51,7 +51,9 @@ export const STORIES = [
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
     // steps: [NetworkSelectPanel, Web3ProviderDecrypt, SaveAndRedirect],
-    steps: true ? [Web3ProviderInstall, SaveAndRedirect] : [Web3ProviderDecrypt]
+    steps: HAS_WEB3_PROVIDER
+      ? [NetworkSelectPanel, Web3ProviderDecrypt, SaveAndRedirect]
+      : [Web3ProviderInstall]
   },
   {
     name: WalletName.LEDGER,

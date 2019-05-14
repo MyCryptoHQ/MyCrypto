@@ -10,7 +10,6 @@ import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
 
-
 interface State {
   storyName: WalletName;
   step: number;
@@ -65,8 +64,6 @@ function AddAccountFlow() {
     // 2. continue once it's done.
     goToNextStep();
 
-
-
     // console.log('UNLOCK CALLED')
     //   // some components (TrezorDecrypt) don't take an onChange prop, and thus
     //   // this.state.value will remain unpopulated. in this case, we can expect
@@ -104,7 +101,7 @@ function AddAccountFlow() {
     //
     // console.log(formData);
     // goToNextStep();
-  }
+  };
 
   const onWalletSelection = (name: WalletName) => {
     setStoryName(name);

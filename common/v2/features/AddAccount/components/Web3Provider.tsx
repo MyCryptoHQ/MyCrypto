@@ -5,6 +5,7 @@ import { Typography } from '@mycrypto/ui';
 import translate from 'translations';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import { NewTabLink, HelpLink } from 'components/ui';
+import { unlockWeb3 } from 'v2/features/Wallets';
 
 interface Props {
   wallet: object;
@@ -12,6 +13,11 @@ interface Props {
 }
 
 function Web3ProviderDecrypt({ wallet, onUnlock }: Props) {
+  const unlockWallet = async () => {
+    const walletPayload = await unlockWeb3();
+    onUnlock(walletPayload);
+  };
+
   return (
     <div className="Panel">
       <div className="Panel-title">{translate('ADD_ACCOUNT_METAMASK_TITLE')}</div>
@@ -21,7 +27,7 @@ function Web3ProviderDecrypt({ wallet, onUnlock }: Props) {
           <div className="Panel-content-img">
             <img src={MetamaskSVG} />
           </div>
-          <button className="btn btn-primary btn-lg btn-block" onClick={onUnlock}>
+          <button className="btn btn-primary btn-lg btn-block" onClick={unlockWallet}>
             {translate('ADD_METAMASK')}
           </button>
         </div>
