@@ -11,7 +11,7 @@ import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
 
-export const getStory = (storyName: WalletName) => {
+export const getStory = (storyName: WalletName): any => {
   return STORIES.filter(selected => selected.name === storyName)[0];
 };
 
