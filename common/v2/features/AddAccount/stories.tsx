@@ -1,6 +1,5 @@
 import { knowledgeBaseURL as KB_URL } from 'config';
 import {
-  walletNames,
   DefaultWalletName,
   SecureWalletName,
   InsecureWalletName,
@@ -43,8 +42,7 @@ import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 // 2. Merge enums and names with the ones in common/v2/config/accountTypes.ts
 
 const web3ProviderInfo = getWeb3ProviderInfo();
-console.log('walletNames');
-console.log(walletNames);
+
 export const STORIES = [
   {
     name: DefaultWalletName.DEFAULT,
@@ -58,7 +56,6 @@ export const STORIES = [
     icon: web3ProviderInfo.icon,
     description: 'ADD_WEB3DESC',
     helpLink: `${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`,
-    // steps: [NetworkSelectPanel, Web3ProviderDecrypt, SaveAndRedirect],
     steps: HAS_WEB3_PROVIDER
       ? [NetworkSelectPanel, Web3ProviderDecrypt, SaveAndRedirect]
       : [Web3ProviderInstall]

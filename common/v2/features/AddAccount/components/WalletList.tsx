@@ -13,9 +13,6 @@ export default class WalletList extends PureComponent<Props> {
   public render() {
     const { wallets, onSelect } = this.props;
     const validWallets = wallets.filter(w => !w.hideFromWalletList); // @TODO Filter here according to electronOnly
-    console.log('wallets');
-    console.log(wallets);
-    console.log(validWallets);
     return (
       <div className="WalletDecrypt-container">
         <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
@@ -25,7 +22,6 @@ export default class WalletList extends PureComponent<Props> {
         <div className="WalletDecrypt-container">
           <div className="WalletDecrypt-wallets-row">
             {validWallets.map(wallet => {
-              console.log(wallet.name);
               return (
                 <WalletButton
                   key={`wallet-icon-${wallet.name}`}

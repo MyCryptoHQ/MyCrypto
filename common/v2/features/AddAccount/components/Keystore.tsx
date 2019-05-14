@@ -49,7 +49,7 @@ export class KeystoreDecrypt extends PureComponent {
   };
 
   public render() {
-    const { isWalletPending, wallet } = this.props;
+    const { isWalletPending } = this.props;
     const { file, password, filename } = this.state;
     const passReq = file ? isPassRequired(file) : true;
     const unlockDisabled = !file || (passReq && !password);
@@ -57,7 +57,7 @@ export class KeystoreDecrypt extends PureComponent {
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(wallet.lid)}`}
+          {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_KEYSTORE2')}`}
         </div>
         <div className="Keystore">
           <form onSubmit={this.unlock}>

@@ -53,51 +53,11 @@ function AddAccountFlow() {
   };
 
   const onUnlock = async (payload: any) => {
-    console.log('onUnlock');
-    console.log(payload);
     // 1. Let reducer handle the differences. Infact this updateFormState could
     // be simplified by having each component call `updateFormState` themselves.
     await updateFormState({ type: ActionType.ON_UNLOCK, payload });
     // 2. continue once it's done.
     goToNextStep();
-
-    // console.log('UNLOCK CALLED')
-    //   // some components (TrezorDecrypt) don't take an onChange prop, and thus
-    //   // this.state.value will remain unpopulated. in this case, we can expect
-    //   // the payload to contain the unlocked wallet info.
-    //   const unlockValue = payload;
-    //   console.log(unlockValue)
-    //
-    //   console.log(payload);
-    //   console.log(formData)
-    //   if (formData.accountType === WalletName.VIEW_ONLY) {
-    //     updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: unlockValue.getAddressString() }})
-    //     updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: '' }})
-    //   } else if (
-    //     formData.accountType === WalletName.KEYSTORE_FILE ||
-    //     formData.accountType === WalletName.PRIVATE_KEY ||
-    //     formData.accountType === WalletName.WEB3PROVIDER
-    //   ) {
-    //     console.log('got here??')
-    //     const wallet = await STORIES[formData.accountType].unlock(unlockValue);
-    //     updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: wallet.getAddressString() }})
-    //     updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: '' }})
-    //   } else if (formData.accountType === WalletName.PARITY_SIGNER) {
-    //     updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: unlockValue.address }})
-    //     updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: '' }})
-    //   } else if (formData.accountType === MNEMONIC_PHRASE
-    //       || formData.accountType === LEDGER
-    //       || formData.accountType === TREZOR
-    //       || formData.accountType === SAFE_T
-    //     ) {
-    //     updateFormState({ type: ActionType.SELECT_ACCOUNT, payload: { account: unlockValue.address }})
-    //     updateFormState({ type: ActionType.SET_DERIVATION_PATH, payload: { derivationPath: unlockValue.path || unlockValue.dPath + '/' + unlockValue.index.toString() }})
-    //   }
-    //   console.log('got here?')
-    // //updateFormState({ type: ActionType.ON_UNLOCK, payload: '' })
-    //
-    // console.log(formData);
-    // goToNextStep();
   };
 
   const onWalletSelection = (name: WalletName) => {

@@ -71,7 +71,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_MNEMONIC')}`}
           </div>
           <div className="Mnemonic">
             <div id="selectedTypeKey">

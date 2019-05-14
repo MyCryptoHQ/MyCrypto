@@ -75,7 +75,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_SAFE_T')}`}
           </div>
           <div className="SafeTminiDecrypt">
             <div className="SafeTminiDecrypt-description">

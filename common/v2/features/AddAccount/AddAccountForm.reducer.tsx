@@ -25,15 +25,9 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
       return { ...formData, account };
     case ActionType.SELECT_ACCOUNT_TYPE:
       const { accountType } = action.payload;
-      console.log('got heree???');
-      console.log(action.payload);
       return { ...formData, accountType };
     case ActionType.ON_UNLOCK:
-      console.log('payload1');
-      console.log(action.payload);
       const accountAndDerivationPath = handleUnlock(formData.accountType, action.payload);
-      console.log('accountAndDerivationPath');
-      console.log(accountAndDerivationPath);
       return { ...formData, ...accountAndDerivationPath };
     case ActionType.SET_LABEL:
       const { label } = action.payload;

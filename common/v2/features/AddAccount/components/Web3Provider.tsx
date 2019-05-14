@@ -1,6 +1,7 @@
 import React from 'react';
 
 import translate from 'translations';
+import { knowledgeBaseURL as KB_URL } from 'v2/config';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import { NewTabLink } from 'components/ui';
 import { unlockWeb3 } from 'v2/features/Wallets';
@@ -11,7 +12,7 @@ interface Props {
   onUnlock(param: any): void;
 }
 
-function Web3ProviderDecrypt({ wallet, onUnlock }: Props) {
+function Web3ProviderDecrypt({ onUnlock }: Props) {
   const unlockWallet = async () => {
     const walletPayload = await unlockWeb3();
     onUnlock(walletPayload);
@@ -40,7 +41,10 @@ function Web3ProviderDecrypt({ wallet, onUnlock }: Props) {
           />
         </div>
         <div>
-          <NewTabLink content={translate('ADD_ACCOUNT_METAMASK_HELP')} href={wallet.helpLink} />
+          <NewTabLink
+            content={translate('ADD_ACCOUNT_METAMASK_HELP')}
+            href={`${KB_URL}/how-to/migrating/moving-from-mycrypto-to-metamask`}
+          />
         </div>
       </div>
     </div>

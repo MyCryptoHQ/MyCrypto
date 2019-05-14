@@ -51,8 +51,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   }
 
   public render() {
-    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
-    const showErr = error ? 'is-showing' : '';
+    const { dPath, publicKey, chainCode, isLoading } = this.state;
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
@@ -87,7 +86,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Panel">
           <div className="Panel-title">
-            {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_LEDGER')}`}
           </div>
           <div className="LedgerPanel-description-content">
             <div className="LedgerPanel-description">
@@ -156,8 +155,6 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    console.log('ledgerUnlock');
-    console.log(new LedgerWallet(address, this.state.dPath.value, index));
     this.props.onUnlock(new LedgerWallet(address, this.state.dPath.value, index));
     this.reset();
   };

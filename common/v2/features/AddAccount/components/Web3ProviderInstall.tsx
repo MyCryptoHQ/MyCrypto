@@ -79,7 +79,7 @@ function InstallMetaMask({ onUnlock }: Props) {
 }
 
 function Web3ProviderInstall(props: Props) {
-  return <>{IS_MOBILE ? <InstallTrunk {...props} /> : <InstallMetaMask {...props} />}</>;
+  return <>{IS_MOBILE ? <InstallTrunk /> : <InstallMetaMask {...props} />}</>;
 }
 
 export default Web3ProviderInstall;

@@ -83,7 +83,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
                   placeholder={translateRaw('X_PRIVKEY2')}
                   isValid={isValidPkey}
                   onChange={this.onPkeyChange}
-                  onEnter={this.unlock}
+                  onEnter={() => this.unlock}
                 />
               </label>
             </div>

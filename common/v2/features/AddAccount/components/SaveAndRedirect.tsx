@@ -11,14 +11,8 @@ import { Account } from 'v2/services/Account/types';
 */
 function SaveAndRedirect(payload: { formData: FormData }) {
   const { createAccount } = useContext(AccountContext);
-  console.log('gotTo SaveAndRedirect');
-
   useEffect(() => {
     const network: NetworkOptions | undefined = getNetworkByName(payload.formData.network);
-    console.log('payload');
-    console.log(payload);
-    console.log('network');
-    console.log(network);
     const account: Account = {
       address: payload.formData.account,
       network: payload.formData.network,
@@ -30,8 +24,6 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       localSettings: 'default',
       transactionHistory: ''
     };
-    console.log('Account to add');
-    console.log(account);
     createAccount(account);
   });
 
