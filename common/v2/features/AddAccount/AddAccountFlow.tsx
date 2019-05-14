@@ -86,6 +86,7 @@ function AddAccountFlow() {
     return (
       <ContentPanel
         className=""
+        data-testid="ContentPanelMAKEBIGGER"
         onBack={goToPreviousStep}
         stepper={{ current: step + 1, total: steps.length }}
       >
@@ -105,7 +106,11 @@ function AddAccountFlow() {
     );
   };
 
-  return <Layout centered={true}>{isDefaultView ? renderDefault() : renderStep()}</Layout>;
+  return (
+    <Layout data-testid="MainLayout" centered={true}>
+      {isDefaultView ? renderDefault() : renderStep()}
+    </Layout>
+  );
 }
 
 export default AddAccountFlow;

@@ -94,9 +94,11 @@ export class KeystoreDecrypt extends PureComponent {
                 type="password"
               />
             </div>
-            <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-              {translate('ADD_LABEL_6_SHORT')}
-            </button>
+            <div>
+              <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
+                {translate('ADD_LABEL_6_SHORT')}
+              </button>
+            </div>
           </form>
           <div className="Keystore-help">{translate('KEYSTORE_HELP')}</div>
         </div>
@@ -117,7 +119,7 @@ export class KeystoreDecrypt extends PureComponent {
       file: this.state.file,
       password: this.state.password
     });
-    console.log(this.state.file, this.state.password, wallet)
+    console.log(this.state.file, this.state.password, wallet);
     this.props.onUnlock(wallet);
   };
 
