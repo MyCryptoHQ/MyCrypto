@@ -1,7 +1,14 @@
 import { knowledgeBaseURL as KB_URL } from 'config';
+import {
+  walletNames,
+  DefaultWalletName,
+  SecureWalletName,
+  InsecureWalletName,
+  MiscWalletName
+} from 'v2/config/data';
 import { getWeb3ProviderInfo } from 'utils/web3';
-import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from './flags';
-import { WalletName, WalletType } from './types';
+import { IS_ELECTRON, HAS_WEB3_PROVIDER } from './flags';
+import { WalletType } from './types';
 import {
   InsecureWalletWarning,
   LedgerNanoSDecrypt,
@@ -25,7 +32,6 @@ import LedgerSVG from 'common/assets/images/wallets/ledger.svg';
 import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
 import SafeTSVG from 'common/assets/images/wallets/safe-t.png';
 import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
-import { WalletActions } from 'features/wallet/types';
 
 // STORIES serve the double purpose of generating the wallet options and
 // providing a declarative way to determine the flow for each wallet.
@@ -37,14 +43,16 @@ import { WalletActions } from 'features/wallet/types';
 // 2. Merge enums and names with the ones in common/v2/config/accountTypes.ts
 
 const web3ProviderInfo = getWeb3ProviderInfo();
+console.log('walletNames');
+console.log(walletNames);
 export const STORIES = [
   {
-    name: WalletName.DEFAULT,
+    name: DefaultWalletName.DEFAULT,
     steps: [WalletList],
     hideFromWalletList: true
   },
   {
-    name: WalletName.WEB3PROVIDER,
+    name: SecureWalletName.WEB3,
     type: WalletType.SECURE,
     lid: web3ProviderInfo.lid,
     icon: web3ProviderInfo.icon,
@@ -56,7 +64,7 @@ export const STORIES = [
       : [Web3ProviderInstall]
   },
   {
-    name: WalletName.LEDGER,
+    name: SecureWalletName.LEDGER_NANO_S,
     type: WalletType.SECURE,
     lid: 'X_LEDGER',
     icon: LedgerSVG,
@@ -65,7 +73,7 @@ export const STORIES = [
     steps: [NetworkSelectPanel, LedgerNanoSDecrypt, SaveAndRedirect]
   },
   {
-    name: WalletName.TREZOR,
+    name: SecureWalletName.TREZOR,
     type: WalletType.SECURE,
     lid: 'X_TREZOR',
     icon: TrezorSVG,
@@ -74,7 +82,7 @@ export const STORIES = [
     steps: [NetworkSelectPanel, TrezorDecrypt, SaveAndRedirect]
   },
   {
-    name: WalletName.SAFE_T,
+    name: SecureWalletName.SAFE_T,
     type: WalletType.SECURE,
     lid: 'X_SAFE_T',
     icon: SafeTSVG,
@@ -83,7 +91,7 @@ export const STORIES = [
     steps: [NetworkSelectPanel, SafeTminiDecrypt, SaveAndRedirect]
   },
   {
-    name: WalletName.PARITY_SIGNER,
+    name: SecureWalletName.PARITY_SIGNER,
     type: WalletType.SECURE,
     lid: 'X_PARITYSIGNER',
     icon: ParitySignerSVG,
@@ -91,7 +99,7 @@ export const STORIES = [
     steps: [NetworkSelectPanel, ParitySignerDecrypt, SaveAndRedirect]
   },
   {
-    name: WalletName.KEYSTORE_FILE,
+    name: InsecureWalletName.KEYSTORE_FILE,
     type: WalletType.INSECURE,
     lid: 'X_KEYSTORE2',
     description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
@@ -104,7 +112,7 @@ export const STORIES = [
     hideFromWalletList: !IS_ELECTRON
   },
   {
-    name: WalletName.MNEMONIC_PHRASE,
+    name: InsecureWalletName.MNEMONIC_PHRASE,
     type: WalletType.INSECURE,
     lid: 'X_MNEMONIC',
     description: 'brain surround have swap horror cheese file distinct',
@@ -117,7 +125,7 @@ export const STORIES = [
     hideFromWalletList: !IS_ELECTRON
   },
   {
-    name: WalletName.PRIVATE_KEY,
+    name: InsecureWalletName.PRIVATE_KEY,
     type: WalletType.INSECURE,
     lid: 'X_PRIVKEY2',
     description: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
@@ -130,7 +138,7 @@ export const STORIES = [
     hideFromWalletList: !IS_ELECTRON
   },
   {
-    name: WalletName.VIEW_ONLY,
+    name: MiscWalletName.VIEW_ONLY,
     type: WalletType.MISC,
     lid: 'VIEW_ADDR',
     description: 'ADD_VIEW_ADDRESS_DESC',

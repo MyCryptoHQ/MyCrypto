@@ -1,7 +1,18 @@
-import { FormDataAction, FormData, FormDataActionType as ActionType, WalletName } from './types';
+import { FormDataAction, FormData, FormDataActionType as ActionType } from './types';
+import {
+  WalletName,
+  walletNames,
+  InsecureWalletName,
+  MiscWalletName,
+  SecureWalletName
+} from 'v2/config/data';
 
 export const initialState: FormData = {
-  network: 'Ethereum' // @ADD_ACCOUNT_TODO this should have the same type as networkOptions in NetworkOptionsContext
+  network: 'Ethereum', // @ADD_ACCOUNT_TODO this should have the same type as networkOptions in NetworkOptionsContext
+  accountType: walletNames.DEFAULT,
+  account: '',
+  label: 'New Account',
+  derivationPath: ''
 };
 
 export const formReducer = (formData: FormData, action: FormDataAction) => {
@@ -14,9 +25,15 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
       return { ...formData, account };
     case ActionType.SELECT_ACCOUNT_TYPE:
       const { accountType } = action.payload;
+      console.log('got heree???');
+      console.log(action.payload);
       return { ...formData, accountType };
     case ActionType.ON_UNLOCK:
+      console.log('payload1');
+      console.log(action.payload);
       const accountAndDerivationPath = handleUnlock(formData.accountType, action.payload);
+      console.log('accountAndDerivationPath');
+      console.log(accountAndDerivationPath);
       return { ...formData, ...accountAndDerivationPath };
     case ActionType.SET_LABEL:
       const { label } = action.payload;
@@ -31,25 +48,25 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
   }
 };
 
-const handleUnlock = (walletType, payload) => {
+const handleUnlock = (walletType: WalletName, payload: any) => {
   switch (walletType) {
-    case WalletName.VIEW_ONLY:
-    case WalletName.KEYSTORE_FILE:
-    case WalletName.PRIVATE_KEY:
-    case WalletName.WEB3PROVIDER:
+    case MiscWalletName.VIEW_ONLY:
+    case InsecureWalletName.KEYSTORE_FILE:
+    case InsecureWalletName.PRIVATE_KEY:
+    case SecureWalletName.WEB3:
       return {
         account: payload.getAddressString(),
         derivationPath: ''
       };
-    case WalletName.PARITY_SIGNER:
+    case SecureWalletName.PARITY_SIGNER:
       return {
         account: payload.address,
         derivationPath: ''
       };
-    case WalletName.MNEMONIC_PHRASE:
-    case WalletName.LEDGER:
-    case WalletName.TREZOR:
-    case WalletName.SAFE_T:
+    case InsecureWalletName.MNEMONIC_PHRASE:
+    case SecureWalletName.LEDGER_NANO_S:
+    case SecureWalletName.TREZOR:
+    case SecureWalletName.SAFE_T:
       return {
         account: payload.address,
         derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()

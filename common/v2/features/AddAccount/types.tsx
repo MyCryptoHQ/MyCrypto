@@ -1,3 +1,5 @@
+import { WalletName } from 'v2/config/data';
+
 export enum WalletType {
   SECURE,
   INSECURE,
@@ -5,7 +7,7 @@ export enum WalletType {
 }
 
 // @ADD_ACCOUNT_TODO: move to named enum or other Set
-export enum WalletName {
+/*export enum WalletName {
   DEFAULT = 'WALLETLIST',
   WEB3PROVIDER = 'WEB3_PROVIDER',
   LEDGER = 'LEDGER',
@@ -16,7 +18,7 @@ export enum WalletName {
   MNEMONIC_PHRASE = 'MNEMONIC_PHRASE',
   PRIVATE_KEY = 'PRIVATE_KEY',
   VIEW_ONLY = 'VIEW_ONLY'
-}
+}*/
 
 // @ADD_ACCOUNT_TODO: move to named enum or other Set
 export enum FormDataActionType {
@@ -37,7 +39,7 @@ export interface FormDataAction {
 export interface FormData {
   network: string;
   account: string;
-  accountType: string;
+  accountType: WalletName;
   label: string;
   derivationPath: string;
 }

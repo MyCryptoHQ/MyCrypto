@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 
 import { Typography } from '@mycrypto/ui';
 import translate from 'translations';
@@ -8,7 +7,7 @@ import CoinbaseWalletJPG from 'common/assets/images/wallets/coinbase.jpg';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
-import { NewTabLink, HelpLink } from 'components/ui';
+import { NewTabLink } from 'components/ui';
 import { IS_MOBILE } from '../flags';
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
   onUnlock(): void;
 }
 
-function InstallTrunk({ wallet, onUnlock }: Props) {
+function InstallTrunk() {
   return (
     <div className="Panel">
       <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>
@@ -35,7 +34,7 @@ function InstallTrunk({ wallet, onUnlock }: Props) {
           </NewTabLink>
         </div>
         <div className="download-option">
-          <NewTabLink href="https://www.coinbase.com/mobile" target="_black">
+          <NewTabLink href="https://www.coinbase.com/mobile" target="_blank">
             <img src={CoinbaseWalletJPG} />
           </NewTabLink>
           <Typography>Coinbase App</Typography>
@@ -51,7 +50,7 @@ function InstallTrunk({ wallet, onUnlock }: Props) {
   );
 }
 
-function InstallMetaMask({ wallet, onUnlock }: Props) {
+function InstallMetaMask({ onUnlock }: Props) {
   return (
     <div className="Panel">
       <div className="Panel-title">{translate('ADD_ACCOUNT_WEB3_INSTALL_TITLE')}</div>

@@ -5,8 +5,15 @@ import { translate } from 'translations';
 import { NetworkOptionsContext } from 'v2/providers';
 import { isWalletFormatSupportedOnNetwork } from 'v2/libs';
 import { FormDataActionType as ActionType } from '../types';
+import { FormData } from 'v2/features/AddAccount/types';
 
-function NetworkSelectPanel({ formData, formDispatch, goToNextStep }) {
+interface Props {
+  formData: FormData;
+  formDispatch: any;
+  goToNextStep(): void;
+}
+
+function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const [network, setNetwork] = useState(formData.network);
   const { networkOptions } = useContext(NetworkOptionsContext);
 

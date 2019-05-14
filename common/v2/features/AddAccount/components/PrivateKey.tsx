@@ -45,14 +45,15 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
 }
 
 interface Props {
+  wallet: any;
   onChange(value: PrivateKeyValue): void;
-  onUnlock(): void;
+  onUnlock(param: any): void;
 }
 
 export class PrivateKeyDecrypt extends PureComponent<Props> {
   public state: PrivateKeyValue = {
-    key: undefined,
-    password: undefined,
+    key: '',
+    password: '',
     valid: false
   };
 

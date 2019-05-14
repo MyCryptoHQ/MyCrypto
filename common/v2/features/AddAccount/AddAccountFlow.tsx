@@ -3,24 +3,19 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import { Layout } from 'v2/features';
 import { ContentPanel } from 'v2/components';
-import { WalletName, FormData, FormDataAction, FormDataActionType as ActionType } from './types';
+import { FormDataActionType as ActionType } from './types';
+import { WalletName, walletNames } from 'v2/config/data';
 import { STORIES } from './stories';
 import { WalletList } from './components';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
 
-interface State {
-  storyName: WalletName;
-  step: number;
-  formData: FormData;
-}
-
-const getStory = (storyName: WalletName) => {
+export const getStory = (storyName: WalletName) => {
   return STORIES.filter(selected => selected.name === storyName)[0];
 };
 
-const getStorySteps = (storyName: WalletName) => {
+export const getStorySteps = (storyName: WalletName) => {
   return getStory(storyName).steps;
 };
 
@@ -33,15 +28,15 @@ const getStorySteps = (storyName: WalletName) => {
     story.
 */
 function AddAccountFlow() {
-  const [storyName, setStoryName] = useState(WalletName.DEFAULT); // The Wallet Story that we are tracking.
+  const [storyName, setStoryName] = useState(walletNames.DEFAULT); // The Wallet Story that we are tracking.
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
 
-  const isDefaultView = storyName === WalletName.DEFAULT;
+  const isDefaultView = storyName === walletNames.DEFAULT;
 
   const goToStart = () => {
     setStep(0);
-    setStoryName(WalletName.DEFAULT);
+    setStoryName(walletNames.DEFAULT);
     updateFormState({ type: ActionType.RESET_FORM, payload: '' });
   };
 
@@ -58,6 +53,8 @@ function AddAccountFlow() {
   };
 
   const onUnlock = async (payload: any) => {
+    console.log('onUnlock');
+    console.log(payload);
     // 1. Let reducer handle the differences. Infact this updateFormState could
     // be simplified by having each component call `updateFormState` themselves.
     await updateFormState({ type: ActionType.ON_UNLOCK, payload });

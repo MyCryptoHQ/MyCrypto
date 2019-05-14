@@ -10,6 +10,11 @@ interface Props {
   onCancel(): void;
 }
 
+interface InsecureWarningType {
+  wallet: any;
+  goToStart: any;
+}
+
 class InsecureWalletWarning extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
@@ -44,7 +49,7 @@ class InsecureWalletWarning extends React.Component<Props> {
   }
 }
 
-const InsecureWarning = ({ wallet, formData, goToStart }) => (
+const InsecureWarning = ({ wallet, goToStart }: InsecureWarningType) => (
   <div className="WalletDecrypt-decrypt">
     <InsecureWalletWarning walletType={translateRaw(wallet.lid)} onCancel={goToStart} />
     {IS_DEV && (

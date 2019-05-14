@@ -154,6 +154,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
+    console.log('ledgerUnlock');
+    console.log(new LedgerWallet(address, this.state.dPath.value, index));
     this.props.onUnlock(new LedgerWallet(address, this.state.dPath.value, index));
     this.reset();
   };

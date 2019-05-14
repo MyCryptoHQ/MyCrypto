@@ -6,14 +6,14 @@ import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { unlockKeystore } from 'v2/features/wallets';
+import { unlockKeystore } from 'v2/features/Wallets';
 import './Keystore.scss';
 
 export interface KeystoreValue {
   file: string;
   password: string;
-  filename: string;
-  valid: boolean;
+  filename: string | undefined;
+  valid: boolean | undefined;
 }
 
 function isPassRequired(file: string): boolean {
@@ -33,16 +33,17 @@ function isValidFile(rawFile: File): boolean {
 
 export class KeystoreDecrypt extends PureComponent {
   public props: {
+    wallet: any;
     isWalletPending: boolean;
     isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
-    onUnlock(): void;
+    onUnlock(param: any): void;
     showNotification(level: string, message: string): notificationsActions.TShowNotification;
   };
 
   public state: KeystoreValue = {
-    file: undefined,
-    password: undefined,
+    file: '',
+    password: '',
     filename: undefined,
     valid: undefined
   };
@@ -50,7 +51,7 @@ export class KeystoreDecrypt extends PureComponent {
   public render() {
     const { isWalletPending, wallet } = this.props;
     const { file, password, filename } = this.state;
-    const passReq = isPassRequired(file);
+    const passReq = file ? isPassRequired(file) : true;
     const unlockDisabled = !file || (passReq && !password);
 
     return (
@@ -83,7 +84,7 @@ export class KeystoreDecrypt extends PureComponent {
               {isWalletPending ? <Spinner /> : ''}
               <label className="Keystore-password">Your Password</label>
               <Input
-                isValid={password.length > 0}
+                isValid={password ? password.length > 0 : false}
                 className={`${file.length && isWalletPending ? 'hidden' : ''}`}
                 disabled={!file}
                 value={password}

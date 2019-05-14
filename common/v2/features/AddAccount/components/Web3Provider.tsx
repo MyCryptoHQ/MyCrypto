@@ -1,15 +1,13 @@
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 
-import { Typography } from '@mycrypto/ui';
 import translate from 'translations';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
-import { NewTabLink, HelpLink } from 'components/ui';
+import { NewTabLink } from 'components/ui';
 import { unlockWeb3 } from 'v2/features/Wallets';
 
 interface Props {
   wallet: object;
-  onUnlock(): void;
+  onUnlock(param: any): void;
 }
 
 function Web3ProviderDecrypt({ wallet, onUnlock }: Props) {

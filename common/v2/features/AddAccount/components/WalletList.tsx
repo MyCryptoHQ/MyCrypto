@@ -1,21 +1,21 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 
 import translate, { translateRaw } from 'translations';
-import { getDisabledWallets } from 'features/selectors';
-import { walletSelectors } from 'features/wallet';
 import { WalletButton } from '../components';
-import { WalletName } from '../types';
+import { WalletName } from 'v2/config/data';
 
 interface Props {
   wallets: any[];
   onSelect(name: WalletName): void;
 }
 
-class WalletList extends PureComponent<Props> {
+export default class WalletList extends PureComponent<Props> {
   public render() {
-    const { wallets, onSelect, formDataDispatch } = this.props;
+    const { wallets, onSelect } = this.props;
     const validWallets = wallets.filter(w => !w.hideFromWalletList); // @TODO Filter here according to electronOnly
+    console.log('wallets');
+    console.log(wallets);
+    console.log(validWallets);
     return (
       <div className="WalletDecrypt-wallets">
         <h2 className="WalletDecrypt-wallets-title">{translate('DECRYPT_ACCESS')}</h2>
@@ -25,13 +25,13 @@ class WalletList extends PureComponent<Props> {
         <div className="WalletDecrypt-container">
           <div className="WalletDecrypt-wallets-row">
             {validWallets.map(wallet => {
+              console.log(wallet.name);
               return (
                 <WalletButton
                   key={`wallet-icon-${wallet.name}`}
                   name={translateRaw(wallet.lid)}
                   icon={wallet.icon}
                   description={translateRaw(wallet.description)}
-                  helpLink={wallet.helpLink}
                   // walletType={walletType}
                   // isSecure={true}
                   // isDisabled={this.isWalletDisabled(walletType)}
@@ -47,27 +47,3 @@ class WalletList extends PureComponent<Props> {
     );
   }
 }
-
-// @TODO: From the moment we have flags on the wallets, this logic appears
-// convulated and should be removed.
-function mapStateToProps(state, ownProps) {
-  // const { disabledWallets } = ownProps;
-  // let computedDisabledWallets = getDisabledWallets(state);
-  //
-  // if (disabledWallets) {
-  //   computedDisabledWallets = {
-  //     wallets: [...computedDisabledWallets.wallets, ...disabledWallets.wallets],
-  //     reasons: {
-  //       ...computedDisabledWallets.reasons,
-  //       ...disabledWallets.reasons
-  //     }
-  //   };
-  // }
-
-  return {
-    // computedDisabledWallets,
-    // accessMessage: walletSelectors.getWalletAccessMessage(state)
-  };
-}
-
-export default connect(mapStateToProps, null)(WalletList);
