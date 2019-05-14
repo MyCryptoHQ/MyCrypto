@@ -16,50 +16,50 @@ import questionToolTip from 'common/assets/images/icn-question.svg';
 import './Mnemonic.scss';
 
 interface OwnProps {
-  seed: string;
-  onSeed(seed: string): void;
   onUnlock(param: any): void;
 }
 
-interface StateProps {
+interface StoreProps {
   dPath: DPath;
   dPaths: DPath[];
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps & StoreProps;
 
 interface State {
-  phrase: string;
-  formattedPhrase: string;
-  pass: string;
-  dPath: DPath;
+  seed: string | undefined;
+  phrase: string | undefined;
+  formattedPhrase: string | undefined;
+  pass: string | undefined;
+  selectedDPath: DPath;
 }
 
+
 class MnemonicDecryptClass extends PureComponent<Props, State> {
-  public state: State = {
-    phrase: '',
-    formattedPhrase: '',
-    pass: '',
-    dPath: this.props.dPath
-  };
+  public state:State = {
+    seed: undefined,
+    phrase: undefined,
+    formattedPhrase: undefined,
+    pass: undefined,
+    selectedDPath: this.props.dPath
+  }
 
   public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath });
+      this.setState({ selectedDPath: nextProps.dPath });
     }
   }
 
   public render() {
-    const { phrase, formattedPhrase, dPath, pass } = this.state;
-    const { seed } = this.props;
-    const isValidMnemonic = validateMnemonic(formattedPhrase);
+    const { seed, phrase, formattedPhrase, pass, selectedDPath} = this.state;
+    const isValidMnemonic = validateMnemonic(formattedPhrase || '');
 
     if (seed) {
       return (
         <div className="Mnemoinc-dpath">
           <DeterministicWallets
             seed={seed}
-            dPath={dPath}
+            dPath={selectedDPath}
             dPaths={this.props.dPaths}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
@@ -82,7 +82,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               <div className="form-group">
                 <label>Your Mnemonic Phrase</label>
                 <TogglablePassword
-                  value={phrase}
+                  value={phrase || ''}
                   rows={4}
                   placeholder={translateRaw('X_MNEMONIC')}
                   isValid={isValidMnemonic}
@@ -104,7 +104,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
                 <Input
                   isValid={true}
                   showValidAsPlain={true}
-                  value={pass}
+                  value={pass || ''}
                   onChange={this.onPasswordChange}
                   placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
                   type="password"
@@ -142,50 +142,43 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     });
   };
 
-  public onDWModalOpen = () => {
-    const { formattedPhrase, pass } = this.state;
+  public onDWModalOpen = async () => {
+    const { formattedPhrase, pass = '' } = this.state;
+    if (!formattedPhrase || !validateMnemonic(formattedPhrase)) { return; }
 
-    if (!validateMnemonic(formattedPhrase)) {
-      return;
-    }
-
-    try {
-      const seed = mnemonicToSeed(formattedPhrase, pass).toString('hex');
-      this.props.onSeed(seed);
-    } catch (err) {
-      console.log(err);
-    }
+    const seed = await mnemonicToSeed(formattedPhrase, pass).toString('hex');
+    this.setState({ seed });
   };
 
   private handleCancel = () => {
-    this.props.onSeed('');
+    this.setState({ seed: undefined });
   };
 
   private handlePathChange = (dPath: DPath) => {
-    this.setState({ dPath });
+    this.setState({ selectedDPath: dPath });
   };
 
   private handleUnlock = (address: string, index: number) => {
-    const { formattedPhrase, pass, dPath } = this.state;
+    const { formattedPhrase, pass, selectedDPath } = this.state;
 
     this.props.onUnlock({
-      path: `${dPath.value}/${index}`,
+      path: `${selectedDPath.value}/${index}`,
       pass,
       phrase: formattedPhrase,
       address
     });
 
     this.setState({
-      pass: '',
-      phrase: '',
-      formattedPhrase: ''
+      seed: undefined,
+      phrase: undefined,
+      formattedPhrase: undefined,
+      pass: undefined,
+      selectedDPath: this.props.dPath
     });
-
-    this.props.onSeed('');
   };
 }
 
-function mapStateToProps(state: AppState): StateProps {
+function mapStateToProps(state: AppState): StoreProps {
   return {
     // Mnemonic dPath is guaranteed to always be provided
     dPath: configSelectors.getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE) as DPath,
