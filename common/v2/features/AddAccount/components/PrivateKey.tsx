@@ -6,7 +6,9 @@ import { stripHexPrefix } from 'libs/formatters';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import { unlockPrivateKey } from 'v2/features/Wallets';
 import './PrivateKey.scss';
+
 export interface PrivateKeyValue {
   key: string;
   password: string;
@@ -43,21 +45,27 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
 }
 
 interface Props {
-  value: PrivateKeyValue;
   onChange(value: PrivateKeyValue): void;
   onUnlock(): void;
 }
 
 export class PrivateKeyDecrypt extends PureComponent<Props> {
+  public state: PrivateKeyValue = {
+    key: undefined,
+    password: undefined,
+    valid: false
+  };
+
   public render() {
-    const { key, password } = this.props.value;
+    const { wallet } = this.props;
+    const { key, password } = this.state;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
     const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
+          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(wallet.lid)}`}
         </div>
         <div className="PrivateKey">
           <form id="selectedTypeKey" onSubmit={this.unlock}>
@@ -74,7 +82,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
                   placeholder={translateRaw('X_PRIVKEY2')}
                   isValid={isValidPkey}
                   onChange={this.onPkeyChange}
-                  onEnter={this.props.onUnlock}
+                  onEnter={this.unlock}
                 />
               </label>
             </div>
@@ -107,21 +115,23 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
 
   private onPkeyChange = (e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const pkey = e.currentTarget.value;
-    const pass = this.props.value.password;
+    const pass = this.state.password;
     const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
 
-    this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
+    this.setState({
+      key: fixedPkey,
+      valid
+    });
   };
 
   private onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
     // NOTE: Textareas don't support password type, so we replace the value
     // with an equal length number of dots. On change, we replace
-    const pkey = this.props.value.key;
+    const pkey = this.state.key;
     const pass = e.currentTarget.value;
     const { valid } = validatePkeyAndPass(pkey, pass);
 
-    this.props.onChange({
-      ...this.props.value,
+    this.setState({
       password: pass,
       valid
     });
@@ -136,6 +146,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
   private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onUnlock();
+    const wallet = unlockPrivateKey({ key: this.state.key, password: this.state.password });
+    this.props.onUnlock(wallet);
   };
 }

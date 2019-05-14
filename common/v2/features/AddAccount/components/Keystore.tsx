@@ -6,6 +6,7 @@ import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import { unlockKeystore } from 'v2/features/wallets';
 import './Keystore.scss';
 
 export interface KeystoreValue {
@@ -32,7 +33,6 @@ function isValidFile(rawFile: File): boolean {
 
 export class KeystoreDecrypt extends PureComponent {
   public props: {
-    value: KeystoreValue;
     isWalletPending: boolean;
     isPasswordPending: boolean;
     onChange(value: KeystoreValue): void;
@@ -40,15 +40,23 @@ export class KeystoreDecrypt extends PureComponent {
     showNotification(level: string, message: string): notificationsActions.TShowNotification;
   };
 
+  public state: KeystoreValue = {
+    file: undefined,
+    password: undefined,
+    filename: undefined,
+    valid: undefined
+  };
+
   public render() {
-    const { isWalletPending, value: { file, password, filename } } = this.props;
+    const { isWalletPending, wallet } = this.props;
+    const { file, password, filename } = this.state;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
     return (
       <div className="Panel">
         <div className="Panel-title">
-          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(this.props.wallet.lid)}`}
+          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(wallet.lid)}`}
         </div>
         <div className="Keystore">
           <form onSubmit={this.unlock}>
@@ -101,18 +109,20 @@ export class KeystoreDecrypt extends PureComponent {
     }
   };
 
-  private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
+  private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onUnlock();
+    const wallet = await unlockKeystore({
+      file: this.state.file,
+      password: this.state.password
+    });
+    this.props.onUnlock(wallet);
   };
 
   private onPasswordChange = (e: any) => {
-    const valid = this.props.value.file.length && e.target.value.length;
-    this.props.onChange({
-      ...this.props.value,
+    this.setState({
       password: e.target.value,
-      valid
+      valid: this.state.file.length && e.target.value.length
     });
   };
 
@@ -126,14 +136,14 @@ export class KeystoreDecrypt extends PureComponent {
       const keystore = fileReader.result;
       const passReq = isPassRequired(keystore as any);
 
-      this.props.onChange({
-        ...this.props.value,
+      this.setState({
         file: keystore,
         valid: (keystore as any).length && !passReq,
         password: '',
         filename: fileName
       } as any);
     };
+
     if (isValidFile(inputFile)) {
       fileReader.readAsText(inputFile, 'utf-8');
     } else {

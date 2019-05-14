@@ -1,4 +1,4 @@
-import { FormDataAction, FormData, FormDataActionType as ActionType } from './types';
+import { FormDataAction, FormData, FormDataActionType as ActionType, WalletName } from './types';
 
 export const initialState: FormData = {
   network: 'Ethereum' // @ADD_ACCOUNT_TODO this should have the same type as networkOptions in NetworkOptionsContext
@@ -32,27 +32,20 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
 };
 
 const handleUnlock = (walletType, payload) => {
-  switch(walletType) {
+  switch (walletType) {
     case WalletName.VIEW_ONLY:
+    case WalletName.KEYSTORE_FILE:
+    case WalletName.PRIVATE_KEY:
+    case WalletName.WEB3PROVIDER:
       return {
         account: payload.getAddressString(),
         derivationPath: ''
-      }
+      };
     case WalletName.PARITY_SIGNER:
       return {
         account: payload.address,
         derivationPath: ''
-      }
-    case WalletName.KEYSTORE_FILE:
-    case WalletName.PRIVATE_KEY:
-    case WalletName.WEB3PROVIDER:
-      // Here it would be for each component to call unlock itself and to have
-      // an identical payload format as view_only
-      const wallet = await STORIES[walletType].unlock(payload);
-      return {
-        account: wallet.getAddressString(),
-        derivationPath: ''
-      }
+      };
     case WalletName.MNEMONIC_PHRASE:
     case WalletName.LEDGER:
     case WalletName.TREZOR:
@@ -60,8 +53,10 @@ const handleUnlock = (walletType, payload) => {
       return {
         account: payload.address,
         derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()
-      }
+      };
     default:
-      throw new Error(`[AddAccountReducer]: UNLOCK with wallet ${walletType} and payload ${payload} is invalid`);
+      throw new Error(
+        `[AddAccountReducer]: UNLOCK with wallet ${walletType} and payload ${payload} is invalid`
+      );
   }
-}
+};
