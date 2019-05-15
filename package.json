@@ -6,7 +6,7 @@
   "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
   "engines": {
-    "node": ">= 8.0.0",
+    "node": ">= 8.16.0",
     "npm": ">= 5.0.0"
   },
   "dependencies": {

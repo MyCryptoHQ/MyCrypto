@@ -8,7 +8,7 @@
 
 ## Development / Build Requirements
 
-* Node 8.9.4\*
+* Node 8.16.0\*
 * Yarn >= 1.7.0\*\*
 * Python 2.7.X\*\*\*
 
@@ -124,7 +124,7 @@ yarn test:int
 │   ├── containers - Containers according to "Redux philosophy"
 |   ├── features - State management and async operations, organized per "feature", follows "ducks" philosophy, see: https://github.com/MyCryptoHQ/MyCrypto/issues/1435
 │   ├── libs - Framework-agnostic libraries and business logic
-|       ├── contracts - Takes in a contract interface ABI and returns an object with keys equivalent to the ABI function names that each have `.encodeInput`,  `.decodeInput`, `decodeOutput` methods. 
+|       ├── contracts - Takes in a contract interface ABI and returns an object with keys equivalent to the ABI function names that each have `.encodeInput`,  `.decodeInput`, `decodeOutput` methods.
 |       ├── ens - Basic ENS functions for getting a name hash and mapping returned ENS contract values to human-readable strings
 |       ├── nodes - Configures Shepherd (https://github.com/MyCryptoHQ/shepherd) and exports a singleton provider
 |       ├── scheduling - Functionality for enabling Ethereum Alarm Clock usage for scheduled transactions. See https://github.com/MyCryptoHQ/MyCrypto/pull/1343
@@ -160,7 +160,7 @@ yarn test:int
 - [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
 - [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
 - [MyCryptoBuilds](https://github.com/MyCryptoHQ/MyCrypto/wiki/MyCryptoBuilds) - access a build by commithash, PR number, or branch name without building it yourself!
- 
+
 ## Branching Model
 
 MyCrypto is open-source and encourages pull-requests from third-parties. Our branching model is described below.
