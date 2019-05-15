@@ -7,7 +7,13 @@ interface Props {
   stateValues: SendState;
 }
 
-export default class SignTransaction extends Component<Props> {
+export default function createSignTransaction() {
+  return (props: Pick<Props, 'stateValues'>) => {
+    return <SignTransaction stateValues={props.stateValues} />;
+  };
+}
+
+export class SignTransaction extends Component<Props> {
   public render() {
     return <div>This gets renders when signing Transaction</div>;
   }

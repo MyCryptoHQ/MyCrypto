@@ -1,14 +1,14 @@
 import {
   createSendAssetsForm,
   createConfirmTransactionComponent,
-  SignTransaction,
+  createSignTransaction,
   createTransactionReceipt
 } from './components';
 
 export const steps = [
   createSendAssetsForm,
   createConfirmTransactionComponent,
-  SignTransaction,
+  createSignTransaction,
   createTransactionReceipt
 ];
 

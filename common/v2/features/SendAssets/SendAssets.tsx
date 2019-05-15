@@ -10,7 +10,7 @@ import {
   createConfirmTransactionComponent,
   createSendAssetsForm,
   createTransactionReceipt,
-  SignTransaction
+  createSignTransaction
 } from './components';
 import { headings, steps } from './constants';
 
@@ -109,22 +109,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
     // Step 3, ConfirmTransaction, cannot go back (as backOptions[2] is undefined)
     const onBack = backOptions[step];
 
-    const SendAssetsForm = createSendAssetsForm({
-      transactionFields: this.state.transactionFields,
-      onNext: this.advanceStep,
-      updateState: this.updateState,
-      onSubmit: this.updateTransactionFields
-    });
-    const ConfirmTransaction = createConfirmTransactionComponent({ onNext: this.advanceStep });
-    const TransactionReceipt = createTransactionReceipt({ onReset: this.handleReset });
-
-    const sendAssetsSteps = [
-      SendAssetsForm,
-      ConfirmTransaction,
-      SignTransaction,
-      TransactionReceipt
-    ];
-    const Step = sendAssetsSteps[step];
+    const Step = this.sendAssetsSteps[step];
 
     // const onBack = backOptions[step];
     // const Step = steps[step];
@@ -170,6 +155,19 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   };
 
   private handleReset = () => this.setState(getInitialState());
+
+  // tslint:disable-next-line
+  private sendAssetsSteps = [
+    createSendAssetsForm({
+      transactionFields: this.state.transactionFields,
+      onNext: this.advanceStep,
+      updateState: this.updateState,
+      onSubmit: this.updateTransactionFields
+    }),
+    createConfirmTransactionComponent({ onNext: this.advanceStep }),
+    createSignTransaction(),
+    createTransactionReceipt({ onReset: this.handleReset })
+  ];
 }
 
 export default withRouter(SendAssets);
