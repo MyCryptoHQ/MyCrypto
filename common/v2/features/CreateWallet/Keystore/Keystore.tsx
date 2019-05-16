@@ -5,8 +5,9 @@ import { IV3Wallet } from 'ethereumjs-wallet';
 import { makeBlob } from 'utils/blob';
 import { N_FACTOR } from 'config';
 import { generateKeystore, fromV3 } from 'libs/web-workers';
+import { stripHexPrefix } from 'libs/formatters';
+import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
 import { Layout } from 'v2/features';
-import { KeystoreProvider, KeystoreContext } from './components';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 
 interface State {
@@ -31,6 +32,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
 
   public render() {
     const { stage } = this.state;
+    const currentStep: number = keystoreFlow.indexOf(stage) + 1;
     const ActivePanel: ReactType = keystoreStageToComponentHash[stage];
     const actions = {
       onBack: this.regressToPreviousStage,
@@ -38,30 +40,14 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
       generateWalletAndContinue: this.generateWalletAndContinue,
       selectNetworkAndContinue: this.selectNetworkAndContinue,
       getKeystoreBlob: this.getKeystoreBlob,
-      verifyKeystore: this.verifyKeystore
+      verifyKeystore: this.verifyKeystore,
+      verifyPrivateKey: this.verifyPrivateKey
     };
 
-    const isKeystorePanel = [
-      KeystoreStages.GenerateKeystore,
-      KeystoreStages.SaveKeystore,
-      KeystoreStages.MakeBackup,
-      KeystoreStages.VerifyKeystore
-    ].includes(stage);
-
     return (
-      <KeystoreProvider>
-        <Layout centered={true}>
-          <section className="CreateWallet">
-            {isKeystorePanel ? (
-              <KeystoreContext.Consumer>
-                {({}) => <ActivePanel totalSteps={5} {...actions} {...this.state} />}
-              </KeystoreContext.Consumer>
-            ) : (
-              <ActivePanel totalSteps={5} {...actions} {...this.state} />
-            )}
-          </section>
-        </Layout>
-      </KeystoreProvider>
+      <Layout centered={true}>
+        <ActivePanel currentStep={currentStep} totalSteps={5} {...actions} {...this.state} />
+      </Layout>
     );
   }
 
@@ -96,7 +82,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
         password,
         keystore: res.keystore,
         filename: res.filename,
-        privateKey: res.privateKey,
+        privateKey: stripHexPrefix(res.privateKey),
         isGenerating: false
       });
       this.advanceToNextStage();
@@ -117,6 +103,15 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
   private verifyKeystore = async (keystore: string, password: string): Promise<boolean> => {
     try {
       await fromV3(keystore, password, true);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  private verifyPrivateKey = (key: string, password: string): boolean => {
+    try {
+      getPrivKeyWallet(key, password);
       return true;
     } catch (e) {
       return false;

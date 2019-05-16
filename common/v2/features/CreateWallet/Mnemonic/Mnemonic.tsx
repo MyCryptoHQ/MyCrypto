@@ -12,6 +12,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
 
   public render() {
     const { stage } = this.state;
+    const currentStep: number = mnemonicFlow.indexOf(stage) + 1;
     const ActivePanel = mnemonicStageToComponentHash[stage];
     const actions = {
       onBack: this.regressToPreviousStage,
@@ -31,6 +32,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
               <MnemonicContext.Consumer>
                 {({ words, generateWords }) => (
                   <ActivePanel
+                    currentStep={currentStep}
                     totalSteps={4}
                     words={words}
                     generateWords={generateWords}
@@ -39,7 +41,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
                 )}
               </MnemonicContext.Consumer>
             ) : (
-              <ActivePanel totalSteps={4} {...actions} />
+              <ActivePanel currentStep={currentStep} totalSteps={4} {...actions} />
             )}
           </section>
         </Layout>

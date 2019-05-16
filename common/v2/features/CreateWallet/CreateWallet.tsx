@@ -10,6 +10,8 @@ import './CreateWallet.scss';
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
 
 export interface PanelProps {
+  totalSteps: number;
+  currentStep: number;
   onBack(): void;
   onNext(): void;
 }

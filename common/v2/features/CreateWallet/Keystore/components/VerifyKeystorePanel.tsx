@@ -67,7 +67,9 @@ const UploadZone = styled.label`
 `;
 
 interface ExtendedProps extends PanelProps {
+  privateKey: string;
   verifyKeystore(keystore: string, password: string): Promise<boolean>;
+  verifyPrivateKey(key: string, password: string): boolean;
 }
 
 type Props = ExtendedProps & RouteComponentProps<{}>;
@@ -85,19 +87,26 @@ class VerifyKeystorePanel extends Component<Props> {
   public validating = false;
 
   public validate = async () => {
-    const { verifyKeystore } = this.props;
-    const { keystore, password } = this.state;
+    const { verifyKeystore, verifyPrivateKey, privateKey: generatedPrivateKey } = this.props;
+    const { keystore, password, privateKey } = this.state;
     this.validating = true;
 
     if (keystore) {
       const isValid = await verifyKeystore(keystore, password);
+      this.setState({ isValid });
+    } else if (privateKey) {
+      const isValid = verifyPrivateKey(privateKey, password) && generatedPrivateKey === privateKey;
       this.setState({ isValid });
     }
 
     this.validating = false;
   };
 
-  public handleFileDrop = (e: any) => {
+  public handleFileDrop = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target || !e.target.files) {
+      return;
+    }
+
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], 'UTF-8');
     this.setState({ fileName: e.target.files[0].name });
@@ -107,19 +116,23 @@ class VerifyKeystorePanel extends Component<Props> {
     };
   };
 
-  public handlePasswordInputChanged = (e: any) => {
+  public handlePasswordInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ password: e.target.value }, () => this.validate());
   };
 
+  public handlePrivateKeyInputChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({ privateKey: e.target.value }, () => this.validate());
+  };
+
   public render() {
-    const { history, onBack } = this.props;
+    const { history, onBack, totalSteps, currentStep } = this.props;
 
     return (
       <ExtendedContentPanel
         onBack={onBack}
         stepper={{
-          current: 5,
-          total: 5
+          current: currentStep,
+          total: totalSteps
         }}
         heading={translateRaw('VERIFY_KEYSTORE_TITLE')}
         description={translateRaw('VERIFY_KEYSTORE_DESCRIPTION')}
@@ -127,7 +140,7 @@ class VerifyKeystorePanel extends Component<Props> {
       >
         <FormItemWrapper>
           {translate('YOUR_PRIVATE_KEY_LABEL')}
-          <StyledTextArea />
+          <StyledTextArea onChange={this.handlePrivateKeyInputChanged} />
         </FormItemWrapper>
         <Divider>- {translateRaw('OR')} -</Divider>
         <FormItemWrapper>

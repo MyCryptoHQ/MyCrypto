@@ -73,13 +73,13 @@ export default class SaveKeystorePanel extends Component<Props, State> {
   };
 
   public render() {
-    const { onBack, onNext, getKeystoreBlob, filename } = this.props;
+    const { onBack, onNext, totalSteps, currentStep, getKeystoreBlob, filename } = this.props;
     return (
       <ExtendedContentPanel
         onBack={onBack}
         stepper={{
-          current: 3,
-          total: 5
+          current: currentStep,
+          total: totalSteps
         }}
         heading={translateRaw('SAVE_KEYSTORE_TITLE')}
       >
