@@ -1,6 +1,6 @@
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
-import React, { Component } from 'react';
+import React, { Component, ComponentType } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { isAdvancedQueryTransaction } from 'utils/helpers';
 import { ContentPanel } from 'v2/components';
@@ -102,6 +102,24 @@ const getInitialState = (): SendState => {
 export class SendAssets extends Component<RouteComponentProps<{}>> {
   public state: SendState = getInitialState();
 
+  private sendAssetsSteps: ComponentType<{ stateValues: SendState }>[];
+
+  constructor(props: RouteComponentProps<{}>) {
+    super(props);
+
+    this.sendAssetsSteps = [
+      createSendAssetsForm({
+        transactionFields: this.state.transactionFields,
+        onNext: this.advanceStep,
+        updateState: this.updateState,
+        onSubmit: this.updateTransactionFields
+      }),
+      createConfirmTransactionComponent({ onNext: this.advanceStep }),
+      createSignTransaction(),
+      createTransactionReceipt({ onReset: this.handleReset })
+    ];
+  }
+
   public render() {
     const { history } = this.props;
     const { step } = this.state;
@@ -155,19 +173,6 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   };
 
   private handleReset = () => this.setState(getInitialState());
-
-  // tslint:disable-next-line
-  private sendAssetsSteps = [
-    createSendAssetsForm({
-      transactionFields: this.state.transactionFields,
-      onNext: this.advanceStep,
-      updateState: this.updateState,
-      onSubmit: this.updateTransactionFields
-    }),
-    createConfirmTransactionComponent({ onNext: this.advanceStep }),
-    createSignTransaction(),
-    createTransactionReceipt({ onReset: this.handleReset })
-  ];
 }
 
 export default withRouter(SendAssets);
