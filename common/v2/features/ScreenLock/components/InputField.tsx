@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { COLORS } from 'v2/features/constants';
 import _ from 'lodash';
+import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 
 const { PASTEL_RED } = COLORS;
 
@@ -38,12 +39,6 @@ const CustomInput = styled.input`
   border-color: ${(props: CustomInputProps) => (props.inputError ? PASTEL_RED : '')};
 `;
 
-const ErrorMessage = styled.div`
-  width: 100%;
-  color: ${PASTEL_RED};
-  text-align: justify;
-`;
-
 interface Props {
   type?: string;
   label?: string;
@@ -68,7 +63,7 @@ export class InputField extends Component<Props> {
           onKeyUp={this.handleKeyUp}
           type={type ? type : 'text'}
         />
-        {inputError && <ErrorMessage>{inputError}</ErrorMessage>}
+        {inputError && <InlineErrorMsg>{inputError}</InlineErrorMsg>}
       </MainWrapper>
     );
   }

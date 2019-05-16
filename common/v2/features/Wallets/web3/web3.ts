@@ -76,7 +76,6 @@ export const unlockWeb3 = async () => {
     }
     return new Web3Wallet(address, stripWeb3Network(network));
   } catch (err) {
-    console.error(err);
     // unset web3 node so node dropdown isn't disabled
     //configNodesStaticActions.web3UnsetNode();
     console.log('Error ' + translateRaw(err.message));

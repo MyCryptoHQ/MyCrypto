@@ -874,6 +874,7 @@
     "NOTIFICATIONS_GET_WALLET_TITLE": "Get a Hardware Wallet!",
     "NOTIFICATIONS_GET_WALLET_DESCRIPTION": "Keep your funds safe offline with Trezor or Ledger.",
     "NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR": "Get a Trezor",
-    "NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER": "Get a Ledger"
+    "NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER": "Get a Ledger",
+    "WEB3_ONUNLOCK_NOT_FOUND_ERROR": "Please unlock your Metamask before continuing."
   }
 }
