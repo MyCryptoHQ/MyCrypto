@@ -22,7 +22,7 @@ export interface LocalCache {
   contractOptions: Record<string, serviceTypes.ContractOptions>;
   derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   addressMetadata: Record<string, serviceTypes.AddressMetadata>;
-  activeNotifications: Record<string, serviceTypes.ActiveNotifications>;
+  notifications: Record<string, serviceTypes.Notification>;
   fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
   screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
 }
@@ -192,11 +192,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       notes: 'This is my wallet.'
     }
   },
-  activeNotifications: {
-    '61d84f5e-0efa-46b9-915c-aed6ebe5a4dd': {
-      template: 'wallet-created'
-    }
-  },
+  notifications: {},
   fiatCurrencies: {
     USD: {
       code: 'USD',
@@ -224,6 +220,6 @@ export const CACHE_INIT: LocalCache = {
   contractOptions: {},
   derivationPathOptions: {},
   addressMetadata: {},
-  activeNotifications: {},
+  notifications: {},
   fiatCurrencies: {}
 };

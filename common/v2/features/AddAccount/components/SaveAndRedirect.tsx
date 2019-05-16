@@ -1,16 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Redirect } from 'react-router';
 import { FormData } from 'v2/features/AddAccount/types';
-import { AccountContext } from 'v2/providers';
+import { AccountContext, NotificationsContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs';
 import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 import { Account } from 'v2/services/Account/types';
+import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
 
 /*
   Create a new account in localStorage and redirect to dashboard.
 */
 function SaveAndRedirect(payload: { formData: FormData }) {
   const { createAccount } = useContext(AccountContext);
+  const { displayNotification } = useContext(NotificationsContext);
   useEffect(() => {
     const network: NetworkOptions | undefined = getNetworkByName(payload.formData.network);
     const account: Account = {
@@ -25,6 +27,9 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       transactionHistory: ''
     };
     createAccount(account);
+    displayNotification(NotificationTemplates.walletCreated, {
+      address: account.address
+    });
   });
 
   return (
