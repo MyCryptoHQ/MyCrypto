@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -40,6 +40,9 @@ const StyledButton = styled(Button)`
   justify-content: center;
   align-items: center;
 
+  &:disabled {
+    opacity: 0.45;
+  }
   &:focus,
   &:hover {
     embed {
@@ -55,30 +58,50 @@ const ImageWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
-export default function SaveKeystoreFilePanel({ onBack, onNext }: PanelProps) {
-  return (
-    <ExtendedContentPanel
-      onBack={onBack}
-      stepper={{
-        current: 3,
-        total: 5
-      }}
-      heading={translateRaw('SAVE_KEYSTORE_TITLE')}
-    >
-      <ImageWrapper>
-        <img src={keystoreIcon} />
-      </ImageWrapper>
+interface Props extends PanelProps {
+  filename: string;
+  getKeystoreBlob(): string;
+}
 
-      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
-      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
-      <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
-      <ButtonsWrapper>
-        <StyledButton secondary={true}>
-          <DownloadImage src={downloadIcon} />
-          {translate('SAVE_KEYSTORE_BUTTON')}
-        </StyledButton>
-        <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
-      </ButtonsWrapper>
-    </ExtendedContentPanel>
-  );
+interface State {
+  downloaded: boolean;
+}
+
+export default class SaveKeystorePanel extends Component<Props, State> {
+  public state: State = {
+    downloaded: false
+  };
+
+  public render() {
+    const { onBack, onNext, getKeystoreBlob, filename } = this.props;
+    return (
+      <ExtendedContentPanel
+        onBack={onBack}
+        stepper={{
+          current: 3,
+          total: 5
+        }}
+        heading={translateRaw('SAVE_KEYSTORE_TITLE')}
+      >
+        <ImageWrapper>
+          <img src={keystoreIcon} />
+        </ImageWrapper>
+
+        <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
+        <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
+        <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
+        <ButtonsWrapper>
+          <a href={getKeystoreBlob()} download={filename}>
+            <StyledButton onClick={() => this.setState({ downloaded: true })} secondary={true}>
+              <DownloadImage src={downloadIcon} />
+              {translate('SAVE_KEYSTORE_BUTTON')}
+            </StyledButton>
+          </a>
+          <StyledButton onClick={onNext} disabled={!this.state.downloaded}>
+            {translate('ACTION_6')}
+          </StyledButton>
+        </ButtonsWrapper>
+      </ExtendedContentPanel>
+    );
+  }
 }

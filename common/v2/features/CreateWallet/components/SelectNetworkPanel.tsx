@@ -20,7 +20,15 @@ const SubmitButton = styled(Button)`
   font-size: 18px;
 `;
 
-export default function SelectNetworkPanel({ totalSteps, onBack, onNext }: Props) {
+interface Props extends PanelProps {
+  selectNetworkAndContinue(network: string): void;
+}
+
+export default function SelectNetworkPanel({
+  totalSteps,
+  onBack,
+  selectNetworkAndContinue
+}: Props) {
   return (
     <ExtendedContentPanel
       onBack={onBack}
@@ -36,7 +44,10 @@ export default function SelectNetworkPanel({ totalSteps, onBack, onNext }: Props
         <label>{translateRaw('SELECT_NETWORK_LABEL')}</label>
         <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
       </NetworkForm>
-      <SubmitButton className="SelectNetworkPanel-next" onClick={onNext}>
+      <SubmitButton
+        className="SelectNetworkPanel-next"
+        onClick={() => selectNetworkAndContinue && selectNetworkAndContinue('Ethereum')}
+      >
         {translateRaw('ACTION_6')}
       </SubmitButton>
     </ExtendedContentPanel>

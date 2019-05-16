@@ -45,7 +45,11 @@ const Description = () => {
   );
 };
 
-export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps) {
+interface Props extends PanelProps {
+  generateWalletAndContinue?(password: string): void;
+}
+
+export default function GenerateKeystoreFilePanel({ onBack, generateWalletAndContinue }: Props) {
   return (
     <ExtendedContentPanel
       onBack={onBack}
@@ -58,7 +62,7 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
     >
       <Formik
         initialValues={initialValues}
-        onSubmit={console.info}
+        onSubmit={values => generateWalletAndContinue && generateWalletAndContinue(values.password)}
         render={() => (
           <PasswordForm>
             <FormItem>
@@ -90,7 +94,7 @@ export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps
               />
             </FormItem>
             <DescriptionItem>{translate('NEW_WALLET_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
-            <SubmitButton onClick={onNext}>{translate('NEW_WALLET_KEYSTORE_BUTTON')}</SubmitButton>
+            <SubmitButton type="submit">{translate('NEW_WALLET_KEYSTORE_BUTTON')}</SubmitButton>
           </PasswordForm>
         )}
       />
