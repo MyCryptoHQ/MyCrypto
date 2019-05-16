@@ -315,7 +315,7 @@
 "@types/remote-redux-devtools@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@types/remote-redux-devtools/-/remote-redux-devtools-0.5.2.tgz#828112e340e397a69f613ab1fd501021b8fb9f67"
-  integrity sha512-BiYLbXBzN4HA/pSgwlebtAwd35L+PD4lkUPPxzHqFQCZDP5bHTuRp8xCUQDKiU2iRWBgtI9cZRgQQR0Pv1LF3w==
+  integrity sha512-QbXwLYwM3cgkm5y6sT23eDloF0NverqgzI9V0lFSNWFdfl4rkdNroCJ8t3Z9pYnMShwNgOa9/npY3exFl+8IgA==
   dependencies:
     redux "^3.6.0"
 
