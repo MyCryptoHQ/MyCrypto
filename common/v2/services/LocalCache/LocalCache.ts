@@ -225,7 +225,7 @@ export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCa
 type CollectionKey =
   | 'accounts'
   | 'accountTypes'
-  | 'activeNotifications'
+  | 'notifications'
   | 'addressMetadata'
   | 'assetOptions'
   | 'assets'
