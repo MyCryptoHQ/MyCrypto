@@ -20,11 +20,13 @@ interface ContractOption {
 
 interface StateProps {
   currentTo: ReturnType<typeof selectors.getCurrentTo>;
+  currentUnit: ReturnType<typeof selectors.getUnit>;
   contracts: NetworkContract[];
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
 }
 
 interface OwnProps {
+  defaultContract: string;
   accessContract(contractAbi: string): (ev: any) => void;
   resetState(): void;
 }
@@ -69,6 +71,16 @@ class InteractForm extends Component<Props, State> {
     if (nextProps.currentTo.raw !== prevProps.currentTo.raw) {
       nextProps.resetState();
     }
+
+    if (nextProps.currentUnit !== prevProps.currentUnit && nextProps.currentUnit) {
+      const { defaultContract, contracts } = nextProps;
+      if (defaultContract) {
+        const contract = contracts.find(c => c.address === defaultContract);
+        if (contract) {
+          this.handleSelectContract(this.makeContractOption(contract));
+        }
+      }
+    }
   }
 
   public isContractsValid = () => {
@@ -87,13 +99,7 @@ class InteractForm extends Component<Props, State> {
     let options: ContractOption[] = [];
 
     if (this.isContractsValid()) {
-      const contractOptions = contracts.map(con => {
-        const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
-        return {
-          name: `${con.name} ${addr}`,
-          value: this.makeContractValue(con)
-        };
-      });
+      const contractOptions = contracts.map(con => this.makeContractOption(con));
       options = [{ name: 'Custom', value: '' }, ...contractOptions];
     }
 
@@ -204,6 +210,14 @@ class InteractForm extends Component<Props, State> {
     }
   };
 
+  private makeContractOption(con: NetworkContract): ContractOption {
+    const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
+    return {
+      name: `${con.name} ${addr}`,
+      value: this.makeContractValue(con)
+    };
+  }
+
   private makeContractValue(contract: NetworkContract) {
     return `${contract.name}:${contract.address}`;
   }
@@ -212,6 +226,7 @@ class InteractForm extends Component<Props, State> {
 const mapStateToProps = (state: AppState) => ({
   contracts: configSelectors.getNetworkContracts(state) || [],
   currentTo: selectors.getCurrentTo(state),
+  currentUnit: selectors.getUnit(state),
   isValidAddress: configSelectors.getIsValidAddressFn(state)
 });
 

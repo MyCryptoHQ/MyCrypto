@@ -6,6 +6,8 @@ import * as selectors from 'features/selectors';
 import { notificationsActions } from 'features/notifications';
 import InteractForm from './components/InteractForm';
 import { InteractExplorer } from './components/InteractExplorer';
+import { RouteComponentProps } from 'react-router';
+import { parse } from 'query-string';
 
 interface State {
   currentContract: Contract | null;
@@ -20,7 +22,7 @@ interface DispatchProps {
   showNotification: notificationsActions.TShowNotification;
 }
 
-type Props = StateProps & DispatchProps;
+type Props = StateProps & DispatchProps & RouteComponentProps<{}>;
 class InteractClass extends Component<Props, State> {
   public initialState: State = {
     currentContract: null,
@@ -48,6 +50,9 @@ class InteractClass extends Component<Props, State> {
 
   public render() {
     const { showExplorer, currentContract } = this.state;
+    const { location } = this.props;
+
+    const search = parse(location.search);
 
     const interactProps = {
       accessContract: this.accessContract,
@@ -56,7 +61,7 @@ class InteractClass extends Component<Props, State> {
 
     return (
       <main className="Interact Tab-content-pane" role="main">
-        <InteractForm {...interactProps} />
+        <InteractForm {...interactProps} defaultContract={search.contract} />
         <hr />
         {showExplorer &&
           currentContract && (

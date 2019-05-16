@@ -492,6 +492,8 @@ export const getCurrentValue = (state: AppState): ICurrentValue =>
     ? transactionFieldsSelectors.getValue(state)
     : transactionMetaSelectors.getTokenValue(state);
 
+export const getCurrentUnit = (state: AppState): string => transactionMetaSelectors.getUnit(state);
+
 export const isValidCurrentTo = (state: AppState) => {
   const currentTo = getCurrentTo(state);
   const dataExists = transactionSelectors.getDataExists(state);
