@@ -9,6 +9,7 @@ import {
   TokenList,
   WalletBreakdown
 } from './components';
+import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 import {
@@ -25,6 +26,7 @@ export default function Dashboard() {
       <AccountContext.Consumer>
         {({ accounts, deleteAccount }) => (
           <Layout className="Dashboard-mobile" fluid={true}>
+            <NotificationsPanel />
             <div className="Dashboard-mobile-actions">
               {actions.map(action => <ActionTile key={action.title} {...action} />)}
             </div>
@@ -70,6 +72,7 @@ export default function Dashboard() {
       <AccountContext.Consumer>
         {({ accounts, deleteAccount }) => (
           <Layout className="Dashboard-desktop">
+            <NotificationsPanel />
             <div className="Dashboard-desktop-top">
               <div className="Dashboard-desktop-top-left">
                 <Heading as="h2" className="Dashboard-desktop-top-left-heading">
