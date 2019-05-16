@@ -33,6 +33,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
   public render() {
     const { stage } = this.state;
     const currentStep: number = keystoreFlow.indexOf(stage) + 1;
+    const totalSteps: number = keystoreFlow.length;
     const ActivePanel: ReactType = keystoreStageToComponentHash[stage];
     const actions = {
       onBack: this.regressToPreviousStage,
@@ -46,7 +47,12 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
 
     return (
       <Layout centered={true}>
-        <ActivePanel currentStep={currentStep} totalSteps={5} {...actions} {...this.state} />
+        <ActivePanel
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+          {...actions}
+          {...this.state}
+        />
       </Layout>
     );
   }
