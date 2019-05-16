@@ -122,6 +122,24 @@ export function* resolveDomainRequest(name: string): SagaIterator {
   const nameStateHandler = modeMap[domainData.mode];
   const result = yield call(nameStateHandler, domainData, nameHash);
 
+  if (!result.hasOwnProperty('resolvedAddress')) {
+    const { resolverAddress }: typeof ENS.registry.resolver.outputType = yield call(
+      makeEthCallAndDecode,
+      {
+        to: ensAddresses.registry,
+        decoder: ENS.registry.resolver.decodeOutput,
+        data: ENS.registry.resolver.encodeInput({
+          node: nameHash
+        })
+      }
+    );
+    const resolvedAddress: typeof ENS.resolver.addr.outputType = yield call(makeEthCallAndDecode, {
+      to: resolverAddress,
+      data: ENS.resolver.addr.encodeInput({ node: nameHash }),
+      decoder: ENS.resolver.addr.decodeOutput
+    });
+    result.resolvedAddress = resolvedAddress.ret;
+  }
   const returnValue: IBaseDomainRequest = {
     name,
     ...domainData,
