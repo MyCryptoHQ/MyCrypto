@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { IV3Wallet } from 'ethereumjs-wallet';
 
 import { ExtendedContentPanel } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
+import { PaperWallet } from 'components';
 import translate, { translateRaw } from 'translations';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 
@@ -70,38 +72,79 @@ const PrivateKeyField = styled.div`
   margin-top: 8px;
 `;
 
-export default function MakeBackupPanel({ onBack, onNext }: PanelProps) {
-  return (
-    <ExtendedContentPanel
-      onBack={onBack}
-      stepper={{
-        current: 4,
-        total: 5
-      }}
-      heading={translateRaw('MAKE_BACKUP_TITLE')}
-      className="SaveKeystoreFilePanel"
-    >
-      <ImageWrapper>
-        <img src={lockSafetyIcon} />
-      </ImageWrapper>
+const HiddenPaperWallet = styled.div`
+  position: absolute;
+  top: -1000px;
+`;
 
-      <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_1')}</DescriptionItem>
-      <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_2')}</DescriptionItem>
-      <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_3')}</DescriptionItem>
+interface Props extends PanelProps {
+  privateKey: string;
+  keystore: IV3Wallet;
+}
 
-      <PrivateKeyWrapper>
-        {translate('YOUR_PRIVATE_KEY_LABEL')}
-        <PrivateKeyField>
-          afdfd9c3d2095ef696594f6cedcae59e72dcd697e2a7521b1578140422a4f890
-        </PrivateKeyField>
-      </PrivateKeyWrapper>
-      <ButtonsWrapper>
-        <StyledButton secondary={true}>
-          <PrinterImage src={printerIcon} />
-          {translate('MAKE_BACKUP_PRINT_BUTTON')}
-        </StyledButton>
-        <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
-      </ButtonsWrapper>
-    </ExtendedContentPanel>
-  );
+interface State {
+  paperWalletImage: string;
+}
+
+export default class MakeBackupPanel extends Component<Props, State> {
+  public state: State = {
+    paperWalletImage: ''
+  };
+
+  private paperWallet: PaperWallet | null;
+
+  public componentDidMount() {
+    setTimeout(() => {
+      if (!this.paperWallet) {
+        return this.componentDidMount();
+      }
+      this.paperWallet.toPNG().then(png => this.setState({ paperWalletImage: png }));
+    }, 500);
+  }
+
+  public render() {
+    const { paperWalletImage } = this.state;
+    const { onBack, onNext, privateKey, keystore } = this.props;
+
+    return (
+      <ExtendedContentPanel
+        onBack={onBack}
+        stepper={{
+          current: 4,
+          total: 5
+        }}
+        heading={translateRaw('MAKE_BACKUP_TITLE')}
+        className="SaveKeystoreFilePanel"
+      >
+        <ImageWrapper>
+          <img src={lockSafetyIcon} />
+        </ImageWrapper>
+
+        <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_1')}</DescriptionItem>
+        <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_2')}</DescriptionItem>
+        <DescriptionItem>{translate('MAKE_BACKUP_DESCRIPTION_3')}</DescriptionItem>
+
+        <PrivateKeyWrapper>
+          {translate('YOUR_PRIVATE_KEY_LABEL')}
+          <PrivateKeyField>{privateKey}</PrivateKeyField>
+        </PrivateKeyWrapper>
+        <ButtonsWrapper>
+          <a href={paperWalletImage} download={`paper-wallet-0x${keystore.address.substr(0, 6)}`}>
+            <StyledButton secondary={true} disabled={!paperWalletImage}>
+              <PrinterImage src={printerIcon} />
+              {translate('MAKE_BACKUP_PRINT_BUTTON')}
+            </StyledButton>
+          </a>
+          <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
+        </ButtonsWrapper>
+        <HiddenPaperWallet>
+          <PaperWallet
+            address={keystore.address}
+            privateKey={privateKey}
+            ref={c => (this.paperWallet = c)}
+          />
+        </HiddenPaperWallet>
+      </ExtendedContentPanel>
+    );
+  }
 }
