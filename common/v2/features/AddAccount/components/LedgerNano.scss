@@ -1,19 +1,27 @@
 @import 'common/sass/variables';
 
 .LedgerPanel {
-  width: auto;
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 400px;
   position: relative;
+  justify-content: center;
+
+
 
   &-top {
     display: flex;
   }
+  &-loading {
+    padding-bottom: 2em;
+
+    @media (max-width: 700px) {
+      // position: absolute;
+      // bottom: 0em; 
+    }
+  }
 
   &-description {
-    width: 417px;
-    height: 500px;
     font-family: Lato;
     font-size: 18px;
     font-weight: normal;
@@ -26,13 +34,41 @@
     justify-content: center;
     text-align: center;
     align-content: center;
+
+    @media (max-width: 700px) {
+      height: 350px; 
+    }
+
+    &-content {
+      justify-content: center;
+      text-align: center;
+      align-content: center;
+    }
     &-button {
-      width: 417px;
-      bottom: 50px;
-      position: absolute;
+      position: relative;
+      bottom: 2em;
+      width: 420px;
+
+      @media (max-width: 700px) {
+        width:345px;
+        bottom: 0em; 
+      }
     }
   }
   &-image {
     vertical-align: center;
+    margin: 4em;
+    padding-top: 2em;
+
+    @media (max-width: 700px) {
+      margin: 0.25em; 
+      padding: 0.5em; 
+    }
+  }
+
+  &-footer {
+    @media (max-width: 700px) {
+      margin-bottom: 20px; 
+    }
   }
 }

@@ -82,6 +82,10 @@
     transition: border-color 120ms, box-shadow 120ms;
     margin-bottom: 1rem;
 
+    @media (max-width: 700px) {
+      margin-bottom: 0em; 
+    }
+
     &[placeholder] {
       text-overflow: ellipsis;
     }

@@ -49,8 +49,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   }
 
   public render() {
-    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
-    const showErr = error ? 'is-showing' : '';
+    const { dPath, publicKey, chainCode, isLoading } = this.state;
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} />;
@@ -58,41 +57,53 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <DeterministicWallets
-          publicKey={publicKey}
-          chainCode={chainCode}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
-        />
+        <div className="Mnemoinc-dpath">
+          <DeterministicWallets
+            publicKey={publicKey}
+            chainCode={chainCode}
+            dPath={dPath}
+            dPaths={this.props.dPaths}
+            onCancel={this.handleCancel}
+            onConfirmAddress={this.handleUnlock}
+            onPathChange={this.handlePathChange}
+          />
+        </div>
       );
     } else {
       return (
-        <div className="TrezorDecrypt">
-          <div className="Trezor-description">
-            {translate('TREZOR_TIP')}
-            <div className="Panel-image">
-              <img src={ConnectTrezor} />
-            </div>
+        <div className="Panel">
+          <div className="Panel-title">
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_TREZOR')}`}
           </div>
-          <Button
-            className="TrezorDecrypt-button"
-            onClick={this.handleNullConnect}
-            disabled={isLoading}
-          >
+          <div className="TrezorDecrypt">
+            <div className="TrezorDecrypt-description">
+              {translate('TREZOR_TIP')}
+              <div className="TrezorDecrypt-img">
+                <img src={ConnectTrezor} />
+              </div>
+            </div>
+            {/* <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>
+              {error || '-'}
+            </div> */}
+
             {isLoading ? (
-              <div className="TrezorDecrypt-message">
-                <Spinner light={true} />
-                {translate('WALLET_UNLOCKING')}
+              <div className="TrezorDecrypt-loading">
+                <Spinner /> {translate('WALLET_UNLOCKING')}
               </div>
             ) : (
-              translate('ADD_TREZOR_SCAN')
+              <Button
+                className="TrezorDecrypt-button"
+                onClick={this.handleNullConnect}
+                disabled={isLoading}
+              >
+                {translate('ADD_TREZOR_SCAN')}
+              </Button>
             )}
-          </Button>
-
-          <div className={`TrezorDecrypt-error alert alert-danger ${showErr}`}>{error || '-'}</div>
+            <div className="TrezorDecrypt-footer">
+              {translate('ORDER_TREZOR')} <br />
+              {translate('HOWTO_TREZOR')}
+            </div>
+          </div>
         </div>
       );
     }

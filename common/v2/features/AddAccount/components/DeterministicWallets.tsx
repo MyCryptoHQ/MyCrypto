@@ -1,7 +1,7 @@
 import React from 'react';
 import Select, { Option } from 'react-select';
 import { connect } from 'react-redux';
-import { Table, Address, IconLink, Typography, Button } from '@mycrypto/ui';
+import { Table, Address, Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'libs/validators';
@@ -17,6 +17,12 @@ import './DeterministicWallets.scss';
 import { truncate } from 'v2/libs';
 import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
+import radio from 'assets/images/radio.svg';
+import radioChecked from 'assets/images/radio-checked.svg';
+
+function Radio({ checked }: { checked: boolean }) {
+  return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
+}
 
 const WALLETS_PER_PAGE = 5;
 
@@ -92,16 +98,10 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     return (
       <div className="DW">
         <form className="DW-path form-group-sm" onSubmit={this.handleSubmitCustomPath}>
-          <header>
-            <div className="DW-path-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
-            <Typography>
-              Derivation Path{' '}
-              <IconLink
-                icon="shape"
-                href="https://support.mycrypto.com/how-to/hardware-wallets/multiple-addresses-showing-on-hardware-wallet"
-              />
-            </Typography>
-            <div className="DW-path-select">
+          <div className="DW-header">
+            {' '}
+            <div className="DW-header-title">{translate('DECRYPT_PROMPT_SELECT_ADDRESS')}</div>
+            <div className="DW-header-select">
               <Select
                 name="fieldDPath"
                 value={this.state.currentDPath}
@@ -113,10 +113,11 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
                 searchable={false}
               />
             </div>
-          </header>
+          </div>
+
           {this.state.currentDPath.label === customDPath.label && (
             <div className="flex-wrapper">
-              <div className="DW-path-custom">
+              <div className="DW-custom">
                 <Input
                   isValid={customPath ? isValidPath(customPath) : true}
                   value={customPath}
@@ -143,13 +144,13 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         <div className="DW-addresses-nav">
           <img src={prevIcon} onClick={this.prevPage} />
           <span className="DW-addresses-nav-page">PAGE {page + 1} OF ∞</span>
-          <img src={nextIcon} onClick={this.nextPage} />
+          <img className="Identicon-img" src={nextIcon} onClick={this.nextPage} />
 
           <Button onClick={onCancel} secondary={true}>
             {translate('ACTION_2')}
           </Button>
           <Button onClick={this.handleConfirmAddress} disabled={!selectedAddress}>
-            {translate('ACTION_3')}
+            {translate('ACTION_6')}
           </Button>
         </div>
       </div>
@@ -249,14 +250,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     return [
       <div className="DW-addresses-table-address-select">
         {wallet.index + 1}
-        <input
-          type="radio"
-          name="selectedAddress"
-          checked={selectedAddress === wallet.address}
-          value={wallet.address}
-          readOnly={true}
-          onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
-        />
+        <Radio checked={selectedAddress === wallet.address} />
       </div>,
       <Address title={label} address={wallet.address} truncate={truncate} />,
       <UnitDisplay
@@ -266,10 +260,22 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         displayShortBalance={true}
         checkOffline={true}
       />,
-      <a target="_blank" href={blockExplorer.addressUrl(wallet.address)} rel="noopener noreferrer">
+      <a
+        target="_blank"
+        href={blockExplorer.addressUrl(wallet.address)}
+        rel="noopener noreferrer"
+        onClick={event => event.stopPropagation()}
+      >
         <i className="DW-addresses-table-more" />
       </a>
-    ];
+    ].map(element => (
+      <div
+        className="clickable"
+        onClick={this.selectAddress.bind(this, wallet.address, wallet.index)}
+      >
+        {element}
+      </div>
+    ));
     // tslint:enable:jsx-key
   }
 }

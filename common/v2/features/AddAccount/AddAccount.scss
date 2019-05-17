@@ -3,68 +3,82 @@
 
 $speed: 500ms;
 
+.Title-Wallets {
+  position: relative;
+}
 @keyframes decrypt-enter {
   0% {
     opacity: 0;
-    transform: translateY(8px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0px);
   }
 }
 
 @mixin decrypt-title {
   text-align: center;
+  justify-content: center;
   line-height: 1;
   margin: $space 0 2rem;
   font-weight: normal;
   animation: decrypt-enter $speed ease 1;
+  padding-top: 1em;
+  font-size: 32px;
+  font-weight: bold;
 }
 
 .Panel {
-  width: 760px;
-  min-height: 790px;
+  width: 562px;
+  height: 629px;
+  justify-content: center; 
   // display: flex;
   // flex-direction: column;
   position: relative;
+  padding: 2.5em;
+
+  @media only screen and (max-width: 700px) {
+    width: 375px;
+    height: 500px;
+    padding: 1em; 
+  }
+
   &-top {
     display: flex;
   }
+
   &-content {
-    min-height: 629px;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
-    background-color: #ffffff;
-    padding-top: 40px;
-    padding-left: 70px;
-    padding-right: 70px;
-    position: relative;
+    margin: 2em;
+
+    @media (max-width: 700px) {
+      margin: 0px; 
+    }
+  }
+  &-back {
+    width: 150px;
+    height: 29px;
+    font-family: Lato;
+    font-size: 20px;
+    font-weight: bold;
   }
   &-title {
-    height: 39px;
     font-family: Lato;
     font-size: 32px;
     font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
     color: var(--dark-slate-blue);
     text-align: center;
+
+    @media (max-width: 700px){
+      font-size: 25px;
+    }
 
     &-connectDevice {
       justify-content: center;
       text-align: center;
-      width: 421px;
+      // width: 421px;
       height: auto;
       font-family: Lato;
       font-size: 32px;
       font-weight: bold;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
       color: var(--dark-slate-blue);
       position: relative;
     }
@@ -78,19 +92,20 @@ $speed: 500ms;
     height: 108px;
     font-family: Lato;
     font-size: 18px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
     line-height: 1.5;
-    letter-spacing: normal;
     color: #333333;
     padding-top: 16px;
     position: relative;
     text-align: center;
+
+    // @media (max-width: 700px) {
+    //   margin-bottom: 50px; 
+    // }
+
     &-button {
       position: absolute;
-      bottom: 50px;
-      width: calc(100% - 140px);
+      bottom: 1em;
+      width: 420px;
     }
   }
   &-networkLabel {
@@ -99,6 +114,7 @@ $speed: 500ms;
     font-family: Lato;
     font-size: 15px;
     color: var(--dark-slate-blue);
+    padding-top: 1.25em;
   }
   &-dropdown {
     padding-top: 10px;
@@ -106,12 +122,26 @@ $speed: 500ms;
 }
 
 .WalletDecrypt {
-  display: flex;
   justify-content: center;
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(0, 0, 0, 0.12);
   width: 760px;
-  min-height: 790px;
+  min-height: 850px;
   border-radius: 3px;
+  background-color: #ffffff;
+
+  @media (max-width: $screen-md) {
+    width: 760px;
+    height: 769px;
+  }
+
+  &-container {
+    // display: flex;
+
+    @media (max-width: 700px) {
+      width: 375px;
+      // flex-wrap: wrap;
+    }
+  }
 
   &-connectWallet {
     width: 562px;
@@ -119,17 +149,14 @@ $speed: 500ms;
   }
 
   &-info {
-    width: 512px;
+    justify-content: center;
     height: 19px;
     font-family: Lato;
     font-size: 16px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
     text-align: center;
     color: #093053;
+    margin: 2em;
+    padding-bottom: 2em;
   }
 
   &-wallets {
@@ -167,11 +194,6 @@ $speed: 500ms;
 
   &-decrypt {
     text-align: center;
-    padding-bottom: $space;
-
-    @media (max-width: $screen-md) {
-      padding-bottom: $space * 2;
-    }
 
     &-back {
       @include reset-button;
@@ -187,7 +209,6 @@ $speed: 500ms;
         top: auto;
         bottom: -10px;
         left: 50%;
-        transform: translateX(-50%);
       }
 
       &:hover,
@@ -274,13 +295,26 @@ $speed: 500ms;
 }
 
 .WalletDecrypt {
-  position: relative;
+  display: flex;
 
   &-wallets {
     margin: 0 -$space-md;
+    justify-content: center;
+    text-align: center;
 
     &-title {
       @include decrypt-title;
+    }
+
+    &-description {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+
+      height: 54px;
+      font-family: Lato;
+      font-size: 18px;
+      line-height: 1.5;
     }
 
     &-row {
@@ -312,7 +346,6 @@ $speed: 500ms;
   &-decrypt {
     position: relative;
     text-align: center;
-    padding-bottom: $space;
 
     @media (max-width: $screen-md) {
       padding-bottom: $space * 2;
@@ -331,7 +364,6 @@ $speed: 500ms;
         top: auto;
         bottom: -10px;
         left: 50%;
-        transform: translateX(-50%);
       }
 
       &:hover,
@@ -352,10 +384,6 @@ $speed: 500ms;
 
     &-title {
       @include decrypt-title;
-    }
-
-    &-form {
-      margin: 0 auto;
     }
     &-label {
       opacity: 0.8;
@@ -407,4 +435,13 @@ $speed: 500ms;
 
 .no-padding {
   padding: 0;
+}
+
+.SelectNetwork-panel {
+  width: 420px; 
+}
+
+.Mnemoinc-dpath{
+  width: 935px;
+  height: 757px;
 }

@@ -6,6 +6,8 @@ import { stripHexPrefix } from 'libs/formatters';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import { unlockPrivateKey } from 'v2/features/Wallets';
+import './PrivateKey.scss';
 
 export interface PrivateKeyValue {
   key: string;
@@ -43,72 +45,94 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
 }
 
 interface Props {
-  value: PrivateKeyValue;
+  wallet: any;
   onChange(value: PrivateKeyValue): void;
-  onUnlock(): void;
+  onUnlock(param: any): void;
 }
 
 export class PrivateKeyDecrypt extends PureComponent<Props> {
+  public state: PrivateKeyValue = {
+    key: '',
+    password: '',
+    valid: false
+  };
+
   public render() {
-    const { key, password } = this.props.value;
+    const { wallet } = this.props;
+    const { key, password } = this.state;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
     const unlockDisabled = !isValidPkey || (isPassRequired && !password.length);
 
     return (
-      <form id="selectedTypeKey" onSubmit={this.unlock}>
-        <img src={PrivateKeyicon} />
-        <div className="input-group-wrapper">
-          <label className="input-group">
-            <TogglablePassword
-              value={key}
-              rows={4}
-              placeholder={translateRaw('X_PRIVKEY2')}
-              isValid={isValidPkey}
-              onChange={this.onPkeyChange}
-              onEnter={this.props.onUnlock}
-            />
-          </label>
+      <div className="Panel">
+        <div className="Panel-title">
+          {translate('UNLOCK_WALLET')} {`Your ${translateRaw(wallet.lid)}`}
         </div>
-        {isValidPkey &&
-          isPassRequired && (
+        <div className="PrivateKey">
+          <form id="selectedTypeKey" onSubmit={this.unlock}>
+            <div className="PrivateKey-img">
+              <img src={PrivateKeyicon} />
+            </div>
+
             <div className="input-group-wrapper">
               <label className="input-group">
-                <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
-                <Input
-                  isValid={password.length > 0}
-                  value={password}
-                  onChange={this.onPasswordChange}
-                  onKeyDown={this.onKeyDown}
-                  placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-                  type="password"
+                <label className="PrivateKey-label">Your Private Key</label>
+                <TogglablePassword
+                  value={key}
+                  rows={4}
+                  placeholder={translateRaw('X_PRIVKEY2')}
+                  isValid={isValidPkey}
+                  onChange={this.onPkeyChange}
+                  onEnter={() => this.unlock}
                 />
               </label>
             </div>
-          )}
-        <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
-          {translate('ADD_LABEL_6_SHORT')}
-        </button>
-      </form>
+            {isValidPkey &&
+              isPassRequired && (
+                <div className="input-group-wrapper">
+                  <label className="input-group">
+                    <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
+
+                    <Input
+                      isValid={password.length > 0}
+                      value={password}
+                      onChange={this.onPasswordChange}
+                      onKeyDown={this.onKeyDown}
+                      placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+                      type="password"
+                    />
+                  </label>
+                </div>
+              )}
+            <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
+              {translate('ADD_LABEL_6_SHORT')}
+            </button>
+          </form>
+          <div className="PrivateKey-help">{translate('PRIVATE_KEY_HELP')}</div>
+        </div>
+      </div>
     );
   }
 
   private onPkeyChange = (e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const pkey = e.currentTarget.value;
-    const pass = this.props.value.password;
+    const pass = this.state.password;
     const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
 
-    this.props.onChange({ ...this.props.value, key: fixedPkey, valid });
+    this.setState({
+      key: fixedPkey,
+      valid
+    });
   };
 
   private onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
     // NOTE: Textareas don't support password type, so we replace the value
     // with an equal length number of dots. On change, we replace
-    const pkey = this.props.value.key;
+    const pkey = this.state.key;
     const pass = e.currentTarget.value;
     const { valid } = validatePkeyAndPass(pkey, pass);
 
-    this.props.onChange({
-      ...this.props.value,
+    this.setState({
       password: pass,
       valid
     });
@@ -120,9 +144,10 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
     }
   };
 
-  private unlock = (e: React.SyntheticEvent<HTMLElement>) => {
+  private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onUnlock();
+    const wallet = await unlockPrivateKey({ key: this.state.key, password: this.state.password });
+    this.props.onUnlock(wallet);
   };
 }

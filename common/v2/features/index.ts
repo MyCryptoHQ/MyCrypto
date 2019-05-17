@@ -2,7 +2,7 @@ export * from './BuyAndExchange';
 export * from './CreateWallet';
 export * from './Dashboard';
 export * from './Home';
-export * from './AddAccount';
+export { addAccountRoutes } from './AddAccount';
 export * from './DownloadApp';
 export * from './NoAccounts';
 export * from './constants';

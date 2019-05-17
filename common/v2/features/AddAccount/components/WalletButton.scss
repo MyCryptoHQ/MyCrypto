@@ -12,15 +12,15 @@
   }
 }
 
-.WalletButton {
-  position: relative;
-  flex: 1;
+.WalletButton-main {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
   height: 200px;
   max-width: 200px;
   min-width: 200px;
   padding: 25px 15px;
-  margin: 0 $space-md $space;
-
   background-color: #ffffff;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 0 rgba(0, 0, 0, 0.05),
     0 1px 3px 0 rgba(0, 0, 0, 0.1);
@@ -30,6 +30,12 @@
   transition: transform 150ms ease, box-shadow 150ms ease;
   animation: wallet-button-enter 400ms ease 1;
   animation-fill-mode: backwards;
+
+  @media only screen and (max-width: 700px) {
+    height: 159.7px;
+    max-width: 159.7px;
+    min-width: 159.7px;
+  }
 
   @for $i from 0 to 6 {
     &:nth-child(#{$i}) {
@@ -43,14 +49,6 @@
       transform: translateY(-2px);
       z-index: 2;
       box-shadow: 0 1px 4px rgba(#000, 0.12), 0 4px 6px rgba(#000, 0.12);
-
-      .WalletButton-title {
-        color: color(brand-primary);
-
-        &-icon {
-          opacity: 1;
-        }
-      }
     }
 
     &:active {
@@ -66,20 +64,24 @@
 
   &-inner {
     transition: opacity 200ms ease;
+
+    // transform: perspective(1px) translateY(5%);
   }
 
   &-title {
-    position: relative;
-    justify-content: center;
-    align-items: center;
     font-size: $font-size-medium;
-    margin-bottom: $space * 1.25;
     transition: color 150ms ease;
+    font-family: Lato;
+    font-size: 18px;
+    padding-top: 19px;
 
     &-icon {
-      margin-right: 8px;
-      max-height: 26px;
+      max-height: 75px;
       opacity: 0.8;
+
+      @media screen and (max-width: 700px) {
+        max-height: 59.9px;
+      }
 
       @include theme(dark) {
         opacity: 1;
@@ -88,126 +90,6 @@
         // Kind of hacky, but we don't want to invert metamask
         &[src*='metamask'] {
           filter: none;
-        }
-      }
-    }
-  }
-
-  &-icons {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-
-    &-icon {
-      position: relative;
-      margin-left: 8px;
-      @include show-tooltip-on-hover;
-
-      .fa {
-        position: relative;
-        opacity: 0.6;
-        font-size: $font-size-medium;
-
-        &:hover {
-          opacity: 0.9;
-        }
-      }
-    }
-  }
-
-  &--small {
-    height: 159.7px;
-    max-width: 159.7px;
-    min-width: 159.7px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 0 rgba(0, 0, 0, 0.05),
-      0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    margin: 0 $space-sm $space-md;
-
-    .WalletButton {
-      &-title {
-        font-size: $font-size-bump;
-        margin-bottom: $space-sm;
-      }
-
-      &-icons {
-        &-icon {
-          margin-left: 6px;
-
-          .fa {
-            font-size: $font-size-bump;
-          }
-        }
-      }
-    }
-  }
-
-  // Mobile handling
-  @media screen and (max-width: $screen-xs) {
-    padding: 16px;
-
-    &,
-    &--small {
-      height: 159.7px;
-      width: 159.7px;
-      min-width: 159.7px;
-      max-width: none;
-      margin-left: 0;
-      margin-right: 0;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 1px 0 0 rgba(0, 0, 0, 0.05),
-        0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    }
-
-    &-title {
-      justify-content: flex-start;
-      margin: 0;
-    }
-
-    &-description,
-    &-example {
-      display: none;
-    }
-
-    &-icons {
-      top: 0;
-      right: 0;
-      bottom: 0;
-
-      &-icon {
-        float: left;
-        display: block;
-        height: 100%;
-        margin: 0;
-        width: 48px;
-        text-align: center;
-        border-left: 1px solid rgba(0, 0, 0, 0.1);
-
-        a {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        }
-
-        .fa {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      }
-    }
-
-    &--small {
-      padding: 12px;
-
-      .WalletButton-title {
-        margin: 0;
-      }
-
-      .WalletButton-icons {
-        &-icon {
-          margin: 0;
         }
       }
     }

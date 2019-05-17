@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { SecureWalletName, safeTReferralURL } from 'config';
+import { SecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
 import { SafeTWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import { configSelectors, configNetworksStaticSelectors } from 'features/config';
-import { Spinner, NewTabLink } from 'components/ui';
+import { Spinner } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './SafeT.scss';
@@ -58,45 +58,57 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <DeterministicWallets
-          publicKey={publicKey}
-          chainCode={chainCode}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
-        />
+        <div className="Mnemoinc-dpath">
+          <DeterministicWallets
+            publicKey={publicKey}
+            chainCode={chainCode}
+            dPath={dPath}
+            dPaths={this.props.dPaths}
+            onCancel={this.handleCancel}
+            onConfirmAddress={this.handleUnlock}
+            onPathChange={this.handlePathChange}
+          />
+        </div>
       );
     } else {
       // todo: update help link
       return (
-        <div className="SafeTminiDecrypt">
-          <img src={SafeTIcon} />
-          <button
-            className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
-            onClick={this.handleNullConnect}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <div className="SafeTminiDecrypt-message">
-                <Spinner light={true} />
-                {translate('WALLET_UNLOCKING')}
+        <div className="Panel">
+          <div className="Panel-title">
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_SAFE_T')}`}
+          </div>
+          <div className="SafeTminiDecrypt">
+            <div className="SafeTminiDecrypt-description">
+              {translate('SAFET_MINI_DESCRIPTION')}
+            </div>
+            <div className="SafeTminiDecrypt-img">
+              <img src={SafeTIcon} />
+            </div>
+            <div className="SafeTMini-button-container">
+              <div className="SafeTminiDecrypt-unlockButton">
+                {isLoading ? (
+                  <div className="SafeTminiDecrypt-message">
+                    <Spinner />
+                    {translate('WALLET_UNLOCKING')}
+                  </div>
+                ) : (
+                  <button
+                    className="SafeTminiDecrypt-decrypt btn btn-primary btn-lg btn-block"
+                    onClick={this.handleNullConnect}
+                    disabled={isLoading}
+                  >
+                    {translate('ADD_SAFE_T_SCAN')}
+                  </button>
+                )}
+                <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
+                  {error || '-'}
+                </div>
               </div>
-            ) : (
-              translate('ADD_SAFE_T_SCAN')
-            )}
-          </button>
+            </div>
 
-          <NewTabLink
-            className="SafeTminiDecrypt-buy btn btn-sm btn-default"
-            href={safeTReferralURL}
-          >
-            {translate('ORDER_SAFE_T')}
-          </NewTabLink>
-
-          <div className={`SafeTminiDecrypt-error alert alert-danger ${showErr}`}>
-            {error || '-'}
+            <div className="SafeTminiDecrypt-description-footer">
+              {translate('SAFET_MINI_HELP')}
+            </div>
           </div>
         </div>
       );

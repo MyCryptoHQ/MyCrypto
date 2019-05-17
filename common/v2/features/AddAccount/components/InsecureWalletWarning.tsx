@@ -1,6 +1,8 @@
 import React from 'react';
-import translate from 'translations';
+
+import translate, { translateRaw } from 'translations';
 import { NewTabLink } from 'components/ui';
+import { IS_DEV } from '../flags';
 import './InsecureWalletWarning.scss';
 
 interface Props {
@@ -8,7 +10,12 @@ interface Props {
   onCancel(): void;
 }
 
-export class InsecureWalletWarning extends React.Component<Props> {
+interface InsecureWarningType {
+  wallet: any;
+  goToStart: any;
+}
+
+class InsecureWalletWarning extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }
@@ -41,3 +48,19 @@ export class InsecureWalletWarning extends React.Component<Props> {
     );
   }
 }
+
+const InsecureWarning = ({ wallet, goToStart }: InsecureWarningType) => (
+  <div className="WalletDecrypt-decrypt">
+    <InsecureWalletWarning walletType={translateRaw(wallet.lid)} onCancel={goToStart} />
+    {IS_DEV && (
+      <button
+        className="WalletDecrypt-decrypt-override"
+        onClick={() => console.debug('[DEV] Please code a Feature Flag to remove this warning')}
+      >
+        Override Warning
+      </button>
+    )}
+  </div>
+);
+
+export default InsecureWarning;
