@@ -62,7 +62,9 @@ async function run() {
   const tokensJson: RawTokenJSON[] = JSON.parse(await httpsGet(tokensUrl));
 
   // Format the json to match our format in common/config/tokens/eth.json
-  const tokensLists: {tokens: Token[], extendedTokens: ExtendedToken[]} = processTokenJson(tokensJson);
+  const tokensLists: { tokens: Token[]; extendedTokens: ExtendedToken[] } = processTokenJson(
+    tokensJson
+  );
 
   // Write to the tokens file
   console.log('Writing Tokens JSON to common/config/tokens/eth.json...');
@@ -79,14 +81,19 @@ async function run() {
   // Write to the extendedTokens file
   console.log('Writing Tokens JSON to common/v2/config/tokens/eth.json...');
   const extendedTokensFilePath = path.resolve(__dirname, '../common/v2/config/tokens/eth.json');
-  fs.writeFile(extendedTokensFilePath, JSON.stringify(tokensLists.extendedTokens, null, 2), 'utf8', (err: any) => {
-    if (err) {
-      console.error(err);
-      throw new Error('Failed to write tokens json to file, see above error');
-    }
+  fs.writeFile(
+    extendedTokensFilePath,
+    JSON.stringify(tokensLists.extendedTokens, null, 2),
+    'utf8',
+    (err: any) => {
+      if (err) {
+        console.error(err);
+        throw new Error('Failed to write tokens json to file, see above error');
+      }
 
-    console.log('Succesfully imported', tokensLists.extendedTokens.length, 'tokens!');
-  });
+      console.log('Succesfully imported', tokensLists.extendedTokens.length, 'tokens!');
+    }
+  );
 }
 
 run();

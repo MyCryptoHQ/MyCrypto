@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="103" height="87" viewBox="0 0 103 87">
+    <defs>
+        <radialGradient id="a" cx="75.31%" cy="19.589%" r="40.813%" fx="75.31%" fy="19.589%" gradientTransform="matrix(1 0 0 .99302 0 .001)">
+            <stop offset="6%" stop-color="#FFEA80"/>
+            <stop offset="11%" stop-color="#FFE77D"/>
+            <stop offset="47%" stop-color="#FFD76C"/>
+            <stop offset="73%" stop-color="#FFD166"/>
+        </radialGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(1 3)">
+        <path fill="#2287B4" d="M76.043 37.785h7.979l8.413-11.033-2.544-2.758H75.587z"/>
+        <path fill="#1EB8E7" stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.39" d="M90.565 25.022l7.892 7.247a4.4 4.4 0 0 1 0 6.173l-3.5 3.525a4.333 4.333 0 0 1-3.077 1.284 4.333 4.333 0 0 1-3.076-1.284l-2.456-2.562a4.4 4.4 0 0 1 0-6.173l3.956-3.81a3.167 3.167 0 0 0 .841-3.528 3.13 3.13 0 0 0-3.015-1.988H76.37"/>
+        <path stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.39" d="M77.217 37.764h8.087"/>
+        <path fill="#2287B4" stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.39" d="M26.37 51.358h45.652c2.401 0 4.348-1.96 4.348-4.378V16.331c0-2.418-1.947-4.378-4.348-4.378H28.543a6.195 6.195 0 0 0-5.782 3.875L17.065 25"/>
+        <ellipse cx="53.978" cy="24.081" fill="url(#a)" stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.39" rx="23.913" ry="24.081"/>
+        <path fill="#FFC835" stroke="#FFAE25" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.512" d="M38.24 24.738c-.427-5.972 2.516-11.679 7.612-14.762a15.689 15.689 0 0 1 16.518.16l-5.74 12.04 12.783-1.838c1.257 5.828-.831 11.875-5.41 15.659a15.694 15.694 0 0 1-16.306 2.29c-5.432-2.378-9.084-7.619-9.458-13.571v.022z"/>
+        <path fill="#1EB8E7" d="M66.435 52.847L50.26 78.811a4.349 4.349 0 0 1-2.716 1.942 4.322 4.322 0 0 1-3.284-.563L5.826 55.868l-2.065-1.313a4.378 4.378 0 0 1-1.93-2.735 4.404 4.404 0 0 1 .56-3.308l21.24-34.129a5.24 5.24 0 0 0-.754 3.99 5.21 5.21 0 0 0 2.319 3.322l.913.57 38.978 24.54a4.378 4.378 0 0 1 1.917 2.74 4.404 4.404 0 0 1-.57 3.302z"/>
+        <path fill="#0C9FE1" d="M28.522 23.315L7.239 56.919 3.761 54.51a4.378 4.378 0 0 1-1.93-2.735 4.404 4.404 0 0 1 .56-3.307l21.24-34.13a5.24 5.24 0 0 0-.754 3.99 5.21 5.21 0 0 0 2.319 3.322l3.326 1.664z"/>
+        <path stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.39" d="M23.63 14.383L2.391 48.513a4.404 4.404 0 0 0-.56 3.307 4.378 4.378 0 0 0 1.93 2.735l40.5 25.613a4.322 4.322 0 0 0 3.28.573 4.349 4.349 0 0 0 2.72-1.93l16.174-25.942c.617-.981.822-2.17.569-3.302a4.378 4.378 0 0 0-1.917-2.74L25.196 21.695a5.21 5.21 0 0 1-2.32-3.323 5.24 5.24 0 0 1 .754-3.989"/>
+        <path fill="#0C9FE1" d="M52.891 66.748a6.228 6.228 0 0 1-5.564 2.97 6.236 6.236 0 0 1-5.3-3.425 6.32 6.32 0 0 1 .364-6.331l2.022-4.378 11.26 6.304-2.782 4.86z"/>
+        <ellipse cx="49.63" cy="59.436" fill="#B3C1D6" stroke="#163150" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.39" rx="4.348" ry="4.378"/>
+    </g>
+</svg>

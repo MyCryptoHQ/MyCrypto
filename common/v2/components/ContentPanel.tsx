@@ -8,8 +8,11 @@ import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const ContentPanelWrapper = styled.div`
-  @media (min-width: 700px) {
-    max-width: 560px;
+  @media (max-width: 700px) {
+    max-width: 450px;
+    max-height: 500px;
+    padding-left: 0px;
+    margin-bottom: 1em;
   }
 `;
 
@@ -71,7 +74,7 @@ interface Props {
     current: number;
     total: number;
   };
-  onBack(): void;
+  onBack?(): void | null;
 }
 
 export default function ContentPanel({
