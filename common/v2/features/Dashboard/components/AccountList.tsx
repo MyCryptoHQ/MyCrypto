@@ -33,7 +33,7 @@ export default function AccountList(props: AccountListProps) {
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS')}
       action={translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
-      actionLink="/dashboard/add-account"
+      actionLink="/add-account"
       className={`AccountList ${className}`}
     >
       <CollapsibleTable breakpoint={450} {...buildAccountTable(accounts, deleteAccount)} />

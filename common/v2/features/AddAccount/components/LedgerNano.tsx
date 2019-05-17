@@ -15,6 +15,7 @@ import { Button } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
+  wallet: object;
   onUnlock(param: any): void;
 }
 
@@ -50,8 +51,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   }
 
   public render() {
-    const { dPath, publicKey, chainCode, error, isLoading } = this.state;
-    const showErr = error ? 'is-showing' : '';
+    const { dPath, publicKey, chainCode, isLoading } = this.state;
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
@@ -70,44 +70,51 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <DeterministicWallets
-          publicKey={publicKey}
-          chainCode={chainCode}
-          dPath={dPath}
-          dPaths={this.props.dPaths}
-          onCancel={this.handleCancel}
-          onConfirmAddress={this.handleUnlock}
-          onPathChange={this.handlePathChange}
-        />
+        <div className="Mnemoinc-dpath">
+          <DeterministicWallets
+            publicKey={publicKey}
+            chainCode={chainCode}
+            dPath={dPath}
+            dPaths={this.props.dPaths}
+            onCancel={this.handleCancel}
+            onConfirmAddress={this.handleUnlock}
+            onPathChange={this.handlePathChange}
+          />
+        </div>
       );
     } else {
       return (
-        <div className="LedgerPanel-description-content">
-          <div className="LedgerPanel-description">
-            {translate('LEDGER_TIP')}
-            <div className="LedgerPanel-image">
-              <img src={ledgerIcon} />
-            </div>
-            <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
-              {error || '-'}
-            </div>
-            {isLoading ? (
-              <div className="LedgerPanel-loading">
-                <Spinner /> {translate('WALLET_UNLOCKING')}
-              </div>
-            ) : (
-              <Button
-                className="LedgerPanel-description-button"
-                onClick={this.handleNullConnect}
-                disabled={isLoading}
-              >
-                {translate('ADD_LEDGER_SCAN')}
-              </Button>
-            )}
+        <div className="Panel">
+          <div className="Panel-title">
+            {translate('UNLOCK_WALLET')} {`Your ${translateRaw('X_LEDGER')}`}
           </div>
-          <div className="LedgerPanel-footer">
-            {translate('LEDGER_REFERRAL_2')} <br />
-            {translate('LEDGER_HELP_LINK')}
+          <div className="LedgerPanel-description-content">
+            <div className="LedgerPanel-description">
+              {translate('LEDGER_TIP')}
+              <div className="LedgerPanel-image">
+                <img src={ledgerIcon} />
+              </div>
+              {/* <div className={`LedgerDecrypt-error alert alert-danger ${showErr}`}>
+                {error || '-'}
+              </div> */}
+              {isLoading ? (
+                <div className="LedgerPanel-loading">
+                  <Spinner /> {translate('WALLET_UNLOCKING')}
+                </div>
+              ) : (
+                <Button
+                  className="LedgerPanel-description-button"
+                  onClick={this.handleNullConnect}
+                  disabled={isLoading}
+                >
+                  {translate('ADD_LEDGER_SCAN')}
+                </Button>
+              )}
+            </div>
+            <div className="LedgerPanel-footer">
+              {translate('LEDGER_REFERRAL_2')} <br />
+              {translate('LEDGER_HELP_LINK')}
+            </div>
           </div>
         </div>
       );

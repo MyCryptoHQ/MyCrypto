@@ -8,11 +8,11 @@ interface OwnProps {
   name: string;
   description?: string;
   example?: string;
-  walletType: WalletName;
+  walletType?: WalletName;
   isSecure?: boolean;
   isDisabled?: boolean;
   disableReason?: string;
-  onClick(walletType: string): void;
+  onClick(walletType: any): void;
 }
 
 interface StateProps {

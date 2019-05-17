@@ -49,7 +49,7 @@
     "X_KEYSTOREDESC": "키스토어 / JSON 파일은 Mist에서 사용하는 형식과 일치하므로 나중에 쉽게 가져올 수 있습니다. 다운로드하고 백업할 것을 권장합니다. ",
     "X_METAMASK": "MetaMask ",
     "X_MIST": "Mist",
-    "X_WEB3": "Web3",
+    "X_WEB3_DEFAULT": "Web3",
     "X_MNEMONIC": "니모닉 문구 ",
     "X_SAVE_PAPER": "종이 지갑 저장 ",
     "X_PRINT": "종이 지갑 인쇄 ",

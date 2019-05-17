@@ -1,4 +1,4 @@
-import { WalletName } from 'config/data';
+import { WalletName } from 'v2/config/data';
 
 export interface Account {
   label: string;

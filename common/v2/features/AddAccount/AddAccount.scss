@@ -28,17 +28,30 @@ $speed: 500ms;
 }
 
 .Panel {
-  min-height: 629px;
+  width: 562px;
+  height: 629px;
+  justify-content: center; 
   // display: flex;
   // flex-direction: column;
   position: relative;
   padding: 2.5em;
+
+  @media only screen and (max-width: 700px) {
+    width: 375px;
+    height: 500px;
+    padding: 1em; 
+  }
+
   &-top {
     display: flex;
   }
 
   &-content {
     margin: 2em;
+
+    @media (max-width: 700px) {
+      margin: 0px; 
+    }
   }
   &-back {
     width: 150px;
@@ -48,12 +61,15 @@ $speed: 500ms;
     font-weight: bold;
   }
   &-title {
-    height: 39px;
     font-family: Lato;
     font-size: 32px;
     font-weight: bold;
     color: var(--dark-slate-blue);
     text-align: center;
+
+    @media (max-width: 700px){
+      font-size: 25px;
+    }
 
     &-connectDevice {
       justify-content: center;
@@ -81,6 +97,11 @@ $speed: 500ms;
     padding-top: 16px;
     position: relative;
     text-align: center;
+
+    // @media (max-width: 700px) {
+    //   margin-bottom: 50px; 
+    // }
+
     &-button {
       position: absolute;
       bottom: 1em;
@@ -118,7 +139,6 @@ $speed: 500ms;
 
     @media (max-width: 700px) {
       width: 375px;
-      height: 769px;
       // flex-wrap: wrap;
     }
   }
@@ -415,4 +435,13 @@ $speed: 500ms;
 
 .no-padding {
   padding: 0;
+}
+
+.SelectNetwork-panel {
+  width: 420px; 
+}
+
+.Mnemoinc-dpath{
+  width: 935px;
+  height: 757px;
 }

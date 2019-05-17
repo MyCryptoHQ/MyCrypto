@@ -2,6 +2,7 @@ import MetamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
 import MistIcon from 'assets/images/wallets/mist.svg';
 import CipherIcon from 'assets/images/wallets/cipher.svg';
 import TrustIcon from 'assets/images/wallets/trust.svg';
+import Web3DefaultIcon from 'assets/images/wallets/web3-default.svg';
 
 interface Web3ProviderInfo {
   lid: string;
@@ -26,23 +27,22 @@ const WEB3_CONFIGS: {
   TrustWeb3Provider: {
     lid: 'X_TRUST',
     icon: TrustIcon
+  },
+  UnIndentifiedWeb3Provider: {
+    lid: 'X_WEB3_DEFAULT',
+    icon: Web3DefaultIcon
   }
-};
-
-const DEFAULT_WEB3_CONFIG: Web3ProviderInfo = {
-  lid: 'X_WEB3',
-  icon: ''
 };
 
 export function getWeb3ProviderInfo(): Web3ProviderInfo {
   if (typeof window === 'undefined') {
-    return DEFAULT_WEB3_CONFIG;
+    return WEB3_CONFIGS.UnIndentifiedWeb3Provider;
   }
 
-  const className = (window as any).web3 && (window as any).web3.currentProvider.constructor.name;
-  if (className && WEB3_CONFIGS[className]) {
-    return WEB3_CONFIGS[className];
-  }
+  const className =
+    ((window as any).web3 && (window as any).web3.currentProvider.constructor.name) || undefined;
 
-  return DEFAULT_WEB3_CONFIG;
+  return className && WEB3_CONFIGS[className]
+    ? WEB3_CONFIGS[className]
+    : WEB3_CONFIGS.UnIndentifiedWeb3Provider;
 }
