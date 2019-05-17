@@ -24,6 +24,9 @@ label {
   line-height: 1.4;
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
+  background-color: transparent;
+  border-left: none;
+
   &--transparent {
     background-color: transparent;
     border: none;

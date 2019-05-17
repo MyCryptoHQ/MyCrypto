@@ -10,6 +10,7 @@ import './RecentTransactionList.scss';
 // Legacy
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { TransactionHistory, ExtendedTransaction, AddressMetadata } from 'v2/services';
+import { truncate } from 'v2/libs';
 
 interface Props {
   transactionHistories: TransactionHistory[];
@@ -27,9 +28,6 @@ export default function RecentTransactionList({
 
   // TODO: Sort by relevant transactions
 
-  const truncate = (children: string) => {
-    return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-  };
   const pending = recentTransactions.filter(tx => tx.stage === 'pending');
   const completed = recentTransactions.filter(tx => tx.stage === 'completed');
   const createEntries = (_: string, collection: typeof recentTransactions) =>

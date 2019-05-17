@@ -1,4 +1,4 @@
-import { GasPriceSetting } from 'types/network';
+import { GasPriceSetting, DPathFormats } from 'types/network';
 
 export interface NetworkOptions {
   contracts: string[];
@@ -13,7 +13,7 @@ export interface NetworkOptions {
   blockExplorer: {};
   tokenExplorer: {};
   tokens: {};
-  dPathFormats: {};
+  dPathFormats: DPathFormats;
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice: boolean | undefined;
 }

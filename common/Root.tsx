@@ -37,8 +37,11 @@ import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
+import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
+import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import Dashboard from 'v2/features/Dashboard';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { CurrentsProvider, NotificationsProvider } from 'v2/providers';
 import { NewAppReleaseModal } from 'v2/components';
@@ -93,12 +96,12 @@ class RootClass extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
-
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
           {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-          <Route path="/account" component={SendTransaction} />
+          <Route path="/account" component={SendTransaction} exact={true} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
@@ -130,20 +133,22 @@ class RootClass extends Component<Props, State> {
                   <TransactionProvider>
                     <TransactionHistoryProvider>
                       <NotificationsProvider>
-                        <Router>
-                          <LockScreenProvider>
-                            <PageVisitsAnalytics>
-                              {onboardingActive && <OnboardingModal />}
-                              {routes}
-                              <LegacyRoutes />
-                              <LogOutPrompt />
-                              <QrSignerModal />
-                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                            </PageVisitsAnalytics>
-                          </LockScreenProvider>
-                        </Router>
-                        {developmentMode && <DevTools />}
-                        <div id="ModalContainer" />
+                        <NetworkOptionsProvider>
+                          <Router>
+                            <LockScreenProvider>
+                              <PageVisitsAnalytics>
+                                {onboardingActive && <OnboardingModal />}
+                                {routes}
+                                <LegacyRoutes />
+                                <LogOutPrompt />
+                                <QrSignerModal />
+                                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                              </PageVisitsAnalytics>
+                            </LockScreenProvider>
+                          </Router>
+                          {developmentMode && <DevTools />}
+                          <div id="ModalContainer" />
+                        </NetworkOptionsProvider>
                       </NotificationsProvider>
                     </TransactionHistoryProvider>
                   </TransactionProvider>

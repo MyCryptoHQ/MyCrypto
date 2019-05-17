@@ -91,6 +91,10 @@ export enum MiscWalletName {
   VIEW_ONLY = 'viewOnly'
 }
 
+export enum DefaultWalletName {
+  DEFAULT = 'walletsList'
+}
+
 export const walletNames = getValues(
   SecureWalletName,
   HardwareWalletName,

@@ -1,4 +1,3 @@
-export { default as AddAccount } from './AddAccount';
 export { default as AddressBook } from './AddressBook';
 export { default as AddToAddressBook } from './AddToAddressBook';
 export { default as GeneralSettings } from './GeneralSettings';
