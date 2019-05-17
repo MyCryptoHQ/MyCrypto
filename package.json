@@ -203,7 +203,7 @@
     "dev:https": "cross-env HTTPS=true node webpack_config/devServer.js",
     "predev:https": "check-node-version --package",
     "dev:electron": "concurrently -r --kill-others -n \"RENDERER,MAIN\" \"yarn run dev:electron:renderer\" \"yarn run dev:electron:main\"",
-    "dev:electron:main": "cross-env BUILD_ELECTRON=true webpack --config webpack_config/webpack.electron-dev.js && electron dist/electron-js/main.js",
+    "dev:electron:main": "cross-env BUILD_ELECTRON=true webpack --config webpack_config/electron-main.dev.js && electron dist/electron-js/main.js",
     "dev:electron:renderer": "cross-env BUILD_ELECTRON=true webpack-dev-server --config webpack_config/electron-renderer.dev.js",
     "tslint": "tslint --project . --exclude common/vendor/**/*",
     "tscheck": "tsc --noEmit",
