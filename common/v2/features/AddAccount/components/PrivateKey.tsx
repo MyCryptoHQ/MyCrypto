@@ -76,7 +76,7 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
 
             <div className="input-group-wrapper">
               <label className="input-group">
-                <label className="PrivateKey-label">Your Private Key</label>
+                <label className="PrivateKey-label">{translateRaw('YOUR_PRIVATE_KEY')}</label>
                 <TogglablePassword
                   value={key}
                   rows={4}

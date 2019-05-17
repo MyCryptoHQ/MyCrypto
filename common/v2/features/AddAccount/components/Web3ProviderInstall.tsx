@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Typography } from '@mycrypto/ui';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import TrustWalletWEBP from 'common/assets/images/wallets/trust-3.webp';
 import CoinbaseWalletJPG from 'common/assets/images/wallets/coinbase.jpg';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
@@ -25,7 +25,7 @@ function InstallTrunk() {
               </div>
             </NewTabLink>
 
-            <Typography>TrustWallet App</Typography>
+            <Typography>{translateRaw('TRUST_APP_LABEL')}</Typography>
             <NewTabLink href="https://itunes.apple.com/us/app/trust-ethereum-wallet/id1288339409">
               <img src={AppStoreBadgeIMG} />
             </NewTabLink>
@@ -41,7 +41,7 @@ function InstallTrunk() {
                   <img src={CoinbaseWalletJPG} />
                 </div>
               </NewTabLink>
-              <Typography>Coinbase App</Typography>
+              <Typography>{translateRaw('COINBASE_APP_LABEL')}</Typography>
               <NewTabLink href="https://itunes.apple.com/us/app/coinbase-bitcoin-wallet/id886427730?mt=8">
                 <img src={AppStoreBadgeIMG} />
               </NewTabLink>

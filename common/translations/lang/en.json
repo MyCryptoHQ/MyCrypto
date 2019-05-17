@@ -875,6 +875,10 @@
     "NOTIFICATIONS_GET_WALLET_DESCRIPTION": "Keep your funds safe offline with Trezor or Ledger.",
     "NOTIFICATIONS_GET_WALLET_RESOURCE_TREZOR": "Get a Trezor",
     "NOTIFICATIONS_GET_WALLET_RESOURCE_LEDGER": "Get a Ledger",
-    "WEB3_ONUNLOCK_NOT_FOUND_ERROR": "Please unlock your Metamask before continuing."
+    "WEB3_ONUNLOCK_NOT_FOUND_ERROR": "Please unlock your Metamask before continuing.",
+    "YOUR_PRIVATE_KEY": "Your Private Key",
+    "INPUT_PUBLIC_ADDRESS_LABEL": "Select or Input Your Address",
+    "COINBASE_APP_LABEL": "Coinbase App",
+    "TRUST_APP_LABEL": "Trust Wallet App"
   }
 }

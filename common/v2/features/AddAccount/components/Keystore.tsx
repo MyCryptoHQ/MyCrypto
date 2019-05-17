@@ -119,7 +119,6 @@ export class KeystoreDecrypt extends PureComponent {
       file: this.state.file,
       password: this.state.password
     });
-    console.log(this.state.file, this.state.password, wallet);
     this.props.onUnlock(wallet);
   };
 
