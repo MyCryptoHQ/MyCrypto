@@ -104,14 +104,14 @@ export default class MakeBackupPanel extends Component<Props, State> {
 
   public render() {
     const { paperWalletImage } = this.state;
-    const { onBack, onNext, privateKey, keystore } = this.props;
+    const { onBack, onNext, totalSteps, currentStep, privateKey, keystore } = this.props;
 
     return (
       <ExtendedContentPanel
         onBack={onBack}
         stepper={{
-          current: 4,
-          total: 5
+          current: currentStep,
+          total: totalSteps
         }}
         heading={translateRaw('MAKE_BACKUP_TITLE')}
         className="SaveKeystoreFilePanel"

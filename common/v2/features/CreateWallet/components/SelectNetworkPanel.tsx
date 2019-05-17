@@ -26,6 +26,7 @@ interface Props extends PanelProps {
 
 export default function SelectNetworkPanel({
   totalSteps,
+  currentStep,
   onBack,
   selectNetworkAndContinue
 }: Props) {
@@ -33,7 +34,7 @@ export default function SelectNetworkPanel({
     <ExtendedContentPanel
       onBack={onBack}
       stepper={{
-        current: 2,
+        current: currentStep,
         total: totalSteps
       }}
       heading={translateRaw('SELECT_NETWORK_TITLE')}
@@ -46,7 +47,7 @@ export default function SelectNetworkPanel({
       </NetworkForm>
       <SubmitButton
         className="SelectNetworkPanel-next"
-        onClick={() => selectNetworkAndContinue && selectNetworkAndContinue('Ethereum')}
+        onClick={() => selectNetworkAndContinue('Ethereum')}
       >
         {translateRaw('ACTION_6')}
       </SubmitButton>
