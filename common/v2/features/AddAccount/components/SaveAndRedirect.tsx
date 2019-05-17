@@ -27,7 +27,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       transactionHistory: ''
     };
     createAccount(account);
-    displayNotification(NotificationTemplates.walletCreated, {
+    displayNotification(NotificationTemplates.walletAdded, {
       address: account.address
     });
   });
