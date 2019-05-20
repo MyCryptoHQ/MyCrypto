@@ -24,6 +24,7 @@ matrix:
       dist: trusty
       sudo: required
       services: docker
+  fast_finish: true
 
 cache:
   yarn: true

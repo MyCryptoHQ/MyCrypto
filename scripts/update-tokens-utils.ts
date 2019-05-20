@@ -9,14 +9,16 @@ const excludedTokens: string[] = [
   '0xE94327D07Fc17907b4DB788E5aDf2ed424adDff6'
 ];
 
-function processTokenJson(tokensJson: RawTokenJSON[]): {tokens: Token[], extendedTokens: ExtendedToken[]} {
+function processTokenJson(
+  tokensJson: RawTokenJSON[]
+): { tokens: Token[]; extendedTokens: ExtendedToken[] } {
   const normalizedTokens = tokensJson.map(validateTokenJSON).map(normalizeTokenJSON);
   checkForDuplicateAddresses(normalizedTokens);
-  return { 
+  return {
     tokens: handleDuplicateSymbols(normalizedTokens)
       .map(({ name: _, ...rest }) => rest)
       .filter(filterExcludedTokens)
-      .sort((a, b) => a.symbol.localeCompare(b.symbol)), 
+      .sort((a, b) => a.symbol.localeCompare(b.symbol)),
     extendedTokens: handleDuplicateSymbols(normalizedTokens)
       .map(({ ...rest }) => rest)
       .filter(filterExcludedTokens)

@@ -6,7 +6,7 @@ export interface AssetOption {
   decimal: number;
   contractAddress: string | null;
 }
-
+export type assetOptionMethod = 'base' | 'erc20';
 export interface ExtendedAssetOption extends AssetOption {
   uuid: string;
 }

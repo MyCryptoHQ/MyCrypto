@@ -1,4 +1,7 @@
 import * as serviceTypes from 'v2/services/types';
+import { SecureWalletName } from 'config/data';
+import { InsecureWalletName } from 'v2/features/Wallets/types';
+import { ETH_DEFAULT } from 'config/dpaths';
 
 export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
@@ -19,7 +22,7 @@ export interface LocalCache {
   contractOptions: Record<string, serviceTypes.ContractOptions>;
   derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   addressMetadata: Record<string, serviceTypes.AddressMetadata>;
-  activeNotifications: Record<string, serviceTypes.ActiveNotifications>;
+  notifications: Record<string, serviceTypes.Notification>;
   fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
   screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
 }
@@ -28,7 +31,9 @@ export const CACHE_INIT_DEV: LocalCache = {
   currents: {
     accounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
     fiatCurrency: 'USD',
-    activeWallet: 'all'
+    activeWallet: 'all',
+    node: 'eth_mycrypto',
+    network: 'ETH'
   },
   recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
   globalSettings: {
@@ -39,12 +44,13 @@ export const CACHE_INIT_DEV: LocalCache = {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
       label: 'Foo',
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      network: 'Ethereum',
+      network: 'ETH',
       localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
       assets: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
-      accountType: 'MetaMask',
+      accountType: SecureWalletName.WEB3,
       value: 1e18,
-      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882'
+      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
+      derivationPath: `m/44'/60'/0'/0/0`
     }
   },
   transactionHistories: {
@@ -140,7 +146,9 @@ export const CACHE_INIT_DEV: LocalCache = {
       tokens: [],
       contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
       nodes: ['eth_mycrypto'],
-      dPathFormats: {},
+      dPathFormats: {
+        [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
+      },
       gasPriceSettings: {
         min: 1,
         max: 100,
@@ -158,9 +166,9 @@ export const CACHE_INIT_DEV: LocalCache = {
     }
   },
   assetOptions: {
-    Ethereum: {
+    ETH: {
       name: 'Ethereum',
-      network: 'Ethereum',
+      network: 'ETH',
       ticker: 'ETH',
       type: 'base',
       decimal: 18,
@@ -184,11 +192,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       notes: 'This is my wallet.'
     }
   },
-  activeNotifications: {
-    '61d84f5e-0efa-46b9-915c-aed6ebe5a4dd': {
-      template: 'wallet-created'
-    }
-  },
+  notifications: {},
   fiatCurrencies: {
     USD: {
       code: 'USD',
@@ -216,6 +220,6 @@ export const CACHE_INIT: LocalCache = {
   contractOptions: {},
   derivationPathOptions: {},
   addressMetadata: {},
-  activeNotifications: {},
+  notifications: {},
   fiatCurrencies: {}
 };
