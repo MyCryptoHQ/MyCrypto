@@ -156,6 +156,7 @@ export function SendAssetsForm({
                   {/* TRANSLATE THIS */}
                 </label>
                 <GasPriceSlider
+                  transactionFieldValues={values}
                   gasEstimates={gasEstimates}
                   handleChange={handleChange}
                   gasPrice={values.gasPriceField}

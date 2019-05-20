@@ -14,3 +14,4 @@ export * from './Wallets';
 export * from './constants';
 export * from './ScreenLock';
 export * from './SendAssets';
+export * from './Gas';

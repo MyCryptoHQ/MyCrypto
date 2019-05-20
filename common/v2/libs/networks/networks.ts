@@ -29,6 +29,11 @@ export const getNetworkByName = (name: string): NetworkOptions | undefined => {
   return networks.find((network: NetworkOptions) => network.name === name);
 };
 
+export const getNetworkById = (id: string): NetworkOptions | undefined => {
+  const networks = getAllNetworks() || [];
+  return networks.find((network: NetworkOptions) => network.id === id);
+};
+
 export const isWalletFormatSupportedOnNetwork = (
   network: NetworkOptions,
   format: WalletName

@@ -1,5 +1,4 @@
-import { RawTransactionValues } from '../SendAssets/SendAssets';
-import { getNetworkByAddress } from 'v2/libs/networks/networks';
+import { getNetworkById } from 'v2/libs/networks/networks';
 import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 import { gasPriceDefaults } from 'config/data';
 import { GasEstimates, fetchGasEstimates } from 'v2/api/gas';
@@ -33,19 +32,13 @@ export function getDefaultEstimates(network: NetworkOptions | undefined) {
   }
 }
 
-export async function fetchGasPriceEstimates(
-  transaction: RawTransactionValues
-): Promise<GasEstimates> {
+export async function fetchGasPriceEstimates(networkId: string): Promise<GasEstimates> {
   // Don't try on non-estimating network
-  const transactionSender = transaction.from;
-  const network = getNetworkByAddress(transactionSender);
-  console.log('1');
+  const network = getNetworkById(networkId);
   if (!network || network.isCustom || !network.shouldEstimateGasPrice) {
-    console.log('2');
     const defaultEstimates: GasEstimates = getDefaultEstimates(network);
     return defaultEstimates;
   }
-  console.log('3');
   // Don't try while offline
   /*const isOffline: boolean = yield select(configMetaSelectors.getOffline);
   if (isOffline) {
@@ -55,13 +48,9 @@ export async function fetchGasPriceEstimates(
 
   // Try to fetch new estimates
   try {
-    console.log('4');
     const estimates: GasEstimates = await fetchGasEstimates();
-    console.log('5');
-    console.log(estimates);
     return estimates;
   } catch (err) {
-    console.warn('Failed to fetch gas estimates:', err);
     const defaultEstimates: GasEstimates = getDefaultEstimates(network);
     return defaultEstimates;
   }
