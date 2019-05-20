@@ -39,7 +39,23 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-export default function SendAssetsForm({
+export default function createSendAssetsForm(
+  outerProps: Pick<Props, 'transactionFields' | 'onNext' | 'updateState' | 'onSubmit'>
+) {
+  return (props: Pick<Props, 'stateValues'>) => {
+    return (
+      <SendAssetsForm
+        stateValues={props.stateValues}
+        transactionFields={outerProps.transactionFields}
+        onNext={outerProps.onNext}
+        updateState={outerProps.updateState}
+        onSubmit={outerProps.onSubmit}
+      />
+    );
+  };
+}
+
+export function SendAssetsForm({
   stateValues,
   transactionFields,
   onNext,
@@ -209,7 +225,7 @@ export default function SendAssetsForm({
                   </div>
                 )}
               </div>
-              <Button type="submit" className="SendAssetsForm-next">
+              <Button type="submit" onClick={onNext} className="SendAssetsForm-next">
                 Next{/* TRANSLATE THIS */}
               </Button>
             </Form>

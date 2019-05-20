@@ -23,7 +23,13 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default class ConfirmTransaction extends Component<Props> {
+export default function createConfirmTransactionComponent(outterProps: Pick<Props, 'onNext'>) {
+  return (props: Pick<Props, 'stateValues'>) => {
+    return <ConfirmTransaction onNext={outterProps.onNext} stateValues={props.stateValues} />;
+  };
+}
+
+export class ConfirmTransaction extends Component<Props> {
   public state: State = {
     showingDetails: false
   };

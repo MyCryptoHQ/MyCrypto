@@ -254,7 +254,7 @@ export default function GetStartedPanel() {
             name={translateRaw('HOME_GET_STARTED_HAVE_WALLET_TITLE')}
             description={translate('HOME_GET_STARTED_HAVE_WALLET_DESCRIPTION')}
             icon={existingWalletIcon}
-            link={'/'} //TODO: Replace with route to Wallet import flow
+            link={'/add-account'}
             eventAction="I have a wallet"
           />
           <ActionCard

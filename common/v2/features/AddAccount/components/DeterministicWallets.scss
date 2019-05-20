@@ -1,0 +1,114 @@
+@import 'common/sass/variables';
+@import 'common/sass/mixins';
+
+.DW {
+  position: relative;
+  z-index: 1;
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding-top: 40px;
+    margin-bottom: 35px;
+    &-title {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    &-select {
+      width: 421px;
+      height: 26px;
+      small {
+        padding-left: 5px;
+        opacity: 0.5;
+        font-size: 11px;
+        @include mono;
+      }
+    }
+
+    &-custom {
+      flex: 1;
+      z-index: 1;
+
+      .input-group-input {
+        margin: 0;
+      }
+    }
+
+    &-submit {
+      margin-left: $space-md;
+      padding-left: $space;
+      padding-right: $space;
+      border: none;
+    }
+  }
+
+  &-addresses {
+    overflow-y: auto;
+    &-table {
+      width: 732px;
+      text-align: center;
+      margin: auto;
+      margin-bottom: 10px;
+
+      &-address-select {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &-more {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url('~assets/images/icon-external-link.svg');
+      }
+
+      // Specific selectors to override bootstrap
+      tbody {
+        tr {
+          cursor: pointer;
+
+          label {
+            display: block;
+            font-family: $font-family-sans-serif;
+          }
+        }
+
+        td {
+          vertical-align: middle;
+        }
+      }
+    }
+
+    &-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.5rem;
+      margin: 2em;
+
+      &-page {
+        color: #9a978a;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.Identicon-img {
+  width: 30px;
+  height: 30.6px;
+}
+.clickable {
+  cursor: pointer;
+}
+
+.radio-image {
+  align-self: center;
+}

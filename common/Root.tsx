@@ -1,3 +1,5 @@
+import { hot } from 'react-hot-loader/root';
+import { setConfig } from 'react-hot-loader';
 import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
@@ -35,10 +37,13 @@ import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
+import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
+import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import Dashboard from 'v2/features/Dashboard';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
-import { CurrentsProvider, AssetOptionsProvider } from 'v2/providers';
+import { CurrentsProvider, AssetOptionsProvider, NotificationsProvider } from 'v2/providers';
 import { NewAppReleaseModal } from 'v2/components';
 
 interface OwnProps {
@@ -91,12 +96,12 @@ class RootClass extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
-
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
           {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-          <Route path="/account" component={SendTransaction} />
+          <Route path="/account" component={SendTransaction} exact={true} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
@@ -128,20 +133,24 @@ class RootClass extends Component<Props, State> {
                   <CurrentsProvider>
                     <TransactionProvider>
                       <TransactionHistoryProvider>
-                        <Router>
-                          <LockScreenProvider>
-                            <PageVisitsAnalytics>
-                              {onboardingActive && <OnboardingModal />}
-                              {routes}
-                              <LegacyRoutes />
-                              <LogOutPrompt />
-                              <QrSignerModal />
-                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                            </PageVisitsAnalytics>
-                          </LockScreenProvider>
-                        </Router>
-                        {developmentMode && <DevTools />}
-                        <div id="ModalContainer" />
+                        <NotificationsProvider>
+                          <NetworkOptionsProvider>
+                            <Router>
+                              <LockScreenProvider>
+                                <PageVisitsAnalytics>
+                                  {onboardingActive && <OnboardingModal />}
+                                  {routes}
+                                  <LegacyRoutes />
+                                  <LogOutPrompt />
+                                  <QrSignerModal />
+                                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                                </PageVisitsAnalytics>
+                              </LockScreenProvider>
+                            </Router>
+                            {developmentMode && <DevTools />}
+                            <div id="ModalContainer" />
+                          </NetworkOptionsProvider>
+                        </NotificationsProvider>
                       </TransactionHistoryProvider>
                     </TransactionProvider>
                   </CurrentsProvider>
@@ -276,6 +285,11 @@ const mapStateToProps = (state: AppState): StateProps => ({
   theme: configMetaSelectors.getTheme(state)
 });
 
-export default connect(mapStateToProps, {
+const ConnectedRoot = connect(mapStateToProps, {
   setUnitMeta: transactionMetaActions.setUnitMeta
 })(RootClass);
+
+// Silence RHL 'reconciliation failed' errors
+// https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021
+setConfig({ logLevel: 'no-errors-please' });
+export default hot(ConnectedRoot);

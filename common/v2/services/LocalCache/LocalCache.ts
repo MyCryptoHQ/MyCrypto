@@ -8,7 +8,6 @@ import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 
 // Initialization
-
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
   if (!check || check === '[]' || check === '{}') {
@@ -26,6 +25,8 @@ export const initializeCache = () => {
 
     initGlobalSettings();
 
+    initLocalSettings();
+
     initContractOptions();
 
     initAssetOptions();
@@ -41,6 +42,17 @@ export const initGlobalSettings = () => {
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
     darkMode: false
+  };
+  setCache(newStorage);
+};
+
+export const initLocalSettings = () => {
+  const newStorage = getCacheRaw();
+  newStorage.localSettings = {
+    default: {
+      fiatCurrency: 'USD',
+      favorite: false
+    }
   };
   setCache(newStorage);
 };
@@ -100,7 +112,7 @@ export const initNetworkOptions = () => {
       blockExplorer: {},
       tokenExplorer: {},
       tokens: {},
-      dPathFormats: {},
+      dPathFormats: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
       gasPriceSettings: STATIC_NETWORKS_INITIAL_STATE[en].gasPriceSettings,
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
@@ -195,7 +207,7 @@ export const destroyEncryptedCache = () => {
 
 // Settings operations
 
-type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings';
+type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings' | 'networkOptions';
 
 export const readSettings = <K extends SettingsKey>(key: K) => () => {
   return getCache()[key];
@@ -213,7 +225,7 @@ export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCa
 type CollectionKey =
   | 'accounts'
   | 'accountTypes'
-  | 'activeNotifications'
+  | 'notifications'
   | 'addressMetadata'
   | 'assetOptions'
   | 'assets'
@@ -235,6 +247,20 @@ export const create = <K extends CollectionKey>(key: K) => (
   newCache[key][uuid] = value;
 
   setCache(newCache);
+};
+
+export const createWithID = <K extends CollectionKey>(key: K) => (
+  value: LocalCache[K][keyof LocalCache[K]],
+  id: string
+) => {
+  const uuid = id;
+  if (getCache()[key][uuid] === undefined) {
+    const newCache = getCache();
+    newCache[key][uuid] = value;
+    setCache(newCache);
+  } else {
+    console.log('Error: key already exists in createWithID');
+  }
 };
 
 export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {
