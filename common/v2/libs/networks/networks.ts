@@ -1,5 +1,7 @@
 import { getCache } from 'v2/services/LocalCache';
 import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { getAccountByAddress } from 'v2/libs/accounts';
+import { Account } from 'v2/services/Account/types';
 import { SecureWalletName, InsecureWalletName } from 'config/data';
 import * as types from './types';
 import { WalletName } from 'v2/features/Wallets/types';
@@ -8,6 +10,15 @@ export const getAllNetworks = () => {
   return Object.values(getCache().networkOptions);
 };
 
+export const getNetworkByAddress = (address: string): NetworkOptions | undefined => {
+  const account: Account | undefined = getAccountByAddress(address);
+  if (!account) {
+    return undefined;
+  } else {
+    const networks = getAllNetworks();
+    return networks.find(network => account.network === network.name);
+  }
+};
 export const getNetworkByChainId = (chainId: string): NetworkOptions | undefined => {
   const networks = getAllNetworks() || [];
   return networks.find((network: NetworkOptions) => network.chainId === parseInt(chainId, 16));
@@ -16,6 +27,11 @@ export const getNetworkByChainId = (chainId: string): NetworkOptions | undefined
 export const getNetworkByName = (name: string): NetworkOptions | undefined => {
   const networks = getAllNetworks() || [];
   return networks.find((network: NetworkOptions) => network.name === name);
+};
+
+export const getNetworkById = (id: string): NetworkOptions | undefined => {
+  const networks = getAllNetworks() || [];
+  return networks.find((network: NetworkOptions) => network.id === id);
 };
 
 export const isWalletFormatSupportedOnNetwork = (

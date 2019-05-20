@@ -6,6 +6,9 @@ import translate, { translateRaw } from 'translations';
 import './styles/GasPriceSlider.scss';
 import { Field, FieldProps } from 'formik';
 import { Transaction } from 'v2/services/Transaction';
+import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
+import { GasEstimates } from 'v2/api/gas';
+import { TransactionFields } from '../../SendAssets';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
@@ -21,6 +24,7 @@ interface StateProps {
     fastest: number;
     isDefault: boolean;
   };
+  transactionFieldValues: TransactionFields;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
@@ -28,10 +32,6 @@ interface StateProps {
       : (e: string | ChangeEvent<any>) => void;
   };
 }
-/*
-interface ActionProps {
-  fetchGasEstimates: {};//gasActions.TFetchGasEstimates;
-}*/
 
 type Props = OwnProps & StateProps; // & ActionProps;
 
@@ -50,9 +50,18 @@ export default class SimpleGas extends React.Component<Props> {
     realGasPrice: 0
   };
 
+  public async componentDidMount() {
+    const gasPriceValues: GasEstimates = await fetchGasPriceEstimates(
+      this.props.transactionFieldValues.asset
+    );
+    console.log('fetched new gasPrice values');
+    console.log(gasPriceValues);
+    this.setState({ ...this.state, gasEstimates: gasPriceValues });
+  }
+
   public render() {
     const { gasPrice } = this.props;
-    const gasEstimates = {
+    const gasEstimates = this.props.gasEstimates || {
       fastest: 20,
       fast: 18,
       standard: 12,
@@ -64,6 +73,7 @@ export default class SimpleGas extends React.Component<Props> {
       max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.max,
       min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
     };
+    console.log(bounds);
     const gasNotches = this.makeGasNotches();
 
     /**

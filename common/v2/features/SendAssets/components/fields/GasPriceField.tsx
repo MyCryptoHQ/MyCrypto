@@ -15,11 +15,7 @@ interface OwnProps {
   updateState(values: SendState): void;
 }
 
-/*interface StateProps {
-  name: string;
-}*/
-
-type Props = OwnProps; // & StateProps;
+type Props = OwnProps;
 
 export default class GasPriceField extends Component<Props> {
   public isValidGasPrice = (value: any) => {
