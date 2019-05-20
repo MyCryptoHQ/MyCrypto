@@ -8,15 +8,12 @@ import './TransactionComplete.scss';
 
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
+import { truncate } from 'v2/libs';
 
 interface Props {
   transaction: Transaction;
   onReset(): void;
 }
-
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
 
 export default function TransactionComplete({
   transaction: { recipientAddress, senderAddress },

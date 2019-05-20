@@ -49,7 +49,7 @@
     "X_KEYSTOREDESC": "Ce fichier Keystore utilise le même format que celui que Mist, vous pouvez donc facilement l'importer plus tard dans ces logiciels. C'est le fichier que nous vous recommandons de télécharger et sauvegarder. ",
     "X_METAMASK": "MetaMask / Web3 ",
     "X_MIST": "Mist",
-    "X_WEB3": "Web3",
+    "X_WEB3_DEFAULT": "Web3",
     "X_MNEMONIC": "Phrase mnémonique ",
     "X_SAVE_PAPER": "Enregistrer le portefeuille papier ",
     "X_PRINT": "Imprimer un portefeuille papier ",

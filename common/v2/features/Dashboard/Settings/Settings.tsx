@@ -3,7 +3,7 @@ import { Heading } from '@mycrypto/ui';
 
 import { FlippablePanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import { AddAccount, AddressBook, AddToAddressBook, GeneralSettings } from './components';
+import { AddressBook, AddToAddressBook, GeneralSettings } from './components';
 import './Settings.scss';
 
 // Legacy
@@ -23,7 +23,7 @@ export default function Settings() {
           <FlippablePanel>
             {({ flipped }) =>
               flipped ? (
-                <AddAccount />
+                <p>Add Account</p>
               ) : (
                 <AccountList accounts={accounts} deleteAccount={deleteAccount} />
               )
