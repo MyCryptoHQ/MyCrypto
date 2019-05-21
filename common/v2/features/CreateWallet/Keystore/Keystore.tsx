@@ -14,7 +14,7 @@ import { NotificationTemplates } from 'v2/providers/NotificationsProvider/consta
 import { getNetworkByName } from 'v2/libs';
 import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 import { Account } from 'v2/services/Account/types';
-import { InsecureWalletName } from 'v2/config/data';
+import { WalletName, InsecureWalletName } from 'v2/config/data';
 import { withAccountAndNotificationsContext } from './components/withAccountAndNotificationsContext';
 
 interface State {
@@ -25,6 +25,7 @@ interface State {
   network: string;
   stage: KeystoreStages;
   isGenerating: boolean;
+  accountType: WalletName;
 }
 
 interface Props extends RouteComponentProps<{}> {
@@ -37,9 +38,10 @@ class CreateWallet extends Component<Props, State> {
     password: '',
     privateKey: '',
     filename: '',
-    network: '',
+    network: 'Ethereum',
     stage: KeystoreStages.GenerateKeystore,
-    isGenerating: false
+    isGenerating: false,
+    accountType: InsecureWalletName.KEYSTORE_FILE
   };
 
   public render() {
@@ -51,7 +53,7 @@ class CreateWallet extends Component<Props, State> {
       onBack: this.regressToPreviousStage,
       onNext: this.advanceToNextStage,
       generateWalletAndContinue: this.generateWalletAndContinue,
-      selectNetworkAndContinue: this.selectNetworkAndContinue,
+      selectNetwork: this.selectNetwork,
       getKeystoreBlob: this.getKeystoreBlob,
       verifyKeystore: this.verifyKeystore,
       verifyPrivateKey: this.verifyPrivateKey,
@@ -95,7 +97,7 @@ class CreateWallet extends Component<Props, State> {
 
   private addCreatedAccountAndRedirectToDashboard = () => {
     const { history, createAccount, displayNotification } = this.props;
-    const { keystore, network } = this.state;
+    const { keystore, network, accountType } = this.state;
 
     if (!keystore) {
       return;
@@ -105,7 +107,7 @@ class CreateWallet extends Component<Props, State> {
     const account: Account = {
       address: toChecksumAddress(addHexPrefix(keystore.address)),
       network,
-      accountType: InsecureWalletName.KEYSTORE_FILE,
+      accountType,
       derivationPath: '',
       assets: accountNetwork ? accountNetwork.unit : 'DefaultAsset',
       value: 0,
@@ -137,9 +139,8 @@ class CreateWallet extends Component<Props, State> {
     }
   };
 
-  private selectNetworkAndContinue = async (network: string) => {
+  private selectNetwork = async (network: string) => {
     this.setState({ network });
-    this.advanceToNextStage();
   };
 
   private getKeystoreBlob = (): string => {
