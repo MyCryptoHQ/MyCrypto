@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Textarea, Input } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel } from 'v2/components';
@@ -66,13 +65,12 @@ const UploadZone = styled.label`
   cursor: pointer;
 `;
 
-interface ExtendedProps extends PanelProps {
+interface Props extends PanelProps {
   privateKey: string;
   verifyKeystore(keystore: string, password: string): Promise<boolean>;
   verifyPrivateKey(key: string, password: string): boolean;
+  addCreatedAccountAndRedirectToDashboard(): void;
 }
-
-type Props = ExtendedProps & RouteComponentProps<{}>;
 
 class VerifyKeystorePanel extends Component<Props> {
   public state = {
@@ -125,7 +123,7 @@ class VerifyKeystorePanel extends Component<Props> {
   };
 
   public render() {
-    const { history, onBack, totalSteps, currentStep } = this.props;
+    const { addCreatedAccountAndRedirectToDashboard, onBack, totalSteps, currentStep } = this.props;
 
     return (
       <ExtendedContentPanel
@@ -157,7 +155,7 @@ class VerifyKeystorePanel extends Component<Props> {
         <ButtonsWrapper>
           <StyledButton
             disabled={!this.state.isValid}
-            onClick={() => history.replace('/dashboard')}
+            onClick={addCreatedAccountAndRedirectToDashboard}
           >
             {translate('DONE_AND_RETURN_LABEL')}
           </StyledButton>
@@ -167,4 +165,4 @@ class VerifyKeystorePanel extends Component<Props> {
   }
 }
 
-export default withRouter(VerifyKeystorePanel);
+export default VerifyKeystorePanel;

@@ -1,6 +1,7 @@
 import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { IV3Wallet } from 'ethereumjs-wallet';
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
 import { makeBlob } from 'utils/blob';
 import { N_FACTOR } from 'config';
@@ -9,6 +10,12 @@ import { stripHexPrefix } from 'libs/formatters';
 import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
 import { Layout } from 'v2/features';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
+import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
+import { getNetworkByName } from 'v2/libs';
+import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Account } from 'v2/services/Account/types';
+import { InsecureWalletName } from 'v2/config/data';
+import { withAccountAndNotificationsContext } from './components/withAccountAndNotificationsContext';
 
 interface State {
   password: string;
@@ -20,7 +27,12 @@ interface State {
   isGenerating: boolean;
 }
 
-export default class CreateWallet extends Component<RouteComponentProps<{}>, State> {
+interface Props extends RouteComponentProps<{}> {
+  createAccount(accountData: Account): void;
+  displayNotification(templateName: string, templateData?: object): void;
+}
+
+class CreateWallet extends Component<Props, State> {
   public state: State = {
     password: '',
     privateKey: '',
@@ -42,7 +54,8 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
       selectNetworkAndContinue: this.selectNetworkAndContinue,
       getKeystoreBlob: this.getKeystoreBlob,
       verifyKeystore: this.verifyKeystore,
-      verifyPrivateKey: this.verifyPrivateKey
+      verifyPrivateKey: this.verifyPrivateKey,
+      addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
 
     return (
@@ -78,6 +91,33 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
     if (nextStage != null) {
       this.setState({ stage: nextStage });
     }
+  };
+
+  private addCreatedAccountAndRedirectToDashboard = () => {
+    const { history, createAccount, displayNotification } = this.props;
+    const { keystore, network } = this.state;
+
+    if (!keystore) {
+      return;
+    }
+
+    const accountNetwork: NetworkOptions | undefined = getNetworkByName(network);
+    const account: Account = {
+      address: toChecksumAddress(addHexPrefix(keystore.address)),
+      network,
+      accountType: InsecureWalletName.KEYSTORE_FILE,
+      derivationPath: '',
+      assets: accountNetwork ? accountNetwork.unit : 'DefaultAsset',
+      value: 0,
+      label: 'New Account', // @TODO: we really should have the correct label before!
+      localSettings: 'default',
+      transactionHistory: ''
+    };
+    createAccount(account);
+    displayNotification(NotificationTemplates.walletCreated, {
+      address: account.address
+    });
+    history.replace('/dashboard');
   };
 
   private generateWalletAndContinue = async (password: string) => {
@@ -124,3 +164,5 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
     }
   };
 }
+
+export default withAccountAndNotificationsContext(CreateWallet);
