@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const PnpWebpackPlugin = require('pnp-webpack-plugin');
 
 const paths = {
   root: path.join(__dirname, '../'),
@@ -31,7 +32,12 @@ module.exports = {
   typescriptRule: {
     test: /\.(ts|tsx)$/,
     include: [paths.src, paths.shared, paths.electron],
-    use: [{ loader: 'ts-loader', options: { happyPackMode: true, logLevel: 'info' } }],
+    use: [
+      {
+        loader: 'ts-loader',
+        options: PnpWebpackPlugin.tsLoaderOptions({ happyPackMode: true, logLevel: 'info' })
+      }
+    ],
     exclude: ['assets', 'sass', 'vendor', 'translations/lang']
       .map(dir => path.resolve(paths.src, dir))
       .concat([paths.modules])

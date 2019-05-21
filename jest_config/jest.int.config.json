@@ -20,5 +20,6 @@
   "automock": false,
   "snapshotSerializers": ["enzyme-to-json/serializer"],
   "browser": true,
-  "collectCoverage": true
+  "collectCoverage": true,
+  "resolver": "jest-pnp-resolver"
 }
