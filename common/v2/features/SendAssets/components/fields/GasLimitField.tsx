@@ -29,14 +29,6 @@ export default class GasLimitField extends Component<Props> {
   };
 
   public handleGasLimitField = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        gasLimit: e.target.value
-      }
-    });
     this.props.handleChange(e);
   };
 

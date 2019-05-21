@@ -25,14 +25,6 @@ export default class GasPriceField extends Component<Props> {
   };
 
   public handleGasPriceField = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        gasPrice: e.target.value
-      }
-    });
     this.props.handleChange(e);
   };
 

@@ -4,9 +4,6 @@ import { TransactionFields } from '../../SendAssets';
 import { ComboBox } from '@mycrypto/ui';
 import { AssetOptionsContext } from 'v2/providers';
 import { SendState } from 'v2/features/SendAssets/SendAssets';
-import { getAssetByTicker } from 'v2/libs';
-import { AssetOption } from 'v2/services/AssetOption/types';
-//import { donationAddressMap } from '';
 
 interface OwnProps {
   stateValues: SendState;
@@ -19,36 +16,16 @@ interface OwnProps {
   updateState(values: SendState): void;
 }
 
-/*interface StateProps {
-  name: string;
-}*/
-
-type Props = OwnProps; // & StateProps;
+type Props = OwnProps;
 
 export default class AssetField extends Component<Props> {
   public isValidAmount = (value: any) => {
-    const valid = value >= 0; // && value <= (this.balance - this.gasCost);
+    const valid = value >= 0;
     this.setState({ isValidAmount: valid });
     return valid;
   };
 
   public handleAssetField = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    const assetType: AssetOption | undefined = getAssetByTicker(e.target.value);
-    this.props.updateState({
-      ...stateValues,
-      rawTransactionValues: {
-        from: '',
-        to: '',
-        value: '',
-        data: '',
-        gasLimit: '',
-        gasPrice: '',
-        nonce: ''
-      },
-      assetType: assetType ? assetType.type : 'base',
-      network: assetType ? assetType.network : 'ETH'
-    });
     // Conduct estimateGas
     // Conduct clearFields
     this.props.handleChange(e);

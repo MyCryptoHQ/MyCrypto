@@ -121,7 +121,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       option: 'OmiseGo',
       amount: '2',
       network: 'ETH',
-      type: 'call',
+      type: 'erc20',
       symbol: 'OMG',
       contractAddress: '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07',
       decimal: 18

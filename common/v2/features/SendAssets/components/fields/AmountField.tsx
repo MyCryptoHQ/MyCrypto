@@ -29,14 +29,6 @@ export default class AmountField extends Component<Props> {
   };
 
   public handleAmountField = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        value: e.target.value
-      }
-    });
     this.props.handleChange(e);
   };
 

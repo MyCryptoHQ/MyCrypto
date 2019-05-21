@@ -54,8 +54,6 @@ export default class SimpleGas extends React.Component<Props> {
     const gasPriceValues: GasEstimates = await fetchGasPriceEstimates(
       this.props.transactionFieldValues.asset
     );
-    console.log('fetched new gasPrice values');
-    console.log(gasPriceValues);
     this.setState({ ...this.state, gasEstimates: gasPriceValues });
   }
 
@@ -73,7 +71,6 @@ export default class SimpleGas extends React.Component<Props> {
       max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.max,
       min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
     };
-    console.log(bounds);
     const gasNotches = this.makeGasNotches();
 
     /**

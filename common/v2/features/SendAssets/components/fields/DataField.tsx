@@ -29,14 +29,6 @@ export default class DataField extends Component<Props> {
   };
 
   public handleDataField = (e: ChangeEvent<any>) => {
-    const { values } = this.props;
-    this.props.updateState({
-      ...values,
-      rawTransactionValues: {
-        ...values.rawTransactionValues,
-        data: e.target.value
-      }
-    });
     // Conduct estimateGas
     // Conduct clearFields
     this.props.handleChange(e);

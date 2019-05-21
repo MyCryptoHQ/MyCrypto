@@ -27,29 +27,18 @@ export interface TransactionFields {
   gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
   nonceField: string; // Use only if user has input a manual nonce value.
   isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-}
-
-export interface RawTransactionValues {
-  from: string;
-  to: string;
-  value: string;
-  data: string;
-  gasLimit: string;
-  gasPrice: string;
-  nonce: string;
+  isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
 }
 
 export interface SendState {
   step: number;
   transactionFields: TransactionFields;
-  rawTransactionValues: RawTransactionValues;
 
   isFetchingAccountValue: boolean; // Used to indicate looking up user's balance of currently-selected asset.
   isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   isAddressLabelValid: boolean; // Used to indicate if recipient-address is found in the address book.
   isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
   isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-  isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
 
   resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
   recipientAddressLabel: string; //  Recipient-address label found in address book.
@@ -64,7 +53,7 @@ const getInitialState = (): SendState => {
     transactionFields: {
       senderAddress: '',
       recipientAddress: '',
-      amount: '0.00',
+      amount: '0',
       asset: 'ETH',
       gasPriceSlider: '20',
       gasPriceField: '20',
@@ -73,23 +62,14 @@ const getInitialState = (): SendState => {
       nonceEstimated: '0',
       nonceField: '0',
       data: '',
-      isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-    },
-    rawTransactionValues: {
-      from: '',
-      to: '',
-      value: '',
-      data: '',
-      gasLimit: '',
-      gasPrice: '',
-      nonce: ''
+      isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+      isGasLimitManual: false
     },
     isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
     isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
     isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
     isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
     isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-    isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
 
     resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
     recipientAddressLabel: '', //  Recipient-address label found in address book.

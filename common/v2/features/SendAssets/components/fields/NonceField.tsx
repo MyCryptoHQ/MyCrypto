@@ -29,14 +29,6 @@ export default class NonceField extends Component<Props> {
   };
 
   public handleNonceField = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        nonce: e.target.value
-      }
-    });
     this.props.handleChange(e);
   };
 

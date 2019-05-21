@@ -23,19 +23,6 @@ export default class SenderAddressField extends Component<Props> {
     return isValidETHAddress(value);
   };
   public handleSenderAddress = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      transactionFields: {
-        ...stateValues.transactionFields,
-        senderAddress: e.target.value
-      },
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        from: e.target.value
-      }
-    });
-
     // Conduct max nonce check
     // Conduct estimateGas
     this.props.handleChange(e);

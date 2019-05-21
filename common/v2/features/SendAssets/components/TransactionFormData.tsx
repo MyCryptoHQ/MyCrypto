@@ -20,6 +20,7 @@ import {
   DataField,
   NonceField
 } from './fields';
+import { processFormDataToTx } from 'v2/libs/transaction/process';
 
 interface Props {
   stateValues: SendState;
@@ -64,12 +65,6 @@ export function SendAssetsForm({
 }: Props) {
   return (
     <div>
-      <React.Fragment>
-        {'RawValues: '}
-        <br />
-        {JSON.stringify(stateValues.rawTransactionValues, null, 2)}
-      </React.Fragment>
-
       <Formik
         initialValues={transactionFields}
         onSubmit={(fields: TransactionFields) => {
@@ -91,13 +86,15 @@ export function SendAssetsForm({
               <QueryWarning />
 
               <React.Fragment>
+                {'TransactionFields: '}
                 <br />
-                <br />
+                {JSON.stringify(processFormDataToTx(values), null, 2)}
                 <br />
                 {'Formik Fields: '}
                 <br />
                 {JSON.stringify(values, null, 2)}
               </React.Fragment>
+
               {/* Asset */}
               <AssetField
                 handleChange={handleChange}

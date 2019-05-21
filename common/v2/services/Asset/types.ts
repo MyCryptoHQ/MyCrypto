@@ -8,7 +8,7 @@ export interface Asset {
   decimal?: number;
 }
 
-export type assetMethod = 'base' | 'call';
+export type assetMethod = 'base' | 'erc20';
 
 export interface ExtendedAsset extends Asset {
   uuid: string;
