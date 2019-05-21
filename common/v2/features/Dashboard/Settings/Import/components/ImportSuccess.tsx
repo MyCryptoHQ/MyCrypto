@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import translate from 'translations';
 
 const ImportSuccessContainer = styled.div`
   display: flex;
@@ -21,9 +22,9 @@ const FullWidthLink = styled(Link)`
 export default function ImportSuccess(props) {
   return (
     <ImportSuccessContainer>
-      You will see the imported files in settings!
+      {translate('SETTINGS_IMPORT_SUCCESS')}
       <FullWidthLink to="/dashboard/settings">
-        <FullWidthButton secondary>Back To Settings</FullWidthButton>
+        <FullWidthButton secondary>{translate('SETTINGS_IMPORT_COMPLETE')}</FullWidthButton>
       </FullWidthLink>
     </ImportSuccessContainer>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
+import translate from 'translations';
 
 import { FlippablePanel } from 'v2/components';
 import { Layout } from 'v2/features';
@@ -27,7 +28,7 @@ export default function Settings() {
     <Layout className="Settings">
       <SettingsHeading>
         <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
-        Settings
+        {translate("SETTINGS_HEADING")}
       </SettingsHeading>
       <AccountContext.Consumer>
         {({ accounts, deleteAccount }) => (
@@ -63,9 +64,10 @@ export default function Settings() {
         )}
       </AddressMetadataContext.Consumer>
       <GlobalSettingsContext.Consumer>
-        {({ updateGlobalSettings }) => (
+        {({ updateGlobalSettings, globalSettings }) => (
           <GeneralSettings
             updateGlobalSettings={updateGlobalSettings}
+            globalSettings={globalSettings}
           />
         )}
       </GlobalSettingsContext.Consumer>

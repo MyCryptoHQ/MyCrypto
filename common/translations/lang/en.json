@@ -750,6 +750,17 @@
     "ACCESS_MESSAGE_2": "You must access your wallet in order to request a payment.",
     "ACCESS_MESSAGE_3": "You must access your wallet in order to view your wallet's information.",
     "ACCESS_MESSAGE_4": "You must access your wallet in order to view your recent transactions.",
-    "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book."
+    "ACCESS_MESSAGE_5": "You must access your wallet in order to view your address book.",
+    "SETTINGS_HEADING": "Settings",
+    "SETTINGS_EXPORT_HEADING": "Export",
+    "SETTINGS_EXPORT_INFO": "Your MyCrypto settings file is ready.",
+    "SETTINGS_EXPORT_LEAVE": "Back To Settings",
+    "SETTINGS_EXPORT_DOWNLOAD": "Download",
+    "SETTINGS_IMPORT_BUTTON": "Browse",
+    "SETTINGS_IMPORT_PASTE": "or paste your settings JSON here.",
+    "SETTINGS_IMPORT_CONFIRM": "Next",
+    "SETTINGS_IMPORT_SUCCESS": "You will see the imported files in settings!",
+    "SETTINGS_IMPORT_COMPLETE": "Back To Settings"
+
   }
 }

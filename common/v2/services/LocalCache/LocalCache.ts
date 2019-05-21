@@ -40,7 +40,8 @@ export const initGlobalSettings = () => {
   const newStorage: LocalCache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
-    darkMode: false
+    darkMode: false,
+    timer: 5
   };
   localStorage.setItem(CACHE_KEY, JSON.stringify(newStorage));
 };

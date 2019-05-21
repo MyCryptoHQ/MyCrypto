@@ -2,8 +2,10 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { GlobalSettings } from './types';
 
 import { DashboardPanel } from '../../components';
+import { GlobalSettings } from 'v2/services';
 
 const Divider = styled.div`
   height: 2px;
@@ -39,43 +41,56 @@ const SelectContainer = styled.div`
     background: none;
   }
 `;
-export default function GeneralSettings(props) {
-  const { updateGlobalSettings } = props;
-  return (
-    <DashboardPanel heading="General Settings">
-      <Divider />
-      <SettingsField>
-        <SettingsLabel>Account Settings</SettingsLabel>
-        <SettingsControl>
-          <Link to="/dashboard/settings/import">
-            <Button secondary={true}>Import</Button>
-          </Link>
-          <Link to="/dashboard/settings/export">
-            <Button secondary={true}>Export</Button>
-          </Link>
-        </SettingsControl>
-      </SettingsField>
-      <SettingsField>
-        <SettingsLabel>Paper Wallet</SettingsLabel>
-        <SettingsControl>
-          <Button secondary={true}>Download</Button>
-          <Button secondary={true}>Print</Button>
-        </SettingsControl>
-      </SettingsField>
-      <SettingsField>
-        <SettingsLabel>Inactivity Timer</SettingsLabel>
-        <SettingsControl>
-          <SelectContainer>
-            <select>
-              <option value="1 Minutes">1 Minutes</option>
-              <option value="2 Minutes">2 Minutes</option>
-              <option value="3 Minutes">3 Minutes</option>
-              <option value="4 Minutes">4 Minutes</option>
-              <option value="5 Minutes">5 Minutes</option>
-            </select>
-          </SelectContainer>
-        </SettingsControl>
-      </SettingsField>
-    </DashboardPanel>
-  );
+
+interface SettingsProps {
+  globalSettings: GlobalSettings;
+  updateGlobalSettings(settings: GlobalSettings): void;
+}
+export default class GeneralSettings extends React.Component<SettingsProps> {
+  public changeTimer = event => {
+    let settings = this.props.globalSettings;
+    settings.timer = Number(event.target.value);
+    this.props.updateGlobalSettings(settings);
+  };
+
+  public render() {
+    const { updateGlobalSettings, globalSettings } = this.props;
+    return (
+      <DashboardPanel heading="General Settings">
+        <Divider />
+        <SettingsField>
+          <SettingsLabel>Account Settings</SettingsLabel>
+          <SettingsControl>
+            <Link to="/dashboard/settings/import">
+              <Button secondary={true}>Import</Button>
+            </Link>
+            <Link to="/dashboard/settings/export">
+              <Button secondary={true}>Export</Button>
+            </Link>
+          </SettingsControl>
+        </SettingsField>
+        <SettingsField>
+          <SettingsLabel>Paper Wallet</SettingsLabel>
+          <SettingsControl>
+            <Button secondary={true}>Download</Button>
+            <Button secondary={true}>Print</Button>
+          </SettingsControl>
+        </SettingsField>
+        <SettingsField>
+          <SettingsLabel>Inactivity Timer</SettingsLabel>
+          <SettingsControl>
+            <SelectContainer>
+              <select onChange={this.changeTimer} value={String(globalSettings.timer)}>
+                <option value="1">1 Minutes</option>
+                <option value="2">2 Minutes</option>
+                <option value="3">3 Minutes</option>
+                <option value="4">4 Minutes</option>
+                <option value="5">5 Minutes</option>
+              </select>
+            </SelectContainer>
+          </SettingsControl>
+        </SettingsField>
+      </DashboardPanel>
+    );
+  }
 }

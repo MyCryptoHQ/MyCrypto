@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { ContentPanel } from 'v2/components';
 import { ImportBox, ImportSuccess } from './components';
 import { Layout } from 'v2/features';
+import { GlobalSettingsContext } from 'v2/providers';
 
 const Content = styled.div`
   display: flex;
@@ -46,7 +47,9 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
           }}
         >
           <Content>
-            <Step onNext={this.advanceStep} />
+            <GlobalSettingsContext.Consumer>
+              {({ importCache }) => <Step onNext={this.advanceStep} importCache={importCache} />}
+            </GlobalSettingsContext.Consumer>
           </Content>
         </CenteredContentPanel>
       </Layout>
