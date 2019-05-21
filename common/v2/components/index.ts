@@ -7,3 +7,4 @@ export { default as Overlay } from './Overlay';
 export { default as Stepper } from './Stepper';
 export { default as Modal } from './Modal';
 export { default as NewAppReleaseModal } from './NewAppReleaseModal';
+export { default as InputField } from './InputField';
