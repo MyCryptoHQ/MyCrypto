@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { COLORS } from 'v2/features/constants';
+import { Icon } from '@mycrypto/ui';
 import _ from 'lodash';
 
-const { PASTEL_RED } = COLORS;
+const { PASTEL_RED, BRIGHT_SKY_BLUE } = COLORS;
 
 const MainWrapper = styled.div`
   margin-bottom: 15px;
@@ -22,6 +23,7 @@ const Label = styled.p`
 
 interface CustomInputProps {
   inputError?: string;
+  showEye?: boolean;
 }
 
 const CustomInput = styled.input`
@@ -29,7 +31,7 @@ const CustomInput = styled.input`
   background: ${props => props.theme.controlBackground};
   border: 0.125em solid ${props => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: 12px 12px;
+  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')}
   display: flex;
   :focus-within {
     outline: none;
@@ -38,10 +40,55 @@ const CustomInput = styled.input`
   border-color: ${(props: CustomInputProps) => (props.inputError ? PASTEL_RED : '')};
 `;
 
+const CustomTextArea = styled.textarea`
+  width: 100%;
+  background: ${props => props.theme.controlBackground};
+  border: 0.125em solid ${props => props.theme.controlBorder};
+  border-radius: 0.125em;
+  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')}
+  display: flex;
+  :focus-within {
+    outline: none;
+    box-shadow: ${props => props.theme.outline};
+  }
+  border-color: ${(props: CustomInputProps) => (props.inputError ? PASTEL_RED : '')};
+  resize: none;
+`;
+
 const ErrorMessage = styled.div`
+  font-size: 16px;
   width: 100%;
   color: ${PASTEL_RED};
   text-align: justify;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+interface CustomIconProps {
+  showPassword?: boolean;
+}
+
+const CustomIcon = styled(Icon)`
+  svg {
+    margin-top: 6px;
+    width: 23px;
+    height: 23px;
+    color: ${(props: CustomIconProps) => (props.showPassword ? BRIGHT_SKY_BLUE : '')};
+    cursor: pointer;
+    user-select: none;
+  }
+`;
+
+const CustomIconWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  position: absolute;
+  right: 10px;
+  top: 0;
 `;
 
 interface Props {
@@ -49,25 +96,51 @@ interface Props {
   label?: string;
   value: string;
   inputError?: string | undefined;
+  showEye?: boolean;
+  textarea?: boolean;
   onChange(event: any): void;
   validate?(): void | undefined;
 }
 
 export class InputField extends Component<Props> {
+  public state = { showPassword: false };
   private validatorTimeout: any = null;
 
+  public handleEyeClick = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  };
+
   public render() {
-    const { value, label, onChange, inputError, type } = this.props;
+    const { value, label, onChange, inputError, type, showEye, textarea } = this.props;
     return (
       <MainWrapper>
         {label && <Label>{label}</Label>}
-        <CustomInput
-          value={value}
-          onChange={onChange}
-          inputError={inputError}
-          onKeyUp={this.handleKeyUp}
-          type={type ? type : 'text'}
-        />
+        <InputWrapper>
+          {textarea ? (
+            <CustomTextArea
+              value={value}
+              onChange={onChange}
+              inputError={inputError}
+              onKeyUp={this.handleKeyUp}
+            />
+          ) : (
+            <CustomInput
+              value={value}
+              onChange={onChange}
+              inputError={inputError}
+              onKeyUp={this.handleKeyUp}
+              showEye={showEye}
+              type={this.state.showPassword ? 'text' : type ? type : 'text'}
+            />
+          )}
+
+          {showEye && (
+            <CustomIconWrapper onClick={this.handleEyeClick}>
+              <CustomIcon icon={'showNetworks'} showPassword={this.state.showPassword} />
+            </CustomIconWrapper>
+          )}
+        </InputWrapper>
+
         {inputError && <ErrorMessage>{inputError}</ErrorMessage>}
       </MainWrapper>
     );
