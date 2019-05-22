@@ -18,8 +18,8 @@ const getInitialState = (): ISendState => {
   return {
     step: 0,
     transactionFields: {
-      senderAddress: '',
-      recipientAddress: '',
+      senderAddress: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
+      recipientAddress: '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
       amount: '0',
       asset: 'ETH',
       gasPriceSlider: '20',
