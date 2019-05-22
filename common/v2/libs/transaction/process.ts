@@ -1,4 +1,4 @@
-import { TransactionFields } from 'v2/features/SendAssets/SendAssets';
+import { ITxFields } from 'v2/features/SendAssets/types';
 import { IHexStrWeb3Transaction } from './typings';
 import { AssetOption } from 'v2/services/AssetOption/types';
 import { getAssetByTicker } from '../assetOptions';
@@ -10,9 +10,7 @@ import BN from 'bn.js';
 import { encodeTransfer } from './utils/token';
 import { bufferToHex } from 'ethereumjs-util';
 
-export const processFormDataToTx = (
-  formData: TransactionFields
-): IHexStrWeb3Transaction | undefined => {
+export const processFormDataToTx = (formData: ITxFields): IHexStrWeb3Transaction | undefined => {
   const asset: AssetOption | undefined = getAssetByTicker(formData.asset);
 
   const txFields = formData;

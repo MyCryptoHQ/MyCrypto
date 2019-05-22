@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Address, Button, Network } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
-import { SendState } from '../SendAssets';
+import { ISendState } from '../types';
 import './ConfirmTransaction.scss';
 
 // Legacy
@@ -11,7 +11,7 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import { AddressMetadataContext } from 'v2/providers';
 
 interface Props {
-  stateValues: SendState;
+  stateValues: ISendState;
   onNext(): void;
 }
 
@@ -23,20 +23,25 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default function createConfirmTransactionComponent(outterProps: Pick<Props, 'onNext'>) {
-  return (props: Pick<Props, 'stateValues'>) => {
-    return <ConfirmTransaction onNext={outterProps.onNext} stateValues={props.stateValues} />;
-  };
-}
+// export default function createConfirmTransactionComponent(outterProps: Pick<Props, 'onNext'>) {
+//   return (props: Pick<Props, 'stateValues'>) => {
+//     return <ConfirmTransaction onNext={outterProps.onNext} stateValues={props.stateValues} />;
+//   };
+// }
 
-export class ConfirmTransaction extends Component<Props> {
+export default class ConfirmTransaction extends Component<Props> {
   public state: State = {
     showingDetails: false
   };
 
   public render() {
     const {
-      stateValues: { transactionFields: { senderAddress, recipientAddress } },
+      stateValues: {
+        transactionFields: {
+          senderAddress = '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
+          recipientAddress = '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2'
+        }
+      },
       onNext
     } = this.props;
     const { showingDetails } = this.state;

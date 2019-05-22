@@ -1,53 +1,20 @@
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
-import React, { Component, ComponentType } from 'react';
+import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { isAdvancedQueryTransaction } from 'utils/helpers';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import { AssetOption, assetType } from 'v2/services/AssetOption/types';
+
 import {
-  createConfirmTransactionComponent,
-  createSendAssetsForm,
-  createTransactionReceipt,
-  createSignTransaction
+  ConfirmTransaction,
+  SendAssetsForm,
+  SignTransaction,
+  TransactionReceipt
 } from './components';
-import { headings, steps } from './constants';
+import { ITxFields, ISendState } from './types';
 
-export interface TransactionFields {
-  asset: string;
-  senderAddress: string;
-  recipientAddress: string;
-  amount: string;
-  data: string;
-  gasLimitEstimated: string;
-  gasPriceSlider: string;
-  nonceEstimated: string;
-  gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
-  gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
-  nonceField: string; // Use only if user has input a manual nonce value.
-  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-  isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-}
-
-export interface SendState {
-  step: number;
-  transactionFields: TransactionFields;
-
-  isFetchingAccountValue: boolean; // Used to indicate looking up user's balance of currently-selected asset.
-  isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  isAddressLabelValid: boolean; // Used to indicate if recipient-address is found in the address book.
-  isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
-  isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-
-  resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
-  recipientAddressLabel: string; //  Recipient-address label found in address book.
-  asset: AssetOption | undefined;
-  network: string;
-  assetType: assetType; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
-}
-
-const getInitialState = (): SendState => {
+const getInitialState = (): ISendState => {
   return {
     step: 0,
     transactionFields: {
@@ -79,80 +46,64 @@ const getInitialState = (): SendState => {
   };
 };
 
+const steps = [
+  { label: 'Send Assets', elem: SendAssetsForm },
+  { label: 'ConfirmTransaction', elem: ConfirmTransaction },
+  { label: 'Sign Transaction', elem: SignTransaction },
+  { label: 'Transaction Complete', elem: TransactionReceipt }
+];
+
 export class SendAssets extends Component<RouteComponentProps<{}>> {
-  public state: SendState = getInitialState();
-
-  private sendAssetsSteps: ComponentType<{ stateValues: SendState }>[];
-
-  constructor(props: RouteComponentProps<{}>) {
-    super(props);
-
-    this.sendAssetsSteps = [
-      createSendAssetsForm({
-        transactionFields: this.state.transactionFields,
-        onNext: this.advanceStep,
-        updateState: this.updateState,
-        onSubmit: this.updateTransactionFields
-      }),
-      createConfirmTransactionComponent({ onNext: this.advanceStep }),
-      createSignTransaction(),
-      createTransactionReceipt({ onReset: this.handleReset })
-    ];
-  }
+  public state: ISendState = getInitialState();
 
   public render() {
-    const { history } = this.props;
     const { step } = this.state;
-    const backOptions = [history.goBack, this.regressStep];
-    // Step 3, ConfirmTransaction, cannot go back (as backOptions[2] is undefined)
-    const onBack = backOptions[step];
+    const Step = steps[step];
 
-    const Step = this.sendAssetsSteps[step];
-
-    // const onBack = backOptions[step];
-    // const Step = steps[step];
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
-          onBack={onBack}
+          onBack={this.goToPrevStep}
           className="SendAssets-panel"
-          heading={headings[step]}
+          heading={Step.label}
           icon={sendIcon}
-          stepper={{
-            current: step + 1,
-            total: steps.length
-          }}
+          stepper={{ current: step + 1, total: steps.length - 1 }}
         >
-          <Step stateValues={this.state} />
+          <Step.elem
+            transactionFields={this.state.transactionFields}
+            onNext={this.goToNextStep}
+            updateState={this.updateState}
+            onSubmit={this.updateTransactionFields}
+            stateValues={this.state}
+          />
         </ContentPanel>
       </Layout>
     );
   }
 
-  private advanceStep = () =>
-    this.setState((prevState: SendState) => ({
+  private goToNextStep = () =>
+    this.setState((prevState: ISendState) => ({
       step: Math.min(prevState.step + 1, steps.length - 1)
     }));
 
-  private regressStep = () =>
-    this.setState((prevState: SendState) => ({
-      step: Math.min(0, prevState.step - 1)
+  private goToPrevStep = () =>
+    this.setState((prevState: ISendState) => ({
+      step: Math.max(0, prevState.step - 1)
     }));
 
-  private updateTransactionFields = (transactionFields: TransactionFields) => {
+  private updateTransactionFields = (transactionFields: ITxFields) => {
     this.setState({
-      ...this.state,
       transactionFields
     });
   };
 
-  private updateState = (state: SendState) => {
+  private updateState = (state: ISendState) => {
     this.setState({
       ...state
     });
   };
 
-  private handleReset = () => this.setState(getInitialState());
+  // private handleReset = () => this.setState(getInitialState());
 }
 
 export default withRouter(SendAssets);

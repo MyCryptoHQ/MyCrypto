@@ -1,18 +1,18 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from '../../SendAssets';
+import { ITxFields, ISendState } from '../../types';
 import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
-  stateValues: SendState;
+  stateValues: ISendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
       ? void
       : (e: string | ChangeEvent<any>) => void;
   };
-  updateState(values: SendState): void;
+  updateState(values: ISendState): void;
 }
 
 type Props = OwnProps;
@@ -32,7 +32,7 @@ export default class GasPriceField extends Component<Props> {
     return (
       <Field
         name="gasPrice"
-        render={({ field }: FieldProps<TransactionFields>) => (
+        render={({ field }: FieldProps<ITxFields>) => (
           <Input
             {...field}
             value={field.value}

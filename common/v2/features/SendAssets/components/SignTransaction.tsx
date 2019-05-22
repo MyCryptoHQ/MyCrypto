@@ -1,20 +1,12 @@
-import React, { Component } from 'react';
-// import { SignTransactionLedger } from './SignTransactionWallets';
-import { SendState } from '../SendAssets';
-// import { SignTransactionTrezor } from './SignTransactionWallets';
+import React from 'react';
+import { ISendState } from '../types';
 
 interface Props {
-  stateValues: SendState;
+  stateValues?: ISendState;
 }
 
-export default function createSignTransaction() {
-  return (props: Pick<Props, 'stateValues'>) => {
-    return <SignTransaction stateValues={props.stateValues} />;
-  };
+function SignTransaction({  }: Props) {
+  return <div>This gets renders when signing Transaction</div>;
 }
 
-export class SignTransaction extends Component<Props> {
-  public render() {
-    return <div>This gets renders when signing Transaction</div>;
-  }
-}
+export default SignTransaction;
