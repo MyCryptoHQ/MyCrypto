@@ -37,10 +37,7 @@ export default class ConfirmTransaction extends Component<Props> {
   public render() {
     const {
       stateValues: {
-        transactionFields: {
-          senderAddress = '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
-          recipientAddress = '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2'
-        }
+        transactionFields: { senderAddress, recipientAddress }
       },
       onNext
     } = this.props;
