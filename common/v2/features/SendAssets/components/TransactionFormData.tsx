@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
-import { SendState, TransactionFields } from '../SendAssets';
+import { ISendState, ITxFields } from '../types';
 import './TransactionFormData.scss';
 
 // Legacy
@@ -23,11 +23,11 @@ import {
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 
 interface Props {
-  stateValues: SendState;
-  transactionFields: TransactionFields;
+  stateValues: ISendState;
+  transactionFields: ITxFields;
   onNext(): void;
-  onSubmit(transactionFields: TransactionFields): void;
-  updateState(state: SendState): void;
+  onSubmit(transactionFields: ITxFields): void;
+  updateState(state: ISendState): void;
 }
 
 const QueryWarning: React.SFC<{}> = () => (
@@ -40,23 +40,7 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
-export default function createSendAssetsForm(
-  outerProps: Pick<Props, 'transactionFields' | 'onNext' | 'updateState' | 'onSubmit'>
-) {
-  return (props: Pick<Props, 'stateValues'>) => {
-    return (
-      <SendAssetsForm
-        stateValues={props.stateValues}
-        transactionFields={outerProps.transactionFields}
-        onNext={outerProps.onNext}
-        updateState={outerProps.updateState}
-        onSubmit={outerProps.onSubmit}
-      />
-    );
-  };
-}
-
-export function SendAssetsForm({
+export default function SendAssetsForm({
   stateValues,
   transactionFields,
   onNext,
@@ -67,7 +51,7 @@ export function SendAssetsForm({
     <div>
       <Formik
         initialValues={transactionFields}
-        onSubmit={(fields: TransactionFields) => {
+        onSubmit={(fields: ITxFields) => {
           onSubmit(fields);
           onNext();
         }}
@@ -86,7 +70,7 @@ export function SendAssetsForm({
               <QueryWarning />
 
               <React.Fragment>
-                {'TransactionFields: '}
+                {'ITxFields: '}
                 <br />
                 {JSON.stringify(processFormDataToTx(values), null, 2)}
                 <br />
@@ -94,7 +78,6 @@ export function SendAssetsForm({
                 <br />
                 {JSON.stringify(values, null, 2)}
               </React.Fragment>
-
               {/* Asset */}
               <AssetField
                 handleChange={handleChange}

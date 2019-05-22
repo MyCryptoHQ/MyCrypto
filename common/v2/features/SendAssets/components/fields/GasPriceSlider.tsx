@@ -1,14 +1,14 @@
 import React, { ChangeEvent } from 'react';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
+import { Field, FieldProps } from 'formik';
 
 import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
-import './styles/GasPriceSlider.scss';
-import { Field, FieldProps } from 'formik';
 import { Transaction } from 'v2/services/Transaction';
 import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
 import { GasEstimates } from 'v2/api/gas';
-import { TransactionFields } from '../../SendAssets';
+import { ITxFields } from '../../types';
+import './styles/GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
@@ -24,7 +24,7 @@ interface StateProps {
     fastest: number;
     isDefault: boolean;
   };
-  transactionFieldValues: TransactionFields;
+  transactionFieldValues: ITxFields;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>

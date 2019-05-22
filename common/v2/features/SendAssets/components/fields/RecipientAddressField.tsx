@@ -1,18 +1,18 @@
 import React, { Component, ChangeEvent } from 'react';
 import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from 'v2/features/SendAssets/SendAssets';
+import { ITxFields, ISendState } from 'v2/features/SendAssets/types';
 import { Input } from '@mycrypto/ui';
 import { isValidETHAddress } from 'libs/validators';
 
 interface OwnProps {
-  stateValues: SendState;
+  stateValues: ISendState;
   handleChange: {
     (e: ChangeEvent<any>): void;
     <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
       ? void
       : (e: string | ChangeEvent<any>) => void;
   };
-  updateState(values: SendState): void;
+  updateState(values: ISendState): void;
 }
 
 type Props = OwnProps;
@@ -35,7 +35,7 @@ export default class RecipientAddressField extends Component<Props> {
         id={'3'}
         name="recipientAddress"
         validate={this.isValidRecipientAddress}
-        render={({ field }: FieldProps<TransactionFields>) => (
+        render={({ field }: FieldProps<ITxFields>) => (
           <Input
             {...field}
             value={field.value}
