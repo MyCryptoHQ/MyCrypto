@@ -28,13 +28,13 @@ export default function TransactionReceipt({
         <div className="TransactionReceipt-row-column">
           To:
           <div className="TransactionReceipt-addressWrapper">
-            <Address address={recipientAddress!} title="Example #2" truncate={truncate} />
+            <Address address={recipientAddress} title="Example #2" truncate={truncate} />
           </div>
         </div>
         <div className="TransactionReceipt-row-column">
           From:
           <div className="TransactionReceipt-addressWrapper">
-            <Address address={senderAddress!} title="Example #1" truncate={truncate} />
+            <Address address={senderAddress} title="Example #1" truncate={truncate} />
           </div>
         </div>
       </div>
