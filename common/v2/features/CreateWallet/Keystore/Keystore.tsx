@@ -1,6 +1,7 @@
 import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { IV3Wallet } from 'ethereumjs-wallet';
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
 import { makeBlob } from 'utils/blob';
 import { N_FACTOR } from 'config';
@@ -9,6 +10,12 @@ import { stripHexPrefix } from 'libs/formatters';
 import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
 import { Layout } from 'v2/features';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
+import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
+import { getNetworkByName } from 'v2/libs';
+import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Account } from 'v2/services/Account/types';
+import { WalletName, InsecureWalletName } from 'v2/config/data';
+import { withAccountAndNotificationsContext } from './components/withAccountAndNotificationsContext';
 
 interface State {
   password: string;
@@ -18,16 +25,23 @@ interface State {
   network: string;
   stage: KeystoreStages;
   isGenerating: boolean;
+  accountType: WalletName;
 }
 
-export default class CreateWallet extends Component<RouteComponentProps<{}>, State> {
+interface Props extends RouteComponentProps<{}> {
+  createAccount(accountData: Account): void;
+  displayNotification(templateName: string, templateData?: object): void;
+}
+
+class CreateWallet extends Component<Props, State> {
   public state: State = {
     password: '',
     privateKey: '',
     filename: '',
-    network: '',
+    network: 'Ethereum',
     stage: KeystoreStages.GenerateKeystore,
-    isGenerating: false
+    isGenerating: false,
+    accountType: InsecureWalletName.KEYSTORE_FILE
   };
 
   public render() {
@@ -39,10 +53,11 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
       onBack: this.regressToPreviousStage,
       onNext: this.advanceToNextStage,
       generateWalletAndContinue: this.generateWalletAndContinue,
-      selectNetworkAndContinue: this.selectNetworkAndContinue,
+      selectNetwork: this.selectNetwork,
       getKeystoreBlob: this.getKeystoreBlob,
       verifyKeystore: this.verifyKeystore,
-      verifyPrivateKey: this.verifyPrivateKey
+      verifyPrivateKey: this.verifyPrivateKey,
+      addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
 
     return (
@@ -80,6 +95,33 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
     }
   };
 
+  private addCreatedAccountAndRedirectToDashboard = () => {
+    const { history, createAccount, displayNotification } = this.props;
+    const { keystore, network, accountType } = this.state;
+
+    if (!keystore) {
+      return;
+    }
+
+    const accountNetwork: NetworkOptions | undefined = getNetworkByName(network);
+    const account: Account = {
+      address: toChecksumAddress(addHexPrefix(keystore.address)),
+      network,
+      accountType,
+      derivationPath: '',
+      assets: accountNetwork ? accountNetwork.unit : 'DefaultAsset',
+      value: 0,
+      label: 'New Account', // @TODO: we really should have the correct label before!
+      localSettings: 'default',
+      transactionHistory: ''
+    };
+    createAccount(account);
+    displayNotification(NotificationTemplates.walletCreated, {
+      address: account.address
+    });
+    history.replace('/dashboard');
+  };
+
   private generateWalletAndContinue = async (password: string) => {
     this.setState({ isGenerating: true });
     try {
@@ -97,9 +139,8 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
     }
   };
 
-  private selectNetworkAndContinue = async (network: string) => {
+  private selectNetwork = async (network: string) => {
     this.setState({ network });
-    this.advanceToNextStage();
   };
 
   private getKeystoreBlob = (): string => {
@@ -124,3 +165,5 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>, Sta
     }
   };
 }
+
+export default withAccountAndNotificationsContext(CreateWallet);

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, ComboBox } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, NetworkSelectDropdown } from 'v2/components';
 import { PanelProps } from '../CreateWallet';
 import translate, { translateRaw } from 'translations';
+import { WalletName } from 'v2/config/data';
 
 interface Props extends PanelProps {
   totalSteps: number;
@@ -21,14 +22,19 @@ const SubmitButton = styled(Button)`
 `;
 
 interface Props extends PanelProps {
-  selectNetworkAndContinue(network: string): void;
+  network: string;
+  accountType: WalletName;
+  selectNetwork(network: string): void;
 }
 
 export default function SelectNetworkPanel({
   totalSteps,
   currentStep,
+  network,
+  accountType,
   onBack,
-  selectNetworkAndContinue
+  onNext,
+  selectNetwork
 }: Props) {
   return (
     <ExtendedContentPanel
@@ -39,18 +45,15 @@ export default function SelectNetworkPanel({
       }}
       heading={translateRaw('SELECT_NETWORK_TITLE')}
       description={translate('SELECT_NETWORK_DESCRIPTION')}
-      className="SelectNetworkPanel"
     >
       <NetworkForm>
-        <label>{translateRaw('SELECT_NETWORK_LABEL')}</label>
-        <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
+        <NetworkSelectDropdown
+          network={network}
+          accountType={accountType}
+          onChange={selectNetwork}
+        />
       </NetworkForm>
-      <SubmitButton
-        className="SelectNetworkPanel-next"
-        onClick={() => selectNetworkAndContinue('Ethereum')}
-      >
-        {translateRaw('ACTION_6')}
-      </SubmitButton>
+      <SubmitButton onClick={onNext}>{translateRaw('ACTION_6')}</SubmitButton>
     </ExtendedContentPanel>
   );
 }

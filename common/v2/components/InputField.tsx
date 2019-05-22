@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { COLORS } from 'v2/features/constants';
 import { Icon } from '@mycrypto/ui';
+import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import _ from 'lodash';
 
 const { PASTEL_RED, BRIGHT_SKY_BLUE } = COLORS;
@@ -53,13 +54,6 @@ const CustomTextArea = styled.textarea`
   }
   border-color: ${(props: CustomInputProps) => (props.inputError ? PASTEL_RED : '')};
   resize: none;
-`;
-
-const ErrorMessage = styled.div`
-  font-size: 16px;
-  width: 100%;
-  color: ${PASTEL_RED};
-  text-align: justify;
 `;
 
 const InputWrapper = styled.div`
@@ -141,7 +135,7 @@ export class InputField extends Component<Props> {
           )}
         </InputWrapper>
 
-        {inputError && <ErrorMessage>{inputError}</ErrorMessage>}
+        {inputError && <InlineErrorMsg>{inputError}</InlineErrorMsg>}
       </MainWrapper>
     );
   }

@@ -16,12 +16,16 @@
     "key": "home"
   },
   {
-    "name": "Import Wallet",
-    "key": "importWallet"
+    "name": "Add Account",
+    "key": "addAccount"
   },
   {
     "name": "Download App",
     "key": "downloadApp"
+  },
+  {
+    "name": "No Accounts",
+    "key": "noAccounts"
   },
   {
     "name": "Sceen Lock",

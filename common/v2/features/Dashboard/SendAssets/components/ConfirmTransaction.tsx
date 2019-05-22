@@ -8,6 +8,7 @@ import './ConfirmTransaction.scss';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import feeIcon from 'common/assets/images/icn-fee.svg';
+import { truncate } from 'v2/libs';
 
 interface Props {
   transaction: Transaction;
@@ -17,10 +18,6 @@ interface Props {
 interface State {
   showingDetails: boolean;
 }
-
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
 
 export default class ConfirmTransaction extends Component<Props> {
   public state: State = {

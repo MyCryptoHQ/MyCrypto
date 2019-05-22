@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel, InputField } from 'v2/components';
+import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 
@@ -57,13 +57,16 @@ const UploadZone = styled.label`
   cursor: pointer;
 `;
 
-interface ExtendedProps extends PanelProps {
+const ErrorWrapper = styled.div`
+  margin-top: 26px;
+`;
+
+interface Props extends PanelProps {
   privateKey: string;
   verifyKeystore(keystore: string, password: string): Promise<boolean>;
   verifyPrivateKey(key: string, password: string): boolean;
+  addCreatedAccountAndRedirectToDashboard(): void;
 }
-
-type Props = ExtendedProps & RouteComponentProps<{}>;
 
 class VerifyKeystorePanel extends Component<Props> {
   public state = {
@@ -74,7 +77,8 @@ class VerifyKeystorePanel extends Component<Props> {
     privateKey: '',
     fileName: '',
     passwordError: '',
-    privateKeyError: ''
+    privateKeyError: '',
+    emptyFormError: false
   };
 
   public validating = false;
@@ -84,12 +88,17 @@ class VerifyKeystorePanel extends Component<Props> {
       verifyKeystore,
       verifyPrivateKey,
       privateKey: generatedPrivateKey,
-      history
+      addCreatedAccountAndRedirectToDashboard
     } = this.props;
     const { keystore, password, privateKey } = this.state;
     this.validating = true;
 
-    this.setState({ passwordError: '', privateKeyError: '' });
+    this.setState({ passwordError: '', privateKeyError: '', emptyFormError: false });
+
+    if (!keystore && !privateKey) {
+      this.setState({ emptyFormError: true });
+      return;
+    }
 
     if (keystore) {
       const isValid = await verifyKeystore(keystore, password);
@@ -97,7 +106,7 @@ class VerifyKeystorePanel extends Component<Props> {
         this.setState({ passwordError: 'Wrong password' });
         return;
       } else {
-        history.replace('/dashboard');
+        addCreatedAccountAndRedirectToDashboard();
       }
     } else if (privateKey) {
       const isValid = verifyPrivateKey(privateKey, password) && generatedPrivateKey === privateKey;
@@ -105,7 +114,7 @@ class VerifyKeystorePanel extends Component<Props> {
         this.setState({ privateKeyError: 'Invalid private key' });
         return;
       } else {
-        history.replace('/dashboard');
+        addCreatedAccountAndRedirectToDashboard();
       }
     }
     this.setState({ submited: true });
@@ -179,6 +188,13 @@ class VerifyKeystorePanel extends Component<Props> {
             type={'password'}
           />
         </FormItemWrapper>
+
+        {this.state.emptyFormError && (
+          <ErrorWrapper>
+            <InlineErrorMsg>{translateRaw('VERIFY_KEYSTORE_EMPTY_FORM_ERROR')}</InlineErrorMsg>
+          </ErrorWrapper>
+        )}
+
         <ButtonsWrapper>
           <StyledButton onClick={this.validate}>{translate('DONE_AND_RETURN_LABEL')}</StyledButton>
         </ButtonsWrapper>
@@ -187,6 +203,4 @@ class VerifyKeystorePanel extends Component<Props> {
   }
 }
 
-export default withRouter(VerifyKeystorePanel);
-
-/* history.replace('/dashboard') */
+export default VerifyKeystorePanel;

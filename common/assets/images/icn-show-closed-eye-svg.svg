@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 12" width="19" height="12">
+	<defs>
+		<image width="19" height="12" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAMCAMAAAC3DnawAAAAAXNSR0IB2cksfwAAAMxQTFRFAAAAHLLjHbfnHrfnHrfnFK3WHbblHbbmHbfnHbfnGrblF67cG7XkHrbmHbfmHbfmGrPmHbjlHbjnHbjnHrjmHbbnHbfnHbbmGLLiHLfjHbfnHbflG7XkHbfmHbbmHbbmHLXlG67kHbfmHbfmHLbmHbbnHbbmHKrjHLTjHrbnHrbmHrbmHrbnHbjlGrTiHbfnHbbmHbXmG7bmHrjnHrThAKLRHLblHbbmG7jnHrjnHbjmHLbnGLDhHLbmF7TiHrbnHbXlGrHlHbfmGrPm28YuiwAAAER0Uk5TAD/m+vAZsvT7200Wcfn0sApr0/TM0fPVNUD8WWDz//OzE4bCmfylCZrx+LXyT07/9Y2C8BELi9b7/+0/KqQs52snzBQcwl+XAAAAdklEQVR4nGNgQAWMTMwsqCKsbOwcnFzIItw8TLx8/AJwvqCQsIioGK+4BEKJpJS0jKycvIIikjYlZRV2ZlU1dWSjNDSZtbR1dJGF9Fj0DQyNjE0QIqZmBlrmFpZW1gghG3NeLVtUd9rZc9g7oAo5KvM5OaMKAQC/TQpHEf52rgAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: none;stroke: #1eb8e7;stroke-width: 1.2 } 
+	</style>
+	<g id="Layer">
+		<path id="Layer" class="shp0" d="M9.42,11c3.58,0 6.72,-2.01 8.42,-5c-1.7,-2.99 -4.84,-5 -8.42,-5c-3.58,0 -6.72,2.01 -8.42,5c1.71,2.99 4.84,5 8.42,5z" />
+		<use id="Layer" href="#img1" transform="matrix(1,0,0,1,0,0)"/>
+	</g>
+</svg>
