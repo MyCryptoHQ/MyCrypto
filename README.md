@@ -30,8 +30,12 @@ Then, you can run various commands depending on what you want to do:
 
 ```bash
 # run app in dev mode in browser, rebuild on file changes
-yarn dev
+yarn start
 ```
+A development server will be available on https://localhost:3000
+If you're using Chrome, you will get a `net::ERR_CERT_AUTHORITY_INVALID` warning.
+To disable it you can your settings in chrome: chrome://flags/#allow-insecure-localhost
+
 
 ```bash
 # run app in dev mode in electron, rebuild on file changes
@@ -112,7 +116,7 @@ yarn test:int
 │   ├── containers - Containers according to "Redux philosophy"
 |   ├── features - State management and async operations, organized per "feature", follows "ducks" philosophy, see: https://github.com/MyCryptoHQ/MyCrypto/issues/1435
 │   ├── libs - Framework-agnostic libraries and business logic
-|       ├── contracts - Takes in a contract interface ABI and returns an object with keys equivalent to the ABI function names that each have `.encodeInput`,  `.decodeInput`, `decodeOutput` methods. 
+|       ├── contracts - Takes in a contract interface ABI and returns an object with keys equivalent to the ABI function names that each have `.encodeInput`,  `.decodeInput`, `decodeOutput` methods.
 |       ├── ens - Basic ENS functions for getting a name hash and mapping returned ENS contract values to human-readable strings
 |       ├── nodes - Configures Shepherd (https://github.com/MyCryptoHQ/shepherd) and exports a singleton provider
 |       ├── scheduling - Functionality for enabling Ethereum Alarm Clock usage for scheduled transactions. See https://github.com/MyCryptoHQ/MyCrypto/pull/1343
@@ -148,7 +152,7 @@ yarn test:int
 - [Adding your Network or Node](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Network-or-Node)
 - [Adding your Web3 Wallet & Logo](https://github.com/MyCryptoHQ/MyCrypto/wiki/Contributing-%E2%80%90-Web3-Wallet)
 - [MyCryptoBuilds](https://github.com/MyCryptoHQ/MyCrypto/wiki/MyCryptoBuilds) - access a build by commithash, PR number, or branch name without building it yourself!
- 
+
 ## Branching Model
 
 MyCrypto is open-source and encourages pull-requests from third-parties. Our branching model is described below.
