@@ -3,6 +3,7 @@ import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel } from 'v2/components';
+import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 import keystoreIcon from 'common/assets/images/icn-keystore.svg';
@@ -40,9 +41,6 @@ const StyledButton = styled(Button)`
   justify-content: center;
   align-items: center;
 
-  &:disabled {
-    opacity: 0.45;
-  }
   &:focus,
   &:hover {
     embed {
@@ -58,6 +56,10 @@ const ImageWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
+const ErrorWrapper = styled.div`
+  margin-bottom: 26px;
+`;
+
 interface Props extends PanelProps {
   filename: string;
   getKeystoreBlob(): string;
@@ -65,15 +67,28 @@ interface Props extends PanelProps {
 
 interface State {
   downloaded: boolean;
+  error: boolean;
 }
 
 export default class SaveKeystorePanel extends Component<Props, State> {
   public state: State = {
-    downloaded: false
+    downloaded: false,
+    error: false
+  };
+
+  public handleNextClick = () => {
+    const { onNext } = this.props;
+    this.setState({ error: false });
+
+    if (!this.state.downloaded) {
+      this.setState({ error: true });
+    } else {
+      onNext();
+    }
   };
 
   public render() {
-    const { onBack, onNext, totalSteps, currentStep, getKeystoreBlob, filename } = this.props;
+    const { onBack, totalSteps, currentStep, getKeystoreBlob, filename } = this.props;
     return (
       <ExtendedContentPanel
         onBack={onBack}
@@ -90,16 +105,24 @@ export default class SaveKeystorePanel extends Component<Props, State> {
         <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
         <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
         <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
+
         <ButtonsWrapper>
+          {this.state.error && (
+            <ErrorWrapper>
+              <InlineErrorMsg>{'Please download the keystore file.'}</InlineErrorMsg>
+            </ErrorWrapper>
+          )}
+
           <a href={getKeystoreBlob()} download={filename}>
-            <StyledButton onClick={() => this.setState({ downloaded: true })} secondary={true}>
+            <StyledButton
+              onClick={() => this.setState({ downloaded: true, error: false })}
+              secondary={true}
+            >
               <DownloadImage src={downloadIcon} />
               {translate('SAVE_KEYSTORE_BUTTON')}
             </StyledButton>
           </a>
-          <StyledButton onClick={onNext} disabled={!this.state.downloaded}>
-            {translate('ACTION_6')}
-          </StyledButton>
+          <StyledButton onClick={this.handleNextClick}>{translate('ACTION_6')}</StyledButton>
         </ButtonsWrapper>
       </ExtendedContentPanel>
     );

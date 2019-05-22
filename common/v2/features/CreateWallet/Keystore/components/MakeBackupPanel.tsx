@@ -70,6 +70,7 @@ const PrivateKeyField = styled.div`
   word-wrap: break-word;
   padding: 8px 18px;
   margin-top: 8px;
+  font-family: 'Roboto Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
 `;
 
 const HiddenPaperWallet = styled.div`

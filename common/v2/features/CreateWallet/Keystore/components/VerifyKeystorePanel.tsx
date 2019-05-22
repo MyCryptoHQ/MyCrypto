@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Textarea, Input } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, InputField } from 'v2/components';
+import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 
@@ -15,24 +16,11 @@ const StyledButton = styled(Button)`
   font-size: 18px;
   margin-bottom: 16px;
   width: 100%;
-
-  :disabled {
-    opacity: 0.45;
-  }
 `;
 
 const FormItemWrapper = styled.div`
   font-size: 20px;
   margin-top: 28px;
-`;
-
-const StyledTextArea = styled(Textarea)`
-  font-size: 18px;
-  resize: none;
-  width: 100%;
-  height: 75px;
-  margin-top: 8px;
-  padding: 8px 18px;
 `;
 
 const Divider = styled.div`
@@ -65,6 +53,10 @@ const UploadZone = styled.label`
   cursor: pointer;
 `;
 
+const ErrorWrapper = styled.div`
+  margin-top: 26px;
+`;
+
 interface Props extends PanelProps {
   privateKey: string;
   verifyKeystore(keystore: string, password: string): Promise<boolean>;
@@ -75,32 +67,57 @@ interface Props extends PanelProps {
 class VerifyKeystorePanel extends Component<Props> {
   public state = {
     validating: false,
-    isValid: false,
+    submited: false,
     keystore: null,
     password: '',
     privateKey: '',
-    fileName: ''
+    fileName: '',
+    passwordError: '',
+    privateKeyError: '',
+    emptyFormError: false
   };
 
   public validating = false;
 
   public validate = async () => {
-    const { verifyKeystore, verifyPrivateKey, privateKey: generatedPrivateKey } = this.props;
+    const {
+      verifyKeystore,
+      verifyPrivateKey,
+      privateKey: generatedPrivateKey,
+      addCreatedAccountAndRedirectToDashboard
+    } = this.props;
     const { keystore, password, privateKey } = this.state;
     this.validating = true;
 
-    if (keystore) {
-      const isValid = await verifyKeystore(keystore, password);
-      this.setState({ isValid });
-    } else if (privateKey) {
-      const isValid = verifyPrivateKey(privateKey, password) && generatedPrivateKey === privateKey;
-      this.setState({ isValid });
+    this.setState({ passwordError: '', privateKeyError: '', emptyFormError: false });
+
+    if (!keystore && !privateKey) {
+      this.setState({ emptyFormError: true });
+      return;
     }
 
+    if (keystore) {
+      const isValid = await verifyKeystore(keystore, password);
+      if (!isValid) {
+        this.setState({ passwordError: 'Wrong password' });
+        return;
+      } else {
+        addCreatedAccountAndRedirectToDashboard();
+      }
+    } else if (privateKey) {
+      const isValid = verifyPrivateKey(privateKey, password) && generatedPrivateKey === privateKey;
+      if (!isValid) {
+        this.setState({ privateKeyError: 'Invalid private key' });
+        return;
+      } else {
+        addCreatedAccountAndRedirectToDashboard();
+      }
+    }
+    this.setState({ submited: true });
     this.validating = false;
   };
 
-  public handleFileDrop = (e: React.ChangeEvent<HTMLInputElement>) => {
+  public handleFileSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target || !e.target.files) {
       return;
     }
@@ -110,20 +127,20 @@ class VerifyKeystorePanel extends Component<Props> {
     this.setState({ fileName: e.target.files[0].name });
 
     fileReader.onload = () => {
-      this.setState({ keystore: fileReader.result }, () => this.validate());
+      this.setState({ keystore: fileReader.result });
     };
   };
 
   public handlePasswordInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ password: e.target.value }, () => this.validate());
+    this.setState({ password: e.target.value });
   };
 
   public handlePrivateKeyInputChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.setState({ privateKey: e.target.value }, () => this.validate());
+    this.setState({ privateKey: e.target.value });
   };
 
   public render() {
-    const { addCreatedAccountAndRedirectToDashboard, onBack, totalSteps, currentStep } = this.props;
+    const { onBack, totalSteps, currentStep } = this.props;
 
     return (
       <ExtendedContentPanel
@@ -134,31 +151,47 @@ class VerifyKeystorePanel extends Component<Props> {
         }}
         heading={translateRaw('VERIFY_KEYSTORE_TITLE')}
         description={translateRaw('VERIFY_KEYSTORE_DESCRIPTION')}
-        className="SaveKeystoreFilePanel"
       >
         <FormItemWrapper>
-          {translate('YOUR_PRIVATE_KEY_LABEL')}
-          <StyledTextArea onChange={this.handlePrivateKeyInputChanged} />
+          <InputField
+            label={translateRaw('YOUR_PRIVATE_KEY_LABEL')}
+            value={this.state.privateKey}
+            onChange={this.handlePrivateKeyInputChanged}
+            inputError={this.state.privateKeyError}
+            textarea={true}
+          />
         </FormItemWrapper>
         <Divider>- {translateRaw('OR')} -</Divider>
         <FormItemWrapper>
           {translate('YOUR_KEYSTORE_LABEL')}
-
-          <UploadZone htmlFor="dropzone">{translateRaw('UPLOAD_KEYSTORE_LABEL')}</UploadZone>
+          <UploadZone htmlFor="uploadZone">{translateRaw('UPLOAD_KEYSTORE_LABEL')}</UploadZone>
           {this.state.fileName && <FileName>{this.state.fileName}</FileName>}
-          <input type="file" id="dropzone" onChange={this.handleFileDrop} style={{ opacity: 0 }} />
+          <input
+            type="file"
+            id="uploadZone"
+            onChange={this.handleFileSelection}
+            style={{ opacity: 0 }}
+          />
         </FormItemWrapper>
         <FormItemWrapper>
-          {translate('INPUT_PASSWORD_LABEL')}
-          <Input icon="showNetworks" iconSide="right" onChange={this.handlePasswordInputChanged} />
+          <InputField
+            label={translateRaw('INPUT_PASSWORD_LABEL')}
+            value={this.state.password}
+            onChange={this.handlePasswordInputChanged}
+            inputError={this.state.passwordError}
+            showEye={true}
+            type={'password'}
+          />
         </FormItemWrapper>
+
+        {this.state.emptyFormError && (
+          <ErrorWrapper>
+            <InlineErrorMsg>{translateRaw('VERIFY_KEYSTORE_EMPTY_FORM_ERROR')}</InlineErrorMsg>
+          </ErrorWrapper>
+        )}
+
         <ButtonsWrapper>
-          <StyledButton
-            disabled={!this.state.isValid}
-            onClick={addCreatedAccountAndRedirectToDashboard}
-          >
-            {translate('DONE_AND_RETURN_LABEL')}
-          </StyledButton>
+          <StyledButton onClick={this.validate}>{translate('DONE_AND_RETURN_LABEL')}</StyledButton>
         </ButtonsWrapper>
       </ExtendedContentPanel>
     );
