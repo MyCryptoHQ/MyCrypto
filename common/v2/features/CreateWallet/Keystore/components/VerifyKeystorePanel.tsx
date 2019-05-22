@@ -16,10 +16,6 @@ const StyledButton = styled(Button)`
   font-size: 18px;
   margin-bottom: 16px;
   width: 100%;
-
-  :disabled {
-    opacity: 0.45;
-  }
 `;
 
 const FormItemWrapper = styled.div`
@@ -155,7 +151,6 @@ class VerifyKeystorePanel extends Component<Props> {
         }}
         heading={translateRaw('VERIFY_KEYSTORE_TITLE')}
         description={translateRaw('VERIFY_KEYSTORE_DESCRIPTION')}
-        className="SaveKeystoreFilePanel"
       >
         <FormItemWrapper>
           <InputField
