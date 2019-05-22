@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
@@ -21,13 +21,14 @@ import {
   NonceField
 } from './fields';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
+import { DeepPartial } from 'shared/types/util';
 
 interface Props {
   stateValues: ISendState;
   transactionFields: ITxFields;
   onNext(): void;
   onSubmit(transactionFields: ITxFields): void;
-  updateState(state: ISendState): void;
+  updateState(state: DeepPartial<ISendState>): void;
 }
 
 const QueryWarning: React.SFC<{}> = () => (
@@ -80,33 +81,41 @@ export default function SendAssetsForm({
               </React.Fragment>
               {/* Asset */}
               <AssetField
-                handleChange={handleChange}
-                updateState={updateState}
-                stateValues={stateValues}
+                handleChange={(e: FormEvent<HTMLInputElement>) => {
+                  updateState({ transactionFields: { asset: e.currentTarget.value } });
+                  handleChange(e);
+                }}
               />
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
                 <SenderAddressField
-                  handleChange={handleChange}
-                  updateState={updateState}
-                  stateValues={stateValues}
+                  handleChange={(e: FormEvent<HTMLInputElement>) => {
+                    updateState({
+                      transactionFields: { senderAddress: e.currentTarget.value }
+                    });
+                    handleChange(e);
+                  }}
                 />
               </fieldset>
               {/* Recipient Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="input-group-header">{translate('SEND_ADDR')}</div>
                 <RecipientAddressField
-                  handleChange={handleChange}
-                  updateState={updateState}
-                  stateValues={stateValues}
+                  handleChange={(e: FormEvent<HTMLInputElement>) => {
+                    updateState({
+                      transactionFields: { recipientAddress: e.currentTarget.value }
+                    });
+                    handleChange(e);
+                  }}
                 />
               </fieldset>
               {/* Amount */}
               <AmountField
-                handleChange={handleChange}
-                updateState={updateState}
-                stateValues={stateValues}
+                handleChange={(e: FormEvent<HTMLInputElement>) => {
+                  updateState({ transactionFields: { amount: e.currentTarget.value } });
+                  handleChange(e);
+                }}
               />
               {/* You'll Send */}
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">

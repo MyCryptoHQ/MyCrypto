@@ -6,7 +6,7 @@ interface Props {
 }
 
 function SignTransaction({  }: Props) {
-  return <div>This gets renders when signing Transaction</div>;
+  return <div>This gets rendered when signing Transaction</div>;
 }
 
 export default SignTransaction;
