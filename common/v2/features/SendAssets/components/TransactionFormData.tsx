@@ -23,6 +23,8 @@ import {
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
+import { getAccountByAddress } from 'v2/libs/accounts';
+import { Account } from 'v2/services/Account/types';
 
 interface Props {
   stateValues: ISendState;
@@ -93,8 +95,12 @@ export default function SendAssetsForm({
 
                 <SenderAddressField
                   handleChange={(e: FormEvent<HTMLInputElement>) => {
+                    const account: Account | undefined = getAccountByAddress(e.currentTarget.value);
                     updateState({
-                      transactionFields: { senderAddress: e.currentTarget.value }
+                      transactionFields: {
+                        senderAddress: e.currentTarget.value,
+                        accountType: !account ? undefined : account.accountType
+                      }
                     });
                     handleChange(e);
                   }}

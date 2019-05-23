@@ -30,7 +30,8 @@ const getInitialState = (): ISendState => {
       nonceField: '0',
       data: '',
       isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-      isGasLimitManual: false
+      isGasLimitManual: false,
+      accountType: undefined
     },
     isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
     isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.

@@ -1,4 +1,5 @@
 import { AssetOption, assetType } from 'v2/services/AssetOption/types';
+import { WalletName } from 'v2/config/data';
 
 export interface ITxFields {
   asset: string;
@@ -14,6 +15,7 @@ export interface ITxFields {
   nonceField: string; // Use only if user has input a manual nonce value.
   isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
   isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+  accountType: WalletName | undefined; // Type of wallet selected.
 }
 
 export interface ISendState {
