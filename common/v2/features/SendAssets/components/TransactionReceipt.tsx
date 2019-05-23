@@ -11,7 +11,7 @@ import sentIcon from 'common/assets/images/icn-sent.svg';
 
 interface Props {
   stateValues: ISendState;
-  onReset(): void;
+  // onReset(): void; // RE-ADD RESET
 }
 
 const truncate = (children: string) => {
@@ -19,8 +19,7 @@ const truncate = (children: string) => {
 };
 
 export default function TransactionReceipt({
-  stateValues: { transactionFields: { recipientAddress, senderAddress } },
-  onReset
+  stateValues: { transactionFields: { recipientAddress, senderAddress } }
 }: Props) {
   return (
     <div className="TransactionReceipt">
@@ -69,7 +68,7 @@ export default function TransactionReceipt({
       <Link to="/dashboard">
         <Button className="TransactionReceipt-back">Back to Dashboard</Button>
       </Link>
-      <Button secondary={true} onClick={onReset} className="TransactionReceipt-another">
+      <Button secondary={true} className="TransactionReceipt-another">
         Send Another Transaction
       </Button>
     </div>

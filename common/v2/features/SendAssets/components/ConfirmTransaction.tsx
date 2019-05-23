@@ -30,7 +30,7 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public render() {
     const {
-      stateValues: { transactionFields: { senderAddress, recipientAddress, amount } },
+      stateValues: { transactionFields: { senderAddress, recipientAddress, amount, asset } },
       onNext
     } = this.props;
     const { showingDetails } = this.state;
@@ -95,7 +95,7 @@ export default class ConfirmTransaction extends Component<Props> {
             <img src={sendIcon} alt="Total" /> You'll Send:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue="13.2434662 ETH" fiatValue="$12,000.21" />
+            <Amount assetValue={amount + asset} fiatValue="$12,000.21" />
           </div>
         </div>
         <Button

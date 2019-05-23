@@ -20,7 +20,7 @@ import {
   DataField,
   NonceField
 } from './fields';
-import { processFormDataToTx } from 'v2/libs/transaction/process';
+// import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
 
 interface Props {
@@ -49,7 +49,7 @@ export default function SendAssetsForm({
   updateState
 }: Props) {
   return (
-    <div>
+    <div className="SendAssetsForm">
       <Formik
         initialValues={transactionFields}
         onSubmit={(fields: ITxFields) => {
@@ -69,16 +69,6 @@ export default function SendAssetsForm({
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
-
-              <React.Fragment>
-                {'ITxFields: '}
-                <br />
-                {JSON.stringify(processFormDataToTx(values), null, 2)}
-                <br />
-                {'Formik Fields: '}
-                <br />
-                {JSON.stringify(values, null, 2)}
-              </React.Fragment>
               {/* Asset */}
               <AssetField
                 handleChange={(e: FormEvent<HTMLInputElement>) => {
@@ -89,6 +79,7 @@ export default function SendAssetsForm({
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
+
                 <SenderAddressField
                   handleChange={(e: FormEvent<HTMLInputElement>) => {
                     updateState({
@@ -122,7 +113,9 @@ export default function SendAssetsForm({
                 <label>You'll Send</label>
                 <div className="SendAssetsForm-fieldset-youllSend-box">
                   <Heading as="h2" className="SendAssetsForm-fieldset-youllSend-box-crypto">
-                    <img src={sendIcon} alt="Send" /> 13.233333 ETH{/* TRANSLATE THIS */}
+                    <img src={sendIcon} alt="Send" />{' '}
+                    {transactionFields.amount + transactionFields.asset}
+                    {/* TRANSLATE THIS */}
                   </Heading>
                   <small className="SendAssetsForm-fieldset-youllSend-box-fiat">
                     {/* TRANSLATE THIS */}≈ $1440.00 USD
@@ -215,6 +208,7 @@ export default function SendAssetsForm({
                   </div>
                 )}
               </div>
+
               <Button type="submit" onClick={onNext} className="SendAssetsForm-next">
                 Next{/* TRANSLATE THIS */}
               </Button>

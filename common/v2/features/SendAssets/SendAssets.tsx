@@ -59,7 +59,6 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   public render() {
     const { step } = this.state;
     const Step = steps[step];
-    console.log(this.state.transactionFields);
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
