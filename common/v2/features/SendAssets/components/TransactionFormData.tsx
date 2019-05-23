@@ -22,6 +22,7 @@ import {
 } from './fields';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
+import { processFormDataToTx } from 'v2/libs/transaction/process';
 
 interface Props {
   stateValues: ISendState;
@@ -69,6 +70,16 @@ export default function SendAssetsForm({
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
+
+              <React.Fragment>
+                {'ITxFields: '}
+                <br />
+                {JSON.stringify(processFormDataToTx(values), null, 2)}
+                <br />
+                {'Formik Fields: '}
+                <br />
+                {JSON.stringify(values, null, 2)}
+              </React.Fragment>
               {/* Asset */}
               <AssetField
                 handleChange={(e: FormEvent<HTMLInputElement>) => {
@@ -162,8 +173,8 @@ export default function SendAssetsForm({
                 {values.isAdvancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
-                      <Field name="automaticallyCalculateGasLimit" type="checkbox" value={true} />
-                      <label htmlFor="automaticallyCalculateGasLimit">
+                      <Field name="isGasLimitManual" type="checkbox" value={true} />
+                      <label htmlFor="isGasLimitManual">
                         Automatically Calculate Gas Limit{/* TRANSLATE THIS */}
                       </label>
                     </div>
@@ -171,24 +182,34 @@ export default function SendAssetsForm({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
                         <GasPriceField
-                          handleChange={handleChange}
-                          updateState={updateState}
+                          handleChange={(e: FormEvent<HTMLInputElement>) => {
+                            updateState({
+                              transactionFields: { gasPriceField: e.currentTarget.value }
+                            });
+                            handleChange(e);
+                          }}
                           stateValues={stateValues}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
                         <GasLimitField
-                          handleChange={handleChange}
-                          updateState={updateState}
+                          handleChange={(e: FormEvent<HTMLInputElement>) => {
+                            updateState({
+                              transactionFields: { gasLimitField: e.currentTarget.value }
+                            });
+                            handleChange(e);
+                          }}
                           stateValues={stateValues}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce">Nonce (?)</label>
                         <NonceField
-                          handleChange={handleChange}
-                          updateState={updateState}
+                          handleChange={(e: FormEvent<HTMLInputElement>) => {
+                            updateState({ transactionFields: { data: e.currentTarget.value } });
+                            handleChange(e);
+                          }}
                           stateValues={stateValues}
                         />
                       </div>
@@ -196,8 +217,10 @@ export default function SendAssetsForm({
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
                       <DataField
-                        handleChange={handleChange}
-                        updateState={updateState}
+                        handleChange={(e: FormEvent<HTMLInputElement>) => {
+                          updateState({ transactionFields: { data: e.currentTarget.value } });
+                          handleChange(e);
+                        }}
                         values={stateValues}
                       />
                     </fieldset>

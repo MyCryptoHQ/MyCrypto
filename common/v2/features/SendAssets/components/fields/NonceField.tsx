@@ -1,5 +1,5 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, Formik } from 'formik';
 import { Input } from '@mycrypto/ui';
 
 import { ITxFields, ISendState } from '../../types';
@@ -7,13 +7,7 @@ import { ITxFields, ISendState } from '../../types';
 
 interface OwnProps {
   stateValues: ISendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: ISendState): void;
+  handleChange: Formik['handleChange'];
 }
 
 /*interface StateProps {
@@ -36,7 +30,7 @@ export default class NonceField extends Component<Props> {
   public render() {
     return (
       <Field
-        name="nonce"
+        name="nonceField"
         validate={this.isValidNonce}
         render={({ field }: FieldProps<ITxFields>) => (
           <Input

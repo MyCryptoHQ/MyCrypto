@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, Formik } from 'formik';
 
 import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
@@ -25,12 +25,7 @@ interface StateProps {
     isDefault: boolean;
   };
   transactionFieldValues: ITxFields;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
+  handleChange: Formik['handleChange'];
 }
 
 type Props = OwnProps & StateProps; // & ActionProps;
@@ -55,6 +50,10 @@ export default class SimpleGas extends React.Component<Props> {
       this.props.transactionFieldValues.asset
     );
     this.setState({ ...this.state, gasEstimates: gasPriceValues });
+  }
+
+  public handleGasPriceSlider(e: ChangeEvent<any>) {
+    this.props.handleChange(e);
   }
 
   public render() {
@@ -84,17 +83,15 @@ export default class SimpleGas extends React.Component<Props> {
     const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
     return (
       <Field
-        name="transactionFee"
-        render={({ field, form }: FieldProps<Transaction>) => {
+        name="gasPriceSlider"
+        render={({ field }: FieldProps<Transaction>) => {
           return (
             <div className="SimpleGas row form-group">
               <div className="SimpleGas-input-group">
                 <div className="SimpleGas-slider">
                   <SliderWithTooltip
                     {...field}
-                    onChange={e => {
-                      form.setFieldValue(field.name, e);
-                    }}
+                    onChange={this.handleGasPriceSlider}
                     min={bounds.min}
                     max={bounds.max}
                     marks={gasNotches}

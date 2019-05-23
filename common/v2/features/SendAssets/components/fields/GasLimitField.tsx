@@ -1,18 +1,12 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, Formik } from 'formik';
 import { ITxFields, ISendState } from '../../types';
 import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
   stateValues: ISendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: ISendState): void;
+  handleChange: Formik['handleChange'];
 }
 
 /*interface StateProps {
@@ -36,7 +30,7 @@ export default class GasLimitField extends Component<Props> {
     //const { handleChange } = this.props;
     return (
       <Field
-        name="gasLimit"
+        name="gasLimitField"
         validate={this.isValidGasLimit}
         render={({ field }: FieldProps<ITxFields>) => (
           <Input
