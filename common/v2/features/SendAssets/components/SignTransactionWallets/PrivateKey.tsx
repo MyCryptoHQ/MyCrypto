@@ -51,28 +51,42 @@ export default class SignTransactionPrivateKey extends Component {
   };
   public render() {
     const { key, password } = this.state;
-    const { isValidPkey } = validatePkeyAndPass(key, password);
+    const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
     return (
       <div className="SignTransactionPrivateKey-panel">
         <div className="SignTransactionPrivateKey-title">
           Sign the Transaction with your Private Key
         </div>
-        <div className="SignTransactionPrivateKey-content">
+        <div
+          className={'SignTransactionPrivateKey-' + (isPassRequired ? 'with-pass' : 'without-pass')}
+        >
           <div className="SignTransactionPrivateKey-img">
             <img src={PrivateKeyicon} />
           </div>
           <div className="SignTransactionPrivateKey-input">
             <label className="SignTransactionPrivateKey-label">Your Private Key</label>
-            <TogglablePassword value={key} isValid={isValidPkey} placeholder="Private Key" />
-            <label className="SignTransactionPrivateKey-label">Your Password</label>
-            <Input
-              isValid={password.length > 0}
-              value={password}
-              onChange={this.onPasswordChange}
-              onKeyDown={this.onKeyDown}
-              placeholder="Password"
-              type="password"
+            <TogglablePassword
+              value={key}
+              isValid={isValidPkey}
+              placeholder="Private Key"
+              onChange={this.onPkeyChange}
+              onEnter={() => this.unlock}
             />
+
+            {isValidPkey &&
+              isPassRequired && (
+                <label className="SignTransactionPrivateKey-label">
+                  Your Password
+                  <Input
+                    isValid={password.length > 0}
+                    value={password}
+                    onChange={this.onPasswordChange}
+                    onKeyDown={this.onKeyDown}
+                    placeholder="Password"
+                    type="password"
+                  />
+                </label>
+              )}
           </div>
           <div className="SignTransactionPrivateKey-description">
             Because we never save, store, or transmit your secret, you need to sign each transaction
@@ -89,6 +103,17 @@ export default class SignTransactionPrivateKey extends Component {
     );
   }
 
+  private onPkeyChange = (e: React.FormEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const pkey = e.currentTarget.value;
+    const pass = this.state.password;
+    const { fixedPkey, valid } = validatePkeyAndPass(pkey, pass);
+
+    this.setState({
+      key: fixedPkey,
+      valid
+    });
+  };
+
   private onPasswordChange = (e: React.FormEvent<HTMLInputElement>) => {
     // NOTE: Textareas don't support password type, so we replace the value
     // with an equal length number of dots. On change, we replace
@@ -104,5 +129,10 @@ export default class SignTransactionPrivateKey extends Component {
 
   private onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     console.log(e);
+  };
+
+  private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 }

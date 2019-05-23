@@ -14,6 +14,10 @@
   margin-top: 40px;
 }
 
+.SignTransactionPrivateKey-without-pass {
+  margin-top: 5em;
+}
+
 .SignTransactionPrivateKey-img {
   display: flex;
   justify-content: center;
@@ -25,6 +29,10 @@
   line-height: 1.5;
   text-align: center;
   margin-bottom: 1em;
+}
+
+.SignTransactionPrivateKey-footer {
+  width: 100%;
 }
 
 .SignTransactionPrivateKey-button {
