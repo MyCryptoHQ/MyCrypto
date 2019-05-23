@@ -180,7 +180,7 @@ class InteractForm extends Component<Props, State> {
     ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     this.props.resetState();
-    this.setState({ [name]: ev.currentTarget.value });
+    this.setState({ [name]: ev.currentTarget.value } as any);
   };
 
   private handleSelectContract = (contract: ContractOption) => {

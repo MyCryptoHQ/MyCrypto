@@ -7,7 +7,14 @@ import { AppState } from 'features/reducers';
 import { configMetaActions, configMetaSelectors } from 'features/config';
 import { scheduleSelectors } from 'features/schedule';
 import { transactionFieldsActions, transactionSelectors } from 'features/transaction';
-import { NonceField, GasLimitField, DataField } from 'components';
+import {
+  NonceField,
+  GasLimitField,
+  DataField,
+  ScheduleDepositField,
+  ScheduleType,
+  WindowSizeField
+} from 'components';
 import { Input } from 'components/ui';
 import FeeSummary, { RenderData } from './FeeSummary';
 import './AdvancedGas.scss';
@@ -62,6 +69,21 @@ class AdvancedGas extends React.Component<Props, State> {
 
     return (
       <div className="AdvancedGas row form-group">
+        {scheduling && (
+          <div>
+            <div className="row vcenter-sm">
+              <div className="col-xs-6 col-md-4 col-lg-3">
+                <ScheduleType />
+              </div>
+              <div className="col-xs-6 col-md-8 col-lg-9">
+                <WindowSizeField />
+              </div>
+            </div>
+
+            <ScheduleDepositField />
+          </div>
+        )}
+
         <div className="AdvancedGas-calculate-limit">
           <label className="checkbox">
             <input
@@ -85,6 +107,7 @@ class AdvancedGas extends React.Component<Props, State> {
                   or invalid exponent notation does not fire the onchange handler
                   so the component will not display as invalid for such things */}
                   <Input
+                    maxLength={10}
                     isValid={validGasPrice}
                     placeholder="40"
                     value={gasPrice.raw}
@@ -99,7 +122,6 @@ class AdvancedGas extends React.Component<Props, State> {
             <div className="AdvancedGas-gas-limit">
               <GasLimitField
                 customLabel={translateRaw('OFFLINE_STEP2_LABEL_4')}
-                disabled={scheduling}
                 hideGasCalculationSpinner={scheduling}
               />
             </div>
@@ -111,12 +133,11 @@ class AdvancedGas extends React.Component<Props, State> {
           )}
         </div>
 
-        {!scheduling &&
-          dataField && (
-            <div className="AdvancedGas-data">
-              <DataField />
-            </div>
-          )}
+        {dataField && (
+          <div className="AdvancedGas-data">
+            <DataField />
+          </div>
+        )}
 
         {this.renderFee()}
       </div>
@@ -158,13 +179,13 @@ class AdvancedGas extends React.Component<Props, State> {
     );
   }
 
-  private getScheduleFeeFormula({ gasPriceWei, scheduleGasLimit, fee, usd }: RenderData) {
+  private getScheduleFeeFormula({ gasLimit, gasPriceWei, scheduleGasLimit, fee, usd }: RenderData) {
     const { scheduleGasPrice, timeBounty } = this.props;
 
     return (
       <div>
         {timeBounty && timeBounty.value && timeBounty.value.toString()} + {gasPriceWei} *{' '}
-        {EAC_SCHEDULING_CONFIG.SCHEDULING_GAS_LIMIT.toString()} +{' '}
+        {gasLimit.toString()} +{' '}
         {scheduleGasPrice && scheduleGasPrice.value && scheduleGasPrice.value.toString()} * ({EAC_SCHEDULING_CONFIG.FUTURE_EXECUTION_COST.toString()}{' '}
         + {scheduleGasLimit}) =&nbsp;{fee}&nbsp;{usd && <span>~=&nbsp;${usd}&nbsp;USD</span>}
       </div>
@@ -184,9 +205,9 @@ class AdvancedGas extends React.Component<Props, State> {
 export default connect(
   (state: AppState) => ({
     autoGasLimitEnabled: configMetaSelectors.getAutoGasLimitEnabled(state),
-    scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state),
+    validGasPrice: transactionSelectors.isValidGasPrice(state),
     timeBounty: scheduleSelectors.getTimeBounty(state),
-    validGasPrice: transactionSelectors.isValidGasPrice(state)
+    scheduleGasPrice: scheduleSelectors.getScheduleGasPrice(state)
   }),
   { toggleAutoGasLimit: configMetaActions.toggleAutoGasLimit }
 )(AdvancedGas);

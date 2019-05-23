@@ -361,7 +361,7 @@ describe('unlockWeb3*', () => {
       put(
         notificationsActions.showNotification(
           'danger',
-          translateRaw('No accounts found in MetaMask / Mist.')
+          translateRaw('No accounts found in MetaMask / Web3.')
         )
       )
     );

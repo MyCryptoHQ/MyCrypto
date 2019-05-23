@@ -33,7 +33,7 @@ interface GasExpressResponse {
 }
 
 export function fetchGasEstimates(): Promise<GasEstimates> {
-  return fetch('https://dev.blockscale.net/api/gasexpress.json', {
+  return fetch('https://gas.mycryptoapi.com', {
     mode: 'cors'
   })
     .then(checkHttpStatus)

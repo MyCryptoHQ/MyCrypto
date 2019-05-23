@@ -17,15 +17,17 @@ import { AddressMessage } from 'config';
 import { INode } from 'libs/nodes/INode';
 import { IWallet } from 'libs/wallet';
 import { Nonce } from 'libs/units';
+import { hexStringToNumber } from 'utils/formatters';
 import { makeTransaction, getTransactionFields, IHexStrTransaction } from 'libs/transaction';
 import { IGetTransaction } from 'features/types';
 import { AppState } from 'features/reducers';
 import * as derivedSelectors from 'features/selectors';
 import { configMetaTypes, configMetaSelectors, configNodesSelectors } from 'features/config';
 import { walletTypes, walletSelectors } from 'features/wallet';
-import { scheduleActions, scheduleSelectors } from 'features/schedule';
+import { scheduleActions, scheduleSelectors, scheduleTypes } from 'features/schedule';
 import { notificationsActions } from 'features/notifications';
 import { transactionFieldsTypes, transactionFieldsActions } from '../fields';
+import { transactionsSelectors } from 'features/transactions';
 import * as transactionTypes from '../types';
 import * as types from './types';
 import * as actions from './actions';
@@ -67,14 +69,15 @@ export function* shouldEstimateGas(): SagaIterator {
       | transactionTypes.SwapTokenToTokenAction
       | transactionTypes.SwapTokenToEtherAction
       | configMetaTypes.ToggleAutoGasLimitAction
-      | transactionFieldsTypes.SetValueFieldAction = yield take([
+      | scheduleTypes.SetSchedulingToggleAction = yield take([
       transactionFieldsTypes.TransactionFieldsActions.TO_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.VALUE_FIELD_SET,
       transactionFieldsTypes.TransactionFieldsActions.DATA_FIELD_SET,
       transactionTypes.TransactionActions.ETHER_TO_TOKEN_SWAP,
       transactionTypes.TransactionActions.TOKEN_TO_TOKEN_SWAP,
       transactionTypes.TransactionActions.TOKEN_TO_ETHER_SWAP,
-      configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT
+      configMetaTypes.ConfigMetaActions.TOGGLE_AUTO_GAS_LIMIT,
+      scheduleTypes.ScheduleActions.TOGGLE_SET
     ]);
 
     const isOffline: boolean = yield select(configMetaSelectors.getOffline);
@@ -115,7 +118,13 @@ export function* shouldEstimateGas(): SagaIterator {
       rest.to = undefined as any;
     }
 
-    yield put(actions.estimateGasRequested(rest));
+    const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+
+    if (scheduling) {
+      yield put(scheduleActions.estimateSchedulingGasRequested(rest));
+    } else {
+      yield put(actions.estimateGasRequested(rest));
+    }
   }
 }
 
@@ -142,23 +151,24 @@ export function* estimateGas(): SagaIterator {
       const from: string = yield apply(walletInst, walletInst.getAddressString);
       const txObj = { ...payload, from };
 
-      const { gasLimit } = yield race({
+      let { gasLimit }: { gasLimit: BN } = yield race({
         gasLimit: apply(node, node.estimateGas, [txObj]),
         timeout: call(delay, 10000)
       });
       if (gasLimit) {
+        const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
+        const isEtherTransaction: boolean = yield select(derivedSelectors.isEtherTransaction);
+
+        if (scheduling && !isEtherTransaction) {
+          gasLimit = gasLimit.add(new BN('40000'));
+        }
+
         const gasSetOptions = {
           raw: gasLimit.toString(),
           value: gasLimit
         };
 
-        const scheduling: boolean = yield select(scheduleSelectors.isSchedulingEnabled);
-
-        if (scheduling) {
-          yield put(scheduleActions.setScheduleGasLimitField(gasSetOptions));
-        } else {
-          yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
-        }
+        yield put(transactionFieldsActions.setGasLimitField(gasSetOptions));
 
         yield put(actions.estimateGasSucceeded());
       } else {
@@ -209,21 +219,67 @@ export function* handleNonceRequest(): SagaIterator {
   const isOffline: boolean = yield select(configMetaSelectors.getOffline);
   try {
     if (isOffline || !walletInst) {
-      return;
+      if (isOffline) {
+        throw Error('offline');
+      } else {
+        throw Error('wallet');
+      }
     }
-
     const fromAddress: string = yield apply(walletInst, walletInst.getAddressString);
-
-    const retrievedNonce: string = yield apply(nodeLib, nodeLib.getTransactionCount, [fromAddress]);
+    const transactionCountString: string = yield apply(nodeLib, nodeLib.getTransactionCount, [
+      fromAddress
+    ]);
+    const transactionCount: number = yield call(hexStringToNumber, transactionCountString);
+    const recentTransactions: AppState['transactions']['recent'] = yield select(
+      transactionsSelectors.getRecentTransactions
+    );
+    const { transaction }: IGetTransaction = yield select(derivedSelectors.getTransaction);
+    const { chainId }: IHexStrTransaction = yield call(getTransactionFields, transaction);
+    const retrievedNonce = yield call(
+      conductMaxNonceCheck,
+      transactionCount,
+      fromAddress,
+      recentTransactions,
+      chainId
+    );
     const base10Nonce = Nonce(retrievedNonce);
     yield put(transactionFieldsActions.inputNonce(base10Nonce.toString()));
     yield put(actions.getNonceSucceeded(retrievedNonce));
-  } catch {
-    yield put(
-      notificationsActions.showNotification('warning', 'Your addresses nonce could not be fetched')
-    );
+  } catch (e) {
+    if (e === 'offline') {
+      yield put(
+        notificationsActions.showNotification(
+          'warning',
+          'Your addresses nonce could not be fetched'
+        )
+      );
+    }
     yield put(actions.getNonceFailed());
   }
+}
+
+export function* conductMaxNonceCheck(
+  transactionCount: number,
+  fromAddress: string,
+  recentTransactions: AppState['transactions']['recent'],
+  chainId: number
+): SagaIterator {
+  // Selects the maximum nonce from the maximum of the recent-transaction nonces with the same `from` address and the transaction count of the address
+  const selectedNonce = Math.max(
+    transactionCount,
+    Math.max(
+      Math.max(
+        ...recentTransactions
+          .filter(entry => entry.from === fromAddress.toLowerCase())
+          .filter(entry => entry.nonce)
+          .filter(entry => typeof entry.nonce === 'number')
+          .filter(entry => entry.chainId === chainId)
+          .map(entry => entry.nonce + 1)
+      ),
+      0
+    )
+  ).toString();
+  return selectedNonce;
 }
 
 export function* handleNonceRequestWrapper(): SagaIterator {

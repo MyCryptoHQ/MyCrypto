@@ -17,7 +17,7 @@ const electronConfig = {
       // HTML as string
       {
         test: /\.html$/,
-        use: 'raw-loader',
+        use: 'raw-loader'
       }
     ]
   },
@@ -36,7 +36,8 @@ const electronConfig = {
     })
   ],
   externals: {
-    'node-hid': 'commonjs node-hid'
+    'node-hid': 'commonjs node-hid',
+    usb: 'commonjs usb'
   },
   node: {
     __dirname: false,

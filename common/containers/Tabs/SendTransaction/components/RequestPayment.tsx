@@ -17,7 +17,7 @@ import {
   transactionMetaSelectors,
   transactionActions
 } from 'features/transaction';
-import { AddressField, AmountField, TXMetaDataPanel } from 'components';
+import { AddressField, AmountField } from 'components';
 import { QRCode, CodeBlock } from 'components/ui';
 import { NetworkConfig } from 'types/network';
 import './RequestPayment.scss';
@@ -103,21 +103,6 @@ class RequestPayment extends React.Component<Props, {}> {
                 showAllTokens={true}
                 customValidator={isValidAmount(decimal)}
                 showInvalidWithoutValue={true}
-              />
-            </div>
-          </div>
-
-          <div className="row form-group">
-            <div className="col-xs-12">
-              <TXMetaDataPanel
-                initialState="advanced"
-                disableToggle={true}
-                advancedGasOptions={{
-                  gasPriceField: false,
-                  nonceField: false,
-                  dataField: false,
-                  feeSummary: false
-                }}
               />
             </div>
           </div>

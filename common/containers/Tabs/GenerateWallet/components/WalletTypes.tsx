@@ -154,6 +154,24 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
       <h1 className="WalletTypes-title">{translate('GENERATE_WALLET_TITLE')}</h1>
       <p className="WalletTypes-subtitle">{translate('GENERATE_WALLET_SUGGESTIONS')}</p>
 
+      {!process.env.BUILD_DOWNLOADABLE && (
+        <React.Fragment>
+          <div className="WalletTypes-download">
+            <NewTabLink
+              href="https://download.mycrypto.com"
+              className="WalletTypes-download-button btn btn-primary btn-lg"
+            >
+              {translate('WALLET_SUGGESTION_DESKTOP_APP')}
+            </NewTabLink>
+            <p className="WalletTypes-download-desc">
+              {translate('WALLET_SUGGESTION_DESKTOP_APP_DESC')}
+            </p>
+          </div>
+
+          <div className="WalletTypes-divider">{translate('OR')}</div>
+        </React.Fragment>
+      )}
+
       <div className="WalletTypes-suggestions">
         {suggestions.map(sug => (
           <div className={`WalletSuggestion is-${sug.type}`}>
@@ -197,24 +215,6 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
           </div>
         ))}
       </div>
-
-      {!process.env.BUILD_DOWNLOADABLE && (
-        <React.Fragment>
-          <div className="WalletTypes-divider">{translate('OR')}</div>
-
-          <div className="WalletTypes-download">
-            <NewTabLink
-              href="https://download.mycrypto.com"
-              className="WalletTypes-download-button btn btn-primary btn-lg"
-            >
-              {translate('WALLET_SUGGESTION_DESKTOP_APP')}
-            </NewTabLink>
-            <p className="WalletTypes-download-desc">
-              {translate('WALLET_SUGGESTION_DESKTOP_APP_DESC')}
-            </p>
-          </div>
-        </React.Fragment>
-      )}
     </React.Fragment>
   );
 };
