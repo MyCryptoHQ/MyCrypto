@@ -154,7 +154,8 @@ export const CACHE_INIT_DEV: LocalCache = {
         max: 100,
         initial: 15
       },
-      shouldEstimateGasPrice: true
+      shouldEstimateGasPrice: true,
+      assets: []
     }
   },
   nodeOptions: {
