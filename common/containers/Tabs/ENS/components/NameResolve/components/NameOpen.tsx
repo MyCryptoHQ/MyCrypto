@@ -10,15 +10,12 @@ export const NameOpen: React.SFC<IBaseDomainRequest> = props => (
     <section className="auction-info text-center">
       <div className="ens-title">
         <h1>{translate('ENS_DOMAIN_OPEN', { $name: props.name + '.eth' })}</h1>
-      </div>
-      <p>
-        {translate('OPEN_AUCTION_PROMPT_1', { $name: props.name })}
-        <strong>
-          <NewTabLink className="text-center" href={ensV3Url(props.name)}>
-            {translate('OPEN_AUCTION_PROMPT_2')}
+        <h3>
+          <NewTabLink className="text-center" href={ensV3Url(props.name + '.eth')}>
+            {translate('ENS_SEND_TO_MANAGER', { $name: props.name + '.eth' })}
           </NewTabLink>
-        </strong>
-      </p>
+        </h3>
+      </div>
     </section>
   </section>
 );

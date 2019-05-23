@@ -4,7 +4,7 @@ import translate from 'translations';
 import { Wei } from 'libs/units';
 import { IRevealDomainRequest } from 'libs/ens';
 import { ensV3Url } from 'utils/formatters';
-import { UnitDisplay } from 'components/ui';
+import { UnitDisplay, NewTabLink } from 'components/ui';
 import ENSTime from './components/ENSTime';
 
 export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
@@ -34,11 +34,10 @@ export const NameReveal: React.SFC<IRevealDomainRequest> = props => (
       </div>
     </div>
 
-    <p>
-      {translate('ENS_DOMAIN_PROMPT_REVEAL', {
-        $name: props.name + '.eth',
-        $link: ensV3Url(props.name)
-      })}
-    </p>
+    <h3>
+      <NewTabLink className="text-center" href={ensV3Url(props.name + '.eth')}>
+        {translate('ENS_SEND_TO_MANAGER', { $name: props.name + '.eth' })}
+      </NewTabLink>
+    </h3>
   </section>
 );

@@ -56,6 +56,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
     }
 
+    // TODO: This doesn't apply when WebUSB is used instead of U2F
     if (!process.env.BUILD_ELECTRON && window.location.protocol !== 'https:') {
       return (
         <div className="LedgerDecrypt">
