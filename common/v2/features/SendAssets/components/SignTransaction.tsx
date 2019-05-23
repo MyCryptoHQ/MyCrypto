@@ -1,12 +1,22 @@
 import React from 'react';
-import { ISendState } from '../types';
+import { ISendState, ITxFields } from '../types';
 
 interface Props {
-  stateValues?: ISendState;
+  stateValues: ISendState;
+  transactionFields: ITxFields;
 }
 
-function SignTransaction({  }: Props) {
-  return <div>This gets renders when signing Transaction</div>;
-}
+export default function SignTransaction({ transactionFields }: Props) {
+  // const recipientLabel = 'unknown';
+  // const senderLabel = 'unknown';
 
-export default SignTransaction;
+  return (
+    <div className="ConfirmTransaction">
+      <div className="ConfirmTransaction-row">
+        <div className="ConfirmTransaction-row-column">
+          <div className="ConfirmTransaction-addressWrapper">{transactionFields.senderAddress}</div>
+        </div>
+      </div>
+    </div>
+  );
+}

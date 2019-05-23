@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Address, Button, Network } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
-import { ISendState } from '../types';
 import './ConfirmTransaction.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import { AddressMetadataContext } from 'v2/providers';
+import { ISendState } from '../types';
 
 interface Props {
   stateValues: ISendState;
@@ -23,12 +23,6 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-// export default function createConfirmTransactionComponent(outterProps: Pick<Props, 'onNext'>) {
-//   return (props: Pick<Props, 'stateValues'>) => {
-//     return <ConfirmTransaction onNext={outterProps.onNext} stateValues={props.stateValues} />;
-//   };
-// }
-
 export default class ConfirmTransaction extends Component<Props> {
   public state: State = {
     showingDetails: false
@@ -36,15 +30,12 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public render() {
     const {
-      stateValues: {
-        transactionFields: {
-          senderAddress = '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2',
-          recipientAddress = '0x909f74Ffdc223586d0d30E78016E707B6F5a45E2'
-        }
-      },
+      stateValues: { transactionFields: { senderAddress, recipientAddress, amount, asset } },
       onNext
     } = this.props;
     const { showingDetails } = this.state;
+    // const recipientLabel = 'unknown';
+    // const senderLabel = 'unknown';
 
     return (
       <div className="ConfirmTransaction">
@@ -87,7 +78,7 @@ export default class ConfirmTransaction extends Component<Props> {
             <img src={sendIcon} alt="Send" /> Send Amount:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue="13.2343 ETH" fiatValue="$12,000.00" />
+            <Amount assetValue={amount} fiatValue="$12,000.00" />
           </div>
         </div>
         <div className="ConfirmTransaction-row">
@@ -104,7 +95,7 @@ export default class ConfirmTransaction extends Component<Props> {
             <img src={sendIcon} alt="Total" /> You'll Send:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue="13.2434662 ETH" fiatValue="$12,000.21" />
+            <Amount assetValue={amount + asset} fiatValue="$12,000.21" />
           </div>
         </div>
         <Button

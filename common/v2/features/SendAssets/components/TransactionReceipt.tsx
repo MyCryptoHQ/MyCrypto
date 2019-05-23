@@ -11,7 +11,7 @@ import sentIcon from 'common/assets/images/icn-sent.svg';
 
 interface Props {
   stateValues: ISendState;
-  onReset(): void;
+  // onReset(): void; // RE-ADD RESET
 }
 
 const truncate = (children: string) => {
@@ -19,8 +19,7 @@ const truncate = (children: string) => {
 };
 
 export default function TransactionReceipt({
-  stateValues: { transactionFields: { recipientAddress, senderAddress } },
-  onReset
+  stateValues: { transactionFields: { recipientAddress, senderAddress } }
 }: Props) {
   return (
     <div className="TransactionReceipt">
@@ -28,13 +27,13 @@ export default function TransactionReceipt({
         <div className="TransactionReceipt-row-column">
           To:
           <div className="TransactionReceipt-addressWrapper">
-            <Address address={recipientAddress!} title="Example #2" truncate={truncate} />
+            <Address address={recipientAddress} title="Example #2" truncate={truncate} />
           </div>
         </div>
         <div className="TransactionReceipt-row-column">
           From:
           <div className="TransactionReceipt-addressWrapper">
-            <Address address={senderAddress!} title="Example #1" truncate={truncate} />
+            <Address address={senderAddress} title="Example #1" truncate={truncate} />
           </div>
         </div>
       </div>
@@ -69,7 +68,7 @@ export default function TransactionReceipt({
       <Link to="/dashboard">
         <Button className="TransactionReceipt-back">Back to Dashboard</Button>
       </Link>
-      <Button secondary={true} onClick={onReset} className="TransactionReceipt-another">
+      <Button secondary={true} className="TransactionReceipt-another">
         Send Another Transaction
       </Button>
     </div>

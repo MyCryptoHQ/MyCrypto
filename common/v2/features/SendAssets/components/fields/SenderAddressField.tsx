@@ -1,19 +1,12 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps } from 'formik';
-import { ITxFields, ISendState } from '../../types';
+import { Field, FieldProps, Formik } from 'formik';
+import { ITxFields } from '../../types';
 import { ComboBox } from '@mycrypto/ui';
 import { AccountContext } from 'v2/providers';
 import { isValidETHAddress } from 'libs/validators';
 
 interface OwnProps {
-  stateValues: ISendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: ISendState): void;
+  handleChange: Formik['handleChange'];
 }
 
 type Props = OwnProps; // & StateProps;

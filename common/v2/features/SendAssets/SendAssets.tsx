@@ -59,12 +59,11 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   public render() {
     const { step } = this.state;
     const Step = steps[step];
-
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
           onBack={this.goToPrevStep}
-          className="SendAssets-panel"
+          className="SendAssets"
           heading={Step.label}
           icon={sendIcon}
           stepper={{ current: step + 1, total: steps.length - 1 }}
@@ -93,13 +92,13 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
 
   private updateTransactionFields = (transactionFields: ITxFields) => {
     this.setState({
-      transactionFields
+      transactionFields: { ...this.state.transactionFields, ...transactionFields }
     });
   };
 
   private updateState = (state: ISendState) => {
     this.setState({
-      ...state
+      transactionFields: { ...this.state.transactionFields, ...state.transactionFields }
     });
   };
 
