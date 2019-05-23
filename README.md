@@ -8,11 +8,11 @@
 
 ## Development / Build Requirements
 
-* Node 8.9.4\*
+* Node 8.16.0\*
 * Yarn >= 1.7.0\*\*
 * Python 2.7.X\*\*\*
 
-<sub>\*Higher versions should work fine, but may cause inconsistencies. It's suggested you run 8.9.4 using `nvm`.</sub>
+<sub>\*Higher versions should work fine, but may cause inconsistencies. It's suggested you run 8.16.0 using `nvm`.</sub>
 <br/>
 <sub>**npm is NOT supported for package management. MyCrypto uses yarn.lock to ensure sub-dependency versions are pinned, so yarn is required to install node_modules</sub>
 <br/>
