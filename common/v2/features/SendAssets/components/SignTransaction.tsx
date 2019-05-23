@@ -1,22 +1,29 @@
 import React from 'react';
 import { ISendState, ITxFields } from '../types';
+import { SignTransactionPrivateKey } from './SignTransactionWallets';
+import { DeepPartial } from 'shared/types/util';
 
 interface Props {
   stateValues: ISendState;
   transactionFields: ITxFields;
+  onNext(): void;
+  onSubmit(transactionFields: ITxFields): void;
+  updateState(state: DeepPartial<ISendState>): void;
 }
 
 export default function SignTransaction({ transactionFields }: Props) {
-  // const recipientLabel = 'unknown';
-  // const senderLabel = 'unknown';
+  const whichWallet = transactionFields.accountType;
 
-  return (
-    <div className="ConfirmTransaction">
-      <div className="ConfirmTransaction-row">
-        <div className="ConfirmTransaction-row-column">
-          <div className="ConfirmTransaction-addressWrapper">{transactionFields.senderAddress}</div>
+  switch (whichWallet) {
+    case 'privateKey':
+      return (
+        <div>
+          <SignTransactionPrivateKey />
         </div>
-      </div>
-    </div>
-  );
+      );
+    default:
+      return null;
+    // case 'Mnemonic':
+    //   return <div>Mnemonic</div>;
+  }
 }

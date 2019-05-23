@@ -49,7 +49,7 @@ const getInitialState = (): ISendState => {
 
 const steps = [
   { label: 'Send Assets', elem: SendAssetsForm },
-  { label: 'Sign Transaction', elem: SignTransaction },
+  { label: '', elem: SignTransaction },
   { label: 'ConfirmTransaction', elem: ConfirmTransaction },
   { label: 'Transaction Complete', elem: TransactionReceipt }
 ];

@@ -1,0 +1,38 @@
+.SignTransactionPrivateKey-panel {
+  width: 500px;
+  height: 600px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.SignTransactionPrivateKey-title {
+  height: 78px;
+  font-family: Lato;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.SignTransactionPrivateKey-img {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.SignTransactionPrivateKey-description {
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.SignTransactionPrivateKey-button {
+  width: 100%;
+}
+
+.SignTransactionPrivateKey-help {
+  margin-top: 1em;
+  text-align: center;
+  font-size: 16px;
+}
