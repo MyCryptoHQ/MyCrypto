@@ -62,13 +62,6 @@ export default function SendAssetsForm({
         render={({ setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
-          const gasEstimates = {
-            fastest: 20,
-            fast: 18,
-            standard: 12,
-            isDefault: true,
-            safeLow: 4
-          };
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
@@ -156,9 +149,11 @@ export default function SendAssetsForm({
                 </label>
                 <GasPriceSlider
                   transactionFieldValues={values}
-                  gasEstimates={gasEstimates}
-                  handleChange={handleChange}
-                  gasPrice={values.gasPriceField}
+                  handleChange={(e: string) => {
+                    updateState({ transactionFields: { gasPriceSlider: e } });
+                    handleChange(e);
+                  }}
+                  gasPrice={values.gasPriceSlider}
                 />
                 <div className="SendAssetsForm-fieldset-cheapFast">
                   <div>Cheap</div>
