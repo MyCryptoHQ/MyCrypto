@@ -90,7 +90,7 @@ export default class SignTransactionPrivateKey extends Component {
           </div>
           <div className="SignTransactionPrivateKey-description">
             Because we never save, store, or transmit your secret, you need to sign each transaction
-            in order to send it. MyCyrpto puts YOU in control of your assets.
+            in order to send it. MyCrypto puts YOU in control of your assets.
           </div>
           <div className="SignTransactionPrivateKey-footer">
             <Button className="SignTransactionPrivateKey-button"> Sign Transaction</Button>
