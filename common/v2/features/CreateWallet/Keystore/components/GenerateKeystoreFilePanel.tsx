@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
+import zxcvbn from 'zxcvbn';
 
 import { ExtendedContentPanel, InputField } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
@@ -81,6 +82,15 @@ export default class GenerateKeystoreFilePanel extends Component<Props> {
       this.setState({
         password1Error: translate('INPUT_ERROR_PASSWORD_TOO_SHORT')
       });
+      return false;
+    }
+
+    const passwordValidation = password1 ? zxcvbn(password1) : null;
+    if (passwordValidation && passwordValidation.score < 3) {
+      this.setState({
+        password1Error: `${translateRaw('WEAK_PASSWORD')} ${passwordValidation.feedback.warning}`
+      });
+
       return false;
     }
 

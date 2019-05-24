@@ -53,6 +53,12 @@ const UploadZone = styled.label`
   cursor: pointer;
 `;
 
+const HiddenUploadZone = styled.input`
+  &[type='file'] {
+    display: none;
+  }
+`;
+
 const ErrorWrapper = styled.div`
   margin-top: 26px;
 `;
@@ -166,12 +172,7 @@ class VerifyKeystorePanel extends Component<Props> {
           {translate('YOUR_KEYSTORE_LABEL')}
           <UploadZone htmlFor="uploadZone">{translateRaw('UPLOAD_KEYSTORE_LABEL')}</UploadZone>
           {this.state.fileName && <FileName>{this.state.fileName}</FileName>}
-          <input
-            type="file"
-            id="uploadZone"
-            onChange={this.handleFileSelection}
-            style={{ opacity: 0 }}
-          />
+          <HiddenUploadZone type="file" id="uploadZone" onChange={this.handleFileSelection} />
         </FormItemWrapper>
         <FormItemWrapper>
           <InputField

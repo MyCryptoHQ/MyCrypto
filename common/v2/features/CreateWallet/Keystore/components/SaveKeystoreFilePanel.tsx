@@ -33,9 +33,13 @@ const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const DownloadLink = styled.a`
+  margin-bottom: 16px;
+`;
+
 const StyledButton = styled(Button)`
   font-size: 18px;
-  margin-bottom: 16px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -78,7 +82,6 @@ export default class SaveKeystorePanel extends Component<Props, State> {
 
   public handleNextClick = () => {
     const { onNext } = this.props;
-    this.setState({ error: false });
 
     if (!this.state.downloaded) {
       this.setState({ error: true });
@@ -113,7 +116,7 @@ export default class SaveKeystorePanel extends Component<Props, State> {
             </ErrorWrapper>
           )}
 
-          <a href={getKeystoreBlob()} download={filename}>
+          <DownloadLink href={getKeystoreBlob()} download={filename}>
             <StyledButton
               onClick={() => this.setState({ downloaded: true, error: false })}
               secondary={true}
@@ -121,7 +124,7 @@ export default class SaveKeystorePanel extends Component<Props, State> {
               <DownloadImage src={downloadIcon} />
               {translate('SAVE_KEYSTORE_BUTTON')}
             </StyledButton>
-          </a>
+          </DownloadLink>
           <StyledButton onClick={this.handleNextClick}>{translate('ACTION_6')}</StyledButton>
         </ButtonsWrapper>
       </ExtendedContentPanel>
