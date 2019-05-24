@@ -38,7 +38,7 @@ export const processFormDataToWeb3Tx = (
       value: txFields.amount
         ? hexEncodeQuantity(toTokenBase(txFields.amount, asset.decimal))
         : '0x0',
-      data: txFields.data ? txFields.data : '0x',
+      data: txFields.data ? txFields.data : '0x0',
       gas: txFields.isAdvancedTransaction
         ? txFields.isGasLimitManual ? txFields.gasLimitField : txFields.gasLimitEstimated
         : txFields.gasLimitEstimated,
@@ -55,7 +55,7 @@ export const processFormDataToWeb3Tx = (
     const rawTransaction: IHexStrWeb3Transaction = {
       from: txFields.senderAddress,
       to: asset.contractAddress,
-      value: '',
+      value: '0x0',
       data: bufferToHex(
         encodeTransfer(
           Address(txFields.recipientAddress),
@@ -97,7 +97,7 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
       value: txFields.amount
         ? hexEncodeQuantity(toTokenBase(txFields.amount, asset.decimal))
         : '0x0',
-      data: txFields.data ? txFields.data : '0x',
+      data: txFields.data ? txFields.data : '0x0',
       gasLimit: txFields.isAdvancedTransaction
         ? txFields.isGasLimitManual ? txFields.gasLimitField : txFields.gasLimitEstimated
         : txFields.gasLimitEstimated,
@@ -113,7 +113,7 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
 
     const rawTransaction: IHexStrTransaction = {
       to: asset.contractAddress,
-      value: '',
+      value: '0x0',
       data: bufferToHex(
         encodeTransfer(
           Address(txFields.recipientAddress),
