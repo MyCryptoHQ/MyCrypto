@@ -2,6 +2,7 @@ import React from 'react';
 import { ISendState, ITxFields } from '../types';
 import { SignTransactionPrivateKey } from './SignTransactionWallets';
 import { DeepPartial } from 'shared/types/util';
+// import SignTransactionMetaMask from './SignTransactionWallets/Metamask';
 
 interface Props {
   stateValues: ISendState;
@@ -21,6 +22,12 @@ export default function SignTransaction({ transactionFields }: Props) {
           <SignTransactionPrivateKey />
         </div>
       );
+    // case 'web3':
+    //   return (
+    //     <div>
+    //       <SignTransactionMetaMask stateValues={transactionFields}/>
+    //     </div>
+    //   );
     default:
       return null;
     // case 'Mnemonic':

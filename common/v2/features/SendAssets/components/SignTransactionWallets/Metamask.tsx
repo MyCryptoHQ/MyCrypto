@@ -1,9 +1,47 @@
 import React, { Component } from 'react';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
+import * as ethers from 'ethers';
+import { AsyncSendable } from 'ethers/providers/web3-provider';
+import { ISendState } from '../../types';
 
-export default class SignTransactionMetaMask extends Component {
+type AsyncSendableMetamask = AsyncSendable & { enable(): Promise<boolean> };
+
+declare global {
+  interface Window {
+    ethereum?: AsyncSendableMetamask;
+    web3: any;
+  }
+}
+
+interface Props {
+  stateValues: ISendState;
+}
+
+interface MetaMaskUserState {
+  account: string;
+  network: string;
+  provider: boolean;
+  // provider2: Web3Provider | null;
+  metaMaskAccountMatches: boolean;
+}
+
+const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
+
+export default class SignTransactionMetaMask extends Component<Props> {
+  public state: MetaMaskUserState = {
+    account: '',
+    network: '',
+    provider: false,
+    metaMaskAccountMatches: false
+  };
+
+  public componentDidMount() {
+    this.getMetaMaskProvider();
+  }
+
   public render() {
+    // const { stateValues: { transactionFields: { senderAddress } } } = this.props;
     return (
       <div className="SignTransactionMetaMask-panel">
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
@@ -26,5 +64,36 @@ export default class SignTransactionMetaMask extends Component {
         </div>
       </div>
     );
+  }
+  // private signTransaction() {
+
+  // }
+
+  private checkAddressMatches(metaMaskAddress: string) {
+    // console.log(senderAddress, account);
+    if (metaMaskAddress === this.state.account) {
+      return this.setState({ metaMaskAccountMatches: true });
+    }
+  }
+
+  private async getMetaMaskProvider() {
+    if (window.ethereum) {
+      await window.ethereum.enable();
+      const metaMaskProvider = new ethers.providers.Web3Provider(window.ethereum);
+      const metaMaskSigner = await metaMaskProvider.getSigner();
+      const metaMaskNetwork = await metaMaskProvider.getNetwork();
+      const metaMaskAddress = await metaMaskSigner.getAddress();
+
+      await this.setState({
+        account: metaMaskAddress,
+        network: metaMaskNetwork.chainId,
+        provider: metaMaskSigner !== null ? true : false
+      });
+      this.checkAddressMatches(metaMaskAddress);
+      console.log(this.state);
+    } else {
+      const defaultProvider = ethers.getDefaultProvider(DEFAULT_NETWORK_FOR_FALLBACK);
+      this.setState({ provider: defaultProvider });
+    }
   }
 }
