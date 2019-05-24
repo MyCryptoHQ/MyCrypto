@@ -3,7 +3,7 @@ import { AssetOption } from 'v2/services/AssetOption/types';
 
 export const getAssetByTicker = (ticker: string): AssetOption | undefined => {
   const assets = getAllAssets() || [];
-  return assets.find((asset: AssetOption) => asset.ticker === ticker);
+  return assets.find((asset: AssetOption) => asset.ticker.toLowerCase() === ticker.toLowerCase());
 };
 
 export const getAllAssets = () => {
