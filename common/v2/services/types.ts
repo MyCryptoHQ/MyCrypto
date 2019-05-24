@@ -1,6 +1,6 @@
 export * from 'v2/services/Account/types';
 export * from 'v2/services/AccountType/types';
-export * from 'v2/services/ActiveNotifications/types';
+export * from 'v2/services/Notifications/types';
 export * from 'v2/services/AddressMetadata/types';
 export * from 'v2/services/Asset/types';
 export * from 'v2/services/AssetOption/types';
@@ -15,3 +15,4 @@ export * from 'v2/services/NodeOptions/types';
 export * from 'v2/services/RecentAccounts/types';
 export * from 'v2/services/Transaction/types';
 export * from 'v2/services/TransactionHistory/types';
+export * from 'v2/services/ScreenLockSettings/types';

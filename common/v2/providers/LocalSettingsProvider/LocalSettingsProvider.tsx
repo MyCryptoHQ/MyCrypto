@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import LocalSettingsServiceBase from 'v2/services/LocalSettings/LocalSettings';
+import * as service from 'v2/services/LocalSettings/LocalSettings';
 import { LocalSetting, ExtendedLocalSetting } from 'v2/services/LocalSettings';
 
 interface ProviderState {
@@ -12,24 +12,22 @@ interface ProviderState {
 
 export const LocalSettingsContext = createContext({} as ProviderState);
 
-const LocalSetting = new LocalSettingsServiceBase();
-
 export class LocalSettingProvider extends Component {
   public readonly state: ProviderState = {
-    localSettings: LocalSetting.readLocalSettings() || [],
+    localSettings: service.readLocalSettings() || [],
     createLocalSetting: (localSettingData: LocalSetting) => {
-      LocalSetting.createLocalSetting(localSettingData);
+      service.createLocalSetting(localSettingData);
       this.getLocalSettings();
     },
     readLocalSetting: (uuid: string): LocalSetting => {
-      return LocalSetting.readLocalSetting(uuid);
+      return service.readLocalSetting(uuid);
     },
     deleteLocalSetting: (uuid: string) => {
-      LocalSetting.deleteLocalSetting(uuid);
+      service.deleteLocalSetting(uuid);
       this.getLocalSettings();
     },
     updateLocalSetting: (uuid: string, localSettingData: LocalSetting) => {
-      LocalSetting.updateLocalSetting(uuid, localSettingData);
+      service.updateLocalSetting(uuid, localSettingData);
       this.getLocalSettings();
     }
   };
@@ -42,7 +40,7 @@ export class LocalSettingProvider extends Component {
   }
 
   private getLocalSettings = () => {
-    const localSettings: ExtendedLocalSetting[] = LocalSetting.readLocalSettings() || [];
+    const localSettings: ExtendedLocalSetting[] = service.readLocalSettings() || [];
     this.setState({ localSettings });
   };
 }

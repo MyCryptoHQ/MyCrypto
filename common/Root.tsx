@@ -1,10 +1,12 @@
+import { hot } from 'react-hot-loader/root';
+import { setConfig } from 'react-hot-loader';
 import React, { Component } from 'react';
 import { Store } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { light } from '@mycrypto/ui';
 
+import GAU_THEME from 'v2/theme';
 import { AnalyticsService } from 'v2/services';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
@@ -24,7 +26,6 @@ import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
 import OnboardingModal from 'containers/OnboardingModal';
-import NewAppReleaseModal from 'components/NewAppReleaseModal';
 import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
@@ -36,9 +37,14 @@ import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
+import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
 import { TransactionProvider } from 'v2/providers/TransactionProvider';
 import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
-import { GlobalSettingsProvider } from 'v2/providers/GlobalSettingsProvider';
+import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import Dashboard from 'v2/features/Dashboard';
+import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
+import { CurrentsProvider, NotificationsProvider, GlobalSettingsProvider } from 'v2/providers';
+import { NewAppReleaseModal } from 'v2/components';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -90,12 +96,12 @@ class RootClass extends Component<Props, State> {
     if (error) {
       return <ErrorScreen error={error} />;
     }
-
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
           {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-          <Route path="/account" component={SendTransaction} />
+          <Route path="/account" component={SendTransaction} exact={true} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
@@ -118,29 +124,37 @@ class RootClass extends Component<Props, State> {
         : BrowserRouter;
 
     return (
-      <ThemeProvider theme={light}>
+      <ThemeProvider theme={GAU_THEME}>
         <React.Fragment>
           <Provider store={store}>
             <AddressMetadataProvider>
               <AccountProvider>
-                <TransactionProvider>
-                  <TransactionHistoryProvider>
-                    <GlobalSettingsProvider>
-                      <Router>
-                        <PageVisitsAnalytics>
-                          {onboardingActive && <OnboardingModal />}
-                          {routes}
-                          <LegacyRoutes />
-                          <LogOutPrompt />
-                          <QrSignerModal />
-                          {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                        </PageVisitsAnalytics>
-                      </Router>
-                      {developmentMode && <DevTools />}
-                      <div id="ModalContainer" />
-                    </GlobalSettingsProvider>
-                  </TransactionHistoryProvider>
-                </TransactionProvider>
+                <CurrentsProvider>
+                  <TransactionProvider>
+                    <TransactionHistoryProvider>
+                      <NotificationsProvider>
+                        <NetworkOptionsProvider>
+                          <GlobalSettingsProvider>
+                            <Router>
+                              <LockScreenProvider>
+                                <PageVisitsAnalytics>
+                                  {onboardingActive && <OnboardingModal />}
+                                  {routes}
+                                  <LegacyRoutes />
+                                  <LogOutPrompt />
+                                  <QrSignerModal />
+                                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                                </PageVisitsAnalytics>
+                              </LockScreenProvider>
+                            </Router>
+                            {developmentMode && <DevTools />}
+                            <div id="ModalContainer" />
+                          </GlobalSettingsProvider>
+                        </NetworkOptionsProvider>
+                      </NotificationsProvider>
+                    </TransactionHistoryProvider>
+                  </TransactionProvider>
+                </CurrentsProvider>
               </AccountProvider>
             </AddressMetadataProvider>
           </Provider>
@@ -271,6 +285,11 @@ const mapStateToProps = (state: AppState): StateProps => ({
   theme: configMetaSelectors.getTheme(state)
 });
 
-export default connect(mapStateToProps, {
+const ConnectedRoot = connect(mapStateToProps, {
   setUnitMeta: transactionMetaActions.setUnitMeta
 })(RootClass);
+
+// Silence RHL 'reconciliation failed' errors
+// https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021
+setConfig({ logLevel: 'no-errors-please' });
+export default hot(ConnectedRoot);

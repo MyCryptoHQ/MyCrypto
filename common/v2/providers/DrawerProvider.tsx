@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Transition } from 'react-spring';
+import { Transition } from 'react-spring/renderprops.cjs';
 
 import { Overlay } from 'v2/components';
 import { Drawer } from 'v2/features';
@@ -44,9 +44,15 @@ export default class DrawerProvider extends Component {
       <DrawerContext.Provider value={this.state}>
         {children}
         {visible && <Overlay onClick={toggleVisible} />}
-        <Transition from={{ right: '-350px' }} enter={{ right: '0' }} leave={{ right: '-500px' }}>
-          {visible &&
-            ((style: any) => <Drawer {...screen} onClose={toggleVisible} style={style} />)}
+        <Transition
+          items={visible}
+          from={{ right: '-350px' }}
+          enter={{ right: '0' }}
+          leave={{ right: '-500px' }}
+        >
+          {show =>
+            show && ((style: any) => <Drawer {...screen} onClose={toggleVisible} style={style} />)
+          }
         </Transition>
       </DrawerContext.Provider>
     );

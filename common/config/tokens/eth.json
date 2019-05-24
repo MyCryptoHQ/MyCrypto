@@ -135,6 +135,11 @@
     "decimal": 18
   },
   {
+    "address": "0xc994a2dEb02543Db1f48688438b9903c4b305ce3",
+    "symbol": "AEUR",
+    "decimal": 2
+  },
+  {
     "address": "0xfB48E0DEa837f9438309a7e9F0cFe7EE3353A84e",
     "symbol": "AFA",
     "decimal": 2
@@ -410,6 +415,11 @@
     "decimal": 18
   },
   {
+    "address": "0xc73f2474001aD1D6aEd615aF53631148CF98dE6b",
+    "symbol": "BAR",
+    "decimal": 18
+  },
+  {
     "address": "0x2A05d22DB079BC40C2f77a1d1fF703a56E631cc1",
     "symbol": "BAS",
     "decimal": 8
@@ -463,6 +473,11 @@
     "address": "0xFf3519eeeEA3e76F1F699CCcE5E23ee0bdDa41aC",
     "symbol": "BCAP (1)",
     "decimal": 0
+  },
+  {
+    "address": "0xb5BB48567BfD0bFE9e4B08EF8b7f91556CC2a112",
+    "symbol": "BCASH",
+    "decimal": 18
   },
   {
     "address": "0x7367A68039d4704f30BfBF6d948020C3B07DFC59",
@@ -565,8 +580,18 @@
     "decimal": 18
   },
   {
-    "address": "0xB2Bfeb70B903F1BAaC7f2ba2c62934C7e5B974C4",
+    "address": "0x5c39bC68e58a242A624E4FC96be77A383C52002D",
     "symbol": "BKB",
+    "decimal": 18
+  },
+  {
+    "address": "0xB2Bfeb70B903F1BAaC7f2ba2c62934C7e5B974C4",
+    "symbol": "BKB (BetKing Bankroll Token)",
+    "decimal": 8
+  },
+  {
+    "address": "0xc88Be04c809856B75E3DfE19eB4dCf0a3B15317a",
+    "symbol": "BKC",
     "decimal": 8
   },
   {
@@ -582,6 +607,11 @@
   {
     "address": "0xCA29db4221c111888a7e80b12eAc8a266Da3Ee0d",
     "symbol": "BLN",
+    "decimal": 18
+  },
+  {
+    "address": "0x1C3BB10dE15C31D5DBE48fbB7B87735d1B7d8c32",
+    "symbol": "BLO",
     "decimal": 18
   },
   {
@@ -950,6 +980,11 @@
     "decimal": 18
   },
   {
+    "address": "0x8293bBd92C42608B20af588620a76128A33e4De9",
+    "symbol": "CATS",
+    "decimal": 6
+  },
+  {
     "address": "0x68e14bb5A45B9681327E16E528084B9d962C1a39",
     "symbol": "CATs (BitClave)_Old",
     "decimal": 18
@@ -1213,6 +1248,11 @@
     "address": "0xE2FB6529EF566a080e6d23dE0bd351311087D567",
     "symbol": "COV",
     "decimal": 18
+  },
+  {
+    "address": "0x31910AFF5545784755970aE1fBE7fE65d5F0eEa2",
+    "symbol": "CPAL",
+    "decimal": 8
   },
   {
     "address": "0x0Ebb614204E47c09B6C3FeB9AAeCad8EE060E23E",
@@ -2075,8 +2115,13 @@
     "decimal": 18
   },
   {
-    "address": "0x00c4B398500645eb5dA00a1a379a88B11683ba01",
+    "address": "0x9e4C143Bfe35f855624B3F84465AB7401A17A120",
     "symbol": "EXC",
+    "decimal": 18
+  },
+  {
+    "address": "0x00c4B398500645eb5dA00a1a379a88B11683ba01",
+    "symbol": "EXC (Eximchain Token)",
     "decimal": 18
   },
   {
@@ -2127,6 +2172,11 @@
   {
     "address": "0x7f6715c3FC4740A02F70De85B9FD50ac6001fEd9",
     "symbol": "FANX (1)",
+    "decimal": 18
+  },
+  {
+    "address": "0x7cf6dC769482AbEe2FF75795d000F381A8062DEC",
+    "symbol": "FAR",
     "decimal": 18
   },
   {
@@ -2215,6 +2265,11 @@
     "decimal": 8
   },
   {
+    "address": "0x4946Fcea7C692606e8908002e55A582af44AC121",
+    "symbol": "FOAM",
+    "decimal": 18
+  },
+  {
     "address": "0x2a093BcF0C98Ef744Bb6F69D74f2F85605324290",
     "symbol": "FOOD",
     "decimal": 8
@@ -2248,6 +2303,11 @@
     "address": "0x48DF4E0296f908CEAb0428A5182D19B31fC037d6",
     "symbol": "FRV",
     "decimal": 8
+  },
+  {
+    "address": "0x36a73557f5BDE5195EC39eCA82d28b8A36D21141",
+    "symbol": "FRX",
+    "decimal": 18
   },
   {
     "address": "0xD0352a019e9AB9d757776F532377aAEbd36Fd541",
@@ -2315,6 +2375,11 @@
     "decimal": 8
   },
   {
+    "address": "0x4a57E687b9126435a9B19E4A802113e266AdeBde",
+    "symbol": "FXC (Flexacoin)",
+    "decimal": 18
+  },
+  {
     "address": "0x1829aA045E21E0D59580024A951DB48096e01782",
     "symbol": "FXT",
     "decimal": 18
@@ -2373,6 +2438,16 @@
     "address": "0xdb0F69306FF8F949f258E83f6b87ee5D052d0b23",
     "symbol": "GCP",
     "decimal": 18
+  },
+  {
+    "address": "0xa4ec83c8907888d006A37debF755ee39766f38ae",
+    "symbol": "GCU",
+    "decimal": 18
+  },
+  {
+    "address": "0x44A67C8570a61A28bAfd0035042f2F0A73a64428",
+    "symbol": "GCX",
+    "decimal": 6
   },
   {
     "address": "0x4F4f0Db4de903B88f2B1a2847971E231D54F8fd3",
@@ -2610,6 +2685,11 @@
     "decimal": 18
   },
   {
+    "address": "0xe9C9e7E1DaBea830C958C39D6b25964a6F52143A",
+    "symbol": "HEY",
+    "decimal": 18
+  },
+  {
     "address": "0xba2184520A1cC49a6159c57e61E1844E085615B6",
     "symbol": "HGT",
     "decimal": 8
@@ -2655,6 +2735,11 @@
     "decimal": 8
   },
   {
+    "address": "0x9C9Fe3bD60b22A9735908B9589011E78F2025C11",
+    "symbol": "HNST",
+    "decimal": 18
+  },
+  {
     "address": "0xb45d7Bc4cEBcAB98aD09BABDF8C818B2292B672c",
     "symbol": "HODL",
     "decimal": 18
@@ -2690,6 +2775,11 @@
     "decimal": 18
   },
   {
+    "address": "0x141ABB03F001dEDED9A0223d4ff26d929117B72e",
+    "symbol": "HV",
+    "decimal": 18
+  },
+  {
     "address": "0xC0Eb85285d83217CD7c891702bcbC0FC401E2D9D",
     "symbol": "HVN",
     "decimal": 8
@@ -2702,6 +2792,11 @@
   {
     "address": "0xC1E2097d788d33701BA3Cc2773BF67155ec93FC4",
     "symbol": "IAD",
+    "decimal": 18
+  },
+  {
+    "address": "0x3c20d67b6B1aE0985F913aBb7397babc2fBb1A1F",
+    "symbol": "ICD",
     "decimal": 18
   },
   {
@@ -2920,6 +3015,11 @@
     "decimal": 18
   },
   {
+    "address": "0x17280DA053596E097604839C61A2eF5efb7d493f",
+    "symbol": "JOB",
+    "decimal": 8
+  },
+  {
     "address": "0xdb455c71C1bC2de4e80cA451184041Ef32054001",
     "symbol": "JOT",
     "decimal": 18
@@ -2938,6 +3038,11 @@
     "address": "0x0D6DD9f68d24EC1d5fE2174f3EC8DAB52B52BaF5",
     "symbol": "KC",
     "decimal": 18
+  },
+  {
+    "address": "0x039B5649A59967e3e936D7471f9c3700100Ee1ab",
+    "symbol": "KCS",
+    "decimal": 6
   },
   {
     "address": "0x72D32ac1c5E66BfC5b08806271f8eEF915545164",
@@ -2968,6 +3073,11 @@
     "address": "0x4618519de4C304F3444ffa7f812dddC2971cc688",
     "symbol": "KIND",
     "decimal": 8
+  },
+  {
+    "address": "0x2BDD6c9bf1bf396a37501AAE53751B9946B503Da",
+    "symbol": "KMTBA",
+    "decimal": 18
   },
   {
     "address": "0xdd974D5C2e2928deA5F71b9825b8b646686BD200",
@@ -3082,6 +3192,11 @@
   {
     "address": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
     "symbol": "LEND",
+    "decimal": 18
+  },
+  {
+    "address": "0xf97b5d65Da6b0468b90D531ddae2a69843e6797d",
+    "symbol": "LEO",
     "decimal": 18
   },
   {
@@ -3235,6 +3350,11 @@
     "decimal": 18
   },
   {
+    "address": "0xc690F7C7FcfFA6a82b79faB7508c466FEfdfc8c5",
+    "symbol": "LYM (1)",
+    "decimal": 18
+  },
+  {
     "address": "0xdD41fBd1Ae95C5D9B198174A28e04Be6b3d1aa27",
     "symbol": "LYS",
     "decimal": 8
@@ -3267,6 +3387,11 @@
   {
     "address": "0x23Ccc43365D9dD3882eab88F43d515208f832430",
     "symbol": "MAS",
+    "decimal": 18
+  },
+  {
+    "address": "0xEfbB3F1058fd8E0C9d7204f532E17d7572AFfc3e",
+    "symbol": "MBCASH",
     "decimal": 18
   },
   {
@@ -3308,6 +3433,11 @@
     "address": "0xfd1e80508F243E64CE234eA88A5Fd2827c71D4b7",
     "symbol": "MEDX",
     "decimal": 8
+  },
+  {
+    "address": "0x420167D87d35c3A249b32Ef6225872fBD9aB85D2",
+    "symbol": "MESG",
+    "decimal": 18
   },
   {
     "address": "0xF03045a4C8077e38f3B8e2Ed33b8aEE69edF869F",
@@ -3360,6 +3490,11 @@
     "decimal": 18
   },
   {
+    "address": "0xD717B75404022fb1C8582ADf1c66B9A553811754",
+    "symbol": "MILC",
+    "decimal": 18
+  },
+  {
     "address": "0xe23cd160761f63FC3a1cF78Aa034b6cdF97d3E0C",
     "symbol": "MIT",
     "decimal": 18
@@ -3368,6 +3503,11 @@
     "address": "0xAd8DD4c725dE1D31b9E8F8D146089e9DC6882093",
     "symbol": "MIT (Mychatcoin)",
     "decimal": 6
+  },
+  {
+    "address": "0x3893b9422Cd5D70a81eDeFfe3d5A1c6A978310BB",
+    "symbol": "MITH",
+    "decimal": 18
   },
   {
     "address": "0x4a527d8fc13C5203AB24BA0944F4Cb14658D1Db6",
@@ -3502,6 +3642,11 @@
   {
     "address": "0x0AF44e2784637218dD1D32A322D44e603A8f0c6A",
     "symbol": "MTX",
+    "decimal": 18
+  },
+  {
+    "address": "0xA52383B665b91DCe42dD4b6d1E0Fb37d3EFFe489",
+    "symbol": "MUSD",
     "decimal": 18
   },
   {
@@ -3640,6 +3785,11 @@
     "decimal": 0
   },
   {
+    "address": "0xCeE4019Fd41ECDc8bae9EFDd20510f4b6FAA6197",
+    "symbol": "NLYA",
+    "decimal": 18
+  },
+  {
     "address": "0x1776e1F26f98b1A5dF9cD347953a26dd3Cb46671",
     "symbol": "NMR",
     "decimal": 18
@@ -3750,6 +3900,11 @@
     "decimal": 18
   },
   {
+    "address": "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26",
+    "symbol": "OGN",
+    "decimal": 18
+  },
+  {
     "address": "0x6f539a9456A5BCb6334A1A41207c3788f5825207",
     "symbol": "OHNI",
     "decimal": 18
@@ -3768,6 +3923,11 @@
     "address": "0xC66eA802717bFb9833400264Dd12c2bCeAa34a6d",
     "symbol": "OLD_MKR",
     "decimal": 18
+  },
+  {
+    "address": "0x3618516F45CD3c913F81F9987AF41077932Bc40d",
+    "symbol": "OLDPCL",
+    "decimal": 8
   },
   {
     "address": "0x9d9223436dDD466FC247e9dbbD20207e640fEf58",
@@ -3815,6 +3975,11 @@
     "decimal": 18
   },
   {
+    "address": "0xB31C219959E06f9aFBeB36b388a4BaD13E802725",
+    "symbol": "ONOT",
+    "decimal": 18
+  },
+  {
     "address": "0x69c4BB240cF05D51eeab6985Bab35527d04a8C64",
     "symbol": "OPEN",
     "decimal": 8
@@ -3823,6 +3988,11 @@
     "address": "0xe9dE1C630753A15d7021Cc563429c21d4887506F",
     "symbol": "OPEN (OPEN)",
     "decimal": 8
+  },
+  {
+    "address": "0x77599D2C6DB170224243e255e6669280F11F1473",
+    "symbol": "OPQ",
+    "decimal": 18
   },
   {
     "address": "0x4355fC160f74328f9b383dF2EC589bB3dFd82Ba0",
@@ -3880,6 +4050,11 @@
     "decimal": 8
   },
   {
+    "address": "0xC2494604e9DcEfa2A70dCEbf81e6D7BE064a334e",
+    "symbol": "OWT",
+    "decimal": 18
+  },
+  {
     "address": "0x65A15014964F2102Ff58647e16a16a6B9E14bCF6",
     "symbol": "Ox Fina",
     "decimal": 3
@@ -3925,6 +4100,11 @@
     "decimal": 18
   },
   {
+    "address": "0x9FbA684D77D2d6A1408C24b60A1f5534e71f5b75",
+    "symbol": "PATR",
+    "decimal": 18
+  },
+  {
     "address": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
     "symbol": "PAX",
     "decimal": 18
@@ -3955,7 +4135,7 @@
     "decimal": 18
   },
   {
-    "address": "0x3618516F45CD3c913F81F9987AF41077932Bc40d",
+    "address": "0x0F02e27745e3b6e9e1310d19469e2b5D7B5eC99A",
     "symbol": "PCL",
     "decimal": 8
   },
@@ -3972,6 +4152,11 @@
   {
     "address": "0x8Ae56a6850a7cbeaC3c3Ab2cB311e7620167eAC8",
     "symbol": "PEG",
+    "decimal": 18
+  },
+  {
+    "address": "0xBb0eF9e617FADdf54B8D16e29046F72B4D3ec77F",
+    "symbol": "PEP",
     "decimal": 18
   },
   {
@@ -4160,6 +4345,11 @@
     "decimal": 8
   },
   {
+    "address": "0x6fe56C0bcdD471359019FcBC48863d6c3e9d4F41",
+    "symbol": "PROPS",
+    "decimal": 18
+  },
+  {
     "address": "0xd94F2778e2B3913C53637Ae60647598bE588c570",
     "symbol": "PRPS",
     "decimal": 18
@@ -4255,8 +4445,13 @@
     "decimal": 8
   },
   {
-    "address": "0xCb5ea3c190d8f82DEADF7ce5Af855dDbf33e3962",
+    "address": "0x1602af2C782cC03F9241992E243290Fccf73Bb13",
     "symbol": "QBIT",
+    "decimal": 18
+  },
+  {
+    "address": "0xCb5ea3c190d8f82DEADF7ce5Af855dDbf33e3962",
+    "symbol": "QBIT (1)",
     "decimal": 6
   },
   {
@@ -4562,6 +4757,11 @@
   {
     "address": "0x3d1BA9be9f66B8ee101911bC36D3fB562eaC2244",
     "symbol": "RVT",
+    "decimal": 18
+  },
+  {
+    "address": "0xd30a2e9347Ad48Ea208ee563a9CdfD80E962a727",
+    "symbol": "RYLT",
     "decimal": 18
   },
   {
@@ -5115,6 +5315,11 @@
     "decimal": 0
   },
   {
+    "address": "0x28d7F432d24ba6020d1cbD4f28BEDc5a82F24320",
+    "symbol": "TCNX",
+    "decimal": 18
+  },
+  {
     "address": "0x2a1dbabe65c595B0022e75208C34014139d5d357",
     "symbol": "TDH",
     "decimal": 18
@@ -5158,6 +5363,11 @@
     "address": "0xAc3Da587eac229C9896D919aBC235CA4Fd7f72c1",
     "symbol": "TGT",
     "decimal": 1
+  },
+  {
+    "address": "0x96c30D5499EF6eA96A9c221Bc18BC39D29c97F27",
+    "symbol": "Thar",
+    "decimal": 18
   },
   {
     "address": "0x3883f5e181fccaF8410FA61e12b59BAd963fb645",
@@ -5260,6 +5470,11 @@
     "decimal": 18
   },
   {
+    "address": "0xF7920B0768Ecb20A123fAc32311d07D193381d6f",
+    "symbol": "TNB",
+    "decimal": 18
+  },
+  {
     "address": "0xb0280743b44bF7db4B6bE482b2Ba7b75E5dA096C",
     "symbol": "TNS",
     "decimal": 18
@@ -5342,6 +5557,11 @@
   {
     "address": "0x9CDa8A60dd5AfA156c95Bd974428d91a0812e054",
     "symbol": "TTU",
+    "decimal": 18
+  },
+  {
+    "address": "0xa838be6E4b760E6061D4732D6B9F11Bf578f9A76",
+    "symbol": "TTV",
     "decimal": 18
   },
   {
@@ -5465,6 +5685,11 @@
     "decimal": 18
   },
   {
+    "address": "0x9a9bB9b4b11BF8eccff84B58a6CCCCD4058A7f0D",
+    "symbol": "VD",
+    "decimal": 8
+  },
+  {
     "address": "0x57C75ECCc8557136D32619a191fBCDc88560d711",
     "symbol": "VDG",
     "decimal": 0
@@ -5480,6 +5705,11 @@
     "decimal": 18
   },
   {
+    "address": "0xFADe17a07ba3B480aA1714c3724a52D4C57d410E",
+    "symbol": "VEGAN",
+    "decimal": 8
+  },
+  {
     "address": "0xD850942eF8811f2A866692A623011bDE52a462C1",
     "symbol": "VEN",
     "decimal": 18
@@ -5492,6 +5722,11 @@
   {
     "address": "0x8f3470A7388c05eE4e7AF3d01D8C722b0FF52374",
     "symbol": "VERI",
+    "decimal": 18
+  },
+  {
+    "address": "0x1B879d3812F2Ade1214264655B473910e0caF1e6",
+    "symbol": "VERSI",
     "decimal": 18
   },
   {
@@ -5560,6 +5795,11 @@
     "decimal": 8
   },
   {
+    "address": "0xF722B01910F93B84EDa9CA128b9F05821A41EAe1",
+    "symbol": "VRE",
+    "decimal": 18
+  },
+  {
     "address": "0x92E78dAe1315067a8819EFD6dCA432de9DCdE2e9",
     "symbol": "VRS",
     "decimal": 6
@@ -5568,6 +5808,11 @@
     "address": "0xeDBaF3c5100302dCddA53269322f3730b1F0416d",
     "symbol": "VRS (1)",
     "decimal": 5
+  },
+  {
+    "address": "0xBA3a79D758f19eFe588247388754b8e4d6EddA81",
+    "symbol": "VSF",
+    "decimal": 18
   },
   {
     "address": "0x5c543e7AE0A1104f78406C340E9C64FD9fCE5170",
@@ -5592,6 +5837,11 @@
   {
     "address": "0x286BDA1413a2Df81731D4930ce2F862a35A609fE",
     "symbol": "WABI",
+    "decimal": 18
+  },
+  {
+    "address": "0x9f6513ED2b0DE89218E97DB4A5115ba04Be449f1",
+    "symbol": "WAK",
     "decimal": 18
   },
   {
@@ -5790,6 +6040,11 @@
     "decimal": 18
   },
   {
+    "address": "0x0843971B4ac6e842a518AA184e0271d88B5cB74F",
+    "symbol": "XCL",
+    "decimal": 8
+  },
+  {
     "address": "0x1E26b3D07E57F453caE30F7DDd2f945f5bF3EF33",
     "symbol": "XCLR",
     "decimal": 8
@@ -5902,6 +6157,11 @@
   {
     "address": "0xcA2796F9F61dc7b238Aab043971e49c6164DF375",
     "symbol": "YEED (YGGDRASH)",
+    "decimal": 18
+  },
+  {
+    "address": "0x1BC7C1dE0AC6eF4fDeC35c053030D90cf54c7e9A",
+    "symbol": "YNN",
     "decimal": 18
   },
   {

@@ -14,9 +14,10 @@ export { FiatCurrencyContext, FiatCurrencyProvider } from './FiatCurrencyProvide
 export { TransactionContext, TransactionProvider } from './TransactionProvider';
 export { AssetOptionsContext, AssetOptionsProvider } from './AssetOptionsProvider';
 export {
-  ActiveNotificationsContext,
-  ActiveNotificationsProvider
-} from './ActiveNotificationsProvider';
+  NotificationsContext,
+  NotificationsProvider,
+  NotificationTemplates
+} from './NotificationsProvider';
 export { AddressMetadataContext, AddressMetadataProvider } from './AddressMetadataProvider';
 export { NetworkOptionsContext, NetworkOptionsProvider } from './NetworkOptionsProvider';
 export { NodeOptionsContext, NodeOptionsProvider } from './NodeOptionsProvider';
@@ -25,3 +26,4 @@ export {
   TransactionHistoryContext,
   TransactionHistoryProvider
 } from './TransactionHistoryProvider';
+export { LockScreenContext, LockScreenProvider } from './LockScreenProvider';

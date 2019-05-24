@@ -1,21 +1,27 @@
 import React, { Component, createContext } from 'react';
-import CurrentsServiceBase from 'v2/services/Currents/Currents';
-import { Currents } from 'v2/services/Currents';
+
+import { Currents, updateCurrents, readCurrents } from 'v2/services/Currents';
 
 interface ProviderState {
   currents: Currents;
   updateCurrents(currentsData: Currents): void;
+  updateCurrentsAccounts(accounts: string[]): void;
 }
 
 export const CurrentsContext = createContext({} as ProviderState);
 
-const Currents = new CurrentsServiceBase();
-
 export class CurrentsProvider extends Component {
   public readonly state: ProviderState = {
-    currents: Currents.readCurrents() || [],
+    currents: readCurrents() || {},
+
     updateCurrents: (currentsData: Currents) => {
-      Currents.updateCurrents(currentsData);
+      updateCurrents(currentsData);
+      this.getCurrents();
+    },
+
+    updateCurrentsAccounts: (accounts: string[]) => {
+      const currents = readCurrents();
+      updateCurrents({ ...currents, accounts });
       this.getCurrents();
     }
   };
@@ -26,7 +32,7 @@ export class CurrentsProvider extends Component {
   }
 
   private getCurrents = () => {
-    const currents: Currents = Currents.readCurrents() || [];
+    const currents = readCurrents() || {};
     this.setState({ currents });
   };
 }
