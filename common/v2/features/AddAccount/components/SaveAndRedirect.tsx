@@ -27,7 +27,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       label: 'New Account', // @TODO: we really should have the correct label before!
       localSettings: 'default',
       transactionHistory: '',
-      timestamp: Date.now()
+      timestamp: 0
     };
     createAccountWithID(account, newUUID);
     updateCurrentsAccounts([...currents.accounts, newUUID]);

@@ -55,7 +55,7 @@ function WalletBreakdown() {
         amount:
           -(en.timestamp - Date.now()) >= 15000
             ? getAccountBalances(currentAccounts, updateAccount)
-            : parseInt(getBalanceFromAccount(en), 16).toFixed(4),
+            : parseFloat(getBalanceFromAccount(en)).toFixed(4),
         value: 0
       });
     } else {
