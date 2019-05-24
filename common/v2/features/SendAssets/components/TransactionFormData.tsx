@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
-import { SendState, TransactionFields } from '../SendAssets';
+import { ISendState, ITxFields } from '../types';
 import './TransactionFormData.scss';
 
 // Legacy
@@ -20,13 +20,18 @@ import {
   DataField,
   NonceField
 } from './fields';
+// import { processFormDataToTx } from 'v2/libs/transaction/process';
+import { DeepPartial } from 'shared/types/util';
+import { processFormDataToTx } from 'v2/libs/transaction/process';
+import { getAccountByAddress } from 'v2/libs/accounts';
+import { Account } from 'v2/services/Account/types';
 
 interface Props {
-  stateValues: SendState;
-  transactionFields: TransactionFields;
+  stateValues: ISendState;
+  transactionFields: ITxFields;
   onNext(): void;
-  onSubmit(transactionFields: TransactionFields): void;
-  updateState(state: SendState): void;
+  onSubmit(transactionFields: ITxFields): void;
+  updateState(state: DeepPartial<ISendState>): void;
 }
 
 const QueryWarning: React.SFC<{}> = () => (
@@ -47,36 +52,24 @@ export default function SendAssetsForm({
   updateState
 }: Props) {
   return (
-    <div>
-      <React.Fragment>
-        {'RawValues: '}
-        <br />
-        {JSON.stringify(stateValues.rawTransactionValues, null, 2)}
-      </React.Fragment>
-
+    <div className="SendAssetsForm">
       <Formik
         initialValues={transactionFields}
-        onSubmit={(fields: TransactionFields) => {
+        onSubmit={(fields: ITxFields) => {
           onSubmit(fields);
           onNext();
         }}
         render={({ setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
-          const gasEstimates = {
-            fastest: 20,
-            fast: 18,
-            standard: 12,
-            isDefault: true,
-            safeLow: 4
-          };
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
 
               <React.Fragment>
+                {'ITxFields: '}
                 <br />
-                <br />
+                {JSON.stringify(processFormDataToTx(values), null, 2)}
                 <br />
                 {'Formik Fields: '}
                 <br />
@@ -84,40 +77,55 @@ export default function SendAssetsForm({
               </React.Fragment>
               {/* Asset */}
               <AssetField
-                handleChange={handleChange}
-                updateState={updateState}
-                stateValues={stateValues}
+                handleChange={(e: FormEvent<HTMLInputElement>) => {
+                  updateState({ transactionFields: { asset: e.currentTarget.value } });
+                  handleChange(e);
+                }}
               />
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
+
                 <SenderAddressField
-                  handleChange={handleChange}
-                  updateState={updateState}
-                  stateValues={stateValues}
+                  handleChange={(e: FormEvent<HTMLInputElement>) => {
+                    const account: Account | undefined = getAccountByAddress(e.currentTarget.value);
+                    updateState({
+                      transactionFields: {
+                        senderAddress: e.currentTarget.value,
+                        accountType: !account ? undefined : account.accountType
+                      }
+                    });
+                    handleChange(e);
+                  }}
                 />
               </fieldset>
               {/* Recipient Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="input-group-header">{translate('SEND_ADDR')}</div>
                 <RecipientAddressField
-                  handleChange={handleChange}
-                  updateState={updateState}
-                  stateValues={stateValues}
+                  handleChange={(e: FormEvent<HTMLInputElement>) => {
+                    updateState({
+                      transactionFields: { recipientAddress: e.currentTarget.value }
+                    });
+                    handleChange(e);
+                  }}
                 />
               </fieldset>
               {/* Amount */}
               <AmountField
-                handleChange={handleChange}
-                updateState={updateState}
-                stateValues={stateValues}
+                handleChange={(e: FormEvent<HTMLInputElement>) => {
+                  updateState({ transactionFields: { amount: e.currentTarget.value } });
+                  handleChange(e);
+                }}
               />
               {/* You'll Send */}
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
                 <label>You'll Send</label>
                 <div className="SendAssetsForm-fieldset-youllSend-box">
                   <Heading as="h2" className="SendAssetsForm-fieldset-youllSend-box-crypto">
-                    <img src={sendIcon} alt="Send" /> 13.233333 ETH{/* TRANSLATE THIS */}
+                    <img src={sendIcon} alt="Send" />{' '}
+                    {transactionFields.amount + transactionFields.asset}
+                    {/* TRANSLATE THIS */}
                   </Heading>
                   <small className="SendAssetsForm-fieldset-youllSend-box-fiat">
                     {/* TRANSLATE THIS */}≈ $1440.00 USD
@@ -140,9 +148,12 @@ export default function SendAssetsForm({
                   {/* TRANSLATE THIS */}
                 </label>
                 <GasPriceSlider
-                  gasEstimates={gasEstimates}
-                  handleChange={handleChange}
-                  gasPrice={values.gasPriceField}
+                  transactionFieldValues={values}
+                  handleChange={(e: string) => {
+                    updateState({ transactionFields: { gasPriceSlider: e } });
+                    handleChange(e);
+                  }}
+                  gasPrice={values.gasPriceSlider}
                 />
                 <div className="SendAssetsForm-fieldset-cheapFast">
                   <div>Cheap</div>
@@ -163,8 +174,8 @@ export default function SendAssetsForm({
                 {values.isAdvancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
-                      <Field name="automaticallyCalculateGasLimit" type="checkbox" value={true} />
-                      <label htmlFor="automaticallyCalculateGasLimit">
+                      <Field name="isGasLimitManual" type="checkbox" value={true} />
+                      <label htmlFor="isGasLimitManual">
                         Automatically Calculate Gas Limit{/* TRANSLATE THIS */}
                       </label>
                     </div>
@@ -172,24 +183,34 @@ export default function SendAssetsForm({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
                         <GasPriceField
-                          handleChange={handleChange}
-                          updateState={updateState}
+                          handleChange={(e: FormEvent<HTMLInputElement>) => {
+                            updateState({
+                              transactionFields: { gasPriceField: e.currentTarget.value }
+                            });
+                            handleChange(e);
+                          }}
                           stateValues={stateValues}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
                         <GasLimitField
-                          handleChange={handleChange}
-                          updateState={updateState}
+                          handleChange={(e: FormEvent<HTMLInputElement>) => {
+                            updateState({
+                              transactionFields: { gasLimitField: e.currentTarget.value }
+                            });
+                            handleChange(e);
+                          }}
                           stateValues={stateValues}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce">Nonce (?)</label>
                         <NonceField
-                          handleChange={handleChange}
-                          updateState={updateState}
+                          handleChange={(e: FormEvent<HTMLInputElement>) => {
+                            updateState({ transactionFields: { data: e.currentTarget.value } });
+                            handleChange(e);
+                          }}
                           stateValues={stateValues}
                         />
                       </div>
@@ -197,8 +218,10 @@ export default function SendAssetsForm({
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
                       <DataField
-                        handleChange={handleChange}
-                        updateState={updateState}
+                        handleChange={(e: FormEvent<HTMLInputElement>) => {
+                          updateState({ transactionFields: { data: e.currentTarget.value } });
+                          handleChange(e);
+                        }}
                         values={stateValues}
                       />
                     </fieldset>
@@ -209,7 +232,8 @@ export default function SendAssetsForm({
                   </div>
                 )}
               </div>
-              <Button type="submit" className="SendAssetsForm-next">
+
+              <Button type="submit" onClick={onNext} className="SendAssetsForm-next">
                 Next{/* TRANSLATE THIS */}
               </Button>
             </Form>

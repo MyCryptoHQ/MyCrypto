@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-
-import { ContentPanel } from 'v2/components';
-import { Layout } from 'v2/features';
-import { headings, steps } from './constants';
-
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
-import { AssetOption, assetType } from 'v2/services/AssetOption/types';
+import React, { Component } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { ContentPanel } from 'v2/components';
+import { Layout } from 'v2/features';
+import {
+  ConfirmTransaction,
+  SendAssetsForm,
+  SignTransaction,
+  TransactionReceipt
+} from './components';
+import { ITxFields, ISendState } from './types';
 import {
   isQueryTransaction,
   getQueryParamWithKey,
@@ -16,51 +19,7 @@ import {
 } from 'v2/libs/preFillTx';
 import { queryObject } from 'v2/libs/preFillTx/types';
 
-export interface TransactionFields {
-  asset: string;
-  senderAddress: string;
-  recipientAddress: string;
-  amount: string;
-  data: string;
-  gasLimitEstimated: string;
-  gasPriceSlider: string;
-  nonceEstimated: string;
-  gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
-  gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
-  nonceField: string; // Use only if user has input a manual nonce value.
-  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-}
-
-export interface RawTransactionValues {
-  from: string;
-  to: string;
-  value: string;
-  data: string;
-  gasLimit: string;
-  gasPrice: string;
-  nonce: string;
-}
-
-export interface SendState {
-  step: number;
-  transactionFields: TransactionFields;
-  rawTransactionValues: RawTransactionValues;
-
-  isFetchingAccountValue: boolean; // Used to indicate looking up user's balance of currently-selected asset.
-  isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  isAddressLabelValid: boolean; // Used to indicate if recipient-address is found in the address book.
-  isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
-  isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-  isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-
-  resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
-  recipientAddressLabel: string; //  Recipient-address label found in address book.
-  asset: AssetOption | undefined;
-  network: string;
-  assetType: assetType; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
-}
-
-const getInitialState = (): SendState => {
+const getInitialState = (): ISendState => {
   if (isQueryTransaction(location.search)) {
     const params: queryObject = getQueryTransactionData(location.search);
     return {
@@ -83,23 +42,15 @@ const getInitialState = (): SendState => {
         nonceEstimated: '0',
         nonceField: '0',
         data: getQueryParamWithKey(params, 'data') || '',
-        isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-      },
-      rawTransactionValues: {
-        from: '',
-        to: '',
-        value: '',
-        data: '',
-        gasLimit: '',
-        gasPrice: '',
-        nonce: ''
+        isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+        isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+        accountType: undefined
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
       isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
       isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-      isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
 
       resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
@@ -122,23 +73,15 @@ const getInitialState = (): SendState => {
         nonceEstimated: '0',
         nonceField: '0',
         data: '',
-        isAdvancedTransaction: false // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-      },
-      rawTransactionValues: {
-        from: '',
-        to: '',
-        value: '',
-        data: '',
-        gasLimit: '',
-        gasPrice: '',
-        nonce: ''
+        isAdvancedTransaction: false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+        isGasLimitManual: false,
+        accountType: undefined
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
       isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
       isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-      isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
 
       resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
@@ -149,66 +92,63 @@ const getInitialState = (): SendState => {
   }
 };
 
+const steps = [
+  { label: 'Send Assets', elem: SendAssetsForm },
+  { label: '', elem: SignTransaction },
+  { label: 'ConfirmTransaction', elem: ConfirmTransaction },
+  { label: 'Transaction Complete', elem: TransactionReceipt }
+];
+
 export class SendAssets extends Component<RouteComponentProps<{}>> {
-  public state: SendState = getInitialState();
+  public state: ISendState = getInitialState();
 
   public render() {
-    const { history } = this.props;
     const { step } = this.state;
-    const backOptions = [history.goBack, this.regressStep];
-    // Step 3, ConfirmTransaction, cannot go back (as backOptions[2] is undefined)
-    const onBack = backOptions[step];
     const Step = steps[step];
-
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
-          onBack={onBack}
-          className="SendAssets-panel"
-          heading={headings[step]}
+          onBack={this.goToPrevStep}
+          className="SendAssets"
+          heading={Step.label}
           icon={sendIcon}
-          stepper={{
-            current: step + 1,
-            total: steps.length
-          }}
+          stepper={{ current: step + 1, total: steps.length - 1 }}
         >
-          <Step
-            stateValues={this.state}
+          <Step.elem
             transactionFields={this.state.transactionFields}
+            onNext={this.goToNextStep}
             updateState={this.updateState}
-            onNext={this.advanceStep}
             onSubmit={this.updateTransactionFields}
-            onReset={this.handleReset}
+            stateValues={this.state}
           />
         </ContentPanel>
       </Layout>
     );
   }
 
-  private advanceStep = () =>
-    this.setState((prevState: SendState) => ({
+  private goToNextStep = () =>
+    this.setState((prevState: ISendState) => ({
       step: Math.min(prevState.step + 1, steps.length - 1)
     }));
 
-  private regressStep = () =>
-    this.setState((prevState: SendState) => ({
-      step: Math.min(0, prevState.step - 1)
+  private goToPrevStep = () =>
+    this.setState((prevState: ISendState) => ({
+      step: Math.max(0, prevState.step - 1)
     }));
 
-  private updateTransactionFields = (transactionFields: TransactionFields) => {
+  private updateTransactionFields = (transactionFields: ITxFields) => {
     this.setState({
-      ...this.state,
-      transactionFields
+      transactionFields: { ...this.state.transactionFields, ...transactionFields }
     });
   };
 
-  private updateState = (state: SendState) => {
+  private updateState = (state: ISendState) => {
     this.setState({
-      ...state
+      transactionFields: { ...this.state.transactionFields, ...state.transactionFields }
     });
   };
 
-  private handleReset = () => this.setState(getInitialState());
+  // private handleReset = () => this.setState(getInitialState());
 }
 
 export default withRouter(SendAssets);

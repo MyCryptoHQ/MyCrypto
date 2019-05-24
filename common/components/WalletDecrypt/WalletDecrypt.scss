@@ -104,7 +104,6 @@ $speed: 500ms;
     }
 
     &-form {
-      max-width: 480px;
       margin: 0 auto;
     }
     &-label {
@@ -152,5 +151,15 @@ $speed: 500ms;
     &-active {
       opacity: 0;
     }
+  }
+}
+
+.MainPanel {
+  width: 700px; 
+
+  @media (max-width: $screen-md) {
+    width: 300px; 
+    height: 769px;
+
   }
 }

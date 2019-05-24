@@ -1,23 +1,13 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from '../../SendAssets';
+import { Field, FieldProps, Formik } from 'formik';
 import { Input } from '@mycrypto/ui';
+import { ITxFields, ISendState } from '../../types';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
-  values: SendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: SendState): void;
+  values: ISendState;
+  handleChange: Formik['handleChange'];
 }
-
-/*interface StateProps {
-  name: string;
-}*/
 
 type Props = OwnProps; // & StateProps;
 
@@ -29,14 +19,6 @@ export default class DataField extends Component<Props> {
   };
 
   public handleDataField = (e: ChangeEvent<any>) => {
-    const { values } = this.props;
-    this.props.updateState({
-      ...values,
-      rawTransactionValues: {
-        ...values.rawTransactionValues,
-        data: e.target.value
-      }
-    });
     // Conduct estimateGas
     // Conduct clearFields
     this.props.handleChange(e);
@@ -48,7 +30,7 @@ export default class DataField extends Component<Props> {
       <Field
         name="data"
         validate={this.isValidDataInput}
-        render={({ field }: FieldProps<TransactionFields>) => (
+        render={({ field }: FieldProps<ITxFields>) => (
           <Input
             {...field}
             maxLength={10}

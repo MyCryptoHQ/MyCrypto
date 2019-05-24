@@ -1,20 +1,11 @@
 import React, { Component, ChangeEvent } from 'react';
-import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from 'v2/features/SendAssets/SendAssets';
+import { Field, FieldProps, Formik } from 'formik';
+import { ITxFields } from 'v2/features/SendAssets/types';
 import { Input } from '@mycrypto/ui';
 import { isValidETHAddress } from 'libs/validators';
-import { getAssetByTicker } from 'v2/libs';
-import { AssetOption } from 'v2/services/AssetOption/types';
 
 interface OwnProps {
-  stateValues: SendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: SendState): void;
+  handleChange: Formik['handleChange'];
 }
 
 type Props = OwnProps;
@@ -27,24 +18,6 @@ export default class RecipientAddressField extends Component<Props> {
   };
 
   public handleRecipientAddress = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    const assetType: AssetOption | undefined = getAssetByTicker(
-      stateValues.transactionFields.asset
-    );
-    this.props.updateState({
-      ...stateValues,
-      transactionFields: {
-        ...stateValues.transactionFields,
-        recipientAddress: e.target.value
-      },
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        to: assetType
-          ? assetType.type === 'base' ? e.target.value : assetType.contractAddress
-          : 'base'
-      }
-    });
-
     // Conduct estimateGas
     this.props.handleChange(e);
   };
@@ -55,7 +28,7 @@ export default class RecipientAddressField extends Component<Props> {
         id={'3'}
         name="recipientAddress"
         validate={this.isValidRecipientAddress}
-        render={({ field }: FieldProps<TransactionFields>) => (
+        render={({ field }: FieldProps<ITxFields>) => (
           <Input
             {...field}
             value={field.value}

@@ -1,19 +1,27 @@
-import React, { ChangeEvent } from 'react';
+import React, { Component } from 'react';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
+import { Field, FieldProps, Formik } from 'formik';
 
 import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
+import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
+import { GasEstimates } from 'v2/api/gas';
+import { ITxFields } from '../../types';
 import './styles/GasPriceSlider.scss';
-import { Field, FieldProps } from 'formik';
-import { Transaction } from 'v2/services/Transaction';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 interface OwnProps {
   gasPrice: string;
+  transactionFieldValues: ITxFields;
+  handleChange: Formik['handleChange'];
 }
 
-interface StateProps {
+type Props = OwnProps;
+
+interface State {
+  hasSetRecommendedGasPrice: boolean;
+  realGasPrice: number;
   gasEstimates: {
     safeLow: number;
     standard: number;
@@ -21,44 +29,35 @@ interface StateProps {
     fastest: number;
     isDefault: boolean;
   };
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-}
-/*
-interface ActionProps {
-  fetchGasEstimates: {};//gasActions.TFetchGasEstimates;
-}*/
-
-type Props = OwnProps & StateProps; // & ActionProps;
-
-interface State {
-  hasSetRecommendedGasPrice: boolean;
-  realGasPrice: number;
 }
 
 interface GasTooltips {
   [estimationLevel: string]: string;
 }
 
-export default class SimpleGas extends React.Component<Props> {
+export default class SimpleGas extends Component<Props> {
   public state: State = {
     hasSetRecommendedGasPrice: false,
-    realGasPrice: 0
-  };
-
-  public render() {
-    const { gasPrice } = this.props;
-    const gasEstimates = {
+    realGasPrice: 0,
+    gasEstimates: {
       fastest: 20,
       fast: 18,
       standard: 12,
       isDefault: false,
       safeLow: 4
-    };
+    }
+  };
+
+  public async componentDidMount() {
+    const gasPriceValues: GasEstimates = await fetchGasPriceEstimates(
+      this.props.transactionFieldValues.asset
+    );
+    this.setState({ ...this.state, gasEstimates: gasPriceValues });
+  }
+
+  public render() {
+    const { gasPrice } = this.props;
+    const { gasEstimates } = this.state;
 
     const bounds = {
       max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.max,
@@ -77,40 +76,36 @@ export default class SimpleGas extends React.Component<Props> {
     const actualGasPrice = Math.max(parseFloat(gasPrice), bounds.min);
     return (
       <Field
-        name="transactionFee"
-        render={({ field, form }: FieldProps<Transaction>) => {
-          return (
-            <div className="SimpleGas row form-group">
-              <div className="SimpleGas-input-group">
-                <div className="SimpleGas-slider">
-                  <SliderWithTooltip
-                    {...field}
-                    onChange={e => {
-                      form.setFieldValue(field.name, e);
-                    }}
-                    min={bounds.min}
-                    max={bounds.max}
-                    marks={gasNotches}
-                    included={false}
-                    value={actualGasPrice}
-                    tipFormatter={this.formatTooltip}
-                    step={bounds.min < 1 ? 0.1 : 1}
-                  />
-                  <div className="SimpleGas-slider-labels">
-                    <span>{translate('TX_FEE_SCALE_LEFT')}</span>
-                    <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
-                  </div>
+        name="gasPriceSlider"
+        render={({ field, form }: FieldProps<ITxFields>) => (
+          <div className="SimpleGas row form-group">
+            <div className="SimpleGas-input-group">
+              <div className="SimpleGas-slider">
+                <SliderWithTooltip
+                  {...field}
+                  onChange={e => form.setFieldValue(field.name, e)}
+                  min={bounds.min}
+                  max={bounds.max}
+                  marks={gasNotches}
+                  included={false}
+                  value={actualGasPrice}
+                  tipFormatter={this.formatTooltip}
+                  step={bounds.min < 1 ? 0.1 : 1}
+                />
+                <div className="SimpleGas-slider-labels">
+                  <span>{translate('TX_FEE_SCALE_LEFT')}</span>
+                  <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
                 </div>
               </div>
             </div>
-          );
-        }}
+          </div>
+        )}
       />
     );
   }
 
   private makeGasNotches = (): Marks => {
-    const { gasEstimates } = this.props;
+    const { gasEstimates } = this.state;
 
     return gasEstimates
       ? {
@@ -123,7 +118,7 @@ export default class SimpleGas extends React.Component<Props> {
   };
 
   private formatTooltip = (gas: number) => {
-    const { gasEstimates } = this.props;
+    const { gasEstimates } = this.state;
     if (!(gasEstimates && !gasEstimates.isDefault)) {
       return '';
     }

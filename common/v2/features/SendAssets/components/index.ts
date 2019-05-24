@@ -1,6 +1,6 @@
 export { default as ConfirmTransaction } from './ConfirmTransaction';
-export { default as TransactionFormData } from './TransactionFormData';
-export { default as TransactionComplete } from './TransactionComplete';
-//export { default as RecipientAddressField } from './fields/RecipientAddressField';
+export { default as SendAssetsForm } from './TransactionFormData';
+export { default as TransactionReceipt } from './TransactionReceipt';
+export { default as SignTransaction } from './SignTransaction';
 
 export * from './fields';

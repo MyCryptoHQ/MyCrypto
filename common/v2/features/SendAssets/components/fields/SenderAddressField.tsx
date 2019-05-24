@@ -1,19 +1,12 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from '../../SendAssets';
+import { Field, FieldProps, Formik } from 'formik';
+import { ITxFields } from '../../types';
 import { ComboBox } from '@mycrypto/ui';
 import { AccountContext } from 'v2/providers';
 import { isValidETHAddress } from 'libs/validators';
 
 interface OwnProps {
-  stateValues: SendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: SendState): void;
+  handleChange: Formik['handleChange'];
 }
 
 type Props = OwnProps; // & StateProps;
@@ -23,19 +16,6 @@ export default class SenderAddressField extends Component<Props> {
     return isValidETHAddress(value);
   };
   public handleSenderAddress = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      transactionFields: {
-        ...stateValues.transactionFields,
-        senderAddress: e.target.value
-      },
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        from: e.target.value
-      }
-    });
-
     // Conduct max nonce check
     // Conduct estimateGas
     this.props.handleChange(e);
@@ -54,7 +34,7 @@ export default class SenderAddressField extends Component<Props> {
               name="senderAddress"
               id={'1'}
               validate={this.isValidSender}
-              render={({ field }: FieldProps<TransactionFields>) => (
+              render={({ field }: FieldProps<ITxFields>) => (
                 <ComboBox
                   {...field}
                   id={'2'}

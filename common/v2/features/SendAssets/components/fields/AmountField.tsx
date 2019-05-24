@@ -1,18 +1,11 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from 'v2/features/SendAssets/SendAssets';
+import { Field, FieldProps, Formik } from 'formik';
 import { Input } from '@mycrypto/ui';
+import { ITxFields } from '../../types';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
-  stateValues: SendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: SendState): void;
+  handleChange: Formik['handleChange'];
 }
 
 /*interface StateProps {
@@ -29,14 +22,6 @@ export default class AmountField extends Component<Props> {
   };
 
   public handleAmountField = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        value: e.target.value
-      }
-    });
     this.props.handleChange(e);
   };
 
@@ -54,7 +39,7 @@ export default class AmountField extends Component<Props> {
             id={'5'}
             name="amount"
             validate={this.isValidAmount}
-            render={({ field }: FieldProps<TransactionFields>) => (
+            render={({ field }: FieldProps<ITxFields>) => (
               <Input
                 {...field}
                 id={'6'}

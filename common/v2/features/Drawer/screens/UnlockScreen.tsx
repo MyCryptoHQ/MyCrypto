@@ -17,7 +17,7 @@ export default {
         </Heading>
         <Typography>To access your funds, add or create a wallet now.</Typography>
         <Button>Add Wallet</Button>
-        <Button>Import Wallet</Button>
+        <Button>Add Account</Button>
       </div>
     </section>
   ),

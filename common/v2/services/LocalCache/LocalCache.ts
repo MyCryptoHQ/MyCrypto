@@ -1,43 +1,35 @@
 import * as utils from 'v2/libs';
 import * as types from 'v2/services';
-import {
-  CACHE_INIT,
-  CACHE_INIT_DEV,
-  CACHE_KEY,
-  ENCRYPTED_CACHE_KEY,
-  LocalCache
-} from './constants';
-import { isDevelopment } from 'v2/utils';
+import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
-import { ContractsData } from 'config/cacheData';
+import { ContractsData, AssetOptionsData } from 'v2/config/cacheData';
 import { ACCOUNTTYPES } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 
 // Initialization
-
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
   if (!check || check === '[]' || check === '{}') {
-    if (isDevelopment) {
-      setCache(CACHE_INIT_DEV);
-    } else {
-      hardRefreshCache();
+    hardRefreshCache();
 
-      initDerivationPathOptions();
+    initDerivationPathOptions();
 
-      initFiatCurrencies();
+    initFiatCurrencies();
 
-      initNetworkOptions();
+    initNetworkOptions();
 
-      initNodeOptions();
+    initNodeOptions();
 
-      initAccountTypes();
+    initAccountTypes();
 
-      initGlobalSettings();
+    initGlobalSettings();
 
-      initContractOptions();
-    }
+    initLocalSettings();
+
+    initContractOptions();
+
+    initAssetOptions();
   }
 };
 
@@ -50,6 +42,17 @@ export const initGlobalSettings = () => {
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
     darkMode: false
+  };
+  setCache(newStorage);
+};
+
+export const initLocalSettings = () => {
+  const newStorage = getCacheRaw();
+  newStorage.localSettings = {
+    default: {
+      fiatCurrency: 'USD',
+      favorite: false
+    }
   };
   setCache(newStorage);
 };
@@ -82,17 +85,23 @@ export const initNodeOptions = () => {
 
 export const initNetworkOptions = () => {
   const newStorage = getCacheRaw();
-  const length: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
-  length.map((en: any) => {
+  const allNetworks: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
+  allNetworks.map((en: any) => {
     const newContracts: string[] = [];
+    const newAssetOptions: string[] = [];
     Object.keys(newStorage.contractOptions).map(entry => {
       if (newStorage.contractOptions[entry].network === en) {
         newContracts.push(entry);
       }
     });
+    Object.keys(newStorage.assetOptions).map(entry => {
+      if (newStorage.assetOptions[entry].network === en) {
+        newAssetOptions.push(entry);
+      }
+    });
     const newLocalNetwork: types.NetworkOptions = {
       contracts: newContracts,
-      assets: [],
+      assets: [STATIC_NETWORKS_INITIAL_STATE[en].id, ...newAssetOptions],
       nodes: [],
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
@@ -103,11 +112,30 @@ export const initNetworkOptions = () => {
       blockExplorer: {},
       tokenExplorer: {},
       tokens: {},
-      dPathFormats: {},
+      dPathFormats: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
       gasPriceSettings: STATIC_NETWORKS_INITIAL_STATE[en].gasPriceSettings,
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
+    const newLocalAssetOption: types.AssetOption = {
+      name: STATIC_NETWORKS_INITIAL_STATE[en].name,
+      network: en,
+      ticker: en,
+      type: 'base',
+      decimal: 18,
+      contractAddress: null
+    };
     newStorage.networkOptions[en] = newLocalNetwork;
+    newStorage.assetOptions[STATIC_NETWORKS_INITIAL_STATE[en].id] = newLocalAssetOption;
+  });
+  setCache(newStorage);
+};
+
+export const initAssetOptions = () => {
+  const newStorage = getCacheRaw();
+  const assets = AssetOptionsData();
+  Object.keys(assets).map(en => {
+    newStorage.assetOptions[en] = assets[en];
+    newStorage.networkOptions[assets[en].network].assets.push(en);
   });
   setCache(newStorage);
 };
@@ -179,7 +207,7 @@ export const destroyEncryptedCache = () => {
 
 // Settings operations
 
-type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings';
+type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings' | 'networkOptions';
 
 export const readSettings = <K extends SettingsKey>(key: K) => () => {
   return getCache()[key];
@@ -197,7 +225,7 @@ export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCa
 type CollectionKey =
   | 'accounts'
   | 'accountTypes'
-  | 'activeNotifications'
+  | 'notifications'
   | 'addressMetadata'
   | 'assetOptions'
   | 'assets'
@@ -219,6 +247,20 @@ export const create = <K extends CollectionKey>(key: K) => (
   newCache[key][uuid] = value;
 
   setCache(newCache);
+};
+
+export const createWithID = <K extends CollectionKey>(key: K) => (
+  value: LocalCache[K][keyof LocalCache[K]],
+  id: string
+) => {
+  const uuid = id;
+  if (getCache()[key][uuid] === undefined) {
+    const newCache = getCache();
+    newCache[key][uuid] = value;
+    setCache(newCache);
+  } else {
+    console.log('Error: key already exists in createWithID');
+  }
 };
 
 export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {

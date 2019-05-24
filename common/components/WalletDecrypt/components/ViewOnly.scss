@@ -2,6 +2,7 @@
 @import 'common/sass/mixins';
 
 .ViewOnly {
+  margin: 3em; 
   &-fields {
     display: flex;
     flex-direction: column;

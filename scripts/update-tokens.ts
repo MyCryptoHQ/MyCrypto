@@ -1,6 +1,8 @@
 import { GitCommit } from './types/GitCommit';
 import { CommitStatus } from './types/CommitStatus';
 import { RawTokenJSON } from './types/TokensJson';
+import { Token } from 'shared/types/network';
+import { ExtendedToken } from 'v2/config/tokens';
 
 const { processTokenJson } = require('./update-tokens-utils');
 const https = require('https');
@@ -60,19 +62,38 @@ async function run() {
   const tokensJson: RawTokenJSON[] = JSON.parse(await httpsGet(tokensUrl));
 
   // Format the json to match our format in common/config/tokens/eth.json
-  const tokens = processTokenJson(tokensJson);
+  const tokensLists: { tokens: Token[]; extendedTokens: ExtendedToken[] } = processTokenJson(
+    tokensJson
+  );
 
-  // Write to the file
+  // Write to the tokens file
   console.log('Writing Tokens JSON to common/config/tokens/eth.json...');
-  const filePath = path.resolve(__dirname, '../common/config/tokens/eth.json');
-  fs.writeFile(filePath, JSON.stringify(tokens, null, 2), 'utf8', (err: any) => {
+  const tokensFilePath = path.resolve(__dirname, '../common/config/tokens/eth.json');
+  fs.writeFile(tokensFilePath, JSON.stringify(tokensLists.tokens, null, 2), 'utf8', (err: any) => {
     if (err) {
       console.error(err);
       throw new Error('Failed to write tokens json to file, see above error');
     }
 
-    console.log('Succesfully imported', tokens.length, 'tokens!');
+    console.log('Succesfully imported', tokensLists.tokens.length, 'tokens!');
   });
+
+  // Write to the extendedTokens file
+  console.log('Writing Tokens JSON to common/v2/config/tokens/eth.json...');
+  const extendedTokensFilePath = path.resolve(__dirname, '../common/v2/config/tokens/eth.json');
+  fs.writeFile(
+    extendedTokensFilePath,
+    JSON.stringify(tokensLists.extendedTokens, null, 2),
+    'utf8',
+    (err: any) => {
+      if (err) {
+        console.error(err);
+        throw new Error('Failed to write tokens json to file, see above error');
+      }
+
+      console.log('Succesfully imported', tokensLists.extendedTokens.length, 'tokens!');
+    }
+  );
 }
 
 run();

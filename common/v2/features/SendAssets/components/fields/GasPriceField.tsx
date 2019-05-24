@@ -1,25 +1,15 @@
 import React, { ChangeEvent, Component } from 'react';
-import { Field, FieldProps } from 'formik';
-import { TransactionFields, SendState } from '../../SendAssets';
+import { Field, FieldProps, Formik } from 'formik';
+import { ITxFields, ISendState } from '../../types';
 import { Input } from '@mycrypto/ui';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
-  stateValues: SendState;
-  handleChange: {
-    (e: ChangeEvent<any>): void;
-    <T = string | ChangeEvent<any>>(field: T): T extends ChangeEvent<any>
-      ? void
-      : (e: string | ChangeEvent<any>) => void;
-  };
-  updateState(values: SendState): void;
+  stateValues: ISendState;
+  handleChange: Formik['handleChange'];
 }
 
-/*interface StateProps {
-  name: string;
-}*/
-
-type Props = OwnProps; // & StateProps;
+type Props = OwnProps;
 
 export default class GasPriceField extends Component<Props> {
   public isValidGasPrice = (value: any) => {
@@ -29,22 +19,14 @@ export default class GasPriceField extends Component<Props> {
   };
 
   public handleGasPriceField = (e: ChangeEvent<any>) => {
-    const { stateValues } = this.props;
-    this.props.updateState({
-      ...stateValues,
-      rawTransactionValues: {
-        ...stateValues.rawTransactionValues,
-        gasPrice: e.target.value
-      }
-    });
     this.props.handleChange(e);
   };
 
   public render() {
     return (
       <Field
-        name="gasPrice"
-        render={({ field }: FieldProps<TransactionFields>) => (
+        name="gasPriceField"
+        render={({ field }: FieldProps<ITxFields>) => (
           <Input
             {...field}
             value={field.value}
