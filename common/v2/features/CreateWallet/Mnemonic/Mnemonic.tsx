@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Layout } from 'v2/features';
@@ -13,10 +13,11 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
   public render() {
     const { stage } = this.state;
     const currentStep: number = mnemonicFlow.indexOf(stage) + 1;
-    const ActivePanel = mnemonicStageToComponentHash[stage];
+    const ActivePanel: ReactType = mnemonicStageToComponentHash[stage];
     const actions = {
       onBack: this.regressToPreviousStage,
-      onNext: this.advanceToNextStage
+      onNext: this.advanceToNextStage,
+      navigateToDashboard: this.navigateToDashboard
     };
     const isMnemonicPanel = [
       MnemonicStages.GeneratePhrase,
@@ -70,5 +71,10 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
     if (nextStage != null) {
       this.setState({ stage: nextStage });
     }
+  };
+
+  private navigateToDashboard = () => {
+    const { history } = this.props;
+    history.replace('/dashboard');
   };
 }

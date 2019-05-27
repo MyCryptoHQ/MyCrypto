@@ -115,7 +115,6 @@ export default class MakeBackupPanel extends Component<Props, State> {
           total: totalSteps
         }}
         heading={translateRaw('MAKE_BACKUP_TITLE')}
-        className="SaveKeystoreFilePanel"
       >
         <ImageWrapper>
           <img src={lockSafetyIcon} />
