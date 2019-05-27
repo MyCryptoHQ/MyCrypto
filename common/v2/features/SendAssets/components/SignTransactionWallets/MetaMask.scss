@@ -24,9 +24,13 @@
 .SignTransactionMetaMask-img {
   display: flex;
   justify-content: center;
-  margin: 4em;
+  margin: 2em;
 }
 
+.SignTransactionMetaMask-wrong-address {
+  color: red;
+  text-align: center;
+}
 .SignTransactionMetaMask-description {
   font-size: 18px;
   line-height: 1.5;
