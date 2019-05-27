@@ -912,8 +912,16 @@
     "MNEMONIC_YOUR_PHRASE_LABEL": "Your Mnemonic Phrase",
     "MNEMONIC_MAKE_BACKUP_DESCRIPTION": "Write down your **Mnemonic Phrase** on two pieces of paper. Store them in two separate, safe, and secret locations. Do not share them with others, save them online, or take a photo of them.",
     "MNEMONIC_VERIFY_TITLE": "Verify Mnemonic Phrase",
-    "MNEMONIC_VERIFY_DESCRIPTION": "Select each word in order to ensure you backed up your Mnemonic Phrase properly."
-
+    "MNEMONIC_VERIFY_DESCRIPTION": "Select each word in order to ensure you backed up your Mnemonic Phrase properly.",
+    "CREATE_ACCOUNT_TITLE":"Create New Account",
+    "CREATE_ACCOUNT_DESCRIPTION_1":"Your account accesses your crypto assets, which are stored on the blockchain.",
+    "CREATE_ACCOUNT_DESCRIPTION_2":"Each account has two parts: an address and a secret. Secrets come in many formats: a private key, a keystore file, or the recommended mnemonic phrase.",
+    "CREATE_ACCOUNT_DESCRIPTION_3":"Don’t worry, it’s easier than it sounds. You can do this!",
+    "CREATE_ACCOUNT_BUTTON":"Create Mnemonic Phrase",
+    "CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_1": "Don’t want to use a phrase?",
+    "CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_2": "Create wallet with keystore file.",
+    "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
+    "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now."
 
    
   }
