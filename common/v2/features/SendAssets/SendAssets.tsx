@@ -26,6 +26,7 @@ const getInitialState = (): ISendState => {
       step: 0,
       transactionFields: {
         senderAddress: '',
+        account: {},
         recipientAddress: getQueryParamWithKey(params, 'to') || '',
         amount: getQueryParamWithKey(params, 'value') || '0.00',
         asset:
@@ -63,6 +64,7 @@ const getInitialState = (): ISendState => {
       step: 0,
       transactionFields: {
         senderAddress: '',
+        account: {},
         recipientAddress: '',
         amount: '0.00',
         asset: 'ETH',
@@ -143,9 +145,11 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   };
 
   private updateState = (state: ISendState) => {
+    console.log('SEND', state)
     this.setState({
       transactionFields: { ...this.state.transactionFields, ...state.transactionFields }
     });
+    console.log('SEND', this.state.transactionFields)
   };
 
   // private handleReset = () => this.setState(getInitialState());
