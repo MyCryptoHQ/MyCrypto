@@ -29,6 +29,7 @@
 <!-- Upload screenshots here. -->
 
 ## Quality Assurance
+
 - [ ] The branch name is in lowercase-kebab-case with no prefix (unless it was created from Clubhouse)
 - [ ] The base branch is develop or gau (no nested branches)
 - [ ] This is related to a maximum of one Clubhouse story or GitHub issue
