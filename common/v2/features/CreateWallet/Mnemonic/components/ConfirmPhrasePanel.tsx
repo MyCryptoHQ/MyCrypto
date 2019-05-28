@@ -144,7 +144,7 @@ export default class ConfirmPhrasePanel extends Component<Props> {
         {this.state.doneClicked &&
           this.state.error && (
             <ErrorWrapper>
-              <InlineErrorMsg>{'Please verify mnemonic phrase.'}</InlineErrorMsg>
+              <InlineErrorMsg>{translateRaw('MNEMONIC_VERIFY_ERROR')}</InlineErrorMsg>
             </ErrorWrapper>
           )}
         <StyledButton onClick={this.handleDoneClicked}>

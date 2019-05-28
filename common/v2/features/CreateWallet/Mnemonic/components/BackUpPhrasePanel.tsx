@@ -59,6 +59,7 @@ const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const StyledButton = styled(Button)`
   font-size: 18px;
   margin-bottom: 16px;
@@ -131,7 +132,7 @@ export default class BackUpPhrasePanel extends Component<ExtendedPanelProps, Sta
 
         {this.state.error && (
           <ErrorWrapper>
-            <InlineErrorMsg>{'Please print paper wallet.'}</InlineErrorMsg>
+            <InlineErrorMsg>{translateRaw('MNEMONIC_MAKE_BACKUP_ERROR')}</InlineErrorMsg>
           </ErrorWrapper>
         )}
         <ButtonsWrapper>
