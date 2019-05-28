@@ -3,7 +3,8 @@ import { ISendState, ITxFields } from '../types';
 import {
   SignTransactionPrivateKey,
   SignTransactionLedger,
-  SignTransactionTrezor
+  SignTransactionTrezor,
+  SignTransactionSafeT
 } from './SignTransactionWallets';
 import { DeepPartial } from 'shared/types/util';
 import SignTransactionMetaMask from './SignTransactionWallets/Metamask';
@@ -47,6 +48,12 @@ export default class SignTransaction extends Component<Props> {
         return (
           <div>
             <SignTransactionTrezor />
+          </div>
+        );
+      case 'safeTmini':
+        return (
+          <div>
+            <SignTransactionSafeT />
           </div>
         );
       default:
