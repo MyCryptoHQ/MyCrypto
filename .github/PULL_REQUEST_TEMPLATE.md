@@ -17,7 +17,7 @@
 
 ### Reusable Code/Components
 
-<!-- Employees: Delete this section if there's a clear spec or test plan in Clubhouse. -->
+<!-- Preferably, include automated tests instead. -->
 ## Steps to Test
 
 1. Steps
