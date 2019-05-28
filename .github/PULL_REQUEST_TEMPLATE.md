@@ -27,3 +27,10 @@
 <!-- Contributors: Delete this section. -->
 ## [Zeplin Design](https://app.zeplin.io/project/5b0334f5e91e8c481645ad56)
 <!-- Upload screenshots here. -->
+
+## Quality Assurance
+- [ ] The branch name is in lowercase-kebab-case with no prefix (unless it was created from Clubhouse)
+- [ ] The base branch is develop or gau (no nested branches)
+- [ ] This is related to a maximum of one Clubhouse story or GitHub issue
+- [ ] Types are safe (avoid TypeScript/TSLint features like any and disable, instead use more specific types)
+- [ ] If code is copied from existing directories, there is an explanation of why this is necesary in the description/changes, and all copying is done in separate commits to make them easy to filter out
