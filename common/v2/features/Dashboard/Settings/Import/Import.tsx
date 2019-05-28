@@ -48,7 +48,9 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
         >
           <Content>
             <GlobalSettingsContext.Consumer>
-              {({ importCache }) => <Step onNext={this.advanceStep} importCache={importCache} />}
+              {({ localCache, importCache }) => (
+                <Step onNext={this.advanceStep} importCache={importCache} localCache={localCache} />
+              )}
             </GlobalSettingsContext.Consumer>
           </Content>
         </CenteredContentPanel>

@@ -828,6 +828,7 @@
     "ADD_ACCOUNT_WEB3_INSTALL_FOOTER_LINK": "Download the Desktop App to unlock your wallet",
     "ADD_ACCOUNT_WEB3_INSTALL_MOBILE_DESC": "Download our recommended Web3Provider apps to get started now!",
     "ACCOUNT_LIST_TABLE_ADD_ACCOUNT": "Add Account",
+    "ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS": "Your Accounts",
     "ACCOUNT_LIST_FAVOURITE": "Favorite",
     "ACCOUNT_LIST_ADDRESS": "Address",
     "ACCOUNT_LIST_NETWORK":"Network",

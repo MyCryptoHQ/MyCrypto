@@ -3,6 +3,7 @@ export * from './CreateWallet';
 export * from './Dashboard';
 export * from './Home';
 export { addAccountRoutes } from './AddAccount';
+export { settingsRoutes } from './Dashboard/Settings';
 export * from './DownloadApp';
 export * from './NoAccounts';
 export * from './constants';

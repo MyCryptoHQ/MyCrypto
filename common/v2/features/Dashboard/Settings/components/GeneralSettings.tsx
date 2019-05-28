@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { GlobalSettings } from './types';
 
 import { DashboardPanel } from '../../components';
-import { GlobalSettings } from 'v2/services';
+// import { GlobalSettings } from 'v2/services';
 
 const Divider = styled.div`
   height: 2px;
@@ -19,15 +19,26 @@ const SettingsField = styled.div`
   justify-content: space-between;
   margin-bottom: 29px;
   padding: 0 30px;
+
+  @media (max-width: 700px) {
+    display: block;
+  }
 `;
 
 const SettingsLabel = styled.div`
   font-size: 20px;
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 `;
 
 const SettingsControl = styled.div`
   button {
     margin-left: 15px;
+  }
+  @media (max-width: 700px) {
+    margin-top: 15px;
+    width: 100%;
   }
 `;
 
@@ -48,7 +59,7 @@ interface SettingsProps {
 }
 export default class GeneralSettings extends React.Component<SettingsProps> {
   public changeTimer = event => {
-    let settings = this.props.globalSettings;
+    const settings = this.props.globalSettings;
     settings.timer = Number(event.target.value);
     this.props.updateGlobalSettings(settings);
   };
@@ -61,10 +72,10 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
         <SettingsField>
           <SettingsLabel>Account Settings</SettingsLabel>
           <SettingsControl>
-            <Link to="/dashboard/settings/import">
+            <Link to="/import">
               <Button secondary={true}>Import</Button>
             </Link>
-            <Link to="/dashboard/settings/export">
+            <Link to="/export">
               <Button secondary={true}>Export</Button>
             </Link>
           </SettingsControl>
@@ -81,11 +92,17 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           <SettingsControl>
             <SelectContainer>
               <select onChange={this.changeTimer} value={String(globalSettings.timer)}>
-                <option value="1">1 Minutes</option>
-                <option value="2">2 Minutes</option>
-                <option value="3">3 Minutes</option>
-                <option value="4">4 Minutes</option>
-                <option value="5">5 Minutes</option>
+                <option value="0">1 Minutes</option>
+                <option value="1">3 Minutes</option>
+                <option value="2">5 Minutes</option>
+                <option value="3">10 Minutes</option>
+                <option value="4">15 Minutes</option>
+                <option value="5">30 Minutes</option>
+                <option value="6">45 Minutes</option>
+                <option value="7">1 Hour</option>
+                <option value="8">3 Hour</option>
+                <option value="9">6 Hour</option>
+                <option value="10">12 Hour</option>
               </select>
             </SelectContainer>
           </SettingsControl>

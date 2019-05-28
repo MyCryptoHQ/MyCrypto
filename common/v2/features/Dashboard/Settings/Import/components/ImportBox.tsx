@@ -29,12 +29,21 @@ interface ImportProps {
   onNext(): void;
 }
 
+function isValidCache(oldCache: string, newCache: string) {
+  const oldKeys = Object.keys(JSON.parse(oldCache)).sort();
+  const newKeys = Object.keys(JSON.parse(newCache)).sort();
+  return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
+}
+
 export default class ImportBox extends React.Component<ImportProps> {
+  public state = { isValid: false, importedCache: '', badImport: false };
   public submit = () => {
+    this.props.importCache(this.state.importedCache);
     this.props.onNext();
   };
 
   public render() {
+    const { isValid, badImport } = this.state;
     return (
       <ImportBoxContainer>
         <FilePicker htmlFor="upload">
@@ -42,12 +51,21 @@ export default class ImportBox extends React.Component<ImportProps> {
           <FilePickerInput id="upload" type="file" onChange={this.handleFileSelection} />
         </FilePicker>{' '}
         {translate('SETTINGS_IMPORT_PASTE')}
-        <Textarea />
+        <Textarea onChange={this.checkPastedCache} />
         <br />
-        <button onClick={this.submit}>{translate('SETTINGS_IMPORT_CONFIRM')}</button>
+        {isValid && <button onClick={this.submit}>{translate('SETTINGS_IMPORT_CONFIRM')}</button>}
+        {badImport && <p>Your imported cache is invalid.</p>}
       </ImportBoxContainer>
     );
   }
+
+  private checkPastedCache = (e: any) => {
+    if (isValidCache(e.target.value)) {
+      this.setState({ isValid: true });
+    } else {
+      this.setState({ badImport: true });
+    }
+  };
 
   private handleFileSelection = (e: any) => {
     console.log('handling file selection');
@@ -56,8 +74,8 @@ export default class ImportBox extends React.Component<ImportProps> {
     const inputFile = target.files[0];
 
     fileReader.onload = () => {
-      if (fileReader.result) {
-        this.props.importCache(fileReader.result);
+      if (fileReader.result && isValidCache(this.props.localCache, filereader.result)) {
+        this.setState({ isValid: true, importedCache: fileReader.result });
       }
     };
     if (isValidFile(inputFile)) {

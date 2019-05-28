@@ -68,5 +68,5 @@ export const links = [
       }
     ]
   },
-  { title: 'Settings', to: '/dashboard/settings' }
+  { title: 'Settings', to: '/settings' }
 ];

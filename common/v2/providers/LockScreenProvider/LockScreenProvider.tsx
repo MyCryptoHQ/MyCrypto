@@ -4,6 +4,7 @@ import CryptoJS, { SHA256, AES } from 'crypto-js';
 
 import * as localCacheService from 'v2/services/LocalCache/LocalCache';
 import * as screenLockService from 'v2/services/ScreenLockSettings/ScreenLockSettings';
+import * as globalSettingsService from 'v2/services/GlobalSettings/GlobalSettings';
 import { translateRaw } from 'translations';
 import { ScreenLockLocking } from 'v2/features/ScreenLock';
 
@@ -16,10 +17,23 @@ interface State {
 }
 export const LockScreenContext = React.createContext({} as State);
 
+const timers = [
+  60000,
+  180000,
+  300000,
+  600000,
+  900000,
+  1800000,
+  2700000,
+  3600000,
+  10800000,
+  21600000,
+  43200000
+];
+
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
 const countDownDuration: number = 59;
-const inactivityTime: number = 300000; // After this time (ms) the screen lock count down will start
 
 export class LockScreenProvider extends Component<RouteComponentProps<{}>, State> {
   public state: State = {
@@ -100,7 +114,10 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
 
   public resetInactivityTimer = () => {
     clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(this.startLockCountdown, inactivityTime);
+    inactivityTimer = setTimeout(
+      this.startLockCountdown,
+      timers[globalSettingsService.readGlobalSettings().timer!]
+    );
   };
 
   public startLockCountdown = () => {

@@ -14,7 +14,7 @@ const FullWidthDownloadLink = styled.a`
   width: 100%;
 `;
 
-class Downloader extends React.Component<{ cache: string, readCache: function }> {
+class Downloader extends React.Component<{ cache: string; readCache(): void }> {
   public state = { blob: '', name: '' };
   public componentDidMount() {
     this.props.readCache();
