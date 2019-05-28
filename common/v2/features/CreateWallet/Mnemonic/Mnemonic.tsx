@@ -1,22 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { generateMnemonic } from 'bip39';
 
 import { Layout } from 'v2/features';
-import { MnemonicProvider, MnemonicContext } from './components';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 
 export default class CreateWallet extends Component<RouteComponentProps<{}>> {
   public state = {
-    stage: MnemonicStages.SelectNetwork
+    stage: MnemonicStages.SelectNetwork,
+    words: []
   };
 
   public render() {
-    const { stage } = this.state;
+    const { stage, words } = this.state;
     const currentStep: number = mnemonicFlow.indexOf(stage) + 1;
-    const ActivePanel = mnemonicStageToComponentHash[stage];
+    const ActivePanel: ReactType = mnemonicStageToComponentHash[stage];
     const actions = {
       onBack: this.regressToPreviousStage,
-      onNext: this.advanceToNextStage
+      onNext: this.advanceToNextStage,
+      navigateToDashboard: this.navigateToDashboard,
+      generateWords: this.generateWords
     };
     const isMnemonicPanel = [
       MnemonicStages.GeneratePhrase,
@@ -25,27 +28,15 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
     ].includes(stage);
 
     return (
-      <MnemonicProvider>
-        <Layout centered={true}>
-          <section className="CreateWallet">
-            {isMnemonicPanel ? (
-              <MnemonicContext.Consumer>
-                {({ words, generateWords }) => (
-                  <ActivePanel
-                    currentStep={currentStep}
-                    totalSteps={4}
-                    words={words}
-                    generateWords={generateWords}
-                    {...actions}
-                  />
-                )}
-              </MnemonicContext.Consumer>
-            ) : (
-              <ActivePanel currentStep={currentStep} totalSteps={4} {...actions} />
-            )}
-          </section>
-        </Layout>
-      </MnemonicProvider>
+      <Layout centered={true}>
+        <section className="CreateWallet">
+          {isMnemonicPanel ? (
+            <ActivePanel currentStep={currentStep} totalSteps={4} words={words} {...actions} />
+          ) : (
+            <ActivePanel currentStep={currentStep} totalSteps={4} {...actions} />
+          )}
+        </section>
+      </Layout>
     );
   }
 
@@ -58,7 +49,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
     if (previousStage != null) {
       this.setState({ stage: previousStage });
     } else {
-      history.push('/');
+      history.push('/create-wallet');
     }
   };
 
@@ -70,5 +61,16 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
     if (nextStage != null) {
       this.setState({ stage: nextStage });
     }
+  };
+
+  private navigateToDashboard = () => {
+    const { history } = this.props;
+    history.replace('/dashboard');
+  };
+
+  private generateWords = () => {
+    this.setState({
+      words: generateMnemonic().split(' ')
+    });
   };
 }

@@ -1,80 +1,156 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import chunk from 'lodash/chunk';
 import shuffle from 'lodash/shuffle';
 import { Button } from '@mycrypto/ui';
+import { translateRaw } from 'translations';
+import styled from 'styled-components';
 
-import { ContentPanel } from 'v2/components';
-import './ConfirmPhrasePanel.scss';
-import { MnemonicStageProps } from '../constants';
+import { ExtendedContentPanel } from 'v2/components';
+import { PanelProps } from '../../CreateWallet';
+import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
+
+const ActiveWords = styled.div`
+  height: 200px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid #e5ecf3;
+  background: rgba(247, 247, 247, 0.4);
+  margin-top: 36px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+`;
+
+const ActiveWordsRow = styled(Row)`
+  justify-content: flex-start;
+`;
+
+const Word = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 28px;
+  padding: 6px 14px;
+  border-radius: 1.4px;
+  background-color: rgba(122, 129, 135, 0.75);
+  color: #fff;
+
+  &:not(:last-of-type) {
+    margin-right: 9px;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  width: 100%;
+  margin-top: 10px;
+`;
+
+interface SelectableWordProps {
+  confirmed: boolean;
+  wrong: boolean;
+}
+
+const SelectableWord = styled(Word)`
+  cursor: pointer;
+  width: 100px;
+  transition: background-color 0.1s ease-in;
+  background-color: ${(props: SelectableWordProps) =>
+    props.wrong ? '#ef4747' : props.confirmed ? '#a682ff' : 'rgba(122, 129, 135, 0.75)'};
+`;
+
+const ErrorWrapper = styled.div`
+  margin-top: 24px;
+`;
+
+interface Props extends PanelProps {
+  totalSteps: number;
+  words: string[];
+  navigateToDashboard(): void;
+}
 
 interface State {
   confirmedWords: string[];
   shuffledWords: string[];
   wrongWord: string;
+  doneClicked: boolean;
+  error: boolean;
 }
 
-export default class ConfirmPhrasePanel extends Component<
-  { words: string[] } & MnemonicStageProps
-> {
+export default class ConfirmPhrasePanel extends Component<Props> {
   public state: State = {
     shuffledWords: shuffle(this.props.words),
     confirmedWords: [],
-    wrongWord: ''
+    wrongWord: '',
+    doneClicked: false,
+    error: false
+  };
+
+  public handleDoneClicked = () => {
+    const { navigateToDashboard } = this.props;
+    const { confirmedWords, shuffledWords } = this.state;
+
+    this.setState({ doneClicked: true, error: false });
+
+    if (confirmedWords.length !== shuffledWords.length) {
+      this.setState({ error: true });
+    } else {
+      navigateToDashboard();
+    }
   };
 
   public render() {
-    const { totalSteps, onBack, onNext } = this.props;
+    const { totalSteps, onBack } = this.props;
     const { confirmedWords, shuffledWords, wrongWord } = this.state;
 
     return (
-      <ContentPanel
+      <ExtendedContentPanel
         onBack={onBack}
         stepper={{
           current: 4,
           total: totalSteps
         }}
-        heading="Confirm Phrase"
-        description="Confirm your mnemonic phrase by selecting each phrase in order to make sure it is correct."
-        className="ConfirmPhrasePanel"
+        heading={translateRaw('MNEMONIC_VERIFY_TITLE')}
+        description={translateRaw('MNEMONIC_VERIFY_DESCRIPTION')}
       >
-        <div className="ConfirmPhrasePanel-activeWords">
+        <ActiveWords>
           {chunk(confirmedWords, 4).map((row, rowIndex) => (
-            <div key={rowIndex} className="ConfirmPhrasePanel-activeWords-row">
-              {row.map((word, wordIndex) => (
-                <div key={wordIndex} className="ConfirmPhrasePanel-activeWords-row-word">
-                  {word}
-                </div>
-              ))}
-            </div>
+            <ActiveWordsRow key={rowIndex}>
+              {row.map((word, wordIndex) => <Word key={wordIndex}>{word}</Word>)}
+            </ActiveWordsRow>
           ))}
-        </div>
-        <div className="ConfirmPhrasePanel-selectableWords">
+        </ActiveWords>
+        <div>
           {chunk(shuffledWords, 4).map((row, rowIndex) => (
-            <div key={rowIndex} className="ConfirmPhrasePanel-selectableWords-row">
+            <Row key={rowIndex}>
               {row.map((word, wordIndex) => (
-                <div
+                <SelectableWord
+                  wrong={wrongWord === word}
+                  confirmed={confirmedWords.includes(word)}
                   key={wordIndex}
-                  className={classnames('ConfirmPhrasePanel-selectableWords-row-word', {
-                    wrong: wrongWord === word,
-                    confirmed: confirmedWords.includes(word)
-                  })}
                   onClick={() => this.confirmWord(word)}
                 >
                   {word}
-                </div>
+                </SelectableWord>
               ))}
-            </div>
+            </Row>
           ))}
         </div>
-        <Button
-          className="ConfirmPhrasePanel-next"
-          onClick={onNext}
-          disabled={confirmedWords.length !== shuffledWords.length}
-        >
-          Confirm Phrase
-        </Button>
-      </ContentPanel>
+        {this.state.doneClicked &&
+          this.state.error && (
+            <ErrorWrapper>
+              <InlineErrorMsg>{translateRaw('MNEMONIC_VERIFY_ERROR')}</InlineErrorMsg>
+            </ErrorWrapper>
+          )}
+        <StyledButton onClick={this.handleDoneClicked}>
+          {translateRaw('DONE_AND_RETURN_LABEL')}
+        </StyledButton>
+      </ExtendedContentPanel>
     );
   }
 
