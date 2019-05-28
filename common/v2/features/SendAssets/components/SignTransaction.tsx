@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ISendState, ITxFields } from '../types';
-import { SignTransactionPrivateKey } from './SignTransactionWallets';
+import { SignTransactionPrivateKey, SignTransactionLedger } from './SignTransactionWallets';
 import { DeepPartial } from 'shared/types/util';
 import SignTransactionMetaMask from './SignTransactionWallets/Metamask';
 
@@ -31,6 +31,12 @@ export default class SignTransaction extends Component<Props> {
               stateValues={stateValues}
               transactionFields={transactionFields}
             />
+          </div>
+        );
+      case 'ledgerNanoS':
+        return (
+          <div>
+            <SignTransactionLedger />
           </div>
         );
       default:
