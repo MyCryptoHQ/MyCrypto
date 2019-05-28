@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { ISendState, ITxFields } from '../types';
-import { SignTransactionPrivateKey, SignTransactionLedger } from './SignTransactionWallets';
+import {
+  SignTransactionPrivateKey,
+  SignTransactionLedger,
+  SignTransactionTrezor
+} from './SignTransactionWallets';
 import { DeepPartial } from 'shared/types/util';
 import SignTransactionMetaMask from './SignTransactionWallets/Metamask';
 
@@ -37,6 +41,12 @@ export default class SignTransaction extends Component<Props> {
         return (
           <div>
             <SignTransactionLedger />
+          </div>
+        );
+      case 'trezor':
+        return (
+          <div>
+            <SignTransactionTrezor />
           </div>
         );
       default:

@@ -1,0 +1,58 @@
+.SignTransactionTrezor-panel {
+  width: 500px;
+  height: 600px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.SignTransactionTrezor-title {
+  height: 78px;
+  font-family: Lato;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.SignTransactionTrezor-instructions {
+  padding-top: 2em;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.SignTransactionTrezor-without-pass {
+  margin-top: 5em;
+}
+
+.SignTransactionTrezor-img {
+  display: flex;
+  justify-content: center;
+  margin: 2em;
+}
+
+.SignTransactionTrezor-description {
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.SignTransactionTrezor-footer {
+  width: 100%;
+}
+
+.SignTransactionTrezorr-button {
+  width: 100%;
+}
+
+.SignTransactionTrezor-help {
+  margin-top: 1em;
+  text-align: center;
+  font-size: 16px;
+}
+
+.SignTransactionTrezor-referal {
+  text-align: center;
+  font-size: 16px;
+}
