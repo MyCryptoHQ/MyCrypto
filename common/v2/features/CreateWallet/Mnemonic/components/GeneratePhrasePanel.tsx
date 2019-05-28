@@ -3,11 +3,11 @@ import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel } from 'v2/components';
+import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 
 // Legacy
 import reloadIcon from 'common/assets/images/icn-reload.svg';
-import { MnemonicStageProps } from '../constants';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;
@@ -66,22 +66,32 @@ const StyledButton = styled(Button)`
   }
 `;
 
-export default class GeneratePhrasePanel extends Component<
-  { words: string[]; generateWords(): void } & MnemonicStageProps
-> {
+interface Props extends PanelProps {
+  words: string[];
+  generateWords(): void;
+  decryptMnemonic(): void;
+}
+
+export default class GeneratePhrasePanel extends Component<Props> {
   public componentDidMount() {
     const { generateWords } = this.props;
     generateWords();
   }
 
+  public handleNextClick = () => {
+    const { onNext, decryptMnemonic } = this.props;
+    decryptMnemonic();
+    onNext();
+  };
+
   public render() {
-    const { totalSteps, words, generateWords, onBack, onNext } = this.props;
+    const { totalSteps, currentStep, words, generateWords, onBack } = this.props;
 
     return (
       <ExtendedContentPanel
         onBack={onBack}
         stepper={{
-          current: 2,
+          current: currentStep,
           total: totalSteps
         }}
         heading={translateRaw('MNEMONIC_GENERATE_PHRASE_TITLE')}
@@ -97,7 +107,7 @@ export default class GeneratePhrasePanel extends Component<
           <StyledButton onClick={generateWords} secondary={true}>
             <RegenerateImage src={reloadIcon} /> {translateRaw('REGENERATE_MNEMONIC')}
           </StyledButton>
-          <StyledButton onClick={onNext}>{translateRaw('ACTION_6')}</StyledButton>
+          <StyledButton onClick={this.handleNextClick}>{translateRaw('ACTION_6')}</StyledButton>
         </ButtonsWrapper>
       </ExtendedContentPanel>
     );

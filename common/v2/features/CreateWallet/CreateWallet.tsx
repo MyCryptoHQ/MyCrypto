@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { ExtendedContentPanel } from 'v2/components';
 import { translateRaw } from 'translations';
 import { Layout } from 'v2/features';
-import './CreateWallet.scss';
 
 // Legacy
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';

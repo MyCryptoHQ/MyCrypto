@@ -69,9 +69,8 @@ const ErrorWrapper = styled.div`
 `;
 
 interface Props extends PanelProps {
-  totalSteps: number;
   words: string[];
-  navigateToDashboard(): void;
+  addCreatedAccountAndRedirectToDashboard(): void;
 }
 
 interface State {
@@ -92,7 +91,7 @@ export default class ConfirmPhrasePanel extends Component<Props> {
   };
 
   public handleDoneClicked = () => {
-    const { navigateToDashboard } = this.props;
+    const { addCreatedAccountAndRedirectToDashboard } = this.props;
     const { confirmedWords, shuffledWords } = this.state;
 
     this.setState({ doneClicked: true, error: false });
@@ -100,19 +99,19 @@ export default class ConfirmPhrasePanel extends Component<Props> {
     if (confirmedWords.length !== shuffledWords.length) {
       this.setState({ error: true });
     } else {
-      navigateToDashboard();
+      addCreatedAccountAndRedirectToDashboard();
     }
   };
 
   public render() {
-    const { totalSteps, onBack } = this.props;
+    const { totalSteps, onBack, currentStep } = this.props;
     const { confirmedWords, shuffledWords, wrongWord } = this.state;
 
     return (
       <ExtendedContentPanel
         onBack={onBack}
         stepper={{
-          current: 4,
+          current: currentStep,
           total: totalSteps
         }}
         heading={translateRaw('MNEMONIC_VERIFY_TITLE')}

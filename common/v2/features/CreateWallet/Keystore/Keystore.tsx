@@ -15,7 +15,7 @@ import { getNetworkByName } from 'v2/libs';
 import { NetworkOptions } from 'v2/services/NetworkOptions/types';
 import { Account } from 'v2/services/Account/types';
 import { WalletName, InsecureWalletName } from 'v2/config/data';
-import { withAccountAndNotificationsContext } from './components/withAccountAndNotificationsContext';
+import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 
 interface State {
   password: string;
