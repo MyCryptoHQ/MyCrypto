@@ -4,5 +4,5 @@ export { default as SignTransactionSafeT } from './SafeTmini';
 export { default as SignTransactionPrivateKey } from './PrivateKey';
 export { default as SignTransactionKeystore } from './Keystore';
 export { default as SignTransactionParity } from './Parity';
-export { default as SignTransactionMetamask } from './Metamask';
+export { default as SignTransactionMetaMask } from './Metamask';
 export { default as SignTransactionMnemonic } from './Mnemonic';

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import { DeepPartial } from 'shared/types/util';
 import { ISendState, ITxFields } from '../types';
 import {
   SignTransactionPrivateKey,
+  SignTransactionMetaMask,
   SignTransactionLedger,
   SignTransactionTrezor,
   SignTransactionSafeT
 } from './SignTransactionWallets';
-import { DeepPartial } from 'shared/types/util';
-import SignTransactionMetaMask from './SignTransactionWallets/Metamask';
 
 interface Props {
   stateValues: ISendState;
@@ -58,8 +58,6 @@ export default class SignTransaction extends Component<Props> {
         );
       default:
         return null;
-      // case 'Mnemonic':
-      //   return <div>Mnemonic</div>;
     }
   }
 }

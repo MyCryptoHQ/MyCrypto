@@ -1,11 +1,23 @@
-import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
-import * as ethers from 'ethers';
-// tslint:disable-next-line: no-duplicate-imports
-import { utils } from 'ethers';
-import { AsyncSendable, Web3Provider } from 'ethers/providers/web3-provider';
 import React, { Component } from 'react';
+import { ethers, utils } from 'ethers';
+import { AsyncSendable } from 'ethers/providers/web3-provider';
 import { ISendState, ITxFields } from '../../types';
+
+import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
+// import ethereumjs from 'ethereumjs-tx';
+
+// const transaction = {
+//   nonce: 0,
+//   gasLimit: 21000,
+//   gasPrice: utils.bigNumberify('20000000000'),
+//   to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
+//   // ... or supports ENS names
+//   value: utils.parseEther('0.01'),
+//   data: '0x',
+//   // This ensures the transaction cannot be replayed on different networks
+//   chainId: ethers.utils.getNetwork('homestead').chainId
+// };
 
 type AsyncSendableMetamask = AsyncSendable & {
   on(evt: string, cb: (params: any[]) => void): void;
@@ -18,14 +30,6 @@ declare global {
     web3: any;
   }
 }
-
-// const networks = {
-//   ethereum: 1,
-//   ropsten: 3,
-//   rinkeby: 4,
-//   kovan: 42
-// };
-
 interface Props {
   stateValues: ISendState;
   transactionFields: ITxFields;
@@ -34,11 +38,11 @@ interface Props {
 interface MetaMaskUserState {
   account: string;
   network: string;
-  metaMaskSigner: any;
-  metaMaskProvider: Web3Provider | null;
-  metaMaskAccountMatches: boolean;
-  metaMaskNetworkMatches: boolean;
-  initAccountPolling: null;
+  provider: null | boolean;
+  accountMatches: boolean;
+  networkMatches: boolean;
+  signer: boolean;
+  initNetworkPolling: null;
 }
 
 const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
@@ -47,11 +51,11 @@ export default class SignTransactionMetaMask extends Component<Props> {
   public state: MetaMaskUserState = {
     account: '',
     network: '',
-    metaMaskProvider: null,
-    metaMaskSigner: false,
-    metaMaskAccountMatches: false,
-    metaMaskNetworkMatches: false,
-    initAccountPolling: null
+    accountMatches: false,
+    provider: null,
+    signer: false,
+    networkMatches: false,
+    initNetworkPolling: null
   };
 
   constructor(props: Props) {
@@ -61,7 +65,8 @@ export default class SignTransactionMetaMask extends Component<Props> {
 
   public componentDidMount() {
     this.getMetaMaskProviderAndSigner();
-    this.initMetMaskPolling();
+
+    // this.initMetMaskPolling();
   }
 
   public render() {
@@ -76,7 +81,7 @@ export default class SignTransactionMetaMask extends Component<Props> {
           <img src={MetamaskSVG} />
         </div>
         <div className="SignTransactionMetaMask-input">
-          {this.state.metaMaskAccountMatches === false && (
+          {this.state.accountMatches === false && (
             <div className="SignTransactionMetaMask-wrong-address">
               {' '}
               Please switch the account in MetaMask to {
@@ -98,33 +103,22 @@ export default class SignTransactionMetaMask extends Component<Props> {
       </div>
     );
   }
-  // private signTransaction() {
-
-  // }
-
-  private initMetMaskPolling() {
-    setInterval(this.getMetaMaskProviderAndSigner, 2000);
-  }
 
   private checkAddressMatches(metaMaskAddress: string, stateValues: ISendState) {
     const desiredAddress = utils.getAddress(stateValues.transactionFields.senderAddress);
 
-    if (metaMaskAddress === desiredAddress) {
-      return this.setState({ metaMaskAccountMatches: true });
-    } else {
-      return this.setState({ metaMaskAccountMatches: false });
-    }
+    this.setState({ metaMaskAccountMatches: metaMaskAddress === desiredAddress });
   }
 
-  // private checkNetworkMatches(metaMaskNetwork: string, stateValues: ISendState) {
-  //   const desiredNetwork = stateValues.network;
+  private checkNetworkMatches(metaMaskNetwork: string, stateValues: ISendState) {
+    const desiredNetwork = stateValues.network;
 
-  //   if (metaMaskNetwork === desiredNetwork) {
-  //     return this.setState({ metaMaskNetworkMatches: true });
-  //   } else {
-  //     return this.setState({ metaMaskNetworkMatches: false });
-  //   }
-  // }
+    if (metaMaskNetwork === desiredNetwork) {
+      this.setState({ metaMaskNetworkMatches: true });
+    } else {
+      this.setState({ metaMaskNetworkMatches: false });
+    }
+  }
 
   private async getMetaMaskProviderAndSigner() {
     if (window.ethereum) {
@@ -142,9 +136,11 @@ export default class SignTransactionMetaMask extends Component<Props> {
         metaMaskProvider,
         metaMaskSigner
       });
-
       this.watchForAccountChanges(window.ethereum);
       this.checkAddressMatches(checksumAddress, this.props.stateValues);
+      this.checkNetworkMatches(metaMaskNetwork.name, this.props.stateValues);
+      // metaMaskSigner.sendTransaction(transaction);
+
       console.log(this.state);
     } else {
       const defaultProvider = ethers.getDefaultProvider(DEFAULT_NETWORK_FOR_FALLBACK);

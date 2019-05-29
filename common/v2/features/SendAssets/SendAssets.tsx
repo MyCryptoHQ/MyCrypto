@@ -5,19 +5,19 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import {
+  getQueryParamWithKey,
+  getQueryTransactionData,
+  isAdvancedQueryTransaction,
+  isQueryTransaction
+} from 'v2/libs/preFillTx';
+import { queryObject } from 'v2/libs/preFillTx/types';
+import {
   ConfirmTransaction,
   SendAssetsForm,
   SignTransaction,
   TransactionReceipt
 } from './components';
-import { ITxFields, ISendState } from './types';
-import {
-  isQueryTransaction,
-  getQueryParamWithKey,
-  getQueryTransactionData,
-  isAdvancedQueryTransaction
-} from 'v2/libs/preFillTx';
-import { queryObject } from 'v2/libs/preFillTx/types';
+import { ISendState, ITxFields } from './types';
 
 const getInitialState = (): ISendState => {
   if (isQueryTransaction(location.search)) {
@@ -99,28 +99,46 @@ const steps = [
   { label: 'Transaction Complete', elem: TransactionReceipt }
 ];
 
+const web3Steps = [
+  { label: 'Send Assets', elem: SendAssetsForm },
+  { label: 'ConfirmTransaction', elem: ConfirmTransaction },
+  { label: '', elem: SignTransaction },
+  { label: 'Transaction Complete', elem: TransactionReceipt }
+];
+
 export class SendAssets extends Component<RouteComponentProps<{}>> {
   public state: ISendState = getInitialState();
 
   public render() {
-    const { step } = this.state;
+    const { step, transactionFields } = this.state;
     const Step = steps[step];
+    const Web3Steps = web3Steps[step];
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
           onBack={this.goToPrevStep}
           className="SendAssets"
-          heading={Step.label}
+          heading={transactionFields.accountType === 'web3' ? Web3Steps.label : Step.label}
           icon={sendIcon}
           stepper={{ current: step + 1, total: steps.length - 1 }}
         >
-          <Step.elem
-            transactionFields={this.state.transactionFields}
-            onNext={this.goToNextStep}
-            updateState={this.updateState}
-            onSubmit={this.updateTransactionFields}
-            stateValues={this.state}
-          />
+          {transactionFields.accountType === 'web3' ? (
+            <Web3Steps.elem
+              transactionFields={this.state.transactionFields}
+              onNext={this.goToNextStep}
+              updateState={this.updateState}
+              onSubmit={this.updateTransactionFields}
+              stateValues={this.state}
+            />
+          ) : (
+            <Step.elem
+              transactionFields={this.state.transactionFields}
+              onNext={this.goToNextStep}
+              updateState={this.updateState}
+              onSubmit={this.updateTransactionFields}
+              stateValues={this.state}
+            />
+          )}
         </ContentPanel>
       </Layout>
     );
