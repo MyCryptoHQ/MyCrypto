@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import { PanelProps } from '../../CreateWallet';
 import { PaperWallet } from 'components';
 

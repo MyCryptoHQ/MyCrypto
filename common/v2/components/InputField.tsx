@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { COLORS } from 'v2/features/constants';
 import { Icon } from '@mycrypto/ui';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import _ from 'lodash';
+
+import { COLORS } from 'v2/features/constants';
+import { InlineErrorMsg } from 'v2/components';
 
 const { PASTEL_RED, BRIGHT_SKY_BLUE } = COLORS;
 
