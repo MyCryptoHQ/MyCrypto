@@ -80,9 +80,8 @@ const ErrorWrapper = styled.div`
   margin-top: 24px;
 `;
 
-interface ExtendedPanelProps extends PanelProps {
+interface Props extends PanelProps {
   words: string[];
-  totalSteps: number;
 }
 
 interface State {
@@ -90,7 +89,7 @@ interface State {
   error: boolean;
 }
 
-export default class BackUpPhrasePanel extends Component<ExtendedPanelProps, State> {
+export default class BackUpPhrasePanel extends Component<Props, State> {
   public state: State = {
     printed: false,
     error: false
@@ -111,13 +110,13 @@ export default class BackUpPhrasePanel extends Component<ExtendedPanelProps, Sta
   };
 
   public render() {
-    const { words, totalSteps, onBack } = this.props;
+    const { words, currentStep, totalSteps, onBack } = this.props;
 
     return (
       <ExtendedContentPanel
         onBack={onBack}
         stepper={{
-          current: 3,
+          current: currentStep,
           total: totalSteps
         }}
         heading={translateRaw('MAKE_BACKUP_TITLE')}
