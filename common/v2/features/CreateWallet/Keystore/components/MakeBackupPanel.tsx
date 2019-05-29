@@ -34,9 +34,13 @@ const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const DownloadLink = styled.a`
+  margin-bottom: 16px;
+`;
+
 const StyledButton = styled(Button)`
   font-size: 18px;
-  margin-bottom: 16px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -71,11 +75,6 @@ const PrivateKeyField = styled.div`
   padding: 8px 18px;
   margin-top: 8px;
   font-family: 'Roboto Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
-`;
-
-const HiddenPaperWallet = styled.div`
-  position: absolute;
-  top: -1000px;
 `;
 
 interface Props extends PanelProps {
@@ -129,21 +128,23 @@ export default class MakeBackupPanel extends Component<Props, State> {
           <PrivateKeyField>{privateKey}</PrivateKeyField>
         </PrivateKeyWrapper>
         <ButtonsWrapper>
-          <a href={paperWalletImage} download={`paper-wallet-0x${keystore.address.substr(0, 6)}`}>
+          <DownloadLink
+            href={paperWalletImage}
+            download={`paper-wallet-0x${keystore.address.substr(0, 6)}`}
+          >
             <StyledButton secondary={true} disabled={!paperWalletImage}>
               <PrinterImage src={printerIcon} />
               {translate('MAKE_BACKUP_PRINT_BUTTON')}
             </StyledButton>
-          </a>
+          </DownloadLink>
           <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
         </ButtonsWrapper>
-        <HiddenPaperWallet>
-          <PaperWallet
-            address={keystore.address}
-            privateKey={privateKey}
-            ref={c => (this.paperWallet = c)}
-          />
-        </HiddenPaperWallet>
+        <PaperWallet
+          address={keystore.address}
+          privateKey={privateKey}
+          ref={c => (this.paperWallet = c)}
+          isHidden={true}
+        />
       </ExtendedContentPanel>
     );
   }
