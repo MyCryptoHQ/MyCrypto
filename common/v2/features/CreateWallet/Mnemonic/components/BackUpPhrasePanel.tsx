@@ -6,6 +6,7 @@ import { ExtendedContentPanel } from 'v2/components';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import { PanelProps } from '../../CreateWallet';
+import { PaperWallet } from 'components';
 
 // Legacy
 import printerIcon from 'common/assets/images/icn-printer.svg';
@@ -60,9 +61,12 @@ const ButtonsWrapper = styled.div`
   flex-direction: column;
 `;
 
+const DownloadLink = styled.a`
+  margin-bottom: 16px;
+`;
+
 const StyledButton = styled(Button)`
   font-size: 18px;
-  margin-bottom: 16px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -82,18 +86,23 @@ const ErrorWrapper = styled.div`
 
 interface Props extends PanelProps {
   words: string[];
+  address: string;
 }
 
 interface State {
   printed: boolean;
   error: boolean;
+  paperWalletPdf: string;
 }
 
 export default class BackUpPhrasePanel extends Component<Props, State> {
   public state: State = {
     printed: false,
-    error: false
+    error: false,
+    paperWalletPdf: ''
   };
+
+  private paperWallet: PaperWallet | null;
 
   public handleDoneClick = () => {
     const { onNext } = this.props;
@@ -105,12 +114,26 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
     }
   };
 
+  public componentDidMount() {
+    setTimeout(() => {
+      if (!this.paperWallet) {
+        return this.componentDidMount();
+      }
+      this.paperWallet.toPDF().then(png => this.setState({ paperWalletPdf: png }));
+    }, 500);
+  }
+
   public handlePrintClick = () => {
+    if (!this.paperWallet) {
+      return;
+    }
+
     this.setState({ printed: true, error: false });
   };
 
   public render() {
-    const { words, currentStep, totalSteps, onBack } = this.props;
+    const { paperWalletPdf } = this.state;
+    const { address, words, currentStep, totalSteps, onBack } = this.props;
 
     return (
       <ExtendedContentPanel
@@ -135,12 +158,20 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
           </ErrorWrapper>
         )}
         <ButtonsWrapper>
-          <StyledButton secondary={true} onClick={this.handlePrintClick}>
-            <PrinterImage src={printerIcon} />
-            {translate('X_PRINT')}
-          </StyledButton>
+          <DownloadLink href={paperWalletPdf} download={`paper-wallet-0x${address.substr(0, 6)}`}>
+            <StyledButton secondary={true} onClick={this.handlePrintClick}>
+              <PrinterImage src={printerIcon} />
+              {translate('X_PRINT')}
+            </StyledButton>
+          </DownloadLink>
           <StyledButton onClick={this.handleDoneClick}>{translate('ACTION_6')}</StyledButton>
         </ButtonsWrapper>
+        <PaperWallet
+          address={address}
+          privateKey={words.join(' ')}
+          ref={c => (this.paperWallet = c)}
+          isHidden={true}
+        />
       </ExtendedContentPanel>
     );
   }
