@@ -36,7 +36,8 @@ type StaticNetworkIds =
   | 'THUNDERCORE'
   | 'TOMO'
   | 'UBQ'
-  | 'WEB';
+  | 'WEB'
+  | 'ASK';
 
 export interface BlockExplorerConfig {
   name: string;
