@@ -1,11 +1,11 @@
-.SignTransactionMetaMask-panel {
+.SignTransactionSafeT-panel {
   width: 500px;
   height: 600px;
   padding-left: 40px;
   padding-right: 40px;
 }
 
-.SignTransactionMetaMask-title {
+.SignTransactionSafeT-title {
   height: 78px;
   font-family: Lato;
   font-size: 32px;
@@ -14,40 +14,31 @@
   margin-top: 40px;
 }
 
-.SignTransactionMetaMask-instructions {
+.SignTransactionSafeT-instructions {
   padding-top: 2em;
   font-size: 18px;
   line-height: 1.5;
   text-align: center;
 }
 
-.SignTransactionMetaMask-img {
+.SignTransactionSafeT-img {
   display: flex;
   justify-content: center;
-  margin: 2em;
+  margin: 3em;
 }
 
-.SignTransactionMetaMask-wrong-address {
-  color: red;
-  text-align: center;
-}
-.SignTransactionMetaMask-description {
+.SignTransactionSafeT-description {
   font-size: 18px;
   line-height: 1.5;
   text-align: center;
   margin-bottom: 1em;
 }
 
-.SignTransactionMetaMask-footer {
-  width: 100%;
-  margin-top: 2em;
-}
-
-.SignTransactionMetaMask-button {
+.SignTransactionSafeT-footer {
   width: 100%;
 }
 
-.SignTransactionMetaMask-help {
+.SignTransactionSafeT-help {
   margin-top: 1em;
   text-align: center;
   font-size: 16px;

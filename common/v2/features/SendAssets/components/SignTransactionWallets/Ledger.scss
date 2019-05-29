@@ -1,11 +1,11 @@
-.SignTransactionMetaMask-panel {
+.SignTransactionLedger-panel {
   width: 500px;
   height: 600px;
   padding-left: 40px;
   padding-right: 40px;
 }
 
-.SignTransactionMetaMask-title {
+.SignTransactionLedger-title {
   height: 78px;
   font-family: Lato;
   font-size: 32px;
@@ -14,41 +14,45 @@
   margin-top: 40px;
 }
 
-.SignTransactionMetaMask-instructions {
+.SignTransactionLedger-instructions {
   padding-top: 2em;
   font-size: 18px;
   line-height: 1.5;
   text-align: center;
 }
 
-.SignTransactionMetaMask-img {
-  display: flex;
-  justify-content: center;
-  margin: 2em;
+.SignTransactionLedger-without-pass {
+  margin-top: 5em;
 }
 
-.SignTransactionMetaMask-wrong-address {
-  color: red;
-  text-align: center;
+.SignTransactionLedger-img {
+  display: flex;
+  justify-content: center;
+  margin: 3em;
 }
-.SignTransactionMetaMask-description {
+
+.SignTransactionLegder-description {
   font-size: 18px;
   line-height: 1.5;
   text-align: center;
   margin-bottom: 1em;
 }
 
-.SignTransactionMetaMask-footer {
-  width: 100%;
-  margin-top: 2em;
-}
-
-.SignTransactionMetaMask-button {
+.SignTransactionLedger-footer {
   width: 100%;
 }
 
-.SignTransactionMetaMask-help {
+.SignTransactionLedger-button {
+  width: 100%;
+}
+
+.SignTransactionLedger-help {
   margin-top: 1em;
+  text-align: center;
+  font-size: 16px;
+}
+
+.SignTransactionLedger-referal {
   text-align: center;
   font-size: 16px;
 }
