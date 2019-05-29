@@ -159,7 +159,11 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
         )}
         <ButtonsWrapper>
           <DownloadLink href={paperWalletPdf} download={`paper-wallet-0x${address.substr(0, 6)}`}>
-            <StyledButton secondary={true} onClick={this.handlePrintClick}>
+            <StyledButton
+              secondary={true}
+              onClick={this.handlePrintClick}
+              disabled={!paperWalletPdf}
+            >
               <PrinterImage src={printerIcon} />
               {translate('X_PRINT')}
             </StyledButton>

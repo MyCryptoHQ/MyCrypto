@@ -923,7 +923,8 @@
     "CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_1": "Don’t want to use a phrase?",
     "CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_2": "Create wallet with keystore file.",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
-    "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now."
+    "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
+    "SELECT_NETWORK_ERROR": "Please select network."
 
    
   }
