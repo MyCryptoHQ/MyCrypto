@@ -7,7 +7,7 @@ import { Account, ExtendedAccount } from 'v2/services/Account';
 import { AccountContext } from 'v2/providers/AccountProvider';
 
 import ToolsAccountList from './ToolsAccountList';
-import { SecureWalletName } from 'config';
+import { SecureWalletName } from 'v2/config';
 import ToolsNotifications from './ToolsNotifications';
 
 const DevToolsContainer = styled.div`
@@ -41,6 +41,7 @@ const DevTools = () => {
                   assets: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
                   accountType: SecureWalletName.WEB3,
                   value: 0,
+                  timestamp: Date.now(),
                   transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
                   derivationPath: `m/44'/60'/0'/0/0`
