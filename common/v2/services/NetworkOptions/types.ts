@@ -2,7 +2,7 @@ import { GasPriceSetting, DPathFormats } from 'types/network';
 
 export interface NetworkOptions {
   contracts: string[];
-  assets?: string[];
+  assets: string[];
   nodes: string[];
   id: string;
   name: string;

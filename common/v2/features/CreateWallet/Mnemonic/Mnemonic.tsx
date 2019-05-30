@@ -143,7 +143,8 @@ class CreateWallet extends Component<Props> {
       value: 0,
       label: 'New Account', // @TODO: we really should have the correct label before!
       localSettings: 'default',
-      transactionHistory: ''
+      transactionHistory: '',
+      timestamp: 0
     };
     createAccount(account);
     displayNotification(NotificationTemplates.walletCreated, {

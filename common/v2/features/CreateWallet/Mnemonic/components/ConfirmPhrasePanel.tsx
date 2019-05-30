@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import chunk from 'lodash/chunk';
 import shuffle from 'lodash/shuffle';
 import { Button } from '@mycrypto/ui';
-import { translateRaw } from 'translations';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
+import { translateRaw } from 'translations';
 
 const ActiveWords = styled.div`
   height: 200px;

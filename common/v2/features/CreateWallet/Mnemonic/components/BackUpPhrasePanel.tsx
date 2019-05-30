@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
 import { PanelProps } from '../../CreateWallet';
 import { PaperWallet } from 'components';
 
@@ -92,14 +91,14 @@ interface Props extends PanelProps {
 interface State {
   printed: boolean;
   error: boolean;
-  paperWalletPdf: string;
+  paperWalletImage: string;
 }
 
 export default class BackUpPhrasePanel extends Component<Props, State> {
   public state: State = {
     printed: false,
     error: false,
-    paperWalletPdf: ''
+    paperWalletImage: ''
   };
 
   private paperWallet: PaperWallet | null;
@@ -119,7 +118,7 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
       if (!this.paperWallet) {
         return this.componentDidMount();
       }
-      this.paperWallet.toPDF().then(png => this.setState({ paperWalletPdf: png }));
+      this.paperWallet.toPNG().then(png => this.setState({ paperWalletImage: png }));
     }, 500);
   }
 
@@ -132,7 +131,7 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
   };
 
   public render() {
-    const { paperWalletPdf } = this.state;
+    const { paperWalletImage } = this.state;
     const { address, words, currentStep, totalSteps, onBack } = this.props;
 
     return (
@@ -158,11 +157,11 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
           </ErrorWrapper>
         )}
         <ButtonsWrapper>
-          <DownloadLink href={paperWalletPdf} download={`paper-wallet-0x${address.substr(0, 6)}`}>
+          <DownloadLink href={paperWalletImage} download={`paper-wallet-0x${address.substr(0, 6)}`}>
             <StyledButton
               secondary={true}
               onClick={this.handlePrintClick}
-              disabled={!paperWalletPdf}
+              disabled={!paperWalletImage}
             >
               <PrinterImage src={printerIcon} />
               {translate('X_PRINT')}

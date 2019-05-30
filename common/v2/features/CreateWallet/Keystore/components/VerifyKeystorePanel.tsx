@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InputField } from 'v2/components';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
+import { ExtendedContentPanel, InputField, InlineErrorMsg } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
 

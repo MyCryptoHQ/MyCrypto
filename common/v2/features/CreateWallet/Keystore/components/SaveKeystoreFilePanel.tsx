@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
+import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
-import keystoreIcon from 'common/assets/images/icn-keystore.svg';
 
+import keystoreIcon from 'common/assets/images/icn-keystore.svg';
 import downloadIcon from 'common/assets/images/icn-download.svg';
 
 const DownloadImage = styled.embed`
