@@ -4,7 +4,7 @@ import './SafeTmini.scss';
 
 export default function SignTransactionSafeT() {
   return (
-    <div className="SignTransactionSafeT-panel">
+    <div className="SignTransaction-panel">
       <div className="SignTransactionSafeT-title">Sign the Transaction with your Safe-T Mini</div>
       <div className="SignTransactionSafeT-instructions">
         Connect your Safe-T Mini to your computer and enter your Safe-T Mini PIN when prompted to

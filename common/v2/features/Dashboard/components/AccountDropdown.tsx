@@ -5,6 +5,7 @@ import { Button, Identicon } from '@mycrypto/ui';
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { ExtendedAccount, useOnClickOutside } from 'v2/services';
+import { SCref } from 'v2/types/global';
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];

@@ -4,7 +4,7 @@ import './Trezor.scss';
 
 export default function SignTransactionTrezor() {
   return (
-    <div className="SignTransactionTrezor-panel">
+    <div className="SignTransaction-panel">
       <div className="SignTransactionTrezor-title">Sign the Transaction with your Trezor</div>
       <div className="SignTransactionTrezor-instructions">
         Connect your Trezor to your computer and enter your Trezor PIN when prompted to sign your
