@@ -1,12 +1,17 @@
-import React, { useState, useContext } from 'react';
-import { Button, ComboBox } from '@mycrypto/ui';
+import React, { useState } from 'react';
+import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
+
 import './NetworkSelectPanel.scss';
 
 import { translate } from 'translations';
-import { NetworkOptionsContext } from 'v2/providers';
-import { isWalletFormatSupportedOnNetwork } from 'v2/libs';
 import { FormDataActionType as ActionType } from '../types';
 import { FormData } from 'v2/features/AddAccount/types';
+import { NetworkSelectDropdown } from 'v2/components';
+
+const NetworkForm = styled.div`
+  margin-top: 22px;
+`;
 
 interface Props {
   formData: FormData;
@@ -16,13 +21,6 @@ interface Props {
 
 function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const [network, setNetwork] = useState(formData.network);
-  const { networkOptions } = useContext(NetworkOptionsContext);
-
-  // @ADD_ACCOUNT_TODO: The difference in accountType is likely causing
-  // the absence of list.
-  const validNetworks = networkOptions
-    .filter(options => isWalletFormatSupportedOnNetwork(options, formData.accountType))
-    .map(n => n.name);
 
   const onSubmit = () => {
     formDispatch({
@@ -38,14 +36,13 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
       <div className="Panel-description" id="NetworkPanel-description">
         {translate('ADD_ACCOUNT_NETWORK_SELCT')}
       </div>
-      <label className="Panel-networkLabel">Network</label>
-      <ComboBox
-        className="Panel-dropdown"
-        value={network}
-        items={new Set(validNetworks.sort())}
-        placeholder="Ethereum"
-        onChange={({ target: { value } }) => setNetwork(value)}
-      />
+      <NetworkForm>
+        <NetworkSelectDropdown
+          network={network}
+          accountType={formData.accountType}
+          onChange={setNetwork}
+        />
+      </NetworkForm>
       <div className="SelectNetworkPanel-button-container">
         <Button className="SelectNetworkPanel-button" onClick={onSubmit}>
           {translate('ADD_ACCOUNT_NETWORK_ACTION')}

@@ -1,33 +1,59 @@
 import React from 'react';
-import { Button, ComboBox } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import { ContentPanel } from 'v2/components';
+import { ExtendedContentPanel, NetworkSelectDropdown } from 'v2/components';
 import { PanelProps } from '../CreateWallet';
-import './SelectNetworkPanel.scss';
+import translate, { translateRaw } from 'translations';
+import { WalletName } from 'v2/config/data';
 
 interface Props extends PanelProps {
   totalSteps: number;
 }
 
-export default function SelectNetworkPanel({ totalSteps, onBack, onNext }: Props) {
+const NetworkForm = styled.div`
+  margin-top: 22px;
+`;
+
+const SubmitButton = styled(Button)`
+  width: 100%;
+  margin-top: 30px;
+  font-size: 18px;
+`;
+
+interface Props extends PanelProps {
+  network: string;
+  accountType: WalletName;
+  selectNetwork(network: string): void;
+}
+
+export default function SelectNetworkPanel({
+  totalSteps,
+  currentStep,
+  network,
+  accountType,
+  onBack,
+  onNext,
+  selectNetwork
+}: Props) {
   return (
-    <ContentPanel
+    <ExtendedContentPanel
       onBack={onBack}
       stepper={{
-        current: 1,
+        current: currentStep,
         total: totalSteps
       }}
-      heading="Select Network"
-      description="Not sure what to choose? Leave displayed defaults below and just click next!"
-      className="SelectNetworkPanel"
+      heading={translateRaw('SELECT_NETWORK_TITLE')}
+      description={translate('SELECT_NETWORK_DESCRIPTION')}
     >
-      <label>Network</label>
-      <ComboBox value="Ethereum" items={new Set(['Ethereum'])} />
-      <label>Node</label>
-      <ComboBox value="Automatic" items={new Set(['Automatic'])} />
-      <Button className="SelectNetworkPanel-next" onClick={onNext}>
-        Next
-      </Button>
-    </ContentPanel>
+      <NetworkForm>
+        <NetworkSelectDropdown
+          network={network}
+          accountType={accountType}
+          onChange={selectNetwork}
+        />
+      </NetworkForm>
+      <SubmitButton onClick={onNext}>{translateRaw('ACTION_6')}</SubmitButton>
+    </ExtendedContentPanel>
   );
 }

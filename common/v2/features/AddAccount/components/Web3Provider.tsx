@@ -6,7 +6,7 @@ import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import { NewTabLink } from 'components/ui';
 import { unlockWeb3 } from 'v2/features/Wallets';
 import './Web3Provider.scss';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
+import { InlineErrorMsg } from 'v2/components';
 
 interface Props {
   wallet: object;

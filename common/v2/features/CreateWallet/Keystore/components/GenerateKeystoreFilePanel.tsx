@@ -1,82 +1,169 @@
-import React from 'react';
-import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button, Input, Typography } from '@mycrypto/ui';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Button } from '@mycrypto/ui';
+import zxcvbn from 'zxcvbn';
 
-import { ContentPanel } from 'v2/components';
+import { ExtendedContentPanel, InputField } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
-import './GenerateKeystoreFilePanel.scss';
+import translate, { translateRaw } from 'translations';
 
-const initialValues = {
-  password: '',
-  confirmPassword: ''
+// Legacy
+import Spinner from 'components/ui/Spinner';
+
+const DescriptionItem = styled.div`
+  margin-top: 18px;
+  font-weight: normal;
+  font-size: 18px;
+
+  strong {
+    font-weight: 900;
+  }
+`;
+
+const PasswordForm = styled.form`
+  margin-top: 22px;
+`;
+
+const FormItem = styled.fieldset`
+  margin-top: 15px;
+`;
+
+const SubmitButton = styled(Button)`
+  width: 100%;
+  font-size: 18px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+  height: 51px;
+`;
+
+const Description = () => {
+  return (
+    <React.Fragment>
+      <DescriptionItem>{translate('NEW_WALLET_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
+      <DescriptionItem>{translate('NEW_WALLET_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
+    </React.Fragment>
+  );
 };
 
-export default function GenerateKeystoreFilePanel({ onBack, onNext }: PanelProps) {
-  return (
-    <ContentPanel
-      onBack={onBack}
-      stepper={{
-        current: 2,
-        total: 3
-      }}
-      heading="Generate a Keystore File"
-      className="GenerateKeystoreFilePanel"
-    >
-      <Formik
-        initialValues={initialValues}
-        onSubmit={console.info}
-        render={() => (
-          <Form>
-            <fieldset className="GenerateKeystoreFilePanel-fieldset">
-              <label htmlFor="password" className="GenerateKeystoreFilePanel-fieldset-label">
-                Password
-              </label>
-              <Field
-                name="password"
-                render={({ field, form }: FieldProps<typeof initialValues>) => (
-                  <Input
-                    {...field}
-                    onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
-                    icon="showNetworks"
-                    iconSide="right"
-                  />
-                )}
-              />
-            </fieldset>
-            <fieldset className="GenerateKeystoreFilePanel-fieldset">
-              <label htmlFor="confirmPassword" className="GenerateKeystoreFilePanel-fieldset-label">
-                Confirm Password
-              </label>
-              <Field
-                name="confirmPassword"
-                render={({ field, form }: FieldProps<typeof initialValues>) => (
-                  <Input
-                    {...field}
-                    onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
-                    icon="showNetworks"
-                    iconSide="right"
-                  />
-                )}
-              />
-            </fieldset>
-            <Typography>
-              This password encrypts your private key. This does not act as a seed to generate your
-              keys.
-            </Typography>
-            <Typography>
-              <strong>
-                You will need this password + your keystore file to unlock your wallet.
-              </strong>
-            </Typography>
-            <Button onClick={onNext} className="GenerateKeystoreFilePanel-button">
-              Create Keystore File
-            </Button>
-            <Typography className="GenerateKeystoreFilePanel-bottom">
-              Don’t know what a keystore file is? <a href="">Learn more.</a>
-            </Typography>
-          </Form>
-        )}
-      />
-    </ContentPanel>
-  );
+interface Props extends PanelProps {
+  generateWalletAndContinue(password: string): void;
+}
+
+export default class GenerateKeystoreFilePanel extends Component<Props> {
+  public state = {
+    password1: '',
+    password2: '',
+    password1Error: '',
+    password2Error: '',
+    generatingKeystore: false
+  };
+
+  public onPassword1Changed = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ password1: event.target.value });
+  };
+
+  public onPassword2Changed = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ password2: event.target.value });
+  };
+
+  public validateForm = (): boolean => {
+    this.setState({ password1Error: '', password2Error: '' });
+    const { password1, password2 } = this.state;
+    const minLength = 8;
+
+    if (password1.length < minLength) {
+      this.setState({
+        password1Error: translate('INPUT_ERROR_PASSWORD_TOO_SHORT')
+      });
+      return false;
+    }
+
+    const passwordValidation = password1 ? zxcvbn(password1) : null;
+    if (passwordValidation && passwordValidation.score < 3) {
+      this.setState({
+        password1Error: `${translateRaw('WEAK_PASSWORD')} ${passwordValidation.feedback.warning}`
+      });
+
+      return false;
+    }
+
+    if (password1 !== password2) {
+      this.setState({
+        password2Error: translate('INPUT_ERROR_PASSWORDS_DONT_MATCH')
+      });
+
+      return false;
+    }
+
+    return true;
+  };
+
+  public handleFormSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const { generateWalletAndContinue } = this.props;
+
+    if (this.validateForm()) {
+      try {
+        this.setState({ generatingKeystore: true });
+        await generateWalletAndContinue(this.state.password1);
+        this.setState({ generatingKeystore: false });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  public render() {
+    const { onBack, totalSteps, currentStep } = this.props;
+
+    return (
+      <ExtendedContentPanel
+        onBack={onBack}
+        stepper={{
+          current: currentStep,
+          total: totalSteps
+        }}
+        heading={translateRaw('NEW_WALLET_KEYSTORE_TITLE')}
+        description={<Description />}
+      >
+        <PasswordForm onSubmit={this.handleFormSubmit}>
+          <FormItem>
+            <InputField
+              label={translateRaw('INPUT_PASSWORD_LABEL')}
+              value={this.state.password1}
+              onChange={this.onPassword1Changed}
+              inputError={this.state.password1Error}
+              showEye={true}
+              type={'password'}
+            />
+          </FormItem>
+          <FormItem>
+            <InputField
+              label={translateRaw('INPUT_CONFIRM_PASSWORD_LABEL')}
+              value={this.state.password2}
+              onChange={this.onPassword2Changed}
+              inputError={this.state.password2Error}
+              showEye={true}
+              type={'password'}
+            />
+          </FormItem>
+          <DescriptionItem>{translate('NEW_WALLET_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
+          <ButtonWrapper>
+            {this.state.generatingKeystore ? (
+              <Spinner size={'x2'} />
+            ) : (
+              <SubmitButton type="submit">{translate('NEW_WALLET_KEYSTORE_BUTTON')}</SubmitButton>
+            )}
+          </ButtonWrapper>
+        </PasswordForm>
+      </ExtendedContentPanel>
+    );
+  }
 }

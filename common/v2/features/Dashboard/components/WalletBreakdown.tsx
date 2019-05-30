@@ -1,16 +1,23 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { ComboBox, Heading, Panel, Typography } from '@mycrypto/ui';
 
 import { AccountContext, CurrentsContext } from 'v2/providers';
+import { ExtendedAccount } from 'v2/services/Account/types';
 import AccountDropdown from './AccountDropdown';
 import './WalletBreakdown.scss';
 
 // Legacy
 import moreIcon from 'common/assets/images/icn-more.svg';
+import {
+  getCurrentsFromContext,
+  getBalanceFromAccount,
+  getBaseAssetFromAccount,
+  getAccountBalances
+} from 'v2/libs/accounts/accounts';
+import { Link } from 'react-router-dom';
 
 // Fake Data
-const balances = [
+/*const balances = [
   {
     asset: 'Ethereum',
     amount: '14.13 ETH',
@@ -31,11 +38,40 @@ const balances = [
     amount: <Link to="/dashboard">View Details</Link>,
     value: '$140.03'
   }
-];
+];*/
 
 function WalletBreakdown() {
-  const { accounts } = useContext(AccountContext);
+  const { accounts, updateAccount } = useContext(AccountContext);
   const { currents, updateCurrentsAccounts } = useContext(CurrentsContext);
+  const balances: any[] = [];
+
+  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(accounts, currents.accounts);
+
+  currentAccounts.map((en: ExtendedAccount) => {
+    const baseAsset = getBaseAssetFromAccount(en);
+    if (!balances.find(asset => asset.asset === (baseAsset ? baseAsset.name : 'Unknown Asset'))) {
+      balances.push({
+        asset: baseAsset ? baseAsset.name : 'Unknown Asset',
+        amount:
+          -(en.timestamp - Date.now()) >= 15000
+            ? getAccountBalances(currentAccounts, updateAccount)
+            : parseFloat(getBalanceFromAccount(en)).toFixed(4),
+        value: 0
+      });
+    } else {
+      const balanceToUpdate: any = balances.find(
+        asset => asset.asset === (baseAsset ? baseAsset.name : 'Unknown Asset')
+      );
+      balanceToUpdate.amount = (
+        parseFloat(balanceToUpdate.amount) + parseFloat(getBalanceFromAccount(en))
+      ).toFixed(4);
+    }
+  });
+  balances.push({
+    asset: 'Other Tokens',
+    amount: <Link to="/dashboard">View Details</Link>,
+    value: '$0'
+  });
 
   return (
     <div className="WalletBreakdown">

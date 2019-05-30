@@ -1,49 +1,69 @@
-import React, { Component } from 'react';
+import React, { Component, ReactType } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { generateMnemonic, mnemonicToSeed } from 'bip39';
+import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
+import HDkey from 'hdkey';
 
 import { Layout } from 'v2/features';
-import { MnemonicProvider, MnemonicContext } from './components';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
+import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
+import { InsecureWalletName } from 'v2/config/data';
+import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
+import { getNetworkByName } from 'v2/libs';
+import { DPathFormat } from 'v2/libs/networks/types';
+import { Account } from 'v2/services/Account/types';
 
-export default class CreateWallet extends Component<RouteComponentProps<{}>> {
-  public state = {
-    stage: MnemonicStages.SelectNetwork
+interface Props extends RouteComponentProps<{}> {
+  createAccount(accountData: Account): void;
+  displayNotification(templateName: string, templateData?: object): void;
+}
+
+interface State {
+  network: string;
+  stage: MnemonicStages;
+  words: string[];
+  accountType: DPathFormat;
+  path: string;
+  address: string;
+  unit: string;
+}
+
+class CreateWallet extends Component<Props> {
+  public state: State = {
+    stage: MnemonicStages.SelectNetwork,
+    words: [],
+    network: 'Ethereum',
+    accountType: InsecureWalletName.MNEMONIC_PHRASE,
+    path: `m/44'/60'/0'/0`,
+    address: '',
+    unit: 'ETH'
   };
 
   public render() {
     const { stage } = this.state;
-    const ActivePanel = mnemonicStageToComponentHash[stage];
+    const currentStep: number = mnemonicFlow.indexOf(stage) + 1;
+    const totalSteps: number = mnemonicFlow.length;
+    const ActivePanel: ReactType = mnemonicStageToComponentHash[stage];
     const actions = {
       onBack: this.regressToPreviousStage,
-      onNext: this.advanceToNextStage
+      onNext: this.advanceToNextStage,
+      navigateToDashboard: this.navigateToDashboard,
+      generateWords: this.generateWords,
+      selectNetwork: this.selectNetwork,
+      decryptMnemonic: this.decryptMnemonic,
+      addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
-    const isMnemonicPanel = [
-      MnemonicStages.GeneratePhrase,
-      MnemonicStages.BackUpPhrase,
-      MnemonicStages.ConfirmPhrase
-    ].includes(stage);
 
     return (
-      <MnemonicProvider>
-        <Layout centered={true}>
-          <section className="CreateWallet">
-            {isMnemonicPanel ? (
-              <MnemonicContext.Consumer>
-                {({ words, generateWords }) => (
-                  <ActivePanel
-                    totalSteps={4}
-                    words={words}
-                    generateWords={generateWords}
-                    {...actions}
-                  />
-                )}
-              </MnemonicContext.Consumer>
-            ) : (
-              <ActivePanel totalSteps={4} {...actions} />
-            )}
-          </section>
-        </Layout>
-      </MnemonicProvider>
+      <Layout centered={true}>
+        <ActivePanel
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+          {...this.state}
+          {...actions}
+        />
+      </Layout>
     );
   }
 
@@ -56,7 +76,7 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
     if (previousStage != null) {
       this.setState({ stage: previousStage });
     } else {
-      history.push('/');
+      history.push('/create-wallet');
     }
   };
 
@@ -69,4 +89,60 @@ export default class CreateWallet extends Component<RouteComponentProps<{}>> {
       this.setState({ stage: nextStage });
     }
   };
+
+  private navigateToDashboard = () => {
+    const { history } = this.props;
+    history.replace('/dashboard');
+  };
+
+  private generateWords = () => {
+    this.setState({
+      words: generateMnemonic().split(' ')
+    });
+  };
+
+  private selectNetwork = async (network: string) => {
+    const accountNetwork: NetworkOptions | undefined = getNetworkByName(network);
+
+    const pathFormat = accountNetwork && accountNetwork.dPathFormats[this.state.accountType];
+    const path = (pathFormat && pathFormat.value) || '';
+    const unit = (accountNetwork && accountNetwork.unit) || 'DefaultAsset';
+    this.setState({ network, path, unit });
+  };
+
+  private decryptMnemonic = () => {
+    const { words, path } = this.state;
+
+    const phrase = words.join(' ').trim();
+    const seed = mnemonicToSeed(phrase);
+    const derived = HDkey.fromMasterSeed(seed).derive(path);
+    const privateKey = derived.privateKey;
+    const address = privateToAddress(privateKey).toString('hex');
+
+    this.setState({ address });
+  };
+
+  private addCreatedAccountAndRedirectToDashboard = () => {
+    const { history, createAccount, displayNotification } = this.props;
+    const { network, accountType, address, unit } = this.state;
+
+    const account: Account = {
+      address: toChecksumAddress(addHexPrefix(address)),
+      network,
+      accountType,
+      derivationPath: '',
+      assets: unit,
+      value: 0,
+      label: 'New Account', // @TODO: we really should have the correct label before!
+      localSettings: 'default',
+      transactionHistory: ''
+    };
+    createAccount(account);
+    displayNotification(NotificationTemplates.walletCreated, {
+      address: account.address
+    });
+    history.replace('/dashboard');
+  };
 }
+
+export default withAccountAndNotificationsContext(CreateWallet);

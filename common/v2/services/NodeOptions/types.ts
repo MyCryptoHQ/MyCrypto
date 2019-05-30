@@ -4,7 +4,7 @@ export interface NodeOptions {
   name: string;
   type?: 'rpc' | 'etherscan' | 'infura' | 'web3' | 'myccustom';
   service: string;
-  url?: string;
+  url: string;
   isCustom?: boolean;
   isAuto?: boolean;
   network?: string;

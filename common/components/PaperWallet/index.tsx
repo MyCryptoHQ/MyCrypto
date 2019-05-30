@@ -1,25 +1,32 @@
 import React from 'react';
 import html2canvas from 'html2canvas';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
+import jsPDF from 'jspdf';
+import styled from 'styled-components';
 
 import notesBg from 'assets/images/notes-bg.png';
 import sidebarImg from 'assets/images/print-sidebar.png';
 import { Identicon, QRCode } from 'components/ui';
 import './index.scss';
 
+const HiddenPaperWallet = styled.div`
+  position: absolute;
+  top: -1000px;
+`;
+
 interface Props {
   address: string;
   privateKey: string;
+  isHidden?: boolean;
 }
 
 export default class PaperWallet extends React.Component<Props, {}> {
   private container: HTMLElement | null;
 
   public render() {
-    const { privateKey } = this.props;
+    const { privateKey, isHidden } = this.props;
     const address = toChecksumAddress(addHexPrefix(this.props.address));
-
-    return (
+    const paperWallet = (
       <div className="PaperWallet" ref={el => (this.container = el)}>
         <img src={sidebarImg} className="PaperWallet-sidebar" alt="MyCrypto Logo" />
 
@@ -65,13 +72,37 @@ export default class PaperWallet extends React.Component<Props, {}> {
         </div>
       </div>
     );
+
+    return isHidden ? <HiddenPaperWallet>{paperWallet}</HiddenPaperWallet> : paperWallet;
   }
 
-  public toPNG = async () => {
+  public toPNG = async (scale: number = 1) => {
     if (!this.container) {
       return '';
     }
-    const canvas = await html2canvas(this.container);
+    const canvas = await html2canvas(this.container, { scale });
     return canvas.toDataURL('image/png');
+  };
+
+  public toPDF = async () => {
+    const png = await this.toPNG(2);
+    const pdf = new jsPDF('l', 'pt', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = 680;
+    const imgHeight = 280;
+
+    pdf.addImage(
+      png,
+      'PNG',
+      (pdfWidth - imgWidth) / 2,
+      (pdfHeight - imgHeight) / 2,
+      imgWidth,
+      imgHeight,
+      undefined,
+      'FAST'
+    );
+
+    return pdf.output('datauristring');
   };
 }
