@@ -1,10 +1,3 @@
-.SignTransactionMetaMask-panel {
-  width: 500px;
-  height: 600px;
-  padding-left: 40px;
-  padding-right: 40px;
-}
-
 .SignTransactionMetaMask-title {
   height: 78px;
   font-family: Lato;
@@ -27,7 +20,7 @@
   margin: 2em;
 }
 
-.SignTransactionMetaMask-wrong-address {
+.SignTransactionMetaMask-wrong-address .SignTransactionMetaMask-wrong-network {
   color: red;
   text-align: center;
 }

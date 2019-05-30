@@ -8,6 +8,10 @@ import {
   SignTransactionTrezor,
   SignTransactionSafeT
 } from './SignTransactionWallets';
+import { WalletName } from 'v2/types/global';
+import './SignTransaction.scss';
+
+type WalletType = WalletName;
 
 interface Props {
   stateValues: ISendState;
@@ -20,42 +24,24 @@ interface Props {
 export default class SignTransaction extends Component<Props> {
   public render() {
     const { stateValues, transactionFields } = this.props;
-    const whichWallet = transactionFields.accountType;
+    const currentWalletType: WalletType | undefined = transactionFields.accountType;
 
-    switch (whichWallet) {
+    switch (currentWalletType) {
       case 'privateKey':
-        return (
-          <div>
-            <SignTransactionPrivateKey />
-          </div>
-        );
+        return <SignTransactionPrivateKey />;
       case 'web3':
         return (
-          <div>
-            <SignTransactionMetaMask
-              stateValues={stateValues}
-              transactionFields={transactionFields}
-            />
-          </div>
+          <SignTransactionMetaMask
+            stateValues={stateValues}
+            transactionFields={transactionFields}
+          />
         );
       case 'ledgerNanoS':
-        return (
-          <div>
-            <SignTransactionLedger />
-          </div>
-        );
+        return <SignTransactionLedger />;
       case 'trezor':
-        return (
-          <div>
-            <SignTransactionTrezor />
-          </div>
-        );
+        return <SignTransactionTrezor />;
       case 'safeTmini':
-        return (
-          <div>
-            <SignTransactionSafeT />
-          </div>
-        );
+        return <SignTransactionSafeT />;
       default:
         return null;
     }
