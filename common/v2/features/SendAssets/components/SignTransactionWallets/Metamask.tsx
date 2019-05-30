@@ -7,17 +7,17 @@ import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
 
 // Replace this with the data passed in from FormData
-const transaction = {
-  nonce: 0,
-  gasLimit: 21000,
-  gasPrice: utils.bigNumberify('20000000000'),
-  to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
-  // ... or supports ENS names
-  value: utils.parseEther('0.01'),
-  data: '0x',
-  // This ensures the transaction cannot be replayed on different networks
-  chainId: ethers.utils.getNetwork('homestead').chainId
-};
+// const transaction = {
+//   nonce: 0,
+//   gasLimit: 21000,
+//   gasPrice: utils.bigNumberify('20000000000'),
+//   to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
+//   // ... or supports ENS names
+//   value: utils.parseEther('0.01'),
+//   data: '0x',
+//   // This ensures the transaction cannot be replayed on different networks
+//   chainId: ethers.utils.getNetwork('homestead').chainId
+// };
 
 declare global {
   interface Window {
@@ -39,6 +39,7 @@ interface MetaMaskUserState {
   networkMatches: boolean;
 }
 
+// this will be changed when we figure out networks
 const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
 const ethereumProvider = window.ethereum;
@@ -86,7 +87,6 @@ export default class SignTransactionMetaMask extends Component<Props> {
 
     return (
       <div className="SignTransaction-panel">
-        {accountMatches && networkMatches && this.signTransaction}
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
         <div className="SignTransactionMetaMask-instructions">
           Sign into MetaMask on your computer and follow the isntructions in the MetaMask window.
@@ -103,7 +103,8 @@ export default class SignTransactionMetaMask extends Component<Props> {
           )}
           {!accountMatches && (
             <div className="SignTransactionMetaMask-wrong-address">
-              Please switch the account in MetaMask to {stateValues.transactionFields.senderAddress}
+              Please switch the account in MetaMask to{' '}
+              {stateValues.transactionFields.account.address}
               <br /> in order to proceed
             </div>
           )}
@@ -120,11 +121,6 @@ export default class SignTransactionMetaMask extends Component<Props> {
       </div>
     );
   }
-
-  private watchForAccountChanges(ethereum: NonNullable<Window['ethereum']>) {
-    ethereum.on('accountsChanged', this.getMetaMaskAccount);
-  }
-
   private async getMetaMaskAccount() {
     if (metaMaskProvider) {
       const metaMaskSigner = await metaMaskProvider.getSigner();
@@ -147,7 +143,7 @@ export default class SignTransactionMetaMask extends Component<Props> {
   }
 
   private checkAddressMatches(metaMaskAddress: string, stateValues: ISendState) {
-    const desiredAddress = utils.getAddress(stateValues.transactionFields.senderAddress);
+    const desiredAddress = utils.getAddress(stateValues.transactionFields.account.address);
 
     this.setState({ accountMatches: metaMaskAddress === desiredAddress });
   }
@@ -162,8 +158,24 @@ export default class SignTransactionMetaMask extends Component<Props> {
     }
   }
 
-  private async signTransaction() {
-    const signerWallet = await metaMaskProvider.getSigner();
-    signerWallet.sendTransaction(transaction);
+  private watchForAccountChanges(ethereum: NonNullable<Window['ethereum']>) {
+    ethereum.on('accountsChanged', this.getMetaMaskNetwork);
+
+    this.setState({ networkMatches: true });
   }
+
+  // private triggerTransaction() {
+  //   if (this.state.accountMatches && this.state.networkMatches) {
+  //     this.signTransaction();
+  //   }
+  // }
+
+  // private async signTransaction() {
+  //   const signerWallet = await metaMaskProvider.getSigner();
+  //   signerWallet.sendTransaction(transaction).catch(err => {
+  //     if (err.message.includes('User denied transaction signature')) {
+  //       this.setState({ transactionComplete: false });
+  //     }
+  //   });
+  // }
 }

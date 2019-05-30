@@ -90,13 +90,16 @@ export default function SendAssetsForm({
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
                 <Field
                   name="account"
+                  value={console.log(values.account)}
+                  // => {updateState({ transactionFields: { account: values.account } })
                   component={({ field, form }: FieldProps) => (
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
-                      onChange={(option: IExtendedAccount) =>
-                        form.setFieldValue(field.name, option)
-                      }
+                      onChange={(option: IExtendedAccount) => {
+                        updateState({ transactionFields: { account: option } });
+                        form.setFieldValue(field.name, option);
+                      }}
                       accounts={accounts}
                     />
                   )}

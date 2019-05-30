@@ -25,8 +25,18 @@ const getInitialState = (): ISendState => {
     return {
       step: 0,
       transactionFields: {
-        senderAddress: '',
-        account: undefined,
+        account: {
+          label: '',
+          address: '',
+          network: '',
+          localSettings: '',
+          assets: '',
+          accountType: undefined,
+          value: 0,
+          transactionHistory: '',
+          derivationPath: '',
+          uuid: ''
+        },
         recipientAddress: getQueryParamWithKey(params, 'to') || '',
         amount: getQueryParamWithKey(params, 'value') || '0.00',
         asset:
@@ -44,8 +54,7 @@ const getInitialState = (): ISendState => {
         nonceField: '0',
         data: getQueryParamWithKey(params, 'data') || '',
         isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-        isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-        accountType: undefined
+        isGasLimitManual: false // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -63,8 +72,18 @@ const getInitialState = (): ISendState => {
     return {
       step: 0,
       transactionFields: {
-        senderAddress: '',
-        account: undefined,
+        account: {
+          label: '',
+          address: '',
+          network: '',
+          localSettings: '',
+          assets: '',
+          accountType: undefined,
+          value: 0,
+          transactionHistory: '',
+          derivationPath: '',
+          uuid: ''
+        },
         recipientAddress: '',
         amount: '0.00',
         asset: 'ETH',
@@ -76,8 +95,7 @@ const getInitialState = (): ISendState => {
         nonceField: '0',
         data: '',
         isAdvancedTransaction: false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-        isGasLimitManual: false,
-        accountType: undefined
+        isGasLimitManual: false
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -101,6 +119,7 @@ const steps = [
   { label: 'Transaction Complete', elem: TransactionReceipt }
 ];
 
+// due to MetaMask deprecating eth_sign method, it has different step order, where sign and send are one panel
 const web3Steps = [
   { label: 'Send Assets', elem: SendAssetsForm },
   { label: 'ConfirmTransaction', elem: ConfirmTransaction },
@@ -115,16 +134,17 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
     const { step, transactionFields } = this.state;
     const Step = steps[step];
     const Web3Steps = web3Steps[step];
+    console.log(transactionFields.account);
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
           onBack={this.goToPrevStep}
           className="SendAssets"
-          heading={transactionFields.accountType === 'web3' ? Web3Steps.label : Step.label}
+          heading={transactionFields.account.accountType === 'web3' ? Web3Steps.label : Step.label}
           icon={sendIcon}
           stepper={{ current: step + 1, total: steps.length - 1 }}
         >
-          {transactionFields.accountType === 'web3' ? (
+          {transactionFields.account.accountType === 'web3' ? (
             <Web3Steps.elem
               transactionFields={this.state.transactionFields}
               onNext={this.goToNextStep}

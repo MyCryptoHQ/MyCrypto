@@ -24,8 +24,8 @@ interface Props {
 export default class SignTransaction extends Component<Props> {
   public render() {
     const { stateValues, transactionFields } = this.props;
-    const currentWalletType: WalletType | undefined = transactionFields.accountType;
-
+    const currentWalletType: WalletType | undefined = transactionFields.account.accountType;
+    console.log(transactionFields.account.accountType);
     switch (currentWalletType) {
       case 'privateKey':
         return <SignTransactionPrivateKey />;

@@ -30,7 +30,7 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public render() {
     const {
-      stateValues: { transactionFields: { senderAddress, recipientAddress, amount, asset } },
+      stateValues: { transactionFields: { recipientAddress, amount, asset, account: { address } } },
       onNext
     } = this.props;
     const { showingDetails } = this.state;
@@ -47,7 +47,7 @@ export default class ConfirmTransaction extends Component<Props> {
               if (en.address.toLowerCase() === recipientAddress.toLowerCase()) {
                 recipientLabel = en.label;
               }
-              if (en.address.toLowerCase() === senderAddress.toLowerCase()) {
+              if (en.address.toLowerCase() === address.toLowerCase()) {
                 senderLabel = en.label;
               }
             });
@@ -66,7 +66,7 @@ export default class ConfirmTransaction extends Component<Props> {
                 <div className="ConfirmTransaction-row-column">
                   From:
                   <div className="ConfirmTransaction-addressWrapper">
-                    <Address address={senderAddress} title={senderLabel} truncate={truncate} />
+                    <Address address={address} title={senderLabel} truncate={truncate} />
                   </div>
                 </div>
               </div>

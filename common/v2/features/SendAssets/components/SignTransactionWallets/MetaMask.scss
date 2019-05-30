@@ -20,10 +20,16 @@
   margin: 2em;
 }
 
-.SignTransactionMetaMask-wrong-address .SignTransactionMetaMask-wrong-network {
+.SignTransactionMetaMask-wrong-address {
   color: red;
   text-align: center;
 }
+
+.SignTransactionMetaMask-wrong-network {
+  color: red;
+  text-align: center;
+}
+
 .SignTransactionMetaMask-description {
   font-size: 18px;
   line-height: 1.5;
