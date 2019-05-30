@@ -145,11 +145,9 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   };
 
   private updateState = (state: ISendState) => {
-    console.log('SEND', state);
     this.setState({
       transactionFields: { ...this.state.transactionFields, ...state.transactionFields }
     });
-    console.log('SEND', this.state.transactionFields);
   };
 
   // private handleReset = () => this.setState(getInitialState());
