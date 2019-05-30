@@ -8,6 +8,7 @@ import translate, { translateRaw } from 'translations';
 
 // Legacy
 import reloadIcon from 'common/assets/images/icn-reload.svg';
+import Spinner from 'components/ui/Spinner';
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;
@@ -66,13 +67,25 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const ButtonWrapper = styled.div`
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 51px;
+`;
+
 interface Props extends PanelProps {
   words: string[];
   generateWords(): void;
-  decryptMnemonic(): void;
+  decryptMnemonic(): Promise<string>;
 }
 
 export default class GeneratePhrasePanel extends Component<Props> {
+  public state = { decrypting: false };
+
   public componentDidMount() {
     const { generateWords } = this.props;
     generateWords();
@@ -80,8 +93,13 @@ export default class GeneratePhrasePanel extends Component<Props> {
 
   public handleNextClick = () => {
     const { onNext, decryptMnemonic } = this.props;
-    decryptMnemonic();
-    onNext();
+
+    this.setState({ decrypting: true });
+    setTimeout(() => {
+      decryptMnemonic();
+      this.setState({ decrypting: false });
+      onNext();
+    }, 0);
   };
 
   public render() {
@@ -107,7 +125,14 @@ export default class GeneratePhrasePanel extends Component<Props> {
           <StyledButton onClick={generateWords} secondary={true}>
             <RegenerateImage src={reloadIcon} /> {translateRaw('REGENERATE_MNEMONIC')}
           </StyledButton>
-          <StyledButton onClick={this.handleNextClick}>{translateRaw('ACTION_6')}</StyledButton>
+
+          <ButtonWrapper>
+            {this.state.decrypting ? (
+              <Spinner size={'x2'} />
+            ) : (
+              <StyledButton onClick={this.handleNextClick}>{translateRaw('ACTION_6')}</StyledButton>
+            )}
+          </ButtonWrapper>
         </ButtonsWrapper>
       </ExtendedContentPanel>
     );
