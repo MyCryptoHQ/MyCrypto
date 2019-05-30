@@ -132,10 +132,10 @@ export const initNetworkOptions = () => {
 
 export const initAssetOptions = () => {
   const newStorage = getCacheRaw();
-  const contracts = AssetOptionsData();
-  Object.keys(contracts).map(en => {
-    newStorage.assetOptions[en] = contracts[en];
-    newStorage.networkOptions[contracts[en].network].contracts.push(en);
+  const assets = AssetOptionsData();
+  Object.keys(assets).map(en => {
+    newStorage.assetOptions[en] = assets[en];
+    newStorage.networkOptions[assets[en].network].assets.push(en);
   });
   setCache(newStorage);
 };
