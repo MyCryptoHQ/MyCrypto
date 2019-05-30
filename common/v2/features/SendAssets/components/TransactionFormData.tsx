@@ -1,5 +1,5 @@
-import React, { FormEvent } from 'react';
-import { Formik, Form, Field } from 'formik';
+import React, { FormEvent, useContext } from 'react';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
 import { ISendState, ITxFields } from '../types';
@@ -13,7 +13,7 @@ import {
   RecipientAddressField,
   AmountField,
   AssetField,
-  SenderAddressField,
+  AccountDropdown,
   GasPriceField,
   GasPriceSlider,
   GasLimitField,
@@ -23,8 +23,8 @@ import {
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { getAccountByAddress } from 'v2/libs/accounts';
-import { Account } from 'v2/services/Account/types';
+import { AccountContext } from 'v2/providers';
+import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 
 interface Props {
   stateValues: ISendState;
@@ -51,6 +51,7 @@ export default function SendAssetsForm({
   onSubmit,
   updateState
 }: Props) {
+  const { accounts } = useContext(AccountContext);
   return (
     <div className="SendAssetsForm">
       <Formik
@@ -64,17 +65,19 @@ export default function SendAssetsForm({
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           return (
             <Form className="SendAssetsForm">
-              <QueryWarning />
-
               <React.Fragment>
                 {'ITxFields: '}
                 <br />
-                {JSON.stringify(processFormDataToTx(values), null, 2)}
+                <pre style={{ fontSize: '1rem' }}>
+                  {JSON.stringify(processFormDataToTx(values), null, 2)}
+                </pre>
                 <br />
                 {'Formik Fields: '}
                 <br />
-                {JSON.stringify(values, null, 2)}
+                <pre style={{ fontSize: '1rem' }}>{JSON.stringify(values, null, 2)}</pre>
               </React.Fragment>
+              <QueryWarning />
+
               {/* Asset */}
               <AssetField
                 handleChange={(e: FormEvent<HTMLInputElement>) => {
@@ -85,18 +88,18 @@ export default function SendAssetsForm({
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
-
-                <SenderAddressField
-                  handleChange={(e: FormEvent<HTMLInputElement>) => {
-                    const account: Account | undefined = getAccountByAddress(e.currentTarget.value);
-                    updateState({
-                      transactionFields: {
-                        senderAddress: e.currentTarget.value,
-                        accountType: !account ? undefined : account.accountType
+                <Field
+                  name="account"
+                  component={({ field, form }: FieldProps) => (
+                    <AccountDropdown
+                      name={field.name}
+                      value={field.value}
+                      onChange={(option: IExtendedAccount) =>
+                        form.setFieldValue(field.name, option)
                       }
-                    });
-                    handleChange(e);
-                  }}
+                      accounts={accounts}
+                    />
+                  )}
                 />
               </fieldset>
               {/* Recipient Address */}

@@ -26,6 +26,7 @@ const getInitialState = (): ISendState => {
       step: 0,
       transactionFields: {
         senderAddress: '',
+        account: undefined,
         recipientAddress: getQueryParamWithKey(params, 'to') || '',
         amount: getQueryParamWithKey(params, 'value') || '0.00',
         asset:
@@ -63,6 +64,7 @@ const getInitialState = (): ISendState => {
       step: 0,
       transactionFields: {
         senderAddress: '',
+        account: undefined,
         recipientAddress: '',
         amount: '0.00',
         asset: 'ETH',
