@@ -1,11 +1,13 @@
 import { TSymbol } from 'v2/types';
 
-const ICONS = {
-  ETH: require('assets/images/ether.png'),
-}
+type TSymbolIcon = { [s in TSymbol]?: string };
+
+const ICONS: TSymbolIcon = {
+  ETH: require('assets/images/ether.png')
+};
 
 const getSymbolIcon = (symbol: TSymbol) => {
   return ICONS[symbol];
-}
+};
 
 export default getSymbolIcon;

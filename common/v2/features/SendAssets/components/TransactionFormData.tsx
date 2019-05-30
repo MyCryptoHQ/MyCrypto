@@ -1,5 +1,5 @@
 import React, { FormEvent, useContext } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
 import { ISendState, ITxFields } from '../types';
@@ -23,9 +23,8 @@ import {
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { getAccountByAddress } from 'v2/libs/accounts';
 import { AccountContext } from 'v2/providers';
-import { Account } from 'v2/services/Account/types';
+import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 
 interface Props {
   stateValues: ISendState;
@@ -52,10 +51,9 @@ export default function SendAssetsForm({
   onSubmit,
   updateState
 }: Props) {
-  const { accounts } = useContext(AccountContext)
+  const { accounts } = useContext(AccountContext);
   return (
     <div className="SendAssetsForm">
-
       <Formik
         initialValues={transactionFields}
         onSubmit={(fields: ITxFields) => {
@@ -76,9 +74,7 @@ export default function SendAssetsForm({
                 <br />
                 {'Formik Fields: '}
                 <br />
-                <pre style={{ fontSize: '1rem' }}>
-                  {JSON.stringify(values, null, 2)}
-                </pre>
+                <pre style={{ fontSize: '1rem' }}>{JSON.stringify(values, null, 2)}</pre>
               </React.Fragment>
               <QueryWarning />
 
@@ -94,14 +90,17 @@ export default function SendAssetsForm({
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
                 <Field
                   name="account"
-                  component={({ field, form }) => (
+                  component={({ field, form }: FieldProps) => (
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
-                      onChange={(option) => form.setFieldValue(field.name, option)}
+                      onChange={(option: IExtendedAccount) =>
+                        form.setFieldValue(field.name, option)
+                      }
                       accounts={accounts}
                     />
-                  )} />
+                  )}
+                />
               </fieldset>
               {/* Recipient Address */}
               <fieldset className="SendAssetsForm-fieldset">

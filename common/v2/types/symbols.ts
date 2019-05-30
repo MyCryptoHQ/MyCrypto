@@ -1,4 +1,3 @@
-type TSymbol = 'ETH'
-            | 'USD';
+type TSymbol = 'ETH' | 'USD';
 
 export default TSymbol;

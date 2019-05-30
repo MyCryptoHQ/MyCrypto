@@ -1,4 +1,5 @@
 export { default as Amount } from './Amount';
+export { default as AccountSummary } from './AccountSummary';
 export { default as Checkbox } from './Checkbox';
 export { default as ContentPanel } from './ContentPanel';
 export { default as Currency } from './Currency';

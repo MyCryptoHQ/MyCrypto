@@ -1,4 +1,5 @@
 import { AssetOption, assetType } from 'v2/services/AssetOption/types';
+import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 import { WalletName } from 'v2/config/data';
 
 export interface ITxFields {
@@ -6,6 +7,7 @@ export interface ITxFields {
   senderAddress: string;
   recipientAddress: string;
   amount: string;
+  account?: IExtendedAccount;
   data: string;
   gasLimitEstimated: string;
   gasPriceSlider: string;
