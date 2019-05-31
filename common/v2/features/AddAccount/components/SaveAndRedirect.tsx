@@ -20,7 +20,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       network: payload.formData.network,
       accountType: payload.formData.accountType,
       derivationPath: payload.formData.derivationPath,
-      assets: network ? network.unit : 'DefaultAsset',
+      assets: network ? [network.unit] : ['DefaultAsset'],
       value: 0,
       label: 'New Account', // @TODO: we really should have the correct label before!
       localSettings: 'default',

@@ -1,11 +1,13 @@
 import * as utils from 'v2/libs';
-import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
 import { ContractsData, AssetOptionsData } from 'v2/config/cacheData';
-import { ACCOUNTTYPES } from 'v2/config';
+import { ACCOUNTTYPES, SecureWalletName } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
+import { createAccount, Account } from '../Account';
+import { default as types, Asset, createAssetWithID } from 'v2/services';
+import { isDevelopment } from 'v2/utils/environment';
 
 // Initialization
 export const initializeCache = () => {
@@ -30,6 +32,10 @@ export const initializeCache = () => {
     initContractOptions();
 
     initAssetOptions();
+
+    if (isDevelopment) {
+      initTestAccounts();
+    }
   }
 };
 
@@ -288,4 +294,66 @@ export const readAll = <K extends CollectionKey>(key: K) => () => {
   const section: LocalCache[K] = getCache()[key];
   const sectionEntries: [string, LocalCache[K][string]][] = Object.entries(section);
   return sectionEntries.map(([uuid, value]) => ({ ...value, uuid }));
+};
+
+export const initTestAccounts = () => {
+  const newAccounts: Account[] = [
+    {
+      label: 'ETH Test 1',
+      address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
+      network: 'Ethereum',
+      localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
+      assets: ['10e14757-78bb-4bb2-a17a-8333830f6698', 'f7e30bbe-08e2-41ce-9231-5236e6aab702'],
+      accountType: SecureWalletName.WEB3,
+      value: 1e16,
+      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
+      derivationPath: `m/44'/60'/0'/0/0`
+    },
+    {
+      label: 'Goerli ETH Test 1',
+      address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
+      network: 'Goerli',
+      localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
+      assets: ['12d3cbf2-de3a-4050-a0c6-521592e4b85a'],
+      accountType: SecureWalletName.WEB3,
+      value: 1e16,
+      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
+      derivationPath: `m/44'/60'/0'/0/0`
+    }
+  ];
+
+  const newAssets: { [key in string]: Asset } = {
+    '10e14757-78bb-4bb2-a17a-8333830f6698': {
+      option: 'WrappedETH',
+      amount: '0.01',
+      network: 'Ethereum',
+      type: 'erc20',
+      symbol: 'WETH',
+      contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      decimal: 18
+    },
+    'f7e30bbe-08e2-41ce-9231-5236e6aab702': {
+      option: 'ETH',
+      amount: '0.001',
+      network: 'Ethereum',
+      type: 'base',
+      symbol: 'ETH',
+      decimal: 18
+    },
+    '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
+      option: 'GoerliETH',
+      amount: '0.01',
+      network: 'Goerli',
+      type: 'base',
+      symbol: 'GoerliETH',
+      decimal: 18
+    }
+  };
+
+  newAccounts.map(accountToAdd => {
+    createAccount(accountToAdd);
+  });
+  Object.keys(newAssets).map(assetToAdd => {
+    createAssetWithID(newAssets[assetToAdd], assetToAdd);
+  });
 };
