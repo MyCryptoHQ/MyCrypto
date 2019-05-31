@@ -11,8 +11,11 @@ describe('rates reducer', () => {
         EUR: 2,
         GBP: 3,
         CHF: 4,
-        REP: 5,
-        ETH: 6
+        ETH: 5,
+        RUB: 6,
+        JPY: 7,
+        KRW: 8,
+        INR: 9
       }
     };
 

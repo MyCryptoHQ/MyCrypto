@@ -15,10 +15,12 @@ interface State {
   signature: string;
   verifiedAddress?: string;
   verifiedMessage?: string;
+  isButtonDisabled: boolean;
 }
 
 const initialState: State = {
-  signature: ''
+  signature: '',
+  isButtonDisabled: true
 };
 
 const signatureExample: ISignedMessage = {
@@ -33,7 +35,7 @@ export class VerifyMessage extends Component<Props, State> {
   public state: State = initialState;
 
   public render() {
-    const { verifiedAddress, verifiedMessage, signature } = this.state;
+    const { verifiedAddress, verifiedMessage, signature, isButtonDisabled } = this.state;
 
     return (
       <div>
@@ -55,7 +57,7 @@ export class VerifyMessage extends Component<Props, State> {
           <button
             className="VerifyMessage-sign btn btn-primary btn-lg"
             onClick={this.handleVerifySignedMessage}
-            disabled={false}
+            disabled={isButtonDisabled}
           >
             {translate('MSG_VERIFY')}
           </button>
@@ -81,13 +83,13 @@ export class VerifyMessage extends Component<Props, State> {
 
   private handleVerifySignedMessage = () => {
     try {
-      const parsedSignature: ISignedMessage = JSON.parse(this.state.signature);
+      const parsedSignature = this.checkIfSignatureIsValid(this.state.signature);
 
-      if (!verifySignedMessage(parsedSignature)) {
+      if (parsedSignature.isSignatureValid) {
         throw Error();
       }
 
-      const { address, msg } = parsedSignature;
+      const { address, msg } = parsedSignature.signature;
       this.setState({
         verifiedAddress: address,
         verifiedMessage: msg
@@ -99,9 +101,35 @@ export class VerifyMessage extends Component<Props, State> {
     }
   };
 
+  private checkIfSignatureIsValid = (signature: string) => {
+    try {
+      const parsedSignature: ISignedMessage = JSON.parse(signature);
+
+      this.setState({
+        isButtonDisabled: !verifySignedMessage(parsedSignature)
+      });
+      return {
+        isSignatureValid: !verifySignedMessage(parsedSignature),
+        signature: parsedSignature
+      };
+    } catch (error) {
+      this.setState({
+        isButtonDisabled: true
+      });
+      return {
+        isSignatureValid: false,
+        signature: {
+          address: '',
+          msg: ''
+        }
+      };
+    }
+  };
+
   private handleSignatureChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const signature = e.currentTarget.value;
     this.setState({ signature });
+    this.checkIfSignatureIsValid(signature);
   };
 
   private handleSignaturePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
@@ -110,6 +138,7 @@ export class VerifyMessage extends Component<Props, State> {
       try {
         const signature = JSON.stringify(JSON.parse(text), null, 2);
         this.setState({ signature });
+        this.checkIfSignatureIsValid(signature);
         e.preventDefault();
       } catch (err) {
         // Do nothing, it wasn't json they pasted

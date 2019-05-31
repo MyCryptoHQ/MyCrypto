@@ -1,11 +1,14 @@
 import EthTx, { TxObj } from 'ethereumjs-tx';
 import { addHexPrefix, toBuffer } from 'ethereumjs-util';
+import Transport from '@ledgerhq/hw-transport';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
+import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import LedgerEth from '@ledgerhq/hw-app-eth';
 
 import { translateRaw } from 'translations';
 import { getTransactionFields } from 'libs/transaction';
 import { HardwareWallet, ChainCodeResponse } from './hardware';
+import { byContractAddress } from '@ledgerhq/hw-app-eth/erc20';
 
 // Ledger throws a few types of errors
 interface U2FError {
@@ -51,6 +54,14 @@ export class LedgerWallet extends HardwareWallet {
 
     try {
       const ethApp = await makeApp();
+
+      if (t.getChainId() === 1) {
+        const tokenInfo = byContractAddress(t.to.toString('hex'));
+        if (tokenInfo) {
+          await ethApp.provideERC20TokenInformation(tokenInfo);
+        }
+      }
+
       const result = await ethApp.signTransaction(this.getPath(), t.serialize().toString('hex'));
 
       let v = result.v;
@@ -118,7 +129,15 @@ export class LedgerWallet extends HardwareWallet {
 }
 
 async function makeApp() {
-  const transport = await TransportU2F.create();
+  let transport: Transport<any>;
+  // TODO: Remove check for Windows once Windows issues are resolved
+  if (!navigator.platform.toLowerCase().includes('win') && (await TransportUSB.isSupported())) {
+    // Use WebUSB protocol instead of U2F if it's supported
+    transport = await TransportUSB.create();
+  } else {
+    transport = await TransportU2F.create();
+  }
+
   return new LedgerEth(transport);
 }
 
