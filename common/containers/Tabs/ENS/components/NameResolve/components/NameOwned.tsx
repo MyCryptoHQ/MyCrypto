@@ -1,6 +1,7 @@
 import React from 'react';
 import { IOwnedDomainRequest } from 'libs/ens';
 import { fromWei, Wei } from 'libs/units';
+import { ensV3Url } from 'utils/formatters';
 import { NewTabLink, Address } from 'components/ui';
 import translate from 'translations';
 const lookupLink = (name: string) => `https://etherscan.io/enslookup?q=${name}`;
@@ -15,11 +16,17 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
   nameHash,
   resolvedAddress,
   ownerAddress,
+  deedOwnerAddress,
   name
 }) => (
   <section>
     <div className="ens-title">
-      <h1 className="text-center">{translate('ENS_DOMAIN_OWNED', { $name: name + '.eth' })}</h1>
+      <h1>{translate('ENS_DOMAIN_OWNED', { $name: name + '.eth' })}</h1>
+      <h3>
+        <NewTabLink className="text-center" href={ensV3Url(name + '.eth')}>
+          {translate('ENS_SEND_TO_MANAGER', { $name: name + '.eth' })}
+        </NewTabLink>
+      </h3>
     </div>
     <div className="ens-table-wrapper">
       <table className="table table-striped">
@@ -42,6 +49,12 @@ export const NameOwned: React.SFC<IOwnedDomainRequest> = ({
             <td>{translate('NAME_OWNED_OWNER')}:</td>
             <MonoTd>
               <Address address={ownerAddress} />
+            </MonoTd>
+          </tr>
+          <tr>
+            <td>{translate('NAME_OWNED_DEEDOWNER')}:</td>
+            <MonoTd>
+              <Address address={deedOwnerAddress} />
             </MonoTd>
           </tr>
           <tr>

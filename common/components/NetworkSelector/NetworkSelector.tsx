@@ -14,7 +14,7 @@ import {
 import NetworkOption from './NetworkOption';
 import './NetworkSelector.scss';
 
-const CORE_NETWORKS = ['ETH', 'ETC', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli'];
+const CORE_NETWORKS = ['ETH', 'Ropsten', 'Kovan', 'Rinkeby', 'Goerli', 'ETC', 'RSK'];
 
 interface OwnProps {
   openCustomNodeModal(): void;
