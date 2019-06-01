@@ -1,6 +1,7 @@
 import { AssetOption, assetType } from 'v2/services/AssetOption/types';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 import { WalletName } from 'v2/config/data';
+import { GasEstimates } from 'v2/api/gas';
 
 export interface ITxFields {
   asset: string;
@@ -18,6 +19,7 @@ export interface ITxFields {
   isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
   isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
   accountType: WalletName | undefined; // Type of wallet selected.
+  gasEstimates: GasEstimates;
 }
 
 export interface ISendState {
@@ -32,5 +34,5 @@ export interface ISendState {
   recipientAddressLabel: string; //  Recipient-address label found in address book.
   asset: AssetOption | undefined;
   network: string;
-  assetType: assetType; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
+  assetType: assetType; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
 }

@@ -45,7 +45,16 @@ const getInitialState = (): ISendState => {
         data: getQueryParamWithKey(params, 'data') || '',
         isAdvancedTransaction: isAdvancedQueryTransaction(location.search) || false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
         isGasLimitManual: false, // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-        accountType: undefined
+        accountType: undefined,
+        gasEstimates: {
+          fastest: 20,
+          fast: 18,
+          standard: 12,
+          isDefault: false,
+          safeLow: 4,
+          time: Date.now(),
+          chainId: 1
+        }
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -77,7 +86,16 @@ const getInitialState = (): ISendState => {
         data: '',
         isAdvancedTransaction: false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
         isGasLimitManual: false,
-        accountType: undefined
+        accountType: undefined,
+        gasEstimates: {
+          fastest: 20,
+          fast: 18,
+          standard: 12,
+          isDefault: false,
+          safeLow: 4,
+          time: Date.now(),
+          chainId: 1
+        }
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.

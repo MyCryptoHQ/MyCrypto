@@ -25,6 +25,7 @@ import { DeepPartial } from 'shared/types/util';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
 
 interface Props {
   stateValues: ISendState;
@@ -94,9 +95,12 @@ export default function SendAssetsForm({
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
-                      onChange={(option: IExtendedAccount) =>
-                        form.setFieldValue(field.name, option)
-                      }
+                      onChange={(option: IExtendedAccount) => {
+                        form.setFieldValue(field.name, option);
+                        fetchGasPriceEstimates('Ethereum').then(data =>
+                          form.setFieldValue('gasEstimates', data)
+                        );
+                      }}
                       accounts={accounts}
                     />
                   )}
@@ -157,6 +161,7 @@ export default function SendAssetsForm({
                     handleChange(e);
                   }}
                   gasPrice={values.gasPriceSlider}
+                  gasEstimates={values.gasEstimates}
                 />
                 <div className="SendAssetsForm-fieldset-cheapFast">
                   <div>Cheap</div>
