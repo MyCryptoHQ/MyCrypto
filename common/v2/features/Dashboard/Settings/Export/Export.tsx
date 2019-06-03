@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Typography } from '@mycrypto/ui';
 import translate, { translateRaw } from 'translations';
 
@@ -8,8 +8,6 @@ import { Layout } from 'v2/features';
 import { ContentPanel } from 'v2/components';
 
 import { GlobalSettingsContext } from 'v2/providers';
-
-import { makeBlob } from 'utils/blob';
 
 import Downloader from './Downloader';
 
@@ -32,10 +30,6 @@ const FullWidthLink = styled(Link)`
   width: 100%;
 `;
 
-const FullWidthDownloadLink = styled.a`
-  width: 100%;
-`;
-
 const CacheDisplay = styled.code`
   overflow: auto;
   width: 100%;
@@ -50,7 +44,7 @@ export class Export extends React.Component<RouteComponentProps<{}>> {
       <Layout centered={true}>
         <GlobalSettingsContext.Consumer>
           {({ localCache, readCache }) => (
-            <CenteredContentPanel onBack={onBack} heading={translate('SETTINGS_EXPORT_HEADING')}>
+            <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
               <ImportSuccessContainer>
                 <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
                 <CacheDisplay>{localCache}</CacheDisplay>

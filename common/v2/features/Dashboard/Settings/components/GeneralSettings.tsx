@@ -2,10 +2,9 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { GlobalSettings } from './types';
+import { GlobalSettings } from 'v2/services/GlobalSettings';
 
 import { DashboardPanel } from '../../components';
-// import { GlobalSettings } from 'v2/services';
 
 const Divider = styled.div`
   height: 2px;
@@ -58,14 +57,14 @@ interface SettingsProps {
   updateGlobalSettings(settings: GlobalSettings): void;
 }
 export default class GeneralSettings extends React.Component<SettingsProps> {
-  public changeTimer = event => {
+  public changeTimer = (event: React.ChangeEvent<HTMLInputElement>) => {
     const settings = this.props.globalSettings;
     settings.timer = Number(event.target.value);
     this.props.updateGlobalSettings(settings);
   };
 
   public render() {
-    const { updateGlobalSettings, globalSettings } = this.props;
+    const { globalSettings } = this.props;
     return (
       <DashboardPanel heading="General Settings">
         <Divider />
@@ -91,7 +90,7 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           <SettingsLabel>Inactivity Timer</SettingsLabel>
           <SettingsControl>
             <SelectContainer>
-              <select onChange={this.changeTimer} value={String(globalSettings.timer)}>
+              <select onChange={() => this.changeTimer} value={String(globalSettings.timer)}>
                 <option value="0">1 Minutes</option>
                 <option value="1">3 Minutes</option>
                 <option value="2">5 Minutes</option>

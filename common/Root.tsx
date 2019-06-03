@@ -35,9 +35,7 @@ import 'what-input';
 // v2
 import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
-import { Settings } from 'v2/features/Dashboard/Settings';
-import { Import } from 'v2/features/Dashboard/Settings/Import';
-import { Export } from 'v2/features/Dashboard/Settings/Export';
+import { Settings, Import, Export } from 'v2/features/Dashboard/Settings';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
@@ -128,7 +126,6 @@ class RootClass extends Component<Props, State> {
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
-    console.log(routes);
     return (
       <ThemeProvider theme={GAU_THEME}>
         <React.Fragment>

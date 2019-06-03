@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 // import { Button, Typography, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -24,8 +24,16 @@ export interface PanelProps {
   onNext(): void;
 }
 
-const steps = [ImportBox, ImportSuccess];
-const headings = ['Import', 'Import Complete'];
+const steps = [
+  {
+    heading: 'Import',
+    component: ImportBox
+  },
+  {
+    heading: 'Import Complete',
+    component: ImportSuccess
+  }
+];
 
 export class Import extends React.Component<RouteComponentProps<{}>> {
   public state = { step: 0 };
@@ -35,12 +43,12 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     const { step } = this.state;
     const backOptions = [history.goBack, this.regressStep];
     const onBack = backOptions[step];
-    const Step = steps[step];
+    const Step = steps[step].component;
     return (
       <Layout centered={true}>
         <CenteredContentPanel
           onBack={onBack}
-          heading={headings[step]}
+          heading={steps[step].heading}
           stepper={{
             current: step + 1,
             total: steps.length

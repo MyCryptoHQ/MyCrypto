@@ -19,12 +19,12 @@ const FullWidthLink = styled(Link)`
   width: 100%;
 `;
 
-export default function ImportSuccess(props) {
+export default function ImportSuccess() {
   return (
     <ImportSuccessContainer>
       {translate('SETTINGS_IMPORT_SUCCESS')}
       <FullWidthLink to="/dashboard/settings">
-        <FullWidthButton secondary>{translate('SETTINGS_IMPORT_COMPLETE')}</FullWidthButton>
+        <FullWidthButton secondary={true}>{translate('SETTINGS_IMPORT_COMPLETE')}</FullWidthButton>
       </FullWidthLink>
     </ImportSuccessContainer>
   );

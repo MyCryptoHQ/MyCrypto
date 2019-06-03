@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Typography } from '@mycrypto/ui';
-import translate from 'translations';
+import { Button } from '@mycrypto/ui';
 
 import { makeBlob } from 'utils/blob';
+import translate from 'translations';
 
 const FullWidthButton = styled(Button)`
   width: 100%;
