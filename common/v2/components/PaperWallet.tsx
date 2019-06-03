@@ -13,8 +13,8 @@ interface PaperWalletWrapperProps {
   isHidden?: boolean;
 }
 
-const paperWalletWidth: number = 729;
-const paperWalletHeight: number = 306;
+const paperWalletWidth: number = 1458;
+const paperWalletHeight: number = 612;
 
 const PaperWalletWrapper =
   styled.div <
@@ -32,13 +32,13 @@ interface PartProps {
   hasTopBorder?: boolean;
 }
 
-const borderStyle = '3px dashed rgba(227, 237, 255, 0.3);';
+const borderStyle = '6px dashed rgba(227, 237, 255, 0.3);';
 const Part =
   styled.div <
   PartProps >
   `
-  width: 243px;
-  height: 152px;
+  width: 486px;
+  height: 304px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -62,31 +62,31 @@ const PartWrapper =
 `;
 
 const WalletImage = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: 120px;
 `;
 
 const Resources = styled.p`
   text-align: center;
-  font-size: 14px;
+  font-size: 28px;
   font-weight: normal;
 `;
 
 const MyCryptoImage = styled.img`
-  width: 180px;
+  width: 360px;
   height: auto;
 `;
 
 const LogoText = styled.p`
   text-align: right;
-  font-size: 15px;
+  font-size: 30px;
   font-weight: normal;
-  margin-top: -7px;
+  margin-top: -14px;
 `;
 
 const Notes = styled.p`
   text-align: left;
-  font-size: 13px;
+  font-size: 26px;
   font-weight: normal;
   margin: 0;
 `;
@@ -94,13 +94,13 @@ const Notes = styled.p`
 const InnerPartWrapper = styled.div`
   width: 100%;
   height: 100%;
-  padding: 15px;
+  padding: 30px;
 `;
 
 const HorizontalLine = styled.hr`
-  border: 0.5px solid #b5bfc7;
+  border: 1px solid #b5bfc7;
   width: 100%;
-  margin: 0 0 15px 0;
+  margin: 0 0 30px 0;
 `;
 
 const IdenticonHeader = styled.div`
@@ -109,19 +109,19 @@ const IdenticonHeader = styled.div`
 `;
 
 const IdenticonIcon = styled(Identicon)`
-  margin-right: 10px;
+  margin-right: 20px;
 
   img {
-    width: 34px;
-    height: 34px;
+    width: 68px;
+    height: 68px;
     max-width: none;
   }
 `;
 
 const TextHeader = styled.div`
-  font-size: 13px;
+  font-size: 26px;
   font-weight: normal;
-  line-height: 13px;
+  line-height: 26px;
 `;
 
 interface TextSubHeaderProps {
@@ -131,9 +131,9 @@ const TextSubHeader =
   styled.p <
   TextSubHeaderProps >
   `
-  font-size: 7px;
+  font-size: 14px;
   font-weight: normal;
-  margin: ${props => (props.noTopMargin ? '0' : '7px')} 0 0 0;
+  margin: ${props => (props.noTopMargin ? '0' : '14px')} 0 0 0;
 `;
 
 interface QRAddressWrapperProps {
@@ -143,9 +143,9 @@ const QRAddressWrapper =
   styled.div <
   QRAddressWrapperProps >
   `
-  width: 122px;
-  height: 213px;
-  border: 3px solid ${props => (props.isInversed ? '#ef4747' : '#a7e07b')};
+  width: 244px;
+  height: 426px;
+  border: 6px solid ${props => (props.isInversed ? '#ef4747' : '#a7e07b')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,36 +155,37 @@ const QRAddressWrapper =
 `;
 
 const QRCodeWrapper = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
 `;
 
 const QRCodeTitle = styled.div`
-  font-size: 18px;
+  font-size: 36px;
   text-align: center;
   font-weight: bold;
 `;
 
 const QRCodeSubTitle = styled.div`
-  min-height: 25px;
-  font-size: 7px;
+  min-height: 50px;
+  font-size: 14px;
   text-align: center;
   font-weight: normal;
 `;
 
 const Path = styled.div`
-  min-height: 15px;
-  font-size: 7px;
+  min-height: 30px;
+  font-size: 14px;
   text-align: center;
   font-weight: normal;
-  margin-top: 3px;
+  margin-top: 6px;
 `;
 
 const Address = styled.div`
-  font-size: 9px;
+  font-size: 18px;
   text-align: center;
   font-weight: normal;
-  margin: 0px 16px 10px 16px;
+  margin: 0px 32px 20px 32px;
+  line-height: 24px;
   word-break: break-all;
 `;
 
@@ -195,10 +196,11 @@ const Mnemonic =
   styled.div <
   MnemonicProps >
   `
-  font-size: 7px;
+  font-size: 14px;
   text-align: center;
   font-weight: normal;
-  margin: 0px 8px 5px 8px;
+  margin: 0px 16px 10px 16px;
+  line-height: 17px;
   ${props => props.breakWords && 'word-break: break-all;'}
 `;
 
@@ -279,17 +281,20 @@ export default class PaperWallet extends React.Component<Props, {}> {
 
   public toPDF = async () => {
     const png = await this.toPNG(3);
-    const pdf = new jsPDF('l', 'pt', 'a4');
+    const pdf = new jsPDF('l', 'px');
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
+
+    const printedWidth = paperWalletWidth / 2.6;
+    const printedHeight = paperWalletHeight / 2.6;
 
     pdf.addImage(
       png,
       'PNG',
-      (pdfWidth - paperWalletWidth) / 2,
-      (pdfHeight - paperWalletHeight) / 2,
-      paperWalletWidth,
-      paperWalletHeight,
+      (pdfWidth - printedWidth) / 2,
+      (pdfHeight - printedHeight) / 2,
+      printedWidth,
+      printedHeight,
       undefined,
       'FAST'
     );
