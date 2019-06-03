@@ -23,6 +23,7 @@ const PaperWalletWrapper =
   ${props => props.isHidden && 'position: absolute; top: -1000px;'}
   width: ${paperWalletWidth}px;
   height: ${paperWalletHeight}px;
+  color: black;
 `;
 
 interface PartProps {
@@ -183,7 +184,7 @@ const Address = styled.div`
   font-size: 9px;
   text-align: center;
   font-weight: normal;
-  margin: 0px 20px 10px 20px;
+  margin: 0px 16px 10px 16px;
   word-break: break-all;
 `;
 
@@ -197,7 +198,7 @@ const Mnemonic =
   font-size: 7px;
   text-align: center;
   font-weight: normal;
-  margin: 0px 10px 5px 10px;
+  margin: 0px 8px 5px 8px;
   ${props => props.breakWords && 'word-break: break-all;'}
 `;
 
@@ -277,7 +278,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
   };
 
   public toPDF = async () => {
-    const png = await this.toPNG(2);
+    const png = await this.toPNG(3);
     const pdf = new jsPDF('l', 'pt', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
