@@ -3,20 +3,11 @@ import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 import { IV3Wallet } from 'ethereumjs-wallet';
 
-import { ExtendedContentPanel, PaperWallet } from 'v2/components';
+import { ExtendedContentPanel, PrintPaperWalletButton } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
 import translate, { translateRaw } from 'translations';
+
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
-
-import printerIcon from 'common/assets/images/icn-printer.svg';
-
-const PrinterImage = styled.embed`
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-  pointer-events: none;
-  display: inline;
-`;
 
 const DescriptionItem = styled(Typography)`
   margin-top: 18px;
@@ -32,10 +23,6 @@ const ButtonsWrapper = styled.div`
   margin-top: 48px;
   display: flex;
   flex-direction: column;
-`;
-
-const DownloadLink = styled.a`
-  margin-bottom: 16px;
 `;
 
 const StyledButton = styled(Button)`
@@ -81,28 +68,8 @@ interface Props extends PanelProps {
   keystore: IV3Wallet;
 }
 
-interface State {
-  paperWalletImage: string;
-}
-
-export default class MakeBackupPanel extends Component<Props, State> {
-  public state: State = {
-    paperWalletImage: ''
-  };
-
-  private paperWallet: PaperWallet | null;
-
-  public componentDidMount() {
-    setTimeout(() => {
-      if (!this.paperWallet) {
-        return this.componentDidMount();
-      }
-      this.paperWallet.toPNG().then(png => this.setState({ paperWalletImage: png }));
-    }, 500);
-  }
-
+export default class MakeBackupPanel extends Component<Props> {
   public render() {
-    const { paperWalletImage } = this.state;
     const { onBack, onNext, totalSteps, currentStep, privateKey, keystore } = this.props;
 
     return (
@@ -127,23 +94,13 @@ export default class MakeBackupPanel extends Component<Props, State> {
           <PrivateKeyField>{privateKey}</PrivateKeyField>
         </PrivateKeyWrapper>
         <ButtonsWrapper>
-          <DownloadLink
-            href={paperWalletImage}
-            download={`paper-wallet-0x${keystore.address.substr(0, 6)}`}
-          >
-            <StyledButton secondary={true} disabled={!paperWalletImage}>
-              <PrinterImage src={printerIcon} />
-              {translate('MAKE_BACKUP_PRINT_BUTTON')}
-            </StyledButton>
-          </DownloadLink>
+          <PrintPaperWalletButton
+            address={keystore.address}
+            privateKey={privateKey}
+            printText={translate('MAKE_BACKUP_PRINT_BUTTON')}
+          />
           <StyledButton onClick={onNext}>{translate('ACTION_6')}</StyledButton>
         </ButtonsWrapper>
-        <PaperWallet
-          address={keystore.address}
-          privateKey={privateKey}
-          ref={c => (this.paperWallet = c)}
-          isHidden={true}
-        />
       </ExtendedContentPanel>
     );
   }

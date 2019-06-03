@@ -2,21 +2,10 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineErrorMsg, PaperWallet } from 'v2/components';
+import { ExtendedContentPanel, InlineErrorMsg, PrintPaperWalletButton } from 'v2/components';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 import { PanelProps } from '../../CreateWallet';
-
-// Legacy
-import printerIcon from 'common/assets/images/icn-printer.svg';
 import translate, { translateRaw } from 'translations';
-
-const PrinterImage = styled.embed`
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
-  pointer-events: none;
-  display: inline;
-`;
 
 const ImageWrapper = styled.div`
   display: flex;
@@ -59,10 +48,6 @@ const ButtonsWrapper = styled.div`
   flex-direction: column;
 `;
 
-const DownloadLink = styled.a`
-  margin-bottom: 16px;
-`;
-
 const StyledButton = styled(Button)`
   font-size: 18px;
   width: 100%;
@@ -91,17 +76,13 @@ interface Props extends PanelProps {
 interface State {
   printed: boolean;
   error: boolean;
-  paperWalletPdf: string;
 }
 
 export default class BackUpPhrasePanel extends Component<Props, State> {
   public state: State = {
     printed: false,
-    error: false,
-    paperWalletPdf: ''
+    error: false
   };
-
-  private paperWallet: PaperWallet | null;
 
   public handleDoneClick = () => {
     const { onNext } = this.props;
@@ -113,25 +94,11 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
     }
   };
 
-  public componentDidMount() {
-    setTimeout(() => {
-      if (!this.paperWallet) {
-        return this.componentDidMount();
-      }
-      this.paperWallet.toPDF().then(png => this.setState({ paperWalletPdf: png }));
-    }, 500);
-  }
-
   public handlePrintClick = () => {
-    if (!this.paperWallet) {
-      return;
-    }
-
     this.setState({ printed: true, error: false });
   };
 
   public render() {
-    const { paperWalletPdf } = this.state;
     const { address, words, path, currentStep, totalSteps, onBack } = this.props;
 
     return (
@@ -157,21 +124,15 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
           </ErrorWrapper>
         )}
         <ButtonsWrapper>
-          <DownloadLink href={paperWalletPdf} download={`paper-wallet-0x${address.substr(0, 6)}`}>
-            <StyledButton secondary={true} onClick={this.handlePrintClick}>
-              <PrinterImage src={printerIcon} />
-              {translate('X_PRINT')}
-            </StyledButton>
-          </DownloadLink>
+          <PrintPaperWalletButton
+            address={address}
+            mnemonic={words.join(' ')}
+            path={path}
+            printText={translate('X_PRINT')}
+            onPrintWalletClick={this.handlePrintClick}
+          />
           <StyledButton onClick={this.handleDoneClick}>{translate('ACTION_6')}</StyledButton>
         </ButtonsWrapper>
-        <PaperWallet
-          address={address}
-          mnemonic={words.join(' ')}
-          path={path}
-          ref={c => (this.paperWallet = c)}
-          isHidden={true}
-        />
       </ExtendedContentPanel>
     );
   }
