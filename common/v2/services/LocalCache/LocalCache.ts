@@ -1,12 +1,11 @@
 import * as utils from 'v2/libs';
+import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
 import { ContractsData, AssetOptionsData } from 'v2/config/cacheData';
 import { ACCOUNTTYPES, SecureWalletName } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
-import { createAccount, Account } from '../Account';
-import { default as types, Asset, createAssetWithID } from 'v2/services';
 import { isDevelopment } from 'v2/utils/environment';
 
 // Initialization
@@ -297,7 +296,8 @@ export const readAll = <K extends CollectionKey>(key: K) => () => {
 };
 
 export const initTestAccounts = () => {
-  const newAccounts: Account[] = [
+  const newStorage = getCacheRaw();
+  const newAccounts: types.Account[] = [
     {
       label: 'ETH Test 1',
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
@@ -322,7 +322,7 @@ export const initTestAccounts = () => {
     }
   ];
 
-  const newAssets: { [key in string]: Asset } = {
+  const newAssets: { [key in string]: types.Asset } = {
     '10e14757-78bb-4bb2-a17a-8333830f6698': {
       option: 'WrappedETH',
       amount: '0.01',
@@ -351,9 +351,12 @@ export const initTestAccounts = () => {
   };
 
   newAccounts.map(accountToAdd => {
-    createAccount(accountToAdd);
+    const uuid = utils.generateUUID();
+    newStorage.accounts[uuid] = accountToAdd;
+    newStorage.currents.accounts.push(uuid);
   });
   Object.keys(newAssets).map(assetToAdd => {
-    createAssetWithID(newAssets[assetToAdd], assetToAdd);
+    newStorage.assets[assetToAdd] = newAssets[assetToAdd];
   });
+  setCache(newStorage);
 };
