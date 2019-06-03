@@ -4,14 +4,17 @@ import { Input } from '@mycrypto/ui';
 
 export function GasPriceField({ value, name, onChange }: IGasPriceField) {
   return (
-    <Input
-      {...value}
-      name={name}
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      placeholder="20"
-      className="SendAssetsForm-fieldset-input"
-    />
+    <div>
+      <Input
+        {...value}
+        name={name}
+        value={value}
+        maxLength={6}
+        onChange={e => onChange(e.target.value)}
+        placeholder="20"
+        className="SendAssetsForm-fieldset-input"
+      />
+    </div>
   );
 }
 

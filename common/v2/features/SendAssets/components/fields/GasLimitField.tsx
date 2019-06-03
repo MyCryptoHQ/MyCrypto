@@ -4,14 +4,16 @@ import { Input } from '@mycrypto/ui';
 
 export function GasLimitField({ value, name, onChange }: IGasLimitField) {
   return (
-    <Input
-      {...value}
-      name={name}
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      placeholder="21000"
-      className="SendAssetsForm-fieldset-input"
-    />
+    <div>
+      <Input
+        {...value}
+        name={name}
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder="21000"
+        className="SendAssetsForm-fieldset-input"
+      />
+    </div>
   );
 }
 

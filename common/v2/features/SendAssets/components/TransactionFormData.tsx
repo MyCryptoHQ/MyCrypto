@@ -32,6 +32,7 @@ import {
   validateDataField,
   validateNonceField
 } from './validators/validators';
+import { InlineErrorMsg } from 'v2/components';
 
 interface Props {
   stateValues: ISendState;
@@ -66,7 +67,7 @@ export default function SendAssetsForm({
           onSubmit(fields);
           onNext();
         }}
-        render={({ setFieldValue, values, handleChange }) => {
+        render={({ errors, setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           return (
@@ -242,6 +243,15 @@ export default function SendAssetsForm({
                         />
                       </div>
                     </div>
+                    <div className="SendAssetsForm-advancedOptions-errors">
+                      {errors.gasPriceField && (
+                        <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
+                      )}
+                      {errors.gasLimitField && (
+                        <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
+                      )}
+                      {errors.nonceField && <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>}
+                    </div>
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
                       <Field
@@ -252,6 +262,7 @@ export default function SendAssetsForm({
                             onChange={(option: string) => {
                               form.setFieldValue(field.name, option);
                             }}
+                            errors={errors.data}
                             name={field.name}
                             value={field.value}
                           />
