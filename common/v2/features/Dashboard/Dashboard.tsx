@@ -98,30 +98,6 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <AddressMetadataContext.Consumer>
-              {({ readAddressMetadata }) => (
-                <TransactionContext.Consumer>
-                  {({ transactions }) => {
-                    return (
-                      <TransactionHistoryContext.Consumer>
-                        {({ transactionHistories }) => {
-                          return (
-                            <div className="Dashboard-desktop-bottom">
-                              <RecentTransactionList
-                                transactionHistories={transactionHistories}
-                                readAddressMetadata={readAddressMetadata}
-                                transactions={transactions}
-                                className="Dashboard-desktop-modifiedPanel"
-                              />
-                            </div>
-                          );
-                        }}
-                      </TransactionHistoryContext.Consumer>
-                    );
-                  }}
-                </TransactionContext.Consumer>
-              )}
-            </AddressMetadataContext.Consumer>
           </Layout>
         )}
       </AccountContext.Consumer>
