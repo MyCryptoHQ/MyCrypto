@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
+import { ExtendedContentPanel, InlineErrorMsg, PaperWallet } from 'v2/components';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 import { PanelProps } from '../../CreateWallet';
-import { PaperWallet } from 'components';
 
 // Legacy
 import printerIcon from 'common/assets/images/icn-printer.svg';
@@ -86,6 +85,7 @@ const ErrorWrapper = styled.div`
 interface Props extends PanelProps {
   words: string[];
   address: string;
+  path: string;
 }
 
 interface State {
@@ -132,7 +132,7 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
 
   public render() {
     const { paperWalletPdf } = this.state;
-    const { address, words, currentStep, totalSteps, onBack } = this.props;
+    const { address, words, path, currentStep, totalSteps, onBack } = this.props;
 
     return (
       <ExtendedContentPanel
@@ -167,7 +167,8 @@ export default class BackUpPhrasePanel extends Component<Props, State> {
         </ButtonsWrapper>
         <PaperWallet
           address={address}
-          privateKey={words.join(' ')}
+          mnemonic={words.join(' ')}
+          path={path}
           ref={c => (this.paperWallet = c)}
           isHidden={true}
         />

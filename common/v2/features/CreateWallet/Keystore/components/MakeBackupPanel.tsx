@@ -3,9 +3,8 @@ import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 import { IV3Wallet } from 'ethereumjs-wallet';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, PaperWallet } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
-import { PaperWallet } from 'components';
 import translate, { translateRaw } from 'translations';
 import lockSafetyIcon from 'common/assets/images/icn-lock-safety.svg';
 

@@ -9,4 +9,5 @@ export { default as Modal } from './Modal';
 export { default as NewAppReleaseModal } from './NewAppReleaseModal';
 export { default as InputField } from './InputField';
 export { default as NetworkSelectDropdown } from './NetworkSelectDropdown';
+export { default as PaperWallet } from './PaperWallet';
 export * from './ErrorMessages';
