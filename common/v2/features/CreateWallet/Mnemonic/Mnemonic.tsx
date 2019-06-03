@@ -30,7 +30,7 @@ interface State {
   unit: string;
 }
 
-class CreateWallet extends Component<Props> {
+class CreateMnemonic extends Component<Props> {
   public state: State = {
     stage: MnemonicStages.SelectNetwork,
     words: [],
@@ -154,4 +154,4 @@ class CreateWallet extends Component<Props> {
   };
 }
 
-export default withAccountAndNotificationsContext(CreateWallet);
+export default withAccountAndNotificationsContext(CreateMnemonic);

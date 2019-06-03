@@ -33,7 +33,7 @@ interface Props extends RouteComponentProps<{}> {
   displayNotification(templateName: string, templateData?: object): void;
 }
 
-class CreateWallet extends Component<Props, State> {
+class CreateKeystore extends Component<Props, State> {
   public state: State = {
     password: '',
     privateKey: '',
@@ -167,4 +167,4 @@ class CreateWallet extends Component<Props, State> {
   };
 }
 
-export default withAccountAndNotificationsContext(CreateWallet);
+export default withAccountAndNotificationsContext(CreateKeystore);
