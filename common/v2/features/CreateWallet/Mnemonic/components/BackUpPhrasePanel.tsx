@@ -11,7 +11,7 @@ import { PaperWallet } from 'components';
 import printerIcon from 'common/assets/images/icn-printer.svg';
 import translate, { translateRaw } from 'translations';
 
-const PrinterImage = styled.embed`
+const PrinterImage = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 10px;
@@ -73,7 +73,7 @@ const StyledButton = styled(Button)`
 
   &:focus,
   &:hover {
-    embed {
+    img {
       filter: brightness(0) invert(1);
     }
   }
