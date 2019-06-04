@@ -13,6 +13,7 @@ import { NotificationTemplates } from 'v2/providers/NotificationsProvider/consta
 import { getNetworkByName } from 'v2/libs';
 import { DPathFormat } from 'v2/libs/networks/types';
 import { Account } from 'v2/services/Account/types';
+import _ from 'lodash';
 
 interface Props extends RouteComponentProps<{}> {
   createAccount(accountData: Account): void;
@@ -29,7 +30,7 @@ interface State {
   unit: string;
 }
 
-class CreateWallet extends Component<Props> {
+class CreateMnemonic extends Component<Props> {
   public state: State = {
     stage: MnemonicStages.SelectNetwork,
     words: [],
@@ -96,8 +97,15 @@ class CreateWallet extends Component<Props> {
   };
 
   private generateWords = () => {
+    let words = generateMnemonic().split(' ');
+
+    // Prevent duplicate words in mnemonic phrase
+    while (_.uniq(words).length !== words.length) {
+      words = generateMnemonic().split(' ');
+    }
+
     this.setState({
-      words: generateMnemonic().split(' ')
+      words
     });
   };
 
@@ -146,4 +154,4 @@ class CreateWallet extends Component<Props> {
   };
 }
 
-export default withAccountAndNotificationsContext(CreateWallet);
+export default withAccountAndNotificationsContext(CreateMnemonic);

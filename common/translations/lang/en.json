@@ -866,6 +866,7 @@
     "SAVE_KEYSTORE_DESCRIPTION_2":"**Don't share it.** Your funds will be stolen if you use this on a malicious site.",
     "SAVE_KEYSTORE_DESCRIPTION_3":"**Keep it offline.** Your funds are safest offline (on a USB drive or something similar). We don't recommend keeping your file on any cloud services like Dropbox, Google Drive, etc.",
     "SAVE_KEYSTORE_BUTTON":"Download Keystore File",
+    "SAVE_KEYSTORE_ERROR":"Please download the keystore file.",
     "MAKE_BACKUP_TITLE": "Make a Backup",
     "MAKE_BACKUP_DESCRIPTION_1": "Remember, a **private key** + a **password** = a **keystore file.**",
     "MAKE_BACKUP_DESCRIPTION_2": "Make a backup of your **private key** in case you ever lose your **keystore file.**",
@@ -923,8 +924,7 @@
     "CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_1": "Don’t want to use a phrase?",
     "CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_2": "Create wallet with keystore file.",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
-    "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now."
-
-   
+    "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
+    "SELECT_NETWORK_ERROR": "Please select network."
   }
 }

@@ -34,7 +34,7 @@ const StyledButton = styled(Button)`
 
   &:focus,
   &:hover {
-    embed {
+    img {
       filter: brightness(0) invert(1);
     }
   }
