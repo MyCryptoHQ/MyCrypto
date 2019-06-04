@@ -5,12 +5,14 @@ import {
   WalletAddedNotification,
   SaveDashboardNotification,
   PrintPaperWalletNotification,
-  GetHardwareWalletNotification
+  GetHardwareWalletNotification,
+  WalletNotAddedNotification
 } from 'v2/features/Dashboard/NotificationsPanel/components';
 
 export const NotificationTemplates = {
   walletCreated: 'wallet-created',
   walletAdded: 'wallet-added',
+  walletNotAdded: 'wallet-not-added',
   saveSettings: 'save-settings',
   printPaperWallet: 'print-paper-wallet',
   getHardwareWallet: 'get-hardware-wallet'
@@ -26,6 +28,12 @@ export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.walletAdded]: {
     analyticsEvent: 'New Account (Wallet) Added',
     layout: WalletAddedNotification,
+    showOneTime: true,
+    dismissOnOverwrite: true
+  },
+  [NotificationTemplates.walletNotAdded]: {
+    analyticsEvent: 'New Account (Wallet) Could Not Be Added',
+    layout: WalletNotAddedNotification,
     showOneTime: true,
     dismissOnOverwrite: true
   },
