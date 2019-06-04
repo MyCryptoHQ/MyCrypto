@@ -4,7 +4,6 @@ import { Field, FieldProps, Formik } from 'formik';
 
 import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
-import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
 import { GasEstimates } from 'v2/api/gas';
 import { ITxFields } from '../../types';
 import './styles/GasPriceSlider.scss';
@@ -15,6 +14,7 @@ interface OwnProps {
   gasPrice: string;
   transactionFieldValues: ITxFields;
   handleChange: Formik['handleChange'];
+  gasEstimates: GasEstimates;
 }
 
 type Props = OwnProps;
@@ -22,13 +22,7 @@ type Props = OwnProps;
 interface State {
   hasSetRecommendedGasPrice: boolean;
   realGasPrice: number;
-  gasEstimates: {
-    safeLow: number;
-    standard: number;
-    fast: number;
-    fastest: number;
-    isDefault: boolean;
-  };
+  gasEstimates: GasEstimates;
 }
 
 interface GasTooltips {
@@ -39,26 +33,11 @@ export default class SimpleGas extends Component<Props> {
   public state: State = {
     hasSetRecommendedGasPrice: false,
     realGasPrice: 0,
-    gasEstimates: {
-      fastest: 20,
-      fast: 18,
-      standard: 12,
-      isDefault: false,
-      safeLow: 4
-    }
+    gasEstimates: this.props.gasEstimates
   };
 
-  public async componentDidMount() {
-    const gasPriceValues: GasEstimates = await fetchGasPriceEstimates(
-      this.props.transactionFieldValues.asset
-    );
-    this.setState({ ...this.state, gasEstimates: gasPriceValues });
-  }
-
   public render() {
-    const { gasPrice } = this.props;
-    const { gasEstimates } = this.state;
-
+    const { gasPrice, gasEstimates } = this.props;
     const bounds = {
       max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.max,
       min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min

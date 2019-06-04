@@ -1,30 +1,28 @@
-import React, { FormEvent, useContext } from 'react';
-import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Heading, Typography } from '@mycrypto/ui';
-
-import { ISendState, ITxFields } from '../types';
-import './TransactionFormData.scss';
-
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { WhenQueryExists } from 'components/renderCbs';
-import translate from 'translations';
-import {
-  RecipientAddressField,
-  AmountField,
-  AssetField,
-  AccountDropdown,
-  GasPriceField,
-  GasPriceSlider,
-  GasLimitField,
-  DataField,
-  NonceField
-} from './fields';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import React, { FormEvent, useContext } from 'react';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
+import translate from 'translations';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { ISendState, ITxFields } from '../types';
+import {
+  AccountDropdown,
+  AmountField,
+  AssetField,
+  DataField,
+  GasLimitField,
+  GasPriceField,
+  GasPriceSlider,
+  NonceField,
+  RecipientAddressField
+} from './fields';
+import './TransactionFormData.scss';
 
 interface Props {
   stateValues: ISendState;
@@ -90,15 +88,20 @@ export default function SendAssetsForm({
                 <div className="input-group-header">{translate('X_ADDRESS')}</div>
                 <Field
                   name="account"
-                  value={console.log(values.account)}
-                  // => {updateState({ transactionFields: { account: values.account } })
+                  value={values.account}
+                  // onChange={(option: IExtendedAccount) => {
+                  //   updateState({ transactionFields: { account: option } });
+                  // }}
                   component={({ field, form }: FieldProps) => (
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
                       onChange={(option: IExtendedAccount) => {
-                        updateState({ transactionFields: { account: option } });
                         form.setFieldValue(field.name, option);
+                        updateState({ transactionFields: { account: option } });
+                        // fetchGasPriceEstimates('Ethereum').then(data =>
+                        //   form.setFieldValue('gasEstimates', data)
+                        // );
                       }}
                       accounts={accounts}
                     />
@@ -160,6 +163,7 @@ export default function SendAssetsForm({
                     handleChange(e);
                   }}
                   gasPrice={values.gasPriceSlider}
+                  gasEstimates={values.gasEstimates}
                 />
                 <div className="SendAssetsForm-fieldset-cheapFast">
                   <div>Cheap</div>
