@@ -147,7 +147,7 @@ const web3Steps = [
   { label: 'Transaction Complete', elem: TransactionReceipt }
 ];
 
-export class SendAssets extends Component<RouteComponentProps<{}>> {
+export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
   public state: ISendState = getInitialState();
 
   public render() {
@@ -203,8 +203,19 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   };
 
   private updateState = (state: ISendState) => {
+    const nextAccountField: ITxFields['account'] = {
+      ...this.state.transactionFields.account,
+      ...state.transactionFields.account
+    };
+
+    const nextTransactionFields: ITxFields = {
+      ...this.state.transactionFields,
+      ...state.transactionFields,
+      account: nextAccountField
+    };
+
     this.setState({
-      transactionFields: { ...this.state.transactionFields, ...state.transactionFields }
+      transactionFields: nextTransactionFields
     });
   };
 

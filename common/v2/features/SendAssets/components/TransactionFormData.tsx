@@ -7,6 +7,7 @@ import React, { FormEvent, useContext } from 'react';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
 import translate from 'translations';
+import { fetchGasPriceEstimates } from 'v2';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
@@ -89,9 +90,6 @@ export default function SendAssetsForm({
                 <Field
                   name="account"
                   value={values.account}
-                  // onChange={(option: IExtendedAccount) => {
-                  //   updateState({ transactionFields: { account: option } });
-                  // }}
                   component={({ field, form }: FieldProps) => (
                     <AccountDropdown
                       name={field.name}
@@ -99,9 +97,9 @@ export default function SendAssetsForm({
                       onChange={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
                         updateState({ transactionFields: { account: option } });
-                        // fetchGasPriceEstimates('Ethereum').then(data =>
-                        //   form.setFieldValue('gasEstimates', data)
-                        // );
+                        fetchGasPriceEstimates('Ethereum').then(data =>
+                          form.setFieldValue('gasEstimates', data)
+                        );
                       }}
                       accounts={accounts}
                     />

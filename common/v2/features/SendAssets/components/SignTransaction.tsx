@@ -23,7 +23,7 @@ interface Props {
 
 export default class SignTransaction extends Component<Props> {
   public render() {
-    const { stateValues, transactionFields } = this.props;
+    const { stateValues, transactionFields, onNext, updateState } = this.props;
     const currentWalletType: WalletType = transactionFields.account.accountType;
 
     switch (currentWalletType) {
@@ -34,6 +34,13 @@ export default class SignTransaction extends Component<Props> {
           <SignTransactionMetaMask
             stateValues={stateValues}
             transactionFields={transactionFields}
+            onNext={receipt => {
+              const nextState: DeepPartial<ISendState> = {
+                transactionFields: { account: { transactionHistory: receipt.hash } }
+              };
+              updateState(nextState);
+              onNext();
+            }}
           />
         );
       case 'ledgerNanoS':
