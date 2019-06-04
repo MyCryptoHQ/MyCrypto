@@ -69,7 +69,7 @@ export default class PrintPaperWalletButton extends Component<Props, State> {
 
     return (
       <DownloadLink href={paperWalletPdf} download={`paper-wallet-0x${address.substr(0, 6)}`}>
-        <StyledButton secondary={true} onClick={this.handlePrintClick}>
+        <StyledButton secondary={true} onClick={this.handlePrintClick} disabled={!paperWalletPdf}>
           <PrinterImage src={printerIcon} />
           {printText}
         </StyledButton>
