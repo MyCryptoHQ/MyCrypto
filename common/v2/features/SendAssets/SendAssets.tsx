@@ -2,6 +2,8 @@
 import sendIcon from 'common/assets/images/icn-send.svg';
 import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+
+import { IAsset } from 'v2/types';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import {
@@ -41,8 +43,8 @@ const getInitialState = (): ISendState => {
         amount: getQueryParamWithKey(params, 'value') || '0.00',
         asset:
           getQueryParamWithKey(params, 'sendmode') === 'token'
-            ? getQueryParamWithKey(params, 'tokensymbol') || 'ETH'
-            : 'ETH',
+            ? ({ symbol: getQueryParamWithKey(params, 'tokensymbol') || 'ETH' } as IAsset)
+            : undefined,
         gasPriceSlider: '20',
         gasPriceField: getQueryParamWithKey(params, 'gasprice') || '20',
         gasLimitField:
@@ -96,7 +98,7 @@ const getInitialState = (): ISendState => {
         },
         recipientAddress: '',
         amount: '0.00',
-        asset: 'ETH',
+        asset: undefined,
         gasPriceSlider: '20',
         gasPriceField: '20',
         gasLimitField: '21000',

@@ -1,10 +1,12 @@
-import { GasEstimates } from 'v2/api/gas';
-import { WalletName } from 'v2/config/data';
-import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { IAsset } from 'v2/types';
 import { AssetOption, assetType } from 'v2/services/AssetOption/types';
+import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { WalletName } from 'v2/config/data';
+import { GasEstimates } from 'v2/api/gas';
 
 export interface ITxFields {
-  asset: string;
+  asset: IAsset | undefined;
+  senderAddress: string;
   recipientAddress: string;
   amount: string;
   account: IExtendedAccount;
@@ -31,7 +33,7 @@ export interface ISendState {
   isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
   resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
   recipientAddressLabel: string; //  Recipient-address label found in address book.
-  asset: AssetOption | undefined;
+  asset: IAsset | AssetOption | undefined;
   network: string;
   assetType: assetType; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
 }

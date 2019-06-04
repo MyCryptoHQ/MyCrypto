@@ -25,6 +25,7 @@ export default class AssetField extends Component<Props> {
     this.props.handleChange(e);
   };
 
+  // @TODO:SEND delete file once we determine how to store assets
   public render() {
     return (
       <div className="SendAssetsForm-amountAsset-asset">
@@ -33,14 +34,19 @@ export default class AssetField extends Component<Props> {
           {({ accounts }) => (
             <NetworkOptionsContext.Consumer>
               {({ networkOptions }) => {
+                // Networks of all accounts
                 const relevantNetworks: string[] = [
                   ...new Set(accounts.map(account => account.network))
                 ];
+
                 const assetslist: string[] = [];
+                // For each network
                 relevantNetworks.map(en => {
+                  // get the NetworkOptions
                   const network: NetworkOptions | undefined = networkOptions.find(
                     networkEntry => networkEntry.name === en
                   );
+                  // and get associated assets
                   if (network) {
                     assetslist.push(...network.assets);
                   }

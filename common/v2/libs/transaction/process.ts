@@ -14,7 +14,8 @@ import { hexEncodeQuantity } from '../nodes/rpc/utils';
 export const processFormDataToWeb3Tx = (
   formData: ITxFields
 ): IHexStrWeb3Transaction | undefined => {
-  const asset: AssetOption | undefined = getAssetByTicker(formData.asset);
+  const symbol = formData.asset!.symbol;
+  const asset: AssetOption | undefined = getAssetByTicker(symbol);
 
   const txFields = formData;
 
@@ -74,7 +75,8 @@ export const processFormDataToWeb3Tx = (
 };
 
 export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | undefined => {
-  const asset: AssetOption | undefined = getAssetByTicker(formData.asset);
+  const symbol = formData.asset!.symbol;
+  const asset: AssetOption | undefined = getAssetByTicker(symbol);
 
   const txFields = formData;
 
