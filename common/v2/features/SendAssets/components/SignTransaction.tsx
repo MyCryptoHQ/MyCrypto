@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import { ISendState, ITxFields } from '../types';
-import {
-  SignTransactionPrivateKey,
-  SignTransactionLedger,
-  SignTransactionTrezor,
-  SignTransactionSafeT
-} from './SignTransactionWallets';
 import { DeepPartial } from 'shared/types/util';
-import SignTransactionMetaMask from './SignTransactionWallets/Metamask';
+import { WalletName } from 'v2/config/data';
+import { ISendState, ITxFields } from '../types';
+import './SignTransaction.scss';
+import {
+  SignTransactionLedger,
+  SignTransactionMetaMask,
+  SignTransactionPrivateKey,
+  SignTransactionSafeT,
+  SignTransactionTrezor
+} from './SignTransactionWallets';
+
+type WalletType = WalletName;
 
 interface Props {
   stateValues: ISendState;
@@ -19,47 +23,34 @@ interface Props {
 
 export default class SignTransaction extends Component<Props> {
   public render() {
-    const { stateValues, transactionFields } = this.props;
-    const whichWallet = transactionFields.accountType;
+    const { stateValues, transactionFields, onNext, updateState } = this.props;
+    const currentWalletType: WalletType = transactionFields.account.accountType;
 
-    switch (whichWallet) {
+    switch (currentWalletType) {
       case 'privateKey':
-        return (
-          <div>
-            <SignTransactionPrivateKey />
-          </div>
-        );
+        return <SignTransactionPrivateKey />;
       case 'web3':
         return (
-          <div>
-            <SignTransactionMetaMask
-              stateValues={stateValues}
-              transactionFields={transactionFields}
-            />
-          </div>
+          <SignTransactionMetaMask
+            stateValues={stateValues}
+            transactionFields={transactionFields}
+            onNext={receipt => {
+              const nextState: DeepPartial<ISendState> = {
+                transactionFields: { account: { transactionHistory: receipt.hash } }
+              };
+              updateState(nextState);
+              onNext();
+            }}
+          />
         );
       case 'ledgerNanoS':
-        return (
-          <div>
-            <SignTransactionLedger />
-          </div>
-        );
+        return <SignTransactionLedger />;
       case 'trezor':
-        return (
-          <div>
-            <SignTransactionTrezor />
-          </div>
-        );
+        return <SignTransactionTrezor />;
       case 'safeTmini':
-        return (
-          <div>
-            <SignTransactionSafeT />
-          </div>
-        );
+        return <SignTransactionSafeT />;
       default:
         return null;
-      // case 'Mnemonic':
-      //   return <div>Mnemonic</div>;
     }
   }
 }

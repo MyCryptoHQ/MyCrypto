@@ -5,19 +5,19 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import {
+  getQueryParamWithKey,
+  getQueryTransactionData,
+  isAdvancedQueryTransaction,
+  isQueryTransaction
+} from 'v2/libs/preFillTx';
+import { queryObject } from 'v2/libs/preFillTx/types';
+import {
   ConfirmTransaction,
   SendAssetsForm,
   SignTransaction,
   TransactionReceipt
 } from './components';
-import { ITxFields, ISendState } from './types';
-import {
-  isQueryTransaction,
-  getQueryParamWithKey,
-  getQueryTransactionData,
-  isAdvancedQueryTransaction
-} from 'v2/libs/preFillTx';
-import { queryObject } from 'v2/libs/preFillTx/types';
+import { ISendState, ITxFields } from './types';
 
 const getInitialState = (): ISendState => {
   if (isQueryTransaction(location.search)) {
@@ -25,8 +25,18 @@ const getInitialState = (): ISendState => {
     return {
       step: 0,
       transactionFields: {
-        senderAddress: '',
-        account: undefined,
+        account: {
+          label: '',
+          address: '',
+          network: '',
+          localSettings: '',
+          assets: [''],
+          accountType: undefined,
+          value: 0,
+          transactionHistory: '',
+          derivationPath: '',
+          uuid: ''
+        },
         recipientAddress: getQueryParamWithKey(params, 'to') || '',
         amount: getQueryParamWithKey(params, 'value') || '0.00',
         asset:
@@ -72,8 +82,18 @@ const getInitialState = (): ISendState => {
     return {
       step: 0,
       transactionFields: {
-        senderAddress: '',
-        account: undefined,
+        account: {
+          label: '',
+          address: '',
+          network: '',
+          localSettings: '',
+          assets: [''],
+          accountType: undefined,
+          value: 0,
+          transactionHistory: '',
+          derivationPath: '',
+          uuid: ''
+        },
         recipientAddress: '',
         amount: '0.00',
         asset: 'ETH',
@@ -119,28 +139,48 @@ const steps = [
   { label: 'Transaction Complete', elem: TransactionReceipt }
 ];
 
-export class SendAssets extends Component<RouteComponentProps<{}>> {
+// due to MetaMask deprecating eth_sign method, it has different step order, where sign and send are one panel
+const web3Steps = [
+  { label: 'Send Assets', elem: SendAssetsForm },
+  { label: 'ConfirmTransaction', elem: ConfirmTransaction },
+  { label: '', elem: SignTransaction },
+  { label: 'Transaction Complete', elem: TransactionReceipt }
+];
+
+export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
   public state: ISendState = getInitialState();
 
   public render() {
-    const { step } = this.state;
+    const { step, transactionFields } = this.state;
     const Step = steps[step];
+    const Web3Steps = web3Steps[step];
+
     return (
       <Layout className="SendAssets" centered={true}>
         <ContentPanel
           onBack={this.goToPrevStep}
           className="SendAssets"
-          heading={Step.label}
+          heading={transactionFields.account.accountType === 'web3' ? Web3Steps.label : Step.label}
           icon={sendIcon}
           stepper={{ current: step + 1, total: steps.length - 1 }}
         >
-          <Step.elem
-            transactionFields={this.state.transactionFields}
-            onNext={this.goToNextStep}
-            updateState={this.updateState}
-            onSubmit={this.updateTransactionFields}
-            stateValues={this.state}
-          />
+          {transactionFields.account.accountType === 'web3' ? (
+            <Web3Steps.elem
+              transactionFields={this.state.transactionFields}
+              onNext={this.goToNextStep}
+              updateState={this.updateState}
+              onSubmit={this.updateTransactionFields}
+              stateValues={this.state}
+            />
+          ) : (
+            <Step.elem
+              transactionFields={this.state.transactionFields}
+              onNext={this.goToNextStep}
+              updateState={this.updateState}
+              onSubmit={this.updateTransactionFields}
+              stateValues={this.state}
+            />
+          )}
         </ContentPanel>
       </Layout>
     );
@@ -163,8 +203,19 @@ export class SendAssets extends Component<RouteComponentProps<{}>> {
   };
 
   private updateState = (state: ISendState) => {
+    const nextAccountField: ITxFields['account'] = {
+      ...this.state.transactionFields.account,
+      ...state.transactionFields.account
+    };
+
+    const nextTransactionFields: ITxFields = {
+      ...this.state.transactionFields,
+      ...state.transactionFields,
+      account: nextAccountField
+    };
+
     this.setState({
-      transactionFields: { ...this.state.transactionFields, ...state.transactionFields }
+      transactionFields: nextTransactionFields
     });
   };
 

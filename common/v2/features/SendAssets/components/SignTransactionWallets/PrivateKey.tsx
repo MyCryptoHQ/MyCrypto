@@ -53,7 +53,7 @@ export default class SignTransactionPrivateKey extends Component {
     const { key, password } = this.state;
     const { isValidPkey, isPassRequired } = validatePkeyAndPass(key, password);
     return (
-      <div className="SignTransactionPrivateKey-panel">
+      <div className="SignTransaction-panel">
         <div className="SignTransactionPrivateKey-title">
           Sign the Transaction with your Private Key
         </div>

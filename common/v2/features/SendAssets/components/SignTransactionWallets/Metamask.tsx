@@ -1,88 +1,128 @@
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
-import * as ethers from 'ethers';
-// tslint:disable-next-line: no-duplicate-imports
-import { utils } from 'ethers';
-import { AsyncSendable, Web3Provider } from 'ethers/providers/web3-provider';
+import { ethers, utils } from 'ethers';
+import { Web3Provider } from 'ethers/providers/web3-provider';
 import React, { Component } from 'react';
+import { getNetworkByChainId } from 'v2';
 import { ISendState, ITxFields } from '../../types';
 import './MetaMask.scss';
 
-type AsyncSendableMetamask = AsyncSendable & {
-  on(evt: string, cb: (params: any[]) => void): void;
-  enable(): Promise<boolean>;
+//Test Transaction
+const transaction = {
+  nonce: 0,
+  gasLimit: 21000,
+  gasPrice: utils.bigNumberify('20000000000'),
+  to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
+  // ... or supports ENS names
+  value: utils.parseEther('0.00001'),
+  data: '0x',
+  // This ensures the transaction cannot be replayed on different networks
+  chainId: ethers.utils.getNetwork('ropsten').chainId
 };
 
 declare global {
   interface Window {
-    ethereum?: AsyncSendableMetamask;
+    ethereum?: any;
     web3: any;
+    metaMaskProvider: ethers.providers.Web3Provider;
+    metaMaskSigner: Web3Provider;
   }
 }
-
-// const networks = {
-//   ethereum: 1,
-//   ropsten: 3,
-//   rinkeby: 4,
-//   kovan: 42
-// };
-
 interface Props {
   stateValues: ISendState;
   transactionFields: ITxFields;
+  onNext(receipt: ethers.providers.TransactionResponse): void;
+  // updateState(state: DeepPartial<ISendState>): void;
+}
+
+enum WalletSigningState {
+  READY, //when signerWallet is ready to sendTransaction
+  NOT_READY, //use when signerWallet rejects transaction
+  UNKNOWN //used upon component initialization when wallet status is not determined
 }
 
 interface MetaMaskUserState {
-  account: string;
-  network: string;
-  metaMaskSigner: any;
-  metaMaskProvider: Web3Provider | null;
-  metaMaskAccountMatches: boolean;
-  metaMaskNetworkMatches: boolean;
-  initAccountPolling: null;
+  account: string | undefined;
+  network: number | undefined;
+  accountMatches: boolean;
+  networkMatches: boolean;
+  walletState: WalletSigningState;
 }
 
+// this will be changed when we figure out networks
 const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
-export default class SignTransactionMetaMask extends Component<Props> {
+const ethereumProvider = window.ethereum;
+let metaMaskProvider: ethers.providers.Web3Provider;
+
+async function getMetaMaskProvider() {
+  if (ethereumProvider) {
+    await ethereumProvider.enable();
+    return (metaMaskProvider = new ethers.providers.Web3Provider(ethereumProvider));
+  } else {
+    return ethers.getDefaultProvider(DEFAULT_NETWORK_FOR_FALLBACK);
+  }
+}
+
+export default class SignTransactionMetaMask extends Component<Props, MetaMaskUserState> {
   public state: MetaMaskUserState = {
-    account: '',
-    network: '',
-    metaMaskProvider: null,
-    metaMaskSigner: false,
-    metaMaskAccountMatches: false,
-    metaMaskNetworkMatches: false,
-    initAccountPolling: null
+    account: undefined,
+    network: undefined,
+    accountMatches: false,
+    networkMatches: false,
+    walletState: WalletSigningState.UNKNOWN
   };
 
   constructor(props: Props) {
     super(props);
-    this.getMetaMaskProviderAndSigner = this.getMetaMaskProviderAndSigner.bind(this);
+    this.getMetaMaskAccount = this.getMetaMaskAccount.bind(this);
   }
 
-  public componentDidMount() {
-    this.getMetaMaskProviderAndSigner();
-    this.initMetMaskPolling();
+  public async initProvider() {
+    await getMetaMaskProvider();
+
+    if (ethereumProvider) {
+      this.getMetaMaskAccount();
+      this.watchForAccountChanges(ethereumProvider);
+    } else {
+      throw Error('No web3 found');
+    }
+  }
+
+  public componentWillMount() {
+    this.initProvider();
   }
 
   public render() {
     const { stateValues } = this.props;
+    const { accountMatches, networkMatches, walletState } = this.state;
     return (
-      <div className="SignTransactionMetaMask-panel">
+      <div className="SignTransaction-panel">
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
         <div className="SignTransactionMetaMask-instructions">
-          Sign into MetaMask on your computer and follow the isntructions in the MetaMask window.{' '}
+          Sign into MetaMask on your computer and follow the isntructions in the MetaMask window.
         </div>
         <div className="SignTransactionMetaMask-img">
           <img src={MetamaskSVG} />
         </div>
+        {walletState === WalletSigningState.NOT_READY ? (
+          <div className="SignTransactionMetaMask-rejection">
+            Transaction has been rejected or there was an error. Please restart send-flow
+          </div>
+        ) : null}
+
         <div className="SignTransactionMetaMask-input">
-          {this.state.metaMaskAccountMatches === false && (
-            <div className="SignTransactionMetaMask-wrong-address">
+          {!networkMatches && (
+            <div className="SignTransactionMetaMask-wrong-network">
               {' '}
-              Please switch the account in MetaMask to {
-                stateValues.transactionFields.senderAddress
-              }{' '}
-              <br /> in order to proceed{' '}
+              Please switch the network in MetaMask to{' '}
+              {stateValues.transactionFields.account.network}
+            </div>
+          )}
+          {!accountMatches && (
+            <div className="SignTransactionMetaMask-wrong-address">
+              Please switch the account in MetaMask to{' '}
+              {stateValues.transactionFields.account.address}
+              <br /> in order to proceed
             </div>
           )}
           <div className="SignTransactionMetaMask-description">
@@ -98,61 +138,71 @@ export default class SignTransactionMetaMask extends Component<Props> {
       </div>
     );
   }
-  // private signTransaction() {
 
-  // }
-
-  private initMetMaskPolling() {
-    setInterval(this.getMetaMaskProviderAndSigner, 2000);
-  }
-
-  private checkAddressMatches(metaMaskAddress: string, stateValues: ISendState) {
-    const desiredAddress = utils.getAddress(stateValues.transactionFields.senderAddress);
-
-    if (metaMaskAddress === desiredAddress) {
-      return this.setState({ metaMaskAccountMatches: true });
-    } else {
-      return this.setState({ metaMaskAccountMatches: false });
+  private async getMetaMaskAccount() {
+    if (!metaMaskProvider) {
+      return;
     }
+
+    const metaMaskSigner = metaMaskProvider.getSigner();
+    const metaMaskAddress = await metaMaskSigner.getAddress();
+    const checksumAddress = utils.getAddress(metaMaskAddress);
+
+    this.setState({ account: checksumAddress });
+    this.getMetaMaskNetwork();
+    this.checkAddressMatches(checksumAddress);
   }
 
-  // private checkNetworkMatches(metaMaskNetwork: string, stateValues: ISendState) {
-  //   const desiredNetwork = stateValues.network;
+  private async getMetaMaskNetwork() {
+    if (!metaMaskProvider) {
+      return;
+    }
 
-  //   if (metaMaskNetwork === desiredNetwork) {
-  //     return this.setState({ metaMaskNetworkMatches: true });
-  //   } else {
-  //     return this.setState({ metaMaskNetworkMatches: false });
-  //   }
-  // }
+    const metaMaskNetwork = await metaMaskProvider.getNetwork();
 
-  private async getMetaMaskProviderAndSigner() {
-    if (window.ethereum) {
-      await window.ethereum.enable();
-      const metaMaskProvider = new ethers.providers.Web3Provider(window.ethereum);
-      const metaMaskSigner = await metaMaskProvider.getSigner();
-      const metaMaskNetwork = await metaMaskProvider.getNetwork();
-      const metaMaskAddress = await metaMaskSigner.getAddress();
+    this.setState({ network: metaMaskNetwork.chainId });
+    this.checkNetworkMatches(metaMaskNetwork);
+  }
 
-      const checksumAddress = utils.getAddress(metaMaskAddress);
+  private checkAddressMatches(metaMaskAddress: string) {
+    const desiredAddress = utils.getAddress(this.props.transactionFields.account.address);
+    this.setState({ accountMatches: metaMaskAddress === desiredAddress });
+  }
 
-      await this.setState({
-        account: checksumAddress,
-        network: metaMaskNetwork.chainId,
-        metaMaskProvider,
-        metaMaskSigner
-      });
+  private checkNetworkMatches(metaMaskNetwork: ethers.utils.Network) {
+    const getMetaMaskNetworkbyChainId = getNetworkByChainId(metaMaskNetwork.chainId.toString());
+    if (!getMetaMaskNetworkbyChainId) {
+      return;
+    }
 
-      this.watchForAccountChanges(window.ethereum);
-      this.checkAddressMatches(checksumAddress, this.props.stateValues);
-      console.log(this.state);
+    const localCacheSenderNetwork = this.props.transactionFields.account.network;
+    if (getMetaMaskNetworkbyChainId.name === localCacheSenderNetwork) {
+      this.setState({ networkMatches: true });
+      this.maybeSendTransaction();
     } else {
-      const defaultProvider = ethers.getDefaultProvider(DEFAULT_NETWORK_FOR_FALLBACK);
-      this.setState({ provider: defaultProvider });
+      this.setState({ networkMatches: false });
     }
   }
 
   private watchForAccountChanges(ethereum: NonNullable<Window['ethereum']>) {
-    ethereum.on('accountsChanged', this.getMetaMaskProviderAndSigner);
+    ethereum.on('accountsChanged', this.getMetaMaskAccount);
+  }
+
+  private async maybeSendTransaction() {
+    if (!this.state.accountMatches || !this.state.networkMatches) {
+      return;
+    }
+
+    this.setState({ walletState: WalletSigningState.READY });
+    const signerWallet = metaMaskProvider.getSigner();
+
+    try {
+      const receipt = await signerWallet.sendTransaction(transaction);
+      this.props.onNext(receipt);
+    } catch (err) {
+      if (err.message.includes('User denied transaction signature')) {
+        this.setState({ walletState: WalletSigningState.NOT_READY });
+      }
+    }
   }
 }

@@ -1,14 +1,13 @@
-import { AssetOption, assetType } from 'v2/services/AssetOption/types';
-import { ExtendedAccount as IExtendedAccount } from 'v2/services';
-import { WalletName } from 'v2/config/data';
 import { GasEstimates } from 'v2/api/gas';
+import { WalletName } from 'v2/config/data';
+import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { AssetOption, assetType } from 'v2/services/AssetOption/types';
 
 export interface ITxFields {
   asset: string;
-  senderAddress: string;
   recipientAddress: string;
   amount: string;
-  account?: IExtendedAccount;
+  account: IExtendedAccount;
   data: string;
   gasLimitEstimated: string;
   gasPriceSlider: string;

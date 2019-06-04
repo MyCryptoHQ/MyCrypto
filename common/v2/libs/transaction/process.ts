@@ -33,7 +33,7 @@ export const processFormDataToWeb3Tx = (
       return undefined;
     }
     const rawTransaction: IHexStrWeb3Transaction = {
-      from: txFields.senderAddress,
+      from: txFields.account.address,
       to: txFields.recipientAddress,
       value: txFields.amount
         ? hexEncodeQuantity(toTokenBase(txFields.amount, asset.decimal))
@@ -53,7 +53,7 @@ export const processFormDataToWeb3Tx = (
     }
 
     const rawTransaction: IHexStrWeb3Transaction = {
-      from: txFields.senderAddress,
+      from: txFields.account.address,
       to: asset.contractAddress,
       value: '0x0',
       data: bufferToHex(
