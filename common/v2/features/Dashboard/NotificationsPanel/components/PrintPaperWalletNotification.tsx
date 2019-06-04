@@ -13,7 +13,7 @@ import printerIcon from 'common/assets/images/icn-printer.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-const PrinterImage = styled.embed`
+const PrinterImage = styled.img`
   width: 20px;
   height: 20px;
   margin-right: 10px;
@@ -36,7 +36,7 @@ const ResourceItem = styled(Button)`
 
   &:focus,
   &:hover {
-    embed {
+    img {
       filter: brightness(0) invert(1);
     }
   }

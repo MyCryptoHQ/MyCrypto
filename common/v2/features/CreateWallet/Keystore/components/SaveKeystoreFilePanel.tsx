@@ -9,7 +9,7 @@ import translate, { translateRaw } from 'translations';
 import keystoreIcon from 'common/assets/images/icn-keystore.svg';
 import downloadIcon from 'common/assets/images/icn-download.svg';
 
-const DownloadImage = styled.embed`
+const DownloadImage = styled.img`
   width: 16px;
   height: 16px;
   margin-right: 10px;
@@ -46,7 +46,7 @@ const StyledButton = styled(Button)`
 
   &:focus,
   &:hover {
-    embed {
+    img {
       filter: brightness(0) invert(1);
     }
   }

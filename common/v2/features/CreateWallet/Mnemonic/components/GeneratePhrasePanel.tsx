@@ -20,7 +20,7 @@ const DescriptionItem = styled(Typography)`
   }
 `;
 
-const RegenerateImage = styled.embed`
+const RegenerateImage = styled.img`
   width: 16px;
   height: 16px;
   margin-right: 10px;
@@ -61,7 +61,7 @@ const StyledButton = styled(Button)`
   margin-top: 15px;
   &:focus,
   &:hover {
-    embed {
+    img {
       filter: brightness(0) invert(1);
     }
   }
