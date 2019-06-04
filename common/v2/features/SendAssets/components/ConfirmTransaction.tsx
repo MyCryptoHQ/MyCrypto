@@ -30,19 +30,19 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public render() {
     const {
-      stateValues: { transactionFields: { recipientAddress, amount, asset, account: { address } } },
+      stateValues: {
+        transactionFields: { recipientAddress, amount, asset, account: { address, label } }
+      },
       onNext
     } = this.props;
     const { showingDetails } = this.state;
-    // const recipientLabel = 'unknown';
-    // const senderLabel = 'unknown';
 
     return (
       <div className="ConfirmTransaction">
         <AddressMetadataContext.Consumer>
           {({ addressMetadata }) => {
             let recipientLabel: string = 'Unknown';
-            let senderLabel: string = 'Unknown';
+            let senderLabel: string = label;
             addressMetadata.map(en => {
               if (en.address.toLowerCase() === recipientAddress.toLowerCase()) {
                 recipientLabel = en.label;

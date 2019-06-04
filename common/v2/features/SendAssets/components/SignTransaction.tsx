@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { DeepPartial } from 'shared/types/util';
+import { WalletName } from 'v2/config/data';
 import { ISendState, ITxFields } from '../types';
-import {
-  SignTransactionPrivateKey,
-  SignTransactionMetaMask,
-  SignTransactionLedger,
-  SignTransactionTrezor,
-  SignTransactionSafeT
-} from './SignTransactionWallets';
-import { WalletName } from 'v2/types/global';
 import './SignTransaction.scss';
+import {
+  SignTransactionLedger,
+  SignTransactionMetaMask,
+  SignTransactionPrivateKey,
+  SignTransactionSafeT,
+  SignTransactionTrezor
+} from './SignTransactionWallets';
 
 type WalletType = WalletName;
 
@@ -24,8 +24,8 @@ interface Props {
 export default class SignTransaction extends Component<Props> {
   public render() {
     const { stateValues, transactionFields } = this.props;
-    const currentWalletType: WalletType | undefined = transactionFields.account.accountType;
-    console.log(transactionFields.account.accountType);
+    const currentWalletType: WalletType = transactionFields.account.accountType;
+
     switch (currentWalletType) {
       case 'privateKey':
         return <SignTransactionPrivateKey />;

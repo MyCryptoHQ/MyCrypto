@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
+import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
+import React, { Component } from 'react';
+import { getNetworkByChainId } from 'v2';
 import { ISendState, ITxFields } from '../../types';
-
-import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
 
-// Replace this with the data passed in from FormData
-// const transaction = {
-//   nonce: 0,
-//   gasLimit: 21000,
-//   gasPrice: utils.bigNumberify('20000000000'),
-//   to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
-//   // ... or supports ENS names
-//   value: utils.parseEther('0.01'),
-//   data: '0x',
-//   // This ensures the transaction cannot be replayed on different networks
-//   chainId: ethers.utils.getNetwork('homestead').chainId
-// };
+const transaction = {
+  nonce: 0,
+  gasLimit: 21000,
+  gasPrice: utils.bigNumberify('20000000000'),
+  to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
+  // ... or supports ENS names
+  value: utils.parseEther('0.00001'),
+  data: '0x',
+  // This ensures the transaction cannot be replayed on different networks
+  chainId: ethers.utils.getNetwork('homestead').chainId
+};
 
 declare global {
   interface Window {
@@ -34,9 +33,11 @@ interface Props {
 
 interface MetaMaskUserState {
   account: string | undefined;
-  network: string | undefined;
+  network: number | undefined;
   accountMatches: boolean;
   networkMatches: boolean;
+  transactionComplete: boolean;
+  walletReadyToSign: boolean | null;
 }
 
 // this will be changed when we figure out networks
@@ -59,7 +60,9 @@ export default class SignTransactionMetaMask extends Component<Props> {
     account: undefined,
     network: undefined,
     accountMatches: false,
-    networkMatches: false
+    networkMatches: false,
+    transactionComplete: false,
+    walletReadyToSign: null
   };
 
   constructor(props: Props) {
@@ -71,20 +74,21 @@ export default class SignTransactionMetaMask extends Component<Props> {
     await getMetaMaskProvider();
 
     if (ethereumProvider) {
+      this.getMetaMaskAccount();
       await this.watchForAccountChanges(ethereumProvider);
+    } else {
+      throw Error('No web3 found');
     }
-
-    await this.getMetaMaskAccount();
   }
 
-  public componentDidMount() {
+  public componentWillMount() {
     this.initProvider();
   }
 
   public render() {
     const { stateValues } = this.props;
-    const { accountMatches, networkMatches } = this.state;
-
+    const { accountMatches, networkMatches, walletReadyToSign } = this.state;
+    console.log(this.state);
     return (
       <div className="SignTransaction-panel">
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
@@ -94,11 +98,18 @@ export default class SignTransactionMetaMask extends Component<Props> {
         <div className="SignTransactionMetaMask-img">
           <img src={MetamaskSVG} />
         </div>
+        {walletReadyToSign === false ? (
+          <div className="SignTransactionMetaMask-rejection">
+            Transaction has been rejected or there was an error. Please restart send-flow
+          </div>
+        ) : null}
+
         <div className="SignTransactionMetaMask-input">
           {!networkMatches && (
             <div className="SignTransactionMetaMask-wrong-network">
               {' '}
-              Please switch the network in MetaMask to {stateValues.network}
+              Please switch the network in MetaMask to{' '}
+              {stateValues.transactionFields.account.network}
             </div>
           )}
           {!accountMatches && (
@@ -121,6 +132,7 @@ export default class SignTransactionMetaMask extends Component<Props> {
       </div>
     );
   }
+
   private async getMetaMaskAccount() {
     if (metaMaskProvider) {
       const metaMaskSigner = await metaMaskProvider.getSigner();
@@ -138,7 +150,7 @@ export default class SignTransactionMetaMask extends Component<Props> {
       const metaMaskNetwork = await metaMaskProvider.getNetwork();
 
       await this.setState({ network: metaMaskNetwork.chainId });
-      this.checkNetworkMatches(metaMaskNetwork.name, this.props.stateValues);
+      this.checkNetworkMatches(metaMaskNetwork.chainId, this.props.stateValues);
     }
   }
 
@@ -148,34 +160,40 @@ export default class SignTransactionMetaMask extends Component<Props> {
     this.setState({ accountMatches: metaMaskAddress === desiredAddress });
   }
 
-  private checkNetworkMatches(metaMaskNetwork: string, stateValues: ISendState) {
-    const desiredNetwork = stateValues.network;
+  private async checkNetworkMatches(metaMaskNetwork: any, stateValues: ISendState) {
+    const getMetaMaskNetworkbyChainId = await getNetworkByChainId(metaMaskNetwork);
+    const localCachseSenderNetwork = stateValues.transactionFields.account.network;
 
-    if (metaMaskNetwork === desiredNetwork) {
-      this.setState({ networkMatches: true });
-    } else {
-      this.setState({ networkMatches: false });
+    if (getMetaMaskNetworkbyChainId) {
+      if (getMetaMaskNetworkbyChainId.name === localCachseSenderNetwork) {
+        this.setState({ networkMatches: true });
+        this.triggerTransaction();
+      } else {
+        this.setState({ networkMatches: false });
+      }
     }
   }
 
   private watchForAccountChanges(ethereum: NonNullable<Window['ethereum']>) {
-    ethereum.on('accountsChanged', this.getMetaMaskNetwork);
-
-    this.setState({ networkMatches: true });
+    ethereum.on('accountsChanged', this.getMetaMaskAccount);
   }
 
-  // private triggerTransaction() {
-  //   if (this.state.accountMatches && this.state.networkMatches) {
-  //     this.signTransaction();
-  //   }
-  // }
+  private triggerTransaction() {
+    if (this.state.accountMatches && this.state.networkMatches) {
+      this.setState({ walletReadyToSign: true });
+      this.signTransaction();
+    }
+  }
 
-  // private async signTransaction() {
-  //   const signerWallet = await metaMaskProvider.getSigner();
-  //   signerWallet.sendTransaction(transaction).catch(err => {
-  //     if (err.message.includes('User denied transaction signature')) {
-  //       this.setState({ transactionComplete: false });
-  //     }
-  //   });
-  // }
+  private async signTransaction() {
+    if (this.state.walletReadyToSign) {
+      const signerWallet = await metaMaskProvider.getSigner();
+
+      await signerWallet.sendTransaction(transaction).catch(err => {
+        if (err.message.includes('User denied transaction signature')) {
+          this.setState({ walletReadyToSign: false, transactionComplete: false });
+        }
+      });
+    }
+  }
 }

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled, { StyledFunction } from 'styled-components';
 import { Button, Identicon } from '@mycrypto/ui';
-
+import React, { useEffect, useRef, useState } from 'react';
+import styled, { StyledFunction } from 'styled-components';
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { ExtendedAccount, useOnClickOutside } from 'v2/services';
-import { SCref } from 'v2/types/global';
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];
