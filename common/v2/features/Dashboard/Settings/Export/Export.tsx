@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Typography } from '@mycrypto/ui';
+import { Typography } from '@mycrypto/ui';
 import translate, { translateRaw } from 'translations';
 
+import { ContentPanel, Button } from 'v2/components';
 import { Layout } from 'v2/features';
-import { ContentPanel } from 'v2/components';
 
 import { GlobalSettingsContext } from 'v2/providers';
 
@@ -19,11 +19,6 @@ const ImportSuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const FullWidthButton = styled(Button)`
-  width: 100%;
-  margin-top: 1rem;
 `;
 
 const FullWidthLink = styled(Link)`
@@ -49,7 +44,7 @@ export class Export extends React.Component<RouteComponentProps<{}>> {
                 <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
                 <CacheDisplay>{localCache}</CacheDisplay>
                 <FullWidthLink to="/dashboard/settings">
-                  <FullWidthButton>{translate('SETTINGS_EXPORT_LEAVE')}</FullWidthButton>
+                  <Button fullWidth={true}>{translate('SETTINGS_EXPORT_LEAVE')}</Button>
                 </FullWidthLink>
                 <Downloader cache={localCache} readCache={readCache} />
               </ImportSuccessContainer>

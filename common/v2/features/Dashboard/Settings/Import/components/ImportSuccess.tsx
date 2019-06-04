@@ -1,18 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 import translate from 'translations';
+
+import { Button } from 'v2/components';
 
 const ImportSuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const FullWidthButton = styled(Button)`
-  width: 100%;
-  margin-top: 1rem;
 `;
 
 const FullWidthLink = styled(Link)`
@@ -24,7 +20,9 @@ export default function ImportSuccess() {
     <ImportSuccessContainer>
       {translate('SETTINGS_IMPORT_SUCCESS')}
       <FullWidthLink to="/dashboard/settings">
-        <FullWidthButton secondary={true}>{translate('SETTINGS_IMPORT_COMPLETE')}</FullWidthButton>
+        <Button fullWidth={true} secondary={true}>
+          {translate('SETTINGS_IMPORT_COMPLETE')}
+        </Button>
       </FullWidthLink>
     </ImportSuccessContainer>
   );

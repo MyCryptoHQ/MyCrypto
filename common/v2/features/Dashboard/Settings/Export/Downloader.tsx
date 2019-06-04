@@ -1,14 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 
+import { Button } from 'v2/components';
 import { makeBlob } from 'utils/blob';
 import translate from 'translations';
-
-const FullWidthButton = styled(Button)`
-  width: 100%;
-  margin-top: 1rem;
-`;
 
 const FullWidthDownloadLink = styled.a`
   width: 100%;
@@ -26,7 +21,7 @@ class Downloader extends React.Component<{ cache: string; readCache(): void }> {
     const { blob, name } = this.state;
     return (
       <FullWidthDownloadLink href={blob} download={name}>
-        <FullWidthButton>{translate('SETTINGS_EXPORT_DOWNLOAD')}</FullWidthButton>
+        <Button fullWidth={true}>{translate('SETTINGS_EXPORT_DOWNLOAD')}</Button>
       </FullWidthDownloadLink>
     );
   }
