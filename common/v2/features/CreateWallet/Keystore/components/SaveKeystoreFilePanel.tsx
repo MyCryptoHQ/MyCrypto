@@ -111,7 +111,7 @@ export default class SaveKeystorePanel extends Component<Props, State> {
         <ButtonsWrapper>
           {this.state.error && (
             <ErrorWrapper>
-              <InlineErrorMsg>{'Please download the keystore file.'}</InlineErrorMsg>
+              <InlineErrorMsg>{translate('SAVE_KEYSTORE_ERROR')}</InlineErrorMsg>
             </ErrorWrapper>
           )}
 
