@@ -7,7 +7,7 @@ import PaperWallet from './PaperWallet';
 // Legacy
 import printerIcon from 'common/assets/images/icn-printer.svg';
 
-const PrinterImage = styled.embed`
+const PrinterImage = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 10px;
@@ -28,7 +28,7 @@ const StyledButton = styled(Button)`
 
   &:focus,
   &:hover {
-    embed {
+    img {
       filter: brightness(0) invert(1);
     }
   }
