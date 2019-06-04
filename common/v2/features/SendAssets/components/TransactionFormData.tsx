@@ -26,6 +26,13 @@ import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
+import {
+  validateGasPriceField,
+  validateGasLimitField,
+  validateDataField,
+  validateNonceField
+} from './validators/validators';
+import { InlineErrorMsg } from 'v2/components';
 
 interface Props {
   stateValues: ISendState;
@@ -46,7 +53,6 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 export default function SendAssetsForm({
-  stateValues,
   transactionFields,
   onNext,
   onSubmit,
@@ -61,7 +67,7 @@ export default function SendAssetsForm({
           onSubmit(fields);
           onNext();
         }}
-        render={({ setFieldValue, values, handleChange }) => {
+        render={({ errors, setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           return (
@@ -190,47 +196,77 @@ export default function SendAssetsForm({
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
-                        <GasPriceField
-                          handleChange={(e: FormEvent<HTMLInputElement>) => {
-                            updateState({
-                              transactionFields: { gasPriceField: e.currentTarget.value }
-                            });
-                            handleChange(e);
-                          }}
-                          stateValues={stateValues}
+                        <Field
+                          name="gasPriceField"
+                          validate={validateGasPriceField}
+                          render={({ field, form }: FieldProps<ITxFields>) => (
+                            <GasPriceField
+                              onChange={(option: string) => {
+                                form.setFieldValue(field.name, option);
+                              }}
+                              name={field.name}
+                              value={field.value}
+                            />
+                          )}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
-                        <GasLimitField
-                          handleChange={(e: FormEvent<HTMLInputElement>) => {
-                            updateState({
-                              transactionFields: { gasLimitField: e.currentTarget.value }
-                            });
-                            handleChange(e);
-                          }}
-                          stateValues={stateValues}
+                        <Field
+                          name="gasLimitField"
+                          validate={validateGasLimitField}
+                          render={({ field, form }: FieldProps<ITxFields>) => (
+                            <GasLimitField
+                              onChange={(option: string) => {
+                                form.setFieldValue(field.name, option);
+                              }}
+                              name={field.name}
+                              value={field.value}
+                            />
+                          )}
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce">Nonce (?)</label>
-                        <NonceField
-                          handleChange={(e: FormEvent<HTMLInputElement>) => {
-                            updateState({ transactionFields: { data: e.currentTarget.value } });
-                            handleChange(e);
-                          }}
-                          stateValues={stateValues}
+                        <Field
+                          name="nonceField"
+                          validate={validateNonceField}
+                          render={({ field, form }: FieldProps<ITxFields>) => (
+                            <NonceField
+                              onChange={(option: string) => {
+                                form.setFieldValue(field.name, option);
+                              }}
+                              name={field.name}
+                              value={field.value}
+                            />
+                          )}
                         />
                       </div>
                     </div>
+                    <div className="SendAssetsForm-advancedOptions-errors">
+                      {errors.gasPriceField && (
+                        <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
+                      )}
+                      {errors.gasLimitField && (
+                        <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
+                      )}
+                      {errors.nonceField && <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>}
+                    </div>
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
-                      <DataField
-                        handleChange={(e: FormEvent<HTMLInputElement>) => {
-                          updateState({ transactionFields: { data: e.currentTarget.value } });
-                          handleChange(e);
-                        }}
-                        values={stateValues}
+                      <Field
+                        name="data"
+                        validate={validateDataField}
+                        render={({ field, form }: FieldProps<ITxFields>) => (
+                          <DataField
+                            onChange={(option: string) => {
+                              form.setFieldValue(field.name, option);
+                            }}
+                            errors={errors.data}
+                            name={field.name}
+                            value={field.value}
+                          />
+                        )}
                       />
                     </fieldset>
                     <div className="SendAssetsForm-advancedOptions-content-output">
