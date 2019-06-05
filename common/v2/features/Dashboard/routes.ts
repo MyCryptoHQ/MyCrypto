@@ -12,19 +12,19 @@ export default [
   },
   {
     name: 'Request Assets',
-    path: '/dashboard/request',
+    path: '/requestAssets',
     exact: true,
     component: RequestAssets
   },
   {
     name: 'Send Assets',
-    path: '/dashboard/send',
+    path: '/sendAssets',
     exact: true,
     component: SendAssets
   },
   {
     name: 'Settings',
-    path: '/dashboard/settings',
+    path: '/settings',
     exact: true,
     component: Settings
   }

@@ -10,19 +10,19 @@ export const links = [
     title: 'Manage Assets',
     subItems: [
       {
-        to: '/dashboard/send',
+        to: '/sendAssets',
         title: 'Send Assets'
       },
       {
-        to: '/dashboard/receive',
+        to: '/receiveAssets',
         title: 'Receive Assets'
       },
       {
-        to: '/dashboard/request',
+        to: '/requestAssets',
         title: 'Request Assets'
       },
       {
-        to: '/dashboard/swap',
+        to: '/swapAssets',
         title: 'Swap Assets'
       },
       {

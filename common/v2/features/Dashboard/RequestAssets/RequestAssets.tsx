@@ -1,6 +1,6 @@
 import noop from 'lodash/noop';
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { ComboBox, Copyable, Input } from '@mycrypto/ui';
 
@@ -105,4 +105,4 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
   );
 }
 
-export default withRouter(RequestAssets);
+export default RequestAssets;

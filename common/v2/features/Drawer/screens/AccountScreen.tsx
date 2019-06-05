@@ -42,7 +42,7 @@ export default {
     {
       icon: settingsIcon,
       title: 'Settings',
-      link: '/dashboard/settings'
+      link: '/settings'
     },
     {
       icon: unlockIcon,
