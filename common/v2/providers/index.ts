@@ -7,8 +7,7 @@ export {
   DerivationPathOptionsContext,
   DerivationPathOptionsProvider
 } from './DerivationPathOptionsProvider';
-export { GlobalSettingsContext, GlobalSettingsProvider } from './GlobalSettingsProvider';
-export { CurrentsContext, CurrentsProvider } from './CurrentsProvider';
+export { SettingsContext, SettingsProvider } from './SettingsProvider';
 export { FiatCurrencyContext, FiatCurrencyProvider } from './FiatCurrencyProvider';
 export {
   NotificationsContext,

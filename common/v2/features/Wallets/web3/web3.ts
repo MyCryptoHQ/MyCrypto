@@ -15,7 +15,7 @@ import {
   readNodeOptions,
   createNodeOptionsWithID
 } from 'v2/services/NodeOptions/NodeOptions';
-import { updateCurrents, readCurrents } from 'v2/services/Currents/Currents';
+import { updateSetting, readAllSettings } from 'v2/services/Settings/Settings';
 import { Network } from 'v2/services/Network/types';
 
 //#region Web3
@@ -47,7 +47,7 @@ export const initWeb3Node = async () => {
   }
   web3Added = true;
   createNodeOptionsWithID(config, id);
-  updateCurrents({ ...readCurrents(), node: 'web3' });
+  updateSetting({ ...readAllSettings(), node: 'web3' });
   return lib;
 };
 
@@ -85,7 +85,7 @@ export const unlockWeb3 = async () => {
 
 export const getWeb3Node = async () => {
   const currNode = readNodeOptions('web3');
-  const currNodeId = readCurrents().node;
+  const currNodeId = readAllSettings().node;
   if (currNode && currNodeId && isWeb3NodeId(currNodeId)) {
     return currNode;
   }

@@ -9,8 +9,7 @@ import { ExtendedAccount } from 'v2/services';
 import './AccountList.scss';
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
-import { CurrentsContext } from 'v2/providers/CurrentsProvider/CurrentsProvider';
-import { AccountContext } from 'v2/providers';
+import { AccountContext, SettingsContext } from 'v2/providers';
 
 const DeleteButton = styled(Button)`
   align-self: flex-start;
@@ -26,9 +25,12 @@ interface AccountListProps {
 
 export default function AccountList(props: AccountListProps) {
   const { deleteAccount, className } = props;
-  const { currents } = useContext(CurrentsContext);
+  const { settings } = useContext(SettingsContext);
   const { accounts } = useContext(AccountContext);
-  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(accounts, currents.accounts);
+  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
+    accounts,
+    settings.dashboardAccounts
+  );
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;

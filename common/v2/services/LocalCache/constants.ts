@@ -7,8 +7,7 @@ export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 
 export interface LocalCache {
-  currents: serviceTypes.Currents;
-  globalSettings: Partial<serviceTypes.GlobalSettings>;
+  settings: serviceTypes.Settings;
   recentAccounts: string[];
   accounts: Record<string, serviceTypes.Account>;
   accountTypes: Record<string, serviceTypes.AccountType>;
@@ -24,18 +23,13 @@ export interface LocalCache {
 }
 
 export const CACHE_INIT_DEV: LocalCache = {
-  currents: {
-    accounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
+  settings: {
     fiatCurrency: 'USD',
-    activeWallet: 'all',
-    node: 'eth_mycrypto',
-    network: 'ETH'
+    darkMode: false,
+    dashboardAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
+    inactivityTimer: 1800000
   },
   recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
-  globalSettings: {
-    fiatCurrency: 'USD',
-    darkMode: true
-  },
   accounts: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
       label: 'Foo',
@@ -154,11 +148,13 @@ export const CACHE_INIT_DEV: LocalCache = {
 
 export const CACHE_INIT: LocalCache = {
   // : LocalCache
-  currents: {
-    accounts: []
+  settings: {
+    fiatCurrency: 'USD',
+    darkMode: false,
+    dashboardAccounts: [],
+    inactivityTimer: 1800000
   },
   recentAccounts: [],
-  globalSettings: {},
   accounts: {},
   accountTypes: {},
   assets: {},

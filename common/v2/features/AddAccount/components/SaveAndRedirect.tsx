@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Route, Redirect } from 'react-router';
 import { FormData } from 'v2/features/AddAccount/types';
 import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
-import { AccountContext, NotificationsContext, CurrentsContext } from 'v2/providers';
+import { AccountContext, NotificationsContext, SettingsContext } from 'v2/providers';
 import { Network } from 'v2/services/Network/types';
 import { Account } from 'v2/services/Account/types';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
@@ -15,7 +15,7 @@ import { getAccountByAddress } from 'v2/libs/accounts/accounts';
 */
 function SaveAndRedirect(payload: { formData: FormData }) {
   const { createAccountWithID } = useContext(AccountContext);
-  const { currents, updateCurrentsAccounts } = useContext(CurrentsContext);
+  const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { displayNotification } = useContext(NotificationsContext);
   useEffect(() => {
     const network: Network | undefined = getNetworkByName(payload.formData.network);
@@ -39,7 +39,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         timestamp: 0
       };
       createAccountWithID(account, newUUID);
-      updateCurrentsAccounts([...currents.accounts, newUUID]);
+      updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
       createAssetWithID(newAsset, newAssetID);
       displayNotification(NotificationTemplates.walletAdded, {
         address: account.address

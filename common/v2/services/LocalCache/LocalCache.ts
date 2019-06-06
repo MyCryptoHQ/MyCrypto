@@ -24,7 +24,7 @@ export const initializeCache = () => {
 
     initAccountTypes();
 
-    initGlobalSettings();
+    initSettings();
 
     initContracts();
 
@@ -40,11 +40,13 @@ export const hardRefreshCache = () => {
   setCache(CACHE_INIT);
 };
 
-export const initGlobalSettings = () => {
+export const initSettings = () => {
   const newStorage = getCacheRaw();
-  newStorage.globalSettings = {
+  newStorage.settings = {
     fiatCurrency: 'USD',
-    darkMode: false
+    darkMode: false,
+    dashboardAccounts: [],
+    inactivityTimer: 1800000
   };
   setCache(newStorage);
 };
@@ -202,7 +204,7 @@ export const destroyEncryptedCache = () => {
 
 // Settings operations
 
-type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings' | 'networks';
+type SettingsKey = 'settings' | 'screenLockSettings' | 'networks';
 
 export const readSettings = <K extends SettingsKey>(key: K) => () => {
   return getCache()[key];
@@ -342,7 +344,7 @@ export const initTestAccounts = () => {
   newAccounts.map(accountToAdd => {
     const uuid = utils.generateUUID();
     newStorage.accounts[uuid] = accountToAdd;
-    newStorage.currents.accounts.push(uuid);
+    newStorage.settings.dashboardAccounts.push(uuid);
   });
   Object.keys(newAssets).map(assetToAdd => {
     newStorage.assets[assetToAdd] = newAssets[assetToAdd];
