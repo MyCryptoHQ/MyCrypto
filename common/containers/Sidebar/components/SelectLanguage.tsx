@@ -65,4 +65,7 @@ const mapDispatchToProps = {
   closeSidebar: sidebarActions.closeSidebar
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSelect);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LanguageSelect);

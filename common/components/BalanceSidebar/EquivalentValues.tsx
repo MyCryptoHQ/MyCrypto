@@ -337,6 +337,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, { fetchCCRates: ratesActions.fetchCCRatesRequested })(
-  EquivalentValues
-);
+export default connect(
+  mapStateToProps,
+  { fetchCCRates: ratesActions.fetchCCRatesRequested }
+)(EquivalentValues);

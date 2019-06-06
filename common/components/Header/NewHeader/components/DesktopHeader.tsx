@@ -57,7 +57,9 @@ class DesktopHeader extends Component<Props> {
 
   public render() {
     const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
-    const { visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
+    const {
+      visibleDropdowns: { sendAndReceive, buyAndExchange, tools }
+    } = this.state;
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
     const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
     const toolsIcon = generateCaretIcon(tools);
@@ -199,4 +201,7 @@ const mapDispatchToProps = {
   setAccessMessage: walletActions.setAccessMessage
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DesktopHeader);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DesktopHeader);

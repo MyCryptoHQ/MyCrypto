@@ -101,7 +101,7 @@ export const fetchRates = (symbols: string[] = []): Promise<CCResponse> =>
           if (rates[sym]) {
             eqRates[sym] = rateSymbols.symbols.all.reduce(
               (symRates, rateSym) => {
-                symRates[rateSym] = 1 / rates[sym] * rates[rateSym];
+                symRates[rateSym] = (1 / rates[sym]) * rates[rateSym];
                 return symRates;
               },
               {} as ISymbol

@@ -47,4 +47,7 @@ class Contracts extends Component<RouteComponentProps<{}>> {
   }
 }
 
-export default connect(null, {})(Contracts);
+export default connect(
+  null,
+  {}
+)(Contracts);
