@@ -42,6 +42,8 @@ export const CACHE_INIT_DEV: LocalCache = {
           value: 0,
           from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
           to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+          data: '0x',
+          assetType: 'base',
           fiatValue: {
             USD: '0'
           }
@@ -92,7 +94,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       color: '#007896',
       blockExplorer: {},
       tokenExplorer: {},
-      tokens: [],
       contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
       nodes: [
         {
@@ -102,7 +103,7 @@ export const CACHE_INIT_DEV: LocalCache = {
           url: 'https://api.mycryptoapi.com/eth'
         }
       ],
-      dPathFormats: {
+      dPaths: {
         [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
       },
       gasPriceSettings: {

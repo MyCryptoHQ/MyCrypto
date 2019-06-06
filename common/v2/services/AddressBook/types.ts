@@ -4,9 +4,6 @@ export interface AddressBook {
   notes: string;
 }
 
-export interface ExtendedAddressBook {
-  address: string;
-  label: string;
-  notes: string;
+export interface ExtendedAddressBook extends AddressBook {
   uuid: string;
 }

@@ -52,7 +52,7 @@ export const isWalletFormatSupportedOnNetwork = (network: Network, format: Walle
     if (!network) {
       return false;
     }
-    const dPath: DPath | undefined = network.dPathFormats && network.dPathFormats[format];
+    const dPath: DPath | undefined = network.dPaths && network.dPaths[format];
     return !!dPath;
   }
 

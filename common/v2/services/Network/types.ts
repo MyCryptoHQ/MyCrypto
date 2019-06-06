@@ -1,21 +1,20 @@
 import { StaticNetworkIds } from 'shared/types/network';
 
 export interface Network {
-  contracts: string[];
-  baseAsset: string;
-  assets: string[];
-  nodes: NodeOptions[];
   id: string;
   name: string;
+  baseAsset: string;
   chainId: number;
   isCustom: boolean;
   color: string | undefined;
   blockExplorer: {};
   tokenExplorer: {};
-  tokens: {};
-  dPathFormats: DPathFormats;
+  assets: string[];
+  contracts: string[];
+  dPaths: DPathFormats;
   gasPriceSettings: GasPriceSetting;
   shouldEstimateGasPrice: boolean | undefined;
+  nodes: NodeOptions[];
 }
 
 export interface ExtendedNetwork extends Network {

@@ -104,8 +104,7 @@ export const initNetworks = () => {
       color: STATIC_NETWORKS_INITIAL_STATE[en].color,
       blockExplorer: {},
       tokenExplorer: {},
-      tokens: {},
-      dPathFormats: {
+      dPaths: {
         ...STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
         default: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats[InsecureWalletName.MNEMONIC_PHRASE]
       },

@@ -1,4 +1,5 @@
 import { WalletName } from 'v2/config/data';
+import { assetMethod } from '../Asset/types';
 
 export interface Account {
   label: string;
@@ -24,7 +25,9 @@ export interface TransactionData {
   from: string;
   to: string;
   value: number;
+  data: string;
   fiatValue: { USD: string };
+  assetType: assetMethod;
 }
 
 export interface AssetBalanceObject {
