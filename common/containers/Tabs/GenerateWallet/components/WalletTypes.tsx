@@ -173,8 +173,8 @@ const WalletSuggestions: React.SFC<WalletSuggestionsProps> = ({ showGenerate }) 
       )}
 
       <div className="WalletTypes-suggestions">
-        {suggestions.map(sug => (
-          <div className={`WalletSuggestion is-${sug.type}`}>
+        {suggestions.map((sug, index) => (
+          <div key={index} className={`WalletSuggestion is-${sug.type}`}>
             <h3 className="WalletSuggestion-name">
               <img className="WalletSuggestion-name-icon" src={sug.icon} />
               {sug.name}
