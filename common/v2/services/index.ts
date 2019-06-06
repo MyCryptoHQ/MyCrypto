@@ -1,7 +1,7 @@
 export * from './Analytics';
 export * from './API';
 export * from './Cache';
-export * from './ContractOptions';
+export * from './Contracts';
 export * from './Currents';
 export * from './Effects';
 export * from './LocalCache';
@@ -12,7 +12,7 @@ export * from './Account';
 export * from './AccountType';
 export * from './Asset';
 export * from './DerivationPathOptions';
-export * from './NetworkOptions';
+export * from './Network';
 export * from './NodeOptions';
 export * from './ShapeShift';
 export * from './FiatCurrency';

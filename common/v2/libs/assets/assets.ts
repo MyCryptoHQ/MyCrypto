@@ -1,6 +1,6 @@
 import { getCache } from 'v2/services/LocalCache';
 import { Asset } from 'v2/services/Asset/types';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 import { generateUUID } from '../cache';
 
 export const getAllAssets = () => {
@@ -12,7 +12,7 @@ export const getAssetByTicker = (symbol: string): Asset | undefined => {
   return assets.find(asset => asset.ticker.toLowerCase() === symbol.toLowerCase());
 };
 
-export const getNewDefaultAssetTemplateByNetwork = (network: NetworkOptions): Asset => {
+export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => {
   const baseAssetOfNetwork: Asset | undefined = getAssetByTicker(network.unit);
   if (!baseAssetOfNetwork) {
     return {

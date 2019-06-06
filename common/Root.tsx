@@ -37,7 +37,7 @@ import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
-import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
+import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
 import Dashboard from 'v2/features/Dashboard';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
@@ -129,7 +129,7 @@ class RootClass extends Component<Props, State> {
               <AccountProvider>
                 <CurrentsProvider>
                   <NotificationsProvider>
-                    <NetworkOptionsProvider>
+                    <NetworksProvider>
                       <Router>
                         <LockScreenProvider>
                           <PageVisitsAnalytics>
@@ -144,7 +144,7 @@ class RootClass extends Component<Props, State> {
                       </Router>
                       {developmentMode && <DevTools />}
                       <div id="ModalContainer" />
-                    </NetworkOptionsProvider>
+                    </NetworksProvider>
                   </NotificationsProvider>
                 </CurrentsProvider>
               </AccountProvider>

@@ -1,6 +1,6 @@
 import { GasPriceSetting, DPathFormats } from 'types/network';
 
-export interface NetworkOptions {
+export interface Network {
   contracts: string[];
   baseAsset: string;
   assets: string[];
@@ -19,6 +19,6 @@ export interface NetworkOptions {
   shouldEstimateGasPrice: boolean | undefined;
 }
 
-export interface ExtendedNetworkOptions extends NetworkOptions {
+export interface ExtendedNetwork extends Network {
   uuid: string;
 }

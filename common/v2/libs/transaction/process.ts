@@ -2,7 +2,7 @@ import { ITxFields } from 'v2/features/SendAssets/types';
 import { IHexStrWeb3Transaction, IHexStrTransaction } from './typings';
 import { getAssetByTicker } from 'v2/libs/assets';
 import { getNetworkById } from '../networks/networks';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 
 import { Address, TokenValue, toWei, toTokenBase } from '../units';
 import BN from 'bn.js';
@@ -23,7 +23,7 @@ export const processFormDataToWeb3Tx = (
     return undefined;
   }
 
-  const network: NetworkOptions | undefined = getNetworkById(asset.networkId);
+  const network: Network | undefined = getNetworkById(asset.networkId);
 
   if (!network) {
     return undefined;
@@ -84,7 +84,7 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
     return undefined;
   }
 
-  const network: NetworkOptions | undefined = getNetworkById(asset.networkId);
+  const network: Network | undefined = getNetworkById(asset.networkId);
 
   if (!network) {
     return undefined;

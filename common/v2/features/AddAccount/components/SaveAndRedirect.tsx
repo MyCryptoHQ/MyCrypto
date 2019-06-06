@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router';
 import { FormData } from 'v2/features/AddAccount/types';
 import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
 import { AccountContext, NotificationsContext, CurrentsContext } from 'v2/providers';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 import { Account } from 'v2/services/Account/types';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
 import { Asset } from 'v2/services/Asset/types';
@@ -18,7 +18,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
   const { currents, updateCurrentsAccounts } = useContext(CurrentsContext);
   const { displayNotification } = useContext(NotificationsContext);
   useEffect(() => {
-    const network: NetworkOptions | undefined = getNetworkByName(payload.formData.network);
+    const network: Network | undefined = getNetworkByName(payload.formData.network);
     if (!network || getAccountByAddress(payload.formData.account)) {
       displayNotification(NotificationTemplates.walletNotAdded, {
         address: payload.formData.account

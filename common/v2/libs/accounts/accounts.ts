@@ -6,7 +6,7 @@ import { getAssetByName } from '../assets/assets';
 import { fromWei } from '../units';
 import BN from 'bn.js';
 import { getNetworkByName, getNodeByName } from '../networks/networks';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 import { NodeOptions } from 'v2/services/NodeOptions/types';
 import RpcNode from '../nodes/rpc';
 
@@ -58,7 +58,7 @@ export function getNodeLib(): INode {
 
 export const getAccountBalance = async (
   address: string,
-  network: NetworkOptions | undefined
+  network: Network | undefined
 ): Promise<BN> => {
   const nodeOptions: NodeOptions | undefined = getNodeByName(
     network ? network.nodes[0] : 'eth_mycrypto'
@@ -90,7 +90,7 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
 };
 
 export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
-  const network: NetworkOptions | undefined = getNetworkByName(account.network);
+  const network: Network | undefined = getNetworkByName(account.network);
   if (!network) {
     return undefined;
   }

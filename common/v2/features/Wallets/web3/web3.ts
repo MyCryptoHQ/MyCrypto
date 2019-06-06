@@ -16,7 +16,7 @@ import {
   createNodeOptionsWithID
 } from 'v2/services/NodeOptions/NodeOptions';
 import { updateCurrents, readCurrents } from 'v2/services/Currents/Currents';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 
 //#region Web3
 
@@ -24,7 +24,7 @@ let web3Added = true;
 
 export const initWeb3Node = async () => {
   const { chainId, lib } = await setupWeb3Node();
-  const network: NetworkOptions | undefined = getNetworkByChainId(chainId);
+  const network: Network | undefined = getNetworkByChainId(chainId);
   if (!network) {
     throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
   }

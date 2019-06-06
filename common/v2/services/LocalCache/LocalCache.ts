@@ -18,7 +18,7 @@ export const initializeCache = () => {
 
     initFiatCurrencies();
 
-    initNetworkOptions();
+    initNetworks();
 
     initNodeOptions();
 
@@ -26,7 +26,7 @@ export const initializeCache = () => {
 
     initGlobalSettings();
 
-    initContractOptions();
+    initContracts();
 
     initAssets();
 
@@ -69,20 +69,20 @@ export const initNodeOptions = () => {
         url: entry.url
       };
       newStorage.nodeOptions[newNode.name] = newNode;
-      newStorage.networkOptions[en].nodes.push(newNode.name);
+      newStorage.networks[en].nodes.push(newNode.name);
     });
   });
   setCache(newStorage);
 };
 
-export const initNetworkOptions = () => {
+export const initNetworks = () => {
   const newStorage = getCacheRaw();
   const allNetworks: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
   allNetworks.map((en: any) => {
     const newContracts: string[] = [];
     const newAssets: string[] = [];
-    Object.keys(newStorage.contractOptions).map(entry => {
-      if (newStorage.contractOptions[entry].network === en) {
+    Object.keys(newStorage.contracts).map(entry => {
+      if (newStorage.contracts[entry].networkId === en) {
         newContracts.push(entry);
       }
     });
@@ -91,11 +91,12 @@ export const initNetworkOptions = () => {
         newAssets.push(entry);
       }
     });
-    const newLocalNetwork: types.NetworkOptions = {
+    const baseAssetID = utils.generateUUID();
+    const newLocalNetwork: types.Network = {
       contracts: newContracts,
       assets: [...newAssets],
       nodes: [],
-      baseAsset: STATIC_NETWORKS_INITIAL_STATE[en].id,
+      baseAsset: baseAssetID,
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
       unit: STATIC_NETWORKS_INITIAL_STATE[en].unit,
@@ -110,7 +111,7 @@ export const initNetworkOptions = () => {
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
     const newLocalAssetOption: types.Asset = {
-      uuid: utils.generateUUID(),
+      uuid: baseAssetID,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
       networkId: en,
       ticker: en,
@@ -118,8 +119,8 @@ export const initNetworkOptions = () => {
       decimal: 18,
       contractAddress: null
     };
-    newStorage.networkOptions[en] = newLocalNetwork;
-    newStorage.assets[newLocalAssetOption.uuid] = newLocalAssetOption;
+    newStorage.networks[en] = newLocalNetwork;
+    newStorage.assets[baseAssetID] = newLocalAssetOption;
   });
   setCache(newStorage);
 };
@@ -129,17 +130,17 @@ export const initAssets = () => {
   const assets = AssetsData();
   Object.keys(assets).map(en => {
     newStorage.assets[en] = assets[en];
-    newStorage.networkOptions[assets[en].networkId].assets.push(en);
+    newStorage.networks[assets[en].networkId].assets.push(en);
   });
   setCache(newStorage);
 };
 
-export const initContractOptions = () => {
+export const initContracts = () => {
   const newStorage = getCacheRaw();
   const contracts = ContractsData();
   Object.keys(contracts).map(en => {
-    newStorage.contractOptions[en] = contracts[en];
-    newStorage.networkOptions[contracts[en].network].contracts.push(en);
+    newStorage.contracts[en] = contracts[en];
+    newStorage.networks[contracts[en].networkId].contracts.push(en);
   });
   setCache(newStorage);
 };
@@ -201,7 +202,7 @@ export const destroyEncryptedCache = () => {
 
 // Settings operations
 
-type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings' | 'networkOptions';
+type SettingsKey = 'currents' | 'globalSettings' | 'screenLockSettings' | 'networks';
 
 export const readSettings = <K extends SettingsKey>(key: K) => () => {
   return getCache()[key];
@@ -222,10 +223,10 @@ type CollectionKey =
   | 'notifications'
   | 'addressMetadata'
   | 'assets'
-  | 'contractOptions'
+  | 'contracts'
   | 'derivationPathOptions'
   | 'fiatCurrencies'
-  | 'networkOptions'
+  | 'networks'
   | 'nodeOptions';
 
 export const create = <K extends CollectionKey>(key: K) => (

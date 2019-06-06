@@ -1,9 +1,9 @@
 import { getNetworkById } from 'v2/libs/networks/networks';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 import { gasPriceDefaults } from 'config/data';
 import { GasEstimates, fetchGasEstimates } from 'v2/api/gas';
 
-export function getDefaultEstimates(network: NetworkOptions | undefined) {
+export function getDefaultEstimates(network: Network | undefined) {
   // Must yield time for testability
   const time = Date.now();
   if (!network) {

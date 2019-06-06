@@ -13,9 +13,9 @@ export interface LocalCache {
   accounts: Record<string, serviceTypes.Account>;
   accountTypes: Record<string, serviceTypes.AccountType>;
   assets: Record<string, serviceTypes.Asset>;
-  networkOptions: Record<string, serviceTypes.NetworkOptions>;
+  networks: Record<string, serviceTypes.Network>;
   nodeOptions: Record<string, serviceTypes.NodeOptions>;
-  contractOptions: Record<string, serviceTypes.ContractOptions>;
+  contracts: Record<string, serviceTypes.Contract>;
   derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   addressMetadata: Record<string, serviceTypes.AddressMetadata>;
   notifications: Record<string, serviceTypes.Notification>;
@@ -92,7 +92,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       decimal: 18
     }
   },
-  networkOptions: {
+  networks: {
     ETH: {
       id: 'ETH',
       name: 'Ethereum',
@@ -126,10 +126,10 @@ export const CACHE_INIT_DEV: LocalCache = {
       url: 'https://api.mycryptoapi.com/eth'
     }
   },
-  contractOptions: {
+  contracts: {
     '17ed6f49-ff23-4bef-a676-69174c266b38': {
       name: 'Athenian: Warrior for Battle',
-      network: 'Ethereum',
+      networkId: 'ETH',
       address: '0x17052d51E954592C1046320c2371AbaB6C73Ef10',
       abi:
         '[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_amount","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"tokenName","type":"string"},{"name":"tokenSymbol","type":"string"},{"name":"tokenSupply","type":"uint256"}],"name":"SetupToken","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[{"name":"adr","type":"address"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]'
@@ -162,9 +162,9 @@ export const CACHE_INIT: LocalCache = {
   accounts: {},
   accountTypes: {},
   assets: {},
-  networkOptions: {},
+  networks: {},
   nodeOptions: {},
-  contractOptions: {},
+  contracts: {},
   derivationPathOptions: {},
   addressMetadata: {},
   notifications: {},
