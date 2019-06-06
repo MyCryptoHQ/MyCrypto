@@ -1,7 +1,7 @@
 import * as serviceTypes from 'v2/services/types';
-import { SecureWalletName } from 'config/data';
+import { SecureWalletName } from 'v2/config/data';
 import { InsecureWalletName } from 'v2/features/Wallets/types';
-import { ETH_DEFAULT } from 'config/dpaths';
+import { ETH_DEFAULT } from 'v2/config/dpaths';
 
 export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
@@ -13,7 +13,6 @@ export interface LocalCache {
   assets: Record<string, serviceTypes.Asset>;
   networks: Record<string, serviceTypes.Network>;
   contracts: Record<string, serviceTypes.Contract>;
-  derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   addressBook: Record<string, serviceTypes.AddressBook>;
   notifications: Record<string, serviceTypes.Notification>;
   screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
@@ -124,7 +123,6 @@ export const CACHE_INIT_DEV: LocalCache = {
         '[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_amount","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"tokenName","type":"string"},{"name":"tokenSymbol","type":"string"},{"name":"tokenSupply","type":"uint256"}],"name":"SetupToken","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[{"name":"adr","type":"address"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]'
     }
   },
-  derivationPathOptions: {},
   addressBook: {
     '0x80200997f095da94e404f7e0d581aab1ffba9f7d': {
       address: '0x80200997f095da94e404f7e0d581aab1ffba9f7d',
@@ -148,7 +146,6 @@ export const CACHE_INIT: LocalCache = {
   assets: {},
   networks: {},
   contracts: {},
-  derivationPathOptions: {},
   addressBook: {},
   notifications: {}
 };

@@ -55,7 +55,7 @@ function WalletBreakdown() {
       balances.push({
         asset: baseAsset ? baseAsset.name : 'Unknown Asset',
         amount:
-          -(en.timestamp - Date.now()) >= 15000
+          -(en.timestamp - Date.now()) >= 150000
             ? getAccountBalances(currentAccounts, updateAccount)
             : parseFloat(getBalanceFromAccount(en)).toFixed(4),
         value: 0

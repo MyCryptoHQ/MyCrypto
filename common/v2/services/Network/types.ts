@@ -1,4 +1,3 @@
-import { GasPriceSetting, DPathFormats } from 'types/network';
 import { StaticNetworkIds } from 'shared/types/network';
 
 export interface Network {
@@ -59,4 +58,33 @@ export interface StaticNodeConfig {
   network: StaticNetworkIds;
   service: string;
   hidden?: boolean;
+}
+
+export interface DerivationPathOptions {
+  name: string;
+  derivationPath: string;
+  active: boolean;
+}
+
+export interface ExtendedDerivationPathOptions extends DerivationPathOptions {
+  uuid: string;
+}
+
+export interface DPathFormats {
+  default?: DPath;
+  trezor?: DPath;
+  safeTmini?: DPath;
+  ledgerNanoS?: DPath;
+  mnemonicPhrase: DPath;
+}
+
+export interface DPath {
+  label: string;
+  value: string; // TODO determine method for more precise typing for path
+}
+
+export interface GasPriceSetting {
+  min: number;
+  max: number;
+  initial: number;
 }

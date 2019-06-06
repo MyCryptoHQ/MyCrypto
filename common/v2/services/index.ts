@@ -10,7 +10,6 @@ export * from './Github';
 export * from './Account';
 export * from './Wallets';
 export * from './Asset';
-export * from './DerivationPathOptions';
 export * from './Network';
 export * from './ShapeShift';
 export * from './AddressBook';

@@ -92,7 +92,6 @@ export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undef
   if (!network) {
     return undefined;
   }
-  console.log(getAssetByUUID(network.baseAsset));
   return getAssetByUUID(network.baseAsset);
 };
 

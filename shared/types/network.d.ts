@@ -64,6 +64,7 @@ interface DPathFormats {
   safeTmini?: DPath;
   ledgerNanoS?: DPath;
   mnemonicPhrase: DPath;
+  default?: DPath;
 }
 
 export interface GasPriceSetting {

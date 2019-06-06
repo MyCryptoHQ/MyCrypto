@@ -1,20 +1,19 @@
 import * as utils from 'v2/libs';
 import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
-import { DPaths, Fiats } from 'config';
+import { Fiats } from 'config';
 import { ContractsData, AssetsData } from 'v2/config/cacheData';
 import { WalletTypes, SecureWalletName } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 import { isDevelopment } from 'v2/utils/environment';
+import { InsecureWalletName } from 'v2/features/Wallets/types';
 
 // Initialization
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
   if (!check || check === '[]' || check === '{}') {
     hardRefreshCache();
-
-    initDerivationPathOptions();
 
     initFiatCurrencies();
 
@@ -106,7 +105,10 @@ export const initNetworks = () => {
       blockExplorer: {},
       tokenExplorer: {},
       tokens: {},
-      dPathFormats: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
+      dPathFormats: {
+        ...STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
+        default: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats[InsecureWalletName.MNEMONIC_PHRASE]
+      },
       gasPriceSettings: STATIC_NETWORKS_INITIAL_STATE[en].gasPriceSettings,
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
@@ -166,6 +168,7 @@ export const initFiatCurrencies = () => {
   setCache(newStorage);
 };
 
+/* Not deleting in case we need it later.
 export const initDerivationPathOptions = () => {
   const newStorage = getCacheRaw();
   DPaths.map(en => {
@@ -177,6 +180,7 @@ export const initDerivationPathOptions = () => {
   });
   setCache(newStorage);
 };
+*/
 
 // Low level operations
 
@@ -234,7 +238,6 @@ type CollectionKey =
   | 'addressBook'
   | 'assets'
   | 'contracts'
-  | 'derivationPathOptions'
   | 'networks';
 
 export const create = <K extends CollectionKey>(key: K) => (
