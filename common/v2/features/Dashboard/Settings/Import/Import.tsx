@@ -24,25 +24,25 @@ export interface PanelProps {
   onNext(): void;
 }
 
-const steps = [
-  {
-    heading: 'Import',
-    component: ImportBox
-  },
-  {
-    heading: 'Import Complete',
-    component: ImportSuccess
-  }
-];
-
 export class Import extends React.Component<RouteComponentProps<{}>> {
   public state = { step: 0 };
 
   public render() {
     const { history } = this.props;
     const { step } = this.state;
-    const backOptions = [history.goBack, this.regressStep];
-    const onBack = backOptions[step];
+    const steps = [
+      {
+        heading: 'Import',
+        component: ImportBox,
+        backOption: history.goBack
+      },
+      {
+        heading: 'Import Complete',
+        component: ImportSuccess,
+        backOption: this.regressStep
+      }
+    ];
+    const onBack = steps[step].backOption;
     const Step = steps[step].component;
     return (
       <Layout centered={true}>
@@ -71,8 +71,8 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
   }
 
   private advanceStep = () =>
-    this.setState((prevState: any) => ({
-      step: Math.min(prevState.step + 1, steps.length - 1)
+    this.setState(() => ({
+      step: 1
     }));
 
   private regressStep = () =>

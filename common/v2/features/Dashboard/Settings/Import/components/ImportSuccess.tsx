@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import translate from 'translations';
 
-import { Button } from 'v2/components';
+import { Button, RouterLink } from 'v2/components';
 
 const ImportSuccessContainer = styled.div`
   display: flex;
@@ -11,19 +10,15 @@ const ImportSuccessContainer = styled.div`
   align-items: center;
 `;
 
-const FullWidthLink = styled(Link)`
-  width: 100%;
-`;
-
 export default function ImportSuccess() {
   return (
     <ImportSuccessContainer>
       {translate('SETTINGS_IMPORT_SUCCESS')}
-      <FullWidthLink to="/dashboard/settings">
+      <RouterLink to="/settings">
         <Button fullWidth={true} secondary={true}>
           {translate('SETTINGS_IMPORT_COMPLETE')}
         </Button>
-      </FullWidthLink>
+      </RouterLink>
     </ImportSuccessContainer>
   );
 }

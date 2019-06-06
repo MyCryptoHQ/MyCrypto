@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Typography } from '@mycrypto/ui';
 import translate, { translateRaw } from 'translations';
 
-import { ContentPanel, Button } from 'v2/components';
+import { ContentPanel, Button, RouterLink } from 'v2/components';
 import { Layout } from 'v2/features';
 
 import { GlobalSettingsContext } from 'v2/providers';
@@ -21,10 +21,6 @@ const ImportSuccessContainer = styled.div`
   align-items: center;
 `;
 
-const FullWidthLink = styled(Link)`
-  width: 100%;
-`;
-
 const CacheDisplay = styled.code`
   overflow: auto;
   width: 100%;
@@ -33,7 +29,6 @@ const CacheDisplay = styled.code`
 
 export function Export(props: RouteComponentProps<{}>) {
   const { history } = props;
-  console.log(props);
   const onBack = history.goBack;
   const { getStorage } = useContext(GlobalSettingsContext);
   const store = String(getStorage());
@@ -43,9 +38,9 @@ export function Export(props: RouteComponentProps<{}>) {
         <ImportSuccessContainer>
           <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
           <CacheDisplay>{store}</CacheDisplay>
-          <FullWidthLink to="/dashboard/settings">
+          <RouterLink fullWidth={true} to="/settings">
             <Button fullWidth={true}>{translate('SETTINGS_EXPORT_LEAVE')}</Button>
-          </FullWidthLink>
+          </RouterLink>
           <Downloader getStorage={getStorage} />
         </ImportSuccessContainer>
       </CenteredContentPanel>
