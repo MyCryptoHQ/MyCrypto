@@ -44,12 +44,18 @@ const SettingsControl = styled.div`
 const SelectContainer = styled.div`
   border: 0.125em solid #007896;
   padding: 0.6rem;
-
+  width: 205px;
+  text-align: center;
   select {
     border: none;
     height: 2em;
     background: none;
   }
+`;
+
+const SettingsButton = styled(Button)`
+  width: 105px;
+  padding: 12px 12px;
 `;
 
 interface SettingsProps {
@@ -88,18 +94,18 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           <SettingsLabel>Account Settings</SettingsLabel>
           <SettingsControl>
             <Link to="/import">
-              <Button secondary={true}>Import</Button>
+              <SettingsButton secondary={true}>Import</SettingsButton>
             </Link>
             <Link to="/export">
-              <Button secondary={true}>Export</Button>
+              <SettingsButton secondary={true}>Export</SettingsButton>
             </Link>
           </SettingsControl>
         </SettingsField>
         <SettingsField>
           <SettingsLabel>Paper Wallet</SettingsLabel>
           <SettingsControl>
-            <Button secondary={true}>Download</Button>
-            <Button secondary={true}>Print</Button>
+            <SettingsButton secondary={true}>Download</SettingsButton>
+            <SettingsButton secondary={true}>Print</SettingsButton>
           </SettingsControl>
         </SettingsField>
         <SettingsField>
