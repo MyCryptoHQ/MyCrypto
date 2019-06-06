@@ -178,6 +178,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const filteredLabelCount = this.getFilteredLabels().length;
 
     let activeIndex =
+      // @ts-ignore
       previousActiveIndex === null ? filteredLabelCount - 1 : previousActiveIndex - 1;
 
     // Loop back to end
@@ -192,6 +193,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const { activeIndex: previousActiveIndex } = this.state;
     const filteredLabelCount = this.getFilteredLabels().length;
 
+    // @ts-ignore
     let activeIndex = previousActiveIndex === null ? 0 : previousActiveIndex + 1;
 
     // Loop back to beginning
@@ -311,6 +313,6 @@ export default function AddressFieldDropdown({
   ...props
 }: AddressFieldDropdownProps) {
   const Dropdown = controlled ? ControlledAddressFieldDropdown : UncontrolledAddressFieldDropdown;
-
+  // @ts-ignore
   return <Dropdown {...props} />;
 }

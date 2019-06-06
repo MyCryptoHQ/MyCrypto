@@ -8,7 +8,7 @@ const DESCRIPTION =
   'I encountered an error while using MyCrypto. Here are the steps to re-create the issue:\n\nThe full error message:';
 
 interface Props {
-  error: Error;
+  error: Error | null;
 }
 
 const ErrorScreen: React.SFC<Props> = ({ error }) => {
@@ -33,7 +33,7 @@ const ErrorScreen: React.SFC<Props> = ({ error }) => {
           </NewTabLink>
           . Please attach the following error to help our team solve your issue.
         </p>
-        <code>{error.message}</code>
+        <code>{error!.message}</code>
         <h5>
           Please make sure the error message does not include any sensitive information before
           sending it to us. We don't want your private keys!
