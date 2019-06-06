@@ -16,7 +16,7 @@
     "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@ledgerhq/hw-transport-webusb": "4.56.0",
     "@parity/qr-signer": "0.3.1",
-    "axios": "0.18.0",
+    "axios": "0.18.1",
     "babel-polyfill": "6.26.0",
     "bip39": "2.5.0",
     "bn.js": "4.11.8",
