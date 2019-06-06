@@ -19,7 +19,7 @@ export const processFormDataToWeb3Tx = (
 
   const txFields = formData;
 
-  if (!asset) {
+  if (!asset || !asset.networkId) {
     return undefined;
   }
 
@@ -80,7 +80,7 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
 
   const txFields = formData;
 
-  if (!asset) {
+  if (!asset || !asset.networkId) {
     return undefined;
   }
 

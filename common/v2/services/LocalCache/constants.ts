@@ -8,7 +8,6 @@ export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 
 export interface LocalCache {
   settings: serviceTypes.Settings;
-  recentAccounts: string[];
   accounts: Record<string, serviceTypes.Account>;
   accountTypes: Record<string, serviceTypes.AccountType>;
   assets: Record<string, serviceTypes.Asset>;
@@ -18,7 +17,6 @@ export interface LocalCache {
   derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   addressMetadata: Record<string, serviceTypes.AddressMetadata>;
   notifications: Record<string, serviceTypes.Notification>;
-  fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
   screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
 }
 
@@ -29,7 +27,6 @@ export const CACHE_INIT_DEV: LocalCache = {
     dashboardAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
     inactivityTimer: 1800000
   },
-  recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
   accounts: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
       label: 'Foo',
@@ -137,13 +134,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       notes: 'This is my wallet.'
     }
   },
-  notifications: {},
-  fiatCurrencies: {
-    USD: {
-      code: 'USD',
-      name: 'US Dollars'
-    }
-  }
+  notifications: {}
 };
 
 export const CACHE_INIT: LocalCache = {
@@ -154,7 +145,6 @@ export const CACHE_INIT: LocalCache = {
     dashboardAccounts: [],
     inactivityTimer: 1800000
   },
-  recentAccounts: [],
   accounts: {},
   accountTypes: {},
   assets: {},
@@ -163,6 +153,5 @@ export const CACHE_INIT: LocalCache = {
   contracts: {},
   derivationPathOptions: {},
   addressMetadata: {},
-  notifications: {},
-  fiatCurrencies: {}
+  notifications: {}
 };

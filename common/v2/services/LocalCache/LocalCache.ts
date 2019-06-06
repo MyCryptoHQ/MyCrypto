@@ -131,8 +131,11 @@ export const initAssets = () => {
   const newStorage = getCacheRaw();
   const assets = AssetsData();
   Object.keys(assets).map(en => {
-    newStorage.assets[en] = assets[en];
-    newStorage.networks[assets[en].networkId].assets.push(en);
+    if (assets[en] && assets[en].networkId) {
+      const networkName = assets[en].networkId;
+      newStorage.assets[en] = assets[en];
+      newStorage.networks[networkName!].assets.push(en);
+    }
   });
   setCache(newStorage);
 };
@@ -150,9 +153,14 @@ export const initContracts = () => {
 export const initFiatCurrencies = () => {
   const newStorage = getCacheRaw();
   Fiats.map(en => {
-    newStorage.fiatCurrencies[en.code] = {
-      code: en.code,
-      name: en.name
+    const uuid = utils.generateUUID();
+    newStorage.assets[uuid] = {
+      uuid,
+      ticker: en.code,
+      name: en.name,
+      networkId: undefined,
+      type: 'fiat',
+      decimal: 0
     };
   });
   setCache(newStorage);
@@ -227,7 +235,6 @@ type CollectionKey =
   | 'assets'
   | 'contracts'
   | 'derivationPathOptions'
-  | 'fiatCurrencies'
   | 'networks'
   | 'nodeOptions';
 

@@ -8,7 +8,6 @@ export {
   DerivationPathOptionsProvider
 } from './DerivationPathOptionsProvider';
 export { SettingsContext, SettingsProvider } from './SettingsProvider';
-export { FiatCurrencyContext, FiatCurrencyProvider } from './FiatCurrencyProvider';
 export {
   NotificationsContext,
   NotificationsProvider,
@@ -17,5 +16,4 @@ export {
 export { AddressMetadataContext, AddressMetadataProvider } from './AddressMetadataProvider';
 export { NetworksContext, NetworksProvider } from './NetworksProvider';
 export { NodeOptionsContext, NodeOptionsProvider } from './NodeOptionsProvider';
-export { RecentAccountsContext, RecentAccountsProvider } from './RecentAccountsProvider';
 export { LockScreenContext, LockScreenProvider } from './LockScreenProvider';

@@ -14,8 +14,6 @@ export * from './DerivationPathOptions';
 export * from './Network';
 export * from './NodeOptions';
 export * from './ShapeShift';
-export * from './FiatCurrency';
-export * from './RecentAccounts';
 export * from './AddressMetadata';
 
 export * from './types';
