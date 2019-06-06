@@ -1,8 +1,8 @@
 import { shepherdProvider, INode } from 'libs/nodes';
 import { getCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from 'v2/services/Account/types';
-import { AssetOption } from 'v2/services/AssetOption/types';
-import { getAssetOptionByName } from '../assets/assets';
+import { Asset } from 'v2/services/Asset/types';
+import { getAssetByName } from '../assets/assets';
 import { fromWei } from '../units';
 import BN from 'bn.js';
 import { getNetworkByName, getNodeByName } from '../networks/networks';
@@ -29,7 +29,7 @@ export const getCurrentsFromContext = (
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
   const baseAsset = getBaseAssetFromAccount(account);
   if (baseAsset) {
-    return account.value.toString();
+    return account.balance.toString();
   } else {
     return 'err';
   }
@@ -44,7 +44,11 @@ export const getAccountBalances = (
       await getAccountBalance(account.address, getNetworkByName(account.network)),
       'ether'
     );
-    updateAccount(account.uuid, { ...account, timestamp: Date.now(), value: parseFloat(balance) });
+    updateAccount(account.uuid, {
+      ...account,
+      timestamp: Date.now(),
+      balance: parseFloat(balance)
+    });
   });
 };
 
@@ -85,8 +89,12 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
   return undefined;
 };
 
-export const getBaseAssetFromAccount = (account: ExtendedAccount): AssetOption | undefined => {
-  return getAssetOptionByName(account.assets[0]);
+export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
+  const network: NetworkOptions | undefined = getNetworkByName(account.network);
+  if (!network) {
+    return undefined;
+  }
+  return getAssetByName(network.baseAsset);
 };
 
 export const getAllAccounts = (): Account[] => {

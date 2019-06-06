@@ -11,14 +11,10 @@ export interface LocalCache {
   globalSettings: Partial<serviceTypes.GlobalSettings>;
   recentAccounts: string[];
   accounts: Record<string, serviceTypes.Account>;
-  transactionHistories: Record<string, serviceTypes.TransactionHistory>;
-  transactions: Record<string, serviceTypes.Transaction>;
   accountTypes: Record<string, serviceTypes.AccountType>;
   assets: Record<string, serviceTypes.Asset>;
-  localSettings: Record<string, serviceTypes.LocalSetting>;
   networkOptions: Record<string, serviceTypes.NetworkOptions>;
   nodeOptions: Record<string, serviceTypes.NodeOptions>;
-  assetOptions: Record<string, serviceTypes.AssetOption>;
   contractOptions: Record<string, serviceTypes.ContractOptions>;
   derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   addressMetadata: Record<string, serviceTypes.AddressMetadata>;
@@ -45,59 +41,25 @@ export const CACHE_INIT_DEV: LocalCache = {
       label: 'Foo',
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       network: 'ETH',
-      localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
-      assets: ['12d3cbf2-de3a-4050-a0c6-521592e4b85a'],
-      accountType: SecureWalletName.WEB3,
-      value: 1e18,
-      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
-      derivationPath: `m/44'/60'/0'/0/0`,
+      assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0' }],
+      wallet: SecureWalletName.WEB3,
+      balance: 1e18,
+      transactions: [
+        {
+          txHash: '0xf1e4e01312c3e465376cc6eeed1138d5a870363e1a1a88f54473801b214d3a69',
+          stage: 'pending',
+          label: 'Example',
+          date: 1547768373,
+          value: 0,
+          from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+          to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+          fiatValue: {
+            USD: '0'
+          }
+        }
+      ],
+      dPath: `m/44'/60'/0'/0/0`,
       timestamp: Date.now()
-    }
-  },
-  transactionHistories: {
-    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
-      transaction: '6e1c322c-aea6-4484-8fdc-7b3227a9d359'
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654881': {
-      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654881'
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654885': {
-      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654885'
-    }
-  },
-  transactions: {
-    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
-      stage: 'pending',
-      label: 'Example',
-      date: 1547768373,
-      value: 0,
-      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      fiatValue: {
-        USD: '0'
-      }
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654881': {
-      stage: 'completed',
-      label: 'Example',
-      date: 1547769373,
-      value: 0,
-      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      fiatValue: {
-        USD: '0'
-      }
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654885': {
-      stage: 'completed',
-      label: 'Example',
-      date: 1548769373,
-      value: 0,
-      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      fiatValue: {
-        USD: '0'
-      }
     }
   },
   accountTypes: {
@@ -112,32 +74,29 @@ export const CACHE_INIT_DEV: LocalCache = {
   },
   assets: {
     '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
-      option: 'Ethereum',
-      amount: '14.13',
-      network: 'ETH',
+      uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
+      name: 'Ethereum',
+      networkId: 'ETH',
       type: 'base',
-      symbol: 'ETH'
+      ticker: 'ETH',
+      decimal: 18,
+      contractAddress: null
     },
     '10e14757-78bb-4bb2-a17a-8333830f6698': {
-      option: 'OmiseGo',
-      amount: '2',
-      network: 'ETH',
+      uuid: '10e14757-78bb-4bb2-a17a-8333830f6698',
+      name: 'OmiseGo',
+      networkId: 'ETH',
       type: 'erc20',
-      symbol: 'OMG',
+      ticker: 'OMG',
       contractAddress: '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07',
       decimal: 18
-    }
-  },
-  localSettings: {
-    '17ed6f49-ff23-4bef-a676-69174c266b37': {
-      fiatCurrency: 'GBP',
-      favorite: false
     }
   },
   networkOptions: {
     ETH: {
       id: 'ETH',
       name: 'Ethereum',
+      baseAsset: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
       unit: 'ETH',
       chainId: 1,
       isCustom: false,
@@ -165,16 +124,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       type: 'rpc',
       service: 'MyCrypto',
       url: 'https://api.mycryptoapi.com/eth'
-    }
-  },
-  assetOptions: {
-    ETH: {
-      name: 'Ethereum',
-      network: 'ETH',
-      ticker: 'ETH',
-      type: 'base',
-      decimal: 18,
-      contractAddress: null
     }
   },
   contractOptions: {
@@ -211,14 +160,10 @@ export const CACHE_INIT: LocalCache = {
   recentAccounts: [],
   globalSettings: {},
   accounts: {},
-  transactionHistories: {},
-  transactions: {},
   accountTypes: {},
   assets: {},
-  localSettings: {},
   networkOptions: {},
   nodeOptions: {},
-  assetOptions: {},
   contractOptions: {},
   derivationPathOptions: {},
   addressMetadata: {},

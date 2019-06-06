@@ -30,13 +30,12 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       const account: Account = {
         address: payload.formData.account,
         network: payload.formData.network,
-        accountType: payload.formData.accountType,
-        derivationPath: payload.formData.derivationPath,
-        assets: [newAssetID],
-        value: 0,
+        wallet: payload.formData.accountType,
+        dPath: payload.formData.derivationPath,
+        assets: [{ uuid: newAssetID, balance: '0' }],
+        balance: 0,
         label: 'New Account', // @TODO: we really should have the correct label before!
-        localSettings: 'default',
-        transactionHistory: '',
+        transactions: [],
         timestamp: 0
       };
       createAccountWithID(account, newUUID);

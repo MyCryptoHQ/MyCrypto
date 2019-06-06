@@ -61,14 +61,14 @@ function buildAccountTable(accounts: ExtendedAccount[], deleteAccount: DeleteAcc
         <Icon icon="star" />,
         // tslint:disable-next-line: jsx-key
         <Address
-          title={`${account.label}-(${account.accountType})`}
+          title={`${account.label}-(${account.wallet})`}
           address={account.address}
           truncate={truncate}
         />,
         // tslint:disable-next-line: jsx-key
         <Network color="#a682ff">{account.network}</Network>,
         // tslint:disable-next-line: jsx-key
-        <Typography>{account.value}</Typography>,
+        <Typography>{account.balance}</Typography>,
         // tslint:disable-next-line: jsx-key
         <DeleteButton onClick={handleAccountDelete(deleteAccount, account.uuid)} icon="exit" />
       ];

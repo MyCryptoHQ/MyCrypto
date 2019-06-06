@@ -12,12 +12,7 @@ import {
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import {
-  AccountContext,
-  TransactionHistoryContext,
-  TransactionContext,
-  AddressMetadataContext
-} from 'v2/providers';
+import { AccountContext, AddressMetadataContext } from 'v2/providers';
 
 export default function Dashboard() {
   return (
@@ -48,21 +43,12 @@ export default function Dashboard() {
             </div>
             <AddressMetadataContext.Consumer>
               {({ readAddressMetadata }) => (
-                <TransactionContext.Consumer>
-                  {({ transactions }) => (
-                    <TransactionHistoryContext.Consumer>
-                      {({ transactionHistories }) => (
-                        <div className="Dashboard-mobile-section">
-                          <RecentTransactionList
-                            transactions={transactions}
-                            readAddressMetadata={readAddressMetadata}
-                            transactionHistories={transactionHistories}
-                          />
-                        </div>
-                      )}
-                    </TransactionHistoryContext.Consumer>
-                  )}
-                </TransactionContext.Consumer>
+                <div className="Dashboard-mobile-section">
+                  <RecentTransactionList
+                    accountsList={accounts}
+                    readAddressMetadata={readAddressMetadata}
+                  />
+                </div>
               )}
             </AddressMetadataContext.Consumer>
           </Layout>
@@ -100,26 +86,13 @@ export default function Dashboard() {
             </div>
             <AddressMetadataContext.Consumer>
               {({ readAddressMetadata }) => (
-                <TransactionContext.Consumer>
-                  {({ transactions }) => {
-                    return (
-                      <TransactionHistoryContext.Consumer>
-                        {({ transactionHistories }) => {
-                          return (
-                            <div className="Dashboard-desktop-bottom">
-                              <RecentTransactionList
-                                transactionHistories={transactionHistories}
-                                readAddressMetadata={readAddressMetadata}
-                                transactions={transactions}
-                                className="Dashboard-desktop-modifiedPanel"
-                              />
-                            </div>
-                          );
-                        }}
-                      </TransactionHistoryContext.Consumer>
-                    );
-                  }}
-                </TransactionContext.Consumer>
+                <div className="Dashboard-desktop-bottom">
+                  <RecentTransactionList
+                    readAddressMetadata={readAddressMetadata}
+                    accountsList={accounts}
+                    className="Dashboard-desktop-modifiedPanel"
+                  />
+                </div>
               )}
             </AddressMetadataContext.Consumer>
           </Layout>

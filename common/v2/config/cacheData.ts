@@ -41,18 +41,19 @@ export const ContractsData = (): Record<string, types.ContractOptions> => {
   return outData;
 };
 
-export const AssetOptionsData = (): Record<string, types.AssetOption> => {
+export const AssetsData = (): Record<string, types.Asset> => {
   const data: any = Object.keys(tokens.default);
-  const outData = {} as Record<string, types.AssetOption>;
+  const outData = {} as Record<string, types.Asset>;
   data.map((en: string) => {
     const nextData: [tokens.Asset] = tokens.default[en];
     nextData.map((entry: tokens.Asset) => {
       const uuid: string = entry.symbol;
       outData[uuid] = {
+        uuid: '',
         name: entry.name,
         contractAddress: entry.address,
         decimal: entry.decimal,
-        network: en,
+        networkId: en,
         ticker: entry.symbol,
         type: 'erc20'
       };

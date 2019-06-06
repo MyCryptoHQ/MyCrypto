@@ -1,11 +1,11 @@
 export interface Asset {
-  option: string;
-  amount: string;
-  network: string;
-  symbol: string;
+  uuid: string;
+  name: string;
+  networkId: string;
+  ticker: string;
   type: assetMethod;
-  contractAddress?: string;
-  decimal?: number;
+  contractAddress?: string | null;
+  decimal: number | null;
 }
 
 export type assetMethod = 'base' | 'erc20';

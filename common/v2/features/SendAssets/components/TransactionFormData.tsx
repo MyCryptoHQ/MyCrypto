@@ -8,9 +8,9 @@ import { DeepPartial } from 'shared/types/util';
 import translate from 'translations';
 import { fetchGasPriceEstimates } from 'v2';
 import { AccountContext } from 'v2/providers';
-import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { ExtendedAccount as IExtendedAccount, AssetBalanceObject, Asset } from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { IAsset, TSymbol } from 'v2/types';
+import { IAsset } from 'v2/types';
 import { InlineErrorMsg, Typography } from 'v2/components';
 
 import { ISendState, ITxFields } from '../types';
@@ -32,6 +32,7 @@ import {
   validateNonceField
 } from './validators/validators';
 import './TransactionFormData.scss';
+import { getAssetByUUID } from 'v2/libs';
 
 interface Props {
   stateValues: ISendState;
@@ -59,9 +60,16 @@ export default function SendAssetsForm({
 }: Props) {
   const { accounts } = useContext(AccountContext);
   // @TODO:SEND change the data structure to get an object
-  const assets: IAsset[] = accounts
-    .map(a => a.assets)
-    .map(a => ({ symbol: 'ETH' as TSymbol, name: a[0] }));
+  const accountAssets: AssetBalanceObject[] = [];
+  accounts.map(a => a.assets.map(asset => accountAssets.push(asset)));
+
+  const assets: IAsset[] = [];
+  accountAssets.map(asset => {
+    const assetObject: Asset | undefined = getAssetByUUID(asset.uuid);
+    if (assetObject) {
+      assets.push({ symbol: assetObject.ticker, name: assetObject.name });
+    }
+  });
 
   return (
     <div className="SendAssetsForm">

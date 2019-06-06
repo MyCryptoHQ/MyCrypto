@@ -2,7 +2,7 @@ import * as utils from 'v2/libs';
 import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
-import { ContractsData, AssetOptionsData } from 'v2/config/cacheData';
+import { ContractsData, AssetsData } from 'v2/config/cacheData';
 import { ACCOUNTTYPES, SecureWalletName } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
@@ -26,11 +26,9 @@ export const initializeCache = () => {
 
     initGlobalSettings();
 
-    initLocalSettings();
-
     initContractOptions();
 
-    initAssetOptions();
+    initAssets();
 
     if (isDevelopment) {
       initTestAccounts();
@@ -47,17 +45,6 @@ export const initGlobalSettings = () => {
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
     darkMode: false
-  };
-  setCache(newStorage);
-};
-
-export const initLocalSettings = () => {
-  const newStorage = getCacheRaw();
-  newStorage.localSettings = {
-    default: {
-      fiatCurrency: 'USD',
-      favorite: false
-    }
   };
   setCache(newStorage);
 };
@@ -93,21 +80,22 @@ export const initNetworkOptions = () => {
   const allNetworks: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
   allNetworks.map((en: any) => {
     const newContracts: string[] = [];
-    const newAssetOptions: string[] = [];
+    const newAssets: string[] = [];
     Object.keys(newStorage.contractOptions).map(entry => {
       if (newStorage.contractOptions[entry].network === en) {
         newContracts.push(entry);
       }
     });
-    Object.keys(newStorage.assetOptions).map(entry => {
-      if (newStorage.assetOptions[entry].network === en) {
-        newAssetOptions.push(entry);
+    Object.keys(newStorage.assets).map(entry => {
+      if (newStorage.assets[entry].networkId === en) {
+        newAssets.push(entry);
       }
     });
     const newLocalNetwork: types.NetworkOptions = {
       contracts: newContracts,
-      assets: [STATIC_NETWORKS_INITIAL_STATE[en].id, ...newAssetOptions],
+      assets: [...newAssets],
       nodes: [],
+      baseAsset: STATIC_NETWORKS_INITIAL_STATE[en].id,
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
       unit: STATIC_NETWORKS_INITIAL_STATE[en].unit,
@@ -121,26 +109,27 @@ export const initNetworkOptions = () => {
       gasPriceSettings: STATIC_NETWORKS_INITIAL_STATE[en].gasPriceSettings,
       shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
     };
-    const newLocalAssetOption: types.AssetOption = {
+    const newLocalAssetOption: types.Asset = {
+      uuid: utils.generateUUID(),
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
-      network: en,
+      networkId: en,
       ticker: en,
       type: 'base',
       decimal: 18,
       contractAddress: null
     };
     newStorage.networkOptions[en] = newLocalNetwork;
-    newStorage.assetOptions[STATIC_NETWORKS_INITIAL_STATE[en].id] = newLocalAssetOption;
+    newStorage.assets[newLocalAssetOption.uuid] = newLocalAssetOption;
   });
   setCache(newStorage);
 };
 
-export const initAssetOptions = () => {
+export const initAssets = () => {
   const newStorage = getCacheRaw();
-  const assets = AssetOptionsData();
+  const assets = AssetsData();
   Object.keys(assets).map(en => {
-    newStorage.assetOptions[en] = assets[en];
-    newStorage.networkOptions[assets[en].network].assets.push(en);
+    newStorage.assets[en] = assets[en];
+    newStorage.networkOptions[assets[en].networkId].assets.push(en);
   });
   setCache(newStorage);
 };
@@ -232,16 +221,12 @@ type CollectionKey =
   | 'accountTypes'
   | 'notifications'
   | 'addressMetadata'
-  | 'assetOptions'
   | 'assets'
   | 'contractOptions'
   | 'derivationPathOptions'
   | 'fiatCurrencies'
-  | 'localSettings'
   | 'networkOptions'
-  | 'nodeOptions'
-  | 'transactionHistories'
-  | 'transactions';
+  | 'nodeOptions';
 
 export const create = <K extends CollectionKey>(key: K) => (
   value: LocalCache[K][keyof LocalCache[K]]
@@ -302,52 +287,53 @@ export const initTestAccounts = () => {
       label: 'ETH Test 1',
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
       network: 'Ethereum',
-      localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
-      assets: ['10e14757-78bb-4bb2-a17a-8333830f6698', 'f7e30bbe-08e2-41ce-9231-5236e6aab702'],
-      accountType: SecureWalletName.WEB3,
-      value: 1e16,
-      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
-      derivationPath: `m/44'/60'/0'/0/0`,
-      timestamp: 0
+      assets: [
+        { uuid: '10e14757-78bb-4bb2-a17a-8333830f6698', balance: '0.01' },
+        { uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702', balance: '0.001' }
+      ],
+      wallet: SecureWalletName.WEB3,
+      balance: 1e16,
+      dPath: `m/44'/60'/0'/0/0`,
+      timestamp: 0,
+      transactions: []
     },
     {
       label: 'Goerli ETH Test 1',
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
       network: 'Goerli',
-      localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
-      assets: ['12d3cbf2-de3a-4050-a0c6-521592e4b85a'],
-      accountType: SecureWalletName.WEB3,
-      value: 1e16,
-      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
-      derivationPath: `m/44'/60'/0'/0/0`,
-      timestamp: 0
+      assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0.01' }],
+      wallet: SecureWalletName.WEB3,
+      balance: 1e16,
+      dPath: `m/44'/60'/0'/0/0`,
+      timestamp: 0,
+      transactions: []
     }
   ];
 
   const newAssets: { [key in string]: types.Asset } = {
     '10e14757-78bb-4bb2-a17a-8333830f6698': {
-      option: 'WrappedETH',
-      amount: '0.01',
-      network: 'Ethereum',
+      uuid: '10e14757-78bb-4bb2-a17a-8333830f6698',
+      name: 'WrappedETH',
+      networkId: 'Ethereum',
       type: 'erc20',
-      symbol: 'WETH',
+      ticker: 'WETH',
       contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
       decimal: 18
     },
     'f7e30bbe-08e2-41ce-9231-5236e6aab702': {
-      option: 'ETH',
-      amount: '0.001',
-      network: 'Ethereum',
+      uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702',
+      name: 'ETH',
+      networkId: 'Ethereum',
       type: 'base',
-      symbol: 'ETH',
+      ticker: 'ETH',
       decimal: 18
     },
     '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
-      option: 'GoerliETH',
-      amount: '0.01',
-      network: 'Goerli',
+      uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
+      name: 'GoerliETH',
+      networkId: 'Goerli',
       type: 'base',
-      symbol: 'GoerliETH',
+      ticker: 'GoerliETH',
       decimal: 18
     }
   };
