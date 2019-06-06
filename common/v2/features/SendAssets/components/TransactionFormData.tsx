@@ -10,7 +10,7 @@ import { fetchGasPriceEstimates } from 'v2';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { IAsset } from 'v2/types';
+import { IAsset, TSymbol } from 'v2/types';
 import { InlineErrorMsg, Typography } from 'v2/components';
 
 import { ISendState, ITxFields } from '../types';
@@ -61,7 +61,7 @@ export default function SendAssetsForm({
   // @TODO:SEND change the data structure to get an object
   const assets: IAsset[] = accounts
     .map(a => a.assets)
-    .map(a => ({ symbol: 'ETH', name: a } as IAsset));
+    .map(a => ({ symbol: 'ETH' as TSymbol, name: a[0] }));
 
   return (
     <div className="SendAssetsForm">

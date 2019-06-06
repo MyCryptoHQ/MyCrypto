@@ -6,7 +6,6 @@ import { GasEstimates } from 'v2/api/gas';
 
 export interface ITxFields {
   asset: IAsset | undefined;
-  senderAddress: string;
   recipientAddress: string;
   amount: string;
   account: IExtendedAccount;
