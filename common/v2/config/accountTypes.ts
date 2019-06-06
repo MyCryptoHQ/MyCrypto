@@ -56,11 +56,11 @@ export const WalletTypes: Record<string, types.Wallet> = {
     desktopOnly: true
   },
   paritysigner: {
-    name: 'MetaMask',
-    key: 'metamask',
+    name: 'Parity Signer',
+    key: 'paritySigner',
     secure: true,
     derivationPath: '',
-    web3: true,
+    web3: false,
     hardware: false,
     desktopOnly: false
   },
