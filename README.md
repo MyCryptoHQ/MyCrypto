@@ -34,8 +34,12 @@ Then, you can run various commands depending on what you want to do:
 
 ```bash
 # run app in dev mode in browser, rebuild on file changes
-yarn dev
+yarn start
 ```
+A development server will be available on https://localhost:3000
+If you're using Chrome, you will get a `net::ERR_CERT_AUTHORITY_INVALID` warning.
+To disable it you can your settings in chrome: chrome://flags/#allow-insecure-localhost
+
 
 ```bash
 # run app in dev mode in electron, rebuild on file changes
@@ -76,18 +80,6 @@ yarn test
 ```bash
 # run integration tests with Jest
 yarn test:int
-```
-
-#### Dev (HTTPS):
-
-Some parts of the site, such as interacting with a Ledger hardware wallet, require an HTTPS environment to work. To develop on HTTPS:
-
-1.  Create your own SSL Certificate (Heroku has a [nice guide here](https://devcenter.heroku.com/articles/ssl-certificate-self))
-2.  Move the `.key` and `.crt` files into `webpack_config/server.*`
-3.  Run the following command:
-
-```bash
-yarn dev:https
 ```
 
 #### Address Derivation Checker:

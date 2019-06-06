@@ -242,7 +242,6 @@ module.exports = function(opts = {}) {
           files: ['package.json']
         }
       }),
-      new webpack.HotModuleReplacementPlugin(),
       new FriendlyErrorsPlugin()
     );
   }
