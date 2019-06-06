@@ -1,10 +1,11 @@
-'use strict';
 const webpack = require('webpack');
 const path = require('path');
-const ClearDistPlugin = require('./plugins/clearDist');
-const config = require('./config');
 
-const electronConfig = {
+const config = require('./config');
+const ClearDistPlugin = require('./plugins/clearDist');
+
+// Transpile the files that are needed by the electron main process.
+const electronMainConfig = {
   target: 'electron-main',
   mode: 'development',
   entry: {
@@ -13,8 +14,21 @@ const electronConfig = {
   },
   module: {
     rules: [
-      config.typescriptRule,
-      // HTML as string
+      {
+        test: /\.(ts|tsx)$/,
+        include: [
+          config.path.src,
+          config.path.shared,
+          config.path.electron
+        ],
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            cacheCompression: false,
+          }
+        }],
+      },
       {
         test: /\.html$/,
         use: 'raw-loader'
@@ -46,4 +60,4 @@ const electronConfig = {
   devtool: 'eval'
 };
 
-module.exports = electronConfig;
+module.exports = electronMainConfig;
