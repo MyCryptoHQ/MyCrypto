@@ -56,6 +56,7 @@ interface SettingsProps {
   globalSettings: GlobalSettings;
   updateGlobalSettings(settings: GlobalSettings): void;
 }
+
 export default class GeneralSettings extends React.Component<SettingsProps> {
   public changeTimer = (event: React.ChangeEvent<HTMLInputElement>) => {
     const settings = this.props.globalSettings;

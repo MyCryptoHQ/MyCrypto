@@ -56,8 +56,12 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
         >
           <Content>
             <GlobalSettingsContext.Consumer>
-              {({ localCache, importCache }) => (
-                <Step onNext={this.advanceStep} importCache={importCache} localCache={localCache} />
+              {({ localStorage, importCache }) => (
+                <Step
+                  onNext={this.advanceStep}
+                  importCache={importCache}
+                  localStorage={localStorage}
+                />
               )}
             </GlobalSettingsContext.Consumer>
           </Content>

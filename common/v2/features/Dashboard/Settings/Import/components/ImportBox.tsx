@@ -25,7 +25,7 @@ function isValidFile(rawFile: File): boolean {
 }
 
 interface ImportProps {
-  localCache: string;
+  localStorage: string;
   importCache(importedCache: any): void;
   onNext(): void;
 }
@@ -61,7 +61,7 @@ export default class ImportBox extends React.Component<ImportProps> {
   }
 
   private checkPastedCache = (e: any) => {
-    if (isValidCache(this.props.localCache, e.target.value)) {
+    if (isValidCache(this.props.localStorage, e.target.value)) {
       this.setState({ isValid: true });
     } else {
       this.setState({ badImport: true });
@@ -74,7 +74,7 @@ export default class ImportBox extends React.Component<ImportProps> {
     const inputFile = target.files[0];
 
     fileReader.onload = () => {
-      if (fileReader.result && isValidCache(this.props.localCache, fileReader.result as string)) {
+      if (fileReader.result && isValidCache(this.props.localStorage, fileReader.result as string)) {
         this.setState({ isValid: true, importedCache: fileReader.result });
       }
     };
