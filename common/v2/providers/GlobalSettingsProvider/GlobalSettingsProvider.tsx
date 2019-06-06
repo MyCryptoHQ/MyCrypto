@@ -4,10 +4,10 @@ import { GlobalSettings } from 'v2/services/GlobalSettings';
 
 interface ProviderState {
   globalSettings: GlobalSettings;
-  localCache: string;
+  localStorage: string;
   updateGlobalSettings(globalSettingsData: GlobalSettings): void;
   readGlobalSettings(): void;
-  readCache(): void;
+  getStorage(): void;
   importCache(importedCache: string): void;
 }
 
@@ -15,25 +15,25 @@ export const GlobalSettingsContext = createContext({} as ProviderState);
 
 export class GlobalSettingsProvider extends Component {
   public readonly state: ProviderState = {
-    localCache: service.readCache() || '[]',
+    localStorage: service.readStorage() || '[]',
     globalSettings: service.readGlobalSettings() || [],
     updateGlobalSettings: (globalSettingsData: GlobalSettings) => {
       service.updateGlobalSettings(globalSettingsData);
       this.getGlobalSettings();
-      this.getCache();
+      this.syncStorage();
     },
     readGlobalSettings: () => {
       service.readGlobalSettings();
       this.getGlobalSettings();
-      this.getCache();
+      this.syncStorage();
     },
-    readCache: () => {
-      this.getCache();
+    getStorage: () => {
+      return service.readStorage();
     },
     importCache: (importedCache: string) => {
       service.importCache(importedCache);
       this.getGlobalSettings();
-      this.getCache();
+      this.syncStorage();
     }
   };
 
@@ -48,8 +48,8 @@ export class GlobalSettingsProvider extends Component {
     this.setState({ globalSettings });
   };
 
-  private getCache = () => {
-    const localCache: String = service.readCache() || '[]';
-    this.setState({ localCache });
+  private syncStorage = () => {
+    const localStorage: string = service.readStorage() || '[]';
+    this.setState({ localStorage });
   };
 }

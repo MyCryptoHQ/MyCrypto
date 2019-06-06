@@ -1,8 +1,8 @@
 import { readSettings, updateSettings } from 'v2/services/LocalCache';
 
-export const readCache = () => {
-  const localCache: string = localStorage.getItem('MyCryptoCache') || '[]';
-  return localCache;
+export const readStorage = () => {
+  const currentLocalStorage: string = localStorage.getItem('MyCryptoCache') || '[]';
+  return currentLocalStorage;
 };
 
 export const importCache = (importedCache: string) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
 import { Typography } from '@mycrypto/ui';
@@ -31,29 +31,26 @@ const CacheDisplay = styled.code`
   height: 10rem;
 `;
 
-export class Export extends React.Component<RouteComponentProps<{}>> {
-  public render() {
-    const { history } = this.props;
-    const onBack = history.goBack;
-    return (
-      <Layout centered={true}>
-        <GlobalSettingsContext.Consumer>
-          {({ localCache, readCache }) => (
-            <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
-              <ImportSuccessContainer>
-                <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
-                <CacheDisplay>{localCache}</CacheDisplay>
-                <FullWidthLink to="/dashboard/settings">
-                  <Button fullWidth={true}>{translate('SETTINGS_EXPORT_LEAVE')}</Button>
-                </FullWidthLink>
-                <Downloader cache={localCache} readCache={readCache} />
-              </ImportSuccessContainer>
-            </CenteredContentPanel>
-          )}
-        </GlobalSettingsContext.Consumer>
-      </Layout>
-    );
-  }
+export function Export(props: RouteComponentProps<{}>) {
+  const { history } = props;
+  console.log(props);
+  const onBack = history.goBack;
+  const { getStorage } = useContext(GlobalSettingsContext);
+  const store = String(getStorage());
+  return (
+    <Layout centered={true}>
+      <CenteredContentPanel onBack={onBack} heading={translateRaw('SETTINGS_EXPORT_HEADING')}>
+        <ImportSuccessContainer>
+          <Typography>{translate('SETTINGS_EXPORT_INFO')}</Typography>
+          <CacheDisplay>{store}</CacheDisplay>
+          <FullWidthLink to="/dashboard/settings">
+            <Button fullWidth={true}>{translate('SETTINGS_EXPORT_LEAVE')}</Button>
+          </FullWidthLink>
+          <Downloader getStorage={getStorage} />
+        </ImportSuccessContainer>
+      </CenteredContentPanel>
+    </Layout>
+  );
 }
 
 export default withRouter(Export);
