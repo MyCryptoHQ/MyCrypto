@@ -44,7 +44,7 @@ export default function Dropdown({
       optionComponent={optionComponent}
       placeholder={placeholder}
       searchable={false}
-      value={value}
+      value={value} //!! value must be an expression or an object !?
       valueComponent={valueComponent}
     />
   );

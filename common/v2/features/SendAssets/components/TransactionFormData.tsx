@@ -1,22 +1,23 @@
-import { Button, Heading, Typography } from '@mycrypto/ui';
-// Legacy
+import React, { FormEvent, useContext } from 'react';
+import { Formik, Form, Field, FieldProps } from 'formik';
+import { Button, Heading } from '@mycrypto/ui';
+
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { WhenQueryExists } from 'components/renderCbs';
-import { Field, FieldProps, Form, Formik } from 'formik';
-import React, { FormEvent, useContext } from 'react';
-// import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { DeepPartial } from 'shared/types/util';
 import translate from 'translations';
 import { fetchGasPriceEstimates } from 'v2';
-import { InlineErrorMsg } from 'v2/components';
-import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+// import { processFormDataToTx } from 'v2/libs/transaction/process';
+import { IAsset, TSymbol } from 'v2/types';
+import { InlineErrorMsg, Typography } from 'v2/components';
+
 import { ISendState, ITxFields } from '../types';
 import {
   AccountDropdown,
+  AssetDropdown,
   AmountField,
-  AssetField,
   DataField,
   GasLimitField,
   GasPriceField,
@@ -24,13 +25,13 @@ import {
   NonceField,
   RecipientAddressField
 } from './fields';
-import './TransactionFormData.scss';
 import {
   validateDataField,
   validateGasLimitField,
   validateGasPriceField,
   validateNonceField
 } from './validators/validators';
+import './TransactionFormData.scss';
 
 interface Props {
   stateValues: ISendState;
@@ -57,6 +58,11 @@ export default function SendAssetsForm({
   updateState
 }: Props) {
   const { accounts } = useContext(AccountContext);
+  // @TODO:SEND change the data structure to get an object
+  const assets: IAsset[] = accounts
+    .map(a => a.assets)
+    .map(a => ({ symbol: 'ETH' as TSymbol, name: a[0] }));
+
   return (
     <div className="SendAssetsForm">
       <Formik
@@ -71,28 +77,40 @@ export default function SendAssetsForm({
           return (
             <Form className="SendAssetsForm">
               <React.Fragment>
-                {'ITxFields: '}
+                {/*{'ITxFields123: '}
                 <br />
-                <pre style={{ fontSize: '1rem' }}>
+                <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
                 </pre>
-                <br />
+                <br />*/}
                 {'Formik Fields: '}
                 <br />
-                <pre style={{ fontSize: '1rem' }}>{JSON.stringify(values, null, 2)}</pre>
+                <pre style={{ fontSize: '0.5rem' }}>{JSON.stringify(values, null, 2)}</pre>
               </React.Fragment>
               <QueryWarning />
 
               {/* Asset */}
-              <AssetField
-                handleChange={(e: FormEvent<HTMLInputElement>) => {
-                  updateState({ transactionFields: { asset: e.currentTarget.value } });
-                  handleChange(e);
-                }}
-              />
+              <fieldset className="SendAssetsForm-fieldset">
+                <label htmlFor="asset" className="input-group-header">
+                  {translate('X_ASSET')}
+                </label>
+                <Field
+                  name="asset"
+                  component={({ field, form }: FieldProps) => (
+                    <AssetDropdown
+                      name={field.name}
+                      value={field.value}
+                      assets={assets}
+                      onSelect={option => form.setFieldValue(field.name, option)}
+                    />
+                  )}
+                />
+              </fieldset>
               {/* Sender Address */}
               <fieldset className="SendAssetsForm-fieldset">
-                <div className="input-group-header">{translate('X_ADDRESS')}</div>
+                <label htmlFor="account" className="input-group-header">
+                  {translate('X_ADDRESS')}
+                </label>
                 <Field
                   name="account"
                   value={values.account}
@@ -100,14 +118,14 @@ export default function SendAssetsForm({
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
-                      onChange={(option: IExtendedAccount) => {
+                      accounts={accounts}
+                      onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
                         updateState({ transactionFields: { account: option } });
                         fetchGasPriceEstimates('Ethereum').then(data =>
                           form.setFieldValue('gasEstimates', data)
                         );
                       }}
-                      accounts={accounts}
                     />
                   )}
                 />

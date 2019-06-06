@@ -36,7 +36,7 @@ const SAccountWrapper = styled('div')`
     pointer-events: none;
   }
   &:hover {
-    background-color: ${(p: SProps) => (p.selectable ? '#ececec' : 'inherit')};
+    background-color: ${(p: SProps) => (p.selectable ? 'var(--color-gray-lighter)' : 'inherit')};
   }
 `;
 

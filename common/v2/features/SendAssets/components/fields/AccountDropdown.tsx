@@ -1,8 +1,8 @@
 import React from 'react';
+import { OptionComponentProps } from 'react-select';
 
 import { translateRaw } from 'translations';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
-import { OptionComponentProps } from 'react-select';
 import { AccountSummary, Divider, Dropdown } from 'v2/components';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
@@ -26,13 +26,13 @@ class AccountOption extends React.PureComponent<OptionComponentProps> {
   }
 }
 
-function AccountDropdown({ accounts, name, value, onChange }: IAccountDropdown) {
+function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdown) {
   return (
     <Dropdown
       name={name}
       placeholder={translateRaw('SEND_ASSETS_ACCOUNT_SELECTION_PLACEHOLDER')}
       options={accounts}
-      onChange={option => onChange(option)}
+      onChange={option => onSelect(option)}
       optionComponent={AccountOption}
       value={value && value.address ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
       valueComponent={({ value: { label, address } }) => (
@@ -51,7 +51,7 @@ interface IAccountDropdown {
   accounts: IExtendedAccount[];
   name: string;
   value: IExtendedAccount;
-  onChange(option: IExtendedAccount): void;
+  onSelect(option: IExtendedAccount): void;
 }
 
 export default AccountDropdown;
