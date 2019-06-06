@@ -5,7 +5,7 @@ export interface Account {
   address: string;
   network: string;
   localSettings: string;
-  assets: string;
+  assets: string[];
   accountType: WalletName;
   value: number;
   transactionHistory: string;

@@ -43,7 +43,7 @@ import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvi
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
 import Dashboard from 'v2/features/Dashboard';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
-import { CurrentsProvider, NotificationsProvider } from 'v2/providers';
+import { CurrentsProvider, AssetOptionsProvider, NotificationsProvider } from 'v2/providers';
 import { NewAppReleaseModal } from 'v2/components';
 
 interface OwnProps {
@@ -129,30 +129,32 @@ class RootClass extends Component<Props, State> {
           <Provider store={store}>
             <AddressMetadataProvider>
               <AccountProvider>
-                <CurrentsProvider>
-                  <TransactionProvider>
-                    <TransactionHistoryProvider>
-                      <NotificationsProvider>
-                        <NetworkOptionsProvider>
-                          <Router>
-                            <LockScreenProvider>
-                              <PageVisitsAnalytics>
-                                {onboardingActive && <OnboardingModal />}
-                                {routes}
-                                <LegacyRoutes />
-                                <LogOutPrompt />
-                                <QrSignerModal />
-                                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                              </PageVisitsAnalytics>
-                            </LockScreenProvider>
-                          </Router>
-                          {developmentMode && <DevTools />}
-                          <div id="ModalContainer" />
-                        </NetworkOptionsProvider>
-                      </NotificationsProvider>
-                    </TransactionHistoryProvider>
-                  </TransactionProvider>
-                </CurrentsProvider>
+                <AssetOptionsProvider>
+                  <CurrentsProvider>
+                    <TransactionProvider>
+                      <TransactionHistoryProvider>
+                        <NotificationsProvider>
+                          <NetworkOptionsProvider>
+                            <Router>
+                              <LockScreenProvider>
+                                <PageVisitsAnalytics>
+                                  {onboardingActive && <OnboardingModal />}
+                                  {routes}
+                                  <LegacyRoutes />
+                                  <LogOutPrompt />
+                                  <QrSignerModal />
+                                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                                </PageVisitsAnalytics>
+                              </LockScreenProvider>
+                            </Router>
+                            {developmentMode && <DevTools />}
+                            <div id="ModalContainer" />
+                          </NetworkOptionsProvider>
+                        </NotificationsProvider>
+                      </TransactionHistoryProvider>
+                    </TransactionProvider>
+                  </CurrentsProvider>
+                </AssetOptionsProvider>
               </AccountProvider>
             </AddressMetadataProvider>
           </Provider>

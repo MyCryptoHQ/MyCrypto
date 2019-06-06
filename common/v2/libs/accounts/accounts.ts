@@ -86,7 +86,7 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
 };
 
 export const getBaseAssetFromAccount = (account: ExtendedAccount): AssetOption | undefined => {
-  return getAssetOptionByName(account.assets);
+  return getAssetOptionByName(account.assets[0]);
 };
 
 export const getAllAccounts = (): Account[] => {

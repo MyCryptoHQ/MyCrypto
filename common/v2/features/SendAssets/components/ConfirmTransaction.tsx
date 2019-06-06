@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Address, Button, Network } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
-import { Transaction } from '../SendAssets';
 import './ConfirmTransaction.scss';
 
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import feeIcon from 'common/assets/images/icn-fee.svg';
-import { truncate } from 'v2/libs';
+import { AddressMetadataContext } from 'v2/providers';
+import { ISendState } from '../types';
 
 interface Props {
-  transaction: Transaction;
+  stateValues: ISendState;
   onNext(): void;
 }
 
@@ -19,37 +19,66 @@ interface State {
   showingDetails: boolean;
 }
 
+const truncate = (children: string) => {
+  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
+};
+
 export default class ConfirmTransaction extends Component<Props> {
   public state: State = {
     showingDetails: false
   };
 
   public render() {
-    const { transaction: { senderAddress, recipientAddress }, onNext } = this.props;
+    const {
+      stateValues: {
+        transactionFields: { recipientAddress, amount, asset, account: { address, label } }
+      },
+      onNext
+    } = this.props;
     const { showingDetails } = this.state;
 
     return (
       <div className="ConfirmTransaction">
-        <div className="ConfirmTransaction-row">
-          <div className="ConfirmTransaction-row-column">
-            To:
-            <div className="ConfirmTransaction-addressWrapper">
-              <Address address={recipientAddress} title="Example #2" truncate={truncate} />
-            </div>
-          </div>
-          <div className="ConfirmTransaction-row-column">
-            From:
-            <div className="ConfirmTransaction-addressWrapper">
-              <Address address={senderAddress} title="Example #1" truncate={truncate} />
-            </div>
-          </div>
-        </div>
+        <AddressMetadataContext.Consumer>
+          {({ addressMetadata }) => {
+            let recipientLabel: string = 'Unknown';
+            let senderLabel: string = label;
+            addressMetadata.map(en => {
+              if (en.address.toLowerCase() === recipientAddress.toLowerCase()) {
+                recipientLabel = en.label;
+              }
+              if (en.address.toLowerCase() === address.toLowerCase()) {
+                senderLabel = en.label;
+              }
+            });
+            return (
+              <div className="ConfirmTransaction-row">
+                <div className="ConfirmTransaction-row-column">
+                  To:
+                  <div className="ConfirmTransaction-addressWrapper">
+                    <Address
+                      address={recipientAddress}
+                      title={recipientLabel}
+                      truncate={truncate}
+                    />
+                  </div>
+                </div>
+                <div className="ConfirmTransaction-row-column">
+                  From:
+                  <div className="ConfirmTransaction-addressWrapper">
+                    <Address address={address} title={senderLabel} truncate={truncate} />
+                  </div>
+                </div>
+              </div>
+            );
+          }}
+        </AddressMetadataContext.Consumer>
         <div className="ConfirmTransaction-row">
           <div className="ConfirmTransaction-row-column">
             <img src={sendIcon} alt="Send" /> Send Amount:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue="13.2343 ETH" fiatValue="$12,000.00" />
+            <Amount assetValue={amount} fiatValue="$12,000.00" />
           </div>
         </div>
         <div className="ConfirmTransaction-row">
@@ -66,7 +95,7 @@ export default class ConfirmTransaction extends Component<Props> {
             <img src={sendIcon} alt="Total" /> You'll Send:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue="13.2434662 ETH" fiatValue="$12,000.21" />
+            <Amount assetValue={amount + asset} fiatValue="$12,000.21" />
           </div>
         </div>
         <Button

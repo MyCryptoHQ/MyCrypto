@@ -21,6 +21,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   // @ADD_ACCOUNT_TODO: The difference in accountType is likely causing
   // the absence of list.
   const validNetworks = networkOptions
+    // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING formData.accountType to error -> TODO: FIX accountType
     .filter(options => isWalletFormatSupportedOnNetwork(options, formData.accountType))
     .map(n => n.name);
 
