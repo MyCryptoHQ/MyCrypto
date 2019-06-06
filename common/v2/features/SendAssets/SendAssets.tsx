@@ -37,7 +37,8 @@ const getInitialState = (): ISendState => {
           value: 0,
           transactionHistory: '',
           derivationPath: '',
-          uuid: ''
+          uuid: '',
+          timestamp: 0
         },
         recipientAddress: getQueryParamWithKey(params, 'to') || '',
         amount: getQueryParamWithKey(params, 'value') || '0.00',
@@ -94,7 +95,8 @@ const getInitialState = (): ISendState => {
           value: 0,
           transactionHistory: '',
           derivationPath: '',
-          uuid: ''
+          uuid: '',
+          timestamp: 0
         },
         recipientAddress: '',
         amount: '0.00',

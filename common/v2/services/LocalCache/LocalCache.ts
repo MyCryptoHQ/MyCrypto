@@ -307,7 +307,8 @@ export const initTestAccounts = () => {
       accountType: SecureWalletName.WEB3,
       value: 1e16,
       transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
-      derivationPath: `m/44'/60'/0'/0/0`
+      derivationPath: `m/44'/60'/0'/0/0`,
+      timestamp: 0
     },
     {
       label: 'Goerli ETH Test 1',
@@ -318,7 +319,8 @@ export const initTestAccounts = () => {
       accountType: SecureWalletName.WEB3,
       value: 1e16,
       transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
-      derivationPath: `m/44'/60'/0'/0/0`
+      derivationPath: `m/44'/60'/0'/0/0`,
+      timestamp: 0
     }
   ];
 
