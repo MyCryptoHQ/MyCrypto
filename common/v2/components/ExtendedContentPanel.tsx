@@ -60,15 +60,14 @@ const ContentPanelDescription = styled.p`
   font-size: 18px;
   line-height: 1.5;
   font-weight: normal;
-
   color: ${props => props.theme.text};
   white-space: pre-line;
 
   strong {
     font-weight: 900;
   }
-  @media (max-w
- idth: 700px) {
+
+  @media (max-width: 700px) {
     padding: 0 8px;
   }
 `;

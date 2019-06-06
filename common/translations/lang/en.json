@@ -926,7 +926,5 @@
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
     "SELECT_NETWORK_ERROR": "Please select network."
-
-   
   }
 }
