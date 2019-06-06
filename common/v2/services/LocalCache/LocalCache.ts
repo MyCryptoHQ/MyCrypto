@@ -70,8 +70,7 @@ export const initNodeOptions = () => {
         service: entry.service,
         url: entry.url
       };
-      newStorage.nodeOptions[newNode.name] = newNode;
-      newStorage.networks[en].nodes.push(newNode.name);
+      newStorage.networks[en].nodes.push(newNode);
     });
   });
   setCache(newStorage);
@@ -101,7 +100,6 @@ export const initNetworks = () => {
       baseAsset: baseAssetID,
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
-      unit: STATIC_NETWORKS_INITIAL_STATE[en].unit,
       chainId: STATIC_NETWORKS_INITIAL_STATE[en].chainId,
       isCustom: STATIC_NETWORKS_INITIAL_STATE[en].isCustom,
       color: STATIC_NETWORKS_INITIAL_STATE[en].color,
@@ -132,9 +130,11 @@ export const initAssets = () => {
   const assets = AssetsData();
   Object.keys(assets).map(en => {
     if (assets[en] && assets[en].networkId) {
+      const uuid = utils.generateUUID();
       const networkName = assets[en].networkId;
-      newStorage.assets[en] = assets[en];
-      newStorage.networks[networkName!].assets.push(en);
+      assets[en].uuid = uuid;
+      newStorage.assets[uuid] = assets[en];
+      newStorage.networks[networkName!].assets.push(uuid);
     }
   });
   setCache(newStorage);
@@ -180,7 +180,7 @@ export const initDerivationPathOptions = () => {
 
 // Low level operations
 
-const getCacheRaw = (): LocalCache => {
+export const getCacheRaw = (): LocalCache => {
   const text = localStorage.getItem(CACHE_KEY);
   return text ? JSON.parse(text) : CACHE_INIT;
 };
@@ -235,8 +235,7 @@ type CollectionKey =
   | 'assets'
   | 'contracts'
   | 'derivationPathOptions'
-  | 'networks'
-  | 'nodeOptions';
+  | 'networks';
 
 export const create = <K extends CollectionKey>(key: K) => (
   value: LocalCache[K][keyof LocalCache[K]]

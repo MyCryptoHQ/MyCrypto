@@ -1,12 +1,13 @@
 import React, { Component, createContext } from 'react';
 import * as service from 'v2/services/Network/Network';
-import { Network, ExtendedNetwork } from 'v2/services/Network';
+import { Network, ExtendedNetwork, NodeOptions } from 'v2/services/Network';
 
 export interface ProviderState {
   networks: ExtendedNetwork[];
   createNetworks(networksData: ExtendedNetwork): void;
   readNetworks(uuid: string): Network;
   deleteNetworks(uuid: string): void;
+  createNetworksNode(uuid: string, nodeData: NodeOptions): void;
   updateNetworks(uuid: string, networksData: ExtendedNetwork): void;
 }
 
@@ -24,6 +25,15 @@ export class NetworksProvider extends Component {
     },
     deleteNetworks: (uuid: string) => {
       service.deleteNetworks(uuid);
+      this.getNetworks();
+    },
+    createNetworksNode: (uuid: string, nodeData: NodeOptions) => {
+      const networkCurrentData: Network = service.readNetworks(uuid);
+      const newNetworkData: Network = {
+        ...networkCurrentData,
+        nodes: [...networkCurrentData.nodes, nodeData]
+      };
+      service.updateNetworks(uuid, newNetworkData);
       this.getNetworks();
     },
     updateNetworks: (uuid: string, networksData: ExtendedNetwork) => {

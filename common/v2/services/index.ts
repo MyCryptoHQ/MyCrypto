@@ -12,7 +12,6 @@ export * from './Wallets';
 export * from './Asset';
 export * from './DerivationPathOptions';
 export * from './Network';
-export * from './NodeOptions';
 export * from './ShapeShift';
 export * from './AddressBook';
 

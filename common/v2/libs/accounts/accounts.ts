@@ -2,12 +2,11 @@ import { shepherdProvider, INode } from 'libs/nodes';
 import { getCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from 'v2/services/Account/types';
 import { Asset } from 'v2/services/Asset/types';
-import { getAssetByName } from '../assets/assets';
+import { getAssetByUUID } from '../assets/assets';
 import { fromWei } from '../units';
 import BN from 'bn.js';
-import { getNetworkByName, getNodeByName } from '../networks/networks';
-import { Network } from 'v2/services/Network/types';
-import { NodeOptions } from 'v2/services/NodeOptions/types';
+import { getNetworkByName, getNodesByNetwork } from '../networks/networks';
+import { Network, NodeOptions } from 'v2/services/Network/types';
 import RpcNode from '../nodes/rpc';
 
 export const getCurrentsFromContext = (
@@ -60,15 +59,14 @@ export const getAccountBalance = async (
   address: string,
   network: Network | undefined
 ): Promise<BN> => {
-  const nodeOptions: NodeOptions | undefined = getNodeByName(
-    network ? network.nodes[0] : 'eth_mycrypto'
-  );
-  const node: INode = new RpcNode(
-    nodeOptions ? nodeOptions.url : 'https://api.mycryptoapi.com/eth'
-  );
   if (!network) {
     return new BN(0);
   } else {
+    const nodeOptions: NodeOptions[] = getNodesByNetwork(network.name);
+    if (!nodeOptions) {
+      return new BN(0);
+    }
+    const node: INode = new RpcNode(nodeOptions[0].url);
     const num = await node.getBalance(address);
     return num;
   }
@@ -94,7 +92,8 @@ export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undef
   if (!network) {
     return undefined;
   }
-  return getAssetByName(network.baseAsset);
+  console.log(getAssetByUUID(network.baseAsset));
+  return getAssetByUUID(network.baseAsset);
 };
 
 export const getAllAccounts = (): Account[] => {

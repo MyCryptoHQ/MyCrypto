@@ -12,7 +12,6 @@ export interface LocalCache {
   wallets: Record<string, serviceTypes.Wallet>;
   assets: Record<string, serviceTypes.Asset>;
   networks: Record<string, serviceTypes.Network>;
-  nodeOptions: Record<string, serviceTypes.NodeOptions>;
   contracts: Record<string, serviceTypes.Contract>;
   derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
   addressBook: Record<string, serviceTypes.AddressBook>;
@@ -89,7 +88,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       id: 'ETH',
       name: 'Ethereum',
       baseAsset: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
-      unit: 'ETH',
       chainId: 1,
       isCustom: false,
       color: '#007896',
@@ -97,7 +95,14 @@ export const CACHE_INIT_DEV: LocalCache = {
       tokenExplorer: {},
       tokens: [],
       contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
-      nodes: ['eth_mycrypto'],
+      nodes: [
+        {
+          name: 'eth_mycrypto',
+          type: 'rpc',
+          service: 'MyCrypto',
+          url: 'https://api.mycryptoapi.com/eth'
+        }
+      ],
       dPathFormats: {
         [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
       },
@@ -108,14 +113,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       },
       shouldEstimateGasPrice: true,
       assets: []
-    }
-  },
-  nodeOptions: {
-    eth_mycrypto: {
-      name: 'eth_mycrypto',
-      type: 'rpc',
-      service: 'MyCrypto',
-      url: 'https://api.mycryptoapi.com/eth'
     }
   },
   contracts: {
@@ -150,7 +147,6 @@ export const CACHE_INIT: LocalCache = {
   wallets: {},
   assets: {},
   networks: {},
-  nodeOptions: {},
   contracts: {},
   derivationPathOptions: {},
   addressBook: {},

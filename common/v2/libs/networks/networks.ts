@@ -1,11 +1,10 @@
-import { getCache } from 'v2/services/LocalCache';
-import { Network } from 'v2/services/Network/types';
+import { getCache, LocalCache, getCacheRaw, setCache } from 'v2/services/LocalCache';
+import { Network, NodeOptions } from 'v2/services/Network/types';
 import { getAccountByAddress } from 'v2/libs/accounts';
 import { Account } from 'v2/services/Account/types';
 import { SecureWalletName, InsecureWalletName } from 'config/data';
 import * as types from './types';
 import { WalletName } from 'v2/features/Wallets/types';
-import { NodeOptions } from 'v2/services/NodeOptions/types';
 
 export const getAllNetworks = () => {
   return Object.values(getCache().networks);
@@ -66,11 +65,29 @@ export const isWalletFormatSupportedOnNetwork = (network: Network, format: Walle
   return true;
 };
 
-export const getAllNodes = () => {
-  return Object.values(getCache().nodeOptions);
+export const getAllNodes = (): NodeOptions[] => {
+  const nodes: NodeOptions[] = [];
+  const networks: Network[] = getAllNetworks();
+  networks.map(network => {
+    network.nodes.map((node: NodeOptions) => {
+      nodes.push(node);
+    });
+  });
+  return nodes;
+};
+
+export const getNodesByNetwork = (network: string): NodeOptions[] => {
+  const networkObject: Network | undefined = getNetworkByName(network);
+  return networkObject ? networkObject.nodes : [];
 };
 
 export const getNodeByName = (name: string): NodeOptions | undefined => {
   const nodes = getAllNodes() || [];
   return nodes.find((node: NodeOptions) => node.name === name);
+};
+
+export const createNode = (node: NodeOptions, network: Network): void => {
+  const newStorage: LocalCache = getCacheRaw();
+  newStorage.networks[network.id].nodes.push(node);
+  setCache(newStorage);
 };

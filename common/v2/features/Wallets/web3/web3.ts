@@ -7,16 +7,11 @@ import {
   shepherd,
   makeProviderConfig
 } from 'libs/nodes';
-import { CustomNodeConfig, NodeOptions } from 'v2/services/NodeOptions/types';
-import { getNetworkByChainId } from 'v2/libs';
+import { CustomNodeConfig, NodeOptions, Network } from 'v2/services/Network';
+import { getNetworkByChainId, createNode, getNodeByName } from 'v2/libs';
 import { translateRaw } from 'translations';
-import {
-  createNodeOptions,
-  readNodeOptions,
-  createNodeOptionsWithID
-} from 'v2/services/NodeOptions/NodeOptions';
+
 import { updateSetting, readAllSettings } from 'v2/services/Settings/Settings';
-import { Network } from 'v2/services/Network/types';
 
 //#region Web3
 
@@ -46,7 +41,7 @@ export const initWeb3Node = async () => {
     shepherd.useProvider('web3', id, makeProviderConfig({ network: web3Network }));
   }
   web3Added = true;
-  createNodeOptionsWithID(config, id);
+  createNode(config, network);
   updateSetting({ ...readAllSettings(), node: 'web3' });
   return lib;
 };
@@ -84,7 +79,7 @@ export const unlockWeb3 = async () => {
 };
 
 export const getWeb3Node = async () => {
-  const currNode = readNodeOptions('web3');
+  const currNode = getNodeByName('web3');
   const currNodeId = readAllSettings().node;
   if (currNode && currNodeId && isWeb3NodeId(currNodeId)) {
     return currNode;
@@ -93,6 +88,10 @@ export const getWeb3Node = async () => {
 };
 export const isWeb3NodeId = (nodeId: string) => nodeId === 'web3';
 
-export const createNewWeb3Node = async (id: string, newNode: CustomNodeConfig) => {
-  createNodeOptions({ ...newNode, name: id, type: 'web3' });
+export const createNewWeb3Node = async (
+  id: string,
+  newNode: CustomNodeConfig,
+  network: Network
+) => {
+  createNode({ ...newNode, name: id, type: 'web3' }, network);
 };

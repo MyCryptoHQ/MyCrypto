@@ -15,5 +15,4 @@ export {
 } from './NotificationsProvider';
 export { AddressBookContext, AddressBookProvider } from './AddressBookProvider';
 export { NetworksContext, NetworksProvider } from './NetworksProvider';
-export { NodeOptionsContext, NodeOptionsProvider } from './NodeOptionsProvider';
 export { LockScreenContext, LockScreenProvider } from './LockScreenProvider';

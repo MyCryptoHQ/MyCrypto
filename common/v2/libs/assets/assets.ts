@@ -13,14 +13,14 @@ export const getAssetByTicker = (symbol: string): Asset | undefined => {
 };
 
 export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => {
-  const baseAssetOfNetwork: Asset | undefined = getAssetByTicker(network.unit);
+  const baseAssetOfNetwork: Asset | undefined = getAssetByTicker(network.id);
   if (!baseAssetOfNetwork) {
     return {
       uuid: generateUUID(),
       name: network.name,
-      networkId: network.unit,
+      networkId: network.id,
       type: 'base',
-      ticker: network.unit,
+      ticker: network.id,
       decimal: 18
     };
   } else {

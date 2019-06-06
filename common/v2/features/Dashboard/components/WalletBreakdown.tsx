@@ -44,7 +44,6 @@ function WalletBreakdown() {
   const { accounts, updateAccount } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const balances: any[] = [];
-
   const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
     accounts,
     settings.dashboardAccounts
