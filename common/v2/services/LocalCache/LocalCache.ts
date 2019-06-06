@@ -42,7 +42,7 @@ export const initGlobalSettings = () => {
   newStorage.globalSettings = {
     fiatCurrency: 'USD',
     darkMode: false,
-    timer: 5
+    timer: 1800000 //milliseconds
   };
   setCache(newStorage);
 };

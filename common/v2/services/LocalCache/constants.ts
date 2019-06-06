@@ -38,7 +38,8 @@ export const CACHE_INIT_DEV: LocalCache = {
   recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
   globalSettings: {
     fiatCurrency: 'USD',
-    darkMode: true
+    darkMode: true,
+    timer: 1800000 //milliseconds
   },
   accounts: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {

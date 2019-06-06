@@ -57,10 +57,25 @@ interface SettingsProps {
   updateGlobalSettings(settings: GlobalSettings): void;
 }
 
+const timerOptions = [
+  { name: '1 Minutes', value: '60000' },
+  { name: '3 Minutes', value: '180000' },
+  { name: '5 Minutes', value: '300000' },
+  { name: '10 Minutes', value: '600000' },
+  { name: '15 Minutes', value: '900000' },
+  { name: '30 Minutes', value: '1800000' },
+  { name: '45 Minutes', value: '2700000' },
+  { name: '1 Hour', value: '3600000' },
+  { name: '3 Hour', value: '10800000' },
+  { name: '6 Hour', value: '21600000' },
+  { name: '12 Hour', value: '43200000' }
+];
+
 export default class GeneralSettings extends React.Component<SettingsProps> {
-  public changeTimer = (event: React.ChangeEvent<HTMLInputElement>) => {
+  public changeTimer = (event: React.FormEvent<HTMLSelectElement>) => {
+    const target = event.target as HTMLSelectElement;
     const settings = this.props.globalSettings;
-    settings.timer = Number(event.target.value);
+    settings.timer = Number(target.value);
     this.props.updateGlobalSettings(settings);
   };
 
@@ -91,18 +106,12 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           <SettingsLabel>Inactivity Timer</SettingsLabel>
           <SettingsControl>
             <SelectContainer>
-              <select onChange={() => this.changeTimer} value={String(globalSettings.timer)}>
-                <option value="0">1 Minutes</option>
-                <option value="1">3 Minutes</option>
-                <option value="2">5 Minutes</option>
-                <option value="3">10 Minutes</option>
-                <option value="4">15 Minutes</option>
-                <option value="5">30 Minutes</option>
-                <option value="6">45 Minutes</option>
-                <option value="7">1 Hour</option>
-                <option value="8">3 Hour</option>
-                <option value="9">6 Hour</option>
-                <option value="10">12 Hour</option>
+              <select onChange={this.changeTimer} value={String(globalSettings.timer)}>
+                {timerOptions.map(option => (
+                  <option value={option.value} key={option.value}>
+                    {option.name}
+                  </option>
+                ))}
               </select>
             </SelectContainer>
           </SettingsControl>

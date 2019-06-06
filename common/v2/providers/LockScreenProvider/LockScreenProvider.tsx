@@ -17,20 +17,6 @@ interface State {
 }
 export const LockScreenContext = React.createContext({} as State);
 
-const timers = [
-  60000,
-  180000,
-  300000,
-  600000,
-  900000,
-  1800000,
-  2700000,
-  3600000,
-  10800000,
-  21600000,
-  43200000
-];
-
 let inactivityTimer: any = null;
 let countDownTimer: any = null;
 const countDownDuration: number = 59;
@@ -116,7 +102,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(
       this.startLockCountdown,
-      timers[globalSettingsService.readGlobalSettings().timer!]
+      globalSettingsService.readGlobalSettings().timer!
     );
   };
 
