@@ -68,13 +68,12 @@ const StyledButton = styled(Button)`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 51px;
+  height: 66px;
 `;
 
 interface Props extends PanelProps {

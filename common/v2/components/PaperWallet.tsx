@@ -330,7 +330,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
           <QRCodeWrapper>
             <QRCode data={data} />
           </QRCodeWrapper>
-          <Path>{isPrivate && path && `Bip Path: ${path}`}</Path>
+          <Path>{isPrivate && path && `Derived Path: ${path}`}</Path>
           {isPrivate ? (
             <Mnemonic breakWords={!!privateKey}>
               <b>{dataText}:</b>
