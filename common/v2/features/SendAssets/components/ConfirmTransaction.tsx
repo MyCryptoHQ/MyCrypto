@@ -7,7 +7,7 @@ import './ConfirmTransaction.scss';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import feeIcon from 'common/assets/images/icn-fee.svg';
-import { AddressMetadataContext } from 'v2/providers';
+import { AddressBookContext } from 'v2/providers';
 import { ISendState } from '../types';
 
 interface Props {
@@ -39,11 +39,11 @@ export default class ConfirmTransaction extends Component<Props> {
 
     return (
       <div className="ConfirmTransaction">
-        <AddressMetadataContext.Consumer>
-          {({ addressMetadata }) => {
+        <AddressBookContext.Consumer>
+          {({ addressBook }) => {
             let recipientLabel: string = 'Unknown';
             let senderLabel: string = label;
-            addressMetadata.map(en => {
+            addressBook.map(en => {
               if (en.address.toLowerCase() === recipientAddress.toLowerCase()) {
                 recipientLabel = en.label;
               }
@@ -72,7 +72,7 @@ export default class ConfirmTransaction extends Component<Props> {
               </div>
             );
           }}
-        </AddressMetadataContext.Consumer>
+        </AddressBookContext.Consumer>
         <div className="ConfirmTransaction-row">
           <div className="ConfirmTransaction-row-column">
             <img src={sendIcon} alt="Send" /> Send Amount:

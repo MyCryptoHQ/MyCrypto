@@ -1,10 +1,10 @@
-export interface AddressMetadata {
+export interface AddressBook {
   address: string;
   label: string;
   notes: string;
 }
 
-export interface ExtendedAddressMetadata {
+export interface ExtendedAddressBook {
   address: string;
   label: string;
   notes: string;

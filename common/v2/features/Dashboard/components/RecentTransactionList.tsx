@@ -9,18 +9,18 @@ import './RecentTransactionList.scss';
 
 // Legacy
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import { AddressMetadata, ExtendedAccount, TransactionData } from 'v2/services';
+import { AddressBook, ExtendedAccount, TransactionData } from 'v2/services';
 import { truncate } from 'v2/libs';
 
 interface Props {
   className?: string;
   accountsList: ExtendedAccount[];
-  readAddressMetadata(uuid: string): AddressMetadata;
+  readAddressBook(uuid: string): AddressBook;
 }
 
 export default function RecentTransactionList({
   accountsList,
-  readAddressMetadata,
+  readAddressBook,
   className = ''
 }: Props) {
   const transactions: TransactionData[] = [];
@@ -44,8 +44,8 @@ export default function RecentTransactionList({
       <Address
         key={1}
         title={
-          readAddressMetadata(from.toLowerCase())
-            ? readAddressMetadata(from.toLowerCase()).label
+          readAddressBook(from.toLowerCase())
+            ? readAddressBook(from.toLowerCase()).label
             : 'No Label'
         }
         truncate={truncate}
@@ -54,9 +54,7 @@ export default function RecentTransactionList({
       <Address
         key={2}
         title={
-          readAddressMetadata(to.toLowerCase())
-            ? readAddressMetadata(to.toLowerCase()).label
-            : 'No Label'
+          readAddressBook(to.toLowerCase()) ? readAddressBook(to.toLowerCase()).label : 'No Label'
         }
         truncate={truncate}
         address={to}

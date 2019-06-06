@@ -1,13 +1,14 @@
 import * as types from 'v2/services';
 
-export const ACCOUNTTYPES: Record<string, types.AccountType> = {
+export const WalletTypes: Record<string, types.Wallet> = {
   metamask: {
     name: 'MetaMask',
     key: 'metamask',
     secure: true,
     derivationPath: '',
     web3: true,
-    hardware: false
+    hardware: false,
+    desktopOnly: false
   },
   ledger: {
     name: 'Ledger',
@@ -15,7 +16,8 @@ export const ACCOUNTTYPES: Record<string, types.AccountType> = {
     secure: true,
     derivationPath: '',
     web3: false,
-    hardware: true
+    hardware: true,
+    desktopOnly: false
   },
   trezor: {
     name: 'Trezor',
@@ -23,7 +25,8 @@ export const ACCOUNTTYPES: Record<string, types.AccountType> = {
     secure: true,
     derivationPath: '',
     web3: false,
-    hardware: true
+    hardware: true,
+    desktopOnly: false
   },
   keystore: {
     name: 'JSON Keystore File',
@@ -31,7 +34,8 @@ export const ACCOUNTTYPES: Record<string, types.AccountType> = {
     secure: false,
     derivationPath: '',
     web3: false,
-    hardware: false
+    hardware: false,
+    desktopOnly: true
   },
   mnemonic: {
     name: 'Mnemonic Phrase',
@@ -39,7 +43,8 @@ export const ACCOUNTTYPES: Record<string, types.AccountType> = {
     secure: false,
     derivationPath: '',
     web3: false,
-    hardware: false
+    hardware: false,
+    desktopOnly: true
   },
   privatekey: {
     name: 'Private Key',
@@ -47,7 +52,8 @@ export const ACCOUNTTYPES: Record<string, types.AccountType> = {
     secure: false,
     derivationPath: '',
     web3: false,
-    hardware: false
+    hardware: false,
+    desktopOnly: true
   },
   paritysigner: {
     name: 'MetaMask',
@@ -55,7 +61,8 @@ export const ACCOUNTTYPES: Record<string, types.AccountType> = {
     secure: true,
     derivationPath: '',
     web3: true,
-    hardware: false
+    hardware: false,
+    desktopOnly: false
   },
   safetmini: {
     name: 'Safe-T Mini',
@@ -63,6 +70,7 @@ export const ACCOUNTTYPES: Record<string, types.AccountType> = {
     secure: true,
     derivationPath: '',
     web3: false,
-    hardware: true
+    hardware: true,
+    desktopOnly: false
   }
 };

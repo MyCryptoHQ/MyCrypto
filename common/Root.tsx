@@ -36,7 +36,7 @@ import 'what-input';
 import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
-import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
+import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
 import Dashboard from 'v2/features/Dashboard';
@@ -125,7 +125,7 @@ class RootClass extends Component<Props, State> {
       <ThemeProvider theme={GAU_THEME}>
         <React.Fragment>
           <Provider store={store}>
-            <AddressMetadataProvider>
+            <AddressBookProvider>
               <AccountProvider>
                 <NotificationsProvider>
                   <NetworksProvider>
@@ -146,7 +146,7 @@ class RootClass extends Component<Props, State> {
                   </NetworksProvider>
                 </NotificationsProvider>
               </AccountProvider>
-            </AddressMetadataProvider>
+            </AddressBookProvider>
           </Provider>
           {process.env.NODE_ENV !== 'production' && (
             <button

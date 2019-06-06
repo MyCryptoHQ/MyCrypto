@@ -8,12 +8,12 @@ export * from './Settings';
 export * from './Storage';
 export * from './Github';
 export * from './Account';
-export * from './AccountType';
+export * from './Wallets';
 export * from './Asset';
 export * from './DerivationPathOptions';
 export * from './Network';
 export * from './NodeOptions';
 export * from './ShapeShift';
-export * from './AddressMetadata';
+export * from './AddressBook';
 
 export * from './types';

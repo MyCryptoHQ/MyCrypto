@@ -3,7 +3,7 @@ import * as types from 'v2/services';
 import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY, LocalCache } from './constants';
 import { DPaths, Fiats } from 'config';
 import { ContractsData, AssetsData } from 'v2/config/cacheData';
-import { ACCOUNTTYPES, SecureWalletName } from 'v2/config';
+import { WalletTypes, SecureWalletName } from 'v2/config';
 import { NODE_CONFIGS } from 'libs/nodes';
 import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 import { isDevelopment } from 'v2/utils/environment';
@@ -22,7 +22,7 @@ export const initializeCache = () => {
 
     initNodeOptions();
 
-    initAccountTypes();
+    initWallets();
 
     initSettings();
 
@@ -51,10 +51,10 @@ export const initSettings = () => {
   setCache(newStorage);
 };
 
-export const initAccountTypes = () => {
+export const initWallets = () => {
   const newStorage = getCacheRaw();
-  const accountTypes: Record<string, types.AccountType> = ACCOUNTTYPES;
-  newStorage.accountTypes = accountTypes;
+  const wallets: Record<string, types.Wallet> = WalletTypes;
+  newStorage.wallets = wallets;
   setCache(newStorage);
 };
 
@@ -229,9 +229,9 @@ export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCa
 
 type CollectionKey =
   | 'accounts'
-  | 'accountTypes'
+  | 'wallets'
   | 'notifications'
-  | 'addressMetadata'
+  | 'addressBook'
   | 'assets'
   | 'contracts'
   | 'derivationPathOptions'

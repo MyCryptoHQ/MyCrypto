@@ -9,13 +9,13 @@ export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 export interface LocalCache {
   settings: serviceTypes.Settings;
   accounts: Record<string, serviceTypes.Account>;
-  accountTypes: Record<string, serviceTypes.AccountType>;
+  wallets: Record<string, serviceTypes.Wallet>;
   assets: Record<string, serviceTypes.Asset>;
   networks: Record<string, serviceTypes.Network>;
   nodeOptions: Record<string, serviceTypes.NodeOptions>;
   contracts: Record<string, serviceTypes.Contract>;
   derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
-  addressMetadata: Record<string, serviceTypes.AddressMetadata>;
+  addressBook: Record<string, serviceTypes.AddressBook>;
   notifications: Record<string, serviceTypes.Notification>;
   screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
 }
@@ -53,14 +53,15 @@ export const CACHE_INIT_DEV: LocalCache = {
       timestamp: Date.now()
     }
   },
-  accountTypes: {
+  wallets: {
     MetaMask: {
       name: 'MetaMask',
       key: 'metamask',
       secure: true,
       derivationPath: '',
       web3: true,
-      hardware: false
+      hardware: false,
+      desktopOnly: false
     }
   },
   assets: {
@@ -127,7 +128,7 @@ export const CACHE_INIT_DEV: LocalCache = {
     }
   },
   derivationPathOptions: {},
-  addressMetadata: {
+  addressBook: {
     '0x80200997f095da94e404f7e0d581aab1ffba9f7d': {
       address: '0x80200997f095da94e404f7e0d581aab1ffba9f7d',
       label: 'My Wallet',
@@ -146,12 +147,12 @@ export const CACHE_INIT: LocalCache = {
     inactivityTimer: 1800000
   },
   accounts: {},
-  accountTypes: {},
+  wallets: {},
   assets: {},
   networks: {},
   nodeOptions: {},
   contracts: {},
   derivationPathOptions: {},
-  addressMetadata: {},
+  addressBook: {},
   notifications: {}
 };

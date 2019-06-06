@@ -12,7 +12,7 @@ import {
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { AccountContext, AddressMetadataContext } from 'v2/providers';
+import { AccountContext, AddressBookContext } from 'v2/providers';
 
 export default function Dashboard() {
   return (
@@ -41,16 +41,16 @@ export default function Dashboard() {
                 className="Dashboard-mobile-modifiedPanel"
               />
             </div>
-            <AddressMetadataContext.Consumer>
-              {({ readAddressMetadata }) => (
+            <AddressBookContext.Consumer>
+              {({ readAddressBook }) => (
                 <div className="Dashboard-mobile-section">
                   <RecentTransactionList
                     accountsList={accounts}
-                    readAddressMetadata={readAddressMetadata}
+                    readAddressBook={readAddressBook}
                   />
                 </div>
               )}
-            </AddressMetadataContext.Consumer>
+            </AddressBookContext.Consumer>
           </Layout>
         )}
       </AccountContext.Consumer>
@@ -84,17 +84,17 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <AddressMetadataContext.Consumer>
-              {({ readAddressMetadata }) => (
+            <AddressBookContext.Consumer>
+              {({ readAddressBook }) => (
                 <div className="Dashboard-desktop-bottom">
                   <RecentTransactionList
-                    readAddressMetadata={readAddressMetadata}
+                    readAddressBook={readAddressBook}
                     accountsList={accounts}
                     className="Dashboard-desktop-modifiedPanel"
                   />
                 </div>
               )}
-            </AddressMetadataContext.Consumer>
+            </AddressBookContext.Consumer>
           </Layout>
         )}
       </AccountContext.Consumer>
