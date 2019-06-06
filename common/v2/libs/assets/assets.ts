@@ -35,3 +35,12 @@ export const getNewDefaultAssetTemplateByNetwork = (network: NetworkOptions): As
     };
   }
 };
+
+export const getAllAssetsOptions = (): AssetOption[] => {
+  return Object.values(getCache().assetOptions);
+};
+
+export const getAssetOptionByName = (name: string): AssetOption | undefined => {
+  const allAssets = getAllAssetsOptions();
+  return allAssets.find(asset => asset.ticker === name);
+};

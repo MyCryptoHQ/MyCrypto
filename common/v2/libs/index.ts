@@ -4,4 +4,5 @@ export * from './assetOptions';
 export * from './helpers';
 export * from './preFillTx';
 export * from './networks';
+export * from './accounts';
 export * from './assets';

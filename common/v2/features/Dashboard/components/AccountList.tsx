@@ -1,13 +1,16 @@
 import { Address, Button, CollapsibleTable, Icon, Network, Typography } from '@mycrypto/ui';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { getCurrentsFromContext } from 'v2/libs/accounts/accounts';
 import { truncate } from 'v2/libs';
 import { ExtendedAccount } from 'v2/services';
 import './AccountList.scss';
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
+import { CurrentsContext } from 'v2/providers/CurrentsProvider/CurrentsProvider';
+import { AccountContext } from 'v2/providers';
 
 const DeleteButton = styled(Button)`
   align-self: flex-start;
@@ -22,8 +25,10 @@ interface AccountListProps {
 }
 
 export default function AccountList(props: AccountListProps) {
-  const { accounts, deleteAccount, className } = props;
-
+  const { deleteAccount, className } = props;
+  const { currents } = useContext(CurrentsContext);
+  const { accounts } = useContext(AccountContext);
+  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(accounts, currents.accounts);
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;
@@ -36,7 +41,7 @@ export default function AccountList(props: AccountListProps) {
       actionLink="/add-account"
       className={`AccountList ${className}`}
     >
-      <CollapsibleTable breakpoint={450} {...buildAccountTable(accounts, deleteAccount)} />
+      <CollapsibleTable breakpoint={450} {...buildAccountTable(currentAccounts, deleteAccount)} />
     </DashboardPanel>
   );
 }

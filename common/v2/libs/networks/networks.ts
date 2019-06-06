@@ -5,6 +5,7 @@ import { Account } from 'v2/services/Account/types';
 import { SecureWalletName, InsecureWalletName } from 'config/data';
 import * as types from './types';
 import { WalletName } from 'v2/features/Wallets/types';
+import { NodeOptions } from 'v2/services/NodeOptions/types';
 
 export const getAllNetworks = () => {
   return Object.values(getCache().networkOptions);
@@ -66,4 +67,13 @@ export const isWalletFormatSupportedOnNetwork = (
 
   // All other wallet formats are supported
   return true;
+};
+
+export const getAllNodes = () => {
+  return Object.values(getCache().nodeOptions);
+};
+
+export const getNodeByName = (name: string): NodeOptions | undefined => {
+  const nodes = getAllNodes() || [];
+  return nodes.find((node: NodeOptions) => node.name === name);
 };

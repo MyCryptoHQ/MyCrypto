@@ -10,6 +10,7 @@ export interface Account {
   value: number;
   transactionHistory: string;
   derivationPath: string;
+  timestamp: number;
 }
 
 export interface ExtendedAccount extends Account {
