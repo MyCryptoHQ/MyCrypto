@@ -9,7 +9,7 @@ import './Settings.scss';
 // Legacy
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { AccountList } from '../components';
-import { AccountContext, AddressMetadataContext } from 'v2/providers';
+import { AccountContext, AddressBookContext } from 'v2/providers';
 
 export default function Settings() {
   return (
@@ -31,26 +31,26 @@ export default function Settings() {
           </FlippablePanel>
         )}
       </AccountContext.Consumer>
-      <AddressMetadataContext.Consumer>
-        {({ createAddressMetadatas, addressMetadata, deleteAddressMetadatas }) => (
+      <AddressBookContext.Consumer>
+        {({ createAddressBooks, addressBook, deleteAddressBooks }) => (
           <FlippablePanel>
             {({ flipped, toggleFlipped }) =>
               flipped ? (
                 <AddToAddressBook
                   toggleFlipped={toggleFlipped}
-                  createAddressMetadatas={createAddressMetadatas}
+                  createAddressBooks={createAddressBooks}
                 />
               ) : (
                 <AddressBook
-                  addressMetadata={addressMetadata}
+                  addressBook={addressBook}
                   toggleFlipped={toggleFlipped}
-                  deleteAddressMetadatas={deleteAddressMetadatas}
+                  deleteAddressBooks={deleteAddressBooks}
                 />
               )
             }
           </FlippablePanel>
         )}
-      </AddressMetadataContext.Consumer>
+      </AddressBookContext.Consumer>
       <GeneralSettings />
     </Layout>
   );

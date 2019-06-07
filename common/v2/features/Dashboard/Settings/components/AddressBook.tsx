@@ -2,14 +2,14 @@ import React from 'react';
 import { Address, Icon, CollapsibleTable, Typography, Button } from '@mycrypto/ui';
 
 import { DashboardPanel } from '../../components';
-import { ExtendedAddressMetadata } from 'v2/services';
+import { ExtendedAddressBook } from 'v2/services';
 import styled from 'styled-components';
 import { truncate } from 'v2/libs';
 
 interface Props {
-  addressMetadata: ExtendedAddressMetadata[];
+  addressBook: ExtendedAddressBook[];
   toggleFlipped(): void;
-  deleteAddressMetadatas(uuid: string): void;
+  deleteAddressBooks(uuid: string): void;
 }
 
 const DeleteButton = styled(Button)`
@@ -17,18 +17,14 @@ const DeleteButton = styled(Button)`
   margin-left: 1em;
 `;
 
-export default function AddressBook({
-  addressMetadata,
-  toggleFlipped,
-  deleteAddressMetadatas
-}: Props) {
+export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
   const addressBookTable = {
     head: ['Favorite', 'Address', 'Notes', 'Delete'],
-    body: addressMetadata.map(({ address, label, notes, uuid }: ExtendedAddressMetadata) => [
+    body: addressBook.map(({ address, label, notes, uuid }: ExtendedAddressBook) => [
       <Icon key={0} icon="star" />,
       <Address key={1} title={label} address={address} truncate={truncate} />,
       <Typography key={2}>{notes}</Typography>,
-      <DeleteButton key={3} onClick={() => deleteAddressMetadatas(uuid)} icon="exit" />
+      <DeleteButton key={3} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
     ]),
     config: {
       primaryColumn: 'Address',

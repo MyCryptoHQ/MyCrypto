@@ -2,9 +2,9 @@ import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { ComboBox } from '@mycrypto/ui';
 
-import { AccountContext, NetworkOptionsContext } from 'v2/providers';
+import { AccountContext, NetworksContext } from 'v2/providers';
 import { ITxFields } from '../../types';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 
 interface OwnProps {
   handleChange: Formik['handleChange'];
@@ -32,8 +32,8 @@ export default class AssetField extends Component<Props> {
         <label htmlFor="asset">Asset</label>
         <AccountContext.Consumer>
           {({ accounts }) => (
-            <NetworkOptionsContext.Consumer>
-              {({ networkOptions }) => {
+            <NetworksContext.Consumer>
+              {({ networks }) => {
                 // Networks of all accounts
                 const relevantNetworks: string[] = [
                   ...new Set(accounts.map(account => account.network))
@@ -42,8 +42,8 @@ export default class AssetField extends Component<Props> {
                 const assetslist: string[] = [];
                 // For each network
                 relevantNetworks.map(en => {
-                  // get the NetworkOptions
-                  const network: NetworkOptions | undefined = networkOptions.find(
+                  // get the Network
+                  const network: Network | undefined = networks.find(
                     networkEntry => networkEntry.name === en
                   );
                   // and get associated assets
@@ -68,7 +68,7 @@ export default class AssetField extends Component<Props> {
                   />
                 );
               }}
-            </NetworkOptionsContext.Consumer>
+            </NetworksContext.Consumer>
           )}
         </AccountContext.Consumer>
       </div>

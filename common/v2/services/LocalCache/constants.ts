@@ -1,153 +1,105 @@
 import * as serviceTypes from 'v2/services/types';
-import { SecureWalletName } from 'config/data';
+import { SecureWalletName } from 'v2/config/data';
 import { InsecureWalletName } from 'v2/features/Wallets/types';
-import { ETH_DEFAULT } from 'config/dpaths';
+import { ETH_DEFAULT } from 'v2/config/dpaths';
 
 export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 
 export interface LocalCache {
-  currents: serviceTypes.Currents;
-  globalSettings: Partial<serviceTypes.GlobalSettings>;
-  recentAccounts: string[];
+  settings: serviceTypes.Settings;
   accounts: Record<string, serviceTypes.Account>;
-  transactionHistories: Record<string, serviceTypes.TransactionHistory>;
-  transactions: Record<string, serviceTypes.Transaction>;
-  accountTypes: Record<string, serviceTypes.AccountType>;
+  wallets: Record<string, serviceTypes.Wallet>;
   assets: Record<string, serviceTypes.Asset>;
-  localSettings: Record<string, serviceTypes.LocalSetting>;
-  networkOptions: Record<string, serviceTypes.NetworkOptions>;
-  nodeOptions: Record<string, serviceTypes.NodeOptions>;
-  assetOptions: Record<string, serviceTypes.AssetOption>;
-  contractOptions: Record<string, serviceTypes.ContractOptions>;
-  derivationPathOptions: Record<string, serviceTypes.DerivationPathOptions>;
-  addressMetadata: Record<string, serviceTypes.AddressMetadata>;
+  networks: Record<string, serviceTypes.Network>;
+  contracts: Record<string, serviceTypes.Contract>;
+  addressBook: Record<string, serviceTypes.AddressBook>;
   notifications: Record<string, serviceTypes.Notification>;
-  fiatCurrencies: Record<string, serviceTypes.FiatCurrency>;
   screenLockSettings?: Partial<serviceTypes.ScreenLockSettings>;
 }
 
 export const CACHE_INIT_DEV: LocalCache = {
-  currents: {
-    accounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
+  settings: {
     fiatCurrency: 'USD',
-    activeWallet: 'all',
-    node: 'eth_mycrypto',
-    network: 'ETH'
-  },
-  recentAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
-  globalSettings: {
-    fiatCurrency: 'USD',
-    darkMode: true
+    darkMode: false,
+    dashboardAccounts: ['61d84f5e-0efa-46b9-915c-aed6ebe5a4dc'],
+    inactivityTimer: 1800000
   },
   accounts: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
       label: 'Foo',
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       network: 'ETH',
-      localSettings: '17ed6f49-ff23-4bef-a676-69174c266b37',
-      assets: ['12d3cbf2-de3a-4050-a0c6-521592e4b85a'],
-      accountType: SecureWalletName.WEB3,
-      value: 1e18,
-      transactionHistory: '76b50f76-afb2-4185-ab7d-4d62c0654882',
-      derivationPath: `m/44'/60'/0'/0/0`,
+      assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0' }],
+      wallet: SecureWalletName.WEB3,
+      balance: 1e18,
+      transactions: [
+        {
+          txHash: '0xf1e4e01312c3e465376cc6eeed1138d5a870363e1a1a88f54473801b214d3a69',
+          stage: 'pending',
+          label: 'Example',
+          date: 1547768373,
+          value: 0,
+          from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+          to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
+          data: '0x',
+          assetType: 'base',
+          fiatValue: {
+            USD: '0'
+          }
+        }
+      ],
+      dPath: `m/44'/60'/0'/0/0`,
       timestamp: Date.now()
     }
   },
-  transactionHistories: {
-    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
-      transaction: '6e1c322c-aea6-4484-8fdc-7b3227a9d359'
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654881': {
-      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654881'
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654885': {
-      transaction: '76b50f76-afb2-4185-ab7d-4d62c0654885'
-    }
-  },
-  transactions: {
-    '6e1c322c-aea6-4484-8fdc-7b3227a9d359': {
-      stage: 'pending',
-      label: 'Example',
-      date: 1547768373,
-      value: 0,
-      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      fiatValue: {
-        USD: '0'
-      }
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654881': {
-      stage: 'completed',
-      label: 'Example',
-      date: 1547769373,
-      value: 0,
-      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      fiatValue: {
-        USD: '0'
-      }
-    },
-    '76b50f76-afb2-4185-ab7d-4d62c0654885': {
-      stage: 'completed',
-      label: 'Example',
-      date: 1548769373,
-      value: 0,
-      from: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      to: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-      fiatValue: {
-        USD: '0'
-      }
-    }
-  },
-  accountTypes: {
+  wallets: {
     MetaMask: {
       name: 'MetaMask',
       key: 'metamask',
       secure: true,
-      derivationPath: '',
       web3: true,
-      hardware: false
+      hardware: false,
+      desktopOnly: false
     }
   },
   assets: {
     '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
-      option: 'Ethereum',
-      amount: '14.13',
-      network: 'ETH',
+      uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
+      name: 'Ethereum',
+      networkId: 'ETH',
       type: 'base',
-      symbol: 'ETH'
+      ticker: 'ETH',
+      decimal: 18
     },
     '10e14757-78bb-4bb2-a17a-8333830f6698': {
-      option: 'OmiseGo',
-      amount: '2',
-      network: 'ETH',
+      uuid: '10e14757-78bb-4bb2-a17a-8333830f6698',
+      name: 'OmiseGo',
+      networkId: 'ETH',
       type: 'erc20',
-      symbol: 'OMG',
+      ticker: 'OMG',
       contractAddress: '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07',
       decimal: 18
     }
   },
-  localSettings: {
-    '17ed6f49-ff23-4bef-a676-69174c266b37': {
-      fiatCurrency: 'GBP',
-      favorite: false
-    }
-  },
-  networkOptions: {
+  networks: {
     ETH: {
       id: 'ETH',
       name: 'Ethereum',
-      unit: 'ETH',
+      baseAsset: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
       chainId: 1,
       isCustom: false,
       color: '#007896',
-      blockExplorer: {},
-      tokenExplorer: {},
-      tokens: [],
       contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
-      nodes: ['eth_mycrypto'],
-      dPathFormats: {
+      nodes: [
+        {
+          name: 'eth_mycrypto',
+          type: 'rpc',
+          service: 'MyCrypto',
+          url: 'https://api.mycryptoapi.com/eth'
+        }
+      ],
+      dPaths: {
         [InsecureWalletName.MNEMONIC_PHRASE]: ETH_DEFAULT
       },
       gasPriceSettings: {
@@ -159,69 +111,38 @@ export const CACHE_INIT_DEV: LocalCache = {
       assets: []
     }
   },
-  nodeOptions: {
-    eth_mycrypto: {
-      name: 'eth_mycrypto',
-      type: 'rpc',
-      service: 'MyCrypto',
-      url: 'https://api.mycryptoapi.com/eth'
-    }
-  },
-  assetOptions: {
-    ETH: {
-      name: 'Ethereum',
-      network: 'ETH',
-      ticker: 'ETH',
-      type: 'base',
-      decimal: 18,
-      contractAddress: null
-    }
-  },
-  contractOptions: {
+  contracts: {
     '17ed6f49-ff23-4bef-a676-69174c266b38': {
       name: 'Athenian: Warrior for Battle',
-      network: 'Ethereum',
+      networkId: 'ETH',
       address: '0x17052d51E954592C1046320c2371AbaB6C73Ef10',
       abi:
         '[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_amount","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"tokenName","type":"string"},{"name":"tokenSymbol","type":"string"},{"name":"tokenSupply","type":"uint256"}],"name":"SetupToken","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[{"name":"adr","type":"address"}],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]'
     }
   },
-  derivationPathOptions: {},
-  addressMetadata: {
+  addressBook: {
     '0x80200997f095da94e404f7e0d581aab1ffba9f7d': {
       address: '0x80200997f095da94e404f7e0d581aab1ffba9f7d',
       label: 'My Wallet',
       notes: 'This is my wallet.'
     }
   },
-  notifications: {},
-  fiatCurrencies: {
-    USD: {
-      code: 'USD',
-      name: 'US Dollars'
-    }
-  }
+  notifications: {}
 };
 
 export const CACHE_INIT: LocalCache = {
   // : LocalCache
-  currents: {
-    accounts: []
+  settings: {
+    fiatCurrency: 'USD',
+    darkMode: false,
+    dashboardAccounts: [],
+    inactivityTimer: 1800000
   },
-  recentAccounts: [],
-  globalSettings: {},
   accounts: {},
-  transactionHistories: {},
-  transactions: {},
-  accountTypes: {},
+  wallets: {},
   assets: {},
-  localSettings: {},
-  networkOptions: {},
-  nodeOptions: {},
-  assetOptions: {},
-  contractOptions: {},
-  derivationPathOptions: {},
-  addressMetadata: {},
-  notifications: {},
-  fiatCurrencies: {}
+  networks: {},
+  contracts: {},
+  addressBook: {},
+  notifications: {}
 };

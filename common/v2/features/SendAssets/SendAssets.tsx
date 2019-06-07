@@ -31,12 +31,11 @@ const getInitialState = (): ISendState => {
           label: '',
           address: '',
           network: '',
-          localSettings: '',
-          assets: [''],
-          accountType: undefined,
-          value: 0,
-          transactionHistory: '',
-          derivationPath: '',
+          assets: [],
+          wallet: undefined,
+          balance: 0,
+          transactions: [],
+          dPath: '',
           uuid: '',
           timestamp: 0
         },
@@ -89,12 +88,11 @@ const getInitialState = (): ISendState => {
           label: '',
           address: '',
           network: '',
-          localSettings: '',
-          assets: [''],
-          accountType: undefined,
-          value: 0,
-          transactionHistory: '',
-          derivationPath: '',
+          assets: [],
+          wallet: undefined,
+          balance: 0,
+          transactions: [],
+          dPath: '',
           uuid: '',
           timestamp: 0
         },
@@ -164,11 +162,11 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
         <ContentPanel
           onBack={this.goToPrevStep}
           className="SendAssets"
-          heading={transactionFields.account.accountType === 'web3' ? Web3Steps.label : Step.label}
+          heading={transactionFields.account.wallet === 'web3' ? Web3Steps.label : Step.label}
           icon={sendIcon}
           stepper={{ current: step + 1, total: steps.length - 1 }}
         >
-          {transactionFields.account.accountType === 'web3' ? (
+          {transactionFields.account.wallet === 'web3' ? (
             <Web3Steps.elem
               transactionFields={this.state.transactionFields}
               onNext={this.goToNextStep}

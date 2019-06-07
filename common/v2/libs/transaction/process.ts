@@ -1,29 +1,29 @@
 import { ITxFields } from 'v2/features/SendAssets/types';
 import { IHexStrWeb3Transaction, IHexStrTransaction } from './typings';
-import { AssetOption } from 'v2/services/AssetOption/types';
-import { getAssetByTicker } from '../assetOptions';
+import { getAssetByTicker } from 'v2/libs/assets';
 import { getNetworkById } from '../networks/networks';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 
 import { Address, TokenValue, toWei, toTokenBase } from '../units';
 import BN from 'bn.js';
 import { encodeTransfer } from './utils/token';
 import { bufferToHex } from 'ethereumjs-util';
 import { hexEncodeQuantity } from '../nodes/rpc/utils';
+import { Asset } from 'v2/services/Asset/types';
 
 export const processFormDataToWeb3Tx = (
   formData: ITxFields
 ): IHexStrWeb3Transaction | undefined => {
   const symbol = formData.asset!.symbol;
-  const asset: AssetOption | undefined = getAssetByTicker(symbol);
+  const asset: Asset | undefined = getAssetByTicker(symbol);
 
   const txFields = formData;
 
-  if (!asset) {
+  if (!asset || !asset.networkId) {
     return undefined;
   }
 
-  const network: NetworkOptions | undefined = getNetworkById(asset.network);
+  const network: Network | undefined = getNetworkById(asset.networkId);
 
   if (!network) {
     return undefined;
@@ -76,15 +76,15 @@ export const processFormDataToWeb3Tx = (
 
 export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | undefined => {
   const symbol = formData.asset!.symbol;
-  const asset: AssetOption | undefined = getAssetByTicker(symbol);
+  const asset: Asset | undefined = getAssetByTicker(symbol);
 
   const txFields = formData;
 
-  if (!asset) {
+  if (!asset || !asset.networkId) {
     return undefined;
   }
 
-  const network: NetworkOptions | undefined = getNetworkById(asset.network);
+  const network: Network | undefined = getNetworkById(asset.networkId);
 
   if (!network) {
     return undefined;

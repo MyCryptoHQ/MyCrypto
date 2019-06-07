@@ -24,7 +24,7 @@ interface Props {
 export default class SignTransaction extends Component<Props> {
   public render() {
     const { stateValues, transactionFields, onNext, updateState } = this.props;
-    const currentWalletType: WalletType = transactionFields.account.accountType;
+    const currentWalletType: WalletType = transactionFields.account.wallet;
 
     switch (currentWalletType) {
       case 'privateKey':
@@ -36,7 +36,7 @@ export default class SignTransaction extends Component<Props> {
             transactionFields={transactionFields}
             onNext={receipt => {
               const nextState: DeepPartial<ISendState> = {
-                transactionFields: { account: { transactionHistory: receipt.hash } }
+                transactionFields: { account: { transactions: [{ txHash: receipt.hash }] } }
               };
               updateState(nextState);
               onNext();

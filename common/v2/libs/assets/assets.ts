@@ -1,46 +1,46 @@
 import { getCache } from 'v2/services/LocalCache';
 import { Asset } from 'v2/services/Asset/types';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
-import { getAssetByTicker } from '../assetOptions';
-import { AssetOption } from 'v2/services/AssetOption/types';
+import { Network } from 'v2/services/Network/types';
+import { generateUUID } from '../cache';
 
 export const getAllAssets = () => {
   return Object.values(getCache().assets);
 };
 
-export const getAssetBySymbol = (symbol: string): Asset | undefined => {
+export const getAssetByTicker = (symbol: string): Asset | undefined => {
   const assets: Asset[] = getAllAssets();
-  return assets.find(asset => asset.symbol.toLowerCase() === symbol.toLowerCase());
+  return assets.find(asset => asset.ticker.toLowerCase() === symbol.toLowerCase());
 };
 
-export const getNewDefaultAssetTemplateByNetwork = (network: NetworkOptions): Asset => {
-  const baseAssetOfNetwork: AssetOption | undefined = getAssetByTicker(network.unit);
+export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => {
+  const baseAssetOfNetwork: Asset | undefined = getAssetByTicker(network.id);
   if (!baseAssetOfNetwork) {
     return {
-      option: network.name,
-      amount: '0',
-      network: network.unit,
+      uuid: generateUUID(),
+      name: network.name,
+      networkId: network.id,
       type: 'base',
-      symbol: network.unit,
+      ticker: network.id,
       decimal: 18
     };
   } else {
     return {
-      option: baseAssetOfNetwork.name,
-      amount: '0',
-      network: baseAssetOfNetwork.network,
+      uuid: generateUUID(),
+      name: baseAssetOfNetwork.name,
+      networkId: baseAssetOfNetwork.networkId,
       type: 'base',
-      symbol: baseAssetOfNetwork.ticker,
+      ticker: baseAssetOfNetwork.ticker,
       decimal: baseAssetOfNetwork.decimal
     };
   }
 };
 
-export const getAllAssetsOptions = (): AssetOption[] => {
-  return Object.values(getCache().assetOptions);
+export const getAssetByName = (name: string): Asset | undefined => {
+  const allAssets = getAllAssets();
+  return allAssets.find(asset => asset.name === name);
 };
 
-export const getAssetOptionByName = (name: string): AssetOption | undefined => {
-  const allAssets = getAllAssetsOptions();
-  return allAssets.find(asset => asset.ticker === name);
+export const getAssetByUUID = (uuid: string): Asset | undefined => {
+  const allAssets = getAllAssets();
+  return allAssets.find(asset => asset.uuid === uuid);
 };

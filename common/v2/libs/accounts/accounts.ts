@@ -1,13 +1,12 @@
 import { shepherdProvider, INode } from 'libs/nodes';
 import { getCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from 'v2/services/Account/types';
-import { AssetOption } from 'v2/services/AssetOption/types';
-import { getAssetOptionByName } from '../assets/assets';
+import { Asset } from 'v2/services/Asset/types';
+import { getAssetByUUID } from '../assets/assets';
 import { fromWei } from '../units';
 import BN from 'bn.js';
-import { getNetworkByName, getNodeByName } from '../networks/networks';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
-import { NodeOptions } from 'v2/services/NodeOptions/types';
+import { getNetworkByName, getNodesByNetwork } from '../networks/networks';
+import { Network, NodeOptions } from 'v2/services/Network/types';
 import RpcNode from '../nodes/rpc';
 
 export const getCurrentsFromContext = (
@@ -29,7 +28,7 @@ export const getCurrentsFromContext = (
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
   const baseAsset = getBaseAssetFromAccount(account);
   if (baseAsset) {
-    return account.value.toString();
+    return account.balance.toString();
   } else {
     return 'err';
   }
@@ -44,7 +43,11 @@ export const getAccountBalances = (
       await getAccountBalance(account.address, getNetworkByName(account.network)),
       'ether'
     );
-    updateAccount(account.uuid, { ...account, timestamp: Date.now(), value: parseFloat(balance) });
+    updateAccount(account.uuid, {
+      ...account,
+      timestamp: Date.now(),
+      balance: parseFloat(balance)
+    });
   });
 };
 
@@ -54,17 +57,16 @@ export function getNodeLib(): INode {
 
 export const getAccountBalance = async (
   address: string,
-  network: NetworkOptions | undefined
+  network: Network | undefined
 ): Promise<BN> => {
-  const nodeOptions: NodeOptions | undefined = getNodeByName(
-    network ? network.nodes[0] : 'eth_mycrypto'
-  );
-  const node: INode = new RpcNode(
-    nodeOptions ? nodeOptions.url : 'https://api.mycryptoapi.com/eth'
-  );
   if (!network) {
     return new BN(0);
   } else {
+    const nodeOptions: NodeOptions[] = getNodesByNetwork(network.name);
+    if (!nodeOptions) {
+      return new BN(0);
+    }
+    const node: INode = new RpcNode(nodeOptions[0].url);
     const num = await node.getBalance(address);
     return num;
   }
@@ -85,8 +87,11 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
   return undefined;
 };
 
-export const getBaseAssetFromAccount = (account: ExtendedAccount): AssetOption | undefined => {
-  return getAssetOptionByName(account.assets[0]);
+export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
+  const network: Network | undefined = getNetworkByName(account.network);
+  if (network) {
+    return getAssetByUUID(network.baseAsset);
+  }
 };
 
 export const getAllAccounts = (): Account[] => {
