@@ -2,8 +2,6 @@ import React, { Component, createContext } from 'react';
 import * as service from 'v2/services/GlobalSettings/GlobalSettings';
 import { GlobalSettings } from 'v2/services/GlobalSettings';
 
-import deepKeys from 'deep-keys';
-
 interface ProviderState {
   globalSettings: GlobalSettings;
   updateGlobalSettings(globalSettingsData: GlobalSettings): void;
@@ -31,7 +29,8 @@ export class GlobalSettingsProvider extends Component {
       return service.readStorage();
     },
     importCache: (importedCache: string) => {
-      if (this.isValidImport(importedCache)) {
+      const localStorage = this.state.getStorage();
+      if (this.isValidImport(importedCache, String(localStorage))) {
         service.importCache(importedCache);
         this.getGlobalSettings();
         // We're missing a service method to update all the components.
@@ -49,15 +48,13 @@ export class GlobalSettingsProvider extends Component {
     );
   }
 
-  private isValidImport(importedCache: string) {
-    // https://www.npmjs.com/package/deep-keys
-    // perform deep key compairison.
+  private isValidImport(importedCache: string, localStorage: string) {
     const parsedImport = JSON.parse(importedCache);
-    const localStorage = this.state.getStorage();
-    if (deepKeys(parsedImport) === deepKeys(localStorage)) {
-      return true;
-    }
-    return false;
+    const parsedLocalStorage = JSON.parse(localStorage);
+
+    const oldKeys = Object.keys(parsedImport).sort();
+    const newKeys = Object.keys(parsedLocalStorage).sort();
+    return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
   }
   private getGlobalSettings = () => {
     const globalSettings: GlobalSettings = service.readGlobalSettings() || [];

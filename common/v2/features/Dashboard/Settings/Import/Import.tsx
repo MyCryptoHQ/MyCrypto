@@ -18,6 +18,9 @@ const Content = styled.div`
 
 const CenteredContentPanel = styled(ContentPanel)`
   width: 35rem;
+  h1 {
+    font-size: 24px;
+  }
 `;
 
 export interface PanelProps {
@@ -38,7 +41,7 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
         backOption: history.goBack
       },
       {
-        heading: 'Import Complete',
+        heading: translateRaw('SETTINGS_IMPORT_SUCCESS_HEADING'),
         component: ImportSuccess,
         backOption: this.regressStep
       }

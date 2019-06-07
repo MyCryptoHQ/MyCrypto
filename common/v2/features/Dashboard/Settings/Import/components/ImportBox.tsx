@@ -11,11 +11,19 @@ const FilePickerInput = styled.input`
   display: none !important;
 `;
 
-const ImportBoxContainer = styled.div`
+interface ImportBoxContainerProps {
+  dragging: boolean;
+}
+
+const ImportBoxContainer =
+  styled.div <
+  ImportBoxContainerProps >
+  `
   color: #9b9b9b;
   background: #e8eaed;
   padding: 6rem;
   border-radius: 0.375em;
+  box-shadow: ${props => (props.dragging ? '0px 0px 0px 2px #1eb8e7;' : 'none')};
 `;
 
 const ErrorMessage = styled.span`
@@ -28,7 +36,7 @@ interface ImportProps {
 }
 
 export default class ImportBox extends React.Component<ImportProps> {
-  public state = { badImport: false };
+  public state = { badImport: true, dragging: false };
   public submit = (importedCache: string) => {
     const importSuccess = this.props.importCache(importedCache);
     if (Boolean(importSuccess) === false) {
@@ -40,9 +48,14 @@ export default class ImportBox extends React.Component<ImportProps> {
   };
 
   public render() {
-    const { badImport } = this.state;
+    const { badImport, dragging } = this.state;
     return (
-      <ImportBoxContainer onDrop={this.handleFileSelection}>
+      <ImportBoxContainer
+        onDrop={this.handleFileSelection}
+        onDragEnter={() => this.setState({ dragging: true })}
+        onDragLeave={() => this.setState({ dragging: false })}
+        dragging={dragging}
+      >
         {badImport ? (
           <ErrorMessage>{translate('SETTINGS_IMPORT_INVALID')}</ErrorMessage>
         ) : (

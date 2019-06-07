@@ -2,8 +2,9 @@ import React from 'react';
 import { Button } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { GlobalSettings } from 'v2/services/GlobalSettings';
 
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { GlobalSettings } from 'v2/services/GlobalSettings';
 import { DashboardPanel } from '../../components';
 
 const Divider = styled.div`
@@ -71,10 +72,10 @@ const timerOptions = [
   { name: '15 Minutes', value: '900000' },
   { name: '30 Minutes', value: '1800000' },
   { name: '45 Minutes', value: '2700000' },
-  { name: '1 Hour', value: '3600000' },
-  { name: '3 Hour', value: '10800000' },
-  { name: '6 Hour', value: '21600000' },
-  { name: '12 Hour', value: '43200000' }
+  { name: '1 Hours', value: '3600000' },
+  { name: '3 Hours', value: '10800000' },
+  { name: '6 Hours', value: '21600000' },
+  { name: '12 Hours', value: '43200000' }
 ];
 
 export default class GeneralSettings extends React.Component<SettingsProps> {
@@ -83,6 +84,14 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
     const settings = this.props.globalSettings;
     settings.timer = Number(target.value);
     this.props.updateGlobalSettings(settings);
+
+    const selectedTimer = timerOptions.find(selection => selection.value === target.value);
+    if (selectedTimer) {
+      AnalyticsService.instance.track(
+        ANALYTICS_CATEGORIES.SETTINGS,
+        `User set inactivity timer to ${selectedTimer.name}`
+      );
+    }
   };
 
   public render() {

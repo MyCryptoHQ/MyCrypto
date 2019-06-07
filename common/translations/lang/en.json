@@ -769,6 +769,7 @@
     "SETTINGS_EXPORT_LEAVE": "Back To Settings",
     "SETTINGS_EXPORT_DOWNLOAD": "Download",
     "SETTINGS_IMPORT_HEADING": "Import MyCrypto Settings",
+    "SETTINGS_IMPORT_SUCCESS_HEADING": "Import Complete",
     "SETTINGS_IMPORT_BUTTON": "Browse",
     "SETTINGS_IMPORT_COPY": "Upload the MyCrypto settings file that you previously exported",
     "SETTINGS_IMPORT_INVALID": "The file you've selected is not a MyCrypto Settings JSON file. Please select the proper file.",
