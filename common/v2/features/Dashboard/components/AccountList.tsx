@@ -4,8 +4,8 @@ import { Redirect } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { getCurrentsFromContext } from 'v2/libs/accounts/accounts';
-import { truncate } from 'v2/libs';
-import { ExtendedAccount } from 'v2/services';
+import { truncate, getLabelByAccount } from 'v2/libs';
+import { ExtendedAccount, AddressBook } from 'v2/services';
 import './AccountList.scss';
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
@@ -58,15 +58,13 @@ function buildAccountTable(accounts: ExtendedAccount[], deleteAccount: DeleteAcc
       translateRaw('ACCOUNT_LIST_DELETE')
     ],
     body: accounts.map(account => {
+      const detectedLabel: AddressBook | undefined = getLabelByAccount(account);
+      const label = !detectedLabel ? 'Unknown Account' : detectedLabel.label;
       return [
         // tslint:disable-next-line: jsx-key
         <Icon icon="star" />,
         // tslint:disable-next-line: jsx-key
-        <Address
-          title={`${account.label}-(${account.wallet})`}
-          address={account.address}
-          truncate={truncate}
-        />,
+        <Address title={`${label}`} address={account.address} truncate={truncate} />,
         // tslint:disable-next-line: jsx-key
         <Network color="#a682ff">{account.network}</Network>,
         // tslint:disable-next-line: jsx-key

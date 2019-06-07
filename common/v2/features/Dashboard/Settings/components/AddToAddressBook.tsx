@@ -31,7 +31,8 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
         initialValues={{
           label: '',
           address: '',
-          notes: ''
+          notes: '',
+          network: ''
         }}
         onSubmit={(values: AddressBook, { setSubmitting }) => {
           createAddressBooks(values);

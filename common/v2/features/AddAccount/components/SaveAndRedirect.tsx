@@ -1,13 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Redirect } from 'react-router';
 import { FormData } from 'v2/features/AddAccount/types';
-import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
+import {
+  getNetworkByName,
+  getNewDefaultAssetTemplateByNetwork,
+  generateUUID,
+  getDefaultLabel
+} from 'v2/libs';
 import { AccountContext, NotificationsContext, SettingsContext } from 'v2/providers';
 import { Network } from 'v2/services/Network/types';
 import { Account } from 'v2/services/Account/types';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
 import { Asset } from 'v2/services/Asset/types';
-import { createAssetWithID } from 'v2/services';
+import { createAssetWithID, createAddressBook, AddressBook } from 'v2/services';
 import { getAccountByAddress } from 'v2/libs/accounts/accounts';
 
 /*
@@ -34,10 +39,16 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         dPath: payload.formData.derivationPath,
         assets: [{ uuid: newAssetID, balance: '0' }],
         balance: 0,
-        label: 'New Account', // @TODO: we really should have the correct label before!
         transactions: [],
         timestamp: 0
       };
+      const newLabel: AddressBook = {
+        label: getDefaultLabel(account.network),
+        address: account.address,
+        notes: '',
+        network: account.network
+      };
+      createAddressBook(newLabel);
       createAccountWithID(account, newUUID);
       updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
       createAssetWithID(newAsset, newAssetID);

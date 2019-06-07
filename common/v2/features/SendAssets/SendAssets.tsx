@@ -28,7 +28,6 @@ const getInitialState = (): ISendState => {
       step: 0,
       transactionFields: {
         account: {
-          label: '',
           address: '',
           network: '',
           assets: [],
@@ -85,7 +84,6 @@ const getInitialState = (): ISendState => {
       step: 0,
       transactionFields: {
         account: {
-          label: '',
           address: '',
           network: '',
           assets: [],

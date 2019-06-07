@@ -1,9 +1,10 @@
 import { Button, Identicon } from '@mycrypto/ui';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import styled, { StyledFunction } from 'styled-components';
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
-import { ExtendedAccount, useOnClickOutside } from 'v2/services';
+import { ExtendedAccount, useOnClickOutside, AddressBook } from 'v2/services';
+import { AddressBookContext } from 'v2/providers';
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];
@@ -69,22 +70,31 @@ const SDropdown = dropdown`
 
 const renderAccounts = (
   accounts: ExtendedAccount[],
+  labels: AddressBook[],
   selected: string[],
   handleChange: (uuid: string) => void
 ) =>
-  accounts.map(({ uuid, label, address }: ExtendedAccount) => (
-    <Checkbox
-      key={uuid}
-      name={`account-${uuid}`}
-      checked={selected.includes(uuid)}
-      onChange={() => handleChange(uuid)}
-      label={label}
-      icon={() => <Identicon className="AccountDropdown-menu-identicon" address={address} />}
-    />
-  ));
+  accounts.map(({ uuid, address }: ExtendedAccount) => {
+    const detectedLabel: AddressBook | undefined = labels.find(
+      label => label.address.toLowerCase() === address.toLowerCase()
+    );
+    const addressLabel = !detectedLabel ? 'Unknown Account' : detectedLabel.label;
+
+    return (
+      <Checkbox
+        key={uuid}
+        name={`account-${uuid}`}
+        checked={selected.includes(uuid)}
+        onChange={() => handleChange(uuid)}
+        label={addressLabel}
+        icon={() => <Identicon className="AccountDropdown-menu-identicon" address={address} />}
+      />
+    );
+  });
 
 const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDropdownProps) => {
   const ref = useRef<HTMLElement>(null);
+  const { addressBook } = useContext(AddressBookContext);
   const [isOpen, setIsOpen] = useState(false);
   const [draftSelected, setDraftSelected] = useState<string[]>([]);
 
@@ -131,7 +141,7 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
             label={`${translateRaw('ACCOUNTS_DROPDOWN_ALL_WALLETS')}`}
           />
           <Divider />
-          {renderAccounts(accounts, draftSelected, toggleSingleAccount)}
+          {renderAccounts(accounts, addressBook, draftSelected, toggleSingleAccount)}
           <Divider />
           <SButton
             onClick={() => {

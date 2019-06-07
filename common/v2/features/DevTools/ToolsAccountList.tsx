@@ -3,7 +3,8 @@ import { List, Address, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ExtendedAccount } from 'v2/services/Account';
-import { truncate } from 'v2/libs';
+import { truncate, getLabelByAccount } from 'v2/libs';
+import { AddressBook } from 'v2/services/AddressBook/types';
 
 const AccountContainer = styled.div`
   display: flex;
@@ -22,12 +23,18 @@ export interface AccountListProps {
 
 const ToolsAccountList: React.FC<AccountListProps> = props => {
   const { accounts, deleteAccount } = props;
-  const list = accounts.map((account: ExtendedAccount) => (
-    <AccountContainer>
-      <Address title={account.label} address={account.address} truncate={truncate} />
-      <DeleteButton onClick={() => deleteAccount(account.uuid)} icon="exit" />
-    </AccountContainer>
-  ));
+  let key = 0;
+  const list = accounts.map((account: ExtendedAccount) => {
+    key += 1;
+    const detectedLabel: AddressBook | undefined = getLabelByAccount(account);
+    const label = !detectedLabel ? 'Unknown Account' : detectedLabel.label;
+    return (
+      <AccountContainer key={key}>
+        <Address title={label} address={account.address} truncate={truncate} />
+        <DeleteButton onClick={() => deleteAccount(account.uuid)} icon="exit" />
+      </AccountContainer>
+    );
+  });
 
   return <List group={true}>{list}</List>;
 };
