@@ -43,8 +43,8 @@ const getInitialState = (): ISendState => {
         amount: getQueryParamWithKey(params, 'value') || '0.00',
         asset:
           getQueryParamWithKey(params, 'sendmode') === 'token'
-            ? ({ symbol: getQueryParamWithKey(params, 'tokensymbol') || 'ETH' } as IAsset)
-            : undefined,
+            ? ({ symbol: getQueryParamWithKey(params, 'tokensymbol') || 'DAI' } as IAsset)
+            : { symbol: 'ETH', name: 'Ether', network: 'Ethereum' },
         gasPriceSlider: '20',
         gasPriceField: getQueryParamWithKey(params, 'gasprice') || '20',
         gasLimitField:
@@ -98,7 +98,7 @@ const getInitialState = (): ISendState => {
         },
         recipientAddress: '',
         amount: '0.00',
-        asset: undefined,
+        asset: { symbol: 'ETH', name: 'Ether', network: 'Ethereum' },
         gasPriceSlider: '20',
         gasPriceField: '20',
         gasLimitField: '21000',
