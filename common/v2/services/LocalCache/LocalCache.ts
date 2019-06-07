@@ -183,7 +183,7 @@ export const initDerivationPathOptions = () => {
 
 // Low level operations
 
-export const getCacheRaw = (): LocalCache => {
+const getCacheRaw = (): LocalCache => {
   const text = localStorage.getItem(CACHE_KEY);
   return text ? JSON.parse(text) : CACHE_INIT;
 };
