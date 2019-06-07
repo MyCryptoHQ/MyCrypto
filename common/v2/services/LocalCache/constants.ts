@@ -58,7 +58,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       name: 'MetaMask',
       key: 'metamask',
       secure: true,
-      derivationPath: '',
       web3: true,
       hardware: false,
       desktopOnly: false
