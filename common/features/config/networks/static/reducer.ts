@@ -10,6 +10,8 @@ import {
   AKA_DEFAULT,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
+  ASK_DEFAULT,
+  ASK_TREZOR,
   ATH_DEFAULT,
   CLO_DEFAULT,
   DEXON_DEFAULT,
@@ -970,6 +972,33 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       max: 60,
       initial: 2
     }
+  },
+  ASK: {
+    id: 'ASK',
+    name: 'Permission',
+    unit: 'ASK',
+    chainId: 222,
+    isCustom: false,
+    color: '#000',
+    blockExplorer: makeExplorer({
+      name: 'Permission explorer',
+      origin: 'https://explorer.permission.io',
+      txPath: 'transactions',
+      addressPath: 'wallets',
+      blockPath: 'blocks'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ASK_TREZOR,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ASK_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 4.77,
+      max: 100,
+      initial: 4.77
+    },
+    shouldEstimateGasPrice: false
   }
 };
 
