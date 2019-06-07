@@ -82,11 +82,6 @@ export default function SendAssetsForm({
         render={({ errors, setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
-
-          /*fetchGasPriceEstimates('Ethereum').then(data =>
-            console.log('rerendering gas')
-            setFieldValue('gasEstimates', data)
-          );*/
           return (
             <Form className="SendAssetsForm">
               <React.Fragment>
