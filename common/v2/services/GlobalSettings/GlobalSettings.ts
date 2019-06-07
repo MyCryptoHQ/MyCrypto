@@ -1,7 +1,8 @@
 import { readSettings, updateSettings } from 'v2/services/LocalCache';
+import { CACHE_KEY } from '../LocalCache/constants';
 
 export const readStorage = () => {
-  const currentLocalStorage: string = localStorage.getItem('MyCryptoCache') || '[]';
+  const currentLocalStorage: string = localStorage.getItem(CACHE_KEY) || '[]';
   return currentLocalStorage;
 };
 
