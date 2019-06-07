@@ -6,7 +6,7 @@ export interface Network {
   baseAsset: string;
   chainId: number;
   isCustom: boolean;
-  color: string | undefined;
+  color?: string;
   blockExplorer: {};
   tokenExplorer: {};
   assets: string[];
