@@ -1,4 +1,4 @@
-import { StaticNetworkIds } from 'shared/types/network';
+import { StaticNetworkIds, BlockExplorerConfig } from 'shared/types/network';
 
 export interface Network {
   id: string;
@@ -6,9 +6,12 @@ export interface Network {
   baseAsset: string;
   chainId: number;
   isCustom: boolean;
-  color?: string;
-  blockExplorer: {};
-  tokenExplorer: {};
+  color: string | undefined;
+  blockExplorer?: BlockExplorerConfig;
+  tokenExplorer?: {
+    name: string;
+    address(address: string): string;
+  };
   assets: string[];
   contracts: string[];
   dPaths: DPathFormats;

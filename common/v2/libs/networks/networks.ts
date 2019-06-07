@@ -1,4 +1,4 @@
-import { getCache, LocalCache, getCacheRaw, setCache } from 'v2/services/LocalCache';
+import { getCache, LocalCache, setCache } from 'v2/services/LocalCache';
 import { Network, NodeOptions } from 'v2/services/Network/types';
 import { getAccountByAddress } from 'v2/libs/accounts';
 import { Account } from 'v2/services/Account/types';
@@ -12,9 +12,7 @@ export const getAllNetworks = () => {
 
 export const getNetworkByAddress = (address: string): Network | undefined => {
   const account: Account | undefined = getAccountByAddress(address);
-  if (!account) {
-    return undefined;
-  } else {
+  if (account) {
     const networks = getAllNetworks();
     return networks.find(network => account.network === network.name);
   }
@@ -66,14 +64,8 @@ export const isWalletFormatSupportedOnNetwork = (network: Network, format: Walle
 };
 
 export const getAllNodes = (): NodeOptions[] => {
-  const nodes: NodeOptions[] = [];
   const networks: Network[] = getAllNetworks();
-  networks.map(network => {
-    network.nodes.map((node: NodeOptions) => {
-      nodes.push(node);
-    });
-  });
-  return nodes;
+  return networks.flatMap(network => network.nodes);
 };
 
 export const getNodesByNetwork = (network: string): NodeOptions[] => {
@@ -87,7 +79,7 @@ export const getNodeByName = (name: string): NodeOptions | undefined => {
 };
 
 export const createNode = (node: NodeOptions, network: Network): void => {
-  const newStorage: LocalCache = getCacheRaw();
+  const newStorage: LocalCache = getCache();
   newStorage.networks[network.id].nodes.push(node);
   setCache(newStorage);
 };

@@ -23,10 +23,7 @@ export default function RecentTransactionList({
   readAddressBook,
   className = ''
 }: Props) {
-  const transactions: TransactionData[] = [];
-  accountsList.map(account =>
-    account.transactions.map(transaction => transactions.push(transaction))
-  );
+  const transactions: TransactionData[] = accountsList.flatMap(account => account.transactions);
 
   // TODO: Sort by relevant transactions
 

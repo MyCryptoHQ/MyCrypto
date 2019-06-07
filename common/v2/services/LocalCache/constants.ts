@@ -70,8 +70,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       networkId: 'ETH',
       type: 'base',
       ticker: 'ETH',
-      decimal: 18,
-      contractAddress: null
+      decimal: 18
     },
     '10e14757-78bb-4bb2-a17a-8333830f6698': {
       uuid: '10e14757-78bb-4bb2-a17a-8333830f6698',
@@ -91,12 +90,10 @@ export const CACHE_INIT_DEV: LocalCache = {
       chainId: 1,
       isCustom: false,
       color: '#007896',
-      blockExplorer: {},
-      tokenExplorer: {},
       contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
       nodes: [
         {
-          uuid: 'eth_mycrypto',
+          name: 'eth_mycrypto',
           type: 'rpc',
           service: 'MyCrypto',
           url: 'https://api.mycryptoapi.com/eth'

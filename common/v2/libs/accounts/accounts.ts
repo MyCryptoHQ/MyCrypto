@@ -89,10 +89,9 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
 
 export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
   const network: Network | undefined = getNetworkByName(account.network);
-  if (!network) {
-    return undefined;
+  if (network) {
+    return getAssetByUUID(network.baseAsset);
   }
-  return getAssetByUUID(network.baseAsset);
 };
 
 export const getAllAccounts = (): Account[] => {

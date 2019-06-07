@@ -102,8 +102,6 @@ export const initNetworks = () => {
       chainId: STATIC_NETWORKS_INITIAL_STATE[en].chainId,
       isCustom: STATIC_NETWORKS_INITIAL_STATE[en].isCustom,
       color: STATIC_NETWORKS_INITIAL_STATE[en].color,
-      blockExplorer: {},
-      tokenExplorer: {},
       dPaths: {
         ...STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
         default: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats[InsecureWalletName.MNEMONIC_PHRASE]
@@ -117,8 +115,7 @@ export const initNetworks = () => {
       networkId: en,
       ticker: en,
       type: 'base',
-      decimal: 18,
-      contractAddress: null
+      decimal: 18
     };
     newStorage.networks[en] = newLocalNetwork;
     newStorage.assets[baseAssetID] = newLocalAssetOption;
@@ -135,7 +132,9 @@ export const initAssets = () => {
       const networkName = assets[en].networkId;
       assets[en].uuid = uuid;
       newStorage.assets[uuid] = assets[en];
-      newStorage.networks[networkName!].assets.push(uuid);
+      if (networkName) {
+        newStorage.networks[networkName].assets.push(uuid);
+      }
     }
   });
   setCache(newStorage);

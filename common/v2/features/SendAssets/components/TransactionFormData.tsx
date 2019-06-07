@@ -60,16 +60,15 @@ export default function SendAssetsForm({
 }: Props) {
   const { accounts } = useContext(AccountContext);
   // @TODO:SEND change the data structure to get an object
-  const accountAssets: AssetBalanceObject[] = [];
-  accounts.map(a => a.assets.map(asset => accountAssets.push(asset)));
 
-  const assets: IAsset[] = [];
-  accountAssets.map(asset => {
-    const assetObject: Asset | undefined = getAssetByUUID(asset.uuid);
-    if (assetObject) {
-      assets.push({ symbol: assetObject.ticker, name: assetObject.name });
-    }
-  });
+  const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
+
+  const assets: IAsset[] = accountAssets
+    .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid))
+    .filter((asset: Asset | undefined) => asset)
+    .map((asset: Asset) => {
+      return { symbol: asset.ticker, name: asset.name };
+    });
 
   return (
     <div className="SendAssetsForm">

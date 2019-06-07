@@ -5,7 +5,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'MetaMask',
     key: 'metamask',
     secure: true,
-    derivationPath: '',
     web3: true,
     hardware: false,
     desktopOnly: false
@@ -14,7 +13,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'Ledger',
     key: 'ledger',
     secure: true,
-    derivationPath: '',
     web3: false,
     hardware: true,
     desktopOnly: false
@@ -23,7 +21,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'Trezor',
     key: 'trezor',
     secure: true,
-    derivationPath: '',
     web3: false,
     hardware: true,
     desktopOnly: false
@@ -32,7 +29,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'JSON Keystore File',
     key: 'keystore',
     secure: false,
-    derivationPath: '',
     web3: false,
     hardware: false,
     desktopOnly: true
@@ -41,7 +37,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'Mnemonic Phrase',
     key: 'mnemonic',
     secure: false,
-    derivationPath: '',
     web3: false,
     hardware: false,
     desktopOnly: true
@@ -50,7 +45,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'Private Key',
     key: 'privatekey',
     secure: false,
-    derivationPath: '',
     web3: false,
     hardware: false,
     desktopOnly: true
@@ -59,7 +53,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'Parity Signer',
     key: 'paritySigner',
     secure: true,
-    derivationPath: '',
     web3: false,
     hardware: false,
     desktopOnly: false
@@ -68,7 +61,6 @@ export const WalletTypes: Record<string, types.Wallet> = {
     name: 'Safe-T Mini',
     key: 'safetmini',
     secure: true,
-    derivationPath: '',
     web3: false,
     hardware: true,
     desktopOnly: false
