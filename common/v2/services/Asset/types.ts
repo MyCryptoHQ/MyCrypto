@@ -5,7 +5,7 @@ export interface Asset {
   ticker: string;
   type: assetMethod;
   contractAddress?: string;
-  decimal: number | null;
+  decimal?: number;
 }
 
 export type assetMethod = 'base' | 'erc20' | 'fiat';
