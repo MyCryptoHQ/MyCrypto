@@ -123,6 +123,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  ASK: [
+    {
+      name: makeNodeName('ASK', 'permission'),
+      type: 'rpc',
+      service: 'permission.io',
+      url: 'https://blockchain-api-mainnet.permission.io/rpc'
+    }
+  ],
+
   ARTIS_SIGMA1: [
     {
       name: makeNodeName('ARTIS_SIGMA1', 'artis_sigma1'),
