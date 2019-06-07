@@ -93,10 +93,10 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
         <SettingsField>
           <SettingsLabel>Account Settings</SettingsLabel>
           <SettingsControl>
-            <Link to="/import">
+            <Link to="/settings/import">
               <SettingsButton secondary={true}>Import</SettingsButton>
             </Link>
-            <Link to="/export">
+            <Link to="/settings/export">
               <SettingsButton secondary={true}>Export</SettingsButton>
             </Link>
           </SettingsControl>

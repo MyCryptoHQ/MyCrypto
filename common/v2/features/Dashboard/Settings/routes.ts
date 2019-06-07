@@ -1,6 +1,6 @@
-// import AddAccount from './AddAccount';
-
 import Settings from './Settings';
+import { Export } from './Export';
+import { Import } from './Import';
 
 export default [
   {
@@ -8,5 +8,17 @@ export default [
     path: '/settings',
     exact: true,
     component: Settings
+  },
+  {
+    name: 'Import',
+    path: '/settings/import',
+    exact: true,
+    component: Import
+  },
+  {
+    name: 'Export',
+    path: '/settings/export',
+    exact: true,
+    component: Export
   }
 ];

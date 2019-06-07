@@ -35,7 +35,6 @@ import 'what-input';
 // v2
 import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
-import { Settings, Import, Export } from 'v2/features/Dashboard/Settings';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
 import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
@@ -103,9 +102,6 @@ class RootClass extends Component<Props, State> {
           <PrivateRoute path="/dashboard" component={Dashboard} />
           {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
           <Route path="/account" component={SendTransaction} exact={true} />
-          <Route path="/settings" component={Settings} exact={true} />
-          <Route path="/import" component={Import} exact={true} />
-          <Route path="/export" component={Export} exact={true} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
           <Route path="/ens" component={ENS} exact={true} />
