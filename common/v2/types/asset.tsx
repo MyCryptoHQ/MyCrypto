@@ -1,7 +1,7 @@
 interface IAsset {
   symbol: string;
   name: string;
-  network: string;
+  network?: string;
 }
 
 export default IAsset;
