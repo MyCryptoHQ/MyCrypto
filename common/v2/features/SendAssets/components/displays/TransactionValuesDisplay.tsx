@@ -11,9 +11,9 @@ interface Props {
 function TransactionValueDisplay({ values, fiatAsset }: Props) {
   const amount = values.amount;
   const transactionValue = parseFloat(amount);
-  let AssetName: string = 'Ether';
+  let AssetSymbol: string = 'ETH';
   if (values.asset && values.asset.network) {
-    AssetName = values.asset.name;
+    AssetSymbol = values.asset.symbol;
   }
 
   const fiatValue: string = parseFloat(fiatAsset.value).toFixed(2);
@@ -23,7 +23,7 @@ function TransactionValueDisplay({ values, fiatAsset }: Props) {
   return (
     <div className="SendAssetsForm-fieldset-youllSend-box">
       <Heading as="h2" className="SendAssetsForm-fieldset-youllSend-box-crypto">
-        <img src={sendIcon} alt="Send" /> {transactionValue} {AssetName}
+        <img src={sendIcon} alt="Send" /> {transactionValue} {AssetSymbol}
       </Heading>
       <small className="SendAssetsForm-fieldset-youllSend-box-fiat">
         ≈ {fiatAsset.symbol}
@@ -33,7 +33,7 @@ function TransactionValueDisplay({ values, fiatAsset }: Props) {
         <Typography>
           Conversion Rate <br />
           {/* TRANSLATE THIS */}
-          1 {AssetName} ≈ {fiatAsset.symbol}
+          1 {AssetSymbol} ≈ {fiatAsset.symbol}
           {fiatValue} {fiatAsset.fiat}
         </Typography>
       </div>
