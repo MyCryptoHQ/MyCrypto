@@ -4,7 +4,7 @@ export interface Asset {
   networkId?: string;
   ticker: string;
   type: assetMethod;
-  contractAddress?: string | null;
+  contractAddress?: string;
   decimal: number | null;
 }
 
