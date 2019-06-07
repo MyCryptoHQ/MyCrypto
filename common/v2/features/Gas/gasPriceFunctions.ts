@@ -1,4 +1,4 @@
-import { getNetworkById } from 'v2/libs/networks/networks';
+import { getNetworkByName } from 'v2/libs/networks/networks';
 import { Network } from 'v2/services/Network/types';
 import { gasPriceDefaults } from 'config/data';
 import { GasEstimates, fetchGasEstimates } from 'v2/api/gas';
@@ -34,7 +34,7 @@ export function getDefaultEstimates(network: Network | undefined) {
 
 export async function fetchGasPriceEstimates(networkId: string): Promise<GasEstimates> {
   // Don't try on non-estimating network
-  const network = getNetworkById(networkId);
+  const network = getNetworkByName(networkId);
   if (!network || network.isCustom || !network.shouldEstimateGasPrice) {
     const defaultEstimates: GasEstimates = getDefaultEstimates(network);
     return defaultEstimates;

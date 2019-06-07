@@ -7,6 +7,7 @@ import translate, { translateRaw } from 'translations';
 import { GasEstimates } from 'v2/api/gas';
 import { ITxFields } from '../../types';
 import './styles/GasPriceSlider.scss';
+import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
@@ -35,6 +36,11 @@ export default class SimpleGas extends Component<Props> {
     realGasPrice: 0,
     gasEstimates: this.props.gasEstimates
   };
+
+  public async componentWillMount() {
+    const gas = await fetchGasPriceEstimates('Ethereum');
+    this.setState({ ...this.state, gasEstimates: gas });
+  }
 
   public render() {
     const { gasPrice, gasEstimates } = this.props;
@@ -85,7 +91,6 @@ export default class SimpleGas extends Component<Props> {
 
   private makeGasNotches = (): Marks => {
     const { gasEstimates } = this.state;
-
     return gasEstimates
       ? {
           [gasEstimates.safeLow]: '',
@@ -114,6 +119,7 @@ export default class SimpleGas extends Component<Props> {
       $gas: gas.toString(),
       $recommended: recommended
     });
+
     return x;
   };
 }

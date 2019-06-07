@@ -5,6 +5,8 @@ import { Account } from 'v2/services/Account/types';
 import { SecureWalletName, InsecureWalletName } from 'config/data';
 import * as types from './types';
 import { WalletName } from 'v2/features/Wallets/types';
+import { Asset } from 'v2/services/Asset/types';
+import { getAssetByUUID } from '../assets';
 
 export const getAllNetworks = () => {
   return Object.values(getCache().networks);
@@ -82,4 +84,8 @@ export const createNode = (node: NodeOptions, network: Network): void => {
   const newStorage: LocalCache = getCache();
   newStorage.networks[network.id].nodes.push(node);
   setCache(newStorage);
+};
+
+export const getBaseAssetByNetwork = (networkObj: Network): Asset | undefined => {
+  return getAssetByUUID(networkObj.baseAsset);
 };
