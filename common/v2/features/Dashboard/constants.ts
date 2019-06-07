@@ -23,7 +23,7 @@ export const actions: Action[] = [
   {
     icon: sendIcon,
     title: 'Send Assets',
-    link: '/dashboard/send',
+    link: '/send',
     description: 'Transfer Assets to Another Wallet'
   },
   {

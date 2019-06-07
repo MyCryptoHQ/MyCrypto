@@ -3,7 +3,7 @@ import { Button, ComboBox } from '@mycrypto/ui';
 import './NetworkSelectPanel.scss';
 
 import { translate } from 'translations';
-import { NetworkOptionsContext } from 'v2/providers';
+import { NetworksContext } from 'v2/providers';
 import { isWalletFormatSupportedOnNetwork } from 'v2/libs';
 import { FormDataActionType as ActionType } from '../types';
 import { FormData } from 'v2/features/AddAccount/types';
@@ -16,11 +16,12 @@ interface Props {
 
 function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
   const [network, setNetwork] = useState(formData.network);
-  const { networkOptions } = useContext(NetworkOptionsContext);
+  const { networks } = useContext(NetworksContext);
 
   // @ADD_ACCOUNT_TODO: The difference in accountType is likely causing
   // the absence of list.
-  const validNetworks = networkOptions
+  const validNetworks = networks
+    // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING formData.accountType to error -> TODO: FIX accountType
     .filter(options => isWalletFormatSupportedOnNetwork(options, formData.accountType))
     .map(n => n.name);
 

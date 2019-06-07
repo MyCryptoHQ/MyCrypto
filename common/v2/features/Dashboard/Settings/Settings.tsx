@@ -5,12 +5,12 @@ import translate from 'translations';
 
 import { FlippablePanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import { AddressBook, AddToAddressBook, GeneralSettings } from './components';
+import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
 import IS_MOBILE from 'utils/isMobile';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { AccountList } from '../components';
-import { AccountContext, AddressMetadataContext, GlobalSettingsContext } from 'v2/providers';
+import { AccountContext, AddressBookContext, SettingsContext } from 'v2/providers';
 
 const SettingsHeading = styled(Heading)`
   display: flex;
@@ -52,22 +52,17 @@ function renderAccountPanel() {
 }
 
 function renderAddressPanel() {
-  const { createAddressMetadatas, addressMetadata, deleteAddressMetadatas } = useContext(
-    AddressMetadataContext
-  );
+  const { createAddressBooks, addressBook, deleteAddressBooks } = useContext(AddressBookContext);
   return (
     <FlippablePanel>
       {({ flipped, toggleFlipped }) =>
         flipped ? (
-          <AddToAddressBook
-            toggleFlipped={toggleFlipped}
-            createAddressMetadatas={createAddressMetadatas}
-          />
+          <AddToAddressBook toggleFlipped={toggleFlipped} createAddressBooks={createAddressBooks} />
         ) : (
-          <AddressBook
-            addressMetadata={addressMetadata}
+          <AddressBookPanel
+            addressBook={addressBook}
             toggleFlipped={toggleFlipped}
-            deleteAddressMetadatas={deleteAddressMetadatas}
+            deleteAddressBooks={deleteAddressBooks}
           />
         )
       }
@@ -76,10 +71,8 @@ function renderAddressPanel() {
 }
 
 function renderGeneralSettingsPanel() {
-  const { updateGlobalSettings, globalSettings } = useContext(GlobalSettingsContext);
-  return (
-    <GeneralSettings updateGlobalSettings={updateGlobalSettings} globalSettings={globalSettings} />
-  );
+  const { updateSettings, settings } = useContext(SettingsContext);
+  return <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />;
 }
 
 interface TabOptions {

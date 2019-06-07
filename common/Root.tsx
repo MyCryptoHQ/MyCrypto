@@ -36,14 +36,12 @@ import 'what-input';
 import { gatherFeatureRoutes } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
-import { AddressMetadataProvider } from 'v2/providers/AddressMetadataProvider';
-import { NetworkOptionsProvider } from 'v2/providers/NetworkOptionsProvider';
-import { TransactionProvider } from 'v2/providers/TransactionProvider';
-import { TransactionHistoryProvider } from 'v2/providers/TransactionHistoryProvider';
+import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
+import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
 import Dashboard from 'v2/features/Dashboard';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
-import { CurrentsProvider, NotificationsProvider, GlobalSettingsProvider } from 'v2/providers';
+import { NotificationsProvider, SettingsProvider } from 'v2/providers';
 import { NewAppReleaseModal } from 'v2/components';
 
 interface OwnProps {
@@ -126,36 +124,30 @@ class RootClass extends Component<Props, State> {
       <ThemeProvider theme={GAU_THEME}>
         <React.Fragment>
           <Provider store={store}>
-            <AddressMetadataProvider>
-              <AccountProvider>
-                <CurrentsProvider>
-                  <TransactionProvider>
-                    <TransactionHistoryProvider>
-                      <NotificationsProvider>
-                        <NetworkOptionsProvider>
-                          <GlobalSettingsProvider>
-                            <Router>
-                              <LockScreenProvider>
-                                <PageVisitsAnalytics>
-                                  {onboardingActive && <OnboardingModal />}
-                                  {routes}
-                                  <LegacyRoutes />
-                                  <LogOutPrompt />
-                                  <QrSignerModal />
-                                  {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                                </PageVisitsAnalytics>
-                              </LockScreenProvider>
-                            </Router>
-                            {developmentMode && <DevTools />}
-                            <div id="ModalContainer" />
-                          </GlobalSettingsProvider>
-                        </NetworkOptionsProvider>
-                      </NotificationsProvider>
-                    </TransactionHistoryProvider>
-                  </TransactionProvider>
-                </CurrentsProvider>
-              </AccountProvider>
-            </AddressMetadataProvider>
+            <SettingsProvider>
+              <AddressBookProvider>
+                <AccountProvider>
+                  <NotificationsProvider>
+                    <NetworksProvider>
+                      <Router>
+                        <LockScreenProvider>
+                          <PageVisitsAnalytics>
+                            {onboardingActive && <OnboardingModal />}
+                            {routes}
+                            <LegacyRoutes />
+                            <LogOutPrompt />
+                            <QrSignerModal />
+                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                          </PageVisitsAnalytics>
+                        </LockScreenProvider>
+                      </Router>
+                      {developmentMode && <DevTools />}
+                      <div id="ModalContainer" />
+                    </NetworksProvider>
+                  </NotificationsProvider>
+                </AccountProvider>
+              </AddressBookProvider>
+            </SettingsProvider>
           </Provider>
           {process.env.NODE_ENV !== 'production' && (
             <button

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { GlobalSettings } from 'v2/services/GlobalSettings';
+import { Settings } from 'v2/services/Settings';
 import { DashboardPanel } from '../../components';
 
 const Divider = styled.div`
@@ -60,8 +60,8 @@ const SettingsButton = styled(Button)`
 `;
 
 interface SettingsProps {
-  globalSettings: GlobalSettings;
-  updateGlobalSettings(settings: GlobalSettings): void;
+  globalSettings: Settings;
+  updateGlobalSettings(settings: Settings): void;
 }
 
 const timerOptions = [
@@ -82,7 +82,7 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
   public changeTimer = (event: React.FormEvent<HTMLSelectElement>) => {
     const target = event.target as HTMLSelectElement;
     const settings = this.props.globalSettings;
-    settings.timer = Number(target.value);
+    settings.inactivityTimer = Number(target.value);
     this.props.updateGlobalSettings(settings);
 
     const selectedTimer = timerOptions.find(selection => selection.value === target.value);
@@ -121,7 +121,7 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
           <SettingsLabel>Inactivity Timer</SettingsLabel>
           <SettingsControl>
             <SelectContainer>
-              <select onChange={this.changeTimer} value={String(globalSettings.timer)}>
+              <select onChange={this.changeTimer} value={String(globalSettings.inactivityTimer)}>
                 {timerOptions.map(option => (
                   <option value={option.value} key={option.value}>
                     {option.name}

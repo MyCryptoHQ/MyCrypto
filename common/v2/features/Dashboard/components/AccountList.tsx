@@ -1,13 +1,15 @@
 import { Address, Button, CollapsibleTable, Icon, Network, Typography } from '@mycrypto/ui';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { getCurrentsFromContext } from 'v2/libs/accounts/accounts';
 import { truncate } from 'v2/libs';
 import { ExtendedAccount } from 'v2/services';
 import './AccountList.scss';
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
+import { AccountContext, SettingsContext } from 'v2/providers';
 
 const DeleteButton = styled(Button)`
   align-self: flex-start;
@@ -22,8 +24,13 @@ interface AccountListProps {
 }
 
 export default function AccountList(props: AccountListProps) {
-  const { accounts, deleteAccount, className } = props;
-
+  const { deleteAccount, className } = props;
+  const { settings } = useContext(SettingsContext);
+  const { accounts } = useContext(AccountContext);
+  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
+    accounts,
+    settings.dashboardAccounts
+  );
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;
@@ -36,7 +43,7 @@ export default function AccountList(props: AccountListProps) {
       actionLink="/add-account"
       className={`AccountList ${className}`}
     >
-      <CollapsibleTable breakpoint={450} {...buildAccountTable(accounts, deleteAccount)} />
+      <CollapsibleTable breakpoint={450} {...buildAccountTable(currentAccounts, deleteAccount)} />
     </DashboardPanel>
   );
 }
@@ -56,14 +63,14 @@ function buildAccountTable(accounts: ExtendedAccount[], deleteAccount: DeleteAcc
         <Icon icon="star" />,
         // tslint:disable-next-line: jsx-key
         <Address
-          title={`${account.label}-(${account.accountType})`}
+          title={`${account.label}-(${account.wallet})`}
           address={account.address}
           truncate={truncate}
         />,
         // tslint:disable-next-line: jsx-key
         <Network color="#a682ff">{account.network}</Network>,
         // tslint:disable-next-line: jsx-key
-        <Typography>{account.value}</Typography>,
+        <Typography>{account.balance}</Typography>,
         // tslint:disable-next-line: jsx-key
         <DeleteButton onClick={handleAccountDelete(deleteAccount, account.uuid)} icon="exit" />
       ];

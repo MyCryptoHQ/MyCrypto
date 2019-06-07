@@ -34,5 +34,9 @@
   {
     "name": "Settings",
     "key": "settings"
+  },
+  {
+    "name": "Send Assets",
+    "key": "sendAssets"
   }
 ]

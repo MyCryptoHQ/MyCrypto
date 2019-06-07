@@ -7,7 +7,7 @@ import { DashboardPanel } from '../../components';
 
 // Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
-import { AddressMetadata } from 'v2/services/AddressMetadata';
+import { AddressBook } from 'v2/services/AddressBook';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;
@@ -34,7 +34,6 @@ const AddressFieldset = styled.fieldset`
 
 const AddressBookButtons = styled.div`
   button {
-
     &:first-of-type {
       margin-right: 12px;
     }
@@ -43,10 +42,10 @@ const AddressBookButtons = styled.div`
 
 interface Props {
   toggleFlipped(): void;
-  createAddressMetadatas(values: AddressMetadata): void;
+  createAddressBooks(values: AddressBook): void;
 }
 
-export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas }: Props) {
+export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: Props) {
   return (
     <AddToAddressBookPanel
       heading={
@@ -64,8 +63,8 @@ export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas
           address: '',
           notes: ''
         }}
-        onSubmit={(values: AddressMetadata, { setSubmitting }) => {
-          createAddressMetadatas(values);
+        onSubmit={(values: AddressBook, { setSubmitting }) => {
+          createAddressBooks(values);
           setSubmitting(false);
           toggleFlipped();
         }}
@@ -76,7 +75,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas
               <label htmlFor="label">Label</label>
               <Field
                 name="label"
-                render={({ field }: FieldProps<AddressMetadata>) => (
+                render={({ field }: FieldProps<AddressBook>) => (
                   <Input {...field} placeholder="Enter Name of Address" />
                 )}
               />
@@ -85,7 +84,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas
               <label htmlFor="address">Address</label>
               <Field
                 name="address"
-                render={({ field }: FieldProps<AddressMetadata>) => (
+                render={({ field }: FieldProps<AddressBook>) => (
                   <Input {...field} placeholder="Enter Your Token Address" />
                 )}
               />
@@ -94,7 +93,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressMetadatas
               <label htmlFor="notes">Notes</label>
               <Field
                 name="notes"
-                render={({ field }: FieldProps<AddressMetadata>) => (
+                render={({ field }: FieldProps<AddressBook>) => (
                   <Textarea {...field} placeholder="Enter a Note for this Address" />
                 )}
               />

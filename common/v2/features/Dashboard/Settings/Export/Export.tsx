@@ -7,7 +7,7 @@ import translate, { translateRaw } from 'translations';
 import { ContentPanel, Button, RouterLink } from 'v2/components';
 import { Layout } from 'v2/features';
 
-import { GlobalSettingsContext } from 'v2/providers';
+import { SettingsContext } from 'v2/providers';
 
 import Downloader from './Downloader';
 
@@ -30,7 +30,7 @@ const CacheDisplay = styled.code`
 export function Export(props: RouteComponentProps<{}>) {
   const { history } = props;
   const onBack = history.goBack;
-  const { getStorage } = useContext(GlobalSettingsContext);
+  const { getStorage } = useContext(SettingsContext);
   const store = String(getStorage());
   return (
     <Layout centered={true}>

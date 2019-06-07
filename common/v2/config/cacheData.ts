@@ -23,9 +23,9 @@ export const GBP = {
 
 export const Fiats: Fiat[] = [USD, EUR, GBP];
 
-export const ContractsData = (): Record<string, types.ContractOptions> => {
+export const ContractsData = (): Record<string, types.Contract> => {
   const data: any = Object.keys(contracts.default);
-  const outData = {} as Record<string, types.ContractOptions>;
+  const outData = {} as Record<string, types.Contract>;
   data.map((en: string) => {
     const nextData: [contracts.Network] = contracts.default[en];
     nextData.map((entry: contracts.Network) => {
@@ -34,25 +34,26 @@ export const ContractsData = (): Record<string, types.ContractOptions> => {
         name: entry.name,
         address: entry.address,
         abi: entry.abi,
-        network: en
+        networkId: en
       };
     });
   });
   return outData;
 };
 
-export const AssetOptionsData = (): Record<string, types.AssetOption> => {
+export const AssetsData = (): Record<string, types.Asset> => {
   const data: any = Object.keys(tokens.default);
-  const outData = {} as Record<string, types.AssetOption>;
+  const outData = {} as Record<string, types.Asset>;
   data.map((en: string) => {
     const nextData: [tokens.Asset] = tokens.default[en];
     nextData.map((entry: tokens.Asset) => {
       const uuid: string = entry.symbol;
       outData[uuid] = {
+        uuid: '',
         name: entry.name,
         contractAddress: entry.address,
         decimal: entry.decimal,
-        network: en,
+        networkId: en,
         ticker: entry.symbol,
         type: 'erc20'
       };

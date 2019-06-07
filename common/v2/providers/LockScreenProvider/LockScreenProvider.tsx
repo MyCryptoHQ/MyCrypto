@@ -4,7 +4,7 @@ import CryptoJS, { SHA256, AES } from 'crypto-js';
 
 import * as localCacheService from 'v2/services/LocalCache/LocalCache';
 import * as screenLockService from 'v2/services/ScreenLockSettings/ScreenLockSettings';
-import * as globalSettingsService from 'v2/services/GlobalSettings/GlobalSettings';
+import * as settingsService from 'v2/services/Settings/Settings';
 import { translateRaw } from 'translations';
 import { ScreenLockLocking } from 'v2/features/ScreenLock';
 
@@ -102,7 +102,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(
       this.startLockCountdown,
-      globalSettingsService.readGlobalSettings().timer!
+      settingsService.readAllSettings().inactivityTimer
     );
   };
 
