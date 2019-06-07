@@ -13,7 +13,7 @@ export interface Network {
   contracts: string[];
   dPaths: DPathFormats;
   gasPriceSettings: GasPriceSetting;
-  shouldEstimateGasPrice: boolean | undefined;
+  shouldEstimateGasPrice?: boolean;
   nodes: NodeOptions[];
 }
 
