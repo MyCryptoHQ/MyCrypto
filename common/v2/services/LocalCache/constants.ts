@@ -96,7 +96,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       contracts: ['17ed6f49-ff23-4bef-a676-69174c266b38'],
       nodes: [
         {
-          name: 'eth_mycrypto',
+          uuid: 'eth_mycrypto',
           type: 'rpc',
           service: 'MyCrypto',
           url: 'https://api.mycryptoapi.com/eth'
