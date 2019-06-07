@@ -116,9 +116,11 @@ export default function SendAssetsForm({
                       assets={assets}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
-                        fetchGasPriceEstimates(option.network).then(data =>
-                          form.setFieldValue('gasEstimates', data)
-                        );
+                        if (option.network) {
+                          fetchGasPriceEstimates(option.network).then(data =>
+                            form.setFieldValue('gasEstimates', data)
+                          );
+                        }
                       }}
                     />
                   )}
