@@ -7,6 +7,7 @@ import { ContentPanel } from 'v2/components';
 import { ImportBox, ImportSuccess } from './components';
 import { Layout } from 'v2/features';
 import { GlobalSettingsContext } from 'v2/providers';
+import { translateRaw } from 'translations';
 
 const Content = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     const { step } = this.state;
     const steps = [
       {
-        heading: 'Import',
+        heading: translateRaw('SETTINGS_IMPORT_HEADING'),
         component: ImportBox,
         backOption: history.goBack
       },
@@ -56,13 +57,7 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
         >
           <Content>
             <GlobalSettingsContext.Consumer>
-              {({ localStorage, importCache }) => (
-                <Step
-                  onNext={this.advanceStep}
-                  importCache={importCache}
-                  localStorage={localStorage}
-                />
-              )}
+              {({ importCache }) => <Step onNext={this.advanceStep} importCache={importCache} />}
             </GlobalSettingsContext.Consumer>
           </Content>
         </CenteredContentPanel>

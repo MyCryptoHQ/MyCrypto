@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Textarea } from '@mycrypto/ui';
 import translate from 'translations';
 
 const FilePicker = styled.label`
@@ -19,67 +18,79 @@ const ImportBoxContainer = styled.div`
   border-radius: 0.375em;
 `;
 
-function isValidFile(rawFile: File): boolean {
-  const fileType = rawFile.type;
-  return fileType === '' || fileType === 'application/json';
-}
+const ErrorMessage = styled.span`
+  color: #ef4747;
+`;
 
 interface ImportProps {
-  localStorage: string;
   importCache(importedCache: any): void;
   onNext(): void;
 }
 
-function isValidCache(oldCache: string, newCache: string) {
-  const oldKeys = Object.keys(JSON.parse(oldCache)).sort();
-  const newKeys = Object.keys(JSON.parse(newCache)).sort();
-  return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
-}
-
 export default class ImportBox extends React.Component<ImportProps> {
-  public state = { isValid: false, importedCache: '', badImport: false };
-  public submit = () => {
-    this.props.importCache(this.state.importedCache);
-    this.props.onNext();
+  public state = { badImport: false };
+  public submit = (importedCache: string) => {
+    const importSuccess = this.props.importCache(importedCache);
+    if (Boolean(importSuccess) === false) {
+      this.setState({ badImport: true });
+    }
+    if (Boolean(importSuccess) === true) {
+      this.props.onNext();
+    }
   };
 
   public render() {
-    const { isValid, badImport } = this.state;
+    const { badImport } = this.state;
     return (
-      <ImportBoxContainer>
+      <ImportBoxContainer onDrop={this.handleFileSelection}>
+        {badImport ? (
+          <ErrorMessage>{translate('SETTINGS_IMPORT_INVALID')}</ErrorMessage>
+        ) : (
+          translate('SETTINGS_IMPORT_COPY')
+        )}
+        <br />
+        <br />
         <FilePicker htmlFor="upload">
           {translate('SETTINGS_IMPORT_BUTTON')}
           <FilePickerInput id="upload" type="file" onChange={this.handleFileSelection} />
         </FilePicker>{' '}
         {translate('SETTINGS_IMPORT_PASTE')}
-        <Textarea onChange={this.checkPastedCache} />
         <br />
-        {isValid && <button onClick={this.submit}>{translate('SETTINGS_IMPORT_CONFIRM')}</button>}
-        {badImport && <p>Your imported cache is invalid.</p>}
       </ImportBoxContainer>
     );
   }
 
-  private checkPastedCache = (e: any) => {
-    if (isValidCache(this.props.localStorage, e.target.value)) {
-      this.setState({ isValid: true });
-    } else {
-      this.setState({ badImport: true });
-    }
-  };
+  // private checkPastedCache = (e: any) => {
+  //   if (isValidCache(this.props.localStorage, e.target.value)) {
+  //     this.setState({ isValid: true });
+  //   } else {
+  //     this.setState({ badImport: true });
+  //   }
+  // };
 
   private handleFileSelection = (e: any) => {
     const fileReader = new FileReader();
-    const target = e.target;
-    const inputFile = target.files[0];
 
     fileReader.onload = () => {
-      if (fileReader.result && isValidCache(this.props.localStorage, fileReader.result as string)) {
-        this.setState({ isValid: true, importedCache: fileReader.result });
+      if (fileReader.result) {
+        // this.setState({ isValid: true, importedCache: fileReader.result });
+        this.submit(fileReader.result as string);
       }
     };
-    if (isValidFile(inputFile)) {
-      fileReader.readAsText(inputFile, 'utf-8');
+    if (e.target.files) {
+      if (e.target.files[0]) {
+        const target = e.target;
+        const inputFile = target.files[0];
+        fileReader.readAsText(inputFile, 'utf-8');
+      }
+    }
+    if (e.dataTransfer) {
+      if (e.dataTransfer.items) {
+        if (e.dataTransfer.items[0].kind === 'file') {
+          const draggedFile = e.dataTransfer.items[0].getAsFile();
+          fileReader.readAsText(draggedFile, 'utf-8');
+        }
+      }
     }
   };
 }
