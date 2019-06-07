@@ -158,6 +158,10 @@ export const THUNDERCORE_DEFAULT: DPath = {
   value: "m/44'/1001'/0'/0"
 };
 
+export const ETI_DEFAULT: DPath = {
+  label: 'Default (ETI)',
+  value: "m/44'/464'/0'/0"
+};
 export const WEB_DEFAULT: DPath = {
   label: 'Default (WEB)',
   value: "m/44'/227'/0'/0"
@@ -220,6 +224,7 @@ export const DPaths: DPath[] = [
   ARTIS_SIGMA1,
   ARTIS_TAU1,
   THUNDERCORE_DEFAULT,
+  ETI_DEFAULT,
   WEB_DEFAULT,
   METADIUM_DEFAULT,
   SOLIDUM_DEFAULT,
