@@ -120,7 +120,6 @@ class RootClass extends Component<Props, State> {
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
-
     return (
       <ThemeProvider theme={GAU_THEME}>
         <React.Fragment>

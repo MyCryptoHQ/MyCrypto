@@ -67,7 +67,7 @@ const ContentPanelTop = styled.div`
 
 interface Props {
   children: any;
-  className: string;
+  className?: string;
   heading?: string;
   icon?: string;
   description?: string;
