@@ -1,7 +1,7 @@
 export interface Asset {
   uuid: string;
   name: string;
-  networkId: string | undefined;
+  networkId?: string;
   ticker: string;
   type: assetMethod;
   contractAddress?: string | null;
