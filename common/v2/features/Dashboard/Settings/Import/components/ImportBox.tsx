@@ -73,37 +73,22 @@ export default class ImportBox extends React.Component<ImportProps> {
     );
   }
 
-  // private checkPastedCache = (e: any) => {
-  //   if (isValidCache(this.props.localStorage, e.target.value)) {
-  //     this.setState({ isValid: true });
-  //   } else {
-  //     this.setState({ badImport: true });
-  //   }
-  // };
-
   private handleFileSelection = (e: any) => {
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
       if (fileReader.result) {
-        // this.setState({ isValid: true, importedCache: fileReader.result });
         this.submit(fileReader.result as string);
       }
     };
-    if (e.target.files) {
-      if (e.target.files[0]) {
-        const target = e.target;
-        const inputFile = target.files[0];
-        fileReader.readAsText(inputFile, 'utf-8');
-      }
+    if (e.target.files && e.target.files[0]) {
+      const target = e.target;
+      const inputFile = target.files[0];
+      fileReader.readAsText(inputFile, 'utf-8');
     }
-    if (e.dataTransfer) {
-      if (e.dataTransfer.items) {
-        if (e.dataTransfer.items[0].kind === 'file') {
-          const draggedFile = e.dataTransfer.items[0].getAsFile();
-          fileReader.readAsText(draggedFile, 'utf-8');
-        }
-      }
+    if (e.dataTransfer && e.dataTransfer.items && e.dataTransfer.items[0].kind === 'file') {
+      const draggedFile = e.dataTransfer.items[0].getAsFile();
+      fileReader.readAsText(draggedFile, 'utf-8');
     }
   };
 }

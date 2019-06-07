@@ -1,6 +1,5 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-// import { Button, Typography, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ContentPanel } from 'v2/components';

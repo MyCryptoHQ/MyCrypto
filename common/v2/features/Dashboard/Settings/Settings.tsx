@@ -119,7 +119,7 @@ function renderDesktop() {
         {translate('SETTINGS_HEADING')}
       </SettingsHeading>
       {renderAccountPanel()}
-      {renderAccountPanel()}
+      {renderAddressPanel()}
       {renderGeneralSettingsPanel()}
     </SettingsContent>
   );
