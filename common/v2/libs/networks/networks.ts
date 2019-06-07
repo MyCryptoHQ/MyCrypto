@@ -77,7 +77,7 @@ export const getAllNodes = (): NodeOptions[] => {
 };
 
 export const getNodesByNetwork = (network: string): NodeOptions[] => {
-  const networkObject: Network | undefined = getNetworkByName(network);
+  const networkObject = getNetworkByName(network);
   return networkObject ? networkObject.nodes : [];
 };
 
