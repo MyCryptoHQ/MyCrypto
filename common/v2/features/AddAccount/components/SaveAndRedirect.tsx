@@ -13,7 +13,7 @@ import { Account } from 'v2/services/Account/types';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
 import { Asset } from 'v2/services/Asset/types';
 import { createAssetWithID, createAddressBook, AddressBook } from 'v2/services';
-import { getAccountByAddress } from 'v2/libs/accounts/accounts';
+import { getAccountByAddressAndNetwork } from 'v2/libs/accounts/accounts';
 
 /*
   Create a new account in localStorage and redirect to dashboard.
@@ -24,7 +24,11 @@ function SaveAndRedirect(payload: { formData: FormData }) {
   const { displayNotification } = useContext(NotificationsContext);
   useEffect(() => {
     const network: Network | undefined = getNetworkByName(payload.formData.network);
-    if (!network || getAccountByAddress(payload.formData.account)) {
+    if (
+      !network ||
+      getAccountByAddressAndNetwork(payload.formData.account, payload.formData.network) !==
+        undefined
+    ) {
       displayNotification(NotificationTemplates.walletNotAdded, {
         address: payload.formData.account
       });

@@ -72,6 +72,7 @@ export const getAccountBalance = async (
   }
 };
 
+// Returns an account if it exists
 export const getAccountByAddress = (address: string): ExtendedAccount | undefined => {
   const accountKeys = getAllAccountKeys();
   accountKeys.map(key => {
@@ -85,6 +86,15 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
     }
   });
   return undefined;
+};
+
+// Returns an account if it exists
+export const getAccountByAddressAndNetwork = (
+  address: string,
+  network: string
+): Account | undefined => {
+  const accounts: Account[] = getAllAccounts();
+  return accounts.find(account => account.address === address && account.network === network);
 };
 
 export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
