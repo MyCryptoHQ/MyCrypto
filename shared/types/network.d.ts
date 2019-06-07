@@ -19,6 +19,7 @@ type StaticNetworkIds =
   | 'ELLA'
   | 'EOSC'
   | 'ESN'
+  | 'ETI'
   | 'ETHO'
   | 'ETSC'
   | 'EXP'

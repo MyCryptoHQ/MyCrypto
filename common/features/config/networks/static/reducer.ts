@@ -1,3 +1,4 @@
+import { TAB } from 'components/Header/components/constants';
 import {
   ethPlorer,
   ETHTokenExplorer,
@@ -11,6 +12,7 @@ import {
   ARTIS_TAU1,
   ATH_DEFAULT,
   CLO_DEFAULT,
+  DEXON_DEFAULT,
   EGEM_DEFAULT,
   ELLA_DEFAULT,
   EOSC_DEFAULT,
@@ -18,12 +20,13 @@ import {
   ETC_LEDGER,
   ETC_SAFE_T,
   ETC_TREZOR,
+  ETHO_DEFAULT,
   ETH_DEFAULT,
   ETH_LEDGER,
   ETH_SAFE_T,
   ETH_TESTNET,
   ETH_TREZOR,
-  ETHO_DEFAULT,
+  ETI_DEFAULT,
   ETSC_DEFAULT,
   EXP_DEFAULT,
   GO_DEFAULT,
@@ -39,11 +42,9 @@ import {
   THUNDERCORE_DEFAULT,
   TOMO_DEFAULT,
   UBQ_DEFAULT,
-  WEB_DEFAULT,
-  DEXON_DEFAULT
+  WEB_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
-import { TAB } from 'components/Header/components/constants';
 import * as types from './types';
 
 const testnetDefaultGasPrice = {
@@ -944,6 +945,30 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       min: 24,
       max: 100,
       initial: 24
+    }
+  },
+  ETI: {
+    id: 'ETI',
+    name: 'Etherinc',
+    unit: 'ETI',
+    chainId: 101,
+    isCustom: false,
+    color: '#3560bf',
+    blockExplorer: makeExplorer({
+      name: 'Etherinc Explorer',
+      origin: 'https://explorer.einc.io'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.TREZOR]: ETI_DEFAULT,
+      [SecureWalletName.SAFE_T]: ETI_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: ETI_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 2,
+      max: 60,
+      initial: 2
     }
   }
 };
