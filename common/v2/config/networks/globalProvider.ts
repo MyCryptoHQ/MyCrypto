@@ -47,8 +47,10 @@ async function getBlock() {
 }
 
 getBlock();
-
 //step 2, multinetwork calls
+//TODO
+// Map networks to args
+//
 
 // interface callProviderMethodArgs {
 
