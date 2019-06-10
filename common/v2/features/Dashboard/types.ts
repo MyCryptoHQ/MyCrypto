@@ -1,6 +1,8 @@
 export interface Action {
-  icon: string;
+  icon: string | string[];
   title: string;
-  description: string;
-  link: string;
+  description: string | string[];
+  tracking: string | string[];
+  path?: string;
+  url?: string | string[];
 }
