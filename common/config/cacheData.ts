@@ -22,9 +22,9 @@ export const GBP = {
 
 export const Fiats: Fiat[] = [USD, EUR, GBP];
 
-export const ContractsData = (): Record<string, types.ContractOptions> => {
+export const ContractsData = (): Record<string, types.Contract> => {
   const data: any = Object.keys(contracts.default);
-  const outData = {} as Record<string, types.ContractOptions>;
+  const outData = {} as Record<string, types.Contract>;
   data.map((en: string) => {
     const nextData = contracts.default[en];
     nextData.map((entry: contracts.Network) => {
@@ -33,7 +33,7 @@ export const ContractsData = (): Record<string, types.ContractOptions> => {
         name: entry.name,
         address: entry.address,
         abi: entry.abi,
-        network: en
+        networkId: en
       };
     });
   });
