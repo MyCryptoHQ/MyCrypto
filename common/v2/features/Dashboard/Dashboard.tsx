@@ -2,22 +2,11 @@ import React from 'react';
 import { Heading } from '@mycrypto/ui';
 
 import { Layout } from 'v2/features';
-import {
-  AccountList,
-  ActionTile,
-  RecentTransactionList,
-  TokenList,
-  WalletBreakdown
-} from './components';
+import { AccountList, ActionTile, TokenList, WalletBreakdown } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import {
-  AccountContext,
-  TransactionHistoryContext,
-  TransactionContext,
-  AddressMetadataContext
-} from 'v2/providers';
+import { AccountContext } from 'v2/providers';
 
 export default function Dashboard() {
   return (
@@ -46,25 +35,6 @@ export default function Dashboard() {
                 className="Dashboard-mobile-modifiedPanel"
               />
             </div>
-            <AddressMetadataContext.Consumer>
-              {({ readAddressMetadata }) => (
-                <TransactionContext.Consumer>
-                  {({ transactions }) => (
-                    <TransactionHistoryContext.Consumer>
-                      {({ transactionHistories }) => (
-                        <div className="Dashboard-mobile-section">
-                          <RecentTransactionList
-                            transactions={transactions}
-                            readAddressMetadata={readAddressMetadata}
-                            transactionHistories={transactionHistories}
-                          />
-                        </div>
-                      )}
-                    </TransactionHistoryContext.Consumer>
-                  )}
-                </TransactionContext.Consumer>
-              )}
-            </AddressMetadataContext.Consumer>
           </Layout>
         )}
       </AccountContext.Consumer>
