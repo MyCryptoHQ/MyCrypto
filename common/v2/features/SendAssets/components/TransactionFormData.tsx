@@ -18,11 +18,11 @@ import {
   AssetDropdown,
   AmountField,
   DataField,
+  EthAddressField,
   GasLimitField,
   GasPriceField,
   GasPriceSlider,
-  NonceField,
-  RecipientAddressField
+  NonceField
 } from './fields';
 import {
   validateDataField,
@@ -79,7 +79,7 @@ export default function SendAssetsForm({
           onSubmit(fields);
           onNext();
         }}
-        render={({ errors, setFieldValue, values, handleChange }) => {
+        render={({ errors, touched, setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           return (
@@ -148,14 +148,14 @@ export default function SendAssetsForm({
               </fieldset>
               {/* Recipient Address */}
               <fieldset className="SendAssetsForm-fieldset">
-                <div className="input-group-header">{translate('SEND_ADDR')}</div>
-                <RecipientAddressField
-                  handleChange={(e: FormEvent<HTMLInputElement>) => {
-                    updateState({
-                      transactionFields: { recipientAddress: e.currentTarget.value }
-                    });
-                    handleChange(e);
-                  }}
+                <label htmlFor="recipientAddress" className="input-group-header">
+                  {translate('SEND_ADDR')}
+                </label>
+                <EthAddressField
+                  error={errors.recipientAddress}
+                  touched={touched.recipientAddress}
+                  fieldName="recipientAddress"
+                  placeholder="Enter an Address or Contact"
                 />
               </fieldset>
               {/* Amount */}
@@ -290,7 +290,8 @@ export default function SendAssetsForm({
                       />
                     </fieldset>
                     <div className="SendAssetsForm-advancedOptions-content-output">
-                      0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~={/* TRANSLATE THIS */}
+                      0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~=
+                      {/* TRANSLATE THIS */}
                       $2.67 USD{/* TRANSLATE THIS */}
                     </div>
                   </div>
