@@ -1,6 +1,7 @@
 import React from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import translate from 'translations';
 import {
@@ -191,9 +192,11 @@ export default function PeaceOfMindPanel(props: PeaceOfMindPanelProps) {
         />
       </Content>
       <Actions>
-        <ActionButton onClick={trackGetStartedClick}>
-          {translate('HOME_PEACE_OF_MIND_GET_STARTED')}
-        </ActionButton>
+        <Link to="/add-account">
+          <ActionButton onClick={trackGetStartedClick}>
+            {translate('HOME_PEACE_OF_MIND_GET_STARTED')}
+          </ActionButton>
+        </Link>
         <ActionButton onClick={() => openDownloadLink(downloadLink)}>
           {translate('HOME_PEACE_OF_MIND_DOWNLOAD')}
         </ActionButton>
