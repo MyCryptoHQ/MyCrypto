@@ -1,11 +1,46 @@
-import { getCache } from 'v2/services/LocalCache/LocalCache';
-import { AssetOption } from 'v2/services/AssetOption/types';
+import { getCache } from 'v2/services/LocalCache';
+import { Asset } from 'v2/services/Asset/types';
+import { Network } from 'v2/services/Network/types';
+import { generateUUID } from '../cache';
 
-export const getAllAssetsOptions = (): AssetOption[] => {
-  return Object.values(getCache().assetOptions);
+export const getAllAssets = () => {
+  return Object.values(getCache().assets);
 };
 
-export const getAssetOptionByName = (name: string): AssetOption | undefined => {
-  const allAssets = getAllAssetsOptions();
-  return allAssets.find(asset => asset.ticker === name);
+export const getAssetByTicker = (symbol: string): Asset | undefined => {
+  const assets: Asset[] = getAllAssets();
+  return assets.find(asset => asset.ticker.toLowerCase() === symbol.toLowerCase());
+};
+
+export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => {
+  const baseAssetOfNetwork: Asset | undefined = getAssetByTicker(network.id);
+  if (!baseAssetOfNetwork) {
+    return {
+      uuid: generateUUID(),
+      name: network.name,
+      networkId: network.id,
+      type: 'base',
+      ticker: network.id,
+      decimal: 18
+    };
+  } else {
+    return {
+      uuid: generateUUID(),
+      name: baseAssetOfNetwork.name,
+      networkId: baseAssetOfNetwork.networkId,
+      type: 'base',
+      ticker: baseAssetOfNetwork.ticker,
+      decimal: baseAssetOfNetwork.decimal
+    };
+  }
+};
+
+export const getAssetByName = (name: string): Asset | undefined => {
+  const allAssets = getAllAssets();
+  return allAssets.find(asset => asset.name === name);
+};
+
+export const getAssetByUUID = (uuid: string): Asset | undefined => {
+  const allAssets = getAllAssets();
+  return allAssets.find(asset => asset.uuid === uuid);
 };

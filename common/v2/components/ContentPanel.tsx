@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
+import { Button, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import Stepper from './Stepper';
@@ -27,13 +27,14 @@ const BackButton = styled(Button)`
   }
 `;
 
-const ContentPanelHeading = styled(Heading)`
+const ContentPanelHeading = styled.p`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
   color: #303030;
-  font-size: 25px;
+  font-family: Lato;
+  font-size: 32px;
   font-weight: bold;
 `;
 
@@ -66,7 +67,7 @@ const ContentPanelTop = styled.div`
 
 interface Props {
   children: any;
-  className: string;
+  className?: string;
   heading?: string;
   icon?: string;
   description?: string;
