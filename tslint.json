@@ -1,6 +1,9 @@
 {
   "defaultSeverity": "error",
   "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["common/vendor/**/*", "common/typescript/ledger/*.d.ts"]
+  },
   "jsRules": {
     "quotemark": false,
     "max-line-length": false,
