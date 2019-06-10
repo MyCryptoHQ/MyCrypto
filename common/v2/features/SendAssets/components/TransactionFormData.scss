@@ -1,0 +1,277 @@
+.SendAssetsForm {
+  width: 500px;
+  label {
+    margin-bottom: 8px;
+    color: #333333;
+    font-weight: normal;
+  }
+  &-heading {
+    margin-top: 0;
+    margin-bottom: 22px;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  &-fieldset {
+    margin-bottom: 15px;
+
+    &-input {
+      width: 100%;
+    }
+    &-youllSend {
+      margin-top: 32px;
+
+      &-box {
+        padding: 12px 0;
+        background: #f6f8fa;
+        text-align: center;
+
+        &-crypto {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 1px;
+          font-weight: bold;
+
+          img {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+          }
+        }
+        &-fiat {
+          margin-bottom: 13px;
+          color: #7b8695;
+          font-size: 13px;
+        }
+        &-conversion {
+          margin-top: 13px;
+        }
+      }
+    }
+    &-transactionFee {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &-rangeWrapper {
+      position: relative;
+      margin-top: 14px;
+
+      > div {
+        position: absolute;
+        top: -35%;
+        width: 20px;
+        height: 20px;
+        background: #ffffff;
+        border: 1px solid #66aae5;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      &-cheap {
+        left: -3px;
+      }
+      &-fast {
+        right: -3px;
+      }
+    }
+    &-cheapFast {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 11px;
+      color: #9b9b9b;
+    }
+  }
+  &-amountAsset {
+    display: flex;
+    align-items: center;
+
+    &-amount {
+      flex: 2;
+      margin-right: 15px;
+
+      &-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &-sendMax {
+          color: #1eb8e7;
+        }
+      }
+    }
+    &-asset {
+      flex: 1;
+    }
+  }
+  &-advancedOptions {
+    margin-bottom: 12px;
+
+    &-button {
+      width: 100%;
+      color: #1eb8e7;
+      text-align: center;
+    }
+
+    &-errors {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    &-content {
+      margin-top: 32px;
+
+      &-automaticallyCalculate {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+
+        input[type='checkbox'] {
+          margin: 0;
+          margin-right: 8px;
+        }
+        label {
+          margin: 0;
+          color: #163150;
+          font-weight: 300;
+        }
+      }
+      &-priceLimitNonce {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+
+        &-price {
+          flex: 2;
+          margin-right: 15px;
+        }
+        &-limit {
+          flex: 2;
+          margin-right: 15px;
+        }
+        &-nonce {
+          flex: 1;
+        }
+      }
+      &-output {
+        margin-bottom: 25px;
+        padding: 24px 18px;
+        background: #f6f8fa;
+        text-align: center;
+      }
+    }
+  }
+  &-next {
+    width: 100%;
+  }
+}
+
+// Custom Range
+input[type='range'] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type='range']:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type='range']::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+/* Thumb */
+/* Special styling for WebKit/Blink */
+input[type='range']::-webkit-slider-thumb {
+  position: relative;
+  -webkit-appearance: none;
+  border: 1px solid #66aae5;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -10px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  z-index: 1;
+}
+
+/* All the same stuff for Firefox */
+input[type='range']::-moz-range-thumb {
+  position: relative;
+  z-index: 1;
+  border: 1px solid #66aae5;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type='range']::-ms-thumb {
+  position: relative;
+  z-index: 1;
+  border: 1px solid #66aae5;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* Track */
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: #2db9e5;
+  border-radius: 1.3px;
+}
+
+input[type='range']:focus::-webkit-slider-runnable-track {
+  background: #2db9e5;
+}
+
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: #2db9e5;
+  border-radius: 1.3px;
+}
+
+input[type='range']::-ms-track {
+  width: 100%;
+  height: 12px;
+  cursor: pointer;
+  background: #2db9e5;
+  border-radius: 1.3px;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type='range']::-ms-fill-lower {
+  background: #2db9e5;
+  border-radius: 2.6px;
+}
+input[type='range']:focus::-ms-fill-lower {
+  background: #2db9e5;
+}
+input[type='range']::-ms-fill-upper {
+  background: #2db9e5;
+  border-radius: 2.6px;
+}
+input[type='range']:focus::-ms-fill-upper {
+  background: #2db9e5;
+}

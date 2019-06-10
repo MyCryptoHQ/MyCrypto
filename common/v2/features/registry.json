@@ -30,5 +30,13 @@
   {
     "name": "Sceen Lock",
     "key": "screenLock"
+  },
+  {
+    "name": "Settings",
+    "key": "settings"
+  },
+  {
+    "name": "Send Assets",
+    "key": "sendAssets"
   }
 ]

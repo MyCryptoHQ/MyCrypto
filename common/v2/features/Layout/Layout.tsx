@@ -10,7 +10,7 @@ interface Props {
   className?: string;
   centered?: boolean;
   fluid?: boolean;
-  children: any;
+  children?: any;
 }
 
 export default function Layout({ centered, fluid, className = '', children }: Props) {
