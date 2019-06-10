@@ -87,6 +87,7 @@ class RootClass extends Component<Props, State> {
     const { error } = this.state;
 
     if (error) {
+      // @ts-ignore
       return <ErrorScreen error={error} />;
     }
 

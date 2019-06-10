@@ -26,16 +26,16 @@ class LanguageSelect extends React.Component<Props> {
     const { languageSelection } = this.props;
     return (
       <div className="LanguageSelect">
-        {Object.entries(languages).map(lang => (
+        {Object.entries(languages).map(([code, lang]: [string, string]) => (
           <button
-            key={lang[0]}
+            key={code}
             className={classnames({
               'LanguageSelect-language': true,
-              'is-selected': languageSelection === lang[0]
+              'is-selected': languageSelection === code
             })}
-            onClick={() => this.handleLanguageSelect(lang[0])}
+            onClick={() => this.handleLanguageSelect(code)}
           >
-            {lang[1]}
+            {lang}
           </button>
         ))}
       </div>
