@@ -3,20 +3,25 @@ import { RouteComponentProps } from 'react-router-dom';
 import { generateMnemonic, mnemonicToSeed } from 'bip39';
 import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
+import _ from 'lodash';
 
 import { Layout } from 'v2/features';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { InsecureWalletName } from 'v2/config/data';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { Network } from 'v2/services/Network/types';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
-import { getNetworkByName } from 'v2/libs';
+import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
 import { DPathFormat } from 'v2/libs/networks/types';
 import { Account } from 'v2/services/Account/types';
-import _ from 'lodash';
+import { Asset } from 'v2/services/Asset/types';
+import { Settings } from 'v2/services/Settings';
 
 interface Props extends RouteComponentProps<{}> {
-  createAccount(accountData: Account): void;
+  settings: Settings;
+  createAccountWithID(accountData: Account, uuid: string): void;
+  updateSettingsAccounts(accounts: string[]): void;
+  createAssetWithID(value: Asset, id: string): void;
   displayNotification(templateName: string, templateData?: object): void;
 }
 
@@ -27,7 +32,6 @@ interface State {
   accountType: DPathFormat;
   path: string;
   address: string;
-  unit: string;
 }
 
 class CreateMnemonic extends Component<Props> {
@@ -37,8 +41,7 @@ class CreateMnemonic extends Component<Props> {
     network: 'Ethereum',
     accountType: InsecureWalletName.MNEMONIC_PHRASE,
     path: `m/44'/60'/0'/0`,
-    address: '',
-    unit: 'ETH'
+    address: ''
   };
 
   public render() {
@@ -110,12 +113,10 @@ class CreateMnemonic extends Component<Props> {
   };
 
   private selectNetwork = async (network: string) => {
-    const accountNetwork: NetworkOptions | undefined = getNetworkByName(network);
-
-    const pathFormat = accountNetwork && accountNetwork.dPathFormats[this.state.accountType];
+    const accountNetwork: Network | undefined = getNetworkByName(network);
+    const pathFormat = accountNetwork && accountNetwork.dPaths[this.state.accountType];
     const path = (pathFormat && pathFormat.value) || '';
-    const unit = (accountNetwork && accountNetwork.unit) || 'DefaultAsset';
-    this.setState({ network, path, unit });
+    this.setState({ network, path });
   };
 
   private decryptMnemonic = () => {
@@ -131,22 +132,38 @@ class CreateMnemonic extends Component<Props> {
   };
 
   private addCreatedAccountAndRedirectToDashboard = () => {
-    const { history, createAccount, displayNotification } = this.props;
-    const { network, accountType, address, unit } = this.state;
+    const {
+      history,
+      settings,
+      createAccountWithID,
+      updateSettingsAccounts,
+      createAssetWithID,
+      displayNotification
+    } = this.props;
+    const { network, accountType, address, path } = this.state;
 
+    const accountNetwork: Network | undefined = getNetworkByName(network);
+    if (!accountNetwork) {
+      return;
+    }
+    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(accountNetwork);
+    const newAssetID: string = generateUUID();
+    const newUUID = generateUUID();
     const account: Account = {
       address: toChecksumAddress(addHexPrefix(address)),
       network,
-      accountType,
-      derivationPath: '',
-      assets: unit,
-      value: 0,
+      wallet: accountType,
+      dPath: path,
+      assets: [{ uuid: newAssetID, balance: '0' }],
+      balance: 0,
       label: 'New Account', // @TODO: we really should have the correct label before!
-      localSettings: 'default',
-      transactionHistory: '',
+      transactions: [],
       timestamp: 0
     };
-    createAccount(account);
+    createAccountWithID(account, newUUID);
+    updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
+    createAssetWithID(newAsset, newAssetID);
+
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address
     });

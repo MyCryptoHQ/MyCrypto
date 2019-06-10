@@ -11,9 +11,11 @@ import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
 import { Layout } from 'v2/features';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
-import { getNetworkByName } from 'v2/libs';
-import { NetworkOptions } from 'v2/services/NetworkOptions/types';
+import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
+import { Network } from 'v2/services/Network/types';
 import { Account } from 'v2/services/Account/types';
+import { Asset } from 'v2/services/Asset/types';
+import { Settings } from 'v2/services/Settings';
 import { WalletName, InsecureWalletName } from 'v2/config/data';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 
@@ -29,7 +31,10 @@ interface State {
 }
 
 interface Props extends RouteComponentProps<{}> {
-  createAccount(accountData: Account): void;
+  settings: Settings;
+  createAccountWithID(accountData: Account, uuid: string): void;
+  updateSettingsAccounts(accounts: string[]): void;
+  createAssetWithID(value: Asset, id: string): void;
   displayNotification(templateName: string, templateData?: object): void;
 }
 
@@ -96,27 +101,38 @@ class CreateKeystore extends Component<Props, State> {
   };
 
   private addCreatedAccountAndRedirectToDashboard = () => {
-    const { history, createAccount, displayNotification } = this.props;
+    const {
+      history,
+      settings,
+      createAccountWithID,
+      updateSettingsAccounts,
+      createAssetWithID,
+      displayNotification
+    } = this.props;
     const { keystore, network, accountType } = this.state;
 
-    if (!keystore) {
+    const accountNetwork: Network | undefined = getNetworkByName(network);
+    if (!keystore || !accountNetwork) {
       return;
     }
-
-    const accountNetwork: NetworkOptions | undefined = getNetworkByName(network);
+    const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(accountNetwork);
+    const newAssetID: string = generateUUID();
+    const newUUID = generateUUID();
     const account: Account = {
       address: toChecksumAddress(addHexPrefix(keystore.address)),
       network,
-      accountType,
-      derivationPath: '',
-      assets: accountNetwork ? accountNetwork.unit : 'DefaultAsset',
-      value: 0,
+      wallet: accountType,
+      dPath: '',
+      assets: [{ uuid: newAssetID, balance: '0' }],
+      balance: 0,
       label: 'New Account', // @TODO: we really should have the correct label before!
-      localSettings: 'default',
-      transactionHistory: '',
+      transactions: [],
       timestamp: 0
     };
-    createAccount(account);
+    createAccountWithID(account, newUUID);
+    updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
+    createAssetWithID(newAsset, newAssetID);
+
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address
     });

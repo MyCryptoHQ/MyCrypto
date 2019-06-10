@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { ComboBox } from '@mycrypto/ui';
 
 import { translate } from 'translations';
-import { NetworkOptionsContext } from 'v2/providers';
+import { NetworksContext } from 'v2/providers';
 import { isWalletFormatSupportedOnNetwork } from 'v2/libs';
 import { WalletName } from 'v2/config/data';
 
@@ -13,11 +13,12 @@ interface Props {
 }
 
 function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
-  const { networkOptions } = useContext(NetworkOptionsContext);
+  const { networks } = useContext(NetworksContext);
 
   // @ADD_ACCOUNT_TODO: The difference in accountType is likely causing
   // the absence of list.
-  const validNetworks = networkOptions
+  const validNetworks = networks
+    // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> TODO: FIX accountType
     .filter(options => isWalletFormatSupportedOnNetwork(options, accountType))
     .map(n => n.name);
 
