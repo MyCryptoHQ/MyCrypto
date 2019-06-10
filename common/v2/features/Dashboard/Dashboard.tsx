@@ -2,13 +2,20 @@ import React from 'react';
 import { Heading } from '@mycrypto/ui';
 
 import { Layout } from 'v2/features';
-import { AccountList, ActionTile, TokenList, WalletBreakdown } from './components';
+import {
+  AccountList,
+  ActionTile,
+  TokenList,
+  WalletBreakdown,
+  RecentTransactionList
+} from './components';
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { AccountContext } from 'v2/providers';
+import { AccountContext, AddressBookContext } from 'v2/providers';
 
 export default function Dashboard() {
+  const developmentMode = Boolean(window.localStorage.getItem('MyCrypto Dev Mode'));
   return (
     <>
       {/* MOBILE */}
@@ -35,6 +42,18 @@ export default function Dashboard() {
                 className="Dashboard-mobile-modifiedPanel"
               />
             </div>
+            {developmentMode && (
+              <AddressBookContext.Consumer>
+                {({ readAddressBook }) => (
+                  <div className="Dashboard-mobile-section">
+                    <RecentTransactionList
+                      accountsList={accounts}
+                      readAddressBook={readAddressBook}
+                    />
+                  </div>
+                )}
+              </AddressBookContext.Consumer>
+            )}
           </Layout>
         )}
       </AccountContext.Consumer>
@@ -68,6 +87,19 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+            {developmentMode && (
+              <AddressBookContext.Consumer>
+                {({ readAddressBook }) => (
+                  <div className="Dashboard-desktop-bottom">
+                    <RecentTransactionList
+                      readAddressBook={readAddressBook}
+                      accountsList={accounts}
+                      className="Dashboard-desktop-modifiedPanel"
+                    />
+                  </div>
+                )}
+              </AddressBookContext.Consumer>
+            )}
           </Layout>
         )}
       </AccountContext.Consumer>

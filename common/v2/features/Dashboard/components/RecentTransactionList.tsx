@@ -9,29 +9,28 @@ import './RecentTransactionList.scss';
 
 // Legacy
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import { TransactionHistory, ExtendedTransaction, AddressMetadata } from 'v2/services';
+import { AddressBook, ExtendedAccount, TransactionData } from 'v2/services';
 import { truncate } from 'v2/libs';
 
 interface Props {
-  transactionHistories: TransactionHistory[];
   className?: string;
-  transactions: ExtendedTransaction[];
-  readAddressMetadata(uuid: string): AddressMetadata;
+  accountsList: ExtendedAccount[];
+  readAddressBook(uuid: string): AddressBook;
 }
 
 export default function RecentTransactionList({
-  transactions,
-  readAddressMetadata,
+  accountsList,
+  readAddressBook,
   className = ''
 }: Props) {
-  const recentTransactions: ExtendedTransaction[] = transactions;
+  const transactions: TransactionData[] = accountsList.flatMap(account => account.transactions);
 
   // TODO: Sort by relevant transactions
 
-  const pending = recentTransactions.filter(tx => tx.stage === 'pending');
-  const completed = recentTransactions.filter(tx => tx.stage === 'completed');
-  const createEntries = (_: string, collection: typeof recentTransactions) =>
-    collection.map(({ label, stage, date, from, to, value, fiatValue, uuid }) => [
+  const pending = transactions.filter(tx => tx.stage === 'pending');
+  const completed = transactions.filter(tx => tx.stage === 'completed');
+  const createEntries = (_: string, collection: typeof transactions) =>
+    collection.map(({ label, stage, date, from, to, value, fiatValue }) => [
       <TransactionLabel
         key={0}
         image="https://placehold.it/45x45"
@@ -42,8 +41,8 @@ export default function RecentTransactionList({
       <Address
         key={1}
         title={
-          readAddressMetadata(from.toLowerCase())
-            ? readAddressMetadata(from.toLowerCase()).label
+          readAddressBook(from.toLowerCase())
+            ? readAddressBook(from.toLowerCase()).label
             : 'No Label'
         }
         truncate={truncate}
@@ -52,15 +51,15 @@ export default function RecentTransactionList({
       <Address
         key={2}
         title={
-          readAddressMetadata(to.toLowerCase())
-            ? readAddressMetadata(to.toLowerCase()).label
-            : 'No Label'
+          readAddressBook(to.toLowerCase()) ? readAddressBook(to.toLowerCase()).label : 'No Label'
         }
         truncate={truncate}
         address={to}
       />,
       <Amount key={3} assetValue={value.toString()} fiatValue={fiatValue.USD} />,
-      <Link key={4} to={`/dashboard/transactions/${uuid}`}>
+      <Link key={4} to={`/dashboard/transactions/${'transactionuuid'}`}>
+        {' '}
+        {/* TODO - fix this.*/}
         <img src={newWindowIcon} alt="View more information about this transaction" />
       </Link>
     ]);

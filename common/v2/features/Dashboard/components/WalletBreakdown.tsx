@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ComboBox, Heading, Panel, Typography } from '@mycrypto/ui';
 
-import { AccountContext, CurrentsContext } from 'v2/providers';
+import { AccountContext, SettingsContext } from 'v2/providers';
 import { ExtendedAccount } from 'v2/services/Account/types';
 import AccountDropdown from './AccountDropdown';
 import './WalletBreakdown.scss';
@@ -42,10 +42,12 @@ import { Link } from 'react-router-dom';
 
 function WalletBreakdown() {
   const { accounts, updateAccount } = useContext(AccountContext);
-  const { currents, updateCurrentsAccounts } = useContext(CurrentsContext);
+  const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const balances: any[] = [];
-
-  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(accounts, currents.accounts);
+  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
+    accounts,
+    settings.dashboardAccounts
+  );
 
   currentAccounts.map((en: ExtendedAccount) => {
     const baseAsset = getBaseAssetFromAccount(en);
@@ -53,7 +55,7 @@ function WalletBreakdown() {
       balances.push({
         asset: baseAsset ? baseAsset.name : 'Unknown Asset',
         amount:
-          -(en.timestamp - Date.now()) >= 15000
+          -(en.timestamp - Date.now()) >= 150000
             ? getAccountBalances(currentAccounts, updateAccount)
             : parseFloat(getBalanceFromAccount(en)).toFixed(4),
         value: 0
@@ -84,8 +86,8 @@ function WalletBreakdown() {
         <div className="WalletBreakdown-selectWrapper-select">
           <AccountDropdown
             accounts={accounts}
-            selected={currents.accounts}
-            onSubmit={(selected: string[]) => updateCurrentsAccounts(selected)}
+            selected={settings.dashboardAccounts}
+            onSubmit={(selected: string[]) => updateSettingsAccounts(selected)}
           />
         </div>
       </div>

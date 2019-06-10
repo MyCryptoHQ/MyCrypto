@@ -8,7 +8,7 @@ import {
 } from 'v2/config/data';
 
 export const initialState: FormData = {
-  network: 'Ethereum', // @ADD_ACCOUNT_TODO this should have the same type as networkOptions in NetworkOptionsContext
+  network: 'Ethereum', // @ADD_ACCOUNT_TODO this should have the same type as networks in NetworksContext
   accountType: walletNames.DEFAULT,
   account: '',
   label: 'New Account',

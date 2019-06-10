@@ -1,14 +1,14 @@
 export interface Asset {
-  option: string;
-  amount: string;
-  network: string;
-  symbol: string;
+  uuid: string;
+  name: string;
+  networkId?: string;
+  ticker: string;
   type: assetMethod;
   contractAddress?: string;
   decimal?: number;
 }
 
-export type assetMethod = 'base' | 'call';
+export type assetMethod = 'base' | 'erc20' | 'fiat';
 
 export interface ExtendedAsset extends Asset {
   uuid: string;

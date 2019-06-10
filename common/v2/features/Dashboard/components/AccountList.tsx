@@ -9,8 +9,7 @@ import { ExtendedAccount } from 'v2/services';
 import './AccountList.scss';
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
-import { CurrentsContext } from 'v2/providers/CurrentsProvider/CurrentsProvider';
-import { AccountContext } from 'v2/providers';
+import { AccountContext, SettingsContext } from 'v2/providers';
 
 const DeleteButton = styled(Button)`
   align-self: flex-start;
@@ -26,9 +25,12 @@ interface AccountListProps {
 
 export default function AccountList(props: AccountListProps) {
   const { deleteAccount, className } = props;
-  const { currents } = useContext(CurrentsContext);
+  const { settings } = useContext(SettingsContext);
   const { accounts } = useContext(AccountContext);
-  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(accounts, currents.accounts);
+  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
+    accounts,
+    settings.dashboardAccounts
+  );
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;
@@ -61,14 +63,14 @@ function buildAccountTable(accounts: ExtendedAccount[], deleteAccount: DeleteAcc
         <Icon icon="star" />,
         // tslint:disable-next-line: jsx-key
         <Address
-          title={`${account.label}-(${account.accountType})`}
+          title={`${account.label}-(${account.wallet})`}
           address={account.address}
           truncate={truncate}
         />,
         // tslint:disable-next-line: jsx-key
         <Network color="#a682ff">{account.network}</Network>,
         // tslint:disable-next-line: jsx-key
-        <Typography>{account.value}</Typography>,
+        <Typography>{account.balance}</Typography>,
         // tslint:disable-next-line: jsx-key
         <DeleteButton onClick={handleAccountDelete(deleteAccount, account.uuid)} icon="exit" />
       ];
