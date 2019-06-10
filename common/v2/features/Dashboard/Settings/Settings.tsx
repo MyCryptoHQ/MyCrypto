@@ -1,57 +1,130 @@
-import React from 'react';
-import { Heading } from '@mycrypto/ui';
+import React, { useState, useContext } from 'react';
+import { Heading, Tabs } from '@mycrypto/ui';
+import styled from 'styled-components';
+import translate from 'translations';
 
 import { FlippablePanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import { AddressBook, AddToAddressBook, GeneralSettings } from './components';
-import './Settings.scss';
+import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
+import IS_MOBILE from 'utils/isMobile';
 
-// Legacy
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { AccountList } from '../components';
-import { AccountContext, AddressMetadataContext } from 'v2/providers';
+import { AccountContext, AddressBookContext, SettingsContext } from 'v2/providers';
+
+const SettingsHeading = styled(Heading)`
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+  color: #163150;
+`;
+
+const SettingsHeadingIcon = styled.img`
+  margin-right: 12px;
+`;
+
+const StyledLayout = styled(props => <Layout {...props} />)`
+  .Layout-content {
+    padding: 0;
+    @media (max-width: 850px) {
+      margin-top: ${IS_MOBILE && '73px'};
+    }
+  }
+`;
+
+const SettingsContent = styled.div`
+  padding: ${IS_MOBILE ? '0 10px' : '0 80px'};
+`;
+
+function renderAccountPanel() {
+  const { accounts, deleteAccount } = useContext(AccountContext);
+  return (
+    <FlippablePanel>
+      {({ flipped }) =>
+        flipped ? (
+          <p>Add Account</p>
+        ) : (
+          <AccountList accounts={accounts} deleteAccount={deleteAccount} />
+        )
+      }
+    </FlippablePanel>
+  );
+}
+
+function renderAddressPanel() {
+  const { createAddressBooks, addressBook, deleteAddressBooks } = useContext(AddressBookContext);
+  return (
+    <FlippablePanel>
+      {({ flipped, toggleFlipped }) =>
+        flipped ? (
+          <AddToAddressBook toggleFlipped={toggleFlipped} createAddressBooks={createAddressBooks} />
+        ) : (
+          <AddressBookPanel
+            addressBook={addressBook}
+            toggleFlipped={toggleFlipped}
+            deleteAddressBooks={deleteAddressBooks}
+          />
+        )
+      }
+    </FlippablePanel>
+  );
+}
+
+function renderGeneralSettingsPanel() {
+  const { updateSettings, settings } = useContext(SettingsContext);
+  return <GeneralSettings updateGlobalSettings={updateSettings} globalSettings={settings} />;
+}
+
+interface TabOptions {
+  [key: string]: React.ReactNode;
+}
+
+function renderMobile() {
+  const [tab, setTab] = useState('wallets');
+  const tabOptions: TabOptions = {
+    ['wallets']: renderAccountPanel(),
+    ['addresses']: renderAddressPanel(),
+    ['general']: renderGeneralSettingsPanel()
+  };
+  const currentTab = tabOptions[tab];
+  return (
+    <>
+      <Tabs>
+        <a href="#" onClick={() => setTab('wallets')}>
+          Your Wallets
+        </a>
+        <a href="#" onClick={() => setTab('addresses')}>
+          Addresses
+        </a>
+        <a href="#" onClick={() => setTab('general')}>
+          General
+        </a>
+      </Tabs>
+      <SettingsContent>
+        <SettingsHeading>
+          <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
+          {translate('SETTINGS_HEADING')}
+        </SettingsHeading>
+        {currentTab}
+      </SettingsContent>
+    </>
+  );
+}
+
+function renderDesktop() {
+  return (
+    <SettingsContent>
+      <SettingsHeading>
+        <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
+        {translate('SETTINGS_HEADING')}
+      </SettingsHeading>
+      {renderAccountPanel()}
+      {renderAddressPanel()}
+      {renderGeneralSettingsPanel()}
+    </SettingsContent>
+  );
+}
 
 export default function Settings() {
-  return (
-    <Layout className="Settings">
-      <Heading className="Settings-heading">
-        <img src={settingsIcon} alt="Settings" className="Settings-heading-icon" />
-        Settings
-      </Heading>
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
-          <FlippablePanel>
-            {({ flipped }) =>
-              flipped ? (
-                <p>Add Account</p>
-              ) : (
-                <AccountList accounts={accounts} deleteAccount={deleteAccount} />
-              )
-            }
-          </FlippablePanel>
-        )}
-      </AccountContext.Consumer>
-      <AddressMetadataContext.Consumer>
-        {({ createAddressMetadatas, addressMetadata, deleteAddressMetadatas }) => (
-          <FlippablePanel>
-            {({ flipped, toggleFlipped }) =>
-              flipped ? (
-                <AddToAddressBook
-                  toggleFlipped={toggleFlipped}
-                  createAddressMetadatas={createAddressMetadatas}
-                />
-              ) : (
-                <AddressBook
-                  addressMetadata={addressMetadata}
-                  toggleFlipped={toggleFlipped}
-                  deleteAddressMetadatas={deleteAddressMetadatas}
-                />
-              )
-            }
-          </FlippablePanel>
-        )}
-      </AddressMetadataContext.Consumer>
-      <GeneralSettings />
-    </Layout>
-  );
+  return <StyledLayout>{IS_MOBILE ? renderMobile() : renderDesktop()}</StyledLayout>;
 }
