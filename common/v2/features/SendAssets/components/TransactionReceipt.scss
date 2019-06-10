@@ -1,0 +1,74 @@
+.TransactionReceipt {
+  &-row {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 550px) {
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    &-column {
+      flex: 1;
+      margin-right: 13px;
+      margin-bottom: 24px;
+
+      @media (min-width: 550px) {
+        margin-bottom: 0;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+    }
+  }
+  &-addressWrapper {
+    margin-top: 10px;
+    padding: 12px;
+    background: #f8f8f8;
+  }
+  &-divider {
+    height: 1px;
+    margin-bottom: 20px;
+    background: #e3edff;
+  }
+  &-details {
+    margin-bottom: 25px;
+
+    &-row {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+
+      @media (min-width: 500px) {
+        flex-direction: row;
+        align-items: center;
+      }
+      &-column {
+        &:first-child {
+          font-weight: bold;
+
+          @media (min-width: 500px) {
+            flex: 1;
+          }
+        }
+        &:nth-child(2) {
+          @media (min-width: 500px) {
+            flex: 2;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+  &-back {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+  &-another {
+    width: 100%;
+    margin-bottom: 25px;
+  }
+}
