@@ -93,7 +93,9 @@ class RootClass extends Component<Props, State> {
     const routes = (
       <CaptureRouteNotFound>
         <Switch>
-          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
+          {gatherFeatureRoutes().map((config, i) => (
+            <Route key={i} {...config} />
+          ))}
           <Route path="/account" component={SendTransaction} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />
@@ -240,9 +242,12 @@ const mapStateToProps = (state: AppState): StateProps => ({
   theme: configMetaSelectors.getTheme(state)
 });
 
-const ConnectedRoot = connect(mapStateToProps, {
-  setUnitMeta: transactionMetaActions.setUnitMeta
-})(RootClass);
+const ConnectedRoot = connect(
+  mapStateToProps,
+  {
+    setUnitMeta: transactionMetaActions.setUnitMeta
+  }
+)(RootClass);
 
 // Silence RHL 'reconciliation failed' errors
 // https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021

@@ -47,9 +47,8 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
             this.renderDropdownItems()
           ) : (
             <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
-              <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{
-                addressInput
-              }".
+              <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "
+              {addressInput}".
             </li>
           )}
         </ul>

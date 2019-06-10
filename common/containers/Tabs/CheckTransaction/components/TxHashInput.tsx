@@ -123,7 +123,9 @@ class TxHashInput extends React.Component<Props, State> {
   };
 }
 
-export default connect((state: AppState): ReduxProps => ({
-  recentTxs: selectors.getRecentNetworkTransactions(state),
-  isValidAddress: configSelectors.getIsValidAddressFn(state)
-}))(TxHashInput);
+export default connect(
+  (state: AppState): ReduxProps => ({
+    recentTxs: selectors.getRecentNetworkTransactions(state),
+    isValidAddress: configSelectors.getIsValidAddressFn(state)
+  })
+)(TxHashInput);
