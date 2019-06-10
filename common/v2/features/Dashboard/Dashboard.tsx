@@ -12,10 +12,10 @@ import {
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { AccountContext, AddressBookContext } from 'v2/providers';
+import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
 
 export default function Dashboard() {
-  const developmentMode = Boolean(window.localStorage.getItem('MyCrypto Dev Mode'));
+  const { developmentMode } = useDevMode();
   return (
     <>
       {/* MOBILE */}
