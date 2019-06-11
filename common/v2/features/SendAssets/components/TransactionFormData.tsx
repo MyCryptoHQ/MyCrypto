@@ -32,7 +32,8 @@ import {
   validateNonceField
 } from './validators/validators';
 import './TransactionFormData.scss';
-import { getAssetByUUID } from 'v2/libs';
+import { getAssetByUUID, getNetworkByName } from 'v2/libs';
+import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 
 interface Props {
   stateValues: ISendState;
@@ -67,7 +68,7 @@ export default function SendAssetsForm({
     .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid))
     .filter((asset: Asset | undefined) => asset)
     .map((asset: Asset) => {
-      return { symbol: asset.ticker, name: asset.name };
+      return { symbol: asset.ticker, name: asset.name, network: asset.networkId };
     });
 
   return (
@@ -83,17 +84,17 @@ export default function SendAssetsForm({
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           return (
             <Form className="SendAssetsForm">
-              <React.Fragment>
-                {/*{'ITxFields123: '}
+              {/*<React.Fragment>
+                {'ITxFields123: '}
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
                 </pre>
-                <br />*/}
+                <br />
                 {'Formik Fields: '}
                 <br />
-                <pre style={{ fontSize: '0.5rem' }}>{JSON.stringify(values, null, 2)}</pre>
-              </React.Fragment>
+                <pre style={{ fontSize: '0.75rem' }}>{JSON.stringify(values, null, 2)}</pre>
+              </React.Fragment>*/}
               <QueryWarning />
 
               {/* Asset */}
@@ -108,7 +109,16 @@ export default function SendAssetsForm({
                       name={field.name}
                       value={field.value}
                       assets={assets}
-                      onSelect={option => form.setFieldValue(field.name, option)}
+                      onSelect={option => {
+                        form.setFieldValue(field.name, option);
+                        if (option.network) {
+                          fetchGasPriceEstimates(option.network).then(data => {
+                            form.setFieldValue('gasEstimates', data);
+                            form.setFieldValue('gasPriceSlider', data.fast);
+                          });
+                          form.setFieldValue('network', getNetworkByName(option.network));
+                        }
+                      }}
                     />
                   )}
                 />
@@ -129,9 +139,6 @@ export default function SendAssetsForm({
                       onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
                         updateState({ transactionFields: { account: option } });
-                        fetchGasPriceEstimates('Ethereum').then(data =>
-                          form.setFieldValue('gasEstimates', data)
-                        );
                       }}
                     />
                   )}
@@ -182,24 +189,23 @@ export default function SendAssetsForm({
                 <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
                   <div>Transaction Fee</div>
                   {/* TRANSLATE THIS */}
-                  <div>0.000273 / $0.03 USD</div>
+                  <TransactionFeeDisplay
+                    values={values}
+                    fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
+                  />
                   {/* TRANSLATE THIS */}
                 </label>
-                <GasPriceSlider
-                  transactionFieldValues={values}
-                  handleChange={(e: string) => {
-                    updateState({ transactionFields: { gasPriceSlider: e } });
-                    handleChange(e);
-                  }}
-                  gasPrice={values.gasPriceSlider}
-                  gasEstimates={values.gasEstimates}
-                />
-                <div className="SendAssetsForm-fieldset-cheapFast">
-                  <div>Cheap</div>
-                  {/* TRANSLATE THIS */}
-                  <div>Fast</div>
-                  {/* TRANSLATE THIS */}
-                </div>
+                {!values.isAdvancedTransaction && (
+                  <GasPriceSlider
+                    transactionFieldValues={values}
+                    handleChange={(e: string) => {
+                      updateState({ transactionFields: { gasPriceSlider: e } });
+                      handleChange(e);
+                    }}
+                    gasPrice={values.gasPriceSlider}
+                    gasEstimates={values.gasEstimates}
+                  />
+                )}
               </fieldset>
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
