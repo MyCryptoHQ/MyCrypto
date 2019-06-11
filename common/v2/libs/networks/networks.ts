@@ -89,3 +89,8 @@ export const createNode = (node: NodeOptions, network: Network): void => {
 export const getBaseAssetByNetwork = (networkObj: Network): Asset | undefined => {
   return getAssetByUUID(networkObj.baseAsset);
 };
+
+export const getBaseAssetSymbolByNetwork = (networkObj: Network): string | undefined => {
+  const baseAsset: Asset | undefined = getAssetByUUID(networkObj.baseAsset);
+  return baseAsset ? baseAsset.ticker : undefined;
+};

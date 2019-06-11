@@ -32,7 +32,7 @@ import {
   validateNonceField
 } from './validators/validators';
 import './TransactionFormData.scss';
-import { getAssetByUUID } from 'v2/libs';
+import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 
 interface Props {
@@ -84,17 +84,17 @@ export default function SendAssetsForm({
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           return (
             <Form className="SendAssetsForm">
-              <React.Fragment>
-                {/*{'ITxFields123: '}
+              {/*<React.Fragment>
+                {'ITxFields123: '}
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
                 </pre>
-                <br />*/}
+                <br />
                 {'Formik Fields: '}
                 <br />
                 <pre style={{ fontSize: '0.75rem' }}>{JSON.stringify(values, null, 2)}</pre>
-              </React.Fragment>
+              </React.Fragment>*/}
               <QueryWarning />
 
               {/* Asset */}
@@ -116,6 +116,7 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
+                          form.setFieldValue('network', getNetworkByName(option.network));
                         }
                       }}
                     />
