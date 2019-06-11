@@ -7,7 +7,6 @@ import translate, { translateRaw } from 'translations';
 import { GasEstimates } from 'v2/api/gas';
 import { ITxFields } from '../../types';
 import './styles/GasPriceSlider.scss';
-import { fetchGasPriceEstimates } from 'v2/features/Gas/gasPriceFunctions';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
@@ -23,7 +22,6 @@ type Props = OwnProps;
 interface State {
   hasSetRecommendedGasPrice: boolean;
   realGasPrice: number;
-  gasEstimates: GasEstimates;
 }
 
 interface GasTooltips {
@@ -33,14 +31,8 @@ interface GasTooltips {
 export default class SimpleGas extends Component<Props> {
   public state: State = {
     hasSetRecommendedGasPrice: false,
-    realGasPrice: 0,
-    gasEstimates: this.props.gasEstimates
+    realGasPrice: 0
   };
-
-  public async componentWillMount() {
-    const gas = await fetchGasPriceEstimates('Ethereum');
-    this.setState({ ...this.state, gasEstimates: gas });
-  }
 
   public render() {
     const { gasPrice, gasEstimates } = this.props;
@@ -90,7 +82,7 @@ export default class SimpleGas extends Component<Props> {
   }
 
   private makeGasNotches = (): Marks => {
-    const { gasEstimates } = this.state;
+    const { gasEstimates } = this.props;
     return gasEstimates
       ? {
           [gasEstimates.safeLow]: '',
@@ -102,7 +94,7 @@ export default class SimpleGas extends Component<Props> {
   };
 
   private formatTooltip = (gas: number) => {
-    const { gasEstimates } = this.state;
+    const { gasEstimates } = this.props;
     if (!(gasEstimates && !gasEstimates.isDefault)) {
       return '';
     }
