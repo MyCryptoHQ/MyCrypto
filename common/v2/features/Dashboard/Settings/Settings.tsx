@@ -10,7 +10,7 @@ import IS_MOBILE from 'utils/isMobile';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import { AccountList } from '../components';
-import { AccountContext, AddressBookContext, SettingsContext } from 'v2/providers';
+import { AddressBookContext, SettingsContext } from 'v2/providers';
 
 const SettingsHeading = styled(Heading)`
   display: flex;
@@ -37,16 +37,9 @@ const SettingsContent = styled.div`
 `;
 
 function renderAccountPanel() {
-  const { accounts, deleteAccount } = useContext(AccountContext);
   return (
     <FlippablePanel>
-      {({ flipped }) =>
-        flipped ? (
-          <p>Add Account</p>
-        ) : (
-          <AccountList accounts={accounts} deleteAccount={deleteAccount} />
-        )
-      }
+      {({ flipped }) => (flipped ? <p>Add Account</p> : <AccountList />)}
     </FlippablePanel>
   );
 }
