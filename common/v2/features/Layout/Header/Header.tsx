@@ -7,6 +7,9 @@ import styled from 'styled-components';
 import { UnlockScreen } from 'v2/features';
 import { links } from './constants';
 import { COLORS } from 'v2/features/constants';
+import { translate } from 'translations';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { knowledgeBaseURL } from 'v2/config';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
@@ -360,8 +363,9 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                   English <IconWrapper subItems={true} icon="navDownCaret" />
                 </MenuMid>
                 <MenuLinks>
-                  <li>
-                    Help & Support <IconWrapper subItems={true} icon="navDownCaret" />
+                  <li onClick={this.openHelpSupportPage}>
+                    {translate('NEW_HEADER_TEXT_1')}
+                    <IconWrapper subItems={true} icon="navDownCaret" />
                   </li>
                   <li>
                     Latest News <IconWrapper subItems={true} icon="navDownCaret" />
@@ -378,8 +382,9 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
           </MobileTopLeft>
           {/* Desktop Left */}
           <HeaderTopLeft>
-            <li>
-              Help & Support <IconWrapper subItems={true} icon="navDownCaret" />
+            <li onClick={this.openHelpSupportPage}>
+              {translate('NEW_HEADER_TEXT_1')}
+              <IconWrapper subItems={true} icon="navDownCaret" />
             </li>
             <li>
               Latest News <IconWrapper subItems={true} icon="navDownCaret" />
@@ -469,6 +474,11 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
         [dropdown]: !prevState.visibleDropdowns[dropdown]
       }
     }));
+
+  private openHelpSupportPage = (): void => {
+    window.open(knowledgeBaseURL, '_blank');
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
+  };
 }
 
 export default withRouter(Header);
