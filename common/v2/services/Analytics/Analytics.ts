@@ -1,16 +1,16 @@
 import { AxiosInstance } from 'axios';
-
-import { ANALYTICS_API_URL, ANALYTICS_ID_SITE, ANALYTICS_REC } from './constants';
+import { isDesktop, isDevelopment } from 'v2/utils';
 import { APIService } from '../API';
-import { isDevelopment, isDesktop } from 'v2/utils';
-import { Params, CvarEntry } from './types';
+import { ANALYTICS_API_URL, ANALYTICS_ID_SITE, ANALYTICS_REC } from './constants';
+import { CvarEntry, Params } from './types';
 
 let instantiated: boolean = false;
 export default class AnalyticsService {
   public static instance = new AnalyticsService();
 
   private service: AxiosInstance = APIService.generateInstance({
-    baseURL: ANALYTICS_API_URL
+    baseURL: ANALYTICS_API_URL,
+    timeout: 5000
   });
 
   constructor() {
