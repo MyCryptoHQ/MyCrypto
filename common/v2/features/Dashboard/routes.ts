@@ -1,16 +1,9 @@
-import Dashboard from './Dashboard';
 import { RequestAssets } from './RequestAssets';
 
 export default [
   {
-    name: 'Dashboard',
-    path: '/dashboard',
-    exact: true,
-    component: Dashboard
-  },
-  {
     name: 'Request Assets',
-    path: '/dashboard/request',
+    path: '/request',
     exact: true,
     component: RequestAssets
   }

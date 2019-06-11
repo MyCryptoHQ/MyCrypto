@@ -14,24 +14,12 @@ export const links = [
         title: 'Send Assets'
       },
       {
-        to: '/dashboard/receive',
+        to: '/request',
         title: 'Receive Assets'
       },
       {
-        to: '/dashboard/request',
-        title: 'Request Assets'
-      },
-      {
-        to: '/dashboard/swap',
+        to: '/swap',
         title: 'Swap Assets'
-      },
-      {
-        to: '/dashboard/info',
-        title: 'Wallet Info'
-      },
-      {
-        to: '/dashboard/recent',
-        title: 'Recent Transactions'
       }
     ]
   },
