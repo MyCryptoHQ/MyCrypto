@@ -5,9 +5,11 @@ import jsPDF from 'jspdf';
 import styled from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
+import { QRCode } from 'components/ui';
+import { knowledgeBaseURL } from 'v2/config';
+
 import walletIcon from 'common/assets/images/icn-hardware-wallet.svg';
 import myCryptoIcon from 'common/assets/images/logo-mycrypto-transparent.png';
-import { QRCode } from 'components/ui';
 
 interface PaperWalletWrapperProps {
   isHidden?: boolean;
@@ -263,7 +265,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
           </Part>
           <Part hasRightBorder={true} hasTopBorder={true}>
             <WalletImage src={walletIcon} />
-            <Resources>For Resources and Help, Visit: {'https://support.mycrypto.com'}</Resources>
+            <Resources>For Resources and Help, Visit: {knowledgeBaseURL}</Resources>
           </Part>
           <Part hasTopBorder={true}>{this.getQRAddressWrapper(false, address)}</Part>
         </PartWrapper>
