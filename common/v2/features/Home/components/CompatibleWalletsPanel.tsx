@@ -2,10 +2,12 @@ import React from 'react';
 import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/features/constants';
+import { SecureWalletName } from 'v2/config/data';
 import './SliderImports.scss';
 
 import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
@@ -157,29 +159,38 @@ interface WalletCardProps {
   text: string;
   mobileSrc?: string;
   mobileText?: string;
+  walletName: string;
 }
 
 const trackWalletLink = (wallet: string) => {
   AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${wallet} wallet button clicked`);
 };
 
-const WalletCard: React.SFC<WalletCardProps> = ({ src, text, mobileSrc, mobileText }) => {
+const WalletCard: React.SFC<WalletCardProps> = ({
+  src,
+  text,
+  mobileSrc,
+  mobileText,
+  walletName
+}) => {
   return (
     <WalletCardWrapper>
-      <WalletCardContent isMobile={!!mobileSrc} onClick={() => trackWalletLink(text)}>
-        <WalletCardImg src={src} alt={text} />
-        <WalletCardDescription>{text}</WalletCardDescription>
-      </WalletCardContent>
-      {mobileSrc && (
-        <WalletCardContent
-          isMobile={!mobileSrc}
-          showMobile={true}
-          onClick={() => trackWalletLink(mobileText || text)}
-        >
-          <WalletCardImg src={mobileSrc} alt={mobileText} />
-          <WalletCardDescription>{mobileText}</WalletCardDescription>
+      <Link to={`/add-account/${walletName}`}>
+        <WalletCardContent isMobile={!!mobileSrc} onClick={() => trackWalletLink(text)}>
+          <WalletCardImg src={src} alt={text} />
+          <WalletCardDescription>{text}</WalletCardDescription>
         </WalletCardContent>
-      )}
+        {mobileSrc && (
+          <WalletCardContent
+            isMobile={!mobileSrc}
+            showMobile={true}
+            onClick={() => trackWalletLink(mobileText || text)}
+          >
+            <WalletCardImg src={mobileSrc} alt={mobileText} />
+            <WalletCardDescription>{mobileText}</WalletCardDescription>
+          </WalletCardContent>
+        )}
+      </Link>
     </WalletCardWrapper>
   );
 };
@@ -231,11 +242,28 @@ export default function CompatibleWalletsPanel() {
             text={translateRaw('X_METAMASK')}
             mobileSrc={trustIcon}
             mobileText={translateRaw('X_TRUST')}
+            walletName={SecureWalletName.WEB3}
           />
-          <WalletCard src={ledgerIcon} text={translateRaw('X_LEDGER')} />
-          <WalletCard src={trezorIcon} text={translateRaw('X_TREZOR')} />
-          <WalletCard src={paritySignerIcon} text={translateRaw('X_PARITYSIGNER')} />
-          <WalletCard src={safeTIcon} text={translateRaw('X_SAFE_T')} />
+          <WalletCard
+            src={ledgerIcon}
+            text={translateRaw('X_LEDGER')}
+            walletName={SecureWalletName.LEDGER_NANO_S}
+          />
+          <WalletCard
+            src={trezorIcon}
+            text={translateRaw('X_TREZOR')}
+            walletName={SecureWalletName.TREZOR}
+          />
+          <WalletCard
+            src={paritySignerIcon}
+            text={translateRaw('X_PARITYSIGNER')}
+            walletName={SecureWalletName.PARITY_SIGNER}
+          />
+          <WalletCard
+            src={safeTIcon}
+            text={translateRaw('X_SAFE_T')}
+            walletName={SecureWalletName.SAFE_T}
+          />
         </Slider>
       </Wallets>
     </MainPanel>
