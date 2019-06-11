@@ -4,6 +4,7 @@ import { WalletName } from 'v2/config/data';
 import { ISendState, ITxFields } from '../types';
 import './SignTransaction.scss';
 import {
+  SignTransactionKeystore,
   SignTransactionLedger,
   SignTransactionMetaMask,
   SignTransactionPrivateKey,
@@ -49,6 +50,8 @@ export default class SignTransaction extends Component<Props> {
         return <SignTransactionTrezor />;
       case 'safeTmini':
         return <SignTransactionSafeT />;
+      case 'keystore':
+        return <SignTransactionKeystore />;
       default:
         return null;
     }
