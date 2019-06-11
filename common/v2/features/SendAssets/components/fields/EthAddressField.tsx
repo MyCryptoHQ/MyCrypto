@@ -3,6 +3,7 @@ import { Field, FieldProps } from 'formik';
 import { Input } from '@mycrypto/ui';
 
 import { isValidETHAddress } from 'libs/validators';
+import { InlineErrorMsg } from 'v2/components';
 
 /*
   Eth address field to be used within a Formik Form
@@ -37,7 +38,9 @@ function ETHAddressField({ fieldName, error, touched, placeholder = 'Eth Address
         validate={validateEthAddress}
         render={({ field }: FieldProps) => <Input {...field} placeholder={placeholder} />}
       />
-      {error && touched ? <div>{error}</div> : null}
+      {error && touched ? (
+        <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
+      ) : null}
     </>
   );
 }

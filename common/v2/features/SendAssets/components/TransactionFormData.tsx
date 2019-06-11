@@ -1,10 +1,11 @@
-import React, { FormEvent, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button } from '@mycrypto/ui';
+import * as Yup from 'yup';
+import { Button, Input } from '@mycrypto/ui';
 
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { fetchGasPriceEstimates } from 'v2';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount, AssetBalanceObject, Asset } from 'v2/services';
@@ -16,7 +17,6 @@ import { ISendState, ITxFields } from '../types';
 import {
   AccountDropdown,
   AssetDropdown,
-  AmountField,
   DataField,
   EthAddressField,
   GasLimitField,
@@ -53,6 +53,13 @@ const QueryWarning: React.SFC<{}> = () => (
   />
 );
 
+const SendAssetsSchema = Yup.object().shape({
+  amount: Yup.number()
+    .required('Required')
+    .min(0.001, 'Minimun required')
+    .max(1001, 'Above the balance')
+});
+
 export default function SendAssetsForm({
   transactionFields,
   onNext,
@@ -75,6 +82,7 @@ export default function SendAssetsForm({
     <div className="SendAssetsForm">
       <Formik
         initialValues={transactionFields}
+        validationSchema={SendAssetsSchema}
         onSubmit={(fields: ITxFields) => {
           onSubmit(fields);
           onNext();
@@ -82,6 +90,11 @@ export default function SendAssetsForm({
         render={({ errors, touched, setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
+
+          const setAmountFieldToAssetMax = () =>
+            // @TODO get asset balance and subtract gas cost
+            setFieldValue('amount', '1000');
+
           return (
             <Form className="SendAssetsForm">
               {/*<React.Fragment>
@@ -159,12 +172,23 @@ export default function SendAssetsForm({
                 />
               </fieldset>
               {/* Amount */}
-              <AmountField
-                handleChange={(e: FormEvent<HTMLInputElement>) => {
-                  updateState({ transactionFields: { amount: e.currentTarget.value } });
-                  handleChange(e);
-                }}
-              />
+              <fieldset className="SendAssetsForm-fieldset">
+                <label htmlFor="amount" className="input-group-header label-with-action">
+                  <div>{translate('SEND_ASSETS_AMOUNT_LABEL')}</div>
+                  <div className="label-action" onClick={setAmountFieldToAssetMax}>
+                    {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION').toLowerCase()}
+                  </div>
+                </label>
+                <Field
+                  name="amount"
+                  render={({ field }: FieldProps) => (
+                    <Input value={field.value} placeholder={'0.00'} {...field} />
+                  )}
+                />
+                {errors.amount && touched.amount ? (
+                  <InlineErrorMsg className="SendAssetsForm-errors">{errors.amount}</InlineErrorMsg>
+                ) : null}
+              </fieldset>
               {/* You'll Send */}
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
                 <label>You'll Send</label>
@@ -263,7 +287,7 @@ export default function SendAssetsForm({
                         />
                       </div>
                     </div>
-                    <div className="SendAssetsForm-advancedOptions-errors">
+                    <div className="SendAssetsForm-errors">
                       {errors.gasPriceField && (
                         <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
                       )}

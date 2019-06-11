@@ -79,6 +79,7 @@
     "uuid": "3.2.1",
     "wallet-address-validator": "0.2.4",
     "whatwg-fetch": "2.0.3",
+    "yup": "0.27.0",
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
