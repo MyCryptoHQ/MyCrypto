@@ -50,20 +50,22 @@ type SubType<Base, Condition> = Pick<Base, AllowedNames<Base, Condition>>;
 
 type ProviderMethod = SubType<FallbackProvider, (...args: any) => any>;
 
-export default async function callProviderMethod<K extends keyof ProviderMethod>(
+async function callProviderMethod<K extends keyof ProviderMethod>(
   method: K,
   args: { [Network in NetworkKey]?: Parameters<ProviderMethod[K]> }
 ) {
+  const arrayOfResults = [];
   for (const network of Object.keys(args)) {
     const provider = allProviders[network as NetworkKey];
     const argsForNetwork: any = args[network as NetworkKey];
-    const result = await (provider[method] as any)(...argsForNetwork);
-    console.log(result);
+    arrayOfResults.push(await (provider[method] as any)(...argsForNetwork));
   }
+  return arrayOfResults;
 }
 
 //example
+
 callProviderMethod('getBalance', {
-  Ethereum: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8'],
-  Kovan: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8', 'latest']
+  Kovan: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8', 'latest'],
+  Ethereum: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8']
 });
