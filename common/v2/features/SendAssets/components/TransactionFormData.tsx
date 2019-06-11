@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
-import { Button, Heading, Input } from '@mycrypto/ui';
+import { Button, Input } from '@mycrypto/ui';
 
-import sendIcon from 'common/assets/images/icn-send.svg';
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
@@ -12,7 +11,7 @@ import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount, AssetBalanceObject, Asset } from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { IAsset, TSymbol } from 'v2/types';
-import { Currency, InlineErrorMsg, Typography } from 'v2/components';
+import { InlineErrorMsg } from 'v2/components';
 
 import { ISendState, ITxFields } from '../types';
 import {
@@ -194,8 +193,9 @@ export default function SendAssetsForm({
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
                 <label>You'll Send</label>
                 <TransactionValueDisplay
-                  values={values}
-                  fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
+                  amount={values.amount || '0.00'}
+                  ticker={values.asset ? values.asset.symbol : 'ETH'}
+                  fiatAsset={{ ticker: 'USD', exchangeRate: '250' }}
                 />
               </fieldset>
               {/* Transaction Fee */}
