@@ -1,7 +1,3 @@
-export const makeNodeName = (network: string, name: string) => {
-  return `${network.toLowerCase()}_${name}`;
-};
-
 function makeEtherscanOption(network: 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli') {
   return `etherscan+${network}`;
 }
