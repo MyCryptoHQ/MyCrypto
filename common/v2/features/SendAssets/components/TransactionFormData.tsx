@@ -1,8 +1,7 @@
 import React, { FormEvent, useContext } from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
-import { Button, Heading } from '@mycrypto/ui';
+import { Button } from '@mycrypto/ui';
 
-import sendIcon from 'common/assets/images/icn-send.svg';
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate from 'translations';
@@ -11,7 +10,7 @@ import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount, AssetBalanceObject, Asset } from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { IAsset } from 'v2/types';
-import { InlineErrorMsg, Typography } from 'v2/components';
+import { InlineErrorMsg } from 'v2/components';
 
 import { ISendState, ITxFields } from '../types';
 import {
@@ -34,6 +33,7 @@ import {
 import './TransactionFormData.scss';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
+import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 
 interface Props {
   stateValues: ISendState;
@@ -111,6 +111,7 @@ export default function SendAssetsForm({
                       assets={assets}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
+                        form.setFieldValue('account', undefined);
                         if (option.network) {
                           fetchGasPriceEstimates(option.network).then(data => {
                             form.setFieldValue('gasEstimates', data);
@@ -133,6 +134,7 @@ export default function SendAssetsForm({
                   value={values.account}
                   component={({ field, form }: FieldProps) => (
                     <AccountDropdown
+                      values={values}
                       name={field.name}
                       value={field.value}
                       accounts={accounts}
@@ -166,23 +168,10 @@ export default function SendAssetsForm({
               {/* You'll Send */}
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
                 <label>You'll Send</label>
-                <div className="SendAssetsForm-fieldset-youllSend-box">
-                  <Heading as="h2" className="SendAssetsForm-fieldset-youllSend-box-crypto">
-                    <img src={sendIcon} alt="Send" />{' '}
-                    {transactionFields.amount + transactionFields.asset}
-                    {/* TRANSLATE THIS */}
-                  </Heading>
-                  <small className="SendAssetsForm-fieldset-youllSend-box-fiat">
-                    {/* TRANSLATE THIS */}≈ $1440.00 USD
-                  </small>
-                  <div className="SendAssetsForm-fieldset-youllSend-box-conversion">
-                    <Typography>
-                      Conversion Rate <br />
-                      {/* TRANSLATE THIS */}
-                      1 ETH ≈ $109.41 USD{/* TRANSLATE THIS */}
-                    </Typography>
-                  </div>
-                </div>
+                <TransactionValueDisplay
+                  values={values}
+                  fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
+                />
               </fieldset>
               {/* Transaction Fee */}
               <fieldset className="SendAssetsForm-fieldset">
