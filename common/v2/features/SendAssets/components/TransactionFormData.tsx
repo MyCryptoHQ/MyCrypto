@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
-import { Button, Input } from '@mycrypto/ui';
+import { Button, Heading, Input } from '@mycrypto/ui';
 
+import sendIcon from 'common/assets/images/icn-send.svg';
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
@@ -10,8 +11,8 @@ import { fetchGasPriceEstimates } from 'v2';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount, AssetBalanceObject, Asset } from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { IAsset } from 'v2/types';
-import { InlineErrorMsg } from 'v2/components';
+import { IAsset, TSymbol } from 'v2/types';
+import { Currency, InlineErrorMsg, Typography } from 'v2/components';
 
 import { ISendState, ITxFields } from '../types';
 import {
@@ -75,7 +76,7 @@ export default function SendAssetsForm({
     .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid))
     .filter((asset: Asset | undefined) => asset)
     .map((asset: Asset) => {
-      return { symbol: asset.ticker, name: asset.name, network: asset.networkId };
+      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId };
     });
 
   return (
