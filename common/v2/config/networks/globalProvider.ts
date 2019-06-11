@@ -10,6 +10,7 @@ const FallbackProvider = ethers.providers.FallbackProvider;
 type TempProviders = { [K in NetworkKey]: BaseProvider[] };
 type FallbackProviders = { [K in NetworkKey]: FallbackProvider };
 
+//@ts-ignore
 function entries<T, K extends keyof T>(obj: { [K in keyof T]: T[K] }): [K, T[K]][] {
   return Object.entries(obj) as any;
 }
@@ -40,23 +41,29 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
 }
 const allProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
 
-async function getBlock() {
-  const ETHProvider = allProviders.Ethereum;
-  const block = await ETHProvider.getBlockNumber();
-  console.log(block);
+type FilterFlags<Base, Condition> = {
+  [Key in keyof Base]: Base[Key] extends Condition ? Key : never
+};
+type AllowedNames<Base, Condition> = FilterFlags<Base, Condition>[keyof Base];
+
+type SubType<Base, Condition> = Pick<Base, AllowedNames<Base, Condition>>;
+
+type ProviderMethod = SubType<FallbackProvider, (...args: any) => any>;
+
+async function callProviderMethod<K extends keyof ProviderMethod>(
+  method: K,
+  args: { [Network in NetworkKey]?: Parameters<ProviderMethod[K]> }
+) {
+  for (const network of Object.keys(args)) {
+    const provider = allProviders[network as NetworkKey];
+    const argsForNetwork: any = args[network as NetworkKey];
+    const result = await (provider[method] as any)(...argsForNetwork);
+    console.log(result);
+  }
 }
 
-getBlock();
-//step 2, multinetwork calls
-//TODO
-// Map networks to args
-//
-
-// interface callProviderMethodArgs {
-
-//   method: Parameters<ethers.providers.FallbackProvider[K]>
-// }
-
-// async function callProviderMethod(providers: FallbackProviders,  args: any,  method ):  {
-
-// }
+//example
+callProviderMethod('getBalance', {
+  Ethereum: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8'],
+  Kovan: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8', 'latest']
+});
