@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { knowledgeBaseURL } from 'v2/config';
 import { translateRaw } from 'translations';
 import './Linkset.scss';
 
@@ -15,7 +16,7 @@ const LINK_COLUMNS = [
       },
       {
         title: translateRaw('NEW_FOOTER_TEXT_7'),
-        link: 'https://support.mycrypto.com/',
+        link: knowledgeBaseURL,
         analytics_event: 'Help & Support'
       },
       {

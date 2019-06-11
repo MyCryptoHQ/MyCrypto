@@ -1,6 +1,7 @@
 import { MenuItemConstructorOptions, shell } from 'electron';
 import { APP_TITLE, REPOSITORY } from '../constants';
 import packageJson from '../../package.json';
+import { knowledgeBaseURL } from 'v2/config';
 
 const MENU: MenuItemConstructorOptions[] = [
   {
@@ -44,7 +45,7 @@ const HELP_MENU: MenuItemConstructorOptions = {
     {
       label: 'Help / FAQ',
       click() {
-        shell.openExternal('https://support.mycrypto.com/');
+        shell.openExternal(knowledgeBaseURL);
       }
     },
     {
