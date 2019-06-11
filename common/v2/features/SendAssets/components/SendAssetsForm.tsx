@@ -30,7 +30,7 @@ import {
   validateGasPriceField,
   validateNonceField
 } from './validators/validators';
-import './TransactionFormData.scss';
+import './SendAssetsForm.scss';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
