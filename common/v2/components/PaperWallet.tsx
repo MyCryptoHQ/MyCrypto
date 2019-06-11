@@ -20,7 +20,7 @@ const PaperWalletWrapper =
   styled.div <
   PaperWalletWrapperProps >
   `
-  ${props => props.isHidden && 'position: absolute; top: -1000px;'}
+  ${props => props.isHidden && `position: absolute; top: -${paperWalletHeight}px;`}
   width: ${paperWalletWidth}px;
   height: ${paperWalletHeight}px;
   color: black;
