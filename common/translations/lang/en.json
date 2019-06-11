@@ -47,7 +47,7 @@
     "NAV_ADDRESS_BOOK": "Address Book",
     "NAV_SUPPORT_US": "Support Us",
     "X_ACCESS": "Access ",
-    "X_ASSET": "Select Asset",
+    "X_ASSET": "Asset to Send",
     "X_ADDRESS": "Your Address ",
     "X_CIPHER": "Cipher Browser",
     "X_KEYSTORE": "Keystore File (UTC / JSON · Recommended · Encrypted) ",
@@ -898,6 +898,7 @@
     "YOUR_PRIVATE_KEY": "Your Private Key",
     "INPUT_PUBLIC_ADDRESS_LABEL": "Select or Input Your Address",
     "COINBASE_APP_LABEL": "Coinbase App",
-    "TRUST_APP_LABEL": "Trust Wallet App"
+    "TRUST_APP_LABEL": "Trust Wallet App",
+    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset"
   }
 }
