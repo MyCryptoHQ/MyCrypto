@@ -130,28 +130,3 @@
   background: $baby-blue;
   color: #fff;
 }
-
-@mixin onboarding-modal-slide-heading {
-  font-size: 20px;
-  font-family: Lato, sans-serif;
-  font-weight: 900;
-  color: $heading-text-color;
-
-  @media (min-width: 500px) {
-    font-size: 24px;
-  }
-  @media (min-width: 800px) {
-    font-size: 30px;
-  }
-}
-
-@mixin onboarding-modal-slide-text {
-  font-size: 14px;
-
-  @media (min-width: 500px) {
-    font-size: 18px;
-  }
-  @media (min-width: 800px) {
-    font-size: 20px;
-  }
-}

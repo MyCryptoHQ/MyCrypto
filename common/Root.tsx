@@ -11,7 +11,6 @@ import { AnalyticsService } from 'v2/services';
 import { AppState } from 'features/reducers';
 import { configSelectors, configMetaSelectors } from 'features/config';
 import { transactionMetaActions } from 'features/transaction';
-import { onboardingSelectors } from 'features/onboarding';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
@@ -25,7 +24,6 @@ import ErrorScreen from 'components/ErrorScreen';
 import PageNotFound from 'components/PageNotFound';
 import LogOutPrompt from 'components/LogOutPrompt';
 import QrSignerModal from 'containers/QrSignerModal';
-import OnboardingModal from 'containers/OnboardingModal';
 import PalettePage from 'components/Palette';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
@@ -49,7 +47,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  onboardingActive: ReturnType<typeof onboardingSelectors.getActive>;
   networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
   theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
@@ -88,7 +85,7 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store, onboardingActive } = this.props;
+    const { store } = this.props;
     const { error, developmentMode } = this.state;
 
     if (error) {
@@ -132,7 +129,6 @@ class RootClass extends Component<Props, State> {
                       <Router>
                         <LockScreenProvider>
                           <PageVisitsAnalytics>
-                            {onboardingActive && <OnboardingModal />}
                             {routes}
                             <LegacyRoutes />
                             <LogOutPrompt />
@@ -271,7 +267,6 @@ const CaptureRouteNotFound = withRouter(({ children, location }) => {
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  onboardingActive: onboardingSelectors.getActive(state),
   networkUnit: configSelectors.getNetworkUnit(state),
   theme: configMetaSelectors.getTheme(state)
 });

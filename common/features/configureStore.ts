@@ -17,8 +17,6 @@ import { TransactionsState } from './transactions/types';
 import { INITIAL_STATE as initialTransactionsState } from './transactions/reducer';
 import { WalletState } from './wallet/types';
 import { INITIAL_STATE as initialWalletState } from './wallet/reducer';
-import { OnboardingState } from './onboarding/types';
-import { INITIAL_STATE as initialOnboardingState } from './onboarding/reducer';
 import {
   rehydrateConfigAndCustomTokenState,
   getConfigAndCustomTokensStateToSubscribe
@@ -45,7 +43,6 @@ export default function configureStore() {
   const savedTransactionsState = loadStatePropertyOrEmptyObject<TransactionsState>('transactions');
   const savedAddressBook = loadStatePropertyOrEmptyObject<AddressBookState>('addressBook');
   const savedWalletState = loadStatePropertyOrEmptyObject<WalletState>('wallet');
-  const savedOnboardingState = loadStatePropertyOrEmptyObject<OnboardingState>('onboarding');
 
   const persistedInitialState: Partial<AppState> = {
     transaction: {
@@ -69,10 +66,6 @@ export default function configureStore() {
     wallet: {
       ...initialWalletState,
       ...savedWalletState
-    },
-    onboarding: {
-      ...initialOnboardingState,
-      ...savedOnboardingState
     },
     ...rehydrateConfigAndCustomTokenState()
   };
@@ -104,7 +97,6 @@ export default function configureStore() {
         wallet: {
           recentAddresses: state.wallet.recentAddresses
         },
-        onboarding: state.onboarding,
         ...getConfigAndCustomTokensStateToSubscribe(state)
       });
     }, 50)
