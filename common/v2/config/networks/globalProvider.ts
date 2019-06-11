@@ -39,7 +39,7 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
   }
   return fallBackProviders;
 }
-const allProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
+export const allProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
 
 type FilterFlags<Base, Condition> = {
   [Key in keyof Base]: Base[Key] extends Condition ? Key : never
@@ -50,7 +50,7 @@ type SubType<Base, Condition> = Pick<Base, AllowedNames<Base, Condition>>;
 
 type ProviderMethod = SubType<FallbackProvider, (...args: any) => any>;
 
-async function callProviderMethod<K extends keyof ProviderMethod>(
+export default async function callProviderMethod<K extends keyof ProviderMethod>(
   method: K,
   args: { [Network in NetworkKey]?: Parameters<ProviderMethod[K]> }
 ) {
