@@ -10,7 +10,7 @@ const FallbackProvider = ethers.providers.FallbackProvider;
 type TempProviders = { [K in NetworkKey]: BaseProvider[] };
 type FallbackProviders = { [K in NetworkKey]: FallbackProvider };
 
-//@ts-ignore
+// tslint:disable-next-line
 function entries<T, K extends keyof T>(obj: { [K in keyof T]: T[K] }): [K, T[K]][] {
   return Object.entries(obj) as any;
 }
@@ -24,11 +24,13 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
       if (!tempProviders[networkKey]) {
         tempProviders[networkKey] = [];
       }
-      if (url.includes('etherscan')) {
-        const network = url.split('+')[1];
-        tempProviders[networkKey].push(new ethers.providers.EtherscanProvider(network));
-      } else {
-        tempProviders[networkKey].push(new ethers.providers.JsonRpcProvider(url));
+      if (url) {
+        if (url.includes('etherscan')) {
+          const network = url.split('+')[1];
+          tempProviders[networkKey].push(new ethers.providers.EtherscanProvider(network));
+        } else {
+          tempProviders[networkKey].push(new ethers.providers.JsonRpcProvider(url));
+        }
       }
     }
   }
@@ -67,5 +69,7 @@ async function callProviderMethod<K extends keyof ProviderMethod>(
 
 callProviderMethod('getBalance', {
   Kovan: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8', 'latest'],
-  Ethereum: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8']
+  Ethereum: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8'],
+  Rinkeby: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8'],
+  ESN: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8']
 });
