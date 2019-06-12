@@ -28,8 +28,8 @@ export const actions: Action[] = [
   },
   {
     icon: receiveIcon,
-    title: 'Request Assets',
-    link: '/request',
+    title: 'Receive Assets',
+    link: '/receive',
     description: 'Transfer Assets to Your Wallet'
   },
   {

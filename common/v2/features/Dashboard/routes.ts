@@ -2,8 +2,8 @@ import { RequestAssets } from './RequestAssets';
 
 export default [
   {
-    name: 'Request Assets',
-    path: '/request',
+    name: 'Receive Assets',
+    path: '/receive',
     exact: true,
     component: RequestAssets
   }

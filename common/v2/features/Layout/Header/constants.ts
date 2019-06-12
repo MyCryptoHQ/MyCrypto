@@ -14,7 +14,7 @@ export const links = [
         title: 'Send Assets'
       },
       {
-        to: '/request',
+        to: '/receive',
         title: 'Receive Assets'
       },
       {
