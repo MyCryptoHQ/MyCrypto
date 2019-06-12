@@ -34,6 +34,8 @@ import './TransactionFormData.scss';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
+import { processFormDataToTx } from 'v2/libs/transaction/process';
+import ProviderHandler from 'v2/config/networks/providerHandler';
 
 interface Props {
   stateValues: ISendState;
@@ -82,6 +84,19 @@ export default function SendAssetsForm({
         render={({ errors, setFieldValue, values, handleChange }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
+
+          const estimateGasHandler = () => {
+            if (values && values.network) {
+              const provider = new ProviderHandler(values.network);
+              const processedTx = processFormDataToTx(values);
+              if (processedTx) {
+                provider
+                  .estimateGas(processedTx)
+                  .then(data => setFieldValue('gasLimitEstimated', data));
+              }
+            }
+          };
+
           return (
             <Form className="SendAssetsForm">
               {/*<React.Fragment>
@@ -89,12 +104,22 @@ export default function SendAssetsForm({
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
+                  <br />
+                  {async () => {
+                    if (values.network) {
+                      const provider = new ProviderHandler(values.network);
+                      
+
+                    }
+
+                  }}
                 </pre>
-                <br />
-                {'Formik Fields: '}
-                <br />
-                <pre style={{ fontSize: '0.75rem' }}>{JSON.stringify(values, null, 2)}</pre>
-              </React.Fragment>*/}
+                </React.Fragment>*/}
+              <br />
+              {'Formik Fields: '}
+              <br />
+              <pre style={{ fontSize: '0.75rem' }}>{values.gasLimitEstimated}</pre>
+
               <QueryWarning />
 
               {/* Asset */}
@@ -117,7 +142,9 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
+
                           form.setFieldValue('network', getNetworkByName(option.network));
+                          estimateGasHandler();
                         }
                       }}
                     />
@@ -141,6 +168,7 @@ export default function SendAssetsForm({
                       onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
                         updateState({ transactionFields: { account: option } });
+                        estimateGasHandler();
                       }}
                     />
                   )}
@@ -151,6 +179,7 @@ export default function SendAssetsForm({
                 <div className="input-group-header">{translate('SEND_ADDR')}</div>
                 <RecipientAddressField
                   handleChange={(e: FormEvent<HTMLInputElement>) => {
+                    estimateGasHandler();
                     updateState({
                       transactionFields: { recipientAddress: e.currentTarget.value }
                     });
@@ -161,6 +190,7 @@ export default function SendAssetsForm({
               {/* Amount */}
               <AmountField
                 handleChange={(e: FormEvent<HTMLInputElement>) => {
+                  estimateGasHandler();
                   updateState({ transactionFields: { amount: e.currentTarget.value } });
                   handleChange(e);
                 }}
@@ -188,6 +218,7 @@ export default function SendAssetsForm({
                   <GasPriceSlider
                     transactionFieldValues={values}
                     handleChange={(e: string) => {
+                      estimateGasHandler();
                       updateState({ transactionFields: { gasPriceSlider: e } });
                       handleChange(e);
                     }}

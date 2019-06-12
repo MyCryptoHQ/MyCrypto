@@ -12,8 +12,9 @@ import {
 } from './types';
 import { hexEncodeData } from './utils';
 import { TxObj } from '../INode';
-import { Token } from 'types/network';
 import { IHexStrTransaction } from 'libs/transaction';
+import { Asset } from 'v2/services/Asset/types';
+import { Token } from 'shared/types/network';
 
 export default class RPCRequests {
   public getNetVersion() {
@@ -69,12 +70,15 @@ export default class RPCRequests {
     };
   }
 
-  public getTokenBalance(address: string, token: Token): GetTokenBalanceRequest | any {
+  public getTokenBalance(address: string, token: Asset | Token): GetTokenBalanceRequest | any {
     return {
       method: 'eth_call',
       params: [
         {
-          to: token.address,
+          to:
+            'contractAddress' in token
+              ? token.contractAddress
+              : 'address' in token ? token.address : '0x0',
           data: ERC20.balanceOf.encodeInput({ _owner: address })
         },
         'pending'
