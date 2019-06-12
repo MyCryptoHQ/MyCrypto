@@ -91,6 +91,10 @@ export enum MiscWalletName {
   VIEW_ONLY = 'viewOnly'
 }
 
+export enum DefaultWalletName {
+  DEFAULT = 'walletsList'
+}
+
 export const walletNames = getValues(
   SecureWalletName,
   HardwareWalletName,
@@ -98,7 +102,7 @@ export const walletNames = getValues(
   MiscWalletName
 );
 
-export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName;
+export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName | undefined;
 
 export enum Theme {
   DARK = 'dark',

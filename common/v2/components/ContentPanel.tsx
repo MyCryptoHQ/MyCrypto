@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Heading, Panel, Typography } from '@mycrypto/ui';
+import { Button, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import Stepper from './Stepper';
@@ -8,8 +8,11 @@ import Stepper from './Stepper';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const ContentPanelWrapper = styled.div`
-  @media (min-width: 700px) {
-    max-width: 560px;
+  @media (max-width: 700px) {
+    max-width: 450px;
+    max-height: 500px;
+    padding-left: 0px;
+    margin-bottom: 1em;
   }
 `;
 
@@ -24,13 +27,14 @@ const BackButton = styled(Button)`
   }
 `;
 
-const ContentPanelHeading = styled(Heading)`
+const ContentPanelHeading = styled.p`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
   color: #303030;
-  font-size: 25px;
+  font-family: Lato;
+  font-size: 32px;
   font-weight: bold;
 `;
 
@@ -63,7 +67,7 @@ const ContentPanelTop = styled.div`
 
 interface Props {
   children: any;
-  className: string;
+  className?: string;
   heading?: string;
   icon?: string;
   description?: string;
@@ -71,7 +75,7 @@ interface Props {
     current: number;
     total: number;
   };
-  onBack(): void;
+  onBack?(): void | null;
 }
 
 export default function ContentPanel({

@@ -7,10 +7,7 @@ import './AccountScreen.scss';
 import addIcon from 'common/assets/images/icn-add.svg';
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import unlockIcon from 'common/assets/images/icn-unlock.svg';
-
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
+import { truncate } from 'v2/libs';
 
 export default {
   title: 'Current Account',

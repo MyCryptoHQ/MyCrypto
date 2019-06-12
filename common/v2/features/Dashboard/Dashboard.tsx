@@ -9,119 +9,89 @@ import {
   TokenList,
   WalletBreakdown
 } from './components';
+import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import {
-  AccountContext,
-  TransactionHistoryContext,
-  TransactionContext,
-  AddressMetadataContext
-} from 'v2/providers';
+import { AccountContext, AddressBookContext } from 'v2/providers';
 
 export default function Dashboard() {
   return (
     <>
       {/* MOBILE */}
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
-          <Layout className="Dashboard-mobile" fluid={true}>
-            <div className="Dashboard-mobile-actions">
+      <Layout className="Dashboard-mobile" fluid={true}>
+        <NotificationsPanel />
+        <div className="Dashboard-mobile-actions">
+          {actions.map(action => <ActionTile key={action.title} {...action} />)}
+        </div>
+        <div className="Dashboard-mobile-divider" />
+        <div className="Dashboard-mobile-group">
+          <div className="Dashboard-mobile-walletBreakdown">
+            <WalletBreakdown />
+          </div>
+          <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
+            <TokenList />
+          </div>
+        </div>
+        <div className="Dashboard-mobile-section">
+          <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
+        </div>
+        <AccountContext.Consumer>
+          {({ accounts }) => (
+            <AddressBookContext.Consumer>
+              {({ readAddressBook }) => (
+                <div className="Dashboard-mobile-section">
+                  <RecentTransactionList
+                    accountsList={accounts}
+                    readAddressBook={readAddressBook}
+                  />
+                </div>
+              )}
+            </AddressBookContext.Consumer>
+          )}
+        </AccountContext.Consumer>
+      </Layout>
+
+      {/* DESKTOP */}
+
+      <Layout className="Dashboard-desktop">
+        <NotificationsPanel />
+        <div className="Dashboard-desktop-top">
+          <div className="Dashboard-desktop-top-left">
+            <Heading as="h2" className="Dashboard-desktop-top-left-heading">
+              Your Dashboard
+            </Heading>
+            <div className="Dashboard-desktop-top-left-actions">
               {actions.map(action => <ActionTile key={action.title} {...action} />)}
             </div>
-            <div className="Dashboard-mobile-divider" />
-            <div className="Dashboard-mobile-group">
-              <div className="Dashboard-mobile-walletBreakdown">
-                <WalletBreakdown />
-              </div>
-              <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
-                <TokenList />
-              </div>
+            <div>
+              <TokenList />
             </div>
-            <div className="Dashboard-mobile-section">
-              <AccountList
-                accounts={accounts}
-                deleteAccount={deleteAccount}
-                className="Dashboard-mobile-modifiedPanel"
-              />
+          </div>
+          <div className="Dashboard-desktop-top-right">
+            <div>
+              <WalletBreakdown />
             </div>
-            <AddressMetadataContext.Consumer>
-              {({ readAddressMetadata }) => (
-                <TransactionContext.Consumer>
-                  {({ transactions }) => (
-                    <TransactionHistoryContext.Consumer>
-                      {({ transactionHistories }) => (
-                        <div className="Dashboard-mobile-section">
-                          <RecentTransactionList
-                            transactions={transactions}
-                            readAddressMetadata={readAddressMetadata}
-                            transactionHistories={transactionHistories}
-                          />
-                        </div>
-                      )}
-                    </TransactionHistoryContext.Consumer>
-                  )}
-                </TransactionContext.Consumer>
-              )}
-            </AddressMetadataContext.Consumer>
-          </Layout>
-        )}
-      </AccountContext.Consumer>
-      {/* DESKTOP */}
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
-          <Layout className="Dashboard-desktop">
-            <div className="Dashboard-desktop-top">
-              <div className="Dashboard-desktop-top-left">
-                <Heading as="h2" className="Dashboard-desktop-top-left-heading">
-                  Your Dashboard
-                </Heading>
-                <div className="Dashboard-desktop-top-left-actions">
-                  {actions.map(action => <ActionTile key={action.title} {...action} />)}
-                </div>
-                <div>
-                  <TokenList />
-                </div>
-              </div>
-              <div className="Dashboard-desktop-top-right">
-                <div>
-                  <WalletBreakdown />
-                </div>
-                <div>
-                  <AccountList
-                    accounts={accounts}
-                    deleteAccount={deleteAccount}
+            <div>
+              <AccountList currentsOnly={true} className="Dashboard-desktop-modifiedPanel" />
+            </div>
+          </div>
+        </div>
+        <AccountContext.Consumer>
+          {({ accounts }) => (
+            <AddressBookContext.Consumer>
+              {({ readAddressBook }) => (
+                <div className="Dashboard-desktop-bottom">
+                  <RecentTransactionList
+                    readAddressBook={readAddressBook}
+                    accountsList={accounts}
                     className="Dashboard-desktop-modifiedPanel"
                   />
                 </div>
-              </div>
-            </div>
-            <AddressMetadataContext.Consumer>
-              {({ readAddressMetadata }) => (
-                <TransactionContext.Consumer>
-                  {({ transactions }) => {
-                    return (
-                      <TransactionHistoryContext.Consumer>
-                        {({ transactionHistories }) => {
-                          return (
-                            <div className="Dashboard-desktop-bottom">
-                              <RecentTransactionList
-                                transactionHistories={transactionHistories}
-                                readAddressMetadata={readAddressMetadata}
-                                transactions={transactions}
-                                className="Dashboard-desktop-modifiedPanel"
-                              />
-                            </div>
-                          );
-                        }}
-                      </TransactionHistoryContext.Consumer>
-                    );
-                  }}
-                </TransactionContext.Consumer>
               )}
-            </AddressMetadataContext.Consumer>
-          </Layout>
-        )}
-      </AccountContext.Consumer>
+            </AddressBookContext.Consumer>
+          )}
+        </AccountContext.Consumer>
+      </Layout>
     </>
   );
 }

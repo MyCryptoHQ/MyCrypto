@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { Identicon } from '@mycrypto/ui';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { StyledFunction } from 'styled-components';
-import { Button, Identicon } from '@mycrypto/ui';
-
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { ExtendedAccount, useOnClickOutside } from 'v2/services';
@@ -20,15 +19,6 @@ interface SDropdownProps {
 const Divider = styled('div')`
   border-bottom: ${props => `1px solid ${props.theme.GAU.COLORS.dividerColor}`};
   margin-bottom: 15px;
-`;
-
-const SButton = styled(Button)`
-  height: 40px;
-  width: 100%;
-  padding: 9px 0;
-  font-size: 18px;
-  line-height: 18px;
-  font-weight: bold;
 `;
 
 const dropdown: StyledFunction<SDropdownProps & React.HTMLProps<HTMLInputElement>> = styled('div');
@@ -111,6 +101,7 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
   const toggleAllAccounts = () => {
     const changed = draftSelected.length < accounts.length ? accounts.map(a => a.uuid) : [];
     setDraftSelected(changed);
+    onSubmit(changed);
   };
 
   const toggleSingleAccount = (uuid: string) => {
@@ -118,6 +109,7 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
       ? draftSelected.filter(entry => entry !== uuid)
       : draftSelected.concat(uuid);
     setDraftSelected(changed);
+    onSubmit(changed);
   };
 
   return (
@@ -134,14 +126,6 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
           <Divider />
           {renderAccounts(accounts, draftSelected, toggleSingleAccount)}
           <Divider />
-          <SButton
-            onClick={() => {
-              onSubmit(draftSelected);
-              toggleOpen();
-            }}
-          >
-            {translateRaw('ACCOUNTS_DROPDOWN_ACTION')}
-          </SButton>
         </div>
       )}
     </SDropdown>

@@ -16,15 +16,27 @@
     "key": "home"
   },
   {
-    "name": "Import Wallet",
-    "key": "importWallet"
+    "name": "Add Account",
+    "key": "addAccount"
   },
   {
     "name": "Download App",
     "key": "downloadApp"
   },
   {
+    "name": "No Accounts",
+    "key": "noAccounts"
+  },
+  {
     "name": "Sceen Lock",
     "key": "screenLock"
+  },
+  {
+    "name": "Settings",
+    "key": "settings"
+  },
+  {
+    "name": "Send Assets",
+    "key": "sendAssets"
   }
 ]

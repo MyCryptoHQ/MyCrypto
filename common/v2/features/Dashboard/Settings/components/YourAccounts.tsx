@@ -2,6 +2,7 @@ import React from 'react';
 import { Address, Icon, CollapsibleTable, Network, Typography } from '@mycrypto/ui';
 
 import { DashboardPanel } from '../../components';
+import { truncate } from 'v2/libs';
 
 interface Props {
   toggleFlipped(): void;
@@ -26,9 +27,6 @@ const accounts = [
     favorite: false
   }
 ];
-const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
 const accountTable = {
   head: ['Favorite', 'Address', 'Network', 'Value', 'Delete'],
   body: accounts.map(({ address, name, network, value }) => [
@@ -57,7 +55,7 @@ const accountTable = {
 
 export default function YourAccounts({ toggleFlipped }: Props) {
   return (
-    <DashboardPanel heading="Your Accounts" className="AddressBook">
+    <DashboardPanel heading="Your Accounts">
       <CollapsibleTable breakpoint={450} {...accountTable} />
       <button onClick={toggleFlipped}>Add Account</button>
     </DashboardPanel>
