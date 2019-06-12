@@ -31,7 +31,7 @@ import { Theme } from 'config';
 import 'what-input';
 
 // v2
-import { gatherFeatureRoutes } from 'v2';
+import { gatherFeatureRoutes, HomepageChoiceRedirect } from 'v2';
 import DevTools from 'v2/features/DevTools';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
@@ -128,13 +128,15 @@ class RootClass extends Component<Props, State> {
                     <NetworksProvider>
                       <Router>
                         <LockScreenProvider>
-                          <PageVisitsAnalytics>
-                            {routes}
-                            <LegacyRoutes />
-                            <LogOutPrompt />
-                            <QrSignerModal />
-                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                          </PageVisitsAnalytics>
+                          <HomepageChoiceRedirect>
+                            <PageVisitsAnalytics>
+                              {routes}
+                              <LegacyRoutes />
+                              <LogOutPrompt />
+                              <QrSignerModal />
+                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                            </PageVisitsAnalytics>
+                          </HomepageChoiceRedirect>
                         </LockScreenProvider>
                       </Router>
                       {developmentMode && <DevTools />}
