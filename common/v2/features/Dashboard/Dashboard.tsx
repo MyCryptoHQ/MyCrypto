@@ -18,29 +18,25 @@ export default function Dashboard() {
   return (
     <>
       {/* MOBILE */}
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
-          <Layout className="Dashboard-mobile" fluid={true}>
-            <NotificationsPanel />
-            <div className="Dashboard-mobile-actions">
-              {actions.map(action => <ActionTile key={action.title} {...action} />)}
-            </div>
-            <div className="Dashboard-mobile-divider" />
-            <div className="Dashboard-mobile-group">
-              <div className="Dashboard-mobile-walletBreakdown">
-                <WalletBreakdown />
-              </div>
-              <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
-                <TokenList />
-              </div>
-            </div>
-            <div className="Dashboard-mobile-section">
-              <AccountList
-                accounts={accounts}
-                deleteAccount={deleteAccount}
-                className="Dashboard-mobile-modifiedPanel"
-              />
-            </div>
+      <Layout className="Dashboard-mobile" fluid={true}>
+        <NotificationsPanel />
+        <div className="Dashboard-mobile-actions">
+          {actions.map(action => <ActionTile key={action.title} {...action} />)}
+        </div>
+        <div className="Dashboard-mobile-divider" />
+        <div className="Dashboard-mobile-group">
+          <div className="Dashboard-mobile-walletBreakdown">
+            <WalletBreakdown />
+          </div>
+          <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
+            <TokenList />
+          </div>
+        </div>
+        <div className="Dashboard-mobile-section">
+          <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
+        </div>
+        <AccountContext.Consumer>
+          {({ accounts }) => (
             <AddressBookContext.Consumer>
               {({ readAddressBook }) => (
                 <div className="Dashboard-mobile-section">
@@ -51,39 +47,37 @@ export default function Dashboard() {
                 </div>
               )}
             </AddressBookContext.Consumer>
-          </Layout>
-        )}
-      </AccountContext.Consumer>
+          )}
+        </AccountContext.Consumer>
+      </Layout>
+
       {/* DESKTOP */}
-      <AccountContext.Consumer>
-        {({ accounts, deleteAccount }) => (
-          <Layout className="Dashboard-desktop">
-            <NotificationsPanel />
-            <div className="Dashboard-desktop-top">
-              <div className="Dashboard-desktop-top-left">
-                <Heading as="h2" className="Dashboard-desktop-top-left-heading">
-                  Your Dashboard
-                </Heading>
-                <div className="Dashboard-desktop-top-left-actions">
-                  {actions.map(action => <ActionTile key={action.title} {...action} />)}
-                </div>
-                <div>
-                  <TokenList />
-                </div>
-              </div>
-              <div className="Dashboard-desktop-top-right">
-                <div>
-                  <WalletBreakdown />
-                </div>
-                <div>
-                  <AccountList
-                    accounts={accounts}
-                    deleteAccount={deleteAccount}
-                    className="Dashboard-desktop-modifiedPanel"
-                  />
-                </div>
-              </div>
+
+      <Layout className="Dashboard-desktop">
+        <NotificationsPanel />
+        <div className="Dashboard-desktop-top">
+          <div className="Dashboard-desktop-top-left">
+            <Heading as="h2" className="Dashboard-desktop-top-left-heading">
+              Your Dashboard
+            </Heading>
+            <div className="Dashboard-desktop-top-left-actions">
+              {actions.map(action => <ActionTile key={action.title} {...action} />)}
             </div>
+            <div>
+              <TokenList />
+            </div>
+          </div>
+          <div className="Dashboard-desktop-top-right">
+            <div>
+              <WalletBreakdown />
+            </div>
+            <div>
+              <AccountList currentsOnly={true} className="Dashboard-desktop-modifiedPanel" />
+            </div>
+          </div>
+        </div>
+        <AccountContext.Consumer>
+          {({ accounts }) => (
             <AddressBookContext.Consumer>
               {({ readAddressBook }) => (
                 <div className="Dashboard-desktop-bottom">
@@ -95,9 +89,9 @@ export default function Dashboard() {
                 </div>
               )}
             </AddressBookContext.Consumer>
-          </Layout>
-        )}
-      </AccountContext.Consumer>
+          )}
+        </AccountContext.Consumer>
+      </Layout>
     </>
   );
 }
