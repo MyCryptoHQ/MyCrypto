@@ -38,5 +38,9 @@
   {
     "name": "Send Assets",
     "key": "sendAssets"
+  },
+  {
+    "name": "Receive",
+    "key": "receive"
   }
 ]

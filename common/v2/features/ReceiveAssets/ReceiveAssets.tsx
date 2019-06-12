@@ -6,7 +6,7 @@ import { ComboBox, Copyable, Input } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import './RequestAssets.scss';
+import './ReceiveAssets.scss';
 
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
@@ -21,11 +21,11 @@ const truncate = (children: string) => {
   return [children.substring(0, 15), '…', children.substring(children.length - 10)].join('');
 };
 
-export function RequestAssets({ history }: RouteComponentProps<{}>) {
+export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   return (
     <Layout className="RequestAssets" centered={true}>
       <ContentPanel
-        heading="Request Assets"
+        heading="Receive Assets"
         icon={receiveIcon}
         onBack={history.goBack}
         className="RequestAssets-panel"
@@ -105,4 +105,4 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
   );
 }
 
-export default withRouter(RequestAssets);
+export default withRouter(ReceiveAssets);

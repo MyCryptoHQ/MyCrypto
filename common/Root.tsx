@@ -90,6 +90,7 @@ class RootClass extends Component<Props, State> {
   public render() {
     const { store, onboardingActive } = this.props;
     const { error, developmentMode } = this.state;
+    console.log(gatherFeatureRoutes());
 
     if (error) {
       return <ErrorScreen error={error} />;
