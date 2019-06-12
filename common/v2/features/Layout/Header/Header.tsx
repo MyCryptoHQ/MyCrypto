@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { UnlockScreen } from 'v2/features';
+import { UnlockScreen, SelectLanguage } from 'v2/features';
 import { links } from './constants';
 import { COLORS } from 'v2/features/constants';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { knowledgeBaseURL } from 'v2/config';
+
+import { AppState } from 'features/reducers';
+import { configMetaSelectors } from 'features/config';
+import { languages } from 'config';
 
 // Legacy
 import logo from 'assets/images/logo-mycrypto.svg';
@@ -264,6 +269,7 @@ const PrefixIcon = styled.img<PrefixIconProps>`
 `;
 
 interface Props {
+  languageSelection: ReturnType<typeof configMetaSelectors.getLanguageSelection>;
   drawerVisible: boolean;
   toggleDrawerVisible(): void;
   setDrawerScreen(screen: any): void;
@@ -299,11 +305,22 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
   };
 
   public render() {
-    const { history, drawerVisible, toggleDrawerVisible, setDrawerScreen } = this.props;
+    const {
+      history,
+      drawerVisible,
+      toggleDrawerVisible,
+      setDrawerScreen,
+      languageSelection
+    } = this.props;
     const { menuOpen, visibleMenuDropdowns, visibleDropdowns } = this.state;
     const onUnlockClick = () => {
       this.closeMenu();
       drawerVisible ? toggleDrawerVisible() : setDrawerScreen(UnlockScreen);
+    };
+
+    const onLanguageClick = () => {
+      this.closeMenu();
+      drawerVisible ? toggleDrawerVisible() : setDrawerScreen(SelectLanguage);
     };
 
     return (
@@ -359,8 +376,8 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                     );
                   })}
                 </MenuLinks>
-                <MenuMid>
-                  English <IconWrapper subItems={true} icon="navDownCaret" />
+                <MenuMid onClick={onLanguageClick}>
+                  {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
                 </MenuMid>
                 <MenuLinks>
                   <li onClick={this.openHelpSupportPage}>
@@ -401,8 +418,8 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
           </MobileTopLeft>
           {/* Desktop Right */}
           <HeaderTopLeft>
-            <li>
-              English <IconWrapper subItems={true} icon="navDownCaret" />
+            <li onClick={onLanguageClick}>
+              {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
             </li>
             <Unlock onClick={onUnlockClick}>
               <IconWrapper icon="unlock" /> Unlock
@@ -481,4 +498,8 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
   };
 }
 
-export default withRouter(Header);
+const mapStateToProps = (state: AppState) => ({
+  languageSelection: configMetaSelectors.getLanguageSelection(state)
+});
+
+export default withRouter(connect(mapStateToProps)(Header));
