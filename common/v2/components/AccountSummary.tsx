@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Address } from '@mycrypto/ui';
 
 import { truncate } from 'v2/libs';
+import { TSymbol } from 'v2/types';
 import Currency from './Currency';
 
 interface Props {
@@ -45,7 +46,7 @@ function AccountSummary({ address, balance, label, selectable = true, onClick }:
   return (
     <SAccountWrapper onPointerDown={onClick} selectable={selectable}>
       <SAddress title={label} truncate={truncate} address={address} />
-      <SCurrency amount={balance} symbol={'ETH'} decimals={4} icon={true} />
+      <SCurrency amount={balance} symbol={'ETH' as TSymbol} decimals={4} icon={true} />
     </SAccountWrapper>
   );
 }

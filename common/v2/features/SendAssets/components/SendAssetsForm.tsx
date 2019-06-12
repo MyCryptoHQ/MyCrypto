@@ -194,8 +194,8 @@ export default function SendAssetsForm({
                 <label>You'll Send</label>
                 <TransactionValueDisplay
                   amount={values.amount || '0.00'}
-                  ticker={values.asset ? values.asset.symbol : 'ETH'}
-                  fiatAsset={{ ticker: 'USD', exchangeRate: '250' }}
+                  ticker={values.asset ? values.asset.symbol : ('ETH' as TSymbol)}
+                  fiatAsset={{ ticker: 'USD' as TSymbol, exchangeRate: '250' }}
                 />
               </fieldset>
               {/* Transaction Fee */}
