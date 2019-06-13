@@ -1,8 +1,9 @@
 import { ethers } from 'ethers';
 import { BaseProvider } from 'ethers/providers';
 import { PROVIDER_OPTIONS } from './providerOptions';
+import { Network } from 'v2/services/Network/types';
 
-type NetworkKey = keyof typeof PROVIDER_OPTIONS;
+export type NetworkKey = keyof typeof PROVIDER_OPTIONS;
 
 type FallbackProvider = ethers.providers.FallbackProvider;
 const FallbackProvider = ethers.providers.FallbackProvider;
@@ -41,7 +42,19 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
   }
   return fallBackProviders;
 }
-export const allProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
+
+export const createProviderHandler = (network: Network): FallbackProvider => {
+  const newProviderPattern: any = { [network.name]: [] };
+  network.nodes.forEach(node => {
+    if (node.url && /^https?:\/\/.+/i.test(node.url)) {
+      // Not very-well covered test for if url is a valid url (sorts out web3 nodes / non-https nodes).
+      newProviderPattern[network.name].push(node.url);
+    }
+  });
+  return createFallBackProvidersFrom(newProviderPattern)[network.name as NetworkKey];
+};
+
+export const allProviders: FallbackProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
 
 type FilterFlags<Base, Condition> = {
   [Key in keyof Base]: Base[Key] extends Condition ? Key : never
@@ -54,7 +67,7 @@ type ProviderMethod = SubType<FallbackProvider, (...args: any) => any>;
 
 async function callProviderMethod<K extends keyof ProviderMethod>(
   method: K,
-  args: { [Network in NetworkKey]?: Parameters<ProviderMethod[K]> }
+  args: { [NetworkName in NetworkKey]?: Parameters<ProviderMethod[K]> }
 ) {
   const arrayOfResults = [];
   for (const network of Object.keys(args)) {
@@ -65,11 +78,4 @@ async function callProviderMethod<K extends keyof ProviderMethod>(
   return arrayOfResults;
 }
 
-//example
-
-callProviderMethod('getBalance', {
-  Kovan: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8', 'latest'],
-  Ethereum: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8'],
-  Rinkeby: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8'],
-  ESN: ['0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8']
-});
+export default callProviderMethod;

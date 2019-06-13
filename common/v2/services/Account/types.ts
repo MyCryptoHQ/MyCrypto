@@ -33,4 +33,5 @@ export interface TransactionData {
 export interface AssetBalanceObject {
   uuid: string;
   balance: string;
+  timestamp: number;
 }

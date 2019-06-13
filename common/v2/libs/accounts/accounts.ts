@@ -3,11 +3,11 @@ import { getCache } from 'v2/services/LocalCache';
 import { Account, ExtendedAccount } from 'v2/services/Account/types';
 import { Asset } from 'v2/services/Asset/types';
 import { getAssetByUUID } from '../assets/assets';
-import { fromWei } from '../units';
 import BN from 'bn.js';
 import { getNetworkByName, getNodesByNetwork } from '../networks/networks';
 import { Network, NodeOptions } from 'v2/services/Network/types';
 import RpcNode from '../nodes/rpc';
+import ProviderHandler from 'v2/config/networks/providerHandler';
 
 export const getCurrentsFromContext = (
   accounts: ExtendedAccount[],
@@ -30,25 +30,55 @@ export const getBalanceFromAccount = (account: ExtendedAccount): string => {
   if (baseAsset) {
     return account.balance.toString();
   } else {
-    return 'err';
+    return '0';
   }
+};
+
+export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset: Asset): string => {
+  const balanceFound = account.assets.find(entry => entry.uuid === asset.uuid);
+  return balanceFound ? balanceFound.balance.toString() : '0';
 };
 
 export const getAccountBalances = (
   accounts: ExtendedAccount[],
   updateAccount: (uuid: string, accountData: ExtendedAccount) => void
 ): void => {
-  accounts.map(async account => {
-    const balance: string = fromWei(
-      await getAccountBalance(account.address, getNetworkByName(account.network)),
-      'ether'
-    );
-    updateAccount(account.uuid, {
-      ...account,
-      timestamp: Date.now(),
-      balance: parseFloat(balance)
-    });
+  accounts.forEach(async account => {
+    const network = getNetworkByName(account.network);
+    if (network) {
+      const provider = new ProviderHandler(network);
+      const balance: string = await provider.getBalance(account.address);
+      updateAccount(account.uuid, {
+        ...account,
+        timestamp: Date.now(),
+        balance: parseFloat(balance)
+      });
+    }
   });
+};
+
+export const getTokenBalanceByAsset = (
+  account: ExtendedAccount,
+  asset: Asset,
+  updateAccount: (uuid: string, accountData: ExtendedAccount) => void
+): void => {
+  const network = getNetworkByName(account.network);
+  if (network) {
+    const provider = new ProviderHandler(network);
+    provider.getTokenBalance(account.address, asset).then(data => {
+      const assets = account.assets;
+      const newAssets = assets.map(assetObject => {
+        if (assetObject.uuid === asset.uuid) {
+          return { uuid: assetObject.uuid, balance: data, timestamp: Date.now() };
+        }
+        return assetObject;
+      });
+      updateAccount(account.uuid, {
+        ...account,
+        assets: newAssets
+      });
+    });
+  }
 };
 
 export function getNodeLib(): INode {
@@ -93,6 +123,13 @@ export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undef
     return getAssetByUUID(network.baseAsset);
   }
 };
+
+/*export const getAssetFromAccount = (account: ExtendedAccount, asset: Asset): Asset | undefined => {
+  const network: Network | undefined = getNetworkByName(account.network);
+  if (network) {
+    return getAssetByUUID(network.baseAsset);
+  }
+};*/
 
 export const getAllAccounts = (): Account[] => {
   return Object.values(getCache().accounts);
