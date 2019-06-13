@@ -50,18 +50,22 @@ class ProviderHandler {
       });
   }
 
+  /* Tested */
   public getTransactionCount(address: string): Promise<number> {
     return this.client.getTransactionCount(address).then(data => data);
   }
 
+  /* Tested */
   public getTransactionByHash(txhash: string): Promise<TransactionResponse> {
     return this.client.getTransaction(txhash).then((data): TransactionResponse => data);
   }
 
+  /* Tested */
   public getTransactionReceipt(txhash: string): Promise<TransactionReceipt> {
     return this.client.getTransactionReceipt(txhash).then(data => data);
   }
 
+  /* Tested */
   public getCurrentBlock(): Promise<string> {
     return this.client.getBlockNumber().then(data => data.toString());
   }
@@ -70,6 +74,7 @@ class ProviderHandler {
     return this.client.sendTransaction(signedTx).then((data): TransactionResponse => data);
   }
 
+  /* TODO: Needs handling for web3 providers. */
   private fetchProvider(network: Network): FallbackProvider {
     return createProviderHandler(network);
   }

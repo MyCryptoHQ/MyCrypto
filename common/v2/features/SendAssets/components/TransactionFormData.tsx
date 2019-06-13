@@ -118,8 +118,9 @@ export default function SendAssetsForm({
               <br />
               {'Formik Fields: '}
               <br />
-              <pre style={{ fontSize: '0.75rem' }}>{values.gasLimitEstimated}</pre>
-
+              <pre style={{ fontSize: '0.75rem' }}>{`Gas Limit Estimated: ${
+                values.gasLimitEstimated
+              }`}</pre>
               <QueryWarning />
 
               {/* Asset */}
