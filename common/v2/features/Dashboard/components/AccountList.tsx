@@ -18,15 +18,14 @@ const DeleteButton = styled(Button)`
 
 type DeleteAccount = (uuid: string) => void;
 interface AccountListProps {
-  accounts: ExtendedAccount[];
   className?: string;
-  deleteAccount: DeleteAccount;
+  currentsOnly?: boolean;
 }
 
 export default function AccountList(props: AccountListProps) {
-  const { deleteAccount, className } = props;
+  const { className, currentsOnly } = props;
   const { settings } = useContext(SettingsContext);
-  const { accounts } = useContext(AccountContext);
+  const { accounts, deleteAccount } = useContext(AccountContext);
   const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
     accounts,
     settings.dashboardAccounts
@@ -43,7 +42,10 @@ export default function AccountList(props: AccountListProps) {
       actionLink="/add-account"
       className={`AccountList ${className}`}
     >
-      <CollapsibleTable breakpoint={450} {...buildAccountTable(currentAccounts, deleteAccount)} />
+      <CollapsibleTable
+        breakpoint={450}
+        {...buildAccountTable(currentsOnly ? currentAccounts : accounts, deleteAccount)}
+      />
     </DashboardPanel>
   );
 }
