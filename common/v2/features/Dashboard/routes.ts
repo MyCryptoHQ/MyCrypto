@@ -1,6 +1,5 @@
 import Dashboard from './Dashboard';
 import { RequestAssets } from './RequestAssets';
-import { Settings } from './Settings';
 
 export default [
   {
@@ -14,11 +13,5 @@ export default [
     path: '/dashboard/request',
     exact: true,
     component: RequestAssets
-  },
-  {
-    name: 'Settings',
-    path: '/dashboard/settings',
-    exact: true,
-    component: Settings
   }
 ];

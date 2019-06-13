@@ -17,6 +17,16 @@ const DeleteButton = styled(Button)`
   margin-left: 1em;
 `;
 
+const AddAccountButton = styled(Button)`
+  color: #1eb8e7;
+  font-weight: bold;
+`;
+
+const BottomRow = styled.div`
+  margin-top: 0.875rem;
+  text-align: center;
+`;
+
 export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
   const addressBookTable = {
     head: ['Favorite', 'Address', 'Notes', 'Delete'],
@@ -39,9 +49,13 @@ export default function AddressBook({ addressBook, toggleFlipped, deleteAddressB
     }
   };
   return (
-    <DashboardPanel heading="Address Book" className="AddressBook">
+    <DashboardPanel heading="Address Book">
       <CollapsibleTable breakpoint={450} {...addressBookTable} />
-      <button onClick={toggleFlipped}>Add Address</button>
+      <BottomRow>
+        <AddAccountButton onClick={toggleFlipped} basic={true}>
+          + Add Address
+        </AddAccountButton>
+      </BottomRow>
     </DashboardPanel>
   );
 }

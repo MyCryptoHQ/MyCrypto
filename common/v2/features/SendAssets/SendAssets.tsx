@@ -42,7 +42,7 @@ const getInitialState = (): ISendState => {
         amount: getQueryParamWithKey(params, 'value') || '0.00',
         asset:
           getQueryParamWithKey(params, 'sendmode') === 'token'
-            ? ({ symbol: getQueryParamWithKey(params, 'tokensymbol') || 'ETH' } as IAsset)
+            ? ({ symbol: getQueryParamWithKey(params, 'tokensymbol') || 'DAI' } as IAsset)
             : undefined,
         gasPriceSlider: '20',
         gasPriceField: getQueryParamWithKey(params, 'gasprice') || '20',
@@ -65,7 +65,8 @@ const getInitialState = (): ISendState => {
           safeLow: 4,
           time: Date.now(),
           chainId: 1
-        }
+        },
+        network: undefined
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -76,7 +77,6 @@ const getInitialState = (): ISendState => {
       resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
-      network: 'ETH',
       assetType: getQueryParamWithKey(params, 'sendmode') === 'token' ? 'erc20' : 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
     };
   } else {
@@ -115,7 +115,8 @@ const getInitialState = (): ISendState => {
           safeLow: 4,
           time: Date.now(),
           chainId: 1
-        }
+        },
+        network: undefined
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
       isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -126,7 +127,6 @@ const getInitialState = (): ISendState => {
       resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
-      network: 'ETH',
       assetType: 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
     };
   }

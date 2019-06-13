@@ -1,48 +1,46 @@
-import { hot } from 'react-hot-loader/root';
-import { setConfig } from 'react-hot-loader';
-import React, { Component } from 'react';
-import { Store } from 'redux';
-import { Provider, connect } from 'react-redux';
-import { withRouter, Switch, HashRouter, Route, BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-
-import GAU_THEME from 'v2/theme';
-import { AnalyticsService } from 'v2/services';
-import { AppState } from 'features/reducers';
-import { configSelectors, configMetaSelectors } from 'features/config';
-import { transactionMetaActions } from 'features/transaction';
-import { onboardingSelectors } from 'features/onboarding';
+import ErrorScreen from 'components/ErrorScreen';
+import LogOutPrompt from 'components/LogOutPrompt';
+import PageNotFound from 'components/PageNotFound';
+import PalettePage from 'components/Palette';
+import { RedirectWithQuery } from 'components/RedirectWithQuery';
+import { RouteNotFound } from 'components/RouteNotFound';
+import { Theme } from 'config';
+import OnboardingModal from 'containers/OnboardingModal';
+import QrSignerModal from 'containers/QrSignerModal';
+import BroadcastTx from 'containers/Tabs/BroadcastTx';
+import CheckTransaction from 'containers/Tabs/CheckTransaction';
 // Components
 import Contracts from 'containers/Tabs/Contracts';
 import ENS from 'containers/Tabs/ENS';
 import GenerateWallet from 'containers/Tabs/GenerateWallet';
 import SendTransaction from 'containers/Tabs/SendTransaction';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
-import BroadcastTx from 'containers/Tabs/BroadcastTx';
-import CheckTransaction from 'containers/Tabs/CheckTransaction';
 import SupportPage from 'containers/Tabs/SupportPage';
-import ErrorScreen from 'components/ErrorScreen';
-import PageNotFound from 'components/PageNotFound';
-import LogOutPrompt from 'components/LogOutPrompt';
-import QrSignerModal from 'containers/QrSignerModal';
-import OnboardingModal from 'containers/OnboardingModal';
-import PalettePage from 'components/Palette';
-import { RouteNotFound } from 'components/RouteNotFound';
-import { RedirectWithQuery } from 'components/RedirectWithQuery';
-import { Theme } from 'config';
-import 'what-input';
-
+import { configMetaSelectors, configSelectors } from 'features/config';
+import { onboardingSelectors } from 'features/onboarding';
+import { AppState } from 'features/reducers';
+import { transactionMetaActions } from 'features/transaction';
+import React, { Component } from 'react';
+import { setConfig } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
+import { connect, Provider } from 'react-redux';
+import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-router-dom';
+import { Store } from 'redux';
+import { ThemeProvider } from 'styled-components';
 // v2
 import { gatherFeatureRoutes } from 'v2';
+import { NewAppReleaseModal } from 'v2/components';
+import Dashboard from 'v2/features/Dashboard';
 import DevTools from 'v2/features/DevTools';
+import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import { NotificationsProvider, SettingsProvider } from 'v2/providers';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
-import { NetworksProvider } from 'v2/providers/NetworksProvider';
-import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
-import Dashboard from 'v2/features/Dashboard';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
-import { NotificationsProvider, SettingsProvider } from 'v2/providers';
-import { NewAppReleaseModal } from 'v2/components';
+import { NetworksProvider } from 'v2/providers/NetworksProvider';
+import { AnalyticsService } from 'v2/services';
+import GAU_THEME from 'v2/theme';
+import 'what-input';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -120,7 +118,6 @@ class RootClass extends Component<Props, State> {
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
-
     return (
       <ThemeProvider theme={GAU_THEME}>
         <React.Fragment>

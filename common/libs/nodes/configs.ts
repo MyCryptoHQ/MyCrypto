@@ -1,5 +1,5 @@
-import { RawNodeConfig } from 'types/node';
 import { StaticNetworkIds } from 'types/network';
+import { RawNodeConfig } from 'types/node';
 
 export const makeNodeName = (network: string, name: string) => {
   return `${network.toLowerCase()}_${name}`;
@@ -120,6 +120,15 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       type: 'rpc',
       service: 'uncan.onical.org',
       url: 'https://c.onical.org'
+    }
+  ],
+
+  ASK: [
+    {
+      name: makeNodeName('ASK', 'permission'),
+      type: 'rpc',
+      service: 'permission.io',
+      url: 'https://blockchain-api-mainnet.permission.io/rpc'
     }
   ],
 
@@ -345,6 +354,14 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
     }
   ],
 
+  ETI: [
+    {
+      name: makeNodeName('ETI', 'eti'),
+      type: 'rpc',
+      service: 'api.einc.io',
+      url: 'https://api.einc.io/jsonrpc/mainnet/'
+    }
+  ],
   TOMO: [
     {
       name: makeNodeName('TOMO', 'tomochain'),
