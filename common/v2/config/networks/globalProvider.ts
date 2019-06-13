@@ -51,7 +51,6 @@ export const createProviderHandler = (network: Network): FallbackProvider => {
       newProviderPattern[network.name].push(node.url);
     }
   });
-  console.log(newProviderPattern);
   return createFallBackProvidersFrom(newProviderPattern)[network.name as NetworkKey];
 };
 
