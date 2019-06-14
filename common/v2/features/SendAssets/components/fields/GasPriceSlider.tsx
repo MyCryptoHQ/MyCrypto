@@ -22,7 +22,6 @@ type Props = OwnProps;
 interface State {
   hasSetRecommendedGasPrice: boolean;
   realGasPrice: number;
-  gasEstimates: GasEstimates;
 }
 
 interface GasTooltips {
@@ -32,8 +31,7 @@ interface GasTooltips {
 export default class SimpleGas extends Component<Props> {
   public state: State = {
     hasSetRecommendedGasPrice: false,
-    realGasPrice: 0,
-    gasEstimates: this.props.gasEstimates
+    realGasPrice: 0
   };
 
   public render() {
@@ -84,8 +82,7 @@ export default class SimpleGas extends Component<Props> {
   }
 
   private makeGasNotches = (): Marks => {
-    const { gasEstimates } = this.state;
-
+    const { gasEstimates } = this.props;
     return gasEstimates
       ? {
           [gasEstimates.safeLow]: '',
@@ -97,7 +94,7 @@ export default class SimpleGas extends Component<Props> {
   };
 
   private formatTooltip = (gas: number) => {
-    const { gasEstimates } = this.state;
+    const { gasEstimates } = this.props;
     if (!(gasEstimates && !gasEstimates.isDefault)) {
       return '';
     }
@@ -114,6 +111,7 @@ export default class SimpleGas extends Component<Props> {
       $gas: gas.toString(),
       $recommended: recommended
     });
+
     return x;
   };
 }

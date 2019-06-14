@@ -19,6 +19,7 @@ type StaticNetworkIds =
   | 'ELLA'
   | 'EOSC'
   | 'ESN'
+  | 'ETI'
   | 'ETHO'
   | 'ETSC'
   | 'EXP'
@@ -36,7 +37,8 @@ type StaticNetworkIds =
   | 'THUNDERCORE'
   | 'TOMO'
   | 'UBQ'
-  | 'WEB';
+  | 'WEB'
+  | 'ASK';
 
 export interface BlockExplorerConfig {
   name: string;
