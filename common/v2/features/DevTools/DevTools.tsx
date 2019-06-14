@@ -45,7 +45,7 @@ const DevTools = () => {
                     }
                   ],
                   wallet: SecureWalletName.WEB3,
-                  balance: 0,
+                  balance: '0',
                   timestamp: Date.now(),
                   transactions: [],
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
