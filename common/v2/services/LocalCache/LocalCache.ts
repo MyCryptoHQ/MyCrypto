@@ -328,7 +328,8 @@ export const initTestAccounts = () => {
       type: 'erc20',
       ticker: 'WETH',
       contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-      decimal: 18
+      decimal: 18,
+      value: 250
     },
     'f7e30bbe-08e2-41ce-9231-5236e6aab702': {
       uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702',
@@ -336,7 +337,8 @@ export const initTestAccounts = () => {
       networkId: 'Ethereum',
       type: 'base',
       ticker: 'ETH',
-      decimal: 18
+      decimal: 18,
+      value: 249.44
     },
     '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
       uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
@@ -344,7 +346,8 @@ export const initTestAccounts = () => {
       networkId: 'Goerli',
       type: 'base',
       ticker: 'GoerliETH',
-      decimal: 18
+      decimal: 18,
+      value: 0
     }
   };
 

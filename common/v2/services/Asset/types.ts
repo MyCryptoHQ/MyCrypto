@@ -6,6 +6,7 @@ export interface Asset {
   type: assetMethod;
   contractAddress?: string;
   decimal?: number;
+  value?: number;
 }
 
 export type assetMethod = 'base' | 'erc20' | 'fiat';
