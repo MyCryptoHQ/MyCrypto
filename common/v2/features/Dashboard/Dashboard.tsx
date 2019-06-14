@@ -13,6 +13,7 @@ import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 import { AccountContext, AddressBookContext } from 'v2/providers';
+import { BannerAd } from './BannerAd';
 
 export default function Dashboard() {
   return (
@@ -35,6 +36,7 @@ export default function Dashboard() {
         <div className="Dashboard-mobile-section">
           <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
         </div>
+        <BannerAd />
         <AccountContext.Consumer>
           {({ accounts }) => (
             <AddressBookContext.Consumer>
@@ -76,6 +78,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        <BannerAd />
         <AccountContext.Consumer>
           {({ accounts }) => (
             <AddressBookContext.Consumer>
