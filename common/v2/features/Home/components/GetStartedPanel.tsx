@@ -247,7 +247,7 @@ export default function GetStartedPanel() {
             name={translateRaw('HOME_GET_STARTED_NEED_WALLET_TITLE')}
             description={translate('HOME_GET_STARTED_NEED_WALLET_DESCRIPTION')}
             icon={newWalletIcon}
-            link={'/download-desktop-app'}
+            link={'/create-wallet'}
             eventAction="I need a wallet"
           />
           <ActionCard
