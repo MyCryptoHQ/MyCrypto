@@ -39,14 +39,15 @@ export default function Drawer({ style, title, content: Content, actions, onClos
         <div className="Drawer-content-inside">
           {typeof Content === 'function' ? <Content onClose={onClose} /> : Content}
         </div>
-        <div className="Drawer-content-actions">
-          {actions &&
-            actions.map(action => (
+        {actions && (
+          <div className="Drawer-content-actions">
+            {actions.map(action => (
               <div className="Drawer-content-actions-action">
                 <DrawerAction key={action.title} {...action} />
               </div>
             ))}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

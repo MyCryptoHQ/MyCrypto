@@ -11,9 +11,8 @@ import { configMetaActions, configMetaSelectors } from 'features/config';
 const LanguagesList = styled.ul`
   flex-grow: 1;
   margin: 0;
-  padding: 0;
+  padding: 0 0 21px 0;
   list-style-type: none;
-  overflow: auto;
 `;
 
 interface LanguageProps {
