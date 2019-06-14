@@ -20,16 +20,15 @@ export const getLabelByAccount = (account: Account): AddressBook | undefined => 
   );
 };
 
-export const getDefaultLabel = (networkName: string): string => {
+export const findNextUnusedDefaultLabel = (networkName: string): string => {
   const addressLabels: AddressBook[] = getAllAddressLabels();
-  let iterator = 1;
-  let defaultLabel: string | undefined;
-  do {
-    const isFound: AddressBook | undefined = addressLabels.find(
-      label => label.label === `New ${networkName} Account ${iterator}`
-    );
-    defaultLabel = !isFound ? `New ${networkName} Account ${iterator}` : undefined;
-    iterator += 1;
-  } while (!defaultLabel);
+  let defaultLabel: string = '';
+  for (let i = 1; i <= addressLabels.length + 1; i++) {
+    const draftLabel = `${networkName} Account ${i}`;
+    if (addressLabels[i].label !== draftLabel) {
+      defaultLabel = draftLabel;
+      break;
+    }
+  }
   return defaultLabel;
 };

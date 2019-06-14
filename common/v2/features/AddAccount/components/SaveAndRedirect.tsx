@@ -5,7 +5,7 @@ import {
   getNetworkByName,
   getNewDefaultAssetTemplateByNetwork,
   generateUUID,
-  getDefaultLabel
+  findNextUnusedDefaultLabel
 } from 'v2/libs';
 import { AccountContext, NotificationsContext, SettingsContext } from 'v2/providers';
 import { Network } from 'v2/services/Network/types';
@@ -26,8 +26,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
     const network: Network | undefined = getNetworkByName(payload.formData.network);
     if (
       !network ||
-      getAccountByAddressAndNetwork(payload.formData.account, payload.formData.network) !==
-        undefined
+      !!getAccountByAddressAndNetwork(payload.formData.account, payload.formData.network)
     ) {
       displayNotification(NotificationTemplates.walletNotAdded, {
         address: payload.formData.account
@@ -47,7 +46,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         timestamp: 0
       };
       const newLabel: AddressBook = {
-        label: getDefaultLabel(account.network),
+        label: findNextUnusedDefaultLabel(account.network),
         address: account.address,
         notes: '',
         network: account.network

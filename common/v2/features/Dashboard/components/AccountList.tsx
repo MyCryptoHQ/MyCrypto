@@ -59,20 +59,27 @@ function buildAccountTable(accounts: ExtendedAccount[], deleteAccount: DeleteAcc
       translateRaw('ACCOUNT_LIST_VALUE'),
       translateRaw('ACCOUNT_LIST_DELETE')
     ],
-    body: accounts.map(account => {
-      const detectedLabel: AddressBook | undefined = getLabelByAccount(account);
-      const label = !detectedLabel ? 'Unknown Account' : detectedLabel.label;
+    body: accounts.map((account, index) => {
+      const addressCard: AddressBook | undefined = getLabelByAccount(account);
+      const label = addressCard ? addressCard.label : 'Unknown Account';
+      let bodyItemCount = 0;
       return [
-        // tslint:disable-next-line: jsx-key
-        <Icon icon="star" />,
-        // tslint:disable-next-line: jsx-key
-        <Address title={`${label}`} address={account.address} truncate={truncate} />,
-        // tslint:disable-next-line: jsx-key
-        <Network color="#a682ff">{account.network}</Network>,
-        // tslint:disable-next-line: jsx-key
-        <Typography>{account.balance}</Typography>,
-        // tslint:disable-next-line: jsx-key
-        <DeleteButton onClick={handleAccountDelete(deleteAccount, account.uuid)} icon="exit" />
+        <Icon key={index + bodyItemCount++} icon="star" />,
+        <Address
+          key={index + bodyItemCount++}
+          title={`${label}`}
+          address={account.address}
+          truncate={truncate}
+        />,
+        <Network key={index + bodyItemCount++} color="#a682ff">
+          {account.network}
+        </Network>,
+        <Typography key={index + bodyItemCount++}>{account.balance}</Typography>,
+        <DeleteButton
+          key={index + bodyItemCount++}
+          onClick={handleAccountDelete(deleteAccount, account.uuid)}
+          icon="exit"
+        />
       ];
     }),
     config: {

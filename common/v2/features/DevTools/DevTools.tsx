@@ -54,7 +54,7 @@ const DevTools = () => {
               >
                 {({ values, handleChange, handleBlur, isSubmitting }) => {
                   const detectedLabel: AddressBook | undefined = getLabelByAccount(values);
-                  const label = !detectedLabel ? 'Unknown Account' : detectedLabel.label;
+                  const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
                   return (
                     <Form>
                       <fieldset>

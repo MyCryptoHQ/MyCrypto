@@ -23,13 +23,11 @@ export interface AccountListProps {
 
 const ToolsAccountList: React.FC<AccountListProps> = props => {
   const { accounts, deleteAccount } = props;
-  let key = 0;
-  const list = accounts.map((account: ExtendedAccount) => {
-    key += 1;
+  const list = accounts.map((account: ExtendedAccount, index: number) => {
     const detectedLabel: AddressBook | undefined = getLabelByAccount(account);
-    const label = !detectedLabel ? 'Unknown Account' : detectedLabel.label;
+    const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
     return (
-      <AccountContainer key={key}>
+      <AccountContainer key={index}>
         <Address title={label} address={account.address} truncate={truncate} />
         <DeleteButton onClick={() => deleteAccount(account.uuid)} icon="exit" />
       </AccountContainer>
