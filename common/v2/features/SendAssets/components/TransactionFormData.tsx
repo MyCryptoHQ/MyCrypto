@@ -104,15 +104,6 @@ export default function SendAssetsForm({
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
-                  <br />
-                  {async () => {
-                    if (values.network) {
-                      const provider = new ProviderHandler(values.network);
-                      
-
-                    }
-
-                  }}
                 </pre>
                 </React.Fragment>*/}
               <br />
@@ -143,7 +134,6 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-
                           form.setFieldValue('network', getNetworkByName(option.network));
                           estimateGasHandler();
                         }

@@ -124,13 +124,6 @@ export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undef
   }
 };
 
-/*export const getAssetFromAccount = (account: ExtendedAccount, asset: Asset): Asset | undefined => {
-  const network: Network | undefined = getNetworkByName(account.network);
-  if (network) {
-    return getAssetByUUID(network.baseAsset);
-  }
-};*/
-
 export const getAllAccounts = (): Account[] => {
   return Object.values(getCache().accounts);
 };
