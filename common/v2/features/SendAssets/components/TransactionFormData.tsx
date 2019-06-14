@@ -80,6 +80,7 @@ export default function SendAssetsForm({
           onNext();
         }}
         render={({ errors, setFieldValue, values, handleChange }) => {
+          console.log(values);
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
           return (
