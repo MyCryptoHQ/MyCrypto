@@ -20,15 +20,19 @@ export const getLabelByAccount = (account: Account): AddressBook | undefined => 
   );
 };
 
+/* @desc
+/ The idea is that when a user adds their account, 
+/ it’s created with this default label 
+/ that they can change later which differentiates between accounts. 
+/ `New Ethereum Account 1` vs `New Ethereum Account 2` vs `New Ethereum Classic Account 1`
+*/
 export const findNextUnusedDefaultLabel = (networkName: string): string => {
   const addressLabels: AddressBook[] = getAllAddressLabels();
-  let defaultLabel: string = '';
-  for (let i = 1; i <= addressLabels.length + 1; i++) {
-    const draftLabel = `${networkName} Account ${i}`;
-    if (addressLabels[i].label !== draftLabel) {
-      defaultLabel = draftLabel;
-      break;
-    }
-  }
-  return defaultLabel;
+  let index = 1;
+  let isFound: AddressBook | undefined;
+  do {
+    isFound = addressLabels.find(label => label.label === `${networkName} Account ${index}`);
+    index += 1;
+  } while (!isFound);
+  return `${networkName} Account ${index}`;
 };
