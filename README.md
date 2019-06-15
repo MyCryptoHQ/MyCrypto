@@ -6,6 +6,10 @@
 * **Just looking to download?** Grab our [latest release](https://github.com/MyCryptoHQ/MyCrypto/releases).
 * **Looking for the old site?** Check out [https://legacy.mycrypto.com](https://legacy.mycrypto.com) or the source at [MyCryptoHQ/mycrypto.com](https://github.com/MyCryptoHQ/mycrypto.com)
 
+## Verifying our releases
+You can find how to do this on our [support document](https://support.mycrypto.com/staying-safe/verifying-authenticity-of-desktop-app)
+
+
 ## Development / Build Requirements
 
 * Node 8.16.0\*
@@ -30,8 +34,12 @@ Then, you can run various commands depending on what you want to do:
 
 ```bash
 # run app in dev mode in browser, rebuild on file changes
-yarn dev
+yarn start
 ```
+A development server will be available on https://localhost:3000
+If you're using Chrome, you will get a `net::ERR_CERT_AUTHORITY_INVALID` warning.
+To disable it you can your settings in chrome: chrome://flags/#allow-insecure-localhost
+
 
 ```bash
 # run app in dev mode in electron, rebuild on file changes
