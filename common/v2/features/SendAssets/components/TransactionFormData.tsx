@@ -5,13 +5,13 @@ import { Button } from '@mycrypto/ui';
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate from 'translations';
-import { fetchGasPriceEstimates } from 'v2';
+import { fetchGasPriceEstimates, getResolvedENSAddress } from 'v2';
 import { AccountContext } from 'v2/providers';
 import { ExtendedAccount as IExtendedAccount, AssetBalanceObject, Asset } from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { IAsset } from 'v2/types';
 import { InlineErrorMsg } from 'v2/components';
-
+import { getGasEstimate } from 'v2/features/Gas';
 import { ISendState, ITxFields } from '../types';
 import {
   AccountDropdown,
@@ -35,7 +35,7 @@ import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
-import ProviderHandler from 'v2/config/networks/providerHandler';
+import { isValidENSName } from 'v2/libs/validators';
 
 interface Props {
   stateValues: ISendState;
@@ -85,16 +85,24 @@ export default function SendAssetsForm({
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
 
-          const estimateGasHandler = () => {
-            if (values && values.network) {
-              const provider = new ProviderHandler(values.network);
-              const processedTx = processFormDataToTx(values);
-              if (processedTx) {
-                provider
-                  .estimateGas(processedTx)
-                  .then(data => setFieldValue('gasLimitEstimated', data));
-              }
+          const handleGasEstimate = async () => {
+            if (!values || !values.network) {
+              return;
             }
+            const finalTx = processFormDataToTx(values);
+            if (!finalTx) {
+              return;
+            }
+            const gas = await getGasEstimate(values.network, finalTx);
+            setFieldValue('gasLimitEstimated', gas);
+          };
+
+          const handleENSResolve = async (name: string) => {
+            if (!values || !values.network) {
+              return;
+            }
+            const resolvedAddress = await getResolvedENSAddress(values.network, name);
+            setFieldValue('resolvedAddress', resolvedAddress);
           };
 
           return (
@@ -135,7 +143,7 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
                           form.setFieldValue('network', getNetworkByName(option.network));
-                          estimateGasHandler();
+                          handleGasEstimate();
                         }
                       }}
                     />
@@ -159,7 +167,7 @@ export default function SendAssetsForm({
                       onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
                         updateState({ transactionFields: { account: option } });
-                        estimateGasHandler();
+                        handleGasEstimate();
                       }}
                     />
                   )}
@@ -170,10 +178,13 @@ export default function SendAssetsForm({
                 <div className="input-group-header">{translate('SEND_ADDR')}</div>
                 <RecipientAddressField
                   handleChange={(e: FormEvent<HTMLInputElement>) => {
-                    estimateGasHandler();
+                    handleGasEstimate();
                     updateState({
                       transactionFields: { recipientAddress: e.currentTarget.value }
                     });
+                    if (isValidENSName(e.currentTarget.value)) {
+                      handleENSResolve(e.currentTarget.value);
+                    }
                     handleChange(e);
                   }}
                 />
@@ -181,7 +192,7 @@ export default function SendAssetsForm({
               {/* Amount */}
               <AmountField
                 handleChange={(e: FormEvent<HTMLInputElement>) => {
-                  estimateGasHandler();
+                  handleGasEstimate();
                   updateState({ transactionFields: { amount: e.currentTarget.value } });
                   handleChange(e);
                 }}
@@ -209,7 +220,7 @@ export default function SendAssetsForm({
                   <GasPriceSlider
                     transactionFieldValues={values}
                     handleChange={(e: string) => {
-                      estimateGasHandler();
+                      handleGasEstimate();
                       updateState({ transactionFields: { gasPriceSlider: e } });
                       handleChange(e);
                     }}

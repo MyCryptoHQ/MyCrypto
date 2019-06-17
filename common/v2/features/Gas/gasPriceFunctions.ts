@@ -2,6 +2,8 @@ import { getNetworkByName } from 'v2/libs/networks/networks';
 import { Network } from 'v2/services/Network/types';
 import { gasPriceDefaults } from 'config/data';
 import { GasEstimates, fetchGasEstimates } from 'v2/api/gas';
+import { IHexStrTransaction } from 'v2/libs/transaction';
+import ProviderHandler from 'v2/config/networks/providerHandler';
 
 export function getDefaultEstimates(network: Network | undefined) {
   // Must yield time for testability
@@ -55,3 +57,8 @@ export async function fetchGasPriceEstimates(networkId: string): Promise<GasEsti
     return defaultEstimates;
   }
 }
+
+export const getGasEstimate = async (network: Network, tx: IHexStrTransaction) => {
+  const provider = new ProviderHandler(network);
+  return await provider.estimateGas(tx);
+};
