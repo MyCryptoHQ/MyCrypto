@@ -1,9 +1,10 @@
-import React from 'React';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ads } from './constants';
 import { BREAK_POINTS } from 'v2/features/constants';
+import { ANALYTICS_CATEGORIES, AnalyticsService } from 'v2/services';
 
 const { SCREEN_MD, SCREEN_SM } = BREAK_POINTS;
 
@@ -35,24 +36,26 @@ const BannerImageMobile = styled.img`
   }
 `;
 
+const onAdClick = (ad: string) => {
+  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.AD, `${ad} ad clicked`);
+};
+
 export default function BannerAd() {
   const randomIndex = Math.floor(Math.random() * ads.length);
-  const desktopImage = ads[randomIndex].srcDesktop;
-  const mobileImage = ads[randomIndex].srcMobile;
-  const url = ads[randomIndex].url;
-  const externalLink = url.startsWith('http');
+  const ad = ads[randomIndex];
+  const externalLink = ad.url.startsWith('http');
 
   return (
-    <AdWrapper>
+    <AdWrapper onClick={() => onAdClick(ad.name)}>
       {externalLink ? (
-        <a href={url} target="_blank" rel="noreferrer">
-          <BannerImageDesktop src={desktopImage} />
-          <BannerImageMobile src={mobileImage} />
+        <a href={ad.url} target="_blank" rel="noreferrer">
+          <BannerImageDesktop src={ad.srcDesktop} />
+          <BannerImageMobile src={ad.srcMobile} />
         </a>
       ) : (
-        <Link to={url}>
-          <BannerImageDesktop src={desktopImage} />
-          <BannerImageMobile src={mobileImage} />
+        <Link to={ad.url}>
+          <BannerImageDesktop src={ad.srcDesktop} />
+          <BannerImageMobile src={ad.srcMobile} />
         </Link>
       )}
     </AdWrapper>
