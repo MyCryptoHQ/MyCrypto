@@ -130,7 +130,8 @@ export class LedgerWallet extends HardwareWallet {
 
 async function makeApp() {
   let transport: Transport<any>;
-  if (await TransportUSB.isSupported()) {
+  // TODO: Remove check for Windows once Windows issues are resolved
+  if (!navigator.platform.toLowerCase().includes('win') && (await TransportUSB.isSupported())) {
     // Use WebUSB protocol instead of U2F if it's supported
     transport = await TransportUSB.create();
   } else {

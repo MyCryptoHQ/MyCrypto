@@ -6,15 +6,12 @@
     @media (min-width: 1080px) {
       flex-direction: row;
       align-items: center;
-      padding-left: 150px;
+      justify-content: flex-end;
     }
     &-select {
       width: 100%;
+      max-width: 480px;
       margin-bottom: 15px;
-
-      &:first-of-type {
-        margin-right: 15px;
-      }
     }
   }
   &-panel {

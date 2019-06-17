@@ -47,7 +47,7 @@
     "NAV_ADDRESS_BOOK": "Address Book",
     "NAV_SUPPORT_US": "Support Us",
     "X_ACCESS": "Access ",
-    "X_ASSET": "Select Asset",
+    "X_ASSET": "Asset to Send",
     "X_ADDRESS": "Your Address ",
     "X_CIPHER": "Cipher Browser",
     "X_KEYSTORE": "Keystore File (UTC / JSON · Recommended · Encrypted) ",
@@ -944,6 +944,7 @@
     "CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_2": "Create wallet with keystore file.",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
-    "SELECT_NETWORK_ERROR": "Please select network."
+    "SELECT_NETWORK_ERROR": "Please select network.",
+    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset"
   }
 }
