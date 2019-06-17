@@ -9,12 +9,40 @@
     > .SimpleGas-slider {
       flex-grow: 1;
       margin-right: $space;
+      margin-left: $space;
 
-      > .rc-slider > .rc-slider-step > .rc-slider-dot {
-        height: 20px;
-        width: 12px;
-        bottom: -7px
+      > .rc-slider {
+
+        > .rc-slider-step > .rc-slider-dot  {
+          height: 12px;
+          width: 12px;
+          bottom: -3px;
+          background-color: #fff;
+          border: solid 1px rgba(102, 170, 229, 0.3);
+          box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5);
+        }
+
+        > .rc-slider-rail {
+          background-color: $bright-sky-blue;
+          opacity: 0.22
+        }
+
+        > .rc-slider-track {
+          background-color: $bright-sky-blue;
+          visibility: visible !important;
+          opacity: 1
+        }
+
+        > .rc-slider-handle {
+          width: 20px;
+          height: 20px;
+          background-color: #fff;
+          box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5);
+          border: solid 1px $bright-sky-blue;
+        }
+
       }
+
     }
 
     > .FeeSummary {

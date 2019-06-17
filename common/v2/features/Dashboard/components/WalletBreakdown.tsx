@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ComboBox, Heading, Panel, Typography } from '@mycrypto/ui';
+import { Heading, Panel, Typography } from '@mycrypto/ui';
 
 import { AccountContext, SettingsContext } from 'v2/providers';
 import { ExtendedAccount } from 'v2/services/Account/types';
@@ -78,11 +78,6 @@ function WalletBreakdown() {
   return (
     <div className="WalletBreakdown">
       <div className="WalletBreakdown-selectWrapper">
-        <ComboBox
-          className="WalletBreakdown-selectWrapper-select"
-          defaultValue="US Dollars"
-          items={new Set(['US Dollars'])}
-        />
         <div className="WalletBreakdown-selectWrapper-select">
           <AccountDropdown
             accounts={accounts}
