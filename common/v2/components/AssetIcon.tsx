@@ -13,7 +13,7 @@ function buildUrl(symbol: TSymbol) {
 
 function getIconUrl(symbol: TSymbol) {
   const curr = manifest.find((c: IAsset) => c.symbol === symbol);
-  return curr ? buildUrl(symbol) : buildUrl('generic');
+  return curr ? buildUrl(symbol) : buildUrl('generic' as TSymbol);
 }
 
 const SImg = styled('img')`
