@@ -1,0 +1,67 @@
+import React from 'react';
+import { Field, FieldProps } from 'formik';
+import { Input } from '@mycrypto/ui';
+
+import { isValidETHAddress } from 'libs/validators';
+import { InlineErrorMsg } from 'v2/components';
+import { isValidENSName } from 'v2/libs/validators';
+
+/*
+  Eth address field to be used within a Formik Form
+  - the 'fieldname' must exist wihtin the Formik default fields
+  - validation of the field is handled here.
+*/
+
+interface Props {
+  error?: string;
+  fieldName: string;
+  touched?: boolean;
+  placeholder?: string;
+  handleENSResolve?(name: string): Promise<void>;
+}
+
+function ETHAddressField({
+  fieldName,
+  error,
+  touched,
+  placeholder = 'Eth Address',
+  handleENSResolve
+}: Props) {
+  const validateEthAddress = (value: any) => {
+    let errorMsg;
+    if (!value) {
+      errorMsg = 'Required';
+    } else if (!isValidETHAddress(value)) {
+      errorMsg = 'Enter a valid address';
+    }
+    return errorMsg;
+  };
+
+  // By destructuring 'field' in the rendered component we are mapping
+  // the Inputs 'value' and 'onChange' props to Formiks handlers.
+  return (
+    <>
+      <Field
+        name={fieldName}
+        validate={validateEthAddress}
+        render={({ field, form }: FieldProps) => (
+          <Input
+            {...field}
+            placeholder={placeholder}
+            onChange={e => {
+              form.setFieldValue(field.name, field.value);
+              if (isValidENSName(e.currentTarget.value) && handleENSResolve) {
+                handleENSResolve(e.currentTarget.value);
+              }
+            }}
+          />
+        )}
+      />
+      {error && touched ? (
+        <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
+      ) : null}
+    </>
+  );
+}
+
+export default ETHAddressField;

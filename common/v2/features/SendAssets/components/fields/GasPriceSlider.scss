@@ -1,21 +1,24 @@
 @import 'common/sass/variables';
 
-.SimpleGas {
+.GasPriceSlider {
+  $handleSize: 20px;
+  $stepSize: 12px;
+
   margin-top: 0;
   margin-bottom: 0;
 
   &-input-group {
     display: flex;
-    > .SimpleGas-slider {
-      flex-grow: 1;
-      margin-right: $space;
-      margin-left: $space;
+    justify-content: center;
+    align-items: center;
+    > .GasPriceSlider-slider {
+      width: calc(100% - #{$stepSize}); // steps overflow, so limit the size of the container
+      margin-left: calc(-#{$stepSize / 3}); // the slider is not balanced so arbitrary corrections
 
       > .rc-slider {
-
-        > .rc-slider-step > .rc-slider-dot  {
-          height: 12px;
-          width: 12px;
+        > .rc-slider-step > .rc-slider-dot {
+          height: $stepSize;
+          width: $stepSize;
           bottom: -3px;
           background-color: #fff;
           border: solid 1px rgba(102, 170, 229, 0.3);
@@ -24,25 +27,23 @@
 
         > .rc-slider-rail {
           background-color: $bright-sky-blue;
-          opacity: 0.22
+          opacity: 0.22;
         }
 
         > .rc-slider-track {
           background-color: $bright-sky-blue;
           visibility: visible !important;
-          opacity: 1
+          opacity: 1;
         }
 
         > .rc-slider-handle {
-          width: 20px;
-          height: 20px;
+          width: $handleSize;
+          height: $handleSize;
           background-color: #fff;
           box-shadow: 0 1px 1px 0 rgba(232, 234, 237, 0.5);
           border: solid 1px $bright-sky-blue;
         }
-
       }
-
     }
 
     > .FeeSummary {
@@ -52,11 +53,6 @@
 
     @media screen and (max-width: $screen-md) {
       flex-wrap: wrap;
-
-      > .SimpleGas-slider {
-        width: 100%;
-        margin-right: 0;
-      }
 
       > .FeeSummary {
         width: 100%;
@@ -75,17 +71,19 @@
 
       > span {
         flex: 1;
-        padding: 0 $space-xs;
+        padding: 0;
         text-align: center;
         color: shade-dark(0.4);
         font-size: $font-size-xs;
 
         &:first-child {
           text-align: left;
+          margin-left: calc(-#{$stepSize / 6});
         }
 
         &:last-child {
           text-align: right;
+          margin-right: calc(-#{$stepSize / 2});
         }
       }
     }
