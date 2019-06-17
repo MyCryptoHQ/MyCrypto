@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import { BaseProvider } from 'ethers/providers';
-import { PROVIDER_OPTIONS } from './providerOptions';
-import { Network } from 'v2/services/Network/types';
 import { isUrl } from 'v2/libs/helpers';
+import { Network } from 'v2/services/Network/types';
+import { PROVIDER_OPTIONS } from './providerOptions';
 
 export type NetworkKey = keyof typeof PROVIDER_OPTIONS;
 
@@ -26,13 +26,11 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
       if (!tempProviders[networkKey]) {
         tempProviders[networkKey] = [];
       }
-      if (url) {
-        if (url.includes('etherscan')) {
-          const network = url.split('+')[1];
-          tempProviders[networkKey].push(new ethers.providers.EtherscanProvider(network));
-        } else {
-          tempProviders[networkKey].push(new ethers.providers.JsonRpcProvider(url));
-        }
+      if (url && url.includes('etherscan')) {
+        const network = url.split('+')[1];
+        tempProviders[networkKey].push(new ethers.providers.EtherscanProvider(network));
+      } else {
+        tempProviders[networkKey].push(new ethers.providers.JsonRpcProvider(url));
       }
     }
   }
