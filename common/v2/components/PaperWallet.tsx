@@ -1,12 +1,11 @@
 import React from 'react';
 import html2canvas from 'html2canvas';
-import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import jsPDF from 'jspdf';
 import styled from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
 import { QRCode } from 'components/ui';
-import { knowledgeBaseURL } from 'v2/config';
+import { KNOWLEDGE_BASE_URL } from 'v2/config';
 
 import walletIcon from 'common/assets/images/icn-hardware-wallet.svg';
 import myCryptoIcon from 'common/assets/images/logo-mycrypto-transparent.png';
@@ -15,6 +14,7 @@ interface PaperWalletWrapperProps {
   isHidden?: boolean;
 }
 
+// size of paper wallet is 2 times of design size
 const paperWalletWidth: number = 1458;
 const paperWalletHeight: number = 612;
 
@@ -218,8 +218,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
   private container: HTMLElement | null;
 
   public render() {
-    const { isHidden } = this.props;
-    const address = toChecksumAddress(addHexPrefix(this.props.address));
+    const { isHidden, address } = this.props;
 
     return (
       <PaperWalletWrapper isHidden={isHidden} ref={(el: any) => (this.container = el)}>
@@ -254,7 +253,7 @@ export default class PaperWallet extends React.Component<Props, {}> {
               {[...Array(7)].map((x: any, index: any) => <HorizontalLine key={`${index}${x}`} />)}
             </InnerPartWrapper>
           </Part>
-          <Part>{this.getQRAddressWrapper(true, address)}</Part>
+          <Part>{this.getQRAddressWrapper(true)}</Part>
         </PartWrapper>
         <PartWrapper>
           <Part hasRightBorder={true} hasTopBorder={true}>
@@ -265,9 +264,9 @@ export default class PaperWallet extends React.Component<Props, {}> {
           </Part>
           <Part hasRightBorder={true} hasTopBorder={true}>
             <WalletImage src={walletIcon} />
-            <Resources>For Resources and Help, Visit: {knowledgeBaseURL}</Resources>
+            <Resources>For Resources and Help, Visit: {KNOWLEDGE_BASE_URL}</Resources>
           </Part>
-          <Part hasTopBorder={true}>{this.getQRAddressWrapper(false, address)}</Part>
+          <Part hasTopBorder={true}>{this.getQRAddressWrapper(false)}</Part>
         </PartWrapper>
       </PaperWalletWrapper>
     );
@@ -282,13 +281,16 @@ export default class PaperWallet extends React.Component<Props, {}> {
   };
 
   public toPDF = async () => {
+    const { address } = this.props;
     const png = await this.toPNG(3);
     const pdf = new jsPDF('l', 'px');
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    const printedWidth = paperWalletWidth / 2.6;
-    const printedHeight = paperWalletHeight / 2.6;
+    // ratio setting size of paper wallet in PDF
+    const pdfImageSizeRation = 2.6;
+    const printedWidth = paperWalletWidth / pdfImageSizeRation;
+    const printedHeight = paperWalletHeight / pdfImageSizeRation;
 
     pdf.addImage(
       png,
@@ -301,11 +303,13 @@ export default class PaperWallet extends React.Component<Props, {}> {
       'FAST'
     );
 
-    return pdf.output('datauristring');
+    pdf.save(`paper-wallet-${address.substr(0, 8)}`);
+
+    //return pdf.output('datauristring');
   };
 
-  private getQRAddressWrapper = (isPrivate: boolean, address: string) => {
-    const { mnemonic, privateKey, path } = this.props;
+  private getQRAddressWrapper = (isPrivate: boolean) => {
+    const { mnemonic, privateKey, path, address } = this.props;
     let dataText: string = '';
     let data: string = '';
     if (isPrivate) {

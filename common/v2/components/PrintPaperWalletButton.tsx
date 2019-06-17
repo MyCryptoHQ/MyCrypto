@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
 import PaperWallet from './PaperWallet';
 
@@ -15,16 +16,13 @@ const PrinterImage = styled.img`
   display: inline;
 `;
 
-const DownloadLink = styled.a`
-  margin-bottom: 16px;
-`;
-
 const StyledButton = styled(Button)`
   font-size: 18px;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 16px;
 
   &:focus,
   &:hover {
@@ -54,42 +52,35 @@ export default class PrintPaperWalletButton extends Component<Props, State> {
 
   private paperWallet: PaperWallet | null;
 
-  public componentDidMount() {
-    setTimeout(() => {
-      if (!this.paperWallet) {
-        return this.componentDidMount();
-      }
-      this.paperWallet.toPDF().then(pdf => this.setState({ paperWalletPdf: pdf }));
-    }, 500);
-  }
-
   public render() {
-    const { paperWalletPdf } = this.state;
     const { address, path, printText, mnemonic, privateKey } = this.props;
+    const prefixedAddress = toChecksumAddress(addHexPrefix(address));
 
     return (
-      <DownloadLink href={paperWalletPdf} download={`paper-wallet-0x${address.substr(0, 6)}`}>
-        <StyledButton secondary={true} onClick={this.handlePrintClick} disabled={!paperWalletPdf}>
+      <>
+        <StyledButton secondary={true} onClick={this.handlePrintClick}>
           <PrinterImage src={printerIcon} />
           {printText}
         </StyledButton>
         <PaperWallet
-          address={address}
+          address={prefixedAddress}
           mnemonic={mnemonic}
           privateKey={privateKey}
           path={path}
           ref={c => (this.paperWallet = c)}
           isHidden={true}
         />
-      </DownloadLink>
+      </>
     );
   }
 
-  private handlePrintClick = () => {
+  private handlePrintClick = async () => {
     const { onPrintWalletClick } = this.props;
     if (!this.paperWallet) {
       return;
     }
+
+    await this.paperWallet.toPDF();
 
     if (onPrintWalletClick) {
       onPrintWalletClick();

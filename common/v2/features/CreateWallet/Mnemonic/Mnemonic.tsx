@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { generateMnemonic, mnemonicToSeed } from 'bip39';
 import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
-import _ from 'lodash';
+import { uniq } from 'lodash';
 
 import { Layout } from 'v2/features';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
@@ -103,7 +103,7 @@ class CreateMnemonic extends Component<Props> {
     let words = generateMnemonic().split(' ');
 
     // Prevent duplicate words in mnemonic phrase
-    while (_.uniq(words).length !== words.length) {
+    while (uniq(words).length !== words.length) {
       words = generateMnemonic().split(' ');
     }
 

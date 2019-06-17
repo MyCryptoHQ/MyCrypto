@@ -115,7 +115,7 @@ export default class GenerateKeystoreFilePanel extends Component<Props> {
         await generateWalletAndContinue(this.state.password1);
         this.setState({ generatingKeystore: false });
       } catch (e) {
-        console.log(e);
+        console.debug(e);
       }
     }
   };

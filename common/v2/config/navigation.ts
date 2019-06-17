@@ -1,4 +1,4 @@
-import { knowledgeBaseURL } from './data';
+import { KNOWLEDGE_BASE_URL } from './data';
 
 export interface NavigationLink {
   name: string;
@@ -47,7 +47,7 @@ export const navigationLinks: NavigationLink[] = [
   },
   {
     name: 'NAV_HELP',
-    to: knowledgeBaseURL,
+    to: KNOWLEDGE_BASE_URL,
     external: true
   }
 ].filter(link => !link.disabled);

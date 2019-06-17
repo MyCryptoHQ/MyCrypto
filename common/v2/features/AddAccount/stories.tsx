@@ -1,4 +1,4 @@
-import { knowledgeBaseURL as KB_URL } from 'config';
+import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
 import {
   DefaultWalletName,
   SecureWalletName,
