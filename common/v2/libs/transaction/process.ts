@@ -101,9 +101,10 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
           ? hexEncodeQuantity(toTokenBase(txFields.amount, asset.decimal))
           : '0x0',
         data: txFields.data ? txFields.data : '0x0',
-        gasLimit: txFields.isAdvancedTransaction
-          ? txFields.isGasLimitManual ? txFields.gasLimitField : txFields.gasLimitEstimated
-          : txFields.gasLimitEstimated,
+        gasLimit:
+          txFields.isAdvancedTransaction && txFields.isGasLimitManual
+            ? txFields.gasLimitField
+            : txFields.gasLimitEstimated,
         gasPrice: txFields.isAdvancedTransaction ? txFields.gasPriceField : txFields.gasPriceSlider,
         nonce: txFields.isAdvancedTransaction ? txFields.nonceField : txFields.nonceEstimated,
         chainId: network.chainId ? network.chainId : 1
@@ -123,9 +124,10 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
             txFields.amount !== '' ? toWei(txFields.amount, asset.decimal) : TokenValue(new BN(0))
           )
         ),
-        gasLimit: txFields.isAdvancedTransaction
-          ? txFields.isGasLimitManual ? txFields.gasLimitField : txFields.gasLimitEstimated
-          : txFields.gasLimitEstimated,
+        gasLimit:
+          txFields.isAdvancedTransaction && txFields.isGasLimitManual
+            ? txFields.gasLimitField
+            : txFields.gasLimitEstimated,
         gasPrice: txFields.isAdvancedTransaction ? txFields.gasPriceField : txFields.gasPriceSlider,
         nonce: txFields.isAdvancedTransaction ? txFields.nonceField : txFields.nonceEstimated,
         chainId: network.chainId ? network.chainId : 1

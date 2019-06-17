@@ -79,22 +79,18 @@ export const initNetworks = () => {
   const newStorage = getCacheRaw();
   const allNetworks: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
   allNetworks.map((en: any) => {
-    const newContracts: string[] = [];
-    const newAssets: string[] = [];
-    Object.keys(newStorage.contracts).forEach(entry => {
-      if (newStorage.contracts[entry].networkId === en) {
-        newContracts.push(entry);
-      }
-    });
-    Object.keys(newStorage.assets).forEach(entry => {
-      if (newStorage.assets[entry].networkId === en) {
-        newAssets.push(entry);
-      }
-    });
+    const newContracts: [string, types.Contract][] = Object.entries(newStorage.contracts).filter(
+      ([, contract]) => contract.networkId === en
+    );
+
+    const newAssets: [string, types.Asset][] = Object.entries(newStorage.assets).filter(
+      ([, asset]) => asset.networkId === en
+    );
+
     const baseAssetID = utils.generateUUID();
     const newLocalNetwork: types.Network = {
-      contracts: newContracts,
-      assets: [...newAssets],
+      contracts: Object.keys(newContracts),
+      assets: Object.keys(newAssets),
       nodes: [],
       baseAsset: baseAssetID,
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
@@ -301,7 +297,7 @@ export const initTestAccounts = () => {
         { uuid: '10e14757-78bb-4bb2-a17a-8333830f6698', balance: '0.01', timestamp: Date.now() }
       ],
       wallet: SecureWalletName.WEB3,
-      balance: 0.01,
+      balance: '0.01',
       dPath: `m/44'/60'/0'/0/0`,
       timestamp: 0,
       transactions: []
@@ -312,7 +308,7 @@ export const initTestAccounts = () => {
       network: 'Goerli',
       assets: [],
       wallet: SecureWalletName.WEB3,
-      balance: 0.01,
+      balance: '0.01',
       dPath: `m/44'/60'/0'/0/0`,
       timestamp: 0,
       transactions: []

@@ -1,12 +1,15 @@
+import { FallbackProvider, TransactionResponse, TransactionReceipt } from 'ethers/providers';
+import { formatEther } from 'ethers/utils/units';
+
 import { Network } from 'v2/services/Network/types';
 import { TxObj } from 'v2/libs/nodes/INode';
 import { IHexStrTransaction } from 'v2/libs/transaction/typings';
 import { Asset } from 'v2/services/Asset/types';
 import { createProviderHandler } from './globalProvider';
-import { FallbackProvider, TransactionResponse, TransactionReceipt } from 'ethers/providers';
+
 import RPCRequests from 'v2/libs/nodes/rpc/requests';
 import ERC20 from 'v2/libs/erc20';
-import { formatEther } from 'ethers/utils/units';
+
 import * as units from 'v2/libs/units';
 
 class ProviderHandler {
@@ -21,7 +24,7 @@ class ProviderHandler {
   }
 
   public call(txObj: TxObj): Promise<string> {
-    return this.client.call(this.requests.ethCall(txObj)).then(response => response);
+    return this.client.call(this.requests.ethCall(txObj));
   }
 
   /* Tested */
@@ -52,17 +55,17 @@ class ProviderHandler {
 
   /* Tested */
   public getTransactionCount(address: string): Promise<number> {
-    return this.client.getTransactionCount(address).then(data => data);
+    return this.client.getTransactionCount(address);
   }
 
   /* Tested */
   public getTransactionByHash(txhash: string): Promise<TransactionResponse> {
-    return this.client.getTransaction(txhash).then((data): TransactionResponse => data);
+    return this.client.getTransaction(txhash);
   }
 
   /* Tested */
   public getTransactionReceipt(txhash: string): Promise<TransactionReceipt> {
-    return this.client.getTransactionReceipt(txhash).then(data => data);
+    return this.client.getTransactionReceipt(txhash);
   }
 
   /* Tested */
@@ -71,7 +74,7 @@ class ProviderHandler {
   }
 
   public sendRawTx(signedTx: string): Promise<TransactionResponse> {
-    return this.client.sendTransaction(signedTx).then((data): TransactionResponse => data);
+    return this.client.sendTransaction(signedTx);
   }
 
   /* TODO: Needs handling for web3 providers. */
