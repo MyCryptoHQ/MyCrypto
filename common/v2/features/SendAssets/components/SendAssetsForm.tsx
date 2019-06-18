@@ -214,7 +214,7 @@ export default function SendAssetsForm({
                 />
                 <ENSStatus
                   ensAddress={values.recipientAddress}
-                  isLoading={false}
+                  isLoading={values.isResolvingNSName}
                   rawAddress={values.resolvedNSAddress}
                   chainId={values.network ? values.network.chainId : 1}
                 />
