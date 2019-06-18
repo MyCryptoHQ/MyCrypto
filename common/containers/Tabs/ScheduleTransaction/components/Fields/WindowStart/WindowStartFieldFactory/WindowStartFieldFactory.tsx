@@ -36,9 +36,12 @@ class WindowStartFieldFactoryClass extends React.Component<Props> {
   };
 }
 
-const WindowStartFieldFactory = connect(null, {
-  setCurrentWindowStart: scheduleActions.setCurrentWindowStart
-})(WindowStartFieldFactoryClass);
+const WindowStartFieldFactory = connect(
+  null,
+  {
+    setCurrentWindowStart: scheduleActions.setCurrentWindowStart
+  }
+)(WindowStartFieldFactoryClass);
 
 interface DefaultWindowStartFieldProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;

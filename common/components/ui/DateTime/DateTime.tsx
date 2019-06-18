@@ -201,7 +201,9 @@ export default class DateTime extends Component<Props, State> {
 
     viewDate = selectedDate
       ? selectedDate.clone().startOf('month')
-      : viewDate ? viewDate.clone().startOf('month') : this.localMoment().startOf('month');
+      : viewDate
+      ? viewDate.clone().startOf('month')
+      : this.localMoment().startOf('month');
 
     updateOn = this.getUpdateOn(formats);
 
