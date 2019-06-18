@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 
 export interface ProviderState {
-  developmentMode: boolean;
+  isDevelopmentMode: boolean;
   toggleDevMode(): void;
 }
 
@@ -9,9 +9,9 @@ const DevModeContext = createContext({} as ProviderState);
 
 class DevModeProvider extends Component {
   public readonly state: ProviderState = {
-    developmentMode: false,
+    isDevelopmentMode: false,
     toggleDevMode: (): void => {
-      this.setState({ developmentMode: !this.state.developmentMode });
+      this.setState({ isDevelopmentMode: !this.state.isDevelopmentMode });
     }
   };
 

@@ -66,9 +66,7 @@ const DevTools = () => {
                         )}
                       />
                     </fieldset>
-
                     <br />
-
                     <fieldset>
                       Label:{' '}
                       <Field
@@ -83,9 +81,7 @@ const DevTools = () => {
                         )}
                       />
                     </fieldset>
-
                     <br />
-
                     <fieldset>
                       Network:{' '}
                       <Field
@@ -100,9 +96,12 @@ const DevTools = () => {
                         )}
                       />
                     </fieldset>
-
                     <br />
-
+                    Current dev-mode only features
+                    <ul>
+                      <li>Recent Transactions panel (Dashboard)</li>
+                      <li>Error page disabled</li>
+                    </ul>
                     <Button type="submit" disabled={isSubmitting}>
                       Submit
                     </Button>

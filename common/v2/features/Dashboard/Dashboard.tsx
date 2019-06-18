@@ -15,7 +15,7 @@ import './Dashboard.scss';
 import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
 
 export default function Dashboard() {
-  const { developmentMode } = useDevMode();
+  const { isDevelopmentMode } = useDevMode();
   return (
     <>
       {/* MOBILE */}
@@ -36,7 +36,7 @@ export default function Dashboard() {
         <div className="Dashboard-mobile-section">
           <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
         </div>
-        {developmentMode && (
+        {isDevelopmentMode && (
           <AccountContext.Consumer>
             {({ accounts }) => (
               <AddressBookContext.Consumer>
@@ -79,7 +79,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        {developmentMode && (
+        {isDevelopmentMode && (
           <AccountContext.Consumer>
             {({ accounts }) => (
               <AddressBookContext.Consumer>

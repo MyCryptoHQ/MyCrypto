@@ -84,38 +84,14 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store, onboardingActive } = this.props;
     const { error } = this.state;
-
-    if (error) {
-      return <ErrorScreen error={error} />;
-    }
-    const routes = (
-      <CaptureRouteNotFound>
-        <Switch>
-          <PrivateRoute path="/dashboard" component={Dashboard} />
-          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-          <Route path="/account" component={SendTransaction} exact={true} />
-          <Route path="/generate" component={GenerateWallet} />
-          <Route path="/contracts" component={Contracts} />
-          <Route path="/ens" component={ENS} exact={true} />
-          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-          <Route path="/tx-status" component={CheckTransaction} exact={true} />
-          <Route path="/pushTx" component={BroadcastTx} />
-          <Route path="/support-us" component={SupportPage} exact={true} />
-          {process.env.NODE_ENV !== 'production' && (
-            <Route path="/dev/palette" component={PalettePage} exact={true} />
-          )}
-          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
-          <RouteNotFound />
-        </Switch>
-      </CaptureRouteNotFound>
-    );
+    const { store, onboardingActive } = this.props;
 
     const Router: any =
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
+
     return (
       <DevModeProvider>
         <ThemeProvider theme={GAU_THEME}>
@@ -130,8 +106,7 @@ class RootClass extends Component<Props, State> {
                           <LockScreenProvider>
                             <PageVisitsAnalytics>
                               {onboardingActive && <OnboardingModal />}
-                              {routes}
-                              <LegacyRoutes />
+                              {error ? <AppContainer error={error} /> : <AppContainer />}
                               <LogOutPrompt />
                               <QrSignerModal />
                               {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
@@ -236,8 +211,49 @@ const LegacyRoutes = withRouter(props => {
   );
 });
 
+interface AppContainerProps {
+  error?: Error | undefined;
+}
+
+const AppContainer = (props: AppContainerProps) => {
+  const { isDevelopmentMode } = useDevMode();
+  const { error } = props;
+  const routes = (
+    <CaptureRouteNotFound>
+      <Switch>
+        <PrivateRoute path="/dashboard" component={Dashboard} />
+        {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
+        <Route path="/account" component={SendTransaction} exact={true} />
+        <Route path="/generate" component={GenerateWallet} />
+        <Route path="/contracts" component={Contracts} />
+        <Route path="/ens" component={ENS} exact={true} />
+        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+        <Route path="/tx-status" component={CheckTransaction} exact={true} />
+        <Route path="/pushTx" component={BroadcastTx} />
+        <Route path="/support-us" component={SupportPage} exact={true} />
+        {process.env.NODE_ENV !== 'production' && (
+          <Route path="/dev/palette" component={PalettePage} exact={true} />
+        )}
+        <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
+        <RouteNotFound />
+      </Switch>
+    </CaptureRouteNotFound>
+  );
+
+  if (error !== undefined && !isDevelopmentMode) {
+    return <ErrorScreen error={error} />;
+  }
+
+  return (
+    <>
+      {routes}
+      <LegacyRoutes />
+    </>
+  );
+};
+
 const DevModeToggle = () => {
-  const { developmentMode, toggleDevMode } = useDevMode();
+  const { isDevelopmentMode, toggleDevMode } = useDevMode();
   return (
     <button
       onClick={toggleDevMode}
@@ -249,14 +265,14 @@ const DevModeToggle = () => {
         height: '5rem'
       }}
     >
-      Development Mode {developmentMode ? 'On' : 'Off'}
+      Development Mode {isDevelopmentMode ? 'On' : 'Off'}
     </button>
   );
 };
 
 const DevToolsContainer = () => {
-  const { developmentMode } = useDevMode();
-  return developmentMode ? <DevTools /> : <></>;
+  const { isDevelopmentMode } = useDevMode();
+  return isDevelopmentMode ? <DevTools /> : <></>;
 };
 
 const CaptureRouteNotFound = withRouter(({ children, location }) => {
