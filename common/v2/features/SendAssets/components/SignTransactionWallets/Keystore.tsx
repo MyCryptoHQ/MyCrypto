@@ -1,18 +1,51 @@
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import { Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
+import { ethers, utils } from 'ethers';
 import { notificationsActions } from 'features/notifications';
 import { isKeystorePassRequired } from 'libs/wallet';
 import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import { unlockKeystore } from 'v2/features/Wallets';
+import { ISendState, ITxFields } from '../../types';
 import './Keystore.scss';
 
-export interface KeystoreValue {
+//Test Transaction
+const transaction = {
+  nonce: 0,
+  gasLimit: 21000,
+  gasPrice: utils.bigNumberify('20000000000'),
+  to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
+  // ... or supports ENS names
+  value: utils.parseEther('0.00001'),
+  data: '0x',
+  // This ensures the transaction cannot be replayed on different networks
+  chainId: ethers.utils.getNetwork('ropsten').chainId
+};
+
+interface Props {
+  stateValues: ISendState;
+  transactionFields: ITxFields;
+  wallet: any;
+  isWalletPending: boolean;
+  isPasswordPending: boolean;
+  onChange(value: KeystoreValueState): void;
+  onUnlock(param: any): void;
+  showNotification(level: string, message: string): notificationsActions.TShowNotification;
+}
+
+export interface KeystoreValueState {
   file: string;
   password: string;
   filename: string | undefined;
   valid: boolean | undefined;
+  walletState: WalletSigningState;
+  hasCorrectPassword: boolean | undefined;
+}
+
+enum WalletSigningState {
+  READY, //when signerWallet is ready to sendTransaction
+  NOT_READY, //use when signerWallet rejects transaction
+  UNKNOWN //used upon component initialization when wallet status is not determined
 }
 
 function isPassRequired(file: string): boolean {
@@ -30,26 +63,19 @@ function isValidFile(rawFile: File): boolean {
   return fileType === '' || fileType === 'application/json';
 }
 
-export default class SignTransactionKeystore extends Component {
-  public props: {
-    wallet: any;
-    isWalletPending: boolean;
-    isPasswordPending: boolean;
-    onChange(value: KeystoreValue): void;
-    onUnlock(param: any): void;
-    showNotification(level: string, message: string): notificationsActions.TShowNotification;
-  };
-
-  public state: KeystoreValue = {
+export default class SignTransactionKeystore extends Component<Props, KeystoreValueState> {
+  public state: KeystoreValueState = {
     file: '',
     password: '',
     filename: undefined,
-    valid: undefined
+    valid: undefined,
+    walletState: WalletSigningState.UNKNOWN,
+    hasCorrectPassword: undefined
   };
 
   public render() {
     const { isWalletPending } = this.props;
-    const { file, password, filename } = this.state;
+    const { file, password, filename, walletState, hasCorrectPassword } = this.state;
     const passReq = file ? isPassRequired(file) : true;
     const unlockDisabled = !file || (passReq && !password);
 
@@ -60,7 +86,7 @@ export default class SignTransactionKeystore extends Component {
         </div>
         <div className="Keystore">
           <form onSubmit={this.unlock}>
-            <div className="form-group">
+            <div className="Keystore-form">
               <div className="SignTransactionKeystore-img">
                 <img src={PrivateKeyicon} />
               </div>
@@ -70,6 +96,17 @@ export default class SignTransactionKeystore extends Component {
                 id="fselector"
                 onChange={this.handleFileSelection}
               />
+              {walletState === WalletSigningState.NOT_READY ? (
+                <div className="SignTransactionKeystore-error">
+                  Keystore File Public Address does not match Account's sender Address, please
+                  upload correct Keystore File.
+                </div>
+              ) : null}
+              {hasCorrectPassword === false ? (
+                <div className="SignTransactionKeystore-error">
+                  Incorrect Keystore File Password.
+                </div>
+              ) : null}
               <label>Your Keystore File</label>
               <label htmlFor="fselector" style={{ width: '100%' }}>
                 <a className="btn btn-default btn-block" id="aria1" tabIndex={0} role="button">
@@ -79,9 +116,8 @@ export default class SignTransactionKeystore extends Component {
                   <span>{filename}</span>
                 </label>
               </label>
-
               {isWalletPending ? <Spinner /> : ''}
-              <label className="Keystore-password">Your Password</label>
+              <label className="SignTransactionKeystore-password">Your Password</label>
               <Input
                 isValid={password ? password.length > 0 : false}
                 className={`${file.length && isWalletPending ? 'hidden' : ''}`}
@@ -120,13 +156,43 @@ export default class SignTransactionKeystore extends Component {
   private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const wallet = await unlockKeystore({
-      file: this.state.file,
-      password: this.state.password
-    });
-    this.props.onUnlock(wallet);
+    this.getPublicKey();
   };
 
+  private async getPublicKey() {
+    await ethers.Wallet.fromEncryptedJson(this.state.file, this.state.password)
+      .then(wallet => {
+        const checkSumAddress = utils.getAddress(wallet.address);
+        this.checkPublicKeyMatchesCache(checkSumAddress);
+      })
+      .catch(e => {
+        if (e) {
+          this.setState({ hasCorrectPassword: false });
+        }
+      });
+  }
+
+  private checkPublicKeyMatchesCache(walletAddres: string) {
+    const localCacheAddress = utils.getAddress(this.props.transactionFields.account.address);
+    const keystoreFileAddress = walletAddres;
+
+    if (localCacheAddress === keystoreFileAddress) {
+      this.setState({ walletState: WalletSigningState.READY });
+      this.signTransaction();
+    } else {
+      this.setState({ walletState: WalletSigningState.NOT_READY });
+      throw new Error('Incorrect Keystore File');
+    }
+  }
+
+  private async signTransaction() {
+    const signerWallet = await ethers.Wallet.fromEncryptedJson(
+      this.state.file,
+      this.state.password
+    );
+    const signedTransaction = await signerWallet.sign(transaction);
+    console.log(signedTransaction);
+  }
   private onPasswordChange = (e: any) => {
     this.setState({
       password: e.target.value,

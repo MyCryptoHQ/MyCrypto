@@ -50,8 +50,15 @@ export default class SignTransaction extends Component<Props> {
         return <SignTransactionTrezor />;
       case 'safeTmini':
         return <SignTransactionSafeT />;
-      case 'keystore':
-        return <SignTransactionKeystore />;
+      case 'keystoreFile':
+        return (
+          //@ts-ignoretslint-ignore
+          <SignTransactionKeystore
+            stateValues={stateValues}
+            transactionFields={transactionFields}
+          />
+        );
+
       default:
         return null;
     }
