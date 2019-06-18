@@ -79,6 +79,7 @@
     "uuid": "3.2.1",
     "wallet-address-validator": "0.2.4",
     "whatwg-fetch": "2.0.3",
+    "yup": "0.27.0",
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
@@ -117,6 +118,7 @@
     "@types/styled-components": "4.0.3",
     "@types/uuid": "3.4.3",
     "@types/webpack-env": "1.13.4",
+    "@types/yup": "0.26.14",
     "@types/zxcvbn": "4.4.0",
     "autodll-webpack-plugin": "0.3.9",
     "aws-sdk": "2.424.0",

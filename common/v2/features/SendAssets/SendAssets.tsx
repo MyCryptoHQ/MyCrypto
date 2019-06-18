@@ -32,14 +32,14 @@ const getInitialState = (): ISendState => {
           network: '',
           assets: [],
           wallet: undefined,
-          balance: 0,
+          balance: '0',
           transactions: [],
           dPath: '',
           uuid: '',
           timestamp: 0
         },
         recipientAddress: getQueryParamWithKey(params, 'to') || '',
-        amount: getQueryParamWithKey(params, 'value') || '0.00',
+        amount: getQueryParamWithKey(params, 'value') || '',
         asset:
           getQueryParamWithKey(params, 'sendmode') === 'token'
             ? ({ symbol: getQueryParamWithKey(params, 'tokensymbol') || 'DAI' } as IAsset)
@@ -88,14 +88,14 @@ const getInitialState = (): ISendState => {
           network: '',
           assets: [],
           wallet: undefined,
-          balance: 0,
+          balance: '0',
           transactions: [],
           dPath: '',
           uuid: '',
           timestamp: 0
         },
         recipientAddress: '',
-        amount: '0.00',
+        amount: '', // Really should be undefined, but Formik recognizes empty strings.
         asset: undefined,
         gasPriceSlider: '20',
         gasPriceField: '20',
