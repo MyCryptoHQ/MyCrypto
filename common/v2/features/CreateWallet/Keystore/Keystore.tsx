@@ -43,7 +43,7 @@ class CreateKeystore extends Component<Props, State> {
     password: '',
     privateKey: '',
     filename: '',
-    network: 'Ethereum',
+    network: '',
     stage: KeystoreStages.GenerateKeystore,
     isGenerating: false,
     accountType: InsecureWalletName.KEYSTORE_FILE

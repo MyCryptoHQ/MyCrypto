@@ -38,9 +38,9 @@ class CreateMnemonic extends Component<Props> {
   public state: State = {
     stage: MnemonicStages.SelectNetwork,
     words: [],
-    network: 'Ethereum',
+    network: '',
     accountType: InsecureWalletName.MNEMONIC_PHRASE,
-    path: `m/44'/60'/0'/0`,
+    path: '',
     address: ''
   };
 
