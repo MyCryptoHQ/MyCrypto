@@ -26,7 +26,6 @@ interface State {
   filename: string;
   network: string;
   stage: KeystoreStages;
-  isGenerating: boolean;
   accountType: WalletName;
 }
 
@@ -45,7 +44,6 @@ class CreateKeystore extends Component<Props, State> {
     filename: '',
     network: '',
     stage: KeystoreStages.GenerateKeystore,
-    isGenerating: false,
     accountType: InsecureWalletName.KEYSTORE_FILE
   };
 
@@ -65,14 +63,11 @@ class CreateKeystore extends Component<Props, State> {
       addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
 
+    const { password, privateKey, keystore, filename, network, accountType } = this.state;
+    const props = { password, privateKey, keystore, filename, network, accountType };
     return (
       <Layout centered={true}>
-        <ActivePanel
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-          {...actions}
-          {...this.state}
-        />
+        <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...actions} {...props} />
       </Layout>
     );
   }
@@ -140,15 +135,13 @@ class CreateKeystore extends Component<Props, State> {
   };
 
   private generateWalletAndContinue = async (password: string) => {
-    this.setState({ isGenerating: true });
     try {
       const res = await generateKeystore(password, N_FACTOR);
       this.setState({
         password,
         keystore: res.keystore,
         filename: res.filename,
-        privateKey: stripHexPrefix(res.privateKey),
-        isGenerating: false
+        privateKey: stripHexPrefix(res.privateKey)
       });
       this.advanceToNextStage();
     } catch (e) {

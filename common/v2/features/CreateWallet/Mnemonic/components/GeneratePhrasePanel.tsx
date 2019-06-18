@@ -79,7 +79,7 @@ const ButtonWrapper = styled.div`
 interface Props extends PanelProps {
   words: string[];
   generateWords(): void;
-  decryptMnemonic(): Promise<string>;
+  decryptMnemonic(): void;
 }
 
 export default class GeneratePhrasePanel extends Component<Props> {

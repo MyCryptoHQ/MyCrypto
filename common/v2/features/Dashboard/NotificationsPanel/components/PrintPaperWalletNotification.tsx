@@ -12,8 +12,10 @@ import walletIcon from 'common/assets/images/icn-wallet.svg';
 const { SCREEN_XS } = BREAK_POINTS;
 
 const ResourceItem = styled.div`
+  width: 200px;
+
   button {
-    width: 200px;
+    width: 100%;
     font-weight: normal;
     font-size: 17px;
     padding-left: 0px;
