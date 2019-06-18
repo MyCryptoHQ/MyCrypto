@@ -67,15 +67,14 @@ const getInitialState = (): ISendState => {
           time: Date.now(),
           chainId: 1
         },
-        network: undefined
+        network: undefined,
+        resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
+        isResolvingNSName: false // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
-      isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
       isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
       isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-
-      resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
       assetType: getQueryParamWithKey(params, 'sendmode') === 'token' ? 'erc20' : 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
@@ -118,15 +117,14 @@ const getInitialState = (): ISendState => {
           time: Date.now(),
           chainId: 1
         },
-        network: undefined
+        network: undefined,
+        resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
+        isResolvingNSName: false // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
       },
       isFetchingAccountValue: false, // Used to indicate looking up user's balance of currently-selected asset.
-      isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
       isAddressLabelValid: false, // Used to indicate if recipient-address is found in the address book.
       isFetchingAssetPricing: false, // Used to indicate fetching CC rates for currently-selected asset.
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-
-      resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
       assetType: 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.

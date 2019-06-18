@@ -35,6 +35,7 @@ import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
+import { ENSStatus } from 'components/AddressFieldFactory/AddressInputFactory';
 
 interface Props {
   stateValues: ISendState;
@@ -108,22 +109,36 @@ export default function SendAssetsForm({
             if (!values || !values.network) {
               return;
             }
-            const resolvedAddress = await getResolvedENSAddress(values.network, name);
-            setFieldValue('resolvedAddress', resolvedAddress);
+            setFieldValue('isResolvingNSName', true);
+            const resolvedAddress: string | null = await getResolvedENSAddress(
+              values.network,
+              name
+            );
+            setFieldValue('isResolvingNSName', false);
+            resolvedAddress === null
+              ? setFieldValue('resolvedNSAddress', '0x0')
+              : setFieldValue('resolvedNSAddress', resolvedAddress);
           };
+
+          const handleFieldReset = () => {
+            setFieldValue('account', undefined);
+            setFieldValue('recipientAddress', '');
+            setFieldValue('amount', '');
+          };
+
           const setAmountFieldToAssetMax = () =>
             // @TODO get asset balance and subtract gas cost
             setFieldValue('amount', '1000');
 
           return (
             <Form className="SendAssetsForm">
-              {/*<React.Fragment>
+              <React.Fragment>
                 {'ITxFields123: '}
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
                 </pre>
-                </React.Fragment>*/}
+              </React.Fragment>
               <br />
               {'Formik Fields: '}
               <br />
@@ -146,7 +161,8 @@ export default function SendAssetsForm({
                       assets={assets}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
-                        form.setFieldValue('account', undefined);
+                        handleFieldReset();
+
                         if (option.network) {
                           fetchGasPriceEstimates(option.network).then(data => {
                             form.setFieldValue('gasEstimates', data);
@@ -192,8 +208,15 @@ export default function SendAssetsForm({
                   handleENSResolve={handleENSResolve}
                   error={errors.recipientAddress}
                   touched={touched.recipientAddress}
+                  values={values}
                   fieldName="recipientAddress"
                   placeholder="Enter an Address or Contact"
+                />
+                <ENSStatus
+                  ensAddress={values.recipientAddress}
+                  isLoading={false}
+                  rawAddress={values.resolvedNSAddress}
+                  chainId={values.network ? values.network.chainId : 1}
                 />
               </fieldset>
               {/* Amount */}

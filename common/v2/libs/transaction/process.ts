@@ -96,7 +96,7 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
         return undefined;
       }
       const rawTransaction: IHexStrTransaction = {
-        to: txFields.recipientAddress,
+        to: txFields.resolvedNSAddress ? txFields.resolvedNSAddress : txFields.recipientAddress,
         value: txFields.amount
           ? hexEncodeQuantity(toTokenBase(txFields.amount, asset.decimal))
           : '0x0',
@@ -120,7 +120,9 @@ export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | u
         value: '0x0',
         data: bufferToHex(
           encodeTransfer(
-            Address(txFields.recipientAddress),
+            Address(
+              txFields.resolvedNSAddress ? txFields.resolvedNSAddress : txFields.recipientAddress
+            ),
             txFields.amount !== '' ? toWei(txFields.amount, asset.decimal) : TokenValue(new BN(0))
           )
         ),
