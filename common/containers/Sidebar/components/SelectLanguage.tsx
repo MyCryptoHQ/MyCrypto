@@ -29,7 +29,7 @@ class LanguageSelect extends Component<Props> {
           {translateRaw('NEW_SIDEBAR_TEXT_1')}
         </h1>
         <ul className="SidebarScreen-list-full">
-          {Object.entries(languages).map(([code, language]) => (
+          {Object.entries(languages).map(([code, language]: [string, string]) => (
             <li
               key={code}
               className={classnames('SidebarScreen-language', {
@@ -65,4 +65,7 @@ const mapDispatchToProps = {
   closeSidebar: sidebarActions.closeSidebar
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSelect);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LanguageSelect);

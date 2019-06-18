@@ -62,14 +62,13 @@ export class VerifyMessage extends Component<Props, State> {
             {translate('MSG_VERIFY')}
           </button>
 
-          {!!verifiedAddress &&
-            !!verifiedMessage && (
-              <div className="VerifyMessage-success alert alert-success">
-                <strong>{verifiedAddress}</strong>
-                {` ${translateRaw('SIGNED')} `}
-                <strong>{verifiedMessage}</strong>.
-              </div>
-            )}
+          {!!verifiedAddress && !!verifiedMessage && (
+            <div className="VerifyMessage-success alert alert-success">
+              <strong>{verifiedAddress}</strong>
+              {` ${translateRaw('SIGNED')} `}
+              <strong>{verifiedMessage}</strong>.
+            </div>
+          )}
         </div>
       </div>
     );
@@ -147,6 +146,9 @@ export class VerifyMessage extends Component<Props, State> {
   };
 }
 
-export default connect(null, {
-  showNotification: notificationsActions.showNotification
-})(VerifyMessage);
+export default connect(
+  null,
+  {
+    showNotification: notificationsActions.showNotification
+  }
+)(VerifyMessage);

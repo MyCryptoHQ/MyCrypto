@@ -114,7 +114,10 @@ class AccountAddress extends React.Component<Props, State> {
   private setLabelInputRef = (node: HTMLInputElement) => (this.labelInput = node);
 
   private generateLabelContent = () => {
-    const { addressLabel, entry: { temporaryLabel, labelError } } = this.props;
+    const {
+      addressLabel,
+      entry: { temporaryLabel, labelError }
+    } = this.props;
     const { editingLabel, labelInputTouched } = this.state;
     const newLabelSameAsPrevious = temporaryLabel === addressLabel;
     const labelInputTouchedWithError = labelInputTouched && !newLabelSameAsPrevious && labelError;
@@ -175,7 +178,11 @@ class AccountAddress extends React.Component<Props, State> {
   };
 
   private handleBlur = () => {
-    const { address, addressLabel, entry: { id, label, temporaryLabel, labelError } } = this.props;
+    const {
+      address,
+      addressLabel,
+      entry: { id, label, temporaryLabel, labelError }
+    } = this.props;
 
     this.clearTemporaryLabelTouched();
     this.stopEditingLabel();

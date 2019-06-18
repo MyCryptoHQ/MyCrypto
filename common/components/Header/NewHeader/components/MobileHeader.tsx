@@ -60,7 +60,10 @@ class MobileHeader extends Component<Props> {
 
   public render() {
     const { nodeLabel, openSidebar, languageSelection, setAccessMessage } = this.props;
-    const { menuVisible, visibleDropdowns: { sendAndReceive, buyAndExchange, tools } } = this.state;
+    const {
+      menuVisible,
+      visibleDropdowns: { sendAndReceive, buyAndExchange, tools }
+    } = this.state;
     const menuIcon = generateMenuIcon(menuVisible);
     const sendAndReceiveIcon = generateCaretIcon(sendAndReceive);
     const buyAndExchangeIcon = generateCaretIcon(buyAndExchange);
@@ -219,4 +222,7 @@ const mapDispatchToProps = {
   setAccessMessage: walletActions.setAccessMessage
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MobileHeader);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MobileHeader);

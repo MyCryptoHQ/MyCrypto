@@ -39,6 +39,8 @@ const Identicon: React.SFC<Props> = props => {
   );
 };
 
-export default connect((state: AppState): StateProps => ({
-  isValidAddress: configSelectors.getIsValidAddressFn(state)
-}))(Identicon);
+export default connect(
+  (state: AppState): StateProps => ({
+    isValidAddress: configSelectors.getIsValidAddressFn(state)
+  })
+)(Identicon);

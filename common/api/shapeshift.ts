@@ -192,10 +192,12 @@ class ShapeshiftService {
 
   public requestAccessToken = async () => {
     const { code } = queryString.parse(window.location.search);
-    const { data: { access_token: token } } = await axios.post(
-      'https://proxy.mycryptoapi.com/request-shapeshift-token',
-      { code, grant_type: 'authorization_code' }
-    );
+    const {
+      data: { access_token: token }
+    } = await axios.post('https://proxy.mycryptoapi.com/request-shapeshift-token', {
+      code,
+      grant_type: 'authorization_code'
+    });
 
     this.token = token;
     this.saveAccessTokenToStorage(token);
