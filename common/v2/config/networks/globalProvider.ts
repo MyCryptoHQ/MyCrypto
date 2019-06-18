@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
 import { BaseProvider } from 'ethers/providers';
-import { PROVIDER_OPTIONS } from './providerOptions';
+import { isUrl } from 'v2/libs/helpers';
 import { Network } from 'v2/services/Network/types';
+import { PROVIDER_OPTIONS } from './providerOptions';
 
 export type NetworkKey = keyof typeof PROVIDER_OPTIONS;
 
@@ -25,13 +26,11 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
       if (!tempProviders[networkKey]) {
         tempProviders[networkKey] = [];
       }
-      if (url) {
-        if (url.includes('etherscan')) {
-          const network = url.split('+')[1];
-          tempProviders[networkKey].push(new ethers.providers.EtherscanProvider(network));
-        } else {
-          tempProviders[networkKey].push(new ethers.providers.JsonRpcProvider(url));
-        }
+      if (url && url.includes('etherscan')) {
+        const network = url.split('+')[1];
+        tempProviders[networkKey].push(new ethers.providers.EtherscanProvider(network));
+      } else {
+        tempProviders[networkKey].push(new ethers.providers.JsonRpcProvider(url));
       }
     }
   }
@@ -46,7 +45,7 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
 export const createProviderHandler = (network: Network): FallbackProvider => {
   const newProviderPattern: any = { [network.name]: [] };
   network.nodes.forEach(node => {
-    if (node.url && /^https?:\/\/.+/i.test(node.url)) {
+    if (node.url && isUrl(node.url)) {
       // Not very-well covered test for if url is a valid url (sorts out web3 nodes / non-https nodes).
       newProviderPattern[network.name].push(node.url);
     }

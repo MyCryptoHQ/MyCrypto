@@ -39,6 +39,7 @@ export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset: Asse
   return balanceFound ? balanceFound.balance.toString() : '0';
 };
 
+/* TODO: Refactor this */
 export const getAccountBalances = (
   accounts: ExtendedAccount[],
   updateAccount: (uuid: string, accountData: ExtendedAccount) => void
@@ -51,13 +52,13 @@ export const getAccountBalances = (
       updateAccount(account.uuid, {
         ...account,
         timestamp: Date.now(),
-        balance: parseFloat(balance)
+        balance
       });
     }
   });
 };
 
-export const getTokenBalanceByAsset = (
+export const updateTokenBalanceByAsset = (
   account: ExtendedAccount,
   asset: Asset,
   updateAccount: (uuid: string, accountData: ExtendedAccount) => void
@@ -66,16 +67,15 @@ export const getTokenBalanceByAsset = (
   if (network) {
     const provider = new ProviderHandler(network);
     provider.getTokenBalance(account.address, asset).then(data => {
-      const assets = account.assets;
-      const newAssets = assets.map(assetObject => {
-        if (assetObject.uuid === asset.uuid) {
-          return { uuid: assetObject.uuid, balance: data, timestamp: Date.now() };
-        }
-        return assetObject;
-      });
+      const assets = account.assets.map(
+        prevAsset =>
+          asset.uuid === prevAsset.uuid
+            ? { ...prevAsset, balance: data, timestamp: Date.now() }
+            : prevAsset
+      );
       updateAccount(account.uuid, {
         ...account,
-        assets: newAssets
+        assets
       });
     });
   }
@@ -123,13 +123,6 @@ export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undef
     return getAssetByUUID(network.baseAsset);
   }
 };
-
-/*export const getAssetFromAccount = (account: ExtendedAccount, asset: Asset): Asset | undefined => {
-  const network: Network | undefined = getNetworkByName(account.network);
-  if (network) {
-    return getAssetByUUID(network.baseAsset);
-  }
-};*/
 
 export const getAllAccounts = (): Account[] => {
   return Object.values(getCache().accounts);

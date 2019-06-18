@@ -7,7 +7,7 @@ export interface Account {
   network: string;
   assets: AssetBalanceObject[];
   wallet: WalletName;
-  balance: number;
+  balance: string;
   transactions: TransactionData[];
   dPath: string;
   timestamp: number;

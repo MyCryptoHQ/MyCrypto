@@ -87,7 +87,7 @@ export default function SendAssetsForm({
           onSubmit(fields);
           onNext();
         }}
-        render={({ errors, touched, setFieldValue, values, handleChange }) => {
+        render={({ errors, touched, setFieldValue, values, handleChange, submitForm }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
 
@@ -108,22 +108,13 @@ export default function SendAssetsForm({
 
           return (
             <Form className="SendAssetsForm">
-              {/*<React.Fragment>
+              <React.Fragment>
                 {'ITxFields123: '}
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
-                  <br />
-                  {async () => {
-                    if (values.network) {
-                      const provider = new ProviderHandler(values.network);
-                      
-
-                    }
-
-                  }}
                 </pre>
-                </React.Fragment>*/}
+              </React.Fragment>
               <br />
               {'Formik Fields: '}
               <br />
@@ -152,7 +143,6 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-
                           form.setFieldValue('network', getNetworkByName(option.network));
                           estimateGasHandler();
                         }
@@ -214,6 +204,17 @@ export default function SendAssetsForm({
                 fieldName="recipientAddress"
                 placeholder="Enter an Address or Contact"
               />
+              <fieldset className="SendAssetsForm-fieldset">
+                <label htmlFor="recipientAddress" className="input-group-header">
+                  {translate('SEND_ADDR')}
+                </label>
+                <EthAddressField
+                  error={errors.recipientAddress}
+                  touched={touched.recipientAddress}
+                  fieldName="recipientAddress"
+                  placeholder="Enter an Address or Contact"
+                />
+              </fieldset>
               {/* Amount */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="amount" className="input-group-header label-with-action">
@@ -367,7 +368,7 @@ export default function SendAssetsForm({
                 )}
               </div>
 
-              <Button type="submit" onClick={onNext} className="SendAssetsForm-next">
+              <Button type="submit" onClick={submitForm} className="SendAssetsForm-next">
                 Next{/* TRANSLATE THIS */}
               </Button>
             </Form>

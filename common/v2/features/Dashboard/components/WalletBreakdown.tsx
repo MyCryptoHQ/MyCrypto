@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Heading, Panel, Typography } from '@mycrypto/ui';
 
 import { AccountContext, SettingsContext } from 'v2/providers';
-import { ExtendedAccount /*, AssetBalanceObject*/ } from 'v2/services/Account/types';
+import { ExtendedAccount } from 'v2/services/Account/types';
 import AccountDropdown from './AccountDropdown';
 import './WalletBreakdown.scss';
 
@@ -12,42 +12,12 @@ import {
   getCurrentsFromContext,
   getBalanceFromAccount,
   getBaseAssetFromAccount
-  /*getAccountBalances,
-  getTokenBalanceByAsset,
-  getTokenBalanceFromAccount*/
 } from 'v2/libs/accounts/accounts';
 
 import { Link } from 'react-router-dom';
-/*
-import { Asset } from 'v2/services/Asset/types';
-import { getAssetByUUID } from 'v2/libs';*/
-
-// Fake Data
-/*const balances = [
-  {
-    asset: 'Ethereum',
-    amount: '14.13 ETH',
-    value: '$3,307.95'
-  },
-  {
-    asset: 'OmiseGO',
-    amount: '208.321234 OMG',
-    value: '$646.80'
-  },
-  {
-    asset: 'Aragon',
-    amount: '200 ANT',
-    value: '$159.63'
-  },
-  {
-    asset: 'Other Tokens',
-    amount: <Link to="/dashboard">View Details</Link>,
-    value: '$140.03'
-  }
-];*/
 
 function WalletBreakdown() {
-  const { accounts /*, updateAccount*/ } = useContext(AccountContext);
+  const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const balances: any[] = [];
   const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
@@ -71,20 +41,6 @@ function WalletBreakdown() {
         parseFloat(balanceToUpdate.amount) + parseFloat(getBalanceFromAccount(account))
       ).toFixed(4);
     }
-    /* Ignore the random commented code. it's a implementation of balance lookups used to test ethers.js */
-    /*
-    account.assets.forEach( async (accountAssetEntry: AssetBalanceObject) => {
-      const asset: Asset | undefined = getAssetByUUID(accountAssetEntry.uuid);
-      if (asset) {
-        balances.push({
-          asset: asset.name,
-          amount: -(account.timestamp - Date.now()) >= 1500000
-          ? getTokenBalanceByAsset(account, asset, updateAccount)
-          : parseFloat(getTokenBalanceFromAccount(account, asset)).toFixed(4),
-          value: 0
-        })
-      }
-    })*/
     balances.push({
       asset: 'Other Tokens',
       amount: <Link to="/dashboard">View Details</Link>,
