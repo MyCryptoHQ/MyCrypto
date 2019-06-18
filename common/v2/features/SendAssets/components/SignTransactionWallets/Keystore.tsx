@@ -31,6 +31,7 @@ interface Props {
   onChange(value: KeystoreValueState): void;
   onUnlock(param: any): void;
   showNotification(level: string, message: string): notificationsActions.TShowNotification;
+  onNext(signedTransaction: string): void;
 }
 
 export interface KeystoreValueState {
@@ -192,6 +193,7 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
     );
     const signedTransaction = await signerWallet.sign(transaction);
     console.log(signedTransaction);
+    this.props.onNext(signedTransaction);
   }
   private onPasswordChange = (e: any) => {
     this.setState({

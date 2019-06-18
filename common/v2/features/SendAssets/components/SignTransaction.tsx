@@ -56,6 +56,13 @@ export default class SignTransaction extends Component<Props> {
           <SignTransactionKeystore
             stateValues={stateValues}
             transactionFields={transactionFields}
+            onNext={signedTransaction => {
+              const nextState: DeepPartial<ISendState> = {
+                transactionFields: { account: { transactions: [{ txHash: signedTransaction }] } }
+              };
+              updateState(nextState);
+              onNext();
+            }}
           />
         );
 
