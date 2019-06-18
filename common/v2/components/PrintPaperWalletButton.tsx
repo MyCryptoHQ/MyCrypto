@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
 import PaperWallet from './PaperWallet';
+import Spinner from 'components/ui/Spinner';
 
 // Legacy
 import printerIcon from 'common/assets/images/icn-printer.svg';
@@ -32,6 +33,15 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 66px;
+`;
+
 interface Props {
   address: string;
   printText: React.ReactElement<any>;
@@ -43,11 +53,13 @@ interface Props {
 
 interface State {
   paperWalletPdf: string;
+  loading: boolean;
 }
 
 export default class PrintPaperWalletButton extends Component<Props, State> {
   public state: State = {
-    paperWalletPdf: ''
+    paperWalletPdf: '',
+    loading: false
   };
 
   private paperWallet: PaperWallet | null;
@@ -58,10 +70,16 @@ export default class PrintPaperWalletButton extends Component<Props, State> {
 
     return (
       <>
-        <StyledButton secondary={true} onClick={this.handlePrintClick}>
-          <PrinterImage src={printerIcon} />
-          {printText}
-        </StyledButton>
+        <ButtonWrapper>
+          {this.state.loading ? (
+            <Spinner size={'x2'} />
+          ) : (
+            <StyledButton secondary={true} onClick={this.handlePrintClick}>
+              <PrinterImage src={printerIcon} />
+              {printText}
+            </StyledButton>
+          )}
+        </ButtonWrapper>
         <PaperWallet
           address={prefixedAddress}
           mnemonic={mnemonic}
@@ -80,7 +98,9 @@ export default class PrintPaperWalletButton extends Component<Props, State> {
       return;
     }
 
+    this.setState({ loading: true });
     await this.paperWallet.toPDF();
+    this.setState({ loading: false });
 
     if (onPrintWalletClick) {
       onPrintWalletClick();
