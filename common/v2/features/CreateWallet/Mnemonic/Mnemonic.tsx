@@ -49,6 +49,7 @@ class CreateMnemonic extends Component<Props> {
     const currentStep: number = mnemonicFlow.indexOf(stage) + 1;
     const totalSteps: number = mnemonicFlow.length;
     const ActivePanel: ReactType = mnemonicStageToComponentHash[stage];
+
     const actions = {
       onBack: this.regressToPreviousStage,
       onNext: this.advanceToNextStage,
@@ -59,14 +60,12 @@ class CreateMnemonic extends Component<Props> {
       addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
 
+    const { words, network, accountType, path, address } = this.state;
+    const props = { words, network, accountType, path, address };
+
     return (
       <Layout centered={true}>
-        <ActivePanel
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-          {...this.state}
-          {...actions}
-        />
+        <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
       </Layout>
     );
   }
