@@ -2,8 +2,6 @@
 import sendIcon from 'common/assets/images/icn-send.svg';
 import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-
-import { IAsset } from 'v2/types';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import {
@@ -13,6 +11,7 @@ import {
   isQueryTransaction
 } from 'v2/libs/preFillTx';
 import { queryObject } from 'v2/libs/preFillTx/types';
+import { IAsset } from 'v2/types';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -167,6 +166,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
           stepper={{ current: step + 1, total: steps.length - 1 }}
         >
           {transactionFields.account.wallet === 'web3' ? (
+            //@ts-ignoretslint-ignore //deprecated eth_sign
             <Web3Steps.elem
               transactionFields={this.state.transactionFields}
               onNext={this.goToNextStep}
@@ -181,6 +181,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
               updateState={this.updateState}
               onSubmit={this.updateTransactionFields}
               stateValues={this.state}
+              handleSignedTransaction={this.handleSignedTransaction}
             />
           )}
         </ContentPanel>
@@ -220,6 +221,16 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
       transactionFields: nextTransactionFields
     });
   };
+
+  private handleSignedTransaction(signedTx: string) {
+    const txToSubmit = signedTx;
+    console.log(txToSubmit);
+    return txToSubmit;
+  }
+
+  // private broadCastSignedTransaction(){
+
+  // }
 
   // private handleReset = () => this.setState(getInitialState());
 }

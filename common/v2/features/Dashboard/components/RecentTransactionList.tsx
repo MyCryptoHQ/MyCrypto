@@ -1,16 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { Address, CollapsibleTable } from '@mycrypto/ui';
-
-import { Amount } from 'v2/components';
-import DashboardPanel from './DashboardPanel';
-import TransactionLabel from './TransactionLabel';
-import './RecentTransactionList.scss';
-
 // Legacy
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import { AddressBook, ExtendedAccount, TransactionData } from 'v2/services';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Amount } from 'v2/components';
 import { truncate } from 'v2/libs';
+import { AddressBook, ExtendedAccount, TransactionData } from 'v2/services';
+import DashboardPanel from './DashboardPanel';
+import './RecentTransactionList.scss';
+import TransactionLabel from './TransactionLabel';
 
 interface Props {
   className?: string;

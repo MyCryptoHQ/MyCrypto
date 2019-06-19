@@ -1,7 +1,7 @@
-import * as serviceTypes from 'v2/services/types';
 import { SecureWalletName } from 'v2/config/data';
-import { InsecureWalletName } from 'v2/features/Wallets/types';
 import { ETH_DEFAULT } from 'v2/config/dpaths';
+import { InsecureWalletName } from 'v2/features/Wallets/types';
+import * as serviceTypes from 'v2/services/types';
 
 export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';

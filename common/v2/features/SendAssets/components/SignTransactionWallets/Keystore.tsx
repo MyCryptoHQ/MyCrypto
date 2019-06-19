@@ -28,10 +28,12 @@ interface Props {
   wallet: any;
   isWalletPending: boolean;
   isPasswordPending: boolean;
+  signedTransaction: string;
   onChange(value: KeystoreValueState): void;
   onUnlock(param: any): void;
   showNotification(level: string, message: string): notificationsActions.TShowNotification;
   onNext(signedTransaction: string): void;
+  handleSignedTransaction(signedTx: string): void;
 }
 
 export interface KeystoreValueState {
@@ -175,7 +177,7 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
       })
       .catch(e => {
         if (e) {
-          this.setState({ hasCorrectPassword: false });
+          this.setState({ hasCorrectPassword: false, isSigning: false });
         }
       });
   }
@@ -198,8 +200,9 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
       this.state.file,
       this.state.password
     );
-    const signedTransaction: string = await signerWallet.sign(transaction);
-    console.log(signedTransaction);
+    const rawSignedTransaction: string = await signerWallet.sign(transaction);
+    const signedTransaction = JSON.stringify(rawSignedTransaction);
+    this.props.handleSignedTransaction(signedTransaction);
     this.props.onNext(signedTransaction);
   }
   private onPasswordChange = (e: any) => {
