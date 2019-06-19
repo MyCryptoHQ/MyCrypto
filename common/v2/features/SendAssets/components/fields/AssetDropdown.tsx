@@ -24,11 +24,14 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
 }
 
 function AssetDropdown({ assets, name, value, onSelect }: Props<IAsset>) {
+  const filteredAssets: IAsset[] = assets.filter(
+    (asset, index) => assets.indexOf(asset) >= index
+  ); /* Removes duplicates */
   return (
     <Dropdown
       name={name}
       placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
-      options={assets}
+      options={filteredAssets}
       onChange={(option: IAsset) => onSelect(option)}
       optionComponent={AssetOption}
       value={value}

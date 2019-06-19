@@ -21,17 +21,17 @@ export interface ITxFields {
   accountType: WalletName | undefined; // Type of wallet selected.
   network: Network | undefined;
   gasEstimates: GasEstimates;
+  resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
+  isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
 }
 
 export interface ISendState {
   step: number;
   transactionFields: ITxFields;
   isFetchingAccountValue: boolean; // Used to indicate looking up user's balance of currently-selected asset.
-  isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   isAddressLabelValid: boolean; // Used to indicate if recipient-address is found in the address book.
   isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
   isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-  resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
   recipientAddressLabel: string; //  Recipient-address label found in address book.
   asset: IAsset | Asset | undefined;
   assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction

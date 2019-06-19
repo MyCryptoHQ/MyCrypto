@@ -141,7 +141,6 @@
     "SEND_AMOUNT_SHORT": "Amount",
     "SEND_CUSTOM": "Add Custom Token",
     "SEND_ASSETS_ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select Asset",
     "SEND_ASSETS_AMOUNT_LABEL": "Amount",
     "SEND_ASSETS_AMOUNT_LABEL_ACTION": "Send max",
     "SCAN_TOKENS": "Scan For Tokens",
@@ -948,6 +947,8 @@
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
     "SELECT_NETWORK_ERROR": "Please select network.",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset"
+    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset",
+    "REQUIRED": "Required",
+    "TO_FIELD_ERROR": "Enter a valid address or ENS name"
   }
 }

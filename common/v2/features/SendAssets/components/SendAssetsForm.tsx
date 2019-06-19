@@ -1,12 +1,13 @@
 import { Button, Input } from '@mycrypto/ui';
+import { ENSStatus } from 'components/AddressFieldFactory/AddressInputFactory';
 import { WhenQueryExists } from 'components/renderCbs';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import React, { useContext } from 'react';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
-import { fetchGasPriceEstimates, getNonce } from 'v2';
+import { fetchGasPriceEstimates, getNonce, getResolvedENSAddress } from 'v2';
 import { InlineErrorMsg } from 'v2/components';
-import ProviderHandler from 'v2/config/networks/providerHandler';
+import { getGasEstimate } from 'v2/features/Gas';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
@@ -96,16 +97,37 @@ export default function SendAssetsForm({
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
 
-          const estimateGasHandler = () => {
-            if (values && values.network) {
-              const provider = new ProviderHandler(values.network);
-              const processedTx = processFormDataToTx(values);
-              if (processedTx) {
-                provider
-                  .estimateGas(processedTx)
-                  .then(data => setFieldValue('gasLimitEstimated', data));
-              }
+          const handleGasEstimate = async () => {
+            if (!values || !values.network) {
+              return;
             }
+            const finalTx = processFormDataToTx(values);
+            if (!finalTx) {
+              return;
+            }
+            const gas = await getGasEstimate(values.network, finalTx);
+            setFieldValue('gasLimitEstimated', gas);
+          };
+
+          const handleENSResolve = async (name: string) => {
+            if (!values || !values.network) {
+              return;
+            }
+            setFieldValue('isResolvingNSName', true);
+            const resolvedAddress: string | null = await getResolvedENSAddress(
+              values.network,
+              name
+            );
+            setFieldValue('isResolvingNSName', false);
+            resolvedAddress === null
+              ? setFieldValue('resolvedNSAddress', '0x0')
+              : setFieldValue('resolvedNSAddress', resolvedAddress);
+          };
+
+          const handleFieldReset = () => {
+            setFieldValue('account', undefined);
+            setFieldValue('recipientAddress', '');
+            setFieldValue('amount', '');
           };
 
           const setAmountFieldToAssetMax = () =>
@@ -151,14 +173,15 @@ export default function SendAssetsForm({
                       assets={assets}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
-                        form.setFieldValue('account', undefined);
+                        handleFieldReset();
+
                         if (option.network) {
                           fetchGasPriceEstimates(option.network).then(data => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
                           form.setFieldValue('network', getNetworkByName(option.network));
-                          estimateGasHandler();
+                          handleGasEstimate();
                         }
                       }}
                     />
@@ -181,8 +204,9 @@ export default function SendAssetsForm({
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
-                        estimateGasHandler();
                         handleNonceEstimate(option);
+                        updateState({ transactionFields: { account: option } });
+                        handleGasEstimate();
                       }}
                     />
                   )}
@@ -214,10 +238,18 @@ export default function SendAssetsForm({
                   {translate('SEND_ADDR')}
                 </label>
                 <EthAddressField
+                  handleENSResolve={handleENSResolve}
                   error={errors.recipientAddress}
                   touched={touched.recipientAddress}
+                  values={values}
                   fieldName="recipientAddress"
                   placeholder="Enter an Address or Contact"
+                />
+                <ENSStatus
+                  ensAddress={values.recipientAddress}
+                  isLoading={values.isResolvingNSName}
+                  rawAddress={values.resolvedNSAddress}
+                  chainId={values.network ? values.network.chainId : 1}
                 />
               </fieldset>
               {/* Amount */}
@@ -262,7 +294,7 @@ export default function SendAssetsForm({
                   <GasPriceSlider
                     transactionFieldValues={values}
                     handleChange={(e: string) => {
-                      estimateGasHandler();
+                      handleGasEstimate();
                       updateState({ transactionFields: { gasPriceSlider: e } });
                       handleChange(e);
                     }}
