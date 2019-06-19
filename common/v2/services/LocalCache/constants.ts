@@ -30,9 +30,11 @@ export const CACHE_INIT_DEV: LocalCache = {
       label: 'Foo',
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       network: 'ETH',
-      assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0' }],
+      assets: [
+        { uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0', timestamp: Date.now() }
+      ],
       wallet: SecureWalletName.WEB3,
-      balance: 1e18,
+      balance: '1',
       transactions: [
         {
           txHash: '0xf1e4e01312c3e465376cc6eeed1138d5a870363e1a1a88f54473801b214d3a69',

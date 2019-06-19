@@ -6,7 +6,7 @@ import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
 import { GasEstimates } from 'v2/api/gas';
 import { ITxFields } from '../../types';
-import './styles/GasPriceSlider.scss';
+import './GasPriceSlider.scss';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
@@ -55,9 +55,9 @@ export default class SimpleGas extends Component<Props> {
       <Field
         name="gasPriceSlider"
         render={({ field, form }: FieldProps<ITxFields>) => (
-          <div className="SimpleGas row form-group">
-            <div className="SimpleGas-input-group">
-              <div className="SimpleGas-slider">
+          <div className="GasPriceSlider">
+            <div className="GasPriceSlider-input-group">
+              <div className="GasPriceSlider-slider">
                 <SliderWithTooltip
                   {...field}
                   onChange={e => form.setFieldValue(field.name, e)}
@@ -69,7 +69,7 @@ export default class SimpleGas extends Component<Props> {
                   tipFormatter={this.formatTooltip}
                   step={bounds.min < 1 ? 0.1 : 1}
                 />
-                <div className="SimpleGas-slider-labels">
+                <div className="GasPriceSlider-slider-labels">
                   <span>{translate('TX_FEE_SCALE_LEFT')}</span>
                   <span>{translate('TX_FEE_SCALE_RIGHT')}</span>
                 </div>
