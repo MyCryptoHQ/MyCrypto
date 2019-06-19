@@ -1,14 +1,12 @@
-import React, { Component } from 'react';
 import { Address, Button, Network } from '@mycrypto/ui';
-
-import { Amount } from 'v2/components';
-import './ConfirmTransaction.scss';
-
+import feeIcon from 'common/assets/images/icn-fee.svg';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
-import feeIcon from 'common/assets/images/icn-fee.svg';
+import React, { Component } from 'react';
+import { Amount } from 'v2/components';
 import { AddressBookContext } from 'v2/providers';
 import { ISendState } from '../types';
+import './ConfirmTransaction.scss';
 
 interface Props {
   stateValues: ISendState;
@@ -31,6 +29,7 @@ export default class ConfirmTransaction extends Component<Props> {
   public render() {
     const {
       stateValues: {
+        signedTransaction,
         transactionFields: { recipientAddress, amount, asset, account: { address, label } }
       },
       onNext
@@ -39,6 +38,7 @@ export default class ConfirmTransaction extends Component<Props> {
 
     return (
       <div className="ConfirmTransaction">
+        {signedTransaction}
         <AddressBookContext.Consumer>
           {({ addressBook }) => {
             let recipientLabel: string = 'Unknown';

@@ -76,7 +76,8 @@ const getInitialState = (): ISendState => {
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
-      assetType: getQueryParamWithKey(params, 'sendmode') === 'token' ? 'erc20' : 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
+      assetType: getQueryParamWithKey(params, 'sendmode') === 'token' ? 'erc20' : 'base', // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
+      signedTransaction: ''
     };
   } else {
     return {
@@ -126,7 +127,8 @@ const getInitialState = (): ISendState => {
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
-      assetType: 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
+      assetType: 'base', // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
+      signedTransaction: ''
     };
   }
 };
@@ -179,7 +181,6 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
               updateState={this.updateState}
               onSubmit={this.updateTransactionFields}
               stateValues={this.state}
-              handleSignedTransaction={this.handleSignedTransaction}
             />
           )}
         </ContentPanel>
@@ -219,16 +220,6 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
       transactionFields: nextTransactionFields
     });
   };
-
-  private handleSignedTransaction(signedTx: string) {
-    const txToSubmit = signedTx;
-    console.log(txToSubmit);
-    return txToSubmit;
-  }
-
-  // private broadCastSignedTransaction(){
-
-  // }
 
   // private handleReset = () => this.setState(getInitialState());
 }

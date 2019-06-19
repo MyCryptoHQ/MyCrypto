@@ -1,8 +1,8 @@
-import { IAsset } from 'v2/types';
-import { Asset, assetMethod } from 'v2/services/Asset/types';
-import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
-import { WalletName } from 'v2/config/data';
 import { GasEstimates } from 'v2/api/gas';
+import { WalletName } from 'v2/config/data';
+import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
+import { Asset, assetMethod } from 'v2/services/Asset/types';
+import { IAsset } from 'v2/types';
 
 export interface ITxFields {
   asset: IAsset | undefined;
@@ -35,4 +35,5 @@ export interface ISendState {
   recipientAddressLabel: string; //  Recipient-address label found in address book.
   asset: IAsset | Asset | undefined;
   assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
+  signedTransaction: string;
 }

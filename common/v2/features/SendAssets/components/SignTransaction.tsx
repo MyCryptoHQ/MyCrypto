@@ -20,18 +20,11 @@ interface Props {
   onNext(): void;
   onSubmit(transactionFields: ITxFields): void;
   updateState(state: DeepPartial<ISendState>): void;
-  handleSignedTransaction(signedTx: string): void;
 }
 
 export default class SignTransaction extends Component<Props> {
   public render() {
-    const {
-      stateValues,
-      transactionFields,
-      onNext,
-      updateState,
-      handleSignedTransaction
-    } = this.props;
+    const { stateValues, transactionFields, onNext, updateState } = this.props;
     const currentWalletType: WalletType = transactionFields.account.wallet;
 
     switch (currentWalletType) {
@@ -63,8 +56,13 @@ export default class SignTransaction extends Component<Props> {
           <SignTransactionKeystore
             stateValues={stateValues}
             transactionFields={transactionFields}
-            onNext={onNext}
-            handleSignedTransaction={handleSignedTransaction}
+            onNext={signedTransaction => {
+              const nextState: DeepPartial<ISendState> = {
+                signedTransaction
+              };
+              updateState(nextState);
+              onNext();
+            }}
           />
         );
       default:
