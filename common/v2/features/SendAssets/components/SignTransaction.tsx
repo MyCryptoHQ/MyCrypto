@@ -4,6 +4,7 @@ import { WalletName } from 'v2/config/data';
 import { ISendState, ITxFields } from '../types';
 import './SignTransaction.scss';
 import {
+  SignTransactionKeystore,
   SignTransactionLedger,
   SignTransactionMetaMask,
   SignTransactionPrivateKey,
@@ -55,7 +56,6 @@ export default class SignTransaction extends Component<Props> {
           <SignTransactionKeystore
             stateValues={stateValues}
             transactionFields={transactionFields}
-            //@ts-ignoretslint-ignore
             onNext={signedTransaction => {
               const nextState: DeepPartial<ISendState> = {
                 transactionFields: { account: { transactions: [{ txHash: signedTransaction }] } }
@@ -65,9 +65,6 @@ export default class SignTransaction extends Component<Props> {
             }}
           />
         );
-
-      // case 'keystoreFile':
-      //   return <SignTransactionKeystore />;
       default:
         return null;
     }

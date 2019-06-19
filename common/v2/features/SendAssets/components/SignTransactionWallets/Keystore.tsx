@@ -41,6 +41,7 @@ export interface KeystoreValueState {
   valid: boolean | undefined;
   walletState: WalletSigningState;
   hasCorrectPassword: boolean | undefined;
+  isSigning: boolean;
 }
 
 enum WalletSigningState {
@@ -71,12 +72,13 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
     filename: undefined,
     valid: undefined,
     walletState: WalletSigningState.UNKNOWN,
-    hasCorrectPassword: undefined
+    hasCorrectPassword: undefined,
+    isSigning: false
   };
 
   public render() {
     const { isWalletPending } = this.props;
-    const { file, password, filename, walletState, hasCorrectPassword } = this.state;
+    const { file, password, filename, walletState, hasCorrectPassword, isSigning } = this.state;
     const passReq = file ? isPassRequired(file) : true;
     const unlockDisabled = !file || (passReq && !password);
 
@@ -117,7 +119,7 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
                   <span>{filename}</span>
                 </label>
               </label>
-              {isWalletPending ? <Spinner /> : ''}
+
               <label className="SignTransactionKeystore-password">Your Password</label>
               <Input
                 isValid={password ? password.length > 0 : false}
@@ -134,10 +136,14 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
               Because we never save, store, or transmit your secret, you need to sign each
               transaction in order to send it. MyCrypto puts YOU in control of your assets.
             </div>
-            <div>
-              <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
-                Sign Transaction
-              </button>
+            <div className="SignTransactionKeystore-spinner">
+              {isSigning ? (
+                <Spinner />
+              ) : (
+                <button className="btn btn-primary btn-block" disabled={unlockDisabled}>
+                  Sign Transaction
+                </button>
+              )}
             </div>
           </form>
           <div className="SignTransactionKeystore-help">
@@ -161,6 +167,7 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
   };
 
   private async getPublicKey() {
+    this.setState({ isSigning: true });
     await ethers.Wallet.fromEncryptedJson(this.state.file, this.state.password)
       .then(wallet => {
         const checkSumAddress = utils.getAddress(wallet.address);
@@ -191,7 +198,7 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
       this.state.file,
       this.state.password
     );
-    const signedTransaction = await signerWallet.sign(transaction);
+    const signedTransaction: string = await signerWallet.sign(transaction);
     console.log(signedTransaction);
     this.props.onNext(signedTransaction);
   }

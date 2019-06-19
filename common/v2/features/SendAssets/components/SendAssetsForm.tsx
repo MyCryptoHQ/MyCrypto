@@ -195,15 +195,6 @@ export default function SendAssetsForm({
                   handleChange(e);
                 }}
               /> */}
-              <label htmlFor="recipientAddress" className="input-group-header">
-                {translate('SEND_ADDR')}
-              </label>
-              <EthAddressField
-                error={errors.recipientAddress}
-                touched={touched.recipientAddress}
-                fieldName="recipientAddress"
-                placeholder="Enter an Address or Contact"
-              />
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="recipientAddress" className="input-group-header">
                   {translate('SEND_ADDR')}
