@@ -79,22 +79,18 @@ export const initNetworks = () => {
   const newStorage = getCacheRaw();
   const allNetworks: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
   allNetworks.map((en: any) => {
-    const newContracts: string[] = [];
-    const newAssets: string[] = [];
-    Object.keys(newStorage.contracts).map(entry => {
-      if (newStorage.contracts[entry].networkId === en) {
-        newContracts.push(entry);
-      }
-    });
-    Object.keys(newStorage.assets).map(entry => {
-      if (newStorage.assets[entry].networkId === en) {
-        newAssets.push(entry);
-      }
-    });
+    const newContracts: [string, types.Contract][] = Object.entries(newStorage.contracts).filter(
+      ([, contract]) => contract.networkId === en
+    );
+
+    const newAssets: [string, types.Asset][] = Object.entries(newStorage.assets).filter(
+      ([, asset]) => asset.networkId === en
+    );
+
     const baseAssetID = utils.generateUUID();
     const newLocalNetwork: types.Network = {
-      contracts: newContracts,
-      assets: [...newAssets],
+      contracts: Object.keys(newContracts),
+      assets: Object.keys(newAssets),
       nodes: [],
       baseAsset: baseAssetID,
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
@@ -298,11 +294,10 @@ export const initTestAccounts = () => {
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
       network: 'Ethereum',
       assets: [
-        { uuid: '10e14757-78bb-4bb2-a17a-8333830f6698', balance: '0.01' },
-        { uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702', balance: '0.001' }
+        { uuid: '10e14757-78bb-4bb2-a17a-8333830f6698', balance: '0.01', timestamp: Date.now() }
       ],
       wallet: SecureWalletName.WEB3,
-      balance: 1e16,
+      balance: '0.01',
       dPath: `m/44'/60'/0'/0/0`,
       timestamp: 0,
       transactions: []
@@ -311,9 +306,9 @@ export const initTestAccounts = () => {
       label: 'Goerli ETH Test 1',
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
       network: 'Goerli',
-      assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0.01' }],
+      assets: [],
       wallet: SecureWalletName.WEB3,
-      balance: 1e16,
+      balance: '0.01',
       dPath: `m/44'/60'/0'/0/0`,
       timestamp: 0,
       transactions: []
