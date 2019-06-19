@@ -85,6 +85,7 @@ export default function SendAssetsForm({
       <Formik
         initialValues={transactionFields}
         validationSchema={SendAssetsSchema}
+        validateOnChange={false}
         onSubmit={(fields: ITxFields) => {
           onSubmit(fields);
           onNext();
