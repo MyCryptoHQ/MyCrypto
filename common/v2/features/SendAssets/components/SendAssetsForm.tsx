@@ -4,13 +4,18 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import React, { useContext } from 'react';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
-import { fetchGasPriceEstimates } from 'v2';
+import { fetchGasPriceEstimates, getNonce } from 'v2';
 import { InlineErrorMsg } from 'v2/components';
 import ProviderHandler from 'v2/config/networks/providerHandler';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
-import { Asset, AssetBalanceObject, ExtendedAccount as IExtendedAccount } from 'v2/services';
+import {
+  Asset,
+  AssetBalanceObject,
+  ExtendedAccount,
+  ExtendedAccount as IExtendedAccount
+} from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { IAsset, TSymbol } from 'v2/types';
 import * as Yup from 'yup';
@@ -102,9 +107,18 @@ export default function SendAssetsForm({
               }
             }
           };
+
           const setAmountFieldToAssetMax = () =>
             // @TODO get asset balance and subtract gas cost
             setFieldValue('amount', '1000');
+
+          const handleNonceEstimate = async (account: ExtendedAccount) => {
+            if (!values || !values.network) {
+              return;
+            }
+            const nonce: number = await getNonce(values.network, account);
+            setFieldValue('nonceEstimated', nonce.toString());
+          };
 
           return (
             <Form className="SendAssetsForm">
@@ -167,8 +181,8 @@ export default function SendAssetsForm({
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
-                        updateState({ transactionFields: { account: option } });
                         estimateGasHandler();
+                        handleNonceEstimate(option);
                       }}
                     />
                   )}
