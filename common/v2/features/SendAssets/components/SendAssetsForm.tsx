@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
-import { Formik, Form, Field, FieldProps } from 'formik';
+import { Formik, Form, Field, FieldProps, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
-import { fetchGasPriceEstimates, getNonce, getResolvedENSAddress } from 'v2';
 import { AccountContext } from 'v2/providers';
 import {
   ExtendedAccount as IExtendedAccount,
@@ -17,7 +16,9 @@ import {
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { IAsset, TSymbol } from 'v2/types';
 import { InlineErrorMsg } from 'v2/components';
-import { getGasEstimate } from 'v2/features/Gas';
+import { getNonce } from 'v2/features/Nonce';
+import { getGasEstimate, fetchGasPriceEstimates } from 'v2/features/Gas';
+import { getResolvedENSAddress } from 'v2/features/Ens';
 import { ISendState, ITxFields } from '../types';
 import {
   AccountDropdown,
@@ -37,10 +38,13 @@ import {
 } from './validators/validators';
 import './SendAssetsForm.scss';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
-import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
-import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { ENSStatus } from 'components/AddressFieldFactory/AddressInputFactory';
+import { GasEstimates } from 'v2/api/gas';
+import { validateTxFields } from 'v2/libs/validators';
+
+import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
+import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 
 interface Props {
   stateValues: ISendState;
@@ -64,7 +68,6 @@ const SendAssetsSchema = Yup.object().shape({
   amount: Yup.number()
     .required('Required')
     .min(0.001, 'Minimun required')
-    .max(1001, 'Above the balance')
 });
 
 export default function SendAssetsForm({
@@ -91,6 +94,7 @@ export default function SendAssetsForm({
         initialValues={transactionFields}
         validationSchema={SendAssetsSchema}
         validateOnChange={false}
+        validateOnBlur={true}
         onSubmit={(fields: ITxFields) => {
           onSubmit(fields);
           onNext();
@@ -101,6 +105,9 @@ export default function SendAssetsForm({
 
           const handleGasEstimate = async () => {
             if (!values || !values.network) {
+              return;
+            }
+            if (!validateTxFields(values)) {
               return;
             }
             const finalTx = processFormDataToTx(values);
@@ -131,7 +138,7 @@ export default function SendAssetsForm({
             setFieldValue('recipientAddress', '');
             setFieldValue('amount', '');
           };
-          
+
           const setAmountFieldToAssetMax = () =>
             // @TODO get asset balance and subtract gas cost
             setFieldValue('amount', '1000');
@@ -149,9 +156,7 @@ export default function SendAssetsForm({
               <React.Fragment>
                 {'ITxFields123: '}
                 <br />
-                <pre style={{ fontSize: '0.5rem' }}>
-                  {JSON.stringify(processFormDataToTx(values), null, 2)}
-                </pre>
+                <pre style={{ fontSize: '0.5rem' }}>{JSON.stringify(errors, null, 2)}</pre>
               </React.Fragment>
               <br />
               {'Formik Fields: '}
@@ -166,7 +171,7 @@ export default function SendAssetsForm({
                 <label htmlFor="asset" className="input-group-header">
                   {translate('X_ASSET')}
                 </label>
-                <Field
+                <FastField
                   name="asset"
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
@@ -178,9 +183,9 @@ export default function SendAssetsForm({
                         handleFieldReset();
 
                         if (option.network) {
-                          fetchGasPriceEstimates(option.network).then(data => {
+                          fetchGasPriceEstimates(option.network).then((data: GasEstimates) => {
                             form.setFieldValue('gasEstimates', data);
-                            form.setFieldValue('gasPriceSlider', data.fast);
+                            form.setFieldValue('gasPriceSlider', data.fast.toString());
                           });
                           form.setFieldValue('network', getNetworkByName(option.network));
                           handleGasEstimate();
@@ -195,7 +200,7 @@ export default function SendAssetsForm({
                 <label htmlFor="account" className="input-group-header">
                   {translate('X_ADDRESS')}
                 </label>
-                <Field
+                <FastField
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => (
@@ -241,7 +246,7 @@ export default function SendAssetsForm({
                     {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION').toLowerCase()}
                   </div>
                 </label>
-                <Field
+                <FastField
                   name="amount"
                   render={({ field }: FieldProps) => (
                     <Input value={field.value} placeholder={'0.00'} {...field} />
@@ -304,7 +309,7 @@ export default function SendAssetsForm({
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
-                        <Field
+                        <FastField
                           name="gasPriceField"
                           validate={validateGasPriceField}
                           render={({ field, form }: FieldProps<ITxFields>) => (
@@ -320,7 +325,7 @@ export default function SendAssetsForm({
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
-                        <Field
+                        <FastField
                           name="gasLimitField"
                           validate={validateGasLimitField}
                           render={({ field, form }: FieldProps<ITxFields>) => (
@@ -336,7 +341,7 @@ export default function SendAssetsForm({
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce">Nonce (?)</label>
-                        <Field
+                        <FastField
                           name="nonceField"
                           validate={validateNonceField}
                           render={({ field, form }: FieldProps<ITxFields>) => (
@@ -362,7 +367,7 @@ export default function SendAssetsForm({
                     </div>
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
-                      <Field
+                      <FastField
                         name="data"
                         validate={validateDataField}
                         render={({ field, form }: FieldProps<ITxFields>) => (

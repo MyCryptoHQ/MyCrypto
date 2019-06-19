@@ -18,6 +18,7 @@ import { JsonRpcResponse } from './nodes/rpc/types';
 import { normalise } from './ens';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import { getValidTLDsForChain, ITLDCollection } from './ens/networkConfigs';
+import { ITxFields } from 'v2/features/SendAssets/types';
 
 export function getIsValidAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {
@@ -34,6 +35,9 @@ export function getIsValidENSAddressFunction(chainId: number) {
 export function isValidAddress(address: string, chainId: number) {
   return getIsValidAddressFunction(chainId)(address);
 }
+
+export const isValidAmount = (decimal: number) => (amount: string) =>
+  validPositiveNumber(+amount) && validDecimal(amount, decimal);
 
 function isValidETHLikeAddress(address: string, extraChecks?: () => boolean): boolean {
   if (address === '0x0000000000000000000000000000000000000000') {
@@ -446,3 +450,22 @@ export function isValidAddressLabel(
 
   return result;
 }
+
+export const validateTxFields = (tx: ITxFields): true | undefined => {
+  if (!isValidETHAddress(tx.recipientAddress)) {
+    console.log('failed recipient address');
+    return;
+  }
+  if (!isValidHex(tx.data)) {
+    console.log('failed data field');
+    return;
+  }
+  if (!gasPriceValidator(tx.gasPriceSlider) || !gasPriceValidator(tx.gasPriceField)) {
+    console.log('failed gasPriceSlider || gasPriceField');
+    return;
+  }
+  if (!isValidAmount(parseFloat(tx.amount))) {
+    console.log('failed amount');
+    return;
+  }
+};
