@@ -10,7 +10,7 @@ import { links } from './constants';
 import { COLORS } from 'v2/features/constants';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { knowledgeBaseURL } from 'v2/config';
+import { KNOWLEDGE_BASE_URL } from 'v2/config';
 
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
@@ -493,7 +493,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
     }));
 
   private openHelpSupportPage = (): void => {
-    window.open(knowledgeBaseURL, '_blank');
+    window.open(KNOWLEDGE_BASE_URL, '_blank');
     AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HEADER, 'Help & Support clicked');
   };
 }
