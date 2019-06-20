@@ -4,7 +4,7 @@ import { Input } from '@mycrypto/ui';
 
 import { isValidETHAddress } from 'libs/validators';
 import { InlineErrorMsg } from 'v2/components';
-import { isValidENSName } from 'v2/libs/validators';
+import { getIsValidENSAddressFunction } from 'v2/libs/validators';
 import { translateRaw } from 'translations';
 import { getENSTLDForChain } from 'v2/libs/ens/networkConfigs';
 import { ITxFields } from '../../types';
@@ -37,7 +37,12 @@ function ETHAddressField({
     if (!value) {
       errorMsg = translateRaw('REQUIRED');
     } else if (!isValidETHAddress(value)) {
-      if (!isValidENSName(value)) {
+      if (values && values.network) {
+        const isValidENS = getIsValidENSAddressFunction(values.network.chainId);
+        if (!isValidENS(value)) {
+          errorMsg = translateRaw('TO_FIELD_ERROR');
+        }
+      } else {
         errorMsg = translateRaw('TO_FIELD_ERROR');
       }
     }
