@@ -74,13 +74,13 @@ export default class GenerateKeystoreFilePanel extends Component<Props> {
   };
 
   public validateForm = (): boolean => {
-    this.setState({ password1Error: '', password2Error: '' });
     const { password1, password2 } = this.state;
     const minLength = 8;
 
     if (password1.length < minLength) {
       this.setState({
-        password1Error: translate('INPUT_ERROR_PASSWORD_TOO_SHORT')
+        password1Error: translate('INPUT_ERROR_PASSWORD_TOO_SHORT'),
+        password2Error: ''
       });
       return false;
     }
@@ -88,20 +88,21 @@ export default class GenerateKeystoreFilePanel extends Component<Props> {
     const passwordValidation = password1 ? zxcvbn(password1) : null;
     if (passwordValidation && passwordValidation.score < 3) {
       this.setState({
-        password1Error: `${translateRaw('WEAK_PASSWORD')} ${passwordValidation.feedback.warning}`
+        password1Error: `${translateRaw('WEAK_PASSWORD')} ${passwordValidation.feedback.warning}`,
+        password2Error: ''
       });
-
       return false;
     }
 
     if (password1 !== password2) {
       this.setState({
+        password1Error: '',
         password2Error: translate('INPUT_ERROR_PASSWORDS_DONT_MATCH')
       });
-
       return false;
     }
 
+    this.setState({ password1Error: '', password2Error: '' });
     return true;
   };
 
@@ -113,9 +114,8 @@ export default class GenerateKeystoreFilePanel extends Component<Props> {
       try {
         this.setState({ generatingKeystore: true });
         await generateWalletAndContinue(this.state.password1);
-        this.setState({ generatingKeystore: false });
       } catch (e) {
-        console.log(e);
+        console.debug(e);
       }
     }
   };

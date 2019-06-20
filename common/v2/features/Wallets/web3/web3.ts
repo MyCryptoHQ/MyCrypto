@@ -29,7 +29,7 @@ export const initWeb3Node = async () => {
     name: id,
     isCustom: false,
     type: 'web3',
-    url: 'undefined',
+    url: '',
     service: Web3Service,
     hidden: true,
     network: web3Network

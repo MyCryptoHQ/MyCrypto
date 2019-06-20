@@ -98,7 +98,7 @@ const ContentPanelTop =
 `;
 
 const StyledPanel = styled(Panel)`
-  padding: 42px 70px 42px 70px;
+  padding: 42px 70px;
 
   @media (max-width: 700px) {
     padding-left: 15px;

@@ -11,37 +11,13 @@ import moreIcon from 'common/assets/images/icn-more.svg';
 import {
   getCurrentsFromContext,
   getBalanceFromAccount,
-  getBaseAssetFromAccount,
-  getAccountBalances
+  getBaseAssetFromAccount
 } from 'v2/libs/accounts/accounts';
+
 import { Link } from 'react-router-dom';
 
-// Fake Data
-/*const balances = [
-  {
-    asset: 'Ethereum',
-    amount: '14.13 ETH',
-    value: '$3,307.95'
-  },
-  {
-    asset: 'OmiseGO',
-    amount: '208.321234 OMG',
-    value: '$646.80'
-  },
-  {
-    asset: 'Aragon',
-    amount: '200 ANT',
-    value: '$159.63'
-  },
-  {
-    asset: 'Other Tokens',
-    amount: <Link to="/dashboard">View Details</Link>,
-    value: '$140.03'
-  }
-];*/
-
 function WalletBreakdown() {
-  const { accounts, updateAccount } = useContext(AccountContext);
+  const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const balances: any[] = [];
   const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
@@ -49,15 +25,12 @@ function WalletBreakdown() {
     settings.dashboardAccounts
   );
 
-  currentAccounts.map((en: ExtendedAccount) => {
-    const baseAsset = getBaseAssetFromAccount(en);
+  currentAccounts.forEach((account: ExtendedAccount) => {
+    const baseAsset = getBaseAssetFromAccount(account);
     if (!balances.find(asset => asset.asset === (baseAsset ? baseAsset.name : 'Unknown Asset'))) {
       balances.push({
         asset: baseAsset ? baseAsset.name : 'Unknown Asset',
-        amount:
-          -(en.timestamp - Date.now()) >= 150000
-            ? getAccountBalances(currentAccounts, updateAccount)
-            : parseFloat(getBalanceFromAccount(en)).toFixed(4),
+        amount: parseFloat(getBalanceFromAccount(account)).toFixed(4),
         value: 0
       });
     } else {
@@ -65,14 +38,14 @@ function WalletBreakdown() {
         asset => asset.asset === (baseAsset ? baseAsset.name : 'Unknown Asset')
       );
       balanceToUpdate.amount = (
-        parseFloat(balanceToUpdate.amount) + parseFloat(getBalanceFromAccount(en))
+        parseFloat(balanceToUpdate.amount) + parseFloat(getBalanceFromAccount(account))
       ).toFixed(4);
     }
-  });
-  balances.push({
-    asset: 'Other Tokens',
-    amount: <Link to="/dashboard">View Details</Link>,
-    value: '$0'
+    balances.push({
+      asset: 'Other Tokens',
+      amount: <Link to="/dashboard">View Details</Link>,
+      value: '$0'
+    });
   });
 
   return (

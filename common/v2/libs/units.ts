@@ -68,7 +68,7 @@ const stripRightZeros = (str: string) => {
   return strippedStr === '' ? null : strippedStr;
 };
 
-const baseToConvertedUnit = (value: string, decimal: number) => {
+export const baseToConvertedUnit = (value: string, decimal: number) => {
   if (decimal === 0) {
     return value;
   }
@@ -78,7 +78,7 @@ const baseToConvertedUnit = (value: string, decimal: number) => {
   return fractionPart ? `${integerPart}.${fractionPart}` : `${integerPart}`;
 };
 
-const convertedToBaseUnit = (value: string, decimal: number) => {
+export const convertedToBaseUnit = (value: string, decimal: number) => {
   if (decimal === 0) {
     return value;
   }

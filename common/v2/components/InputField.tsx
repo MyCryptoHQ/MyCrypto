@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
-import _ from 'lodash';
 
 import { COLORS } from 'v2/features/constants';
 import { InlineErrorMsg } from 'v2/components';
@@ -143,13 +142,15 @@ export class InputField extends Component<Props> {
 
   public handleKeyUp = () => {
     const { validate } = this.props;
+    if (!validate) {
+      return;
+    }
+
     clearTimeout(this.validatorTimeout);
 
     // Call validation function 500ms after the user stops typing
     this.validatorTimeout = setTimeout(() => {
-      if (validate) {
-        validate();
-      }
+      validate();
     }, 500);
   };
 }

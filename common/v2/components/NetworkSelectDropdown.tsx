@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ComboBox } from '@mycrypto/ui';
 
 import { translate } from 'translations';
@@ -12,8 +12,17 @@ interface Props {
   onChange(network: string): void;
 }
 
+const DEFAULT_NETWORK = 'Ethereum';
+
 function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
   const { networks } = useContext(NetworksContext);
+
+  // set default network if none selected
+  useEffect(() => {
+    if (!network) {
+      onChange(DEFAULT_NETWORK);
+    }
+  }, []);
 
   // @ADD_ACCOUNT_TODO: The difference in accountType is likely causing
   // the absence of list.
@@ -28,7 +37,7 @@ function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
       <ComboBox
         value={network}
         items={new Set(validNetworks.sort())}
-        placeholder="Ethereum"
+        placeholder={DEFAULT_NETWORK}
         onChange={({ target: { value } }) => onChange(value)}
       />
     </div>

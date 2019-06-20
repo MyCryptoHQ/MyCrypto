@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { knowledgeBaseURL as KB_URL } from 'v2/config';
+import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import { NewTabLink } from 'components/ui';
 import { unlockWeb3 } from 'v2/features/Wallets';

@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { generateMnemonic, mnemonicToSeed } from 'bip39';
 import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-util';
 import HDkey from 'hdkey';
-import _ from 'lodash';
+import { uniq } from 'lodash';
 
 import { Layout } from 'v2/features';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
@@ -38,9 +38,9 @@ class CreateMnemonic extends Component<Props> {
   public state: State = {
     stage: MnemonicStages.SelectNetwork,
     words: [],
-    network: 'Ethereum',
+    network: '',
     accountType: InsecureWalletName.MNEMONIC_PHRASE,
-    path: `m/44'/60'/0'/0`,
+    path: '',
     address: ''
   };
 
@@ -49,6 +49,7 @@ class CreateMnemonic extends Component<Props> {
     const currentStep: number = mnemonicFlow.indexOf(stage) + 1;
     const totalSteps: number = mnemonicFlow.length;
     const ActivePanel: ReactType = mnemonicStageToComponentHash[stage];
+
     const actions = {
       onBack: this.regressToPreviousStage,
       onNext: this.advanceToNextStage,
@@ -59,14 +60,12 @@ class CreateMnemonic extends Component<Props> {
       addCreatedAccountAndRedirectToDashboard: this.addCreatedAccountAndRedirectToDashboard
     };
 
+    const { words, network, accountType, path, address } = this.state;
+    const props = { words, network, accountType, path, address };
+
     return (
       <Layout centered={true}>
-        <ActivePanel
-          currentStep={currentStep}
-          totalSteps={totalSteps}
-          {...this.state}
-          {...actions}
-        />
+        <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
       </Layout>
     );
   }
@@ -103,7 +102,7 @@ class CreateMnemonic extends Component<Props> {
     let words = generateMnemonic().split(' ');
 
     // Prevent duplicate words in mnemonic phrase
-    while (_.uniq(words).length !== words.length) {
+    while (uniq(words).length !== words.length) {
       words = generateMnemonic().split(' ');
     }
 
@@ -154,8 +153,8 @@ class CreateMnemonic extends Component<Props> {
       network,
       wallet: accountType,
       dPath: path,
-      assets: [{ uuid: newAssetID, balance: '0' }],
-      balance: 0,
+      assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
+      balance: '0',
       label: 'New Account', // @TODO: we really should have the correct label before!
       transactions: [],
       timestamp: 0
