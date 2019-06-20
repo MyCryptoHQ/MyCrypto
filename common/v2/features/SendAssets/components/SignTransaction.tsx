@@ -58,7 +58,7 @@ export default class SignTransaction extends Component<Props> {
             transactionFields={transactionFields}
             onNext={signedTransaction => {
               const nextState: DeepPartial<ISendState> = {
-                signedTransaction
+                transactionFields: { account: { signedTransaction } }
               };
               updateState(nextState);
               onNext();

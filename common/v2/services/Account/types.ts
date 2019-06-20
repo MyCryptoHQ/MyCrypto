@@ -11,6 +11,7 @@ export interface Account {
   transactions: TransactionData[];
   dPath: string;
   timestamp: number;
+  signedTransaction: string;
 }
 
 export interface ExtendedAccount extends Account {

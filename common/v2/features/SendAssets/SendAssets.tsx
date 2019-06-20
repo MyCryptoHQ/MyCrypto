@@ -36,7 +36,8 @@ const getInitialState = (): ISendState => {
           transactions: [],
           dPath: '',
           uuid: '',
-          timestamp: 0
+          timestamp: 0,
+          signedTransaction: ''
         },
         recipientAddress: getQueryParamWithKey(params, 'to') || '',
         amount: getQueryParamWithKey(params, 'value') || '',
@@ -76,8 +77,7 @@ const getInitialState = (): ISendState => {
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
-      assetType: getQueryParamWithKey(params, 'sendmode') === 'token' ? 'erc20' : 'base', // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
-      signedTransaction: ''
+      assetType: getQueryParamWithKey(params, 'sendmode') === 'token' ? 'erc20' : 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
     };
   } else {
     return {
@@ -93,7 +93,8 @@ const getInitialState = (): ISendState => {
           transactions: [],
           dPath: '',
           uuid: '',
-          timestamp: 0
+          timestamp: 0,
+          signedTransaction: ''
         },
         recipientAddress: '',
         amount: '', // Really should be undefined, but Formik recognizes empty strings.
@@ -127,8 +128,7 @@ const getInitialState = (): ISendState => {
       isEstimatingGasLimit: false, // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
       recipientAddressLabel: '', //  Recipient-address label found in address book.
       asset: undefined,
-      assetType: 'base', // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
-      signedTransaction: ''
+      assetType: 'base' // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction.
     };
   }
 };
