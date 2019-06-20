@@ -1,3 +1,20 @@
+.SendAssetsForm-fieldset > .label-with-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label-action {
+  color: #1eb8e7;
+}
+
+.SendAssetsForm-errors {
+  margin-bottom: 12px;
+  width: 100%;
+  margin-bottom: 15px;
+  margin-top: 8px;
+}
+
 .SendAssetsForm {
   width: 500px;
   label {
@@ -82,28 +99,6 @@
       color: #9b9b9b;
     }
   }
-  &-amountAsset {
-    display: flex;
-    align-items: center;
-
-    &-amount {
-      flex: 2;
-      margin-right: 15px;
-
-      &-label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &-sendMax {
-          color: #1eb8e7;
-        }
-      }
-    }
-    &-asset {
-      flex: 1;
-    }
-  }
   &-advancedOptions {
     margin-bottom: 12px;
 
@@ -111,11 +106,6 @@
       width: 100%;
       color: #1eb8e7;
       text-align: center;
-    }
-
-    &-errors {
-      width: 100%;
-      margin-bottom: 15px;
     }
 
     &-content {
@@ -139,7 +129,6 @@
       &-priceLimitNonce {
         display: flex;
         align-items: center;
-        margin-bottom: 15px;
 
         &-price {
           flex: 2;

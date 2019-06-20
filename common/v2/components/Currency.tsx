@@ -5,12 +5,12 @@ import { TSymbol } from 'v2/types';
 import { getSymbolIcon } from 'v2/utils';
 
 const STypography = styled('span')`
-  font-size: 14px;
+  font-size: inherit;
   line-height: 1.5;
   vertical-align: middle;
 `;
 const SContainer = styled('div')`
-  display: flex;
+  display: inline-flex;
   align-contents: center;
 `;
 interface Props {

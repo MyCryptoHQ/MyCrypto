@@ -1,4 +1,4 @@
-export { default as RecipientAddressField } from './RecipientAddressField';
+export { default as EthAddressField } from './EthAddressField';
 export { default as AccountDropdown } from './AccountDropdown';
 export { default as AmountField } from './AmountField';
 export { default as AssetField } from './AssetField';

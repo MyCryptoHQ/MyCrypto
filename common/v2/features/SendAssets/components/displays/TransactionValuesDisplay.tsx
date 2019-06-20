@@ -1,40 +1,40 @@
-import { ITxFields } from '../../types';
 import React from 'react';
 import { Heading, Typography } from '@mycrypto/ui';
+
 import sendIcon from 'common/assets/images/icn-send.svg';
+import { Currency } from 'v2/components';
+import { TSymbol } from 'v2/types';
 
 interface Props {
-  values: ITxFields;
-  fiatAsset: { fiat: string; value: string; symbol: string };
+  amount: string;
+  ticker: TSymbol;
+  fiatAsset: { ticker: TSymbol; exchangeRate: string };
 }
 
-function TransactionValueDisplay({ values, fiatAsset }: Props) {
-  const amount = values.amount;
-  const transactionValue = parseFloat(amount);
-  let AssetSymbol: string = 'ETH';
-  if (values.asset && values.asset.network) {
-    AssetSymbol = values.asset.symbol;
-  }
+function TransactionValueDisplay({ amount, ticker, fiatAsset }: Props) {
+  // @TODO handle math with BN.js
+  const convertToFiat = (base: string, rate: string) => {
+    return (parseFloat(base) * parseFloat(rate)).toString();
+  };
 
-  const fiatValue: string = parseFloat(fiatAsset.value).toFixed(2);
-
-  const transactionValueFiat: string = (transactionValue * parseFloat(fiatValue)).toFixed(2);
+  const txAmountinFiat = convertToFiat(amount, fiatAsset.exchangeRate);
 
   return (
     <div className="SendAssetsForm-fieldset-youllSend-box">
       <Heading as="h2" className="SendAssetsForm-fieldset-youllSend-box-crypto">
-        <img src={sendIcon} alt="Send" /> {transactionValue} {AssetSymbol}
+        <img src={sendIcon} alt="Send" />
+        <Currency amount={amount} symbol={ticker} />
       </Heading>
       <small className="SendAssetsForm-fieldset-youllSend-box-fiat">
-        ≈ {fiatAsset.symbol}
-        {transactionValueFiat} {fiatAsset.fiat}
+        {'≈ '}
+        <Currency amount={txAmountinFiat} symbol={fiatAsset.ticker} decimals={2} />
       </small>
       <div className="SendAssetsForm-fieldset-youllSend-box-conversion">
-        <Typography>
-          Conversion Rate <br />
-          {/* TRANSLATE THIS */}
-          1 {AssetSymbol} ≈ {fiatAsset.symbol}
-          {fiatValue} {fiatAsset.fiat}
+        <Typography as="div">
+          {/*TRANSLATE_THIS*/} Conversion Rate <br />
+          <Currency amount={'1'} symbol={ticker} decimals={0} />
+          {' ≈ '}
+          <Currency amount={fiatAsset.exchangeRate} symbol={fiatAsset.ticker} decimals={2} />
         </Typography>
       </div>
     </div>
