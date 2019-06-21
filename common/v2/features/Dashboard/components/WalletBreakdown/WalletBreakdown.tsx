@@ -174,19 +174,18 @@ function WalletBreakdown() {
 
   currentAccounts.forEach((account: ExtendedAccount) => {
     const baseAsset = getBaseAssetFromAccount(account);
-    if (!balances.find(asset => asset.asset === (baseAsset ? baseAsset.name : 'Unknown Asset'))) {
+    const assetName = baseAsset ? baseAsset.name : 'Unknown Asset';
+    const assetAmount = parseFloat(getBalanceFromAccount(account));
+    const assetInBalances = balances.find(asset => asset.asset === assetName);
+    if (!assetInBalances) {
       balances.push({
-        asset: baseAsset ? baseAsset.name : 'Unknown Asset',
-        amount: parseFloat(getBalanceFromAccount(account)).toFixed(4),
-        value: 0
+        asset: assetName,
+        amount: assetAmount.toFixed(4),
+        value: 0,
+        ticker: baseAsset ? baseAsset.ticker : ''
       });
     } else {
-      const balanceToUpdate: any = balances.find(
-        asset => asset.asset === (baseAsset ? baseAsset.name : 'Unknown Asset')
-      );
-      balanceToUpdate.amount = (
-        parseFloat(balanceToUpdate.amount) + parseFloat(getBalanceFromAccount(account))
-      ).toFixed(4);
+      assetInBalances.amount = (parseFloat(assetInBalances.amount) + assetAmount).toFixed(4);
     }
     balances.push({
       asset: 'Other Tokens',
@@ -230,11 +229,13 @@ function WalletBreakdown() {
             <BreakDownMore src={moreIcon} alt="More" />
           </BreakDownHeadingWrapper>
           <BreakDownBalanceList>
-            {balances.map(({ asset, amount, value }) => (
+            {balances.map(({ asset, amount, value, ticker }) => (
               <BreakDownBalance key={asset}>
                 <BreakDownBalanceAsset>
                   <BreakDownBalanceAssetName>{asset}</BreakDownBalanceAssetName>
-                  <BreakDownBalanceAssetAmount>{amount}</BreakDownBalanceAssetAmount>
+                  <BreakDownBalanceAssetAmount>
+                    {amount} {ticker}
+                  </BreakDownBalanceAssetAmount>
                 </BreakDownBalanceAsset>
                 <BreakDownBalanceAssetAmount>{value}</BreakDownBalanceAssetAmount>
               </BreakDownBalance>
