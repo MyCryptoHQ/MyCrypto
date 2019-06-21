@@ -1,8 +1,7 @@
 import { ITxFields } from '../../types';
-import { gasPriceToBase, fromWei } from 'v2/libs/units';
-import BN from 'bn.js';
 import { getBaseAssetSymbolByNetwork } from 'v2/libs/networks/networks';
 import React from 'react';
+import { calculateStringTransactionFee } from 'v2/features/Gas/transactionFees';
 
 interface Props {
   values: ITxFields;
@@ -10,15 +9,7 @@ interface Props {
 }
 
 function TransactionFeeDisplay({ values, fiatAsset }: Props) {
-  const gasLimitToUse =
-    values.isAdvancedTransaction && values.isGasLimitManual
-      ? values.gasLimitField
-      : values.gasLimitEstimated;
-  const gasPriceToUse = values.isAdvancedTransaction ? values.gasPriceField : values.gasPriceSlider;
-  const transactionFeeWei: BN = gasPriceToBase(
-    parseFloat(gasPriceToUse) * parseFloat(gasLimitToUse)
-  );
-  const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
+  const transactionFeeBaseAdv: string = calculateStringTransactionFee(values);
   const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(4);
   let baseAssetSymbol: string | undefined;
   if (values.network) {

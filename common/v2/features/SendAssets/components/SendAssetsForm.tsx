@@ -85,7 +85,7 @@ export default function SendAssetsForm({
     .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid))
     .filter((asset: Asset | undefined) => asset)
     .map((asset: Asset) => {
-      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId };
+      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId, asset };
     });
 
   return (
@@ -133,15 +133,43 @@ export default function SendAssetsForm({
               : setFieldValue('resolvedNSAddress', resolvedAddress);
           };
 
-          const handleFieldReset = () => {
+          const handleAssetFieldReset = () => {
             setFieldValue('account', undefined);
             setFieldValue('recipientAddress', '');
             setFieldValue('amount', '');
           };
 
-          const setAmountFieldToAssetMax = () =>
+          const handleAccountReset = () => {
+            setFieldValue('recipientAddress', '');
+            setFieldValue('amount', '');
+          };
+
+          const setAmountFieldToAssetMax = () => {
             // @TODO get asset balance and subtract gas cost
-            setFieldValue('amount', '1000');
+            if (values && values.network && values.account && values.asset && values.asset.asset) {
+              const processedTx = processFormDataToTx(values);
+              const selectedAsset = values.asset;
+              if (processedTx && values.asset.asset.type === 'base') {
+                const calculatedGas =
+                  parseFloat(processedTx.gasLimit) * parseFloat(processedTx.gasPrice);
+                setFieldValue(
+                  'amount',
+                  (parseFloat(values.account.balance) - calculatedGas).toString()
+                );
+              } else if (processedTx && values.asset.asset.type === 'erc20') {
+                const selectedAccountAssetBalance = values.account.assets.find(
+                  accountAsset => accountAsset.uuid === selectedAsset.asset.uuid
+                );
+                if (selectedAccountAssetBalance) {
+                  setFieldValue('amount', selectedAccountAssetBalance.balance);
+                } else {
+                  setFieldValue('amount', '0');
+                }
+              }
+            } else {
+              setFieldValue('amount', '0');
+            }
+          };
 
           const handleNonceEstimate = async (account: ExtendedAccount) => {
             if (!values || !values.network) {
@@ -180,7 +208,7 @@ export default function SendAssetsForm({
                       assets={assets}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
-                        handleFieldReset();
+                        handleAssetFieldReset();
 
                         if (option.network) {
                           fetchGasPriceEstimates(option.network).then((data: GasEstimates) => {
@@ -210,6 +238,7 @@ export default function SendAssetsForm({
                       value={field.value}
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
+                        handleAccountReset();
                         form.setFieldValue(field.name, option);
                         handleGasEstimate();
                         handleNonceEstimate(option);
