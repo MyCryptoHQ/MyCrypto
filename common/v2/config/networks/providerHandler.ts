@@ -1,16 +1,13 @@
-import { FallbackProvider, TransactionResponse, TransactionReceipt } from 'ethers/providers';
+import { FallbackProvider, TransactionReceipt, TransactionResponse } from 'ethers/providers';
 import { formatEther } from 'ethers/utils/units';
-
-import { Network } from 'v2/services/Network/types';
-import { TxObj } from 'v2/libs/nodes/INode';
-import { IHexStrTransaction } from 'v2/libs/transaction/typings';
-import { Asset } from 'v2/services/Asset/types';
-import { createProviderHandler } from './globalProvider';
-
-import RPCRequests from 'v2/libs/nodes/rpc/requests';
 import ERC20 from 'v2/libs/erc20';
-
+import { TxObj } from 'v2/libs/nodes/INode';
+import RPCRequests from 'v2/libs/nodes/rpc/requests';
+import { IHexStrTransaction } from 'v2/libs/transaction/typings';
 import * as units from 'v2/libs/units';
+import { Asset } from 'v2/services/Asset/types';
+import { Network } from 'v2/services/Network/types';
+import { createProviderHandler } from './globalProvider';
 
 class ProviderHandler {
   public network: Network;

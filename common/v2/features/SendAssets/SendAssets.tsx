@@ -204,22 +204,29 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
     });
   };
 
-  private updateState = (state: ISendState) => {
-    const nextAccountField: ITxFields['account'] = {
-      ...this.state.transactionFields.account,
-      ...state.transactionFields.account
-    };
+  private updateState = (state: Partial<ISendState>) => {
+    if (state.transactionFields) {
+      const nextAccountField: ITxFields['account'] = {
+        ...this.state.transactionFields.account,
+        ...state.transactionFields.account
+      };
 
-    const nextTransactionFields: ITxFields = {
-      ...this.state.transactionFields,
-      ...state.transactionFields,
-      account: nextAccountField
-    };
+      const nextTransactionFields: ITxFields = {
+        ...this.state.transactionFields,
+        ...state.transactionFields,
+        account: nextAccountField
+      };
 
-    this.setState({
-      signedTransaction: this.state.signedTransaction,
-      transactionFields: nextTransactionFields
-    });
+      this.setState({
+        transactionFields: nextTransactionFields
+      });
+    }
+
+    if (state.signedTransaction) {
+      this.setState({
+        signedTransaction: state.signedTransaction
+      });
+    }
   };
 
   // private handleReset = () => this.setState(getInitialState());

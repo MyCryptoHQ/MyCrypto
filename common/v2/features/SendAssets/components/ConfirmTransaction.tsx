@@ -3,9 +3,11 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { utils } from 'ethers';
+import { FallbackProvider } from 'ethers/providers';
 import React, { Component } from 'react';
 import { getNetworkByChainId } from 'v2';
 import { Amount } from 'v2/components';
+import { allProviders } from 'v2/config/networks/globalProvider';
 import { AddressBookContext } from 'v2/providers';
 import { ISendState } from '../types';
 import './ConfirmTransaction.scss';
@@ -69,7 +71,6 @@ export default class ConfirmTransaction extends Component<Props> {
 
       const totalAmountWei = amountToSendWei.add(maxCostWei);
       const totalAmountEther = utils.formatEther(totalAmountWei);
-      console.log(totalAmountEther);
 
       this.setState({
         toAddressFromSignedTransaction: toAddress,
@@ -88,10 +89,13 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public async getNetworkFromSignedTransaction() {
     const decodedTranasction = utils.parseTransaction(this.props.stateValues.signedTransaction);
-    const network = getNetworkByChainId(decodedTranasction.chainId.toString());
+    const chainId = decodedTranasction.chainId.toString();
+    const network = await getNetworkByChainId(chainId);
+
     if (network) {
       const networkName = network.name;
       this.setState({ networkFromSignedTransaction: networkName });
+      console.log(this.state.networkFromSignedTransaction);
     }
   }
 
@@ -100,7 +104,7 @@ export default class ConfirmTransaction extends Component<Props> {
   }
 
   public render() {
-    const { stateValues: { transactionFields: { account: { label } } }, onNext } = this.props;
+    const { stateValues: { transactionFields: { account: { label } } } } = this.props;
     const {
       showingDetails,
       toAddressFromSignedTransaction,
@@ -233,14 +237,23 @@ export default class ConfirmTransaction extends Component<Props> {
             </div>
           </div>
         )}
-        <Button onClick={onNext} className="ConfirmTransaction-button">
+        <Button onClick={this.sendTransaction} className="ConfirmTransaction-button">
           Confirm and Send
         </Button>
       </div>
     );
   }
 
-  // private sendTransaction() {}
+  private sendTransaction = async () => {
+    const network: string = this.state.networkFromSignedTransaction;
+    const signedTransaction: string = this.props.stateValues.signedTransaction;
+
+    //@ts-ignore
+    const transactionProvider: FallbackProvider = allProviders[network];
+    const broadcastTransaction = await transactionProvider.sendTransaction(signedTransaction);
+
+    console.log(broadcastTransaction);
+  };
 
   private toggleShowingDetails = () =>
     this.setState((prevState: State) => ({
