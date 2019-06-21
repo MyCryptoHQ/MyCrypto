@@ -37,14 +37,12 @@ const WalletBreakdownPanel = styled(Panel)`
   @media (min-width: 1080px) {
     flex-direction: row;
     margin-top: 0;
-
-    > div {
-      flex: 1;
-    }
   }
 `;
 
-const BreakDownChart = styled.div``;
+const BreakDownChart = styled.div`
+  flex: 1;
+`;
 
 const BreakDownHeading = styled(Heading)`
   margin: 0;
@@ -106,7 +104,20 @@ const PanelDivider =
   }`};
 `;
 
-const BreakDownBalances = styled.div``;
+const VerticalPanelDivider = styled.div`
+  width: 1px;
+  margin: 0 15px;
+  background: #ddd;
+  display: none;
+
+  @media (min-width: 1080px) {
+    display: block;
+  }
+`;
+
+const BreakDownBalances = styled.div`
+  flex: 1;
+`;
 
 const BreakDownHeadingWrapper = styled.div`
   display: flex;
@@ -212,6 +223,7 @@ function WalletBreakdown() {
           </PanelFigures>
         </BreakDownChart>
         <PanelDivider mobileOnly={true} />
+        <VerticalPanelDivider />
         <BreakDownBalances>
           <BreakDownHeadingWrapper>
             <BreakDownHeading>Balance</BreakDownHeading>
