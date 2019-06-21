@@ -20,11 +20,13 @@ interface State {
   toAddressFromSignedTransaction: string;
   senderAddressFromSignedTransaction: string;
   amountToSendFromSignedTransaction: string;
-  gasLimitFromSignedTransaction: number;
-  gasPriceFromSignedTransaction: number;
+  gasLimitWeiFromSignedTransaction: string | number;
+  gasPriceWeiFromSignedTransaction: string | number;
   nonceFromSignedTransaction: number;
   networkFromSignedTransaction: string;
   dataFromSignedTransaction: string;
+  maxCostFeeEther: string;
+  totalAmountEther: string;
 }
 
 const truncate = (children: string) => {
@@ -37,49 +39,55 @@ export default class ConfirmTransaction extends Component<Props> {
     toAddressFromSignedTransaction: '',
     senderAddressFromSignedTransaction: '',
     amountToSendFromSignedTransaction: '',
-    gasLimitFromSignedTransaction: 0,
-    gasPriceFromSignedTransaction: 0,
+    gasLimitWeiFromSignedTransaction: '',
+    gasPriceWeiFromSignedTransaction: '',
     nonceFromSignedTransaction: 0,
     networkFromSignedTransaction: '',
-    dataFromSignedTransaction: ''
+    dataFromSignedTransaction: '',
+    maxCostFeeEther: '',
+    totalAmountEther: ''
   };
 
   public decodeTransaction() {
-    const decodedTranasction = utils.parseTransaction(
-      this.props.stateValues.transactionFields.account.signedTransaction
-    );
+    const decodedTranasction = utils.parseTransaction(this.props.stateValues.signedTransaction);
 
     if (!decodedTranasction) {
       return;
     } else {
       const toAddress = decodedTranasction.to;
       const fromAddress = decodedTranasction.from;
-      const amountToSend = utils.formatEther(decodedTranasction.value).toString();
-      const gasLimit = utils.formatEther(decodedTranasction.gasLimit);
-      const gasPrice = utils.formatEther(decodedTranasction.gasPrice);
+      const gasLimitWei = utils.bigNumberify(decodedTranasction.gasLimit);
+      const gasPriceWei = utils.bigNumberify(decodedTranasction.gasPrice);
       const nonce = decodedTranasction.nonce;
       const data = decodedTranasction.data;
 
-      console.log(decodedTranasction);
+      const amountToSendWei = utils.bigNumberify(decodedTranasction.value);
+      const amountToSendEther = utils.formatEther(amountToSendWei);
+
+      const maxCostWei = gasPriceWei.mul(gasLimitWei);
+      const maxCostFeeEther = utils.formatEther(maxCostWei);
+
+      const totalAmountWei = amountToSendWei.add(maxCostWei);
+      const totalAmountEther = utils.formatEther(totalAmountWei);
+      console.log(totalAmountEther);
 
       this.setState({
         toAddressFromSignedTransaction: toAddress,
         senderAddressFromSignedTransaction: fromAddress,
-        amountToSendFromSignedTransaction: amountToSend,
-        gasLimitFromSignedTransaction: gasLimit,
-        gasPriceWeiFromSignedTransaction: gasPrice,
+        amountToSendFromSignedTransaction: amountToSendEther.toString(),
+        gasLimitWeiFromSignedTransaction: gasLimitWei.toString(),
+        gasPriceWeiFromSignedTransaction: gasPriceWei.toString(),
         nonceFromSignedTransaction: nonce,
-
-        dataFromSignedTransaction: data
+        dataFromSignedTransaction: data,
+        maxCostFeeEther: maxCostFeeEther.toString(),
+        totalAmountEther
       });
     }
     this.getNetworkFromSignedTransaction();
   }
 
   public async getNetworkFromSignedTransaction() {
-    const decodedTranasction = utils.parseTransaction(
-      this.props.stateValues.transactionFields.account.signedTransaction
-    );
+    const decodedTranasction = utils.parseTransaction(this.props.stateValues.signedTransaction);
     const network = getNetworkByChainId(decodedTranasction.chainId.toString());
     if (network) {
       const networkName = network.name;
@@ -92,20 +100,19 @@ export default class ConfirmTransaction extends Component<Props> {
   }
 
   public render() {
-    const {
-      stateValues: { transactionFields: { amount, asset, account: { label } } },
-      onNext
-    } = this.props;
+    const { stateValues: { transactionFields: { account: { label } } }, onNext } = this.props;
     const {
       showingDetails,
       toAddressFromSignedTransaction,
       senderAddressFromSignedTransaction,
       amountToSendFromSignedTransaction,
-      gasLimitFromSignedTransaction,
-      gasPriceFromSignedTransaction,
+      gasLimitWeiFromSignedTransaction,
+      gasPriceWeiFromSignedTransaction,
       nonceFromSignedTransaction,
       networkFromSignedTransaction,
-      dataFromSignedTransaction
+      dataFromSignedTransaction,
+      maxCostFeeEther,
+      totalAmountEther
     } = this.state;
 
     return (
@@ -154,7 +161,10 @@ export default class ConfirmTransaction extends Component<Props> {
             <img src={sendIcon} alt="Send" /> Send Amount:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue={amountToSendFromSignedTransaction} fiatValue="$12,000.00" />
+            <Amount
+              assetValue={`${amountToSendFromSignedTransaction} ETH`}
+              fiatValue="$12,000.00"
+            />
           </div>
         </div>
         <div className="ConfirmTransaction-row">
@@ -162,7 +172,7 @@ export default class ConfirmTransaction extends Component<Props> {
             <img src={feeIcon} alt="Fee" /> Transaction Fee:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue="0.000462 ETH" fiatValue="$0.21" />
+            <Amount assetValue={`${maxCostFeeEther} ETH`} fiatValue="$0.21" />
           </div>
         </div>
         <div className="ConfirmTransaction-divider" />
@@ -171,7 +181,7 @@ export default class ConfirmTransaction extends Component<Props> {
             <img src={sendIcon} alt="Total" /> You'll Send:
           </div>
           <div className="ConfirmTransaction-row-column">
-            <Amount assetValue={amount + asset} fiatValue="$12,000.21" />
+            <Amount assetValue={totalAmountEther} fiatValue="$12,000.21" />
           </div>
         </div>
         <Button
@@ -196,20 +206,18 @@ export default class ConfirmTransaction extends Component<Props> {
             <div className="ConfirmTransaction-details-row">
               <div className="ConfirmTransaction-details-row-column">Gas Limit:</div>
               <div className="ConfirmTransaction-details-row-column">
-                {gasLimitFromSignedTransaction}
+                {`${utils.formatEther(gasLimitWeiFromSignedTransaction)} ETH`}
               </div>
             </div>
             <div className="ConfirmTransaction-details-row">
               <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
               <div className="ConfirmTransaction-details-row-column">
-                {gasPriceFromSignedTransaction}
+                {`${utils.formatEther(gasPriceWeiFromSignedTransaction)} ETH`}
               </div>
             </div>
             <div className="ConfirmTransaction-details-row">
               <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
-              <div className="ConfirmTransaction-details-row-column">
-                {gasLimitFromSignedTransaction * gasPriceFromSignedTransaction}
-              </div>
+              <div className="ConfirmTransaction-details-row-column">{maxCostFeeEther} ETH</div>
             </div>
             <div className="ConfirmTransaction-details-row">
               <div className="ConfirmTransaction-details-row-column">Nonce:</div>

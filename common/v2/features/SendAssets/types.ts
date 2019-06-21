@@ -35,4 +35,5 @@ export interface ISendState {
   recipientAddressLabel: string; //  Recipient-address label found in address book.
   asset: IAsset | Asset | undefined;
   assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
+  signedTransaction: string; //to store signed transaction to be broadcasted
 }
