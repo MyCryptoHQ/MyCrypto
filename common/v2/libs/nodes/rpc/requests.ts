@@ -1,76 +1,80 @@
 import ERC20 from 'libs/erc20';
+import { IHexStrTransaction } from 'libs/transaction';
+import { Token } from 'shared/types/network';
+import { Asset } from 'v2/services/Asset/types';
+import { TxObj } from '../INode';
 import {
   CallRequest,
   EstimateGasRequest,
   GetBalanceRequest,
-  GetTokenBalanceRequest,
-  GetTransactionCountRequest,
-  SendRawTxRequest,
   GetCurrentBlockRequest,
+  GetTokenBalanceRequest,
   GetTransactionByHashRequest,
-  GetTransactionReceiptRequest
+  GetTransactionCountRequest,
+  GetTransactionReceiptRequest,
+  SendRawTxRequest
 } from './types';
 import { hexEncodeData } from './utils';
-import { TxObj } from '../INode';
-import { IHexStrTransaction } from 'libs/transaction';
-import { Asset } from 'v2/services/Asset/types';
-import { Token } from 'shared/types/network';
 
+// we can make these static methods so that RPCRequests don't need to be instiated each timegi
 export default class RPCRequests {
-  public getNetVersion() {
+  public static getNetVersion() {
     return { method: 'net_version' };
   }
 
-  public sendRawTx(signedTx: string): SendRawTxRequest | any {
+  public static sendRawTx(signedTx: string): SendRawTxRequest | any {
     return {
       method: 'eth_sendRawTransaction',
       params: [signedTx]
     };
   }
 
-  public estimateGas(transaction: Partial<IHexStrTransaction>): EstimateGasRequest | any {
+  public static estimateGas(transaction: Partial<IHexStrTransaction>): EstimateGasRequest | any {
     return {
       method: 'eth_estimateGas',
       params: [transaction]
     };
   }
 
-  public getBalance(address: string): GetBalanceRequest | any {
+  public static getBalance(address: string): GetBalanceRequest | any {
     return {
       method: 'eth_getBalance',
       params: [hexEncodeData(address), 'pending']
     };
   }
 
-  public ethCall(txObj: TxObj): CallRequest | any {
+  public static ethCall(txObj: TxObj): CallRequest | any {
     return {
       method: 'eth_call',
       params: [txObj, 'pending']
     };
   }
 
-  public getTransactionCount(address: string): GetTransactionCountRequest | any {
+  public static getTransactionCount(address: string): GetTransactionCountRequest | any {
     return {
       method: 'eth_getTransactionCount',
       params: [address, 'pending']
     };
   }
 
-  public getTransactionByHash(txhash: string): GetTransactionByHashRequest | any {
+  public static getTransactionByHash(txhash: string): GetTransactionByHashRequest | any {
     return {
       method: 'eth_getTransactionByHash',
       params: [txhash]
     };
   }
 
-  public getTransactionReceipt(txhash: string): GetTransactionReceiptRequest | any {
+  public static getTransactionReceipt(txhash: string): GetTransactionReceiptRequest | any {
     return {
       method: 'eth_getTransactionReceipt',
       params: [txhash]
     };
   }
 
-  public getTokenBalance(address: string, token: Asset | Token): GetTokenBalanceRequest | any {
+  public static getTokenBalance(
+    address: string,
+    token: Asset | Token
+  ): GetTokenBalanceRequest | any {
     return {
       method: 'eth_call',
       params: [
@@ -86,7 +90,7 @@ export default class RPCRequests {
     };
   }
 
-  public getCurrentBlock(): GetCurrentBlockRequest | any {
+  public static getCurrentBlock(): GetCurrentBlockRequest | any {
     return {
       method: 'eth_blockNumber'
     };

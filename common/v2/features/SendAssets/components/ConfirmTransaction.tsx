@@ -3,11 +3,10 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { utils } from 'ethers';
-import { FallbackProvider } from 'ethers/providers';
 import React, { Component } from 'react';
-import { getNetworkByChainId } from 'v2';
+import { Asset, getNetworkByChainId } from 'v2';
 import { Amount } from 'v2/components';
-import { allProviders } from 'v2/config/networks/globalProvider';
+import { allProviders, NetworkKey } from 'v2/config/networks/globalProvider';
 import { AddressBookContext } from 'v2/providers';
 import { ISendState } from '../types';
 import './ConfirmTransaction.scss';
@@ -245,15 +244,36 @@ export default class ConfirmTransaction extends Component<Props> {
   }
 
   private sendTransaction = async () => {
+    //example of sending transaction with fallBackProvider
     const network: string = this.state.networkFromSignedTransaction;
     const signedTransaction: string = this.props.stateValues.signedTransaction;
 
-    //@ts-ignore
-    const transactionProvider: FallbackProvider = allProviders[network];
+    const transactionProvider = allProviders[network as NetworkKey];
     const broadcastTransaction = await transactionProvider.sendTransaction(signedTransaction);
-
     console.log(broadcastTransaction);
+
+    //example of token call
+    this.getTokens();
+    this.props.onNext();
   };
+
+  private async getTokens() {
+    const link: Asset = {
+      uuid: '',
+      name: 'ChainLink Token',
+      ticker: 'LINK',
+      contractAddress: '0x514910771af9ca656af840dff83e8264ecf986ca',
+      type: 'erc20'
+    };
+
+    // tslint:disable-next-line: no-string-literal
+    const tokenBalanceProvider = await allProviders['Ethereum'].getTokenBalance(
+      '0x7750540B0363634f3b29579EDd9b2E4c0Fc4C502',
+      link
+    );
+
+    console.log(tokenBalanceProvider);
+  }
 
   private toggleShowingDetails = () =>
     this.setState((prevState: State) => ({

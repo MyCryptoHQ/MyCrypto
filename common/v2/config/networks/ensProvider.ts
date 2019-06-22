@@ -1,6 +1,6 @@
-import ProviderHandler from './providerHandler';
+import MyCryptoProvider from './providerHandler';
 
-export class ENSProvider extends ProviderHandler {
+export class ENSProvider extends MyCryptoProvider {
   public resolveENS(name: string): Promise<string | null> {
     return this.client.resolveName(name);
   }
@@ -8,3 +8,5 @@ export class ENSProvider extends ProviderHandler {
     return this.client.lookupAddress(address);
   }
 }
+
+// this is already provided in Ethers, no need to wrap function if you're just going to call the function

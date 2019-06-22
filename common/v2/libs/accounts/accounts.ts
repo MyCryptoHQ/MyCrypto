@@ -1,13 +1,13 @@
-import { shepherdProvider, INode } from 'libs/nodes';
-import { getCache } from 'v2/services/LocalCache';
+import BN from 'bn.js';
+import { INode, shepherdProvider } from 'libs/nodes';
+import MyCryptoProvider from 'v2/config/networks/providerHandler';
 import { Account, ExtendedAccount } from 'v2/services/Account/types';
 import { Asset } from 'v2/services/Asset/types';
-import { getAssetByUUID } from '../assets/assets';
-import BN from 'bn.js';
-import { getNetworkByName, getNodesByNetwork } from '../networks/networks';
+import { getCache } from 'v2/services/LocalCache';
 import { Network, NodeOptions } from 'v2/services/Network/types';
+import { getAssetByUUID } from '../assets/assets';
+import { getNetworkByName, getNodesByNetwork } from '../networks/networks';
 import RpcNode from '../nodes/rpc';
-import ProviderHandler from 'v2/config/networks/providerHandler';
 
 export const getCurrentsFromContext = (
   accounts: ExtendedAccount[],
@@ -47,7 +47,7 @@ export const getAccountBalances = (
   accounts.forEach(async account => {
     const network = getNetworkByName(account.network);
     if (network) {
-      const provider = new ProviderHandler(network);
+      const provider = new MyCryptoProvider(network);
       const balance: string = await provider.getBalance(account.address);
       updateAccount(account.uuid, {
         ...account,
@@ -65,7 +65,7 @@ export const updateTokenBalanceByAsset = (
 ): void => {
   const network = getNetworkByName(account.network);
   if (network) {
-    const provider = new ProviderHandler(network);
+    const provider = new MyCryptoProvider(network);
     provider.getTokenBalance(account.address, asset).then(data => {
       const assets = account.assets.map(
         prevAsset =>

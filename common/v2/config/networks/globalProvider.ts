@@ -1,23 +1,19 @@
 import { ethers } from 'ethers';
 import { BaseProvider } from 'ethers/providers';
-import { isUrl } from 'v2/libs/helpers';
-import { Network } from 'v2/services/Network/types';
+import MyCryptoProvider from './providerHandler';
 import { PROVIDER_OPTIONS } from './providerOptions';
 
 export type NetworkKey = keyof typeof PROVIDER_OPTIONS;
 
-export type FallbackProvider = ethers.providers.FallbackProvider;
-const FallbackProvider = ethers.providers.FallbackProvider;
-
 type TempProviders = { [K in NetworkKey]: BaseProvider[] };
-type FallbackProviders = { [K in NetworkKey]: FallbackProvider };
+type Providers = { [K in NetworkKey]: MyCryptoProvider };
 
 // tslint:disable-next-line
 function entries<T, K extends keyof T>(obj: { [K in keyof T]: T[K] }): [K, T[K]][] {
   return Object.entries(obj) as any;
 }
-
-function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackProviders {
+//this should be tested
+function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): Providers {
   const tempProviders: TempProviders = {} as TempProviders;
 
   // create fallback providers
@@ -35,35 +31,23 @@ function createFallBackProvidersFrom(config: typeof PROVIDER_OPTIONS): FallbackP
     }
   }
 
-  const fallBackProviders: FallbackProviders = {} as FallbackProviders;
+  const mycryptoProviders: Providers = {} as Providers;
   for (const [networkKey, providers] of entries(tempProviders)) {
-    fallBackProviders[networkKey] = new ethers.providers.FallbackProvider(providers);
+    mycryptoProviders[networkKey] = new MyCryptoProvider(providers);
   }
-  return fallBackProviders;
+  return mycryptoProviders;
 }
 
-export const createProviderHandler = (network: Network): FallbackProvider => {
-  const newProviderPattern: any = { [network.name]: [] };
-  network.nodes.forEach(node => {
-    if (node.url && isUrl(node.url)) {
-      // Not very-well covered test for if url is a valid url (sorts out web3 nodes / non-https nodes).
-      newProviderPattern[network.name].push(node.url);
-    }
-  });
-  return createFallBackProvidersFrom(newProviderPattern)[network.name as NetworkKey];
-};
-
 //allProviders are by default fallBackProviders, ex. allProviders.Ethereum -> will have main node (MyCrypto), and 2 fallback nodes
-export const allProviders: FallbackProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
+export const allProviders: Providers = createFallBackProvidersFrom(PROVIDER_OPTIONS);
 
+//these types need to be extracted into their own folder
 type FilterFlags<Base, Condition> = {
   [Key in keyof Base]: Base[Key] extends Condition ? Key : never
 };
 type AllowedNames<Base, Condition> = FilterFlags<Base, Condition>[keyof Base];
-
 type SubType<Base, Condition> = Pick<Base, AllowedNames<Base, Condition>>;
-
-type ProviderMethod = SubType<FallbackProvider, (...args: any) => any>;
+type ProviderMethod = SubType<MyCryptoProvider, (...args: any) => any>;
 
 async function callMultiProviderMethod<K extends keyof ProviderMethod>(
   method: K,
