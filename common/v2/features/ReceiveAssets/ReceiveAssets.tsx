@@ -1,5 +1,5 @@
 import noop from 'lodash/noop';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { ComboBox, Copyable, Input } from '@mycrypto/ui';
@@ -10,18 +10,12 @@ import { Layout } from 'v2/features';
 import { AccountContext } from 'v2/providers';
 import './ReceiveAssets.scss';
 import { getNetworkByName } from 'v2/libs/networks/networks';
+import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 
 import QRCode from './components/QRCode';
-// import AccountDropdown from './components/AccountDropdown';
+import AccountDropdown from './components/AccountDropdown';
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
-
-const initialValues = {
-  recipientAddress: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-  amount: '1.00',
-  asset: 'ETH',
-  chainId: 1
-};
 
 const truncate = (children: string) => {
   return [children.substring(0, 15), '…', children.substring(children.length - 10)].join('');
@@ -40,9 +34,15 @@ const QRDisplay = styled.div`
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts } = useContext(AccountContext);
-  console.log(accounts);
   const network = getNetworkByName(accounts[0].network);
-  console.log(network);
+  const [requestAddress, setRequestAddress] = useState('');
+
+  const initialValues = {
+    recipientAddress: accounts[0].address,
+    amount: '0',
+    asset: 'ETH',
+    chainId: network ? network.chainId : 1
+  };
 
   return (
     <Layout className="RequestAssets" centered={true}>
@@ -55,28 +55,22 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         <Formik
           initialValues={initialValues}
           onSubmit={noop}
-          render={({ values: { amount } }: FormikProps<typeof initialValues>) => (
+          render={({ values: { amount, chainId } }: FormikProps<typeof initialValues>) => (
             <Form>
               <fieldset className="RequestAssets-panel-fieldset">
                 <label htmlFor="recipientAddress">Recipient Address</label>
                 <Field
                   name="recipientAddress"
-                  render={({ field }: FieldProps<typeof initialValues>) => (
-                    <Input
-                      {...field}
-                      disabled={true}
-                      className="RequestAssets-panel-fieldset-input"
+                  component={({ field, form }: FieldProps) => (
+                    <AccountDropdown
+                      name={field.name}
+                      value={field.value}
+                      accounts={accounts}
+                      onSelect={(option: IExtendedAccount) => {
+                        form.setFieldValue(field.name, option);
+                        setRequestAddress(option.address);
+                      }}
                     />
-                    // <AccountDropdown
-                    //   values={values}
-                    //   name={field.name}
-                    //   value={field.value}
-                    //   accounts={accounts}
-                    //   onSelect={(option: IExtendedAccount) => {
-                    //     form.setFieldValue(field.name, option);
-                    //     updateState({ transactionFields: { account: option } });
-                    //   }}
-                    // />
                   )}
                 />
               </fieldset>
@@ -118,11 +112,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     <label>Payment Code</label>
                     <div className="RequestAssets-panel-fieldset-box">
                       <Copyable
-                        text={buildEIP681EtherRequest(
-                          initialValues.recipientAddress,
-                          initialValues.chainId,
-                          amount
-                        )}
+                        text={buildEIP681EtherRequest(requestAddress, chainId, amount)}
                         truncate={truncate}
                       />
                     </div>
@@ -132,7 +122,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     <QRDisplay>
                       <QRCode
                         data={buildEIP681EtherRequest(
-                          accounts[0].address,
+                          requestAddress,
                           network ? network.chainId : 1,
                           amount
                         )}

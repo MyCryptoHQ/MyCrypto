@@ -33,7 +33,7 @@ import { NewAppReleaseModal } from 'v2/components';
 import Dashboard from 'v2/features/Dashboard';
 import DevTools from 'v2/features/DevTools';
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
-import { NotificationsProvider, SettingsProvider } from 'v2/providers';
+import { NotificationsProvider, SettingsProvider, AssetProvider } from 'v2/providers';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
@@ -88,7 +88,6 @@ class RootClass extends Component<Props, State> {
   public render() {
     const { store, onboardingActive } = this.props;
     const { error, developmentMode } = this.state;
-    console.log(gatherFeatureRoutes());
 
     if (error) {
       return <ErrorScreen error={error} />;
@@ -128,20 +127,22 @@ class RootClass extends Component<Props, State> {
                 <AccountProvider>
                   <NotificationsProvider>
                     <NetworksProvider>
-                      <Router>
-                        <LockScreenProvider>
-                          <PageVisitsAnalytics>
-                            {onboardingActive && <OnboardingModal />}
-                            {routes}
-                            <LegacyRoutes />
-                            <LogOutPrompt />
-                            <QrSignerModal />
-                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                          </PageVisitsAnalytics>
-                        </LockScreenProvider>
-                      </Router>
-                      {developmentMode && <DevTools />}
-                      <div id="ModalContainer" />
+                      <AssetProvider>
+                        <Router>
+                          <LockScreenProvider>
+                            <PageVisitsAnalytics>
+                              {onboardingActive && <OnboardingModal />}
+                              {routes}
+                              <LegacyRoutes />
+                              <LogOutPrompt />
+                              <QrSignerModal />
+                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                            </PageVisitsAnalytics>
+                          </LockScreenProvider>
+                        </Router>
+                        {developmentMode && <DevTools />}
+                        <div id="ModalContainer" />
+                      </AssetProvider>
                     </NetworksProvider>
                   </NotificationsProvider>
                 </AccountProvider>
