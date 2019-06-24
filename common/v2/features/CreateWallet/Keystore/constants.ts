@@ -1,20 +1,31 @@
 import { SelectNetworkPanel } from '../components';
-import { GenerateKeystoreFilePanel, SaveKeystoreFilePanel } from './components';
+import {
+  GenerateKeystoreFilePanel,
+  SaveKeystoreFilePanel,
+  MakeBackupPanel,
+  VerifyKeystorePanel
+} from './components';
 
 export enum KeystoreStages {
   SelectNetwork,
   GenerateKeystore,
-  SaveKeystore
+  SaveKeystore,
+  MakeBackup,
+  VerifyKeystore
 }
 
 export const keystoreStageToComponentHash = {
   [KeystoreStages.SelectNetwork]: SelectNetworkPanel,
   [KeystoreStages.GenerateKeystore]: GenerateKeystoreFilePanel,
-  [KeystoreStages.SaveKeystore]: SaveKeystoreFilePanel
+  [KeystoreStages.SaveKeystore]: SaveKeystoreFilePanel,
+  [KeystoreStages.MakeBackup]: MakeBackupPanel,
+  [KeystoreStages.VerifyKeystore]: VerifyKeystorePanel
 };
 
 export const keystoreFlow = [
-  KeystoreStages.SelectNetwork,
   KeystoreStages.GenerateKeystore,
-  KeystoreStages.SaveKeystore
+  KeystoreStages.SelectNetwork,
+  KeystoreStages.SaveKeystore,
+  KeystoreStages.MakeBackup,
+  KeystoreStages.VerifyKeystore
 ];

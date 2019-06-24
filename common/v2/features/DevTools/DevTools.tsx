@@ -37,9 +37,15 @@ const DevTools = () => {
                   label: 'Foo',
                   address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
                   network: 'Ethereum',
-                  assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0' }],
+                  assets: [
+                    {
+                      uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
+                      balance: '0',
+                      timestamp: Date.now()
+                    }
+                  ],
                   wallet: SecureWalletName.WEB3,
-                  balance: 0,
+                  balance: '0',
                   timestamp: Date.now(),
                   transactions: [],
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
@@ -66,9 +72,7 @@ const DevTools = () => {
                         )}
                       />
                     </fieldset>
-
                     <br />
-
                     <fieldset>
                       Label:{' '}
                       <Field
@@ -83,9 +87,7 @@ const DevTools = () => {
                         )}
                       />
                     </fieldset>
-
                     <br />
-
                     <fieldset>
                       Network:{' '}
                       <Field
@@ -100,9 +102,12 @@ const DevTools = () => {
                         )}
                       />
                     </fieldset>
-
                     <br />
-
+                    Current dev-mode only features
+                    <ul>
+                      <li>Recent Transactions panel (Dashboard)</li>
+                      <li>Error page disabled</li>
+                    </ul>
                     <Button type="submit" disabled={isSubmitting}>
                       Submit
                     </Button>

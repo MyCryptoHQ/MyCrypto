@@ -16,3 +16,5 @@ export * from './constants';
 export * from './ScreenLock';
 export * from './SendAssets';
 export * from './Gas';
+
+export * from './Nonce';

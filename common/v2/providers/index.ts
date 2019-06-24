@@ -3,6 +3,7 @@ export { AccountContext, AccountProvider } from './AccountProvider';
 export { WalletContext, WalletProvider } from './WalletProvider';
 export { AssetContext, AssetProvider } from './AssetProvider';
 export { ContractsContext, ContractsProvider } from './ContractsProvider';
+export { DevModeContext, DevModeProvider, useDevMode } from './DevModeProvider';
 export { SettingsContext, SettingsProvider } from './SettingsProvider';
 export {
   NotificationsContext,
