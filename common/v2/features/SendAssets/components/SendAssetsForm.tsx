@@ -39,12 +39,12 @@ import {
 import './SendAssetsForm.scss';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { ENSStatus } from 'components/AddressFieldFactory/AddressInputFactory';
 import { GasEstimates } from 'v2/api/gas';
 import { validateTxFields } from 'v2/libs/validators';
 
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
+import ENSStatus from 'v2/components/ENSStatus';
 
 interface Props {
   stateValues: ISendState;
