@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heading, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { AccountContext, SettingsContext } from 'v2/providers';
 import { ExtendedAccount } from 'v2/services';
 import AccountDropdown from './AccountDropdown';
-
-// Legacy
-import moreIcon from 'common/assets/images/icn-more.svg';
+import BalancesList from './BalancesList';
 import { getCurrentsFromContext, getBalanceFromAccount, getBaseAssetFromAccount } from 'v2/libs';
+
+import moreIcon from 'common/assets/images/icn-more.svg';
 
 const WalletBreakdownTop = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const WalletBreakdownPanel = styled(Panel)`
   display: flex;
   flex-direction: column;
   margin-top: 5px;
-  padding: 15px;
+  padding: 0;
 
   @media (min-width: 1080px) {
     flex-direction: row;
@@ -61,8 +61,8 @@ const BreakDownHeadingExtra = styled.span`
 
 const NoAssetsBreakdownHeading = styled(BreakDownHeading)`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 15px;
+  left: 15px;
 `;
 
 const NoAssetsWrapper = styled.div`
@@ -93,6 +93,13 @@ const NoAssetsDescription = styled(Typography)`
 
 const BreakDownChart = styled.div`
   flex: 1;
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  @media (max-width: 1080px) {
+    padding-right: 15px;
+  }
 `;
 
 const PanelFigures = styled.div`
@@ -149,6 +156,13 @@ const VerticalPanelDivider = styled.div`
 
 const BreakDownBalances = styled.div`
   flex: 1;
+  padding-right: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  @media (max-width: 1080px) {
+    padding-left: 15px;
+  }
 `;
 
 const BreakDownHeadingWrapper = styled.div`
@@ -159,6 +173,7 @@ const BreakDownHeadingWrapper = styled.div`
 
 const BreakDownMore = styled.img`
   display: block;
+  cursor: pointer;
 `;
 
 const BreakDownBalanceList = styled.div`
@@ -195,74 +210,17 @@ const BreakDownBalanceTotal = styled.div`
   justify-content: space-between;
 `;
 
-const getNoAssets = () => {
-  return (
-    <NoAssetsWrapper>
-      <NoAssetsBreakdownHeading>
-        Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
-      </NoAssetsBreakdownHeading>
-      <PlusIcon src={moreIcon} />
-      <NoAssetsHeading>No Assets Found</NoAssetsHeading>
-      <NoAssetsDescription>
-        You can{' '}
-        <a href="https://buy.mycrypto.com/" target="_blank" rel="noreferrer">
-          buy some ETH
-        </a>{' '}
-        with your credit card to get started!
-      </NoAssetsDescription>
-    </NoAssetsWrapper>
-  );
-};
+const BalancesOnly = styled.div`
+  width: 100%;
 
-const getChartWithBalances = (balances: any[]) => {
-  return (
-    <>
-      <BreakDownChart>
-        <BreakDownHeading>
-          Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
-        </BreakDownHeading>
-        <PanelFigures>
-          <PanelFigure>
-            <PanelFigureValue>Ethereum</PanelFigureValue>
-            <PanelFigureLabel>43% Of Your Funds</PanelFigureLabel>
-          </PanelFigure>
-          <PanelFigure>
-            <PanelFigureValue>$5,204.14</PanelFigureValue>
-            <PanelFigureLabel>Value in US Dollars</PanelFigureLabel>
-          </PanelFigure>
-        </PanelFigures>
-      </BreakDownChart>
-      <PanelDivider mobileOnly={true} />
-      <VerticalPanelDivider />
-      <BreakDownBalances>
-        <BreakDownHeadingWrapper>
-          <BreakDownHeading>Balance</BreakDownHeading>
-          <BreakDownMore src={moreIcon} alt="More" />
-        </BreakDownHeadingWrapper>
-        <BreakDownBalanceList>
-          {balances.map(({ asset, amount, value, ticker }) => (
-            <BreakDownBalance key={asset}>
-              <BreakDownBalanceAsset>
-                <BreakDownBalanceAssetName>{asset}</BreakDownBalanceAssetName>
-                <BreakDownBalanceAssetAmount>
-                  {amount} {ticker}
-                </BreakDownBalanceAssetAmount>
-              </BreakDownBalanceAsset>
-              <BreakDownBalanceAssetAmount>{value}</BreakDownBalanceAssetAmount>
-            </BreakDownBalance>
-          ))}
-          <PanelDivider />
-          <BreakDownBalanceTotal>
-            <Typography>Total</Typography>
-            <Typography>$2,974.41</Typography>
-          </BreakDownBalanceTotal>
-        </BreakDownBalanceList>
-      </BreakDownBalances>
-    </>
-  );
-};
+  > section {
+    padding: 0;
+    margin: 0;
+  }
+`;
 
 function WalletBreakdown() {
+  const [showChart, setShowChart] = useState(true);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const balances: any[] = [];
@@ -293,6 +251,85 @@ function WalletBreakdown() {
     });
   });
 
+  const toggleShowChart = () => {
+    setShowChart(!showChart);
+  };
+
+  const getNoAssets = () => {
+    return (
+      <NoAssetsWrapper>
+        <NoAssetsBreakdownHeading>
+          Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
+        </NoAssetsBreakdownHeading>
+        <PlusIcon src={moreIcon} />
+        <NoAssetsHeading>No Assets Found</NoAssetsHeading>
+        <NoAssetsDescription>
+          You can{' '}
+          <a href="https://buy.mycrypto.com/" target="_blank" rel="noreferrer">
+            buy some ETH
+          </a>{' '}
+          with your credit card to get started!
+        </NoAssetsDescription>
+      </NoAssetsWrapper>
+    );
+  };
+
+  const getChartWithBalances = () => {
+    return (
+      <>
+        <BreakDownChart>
+          <BreakDownHeading>
+            Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
+          </BreakDownHeading>
+          <PanelFigures>
+            <PanelFigure>
+              <PanelFigureValue>Ethereum</PanelFigureValue>
+              <PanelFigureLabel>43% Of Your Funds</PanelFigureLabel>
+            </PanelFigure>
+            <PanelFigure>
+              <PanelFigureValue>$5,204.14</PanelFigureValue>
+              <PanelFigureLabel>Value in US Dollars</PanelFigureLabel>
+            </PanelFigure>
+          </PanelFigures>
+        </BreakDownChart>
+        <PanelDivider mobileOnly={true} />
+        <VerticalPanelDivider />
+        <BreakDownBalances>
+          <BreakDownHeadingWrapper>
+            <BreakDownHeading>Balance</BreakDownHeading>
+            <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
+          </BreakDownHeadingWrapper>
+          <BreakDownBalanceList>
+            {balances.map(({ asset, amount, value, ticker }) => (
+              <BreakDownBalance key={asset}>
+                <BreakDownBalanceAsset>
+                  <BreakDownBalanceAssetName>{asset}</BreakDownBalanceAssetName>
+                  <BreakDownBalanceAssetAmount>
+                    {amount} {ticker}
+                  </BreakDownBalanceAssetAmount>
+                </BreakDownBalanceAsset>
+                <BreakDownBalanceAssetAmount>{value}</BreakDownBalanceAssetAmount>
+              </BreakDownBalance>
+            ))}
+            <PanelDivider />
+            <BreakDownBalanceTotal>
+              <Typography>Total</Typography>
+              <Typography>$2,974.41</Typography>
+            </BreakDownBalanceTotal>
+          </BreakDownBalanceList>
+        </BreakDownBalances>
+      </>
+    );
+  };
+
+  const getBalancesOnly = () => {
+    return (
+      <BalancesOnly>
+        <BalancesList balances={balances} toggleShowChart={toggleShowChart} />
+      </BalancesOnly>
+    );
+  };
+
   return (
     <>
       <WalletBreakdownTop>
@@ -305,7 +342,9 @@ function WalletBreakdown() {
         </AccountDropdownWrapper>
       </WalletBreakdownTop>
       <WalletBreakdownPanel>
-        {balances.length === 0 ? getNoAssets() : getChartWithBalances(balances)}
+        {balances.length === 0
+          ? getNoAssets()
+          : showChart ? getChartWithBalances() : getBalancesOnly()}
       </WalletBreakdownPanel>
     </>
   );

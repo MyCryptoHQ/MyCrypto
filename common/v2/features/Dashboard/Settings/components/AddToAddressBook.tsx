@@ -56,6 +56,7 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
           Add Address
         </>
       }
+      padChildren={true}
     >
       <Formik
         initialValues={{

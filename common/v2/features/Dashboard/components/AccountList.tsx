@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { getCurrentsFromContext } from 'v2/libs/accounts/accounts';
 import { truncate } from 'v2/libs';
 import { ExtendedAccount } from 'v2/services';
-import './AccountList.scss';
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
 import { AccountContext, SettingsContext } from 'v2/providers';
@@ -38,7 +37,7 @@ export default function AccountList(props: AccountListProps) {
   return (
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS')}
-      action={translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
+      headingRight={translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
       actionLink="/add-account"
       className={`AccountList ${className}`}
     >

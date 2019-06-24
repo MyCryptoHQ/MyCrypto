@@ -87,7 +87,7 @@ export default function RecentTransactionList({
   return (
     <DashboardPanel
       heading="Recent Transactions"
-      action="Export"
+      headingRight="Export"
       actionLink="/dashboard/recent-transactions"
       className={`RecentTransactionsList ${className}`}
     >
