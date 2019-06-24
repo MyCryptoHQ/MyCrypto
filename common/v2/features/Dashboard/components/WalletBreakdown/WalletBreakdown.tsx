@@ -40,10 +40,6 @@ const WalletBreakdownPanel = styled(Panel)`
   }
 `;
 
-const BreakDownChart = styled.div`
-  flex: 1;
-`;
-
 const BreakDownHeading = styled(Heading)`
   margin: 0;
   font-size: 20px !important;
@@ -61,6 +57,42 @@ const BreakDownHeadingExtra = styled.span`
   @media (min-width: 1080px) {
     display: none;
   }
+`;
+
+const NoAssetsBreakdownHeading = styled(BreakDownHeading)`
+  position: absolute;
+  top: 0;
+  left: 0;
+`;
+
+const NoAssetsWrapper = styled.div`
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+const PlusIcon = styled.img`
+  width: 75px;
+  height: 75px;
+`;
+
+const NoAssetsHeading = styled(Heading)`
+  font-size: 24px !important;
+  font-weight: bold;
+  color: #b5bfc7;
+`;
+
+const NoAssetsDescription = styled(Typography)`
+  color: #b5bfc7;
+  text-align: center;
+`;
+
+const BreakDownChart = styled.div`
+  flex: 1;
 `;
 
 const PanelFigures = styled.div`
@@ -163,6 +195,73 @@ const BreakDownBalanceTotal = styled.div`
   justify-content: space-between;
 `;
 
+const getNoAssets = () => {
+  return (
+    <NoAssetsWrapper>
+      <NoAssetsBreakdownHeading>
+        Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
+      </NoAssetsBreakdownHeading>
+      <PlusIcon src={moreIcon} />
+      <NoAssetsHeading>No Assets Found</NoAssetsHeading>
+      <NoAssetsDescription>
+        You can{' '}
+        <a href="https://buy.mycrypto.com/" target="_blank" rel="noreferrer">
+          buy some ETH
+        </a>{' '}
+        with your credit card to get started!
+      </NoAssetsDescription>
+    </NoAssetsWrapper>
+  );
+};
+
+const getChartWithBalances = (balances: any[]) => {
+  return (
+    <>
+      <BreakDownChart>
+        <BreakDownHeading>
+          Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
+        </BreakDownHeading>
+        <PanelFigures>
+          <PanelFigure>
+            <PanelFigureValue>Ethereum</PanelFigureValue>
+            <PanelFigureLabel>43% Of Your Funds</PanelFigureLabel>
+          </PanelFigure>
+          <PanelFigure>
+            <PanelFigureValue>$5,204.14</PanelFigureValue>
+            <PanelFigureLabel>Value in US Dollars</PanelFigureLabel>
+          </PanelFigure>
+        </PanelFigures>
+      </BreakDownChart>
+      <PanelDivider mobileOnly={true} />
+      <VerticalPanelDivider />
+      <BreakDownBalances>
+        <BreakDownHeadingWrapper>
+          <BreakDownHeading>Balance</BreakDownHeading>
+          <BreakDownMore src={moreIcon} alt="More" />
+        </BreakDownHeadingWrapper>
+        <BreakDownBalanceList>
+          {balances.map(({ asset, amount, value, ticker }) => (
+            <BreakDownBalance key={asset}>
+              <BreakDownBalanceAsset>
+                <BreakDownBalanceAssetName>{asset}</BreakDownBalanceAssetName>
+                <BreakDownBalanceAssetAmount>
+                  {amount} {ticker}
+                </BreakDownBalanceAssetAmount>
+              </BreakDownBalanceAsset>
+              <BreakDownBalanceAssetAmount>{value}</BreakDownBalanceAssetAmount>
+            </BreakDownBalance>
+          ))}
+          <PanelDivider />
+          <BreakDownBalanceTotal>
+            <Typography>Total</Typography>
+            <Typography>$2,974.41</Typography>
+          </BreakDownBalanceTotal>
+        </BreakDownBalanceList>
+      </BreakDownBalances>
+    </>
+  );
+};
+
 function WalletBreakdown() {
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
@@ -206,47 +305,7 @@ function WalletBreakdown() {
         </AccountDropdownWrapper>
       </WalletBreakdownTop>
       <WalletBreakdownPanel>
-        <BreakDownChart>
-          <BreakDownHeading>
-            Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
-          </BreakDownHeading>
-          <PanelFigures>
-            <PanelFigure>
-              <PanelFigureValue>Ethereum</PanelFigureValue>
-              <PanelFigureLabel>43% Of Your Funds</PanelFigureLabel>
-            </PanelFigure>
-            <PanelFigure>
-              <PanelFigureValue>$5,204.14</PanelFigureValue>
-              <PanelFigureLabel>Value in US Dollars</PanelFigureLabel>
-            </PanelFigure>
-          </PanelFigures>
-        </BreakDownChart>
-        <PanelDivider mobileOnly={true} />
-        <VerticalPanelDivider />
-        <BreakDownBalances>
-          <BreakDownHeadingWrapper>
-            <BreakDownHeading>Balance</BreakDownHeading>
-            <BreakDownMore src={moreIcon} alt="More" />
-          </BreakDownHeadingWrapper>
-          <BreakDownBalanceList>
-            {balances.map(({ asset, amount, value, ticker }) => (
-              <BreakDownBalance key={asset}>
-                <BreakDownBalanceAsset>
-                  <BreakDownBalanceAssetName>{asset}</BreakDownBalanceAssetName>
-                  <BreakDownBalanceAssetAmount>
-                    {amount} {ticker}
-                  </BreakDownBalanceAssetAmount>
-                </BreakDownBalanceAsset>
-                <BreakDownBalanceAssetAmount>{value}</BreakDownBalanceAssetAmount>
-              </BreakDownBalance>
-            ))}
-            <PanelDivider />
-            <BreakDownBalanceTotal>
-              <Typography>Total</Typography>
-              <Typography>$2,974.41</Typography>
-            </BreakDownBalanceTotal>
-          </BreakDownBalanceList>
-        </BreakDownBalances>
+        {balances.length === 0 ? getNoAssets() : getChartWithBalances(balances)}
       </WalletBreakdownPanel>
     </>
   );
