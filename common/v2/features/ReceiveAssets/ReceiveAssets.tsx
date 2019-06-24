@@ -4,11 +4,11 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { ComboBox, Copyable, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/formatters';
 
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import { AccountContext } from 'v2/providers';
-import './ReceiveAssets.scss';
+import { AccountContext, AssetContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs/networks/networks';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 
@@ -21,44 +21,94 @@ const truncate = (children: string) => {
   return [children.substring(0, 15), '…', children.substring(children.length - 10)].join('');
 };
 
-export const buildEIP681EtherRequest = (
-  recipientAddr: string,
-  chainId: number,
-  etherValue: string
-) => `ethereum:${recipientAddr}${chainId !== 1 ? `@${chainId}` : ''}?value=${etherValue}e18`;
+const isAssetToken = (tokenType: string) => {
+  if (tokenType === 'base') {
+    return false;
+  }
+  return true;
+};
 
 const QRDisplay = styled.div`
   margin: auto;
   width: 60%;
 `;
 
+const Label = styled.label`
+  margin-bottom: 8px;
+  color: #333333;
+  font-weight: normal;
+`;
+
+const Fieldset = styled.fieldset`
+  margin-bottom: 15px;
+`;
+
+const FieldsetBox = styled.div`
+  padding: 12px 0;
+  background: #f6f8fa;
+  text-align: center;
+`;
+
+const AssetFields = styled.div`
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+`;
+
+const Divider = styled.div`
+  height: 1px;
+  margin: 30px 0;
+  background: #e3edff;
+`;
+
+const FullWidthInput = styled(Input)`
+  width: 100%;
+`;
+
+const FullWidthComboBox = styled(ComboBox)`
+  width: 100%;
+`;
+
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts } = useContext(AccountContext);
+  const { assets } = useContext(AssetContext);
   const network = getNetworkByName(accounts[0].network);
+  const filteredAssets = network
+    ? assets
+        .filter(asset => asset.networkId === network.id)
+        .filter(asset => asset.type === 'base' || asset.type === 'erc20')
+    : [];
+  const assetNames = filteredAssets.map(asset => asset.name);
+  const [chosenAssetName, setAssetName] = useState(assetNames[0]);
+  const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
+
   const [requestAddress, setRequestAddress] = useState('');
 
   const initialValues = {
-    recipientAddress: accounts[0].address,
     amount: '0',
     asset: 'ETH',
     chainId: network ? network.chainId : 1
   };
 
+  const Amount = styled.div`
+    flex: 2;
+    margin-right: 15px;
+  `;
+
+  const Asset = styled.div`
+    flex: 1;
+  `;
+
   return (
-    <Layout className="RequestAssets" centered={true}>
-      <ContentPanel
-        heading="Receive Assets"
-        icon={receiveIcon}
-        onBack={history.goBack}
-        className="RequestAssets-panel"
-      >
+    <Layout centered={true}>
+      <ContentPanel heading="Receive Assets" icon={receiveIcon} onBack={history.goBack}>
         <Formik
           initialValues={initialValues}
           onSubmit={noop}
           render={({ values: { amount, chainId } }: FormikProps<typeof initialValues>) => (
             <Form>
-              <fieldset className="RequestAssets-panel-fieldset">
-                <label htmlFor="recipientAddress">Recipient Address</label>
+              <Fieldset>
+                <Label htmlFor="recipientAddress">Recipient Address</Label>
                 <Field
                   name="recipientAddress"
                   component={({ field, form }: FieldProps) => (
@@ -73,64 +123,87 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     />
                   )}
                 />
-              </fieldset>
-              <div className="RequestAssets-panel-fieldset RequestAssets-panel-amountAsset">
-                <div className="RequestAssets-panel-amountAsset-amount">
-                  <label htmlFor="amount" className="RequestAssets-panel-amountAsset-amount-label">
-                    Amount
-                  </label>
+              </Fieldset>
+              <AssetFields>
+                <Amount>
+                  <Label htmlFor="amount">Amount</Label>
                   <Field
                     name="amount"
                     render={({ field, form }: FieldProps<typeof initialValues>) => (
-                      <Input
+                      <FullWidthInput
                         value={field.value}
                         onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
                         placeholder="0.00"
-                        className="SendAssetsForm-fieldset-input"
                       />
                     )}
                   />
-                </div>
-                <div className="RequestAssets-panel-amountAsset-asset">
-                  <label htmlFor="asset">Asset</label>
+                </Amount>
+                <Asset>
+                  <Label htmlFor="asset">Asset</Label>
                   <Field
                     name="asset"
-                    render={({ field }: FieldProps<typeof initialValues>) => (
-                      <ComboBox
+                    render={({ field, form }: FieldProps<typeof initialValues>) => (
+                      <FullWidthComboBox
                         value={field.value}
-                        items={new Set(['ETH', 'ZRX'])}
-                        className="SendAssetsForm-fieldset-input"
+                        items={new Set(assetNames)}
+                        onChange={({ target: { value } }) => {
+                          form.setFieldValue(field.name, value);
+                          setAssetName(value);
+                        }}
                       />
                     )}
                   />
-                </div>
-              </div>
-              {parseFloat(amount) > 0 && (
-                <>
-                  <div className="RequestAssets-panel-divider" />
-                  <fieldset className="RequestAssets-panel-fieldset">
-                    <label>Payment Code</label>
-                    <div className="RequestAssets-panel-fieldset-box">
-                      <Copyable
-                        text={buildEIP681EtherRequest(requestAddress, chainId, amount)}
-                        truncate={truncate}
-                      />
-                    </div>
-                  </fieldset>
-                  <fieldset className="RequestAssets-panel-fieldset">
-                    <label>QR Code</label>
-                    <QRDisplay>
-                      <QRCode
-                        data={buildEIP681EtherRequest(
-                          requestAddress,
-                          network ? network.chainId : 1,
-                          amount
-                        )}
-                      />
-                    </QRDisplay>
-                  </fieldset>
-                </>
-              )}
+                </Asset>
+              </AssetFields>
+              {parseFloat(amount) > 0 &&
+                selectedAsset &&
+                requestAddress &&
+                network && (
+                  <>
+                    <Divider />
+                    <Fieldset>
+                      <Label>Payment Code</Label>
+                      <FieldsetBox>
+                        <Copyable
+                          text={
+                            isAssetToken(selectedAsset.type) &&
+                            selectedAsset.contractAddress &&
+                            selectedAsset.decimal
+                              ? buildEIP681TokenRequest(
+                                  requestAddress,
+                                  selectedAsset.contractAddress,
+                                  network.chainId,
+                                  amount,
+                                  selectedAsset.decimal
+                                )
+                              : buildEIP681EtherRequest(requestAddress, chainId, amount)
+                          }
+                          truncate={truncate}
+                        />
+                      </FieldsetBox>
+                    </Fieldset>
+                    <Fieldset>
+                      <Label>QR Code</Label>
+                      <QRDisplay>
+                        <QRCode
+                          data={
+                            isAssetToken(selectedAsset.type) &&
+                            selectedAsset.contractAddress &&
+                            selectedAsset.decimal
+                              ? buildEIP681TokenRequest(
+                                  requestAddress,
+                                  selectedAsset.contractAddress,
+                                  network.chainId,
+                                  amount,
+                                  selectedAsset.decimal
+                                )
+                              : buildEIP681EtherRequest(requestAddress, chainId, amount)
+                          }
+                        />
+                      </QRDisplay>
+                    </Fieldset>
+                  </>
+                )}
             </Form>
           )}
         />
