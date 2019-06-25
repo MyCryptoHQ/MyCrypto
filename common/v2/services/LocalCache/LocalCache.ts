@@ -226,13 +226,13 @@ export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCa
 // Collection operations
 
 type CollectionKey =
-  | 'accounts'
-  | 'wallets'
-  | 'notifications'
   | 'addressBook'
+  | 'accounts'
   | 'assets'
   | 'contracts'
-  | 'networks';
+  | 'networks'
+  | 'notifications'
+  | 'wallets';
 
 export const create = <K extends CollectionKey>(key: K) => (
   value: LocalCache[K][keyof LocalCache[K]]
