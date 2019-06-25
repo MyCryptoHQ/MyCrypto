@@ -78,34 +78,28 @@ export default function SendAssetsForm({
   const { assets } = useContext(AssetContext);
   // @TODO:SEND change the data structure to get an object
 
-  const allAssets: IAsset[] = [];
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
 
-  /* ERC20 Tokens */
-  accountAssets
+  const easyAssets: Asset[] = accountAssets
     .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid, assets))
     .filter((asset: Asset | undefined) => asset)
-    .map((asset: Asset) => {
-      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId, asset };
-    })
-    .forEach((asset: IAsset) => {
-      /* removes duplicates */
-      if (!(allAssets.map(allAssetItem => allAssetItem.name).indexOf(asset.name) > -1)) {
-        allAssets.push(asset);
-      }
-    });
+    .map((asset: Asset) => asset);
 
-  /* Base Assets */
-  accounts
+  const baseAssets: Asset[] = accounts
     .map(account => getBaseAssetFromAccount(account, assets))
+    .filter((asset: Asset | undefined) => asset)
+    .map((asset: Asset) => asset);
+
+  const filteredAssets: string[] = _.union(
+    easyAssets.map(ass => ass.uuid),
+    baseAssets.map(ass => ass.uuid)
+  );
+
+  const allAssets: IAsset[] = filteredAssets
+    .map(assetName => getAssetByUUID(assetName, assets))
     .filter((asset: Asset | undefined) => asset)
     .map((asset: Asset) => {
       return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId, asset };
-    })
-    .forEach((asset: IAsset) => {
-      if (!(allAssets.map(allAssetItem => allAssetItem.name).indexOf(asset.name) > -1)) {
-        allAssets.push(asset);
-      }
     });
 
   return (
