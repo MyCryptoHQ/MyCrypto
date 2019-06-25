@@ -1,50 +1,37 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '@mycrypto/ui';
 
 import translate from 'translations';
 import { BREAK_POINTS } from 'v2/features/constants';
 import NotificationWrapper from './NotificationWrapper';
-import { PaperWallet } from 'components';
+import { PrintPaperWalletButton } from 'v2/components';
 
 // Legacy
 import walletIcon from 'common/assets/images/icn-wallet.svg';
-import printerIcon from 'common/assets/images/icn-printer.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
-const PrinterImage = styled.embed`
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  pointer-events: none;
-`;
-
-const ResourceItem = styled(Button)`
+const ResourceItem = styled.div`
   width: 200px;
-  font-weight: normal;
-  font-size: 17px;
-  padding-left: 0px;
-  padding-right: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  @media (max-width: ${SCREEN_XS}) {
-    font-size: 15px;
-  }
+  button {
+    width: 100%;
+    font-weight: normal;
+    font-size: 17px;
+    padding-left: 0px;
+    padding-right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  &:focus,
-  &:hover {
-    embed {
-      filter: brightness(0) invert(1);
+    @media (max-width: ${SCREEN_XS}) {
+      font-size: 15px;
     }
   }
-`;
 
-const HiddenPaperWallet = styled.div`
-  position: absolute;
-  top: -1000px;
+  a {
+    margin: 0;
+  }
 `;
 
 interface Props {
@@ -52,29 +39,8 @@ interface Props {
   privateKey: string;
 }
 
-interface State {
-  paperWalletImage: string;
-}
-
-export default class PrintPaperWalletNotification extends React.Component<Props, State> {
-  public state: State = {
-    paperWalletImage: ''
-  };
-
-  private paperWallet: PaperWallet | null;
-
-  public componentDidMount() {
-    setTimeout(() => {
-      if (!this.paperWallet) {
-        return this.componentDidMount();
-      }
-
-      this.paperWallet.toPNG().then(png => this.setState({ paperWalletImage: png }));
-    }, 500);
-  }
-
+export default class PrintPaperWalletNotification extends React.Component<Props> {
   public render() {
-    const { paperWalletImage } = this.state;
     const { address, privateKey } = this.props;
 
     return (
@@ -83,22 +49,15 @@ export default class PrintPaperWalletNotification extends React.Component<Props,
         title={translate('NOTIFICATIONS_PRINT_WALLET_TITLE')}
         description={translate('NOTIFICATIONS_PRINT_WALLET_DESCRIPTION')}
         resources={
-          <a href={paperWalletImage} download={`paper-wallet-0x${address.substr(0, 6)}`}>
-            <ResourceItem disabled={!paperWalletImage} secondary={true}>
-              <PrinterImage src={printerIcon} />
-              {translate('NOTIFICATIONS_PRINT_WALLET_RESOURCE')}
-            </ResourceItem>
-          </a>
+          <ResourceItem>
+            <PrintPaperWalletButton
+              address={address}
+              privateKey={privateKey}
+              printText={translate('NOTIFICATIONS_PRINT_WALLET_RESOURCE')}
+            />
+          </ResourceItem>
         }
-      >
-        <HiddenPaperWallet>
-          <PaperWallet
-            address={address}
-            privateKey={privateKey}
-            ref={c => (this.paperWallet = c)}
-          />
-        </HiddenPaperWallet>
-      </NotificationWrapper>
+      />
     );
   }
 }

@@ -6,9 +6,14 @@ import { Button, Input } from '@mycrypto/ui';
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
-import { fetchGasPriceEstimates } from 'v2';
+import { fetchGasPriceEstimates, getNonce } from 'v2';
 import { AccountContext } from 'v2/providers';
-import { ExtendedAccount as IExtendedAccount, AssetBalanceObject, Asset } from 'v2/services';
+import {
+  ExtendedAccount as IExtendedAccount,
+  AssetBalanceObject,
+  Asset,
+  ExtendedAccount
+} from 'v2/services';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { IAsset, TSymbol } from 'v2/types';
 import { InlineErrorMsg } from 'v2/components';
@@ -89,7 +94,7 @@ export default function SendAssetsForm({
           onSubmit(fields);
           onNext();
         }}
-        render={({ errors, touched, setFieldValue, values, handleChange }) => {
+        render={({ errors, touched, setFieldValue, values, handleChange, submitForm }) => {
           const toggleAdvancedOptions = () =>
             setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
 
@@ -104,19 +109,28 @@ export default function SendAssetsForm({
               }
             }
           };
+
           const setAmountFieldToAssetMax = () =>
             // @TODO get asset balance and subtract gas cost
             setFieldValue('amount', '1000');
 
+          const handleNonceEstimate = async (account: ExtendedAccount) => {
+            if (!values || !values.network) {
+              return;
+            }
+            const nonce: number = await getNonce(values.network, account);
+            setFieldValue('nonceEstimated', nonce.toString());
+          };
+
           return (
             <Form className="SendAssetsForm">
-              {/*<React.Fragment>
+              <React.Fragment>
                 {'ITxFields123: '}
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
                   {JSON.stringify(processFormDataToTx(values), null, 2)}
                 </pre>
-                </React.Fragment>*/}
+              </React.Fragment>
               <br />
               {'Formik Fields: '}
               <br />
@@ -169,8 +183,8 @@ export default function SendAssetsForm({
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
-                        updateState({ transactionFields: { account: option } });
                         estimateGasHandler();
+                        handleNonceEstimate(option);
                       }}
                     />
                   )}
@@ -341,7 +355,7 @@ export default function SendAssetsForm({
                 )}
               </div>
 
-              <Button type="submit" onClick={onNext} className="SendAssetsForm-next">
+              <Button type="submit" onClick={submitForm} className="SendAssetsForm-next">
                 Next{/* TRANSLATE THIS */}
               </Button>
             </Form>
