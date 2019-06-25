@@ -290,7 +290,6 @@ export const initTestAccounts = () => {
   const newStorage = getCacheRaw();
   const newAccounts: types.Account[] = [
     {
-      label: 'ETH Test 1',
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
       network: 'Ethereum',
       assets: [
@@ -303,7 +302,6 @@ export const initTestAccounts = () => {
       transactions: []
     },
     {
-      label: 'Goerli ETH Test 1',
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
       network: 'Goerli',
       assets: [],
@@ -343,10 +341,28 @@ export const initTestAccounts = () => {
     }
   };
 
+  const newLabels: { [key in string]: types.AddressBook } = {
+    'f1330cce-08e2-41ce-9231-5236e6aab702': {
+      label: 'Goerli ETH Test 1',
+      address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
+      notes: '',
+      network: 'Goerli'
+    },
+    '13f3cbf2-de3a-4050-a0c6-521592e4b85a': {
+      label: 'ETH Test 1',
+      address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
+      notes: '',
+      network: 'Ethereum'
+    }
+  };
+
   newAccounts.map(accountToAdd => {
     const uuid = utils.generateUUID();
     newStorage.accounts[uuid] = accountToAdd;
     newStorage.settings.dashboardAccounts.push(uuid);
+  });
+  Object.keys(newLabels).map(labelId => {
+    newStorage.addressBook[labelId] = newLabels[labelId];
   });
   Object.keys(newAssets).map(assetToAdd => {
     newStorage.assets[assetToAdd] = newAssets[assetToAdd];
