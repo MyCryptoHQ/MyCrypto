@@ -33,7 +33,13 @@ import { NewAppReleaseModal } from 'v2/components';
 import Dashboard from 'v2/features/Dashboard';
 import DevTools from 'v2/features/DevTools';
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
-import { NotificationsProvider, SettingsProvider, DevModeProvider, useDevMode } from 'v2/providers';
+import {
+  NotificationsProvider,
+  SettingsProvider,
+  DevModeProvider,
+  useDevMode,
+  AssetProvider
+} from 'v2/providers';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
@@ -100,23 +106,25 @@ class RootClass extends Component<Props, State> {
               <SettingsProvider>
                 <AddressBookProvider>
                   <AccountProvider>
-                    <NotificationsProvider>
-                      <NetworksProvider>
-                        <Router>
-                          <LockScreenProvider>
-                            <PageVisitsAnalytics>
-                              {onboardingActive && <OnboardingModal />}
-                              {error ? <AppContainer error={error} /> : <AppContainer />}
-                              <LogOutPrompt />
-                              <QrSignerModal />
-                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                            </PageVisitsAnalytics>
-                          </LockScreenProvider>
-                        </Router>
-                        <DevToolsContainer />
-                        <div id="ModalContainer" />
-                      </NetworksProvider>
-                    </NotificationsProvider>
+                    <AssetProvider>
+                      <NotificationsProvider>
+                        <NetworksProvider>
+                          <Router>
+                            <LockScreenProvider>
+                              <PageVisitsAnalytics>
+                                {onboardingActive && <OnboardingModal />}
+                                {error ? <AppContainer error={error} /> : <AppContainer />}
+                                <LogOutPrompt />
+                                <QrSignerModal />
+                                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                              </PageVisitsAnalytics>
+                            </LockScreenProvider>
+                          </Router>
+                          <DevToolsContainer />
+                          <div id="ModalContainer" />
+                        </NetworksProvider>
+                      </NotificationsProvider>
+                    </AssetProvider>
                   </AccountProvider>
                 </AddressBookProvider>
               </SettingsProvider>

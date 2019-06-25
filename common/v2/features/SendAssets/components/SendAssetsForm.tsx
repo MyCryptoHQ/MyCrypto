@@ -7,7 +7,7 @@ import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
 import { fetchGasPriceEstimates, getNonce } from 'v2';
-import { AccountContext } from 'v2/providers';
+import { AccountContext, AssetContext } from 'v2/providers';
 import {
   ExtendedAccount as IExtendedAccount,
   AssetBalanceObject,
@@ -36,11 +36,12 @@ import {
   validateNonceField
 } from './validators/validators';
 import './SendAssetsForm.scss';
-import { getAssetByUUID, getNetworkByName } from 'v2/libs';
+import { getAssetByUUID, getNetworkByName, getBaseAssetFromAccount } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import ProviderHandler from 'v2/config/networks/providerHandler';
+import _ from 'lodash';
 
 interface Props {
   stateValues: ISendState;
@@ -74,15 +75,37 @@ export default function SendAssetsForm({
   updateState
 }: Props) {
   const { accounts } = useContext(AccountContext);
+  const { assets } = useContext(AssetContext);
   // @TODO:SEND change the data structure to get an object
 
+  const allAssets: IAsset[] = [];
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
 
-  const assets: IAsset[] = accountAssets
-    .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid))
+  /* ERC20 Tokens */
+  accountAssets
+    .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid, assets))
     .filter((asset: Asset | undefined) => asset)
     .map((asset: Asset) => {
-      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId };
+      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId, asset };
+    })
+    .forEach((asset: IAsset) => {
+      /* removes duplicates */
+      if (!(allAssets.map(allAssetItem => allAssetItem.name).indexOf(asset.name) > -1)) {
+        allAssets.push(asset);
+      }
+    });
+
+  /* Base Assets */
+  accounts
+    .map(account => getBaseAssetFromAccount(account, assets))
+    .filter((asset: Asset | undefined) => asset)
+    .map((asset: Asset) => {
+      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId, asset };
+    })
+    .forEach((asset: IAsset) => {
+      if (!(allAssets.map(allAssetItem => allAssetItem.name).indexOf(asset.name) > -1)) {
+        allAssets.push(asset);
+      }
     });
 
   return (
@@ -150,7 +173,7 @@ export default function SendAssetsForm({
                     <AssetDropdown
                       name={field.name}
                       value={field.value}
-                      assets={assets}
+                      assets={allAssets}
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
                         form.setFieldValue('account', undefined);
@@ -236,6 +259,7 @@ export default function SendAssetsForm({
                   {/* TRANSLATE THIS */}
                   <TransactionFeeDisplay
                     values={values}
+                    assets={assets}
                     fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
                   />
                   {/* TRANSLATE THIS */}

@@ -86,11 +86,33 @@ export const createNode = (node: NodeOptions, network: Network): void => {
   setCache(newStorage);
 };
 
-export const getBaseAssetByNetwork = (networkObj: Network): Asset | undefined => {
-  return getAssetByUUID(networkObj.baseAsset);
+export const getBaseAssetByNetwork = (networkObj: Network, assets: Asset[]): Asset | undefined => {
+  return getAssetByUUID(networkObj.baseAsset, assets);
 };
 
-export const getBaseAssetSymbolByNetwork = (networkObj: Network): string | undefined => {
-  const baseAsset: Asset | undefined = getAssetByUUID(networkObj.baseAsset);
+export const getBaseAssetSymbolByNetwork = (
+  networkObj: Network,
+  assets: Asset[]
+): string | undefined => {
+  const baseAsset: Asset | undefined = getAssetByUUID(networkObj.baseAsset, assets);
   return baseAsset ? baseAsset.ticker : undefined;
+};
+
+export const getBaseAssetByNetworkName = (
+  networkName: string,
+  networks: Network[],
+  assets: Asset[]
+): Asset | undefined => {
+  const network: Network | undefined = getNetworkByNetworkName(networkName, networks);
+  if (network) {
+    const baseAsset: Asset | undefined = getAssetByUUID(network.baseAsset, assets);
+    return baseAsset;
+  }
+};
+
+export const getNetworkByNetworkName = (
+  networkName: string,
+  networks: Network[]
+): Network | undefined => {
+  return networks.find(network => network.name === networkName);
 };

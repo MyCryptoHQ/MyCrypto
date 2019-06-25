@@ -25,8 +25,8 @@ export const getCurrentsFromContext = (
   return accountList;
 };
 
-export const getBalanceFromAccount = (account: ExtendedAccount): string => {
-  const baseAsset = getBaseAssetFromAccount(account);
+export const getBalanceFromAccount = (account: ExtendedAccount, assets: Asset[]): string => {
+  const baseAsset = getBaseAssetFromAccount(account, assets);
   if (baseAsset) {
     return account.balance.toString();
   } else {
@@ -117,10 +117,13 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
   return undefined;
 };
 
-export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
+export const getBaseAssetFromAccount = (
+  account: ExtendedAccount,
+  assets: Asset[]
+): Asset | undefined => {
   const network: Network | undefined = getNetworkByName(account.network);
   if (network) {
-    return getAssetByUUID(network.baseAsset);
+    return getAssetByUUID(network.baseAsset, assets);
   }
 };
 

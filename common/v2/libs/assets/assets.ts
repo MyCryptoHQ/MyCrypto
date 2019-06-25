@@ -40,7 +40,6 @@ export const getAssetByName = (name: string): Asset | undefined => {
   return allAssets.find(asset => asset.name === name);
 };
 
-export const getAssetByUUID = (uuid: string): Asset | undefined => {
-  const allAssets = getAllAssets();
-  return allAssets.find(asset => asset.uuid === uuid);
+export const getAssetByUUID = (uuid: string, assets: Asset[]): Asset | undefined => {
+  return assets.find(asset => asset.uuid === uuid);
 };
