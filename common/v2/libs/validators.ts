@@ -455,19 +455,17 @@ export function isValidAddressLabel(
 
 export const validateTxFields = (tx: ITxFields): true | undefined => {
   if (!isValidETHAddress(tx.recipientAddress)) {
-    console.log('failed recipient address');
-    return;
+    if (!isValidETHAddress(tx.resolvedNSAddress)) {
+      return;
+    }
   }
   if (!isValidHex(tx.data)) {
-    console.log('failed data field');
     return;
   }
   if (!gasPriceValidator(tx.gasPriceSlider) || !gasPriceValidator(tx.gasPriceField)) {
-    console.log('failed gasPriceSlider || gasPriceField');
     return;
   }
   if (!isValidAmount(parseFloat(tx.amount))) {
-    console.log('failed amount');
     return;
   }
 };

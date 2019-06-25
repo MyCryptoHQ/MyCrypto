@@ -10,7 +10,7 @@ import { ITxFields } from '../../types';
 
 /*
   Eth address field to be used within a Formik Form
-  - the 'fieldname' must exist wihtin the Formik default fields
+  - the 'fieldname' must exist within the Formik default fields
   - validation of the field is handled here.
 */
 
@@ -21,6 +21,7 @@ interface Props {
   placeholder?: string;
   values: ITxFields;
   handleENSResolve?(name: string): Promise<void>;
+  handleGasEstimate(): Promise<void>;
 }
 
 function ETHAddressField({
@@ -29,7 +30,8 @@ function ETHAddressField({
   touched,
   values,
   placeholder = 'Eth Address',
-  handleENSResolve
+  handleENSResolve,
+  handleGasEstimate
 }: Props) {
   const validateEthAddress = (value: any) => {
     let errorMsg;
@@ -65,6 +67,9 @@ function ETHAddressField({
                 form.setFieldValue('resolvedNSAddress', '');
                 if (isValidENS(e.currentTarget.value) && handleENSResolve) {
                   handleENSResolve(e.currentTarget.value);
+                } else if (isValidETHAddress(e.currentTarget.value)) {
+                  form.setFieldValue('recipientAddress', e.currentTarget.value);
+                  handleGasEstimate();
                 }
               }
             }}
