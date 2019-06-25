@@ -20,4 +20,5 @@ export { default as PrintPaperWalletButton } from './PrintPaperWalletButton';
 export { default as Overlay } from './Overlay';
 export { default as RouterLink } from './RouterLink';
 export { default as Stepper } from './Stepper';
+export { default as ENSStatus } from './ENSStatus';
 export * from './ErrorMessages';

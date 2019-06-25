@@ -19,6 +19,7 @@ import { normalise } from './ens';
 import { EAC_SCHEDULING_CONFIG } from './scheduling';
 import { getValidTLDsForChain, ITLDCollection } from './ens/networkConfigs';
 import { ITxFields } from 'v2/features/SendAssets/types';
+import { formateENSRegex } from './formatters';
 
 export function getIsValidAddressFunction(chainId: number) {
   if (chainId === 30 || chainId === 31) {
@@ -95,12 +96,13 @@ export function isValidENSName(str: string) {
 }
 
 export function isValidENSAddress(address: string, validTLDs: ITLDCollection): boolean {
+  /* ENS Validation from an existing library can't be used because it needs to support RSK and other networks that have NS support. */
   try {
     const normalized = normalise(address);
     const tld = normalized.substr(normalized.lastIndexOf('.') + 1);
-
     if (validTLDs[tld]) {
-      return true;
+      const relevantNSRegex: string = formateENSRegex(validTLDs);
+      return new RegExp(relevantNSRegex).test(normalized);
     }
   } catch (e) {
     return false;
@@ -453,19 +455,17 @@ export function isValidAddressLabel(
 
 export const validateTxFields = (tx: ITxFields): true | undefined => {
   if (!isValidETHAddress(tx.recipientAddress)) {
-    console.log('failed recipient address');
-    return;
+    if (!isValidETHAddress(tx.resolvedNSAddress)) {
+      return;
+    }
   }
   if (!isValidHex(tx.data)) {
-    console.log('failed data field');
     return;
   }
   if (!gasPriceValidator(tx.gasPriceSlider) || !gasPriceValidator(tx.gasPriceField)) {
-    console.log('failed gasPriceSlider || gasPriceField');
     return;
   }
   if (!isValidAmount(parseFloat(tx.amount))) {
-    console.log('failed amount');
     return;
   }
 };

@@ -4,33 +4,34 @@ import {
   gasLimitValidator,
   isValidAmount
 } from 'v2/libs/validators';
+import { translateRaw } from 'translations';
 
 export function validateGasPriceField(value: string): string | undefined {
   if (!gasPriceValidator(value)) {
-    return 'Gas price must be a valid number.';
+    return translateRaw('ERROR_10');
   }
 }
 
 export function validateGasLimitField(value: string): string | undefined {
   if (!gasLimitValidator(value)) {
-    return 'Gas limit must be a valid number.';
+    return translateRaw('ERROR_8');
   }
 }
 
 export function validateDataField(value: string): string | undefined {
   if (!isValidHex(value)) {
-    return 'Data field must contain valid hex.';
+    return translateRaw('ERROR_9');
   }
 }
 
 export function validateNonceField(value: string): string | undefined {
   if (!(parseInt(value, 10) >= 0)) {
-    return 'Nonce must be a valid number.';
+    return translateRaw('ERROR_11');
   }
 }
 
 export function validateAmountField(value: string): string | undefined {
   if (!isValidAmount(parseFloat(value))) {
-    return 'Amount must be a valid number';
+    return translateRaw('ERROR_0');
   }
 }

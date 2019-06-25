@@ -950,6 +950,13 @@
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
     "SELECT_NETWORK_ERROR": "Please select network.",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset"
+    "TO_FIELD_PLACEHOLDER": "Enter an address or ENS name",
+    "NONCE": "Nonce",
+    "DATA": "Data",
+    "ADVANCED_SETTINGS": "Advanced Settings",
+    "SHOW": "Show",
+    "HIDE": "Hide",
+    "TX_FEE": "Transaction Fee",
+    "YOU_WILL_SEND": "You will send"
   }
 }

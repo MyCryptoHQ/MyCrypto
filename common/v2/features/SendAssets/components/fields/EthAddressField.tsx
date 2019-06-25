@@ -6,12 +6,11 @@ import { isValidETHAddress } from 'libs/validators';
 import { InlineErrorMsg } from 'v2/components';
 import { getIsValidENSAddressFunction } from 'v2/libs/validators';
 import { translateRaw } from 'translations';
-import { getENSTLDForChain } from 'v2/libs/ens/networkConfigs';
 import { ITxFields } from '../../types';
 
 /*
   Eth address field to be used within a Formik Form
-  - the 'fieldname' must exist wihtin the Formik default fields
+  - the 'fieldname' must exist within the Formik default fields
   - validation of the field is handled here.
 */
 
@@ -22,6 +21,7 @@ interface Props {
   placeholder?: string;
   values: ITxFields;
   handleENSResolve?(name: string): Promise<void>;
+  handleGasEstimate(): Promise<void>;
 }
 
 function ETHAddressField({
@@ -30,7 +30,8 @@ function ETHAddressField({
   touched,
   values,
   placeholder = 'Eth Address',
-  handleENSResolve
+  handleENSResolve,
+  handleGasEstimate
 }: Props) {
   const validateEthAddress = (value: any) => {
     let errorMsg;
@@ -62,11 +63,13 @@ function ETHAddressField({
             placeholder={placeholder}
             onBlur={e => {
               if (values && values.network) {
-                const ensTLD = getENSTLDForChain(values.network.chainId);
-                const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
+                const isValidENS = getIsValidENSAddressFunction(values.network.chainId);
                 form.setFieldValue('resolvedNSAddress', '');
-                if (isENSAddress && handleENSResolve) {
+                if (isValidENS(e.currentTarget.value) && handleENSResolve) {
                   handleENSResolve(e.currentTarget.value);
+                } else if (isValidETHAddress(e.currentTarget.value)) {
+                  form.setFieldValue('recipientAddress', e.currentTarget.value);
+                  handleGasEstimate();
                 }
               }
             }}
