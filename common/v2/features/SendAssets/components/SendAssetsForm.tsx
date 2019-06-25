@@ -80,7 +80,7 @@ export default function SendAssetsForm({
 
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
 
-  const easyAssets: Asset[] = accountAssets
+  const tokenAssets: Asset[] = accountAssets
     .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid, assets))
     .filter((asset: Asset | undefined) => asset)
     .map((asset: Asset) => asset);
@@ -91,8 +91,8 @@ export default function SendAssetsForm({
     .map((asset: Asset) => asset);
 
   const filteredAssets: string[] = _.union(
-    easyAssets.map(ass => ass.uuid),
-    baseAssets.map(ass => ass.uuid)
+    tokenAssets.map(token => token.uuid),
+    baseAssets.map(baseAsset => baseAsset.uuid)
   );
 
   const allAssets: IAsset[] = filteredAssets
