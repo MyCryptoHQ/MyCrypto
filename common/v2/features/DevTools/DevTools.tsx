@@ -107,9 +107,9 @@ const DevTools = () => {
                           )}
                         />
                       </fieldset>
-                    Current dev-mode only features
+                      Current dev-mode only features
                       <br />
-                       Current dev-mode only features
+                      Current dev-mode only features
                       <ul>
                         <li>Recent Transactions panel (Dashboard)</li>
                         <li>Error page disabled</li>
