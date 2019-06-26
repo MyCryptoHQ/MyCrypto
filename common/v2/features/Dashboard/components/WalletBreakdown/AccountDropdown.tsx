@@ -1,6 +1,7 @@
-import { Identicon } from '@mycrypto/ui';
 import React, { useEffect, useRef, useState } from 'react';
+import { Identicon } from '@mycrypto/ui';
 import styled, { StyledFunction } from 'styled-components';
+
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { ExtendedAccount, useOnClickOutside } from 'v2/services';
