@@ -8,6 +8,7 @@ import { ExtendedAccount } from 'v2/services';
 import AccountDropdown from './AccountDropdown';
 import BalancesList from './BalancesList';
 import { getCurrentsFromContext, getBalanceFromAccount, getBaseAssetFromAccount } from 'v2/libs';
+import BreakdownChart from './BreakdownChart';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -281,6 +282,7 @@ function WalletBreakdown() {
           <BreakDownHeading>
             Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
           </BreakDownHeading>
+          <BreakdownChart />
           <PanelFigures>
             <PanelFigure>
               <PanelFigureValue>Ethereum</PanelFigureValue>
