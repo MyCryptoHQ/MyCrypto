@@ -16,6 +16,8 @@ import {
 } from 'v2/libs/accounts/accounts';
 import { Link } from 'react-router-dom';
 
+import BreakdownChart from './BreakdownChart';
+
 // Fake Data
 /*const balances = [
   {
@@ -89,7 +91,7 @@ function WalletBreakdown() {
       <Panel className="WalletBreakdown-panel">
         <div>
           <Heading className="WalletBreakdown-panel-heading">
-            Wallet Breakdown{' '}
+            Wallet Breakdown <BreakdownChart />
             <span className="WalletBreakdown-panel-heading-extra">(All Accounts)</span>
           </Heading>
           <div className="WalletBreakdown-panel-figures">
