@@ -7,6 +7,15 @@ import { Balance } from './types';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
+const BalancesOnly = styled.div`
+  width: 100%;
+
+  > section {
+    padding: 0;
+    margin: 0;
+  }
+`;
+
 const BackButton = styled(Button)`
   font-weight: bold;
   display: flex;
@@ -38,28 +47,16 @@ interface BalancesListProps {
   toggleShowChart(): void;
 }
 
-export default function BalancesList({
+export default function BalancesDetailView({
   balances,
   toggleShowChart,
   totalFiatValue
 }: BalancesListProps) {
-  return (
-    <DashboardPanel
-      heading={
-        <BackButton basic={true} onClick={toggleShowChart}>
-          <img src={backArrowIcon} alt="Back arrow" /> Balance
-        </BackButton>
-      }
-      headingRight={<BalancesOnlyTotal>${totalFiatValue.toFixed(2)}</BalancesOnlyTotal>}
-    >
-      <CollapsibleTable breakpoint={450} {...buildAccountTable(balances)} />
-    </DashboardPanel>
-  );
-}
-
-function buildAccountTable(balances: any[]) {
-  return {
-    head: ['TOKEN', 'AMOUNT', 'BALANCE'],
+  const TOKEN = 'TOKEN';
+  const AMOUNT = 'AMOUNT';
+  const BALANCE = 'BALANCE';
+  const balancesTable = {
+    head: [TOKEN, AMOUNT, BALANCE],
     body: balances.map(balance => {
       return [
         balance.name,
@@ -68,14 +65,24 @@ function buildAccountTable(balances: any[]) {
       ];
     }),
     config: {
-      primaryColumn: 'TOKEN',
-      sortableColumn: 'TOKEN',
-      sortFunction: (a: any, b: any) => {
-        const aLabel = a.props.name;
-        const bLabel = b.props.name;
-        return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
-      },
-      hiddenHeadings: ['AMOUNT']
+      primaryColumn: TOKEN,
+      sortableColumn: TOKEN,
+      hiddenHeadings: [AMOUNT]
     }
   };
+
+  return (
+    <BalancesOnly>
+      <DashboardPanel
+        heading={
+          <BackButton basic={true} onClick={toggleShowChart}>
+            <img src={backArrowIcon} alt="Back arrow" /> Balance
+          </BackButton>
+        }
+        headingRight={<BalancesOnlyTotal>${totalFiatValue.toFixed(2)}</BalancesOnlyTotal>}
+      >
+        <CollapsibleTable {...balancesTable} />
+      </DashboardPanel>
+    </BalancesOnly>
+  );
 }

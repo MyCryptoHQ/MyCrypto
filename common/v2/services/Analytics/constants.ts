@@ -18,5 +18,6 @@ export enum ANALYTICS_CATEGORIES {
   SCREEN_LOCK = 'Screen Lock',
   UPDATE_DESKTOP = 'Update Desktop App',
   NOTIFICATION = 'Notification',
-  SETTINGS = 'Settings'
+  SETTINGS = 'Settings',
+  WALLET_BREAKDOWN = 'Wallet breakdown'
 }
