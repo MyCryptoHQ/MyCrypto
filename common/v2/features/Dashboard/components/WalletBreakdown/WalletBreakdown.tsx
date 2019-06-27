@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import { translateRaw } from 'translations';
 import { AccountContext, SettingsContext } from 'v2/providers';
 import { Asset } from 'v2/services/Asset/types';
 import { ExtendedAccount } from 'v2/services';
@@ -14,7 +15,7 @@ import {
   getAssetByUUID,
   getTokenBalanceFromAccount
 } from 'v2/libs';
-import { Balance } from './types';
+import { Balance, Fiat } from './types';
 import WalletBreakdownView from './WalletBreakdownView';
 
 const WalletBreakdownTop = styled.div`
@@ -65,7 +66,7 @@ function WalletBreakdown() {
     assetAmount: number,
     assetValue: number
   ) => {
-    const assetName = asset ? asset.name : 'Unknown Asset';
+    const assetName = asset ? asset.name : translateRaw('WALLET_BREAKDOWN_UNKNOWN');
     const assetTicker = asset ? asset.ticker : '';
 
     const existingAssetInBalances = balances.find(balance => balance.name === assetName);
@@ -103,6 +104,11 @@ function WalletBreakdown() {
     return b.fiatValue - a.fiatValue;
   });
 
+  //TODO: Get fiat symbol and text
+  const fiat: Fiat = {
+    name: 'US Dollars',
+    symbol: '$'
+  };
   const totalFiatValue = balances.reduce((sum, asset) => {
     return (sum += asset.fiatValue);
   }, 0);
@@ -114,8 +120,8 @@ function WalletBreakdown() {
     const otherBalances = balances.slice(numberOfAssetsDisplayed, balances.length);
 
     const otherTokensAsset = {
-      name: 'Other Tokens',
-      ticker: 'Other',
+      name: translateRaw('WALLET_BREAKDOWN_OTHER'),
+      ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
       isOther: true,
       amount: 0,
       fiatValue: otherBalances.reduce((sum, asset) => {
@@ -148,12 +154,14 @@ function WalletBreakdown() {
             balances={balances}
             toggleShowChart={toggleShowChart}
             totalFiatValue={totalFiatValue}
+            fiat={fiat}
           />
         ) : (
           <WalletBreakdownView
             balances={finalBalances}
             toggleShowChart={toggleShowChart}
             totalFiatValue={totalFiatValue}
+            fiat={fiat}
           />
         )}
       </WalletBreakdownPanel>

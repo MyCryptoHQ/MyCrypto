@@ -2,8 +2,9 @@ import React from 'react';
 import { Button, CollapsibleTable, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import { translateRaw } from 'translations';
 import DashboardPanel from '../DashboardPanel';
-import { Balance } from './types';
+import { WalletBreakdownProps } from './types';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
@@ -41,27 +42,22 @@ const BalancesOnlyTotal = styled(Typography)`
   }
 `;
 
-interface BalancesListProps {
-  balances: Balance[];
-  totalFiatValue: number;
-  toggleShowChart(): void;
-}
-
 export default function BalancesDetailView({
   balances,
   toggleShowChart,
-  totalFiatValue
-}: BalancesListProps) {
-  const TOKEN = 'TOKEN';
-  const AMOUNT = 'AMOUNT';
-  const BALANCE = 'BALANCE';
+  totalFiatValue,
+  fiat
+}: WalletBreakdownProps) {
+  const TOKEN = translateRaw('WALLET_BREAKDOWN_TOKEN');
+  const AMOUNT = translateRaw('WALLET_BREAKDOWN_AMOUNT');
+  const BALANCE = translateRaw('WALLET_BREAKDOWN_BALANCE');
   const balancesTable = {
     head: [TOKEN, AMOUNT, BALANCE],
     body: balances.map(balance => {
       return [
         balance.name,
         `${balance.amount} ${balance.ticker}`,
-        `$${balance.fiatValue.toFixed(2)}`
+        `${fiat.symbol}${balance.fiatValue.toFixed(2)}`
       ];
     }),
     config: {
@@ -76,10 +72,15 @@ export default function BalancesDetailView({
       <DashboardPanel
         heading={
           <BackButton basic={true} onClick={toggleShowChart}>
-            <img src={backArrowIcon} alt="Back arrow" /> Balance
+            <img src={backArrowIcon} alt="Back arrow" /> {BALANCE}
           </BackButton>
         }
-        headingRight={<BalancesOnlyTotal>${totalFiatValue.toFixed(2)}</BalancesOnlyTotal>}
+        headingRight={
+          <BalancesOnlyTotal>
+            {fiat.symbol}
+            {totalFiatValue.toFixed(2)}
+          </BalancesOnlyTotal>
+        }
       >
         <CollapsibleTable {...balancesTable} />
       </DashboardPanel>

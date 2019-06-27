@@ -5,3 +5,15 @@ export interface Balance {
   ticker: string;
   isOther?: boolean;
 }
+
+export interface Fiat {
+  name: string;
+  symbol: string;
+}
+
+export interface WalletBreakdownProps {
+  balances: Balance[];
+  totalFiatValue: number;
+  fiat: Fiat;
+  toggleShowChart(): void;
+}

@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { translate } from 'translations';
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
-import { Balance } from './types';
+import { WalletBreakdownProps } from './types';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -15,14 +16,6 @@ const BreakDownHeading = styled.div`
 
   @media (min-width: 1080px) {
     font-size: 24px;
-  }
-`;
-
-const BreakDownHeadingExtra = styled.span`
-  display: inline;
-
-  @media (min-width: 1080px) {
-    display: none;
   }
 `;
 
@@ -55,6 +48,7 @@ const PanelFigureValue = styled.div`
 const PanelFigureLabel = styled.div`
   margin: 0;
   font-size: 16px;
+  font-weight: normal;
 `;
 
 interface PanelDividerProps {
@@ -147,48 +141,51 @@ const BreakDownBalanceTotal = styled.div`
   font-weight: normal;
 `;
 
-interface WalletBreakdownProps {
-  balances: Balance[];
-  totalFiatValue: number;
-  toggleShowChart(): void;
-}
-
 export default function WalletBreakdownView({
   balances,
   toggleShowChart,
-  totalFiatValue
+  totalFiatValue,
+  fiat
 }: WalletBreakdownProps) {
   const highestPercentageAssetName = balances.length > 0 && balances[0].name;
   const highestPercentage =
     balances.length > 0 && Math.floor(balances[0].fiatValue / totalFiatValue * 100);
 
-  return balances.length === 0 ? (
-    <NoAssets />
-  ) : (
+  return (
     <>
       <BreakDownChartWrapper>
-        <BreakDownHeading>
-          Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
-        </BreakDownHeading>
-        <BreakdownChart balances={balances} />
-        <PanelFigures>
-          <PanelFigure>
-            <PanelFigureValue>{highestPercentageAssetName}</PanelFigureValue>
-            <PanelFigureLabel>{highestPercentage}% Of Your Funds</PanelFigureLabel>
-          </PanelFigure>
-          <PanelFigure>
-            <PanelFigureValue>
-              ${balances.length > 0 && balances[0].fiatValue.toFixed(2)}
-            </PanelFigureValue>
-            <PanelFigureLabel>Value in US Dollars</PanelFigureLabel>
-          </PanelFigure>
-        </PanelFigures>
+        <BreakDownHeading>{translate('WALLET_BREAKDOWN_TITLE')}</BreakDownHeading>
+        {totalFiatValue === 0 ? (
+          <NoAssets />
+        ) : (
+          <>
+            <BreakdownChart balances={balances} />
+            <PanelFigures>
+              <PanelFigure>
+                <PanelFigureValue>{highestPercentageAssetName}</PanelFigureValue>
+                <PanelFigureLabel>
+                  {highestPercentage}
+                  {translate('WALLET_BREAKDOWN_PERCENTAGE')}
+                </PanelFigureLabel>
+              </PanelFigure>
+              <PanelFigure>
+                <PanelFigureValue>
+                  {fiat.symbol}
+                  {balances[0].fiatValue.toFixed(2)}
+                </PanelFigureValue>
+                <PanelFigureLabel>
+                  {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.name}
+                </PanelFigureLabel>
+              </PanelFigure>
+            </PanelFigures>
+          </>
+        )}
       </BreakDownChartWrapper>
       <PanelDivider mobileOnly={true} />
       <VerticalPanelDivider />
       <BreakDownBalances>
         <BreakDownHeadingWrapper>
-          <BreakDownHeading>Balance</BreakDownHeading>
+          <BreakDownHeading>{translate('WALLET_BREAKDOWN_BALANCE')}</BreakDownHeading>
           <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
@@ -200,17 +197,23 @@ export default function WalletBreakdownView({
                   {!isOther ? (
                     `${amount.toFixed(4)} ${ticker}`
                   ) : (
-                    <a onClick={toggleShowChart}>View Details</a>
+                    <a onClick={toggleShowChart}>{translate('WALLET_BREAKDOWN_MORE')}</a>
                   )}
                 </BreakDownBalanceAssetAmount>
               </div>
-              <BreakDownBalanceAssetAmount>${fiatValue.toFixed(2)}</BreakDownBalanceAssetAmount>
+              <BreakDownBalanceAssetAmount>
+                {fiat.symbol}
+                {fiatValue.toFixed(2)}
+              </BreakDownBalanceAssetAmount>
             </BreakDownBalance>
           ))}
           <PanelDivider />
           <BreakDownBalanceTotal>
-            <div>Total</div>
-            <div>${totalFiatValue.toFixed(2)}</div>
+            <div>{translate('WALLET_BREAKDOWN_TOTAL')}</div>
+            <div>
+              {fiat.symbol}
+              {totalFiatValue.toFixed(2)}
+            </div>
           </BreakDownBalanceTotal>
         </BreakDownBalanceList>
       </BreakDownBalances>

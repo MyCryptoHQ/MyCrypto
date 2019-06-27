@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { COLORS } from 'v2/features/constants';
 
@@ -8,31 +9,9 @@ import addIcon from 'common/assets/images/icn-add-assets.svg';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 
-const NoAssetsWrapper = styled.div`
+const NoAssetsWrapper = styled.a`
   width: 100%;
   height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
-const NoAssetsBreakdownHeading = styled.div`
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  margin: 0;
-  font-size: 20px;
-  font-weight: bold;
-  color: #424242;
-
-  @media (min-width: 1080px) {
-    font-size: 24px;
-  }
-`;
-
-const NoAssetsBreakdownContent = styled.a`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,7 +35,7 @@ const NoAssetsDescription = styled.div`
   text-align: center;
   font-weight: normal;
 
-  > span {
+  > a {
     color: ${BRIGHT_SKY_BLUE};
   }
 `;
@@ -70,20 +49,15 @@ const trackBuyMyCrypto = () => {
 
 export default function NoAssets() {
   return (
-    <NoAssetsWrapper>
-      <NoAssetsBreakdownHeading>Wallet Breakdown</NoAssetsBreakdownHeading>
-      <NoAssetsBreakdownContent
-        href="https://buy.mycrypto.com/"
-        target="_blank"
-        rel="noreferrer"
-        onClick={trackBuyMyCrypto}
-      >
-        <PlusIcon src={addIcon} />
-        <NoAssetsHeading>No Assets Found</NoAssetsHeading>
-        <NoAssetsDescription>
-          You can <span>buy some ETH</span> with your credit card to get started!
-        </NoAssetsDescription>
-      </NoAssetsBreakdownContent>
+    <NoAssetsWrapper
+      href="https://buy.mycrypto.com/"
+      target="_blank"
+      rel="noreferrer"
+      onClick={trackBuyMyCrypto}
+    >
+      <PlusIcon src={addIcon} />
+      <NoAssetsHeading>{translate('WALLET_BREAKDOWN_NO_ASSETS')}</NoAssetsHeading>
+      <NoAssetsDescription>{translate('WALLET_BREAKDOWN_NO_ASSETS_MORE')}</NoAssetsDescription>
     </NoAssetsWrapper>
   );
 }
