@@ -3,6 +3,7 @@ import { Button, CollapsibleTable, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import DashboardPanel from '../DashboardPanel';
+import { Balance } from './types';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
@@ -32,11 +33,16 @@ const BalancesOnlyTotal = styled(Typography)`
 `;
 
 interface BalancesListProps {
-  balances: any[];
+  balances: Balance[];
+  totalFiatValue: number;
   toggleShowChart(): void;
 }
 
-export default function BalancesList({ balances, toggleShowChart }: BalancesListProps) {
+export default function BalancesList({
+  balances,
+  toggleShowChart,
+  totalFiatValue
+}: BalancesListProps) {
   return (
     <DashboardPanel
       heading={
@@ -44,7 +50,7 @@ export default function BalancesList({ balances, toggleShowChart }: BalancesList
           <img src={backArrowIcon} alt="Back arrow" /> Balance
         </BackButton>
       }
-      headingRight={<BalancesOnlyTotal>$2,974.41</BalancesOnlyTotal>}
+      headingRight={<BalancesOnlyTotal>${totalFiatValue.toFixed(2)}</BalancesOnlyTotal>}
     >
       <CollapsibleTable breakpoint={450} {...buildAccountTable(balances)} />
     </DashboardPanel>
@@ -55,14 +61,18 @@ function buildAccountTable(balances: any[]) {
   return {
     head: ['TOKEN', 'AMOUNT', 'BALANCE'],
     body: balances.map(balance => {
-      return [balance.asset, `(${balance.amount} ${balance.ticker})`, balance.value];
+      return [
+        balance.name,
+        `${balance.amount} ${balance.ticker}`,
+        `$${balance.fiatValue.toFixed(2)}`
+      ];
     }),
     config: {
       primaryColumn: 'TOKEN',
       sortableColumn: 'TOKEN',
       sortFunction: (a: any, b: any) => {
-        const aLabel = a.props.asset;
-        const bLabel = b.props.asset;
+        const aLabel = a.props.name;
+        const bLabel = b.props.name;
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
       },
       hiddenHeadings: ['AMOUNT']

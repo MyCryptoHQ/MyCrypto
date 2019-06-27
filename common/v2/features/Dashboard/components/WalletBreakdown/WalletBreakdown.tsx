@@ -1,13 +1,21 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Heading, Panel, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { AccountContext, SettingsContext } from 'v2/providers';
+import { Asset } from 'v2/services/Asset/types';
 import { ExtendedAccount } from 'v2/services';
 import AccountDropdown from './AccountDropdown';
 import BalancesList from './BalancesList';
-import { getCurrentsFromContext, getBalanceFromAccount, getBaseAssetFromAccount } from 'v2/libs';
+import {
+  getCurrentsFromContext,
+  getBalanceFromAccount,
+  getBaseAssetFromAccount,
+  getAssetByUUID,
+  getTokenBalanceFromAccount
+} from 'v2/libs';
+import { Balance } from './types';
+import BreakdownChart from './BreakdownChart';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -91,7 +99,7 @@ const NoAssetsDescription = styled(Typography)`
   text-align: center;
 `;
 
-const BreakDownChart = styled.div`
+const BreakDownChartWrapper = styled.div`
   flex: 1;
   padding-left: 15px;
   padding-top: 15px;
@@ -111,13 +119,13 @@ const PanelFigures = styled.div`
 
 const PanelFigure = styled.div``;
 
-const PanelFigureValue = styled(Typography)`
+const PanelFigureValue = styled.div`
   margin: 0;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
 `;
 
-const PanelFigureLabel = styled(Typography)`
+const PanelFigureLabel = styled.div`
   margin: 0;
   font-size: 16px;
 `;
@@ -181,21 +189,21 @@ const BreakDownBalanceList = styled.div`
   flex-direction: column;
   color: #282d32;
   font-size: 16px;
+  font-weight: normal;
 `;
 
 const BreakDownBalance = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 11px 0;
+  line-height: 1.2;
 
   &:first-of-type {
     margin-top: 16px;
   }
 `;
 
-const BreakDownBalanceAsset = styled.div``;
-
-const BreakDownBalanceAssetName = styled(Typography)`
+const BreakDownBalanceAssetName = styled.div`
   margin: 0;
 `;
 
@@ -208,6 +216,8 @@ const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
 const BreakDownBalanceTotal = styled.div`
   display: flex;
   justify-content: space-between;
+  font-size: 16px;
+  font-weight: normal;
 `;
 
 const BalancesOnly = styled.div`
@@ -219,37 +229,90 @@ const BalancesOnly = styled.div`
   }
 `;
 
+const numberOfAssetsDisplayed = 4;
+
 function WalletBreakdown() {
   const [showChart, setShowChart] = useState(true);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
-  const balances: any[] = [];
+
+  const balances: Balance[] = [];
   const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
     accounts,
     settings.dashboardAccounts
   );
 
-  currentAccounts.forEach((account: ExtendedAccount) => {
-    const baseAsset = getBaseAssetFromAccount(account);
-    const assetName = baseAsset ? baseAsset.name : 'Unknown Asset';
-    const assetAmount = parseFloat(getBalanceFromAccount(account));
-    const assetInBalances = balances.find(asset => asset.asset === assetName);
-    if (!assetInBalances) {
+  // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
+  const addAssetToBalances = (
+    asset: Asset | undefined,
+    assetAmount: number,
+    assetValue: number
+  ) => {
+    const assetName = asset ? asset.name : 'Unknown Asset';
+    const assetTicker = asset ? asset.ticker : '';
+
+    const existingAssetInBalances = balances.find(balance => balance.name === assetName);
+
+    if (!existingAssetInBalances) {
       balances.push({
-        asset: assetName,
-        amount: assetAmount.toFixed(4),
-        value: 0,
-        ticker: baseAsset ? baseAsset.ticker : ''
+        name: assetName,
+        amount: assetAmount,
+        fiatValue: assetAmount * assetValue,
+        ticker: assetTicker
       });
     } else {
-      assetInBalances.amount = (parseFloat(assetInBalances.amount) + assetAmount).toFixed(4);
+      existingAssetInBalances.amount = existingAssetInBalances.amount + assetAmount;
+      existingAssetInBalances.fiatValue = existingAssetInBalances.amount * assetValue;
     }
-    balances.push({
-      asset: 'Other Tokens',
-      amount: <Link to="/dashboard">View Details</Link>,
-      value: '$0'
+  };
+
+  // Combine all base assets and account assets in the balances array
+  currentAccounts.forEach((account: ExtendedAccount) => {
+    const baseAsset = getBaseAssetFromAccount(account);
+    const baseAssetAmount = parseFloat(getBalanceFromAccount(account));
+    const baseAssetValue = 333.33; //TODO: Get actual asset value from the local cache
+
+    addAssetToBalances(baseAsset, baseAssetAmount, baseAssetValue);
+
+    account.assets.forEach(accountAsset => {
+      const asset = getAssetByUUID(accountAsset.uuid);
+      const assetAmount = parseFloat(getTokenBalanceFromAccount(account, asset));
+      const assetValue = 333.33; //TODO: Get actual asset value from the local cache
+      addAssetToBalances(asset, assetAmount, assetValue);
     });
   });
+
+  balances.sort((a, b) => {
+    return b.fiatValue - a.fiatValue;
+  });
+
+  const totalFiatValue = balances.reduce((sum, asset) => {
+    return (sum += asset.fiatValue);
+  }, 0);
+
+  const highestPercentageAssetName = balances.length > 0 && balances[0].name;
+  const highestPercentage =
+    balances.length > 0 && Math.floor(balances[0].fiatValue / totalFiatValue * 100);
+
+  /* Construct a finalBalances array which consits of top X assets and a otherTokensAsset 
+     which combines the fiat value of all remaining tokens that are in the balances array*/
+  let finalBalances = balances;
+  if (balances.length > numberOfAssetsDisplayed) {
+    const otherBalances = balances.slice(numberOfAssetsDisplayed, balances.length);
+
+    const otherTokensAsset = {
+      name: 'Other Tokens',
+      ticker: 'Other',
+      isOther: true,
+      amount: 0,
+      fiatValue: otherBalances.reduce((sum, asset) => {
+        return (sum += asset.fiatValue);
+      }, 0)
+    };
+
+    finalBalances = balances.slice(0, numberOfAssetsDisplayed);
+    finalBalances.push(otherTokensAsset);
+  }
 
   const toggleShowChart = () => {
     setShowChart(!showChart);
@@ -277,21 +340,24 @@ function WalletBreakdown() {
   const getChartWithBalances = () => {
     return (
       <>
-        <BreakDownChart>
+        <BreakDownChartWrapper>
           <BreakDownHeading>
             Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
           </BreakDownHeading>
+          <BreakdownChart balances={finalBalances} />
           <PanelFigures>
             <PanelFigure>
-              <PanelFigureValue>Ethereum</PanelFigureValue>
-              <PanelFigureLabel>43% Of Your Funds</PanelFigureLabel>
+              <PanelFigureValue>{highestPercentageAssetName}</PanelFigureValue>
+              <PanelFigureLabel>{highestPercentage}% Of Your Funds</PanelFigureLabel>
             </PanelFigure>
             <PanelFigure>
-              <PanelFigureValue>$5,204.14</PanelFigureValue>
+              <PanelFigureValue>
+                ${balances.length > 0 && balances[0].fiatValue.toFixed(2)}
+              </PanelFigureValue>
               <PanelFigureLabel>Value in US Dollars</PanelFigureLabel>
             </PanelFigure>
           </PanelFigures>
-        </BreakDownChart>
+        </BreakDownChartWrapper>
         <PanelDivider mobileOnly={true} />
         <VerticalPanelDivider />
         <BreakDownBalances>
@@ -300,21 +366,25 @@ function WalletBreakdown() {
             <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
           </BreakDownHeadingWrapper>
           <BreakDownBalanceList>
-            {balances.map(({ asset, amount, value, ticker }) => (
-              <BreakDownBalance key={asset}>
-                <BreakDownBalanceAsset>
-                  <BreakDownBalanceAssetName>{asset}</BreakDownBalanceAssetName>
+            {finalBalances.map(({ name, amount, fiatValue, ticker, isOther }) => (
+              <BreakDownBalance key={name}>
+                <div>
+                  <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
                   <BreakDownBalanceAssetAmount>
-                    {amount} {ticker}
+                    {!isOther ? (
+                      `${amount.toFixed(4)} ${ticker}`
+                    ) : (
+                      <a onClick={toggleShowChart}>View Details</a>
+                    )}
                   </BreakDownBalanceAssetAmount>
-                </BreakDownBalanceAsset>
-                <BreakDownBalanceAssetAmount>{value}</BreakDownBalanceAssetAmount>
+                </div>
+                <BreakDownBalanceAssetAmount>${fiatValue.toFixed(2)}</BreakDownBalanceAssetAmount>
               </BreakDownBalance>
             ))}
             <PanelDivider />
             <BreakDownBalanceTotal>
-              <Typography>Total</Typography>
-              <Typography>$2,974.41</Typography>
+              <div>Total</div>
+              <div>${totalFiatValue.toFixed(2)}</div>
             </BreakDownBalanceTotal>
           </BreakDownBalanceList>
         </BreakDownBalances>
@@ -325,7 +395,11 @@ function WalletBreakdown() {
   const getBalancesOnly = () => {
     return (
       <BalancesOnly>
-        <BalancesList balances={balances} toggleShowChart={toggleShowChart} />
+        <BalancesList
+          balances={balances}
+          toggleShowChart={toggleShowChart}
+          totalFiatValue={totalFiatValue}
+        />
       </BalancesOnly>
     );
   };
