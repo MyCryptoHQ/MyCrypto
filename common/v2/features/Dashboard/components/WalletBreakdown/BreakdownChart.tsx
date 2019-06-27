@@ -2,18 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
 
-const dummyData = [
-  {
-    name: 'OMG',
-    value: 500
-  },
-  { name: 'SLK', value: 300 },
-  { name: 'DGC', value: 200 },
-  { name: 'ETH', value: 150 },
-  { name: 'Other', value: 350 }
-];
+import { Balance } from './types';
 
-const Wrapper = styled.div`
+const MainWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -30,10 +21,11 @@ interface CustomLabelProps {
   outerRadius: number;
   percent: number;
   name: string;
+  ticker: string;
 }
 
 const CustomLabel = (props: CustomLabelProps) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, percent, name } = props;
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent, ticker } = props;
 
   // Position the label in the center of the pie section
   const radian = Math.PI / 180;
@@ -41,10 +33,13 @@ const CustomLabel = (props: CustomLabelProps) => {
   const x = percent < 1 ? cx + radius * Math.cos(-midAngle * radian) : cx;
   const y = percent < 1 ? cy + radius * Math.sin(-midAngle * radian) : cy;
 
-  return (
+  // Don't show the label if percent is 0
+  return percent > 0 ? (
     <text x={x} y={y} fill="white" textAnchor={'middle'} dominantBaseline="central">
-      {name}
+      {ticker}
     </text>
+  ) : (
+    <text />
   );
 };
 
@@ -96,31 +91,35 @@ const generateColors = (length: number) => {
   return colors;
 };
 
-export default class BreakdownChart extends Component {
+interface Props {
+  balances: Balance[];
+}
+export default class BreakdownChart extends Component<Props> {
   public render() {
-    const COLORS = generateColors(dummyData.length);
+    const { balances } = this.props;
+    const COLORS = generateColors(balances.length);
 
     return (
-      <Wrapper>
-        <PieChart width={400} height={400}>
+      <MainWrapper>
+        <PieChart width={400} height={350}>
           <Pie
             activeIndex={0}
             activeShape={ActiveSection}
-            data={dummyData}
+            data={balances}
             cx={200}
             cy={200}
             innerRadius={0}
             outerRadius={110}
             label={CustomLabel}
             labelLine={false}
-            dataKey="value"
+            dataKey="fiatValue"
           >
-            {dummyData.map((entry, index) => (
+            {balances.map((entry, index) => (
               <Cell fill={COLORS[index]} stroke={COLORS[index]} key={entry.name} />
             ))}
           </Pie>
         </PieChart>
-      </Wrapper>
+      </MainWrapper>
     );
   }
 }

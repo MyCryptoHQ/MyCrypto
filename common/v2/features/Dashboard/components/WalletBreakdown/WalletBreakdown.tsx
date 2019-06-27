@@ -15,6 +15,7 @@ import {
   getTokenBalanceFromAccount
 } from 'v2/libs';
 import { Balance } from './types';
+import BreakdownChart from './BreakdownChart';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -343,6 +344,7 @@ function WalletBreakdown() {
           <BreakDownHeading>
             Wallet Breakdown <BreakDownHeadingExtra>(All Accounts)</BreakDownHeadingExtra>
           </BreakDownHeading>
+          <BreakdownChart balances={finalBalances} />
           <PanelFigures>
             <PanelFigure>
               <PanelFigureValue>{highestPercentageAssetName}</PanelFigureValue>
