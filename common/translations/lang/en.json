@@ -141,7 +141,6 @@
     "SEND_AMOUNT_SHORT": "Amount",
     "SEND_CUSTOM": "Add Custom Token",
     "SEND_ASSETS_ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select Asset",
     "SEND_ASSETS_AMOUNT_LABEL": "Amount",
     "SEND_ASSETS_AMOUNT_LABEL_ACTION": "Send max",
     "SCAN_TOKENS": "Scan For Tokens",
@@ -902,6 +901,7 @@
     "INPUT_PUBLIC_ADDRESS_LABEL": "Select or Input Your Address",
     "COINBASE_APP_LABEL": "Coinbase App",
     "TRUST_APP_LABEL": "Trust Wallet App",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset"
+    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset",
+    "RECEIVE_FORM_ERROR": "Please enter a valid amount"
   }
 }

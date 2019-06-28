@@ -10,7 +10,9 @@ import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
 import { AccountContext, AssetContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs/networks/networks';
+import { validPositiveNumber, validDecimal } from 'v2/libs/validators';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { translateRaw } from 'translations';
 
 import QRCode from './components/QRCode';
 import AccountDropdown from './components/AccountDropdown';
@@ -69,6 +71,19 @@ const FullWidthComboBox = styled(ComboBox)`
   width: 100%;
 `;
 
+const Amount = styled.div`
+  flex: 2;
+  margin-right: 15px;
+`;
+
+const Asset = styled.div`
+  flex: 1;
+`;
+
+const ErrorMessage = styled.span`
+  color: red;
+`;
+
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
@@ -90,14 +105,20 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
     chainId: network ? network.chainId : 1
   };
 
-  const Amount = styled.div`
-    flex: 2;
-    margin-right: 15px;
-  `;
+  const isValidAmount = (decimal: number) => (amount: string) =>
+    validPositiveNumber(+amount) && validDecimal(amount, decimal);
 
-  const Asset = styled.div`
-    flex: 1;
-  `;
+  const validateAmount = (amount: any) => {
+    let error;
+    if (selectedAsset) {
+      const { decimal } = selectedAsset;
+      if (decimal && !isValidAmount(decimal)(amount)) {
+        error = 'Please enter a valid amount';
+      }
+    }
+
+    return error;
+  };
 
   return (
     <Layout centered={true}>
@@ -105,7 +126,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         <Formik
           initialValues={initialValues}
           onSubmit={noop}
-          render={({ values: { amount, chainId } }: FormikProps<typeof initialValues>) => (
+          render={({ values: { amount, chainId }, errors }: FormikProps<typeof initialValues>) => (
             <Form>
               <Fieldset>
                 <Label htmlFor="recipientAddress">Recipient Address</Label>
@@ -129,6 +150,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   <Label htmlFor="amount">Amount</Label>
                   <Field
                     name="amount"
+                    validate={validateAmount}
                     render={({ field, form }: FieldProps<typeof initialValues>) => (
                       <FullWidthInput
                         value={field.value}
@@ -155,6 +177,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   />
                 </Asset>
               </AssetFields>
+              {errors.amount && (
+                <ErrorMessage>{' ' + translateRaw('RECEIVE_FORM_ERROR')}</ErrorMessage>
+              )}
               {parseFloat(amount) > 0 &&
                 selectedAsset &&
                 requestAddress &&
