@@ -17,3 +17,5 @@ export * from './ScreenLock';
 export * from './SendAssets';
 export * from './ReceiveAssets';
 export * from './Gas';
+
+export * from './Nonce';

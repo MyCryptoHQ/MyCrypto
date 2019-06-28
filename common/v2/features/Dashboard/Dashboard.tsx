@@ -5,16 +5,17 @@ import { Layout } from 'v2/features';
 import {
   AccountList,
   ActionTile,
-  RecentTransactionList,
   TokenList,
-  WalletBreakdown
+  WalletBreakdown,
+  RecentTransactionList
 } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { AccountContext, AddressBookContext } from 'v2/providers';
+import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
 
 export default function Dashboard() {
+  const { isDevelopmentMode } = useDevMode();
   return (
     <>
       {/* MOBILE */}
@@ -35,20 +36,22 @@ export default function Dashboard() {
         <div className="Dashboard-mobile-section">
           <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
         </div>
-        <AccountContext.Consumer>
-          {({ accounts }) => (
-            <AddressBookContext.Consumer>
-              {({ readAddressBook }) => (
-                <div className="Dashboard-mobile-section">
-                  <RecentTransactionList
-                    accountsList={accounts}
-                    readAddressBook={readAddressBook}
-                  />
-                </div>
-              )}
-            </AddressBookContext.Consumer>
-          )}
-        </AccountContext.Consumer>
+        {isDevelopmentMode && (
+          <AccountContext.Consumer>
+            {({ accounts }) => (
+              <AddressBookContext.Consumer>
+                {({ readAddressBook }) => (
+                  <div className="Dashboard-mobile-section">
+                    <RecentTransactionList
+                      accountsList={accounts}
+                      readAddressBook={readAddressBook}
+                    />
+                  </div>
+                )}
+              </AddressBookContext.Consumer>
+            )}
+          </AccountContext.Consumer>
+        )}
       </Layout>
 
       {/* DESKTOP */}
@@ -76,21 +79,23 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <AccountContext.Consumer>
-          {({ accounts }) => (
-            <AddressBookContext.Consumer>
-              {({ readAddressBook }) => (
-                <div className="Dashboard-desktop-bottom">
-                  <RecentTransactionList
-                    readAddressBook={readAddressBook}
-                    accountsList={accounts}
-                    className="Dashboard-desktop-modifiedPanel"
-                  />
-                </div>
-              )}
-            </AddressBookContext.Consumer>
-          )}
-        </AccountContext.Consumer>
+        {isDevelopmentMode && (
+          <AccountContext.Consumer>
+            {({ accounts }) => (
+              <AddressBookContext.Consumer>
+                {({ readAddressBook }) => (
+                  <div className="Dashboard-desktop-bottom">
+                    <RecentTransactionList
+                      readAddressBook={readAddressBook}
+                      accountsList={accounts}
+                      className="Dashboard-desktop-modifiedPanel"
+                    />
+                  </div>
+                )}
+              </AddressBookContext.Consumer>
+            )}
+          </AccountContext.Consumer>
+        )}
       </Layout>
     </>
   );
