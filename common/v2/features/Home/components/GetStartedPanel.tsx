@@ -104,7 +104,7 @@ const Description = styled.p`
 
 const MobileImage = styled.img`
   max-width: 375px;
-  width: 100%;
+  width: auto;
 
   @media (min-width: ${SCREEN_SM}) {
     display: none;

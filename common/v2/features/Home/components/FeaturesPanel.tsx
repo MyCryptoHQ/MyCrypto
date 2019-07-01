@@ -150,7 +150,6 @@ const FeatureImage = styled.img`
   max-height: 550px;
 
   @media (max-width: ${SCREEN_LG}) {
-    width: 100%;
     margin-top: 24px;
     order: 2;
   }
