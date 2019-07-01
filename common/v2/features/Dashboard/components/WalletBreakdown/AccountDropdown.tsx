@@ -5,6 +5,7 @@ import styled, { StyledFunction } from 'styled-components';
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { ExtendedAccount, useOnClickOutside } from 'v2/services';
+import { getLabelByAccount } from 'v2/libs/addressbook/addressbook';
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];
@@ -64,16 +65,23 @@ const renderAccounts = (
   selected: string[],
   handleChange: (uuid: string) => void
 ) =>
-  accounts.map(({ uuid, label, address }: ExtendedAccount) => (
-    <Checkbox
-      key={uuid}
-      name={`account-${uuid}`}
-      checked={selected.includes(uuid)}
-      onChange={() => handleChange(uuid)}
-      label={label}
-      icon={() => <Identicon className="AccountDropdown-menu-identicon" address={address} />}
-    />
-  ));
+  accounts.map((account: ExtendedAccount) => {
+    const addressCard = getLabelByAccount(account);
+    const addressLabel = addressCard ? addressCard.address : 'Unknown Account';
+
+    return (
+      <Checkbox
+        key={account.uuid}
+        name={`account-${account.uuid}`}
+        checked={selected.includes(account.uuid)}
+        onChange={() => handleChange(account.uuid)}
+        label={addressLabel}
+        icon={() => (
+          <Identicon className="AccountDropdown-menu-identicon" address={account.address} />
+        )}
+      />
+    );
+  });
 
 const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDropdownProps) => {
   const ref = useRef<HTMLElement>(null);
