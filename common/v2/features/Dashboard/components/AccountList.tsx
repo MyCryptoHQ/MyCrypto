@@ -4,8 +4,8 @@ import { Redirect } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { getCurrentsFromContext } from 'v2/libs/accounts/accounts';
-import { truncate } from 'v2/libs';
-import { ExtendedAccount } from 'v2/services';
+import { truncate, getLabelByAccount } from 'v2/libs';
+import { ExtendedAccount, AddressBook } from 'v2/services';
 import './AccountList.scss';
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
@@ -59,22 +59,27 @@ function buildAccountTable(accounts: ExtendedAccount[], deleteAccount: DeleteAcc
       translateRaw('ACCOUNT_LIST_VALUE'),
       translateRaw('ACCOUNT_LIST_DELETE')
     ],
-    body: accounts.map(account => {
+    body: accounts.map((account, index) => {
+      const addressCard: AddressBook | undefined = getLabelByAccount(account);
+      const label = addressCard ? addressCard.label : 'Unknown Account';
+      let bodyItemCount = 0;
       return [
-        // tslint:disable-next-line: jsx-key
-        <Icon icon="star" />,
-        // tslint:disable-next-line: jsx-key
+        <Icon key={index + bodyItemCount++} icon="star" />,
         <Address
-          title={`${account.label}-(${account.wallet})`}
+          key={index + bodyItemCount++}
+          title={`${label}`}
           address={account.address}
           truncate={truncate}
         />,
-        // tslint:disable-next-line: jsx-key
-        <Network color="#a682ff">{account.network}</Network>,
-        // tslint:disable-next-line: jsx-key
-        <Typography>{account.balance}</Typography>,
-        // tslint:disable-next-line: jsx-key
-        <DeleteButton onClick={handleAccountDelete(deleteAccount, account.uuid)} icon="exit" />
+        <Network key={index + bodyItemCount++} color="#a682ff">
+          {account.network}
+        </Network>,
+        <Typography key={index + bodyItemCount++}>{account.balance}</Typography>,
+        <DeleteButton
+          key={index + bodyItemCount++}
+          onClick={handleAccountDelete(deleteAccount, account.uuid)}
+          icon="exit"
+        />
       ];
     }),
     config: {

@@ -30,9 +30,7 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public render() {
     const {
-      stateValues: {
-        transactionFields: { recipientAddress, amount, asset, account: { address, label } }
-      },
+      stateValues: { transactionFields: { recipientAddress, amount, asset, account: { address } } },
       onNext
     } = this.props;
     const { showingDetails } = this.state;
@@ -41,8 +39,8 @@ export default class ConfirmTransaction extends Component<Props> {
       <div className="ConfirmTransaction">
         <AddressBookContext.Consumer>
           {({ addressBook }) => {
-            let recipientLabel: string = 'Unknown';
-            let senderLabel: string = label;
+            let recipientLabel: string = 'Unknown Account';
+            let senderLabel: string | undefined = 'Unknown Account';
             addressBook.map(en => {
               if (en.address.toLowerCase() === recipientAddress.toLowerCase()) {
                 recipientLabel = en.label;
