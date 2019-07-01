@@ -17,6 +17,7 @@ import {
 } from 'v2/libs';
 import { Balance, Fiat } from './types';
 import WalletBreakdownView from './WalletBreakdownView';
+import NoAccountsSelected from './NoAccountsSelected';
 
 const WalletBreakdownTop = styled.div`
   display: flex;
@@ -149,7 +150,9 @@ function WalletBreakdown() {
         </AccountDropdownWrapper>
       </WalletBreakdownTop>
       <WalletBreakdownPanel>
-        {showBalanceDetailView ? (
+        {currentAccounts.length === 0 ? (
+          <NoAccountsSelected />
+        ) : showBalanceDetailView ? (
           <BalancesDetailView
             balances={balances}
             toggleShowChart={toggleShowChart}

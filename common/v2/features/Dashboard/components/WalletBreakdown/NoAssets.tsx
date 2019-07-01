@@ -9,9 +9,16 @@ import addIcon from 'common/assets/images/icn-add-assets.svg';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 
-const NoAssetsWrapper = styled.a`
+const NoAssetsWrapper = styled.div`
   width: 100%;
   height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NoAssetsCenter = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,24 +47,20 @@ const NoAssetsDescription = styled.div`
   }
 `;
 
-const trackBuyMyCrypto = () => {
-  AnalyticsService.instance.track(
-    ANALYTICS_CATEGORIES.WALLET_BREAKDOWN,
-    'Link buy.mycrypto.com clicked'
-  );
+const openLinkBuyMyCrypto = () => {
+  const url = 'buy.mycrypto.com';
+  window.open(`https://${url}`, '_blank');
+  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `Link ${url} clicked`);
 };
 
 export default function NoAssets() {
   return (
-    <NoAssetsWrapper
-      href="https://buy.mycrypto.com/"
-      target="_blank"
-      rel="noreferrer"
-      onClick={trackBuyMyCrypto}
-    >
-      <PlusIcon src={addIcon} />
-      <NoAssetsHeading>{translate('WALLET_BREAKDOWN_NO_ASSETS')}</NoAssetsHeading>
-      <NoAssetsDescription>{translate('WALLET_BREAKDOWN_NO_ASSETS_MORE')}</NoAssetsDescription>
+    <NoAssetsWrapper>
+      <NoAssetsCenter onClick={openLinkBuyMyCrypto}>
+        <PlusIcon src={addIcon} />
+        <NoAssetsHeading>{translate('WALLET_BREAKDOWN_NO_ASSETS')}</NoAssetsHeading>
+        <NoAssetsDescription>{translate('WALLET_BREAKDOWN_NO_ASSETS_MORE')}</NoAssetsDescription>
+      </NoAssetsCenter>
     </NoAssetsWrapper>
   );
 }

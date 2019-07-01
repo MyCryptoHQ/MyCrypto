@@ -5,8 +5,11 @@ import { translate } from 'translations';
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
 import { WalletBreakdownProps } from './types';
+import { COLORS } from 'v2/features/constants';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
+
+const { BRIGHT_SKY_BLUE } = COLORS;
 
 const BreakDownHeading = styled.div`
   margin: 0;
@@ -130,7 +133,7 @@ const BreakDownBalanceAssetName = styled.div`
 
 const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
   a {
-    color: #1eb8e7;
+    color: ${BRIGHT_SKY_BLUE};
   }
 `;
 

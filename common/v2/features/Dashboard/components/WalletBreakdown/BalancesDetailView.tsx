@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, CollapsibleTable, Typography } from '@mycrypto/ui';
+import { Button, CollapsibleTable } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
@@ -32,13 +32,13 @@ const BackButton = styled(Button)`
   }
 `;
 
-const BalancesOnlyTotal = styled(Typography)`
+const BalancesOnlyTotal = styled.div`
   margin: 0;
-  font-size: 20px !important;
+  font-size: 20px;
   font-weight: bold;
 
   @media (min-width: 1080px) {
-    font-size: 24px !important;
+    font-size: 24px;
   }
 `;
 

@@ -960,6 +960,8 @@
     "WALLET_BREAKDOWN_VALUE_IN": "Value in",
     "WALLET_BREAKDOWN_UNKNOWN": "Unknown Asset",
     "WALLET_BREAKDOWN_OTHER": "Other Tokens",
-    "WALLET_BREAKDOWN_OTHER_TICKER": "Other"
+    "WALLET_BREAKDOWN_OTHER_TICKER": "Other",
+    "NO_ACCOUNTS_SELECTED_HEADER":"You have no accounts selected.",
+    "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above."
   }
 }
