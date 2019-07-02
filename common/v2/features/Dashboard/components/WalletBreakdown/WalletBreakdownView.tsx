@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { translate } from 'translations';
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
-import { WalletBreakdownProps } from './types';
+import { WalletBreakdownProps, Balance } from './types';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -147,9 +147,17 @@ export default function WalletBreakdownView({
   totalFiatValue,
   fiat
 }: WalletBreakdownProps) {
-  const highestPercentageAssetName = balances.length > 0 && balances[0].name;
-  const highestPercentage =
-    balances.length > 0 && Math.floor(balances[0].fiatValue / totalFiatValue * 100);
+  const [selectedAssetIndex, setSelectedAssetIndex] = useState(0);
+  const [previousBalances, setPreviousBalances] = useState<Balance[]>([]);
+
+  const selectedAssetPercentage =
+    balances.length > 0 &&
+    Math.floor(balances[selectedAssetIndex].fiatValue / totalFiatValue * 100);
+
+  if (balances.length !== previousBalances.length) {
+    setSelectedAssetIndex(0);
+    setPreviousBalances(balances);
+  }
 
   return (
     <>
@@ -159,19 +167,23 @@ export default function WalletBreakdownView({
           <NoAssets />
         ) : (
           <>
-            <BreakdownChart balances={balances} />
+            <BreakdownChart
+              balances={balances}
+              setSelectedAssetIndex={setSelectedAssetIndex}
+              selectedAssetIndex={selectedAssetIndex}
+            />
             <PanelFigures>
               <PanelFigure>
-                <PanelFigureValue>{highestPercentageAssetName}</PanelFigureValue>
+                <PanelFigureValue>{balances[selectedAssetIndex].name}</PanelFigureValue>
                 <PanelFigureLabel>
-                  {highestPercentage}
+                  {selectedAssetPercentage}
                   {translate('WALLET_BREAKDOWN_PERCENTAGE')}
                 </PanelFigureLabel>
               </PanelFigure>
               <PanelFigure>
                 <PanelFigureValue>
                   {fiat.symbol}
-                  {balances[0].fiatValue.toFixed(2)}
+                  {balances[selectedAssetIndex].fiatValue.toFixed(2)}
                 </PanelFigureValue>
                 <PanelFigureLabel>
                   {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.name}
