@@ -1,6 +1,6 @@
 .Drawer {
   position: fixed;
-  top: 81px;
+  top: 0px;
   right: 0;
   z-index: 4;
   display: flex;
@@ -38,6 +38,7 @@
     &-inside {
       flex: 2;
       padding: 0 21px;
+      overflow: auto;
     }
     &-actions {
       flex: 1;
