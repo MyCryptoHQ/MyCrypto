@@ -1015,9 +1015,7 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
     tokens: [],
     contracts: [],
     dPathFormats: {
-      [SecureWalletName.TREZOR]: AUX_DEFAULT,
       [SecureWalletName.SAFE_T]: AUX_DEFAULT,
-      [SecureWalletName.LEDGER_NANO_S]: AUX_DEFAULT,
       [InsecureWalletName.MNEMONIC_PHRASE]: AUX_DEFAULT
     },
     gasPriceSettings: {
