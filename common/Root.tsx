@@ -1,23 +1,3 @@
-import ErrorScreen from 'components/ErrorScreen';
-import LogOutPrompt from 'components/LogOutPrompt';
-import PageNotFound from 'components/PageNotFound';
-import PalettePage from 'components/Palette';
-import { RedirectWithQuery } from 'components/RedirectWithQuery';
-import { RouteNotFound } from 'components/RouteNotFound';
-import { Theme } from 'config';
-import QrSignerModal from 'containers/QrSignerModal';
-import BroadcastTx from 'containers/Tabs/BroadcastTx';
-import CheckTransaction from 'containers/Tabs/CheckTransaction';
-// Components
-import Contracts from 'containers/Tabs/Contracts';
-import ENS from 'containers/Tabs/ENS';
-import GenerateWallet from 'containers/Tabs/GenerateWallet';
-import SendTransaction from 'containers/Tabs/SendTransaction';
-import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
-import SupportPage from 'containers/Tabs/SupportPage';
-import { configMetaSelectors, configSelectors } from 'features/config';
-import { AppState } from 'features/reducers';
-import { transactionMetaActions } from 'features/transaction';
 import React, { Component } from 'react';
 import { setConfig } from 'react-hot-loader';
 import { hot } from 'react-hot-loader/root';
@@ -25,18 +5,40 @@ import { connect, Provider } from 'react-redux';
 import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-router-dom';
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
+
+import { Theme } from 'config';
+import {
+  ErrorScreen,
+  LogOutPrompt,
+  PageNotFound,
+  PalettePage,
+  RedirectWithQuery,
+  RouteNotFound
+} from 'components';
+import {
+  BroadcastTx,
+  CheckTransaction,
+  Contracts,
+  ENS,
+  GenerateWallet,
+  QrSignerModal,
+  SendTransaction,
+  SignAndVerifyMessage,
+  SupportPage
+} from 'containers';
+import { configMetaSelectors, configSelectors } from 'features/config';
+import { AppState } from 'features/reducers';
+import { transactionMetaActions } from 'features/transaction';
+
 // v2
+import { GAU_THEME } from 'v2/theme';
+import { IS_DEV, IS_PROD } from 'v2/utils';
 import { HomepageChoiceRedirect } from 'v2/routing';
 import { PrivateRoute, NewAppReleaseModal } from 'v2/components';
-import { appRoutes, DevTools, Home } from 'v2/features';
-import { NotificationsProvider, SettingsProvider, DevModeProvider, useDevMode } from 'v2/providers';
-import { AccountProvider } from 'v2/providers/AccountProvider';
-import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
-import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
-import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import { AnalyticsService } from 'v2/services';
-import { GAU_THEME } from 'v2/theme';
-import 'what-input';
+import { appRoutes, DevTools, Home } from 'v2/features';
+import { DevModeProvider, LockScreenProvider, useDevMode } from 'v2/providers';
+import AppProviders from './AppProviders';
 
 interface OwnProps {
   store: Store<AppState>;
@@ -82,41 +84,30 @@ class RootClass extends Component<Props, State> {
     const { error } = this.state;
     const { store } = this.props;
 
-    const Router: any =
-      process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
-        ? HashRouter
-        : BrowserRouter;
+    const Router: any = process.env.BUILD_DOWNLOADABLE && IS_PROD ? HashRouter : BrowserRouter;
 
     return (
       <DevModeProvider>
         <ThemeProvider theme={GAU_THEME}>
-          <React.Fragment>
-            <Provider store={store}>
-              <SettingsProvider>
-                <AddressBookProvider>
-                  <AccountProvider>
-                    <NotificationsProvider>
-                      <NetworksProvider>
-                        <Router>
-                          <LockScreenProvider>
-                            <PageVisitsAnalytics>
-                              {error ? <AppContainer error={error} /> : <AppContainer />}
-                              <LogOutPrompt />
-                              <QrSignerModal />
-                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                            </PageVisitsAnalytics>
-                          </LockScreenProvider>
-                        </Router>
-                        <DevToolsContainer />
-                        <div id="ModalContainer" />
-                      </NetworksProvider>
-                    </NotificationsProvider>
-                  </AccountProvider>
-                </AddressBookProvider>
-              </SettingsProvider>
-            </Provider>
-            {process.env.NODE_ENV !== 'production' && <DevModeToggle />}
-          </React.Fragment>
+          <Provider store={store}>
+            <Router>
+              <AppProviders>
+                <LockScreenProvider>
+                  <HomepageChoiceRedirect>
+                    <PageVisitsAnalytics>
+                      {error ? <AppContainer error={error} /> : <AppContainer />}
+                      <LogOutPrompt />
+                      <QrSignerModal />
+                      {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                    </PageVisitsAnalytics>
+                  </HomepageChoiceRedirect>
+                </LockScreenProvider>
+                <DevToolsContainer />
+                <div id="ModalContainer" />
+                {IS_DEV ? <DevModeToggle /> : <></>}
+              </AppProviders>
+            </Router>
+          </Provider>
         </ThemeProvider>
       </DevModeProvider>
     );
