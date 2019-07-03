@@ -153,14 +153,14 @@ export default function WalletBreakdownView({
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(0);
   const [previousBalances, setPreviousBalances] = useState<Balance[]>([]);
 
-  const selectedAssetPercentage =
-    balances.length > 0 &&
-    Math.floor(balances[selectedAssetIndex].fiatValue / totalFiatValue * 100);
-
   if (balances.length !== previousBalances.length) {
     setSelectedAssetIndex(0);
     setPreviousBalances(balances);
   }
+
+  const shownSelectedIndex = balances.length > selectedAssetIndex ? selectedAssetIndex : 0;
+  const balance = balances[shownSelectedIndex];
+  const selectedAssetPercentage = Math.floor(balance.fiatValue / totalFiatValue * 100);
 
   return (
     <>
@@ -177,7 +177,7 @@ export default function WalletBreakdownView({
             />
             <PanelFigures>
               <PanelFigure>
-                <PanelFigureValue>{balances[selectedAssetIndex].name}</PanelFigureValue>
+                <PanelFigureValue>{balance.name}</PanelFigureValue>
                 <PanelFigureLabel>
                   {selectedAssetPercentage}
                   {translate('WALLET_BREAKDOWN_PERCENTAGE')}
@@ -186,7 +186,7 @@ export default function WalletBreakdownView({
               <PanelFigure>
                 <PanelFigureValue>
                   {fiat.symbol}
-                  {balances[selectedAssetIndex].fiatValue.toFixed(2)}
+                  {balance.fiatValue.toFixed(2)}
                 </PanelFigureValue>
                 <PanelFigureLabel>
                   {translate('WALLET_BREAKDOWN_VALUE_IN')} {fiat.name}
