@@ -28,12 +28,38 @@ export interface ITxFields {
 export interface ISendState {
   step: number;
   transactionFields: ITxFields;
-  isFetchingAccountValue: boolean; // Used to indicate looking up user's balance of currently-selected asset.
-  isAddressLabelValid: boolean; // Used to indicate if recipient-address is found in the address book.
-  isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
-  isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
   recipientAddressLabel: string; //  Recipient-address label found in address book.
-  asset: IAsset | Asset | undefined;
+  asset?: IAsset | Asset;
   assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
-  signedTransaction: string; //to store signed transaction to be broadcasted
+}
+
+export interface SendState {
+  step: number;
+  transactionData: {
+    to: string;
+    gasLimit: string;
+    gasPrice: string;
+    nonce: string;
+    data: string;
+    value: string;
+    chainId: undefined;
+  };
+  sharedConfig: {
+    senderAddress: string;
+    senderAddressLabel: string;
+    senderWalletBalanceBase: string;
+    senderWalletBalanceToken: string;
+    senderAccountType: string;
+    senderNetwork: string;
+    assetSymbol: string;
+    assetType: undefined;
+    dPath: string;
+    recipientAddressLabel: string;
+    recipientResolvedNSAddress: string;
+  };
+  transactionStrings: {
+    serialized: string;
+    signed: string;
+    txHash: string;
+  };
 }

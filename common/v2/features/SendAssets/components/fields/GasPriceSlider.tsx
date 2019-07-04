@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
-import { Field, FieldProps, Formik } from 'formik';
-
 import { gasPriceDefaults } from 'config';
+import { Field, FieldProps, Formik } from 'formik';
+import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
+import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
 import { GasEstimates } from 'v2/api/gas';
 import { ITxFields } from '../../types';
