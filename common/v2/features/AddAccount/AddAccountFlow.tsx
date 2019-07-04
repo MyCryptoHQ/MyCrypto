@@ -129,6 +129,6 @@ const AddAccountFlow = withRouter(props => {
   };
 
   return <>{isDefaultView ? renderDefault() : renderStep()}</>;
-});
+}
 
 export default AddAccountFlow;
