@@ -2,7 +2,6 @@ import React, { useState, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
-import { Layout } from 'v2/features';
 import { ContentPanel } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
 import { WalletName, walletNames } from 'v2/config/data';
@@ -129,11 +128,7 @@ const AddAccountFlow = withRouter(props => {
     );
   };
 
-  return (
-    <Layout data-testid="MainLayout" centered={true}>
-      {isDefaultView ? renderDefault() : renderStep()}
-    </Layout>
-  );
-});
+  return <>{isDefaultView ? renderDefault() : renderStep()}</>;
+}
 
 export default AddAccountFlow;

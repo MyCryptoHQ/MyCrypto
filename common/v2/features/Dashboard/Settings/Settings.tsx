@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import translate from 'translations';
 
 import { FlippablePanel } from 'v2/components';
-import { Layout } from 'v2/features';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
 import IS_MOBILE from 'utils/isMobile';
 
@@ -23,7 +22,7 @@ const SettingsHeadingIcon = styled.img`
   margin-right: 12px;
 `;
 
-const StyledLayout = styled(props => <Layout {...props} />)`
+const StyledLayout = styled.div`
   .Layout-content {
     padding: 0;
     @media (max-width: 850px) {
@@ -118,6 +117,7 @@ function renderDesktop() {
   );
 }
 
+// @TODO: Use { Desktop, Mobile } components instead
 export default function Settings() {
   return <StyledLayout>{IS_MOBILE ? renderMobile() : renderDesktop()}</StyledLayout>;
 }

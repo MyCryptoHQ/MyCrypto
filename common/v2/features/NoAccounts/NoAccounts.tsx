@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { Layout } from 'v2/features';
-import sadWallet from 'common/assets/images/icn-sad-wallet.svg';
-import { Button } from '@mycrypto/ui';
-import translate from 'translations';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { Button } from '@mycrypto/ui';
+
+import translate from 'translations';
+import sadWallet from 'common/assets/images/icn-sad-wallet.svg';
 
 const NoAccountsContainer = styled.div`
   display: flex;
@@ -85,14 +85,14 @@ const WhiteButtonFirst = styled(Button)`
   margin-bottom: 15px;
   font-size: 17px;
   white-space: nowrap;
-  text-align: center; 
-  padding-left: 1.25; 
+  text-align: center;
+  padding-left: 1.25;
 
   @media (min-width: 700px) {
     width: 230px;
 
     &:first-of-type {
-      margin-right: 20px; 
+      margin-right: 20px;
   }
 `;
 
@@ -101,8 +101,8 @@ const WhiteButtonSecond = styled(Button)`
   margin-bottom: 15px;
   font-size: 17px;
   white-space: nowrap;
-  text-align: center; 
-  padding-left: 1.1rem; 
+  text-align: center;
+  padding-left: 1.1rem;
 
   @media (min-width: 700px) {
     width: 230px;
@@ -129,27 +129,25 @@ export default class NoAccounts extends Component {
   }
   public render() {
     return (
-      <Layout centered={true} fluid={true}>
-        <NoAccountsContainer>
-          <NoAccountsContent className="no-accounts">
-            <ImgIcon src={sadWallet} />
-            <Header>{translate('NO_ACCOUNTS_HEADER')}</Header>
-            <Description>{translate('NO_ACCOUNTS_DESCRIPTION')}</Description>
-            <ButtonGroup>
-              <Link to="/add-account">
-                <WhiteButtonFirst secondary={true} onClick={this.handleClick}>
-                  Add Existing Account
-                </WhiteButtonFirst>
-              </Link>
-              {/* Link to import settings page */}
-              <WhiteButtonSecond secondary={true}>Import MyCrypto Settings</WhiteButtonSecond>
-            </ButtonGroup>
-            <Link to="/create-wallet">
-              <PrimaryButton>Create New Account</PrimaryButton>
+      <NoAccountsContainer>
+        <NoAccountsContent className="no-accounts">
+          <ImgIcon src={sadWallet} />
+          <Header>{translate('NO_ACCOUNTS_HEADER')}</Header>
+          <Description>{translate('NO_ACCOUNTS_DESCRIPTION')}</Description>
+          <ButtonGroup>
+            <Link to="/add-account">
+              <WhiteButtonFirst secondary={true} onClick={this.handleClick}>
+                Add Existing Account
+              </WhiteButtonFirst>
             </Link>
-          </NoAccountsContent>
-        </NoAccountsContainer>
-      </Layout>
+            {/* Link to import settings page */}
+            <WhiteButtonSecond secondary={true}>Import MyCrypto Settings</WhiteButtonSecond>
+          </ButtonGroup>
+          <Link to="/create-wallet">
+            <PrimaryButton>Create New Account</PrimaryButton>
+          </Link>
+        </NoAccountsContent>
+      </NoAccountsContainer>
     );
   }
 }

@@ -8,8 +8,8 @@ import { N_FACTOR } from 'config';
 import { generateKeystore, fromV3 } from 'libs/web-workers';
 import { stripHexPrefix } from 'libs/formatters';
 import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
-import { Layout } from 'v2/features';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
+
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
 import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
 import { Network } from 'v2/services/Network/types';
@@ -66,9 +66,7 @@ class CreateKeystore extends Component<Props, State> {
     const { password, privateKey, keystore, filename, network, accountType } = this.state;
     const props = { password, privateKey, keystore, filename, network, accountType };
     return (
-      <Layout centered={true}>
-        <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...actions} {...props} />
-      </Layout>
+      <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...actions} {...props} />
     );
   }
 

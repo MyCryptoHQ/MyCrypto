@@ -5,7 +5,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { IAsset } from 'v2/types';
 import { ContentPanel } from 'v2/components';
-import { Layout } from 'v2/features';
 import {
   getQueryParamWithKey,
   getQueryTransactionData,
@@ -156,33 +155,31 @@ export class SendAssets extends Component<RouteComponentProps<{}>, ISendState> {
     const Web3Steps = web3Steps[step];
 
     return (
-      <Layout className="SendAssets" centered={true}>
-        <ContentPanel
-          onBack={this.goToPrevStep}
-          className="SendAssets"
-          heading={transactionFields.account.wallet === 'web3' ? Web3Steps.label : Step.label}
-          icon={sendIcon}
-          stepper={{ current: step + 1, total: steps.length - 1 }}
-        >
-          {transactionFields.account.wallet === 'web3' ? (
-            <Web3Steps.elem
-              transactionFields={this.state.transactionFields}
-              onNext={this.goToNextStep}
-              updateState={this.updateState}
-              onSubmit={this.updateTransactionFields}
-              stateValues={this.state}
-            />
-          ) : (
-            <Step.elem
-              transactionFields={this.state.transactionFields}
-              onNext={this.goToNextStep}
-              updateState={this.updateState}
-              onSubmit={this.updateTransactionFields}
-              stateValues={this.state}
-            />
-          )}
-        </ContentPanel>
-      </Layout>
+      <ContentPanel
+        onBack={this.goToPrevStep}
+        className="SendAssets"
+        heading={transactionFields.account.wallet === 'web3' ? Web3Steps.label : Step.label}
+        icon={sendIcon}
+        stepper={{ current: step + 1, total: steps.length - 1 }}
+      >
+        {transactionFields.account.wallet === 'web3' ? (
+          <Web3Steps.elem
+            transactionFields={this.state.transactionFields}
+            onNext={this.goToNextStep}
+            updateState={this.updateState}
+            onSubmit={this.updateTransactionFields}
+            stateValues={this.state}
+          />
+        ) : (
+          <Step.elem
+            transactionFields={this.state.transactionFields}
+            onNext={this.goToNextStep}
+            updateState={this.updateState}
+            onSubmit={this.updateTransactionFields}
+            stateValues={this.state}
+          />
+        )}
+      </ContentPanel>
     );
   }
 

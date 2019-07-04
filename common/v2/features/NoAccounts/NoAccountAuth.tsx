@@ -1,6 +1,7 @@
-import React from 'react';
-// import { AccountContext } from 'v2/providers';
-import { readAll } from 'v2/services';
+import React, { useContext } from 'react';
+
+import { Layout } from 'v2/features';
+import { AccountContext } from 'v2/providers';
 import { Route, Redirect } from 'react-router-dom';
 
 interface PrivateRouteProps {
@@ -8,15 +9,18 @@ interface PrivateRouteProps {
 }
 
 export default function PrivateRoute({ component: Component, ...rest }: PrivateRouteProps) {
-  const allAccounts = readAll('accounts')();
+  const { accounts } = useContext(AccountContext);
+
   return (
     <Route
       {...rest}
       render={props =>
-        allAccounts === undefined || allAccounts.length === 0 ? (
-          <Redirect to="/no-accounts" />
+        accounts ? (
+          <Layout>
+            <Component {...props} />
+          </Layout>
         ) : (
-          <Component {...props} />
+          <Redirect to="/no-accounts" />
         )
       }
     />

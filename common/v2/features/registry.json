@@ -12,10 +12,6 @@
     "key": "dashboard"
   },
   {
-    "name": "Home",
-    "key": "home"
-  },
-  {
     "name": "Add Account",
     "key": "addAccount"
   },
@@ -38,5 +34,9 @@
   {
     "name": "Send Assets",
     "key": "sendAssets"
+  },
+  {
+    "name": "Request Assets",
+    "key": "requestAssets"
   }
 ]

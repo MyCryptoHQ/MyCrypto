@@ -37,6 +37,7 @@ import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import { AnalyticsService } from 'v2/services';
+import { Home } from 'v2/features';
 import GAU_THEME from 'v2/theme';
 import 'what-input';
 
@@ -216,27 +217,6 @@ interface AppContainerProps {
 const AppContainer = (props: AppContainerProps) => {
   const { isDevelopmentMode } = useDevMode();
   const { error } = props;
-  const routes = (
-    <CaptureRouteNotFound>
-      <Switch>
-        <PrivateRoute path="/dashboard" component={Dashboard} exact={true} />
-        {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-        <Route path="/account" component={SendTransaction} exact={true} />
-        <Route path="/generate" component={GenerateWallet} />
-        <Route path="/contracts" component={Contracts} />
-        <Route path="/ens" component={ENS} exact={true} />
-        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-        <Route path="/tx-status" component={CheckTransaction} exact={true} />
-        <Route path="/pushTx" component={BroadcastTx} />
-        <Route path="/support-us" component={SupportPage} exact={true} />
-        {process.env.NODE_ENV !== 'production' && (
-          <Route path="/dev/palette" component={PalettePage} exact={true} />
-        )}
-        <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
-        <RouteNotFound />
-      </Switch>
-    </CaptureRouteNotFound>
-  );
 
   if (error !== undefined && !isDevelopmentMode) {
     return <ErrorScreen error={error} />;
@@ -244,7 +224,27 @@ const AppContainer = (props: AppContainerProps) => {
 
   return (
     <>
-      {routes}
+      <CaptureRouteNotFound>
+        <Switch>
+          <Route path="/" component={Home} exact={true} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          {gatherFeatureRoutes().map((config, i) => <PrivateRoute key={i} {...config} />)}
+          <Route path="/account" component={SendTransaction} exact={true} />
+          <Route path="/generate" component={GenerateWallet} />
+          <Route path="/contracts" component={Contracts} />
+          <Route path="/ens" component={ENS} exact={true} />
+          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+          <Route path="/tx-status" component={CheckTransaction} exact={true} />
+          <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/support-us" component={SupportPage} exact={true} />
+          {process.env.NODE_ENV !== 'production' && (
+            <Route path="/dev/palette" component={PalettePage} exact={true} />
+          )}
+          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
+          <RouteNotFound />
+        </Switch>
+      </CaptureRouteNotFound>
+
       <LegacyRoutes />
     </>
   );

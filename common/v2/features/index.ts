@@ -1,7 +1,7 @@
 export * from './BuyAndExchange';
 export * from './CreateWallet';
 export * from './Dashboard';
-export * from './Home';
+export { Home } from './Home';
 export { addAccountRoutes } from './AddAccount';
 export * from './Dashboard/Settings';
 export * from './DownloadApp';
@@ -16,5 +16,5 @@ export * from './constants';
 export * from './ScreenLock';
 export * from './SendAssets';
 export * from './Gas';
-
+export * from './RequestAssets';
 export * from './Nonce';

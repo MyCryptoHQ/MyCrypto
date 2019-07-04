@@ -1,10 +1,10 @@
-import { RequestAssets } from './RequestAssets';
+import Dashboard from './Dashboard';
 
 export default [
   {
-    name: 'Receive Assets',
-    path: '/receive',
+    name: 'Dashboard',
+    path: '/dashboard',
     exact: true,
-    component: RequestAssets
+    component: Dashboard
   }
 ];

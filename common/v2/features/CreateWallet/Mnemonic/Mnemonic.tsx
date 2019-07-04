@@ -5,7 +5,6 @@ import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-ut
 import HDkey from 'hdkey';
 import { uniq } from 'lodash';
 
-import { Layout } from 'v2/features';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { InsecureWalletName } from 'v2/config/data';
@@ -64,9 +63,7 @@ class CreateMnemonic extends Component<Props> {
     const props = { words, network, accountType, path, address };
 
     return (
-      <Layout centered={true}>
-        <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
-      </Layout>
+      <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
     );
   }
 

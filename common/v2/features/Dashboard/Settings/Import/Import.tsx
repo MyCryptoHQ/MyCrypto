@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import { ContentPanel } from 'v2/components';
 import { ImportBox, ImportSuccess } from './components';
-import { Layout } from 'v2/features';
 import { SettingsContext } from 'v2/providers';
 import { translateRaw } from 'translations';
 
@@ -48,24 +47,20 @@ export class Import extends React.Component<RouteComponentProps<{}>> {
     const onBack = steps[step].backOption;
     const Step = steps[step].component;
     return (
-      <Layout centered={true}>
-        <CenteredContentPanel
-          onBack={onBack}
-          heading={steps[step].heading}
-          stepper={{
-            current: step + 1,
-            total: steps.length
-          }}
-        >
-          <Content>
-            <SettingsContext.Consumer>
-              {({ importStorage }) => (
-                <Step onNext={this.advanceStep} importCache={importStorage} />
-              )}
-            </SettingsContext.Consumer>
-          </Content>
-        </CenteredContentPanel>
-      </Layout>
+      <CenteredContentPanel
+        onBack={onBack}
+        heading={steps[step].heading}
+        stepper={{
+          current: step + 1,
+          total: steps.length
+        }}
+      >
+        <Content>
+          <SettingsContext.Consumer>
+            {({ importStorage }) => <Step onNext={this.advanceStep} importCache={importStorage} />}
+          </SettingsContext.Consumer>
+        </Content>
+      </CenteredContentPanel>
     );
   }
 
