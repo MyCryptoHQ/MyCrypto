@@ -3,8 +3,9 @@ import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { COLORS, BREAK_POINTS, MYCRYPTO_SUPPORT_URL } from 'v2/features/constants';
 import { Link } from 'react-router-dom';
+import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { KNOWLEDGE_BASE_URL } from 'v2/config';
 
 import ovalIcon from 'common/assets/images/icn-oval.svg';
 import swooshIcon from 'common/assets/images/icn-purple-swoosh.svg';
@@ -96,7 +97,7 @@ export default function BottomActionPanel() {
             {translate('HOME_BOTTOM_GET_STARTED')}
           </GetStartedButton>
         </Link>
-        <a href={MYCRYPTO_SUPPORT_URL} target="_blank" rel="noreferrer">
+        <a href={KNOWLEDGE_BASE_URL} target="_blank" rel="noreferrer">
           <SupportLink onClick={() => trackButtonClick('Have Questions?')}>
             {translate('HOME_BOTTOM_HELP')}
           </SupportLink>

@@ -120,7 +120,6 @@ class CreateKeystore extends Component<Props, State> {
       dPath: '',
       assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
       balance: '0',
-      label: 'New Account', // @TODO: we really should have the correct label before!
       transactions: [],
       timestamp: 0
     };

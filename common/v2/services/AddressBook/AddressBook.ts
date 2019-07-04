@@ -1,15 +1,6 @@
-import { destroy, getCache, read, readAll, setCache, update } from 'v2/services/LocalCache';
-import { AddressBook } from './types';
+import { create, destroy, read, readAll, update } from 'v2/services/LocalCache';
 
-export const createAddressBook = (AddressBooks: AddressBook) => {
-  const uuid = AddressBooks.address.toLowerCase();
-
-  const newAddressBookCache = getCache();
-  newAddressBookCache.addressBook[uuid] = AddressBooks;
-
-  setCache(newAddressBookCache);
-};
-
+export const createAddressBook = create('addressBook');
 export const readAddressBook = read('addressBook');
 export const updateAddressBook = update('addressBook');
 export const deleteAddressBook = destroy('addressBook');

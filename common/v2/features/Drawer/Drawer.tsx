@@ -22,7 +22,7 @@ interface Props {
   onClose(): void;
 }
 
-export default function Drawer({ style, title, content, actions, onClose }: Props) {
+export default function Drawer({ style, title, content: Content, actions, onClose }: Props) {
   return (
     <section className="Drawer" style={style}>
       <header className="Drawer-top">
@@ -36,15 +36,18 @@ export default function Drawer({ style, title, content, actions, onClose }: Prop
         </div>
       </header>
       <div className="Drawer-content">
-        <div className="Drawer-content-inside">{content}</div>
-        <div className="Drawer-content-actions">
-          {actions &&
-            actions.map(action => (
+        <div className="Drawer-content-inside">
+          {typeof Content === 'function' ? <Content onClose={onClose} /> : Content}
+        </div>
+        {actions && (
+          <div className="Drawer-content-actions">
+            {actions.map(action => (
               <div className="Drawer-content-actions-action">
                 <DrawerAction key={action.title} {...action} />
               </div>
             ))}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
