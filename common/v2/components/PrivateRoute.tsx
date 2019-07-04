@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-
-import { Layout } from 'v2/features';
-import { AccountContext } from 'v2/providers';
 import { Route, Redirect } from 'react-router-dom';
+
+import { AccountContext } from 'v2/providers';
+import { Layout } from 'v2/features';
 
 interface PrivateRouteProps {
   [key: string]: any;

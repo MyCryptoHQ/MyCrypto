@@ -26,18 +26,15 @@ import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-rout
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
 // v2
-import { gatherFeatureRoutes, HomepageChoiceRedirect } from 'v2';
-import { NewAppReleaseModal } from 'v2/components';
-import Dashboard from 'v2/features/Dashboard';
-import DevTools from 'v2/features/DevTools';
-import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import { HomepageChoiceRedirect } from 'v2/routing';
+import { PrivateRoute, NewAppReleaseModal } from 'v2/components';
+import { appRoutes, DevTools, Home } from 'v2/features';
 import { NotificationsProvider, SettingsProvider, DevModeProvider, useDevMode } from 'v2/providers';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import { AnalyticsService } from 'v2/services';
-import { Home } from 'v2/features';
 import GAU_THEME from 'v2/theme';
 import 'what-input';
 
@@ -226,9 +223,9 @@ const AppContainer = (props: AppContainerProps) => {
     <>
       <CaptureRouteNotFound>
         <Switch>
-          <Route path="/" component={Home} exact={true} />
-          <PrivateRoute path="/dashboard" component={Dashboard} />
-          {gatherFeatureRoutes().map((config, i) => <PrivateRoute key={i} {...config} />)}
+          {/* To avoid fiddling with layout we provide a complete route to home */}
+          <Route path="/home" component={Home} exact={true} />{' '}
+          {appRoutes.map((config, idx) => <PrivateRoute key={idx} {...config} />)}
           <Route path="/account" component={SendTransaction} exact={true} />
           <Route path="/generate" component={GenerateWallet} />
           <Route path="/contracts" component={Contracts} />

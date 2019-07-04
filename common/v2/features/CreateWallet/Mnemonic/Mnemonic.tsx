@@ -14,10 +14,10 @@ import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } f
 import { DPathFormat } from 'v2/libs/networks/types';
 import { Account } from 'v2/services/Account/types';
 import { Asset } from 'v2/services/Asset/types';
-import { Settings } from 'v2/services/Settings';
+import { ISettings } from 'v2/services/Settings';
 
 interface Props extends RouteComponentProps<{}> {
-  settings: Settings;
+  settings: ISettings;
   createAccountWithID(accountData: Account, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;

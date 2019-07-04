@@ -6,7 +6,7 @@ import * as localCacheService from 'v2/services/LocalCache/LocalCache';
 import * as screenLockService from 'v2/services/ScreenLockSettings/ScreenLockSettings';
 import * as settingsService from 'v2/services/Settings/Settings';
 import { translateRaw } from 'translations';
-import { ScreenLockLocking } from 'v2/features/ScreenLock';
+import { ScreenLockLocking } from 'v2/features';
 
 interface State {
   locking: boolean;

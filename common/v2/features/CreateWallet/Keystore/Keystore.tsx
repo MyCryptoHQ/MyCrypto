@@ -15,7 +15,7 @@ import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } f
 import { Network } from 'v2/services/Network/types';
 import { Account } from 'v2/services/Account/types';
 import { Asset } from 'v2/services/Asset/types';
-import { Settings } from 'v2/services/Settings';
+import { ISettings } from 'v2/services/Settings';
 import { WalletName, InsecureWalletName } from 'v2/config/data';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 
@@ -30,7 +30,7 @@ interface State {
 }
 
 interface Props extends RouteComponentProps<{}> {
-  settings: Settings;
+  settings: ISettings;
   createAccountWithID(accountData: Account, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;

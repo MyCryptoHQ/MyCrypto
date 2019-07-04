@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { OS } from 'v2/services/Github';
-import { Layout } from '../Layout';
+import Layout from '../Layout';
 import {
   GetStartedPanel,
   DownloadAppPanel,

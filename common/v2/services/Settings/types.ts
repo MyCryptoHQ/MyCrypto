@@ -1,4 +1,4 @@
-export interface Settings {
+export interface ISettings {
   fiatCurrency: string;
   darkMode: boolean;
   dashboardAccounts: string[];

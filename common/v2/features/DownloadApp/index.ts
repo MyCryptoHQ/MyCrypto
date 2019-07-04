@@ -1,3 +1,2 @@
-export { default } from './DownloadApp';
-export { default as downloadAppRoutes } from './routes';
+export { default as DownloadApp } from './DownloadApp';
 export * from './types';
