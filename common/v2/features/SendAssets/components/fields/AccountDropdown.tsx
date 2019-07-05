@@ -36,7 +36,6 @@ interface IAccountDropdownProps {
 }
 
 function AccountDropdown({ accounts, name, value, values, onSelect }: IAccountDropdownProps) {
-  console.log(values.asset);
   let relevantAccounts: ExtendedAccount[] = [];
   if (values.asset && values.asset.network) {
     relevantAccounts = accounts.filter((account: ExtendedAccount): boolean => {

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
+import { processFormDataToTx } from 'v2/libs/transaction';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -108,16 +109,17 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
     }));
 
   private updateSendState = (formikValues: any) => {
+    console.log('formik', formikValues);
     const sharedConfig = {
-      senderAddress: formikValues.transactionFields.account.address,
-      senderAddressLabel: formikValues.transactionFields.account.label,
-      senderWalletBalanceBase: formikValues.transactionFields.account.balance,
+      senderAddress: formikValues.account.address,
+      senderAddressLabel: formikValues.account.label,
+      senderWalletBalanceBase: formikValues.account.balance,
       senderWalletBalanceToken: '',
-      senderAccountType: formikValues.transactionFields.account.wallet,
-      senderNetwork: formikValues.transactionFields.account.network,
-      assetSymbol: formikValues.transactionFields.account.assets,
-      assetType: undefined,
-      dPath: '',
+      senderAccountType: formikValues.account.wallet,
+      senderNetwork: formikValues.account.network,
+      assetSymbol: formikValues.asset.symbol,
+      assetType: formikValues.assetType,
+      dPath: formikValues.account.dPath,
       recipientAddressLabel: formikValues.recipientAddressLabel,
       recipientResolvedNSAddress: formikValues.recipientResolvedNSAddress
     };
@@ -135,9 +137,13 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
       transactionData,
       sharedConfig
     });
-
-    console.log(this.state.transactionData, sharedConfig);
+    this.processTransactionData();
   };
+
+  private processTransactionData() {
+    console.log(processFormDataToTx(this.state));
+    console.log('state', this.state);
+  }
 
   private updateTransactionStrings = (transactionString: any) => {
     console.log(transactionString);

@@ -197,7 +197,7 @@ export default function SendAssetsForm({
                 {'ITxFields123: '}
                 <br />
                 <pre style={{ fontSize: '0.5rem' }}>
-                  {JSON.stringify(processFormDataToTx(values.transactionFields), null, 2)}
+                  {JSON.stringify(processFormDataToTx(values), null, 2)}
                 </pre>
               </React.Fragment>
               <br />

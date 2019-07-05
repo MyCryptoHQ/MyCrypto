@@ -1,15 +1,14 @@
-import { ITxFields } from 'v2/features/SendAssets/types';
-import { IHexStrWeb3Transaction, IHexStrTransaction } from './typings';
-import { getAssetByTicker } from 'v2/libs/assets';
-import { getNetworkById } from '../networks/networks';
-import { Network } from 'v2/services/Network/types';
-
-import { Address, TokenValue, toWei, toTokenBase } from '../units';
 import BN from 'bn.js';
-import { encodeTransfer } from './utils/token';
 import { bufferToHex } from 'ethereumjs-util';
-import { hexEncodeQuantity } from '../nodes/rpc/utils';
+import { ITxFields, SendState } from 'v2/features/SendAssets/types';
+import { getAssetByTicker } from 'v2/libs/assets';
 import { Asset } from 'v2/services/Asset/types';
+import { Network } from 'v2/services/Network/types';
+import { getNetworkById } from '../networks/networks';
+import { hexEncodeQuantity } from '../nodes/rpc/utils';
+import { Address, TokenValue, toTokenBase, toWei } from '../units';
+import { IHexStrTransaction, IHexStrWeb3Transaction } from './typings';
+import { encodeTransfer } from './utils/token';
 
 export const processFormDataToWeb3Tx = (
   formData: ITxFields
@@ -74,11 +73,17 @@ export const processFormDataToWeb3Tx = (
   }
 };
 
-export const processFormDataToTx = (formData: ITxFields): IHexStrTransaction | undefined => {
-  if (formData.asset && formData.asset.symbol) {
-    const symbol = formData.asset.symbol;
+export const processFormDataToTx = (
+  formData: Partial<SendState>
+): IHexStrTransaction | undefined => {
+  if (
+    formData.sharedConfig &&
+    formData.sharedConfig.assetType &&
+    formData.sharedConfig.assetSymbol
+  ) {
+    const symbol = formData.sharedConfig.assetSymbol;
     const asset: Asset | undefined = getAssetByTicker(symbol);
-
+    console.log(asset);
     const txFields = formData;
 
     if (!asset || !asset.networkId) {
