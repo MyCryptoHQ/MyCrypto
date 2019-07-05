@@ -16,7 +16,7 @@ export interface ITxFields {
   gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
   gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
   nonceField: string; // Use only if user has input a manual nonce value.
-  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+
   isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
   accountType: WalletName | undefined; // Type of wallet selected.
   network: Network | undefined;
@@ -35,6 +35,7 @@ export interface ISendState {
   // isAddressLabelValid: boolean;
   // isFetchingAssetPricing: boolean;
   // isEstimatingGasLimit: boolean;
+  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
 }
 
 export interface SendState {

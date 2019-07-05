@@ -77,7 +77,7 @@ const initialState: ISendState = {
     nonceEstimated: '0',
     nonceField: '0',
     data: '',
-    isAdvancedTransaction: false, // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+    // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
     isGasLimitManual: false,
     accountType: undefined,
     gasEstimates: {
@@ -91,11 +91,12 @@ const initialState: ISendState = {
     },
     network: undefined,
     resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
-    isResolvingNSName: false // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+    isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
     // isFetchingAccountValue: false,
     // isAddressLabelValid: false,
     // isFetchingAssetPricing: false,
     // isEstimatingGasLimit: false
+    isAdvancedTransaction: false
   }
 };
 
@@ -143,8 +144,10 @@ export default function SendAssetsForm({
           // onNext();
         }}
         render={({ errors, touched, setFieldValue, values, handleChange, submitForm }) => {
-          const toggleAdvancedOptions = () =>
-            setFieldValue('isAdvancedTransaction', !values.transactionFields.isAdvancedTransaction);
+          const toggleAdvancedOptions = () => {
+            console.log(values.isAdvancedTransaction);
+            setFieldValue('isAdvancedTransaction', !values.isAdvancedTransaction);
+          };
 
           const handleGasEstimate = async () => {
             if (!values || !values.transactionFields.network) {
@@ -327,7 +330,7 @@ export default function SendAssetsForm({
                   />
                   {/* TRANSLATE THIS */}
                 </label>
-                {!values.transactionFields.isAdvancedTransaction && (
+                {!values.isAdvancedTransaction && (
                   <GasPriceSlider
                     transactionFieldValues={values.transactionFields}
                     handleChange={(e: string) => {
@@ -347,10 +350,9 @@ export default function SendAssetsForm({
                   onClick={toggleAdvancedOptions}
                   className="SendAssetsForm-advancedOptions-button"
                 >
-                  {values.transactionFields.isAdvancedTransaction ? 'Hide' : 'Show'} Advanced
-                  Options
+                  {values.isAdvancedTransaction ? 'Hide' : 'Show'} Advanced Options
                 </Button>
-                {values.transactionFields.isAdvancedTransaction && (
+                {values.isAdvancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
                       <Field name="isGasLimitManual" type="checkbox" value={true} />
