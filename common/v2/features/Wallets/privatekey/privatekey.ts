@@ -10,6 +10,7 @@ export const unlockPrivateKey = async (
   try {
     wallet = getPrivKeyWallet(key, password);
   } catch (e) {
+    // tslint:disable-next-line:no-console
     console.log('Error: ' + translateRaw('INVALID_PKEY'));
     return;
   }
