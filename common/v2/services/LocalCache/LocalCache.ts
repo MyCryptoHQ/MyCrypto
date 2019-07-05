@@ -255,7 +255,7 @@ export const createWithID = <K extends CollectionKey>(key: K) => (
     newCache[key][uuid] = value;
     setCache(newCache);
   } else {
-    console.log('Error: key already exists in createWithID');
+    console.error('Error: key already exists in createWithID');
   }
 };
 
