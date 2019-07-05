@@ -5,7 +5,6 @@ import PalettePage from 'components/Palette';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { Theme } from 'config';
-import OnboardingModal from 'containers/OnboardingModal';
 import QrSignerModal from 'containers/QrSignerModal';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
@@ -17,7 +16,6 @@ import SendTransaction from 'containers/Tabs/SendTransaction';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import SupportPage from 'containers/Tabs/SupportPage';
 import { configMetaSelectors, configSelectors } from 'features/config';
-import { onboardingSelectors } from 'features/onboarding';
 import { AppState } from 'features/reducers';
 import { transactionMetaActions } from 'features/transaction';
 import React, { Component } from 'react';
@@ -28,7 +26,7 @@ import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-rout
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
 // v2
-import { gatherFeatureRoutes } from 'v2';
+import { gatherFeatureRoutes, HomepageChoiceRedirect } from 'v2';
 import { NewAppReleaseModal } from 'v2/components';
 import Dashboard from 'v2/features/Dashboard';
 import DevTools from 'v2/features/DevTools';
@@ -47,7 +45,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  onboardingActive: ReturnType<typeof onboardingSelectors.getActive>;
   networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
   theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
@@ -85,7 +82,7 @@ class RootClass extends Component<Props, State> {
 
   public render() {
     const { error } = this.state;
-    const { store, onboardingActive } = this.props;
+    const { store } = this.props;
 
     const Router: any =
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
@@ -104,13 +101,14 @@ class RootClass extends Component<Props, State> {
                       <NetworksProvider>
                         <Router>
                           <LockScreenProvider>
-                            <PageVisitsAnalytics>
-                              {onboardingActive && <OnboardingModal />}
-                              {error ? <AppContainer error={error} /> : <AppContainer />}
-                              <LogOutPrompt />
-                              <QrSignerModal />
-                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                            </PageVisitsAnalytics>
+                            <HomepageChoiceRedirect>
+                              <PageVisitsAnalytics>
+                                {error ? <AppContainer error={error} /> : <AppContainer />}
+                                <LogOutPrompt />
+                                <QrSignerModal />
+                                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                              </PageVisitsAnalytics>
+                            </HomepageChoiceRedirect>
                           </LockScreenProvider>
                         </Router>
                         <DevToolsContainer />
@@ -221,7 +219,7 @@ const AppContainer = (props: AppContainerProps) => {
   const routes = (
     <CaptureRouteNotFound>
       <Switch>
-        <PrivateRoute path="/dashboard" component={Dashboard} />
+        <PrivateRoute path="/dashboard" component={Dashboard} exact={true} />
         {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
         <Route path="/account" component={SendTransaction} exact={true} />
         <Route path="/generate" component={GenerateWallet} />
@@ -284,7 +282,6 @@ const CaptureRouteNotFound = withRouter(({ children, location }) => {
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  onboardingActive: onboardingSelectors.getActive(state),
   networkUnit: configSelectors.getNetworkUnit(state),
   theme: configMetaSelectors.getTheme(state)
 });

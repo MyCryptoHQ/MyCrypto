@@ -27,7 +27,6 @@ export const CACHE_INIT_DEV: LocalCache = {
   },
   accounts: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
-      label: 'Foo',
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       network: 'ETH',
       assets: [
@@ -125,8 +124,9 @@ export const CACHE_INIT_DEV: LocalCache = {
   addressBook: {
     '0x80200997f095da94e404f7e0d581aab1ffba9f7d': {
       address: '0x80200997f095da94e404f7e0d581aab1ffba9f7d',
-      label: 'My Wallet',
-      notes: 'This is my wallet.'
+      label: 'Foo',
+      notes: 'This is my wallet.',
+      network: 'Ethereum'
     }
   },
   notifications: {}

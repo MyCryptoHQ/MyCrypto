@@ -128,7 +128,7 @@ export default class SignTransactionPrivateKey extends Component {
   };
 
   private onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    console.log(e);
+    console.debug(e);
   };
 
   private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {

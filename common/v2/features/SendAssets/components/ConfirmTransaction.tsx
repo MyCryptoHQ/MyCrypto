@@ -123,8 +123,8 @@ export default class ConfirmTransaction extends Component<Props> {
       <div className="ConfirmTransaction">
         <AddressBookContext.Consumer>
           {({ addressBook }) => {
-            let recipientLabel: string = 'Unknown';
-            let senderLabel: string = label;
+            let recipientLabel: string = 'Unknown Account';
+            let senderLabel: string | undefined = 'Unknown Account';
             addressBook.map(en => {
               if (en.address.toLowerCase() === toAddressFromSignedTransaction.toLowerCase()) {
                 recipientLabel = en.label;
