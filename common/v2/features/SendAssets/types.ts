@@ -29,8 +29,12 @@ export interface ISendState {
   step: number;
   transactionFields: ITxFields;
   recipientAddressLabel: string; //  Recipient-address label found in address book.
-  asset?: IAsset | Asset;
+  asset: IAsset | Asset | undefined;
   assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
+  // isFetchingAccountValue: boolean;
+  // isAddressLabelValid: boolean;
+  // isFetchingAssetPricing: boolean;
+  // isEstimatingGasLimit: boolean;
 }
 
 export interface SendState {

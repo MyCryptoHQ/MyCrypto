@@ -4,7 +4,7 @@ import { translateRaw } from 'translations';
 import { AccountSummary, Divider, Dropdown } from 'v2/components';
 import { getNetworkByName } from 'v2/libs/networks/networks';
 import { ExtendedAccount, ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
-import { ITxFields } from '../../types';
+import { ISendState } from '../../types';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
@@ -31,11 +31,12 @@ interface IAccountDropdownProps {
   accounts: IExtendedAccount[];
   name: string;
   value: IExtendedAccount;
-  values: ITxFields;
+  values: ISendState;
   onSelect(option: IExtendedAccount): void;
 }
 
 function AccountDropdown({ accounts, name, value, values, onSelect }: IAccountDropdownProps) {
+  console.log(values.asset);
   let relevantAccounts: ExtendedAccount[] = [];
   if (values.asset && values.asset.network) {
     relevantAccounts = accounts.filter((account: ExtendedAccount): boolean => {

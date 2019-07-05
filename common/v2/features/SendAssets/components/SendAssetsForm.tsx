@@ -8,7 +8,6 @@ import translate, { translateRaw } from 'translations';
 import { fetchGasPriceEstimates, getNonce, getResolvedENSAddress } from 'v2';
 import { InlineErrorMsg } from 'v2/components';
 import { getGasEstimate } from 'v2/features/Gas';
-import { SecureWalletName } from 'v2/features/Wallets/types';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
@@ -52,24 +51,24 @@ interface Props {
 
 const initialState: ISendState = {
   step: 0,
+  asset: undefined,
   assetType: 'base',
   recipientAddressLabel: '',
-
   transactionFields: {
     account: {
-      label: 'myWallet',
-      address: '0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8',
+      label: '',
+      address: '',
       network: '',
       assets: [],
-      wallet: SecureWalletName.WEB3,
+      wallet: undefined,
       balance: '0',
       transactions: [],
       dPath: '',
       uuid: '',
       timestamp: 0
     },
-    recipientAddress: '0xceFB24f90dE062Ee1DaB076516E41993EC5c7FA8',
-    amount: '3', // Really should be undefined, but Formik recognizes empty strings.
+    recipientAddress: '',
+    amount: '', // Really should be undefined, but Formik recognizes empty strings.
     asset: undefined,
     gasPriceSlider: '20',
     gasPriceField: '20',
@@ -93,6 +92,10 @@ const initialState: ISendState = {
     network: undefined,
     resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
     isResolvingNSName: false // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+    // isFetchingAccountValue: false,
+    // isAddressLabelValid: false,
+    // isFetchingAssetPricing: false,
+    // isEstimatingGasLimit: false
   }
 };
 
@@ -220,7 +223,6 @@ export default function SendAssetsForm({
                       onSelect={option => {
                         form.setFieldValue(field.name, option);
                         handleFieldReset();
-
                         if (option.network) {
                           fetchGasPriceEstimates(option.network).then(data => {
                             form.setFieldValue('gasEstimates', data);
@@ -244,21 +246,13 @@ export default function SendAssetsForm({
                   value={values.transactionFields.account}
                   component={({ field, form }: FieldProps) => (
                     <AccountDropdown
-                      values={values.transactionFields}
+                      values={values}
                       name={field.name}
                       value={field.value}
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         form.setFieldValue(field.name, option);
                         handleNonceEstimate(option);
-                        updateSendState({
-                          sharedConfig: {
-                            senderAccountType: option.wallet,
-                            senderAddressLabel: option.label,
-                            senderNetwork: option.network,
-                            senderWalletBalanceBase: option.balance
-                          }
-                        });
                         handleGasEstimate();
                       }}
                     />
