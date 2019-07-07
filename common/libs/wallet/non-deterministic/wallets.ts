@@ -5,6 +5,7 @@ import { decryptPrivKey } from 'libs/decrypt';
 import { fromV3 } from 'libs/web-workers';
 import { signWrapper, determineKeystoreType, KeystoreTypes } from './helpers';
 import Web3Wallet from './web3';
+import IFrameWallet from './iframe';
 import AddressOnlyWallet from './address';
 import ParitySignerWallet from './parity';
 
@@ -59,6 +60,7 @@ export {
   PrivKeyWallet,
   UtcWallet,
   Web3Wallet,
+  IFrameWallet,
   AddressOnlyWallet,
   ParitySignerWallet,
   getUtcWallet,

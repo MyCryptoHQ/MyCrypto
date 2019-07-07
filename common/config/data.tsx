@@ -1,9 +1,9 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
-import { getValues } from '../utils/helpers';
-import packageJson from '../../package.json';
+import translate from 'translations';
 import { GasPriceSetting } from 'types/network';
 import { makeExplorer } from 'utils/helpers';
-import translate from 'translations';
+import packageJson from '../../package.json';
+import { getValues } from '../utils/helpers';
 
 export const languages = require('./languages.json');
 export const discordURL = 'https://discord.gg/VSaTXEA';
@@ -73,7 +73,8 @@ export enum SecureWalletName {
   LEDGER_NANO_S = 'ledgerNanoS',
   TREZOR = 'trezor',
   SAFE_T = 'safeTmini',
-  PARITY_SIGNER = 'paritySigner'
+  PARITY_SIGNER = 'paritySigner',
+  IFRAME_WALLET = 'iframe',
 }
 
 export enum HardwareWalletName {
