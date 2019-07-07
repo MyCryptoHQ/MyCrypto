@@ -3,6 +3,7 @@ import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
 import 'babel-polyfill';
 import 'whatwg-fetch';
+import '@ethvault/iframe-provider-polyfill';
 
 import React from 'react';
 import { render } from 'react-dom';
