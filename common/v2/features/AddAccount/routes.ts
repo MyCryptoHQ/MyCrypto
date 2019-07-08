@@ -4,7 +4,7 @@ import AddAccountFlow from './AddAccountFlow';
 export default [
   {
     name: 'Add Account',
-    path: '/add-account',
+    path: '/add-account/:walletName?',
     exact: true,
     component: AddAccountFlow
   }

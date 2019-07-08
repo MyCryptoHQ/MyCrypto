@@ -1,2 +1,2 @@
 export { default as Drawer } from './Drawer';
-export { AccountScreen, UnlockScreen } from './screens';
+export { AccountScreen, UnlockScreen, SelectLanguage } from './screens';
