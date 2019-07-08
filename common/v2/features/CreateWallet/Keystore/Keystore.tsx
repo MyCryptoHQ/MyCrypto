@@ -144,7 +144,7 @@ class CreateKeystore extends Component<Props, State> {
       });
       this.advanceToNextStage();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
