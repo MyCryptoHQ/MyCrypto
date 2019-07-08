@@ -196,6 +196,7 @@ const MenuMid = styled.div`
   border-bottom: 1px solid #3e546d;
   color: #ffffff;
   text-transform: uppercase;
+  font-weight: normal;
 `;
 
 const MobileTopLeft = styled.div`

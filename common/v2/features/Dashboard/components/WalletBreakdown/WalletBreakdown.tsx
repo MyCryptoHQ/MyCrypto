@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { translateRaw } from 'translations';
 import { AccountContext, SettingsContext } from 'v2/providers';
 import { Asset } from 'v2/services/Asset/types';
-import { ExtendedAccount } from 'v2/services';
+import { ExtendedAccount, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import AccountDropdown from './AccountDropdown';
 import BalancesDetailView from './BalancesDetailView';
 import {
@@ -49,11 +49,20 @@ const WalletBreakdownPanel = styled(Panel)`
 `;
 
 const numberOfAssetsDisplayed = 4;
+let wasNumOfAccountsTracked = false;
 
 function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
+
+  // Track number of accounts that user has only once per session
+  if (!wasNumOfAccountsTracked) {
+    wasNumOfAccountsTracked = true;
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.WALLET_BREAKDOWN, `User has accounts`, {
+      numOfAccounts: accounts.length
+    });
+  }
 
   const balances: Balance[] = [];
   const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
