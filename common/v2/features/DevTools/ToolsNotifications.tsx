@@ -63,6 +63,13 @@ const ToolsNotifications = () => {
           >
             Get Hardware Wallet
           </button>
+          <button
+            onClick={() => {
+              displayNotification(NotificationTemplates.onboardingPleaseUnderstand);
+            }}
+          >
+            Onboarding Please Understand
+          </button>
         </ToolWrapper>
       )}
     </NotificationsContext.Consumer>

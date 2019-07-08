@@ -15,6 +15,8 @@ const MainPanel = styled(Panel)`
   position: relative;
   margin-left: 15px;
   margin-right: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
 
   @media (min-width: ${SCREEN_MD}) {
     margin: 0 0 50px 0;

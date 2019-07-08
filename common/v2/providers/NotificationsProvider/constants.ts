@@ -6,7 +6,8 @@ import {
   SaveDashboardNotification,
   PrintPaperWalletNotification,
   GetHardwareWalletNotification,
-  WalletNotAddedNotification
+  WalletNotAddedNotification,
+  OnboardingPleaseUnderstandNotification
 } from 'v2/features/Dashboard/NotificationsPanel/components';
 
 export const NotificationTemplates = {
@@ -15,7 +16,8 @@ export const NotificationTemplates = {
   walletNotAdded: 'wallet-not-added',
   saveSettings: 'save-settings',
   printPaperWallet: 'print-paper-wallet',
-  getHardwareWallet: 'get-hardware-wallet'
+  getHardwareWallet: 'get-hardware-wallet',
+  onboardingPleaseUnderstand: 'onboarding-please-understand'
 };
 
 export const notificationsConfigs: NotificationsConfigsProps = {
@@ -54,5 +56,10 @@ export const notificationsConfigs: NotificationsConfigsProps = {
     layout: GetHardwareWalletNotification,
     dismissForever: true,
     condition: getHardwareWalletCheck
+  },
+  [NotificationTemplates.onboardingPleaseUnderstand]: {
+    analyticsEvent: 'Onboarding Please Understand',
+    layout: OnboardingPleaseUnderstandNotification,
+    dismissForever: true
   }
 };
