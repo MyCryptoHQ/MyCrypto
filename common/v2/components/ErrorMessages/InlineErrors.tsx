@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS } from 'v2/features/constants';
+import { COLORS } from 'v2/theme';
 const { PASTEL_RED } = COLORS;
 
 export const InlineErrorMsg = styled.div`

@@ -20,7 +20,7 @@ interface Props {
   padChildren?: boolean;
 }
 
-export default function DashboardPanel({
+export const DashboardPanel = ({
   heading,
   headingRight,
   actionLink,
@@ -28,7 +28,7 @@ export default function DashboardPanel({
   children,
   padChildren,
   ...rest
-}: Props) {
+}: Props) => {
   return (
     <Panel className={classnames('DashboardPanel', className)} {...rest}>
       <div className="DashboardPanel-headingWrapper">
@@ -45,4 +45,4 @@ export default function DashboardPanel({
       {padChildren ? <Content>{children}</Content> : children}
     </Panel>
   );
-}
+};

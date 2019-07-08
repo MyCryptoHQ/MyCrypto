@@ -1,1 +1,1 @@
-export { default as BannerAd } from './BannerAd';
+export { default } from './BannerAd';

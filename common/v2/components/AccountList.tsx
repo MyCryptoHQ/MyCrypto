@@ -1,14 +1,20 @@
 import { Address, Button, CollapsibleTable, Icon, Network, Typography } from '@mycrypto/ui';
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-
 import styled from 'styled-components';
+
+import { translateRaw } from 'translations';
 import { getCurrentsFromContext } from 'v2/libs/accounts/accounts';
 import { truncate, getLabelByAccount } from 'v2/libs';
 import { ExtendedAccount, AddressBook } from 'v2/services';
+<<<<<<< HEAD:common/v2/features/Dashboard/components/AccountList.tsx
 import DashboardPanel from './DashboardPanel';
 import { translateRaw } from 'translations';
+=======
+>>>>>>> clean up dashboard imports and place move shared features to components:common/v2/components/AccountList.tsx
 import { AccountContext, SettingsContext } from 'v2/providers';
+import { DashboardPanel } from 'v2/components';
+import './AccountList.scss';
 
 const DeleteButton = styled(Button)`
   align-self: flex-start;

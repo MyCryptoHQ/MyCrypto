@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 import { AccountContext } from 'v2/providers';
-import { Layout } from 'v2/features';
+import { Layout } from './Layout';
 
 interface PrivateRouteProps {
   [key: string]: any;

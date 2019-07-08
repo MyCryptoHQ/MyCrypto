@@ -35,7 +35,7 @@ import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import { AnalyticsService } from 'v2/services';
-import GAU_THEME from 'v2/theme';
+import { GAU_THEME } from 'v2/theme';
 import 'what-input';
 
 interface OwnProps {

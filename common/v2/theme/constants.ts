@@ -14,5 +14,3 @@ export const BREAK_POINTS = {
   SCREEN_XL: '1440px',
   SCREEN_XXL: '1600px'
 };
-
-export const GITHUB_RELEASE_NOTES_URL = 'https://github.com/MyCryptoHQ/MyCrypto/releases/latest';

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import { UnlockScreen, SelectLanguage } from 'v2/features';
 import { links } from './constants';
-import { COLORS } from 'v2/features/constants';
+import { COLORS } from 'v2/theme';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { KNOWLEDGE_BASE_URL } from 'v2/config';

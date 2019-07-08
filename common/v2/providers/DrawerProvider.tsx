@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Transition } from 'react-spring/renderprops.cjs';
 
-import { Overlay } from 'v2/components';
+// @TODO Provider shouldn't depend on components.. refactor
+import { default as Overlay } from 'v2/components/Overlay';
 import { Drawer } from 'v2/features';
 
 export interface Action {

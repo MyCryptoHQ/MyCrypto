@@ -1,19 +1,12 @@
 import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 
-import {
-  AccountList,
-  ActionTile,
-  TokenList,
-  WalletBreakdown,
-  RecentTransactionList
-} from './components';
+import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
+import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
+import { ActionTile, TokenList, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { Desktop, Mobile } from 'v2/components';
-import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
-import { BannerAd } from 'v2/components/BannerAd';
 
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();

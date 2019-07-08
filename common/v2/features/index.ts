@@ -1,10 +1,8 @@
 export * from './Wallets';
-export { COLORS, BREAK_POINTS, GITHUB_RELEASE_NOTES_URL } from './constants';
 export { ScreenLockLocking } from './ScreenLock';
 export { fetchGasPriceEstimates, getDefaultEstimates } from './Gas';
 export { getNonce } from './Nonce';
 export { Drawer, AccountScreen, UnlockScreen, SelectLanguage } from './Drawer';
 export { DevTools } from './DevTools';
 export { Home } from './Home';
-export { default as Layout } from './Layout';
 export { default as appRoutes } from './routes';
