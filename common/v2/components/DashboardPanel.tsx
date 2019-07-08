@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { Button, Heading, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { Button, Heading } from '@mycrypto/ui';
 
+import { Panel } from 'v2/components';
 import './DashboardPanel.scss';
 
 const Content = styled.div`

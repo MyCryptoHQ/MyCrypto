@@ -62,13 +62,13 @@
 
       &-heading {
         margin-top: 0;
-        margin-bottom: 25px;
+        margin-bottom: 24px;
         font-weight: bold;
       }
       &-actions {
         display: flex;
         flex-wrap: wrap;
-        // max-width: 400px;
+        max-width: 400px;
 
         @media (min-width: 1370px) {
           display: block;
@@ -78,7 +78,7 @@
     }
     &-right {
       flex: 2;
-
+      min-width: 781px;
       > div {
         margin-bottom: 18px;
       }
