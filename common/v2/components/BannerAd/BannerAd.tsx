@@ -43,11 +43,11 @@ const onAdClick = (ad: string) => {
 export default function BannerAd() {
   const randomIndex = Math.floor(Math.random() * ads.length);
   const ad = ads[randomIndex];
-  const externalLink = ad.url.startsWith('http');
+  const isExternalLink = ad.url.startsWith('http');
 
   return (
     <AdWrapper onClick={() => onAdClick(ad.name)}>
-      {externalLink ? (
+      {isExternalLink ? (
         <a href={ad.url} target="_blank" rel="noreferrer">
           <BannerImageDesktop src={ad.srcDesktop} />
           <BannerImageMobile src={ad.srcMobile} />
