@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
 import styled from 'styled-components';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/features/constants';
+import { SecureWalletName } from 'v2/config/data';
 import './SliderImports.scss';
 
 import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
@@ -157,32 +159,39 @@ interface WalletCardProps {
   text: string;
   mobileSrc?: string;
   mobileText?: string;
+  walletName: string;
 }
 
-const trackWalletLink = (wallet: string) => {
-  AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${wallet} wallet button clicked`);
-};
+class WalletCard extends Component<WalletCardProps & RouteComponentProps<{}>> {
+  public handleWalletClick = (wallet: string) => {
+    const { walletName, history } = this.props;
+    history.push(`/add-account/${walletName}`);
+    AnalyticsService.instance.track(ANALYTICS_CATEGORIES.HOME, `${wallet} wallet button clicked`);
+  };
 
-const WalletCard: React.SFC<WalletCardProps> = ({ src, text, mobileSrc, mobileText }) => {
-  return (
-    <WalletCardWrapper>
-      <WalletCardContent isMobile={!!mobileSrc} onClick={() => trackWalletLink(text)}>
-        <WalletCardImg src={src} alt={text} />
-        <WalletCardDescription>{text}</WalletCardDescription>
-      </WalletCardContent>
-      {mobileSrc && (
-        <WalletCardContent
-          isMobile={!mobileSrc}
-          showMobile={true}
-          onClick={() => trackWalletLink(mobileText || text)}
-        >
-          <WalletCardImg src={mobileSrc} alt={mobileText} />
-          <WalletCardDescription>{mobileText}</WalletCardDescription>
+  public render() {
+    const { src, text, mobileSrc, mobileText } = this.props;
+    return (
+      <WalletCardWrapper>
+        <WalletCardContent isMobile={!!mobileSrc} onClick={() => this.handleWalletClick(text)}>
+          <WalletCardImg src={src} alt={text} />
+          <WalletCardDescription>{text}</WalletCardDescription>
         </WalletCardContent>
-      )}
-    </WalletCardWrapper>
-  );
-};
+        {mobileSrc && (
+          <WalletCardContent
+            isMobile={!mobileSrc}
+            showMobile={true}
+            onClick={() => this.handleWalletClick(mobileText || text)}
+          >
+            <WalletCardImg src={mobileSrc} alt={mobileText} />
+            <WalletCardDescription>{mobileText}</WalletCardDescription>
+          </WalletCardContent>
+        )}
+      </WalletCardWrapper>
+    );
+  }
+}
+const WalletCardWithRouter = withRouter(WalletCard);
 
 export default function CompatibleWalletsPanel() {
   const settings = {
@@ -226,16 +235,33 @@ export default function CompatibleWalletsPanel() {
       </Header>
       <Wallets>
         <Slider {...settings}>
-          <WalletCard
+          <WalletCardWithRouter
             src={metamaskIcon}
             text={translateRaw('X_METAMASK')}
             mobileSrc={trustIcon}
             mobileText={translateRaw('X_TRUST')}
+            walletName={SecureWalletName.WEB3}
           />
-          <WalletCard src={ledgerIcon} text={translateRaw('X_LEDGER')} />
-          <WalletCard src={trezorIcon} text={translateRaw('X_TREZOR')} />
-          <WalletCard src={paritySignerIcon} text={translateRaw('X_PARITYSIGNER')} />
-          <WalletCard src={safeTIcon} text={translateRaw('X_SAFE_T')} />
+          <WalletCardWithRouter
+            src={ledgerIcon}
+            text={translateRaw('X_LEDGER')}
+            walletName={SecureWalletName.LEDGER_NANO_S}
+          />
+          <WalletCardWithRouter
+            src={trezorIcon}
+            text={translateRaw('X_TREZOR')}
+            walletName={SecureWalletName.TREZOR}
+          />
+          <WalletCardWithRouter
+            src={paritySignerIcon}
+            text={translateRaw('X_PARITYSIGNER')}
+            walletName={SecureWalletName.PARITY_SIGNER}
+          />
+          <WalletCardWithRouter
+            src={safeTIcon}
+            text={translateRaw('X_SAFE_T')}
+            walletName={SecureWalletName.SAFE_T}
+          />
         </Slider>
       </Wallets>
     </MainPanel>

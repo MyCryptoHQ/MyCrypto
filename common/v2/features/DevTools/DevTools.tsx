@@ -9,6 +9,8 @@ import { AccountContext } from 'v2/providers/AccountProvider';
 import ToolsAccountList from './ToolsAccountList';
 import { SecureWalletName } from 'v2/config';
 import ToolsNotifications from './ToolsNotifications';
+import { AddressBook } from 'v2/services/AddressBook/types';
+import { getLabelByAccount } from 'v2/libs/addressbook/addressbook';
 
 const DevToolsContainer = styled.div`
   position: absolute;
@@ -37,9 +39,15 @@ const DevTools = () => {
                   label: 'Foo',
                   address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
                   network: 'Ethereum',
-                  assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0' }],
+                  assets: [
+                    {
+                      uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
+                      balance: '0',
+                      timestamp: Date.now()
+                    }
+                  ],
                   wallet: SecureWalletName.WEB3,
-                  balance: 0,
+                  balance: '0',
                   timestamp: Date.now(),
                   transactions: [],
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
@@ -50,64 +58,68 @@ const DevTools = () => {
                   setSubmitting(false);
                 }}
               >
-                {({ values, handleChange, handleBlur, isSubmitting }) => (
-                  <Form>
-                    <fieldset>
-                      Address:{' '}
-                      <Field
-                        name="address"
-                        render={({ field }: FieldProps<Account>) => (
-                          <DevToolsInput
-                            {...field}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.address}
-                          />
-                        )}
-                      />
-                    </fieldset>
-
-                    <br />
-
-                    <fieldset>
-                      Label:{' '}
-                      <Field
-                        name="label"
-                        render={({ field }: FieldProps<Account>) => (
-                          <DevToolsInput
-                            {...field}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.label}
-                          />
-                        )}
-                      />
-                    </fieldset>
-
-                    <br />
-
-                    <fieldset>
-                      Network:{' '}
-                      <Field
-                        name="network"
-                        render={({ field }: FieldProps<Account>) => (
-                          <DevToolsInput
-                            {...field}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.network}
-                          />
-                        )}
-                      />
-                    </fieldset>
-
-                    <br />
-
-                    <Button type="submit" disabled={isSubmitting}>
-                      Submit
-                    </Button>
-                  </Form>
-                )}
+                {({ values, handleChange, handleBlur, isSubmitting }) => {
+                  const detectedLabel: AddressBook | undefined = getLabelByAccount(values);
+                  const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
+                  return (
+                    <Form>
+                      <fieldset>
+                        Address:{' '}
+                        <Field
+                          name="address"
+                          render={({ field }: FieldProps<Account>) => (
+                            <DevToolsInput
+                              {...field}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.address}
+                            />
+                          )}
+                        />
+                      </fieldset>
+                      <br />
+                      <fieldset>
+                        Label:{' '}
+                        <Field
+                          name="label"
+                          render={({ field }: FieldProps<Account>) => (
+                            <DevToolsInput
+                              {...field}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={label}
+                            />
+                          )}
+                        />
+                      </fieldset>
+                      <br />
+                      <fieldset>
+                        Network:{' '}
+                        <Field
+                          name="network"
+                          render={({ field }: FieldProps<Account>) => (
+                            <DevToolsInput
+                              {...field}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.network}
+                            />
+                          )}
+                        />
+                      </fieldset>
+                      Current dev-mode only features
+                      <br />
+                      Current dev-mode only features
+                      <ul>
+                        <li>Recent Transactions panel (Dashboard)</li>
+                        <li>Error page disabled</li>
+                      </ul>
+                      <Button type="submit" disabled={isSubmitting}>
+                        Submit
+                      </Button>
+                    </Form>
+                  );
+                }}
               </Formik>
             </Panel>
           </DevToolsContainer>

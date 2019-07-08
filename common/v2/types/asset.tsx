@@ -1,5 +1,7 @@
+import { TSymbol } from 'v2/types';
+
 interface IAsset {
-  symbol: string;
+  symbol: TSymbol;
   name: string;
   network?: string;
 }

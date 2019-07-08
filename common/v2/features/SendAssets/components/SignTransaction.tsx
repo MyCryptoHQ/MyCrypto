@@ -49,6 +49,8 @@ export default class SignTransaction extends Component<Props> {
         return <SignTransactionTrezor />;
       case 'safeTmini':
         return <SignTransactionSafeT />;
+      // case 'keystoreFile':
+      //   return <SignTransactionKeystore />;
       default:
         return null;
     }

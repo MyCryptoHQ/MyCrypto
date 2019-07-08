@@ -19,7 +19,7 @@
     "jsx-no-lambda": false,
     "interface-name": false,
     "no-duplicate-imports": true,
-    "no-console": false,
+    "no-console": [true, "log"],
     "no-var-requires": false,
     "jsx-wrap-multiline": false,
     "comment-format": false,

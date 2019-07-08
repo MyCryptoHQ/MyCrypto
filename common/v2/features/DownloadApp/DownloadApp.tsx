@@ -4,7 +4,7 @@ import { Button } from '@mycrypto/ui';
 import cloneDeep from 'lodash/cloneDeep';
 import styled from 'styled-components';
 
-import { ContentPanel } from 'v2/components';
+import { ExtendedContentPanel } from 'v2/components';
 import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { OS } from 'v2/services/Github';
 import { DOWNLOAD_PAGE_URL } from './constants';
@@ -163,7 +163,7 @@ export class DownloadApp extends Component<Props, State> {
 
     return (
       <Layout centered={true}>
-        <ContentPanel onBack={this.props.history.goBack} className="">
+        <ExtendedContentPanel onBack={this.props.history.goBack} className="">
           <DownloadAppWrapper>
             <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
             <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
@@ -199,7 +199,7 @@ export class DownloadApp extends Component<Props, State> {
               </a>
             </Footer>
           </DownloadAppWrapper>
-        </ContentPanel>
+        </ExtendedContentPanel>
       </Layout>
     );
   }

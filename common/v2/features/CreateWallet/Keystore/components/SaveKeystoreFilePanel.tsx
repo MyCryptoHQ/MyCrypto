@@ -1,47 +1,132 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Typography } from '@mycrypto/ui';
+import styled from 'styled-components';
 
-import { ContentPanel } from 'v2/components';
+import { ExtendedContentPanel, InlineErrorMsg } from 'v2/components';
 import { PanelProps } from '../../CreateWallet';
-import './SaveKeystoreFilePanel.scss';
+import translate, { translateRaw } from 'translations';
 
-export default function SaveKeystoreFilePanel({ onBack, onNext }: PanelProps) {
-  return (
-    <ContentPanel
-      onBack={onBack}
-      stepper={{
-        current: 3,
-        total: 3
-      }}
-      heading="Save Your Keystore File"
-      className="SaveKeystoreFilePanel"
-    >
-      <img src="https://placehold.it/150x150" className="SaveKeystoreFilePanel-image" />
-      <Typography>
-        <strong>Don't lose it.</strong> It can't be recovered if you lose it.
-      </Typography>
-      <Typography>
-        <strong>Don't share it.</strong> Your funds will be stolen if you use this on a malicious
-        site.
-      </Typography>
-      <Typography>
-        <strong>Keep it offline.</strong> Your funds are safest offline (on a USB drive or something
-        similar). We don't recommend keeping your file on any cloud services like Dropbox, Google
-        Drive, etc.
-      </Typography>
-      <Typography>
-        <strong>Make a backup.</strong> Secure it like it's the millions of dollars it may one day
-        be worth.
-      </Typography>
-      <Button secondary={true} onClick={onNext} className="SaveKeystoreFilePanel-button">
-        Download Keystore File
-      </Button>
-      <Button secondary={true} onClick={onNext} className="SaveKeystoreFilePanel-button">
-        Print Paper Wallet
-      </Button>
-      <Button onClick={onNext} className="SaveKeystoreFilePanel-button">
-        Next
-      </Button>
-    </ContentPanel>
-  );
+import keystoreIcon from 'common/assets/images/icn-keystore.svg';
+import downloadIcon from 'common/assets/images/icn-download.svg';
+
+const DownloadImage = styled.img`
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+  pointer-events: none;
+  display: inline;
+`;
+
+const DescriptionItem = styled(Typography)`
+  margin-top: 18px;
+  font-weight: normal;
+  font-size: 18px !important;
+
+  strong {
+    font-weight: 900;
+  }
+`;
+
+const ButtonsWrapper = styled.div`
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const DownloadLink = styled.a`
+  margin-bottom: 16px;
+`;
+
+const StyledButton = styled(Button)`
+  font-size: 18px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:focus,
+  &:hover {
+    img {
+      filter: brightness(0) invert(1);
+    }
+  }
+`;
+
+const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 33px;
+  margin-bottom: 25px;
+`;
+
+const ErrorWrapper = styled.div`
+  margin-bottom: 26px;
+`;
+
+interface Props extends PanelProps {
+  filename: string;
+  getKeystoreBlob(): string;
+}
+
+interface State {
+  downloaded: boolean;
+  error: boolean;
+}
+
+export default class SaveKeystorePanel extends Component<Props, State> {
+  public state: State = {
+    downloaded: false,
+    error: false
+  };
+
+  public handleNextClick = () => {
+    const { onNext } = this.props;
+
+    if (!this.state.downloaded) {
+      this.setState({ error: true });
+    } else {
+      onNext();
+    }
+  };
+
+  public render() {
+    const { onBack, totalSteps, currentStep, getKeystoreBlob, filename } = this.props;
+    return (
+      <ExtendedContentPanel
+        onBack={onBack}
+        stepper={{
+          current: currentStep,
+          total: totalSteps
+        }}
+        heading={translateRaw('SAVE_KEYSTORE_TITLE')}
+      >
+        <ImageWrapper>
+          <img src={keystoreIcon} />
+        </ImageWrapper>
+
+        <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_1')}</DescriptionItem>
+        <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_2')}</DescriptionItem>
+        <DescriptionItem>{translate('SAVE_KEYSTORE_DESCRIPTION_3')}</DescriptionItem>
+
+        <ButtonsWrapper>
+          {this.state.error && (
+            <ErrorWrapper>
+              <InlineErrorMsg>{translate('SAVE_KEYSTORE_ERROR')}</InlineErrorMsg>
+            </ErrorWrapper>
+          )}
+
+          <DownloadLink href={getKeystoreBlob()} download={filename}>
+            <StyledButton
+              onClick={() => this.setState({ downloaded: true, error: false })}
+              secondary={true}
+            >
+              <DownloadImage src={downloadIcon} />
+              {translate('SAVE_KEYSTORE_BUTTON')}
+            </StyledButton>
+          </DownloadLink>
+          <StyledButton onClick={this.handleNextClick}>{translate('ACTION_6')}</StyledButton>
+        </ButtonsWrapper>
+      </ExtendedContentPanel>
+    );
+  }
 }

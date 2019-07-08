@@ -5,3 +5,4 @@ export * from './preFillTx';
 export * from './networks';
 export * from './accounts';
 export * from './assets';
+export * from './addressbook';

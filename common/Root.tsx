@@ -5,7 +5,6 @@ import PalettePage from 'components/Palette';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { RouteNotFound } from 'components/RouteNotFound';
 import { Theme } from 'config';
-import OnboardingModal from 'containers/OnboardingModal';
 import QrSignerModal from 'containers/QrSignerModal';
 import BroadcastTx from 'containers/Tabs/BroadcastTx';
 import CheckTransaction from 'containers/Tabs/CheckTransaction';
@@ -17,7 +16,6 @@ import SendTransaction from 'containers/Tabs/SendTransaction';
 import SignAndVerifyMessage from 'containers/Tabs/SignAndVerifyMessage';
 import SupportPage from 'containers/Tabs/SupportPage';
 import { configMetaSelectors, configSelectors } from 'features/config';
-import { onboardingSelectors } from 'features/onboarding';
 import { AppState } from 'features/reducers';
 import { transactionMetaActions } from 'features/transaction';
 import React, { Component } from 'react';
@@ -28,12 +26,12 @@ import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-rout
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
 // v2
-import { gatherFeatureRoutes } from 'v2';
+import { gatherFeatureRoutes, HomepageChoiceRedirect } from 'v2';
 import { NewAppReleaseModal } from 'v2/components';
 import Dashboard from 'v2/features/Dashboard';
 import DevTools from 'v2/features/DevTools';
 import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
-import { NotificationsProvider, SettingsProvider } from 'v2/providers';
+import { NotificationsProvider, SettingsProvider, DevModeProvider, useDevMode } from 'v2/providers';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
@@ -47,7 +45,6 @@ interface OwnProps {
 }
 
 interface StateProps {
-  onboardingActive: ReturnType<typeof onboardingSelectors.getActive>;
   networkUnit: ReturnType<typeof configSelectors.getNetworkUnit>;
   theme: ReturnType<typeof configMetaSelectors.getTheme>;
 }
@@ -60,13 +57,11 @@ type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
   error: Error | null;
-  developmentMode: boolean;
 }
 
 class RootClass extends Component<Props, State> {
   public state = {
-    error: null,
-    developmentMode: Boolean(window.localStorage.getItem('MyCrypto Dev Mode'))
+    error: null
   };
 
   public componentDidMount() {
@@ -86,83 +81,48 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { store, onboardingActive } = this.props;
-    const { error, developmentMode } = this.state;
-
-    if (error) {
-      return <ErrorScreen error={error} />;
-    }
-    const routes = (
-      <CaptureRouteNotFound>
-        <Switch>
-          <PrivateRoute path="/dashboard" component={Dashboard} />
-          {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-          <Route path="/account" component={SendTransaction} exact={true} />
-          <Route path="/generate" component={GenerateWallet} />
-          <Route path="/contracts" component={Contracts} />
-          <Route path="/ens" component={ENS} exact={true} />
-          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-          <Route path="/tx-status" component={CheckTransaction} exact={true} />
-          <Route path="/pushTx" component={BroadcastTx} />
-          <Route path="/support-us" component={SupportPage} exact={true} />
-          {process.env.NODE_ENV !== 'production' && (
-            <Route path="/dev/palette" component={PalettePage} exact={true} />
-          )}
-          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
-          <RouteNotFound />
-        </Switch>
-      </CaptureRouteNotFound>
-    );
+    const { error } = this.state;
+    const { store } = this.props;
 
     const Router: any =
       process.env.BUILD_DOWNLOADABLE && process.env.NODE_ENV === 'production'
         ? HashRouter
         : BrowserRouter;
+
     return (
-      <ThemeProvider theme={GAU_THEME}>
-        <React.Fragment>
-          <Provider store={store}>
-            <SettingsProvider>
-              <AddressBookProvider>
-                <AccountProvider>
-                  <NotificationsProvider>
-                    <NetworksProvider>
-                      <Router>
-                        <LockScreenProvider>
-                          <PageVisitsAnalytics>
-                            {onboardingActive && <OnboardingModal />}
-                            {routes}
-                            <LegacyRoutes />
-                            <LogOutPrompt />
-                            <QrSignerModal />
-                            {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                          </PageVisitsAnalytics>
-                        </LockScreenProvider>
-                      </Router>
-                      {developmentMode && <DevTools />}
-                      <div id="ModalContainer" />
-                    </NetworksProvider>
-                  </NotificationsProvider>
-                </AccountProvider>
-              </AddressBookProvider>
-            </SettingsProvider>
-          </Provider>
-          {process.env.NODE_ENV !== 'production' && (
-            <button
-              onClick={this.handleDevelopmentModeButtonClick}
-              style={{
-                position: 'fixed',
-                bottom: 0,
-                right: 0,
-                zIndex: 99,
-                height: '5rem'
-              }}
-            >
-              Development Mode {developmentMode ? 'On' : 'Off'}
-            </button>
-          )}
-        </React.Fragment>
-      </ThemeProvider>
+      <DevModeProvider>
+        <ThemeProvider theme={GAU_THEME}>
+          <React.Fragment>
+            <Provider store={store}>
+              <SettingsProvider>
+                <AddressBookProvider>
+                  <AccountProvider>
+                    <NotificationsProvider>
+                      <NetworksProvider>
+                        <Router>
+                          <LockScreenProvider>
+                            <HomepageChoiceRedirect>
+                              <PageVisitsAnalytics>
+                                {error ? <AppContainer error={error} /> : <AppContainer />}
+                                <LogOutPrompt />
+                                <QrSignerModal />
+                                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                              </PageVisitsAnalytics>
+                            </HomepageChoiceRedirect>
+                          </LockScreenProvider>
+                        </Router>
+                        <DevToolsContainer />
+                        <div id="ModalContainer" />
+                      </NetworksProvider>
+                    </NotificationsProvider>
+                  </AccountProvider>
+                </AddressBookProvider>
+              </SettingsProvider>
+            </Provider>
+            {process.env.NODE_ENV !== 'production' && <DevModeToggle />}
+          </React.Fragment>
+        </ThemeProvider>
+      </DevModeProvider>
     );
   }
 
@@ -191,17 +151,6 @@ class RootClass extends Component<Props, State> {
     }
     root.classList.add(`theme--${theme}`);
   }
-  private handleDevelopmentModeButtonClick = () => {
-    const isDevelopmentMode = window.localStorage.getItem('MyCrypto Dev Mode');
-
-    if (isDevelopmentMode) {
-      window.localStorage.removeItem('MyCrypto Dev Mode');
-      this.setState({ developmentMode: false });
-    } else {
-      window.localStorage.setItem('MyCrypto Dev Mode', 'true');
-      this.setState({ developmentMode: true });
-    }
-  };
 }
 
 let previousURL = '';
@@ -260,6 +209,70 @@ const LegacyRoutes = withRouter(props => {
   );
 });
 
+interface AppContainerProps {
+  error?: Error | undefined;
+}
+
+const AppContainer = (props: AppContainerProps) => {
+  const { isDevelopmentMode } = useDevMode();
+  const { error } = props;
+  const routes = (
+    <CaptureRouteNotFound>
+      <Switch>
+        <PrivateRoute path="/dashboard" component={Dashboard} exact={true} />
+        {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
+        <Route path="/account" component={SendTransaction} exact={true} />
+        <Route path="/generate" component={GenerateWallet} />
+        <Route path="/contracts" component={Contracts} />
+        <Route path="/ens" component={ENS} exact={true} />
+        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+        <Route path="/tx-status" component={CheckTransaction} exact={true} />
+        <Route path="/pushTx" component={BroadcastTx} />
+        <Route path="/support-us" component={SupportPage} exact={true} />
+        {process.env.NODE_ENV !== 'production' && (
+          <Route path="/dev/palette" component={PalettePage} exact={true} />
+        )}
+        <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
+        <RouteNotFound />
+      </Switch>
+    </CaptureRouteNotFound>
+  );
+
+  if (error !== undefined && !isDevelopmentMode) {
+    return <ErrorScreen error={error} />;
+  }
+
+  return (
+    <>
+      {routes}
+      <LegacyRoutes />
+    </>
+  );
+};
+
+const DevModeToggle = () => {
+  const { isDevelopmentMode, toggleDevMode } = useDevMode();
+  return (
+    <button
+      onClick={toggleDevMode}
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        zIndex: 99,
+        height: '5rem'
+      }}
+    >
+      Development Mode {isDevelopmentMode ? 'On' : 'Off'}
+    </button>
+  );
+};
+
+const DevToolsContainer = () => {
+  const { isDevelopmentMode } = useDevMode();
+  return isDevelopmentMode ? <DevTools /> : <></>;
+};
+
 const CaptureRouteNotFound = withRouter(({ children, location }) => {
   return location && location.state && location.state.error ? (
     <PageNotFound />
@@ -269,7 +282,6 @@ const CaptureRouteNotFound = withRouter(({ children, location }) => {
 });
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  onboardingActive: onboardingSelectors.getActive(state),
   networkUnit: configSelectors.getNetworkUnit(state),
   theme: configMetaSelectors.getTheme(state)
 });

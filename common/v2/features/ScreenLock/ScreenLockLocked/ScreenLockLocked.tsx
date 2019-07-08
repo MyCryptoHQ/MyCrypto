@@ -4,9 +4,8 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate, { translateRaw } from 'translations';
 
-import { ExtendedContentPanel } from 'v2/components';
+import { ExtendedContentPanel, InputField } from 'v2/components';
 import { Layout } from 'v2/features';
-import { InputField } from '../components/InputField';
 import { LockScreenContext } from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 

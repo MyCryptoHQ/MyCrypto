@@ -27,12 +27,13 @@ export const CACHE_INIT_DEV: LocalCache = {
   },
   accounts: {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
-      label: 'Foo',
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       network: 'ETH',
-      assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0' }],
+      assets: [
+        { uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0', timestamp: Date.now() }
+      ],
       wallet: SecureWalletName.WEB3,
-      balance: 1e18,
+      balance: '1',
       transactions: [
         {
           txHash: '0xf1e4e01312c3e465376cc6eeed1138d5a870363e1a1a88f54473801b214d3a69',
@@ -123,8 +124,9 @@ export const CACHE_INIT_DEV: LocalCache = {
   addressBook: {
     '0x80200997f095da94e404f7e0d581aab1ffba9f7d': {
       address: '0x80200997f095da94e404f7e0d581aab1ffba9f7d',
-      label: 'My Wallet',
-      notes: 'This is my wallet.'
+      label: 'Foo',
+      notes: 'This is my wallet.',
+      network: 'Ethereum'
     }
   },
   notifications: {}

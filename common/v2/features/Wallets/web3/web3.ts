@@ -29,7 +29,7 @@ export const initWeb3Node = async () => {
     name: id,
     isCustom: false,
     type: 'web3',
-    url: 'undefined',
+    url: '',
     service: Web3Service,
     hidden: true,
     network: web3Network
@@ -74,7 +74,7 @@ export const unlockWeb3 = async () => {
   } catch (err) {
     // unset web3 node so node dropdown isn't disabled
     //configNodesStaticActions.web3UnsetNode();
-    console.log('Error ' + translateRaw(err.message));
+    console.error('Error ' + translateRaw(err.message));
   }
 };
 
