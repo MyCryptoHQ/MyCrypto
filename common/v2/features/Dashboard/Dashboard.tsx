@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heading } from '@mycrypto/ui';
-
 import { Layout } from 'v2/features';
 import {
   AccountList,
@@ -13,7 +12,7 @@ import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
-import { BannerAd } from './BannerAd';
+import { BannerAd } from 'v2/components/BannerAd';
 
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
