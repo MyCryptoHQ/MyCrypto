@@ -882,7 +882,7 @@
     "NOTIFICATIONS_WALLET_RESOURCE_SUPPORT": "Support Center",
     "NOTIFICATIONS_WALLET_ADDED_TITLE": "Your wallet has been added.",
     "NOTIFICATIONS_WALLET_ADDED_DESCRIPTION": "Your account with the address **$address** has been successfully added!",
-    "NOTIFICATIONS_WALLET_NOT_ADDED_TITLE": "Your wallet could not been added.",
+    "NOTIFICATIONS_WALLET_NOT_ADDED_TITLE": "Your account could not been added.",
     "NOTIFICATIONS_WALLET_NOT_ADDED_DESCRIPTION": "Your account with the address **$address** could not be successfully added. This can be due to an invalid network being selected, or if the account is already present on your dashboard.",
     "NOTIFICATIONS_SAVE_DASHBOARD_TITLE": "Save Your Dashboard Settings",
     "NOTIFICATIONS_SAVE_DASHBOARD_DESCRIPTION": "You've spent a lot of time customizing your dashboard. Make sure to back it up so you don’t lose your settings.",
