@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heading } from '@mycrypto/ui';
-
 import { Layout } from 'v2/features';
 import {
   AccountList,
@@ -13,6 +12,7 @@ import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
+import { BannerAd } from 'v2/components/BannerAd';
 
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
@@ -36,6 +36,7 @@ export default function Dashboard() {
         <div className="Dashboard-mobile-section">
           <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
         </div>
+        <BannerAd />
         {isDevelopmentMode && (
           <AccountContext.Consumer>
             {({ accounts }) => (
@@ -79,6 +80,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        <BannerAd />
         {isDevelopmentMode && (
           <AccountContext.Consumer>
             {({ accounts }) => (
