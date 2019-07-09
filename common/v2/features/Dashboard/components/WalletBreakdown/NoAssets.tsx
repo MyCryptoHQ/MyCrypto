@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { COLORS } from 'v2/features/constants';
+import { COLORS } from 'v2/theme';
 
 import addIcon from 'common/assets/images/icn-add-assets.svg';
 
