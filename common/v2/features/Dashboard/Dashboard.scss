@@ -7,6 +7,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     padding: 0 15px;
 
     &-row {
@@ -58,22 +59,13 @@
 
     &-left {
       flex: 1;
-      min-width: 241px;
+      min-width: 220px;
+      margin-right: 21px;
 
       &-heading {
         margin-top: 0;
         margin-bottom: 24px;
         font-weight: bold;
-      }
-      &-actions {
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 400px;
-
-        @media (min-width: 1370px) {
-          display: block;
-          margin-right: 21px;
-        }
       }
     }
     &-right {

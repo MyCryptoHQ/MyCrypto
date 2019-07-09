@@ -14,7 +14,7 @@ export default function Dashboard() {
   const { readAddressBook } = useContext(AddressBookContext);
 
   return (
-    <>
+    <div>
       {/* Mobile only */}
       <Mobile className="Dashboard-mobile">
         <NotificationsPanel />
@@ -75,6 +75,6 @@ export default function Dashboard() {
           </div>
         )}
       </Desktop>
-    </>
+    </div>
   );
 }
