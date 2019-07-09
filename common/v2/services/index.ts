@@ -13,5 +13,6 @@ export * from './Asset';
 export * from './Network';
 export * from './ShapeShift';
 export * from './AddressBook';
-
+export { fetchGasPriceEstimates, getDefaultEstimates } from './Gas';
+export { getNonce } from './Nonce';
 export * from './types';

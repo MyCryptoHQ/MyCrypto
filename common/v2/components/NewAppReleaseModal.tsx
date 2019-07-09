@@ -6,7 +6,7 @@ import semver from 'semver';
 import Modal from './Modal';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { GITHUB_RELEASE_NOTES_URL } from 'v2/config';
-import { getFeaturedOS } from 'v2/features/helpers';
+import { getFeaturedOS } from 'v2/utils';
 import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { VERSION as currentVersion } from 'config';
 import { OS } from 'v2/services/Github';

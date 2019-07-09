@@ -9,7 +9,7 @@ import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/servic
 import { OS } from 'v2/services/Github';
 import { DOWNLOAD_PAGE_URL } from './constants';
 import { GITHUB_RELEASE_NOTES_URL } from 'v2/config';
-import { getFeaturedOS } from 'v2/features/helpers';
+import { getFeaturedOS } from 'v2/utils';
 import { AppDownloadItem } from './types';
 import translate from 'translations';
 
