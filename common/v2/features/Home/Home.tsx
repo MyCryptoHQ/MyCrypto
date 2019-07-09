@@ -10,7 +10,8 @@ import {
   PeaceOfMindPanel,
   TestimonialsPanel,
   BottomActionPanel,
-  FeaturesPanel
+  FeaturesPanel,
+  KeepYourAssetsSafePanel
 } from './components';
 import { getFeaturedOS } from 'v2/features/helpers';
 import { GithubService } from 'v2/services';
@@ -90,6 +91,9 @@ export default class Home extends Component {
               downloadLink={this.state.appDownloadLink}
               OSName={this.state.OSName}
             />
+          </Section>
+          <Section color={SILVER}>
+            <KeepYourAssetsSafePanel />
           </Section>
           <Section>
             <PeaceOfMindPanel downloadLink={this.state.appDownloadLink} />
