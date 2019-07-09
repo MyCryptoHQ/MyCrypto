@@ -37,6 +37,7 @@ const Title = styled.p`
 
   @media (max-width: ${SCREEN_SM}) {
     font-size: 23px;
+    padding: 0 90px;
   }
 `;
 
