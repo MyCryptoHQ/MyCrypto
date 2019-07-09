@@ -850,10 +850,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@ethvault/iframe-provider-polyfill@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@ethvault/iframe-provider-polyfill/-/iframe-provider-polyfill-0.1.2.tgz#fe7b939bef34d0cd756764a47bb9809165fdd43b"
-  integrity sha512-txJOkk5XQ/+cmTqPrvC3DFN0XtZNLIqvclEidbi5iAsD/aeFZlidCZ7VnShzkgypFJbhDznPbH/mDvcqwrTeQg==
+"@ethvault/iframe-provider-polyfill@0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@ethvault/iframe-provider-polyfill/-/iframe-provider-polyfill-0.1.3.tgz#405daf8cfedbbbef052dd0891a70e060ca668975"
+  integrity sha512-G1JE7nn0fzCbGlSsqIU2S+w64H6vd0CGJZOD6FFEPcbGglAXUTpQR3ambkreKwgKYW/GKy4Jk1zJcTkH9LTw+g==
 
 "@hot-loader/react-dom@16.8.6":
   version "16.8.6"
