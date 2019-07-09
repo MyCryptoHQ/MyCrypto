@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
-import { processFormDataToTx } from 'v2/libs/transaction';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -125,7 +124,9 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
     };
 
     const transactionData = {
-      to: formikValues.transactionFields.recipientAddress,
+      to: formikValues.transactionFields.resolvedNSAddress
+        ? formikValues.transactionFields.resolvedNSAddress
+        : formikValues.transactionFields.recipientAddress,
       gasLimit: formikValues.transactionFields.gasLimitField,
       gasPrice: formikValues.transactionFields.gasPriceField,
       nonce: formikValues.transactionFields.nonceEstimated,
@@ -141,7 +142,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
   };
 
   private processTransactionData() {
-    console.log(processFormDataToTx(this.state));
+    // console.log(processFormDataToTx(this.state));
     console.log('state', this.state);
   }
 

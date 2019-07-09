@@ -53,6 +53,7 @@ const initialState: ISendState = {
   step: 0,
   asset: undefined,
   assetType: 'base',
+  data: '',
   recipientAddressLabel: '',
   transactionFields: {
     account: {
@@ -76,7 +77,6 @@ const initialState: ISendState = {
     gasLimitEstimated: '21000',
     nonceEstimated: '0',
     nonceField: '0',
-    data: '',
     // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
     isGasLimitManual: false,
     accountType: undefined,
@@ -92,10 +92,6 @@ const initialState: ISendState = {
     network: undefined,
     resolvedNSAddress: '', // Address returned when attempting to resolve an ENS/RNS address.
     isResolvingNSName: false, // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-    // isFetchingAccountValue: false,
-    // isAddressLabelValid: false,
-    // isFetchingAssetPricing: false,
-    // isEstimatingGasLimit: false
     isAdvancedTransaction: false
   }
 };
@@ -157,8 +153,13 @@ export default function SendAssetsForm({
             if (!finalTx) {
               return;
             }
-            const gas = await getGasEstimate(values.transactionFields.network, finalTx);
-            setFieldValue('gasLimitEstimated', gas);
+
+            if (!values.isAdvancedTransaction) {
+              const gas = await getGasEstimate(values.transactionFields.network, finalTx);
+              setFieldValue('gasLimitEstimated', gas);
+            } else {
+              return;
+            }
           };
 
           const handleENSResolve = async (name: string) => {
