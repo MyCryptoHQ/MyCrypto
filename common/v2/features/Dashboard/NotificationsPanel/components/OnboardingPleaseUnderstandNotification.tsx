@@ -5,6 +5,7 @@ import { Button } from '@mycrypto/ui';
 import translate, { translateRaw } from 'translations';
 import { BREAK_POINTS } from 'v2/features/constants';
 import NotificationWrapper from './NotificationWrapper';
+import { KNOWLEDGE_BASE_URL } from 'v2/config';
 
 import cantAccessIcon from 'common/assets/images/onboarding/icn-cant-access.svg';
 import cantModifyIcon from 'common/assets/images/onboarding/icn-cant-modify.svg';
@@ -12,6 +13,12 @@ import cantReverseIcon from 'common/assets/images/onboarding/icn-cant-reverse.sv
 import cantFreezeIcon from 'common/assets/images/onboarding/icn-cant-freeze.svg';
 
 const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
+
+const ResourceLink = styled.a`
+  @media (min-width: ${SCREEN_MD}) {
+    margin-top: 60px;
+  }
+`;
 
 const ResourceItem = styled(Button)`
   width: 200px;
@@ -22,10 +29,6 @@ const ResourceItem = styled(Button)`
 
   @media (max-width: ${SCREEN_XS}) {
     font-size: 15px;
-  }
-
-  @media (min-width: ${SCREEN_MD}) {
-    margin-top: 60px;
   }
 `;
 
@@ -64,7 +67,9 @@ export default function OnboardingPleaseUnderstandNotification() {
       tagline={translate('NOTIFICATIONS_ONBOARDING_TAGLINE')}
       title={`${translateRaw('NOTIFICATIONS_ONBOARDING_PLEASE_UNDERSTAND_TITLE')}:`}
       resources={
-        <ResourceItem secondary={true}>{translate('NOTIFICATIONS_ONBOARDING_MORE')}</ResourceItem>
+        <ResourceLink href={KNOWLEDGE_BASE_URL} target="_blank" rel="noopener noreferrer">
+          <ResourceItem secondary={true}>{translate('NOTIFICATIONS_ONBOARDING_MORE')}</ResourceItem>
+        </ResourceLink>
       }
     >
       <Content>

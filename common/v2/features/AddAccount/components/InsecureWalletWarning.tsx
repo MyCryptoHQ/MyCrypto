@@ -1,6 +1,7 @@
 import React from 'react';
 
 import translate, { translateRaw } from 'translations';
+import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 import { NewTabLink } from 'components/ui';
 import { IS_DEV } from '../flags';
 import './InsecureWalletWarning.scss';
@@ -34,7 +35,7 @@ class InsecureWalletWarning extends React.Component<Props> {
 
         <div className="WalletWarning-buttons">
           <NewTabLink
-            href="https://download.mycrypto.com/"
+            href={DOWNLOAD_MYCRYPTO_LINK}
             className="WalletWarning-buttons-btn is-download btn btn-lg btn-primary"
           >
             {translate('WALLET_SUGGESTION_DESKTOP_APP')}

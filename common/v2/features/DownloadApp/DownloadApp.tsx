@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { ExtendedContentPanel } from 'v2/components';
 import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { OS } from 'v2/services/Github';
-import { DOWNLOAD_PAGE_URL } from './constants';
+import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 import { GITHUB_RELEASE_NOTES_URL } from 'v2/features/constants';
 import { getFeaturedOS } from 'v2/features/helpers';
 import { Layout } from 'v2/features';
@@ -191,7 +191,7 @@ export class DownloadApp extends Component<Props, State> {
               {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
               <a
                 onClick={this.trackLearnMoreClick}
-                href={DOWNLOAD_PAGE_URL}
+                href={DOWNLOAD_MYCRYPTO_LINK}
                 target="_blank"
                 rel="noreferrer"
               >

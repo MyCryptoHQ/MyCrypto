@@ -70,6 +70,13 @@ const ToolsNotifications = () => {
           >
             Onboarding Please Understand
           </button>
+          <button
+            onClick={() => {
+              displayNotification(NotificationTemplates.onboardingResponsible);
+            }}
+          >
+            Onboarding Responsible
+          </button>
         </ToolWrapper>
       )}
     </NotificationsContext.Consumer>
