@@ -180,7 +180,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
               {errors.amount && (
                 <ErrorMessage>{' ' + translateRaw('RECEIVE_FORM_ERROR')}</ErrorMessage>
               )}
-              {parseFloat(amount) > 0 &&
+              {parseFloat(amount) >= 0 &&
                 selectedAsset &&
                 requestAddress &&
                 network && (
