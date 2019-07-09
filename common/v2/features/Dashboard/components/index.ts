@@ -4,4 +4,4 @@ export { default as DashboardPanel } from './DashboardPanel';
 export { default as RecentTransactionList } from './RecentTransactionList';
 export { default as TokenList } from './TokenList';
 export { default as TransactionLabel } from './TransactionLabel';
-export * from './WalletBreakdown';
+export { WalletBreakdown } from './WalletBreakdown';

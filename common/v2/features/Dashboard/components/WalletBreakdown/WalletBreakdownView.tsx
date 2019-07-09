@@ -5,11 +5,12 @@ import { translate } from 'translations';
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
-import { COLORS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/features/constants';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
+const { SCREEN_MD } = BREAK_POINTS;
 
 const BreakDownHeading = styled.div`
   margin: 0;
@@ -17,7 +18,7 @@ const BreakDownHeading = styled.div`
   font-weight: bold;
   color: #424242;
 
-  @media (min-width: 1080px) {
+  @media (min-width: ${SCREEN_MD}) {
     font-size: 24px;
   }
 `;
@@ -28,7 +29,7 @@ const BreakDownChartWrapper = styled.div`
   padding-top: 15px;
   padding-bottom: 15px;
 
-  @media (max-width: 1080px) {
+  @media (max-width: ${SCREEN_MD}) {
     padding-right: 15px;
   }
 `;
@@ -70,7 +71,7 @@ const PanelDivider =
   ${props =>
     props.mobileOnly &&
     `
-  @media (min-width: 1080px) {
+  @media (min-width: ${SCREEN_MD}) {
     display: none;
   }`};
 `;
@@ -81,7 +82,7 @@ const VerticalPanelDivider = styled.div`
   background: #ddd;
   display: none;
 
-  @media (min-width: 1080px) {
+  @media (min-width: ${SCREEN_MD}) {
     display: block;
   }
 `;
@@ -92,7 +93,7 @@ const BreakDownBalances = styled.div`
   padding-top: 15px;
   padding-bottom: 15px;
 
-  @media (max-width: 1080px) {
+  @media (max-width: ${SCREEN_MD}) {
     padding-left: 15px;
   }
 `;

@@ -5,8 +5,11 @@ import styled from 'styled-components';
 import { translateRaw } from 'translations';
 import DashboardPanel from '../DashboardPanel';
 import { WalletBreakdownProps } from './types';
+import { BREAK_POINTS } from 'v2/features/constants';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+
+const { SCREEN_MD } = BREAK_POINTS;
 
 const BalancesOnly = styled.div`
   width: 100%;
@@ -23,7 +26,7 @@ const BackButton = styled(Button)`
   align-items: center;
   font-size: 20px;
 
-  @media (min-width: 1080px) {
+  @media (min-width: ${SCREEN_MD}) {
     font-size: 24px;
   }
 
@@ -37,7 +40,7 @@ const BalancesOnlyTotal = styled.div`
   font-size: 20px;
   font-weight: bold;
 
-  @media (min-width: 1080px) {
+  @media (min-width: ${SCREEN_MD}) {
     font-size: 24px;
   }
 `;

@@ -18,12 +18,15 @@ import {
 import { Balance, Fiat } from './types';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
+import { BREAK_POINTS } from 'v2/features/constants';
+
+const { SCREEN_MD } = BREAK_POINTS;
 
 const WalletBreakdownTop = styled.div`
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 1080px) {
+  @media (min-width: ${SCREEN_MD}) {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
@@ -42,7 +45,7 @@ const WalletBreakdownPanel = styled(Panel)`
   margin-top: 5px;
   padding: 0;
 
-  @media (min-width: 1080px) {
+  @media (min-width: ${SCREEN_MD}) {
     flex-direction: row;
     margin-top: 0;
   }
