@@ -1,1 +1,1 @@
-export * from './nonceFunctions';
+export { getNonce } from './nonceFunctions';

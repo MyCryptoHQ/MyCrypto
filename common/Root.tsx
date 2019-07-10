@@ -26,11 +26,9 @@ import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-rout
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
 // v2
-import { gatherFeatureRoutes, HomepageChoiceRedirect } from 'v2';
-import { NewAppReleaseModal } from 'v2/components';
-import Dashboard from 'v2/features/Dashboard';
-import DevTools from 'v2/features/DevTools';
-import PrivateRoute from 'v2/features/NoAccounts/NoAccountAuth';
+import { HomepageChoiceRedirect } from 'v2/routing';
+import { PrivateRoute, NewAppReleaseModal } from 'v2/components';
+import { appRoutes, DevTools, Home } from 'v2/features';
 import { NotificationsProvider, SettingsProvider, DevModeProvider, useDevMode } from 'v2/providers';
 import { AccountProvider } from 'v2/providers/AccountProvider';
 import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
@@ -216,27 +214,6 @@ interface AppContainerProps {
 const AppContainer = (props: AppContainerProps) => {
   const { isDevelopmentMode } = useDevMode();
   const { error } = props;
-  const routes = (
-    <CaptureRouteNotFound>
-      <Switch>
-        <PrivateRoute path="/dashboard" component={Dashboard} exact={true} />
-        {gatherFeatureRoutes().map((config, i) => <Route key={i} {...config} />)}
-        <Route path="/account" component={SendTransaction} exact={true} />
-        <Route path="/generate" component={GenerateWallet} />
-        <Route path="/contracts" component={Contracts} />
-        <Route path="/ens" component={ENS} exact={true} />
-        <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-        <Route path="/tx-status" component={CheckTransaction} exact={true} />
-        <Route path="/pushTx" component={BroadcastTx} />
-        <Route path="/support-us" component={SupportPage} exact={true} />
-        {process.env.NODE_ENV !== 'production' && (
-          <Route path="/dev/palette" component={PalettePage} exact={true} />
-        )}
-        <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
-        <RouteNotFound />
-      </Switch>
-    </CaptureRouteNotFound>
-  );
 
   if (error !== undefined && !isDevelopmentMode) {
     return <ErrorScreen error={error} />;
@@ -244,7 +221,27 @@ const AppContainer = (props: AppContainerProps) => {
 
   return (
     <>
-      {routes}
+      <CaptureRouteNotFound>
+        <Switch>
+          {/* To avoid fiddling with layout we provide a complete route to home */}
+          <Route path="/home" component={Home} exact={true} />{' '}
+          {appRoutes.map((config, idx) => <PrivateRoute key={idx} {...config} />)}
+          <Route path="/account" component={SendTransaction} exact={true} />
+          <Route path="/generate" component={GenerateWallet} />
+          <Route path="/contracts" component={Contracts} />
+          <Route path="/ens" component={ENS} exact={true} />
+          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+          <Route path="/tx-status" component={CheckTransaction} exact={true} />
+          <Route path="/pushTx" component={BroadcastTx} />
+          <Route path="/support-us" component={SupportPage} exact={true} />
+          {process.env.NODE_ENV !== 'production' && (
+            <Route path="/dev/palette" component={PalettePage} exact={true} />
+          )}
+          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
+          <RouteNotFound />
+        </Switch>
+      </CaptureRouteNotFound>
+
       <LegacyRoutes />
     </>
   );

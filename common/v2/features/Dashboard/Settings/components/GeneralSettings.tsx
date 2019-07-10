@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { Settings } from 'v2/services/Settings';
+import { ISettings } from 'v2/services/Settings';
 import { DashboardPanel } from '../../components';
 
 const Divider = styled.div`
@@ -60,8 +60,8 @@ const SettingsButton = styled(Button)`
 `;
 
 interface SettingsProps {
-  globalSettings: Settings;
-  updateGlobalSettings(settings: Settings): void;
+  globalSettings: ISettings;
+  updateGlobalSettings(settings: ISettings): void;
 }
 
 const timerOptions = [

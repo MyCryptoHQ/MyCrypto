@@ -1,2 +1,1 @@
-export { default } from './Home';
-export { default as homeRoutes } from './routes';
+export { default as Home } from './Home';

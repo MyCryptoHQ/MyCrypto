@@ -20,4 +20,6 @@ export { default as PrintPaperWalletButton } from './PrintPaperWalletButton';
 export { default as Overlay } from './Overlay';
 export { default as RouterLink } from './RouterLink';
 export { default as Stepper } from './Stepper';
+export { default as PrivateRoute } from './PrivateRoute';
+export { Desktop, Mobile } from './ResponsiveLayout';
 export * from './ErrorMessages';

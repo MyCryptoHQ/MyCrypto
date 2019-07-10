@@ -5,7 +5,6 @@ import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import { ComboBox, Copyable, Input } from '@mycrypto/ui';
 
 import { ContentPanel } from 'v2/components';
-import { Layout } from 'v2/features';
 import './RequestAssets.scss';
 
 // Legacy
@@ -21,9 +20,9 @@ const truncate = (children: string) => {
   return [children.substring(0, 15), '…', children.substring(children.length - 10)].join('');
 };
 
-export function RequestAssets({ history }: RouteComponentProps<{}>) {
+function RequestAssets({ history }: RouteComponentProps<{}>) {
   return (
-    <Layout className="RequestAssets" centered={true}>
+    <div className="RequestAssets">
       <ContentPanel
         heading="Request Assets"
         icon={receiveIcon}
@@ -101,7 +100,7 @@ export function RequestAssets({ history }: RouteComponentProps<{}>) {
           )}
         />
       </ContentPanel>
-    </Layout>
+    </div>
   );
 }
 

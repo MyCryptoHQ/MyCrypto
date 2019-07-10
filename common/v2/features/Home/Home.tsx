@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { OS } from 'v2/services/Github';
-import { Layout } from 'v2/features';
+import Layout from '../Layout';
 import {
   GetStartedPanel,
   DownloadAppPanel,
@@ -41,6 +41,14 @@ const Section = styled.section`
   justify-content: center;
 `;
 
+// Hack to enforce specificity of our style on base component.
+// https://github.com/styled-components/styled-components/issues/1816#issuecomment-398454088
+const SLayout = styled(Layout)`
+  && {
+    background-color: #fff;
+  }
+`;
+
 const BottomSection = styled(Section)`
   @media (max-width: ${SCREEN_SM}) {
     flex-direction: column;
@@ -74,7 +82,7 @@ export default class Home extends Component {
 
   public render() {
     return (
-      <Layout className="WhiteBackground" fluid={true}>
+      <SLayout fluid={true} centered={false}>
         <HomeWrapper>
           <Section>
             <GetStartedPanel />
@@ -101,7 +109,7 @@ export default class Home extends Component {
             <BottomActionPanel />
           </BottomSection>
         </HomeWrapper>
-      </Layout>
+      </SLayout>
     );
   }
 }

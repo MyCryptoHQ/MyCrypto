@@ -18,6 +18,10 @@ export const links = [
         title: 'Receive Assets'
       },
       {
+        to: '/request',
+        title: 'Request Assets'
+      },
+      {
         to: '/swap',
         title: 'Swap Assets'
       }
