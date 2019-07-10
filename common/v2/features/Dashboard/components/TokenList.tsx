@@ -25,9 +25,10 @@ export default function TokenList() {
   return (
     <DashboardPanel
       heading="Token"
-      action="Add Tokens"
+      headingRight="Add Tokens"
       actionLink="/dashboard/add-tokens"
       className="TokenList"
+      padChildren={true}
     >
       <div className="TokenList-tokens">
         {tokens.map(({ image, name, value }) => (

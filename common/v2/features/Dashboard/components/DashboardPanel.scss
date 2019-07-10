@@ -1,11 +1,11 @@
 .DashboardPanel {
-  padding: 15px;
+  padding: 0 0 15px 0;
 
   &-headingWrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 15px;
+    padding: 15px;
 
     &-heading {
       margin: 0;

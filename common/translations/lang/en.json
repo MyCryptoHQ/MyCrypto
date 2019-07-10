@@ -948,6 +948,20 @@
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
     "SELECT_NETWORK_ERROR": "Please select network.",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset"
+    "WALLET_BREAKDOWN_TITLE": "Wallet Breakdown",
+    "WALLET_BREAKDOWN_BALANCE": "Balance",
+    "WALLET_BREAKDOWN_TOKEN": "Token",
+    "WALLET_BREAKDOWN_AMOUNT": "Amount",
+    "WALLET_BREAKDOWN_NO_ASSETS": "No Assets Found",
+    "WALLET_BREAKDOWN_NO_ASSETS_MORE": "You can [buy some ETH](https://buy.mycrypto.com/) with your credit card to get started!",
+    "WALLET_BREAKDOWN_TOTAL": "Total",
+    "WALLET_BREAKDOWN_MORE": "View details",
+    "WALLET_BREAKDOWN_PERCENTAGE": "% Of Your Funds",
+    "WALLET_BREAKDOWN_VALUE_IN": "Value in",
+    "WALLET_BREAKDOWN_UNKNOWN": "Unknown Asset",
+    "WALLET_BREAKDOWN_OTHER": "Other Tokens",
+    "WALLET_BREAKDOWN_OTHER_TICKER": "Other",
+    "NO_ACCOUNTS_SELECTED_HEADER":"You have no accounts selected.",
+    "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above."
   }
 }
