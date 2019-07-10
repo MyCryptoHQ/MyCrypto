@@ -1,28 +1,30 @@
-import { ITxFields } from '../../types';
-import { gasPriceToBase, fromWei } from 'v2/libs/units';
 import BN from 'bn.js';
-import { getBaseAssetSymbolByNetwork } from 'v2/libs/networks/networks';
 import React from 'react';
+import { getBaseAssetSymbolByNetwork } from 'v2/libs/networks/networks';
+import { fromWei, gasPriceToBase } from 'v2/libs/units';
+import { FormikFormState } from '../../types';
 
 interface Props {
-  values: ITxFields;
+  values: FormikFormState;
   fiatAsset: { fiat: string; value: string; symbol: string };
 }
 
 function TransactionFeeDisplay({ values, fiatAsset }: Props) {
   const gasLimitToUse =
-    values.isAdvancedTransaction && values.isGasLimitManual
-      ? values.gasLimitField
-      : values.gasLimitEstimated;
-  const gasPriceToUse = values.isAdvancedTransaction ? values.gasPriceField : values.gasPriceSlider;
+    values.formikState.isAdvancedTransaction && values.formikState.isGasLimitManual
+      ? values.formikState.gasLimitField
+      : values.formikState.gasLimitEstimated;
+  const gasPriceToUse = values.formikState.isAdvancedTransaction
+    ? values.formikState.gasPriceField
+    : values.formikState.gasPriceSlider;
   const transactionFeeWei: BN = gasPriceToBase(
     parseFloat(gasPriceToUse) * parseFloat(gasLimitToUse)
   );
   const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
   const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(4);
   let baseAssetSymbol: string | undefined;
-  if (values.network) {
-    baseAssetSymbol = getBaseAssetSymbolByNetwork(values.network);
+  if (values.sharedConfig.senderNetwork) {
+    baseAssetSymbol = getBaseAssetSymbolByNetwork(values.sharedConfig.senderNetwork);
   }
   const baseAsset: string = !baseAssetSymbol ? 'Ether' : baseAssetSymbol;
 

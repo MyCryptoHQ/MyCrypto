@@ -4,6 +4,57 @@ import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
 import { Asset, assetMethod } from 'v2/services/Asset/types';
 import { IAsset } from 'v2/types';
 
+export interface FormikFormState {
+  transactionData: {
+    to: string;
+    gasLimit: string;
+    gasPrice: string;
+    nonce: string;
+    data: string;
+    value: string;
+    chainId: undefined;
+  };
+  sharedConfig: {
+    senderAddress: string;
+    senderAddressLabel: string;
+    senderWalletBalanceBase: string;
+    senderWalletBalanceToken: string;
+    senderAccountType: string;
+    senderNetwork: Network | undefined;
+    asset: IAsset | undefined;
+    assetNetwork: Network | undefined;
+    assetSymbol: string;
+    assetType: undefined;
+    dPath: string;
+    recipientAddressLabel: string;
+    recipientResolvedNSAddress: string;
+  };
+  transaction: {
+    serialized: string;
+    signed: string;
+    txHash: string;
+  };
+  formikState: {
+    gasPriceSlider: string;
+    gasPriceField: string;
+    gasLimitField: string;
+    gasLimitEstimated: string;
+    nonceEstimated: string;
+    nonceField: string;
+    isGasLimitManual: boolean;
+    gasEstimates: {
+      fastest: number;
+      fast: number;
+      standard: number;
+      isDefault: boolean;
+      safeLow: number;
+      time: number;
+      chainId: number;
+    };
+    isResolvingNSName: false;
+    isAdvancedTransaction: false;
+  };
+}
 export interface ITxFields {
   asset: IAsset | undefined;
   recipientAddress: string;
@@ -62,7 +113,7 @@ export interface SendState {
     recipientAddressLabel: string;
     recipientResolvedNSAddress: string;
   };
-  transactionStrings: {
+  transaction: {
     serialized: string;
     signed: string;
     txHash: string;

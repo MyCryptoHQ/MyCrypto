@@ -1,5 +1,6 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
+import { DeepPartial } from 'shared/types/util';
 import { ITxFields, SendState } from 'v2/features/SendAssets/types';
 import { getAssetByTicker } from 'v2/libs/assets';
 import { Asset } from 'v2/services/Asset/types';
@@ -74,7 +75,7 @@ export const processFormDataToWeb3Tx = (
 };
 
 export const processFormDataToTx = (
-  formData: Partial<SendState>
+  formData: DeepPartial<SendState>
 ): IHexStrTransaction | undefined => {
   if (
     formData.sharedConfig &&

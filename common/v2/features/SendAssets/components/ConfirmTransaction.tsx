@@ -95,7 +95,6 @@ export default class ConfirmTransaction extends Component<Props> {
     if (network) {
       const networkName = network.name;
       this.setState({ networkFromSignedTransaction: networkName });
-      console.log(this.state.networkFromSignedTransaction);
     }
   }
 

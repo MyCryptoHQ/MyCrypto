@@ -52,7 +52,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
       recipientAddressLabel: '',
       recipientResolvedNSAddress: ''
     },
-    transactionStrings: {
+    transaction: {
       serialized: '',
       signed: '',
       txHash: ''
@@ -78,16 +78,16 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
             <Web3Steps.elem
               transactionData={this.state.transactionData}
               sharedConfig={this.state.sharedConfig}
-              transactionStrings={this.state.transactionStrings}
+              transactionStrings={this.state.transaction}
               onNext={this.goToNextStep}
               updateSendState={this.updateSendState}
             />
           ) : (
+            //@ts-ignoretslint-ignore
             <Step.elem
               transactionData={this.state.transactionData}
               sharedConfig={this.state.sharedConfig}
-              transactionStrings={this.state.transactionStrings}
-              updateTransactionStrings={this.updateTransactionStrings}
+              transactionStrings={this.state.transaction}
               updateSendState={this.updateSendState}
               onNext={this.goToNextStep}
             />
@@ -108,7 +108,7 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
     }));
 
   private updateSendState = (formikValues: any) => {
-    console.log('formik', formikValues);
+    // console.log('formik', formikValues);
     const sharedConfig = {
       senderAddress: formikValues.account.address,
       senderAddressLabel: formikValues.account.label,
@@ -116,63 +116,49 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
       senderWalletBalanceToken: '',
       senderAccountType: formikValues.account.wallet,
       senderNetwork: formikValues.account.network,
-      assetSymbol: formikValues.asset.symbol,
-      assetType: formikValues.assetType,
+      assetNetwork: formikValues.asset.network, //TODO: properly set this field in formik
+      assetSymbol: formikValues.sharedConfig.assetSymbol,
+      assetType: formikValues.sharedConfig.assetType,
       dPath: formikValues.account.dPath,
-      recipientAddressLabel: formikValues.recipientAddressLabel,
-      recipientResolvedNSAddress: formikValues.recipientResolvedNSAddress
+      recipientAddressLabel: formikValues.sharedConfig.recipientAddressLabel,
+      recipientResolvedNSAddress: formikValues.sharedConfig.recipientResolvedNSAddress
     };
 
     const transactionData = {
-      to: formikValues.transactionFields.resolvedNSAddress
-        ? formikValues.transactionFields.resolvedNSAddress
-        : formikValues.transactionFields.recipientAddress,
-      gasLimit: formikValues.transactionFields.gasLimitField,
-      gasPrice: formikValues.transactionFields.gasPriceField,
-      nonce: formikValues.transactionFields.nonceEstimated,
-      data: formikValues.transactionFields.account.data,
-      value: formikValues.transactionFields.account.amount,
-      chainId: formikValues.transactionFields.network
+      to: formikValues.sharedConfig.recipientResolvedNSAddress
+        ? formikValues.sharedConfig.recipientResolvedNSAddress
+        : formikValues.transactionData.to,
+      gasLimit: formikValues.formikState.isAdvancedTransaction
+        ? formikValues.formikState.gasLimitField
+        : formikValues.formikState.gasLimitEstimated,
+      gasPrice: formikValues.formikState.isAdvancedTransaction
+        ? formikValues.formikState.gasPriceField
+        : formikValues.formikState.gasEstimates.standard, //TODO: Properly set correcy gasPrice field in formik
+      nonce: formikValues.formikState.nonceEstimated,
+      data: formikValues.transactionData.data,
+      value: formikValues.transactionData.value,
+      chainId: formikValues.transactionData.network //TODO: grab chain from network name
     };
     this.setState({
       transactionData,
       sharedConfig
     });
+    /*NEXT STEPS: Process transaction data according to formik values
+    * Set conditional gas price and gas limit depending on isAdvancedTransaction in Formik and set transactionData.gasLimit and transactionData.gasPrice
+    * process transaction correctly and serialize transaction
+    * pass serialized transaction to SendState transaction.serialized
+    */
+
     this.processTransactionData();
   };
 
   private processTransactionData() {
     // console.log(processFormDataToTx(this.state));
-    console.log('state', this.state);
+    // console.log('state', this.state);
   }
 
-  private updateTransactionStrings = (transactionString: any) => {
-    console.log(transactionString);
-  };
-
-  // private updateState = (state: Partial<ISendState>) => {
-  //   if (state.transactionFields) {
-  //     const nextAccountField: ITxFields['account'] = {
-  //       ...this.state.transactionFields.account,
-  //       ...state.transactionFields.account
-  //     };
-
-  //     const nextTransactionFields: ITxFields = {
-  //       ...this.state.transactionFields,
-  //       ...state.transactionFields,
-  //       account: nextAccountField
-  //     };
-
-  //     this.setState({
-  //       transactionFields: nextTransactionFields
-  //     });
-  //   }
-
-  //   if (state.signedTransaction) {
-  //     this.setState({
-  //       signedTransaction: state.signedTransaction
-  //     });
-  //   }
+  // private updateTransactionStrings = (transactionString: any) => {
+  //   console.log(transactionString);
   // };
 
   // private handleReset = () => this.setState(getInitialState());
