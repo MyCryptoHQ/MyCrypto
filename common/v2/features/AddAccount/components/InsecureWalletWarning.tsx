@@ -2,7 +2,7 @@ import React from 'react';
 
 import translate, { translateRaw } from 'translations';
 import { NewTabLink } from 'components/ui';
-import { IS_DEV } from '../flags';
+import { IS_DEV } from 'v2/utils';
 import './InsecureWalletWarning.scss';
 
 interface Props {
