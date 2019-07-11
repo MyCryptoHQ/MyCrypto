@@ -18,7 +18,7 @@ import {
 import { Balance, Fiat } from './types';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
 
 const { SCREEN_MD } = BREAK_POINTS;
 
@@ -36,7 +36,7 @@ const WalletBreakdownTop = styled.div`
 const AccountDropdownWrapper = styled.div`
   width: 100%;
   max-width: 480px;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 `;
 
 const WalletBreakdownPanel = styled(Panel)`
@@ -54,7 +54,7 @@ const WalletBreakdownPanel = styled(Panel)`
 const numberOfAssetsDisplayed = 4;
 let wasNumOfAccountsTracked = false;
 
-function WalletBreakdown() {
+export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
@@ -126,7 +126,7 @@ function WalletBreakdown() {
     return (sum += asset.fiatValue);
   }, 0);
 
-  /* Construct a finalBalances array which consits of top X assets and a otherTokensAsset 
+  /* Construct a finalBalances array which consits of top X assets and a otherTokensAsset
      which combines the fiat value of all remaining tokens that are in the balances array*/
   let finalBalances = balances;
   if (balances.length > numberOfAssetsDisplayed) {
@@ -183,5 +183,3 @@ function WalletBreakdown() {
     </>
   );
 }
-
-export default WalletBreakdown;

@@ -1,2 +1,1 @@
-export { default } from './Dashboard';
-export { default as dashboardRoutes } from './routes';
+export { default as Dashboard } from './Dashboard';

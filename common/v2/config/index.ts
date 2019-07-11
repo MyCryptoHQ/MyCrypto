@@ -8,3 +8,4 @@ export * from './cacheData';
 export * from './navigation';
 export * from './links';
 export * from './accountTypes';
+export { GITHUB_RELEASE_NOTES_URL } from './constants';

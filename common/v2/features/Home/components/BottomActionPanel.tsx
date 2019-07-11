@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import translate from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { Link } from 'react-router-dom';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { KNOWLEDGE_BASE_URL } from 'v2/config';
 
 import ovalIcon from 'common/assets/images/icn-oval.svg';
