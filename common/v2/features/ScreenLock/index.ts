@@ -1,2 +1,4 @@
-export { default as screenLockRoutes } from './routes';
 export { ScreenLockLocking } from './ScreenLockLocking';
+export { ScreenLockNew } from './ScreenLockNew';
+export { ScreenLockLocked } from './ScreenLockLocked';
+export { ScreenLockForgotPassword } from './ScreenLockForgotPassword';

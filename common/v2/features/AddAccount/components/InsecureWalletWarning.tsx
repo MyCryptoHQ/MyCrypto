@@ -3,7 +3,7 @@ import React from 'react';
 import translate, { translateRaw } from 'translations';
 import { DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 import { NewTabLink } from 'components/ui';
-import { IS_DEV } from '../flags';
+import { IS_DEV } from 'v2/utils';
 import './InsecureWalletWarning.scss';
 
 interface Props {

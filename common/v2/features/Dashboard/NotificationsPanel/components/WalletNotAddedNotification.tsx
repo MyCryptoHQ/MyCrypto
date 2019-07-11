@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import translate from 'translations';
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
 import { KNOWLEDGE_BASE_URL } from 'v2/config';
 

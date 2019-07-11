@@ -6,7 +6,7 @@ import {
   MiscWalletName
 } from 'v2/config/data';
 import { getWeb3ProviderInfo } from 'utils/web3';
-import { IS_ELECTRON, HAS_WEB3_PROVIDER } from './flags';
+import { IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
 import { WalletType } from './types';
 import {
   InsecureWalletWarning,

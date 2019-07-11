@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 // Legacy
 import titleIllustration from 'common/assets/images/title-illustration.svg';

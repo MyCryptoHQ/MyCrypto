@@ -10,7 +10,6 @@ import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 const ContentPanelWrapper = styled.div`
   @media (max-width: 700px) {
     max-width: 450px;
-    max-height: 500px;
     padding-left: 0px;
     margin-bottom: 1em;
   }

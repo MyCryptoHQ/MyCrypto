@@ -34,7 +34,10 @@ export const getBalanceFromAccount = (account: ExtendedAccount): string => {
   }
 };
 
-export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset: Asset): string => {
+export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset?: Asset): string => {
+  if (!asset) {
+    return '0';
+  }
   const balanceFound = account.assets.find(entry => entry.uuid === asset.uuid);
   return balanceFound ? balanceFound.balance.toString() : '0';
 };

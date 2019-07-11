@@ -1,20 +1,7 @@
-import flatten from 'lodash/flatten';
 import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import * as features from 'v2/features';
 import { AccountContext, LockScreenContext } from 'v2/providers';
-import featureRegistry from 'v2/features/registry.json';
-
-interface FeatureRegistryEntry {
-  name: string;
-  key: string;
-}
-
-export const gatherFeatureRoutes = () =>
-  flatten(
-    (featureRegistry as FeatureRegistryEntry[]).map(({ key }) => (features as any)[`${key}Routes`])
-  );
 
 export const HomepageChoiceRedirect = withRouter(({ history, children }) => {
   const { accounts } = useContext(AccountContext);

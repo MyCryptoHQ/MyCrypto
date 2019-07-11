@@ -2,14 +2,12 @@
   background: #e8eaed;
   font-weight: 300;
 
-  @media (min-width: 1080px) {
-    display: none;
-  }
   &-actions {
     flex: 1;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     padding: 0 15px;
 
     &-row {
@@ -51,40 +49,28 @@
 }
 
 .Dashboard-desktop {
-  display: none;
+  display: block;
   background: #e8eaed;
   font-weight: 300;
 
-  @media (min-width: 1080px) {
-    display: block;
-  }
   &-top {
     display: flex;
     align-items: flex-start;
 
     &-left {
       flex: 1;
-      min-width: 241px;
+      min-width: 220px;
+      margin-right: 21px;
 
       &-heading {
         margin-top: 0;
-        margin-bottom: 25px;
+        margin-bottom: 24px;
         font-weight: bold;
-      }
-      &-actions {
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 400px;
-
-        @media (min-width: 1370px) {
-          display: block;
-          margin-right: 21px;
-        }
       }
     }
     &-right {
       flex: 2;
-
+      min-width: 781px;
       > div {
         margin-bottom: 18px;
       }

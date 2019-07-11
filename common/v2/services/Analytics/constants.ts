@@ -19,5 +19,6 @@ export enum ANALYTICS_CATEGORIES {
   UPDATE_DESKTOP = 'Update Desktop App',
   NOTIFICATION = 'Notification',
   SETTINGS = 'Settings',
+  WALLET_BREAKDOWN = 'Wallet breakdown',
   AD = 'Ad'
 }

@@ -13,3 +13,5 @@ export {
 export { AddressBookContext, AddressBookProvider } from './AddressBookProvider';
 export { NetworksContext, NetworksProvider } from './NetworksProvider';
 export { LockScreenContext, LockScreenProvider } from './LockScreenProvider';
+export { RatesContext, RatesProvider } from './RatesProvider';
+export { StoreContext, StoreProvider } from './StoreProvider';

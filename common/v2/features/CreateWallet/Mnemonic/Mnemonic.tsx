@@ -5,7 +5,6 @@ import { addHexPrefix, toChecksumAddress, privateToAddress } from 'ethereumjs-ut
 import HDkey from 'hdkey';
 import { uniq } from 'lodash';
 
-import { Layout } from 'v2/features';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { InsecureWalletName } from 'v2/config/data';
@@ -15,10 +14,10 @@ import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } f
 import { DPathFormat } from 'v2/libs/networks/types';
 import { Account } from 'v2/services/Account/types';
 import { Asset } from 'v2/services/Asset/types';
-import { Settings } from 'v2/services/Settings';
+import { ISettings } from 'v2/services/Settings';
 
 interface Props extends RouteComponentProps<{}> {
-  settings: Settings;
+  settings: ISettings;
   createAccountWithID(accountData: Account, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
@@ -64,9 +63,7 @@ class CreateMnemonic extends Component<Props> {
     const props = { words, network, accountType, path, address };
 
     return (
-      <Layout centered={true}>
-        <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
-      </Layout>
+      <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...props} {...actions} />
     );
   }
 

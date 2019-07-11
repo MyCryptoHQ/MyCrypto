@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
 import { NotificationsContext, notificationsConfigs } from 'v2/providers/NotificationsProvider';
 import { Notification } from 'v2/services/Notifications';
 

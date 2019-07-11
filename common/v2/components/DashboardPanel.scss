@@ -1,0 +1,21 @@
+.DashboardPanel {
+  padding: 0 0 15px 0;
+
+  &-headingWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+
+    &-heading {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+      color: #424242;
+    }
+    &-button {
+      padding: 9px 16px;
+      font-size: 18px;
+    }
+  }
+}

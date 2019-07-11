@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { OS } from 'v2/services/Github';
-import { Layout } from 'v2/features';
+import { Layout } from 'v2/components';
 import {
   GetStartedPanel,
   DownloadAppPanel,
@@ -12,13 +12,10 @@ import {
   BottomActionPanel,
   FeaturesPanel
 } from './components';
-import { getFeaturedOS } from 'v2/features/helpers';
+import { getFeaturedOS } from 'v2/utils';
 import { GithubService } from 'v2/services';
-import {
-  COLORS,
-  BREAK_POINTS,
-  GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK
-} from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/config';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { SILVER, DARK_SLATE_BLUE } = COLORS;
@@ -39,6 +36,14 @@ const Section = styled.section`
   background-color: ${(props: SectionProps) => props.color};
   display: flex;
   justify-content: center;
+`;
+
+// Hack to enforce specificity of our style on base component.
+// https://github.com/styled-components/styled-components/issues/1816#issuecomment-398454088
+const SLayout = styled(Layout)`
+  && {
+    background-color: #fff;
+  }
 `;
 
 const BottomSection = styled(Section)`
@@ -74,7 +79,7 @@ export default class Home extends Component {
 
   public render() {
     return (
-      <Layout className="WhiteBackground" fluid={true}>
+      <SLayout fluid={true} centered={false}>
         <HomeWrapper>
           <Section>
             <GetStartedPanel />
@@ -101,7 +106,7 @@ export default class Home extends Component {
             <BottomActionPanel />
           </BottomSection>
         </HomeWrapper>
-      </Layout>
+      </SLayout>
     );
   }
 }

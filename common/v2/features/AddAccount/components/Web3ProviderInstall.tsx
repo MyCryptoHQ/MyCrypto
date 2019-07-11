@@ -10,7 +10,7 @@ import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import AppStoreBadgeIMG from 'assets/images/mobile/app-store-badge.png';
 import GooglePlayBadgeIMG from 'assets/images/mobile/google-play-badge.png';
 import { NewTabLink } from 'components/ui';
-import { IS_MOBILE } from '../flags';
+import { IS_MOBILE } from 'v2/utils';
 import './Web3ProviderInstall.scss';
 
 function InstallTrunk() {
