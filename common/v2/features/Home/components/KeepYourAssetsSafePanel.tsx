@@ -3,7 +3,7 @@ import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 import bankIcon from 'common/assets/images/illo-bank.svg';
 import myCryptoIcon from 'common/assets/images/illo-with-mycrypto.svg';

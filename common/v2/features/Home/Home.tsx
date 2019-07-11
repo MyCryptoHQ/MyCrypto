@@ -19,7 +19,7 @@ import { COLORS, BREAK_POINTS } from 'v2/theme';
 import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/config';
 
 const { SCREEN_SM } = BREAK_POINTS;
-const { SILVER, DARK_SLATE_BLUE } = COLORS;
+const { SILVER, DARK_SLATE_BLUE, WHITE } = COLORS;
 
 interface SectionProps {
   color?: string;
@@ -88,7 +88,7 @@ export default class Home extends Component {
           <Section color={SILVER}>
             <CompatibleWalletsPanel />
           </Section>
-          <Section>
+          <Section color={WHITE}>
             <FeaturesPanel />
           </Section>
           <Section color={DARK_SLATE_BLUE}>
@@ -100,7 +100,7 @@ export default class Home extends Component {
           <Section color={SILVER}>
             <KeepYourAssetsSafePanel />
           </Section>
-          <Section>
+          <Section color={WHITE}>
             <PeaceOfMindPanel downloadLink={this.state.appDownloadLink} />
           </Section>
           <Section color={SILVER}>
