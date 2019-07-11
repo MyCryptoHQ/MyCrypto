@@ -3,9 +3,8 @@ import { withRouter, Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedContentPanel } from 'v2/components';
 import { translateRaw } from 'translations';
-import { Layout } from 'v2/features';
+import { ExtendedContentPanel } from 'v2/components';
 
 // Legacy
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
@@ -65,35 +64,33 @@ export interface PanelProps {
 
 export function CreateWallet({ history }: RouteComponentProps<{}>) {
   return (
-    <Layout centered={true}>
-      <ExtendedContentPanel
-        onBack={() => history.push('/')}
-        heading={translateRaw('CREATE_ACCOUNT_TITLE')}
-      >
-        <DescriptionItem>{translateRaw('CREATE_ACCOUNT_DESCRIPTION_1')}</DescriptionItem>
-        <DescriptionItem>{translateRaw('CREATE_ACCOUNT_DESCRIPTION_2')}</DescriptionItem>
-        <ImageWrapper>
-          <WalletImage src={newWalletIcon} alt="New wallet" />
-        </ImageWrapper>
+    <ExtendedContentPanel
+      onBack={() => history.push('/')}
+      heading={translateRaw('CREATE_ACCOUNT_TITLE')}
+    >
+      <DescriptionItem>{translateRaw('CREATE_ACCOUNT_DESCRIPTION_1')}</DescriptionItem>
+      <DescriptionItem>{translateRaw('CREATE_ACCOUNT_DESCRIPTION_2')}</DescriptionItem>
+      <ImageWrapper>
+        <WalletImage src={newWalletIcon} alt="New wallet" />
+      </ImageWrapper>
 
-        <DescriptionItem>{translateRaw('CREATE_ACCOUNT_DESCRIPTION_3')}</DescriptionItem>
-        <Link to="/create-wallet/mnemonic">
-          <StyledButton>{translateRaw('CREATE_ACCOUNT_BUTTON')}</StyledButton>
-        </Link>
-        <BottomActions>
-          <div>
-            {translateRaw('CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_1')}{' '}
-            <Link to="/create-wallet/keystore">
-              {translateRaw('CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_2')}
-            </Link>
-          </div>
-          <div>
-            {translateRaw('CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1')}{' '}
-            <Link to="#">{translateRaw('CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2')}</Link>
-          </div>
-        </BottomActions>
-      </ExtendedContentPanel>
-    </Layout>
+      <DescriptionItem>{translateRaw('CREATE_ACCOUNT_DESCRIPTION_3')}</DescriptionItem>
+      <Link to="/create-wallet/mnemonic">
+        <StyledButton>{translateRaw('CREATE_ACCOUNT_BUTTON')}</StyledButton>
+      </Link>
+      <BottomActions>
+        <div>
+          {translateRaw('CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_1')}{' '}
+          <Link to="/create-wallet/keystore">
+            {translateRaw('CREATE_WALLET_WITH_KEYSTORE_BOTTOM_ACTION_2')}
+          </Link>
+        </div>
+        <div>
+          {translateRaw('CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1')}{' '}
+          <Link to="#">{translateRaw('CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2')}</Link>
+        </div>
+      </BottomActions>
+    </ExtendedContentPanel>
   );
 }
 

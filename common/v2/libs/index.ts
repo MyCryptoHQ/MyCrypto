@@ -6,3 +6,4 @@ export * from './networks';
 export * from './accounts';
 export * from './assets';
 export * from './addressbook';
+export * from './web-workers';

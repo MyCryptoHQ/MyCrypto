@@ -1,2 +1,1 @@
-export { default as addAccountRoutes } from './routes';
-export * from './components';
+export { default as AddAccountFlow } from './AddAccountFlow';

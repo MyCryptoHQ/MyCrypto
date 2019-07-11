@@ -1,1 +1,1 @@
-export { default as WalletBreakdown } from './WalletBreakdown';
+export { WalletBreakdown } from './WalletBreakdown';
