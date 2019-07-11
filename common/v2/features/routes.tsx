@@ -11,7 +11,7 @@ import { isDesktop } from 'v2/utils';
 import { CreateWallet, Mnemonic, Keystore } from './CreateWallet';
 import { Dashboard } from './Dashboard';
 import { AddAccountFlow } from './AddAccount';
-import { Settings, Import, Export } from './Dashboard/Settings';
+import { Settings, Import, Export } from './Settings';
 import { DownloadApp } from './DownloadApp';
 import { NoAccounts } from './NoAccounts';
 import { ScreenLockNew, ScreenLockLocked, ScreenLockForgotPassword } from './ScreenLock';

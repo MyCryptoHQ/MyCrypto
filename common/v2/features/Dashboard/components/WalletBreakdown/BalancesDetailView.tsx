@@ -3,9 +3,9 @@ import { Button, CollapsibleTable } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
-import DashboardPanel from '../DashboardPanel';
+import { DashboardPanel } from 'v2/components';
 import { WalletBreakdownProps } from './types';
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 

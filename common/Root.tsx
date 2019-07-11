@@ -35,7 +35,7 @@ import { AddressBookProvider } from 'v2/providers/AddressBookProvider';
 import LockScreenProvider from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { NetworksProvider } from 'v2/providers/NetworksProvider';
 import { AnalyticsService } from 'v2/services';
-import GAU_THEME from 'v2/theme';
+import { GAU_THEME } from 'v2/theme';
 import 'what-input';
 
 interface OwnProps {
@@ -99,14 +99,12 @@ class RootClass extends Component<Props, State> {
                       <NetworksProvider>
                         <Router>
                           <LockScreenProvider>
-                            <HomepageChoiceRedirect>
-                              <PageVisitsAnalytics>
-                                {error ? <AppContainer error={error} /> : <AppContainer />}
-                                <LogOutPrompt />
-                                <QrSignerModal />
-                                {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
-                              </PageVisitsAnalytics>
-                            </HomepageChoiceRedirect>
+                            <PageVisitsAnalytics>
+                              {error ? <AppContainer error={error} /> : <AppContainer />}
+                              <LogOutPrompt />
+                              <QrSignerModal />
+                              {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
+                            </PageVisitsAnalytics>
                           </LockScreenProvider>
                         </Router>
                         <DevToolsContainer />
@@ -222,24 +220,27 @@ const AppContainer = (props: AppContainerProps) => {
   return (
     <>
       <CaptureRouteNotFound>
-        <Switch>
-          {/* To avoid fiddling with layout we provide a complete route to home */}
-          <Route path="/home" component={Home} exact={true} />{' '}
-          {appRoutes.map((config, idx) => <PrivateRoute key={idx} {...config} />)}
-          <Route path="/account" component={SendTransaction} exact={true} />
-          <Route path="/generate" component={GenerateWallet} />
-          <Route path="/contracts" component={Contracts} />
-          <Route path="/ens" component={ENS} exact={true} />
-          <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-          <Route path="/tx-status" component={CheckTransaction} exact={true} />
-          <Route path="/pushTx" component={BroadcastTx} />
-          <Route path="/support-us" component={SupportPage} exact={true} />
-          {process.env.NODE_ENV !== 'production' && (
-            <Route path="/dev/palette" component={PalettePage} exact={true} />
-          )}
-          <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
-          <RouteNotFound />
-        </Switch>
+        <HomepageChoiceRedirect>
+          <Switch>
+            {/* To avoid fiddling with layout we provide a complete route to home */}
+            <Route path="/" component={Home} exact={true} />
+            <Route path="/home" component={Home} exact={true} />
+            {appRoutes.map((config, idx) => <PrivateRoute key={idx} {...config} />)}
+            <Route path="/account" component={SendTransaction} exact={true} />
+            <Route path="/generate" component={GenerateWallet} />
+            <Route path="/contracts" component={Contracts} />
+            <Route path="/ens" component={ENS} exact={true} />
+            <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
+            <Route path="/tx-status" component={CheckTransaction} exact={true} />
+            <Route path="/pushTx" component={BroadcastTx} />
+            <Route path="/support-us" component={SupportPage} exact={true} />
+            {process.env.NODE_ENV !== 'production' && (
+              <Route path="/dev/palette" component={PalettePage} exact={true} />
+            )}
+            <RedirectWithQuery exactArg={true} from="/" to="/account" pushArg={true} />
+            <RouteNotFound />
+          </Switch>
+        </HomepageChoiceRedirect>
       </CaptureRouteNotFound>
 
       <LegacyRoutes />

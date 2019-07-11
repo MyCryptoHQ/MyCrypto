@@ -1,14 +1,15 @@
 import { Address, Button, CollapsibleTable, Icon, Network, Typography } from '@mycrypto/ui';
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-
 import styled from 'styled-components';
+
+import { translateRaw } from 'translations';
 import { getCurrentsFromContext } from 'v2/libs/accounts/accounts';
 import { truncate, getLabelByAccount } from 'v2/libs';
 import { ExtendedAccount, AddressBook } from 'v2/services';
-import DashboardPanel from './DashboardPanel';
-import { translateRaw } from 'translations';
+import { DashboardPanel } from './DashboardPanel';
 import { AccountContext, SettingsContext } from 'v2/providers';
+import './AccountList.scss';
 
 const DeleteButton = styled(Button)`
   align-self: flex-start;

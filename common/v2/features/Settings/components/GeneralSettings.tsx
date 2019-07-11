@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/services/Settings';
-import { DashboardPanel } from '../../components';
+import { DashboardPanel } from 'v2/components';
 
 const Divider = styled.div`
   height: 2px;

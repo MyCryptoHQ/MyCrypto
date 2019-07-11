@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@mycrypto/ui';
 
-import DashboardPanel from './DashboardPanel';
+import { DashboardPanel } from 'v2/components';
 import './TokenList.scss';
 
 // Legacy

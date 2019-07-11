@@ -3,12 +3,11 @@ import { Heading, Tabs } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from 'translations';
 
-import { FlippablePanel } from 'v2/components';
+import { AccountList, FlippablePanel } from 'v2/components';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
 import IS_MOBILE from 'utils/isMobile';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
-import { AccountList } from '../components';
 import { AddressBookContext, SettingsContext } from 'v2/providers';
 
 const SettingsHeading = styled(Heading)`

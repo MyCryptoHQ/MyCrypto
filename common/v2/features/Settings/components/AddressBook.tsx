@@ -1,7 +1,7 @@
 import React from 'react';
 import { Address, Icon, CollapsibleTable, Typography, Button } from '@mycrypto/ui';
 
-import { DashboardPanel } from '../../components';
+import { DashboardPanel } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/services';
 import styled from 'styled-components';
 import { truncate } from 'v2/libs';

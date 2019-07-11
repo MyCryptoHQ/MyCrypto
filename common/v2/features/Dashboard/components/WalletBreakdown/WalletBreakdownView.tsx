@@ -5,7 +5,7 @@ import { translate } from 'translations';
 import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 

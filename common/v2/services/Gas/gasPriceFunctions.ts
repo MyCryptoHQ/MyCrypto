@@ -1,7 +1,7 @@
-import { getNetworkByName } from 'v2/libs/networks/networks';
-import { Network } from 'v2/services/Network/types';
 import { gasPriceDefaults } from 'config/data';
+import { getNetworkByName } from 'v2/libs/networks/networks';
 import { GasEstimates, fetchGasEstimates } from 'v2/api/gas';
+import { Network } from '../Network/types';
 
 export function getDefaultEstimates(network: Network | undefined) {
   // Must yield time for testability

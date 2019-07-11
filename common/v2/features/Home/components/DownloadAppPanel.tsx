@@ -3,7 +3,8 @@ import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate from 'translations';
-import { BREAK_POINTS, GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/config';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 import champagneIcon from 'common/assets/images/icn-champagne-2.svg';

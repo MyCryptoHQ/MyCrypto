@@ -1,7 +1,7 @@
 import React from 'react';
 import { Address, Icon, CollapsibleTable, Network, Typography } from '@mycrypto/ui';
 
-import { DashboardPanel } from '../../components';
+import { DashboardPanel } from 'v2/components';
 import { truncate } from 'v2/libs';
 
 interface Props {

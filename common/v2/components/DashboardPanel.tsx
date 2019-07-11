@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { Button, Heading, Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
+import { Button, Heading } from '@mycrypto/ui';
 
+import { Panel } from 'v2/components';
 import './DashboardPanel.scss';
 
 const Content = styled.div`
@@ -20,7 +21,7 @@ interface Props {
   padChildren?: boolean;
 }
 
-export default function DashboardPanel({
+export const DashboardPanel = ({
   heading,
   headingRight,
   actionLink,
@@ -28,7 +29,7 @@ export default function DashboardPanel({
   children,
   padChildren,
   ...rest
-}: Props) {
+}: Props) => {
   return (
     <Panel className={classnames('DashboardPanel', className)} {...rest}>
       <div className="DashboardPanel-headingWrapper">
@@ -45,4 +46,4 @@ export default function DashboardPanel({
       {padChildren ? <Content>{children}</Content> : children}
     </Panel>
   );
-}
+};

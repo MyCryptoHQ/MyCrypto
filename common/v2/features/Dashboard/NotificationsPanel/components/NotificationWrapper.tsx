@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
 
 const { SCREEN_XS, SCREEN_MD } = BREAK_POINTS;
 
