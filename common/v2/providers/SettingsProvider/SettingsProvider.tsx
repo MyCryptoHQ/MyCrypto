@@ -1,7 +1,7 @@
 import React, { Component, createContext } from 'react';
 import * as service from 'v2/services/Settings/Settings';
 import {
-  Settings,
+  ISettings,
   updateSetting,
   readAllSettings,
   readStorage,
@@ -9,8 +9,8 @@ import {
 } from 'v2/services/Settings';
 
 interface ProviderState {
-  settings: Settings;
-  updateSettings(settingsData: Settings): void;
+  settings: ISettings;
+  updateSettings(settingsData: ISettings): void;
   updateSettingsAccounts(accounts: string[]): void;
   readAllSettings(): void;
   getStorage(): void;
@@ -22,7 +22,7 @@ export const SettingsContext = createContext({} as ProviderState);
 export class SettingsProvider extends Component {
   public readonly state: ProviderState = {
     settings: readAllSettings() || {},
-    updateSettings: (settings: Settings): void => {
+    updateSettings: (settings: ISettings): void => {
       this.setState(
         // Update our state to let react trigger changes.
         {
@@ -70,7 +70,7 @@ export class SettingsProvider extends Component {
     return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
   }
   private getSettings = () => {
-    const settings: Settings = readAllSettings() || [];
+    const settings: ISettings = readAllSettings() || [];
     this.setState({ settings });
   };
 }

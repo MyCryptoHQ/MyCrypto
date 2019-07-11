@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import translate, { translateRaw } from 'translations';
 
 import { ExtendedContentPanel, InputField } from 'v2/components';
-import { Layout } from 'v2/features';
 import { LockScreenContext } from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
@@ -105,53 +104,51 @@ export class ScreenLockNew extends Component<Props> {
 
   public render() {
     return (
-      <Layout centered={true}>
-        <LockScreenContext.Consumer>
-          {({ encryptWithPassword }) => (
-            <ExtendedContentPanel
-              onBack={this.onBack}
-              heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
-              description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
-              image={mainImage}
-              showImageOnTop={true}
-              centered={true}
-              className=""
-            >
-              <ContentWrapper>
-                <FormWrapper onSubmit={this.handleCreatePasswordClicked(encryptWithPassword)}>
-                  <InputField
-                    label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
-                    value={this.state.password1}
-                    onChange={this.onPassword1Changed}
-                    validate={this.validateForm}
-                    inputError={this.state.password1Error}
-                    type={'password'}
-                  />
-                  <InputField
-                    label={translateRaw('SCREEN_LOCK_NEW_CONFIRM_PASSWORD_LABEL')}
-                    value={this.state.password2}
-                    onChange={this.onPassword2Changed}
-                    validate={this.validateForm}
-                    inputError={this.state.password2Error}
-                    type={'password'}
-                  />
-                  <ActionButton type="submit">
-                    {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
-                  </ActionButton>
-                </FormWrapper>
-                <BottomActions>
-                  <div>
-                    {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-                    <Link onClick={this.trackRecomendationClick} to="/dashboard">
-                      {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
-                    </Link>
-                  </div>
-                </BottomActions>
-              </ContentWrapper>
-            </ExtendedContentPanel>
-          )}
-        </LockScreenContext.Consumer>
-      </Layout>
+      <LockScreenContext.Consumer>
+        {({ encryptWithPassword }) => (
+          <ExtendedContentPanel
+            onBack={this.onBack}
+            heading={translateRaw('SCREEN_LOCK_NEW_HEADING')}
+            description={translateRaw('SCREEN_LOCK_NEW_DESCRIPTION')}
+            image={mainImage}
+            showImageOnTop={true}
+            centered={true}
+            className=""
+          >
+            <ContentWrapper>
+              <FormWrapper onSubmit={this.handleCreatePasswordClicked(encryptWithPassword)}>
+                <InputField
+                  label={translateRaw('SCREEN_LOCK_NEW_PASSWORD_LABEL')}
+                  value={this.state.password1}
+                  onChange={this.onPassword1Changed}
+                  validate={this.validateForm}
+                  inputError={this.state.password1Error}
+                  type={'password'}
+                />
+                <InputField
+                  label={translateRaw('SCREEN_LOCK_NEW_CONFIRM_PASSWORD_LABEL')}
+                  value={this.state.password2}
+                  onChange={this.onPassword2Changed}
+                  validate={this.validateForm}
+                  inputError={this.state.password2Error}
+                  type={'password'}
+                />
+                <ActionButton type="submit">
+                  {translate('SCREEN_LOCK_NEW_CREATE_PASSWORD_BUTTON')}
+                </ActionButton>
+              </FormWrapper>
+              <BottomActions>
+                <div>
+                  {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
+                  <Link onClick={this.trackRecomendationClick} to="/dashboard">
+                    {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
+                  </Link>
+                </div>
+              </BottomActions>
+            </ContentWrapper>
+          </ExtendedContentPanel>
+        )}
+      </LockScreenContext.Consumer>
     );
   }
 }

@@ -3,7 +3,6 @@ import sendIcon from 'common/assets/images/icn-send.svg';
 import React, { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentPanel } from 'v2/components';
-import { Layout } from 'v2/features';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -63,37 +62,30 @@ export class SendAssets extends Component<RouteComponentProps<{}>, SendState> {
     const { step, sharedConfig } = this.state;
     const Step = steps[step];
     const Web3Steps = web3Steps[step];
+    const transactionFields = { account: {} };
 
     return (
-      <Layout className="SendAssets" centered={true}>
-        <ContentPanel
-          onBack={this.goToPrevStep}
-          className="SendAssets"
-          heading={sharedConfig.senderAccountType === 'web3' ? Web3Steps.label : Step.label}
-          icon={sendIcon}
-          stepper={{ current: step + 1, total: steps.length - 1 }}
-        >
-          {sharedConfig.senderAccountType === 'web3' ? (
-            //@ts-ignoretslint-ignore //deprecated eth_sign
-            <Web3Steps.elem
-              transactionData={this.state.transactionData}
-              sharedConfig={this.state.sharedConfig}
-              transactionStrings={this.state.transaction}
-              onNext={this.goToNextStep}
-              updateSendState={this.updateSendState}
-            />
-          ) : (
-            //@ts-ignoretslint-ignore
-            <Step.elem
-              transactionData={this.state.transactionData}
-              sharedConfig={this.state.sharedConfig}
-              transactionStrings={this.state.transaction}
-              updateSendState={this.updateSendState}
-              onNext={this.goToNextStep}
-            />
-          )}
-        </ContentPanel>
-      </Layout>
+      <ContentPanel
+        onBack={this.goToPrevStep}
+        className="SendAssets"
+        heading={sharedConfig.senderAccountType === 'web3' ? Web3Steps.label : Step.label}
+        icon={sendIcon}
+        stepper={{ current: step + 1, total: steps.length - 1 }}
+      >
+        {sharedConfig.senderAccountType === 'web3' ? (
+          <Web3Steps.elem
+            onNext={this.goToNextStep}
+            updateState={this.updateSendState}
+            stateValues={this.state}
+          />
+        ) : (
+          <Step.elem
+            onNext={this.goToNextStep}
+            updateState={this.updateSendState}
+            stateValues={this.state}
+          />
+        )}
+      </ContentPanel>
     );
   }
 

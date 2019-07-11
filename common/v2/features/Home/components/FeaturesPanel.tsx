@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Panel } from '@mycrypto/ui';
 
 import translate from 'translations';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 import manageWalletsImage from 'common/assets/images/manage-your-wallets.svg';
 import viewDashboardImage from 'common/assets/images/view-dashboard.svg';

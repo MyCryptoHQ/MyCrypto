@@ -1,12 +1,11 @@
-import { Address, CollapsibleTable } from '@mycrypto/ui';
-// Legacy
-import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Amount } from 'v2/components';
+import { Address, CollapsibleTable } from '@mycrypto/ui';
+
+import newWindowIcon from 'common/assets/images/icn-new-window.svg';
+import { Amount, DashboardPanel } from 'v2/components';
 import { truncate } from 'v2/libs';
 import { AddressBook, ExtendedAccount, TransactionData } from 'v2/services';
-import DashboardPanel from './DashboardPanel';
 import './RecentTransactionList.scss';
 import TransactionLabel from './TransactionLabel';
 
@@ -85,7 +84,7 @@ export default function RecentTransactionList({
   return (
     <DashboardPanel
       heading="Recent Transactions"
-      action="Export"
+      headingRight="Export"
       actionLink="/dashboard/recent-transactions"
       className={`RecentTransactionsList ${className}`}
     >
