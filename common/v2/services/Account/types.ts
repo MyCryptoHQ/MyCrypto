@@ -1,11 +1,12 @@
 import { WalletName } from 'v2/config/data';
+import { TWalletType } from 'v2/types';
 import { assetMethod } from '../Asset/types';
 
 export interface Account {
   address: string;
   network: string;
   assets: AssetBalanceObject[];
-  wallet: WalletName;
+  wallet: WalletName | TWalletType;
   balance: string;
   transactions: TransactionData[];
   dPath: string;

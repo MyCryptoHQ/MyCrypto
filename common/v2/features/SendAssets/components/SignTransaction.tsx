@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { DeepPartial } from 'shared/types/util';
-import { WalletName } from 'v2/config/data';
-import { ISendState, ITxFields } from '../types';
-import './SignTransaction.scss';
+import React from 'react';
+
+// import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config';
+import { TWalletType } from 'v2/types';
+import { fromStateToTxObject } from '../helpers';
+import { IStepComponentProps, ITxObject, ITxReceipt } from '../types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,
@@ -11,63 +12,50 @@ import {
   SignTransactionSafeT,
   SignTransactionTrezor
 } from './SignTransactionWallets';
+import './SignTransaction.scss';
 
-type WalletType = WalletName;
+export default function SignTransaction({ txConfig, onComplete }: IStepComponentProps) {
+  // @TODO remove before deployement.
+  // const txObject = {
+  //   nonce: 0,
+  //   gasLimit: 21000,
+  //   gasPrice: utils.bigNumberify('20000000000'),
+  //   to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
+  //   // ... or supports ENS names
+  //   value: utils.parseEther('0.00001'),
+  //   data: '0x',
+  //   // This ensures the transaction cannot be replayed on different networks
+  //   chainId: ethers.utils.getNetwork(DEFAULT_NETWORK_FOR_FALLBACK).chainId
+  // };
 
-interface Props {
-  stateValues: ISendState;
-  transactionFields: ITxFields;
-  onNext(): void;
-  onSubmit(transactionFields: ITxFields): void;
-  updateState(state: DeepPartial<ISendState>): void;
-}
+  const { senderAccount: { wallet: walletName } } = txConfig;
+  const txObject: ITxObject = fromStateToTxObject(txConfig);
 
-export default class SignTransaction extends Component<Props> {
-  public render() {
-    const { stateValues, transactionFields, onNext, updateState } = this.props;
-    const currentWalletType: WalletType = transactionFields.account.wallet;
-
-    switch (currentWalletType) {
+  const getWalletComponent = (walletType: TWalletType) => {
+    switch (walletType) {
       case 'privateKey':
-        return <SignTransactionPrivateKey />;
+        return SignTransactionPrivateKey;
       case 'web3':
-        return (
-          <SignTransactionMetaMask
-            stateValues={stateValues}
-            transactionFields={transactionFields}
-            onNext={receipt => {
-              const nextState: DeepPartial<ISendState> = {
-                transactionFields: { account: { transactions: [{ txHash: receipt.hash }] } }
-              };
-              updateState(nextState);
-              onNext();
-            }}
-          />
-        );
+        return SignTransactionMetaMask;
       case 'ledgerNanoS':
-        return <SignTransactionLedger />;
+        return SignTransactionLedger;
       case 'trezor':
-        return <SignTransactionTrezor />;
+        return SignTransactionTrezor;
       case 'safeTmini':
-        return <SignTransactionSafeT />;
+        return SignTransactionSafeT;
       case 'keystoreFile':
-        return (
-          //@ts-ignoretslint-ignore
-          <SignTransactionKeystore
-            stateValues={stateValues}
-            transactionFields={transactionFields}
-            onNext={signedTransaction => {
-              const nextState: DeepPartial<ISendState> = {
-                signedTransaction
-              };
-
-              updateState(nextState);
-              onNext();
-            }}
-          />
-        );
+        return SignTransactionKeystore;
       default:
         return null;
     }
-  }
+  };
+
+  const WalletComponent = getWalletComponent(walletName);
+
+  return (
+    <WalletComponent
+      rawTransaction={txObject}
+      onSuccess={(receipt: ITxReceipt) => onComplete(receipt)}
+    />
+  );
 }

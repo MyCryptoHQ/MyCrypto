@@ -4,7 +4,6 @@ import { translateRaw } from 'translations';
 import { AccountSummary, Divider, Dropdown } from 'v2/components';
 import { getNetworkByName } from 'v2/libs/networks/networks';
 import { ExtendedAccount, ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
-import { FormikFormState } from '../../types';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
@@ -31,22 +30,21 @@ interface IAccountDropdownProps {
   accounts: IExtendedAccount[];
   name: string;
   value: IExtendedAccount;
-  values: FormikFormState;
   onSelect(option: IExtendedAccount): void;
 }
 
-function AccountDropdown({ accounts, name, value, values, onSelect }: IAccountDropdownProps) {
-  let relevantAccounts: ExtendedAccount[] = [];
-  if (values.sharedConfig.asset && values.sharedConfig.assetNetwork) {
-    relevantAccounts = accounts.filter((account: ExtendedAccount): boolean => {
-      const accountNetwork: Network | undefined = getNetworkByName(account.network);
-      const assetNetwork: Network | undefined =
-        values.sharedConfig.asset && values.sharedConfig.assetNetwork
-          ? getNetworkByName(values.sharedConfig.assetNetwork.name)
-          : undefined;
-      return !accountNetwork || !assetNetwork ? false : accountNetwork.name === assetNetwork.name;
-    });
-  }
+function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdownProps) {
+  let relevantAccounts: ExtendedAccount[] = accounts;
+  // if (values.sharedConfig.asset && values.sharedConfig.assetNetwork) {
+  //   relevantAccounts = accounts.filter((account: ExtendedAccount): boolean => {
+  //     const accountNetwork: Network | undefined = getNetworkByName(account.network);
+  //     const assetNetwork: Network | undefined =
+  //       values.sharedConfig.asset && values.sharedConfig.assetNetwork
+  //         ? getNetworkByName(values.sharedConfig.assetNetwork.name)
+  //         : undefined;
+  //     return !accountNetwork || !assetNetwork ? false : accountNetwork.name === assetNetwork.name;
+  //   });
+  // }
 
   return (
     <Dropdown

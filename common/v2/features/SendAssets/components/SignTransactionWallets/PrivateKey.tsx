@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import './PrivateKey.scss';
-import { Button } from '@mycrypto/ui';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-
-import { TogglablePassword } from 'components';
 import { stripHexPrefix } from 'ethjs-util';
-import { isValidPrivKey, isValidEncryptedPrivKey } from 'libs/validators';
+import { Button } from '@mycrypto/ui';
+
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
+import { isValidPrivKey, isValidEncryptedPrivKey } from 'libs/validators';
+import { ISignComponentProps } from '../../types';
+import './PrivateKey.scss';
 
 export interface SignWithPrivKeyState {
   key: string;
@@ -43,8 +44,11 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
   };
 }
 
-export default class SignTransactionPrivateKey extends Component {
-  public state: SignWithPrivKeyState = {
+export default class SignTransactionPrivateKey extends Component<
+  ISignComponentProps,
+  SignWithPrivKeyState
+> {
+  public state = {
     key: '',
     password: '',
     valid: false

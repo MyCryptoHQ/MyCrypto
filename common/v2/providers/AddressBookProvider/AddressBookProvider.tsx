@@ -8,6 +8,7 @@ interface ProviderState {
   createAddressBooks(addressBooksData: AddressBook): void;
   deleteAddressBooks(uuid: string): void;
   updateAddressBooks(uuid: string, addressBooksData: AddressBook): void;
+  getContactByAddress(address: string): ExtendedAddressBook | undefined;
 }
 
 export const AddressBookContext = createContext({} as ProviderState);
@@ -29,6 +30,10 @@ export class AddressBookProvider extends Component {
     updateAddressBooks: (uuid: string, addressBooksData: AddressBook) => {
       service.updateAddressBook(uuid, addressBooksData);
       this.getAddressBooks();
+    },
+    getContactByAddress: address => {
+      const { addressBook } = this.state;
+      return addressBook.find(contact => contact.address.toLowerCase() === address.toLowerCase());
     }
   };
 

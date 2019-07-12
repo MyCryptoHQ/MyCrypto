@@ -1,23 +1,28 @@
+import React, { useContext, useState } from 'react';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
+
+import translate, { translateRaw } from 'translations';
 import { ENSStatus } from 'components/AddressFieldFactory/AddressInputFactory';
 import { WhenQueryExists } from 'components/renderCbs';
-import { Field, FieldProps, Form, Formik } from 'formik';
-import React, { useContext } from 'react';
-import translate, { translateRaw } from 'translations';
-import { fetchGasPriceEstimates, getNonce, getResolvedENSAddress } from 'v2';
+
+import { IAsset, TSymbol } from 'v2/types';
 import { InlineErrorMsg } from 'v2/components';
 import { getAssetByUUID, getNetworkByName } from 'v2/libs';
+// import { processFormDataToTx } from 'v2/libs/transaction/process';
 import { AccountContext } from 'v2/providers';
 import {
   Asset,
   AssetBalanceObject,
   ExtendedAccount,
-  ExtendedAccount as IExtendedAccount
+  ExtendedAccount as IExtendedAccount,
+  fetchGasPriceEstimates,
+  getNonce
 } from 'v2/services';
-// import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { IAsset, TSymbol } from 'v2/types';
-import * as Yup from 'yup';
-import { FormikFormState, ISendState, ITxFields, SendState } from '../types';
+
+import { getResolvedENSAddress } from '../../Ens';
+import { IFormikFields, IStepComponentProps } from '../types';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import {
@@ -37,65 +42,33 @@ import {
   validateGasPriceField,
   validateNonceField
 } from './validators/validators';
+import { fromFormikStateToTxObject } from './helpers';
 
-interface Props {
-  stateValues: ISendState;
-  transactionFields: SendState;
-  onNext(): void;
-  // onSubmit(transactionFields: ISendState): void;
-  updateSendState(state: FormikFormState): void;
-}
-
-const initialState: FormikFormState = {
-  transactionData: {
-    to: '',
-    gasLimit: '',
-    gasPrice: '',
-    nonce: '',
-    data: '',
-    value: '',
-    chainId: undefined
+const initialFormikState = {
+  recipientAddress: undefined, // should get receiverAccount from AddressBook
+  amount: null,
+  account: undefined, // should be renamed senderAccount
+  network: '', // Not a field move to state
+  asset: {},
+  txDataField: '',
+  gasLimitEstimated: '2100',
+  gasEstimates: {
+    // Not a field, move to state
+    fastest: 20,
+    fast: 18,
+    standard: 12,
+    isDefault: false,
+    safeLow: 4,
+    time: Date.now(),
+    chainId: 1
   },
-  sharedConfig: {
-    senderAddress: '',
-    senderAddressLabel: '',
-    senderWalletBalanceBase: '',
-    senderWalletBalanceToken: '',
-    senderAccountType: '',
-    senderNetwork: undefined,
-    asset: undefined,
-    assetNetwork: undefined,
-    assetSymbol: '',
-    assetType: undefined,
-    dPath: '',
-    recipientAddressLabel: '',
-    recipientResolvedNSAddress: ''
-  },
-  formikState: {
-    gasPriceSlider: '20',
-    gasPriceField: '20',
-    gasLimitField: '21000',
-    gasLimitEstimated: '21000',
-    nonceEstimated: '0',
-    nonceField: '0',
-    isGasLimitManual: false,
-    isResolvingNSName: false,
-    isAdvancedTransaction: false,
-    gasEstimates: {
-      fastest: 20,
-      fast: 18,
-      standard: 12,
-      isDefault: false,
-      safeLow: 4,
-      time: Date.now(),
-      chainId: 1
-    }
-  },
-  transaction: {
-    serialized: '',
-    signed: '',
-    txHash: ''
-  }
+  gasPriceSlider: '20',
+  gasPriceField: '20',
+  gasLimitField: '2100',
+  resolvedENSAddress: '0x0', // Not a field, move to state
+  recipientResolvedENSAddress: '', // Not a field, move to state
+  nonceEstimated: '0', // Not a field, move to state
+  nonceField: '0'
 };
 
 const QueryWarning: React.SFC<{}> = () => (
@@ -109,20 +82,20 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 const SendAssetsSchema = Yup.object().shape({
-  transactionData: Yup.object().shape({
-    value: Yup.number()
-      .required('Required')
-      .min(0.001, 'Minimun required')
-      .max(1001, 'Above the balance')
-  })
+  amount: Yup.number()
+    .required('Required')
+    .min(0.001, 'Minimun required')
+    .max(1001, 'Above the balance')
 });
 
 export default function SendAssetsForm({
-  // transactionFields,
-  // onNext,
-  updateSendState
-}: Props) {
+  // txConfig // @TODO Use prop in case goToPrevStep or URI prefill.
+  onComplete
+}: IStepComponentProps) {
   const { accounts } = useContext(AccountContext);
+  const [isAdvancedTransaction, setIsAdvancedTransaction] = useState(false);
+  const [isGasLimitManual, setIsGasLimitManual] = useState(false); // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+  const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   // @TODO:SEND change the data structure to get an object
 
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
@@ -137,22 +110,18 @@ export default function SendAssetsForm({
   return (
     <div className="SendAssetsForm">
       <Formik
-        initialValues={initialState}
+        initialValues={initialFormikState}
         validationSchema={SendAssetsSchema}
-        onSubmit={(fields: FormikFormState) => {
-          updateSendState(fields);
-          // onNext();
+        onSubmit={fields => {
+          onComplete(fields);
         }}
         render={({ errors, touched, setFieldValue, values, handleChange, submitForm }) => {
           const toggleAdvancedOptions = () => {
-            setFieldValue(
-              'formikState.isAdvancedTransaction',
-              !values.formikState.isAdvancedTransaction
-            );
+            setIsAdvancedTransaction(!isAdvancedTransaction);
           };
 
           const handleGasEstimate = async () => {
-            if (!values || !values.sharedConfig.senderNetwork) {
+            if (!values || !values.network) {
               return;
             }
             // const finalTx = processFormDataToTx(values.transactionData);
@@ -160,46 +129,41 @@ export default function SendAssetsForm({
             //   return;
             // }
 
-            // if (!values.formikState.isAdvancedTransaction) {
-            //   const gas = await getGasEstimate(values.sharedConfig.senderNetwork, finalTx);
-            //   setFieldValue('formikState.gasLimitEstimated', gas);
+            // if (!values.isAdvancedTransaction) {
+            //   const gas = await getGasEstimate(values.network, finalTx);
+            //   setFieldValue('gasLimitEstimated', gas);
             // } else {
             //   return;
             // }
           };
 
           const handleENSResolve = async (name: string) => {
-            if (!values || !values.sharedConfig.senderNetwork) {
+            if (!values || !values.network) {
               return;
             }
-            setFieldValue('formikState.isResolvingNSName', true);
-            const resolvedAddress: string | null = await getResolvedENSAddress(
-              values.sharedConfig.senderNetwork,
-              name
-            );
-            setFieldValue('formikState.isResolvingNSName', false);
-            resolvedAddress === null
-              ? setFieldValue('formikState.resolvedNSAddress', '0x0')
-              : setFieldValue('formikState.resolvedNSAddress', resolvedAddress);
+            setIsResolvingENSName(true);
+            const resolvedAddress = (await getResolvedENSAddress(values.network, name)) || '0x0';
+            setIsResolvingENSName(false);
+            setFieldValue('resolvedENSAddress', resolvedAddress);
           };
 
           //move this to parent
           const handleFieldReset = () => {
             setFieldValue('account', undefined);
-            setFieldValue('transactionData.to', '');
-            setFieldValue('transactionData.value', '');
+            setFieldValue('recipientAddress', '');
+            setFieldValue('amount', '');
           };
 
           const setAmountFieldToAssetMax = () =>
             // @TODO get asset balance and subtract gas cost
-            setFieldValue('transactionData.value', '1000');
+            setFieldValue('amount', '1000');
 
           const handleNonceEstimate = async (account: ExtendedAccount) => {
-            if (!values || !values.sharedConfig.senderNetwork) {
+            if (!values || !values.network) {
               return;
             }
-            const nonce: number = await getNonce(values.sharedConfig.senderNetwork, account);
-            setFieldValue('formikState.nonceEstimated', nonce.toString());
+            const nonce: number = await getNonce(values.network, account);
+            setFieldValue('nonceEstimated', nonce.toString());
           };
 
           return (
@@ -218,22 +182,19 @@ export default function SendAssetsForm({
                       value={field.value}
                       assets={assets}
                       onSelect={option => {
-                        form.setFieldValue(field.name, option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
-                        form.setFieldValue('sharedConfig.asset', option.name);
-                        form.setFieldValue('sharedConfig.assetSymbol', option.symbol);
-                        form.setFieldValue('sharedConfig.assetNetwork', option.network);
+                        form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
                         handleFieldReset();
                         if (option.network) {
                           fetchGasPriceEstimates(option.network).then(data => {
-                            form.setFieldValue('formikState.gasEstimates', data);
-                            form.setFieldValue('formikState.gasPriceSlider', data.fast);
+                            form.setFieldValue('gasEstimates', data);
+                            form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          form.setFieldValue(
-                            'sharedConfig.assetNetwork',
-                            getNetworkByName(option.network)
-                          );
-                          handleGasEstimate();
+                          // form.setFieldValue(
+                          //   'sharedConfig.assetNetwork',
+                          //   getNetworkByName(option.network)
+                          // );
+                          // handleGasEstimate();
                         }
                       }}
                     />
@@ -250,15 +211,14 @@ export default function SendAssetsForm({
                   value={values.sharedConfig}
                   component={({ field, form }: FieldProps) => (
                     <AccountDropdown
-                      values={values}
                       name={field.name}
                       value={field.value}
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         //TODO: map account values to correct keys in sharedConfig
                         form.setFieldValue(field.name, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                        handleNonceEstimate(option);
-                        handleGasEstimate();
+                        // handleNonceEstimate(option);
+                        // handleGasEstimate();
                       }}
                     />
                   )}
@@ -269,22 +229,18 @@ export default function SendAssetsForm({
                   {translate('SEND_ADDR')}
                 </label>
                 <EthAddressField
+                  fieldName="recipientAddress"
                   handleENSResolve={handleENSResolve}
-                  error={errors.transactionData && errors.transactionData.to}
-                  touched={touched.transactionData && touched.transactionData.to}
-                  values={values}
-                  fieldName="transactionData.to"
+                  error={errors && errors.recipientAddress}
+                  touched={touched && touched.recipientAddress}
+                  chainId={values.network.chainId}
                   placeholder="Enter an Address or Contact"
                 />
                 <ENSStatus
-                  ensAddress={values.transactionData.to}
-                  isLoading={values.formikState.isResolvingNSName}
-                  rawAddress={values.sharedConfig.recipientResolvedNSAddress}
-                  chainId={
-                    values.sharedConfig.senderNetwork
-                      ? values.sharedConfig.senderNetwork.chainId
-                      : 1
-                  }
+                  ensAddress={values.recipientAddress}
+                  isLoading={isResolvingENSName}
+                  rawAddress={values.recipientResolvedENSAddress}
+                  chainId={values.network ? values.network.chainId : 1}
                 />
               </fieldset>
               {/* Amount */}
@@ -296,30 +252,21 @@ export default function SendAssetsForm({
                   </div>
                 </label>
                 <Field
-                  name="transactionData.value"
+                  name="amount"
                   render={({ field }: FieldProps) => (
                     <Input value={field.value} placeholder={'0.00'} {...field} />
                   )}
                 />
-                {errors.transactionData &&
-                errors.transactionData.value &&
-                touched.transactionData &&
-                touched.transactionData.value ? (
-                  <InlineErrorMsg className="SendAssetsForm-errors">
-                    {errors.transactionData.value}
-                  </InlineErrorMsg>
+                {errors.amount && errors.amount && touched.amount && touched.amount ? (
+                  <InlineErrorMsg className="SendAssetsForm-errors">{errors.amount}</InlineErrorMsg>
                 ) : null}
               </fieldset>
               {/* You'll Send */}
               <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
                 <label>You'll Send</label>
                 <TransactionValueDisplay
-                  amount={values.transactionData.value || '0.00'}
-                  ticker={
-                    values.sharedConfig.asset
-                      ? values.sharedConfig.asset.symbol
-                      : ('ETH' as TSymbol)
-                  }
+                  amount={values.amount || '0.00'}
+                  ticker={values.asset ? values.asset.symbol : ('ETH' as TSymbol)}
                   fiatAsset={{ ticker: 'USD' as TSymbol, exchangeRate: '250' }}
                 />
               </fieldset>
@@ -329,20 +276,29 @@ export default function SendAssetsForm({
                   <div>Transaction Fee</div>
                   {/* TRANSLATE THIS */}
                   <TransactionFeeDisplay
+                    gasLimitToUse={
+                      isAdvancedTransaction && isGasLimitManual
+                        ? values.gasLimitField
+                        : values.gasLimitEstimated
+                    }
+                    gasPriceToUse={
+                      isAdvancedTransaction ? values.gasPriceField : values.gasPriceSlider
+                    }
+                    network={values.network}
                     values={values}
                     fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
                   />
                   {/* TRANSLATE THIS */}
                 </label>
-                {!values.formikState.isAdvancedTransaction && (
+                {!isAdvancedTransaction && (
                   <GasPriceSlider
                     transactionFieldValues={values}
                     handleChange={(e: string) => {
-                      handleGasEstimate();
-                      handleChange(e);
+                      // handleGasEstimate();
+                      // handleChange(e);
                     }}
-                    gasPrice={values.formikState.gasPriceSlider}
-                    gasEstimates={values.formikState.gasEstimates}
+                    gasPrice={values.gasPriceSlider}
+                    gasEstimates={values.gasEstimates}
                   />
                 )}
               </fieldset>
@@ -353,9 +309,9 @@ export default function SendAssetsForm({
                   onClick={toggleAdvancedOptions}
                   className="SendAssetsForm-advancedOptions-button"
                 >
-                  {values.formikState.isAdvancedTransaction ? 'Hide' : 'Show'} Advanced Options
+                  {isAdvancedTransaction ? 'Hide' : 'Show'} Advanced Options
                 </Button>
-                {values.formikState.isAdvancedTransaction && (
+                {isAdvancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
                       <Field name="isGasLimitManual" type="checkbox" value={true} />
@@ -367,12 +323,12 @@ export default function SendAssetsForm({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
                         <Field
-                          name="formikState.gasPriceField"
+                          name="gasPriceField"
                           validate={validateGasPriceField}
-                          render={({ field, form }: FieldProps<ITxFields>) => (
+                          render={({ field, form }: FieldProps<IFormikFields>) => (
                             <GasPriceField
                               onChange={(option: string) => {
-                                form.setFieldValue('formikState.gasPriceField', option);
+                                form.setFieldValue('gasPriceField', option);
                               }}
                               name={field.name}
                               value={field.value}
@@ -383,12 +339,12 @@ export default function SendAssetsForm({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
                         <Field
-                          name="formikState.gasLimitField"
+                          name="gasLimitField"
                           validate={validateGasLimitField}
-                          render={({ field, form }: FieldProps<ITxFields>) => (
+                          render={({ field, form }: FieldProps<IFormikFields>) => (
                             <GasLimitField
                               onChange={(option: string) => {
-                                form.setFieldValue('formikState.gasLimitField', option);
+                                form.setFieldValue('gasLimitField', option);
                               }}
                               name={field.name}
                               value={field.value}
@@ -399,12 +355,12 @@ export default function SendAssetsForm({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce">Nonce (?)</label>
                         <Field
-                          name="formikState.nonceField"
+                          name="nonceField"
                           validate={validateNonceField}
-                          render={({ field, form }: FieldProps<ITxFields>) => (
+                          render={({ field, form }: FieldProps<IFormikFields>) => (
                             <NonceField
                               onChange={(option: string) => {
-                                form.setFieldValue('formikState.nonceField', option);
+                                form.setFieldValue('nonceField', option);
                               }}
                               name={field.name}
                               value={field.value}
@@ -414,35 +370,33 @@ export default function SendAssetsForm({
                       </div>
                     </div>
                     <div className="SendAssetsForm-errors">
-                      {errors.formikState &&
-                        errors.formikState.gasPriceField && (
-                          <InlineErrorMsg>{errors.formikState.gasPriceField}</InlineErrorMsg>
+                      {errors &&
+                        errors.gasPriceField && (
+                          <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
                         )}
-                      {errors.formikState &&
-                        errors.formikState.gasLimitField && (
-                          <InlineErrorMsg>{errors.formikState.gasLimitField}</InlineErrorMsg>
+                      {errors &&
+                        errors.gasLimitField && (
+                          <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
                         )}
-                      {errors.formikState &&
-                        errors.formikState.nonceField && (
-                          <InlineErrorMsg>{errors.formikState.nonceField}</InlineErrorMsg>
-                        )}
+                      {errors &&
+                        errors.nonceField && <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>}
                     </div>
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
-                      <Field
-                        name="transactionData.data"
+                      {/*<Field
+                        name="txDataField"
                         validate={validateDataField}
-                        render={({ field, form }: FieldProps<ITxFields>) => (
+                        render={({ field, form }: FieldProps<IFormikFields>) => (
                           <DataField
                             onChange={(option: string) => {
-                              form.setFieldValue('transactionData.data', option);
+                              form.setFieldValue('txDataField', option);
                             }}
-                            errors={errors.transactionData && errors.transactionData.data}
+                            errors={errors.txDataField}
                             name={field.name}
                             value={field.value}
                           />
                         )}
-                      />
+                      />*/}
                     </fieldset>
                     <div className="SendAssetsForm-advancedOptions-content-output">
                       0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~=
@@ -453,7 +407,13 @@ export default function SendAssetsForm({
                 )}
               </div>
 
-              <Button type="submit" onClick={submitForm} className="SendAssetsForm-next">
+              <Button
+                type="submit"
+                onClick={() => {
+                  submitForm();
+                }}
+                className="SendAssetsForm-next"
+              >
                 Next{/* TRANSLATE THIS */}
               </Button>
             </Form>

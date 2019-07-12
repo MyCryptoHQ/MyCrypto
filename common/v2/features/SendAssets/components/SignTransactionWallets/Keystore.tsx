@@ -1,38 +1,26 @@
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import React, { Component } from 'react';
+import { ethers, utils } from 'ethers';
+
 import { Input } from 'components/ui';
 import Spinner from 'components/ui/Spinner';
-import { ethers, utils } from 'ethers';
-import { notificationsActions } from 'features/notifications';
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+// import { notificationsActions } from 'features/notifications';
 import { isKeystorePassRequired } from 'libs/wallet';
-import React, { Component } from 'react';
 import translate, { translateRaw } from 'translations';
-import { ISendState, ITxFields } from '../../types';
+
+import { ISignComponentProps } from '../../types';
 import './Keystore.scss';
 
-//Test Transaction
-const transaction = {
-  nonce: 0,
-  gasLimit: 21000,
-  gasPrice: utils.bigNumberify('20000000000'),
-  to: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
-  // ... or supports ENS names
-  value: utils.parseEther('2'),
-  data: '0x',
-  // This ensures the transaction cannot be replayed on different networks
-  chainId: ethers.utils.getNetwork('ropsten').chainId
-};
-
-interface Props {
-  stateValues: ISendState;
-  transactionFields: ITxFields;
-  wallet: any;
-  isWalletPending: boolean;
-  isPasswordPending: boolean;
-  onChange(value: KeystoreValueState): void;
-  onUnlock(param: any): void;
-  showNotification(level: string, message: string): notificationsActions.TShowNotification;
-  onNext(signedTransaction: string): void;
-}
+// interface Props {
+//   transactionFields: IFormikFields;
+//   wallet: any;
+//   isWalletPending: boolean;
+//   isPasswordPending: boolean;
+//   onChange(value: KeystoreValueState): void;
+//   onUnlock(param: any): void;
+//   showNotification(level: string, message: string): notificationsActions.TShowNotification;
+//   onNext(signedTransaction: string): void;
+// }
 
 export interface KeystoreValueState {
   file: string;
@@ -65,7 +53,10 @@ function isValidFile(rawFile: File): boolean {
   return fileType === '' || fileType === 'application/json';
 }
 
-export default class SignTransactionKeystore extends Component<Props, KeystoreValueState> {
+export default class SignTransactionKeystore extends Component<
+  ISignComponentProps,
+  KeystoreValueState
+> {
   public state: KeystoreValueState = {
     file: '',
     password: '',
@@ -77,7 +68,8 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
   };
 
   public render() {
-    const { isWalletPending } = this.props;
+    // const { isWalletPending } = this.props;
+    const isWalletPending = false;
     const { file, password, filename, walletState, hasCorrectPassword, isSigning } = this.state;
     const passReq = file ? isPassRequired(file) : true;
     const unlockDisabled = !file || (passReq && !password);
@@ -181,7 +173,8 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
   }
 
   private checkPublicKeyMatchesCache(walletAddres: string) {
-    const localCacheAddress = utils.getAddress(this.props.transactionFields.account.address);
+    const { rawTransaction: { from: senderAddress } } = this.props;
+    const localCacheAddress = utils.getAddress(senderAddress);
     const keystoreFileAddress = walletAddres;
 
     if (localCacheAddress === keystoreFileAddress) {
@@ -194,12 +187,13 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
   }
 
   private async signTransaction() {
+    const { rawTransaction } = this.props;
     const signerWallet = await ethers.Wallet.fromEncryptedJson(
       this.state.file,
       this.state.password
     );
-    const rawSignedTransaction: any = await signerWallet.sign(transaction);
-    this.props.onNext(rawSignedTransaction);
+    const rawSignedTransaction: any = await signerWallet.sign(rawTransaction);
+    this.props.onSuccess(rawSignedTransaction);
   }
   private onPasswordChange = (e: any) => {
     this.setState({
@@ -229,7 +223,7 @@ export default class SignTransactionKeystore extends Component<Props, KeystoreVa
     if (isValidFile(inputFile)) {
       fileReader.readAsText(inputFile, 'utf-8');
     } else {
-      this.props.showNotification('danger', translateRaw('ERROR_3'));
+      // this.props.showNotification('danger', translateRaw('ERROR_3'));
     }
   };
 }

@@ -1,8 +1,10 @@
 import React from 'react';
+
+import { ISignComponentProps } from '../../types';
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import './Trezor.scss';
 
-export default function SignTransactionTrezor() {
+export default function SignTransactionTrezor({  }: ISignComponentProps) {
   return (
     <div className="SignTransaction-panel">
       <div className="SignTransactionTrezor-title">Sign the Transaction with your Trezor</div>

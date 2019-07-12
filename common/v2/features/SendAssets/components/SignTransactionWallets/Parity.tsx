@@ -1,5 +1,7 @@
 import React from 'react';
 
-export default function SignTransactionParity() {
+import { ISignComponentProps } from '../../types';
+
+export default function SignTransactionParity({  }: ISignComponentProps) {
   return <div>Sign Transaction with Parity</div>;
 }

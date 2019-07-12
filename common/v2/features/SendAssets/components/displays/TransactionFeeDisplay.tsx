@@ -2,29 +2,23 @@ import BN from 'bn.js';
 import React from 'react';
 import { getBaseAssetSymbolByNetwork } from 'v2/libs/networks/networks';
 import { fromWei, gasPriceToBase } from 'v2/libs/units';
-import { FormikFormState } from '../../types';
 
 interface Props {
-  values: FormikFormState;
+  gasLimitToUse: string;
+  gasPriceToUse: string;
+  network: object;
   fiatAsset: { fiat: string; value: string; symbol: string };
 }
 
-function TransactionFeeDisplay({ values, fiatAsset }: Props) {
-  const gasLimitToUse =
-    values.formikState.isAdvancedTransaction && values.formikState.isGasLimitManual
-      ? values.formikState.gasLimitField
-      : values.formikState.gasLimitEstimated;
-  const gasPriceToUse = values.formikState.isAdvancedTransaction
-    ? values.formikState.gasPriceField
-    : values.formikState.gasPriceSlider;
+function TransactionFeeDisplay({ gasLimitToUse, gasPriceToUse, network, fiatAsset }: Props) {
   const transactionFeeWei: BN = gasPriceToBase(
     parseFloat(gasPriceToUse) * parseFloat(gasLimitToUse)
   );
   const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
   const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(4);
   let baseAssetSymbol: string | undefined;
-  if (values.sharedConfig.senderNetwork) {
-    baseAssetSymbol = getBaseAssetSymbolByNetwork(values.sharedConfig.senderNetwork);
+  if (network) {
+    baseAssetSymbol = getBaseAssetSymbolByNetwork(network);
   }
   const baseAsset: string = !baseAssetSymbol ? 'Ether' : baseAssetSymbol;
 
