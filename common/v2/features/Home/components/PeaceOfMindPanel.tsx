@@ -92,8 +92,8 @@ const ContentItemWrapper = styled.div`
 `;
 
 const ContentItemImage = styled.img`
-  width: 112px;
-  height: 112px;
+  height: 138px;
+  width: auto;
   object-fit: contain;
 
   @media (max-width: ${SCREEN_MD}) {
@@ -125,7 +125,7 @@ const ContentItemDescription = styled.p`
   }
   @media (max-width: ${SCREEN_SM}) {
     margin-top: 17px;
-    font-size: 16px;
+    font-size: 18px;
     max-width: 244px;
   }
 `;

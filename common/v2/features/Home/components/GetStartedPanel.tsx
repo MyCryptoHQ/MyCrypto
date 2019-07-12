@@ -140,7 +140,7 @@ const ActionCardWrapper = styled.div`
 `;
 
 const LinkWrapper = styled(Link)`
-  padding: 1vw 2vw
+  padding: 1vw 2vw;
   width: 100%;
   display: flex;
   flex-direction: row;
