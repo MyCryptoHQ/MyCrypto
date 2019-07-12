@@ -9,6 +9,7 @@ export interface ProviderState {
   deleteNetworks(uuid: string): void;
   createNetworksNode(uuid: string, nodeData: NodeOptions): void;
   updateNetworks(uuid: string, networksData: ExtendedNetwork): void;
+  getNetworkByName(name: string): Network | undefined;
 }
 
 export const NetworksContext = createContext({} as ProviderState);
@@ -39,6 +40,10 @@ export class NetworksProvider extends Component {
     updateNetworks: (uuid: string, networksData: ExtendedNetwork) => {
       service.updateNetworks(uuid, networksData);
       this.getNetworks();
+    },
+    getNetworkByName: (name: string): Network | undefined => {
+      const { networks } = this.state;
+      return networks.find((network: Network) => network.name === name);
     }
   };
 

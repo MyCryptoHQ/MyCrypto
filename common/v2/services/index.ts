@@ -15,4 +15,5 @@ export * from './ShapeShift';
 export * from './AddressBook';
 export { fetchGasPriceEstimates, getDefaultEstimates } from './Gas';
 export { getNonce } from './Nonce';
+export * from './useApi';
 export * from './types';

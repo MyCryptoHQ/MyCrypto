@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 import { DeepPartial } from 'shared/types/util';
-import { ITxFields, SendState } from 'v2/features/SendAssets/types';
+import { IFormikFields, SendState } from 'v2/features/SendAssets/types';
 import { getAssetByTicker } from 'v2/libs/assets';
 import { Asset } from 'v2/services/Asset/types';
 import { Network } from 'v2/services/Network/types';
@@ -12,9 +12,9 @@ import { IHexStrTransaction, IHexStrWeb3Transaction } from './typings';
 import { encodeTransfer } from './utils/token';
 
 export const processFormDataToWeb3Tx = (
-  formData: ITxFields
+  formData: IFormikFields
 ): IHexStrWeb3Transaction | undefined => {
-  const symbol = formData.asset!.symbol;
+  const symbol = formData.asset.symbol;
   const asset: Asset | undefined = getAssetByTicker(symbol);
 
   const txFields = formData;
@@ -29,11 +29,12 @@ export const processFormDataToWeb3Tx = (
     return undefined;
   }
 
+  let rawTransaction;
   if (asset.type === 'base') {
     if (!asset.decimal) {
       return undefined;
     }
-    const rawTransaction: IHexStrWeb3Transaction = {
+    rawTransaction: IHexStrWeb3Transaction = {
       from: txFields.account.address,
       to: txFields.recipientAddress,
       value: txFields.amount
@@ -47,13 +48,12 @@ export const processFormDataToWeb3Tx = (
       nonce: txFields.isAdvancedTransaction ? txFields.nonceField : txFields.nonceEstimated,
       chainId: network.chainId ? network.chainId : 1
     };
-    return rawTransaction;
   } else if (asset.type === 'erc20') {
     if (!asset.contractAddress || !asset.decimal) {
       return undefined;
     }
 
-    const rawTransaction: IHexStrWeb3Transaction = {
+    rawTransaction: IHexStrWeb3Transaction = {
       from: txFields.account.address,
       to: asset.contractAddress,
       value: '0x0',
@@ -70,8 +70,8 @@ export const processFormDataToWeb3Tx = (
       nonce: txFields.isAdvancedTransaction ? txFields.nonceField : txFields.nonceEstimated,
       chainId: network.chainId ? network.chainId : 1
     };
-    return rawTransaction;
   }
+  return rawTransaction;
 };
 
 export const processFormDataToTx = (

@@ -1,8 +1,10 @@
 import React from 'react';
+
+import { ISignComponentProps } from '../../types';
 import './Ledger.scss';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
-export default function SignTransactionLedger() {
+export default function SignTransactionLedger({  }: ISignComponentProps) {
   return (
     <div className="SignTransaction-panel">
       <div className="SignTransactionLedger-title">Sign the Transaction with your Ledger</div>

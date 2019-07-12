@@ -6,7 +6,7 @@ import { translateRaw } from 'translations';
 import { InlineErrorMsg } from 'v2/components';
 import { getENSTLDForChain } from 'v2/libs/ens/networkConfigs';
 import { isValidENSName } from 'v2/libs/validators';
-import { FormikFormState } from '../../types';
+import { IFormikFields } from '../../types';
 
 /*
   Eth address field to be used within a Formik Form
@@ -19,7 +19,7 @@ interface Props {
   fieldName: string;
   touched?: boolean;
   placeholder?: string;
-  values: FormikFormState;
+  chainId: number;
   handleENSResolve?(name: string): Promise<void>;
 }
 
@@ -27,7 +27,7 @@ function ETHAddressField({
   fieldName,
   error,
   touched,
-  values,
+  chainId,
   placeholder = 'Eth Address',
   handleENSResolve
 }: Props) {
@@ -55,8 +55,8 @@ function ETHAddressField({
             {...field}
             placeholder={placeholder}
             onBlur={e => {
-              if (values && values.sharedConfig.senderNetwork) {
-                const ensTLD = getENSTLDForChain(values.sharedConfig.senderNetwork.chainId);
+              if (chainId) {
+                const ensTLD = getENSTLDForChain(chainId);
                 const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
                 form.setFieldValue('resolvedNSAddress', '');
                 if (isENSAddress && handleENSResolve) {

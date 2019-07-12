@@ -1,121 +1,70 @@
-import { GasEstimates } from 'v2/api/gas';
-import { WalletName } from 'v2/config/data';
-import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
-import { Asset, assetMethod } from 'v2/services/Asset/types';
-import { IAsset } from 'v2/types';
+import { FunctionComponent } from 'react';
 
-export interface FormikFormState {
-  transactionData: {
-    to: string;
-    gasLimit: string;
-    gasPrice: string;
-    nonce: string;
-    data: string;
-    value: string;
-    chainId: undefined;
-  };
-  sharedConfig: {
-    senderAddress: string;
-    senderAddressLabel: string;
-    senderWalletBalanceBase: string;
-    senderWalletBalanceToken: string;
-    senderAccountType: string;
-    senderNetwork: Network | undefined;
-    asset: IAsset | undefined;
-    assetNetwork: Network | undefined;
-    assetSymbol: string;
-    assetType: undefined;
-    dPath: string;
-    recipientAddressLabel: string;
-    recipientResolvedNSAddress: string;
-  };
-  transaction: {
-    serialized: string;
-    signed: string;
-    txHash: string;
-  };
-  formikState: {
-    gasPriceSlider: string;
-    gasPriceField: string;
-    gasLimitField: string;
-    gasLimitEstimated: string;
-    nonceEstimated: string;
-    nonceField: string;
-    isGasLimitManual: boolean;
-    gasEstimates: {
-      fastest: number;
-      fast: number;
-      standard: number;
-      isDefault: boolean;
-      safeLow: number;
-      time: number;
-      chainId: number;
-    };
-    isResolvingNSName: false;
-    isAdvancedTransaction: false;
-  };
+import { GasEstimates } from 'v2/api/gas';
+import { Asset } from 'v2/services/Asset/types';
+import { IAsset } from 'v2/types';
+import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
+
+export interface ITxObject {
+  readonly to: string;
+  readonly from: string;
+  readonly gasLimit: string;
+  readonly gasPrice: string;
+  readonly nonce: string;
+  readonly data: string;
+  readonly value: string;
+  readonly chainId: number;
 }
-export interface ITxFields {
-  asset: IAsset | undefined;
+
+export interface ITxConfig {
+  readonly gasLimit: string; // Move to BN
+  readonly gasPrice: string; // Move to BN
+  readonly nonce: string;
+  readonly amount: string; // Move to BN
+  readonly data: string;
+  readonly recipientAddress: string; // Can't be an ExtendedAddressBook since recipient may not be registered
+  readonly senderAccount: IExtendedAccount;
+  readonly asset: IAsset | Asset;
+  readonly network?: Network;
+}
+
+export interface ITxReceipt {
+  [index: string]: any;
+}
+
+export interface IFormikFields {
+  asset: IAsset | Asset;
   recipientAddress: string;
   amount: string;
   account: IExtendedAccount;
-  data: string;
+  txDataField: string;
   gasLimitEstimated: string;
   gasPriceSlider: string;
   nonceEstimated: string;
   gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
   gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
   nonceField: string; // Use only if user has input a manual nonce value.
-
-  isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-  accountType: WalletName | undefined; // Type of wallet selected.
-  network: Network | undefined;
   gasEstimates: GasEstimates;
-  resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
-  isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
+  resolvedENSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
 }
 
-export interface ISendState {
-  step: number;
-  transactionFields: ITxFields;
-  recipientAddressLabel: string; //  Recipient-address label found in address book.
-  asset: IAsset | Asset | undefined;
-  assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
-  // isFetchingAccountValue: boolean;
-  // isAddressLabelValid: boolean;
-  // isFetchingAssetPricing: boolean;
-  // isEstimatingGasLimit: boolean;
-  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
+export interface ISignComponentProps {
+  rawTransaction: ITxObject;
+  children?: never;
+  onSuccess(receipt: ITxReceipt): void;
 }
 
-export interface SendState {
-  step: number;
-  transactionData: {
-    to: string;
-    gasLimit: string;
-    gasPrice: string;
-    nonce: string;
-    data: string;
-    value: string;
-    chainId: undefined;
-  };
-  sharedConfig: {
-    senderAddress: string;
-    senderAddressLabel: string;
-    senderWalletBalanceBase: string;
-    senderWalletBalanceToken: string;
-    senderAccountType: string;
-    senderNetwork: string;
-    assetSymbol: string;
-    assetType: undefined;
-    dPath: string;
-    recipientAddressLabel: string;
-    recipientResolvedNSAddress: string;
-  };
-  transaction: {
-    serialized: string;
-    signed: string;
-    txHash: string;
-  };
+export interface IStepComponentProps {
+  txConfig: ITxConfig;
+  // txReceipt?: ITxReceipt;
+  children?: never;
+  onComplete(data: IFormikFields | ITxReceipt | null): void;
+}
+
+export type TStepAction = (payload: any, after: () => void) => void;
+
+export interface IPath {
+  label: string;
+  component: FunctionComponent;
+  action: TStepAction;
 }
