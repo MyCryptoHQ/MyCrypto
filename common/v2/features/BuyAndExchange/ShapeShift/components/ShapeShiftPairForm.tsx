@@ -53,7 +53,9 @@ const changeOtherAmountField = (
   order: string[],
   otherFieldName: string
 ) => {
-  const { target: { value } } = e;
+  const {
+    target: { value }
+  } = e;
   const pair = order
     .map(name => props.values[name])
     .join('_')
@@ -96,7 +98,9 @@ const handleAssetSelect = (name: string, value: string, props: any) => {
 };
 
 const setFixedFloat = (e: React.ChangeEvent<any>, props: any) => {
-  const { target: { name, value } } = e;
+  const {
+    target: { name, value }
+  } = e;
 
   props.setFieldValue(name, parseFloat(value).toFixed(7));
 };
@@ -188,12 +192,11 @@ export default function ShapeShiftPairForm({ rates, assets, onSubmit }: Props) {
                 </button>
               </fieldset>
             </Form>
-            {props.touched.depositAmount &&
-              props.errors.depositAmount && (
-                <Warning highlighted={true}>
-                  <ErrorMessage name="depositAmount" />
-                </Warning>
-              )}
+            {props.touched.depositAmount && props.errors.depositAmount && (
+              <Warning highlighted={true}>
+                <ErrorMessage name="depositAmount" />
+              </Warning>
+            )}
           </section>
         );
       }}

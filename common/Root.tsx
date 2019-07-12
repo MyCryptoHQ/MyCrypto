@@ -1,12 +1,3 @@
-import React, { Component } from 'react';
-import { setConfig } from 'react-hot-loader';
-import { hot } from 'react-hot-loader/root';
-import { connect, Provider } from 'react-redux';
-import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-router-dom';
-import { Store } from 'redux';
-import { ThemeProvider } from 'styled-components';
-
-import { Theme } from 'config';
 import {
   ErrorScreen,
   LogOutPrompt,
@@ -15,6 +6,7 @@ import {
   RedirectWithQuery,
   RouteNotFound
 } from 'components';
+import { Theme } from 'config';
 import {
   BroadcastTx,
   CheckTransaction,
@@ -29,15 +21,21 @@ import {
 import { configMetaSelectors, configSelectors } from 'features/config';
 import { AppState } from 'features/reducers';
 import { transactionMetaActions } from 'features/transaction';
-
+import React, { Component } from 'react';
+import { setConfig } from 'react-hot-loader';
+import { hot } from 'react-hot-loader/root';
+import { connect, Provider } from 'react-redux';
+import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-router-dom';
+import { Store } from 'redux';
+import { ThemeProvider } from 'styled-components';
+import { NewAppReleaseModal, PrivateRoute } from 'v2/components';
+import { appRoutes, DevTools, Home } from 'v2/features';
+import { DevModeProvider, LockScreenProvider, useDevMode } from 'v2/providers';
+import { HomepageChoiceRedirect } from 'v2/routing';
+import { AnalyticsService } from 'v2/services';
 // v2
 import { GAU_THEME } from 'v2/theme';
 import { IS_DEV, IS_PROD } from 'v2/utils';
-import { HomepageChoiceRedirect } from 'v2/routing';
-import { PrivateRoute, NewAppReleaseModal } from 'v2/components';
-import { AnalyticsService } from 'v2/services';
-import { appRoutes, DevTools, Home } from 'v2/features';
-import { DevModeProvider, LockScreenProvider, useDevMode } from 'v2/providers';
 import AppProviders from './AppProviders';
 
 interface OwnProps {
@@ -197,7 +195,7 @@ const LegacyRoutes = withRouter(props => {
 });
 
 interface AppContainerProps {
-  error?: Error | undefined;
+  error?: Error | undefined | null;
 }
 
 const AppContainer = (props: AppContainerProps) => {
@@ -216,7 +214,9 @@ const AppContainer = (props: AppContainerProps) => {
             {/* To avoid fiddling with layout we provide a complete route to home */}
             <Route path="/" component={Home} exact={true} />
             <Route path="/home" component={Home} exact={true} />
-            {appRoutes.map((config, idx) => <PrivateRoute key={idx} {...config} />)}
+            {appRoutes.map((config, idx) => (
+              <PrivateRoute key={idx} {...config} />
+            ))}
             <Route path="/account" component={SendTransaction} exact={true} />
             <Route path="/generate" component={GenerateWallet} />
             <Route path="/contracts" component={Contracts} />
@@ -275,9 +275,12 @@ const mapStateToProps = (state: AppState): StateProps => ({
   theme: configMetaSelectors.getTheme(state)
 });
 
-const ConnectedRoot = connect(mapStateToProps, {
-  setUnitMeta: transactionMetaActions.setUnitMeta
-})(RootClass);
+const ConnectedRoot = connect(
+  mapStateToProps,
+  {
+    setUnitMeta: transactionMetaActions.setUnitMeta
+  }
+)(RootClass);
 
 // Silence RHL 'reconciliation failed' errors
 // https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021

@@ -533,12 +533,15 @@ function mapStateToProps(state: AppState, ownProps: Props) {
   };
 }
 
-export default connect(mapStateToProps, {
-  unlockKeystore: walletActions.unlockKeystore,
-  unlockMnemonic: walletActions.unlockMnemonic,
-  unlockPrivateKey: walletActions.unlockPrivateKey,
-  unlockWeb3: walletActions.unlockWeb3,
-  setWallet: walletActions.setWallet,
-  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
-  showNotification: notificationsActions.showNotification
-})(WalletDecrypt) as React.ComponentClass<OwnProps>;
+export default connect(
+  mapStateToProps,
+  {
+    unlockKeystore: walletActions.unlockKeystore,
+    unlockMnemonic: walletActions.unlockMnemonic,
+    unlockPrivateKey: walletActions.unlockPrivateKey,
+    unlockWeb3: walletActions.unlockWeb3,
+    setWallet: walletActions.setWallet,
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+    showNotification: notificationsActions.showNotification
+  }
+)(WalletDecrypt) as React.ComponentClass<OwnProps>;

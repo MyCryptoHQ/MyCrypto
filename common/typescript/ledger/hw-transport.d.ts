@@ -97,7 +97,7 @@ declare module '@ledgerhq/hw-transport' {
   }
 
   export type FunctionPropertyNames<T> = {
-    [K in keyof T]: T[K] extends Function ? K : never
+    [K in keyof T]: T[K] extends Function ? K : never;
   }[keyof T];
 
   export type ExtractPromise<T> = T extends Promise<infer U> ? U : T;
