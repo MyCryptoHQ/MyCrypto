@@ -1,16 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
-
-import translate from 'translations';
-import { BREAK_POINTS } from 'v2/theme';
-import NotificationWrapper from './NotificationWrapper';
-import { KNOWLEDGE_BASE_URL } from 'v2/config';
-
 // Legacy
 import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
-import howBuyIcon from 'common/assets/images/icn-how-do-i-buy-crypto.svg';
 import dontLoseCryptoIcon from 'common/assets/images/icn-don-t-lose-crypto.svg';
+import howBuyIcon from 'common/assets/images/icn-how-do-i-buy-crypto.svg';
 import questionsIcon from 'common/assets/images/icn-questions.svg';
+import React from 'react';
+import styled from 'styled-components';
+import translate from 'translations';
+import { KNOWLEDGE_BASE_URL } from 'v2/config';
+import { BREAK_POINTS } from 'v2/theme';
+import NotificationWrapper from './NotificationWrapper';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -23,7 +21,6 @@ const ResourceItemWrapper = styled.a`
   width: 140px;
   font-weight: normal;
   font-size: 16px;
-
   @media (max-width: ${SCREEN_XS}) {
     font-size: 12px;
     max-width: 105px;

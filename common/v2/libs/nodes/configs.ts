@@ -393,6 +393,14 @@ export const NODE_CONFIGS: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
       service: 'node2.webchain.network',
       url: 'https://node2.webchain.network'
     }
+  ],
+  AUX: [
+    {
+      name: makeNodeName('AUX', 'auxilium'),
+      type: 'rpc',
+      service: 'auxilium.global',
+      url: 'https://rpc.auxilium.global'
+    }
   ]
 };
 
