@@ -1,5 +1,5 @@
-import { isWeb3Node, setupWeb3Node, Web3Service } from 'v2/libs/nodes/web3';
-import { Web3Wallet } from 'v2/libs/wallet';
+import { translateRaw } from 'translations';
+
 import {
   stripWeb3Network,
   makeWeb3Network,
@@ -7,13 +7,15 @@ import {
   shepherd,
   makeProviderConfig
 } from 'libs/nodes';
-import { CustomNodeConfig, NodeOptions, Network } from 'v2/services/Network';
-import { getNetworkByChainId, createNode, getNodeByName } from 'v2/libs';
-import { translateRaw } from 'translations';
-
-import { updateSetting, readAllSettings } from 'v2/services/Settings/Settings';
-
-//#region Web3
+import { isWeb3Node, setupWeb3Node, Web3Service, Web3Wallet } from 'v2/services/EthService';
+import { CustomNodeConfig, NodeOptions, Network } from 'v2/types';
+import {
+  getNetworkByChainId,
+  createNode,
+  getNodeByName,
+  updateSetting,
+  readAllSettings
+} from 'v2/services/Store';
 
 let web3Added = true;
 

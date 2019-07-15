@@ -5,7 +5,7 @@ import { Typography } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { ContentPanel, Button, RouterLink } from 'v2/components';
-import { SettingsContext } from 'v2/providers';
+import { SettingsContext } from 'v2/services/Store';
 import Downloader from './Downloader';
 
 const CenteredContentPanel = styled(ContentPanel)`

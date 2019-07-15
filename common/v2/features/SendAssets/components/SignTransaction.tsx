@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { DeepPartial } from 'shared/types/util';
-import { WalletName } from 'v2/config/data';
+import { WalletName } from 'v2/types';
 import { ISendState, ITxFields } from '../types';
 import './SignTransaction.scss';
 import {
@@ -10,8 +10,6 @@ import {
   SignTransactionSafeT,
   SignTransactionTrezor
 } from './SignTransactionWallets';
-
-type WalletType = WalletName;
 
 interface Props {
   stateValues: ISendState;
@@ -24,7 +22,7 @@ interface Props {
 export default class SignTransaction extends Component<Props> {
   public render() {
     const { stateValues, transactionFields, onNext, updateState } = this.props;
-    const currentWalletType: WalletType = transactionFields.account.wallet;
+    const currentWalletType: WalletName = transactionFields.account.wallet;
 
     switch (currentWalletType) {
       case 'privateKey':

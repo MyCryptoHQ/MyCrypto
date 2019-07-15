@@ -2,9 +2,9 @@ import React from 'react';
 import { List, Address, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { ExtendedAccount } from 'v2/services/Account';
-import { truncate, getLabelByAccount } from 'v2/libs';
-import { AddressBook } from 'v2/services/AddressBook/types';
+import { AddressBook, ExtendedAccount } from 'v2/types';
+import { truncate } from 'v2/utils';
+import { getLabelByAccount } from 'v2/services/Store';
 
 const AccountContainer = styled.div`
   display: flex;

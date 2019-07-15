@@ -6,10 +6,9 @@ import { Amount, DashboardPanel } from 'v2/components';
 import TransactionLabel from './TransactionLabel';
 import './RecentTransactionList.scss';
 
-// Legacy
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
-import { AddressBook, ExtendedAccount, TransactionData } from 'v2/services';
-import { truncate } from 'v2/libs';
+import { truncate } from 'v2/utils';
+import { ExtendedAccount, TransactionData, AddressBook } from 'v2/types';
 
 interface Props {
   className?: string;

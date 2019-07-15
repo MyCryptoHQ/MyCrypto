@@ -1,8 +1,9 @@
-import { ITxFields } from '../../types';
-import { gasPriceToBase, fromWei } from 'v2/libs/units';
-import BN from 'bn.js';
-import { getBaseAssetSymbolByNetwork } from 'v2/libs/networks/networks';
 import React from 'react';
+import BN from 'bn.js';
+
+import { gasPriceToBase, fromWei } from 'v2/services/EthService';
+import { getBaseAssetSymbolByNetwork } from 'v2/services/Store';
+import { ITxFields } from '../../types';
 
 interface Props {
   values: ITxFields;

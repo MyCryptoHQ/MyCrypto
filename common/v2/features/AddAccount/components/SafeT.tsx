@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { SecureWalletName } from 'config';
+import { SecureWalletName } from 'v2/types';
 import translate, { translateRaw } from 'translations';
 import { SafeTWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';

@@ -1,4 +1,4 @@
-import { IWallet, getPrivKeyWallet, IFullWallet } from 'v2/libs/wallet';
+import { IWallet, getPrivKeyWallet, IFullWallet } from 'v2/services/EthService';
 import { translateRaw } from 'translations';
 import { PrivateKeyUnlockParams } from './types';
 

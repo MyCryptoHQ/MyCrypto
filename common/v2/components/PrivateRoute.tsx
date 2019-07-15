@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { AccountContext } from 'v2/providers';
+import { AccountContext } from 'v2/services/Store';
 import { Layout } from './Layout';
 
 interface PrivateRouteProps {
