@@ -1,5 +1,4 @@
-export const GITHUB_RELEASES_URL =
-  'https://api.github.com/repos/MyCryptoHQ/MyCrypto/releases/latest';
+export const GITHUB_RELEASES_URL = 'https://github.proxy.mycryptoapi.com/';
 
 export enum OS {
   WINDOWS = 'windows',
