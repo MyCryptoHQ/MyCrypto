@@ -65,14 +65,18 @@ const ToolsNotifications = () => {
           </button>
           <button
             onClick={() => {
-              displayNotification(NotificationTemplates.onboardingPleaseUnderstand);
+              displayNotification(NotificationTemplates.onboardingPleaseUnderstand, {
+                previousNotificationClosedDate: new Date()
+              });
             }}
           >
             Onboarding Please Understand
           </button>
           <button
             onClick={() => {
-              displayNotification(NotificationTemplates.onboardingResponsible);
+              displayNotification(NotificationTemplates.onboardingResponsible, {
+                firstDashboardVisitDate: new Date()
+              });
             }}
           >
             Onboarding Responsible

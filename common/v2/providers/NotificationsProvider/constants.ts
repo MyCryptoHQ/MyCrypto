@@ -1,4 +1,10 @@
-import { saveSettingsCheck, printPaperWalletCheck, getHardwareWalletCheck } from './helpers';
+import {
+  saveSettingsCheck,
+  printPaperWalletCheck,
+  getHardwareWalletCheck,
+  onboardingPleaseUnderstandCheck,
+  onboardingResponsibleCheck
+} from './helpers';
 import { NotificationsConfigsProps } from './types';
 import {
   WalletCreatedNotification,
@@ -62,11 +68,15 @@ export const notificationsConfigs: NotificationsConfigsProps = {
   [NotificationTemplates.onboardingPleaseUnderstand]: {
     analyticsEvent: 'Onboarding Please Understand',
     layout: OnboardingPleaseUnderstandNotification,
-    dismissForever: true
+    dismissForever: true,
+    condition: onboardingPleaseUnderstandCheck,
+    preventDismisExisting: true
   },
   [NotificationTemplates.onboardingResponsible]: {
     analyticsEvent: 'Onboarding Responsible',
     layout: OnboardingResponsibleNotification,
-    dismissForever: true
+    dismissForever: true,
+    condition: onboardingResponsibleCheck,
+    preventDismisExisting: true
   }
 };

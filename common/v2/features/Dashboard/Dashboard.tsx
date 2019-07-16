@@ -1,7 +1,13 @@
 import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 
-import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
+import {
+  AccountContext,
+  AddressBookContext,
+  useDevMode,
+  NotificationsContext,
+  NotificationTemplates
+} from 'v2/providers';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenList, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
@@ -11,7 +17,17 @@ import './Dashboard.scss';
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
   const { accounts } = useContext(AccountContext);
+  const { notifications, displayNotification } = useContext(NotificationsContext);
   const { readAddressBook } = useContext(AddressBookContext);
+
+  if (
+    !notifications.find(x => x.template === NotificationTemplates.onboardingResponsible) &&
+    accounts.length > 0
+  ) {
+    displayNotification(NotificationTemplates.onboardingResponsible, {
+      firstDashboardVisitDate: new Date()
+    });
+  }
 
   return (
     <div>

@@ -38,12 +38,14 @@ export class NotificationsProvider extends Component {
 
   private displayNotification = (templateName: string, templateData?: object) => {
     // Dismiss previous notifications that need to be dismissed
-    const notificationsToDismiss = this.state.notifications.filter(
-      x => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed
-    );
-    notificationsToDismiss.forEach(dismissableNotification => {
-      this.dismissNotification(dismissableNotification);
-    });
+    if (!notificationsConfigs[templateName].preventDismisExisting) {
+      const notificationsToDismiss = this.state.notifications.filter(
+        x => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed
+      );
+      notificationsToDismiss.forEach(dismissableNotification => {
+        this.dismissNotification(dismissableNotification);
+      });
+    }
 
     // Create the notification object
     const notification: Notification = {
@@ -114,7 +116,7 @@ export class NotificationsProvider extends Component {
 
       // Return if there is a condition and it is not met
       if (shouldShowRepeatingNotification || isNonrepeatingNotification) {
-        if (notificationConfig.condition && !notificationConfig.condition()) {
+        if (notificationConfig.condition && !notificationConfig.condition(notification)) {
           return;
         }
         notification.dismissed = false;
@@ -135,7 +137,7 @@ export class NotificationsProvider extends Component {
       x =>
         !x.dismissed &&
         (notificationsConfigs[x.template].condition
-          ? notificationsConfigs[x.template].condition!()
+          ? notificationsConfigs[x.template].condition!(x)
           : true)
     );
 
