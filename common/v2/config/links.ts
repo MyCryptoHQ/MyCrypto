@@ -6,7 +6,8 @@ import {
   safeTReferralURL,
   ethercardReferralURL,
   keepkeyReferralURL,
-  steelyReferralURL
+  steelyReferralURL,
+  ETHERSCAMDB
 } from './data';
 
 interface Link {
@@ -63,7 +64,7 @@ export const productLinks: Link[] = [
     text: translateRaw('ETHER_SECURITY_LOOKUP')
   },
   {
-    link: 'https://etherscamdb.info/',
+    link: ETHERSCAMDB,
     text: translateRaw('ETHERSCAMDB')
   },
   {
