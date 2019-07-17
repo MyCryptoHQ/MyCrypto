@@ -10,7 +10,10 @@ export function getCustomNodeConfigs(state: AppState) {
 }
 
 export const getCustomNodeConfig = (state: AppState): CustomNodeConfig | undefined => {
-  const { customNodes, selectedNode: { nodeId } } = getNodes(state);
+  const {
+    customNodes,
+    selectedNode: { nodeId }
+  } = getNodes(state);
 
   const customNode = customNodes[nodeId];
   return customNode;

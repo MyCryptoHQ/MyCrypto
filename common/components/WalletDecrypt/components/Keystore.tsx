@@ -39,7 +39,10 @@ export class KeystoreDecrypt extends PureComponent {
   };
 
   public render() {
-    const { isWalletPending, value: { file, password, filename } } = this.props;
+    const {
+      isWalletPending,
+      value: { file, password, filename }
+    } = this.props;
     const passReq = isPassRequired(file);
     const unlockDisabled = !file || (passReq && !password);
 
