@@ -6,7 +6,7 @@ import {
   MiscWalletName
 } from 'v2/config/data';
 import { getWeb3ProviderInfo } from 'utils/web3';
-import { IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
+import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
 import { WalletType } from './types';
 import {
   InsecureWalletWarning,
@@ -106,7 +106,7 @@ export const STORIES = [
       SaveAndRedirect
     ],
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
-    hideFromWalletList: !IS_ELECTRON
+    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
     name: InsecureWalletName.MNEMONIC_PHRASE,
@@ -119,7 +119,7 @@ export const STORIES = [
       IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    hideFromWalletList: !IS_ELECTRON
+    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
     name: InsecureWalletName.PRIVATE_KEY,
@@ -132,7 +132,7 @@ export const STORIES = [
       IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    hideFromWalletList: !IS_ELECTRON
+    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
     name: MiscWalletName.VIEW_ONLY,
