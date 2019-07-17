@@ -102,7 +102,7 @@ export const STORIES = [
     description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
     steps: [
       NetworkSelectPanel,
-      IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning,
+      IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
@@ -116,7 +116,7 @@ export const STORIES = [
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
     steps: [
       NetworkSelectPanel,
-      IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
+      IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
     hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
@@ -129,7 +129,7 @@ export const STORIES = [
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
     steps: [
       NetworkSelectPanel,
-      IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
+      IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
     hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
