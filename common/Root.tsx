@@ -1,8 +1,6 @@
 import { hot } from 'react-hot-loader/root';
 import { setConfig } from 'react-hot-loader';
 import React, { Component } from 'react';
-import { setConfig } from 'react-hot-loader';
-import { hot } from 'react-hot-loader/root';
 import { connect, Provider } from 'react-redux';
 import { BrowserRouter, HashRouter, Route, Switch, withRouter } from 'react-router-dom';
 import { Store } from 'redux';
