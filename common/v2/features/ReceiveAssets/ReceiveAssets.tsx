@@ -2,9 +2,10 @@ import noop from 'lodash/noop';
 import React, { useContext, useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
-import { ComboBox, Copyable, Input } from '@mycrypto/ui';
+import { Copyable, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/formatters';
+import Select, { Option } from 'react-select';
 
 import { ContentPanel } from 'v2/components';
 import { Layout } from 'v2/features';
@@ -35,7 +36,12 @@ const QRDisplay = styled.div`
   width: 60%;
 `;
 
-const Label = styled.label`
+const ReceivePanel = styled(ContentPanel)`
+  width: 100%;
+  min-width: 500px;
+`;
+
+const SLabel = styled.label`
   margin-bottom: 8px;
   color: #333333;
   font-weight: normal;
@@ -53,7 +59,6 @@ const FieldsetBox = styled.div`
 
 const AssetFields = styled.div`
   margin-bottom: 15px;
-  display: flex;
   align-items: center;
 `;
 
@@ -67,17 +72,26 @@ const FullWidthInput = styled(Input)`
   width: 100%;
 `;
 
-const FullWidthComboBox = styled(ComboBox)`
+const StyledSelect = styled(Select)`
   width: 100%;
+  border-radius: 0.125em;
+  border: 0.125em solid rgba(63, 63, 68, 0.05);
+  outline: 0 0 0 0.25em rgba(0, 122, 153, 0.65);
 `;
 
 const Amount = styled.div`
-  flex: 2;
-  margin-right: 15px;
+  width: 100%;
 `;
 
 const Asset = styled.div`
-  flex: 1;
+  margin-top: 15px;
+  width: 100%;
+
+  .is-focused {
+    border-color: none;
+    outline: none;
+    box-shadow: 0 0 0 0.25em rgba(0, 122, 153, 0.65);
+  }
 `;
 
 const ErrorMessage = styled.span`
@@ -93,15 +107,15 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         .filter(asset => asset.networkId === network.id)
         .filter(asset => asset.type === 'base' || asset.type === 'erc20')
     : [];
-  const assetNames = filteredAssets.map(asset => asset.name);
-  const [chosenAssetName, setAssetName] = useState(assetNames[0]);
+  const assetOptions = filteredAssets.map(asset => ({ label: asset.name, id: asset.uuid }));
+  const [chosenAssetName, setAssetName] = useState(assetOptions[0].label);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
   const [requestAddress, setRequestAddress] = useState('');
 
   const initialValues = {
     amount: '0',
-    asset: 'ETH',
+    asset: { label: 'Ethereum', id: '7bbf42b1-9275-120b-0d0a-a788abd75ea0' },
     chainId: network ? network.chainId : 1
   };
 
@@ -122,14 +136,14 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
 
   return (
     <Layout centered={true}>
-      <ContentPanel heading="Receive Assets" icon={receiveIcon} onBack={history.goBack}>
+      <ReceivePanel heading="Receive Assets" icon={receiveIcon} onBack={history.goBack}>
         <Formik
           initialValues={initialValues}
           onSubmit={noop}
           render={({ values: { amount, chainId }, errors }: FormikProps<typeof initialValues>) => (
             <Form>
               <Fieldset>
-                <Label htmlFor="recipientAddress">Recipient Address</Label>
+                <SLabel htmlFor="recipientAddress">Recipient Address</SLabel>
                 <Field
                   name="recipientAddress"
                   component={({ field, form }: FieldProps) => (
@@ -147,7 +161,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
               </Fieldset>
               <AssetFields>
                 <Amount>
-                  <Label htmlFor="amount">Amount</Label>
+                  <SLabel htmlFor="amount">Amount</SLabel>
                   <Field
                     name="amount"
                     validate={validateAmount}
@@ -161,16 +175,20 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   />
                 </Amount>
                 <Asset>
-                  <Label htmlFor="asset">Asset</Label>
+                  <SLabel htmlFor="asset">Asset</SLabel>
                   <Field
                     name="asset"
                     render={({ field, form }: FieldProps<typeof initialValues>) => (
-                      <FullWidthComboBox
+                      <StyledSelect
+                        name="Assets"
+                        className="select-container"
+                        options={assetOptions}
                         value={field.value}
-                        items={new Set(assetNames)}
-                        onChange={({ target: { value } }) => {
-                          form.setFieldValue(field.name, value);
-                          setAssetName(value);
+                        onChange={(option: Option) => {
+                          form.setFieldValue(field.name, option);
+                          if (option.label) {
+                            setAssetName(option.label);
+                          }
                         }}
                       />
                     )}
@@ -187,7 +205,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   <>
                     <Divider />
                     <Fieldset>
-                      <Label>Payment Code</Label>
+                      <SLabel>Payment Code</SLabel>
                       <FieldsetBox>
                         <Copyable
                           text={
@@ -208,7 +226,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                       </FieldsetBox>
                     </Fieldset>
                     <Fieldset>
-                      <Label>QR Code</Label>
+                      <SLabel>QR Code</SLabel>
                       <QRDisplay>
                         <QRCode
                           data={
@@ -232,7 +250,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
             </Form>
           )}
         />
-      </ContentPanel>
+      </ReceivePanel>
     </Layout>
   );
 }
