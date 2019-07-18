@@ -28,11 +28,14 @@ export const getLabelByAccount = (account: Account): AddressBook | undefined => 
 */
 export const findNextUnusedDefaultLabel = (networkName: string): string => {
   const addressLabels: AddressBook[] = getAllAddressLabels();
-  let index = 1;
+  let index = 0;
   let isFound: AddressBook | undefined;
+  let unusedLabel: string;
   do {
-    isFound = addressLabels.find(label => label.label === `${networkName} Account ${index}`);
     index += 1;
-  } while (!isFound);
-  return `${networkName} Account ${index}`;
+    unusedLabel = `${networkName} Account ${index}`;
+    isFound = addressLabels.find(label => label.label === unusedLabel);
+  } while (isFound);
+
+  return unusedLabel;
 };

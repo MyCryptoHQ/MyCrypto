@@ -216,12 +216,17 @@ const MobileTopLeft = styled.div`
   }
 `;
 
+const MobileTopRight = styled(MobileTopLeft)`
+  visibility: hidden;
+`;
+
 const CenterImg = styled.img`
   width: 160px;
   height: 39px;
 `;
 
 const Unlock = styled.li`
+  visibility: hidden;
   display: flex;
   align-items: center;
   border-left: 1px solid #3e546d;
@@ -413,18 +418,19 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
               <CenterImg src={logo} alt="Our logo" />
             </Link>
           </div>
+          {/* Unlock button hidden for MVP purposes */}
           {/* Mobile Right */}
-          <MobileTopLeft onClick={onUnlockClick}>
+          <MobileTopRight onClick={onUnlockClick}>
             <Icon icon={drawerVisible ? 'exit' : 'unlock'} />
-          </MobileTopLeft>
+          </MobileTopRight>
           {/* Desktop Right */}
           <HeaderTopLeft>
-            <li onClick={onLanguageClick}>
-              {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
-            </li>
             <Unlock onClick={onUnlockClick}>
               <IconWrapper icon="unlock" /> Unlock
             </Unlock>
+            <li onClick={onLanguageClick}>
+              {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
+            </li>
           </HeaderTopLeft>
         </HeaderTop>
         <HeaderBottom>
