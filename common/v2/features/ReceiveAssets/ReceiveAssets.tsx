@@ -1,21 +1,20 @@
-import noop from 'lodash/noop';
 import React, { useContext, useState } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
+import noop from 'lodash/noop';
 import { Copyable, Input } from '@mycrypto/ui';
-import styled from 'styled-components';
-import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/formatters';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Select, { Option } from 'react-select';
+import styled from 'styled-components';
 
+import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/formatters';
 import { ContentPanel } from 'v2/components';
 import { AccountContext, AssetContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs/networks/networks';
-import { numberIsNotNegative, validDecimal } from 'v2/libs/validators';
+import { isValidAmount } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 import { translateRaw } from 'translations';
 
-import QRCode from './components/QRCode';
-import AccountDropdown from './components/AccountDropdown';
+import { AccountDropdown, QRCode } from './components';
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 
@@ -110,16 +109,13 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const [chosenAssetName, setAssetName] = useState(assetOptions[0].label);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
-  const [requestAddress, setRequestAddress] = useState('');
+  const [requestAddress, setRequestAddress] = useState<string | undefined>(undefined);
 
   const initialValues = {
     amount: '0',
     asset: { label: 'Ethereum', id: '7bbf42b1-9275-120b-0d0a-a788abd75ea0' },
     chainId: network ? network.chainId : 1
   };
-
-  const isValidAmount = (decimal: number) => (amount: string) =>
-    numberIsNotNegative(+amount) && validDecimal(amount, decimal);
 
   const validateAmount = (amount: any) => {
     let error;
@@ -134,7 +130,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   };
 
   return (
-    <ReceivePanel heading="Receive Assets" icon={receiveIcon} onBack={history.goBack}>
+    <ReceivePanel heading="Receive Assets" icon={receiveIcon} onBack={() => history.push('/')}>
       <Formik
         initialValues={initialValues}
         onSubmit={noop}
