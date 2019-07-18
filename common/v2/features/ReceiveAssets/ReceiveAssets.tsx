@@ -8,10 +8,9 @@ import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/format
 import Select, { Option } from 'react-select';
 
 import { ContentPanel } from 'v2/components';
-import { Layout } from 'v2/features';
 import { AccountContext, AssetContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs/networks/networks';
-import { validPositiveNumber, validDecimal } from 'v2/libs/validators';
+import { numberIsNotNegative, validDecimal } from 'v2/libs/validators';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 import { translateRaw } from 'translations';
 
@@ -120,7 +119,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   };
 
   const isValidAmount = (decimal: number) => (amount: string) =>
-    validPositiveNumber(+amount) && validDecimal(amount, decimal);
+    numberIsNotNegative(+amount) && validDecimal(amount, decimal);
 
   const validateAmount = (amount: any) => {
     let error;
@@ -135,123 +134,121 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   };
 
   return (
-    <Layout centered={true}>
-      <ReceivePanel heading="Receive Assets" icon={receiveIcon} onBack={history.goBack}>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={noop}
-          render={({ values: { amount, chainId }, errors }: FormikProps<typeof initialValues>) => (
-            <Form>
-              <Fieldset>
-                <SLabel htmlFor="recipientAddress">Recipient Address</SLabel>
+    <ReceivePanel heading="Receive Assets" icon={receiveIcon} onBack={history.goBack}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={noop}
+        render={({ values: { amount, chainId }, errors }: FormikProps<typeof initialValues>) => (
+          <Form>
+            <Fieldset>
+              <SLabel htmlFor="recipientAddress">Recipient Address</SLabel>
+              <Field
+                name="recipientAddress"
+                component={({ field, form }: FieldProps) => (
+                  <AccountDropdown
+                    name={field.name}
+                    value={field.value}
+                    accounts={accounts}
+                    onSelect={(option: IExtendedAccount) => {
+                      form.setFieldValue(field.name, option);
+                      setRequestAddress(option.address);
+                    }}
+                  />
+                )}
+              />
+            </Fieldset>
+            <AssetFields>
+              <Amount>
+                <SLabel htmlFor="amount">Amount</SLabel>
                 <Field
-                  name="recipientAddress"
-                  component={({ field, form }: FieldProps) => (
-                    <AccountDropdown
-                      name={field.name}
+                  name="amount"
+                  validate={validateAmount}
+                  render={({ field, form }: FieldProps<typeof initialValues>) => (
+                    <FullWidthInput
                       value={field.value}
-                      accounts={accounts}
-                      onSelect={(option: IExtendedAccount) => {
+                      onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
+                      placeholder="0.00"
+                    />
+                  )}
+                />
+              </Amount>
+              <Asset>
+                <SLabel htmlFor="asset">Asset</SLabel>
+                <Field
+                  name="asset"
+                  render={({ field, form }: FieldProps<typeof initialValues>) => (
+                    <StyledSelect
+                      name="Assets"
+                      className="select-container"
+                      options={assetOptions}
+                      value={field.value}
+                      onChange={(option: Option) => {
                         form.setFieldValue(field.name, option);
-                        setRequestAddress(option.address);
+                        if (option.label) {
+                          setAssetName(option.label);
+                        }
                       }}
                     />
                   )}
                 />
-              </Fieldset>
-              <AssetFields>
-                <Amount>
-                  <SLabel htmlFor="amount">Amount</SLabel>
-                  <Field
-                    name="amount"
-                    validate={validateAmount}
-                    render={({ field, form }: FieldProps<typeof initialValues>) => (
-                      <FullWidthInput
-                        value={field.value}
-                        onChange={({ target: { value } }) => form.setFieldValue(field.name, value)}
-                        placeholder="0.00"
+              </Asset>
+            </AssetFields>
+            {errors.amount && (
+              <ErrorMessage>{' ' + translateRaw('RECEIVE_FORM_ERROR')}</ErrorMessage>
+            )}
+            {parseFloat(amount) >= 0 &&
+              selectedAsset &&
+              requestAddress &&
+              network && (
+                <>
+                  <Divider />
+                  <Fieldset>
+                    <SLabel>Payment Code</SLabel>
+                    <FieldsetBox>
+                      <Copyable
+                        text={
+                          isAssetToken(selectedAsset.type) &&
+                          selectedAsset.contractAddress &&
+                          selectedAsset.decimal
+                            ? buildEIP681TokenRequest(
+                                requestAddress,
+                                selectedAsset.contractAddress,
+                                network.chainId,
+                                amount,
+                                selectedAsset.decimal
+                              )
+                            : buildEIP681EtherRequest(requestAddress, chainId, amount)
+                        }
+                        truncate={truncate}
                       />
-                    )}
-                  />
-                </Amount>
-                <Asset>
-                  <SLabel htmlFor="asset">Asset</SLabel>
-                  <Field
-                    name="asset"
-                    render={({ field, form }: FieldProps<typeof initialValues>) => (
-                      <StyledSelect
-                        name="Assets"
-                        className="select-container"
-                        options={assetOptions}
-                        value={field.value}
-                        onChange={(option: Option) => {
-                          form.setFieldValue(field.name, option);
-                          if (option.label) {
-                            setAssetName(option.label);
-                          }
-                        }}
+                    </FieldsetBox>
+                  </Fieldset>
+                  <Fieldset>
+                    <SLabel>QR Code</SLabel>
+                    <QRDisplay>
+                      <QRCode
+                        data={
+                          isAssetToken(selectedAsset.type) &&
+                          selectedAsset.contractAddress &&
+                          selectedAsset.decimal
+                            ? buildEIP681TokenRequest(
+                                requestAddress,
+                                selectedAsset.contractAddress,
+                                network.chainId,
+                                amount,
+                                selectedAsset.decimal
+                              )
+                            : buildEIP681EtherRequest(requestAddress, chainId, amount)
+                        }
                       />
-                    )}
-                  />
-                </Asset>
-              </AssetFields>
-              {errors.amount && (
-                <ErrorMessage>{' ' + translateRaw('RECEIVE_FORM_ERROR')}</ErrorMessage>
+                    </QRDisplay>
+                  </Fieldset>
+                </>
               )}
-              {parseFloat(amount) >= 0 &&
-                selectedAsset &&
-                requestAddress &&
-                network && (
-                  <>
-                    <Divider />
-                    <Fieldset>
-                      <SLabel>Payment Code</SLabel>
-                      <FieldsetBox>
-                        <Copyable
-                          text={
-                            isAssetToken(selectedAsset.type) &&
-                            selectedAsset.contractAddress &&
-                            selectedAsset.decimal
-                              ? buildEIP681TokenRequest(
-                                  requestAddress,
-                                  selectedAsset.contractAddress,
-                                  network.chainId,
-                                  amount,
-                                  selectedAsset.decimal
-                                )
-                              : buildEIP681EtherRequest(requestAddress, chainId, amount)
-                          }
-                          truncate={truncate}
-                        />
-                      </FieldsetBox>
-                    </Fieldset>
-                    <Fieldset>
-                      <SLabel>QR Code</SLabel>
-                      <QRDisplay>
-                        <QRCode
-                          data={
-                            isAssetToken(selectedAsset.type) &&
-                            selectedAsset.contractAddress &&
-                            selectedAsset.decimal
-                              ? buildEIP681TokenRequest(
-                                  requestAddress,
-                                  selectedAsset.contractAddress,
-                                  network.chainId,
-                                  amount,
-                                  selectedAsset.decimal
-                                )
-                              : buildEIP681EtherRequest(requestAddress, chainId, amount)
-                          }
-                        />
-                      </QRDisplay>
-                    </Fieldset>
-                  </>
-                )}
-            </Form>
-          )}
-        />
-      </ReceivePanel>
-    </Layout>
+          </Form>
+        )}
+      />
+    </ReceivePanel>
   );
 }
 

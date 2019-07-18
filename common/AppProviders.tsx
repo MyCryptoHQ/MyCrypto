@@ -7,7 +7,8 @@ import {
   NotificationsProvider,
   RatesProvider,
   SettingsProvider,
-  StoreProvider
+  StoreProvider,
+  AssetProvider
 } from 'v2/providers';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
@@ -18,8 +19,10 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
           <NotificationsProvider>
             <NetworksProvider>
               <RatesProvider>
-                {/* StoreProvider relies on the others and should be last */}
-                <StoreProvider>{children}</StoreProvider>
+                <AssetProvider>
+                  {/* StoreProvider relies on the others and should be last */}
+                  <StoreProvider>{children}</StoreProvider>
+                </AssetProvider>
               </RatesProvider>
             </NetworksProvider>
           </NotificationsProvider>

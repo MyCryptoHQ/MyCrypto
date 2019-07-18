@@ -16,7 +16,7 @@ import { DownloadApp } from './DownloadApp';
 import { NoAccounts } from './NoAccounts';
 import { ScreenLockNew, ScreenLockLocked, ScreenLockForgotPassword } from './ScreenLock';
 import { SendAssets } from './SendAssets';
-import { RequestAssets } from './RequestAssets';
+import { ReceiveAssets } from './ReceiveAssets';
 import { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchange';
 
 const DownloadAppRedirect = () => <Redirect to="/download-desktop-app" />;
@@ -67,10 +67,10 @@ export default [
     component: NoAccounts
   },
   {
-    name: 'Request Assets',
-    path: '/request',
+    name: 'Receive Assets',
+    path: '/receive',
     exact: true,
-    component: RequestAssets
+    component: ReceiveAssets
   },
   {
     name: 'Screen Lock New',
