@@ -1,3 +1,4 @@
+// tslint:disable:no-console
 import { GitCommit } from './types/GitCommit';
 import { CommitStatus } from './types/CommitStatus';
 import { RawTokenJSON } from './types/TokensJson';

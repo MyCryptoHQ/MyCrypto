@@ -1,7 +1,7 @@
 import React, { useState, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { withRouter } from 'react-router-dom';
 
-import { Layout } from 'v2/features';
 import { ContentPanel } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
 import { WalletName, walletNames } from 'v2/config/data';
@@ -27,7 +27,7 @@ export const getStorySteps = (storyName: WalletName) => {
     - AddAccountFormProvider handles the form state and is accessed by each
     story.
 */
-function AddAccountFlow() {
+const AddAccountFlow = withRouter(props => {
   const [storyName, setStoryName] = useState(walletNames.DEFAULT); // The Wallet Story that we are tracking.
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
@@ -35,6 +35,7 @@ function AddAccountFlow() {
   const isDefaultView = storyName === walletNames.DEFAULT;
 
   const goToStart = () => {
+    props.history.replace('/add-account');
     setStep(0);
     setStoryName(walletNames.DEFAULT);
     updateFormState({ type: ActionType.RESET_FORM, payload: '' });
@@ -60,24 +61,45 @@ function AddAccountFlow() {
     goToNextStep();
   };
 
+  // Read the walletName parameter from the URL
+  const { match: { params: { walletName: walletNameFromURL } } } = props;
+
   const onWalletSelection = (name: WalletName) => {
+    // If wallet has been selected manually by user click, add the wallet name to the URL for consistency
+    if (name) {
+      props.history.replace(`/add-account/${name}`);
+    }
+
     setStoryName(name);
     // @ADD_ACCOUNT_TODO: This is equivalent to formDispatch call.
     // Maybe we can merge story and accountType to use only one?
     updateFormState({ type: ActionType.SELECT_ACCOUNT_TYPE, payload: { accountType: name } });
   };
 
-  const renderDefault = () => (
-    <ContentPanel className="" data-testid="Main-panel">
-      <div className="MainPanel">
-        <TransitionGroup>
-          <CSSTransition classNames="DecryptContent" timeout={500}>
-            <WalletList wallets={STORIES} onSelect={onWalletSelection} />
-          </CSSTransition>
-        </TransitionGroup>
-      </div>
-    </ContentPanel>
-  );
+  // If there is a valid walletName parameter in the URL, redirect to that wallet
+  if (walletNameFromURL) {
+    if (!walletNames.includes(walletNameFromURL)) {
+      props.history.replace('/add-account');
+    } else {
+      if (storyName !== walletNameFromURL) {
+        onWalletSelection(walletNameFromURL);
+      }
+    }
+  }
+
+  const renderDefault = () => {
+    return (
+      <ContentPanel className="" data-testid="Main-panel">
+        <div className="MainPanel">
+          <TransitionGroup>
+            <CSSTransition classNames="DecryptContent" timeout={500}>
+              <WalletList wallets={STORIES} onSelect={onWalletSelection} />
+            </CSSTransition>
+          </TransitionGroup>
+        </div>
+      </ContentPanel>
+    );
+  };
 
   const renderStep = () => {
     const steps = getStorySteps(storyName);
@@ -106,11 +128,7 @@ function AddAccountFlow() {
     );
   };
 
-  return (
-    <Layout data-testid="MainLayout" centered={true}>
-      {isDefaultView ? renderDefault() : renderStep()}
-    </Layout>
-  );
-}
+  return <>{isDefaultView ? renderDefault() : renderStep()}</>;
+});
 
 export default AddAccountFlow;

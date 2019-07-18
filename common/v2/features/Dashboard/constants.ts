@@ -17,7 +17,7 @@ export const actions: Action[] = [
   {
     icon: swapIcon,
     title: 'Swap Assets',
-    link: '/dashboard/swap',
+    link: '/swap',
     description: 'Exchange Assets for Other Assets'
   },
   {

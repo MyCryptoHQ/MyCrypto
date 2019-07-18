@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 // Legacy
 import titleIllustration from 'common/assets/images/title-illustration.svg';
@@ -104,7 +104,7 @@ const Description = styled.p`
 
 const MobileImage = styled.img`
   max-width: 375px;
-  width: 100%;
+  width: auto;
 
   @media (min-width: ${SCREEN_SM}) {
     display: none;
@@ -140,7 +140,7 @@ const ActionCardWrapper = styled.div`
 `;
 
 const LinkWrapper = styled(Link)`
-  padding: 1vw 2vw
+  padding: 1vw 2vw;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -247,7 +247,7 @@ export default function GetStartedPanel() {
             name={translateRaw('HOME_GET_STARTED_NEED_WALLET_TITLE')}
             description={translate('HOME_GET_STARTED_NEED_WALLET_DESCRIPTION')}
             icon={newWalletIcon}
-            link={'/download-desktop-app'}
+            link={'/create-wallet'}
             eventAction="I need a wallet"
           />
           <ActionCard

@@ -7,7 +7,7 @@ export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
 
 export interface LocalCache {
-  settings: serviceTypes.Settings;
+  settings: serviceTypes.ISettings;
   accounts: Record<string, serviceTypes.Account>;
   wallets: Record<string, serviceTypes.Wallet>;
   assets: Record<string, serviceTypes.Asset>;

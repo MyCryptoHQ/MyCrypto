@@ -8,14 +8,14 @@ import { N_FACTOR } from 'config';
 import { generateKeystore, fromV3 } from 'libs/web-workers';
 import { stripHexPrefix } from 'libs/formatters';
 import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
-import { Layout } from 'v2/features';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
+
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
 import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
 import { Network } from 'v2/services/Network/types';
 import { Account } from 'v2/services/Account/types';
 import { Asset } from 'v2/services/Asset/types';
-import { Settings } from 'v2/services/Settings';
+import { ISettings } from 'v2/services/Settings';
 import { WalletName, InsecureWalletName } from 'v2/config/data';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 
@@ -30,7 +30,7 @@ interface State {
 }
 
 interface Props extends RouteComponentProps<{}> {
-  settings: Settings;
+  settings: ISettings;
   createAccountWithID(accountData: Account, uuid: string): void;
   updateSettingsAccounts(accounts: string[]): void;
   createAssetWithID(value: Asset, id: string): void;
@@ -66,9 +66,7 @@ class CreateKeystore extends Component<Props, State> {
     const { password, privateKey, keystore, filename, network, accountType } = this.state;
     const props = { password, privateKey, keystore, filename, network, accountType };
     return (
-      <Layout centered={true}>
-        <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...actions} {...props} />
-      </Layout>
+      <ActivePanel currentStep={currentStep} totalSteps={totalSteps} {...actions} {...props} />
     );
   }
 
@@ -144,7 +142,7 @@ class CreateKeystore extends Component<Props, State> {
       });
       this.advanceToNextStage();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

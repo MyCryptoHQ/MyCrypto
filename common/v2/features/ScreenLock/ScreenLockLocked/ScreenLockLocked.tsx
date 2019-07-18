@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
-import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import translate, { translateRaw } from 'translations';
+import { Button } from '@mycrypto/ui';
 
+import translate, { translateRaw } from 'translations';
 import { ExtendedContentPanel, InputField } from 'v2/components';
-import { Layout } from 'v2/features';
 import { LockScreenContext } from 'v2/providers/LockScreenProvider/LockScreenProvider';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
@@ -69,45 +68,43 @@ export class ScreenLockLocked extends Component<Props> {
     return (
       <LockScreenContext.Consumer>
         {({ decryptWithPassword }) => (
-          <Layout centered={true}>
-            <ExtendedContentPanel
-              heading={translateRaw('SCREEN_LOCK_LOCKED_HEADING')}
-              description={translateRaw('SCREEN_LOCK_LOCKED_DESCRIPTION')}
-              image={mainImage}
-              showImageOnTop={true}
-              centered={true}
-              className=""
-            >
-              <ContentWrapper>
-                <FormWrapper onSubmit={e => this.handleUnlockWalletClick(decryptWithPassword, e)}>
-                  <InputField
-                    label={translateRaw('SCREEN_LOCK_LOCKED_PASSWORD_LABEL')}
-                    value={this.state.password}
-                    onChange={this.onPasswordChanged}
-                    inputError={this.state.passwordError}
-                    type={'password'}
-                  />
-                  <PrimaryButton type="submit">
-                    {translate('SCREEN_LOCK_LOCKED_UNLOCK')}
-                  </PrimaryButton>
-                </FormWrapper>
-                <BottomActions>
-                  <div>
-                    {translate('SCREEN_LOCK_LOCKED_FORGOT_PASSWORD')}{' '}
-                    <Link to="/screen-lock/forgot-password">
-                      {translate('SCREEN_LOCK_LOCKED_IMPORT_SETTINGS')}
-                    </Link>
-                  </div>
-                  <div>
-                    {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
-                    <Link onClick={this.trackRecomendationClick} to="/dashboard">
-                      {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
-                    </Link>
-                  </div>
-                </BottomActions>
-              </ContentWrapper>
-            </ExtendedContentPanel>
-          </Layout>
+          <ExtendedContentPanel
+            heading={translateRaw('SCREEN_LOCK_LOCKED_HEADING')}
+            description={translateRaw('SCREEN_LOCK_LOCKED_DESCRIPTION')}
+            image={mainImage}
+            showImageOnTop={true}
+            centered={true}
+            className=""
+          >
+            <ContentWrapper>
+              <FormWrapper onSubmit={e => this.handleUnlockWalletClick(decryptWithPassword, e)}>
+                <InputField
+                  label={translateRaw('SCREEN_LOCK_LOCKED_PASSWORD_LABEL')}
+                  value={this.state.password}
+                  onChange={this.onPasswordChanged}
+                  inputError={this.state.passwordError}
+                  type={'password'}
+                />
+                <PrimaryButton type="submit">
+                  {translate('SCREEN_LOCK_LOCKED_UNLOCK')}
+                </PrimaryButton>
+              </FormWrapper>
+              <BottomActions>
+                <div>
+                  {translate('SCREEN_LOCK_LOCKED_FORGOT_PASSWORD')}{' '}
+                  <Link to="/screen-lock/forgot-password">
+                    {translate('SCREEN_LOCK_LOCKED_IMPORT_SETTINGS')}
+                  </Link>
+                </div>
+                <div>
+                  {translate('SCREEN_LOCK_LOCKED_RECOMMEND_LOCK')}{' '}
+                  <Link onClick={this.trackRecomendationClick} to="/dashboard">
+                    {translate('SCREEN_LOCK_LOCKED_LEARN_MORE')}
+                  </Link>
+                </div>
+              </BottomActions>
+            </ContentWrapper>
+          </ExtendedContentPanel>
         )}
       </LockScreenContext.Consumer>
     );

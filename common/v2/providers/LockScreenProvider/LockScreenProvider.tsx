@@ -6,7 +6,7 @@ import * as localCacheService from 'v2/services/LocalCache/LocalCache';
 import * as screenLockService from 'v2/services/ScreenLockSettings/ScreenLockSettings';
 import * as settingsService from 'v2/services/Settings/Settings';
 import { translateRaw } from 'translations';
-import { ScreenLockLocking } from 'v2/features/ScreenLock';
+import { ScreenLockLocking } from 'v2/features';
 
 interface State {
   locking: boolean;
@@ -77,7 +77,7 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       return true;
     } catch (error) {
-      console.error('pp', error);
+      console.error(error);
       return false;
     }
   };
@@ -159,7 +159,8 @@ export class LockScreenProvider extends Component<RouteComponentProps<{}>, State
 
     if (
       this.props.location.pathname.includes('/dashboard') ||
-      this.props.location.pathname.includes('/screen-lock/new')
+      this.props.location.pathname.includes('/screen-lock/new') ||
+      this.props.location.pathname === '/'
     ) {
       this.props.history.push('/screen-lock/locked');
     }

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import translate from 'translations';
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
 
 // Legacy

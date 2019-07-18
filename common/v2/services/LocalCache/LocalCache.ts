@@ -226,13 +226,13 @@ export const updateSettings = <K extends SettingsKey>(key: K) => (value: LocalCa
 // Collection operations
 
 type CollectionKey =
-  | 'accounts'
-  | 'wallets'
-  | 'notifications'
   | 'addressBook'
+  | 'accounts'
   | 'assets'
   | 'contracts'
-  | 'networks';
+  | 'networks'
+  | 'notifications'
+  | 'wallets';
 
 export const create = <K extends CollectionKey>(key: K) => (
   value: LocalCache[K][keyof LocalCache[K]]
@@ -255,7 +255,7 @@ export const createWithID = <K extends CollectionKey>(key: K) => (
     newCache[key][uuid] = value;
     setCache(newCache);
   } else {
-    console.log('Error: key already exists in createWithID');
+    console.error('Error: key already exists in createWithID');
   }
 };
 

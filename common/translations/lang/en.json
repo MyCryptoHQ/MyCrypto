@@ -812,6 +812,11 @@
     "HOME_FEATURES_VIEW_DESCRIPTION" :"See a detailed breakdown of all your wallets, tokens, and transactions.",
     "HOME_FEATURES_CONTROL_TITLE" :"Control Your Crypto",
     "HOME_FEATURES_CONTROL_DESCRIPTION" :"Manage your information and your cryptocurrency easily and without fear.",
+    "HOME_KEEP_SAFE_TITLE" :"A Different Way to Keep Your Assets Safe",
+    "HOME_KEEP_SAFE_BANKS_TITLE" :"With Banks",
+    "HOME_KEEP_SAFE_BANKS_DESCRIPTION" :"They control your account \n They own your info \n They add fees \n They tell you what you can do",
+    "HOME_KEEP_SAFE_MYCRYPTO_TITLE" :"With MyCrypto",
+    "HOME_KEEP_SAFE_MYCRYPTO_DESCRIPTION" :"You control your ”account” \n You own your info \n No fees are added \n You do whatever you want",
     "DOWNLOAD_APP_TITLE": "Download App",
     "DOWNLOAD_APP_DESCRIPTION": "Please download the MyCrypto Desktop app so you can securely complete creating your new account and start managing your funds.",
     "DOWNLOAD_APP_DOWNLOAD_BUTTON": "Download for",
@@ -948,6 +953,20 @@
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_1": "Already have a wallet?",
     "CREATE_WALLET_UNLOCK_WALLET_BOTTOM_ACTION_2": "Unlock it now.",
     "SELECT_NETWORK_ERROR": "Please select network.",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset"
+    "WALLET_BREAKDOWN_TITLE": "Wallet Breakdown",
+    "WALLET_BREAKDOWN_BALANCE": "Balance",
+    "WALLET_BREAKDOWN_TOKEN": "Token",
+    "WALLET_BREAKDOWN_AMOUNT": "Amount",
+    "WALLET_BREAKDOWN_NO_ASSETS": "No Assets Found",
+    "WALLET_BREAKDOWN_NO_ASSETS_MORE": "You can [buy some ETH](https://buy.mycrypto.com/) with your credit card to get started!",
+    "WALLET_BREAKDOWN_TOTAL": "Total",
+    "WALLET_BREAKDOWN_MORE": "View details",
+    "WALLET_BREAKDOWN_PERCENTAGE": "% Of Your Funds",
+    "WALLET_BREAKDOWN_VALUE_IN": "Value in",
+    "WALLET_BREAKDOWN_UNKNOWN": "Unknown Asset",
+    "WALLET_BREAKDOWN_OTHER": "Other Tokens",
+    "WALLET_BREAKDOWN_OTHER_TICKER": "Other",
+    "NO_ACCOUNTS_SELECTED_HEADER":"You have no accounts selected.",
+    "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above."
   }
 }

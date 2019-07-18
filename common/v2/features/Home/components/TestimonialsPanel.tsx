@@ -3,7 +3,7 @@ import { Panel } from '@mycrypto/ui';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 
-import { BREAK_POINTS, COLORS } from 'v2/features/constants';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 import './SliderImports.scss';
 
 import sparkles1Icon from 'common/assets/images/icn-sparkles-1.svg';
