@@ -7,14 +7,14 @@ import Select, { Option } from 'react-select';
 import styled from 'styled-components';
 
 import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/formatters';
-import { ContentPanel } from 'v2/components';
+import { ContentPanel, QRCode } from 'v2/components';
 import { AccountContext, AssetContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs/networks/networks';
 import { isValidAmount, truncate } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 import { translateRaw } from 'translations';
 
-import { AccountDropdown, QRCode } from './components';
+import { AccountDropdown } from './components';
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
 
@@ -106,8 +106,6 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const [chosenAssetName, setAssetName] = useState(assetOptions[0].label);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
-  // const [requestAddress, setRequestAddress] = useState<string | undefined>(undefined);
-
   const initialValues = {
     amount: '0',
     asset: { label: 'Ethereum', id: '7bbf42b1-9275-120b-0d0a-a788abd75ea0' },
@@ -121,6 +119,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
       const { decimal } = selectedAsset;
       if (decimal && !isValidAmount(decimal)(amount)) {
         error = 'Please enter a valid amount';
+      }
+      if (isNaN(+amount)) {
+        error = 'Please enter a number';
       }
     }
 
@@ -192,10 +193,10 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                 />
               </Asset>
             </AssetFields>
-            {errors.amount && (
+            {errors.amount ? (
               <ErrorMessage>{' ' + translateRaw('RECEIVE_FORM_ERROR')}</ErrorMessage>
-            )}
-            {parseFloat(amount) >= 0 &&
+            ) : (
+              !errors.amount &&
               selectedAsset &&
               recipientAddress.address &&
               network && (
@@ -243,7 +244,8 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     </QRDisplay>
                   </Fieldset>
                 </>
-              )}
+              )
+            )}
           </Form>
         )}
       />
