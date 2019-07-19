@@ -10,17 +10,13 @@ import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/format
 import { ContentPanel } from 'v2/components';
 import { AccountContext, AssetContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs/networks/networks';
-import { isValidAmount } from 'v2/utils';
+import { isValidAmount, truncate } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
 import { translateRaw } from 'translations';
 
 import { AccountDropdown, QRCode } from './components';
 // Legacy
 import receiveIcon from 'common/assets/images/icn-receive.svg';
-
-const truncate = (children: string) => {
-  return [children.substring(0, 15), '…', children.substring(children.length - 10)].join('');
-};
 
 const isAssetToken = (tokenType: string) => {
   if (tokenType === 'base') {

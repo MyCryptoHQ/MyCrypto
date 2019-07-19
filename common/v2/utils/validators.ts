@@ -1,4 +1,5 @@
 import AddressValidator from 'wallet-address-validator';
+import BN from 'bn.js';
 
 import { SHAPESHIFT_ASSET_WHITELIST } from 'v2/services/ShapeShift/constants';
 
@@ -15,8 +16,8 @@ export const isValidBitcoinAddress = (address: string): boolean => isValidAddres
 
 export const isValidMoneroAddress = (address: string): boolean => isValidAddress(address, 'XMR');
 
-export const validNumber = (num: number) => isFinite(num) && num >= 0;
-export const numberIsNotNegative = (num: number) => validNumber(num) && Math.sign(num) !== -1;
+export const validNumber = (num: BN) => isFinite(num.toNumber()) && num.gten(0);
+export const numberIsNotNegative = (num: BN) => validNumber(num) && !num.isNeg();
 
 export const validDecimal = (input: string, decimal: number) => {
   const arr = input.split('.');
@@ -37,8 +38,10 @@ export const validDecimal = (input: string, decimal: number) => {
   return decimalLength <= decimal;
 };
 
-export const isValidAmount = (decimal: number) => (amount: string) =>
-  numberIsNotNegative(+amount) && validDecimal(amount, decimal);
+export const isValidAmount = (decimal: number) => (amount: string) => {
+  const convertedAmount = new BN(amount);
+  return numberIsNotNegative(convertedAmount) && validDecimal(amount, decimal);
+};
 
 export const addressValidatorHash: ValidatorHash = {
   ETH: isValidEthereumAddress,
