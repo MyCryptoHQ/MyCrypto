@@ -95,7 +95,8 @@ const ErrorMessage = styled.span`
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const { accounts } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
-  const network = getNetworkByName(accounts[0].network);
+  const [networkName, setNetworkName] = useState(accounts[0].network);
+  const network = getNetworkByName(networkName);
   const filteredAssets = network
     ? assets
         .filter(asset => asset.networkId === network.id)
@@ -105,12 +106,13 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const [chosenAssetName, setAssetName] = useState(assetOptions[0].label);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
-  const [requestAddress, setRequestAddress] = useState<string | undefined>(undefined);
+  // const [requestAddress, setRequestAddress] = useState<string | undefined>(undefined);
 
   const initialValues = {
     amount: '0',
     asset: { label: 'Ethereum', id: '7bbf42b1-9275-120b-0d0a-a788abd75ea0' },
-    chainId: network ? network.chainId : 1
+    chainId: network ? network.chainId : 1,
+    recipientAddress: accounts[0]
   };
 
   const validateAmount = (amount: any) => {
@@ -130,7 +132,10 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
       <Formik
         initialValues={initialValues}
         onSubmit={noop}
-        render={({ values: { amount, chainId }, errors }: FormikProps<typeof initialValues>) => (
+        render={({
+          values: { amount, chainId, recipientAddress },
+          errors
+        }: FormikProps<typeof initialValues>) => (
           <Form>
             <Fieldset>
               <SLabel htmlFor="recipientAddress">Recipient Address</SLabel>
@@ -143,7 +148,9 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                     accounts={accounts}
                     onSelect={(option: IExtendedAccount) => {
                       form.setFieldValue(field.name, option);
-                      setRequestAddress(option.address);
+                      if (option.network) {
+                        setNetworkName(option.network);
+                      }
                     }}
                   />
                 )}
@@ -190,7 +197,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
             )}
             {parseFloat(amount) >= 0 &&
               selectedAsset &&
-              requestAddress &&
+              recipientAddress.address &&
               network && (
                 <>
                   <Divider />
@@ -203,13 +210,13 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                           selectedAsset.contractAddress &&
                           selectedAsset.decimal
                             ? buildEIP681TokenRequest(
-                                requestAddress,
+                                recipientAddress.address,
                                 selectedAsset.contractAddress,
                                 network.chainId,
                                 amount,
                                 selectedAsset.decimal
                               )
-                            : buildEIP681EtherRequest(requestAddress, chainId, amount)
+                            : buildEIP681EtherRequest(recipientAddress.address, chainId, amount)
                         }
                         truncate={truncate}
                       />
@@ -224,13 +231,13 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                           selectedAsset.contractAddress &&
                           selectedAsset.decimal
                             ? buildEIP681TokenRequest(
-                                requestAddress,
+                                recipientAddress.address,
                                 selectedAsset.contractAddress,
                                 network.chainId,
                                 amount,
                                 selectedAsset.decimal
                               )
-                            : buildEIP681EtherRequest(requestAddress, chainId, amount)
+                            : buildEIP681EtherRequest(recipientAddress.address, chainId, amount)
                         }
                       />
                     </QRDisplay>

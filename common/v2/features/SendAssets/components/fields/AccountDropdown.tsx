@@ -29,10 +29,10 @@ function AccountDropdown({ accounts, name, value, values, onSelect }: IAccountDr
       onChange={option => onSelect(option)}
       optionComponent={AccountOption}
       value={value && value.address ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-      valueComponent={({ value: { label, address } }) => (
+      valueComponent={({ value: { label, address, account } }) => (
         <AccountSummary
           address={address}
-          balance={'1000.809300'}
+          balance={account.balance}
           label={label}
           selectable={false}
         />
