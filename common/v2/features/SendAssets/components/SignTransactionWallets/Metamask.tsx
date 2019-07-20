@@ -1,8 +1,9 @@
-import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
+import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
-import React, { Component } from 'react';
-import { getNetworkByChainId } from 'v2';
+
+import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
+import { getNetworkByChainId } from 'v2/services/Store';
 import { ISendState, ITxFields } from '../../types';
 import './MetaMask.scss';
 

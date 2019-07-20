@@ -6,16 +6,18 @@ import { Button, Input } from '@mycrypto/ui';
 import { WhenQueryExists } from 'components/renderCbs';
 import { DeepPartial } from 'shared/types/util';
 import translate, { translateRaw } from 'translations';
-import { fetchGasPriceEstimates, getNonce } from 'v2';
-import { AccountContext } from 'v2/providers';
+import { getNonce } from 'v2/services/EthService';
+import { fetchGasPriceEstimates } from 'v2/services/ApiService';
+import { AccountContext, getAssetByUUID, getNetworkByName } from 'v2/services/Store';
 import {
-  ExtendedAccount as IExtendedAccount,
-  AssetBalanceObject,
   Asset,
-  ExtendedAccount
-} from 'v2/services';
-// import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { IAsset, TSymbol } from 'v2/types';
+  IAsset,
+  TSymbol,
+  AssetBalanceObject,
+  ExtendedAccount as IExtendedAccount
+} from 'v2/types';
+
+import { processFormDataToTx } from '../process';
 import { InlineErrorMsg } from 'v2/components';
 
 import { ISendState, ITxFields } from '../types';
@@ -36,10 +38,8 @@ import {
   validateNonceField
 } from './validators/validators';
 import './SendAssetsForm.scss';
-import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
-import { processFormDataToTx } from 'v2/libs/transaction/process';
 import ProviderHandler from 'v2/config/networks/providerHandler';
 
 interface Props {
@@ -114,7 +114,7 @@ export default function SendAssetsForm({
             // @TODO get asset balance and subtract gas cost
             setFieldValue('amount', '1000');
 
-          const handleNonceEstimate = async (account: ExtendedAccount) => {
+          const handleNonceEstimate = async (account: IExtendedAccount) => {
             if (!values || !values.network) {
               return;
             }

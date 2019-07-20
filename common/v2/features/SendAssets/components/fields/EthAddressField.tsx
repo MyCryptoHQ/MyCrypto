@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, FieldProps } from 'formik';
 import { Input } from '@mycrypto/ui';
 
-import { isValidETHAddress } from 'libs/validators';
+import { isValidETHAddress } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components';
 
 /*

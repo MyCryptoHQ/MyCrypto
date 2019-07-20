@@ -1,9 +1,23 @@
 import { TSymbol } from 'v2/types';
 
-interface IAsset {
+export interface IAsset {
   symbol: TSymbol;
   name: string;
   network?: string;
 }
 
-export default IAsset;
+export type TAssetType = 'base' | 'erc20' | 'fiat';
+
+export interface Asset {
+  uuid: string;
+  name: string;
+  networkId?: string;
+  ticker: string;
+  type: TAssetType;
+  contractAddress?: string;
+  decimal?: number;
+}
+
+export interface ExtendedAsset extends Asset {
+  uuid: string;
+}

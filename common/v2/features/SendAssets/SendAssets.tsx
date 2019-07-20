@@ -10,8 +10,8 @@ import {
   getQueryTransactionData,
   isAdvancedQueryTransaction,
   isQueryTransaction
-} from 'v2/libs/preFillTx';
-import { queryObject } from 'v2/libs/preFillTx/types';
+} from './preFillTx';
+import { queryObject } from './preFillTx/types';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -30,6 +30,7 @@ const getInitialState = (): ISendState => {
           address: '',
           network: '',
           assets: [],
+          // @ts-ignore
           wallet: undefined,
           balance: '0',
           transactions: [],
@@ -86,6 +87,7 @@ const getInitialState = (): ISendState => {
           address: '',
           network: '',
           assets: [],
+          // @ts-ignore
           wallet: undefined,
           balance: '0',
           transactions: [],

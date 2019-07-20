@@ -7,7 +7,7 @@ import './AccountScreen.scss';
 import addIcon from 'common/assets/images/icn-add.svg';
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import unlockIcon from 'common/assets/images/icn-unlock.svg';
-import { truncate } from 'v2/libs';
+import { truncate } from 'v2/utils';
 
 export default {
   title: 'Current Account',

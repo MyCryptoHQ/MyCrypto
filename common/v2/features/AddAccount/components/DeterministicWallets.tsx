@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Table, Address, Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
-import { isValidPath } from 'libs/validators';
+import { isValidPath } from 'v2/services/EthService/';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
 import {
@@ -14,7 +14,7 @@ import {
 import { addressBookSelectors } from 'features/addressBook';
 import { UnitDisplay, Input } from 'components/ui';
 import './DeterministicWallets.scss';
-import { truncate } from 'v2/libs';
+import { truncate } from 'v2/utils';
 import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
 import radio from 'assets/images/radio.svg';

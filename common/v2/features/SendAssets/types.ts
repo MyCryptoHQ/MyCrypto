@@ -1,8 +1,12 @@
-import { IAsset } from 'v2/types';
-import { Asset, assetMethod } from 'v2/services/Asset/types';
-import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
-import { WalletName } from 'v2/config/data';
-import { GasEstimates } from 'v2/api/gas';
+import {
+  Asset,
+  IAsset,
+  TAssetType,
+  ExtendedAccount as IExtendedAccount,
+  Network,
+  GasEstimates,
+  WalletName
+} from 'v2/types';
 
 export interface ITxFields {
   asset: IAsset | undefined;
@@ -34,5 +38,5 @@ export interface ISendState {
   resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
   recipientAddressLabel: string; //  Recipient-address label found in address book.
   asset: IAsset | Asset | undefined;
-  assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
+  assetType: TAssetType; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
 }

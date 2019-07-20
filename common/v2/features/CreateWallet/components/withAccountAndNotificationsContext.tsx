@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
-import { AccountContext, NotificationsContext, SettingsContext } from 'v2/providers';
-import { createAssetWithID } from 'v2/services';
+import { NotificationsContext } from 'v2/providers';
+import { AccountContext, SettingsContext, createAssetWithID } from 'v2/services/Store';
 
 export const withAccountAndNotificationsContext = (Component: any) => (props: any) => {
   const { createAccountWithID } = useContext(AccountContext);

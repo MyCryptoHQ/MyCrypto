@@ -5,19 +5,16 @@ import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 
 import { makeBlob } from 'utils/blob';
 import { N_FACTOR } from 'config';
-import { generateKeystore, fromV3 } from 'libs/web-workers';
-import { stripHexPrefix } from 'libs/formatters';
+import { generateKeystore, fromV3 } from 'v2/workers';
+import { stripHexPrefix } from 'v2/services/EthService';
 import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
-import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
-import { Network } from 'v2/services/Network/types';
-import { Account } from 'v2/services/Account/types';
-import { Asset } from 'v2/services/Asset/types';
-import { ISettings } from 'v2/services/Settings';
-import { WalletName, InsecureWalletName } from 'v2/config/data';
+import { Account, Asset, ISettings, Network, WalletName, InsecureWalletName } from 'v2/types';
+import { generateUUID } from 'v2/utils';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
+import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
 
 interface State {
   password: string;

@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
 import { BaseProvider } from 'ethers/providers';
-import { isUrl } from 'v2/libs/helpers';
-import { Network } from 'v2/services/Network/types';
+
+import { isUrl } from 'v2/utils';
+import { Network } from 'v2/types';
 import { PROVIDER_OPTIONS } from './providerOptions';
 
 export type NetworkKey = keyof typeof PROVIDER_OPTIONS;

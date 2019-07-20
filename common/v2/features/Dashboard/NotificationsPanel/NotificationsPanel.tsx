@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { BREAK_POINTS } from 'v2/theme';
 import { NotificationsContext, notificationsConfigs } from 'v2/providers/NotificationsProvider';
-import { Notification } from 'v2/services/Notifications';
+import { Notification } from 'v2/types';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
