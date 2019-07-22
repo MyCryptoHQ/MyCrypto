@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
-import { stripHexPrefix } from 'libs/formatters';
+import { isValidEncryptedPrivKey, isValidPrivKey, stripHexPrefix } from 'v2/services/EthService';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';

@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 
-import {
-  AccountContext,
-  AddressBookContext,
-  useDevMode,
-  NotificationsContext,
-  NotificationTemplates
-} from 'v2/providers';
+import { NotificationsContext, NotificationTemplates } from 'v2/providers';
+import { useDevMode } from 'v2/services';
+import { AccountContext, AddressBookContext } from 'v2/services/Store';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenList, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from './NotificationsPanel';

@@ -8,7 +8,7 @@ import {
   notificationsConfigs,
   NotificationTemplates
 } from 'v2/providers/NotificationsProvider';
-import { Notification } from 'v2/services/Notifications';
+import { Notification } from 'v2/types';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';

@@ -1,5 +1,6 @@
-import { ExtendedNotification } from 'v2/services';
 import moment from 'moment';
+
+import { ExtendedNotification } from 'v2/types';
 
 export const saveSettingsCheck = (): boolean => {
   // TODO: Check if all additional conditions are met for displaying the "save settings" notification

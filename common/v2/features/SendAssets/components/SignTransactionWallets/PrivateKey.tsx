@@ -5,7 +5,7 @@ import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 
 import { TogglablePassword } from 'components';
 import { stripHexPrefix } from 'ethjs-util';
-import { isValidPrivKey, isValidEncryptedPrivKey } from 'libs/validators';
+import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
 import { Input } from 'components/ui';
 
 export interface SignWithPrivKeyState {

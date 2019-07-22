@@ -5,8 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel } from 'v2/components';
-import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { OS } from 'v2/services/Github';
+import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService, OS } from 'v2/services/ApiService';
 import { GITHUB_RELEASE_NOTES_URL, DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 import { getFeaturedOS } from 'v2/utils';
 import { AppDownloadItem } from './types';

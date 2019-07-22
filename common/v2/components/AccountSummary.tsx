@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Address } from '@mycrypto/ui';
 
-import { truncate } from 'v2/libs';
+import { truncate } from 'v2/utils';
 import { TSymbol } from 'v2/types';
 import Currency from './Currency';
 

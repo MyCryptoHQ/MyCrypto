@@ -2,10 +2,10 @@ import React from 'react';
 import { OptionComponentProps } from 'react-select';
 
 import { translateRaw } from 'translations';
-import { ExtendedAccount as IExtendedAccount, ExtendedAccount, Network } from 'v2/services';
+import { getNetworkByName } from 'v2/services/Store';
 import { AccountSummary, Divider, Dropdown } from 'v2/components';
+import { ExtendedAccount as IExtendedAccount, Network } from 'v2/types';
 import { ITxFields } from '../../types';
-import { getNetworkByName } from 'v2/libs/networks/networks';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
@@ -29,9 +29,9 @@ class AccountOption extends React.PureComponent<OptionComponentProps> {
 }
 
 function AccountDropdown({ accounts, name, value, values, onSelect }: IAccountDropdown) {
-  let relevantAccounts: ExtendedAccount[] = [];
+  let relevantAccounts: IExtendedAccount[] = [];
   if (values.asset && values.asset.network) {
-    relevantAccounts = accounts.filter((account: ExtendedAccount): boolean => {
+    relevantAccounts = accounts.filter((account: IExtendedAccount): boolean => {
       const accountNetwork: Network | undefined = getNetworkByName(account.network);
       const assetNetwork: Network | undefined =
         values.asset && values.asset.network ? getNetworkByName(values.asset.network) : undefined;

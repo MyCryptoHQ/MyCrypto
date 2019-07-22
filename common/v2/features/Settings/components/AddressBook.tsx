@@ -1,10 +1,10 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Address, Icon, CollapsibleTable, Typography, Button } from '@mycrypto/ui';
 
 import { DashboardPanel } from 'v2/components';
-import { ExtendedAddressBook } from 'v2/services';
-import styled from 'styled-components';
-import { truncate } from 'v2/libs';
+import { ExtendedAddressBook } from 'v2/types';
+import { truncate } from 'v2/utils';
 
 interface Props {
   addressBook: ExtendedAddressBook[];

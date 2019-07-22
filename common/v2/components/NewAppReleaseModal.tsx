@@ -7,9 +7,8 @@ import Modal from './Modal';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { GITHUB_RELEASE_NOTES_URL } from 'v2/config';
 import { getFeaturedOS } from 'v2/utils';
-import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService, OS } from 'v2/services/ApiService';
 import { VERSION as currentVersion } from 'config';
-import { OS } from 'v2/services/Github';
 import translate from 'translations';
 
 // Legacy

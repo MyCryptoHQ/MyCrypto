@@ -1,4 +1,4 @@
-import { ExtendedNotification } from 'v2/services';
+import { ExtendedNotification } from 'v2/types';
 
 export interface NotificationConfig {
   analyticsEvent: string;

@@ -1,10 +1,12 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
-import { getValues, makeExplorer } from 'utils/helpers';
+
+import { makeExplorer } from 'utils/helpers';
 import packageJson from '../../../package.json';
 import { GasPriceSetting } from 'types/network';
 import translate from 'translations';
 
 export const languages = require('./languages.json');
+
 export const discordURL = 'https://discord.gg/VSaTXEA';
 
 // Displays in the footer
@@ -67,43 +69,6 @@ export const ethercardReferralURL =
   'https://ether.cards/?utm_source=mycrypto&utm_medium=cpm&utm_campaign=site';
 export const keepkeyReferralURL = 'https://keepkey.go2cloud.org/aff_c?offer_id=1&aff_id=4086';
 export const steelyReferralURL = 'https://stee.ly/2Hcl4RE';
-
-export enum SecureWalletName {
-  WEB3 = 'web3',
-  LEDGER_NANO_S = 'ledgerNanoS',
-  TREZOR = 'trezor',
-  SAFE_T = 'safeTmini',
-  PARITY_SIGNER = 'paritySigner'
-}
-
-export enum HardwareWalletName {
-  LEDGER_NANO_S = 'ledgerNanoS',
-  TREZOR = 'trezor',
-  SAFE_T = 'safeTmini'
-}
-
-export enum InsecureWalletName {
-  PRIVATE_KEY = 'privateKey',
-  KEYSTORE_FILE = 'keystoreFile',
-  MNEMONIC_PHRASE = 'mnemonicPhrase'
-}
-
-export enum MiscWalletName {
-  VIEW_ONLY = 'viewOnly'
-}
-
-export enum DefaultWalletName {
-  DEFAULT = 'walletsList'
-}
-
-export const walletNames = getValues(
-  SecureWalletName,
-  HardwareWalletName,
-  InsecureWalletName,
-  MiscWalletName
-);
-
-export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName | undefined;
 
 export enum Theme {
   DARK = 'dark',

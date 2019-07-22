@@ -6,7 +6,7 @@ import {
   getKeystoreWallet,
   getUtcWallet,
   IWallet
-} from 'v2/libs/wallet';
+} from 'v2/services/EthService';
 import { translateRaw } from 'translations';
 
 export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
