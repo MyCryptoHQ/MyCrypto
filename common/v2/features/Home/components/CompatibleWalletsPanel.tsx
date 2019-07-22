@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { SecureWalletName } from 'v2/config/data';
+import { SecureWalletName } from 'v2/types';
 import './SliderImports.scss';
 
 import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';

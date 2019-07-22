@@ -4,7 +4,7 @@ import { Field, FieldProps, Formik } from 'formik';
 
 import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
-import { GasEstimates } from 'v2/api/gas';
+import { GasEstimates } from 'v2/types';
 import { ITxFields } from '../../types';
 import './GasPriceSlider.scss';
 

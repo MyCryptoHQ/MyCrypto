@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
-import { getNetworkByName } from 'v2/libs';
 
-import { ExtendedContentPanel, NetworkSelectDropdown } from 'v2/components';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages/InlineErrors';
-import { PanelProps } from '../CreateWallet';
 import translate, { translateRaw } from 'translations';
-import { WalletName } from 'v2/config/data';
+import { ExtendedContentPanel, InlineErrorMsg, NetworkSelectDropdown } from 'v2/components';
+import { WalletName } from 'v2/types';
+import { getNetworkByName } from 'v2/services/Store';
+import { PanelProps } from '../CreateWallet';
 
 interface Props extends PanelProps {
   totalSteps: number;

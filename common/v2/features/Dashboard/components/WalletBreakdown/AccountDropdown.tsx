@@ -4,8 +4,9 @@ import styled, { StyledFunction } from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
-import { ExtendedAccount, useOnClickOutside } from 'v2/services';
-import { getLabelByAccount } from 'v2/libs/addressbook/addressbook';
+import { useOnClickOutside } from 'v2/utils';
+import { getLabelByAccount } from 'v2/services/Store';
+import { ExtendedAccount } from 'v2/types';
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];

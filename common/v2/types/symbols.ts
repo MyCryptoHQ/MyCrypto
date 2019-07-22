@@ -12,6 +12,4 @@
 // - const symbol = [] as const with TS 3.4
 
 enum SymbolBrand {}
-type TSymbol = SymbolBrand & string;
-
-export default TSymbol;
+export type TSymbol = SymbolBrand & string;

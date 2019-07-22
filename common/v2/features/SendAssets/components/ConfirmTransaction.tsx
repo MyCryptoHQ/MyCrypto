@@ -7,7 +7,7 @@ import './ConfirmTransaction.scss';
 // Legacy
 import sendIcon from 'common/assets/images/icn-send.svg';
 import feeIcon from 'common/assets/images/icn-fee.svg';
-import { AddressBookContext } from 'v2/providers';
+import { AddressBookContext } from 'v2/services/Store';
 import { ISendState } from '../types';
 
 interface Props {

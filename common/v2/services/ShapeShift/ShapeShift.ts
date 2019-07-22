@@ -2,8 +2,8 @@ import { AxiosInstance } from 'axios';
 import queryString from 'query-string';
 
 import { logError, isDesktop } from 'v2/utils';
-import { APIService } from '../API';
-import { CacheService } from '../Cache';
+import { ApiService } from 'v2/services/ApiService';
+import { CacheService } from '../Store';
 import {
   SHAPESHIFT_API_URL,
   SHAPESHIFT_ACCESS_TOKEN,
@@ -26,7 +26,7 @@ import {
 
 export class ShapeShiftServiceBase {
   private token: string | null = null;
-  private service: AxiosInstance = APIService.generateInstance({
+  private service: AxiosInstance = ApiService.generateInstance({
     baseURL: SHAPESHIFT_API_URL
   });
   private cacheGet = CacheService.instance.getEntry.bind(
@@ -290,7 +290,7 @@ export class ShapeShiftServiceBase {
         }
       : {};
 
-    this.service = APIService.generateInstance({
+    this.service = ApiService.generateInstance({
       baseURL: 'https://shapeshift.io',
       headers
     });

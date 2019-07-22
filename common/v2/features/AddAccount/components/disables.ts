@@ -1,4 +1,4 @@
-import { MiscWalletName, SecureWalletName, WalletName } from 'config';
+import { MiscWalletName, SecureWalletName, WalletName } from 'v2/types';
 
 export interface DisabledWallets {
   wallets: WalletName[];

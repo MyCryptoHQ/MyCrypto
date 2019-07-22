@@ -1,4 +1,4 @@
-import { WalletName } from 'v2/config/data';
+import { WalletName } from 'v2/types';
 
 export enum WalletType {
   SECURE,

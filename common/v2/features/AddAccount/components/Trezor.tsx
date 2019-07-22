@@ -1,6 +1,6 @@
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import { Spinner } from 'components/ui';
-import { SecureWalletName } from 'config';
+import { SecureWalletName } from 'v2/types';
 import { configNetworksStaticSelectors, configSelectors } from 'features/config';
 import { AppState } from 'features/reducers';
 import { TrezorWallet } from 'libs/wallet';
