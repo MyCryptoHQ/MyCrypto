@@ -63,8 +63,8 @@ export const productLinks: Link[] = [
     text: translateRaw('ETHER_SECURITY_LOOKUP')
   },
   {
-    link: 'https://etherscamdb.info/',
-    text: translateRaw('ETHERSCAMDB')
+    link: 'https://cryptoscamdb.org/',
+    text: translateRaw('CRYPTOSCAMDB')
   },
   {
     link: 'https://legacy.mycrypto.com/helpers.html',
