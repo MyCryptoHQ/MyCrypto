@@ -47,9 +47,8 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
             this.renderDropdownItems()
           ) : (
             <li className="AddressFieldDropdown-dropdown-item AddressFieldDropdown-dropdown-item-no-match">
-              <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "{
-                addressInput
-              }".
+              <i className="fa fa-warning" /> {translate('NO_LABEL_FOUND_CONTAINING')} "
+              {addressInput}".
             </li>
           )}
         </ul>
@@ -183,7 +182,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const filteredLabelCount = this.getFilteredLabels().length;
 
     let activeIndex =
-      previousActiveIndex === null ? filteredLabelCount - 1 : previousActiveIndex - 1;
+      previousActiveIndex === null ? filteredLabelCount - 1 : previousActiveIndex! - 1;
 
     // Loop back to end
     if (activeIndex < 0) {
@@ -197,7 +196,7 @@ class AddressFieldDropdownClass extends React.Component<Props, State> {
     const { activeIndex: previousActiveIndex } = this.state;
     const filteredLabelCount = this.getFilteredLabels().length;
 
-    let activeIndex = previousActiveIndex === null ? 0 : previousActiveIndex + 1;
+    let activeIndex = previousActiveIndex === null ? 0 : previousActiveIndex! + 1;
 
     // Loop back to beginning
     if (activeIndex >= filteredLabelCount) {
@@ -317,6 +316,6 @@ export default function AddressFieldDropdown({
   ...props
 }: AddressFieldDropdownProps) {
   const Dropdown = controlled ? ControlledAddressFieldDropdown : UncontrolledAddressFieldDropdown;
-
+  // @ts-ignore
   return <Dropdown {...props} />;
 }

@@ -44,7 +44,8 @@ import {
   THUNDERCORE_DEFAULT,
   TOMO_DEFAULT,
   UBQ_DEFAULT,
-  WEB_DEFAULT
+  WEB_DEFAULT,
+  AUX_DEFAULT
 } from 'config/dpaths';
 import { makeExplorer } from 'utils/helpers';
 import * as types from './types';
@@ -999,6 +1000,29 @@ export const STATIC_NETWORKS_INITIAL_STATE: types.ConfigStaticNetworksState = {
       initial: 4.77
     },
     shouldEstimateGasPrice: false
+  },
+  AUX: {
+    id: 'AUX',
+    name: 'Auxilium',
+    unit: 'AUX',
+    chainId: 28945486,
+    isCustom: false,
+    color: '#85dc35',
+    blockExplorer: makeExplorer({
+      name: 'Auxilium Explore',
+      origin: 'https://explore.auxilium.global/'
+    }),
+    tokens: [],
+    contracts: [],
+    dPathFormats: {
+      [SecureWalletName.SAFE_T]: AUX_DEFAULT,
+      [InsecureWalletName.MNEMONIC_PHRASE]: AUX_DEFAULT
+    },
+    gasPriceSettings: {
+      min: 0.1,
+      max: 40,
+      initial: 4
+    }
   }
 };
 

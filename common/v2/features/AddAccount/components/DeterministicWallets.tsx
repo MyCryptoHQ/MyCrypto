@@ -288,8 +288,11 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-const DeterministicWallets = connect(mapStateToProps, {
-  getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets
-})(DeterministicWalletsClass);
+const DeterministicWallets = connect(
+  mapStateToProps,
+  {
+    getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets
+  }
+)(DeterministicWalletsClass);
 
 export default DeterministicWallets;

@@ -8,7 +8,9 @@ import { INode } from '.';
 
 type DeepPartial<T> = Partial<{ [key in keyof T]: Partial<T[key]> }>;
 const { selectors, store } = redux;
-const { providerBalancerSelectors: { balancerConfigSelectors } } = selectors;
+const {
+  providerBalancerSelectors: { balancerConfigSelectors }
+} = selectors;
 
 export const makeProviderConfig = (options: DeepPartial<IProviderConfig> = {}): IProviderConfig => {
   const defaultConfig: IProviderConfig = {

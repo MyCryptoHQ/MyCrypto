@@ -5,16 +5,12 @@ interface RouterLinkProps {
   fullWidth?: boolean;
 }
 
-const StyledRouterLink =
-  styled(Link) <
-  RouterLinkProps >
-  `
-${props =>
+const StyledRouterLink = styled(Link)<RouterLinkProps>`
+  ${props =>
     props.fullWidth === true &&
     css`
       width: 100%;
     `}
-  
 `;
 
 export default StyledRouterLink;

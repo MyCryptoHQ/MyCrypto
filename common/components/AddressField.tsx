@@ -64,7 +64,9 @@ const AddressField: React.SFC<Props> = ({
             type="text"
             value={(value != null
               ? value
-              : isCheckSummed ? toChecksumAddress(currentTo.raw) : currentTo.raw
+              : isCheckSummed
+              ? toChecksumAddress(currentTo.raw)
+              : currentTo.raw
             ).trim()}
             placeholder={placeholder}
             readOnly={!!(isReadOnly || readOnly)}
@@ -79,6 +81,8 @@ const AddressField: React.SFC<Props> = ({
   />
 );
 
-export default connect((state: AppState): StateProps => ({
-  toChecksumAddress: configSelectors.getChecksumAddressFn(state)
-}))(AddressField);
+export default connect(
+  (state: AppState): StateProps => ({
+    toChecksumAddress: configSelectors.getChecksumAddressFn(state)
+  })
+)(AddressField);

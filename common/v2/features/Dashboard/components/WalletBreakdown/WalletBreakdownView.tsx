@@ -59,10 +59,7 @@ interface PanelDividerProps {
   mobileOnly?: boolean;
 }
 
-const PanelDivider =
-  styled.div <
-  PanelDividerProps >
-  `
+const PanelDivider = styled.div<PanelDividerProps>`
   height: 1px;
   margin-bottom: 15px;
   background: #ddd;
@@ -161,7 +158,7 @@ export default function WalletBreakdownView({
 
   const shownSelectedIndex = balances.length > selectedAssetIndex ? selectedAssetIndex : 0;
   const balance = balances[shownSelectedIndex];
-  const selectedAssetPercentage = Math.floor(balance.fiatValue / totalFiatValue * 100);
+  const selectedAssetPercentage = Math.floor((balance.fiatValue / totalFiatValue) * 100);
 
   return (
     <>

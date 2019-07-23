@@ -44,7 +44,9 @@ export const processFormDataToWeb3Tx = (
         : '0x0',
       data: txFields.data ? txFields.data : '0x0',
       gas: txFields.isAdvancedTransaction
-        ? txFields.isGasLimitManual ? txFields.gasLimitField : txFields.gasLimitEstimated
+        ? txFields.isGasLimitManual
+          ? txFields.gasLimitField
+          : txFields.gasLimitEstimated
         : txFields.gasLimitEstimated,
       gasPrice: txFields.isAdvancedTransaction ? txFields.gasPriceField : txFields.gasPriceSlider,
       nonce: txFields.isAdvancedTransaction ? txFields.nonceField : txFields.nonceEstimated,
@@ -67,7 +69,9 @@ export const processFormDataToWeb3Tx = (
         )
       ),
       gas: txFields.isAdvancedTransaction
-        ? txFields.isGasLimitManual ? txFields.gasLimitField : txFields.gasLimitEstimated
+        ? txFields.isGasLimitManual
+          ? txFields.gasLimitField
+          : txFields.gasLimitEstimated
         : txFields.gasLimitEstimated,
       gasPrice: txFields.isAdvancedTransaction ? txFields.gasPriceField : txFields.gasPriceSlider,
       nonce: txFields.isAdvancedTransaction ? txFields.nonceField : txFields.nonceEstimated,

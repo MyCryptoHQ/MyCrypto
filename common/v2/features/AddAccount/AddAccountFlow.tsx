@@ -62,7 +62,11 @@ const AddAccountFlow = withRouter(props => {
   };
 
   // Read the walletName parameter from the URL
-  const { match: { params: { walletName: walletNameFromURL } } } = props;
+  const {
+    match: {
+      params: { walletName: walletNameFromURL }
+    }
+  } = props;
 
   const onWalletSelection = (name: WalletName) => {
     // If wallet has been selected manually by user click, add the wallet name to the URL for consistency

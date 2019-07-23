@@ -241,6 +241,7 @@ export const create = <K extends CollectionKey>(key: K) => (
   const uuid = generateUUID();
 
   const newCache = getCache();
+  // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
   newCache[key][uuid] = value;
 
   setCache(newCache);
@@ -253,6 +254,7 @@ export const createWithID = <K extends CollectionKey>(key: K) => (
   const uuid = id;
   if (getCache()[key][uuid] === undefined) {
     const newCache = getCache();
+    // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
     newCache[key][uuid] = value;
     setCache(newCache);
   } else {
@@ -261,6 +263,7 @@ export const createWithID = <K extends CollectionKey>(key: K) => (
 };
 
 export const read = <K extends CollectionKey>(key: K) => (uuid: string): LocalCache[K][string] => {
+  // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
   return getCache()[key][uuid];
 };
 
@@ -269,6 +272,7 @@ export const update = <K extends CollectionKey>(key: K) => (
   value: LocalCache[K][keyof LocalCache[K]]
 ) => {
   const newCache = getCache();
+  // @ts-ignore ie. https://app.clubhouse.io/mycrypto/story/2376/remove-ts-ignore-from-common-v2-services-store-localcache-localcache-ts
   newCache[key][uuid] = value;
 
   setCache(newCache);

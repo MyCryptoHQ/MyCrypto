@@ -73,20 +73,19 @@ export default class SignTransactionPrivateKey extends Component {
               onEnter={() => this.unlock}
             />
 
-            {isValidPkey &&
-              isPassRequired && (
-                <label className="SignTransactionPrivateKey-label">
-                  Your Password
-                  <Input
-                    isValid={password.length > 0}
-                    value={password}
-                    onChange={this.onPasswordChange}
-                    onKeyDown={this.onKeyDown}
-                    placeholder="Password"
-                    type="password"
-                  />
-                </label>
-              )}
+            {isValidPkey && isPassRequired && (
+              <label className="SignTransactionPrivateKey-label">
+                Your Password
+                <Input
+                  isValid={password.length > 0}
+                  value={password}
+                  onChange={this.onPasswordChange}
+                  onKeyDown={this.onKeyDown}
+                  placeholder="Password"
+                  type="password"
+                />
+              </label>
+            )}
           </div>
           <div className="SignTransactionPrivateKey-description">
             Because we never save, store, or transmit your secret, you need to sign each transaction

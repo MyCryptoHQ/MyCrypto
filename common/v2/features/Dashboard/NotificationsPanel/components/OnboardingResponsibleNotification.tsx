@@ -68,10 +68,7 @@ interface TipIconProps {
   height: number;
 }
 
-const TipIcon =
-  styled.img <
-  TipIconProps >
-  `
+const TipIcon = styled.img<TipIconProps>`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
 `;

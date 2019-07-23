@@ -78,7 +78,8 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
               A message regarding{' '}
               <strong>
                 <Address address={address} />
-              </strong>:
+              </strong>
+              :
             </small>
           </p>
           <p>{msg.msg}</p>
@@ -117,8 +118,10 @@ class CurrentCustomMessageClass extends PureComponent<Props, State> {
   }
 }
 
-export const CurrentCustomMessage = connect((state: AppState): ReduxProps => ({
-  currentTo: derivedSelectors.getCurrentTo(state),
-  tokens: configSelectors.getAllTokens(state),
-  wallet: walletSelectors.getWalletInst(state)
-}))(CurrentCustomMessageClass);
+export const CurrentCustomMessage = connect(
+  (state: AppState): ReduxProps => ({
+    currentTo: derivedSelectors.getCurrentTo(state),
+    tokens: configSelectors.getAllTokens(state),
+    wallet: walletSelectors.getWalletInst(state)
+  })
+)(CurrentCustomMessageClass);
