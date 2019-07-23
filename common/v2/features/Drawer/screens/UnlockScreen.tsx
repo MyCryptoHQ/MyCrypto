@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Heading, Typography } from '@mycrypto/ui';
 
+import { ROUTE_PATHS } from 'v2/config';
 import './UnlockScreen.scss';
 
 import addIcon from 'common/assets/images/icn-add.svg';
@@ -29,7 +30,7 @@ export default {
     {
       icon: settingsIcon,
       title: 'Settings',
-      link: '/dashboard/settings'
+      link: ROUTE_PATHS.SETTINGS.path
     }
   ]
 };

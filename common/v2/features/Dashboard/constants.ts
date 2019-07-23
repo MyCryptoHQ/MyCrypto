@@ -1,3 +1,4 @@
+import { ROUTE_PATHS } from 'v2/config';
 import { Action } from './types';
 
 // Legacy
@@ -11,31 +12,31 @@ export const actions: Action[] = [
   {
     icon: buyIcon,
     title: 'Buy Assets',
-    link: '/dashboard/buy',
+    link: ROUTE_PATHS.BUY.path,
     description: 'Purchase New Assets'
   },
   {
     icon: swapIcon,
     title: 'Swap Assets',
-    link: '/swap',
+    link: ROUTE_PATHS.SWAP.path,
     description: 'Exchange Assets for Other Assets'
   },
   {
     icon: sendIcon,
     title: 'Send Assets',
-    link: '/send',
+    link: ROUTE_PATHS.SEND.path,
     description: 'Transfer Assets to Another Wallet'
   },
   {
     icon: receiveIcon,
     title: 'Receive Assets',
-    link: '/receive',
+    link: ROUTE_PATHS.REQUEST_ASSEST.path,
     description: 'Transfer Assets to Your Wallet'
   },
   {
     icon: hardwareWalletIcon,
     title: 'Get Hardware Wallet',
-    link: '/dashboard/get-hardware-wallet',
+    link: ROUTE_PATHS.PURCHASE_LEDGER.path,
     description: 'Keep Your Funds Safe Offline'
   }
 ];

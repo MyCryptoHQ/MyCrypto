@@ -5,7 +5,7 @@ import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { UnlockScreen, SelectLanguage } from 'v2/features';
+import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
 import { COLORS } from 'v2/theme';
 import { translate } from 'translations';

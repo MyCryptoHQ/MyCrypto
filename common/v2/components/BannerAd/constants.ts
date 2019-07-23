@@ -1,3 +1,5 @@
+import { ROUTE_PATHS } from 'v2/config';
+
 import simplexDesktop from 'assets/images/ads/Simplex_Desktop.png';
 import simplexMobile from 'assets/images/ads/Simplex_Mobile.png';
 import shapeshiftDesktop from 'assets/images/ads/Shapeshift_Desktop.png';
@@ -12,24 +14,24 @@ export const ads = [
     name: 'Simplex',
     srcDesktop: simplexDesktop,
     srcMobile: simplexMobile,
-    url: 'https://buy.mycrypto.com/'
+    url: ROUTE_PATHS.BUY.path
   },
   {
     name: 'Shapeshift',
     srcDesktop: shapeshiftDesktop,
     srcMobile: shapeshiftMobile,
-    url: '/swap/shapeshift'
+    url: ROUTE_PATHS.SWAP_SHAPESHIFT.path
   },
   {
     name: 'Trezor',
     srcDesktop: trezorDesktop,
     srcMobile: trezorMobile,
-    url: 'https://shop.trezor.io/?offer_id=10&aff_id=1735'
+    url: ROUTE_PATHS.PURCHASE_TREZOR.path
   },
   {
     name: 'Ledger',
     srcDesktop: ledgerDesktop,
     srcMobile: ledgerMobile,
-    url: 'https://www.ledgerwallet.com/r/1985?path=/products/'
+    url: ROUTE_PATHS.PURCHASE_LEDGER.path
   }
 ];

@@ -27,3 +27,4 @@ export { ABIFunc, ABIFuncParamless } from './abiFunc';
 export { ITransaction, IHexStrTransaction, IHexStrWeb3Transaction } from './transaction';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
+export { IAppRoute, IRoutePath, IRoutePaths } from './routes';

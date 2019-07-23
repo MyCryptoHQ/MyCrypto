@@ -13,6 +13,7 @@ import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './co
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
 import { Account, Asset, ISettings, Network, WalletName, InsecureWalletName } from 'v2/types';
 import { generateUUID } from 'v2/utils';
+import { ROUTE_PATHS } from 'v2/config';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
 
@@ -76,7 +77,7 @@ class CreateKeystore extends Component<Props, State> {
     if (previousStage != null) {
       this.setState({ stage: previousStage });
     } else {
-      history.push('/');
+      history.push(ROUTE_PATHS.ROOT.path);
     }
   };
 
@@ -125,7 +126,7 @@ class CreateKeystore extends Component<Props, State> {
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address
     });
-    history.replace('/dashboard');
+    history.replace(ROUTE_PATHS.DASHBOARD.path);
   };
 
   private generateWalletAndContinue = async (password: string) => {

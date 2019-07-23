@@ -3,6 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import CryptoJS, { SHA256, AES } from 'crypto-js';
 
 import { translateRaw } from 'translations';
+import { ROUTE_PATHS } from 'v2/config';
 import {
   readAllSettings,
   getCache,
@@ -78,7 +79,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
 
       // Navigate to the dashboard and reset inactivity timer
       this.setState({ locked: false });
-      this.props.history.replace('/dashboard');
+      this.props.history.replace(ROUTE_PATHS.DASHBOARD.path);
       this.resetInactivityTimer();
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
       return true;
@@ -111,7 +112,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
 
   public startLockCountdown = () => {
     //Start the lock screen countdown only if user is on one of the dashboard pages
-    if (!this.props.location.pathname.includes('/dashboard')) {
+    if (!this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
       return;
     }
     if (this.state.locked || this.state.locking) {
@@ -151,7 +152,7 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
     } else {
       this.setState({ locking: false, locked: false });
       document.title = translateRaw('SCREEN_LOCK_TAB_TITLE');
-      this.props.history.push('/screen-lock/new');
+      this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_NEW.path);
     }
   };
 
@@ -161,16 +162,16 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
     document.title = translateRaw('SCREEN_LOCK_TAB_TITLE_LOCKED');
 
     if (
-      this.props.location.pathname.includes('/dashboard') ||
-      this.props.location.pathname.includes('/screen-lock/new') ||
-      this.props.location.pathname === '/'
+      this.props.location.pathname.includes(ROUTE_PATHS.DASHBOARD.path) ||
+      this.props.location.pathname.includes(ROUTE_PATHS.SCREEN_LOCK_NEW.path) ||
+      this.props.location.pathname === ROUTE_PATHS.ROOT.path
     ) {
-      this.props.history.push('/screen-lock/locked');
+      this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
     }
 
     this.props.history.listen(location => {
-      if (this.state.locked === true && location.pathname.includes('/dashboard')) {
-        this.props.history.push('/screen-lock/locked');
+      if (this.state.locked === true && location.pathname.includes(ROUTE_PATHS.DASHBOARD.path)) {
+        this.props.history.push(ROUTE_PATHS.SCREEN_LOCK_LOCKED.path);
       }
     });
   };
