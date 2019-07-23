@@ -10,7 +10,7 @@ const AccountOption = (props: OptionComponentProps) => {
     <>
       <AccountSummary
         address={option.address}
-        balance={'1000.809300'}
+        balance={option.balance}
         label={option.label}
         onClick={() => onSelect!(option, null)} // Since it's a custom Dropdown we know onSelect is defined
       />

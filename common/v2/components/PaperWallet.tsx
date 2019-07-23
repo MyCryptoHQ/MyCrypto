@@ -4,7 +4,7 @@ import jsPDF from 'jspdf';
 import styled from 'styled-components';
 import { Identicon } from '@mycrypto/ui';
 
-import { QRCode } from 'components/ui';
+import { QRCode } from 'v2/components';
 import { KNOWLEDGE_BASE_URL } from 'v2/config';
 
 import walletIcon from 'common/assets/images/icn-hardware-wallet.svg';
