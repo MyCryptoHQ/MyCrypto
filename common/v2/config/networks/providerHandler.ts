@@ -3,7 +3,7 @@ import { formatEther } from 'ethers/utils/units';
 
 import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
-import { createProviderHandler } from './globalProvider';
+import { EthersJS } from './globalProvider';
 
 class ProviderHandler {
   public network: Network;
@@ -72,7 +72,7 @@ class ProviderHandler {
 
   /* TODO: Needs handling for web3 providers. */
   private fetchProvider(network: Network): FallbackProvider {
-    return createProviderHandler(network);
+    return EthersJS.getEthersInstance(network);
   }
 }
 

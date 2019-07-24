@@ -79,3 +79,24 @@ async function callProviderMethod<K extends keyof ProviderMethod>(
 }
 
 export default callProviderMethod;
+
+export class EthersJS {
+  public static getEthersInstance(network: Network): FallbackProvider {
+    if (!EthersJS.instance || !EthersJS.networkName) {
+      EthersJS.instance = createProviderHandler(network);
+      EthersJS.networkName = network.name;
+    }
+    return EthersJS.instance;
+  }
+
+  public static updateEthersInstance(network: Network): FallbackProvider {
+    EthersJS.instance = createProviderHandler(network);
+    EthersJS.networkName = network.name;
+    return EthersJS.instance;
+  }
+
+  private static instance: FallbackProvider;
+  private static networkName: string;
+
+  private constructor() {}
+}
