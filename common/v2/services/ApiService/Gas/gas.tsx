@@ -40,9 +40,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
       keys.forEach(key => {
         if (typeof res[key] !== 'number') {
           throw new Error(
-            `Gas estimate API has invalid shape: Expected numeric key '${key}' in response, got '${
-              res[key]
-            }' instead`
+            `Gas estimate API has invalid shape: Expected numeric key '${key}' in response, got '${res[key]}' instead`
           );
         }
       });
@@ -51,9 +49,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
       const estimateRes = res as RawGasEstimates;
       if (estimateRes.fast > MAX_GAS_FAST) {
         throw new Error(
-          `Gas estimate response estimate too high: Max fast is ${MAX_GAS_FAST}, was given ${
-            estimateRes.fast
-          }`
+          `Gas estimate response estimate too high: Max fast is ${MAX_GAS_FAST}, was given ${estimateRes.fast}`
         );
       }
 
@@ -63,9 +59,7 @@ export function fetchGasEstimates(): Promise<GasEstimates> {
         estimateRes.fast > estimateRes.fastest
       ) {
         throw new Error(
-          `Gas esimates are in illogical order: should be safeLow < standard < fast < fastest, received ${
-            estimateRes.safeLow
-          } < ${estimateRes.standard} < ${estimateRes.fast} < ${estimateRes.fastest}`
+          `Gas esimates are in illogical order: should be safeLow < standard < fast < fastest, received ${estimateRes.safeLow} < ${estimateRes.standard} < ${estimateRes.fast} < ${estimateRes.fastest}`
         );
       }
 

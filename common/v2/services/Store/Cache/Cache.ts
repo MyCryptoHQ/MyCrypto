@@ -66,7 +66,9 @@ export class CacheServiceBase {
   public clearEntry(identifier: string, key: string) {
     this.ensureSubcache(identifier);
 
-    const { [identifier]: { [key]: _, ...cache } } = this.cache;
+    const {
+      [identifier]: { [key]: _, ...cache }
+    } = this.cache;
 
     this.cache[identifier] = cache;
     this.updatePersistedCache();

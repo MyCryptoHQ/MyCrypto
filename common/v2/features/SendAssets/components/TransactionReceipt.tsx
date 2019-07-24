@@ -19,7 +19,12 @@ const truncate = (children: string) => {
 };
 
 export default function TransactionReceipt({
-  stateValues: { transactionFields: { recipientAddress, account: { address } } }
+  stateValues: {
+    transactionFields: {
+      recipientAddress,
+      account: { address }
+    }
+  }
 }: Props) {
   return (
     <div className="TransactionReceipt">

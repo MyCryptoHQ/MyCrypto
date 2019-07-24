@@ -9,10 +9,7 @@ interface WrapperProps {
   alignCenterOnSmallScreen?: boolean;
 }
 
-const Wrapper =
-  styled.div <
-  WrapperProps >
-  `
+const Wrapper = styled.div<WrapperProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,6 +28,7 @@ const Info = styled.div`
 `;
 
 interface LeftImageProps {
+  src: string;
   width: string;
   height: string;
   transform?: string;
@@ -38,19 +36,16 @@ interface LeftImageProps {
   marginRight?: string;
 }
 
-const LeftImage =
-  styled.img <
-  LeftImageProps >
-  `
-${props => `width: ${props.width};`};
-${props => `height: ${props.height};`};
-${props => props.transform && `transform: ${props.transform};`};
-${props =>
+const LeftImage = styled.img<LeftImageProps>`
+  ${props => `width: ${props.width};`};
+  ${props => `height: ${props.height};`};
+  ${props => props.transform && `transform: ${props.transform};`};
+  ${props =>
     props.hideOnMobile &&
     `@media (max-width: ${SCREEN_MD}) {
       display: none;
     }`};
-    ${props => (props.marginRight ? `margin-right: ${props.marginRight};` : 'margin-right: 30px;')};
+  ${props => (props.marginRight ? `margin-right: ${props.marginRight};` : 'margin-right: 30px;')};
 `;
 
 const Content = styled.div`

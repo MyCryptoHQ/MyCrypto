@@ -47,7 +47,8 @@ class AmountsClass extends Component<StateProps> {
             </td>
             {showConversion && (
               <td>
-                $<UnitDisplay
+                $
+                <UnitDisplay
                   value={valueUSD}
                   unit="ether"
                   displayShortBalance={2}
@@ -69,7 +70,8 @@ class AmountsClass extends Component<StateProps> {
             </td>
             {showConversion && (
               <td>
-                $<UnitDisplay
+                $
+                <UnitDisplay
                   value={feeUSD}
                   unit="ether"
                   displayShortBalance={2}
@@ -92,7 +94,8 @@ class AmountsClass extends Component<StateProps> {
               </td>
               {showConversion && (
                 <td>
-                  $<UnitDisplay
+                  $
+                  <UnitDisplay
                     value={totalUSD}
                     unit="ether"
                     displayShortBalance={2}

@@ -102,7 +102,7 @@ class VerifyKeystorePanel extends Component<Props> {
     }
 
     if (keystore) {
-      const isValid = await verifyKeystore(keystore, password);
+      const isValid = await verifyKeystore(keystore!, password);
       if (!isValid) {
         this.setState({ passwordError: 'Wrong password' });
         return;

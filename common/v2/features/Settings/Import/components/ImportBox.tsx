@@ -15,10 +15,7 @@ interface ImportBoxContainerProps {
   dragging: boolean;
 }
 
-const ImportBoxContainer =
-  styled.div <
-  ImportBoxContainerProps >
-  `
+const ImportBoxContainer = styled.div<ImportBoxContainerProps>`
   color: #9b9b9b;
   background: #e8eaed;
   padding: 6rem;

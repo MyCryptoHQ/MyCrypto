@@ -30,7 +30,14 @@ export default class ConfirmTransaction extends Component<Props> {
 
   public render() {
     const {
-      stateValues: { transactionFields: { recipientAddress, amount, asset, account: { address } } },
+      stateValues: {
+        transactionFields: {
+          recipientAddress,
+          amount,
+          asset,
+          account: { address }
+        }
+      },
       onNext
     } = this.props;
     const { showingDetails } = this.state;
