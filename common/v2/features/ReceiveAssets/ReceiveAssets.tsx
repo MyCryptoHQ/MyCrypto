@@ -86,6 +86,12 @@ const Asset = styled.div`
     outline: none;
     box-shadow: 0 0 0 0.25em rgba(0, 122, 153, 0.65);
   }
+  .Select-menu-outer {
+    max-height: 410px;
+    .Select-menu {
+      max-height: 400px;
+    }
+  }
 `;
 
 const ErrorMessage = styled.span`
