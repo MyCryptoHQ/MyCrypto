@@ -57,7 +57,7 @@ export const createProviderHandler = (network: Network): FallbackProvider => {
 export const allProviders: FallbackProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
 
 type FilterFlags<Base, Condition> = {
-  [Key in keyof Base]: Base[Key] extends Condition ? Key : never
+  [Key in keyof Base]: Base[Key] extends Condition ? Key : never;
 };
 type AllowedNames<Base, Condition> = FilterFlags<Base, Condition>[keyof Base];
 

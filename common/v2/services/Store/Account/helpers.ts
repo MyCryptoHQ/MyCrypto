@@ -68,11 +68,10 @@ export const updateTokenBalanceByAsset = (
   if (network) {
     const provider = new ProviderHandler(network);
     provider.getTokenBalance(account.address, asset).then(data => {
-      const assets = account.assets.map(
-        prevAsset =>
-          asset.uuid === prevAsset.uuid
-            ? { ...prevAsset, balance: data, timestamp: Date.now() }
-            : prevAsset
+      const assets = account.assets.map(prevAsset =>
+        asset.uuid === prevAsset.uuid
+          ? { ...prevAsset, balance: data, timestamp: Date.now() }
+          : prevAsset
       );
       updateAccount(account.uuid, {
         ...account,

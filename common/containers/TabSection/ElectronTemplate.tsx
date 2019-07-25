@@ -46,4 +46,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {})(ElectronTemplate);
+export default connect(
+  mapStateToProps,
+  {}
+)(ElectronTemplate);

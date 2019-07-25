@@ -75,7 +75,9 @@ export class RPCRequests {
           to:
             'contractAddress' in token
               ? token.contractAddress
-              : 'address' in token ? token.address : '0x0',
+              : 'address' in token
+              ? token.address
+              : '0x0',
           data: ERC20.balanceOf.encodeInput({ _owner: address })
         },
         'pending'

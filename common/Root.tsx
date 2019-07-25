@@ -27,6 +27,7 @@ import {
   SupportPage
 } from 'containers';
 import { configMetaSelectors, configSelectors } from 'features/config';
+
 import { AppState } from 'features/reducers';
 import { transactionMetaActions } from 'features/transaction';
 
@@ -56,12 +57,12 @@ interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
-  error: Error | null;
+  error: Error | undefined;
 }
 
 class RootClass extends Component<Props, State> {
   public state = {
-    error: null
+    error: undefined
   };
 
   public componentDidMount() {
@@ -216,7 +217,9 @@ const AppContainer = (props: AppContainerProps) => {
             {/* To avoid fiddling with layout we provide a complete route to home */}
             <Route path="/" component={Home} exact={true} />
             <Route path="/home" component={Home} exact={true} />
-            {appRoutes.map((config, idx) => <PrivateRoute key={idx} {...config} />)}
+            {appRoutes.map((config, idx) => (
+              <PrivateRoute key={idx} {...config} />
+            ))}
             <Route path="/account" component={SendTransaction} exact={true} />
             <Route path="/generate" component={GenerateWallet} />
             <Route path="/contracts" component={Contracts} />
@@ -275,9 +278,12 @@ const mapStateToProps = (state: AppState): StateProps => ({
   theme: configMetaSelectors.getTheme(state)
 });
 
-const ConnectedRoot = connect(mapStateToProps, {
-  setUnitMeta: transactionMetaActions.setUnitMeta
-})(RootClass);
+const ConnectedRoot = connect(
+  mapStateToProps,
+  {
+    setUnitMeta: transactionMetaActions.setUnitMeta
+  }
+)(RootClass);
 
 // Silence RHL 'reconciliation failed' errors
 // https://github.com/gatsbyjs/gatsby/issues/7209#issuecomment-415807021

@@ -145,7 +145,8 @@ class SchedulingModalsClass extends Component<Props, State> {
             rel="noopener noreferrer"
           >
             Etherscan
-          </a>)
+          </a>
+          )
         </React.Fragment>
       );
     }
