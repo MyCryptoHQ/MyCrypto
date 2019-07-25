@@ -176,7 +176,7 @@ class ShapeshiftService {
     const query = queryString.stringify({
       client_id: SHAPESHIFT_CLIENT_ID,
       scope: 'users:read',
-      response_type: 'code',
+      response_type: 'token',
       redirect_uri: SHAPESHIFT_REDIRECT_URI
     });
     const url = `${SHAPESHIFT_API_URL}?${query}`;
