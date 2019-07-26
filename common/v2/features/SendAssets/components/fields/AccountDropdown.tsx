@@ -2,7 +2,7 @@ import React from 'react';
 import { OptionComponentProps } from 'react-select';
 import { translateRaw } from 'translations';
 
-import { getNetworkByName } from 'v2/services/Store';
+// import { getNetworkByName } from 'v2/services/Store';
 import { ExtendedAccount, ExtendedAccount as IExtendedAccount } from 'v2/types';
 import { AccountSummary, Divider, Dropdown } from 'v2/components';
 
@@ -35,7 +35,7 @@ interface IAccountDropdownProps {
 }
 
 function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdownProps) {
-  let relevantAccounts: ExtendedAccount[] = accounts;
+  const relevantAccounts: ExtendedAccount[] = accounts;
   // if (values.sharedConfig.asset && values.sharedConfig.assetNetwork) {
   //   relevantAccounts = accounts.filter((account: ExtendedAccount): boolean => {
   //     const accountNetwork: Network | undefined = getNetworkByName(account.network);
