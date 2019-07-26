@@ -1,4 +1,4 @@
-import { OS } from 'v2/services/Github';
+import { OS } from 'v2/services/ApiService';
 
 export const getFeaturedOS = (): string => {
   let featuredOS: string = OS.LINUX64;

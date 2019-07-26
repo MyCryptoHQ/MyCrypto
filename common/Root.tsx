@@ -27,6 +27,7 @@ import {
   SupportPage
 } from 'containers';
 import { configMetaSelectors, configSelectors } from 'features/config';
+
 import { AppState } from 'features/reducers';
 import { transactionMetaActions } from 'features/transaction';
 
@@ -35,9 +36,9 @@ import { GAU_THEME } from 'v2/theme';
 import { IS_DEV, IS_PROD } from 'v2/utils';
 import { HomepageChoiceRedirect } from 'v2/routing';
 import { PrivateRoute, NewAppReleaseModal } from 'v2/components';
-import { AnalyticsService } from 'v2/services';
+import { AnalyticsService, DevModeProvider, useDevMode } from 'v2/services';
 import { appRoutes, DevTools, Home } from 'v2/features';
-import { DevModeProvider, LockScreenProvider, useDevMode } from 'v2/providers';
+import { ScreenLockProvider } from 'v2/providers';
 import AppProviders from './AppProviders';
 
 interface OwnProps {
@@ -56,12 +57,12 @@ interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 interface State {
-  error: Error | null;
+  error: Error | undefined;
 }
 
 class RootClass extends Component<Props, State> {
   public state = {
-    error: null
+    error: undefined
   };
 
   public componentDidMount() {
@@ -92,7 +93,7 @@ class RootClass extends Component<Props, State> {
           <Provider store={store}>
             <Router>
               <AppProviders>
-                <LockScreenProvider>
+                <ScreenLockProvider>
                   <HomepageChoiceRedirect>
                     <PageVisitsAnalytics>
                       {error ? <AppContainer error={error} /> : <AppContainer />}
@@ -101,7 +102,7 @@ class RootClass extends Component<Props, State> {
                       {process.env.BUILD_ELECTRON && <NewAppReleaseModal />}
                     </PageVisitsAnalytics>
                   </HomepageChoiceRedirect>
-                </LockScreenProvider>
+                </ScreenLockProvider>
                 <DevToolsContainer />
                 <div id="ModalContainer" />
                 {IS_DEV ? <DevModeToggle /> : <></>}

@@ -31,6 +31,4 @@ export const walletNames = getValues(
   MiscWalletName
 );
 
-type TWalletType = SecureWalletName | InsecureWalletName | MiscWalletName;
-
-export default TWalletType;
+export type TWalletType = SecureWalletName | InsecureWalletName | MiscWalletName;

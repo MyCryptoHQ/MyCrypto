@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-// import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config';
+import { DeepPartial } from 'shared/types/util';
 import { TWalletType } from 'v2/types';
 import { fromStateToTxObject } from '../helpers';
 import { IStepComponentProps, ITxObject, ITxReceipt } from '../types';

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
 import { WalletButton } from '../components';
-import { WalletName } from 'v2/config/data';
+import { WalletName } from 'v2/types';
 
 interface Props {
   wallets: any[];

@@ -1,9 +1,7 @@
-import TSymbol from './symbols';
+import { TSymbol } from './symbols';
 
-interface IRate {
+export interface IRate {
   from: TSymbol;
   to: TSymbol;
   rate: string;
 }
-
-export default IRate;

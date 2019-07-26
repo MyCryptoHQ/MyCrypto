@@ -4,10 +4,9 @@ import { Address, Button, Network } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
-
+import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
 
-import { AddressBookContext } from 'v2/providers';
 import './ConfirmTransaction.scss';
 import { IStepComponentProps } from '../types';
 

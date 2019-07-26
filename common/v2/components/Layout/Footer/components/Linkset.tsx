@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { KNOWLEDGE_BASE_URL } from 'v2/config';
+import { KNOWLEDGE_BASE_URL, ETHERSCAMDB } from 'v2/config';
 import { translateRaw } from 'translations';
 import './Linkset.scss';
 
@@ -67,7 +67,7 @@ const LINK_COLUMNS = [
       },
       {
         title: 'EtherScamDB',
-        link: 'https://etherscamdb.info/',
+        link: ETHERSCAMDB,
         analytics_event: 'EtherScamDB'
       },
       {

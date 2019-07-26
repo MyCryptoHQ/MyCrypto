@@ -1,14 +1,13 @@
 import React from 'react';
 
+import { NotificationsProvider } from 'v2/providers';
 import {
   AccountProvider,
   AddressBookProvider,
-  NetworksProvider,
-  NotificationsProvider,
-  RatesProvider,
-  SettingsProvider,
-  StoreProvider
-} from 'v2/providers';
+  NetworkProvider,
+  SettingsProvider
+} from 'v2/services/Store';
+import { RatesProvider, StoreProvider } from 'v2/services';
 
 function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | null }) {
   return (
@@ -16,12 +15,12 @@ function AppProviders({ children }: { children: JSX.Element[] | JSX.Element | nu
       <AddressBookProvider>
         <AccountProvider>
           <NotificationsProvider>
-            <NetworksProvider>
+            <NetworkProvider>
               <RatesProvider>
                 {/* StoreProvider relies on the others and should be last */}
                 <StoreProvider>{children}</StoreProvider>
               </RatesProvider>
-            </NetworksProvider>
+            </NetworkProvider>
           </NotificationsProvider>
         </AccountProvider>
       </AddressBookProvider>

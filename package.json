@@ -174,7 +174,7 @@
     "style-loader": "0.20.3",
     "thread-loader": "1.1.5",
     "ts-jest": "24.0.0",
-    "ts-loader": "4.1.0",
+    "ts-loader": "6.0.4",
     "ts-node": "5.0.1",
     "tslint": "5.11.0",
     "tslint-config-prettier": "1.10.0",
@@ -238,7 +238,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
-      "npm run tslint",
+      "yarn tslint",
       "git add"
     ]
   },
@@ -251,7 +251,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run tscheck && npm test"
+      "pre-commit": "lint-staged && yarn tscheck && yarn test"
     }
   }
 }

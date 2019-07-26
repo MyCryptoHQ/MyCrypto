@@ -2,7 +2,7 @@ import React from 'react';
 import { Address, Icon, CollapsibleTable, Network, Typography } from '@mycrypto/ui';
 
 import { DashboardPanel } from 'v2/components';
-import { truncate } from 'v2/libs';
+import { truncate } from 'v2/utils';
 
 interface Props {
   toggleFlipped(): void;

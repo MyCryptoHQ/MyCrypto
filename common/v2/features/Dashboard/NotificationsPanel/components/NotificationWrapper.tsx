@@ -9,10 +9,7 @@ interface WrapperProps {
   alignCenterOnSmallScreen?: boolean;
 }
 
-const Wrapper =
-  styled.div <
-  WrapperProps >
-  `
+const Wrapper = styled.div<WrapperProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,10 +24,11 @@ const Wrapper =
 const Info = styled.div`
   display: flex;
   align-items: center;
-  max-width: 700px;
+  max-width: 860px;
 `;
 
 interface LeftImageProps {
+  src: string;
   width: string;
   height: string;
   transform?: string;
@@ -38,24 +36,33 @@ interface LeftImageProps {
   marginRight?: string;
 }
 
-const LeftImage =
-  styled.img <
-  LeftImageProps >
-  `
-${props => `width: ${props.width};`};
-${props => `height: ${props.height};`};
-${props => props.transform && `transform: ${props.transform};`};
-${props =>
+const LeftImage = styled.img<LeftImageProps>`
+  ${props => `width: ${props.width};`};
+  ${props => `height: ${props.height};`};
+  ${props => props.transform && `transform: ${props.transform};`};
+  ${props =>
     props.hideOnMobile &&
     `@media (max-width: ${SCREEN_MD}) {
       display: none;
     }`};
-    ${props => (props.marginRight ? `margin-right: ${props.marginRight};` : 'margin-right: 30px;')};
+  ${props => (props.marginRight ? `margin-right: ${props.marginRight};` : 'margin-right: 30px;')};
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Tagline = styled.p`
+  font-weight: bold;
+  font-size: 16px;
+  color: #a682ff;
+  margin: 0;
+  text-transform: uppercase;
+
+  @media (max-width: ${SCREEN_XS}) {
+    font-size: 12px;
+  }
 `;
 
 const Title = styled.p`
@@ -92,9 +99,10 @@ const Resources = styled.div`
 `;
 
 interface NotificationWrapperProps {
-  leftImg: LeftImageProps;
-  title: React.ReactElement<any>;
-  description: React.ReactElement<any>;
+  leftImg?: LeftImageProps;
+  tagline?: React.ReactElement<any>;
+  title: React.ReactElement<any> | string;
+  description?: React.ReactElement<any>;
   additionalDescription?: React.ReactElement<any>;
   resources: React.ReactElement<any>;
   alignCenterOnSmallScreen?: boolean;
@@ -103,6 +111,7 @@ interface NotificationWrapperProps {
 
 export default function NotificationWrapper({
   leftImg,
+  tagline,
   title,
   description,
   additionalDescription,
@@ -113,15 +122,16 @@ export default function NotificationWrapper({
   return (
     <Wrapper alignCenterOnSmallScreen={alignCenterOnSmallScreen}>
       <Info>
-        <LeftImage {...leftImg} />
+        {leftImg && <LeftImage {...leftImg} />}
         <Content>
+          {tagline && <Tagline>{tagline}</Tagline>}
           <Title>{title}</Title>
-          <Description>{description}</Description>
+          {description && <Description>{description}</Description>}
           {additionalDescription && <Description>{additionalDescription}</Description>}
+          {children}
         </Content>
       </Info>
       <Resources>{resources}</Resources>
-      {children}
     </Wrapper>
   );
 }

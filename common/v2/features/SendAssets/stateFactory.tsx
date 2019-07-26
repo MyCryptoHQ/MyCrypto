@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { FallbackProvider } from 'ethers/providers';
 
-import { NetworksContext } from 'v2/providers';
+import { NetworkContext } from 'v2/services/Store';
 import { TUseApiFactory } from 'v2/services';
 import { allProviders } from 'v2/config/networks/globalProvider';
 import { ITxObject, ITxConfig, IFormikFields, TStepAction } from './types';
@@ -20,7 +20,7 @@ const txConfigInitialState = {
 };
 
 const TxConfigFactory: TUseApiFactory<ITxConfig> = ({ state, setState }) => {
-  const { getNetworkByName } = useContext(NetworksContext);
+  const { getNetworkByName } = useContext(NetworkContext);
 
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const data = {

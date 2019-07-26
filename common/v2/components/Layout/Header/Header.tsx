@@ -357,22 +357,21 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                           {icon && <PrefixIcon {...icon} />} {title}
                           {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
                         </TitleIconWrapper>
-                        {subItems &&
-                          visibleMenuDropdowns[title] && (
-                            <ul>
-                              {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                                <li
-                                  key={innerTitle}
-                                  onClick={() => {
-                                    this.toggleMenu();
-                                    history.push(innerTo);
-                                  }}
-                                >
-                                  {innerTitle}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
+                        {subItems && visibleMenuDropdowns[title] && (
+                          <ul>
+                            {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                              <li
+                                key={innerTitle}
+                                onClick={() => {
+                                  this.toggleMenu();
+                                  history.push(innerTo);
+                                }}
+                              >
+                                {innerTitle}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </li>
                     );
                   })}
@@ -441,16 +440,15 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                 <li key={title} {...liProps}>
                   {icon && <PrefixIcon {...icon} />} {title}{' '}
                   {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                  {subItems &&
-                    visibleDropdowns[title] && (
-                      <ul>
-                        {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                          <li key={innerTitle} onClick={() => history.push(innerTo)}>
-                            {innerTitle}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  {subItems && visibleDropdowns[title] && (
+                    <ul>
+                      {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                        <li key={innerTitle} onClick={() => history.push(innerTo)}>
+                          {innerTitle}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               );
             })}

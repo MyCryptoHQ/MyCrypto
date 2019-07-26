@@ -1,9 +1,10 @@
-import { gasPriceDefaults } from 'config';
+import React, { Component } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
-import React, { Component } from 'react';
+
+import { gasPriceDefaults } from 'config';
 import translate, { translateRaw } from 'translations';
-import { GasEstimates } from 'v2/api/gas';
+import { GasEstimates } from 'v2/types';
 import { IFormikFields } from '../../types';
 import './GasPriceSlider.scss';
 

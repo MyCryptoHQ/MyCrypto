@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
-import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config';
-import { getNetworkByChainId } from 'v2/libs';
+import { getNetworkByChainId } from 'v2/services/Store';
+import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config'
+import { ISignComponentProps } from '../../types';;
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
-import { ISignComponentProps } from '../../types';
 
 declare global {
   interface Window {

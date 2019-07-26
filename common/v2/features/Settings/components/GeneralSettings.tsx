@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { ISettings } from 'v2/services/Settings';
+import { ISettings } from 'v2/types';
 import { DashboardPanel } from 'v2/components';
 
 const Divider = styled.div`
