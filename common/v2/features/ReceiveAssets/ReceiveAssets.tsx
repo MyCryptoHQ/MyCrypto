@@ -131,10 +131,11 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   const [chosenAssetName, setAssetName] = useState(assetOptions[0].label);
   const selectedAsset = filteredAssets.find(asset => asset.name === chosenAssetName);
 
+  const ethereum = assets.find(asset => asset.name === 'Ethereum');
+
   const initialValues = {
     amount: '0',
-    asset: { label: 'Ethereum', id: '7bbf42b1-9275-120b-0d0a-a788abd75ea0' },
-    chainId: network ? network.chainId : 1,
+    asset: { label: ethereum!.name, id: ethereum!.uuid },
     recipientAddress: accounts[0]
   };
 
@@ -158,7 +159,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
         initialValues={initialValues}
         onSubmit={noop}
         render={({
-          values: { amount, chainId, recipientAddress },
+          values: { amount, recipientAddress },
           errors
         }: FormikProps<typeof initialValues>) => (
           <Form>
@@ -246,7 +247,11 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                                 amount,
                                 selectedAsset.decimal
                               )
-                            : buildEIP681EtherRequest(recipientAddress.address, chainId, amount)
+                            : buildEIP681EtherRequest(
+                                recipientAddress.address,
+                                network.chainId,
+                                amount
+                              )
                         }
                       />
                     </QRDisplay>
@@ -266,7 +271,11 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                                 amount,
                                 selectedAsset.decimal
                               )
-                            : buildEIP681EtherRequest(recipientAddress.address, chainId, amount)
+                            : buildEIP681EtherRequest(
+                                recipientAddress.address,
+                                network.chainId,
+                                amount
+                              )
                         }
                         truncate={truncate}
                       />
