@@ -43,9 +43,8 @@ export class ShapeShiftServiceBase {
   );
 
   public constructor() {
-    const { code } = queryString.parse(window.location.search);
-
-    code ? this.requestAccessToken(code) : this.authorize();
+    const { access_token } = queryString.parse(window.location.hash);
+    access_token ? this.requestAccessToken(access_token) : this.authorize();
 
     if (isDesktop()) {
       const { ipcRenderer } = (window as any).require('electron');
@@ -231,11 +230,10 @@ export class ShapeShiftServiceBase {
     const query = queryString.stringify({
       client_id: SHAPESHIFT_CLIENT_ID,
       scope: 'users:read',
-      response_type: 'code',
+      response_type: 'token',
       redirect_uri: SHAPESHIFT_REDIRECT_URI
     });
     const url = `${SHAPESHIFT_AUTHORIZATION_URL}?${query}`;
-
     if (isDesktop()) {
       const { ipcRenderer } = (window as any).require('electron');
 
@@ -274,8 +272,8 @@ export class ShapeShiftServiceBase {
     const {
       data: { access_token: token }
     } = await this.service.post(SHAPESHIFT_TOKEN_PROXY_URL, {
-      code,
-      grant_type: 'authorization_code'
+      token: code,
+      grant_type: 'token'
     });
 
     this.authorize(token);
