@@ -174,3 +174,4 @@ When reporting vulnerabilities, please consider (1) attack scenario / exploitabi
 
 
 Thank you for helping keep MyCrypto and our users safe!
+
