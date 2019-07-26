@@ -53,9 +53,9 @@ const TxConfigFactory: TUseApiFactory<ITxConfig> = ({ state, setState }) => {
     after();
   };
 
-  // tslint:disable-next-line:
+  /* tslint:disable-next-line */
   const handleConfirmAndSend: TStepAction = (payload, after) => {};
-  // tslint:disable-next-line:
+  /* tslint:disable-next-line */
   const handleSignedTx: TStepAction = (payload, after) => {};
 
   return {

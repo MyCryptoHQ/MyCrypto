@@ -1,6 +1,7 @@
 import React from 'react';
 import { OptionComponentProps } from 'react-select';
 import { translateRaw } from 'translations';
+
 // import { getNetworkByName } from 'v2/services/Store';
 import { AccountSummary, Divider, Dropdown } from 'v2/components';
 import { ExtendedAccount } from 'v2/types';

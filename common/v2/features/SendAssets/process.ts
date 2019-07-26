@@ -1,3 +1,4 @@
+/* tslint:disable */
 import { bufferToHex } from 'ethereumjs-util';
 import BN from 'bn.js';
 
@@ -77,6 +78,8 @@ export const processFormDataToWeb3Tx = (
       nonce: txFields.isAdvancedTransaction ? txFields.nonceField : txFields.nonceEstimated,
       chainId: network.chainId ? network.chainId : 1
     };
+  } else {
+    rawTransaction = undefined;
   }
   return rawTransaction;
 };
@@ -153,3 +156,4 @@ export const processFormDataToTx = (
     }
   }
 };
+/* tslint:enable */
