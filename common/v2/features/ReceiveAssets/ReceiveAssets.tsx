@@ -81,13 +81,19 @@ const Asset = styled.div`
   margin-top: 15px;
   width: 100%;
 
+  .select-container {
+    transition: box-shadow 0.12s;
+  }
+
   .is-focused {
-    border-color: none;
+    border: none;
     outline: none;
     box-shadow: 0 0 0 0.25em rgba(0, 122, 153, 0.65);
   }
   .Select-menu-outer {
     max-height: 410px;
+    border: none;
+    box-shadow: 0 0 0 0.18em rgba(0, 122, 153, 0.65);
     .Select-menu {
       max-height: 400px;
     }
