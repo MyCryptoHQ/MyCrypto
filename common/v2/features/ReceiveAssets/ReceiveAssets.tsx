@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Formik, Form, Field, FieldProps, FormikProps } from 'formik';
 import noop from 'lodash/noop';
-import { Copyable, Input } from '@mycrypto/ui';
+import { Copyable, Heading, Input, Tooltip } from '@mycrypto/ui';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Select, { Option } from 'react-select';
 import styled from 'styled-components';
@@ -12,7 +12,8 @@ import { AccountContext, AssetContext } from 'v2/providers';
 import { getNetworkByName } from 'v2/libs/networks/networks';
 import { isValidAmount, truncate } from 'v2/utils';
 import { ExtendedAccount as IExtendedAccount } from 'v2/services';
-import { translateRaw } from 'translations';
+import { translate, translateRaw } from 'translations';
+import questionToolTip from 'common/assets/images/icn-question.svg';
 
 import { AccountDropdown } from './components';
 // Legacy
@@ -83,6 +84,7 @@ const Asset = styled.div`
 
   .select-container {
     transition: box-shadow 0.12s;
+    height: 54px;
   }
 
   .is-focused {
@@ -100,8 +102,19 @@ const Asset = styled.div`
   }
 `;
 
+const CodeHeader = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CodeHeading = styled(Heading)`
+  margin-top: 8px;
+`;
+
 const ErrorMessage = styled.span`
   color: red;
+  margin-top: 15px;
+  display: block;
 `;
 
 export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
@@ -129,11 +142,10 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
     let error;
     if (selectedAsset) {
       const { decimal } = selectedAsset;
-      if (decimal && !isValidAmount(decimal)(amount)) {
-        error = 'Please enter a valid amount';
-      }
-      if (isNaN(+amount)) {
-        error = 'Please enter a number';
+      if (isNaN(amount)) {
+        error = translateRaw('RECEIVE_FORM_ERROR_TYPE');
+      } else if (decimal && !isValidAmount(decimal)(amount)) {
+        error = translateRaw('RECEIVE_FORM_ERROR_AMOUNT');
       }
     }
 
@@ -184,6 +196,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                   )}
                 />
               </Amount>
+              {errors.amount && <ErrorMessage>{errors.amount}</ErrorMessage>}
               <Asset>
                 <SLabel htmlFor="asset">Asset</SLabel>
                 <Field
@@ -205,15 +218,39 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                 />
               </Asset>
             </AssetFields>
-            {errors.amount ? (
-              <ErrorMessage>{' ' + translateRaw('RECEIVE_FORM_ERROR')}</ErrorMessage>
-            ) : (
-              !errors.amount &&
+            {!errors.amount &&
               selectedAsset &&
               recipientAddress.address &&
               network && (
                 <>
                   <Divider />
+                  <CodeHeader>
+                    <CodeHeading as="h3">{translateRaw('RECEIVE_FORM_CODE_HEADER')}</CodeHeading>
+                    <Tooltip tooltip={translate('RECEIVE_FORM_TOOLTIP')}>
+                      {props => <img className="Tool-tip-img" src={questionToolTip} {...props} />}
+                    </Tooltip>
+                  </CodeHeader>
+
+                  <Fieldset>
+                    <SLabel>QR Code</SLabel>
+                    <QRDisplay>
+                      <QRCode
+                        data={
+                          isAssetToken(selectedAsset.type) &&
+                          selectedAsset.contractAddress &&
+                          selectedAsset.decimal
+                            ? buildEIP681TokenRequest(
+                                recipientAddress.address,
+                                selectedAsset.contractAddress,
+                                network.chainId,
+                                amount,
+                                selectedAsset.decimal
+                              )
+                            : buildEIP681EtherRequest(recipientAddress.address, chainId, amount)
+                        }
+                      />
+                    </QRDisplay>
+                  </Fieldset>
                   <Fieldset>
                     <SLabel>Payment Code</SLabel>
                     <FieldsetBox>
@@ -235,29 +272,8 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                       />
                     </FieldsetBox>
                   </Fieldset>
-                  <Fieldset>
-                    <SLabel>QR Code</SLabel>
-                    <QRDisplay>
-                      <QRCode
-                        data={
-                          isAssetToken(selectedAsset.type) &&
-                          selectedAsset.contractAddress &&
-                          selectedAsset.decimal
-                            ? buildEIP681TokenRequest(
-                                recipientAddress.address,
-                                selectedAsset.contractAddress,
-                                network.chainId,
-                                amount,
-                                selectedAsset.decimal
-                              )
-                            : buildEIP681EtherRequest(recipientAddress.address, chainId, amount)
-                        }
-                      />
-                    </QRDisplay>
-                  </Fieldset>
                 </>
-              )
-            )}
+              )}
           </Form>
         )}
       />

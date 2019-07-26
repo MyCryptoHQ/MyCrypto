@@ -39,8 +39,8 @@ export const validDecimal = (input: string, decimal: number) => {
 };
 
 export const isValidAmount = (decimal: number) => (amount: string) => {
-  const convertedAmount = new BN(amount);
-  return numberIsNotNegative(convertedAmount) && validDecimal(amount, decimal);
+  const convertedAmount: BN = new BN(amount);
+  return !convertedAmount.isNeg() && validDecimal(amount, decimal);
 };
 
 export const addressValidatorHash: ValidatorHash = {
