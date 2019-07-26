@@ -8,4 +8,4 @@ export * from './links';
 export { WALLETS_CONFIG } from './wallets';
 export { GITHUB_RELEASE_NOTES_URL } from './constants';
 export { NODES_CONFIG, makeNodeName } from './nodes';
-export { ROUTE_PATHS } from './routeUrls';
+export { ROUTE_PATHS } from './routePaths';

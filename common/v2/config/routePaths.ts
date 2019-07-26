@@ -11,14 +11,6 @@ const PATHS: IRoutePath[] = [
     path: 'https://buy.mycrypto.com/'
   },
   {
-    name: 'PURCHASE_TREZOR',
-    path: 'https://shop.trezor.io/?offer_id=10&aff_id=1735'
-  },
-  {
-    name: 'PURCHASE_LEDGER',
-    path: 'https://www.ledgerwallet.com/r/1985?path=/products/'
-  },
-  {
     name: 'HOME',
     title: 'home',
     path: '/home'

@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { ErrorScreen, PalettePage, LogOutPrompt } from 'components';
+import { ErrorScreen, LogOutPrompt } from 'components';
 import {
   BroadcastTx,
   CheckTransaction,
@@ -16,13 +16,13 @@ import { Layout } from 'v2/features/Layout';
 import { Home, PageNotFound } from 'v2/features';
 import { useDevMode } from 'v2/services';
 import { ScreenLockProvider } from 'v2/providers';
-import { IS_DEV, IS_PROD, IS_DOWNLOADABLE } from 'v2/utils';
+import { IS_PROD, IS_DOWNLOADABLE } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
 import {
   APP_ROUTES,
   PageVisitsAnalytics,
   LegacyRoutesHandler,
-  HomepageChoiceRedirect,
+  DefaultHomeHandler,
   PrivateRoute
 } from 'v2/routing';
 
@@ -44,7 +44,7 @@ export const AppRouter = (props: AppRouterProps) => {
     <Router>
       <ScreenLockProvider>
         <PageVisitsAnalytics>
-          <HomepageChoiceRedirect>
+          <DefaultHomeHandler>
             <Switch>
               {/* To avoid fiddling with layout we provide a complete route to home */}
               <Route path={ROUTE_PATHS.ROOT.path} component={Home} exact={true} />
@@ -65,10 +65,9 @@ export const AppRouter = (props: AppRouterProps) => {
                   <Route component={PageNotFound} />
                 </Switch>
               </Layout>
-              {IS_DEV && <Route path="/dev/palette" component={PalettePage} exact={true} />}
             </Switch>
             <LogOutPrompt />
-          </HomepageChoiceRedirect>
+          </DefaultHomeHandler>
         </PageVisitsAnalytics>
         <LegacyRoutesHandler />
       </ScreenLockProvider>

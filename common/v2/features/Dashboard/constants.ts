@@ -1,4 +1,4 @@
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, EXT_URLS } from 'v2/config';
 import { Action } from './types';
 
 // Legacy
@@ -36,7 +36,7 @@ export const actions: Action[] = [
   {
     icon: hardwareWalletIcon,
     title: 'Get Hardware Wallet',
-    link: ROUTE_PATHS.PURCHASE_LEDGER.path,
+    link: EXT_URLS.LEDGER_REFERRAL.path,
     description: 'Keep Your Funds Safe Offline'
   }
 ];

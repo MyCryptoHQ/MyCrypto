@@ -5,7 +5,7 @@ import { ROUTE_PATHS } from 'v2/config';
 import { ScreenLockContext } from 'v2/providers';
 import { AccountContext } from 'v2/services/Store';
 
-export const HomepageChoiceRedirect = withRouter(({ history, children }) => {
+export const DefaultHomeHandler = withRouter(({ history, children }) => {
   const { accounts } = useContext(AccountContext);
   const { locked } = useContext(ScreenLockContext);
 

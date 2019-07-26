@@ -1,4 +1,4 @@
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, EXT_URLS } from 'v2/config';
 
 import simplexDesktop from 'assets/images/ads/Simplex_Desktop.png';
 import simplexMobile from 'assets/images/ads/Simplex_Mobile.png';
@@ -26,12 +26,12 @@ export const ads = [
     name: 'Trezor',
     srcDesktop: trezorDesktop,
     srcMobile: trezorMobile,
-    url: ROUTE_PATHS.PURCHASE_TREZOR.path
+    url: EXT_URLS.TREZOR_REFERRAL.path
   },
   {
     name: 'Ledger',
     srcDesktop: ledgerDesktop,
     srcMobile: ledgerMobile,
-    url: ROUTE_PATHS.PURCHASE_LEDGER.path
+    url: EXT_URLS.LEDGER_REFERRAL.path
   }
 ];

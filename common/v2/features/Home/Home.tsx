@@ -40,11 +40,11 @@ const Section = styled.section`
 
 // Hack to enforce specificity of our style on base component.
 // https://github.com/styled-components/styled-components/issues/1816#issuecomment-398454088
-// const SLayout = styled(Layout)`
-//   && {
-//     background-color: #fff;
-//   }
-// `;
+const SLayout = styled(Layout)`
+  && {
+    background-color: #fff;
+  }
+`;
 
 const BottomSection = styled(Section)`
   @media (max-width: ${SCREEN_SM}) {
@@ -79,7 +79,7 @@ export default class Home extends Component {
 
   public render() {
     return (
-      <Layout fluid={true} centered={false}>
+      <SLayout fluid={true} centered={false}>
         <HomeWrapper>
           <Section>
             <GetStartedPanel />
@@ -109,7 +109,7 @@ export default class Home extends Component {
             <BottomActionPanel />
           </BottomSection>
         </HomeWrapper>
-      </Layout>
+      </SLayout>
     );
   }
 }

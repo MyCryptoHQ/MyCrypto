@@ -72,7 +72,7 @@ const AddAccountFlow = withRouter(props => {
   const onWalletSelection = (name: WalletName) => {
     // If wallet has been selected manually by user click, add the wallet name to the URL for consistency
     if (name) {
-      props.history.replace(`${name}`);
+      props.history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${name}`);
     }
 
     setStoryName(name);
