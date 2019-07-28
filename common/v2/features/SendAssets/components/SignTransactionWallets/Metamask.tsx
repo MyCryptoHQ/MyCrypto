@@ -149,13 +149,13 @@ export default class SignTransactionMetaMask extends Component<
   }
 
   private checkAddressMatches(metaMaskAddress: string) {
-    const { senderAddress } = this.props;
+    const { from: senderAddress } = this.props.rawTransaction;
     const desiredAddress = utils.getAddress(senderAddress);
     this.setState({ accountMatches: metaMaskAddress === desiredAddress });
   }
 
   private checkNetworkMatches(metaMaskNetwork: ethers.utils.Network) {
-    const { networkName } = this.props;
+    const { name: networkName } = this.props.network;
     const getMetaMaskNetworkbyChainId = getNetworkByChainId(metaMaskNetwork.chainId.toString());
     if (!getMetaMaskNetworkbyChainId) {
       return;

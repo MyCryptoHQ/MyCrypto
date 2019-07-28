@@ -1,11 +1,9 @@
+/* tslint:disable */
 import { useContext } from 'react';
-import { FallbackProvider } from 'ethers/providers';
 
 import { NetworkContext } from 'v2/services/Store';
 import { TUseApiFactory } from 'v2/services';
-import { allProviders } from 'v2/config/networks/globalProvider';
-import { ITxObject, ITxConfig, IFormikFields, TStepAction } from './types';
-import { fromStateToTxObject } from './helpers';
+import { ITxConfig, ITxReceipt, IFormikFields, TStepAction } from './types';
 
 const txConfigInitialState = {
   gasLimit: null,
@@ -13,13 +11,18 @@ const txConfigInitialState = {
   nonce: null,
   amount: null,
   data: null,
-  recipientAddress: null,
+  receiverAddress: null,
   senderAccount: null,
   network: undefined,
   asset: null
 };
 
-const TxConfigFactory: TUseApiFactory<ITxConfig> = ({ state, setState }) => {
+interface State {
+  txConfig: ITxConfig;
+  txReceipt?: ITxReceipt;
+}
+
+const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   const { getNetworkByName } = useContext(NetworkContext);
 
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
@@ -30,32 +33,33 @@ const TxConfigFactory: TUseApiFactory<ITxConfig> = ({ state, setState }) => {
       data: payload.txDataField,
       amount: payload.amount,
       senderAccount: payload.account,
-      recipientAddress: payload.recipientAddress,
+      receiverAddress: payload.receiverAddress,
       network: getNetworkByName(payload.account.network),
       asset: payload.asset
     };
 
-    setState((prevState: ITxConfig) => ({
+    setState((prevState: State) => ({
       ...prevState,
-      ...data
+      txConfig: data
     }));
     after();
   };
 
-  const handleConfirmAndSign: TStepAction = (payload, after) => {
-    const txObject: ITxObject = fromStateToTxObject(state);
-    const {
-      network: { name: networkName }
-    } = state;
-    const txHash = sendTransaction(txObject, networkName);
+  // For Metamask
+  const handleConfirmAndSign: TStepAction = (payload: ITxReceipt, after) => {
+    setState((prevState: State) => ({
+      ...prevState,
+      txReceipt: payload
+    }));
 
-    // updateState
     after();
   };
 
-  /* tslint:disable-next-line */
+  // For Other Wallets
+  // @ts-ignore
   const handleConfirmAndSend: TStepAction = (payload, after) => {};
-  /* tslint:disable-next-line */
+
+  // @ts-ignore
   const handleSignedTx: TStepAction = (payload, after) => {};
 
   return {
@@ -63,15 +67,11 @@ const TxConfigFactory: TUseApiFactory<ITxConfig> = ({ state, setState }) => {
     handleConfirmAndSign,
     handleConfirmAndSend,
     handleSignedTx,
-    state
+    txConfig: state.txConfig,
+    txReceipt: state.txReceipt
   };
 };
 
 export { txConfigInitialState, TxConfigFactory };
 
-// @TODO: Move to correct service
-async function sendTransaction(signedTx, network) {
-  const transactionProvider: FallbackProvider = allProviders[network];
-  const broadcastTransaction = await transactionProvider.sendTransaction(signedTx);
-  return broadcastTransaction;
-}
+/* tslint:enable */

@@ -3,6 +3,7 @@ import { WalletName } from './wallet';
 import { TAssetType } from './asset';
 
 export interface Account {
+  label?: string;
   address: string;
   network: string;
   assets: AssetBalanceObject[];

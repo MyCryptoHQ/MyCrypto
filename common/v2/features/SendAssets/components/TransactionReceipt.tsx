@@ -13,9 +13,9 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default function TransactionReceipt({ txReceipt, onComplete }: IStepComponentProps) {
-  const recipientAddress = txReceipt.to;
-  const address = txReceipt.from;
+export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
+  const recipientAddress = txReceipt!.to;
+  const address = txReceipt!.from;
 
   return (
     <div className="TransactionReceipt">

@@ -1,13 +1,14 @@
 import React from 'react';
 import BN from 'bn.js';
 
+import { Network } from 'v2/types';
 import { gasPriceToBase, fromWei } from 'v2/services/EthService';
 import { getBaseAssetSymbolByNetwork } from 'v2/services/Store';
 
 interface Props {
   gasLimitToUse: string;
   gasPriceToUse: string;
-  network: object;
+  network: Network;
   fiatAsset: { fiat: string; value: string; symbol: string };
 }
 
