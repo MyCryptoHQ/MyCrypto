@@ -4,7 +4,7 @@ import {
   IAsset,
   ExtendedAccount as IExtendedAccount,
   Network,
-  GasEstimates,
+  GasEstimates
 } from 'v2/types';
 
 export interface ITxObject {

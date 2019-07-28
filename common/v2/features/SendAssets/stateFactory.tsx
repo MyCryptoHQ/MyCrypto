@@ -44,7 +44,9 @@ const TxConfigFactory: TUseApiFactory<ITxConfig> = ({ state, setState }) => {
 
   const handleConfirmAndSign: TStepAction = (payload, after) => {
     const txObject: ITxObject = fromStateToTxObject(state);
-    const { network: { name: networkName } } = state;
+    const {
+      network: { name: networkName }
+    } = state;
     const txHash = sendTransaction(txObject, networkName);
 
     // updateState

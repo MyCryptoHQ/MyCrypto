@@ -27,7 +27,9 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
   //   chainId: ethers.utils.getNetwork(DEFAULT_NETWORK_FOR_FALLBACK).chainId
   // };
 
-  const { senderAccount: { wallet: walletName } } = txConfig;
+  const {
+    senderAccount: { wallet: walletName }
+  } = txConfig;
   const txObject: ITxObject = fromStateToTxObject(txConfig);
 
   const getWalletComponent = (walletType: TWalletType) => {

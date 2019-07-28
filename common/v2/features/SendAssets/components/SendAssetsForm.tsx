@@ -15,7 +15,7 @@ import {
   TSymbol,
   Asset,
   AssetBalanceObject,
-  ExtendedAccount as IExtendedAccount,
+  ExtendedAccount as IExtendedAccount
 } from 'v2/types';
 import { getNonce } from 'v2/services/EthService';
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
@@ -368,16 +368,15 @@ export default function SendAssetsForm({
                       </div>
                     </div>
                     <div className="SendAssetsForm-errors">
-                      {errors &&
-                        errors.gasPriceField && (
-                          <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
-                        )}
-                      {errors &&
-                        errors.gasLimitField && (
-                          <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
-                        )}
-                      {errors &&
-                        errors.nonceField && <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>}
+                      {errors && errors.gasPriceField && (
+                        <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
+                      )}
+                      {errors && errors.gasLimitField && (
+                        <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
+                      )}
+                      {errors && errors.nonceField && (
+                        <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>
+                      )}
                     </div>
                     <fieldset className="SendAssetsForm-fieldset">
                       <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
