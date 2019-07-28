@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { isValidEncryptedPrivKey, isValidPrivKey } from 'libs/validators';
-import { stripHexPrefix } from 'libs/formatters';
+import { isValidEncryptedPrivKey, isValidPrivKey, stripHexPrefix } from 'v2/services/EthService';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
@@ -87,23 +86,22 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
                 />
               </label>
             </div>
-            {isValidPkey &&
-              isPassRequired && (
-                <div className="input-group-wrapper">
-                  <label className="input-group">
-                    <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
+            {isValidPkey && isPassRequired && (
+              <div className="input-group-wrapper">
+                <label className="input-group">
+                  <div className="input-group-header">{translate('ADD_LABEL_3')}</div>
 
-                    <Input
-                      isValid={password.length > 0}
-                      value={password}
-                      onChange={this.onPasswordChange}
-                      onKeyDown={this.onKeyDown}
-                      placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
-                      type="password"
-                    />
-                  </label>
-                </div>
-              )}
+                  <Input
+                    isValid={password.length > 0}
+                    value={password}
+                    onChange={this.onPasswordChange}
+                    onKeyDown={this.onKeyDown}
+                    placeholder={translateRaw('INPUT_PASSWORD_LABEL')}
+                    type="password"
+                  />
+                </label>
+              </div>
+            )}
             <button className="btn btn-block btn-primary" disabled={unlockDisabled}>
               {translate('ADD_LABEL_6_SHORT')}
             </button>

@@ -106,8 +106,11 @@ const mapStateToProps = (state: AppState) => ({
   unlocked: walletSelectors.isWalletFullyUnlocked(state)
 });
 
-export default connect(mapStateToProps, {
-  signMessageRequested: messageActions.signMessageRequested,
-  resetWallet: walletActions.resetWallet,
-  resetMessage: messageActions.resetMessage
-})(withRouter(SignMessage));
+export default connect(
+  mapStateToProps,
+  {
+    signMessageRequested: messageActions.signMessageRequested,
+    resetWallet: walletActions.resetWallet,
+    resetMessage: messageActions.resetMessage
+  }
+)(withRouter(SignMessage));

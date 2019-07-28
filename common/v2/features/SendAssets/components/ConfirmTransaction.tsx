@@ -6,10 +6,9 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 
 import { Amount } from 'v2/components';
-
-import { AddressBookContext } from 'v2/providers';
-import './ConfirmTransaction.scss';
+import { AddressBookContext } from 'v2/services/Store';
 import { IStepComponentProps } from '../types';
+import './ConfirmTransaction.scss';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');

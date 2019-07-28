@@ -1,6 +1,6 @@
 import { utils } from 'ethers';
 
-import { getNetworkByChainId } from 'v2/libs';
+import { getNetworkByChainId } from 'v2/services/Store';
 import { ITxObject, ITxConfig, IFormikFields } from './types';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {

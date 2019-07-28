@@ -117,7 +117,9 @@ export default class ShapeShiftSend extends Component<Props> {
     });
 
   private checkStatus = async () => {
-    const { transaction: { deposit } } = this.props;
+    const {
+      transaction: { deposit }
+    } = this.props;
     const status = await ShapeShiftService.instance.getDepositStatus(deposit);
 
     if (status === DepositStatuses.complete) {

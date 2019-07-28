@@ -1,9 +1,8 @@
 import React from 'react';
 
-// import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config';
 import { TWalletType } from 'v2/types';
-import { fromStateToTxObject } from '../helpers';
 import { IStepComponentProps, ITxObject, ITxReceipt } from '../types';
+import { fromStateToTxObject } from '../helpers';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,

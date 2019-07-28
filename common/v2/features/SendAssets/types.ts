@@ -1,9 +1,11 @@
 import { FunctionComponent } from 'react';
-
-import { GasEstimates } from 'v2/api/gas';
-import { Asset } from 'v2/services/Asset/types';
-import { IAsset } from 'v2/types';
-import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
+import {
+  Asset,
+  IAsset,
+  ExtendedAccount as IExtendedAccount,
+  Network,
+  GasEstimates,
+} from 'v2/types';
 
 export interface ITxObject {
   readonly to: string;

@@ -5,10 +5,10 @@ import {
   InsecureWalletName,
   MiscWalletName,
   SecureWalletName
-} from 'v2/config/data';
+} from 'v2/types';
 
 export const initialState: FormData = {
-  network: 'Ethereum', // @ADD_ACCOUNT_TODO this should have the same type as networks in NetworksContext
+  network: 'Ethereum', // @ADD_ACCOUNT_TODO this should have the same type as networks in NetworkContext
   accountType: walletNames.DEFAULT,
   account: '',
   label: 'New Account',

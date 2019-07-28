@@ -1,12 +1,13 @@
+import React from 'react';
 import { Input } from '@mycrypto/ui';
 import { Field, FieldProps } from 'formik';
-import { isValidETHAddress } from 'libs/validators';
-import React from 'react';
+
+import { getENSTLDForChain } from 'libs/ens/networkConfigs';
+import { isValidENSName } from 'libs/validators';
+
 import { translateRaw } from 'translations';
+import { isValidETHAddress } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components';
-import { getENSTLDForChain } from 'v2/libs/ens/networkConfigs';
-import { isValidENSName } from 'v2/libs/validators';
-import { IFormikFields } from '../../types';
 
 /*
   Eth address field to be used within a Formik Form

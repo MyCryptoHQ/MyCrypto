@@ -7,19 +7,18 @@ import translate, { translateRaw } from 'translations';
 import { ENSStatus } from 'components/AddressFieldFactory/AddressInputFactory';
 import { WhenQueryExists } from 'components/renderCbs';
 
-import { IAsset, TSymbol } from 'v2/types';
 import { InlineErrorMsg } from 'v2/components';
-import { getAssetByUUID, getNetworkByName } from 'v2/libs';
 // import { processFormDataToTx } from 'v2/libs/transaction/process';
-import { AccountContext } from 'v2/providers';
+import { AccountContext, getAssetByUUID, getNetworkByName } from 'v2/services/Store';
 import {
+  IAsset,
+  TSymbol,
   Asset,
   AssetBalanceObject,
-  ExtendedAccount,
   ExtendedAccount as IExtendedAccount,
-  fetchGasPriceEstimates,
-  getNonce
-} from 'v2/services';
+} from 'v2/types';
+import { getNonce } from 'v2/services/EthService';
+import { fetchGasPriceEstimates } from 'v2/services/ApiService';
 
 import { getResolvedENSAddress } from '../../Ens';
 import { IFormikFields, IStepComponentProps } from '../types';
@@ -28,7 +27,7 @@ import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import {
   AccountDropdown,
   AssetDropdown,
-  DataField,
+  // DataField,
   EthAddressField,
   GasLimitField,
   GasPriceField,
@@ -37,12 +36,11 @@ import {
 } from './fields';
 import './SendAssetsForm.scss';
 import {
-  validateDataField,
+  // validateDataField,
   validateGasLimitField,
   validateGasPriceField,
   validateNonceField
 } from './validators/validators';
-import { fromFormikStateToTxObject } from './helpers';
 
 const initialFormikState = {
   recipientAddress: undefined, // should get receiverAccount from AddressBook
@@ -158,7 +156,7 @@ export default function SendAssetsForm({
             // @TODO get asset balance and subtract gas cost
             setFieldValue('amount', '1000');
 
-          const handleNonceEstimate = async (account: ExtendedAccount) => {
+          const handleNonceEstimate = async (account: IExtendedAccount) => {
             if (!values || !values.network) {
               return;
             }

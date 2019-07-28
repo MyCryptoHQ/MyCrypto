@@ -1,4 +1,4 @@
-export { ScreenLockLocking } from './ScreenLockLocking';
-export { ScreenLockNew } from './ScreenLockNew';
-export { ScreenLockLocked } from './ScreenLockLocked';
-export { ScreenLockForgotPassword } from './ScreenLockForgotPassword';
+export { default as ScreenLockLocking } from './ScreenLockLocking';
+export { default as ScreenLockNew } from './ScreenLockNew';
+export { default as ScreenLockLocked } from './ScreenLockLocked';
+export { default as ScreenLockForgotPassword } from './ScreenLockForgotPassword';

@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Address, CollapsibleTable } from '@mycrypto/ui';
 
-import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { Amount, DashboardPanel } from 'v2/components';
-import { truncate } from 'v2/libs';
-import { AddressBook, ExtendedAccount, TransactionData } from 'v2/services';
-import './RecentTransactionList.scss';
 import TransactionLabel from './TransactionLabel';
+import './RecentTransactionList.scss';
+
+import newWindowIcon from 'common/assets/images/icn-new-window.svg';
+import { truncate } from 'v2/utils';
+import { ExtendedAccount, TransactionData, AddressBook } from 'v2/types';
 
 interface Props {
   className?: string;

@@ -3,14 +3,11 @@ import { Formik, Field, Form, FieldProps } from 'formik';
 import { Panel, Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { Account, ExtendedAccount } from 'v2/services/Account';
-import { AccountContext } from 'v2/providers/AccountProvider';
+import { AccountContext, getLabelByAccount } from 'v2/services/Store';
+import { Account, AddressBook, ExtendedAccount, SecureWalletName } from 'v2/types';
 
-import ToolsAccountList from './ToolsAccountList';
-import { SecureWalletName } from 'v2/config';
 import ToolsNotifications from './ToolsNotifications';
-import { AddressBook } from 'v2/services/AddressBook/types';
-import { getLabelByAccount } from 'v2/libs/addressbook/addressbook';
+import ToolsAccountList from './ToolsAccountList';
 
 const DevToolsContainer = styled.div`
   position: absolute;

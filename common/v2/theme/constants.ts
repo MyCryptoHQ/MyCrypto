@@ -3,7 +3,8 @@ export const COLORS = {
   GREYISH_BROWN: '#424242',
   BRIGHT_SKY_BLUE: '#1eb8e7',
   SILVER: '#f7f7f7',
-  PASTEL_RED: '#ef4747'
+  PASTEL_RED: '#ef4747',
+  WHITE: '#fff'
 };
 
 export const BREAK_POINTS = {

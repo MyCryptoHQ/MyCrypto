@@ -1,19 +1,7 @@
-import React, { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
+import { ComponentType } from 'react';
 
-import { AccountContext, LockScreenContext } from 'v2/providers';
+import { isDesktop } from 'v2/utils';
 
-export const HomepageChoiceRedirect = withRouter(({ history, children }) => {
-  const { accounts } = useContext(AccountContext);
-  const { locked } = useContext(LockScreenContext);
-
-  const path = history.location.pathname;
-  if (path === '/') {
-    if (accounts.length > 0 || locked) {
-      history.push('/dashboard');
-    } else {
-      history.push('/home');
-    }
-  }
-  return <React.Fragment>{children}</React.Fragment>;
-});
+export const requiresDesktopApp = (component: ComponentType) => (
+  redirectComponent: ComponentType
+): ComponentType => (isDesktop() ? component : redirectComponent);

@@ -63,6 +63,24 @@ const ToolsNotifications = () => {
           >
             Get Hardware Wallet
           </button>
+          <button
+            onClick={() => {
+              displayNotification(NotificationTemplates.onboardingPleaseUnderstand, {
+                previousNotificationClosedDate: new Date()
+              });
+            }}
+          >
+            Onboarding Please Understand
+          </button>
+          <button
+            onClick={() => {
+              displayNotification(NotificationTemplates.onboardingResponsible, {
+                firstDashboardVisitDate: new Date()
+              });
+            }}
+          >
+            Onboarding Responsible
+          </button>
         </ToolWrapper>
       )}
     </NotificationsContext.Consumer>

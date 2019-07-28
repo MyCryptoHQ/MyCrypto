@@ -23,8 +23,6 @@ export { default as Overlay } from './Overlay';
 export { default as RouterLink } from './RouterLink';
 export { default as Stepper } from './Stepper';
 export { Panel } from './Panel';
-export { Layout } from './Layout';
 export { DashboardPanel } from './DashboardPanel';
 export { Desktop, Mobile } from './ResponsiveLayout';
-export { default as PrivateRoute } from './PrivateRoute';
 export * from './ErrorMessages';

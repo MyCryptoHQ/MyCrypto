@@ -139,21 +139,19 @@ class AddressInputFactoryClass extends Component<Props> {
               chainId={chainId}
             />
           )}
-          {isFocused &&
-            !isENSAddress && (
-              <AddressFieldDropdown
-                controlled={controlled}
-                value={value}
-                onChangeOverride={onChangeOverride}
-                dropdownThreshold={dropdownThreshold}
-              />
-            )}
-          {showLabelMatch &&
-            label && (
-              <div title={sendingTo} className="AddressInput-input-label">
-                <i className="fa fa-check" /> {sendingTo}
-              </div>
-            )}
+          {isFocused && !isENSAddress && (
+            <AddressFieldDropdown
+              controlled={controlled}
+              value={value}
+              onChangeOverride={onChangeOverride}
+              dropdownThreshold={dropdownThreshold}
+            />
+          )}
+          {showLabelMatch && label && (
+            <div title={sendingTo} className="AddressInput-input-label">
+              <i className="fa fa-check" /> {sendingTo}
+            </div>
+          )}
         </div>
         {showIdenticon && (
           <div className="AddressInput-identicon">

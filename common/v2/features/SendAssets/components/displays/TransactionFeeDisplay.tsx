@@ -1,7 +1,9 @@
-import BN from 'bn.js';
 import React from 'react';
-import { getBaseAssetSymbolByNetwork } from 'v2/libs/networks/networks';
-import { fromWei, gasPriceToBase } from 'v2/libs/units';
+import BN from 'bn.js';
+
+import { gasPriceToBase, fromWei } from 'v2/services/EthService';
+import { getBaseAssetSymbolByNetwork } from 'v2/services/Store';
+
 
 interface Props {
   gasLimitToUse: string;
