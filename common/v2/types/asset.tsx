@@ -13,6 +13,7 @@ export interface Asset {
   name: string;
   networkId?: string;
   ticker: string;
+  symbol?: TSymbol;
   type: TAssetType;
   contractAddress?: string;
   decimal?: number;

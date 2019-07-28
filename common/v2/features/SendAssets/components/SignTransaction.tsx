@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { DeepPartial } from 'shared/types/util';
 import { TWalletType } from 'v2/types';
 import { fromStateToTxObject } from '../helpers';
-import { IStepComponentProps, ITxObject, ITxReceipt } from '../types';
+import { IStepComponentProps, ISignComponentProps, ITxObject, ITxReceipt } from '../types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,
@@ -13,6 +12,21 @@ import {
   SignTransactionTrezor
 } from './SignTransactionWallets';
 import './SignTransaction.scss';
+
+type SigningComponents = {
+  readonly [k in Partial<TWalletType>]: React.ComponentType<ISignComponentProps> | null
+};
+const SigningComponents: SigningComponents = {
+  privateKey: SignTransactionPrivateKey,
+  web3: SignTransactionMetaMask,
+  ledgerNanoS: SignTransactionLedger,
+  trezor: SignTransactionTrezor,
+  safeTmini: SignTransactionSafeT,
+  keystoreFile: SignTransactionKeystore,
+  paritySigner: null,
+  mnemonicPhrase: null,
+  viewOnly: null
+};
 
 export default function SignTransaction({ txConfig, onComplete }: IStepComponentProps) {
   // @TODO remove before deployement.
@@ -28,32 +42,19 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
   //   chainId: ethers.utils.getNetwork(DEFAULT_NETWORK_FOR_FALLBACK).chainId
   // };
 
-  const { senderAccount: { wallet: walletName } } = txConfig;
+  const { network, senderAccount: { wallet: walletName } } = txConfig;
+
   const txObject: ITxObject = fromStateToTxObject(txConfig);
 
   const getWalletComponent = (walletType: TWalletType) => {
-    switch (walletType) {
-      case 'privateKey':
-        return SignTransactionPrivateKey;
-      case 'web3':
-        return SignTransactionMetaMask;
-      case 'ledgerNanoS':
-        return SignTransactionLedger;
-      case 'trezor':
-        return SignTransactionTrezor;
-      case 'safeTmini':
-        return SignTransactionSafeT;
-      case 'keystoreFile':
-        return SignTransactionKeystore;
-      default:
-        return null;
-    }
+    return SigningComponents[walletType];
   };
 
-  const WalletComponent = getWalletComponent(walletName);
+  const WalletComponent: React.ComponentType<ISignComponentProps> = getWalletComponent(walletName)!;
 
   return (
     <WalletComponent
+      network={network!}
       rawTransaction={txObject}
       onSuccess={(receipt: ITxReceipt) => onComplete(receipt)}
     />

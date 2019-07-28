@@ -5,7 +5,7 @@ import { ITxObject, ITxConfig, IFormikFields } from './types';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {
   return {
-    to: state.recipientAddress, // @TODO or token address
+    to: state.receiverAddress, // @TODO or token address
     from: state.senderAccount.address,
     value: state.amount,
     data: state.data, // @TODO or generate contract call
@@ -18,7 +18,7 @@ export function fromStateToTxObject(state: ITxConfig): ITxObject {
 
 export function fromFormikStateToTxObject(formikState: IFormikFields): ITxObject {
   return {
-    to: formikState.recipientAddress, // @TODO compose data according to asset type
+    to: formikState.receiverAddress, // @TODO compose data according to asset type
     from: formikState.account.address,
     value: formikState.amount, // @TODO value depends on asset type
     data: formikState.txDataField, // @TODO compose data according to asset type

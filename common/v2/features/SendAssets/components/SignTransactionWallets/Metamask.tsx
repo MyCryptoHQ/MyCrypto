@@ -3,8 +3,8 @@ import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
 import { getNetworkByChainId } from 'v2/services/Store';
-import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config'
-import { ISignComponentProps } from '../../types';;
+import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config';
+import { ISignComponentProps } from '../../types';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
 
@@ -149,13 +149,13 @@ export default class SignTransactionMetaMask extends Component<
   }
 
   private checkAddressMatches(metaMaskAddress: string) {
-    const { senderAddress } = this.props;
+    const { from: senderAddress } = this.props.rawTransaction;
     const desiredAddress = utils.getAddress(senderAddress);
     this.setState({ accountMatches: metaMaskAddress === desiredAddress });
   }
 
   private checkNetworkMatches(metaMaskNetwork: ethers.utils.Network) {
-    const { networkName } = this.props;
+    const { name: networkName } = this.props.network;
     const getMetaMaskNetworkbyChainId = getNetworkByChainId(metaMaskNetwork.chainId.toString());
     if (!getMetaMaskNetworkbyChainId) {
       return;

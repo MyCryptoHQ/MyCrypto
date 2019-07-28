@@ -6,6 +6,7 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
+import { Network as INetwork } from 'v2/types';
 
 import './ConfirmTransaction.scss';
 import { IStepComponentProps } from '../types';
@@ -24,7 +25,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   const { getContactByAddress } = useContext(AddressBookContext);
 
   const {
-    recipientAddress,
+    receiverAddress,
     senderAccount,
     amount,
     gasLimit,
@@ -34,13 +35,13 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
     network
   } = txConfig;
 
-  const recipientAccount = getContactByAddress(recipientAddress);
+  const recipientAccount = getContactByAddress(receiverAddress);
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
 
   const maxCostFeeEther = '123120983'; // @TODO: BN math, multiply gasLimit * Price
   const totalAmountEther = '102398120398'; // @TODO: BN math, add amount + maxCost !In same symbol
 
-  const { name: networkName } = network;
+  const { name: networkName } = network as INetwork;
 
   return (
     <div className="ConfirmTransaction">
@@ -48,7 +49,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
         <div className="ConfirmTransaction-row-column">
           To:
           <div className="ConfirmTransaction-addressWrapper">
-            <Address address={recipientAddress} title={recipientLabel} truncate={truncate} />
+            <Address address={receiverAddress} title={recipientLabel} truncate={truncate} />
           </div>
         </div>
         <div className="ConfirmTransaction-row-column">
