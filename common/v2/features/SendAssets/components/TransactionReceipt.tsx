@@ -3,29 +3,20 @@ import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
-import { ISendState } from '../types';
+import { IStepComponentProps } from '../types';
 import './TransactionReceipt.scss';
 
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 
-interface Props {
-  stateValues: ISendState;
-  // onReset(): void; // RE-ADD RESET
-}
-
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default function TransactionReceipt({
-  stateValues: {
-    transactionFields: {
-      recipientAddress,
-      account: { address }
-    }
-  }
-}: Props) {
+export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
+  const recipientAddress = txReceipt!.to;
+  const address = txReceipt!.from;
+
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">

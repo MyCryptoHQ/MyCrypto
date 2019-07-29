@@ -1,3 +1,4 @@
+import { TWalletType } from './wallets';
 import { Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
 import { IRate } from './rate';
@@ -9,6 +10,7 @@ export type ExtendedWallet = ExtendedWallet;
 export type WalletName = WalletName;
 export type TSymbol = TSymbol;
 export type IRate = IRate;
+export type TWalletType = TWalletType;
 
 export { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName } from './wallet';
 export { walletNames } from './wallet';

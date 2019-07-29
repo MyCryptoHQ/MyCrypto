@@ -1,5 +1,6 @@
 export * from './ApiService';
 export * from './ShapeShift';
+export * from './useApi';
 export * from './Store';
 export { RatesContext, RatesProvider } from './RatesProvider';
 export { StoreContext, StoreProvider } from './StoreProvider';

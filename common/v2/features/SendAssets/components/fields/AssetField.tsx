@@ -4,7 +4,7 @@ import { ComboBox } from '@mycrypto/ui';
 
 import { AccountContext, NetworkContext } from 'v2/services/Store';
 import { Network } from 'v2/types';
-import { ITxFields } from '../../types';
+import { IFormikFields } from '../../types';
 
 interface OwnProps {
   handleChange: Formik['handleChange'];
@@ -55,7 +55,7 @@ export default class AssetField extends Component<Props> {
                   <Field
                     id={'7'}
                     name="asset"
-                    render={({ field }: FieldProps<ITxFields>) => (
+                    render={({ field }: FieldProps<IFormikFields>) => (
                       <ComboBox
                         {...field}
                         id={'8'}
