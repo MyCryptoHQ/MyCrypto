@@ -7,7 +7,7 @@ import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
 
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
-import { AccountContext, getAssetByUUID } from 'v2/services/Store';
+import { AccountContext, getAssetByUUID, getBaseAssetFromAccount } from 'v2/services/Store';
 import {
   IAsset,
   Asset,
@@ -40,6 +40,7 @@ import {
   validateGasPriceField,
   validateNonceField
 } from './validators/validators';
+import _ from 'lodash';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: '',
@@ -98,12 +99,26 @@ export default function SendAssetsForm({
   // @TODO:SEND change the data structure to get an object
 
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
-
-  const assets: IAsset[] = accountAssets
+  const tokenAssets: Asset[] = accountAssets
     .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid))
     .filter((asset: Asset | undefined) => asset)
+    .map((asset: Asset) => asset);
+
+  const baseAssets: Asset[] = accounts
+    .map(account => getBaseAssetFromAccount(account))
+    .filter((asset: Asset | undefined) => asset)
+    .map((asset: Asset) => asset);
+
+  const filteredAssets: string[] = _.union(
+    tokenAssets.map(token => token.uuid),
+    baseAssets.map(baseAsset => baseAsset.uuid)
+  );
+
+  const allAssets: IAsset[] = filteredAssets
+    .map(assetName => getAssetByUUID(assetName))
+    .filter((asset: Asset | undefined) => asset)
     .map((asset: Asset) => {
-      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId };
+      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId, asset };
     });
 
   return (
@@ -180,7 +195,7 @@ export default function SendAssetsForm({
                     <AssetDropdown
                       name={field.name}
                       value={field.value}
-                      assets={assets}
+                      assets={allAssets}
                       onSelect={option => {
                         form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
