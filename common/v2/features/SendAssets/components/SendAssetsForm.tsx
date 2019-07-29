@@ -7,7 +7,7 @@ import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
 
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
-import { AccountContext, getAssetByUUID } from 'v2/services/Store';
+import { AccountContext, getAssetByUUID, getNetworkByName } from 'v2/services/Store';
 import {
   IAsset,
   Asset,
@@ -94,7 +94,6 @@ export default function SendAssetsForm({
   const [isGasLimitManual, setIsGasLimitManual] = useState(false); // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   // @ts-ignore while waiting to update form
-  const [recipientResolvedENSAddress, setRecipienResolvedENSAddress] = useState(null);
   // @TODO:SEND change the data structure to get an object
 
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
@@ -190,11 +189,8 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          // form.setFieldValue(
-                          //   'sharedConfig.assetNetwork',
-                          //   getNetworkByName(option.network)
-                          // );
-                          // handleGasEstimate();
+                          form.setFieldValue('network', getNetworkByName(option.network) || {});
+                          handleGasEstimate();
                         }
                       }}
                     />
@@ -239,7 +235,7 @@ export default function SendAssetsForm({
                 <ENSStatus
                   ensAddress={values.receiverAddress}
                   isLoading={isResolvingENSName}
-                  rawAddress={recipientResolvedENSAddress ? recipientResolvedENSAddress! : ''}
+                  rawAddress={values.resolvedENSAddress ? values.resolvedENSAddress : ''}
                   chainId={values.network ? values.network.chainId : 1}
                 />
               </fieldset>
