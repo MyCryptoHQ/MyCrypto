@@ -8,3 +8,6 @@ export const GAS_PRICE_GWEI_UPPER_BOUND = 3000;
 export const GAS_PRICE_GWEI_DEFAULT = 20;
 
 export const GITHUB_RELEASE_NOTES_URL = 'https://github.com/MyCryptoHQ/MyCrypto/releases/latest';
+
+// this will be changed when we figure out networks
+export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';

@@ -141,7 +141,6 @@
     "SEND_AMOUNT_SHORT": "Amount",
     "SEND_CUSTOM": "Add Custom Token",
     "SEND_ASSETS_ACCOUNT_SELECTION_PLACEHOLDER": "Select Account",
-    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select Asset",
     "SEND_ASSETS_AMOUNT_LABEL": "Amount",
     "SEND_ASSETS_AMOUNT_LABEL_ACTION": "Send max",
     "SCAN_TOKENS": "Scan For Tokens",
@@ -950,6 +949,9 @@
     "WALLET_BREAKDOWN_OTHER": "Other Tokens",
     "WALLET_BREAKDOWN_OTHER_TICKER": "Other",
     "NO_ACCOUNTS_SELECTED_HEADER":"You have no accounts selected.",
-    "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above."
+    "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above.",
+    "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset",
+    "REQUIRED": "Required",
+    "TO_FIELD_ERROR": "Enter a valid address or ENS name"
   }
 }

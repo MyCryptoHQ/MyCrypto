@@ -1,7 +1,7 @@
 import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
 import { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName } from 'v2/types';
 import { getWeb3ProviderInfo } from 'utils/web3';
-import { IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
+import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
 import { WalletType } from './types';
 import {
   InsecureWalletWarning,
@@ -97,11 +97,11 @@ export const STORIES = [
     description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
     steps: [
       NetworkSelectPanel,
-      IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning,
+      IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
-    hideFromWalletList: !IS_ELECTRON
+    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
     name: InsecureWalletName.MNEMONIC_PHRASE,
@@ -111,10 +111,10 @@ export const STORIES = [
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
     steps: [
       NetworkSelectPanel,
-      IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
+      IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    hideFromWalletList: !IS_ELECTRON
+    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
     name: InsecureWalletName.PRIVATE_KEY,
@@ -124,10 +124,10 @@ export const STORIES = [
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
     steps: [
       NetworkSelectPanel,
-      IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
+      IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
       SaveAndRedirect
     ],
-    hideFromWalletList: !IS_ELECTRON
+    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
     name: MiscWalletName.VIEW_ONLY,

@@ -34,8 +34,8 @@ import * as actions from './actions';
 
 //#region From
 /*
-* This function will be called during transaction serialization / signing
-*/
+ * This function will be called during transaction serialization / signing
+ */
 export function* handleFromRequest(): SagaIterator {
   const walletInst: AppState['wallet']['inst'] = yield select(walletSelectors.getWalletInst);
   try {

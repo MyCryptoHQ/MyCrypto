@@ -5,7 +5,7 @@ import { Transition } from 'react-spring/renderprops.cjs';
 import { Icon } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { UnlockScreen, SelectLanguage } from 'v2/features';
+import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
 import { COLORS } from 'v2/theme';
 import { translate } from 'translations';
@@ -362,22 +362,21 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                           {icon && <PrefixIcon {...icon} />} {title}
                           {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
                         </TitleIconWrapper>
-                        {subItems &&
-                          visibleMenuDropdowns[title] && (
-                            <ul>
-                              {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                                <li
-                                  key={innerTitle}
-                                  onClick={() => {
-                                    this.toggleMenu();
-                                    history.push(innerTo);
-                                  }}
-                                >
-                                  {innerTitle}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
+                        {subItems && visibleMenuDropdowns[title] && (
+                          <ul>
+                            {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                              <li
+                                key={innerTitle}
+                                onClick={() => {
+                                  this.toggleMenu();
+                                  history.push(innerTo);
+                                }}
+                              >
+                                {innerTitle}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </li>
                     );
                   })}
@@ -447,16 +446,15 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
                 <li key={title} {...liProps}>
                   {icon && <PrefixIcon {...icon} />} {title}{' '}
                   {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
-                  {subItems &&
-                    visibleDropdowns[title] && (
-                      <ul>
-                        {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
-                          <li key={innerTitle} onClick={() => history.push(innerTo)}>
-                            {innerTitle}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                  {subItems && visibleDropdowns[title] && (
+                    <ul>
+                      {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
+                        <li key={innerTitle} onClick={() => history.push(innerTo)}>
+                          {innerTitle}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               );
             })}

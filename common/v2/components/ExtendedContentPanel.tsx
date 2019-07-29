@@ -32,10 +32,7 @@ interface ContentPanelHeadingProps {
   centered: boolean | undefined;
 }
 
-const ContentPanelHeading =
-  styled.p <
-  ContentPanelHeadingProps >
-  `
+const ContentPanelHeading = styled.p<ContentPanelHeadingProps>`
   font-size: 36px;
   width: 100%;
   display: flex;
@@ -82,10 +79,7 @@ interface ContentPanelTopProps {
   stepperOnly: boolean;
 }
 
-const ContentPanelTop =
-  styled.div <
-  ContentPanelTopProps >
-  `
+const ContentPanelTop = styled.div<ContentPanelTopProps>`
   display: flex;
   align-items: center;
   justify-content: ${props => (props.stepperOnly ? 'flex-end' : 'space-between')};

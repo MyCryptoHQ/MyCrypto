@@ -31,7 +31,9 @@ export default function Dashboard() {
       <Mobile className="Dashboard-mobile">
         <NotificationsPanel />
         <div className="Dashboard-mobile-actions">
-          {actions.map(action => <ActionTile key={action.title} {...action} />)}
+          {actions.map(action => (
+            <ActionTile key={action.title} {...action} />
+          ))}
         </div>
         <div className="Dashboard-mobile-divider" />
         <div className="Dashboard-mobile-group">
@@ -61,7 +63,9 @@ export default function Dashboard() {
               Your Dashboard
             </Heading>
             <div className="Dashboard-desktop-top-left-actions">
-              {actions.map(action => <ActionTile key={action.title} {...action} />)}
+              {actions.map(action => (
+                <ActionTile key={action.title} {...action} />
+              ))}
             </div>
             <div>
               <TokenList />

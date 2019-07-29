@@ -72,7 +72,7 @@ class ScreenLockNew extends Component<Props> {
   };
 
   public handleCreatePasswordClicked = (
-    encryptWithPassword: ((password: string, hashed: boolean) => void)
+    encryptWithPassword: (password: string, hashed: boolean) => void
   ) => (e: any) => {
     e.preventDefault();
 

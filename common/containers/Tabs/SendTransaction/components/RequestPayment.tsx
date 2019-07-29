@@ -183,7 +183,10 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, {
-  resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
-  setCurrentTo: transactionActions.setCurrentTo
-})(RequestPayment);
+export default connect(
+  mapStateToProps,
+  {
+    resetTransactionRequested: transactionFieldsActions.resetTransactionRequested,
+    setCurrentTo: transactionActions.setCurrentTo
+  }
+)(RequestPayment);

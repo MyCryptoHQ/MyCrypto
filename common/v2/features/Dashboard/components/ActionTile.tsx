@@ -1,14 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Typography } from '@mycrypto/ui';
 
+import { isUrl } from 'v2/utils';
 import { BREAK_POINTS } from 'v2/theme';
 import { Action } from '../types';
 
-type Props = Action;
-
-const SLink = styled(Link)`
+const SContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,16 +90,24 @@ const SDescription = styled('div')`
   }
 `;
 
-export default function ActionTile({ icon, title, description, link }: Props) {
+type Props = RouteComponentProps<{}> & Action;
+function ActionTile({ icon, title, description, link, history }: Props) {
+  const goToExternalLink = (url: string) => window.open(url, '_blank');
+  const goToAppRouter = (path: string) => history.push(path);
+
+  const action = isUrl(link) ? goToExternalLink : goToAppRouter;
+
   return (
-    <SLink to={link} className="ActionTile">
-      <SButton basic={true} className="ActionTile-button">
+    <SContainer className="ActionTile">
+      <SButton basic={true} className="ActionTile-button" onClick={() => action(link)}>
         <img className="ActionTile-button-icon" src={icon} alt={title} />
         <Typography as="div">
           <STitle isLonger={title.length > 15}>{title}</STitle>
           <SDescription>{description}</SDescription>
         </Typography>
       </SButton>
-    </SLink>
+    </SContainer>
   );
 }
+
+export default withRouter(ActionTile);

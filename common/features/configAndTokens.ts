@@ -57,7 +57,11 @@ export function rehydrateConfigAndCustomTokenState() {
     nextConfigState.meta = { ...nextConfigState.meta, ...savedConfigState.meta };
   }
 
-  const { customNodes, selectedNode: { nodeId }, staticNodes } = nextConfigState.nodes;
+  const {
+    customNodes,
+    selectedNode: { nodeId },
+    staticNodes
+  } = nextConfigState.nodes;
   const selectedNode = isStaticNodeId(appInitialState, nodeId)
     ? staticNodes[nodeId]
     : customNodes[nodeId];

@@ -270,11 +270,13 @@ class CustomNodeModal extends React.Component<Props, State> {
         return;
       }
       this.setState({
-        defaultNodes: results.filter(r => r.success).map((r, index) => ({
-          ...r,
-          display: `${r.addr}:${r.port}`,
-          index
-        }))
+        defaultNodes: results
+          .filter(r => r.success)
+          .map((r, index) => ({
+            ...r,
+            display: `${r.addr}:${r.port}`,
+            index
+          }))
       });
     }, pollingInterval);
   }
@@ -455,4 +457,7 @@ const mapDispatchToProps: DispatchProps = {
   addCustomNetwork: configNetworksCustomActions.addCustomNetwork
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomNodeModal);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomNodeModal);

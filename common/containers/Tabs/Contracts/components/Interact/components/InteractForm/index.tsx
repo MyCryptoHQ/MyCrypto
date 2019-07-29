@@ -215,4 +215,7 @@ const mapStateToProps = (state: AppState) => ({
   isValidAddress: configSelectors.getIsValidAddressFn(state)
 });
 
-export default connect(mapStateToProps, { setCurrentTo })(InteractForm);
+export default connect(
+  mapStateToProps,
+  { setCurrentTo }
+)(InteractForm);

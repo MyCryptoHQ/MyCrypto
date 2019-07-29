@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import './PrivateKey.scss';
-import { Button } from '@mycrypto/ui';
-import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-
-import { TogglablePassword } from 'components';
 import { stripHexPrefix } from 'ethjs-util';
-import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
+import { Button } from '@mycrypto/ui';
+
+import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
+import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
+import { isValidPrivKey, isValidEncryptedPrivKey } from 'v2/services/EthService';
+import { ISignComponentProps } from '../../types';
+import './PrivateKey.scss';
 
 export interface SignWithPrivKeyState {
   key: string;
@@ -43,8 +44,11 @@ function validatePkeyAndPass(pkey: string, pass: string): Validated {
   };
 }
 
-export default class SignTransactionPrivateKey extends Component {
-  public state: SignWithPrivKeyState = {
+export default class SignTransactionPrivateKey extends Component<
+  ISignComponentProps,
+  SignWithPrivKeyState
+> {
+  public state = {
     key: '',
     password: '',
     valid: false
@@ -73,20 +77,19 @@ export default class SignTransactionPrivateKey extends Component {
               onEnter={() => this.unlock}
             />
 
-            {isValidPkey &&
-              isPassRequired && (
-                <label className="SignTransactionPrivateKey-label">
-                  Your Password
-                  <Input
-                    isValid={password.length > 0}
-                    value={password}
-                    onChange={this.onPasswordChange}
-                    onKeyDown={this.onKeyDown}
-                    placeholder="Password"
-                    type="password"
-                  />
-                </label>
-              )}
+            {isValidPkey && isPassRequired && (
+              <label className="SignTransactionPrivateKey-label">
+                Your Password
+                <Input
+                  isValid={password.length > 0}
+                  value={password}
+                  onChange={this.onPasswordChange}
+                  onKeyDown={this.onKeyDown}
+                  placeholder="Password"
+                  type="password"
+                />
+              </label>
+            )}
           </div>
           <div className="SignTransactionPrivateKey-description">
             Because we never save, store, or transmit your secret, you need to sign each transaction

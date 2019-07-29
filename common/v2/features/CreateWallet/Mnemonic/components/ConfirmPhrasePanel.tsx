@@ -119,7 +119,9 @@ export default class ConfirmPhrasePanel extends Component<Props> {
         <ActiveWords>
           {chunk(confirmedWords, 4).map((row, rowIndex) => (
             <ActiveWordsRow key={rowIndex}>
-              {row.map((word, wordIndex) => <Word key={wordIndex}>{word}</Word>)}
+              {row.map((word, wordIndex) => (
+                <Word key={wordIndex}>{word}</Word>
+              ))}
             </ActiveWordsRow>
           ))}
         </ActiveWords>
@@ -139,12 +141,11 @@ export default class ConfirmPhrasePanel extends Component<Props> {
             </Row>
           ))}
         </div>
-        {this.state.doneClicked &&
-          this.state.error && (
-            <ErrorWrapper>
-              <InlineErrorMsg>{translateRaw('MNEMONIC_VERIFY_ERROR')}</InlineErrorMsg>
-            </ErrorWrapper>
-          )}
+        {this.state.doneClicked && this.state.error && (
+          <ErrorWrapper>
+            <InlineErrorMsg>{translateRaw('MNEMONIC_VERIFY_ERROR')}</InlineErrorMsg>
+          </ErrorWrapper>
+        )}
         <StyledButton onClick={this.handleDoneClicked}>
           {translateRaw('DONE_AND_RETURN_LABEL')}
         </StyledButton>

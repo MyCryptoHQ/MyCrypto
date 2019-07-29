@@ -1,151 +1,141 @@
-import React, { Component } from 'react';
+import React, { useContext, useState } from 'react';
+import { utils } from 'ethers';
 import { Address, Button, Network } from '@mycrypto/ui';
 
-import { Amount } from 'v2/components';
-import './ConfirmTransaction.scss';
-
-// Legacy
-import sendIcon from 'common/assets/images/icn-send.svg';
 import feeIcon from 'common/assets/images/icn-fee.svg';
+import sendIcon from 'common/assets/images/icn-send.svg';
 import { AddressBookContext } from 'v2/services/Store';
-import { ISendState } from '../types';
+import { Amount } from 'v2/components';
+import { Network as INetwork } from 'v2/types';
 
-interface Props {
-  stateValues: ISendState;
-  onNext(): void;
-}
-
-interface State {
-  showingDetails: boolean;
-}
+import { IStepComponentProps } from '../types';
+import './ConfirmTransaction.scss';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default class ConfirmTransaction extends Component<Props> {
-  public state: State = {
-    showingDetails: false
-  };
+/*
+  Confirm should only display values! There are no data transformations.
+  The currentPath in SendAssets determines which action should be called.
+*/
 
-  public render() {
-    const {
-      stateValues: { transactionFields: { recipientAddress, amount, asset, account: { address } } },
-      onNext
-    } = this.props;
-    const { showingDetails } = this.state;
+export default function ConfirmTransaction({ txConfig, onComplete }: IStepComponentProps) {
+  const [showDetails, setShowDetails] = useState(false);
+  const { getContactByAddress } = useContext(AddressBookContext);
 
-    return (
-      <div className="ConfirmTransaction">
-        <AddressBookContext.Consumer>
-          {({ addressBook }) => {
-            let recipientLabel: string = 'Unknown Account';
-            let senderLabel: string | undefined = 'Unknown Account';
-            addressBook.map(en => {
-              if (en.address.toLowerCase() === recipientAddress.toLowerCase()) {
-                recipientLabel = en.label;
-              }
-              if (en.address.toLowerCase() === address.toLowerCase()) {
-                senderLabel = en.label;
-              }
-            });
-            return (
-              <div className="ConfirmTransaction-row">
-                <div className="ConfirmTransaction-row-column">
-                  To:
-                  <div className="ConfirmTransaction-addressWrapper">
-                    <Address
-                      address={recipientAddress}
-                      title={recipientLabel}
-                      truncate={truncate}
-                    />
-                  </div>
-                </div>
-                <div className="ConfirmTransaction-row-column">
-                  From:
-                  <div className="ConfirmTransaction-addressWrapper">
-                    <Address address={address} title={senderLabel} truncate={truncate} />
-                  </div>
-                </div>
-              </div>
-            );
-          }}
-        </AddressBookContext.Consumer>
-        <div className="ConfirmTransaction-row">
-          <div className="ConfirmTransaction-row-column">
-            <img src={sendIcon} alt="Send" /> Send Amount:
-          </div>
-          <div className="ConfirmTransaction-row-column">
-            <Amount assetValue={amount} fiatValue="$12,000.00" />
+  const {
+    receiverAddress,
+    senderAccount,
+    amount,
+    gasLimit,
+    gasPrice,
+    nonce,
+    data,
+    network
+  } = txConfig;
+
+  const recipientAccount = getContactByAddress(receiverAddress);
+  const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
+
+  const maxCostFeeEther = '123120983'; // @TODO: BN math, multiply gasLimit * Price
+  const totalAmountEther = '102398120398'; // @TODO: BN math, add amount + maxCost !In same symbol
+
+  const { name: networkName } = network as INetwork;
+
+  return (
+    <div className="ConfirmTransaction">
+      <div className="ConfirmTransaction-row">
+        <div className="ConfirmTransaction-row-column">
+          To:
+          <div className="ConfirmTransaction-addressWrapper">
+            <Address address={receiverAddress} title={recipientLabel} truncate={truncate} />
           </div>
         </div>
-        <div className="ConfirmTransaction-row">
-          <div className="ConfirmTransaction-row-column">
-            <img src={feeIcon} alt="Fee" /> Transaction Fee:
-          </div>
-          <div className="ConfirmTransaction-row-column">
-            <Amount assetValue="0.000462 ETH" fiatValue="$0.21" />
-          </div>
-        </div>
-        <div className="ConfirmTransaction-divider" />
-        <div className="ConfirmTransaction-row">
-          <div className="ConfirmTransaction-row-column">
-            <img src={sendIcon} alt="Total" /> You'll Send:
-          </div>
-          <div className="ConfirmTransaction-row-column">
-            <Amount assetValue={amount + asset} fiatValue="$12,000.21" />
+        <div className="ConfirmTransaction-row-column">
+          From:
+          <div className="ConfirmTransaction-addressWrapper">
+            <Address
+              address={senderAccount.address}
+              title={senderAccount.label}
+              truncate={truncate}
+            />
           </div>
         </div>
-        <Button
-          basic={true}
-          onClick={this.toggleShowingDetails}
-          className="ConfirmTransaction-detailButton"
-        >
-          {showingDetails ? 'Hide' : 'Show'} Details
-        </Button>
-        {showingDetails && (
-          <div className="ConfirmTransaction-details">
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Account Balance:</div>
-              <div className="ConfirmTransaction-details-row-column">0.231935129 ETH</div>
-            </div>
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Network:</div>
-              <div className="ConfirmTransaction-details-row-column">
-                <Network color="blue">Ethereum</Network>
-              </div>
-            </div>
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Gas Limit:</div>
-              <div className="ConfirmTransaction-details-row-column">21000</div>
-            </div>
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-              <div className="ConfirmTransaction-details-row-column">10 GWEI (0.00000001 ETH)</div>
-            </div>
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
-              <div className="ConfirmTransaction-details-row-column">0.00021 ETH (21000 GWEI)</div>
-            </div>
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Nonce:</div>
-              <div className="ConfirmTransaction-details-row-column">57</div>
-            </div>
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Data:</div>
-              <div className="ConfirmTransaction-details-row-column">(none)</div>
-            </div>
-          </div>
-        )}
-        <Button onClick={onNext} className="ConfirmTransaction-button">
-          Confirm and Send
-        </Button>
       </div>
-    );
-  }
-
-  private toggleShowingDetails = () =>
-    this.setState((prevState: State) => ({
-      showingDetails: !prevState.showingDetails
-    }));
+      <div className="ConfirmTransaction-row">
+        <div className="ConfirmTransaction-row-column">
+          <img src={sendIcon} alt="Send" /> Send Amount:
+        </div>
+        <div className="ConfirmTransaction-row-column">
+          <Amount assetValue={`${amount} ETH`} fiatValue="$12,000.00" />
+        </div>
+      </div>
+      <div className="ConfirmTransaction-row">
+        <div className="ConfirmTransaction-row-column">
+          <img src={feeIcon} alt="Fee" /> Transaction Fee:
+        </div>
+        <div className="ConfirmTransaction-row-column">
+          <Amount assetValue={`${maxCostFeeEther} ETH`} fiatValue="$0.21" />
+        </div>
+      </div>
+      <div className="ConfirmTransaction-divider" />
+      <div className="ConfirmTransaction-row">
+        <div className="ConfirmTransaction-row-column">
+          <img src={sendIcon} alt="Total" /> You'll Send:
+        </div>
+        <div className="ConfirmTransaction-row-column">
+          <Amount assetValue={totalAmountEther} fiatValue="$12,000.21" />
+        </div>
+      </div>
+      <Button
+        basic={true}
+        onClick={() => setShowDetails(!showDetails)}
+        className="ConfirmTransaction-detailButton"
+      >
+        {showDetails ? 'Hide' : 'Show'} Details
+      </Button>
+      {showDetails && (
+        <div className="ConfirmTransaction-details">
+          <div className="ConfirmTransaction-details-row">
+            <div className="ConfirmTransaction-details-row-column">Account Balance:</div>
+            <div className="ConfirmTransaction-details-row-column">0.231935129 ETH</div>
+          </div>
+          <div className="ConfirmTransaction-details-row">
+            <div className="ConfirmTransaction-details-row-column">Network:</div>
+            <div className="ConfirmTransaction-details-row-column">
+              <Network color="blue">{networkName}</Network>
+            </div>
+          </div>
+          <div className="ConfirmTransaction-details-row">
+            <div className="ConfirmTransaction-details-row-column">Gas Limit:</div>
+            <div className="ConfirmTransaction-details-row-column">
+              {`${utils.formatEther(gasLimit)} ETH`}
+            </div>
+          </div>
+          <div className="ConfirmTransaction-details-row">
+            <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
+            <div className="ConfirmTransaction-details-row-column">
+              {`${utils.formatEther(gasPrice)} ETH`}
+            </div>
+          </div>
+          <div className="ConfirmTransaction-details-row">
+            <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
+            <div className="ConfirmTransaction-details-row-column">{maxCostFeeEther} ETH</div>
+          </div>
+          <div className="ConfirmTransaction-details-row">
+            <div className="ConfirmTransaction-details-row-column">Nonce:</div>
+            <div className="ConfirmTransaction-details-row-column">{nonce}</div>
+          </div>
+          <div className="ConfirmTransaction-details-row">
+            <div className="ConfirmTransaction-details-row-column">Data:</div>
+            <div className="ConfirmTransaction-details-row-column">{data}</div>
+          </div>
+        </div>
+      )}
+      <Button onClick={onComplete} className="ConfirmTransaction-button">
+        Confirm and Send
+      </Button>
+    </div>
+  );
 }

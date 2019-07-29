@@ -7,7 +7,7 @@ import { PROVIDER_OPTIONS } from './providerOptions';
 
 export type NetworkKey = keyof typeof PROVIDER_OPTIONS;
 
-type FallbackProvider = ethers.providers.FallbackProvider;
+export type FallbackProvider = ethers.providers.FallbackProvider;
 const FallbackProvider = ethers.providers.FallbackProvider;
 
 type TempProviders = { [K in NetworkKey]: BaseProvider[] };
