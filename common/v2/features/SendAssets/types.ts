@@ -35,7 +35,7 @@ export interface ITxReceipt {
 }
 
 export interface IFormikFields {
-  asset: IAsset | Asset;
+  asset: Asset;
   receiverAddress: string;
   amount: string;
   account: IExtendedAccount;
@@ -48,6 +48,7 @@ export interface IFormikFields {
   nonceField: string; // Use only if user has input a manual nonce value.
   nonceEstimated: string;
   network: Network;
+  advancedTransaction: boolean;
   resolvedENSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
 }
 

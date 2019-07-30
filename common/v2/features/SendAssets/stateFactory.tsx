@@ -1,9 +1,7 @@
-/* tslint:disable */
-import { useContext } from 'react';
-
-import { NetworkContext } from 'v2/services/Store';
 import { TUseApiFactory } from 'v2/services';
 import { ITxConfig, ITxReceipt, IFormikFields, TStepAction } from './types';
+import { processFormDataToTx } from './process';
+import { IHexStrTransaction } from 'mycrypto-shepherd/dist/lib/types';
 
 const txConfigInitialState = {
   gasLimit: null,
@@ -23,20 +21,34 @@ interface State {
 }
 
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
-  const { getNetworkByName } = useContext(NetworkContext);
-
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
-    const data = {
-      gasLimit: payload.gasLimitField, // @TODO update with correct value.
-      gasPrice: payload.gasPriceField, // @TODO update with correct value.
-      nonce: payload.nonceField, // @TODO update with correct value.
-      data: payload.txDataField,
-      amount: payload.amount,
-      senderAccount: payload.account,
-      receiverAddress: payload.receiverAddress,
-      network: getNetworkByName(payload.account.network),
-      asset: payload.asset
-    };
+    const processedTx: IHexStrTransaction | undefined = processFormDataToTx(payload);
+    let data: ITxConfig;
+    if (processedTx) {
+      data = {
+        gasLimit: processedTx.gasLimit, // @TODO update with correct value.
+        gasPrice: processedTx.gasPrice, // @TODO update with correct value.
+        nonce: processedTx.nonce, // @TODO update with correct value.
+        data: processedTx.data,
+        amount: processedTx.gasLimit,
+        senderAccount: payload.account,
+        receiverAddress: payload.receiverAddress,
+        network: payload.network,
+        asset: payload.asset
+      };
+    } else {
+      data = {
+        gasLimit: payload.gasLimitEstimated || payload.gasLimitField, // @TODO update with correct value.
+        gasPrice: payload.gasPriceField, // @TODO update with correct value.
+        nonce: payload.nonceField, // @TODO update with correct value.
+        data: payload.txDataField,
+        amount: payload.amount,
+        senderAccount: payload.account,
+        receiverAddress: payload.receiverAddress,
+        network: payload.network,
+        asset: payload.asset
+      };
+    }
 
     setState((prevState: State) => ({
       ...prevState,
@@ -56,11 +68,14 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   };
 
   // For Other Wallets
+
+  /* tslint:disable */
   // @ts-ignore
   const handleConfirmAndSend: TStepAction = (payload, after) => {};
 
   // @ts-ignore
   const handleSignedTx: TStepAction = (payload, after) => {};
+  /* tslint:enable */
 
   return {
     handleFormSubmit,
@@ -73,5 +88,3 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
 };
 
 export { txConfigInitialState, TxConfigFactory };
-
-/* tslint:enable */

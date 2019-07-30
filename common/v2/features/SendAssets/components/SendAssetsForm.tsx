@@ -7,9 +7,13 @@ import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
 
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
-import { AccountContext, getAssetByUUID, getBaseAssetFromAccount } from 'v2/services/Store';
 import {
-  IAsset,
+  AccountContext,
+  getAssetByUUID,
+  getBaseAssetFromAccount,
+  getNetworkByName
+} from 'v2/services/Store';
+import {
   Asset,
   TSymbol,
   Network,
@@ -61,8 +65,9 @@ const initialFormikValues: IFormikFields = {
   },
   gasPriceSlider: '20',
   gasPriceField: '20',
-  gasLimitField: '2100',
-  gasLimitEstimated: '2100',
+  gasLimitField: '21000',
+  gasLimitEstimated: '21000',
+  advancedTransaction: false,
   resolvedENSAddress: '0x0', // Not a field, move to state
   nonceEstimated: '0', // Not a field, move to state
   nonceField: '0'
@@ -90,7 +95,7 @@ export default function SendAssetsForm({
   onComplete
 }: IStepComponentProps) {
   const { accounts } = useContext(AccountContext);
-  const [isAdvancedTransaction, setIsAdvancedTransaction] = useState(false);
+
   // @ts-ignore while waiting to update form
   const [isGasLimitManual, setIsGasLimitManual] = useState(false); // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
@@ -114,12 +119,10 @@ export default function SendAssetsForm({
     baseAssets.map(baseAsset => baseAsset.uuid)
   );
 
-  const allAssets: IAsset[] = filteredAssets
+  const allAssets: Asset[] = filteredAssets
     .map(assetName => getAssetByUUID(assetName))
     .filter((asset: Asset | undefined) => asset)
-    .map((asset: Asset) => {
-      return { symbol: asset.ticker as TSymbol, name: asset.name, network: asset.networkId, asset };
-    });
+    .map((asset: Asset) => asset);
 
   return (
     <div className="SendAssetsForm">
@@ -131,7 +134,7 @@ export default function SendAssetsForm({
         }}
         render={({ errors, touched, setFieldValue, values, handleChange, submitForm }) => {
           const toggleAdvancedOptions = () => {
-            setIsAdvancedTransaction(!isAdvancedTransaction);
+            setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
 
           // @ts-ignore
@@ -200,15 +203,12 @@ export default function SendAssetsForm({
                         form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
                         handleFieldReset();
-                        if (option.network) {
-                          fetchGasPriceEstimates(option.network).then(data => {
+                        if (option.networkId) {
+                          fetchGasPriceEstimates(option.networkId).then(data => {
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          // form.setFieldValue(
-                          //   'sharedConfig.assetNetwork',
-                          //   getNetworkByName(option.network)
-                          // );
+                          form.setFieldValue('network', getNetworkByName(option.networkId));
                           // handleGasEstimate();
                         }
                       }}
@@ -293,19 +293,19 @@ export default function SendAssetsForm({
                   {/* TRANSLATE THIS */}
                   <TransactionFeeDisplay
                     gasLimitToUse={
-                      isAdvancedTransaction && isGasLimitManual
+                      values.advancedTransaction && isGasLimitManual
                         ? values.gasLimitField
                         : values.gasLimitEstimated
                     }
                     gasPriceToUse={
-                      isAdvancedTransaction ? values.gasPriceField : values.gasPriceSlider
+                      values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
                     network={values.network}
                     fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
                   />
                   {/* TRANSLATE THIS */}
                 </label>
-                {!isAdvancedTransaction && (
+                {!values.advancedTransaction && (
                   <GasPriceSlider
                     handleChange={(e: string) => {
                       // handleGasEstimate();
@@ -323,9 +323,9 @@ export default function SendAssetsForm({
                   onClick={toggleAdvancedOptions}
                   className="SendAssetsForm-advancedOptions-button"
                 >
-                  {isAdvancedTransaction ? 'Hide' : 'Show'} Advanced Options
+                  {values.advancedTransaction ? 'Hide' : 'Show'} Advanced Options
                 </Button>
-                {isAdvancedTransaction && (
+                {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
                       <Field name="isGasLimitManual" type="checkbox" value={true} />
