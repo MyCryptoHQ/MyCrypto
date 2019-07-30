@@ -1,38 +1,74 @@
-import { IAsset } from 'v2/types';
-import { Asset, assetMethod } from 'v2/services/Asset/types';
-import { ExtendedAccount as IExtendedAccount, Network } from 'v2/services';
-import { WalletName } from 'v2/config/data';
-import { GasEstimates } from 'v2/api/gas';
+import { FunctionComponent } from 'react';
+import {
+  Asset,
+  IAsset,
+  ExtendedAccount as IExtendedAccount,
+  Network,
+  GasEstimates
+} from 'v2/types';
 
-export interface ITxFields {
-  asset: IAsset | undefined;
-  recipientAddress: string;
-  amount: string;
-  account: IExtendedAccount;
-  data: string;
-  gasLimitEstimated: string;
-  gasPriceSlider: string;
-  nonceEstimated: string;
-  gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
-  gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
-  nonceField: string; // Use only if user has input a manual nonce value.
-  isAdvancedTransaction: boolean; // Used to indicate whether transaction fee slider should be displayed and if Advanced Tab fields should be displayed.
-  isGasLimitManual: boolean; // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
-  accountType: WalletName | undefined; // Type of wallet selected.
-  network: Network | undefined;
-  gasEstimates: GasEstimates;
+export interface ITxObject {
+  readonly to: string;
+  readonly from: string;
+  readonly gasLimit: string;
+  readonly gasPrice: string;
+  readonly nonce: string;
+  readonly data: string;
+  readonly value: string;
+  readonly chainId: number;
 }
 
-export interface ISendState {
-  step: number;
-  transactionFields: ITxFields;
-  isFetchingAccountValue: boolean; // Used to indicate looking up user's balance of currently-selected asset.
-  isResolvingNSName: boolean; // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  isAddressLabelValid: boolean; // Used to indicate if recipient-address is found in the address book.
-  isFetchingAssetPricing: boolean; // Used to indicate fetching CC rates for currently-selected asset.
-  isEstimatingGasLimit: boolean; // Used to indicate that gas limit is being estimated using `eth_estimateGas` jsonrpc call.
-  resolvedNSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
-  recipientAddressLabel: string; //  Recipient-address label found in address book.
-  asset: IAsset | Asset | undefined;
-  assetType: assetMethod; // Type of asset selected. Directs how rawTransactionValues field are handled when formatting transaction
+export interface ITxConfig {
+  readonly gasLimit: string; // Move to BN
+  readonly gasPrice: string; // Move to BN
+  readonly nonce: string;
+  readonly amount: string; // Move to BN
+  readonly data: string;
+  readonly receiverAddress: string; // Can't be an ExtendedAddressBook since recipient may not be registered
+  readonly senderAccount: IExtendedAccount;
+  readonly asset: IAsset | Asset;
+  readonly network?: Network;
+}
+
+export interface ITxReceipt {
+  [index: string]: any;
+}
+
+export interface IFormikFields {
+  asset: IAsset | Asset;
+  receiverAddress: string;
+  amount: string;
+  account: IExtendedAccount;
+  txDataField: string;
+  gasEstimates: GasEstimates;
+  gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
+  gasPriceSlider: string;
+  gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
+  gasLimitEstimated: string;
+  nonceField: string; // Use only if user has input a manual nonce value.
+  nonceEstimated: string;
+  network: Network;
+  resolvedENSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
+}
+
+export interface ISignComponentProps {
+  network: Network;
+  rawTransaction: ITxObject;
+  children?: never;
+  onSuccess(receipt: ITxReceipt): void;
+}
+
+export interface IStepComponentProps {
+  txConfig: ITxConfig;
+  txReceipt?: ITxReceipt;
+  children?: never;
+  onComplete(data: IFormikFields | ITxReceipt | null): void;
+}
+
+export type TStepAction = (payload: any, after: () => void) => void;
+
+export interface IPath {
+  label: string;
+  component: FunctionComponent<IStepComponentProps>;
+  action: TStepAction;
 }

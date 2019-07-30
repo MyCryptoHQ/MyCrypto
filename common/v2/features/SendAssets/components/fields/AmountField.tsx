@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { Input } from '@mycrypto/ui';
-import { ITxFields } from '../../types';
+import { IFormikFields } from '../../types';
 //import { donationAddressMap } from '';
 
 interface OwnProps {
@@ -39,7 +39,7 @@ export default class AmountField extends Component<Props> {
             id={'5'}
             name="amount"
             validate={this.isValidAmount}
-            render={({ field }: FieldProps<ITxFields>) => (
+            render={({ field }: FieldProps<IFormikFields>) => (
               <Input
                 {...field}
                 id={'6'}

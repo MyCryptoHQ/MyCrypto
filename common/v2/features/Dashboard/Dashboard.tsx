@@ -1,28 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 
-import { Layout } from 'v2/features';
-import {
-  AccountList,
-  ActionTile,
-  TokenList,
-  WalletBreakdown,
-  RecentTransactionList
-} from './components';
+import { NotificationsContext, NotificationTemplates } from 'v2/providers';
+import { useDevMode } from 'v2/services';
+import { AccountContext, AddressBookContext } from 'v2/services/Store';
+import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
+import { ActionTile, TokenList, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
-import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
 
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
+  const { accounts } = useContext(AccountContext);
+  const { notifications, displayNotification } = useContext(NotificationsContext);
+  const { readAddressBook } = useContext(AddressBookContext);
+
+  if (
+    !notifications.find(x => x.template === NotificationTemplates.onboardingResponsible) &&
+    accounts.length > 0
+  ) {
+    displayNotification(NotificationTemplates.onboardingResponsible, {
+      firstDashboardVisitDate: new Date()
+    });
+  }
+
   return (
-    <>
-      {/* MOBILE */}
-      <Layout className="Dashboard-mobile" fluid={true}>
+    <div>
+      {/* Mobile only */}
+      <Mobile className="Dashboard-mobile">
         <NotificationsPanel />
         <div className="Dashboard-mobile-actions">
-          {actions.map(action => <ActionTile key={action.title} {...action} />)}
+          {actions.map(action => (
+            <ActionTile key={action.title} {...action} />
+          ))}
         </div>
         <div className="Dashboard-mobile-divider" />
         <div className="Dashboard-mobile-group">
@@ -36,27 +47,15 @@ export default function Dashboard() {
         <div className="Dashboard-mobile-section">
           <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
         </div>
+        <BannerAd />
         {isDevelopmentMode && (
-          <AccountContext.Consumer>
-            {({ accounts }) => (
-              <AddressBookContext.Consumer>
-                {({ readAddressBook }) => (
-                  <div className="Dashboard-mobile-section">
-                    <RecentTransactionList
-                      accountsList={accounts}
-                      readAddressBook={readAddressBook}
-                    />
-                  </div>
-                )}
-              </AddressBookContext.Consumer>
-            )}
-          </AccountContext.Consumer>
+          <div className="Dashboard-mobile-section">
+            <RecentTransactionList accountsList={accounts} readAddressBook={readAddressBook} />
+          </div>
         )}
-      </Layout>
-
-      {/* DESKTOP */}
-
-      <Layout className="Dashboard-desktop">
+      </Mobile>
+      {/* Desktop only */}
+      <Desktop className="Dashboard-desktop">
         <NotificationsPanel />
         <div className="Dashboard-desktop-top">
           <div className="Dashboard-desktop-top-left">
@@ -64,7 +63,9 @@ export default function Dashboard() {
               Your Dashboard
             </Heading>
             <div className="Dashboard-desktop-top-left-actions">
-              {actions.map(action => <ActionTile key={action.title} {...action} />)}
+              {actions.map(action => (
+                <ActionTile key={action.title} {...action} />
+              ))}
             </div>
             <div>
               <TokenList />
@@ -79,24 +80,17 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        <BannerAd />
         {isDevelopmentMode && (
-          <AccountContext.Consumer>
-            {({ accounts }) => (
-              <AddressBookContext.Consumer>
-                {({ readAddressBook }) => (
-                  <div className="Dashboard-desktop-bottom">
-                    <RecentTransactionList
-                      readAddressBook={readAddressBook}
-                      accountsList={accounts}
-                      className="Dashboard-desktop-modifiedPanel"
-                    />
-                  </div>
-                )}
-              </AddressBookContext.Consumer>
-            )}
-          </AccountContext.Consumer>
+          <div className="Dashboard-desktop-bottom">
+            <RecentTransactionList
+              readAddressBook={readAddressBook}
+              accountsList={accounts}
+              className="Dashboard-desktop-modifiedPanel"
+            />
+          </div>
         )}
-      </Layout>
-    </>
+      </Desktop>
+    </div>
   );
 }

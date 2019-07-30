@@ -2,9 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { ComboBox } from '@mycrypto/ui';
 
 import { translate } from 'translations';
-import { NetworksContext } from 'v2/providers';
-import { isWalletFormatSupportedOnNetwork } from 'v2/libs';
-import { WalletName } from 'v2/config/data';
+import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
+import { WalletName } from 'v2/types';
 
 interface Props {
   network: string;
@@ -15,7 +14,7 @@ interface Props {
 const DEFAULT_NETWORK = 'Ethereum';
 
 function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
-  const { networks } = useContext(NetworksContext);
+  const { networks } = useContext(NetworkContext);
 
   // set default network if none selected
   useEffect(() => {

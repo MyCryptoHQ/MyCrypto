@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@mycrypto/ui';
 
-import { COLORS } from 'v2/features/constants';
+import { COLORS } from 'v2/theme';
 import { InlineErrorMsg } from 'v2/components';
 
 const { PASTEL_RED, BRIGHT_SKY_BLUE } = COLORS;

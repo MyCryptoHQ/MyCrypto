@@ -192,6 +192,11 @@ export const ASK_TREZOR: DPath = {
   value: "m/44'/2221'/0'/0"
 };
 
+export const AUX_DEFAULT: DPath = {
+  label: 'Default (AUX)',
+  value: "m/44'/344'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -230,7 +235,8 @@ export const DPaths: DPath[] = [
   SOLIDUM_DEFAULT,
   DEXON_DEFAULT,
   ASK_DEFAULT,
-  ASK_TREZOR
+  ASK_TREZOR,
+  AUX_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

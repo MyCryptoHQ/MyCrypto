@@ -2,8 +2,8 @@ import { AxiosInstance } from 'axios';
 import queryString from 'query-string';
 
 import { logError, isDesktop } from 'v2/utils';
-import { APIService } from '../API';
-import { CacheService } from '../Cache';
+import { ApiService } from 'v2/services/ApiService';
+import { CacheService } from '../Store';
 import {
   SHAPESHIFT_API_URL,
   SHAPESHIFT_ACCESS_TOKEN,
@@ -26,7 +26,7 @@ import {
 
 export class ShapeShiftServiceBase {
   private token: string | null = null;
-  private service: AxiosInstance = APIService.generateInstance({
+  private service: AxiosInstance = ApiService.generateInstance({
     baseURL: SHAPESHIFT_API_URL
   });
   private cacheGet = CacheService.instance.getEntry.bind(
@@ -148,7 +148,9 @@ export class ShapeShiftServiceBase {
   public async getDepositStatus(depositAddress: string): Promise<DepositStatuses | null> {
     try {
       const url = `/txstat/${depositAddress}`;
-      const { data: { status } } = await this.service.get(url);
+      const {
+        data: { status }
+      } = await this.service.get(url);
 
       return status;
     } catch (error) {
@@ -191,7 +193,9 @@ export class ShapeShiftServiceBase {
 
       this.cacheClear('shift');
 
-      const { data: { success: activeShift, error } } = await this.service.post(url, {
+      const {
+        data: { success: activeShift, error }
+      } = await this.service.post(url, {
         amount,
         withdrawal,
         pair
@@ -267,7 +271,9 @@ export class ShapeShiftServiceBase {
   };
 
   private async requestAccessToken(code: string) {
-    const { data: { access_token: token } } = await this.service.post(SHAPESHIFT_TOKEN_PROXY_URL, {
+    const {
+      data: { access_token: token }
+    } = await this.service.post(SHAPESHIFT_TOKEN_PROXY_URL, {
       code,
       grant_type: 'authorization_code'
     });
@@ -290,7 +296,7 @@ export class ShapeShiftServiceBase {
         }
       : {};
 
-    this.service = APIService.generateInstance({
+    this.service = ApiService.generateInstance({
       baseURL: 'https://shapeshift.io',
       headers
     });

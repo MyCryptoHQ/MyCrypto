@@ -1,4 +1,4 @@
-import { isValidHex, gasPriceValidator, gasLimitValidator } from 'v2/libs/validators';
+import { isValidHex, gasPriceValidator, gasLimitValidator } from 'v2/services/EthService';
 
 export function validateGasPriceField(value: string): string | undefined {
   if (!gasPriceValidator(value)) {

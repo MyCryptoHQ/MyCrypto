@@ -1,24 +1,25 @@
+import { ROUTE_PATHS } from 'v2/config';
 import dashboardIcon from 'common/assets/images/icn-dashboard.svg';
 
 export const links = [
   {
     title: 'Dashboard',
-    to: '/dashboard',
+    to: ROUTE_PATHS.DASHBOARD.path,
     icon: { src: dashboardIcon, width: '16px', height: '12px' }
   },
   {
     title: 'Manage Assets',
     subItems: [
       {
-        to: '/send',
+        to: ROUTE_PATHS.SEND.path,
         title: 'Send Assets'
       },
       {
-        to: '/receive',
+        to: ROUTE_PATHS.REQUEST_ASSEST.path,
         title: 'Receive Assets'
       },
       {
-        to: '/swap',
+        to: ROUTE_PATHS.SWAP.path,
         title: 'Swap Assets'
       }
     ]
@@ -56,5 +57,8 @@ export const links = [
       }
     ]
   },
-  { title: 'Settings', to: '/settings' }
+  {
+    title: 'Settings',
+    to: ROUTE_PATHS.SETTINGS.path
+  }
 ];

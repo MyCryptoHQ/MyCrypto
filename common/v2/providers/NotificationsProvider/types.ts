@@ -1,3 +1,5 @@
+import { ExtendedNotification } from 'v2/types';
+
 export interface NotificationConfig {
   analyticsEvent: string;
   layout: any;
@@ -5,7 +7,8 @@ export interface NotificationConfig {
   dismissOnOverwrite?: boolean;
   dismissForever?: boolean;
   repeatInterval?: number;
-  condition?(): boolean;
+  preventDismisExisting?: boolean;
+  condition?(notification: ExtendedNotification): boolean;
 }
 
 export interface NotificationsConfigsProps {

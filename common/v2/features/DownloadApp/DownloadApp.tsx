@@ -5,12 +5,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import styled from 'styled-components';
 
 import { ExtendedContentPanel } from 'v2/components';
-import { GithubService, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { OS } from 'v2/services/Github';
-import { DOWNLOAD_PAGE_URL } from './constants';
-import { GITHUB_RELEASE_NOTES_URL } from 'v2/features/constants';
-import { getFeaturedOS } from 'v2/features/helpers';
-import { Layout } from 'v2/features';
+import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService, OS } from 'v2/services/ApiService';
+import { GITHUB_RELEASE_NOTES_URL, DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
+import { getFeaturedOS } from 'v2/utils';
 import { AppDownloadItem } from './types';
 import translate from 'translations';
 
@@ -162,45 +159,43 @@ export class DownloadApp extends Component<Props, State> {
     const secondaryDownloads = downloadItems.filter(x => x !== primaryDownload);
 
     return (
-      <Layout centered={true}>
-        <ExtendedContentPanel onBack={this.props.history.goBack} className="">
-          <DownloadAppWrapper>
-            <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
-            <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
-            <ImgIcon src={desktopAppIcon} alt="Desktop" />
-            <PrimaryButton onClick={() => this.openDownloadLink(primaryDownload)}>
-              {translate('DOWNLOAD_APP_DOWNLOAD_BUTTON')} {primaryDownload.name}
-            </PrimaryButton>
-            <OptionGroup>
-              <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[0])}>
-                {secondaryDownloads[0].name}
-              </Option>
-              <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[1])}>
-                {secondaryDownloads[1].name}
-              </Option>
-            </OptionGroup>
-            <OptionGroup>
-              <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[2])}>
-                {secondaryDownloads[2].name}
-              </Option>
-              <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[3])}>
-                {secondaryDownloads[3].name}
-              </Option>
-            </OptionGroup>
-            <Footer>
-              {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
-              <a
-                onClick={this.trackLearnMoreClick}
-                href={DOWNLOAD_PAGE_URL}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
-              </a>
-            </Footer>
-          </DownloadAppWrapper>
-        </ExtendedContentPanel>
-      </Layout>
+      <ExtendedContentPanel onBack={this.props.history.goBack} className="">
+        <DownloadAppWrapper>
+          <Header>{translate('DOWNLOAD_APP_TITLE')}</Header>
+          <Description>{translate('DOWNLOAD_APP_DESCRIPTION')}</Description>
+          <ImgIcon src={desktopAppIcon} alt="Desktop" />
+          <PrimaryButton onClick={() => this.openDownloadLink(primaryDownload)}>
+            {translate('DOWNLOAD_APP_DOWNLOAD_BUTTON')} {primaryDownload.name}
+          </PrimaryButton>
+          <OptionGroup>
+            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[0])}>
+              {secondaryDownloads[0].name}
+            </Option>
+            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[1])}>
+              {secondaryDownloads[1].name}
+            </Option>
+          </OptionGroup>
+          <OptionGroup>
+            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[2])}>
+              {secondaryDownloads[2].name}
+            </Option>
+            <Option secondary={true} onClick={() => this.openDownloadLink(secondaryDownloads[3])}>
+              {secondaryDownloads[3].name}
+            </Option>
+          </OptionGroup>
+          <Footer>
+            {translate('DOWNLOAD_APP_FOOTER_INFO')}{' '}
+            <a
+              onClick={this.trackLearnMoreClick}
+              href={DOWNLOAD_MYCRYPTO_LINK}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {translate('DOWNLOAD_APP_FOOTER_INFO_LINK')}
+            </a>
+          </Footer>
+        </DownloadAppWrapper>
+      </ExtendedContentPanel>
     );
   }
 

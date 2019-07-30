@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import translate from 'translations';
-import { BREAK_POINTS } from 'v2/features/constants';
+import { BREAK_POINTS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
 import { KNOWLEDGE_BASE_URL } from 'v2/config';
 
 // Legacy
-import champagneIcon from 'common/assets/images/icn-champagne-2.svg';
+import sadWalletIcon from 'common/assets/images/icn-sad-wallet.svg';
 import howBuyIcon from 'common/assets/images/icn-how-do-i-buy-crypto.svg';
 import dontLoseCryptoIcon from 'common/assets/images/icn-don-t-lose-crypto.svg';
 import questionsIcon from 'common/assets/images/icn-questions.svg';
@@ -82,7 +82,7 @@ export default function WalletCreatedNotification({ address }: NotificationProps
     <NotificationWrapper
       alignCenterOnSmallScreen={true}
       leftImg={{
-        src: champagneIcon,
+        src: sadWalletIcon,
         width: '71px',
         height: '70px',
         transform: 'rotateY(180deg)',

@@ -4,11 +4,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import translate from 'translations';
-import {
-  COLORS,
-  BREAK_POINTS,
-  GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK
-} from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/config';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 
 import vaultIcon from 'common/assets/images/icn-vault2.svg';
@@ -95,8 +92,8 @@ const ContentItemWrapper = styled.div`
 `;
 
 const ContentItemImage = styled.img`
-  width: 112px;
-  height: 112px;
+  height: 138px;
+  width: auto;
   object-fit: contain;
 
   @media (max-width: ${SCREEN_MD}) {
@@ -128,7 +125,7 @@ const ContentItemDescription = styled.p`
   }
   @media (max-width: ${SCREEN_SM}) {
     margin-top: 17px;
-    font-size: 16px;
+    font-size: 18px;
     max-width: 244px;
   }
 `;

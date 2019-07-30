@@ -183,4 +183,7 @@ const mapDispatchToProps: DispatchProps = {
   addCustomNetwork: configNetworksCustomActions.addCustomNetwork
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);

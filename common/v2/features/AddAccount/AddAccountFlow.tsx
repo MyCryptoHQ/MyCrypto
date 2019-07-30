@@ -2,15 +2,15 @@ import React, { useState, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
-import { Layout } from 'v2/features';
 import { ContentPanel } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
-import { WalletName, walletNames } from 'v2/config/data';
+import { WalletName, walletNames } from 'v2/types';
 import { STORIES } from './stories';
 import { WalletList } from './components';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
+import { ROUTE_PATHS } from 'v2/config';
 
 export const getStory = (storyName: WalletName): any => {
   return STORIES.filter(selected => selected.name === storyName)[0];
@@ -36,7 +36,7 @@ const AddAccountFlow = withRouter(props => {
   const isDefaultView = storyName === walletNames.DEFAULT;
 
   const goToStart = () => {
-    props.history.replace('/add-account');
+    props.history.replace(ROUTE_PATHS.ADD_ACCOUNT.path);
     setStep(0);
     setStoryName(walletNames.DEFAULT);
     updateFormState({ type: ActionType.RESET_FORM, payload: '' });
@@ -63,12 +63,16 @@ const AddAccountFlow = withRouter(props => {
   };
 
   // Read the walletName parameter from the URL
-  const { match: { params: { walletName: walletNameFromURL } } } = props;
+  const {
+    match: {
+      params: { walletName: walletNameFromURL }
+    }
+  } = props;
 
   const onWalletSelection = (name: WalletName) => {
     // If wallet has been selected manually by user click, add the wallet name to the URL for consistency
     if (name) {
-      props.history.replace(`/add-account/${name}`);
+      props.history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${name}`);
     }
 
     setStoryName(name);
@@ -80,7 +84,7 @@ const AddAccountFlow = withRouter(props => {
   // If there is a valid walletName parameter in the URL, redirect to that wallet
   if (walletNameFromURL) {
     if (!walletNames.includes(walletNameFromURL)) {
-      props.history.replace('/add-account');
+      props.history.replace(ROUTE_PATHS.ADD_ACCOUNT.path);
     } else {
       if (storyName !== walletNameFromURL) {
         onWalletSelection(walletNameFromURL);
@@ -129,11 +133,7 @@ const AddAccountFlow = withRouter(props => {
     );
   };
 
-  return (
-    <Layout data-testid="MainLayout" centered={true}>
-      {isDefaultView ? renderDefault() : renderStep()}
-    </Layout>
-  );
+  return <>{isDefaultView ? renderDefault() : renderStep()}</>;
 });
 
 export default AddAccountFlow;

@@ -5,3 +5,4 @@ export { default as PeaceOfMindPanel } from './PeaceOfMindPanel';
 export { default as TestimonialsPanel } from './TestimonialsPanel';
 export { default as BottomActionPanel } from './BottomActionPanel';
 export { default as FeaturesPanel } from './FeaturesPanel';
+export { default as KeepYourAssetsSafePanel } from './KeepYourAssetsSafePanel';

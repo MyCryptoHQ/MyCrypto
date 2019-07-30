@@ -2,9 +2,9 @@ import React, { ChangeEvent, Component } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { ComboBox } from '@mycrypto/ui';
 
-import { AccountContext, NetworksContext } from 'v2/providers';
-import { ITxFields } from '../../types';
-import { Network } from 'v2/services/Network/types';
+import { AccountContext, NetworkContext } from 'v2/services/Store';
+import { Network } from 'v2/types';
+import { IFormikFields } from '../../types';
 
 interface OwnProps {
   handleChange: Formik['handleChange'];
@@ -32,7 +32,7 @@ export default class AssetField extends Component<Props> {
         <label htmlFor="asset">Asset</label>
         <AccountContext.Consumer>
           {({ accounts }) => (
-            <NetworksContext.Consumer>
+            <NetworkContext.Consumer>
               {({ networks }) => {
                 // Networks of all accounts
                 const relevantNetworks: string[] = [
@@ -55,7 +55,7 @@ export default class AssetField extends Component<Props> {
                   <Field
                     id={'7'}
                     name="asset"
-                    render={({ field }: FieldProps<ITxFields>) => (
+                    render={({ field }: FieldProps<IFormikFields>) => (
                       <ComboBox
                         {...field}
                         id={'8'}
@@ -68,7 +68,7 @@ export default class AssetField extends Component<Props> {
                   />
                 );
               }}
-            </NetworksContext.Consumer>
+            </NetworkContext.Consumer>
           )}
         </AccountContext.Consumer>
       </div>

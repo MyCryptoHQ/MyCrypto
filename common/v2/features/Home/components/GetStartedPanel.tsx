@@ -5,7 +5,8 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { COLORS, BREAK_POINTS } from 'v2/features/constants';
+import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { ROUTE_PATHS } from 'v2/config';
 
 // Legacy
 import titleIllustration from 'common/assets/images/title-illustration.svg';
@@ -140,7 +141,7 @@ const ActionCardWrapper = styled.div`
 `;
 
 const LinkWrapper = styled(Link)`
-  padding: 1vw 2vw
+  padding: 1vw 2vw;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -247,21 +248,21 @@ export default function GetStartedPanel() {
             name={translateRaw('HOME_GET_STARTED_NEED_WALLET_TITLE')}
             description={translate('HOME_GET_STARTED_NEED_WALLET_DESCRIPTION')}
             icon={newWalletIcon}
-            link={'/create-wallet'}
+            link={ROUTE_PATHS.CREATE_WALLET.path}
             eventAction="I need a wallet"
           />
           <ActionCard
             name={translateRaw('HOME_GET_STARTED_HAVE_WALLET_TITLE')}
             description={translate('HOME_GET_STARTED_HAVE_WALLET_DESCRIPTION')}
             icon={existingWalletIcon}
-            link={'/add-account'}
+            link={ROUTE_PATHS.ADD_ACCOUNT.path}
             eventAction="I have a wallet"
           />
           <ActionCard
             name={translateRaw('HOME_GET_STARTED_USED_TITLE')}
             description={translate('HOME_GET_STARTED_USED_DESCRIPTION')}
             icon={signInIcon}
-            link={'/dashboard'}
+            link={ROUTE_PATHS.DASHBOARD.path}
             eventAction="I've used MyCrypto"
           />
         </ActionCardsWrapper>
