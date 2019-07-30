@@ -239,7 +239,8 @@
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
       "yarn tslint",
-      "git add"
+      "git add",
+      "yarn test"
     ]
   },
   "freezer": [
@@ -251,7 +252,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn tscheck && yarn test"
+      "pre-commit": "lint-staged && yarn tscheck"
     }
   }
 }
