@@ -7,14 +7,11 @@ import { uniq } from 'lodash';
 
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
-import { InsecureWalletName } from 'v2/config/data';
-import { Network } from 'v2/services/Network/types';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
-import { getNetworkByName, getNewDefaultAssetTemplateByNetwork, generateUUID } from 'v2/libs';
-import { DPathFormat } from 'v2/libs/networks/types';
-import { Account } from 'v2/services/Account/types';
-import { Asset } from 'v2/services/Asset/types';
-import { ISettings } from 'v2/services/Settings';
+import { Account, Asset, DPathFormat, ISettings, InsecureWalletName, Network } from 'v2/types';
+import { generateUUID } from 'v2/utils';
+import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
+import { ROUTE_PATHS } from 'v2/config';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
@@ -76,7 +73,7 @@ class CreateMnemonic extends Component<Props> {
     if (previousStage != null) {
       this.setState({ stage: previousStage });
     } else {
-      history.push('/create-wallet');
+      history.push(ROUTE_PATHS.CREATE_WALLET.path);
     }
   };
 
@@ -92,7 +89,7 @@ class CreateMnemonic extends Component<Props> {
 
   private navigateToDashboard = () => {
     const { history } = this.props;
-    history.replace('/dashboard');
+    history.replace(ROUTE_PATHS.DASHBOARD.path);
   };
 
   private generateWords = () => {
@@ -162,7 +159,7 @@ class CreateMnemonic extends Component<Props> {
     displayNotification(NotificationTemplates.walletCreated, {
       address: account.address
     });
-    history.replace('/dashboard');
+    history.replace(ROUTE_PATHS.DASHBOARD.path);
   };
 }
 

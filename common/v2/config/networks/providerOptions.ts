@@ -28,7 +28,7 @@ export const PROVIDER_OPTIONS = {
 
   AQUA: ['https://tx.aquacha.in/api', 'https://c.onical.org'],
 
-  ARTIS_SIGMA1: [, 'https://rpc.sigma1.artis.network'],
+  ARTIS_SIGMA1: ['https://rpc.sigma1.artis.network'],
 
   ARTIS_TAU1: ['https://rpc.tau1.artis.network'],
 

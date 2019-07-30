@@ -91,7 +91,7 @@ export default class DateTimePickerTime extends Component<Props, State> {
         typeof timeFormat === 'string' &&
         timeFormat.toLowerCase().indexOf(' a') !== -1)
     ) {
-      value = (value - 1) % 12 + 1;
+      value = ((value - 1) % 12) + 1;
 
       if (value === 0) {
         value = 12;

@@ -19,10 +19,7 @@ interface LanguageProps {
   isSelected: boolean;
 }
 
-const Language =
-  styled.li <
-  LanguageProps >
-  `
+const Language = styled.li<LanguageProps>`
   margin: 0;
   padding: 15px 20px;
   border-top: 1px solid #e9e9e9;
@@ -66,7 +63,7 @@ type Props = StateProps & DispatchProps;
 function LanguageSelect({ languageSelection, changeLanguage, onClose }: Props) {
   return (
     <LanguagesList>
-      {Object.entries(languages).map(([code, language]) => (
+      {Object.entries(languages).map(([code, language]: [string, string]) => (
         <Language
           isSelected={languageSelection === code}
           key={code}
@@ -89,5 +86,8 @@ const mapDispatchToProps = {
 
 export default {
   title: translateRaw('NEW_SIDEBAR_TEXT_1'),
-  content: connect(mapStateToProps, mapDispatchToProps)(LanguageSelect)
+  content: connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(LanguageSelect)
 };

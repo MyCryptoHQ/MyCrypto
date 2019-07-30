@@ -9,7 +9,7 @@ enum ABIMethodTypes {
 
 export default interface Contract {
   [key: string]: any;
-};
+}
 
 export type TContract = typeof Contract;
 

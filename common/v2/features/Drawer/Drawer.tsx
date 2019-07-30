@@ -41,8 +41,8 @@ export default function Drawer({ style, title, content: Content, actions, onClos
         </div>
         {actions && (
           <div className="Drawer-content-actions">
-            {actions.map(action => (
-              <div className="Drawer-content-actions-action">
+            {actions.map((action, idx) => (
+              <div key={idx} className="Drawer-content-actions-action">
                 <DrawerAction key={action.title} {...action} />
               </div>
             ))}

@@ -15,16 +15,14 @@ export default function Stepper({ current, total, className, ...rest }: Props) {
 
   return (
     <div className={stepperClassName} {...rest}>
-      {Array.from(
-        { length: total },
-        (_, index) =>
-          index === currentOffset ? (
-            <div key={index} className="Stepper-wrapper">
-              <div className="Stepper-wrapper-activeStep" />
-            </div>
-          ) : (
-            <div key={index} className="Stepper-step" />
-          )
+      {Array.from({ length: total }, (_, index) =>
+        index === currentOffset ? (
+          <div key={index} className="Stepper-wrapper">
+            <div className="Stepper-wrapper-activeStep" />
+          </div>
+        ) : (
+          <div key={index} className="Stepper-step" />
+        )
       )}
     </div>
   );

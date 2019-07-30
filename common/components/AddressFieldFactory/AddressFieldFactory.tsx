@@ -106,9 +106,10 @@ class AddressFieldFactoryClass extends React.Component<Props> {
   private setBlurTimeout = () => (this.goingToBlur = window.setTimeout(this.blur, 150));
 }
 
-const AddressFieldFactory = connect(null, { setCurrentTo: transactionActions.setCurrentTo })(
-  AddressFieldFactoryClass
-);
+const AddressFieldFactory = connect(
+  null,
+  { setCurrentTo: transactionActions.setCurrentTo }
+)(AddressFieldFactoryClass);
 
 interface DefaultAddressFieldProps {
   isSelfAddress?: boolean;

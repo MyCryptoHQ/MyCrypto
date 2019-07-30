@@ -1,5 +1,7 @@
 import React from 'react';
 
-export default function SignTransactionMnemonic() {
+import { ISignComponentProps } from '../../types';
+
+export default function SignTransactionMnemonic({  }: ISignComponentProps) {
   return <div>Sign Transaction with Mnemonic</div>;
 }

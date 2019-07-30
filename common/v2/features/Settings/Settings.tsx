@@ -8,7 +8,7 @@ import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './component
 import IS_MOBILE from 'utils/isMobile';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
-import { AddressBookContext, SettingsContext } from 'v2/providers';
+import { AddressBookContext, SettingsContext } from 'v2/services/Store';
 
 const SettingsHeading = styled(Heading)`
   display: flex;
