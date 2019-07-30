@@ -71,7 +71,9 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
   };
 }
 
-export const ParitySignerDecrypt = connect((state: AppState): StateProps => ({
-  showNotification: notificationsActions.showNotification,
-  isValidAddress: configSelectors.getIsValidAddressFn(state)
-}))(ParitySignerDecryptClass);
+export const ParitySignerDecrypt = connect(
+  (state: AppState): StateProps => ({
+    showNotification: notificationsActions.showNotification,
+    isValidAddress: configSelectors.getIsValidAddressFn(state)
+  })
+)(ParitySignerDecryptClass);

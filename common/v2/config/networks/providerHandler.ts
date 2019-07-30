@@ -1,16 +1,9 @@
-import { FallbackProvider, TransactionResponse, TransactionReceipt } from 'ethers/providers';
+import { FallbackProvider, TransactionReceipt, TransactionResponse } from 'ethers/providers';
 import { formatEther } from 'ethers/utils/units';
 
-import { Network } from 'v2/services/Network/types';
-import { TxObj } from 'v2/libs/nodes/INode';
-import { IHexStrTransaction } from 'v2/libs/transaction/typings';
-import { Asset } from 'v2/services/Asset/types';
+import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
+import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
 import { createProviderHandler } from './globalProvider';
-
-import RPCRequests from 'v2/libs/nodes/rpc/requests';
-import ERC20 from 'v2/libs/erc20';
-
-import * as units from 'v2/libs/units';
 
 class ProviderHandler {
   public network: Network;
@@ -47,9 +40,9 @@ class ProviderHandler {
       .then(data => ERC20.balanceOf.decodeOutput(data))
       .then(({ balance }) => {
         if (token.decimal) {
-          return units.baseToConvertedUnit(balance, token.decimal);
+          return baseToConvertedUnit(balance, token.decimal);
         }
-        return units.baseToConvertedUnit(balance, 18);
+        return baseToConvertedUnit(balance, 18);
       });
   }
 

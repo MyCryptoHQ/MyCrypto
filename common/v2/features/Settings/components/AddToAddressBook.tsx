@@ -3,11 +3,9 @@ import { Formik, Form, Field, FieldProps } from 'formik';
 import { Button, Input, Textarea } from '@mycrypto/ui';
 import styled from 'styled-components';
 
-import { DashboardPanel } from 'v2/components';
-import { AddressBook } from 'v2/services/AddressBook';
-
-// Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import { DashboardPanel } from 'v2/components';
+import { AddressBook } from 'v2/types';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
   padding: 24px 30px;

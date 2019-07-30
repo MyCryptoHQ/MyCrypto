@@ -35,11 +35,10 @@ describe('handleChangeNodeRequested*', () => {
   // normal operation variables
   const defaultNodeId: any = selectedNodeExpectedState.initialState.nodeId;
   const defaultNodeConfig: any = (staticNodesExpectedState as any).initialState[defaultNodeId];
-  const newNodeId = Object.keys(staticNodesExpectedState.initialState).reduce(
-    (acc, cur) =>
-      (staticNodesExpectedState as any).initialState[cur].network !== defaultNodeConfig.network
-        ? cur
-        : acc
+  const newNodeId = Object.keys(staticNodesExpectedState.initialState).reduce((acc, cur) =>
+    (staticNodesExpectedState as any).initialState[cur].network !== defaultNodeConfig.network
+      ? cur
+      : acc
   );
   const newNodeConfig: StaticNodeConfig = (staticNodesExpectedState as any).initialState[newNodeId];
   const isOffline = false;

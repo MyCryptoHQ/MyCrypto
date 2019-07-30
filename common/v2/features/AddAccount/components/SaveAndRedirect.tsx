@@ -1,19 +1,21 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Redirect } from 'react-router';
+
 import { FormData } from 'v2/features/AddAccount/types';
-import {
-  getNetworkByName,
-  getNewDefaultAssetTemplateByNetwork,
-  generateUUID,
-  findNextUnusedDefaultLabel
-} from 'v2/libs';
-import { AccountContext, NotificationsContext, SettingsContext } from 'v2/providers';
-import { Network } from 'v2/services/Network/types';
-import { Account } from 'v2/services/Account/types';
+import { NotificationsContext } from 'v2/providers';
+import { createAssetWithID } from 'v2/services';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
-import { Asset } from 'v2/services/Asset/types';
-import { createAssetWithID, createAddressBook, AddressBook } from 'v2/services';
-import { getAccountByAddressAndNetwork } from 'v2/libs/accounts/accounts';
+import { generateUUID } from 'v2/utils';
+import {
+  AccountContext,
+  SettingsContext,
+  getAccountByAddressAndNetwork,
+  findNextUnusedDefaultLabel,
+  createAddressBook,
+  getNewDefaultAssetTemplateByNetwork,
+  getNetworkByName
+} from 'v2/services/Store';
+import { Account, AddressBook, Asset, Network } from 'v2/types';
 
 /*
   Create a new account in localStorage and redirect to dashboard.

@@ -18,10 +18,7 @@ interface PaperWalletWrapperProps {
 const paperWalletWidth: number = 1458;
 const paperWalletHeight: number = 612;
 
-const PaperWalletWrapper =
-  styled.div <
-  PaperWalletWrapperProps >
-  `
+const PaperWalletWrapper = styled.div<PaperWalletWrapperProps>`
   ${props => props.isHidden && `position: fixed; top: -${paperWalletHeight}px;`}
   width: ${paperWalletWidth}px;
   height: ${paperWalletHeight}px;
@@ -35,10 +32,7 @@ interface PartProps {
 }
 
 const borderStyle = '6px dashed rgba(227, 237, 255, 0.3);';
-const Part =
-  styled.div <
-  PartProps >
-  `
+const Part = styled.div<PartProps>`
   width: 486px;
   height: 304px;
   display: flex;
@@ -53,10 +47,7 @@ const Part =
 interface PartWrapperProps {
   rotateChildren?: boolean;
 }
-const PartWrapper =
-  styled.div <
-  PartWrapperProps >
-  `
+const PartWrapper = styled.div<PartWrapperProps>`
   display: flex;
   ${Part} {
     ${props => props.rotateChildren && 'transform: rotate(180deg);'}
@@ -129,10 +120,7 @@ const TextHeader = styled.div`
 interface TextSubHeaderProps {
   noTopMargin?: boolean;
 }
-const TextSubHeader =
-  styled.p <
-  TextSubHeaderProps >
-  `
+const TextSubHeader = styled.p<TextSubHeaderProps>`
   font-size: 14px;
   font-weight: normal;
   margin: ${props => (props.noTopMargin ? '0' : '14px')} 0 0 0;
@@ -141,18 +129,15 @@ const TextSubHeader =
 interface QRAddressWrapperProps {
   isInversed: boolean;
 }
-const QRAddressWrapper =
-  styled.div <
-  QRAddressWrapperProps >
-  `
+const QRAddressWrapper = styled.div<QRAddressWrapperProps>`
   width: 244px;
   height: 426px;
   border: 6px solid ${props => (props.isInversed ? '#ef4747' : '#a7e07b')};
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: rotate(${props => props.isInversed && '-'}90deg) translate${props =>
-    props.isInversed ? 'X' : 'Y'}(-100%);
+  transform: rotate(${props => props.isInversed && '-'}90deg) translate
+    ${props => (props.isInversed ? 'X' : 'Y')} (-100%);
   transform-origin: 0 0;
 `;
 
@@ -194,10 +179,7 @@ const Address = styled.div`
 interface MnemonicProps {
   breakWords?: boolean;
 }
-const Mnemonic =
-  styled.div <
-  MnemonicProps >
-  `
+const Mnemonic = styled.div<MnemonicProps>`
   font-size: 14px;
   text-align: center;
   font-weight: normal;
@@ -250,7 +232,9 @@ export default class PaperWallet extends React.Component<Props, {}> {
           <Part hasLeftBorder={true}>
             <InnerPartWrapper>
               <Notes>Notes:</Notes>
-              {[...Array(7)].map((x: any, index: any) => <HorizontalLine key={`${index}${x}`} />)}
+              {[...Array(7)].map((x: any, index: any) => (
+                <HorizontalLine key={`${index}${x}`} />
+              ))}
             </InnerPartWrapper>
           </Part>
           <Part>{this.getQRAddressWrapper(true)}</Part>

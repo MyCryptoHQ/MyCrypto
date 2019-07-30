@@ -1,7 +1,7 @@
 {
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
-  "version": "1.6.7",
+  "version": "1.6.9",
   "main": "main.js",
   "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
@@ -44,7 +44,7 @@
     "idna-uts46": "1.1.0",
     "jsonschema": "1.2.4",
     "jspdf": "1.5.3",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "lodash.flatten": "4.4.0",
     "lodash.get": "4.4.2",
     "moment": "2.22.1",
@@ -161,7 +161,7 @@
     "node-sass": "4.8.3",
     "nodemon": "1.17.3",
     "null-loader": "0.1.1",
-    "prettier": "1.11.1",
+    "prettier": "1.18.2",
     "raw-loader": "0.5.1",
     "react-test-renderer": "16.3.2",
     "redux-devtools-extension": "2.13.2",
@@ -174,14 +174,14 @@
     "style-loader": "0.20.3",
     "thread-loader": "1.1.5",
     "ts-jest": "24.0.0",
-    "ts-loader": "4.1.0",
+    "ts-loader": "6.0.4",
     "ts-node": "5.0.1",
-    "tslint": "5.11.0",
-    "tslint-config-prettier": "1.10.0",
-    "tslint-microsoft-contrib": "6.0.0",
-    "tslint-react": "3.5.1",
+    "tslint": "5.17.0",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-microsoft-contrib": "6.2.0",
+    "tslint-react": "4.0.0",
     "types-rlp": "0.0.1",
-    "typescript": "3.3.3333",
+    "typescript": "3.5.1",
     "u2f-api": "1.0.6",
     "uglifyjs-webpack-plugin": "1.2.4",
     "url-search-params-polyfill": "3.0.0",
@@ -238,7 +238,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
-      "npm run tslint",
+      "yarn tslint",
       "git add"
     ]
   },
@@ -251,7 +251,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run tscheck && npm test"
+      "pre-commit": "lint-staged && yarn tscheck && yarn test"
     }
   }
 }

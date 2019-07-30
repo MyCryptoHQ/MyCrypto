@@ -1,13 +1,14 @@
 import React from 'react';
 import { Address, Button, Heading, Typography } from '@mycrypto/ui';
 
+import { ROUTE_PATHS } from 'v2/config';
 import './AccountScreen.scss';
 
 // Legacy
 import addIcon from 'common/assets/images/icn-add.svg';
 import settingsIcon from 'common/assets/images/icn-settings.svg';
 import unlockIcon from 'common/assets/images/icn-unlock.svg';
-import { truncate } from 'v2/libs';
+import { truncate } from 'v2/utils';
 
 export default {
   title: 'Current Account',
@@ -37,12 +38,13 @@ export default {
   actions: [
     {
       icon: addIcon,
-      title: 'Add New Account'
+      title: 'Add New Account',
+      link: ROUTE_PATHS.ADD_ACCOUNT.path
     },
     {
       icon: settingsIcon,
       title: 'Settings',
-      link: '/dashboard/settings'
+      link: ROUTE_PATHS.SETTINGS.path
     },
     {
       icon: unlockIcon,

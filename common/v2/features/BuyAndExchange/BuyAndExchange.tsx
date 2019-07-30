@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import queryString from 'query-string';
 
+import { ROUTE_PATHS } from 'v2/config';
 import { BuyAndExchangeOption } from './components';
 import { BUY_AND_EXCHANGE_ERROR_DISPLAY_DURATION } from './constants';
 import './BuyAndExchange.scss';
@@ -55,7 +56,7 @@ export class BuyAndExchange extends Component<RouteComponentProps<any>> {
               <BuyAndExchangeOption
                 option="ShapeShift"
                 logo={shapeshiftLogo}
-                route="/swap/shapeshift"
+                route={ROUTE_PATHS.SWAP_SHAPESHIFT.path}
               >
                 A platform that gives you the power to quickly swap between assets in a seamless,
                 safe, and secure environment.
@@ -83,7 +84,7 @@ export class BuyAndExchange extends Component<RouteComponentProps<any>> {
   private hideError = () => {
     const { history } = this.props;
 
-    history.replace('/swap');
+    history.replace(ROUTE_PATHS.SWAP.path);
 
     this.setState({ error: null });
   };

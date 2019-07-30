@@ -1,8 +1,8 @@
 import React, { Component, createContext } from 'react';
 import moment from 'moment';
 
-import * as service from 'v2/services/Notifications/Notifications';
-import { ExtendedNotification, Notification } from 'v2/services/Notifications';
+import { readAllNotifications, updateNotification, createNotification } from 'v2/services/Store';
+import { ExtendedNotification, Notification } from 'v2/types';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { notificationsConfigs } from './constants';
 
@@ -18,7 +18,7 @@ export const NotificationsContext = createContext({} as ProviderState);
 export class NotificationsProvider extends Component {
   public state: ProviderState = {
     currentNotification: undefined,
-    notifications: service.readAllNotifications() || [],
+    notifications: readAllNotifications() || [],
     displayNotification: (templateName: string, templateData?: object) =>
       this.displayNotification(templateName, templateData),
     dismissCurrentNotification: () => this.dismissCurrentNotification()
@@ -38,12 +38,14 @@ export class NotificationsProvider extends Component {
 
   private displayNotification = (templateName: string, templateData?: object) => {
     // Dismiss previous notifications that need to be dismissed
-    const notificationsToDismiss = this.state.notifications.filter(
-      x => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed
-    );
-    notificationsToDismiss.forEach(dismissableNotification => {
-      this.dismissNotification(dismissableNotification);
-    });
+    if (!notificationsConfigs[templateName].preventDismisExisting) {
+      const notificationsToDismiss = this.state.notifications.filter(
+        x => notificationsConfigs[x.template].dismissOnOverwrite && !x.dismissed
+      );
+      notificationsToDismiss.forEach(dismissableNotification => {
+        this.dismissNotification(dismissableNotification);
+      });
+    }
 
     // Create the notification object
     const notification: Notification = {
@@ -70,9 +72,9 @@ export class NotificationsProvider extends Component {
         notification.dateDismissed = existingNotification.dateDismissed;
       }
 
-      service.updateNotification(existingNotification.uuid, notification);
+      updateNotification(existingNotification.uuid, notification);
     } else {
-      service.createNotification(notification);
+      createNotification(notification);
     }
 
     this.getNotifications();
@@ -89,7 +91,7 @@ export class NotificationsProvider extends Component {
   private dismissNotification = (notification: ExtendedNotification) => {
     notification.dismissed = true;
     notification.dateDismissed = new Date();
-    service.updateNotification(notification.uuid, notification);
+    updateNotification(notification.uuid, notification);
   };
 
   private checkConditions = () => {
@@ -114,18 +116,18 @@ export class NotificationsProvider extends Component {
 
       // Return if there is a condition and it is not met
       if (shouldShowRepeatingNotification || isNonrepeatingNotification) {
-        if (notificationConfig.condition && !notificationConfig.condition()) {
+        if (notificationConfig.condition && !notificationConfig.condition(notification)) {
           return;
         }
         notification.dismissed = false;
         notification.dateDisplayed = new Date();
-        service.updateNotification(notification.uuid, notification);
+        updateNotification(notification.uuid, notification);
       }
     });
   };
 
   private getNotifications = () => {
-    const notifications: ExtendedNotification[] = service.readAllNotifications() || [];
+    const notifications: ExtendedNotification[] = readAllNotifications() || [];
 
     this.setState({ notifications });
     const sortedNotifications = notifications.sort((a, b) => {
@@ -135,7 +137,7 @@ export class NotificationsProvider extends Component {
       x =>
         !x.dismissed &&
         (notificationsConfigs[x.template].condition
-          ? notificationsConfigs[x.template].condition!()
+          ? notificationsConfigs[x.template].condition!(x)
           : true)
     );
 

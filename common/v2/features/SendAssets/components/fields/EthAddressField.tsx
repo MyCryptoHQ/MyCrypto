@@ -1,8 +1,12 @@
 import React from 'react';
-import { Field, FieldProps } from 'formik';
 import { Input } from '@mycrypto/ui';
+import { Field, FieldProps } from 'formik';
 
-import { isValidETHAddress } from 'libs/validators';
+import { getENSTLDForChain } from 'libs/ens/networkConfigs';
+import { isValidENSName } from 'libs/validators';
+
+import { translateRaw } from 'translations';
+import { isValidETHAddress } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components';
 
 /*
@@ -16,15 +20,26 @@ interface Props {
   fieldName: string;
   touched?: boolean;
   placeholder?: string;
+  chainId: number;
+  handleENSResolve?(name: string): Promise<void>;
 }
 
-function ETHAddressField({ fieldName, error, touched, placeholder = 'Eth Address' }: Props) {
+function ETHAddressField({
+  fieldName,
+  error,
+  touched,
+  chainId,
+  placeholder = 'Eth Address',
+  handleENSResolve
+}: Props) {
   const validateEthAddress = (value: any) => {
     let errorMsg;
     if (!value) {
-      errorMsg = 'Required';
+      errorMsg = translateRaw('REQUIRED');
     } else if (!isValidETHAddress(value)) {
-      errorMsg = 'Enter a valid address';
+      if (!isValidENSName(value)) {
+        errorMsg = translateRaw('TO_FIELD_ERROR');
+      }
     }
     return errorMsg;
   };
@@ -36,7 +51,22 @@ function ETHAddressField({ fieldName, error, touched, placeholder = 'Eth Address
       <Field
         name={fieldName}
         validate={validateEthAddress}
-        render={({ field }: FieldProps) => <Input {...field} placeholder={placeholder} />}
+        render={({ field, form }: FieldProps) => (
+          <Input
+            {...field}
+            placeholder={placeholder}
+            onBlur={e => {
+              if (chainId) {
+                const ensTLD = getENSTLDForChain(chainId);
+                const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
+                form.setFieldValue('resolvedNSAddress', '');
+                if (isENSAddress && handleENSResolve) {
+                  handleENSResolve(e.currentTarget.value);
+                }
+              }
+            }}
+          />
+        )}
       />
       {error && touched ? (
         <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>

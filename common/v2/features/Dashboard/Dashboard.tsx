@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
 
-import { AccountContext, AddressBookContext, useDevMode } from 'v2/providers';
+import { NotificationsContext, NotificationTemplates } from 'v2/providers';
+import { useDevMode } from 'v2/services';
+import { AccountContext, AddressBookContext } from 'v2/services/Store';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenList, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
@@ -11,7 +13,17 @@ import './Dashboard.scss';
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
   const { accounts } = useContext(AccountContext);
+  const { notifications, displayNotification } = useContext(NotificationsContext);
   const { readAddressBook } = useContext(AddressBookContext);
+
+  if (
+    !notifications.find(x => x.template === NotificationTemplates.onboardingResponsible) &&
+    accounts.length > 0
+  ) {
+    displayNotification(NotificationTemplates.onboardingResponsible, {
+      firstDashboardVisitDate: new Date()
+    });
+  }
 
   return (
     <div>
@@ -19,7 +31,9 @@ export default function Dashboard() {
       <Mobile className="Dashboard-mobile">
         <NotificationsPanel />
         <div className="Dashboard-mobile-actions">
-          {actions.map(action => <ActionTile key={action.title} {...action} />)}
+          {actions.map(action => (
+            <ActionTile key={action.title} {...action} />
+          ))}
         </div>
         <div className="Dashboard-mobile-divider" />
         <div className="Dashboard-mobile-group">
@@ -49,7 +63,9 @@ export default function Dashboard() {
               Your Dashboard
             </Heading>
             <div className="Dashboard-desktop-top-left-actions">
-              {actions.map(action => <ActionTile key={action.title} {...action} />)}
+              {actions.map(action => (
+                <ActionTile key={action.title} {...action} />
+              ))}
             </div>
             <div>
               <TokenList />

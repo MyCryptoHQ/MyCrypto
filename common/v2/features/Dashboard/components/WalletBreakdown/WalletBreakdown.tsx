@@ -3,22 +3,24 @@ import { Panel } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
-import { AccountContext, SettingsContext } from 'v2/providers';
-import { Asset } from 'v2/services/Asset/types';
-import { ExtendedAccount, AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import AccountDropdown from './AccountDropdown';
-import BalancesDetailView from './BalancesDetailView';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import {
+  AccountContext,
+  SettingsContext,
   getCurrentsFromContext,
   getBalanceFromAccount,
   getBaseAssetFromAccount,
-  getAssetByUUID,
-  getTokenBalanceFromAccount
-} from 'v2/libs';
+  getTokenBalanceFromAccount,
+  getAssetByUUID
+} from 'v2/services/Store';
+import { ExtendedAccount, Asset } from 'v2/types';
+import { BREAK_POINTS } from 'v2/theme';
+
 import { Balance, Fiat } from './types';
+import AccountDropdown from './AccountDropdown';
+import BalancesDetailView from './BalancesDetailView';
 import WalletBreakdownView from './WalletBreakdownView';
 import NoAccountsSelected from './NoAccountsSelected';
-import { BREAK_POINTS } from 'v2/theme';
 
 const { SCREEN_MD } = BREAK_POINTS;
 

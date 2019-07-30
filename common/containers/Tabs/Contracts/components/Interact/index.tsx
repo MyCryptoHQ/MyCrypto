@@ -58,10 +58,9 @@ class InteractClass extends Component<Props, State> {
       <main className="Interact Tab-content-pane" role="main">
         <InteractForm {...interactProps} />
         <hr />
-        {showExplorer &&
-          currentContract && (
-            <InteractExplorer contractFunctions={Contract.getFunctions(currentContract)} />
-          )}
+        {showExplorer && currentContract && (
+          <InteractExplorer contractFunctions={Contract.getFunctions(currentContract)} />
+        )}
       </main>
     );
   }
@@ -69,6 +68,7 @@ class InteractClass extends Component<Props, State> {
   private resetState = () => this.setState(this.initialState);
 }
 
-export const Interact = connect(null, { showNotification: notificationsActions.showNotification })(
-  InteractClass
-);
+export const Interact = connect(
+  null,
+  { showNotification: notificationsActions.showNotification }
+)(InteractClass);

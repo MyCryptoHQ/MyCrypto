@@ -6,13 +6,19 @@ import {
   safeTReferralURL,
   ethercardReferralURL,
   keepkeyReferralURL,
-  steelyReferralURL
+  steelyReferralURL,
+  ETHERSCAMDB
 } from './data';
+import { IRoutePath, IRoutePaths } from 'v2/types';
 
 interface Link {
   link: string;
   text: string;
 }
+
+// As an intermediate step to creating a single place to reference URLS
+// we create an overlap between the old Link and the new IRoutePath
+type TmpLink = Partial<Link & IRoutePath>;
 
 export const DOWNLOAD_MYCRYPTO_LINK = 'https://download.mycrypto.com/';
 
@@ -63,7 +69,7 @@ export const productLinks: Link[] = [
     text: translateRaw('ETHER_SECURITY_LOOKUP')
   },
   {
-    link: 'https://etherscamdb.info/',
+    link: ETHERSCAMDB,
     text: translateRaw('ETHERSCAMDB')
   },
   {
@@ -76,12 +82,16 @@ export const productLinks: Link[] = [
   }
 ];
 
-export const affiliateLinks: Link[] = [
+export const affiliateLinks: TmpLink[] = [
   {
+    name: 'LEDGER_REFERRAL',
+    path: ledgerReferralURL,
     link: ledgerReferralURL,
     text: translateRaw('LEDGER_REFERRAL_1')
   },
   {
+    name: 'TREZOR_REFERRAL',
+    path: trezorReferralURL,
     link: trezorReferralURL,
     text: translateRaw('TREZOR_REFERAL')
   },
@@ -121,3 +131,17 @@ export const partnerLinks: Link[] = [
     text: 'Etherchain'
   }
 ];
+
+export const EXT_URLS = createNavLinksFromExternalLinks(affiliateLinks.filter(
+  l => l.name !== undefined
+) as IRoutePath[]);
+
+function createNavLinksFromExternalLinks(links: IRoutePath[]) {
+  return links.reduce(
+    (navLinks, linkInfo) => {
+      navLinks[linkInfo.name] = linkInfo;
+      return navLinks;
+    },
+    {} as IRoutePaths
+  );
+}
