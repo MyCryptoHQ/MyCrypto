@@ -956,6 +956,8 @@
     "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above.",
     "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset",
     "REQUIRED": "Required",
-    "TO_FIELD_ERROR": "Enter a valid address or ENS name"
+    "TO_FIELD_ERROR": "Enter a valid address or ENS name",
+    "404_HEADER":"Page Not Found",
+    "404_DESCRIPTION":"Something went wrong and the page you were looking for doesn't yet exist. Try the"
   }
 }
