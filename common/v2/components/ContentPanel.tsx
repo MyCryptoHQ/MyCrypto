@@ -1,15 +1,27 @@
 import React from 'react';
 import { Button, Panel, Typography } from '@mycrypto/ui';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Stepper from './Stepper';
 
 // Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
+interface ContentPanelProps {
+  width?: string;
+  mobileMaxWidth?: string;
+}
+
 const ContentPanelWrapper = styled.div`
+  ${(props: ContentPanelProps) =>
+    props.width &&
+    css`
+      width: ${props.width};
+    `};
+
   @media (max-width: 700px) {
-    max-width: 450px;
+    max-width: ${(props: ContentPanelProps) =>
+      props.mobileMaxWidth ? props.mobileMaxWidth : '450px'};
     padding-left: 0px;
     margin-bottom: 1em;
   }
@@ -74,6 +86,8 @@ interface Props {
     current: number;
     total: number;
   };
+  width?: string;
+  mobileMaxWidth?: string;
   onBack?(): void | null;
 }
 
@@ -85,10 +99,12 @@ export default function ContentPanel({
   description,
   children,
   className = '',
+  width,
+  mobileMaxWidth,
   ...rest
 }: Props) {
   return (
-    <ContentPanelWrapper>
+    <ContentPanelWrapper width={width} mobileMaxWidth={mobileMaxWidth}>
       {(onBack || stepper) && (
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (
