@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { translateRaw } from 'translations';
-import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { ExtendedAccount as IExtendedAccount } from 'v2/types';
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.

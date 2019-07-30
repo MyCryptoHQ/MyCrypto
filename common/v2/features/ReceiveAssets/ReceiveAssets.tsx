@@ -6,12 +6,14 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Select, { Option } from 'react-select';
 import styled from 'styled-components';
 
-import { buildEIP681EtherRequest, buildEIP681TokenRequest } from 'v2/libs/formatters';
+import {
+  buildEIP681EtherRequest,
+  buildEIP681TokenRequest
+} from 'v2/services/EthService/utils/formatters';
 import { ContentPanel, QRCode } from 'v2/components';
-import { AccountContext, AssetContext } from 'v2/providers';
-import { getNetworkByName } from 'v2/libs/networks/networks';
+import { AccountContext, AssetContext, getNetworkByName } from 'v2/services/Store';
 import { isValidAmount, truncate } from 'v2/utils';
-import { ExtendedAccount as IExtendedAccount } from 'v2/services';
+import { ExtendedAccount as IExtendedAccount } from 'v2/types';
 import { translate, translateRaw } from 'translations';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 
