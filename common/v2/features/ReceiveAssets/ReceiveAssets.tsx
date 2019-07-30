@@ -33,11 +33,6 @@ const QRDisplay = styled.div`
   width: 60%;
 `;
 
-const ReceivePanel = styled(ContentPanel)`
-  width: 100%;
-  min-width: 500px;
-`;
-
 const SLabel = styled.label`
   margin-bottom: 8px;
   color: #333333;
@@ -156,7 +151,13 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
   };
 
   return (
-    <ReceivePanel heading="Receive Assets" icon={receiveIcon} onBack={() => history.push('/')}>
+    <ContentPanel
+      heading="Receive Assets"
+      icon={receiveIcon}
+      onBack={() => history.push('/')}
+      width="500px;"
+      mobileMaxWidth="100%;"
+    >
       <Formik
         initialValues={initialValues}
         onSubmit={noop}
@@ -288,7 +289,7 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
           </Form>
         )}
       />
-    </ReceivePanel>
+    </ContentPanel>
   );
 }
 
