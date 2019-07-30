@@ -43,7 +43,7 @@ interface OwnProps {
   withProps(props: CallbackProps): React.ReactElement<any> | null;
 }
 
-const ENSStatus: React.SFC<{
+export const ENSStatus: React.SFC<{
   isLoading: boolean;
   ensAddress: string;
   rawAddress: string;

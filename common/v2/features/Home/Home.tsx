@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Layout } from 'v2/components';
+import { Layout } from 'v2/features/Layout';
 import {
   GetStartedPanel,
   DownloadAppPanel,

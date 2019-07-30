@@ -1,11 +1,13 @@
+import { TWalletType } from './wallets';
 import { WalletName } from './wallet';
 import { TAssetType } from './asset';
 
 export interface Account {
+  label?: string;
   address: string;
   network: string;
   assets: AssetBalanceObject[];
-  wallet: WalletName;
+  wallet: WalletName | TWalletType;
   balance: string;
   transactions: TransactionData[];
   dPath: string;

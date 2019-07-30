@@ -7,7 +7,7 @@ import { PROVIDER_OPTIONS } from './providerOptions';
 
 export type NetworkKey = keyof typeof PROVIDER_OPTIONS;
 
-type FallbackProvider = ethers.providers.FallbackProvider;
+export type FallbackProvider = ethers.providers.FallbackProvider;
 const FallbackProvider = ethers.providers.FallbackProvider;
 
 type TempProviders = { [K in NetworkKey]: BaseProvider[] };
@@ -54,6 +54,7 @@ export const createProviderHandler = (network: Network): FallbackProvider => {
   return createFallBackProvidersFrom(newProviderPattern)[network.name as NetworkKey];
 };
 
+//allProviders are by default fallBackProviders, ex. allProviders.Ethereum -> will have main node (MyCrypto), and 2 fallback nodes
 export const allProviders: FallbackProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
 
 type FilterFlags<Base, Condition> = {
@@ -65,7 +66,7 @@ type SubType<Base, Condition> = Pick<Base, AllowedNames<Base, Condition>>;
 
 type ProviderMethod = SubType<FallbackProvider, (...args: any) => any>;
 
-async function callProviderMethod<K extends keyof ProviderMethod>(
+async function callMultiProviderMethod<K extends keyof ProviderMethod>(
   method: K,
   args: { [NetworkName in NetworkKey]?: Parameters<ProviderMethod[K]> }
 ) {
@@ -78,4 +79,4 @@ async function callProviderMethod<K extends keyof ProviderMethod>(
   return arrayOfResults;
 }
 
-export default callProviderMethod;
+export default callMultiProviderMethod;

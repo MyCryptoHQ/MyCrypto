@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { ExtendedContentPanel } from 'v2/components';
+import { ROUTE_PATHS } from 'v2/config';
 
 // Legacy
 import newWalletIcon from 'common/assets/images/icn-new-wallet.svg';
@@ -65,7 +66,7 @@ export interface PanelProps {
 export function CreateWallet({ history }: RouteComponentProps<{}>) {
   return (
     <ExtendedContentPanel
-      onBack={() => history.push('/')}
+      onBack={() => history.push(ROUTE_PATHS.ROOT.path)}
       heading={translateRaw('CREATE_ACCOUNT_TITLE')}
     >
       <DescriptionItem>{translateRaw('CREATE_ACCOUNT_DESCRIPTION_1')}</DescriptionItem>

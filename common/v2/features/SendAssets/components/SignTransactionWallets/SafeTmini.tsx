@@ -1,8 +1,10 @@
 import React from 'react';
+
 import SafeTIcon from 'common/assets/images/icn-safet-mini-new.svg';
+import { ISignComponentProps } from '../../types';
 import './SafeTmini.scss';
 
-export default function SignTransactionSafeT() {
+export default function SignTransactionSafeT({  }: ISignComponentProps) {
   return (
     <div className="SignTransaction-panel">
       <div className="SignTransactionSafeT-title">Sign the Transaction with your Safe-T Mini</div>
