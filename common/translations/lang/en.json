@@ -958,6 +958,7 @@
     "REQUIRED": "Required",
     "TO_FIELD_ERROR": "Enter a valid address or ENS name",
     "404_HEADER":"Page Not Found",
-    "404_DESCRIPTION":"Something went wrong and the page you were looking for doesn't yet exist. Try the"
+    "404_DESCRIPTION":"Looks like you got lost somewhere along the way. Don't worry, the wizard can help you get back!",
+    "404_BUTTON": "Go Home"
   }
 }

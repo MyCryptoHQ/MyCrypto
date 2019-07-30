@@ -99,7 +99,7 @@ const PageNotFound: React.SFC = () => (
       <Description>{translate('404_DESCRIPTION')}</Description>
       <ButtonGroup>
         <Link to="/">
-          <PrimaryButton>Home Page</PrimaryButton>
+          <PrimaryButton>{translate('404_BUTTON')}</PrimaryButton>
         </Link>
       </ButtonGroup>
     </PageNotFoundContent>
