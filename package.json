@@ -244,10 +244,9 @@
       "yarn test"
     ]
   },
-  "freezer": [
+  "frozen": [
     "package.json",
     "common/freezer.ts",
-    "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
   ],
