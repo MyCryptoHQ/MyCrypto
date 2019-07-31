@@ -47,8 +47,9 @@ import {
   validateDataField
 } from './validators/validators';
 import _ from 'lodash';
-import { processFormDataToTx } from '../process';
+import { processFormDataToWeb3Tx } from '../process';
 import { getGasEstimate } from 'v2/services/ApiService/Gas/gasPriceFunctions';
+import { hexToNumber } from 'utils/formatters';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: '',
@@ -72,7 +73,6 @@ const initialFormikValues: IFormikFields = {
   gasLimitField: '21000',
   advancedTransaction: false,
   resolvedENSAddress: '0x0', // Not a field, move to state
-  nonceEstimated: '0', // Not a field, move to state
   nonceField: '0'
 };
 
@@ -139,10 +139,10 @@ export default function SendAssetsForm({
 
           const handleGasEstimate = async () => {
             if (values && values.network && values.asset && values.receiverAddress) {
-              const finalTx = processFormDataToTx(values);
+              const finalTx = processFormDataToWeb3Tx(values);
               if (finalTx) {
                 const gas = await getGasEstimate(values.network, finalTx);
-                setFieldValue('gasLimitField', gas);
+                setFieldValue('gasLimitField', hexToNumber(gas));
               } else {
                 return;
               }
@@ -165,17 +165,18 @@ export default function SendAssetsForm({
             setFieldValue('account', undefined);
           };
 
-          const setAmountFieldToAssetMax = () =>
+          const setAmountFieldToAssetMax = () => {
             // @TODO get asset balance and subtract gas cost
             setFieldValue('amount', '1000');
+            handleGasEstimate();
+          };
 
-          // @ts-ignore
-          const handleNonceEstimate = async (account: IExtendedAccount) => {
-            if (!values || !values.network) {
+          const handleNonceEstimate = async () => {
+            if (!values || !values.network || !values.account) {
               return;
             }
-            const nonce: number = await getNonce(values.network, account);
-            setFieldValue('nonceEstimated', nonce.toString());
+            const nonce: number = await getNonce(values.network, values.account);
+            setFieldValue('nonceField', nonce.toString());
           };
 
           return (
@@ -266,12 +267,10 @@ export default function SendAssetsForm({
                   name="amount"
                   render={({ field }: FieldProps) => (
                     <Input
-                      value={field.value}
-                      placeholder={'0.00'}
-                      onBlur={() => {
-                        handleGasEstimate();
-                      }}
                       {...field}
+                      value={field.value}
+                      onBlur={handleGasEstimate}
+                      placeholder={'0.00'}
                     />
                   )}
                 />
@@ -353,7 +352,17 @@ export default function SendAssetsForm({
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
-                        <label htmlFor="gasLimit">{translate('OFFLINE_STEP2_LABEL_4')}</label>
+                        <label htmlFor="gasLimit">
+                          {translate('OFFLINE_STEP2_LABEL_4')}
+                          <Button
+                            basic={true}
+                            className="SendAssetsForm-advancedOptions-estimate-button"
+                            onClick={handleGasEstimate}
+                          >
+                            Estimate
+                          </Button>
+                        </label>
+
                         <Field
                           name="gasLimitField"
                           validate={validateGasLimitField}
@@ -369,7 +378,17 @@ export default function SendAssetsForm({
                         />
                       </div>
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
-                        <label htmlFor="nonce">Nonce (?)</label>
+                        <label htmlFor="nonce">
+                          Nonce (?)
+                          <Button
+                            basic={true}
+                            className="SendAssetsForm-advancedOptions-estimate-button"
+                            onClick={handleNonceEstimate}
+                          >
+                            Estimate
+                          </Button>
+                        </label>
+
                         <Field
                           name="nonceField"
                           validate={validateNonceField}
