@@ -41,7 +41,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
       };
     } else {
       data = {
-        gasLimit: payload.gasLimitEstimated || payload.gasLimitField, // @TODO update with correct value.
+        gasLimit: payload.gasLimitField, // @TODO update with correct value.
         gasPrice: payload.gasPriceField, // @TODO update with correct value.
         nonce: payload.nonceField, // @TODO update with correct value.
         data: payload.txDataField,

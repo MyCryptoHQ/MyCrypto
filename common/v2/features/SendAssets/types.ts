@@ -40,8 +40,7 @@ export interface IFormikFields {
   gasEstimates: GasEstimates;
   gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
   gasPriceSlider: string;
-  gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
-  gasLimitEstimated: string;
+  gasLimitField: string;
   nonceField: string; // Use only if user has input a manual nonce value.
   nonceEstimated: string;
   network: Network;
