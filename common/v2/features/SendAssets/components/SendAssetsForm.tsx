@@ -208,7 +208,7 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          form.setFieldValue('network', getNetworkByName(option.networkId));
+                          form.setFieldValue('network', getNetworkByName(option.networkId) || {});
                           // handleGasEstimate();
                         }
                       }}
@@ -228,6 +228,8 @@ export default function SendAssetsForm({
                     <AccountDropdown
                       name={field.name}
                       value={field.value}
+                      asset={form.values.asset}
+                      network={form.values.network}
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         //TODO: map account values to correct keys in sharedConfig

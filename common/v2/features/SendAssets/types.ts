@@ -23,6 +23,9 @@ export interface ITxConfig {
   readonly gasPrice: string; // Move to BN
   readonly nonce: string;
   readonly amount: string; // Move to BN
+  readonly value: string;
+  readonly to: string;
+  readonly chainId: number;
   readonly data: string;
   readonly receiverAddress: string; // Can't be an ExtendedAddressBook since recipient may not be registered
   readonly senderAccount: IExtendedAccount;

@@ -109,7 +109,7 @@ export const initNetworks = () => {
     const newLocalAssetOption: Asset = {
       uuid: baseAssetID,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
-      networkId: en,
+      networkId: STATIC_NETWORKS_INITIAL_STATE[en].name,
       ticker: en,
       type: 'base',
       decimal: 18
@@ -330,7 +330,7 @@ export const initTestAccounts = () => {
     },
     'f7e30bbe-08e2-41ce-9231-5236e6aab702': {
       uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702',
-      name: 'ETH',
+      name: 'Ether',
       networkId: 'Ethereum',
       type: 'base',
       ticker: 'ETH',
