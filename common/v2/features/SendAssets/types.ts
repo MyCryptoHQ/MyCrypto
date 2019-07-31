@@ -1,11 +1,5 @@
 import { FunctionComponent } from 'react';
-import {
-  Asset,
-  IAsset,
-  ExtendedAccount as IExtendedAccount,
-  Network,
-  GasEstimates
-} from 'v2/types';
+import { Asset, ExtendedAccount as IExtendedAccount, Network, GasEstimates } from 'v2/types';
 
 export interface ITxObject {
   readonly to: string;
@@ -29,7 +23,7 @@ export interface ITxConfig {
   readonly data: string;
   readonly receiverAddress: string; // Can't be an ExtendedAddressBook since recipient may not be registered
   readonly senderAccount: IExtendedAccount;
-  readonly asset: IAsset | Asset;
+  readonly asset: Asset;
   readonly network?: Network;
 }
 

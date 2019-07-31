@@ -33,7 +33,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
         value: processedTx.value,
         chainId: processedTx.chainId,
         to: processedTx.to,
-        amount: processedTx.gasLimit,
+        amount: payload.amount,
         senderAccount: payload.account,
         receiverAddress: payload.receiverAddress,
         network: payload.network,

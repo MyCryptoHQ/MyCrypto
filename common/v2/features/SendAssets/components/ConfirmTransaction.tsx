@@ -10,6 +10,8 @@ import { Network as INetwork } from 'v2/types';
 
 import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
+import { gasPriceToBase, fromWei, Wei } from 'v2/services/EthService/utils/units';
+import BN from 'bn.js';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -32,15 +34,23 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
     gasPrice,
     nonce,
     data,
-    network
+    network,
+    value
   } = txConfig;
+  /* TODO: Handle erc20 token sends */
 
+  /* TODO: Handle base asset sends */
   const recipientAccount = getContactByAddress(receiverAddress);
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
 
-  const maxCostFeeEther = '123120983'; // @TODO: BN math, multiply gasLimit * Price
-  const totalAmountEther = '102398120398'; // @TODO: BN math, add amount + maxCost !In same symbol
+  /* Calculate Transaction Fee */
+  const transactionFeeWei: BN = gasPriceToBase(parseFloat(gasPrice) * parseFloat(gasLimit));
+  const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
+  const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(6);
+  const maxCostFeeEther = transactionFeeBase; // @TODO: BN math, multiply gasLimit * Price
 
+  /* Calculate total base asset amount */
+  const totalEtherEgress = fromWei(Wei(value).add(transactionFeeWei), 'ether').toString(); // @TODO: BN math, add amount + maxCost !In same symbol
   const { name: networkName } = network as INetwork;
 
   return (
@@ -68,7 +78,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <img src={sendIcon} alt="Send" /> Send Amount:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${amount} ETH`} fiatValue="$12,000.00" />
+          <Amount assetValue={`${amount} ETH`} fiatValue="$1" />
         </div>
       </div>
       <div className="ConfirmTransaction-row">
@@ -76,7 +86,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <img src={feeIcon} alt="Fee" /> Transaction Fee:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${maxCostFeeEther} ETH`} fiatValue="$0.21" />
+          <Amount assetValue={`${maxCostFeeEther} ETH`} fiatValue="$1" />
         </div>
       </div>
       <div className="ConfirmTransaction-divider" />
@@ -85,7 +95,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <img src={sendIcon} alt="Total" /> You'll Send:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={totalAmountEther} fiatValue="$12,000.21" />
+          <Amount assetValue={totalEtherEgress} fiatValue="$1" />
         </div>
       </div>
       <Button

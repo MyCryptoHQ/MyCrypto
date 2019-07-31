@@ -35,7 +35,10 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
         return undefined;
       }
       const rawTransaction: IHexStrTransaction = {
-        to: formData.resolvedENSAddress ? formData.resolvedENSAddress : formData.receiverAddress,
+        to:
+          formData.resolvedENSAddress === '0x0'
+            ? formData.receiverAddress
+            : formData.resolvedENSAddress,
         value: formData.amount
           ? hexEncodeQuantity(toTokenBase(formData.amount, asset.decimal))
           : '0x0',
@@ -56,7 +59,9 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
         data: bufferToHex(
           encodeTransfer(
             Address(
-              formData.resolvedENSAddress ? formData.resolvedENSAddress : formData.receiverAddress
+              formData.resolvedENSAddress === '0x0'
+                ? formData.receiverAddress
+                : formData.resolvedENSAddress
             ),
             formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
           )
