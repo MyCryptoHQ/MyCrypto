@@ -10,7 +10,7 @@ matrix:
 install:
   - yarn --silent
 before_script:
-  - chmod +x ./travis-scripts/test-{linux,osx}.sh
+  - chmod +x ./travis-scripts/test-osx.sh
 script:
   - './travis-scripts/test-osx.sh'
 notifications:
