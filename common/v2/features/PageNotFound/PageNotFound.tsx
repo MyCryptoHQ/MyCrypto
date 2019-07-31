@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 import translate from 'translations';
 
-import dancingWallet from 'common/assets/images/wallet-attempt.gif';
+import cryingWallet from 'common/assets/images/wallet-crying.svg';
 
 const PageNotFoundContainer = styled.div`
   display: flex;
@@ -20,8 +20,8 @@ const PageNotFoundContainer = styled.div`
   margin-right: auto;
 
   @media (min-width: 700px) {
-    width: 1245px;
-    height: 505px;
+    max-width: 1245px;
+    width: 100%;
     margin-top: 6.5em;
     margin-bottom: 6.5em;
   }
@@ -37,7 +37,7 @@ const PageNotFoundContent = styled.div`
 
   @media (min-width: 700px) {
     width: 503px;
-    margin-top: 45px;
+    margin-top: 35px;
   }
 `;
 const Header = styled.p`
@@ -63,9 +63,8 @@ const Description = styled.p`
 `;
 
 const ImgIcon = styled.img`
-  width: 130px;
-  height: 99px;
-  margin: 21px 0 28px 0;
+  width: 150px;
+  margin: 0 0 28px 0;
 `;
 
 const PrimaryButton = styled(Button)`
@@ -94,7 +93,7 @@ const ButtonGroup = styled.div`
 const PageNotFound: React.SFC = () => (
   <PageNotFoundContainer>
     <PageNotFoundContent>
-      <ImgIcon src={dancingWallet} />
+      <ImgIcon src={cryingWallet} />
       <Header>{translate('404_HEADER')}</Header>
       <Description>{translate('404_DESCRIPTION')}</Description>
       <ButtonGroup>
