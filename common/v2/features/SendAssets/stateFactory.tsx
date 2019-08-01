@@ -1,7 +1,8 @@
 import { TUseApiFactory } from 'v2/services';
 import { ITxConfig, ITxReceipt, IFormikFields, TStepAction } from './types';
-import { processFormDataToTx } from './process';
-import { IHexStrTransaction } from 'mycrypto-shepherd/dist/lib/types';
+import { processFormDataToWeb3Tx, processFormDataToTx } from './process';
+import { IHexStrWeb3Transaction } from 'v2/types';
+import { IHexStrTransaction } from 'libs/transaction';
 
 const txConfigInitialState = {
   gasLimit: null,
@@ -22,39 +23,79 @@ interface State {
 
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
-    const processedTx: IHexStrTransaction | undefined = processFormDataToTx(payload);
     let data: ITxConfig;
-    if (processedTx) {
-      data = {
-        gasLimit: processedTx.gasLimit, // @TODO update with correct value.
-        gasPrice: processedTx.gasPrice, // @TODO update with correct value.
-        nonce: processedTx.nonce, // @TODO update with correct value.
-        data: processedTx.data,
-        value: processedTx.value,
-        chainId: processedTx.chainId,
-        to: processedTx.to,
-        amount: payload.amount,
-        senderAccount: payload.account,
-        receiverAddress: payload.receiverAddress,
-        network: payload.network,
-        asset: payload.asset
-      };
+    if (payload.account.wallet === 'web3') {
+      const processedTx: IHexStrWeb3Transaction | undefined = processFormDataToWeb3Tx(payload);
+
+      /* TODO: If tx processing fails, trigger error message to user */
+      if (processedTx) {
+        data = {
+          gasLimit: processedTx.gas, // @TODO update with correct value.
+          gasPrice: processedTx.gasPrice, // @TODO update with correct value.
+          nonce: processedTx.nonce, // @TODO update with correct value.
+          data: processedTx.data,
+          value: processedTx.value,
+          chainId: processedTx.chainId,
+          to: processedTx.to,
+          amount: payload.amount,
+          senderAccount: payload.account,
+          receiverAddress: payload.receiverAddress,
+          network: payload.network,
+          asset: payload.asset
+        };
+      } else {
+        data = {
+          gasLimit: payload.gasLimitField, // @TODO update with correct value.
+          gasPrice: payload.gasPriceField, // @TODO update with correct value.
+          nonce: payload.nonceField, // @TODO update with correct value.
+          data: payload.txDataField,
+          value: payload.amount,
+          chainId: payload.network.chainId,
+          to: payload.receiverAddress,
+          amount: payload.amount,
+          senderAccount: payload.account,
+          receiverAddress: payload.receiverAddress,
+          network: payload.network,
+          asset: payload.asset
+        };
+      }
     } else {
-      data = {
-        gasLimit: payload.gasLimitField, // @TODO update with correct value.
-        gasPrice: payload.gasPriceField, // @TODO update with correct value.
-        nonce: payload.nonceField, // @TODO update with correct value.
-        data: payload.txDataField,
-        value: payload.amount,
-        chainId: payload.network.chainId,
-        to: payload.receiverAddress,
-        amount: payload.amount,
-        senderAccount: payload.account,
-        receiverAddress: payload.receiverAddress,
-        network: payload.network,
-        asset: payload.asset
-      };
+      const processedTx: IHexStrTransaction | undefined = processFormDataToTx(payload);
+
+      /* TODO: If tx processing fails, trigger error message to user */
+      if (processedTx) {
+        data = {
+          gasLimit: processedTx.gasLimit, // @TODO update with correct value.
+          gasPrice: processedTx.gasPrice, // @TODO update with correct value.
+          nonce: processedTx.nonce, // @TODO update with correct value.
+          data: processedTx.data,
+          value: processedTx.value,
+          chainId: processedTx.chainId,
+          to: processedTx.to,
+          amount: payload.amount,
+          senderAccount: payload.account,
+          receiverAddress: payload.receiverAddress,
+          network: payload.network,
+          asset: payload.asset
+        };
+      } else {
+        data = {
+          gasLimit: payload.gasLimitField, // @TODO update with correct value.
+          gasPrice: payload.gasPriceField, // @TODO update with correct value.
+          nonce: payload.nonceField, // @TODO update with correct value.
+          data: payload.txDataField,
+          value: payload.amount,
+          chainId: payload.network.chainId,
+          to: payload.receiverAddress,
+          amount: payload.amount,
+          senderAccount: payload.account,
+          receiverAddress: payload.receiverAddress,
+          network: payload.network,
+          asset: payload.asset
+        };
+      }
     }
+
     setState((prevState: State) => ({
       ...prevState,
       txConfig: data
@@ -63,7 +104,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   };
 
   // For Metamask
-  const handleConfirmAndSign: TStepAction = (payload: ITxReceipt, after) => {
+  const handleConfirmAndSign: TStepAction = (payload: ITxConfig, after) => {
     setState((prevState: State) => ({
       ...prevState,
       txReceipt: payload
@@ -76,10 +117,32 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
 
   /* tslint:disable */
   // @ts-ignore
-  const handleConfirmAndSend: TStepAction = (payload, after) => {};
+  const handleConfirmAndSend: TStepAction = (payload, after) => {
+    setState((prevState: State) => ({
+      ...prevState,
+      txReceipt: payload
+    }));
+
+    after();
+  };
 
   // @ts-ignore
-  const handleSignedTx: TStepAction = (payload, after) => {};
+  const handleSignedTx: TStepAction = (payload: ITxReceipt | string | any, after) => {
+    if ('hash' in payload) {
+      setState((prevState: State) => ({
+        ...prevState,
+        txReceipt: payload
+      }));
+
+      after();
+    } else {
+      setState((prevState: State) => ({
+        ...prevState,
+        data: payload
+      }));
+      after();
+    }
+  };
   /* tslint:enable */
 
   return {

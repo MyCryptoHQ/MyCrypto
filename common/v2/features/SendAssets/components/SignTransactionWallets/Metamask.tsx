@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ethers, utils } from 'ethers';
 import { Web3Provider } from 'ethers/providers/web3-provider';
 
-import { DEFAULT_NETWORK_FOR_FALLBACK } from 'v2/config';
 import { getNetworkByChainId } from 'v2/services/Store';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
@@ -35,12 +34,8 @@ const ethereumProvider = window.ethereum;
 let metaMaskProvider: ethers.providers.Web3Provider;
 
 async function getMetaMaskProvider() {
-  if (ethereumProvider) {
-    await ethereumProvider.enable();
-    return (metaMaskProvider = new ethers.providers.Web3Provider(ethereumProvider));
-  } else {
-    return ethers.getDefaultProvider(DEFAULT_NETWORK_FOR_FALLBACK);
-  }
+  await ethereumProvider.enable();
+  return new ethers.providers.Web3Provider(ethereumProvider);
 }
 
 export default class SignTransactionMetaMask extends Component<
@@ -61,7 +56,7 @@ export default class SignTransactionMetaMask extends Component<
   }
 
   public async initProvider() {
-    await getMetaMaskProvider();
+    metaMaskProvider = await getMetaMaskProvider();
 
     if (ethereumProvider) {
       this.getMetaMaskAccount();
@@ -76,16 +71,15 @@ export default class SignTransactionMetaMask extends Component<
   }
 
   public render() {
-    const { rawTransaction } = this.props;
+    const { senderAddress, rawTransaction } = this.props;
     const networkName = rawTransaction.chainId; // @TODO get networkName
-    const senderAddress = rawTransaction.from;
 
     const { accountMatches, networkMatches, walletState } = this.state;
     return (
       <div className="SignTransaction-panel">
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
         <div className="SignTransactionMetaMask-instructions">
-          Sign into MetaMask on your computer and follow the isntructions in the MetaMask window.
+          Sign into MetaMask on your computer and follow the instructions in the MetaMask window.
         </div>
         <div className="SignTransactionMetaMask-img">
           <img src={MetamaskSVG} />
@@ -143,13 +137,12 @@ export default class SignTransactionMetaMask extends Component<
     }
 
     const metaMaskNetwork = await metaMaskProvider.getNetwork();
-
     this.setState({ network: metaMaskNetwork.chainId });
     this.checkNetworkMatches(metaMaskNetwork);
   }
 
   private checkAddressMatches(metaMaskAddress: string) {
-    const { from: senderAddress } = this.props.rawTransaction;
+    const { senderAddress } = this.props;
     const desiredAddress = utils.getAddress(senderAddress);
     this.setState({ accountMatches: metaMaskAddress === desiredAddress });
   }

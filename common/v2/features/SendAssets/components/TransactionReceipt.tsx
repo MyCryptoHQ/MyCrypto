@@ -16,6 +16,8 @@ const truncate = (children: string) => {
 export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
   const recipientAddress = txReceipt!.to;
   const address = txReceipt!.from;
+  const hash = txReceipt!.hash;
+  const timestamp = txReceipt!.timestamp;
 
   return (
     <div className="TransactionReceipt">
@@ -38,7 +40,7 @@ export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
           <img src={sentIcon} alt="Sent" /> You Sent:
         </div>
         <div className="TransactionReceipt-row-column">
-          <Amount assetValue="13.2343 ETH" fiatValue="$12,000.00" />
+          <Amount assetValue="13.2343 ETH" fiatValue="$250" />
         </div>
       </div>
       <div className="TransactionReceipt-divider" />
@@ -46,7 +48,7 @@ export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">Transaction ID:</div>
           <div className="TransactionReceipt-details-row-column">
-            <Copyable text="0xf6536u38u4i3i3i6afe7" truncate={truncate} />
+            <Copyable text={hash} truncate={truncate} />
           </div>
         </div>
         <div className="TransactionReceipt-details-row">
@@ -56,8 +58,7 @@ export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">Timestamp:</div>
           <div className="TransactionReceipt-details-row-column">
-            1 minute ago <br />
-            (Dec-30-2018 03:17:10 AM +UTC)
+            1 minute ago <br />({timestamp})
           </div>
         </div>
       </div>

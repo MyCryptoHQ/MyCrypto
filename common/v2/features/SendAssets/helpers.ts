@@ -2,12 +2,12 @@ import { utils } from 'ethers';
 
 import { getNetworkByChainId } from 'v2/services/Store';
 import { ITxObject, ITxConfig, IFormikFields } from './types';
+import { gasPriceToBase, fromWei } from 'v2/services/EthService/utils/units';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {
   return {
-    to: state.receiverAddress, // @TODO or token address
-    from: state.senderAccount.address,
-    value: state.amount,
+    to: state.to, // @TODO or token address
+    value: state.value,
     data: state.data, // @TODO or generate contract call
     gasLimit: state.gasLimit,
     gasPrice: state.gasPrice,
@@ -19,11 +19,10 @@ export function fromStateToTxObject(state: ITxConfig): ITxObject {
 export function fromFormikStateToTxObject(formikState: IFormikFields): ITxObject {
   return {
     to: formikState.receiverAddress, // @TODO compose data according to asset type
-    from: formikState.account.address,
     value: formikState.amount, // @TODO value depends on asset type
     data: formikState.txDataField, // @TODO compose data according to asset type
     gasLimit: formikState.gasLimitField, // @TODO update with correct value.
-    gasPrice: formikState.gasPriceField, // @TODO update with correct value.
+    gasPrice: fromWei(gasPriceToBase(parseFloat(formikState.gasPriceField)), 'ether'), // @TODO update with correct value.
     nonce: formikState.nonceField, // @TODO update with correct value.
     chainId: formikState.network.chainId
   };

@@ -12,6 +12,8 @@ import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
 import { gasPriceToBase, fromWei, Wei } from 'v2/services/EthService/utils/units';
 import BN from 'bn.js';
+import { isValidHex } from 'v2/services/EthService/validators';
+import { stripHexPrefix } from 'v2/services/EthService';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -37,6 +39,13 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
     network,
     value
   } = txConfig;
+
+  const gasPriceActual = isValidHex(gasPrice)
+    ? parseInt(stripHexPrefix(gasPrice), 16)
+    : parseFloat(gasPriceToBase(parseFloat(gasPrice)).toString());
+  const gasLimitActual = isValidHex(gasLimit)
+    ? parseInt(stripHexPrefix(gasLimit), 16)
+    : parseFloat(gasLimit);
   /* TODO: Handle erc20 token sends */
 
   /* TODO: Handle base asset sends */
@@ -44,7 +53,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
 
   /* Calculate Transaction Fee */
-  const transactionFeeWei: BN = gasPriceToBase(parseFloat(gasPrice) * parseFloat(gasLimit));
+  const transactionFeeWei: BN = new BN(gasPriceActual * gasLimitActual);
   const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
   const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(6);
   const maxCostFeeEther = transactionFeeBase; // @TODO: BN math, multiply gasLimit * Price

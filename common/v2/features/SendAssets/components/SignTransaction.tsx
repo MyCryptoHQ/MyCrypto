@@ -58,6 +58,7 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
   return (
     <WalletComponent
       network={network!}
+      senderAddress={txConfig.senderAccount.address}
       rawTransaction={txObject}
       onSuccess={(receipt: ITxReceipt) => onComplete(receipt)}
     />

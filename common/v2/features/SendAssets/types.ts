@@ -3,7 +3,6 @@ import { Asset, ExtendedAccount as IExtendedAccount, Network, GasEstimates } fro
 
 export interface ITxObject {
   readonly to: string;
-  readonly from: string;
   readonly gasLimit: string;
   readonly gasPrice: string;
   readonly nonce: string;
@@ -14,7 +13,7 @@ export interface ITxObject {
 
 export interface ITxConfig {
   readonly gasLimit: string; // Move to BN
-  readonly gasPrice: string; // Move to BN
+  readonly gasPrice: string;
   readonly nonce: string;
   readonly amount: string; // Move to BN
   readonly value: string;
@@ -49,6 +48,7 @@ export interface IFormikFields {
 
 export interface ISignComponentProps {
   network: Network;
+  senderAddress: string;
   rawTransaction: ITxObject;
   children?: never;
   onSuccess(receipt: ITxReceipt): void;

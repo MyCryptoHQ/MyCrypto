@@ -11,11 +11,18 @@ import {
   IHexStrWeb3Transaction
   // IHexStrTransaction
 } from 'v2/types';
-import { bufferToHex } from 'ethereumjs-util';
-import { Address, toWei, TokenValue, toTokenBase } from 'v2/services/EthService/utils/units';
+import { bufferToHex, toBuffer, addHexPrefix } from 'ethereumjs-util';
+import {
+  Address,
+  toWei,
+  TokenValue,
+  toTokenBase,
+  gasPriceToBase
+} from 'v2/services/EthService/utils/units';
 import BN from 'bn.js';
 import { encodeTransfer } from 'v2/services/EthService/contracts/token';
 import { hexEncodeQuantity } from 'v2/services/EthService/utils/hexEncode';
+import { utils } from 'ethers';
 
 // import {
 //   Address,
@@ -44,8 +51,10 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
         : '0x0',
       data: formData.txDataField ? formData.txDataField : '0x0',
       gasLimit: formData.gasLimitField,
-      gasPrice: formData.advancedTransaction ? formData.gasPriceField : formData.gasPriceSlider,
-      nonce: formData.nonceField,
+      gasPrice: formData.advancedTransaction
+        ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
+        : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
+      nonce: bufferToHex(toBuffer(formData.nonceField)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
@@ -67,8 +76,10 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
         )
       ),
       gasLimit: formData.gasLimitField,
-      gasPrice: formData.advancedTransaction ? formData.gasPriceField : formData.gasPriceSlider,
-      nonce: formData.nonceField,
+      gasPrice: formData.advancedTransaction
+        ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
+        : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
+      nonce: bufferToHex(toBuffer(formData.nonceField)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
@@ -95,9 +106,11 @@ export const processFormDataToWeb3Tx = (
         ? hexEncodeQuantity(toTokenBase(formData.amount, asset.decimal))
         : '0x0',
       data: formData.txDataField ? formData.txDataField : '0x0',
-      gas: formData.gasLimitField,
-      gasPrice: formData.advancedTransaction ? formData.gasPriceField : formData.gasPriceSlider,
-      nonce: formData.nonceField,
+      gas: utils.bigNumberify(formData.gasLimitField).toHexString(),
+      gasPrice: formData.advancedTransaction
+        ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
+        : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
+      nonce: bufferToHex(toBuffer(formData.nonceField)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
@@ -120,8 +133,10 @@ export const processFormDataToWeb3Tx = (
         )
       ),
       gas: formData.gasLimitField,
-      gasPrice: formData.advancedTransaction ? formData.gasPriceField : formData.gasPriceSlider,
-      nonce: formData.nonceField,
+      gasPrice: formData.advancedTransaction
+        ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
+        : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
+      nonce: bufferToHex(toBuffer(formData.nonceField)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
