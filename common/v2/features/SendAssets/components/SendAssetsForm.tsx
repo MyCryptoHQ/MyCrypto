@@ -328,12 +328,6 @@ export default function SendAssetsForm({
                 </Button>
                 {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
-                    <div className="SendAssetsForm-advancedOptions-content-automaticallyCalculate">
-                      <Field name="isGasLimitManual" type="checkbox" value={true} />
-                      <label htmlFor="isGasLimitManual">
-                        Automatically Calculate Gas Limit{/* TRANSLATE THIS */}
-                      </label>
-                    </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
@@ -351,16 +345,14 @@ export default function SendAssetsForm({
                           )}
                         />
                       </div>
-                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
-                        <label htmlFor="gasLimit">
-                          {translate('OFFLINE_STEP2_LABEL_4')}
-                          <Button
-                            basic={true}
-                            className="SendAssetsForm-advancedOptions-estimate-button"
-                            onClick={handleGasEstimate}
-                          >
+                    </div>
+                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
+                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-limit">
+                        <label htmlFor="gasLimit" className="input-group-header label-with-action">
+                          <div>{translate('OFFLINE_STEP2_LABEL_4')}</div>
+                          <div className="label-action" onClick={handleGasEstimate}>
                             Estimate
-                          </Button>
+                          </div>
                         </label>
 
                         <Field
@@ -377,16 +369,14 @@ export default function SendAssetsForm({
                           )}
                         />
                       </div>
+                    </div>
+                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
-                        <label htmlFor="nonce">
-                          Nonce (?)
-                          <Button
-                            basic={true}
-                            className="SendAssetsForm-advancedOptions-estimate-button"
-                            onClick={handleNonceEstimate}
-                          >
+                        <label htmlFor="nonce" className="input-group-header label-with-action">
+                          <div>Nonce (?)</div>
+                          <div className="label-action" onClick={handleNonceEstimate}>
                             Estimate
-                          </Button>
+                          </div>
                         </label>
 
                         <Field
