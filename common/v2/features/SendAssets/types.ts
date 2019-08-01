@@ -42,7 +42,6 @@ export interface IFormikFields {
   gasPriceSlider: string;
   gasLimitField: string;
   nonceField: string; // Use only if user has input a manual nonce value.
-  nonceEstimated: string;
   network: Network;
   advancedTransaction: boolean;
   resolvedENSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
