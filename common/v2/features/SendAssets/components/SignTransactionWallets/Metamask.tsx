@@ -71,7 +71,7 @@ export default class SignTransactionMetaMask extends Component<
   }
 
   public render() {
-    const { senderAddress, rawTransaction } = this.props;
+    const { senderAccount, rawTransaction } = this.props;
     const networkName = rawTransaction.chainId; // @TODO get networkName
 
     const { accountMatches, networkMatches, walletState } = this.state;
@@ -99,7 +99,7 @@ export default class SignTransactionMetaMask extends Component<
           )}
           {!accountMatches && (
             <div className="SignTransactionMetaMask-wrong-address">
-              Please switch the account in MetaMask to {senderAddress}
+              Please switch the account in MetaMask to {senderAccount.address}
               <br /> in order to proceed
             </div>
           )}
@@ -142,8 +142,8 @@ export default class SignTransactionMetaMask extends Component<
   }
 
   private checkAddressMatches(metaMaskAddress: string) {
-    const { senderAddress } = this.props;
-    const desiredAddress = utils.getAddress(senderAddress);
+    const { senderAccount } = this.props;
+    const desiredAddress = utils.getAddress(senderAccount.address);
     this.setState({ accountMatches: metaMaskAddress === desiredAddress });
   }
 

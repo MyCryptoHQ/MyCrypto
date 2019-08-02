@@ -1,5 +1,11 @@
 import { FunctionComponent } from 'react';
-import { Asset, ExtendedAccount as IExtendedAccount, Network, GasEstimates } from 'v2/types';
+import {
+  Asset,
+  ExtendedAccount as IExtendedAccount,
+  Network,
+  GasEstimates,
+  ExtendedAccount
+} from 'v2/types';
 
 export interface ITxObject {
   readonly to: string;
@@ -48,7 +54,7 @@ export interface IFormikFields {
 
 export interface ISignComponentProps {
   network: Network;
-  senderAddress: string;
+  senderAccount: ExtendedAccount;
   rawTransaction: ITxObject;
   children?: never;
   onSuccess(receipt: ITxReceipt): void;

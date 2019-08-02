@@ -57,7 +57,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <div className="Mnemoinc-dpath">
+        <div className="Mnemonic-dpath">
           <DeterministicWallets
             publicKey={publicKey}
             chainCode={chainCode}
