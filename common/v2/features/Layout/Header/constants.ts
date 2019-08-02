@@ -44,10 +44,6 @@ export const links = [
         title: 'Broadcast Transaction'
       },
       {
-        to: '/ens',
-        title: 'ENS Domains'
-      },
-      {
         to: '/helpers',
         title: 'Helpers'
       }

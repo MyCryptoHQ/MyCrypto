@@ -5,7 +5,6 @@ import { ErrorScreen, LogOutPrompt } from 'components';
 import {
   BroadcastTx,
   Contracts,
-  ENS,
   GenerateWallet,
   SendTransaction,
   SignAndVerifyMessage,
@@ -51,7 +50,6 @@ export const AppRouter = (props: AppRouterProps) => {
               <Route path="/account" component={SendTransaction} exact={true} />
               <Route path="/generate" component={GenerateWallet} />
               <Route path="/contracts" component={Contracts} />
-              <Route path="/ens" component={ENS} exact={true} />
               <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
               <Route path="/pushTx" component={BroadcastTx} />
               <Route path="/support-us" component={SupportPage} exact={true} />
