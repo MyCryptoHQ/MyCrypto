@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { utils } from 'ethers';
 import { Address, Button, Network } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
@@ -37,18 +36,18 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
     nonce,
     data,
     network,
-    value
+    value,
+    asset
   } = txConfig;
 
+  const assetType = asset.type;
   const gasPriceActual = isValidHex(gasPrice)
     ? parseInt(stripHexPrefix(gasPrice), 16)
     : parseFloat(gasPriceToBase(parseFloat(gasPrice)).toString());
   const gasLimitActual = isValidHex(gasLimit)
     ? parseInt(stripHexPrefix(gasLimit), 16)
     : parseFloat(gasLimit);
-  /* TODO: Handle erc20 token sends */
 
-  /* TODO: Handle base asset sends */
   const recipientAccount = getContactByAddress(receiverAddress);
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
 
@@ -56,10 +55,12 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   const transactionFeeWei: BN = new BN(gasPriceActual * gasLimitActual);
   const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
   const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(6);
-  const maxCostFeeEther = transactionFeeBase; // @TODO: BN math, multiply gasLimit * Price
+  const maxCostFeeEther = transactionFeeBase;
 
   /* Calculate total base asset amount */
-  const totalEtherEgress = fromWei(Wei(value).add(transactionFeeWei), 'ether').toString(); // @TODO: BN math, add amount + maxCost !In same symbol
+  const totalEtherEgress = parseFloat(fromWei(Wei(value).add(transactionFeeWei), 'ether')).toFixed(
+    6
+  ); // @TODO: BN math, add amount + maxCost !In same symbol
   const { name: networkName } = network as INetwork;
 
   return (
@@ -87,7 +88,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <img src={sendIcon} alt="Send" /> Send Amount:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${amount} ETH`} fiatValue="$1" />
+          <Amount assetValue={`${amount} ${asset.ticker}`} fiatValue="$1" />
         </div>
       </div>
       <div className="ConfirmTransaction-row">
@@ -104,7 +105,14 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <img src={sendIcon} alt="Total" /> You'll Send:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={totalEtherEgress} fiatValue="$1" />
+          {assetType === 'base' ? (
+            <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
+          ) : (
+            <Amount
+              assetValue={`${amount} ${asset.ticker} + ${totalEtherEgress} ETH`}
+              fiatValue="$1"
+            />
+          )}
         </div>
       </div>
       <Button
@@ -118,7 +126,9 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
         <div className="ConfirmTransaction-details">
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Account Balance:</div>
-            <div className="ConfirmTransaction-details-row-column">0.231935129 ETH</div>
+            <div className="ConfirmTransaction-details-row-column">
+              ${senderAccount.balance} ETH
+            </div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Network:</div>
@@ -128,15 +138,11 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Limit:</div>
-            <div className="ConfirmTransaction-details-row-column">
-              {`${utils.formatEther(gasLimit)} ETH`}
-            </div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasLimitActual}`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-            <div className="ConfirmTransaction-details-row-column">
-              {`${utils.formatEther(gasPrice)} ETH`}
-            </div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasPriceActual} wei`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
@@ -144,7 +150,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Nonce:</div>
-            <div className="ConfirmTransaction-details-row-column">{nonce}</div>
+            <div className="ConfirmTransaction-details-row-column">{stripHexPrefix(nonce)}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Data:</div>

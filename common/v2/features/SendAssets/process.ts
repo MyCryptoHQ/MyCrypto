@@ -132,7 +132,7 @@ export const processFormDataToWeb3Tx = (
           formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
         )
       ),
-      gas: formData.gasLimitField,
+      gas: utils.bigNumberify(formData.gasLimitField).toHexString(),
       gasPrice: formData.advancedTransaction
         ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
         : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
