@@ -9,7 +9,7 @@ import { generateUUID } from 'v2/utils';
 import {
   AccountContext,
   SettingsContext,
-  getAccountByAddressAndNetwork,
+  getAccountByAddressAndNetworkName,
   findNextUnusedDefaultLabel,
   createAddressBook,
   getNewDefaultAssetTemplateByNetwork,
@@ -28,7 +28,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
     const network: Network | undefined = getNetworkByName(payload.formData.network);
     if (
       !network ||
-      !!getAccountByAddressAndNetwork(payload.formData.account, payload.formData.network)
+      !!getAccountByAddressAndNetworkName(payload.formData.account, payload.formData.network)
     ) {
       displayNotification(NotificationTemplates.walletNotAdded, {
         address: payload.formData.account
@@ -42,8 +42,8 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         network: payload.formData.network,
         wallet: payload.formData.accountType,
         dPath: payload.formData.derivationPath,
-        assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
-        balance: '0',
+        assets: [{ uuid: newAssetID, balance: '0.01', timestamp: Date.now() }],
+        balance: '0.01',
         transactions: [],
         timestamp: 0
       };

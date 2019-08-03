@@ -18,7 +18,8 @@ import {
   TSymbol,
   Network,
   AssetBalanceObject,
-  ExtendedAccount as IExtendedAccount
+  ExtendedAccount as IExtendedAccount,
+  ExtendedAccount
 } from 'v2/types';
 import { getNonce } from 'v2/services/EthService';
 import { fetchGasPriceEstimates } from 'v2/services/ApiService';
@@ -171,11 +172,14 @@ export default function SendAssetsForm({
             handleGasEstimate();
           };
 
-          const handleNonceEstimate = async () => {
-            if (!values || !values.network || !values.account) {
+          const handleNonceEstimate = async (account?: ExtendedAccount) => {
+            if (!values || !values.network || !(values.account || account)) {
               return;
             }
-            const nonce: number = await getNonce(values.network, values.account);
+            const nonce: number = await getNonce(
+              values.network,
+              account ? account : values.account
+            );
             setFieldValue('nonceField', nonce.toString());
           };
 
@@ -228,7 +232,7 @@ export default function SendAssetsForm({
                       onSelect={(option: IExtendedAccount) => {
                         //TODO: map account values to correct keys in sharedConfig
                         form.setFieldValue(field.name, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                        // handleNonceEstimate(option);
+                        handleNonceEstimate(option);
                         handleGasEstimate();
                       }}
                     />
@@ -374,7 +378,7 @@ export default function SendAssetsForm({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce" className="input-group-header label-with-action">
                           <div>Nonce (?)</div>
-                          <div className="label-action" onClick={handleNonceEstimate}>
+                          <div className="label-action" onClick={() => handleNonceEstimate()}>
                             Estimate
                           </div>
                         </label>

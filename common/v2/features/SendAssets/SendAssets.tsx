@@ -21,8 +21,9 @@ function SendAssets() {
     handleConfirmAndSend,
     handleSignedTx,
     txConfig: txConfigState,
-    txReceipt: txReceiptState
-  } = useApi(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
+    txReceipt: txReceiptState,
+    signedTx: signedTxState
+  } = useApi(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null, signedTx: null });
 
   // tslint:disable-next-line
   const goToDashoard = () => {};
@@ -69,6 +70,7 @@ function SendAssets() {
       <Step
         txReceipt={txReceiptState}
         txConfig={txConfigState}
+        signedTx={signedTxState}
         onComplete={(payload: IFormikFields | ITxReceipt) => stepAction(payload, goToNextStep)}
       />
     </ContentPanel>

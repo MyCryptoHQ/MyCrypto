@@ -3,35 +3,40 @@ import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
 import { Amount } from 'v2/components';
-import { IStepComponentProps } from '../types';
+import { IStepComponentProps, ITxData } from '../types';
 import './TransactionReceipt.scss';
 
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
+import { fromTxReceiptObj } from '../helpers';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
 export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
-  const recipientAddress = txReceipt!.to;
-  const address = txReceipt!.from;
-  const hash = txReceipt!.hash;
-  const timestamp = txReceipt!.timestamp;
+  if (!txReceipt) {
+    return <div>Tx Receipt could not be found.</div>;
+  }
+  const timestamp = txReceipt.blockNumber;
 
+  const txDecoded: ITxData | undefined = fromTxReceiptObj(txReceipt);
+  if (!txDecoded) {
+    return <div>Tx Receipt could not be decoded.</div>;
+  }
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
         <div className="TransactionReceipt-row-column">
           To:
           <div className="TransactionReceipt-addressWrapper">
-            <Address address={recipientAddress} title="Example #2" truncate={truncate} />
+            <Address address={txDecoded.to} title="Example #2" truncate={truncate} />
           </div>
         </div>
         <div className="TransactionReceipt-row-column">
           From:
           <div className="TransactionReceipt-addressWrapper">
-            <Address address={address} title="Example #1" truncate={truncate} />
+            <Address address={txDecoded.from} title="Example #1" truncate={truncate} />
           </div>
         </div>
       </div>
@@ -40,7 +45,10 @@ export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
           <img src={sentIcon} alt="Sent" /> You Sent:
         </div>
         <div className="TransactionReceipt-row-column">
-          <Amount assetValue="13.2343 ETH" fiatValue="$250" />
+          <Amount
+            assetValue={`${txDecoded.amount} ${txDecoded.asset ? txDecoded.asset.ticker : 'ETH'}`}
+            fiatValue="$250"
+          />
         </div>
       </div>
       <div className="TransactionReceipt-divider" />
@@ -48,7 +56,7 @@ export default function TransactionReceipt({ txReceipt }: IStepComponentProps) {
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">Transaction ID:</div>
           <div className="TransactionReceipt-details-row-column">
-            <Copyable text={hash} truncate={truncate} />
+            <Copyable text={txDecoded.hash} truncate={truncate} />
           </div>
         </div>
         <div className="TransactionReceipt-details-row">

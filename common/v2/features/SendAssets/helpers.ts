@@ -1,8 +1,10 @@
 import { utils } from 'ethers';
 
-import { getNetworkByChainId } from 'v2/services/Store';
-import { ITxObject, ITxConfig, IFormikFields } from './types';
-import { gasPriceToBase, fromWei } from 'v2/services/EthService/utils/units';
+import { getNetworkByChainId, getBaseAssetByNetwork } from 'v2/services/Store';
+import { ITxObject, ITxConfig, IFormikFields, ITxReceipt, ITxData } from './types';
+import { gasPriceToBase, fromWei, toWei, fromTokenBase } from 'v2/services/EthService/utils/units';
+import { getAssetByContractAndNetwork } from 'v2/services/Store/Asset/helpers';
+import { ERC20 } from 'v2/services/EthService/contracts/erc20';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {
   return {
@@ -12,7 +14,7 @@ export function fromStateToTxObject(state: ITxConfig): ITxObject {
     gasLimit: state.gasLimit,
     gasPrice: state.gasPrice,
     nonce: state.nonce,
-    chainId: state.network!.chainId
+    chainId: state.network.chainId
   };
 }
 
@@ -29,45 +31,59 @@ export function fromFormikStateToTxObject(formikState: IFormikFields): ITxObject
 }
 
 export function decodeTransaction(signedTx: string) {
-  const decodedTranasction = utils.parseTransaction(signedTx);
-
-  if (!decodedTranasction) {
-    return;
-  }
-
-  const toAddress = decodedTranasction.to;
-  const fromAddress = decodedTranasction.from;
-  const gasLimitWei = utils.bigNumberify(decodedTranasction.gasLimit);
-  const gasPriceWei = utils.bigNumberify(decodedTranasction.gasPrice);
-  const nonce = decodedTranasction.nonce;
-  const data = decodedTranasction.data;
-
-  const amountToSendWei = utils.bigNumberify(decodedTranasction.value);
+  const decodedTransaction = utils.parseTransaction(signedTx);
+  const gasLimit = utils.bigNumberify(decodedTransaction.gasLimit);
+  const gasPriceGwei = fromWei(
+    toWei(utils.bigNumberify(decodedTransaction.gasPrice).toString(), 0),
+    'gwei'
+  );
+  const amountToSendWei = utils.bigNumberify(decodedTransaction.value);
   const amountToSendEther = utils.formatEther(amountToSendWei);
 
-  const maxCostWei = gasPriceWei.mul(gasLimitWei);
-  const maxCostFeeEther = utils.formatEther(maxCostWei);
-
-  const totalAmountWei = amountToSendWei.add(maxCostWei);
-  const totalAmountEther = utils.formatEther(totalAmountWei);
-
   return {
-    to: toAddress,
-    from: fromAddress,
+    to: decodedTransaction.to,
+    from: decodedTransaction.from,
     value: amountToSendEther.toString(),
-    gasLimit: gasLimitWei.toString(),
-    gasPrice: gasPriceWei.toString(),
-    nonce,
-    data,
-    maxCostFeeEther: maxCostFeeEther.toString(),
-    totalAmountEther
+    gasLimit: gasLimit.toString(),
+    gasPrice: gasPriceGwei.toString(),
+    nonce: decodedTransaction.nonce,
+    data: decodedTransaction.data,
+    chainId: decodedTransaction.chainId
   };
 }
 
 export async function getNetworkNameFromSignedTx(signedTx: string) {
-  const decodedTranasction = utils.parseTransaction(signedTx);
-  const chainId = decodedTranasction.chainId.toString();
-  const network = await getNetworkByChainId(chainId);
+  const decodedTransaction = utils.parseTransaction(signedTx);
+  const chainId = decodedTransaction.chainId.toString();
+  const network = await getNetworkByChainId(parseFloat(chainId));
 
   return network ? network.name : undefined;
+}
+
+export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxData | undefined {
+  const chainId: number = txReceipt.networkId || txReceipt.chainId;
+  const networkDetected = getNetworkByChainId(chainId);
+  if (networkDetected) {
+    const contractAsset = getAssetByContractAndNetwork(txReceipt.to, networkDetected);
+    const baseAsset = getBaseAssetByNetwork(networkDetected);
+    return {
+      network: networkDetected,
+      hash: txReceipt.hash,
+      from: txReceipt.from,
+      asset: !contractAsset ? (!baseAsset ? undefined : baseAsset) : contractAsset, // If contractAsset, use contractAsset, else if baseAsset, use baseAsset, else 'undefined'
+      value: txReceipt.value.hex, // Hex - wei
+      amount: contractAsset
+        ? fromTokenBase(
+            ERC20.transfer.decodeInput(txReceipt.data)._value,
+            contractAsset.decimal || 18
+          )
+        : txReceipt.value._hex,
+      to: contractAsset ? ERC20.transfer.decodeInput(txReceipt.data)._to : txReceipt.to,
+      nonce: txReceipt.nonce,
+      gasLimit: txReceipt.gasLimit, // Hex
+      gasPrice: txReceipt.gasPrice, // Hex - wei
+      data: txReceipt.data // Hex
+    };
+  }
+  return;
 }

@@ -149,7 +149,7 @@ export default class SignTransactionMetaMask extends Component<
 
   private checkNetworkMatches(metaMaskNetwork: ethers.utils.Network) {
     const { name: networkName } = this.props.network;
-    const getMetaMaskNetworkbyChainId = getNetworkByChainId(metaMaskNetwork.chainId.toString());
+    const getMetaMaskNetworkbyChainId = getNetworkByChainId(metaMaskNetwork.chainId);
     if (!getMetaMaskNetworkbyChainId) {
       return;
     }

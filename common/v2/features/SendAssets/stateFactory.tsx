@@ -1,8 +1,9 @@
 import { TUseApiFactory } from 'v2/services';
-import { ITxConfig, ITxReceipt, IFormikFields, TStepAction } from './types';
+import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx } from './types';
 import { processFormDataToWeb3Tx, processFormDataToTx } from './process';
 import { IHexStrWeb3Transaction } from 'v2/types';
 import { IHexStrTransaction } from 'libs/transaction';
+import ProviderHandler from 'v2/config/networks/providerHandler';
 
 const txConfigInitialState = {
   gasLimit: null,
@@ -18,6 +19,7 @@ const txConfigInitialState = {
 
 interface State {
   txConfig: ITxConfig;
+  signedTx?: ISignedTx;
   txReceipt?: ITxReceipt;
 }
 
@@ -95,7 +97,6 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
         };
       }
     }
-
     setState((prevState: State) => ({
       ...prevState,
       txConfig: data
@@ -114,36 +115,46 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   };
 
   // For Other Wallets
-
-  /* tslint:disable */
-  // @ts-ignore
   const handleConfirmAndSend: TStepAction = (payload, after) => {
-    setState((prevState: State) => ({
-      ...prevState,
-      txReceipt: payload
-    }));
-
-    after();
+    const provider = new ProviderHandler(state.txConfig.network);
+    // tslint:disable-next-line:no-console
+    console.log('payload: ' + payload);
+    if (state.signedTx) {
+      provider.sendRawTx(state.signedTx).then(returnedData => {
+        let txReceipt: any;
+        if (typeof returnedData === 'string') {
+          // If returned data is a tx hash, not a receipt, then fetch the receipt and set to state
+          provider.getTransactionByHash(returnedData).then(txData => {
+            txReceipt = txData;
+          });
+        } else {
+          txReceipt = returnedData;
+        }
+        setState((prevState: State) => ({
+          ...prevState,
+          txReceipt
+        }));
+        after();
+      });
+    }
   };
 
-  // @ts-ignore
-  const handleSignedTx: TStepAction = (payload: ITxReceipt | string | any, after) => {
-    if ('hash' in payload) {
+  const handleSignedTx: TStepAction = (payload: ITxReceipt | ISignedTx | any, after) => {
+    if (typeof payload !== 'string' && 'hash' in payload) {
       setState((prevState: State) => ({
         ...prevState,
         txReceipt: payload
       }));
 
       after();
-    } else {
+    } else if (typeof payload === 'string') {
       setState((prevState: State) => ({
         ...prevState,
-        data: payload
+        signedTx: payload
       }));
       after();
     }
   };
-  /* tslint:enable */
 
   return {
     handleFormSubmit,
@@ -151,7 +162,8 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
     handleConfirmAndSend,
     handleSignedTx,
     txConfig: state.txConfig,
-    txReceipt: state.txReceipt
+    txReceipt: state.txReceipt,
+    signedTx: state.signedTx
   };
 };
 

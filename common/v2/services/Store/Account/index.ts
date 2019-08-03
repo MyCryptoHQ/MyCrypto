@@ -9,7 +9,7 @@ export {
   getNodeLib,
   getAccountBalance,
   getAccountByAddress,
-  getAccountByAddressAndNetwork,
+  getAccountByAddressAndNetworkName,
   getBaseAssetFromAccount,
   getAllAccounts,
   getAllAccountKeys

@@ -7,6 +7,8 @@ import {
   ExtendedAccount
 } from 'v2/types';
 
+export type ISignedTx = string;
+
 export interface ITxObject {
   readonly to: string;
   readonly gasLimit: string;
@@ -29,11 +31,27 @@ export interface ITxConfig {
   readonly receiverAddress: string; // Can't be an ExtendedAddressBook since recipient may not be registered
   readonly senderAccount: IExtendedAccount;
   readonly asset: Asset;
-  readonly network?: Network;
+  readonly network: Network;
 }
 
 export interface ITxReceipt {
   [index: string]: any;
+}
+
+export interface ITxData {
+  readonly hash: string;
+  readonly network: Network;
+  readonly asset: Asset | undefined;
+
+  readonly amount: string;
+  readonly value: string;
+  readonly to: string;
+  readonly from: string;
+  readonly nonce: number;
+
+  readonly gasLimit: string; // Hex
+  readonly gasPrice: string; // Hex - wei
+  readonly data: string; // Hex
 }
 
 export interface IFormikFields {
@@ -57,14 +75,15 @@ export interface ISignComponentProps {
   senderAccount: ExtendedAccount;
   rawTransaction: ITxObject;
   children?: never;
-  onSuccess(receipt: ITxReceipt): void;
+  onSuccess(receipt: ITxReceipt | ISignedTx): void;
 }
 
 export interface IStepComponentProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
+  signedTx?: ISignedTx;
   children?: never;
-  onComplete(data: IFormikFields | ITxReceipt | null): void;
+  onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
 }
 
 export type TStepAction = (payload: any, after: () => void) => void;

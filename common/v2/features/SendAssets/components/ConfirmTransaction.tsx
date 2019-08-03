@@ -3,16 +3,25 @@ import { Address, Button, Network } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
-import { AddressBookContext } from 'v2/services/Store';
+import { AddressBookContext, getNetworkByChainId } from 'v2/services/Store';
 import { Amount } from 'v2/components';
-import { Network as INetwork } from 'v2/types';
 
 import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
-import { gasPriceToBase, fromWei, Wei } from 'v2/services/EthService/utils/units';
+import {
+  gasPriceToBase,
+  fromWei,
+  Wei,
+  toWei,
+  getDecimalFromEtherUnit
+} from 'v2/services/EthService/utils/units';
 import BN from 'bn.js';
-import { isValidHex } from 'v2/services/EthService/validators';
 import { stripHexPrefix } from 'v2/services/EthService';
+import { decodeTransaction } from '../helpers';
+import { getAssetByContractAndNetwork } from 'v2/services/Store/Asset/helpers';
+import { decodeTransfer } from 'v2/services/EthService/contracts/token';
+import { getAccountByAddressAndNetworkName } from 'v2/services/Store/Account/helpers';
+import { isHexPrefixed } from 'ethereumjs-util';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -23,31 +32,76 @@ const truncate = (children: string) => {
   The currentPath in SendAssets determines which action should be called.
 */
 
-export default function ConfirmTransaction({ txConfig, onComplete }: IStepComponentProps) {
+export default function ConfirmTransaction({
+  txConfig,
+  signedTx,
+  onComplete
+}: IStepComponentProps) {
   const [showDetails, setShowDetails] = useState(false);
   const { getContactByAddress } = useContext(AddressBookContext);
-
-  const {
-    receiverAddress,
-    senderAccount,
-    amount,
-    gasLimit,
-    gasPrice,
-    nonce,
-    data,
-    network,
-    value,
-    asset
-  } = txConfig;
+  let receiverAddress;
+  let senderAccount;
+  let amount;
+  let gasLimit;
+  let gasPrice;
+  let nonce;
+  let data;
+  let network;
+  let value;
+  let asset;
+  /* If signed transaction exists */
+  if (signedTx) {
+    const decodedTx = decodeTransaction(signedTx);
+    const to = decodedTx.to;
+    const networkDetected = getNetworkByChainId(decodedTx.chainId);
+    if (to && networkDetected) {
+      gasLimit = decodedTx.gasLimit;
+      gasPrice = decodedTx.gasPrice;
+      nonce = decodedTx.nonce;
+      data = decodedTx.data;
+      senderAccount = getAccountByAddressAndNetworkName(
+        decodedTx.from || undefined,
+        networkDetected.name
+      );
+      const contractAsset = getAssetByContractAndNetwork(to, networkDetected);
+      if (contractAsset) {
+        /* Decode the erc20 tx */
+        const decodedDataField = decodeTransfer(data);
+        receiverAddress = decodedDataField._to;
+        amount = decodedDataField._value;
+        network = networkDetected;
+        value = decodedTx.value;
+        asset = contractAsset;
+      } else {
+        receiverAddress = decodedTx.to;
+        amount = decodedTx.value;
+        network = networkDetected;
+        value = decodedTx.value;
+        asset = txConfig.asset;
+      }
+    } else {
+      return <div>Could not be defined</div>;
+    }
+  } else {
+    receiverAddress = txConfig.receiverAddress;
+    senderAccount = txConfig.senderAccount;
+    amount = txConfig.amount;
+    gasLimit = txConfig.gasLimit;
+    gasPrice = txConfig.gasPrice;
+    nonce = txConfig.nonce;
+    data = txConfig.data;
+    network = txConfig.network;
+    value = txConfig.value;
+    asset = txConfig.asset;
+  }
 
   const assetType = asset.type;
-  const gasPriceActual = isValidHex(gasPrice)
-    ? parseInt(stripHexPrefix(gasPrice), 16)
-    : parseFloat(gasPriceToBase(parseFloat(gasPrice)).toString());
-  const gasLimitActual = isValidHex(gasLimit)
-    ? parseInt(stripHexPrefix(gasLimit), 16)
-    : parseFloat(gasLimit);
-
+  const gasPriceActual = isHexPrefixed(gasPrice) // number (wei)
+    ? parseInt(stripHexPrefix(gasPrice), 16) // '0x9' gwei: string
+    : parseFloat(gasPriceToBase(parseFloat(gasPrice)).toString()); // '9' gwei : string
+  const gasLimitActual = isHexPrefixed(gasLimit) // number (wei)
+    ? parseInt(stripHexPrefix(gasLimit), 16) // '0x5208' : string
+    : parseInt(gasLimit, 10); // '21000' : string
   const recipientAccount = getContactByAddress(receiverAddress);
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
 
@@ -58,10 +112,11 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   const maxCostFeeEther = transactionFeeBase;
 
   /* Calculate total base asset amount */
-  const totalEtherEgress = parseFloat(fromWei(Wei(value).add(transactionFeeWei), 'ether')).toFixed(
-    6
-  ); // @TODO: BN math, add amount + maxCost !In same symbol
-  const { name: networkName } = network as INetwork;
+  const valueWei = isHexPrefixed(value)
+    ? Wei(value)
+    : toWei(value, getDecimalFromEtherUnit('ether'));
+  const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6); // @TODO: BN math, add amount + maxCost !In same symbol
+  const { name: networkName } = network;
 
   return (
     <div className="ConfirmTransaction">
@@ -69,15 +124,19 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
         <div className="ConfirmTransaction-row-column">
           To:
           <div className="ConfirmTransaction-addressWrapper">
-            <Address address={receiverAddress} title={recipientLabel} truncate={truncate} />
+            <Address
+              address={receiverAddress || 'Unknown'}
+              title={recipientLabel}
+              truncate={truncate}
+            />
           </div>
         </div>
         <div className="ConfirmTransaction-row-column">
           From:
           <div className="ConfirmTransaction-addressWrapper">
             <Address
-              address={senderAccount.address}
-              title={senderAccount.label}
+              address={senderAccount ? senderAccount.address : 'Unknown'}
+              title={senderAccount && senderAccount.label ? senderAccount.label : 'Unknown'}
               truncate={truncate}
             />
           </div>
@@ -127,7 +186,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Account Balance:</div>
             <div className="ConfirmTransaction-details-row-column">
-              ${senderAccount.balance} ETH
+              ${senderAccount ? senderAccount.balance : 'Unknown'} ETH
             </div>
           </div>
           <div className="ConfirmTransaction-details-row">
@@ -142,7 +201,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasPriceActual} wei`}</div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasPriceActual} gwei`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
@@ -150,7 +209,11 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Nonce:</div>
-            <div className="ConfirmTransaction-details-row-column">{stripHexPrefix(nonce)}</div>
+            <div className="ConfirmTransaction-details-row-column">
+              {typeof nonce === 'string'
+                ? parseInt(stripHexPrefix(nonce), 10).toString()
+                : nonce.toString()}
+            </div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Data:</div>

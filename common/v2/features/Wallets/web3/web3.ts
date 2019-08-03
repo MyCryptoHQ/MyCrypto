@@ -21,7 +21,7 @@ let web3Added = true;
 
 export const initWeb3Node = async () => {
   const { chainId, lib } = await setupWeb3Node();
-  const network: Network | undefined = getNetworkByChainId(chainId);
+  const network: Network | undefined = getNetworkByChainId(parseFloat(chainId));
   if (!network) {
     throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
   }

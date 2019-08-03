@@ -23,9 +23,9 @@ export const getNetworkByAddress = (address: string): Network | undefined => {
     return networks.find(network => account.network === network.name);
   }
 };
-export const getNetworkByChainId = (chainId: string): Network | undefined => {
+export const getNetworkByChainId = (chainId: number): Network | undefined => {
   const networks = getAllNetworks() || [];
-  return networks.find((network: Network) => network.chainId === parseInt(chainId, 16));
+  return networks.find((network: Network) => network.chainId === chainId);
 };
 
 export const getNetworkByName = (name: string): Network | undefined => {

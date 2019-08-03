@@ -11,7 +11,7 @@ import {
   IHexStrWeb3Transaction
   // IHexStrTransaction
 } from 'v2/types';
-import { bufferToHex, toBuffer, addHexPrefix } from 'ethereumjs-util';
+import { bufferToHex, addHexPrefix } from 'ethereumjs-util';
 import {
   Address,
   toWei,
@@ -54,7 +54,7 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
       gasPrice: formData.advancedTransaction
         ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
         : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
-      nonce: bufferToHex(toBuffer(formData.nonceField)),
+      nonce: addHexPrefix(parseInt(formData.nonceField, 10).toString(16)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
@@ -79,7 +79,7 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
       gasPrice: formData.advancedTransaction
         ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
         : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
-      nonce: bufferToHex(toBuffer(formData.nonceField)),
+      nonce: addHexPrefix(parseInt(formData.nonceField, 10).toString(16)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
@@ -110,7 +110,7 @@ export const processFormDataToWeb3Tx = (
       gasPrice: formData.advancedTransaction
         ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
         : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
-      nonce: bufferToHex(toBuffer(formData.nonceField)),
+      nonce: addHexPrefix(parseInt(formData.nonceField, 10).toString(16)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
@@ -136,7 +136,7 @@ export const processFormDataToWeb3Tx = (
       gasPrice: formData.advancedTransaction
         ? addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceField)).toString(16))
         : addHexPrefix(gasPriceToBase(parseFloat(formData.gasPriceSlider)).toString(16)),
-      nonce: bufferToHex(toBuffer(formData.nonceField)),
+      nonce: addHexPrefix(parseInt(formData.nonceField, 10).toString(16)), //bufferToHex(toBuffer(formData.nonceField)),
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
