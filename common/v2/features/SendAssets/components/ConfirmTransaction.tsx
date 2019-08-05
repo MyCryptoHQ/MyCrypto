@@ -3,7 +3,7 @@ import { Address, Button, Network } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
-import { AddressBookContext, getNetworkByChainId } from 'v2/services/Store';
+import { AddressBookContext, getNetworkByChainId, AccountContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
 
 import { IStepComponentProps } from '../types';
@@ -13,15 +13,15 @@ import {
   fromWei,
   Wei,
   toWei,
-  getDecimalFromEtherUnit
+  getDecimalFromEtherUnit,
+  fromTokenBase
 } from 'v2/services/EthService/utils/units';
 import BN from 'bn.js';
 import { stripHexPrefix } from 'v2/services/EthService';
 import { decodeTransaction } from '../helpers';
 import { getAssetByContractAndNetwork } from 'v2/services/Store/Asset/helpers';
 import { decodeTransfer } from 'v2/services/EthService/contracts/token';
-import { getAccountByAddressAndNetworkName } from 'v2/services/Store/Account/helpers';
-import { isHexPrefixed } from 'ethereumjs-util';
+import { ExtendedAccount, Network as NetworkType, Asset } from 'v2/types';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -32,68 +32,91 @@ const truncate = (children: string) => {
   The currentPath in SendAssets determines which action should be called.
 */
 
+export interface IConfirmConfig {
+  amount: string; // '0.01'
+  asset: Asset; // {} as Asset
+  chainId: number; // 1
+  data: string; // '0x0'
+  gasLimit: string; // '21000'
+  gasPrice: string; // '100000000'
+  network: NetworkType | undefined; // {} as Network
+  nonce: string; // '13'
+  receiverAddress: string; // '0xc7bFC8A6bD4e52bFE901764143abeF76Caf2f912'
+  senderAccount: ExtendedAccount | undefined; // {} as ExtendedAccount
+  to: string; // '0xc7bFC8A6bD4e52bFE901764143abeF76Caf2f912'
+  value: string; // '0.00'
+  from: string; // '0xc7bFC8A6bD4e52bFE901764143abeF76Caf2f912'
+}
+
 export default function ConfirmTransaction({
   txConfig,
   signedTx,
   onComplete
 }: IStepComponentProps) {
-  const [showDetails, setShowDetails] = useState(false);
+  const { getAccountByAddressAndNetworkName } = useContext(AccountContext);
   const { getContactByAddress } = useContext(AddressBookContext);
-  let receiverAddress;
-  let senderAccount;
-  let amount;
-  let gasLimit;
-  let gasPrice;
-  let nonce;
-  let data;
-  let network;
-  let value;
-  let asset;
-  /* If signed transaction exists, this is not a web3 flow */
-  if (signedTx) {
+  const [showDetails, setShowDetails] = useState(false);
+
+  let confirmTransactionConfig: IConfirmConfig = {} as IConfirmConfig;
+  const web3Flow = signedTx === null;
+
+  if (web3Flow) {
+    confirmTransactionConfig = {
+      ...txConfig,
+      from: txConfig.senderAccount.address,
+      amount: txConfig.amount, //fromTokenBase(toWei(txConfig.amount, 0), txConfig.asset.decimal || 18),
+      nonce: parseInt(stripHexPrefix(txConfig.nonce), 16).toString(),
+      gasPrice: parseInt(stripHexPrefix(txConfig.gasPrice), 16).toString(),
+      gasLimit: parseInt(stripHexPrefix(txConfig.gasLimit), 16).toString(),
+      value: Wei(txConfig.value).toString()
+    };
+  } else if (signedTx) {
     const decodedTx = decodeTransaction(signedTx);
-    const to = decodedTx.to;
     const networkDetected = getNetworkByChainId(decodedTx.chainId);
-    if (to && networkDetected) {
-      gasLimit = decodedTx.gasLimit;
-      gasPrice = decodedTx.gasPrice;
-      nonce = decodedTx.nonce;
-      data = decodedTx.data;
-      senderAccount = getAccountByAddressAndNetworkName(
+    const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
+
+    confirmTransactionConfig = {
+      ...decodedTx,
+      to: decodedTx.to || 'Unknown',
+      from: decodedTx.from || 'Unknown',
+      receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
+      amount: contractAsset
+        ? fromTokenBase(
+            toWei(decodeTransfer(decodedTx.data)._value, 0),
+            contractAsset.decimal || 18
+          )
+        : decodedTx.value,
+      network: networkDetected || undefined,
+      value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
+      asset: contractAsset || txConfig.asset,
+      senderAccount: getAccountByAddressAndNetworkName(
         decodedTx.from || undefined,
-        networkDetected.name
-      );
-      const contractAsset = getAssetByContractAndNetwork(to, networkDetected);
-      receiverAddress = contractAsset ? decodeTransfer(data)._to : decodedTx.to;
-      amount = contractAsset ? decodeTransfer(data)._value : decodedTx.value;
-      network = networkDetected;
-      value = contractAsset ? decodedTx.value : decodedTx.value;
-      asset = contractAsset ? contractAsset : txConfig.asset;
-    } else {
-      return <div>Network for this asset could not be determined</div>; // ToDo: Figure out correct error messaging
-    }
-  } else {
-    receiverAddress = txConfig.receiverAddress;
-    senderAccount = txConfig.senderAccount;
-    amount = txConfig.amount;
-    gasLimit = txConfig.gasLimit;
-    gasPrice = txConfig.gasPrice;
-    nonce = txConfig.nonce;
-    data = txConfig.data;
-    network = txConfig.network;
-    value = txConfig.value;
-    asset = txConfig.asset;
+        networkDetected ? networkDetected.name : undefined
+      ),
+      gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
+      nonce: decodedTx.nonce.toString()
+    };
   }
-  /* ToDo: Figure out how to extract this */
-  const assetType = asset.type;
-  const gasPriceActual = isHexPrefixed(gasPrice) // number (wei)
-    ? parseInt(stripHexPrefix(gasPrice), 16) // '0x9' gwei: string
-    : parseFloat(gasPriceToBase(parseFloat(gasPrice)).toString()); // '9' gwei : string
-  const gasLimitActual = isHexPrefixed(gasLimit) // number (wei)
-    ? parseInt(stripHexPrefix(gasLimit), 16) // '0x5208' : string
-    : parseInt(gasLimit, 10); // '21000' : string
-  const recipientAccount = getContactByAddress(receiverAddress);
+
+  const recipientAccount = getContactByAddress(confirmTransactionConfig.to);
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
+
+  /* ToDo: Figure out how to extract this */
+  const {
+    asset,
+    gasPrice,
+    gasLimit,
+    value,
+    amount,
+    senderAccount,
+    receiverAddress,
+    network,
+    nonce,
+    data
+  } = confirmTransactionConfig;
+  const assetType = asset.type;
+  const gasPriceActual = parseInt(gasPrice, 10);
+  const gasLimitActual = parseInt(gasLimit, 10);
 
   /* Calculate Transaction Fee */
   const transactionFeeWei: BN = new BN(gasPriceActual * gasLimitActual);
@@ -102,12 +125,9 @@ export default function ConfirmTransaction({
   const maxCostFeeEther = transactionFeeBase;
 
   /* Calculate total base asset amount */
-  const valueWei = isHexPrefixed(value)
-    ? Wei(value)
-    : toWei(value, getDecimalFromEtherUnit('ether'));
+  const valueWei = Wei(value);
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6); // @TODO: BN math, add amount + maxCost !In same symbol
-  const { name: networkName } = network;
-
+  const networkName = network ? network.name : undefined;
   return (
     <div className="ConfirmTransaction">
       <div className="ConfirmTransaction-row">
@@ -191,7 +211,7 @@ export default function ConfirmTransaction({
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasPriceActual} gwei`}</div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasPriceActual} wei`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
@@ -199,11 +219,7 @@ export default function ConfirmTransaction({
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Nonce:</div>
-            <div className="ConfirmTransaction-details-row-column">
-              {typeof nonce === 'string'
-                ? parseInt(stripHexPrefix(nonce), 10).toString()
-                : nonce.toString()}
-            </div>
+            <div className="ConfirmTransaction-details-row-column">{nonce}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Data:</div>

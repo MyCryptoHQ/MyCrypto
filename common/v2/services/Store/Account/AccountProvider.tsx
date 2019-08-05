@@ -8,6 +8,10 @@ export interface ProviderState {
   createAccountWithID(accountData: Account, uuid: string): void;
   deleteAccount(uuid: string): void;
   updateAccount(uuid: string, accountData: ExtendedAccount): void;
+  getAccountByAddressAndNetworkName(
+    address: string | undefined,
+    network: string | undefined
+  ): ExtendedAccount | undefined;
 }
 
 export const AccountContext = createContext({} as ProviderState);
@@ -30,6 +34,16 @@ export class AccountProvider extends Component {
     updateAccount: (uuid: string, accountData: ExtendedAccount) => {
       service.updateAccount(uuid, accountData);
       this.getAccounts();
+    },
+    getAccountByAddressAndNetworkName: (
+      address: string | undefined,
+      network: string | undefined
+    ): ExtendedAccount | undefined => {
+      if (!address || !network) {
+        return;
+      }
+      const { accounts } = this.state;
+      return accounts.find(account => account.address === address && account.network === network);
     }
   };
 

@@ -45,9 +45,12 @@ export const getAssetByUUID = (uuid: string): Asset | undefined => {
 };
 
 export const getAssetByContractAndNetwork = (
-  contractAddress: string,
-  network: Network
+  contractAddress: string | undefined,
+  network: Network | undefined
 ): Asset | undefined => {
+  if (!network || !contractAddress) {
+    return undefined;
+  }
   const allAssets = getAllAssets();
   return allAssets
     .filter(asset => asset.networkId && asset.contractAddress)
