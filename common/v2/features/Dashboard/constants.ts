@@ -30,7 +30,7 @@ export const actions: Action[] = [
   {
     icon: receiveIcon,
     title: 'Receive Assets',
-    link: ROUTE_PATHS.REQUEST_ASSEST.path,
+    link: ROUTE_PATHS.RECEIVE_ASSETS.path,
     description: 'Transfer Assets to Your Wallet'
   },
   {
