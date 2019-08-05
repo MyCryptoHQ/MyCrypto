@@ -30,3 +30,4 @@ export { ITransaction, IHexStrTransaction, IHexStrWeb3Transaction } from './tran
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
+export { Tab } from './tab';
