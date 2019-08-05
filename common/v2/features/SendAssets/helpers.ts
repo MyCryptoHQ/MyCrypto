@@ -70,7 +70,7 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxData | undefined {
       network: networkDetected,
       hash: txReceipt.hash,
       from: txReceipt.from,
-      asset: !contractAsset ? (!baseAsset ? undefined : baseAsset) : contractAsset, // If contractAsset, use contractAsset, else if baseAsset, use baseAsset, else 'undefined'
+      asset: contractAsset ? contractAsset : baseAsset ? baseAsset : undefined, // If contractAsset, use contractAsset, else if baseAsset, use baseAsset, else 'undefined'
       value: txReceipt.value.hex, // Hex - wei
       amount: contractAsset
         ? fromTokenBase(

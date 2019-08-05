@@ -49,7 +49,7 @@ export default function ConfirmTransaction({
   let network;
   let value;
   let asset;
-  /* If signed transaction exists */
+  /* If signed transaction exists, this is not a web3 flow */
   if (signedTx) {
     const decodedTx = decodeTransaction(signedTx);
     const to = decodedTx.to;
@@ -64,23 +64,13 @@ export default function ConfirmTransaction({
         networkDetected.name
       );
       const contractAsset = getAssetByContractAndNetwork(to, networkDetected);
-      if (contractAsset) {
-        /* Decode the erc20 tx */
-        const decodedDataField = decodeTransfer(data);
-        receiverAddress = decodedDataField._to;
-        amount = decodedDataField._value;
-        network = networkDetected;
-        value = decodedTx.value;
-        asset = contractAsset;
-      } else {
-        receiverAddress = decodedTx.to;
-        amount = decodedTx.value;
-        network = networkDetected;
-        value = decodedTx.value;
-        asset = txConfig.asset;
-      }
+      receiverAddress = contractAsset ? decodeTransfer(data)._to : decodedTx.to;
+      amount = contractAsset ? decodeTransfer(data)._value : decodedTx.value;
+      network = networkDetected;
+      value = contractAsset ? decodedTx.value : decodedTx.value;
+      asset = contractAsset ? contractAsset : txConfig.asset;
     } else {
-      return <div>Could not be defined</div>;
+      return <div>Network for this asset could not be determined</div>; // ToDo: Figure out correct error messaging
     }
   } else {
     receiverAddress = txConfig.receiverAddress;
@@ -94,7 +84,7 @@ export default function ConfirmTransaction({
     value = txConfig.value;
     asset = txConfig.asset;
   }
-
+  /* ToDo: Figure out how to extract this */
   const assetType = asset.type;
   const gasPriceActual = isHexPrefixed(gasPrice) // number (wei)
     ? parseInt(stripHexPrefix(gasPrice), 16) // '0x9' gwei: string

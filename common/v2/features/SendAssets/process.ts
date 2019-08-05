@@ -38,6 +38,7 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
   const network: Network = formData.network;
 
   if (asset.type === 'base') {
+    /* If base asset is being sent */
     if (!asset.decimal) {
       return undefined;
     }
@@ -59,6 +60,7 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
     };
     return rawTransaction;
   } else if (asset.type === 'erc20') {
+    /* If erc20 asset is being sent */
     if (!asset.contractAddress || !asset.decimal) {
       return undefined;
     }

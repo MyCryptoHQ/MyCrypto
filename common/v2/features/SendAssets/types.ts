@@ -20,15 +20,15 @@ export interface ITxObject {
 }
 
 export interface ITxConfig {
-  readonly gasLimit: string; // Move to BN
+  readonly gasLimit: string;
   readonly gasPrice: string;
   readonly nonce: string;
-  readonly amount: string; // Move to BN
+  readonly amount: string;
   readonly value: string;
   readonly to: string;
   readonly chainId: number;
   readonly data: string;
-  readonly receiverAddress: string; // Can't be an ExtendedAddressBook since recipient may not be registered
+  readonly receiverAddress: string;
   readonly senderAccount: IExtendedAccount;
   readonly asset: Asset;
   readonly network: Network;
@@ -61,7 +61,7 @@ export interface IFormikFields {
   account: IExtendedAccount;
   txDataField: string;
   gasEstimates: GasEstimates;
-  gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
+  gasPriceField: string;
   gasPriceSlider: string;
   gasLimitField: string;
   nonceField: string; // Use only if user has input a manual nonce value.
