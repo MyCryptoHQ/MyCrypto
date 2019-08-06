@@ -2,9 +2,16 @@ import { utils } from 'ethers';
 
 import { getNetworkByChainId, getBaseAssetByNetwork } from 'v2/services/Store';
 import { ITxObject, ITxConfig, IFormikFields, ITxReceipt, ITxData } from './types';
-import { gasPriceToBase, fromWei, toWei, fromTokenBase } from 'v2/services/EthService/utils/units';
+import {
+  gasPriceToBase,
+  fromWei,
+  toWei,
+  fromTokenBase,
+  Wei
+} from 'v2/services/EthService/utils/units';
 import { getAssetByContractAndNetwork } from 'v2/services/Store/Asset/helpers';
 import { ERC20 } from 'v2/services/EthService/contracts/erc20';
+import { stripHexPrefix } from 'v2/services/EthService/utils/formatters';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {
   return {
@@ -77,7 +84,10 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxData | undefined {
             ERC20.transfer.decodeInput(txReceipt.data)._value,
             contractAsset.decimal || 18
           )
-        : txReceipt.value._hex,
+        : fromWei(
+            Wei(parseInt(stripHexPrefix(txReceipt.value._hex), 16).toString()),
+            'ether'
+          ).toString(),
       to: contractAsset ? ERC20.transfer.decodeInput(txReceipt.data)._to : txReceipt.to,
       nonce: txReceipt.nonce,
       gasLimit: txReceipt.gasLimit, // Hex
