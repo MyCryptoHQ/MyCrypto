@@ -27,6 +27,10 @@ const TabWrapper = styled.div<TabWrapperProps>`
     `background-color: ${BRIGHT_SKY_BLUE};
      color: ${WHITE};`}
   padding: 12px 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:not(:first-child) {
     border-left: 1px solid ${BRIGHT_SKY_BLUE};
