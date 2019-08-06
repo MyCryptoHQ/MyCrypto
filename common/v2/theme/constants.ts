@@ -3,6 +3,7 @@ export const COLORS = {
   GREYISH_BROWN: '#424242',
   BRIGHT_SKY_BLUE: '#1eb8e7',
   SILVER: '#f7f7f7',
+  DARK_SILVER: '#ccc',
   PASTEL_RED: '#ef4747',
   WHITE: '#fff'
 };

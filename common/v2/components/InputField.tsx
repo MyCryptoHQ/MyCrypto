@@ -5,7 +5,7 @@ import { Icon } from '@mycrypto/ui';
 import { COLORS } from 'v2/theme';
 import { InlineErrorMsg } from 'v2/components';
 
-const { PASTEL_RED, BRIGHT_SKY_BLUE } = COLORS;
+const { PASTEL_RED, BRIGHT_SKY_BLUE, DARK_SILVER } = COLORS;
 
 const MainWrapper = styled.div`
   margin-bottom: 15px;
@@ -32,11 +32,15 @@ const CustomInput = styled.input`
   background: ${props => props.theme.controlBackground};
   border: 0.125em solid ${props => props.theme.controlBorder};
   border-radius: 0.125em;
-  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')}
+  padding: ${props => (props.showEye ? '12px 36px 12px 12px' : '12px 12px')};
   display: flex;
   :focus-within {
     outline: none;
     box-shadow: ${props => props.theme.outline};
+  }
+  ::placeholder {
+    color: ${DARK_SILVER};
+    opacity: 1;
   }
   border-color: ${(props: CustomInputProps) => (props.inputError ? PASTEL_RED : '')};
 `;
@@ -51,6 +55,10 @@ const CustomTextArea = styled.textarea`
   :focus-within {
     outline: none;
     box-shadow: ${props => props.theme.outline};
+  }
+  ::placeholder {
+    color: ${DARK_SILVER};
+    opacity: 1;
   }
   border-color: ${(props: CustomInputProps) => (props.inputError ? PASTEL_RED : '')};
   resize: none;
@@ -92,7 +100,9 @@ interface Props {
   inputError?: string | undefined;
   showEye?: boolean;
   textarea?: boolean;
+  placeholder?: string;
   onChange(event: any): void;
+  onBlur?(event: any): void;
   validate?(): void | undefined;
 }
 
@@ -105,7 +115,17 @@ export class InputField extends Component<Props> {
   };
 
   public render() {
-    const { value, label, onChange, inputError, type, showEye, textarea } = this.props;
+    const {
+      value,
+      label,
+      onChange,
+      onBlur,
+      inputError,
+      type,
+      showEye,
+      textarea,
+      placeholder
+    } = this.props;
     return (
       <MainWrapper>
         {label && <Label>{label}</Label>}
@@ -114,17 +134,21 @@ export class InputField extends Component<Props> {
             <CustomTextArea
               value={value}
               onChange={onChange}
+              onBlur={onBlur}
               inputError={inputError}
               onKeyUp={this.handleKeyUp}
+              placeholder={placeholder ? placeholder : ''}
             />
           ) : (
             <CustomInput
               value={value}
               onChange={onChange}
+              onBlur={onBlur}
               inputError={inputError}
               onKeyUp={this.handleKeyUp}
               showEye={showEye}
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
+              placeholder={placeholder ? placeholder : ''}
             />
           )}
 
