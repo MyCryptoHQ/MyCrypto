@@ -40,16 +40,8 @@ export const links = [
         title: 'Interact with Contracts'
       },
       {
-        to: '/transaction-status',
-        title: 'Check Transaction Status'
-      },
-      {
         to: '/broadcast-transaction',
         title: 'Broadcast Transaction'
-      },
-      {
-        to: '/ens',
-        title: 'ENS Domains'
       },
       {
         to: '/helpers',
