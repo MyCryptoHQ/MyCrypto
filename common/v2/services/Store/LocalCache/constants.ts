@@ -20,6 +20,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       ],
       wallet: SecureWalletName.WEB3,
       balance: '1',
+      favorite: false,
       transactions: [
         {
           txHash: '0xf1e4e01312c3e465376cc6eeed1138d5a870363e1a1a88f54473801b214d3a69',

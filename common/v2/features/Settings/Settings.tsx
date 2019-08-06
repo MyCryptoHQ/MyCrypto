@@ -37,7 +37,7 @@ const SettingsContent = styled.div`
 function renderAccountPanel() {
   return (
     <FlippablePanel>
-      {({ flipped }) => (flipped ? <p>Add Account</p> : <AccountList />)}
+      {({ flipped }) => (flipped ? <p>Add Account</p> : <AccountList deletable={true} />)}
     </FlippablePanel>
   );
 }
