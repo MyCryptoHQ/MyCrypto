@@ -107,7 +107,7 @@ function buildAccountTable(
     head: deletable
       ? [
           translateRaw('ACCOUNT_LIST_FAVOURITE'),
-          'Label',
+          translateRaw('ACCOUNT_LIST_LABEL'),
           translateRaw('ACCOUNT_LIST_ADDRESS'),
           translateRaw('ACCOUNT_LIST_NETWORK'),
           translateRaw('ACCOUNT_LIST_VALUE'),
@@ -115,7 +115,7 @@ function buildAccountTable(
         ]
       : [
           translateRaw('ACCOUNT_LIST_FAVOURITE'),
-          'Label',
+          translateRaw('ACCOUNT_LIST_LABEL'),
           translateRaw('ACCOUNT_LIST_ADDRESS'),
           translateRaw('ACCOUNT_LIST_NETWORK'),
           translateRaw('ACCOUNT_LIST_VALUE')
