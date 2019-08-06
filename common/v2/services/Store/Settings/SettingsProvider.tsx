@@ -57,12 +57,16 @@ export class SettingsProvider extends Component {
     return <SettingsContext.Provider value={this.state}>{children}</SettingsContext.Provider>;
   }
   private isValidImport(importedCache: string, localStorage: string) {
-    const parsedImport = JSON.parse(importedCache);
-    const parsedLocalStorage = JSON.parse(localStorage);
+    try {
+      const parsedImport = JSON.parse(importedCache);
+      const parsedLocalStorage = JSON.parse(localStorage);
 
-    const oldKeys = Object.keys(parsedImport).sort();
-    const newKeys = Object.keys(parsedLocalStorage).sort();
-    return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
+      const oldKeys = Object.keys(parsedImport).sort();
+      const newKeys = Object.keys(parsedLocalStorage).sort();
+      return JSON.stringify(oldKeys) === JSON.stringify(newKeys);
+    } catch (error) {
+      return false;
+    }
   }
   private getSettings = () => {
     const settings: ISettings = readAllSettings() || [];
