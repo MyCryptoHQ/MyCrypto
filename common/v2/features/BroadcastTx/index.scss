@@ -1,0 +1,17 @@
+@import "common/sass/variables";
+
+.BroadcastTx {
+  max-width: 520px;
+  margin: 0 auto;
+
+  &-help {
+    margin-bottom: $space * 1.5;
+  }
+
+  &-qr {
+    max-width: 15rem;
+    margin: 1rem auto;
+    width: 100%;
+    text-align: center;
+  }
+}

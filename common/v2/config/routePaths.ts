@@ -104,6 +104,11 @@ const PATHS: IRoutePath[] = [
     name: 'SWAP_0X',
     title: 'Buy and Exchange | 0x Instant',
     path: '/swap/0x'
+  },
+  {
+    name: 'BROADCAST_TX',
+    title: 'Broadcast Transaction',
+    path: '/broadcast-transaction'
   }
 ];
 

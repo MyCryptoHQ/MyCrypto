@@ -15,3 +15,4 @@ export { SendAssets } from './SendAssets';
 export { RequestAssets } from './RequestAssets';
 export { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchange';
 export { default as PageNotFound } from './PageNotFound';
+export { BroadcastTx } from './BroadcastTx';

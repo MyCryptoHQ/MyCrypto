@@ -22,6 +22,7 @@ import {
   BuyAndExchange,
   ShapeShiftAuthorization,
   ZeroEx,
+  BroadcastTx,
   Home
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
@@ -160,5 +161,11 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.SWAP_0X.title,
     path: ROUTE_PATHS.SWAP_0X.path,
     component: ZeroEx
+  },
+  {
+    name: ROUTE_PATHS.BROADCAST_TX.name,
+    title: ROUTE_PATHS.BROADCAST_TX.title,
+    path: ROUTE_PATHS.BROADCAST_TX.path,
+    component: BroadcastTx
   }
 ];

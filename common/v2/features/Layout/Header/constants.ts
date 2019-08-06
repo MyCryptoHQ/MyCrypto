@@ -44,7 +44,7 @@ export const links = [
         title: 'Check Transaction Status'
       },
       {
-        to: '/broadcast-transaction',
+        to: ROUTE_PATHS.BROADCAST_TX.path,
         title: 'Broadcast Transaction'
       },
       {
