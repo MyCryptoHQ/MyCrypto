@@ -79,11 +79,18 @@ module.exports = function(opts = {}) {
     rules.push(
       {
         test: /\.css$/,
-        use: [MiniCSSExtractPlugin.loader, 'css-loader']
+        include: [
+          path.resolve(config.path.src, 'vendor'),
+          path.resolve(__dirname, '../node_modules/typeface-lato')
+        ],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
-        use: [MiniCSSExtractPlugin.loader, 'css-loader', sassLoader]
+        include: ['components', 'containers', 'sass', 'v2']
+          .map(dir => path.resolve(config.path.src, dir))
+          .concat([config.path.modules]),
+        use: ['style-loader', 'css-loader', sassLoader]
       }
     );
   } else {
