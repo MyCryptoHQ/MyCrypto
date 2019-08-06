@@ -10,10 +10,9 @@ import { computeIndexingHash, getTransactionFields, makeTransaction } from 'libs
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { transactionSignActions } from 'features/transaction';
-import { QRCode, CodeBlock } from 'components/ui';
 import { SendButton } from 'components/SendButton';
 
-import { ExtendedContentPanel, InputField } from 'v2/components';
+import { ExtendedContentPanel, InputField, QRCode, CodeBlock } from 'v2/components';
 import { Button } from '@mycrypto/ui';
 
 interface StateProps {

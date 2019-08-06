@@ -28,3 +28,5 @@ export { DashboardPanel } from './DashboardPanel';
 export { Desktop, Mobile } from './ResponsiveLayout';
 export * from './ErrorMessages';
 export { ENSStatus } from './ENSStatus';
+export { default as QRCode } from './QRCode';
+export { default as CodeBlock } from './CodeBlock';
