@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
+import _ from 'lodash';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
-
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
 import {
   AccountContext,
@@ -18,14 +18,11 @@ import {
   TSymbol,
   Network,
   AssetBalanceObject,
-  ExtendedAccount as IExtendedAccount,
-  ExtendedAccount
+  ExtendedAccount as IExtendedAccount
 } from 'v2/types';
-import { getNonce } from 'v2/services/EthService';
-import { fetchGasPriceEstimates } from 'v2/services/ApiService';
+import { getNonce, hexToNumber } from 'v2/services/EthService';
+import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 
-import { getResolvedENSAddress } from '../../Ens';
-import { IFormikFields, IStepComponentProps } from '../types';
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import {
@@ -47,10 +44,9 @@ import {
   validateNonceField,
   validateDataField
 } from './validators/validators';
-import _ from 'lodash';
 import { processFormDataToWeb3Tx } from '../process';
-import { getGasEstimate } from 'v2/services/ApiService/Gas/gasPriceFunctions';
-import { hexToNumber } from 'utils/formatters';
+import { getResolvedENSAddress } from '../../Ens';
+import { IFormikFields, IStepComponentProps } from '../types';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: '',
@@ -139,7 +135,7 @@ export default function SendAssetsForm({
           };
 
           const handleGasEstimate = async () => {
-            if (values && values.network && values.asset && values.receiverAddress) {
+            if (!(!values || !values.network || !values.asset || !values.receiverAddress)) {
               const finalTx = processFormDataToWeb3Tx(values);
               if (finalTx) {
                 const gas = await getGasEstimate(values.network, finalTx);
@@ -172,14 +168,11 @@ export default function SendAssetsForm({
             handleGasEstimate();
           };
 
-          const handleNonceEstimate = async (account?: ExtendedAccount) => {
-            if (!values || !values.network || !(values.account || account)) {
+          const handleNonceEstimate = async (account: IExtendedAccount) => {
+            if (!values || !values.network || !account) {
               return;
             }
-            const nonce: number = await getNonce(
-              values.network,
-              account ? account : values.account
-            );
+            const nonce: number = await getNonce(values.network, account);
             setFieldValue('nonceField', nonce.toString());
           };
 
@@ -378,7 +371,10 @@ export default function SendAssetsForm({
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
                         <label htmlFor="nonce" className="input-group-header label-with-action">
                           <div>Nonce (?)</div>
-                          <div className="label-action" onClick={() => handleNonceEstimate()}>
+                          <div
+                            className="label-action"
+                            onClick={() => handleNonceEstimate(values.account)}
+                          >
                             Estimate
                           </div>
                         </label>

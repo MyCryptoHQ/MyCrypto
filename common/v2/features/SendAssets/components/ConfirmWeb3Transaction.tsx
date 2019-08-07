@@ -4,24 +4,10 @@ import { Address, Button, Network } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
-import {
-  AddressBookContext,
-  getNetworkByChainId,
-  AccountContext,
-  getAssetByContractAndNetwork
-} from 'v2/services/Store';
+import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
-import {
-  decodeTransfer,
-  gasPriceToBase,
-  fromWei,
-  Wei,
-  toWei,
-  getDecimalFromEtherUnit,
-  fromTokenBase
-} from 'v2/services/EthService';
+import { stripHexPrefix, fromWei, Wei } from 'v2/services/EthService';
 
-import { decodeTransaction } from '../helpers';
 import { IStepComponentProps, IConfirmConfig } from '../types';
 import './ConfirmTransaction.scss';
 
@@ -34,41 +20,18 @@ const truncate = (children: string) => {
   The currentPath in SendAssets determines which action should be called.
 */
 
-export default function ConfirmTransaction({
-  txConfig,
-  signedTx,
-  onComplete
-}: IStepComponentProps) {
-  const { getAccountByAddressAndNetworkName } = useContext(AccountContext);
+export default function ConfirmWeb3Transaction({ txConfig, onComplete }: IStepComponentProps) {
   const { getContactByAddress } = useContext(AddressBookContext);
   const [showDetails, setShowDetails] = useState(false);
 
-  if (!signedTx) {
-    return (
-      <div>Signed Transaction was not saved correctly.</div>
-    ); /* TODO: figure out this error messaging */
-  }
-  const decodedTx = decodeTransaction(signedTx);
-  const networkDetected = getNetworkByChainId(decodedTx.chainId);
-  const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
-
   const confirmTransactionConfig: IConfirmConfig = {
-    ...decodedTx,
-    to: decodedTx.to || 'Unknown',
-    from: decodedTx.from || 'Unknown',
-    receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
-    amount: contractAsset
-      ? fromTokenBase(toWei(decodeTransfer(decodedTx.data)._value, 0), contractAsset.decimal || 18)
-      : decodedTx.value,
-    network: networkDetected || undefined,
-    value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
-    asset: contractAsset || txConfig.asset,
-    senderAccount:
-      !decodedTx.from || !networkDetected
-        ? undefined
-        : getAccountByAddressAndNetworkName(decodedTx.from, networkDetected.name),
-    gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
-    nonce: decodedTx.nonce.toString()
+    ...txConfig,
+    from: txConfig.senderAccount.address,
+    amount: txConfig.amount, //fromTokenBase(toWei(txConfig.amount, 0), txConfig.asset.decimal || 18),
+    nonce: parseInt(stripHexPrefix(txConfig.nonce), 16).toString(),
+    gasPrice: parseInt(stripHexPrefix(txConfig.gasPrice), 16).toString(),
+    gasLimit: parseInt(stripHexPrefix(txConfig.gasLimit), 16).toString(),
+    value: Wei(txConfig.value).toString()
   };
 
   const recipientAccount = getContactByAddress(confirmTransactionConfig.to);

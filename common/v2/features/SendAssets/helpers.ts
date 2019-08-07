@@ -1,17 +1,21 @@
 import { utils } from 'ethers';
 
-import { getNetworkByChainId, getBaseAssetByNetwork } from 'v2/services/Store';
-import { ITxObject, ITxConfig, IFormikFields, ITxReceipt, ITxData } from './types';
 import {
+  getNetworkByChainId,
+  getBaseAssetByNetwork,
+  getAssetByContractAndNetwork
+} from 'v2/services/Store';
+import {
+  ERC20,
+  stripHexPrefix,
   gasPriceToBase,
   fromWei,
   toWei,
   fromTokenBase,
   Wei
-} from 'v2/services/EthService/utils/units';
-import { getAssetByContractAndNetwork } from 'v2/services/Store/Asset/helpers';
-import { ERC20 } from 'v2/services/EthService/contracts/erc20';
-import { stripHexPrefix } from 'v2/services/EthService/utils/formatters';
+} from 'v2/services/EthService';
+
+import { ITxObject, ITxConfig, IFormikFields, ITxReceipt, ITxData } from './types';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {
   return {

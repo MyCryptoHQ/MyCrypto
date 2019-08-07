@@ -1,5 +1,5 @@
 export { getNonce } from './nonce';
-export { Contract, ERC20, encodeTransfer } from './contracts';
+export { Contract, ERC20, encodeTransfer, decodeTransfer } from './contracts';
 export { Web3Node, isWeb3Node, Web3Service, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
   determineKeystoreType,
@@ -24,7 +24,8 @@ export {
   makeTransaction,
   hexEncodeData,
   hexEncodeQuantity,
-  hexToNumber
+  hexToNumber,
+  fromTokenBase
 } from './utils';
 export {
   isValidPath,

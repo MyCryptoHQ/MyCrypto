@@ -118,18 +118,6 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
   return undefined;
 };
 
-// Returns an account if it exists
-export const getAccountByAddressAndNetworkName = (
-  address: string | undefined,
-  network: string | undefined
-): Account | undefined => {
-  if (!address || !network) {
-    return;
-  }
-  const accounts: Account[] = getAllAccounts();
-  return accounts.find(account => account.address === address && account.network === network);
-};
-
 export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
   const network: Network | undefined = getNetworkByName(account.network);
   if (network) {

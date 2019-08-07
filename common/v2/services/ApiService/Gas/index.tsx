@@ -1,1 +1,1 @@
-export { getDefaultEstimates, fetchGasPriceEstimates } from './gasPriceFunctions';
+export { getDefaultEstimates, fetchGasPriceEstimates, getGasEstimate } from './gasPriceFunctions';

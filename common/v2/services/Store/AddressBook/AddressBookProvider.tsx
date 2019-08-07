@@ -33,9 +33,6 @@ export class AddressBookProvider extends Component {
       this.getAddressBooks();
     },
     getContactByAddress: address => {
-      if (!address) {
-        return undefined;
-      }
       const { addressBook } = this.state;
       return addressBook.find(contact => contact.address.toLowerCase() === address.toLowerCase());
     }

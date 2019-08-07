@@ -6,6 +6,7 @@ import { useApi } from 'v2/services';
 import { TWalletType } from 'v2/types';
 import {
   ConfirmTransaction,
+  ConfirmWeb3Transaction,
   SendAssetsForm,
   SignTransaction,
   TransactionReceipt
@@ -20,6 +21,7 @@ function SendAssets() {
     handleConfirmAndSign,
     handleConfirmAndSend,
     handleSignedTx,
+    handleSignedWeb3Tx,
     txConfig: txConfigState,
     txReceipt: txReceiptState,
     signedTx: signedTxState
@@ -32,8 +34,12 @@ function SendAssets() {
   // it has different step order, where sign and send are one panel
   const web3Steps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
-    { label: 'Confirm Transaction', component: ConfirmTransaction, action: handleConfirmAndSign },
-    { label: '', component: SignTransaction, action: handleSignedTx },
+    {
+      label: 'Confirm Transaction',
+      component: ConfirmWeb3Transaction,
+      action: handleConfirmAndSign
+    },
+    { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
     { label: 'Transaction Complete', component: TransactionReceipt, action: goToDashoard }
   ];
 

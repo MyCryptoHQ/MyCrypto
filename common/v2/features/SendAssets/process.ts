@@ -1,37 +1,18 @@
-// import { bufferToHex } from 'ethereumjs-util';
-// import BN from 'bn.js';
+import BN from 'bn.js';
+import { utils } from 'ethers';
+import { bufferToHex, addHexPrefix } from 'ethereumjs-util';
 
 import { IFormikFields } from 'v2/features/SendAssets/types';
+import { IHexStrTransaction, Asset, Network, IHexStrWeb3Transaction } from 'v2/types';
 import {
-  // Asset,
-  // Network,
-  IHexStrTransaction,
-  Asset,
-  Network,
-  IHexStrWeb3Transaction
-  // IHexStrTransaction
-} from 'v2/types';
-import { bufferToHex, addHexPrefix } from 'ethereumjs-util';
-import {
+  encodeTransfer,
+  hexEncodeQuantity,
   Address,
   toWei,
   TokenValue,
   toTokenBase,
   gasPriceToBase
-} from 'v2/services/EthService/utils/units';
-import BN from 'bn.js';
-import { encodeTransfer } from 'v2/services/EthService/contracts/token';
-import { hexEncodeQuantity } from 'v2/services/EthService/utils/hexEncode';
-import { utils } from 'ethers';
-
-// import {
-//   Address,
-//   TokenValue,
-//   toWei,
-//   toTokenBase,
-//   encodeTransfer,
-//   hexEncodeQuantity
-// } from 'v2/services/EthService';
+} from 'v2/services/EthService';
 
 export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | undefined => {
   const asset: Asset = formData.asset;
