@@ -16,6 +16,9 @@ const ContentPanelWrapper = styled.div`
   @media (min-width: 700px) {
     max-width: ${(props: ContentPanelWrapperProps) => (props.maxWidth ? props.maxWidth : '560px')};
   }
+  @media (max-width: 700px) {
+    max-width: 100%;
+  }
 `;
 
 const BackButton = styled(Button)`

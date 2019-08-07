@@ -44,9 +44,11 @@ const PlaceholderButton = styled(Button)`
 `;
 
 const CodeBlockWrapper = styled.div`
+  display: flex;
   width: 100%;
+  justify-content: center;
   max-width: 510px;
-  overflow-x: scroll;
+  overflow-x: auto;
 `;
 
 const QRCodeWrapper = styled.div`
