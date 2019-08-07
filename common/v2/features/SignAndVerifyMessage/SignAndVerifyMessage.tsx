@@ -81,7 +81,6 @@ function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
 
   return currentRoute ? (
     <ExtendedContentPanel
-      onBack={history.goBack}
       heading={
         <HeadingWrapper>
           <Heading>
