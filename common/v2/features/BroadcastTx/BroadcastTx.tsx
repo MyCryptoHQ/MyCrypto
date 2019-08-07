@@ -13,7 +13,7 @@ import { transactionSignActions } from 'features/transaction';
 import { SendButton } from 'components/SendButton';
 
 import { ExtendedContentPanel, InputField, QRCode, CodeBlock } from 'v2/components';
-import { Button } from '@mycrypto/ui';
+import { Button, Identicon } from '@mycrypto/ui';
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -35,6 +35,8 @@ const getStringifiedTx = (serializedTx: Buffer) =>
 
 const InputWrapper = styled.div`
   margin-top: 30px;
+  display: flex;
+  align-items: center;
 `;
 
 const PlaceholderButton = styled(Button)`
@@ -60,6 +62,16 @@ const QRCodeWrapper = styled.div`
   }
 `;
 
+const IdenticonIcon = styled(Identicon)`
+  margin-left: 12px;
+  margin-top: 8px;
+
+  img {
+    width: 48px;
+    height: 48px;
+    max-width: none;
+  }
+`;
 class BroadcastTx extends Component<Props> {
   public state: State = INITIAL_STATE;
 
@@ -83,6 +95,8 @@ class BroadcastTx extends Component<Props> {
             onBlur={this.validateField}
             inputError={!stateTransaction ? this.state.inputError : ''}
           />
+
+          {stateTransaction && <IdenticonIcon address={userInput} />}
         </InputWrapper>
 
         {stateTransaction && (
