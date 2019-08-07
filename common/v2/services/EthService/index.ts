@@ -24,7 +24,8 @@ export {
   makeTransaction,
   hexEncodeData,
   hexEncodeQuantity,
-  hexToNumber
+  hexToNumber,
+  verifySignedMessage
 } from './utils';
 export {
   isValidPath,

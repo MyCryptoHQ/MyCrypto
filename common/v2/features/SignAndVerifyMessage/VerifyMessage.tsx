@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import { InputField } from 'v2/components';
-import { verifySignedMessage, ISignedMessage } from 'libs/signing';
+import { verifySignedMessage } from 'v2/services/EthService';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
+import { ISignedMessage } from 'v2/types';
 
 const { SCREEN_XS } = BREAK_POINTS;
 const { WHITE, SUCCESS_GREEN } = COLORS;
