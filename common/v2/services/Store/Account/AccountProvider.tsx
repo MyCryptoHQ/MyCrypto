@@ -32,10 +32,7 @@ export class AccountProvider extends Component {
       service.updateAccount(uuid, accountData);
       this.getAccounts();
     },
-    getAccountByAddressAndNetworkName: (
-      address: string,
-      network: string
-    ): ExtendedAccount | undefined => {
+    getAccountByAddressAndNetworkName: (address, network): ExtendedAccount | undefined => {
       const { accounts } = this.state;
       return accounts.find(
         account =>

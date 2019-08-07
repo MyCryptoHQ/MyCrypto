@@ -22,13 +22,13 @@ import {
 } from 'v2/types';
 import { getNonce, hexToNumber } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
+import { notUndefined } from 'v2/utils';
 
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import {
   AccountDropdown,
   AssetDropdown,
-  // DataField,
   EthAddressField,
   GasLimitField,
   GasPriceField,
@@ -38,7 +38,7 @@ import {
 } from './fields';
 import './SendAssetsForm.scss';
 import {
-  // validateDataField,
+  // validateDataField, //Re-add this soontm
   validateGasLimitField,
   validateGasPriceField,
   validateNonceField,
@@ -118,8 +118,7 @@ export default function SendAssetsForm({
 
   const allAssets: Asset[] = filteredAssets
     .map(assetName => getAssetByUUID(assetName))
-    .filter((asset: Asset | undefined) => asset)
-    .map((asset: Asset) => asset);
+    .filter(notUndefined);
 
   return (
     <div className="SendAssetsForm">

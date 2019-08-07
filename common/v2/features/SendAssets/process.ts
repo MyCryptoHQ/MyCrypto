@@ -19,18 +19,12 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
   const network: Network = formData.network;
 
   if (asset.type === 'base') {
-    /* If base asset is being sent */
-    if (!asset.decimal) {
-      return undefined;
-    }
     const rawTransaction: IHexStrTransaction = {
       to:
         formData.resolvedENSAddress === '0x0'
           ? formData.receiverAddress
           : formData.resolvedENSAddress,
-      value: formData.amount
-        ? hexEncodeQuantity(toTokenBase(formData.amount, asset.decimal))
-        : '0x0',
+      value: formData.amount ? hexEncodeQuantity(toTokenBase(formData.amount, 18)) : '0x0',
       data: formData.txDataField ? formData.txDataField : '0x0',
       gasLimit: formData.gasLimitField,
       gasPrice: formData.advancedTransaction

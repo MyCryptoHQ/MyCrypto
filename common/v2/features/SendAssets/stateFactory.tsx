@@ -79,11 +79,11 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
           after();
         })
         .catch(txHash => {
-          // If rejected, data is a tx hash, not a receipt. Fetch the receipt
-          provider.getTransactionByHash(txHash).then(txData => {
+          // If rejected, data is a tx hash, not a receipt. Fetch the receipt, then save receipt for flow
+          provider.getTransactionByHash(txHash).then(transactionReceipt => {
             setState((prevState: State) => ({
               ...prevState,
-              txReceipt: txData
+              txReceipt: transactionReceipt
             }));
             after();
           });
