@@ -60,33 +60,10 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
   }
 };
 
-export const processFormDataToWeb3Tx = (
-  formData: IFormikFields
-): IHexStrWeb3Transaction | undefined => {
+export const processFormDataToWeb3Tx = (formData: IFormikFields): IHexStrWeb3Transaction => {
   const asset: Asset = formData.asset;
   const network: Network = formData.network;
-
-  if (asset.type === 'base') {
-    if (!asset.decimal) {
-      return undefined;
-    }
-    const rawTransaction: IHexStrWeb3Transaction = {
-      to:
-        formData.resolvedENSAddress === '0x0'
-          ? formData.receiverAddress
-          : formData.resolvedENSAddress,
-      from: formData.account.address,
-      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
-      data: formData.txDataField ? formData.txDataField : '0x0',
-      gas: inputGasLimitToHex(formData.gasLimitField),
-      gasPrice: formData.advancedTransaction
-        ? inputGasPriceToHex(formData.gasPriceField)
-        : inputGasPriceToHex(formData.gasPriceSlider),
-      nonce: inputNonceToHex(formData.nonceField),
-      chainId: network.chainId ? network.chainId : 1
-    };
-    return rawTransaction;
-  } else if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
+  if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
     const rawTransaction: IHexStrWeb3Transaction = {
       to: asset.contractAddress,
       value: '0x0',
@@ -101,6 +78,23 @@ export const processFormDataToWeb3Tx = (
           formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
         )
       ),
+      gas: inputGasLimitToHex(formData.gasLimitField),
+      gasPrice: formData.advancedTransaction
+        ? inputGasPriceToHex(formData.gasPriceField)
+        : inputGasPriceToHex(formData.gasPriceSlider),
+      nonce: inputNonceToHex(formData.nonceField),
+      chainId: network.chainId ? network.chainId : 1
+    };
+    return rawTransaction;
+  } else {
+    const rawTransaction: IHexStrWeb3Transaction = {
+      to:
+        formData.resolvedENSAddress === '0x0'
+          ? formData.receiverAddress
+          : formData.resolvedENSAddress,
+      from: formData.account.address,
+      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
+      data: formData.txDataField ? formData.txDataField : '0x0',
       gas: inputGasLimitToHex(formData.gasLimitField),
       gasPrice: formData.advancedTransaction
         ? inputGasPriceToHex(formData.gasPriceField)

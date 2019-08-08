@@ -136,12 +136,8 @@ export default function SendAssetsForm({
           const handleGasEstimate = async () => {
             if (!(!values || !values.network || !values.asset || !values.receiverAddress)) {
               const finalTx = processFormDataToWeb3Tx(values);
-              if (finalTx) {
-                const gas = await getGasEstimate(values.network, finalTx);
-                setFieldValue('gasLimitField', hexToNumber(gas));
-              } else {
-                return;
-              }
+              const gas = await getGasEstimate(values.network, finalTx);
+              setFieldValue('gasLimitField', hexToNumber(gas));
             } else {
               return;
             }
