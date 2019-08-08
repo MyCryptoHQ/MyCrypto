@@ -12,7 +12,7 @@ export interface Account {
   transactions: TransactionData[];
   dPath: string;
   timestamp: number;
-  favorite?: boolean;
+  favorite: boolean;
 }
 
 export interface ExtendedAccount extends Account {

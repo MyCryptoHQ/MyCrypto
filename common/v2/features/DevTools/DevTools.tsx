@@ -48,7 +48,8 @@ const DevTools = () => {
                   timestamp: Date.now(),
                   transactions: [],
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
-                  dPath: `m/44'/60'/0'/0/0`
+                  dPath: `m/44'/60'/0'/0/0`,
+                  favorite: false
                 }}
                 onSubmit={(values: ExtendedAccount, { setSubmitting }) => {
                   createAccount(values);
