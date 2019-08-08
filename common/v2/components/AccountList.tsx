@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { Button, CollapsibleTable, Copyable, Network, Typography, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
+import { ROUTE_PATHS } from 'v2/config';
 import { truncate } from 'v2/utils';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { ExtendedAccount, AddressBook } from 'v2/types';
 import {
   AccountContext,
@@ -32,9 +34,8 @@ const FavoriteButton = styled(Button)`
     span {
       svg {
         path {
-          fill: ${(props: iFavoriteProps) => (props.favorited ? 'rgb(255, 209, 102)' : 'white')};
-          stroke: ${(props: iFavoriteProps) =>
-            props.favorited ? 'rgb(255, 209, 102)' : '#7b8695'};
+          fill: ${(props: iFavoriteProps) => (props.favorited ? COLORS.GOLD : 'white')};
+          stroke: ${(props: iFavoriteProps) => (props.favorited ? COLORS.GOLD : '#7b8695')};
         }
       }
     }
@@ -79,12 +80,12 @@ export default function AccountList(props: AccountListProps) {
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS')}
       headingRight={translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
-      actionLink="/add-account"
+      actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}
     >
       <TableContainer>
         <CollapsibleTable
-          breakpoint={450}
+          breakpoint={Number(BREAK_POINTS.SCREEN_XS)}
           {...buildAccountTable(
             currentsOnly ? currentAccounts : accounts,
             deleteAccount,
