@@ -1,7 +1,7 @@
 {
   "name": "MyCrypto",
   "author": "MyCryptoHQ",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "main": "main.js",
   "description": "MyCrypto is a free, open-source interface for interacting with the blockchain",
   "repository": "https://github.com/MyCryptoHQ/MyCrypto",
