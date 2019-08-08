@@ -49,10 +49,9 @@ class NameInput extends Component<Props, State> {
             />
             <span className="input-group-addon">.eth</span>
           </label>
-          {domainToCheck &&
-            !isValidDomain && (
-              <p className="help-block is-invalid">{translate('ENS_INVALID_INPUT')}</p>
-            )}
+          {domainToCheck && !isValidDomain && (
+            <p className="help-block is-invalid">{translate('ENS_INVALID_INPUT')}</p>
+          )}
         </div>
         <button
           className="ENSInput-button btn btn-primary btn-block"
@@ -90,6 +89,9 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps, {
-  resolveDomainRequested: ensActions.resolveDomainRequested
-})(NameInput);
+export default connect(
+  mapStateToProps,
+  {
+    resolveDomainRequested: ensActions.resolveDomainRequested
+  }
+)(NameInput);

@@ -113,11 +113,6 @@ export const ESN_DEFAULT: DPath = {
   value: "m/44'/31102'/0'/0"
 };
 
-export const AQUA_DEFAULT: DPath = {
-  label: 'Default (AQUA)',
-  value: "m/44'/60'/0'/0"
-};
-
 export const AKA_DEFAULT: DPath = {
   label: 'Default (AKA)',
   value: "m/44'/200625'/0'/0"
@@ -163,6 +158,45 @@ export const THUNDERCORE_DEFAULT: DPath = {
   value: "m/44'/1001'/0'/0"
 };
 
+export const ETI_DEFAULT: DPath = {
+  label: 'Default (ETI)',
+  value: "m/44'/464'/0'/0"
+};
+export const WEB_DEFAULT: DPath = {
+  label: 'Default (WEB)',
+  value: "m/44'/227'/0'/0"
+};
+
+export const METADIUM_DEFAULT: DPath = {
+  label: 'Default (METADIUM)',
+  value: "m/44'/916'/0'/0"
+};
+
+export const SOLIDUM_DEFAULT: DPath = {
+  label: 'Default (SOLIDUM)',
+  value: "m/44'/997'/0'/0"
+};
+
+export const DEXON_DEFAULT: DPath = {
+  label: 'Default (DEXON)',
+  value: "m/44'/237'/0'/0"
+};
+
+export const ASK_DEFAULT: DPath = {
+  label: 'Default (ASK)',
+  value: "m/44'/2221'/0'/0"
+};
+
+export const ASK_TREZOR: DPath = {
+  label: 'TREZOR (ASK)',
+  value: "m/44'/2221'/0'/0"
+};
+
+export const AUX_DEFAULT: DPath = {
+  label: 'Default (AUX)',
+  value: "m/44'/344'/0'/0"
+};
+
 export const DPaths: DPath[] = [
   ETH_DEFAULT,
   ETH_TREZOR,
@@ -186,7 +220,6 @@ export const DPaths: DPath[] = [
   GO_DEFAULT,
   EOSC_DEFAULT,
   ESN_DEFAULT,
-  AQUA_DEFAULT,
   AKA_DEFAULT,
   PIRL_DEFAULT,
   ATH_DEFAULT,
@@ -195,7 +228,15 @@ export const DPaths: DPath[] = [
   REOSC_DEFAULT,
   ARTIS_SIGMA1,
   ARTIS_TAU1,
-  THUNDERCORE_DEFAULT
+  THUNDERCORE_DEFAULT,
+  ETI_DEFAULT,
+  WEB_DEFAULT,
+  METADIUM_DEFAULT,
+  SOLIDUM_DEFAULT,
+  DEXON_DEFAULT,
+  ASK_DEFAULT,
+  ASK_TREZOR,
+  AUX_DEFAULT
 ];
 
 // PATHS TO BE INCLUDED REGARDLESS OF WALLET FORMAT

@@ -42,12 +42,11 @@ class BodyClass extends React.Component<StateProps, State> {
         {this.props.network.isTestnet && (
           <p className="tx-modal-testnet-warn small">Testnet Transaction</p>
         )}
-        {this.props.isSchedulingEnabled &&
-          this.props.isToken && (
-            <p className="tx-modal-testnet-warn small">
-              {translate('SCHEDULE_TOKEN_TRANSFER_NOTICE')}
-            </p>
-          )}
+        {this.props.isSchedulingEnabled && this.props.isToken && (
+          <p className="tx-modal-testnet-warn small">
+            {translate('SCHEDULE_TOKEN_TRANSFER_NOTICE')}
+          </p>
+        )}
 
         {this.props.sendingTokenApproveTransaction && (
           <p className="tx-modal-testnet-warn small">

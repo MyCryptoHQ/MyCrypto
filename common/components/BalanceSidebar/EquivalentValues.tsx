@@ -133,7 +133,11 @@ class EquivalentValues extends React.Component<Props, State> {
       USD: '$',
       EUR: '€',
       GBP: '£',
-      CHF: ' '
+      CHF: '₣',
+      RUB: '₽',
+      JPY: '¥',
+      KRW: '₩',
+      INR: '₹'
     };
     const coinAndTokenSymbols: any = {
       BTC: btcIco,
@@ -333,6 +337,7 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-export default connect(mapStateToProps, { fetchCCRates: ratesActions.fetchCCRatesRequested })(
-  EquivalentValues
-);
+export default connect(
+  mapStateToProps,
+  { fetchCCRates: ratesActions.fetchCCRatesRequested }
+)(EquivalentValues);

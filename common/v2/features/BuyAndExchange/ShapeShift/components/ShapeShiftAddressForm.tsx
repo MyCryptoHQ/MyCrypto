@@ -64,12 +64,11 @@ export default function ShapeShiftAddressForm({ addressInputRef, asset, onSubmit
               </button>
             </fieldset>
           </Form>
-          {props.touched.address &&
-            props.errors.address && (
-              <Warning highlighted={true}>
-                <ErrorMessage name="address" />
-              </Warning>
-            )}
+          {props.touched.address && props.errors.address && (
+            <Warning highlighted={true}>
+              <ErrorMessage name="address" />
+            </Warning>
+          )}
         </section>
       )}
     />

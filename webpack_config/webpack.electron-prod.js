@@ -4,7 +4,7 @@ const path = require('path');
 const ClearDistPlugin = require('./plugins/clearDist');
 const DelayPlugin = require('./plugins/delay');
 const makeConfig = require('./makeConfig');
-const electronConfig = require('./webpack.electron-dev.js');
+const electronConfig = require('./electron-main.dev.js');
 
 const jsConfig = makeConfig({
   isProduction: true,

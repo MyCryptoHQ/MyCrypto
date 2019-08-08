@@ -364,9 +364,12 @@ function mapStateToProps(state: AppState): StateProps {
   };
 }
 
-const DeterministicWalletsModal = connect(mapStateToProps, {
-  getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets,
-  setDesiredToken: deterministicWalletsActions.setDesiredToken
-})(DeterministicWalletsModalClass);
+const DeterministicWalletsModal = connect(
+  mapStateToProps,
+  {
+    getDeterministicWallets: deterministicWalletsActions.getDeterministicWallets,
+    setDesiredToken: deterministicWalletsActions.setDesiredToken
+  }
+)(DeterministicWalletsModalClass);
 
 export default DeterministicWalletsModal;
