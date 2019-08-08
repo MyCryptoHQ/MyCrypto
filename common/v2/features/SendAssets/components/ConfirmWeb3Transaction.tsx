@@ -6,10 +6,11 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
-import { stripHexPrefix, fromWei, Wei } from 'v2/services/EthService';
+import { fromWei, Wei, totalTxFeeToWei, totalTxFeeToString } from 'v2/services/EthService';
 
 import { IStepComponentProps, IConfirmConfig } from '../types';
 import './ConfirmTransaction.scss';
+import { hexToString, hexWeiToString } from 'v2/services/EthService/utils/makeTransaction';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -28,10 +29,10 @@ export default function ConfirmWeb3Transaction({ txConfig, onComplete }: IStepCo
     ...txConfig,
     from: txConfig.senderAccount.address,
     amount: txConfig.amount, //fromTokenBase(toWei(txConfig.amount, 0), txConfig.asset.decimal || 18),
-    nonce: parseInt(stripHexPrefix(txConfig.nonce), 16).toString(),
-    gasPrice: parseInt(stripHexPrefix(txConfig.gasPrice), 16).toString(),
-    gasLimit: parseInt(stripHexPrefix(txConfig.gasLimit), 16).toString(),
-    value: Wei(txConfig.value).toString()
+    nonce: hexToString(txConfig.nonce),
+    gasPrice: hexToString(txConfig.gasPrice),
+    gasLimit: hexToString(txConfig.gasLimit),
+    value: hexWeiToString(txConfig.value)
   };
 
   const recipientAccount = getContactByAddress(confirmTransactionConfig.to);
@@ -51,14 +52,10 @@ export default function ConfirmWeb3Transaction({ txConfig, onComplete }: IStepCo
     data
   } = confirmTransactionConfig;
   const assetType = asset.type;
-  const gasPriceActual = parseInt(gasPrice, 10);
-  const gasLimitActual = parseInt(gasLimit, 10);
 
   /* Calculate Transaction Fee */
-  const transactionFeeWei: BN = new BN(gasPriceActual * gasLimitActual);
-  const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
-  const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(6);
-  const maxCostFeeEther = transactionFeeBase;
+  const transactionFeeWei: BN = totalTxFeeToWei(gasPrice, gasLimit);
+  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
 
   /* Calculate total base asset amount */
   const valueWei = Wei(value);
@@ -101,7 +98,7 @@ export default function ConfirmWeb3Transaction({ txConfig, onComplete }: IStepCo
           <img src={feeIcon} alt="Fee" /> Transaction Fee:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${maxCostFeeEther} ETH`} fiatValue="$1" />
+          <Amount assetValue={`${maxTransactionFeeBase} ETH`} fiatValue="$1" />
         </div>
       </div>
       <div className="ConfirmTransaction-divider" />
@@ -143,15 +140,15 @@ export default function ConfirmWeb3Transaction({ txConfig, onComplete }: IStepCo
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Limit:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasLimitActual}`}</div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasLimit}`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasPriceActual} wei`}</div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasPrice} wei`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
-            <div className="ConfirmTransaction-details-row-column">{maxCostFeeEther} ETH</div>
+            <div className="ConfirmTransaction-details-row-column">{maxTransactionFeeBase} ETH</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Nonce:</div>

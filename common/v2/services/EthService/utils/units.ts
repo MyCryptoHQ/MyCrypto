@@ -112,6 +112,12 @@ const convertTokenBase = (value: TokenValue, oldDecimal: number, newDecimal: num
 
 const gasPriceToBase = (price: number) => toWei(price.toString(), getDecimalFromEtherUnit('gwei'));
 
+const totalTxFeeToString = (gasPriceEther: string, gasLimit: string): string =>
+  parseFloat(fromWei(totalTxFeeToWei(gasPriceEther, gasLimit), 'ether')).toFixed(6);
+
+const totalTxFeeToWei = (gasPriceEther: string, gasLimit: string): Wei =>
+  new BN(parseInt(gasPriceEther, 10) * parseInt(gasLimit, 10));
+
 export {
   Data,
   Address,
@@ -126,5 +132,7 @@ export {
   UnitKey,
   Nonce,
   handleValues,
-  gasPriceToBase
+  gasPriceToBase,
+  totalTxFeeToString,
+  totalTxFeeToWei
 };

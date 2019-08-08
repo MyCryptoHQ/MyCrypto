@@ -25,7 +25,20 @@ export {
   hexEncodeData,
   hexEncodeQuantity,
   hexToNumber,
-  fromTokenBase
+  fromTokenBase,
+  bigNumGasLimitToViewable,
+  hexValueToViewableEther,
+  hexToString,
+  hexWeiToString,
+  bigNumGasPriceToViewableGwei,
+  bigNumGasPriceToViewableWei,
+  bigNumValueToViewableEther,
+  inputGasPriceToHex,
+  inputValueToHex,
+  inputGasLimitToHex,
+  inputNonceToHex,
+  totalTxFeeToString,
+  totalTxFeeToWei
 } from './utils';
 export {
   isValidPath,

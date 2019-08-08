@@ -7,15 +7,16 @@ import {
 } from 'v2/services/Store';
 import {
   ERC20,
-  stripHexPrefix,
-  gasPriceToBase,
   fromWei,
-  toWei,
   fromTokenBase,
-  Wei
+  Wei,
+  bigNumGasPriceToViewableGwei,
+  bigNumGasLimitToViewable,
+  bigNumValueToViewableEther,
+  hexWeiToString
 } from 'v2/services/EthService';
 
-import { ITxObject, ITxConfig, IFormikFields, ITxReceipt, ITxData } from './types';
+import { ITxObject, ITxConfig, ITxReceipt, ITxData } from './types';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {
   return {
@@ -29,27 +30,12 @@ export function fromStateToTxObject(state: ITxConfig): ITxObject {
   };
 }
 
-export function fromFormikStateToTxObject(formikState: IFormikFields): ITxObject {
-  return {
-    to: formikState.receiverAddress, // @TODO compose data according to asset type
-    value: formikState.amount, // @TODO value depends on asset type
-    data: formikState.txDataField, // @TODO compose data according to asset type
-    gasLimit: formikState.gasLimitField, // @TODO update with correct value.
-    gasPrice: fromWei(gasPriceToBase(parseFloat(formikState.gasPriceField)), 'ether'), // @TODO update with correct value.
-    nonce: formikState.nonceField, // @TODO update with correct value.
-    chainId: formikState.network.chainId
-  };
-}
-
 export function decodeTransaction(signedTx: string) {
   const decodedTransaction = utils.parseTransaction(signedTx);
-  const gasLimit = utils.bigNumberify(decodedTransaction.gasLimit);
-  const gasPriceGwei = fromWei(
-    toWei(utils.bigNumberify(decodedTransaction.gasPrice).toString(), 0),
-    'gwei'
-  );
-  const amountToSendWei = utils.bigNumberify(decodedTransaction.value);
-  const amountToSendEther = utils.formatEther(amountToSendWei);
+  const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit);
+  const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice);
+
+  const amountToSendEther = bigNumValueToViewableEther(decodedTransaction.value);
 
   return {
     to: decodedTransaction.to,
@@ -88,10 +74,7 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxData | undefined {
             ERC20.transfer.decodeInput(txReceipt.data)._value,
             contractAsset.decimal || 18
           )
-        : fromWei(
-            Wei(parseInt(stripHexPrefix(txReceipt.value._hex), 16).toString()),
-            'ether'
-          ).toString(),
+        : fromWei(Wei(hexWeiToString(txReceipt.value._hex)), 'ether').toString(),
       to: contractAsset ? ERC20.transfer.decodeInput(txReceipt.data)._to : txReceipt.to,
       nonce: txReceipt.nonce,
       gasLimit: txReceipt.gasLimit, // Hex

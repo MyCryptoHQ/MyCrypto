@@ -9,11 +9,26 @@ export {
   TokenValue,
   Address,
   baseToConvertedUnit,
-  fromTokenBase
+  fromTokenBase,
+  totalTxFeeToString,
+  totalTxFeeToWei
 } from './units';
 export { padLeftEven } from './padLeftEven';
 export { normalise } from './normalise';
 export { getTransactionFields } from './getTransactionFields';
-export { makeTransaction } from './makeTransaction';
+export {
+  makeTransaction,
+  inputGasPriceToHex,
+  inputGasLimitToHex,
+  inputValueToHex,
+  hexWeiToString,
+  hexToString,
+  inputNonceToHex,
+  bigNumGasPriceToViewableWei,
+  bigNumGasLimitToViewable,
+  hexValueToViewableEther,
+  bigNumGasPriceToViewableGwei,
+  bigNumValueToViewableEther
+} from './makeTransaction';
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 export { hexToNumber } from './hexToNumber';

@@ -18,7 +18,9 @@ import {
   Wei,
   toWei,
   getDecimalFromEtherUnit,
-  fromTokenBase
+  fromTokenBase,
+  totalTxFeeToString,
+  totalTxFeeToWei
 } from 'v2/services/EthService';
 
 import { decodeTransaction } from '../helpers';
@@ -88,14 +90,10 @@ export default function ConfirmTransaction({
     data
   } = confirmTransactionConfig;
   const assetType = asset.type;
-  const gasPriceActual = parseInt(gasPrice, 10);
-  const gasLimitActual = parseInt(gasLimit, 10);
 
   /* Calculate Transaction Fee */
-  const transactionFeeWei: BN = new BN(gasPriceActual * gasLimitActual);
-  const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
-  const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(6);
-  const maxCostFeeEther = transactionFeeBase;
+  const transactionFeeWei: BN = totalTxFeeToWei(gasPrice, gasLimit);
+  const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
 
   /* Calculate total base asset amount */
   const valueWei = Wei(value);
@@ -138,15 +136,17 @@ export default function ConfirmTransaction({
           <img src={feeIcon} alt="Fee" /> Transaction Fee:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${maxCostFeeEther} ETH`} fiatValue="$1" />
+          <Amount assetValue={`${maxTransactionFeeBase} ETH`} fiatValue="$1" />
         </div>
       </div>
       <div className="ConfirmTransaction-divider" />
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={sendIcon} alt="Total" /> You'll Send:
+          maxCostFeeEther
+          <img src={sendIcon} alt="Total" /> You'll SenmaxCostFeeEther
         </div>
         <div className="ConfirmTransaction-row-column">
+          maxCostFeeEther
           {assetType === 'base' ? (
             <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
           ) : (
@@ -180,15 +180,15 @@ export default function ConfirmTransaction({
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Limit:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasLimitActual}`}</div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasLimit}`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasPriceActual} wei`}</div>
+            <div className="ConfirmTransaction-details-row-column">{`${gasPrice} wei`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
-            <div className="ConfirmTransaction-details-row-column">{maxCostFeeEther} ETH</div>
+            <div className="ConfirmTransaction-details-row-column">{maxTransactionFeeBase} ETH</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Nonce:</div>
