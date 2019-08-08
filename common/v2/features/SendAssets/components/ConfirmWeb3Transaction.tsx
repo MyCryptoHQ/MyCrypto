@@ -31,10 +31,9 @@ export default function ConfirmWeb3Transaction({ txConfig, onComplete }: IStepCo
     amount: txConfig.amount, //fromTokenBase(toWei(txConfig.amount, 0), txConfig.asset.decimal || 18),
     nonce: hexToString(txConfig.nonce),
     gasPrice: hexToString(txConfig.gasPrice),
-    gasLimit: hexToString(txConfig.gasLimit),
+    gasLimit: txConfig.gasLimit.toString(),
     value: hexWeiToString(txConfig.value)
   };
-
   const recipientAccount = getContactByAddress(confirmTransactionConfig.to);
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
 

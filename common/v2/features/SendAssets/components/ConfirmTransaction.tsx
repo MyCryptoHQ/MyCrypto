@@ -142,11 +142,9 @@ export default function ConfirmTransaction({
       <div className="ConfirmTransaction-divider" />
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          maxCostFeeEther
-          <img src={sendIcon} alt="Total" /> You'll SenmaxCostFeeEther
+          <img src={sendIcon} alt="Total" /> You'll Send:
         </div>
         <div className="ConfirmTransaction-row-column">
-          maxCostFeeEther
           {assetType === 'base' ? (
             <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
           ) : (

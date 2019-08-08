@@ -2,7 +2,7 @@ import { TUseApiFactory } from 'v2/services';
 import { ProviderHandler } from 'v2/config';
 
 import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx } from './types';
-import { processFormDataToWeb3Tx, processFormDataToTx } from './process';
+import { processFormDataToTx } from './process';
 
 const txConfigInitialState = {
   gasLimit: null,
@@ -24,17 +24,10 @@ interface State {
 
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
-    const isWeb3Account = payload.account.wallet === 'web3';
-    const processedTx = isWeb3Account
-      ? processFormDataToWeb3Tx(payload)
-      : processFormDataToTx(payload);
+    const processedTx = processFormDataToTx(payload);
     /* TODO: If tx processing fails, trigger error message to user */
     const data: ITxConfig = {
-      gasLimit: processedTx
-        ? 'gas' in processedTx
-          ? processedTx.gas
-          : processedTx.gasLimit
-        : payload.gasLimitField,
+      gasLimit: processedTx ? processedTx.gasLimit : payload.gasLimitField,
       gasPrice: processedTx ? processedTx.gasPrice : payload.gasPriceField,
       nonce: processedTx ? processedTx.nonce : payload.nonceField,
       data: processedTx ? processedTx.data : payload.txDataField,

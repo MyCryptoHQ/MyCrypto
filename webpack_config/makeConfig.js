@@ -325,6 +325,11 @@ module.exports = function(opts = {}) {
       chunkModules: false,
       chunkOrigins: false,
       modules: false
-    }
+    },
+    externals: [
+      {
+        xmlhttprequest: 'XMLHttpRequest'
+      }
+    ]
   };
 };

@@ -34,11 +34,8 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
-  } else if (asset.type === 'erc20') {
+  } else if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
     /* If erc20 asset is being sent */
-    if (!asset.contractAddress || !asset.decimal) {
-      return undefined;
-    }
     const rawTransaction: IHexStrTransaction = {
       to: asset.contractAddress,
       value: '0x0',
@@ -89,10 +86,7 @@ export const processFormDataToWeb3Tx = (
       chainId: network.chainId ? network.chainId : 1
     };
     return rawTransaction;
-  } else if (asset.type === 'erc20') {
-    if (!asset.contractAddress || !asset.decimal) {
-      return undefined;
-    }
+  } else if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
     const rawTransaction: IHexStrWeb3Transaction = {
       to: asset.contractAddress,
       value: '0x0',

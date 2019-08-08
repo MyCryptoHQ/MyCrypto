@@ -44,9 +44,9 @@ import {
   validateNonceField,
   validateDataField
 } from './validators/validators';
-import { processFormDataToWeb3Tx } from '../process';
 import { getResolvedENSAddress } from '../../Ens';
 import { IFormikFields, IStepComponentProps } from '../types';
+import { processFormDataToWeb3Tx } from '../process';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: '',
