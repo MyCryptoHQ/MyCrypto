@@ -3,10 +3,11 @@ import { Button, Tooltip, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { translate, translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/types';
 import { DashboardPanel } from 'v2/components';
-import { translateRaw } from 'translations';
+import { ROUTE_PATHS } from 'v2/config';
 
 const Divider = styled.div`
   height: 2px;
@@ -102,8 +103,6 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
     }
   };
 
-  public renderTooltipContent = () => <div>Test</div>;
-
   public render() {
     const { globalSettings } = this.props;
     return (
@@ -111,8 +110,8 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
         <Divider />
         <SettingsField>
           <SettingsLabel>
-            {translateRaw('SETTINGS_HANDLING_LABEL')}
-            <Tooltip tooltip={<span>{translateRaw('SETTINGS_TOOLTIP')}</span>}>
+            {translate('SETTINGS_HANDLING_LABEL')}
+            <Tooltip tooltip={<span>{translate('SETTINGS_TOOLTIP')}</span>}>
               {props => (
                 <div {...props}>
                   <SettingsTooltipIcon icon="shape" />
@@ -121,29 +120,23 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
             </Tooltip>
           </SettingsLabel>
           <SettingsControl>
-            <Link to="/settings/import">
-              <SettingsButton secondary={true}>
-                {translateRaw('SETTINGS_IMPORT_LABEL')}
-              </SettingsButton>
+            <Link to={ROUTE_PATHS.SETTINGS_IMPORT.path}>
+              <SettingsButton secondary={true}>{translate('SETTINGS_IMPORT_LABEL')}</SettingsButton>
             </Link>
-            <Link to="/settings/export">
-              <SettingsButton secondary={true}>
-                {translateRaw('SETTINGS_EXPORT_LABEL')}
-              </SettingsButton>
+            <Link to={ROUTE_PATHS.SETTINGS_EXPORT.path}>
+              <SettingsButton secondary={true}>{translate('SETTINGS_EXPORT_LABEL')}</SettingsButton>
             </Link>
           </SettingsControl>
         </SettingsField>
         <SettingsField>
-          <SettingsLabel>{translateRaw('SETTINGS_PAPER_LABEL')}</SettingsLabel>
+          <SettingsLabel>{translate('SETTINGS_PAPER_LABEL')}</SettingsLabel>
           <SettingsControl>
-            <SettingsButton secondary={true}>
-              {translateRaw('SETTINGS_DOWNLOAD_LABEL')}
-            </SettingsButton>
-            <SettingsButton secondary={true}>{translateRaw('SETTINGS_PRINT_LABEL')}</SettingsButton>
+            <SettingsButton secondary={true}>{translate('SETTINGS_DOWNLOAD_LABEL')}</SettingsButton>
+            <SettingsButton secondary={true}>{translate('SETTINGS_PRINT_LABEL')}</SettingsButton>
           </SettingsControl>
         </SettingsField>
         <SettingsField>
-          <SettingsLabel>{translateRaw('SETTINGS_INACTIVITY_LABEL')}</SettingsLabel>
+          <SettingsLabel>{translate('SETTINGS_INACTIVITY_LABEL')}</SettingsLabel>
           <SettingsControl>
             <SelectContainer>
               <select onChange={this.changeTimer} value={String(globalSettings.inactivityTimer)}>
