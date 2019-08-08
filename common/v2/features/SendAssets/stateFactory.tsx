@@ -25,15 +25,8 @@ interface State {
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const processedTx = processFormDataToTx(payload);
-    /* TODO: If tx processing fails, trigger error message to user */
-    const data: ITxConfig = {
-      gasLimit: processedTx ? processedTx.gasLimit : payload.gasLimitField,
-      gasPrice: processedTx ? processedTx.gasPrice : payload.gasPriceField,
-      nonce: processedTx ? processedTx.nonce : payload.nonceField,
-      data: processedTx ? processedTx.data : payload.txDataField,
-      value: processedTx ? processedTx.value : payload.amount,
-      chainId: processedTx ? processedTx.chainId : payload.network.chainId,
-      to: processedTx ? processedTx.to : payload.receiverAddress,
+    const txConfigData: ITxConfig = {
+      ...processedTx,
       amount: payload.amount,
       senderAccount: payload.account,
       receiverAddress: payload.receiverAddress,
@@ -42,7 +35,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
     };
     setState((prevState: State) => ({
       ...prevState,
-      txConfig: data
+      txConfig: txConfigData
     }));
     after();
   };

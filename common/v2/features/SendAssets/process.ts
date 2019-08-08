@@ -14,27 +14,11 @@ import {
   inputGasLimitToHex
 } from 'v2/services/EthService';
 
-export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | undefined => {
+export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction => {
   const asset: Asset = formData.asset;
   const network: Network = formData.network;
 
-  if (asset.type === 'base') {
-    const rawTransaction: IHexStrTransaction = {
-      to:
-        formData.resolvedENSAddress === '0x0'
-          ? formData.receiverAddress
-          : formData.resolvedENSAddress,
-      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
-      data: formData.txDataField ? formData.txDataField : '0x0',
-      gasLimit: formData.gasLimitField,
-      gasPrice: formData.advancedTransaction
-        ? inputGasPriceToHex(formData.gasPriceField)
-        : inputGasPriceToHex(formData.gasPriceSlider),
-      nonce: inputNonceToHex(formData.nonceField),
-      chainId: network.chainId ? network.chainId : 1
-    };
-    return rawTransaction;
-  } else if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
+  if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
     /* If erc20 asset is being sent */
     const rawTransaction: IHexStrTransaction = {
       to: asset.contractAddress,
@@ -49,6 +33,22 @@ export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction
           formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
         )
       ),
+      gasLimit: formData.gasLimitField,
+      gasPrice: formData.advancedTransaction
+        ? inputGasPriceToHex(formData.gasPriceField)
+        : inputGasPriceToHex(formData.gasPriceSlider),
+      nonce: inputNonceToHex(formData.nonceField),
+      chainId: network.chainId ? network.chainId : 1
+    };
+    return rawTransaction;
+  } else {
+    const rawTransaction: IHexStrTransaction = {
+      to:
+        formData.resolvedENSAddress === '0x0'
+          ? formData.receiverAddress
+          : formData.resolvedENSAddress,
+      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
+      data: formData.txDataField ? formData.txDataField : '0x0',
       gasLimit: formData.gasLimitField,
       gasPrice: formData.advancedTransaction
         ? inputGasPriceToHex(formData.gasPriceField)
