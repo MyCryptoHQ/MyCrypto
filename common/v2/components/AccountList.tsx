@@ -103,77 +103,52 @@ function buildAccountTable(
   updateAccount: UpdateAccount,
   deletable?: boolean
 ) {
+  const columns = [
+    translateRaw('ACCOUNT_LIST_FAVOURITE'),
+    translateRaw('ACCOUNT_LIST_LABEL'),
+    translateRaw('ACCOUNT_LIST_ADDRESS'),
+    translateRaw('ACCOUNT_LIST_NETWORK'),
+    translateRaw('ACCOUNT_LIST_VALUE')
+  ];
+
   return {
-    head: deletable
-      ? [
-          translateRaw('ACCOUNT_LIST_FAVOURITE'),
-          translateRaw('ACCOUNT_LIST_LABEL'),
-          translateRaw('ACCOUNT_LIST_ADDRESS'),
-          translateRaw('ACCOUNT_LIST_NETWORK'),
-          translateRaw('ACCOUNT_LIST_VALUE'),
-          translateRaw('ACCOUNT_LIST_DELETE')
-        ]
-      : [
-          translateRaw('ACCOUNT_LIST_FAVOURITE'),
-          translateRaw('ACCOUNT_LIST_LABEL'),
-          translateRaw('ACCOUNT_LIST_ADDRESS'),
-          translateRaw('ACCOUNT_LIST_NETWORK'),
-          translateRaw('ACCOUNT_LIST_VALUE')
-        ],
+    head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
     body: accounts.map((account, index) => {
       const addressCard: AddressBook | undefined = getLabelByAccount(account);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       let bodyItemCount = 0;
+      let bodyContent = [
+        <FavoriteButton
+          key={index + bodyItemCount++}
+          icon="star"
+          favorited={account.favorite ? account.favorite : false}
+          onClick={() =>
+            updateAccount(account.uuid, {
+              ...account,
+              favorite: !account.favorite
+            })
+          }
+        />,
+        <Label>
+          <Identicon address={account.address} />
+          <span>{label}</span>
+        </Label>,
+        <Copyable key={index + bodyItemCount++} text={account.address} truncate={truncate} />,
+        <Network key={index + bodyItemCount++} color="#a682ff">
+          {account.network}
+        </Network>,
+        <Typography key={index + bodyItemCount++}>{account.balance}</Typography>
+      ];
       return deletable
         ? [
-            <FavoriteButton
-              key={index + bodyItemCount++}
-              icon="star"
-              favorited={account.favorite ? account.favorite : false}
-              onClick={() =>
-                updateAccount(account.uuid, {
-                  ...account,
-                  favorite: !account.favorite
-                })
-              }
-            />,
-            <Label>
-              <Identicon address={account.address} />
-              <span>{label}</span>
-            </Label>,
-            <Copyable key={index + bodyItemCount++} text={account.address} truncate={truncate} />,
-            <Network key={index + bodyItemCount++} color="#a682ff">
-              {account.network}
-            </Network>,
-            <Typography key={index + bodyItemCount++}>{account.balance}</Typography>,
+            ...bodyContent,
             <DeleteButton
               key={index + bodyItemCount++}
               onClick={handleAccountDelete(deleteAccount, account.uuid)}
               icon="exit"
             />
           ]
-        : [
-            <FavoriteButton
-              key={index + bodyItemCount++}
-              icon="star"
-              favorited={account.favorite ? account.favorite : false}
-              onClick={() =>
-                updateAccount(account.uuid, {
-                  ...account,
-                  favorite: !account.favorite
-                })
-              }
-            />,
-            <Label>
-              <Identicon address={account.address} />
-              <span>{label}</span>
-            </Label>,
-            <Copyable key={index + bodyItemCount++} text={account.address} truncate={truncate} />,
-            <Network key={index + bodyItemCount++} color="#a682ff">
-              {account.network}
-            </Network>,
-            <Typography key={index + bodyItemCount++}>{account.balance}</Typography>
-          ];
+        : bodyContent;
     }),
     config: {
       primaryColumn: translateRaw('ACCOUNT_LIST_ADDRESS'),
