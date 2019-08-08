@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
@@ -8,7 +8,7 @@ import {
   notificationsConfigs,
   NotificationTemplates
 } from 'v2/providers/NotificationsProvider';
-import { Notification } from 'v2/types';
+import { ExtendedAccount } from 'v2/types';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';
@@ -37,12 +37,19 @@ const CloseButton = styled(Button)`
   }
 `;
 
-class NotificationsPanel extends Component {
-  public handleCloseClick = (
-    currentNotification: Notification,
-    dismissCurrentNotification: () => void,
-    displayNotification: (templateName: string, templateData?: object) => void
-  ) => {
+interface Props {
+  accounts: ExtendedAccount[];
+}
+
+const NotificationsPanel = ({ accounts }: Props) => {
+  const {
+    notifications,
+    displayNotification,
+    currentNotification,
+    dismissCurrentNotification
+  } = useContext(NotificationsContext);
+
+  const handleCloseClick = () => {
     if (!currentNotification) {
       return;
     }
@@ -66,40 +73,34 @@ class NotificationsPanel extends Component {
     }
   };
 
-  public render() {
-    return (
-      <NotificationsContext.Consumer>
-        {({ currentNotification, dismissCurrentNotification, displayNotification }) => (
-          <React.Fragment>
-            {currentNotification && (
-              <MainPanel>
-                <CloseButton
-                  basic={true}
-                  onClick={() =>
-                    this.handleCloseClick(
-                      currentNotification,
-                      dismissCurrentNotification,
-                      displayNotification
-                    )
-                  }
-                >
-                  <img src={closeIcon} alt="Close" />
-                </CloseButton>
-                {this.getNotificationBody(currentNotification)}
-              </MainPanel>
-            )}
-          </React.Fragment>
-        )}
-      </NotificationsContext.Consumer>
-    );
+  if (
+    !notifications.find(x => x.template === NotificationTemplates.onboardingResponsible) &&
+    accounts.length > 0
+  ) {
+    displayNotification(NotificationTemplates.onboardingResponsible, {
+      firstDashboardVisitDate: new Date()
+    });
   }
 
-  private getNotificationBody(currentNotification: Notification) {
-    const template = currentNotification.template;
-    const templateData = currentNotification.templateData;
+  const getNotificationBody = () => {
+    const template = currentNotification!.template;
+    const templateData = currentNotification!.templateData;
     const NotificationComponent = notificationsConfigs[template].layout;
     return <NotificationComponent {...templateData} />;
-  }
-}
+  };
+
+  return (
+    <React.Fragment>
+      {currentNotification && (
+        <MainPanel>
+          <CloseButton basic={true} onClick={handleCloseClick}>
+            <img src={closeIcon} alt="Close" />
+          </CloseButton>
+          {getNotificationBody()}
+        </MainPanel>
+      )}
+    </React.Fragment>
+  );
+};
 
 export default NotificationsPanel;

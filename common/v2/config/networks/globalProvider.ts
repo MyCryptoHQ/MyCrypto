@@ -54,29 +54,25 @@ export const createProviderHandler = (network: Network): FallbackProvider => {
   return createFallBackProvidersFrom(newProviderPattern)[network.name as NetworkKey];
 };
 
-//allProviders are by default fallBackProviders, ex. allProviders.Ethereum -> will have main node (MyCrypto), and 2 fallback nodes
-export const allProviders: FallbackProviders = createFallBackProvidersFrom(PROVIDER_OPTIONS);
-
-type FilterFlags<Base, Condition> = {
-  [Key in keyof Base]: Base[Key] extends Condition ? Key : never;
-};
-type AllowedNames<Base, Condition> = FilterFlags<Base, Condition>[keyof Base];
-
-type SubType<Base, Condition> = Pick<Base, AllowedNames<Base, Condition>>;
-
-type ProviderMethod = SubType<FallbackProvider, (...args: any) => any>;
-
-async function callMultiProviderMethod<K extends keyof ProviderMethod>(
-  method: K,
-  args: { [NetworkName in NetworkKey]?: Parameters<ProviderMethod[K]> }
-) {
-  const arrayOfResults = [];
-  for (const network of Object.keys(args)) {
-    const provider = allProviders[network as NetworkKey];
-    const argsForNetwork: any = args[network as NetworkKey];
-    arrayOfResults.push(await (provider[method] as any)(...argsForNetwork));
+export class EthersJS {
+  public static getEthersInstance(network: Network): FallbackProvider {
+    if (!EthersJS.instance || !EthersJS.networkName) {
+      EthersJS.instance = createProviderHandler(network);
+      EthersJS.networkName = network.name;
+    }
+    return EthersJS.instance;
   }
-  return arrayOfResults;
+
+  public static updateEthersInstance(network: Network): FallbackProvider {
+    EthersJS.instance = createProviderHandler(network);
+    EthersJS.networkName = network.name;
+    return EthersJS.instance;
+  }
+
+  private static instance: FallbackProvider;
+  private static networkName: string;
+
+  private constructor() {}
 }
 
-export default callMultiProviderMethod;
+export default EthersJS;
