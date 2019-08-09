@@ -132,3 +132,25 @@ export const getAllAccounts = (): Account[] => {
 export const getAllAccountKeys = (): string[] => {
   return Object.keys(getCache().accounts);
 };
+
+export const getAccountByAddressAndNetworkName = (
+  address: string,
+  networkName: string
+): ExtendedAccount | undefined => {
+  const accountKeys = getAllAccountKeys();
+  const accounts = getCache().accounts;
+  accountKeys.map(key => {
+    const account: Account = accounts[key];
+    if (
+      account.address.toLowerCase() === address.toLowerCase() &&
+      account.network === networkName
+    ) {
+      const newAccount: ExtendedAccount = {
+        ...account,
+        uuid: key
+      };
+      return newAccount;
+    }
+  });
+  return undefined;
+};

@@ -11,5 +11,6 @@ export {
   getAccountByAddress,
   getBaseAssetFromAccount,
   getAllAccounts,
-  getAllAccountKeys
+  getAllAccountKeys,
+  getAccountByAddressAndNetworkName
 } from './helpers';

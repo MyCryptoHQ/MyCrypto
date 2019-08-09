@@ -1,4 +1,9 @@
+import BN from 'bn.js';
+import { bufferToHex } from 'ethereumjs-util';
 import { utils } from 'ethers';
+
+import { IFormikFields } from 'v2/features/SendAssets/types';
+import { IHexStrTransaction, Asset, Network, IHexStrWeb3Transaction } from 'v2/types';
 
 import {
   getNetworkByChainId,
@@ -13,20 +18,29 @@ import {
   bigNumGasPriceToViewableGwei,
   bigNumGasLimitToViewable,
   bigNumValueToViewableEther,
-  hexWeiToString
+  hexWeiToString,
+  encodeTransfer,
+  Address,
+  toWei,
+  TokenValue,
+  inputGasPriceToHex,
+  inputValueToHex,
+  inputNonceToHex,
+  inputGasLimitToHex
 } from 'v2/services/EthService';
 
-import { ITxObject, ITxConfig, ITxReceipt, ITxData } from './types';
+import { ITxObject, ITxConfig, ITxReceipt } from './types';
 
 export function fromStateToTxObject(state: ITxConfig): ITxObject {
+  const tx = state.rawTransaction;
   return {
-    to: state.to, // @TODO or token address
-    value: state.value,
-    data: state.data, // @TODO or generate contract call
-    gasLimit: state.gasLimit,
-    gasPrice: state.gasPrice,
-    nonce: state.nonce,
-    chainId: state.network.chainId
+    to: tx.to,
+    value: tx.value,
+    data: tx.data,
+    gasLimit: tx.gasLimit,
+    gasPrice: tx.gasPrice,
+    nonce: tx.nonce,
+    chainId: tx.chainId
   };
 }
 
@@ -34,7 +48,6 @@ export function decodeTransaction(signedTx: string) {
   const decodedTransaction = utils.parseTransaction(signedTx);
   const gasLimit = bigNumGasLimitToViewable(decodedTransaction.gasLimit);
   const gasPriceGwei = bigNumGasPriceToViewableGwei(decodedTransaction.gasPrice);
-
   const amountToSendEther = bigNumValueToViewableEther(decodedTransaction.value);
 
   return {
@@ -57,7 +70,7 @@ export async function getNetworkNameFromSignedTx(signedTx: string) {
   return network ? network.name : undefined;
 }
 
-export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxData | undefined {
+export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined {
   const chainId: number = txReceipt.networkId || txReceipt.chainId;
   const networkDetected = getNetworkByChainId(chainId);
   if (networkDetected) {
@@ -84,3 +97,95 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxData | undefined {
   }
   return;
 }
+
+export const processFormDataToTx = (formData: IFormikFields): ITxObject => {
+  const asset: Asset = formData.asset;
+  const network: Network = formData.network;
+
+  if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
+    /* If erc20 asset is being sent */
+    const rawTransaction: IHexStrTransaction = {
+      to: asset.contractAddress,
+      value: '0x0',
+      data: bufferToHex(
+        encodeTransfer(
+          Address(
+            formData.resolvedENSAddress === '0x0'
+              ? formData.receiverAddress
+              : formData.resolvedENSAddress
+          ),
+          formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
+        )
+      ),
+      gasLimit: inputGasLimitToHex(formData.gasLimitField),
+      gasPrice: formData.advancedTransaction
+        ? inputGasPriceToHex(formData.gasPriceField)
+        : inputGasPriceToHex(formData.gasPriceSlider),
+      nonce: inputNonceToHex(formData.nonceField),
+      chainId: network.chainId ? network.chainId : 1
+    };
+    return rawTransaction;
+  } else {
+    const rawTransaction: IHexStrTransaction = {
+      to:
+        formData.resolvedENSAddress === '0x0'
+          ? formData.receiverAddress
+          : formData.resolvedENSAddress,
+      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
+      data: formData.txDataField ? formData.txDataField : '0x0',
+      gasLimit: formData.gasLimitField,
+      gasPrice: formData.advancedTransaction
+        ? inputGasPriceToHex(formData.gasPriceField)
+        : inputGasPriceToHex(formData.gasPriceSlider),
+      nonce: inputNonceToHex(formData.nonceField),
+      chainId: network.chainId ? network.chainId : 1
+    };
+    return rawTransaction;
+  }
+};
+
+export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
+  const asset: Asset = formData.asset;
+  const network: Network = formData.network;
+  if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
+    const rawTransaction: IHexStrWeb3Transaction = {
+      to: asset.contractAddress,
+      value: '0x0',
+      from: formData.account.address,
+      data: bufferToHex(
+        encodeTransfer(
+          Address(
+            formData.resolvedENSAddress === '0x0'
+              ? formData.receiverAddress
+              : formData.resolvedENSAddress
+          ),
+          formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
+        )
+      ),
+      gas: inputGasLimitToHex(formData.gasLimitField),
+      gasPrice: formData.advancedTransaction
+        ? inputGasPriceToHex(formData.gasPriceField)
+        : inputGasPriceToHex(formData.gasPriceSlider),
+      nonce: inputNonceToHex(formData.nonceField),
+      chainId: network.chainId ? network.chainId : 1
+    };
+    return rawTransaction;
+  } else {
+    const rawTransaction: IHexStrWeb3Transaction = {
+      to:
+        formData.resolvedENSAddress === '0x0'
+          ? formData.receiverAddress
+          : formData.resolvedENSAddress,
+      from: formData.account.address,
+      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
+      data: formData.txDataField ? formData.txDataField : '0x0',
+      gas: inputGasLimitToHex(formData.gasLimitField),
+      gasPrice: formData.advancedTransaction
+        ? inputGasPriceToHex(formData.gasPriceField)
+        : inputGasPriceToHex(formData.gasPriceSlider),
+      nonce: inputNonceToHex(formData.nonceField),
+      chainId: network.chainId ? network.chainId : 1
+    };
+    return rawTransaction;
+  }
+};

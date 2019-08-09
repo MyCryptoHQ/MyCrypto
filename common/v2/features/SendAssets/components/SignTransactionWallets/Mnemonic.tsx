@@ -142,6 +142,7 @@ export default class SignTransactionMnemonic extends Component<
 
   private async signTransaction() {
     const { rawTransaction } = this.props;
+
     const signerWallet = await ethers.Wallet.fromMnemonic(
       this.state.phrase,
       this.state.selectedDPath

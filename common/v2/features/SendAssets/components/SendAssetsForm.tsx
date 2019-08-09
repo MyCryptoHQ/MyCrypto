@@ -46,7 +46,7 @@ import {
 } from './validators/validators';
 import { getResolvedENSAddress } from '../../Ens';
 import { IFormikFields, IStepComponentProps } from '../types';
-import { processFormDataToWeb3Tx } from '../process';
+import { processFormForEstimateGas } from '../helpers';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: '',
@@ -135,7 +135,7 @@ export default function SendAssetsForm({
 
           const handleGasEstimate = async () => {
             if (!(!values || !values.network || !values.asset || !values.receiverAddress)) {
-              const finalTx = processFormDataToWeb3Tx(values);
+              const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
               setFieldValue('gasLimitField', hexToNumber(gas));
             } else {

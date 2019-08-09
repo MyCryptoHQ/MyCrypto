@@ -6,7 +6,6 @@ import { useApi } from 'v2/services';
 import { TWalletType } from 'v2/types';
 import {
   ConfirmTransaction,
-  ConfirmWeb3Transaction,
   SendAssetsForm,
   SignTransaction,
   TransactionReceipt
@@ -36,7 +35,7 @@ function SendAssets() {
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
     {
       label: 'Confirm Transaction',
-      component: ConfirmWeb3Transaction,
+      component: ConfirmTransaction,
       action: handleConfirmAndSign
     },
     { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
@@ -57,6 +56,7 @@ function SendAssets() {
   };
 
   const { senderAccount } = txConfigState;
+
   const { currentPath, label, Step, stepAction } = getStep(
     senderAccount ? senderAccount.wallet : undefined,
     step

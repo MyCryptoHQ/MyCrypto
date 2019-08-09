@@ -1,15 +1,29 @@
-import { TUseApiFactory } from 'v2/services';
+import {
+  TUseApiFactory,
+  getNetworkByChainId,
+  getAssetByContractAndNetwork,
+  decodeTransfer,
+  toWei,
+  fromTokenBase,
+  getDecimalFromEtherUnit,
+  gasPriceToBase,
+  hexWeiToString
+} from 'v2/services';
 import { ProviderHandler } from 'v2/config';
+import { getAccountByAddressAndNetworkName } from 'v2/services/Store/Account';
 
-import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx } from './types';
-import { processFormDataToTx } from './process';
+import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
+import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
 
 const txConfigInitialState = {
-  gasLimit: null,
-  gasPrice: null,
-  nonce: null,
+  tx: {
+    gasLimit: null,
+    gasPrice: null,
+    nonce: null,
+    data: null,
+    to: null
+  },
   amount: null,
-  data: null,
   receiverAddress: null,
   senderAccount: null,
   network: undefined,
@@ -24,19 +38,25 @@ interface State {
 
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
-    const processedTx = processFormDataToTx(payload);
-    const txConfigData: ITxConfig = {
-      ...processedTx,
-      amount: payload.amount,
-      senderAccount: payload.account,
-      receiverAddress: payload.receiverAddress,
-      network: payload.network,
-      asset: payload.asset
-    };
+    const rawTransaction: ITxObject = processFormDataToTx(payload);
     setState((prevState: State) => ({
       ...prevState,
-      txConfig: txConfigData
+      txConfig: {
+        rawTransaction,
+        amount: payload.amount,
+        senderAccount: payload.account,
+        receiverAddress: payload.receiverAddress,
+        network: payload.network,
+        asset: payload.asset,
+        from: payload.account.address,
+        gasPrice: hexWeiToString(rawTransaction.gasPrice),
+        gasLimit: payload.gasLimitField,
+        nonce: payload.nonceField,
+        data: rawTransaction.data,
+        value: hexWeiToString(rawTransaction.value)
+      }
     }));
+
     after();
   };
 
@@ -77,18 +97,45 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
     }
   };
 
-  const handleSignedTx: TStepAction = (payload: ITxReceipt | ISignedTx | any, after) => {
+  const handleSignedTx: TStepAction = (payload: ISignedTx, after) => {
+    const decodedTx = decodeTransaction(payload);
+    const networkDetected = getNetworkByChainId(decodedTx.chainId);
+    const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
     setState((prevState: State) => ({
       ...prevState,
-      signedTx: payload
+      signedTx: payload,
+      txConfig: {
+        rawTransaction: prevState.txConfig.rawTransaction,
+        receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
+        amount: contractAsset
+          ? fromTokenBase(
+              toWei(decodeTransfer(decodedTx.data)._value, 0),
+              contractAsset.decimal || 18
+            )
+          : decodedTx.value,
+        network: networkDetected || state.txConfig.network,
+        value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
+        asset: contractAsset || state.txConfig.asset,
+        senderAccount:
+          decodedTx.from && networkDetected
+            ? getAccountByAddressAndNetworkName(decodedTx.from, networkDetected.name) ||
+              state.txConfig.senderAccount
+            : state.txConfig.senderAccount,
+        gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
+        gasLimit: decodedTx.gasLimit,
+        data: decodedTx.data,
+        nonce: decodedTx.nonce.toString(),
+        from: decodedTx.from || state.txConfig.from
+      }
     }));
+
     after();
   };
 
-  const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | ISignedTx | any, after) => {
+  const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt, after) => {
     setState((prevState: State) => ({
       ...prevState,
-      txReceipt: payload
+      txReceipt: fromTxReceiptObj(payload)
     }));
     after();
   };
