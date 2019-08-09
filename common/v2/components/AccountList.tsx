@@ -25,7 +25,7 @@ const Label = styled.span`
   }
 `;
 
-interface iFavoriteProps {
+interface IFavoriteProps {
   favorited: boolean;
 }
 
@@ -34,8 +34,8 @@ const FavoriteButton = styled(Button)`
     span {
       svg {
         path {
-          fill: ${(props: iFavoriteProps) => (props.favorited ? COLORS.GOLD : 'white')};
-          stroke: ${(props: iFavoriteProps) => (props.favorited ? COLORS.GOLD : '#7b8695')};
+          fill: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : 'white')};
+          stroke: ${(props: IFavoriteProps) => (props.favorited ? COLORS.GOLD : '#7b8695')};
         }
       }
     }
@@ -118,9 +118,9 @@ function buildAccountTable(
       const addressCard: AddressBook | undefined = getLabelByAccount(account);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       let bodyItemCount = 0;
-      let bodyContent = [
+      const bodyContent = [
         <FavoriteButton
-          key={index + bodyItemCount++}
+          key={index}
           icon="star"
           favorited={account.favorite ? account.favorite : false}
           onClick={() =>
@@ -130,15 +130,15 @@ function buildAccountTable(
             })
           }
         />,
-        <Label>
+        <Label key={index}>
           <Identicon address={account.address} />
           <span>{label}</span>
         </Label>,
-        <Copyable key={index + bodyItemCount++} text={account.address} truncate={truncate} />,
-        <Network key={index + bodyItemCount++} color="#a682ff">
+        <Copyable key={index} text={account.address} truncate={truncate} />,
+        <Network key={index} color="#a682ff">
           {account.network}
         </Network>,
-        <Typography key={index + bodyItemCount++}>{account.balance}</Typography>
+        <Typography key={index}>{account.balance}</Typography>
       ];
       return deletable
         ? [
