@@ -3,7 +3,7 @@ import { Button, Tooltip, Icon } from '@mycrypto/ui';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { translate, translateRaw } from 'translations';
+import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { ISettings } from 'v2/types';
 import { DashboardPanel } from 'v2/components';
@@ -106,7 +106,7 @@ export default class GeneralSettings extends React.Component<SettingsProps> {
   public render() {
     const { globalSettings } = this.props;
     return (
-      <DashboardPanel heading={translateRaw('SETTINGS_GENERAL_LABEL')}>
+      <DashboardPanel heading={translate('SETTINGS_GENERAL_LABEL')}>
         <Divider />
         <SettingsField>
           <SettingsLabel>
