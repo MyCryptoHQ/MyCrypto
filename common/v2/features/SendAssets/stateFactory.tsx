@@ -7,10 +7,10 @@ import {
   fromTokenBase,
   getDecimalFromEtherUnit,
   gasPriceToBase,
-  hexWeiToString
+  hexWeiToString,
+  getAccountByAddressAndNetworkName
 } from 'v2/services';
 import { ProviderHandler } from 'v2/config';
-import { getAccountByAddressAndNetworkName } from 'v2/services/Store/Account';
 
 import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
 import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
