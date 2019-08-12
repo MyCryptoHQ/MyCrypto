@@ -2,14 +2,7 @@ import React from 'react';
 import { HashRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { ErrorScreen, LogOutPrompt } from 'components';
-import {
-  BroadcastTx,
-  Contracts,
-  GenerateWallet,
-  SendTransaction,
-  SignAndVerifyMessage,
-  SupportPage
-} from 'containers';
+import { BroadcastTx, Contracts, GenerateWallet, SendTransaction, SupportPage } from 'containers';
 import { Layout } from 'v2/features/Layout';
 import { Home, PageNotFound } from 'v2/features';
 import { useDevMode } from 'v2/services';
@@ -50,7 +43,6 @@ export const AppRouter = (props: AppRouterProps) => {
               <Route path="/account" component={SendTransaction} exact={true} />
               <Route path="/generate" component={GenerateWallet} />
               <Route path="/contracts" component={Contracts} />
-              <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
               <Route path="/pushTx" component={BroadcastTx} />
               <Route path="/support-us" component={SupportPage} exact={true} />
               <Layout>
