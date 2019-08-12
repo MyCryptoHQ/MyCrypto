@@ -3,7 +3,6 @@ import { HashRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { ErrorScreen, LogOutPrompt } from 'components';
 import {
-  BroadcastTx,
   Contracts,
   GenerateWallet,
   SendTransaction,
@@ -51,7 +50,6 @@ export const AppRouter = (props: AppRouterProps) => {
               <Route path="/generate" component={GenerateWallet} />
               <Route path="/contracts" component={Contracts} />
               <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-              <Route path="/pushTx" component={BroadcastTx} />
               <Route path="/support-us" component={SupportPage} exact={true} />
               <Layout>
                 <Switch>
