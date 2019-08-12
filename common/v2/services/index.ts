@@ -1,4 +1,5 @@
 export * from './ApiService';
+export * from './EthService';
 export * from './ShapeShift';
 export * from './useApi';
 export * from './Store';

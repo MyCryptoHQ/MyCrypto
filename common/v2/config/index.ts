@@ -9,4 +9,4 @@ export { WALLETS_CONFIG } from './wallets';
 export { DEFAULT_NETWORK_FOR_FALLBACK, GITHUB_RELEASE_NOTES_URL } from './constants';
 export { NODES_CONFIG, makeNodeName } from './nodes';
 export { ROUTE_PATHS } from './routePaths';
-export { ENSProvider } from './networks';
+export { ENSProvider, ProviderHandler } from './networks';

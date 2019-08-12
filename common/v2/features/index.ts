@@ -12,6 +12,6 @@ export { DownloadApp } from './DownloadApp';
 export { NoAccounts } from './NoAccounts';
 export { ScreenLockNew, ScreenLockLocked, ScreenLockForgotPassword } from './ScreenLock';
 export { SendAssets } from './SendAssets';
-export { RequestAssets } from './RequestAssets';
+export { ReceiveAssets } from './ReceiveAssets';
 export { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchange';
 export { default as PageNotFound } from './PageNotFound';
