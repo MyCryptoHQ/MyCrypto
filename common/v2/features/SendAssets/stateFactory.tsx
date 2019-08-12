@@ -32,8 +32,8 @@ const txConfigInitialState = {
 
 interface State {
   txConfig: ITxConfig;
-  signedTx?: ISignedTx;
   txReceipt?: ITxReceipt;
+  signedTx: ISignedTx; // make sure signedTx is only used within stateFactory
 }
 
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
@@ -72,38 +72,41 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
 
   // For Other Wallets
   // tslint:disable-next-line
-  const handleConfirmAndSend: TStepAction = (_payload, after) => {
+  const handleConfirmAndSend: TStepAction = (_, after) => {
+    const { signedTx } = state;
+    if (!signedTx) {
+      return;
+    }
+
     const provider = new ProviderHandler(state.txConfig.network);
-    if (state.signedTx) {
-      provider
-        .sendRawTx(state.signedTx)
-        .then(transactionReceipt => {
+    provider
+      .sendRawTx(signedTx)
+      .then(transactionReceipt => {
+        setState((prevState: State) => ({
+          ...prevState,
+          txReceipt: transactionReceipt
+        }));
+      })
+      .catch(txHash => {
+        // If rejected, data is a tx hash, not a receipt. Fetch the receipt, then save receipt for flow
+        provider.getTransactionByHash(txHash).then(transactionReceipt => {
           setState((prevState: State) => ({
             ...prevState,
             txReceipt: transactionReceipt
           }));
-          after();
-        })
-        .catch(txHash => {
-          // If rejected, data is a tx hash, not a receipt. Fetch the receipt, then save receipt for flow
-          provider.getTransactionByHash(txHash).then(transactionReceipt => {
-            setState((prevState: State) => ({
-              ...prevState,
-              txReceipt: transactionReceipt
-            }));
-            after();
-          });
         });
-    }
+      })
+      .finally(after);
   };
 
   const handleSignedTx: TStepAction = (payload: ISignedTx, after) => {
     const decodedTx = decodeTransaction(payload);
     const networkDetected = getNetworkByChainId(decodedTx.chainId);
     const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
+
     setState((prevState: State) => ({
       ...prevState,
-      signedTx: payload,
+      signedTx: payload, // keep a reference to signedTx;
       txConfig: {
         rawTransaction: prevState.txConfig.rawTransaction,
         receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
@@ -147,8 +150,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
     handleSignedTx,
     handleSignedWeb3Tx,
     txConfig: state.txConfig,
-    txReceipt: state.txReceipt,
-    signedTx: state.signedTx
+    txReceipt: state.txReceipt
   };
 };
 

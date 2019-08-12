@@ -3,7 +3,7 @@ import { bufferToHex } from 'ethereumjs-util';
 import { utils } from 'ethers';
 
 import { IFormikFields } from 'v2/features/SendAssets/types';
-import { IHexStrTransaction, Asset, Network, IHexStrWeb3Transaction } from 'v2/types';
+import { IHexStrTransaction, Asset, IHexStrWeb3Transaction } from 'v2/types';
 
 import {
   getNetworkByChainId,
@@ -29,20 +29,7 @@ import {
   inputGasLimitToHex
 } from 'v2/services/EthService';
 
-import { ITxObject, ITxConfig, ITxReceipt } from './types';
-
-export function fromStateToTxObject(state: ITxConfig): ITxObject {
-  const tx = state.rawTransaction;
-  return {
-    to: tx.to,
-    value: tx.value,
-    data: tx.data,
-    gasLimit: tx.gasLimit,
-    gasPrice: tx.gasPrice,
-    nonce: tx.nonce,
-    chainId: tx.chainId
-  };
-}
+import { ITxObject, ITxReceipt } from './types';
 
 export function decodeTransaction(signedTx: string) {
   const decodedTransaction = utils.parseTransaction(signedTx);
@@ -98,94 +85,65 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined 
   return;
 }
 
-export const processFormDataToTx = (formData: IFormikFields): ITxObject => {
-  const asset: Asset = formData.asset;
-  const network: Network = formData.network;
+const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+  const { network } = formData;
+  return {
+    to:
+      formData.resolvedENSAddress === '0x0'
+        ? formData.receiverAddress
+        : formData.resolvedENSAddress,
+    value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
+    data: formData.txDataField ? formData.txDataField : '0x0',
+    gasLimit: formData.gasLimitField,
+    gasPrice: formData.advancedTransaction
+      ? inputGasPriceToHex(formData.gasPriceField)
+      : inputGasPriceToHex(formData.gasPriceSlider),
+    nonce: inputNonceToHex(formData.nonceField),
+    chainId: network.chainId ? network.chainId : 1
+  };
+};
 
-  if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
-    /* If erc20 asset is being sent */
-    const rawTransaction: IHexStrTransaction = {
-      to: asset.contractAddress,
-      value: '0x0',
-      data: bufferToHex(
-        encodeTransfer(
-          Address(
-            formData.resolvedENSAddress === '0x0'
-              ? formData.receiverAddress
-              : formData.resolvedENSAddress
-          ),
-          formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
-        )
-      ),
-      gasLimit: inputGasLimitToHex(formData.gasLimitField),
-      gasPrice: formData.advancedTransaction
-        ? inputGasPriceToHex(formData.gasPriceField)
-        : inputGasPriceToHex(formData.gasPriceSlider),
-      nonce: inputNonceToHex(formData.nonceField),
-      chainId: network.chainId ? network.chainId : 1
-    };
-    return rawTransaction;
-  } else {
-    const rawTransaction: IHexStrTransaction = {
-      to:
-        formData.resolvedENSAddress === '0x0'
-          ? formData.receiverAddress
-          : formData.resolvedENSAddress,
-      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
-      data: formData.txDataField ? formData.txDataField : '0x0',
-      gasLimit: formData.gasLimitField,
-      gasPrice: formData.advancedTransaction
-        ? inputGasPriceToHex(formData.gasPriceField)
-        : inputGasPriceToHex(formData.gasPriceSlider),
-      nonce: inputNonceToHex(formData.nonceField),
-      chainId: network.chainId ? network.chainId : 1
-    };
-    return rawTransaction;
-  }
+const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
+  const { asset, network } = formData;
+  return {
+    to: asset.contractAddress!,
+    value: '0x0',
+    data: bufferToHex(
+      encodeTransfer(
+        Address(
+          formData.resolvedENSAddress === '0x0'
+            ? formData.receiverAddress
+            : formData.resolvedENSAddress
+        ),
+        formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue(new BN(0))
+      )
+    ),
+    gasLimit: inputGasLimitToHex(formData.gasLimitField),
+    gasPrice: formData.advancedTransaction
+      ? inputGasPriceToHex(formData.gasPriceField)
+      : inputGasPriceToHex(formData.gasPriceSlider),
+    nonce: inputNonceToHex(formData.nonceField),
+    chainId: network.chainId ? network.chainId : 1
+  };
+};
+
+const isERC20Tx = (asset: Asset) => {
+  return asset.type === 'erc20' && asset.contractAddress && asset.decimal;
+};
+
+export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  return transform(formData);
 };
 
 export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
-  const asset: Asset = formData.asset;
-  const network: Network = formData.network;
-  if (asset.type === 'erc20' && asset.contractAddress && asset.decimal) {
-    const rawTransaction: IHexStrWeb3Transaction = {
-      to: asset.contractAddress,
-      value: '0x0',
-      from: formData.account.address,
-      data: bufferToHex(
-        encodeTransfer(
-          Address(
-            formData.resolvedENSAddress === '0x0'
-              ? formData.receiverAddress
-              : formData.resolvedENSAddress
-          ),
-          formData.amount !== '' ? toWei(formData.amount, asset.decimal) : TokenValue(new BN(0))
-        )
-      ),
-      gas: inputGasLimitToHex(formData.gasLimitField),
-      gasPrice: formData.advancedTransaction
-        ? inputGasPriceToHex(formData.gasPriceField)
-        : inputGasPriceToHex(formData.gasPriceSlider),
-      nonce: inputNonceToHex(formData.nonceField),
-      chainId: network.chainId ? network.chainId : 1
-    };
-    return rawTransaction;
-  } else {
-    const rawTransaction: IHexStrWeb3Transaction = {
-      to:
-        formData.resolvedENSAddress === '0x0'
-          ? formData.receiverAddress
-          : formData.resolvedENSAddress,
-      from: formData.account.address,
-      value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
-      data: formData.txDataField ? formData.txDataField : '0x0',
-      gas: inputGasLimitToHex(formData.gasLimitField),
-      gasPrice: formData.advancedTransaction
-        ? inputGasPriceToHex(formData.gasPriceField)
-        : inputGasPriceToHex(formData.gasPriceSlider),
-      nonce: inputNonceToHex(formData.nonceField),
-      chainId: network.chainId ? network.chainId : 1
-    };
-    return rawTransaction;
-  }
+  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
+  // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
+  // then we add the extra properties required.
+  const { gasLimit, ...tx } = transform(formData);
+  return {
+    ...tx,
+    from: formData.account.address,
+    gas: inputGasLimitToHex(formData.gasLimitField)
+  };
 };

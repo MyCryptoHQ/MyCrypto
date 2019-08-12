@@ -1,14 +1,7 @@
 import React from 'react';
 
 import { TWalletType } from 'v2/types';
-import { fromStateToTxObject } from '../helpers';
-import {
-  IStepComponentProps,
-  ISignComponentProps,
-  ITxObject,
-  ITxReceipt,
-  ISignedTx
-} from '../types';
+import { IStepComponentProps, ISignComponentProps, ITxReceipt, ISignedTx } from '../types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,
@@ -54,8 +47,6 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
     senderAccount: { wallet: walletName }
   } = txConfig;
 
-  const txObject: ITxObject = fromStateToTxObject(txConfig);
-
   const getWalletComponent = (walletType: TWalletType) => {
     return SigningComponents[walletType];
   };
@@ -66,7 +57,7 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
     <WalletComponent
       network={network}
       senderAccount={txConfig.senderAccount}
-      rawTransaction={txObject}
+      rawTransaction={txConfig.rawTransaction}
       onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
     />
   );
