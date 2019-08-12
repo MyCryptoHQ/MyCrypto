@@ -1,11 +1,11 @@
-import { StaticNetworkIds } from 'types/network';
 import { RawNodeConfig } from 'types/node';
+import { NetworkId } from 'v2/types';
 
 export const makeNodeName = (network: string, name: string) => {
   return `${network.toLowerCase()}_${name}`;
 };
 
-export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
+export const NODES_CONFIG: { [key in NetworkId]: RawNodeConfig[] } = {
   ETH: [
     {
       name: makeNodeName('ETH', 'mycrypto'),

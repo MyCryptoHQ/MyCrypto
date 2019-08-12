@@ -18,7 +18,14 @@ export { Asset, ExtendedAsset, IAsset, TAssetType } from './asset';
 export { Account, ExtendedAccount, TransactionData, AssetBalanceObject } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
-export { CustomNodeConfig, DPathFormat, ExtendedNetwork, Network, NodeOptions } from './network';
+export {
+  CustomNodeConfig,
+  DPathFormat,
+  ExtendedNetwork,
+  Network,
+  NetworkId,
+  NodeOptions
+} from './network';
 export { ISettings } from './settings';
 export { ScreenLockSettings } from './screenLock';
 export { LocalCache } from './store';

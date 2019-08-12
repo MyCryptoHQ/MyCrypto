@@ -1,5 +1,46 @@
-import { StaticNetworkIds, BlockExplorerConfig } from 'shared/types/network';
+import { BlockExplorerConfig } from 'shared/types/network';
 import { SecureWalletName, InsecureWalletName } from './wallet';
+
+export type NetworkId =
+  | 'ETH'
+  | 'Ropsten'
+  | 'Kovan'
+  | 'Rinkeby'
+  | 'Goerli'
+  | 'ETC'
+  | 'RSK'
+  | 'AKA'
+  | 'AQUA'
+  | 'ARTIS_SIGMA1'
+  | 'ARTIS_TAU1'
+  | 'ATH'
+  | 'CLO'
+  | 'DEXON'
+  | 'EGEM'
+  | 'ELLA'
+  | 'EOSC'
+  | 'ESN'
+  | 'ETI'
+  | 'ETHO'
+  | 'ETSC'
+  | 'EXP'
+  | 'Gangnam'
+  | 'GO'
+  | 'GO_TESTNET'
+  | 'METADIUM'
+  | 'MIX'
+  | 'MUSIC'
+  | 'PIRL'
+  | 'POA'
+  | 'REOSC'
+  | 'RSK_TESTNET'
+  | 'SOLIDUM'
+  | 'THUNDERCORE'
+  | 'TOMO'
+  | 'UBQ'
+  | 'WEB'
+  | 'AUX'
+  | 'ASK';
 
 export interface Network {
   id: string;
@@ -58,7 +99,7 @@ export interface StaticNodeConfig {
   id: string;
   isCustom: false;
   isAuto?: boolean;
-  network: StaticNetworkIds;
+  network: NetworkId;
   service: string;
   hidden?: boolean;
 }
