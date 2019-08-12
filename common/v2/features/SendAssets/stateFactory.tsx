@@ -116,19 +116,19 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
               contractAsset.decimal || 18
             )
           : decodedTx.value,
-        network: networkDetected || state.txConfig.network,
+        network: networkDetected || prevState.txConfig.network,
         value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
-        asset: contractAsset || state.txConfig.asset,
+        asset: contractAsset || prevState.txConfig.asset,
         senderAccount:
           decodedTx.from && networkDetected
             ? getAccountByAddressAndNetworkName(decodedTx.from, networkDetected.name) ||
-              state.txConfig.senderAccount
-            : state.txConfig.senderAccount,
+              prevState.txConfig.senderAccount
+            : prevState.txConfig.senderAccount,
         gasPrice: gasPriceToBase(parseInt(decodedTx.gasPrice, 10)).toString(),
         gasLimit: decodedTx.gasLimit,
         data: decodedTx.data,
         nonce: decodedTx.nonce.toString(),
-        from: decodedTx.from || state.txConfig.from
+        from: decodedTx.from || prevState.txConfig.from
       }
     }));
 

@@ -58,12 +58,6 @@ const rhlConfig = merge.smartStrategy({
     alias: { 'react-dom': '@hot-loader/react-dom' }
   },
 
-  externals: [
-    {
-      xmlhttprequest: 'XMLHttpRequest'
-    }
-  ],
-
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new LogPlugin(HTTPS_PORT),
