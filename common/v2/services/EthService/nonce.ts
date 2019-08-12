@@ -1,5 +1,5 @@
 import { ExtendedAccount, Network } from 'v2/types';
-import ProviderHandler from 'v2/config/networks/providerHandler';
+import { ProviderHandler } from './network';
 
 export function getNonce(network: Network, account: ExtendedAccount) {
   const provider = new ProviderHandler(network);

@@ -1,5 +1,5 @@
 import { Network } from 'v2/types';
-import { ENSProvider } from 'v2/config';
+import { ENSProvider } from 'v2/services/EthService';
 
 export const getResolvedENSAddress = async (network: Network, name: string) => {
   const provider = new ENSProvider(network);
