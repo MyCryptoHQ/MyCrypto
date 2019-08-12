@@ -3,9 +3,9 @@ import { formatEther } from 'ethers/utils/units';
 
 import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
-import { EthersJS } from './globalProvider';
+import { EthersJS } from './ethersJsProvider';
 
-class ProviderHandler {
+export class ProviderHandler {
   public network: Network;
   public client: FallbackProvider;
   public requests: RPCRequests;
@@ -75,5 +75,3 @@ class ProviderHandler {
     return EthersJS.getEthersInstance(network);
   }
 }
-
-export default ProviderHandler;
