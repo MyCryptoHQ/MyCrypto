@@ -26,6 +26,7 @@ export {
   NetworkId,
   NodeOptions
 } from './network';
+export { NodeConfig } from './node';
 export { ISettings } from './settings';
 export { ScreenLockSettings } from './screenLock';
 export { LocalCache } from './store';

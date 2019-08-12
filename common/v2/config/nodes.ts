@@ -1,12 +1,11 @@
-import { RawNodeConfig } from 'types/node';
-import { NetworkId } from 'v2/types';
+import { NodeConfig, NetworkId } from 'v2/types';
 import { INFURA_API_KEY } from './constants';
 
 export const makeNodeName = (network: string, name: string) => {
   return `${network.toLowerCase()}_${name}`;
 };
 
-export const NODES_CONFIG: { [key in NetworkId]: RawNodeConfig[] } = {
+export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
   ETH: [
     {
       name: makeNodeName('ETH', 'mycrypto'),
