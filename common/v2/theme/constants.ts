@@ -11,6 +11,7 @@ export const COLORS = {
 
 export const BREAK_POINTS = {
   SCREEN_XS: '512px',
+  SCREEN_S: '650px',
   SCREEN_SM: '850px',
   SCREEN_MD: '1080px',
   SCREEN_LG: '1280px',

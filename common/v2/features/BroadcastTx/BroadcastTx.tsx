@@ -11,9 +11,12 @@ import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { transactionSignActions } from 'features/transaction';
 import { SendButton } from 'components/SendButton';
+import { BREAK_POINTS } from 'v2/theme';
 
 import { ExtendedContentPanel, InputField, QRCode, CodeBlock } from 'v2/components';
 import { Button, Identicon } from '@mycrypto/ui';
+
+const { SCREEN_S } = BREAK_POINTS;
 
 interface StateProps {
   stateTransaction: AppState['transaction']['sign']['local']['signedTransaction'];
@@ -84,7 +87,7 @@ class BroadcastTx extends Component<Props> {
         heading={translateRaw('BROADCAST_TX_TITLE')}
         description={translate('BROADCAST_TX_DESCRIPTION')}
         centered={true}
-        maxWidth="650px"
+        maxWidth={SCREEN_S}
       >
         <InputWrapper>
           <InputField
