@@ -40,16 +40,8 @@ export const links = [
         title: 'Interact with Contracts'
       },
       {
-        to: '/transaction-status',
-        title: 'Check Transaction Status'
-      },
-      {
         to: ROUTE_PATHS.BROADCAST_TX.path,
         title: 'Broadcast Transaction'
-      },
-      {
-        to: '/ens',
-        title: 'ENS Domains'
       },
       {
         to: '/helpers',

@@ -1,5 +1,5 @@
-import QRCodeLib from 'qrcode';
 import React from 'react';
+import QRCodeLib from 'qrcode';
 
 // FIXME should store limited amount if history
 // data -> qr cache

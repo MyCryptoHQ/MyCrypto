@@ -88,7 +88,7 @@ const PATHS: IRoutePath[] = [
   {
     name: 'SETTINGS_EXPORT',
     title: 'Export',
-    path: '/settings/import'
+    path: '/settings/export'
   },
   {
     name: 'SWAP',

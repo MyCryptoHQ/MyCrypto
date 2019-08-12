@@ -1,31 +1,13 @@
 import React from 'react';
-import { OptionComponentProps } from 'react-select';
 import { translateRaw } from 'translations';
 
 // import { getNetworkByName } from 'v2/services/Store';
-import { AccountSummary, Divider, Dropdown } from 'v2/components';
+import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 import { ExtendedAccount } from 'v2/types';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
 // Since Account summary is using Address which still has the 'copy', we must handle hover ourself.
-class AccountOption extends React.PureComponent<OptionComponentProps> {
-  public render() {
-    const { option, onSelect } = this.props;
-
-    return (
-      <>
-        <AccountSummary
-          address={option.address}
-          balance={'1000.809300'}
-          label={option.label}
-          onClick={() => onSelect!(option, null)} // Since it's a custom Dropdown we know onSelect is defined
-        />
-        <Divider padding={'14px'} />
-      </>
-    );
-  }
-}
 
 interface IAccountDropdownProps {
   accounts: ExtendedAccount[];
@@ -55,10 +37,10 @@ function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdownPr
       onChange={option => onSelect(option)}
       optionComponent={AccountOption}
       value={value && value.address ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-      valueComponent={({ value: { label, address } }) => (
+      valueComponent={({ value: { label, address, account } }) => (
         <AccountSummary
           address={address}
-          balance={'1000.809300'}
+          balance={account.balance}
           label={label}
           selectable={false}
         />
