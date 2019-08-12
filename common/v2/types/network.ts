@@ -43,7 +43,7 @@ export type NetworkId =
   | 'ASK';
 
 export interface Network {
-  id: string;
+  id: NetworkId;
   name: string;
   baseAsset: string;
   chainId: number;
