@@ -173,10 +173,8 @@ export default class SignTransactionKeystore extends Component<
   }
 
   private checkPublicKeyMatchesCache(walletAddres: string) {
-    const {
-      rawTransaction: { from: senderAddress }
-    } = this.props;
-    const localCacheAddress = utils.getAddress(senderAddress);
+    const { senderAccount } = this.props;
+    const localCacheAddress = utils.getAddress(senderAccount.address);
     const keystoreFileAddress = walletAddres;
 
     if (localCacheAddress === keystoreFileAddress) {
