@@ -20,7 +20,7 @@ import {
   AssetBalanceObject,
   ExtendedAccount as IExtendedAccount
 } from 'v2/types';
-import { getNonce, hexToNumber } from 'v2/services/EthService';
+import { getNonce, hexToNumber, getResolvedENSAddress } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import { notUndefined } from 'v2/utils';
 
@@ -44,7 +44,6 @@ import {
   validateNonceField,
   validateDataField
 } from './validators/validators';
-import { getResolvedENSAddress } from '../../Ens';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas } from '../helpers';
 
