@@ -77,7 +77,7 @@ class BroadcastTx extends Component<Props> {
 
   public render() {
     const { userInput } = this.state;
-    const { stateTransaction } = this.props;
+    const stateTransaction = userInput ? this.props.stateTransaction : '';
 
     return (
       <ExtendedContentPanel
