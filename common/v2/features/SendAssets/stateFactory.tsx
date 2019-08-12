@@ -33,12 +33,10 @@ const txConfigInitialState = {
 interface State {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
+  signedTx: ISignedTx; // make sure signedTx is only used within stateFactory
 }
 
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
-  // make sur signedTx is only used within stateFactory
-  let signedTx: ISignedTx;
-
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
     setState((prevState: State) => ({
@@ -75,6 +73,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   // For Other Wallets
   // tslint:disable-next-line
   const handleConfirmAndSend: TStepAction = (_, after) => {
+    const { signedTx } = state;
     if (!signedTx) {
       return;
     }
@@ -104,10 +103,10 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
     const decodedTx = decodeTransaction(payload);
     const networkDetected = getNetworkByChainId(decodedTx.chainId);
     const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
-    // keep a reference to signedTx;
-    signedTx = payload;
+
     setState((prevState: State) => ({
       ...prevState,
+      signedTx: payload, // keep a reference to signedTx;
       txConfig: {
         rawTransaction: prevState.txConfig.rawTransaction,
         receiverAddress: contractAsset ? decodeTransfer(decodedTx.data)._to : decodedTx.to,
