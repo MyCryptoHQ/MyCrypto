@@ -29,20 +29,7 @@ import {
   inputGasLimitToHex
 } from 'v2/services/EthService';
 
-import { ITxObject, ITxConfig, ITxReceipt } from './types';
-
-export function fromStateToTxObject(state: ITxConfig): ITxObject {
-  const tx = state.rawTransaction;
-  return {
-    to: tx.to,
-    value: tx.value,
-    data: tx.data,
-    gasLimit: tx.gasLimit,
-    gasPrice: tx.gasPrice,
-    nonce: tx.nonce,
-    chainId: tx.chainId
-  };
-}
+import { ITxObject, ITxReceipt } from './types';
 
 export function decodeTransaction(signedTx: string) {
   const decodedTransaction = utils.parseTransaction(signedTx);
@@ -98,7 +85,7 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined 
   return;
 }
 
-const createTxObject = (formData: IFormikFields): IHexStrTransaction => {
+const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
   return {
     to:
@@ -144,13 +131,13 @@ const isERC20Tx = (asset: Asset) => {
   return asset.type === 'erc20' && asset.contractAddress && asset.decimal;
 };
 
-export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createTxObject;
+export const processFormDataToTx = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
+  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
   return transform(formData);
 };
 
 export const processFormForEstimateGas = (formData: IFormikFields): IHexStrWeb3Transaction => {
-  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createTxObject;
+  const transform = isERC20Tx(formData.asset) ? createERC20TxObject : createBaseTxObject;
   // First we use destructuring to remove the `gasLimit` field from the object that is not used by IHexStrWeb3Transaction
   // then we add the extra properties required.
   const { gasLimit, ...tx } = transform(formData);
