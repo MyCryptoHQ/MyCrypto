@@ -23,7 +23,8 @@ import {
   ShapeShiftAuthorization,
   ZeroEx,
   Home,
-  SignAndVerifyMessage
+  SignAndVerifyMessage,
+  BroadcastTx
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -175,5 +176,11 @@ export const APP_ROUTES: IAppRoute[] = [
     path: ROUTE_PATHS.VERIFY_MESSAGE.path,
     exact: true,
     component: SignAndVerifyMessage
+  },
+  {
+    name: ROUTE_PATHS.BROADCAST_TX.name,
+    title: ROUTE_PATHS.BROADCAST_TX.title,
+    path: ROUTE_PATHS.BROADCAST_TX.path,
+    component: BroadcastTx
   }
 ];

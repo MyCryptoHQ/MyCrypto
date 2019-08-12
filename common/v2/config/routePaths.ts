@@ -114,6 +114,11 @@ const PATHS: IRoutePath[] = [
     name: 'VERIFY_MESSAGE',
     title: 'Verify Message',
     path: '/verify-message'
+  },
+  {
+    name: 'BROADCAST_TX',
+    title: 'Broadcast Transaction',
+    path: '/broadcast-transaction'
   }
 ];
 

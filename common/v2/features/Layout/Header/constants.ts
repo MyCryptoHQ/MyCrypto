@@ -40,7 +40,7 @@ export const links = [
         title: 'Interact with Contracts'
       },
       {
-        to: '/broadcast-transaction',
+        to: ROUTE_PATHS.BROADCAST_TX.path,
         title: 'Broadcast Transaction'
       },
       {
