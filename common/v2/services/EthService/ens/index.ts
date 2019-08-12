@@ -1,0 +1,1 @@
+export { getResolvedENSAddress } from './ensFunctions';

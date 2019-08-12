@@ -4,8 +4,7 @@ import { shepherdProvider } from 'libs/nodes';
 import { Account, Asset, ExtendedAccount, Network, NodeOptions, INode } from 'v2/types';
 import { getAssetByUUID, getNetworkByName, getNodesByNetwork } from 'v2/services/Store';
 import { getCache } from '../LocalCache';
-import { RPCNode } from 'v2/services/EthService';
-import ProviderHandler from 'v2/config/networks/providerHandler';
+import { RPCNode, ProviderHandler } from 'v2/services/EthService';
 
 export const getCurrentsFromContext = (
   accounts: ExtendedAccount[],

@@ -1,7 +1,7 @@
-import ProviderHandler from 'v2/config/networks/providerHandler';
 import { gasPriceDefaults } from 'v2/config/data';
 import { GasEstimates, Network, IHexStrWeb3Transaction } from 'v2/types';
 import { getNetworkByName } from 'v2/services/Store';
+import { ProviderHandler } from 'v2/services/EthService';
 import { fetchGasEstimates } from './gas';
 
 export function getDefaultEstimates(network: Network | undefined) {

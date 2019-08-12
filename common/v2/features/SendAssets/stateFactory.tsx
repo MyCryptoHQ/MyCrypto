@@ -10,7 +10,7 @@ import {
   hexWeiToString,
   getAccountByAddressAndNetworkName
 } from 'v2/services';
-import { ProviderHandler } from 'v2/config';
+import { ProviderHandler } from 'v2/services/EthService';
 
 import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
 import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
