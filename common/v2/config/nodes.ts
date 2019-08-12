@@ -1,5 +1,6 @@
 import { RawNodeConfig } from 'types/node';
 import { NetworkId } from 'v2/types';
+import { INFURA_API_KEY } from './constants';
 
 export const makeNodeName = (network: string, name: string) => {
   return `${network.toLowerCase()}_${name}`;
@@ -23,7 +24,7 @@ export const NODES_CONFIG: { [key in NetworkId]: RawNodeConfig[] } = {
       name: makeNodeName('ETH', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://mainnet.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`
     }
   ],
 
@@ -32,7 +33,7 @@ export const NODES_CONFIG: { [key in NetworkId]: RawNodeConfig[] } = {
       name: makeNodeName('Ropsten', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: `https://ropsten.infura.io/v3/${INFURA_API_KEY}`
     }
   ],
 
@@ -50,7 +51,7 @@ export const NODES_CONFIG: { [key in NetworkId]: RawNodeConfig[] } = {
       name: makeNodeName('Rinkeby', 'infura'),
       type: 'infura',
       service: 'Infura',
-      url: 'https://rinkeby.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`
     },
     {
       name: makeNodeName('Rinkeby', 'ethscan'),
