@@ -66,7 +66,6 @@ export interface ISignComponentProps {
 export interface IStepComponentProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
-  signedTx?: ISignedTx;
   children?: never;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
 }
