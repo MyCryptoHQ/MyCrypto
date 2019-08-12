@@ -124,8 +124,9 @@ export class InputField extends Component<Props> {
       type,
       showEye,
       textarea,
-      placeholder
+      placeholder = ''
     } = this.props;
+
     return (
       <MainWrapper>
         {label && <Label>{label}</Label>}
@@ -137,7 +138,7 @@ export class InputField extends Component<Props> {
               onBlur={onBlur}
               inputError={inputError}
               onKeyUp={this.handleKeyUp}
-              placeholder={placeholder ? placeholder : ''}
+              placeholder={placeholder}
             />
           ) : (
             <CustomInput
@@ -148,7 +149,7 @@ export class InputField extends Component<Props> {
               onKeyUp={this.handleKeyUp}
               showEye={showEye}
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
-              placeholder={placeholder ? placeholder : ''}
+              placeholder={placeholder}
             />
           )}
 
