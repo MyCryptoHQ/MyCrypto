@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 
+import { FormData } from 'v2/features/AddAccount/types';
+import { getNetworkByName } from 'v2/services/Store';
 import { InsecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
 import { formatMnemonic } from 'utils/formatters';
@@ -16,11 +18,11 @@ import questionToolTip from 'common/assets/images/icn-question.svg';
 import './Mnemonic.scss';
 
 interface OwnProps {
+  formData: FormData;
   onUnlock(param: any): void;
 }
 
 interface StoreProps {
-  dPath: DPath;
   dPaths: DPath[];
 }
 
@@ -40,14 +42,14 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     phrase: undefined,
     formattedPhrase: undefined,
     pass: undefined,
-    selectedDPath: this.props.dPath
+    selectedDPath: getNetworkByName(this.props.formData.network).dPaths.mnemonicPhrase
   };
 
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
+  /**public UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (this.props.dPath !== nextProps.dPath) {
       this.setState({ selectedDPath: nextProps.dPath });
     }
-  }
+  }*/
 
   public render() {
     const { seed, phrase, formattedPhrase, pass, selectedDPath } = this.state;
@@ -181,8 +183,6 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
 function mapStateToProps(state: AppState): StoreProps {
   return {
-    // Mnemonic dPath is guaranteed to always be provided
-    dPath: configSelectors.getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE) as DPath,
     dPaths: configNetworksStaticSelectors.getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
   };
 }
