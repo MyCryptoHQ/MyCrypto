@@ -15,10 +15,11 @@ import {
   SaveAndRedirect,
   TrezorDecrypt,
   ViewOnlyDecrypt,
-  WalletList,
   Web3ProviderDecrypt,
   Web3ProviderInstall
 } from './components';
+
+import { WalletList } from 'v2/components';
 
 // @ADD_ACCOUNT_TODO: Icons really belongs to the WalletButton or a WalletIcon
 // component.

@@ -2,11 +2,10 @@ import React, { useState, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
-import { ContentPanel } from 'v2/components';
+import { ContentPanel, WalletList } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
 import { WalletName, walletNames } from 'v2/types';
 import { STORIES } from './stories';
-import { WalletList } from './components';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
