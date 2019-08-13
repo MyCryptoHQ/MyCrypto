@@ -1,5 +1,5 @@
 import { DPaths } from 'v2/config';
-import { LocalCache, SecureWalletName, InsecureWalletName } from 'v2/types';
+import { LocalCache, SecureWalletName, InsecureWalletName, NodeType } from 'v2/types';
 
 export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
@@ -82,7 +82,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       nodes: [
         {
           name: 'eth_mycrypto',
-          type: 'rpc',
+          type: NodeType.RPC,
           service: 'MyCrypto',
           url: 'https://api.mycryptoapi.com/eth'
         }

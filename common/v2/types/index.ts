@@ -2,11 +2,13 @@ import { TWalletType } from './wallets';
 import { Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
 import { IRate } from './rate';
-import { NodeConfig } from './node';
+import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
 
 // Babel needs to know which types to remove when transpiling
 // https://github.com/webpack/webpack/issues/7378#issuecomment-492641148
 export type NodeConfig = NodeConfig;
+export type CustomNodeConfig = CustomNodeConfig;
+export type NodeOptions = NodeOptions;
 export type Wallet = Wallet;
 export type ExtendedWallet = ExtendedWallet;
 export type WalletName = WalletName;
@@ -20,16 +22,10 @@ export { Asset, ExtendedAsset, IAsset, TTicker, TAssetType } from './asset';
 export { Account, ExtendedAccount, TransactionData, AssetBalanceObject } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
-export {
-  CustomNodeConfig,
-  DPathFormat,
-  ExtendedNetwork,
-  Network,
-  NetworkLegacy,
-  NetworkId,
-  NodeOptions
-} from './network';
+export { ExtendedNetwork, Network, NetworkLegacy } from './network';
+export { NetworkId } from './networkId';
 export { NodeType } from './node';
+export { DPathFormat } from './dPath';
 export { ISettings } from './settings';
 export { ScreenLockSettings } from './screenLock';
 export { LocalCache } from './store';
