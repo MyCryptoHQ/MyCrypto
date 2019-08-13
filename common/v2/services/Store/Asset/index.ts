@@ -4,5 +4,6 @@ export {
   getAssetByTicker,
   getNewDefaultAssetTemplateByNetwork,
   getAssetByName,
-  getAssetByUUID
+  getAssetByUUID,
+  getAssetByContractAndNetwork
 } from './helpers';

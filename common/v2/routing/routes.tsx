@@ -18,7 +18,7 @@ import {
   ScreenLockLocked,
   ScreenLockForgotPassword,
   SendAssets,
-  RequestAssets,
+  ReceiveAssets,
   BuyAndExchange,
   ShapeShiftAuthorization,
   ZeroEx,
@@ -91,7 +91,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.REQUEST_ASSEST.title,
     path: ROUTE_PATHS.REQUEST_ASSEST.path,
     exact: true,
-    component: RequestAssets
+    component: ReceiveAssets
   },
   {
     name: ROUTE_PATHS.SCREEN_LOCK_NEW.name,

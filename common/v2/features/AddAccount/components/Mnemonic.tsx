@@ -55,7 +55,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
     if (seed) {
       return (
-        <div className="Mnemoinc-dpath">
+        <div className="Mnemonic-dpath">
           <DeterministicWallets
             seed={seed}
             dPath={selectedDPath}
@@ -93,7 +93,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
               <div className="form-group">
                 <label className="Mnemonic-label">
                   {translate('ADD_LABEL_8')}
-                  <div className="Mnemoinc-tool-tip">
+                  <div className="Mnemonic-tool-tip">
                     {' '}
                     <Tooltip tooltip={translate('MNEMONIC_TOOL_TIP')}>
                       {props => <img className="Tool-tip-img" src={questionToolTip} {...props} />}

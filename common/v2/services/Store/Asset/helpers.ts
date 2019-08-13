@@ -43,3 +43,17 @@ export const getAssetByUUID = (uuid: string): Asset | undefined => {
   const allAssets = getAllAssets();
   return allAssets.find(asset => asset.uuid === uuid);
 };
+
+export const getAssetByContractAndNetwork = (
+  contractAddress: string | undefined,
+  network: Network | undefined
+): Asset | undefined => {
+  if (!network || !contractAddress) {
+    return undefined;
+  }
+  const allAssets = getAllAssets();
+  return allAssets
+    .filter(asset => asset.networkId && asset.contractAddress)
+    .filter(asset => asset.networkId === network.id)
+    .find(asset => asset.contractAddress === contractAddress);
+};

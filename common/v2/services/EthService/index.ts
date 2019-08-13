@@ -1,5 +1,5 @@
 export { getNonce } from './nonce';
-export { Contract, ERC20, encodeTransfer } from './contracts';
+export { Contract, ERC20, encodeTransfer, decodeTransfer } from './contracts';
 export { Web3Node, isWeb3Node, Web3Service, setupWeb3Node, RPCRequests, RPCNode } from './nodes';
 export {
   determineKeystoreType,
@@ -24,7 +24,21 @@ export {
   makeTransaction,
   hexEncodeData,
   hexEncodeQuantity,
-  hexToNumber
+  hexToNumber,
+  fromTokenBase,
+  bigNumGasLimitToViewable,
+  hexValueToViewableEther,
+  hexToString,
+  hexWeiToString,
+  bigNumGasPriceToViewableGwei,
+  bigNumGasPriceToViewableWei,
+  bigNumValueToViewableEther,
+  inputGasPriceToHex,
+  inputValueToHex,
+  inputGasLimitToHex,
+  inputNonceToHex,
+  totalTxFeeToString,
+  totalTxFeeToWei
 } from './utils';
 export {
   isValidPath,
@@ -49,6 +63,8 @@ export {
   isValidGetNetVersion,
   isValidAddress
 } from './validators';
+export { ProviderHandler } from './network';
+export { getResolvedENSAddress } from './ens';
 // @TODO These are consummed by v2/libs
 // remove export after migration into the service
 export {

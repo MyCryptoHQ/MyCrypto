@@ -1,3 +1,5 @@
+export const INFURA_API_KEY = 'c02fff6b5daa434d8422b8ece54c7286';
+
 // Lower/upper ranges for gas limit
 export const GAS_LIMIT_LOWER_BOUND = 21000;
 export const GAS_LIMIT_UPPER_BOUND = 8000000;

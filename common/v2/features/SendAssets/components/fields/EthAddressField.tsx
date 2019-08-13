@@ -21,6 +21,7 @@ interface Props {
   touched?: boolean;
   placeholder?: string;
   chainId: number;
+  handleGasEstimate(): Promise<void>;
   handleENSResolve?(name: string): Promise<void>;
 }
 
@@ -30,7 +31,8 @@ function ETHAddressField({
   touched,
   chainId,
   placeholder = 'Eth Address',
-  handleENSResolve
+  handleENSResolve,
+  handleGasEstimate
 }: Props) {
   const validateEthAddress = (value: any) => {
     let errorMsg;
@@ -62,6 +64,10 @@ function ETHAddressField({
                 form.setFieldValue('resolvedNSAddress', '');
                 if (isENSAddress && handleENSResolve) {
                   handleENSResolve(e.currentTarget.value);
+                  handleGasEstimate();
+                } else {
+                  form.setFieldValue('receiverAddress', e.currentTarget.value);
+                  handleGasEstimate();
                 }
               }
             }}
