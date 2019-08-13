@@ -178,7 +178,6 @@ export default function SendAssetsForm({
               <QueryWarning />
               {/* Asset */}
               <fieldset className="SendAssetsForm-fieldset">
-                <span>{JSON.stringify(values.receiverAddress, null, 2)}</span>
                 <label htmlFor="asset" className="input-group-header">
                   {translate('X_ASSET')}
                 </label>
