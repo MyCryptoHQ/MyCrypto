@@ -45,7 +45,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
         rawTransaction,
         amount: payload.amount,
         senderAccount: payload.account,
-        receiverAddress: payload.receiverAddress,
+        receiverAddress: payload.receiverAddress.value,
         network: payload.network,
         asset: payload.asset,
         from: payload.account.address,

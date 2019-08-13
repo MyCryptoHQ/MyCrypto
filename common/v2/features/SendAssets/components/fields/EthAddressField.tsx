@@ -56,17 +56,26 @@ function ETHAddressField({
         render={({ field, form }: FieldProps) => (
           <Input
             {...field}
+            value={field.value.display}
             placeholder={placeholder}
+            onChange={e => {
+              form.setFieldValue('receiverAddress', {
+                display: e.currentTarget.value,
+                value: e.currentTarget.value
+              });
+            }}
             onBlur={e => {
               if (chainId) {
                 const ensTLD = getENSTLDForChain(chainId);
                 const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
-                form.setFieldValue('resolvedNSAddress', '');
                 if (isENSAddress && handleENSResolve) {
                   handleENSResolve(e.currentTarget.value);
                   handleGasEstimate();
                 } else {
-                  form.setFieldValue('receiverAddress', e.currentTarget.value);
+                  form.setFieldValue('receiverAddress', {
+                    display: e.currentTarget.value,
+                    value: e.currentTarget.value
+                  });
                   handleGasEstimate();
                 }
               }

@@ -49,7 +49,10 @@ import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas } from '../helpers';
 
 const initialFormikValues: IFormikFields = {
-  receiverAddress: '',
+  receiverAddress: {
+    value: '',
+    display: ''
+  },
   amount: '0',
   account: {} as IExtendedAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
@@ -149,7 +152,7 @@ export default function SendAssetsForm({
             setIsResolvingENSName(true);
             const resolvedAddress = (await getResolvedENSAddress(values.network, name)) || '0x0';
             setIsResolvingENSName(false);
-            setFieldValue('resolvedENSAddress', resolvedAddress);
+            setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
           };
 
           const handleFieldReset = () => {
@@ -233,16 +236,16 @@ export default function SendAssetsForm({
                 <EthAddressField
                   fieldName="receiverAddress"
                   handleENSResolve={handleENSResolve}
-                  error={errors && errors.receiverAddress}
-                  touched={touched && touched.receiverAddress}
+                  error={errors && errors.receiverAddress && errors.receiverAddress.value}
+                  touched={touched && touched.receiverAddress && touched.receiverAddress.value}
                   handleGasEstimate={handleGasEstimate}
                   chainId={values.network.chainId}
                   placeholder="Enter an Address or Contact"
                 />
                 <ENSStatus
-                  ensAddress={values.receiverAddress}
+                  ensName={values.receiverAddress.display}
                   isLoading={isResolvingENSName}
-                  rawAddress={values.resolvedENSAddress ? values.resolvedENSAddress : ''}
+                  rawAddress={values.receiverAddress.value}
                   chainId={values.network ? values.network.chainId : 1}
                 />
               </fieldset>

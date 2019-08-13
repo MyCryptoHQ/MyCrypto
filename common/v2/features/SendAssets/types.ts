@@ -39,9 +39,14 @@ export interface ITxReceipt {
   [index: string]: any;
 }
 
+export interface IReceiverAddress {
+  display: string;
+  value: string;
+}
+
 export interface IFormikFields {
   asset: Asset;
-  receiverAddress: string;
+  receiverAddress: IReceiverAddress;
   amount: string;
   account: IExtendedAccount;
   txDataField: string;
