@@ -1,5 +1,7 @@
-import { BlockExplorerConfig } from 'shared/types/network';
+import { Subtract } from 'utility-types';
+import { BlockExplorer } from './blockExplorer';
 import { SecureWalletName, InsecureWalletName } from './wallet';
+import { GasPrice } from './gas';
 
 export type NetworkId =
   | 'ETH'
@@ -49,7 +51,7 @@ export interface Network {
   chainId: number;
   isCustom: boolean;
   color: string | undefined;
-  blockExplorer?: BlockExplorerConfig;
+  blockExplorer?: BlockExplorer;
   tokenExplorer?: {
     name: string;
     address(address: string): string;
@@ -57,7 +59,7 @@ export interface Network {
   assets: string[];
   contracts: string[];
   dPaths: DPathFormats;
-  gasPriceSettings: GasPriceSetting;
+  gasPriceSettings: GasPrice;
   shouldEstimateGasPrice?: boolean;
   nodes: NodeOptions[];
 }
@@ -65,6 +67,24 @@ export interface Network {
 export interface ExtendedNetwork extends Network {
   uuid: string;
 }
+
+interface NetworkPropsMissingInLegacy {
+  uuid: string;
+  nodes: NodeOptions[];
+  assets: string[];
+  baseAsset: string;
+}
+
+interface NetworkUnusedLegacyProps {
+  unit: string;
+  tokens: string[];
+  isTestnet?: boolean;
+  unsupportedTabs?: any[];
+  hideEquivalentValues?: boolean;
+}
+
+export type NetworkLegacy = Subtract<ExtendedNetwork, NetworkPropsMissingInLegacy> &
+  NetworkUnusedLegacyProps;
 
 export interface NodeOptions {
   name: string;
@@ -125,12 +145,6 @@ export interface DPathFormats {
 export interface DPath {
   label: string;
   value: string; // TODO determine method for more precise typing for path
-}
-
-export interface GasPriceSetting {
-  min: number;
-  max: number;
-  initial: number;
 }
 
 export type DPathFormat =

@@ -1,9 +1,12 @@
-import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY } from './constants';
-import { Fiats } from 'config';
-import { ContractsData, AssetsData } from 'v2/config/cacheData';
-import { STATIC_NETWORKS_INITIAL_STATE } from 'features/config/networks/static/reducer';
 import { isDevelopment, generateUUID } from 'v2/utils';
-import { WALLETS_CONFIG, NODES_CONFIG } from 'v2/config';
+import {
+  Fiats,
+  ContractsData,
+  AssetsData,
+  WALLETS_CONFIG,
+  NODES_CONFIG,
+  NETWORKS_CONFIG
+} from 'v2/config';
 import {
   Account,
   AddressBook,
@@ -12,11 +15,13 @@ import {
   LocalCache,
   NodeOptions,
   Network,
+  NetworkLegacy,
+  NetworkId,
   Wallet,
   InsecureWalletName,
   SecureWalletName
 } from 'v2/types';
-
+import { CACHE_INIT, CACHE_KEY, ENCRYPTED_CACHE_KEY } from './constants';
 // Initialization
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
@@ -78,44 +83,45 @@ export const initNodeOptions = () => {
 
 export const initNetworks = () => {
   const newStorage = getCacheRaw();
-  const allNetworks: string[] = Object.keys(STATIC_NETWORKS_INITIAL_STATE);
-  allNetworks.map((en: any) => {
+  const allNetworks: NetworkId[] = Object.keys(NETWORKS_CONFIG) as NetworkId[];
+  allNetworks.map((networkId: NetworkId) => {
     const newContracts: [string, Contract][] = Object.entries(newStorage.contracts).filter(
-      ([, contract]) => contract.networkId === en
+      ([, contract]) => contract.networkId === networkId
     );
 
     const newAssets: [string, Asset][] = Object.entries(newStorage.assets).filter(
-      ([, asset]) => asset.networkId === en
+      ([, asset]) => asset.networkId === networkId
     );
 
     const baseAssetID = generateUUID();
+    const network: NetworkLegacy = NETWORKS_CONFIG[networkId];
     const newLocalNetwork: Network = {
       contracts: Object.keys(newContracts),
       assets: Object.keys(newAssets),
       nodes: [],
       baseAsset: baseAssetID,
-      id: STATIC_NETWORKS_INITIAL_STATE[en].id,
-      name: STATIC_NETWORKS_INITIAL_STATE[en].name,
-      chainId: STATIC_NETWORKS_INITIAL_STATE[en].chainId,
-      isCustom: STATIC_NETWORKS_INITIAL_STATE[en].isCustom,
-      color: STATIC_NETWORKS_INITIAL_STATE[en].color,
-      blockExplorer: STATIC_NETWORKS_INITIAL_STATE[en].blockExplorer,
+      id: network.id,
+      name: network.name,
+      chainId: network.chainId,
+      isCustom: network.isCustom,
+      color: network.color,
+      blockExplorer: network.blockExplorer,
       dPaths: {
-        ...STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
-        default: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats[InsecureWalletName.MNEMONIC_PHRASE]
+        ...network.dPaths,
+        default: network.dPaths[InsecureWalletName.MNEMONIC_PHRASE]
       },
-      gasPriceSettings: STATIC_NETWORKS_INITIAL_STATE[en].gasPriceSettings,
-      shouldEstimateGasPrice: STATIC_NETWORKS_INITIAL_STATE[en].shouldEstimateGasPrice
+      gasPriceSettings: network.gasPriceSettings,
+      shouldEstimateGasPrice: network.shouldEstimateGasPrice
     };
     const newLocalAssetOption: Asset = {
       uuid: baseAssetID,
-      name: STATIC_NETWORKS_INITIAL_STATE[en].name,
-      networkId: STATIC_NETWORKS_INITIAL_STATE[en].name,
-      ticker: en,
+      name: network.name,
+      networkId: network.name,
+      ticker: networkId,
       type: 'base',
       decimal: 18
     };
-    newStorage.networks[en] = newLocalNetwork;
+    newStorage.networks[networkId] = newLocalNetwork;
     newStorage.assets[baseAssetID] = newLocalAssetOption;
   });
   setCache(newStorage);

@@ -1,5 +1,8 @@
 import { TSymbol } from 'v2/types';
 
+enum TickerBrand {}
+export type TTicker = TickerBrand & string;
+
 export interface IAsset {
   symbol: TSymbol;
   name: string;
