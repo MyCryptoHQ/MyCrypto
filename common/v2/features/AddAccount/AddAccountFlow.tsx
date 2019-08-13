@@ -3,6 +3,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
 import { ContentPanel, WalletList } from 'v2/components';
+import { WALLET_INFO } from 'v2/components/WalletList/walletInfo';
 import { FormDataActionType as ActionType } from './types';
 import { WalletName, walletNames } from 'v2/types';
 import { STORIES } from './stories';
@@ -17,6 +18,10 @@ export const getStory = (storyName: WalletName): any => {
 
 export const getStorySteps = (storyName: WalletName) => {
   return getStory(storyName).steps;
+};
+
+export const getWalletInfo = (storyName: WalletName): any => {
+  return WALLET_INFO[storyName];
 };
 
 /*
@@ -119,7 +124,7 @@ const AddAccountFlow = withRouter(props => {
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
             <Step
-              wallet={getStory(storyName)}
+              wallet={getWalletInfo(storyName)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
               onUnlock={onUnlock}

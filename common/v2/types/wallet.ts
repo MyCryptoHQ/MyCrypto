@@ -41,6 +41,12 @@ export enum DefaultWalletName {
   DEFAULT = 'walletsList'
 }
 
+export enum WalletType {
+  SECURE,
+  INSECURE,
+  MISC
+}
+
 export const walletNames = getValues(
   SecureWalletName,
   HardwareWalletName,
@@ -49,3 +55,5 @@ export const walletNames = getValues(
 );
 
 export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName;
+
+export type WalletNameWithDefault = WalletName | DefaultWalletName;

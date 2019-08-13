@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
 import { WalletButton } from './WalletButton';
-import { WalletName } from 'v2/types';
+import { WalletNameWithDefault, IStory } from 'v2/types';
+import { WALLET_INFO } from './walletInfo';
 
 interface Props {
   wallets: any[];
-  onSelect(name: WalletName): void;
+  onSelect(name: WalletNameWithDefault): void;
 }
 
 export default class WalletList extends PureComponent<Props> {
@@ -21,13 +22,14 @@ export default class WalletList extends PureComponent<Props> {
         </div>
         <div className="WalletDecrypt-container">
           <div className="WalletDecrypt-wallets-row">
-            {validWallets.map(wallet => {
+            {validWallets.map((wallet: IStory) => {
+              const walletInfo = WALLET_INFO[wallet.name];
               return (
                 <WalletButton
                   key={`wallet-icon-${wallet.name}`}
-                  name={translateRaw(wallet.lid)}
-                  icon={wallet.icon}
-                  description={translateRaw(wallet.description)}
+                  name={translateRaw(walletInfo.lid)}
+                  icon={walletInfo.icon}
+                  description={translateRaw(walletInfo.description)}
                   // walletType={walletType}
                   // isSecure={true}
                   // isDisabled={this.isWalletDisabled(walletType)}

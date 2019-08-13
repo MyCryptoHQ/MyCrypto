@@ -1,5 +1,5 @@
 import { TWalletType } from './wallets';
-import { Wallet, ExtendedWallet, WalletName } from './wallet';
+import { Wallet, ExtendedWallet, WalletName, WalletNameWithDefault } from './wallet';
 import { TSymbol } from './symbols';
 import { IRate } from './rate';
 import { NodeConfig } from './node';
@@ -13,9 +13,16 @@ export type WalletName = WalletName;
 export type TSymbol = TSymbol;
 export type IRate = IRate;
 export type TWalletType = TWalletType;
+export type WalletNameWithDefault = WalletNameWithDefault;
 
-export { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName } from './wallet';
-export { walletNames } from './wallet';
+export {
+  DefaultWalletName,
+  SecureWalletName,
+  InsecureWalletName,
+  MiscWalletName,
+  WalletType,
+  walletNames
+} from './wallet';
 export { Asset, ExtendedAsset, IAsset, TAssetType } from './asset';
 export { Account, ExtendedAccount, TransactionData, AssetBalanceObject } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
@@ -42,3 +49,4 @@ export { INode, TxObj } from './INode';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
 export { Tab } from './tab';
 export { ISignedMessage } from './signing';
+export { IStory } from './story';
