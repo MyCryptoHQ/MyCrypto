@@ -3,23 +3,20 @@ import { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName
 import { getWeb3ProviderInfo } from 'utils/web3';
 import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
 import { WalletType } from './types';
+import { NetworkSelectPanel, SaveAndRedirect, ViewOnlyDecrypt } from './components';
 import {
+  WalletList,
   InsecureWalletWarning,
   LedgerNanoSDecrypt,
   KeystoreDecrypt,
   MnemonicDecrypt,
-  NetworkSelectPanel,
   ParitySignerDecrypt,
   PrivateKeyDecrypt,
   SafeTminiDecrypt,
-  SaveAndRedirect,
   TrezorDecrypt,
-  ViewOnlyDecrypt,
   Web3ProviderDecrypt,
   Web3ProviderInstall
-} from './components';
-
-import { WalletList } from 'v2/components';
+} from 'v2/components';
 
 // @ADD_ACCOUNT_TODO: Icons really belongs to the WalletButton or a WalletIcon
 // component.

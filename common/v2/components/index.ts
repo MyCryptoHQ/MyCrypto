@@ -33,3 +33,4 @@ export { ENSStatus } from './ENSStatus';
 export { default as Tabs } from './Tabs';
 export { default as CodeBlock } from './CodeBlock';
 export { default as WalletList } from './WalletList';
+export * from './WalletUnlock';
