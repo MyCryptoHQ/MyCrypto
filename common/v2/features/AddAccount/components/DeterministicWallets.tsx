@@ -19,6 +19,8 @@ import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
 import radio from 'assets/images/radio.svg';
 import radioChecked from 'assets/images/radio-checked.svg';
+import { getNetworkByDPath } from 'v2/services/Store/Network/helpers';
+import { Network } from 'v2/types';
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -92,8 +94,9 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { wallets, network, dPaths, onCancel } = this.props;
+    const { wallets, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
+    const network = getNetworkByDPath(this.state.currentDPath);
 
     return (
       <div className="DW">
@@ -137,7 +140,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 
         <Table
           head={['#', 'Address', network.unit, translateRaw('ACTION_5')]}
-          body={wallets.map(wallet => this.renderWalletRow(wallet))}
+          body={wallets.map(wallet => this.renderWalletRow(wallet, network))}
           config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
         />
 
@@ -230,8 +233,8 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData) {
-    const { network, addressLabels } = this.props;
+  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network) {
+    const { addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
 
@@ -283,8 +286,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     addressLabels: addressBookSelectors.getAddressLabels(state),
-    wallets: state.deterministicWallets.wallets,
-    network: configSelectors.getNetworkConfig(state)
+    wallets: state.deterministicWallets.wallets
   };
 }
 
