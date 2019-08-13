@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Field, FieldProps, Form, Formik } from 'formik';
+import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg, ENSStatus } from 'v2/components';
+import { InlineErrorMsg } from 'v2/components';
 import {
   AccountContext,
   getAssetByUUID,
@@ -178,10 +178,11 @@ export default function SendAssetsForm({
               <QueryWarning />
               {/* Asset */}
               <fieldset className="SendAssetsForm-fieldset">
+                <span>{JSON.stringify(values.receiverAddress, null, 2)}</span>
                 <label htmlFor="asset" className="input-group-header">
                   {translate('X_ASSET')}
                 </label>
-                <Field
+                <FastField
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
@@ -209,7 +210,7 @@ export default function SendAssetsForm({
                 <label htmlFor="account" className="input-group-header">
                   {translate('X_ADDRESS')}
                 </label>
-                <Field
+                <FastField
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => (
@@ -234,19 +235,14 @@ export default function SendAssetsForm({
                   {translate('SEND_ADDR')}
                 </label>
                 <EthAddressField
-                  fieldName="receiverAddress"
+                  fieldName="receiverAddress.display"
                   handleENSResolve={handleENSResolve}
                   error={errors && errors.receiverAddress && errors.receiverAddress.value}
                   touched={touched && touched.receiverAddress && touched.receiverAddress.value}
                   handleGasEstimate={handleGasEstimate}
-                  chainId={values.network.chainId}
-                  placeholder="Enter an Address or Contact"
-                />
-                <ENSStatus
-                  ensName={values.receiverAddress.display}
+                  network={values.network}
                   isLoading={isResolvingENSName}
-                  rawAddress={values.receiverAddress.value}
-                  chainId={values.network ? values.network.chainId : 1}
+                  placeholder="Enter an Address or Contact"
                 />
               </fieldset>
               {/* Amount */}
@@ -257,7 +253,7 @@ export default function SendAssetsForm({
                     {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION').toLowerCase()}
                   </div>
                 </label>
-                <Field
+                <FastField
                   name="amount"
                   render={({ field }: FieldProps) => (
                     <Input

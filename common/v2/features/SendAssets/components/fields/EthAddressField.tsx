@@ -1,13 +1,14 @@
 import React from 'react';
 import { Input } from '@mycrypto/ui';
-import { Field, FieldProps } from 'formik';
+import { FieldProps, Field } from 'formik';
 
 import { getENSTLDForChain } from 'libs/ens/networkConfigs';
 import { isValidENSName } from 'libs/validators';
 
 import { translateRaw } from 'translations';
 import { isValidETHAddress } from 'v2/services/EthService';
-import { InlineErrorMsg } from 'v2/components';
+import { InlineErrorMsg, ENSStatus } from 'v2/components';
+import { Network } from 'v2/types';
 
 /*
   Eth address field to be used within a Formik Form
@@ -20,7 +21,8 @@ interface Props {
   fieldName: string;
   touched?: boolean;
   placeholder?: string;
-  chainId: number;
+  network: Network;
+  isLoading: boolean;
   handleGasEstimate(): Promise<void>;
   handleENSResolve?(name: string): Promise<void>;
 }
@@ -29,8 +31,9 @@ function ETHAddressField({
   fieldName,
   error,
   touched,
-  chainId,
+  network,
   placeholder = 'Eth Address',
+  isLoading,
   handleENSResolve,
   handleGasEstimate
 }: Props) {
@@ -54,35 +57,44 @@ function ETHAddressField({
         name={fieldName}
         validate={validateEthAddress}
         render={({ field, form }: FieldProps) => (
-          <Input
-            {...field}
-            value={field.value.display}
-            placeholder={placeholder}
-            onChange={e => {
-              form.setFieldValue('receiverAddress', {
-                display: e.currentTarget.value,
-                value: e.currentTarget.value
-              });
-            }}
-            onBlur={e => {
-              if (chainId) {
-                const ensTLD = getENSTLDForChain(chainId);
-                const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
-                if (isENSAddress && handleENSResolve) {
-                  handleENSResolve(e.currentTarget.value);
-                  handleGasEstimate();
-                } else {
-                  form.setFieldValue('receiverAddress', {
-                    display: e.currentTarget.value,
-                    value: e.currentTarget.value
-                  });
-                  handleGasEstimate();
+          <div>
+            <Input
+              {...field}
+              value={field.value.display}
+              placeholder={placeholder}
+              onChange={e => {
+                form.setFieldValue('receiverAddress', {
+                  display: e.currentTarget.value,
+                  value: e.currentTarget.value
+                });
+              }}
+              onBlur={e => {
+                if (network.chainId) {
+                  const ensTLD = getENSTLDForChain(network.chainId);
+                  const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
+                  if (isENSAddress && handleENSResolve) {
+                    handleENSResolve(e.currentTarget.value);
+                    handleGasEstimate();
+                  } else {
+                    form.setFieldValue('receiverAddress', {
+                      display: e.currentTarget.value,
+                      value: e.currentTarget.value
+                    });
+                    handleGasEstimate();
+                  }
                 }
-              }
-            }}
-          />
+              }}
+            />
+            <ENSStatus
+              ensName={form.values.receiverAddress.display}
+              rawAddress={form.values.receiverAddress.value}
+              chainId={network ? network.chainId : 1}
+              isLoading={isLoading}
+            />
+          </div>
         )}
       />
+
       {error && touched ? (
         <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
       ) : null}
