@@ -57,7 +57,6 @@ export interface IFormikFields {
   nonceField: string; // Use only if user has input a manual nonce value.
   network: INetwork;
   advancedTransaction: boolean;
-  resolvedENSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
 }
 
 export interface ISignComponentProps {

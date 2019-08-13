@@ -72,7 +72,6 @@ const initialFormikValues: IFormikFields = {
   gasPriceField: '20',
   gasLimitField: '21000',
   advancedTransaction: false,
-  resolvedENSAddress: '0x0', // Not a field, move to state
   nonceField: '0'
 };
 
