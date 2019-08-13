@@ -18,3 +18,7 @@ export {
   GAS_PRICE_GWEI_UPPER_BOUND,
   GAS_PRICE_DEFAULT
 } from './gasPrice';
+export { accounts as testAccounts } from './accounts';
+export { assets as testAssets } from './assets';
+export { addressBook as testAddressBook } from './labels';
+export { settings as testSettings } from './settings';
