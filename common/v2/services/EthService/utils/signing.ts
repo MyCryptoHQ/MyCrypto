@@ -10,6 +10,7 @@ import {
 } from 'ethereumjs-util';
 
 import { stripHexPrefixAndLower } from 'v2/services/EthService';
+import { ISignedMessage } from 'v2/types';
 
 export function signRawTxWithPrivKey(privKey: Buffer, t: EthTx): Buffer {
   t.sign(privKey);
@@ -29,13 +30,6 @@ export function signMessageWithPrivKeyV2(privKey: Buffer, msg: string): string {
   const combinedHex = combined.toString('hex');
 
   return addHexPrefix(combinedHex);
-}
-
-export interface ISignedMessage {
-  address: string;
-  msg: string;
-  sig: string;
-  version: string;
 }
 
 // adapted from:

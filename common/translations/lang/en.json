@@ -619,6 +619,7 @@
     "NETWORK_UNKNOWN_ERROR": "Unknown network '$network', try adding a custom node or connecting to a different one",
     "BROADCAST_TX_TITLE": "Broadcast Signed Transaction",
     "BROADCAST_TX_DESCRIPTION": "Paste a signed transaction and click 'send transaction'",
+    "BROADCAST_TX_INPUT_ERROR": "Invalid transaction",
     "RECENT_TX_NETWORK_EXPLORER": "an explorer for the $network_name network",
     "RECENT_TX_HELP": "Only recent transactions sent from this address via MyCrypto on the $network network are listed here. If you don't see your transaction, you can view all of them on $explorer.",
     "NO_RECENT_TX_FOUND": "No recent MyCrypto transactions found, try checking on $explorer.",
@@ -968,6 +969,9 @@
     "TO_FIELD_ERROR": "Enter a valid address or ENS name",
     "404_HEADER":"Page Not Found",
     "404_DESCRIPTION":"Looks like you got lost somewhere along the way. Don't worry, the wizard can help you get back!",
-    "404_BUTTON": "Go Home"
+    "404_BUTTON": "Go Home",
+    "SIGN_MESSAGE_DESCRIPTION": "To sign message, please unlock your account first. Select from the options below.",
+    "VERIFY_MESSAGE_DESCRIPTION": "To verify message, please paste a signature below.",
+    "VERIFY_MESSAGE_SIGNED": "**$address** signed **$msg**"
   }
 }

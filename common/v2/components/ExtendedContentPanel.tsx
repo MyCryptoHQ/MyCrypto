@@ -8,12 +8,16 @@ import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 interface ContentPanelWrapperProps {
   centered: boolean | undefined;
+  maxWidth?: string;
 }
 
 const ContentPanelWrapper = styled.div`
   text-align: ${(props: ContentPanelWrapperProps) => (props.centered ? 'center' : 'left')};
   @media (min-width: 700px) {
-    max-width: 560px;
+    max-width: ${(props: ContentPanelWrapperProps) => (props.maxWidth ? props.maxWidth : '560px')};
+  }
+  @media (max-width: 700px) {
+    max-width: 100%;
   }
 `;
 
@@ -103,7 +107,7 @@ const StyledPanel = styled(Panel)`
 interface Props {
   children: any;
   className?: string;
-  heading?: string;
+  heading?: string | JSX.Element;
   icon?: string;
   image?: string;
   showImageOnTop?: boolean;
@@ -113,6 +117,7 @@ interface Props {
     total: number;
   };
   centered?: boolean;
+  maxWidth?: string;
   onBack?(): void;
 }
 
@@ -127,10 +132,11 @@ export default function ExtendedContentPanel({
   centered,
   children,
   className = '',
+  maxWidth,
   ...rest
 }: Props) {
   return (
-    <ContentPanelWrapper centered={centered}>
+    <ContentPanelWrapper centered={centered} maxWidth={maxWidth}>
       {(onBack || stepper) && (
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (

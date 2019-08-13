@@ -15,7 +15,7 @@ export const links = [
         title: 'Send Assets'
       },
       {
-        to: ROUTE_PATHS.REQUEST_ASSEST.path,
+        to: ROUTE_PATHS.RECEIVE_ASSETS.path,
         title: 'Receive Assets'
       },
       {
@@ -28,11 +28,11 @@ export const links = [
     title: 'Tools',
     subItems: [
       {
-        to: '/sign-message',
+        to: ROUTE_PATHS.SIGN_MESSAGE.path,
         title: 'Sign Message'
       },
       {
-        to: '/verify-message',
+        to: ROUTE_PATHS.VERIFY_MESSAGE.path,
         title: 'Verify Message'
       },
       {
@@ -40,7 +40,7 @@ export const links = [
         title: 'Interact with Contracts'
       },
       {
-        to: '/broadcast-transaction',
+        to: ROUTE_PATHS.BROADCAST_TX.path,
         title: 'Broadcast Transaction'
       },
       {

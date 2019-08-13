@@ -51,8 +51,8 @@ const PATHS: IRoutePath[] = [
     path: '/no-accounts'
   },
   {
-    name: 'REQUEST_ASSEST',
-    title: 'Request Assets',
+    name: 'RECEIVE_ASSETS',
+    title: 'Receive Assets',
     path: '/receive'
   },
   {
@@ -104,6 +104,21 @@ const PATHS: IRoutePath[] = [
     name: 'SWAP_0X',
     title: 'Buy and Exchange | 0x Instant',
     path: '/swap/0x'
+  },
+  {
+    name: 'SIGN_MESSAGE',
+    title: 'Sign Message',
+    path: '/sign-message'
+  },
+  {
+    name: 'VERIFY_MESSAGE',
+    title: 'Verify Message',
+    path: '/verify-message'
+  },
+  {
+    name: 'BROADCAST_TX',
+    title: 'Broadcast Transaction',
+    path: '/broadcast-transaction'
   }
 ];
 

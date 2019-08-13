@@ -38,7 +38,8 @@ export {
   inputGasLimitToHex,
   inputNonceToHex,
   totalTxFeeToString,
-  totalTxFeeToWei
+  totalTxFeeToWei,
+  verifySignedMessage
 } from './utils';
 export {
   isValidPath,
