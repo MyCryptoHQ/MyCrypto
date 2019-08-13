@@ -13,6 +13,7 @@ interface IAccountDropdownProps {
   accounts: ExtendedAccount[];
   name: string;
   value: ExtendedAccount;
+  baseAsset: Asset;
   asset?: Asset;
   network?: Network;
   onSelect(option: ExtendedAccount): void;
@@ -22,6 +23,7 @@ function AccountDropdown({
   accounts,
   name,
   value,
+  baseAsset,
   asset,
   network,
   onSelect
@@ -37,7 +39,11 @@ function AccountDropdown({
       })
       .map((account: ExtendedAccount) => {
         const contact = getContactByAccount(account);
-        return { ...account, label: contact ? contact.label : undefined };
+        return {
+          ...account,
+          label: contact ? contact.label : undefined,
+          baseAssetSymbol: baseAsset.ticker || 'ETH'
+        };
       });
   }
   return (
@@ -48,8 +54,14 @@ function AccountDropdown({
       onChange={option => onSelect(option)}
       optionComponent={AccountOption}
       value={value && value.address ? value : undefined} // Allow the value to be undefined at the start in order to display the placeholder
-      valueComponent={({ value: { label, address, balance } }) => (
-        <AccountSummary address={address} balance={balance} label={label} selectable={false} />
+      valueComponent={({ value: { label, address, balance, baseAssetSymbol } }) => (
+        <AccountSummary
+          address={address}
+          balance={balance}
+          label={label}
+          baseAssetSymbol={baseAssetSymbol}
+          selectable={false}
+        />
       )}
     />
   );

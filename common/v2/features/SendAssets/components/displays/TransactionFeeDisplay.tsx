@@ -1,28 +1,23 @@
 import React from 'react';
 import BN from 'bn.js';
 
-import { Network } from 'v2/types';
+import { Asset } from 'v2/types';
 import { gasPriceToBase, fromWei } from 'v2/services/EthService';
-import { getBaseAssetSymbolByNetwork } from 'v2/services/Store';
 
 interface Props {
+  baseAsset: Asset;
   gasLimitToUse: string;
   gasPriceToUse: string;
-  network: Network;
   fiatAsset: { fiat: string; value: string; symbol: string };
 }
 
-function TransactionFeeDisplay({ gasLimitToUse, gasPriceToUse, network, fiatAsset }: Props) {
+function TransactionFeeDisplay({ baseAsset, gasLimitToUse, gasPriceToUse, fiatAsset }: Props) {
   const transactionFeeWei: BN = gasPriceToBase(
     parseFloat(gasPriceToUse) * parseFloat(gasLimitToUse)
   );
   const transactionFeeBaseAdv: string = fromWei(transactionFeeWei, 'ether').toString();
   const transactionFeeBase: string = parseFloat(transactionFeeBaseAdv).toFixed(4);
-  let baseAssetSymbol: string | undefined;
-  if (network) {
-    baseAssetSymbol = getBaseAssetSymbolByNetwork(network);
-  }
-  const baseAsset: string = !baseAssetSymbol ? 'Ether' : baseAssetSymbol;
+  const baseAssetSymbol: string = baseAsset.ticker || 'ETH';
 
   const fiatValue: string = (
     parseFloat(fiatAsset.value) * parseFloat(transactionFeeBaseAdv)
@@ -30,7 +25,7 @@ function TransactionFeeDisplay({ gasLimitToUse, gasPriceToUse, network, fiatAsse
 
   return (
     <React.Fragment>
-      {transactionFeeBase} {baseAsset} / {fiatAsset.symbol}
+      {transactionFeeBase} {baseAssetSymbol} / {fiatAsset.symbol}
       {fiatValue} {fiatAsset.fiat}
     </React.Fragment>
   );

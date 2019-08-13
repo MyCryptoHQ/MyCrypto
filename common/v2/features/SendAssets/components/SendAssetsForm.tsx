@@ -11,7 +11,8 @@ import {
   AccountContext,
   getAssetByUUID,
   getBaseAssetFromAccount,
-  getNetworkByName
+  getNetworkByName,
+  getBaseAssetByNetwork
 } from 'v2/services/Store';
 import {
   Asset,
@@ -97,6 +98,7 @@ export default function SendAssetsForm({
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   // @ts-ignore while waiting to update form
   const [recipientResolvedENSAddress, setRecipienResolvedENSAddress] = useState(null);
+  const [baseAsset, setBaseAsset] = useState({} as Asset);
   // @TODO:SEND change the data structure to get an object
 
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
@@ -112,7 +114,7 @@ export default function SendAssetsForm({
 
   const filteredAssets: string[] = _.union(
     tokenAssets.map(token => token.uuid),
-    baseAssets.map(baseAsset => baseAsset.uuid)
+    baseAssets.map(asset => asset.uuid)
   );
 
   const allAssets: Asset[] = filteredAssets
@@ -194,7 +196,11 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          form.setFieldValue('network', getNetworkByName(option.networkId) || {});
+                          const network = getNetworkByName(option.networkId);
+                          form.setFieldValue('network', network || {});
+                          if (network) {
+                            setBaseAsset(getBaseAssetByNetwork(network) || ({} as Asset));
+                          }
                         }
                       }}
                     />
@@ -214,6 +220,7 @@ export default function SendAssetsForm({
                       name={field.name}
                       value={field.value}
                       asset={form.values.asset}
+                      baseAsset={baseAsset}
                       network={form.values.network}
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
@@ -288,11 +295,11 @@ export default function SendAssetsForm({
                   <div>Transaction Fee</div>
                   {/* TRANSLATE THIS */}
                   <TransactionFeeDisplay
+                    baseAsset={baseAsset}
                     gasLimitToUse={values.gasLimitField}
                     gasPriceToUse={
                       values.advancedTransaction ? values.gasPriceField : values.gasPriceSlider
                     }
-                    network={values.network}
                     fiatAsset={{ fiat: 'USD', value: '250', symbol: '$' }}
                   />
                   {/* TRANSLATE THIS */}
