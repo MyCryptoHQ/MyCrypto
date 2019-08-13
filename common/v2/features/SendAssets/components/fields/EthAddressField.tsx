@@ -30,7 +30,7 @@ function ETHAddressField({
   error,
   touched,
   chainId,
-  placeholder = 'Eth Address',
+  placeholder = 'ETH Address or ENS Name',
   handleENSResolve,
   handleGasEstimate
 }: Props) {
