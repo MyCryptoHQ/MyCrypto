@@ -11,9 +11,14 @@ import {
   NodeOptions,
   WalletName
 } from 'v2/types';
+import { makeExplorer } from 'utils/helpers';
 
 export const getAllNetworks = () => {
-  return Object.values(getCache().networks);
+  const networks = Object.values(getCache().networks);
+  networks.forEach(
+    n => (n.blockExplorer = n.blockExplorer ? makeExplorer(n.blockExplorer) : n.blockExplorer)
+  );
+  return networks;
 };
 
 export const getNetworkByAddress = (address: string): Network | undefined => {
