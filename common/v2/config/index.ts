@@ -5,6 +5,7 @@ export * from './helpArticles';
 export * from './dpaths';
 export * from './cacheData';
 export * from './links';
+export * from './tokens';
 export { WALLETS_CONFIG } from './wallets';
 export { DEFAULT_NETWORK_FOR_FALLBACK, GITHUB_RELEASE_NOTES_URL } from './constants';
 export { NODES_CONFIG } from './nodes';
