@@ -18,7 +18,7 @@ interface Props {
   fieldName: string;
   touched?: boolean;
   placeholder?: string;
-  network: Network;
+  network?: Network;
   isLoading: boolean;
   handleGasEstimate(): Promise<void>;
   handleENSResolve?(name: string): Promise<void>;
@@ -66,7 +66,7 @@ function ETHAddressField({
                 });
               }}
               onBlur={async e => {
-                if (!network.chainId) {
+                if (!network || !network.chainId) {
                   return;
                 }
                 const ensTLD = getENSTLDForChain(network.chainId);
