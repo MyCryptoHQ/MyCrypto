@@ -28,7 +28,7 @@ function ETHAddressField({
   fieldName,
   error,
   touched,
-  chainId,
+  network,
   placeholder = 'ETH Address or ENS Name',
   isLoading,
   handleENSResolve,
