@@ -6,7 +6,13 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
-import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
+import {
+  fromWei,
+  Wei,
+  totalTxFeeToString,
+  totalTxFeeToWei,
+  baseToConvertedUnit
+} from 'v2/services/EthService';
 
 import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
@@ -21,10 +27,13 @@ const truncate = (children: string) => {
 */
 
 export default function ConfirmTransaction({ txConfig, onComplete }: IStepComponentProps) {
-  const { getContactByAddress } = useContext(AddressBookContext);
+  const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const [showDetails, setShowDetails] = useState(false);
 
-  const recipientAccount = getContactByAddress(txConfig.receiverAddress);
+  const recipientAccount = getContactByAddressAndNetwork(
+    txConfig.receiverAddress,
+    txConfig.network
+  );
   const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
 
   /* ToDo: Figure out how to extract this */
@@ -38,7 +47,8 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
     receiverAddress,
     network,
     nonce,
-    data
+    data,
+    baseAsset
   } = txConfig;
   const assetType = asset.type;
 
@@ -50,6 +60,9 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   const valueWei = Wei(value);
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6); // @TODO: BN math, add amount + maxCost !In same symbol
   const networkName = network ? network.name : undefined;
+
+  const senderContact = getContactByAccount(senderAccount);
+  const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
   return (
     <div className="ConfirmTransaction">
       <div className="ConfirmTransaction-row">
@@ -68,7 +81,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <div className="ConfirmTransaction-addressWrapper">
             <Address
               address={senderAccount ? senderAccount.address : 'Unknown'}
-              title={senderAccount && senderAccount.label ? senderAccount.label : 'Unknown'}
+              title={senderAccountLabel}
               truncate={truncate}
             />
           </div>
@@ -84,10 +97,10 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
       </div>
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={feeIcon} alt="Fee" /> Transaction Fee:
+          <img src={feeIcon} alt="Fee" /> Max. Transaction Fee:
         </div>
         <div className="ConfirmTransaction-row-column">
-          <Amount assetValue={`${maxTransactionFeeBase} ETH`} fiatValue="$1" />
+          <Amount assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`} fiatValue="$1" />
         </div>
       </div>
       <div className="ConfirmTransaction-divider" />
@@ -100,7 +113,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
             <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
           ) : (
             <Amount
-              assetValue={`${amount} ${asset.ticker} + ${totalEtherEgress} ETH`}
+              assetValue={`${amount} ${asset.ticker} + ${totalEtherEgress} ${baseAsset.ticker}`}
               fiatValue="$1"
             />
           )}
@@ -118,7 +131,7 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Account Balance:</div>
             <div className="ConfirmTransaction-details-row-column">
-              ${senderAccount ? senderAccount.balance : 'Unknown'} ETH
+              {`${senderAccount ? senderAccount.balance : 'Unknown'} ${baseAsset.ticker}`}
             </div>
           </div>
           <div className="ConfirmTransaction-details-row">
@@ -133,20 +146,27 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasPrice} wei`}</div>
+            <div className="ConfirmTransaction-details-row-column">{`${baseToConvertedUnit(
+              gasPrice,
+              18
+            )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
-            <div className="ConfirmTransaction-details-row-column">{maxTransactionFeeBase} ETH</div>
+            <div className="ConfirmTransaction-details-row-column">{`${maxTransactionFeeBase} ${baseAsset.ticker}`}</div>
           </div>
           <div className="ConfirmTransaction-details-row">
             <div className="ConfirmTransaction-details-row-column">Nonce:</div>
             <div className="ConfirmTransaction-details-row-column">{nonce}</div>
           </div>
-          <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Data:</div>
-            <div className="ConfirmTransaction-details-row-column">{data}</div>
-          </div>
+          {data !== '0x0' && (
+            <div className="ConfirmTransaction-details-row">
+              <div className="ConfirmTransaction-details-row-column">Data:</div>
+              <div className="ConfirmTransaction-details-row-column">
+                <span className="ConfirmTransaction-details-row-data">{data}</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
       <Button onClick={onComplete} className="ConfirmTransaction-button">

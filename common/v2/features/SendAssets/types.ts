@@ -27,6 +27,7 @@ export interface ITxConfig {
   readonly senderAccount: IExtendedAccount;
   readonly from: string;
   readonly asset: Asset;
+  readonly baseAsset: Asset;
   readonly network: INetwork;
   readonly gasPrice: string;
   readonly gasLimit: string;
