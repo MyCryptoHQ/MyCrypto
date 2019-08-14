@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
+import { FormData } from 'v2/features/AddAccount/types';
+import { getNetworkByName } from 'v2/services/Store';
 import { SecureWalletName } from 'v2/types';
 import translate, { translateRaw } from 'translations';
 import { LedgerWallet } from 'libs/wallet';
-import { NetworkConfig } from 'types/network';
 import { AppState } from 'features/reducers';
-import { configSelectors, configNetworksStaticSelectors } from 'features/config';
+import { configNetworksStaticSelectors } from 'features/config';
 import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
@@ -16,13 +17,12 @@ import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
   wallet: object;
+  formData: FormData;
   onUnlock(param: any): void;
 }
 
 interface StateProps {
-  dPath: DPath | undefined;
   dPaths: DPath[];
-  network: NetworkConfig;
 }
 
 interface State {
@@ -39,19 +39,14 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath || this.props.dPaths[0],
+    dPath: this.getInitialDPath(),
     error: null,
     isLoading: false
   };
 
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (this.props.dPath !== nextProps.dPath && nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath });
-    }
-  }
-
   public render() {
     const { dPath, publicKey, chainCode, isLoading } = this.state;
+    const network = getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
@@ -72,6 +67,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Mnemonic-dpath">
           <DeterministicWallets
+            network={network}
             publicKey={publicKey}
             chainCode={chainCode}
             dPath={dPath}
@@ -150,6 +146,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       });
   };
 
+  private getInitialDPath() : DPath {
+    const network = getNetworkByName(this.props.formData.network);
+    return network && network.dPaths.ledgerNanoS ? network.dPaths.ledgerNanoS : this.props.dPaths[0]
+  }
+
   private handleCancel = () => {
     this.reset();
   };
@@ -167,16 +168,14 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath || this.props.dPaths[0]
+      dPath: this.getInitialDPath()
     });
   }
 }
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    dPath: configSelectors.getSingleDPath(state, SecureWalletName.LEDGER_NANO_S),
-    dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.LEDGER_NANO_S),
-    network: configSelectors.getNetworkConfig(state)
+    dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.LEDGER_NANO_S)
   };
 }
 

@@ -1,7 +1,10 @@
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import { Spinner } from 'components/ui';
+
+import { FormData } from 'v2/features/AddAccount/types';
+import { getNetworkByName } from 'v2/services/Store';
 import { SecureWalletName } from 'v2/types';
-import { configNetworksStaticSelectors, configSelectors } from 'features/config';
+import { configNetworksStaticSelectors } from 'features/config';
 import { AppState } from 'features/reducers';
 import { TrezorWallet } from 'libs/wallet';
 import React, { PureComponent } from 'react';
@@ -14,11 +17,11 @@ import { Button } from '@mycrypto/ui';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
+  formData: FormData;
   onUnlock(param: any): void;
 }
 
 interface StateProps {
-  dPath: DPath | undefined;
   dPaths: DPath[];
 }
 
@@ -37,19 +40,14 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath || this.props.dPaths[0],
+    dPath: this.getInitialDPath(),
     error: null,
     isLoading: false
   };
 
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (this.props.dPath !== nextProps.dPath && nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath });
-    }
-  }
-
   public render() {
     const { dPath, publicKey, chainCode, isLoading } = this.state;
+    const network = getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Trezor')} />;
@@ -59,6 +57,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
       return (
         <div className="Mnemonic-dpath">
           <DeterministicWallets
+            network={network}
             publicKey={publicKey}
             chainCode={chainCode}
             dPath={dPath}
@@ -137,6 +136,11 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
       });
   };
 
+  private getInitialDPath() : DPath {
+    const network = getNetworkByName(this.props.formData.network);
+    return network && network.dPaths.trezor ? network.dPaths.trezor : this.props.dPaths[0]
+  }
+
   private handleCancel = () => {
     this.reset();
   };
@@ -154,14 +158,13 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath || this.props.dPaths[0]
+      dPath: this.getInitialDPath()
     });
   }
 }
 
 function mapStateToProps(state: AppState): StateProps {
   return {
-    dPath: configSelectors.getSingleDPath(state, SecureWalletName.TREZOR),
     dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.TREZOR)
   };
 }
