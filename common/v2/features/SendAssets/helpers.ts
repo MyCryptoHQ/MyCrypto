@@ -88,10 +88,7 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined 
 const createBaseTxObject = (formData: IFormikFields): IHexStrTransaction | ITxObject => {
   const { network } = formData;
   return {
-    to:
-      formData.resolvedENSAddress === '0x0'
-        ? formData.receiverAddress
-        : formData.resolvedENSAddress,
+    to: formData.receiverAddress.value,
     value: formData.amount ? inputValueToHex(formData.amount) : '0x0',
     data: formData.txDataField ? formData.txDataField : '0x0',
     gasLimit: formData.gasLimitField,
@@ -110,11 +107,7 @@ const createERC20TxObject = (formData: IFormikFields): IHexStrTransaction => {
     value: '0x0',
     data: bufferToHex(
       encodeTransfer(
-        Address(
-          formData.resolvedENSAddress === '0x0'
-            ? formData.receiverAddress
-            : formData.resolvedENSAddress
-        ),
+        Address(formData.receiverAddress.value),
         formData.amount !== '' ? toWei(formData.amount, asset.decimal!) : TokenValue(new BN(0))
       )
     ),
