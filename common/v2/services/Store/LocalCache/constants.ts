@@ -73,7 +73,6 @@ export const CACHE_INIT_DEV: LocalCache = {
     ETH: {
       id: 'ETH',
       name: 'Ethereum',
-      unit: 'ETH',
       baseAsset: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
       chainId: 1,
       isCustom: false,

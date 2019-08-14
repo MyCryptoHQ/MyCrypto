@@ -6,7 +6,6 @@ import { Table, Address, Button } from '@mycrypto/ui';
 import translate, { translateRaw } from 'translations';
 import { isValidPath } from 'v2/services/EthService/';
 import { AppState } from 'features/reducers';
-import { configSelectors } from 'features/config';
 import {
   deterministicWalletsTypes,
   deterministicWalletsActions
@@ -19,9 +18,8 @@ import nextIcon from 'assets/images/next-page-button.svg';
 import prevIcon from 'assets/images/previous-page-button.svg';
 import radio from 'assets/images/radio.svg';
 import radioChecked from 'assets/images/radio-checked.svg';
-import { getNetworkByDPath } from 'v2/services/Store/Network/helpers';
 import { Network } from 'v2/types';
-import { StaticNetworkConfig, CustomNetworkConfig } from 'shared/types/network';
+import { getBaseAssetSymbolByNetwork } from 'v2/services';
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -30,6 +28,7 @@ function Radio({ checked }: { checked: boolean }) {
 const WALLETS_PER_PAGE = 5;
 
 interface OwnProps {
+  network: Network;
   dPath: DPath;
   dPaths: DPath[];
   publicKey?: string;
@@ -40,7 +39,6 @@ interface OwnProps {
 interface StateProps {
   addressLabels: ReturnType<typeof addressBookSelectors.getAddressLabels>;
   wallets: AppState['deterministicWallets']['wallets'];
-  network: ReturnType<typeof configSelectors.getNetworkConfig>;
 }
 
 interface DispatchProps {
@@ -95,9 +93,9 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { wallets, dPaths, onCancel } = this.props;
+    const { wallets, network, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
-    const network = getNetworkByDPath(this.state.currentDPath) || this.props.network;
+    const symbol = getBaseAssetSymbolByNetwork(network);
 
     return (
       <div className="DW">
@@ -140,8 +138,8 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
         </form>
 
         <Table
-          head={['#', 'Address', network.unit, translateRaw('ACTION_5')]}
-          body={wallets.map(wallet => this.renderWalletRow(wallet, network))}
+          head={['#', 'Address', symbol, translateRaw('ACTION_5')]}
+          body={wallets.map(wallet => this.renderWalletRow(wallet, network, symbol))}
           config={{ hiddenHeadings: ['#', translateRaw('ACTION_5')] }}
         />
 
@@ -234,7 +232,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network | StaticNetworkConfig | CustomNetworkConfig) {
+  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network, symbol : string) {
     const { addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
@@ -260,7 +258,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
       <UnitDisplay
         unit={'ether'}
         value={wallet.value}
-        symbol={network.unit}
+        symbol={symbol}
         displayShortBalance={true}
         checkOffline={true}
       />,
@@ -287,8 +285,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     addressLabels: addressBookSelectors.getAddressLabels(state),
-    wallets: state.deterministicWallets.wallets,
-    network: configSelectors.getNetworkConfig(state)
+    wallets: state.deterministicWallets.wallets
   };
 }
 

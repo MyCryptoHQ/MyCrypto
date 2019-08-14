@@ -45,7 +45,6 @@ export type NetworkId =
 export interface Network {
   id: NetworkId;
   name: string;
-  unit: string;
   baseAsset: string;
   chainId: number;
   isCustom: boolean;

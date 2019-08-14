@@ -48,11 +48,13 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
   public render() {
     const { seed, phrase, formattedPhrase, pass, selectedDPath } = this.state;
     const isValidMnemonic = validateMnemonic(formattedPhrase || '');
+    const network = getNetworkByName(this.props.formData.network);
 
     if (seed) {
       return (
         <div className="Mnemonic-dpath">
           <DeterministicWallets
+            network={network}
             seed={seed}
             dPath={selectedDPath}
             dPaths={this.props.dPaths}

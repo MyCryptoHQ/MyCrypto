@@ -96,7 +96,6 @@ export const initNetworks = () => {
       baseAsset: baseAssetID,
       id: STATIC_NETWORKS_INITIAL_STATE[en].id,
       name: STATIC_NETWORKS_INITIAL_STATE[en].name,
-      unit: STATIC_NETWORKS_INITIAL_STATE[en].unit,
       chainId: STATIC_NETWORKS_INITIAL_STATE[en].chainId,
       isCustom: STATIC_NETWORKS_INITIAL_STATE[en].isCustom,
       color: STATIC_NETWORKS_INITIAL_STATE[en].color,
