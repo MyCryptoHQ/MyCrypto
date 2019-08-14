@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { InputField, CodeBlock } from 'v2/components';
+import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
 import { ISignedMessage } from 'v2/types';
+import { STORIES } from './stories';
+import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -45,6 +47,18 @@ const CodeBlockWrapper = styled.div`
   width: 100%;
 `;
 
+const BackButton = styled(Button)`
+  align-self: flex-start;
+  color: #007a99;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  img {
+    margin-right: 8px;
+  }
+`;
+
 const signatureExample: ISignedMessage = {
   address: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
   msg: 'asdfasdfasdf',
@@ -53,6 +67,7 @@ const signatureExample: ISignedMessage = {
 };
 
 export default function SignMessage() {
+  const [walletName, setWalletName] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
@@ -74,27 +89,54 @@ export default function SignMessage() {
     setSignedMessage(null);
   };
 
+  const onSelect = (selectedWalletName: string) => {
+    setWalletName(selectedWalletName);
+  };
+
+  const story = STORIES.find(x => x.name === walletName);
+  const Step = story && story.steps[0];
+
+  //TODO: Read unlocked value from redux
+  const unlocked = false;
+
   return (
     <Content>
-      <InputField
-        value={message}
-        label={translate('MSG_MESSAGE')}
-        placeholder={translateRaw('SIGN_MSG_PLACEHOLDER')}
-        textarea={true}
-        onChange={event => handleOnChange(event.target.value)}
-        height="150px"
-        inputError={error}
-      />
-      <SignButton disabled={!message} onClick={handleSignMessage}>
-        {translate('NAV_SIGNMSG')}
-      </SignButton>
-      {signedMessage && (
-        <SignedMessage>
-          <SignedMessageLabel>{translate('MSG_SIGNATURE')}</SignedMessageLabel>
-          <CodeBlockWrapper>
-            <CodeBlock>{JSON.stringify(signedMessage, null, 2)}</CodeBlock>
-          </CodeBlockWrapper>
-        </SignedMessage>
+      {walletName ? (
+        <>
+          <BackButton basic={true} onClick={() => setWalletName('')}>
+            <img src={backArrowIcon} alt="Back arrow" />
+            Change Wallet
+          </BackButton>
+          {Step && <Step />}
+        </>
+      ) : (
+        <WalletList wallets={STORIES} onSelect={onSelect} />
+      )}
+
+      {unlocked && walletName && (
+        <>
+          <InputField
+            value={message}
+            label={translate('MSG_MESSAGE')}
+            placeholder={translateRaw('SIGN_MSG_PLACEHOLDER')}
+            textarea={true}
+            onChange={event => handleOnChange(event.target.value)}
+            height="150px"
+            inputError={error}
+          />
+          <SignButton disabled={!message} onClick={handleSignMessage}>
+            {translate('NAV_SIGNMSG')}
+          </SignButton>
+          {signedMessage && (
+            <SignedMessage>
+              <SignedMessageLabel>{translate('MSG_SIGNATURE')}</SignedMessageLabel>
+              <CodeBlockWrapper>
+                <CodeBlock>{JSON.stringify(signedMessage, null, 2)}</CodeBlock>
+              </CodeBlockWrapper>
+            </SignedMessage>
+          )}
+          }
+        </>
       )}
     </Content>
   );

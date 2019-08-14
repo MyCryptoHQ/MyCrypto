@@ -102,7 +102,7 @@ const AddAccountFlow = withRouter(props => {
         <div className="MainPanel">
           <TransitionGroup>
             <CSSTransition classNames="DecryptContent" timeout={500}>
-              <WalletList wallets={STORIES} onSelect={onWalletSelection} />
+              <WalletList wallets={STORIES} onSelect={onWalletSelection} showHeader={true} />
             </CSSTransition>
           </TransitionGroup>
         </div>

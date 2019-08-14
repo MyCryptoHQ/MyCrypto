@@ -47,10 +47,6 @@ const ContentPanelHeading = styled.p<ContentPanelHeadingProps>`
   margin-top: 0;
   margin-bottom: 15px;
   color: ${props => props.theme.headline};
-
-  @media (max-width: 700px) {
-    padding: 0 8px;
-  }
 `;
 
 const ContentPanelHeadingIcon = styled.img`
