@@ -21,6 +21,7 @@ import radio from 'assets/images/radio.svg';
 import radioChecked from 'assets/images/radio-checked.svg';
 import { getNetworkByDPath } from 'v2/services/Store/Network/helpers';
 import { Network } from 'v2/types';
+import { StaticNetworkConfig, CustomNetworkConfig } from 'shared/types/network';
 
 function Radio({ checked }: { checked: boolean }) {
   return <img className="clickable radio-image" src={checked ? radioChecked : radio} />;
@@ -96,7 +97,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
   public render() {
     const { wallets, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
-    const network = getNetworkByDPath(this.state.currentDPath);
+    const network = getNetworkByDPath(this.state.currentDPath) || this.props.network;
 
     return (
       <div className="DW">
@@ -233,13 +234,13 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network) {
+  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network | StaticNetworkConfig | CustomNetworkConfig) {
     const { addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
 
     let blockExplorer;
-    if (!network.isCustom) {
+    if (!network.isCustom && network.blockExplorer) {
       blockExplorer = network.blockExplorer;
     } else {
       blockExplorer = {
@@ -286,7 +287,8 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
 function mapStateToProps(state: AppState): StateProps {
   return {
     addressLabels: addressBookSelectors.getAddressLabels(state),
-    wallets: state.deterministicWallets.wallets
+    wallets: state.deterministicWallets.wallets,
+    network: configSelectors.getNetworkConfig(state)
   };
 }
 

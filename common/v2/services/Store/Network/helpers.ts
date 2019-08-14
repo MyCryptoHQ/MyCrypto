@@ -45,7 +45,7 @@ export const getNetworkById = (id: string): Network | undefined => {
 
 export const getNetworkByDPath = (dPath: DPath): Network | undefined => {
   const networks = getAllNetworks() || [];
-  return networks.find((network: Network) => network.dPaths.default.value === dPath.value);
+  return networks.find((network: Network) => network.dPaths.default ? network.dPaths.default.value === dPath.value : false);
 };
 
 export const isWalletFormatSupportedOnNetwork = (network: Network, format: WalletName): boolean => {

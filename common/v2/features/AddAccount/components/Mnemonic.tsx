@@ -8,7 +8,7 @@ import { InsecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
 import { formatMnemonic } from 'utils/formatters';
 import { AppState } from 'features/reducers';
-import { configSelectors, configNetworksStaticSelectors } from 'features/config';
+import { configNetworksStaticSelectors } from 'features/config';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWallets from './DeterministicWallets';
@@ -42,14 +42,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     phrase: undefined,
     formattedPhrase: undefined,
     pass: undefined,
-    selectedDPath: getNetworkByName(this.props.formData.network).dPaths.mnemonicPhrase
+    selectedDPath: this.getInitialDPath()
   };
-
-  /**public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ selectedDPath: nextProps.dPath });
-    }
-  }*/
 
   public render() {
     const { seed, phrase, formattedPhrase, pass, selectedDPath } = this.state;
@@ -153,6 +147,11 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     this.setState({ seed });
   };
 
+  private getInitialDPath() : DPath {
+    const network = getNetworkByName(this.props.formData.network);
+    return network ? network.dPaths.mnemonicPhrase : this.props.dPaths[0]
+  }
+
   private handleCancel = () => {
     this.setState({ seed: undefined });
   };
@@ -176,7 +175,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       phrase: undefined,
       formattedPhrase: undefined,
       pass: undefined,
-      selectedDPath: this.props.dPath
+      selectedDPath: this.getInitialDPath()
     });
   };
 }
