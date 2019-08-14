@@ -75,3 +75,4 @@ export {
   getDecimalFromEtherUnit,
   toTokenBase
 } from './utils/units';
+export * from './ens';

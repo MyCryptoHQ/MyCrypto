@@ -964,6 +964,8 @@
     "NO_ACCOUNTS_SELECTED_HEADER":"You have no accounts selected.",
     "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above.",
     "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset",
+    "SEND_ASSETS_ENS_WILL_RESOLVE": "Will Resolve Name",
+    "SEND_ASSETS_ENS_DID_RESOLVE": "Resolved Address",
     "REQUIRED": "Required",
     "TO_FIELD_ERROR": "Enter a valid address or ENS name",
     "404_HEADER":"Page Not Found",

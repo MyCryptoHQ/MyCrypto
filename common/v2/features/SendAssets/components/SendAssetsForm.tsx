@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Field, FieldProps, Form, Formik } from 'formik';
+import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
-import { InlineErrorMsg, ENSStatus } from 'v2/components';
+import { InlineErrorMsg } from 'v2/components';
 import {
   AccountContext,
   getAssetByUUID,
@@ -48,7 +48,10 @@ import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas } from '../helpers';
 
 const initialFormikValues: IFormikFields = {
-  receiverAddress: '',
+  receiverAddress: {
+    value: '',
+    display: ''
+  },
   amount: '0',
   account: {} as IExtendedAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
@@ -68,7 +71,6 @@ const initialFormikValues: IFormikFields = {
   gasPriceField: '20',
   gasLimitField: '21000',
   advancedTransaction: false,
-  resolvedENSAddress: '0x0', // Not a field, move to state
   nonceField: '0'
 };
 
@@ -96,7 +98,6 @@ export default function SendAssetsForm({
   const [isGasLimitManual, setIsGasLimitManual] = useState(false); // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   // @ts-ignore while waiting to update form
-  const [recipientResolvedENSAddress, setRecipienResolvedENSAddress] = useState(null);
   // @TODO:SEND change the data structure to get an object
 
   const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
@@ -149,7 +150,7 @@ export default function SendAssetsForm({
             setIsResolvingENSName(true);
             const resolvedAddress = (await getResolvedENSAddress(values.network, name)) || '0x0';
             setIsResolvingENSName(false);
-            setFieldValue('resolvedENSAddress', resolvedAddress);
+            setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
           };
 
           const handleFieldReset = () => {
@@ -178,7 +179,7 @@ export default function SendAssetsForm({
                 <label htmlFor="asset" className="input-group-header">
                   {translate('X_ASSET')}
                 </label>
-                <Field
+                <FastField
                   name="asset" // Need a way to spread option, name, symbol on sharedConfig for assets
                   component={({ field, form }: FieldProps) => (
                     <AssetDropdown
@@ -206,7 +207,7 @@ export default function SendAssetsForm({
                 <label htmlFor="account" className="input-group-header">
                   {translate('X_ADDRESS')}
                 </label>
-                <Field
+                <FastField
                   name="account"
                   value={values.account}
                   component={({ field, form }: FieldProps) => (
@@ -231,19 +232,14 @@ export default function SendAssetsForm({
                   {translate('SEND_ADDR')}
                 </label>
                 <EthAddressField
-                  fieldName="receiverAddress"
+                  fieldName="receiverAddress.display"
                   handleENSResolve={handleENSResolve}
-                  error={errors && errors.receiverAddress}
-                  touched={touched && touched.receiverAddress}
+                  error={errors && errors.receiverAddress && errors.receiverAddress.value}
+                  touched={touched && touched.receiverAddress && touched.receiverAddress.value}
                   handleGasEstimate={handleGasEstimate}
-                  chainId={values.network.chainId}
-                  placeholder="Enter an Address or Contact"
-                />
-                <ENSStatus
-                  ensAddress={values.receiverAddress}
+                  network={values.network}
                   isLoading={isResolvingENSName}
-                  rawAddress={recipientResolvedENSAddress ? recipientResolvedENSAddress! : ''}
-                  chainId={values.network ? values.network.chainId : 1}
+                  placeholder="Enter an Address or Contact"
                 />
               </fieldset>
               {/* Amount */}
@@ -254,7 +250,7 @@ export default function SendAssetsForm({
                     {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION').toLowerCase()}
                   </div>
                 </label>
-                <Field
+                <FastField
                   name="amount"
                   render={({ field }: FieldProps) => (
                     <Input
