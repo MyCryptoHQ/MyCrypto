@@ -14,19 +14,12 @@ import {
   getNetworkByName,
   getBaseAssetByNetwork
 } from 'v2/services/Store';
-import {
-  Asset,
-  TSymbol,
-  Network,
-  AssetBalanceObject,
-  ExtendedAccount as IExtendedAccount
-} from 'v2/types';
+import { Asset, Network, AssetBalanceObject, ExtendedAccount as IExtendedAccount } from 'v2/types';
 import { getNonce, hexToNumber, getResolvedENSAddress } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import { notUndefined } from 'v2/utils';
 
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
-import TransactionValueDisplay from './displays/TransactionValuesDisplay';
 import {
   AccountDropdown,
   AssetDropdown,
@@ -308,7 +301,7 @@ export default function SendAssetsForm({
                 ) : null}
               </fieldset>
               {/* You'll Send */}
-              <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
+              {/* <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
                 <label>You'll Send</label>
                 <TransactionValueDisplay
                   amount={values.amount || '0.00'}
@@ -319,7 +312,7 @@ export default function SendAssetsForm({
                   }
                   fiatAsset={{ ticker: 'USD' as TSymbol, exchangeRate: '250' }}
                 />
-              </fieldset>
+              </fieldset> */}
               {/* Transaction Fee */}
               <fieldset className="SendAssetsForm-fieldset">
                 <label htmlFor="transactionFee" className="SendAssetsForm-fieldset-transactionFee">
