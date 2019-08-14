@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
 import { WalletButton } from './WalletButton';
 import { WalletNameWithDefault, IStory } from 'v2/types';
-import { WALLET_INFO } from './walletInfo';
+import { WALLET_INFO } from 'v2/config';
 
 interface Props {
   wallets: any[];

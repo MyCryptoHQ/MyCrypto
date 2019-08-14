@@ -5,8 +5,10 @@ import { Button } from '@mycrypto/ui';
 import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
-import { ISignedMessage } from 'v2/types';
+import { ISignedMessage, WalletNameWithDefault } from 'v2/types';
 import { STORIES } from './stories';
+import { WALLET_INFO } from 'v2/config';
+
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
@@ -67,7 +69,7 @@ const signatureExample: ISignedMessage = {
 };
 
 export default function SignMessage() {
-  const [walletName, setWalletName] = useState('');
+  const [walletName, setWalletName] = useState<WalletNameWithDefault | undefined>(undefined);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
@@ -89,7 +91,7 @@ export default function SignMessage() {
     setSignedMessage(null);
   };
 
-  const onSelect = (selectedWalletName: string) => {
+  const onSelect = (selectedWalletName: WalletNameWithDefault) => {
     setWalletName(selectedWalletName);
   };
 
@@ -103,11 +105,11 @@ export default function SignMessage() {
     <Content>
       {walletName ? (
         <>
-          <BackButton basic={true} onClick={() => setWalletName('')}>
+          <BackButton basic={true} onClick={() => setWalletName(undefined)}>
             <img src={backArrowIcon} alt="Back arrow" />
             Change Wallet
           </BackButton>
-          {Step && <Step />}
+          {Step && <Step wallet={WALLET_INFO[walletName]} />}
         </>
       ) : (
         <WalletList wallets={STORIES} onSelect={onSelect} />

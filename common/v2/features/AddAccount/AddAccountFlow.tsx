@@ -3,14 +3,13 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
 import { ContentPanel, WalletList } from 'v2/components';
-import { WALLET_INFO } from 'v2/components/WalletList/walletInfo';
 import { FormDataActionType as ActionType } from './types';
 import { WalletName, walletNames } from 'v2/types';
 import { STORIES } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, WALLET_INFO } from 'v2/config';
 
 export const getStory = (storyName: WalletName): any => {
   return STORIES.filter(selected => selected.name === storyName)[0];
