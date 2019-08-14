@@ -96,7 +96,7 @@ function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
           <SubTitle>{translate(currentRoute.subtitle)}</SubTitle>
         </HeadingWrapper>
       }
-      maxWidth="750px"
+      width="850px"
     >
       <currentRoute.component />
     </ExtendedContentPanel>
