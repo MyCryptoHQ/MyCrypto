@@ -2,11 +2,8 @@ import React from 'react';
 import { Input } from '@mycrypto/ui';
 import { FieldProps, Field } from 'formik';
 
-import { getENSTLDForChain } from 'libs/ens/networkConfigs';
-import { isValidENSName } from 'libs/validators';
-
 import { translateRaw } from 'translations';
-import { isValidETHAddress } from 'v2/services/EthService';
+import { isValidETHAddress, isValidENSName, getENSTLDForChain } from 'v2/services/EthService';
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
 import { Network } from 'v2/types';
 
@@ -68,21 +65,19 @@ function ETHAddressField({
                   value: e.currentTarget.value
                 });
               }}
-              onBlur={e => {
-                if (network.chainId) {
-                  const ensTLD = getENSTLDForChain(network.chainId);
-                  const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
-                  if (isENSAddress && handleENSResolve) {
-                    handleENSResolve(e.currentTarget.value);
-                    handleGasEstimate();
-                  } else {
-                    form.setFieldValue('receiverAddress', {
-                      display: e.currentTarget.value,
-                      value: e.currentTarget.value
-                    });
-                    handleGasEstimate();
-                  }
+              onBlur={async e => {
+                if (!network.chainId) {
+                  return;
                 }
+                const ensTLD = getENSTLDForChain(network.chainId);
+                const isENSAddress = e.currentTarget.value.endsWith(`.${ensTLD}`);
+                const action =
+                  isENSAddress && handleENSResolve
+                    ? (ensName: string) => handleENSResolve(ensName)
+                    : (address: string) =>
+                        form.setFieldValue('receiverAddress', { display: address, value: address });
+                await action(e.currentTarget.value);
+                handleGasEstimate();
               }}
             />
             <ENSStatus
