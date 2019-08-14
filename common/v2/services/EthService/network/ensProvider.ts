@@ -1,4 +1,4 @@
-import ProviderHandler from './providerHandler';
+import { ProviderHandler } from './providerHandler';
 
 export class ENSProvider extends ProviderHandler {
   public resolveENS(name: string): Promise<string | null> {

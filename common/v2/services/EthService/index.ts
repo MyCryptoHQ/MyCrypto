@@ -63,6 +63,8 @@ export {
   isValidGetNetVersion,
   isValidAddress
 } from './validators';
+export { ProviderHandler } from './network';
+export { getResolvedENSAddress } from './ens';
 // @TODO These are consummed by v2/libs
 // remove export after migration into the service
 export {

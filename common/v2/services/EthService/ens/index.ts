@@ -87,3 +87,4 @@ export interface IModeMap {
 }
 
 export * from './validators';
+export { getResolvedENSAddress } from './ensFunctions';
