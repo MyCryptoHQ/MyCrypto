@@ -38,7 +38,8 @@ export {
   inputGasLimitToHex,
   inputNonceToHex,
   totalTxFeeToString,
-  totalTxFeeToWei
+  totalTxFeeToWei,
+  gasStringsToMaxGasNumber
 } from './utils';
 export {
   isValidPath,

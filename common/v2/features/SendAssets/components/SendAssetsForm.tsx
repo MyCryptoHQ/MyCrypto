@@ -46,7 +46,13 @@ import {
   validateDataField
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
-import { processFormForEstimateGas } from '../helpers';
+import { processFormForEstimateGas, isERC20Tx } from '../helpers';
+import {
+  gasStringsToMaxGasBN,
+  convertedToBaseUnit,
+  baseToConvertedUnit
+} from 'v2/services/EthService/utils/units';
+import BN from 'bn.js';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: '',
@@ -94,7 +100,8 @@ export default function SendAssetsForm({
   const { accounts } = useContext(AccountContext);
 
   // @ts-ignore while waiting to update form
-  const [isGasLimitManual, setIsGasLimitManual] = useState(false); // Used to indicate that user has un-clicked the user-input gas-limit checkbox.
+  const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
+  const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
   // @ts-ignore while waiting to update form
   const [recipientResolvedENSAddress, setRecipienResolvedENSAddress] = useState(null);
@@ -159,17 +166,41 @@ export default function SendAssetsForm({
           };
 
           const setAmountFieldToAssetMax = () => {
-            // @TODO get asset balance and subtract gas cost
-            setFieldValue('amount', '1000');
-            handleGasEstimate();
+            if (values.asset && values.account && baseAsset) {
+              const isERC20 = isERC20Tx(values.asset);
+              const balance = isERC20
+                ? values.account.assets
+                    .filter(accountAsset => accountAsset.uuid === values.asset.uuid)
+                    .map(accountAsset => accountAsset.balance)[0] || '0'
+                : values.account.balance;
+
+              if (balance === '0') {
+                return;
+              }
+              const gasPrice = values.advancedTransaction
+                ? values.gasPriceField
+                : values.gasPriceSlider;
+              const amount: string = isERC20 // subtract gas cost from balance when sending a base asset
+                ? balance
+                : baseToConvertedUnit(
+                    new BN(convertedToBaseUnit(balance, 18))
+                      .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
+                      .toString(),
+                    18
+                  );
+              setFieldValue('amount', amount.toString());
+              handleGasEstimate();
+            }
           };
 
           const handleNonceEstimate = async (account: IExtendedAccount) => {
             if (!values || !values.network || !account) {
               return;
             }
+            setIsEstimatingNonce(true);
             const nonce: number = await getNonce(values.network, account);
             setFieldValue('nonceField', nonce.toString());
+            setIsEstimatingNonce(false);
           };
 
           return (
@@ -326,8 +357,8 @@ export default function SendAssetsForm({
                 </Button>
                 {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
-                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
-                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-price">
+                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-price">
                         <label htmlFor="gasPrice">{translate('OFFLINE_STEP2_LABEL_3')}</label>
                         <Field
                           name="gasPriceField"
@@ -344,8 +375,8 @@ export default function SendAssetsForm({
                         />
                       </div>
                     </div>
-                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
-                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-limit">
+                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-limit">
                         <label htmlFor="gasLimit" className="input-group-header label-with-action">
                           <div>{translate('OFFLINE_STEP2_LABEL_4')}</div>
                           <div className="label-action" onClick={handleGasEstimate}>
@@ -368,8 +399,8 @@ export default function SendAssetsForm({
                         />
                       </div>
                     </div>
-                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce">
-                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonce-nonce">
+                    <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-nonce">
                         <label htmlFor="nonce" className="input-group-header label-with-action">
                           <div>Nonce (?)</div>
                           <div
@@ -407,27 +438,26 @@ export default function SendAssetsForm({
                       )}
                     </div>
                     <fieldset className="SendAssetsForm-fieldset">
-                      <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
-                      <Field
-                        name="txDataField"
-                        validate={validateDataField}
-                        render={({ field, form }: FieldProps<IFormikFields>) => (
-                          <DataField
-                            onChange={(option: string) => {
-                              form.setFieldValue('txDataField', option);
-                            }}
-                            errors={errors.txDataField}
-                            name={field.name}
-                            value={field.value}
+                      <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
+                        <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
+                          <label htmlFor="data">Data{/* TRANSLATE THIS */}</label>
+                          <Field
+                            name="txDataField"
+                            validate={validateDataField}
+                            render={({ field, form }: FieldProps<IFormikFields>) => (
+                              <DataField
+                                onChange={(option: string) => {
+                                  form.setFieldValue('txDataField', option);
+                                }}
+                                errors={errors.txDataField}
+                                name={field.name}
+                                value={field.value}
+                              />
+                            )}
                           />
-                        )}
-                      />
+                        </div>
+                      </div>
                     </fieldset>
-                    <div className="SendAssetsForm-advancedOptions-content-output">
-                      0 + 13000000000 * 1500000 + 20000000000 * (180000 + 53000) = 0.02416 ETH ~=
-                      {/* TRANSLATE THIS */}
-                      $2.67 USD{/* TRANSLATE THIS */}
-                    </div>
                   </div>
                 )}
               </div>
@@ -437,6 +467,7 @@ export default function SendAssetsForm({
                 onClick={() => {
                   submitForm();
                 }}
+                disabled={isEstimatingGasLimit || isResolvingENSName || isEstimatingNonce}
                 className="SendAssetsForm-next"
               >
                 Next{/* TRANSLATE THIS */}
