@@ -28,7 +28,7 @@ function Radio({ checked }: { checked: boolean }) {
 const WALLETS_PER_PAGE = 5;
 
 interface OwnProps {
-  network: Network;
+  network: Network | undefined;
   dPath: DPath;
   dPaths: DPath[];
   publicKey?: string;
@@ -95,7 +95,11 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
   public render() {
     const { wallets, network, dPaths, onCancel } = this.props;
     const { selectedAddress, customPath, page } = this.state;
-    const symbol = getBaseAssetSymbolByNetwork(network);
+    let baseAssetSymbol: string | undefined;
+    if (network) {
+      baseAssetSymbol = getBaseAssetSymbolByNetwork(network);
+    }
+    const symbol : string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
 
     return (
       <div className="DW">
@@ -232,13 +236,13 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network, symbol : string) {
+  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network | undefined, symbol : string) {
     const { addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];
 
     let blockExplorer;
-    if (!network.isCustom && network.blockExplorer) {
+    if (network && !network.isCustom && network.blockExplorer) {
       blockExplorer = network.blockExplorer;
     } else {
       blockExplorer = {
