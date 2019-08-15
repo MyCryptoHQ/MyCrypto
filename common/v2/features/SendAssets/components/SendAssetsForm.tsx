@@ -136,7 +136,15 @@ export default function SendAssetsForm({
           };
 
           const handleGasEstimate = async () => {
-            if (!(!values || !values.network || !values.asset || !values.receiverAddress)) {
+            if (
+              !(
+                !values ||
+                !values.network ||
+                !values.asset ||
+                !values.receiverAddress ||
+                !values.account
+              )
+            ) {
               const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
               setFieldValue('gasLimitField', hexToNumber(gas));
@@ -250,7 +258,7 @@ export default function SendAssetsForm({
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         //TODO: map account values to correct keys in sharedConfig
-                        form.setFieldValue(field.name, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                        form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         handleNonceEstimate(option);
                         handleGasEstimate();
                       }}
