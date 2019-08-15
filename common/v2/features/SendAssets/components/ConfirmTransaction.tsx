@@ -30,11 +30,11 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const [showDetails, setShowDetails] = useState(false);
 
-  const recipientAccount = getContactByAddressAndNetwork(
+  const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
     txConfig.network
   );
-  const recipientLabel = recipientAccount ? recipientAccount.label : 'Unknown Address';
+  const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
 
   /* ToDo: Figure out how to extract this */
   const {
@@ -61,8 +61,16 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6); // @TODO: BN math, add amount + maxCost !In same symbol
   const networkName = network ? network.name : undefined;
 
+  /* Calculate User's Asset Balance */
+  const userAssetToSend = senderAccount.assets.find(
+    accountAsset => accountAsset.uuid === asset.uuid
+  );
+  const userAssetBalance = userAssetToSend ? userAssetToSend.balance : 'Unknown Balance';
+
+  /* Determing User's Contact */
   const senderContact = getContactByAccount(senderAccount);
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
+
   return (
     <div className="ConfirmTransaction">
       <div className="ConfirmTransaction-row">
@@ -112,10 +120,10 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           {assetType === 'base' ? (
             <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
           ) : (
-            <Amount
-              assetValue={`${amount} ${asset.ticker} + ${totalEtherEgress} ${baseAsset.ticker}`}
-              fiatValue="$1"
-            />
+            <>
+              <Amount assetValue={`${amount} ${asset.ticker}`} fiatValue="$1" />
+              <Amount assetValue={`${totalEtherEgress} ${baseAsset.ticker}`} fiatValue="$1" />
+            </>
           )}
         </div>
       </div>
@@ -129,8 +137,14 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
       {showDetails && (
         <div className="ConfirmTransaction-details">
           <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Account Balance:</div>
+            <div className="ConfirmTransaction-details-row-column">Current Account Balance:</div>
             <div className="ConfirmTransaction-details-row-column">
+              {assetType === 'erc20' && (
+                <>
+                  {' '}
+                  {userAssetBalance} {asset.ticker} <br />{' '}
+                </>
+              )}
               {`${senderAccount ? senderAccount.balance : 'Unknown'} ${baseAsset.ticker}`}
             </div>
           </div>
