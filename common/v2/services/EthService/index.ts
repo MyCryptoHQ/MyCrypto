@@ -39,7 +39,9 @@ export {
   inputNonceToHex,
   totalTxFeeToString,
   totalTxFeeToWei,
-  gasStringsToMaxGasNumber
+  gasStringsToMaxGasNumber,
+  gasStringsToMaxGasBN,
+  convertedToBaseUnit
 } from './utils';
 export {
   isValidPath,

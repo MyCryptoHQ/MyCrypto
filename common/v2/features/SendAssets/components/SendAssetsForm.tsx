@@ -3,6 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
+import BN from 'bn.js';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
@@ -19,7 +20,10 @@ import {
   getNonce,
   hexToNumber,
   getResolvedENSAddress,
-  isValidETHAddress
+  isValidETHAddress,
+  gasStringsToMaxGasBN,
+  convertedToBaseUnit,
+  baseToConvertedUnit
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import { notUndefined } from 'v2/utils';
@@ -45,12 +49,6 @@ import {
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import {
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  baseToConvertedUnit
-} from 'v2/services/EthService/utils/units';
-import BN from 'bn.js';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: {
@@ -185,14 +183,12 @@ export default function SendAssetsForm({
             if (values.asset && values.account && baseAsset) {
               const isERC20 = isERC20Tx(values.asset);
               const balance = isERC20
-                ? values.account.assets
-                    .filter(accountAsset => accountAsset.uuid === values.asset.uuid)
-                    .map(accountAsset => accountAsset.balance)[0] || '0'
+                ? (
+                    values.account.assets.find(
+                      accountAsset => accountAsset.uuid === values.asset.uuid
+                    ) || { balance: '0' }
+                  ).balance
                 : values.account.balance;
-
-              if (balance === '0') {
-                return;
-              }
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
