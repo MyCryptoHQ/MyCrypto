@@ -15,7 +15,12 @@ import {
   getBaseAssetByNetwork
 } from 'v2/services/Store';
 import { Asset, Network, AssetBalanceObject, ExtendedAccount as IExtendedAccount } from 'v2/types';
-import { getNonce, hexToNumber, getResolvedENSAddress } from 'v2/services/EthService';
+import {
+  getNonce,
+  hexToNumber,
+  getResolvedENSAddress,
+  isValidETHAddress
+} from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import { notUndefined } from 'v2/utils';
 
@@ -32,11 +37,11 @@ import {
 } from './fields';
 import './SendAssetsForm.scss';
 import {
-  // validateDataField, //Re-add this soontm
   validateGasLimitField,
   validateGasPriceField,
   validateNonceField,
-  validateDataField
+  validateDataField,
+  validateAmountField
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
@@ -85,7 +90,9 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 const SendAssetsSchema = Yup.object().shape({
-  amount: Yup.number().required('Required')
+  amount: Yup.string().required('Required'),
+  account: Yup.object().required('Required'),
+  receiverAddress: Yup.object().required('Required')
 });
 
 export default function SendAssetsForm({
@@ -142,6 +149,7 @@ export default function SendAssetsForm({
                 !values.network ||
                 !values.asset ||
                 !values.receiverAddress ||
+                !isValidETHAddress(values.receiverAddress.value) ||
                 !values.account
               )
             ) {
@@ -155,12 +163,16 @@ export default function SendAssetsForm({
 
           const handleENSResolve = async (name: string) => {
             if (!values || !values.network) {
+              setIsResolvingENSName(false);
               return;
             }
             setIsResolvingENSName(true);
-            const resolvedAddress = (await getResolvedENSAddress(values.network, name)) || '0x0';
+            const resolvedAddress =
+              (await getResolvedENSAddress(values.network, name)) ||
+              '0x0000000000000000000000000000000000000000';
             setIsResolvingENSName(false);
             setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
+            setIsResolvingENSName(false);
           };
 
           const handleFieldReset = () => {
@@ -291,6 +303,7 @@ export default function SendAssetsForm({
                 </label>
                 <FastField
                   name="amount"
+                  validate={validateAmountField}
                   render={({ field }: FieldProps) => (
                     <Input
                       {...field}

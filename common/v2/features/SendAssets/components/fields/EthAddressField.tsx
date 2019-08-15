@@ -3,7 +3,11 @@ import { Input } from '@mycrypto/ui';
 import { FieldProps, Field } from 'formik';
 
 import { translateRaw } from 'translations';
-import { isValidETHAddress, isValidENSName, getENSTLDForChain } from 'v2/services/EthService';
+import {
+  isValidETHAddress,
+  getENSTLDForChain,
+  getIsValidENSAddressFunction
+} from 'v2/services/EthService';
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
 import { Network } from 'v2/types';
 
@@ -39,6 +43,8 @@ function ETHAddressField({
     if (!value) {
       errorMsg = translateRaw('REQUIRED');
     } else if (!isValidETHAddress(value)) {
+      const networkId = network && network.chainId ? network.chainId : 1;
+      const isValidENSName = getIsValidENSAddressFunction(networkId);
       if (!isValidENSName(value)) {
         errorMsg = translateRaw('TO_FIELD_ERROR');
       }
