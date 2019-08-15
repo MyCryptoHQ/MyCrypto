@@ -1,5 +1,5 @@
 import {
-  TUseApiFactory,
+  TUseStateReducerFactory,
   getNetworkByChainId,
   getAssetByContractAndNetwork,
   decodeTransfer,
@@ -38,7 +38,7 @@ interface State {
   signedTx: ISignedTx; // make sure signedTx is only used within stateFactory
 }
 
-const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
+const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
     const baseAsset: Asset | undefined = getBaseAssetByNetwork(payload.network);
