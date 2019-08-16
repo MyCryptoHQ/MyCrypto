@@ -28,7 +28,7 @@ const getFullAccounts = (
   return accounts.map(a => ({
     ...a,
     assets: getAssetsByUuid(a.assets, assets),
-    network: getNetworkById(a.network as NetworkId, networks)
+    network: getNetworkById(a.networkId, networks)
   }));
 };
 
@@ -49,7 +49,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     (async function getAccountsBalances() {
       // for the moment EthScan is only deployed on Homestead.
-      const supportedAccounts = accounts.filter(({ network }) => network.id === 'ETH');
+      const supportedAccounts = accounts.filter(({ network }) => network.id === 'Homestead');
       const accountWithBalances = await Promise.all(supportedAccounts.map(getAccountBalance));
       // uniqueness of `accounts` is `address` && `network`, so we use `uuid`
       const updatedAccounts = unionBy(accountWithBalances, accounts, 'uuid');

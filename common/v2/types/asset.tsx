@@ -25,3 +25,10 @@ export interface Asset {
 export interface ExtendedAsset extends Asset {
   uuid: string;
 }
+
+// Used to reference an Asset in a storage Account
+export interface AssetBalanceObject {
+  uuid: string;
+  balance: string;
+  timestamp: number;
+}

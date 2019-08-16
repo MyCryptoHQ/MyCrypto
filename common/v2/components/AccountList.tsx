@@ -130,7 +130,7 @@ function buildAccountTable(
         </Label>,
         <Copyable key={index} text={account.address} truncate={truncate} />,
         <Network key={index} color="#a682ff">
-          {account.network}
+          {account.networkId}
         </Network>,
         <Typography key={index}>{account.balance}</Typography>
       ];

@@ -34,7 +34,7 @@ function AccountDropdown({
   if (asset && network) {
     relevantAccounts = accounts
       .filter((account: ExtendedAccount): boolean => {
-        const accountNetwork: Network | undefined = getNetworkByName(account.network);
+        const accountNetwork: Network | undefined = getNetworkByName(account.networkId);
         return !accountNetwork ? false : accountNetwork.name === network.name;
       })
       .map((account: ExtendedAccount) => {

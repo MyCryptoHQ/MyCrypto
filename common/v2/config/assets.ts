@@ -4,7 +4,7 @@ export const assets: { [key in string]: Asset } = {
   '10e14757-78bb-4bb2-a17a-8333830f6698': {
     uuid: '10e14757-78bb-4bb2-a17a-8333830f6698',
     name: 'WrappedETH',
-    networkId: 'Ethereum',
+    networkId: 'Homestead',
     type: 'erc20',
     ticker: 'WETH',
     contractAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
@@ -13,7 +13,7 @@ export const assets: { [key in string]: Asset } = {
   'f7e30bbe-08e2-41ce-9231-5236e6aab702': {
     uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702',
     name: 'Ether',
-    networkId: 'Ethereum',
+    networkId: 'Homestead',
     type: 'base',
     ticker: 'ETH',
     decimal: 18

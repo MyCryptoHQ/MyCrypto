@@ -7,7 +7,7 @@ import { Network, NetworkId, NodeType, DPathFormat } from 'v2/types';
 type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';
 
 const getValidEthscanNetworkId = (id: NetworkId): TValidEtherscanNetwork =>
-  id === 'ETH' ? 'homestead' : (id.toLowerCase() as TValidEtherscanNetwork);
+  id.toLowerCase() as TValidEtherscanNetwork;
 
 export const createNetworkProviders = (network: Network): FallbackProvider => {
   const { id, nodes }: Partial<Network> = network;

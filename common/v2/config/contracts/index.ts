@@ -1,5 +1,7 @@
+import { Contract } from 'v2/types';
+
 import ETC from './etc.json';
-import ETH from './eth.json';
+import Homestead from './eth.json';
 import EXP from './exp.json';
 import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
@@ -11,19 +13,14 @@ import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 import PIRL from './pirl.json';
 
-export interface Network {
-  name: string;
-  address: string;
-  abi: string;
+// @TODO[Types]: key should really be a partial of NetworkId
+interface Contracts {
+  [key: string]: Contract[];
 }
 
-export interface Networks {
-  [key: string]: [Network];
-}
-
-export default {
+export const Contracts: Contracts = {
   ETC,
-  ETH,
+  Homestead,
   EXP,
   Rinkeby,
   Ropsten,
@@ -34,4 +31,4 @@ export default {
   ARTIS_SIGMA1,
   ARTIS_TAU1,
   PIRL
-} as Networks;
+};

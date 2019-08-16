@@ -1,5 +1,5 @@
 export type NetworkId =
-  | 'ETH'
+  | 'Homestead'
   | 'Ropsten'
   | 'Kovan'
   | 'Rinkeby'

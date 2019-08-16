@@ -45,7 +45,7 @@ export const getAccountBalances = (
   updateAccount: (uuid: string, accountData: ExtendedAccount) => void
 ): void => {
   accounts.forEach(async account => {
-    const network = getNetworkByName(account.network);
+    const network = getNetworkByName(account.networkId);
     if (network) {
       const provider = new ProviderHandler(network);
       const balance: string = await provider.getBalance(account.address);
@@ -63,7 +63,7 @@ export const updateTokenBalanceByAsset = (
   asset: Asset,
   updateAccount: (uuid: string, accountData: ExtendedAccount) => void
 ): void => {
-  const network = getNetworkByName(account.network);
+  const network = getNetworkByName(account.networkId);
   if (network) {
     const provider = new ProviderHandler(network);
     provider.getTokenBalance(account.address, asset).then(data => {
@@ -118,7 +118,7 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
 };
 
 export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
-  const network: Network | undefined = getNetworkByName(account.network);
+  const network: Network | undefined = getNetworkByName(account.networkId);
   if (network) {
     return getAssetByUUID(network.baseAsset);
   }
@@ -142,7 +142,7 @@ export const getAccountByAddressAndNetworkName = (
     const account: Account = accounts[key];
     if (
       account.address.toLowerCase() === address.toLowerCase() &&
-      account.network === networkName
+      account.networkId === networkName
     ) {
       const newAccount: ExtendedAccount = {
         ...account,

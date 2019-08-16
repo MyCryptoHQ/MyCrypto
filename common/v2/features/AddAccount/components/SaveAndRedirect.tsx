@@ -14,7 +14,7 @@ import {
   getNewDefaultAssetTemplateByNetwork,
   getNetworkByName
 } from 'v2/services/Store';
-import { Account, AddressBook, Asset, Network } from 'v2/types';
+import { Account, AddressBook, Asset, Network, NetworkId } from 'v2/types';
 
 /*
   Create a new account in localStorage and redirect to dashboard.
@@ -39,7 +39,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       const newUUID = generateUUID();
       const account: Account = {
         address: payload.formData.account,
-        network: payload.formData.network,
+        networkId: payload.formData.network as NetworkId,
         wallet: payload.formData.accountType,
         dPath: payload.formData.derivationPath,
         assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
@@ -49,10 +49,10 @@ function SaveAndRedirect(payload: { formData: FormData }) {
         favorite: false
       };
       const newLabel: AddressBook = {
-        label: findNextUnusedDefaultLabel(account.network),
+        label: findNextUnusedDefaultLabel(account.networkId),
         address: account.address,
         notes: '',
-        network: account.network
+        network: account.networkId
       };
       createAddressBook(newLabel);
       createAccountWithID(account, newUUID);

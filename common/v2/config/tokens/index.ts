@@ -1,5 +1,5 @@
 import ETC from './etc.json';
-import ETH from './eth.json';
+import Homestead from './eth.json';
 import EXP from './exp.json';
 import Kovan from './kovan.json';
 import Rinkeby from './rinkeby.json';
@@ -11,15 +11,16 @@ import ESN from './esn.json';
 import ARTIS_SIGMA1 from './artis_sigma1.json';
 import ARTIS_TAU1 from './artis_tau1.json';
 
-export interface Asset {
+export interface Token {
   address: string;
   symbol: string;
   decimal: number;
   name: string;
 }
 
+// @TODO[Types]: key should really be a partial of NetworkId
 export interface NetworksAssets {
-  [key: string]: [Asset];
+  [key: string]: [Token];
 }
 
 export interface ExtendedToken {
@@ -30,9 +31,9 @@ export interface ExtendedToken {
   error?: string | null;
 }
 
-export default {
+export const NetworkAssets: NetworksAssets = {
   ETC,
-  ETH,
+  Homestead,
   EXP,
   Kovan,
   Rinkeby,
@@ -43,4 +44,4 @@ export default {
   ESN,
   ARTIS_SIGMA1,
   ARTIS_TAU1
-} as NetworksAssets;
+};
