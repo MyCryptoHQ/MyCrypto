@@ -1,6 +1,8 @@
+import { Overwrite } from 'utility-types';
 import { TWalletType } from './wallets';
 import { WalletName } from './wallet';
-import { TAssetType } from './asset';
+import { Asset, TAssetType } from './asset';
+import { Network } from './network';
 
 export interface Account {
   label?: string;
@@ -18,6 +20,14 @@ export interface Account {
 export interface ExtendedAccount extends Account {
   uuid: string;
 }
+
+export type StoreAccount = Overwrite<
+  ExtendedAccount,
+  {
+    assets: Asset[];
+    network: Network;
+  }
+>;
 
 export interface TransactionData {
   txHash: string;

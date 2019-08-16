@@ -19,7 +19,13 @@ export type TWalletType = TWalletType;
 export { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName } from './wallet';
 export { walletNames } from './wallet';
 export { Asset, ExtendedAsset, IAsset, TTicker, TAssetType } from './asset';
-export { Account, ExtendedAccount, TransactionData, AssetBalanceObject } from './account';
+export {
+  Account,
+  ExtendedAccount,
+  StoreAccount,
+  TransactionData,
+  AssetBalanceObject
+} from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
 export { ExtendedNetwork, Network, NetworkLegacy } from './network';
