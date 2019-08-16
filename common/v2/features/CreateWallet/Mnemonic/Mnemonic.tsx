@@ -155,11 +155,10 @@ class CreateMnemonic extends Component<Props> {
       networkId: network,
       wallet: accountType,
       dPath: path,
-      assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
-      balance: '0',
+      assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
       transactions: [],
-      timestamp: 0,
-      favorite: false
+      favorite: false,
+      mtime: Date.now()
     };
     createAccountWithID(account, newUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);

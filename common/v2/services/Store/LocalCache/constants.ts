@@ -15,11 +15,8 @@ export const CACHE_INIT_DEV: LocalCache = {
     '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc': {
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       networkId: 'Homestead',
-      assets: [
-        { uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0', timestamp: Date.now() }
-      ],
+      assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0', mtime: Date.now() }],
       wallet: SecureWalletName.WEB3,
-      balance: '1',
       favorite: false,
       transactions: [
         {
@@ -38,7 +35,7 @@ export const CACHE_INIT_DEV: LocalCache = {
         }
       ],
       dPath: `m/44'/60'/0'/0/0`,
-      timestamp: Date.now()
+      mtime: Date.now()
     }
   },
   wallets: {

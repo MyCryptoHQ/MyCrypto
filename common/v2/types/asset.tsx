@@ -30,5 +30,5 @@ export interface ExtendedAsset extends Asset {
 export interface AssetBalanceObject {
   uuid: string;
   balance: string;
-  timestamp: number;
+  mtime: number;
 }

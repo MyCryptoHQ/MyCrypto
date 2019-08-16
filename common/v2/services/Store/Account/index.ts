@@ -4,7 +4,6 @@ export {
   getCurrentsFromContext,
   getBalanceFromAccount,
   getTokenBalanceFromAccount,
-  getAccountBalances,
   updateTokenBalanceByAsset,
   getNodeLib,
   getAccountBalance,

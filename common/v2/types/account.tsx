@@ -12,10 +12,9 @@ export interface Account {
   networkId: NetworkId;
   assets: AssetBalanceObject[];
   wallet: WalletName | TWalletType;
-  balance: string;
   transactions: TransactionData[];
   dPath: string;
-  timestamp: number;
+  mtime: number;
   favorite: boolean;
 }
 

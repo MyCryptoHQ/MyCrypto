@@ -2,7 +2,12 @@ import BN from 'bn.js';
 
 import { shepherdProvider } from 'libs/nodes';
 import { Account, Asset, ExtendedAccount, Network, NodeOptions, INode } from 'v2/types';
-import { getAssetByUUID, getNetworkByName, getNodesByNetwork } from 'v2/services/Store';
+import {
+  getAssetByUUID,
+  getNetworkByName,
+  getNetworkById,
+  getNodesByNetwork
+} from 'v2/services/Store';
 import { getCache } from '../LocalCache';
 import { RPCNode, ProviderHandler } from 'v2/services/EthService';
 
@@ -23,12 +28,9 @@ export const getCurrentsFromContext = (
 };
 
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
-  const baseAsset = getBaseAssetFromAccount(account);
-  if (baseAsset) {
-    return account.balance.toString();
-  } else {
-    return '0';
-  }
+  const baseAssetUuid = getBaseAssetFromAccount(account)!.uuid;
+  const baseAsset = account.assets.find(a => a.uuid === baseAssetUuid);
+  return baseAsset ? baseAsset.balance : '0';
 };
 
 export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset?: Asset): string => {
@@ -37,25 +39,6 @@ export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset?: Ass
   }
   const balanceFound = account.assets.find(entry => entry.uuid === asset.uuid);
   return balanceFound ? balanceFound.balance.toString() : '0';
-};
-
-/* TODO: Refactor this */
-export const getAccountBalances = (
-  accounts: ExtendedAccount[],
-  updateAccount: (uuid: string, accountData: ExtendedAccount) => void
-): void => {
-  accounts.forEach(async account => {
-    const network = getNetworkByName(account.networkId);
-    if (network) {
-      const provider = new ProviderHandler(network);
-      const balance: string = await provider.getBalance(account.address);
-      updateAccount(account.uuid, {
-        ...account,
-        timestamp: Date.now(),
-        balance
-      });
-    }
-  });
 };
 
 export const updateTokenBalanceByAsset = (
@@ -118,7 +101,7 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
 };
 
 export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
-  const network: Network | undefined = getNetworkByName(account.networkId);
+  const network: Network | undefined = getNetworkById(account.networkId);
   if (network) {
     return getAssetByUUID(network.baseAsset);
   }

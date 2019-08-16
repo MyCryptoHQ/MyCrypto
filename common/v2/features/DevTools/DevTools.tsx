@@ -40,12 +40,11 @@ const DevTools = () => {
                     {
                       uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
                       balance: '0',
-                      timestamp: Date.now()
+                      mtime: Date.now()
                     }
                   ],
                   wallet: SecureWalletName.WEB3,
-                  balance: '0',
-                  timestamp: Date.now(),
+                  mtime: Date.now(),
                   transactions: [],
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
                   dPath: `m/44'/60'/0'/0/0`,
