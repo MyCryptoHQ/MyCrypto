@@ -112,22 +112,7 @@
     &-content {
       margin-top: 32px;
 
-      &-automaticallyCalculate {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-
-        input[type='checkbox'] {
-          margin: 0;
-          margin-right: 8px;
-        }
-        label {
-          margin: 0;
-          color: #163150;
-          font-weight: 300;
-        }
-      }
-      &-priceLimitNonce {
+      &-priceLimitNonceData {
         display: flex;
         margin-bottom: 25px;
 
@@ -154,17 +139,19 @@
           align-items: center;
           justify-content: space-between;
         }
+
+        &-data {
+          flex: 2;
+        }
       }
-      &-output {
-        margin-bottom: 25px;
-        padding: 24px 18px;
-        background: #f6f8fa;
-        text-align: center;
-      }
+
     }
   }
   &-next {
-    width: 100%;
+    width: 100%; 
+  }
+  &-next:disabled {
+    background-color: rgba(0, 122, 153, 0.3);
   }
 }
 

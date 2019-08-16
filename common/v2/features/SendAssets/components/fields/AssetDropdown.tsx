@@ -34,9 +34,9 @@ function AssetDropdown({ assets, name, value, onSelect }: Props<Asset>) {
       options={filteredAssets}
       onChange={(option: Asset) => onSelect(option)}
       optionComponent={AssetOption}
-      value={value}
+      value={value && value.ticker ? value : undefined}
       valueComponent={({ value: option }) => (
-        <AssetSummary symbol={option.symbol} name={option.name} />
+        <AssetSummary symbol={option.ticker} name={option.name} />
       )}
     />
   );

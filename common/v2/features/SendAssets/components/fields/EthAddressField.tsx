@@ -3,7 +3,11 @@ import { Input } from '@mycrypto/ui';
 import { FieldProps, Field } from 'formik';
 
 import { translateRaw } from 'translations';
-import { isValidETHAddress, isValidENSName, getENSTLDForChain } from 'v2/services/EthService';
+import {
+  isValidETHAddress,
+  getENSTLDForChain,
+  getIsValidENSAddressFunction
+} from 'v2/services/EthService';
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
 import { Network } from 'v2/types';
 
@@ -18,7 +22,7 @@ interface Props {
   fieldName: string;
   touched?: boolean;
   placeholder?: string;
-  network: Network;
+  network?: Network;
   isLoading: boolean;
   handleGasEstimate(): Promise<void>;
   handleENSResolve?(name: string): Promise<void>;
@@ -29,7 +33,7 @@ function ETHAddressField({
   error,
   touched,
   network,
-  placeholder = 'Eth Address',
+  placeholder = 'ETH Address or ENS Name',
   isLoading,
   handleENSResolve,
   handleGasEstimate
@@ -39,6 +43,8 @@ function ETHAddressField({
     if (!value) {
       errorMsg = translateRaw('REQUIRED');
     } else if (!isValidETHAddress(value)) {
+      const networkId = network && network.chainId ? network.chainId : 1;
+      const isValidENSName = getIsValidENSAddressFunction(networkId);
       if (!isValidENSName(value)) {
         errorMsg = translateRaw('TO_FIELD_ERROR');
       }
@@ -66,7 +72,7 @@ function ETHAddressField({
                 });
               }}
               onBlur={async e => {
-                if (!network.chainId) {
+                if (!network || !network.chainId) {
                   return;
                 }
                 const ensTLD = getENSTLDForChain(network.chainId);

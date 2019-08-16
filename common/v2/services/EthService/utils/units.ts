@@ -118,6 +118,16 @@ const totalTxFeeToString = (gasPriceEther: string, gasLimit: string): string =>
 const totalTxFeeToWei = (gasPriceEther: string, gasLimit: string): Wei =>
   new BN(parseInt(gasPriceEther, 10) * parseInt(gasLimit, 10));
 
+const gasStringsToMaxGasBN = (gasPriceGwei: string, gasLimit: string): BN => {
+  return gasPriceToBase(parseFloat(gasPriceGwei)).mul(new BN(gasLimit));
+};
+
+const gasStringsToMaxGasNumber = (gasPriceGwei: string, gasLimit: string): number => {
+  return parseFloat(
+    baseToConvertedUnit(gasStringsToMaxGasBN(gasPriceGwei, gasLimit).toString(), 18)
+  );
+};
+
 export {
   Data,
   Address,
@@ -134,5 +144,7 @@ export {
   handleValues,
   gasPriceToBase,
   totalTxFeeToString,
-  totalTxFeeToWei
+  totalTxFeeToWei,
+  gasStringsToMaxGasBN,
+  gasStringsToMaxGasNumber
 };
