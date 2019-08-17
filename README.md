@@ -132,7 +132,7 @@ yarn test:int
 |       ├── signing - Message signing and signature verification
 |       ├── units - Helper functions for working with Ethereum / Token units in both base and unit form. Use these instead of using bn.js directly
 |       ├── validators - Validation functions for addresses, hex strings, keys, numbers, derivation paths, EAC values, Ethereum values, etc.
-|       ├── values - Functions for building EIP681 requests, numberical sanitization, string padding, bn.js conversion
+|       ├── values - Functions for building EIP681 requests, numerical sanitization, string padding, bn.js conversion
 │   ├── sass - SCSS styles, variables, mixins
 │   ├── translations - Language JSON dictionaries
 │   ├── typescript - Typescript definition files
@@ -190,7 +190,7 @@ $ git checkout -b feature/foo develop
 
 You should use `feature/foo` to implement and commit all changed required for your new feature.
 
-* Make many small commits so that the history of development for you feature branch is clear and so that it is easy to pinpoint and edit or cherry-pick specific commits if necessary.
+* Make many small commits so that the history of development for you feature branch is clear and so that it is easy to pinpoint and edit or cherry-pick specific commits if neccessary.
 * Avoid merging your feature branch with out feature branches being developed in parallel.
 * Add neccessary unit tests for your features code.
 
