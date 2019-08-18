@@ -39,7 +39,9 @@ export {
   inputNonceToHex,
   totalTxFeeToString,
   totalTxFeeToWei,
-  gasStringsToMaxGasNumber
+  gasStringsToMaxGasNumber,
+  getStatusFromHash,
+  getTimestampFromBlockNum
 } from './utils';
 export {
   isValidPath,

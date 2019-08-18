@@ -1,10 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable, Network } from '@mycrypto/ui';
 
-import { Amount } from 'v2/components';
+import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext } from 'v2/services/Store';
-import { totalTxFeeToString, baseToConvertedUnit } from 'v2/services/EthService';
+import {
+  totalTxFeeToString,
+  baseToConvertedUnit,
+  ProviderHandler,
+  getTimestampFromBlockNum,
+  getStatusFromHash
+} from 'v2/services/EthService';
 
 import { IStepComponentProps } from '../types';
 import './TransactionReceipt.scss';
@@ -18,10 +24,28 @@ const truncate = (children: string) => {
 export default function TransactionReceipt({ txReceipt, txConfig }: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const [showDetails, setShowDetails] = useState(false);
+  const [txStatus, setTxStatus] = useState({ status: false, known: false });
+  const [timestamp, setTimestamp] = useState(0);
+
   if (!txReceipt) {
     return <div>Tx Receipt could not be found.</div>;
   }
-  const timestamp = txReceipt.blockNumber;
+  useEffect(() => {
+    const provider = new ProviderHandler(txReceipt.network);
+    if (timestamp === 0) {
+      getTimestampFromBlockNum(txReceipt.blockNumber, provider).then(transactionTimestamp => {
+        setTimestamp(transactionTimestamp || 0);
+      });
+    }
+    if (!txStatus.known) {
+      getStatusFromHash(txReceipt.hash, provider).then(transactionStatus => {
+        setTxStatus(prevState => ({
+          status: transactionStatus || prevState.status,
+          known: transactionStatus !== undefined ? true : false
+        }));
+      });
+    }
+  });
 
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
@@ -45,7 +69,6 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
   /* Determing User's Contact */
   const senderContact = getContactByAccount(senderAccount);
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
-
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -81,16 +104,28 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
             <Copyable text={txReceipt.hash} truncate={truncate} />
           </div>
         </div>
+
         <div className="TransactionReceipt-details-row">
-          <div className="TransactionReceipt-details-row-column">Receipt Status:</div>
-          <div className="TransactionReceipt-details-row-column">Success</div>
+          <div className="TransactionReceipt-details-row-column">Transaction Status:</div>
+          <div className="TransactionReceipt-details-row-column">
+            {txStatus.known ? (txStatus.status ? 'Success' : 'Fail') : 'Unknown'}
+          </div>
         </div>
+
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">Timestamp:</div>
           <div className="TransactionReceipt-details-row-column">
-            1 minute ago <br />({timestamp})
+            {timestamp !== 0 ? (
+              <div>
+                <TimeElapsedCounter timestamp={Math.floor(timestamp)} isSeconds={true} />
+                <br /> ({new Date(Math.floor(timestamp * 1000)).toLocaleString()})
+              </div>
+            ) : (
+              'Unknown'
+            )}
           </div>
         </div>
+
         <Button
           basic={true}
           onClick={() => setShowDetails(!showDetails)}

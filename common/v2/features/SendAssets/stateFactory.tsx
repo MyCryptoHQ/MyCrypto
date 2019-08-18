@@ -88,7 +88,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
       .then(transactionReceipt => {
         setState((prevState: State) => ({
           ...prevState,
-          txReceipt: transactionReceipt
+          txReceipt: fromTxReceiptObj(transactionReceipt)
         }));
       })
       .catch(txHash => {
@@ -96,7 +96,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
         provider.getTransactionByHash(txHash).then(transactionReceipt => {
           setState((prevState: State) => ({
             ...prevState,
-            txReceipt: transactionReceipt
+            txReceipt: fromTxReceiptObj(transactionReceipt)
           }));
         });
       })
@@ -142,11 +142,14 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   };
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt, after) => {
-    setState((prevState: State) => ({
-      ...prevState,
-      txReceipt: fromTxReceiptObj(payload)
-    }));
-    after();
+    const provider = new ProviderHandler(state.txConfig.network);
+    provider.getTransactionByHash(payload.hash).then(transactionData => {
+      setState((prevState: State) => ({
+        ...prevState,
+        txReceipt: fromTxReceiptObj(transactionData)
+      }));
+      after();
+    });
   };
 
   return {
