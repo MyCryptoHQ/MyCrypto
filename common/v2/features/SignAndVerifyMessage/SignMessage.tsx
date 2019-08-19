@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
@@ -8,8 +9,12 @@ import { translate, translateRaw } from 'translations';
 import { ISignedMessage, WalletNameWithDefault } from 'v2/types';
 import { STORIES } from './stories';
 import { WALLET_INFO } from 'v2/config';
+import { walletSelectors } from 'features/wallet';
+import { AppState } from 'features/reducers';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
+import { IFullWallet } from 'v2/services/EthService';
+import { configNodesSelectors } from 'features/config/nodes';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -61,24 +66,30 @@ const BackButton = styled(Button)`
   }
 `;
 
-const signatureExample: ISignedMessage = {
-  address: '0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8',
-  msg: 'asdfasdfasdf',
-  sig: '0x4771d78f13ba...',
-  version: '2'
-};
-
-export default function SignMessage() {
+function SignMessage(props: any) {
   const [walletName, setWalletName] = useState<WalletNameWithDefault | undefined>(undefined);
+  const [wallet, setWallet] = useState<IFullWallet | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
 
-  const handleSignMessage = () => {
+  const handleSignMessage = async () => {
     try {
-      setError(undefined);
+      if (!wallet) {
+        throw Error;
+      }
       // TODO: call correct sign function depending on wallet selection
-      setSignedMessage(signatureExample);
+
+      const sig = await wallet.signMessage(message, props.nodeLib);
+      const combined = {
+        address: wallet.getAddressString(),
+        msg: message,
+        sig,
+        version: '2'
+      };
+      setError(undefined);
+      setSignedMessage(combined);
     } catch (err) {
       setError(translateRaw('ERROR_38'));
       setSignedMessage(null);
@@ -95,24 +106,26 @@ export default function SignMessage() {
     setWalletName(selectedWalletName);
   };
 
+  const onUnlock = (selectedWallet: any) => {
+    setWallet(selectedWallet);
+    setUnlocked(true);
+  };
+
   const story = STORIES.find(x => x.name === walletName);
   const Step = story && story.steps[0];
 
-  //TODO: Read unlocked value from redux
-  const unlocked = false;
-
   return (
     <Content>
-      {walletName ? (
+      {walletName && !unlocked ? (
         <>
           <BackButton basic={true} onClick={() => setWalletName(undefined)}>
             <img src={backArrowIcon} alt="Back arrow" />
             Change Wallet
           </BackButton>
-          {Step && <Step wallet={WALLET_INFO[walletName]} />}
+          {Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
         </>
       ) : (
-        <WalletList wallets={STORIES} onSelect={onSelect} />
+        !unlocked && <WalletList wallets={STORIES} onSelect={onSelect} />
       )}
 
       {unlocked && walletName && (
@@ -137,9 +150,16 @@ export default function SignMessage() {
               </CodeBlockWrapper>
             </SignedMessage>
           )}
-          }
         </>
       )}
     </Content>
   );
 }
+
+const mapStateToProps = (state: AppState) => ({
+  nodeLib: configNodesSelectors.getNodeLib(state),
+  signedMessage: state.message.signed,
+  unlocked: walletSelectors.isWalletFullyUnlocked(state)
+});
+
+export default connect(mapStateToProps)(SignMessage);

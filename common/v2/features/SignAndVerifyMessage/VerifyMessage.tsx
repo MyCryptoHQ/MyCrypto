@@ -34,6 +34,8 @@ const SignedMessage = styled.div`
   color: ${WHITE};
   font-size: 16px;
   background-color: ${SUCCESS_GREEN};
+  width: 100%;
+  overflow: auto;
 `;
 
 const signatureExample: ISignedMessage = {
