@@ -332,6 +332,13 @@ module.exports = function(opts = {}) {
       chunkModules: false,
       chunkOrigins: false,
       modules: false
-    }
+    },
+    externals: [
+      // This was added because there were build issues with ethers.js 
+      // as we included some of the built-in BigNumber and Hex processing functions it provided.
+      {
+        xmlhttprequest: 'XMLHttpRequest'
+      }
+    ]
   };
 };

@@ -2,15 +2,14 @@ import React, { useState, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
-import { ContentPanel } from 'v2/components';
+import { ContentPanel, WalletList } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
 import { WalletName, walletNames } from 'v2/types';
 import { STORIES } from './stories';
-import { WalletList } from './components';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, WALLET_INFO } from 'v2/config';
 
 export const getStory = (storyName: WalletName): any => {
   return STORIES.filter(selected => selected.name === storyName)[0];
@@ -18,6 +17,10 @@ export const getStory = (storyName: WalletName): any => {
 
 export const getStorySteps = (storyName: WalletName) => {
   return getStory(storyName).steps;
+};
+
+export const getWalletInfo = (storyName: WalletName): any => {
+  return WALLET_INFO[storyName];
 };
 
 /*
@@ -98,7 +101,7 @@ const AddAccountFlow = withRouter(props => {
         <div className="MainPanel">
           <TransitionGroup>
             <CSSTransition classNames="DecryptContent" timeout={500}>
-              <WalletList wallets={STORIES} onSelect={onWalletSelection} />
+              <WalletList wallets={STORIES} onSelect={onWalletSelection} showHeader={true} />
             </CSSTransition>
           </TransitionGroup>
         </div>
@@ -120,7 +123,7 @@ const AddAccountFlow = withRouter(props => {
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
             <Step
-              wallet={getStory(storyName)}
+              wallet={getWalletInfo(storyName)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
               onUnlock={onUnlock}

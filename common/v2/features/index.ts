@@ -3,7 +3,6 @@ export { ScreenLockLocking } from './ScreenLock';
 export { Drawer, AccountScreen, UnlockScreen, SelectLanguage } from './Drawer';
 export { DevTools } from './DevTools';
 export { Home } from './Home';
-export * from './Ens';
 export { CreateWallet, Mnemonic, Keystore } from './CreateWallet';
 export { Dashboard } from './Dashboard';
 export { AddAccountFlow } from './AddAccount';

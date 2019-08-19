@@ -84,7 +84,7 @@ class BroadcastTx extends Component<Props> {
         heading={translateRaw('BROADCAST_TX_TITLE')}
         description={translate('BROADCAST_TX_DESCRIPTION')}
         centered={true}
-        maxWidth="650px"
+        width="650px"
       >
         <InputWrapper>
           <InputField
