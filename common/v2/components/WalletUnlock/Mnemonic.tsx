@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
+import { Tooltip } from '@mycrypto/ui';
 
 import { InsecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
@@ -10,9 +11,11 @@ import { configSelectors, configNetworksStaticSelectors } from 'features/config'
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWallets from './DeterministicWallets';
+import { unlockMnemonic } from 'v2/features/Wallets';
+
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { Tooltip } from '@mycrypto/ui';
 import questionToolTip from 'common/assets/images/icn-question.svg';
+
 import './Mnemonic.scss';
 
 interface OwnProps {
@@ -159,15 +162,12 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     this.setState({ selectedDPath: dPath });
   };
 
-  private handleUnlock = (address: string, index: number) => {
+  private handleUnlock = async (address: string, index: number) => {
     const { formattedPhrase, pass, selectedDPath } = this.state;
 
-    this.props.onUnlock({
-      path: `${selectedDPath.value}/${index}`,
-      pass,
-      phrase: formattedPhrase,
-      address
-    });
+    if (!formattedPhrase) {
+      return;
+    }
 
     this.setState({
       seed: undefined,
@@ -176,6 +176,14 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       pass: undefined,
       selectedDPath: this.props.dPath
     });
+
+    const wallet = await unlockMnemonic({
+      path: `${selectedDPath.value}/${index}`,
+      pass,
+      phrase: formattedPhrase,
+      address
+    });
+    this.props.onUnlock(wallet);
   };
 }
 

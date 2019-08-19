@@ -1,7 +1,10 @@
 import { fromPrivateKey } from 'ethereumjs-wallet';
 
-import { signWrapper } from 'libs/wallet';
-import { decryptMnemonicToPrivKey } from 'v2/services/EthService/utils';
+import { decryptMnemonicToPrivKey, signWrapper } from 'v2/services/EthService';
 
-export const MnemonicWallet = (phrase: string, pass: string, path: string, address: string) =>
-  signWrapper(fromPrivateKey(decryptMnemonicToPrivKey(phrase, pass, path, address)));
+export const MnemonicWallet = (
+  phrase: string,
+  pass: string | undefined,
+  path: string,
+  address: string
+) => signWrapper(fromPrivateKey(decryptMnemonicToPrivKey(phrase, pass, path, address)));
