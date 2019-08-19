@@ -54,13 +54,19 @@ const CodeBlockWrapper = styled.div`
   width: 100%;
 `;
 
-const BackButton = styled(Button)`
+interface BackButtonProps {
+  marginBottom: boolean;
+}
+
+const BackButton = styled(Button)<BackButtonProps>`
   align-self: flex-start;
   color: #007a99;
   font-weight: bold;
   display: flex;
   align-items: center;
   font-size: 20px;
+  ${props => props.marginBottom && 'margin-bottom: 40px;'}
+
   img {
     margin-right: 8px;
   }
@@ -111,21 +117,29 @@ function SignMessage(props: any) {
     setUnlocked(true);
   };
 
+  const resetWalletSelectionAndForm = () => {
+    setMessage('');
+    setError(undefined);
+    setSignedMessage(null);
+    setWalletName(undefined);
+    setUnlocked(false);
+  };
+
   const story = STORIES.find(x => x.name === walletName);
   const Step = story && story.steps[0];
 
   return (
     <Content>
-      {walletName && !unlocked ? (
+      {walletName ? (
         <>
-          <BackButton basic={true} onClick={() => setWalletName(undefined)}>
+          <BackButton marginBottom={unlocked} basic={true} onClick={resetWalletSelectionAndForm}>
             <img src={backArrowIcon} alt="Back arrow" />
             Change Wallet
           </BackButton>
-          {Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
+          {!unlocked && Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
         </>
       ) : (
-        !unlocked && <WalletList wallets={STORIES} onSelect={onSelect} />
+        <WalletList wallets={STORIES} onSelect={onSelect} />
       )}
 
       {unlocked && walletName && (
