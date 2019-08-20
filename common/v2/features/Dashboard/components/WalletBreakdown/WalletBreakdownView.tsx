@@ -90,6 +90,9 @@ const BreakDownBalances = styled.div`
   padding-top: 15px;
   padding-bottom: 15px;
 
+  display: flex;
+  flex-direction: column;
+
   @media (max-width: ${SCREEN_MD}) {
     padding-left: 15px;
   }
@@ -133,6 +136,11 @@ const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
   a {
     color: ${BRIGHT_SKY_BLUE};
   }
+`;
+
+const BalanceTotalWrapper = styled.div`
+  margin-top: auto;
+  margin-bottom: 30px;
 `;
 
 const BreakDownBalanceTotal = styled.div`
@@ -220,6 +228,8 @@ export default function WalletBreakdownView({
               </BreakDownBalanceAssetAmount>
             </BreakDownBalance>
           ))}
+        </BreakDownBalanceList>
+        <BalanceTotalWrapper>
           <PanelDivider />
           <BreakDownBalanceTotal>
             <div>{translate('WALLET_BREAKDOWN_TOTAL')}</div>
@@ -228,7 +238,7 @@ export default function WalletBreakdownView({
               {totalFiatValue.toFixed(2)}
             </div>
           </BreakDownBalanceTotal>
-        </BreakDownBalanceList>
+        </BalanceTotalWrapper>
       </BreakDownBalances>
     </>
   );
