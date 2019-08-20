@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 
 import { FormData } from 'v2/features/AddAccount/types';
-import { getNetworkByName } from 'v2/services/Store';
+import { NetworkContext } from 'v2/services/Store';
+import { getDPath, getDPaths } from 'v2/services';
 import { SecureWalletName } from 'v2/types';
 import translate, { translateRaw } from 'translations';
 import { SafeTWallet } from 'libs/wallet';
-import { AppState } from 'features/reducers';
-import { configNetworksStaticSelectors } from 'features/config';
 import { Spinner } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
@@ -20,10 +18,6 @@ interface OwnProps {
   onUnlock(param: any): void;
 }
 
-interface StateProps {
-  dPaths: DPath[];
-}
-
 // todo: nearly duplicates ledger component props
 interface State {
   publicKey: string;
@@ -33,13 +27,14 @@ interface State {
   isLoading: boolean;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps;
 
 class SafeTminiDecryptClass extends PureComponent<Props, State> {
+  static contextType = NetworkContext;
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.getInitialDPath(),
+    dPath: getDPath(this.context.getNetworkByName(this.props.formData.network), SecureWalletName.SAFE_T) || getDPaths(this.context.networks, SecureWalletName.SAFE_T)[0],
     error: null,
     isLoading: false
   };
@@ -47,7 +42,8 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
   public render() {
     const { dPath, publicKey, chainCode, error, isLoading } = this.state;
     const showErr = error ? 'is-showing' : '';
-    const network = getNetworkByName(this.props.formData.network);
+    const networks = this.context.networks;
+    const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('X_SAFE_T')} />;
@@ -61,7 +57,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
             publicKey={publicKey}
             chainCode={chainCode}
             dPath={dPath}
-            dPaths={this.props.dPaths}
+            dPaths={getDPaths(networks, SecureWalletName.SAFE_T)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -141,11 +137,6 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
       });
   };
 
-  private getInitialDPath() : DPath {
-    const network = getNetworkByName(this.props.formData.network);
-    return network && network.dPaths.safeTmini ? network.dPaths.safeTmini : this.props.dPaths[0]
-  }
-
   private handleCancel = () => {
     this.reset();
   };
@@ -160,18 +151,14 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
   };
 
   private reset() {
+    const networks = this.context.networks;
+    const network = this.context.getNetworkByName(this.props.formData.network);
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.getInitialDPath()
+      dPath: getDPath(network, SecureWalletName.SAFE_T) || getDPaths(networks, SecureWalletName.SAFE_T)[0]
     });
   }
 }
 
-function mapStateToProps(state: AppState): StateProps {
-  return {
-    dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.SAFE_T)
-  };
-}
-
-export const SafeTminiDecrypt = connect(mapStateToProps)(SafeTminiDecryptClass);
+export const SafeTminiDecrypt = SafeTminiDecryptClass;
