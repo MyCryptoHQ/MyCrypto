@@ -31,7 +31,7 @@ interface State {
 }
 
 class MnemonicDecryptClass extends PureComponent<Props, State> {
-  static contextType = NetworkContext;
+  public static contextType = NetworkContext;
   public state: State = {
     seed: undefined,
     phrase: undefined,

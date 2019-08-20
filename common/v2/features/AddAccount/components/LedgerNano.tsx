@@ -30,7 +30,7 @@ interface State {
 type Props = OwnProps;
 
 class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
-  static contextType = NetworkContext;
+  public static contextType = NetworkContext;
   public state: State = {
     publicKey: '',
     chainCode: '',

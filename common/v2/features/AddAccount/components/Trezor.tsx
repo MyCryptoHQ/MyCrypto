@@ -31,7 +31,7 @@ interface State {
 type Props = OwnProps;
 
 class TrezorDecryptClass extends PureComponent<Props, State> {
-  static contextType = NetworkContext;
+  public static contextType = NetworkContext;
   public state: State = {
     publicKey: '',
     chainCode: '',
