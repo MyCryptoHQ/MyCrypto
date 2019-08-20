@@ -34,7 +34,11 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: getDPath(this.context.getNetworkByName(this.props.formData.network), SecureWalletName.LEDGER_NANO_S) || getDPaths(this.context.networks, SecureWalletName.LEDGER_NANO_S)[0],
+    dPath:
+      getDPath(
+        this.context.getNetworkByName(this.props.formData.network),
+        SecureWalletName.LEDGER_NANO_S
+      ) || getDPaths(this.context.networks, SecureWalletName.LEDGER_NANO_S)[0],
     error: null,
     isLoading: false
   };
@@ -161,7 +165,9 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: getDPath(network, SecureWalletName.LEDGER_NANO_S) || getDPaths(networks, SecureWalletName.LEDGER_NANO_S)[0]
+      dPath:
+        getDPath(network, SecureWalletName.LEDGER_NANO_S) ||
+        getDPaths(networks, SecureWalletName.LEDGER_NANO_S)[0]
     });
   }
 }

@@ -37,7 +37,11 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     phrase: undefined,
     formattedPhrase: undefined,
     pass: undefined,
-    selectedDPath: getDPath(this.context.getNetworkByName(this.props.formData.network), InsecureWalletName.MNEMONIC_PHRASE) || getDPaths(this.context.networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
+    selectedDPath:
+      getDPath(
+        this.context.getNetworkByName(this.props.formData.network),
+        InsecureWalletName.MNEMONIC_PHRASE
+      ) || getDPaths(this.context.networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
   };
 
   public render() {
@@ -170,7 +174,9 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       phrase: undefined,
       formattedPhrase: undefined,
       pass: undefined,
-      selectedDPath: getDPath(network, InsecureWalletName.MNEMONIC_PHRASE) || getDPaths(networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
+      selectedDPath:
+        getDPath(network, InsecureWalletName.MNEMONIC_PHRASE) ||
+        getDPaths(networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
     });
   };
 }

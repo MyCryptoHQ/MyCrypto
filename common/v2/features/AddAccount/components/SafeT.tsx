@@ -34,7 +34,11 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: getDPath(this.context.getNetworkByName(this.props.formData.network), SecureWalletName.SAFE_T) || getDPaths(this.context.networks, SecureWalletName.SAFE_T)[0],
+    dPath:
+      getDPath(
+        this.context.getNetworkByName(this.props.formData.network),
+        SecureWalletName.SAFE_T
+      ) || getDPaths(this.context.networks, SecureWalletName.SAFE_T)[0],
     error: null,
     isLoading: false
   };
@@ -156,7 +160,9 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: getDPath(network, SecureWalletName.SAFE_T) || getDPaths(networks, SecureWalletName.SAFE_T)[0]
+      dPath:
+        getDPath(network, SecureWalletName.SAFE_T) ||
+        getDPaths(networks, SecureWalletName.SAFE_T)[0]
     });
   }
 }

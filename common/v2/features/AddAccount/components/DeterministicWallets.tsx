@@ -99,7 +99,7 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     if (network) {
       baseAssetSymbol = getBaseAssetSymbolByNetwork(network);
     }
-    const symbol : string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
+    const symbol: string = baseAssetSymbol ? baseAssetSymbol : 'ETH';
 
     return (
       <div className="DW">
@@ -236,7 +236,11 @@ class DeterministicWalletsClass extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderWalletRow(wallet: deterministicWalletsTypes.DeterministicWalletData, network : Network | undefined, symbol : string) {
+  private renderWalletRow(
+    wallet: deterministicWalletsTypes.DeterministicWalletData,
+    network: Network | undefined,
+    symbol: string
+  ) {
     const { addressLabels } = this.props;
     const { selectedAddress } = this.state;
     const label = addressLabels[wallet.address.toLowerCase()];

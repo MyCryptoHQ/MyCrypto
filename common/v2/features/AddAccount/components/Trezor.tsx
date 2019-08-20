@@ -35,7 +35,11 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: getDPath(this.context.getNetworkByName(this.props.formData.network), SecureWalletName.TREZOR) || getDPaths(this.context.networks, SecureWalletName.TREZOR)[0],
+    dPath:
+      getDPath(
+        this.context.getNetworkByName(this.props.formData.network),
+        SecureWalletName.TREZOR
+      ) || getDPaths(this.context.networks, SecureWalletName.TREZOR)[0],
     error: null,
     isLoading: false
   };
@@ -151,7 +155,9 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: getDPath(network, SecureWalletName.TREZOR) || getDPaths(networks, SecureWalletName.TREZOR)[0]
+      dPath:
+        getDPath(network, SecureWalletName.TREZOR) ||
+        getDPaths(networks, SecureWalletName.TREZOR)[0]
     });
   }
 }
