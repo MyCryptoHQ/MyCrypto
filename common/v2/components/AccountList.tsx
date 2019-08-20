@@ -61,10 +61,13 @@ interface AccountListProps {
   className?: string;
   currentsOnly?: boolean;
   deletable?: boolean;
+  favoritable?: boolean;
+  footerAction?: string | JSX.Element;
+  footerActionLink?: string;
 }
 
 export default function AccountList(props: AccountListProps) {
-  const { className, currentsOnly, deletable } = props;
+  const { className, currentsOnly, deletable, favoritable, footerAction, footerActionLink } = props;
   const { settings } = useContext(SettingsContext);
   const { accounts, deleteAccount, updateAccount } = useContext(AccountContext);
   const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
@@ -82,6 +85,8 @@ export default function AccountList(props: AccountListProps) {
       headingRight={translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
       actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}
+      footerAction={footerAction}
+      footerActionLink={footerActionLink}
     >
       <TableContainer>
         <CollapsibleTable
@@ -90,7 +95,8 @@ export default function AccountList(props: AccountListProps) {
             currentsOnly ? currentAccounts : accounts,
             deleteAccount,
             updateAccount,
-            deletable
+            deletable,
+            favoritable
           )}
         />
       </TableContainer>
@@ -102,10 +108,10 @@ function buildAccountTable(
   accounts: ExtendedAccount[],
   deleteAccount: DeleteAccount,
   updateAccount: UpdateAccount,
-  deletable?: boolean
+  deletable?: boolean,
+  favoritable?: boolean
 ) {
   const columns = [
-    translateRaw('ACCOUNT_LIST_FAVOURITE'),
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
     translateRaw('ACCOUNT_LIST_NETWORK'),
@@ -117,19 +123,7 @@ function buildAccountTable(
     body: accounts.map((account, index) => {
       const addressCard: AddressBook | undefined = getLabelByAccount(account);
       const label = addressCard ? addressCard.label : 'Unknown Account';
-      let bodyItemCount = 0;
       const bodyContent = [
-        <FavoriteButton
-          key={index}
-          icon="star"
-          favorited={account.favorite ? account.favorite : false}
-          onClick={() =>
-            updateAccount(account.uuid, {
-              ...account,
-              favorite: !account.favorite
-            })
-          }
-        />,
         <Label key={index}>
           <Identicon address={account.address} />
           <span>{label}</span>
@@ -144,10 +138,25 @@ function buildAccountTable(
         ? [
             ...bodyContent,
             <DeleteButton
-              key={index + bodyItemCount++}
+              key={index}
               onClick={handleAccountDelete(deleteAccount, account.uuid)}
               icon="exit"
             />
+          ]
+        : favoritable
+        ? [
+            <FavoriteButton
+              key={index}
+              icon="star"
+              favorited={account.favorite ? account.favorite : false}
+              onClick={() =>
+                updateAccount(account.uuid, {
+                  ...account,
+                  favorite: !account.favorite
+                })
+              }
+            />,
+            ...bodyContent
           ]
         : bodyContent;
     }),
@@ -159,12 +168,8 @@ function buildAccountTable(
         const bLabel = b.props.label;
         return aLabel === bLabel ? true : aLabel.localeCompare(bLabel);
       },
-      hiddenHeadings: deletable
-        ? [translateRaw('ACCOUNT_LIST_FAVOURITE'), translateRaw('ACCOUNT_LIST_DELETE')]
-        : [translateRaw('ACCOUNT_LIST_FAVOURITE')],
-      iconColumns: deletable
-        ? [translateRaw('ACCOUNT_LIST_FAVOURITE'), translateRaw('ACCOUNT_LIST_DELETE')]
-        : [translateRaw('ACCOUNT_LIST_FAVOURITE')]
+      hiddenHeadings: deletable ? [translateRaw('ACCOUNT_LIST_DELETE')] : undefined,
+      iconColumns: deletable ? [translateRaw('ACCOUNT_LIST_DELETE')] : undefined
     }
   };
 }
