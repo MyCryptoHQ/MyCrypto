@@ -20,14 +20,19 @@ function requestMessageSignature(
 ): types.ParitySignerState {
   return {
     ...state,
-    requested: action.payload
+    requested: action.payload,
+    sig: null
   };
 }
 
-function finalizeSignature(state: types.ParitySignerState): types.ParitySignerState {
+function finalizeSignature(
+  state: types.ParitySignerState,
+  action: types.FinalizeSignatureAction
+): types.ParitySignerState {
   return {
     ...state,
-    requested: null
+    requested: null,
+    sig: action.payload
   };
 }
 
@@ -41,7 +46,7 @@ export function paritySignerReducer(
     case types.ParitySignerActions.REQUEST_MSG_SIGNATURE:
       return requestMessageSignature(state, action);
     case types.ParitySignerActions.FINALIZE_SIGNATURE:
-      return finalizeSignature(state);
+      return finalizeSignature(state, action);
     default:
       return state;
   }

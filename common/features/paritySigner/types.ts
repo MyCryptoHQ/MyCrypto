@@ -1,5 +1,6 @@
 export interface ParitySignerState {
   requested?: QrSignatureState | null;
+  sig?: string | null;
 }
 
 interface QrSignatureState {
