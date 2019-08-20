@@ -10,6 +10,7 @@ export { DEFAULT_NETWORK_FOR_FALLBACK, GITHUB_RELEASE_NOTES_URL } from './consta
 export { NODES_CONFIG } from './nodes';
 export { ROUTE_PATHS } from './routePaths';
 export { NETWORKS_CONFIG } from './networks';
+export { ETHSCAN_NETWORKS } from './ethScan';
 export { Fiats, AssetsData, ContractsData } from './cacheData';
 export {
   GAS_LIMIT_LOWER_BOUND,
