@@ -6,13 +6,7 @@ import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
-import {
-  fromWei,
-  Wei,
-  totalTxFeeToString,
-  totalTxFeeToWei,
-  baseToConvertedUnit
-} from 'v2/services/EthService';
+import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 
 import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
