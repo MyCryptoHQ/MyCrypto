@@ -148,7 +148,10 @@
     }
   }
   &-next {
-    width: 100%;
+    width: 100%; 
+  }
+  &-next:disabled {
+    background-color: rgba(0, 122, 153, 0.3);
   }
 }
 

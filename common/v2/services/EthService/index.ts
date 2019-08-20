@@ -41,7 +41,9 @@ export {
   totalTxFeeToWei,
   gasStringsToMaxGasNumber,
   getStatusFromHash,
-  getTimestampFromBlockNum
+  getTimestampFromBlockNum,
+  gasStringsToMaxGasBN,
+  convertedToBaseUnit
 } from './utils';
 export {
   isValidPath,

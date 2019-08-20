@@ -3,6 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
+import BN from 'bn.js';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
@@ -15,7 +16,15 @@ import {
   getBaseAssetByNetwork
 } from 'v2/services/Store';
 import { Asset, Network, AssetBalanceObject, ExtendedAccount as IExtendedAccount } from 'v2/types';
-import { getNonce, hexToNumber, getResolvedENSAddress } from 'v2/services/EthService';
+import {
+  getNonce,
+  hexToNumber,
+  getResolvedENSAddress,
+  isValidETHAddress,
+  gasStringsToMaxGasBN,
+  convertedToBaseUnit,
+  baseToConvertedUnit
+} from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 import { notUndefined } from 'v2/utils';
 
@@ -32,20 +41,14 @@ import {
 } from './fields';
 import './SendAssetsForm.scss';
 import {
-  // validateDataField, //Re-add this soontm
   validateGasLimitField,
   validateGasPriceField,
   validateNonceField,
-  validateDataField
+  validateDataField,
+  validateAmountField
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import {
-  gasStringsToMaxGasBN,
-  convertedToBaseUnit,
-  baseToConvertedUnit
-} from 'v2/services/EthService/utils/units';
-import BN from 'bn.js';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: {
@@ -85,7 +88,9 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 const SendAssetsSchema = Yup.object().shape({
-  amount: Yup.number().required('Required')
+  amount: Yup.string().required('Required'),
+  account: Yup.object().required('Required'),
+  receiverAddress: Yup.object().required('Required')
 });
 
 export default function SendAssetsForm({
@@ -136,10 +141,21 @@ export default function SendAssetsForm({
           };
 
           const handleGasEstimate = async () => {
-            if (!(!values || !values.network || !values.asset || !values.receiverAddress)) {
+            if (
+              !(
+                !values ||
+                !values.network ||
+                !values.asset ||
+                !values.receiverAddress ||
+                !isValidETHAddress(values.receiverAddress.value) ||
+                !values.account
+              )
+            ) {
+              setIsEstimatingGasLimit(true);
               const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
               setFieldValue('gasLimitField', hexToNumber(gas));
+              setIsEstimatingGasLimit(false);
             } else {
               return;
             }
@@ -147,12 +163,16 @@ export default function SendAssetsForm({
 
           const handleENSResolve = async (name: string) => {
             if (!values || !values.network) {
+              setIsResolvingENSName(false);
               return;
             }
             setIsResolvingENSName(true);
-            const resolvedAddress = (await getResolvedENSAddress(values.network, name)) || '0x0';
+            const resolvedAddress =
+              (await getResolvedENSAddress(values.network, name)) ||
+              '0x0000000000000000000000000000000000000000';
             setIsResolvingENSName(false);
             setFieldValue('receiverAddress', { ...values.receiverAddress, value: resolvedAddress });
+            setIsResolvingENSName(false);
           };
 
           const handleFieldReset = () => {
@@ -163,14 +183,12 @@ export default function SendAssetsForm({
             if (values.asset && values.account && baseAsset) {
               const isERC20 = isERC20Tx(values.asset);
               const balance = isERC20
-                ? values.account.assets
-                    .filter(accountAsset => accountAsset.uuid === values.asset.uuid)
-                    .map(accountAsset => accountAsset.balance)[0] || '0'
+                ? (
+                    values.account.assets.find(
+                      accountAsset => accountAsset.uuid === values.asset.uuid
+                    ) || { balance: '0' }
+                  ).balance
                 : values.account.balance;
-
-              if (balance === '0') {
-                return;
-              }
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
@@ -250,7 +268,7 @@ export default function SendAssetsForm({
                       accounts={accounts}
                       onSelect={(option: IExtendedAccount) => {
                         //TODO: map account values to correct keys in sharedConfig
-                        form.setFieldValue(field.name, option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                        form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
                         handleNonceEstimate(option);
                         handleGasEstimate();
                       }}
@@ -283,6 +301,7 @@ export default function SendAssetsForm({
                 </label>
                 <FastField
                   name="amount"
+                  validate={validateAmountField}
                   render={({ field }: FieldProps) => (
                     <Input
                       {...field}
