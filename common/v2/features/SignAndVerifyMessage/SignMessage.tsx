@@ -6,7 +6,7 @@ import { Button } from '@mycrypto/ui';
 import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
-import { ISignedMessage, WalletNameWithDefault } from 'v2/types';
+import { ISignedMessage, WalletName } from 'v2/types';
 import { STORIES } from './stories';
 import { WALLET_INFO } from 'v2/config';
 import { walletSelectors } from 'features/wallet';
@@ -67,7 +67,7 @@ const BackButton = styled(Button)`
 `;
 
 function SignMessage(props: any) {
-  const [walletName, setWalletName] = useState<WalletNameWithDefault | undefined>(undefined);
+  const [walletName, setWalletName] = useState<WalletName | undefined>(undefined);
   const [wallet, setWallet] = useState<IFullWallet | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [message, setMessage] = useState('');
@@ -102,7 +102,7 @@ function SignMessage(props: any) {
     setSignedMessage(null);
   };
 
-  const onSelect = (selectedWalletName: WalletNameWithDefault) => {
+  const onSelect = (selectedWalletName: WalletName) => {
     setWalletName(selectedWalletName);
   };
 

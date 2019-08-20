@@ -1,14 +1,7 @@
-import {
-  DefaultWalletName,
-  SecureWalletName,
-  InsecureWalletName,
-  MiscWalletName,
-  IStory
-} from 'v2/types';
+import { SecureWalletName, InsecureWalletName, MiscWalletName, IStory } from 'v2/types';
 import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
 import { NetworkSelectPanel, SaveAndRedirect, ViewOnlyDecrypt } from './components';
 import {
-  WalletList,
   InsecureWalletWarning,
   LedgerNanoSDecrypt,
   KeystoreDecrypt,
@@ -22,11 +15,6 @@ import {
 } from 'v2/components';
 
 export const STORIES: IStory[] = [
-  {
-    name: DefaultWalletName.DEFAULT,
-    steps: [WalletList],
-    hideFromWalletList: true
-  },
   {
     name: SecureWalletName.WEB3,
     steps: HAS_WEB3_PROVIDER

@@ -1,14 +1,12 @@
 import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
 import {
-  DefaultWalletName,
   SecureWalletName,
   InsecureWalletName,
   MiscWalletName,
-  WalletNameWithDefault,
-  WalletType
+  WalletType,
+  WalletName
 } from 'v2/types';
 import { getWeb3ProviderInfo } from 'utils/web3';
-import { IS_DEV, IS_ELECTRON } from 'v2/utils';
 
 // @ADD_ACCOUNT_TODO: Icons really belongs to the WalletButton or a WalletIcon
 // component.
@@ -29,13 +27,10 @@ import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 const web3ProviderInfo = getWeb3ProviderInfo();
 
 type IWalletInfo = {
-  [key in WalletNameWithDefault]: any;
+  [key in WalletName]: any;
 };
 
 export const WALLET_INFO: IWalletInfo = {
-  [DefaultWalletName.DEFAULT]: {
-    hideFromWalletList: true
-  },
   [SecureWalletName.WEB3]: {
     type: WalletType.SECURE,
     lid: web3ProviderInfo.lid,
@@ -74,22 +69,19 @@ export const WALLET_INFO: IWalletInfo = {
     type: WalletType.INSECURE,
     lid: 'X_KEYSTORE2',
     description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
-    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
-    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
+    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
   },
   [InsecureWalletName.MNEMONIC_PHRASE]: {
     type: WalletType.INSECURE,
     lid: 'X_MNEMONIC',
     description: 'brain surround have swap horror cheese file distinct',
-    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
-    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
+    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
   },
   [InsecureWalletName.PRIVATE_KEY]: {
     type: WalletType.INSECURE,
     lid: 'X_PRIVKEY2',
     description: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
-    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`,
-    hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
+    helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
   },
   [MiscWalletName.VIEW_ONLY]: {
     type: WalletType.MISC,
