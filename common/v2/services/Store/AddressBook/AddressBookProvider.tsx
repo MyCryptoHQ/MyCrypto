@@ -47,7 +47,7 @@ export class AddressBookProvider extends Component {
     getContactByAccount: account => {
       const { addressBook } = this.state;
       return addressBook
-        .filter(contact => contact.network === account.network)
+        .filter(contact => contact.network === account.networkId)
         .find(contact => contact.address.toLowerCase() === account.address.toLowerCase());
     }
   };

@@ -13,7 +13,8 @@ import {
   getAssetByUUID,
   getBaseAssetFromAccount,
   getNetworkByName,
-  getBaseAssetByNetwork
+  getBaseAssetByNetwork,
+  getBalanceFromAccount
 } from 'v2/services/Store';
 import { Asset, Network, AssetBalanceObject, ExtendedAccount as IExtendedAccount } from 'v2/types';
 import {
@@ -188,7 +189,7 @@ export default function SendAssetsForm({
                       accountAsset => accountAsset.uuid === values.asset.uuid
                     ) || { balance: '0' }
                   ).balance
-                : values.account.balance;
+                : getBalanceFromAccount(values.account);
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;

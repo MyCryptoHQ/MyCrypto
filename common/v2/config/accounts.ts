@@ -19,7 +19,8 @@ export const accounts: Account[] = [
     wallet: SecureWalletName.WEB3,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
-    mtime: Date.now()
+    mtime: Date.now(),
+    favorite: true
   },
   {
     address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
@@ -34,6 +35,7 @@ export const accounts: Account[] = [
     wallet: SecureWalletName.WEB3,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
-    mtime: Date.now()
+    mtime: Date.now(),
+    favorite: true
   }
 ];

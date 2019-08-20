@@ -4,7 +4,7 @@ import { Address, Button } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
-import { AddressBookContext, getBalanceFromAccount } from 'v2/services/Store';
+import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
 import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 

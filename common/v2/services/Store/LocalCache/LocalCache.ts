@@ -9,7 +9,7 @@ export const hardRefreshCache = () => {
   setCache(CACHE_INIT);
 };
 
-const getCacheRaw = (): LocalCache => {
+export const getCacheRaw = (): LocalCache => {
   const text = localStorage.getItem(CACHE_KEY);
   return text ? JSON.parse(text) : CACHE_INIT;
 };
