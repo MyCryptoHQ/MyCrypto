@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { FallbackProvider, BaseProvider } from 'ethers/providers';
 
-import { Network, NetworkId, NodeType } from 'v2/types';
+import { Network, NetworkId, NodeType, DPathFormat } from 'v2/types';
 
 // Network names accepted by ethers.EtherscanProvider
 type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';
@@ -31,3 +31,11 @@ export const createNetworkProviders = (network: Network): FallbackProvider => {
 
   return new ethers.providers.FallbackProvider(providers);
 };
+
+export const getDPath = (network : Network | undefined, type : DPathFormat) : DPath | undefined => {
+  return network ? network.dPaths[type] : undefined
+}
+
+export const getDPaths = (networks : Network[], type : DPathFormat) : DPath[] => {
+  return networks.map((n: Network) => getDPath(n, type)).filter((d: DPath | undefined) => d !== undefined) as DPath[];
+}
