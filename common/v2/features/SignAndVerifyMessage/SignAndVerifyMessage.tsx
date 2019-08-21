@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { History } from 'history';
 import styled from 'styled-components';
@@ -69,6 +69,8 @@ const tabClickRedirect = (history: History, url: string): void => {
 };
 
 function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
+  const [showSubtitle, setShowSubtitle] = useState(true);
+
   const { history, location } = props;
 
   const currentRoute = tabsConfig.find(
@@ -86,7 +88,7 @@ function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
         <HeadingWrapper>
           <Heading>
             <Title>{ROUTE_PATHS[currentRoute.key].title}</Title>
-            <SubTitleMobile>{translate(currentRoute.subtitle)}</SubTitleMobile>
+            {showSubtitle && <SubTitleMobile>{translate(currentRoute.subtitle)}</SubTitleMobile>}
             <TabsWrapper>
               <Tabs
                 tabs={tabs}
@@ -94,12 +96,12 @@ function SignAndVerifyMessage(props: RouteComponentProps<{}>) {
               />
             </TabsWrapper>
           </Heading>
-          <SubTitle>{translate(currentRoute.subtitle)}</SubTitle>
+          {showSubtitle && <SubTitle>{translate(currentRoute.subtitle)}</SubTitle>}
         </HeadingWrapper>
       }
       width="850px"
     >
-      <currentRoute.component />
+      <currentRoute.component setShowSubtitle={setShowSubtitle} />
     </ExtendedContentPanel>
   ) : (
     <></>

@@ -80,6 +80,7 @@ interface DispatchProps {
 interface StateProps {
   nodeLib: INode;
   sig: string;
+  setShowSubtitle(show: boolean): void;
 }
 
 type Props = DispatchProps & StateProps;
@@ -92,6 +93,8 @@ function SignMessage(props: Props) {
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
+
+  const { setShowSubtitle } = props;
 
   useEffect(() => {
     if (props.sig && signedMessage && walletName === SecureWalletName.PARITY_SIGNER) {
@@ -139,6 +142,7 @@ function SignMessage(props: Props) {
 
   const onSelect = (selectedWalletName: WalletName) => {
     setWalletName(selectedWalletName);
+    setShowSubtitle(false);
   };
 
   const onUnlock = (selectedWallet: any) => {
@@ -153,6 +157,7 @@ function SignMessage(props: Props) {
     setWalletName(undefined);
     setUnlocked(false);
     setIsSigned(false);
+    setShowSubtitle(true);
   };
 
   const story = STORIES.find(x => x.name === walletName);
