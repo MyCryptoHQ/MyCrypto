@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { KNOWLEDGE_BASE_URL, ETHERSCAMDB } from 'v2/config';
+import { KNOWLEDGE_BASE_URL, CRYPTOSCAMDB } from 'v2/config';
 import { translateRaw } from 'translations';
 import './Linkset.scss';
 
@@ -66,14 +66,19 @@ const LINK_COLUMNS = [
         analytics_event: 'EtherAddressLookup'
       },
       {
-        title: 'EtherScamDB',
-        link: ETHERSCAMDB,
-        analytics_event: 'EtherScamDB'
+        title: 'CryptoScamDB',
+        link: CRYPTOSCAMDB,
+        analytics_event: 'CryptoScamDB'
       },
       {
         title: 'MoneroVision',
         link: 'https://monerovision.com/',
         analytics_event: 'MoneroVision'
+      },
+      {
+        title: 'FindETH',
+        link: 'https://findeth.io',
+        analytics_event: 'FindETH'
       }
     ]
   }

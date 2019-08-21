@@ -2,19 +2,26 @@ import React from 'react';
 
 import { getIsValidENSAddressFunction } from 'libs/validators';
 
-import translate from 'translations';
+import translate, { translateRaw } from 'translations';
 import { Spinner } from './Spinner';
 
 export const ENSStatus: React.SFC<{
   isLoading: boolean;
-  ensAddress: string;
+  ensName: string;
   rawAddress: string;
   chainId: number;
-}> = ({ isLoading, ensAddress, rawAddress, chainId }) => {
+}> = ({ isLoading, ensName, rawAddress, chainId }) => {
   const isValidENS = getIsValidENSAddressFunction(chainId);
-  const isENS = isValidENS(ensAddress);
+  const isENS = isValidENS(ensName);
+  const isResolvedENS = !isValidENS(rawAddress);
 
   const text = translate('LOADING_ENS_ADDRESS');
+
+  const resolverText: string = isENS
+    ? isResolvedENS
+      ? translateRaw('SEND_ASSETS_ENS_DID_RESOLVE')
+      : translateRaw('SEND_ASSETS_ENS_WILL_RESOLVE')
+    : '';
 
   if (isLoading) {
     return (
@@ -23,6 +30,6 @@ export const ENSStatus: React.SFC<{
       </React.Fragment>
     );
   } else {
-    return isENS ? <React.Fragment>{`Resolved Address: ${rawAddress}`}</React.Fragment> : null;
+    return isENS ? <React.Fragment>{`${resolverText}: ${rawAddress}`}</React.Fragment> : null;
   }
 };

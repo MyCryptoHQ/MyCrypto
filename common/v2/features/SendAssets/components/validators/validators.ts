@@ -23,3 +23,9 @@ export function validateNonceField(value: string): string | undefined {
     return 'Nonce must be a valid number.';
   }
 }
+
+export function validateAmountField(value: string): string | undefined {
+  if (!(parseInt(value, 10) >= 0)) {
+    return 'Amount must be a valid number';
+  }
+}

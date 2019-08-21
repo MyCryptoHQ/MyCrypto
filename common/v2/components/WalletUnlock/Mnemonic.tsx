@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
+import { FormData } from 'v2/features/AddAccount/types';
+import { getDPath, getDPaths } from 'v2/services/EthService';
+import { NetworkContext } from 'v2/services/Store';
 import { InsecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
 import { formatMnemonic } from 'utils/formatters';
-import { AppState } from 'features/reducers';
-import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWallets from './DeterministicWallets';
@@ -19,15 +19,11 @@ import questionToolTip from 'common/assets/images/icn-question.svg';
 import './Mnemonic.scss';
 
 interface OwnProps {
+  formData: FormData;
   onUnlock(param: any): void;
 }
 
-interface StoreProps {
-  dPath: DPath;
-  dPaths: DPath[];
-}
-
-type Props = OwnProps & StoreProps;
+type Props = OwnProps;
 
 interface State {
   seed: string | undefined;
@@ -38,31 +34,33 @@ interface State {
 }
 
 class MnemonicDecryptClass extends PureComponent<Props, State> {
+  public static contextType = NetworkContext;
   public state: State = {
     seed: undefined,
     phrase: undefined,
     formattedPhrase: undefined,
     pass: undefined,
-    selectedDPath: this.props.dPath
+    selectedDPath:
+      getDPath(
+        this.context.getNetworkByName(this.props.formData.network),
+        InsecureWalletName.MNEMONIC_PHRASE
+      ) || getDPaths(this.context.networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
   };
-
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (this.props.dPath !== nextProps.dPath) {
-      this.setState({ selectedDPath: nextProps.dPath });
-    }
-  }
 
   public render() {
     const { seed, phrase, formattedPhrase, pass, selectedDPath } = this.state;
     const isValidMnemonic = validateMnemonic(formattedPhrase || '');
+    const networks = this.context.networks;
+    const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (seed) {
       return (
         <div className="Mnemonic-dpath">
           <DeterministicWallets
+            network={network}
             seed={seed}
             dPath={selectedDPath}
-            dPaths={this.props.dPaths}
+            dPaths={getDPaths(networks, InsecureWalletName.MNEMONIC_PHRASE)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -164,6 +162,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
 
   private handleUnlock = async (address: string, index: number) => {
     const { formattedPhrase, pass, selectedDPath } = this.state;
+    const networks = this.context.networks;
+    const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!formattedPhrase) {
       return;
@@ -174,7 +174,9 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       phrase: undefined,
       formattedPhrase: undefined,
       pass: undefined,
-      selectedDPath: this.props.dPath
+      selectedDPath:
+        getDPath(network, InsecureWalletName.MNEMONIC_PHRASE) ||
+        getDPaths(networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
     });
 
     const wallet = await unlockMnemonic({
@@ -187,12 +189,4 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
   };
 }
 
-function mapStateToProps(state: AppState): StoreProps {
-  return {
-    // Mnemonic dPath is guaranteed to always be provided
-    dPath: configSelectors.getSingleDPath(state, InsecureWalletName.MNEMONIC_PHRASE) as DPath,
-    dPaths: configNetworksStaticSelectors.getPaths(state, InsecureWalletName.MNEMONIC_PHRASE)
-  };
-}
-
-export const MnemonicDecrypt = connect(mapStateToProps)(MnemonicDecryptClass);
+export const MnemonicDecrypt = MnemonicDecryptClass;
