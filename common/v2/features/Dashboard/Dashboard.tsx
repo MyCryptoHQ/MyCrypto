@@ -3,7 +3,6 @@ import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { ROUTE_PATHS } from 'v2/config';
-import { NotificationsContext, NotificationTemplates } from 'v2/providers';
 import { useDevMode } from 'v2/services';
 import { AccountContext, AddressBookContext } from 'v2/services/Store';
 import { translate, translateRaw } from 'translations';
