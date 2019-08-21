@@ -975,6 +975,7 @@
     "404_BUTTON": "Go Home",
     "SIGN_MESSAGE_DESCRIPTION": "To sign message, please unlock your account first. Select from the options below.",
     "VERIFY_MESSAGE_DESCRIPTION": "To verify message, please paste a signature below.",
-    "VERIFY_MESSAGE_SIGNED": "**$address** signed **$msg**"
+    "VERIFY_MESSAGE_SIGNED": "**$address** signed **$msg**",
+    "CHANGE_WALLET_BUTTON": "Change Wallet"
   }
 }

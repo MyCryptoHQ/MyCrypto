@@ -169,7 +169,7 @@ function SignMessage(props: Props) {
         <>
           <BackButton marginBottom={unlocked} basic={true} onClick={resetWalletSelectionAndForm}>
             <img src={backArrowIcon} alt="Back arrow" />
-            Change Wallet
+            {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
           {!unlocked && Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
         </>
