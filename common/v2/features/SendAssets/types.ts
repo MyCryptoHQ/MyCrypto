@@ -1,15 +1,17 @@
 import { FunctionComponent } from 'react';
 import {
   Asset,
-  IAsset,
   ExtendedAccount as IExtendedAccount,
-  Network,
-  GasEstimates
+  Network as INetwork,
+  GasEstimates,
+  ExtendedAccount
 } from 'v2/types';
 
+export type ISignedTx = string;
+
 export interface ITxObject {
+  /* Raw Transaction Object */
   readonly to: string;
-  readonly from: string;
   readonly gasLimit: string;
   readonly gasPrice: string;
   readonly nonce: string;
@@ -19,50 +21,58 @@ export interface ITxObject {
 }
 
 export interface ITxConfig {
-  readonly gasLimit: string; // Move to BN
-  readonly gasPrice: string; // Move to BN
-  readonly nonce: string;
-  readonly amount: string; // Move to BN
-  readonly data: string;
-  readonly receiverAddress: string; // Can't be an ExtendedAddressBook since recipient may not be registered
+  readonly rawTransaction: ITxObject /* The rawTransaction object that will be signed */;
+  readonly amount: string;
+  readonly receiverAddress: string;
   readonly senderAccount: IExtendedAccount;
-  readonly asset: IAsset | Asset;
-  readonly network?: Network;
+  readonly from: string;
+  readonly asset: Asset;
+  readonly baseAsset: Asset;
+  readonly network: INetwork;
+  readonly gasPrice: string;
+  readonly gasLimit: string;
+  readonly nonce: string;
+  readonly data: string;
+  readonly value: string;
 }
 
 export interface ITxReceipt {
   [index: string]: any;
 }
 
+export interface IReceiverAddress {
+  display: string;
+  value: string;
+}
+
 export interface IFormikFields {
-  asset: IAsset | Asset;
-  receiverAddress: string;
+  asset: Asset;
+  receiverAddress: IReceiverAddress;
   amount: string;
   account: IExtendedAccount;
   txDataField: string;
   gasEstimates: GasEstimates;
-  gasPriceField: string; // Use only if advanced tab is open AND user has input gas price
+  gasPriceField: string;
   gasPriceSlider: string;
-  gasLimitField: string; // Use only if advanced tab is open AND isGasLimitManual is true
-  gasLimitEstimated: string;
+  gasLimitField: string;
   nonceField: string; // Use only if user has input a manual nonce value.
-  nonceEstimated: string;
-  network: Network;
-  resolvedENSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
+  network: INetwork;
+  advancedTransaction: boolean;
 }
 
 export interface ISignComponentProps {
-  network: Network;
+  network: INetwork;
+  senderAccount: ExtendedAccount;
   rawTransaction: ITxObject;
   children?: never;
-  onSuccess(receipt: ITxReceipt): void;
+  onSuccess(receipt: ITxReceipt | ISignedTx): void;
 }
 
 export interface IStepComponentProps {
   txConfig: ITxConfig;
   txReceipt?: ITxReceipt;
   children?: never;
-  onComplete(data: IFormikFields | ITxReceipt | null): void;
+  onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
 }
 
 export type TStepAction = (payload: any, after: () => void) => void;

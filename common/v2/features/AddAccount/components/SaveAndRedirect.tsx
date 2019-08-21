@@ -9,7 +9,6 @@ import { generateUUID } from 'v2/utils';
 import {
   AccountContext,
   SettingsContext,
-  getAccountByAddressAndNetwork,
   findNextUnusedDefaultLabel,
   createAddressBook,
   getNewDefaultAssetTemplateByNetwork,
@@ -21,14 +20,15 @@ import { Account, AddressBook, Asset, Network } from 'v2/types';
   Create a new account in localStorage and redirect to dashboard.
 */
 function SaveAndRedirect(payload: { formData: FormData }) {
-  const { createAccountWithID } = useContext(AccountContext);
+  const { createAccountWithID, getAccountByAddressAndNetworkName } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { displayNotification } = useContext(NotificationsContext);
   useEffect(() => {
     const network: Network | undefined = getNetworkByName(payload.formData.network);
     if (
       !network ||
-      !!getAccountByAddressAndNetwork(payload.formData.account, payload.formData.network)
+      !payload.formData.account ||
+      !!getAccountByAddressAndNetworkName(payload.formData.account, payload.formData.network)
     ) {
       displayNotification(NotificationTemplates.walletNotAdded, {
         address: payload.formData.account

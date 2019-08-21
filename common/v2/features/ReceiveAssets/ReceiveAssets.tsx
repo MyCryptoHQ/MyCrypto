@@ -222,70 +222,67 @@ export function ReceiveAssets({ history }: RouteComponentProps<{}>) {
                 />
               </Asset>
             </AssetFields>
-            {!errors.amount &&
-              selectedAsset &&
-              recipientAddress.address &&
-              network && (
-                <>
-                  <Divider />
-                  <CodeHeader>
-                    <CodeHeading as="h3">{translateRaw('RECEIVE_FORM_CODE_HEADER')}</CodeHeading>
-                    <Tooltip tooltip={translate('RECEIVE_FORM_TOOLTIP')}>
-                      {props => <img className="Tool-tip-img" src={questionToolTip} {...props} />}
-                    </Tooltip>
-                  </CodeHeader>
+            {!errors.amount && selectedAsset && recipientAddress.address && network && (
+              <>
+                <Divider />
+                <CodeHeader>
+                  <CodeHeading as="h3">{translateRaw('RECEIVE_FORM_CODE_HEADER')}</CodeHeading>
+                  <Tooltip tooltip={translate('RECEIVE_FORM_TOOLTIP')}>
+                    {props => <img className="Tool-tip-img" src={questionToolTip} {...props} />}
+                  </Tooltip>
+                </CodeHeader>
 
-                  <Fieldset>
-                    <SLabel>QR Code</SLabel>
-                    <QRDisplay>
-                      <QRCode
-                        data={
-                          isAssetToken(selectedAsset.type) &&
-                          selectedAsset.contractAddress &&
-                          selectedAsset.decimal
-                            ? buildEIP681TokenRequest(
-                                recipientAddress.address,
-                                selectedAsset.contractAddress,
-                                network.chainId,
-                                amount,
-                                selectedAsset.decimal
-                              )
-                            : buildEIP681EtherRequest(
-                                recipientAddress.address,
-                                network.chainId,
-                                amount
-                              )
-                        }
-                      />
-                    </QRDisplay>
-                  </Fieldset>
-                  <Fieldset>
-                    <SLabel>Payment Code</SLabel>
-                    <FieldsetBox>
-                      <Copyable
-                        text={
-                          isAssetToken(selectedAsset.type) &&
-                          selectedAsset.contractAddress &&
-                          selectedAsset.decimal
-                            ? buildEIP681TokenRequest(
-                                recipientAddress.address,
-                                selectedAsset.contractAddress,
-                                network.chainId,
-                                amount,
-                                selectedAsset.decimal
-                              )
-                            : buildEIP681EtherRequest(
-                                recipientAddress.address,
-                                network.chainId,
-                                amount
-                              )
-                        }
-                        truncate={truncate}
-                      />
-                    </FieldsetBox>
-                  </Fieldset>
-                </>
-              )}
+                <Fieldset>
+                  <SLabel>QR Code</SLabel>
+                  <QRDisplay>
+                    <QRCode
+                      data={
+                        isAssetToken(selectedAsset.type) &&
+                        selectedAsset.contractAddress &&
+                        selectedAsset.decimal
+                          ? buildEIP681TokenRequest(
+                              recipientAddress.address,
+                              selectedAsset.contractAddress,
+                              network.chainId,
+                              amount,
+                              selectedAsset.decimal
+                            )
+                          : buildEIP681EtherRequest(
+                              recipientAddress.address,
+                              network.chainId,
+                              amount
+                            )
+                      }
+                    />
+                  </QRDisplay>
+                </Fieldset>
+                <Fieldset>
+                  <SLabel>Payment Code</SLabel>
+                  <FieldsetBox>
+                    <Copyable
+                      text={
+                        isAssetToken(selectedAsset.type) &&
+                        selectedAsset.contractAddress &&
+                        selectedAsset.decimal
+                          ? buildEIP681TokenRequest(
+                              recipientAddress.address,
+                              selectedAsset.contractAddress,
+                              network.chainId,
+                              amount,
+                              selectedAsset.decimal
+                            )
+                          : buildEIP681EtherRequest(
+                              recipientAddress.address,
+                              network.chainId,
+                              amount
+                            )
+                      }
+                      truncate={truncate}
+                    />
+                  </FieldsetBox>
+                </Fieldset>
+              </>
+            )}
           </Form>
         )}
       />

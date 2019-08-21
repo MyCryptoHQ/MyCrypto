@@ -4,9 +4,7 @@ import { HashRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ErrorScreen, LogOutPrompt } from 'components';
 import {
   BroadcastTx,
-  CheckTransaction,
   Contracts,
-  ENS,
   GenerateWallet,
   SendTransaction,
   SignAndVerifyMessage,
@@ -52,9 +50,7 @@ export const AppRouter = (props: AppRouterProps) => {
               <Route path="/account" component={SendTransaction} exact={true} />
               <Route path="/generate" component={GenerateWallet} />
               <Route path="/contracts" component={Contracts} />
-              <Route path="/ens" component={ENS} exact={true} />
               <Route path="/sign-and-verify-message" component={SignAndVerifyMessage} />
-              <Route path="/tx-status" component={CheckTransaction} exact={true} />
               <Route path="/pushTx" component={BroadcastTx} />
               <Route path="/support-us" component={SupportPage} exact={true} />
               <Layout>

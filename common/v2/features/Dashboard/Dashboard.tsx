@@ -26,23 +26,13 @@ const AccountListFooter = styled.div`
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
   const { accounts } = useContext(AccountContext);
-  const { notifications, displayNotification } = useContext(NotificationsContext);
   const { readAddressBook } = useContext(AddressBookContext);
-
-  if (
-    !notifications.find(x => x.template === NotificationTemplates.onboardingResponsible) &&
-    accounts.length > 0
-  ) {
-    displayNotification(NotificationTemplates.onboardingResponsible, {
-      firstDashboardVisitDate: new Date()
-    });
-  }
 
   return (
     <div>
       {/* Mobile only */}
       <Mobile className="Dashboard-mobile">
-        <NotificationsPanel />
+        <NotificationsPanel accounts={accounts} />
         <div className="Dashboard-mobile-actions">
           {actions.map(action => (
             <ActionTile key={action.title} {...action} />
@@ -74,7 +64,7 @@ export default function Dashboard() {
       </Mobile>
       {/* Desktop only */}
       <Desktop className="Dashboard-desktop">
-        <NotificationsPanel />
+        <NotificationsPanel accounts={accounts} />
         <div className="Dashboard-desktop-top">
           <div className="Dashboard-desktop-top-left">
             <Heading as="h2" className="Dashboard-desktop-top-left-heading">

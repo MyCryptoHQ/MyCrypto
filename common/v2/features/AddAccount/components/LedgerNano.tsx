@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 
+import { FormData } from 'v2/features/AddAccount/types';
+import { NetworkContext } from 'v2/services/Store';
+import { getDPath, getDPaths } from 'v2/services';
 import { SecureWalletName } from 'v2/types';
 import translate, { translateRaw } from 'translations';
 import { LedgerWallet } from 'libs/wallet';
-import { NetworkConfig } from 'types/network';
-import { AppState } from 'features/reducers';
-import { configSelectors, configNetworksStaticSelectors } from 'features/config';
 import { Spinner, NewTabLink } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
@@ -16,13 +15,8 @@ import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
   wallet: object;
+  formData: FormData;
   onUnlock(param: any): void;
-}
-
-interface StateProps {
-  dPath: DPath | undefined;
-  dPaths: DPath[];
-  network: NetworkConfig;
 }
 
 interface State {
@@ -33,25 +27,26 @@ interface State {
   isLoading: boolean;
 }
 
-type Props = OwnProps & StateProps;
+type Props = OwnProps;
 
 class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
+  public static contextType = NetworkContext;
   public state: State = {
     publicKey: '',
     chainCode: '',
-    dPath: this.props.dPath || this.props.dPaths[0],
+    dPath:
+      getDPath(
+        this.context.getNetworkByName(this.props.formData.network),
+        SecureWalletName.LEDGER_NANO_S
+      ) || getDPaths(this.context.networks, SecureWalletName.LEDGER_NANO_S)[0],
     error: null,
     isLoading: false
   };
 
-  public UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    if (this.props.dPath !== nextProps.dPath && nextProps.dPath) {
-      this.setState({ dPath: nextProps.dPath });
-    }
-  }
-
   public render() {
     const { dPath, publicKey, chainCode, isLoading } = this.state;
+    const networks = this.context.networks;
+    const network = this.context.getNetworkByName(this.props.formData.network);
 
     if (!dPath) {
       return <UnsupportedNetwork walletType={translateRaw('x_Ledger')} />;
@@ -70,12 +65,13 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
 
     if (publicKey && chainCode) {
       return (
-        <div className="Mnemoinc-dpath">
+        <div className="Mnemonic-dpath">
           <DeterministicWallets
+            network={network}
             publicKey={publicKey}
             chainCode={chainCode}
             dPath={dPath}
-            dPaths={this.props.dPaths}
+            dPaths={getDPaths(networks, SecureWalletName.LEDGER_NANO_S)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -164,20 +160,16 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   private reset() {
+    const networks = this.context.networks;
+    const network = this.context.getNetworkByName(this.props.formData.network);
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath: this.props.dPath || this.props.dPaths[0]
+      dPath:
+        getDPath(network, SecureWalletName.LEDGER_NANO_S) ||
+        getDPaths(networks, SecureWalletName.LEDGER_NANO_S)[0]
     });
   }
 }
 
-function mapStateToProps(state: AppState): StateProps {
-  return {
-    dPath: configSelectors.getSingleDPath(state, SecureWalletName.LEDGER_NANO_S),
-    dPaths: configNetworksStaticSelectors.getPaths(state, SecureWalletName.LEDGER_NANO_S),
-    network: configSelectors.getNetworkConfig(state)
-  };
-}
-
-export const LedgerNanoSDecrypt = connect(mapStateToProps)(LedgerNanoSDecryptClass);
+export const LedgerNanoSDecrypt = LedgerNanoSDecryptClass;
