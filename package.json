@@ -239,19 +239,20 @@
     "*.{ts,tsx}": [
       "prettier --write --config ./.prettierrc --config-precedence file-override",
       "yarn tslint",
-      "git add"
+      "git add",
+      "yarn tscheck"
     ]
   },
-  "freezer": [
+  "frozen": [
     "package.json",
     "common/freezer.ts",
-    "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn tscheck && yarn test"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
     }
   }
 }
