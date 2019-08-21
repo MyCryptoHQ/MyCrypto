@@ -31,12 +31,10 @@ function TransactionDetailsDisplay({
 
   const maxTransactionFeeBase: string = totalTxFeeToString(gasPrice, gasLimit);
   const networkName = network ? network.name : undefined;
-
-  const userAssetToSend = senderAccount.assets.find(
-    accountAsset => accountAsset.uuid === asset.uuid
-  );
+  const userAssetToSend = senderAccount.assets.find(accountAsset => {
+    return accountAsset.uuid === asset.uuid;
+  });
   const userAssetBalance = userAssetToSend ? userAssetToSend.balance : 'Unknown Balance';
-
   return (
     <>
       <div className="TransactionDetails">
@@ -54,8 +52,7 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row-column">
                 {asset.type === 'erc20' && (
                   <>
-                    {' '}
-                    {userAssetBalance} {asset.ticker} <br />{' '}
+                    {userAssetBalance} {asset.ticker} <br />
                   </>
                 )}
                 {`${senderAccount ? senderAccount.balance : 'Unknown'} ${baseAsset.ticker}`}

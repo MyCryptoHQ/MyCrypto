@@ -1,3 +1,5 @@
+import { TransactionReceipt } from 'ethers/providers';
+
 import { ProviderHandler } from '../network/providerHandler';
 
 export const getStatusFromHash = async (
@@ -14,14 +16,25 @@ export const getStatusFromHash = async (
     });
 
 export const getTimestampFromBlockNum = async (
-  blockNum: string,
+  blockNum: number,
   provider: ProviderHandler
 ): Promise<number | undefined> =>
   await provider
-    .getBlockByHash(blockNum)
+    .getBlockByNumber(blockNum)
     .then(block => {
       return block.timestamp;
     })
+    .catch(_ => {
+      return undefined;
+    });
+
+export const getTransactionReceiptFromHash = async (
+  txHash: string,
+  provider: ProviderHandler
+): Promise<TransactionReceipt | undefined> =>
+  await provider
+    .getTransactionReceipt(txHash)
+    .then(receipt => receipt)
     .catch(_ => {
       return undefined;
     });

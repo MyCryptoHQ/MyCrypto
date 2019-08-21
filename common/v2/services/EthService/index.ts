@@ -42,6 +42,7 @@ export {
   gasStringsToMaxGasNumber,
   getStatusFromHash,
   getTimestampFromBlockNum,
+  getTransactionReceiptFromHash,
   gasStringsToMaxGasBN,
   convertedToBaseUnit
 } from './utils';

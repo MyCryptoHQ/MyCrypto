@@ -65,6 +65,10 @@ export class ProviderHandler {
     return this.client.getBlock(blockHash, false);
   }
 
+  public getBlockByNumber(blockNumber: number): Promise<Block> {
+    return this.client.getBlock(blockNumber, false);
+  }
+
   /* Tested */
   public getCurrentBlock(): Promise<string> {
     return this.client.getBlockNumber().then(data => data.toString());
