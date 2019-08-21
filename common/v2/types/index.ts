@@ -50,3 +50,4 @@ export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
 export { Tab } from './tab';
 export { ISignedMessage } from './signing';
 export { IStory } from './story';
+export { FormData } from './formData';

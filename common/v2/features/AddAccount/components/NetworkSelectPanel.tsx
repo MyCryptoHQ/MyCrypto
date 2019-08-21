@@ -6,7 +6,7 @@ import './NetworkSelectPanel.scss';
 
 import { translate } from 'translations';
 import { FormDataActionType as ActionType } from '../types';
-import { FormData } from 'v2/features/AddAccount/types';
+import { FormData } from 'v2/types';
 import { NetworkSelectDropdown } from 'v2/components';
 
 const NetworkForm = styled.div`

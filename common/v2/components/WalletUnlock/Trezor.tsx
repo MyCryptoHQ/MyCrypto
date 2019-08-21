@@ -1,10 +1,8 @@
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import { Spinner } from 'components/ui';
-
-import { FormData } from 'v2/features/AddAccount/types';
 import { NetworkContext } from 'v2/services/Store';
 import { getDPath, getDPaths } from 'v2/services';
-import { SecureWalletName } from 'v2/types';
+import { SecureWalletName, FormData } from 'v2/types';
 import { TrezorWallet } from 'libs/wallet';
 import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';

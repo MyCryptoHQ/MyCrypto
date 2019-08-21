@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
-import { FormData } from 'v2/features/AddAccount/types';
+import { FormData } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services/EthService';
 import { NetworkContext } from 'v2/services/Store';
 import { InsecureWalletName } from 'config';

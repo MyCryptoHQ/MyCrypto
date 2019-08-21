@@ -6,7 +6,14 @@ import { Button } from '@mycrypto/ui';
 import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
-import { ISignedMessage, WalletName, SecureWalletName, INode } from 'v2/types';
+import {
+  ISignedMessage,
+  WalletName,
+  SecureWalletName,
+  INode,
+  FormData,
+  walletNames
+} from 'v2/types';
 import { STORIES } from './stories';
 import { WALLET_INFO } from 'v2/config';
 import { AppState } from 'features/reducers';
@@ -18,6 +25,14 @@ import { paritySignerActions } from 'features/paritySigner';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
+
+export const defaultFormData: FormData = {
+  network: 'Ethereum',
+  accountType: walletNames.DEFAULT,
+  account: '',
+  label: 'New Account',
+  derivationPath: ''
+};
 
 const Content = styled.div`
   display: flex;
@@ -171,7 +186,9 @@ function SignMessage(props: Props) {
             <img src={backArrowIcon} alt="Back arrow" />
             {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
-          {!unlocked && Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
+          {!unlocked && Step && (
+            <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} formData={defaultFormData} />
+          )}
         </>
       ) : (
         <WalletList wallets={STORIES} onSelect={onSelect} />

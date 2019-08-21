@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 
-import { FormData } from 'v2/features/AddAccount/types';
 import { NetworkContext } from 'v2/services/Store';
 import { getDPath, getDPaths } from 'v2/services';
-import { SecureWalletName } from 'v2/types';
+import { SecureWalletName, FormData } from 'v2/types';
 import translate, { translateRaw } from 'translations';
 import { LedgerWallet } from 'libs/wallet';
 import { Spinner, NewTabLink } from 'components/ui';
