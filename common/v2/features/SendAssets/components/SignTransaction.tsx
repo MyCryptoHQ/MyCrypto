@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { TWalletType } from 'v2/types';
-import { fromStateToTxObject } from '../helpers';
-import { IStepComponentProps, ISignComponentProps, ITxObject, ITxReceipt } from '../types';
+import { IStepComponentProps, ISignComponentProps, ITxReceipt, ISignedTx } from '../types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,
   SignTransactionMetaMask,
   SignTransactionPrivateKey,
   SignTransactionSafeT,
-  SignTransactionTrezor
+  SignTransactionTrezor,
+  SignTransactionMnemonic
 } from './SignTransactionWallets';
 import './SignTransaction.scss';
 
@@ -24,7 +24,7 @@ const SigningComponents: SigningComponents = {
   safeTmini: SignTransactionSafeT,
   keystoreFile: SignTransactionKeystore,
   paritySigner: null,
-  mnemonicPhrase: null,
+  mnemonicPhrase: SignTransactionMnemonic,
   viewOnly: null
 };
 
@@ -47,8 +47,6 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
     senderAccount: { wallet: walletName }
   } = txConfig;
 
-  const txObject: ITxObject = fromStateToTxObject(txConfig);
-
   const getWalletComponent = (walletType: TWalletType) => {
     return SigningComponents[walletType];
   };
@@ -57,9 +55,10 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
 
   return (
     <WalletComponent
-      network={network!}
-      rawTransaction={txObject}
-      onSuccess={(receipt: ITxReceipt) => onComplete(receipt)}
+      network={network}
+      senderAccount={txConfig.senderAccount}
+      rawTransaction={txConfig.rawTransaction}
+      onSuccess={(payload: ITxReceipt | ISignedTx) => onComplete(payload)}
     />
   );
 }

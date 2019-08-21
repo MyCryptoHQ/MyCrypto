@@ -79,11 +79,18 @@ module.exports = function(opts = {}) {
     rules.push(
       {
         test: /\.css$/,
-        use: [MiniCSSExtractPlugin.loader, 'css-loader']
+        include: [
+          path.resolve(config.path.src, 'vendor'),
+          path.resolve(__dirname, '../node_modules/typeface-lato')
+        ],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
-        use: [MiniCSSExtractPlugin.loader, 'css-loader', sassLoader]
+        include: ['components', 'containers', 'sass', 'v2']
+          .map(dir => path.resolve(config.path.src, dir))
+          .concat([config.path.modules]),
+        use: ['style-loader', 'css-loader', sassLoader]
       }
     );
   } else {
@@ -171,7 +178,7 @@ module.exports = function(opts = {}) {
         creator: config.twitter.creator
       },
       metaCsp: options.isProduction
-        ? "default-src 'none'; script-src 'self' https://0x.mycrypto.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://0x.mycrypto.com; manifest-src 'self'; font-src 'self' https://0x.mycrypto.com; img-src 'self' data: https://shapeshift.io; connect-src *; frame-src 'self' https://connect.trezor.io;"
+        ? "default-src 'none'; script-src 'self' https://0x.mycrypto.com; worker-src 'self' blob:; child-src 'self'; style-src 'self' 'unsafe-inline' https://0x.mycrypto.com; manifest-src 'self'; font-src 'self' https://0x.mycrypto.com; img-src 'self' data: https://shapeshift.io https://cdn.mycryptoapi.com; connect-src *; frame-src 'self' https://connect.trezor.io;"
         : ''
     }),
 
@@ -325,6 +332,13 @@ module.exports = function(opts = {}) {
       chunkModules: false,
       chunkOrigins: false,
       modules: false
-    }
+    },
+    externals: [
+      // This was added because there were build issues with ethers.js 
+      // as we included some of the built-in BigNumber and Hex processing functions it provided.
+      {
+        xmlhttprequest: 'XMLHttpRequest'
+      }
+    ]
   };
 };

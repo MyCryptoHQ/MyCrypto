@@ -6,6 +6,7 @@
 
 .label-action {
   color: #1eb8e7;
+  cursor: pointer;
 }
 
 .SendAssetsForm-errors {
@@ -111,47 +112,46 @@
     &-content {
       margin-top: 32px;
 
-      &-automaticallyCalculate {
+      &-priceLimitNonceData {
         display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-
-        input[type='checkbox'] {
-          margin: 0;
-          margin-right: 8px;
-        }
-        label {
-          margin: 0;
-          color: #163150;
-          font-weight: 300;
-        }
-      }
-      &-priceLimitNonce {
-        display: flex;
-        align-items: center;
+        margin-bottom: 25px;
 
         &-price {
           flex: 2;
-          margin-right: 15px;
+          width: 100%;
         }
+
         &-limit {
           flex: 2;
-          margin-right: 15px;
         }
+        
+        &-limit .label-with-action {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
         &-nonce {
           flex: 1;
         }
+        &-nonce .label-with-action {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        &-data {
+          flex: 2;
+        }
       }
-      &-output {
-        margin-bottom: 25px;
-        padding: 24px 18px;
-        background: #f6f8fa;
-        text-align: center;
-      }
+
     }
   }
   &-next {
-    width: 100%;
+    width: 100%; 
+  }
+  &-next:disabled {
+    background-color: rgba(0, 122, 153, 0.3);
   }
 }
 

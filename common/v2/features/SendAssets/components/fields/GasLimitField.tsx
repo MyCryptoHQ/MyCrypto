@@ -9,6 +9,7 @@ export function GasLimitField({ value, name, onChange }: IGasLimitField) {
         {...value}
         name={name}
         value={value}
+        maxLength={7}
         onChange={e => onChange(e.target.value)}
         placeholder="21000"
         className="SendAssetsForm-fieldset-input"
