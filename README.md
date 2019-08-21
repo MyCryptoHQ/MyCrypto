@@ -190,7 +190,7 @@ $ git checkout -b feature/foo develop
 
 You should use `feature/foo` to implement and commit all changed required for your new feature.
 
-* Make many small commits so that the history of development for you feature branch is clear and so that it is easy to pinpoint and edit or cherry-pick specific commits if neccessary.
+* Make many small commits so that the history of development for you feature branch is clear and so that it is easy to pinpoint and edit or cherry-pick specific commits if necessary.
 * Avoid merging your feature branch with out feature branches being developed in parallel.
 * Add neccessary unit tests for your features code.
 
