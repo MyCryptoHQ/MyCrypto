@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
@@ -6,15 +6,16 @@ import { Button } from '@mycrypto/ui';
 import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
-import { ISignedMessage, WalletName } from 'v2/types';
+import { ISignedMessage, WalletName, SecureWalletName, INode } from 'v2/types';
 import { STORIES } from './stories';
 import { WALLET_INFO } from 'v2/config';
-import { walletSelectors } from 'features/wallet';
 import { AppState } from 'features/reducers';
-
-import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 import { IFullWallet } from 'v2/services/EthService';
 import { configNodesSelectors } from 'features/config/nodes';
+import { messageToData } from 'features/message/sagas';
+import { paritySignerActions } from 'features/paritySigner';
+
+import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
 
@@ -54,42 +55,76 @@ const CodeBlockWrapper = styled.div`
   width: 100%;
 `;
 
-const BackButton = styled(Button)`
+interface BackButtonProps {
+  marginBottom: boolean;
+}
+
+const BackButton = styled(Button)<BackButtonProps>`
   align-self: flex-start;
   color: #007a99;
   font-weight: bold;
   display: flex;
   align-items: center;
   font-size: 20px;
+  ${props => props.marginBottom && 'margin-bottom: 40px;'}
+
   img {
     margin-right: 8px;
   }
 `;
 
-function SignMessage(props: any) {
+interface DispatchProps {
+  requestMessageSignature: paritySignerActions.TRequestMessageSignature;
+}
+
+interface StateProps {
+  nodeLib: INode;
+  sig: string;
+}
+
+type Props = DispatchProps & StateProps;
+
+function SignMessage(props: Props) {
   const [walletName, setWalletName] = useState<WalletName | undefined>(undefined);
   const [wallet, setWallet] = useState<IFullWallet | null>(null);
   const [unlocked, setUnlocked] = useState(false);
+  const [isSigned, setIsSigned] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
+
+  useEffect(() => {
+    if (props.sig && signedMessage && walletName === SecureWalletName.PARITY_SIGNER) {
+      setSignedMessage({ ...signedMessage, sig: props.sig });
+      setIsSigned(true);
+    }
+  }, [props.sig]);
 
   const handleSignMessage = async () => {
     try {
       if (!wallet) {
         throw Error;
       }
-      // TODO: call correct sign function depending on wallet selection
 
-      const sig = await wallet.signMessage(message, props.nodeLib);
+      const address = wallet.getAddressString();
+      let sig = '';
+
+      if (walletName === SecureWalletName.PARITY_SIGNER) {
+        const data = messageToData(message);
+        props.requestMessageSignature(address, data);
+      } else {
+        sig = await wallet.signMessage(message, props.nodeLib);
+      }
+
       const combined = {
-        address: wallet.getAddressString(),
+        address,
         msg: message,
         sig,
         version: '2'
       };
       setError(undefined);
       setSignedMessage(combined);
+      setIsSigned(!!sig);
     } catch (err) {
       setError(translateRaw('ERROR_38'));
       setSignedMessage(null);
@@ -111,21 +146,30 @@ function SignMessage(props: any) {
     setUnlocked(true);
   };
 
+  const resetWalletSelectionAndForm = () => {
+    setMessage('');
+    setError(undefined);
+    setSignedMessage(null);
+    setWalletName(undefined);
+    setUnlocked(false);
+    setIsSigned(false);
+  };
+
   const story = STORIES.find(x => x.name === walletName);
   const Step = story && story.steps[0];
 
   return (
     <Content>
-      {walletName && !unlocked ? (
+      {walletName ? (
         <>
-          <BackButton basic={true} onClick={() => setWalletName(undefined)}>
+          <BackButton marginBottom={unlocked} basic={true} onClick={resetWalletSelectionAndForm}>
             <img src={backArrowIcon} alt="Back arrow" />
             Change Wallet
           </BackButton>
-          {Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
+          {!unlocked && Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
         </>
       ) : (
-        !unlocked && <WalletList wallets={STORIES} onSelect={onSelect} />
+        <WalletList wallets={STORIES} onSelect={onSelect} />
       )}
 
       {unlocked && walletName && (
@@ -142,7 +186,7 @@ function SignMessage(props: any) {
           <SignButton disabled={!message} onClick={handleSignMessage}>
             {translate('NAV_SIGNMSG')}
           </SignButton>
-          {signedMessage && (
+          {signedMessage && isSigned && (
             <SignedMessage>
               <SignedMessageLabel>{translate('MSG_SIGNATURE')}</SignedMessageLabel>
               <CodeBlockWrapper>
@@ -158,8 +202,14 @@ function SignMessage(props: any) {
 
 const mapStateToProps = (state: AppState) => ({
   nodeLib: configNodesSelectors.getNodeLib(state),
-  signedMessage: state.message.signed,
-  unlocked: walletSelectors.isWalletFullyUnlocked(state)
+  sig: state.paritySigner.sig
 });
 
-export default connect(mapStateToProps)(SignMessage);
+const mapDispatchToProps = {
+  requestMessageSignature: paritySignerActions.requestMessageSignature
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignMessage);

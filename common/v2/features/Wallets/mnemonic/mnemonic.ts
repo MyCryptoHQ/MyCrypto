@@ -1,11 +1,8 @@
-import { MnemonicUnlockParams } from './types';
-import { MnemonicWallet } from 'libs/wallet/deterministic/mnemonic';
+import { TUnlockMnemonic } from './types';
 import { translateRaw } from 'translations';
-import { WrappedWallet } from 'libs/wallet';
+import { MnemonicWallet } from 'v2/services/EthService';
 
-export const unlockMnemonic = async (
-  payload: MnemonicUnlockParams
-): Promise<WrappedWallet | undefined> => {
+export const unlockMnemonic: TUnlockMnemonic = async payload => {
   let wallet;
   const { phrase, pass, path, address } = payload;
 
