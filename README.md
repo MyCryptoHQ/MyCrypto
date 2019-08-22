@@ -132,7 +132,7 @@ yarn test:int
 |       ├── signing - Message signing and signature verification
 |       ├── units - Helper functions for working with Ethereum / Token units in both base and unit form. Use these instead of using bn.js directly
 |       ├── validators - Validation functions for addresses, hex strings, keys, numbers, derivation paths, EAC values, Ethereum values, etc.
-|       ├── values - Functions for building EIP681 requests, numberical sanitization, string padding, bn.js conversion
+|       ├── values - Functions for building EIP681 requests, numerical sanitization, string padding, bn.js conversion
 │   ├── sass - SCSS styles, variables, mixins
 │   ├── translations - Language JSON dictionaries
 │   ├── typescript - Typescript definition files
