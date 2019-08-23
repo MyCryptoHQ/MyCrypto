@@ -11,6 +11,7 @@ const AccountOption = (props: OptionComponentProps) => {
       <AccountSummary
         address={option.address}
         balance={option.balance}
+        baseAssetSymbol={option.baseAssetSymbol}
         label={option.label}
         onClick={() => onSelect!(option, null)} // Since it's a custom Dropdown we know onSelect is defined
       />
@@ -19,6 +20,8 @@ const AccountOption = (props: OptionComponentProps) => {
   );
 };
 
-const MemoizedAccountOption = React.memo(AccountOption);
+/* ToDo: React Select doesn't seem to like these memoized components as optionComponents, figure out a solution to this. */
+/*const MemoizedAccountOption = React.memo(AccountOption);
+export default MemoizedAccountOption;*/
 
-export default MemoizedAccountOption;
+export default AccountOption;

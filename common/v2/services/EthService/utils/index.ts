@@ -11,7 +11,10 @@ export {
   baseToConvertedUnit,
   fromTokenBase,
   totalTxFeeToString,
-  totalTxFeeToWei
+  totalTxFeeToWei,
+  gasStringsToMaxGasNumber,
+  gasStringsToMaxGasBN,
+  convertedToBaseUnit
 } from './units';
 export { padLeftEven } from './padLeftEven';
 export { normalise } from './normalise';

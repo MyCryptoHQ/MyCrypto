@@ -27,6 +27,7 @@ export interface ITxConfig {
   readonly senderAccount: IExtendedAccount;
   readonly from: string;
   readonly asset: Asset;
+  readonly baseAsset: Asset;
   readonly network: INetwork;
   readonly gasPrice: string;
   readonly gasLimit: string;
@@ -39,9 +40,14 @@ export interface ITxReceipt {
   [index: string]: any;
 }
 
+export interface IReceiverAddress {
+  display: string;
+  value: string;
+}
+
 export interface IFormikFields {
   asset: Asset;
-  receiverAddress: string;
+  receiverAddress: IReceiverAddress;
   amount: string;
   account: IExtendedAccount;
   txDataField: string;
@@ -52,7 +58,6 @@ export interface IFormikFields {
   nonceField: string; // Use only if user has input a manual nonce value.
   network: INetwork;
   advancedTransaction: boolean;
-  resolvedENSAddress: string; // Address returned when attempting to resolve an ENS/RNS address.
 }
 
 export interface ISignComponentProps {

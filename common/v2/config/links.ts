@@ -7,7 +7,7 @@ import {
   ethercardReferralURL,
   keepkeyReferralURL,
   steelyReferralURL,
-  ETHERSCAMDB
+  CRYPTOSCAMDB
 } from './data';
 import { IRoutePath, IRoutePaths } from 'v2/types';
 
@@ -69,8 +69,8 @@ export const productLinks: Link[] = [
     text: translateRaw('ETHER_SECURITY_LOOKUP')
   },
   {
-    link: ETHERSCAMDB,
-    text: translateRaw('ETHERSCAMDB')
+    link: CRYPTOSCAMDB,
+    text: translateRaw('CRYPTOSCAMDB')
   },
   {
     link: 'https://legacy.mycrypto.com/helpers.html',
