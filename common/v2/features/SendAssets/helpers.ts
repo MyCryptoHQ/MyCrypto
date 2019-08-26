@@ -64,6 +64,7 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined 
     const contractAsset = getAssetByContractAndNetwork(txReceipt.to, networkDetected);
     const baseAsset = getBaseAssetByNetwork(networkDetected);
     return {
+      blockNumber: txReceipt.blockNumber,
       network: networkDetected,
       hash: txReceipt.hash,
       from: txReceipt.from,
