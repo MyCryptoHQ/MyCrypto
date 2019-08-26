@@ -823,6 +823,7 @@
     "ACCOUNT_LIST_TABLE_ADD_ACCOUNT": "Add Account",
     "ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS": "Your Accounts",
     "ACCOUNT_LIST_FAVOURITE": "Favorite",
+    "ACCOUNT_LIST_LABEL":"Label",
     "ACCOUNT_LIST_ADDRESS": "Address",
     "ACCOUNT_LIST_NETWORK":"Network",
     "ACCOUNT_LIST_VALUE": "Value",
