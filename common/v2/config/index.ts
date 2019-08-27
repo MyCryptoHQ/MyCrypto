@@ -21,5 +21,5 @@ export {
 } from './gasPrice';
 export { accounts as testAccounts } from './accounts';
 export { assets as testAssets } from './assets';
-export { addressBook as testAddressBook } from './labels';
+export { addressBook as testAddressBook } from './addressBook';
 export { settings as testSettings } from './settings';

@@ -110,7 +110,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       address: '0x80200997f095da94e404f7e0d581aab1ffba9f7d',
       label: 'Foo',
       notes: 'This is my wallet.',
-      network: 'Ethereum'
+      network: 'Homestead'
     }
   },
   notifications: {}
