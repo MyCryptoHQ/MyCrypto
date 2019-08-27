@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
 import { Amount, TimeElapsedCounter } from 'v2/components';
-import { AddressBookContext } from 'v2/services/Store';
+import { AddressBookContext, AccountContext } from 'v2/services/Store';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
@@ -23,6 +23,7 @@ const truncate = (children: string) => {
 
 export default function TransactionReceipt({ txReceipt, txConfig }: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
+  const { addNewTransactionToAccount } = useContext(AccountContext);
   const [txStatus, setTxStatus] = useState({ status: false, known: false });
   const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
@@ -37,15 +38,19 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
     );
     if (blockNumber === 0 && txReceipt.hash) {
       const blockNumInterval = setInterval(() => {
-        getTransactionReceiptFromHash(txReceipt.hash, provider).then(transactionReceipt => {
-          if (transactionReceipt) {
-            const transactionStatus = transactionReceipt.status === 1 ? true : false;
+        getTransactionReceiptFromHash(txReceipt.hash, provider).then(transactionOutcome => {
+          if (transactionOutcome) {
+            const transactionStatus = transactionOutcome.status === 1 ? true : false;
             setTxStatus(prevState => ({
               status: transactionStatus || prevState.status,
               known: transactionStatus !== undefined ? true : false
             }));
-            setDisplayTxReceipt(fromTxReceiptObj(transactionReceipt) as ITxReceipt);
-            setBlockNumber((prevState: number) => transactionReceipt.blockNumber || prevState);
+            setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+            provider.getTransactionByHash(txReceipt.hash).then(transactionReceipt => {
+              const receipt = fromTxReceiptObj(transactionReceipt) as ITxReceipt;
+              addNewTransactionToAccount(senderAccount, receipt);
+              setDisplayTxReceipt(receipt);
+            });
           }
         });
       }, 1000);

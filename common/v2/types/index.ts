@@ -17,7 +17,7 @@ export type TWalletType = TWalletType;
 export { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName } from './wallet';
 export { walletNames } from './wallet';
 export { Asset, ExtendedAsset, IAsset, TAssetType } from './asset';
-export { Account, ExtendedAccount, TransactionData, AssetBalanceObject } from './account';
+export { Account, ExtendedAccount, AssetBalanceObject } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
 export {

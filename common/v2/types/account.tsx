@@ -1,6 +1,6 @@
 import { TWalletType } from './wallets';
 import { WalletName } from './wallet';
-import { TAssetType } from './asset';
+import { ITxReceipt } from 'v2/features/SendAssets/types';
 
 export interface Account {
   label?: string;
@@ -9,7 +9,7 @@ export interface Account {
   assets: AssetBalanceObject[];
   wallet: WalletName | TWalletType;
   balance: string;
-  transactions: TransactionData[];
+  transactions: ITxReceipt[];
   dPath: string;
   timestamp: number;
   favorite: boolean;
@@ -17,19 +17,6 @@ export interface Account {
 
 export interface ExtendedAccount extends Account {
   uuid: string;
-}
-
-export interface TransactionData {
-  txHash: string;
-  stage: string;
-  label: string;
-  date: number;
-  from: string;
-  to: string;
-  value: number;
-  data: string;
-  fiatValue: { USD: string };
-  assetType: TAssetType;
 }
 
 export interface AssetBalanceObject {

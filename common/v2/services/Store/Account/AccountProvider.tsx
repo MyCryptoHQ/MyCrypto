@@ -1,6 +1,7 @@
 import React, { Component, createContext } from 'react';
 import * as service from './Account';
 import { Account, ExtendedAccount } from 'v2/types';
+import { ITxReceipt } from 'v2/features/SendAssets/types';
 
 export interface ProviderState {
   accounts: ExtendedAccount[];
@@ -8,6 +9,7 @@ export interface ProviderState {
   createAccountWithID(accountData: Account, uuid: string): void;
   deleteAccount(uuid: string): void;
   updateAccount(uuid: string, accountData: ExtendedAccount): void;
+  addNewTransactionToAccount(account: ExtendedAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, network: string): ExtendedAccount | undefined;
 }
 
@@ -30,6 +32,23 @@ export class AccountProvider extends Component {
     },
     updateAccount: (uuid: string, accountData: ExtendedAccount) => {
       service.updateAccount(uuid, accountData);
+      this.getAccounts();
+    },
+    addNewTransactionToAccount: (accountData, newTransaction) => {
+      const existingTransaction = accountData.transactions.find(
+        tx => tx.hash === newTransaction.hash
+      );
+      delete newTransaction.network;
+      if (existingTransaction) {
+        const newTransactionSet = accountData.transactions.filter(
+          transaction => transaction.hash !== newTransaction.hash
+        );
+        newTransactionSet.push(newTransaction);
+        accountData.transactions = [...newTransactionSet];
+      } else {
+        accountData.transactions.push(newTransaction);
+      }
+      service.updateAccount(accountData.uuid, accountData);
       this.getAccounts();
     },
     getAccountByAddressAndNetworkName: (address, network): ExtendedAccount | undefined => {
