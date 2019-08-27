@@ -4,7 +4,8 @@ export const COLORS = {
   BRIGHT_SKY_BLUE: '#1eb8e7',
   SILVER: '#f7f7f7',
   PASTEL_RED: '#ef4747',
-  WHITE: '#fff'
+  WHITE: '#fff',
+  GOLD: '#FFD166'
 };
 
 export const BREAK_POINTS = {

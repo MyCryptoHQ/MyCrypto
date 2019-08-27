@@ -242,16 +242,16 @@
       "git add"
     ]
   },
-  "freezer": [
+  "frozen": [
     "package.json",
     "common/freezer.ts",
-    "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn tscheck && yarn test"
+      "pre-commit": "lint-staged && yarn tscheck",
+      "pre-push": "yarn test"
     }
   }
 }

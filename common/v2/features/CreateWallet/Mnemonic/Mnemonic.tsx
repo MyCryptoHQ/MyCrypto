@@ -150,7 +150,8 @@ class CreateMnemonic extends Component<Props> {
       assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
       balance: '0',
       transactions: [],
-      timestamp: 0
+      timestamp: 0,
+      favorite: false
     };
     createAccountWithID(account, newUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);

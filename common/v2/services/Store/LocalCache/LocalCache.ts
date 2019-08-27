@@ -99,6 +99,7 @@ export const initNetworks = () => {
       chainId: STATIC_NETWORKS_INITIAL_STATE[en].chainId,
       isCustom: STATIC_NETWORKS_INITIAL_STATE[en].isCustom,
       color: STATIC_NETWORKS_INITIAL_STATE[en].color,
+      blockExplorer: STATIC_NETWORKS_INITIAL_STATE[en].blockExplorer,
       dPaths: {
         ...STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats,
         default: STATIC_NETWORKS_INITIAL_STATE[en].dPathFormats[InsecureWalletName.MNEMONIC_PHRASE]
@@ -304,7 +305,8 @@ export const initTestAccounts = () => {
       balance: '0.01',
       dPath: `m/44'/60'/0'/0/0`,
       timestamp: 0,
-      transactions: []
+      transactions: [],
+      favorite: false
     },
     {
       address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
@@ -314,7 +316,8 @@ export const initTestAccounts = () => {
       balance: '0.01',
       dPath: `m/44'/60'/0'/0/0`,
       timestamp: 0,
-      transactions: []
+      transactions: [],
+      favorite: false
     }
   ];
 
