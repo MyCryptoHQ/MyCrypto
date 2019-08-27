@@ -12,9 +12,9 @@ import {
   findNextUnusedDefaultLabel,
   createAddressBook,
   getNewDefaultAssetTemplateByNetwork,
-  getNetworkByName
+  getNetworkById
 } from 'v2/services/Store';
-import { Account, AddressBook, Asset, Network, NetworkId } from 'v2/types';
+import { Account, AddressBook, Asset, Network } from 'v2/types';
 
 /*
   Create a new account in localStorage and redirect to dashboard.
@@ -24,7 +24,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
   const { displayNotification } = useContext(NotificationsContext);
   useEffect(() => {
-    const network: Network | undefined = getNetworkByName(payload.formData.network);
+    const network: Network | undefined = getNetworkById(payload.formData.network);
     if (
       !network ||
       !payload.formData.account ||
@@ -39,7 +39,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       const newUUID = generateUUID();
       const account: Account = {
         address: payload.formData.account,
-        networkId: payload.formData.network as NetworkId,
+        networkId: payload.formData.network,
         wallet: payload.formData.accountType,
         dPath: payload.formData.derivationPath,
         assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],

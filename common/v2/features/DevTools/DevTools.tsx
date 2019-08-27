@@ -3,8 +3,9 @@ import { Formik, Field, Form, FieldProps } from 'formik';
 import { Panel, Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import { DEFAULT_NETWORK } from 'v2/config';
 import { AccountContext, getLabelByAccount } from 'v2/services/Store';
-import { Account, AddressBook, ExtendedAccount, SecureWalletName, NetworkId } from 'v2/types';
+import { Account, AddressBook, ExtendedAccount, SecureWalletName } from 'v2/types';
 
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';
@@ -35,7 +36,7 @@ const DevTools = () => {
                 initialValues={{
                   label: 'Foo',
                   address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
-                  networkId: 'Homestead' as NetworkId,
+                  networkId: DEFAULT_NETWORK,
                   assets: [
                     {
                       uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',

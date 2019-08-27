@@ -6,7 +6,11 @@ export * from './links';
 export * from './tokens';
 export { DPaths, dPathRegex } from './dpaths';
 export { WALLETS_CONFIG } from './wallets';
-export { DEFAULT_NETWORK_FOR_FALLBACK, GITHUB_RELEASE_NOTES_URL } from './constants';
+export {
+  DEFAULT_NETWORK_FOR_FALLBACK,
+  DEFAULT_NETWORK,
+  GITHUB_RELEASE_NOTES_URL
+} from './constants';
 export { NODES_CONFIG } from './nodes';
 export { ROUTE_PATHS } from './routePaths';
 export { NETWORKS_CONFIG } from './networks';

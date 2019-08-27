@@ -19,7 +19,7 @@ import {
 } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 import { getNewDefaultAssetTemplateByNetwork, getNetworkById } from 'v2/services/Store';
-import { ROUTE_PATHS } from 'v2/config';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
@@ -42,7 +42,7 @@ class CreateMnemonic extends Component<Props> {
   public state: State = {
     stage: MnemonicStages.SelectNetwork,
     words: [],
-    network: 'Homestead',
+    network: DEFAULT_NETWORK,
     accountType: InsecureWalletName.MNEMONIC_PHRASE,
     path: '',
     address: ''
