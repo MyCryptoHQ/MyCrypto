@@ -7,7 +7,7 @@ import { useDevMode } from 'v2/services';
 import { AccountContext, AddressBookContext } from 'v2/services/Store';
 import { translate, translateRaw } from 'translations';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
-import { ActionTile, TokenList, WalletBreakdown, RecentTransactionList } from './components';
+import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
@@ -43,7 +43,7 @@ export default function Dashboard() {
             <WalletBreakdown />
           </div>
           <div className="Dashboard-mobile-section Dashboard-mobile-tokenList">
-            <TokenList />
+            <TokenPanel />
           </div>
         </div>
         <div className="Dashboard-mobile-section">
@@ -75,7 +75,7 @@ export default function Dashboard() {
               ))}
             </div>
             <div>
-              <TokenList />
+              <TokenPanel />
             </div>
           </div>
           <div className="Dashboard-desktop-top-right">
