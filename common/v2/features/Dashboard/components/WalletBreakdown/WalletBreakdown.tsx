@@ -1,19 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Panel } from '@mycrypto/ui';
+import { bigNumberify } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import {
-  AccountContext,
-  SettingsContext,
-  getCurrentsFromContext,
-  getBalanceFromAccount,
-  getBaseAssetFromAccount,
-  getTokenBalanceFromAccount,
-  getAssetByUUID
-} from 'v2/services/Store';
-import { ExtendedAccount, Asset } from 'v2/types';
+import { SettingsContext } from 'v2/services/Store';
+import { StoreContext } from 'v2/services/StoreProvider';
+import { StoreAsset } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
 
 import { Balance, Fiat } from './types';
@@ -58,7 +52,7 @@ let wasNumOfAccountsTracked = false;
 
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
-  const { accounts } = useContext(AccountContext);
+  const { accounts, totals, currentAccounts } = useContext(StoreContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
 
   // Track number of accounts that user has only once per session
@@ -69,55 +63,18 @@ export function WalletBreakdown() {
     });
   }
 
-  const balances: Balance[] = [];
-  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
-    accounts,
-    settings.dashboardAccounts
-  );
-
+  const assetValue = bigNumberify('333');
+  const selectedAccounts = currentAccounts();
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
-  const addAssetToBalances = (
-    asset: Asset | undefined,
-    assetAmount: number,
-    assetValue: number
-  ) => {
-    const assetName = asset ? asset.name : translateRaw('WALLET_BREAKDOWN_UNKNOWN');
-    const assetTicker = asset ? asset.ticker : '';
 
-    const existingAssetInBalances = balances.find(balance => balance.name === assetName);
-
-    if (!existingAssetInBalances) {
-      balances.push({
-        name: assetName,
-        amount: assetAmount,
-        fiatValue: assetAmount * assetValue,
-        ticker: assetTicker
-      });
-    } else {
-      existingAssetInBalances.amount = existingAssetInBalances.amount + assetAmount;
-      existingAssetInBalances.fiatValue = existingAssetInBalances.amount * assetValue;
-    }
-  };
-
-  // Combine all base assets and account assets in the balances array
-  currentAccounts.forEach((account: ExtendedAccount) => {
-    const baseAsset = getBaseAssetFromAccount(account);
-    const baseAssetAmount = parseFloat(getBalanceFromAccount(account));
-    const baseAssetValue = 333.33; //TODO: Get actual asset value from the local cache
-
-    addAssetToBalances(baseAsset, baseAssetAmount, baseAssetValue);
-
-    account.assets.forEach(accountAsset => {
-      const asset = getAssetByUUID(accountAsset.uuid);
-      const assetAmount = parseFloat(getTokenBalanceFromAccount(account, asset));
-      const assetValue = 333.33; //TODO: Get actual asset value from the local cache
-      addAssetToBalances(asset, assetAmount, assetValue);
-    });
-  });
-
-  balances.sort((a, b) => {
-    return b.fiatValue - a.fiatValue;
-  });
+  const balances: Balance[] = totals(selectedAccounts)
+    .map((asset: StoreAsset) => ({
+      name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
+      ticker: asset.ticker,
+      amount: asset.balance.toNumber(),
+      fiatValue: asset.balance.mul(assetValue).toNumber()
+    }))
+    .sort((a, b) => b.fiatValue - a.fiatValue);
 
   //TODO: Get fiat symbol and text
   const fiat: Fiat = {
@@ -164,7 +121,7 @@ export function WalletBreakdown() {
         </AccountDropdownWrapper>
       </WalletBreakdownTop>
       <WalletBreakdownPanel>
-        {currentAccounts.length === 0 ? (
+        {selectedAccounts.length === 0 ? (
           <NoAccountsSelected />
         ) : showBalanceDetailView ? (
           <BalancesDetailView

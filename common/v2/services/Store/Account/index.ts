@@ -14,5 +14,6 @@ export {
   getAllAccountKeys,
   getAccountByAddressAndNetworkName,
   getAccountsByAsset,
-  getAccountBaseBalance
+  getAccountBaseBalance,
+  getDashboardAccounts
 } from './helpers';

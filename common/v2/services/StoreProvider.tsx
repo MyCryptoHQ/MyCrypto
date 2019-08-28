@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { bigNumberify } from 'ethers/utils';
+import { bigNumberify, parseUnits } from 'ethers/utils';
 import unionBy from 'lodash/unionBy';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
@@ -12,7 +12,14 @@ import {
   Network,
   NetworkId
 } from 'v2/types';
-import { AssetContext, AccountContext, NetworkContext } from './Store';
+import {
+  AssetContext,
+  AccountContext,
+  SettingsContext,
+  NetworkContext,
+  getTotalByAsset,
+  getDashboardAccounts
+} from './Store';
 import { getAccountBalance } from './BalanceService';
 
 const getNetworkById = (targetNetwork: NetworkId, networks: Network[]): Network => {
@@ -22,7 +29,7 @@ const getNetworkById = (targetNetwork: NetworkId, networks: Network[]): Network 
 const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
   accountAssets
     .map(({ uuid }) => assets.find(a => a.uuid === uuid)!)
-    .map(asset => ({ ...asset, balance: bigNumberify(0), mtime: Date.now() }));
+    .map(asset => ({ ...asset, balance: bigNumberify(parseUnits('0.01', 2)), mtime: Date.now() }));
 
 const getStoreAccounts = (
   accounts: ExtendedAccount[],
@@ -40,7 +47,9 @@ interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
   tokens(): StoreAsset[];
-  assets(): StoreAsset[];
+  assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
+  totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
+  currentAccounts(): StoreAccount[];
 }
 export const StoreContext = createContext({} as State);
 
@@ -49,6 +58,7 @@ export const StoreContext = createContext({} as State);
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const { accounts: rawAccounts } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
+  const { settings } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
 
   const [accounts, setAccounts] = useState(getStoreAccounts(rawAccounts, assets, networks));
@@ -69,8 +79,12 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const state: State = {
     accounts,
     networks,
-    assets: () => state.accounts.flatMap(account => account.assets),
-    tokens: () => state.assets().filter(asset => asset.type !== 'base')
+    assets: (selectedAccounts = state.accounts) =>
+      selectedAccounts.flatMap((account: StoreAccount) => account.assets),
+    tokens: () => state.assets().filter(asset => asset.type !== 'base'),
+    totals: (selectedAccounts = state.accounts) =>
+      Object.values(getTotalByAsset(state.assets(selectedAccounts))),
+    currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts)
   };
 
   // 1. I actually want to watch all the base and token balance for every
@@ -89,7 +103,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   // - [ ] handle ethScan polling.
   // - [x] handle ethScan accepted networks
   // - [ ] handle other networks...
-  // - [ ] connect to view.
+  // - [x] connect to view.
   // - [ ] worry about error handling.
   // - [ ] save to local storage
 

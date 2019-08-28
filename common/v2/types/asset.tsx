@@ -30,8 +30,8 @@ export interface ExtendedAsset extends Asset {
 // Used to reference an Asset in a storage Account
 export interface AssetBalanceObject {
   readonly uuid: string;
-  balance: BigNumber | string; // @TODO: types select only one.
+  balance: BigNumber | string;
   mtime: number;
 }
 
-export type StoreAsset = Asset & AssetBalanceObject;
+export type StoreAsset = Asset & { balance: BigNumber; mtime: number };

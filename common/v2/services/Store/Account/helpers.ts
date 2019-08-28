@@ -36,6 +36,13 @@ export const getCurrentsFromContext = (
   return accountList;
 };
 
+export const getDashboardAccounts = (
+  accounts: StoreAccount[],
+  currentAccounts: string[]
+): StoreAccount[] => {
+  return accounts.filter(account => currentAccounts.indexOf(account.uuid) >= 0);
+};
+
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
   const baseAssetUuid = getBaseAssetFromAccount(account)!.uuid;
   const baseAsset = account.assets.find(a => a.uuid === baseAssetUuid);

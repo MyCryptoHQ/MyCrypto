@@ -1,5 +1,5 @@
 import { getCache } from '../LocalCache';
-import { Asset, Network } from 'v2/types';
+import { Asset, Network, StoreAsset } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 
 export const getAllAssets = () => {
@@ -57,3 +57,20 @@ export const getAssetByContractAndNetwork = (
     .filter(asset => asset.networkId === network.id)
     .find(asset => asset.contractAddress === contractAddress);
 };
+
+export const getTotalByAsset = (assets: StoreAsset[]) =>
+  assets.reduce(
+    (dict, asset) => {
+      const prev = dict[asset.uuid];
+      if (prev) {
+        dict[asset.uuid] = {
+          ...prev,
+          balance: prev.balance.add(asset.balance)
+        };
+      } else {
+        dict[asset.name] = asset;
+      }
+      return dict;
+    },
+    {} as { [key: string]: StoreAsset }
+  );
