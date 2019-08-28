@@ -1,7 +1,7 @@
 import { Contract } from 'v2/types';
 
 import ETC from './etc.json';
-import Homestead from './eth.json';
+import Ethereum from './eth.json';
 import EXP from './exp.json';
 import Rinkeby from './rinkeby.json';
 import Ropsten from './ropsten.json';
@@ -20,7 +20,7 @@ interface Contracts {
 
 export const Contracts: Contracts = {
   ETC,
-  Homestead,
+  Ethereum,
   EXP,
   Rinkeby,
   Ropsten,

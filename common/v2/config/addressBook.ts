@@ -11,6 +11,6 @@ export const addressBook: { [key in string]: AddressBook } = {
     label: 'ETH Test 1',
     address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
     notes: '',
-    network: 'Homestead'
+    network: 'Ethereum'
   }
 };

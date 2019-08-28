@@ -38,7 +38,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   */
   useEffect(() => {
     (async function getAccountsBalances() {
-      // for the moment EthScan is only deployed on Homestead.
+      // for the moment EthScan is only deployed on Ethereum.
       const supportedAccounts = accounts.filter(({ network }) =>
         ETHSCAN_NETWORKS.some(supportedNetwork => network.id === supportedNetwork)
       );

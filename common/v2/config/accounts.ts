@@ -3,7 +3,7 @@ import { Account, SecureWalletName } from 'v2/types';
 export const accounts: Account[] = [
   {
     address: '0xc7bfc8a6bd4e52bfe901764143abef76caf2f912',
-    networkId: 'Homestead',
+    networkId: 'Ethereum',
     assets: [
       {
         uuid: '10e14757-78bb-4bb2-a17a-8333830f6698',

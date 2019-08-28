@@ -15,8 +15,8 @@ type NetworkConfig = {
 };
 
 export const NETWORKS_CONFIG: NetworkConfig = {
-  Homestead: {
-    id: 'Homestead',
+  Ethereum: {
+    id: 'Ethereum',
     name: 'Ethereum',
     unit: 'ETH',
     chainId: 1,

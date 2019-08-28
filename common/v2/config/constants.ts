@@ -7,4 +7,4 @@ export const GITHUB_RELEASE_NOTES_URL = 'https://github.com/MyCryptoHQ/MyCrypto/
 // this will be changed when we figure out networks
 export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
-export const DEFAULT_NETWORK: NetworkId = 'Homestead';
+export const DEFAULT_NETWORK: NetworkId = 'Ethereum';

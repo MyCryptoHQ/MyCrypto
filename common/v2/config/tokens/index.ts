@@ -1,5 +1,5 @@
 import ETC from './etc.json';
-import Homestead from './eth.json';
+import Ethereum from './eth.json';
 import EXP from './exp.json';
 import Kovan from './kovan.json';
 import Rinkeby from './rinkeby.json';
@@ -33,7 +33,7 @@ export interface ExtendedToken {
 
 export const NetworkAssets: NetworksAssets = {
   ETC,
-  Homestead,
+  Ethereum,
   EXP,
   Kovan,
   Rinkeby,

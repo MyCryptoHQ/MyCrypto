@@ -1,7 +1,7 @@
 import { NetworkId } from 'v2/types';
 
 enum EthscanSupportedNetworks {
-  Homestead = 'Homestead'
+  Ethereum = 'Ethereum'
 }
 
 export const ETHSCAN_NETWORKS: NetworkId[] = Object.values(EthscanSupportedNetworks);
