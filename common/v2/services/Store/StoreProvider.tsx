@@ -1,47 +1,15 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { bigNumberify, parseUnits } from 'ethers/utils';
 import unionBy from 'lodash/unionBy';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
-import {
-  ExtendedAccount,
-  StoreAccount,
-  StoreAsset,
-  Asset,
-  AssetBalanceObject,
-  Network,
-  NetworkId
-} from 'v2/types';
-import {
-  AssetContext,
-  AccountContext,
-  SettingsContext,
-  NetworkContext,
-  getTotalByAsset,
-  getDashboardAccounts
-} from './Store';
-import { getAccountBalance } from './BalanceService';
+import { StoreAccount, StoreAsset, Network } from 'v2/types';
 
-const getNetworkById = (targetNetwork: NetworkId, networks: Network[]): Network => {
-  return networks.find(n => n.id === targetNetwork || n.name === targetNetwork) as Network;
-};
-
-const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
-  accountAssets
-    .map(({ uuid }) => assets.find(a => a.uuid === uuid)!)
-    .map(asset => ({ ...asset, balance: bigNumberify(parseUnits('0.01', 2)), mtime: Date.now() }));
-
-const getStoreAccounts = (
-  accounts: ExtendedAccount[],
-  assets: Asset[],
-  networks: Network[]
-): StoreAccount[] => {
-  return accounts.map(a => ({
-    ...a,
-    assets: getAssetsByUuid(a.assets, assets),
-    network: getNetworkById(a.networkId, networks)
-  }));
-};
+import { getAccountBalance } from '../BalanceService';
+import { getStoreAccounts } from './helpers';
+import { AssetContext, getTotalByAsset } from './Asset';
+import { AccountContext, getDashboardAccounts } from './Account';
+import { SettingsContext } from './Settings';
+import { NetworkContext } from './Network';
 
 interface State {
   readonly accounts: StoreAccount[];

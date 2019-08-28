@@ -5,8 +5,7 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { SettingsContext } from 'v2/services/Store';
-import { StoreContext } from 'v2/services/StoreProvider';
+import { SettingsContext, StoreContext } from 'v2/services/Store';
 import { StoreAsset } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
 

@@ -13,9 +13,9 @@ import {
   getNetworkById,
   getBaseAssetByNetwork,
   getBalanceFromAccount,
-  getAccountsByAsset
+  getAccountsByAsset,
+  StoreContext
 } from 'v2/services/Store';
-import { StoreContext } from 'v2/services/StoreProvider';
 import { Asset, Network, ExtendedAccount, StoreAsset } from 'v2/types';
 import {
   getNonce,
