@@ -25,7 +25,7 @@ export default function TokenList() {
   return (
     <DashboardPanel
       heading="Token"
-      headingRight="Add Tokens"
+      headingRight="+ Add Tokens"
       actionLink="/dashboard/add-tokens"
       className="TokenList"
       padChildren={true}
