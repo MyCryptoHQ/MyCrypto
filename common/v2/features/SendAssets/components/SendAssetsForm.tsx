@@ -3,20 +3,20 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
+import { BigNumber } from 'ethers/utils';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
 import { InlineErrorMsg } from 'v2/components';
 import {
-  AccountContext,
-  getAssetByUUID,
-  getBaseAssetFromAccount,
-  getNetworkByName,
+  getNetworkById,
   getBaseAssetByNetwork,
-  getBalanceFromAccount
+  getBalanceFromAccount,
+  getAccountsByAsset
 } from 'v2/services/Store';
-import { Asset, Network, AssetBalanceObject, ExtendedAccount as IExtendedAccount } from 'v2/types';
+import { StoreContext } from 'v2/services/StoreProvider';
+import { Asset, Network, ExtendedAccount, StoreAsset } from 'v2/types';
 import {
   getNonce,
   hexToNumber,
@@ -27,7 +27,6 @@ import {
   baseToConvertedUnit
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
-import { notUndefined } from 'v2/utils';
 
 import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
 import {
@@ -57,9 +56,9 @@ const initialFormikValues: IFormikFields = {
     display: ''
   },
   amount: '0',
-  account: {} as IExtendedAccount, // should be renamed senderAccount
+  account: {} as ExtendedAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
-  asset: {} as Asset,
+  asset: {} as StoreAsset,
   txDataField: '',
   gasEstimates: {
     // Not a field, move to state
@@ -98,35 +97,12 @@ export default function SendAssetsForm({
   // txConfig // @TODO Use prop in case goToPrevStep or URI prefill.
   onComplete
 }: IStepComponentProps) {
-  const { accounts } = useContext(AccountContext);
+  const { accounts, assets } = useContext(StoreContext);
 
-  // @ts-ignore while waiting to update form
   const [isEstimatingGasLimit, setIsEstimatingGasLimit] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isEstimatingNonce, setIsEstimatingNonce] = useState(false); // Used to indicate that interface is currently estimating gas.
   const [isResolvingENSName, setIsResolvingENSName] = useState(false); // Used to indicate recipient-address is ENS name that is currently attempting to be resolved.
-  // @ts-ignore while waiting to update form
   const [baseAsset, setBaseAsset] = useState({} as Asset);
-  // @TODO:SEND change the data structure to get an object
-
-  const accountAssets: AssetBalanceObject[] = accounts.flatMap(a => a.assets);
-  const tokenAssets: Asset[] = accountAssets
-    .map((assetObj: AssetBalanceObject) => getAssetByUUID(assetObj.uuid))
-    .filter((asset: Asset | undefined) => asset)
-    .map((asset: Asset) => asset);
-
-  const baseAssets: Asset[] = accounts
-    .map(account => getBaseAssetFromAccount(account))
-    .filter((asset: Asset | undefined) => asset)
-    .map((asset: Asset) => asset);
-
-  const filteredAssets: string[] = _.union(
-    tokenAssets.map(token => token.uuid),
-    baseAssets.map(asset => asset.uuid)
-  );
-
-  const allAssets: Asset[] = filteredAssets
-    .map(assetName => getAssetByUUID(assetName))
-    .filter(notUndefined);
 
   return (
     <div className="SendAssetsForm">
@@ -193,10 +169,10 @@ export default function SendAssetsForm({
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
-              const amount: string = isERC20 // subtract gas cost from balance when sending a base asset
-                ? balance
+              const amount = isERC20 // subtract gas cost from balance when sending a base asset
+                ? (balance as BigNumber)
                 : baseToConvertedUnit(
-                    new BN(convertedToBaseUnit(balance, 18))
+                    new BN(convertedToBaseUnit(balance.toString(), 18))
                       .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
                       .toString(),
                     18
@@ -206,7 +182,7 @@ export default function SendAssetsForm({
             }
           };
 
-          const handleNonceEstimate = async (account: IExtendedAccount) => {
+          const handleNonceEstimate = async (account: ExtendedAccount) => {
             if (!values || !values.network || !account) {
               return;
             }
@@ -230,8 +206,8 @@ export default function SendAssetsForm({
                     <AssetDropdown
                       name={field.name}
                       value={field.value}
-                      assets={allAssets}
-                      onSelect={option => {
+                      assets={assets()}
+                      onSelect={(option: StoreAsset) => {
                         form.setFieldValue('asset', option); //if this gets deleted, it no longer shows as selected on interface (find way to not need this)
                         //TODO get assetType onChange
                         handleFieldReset();
@@ -240,7 +216,7 @@ export default function SendAssetsForm({
                             form.setFieldValue('gasEstimates', data);
                             form.setFieldValue('gasPriceSlider', data.fast);
                           });
-                          const network = getNetworkByName(option.networkId);
+                          const network = getNetworkById(option.networkId);
                           form.setFieldValue('network', network || {});
                           if (network) {
                             setBaseAsset(getBaseAssetByNetwork(network) || ({} as Asset));
@@ -259,22 +235,21 @@ export default function SendAssetsForm({
                 <FastField
                   name="account"
                   value={values.account}
-                  component={({ field, form }: FieldProps) => (
-                    <AccountDropdown
-                      name={field.name}
-                      value={field.value}
-                      asset={form.values.asset}
-                      baseAsset={baseAsset}
-                      network={form.values.network}
-                      accounts={accounts}
-                      onSelect={(option: IExtendedAccount) => {
-                        //TODO: map account values to correct keys in sharedConfig
-                        form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
-                        handleNonceEstimate(option);
-                        handleGasEstimate();
-                      }}
-                    />
-                  )}
+                  component={({ field, form }: FieldProps) => {
+                    const accountsWithAsset = getAccountsByAsset(accounts, values.asset);
+                    return (
+                      <AccountDropdown
+                        name={field.name}
+                        value={field.value}
+                        accounts={accountsWithAsset}
+                        onSelect={(option: ExtendedAccount) => {
+                          form.setFieldValue('account', option); //if this gets deleted, it no longer shows as selected on interface, would like to set only object keys that are needed instead of full object
+                          handleNonceEstimate(option);
+                          handleGasEstimate();
+                        }}
+                      />
+                    );
+                  }}
                 />
               </fieldset>
               <fieldset className="SendAssetsForm-fieldset">

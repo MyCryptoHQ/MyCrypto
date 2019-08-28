@@ -8,8 +8,11 @@ export {
   getNodeLib,
   getAccountBalance,
   getAccountByAddress,
+  getBaseAsset,
   getBaseAssetFromAccount,
   getAllAccounts,
   getAllAccountKeys,
-  getAccountByAddressAndNetworkName
+  getAccountByAddressAndNetworkName,
+  getAccountsByAsset,
+  getAccountBaseBalance
 } from './helpers';

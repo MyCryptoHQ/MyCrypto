@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 
-import { AddressBook, ExtendedAddressBook, ExtendedAccount, Network } from 'v2/types';
+import { AddressBook, ExtendedAddressBook, ExtendedAccount, Network, StoreAccount } from 'v2/types';
 import * as service from './AddressBook';
 
 interface ProviderState {
@@ -12,6 +12,7 @@ interface ProviderState {
   getContactByAddress(address: string): ExtendedAddressBook | undefined;
   getContactByAddressAndNetwork(address: string, network: Network): ExtendedAddressBook | undefined;
   getContactByAccount(account: ExtendedAccount): ExtendedAddressBook | undefined;
+  getAccountLabel(account: StoreAccount | ExtendedAccount): string | undefined;
 }
 
 export const AddressBookContext = createContext({} as ProviderState);
@@ -49,6 +50,10 @@ export class AddressBookProvider extends Component {
       return addressBook
         .filter(contact => contact.network === account.networkId)
         .find(contact => contact.address.toLowerCase() === account.address.toLowerCase());
+    },
+    getAccountLabel: account => {
+      const addressContact = this.state.getContactByAccount(account as ExtendedAccount);
+      return addressContact ? addressContact.label : undefined;
     }
   };
 

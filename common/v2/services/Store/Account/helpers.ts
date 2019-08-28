@@ -1,7 +1,16 @@
+import { bigNumberify, BigNumber } from 'ethers/utils';
 import BN from 'bn.js';
 
 import { shepherdProvider } from 'libs/nodes';
-import { Account, Asset, ExtendedAccount, Network, NodeOptions, INode } from 'v2/types';
+import {
+  Account,
+  Asset,
+  ExtendedAccount,
+  StoreAccount,
+  Network,
+  NodeOptions,
+  INode
+} from 'v2/types';
 import {
   getAssetByUUID,
   getNetworkByName,
@@ -30,7 +39,8 @@ export const getCurrentsFromContext = (
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
   const baseAssetUuid = getBaseAssetFromAccount(account)!.uuid;
   const baseAsset = account.assets.find(a => a.uuid === baseAssetUuid);
-  return baseAsset ? baseAsset.balance : '0';
+  const value = baseAsset ? baseAsset.balance : bigNumberify(0);
+  return value.toString();
 };
 
 export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset?: Asset): string => {
@@ -67,16 +77,19 @@ export function getNodeLib(): INode {
   return shepherdProvider;
 }
 
+export const getAccountBaseBalance = (account: StoreAccount) =>
+  account.assets.find(a => a.type === 'base')!.balance;
+
 export const getAccountBalance = async (
   address: string,
   network: Network | undefined
-): Promise<BN> => {
+): Promise<BigNumber | BN> => {
   if (!network) {
-    return new BN(0);
+    return bigNumberify(0);
   } else {
     const nodeOptions: NodeOptions[] = getNodesByNetwork(network.name);
     if (!nodeOptions) {
-      return new BN(0);
+      return bigNumberify(0);
     }
     const node: INode = new RPCNode(nodeOptions[0].url);
     const num = await node.getBalance(address);
@@ -136,3 +149,8 @@ export const getAccountByAddressAndNetworkName = (
   });
   return undefined;
 };
+
+export const getAccountsByAsset = (accounts: StoreAccount[], { uuid }: Asset): StoreAccount[] =>
+  accounts.filter(account => account.assets.find(a => a.uuid === uuid));
+
+export const getBaseAsset = (account: StoreAccount) => account.assets.find(a => a.type === 'base');

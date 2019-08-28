@@ -25,7 +25,7 @@ export const getAccountBalance = async (account: StoreAccount): Promise<StoreAcc
       // @ts-ignore
       balance: bigNumberify(addressBalance[account.address].toString()),
       assets: account.assets
-        .filter(a => a.contractAddress)
+        .filter(a => a.contractAddress || a.type === 'base')
         .map(asset => ({
           ...asset,
           balance: bigNumberify(tokenBalances[asset.contractAddress!].toString())

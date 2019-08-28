@@ -24,6 +24,12 @@ import {
 import { hardRefreshCache, getCacheRaw, setCache } from './LocalCache';
 import { CACHE_KEY } from './constants';
 
+/*
+   Extracted from LocalCache.ts.
+   Needs to be refactored and mereged with v2/config & contstants.ts
+
+*/
+
 // Initialization
 export const initializeCache = () => {
   const check = localStorage.getItem(CACHE_KEY);
@@ -108,7 +114,7 @@ export const initNetworks = () => {
     const newLocalAssetOption: Asset = {
       uuid: baseAssetID,
       name: network.name,
-      networkId: network.name,
+      networkId: network.name as NetworkId,
       ticker: networkId,
       type: 'base',
       decimal: 18
@@ -126,6 +132,7 @@ export const initAssets = () => {
     if (assets[en] && assets[en].networkId) {
       const uuid = generateUUID();
       const networkName = assets[en].networkId;
+      // @ts-ignore readonly
       assets[en].uuid = uuid;
       newStorage.assets[uuid] = assets[en];
       if (networkName) {

@@ -2,7 +2,7 @@ import { Overwrite } from 'utility-types';
 
 import { TWalletType } from './wallets';
 import { WalletName } from './wallet';
-import { Asset, TAssetType, AssetBalanceObject } from './asset';
+import { TAssetType, AssetBalanceObject, StoreAsset } from './asset';
 import { Network } from './network';
 import { NetworkId } from './networkId';
 
@@ -25,7 +25,7 @@ export interface ExtendedAccount extends Account {
 export type StoreAccount = Overwrite<
   ExtendedAccount,
   {
-    assets: Asset[];
+    assets: StoreAsset[];
   }
 > & { network: Network };
 

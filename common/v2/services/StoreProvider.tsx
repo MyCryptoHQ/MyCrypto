@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
+import { bigNumberify } from 'ethers/utils';
 import unionBy from 'lodash/unionBy';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import {
   ExtendedAccount,
   StoreAccount,
+  StoreAsset,
   Asset,
   AssetBalanceObject,
   Network,
@@ -17,11 +19,12 @@ const getNetworkById = (targetNetwork: NetworkId, networks: Network[]): Network 
   return networks.find(n => n.id === targetNetwork || n.name === targetNetwork) as Network;
 };
 
-const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): Asset[] => {
-  return accountAssets.map(({ uuid }) => assets.find(a => a.uuid === uuid)) as Asset[];
-};
+const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
+  accountAssets
+    .map(({ uuid }) => assets.find(a => a.uuid === uuid)!)
+    .map(asset => ({ ...asset, balance: bigNumberify(0), mtime: Date.now() }));
 
-const getFullAccounts = (
+const getStoreAccounts = (
   accounts: ExtendedAccount[],
   assets: Asset[],
   networks: Network[]
@@ -36,7 +39,8 @@ const getFullAccounts = (
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  tokens(): Asset[];
+  tokens(): StoreAsset[];
+  assets(): StoreAsset[];
 }
 export const StoreContext = createContext({} as State);
 
@@ -47,7 +51,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const { assets } = useContext(AssetContext);
   const { networks } = useContext(NetworkContext);
 
-  const [accounts, setAccounts] = useState(getFullAccounts(rawAccounts, assets, networks));
+  const [accounts, setAccounts] = useState(getStoreAccounts(rawAccounts, assets, networks));
 
   useEffect(() => {
     (async function getAccountsBalances() {
@@ -65,7 +69,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const state: State = {
     accounts,
     networks,
-    tokens: () => accounts.flatMap(account => account.assets).filter(asset => asset.type !== 'base')
+    assets: () => state.accounts.flatMap(account => account.assets),
+    tokens: () => state.assets().filter(asset => asset.type !== 'base')
   };
 
   // 1. I actually want to watch all the base and token balance for every
