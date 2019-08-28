@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Panel } from '@mycrypto/ui';
-import { bigNumberify } from 'ethers/utils';
+import { bigNumberify, formatEther } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
@@ -70,8 +70,8 @@ export function WalletBreakdown() {
     .map((asset: StoreAsset) => ({
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
-      amount: asset.balance.toNumber(),
-      fiatValue: asset.balance.mul(assetValue).toNumber()
+      amount: parseFloat(formatEther(asset.balance)),
+      fiatValue: parseFloat(formatEther(asset.balance.mul(assetValue)))
     }))
     .sort((a, b) => b.fiatValue - a.fiatValue);
 

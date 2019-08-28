@@ -7,12 +7,12 @@ export const accounts: Account[] = [
     assets: [
       {
         uuid: '10e14757-78bb-4bb2-a17a-8333830f6698',
-        balance: '0.01',
+        balance: '100000000000000',
         mtime: Date.now()
       },
       {
         uuid: 'f7e30bbe-08e2-41ce-9231-5236e6aab702',
-        balance: '0.01',
+        balance: '100000000000000',
         mtime: Date.now()
       }
     ],
@@ -28,7 +28,7 @@ export const accounts: Account[] = [
     assets: [
       {
         uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
-        balance: '0.01',
+        balance: '100000000000000',
         mtime: Date.now()
       }
     ],

@@ -1,4 +1,4 @@
-import { bigNumberify, parseUnits } from 'ethers/utils';
+import { bigNumberify } from 'ethers/utils';
 
 import {
   NetworkId,
@@ -16,8 +16,14 @@ const getNetworkById = (targetNetwork: NetworkId, networks: Network[]): Network 
 
 const getAssetsByUuid = (accountAssets: AssetBalanceObject[], assets: Asset[]): StoreAsset[] =>
   accountAssets
-    .map(({ uuid }) => assets.find(a => a.uuid === uuid)!)
-    .map(asset => ({ ...asset, balance: bigNumberify(parseUnits('0.01', 2)), mtime: Date.now() }));
+    .map(asset => {
+      const refAsset = assets.find(a => a.uuid === asset.uuid)!;
+      return {
+        ...refAsset,
+        ...asset
+      };
+    })
+    .map(asset => ({ ...asset, balance: bigNumberify(asset.balance), mtime: Date.now() }));
 
 export const getStoreAccounts = (
   accounts: ExtendedAccount[],

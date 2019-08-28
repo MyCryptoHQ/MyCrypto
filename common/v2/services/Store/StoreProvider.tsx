@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import unionBy from 'lodash/unionBy';
+import { bigNumberify } from 'ethers/utils';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { StoreAccount, StoreAsset, Network } from 'v2/types';
@@ -31,15 +32,48 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [accounts, setAccounts] = useState(getStoreAccounts(rawAccounts, assets, networks));
 
+  /*
+    Currently this effect only fetches the values for Ethereum address once.
+    Will be cleaned up once we handle other networks + polling.
+  */
   useEffect(() => {
     (async function getAccountsBalances() {
       // for the moment EthScan is only deployed on Homestead.
       const supportedAccounts = accounts.filter(({ network }) =>
         ETHSCAN_NETWORKS.some(supportedNetwork => network.id === supportedNetwork)
       );
-      const accountWithBalances = await Promise.all(supportedAccounts.map(getAccountBalance));
+      const accountBalances = await Promise.all(supportedAccounts.map(getAccountBalance));
+
+      const accountsWithBalances = accountBalances.map(([baseBalance, tokenBalances], index) => {
+        const account = supportedAccounts[index];
+        return {
+          ...account,
+          assets: account.assets
+            // .filter(a => a.contractAddress || a.type === 'base')
+            .map(asset => {
+              switch (asset.type) {
+                case 'base':
+                  return {
+                    ...asset,
+                    balance: baseBalance[account.address].toString()
+                  };
+                case 'erc20':
+                  return {
+                    ...asset,
+                    balance: tokenBalances[asset.contractAddress!].toString()
+                  };
+                default:
+                  break;
+              }
+            })
+            .map(asset => ({
+              ...asset!,
+              balance: bigNumberify(asset!.balance)
+            }))
+        };
+      });
       // uniqueness of `accounts` is `address` + `network`, so we use `uuid`
-      const updatedAccounts = unionBy(accountWithBalances, accounts, 'uuid');
+      const updatedAccounts = unionBy(accountsWithBalances, accounts, 'uuid');
       setAccounts(updatedAccounts);
     })();
   }, [rawAccounts]); // only run if 'rawAccounts' changes
