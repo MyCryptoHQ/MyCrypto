@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Heading } from '@mycrypto/ui';
 
-import { Panel } from 'v2/components';
+import { Panel } from './Panel';
 
 const Content = styled.div`
   padding-left: 15px;
