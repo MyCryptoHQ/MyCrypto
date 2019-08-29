@@ -4,6 +4,7 @@ import { translateRaw } from 'translations';
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 import { StoreAccount } from 'v2/types';
 import { AddressBookContext, getBaseAsset, getAccountBaseBalance } from 'v2/services/Store';
+import { formatEther } from 'ethers/utils';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
@@ -21,7 +22,7 @@ function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdownPr
   const relevantAccounts: StoreAccount[] = accounts.map(account => ({
     ...account,
     label: getAccountLabel(account),
-    balance: getAccountBaseBalance(account),
+    balance: formatEther(getAccountBaseBalance(account)),
     baseAssetSymbol: getBaseAsset(account)!.ticker
   }));
 
