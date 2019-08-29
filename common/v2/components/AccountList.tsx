@@ -12,7 +12,8 @@ import {
   AccountContext,
   SettingsContext,
   getCurrentsFromContext,
-  getLabelByAccount
+  getLabelByAccount,
+  getBalanceFromAccount
 } from 'v2/services/Store';
 import { DashboardPanel } from './DashboardPanel';
 import './AccountList.scss';
@@ -82,7 +83,7 @@ export default function AccountList(props: AccountListProps) {
   return (
     <DashboardPanel
       heading={translateRaw('ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS')}
-      headingRight={translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
+      headingRight={'+ ' + translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
       actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}
       footerAction={footerAction}
@@ -130,9 +131,9 @@ function buildAccountTable(
         </Label>,
         <Copyable key={index} text={account.address} truncate={truncate} />,
         <Network key={index} color="#a682ff">
-          {account.network}
+          {account.networkId}
         </Network>,
-        <Typography key={index}>{account.balance}</Typography>
+        <Typography key={index}>{getBalanceFromAccount(account)}</Typography>
       ];
       return deletable
         ? [

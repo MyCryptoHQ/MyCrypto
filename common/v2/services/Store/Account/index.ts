@@ -4,13 +4,16 @@ export {
   getCurrentsFromContext,
   getBalanceFromAccount,
   getTokenBalanceFromAccount,
-  getAccountBalances,
   updateTokenBalanceByAsset,
   getNodeLib,
   getAccountBalance,
   getAccountByAddress,
+  getBaseAsset,
   getBaseAssetFromAccount,
   getAllAccounts,
   getAllAccountKeys,
-  getAccountByAddressAndNetworkName
+  getAccountByAddressAndNetworkName,
+  getAccountsByAsset,
+  getAccountBaseBalance,
+  getDashboardAccounts
 } from './helpers';

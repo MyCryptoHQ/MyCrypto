@@ -1,4 +1,4 @@
-import { BlockExplorerConfig } from 'types/network';
+import { BlockExplorer } from 'v2/types';
 
 interface ExplorerConfig {
   name: string;
@@ -8,7 +8,7 @@ interface ExplorerConfig {
   blockPath?: string;
 }
 
-export function makeExplorer(expConfig: ExplorerConfig): BlockExplorerConfig {
+export function makeExplorer(expConfig: ExplorerConfig): BlockExplorer {
   const config: ExplorerConfig = {
     // Defaults
     txPath: 'tx',
