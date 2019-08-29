@@ -6,7 +6,7 @@ const makeNodeName = (network: string, name: string) => {
 };
 
 export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
-  ETH: [
+  Ethereum: [
     {
       name: makeNodeName('ETH', 'mycrypto'),
       type: NodeType.RPC,

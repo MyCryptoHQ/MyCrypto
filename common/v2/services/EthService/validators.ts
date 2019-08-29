@@ -4,12 +4,13 @@ import WalletAddressValidator from 'wallet-address-validator';
 import { Validator } from 'jsonschema';
 
 import {
+  dPathRegex,
+  DPaths,
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
-} from 'v2/config/constants';
-import { dPathRegex, ETC_LEDGER, ETH_SINGULAR } from 'v2/config/dpaths';
+} from 'v2/config';
 import { JsonRPCResponse } from 'v2/types';
 import { stripHexPrefix } from './utils';
 
@@ -101,12 +102,12 @@ export function isValidEncryptedPrivKey(privkey: string): boolean {
 
 export function isValidPath(dPath: string) {
   // ETC Ledger is incorrect up due to an extra ' at the end of it
-  if (dPath === ETC_LEDGER.value) {
+  if (dPath === DPaths.ETC_LEDGER.value) {
     return true;
   }
 
   // SingularDTV is incorrect due to using a 0 instead of a 44 as the purpose
-  if (dPath === ETH_SINGULAR.value) {
+  if (dPath === DPaths.ETH_SINGULAR.value) {
     return true;
   }
 

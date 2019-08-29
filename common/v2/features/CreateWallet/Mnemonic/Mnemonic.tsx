@@ -8,10 +8,18 @@ import { uniq } from 'lodash';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
-import { Account, Asset, DPathFormat, ISettings, InsecureWalletName, Network } from 'v2/types';
+import {
+  Account,
+  Asset,
+  DPathFormat,
+  ISettings,
+  InsecureWalletName,
+  Network,
+  NetworkId
+} from 'v2/types';
 import { generateUUID } from 'v2/utils';
-import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
-import { ROUTE_PATHS } from 'v2/config';
+import { getNewDefaultAssetTemplateByNetwork, getNetworkById } from 'v2/services/Store';
+import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
 
 interface Props extends RouteComponentProps<{}> {
   settings: ISettings;
@@ -22,7 +30,7 @@ interface Props extends RouteComponentProps<{}> {
 }
 
 interface State {
-  network: string;
+  network: NetworkId;
   stage: MnemonicStages;
   words: string[];
   accountType: DPathFormat;
@@ -34,7 +42,7 @@ class CreateMnemonic extends Component<Props> {
   public state: State = {
     stage: MnemonicStages.SelectNetwork,
     words: [],
-    network: '',
+    network: DEFAULT_NETWORK,
     accountType: InsecureWalletName.MNEMONIC_PHRASE,
     path: '',
     address: ''
@@ -105,8 +113,8 @@ class CreateMnemonic extends Component<Props> {
     });
   };
 
-  private selectNetwork = async (network: string) => {
-    const accountNetwork: Network | undefined = getNetworkByName(network);
+  private selectNetwork = async (network: NetworkId) => {
+    const accountNetwork: Network | undefined = getNetworkById(network);
     const pathFormat = accountNetwork && accountNetwork.dPaths[this.state.accountType];
     const path = (pathFormat && pathFormat.value) || '';
     this.setState({ network, path });
@@ -135,7 +143,7 @@ class CreateMnemonic extends Component<Props> {
     } = this.props;
     const { network, accountType, address, path } = this.state;
 
-    const accountNetwork: Network | undefined = getNetworkByName(network);
+    const accountNetwork: Network | undefined = getNetworkById(network);
     if (!accountNetwork) {
       return;
     }
@@ -144,14 +152,13 @@ class CreateMnemonic extends Component<Props> {
     const newUUID = generateUUID();
     const account: Account = {
       address: toChecksumAddress(addHexPrefix(address)),
-      network,
+      networkId: network,
       wallet: accountType,
       dPath: path,
-      assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
-      balance: '0',
+      assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
       transactions: [],
-      timestamp: 0,
-      favorite: false
+      favorite: false,
+      mtime: Date.now()
     };
     createAccountWithID(account, newUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);

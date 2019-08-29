@@ -2,50 +2,30 @@ import React, { useContext } from 'react';
 import { translateRaw } from 'translations';
 
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
-import { ExtendedAccount, Network, Asset } from 'v2/types';
-import { AddressBookContext, getNetworkByName } from 'v2/services/Store';
+import { StoreAccount } from 'v2/types';
+import { AddressBookContext, getBaseAsset, getAccountBaseBalance } from 'v2/services/Store';
+import { formatEther } from 'ethers/utils';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459
 // Since Account summary is using Address which still has the 'copy', we must handle hover ourself.
 
 interface IAccountDropdownProps {
-  accounts: ExtendedAccount[];
+  accounts: StoreAccount[];
   name: string;
-  value: ExtendedAccount;
-  baseAsset: Asset;
-  asset?: Asset;
-  network?: Network;
-  onSelect(option: ExtendedAccount): void;
+  value: StoreAccount;
+  onSelect(option: StoreAccount): void;
 }
 
-function AccountDropdown({
-  accounts,
-  name,
-  value,
-  baseAsset,
-  asset,
-  network,
-  onSelect
-}: IAccountDropdownProps) {
-  const { getContactByAccount } = useContext(AddressBookContext);
+function AccountDropdown({ accounts, name, value, onSelect }: IAccountDropdownProps) {
+  const { getAccountLabel } = useContext(AddressBookContext);
+  const relevantAccounts: StoreAccount[] = accounts.map(account => ({
+    ...account,
+    label: getAccountLabel(account),
+    balance: formatEther(getAccountBaseBalance(account)),
+    baseAssetSymbol: getBaseAsset(account)!.ticker
+  }));
 
-  let relevantAccounts: ExtendedAccount[] = accounts;
-  if (asset && network) {
-    relevantAccounts = accounts
-      .filter((account: ExtendedAccount): boolean => {
-        const accountNetwork: Network | undefined = getNetworkByName(account.network);
-        return !accountNetwork ? false : accountNetwork.name === network.name;
-      })
-      .map((account: ExtendedAccount) => {
-        const contact = getContactByAccount(account);
-        return {
-          ...account,
-          label: contact ? contact.label : undefined,
-          baseAssetSymbol: baseAsset.ticker || 'ETH'
-        };
-      });
-  }
   return (
     <Dropdown
       name={name}

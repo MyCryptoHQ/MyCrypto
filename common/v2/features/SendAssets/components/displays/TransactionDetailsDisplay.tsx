@@ -3,6 +3,7 @@ import { Button, Network } from '@mycrypto/ui';
 
 import { Asset, ExtendedAccount, Network as INetwork } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
+import { getBalanceFromAccount } from 'v2/services/Store';
 
 import './TransactionDetailsDisplay.scss';
 
@@ -55,7 +56,7 @@ function TransactionDetailsDisplay({
                     {userAssetBalance} {asset.ticker} <br />
                   </>
                 )}
-                {`${senderAccount ? senderAccount.balance : 'Unknown'} ${baseAsset.ticker}`}
+                {`${getBalanceFromAccount(senderAccount)} ${baseAsset.ticker}`}
               </div>
             </div>
             <div className="TransactionDetails-row">
