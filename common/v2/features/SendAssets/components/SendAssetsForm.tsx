@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
-import { BigNumber } from 'ethers/utils';
+import { BigNumber, formatEther } from 'ethers/utils';
 import BN from 'bn.js';
 
 import translate, { translateRaw } from 'translations';
@@ -165,7 +165,7 @@ export default function SendAssetsForm({
                       accountAsset => accountAsset.uuid === values.asset.uuid
                     ) || { balance: '0' }
                   ).balance
-                : getBalanceFromAccount(values.account);
+                : formatEther(getBalanceFromAccount(values.account));
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
