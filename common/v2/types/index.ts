@@ -44,7 +44,8 @@ export {
   ITransaction,
   IHexStrTransaction,
   IHexStrWeb3Transaction,
-  ITxReceipt
+  ITxReceipt,
+  ITxStatus
 } from './transaction';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';

@@ -34,19 +34,15 @@ export class AccountProvider extends Component {
       this.getAccounts();
     },
     addNewTransactionToAccount: (accountData, newTransaction) => {
-      const existingTransaction = accountData.transactions.find(
-        tx => tx.hash === newTransaction.hash
-      );
-      delete newTransaction.network;
-      if (existingTransaction) {
-        const newTransactionSet = accountData.transactions.filter(
-          transaction => transaction.hash !== newTransaction.hash
-        );
-        accountData.transactions = [...newTransactionSet, newTransaction];
-      } else {
-        accountData.transactions = [...accountData.transactions, newTransaction];
-      }
-      service.updateAccount(accountData.uuid, accountData);
+      const { network, ...newTxWithoutNetwork } = newTransaction;
+      const newAccountData = {
+        ...accountData,
+        transactions: [
+          ...accountData.transactions.filter(tx => tx.hash !== newTransaction.hash),
+          newTxWithoutNetwork
+        ]
+      };
+      service.updateAccount(accountData.uuid, newAccountData);
       this.getAccounts();
     },
     getAccountByAddressAndNetworkName: (address, network): ExtendedAccount | undefined => {

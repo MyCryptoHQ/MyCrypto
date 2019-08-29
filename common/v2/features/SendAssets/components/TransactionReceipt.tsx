@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
-import { ITxReceipt } from 'v2/types';
+import { ITxReceipt, ITxStatus } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext, AccountContext } from 'v2/services/Store';
 import {
@@ -17,7 +17,6 @@ import './TransactionReceipt.scss';
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { fromTxReceiptObj } from '../helpers';
-import { TxStatus } from 'v2/types/transaction';
 import { translateRaw } from 'translations';
 
 const truncate = (children: string) => {
@@ -42,7 +41,7 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
         getTransactionReceiptFromHash(txReceipt.hash, provider).then(transactionOutcome => {
           if (transactionOutcome) {
             const transactionStatus =
-              transactionOutcome.status === 1 ? TxStatus.SUCCESS : TxStatus.FAILED;
+              transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
             setTxStatus(prevStatusState => transactionStatus || prevStatusState);
             setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
             provider.getTransactionByHash(txReceipt.hash).then(transactionReceipt => {

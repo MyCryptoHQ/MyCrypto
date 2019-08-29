@@ -42,7 +42,7 @@ export interface ITxReceipt {
   [index: string]: any;
 }
 
-export enum TxStatus {
+export enum ITxStatus {
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
   PENDING = 'PENDING'
