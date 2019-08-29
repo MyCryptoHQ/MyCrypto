@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Network } from '@mycrypto/ui';
+import { formatEther } from 'ethers/utils';
 
 import { Asset, ExtendedAccount, Network as INetwork } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
@@ -56,7 +57,7 @@ function TransactionDetailsDisplay({
                     {userAssetBalance} {asset.ticker} <br />
                   </>
                 )}
-                {`${getBalanceFromAccount(senderAccount)} ${baseAsset.ticker}`}
+                {`${formatEther(getBalanceFromAccount(senderAccount))} ${baseAsset.ticker}`}
               </div>
             </div>
             <div className="TransactionDetails-row">

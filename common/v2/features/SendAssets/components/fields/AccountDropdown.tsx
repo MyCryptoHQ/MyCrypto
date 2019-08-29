@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { translateRaw } from 'translations';
+import { formatEther } from 'ethers/utils';
 
 import { AccountSummary, AccountOption, Dropdown } from 'v2/components';
 import { StoreAccount } from 'v2/types';
 import { AddressBookContext, getBaseAsset, getAccountBaseBalance } from 'v2/services/Store';
-import { formatEther } from 'ethers/utils';
 
 // Option item displayed in Dropdown menu. Props are passed by react-select Select.
 // To know: Select needs to receive a class in order to attach refs https://github.com/JedWatson/react-select/issues/2459

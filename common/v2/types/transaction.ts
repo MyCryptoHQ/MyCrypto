@@ -41,9 +41,3 @@ export interface IHexStrWeb3Transaction {
 export interface ITxReceipt {
   [index: string]: any;
 }
-
-export enum ITxStatus {
-  SUCCESS = 'SUCCESS',
-  FAILED = 'FAILED',
-  PENDING = 'PENDING'
-}
