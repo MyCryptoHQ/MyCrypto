@@ -4,7 +4,8 @@ import {
   ExtendedAccount as IExtendedAccount,
   Network as INetwork,
   GasEstimates,
-  ExtendedAccount
+  ExtendedAccount,
+  ITxReceipt
 } from 'v2/types';
 
 export type ISignedTx = string;
@@ -34,10 +35,6 @@ export interface ITxConfig {
   readonly nonce: string;
   readonly data: string;
   readonly value: string;
-}
-
-export interface ITxReceipt {
-  [index: string]: any;
 }
 
 export interface IReceiverAddress {

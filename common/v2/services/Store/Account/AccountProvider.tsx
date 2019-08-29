@@ -1,7 +1,6 @@
 import React, { Component, createContext } from 'react';
 import * as service from './Account';
-import { Account, ExtendedAccount } from 'v2/types';
-import { ITxReceipt } from 'v2/features/SendAssets/types';
+import { Account, ExtendedAccount, ITxReceipt } from 'v2/types';
 
 export interface ProviderState {
   accounts: ExtendedAccount[];
@@ -43,10 +42,9 @@ export class AccountProvider extends Component {
         const newTransactionSet = accountData.transactions.filter(
           transaction => transaction.hash !== newTransaction.hash
         );
-        newTransactionSet.push(newTransaction);
-        accountData.transactions = [...newTransactionSet];
+        accountData.transactions = [...newTransactionSet, newTransaction];
       } else {
-        accountData.transactions.push(newTransaction);
+        accountData.transactions = [...accountData.transactions, newTransaction];
       }
       service.updateAccount(accountData.uuid, accountData);
       this.getAccounts();

@@ -14,9 +14,9 @@ import {
 } from 'v2/services';
 import { ProviderHandler } from 'v2/services/EthService';
 
-import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
+import { ITxConfig, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
 import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
-import { Asset, Network } from 'v2/types';
+import { Asset, Network, ITxReceipt } from 'v2/types';
 import { useContext } from 'react';
 
 const txConfigInitialState = {
@@ -151,11 +151,11 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, after) => {
     // Payload is tx hash or receipt
-    const input = typeof payload === 'string' ? { hash: payload } : fromTxReceiptObj(payload);
-    addNewTransactionToAccount(state.txConfig.senderAccount, input || {});
+    const txReceipt = typeof payload === 'string' ? { hash: payload } : fromTxReceiptObj(payload);
+    addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
     setState((prevState: State) => ({
       ...prevState,
-      txReceipt: input
+      txReceipt
     }));
     after();
   };

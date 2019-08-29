@@ -37,3 +37,13 @@ export interface IHexStrWeb3Transaction {
   nonce: string;
   chainId: number;
 }
+
+export interface ITxReceipt {
+  [index: string]: any;
+}
+
+export enum TxStatus {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING'
+}
