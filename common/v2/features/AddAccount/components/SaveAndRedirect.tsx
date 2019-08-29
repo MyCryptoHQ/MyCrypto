@@ -2,9 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Route, Redirect } from 'react-router';
 
 import { FormData } from 'v2/features/AddAccount/types';
-import { NotificationsContext } from 'v2/providers';
-import { createAssetWithID } from 'v2/services';
-import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
+import { NotificationsContext, NotificationTemplates } from 'v2/providers';
 import { generateUUID } from 'v2/utils';
 import {
   AccountContext,
@@ -35,14 +33,13 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       });
     } else {
       const newAsset: Asset = getNewDefaultAssetTemplateByNetwork(network);
-      const newAssetID: string = generateUUID();
       const newUUID = generateUUID();
       const account: Account = {
         address: payload.formData.account,
         networkId: payload.formData.network,
         wallet: payload.formData.accountType,
         dPath: payload.formData.derivationPath,
-        assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
+        assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
         transactions: [],
         favorite: false,
         mtime: 0
@@ -56,7 +53,6 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       createAddressBook(newLabel);
       createAccountWithID(account, newUUID);
       updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);
-      createAssetWithID(newAsset, newAssetID);
       displayNotification(NotificationTemplates.walletAdded, {
         address: account.address
       });

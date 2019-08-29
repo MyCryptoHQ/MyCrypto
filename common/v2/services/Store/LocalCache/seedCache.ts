@@ -115,7 +115,7 @@ export const initNetworks = () => {
       uuid: baseAssetID,
       name: network.name,
       networkId: network.name as NetworkId,
-      ticker: networkId,
+      ticker: network.unit,
       type: 'base',
       decimal: 18
     };

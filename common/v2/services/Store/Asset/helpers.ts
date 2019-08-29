@@ -12,7 +12,7 @@ export const getAssetByTicker = (symbol: string): Asset | undefined => {
 };
 
 export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => {
-  const baseAssetOfNetwork: Asset | undefined = getAssetByTicker(network.id);
+  const baseAssetOfNetwork: Asset | undefined = getAssetByUUID(network.baseAsset);
   if (!baseAssetOfNetwork) {
     return {
       uuid: generateUUID(),
@@ -24,7 +24,7 @@ export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => 
     };
   } else {
     return {
-      uuid: generateUUID(),
+      uuid: baseAssetOfNetwork.uuid,
       name: baseAssetOfNetwork.name,
       networkId: baseAssetOfNetwork.networkId,
       type: 'base',
@@ -61,9 +61,9 @@ export const getAssetByContractAndNetwork = (
 export const getTotalByAsset = (assets: StoreAsset[]) =>
   assets.reduce(
     (dict, asset) => {
-      const prev = dict[asset.uuid];
+      const prev = dict[asset.name];
       if (prev) {
-        dict[asset.uuid] = {
+        dict[asset.name] = {
           ...prev,
           balance: prev.balance.add(asset.balance)
         };

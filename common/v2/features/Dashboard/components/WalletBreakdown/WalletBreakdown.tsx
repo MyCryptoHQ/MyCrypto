@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { SettingsContext, StoreContext } from 'v2/services/Store';
+import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
 import { StoreAsset } from 'v2/types';
 import { BREAK_POINTS } from 'v2/theme';
 
@@ -51,7 +51,8 @@ let wasNumOfAccountsTracked = false;
 
 export function WalletBreakdown() {
   const [showBalanceDetailView, setShowBalanceDetailView] = useState(false);
-  const { accounts, totals, currentAccounts } = useContext(StoreContext);
+  const { totals, currentAccounts } = useContext(StoreContext);
+  const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
 
   // Track number of accounts that user has only once per session
@@ -62,7 +63,7 @@ export function WalletBreakdown() {
     });
   }
 
-  const assetValue = bigNumberify('333');
+  const assetValue = bigNumberify('170');
   const selectedAccounts = currentAccounts();
   // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
 
