@@ -291,6 +291,7 @@ class CustomNodeModal extends React.Component<Props, State> {
       <label className="col-sm-12 input-group">
         <div className="input-group-header"> {'Default Nodes Found'}</div>
         <Dropdown
+          value={null}
           options={this.state.defaultNodes.map(n => ({ label: n.display, value: n.index }))}
           onChange={({ value }: { value: string }) => {
             const result = this.state.defaultNodes.find(d => d.index === +value);

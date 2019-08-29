@@ -5,6 +5,7 @@ interface Props extends ReactSelectProps {
   className?: string;
   options: any;
   onChange: any;
+  value: any;
 }
 
 interface State {
@@ -17,15 +18,15 @@ export default class Dropdown extends React.Component<Props> {
     selectedOption: this.props.value || '',
     hasBlurred: false
   };
-
-  public componentDidUpdate(_: Props, prevState: State) {
-    const { value } = this.props;
-    const { selectedOption } = prevState;
-
-    if (selectedOption !== value) {
-      this.setState({ selectedOption: value });
-    }
-  }
+  //
+  // public componentDidUpdate(_: Props, prevState: State) {
+  //   const { value } = this.props;
+  //   const { selectedOption } = prevState;
+  //
+  //   if (selectedOption !== value) {
+  //     this.setState({ selectedOption: value });
+  //   }
+  // }
 
   public handleChange = (selectedOption: Option) => {
     this.setState({ selectedOption });
@@ -42,9 +43,13 @@ export default class Dropdown extends React.Component<Props> {
   };
 
   public render() {
-    const { onChange } = this.props;
-    const { selectedOption } = this.state;
+    const { onChange, value } = this.props;
+    let { selectedOption } = this.state;
     const options = this.formatOptions(this.props.options);
+
+    if (!selectedOption && value) {
+      selectedOption = value;
+    }
 
     return (
       <Select

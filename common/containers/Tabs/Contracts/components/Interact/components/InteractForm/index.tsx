@@ -12,6 +12,7 @@ import { configSelectors } from 'features/config';
 import { setCurrentTo, TSetCurrentTo } from 'features/transaction/actions';
 import { Input, TextArea, CodeBlock, Dropdown } from 'components/ui';
 import { AddressFieldFactory } from 'components/AddressFieldFactory';
+import queryString from 'query-string';
 
 interface ContractOption {
   name: string;
@@ -76,6 +77,37 @@ class InteractForm extends Component<Props, State> {
     return contracts && contracts.length;
   };
 
+  public componentDidMount = () => {
+    setTimeout(
+      function() {
+        this.contractSetup();
+        const item = document.getElementById('accessButton');
+        if (item) {
+          item.click();
+        }
+      }.bind(this),
+      100
+    );
+  };
+
+  public contractSetup = () => {
+    const { contracts } = this.props;
+    // get contract name from url params
+    const contractName = queryString.parse(location.search).name;
+    if (this.isContractsValid()) {
+      contracts.map(con => {
+        const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
+        // if contract name from Url exists, then load this contract
+        if (con.name === contractName) {
+          this.handleSelectContract({
+            name: `${con.name} ${addr}`,
+            value: this.makeContractValue(con)
+          });
+        }
+      });
+    }
+  };
+
   public render() {
     const { contracts, accessContract, currentTo, isValidAddress } = this.props;
     const { abiJson, contract } = this.state;
@@ -86,13 +118,20 @@ class InteractForm extends Component<Props, State> {
     const showContractAccessButton = validEthAddress && validAbiJson;
     let options: ContractOption[] = [];
 
+    const contractName = queryString.parse(location.search).name;
+    let item = null;
+
     if (this.isContractsValid()) {
       const contractOptions = contracts.map(con => {
         const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
-        return {
+        const obj = {
           name: `${con.name} ${addr}`,
           value: this.makeContractValue(con)
         };
+        if (con.name === contractName) {
+          item = obj;
+        }
+        return obj;
       });
       options = [{ name: 'Custom', value: '' }, ...contractOptions];
     }
@@ -106,7 +145,7 @@ class InteractForm extends Component<Props, State> {
               <div className="input-group-header">{translate('CONTRACT_TITLE_2')}</div>
               <Dropdown
                 className={`${!contract ? 'invalid' : ''}`}
-                value={contract as any}
+                value={item}
                 placeholder={this.state.contractPlaceholder}
                 onChange={this.handleSelectContract}
                 options={options}
@@ -167,6 +206,7 @@ class InteractForm extends Component<Props, State> {
 
         <button
           className="InteractForm-submit btn btn-primary"
+          id="accessButton"
           disabled={!showContractAccessButton}
           onClick={accessContract(abiJson)}
         >
