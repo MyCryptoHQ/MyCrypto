@@ -1,7 +1,7 @@
-import { WalletName } from './wallet';
+import { WalletName, NetworkId } from 'v2/types';
 
 export interface FormData {
-  network: string;
+  network: NetworkId;
   account: string;
   accountType: WalletName;
   label: string;
