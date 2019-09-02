@@ -84,11 +84,11 @@ class InteractForm extends Component<Props, State> {
         console.log('test if reached componentDidMount');
         const item = document.getElementById('accessButton');
         console.log('test if reached item: ' + item);
-        if (item) {
-          item.click();
-        }
+        // if (item) {
+        //   item.click();
+        // }
       }.bind(this),
-      5000
+      1000
     );
   };
 
@@ -96,13 +96,15 @@ class InteractForm extends Component<Props, State> {
     console.log('test if reaches contractSetup');
     const { contracts } = this.props;
     // get contract name from url params
+    console.log('location: ' + location);
+    console.log('location.search: ' + location.search);
     const contractName = queryString.parse(location.search).name;
     console.log('test if reaches contractName: ' + contractName);
     if (this.isContractsValid()) {
       contracts.map(con => {
         const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
         // if contract name from Url exists, then load this contract
-        if (con.name.toLowerCase() === contractName.toLowerCase()) {
+        if (contractName && con.name.toLowerCase() === contractName.toLowerCase()) {
           console.log('test if reaches match contract');
           this.handleSelectContract({
             name: `${con.name} ${addr}`,
@@ -124,6 +126,7 @@ class InteractForm extends Component<Props, State> {
     let options: ContractOption[] = [];
 
     const contractName = queryString.parse(location.search).name;
+    console.log('test location.search: ' + queryString.parse(location.search));
     console.log('test if reached contractName:' + contractName);
     let item = null;
 
@@ -134,7 +137,7 @@ class InteractForm extends Component<Props, State> {
           name: `${con.name} ${addr}`,
           value: this.makeContractValue(con)
         };
-        if (con.name === contractName) {
+        if (contractName && con.name.toLowerCase() === contractName.toLowerCase()) {
           console.log('test if reached inside if');
           item = obj;
         }
