@@ -1,39 +1,41 @@
 import React, { Component, createContext } from 'react';
 
 import { PollingService } from 'v2/workers';
-import { IRate } from 'v2/types';
+import { IRates, TTicker } from 'v2/types';
 
 interface State {
-  rates: IRate[];
-  getRate(uuid: string): object | undefined;
-  getAllRates(): object[];
+  rates: IRates;
+  getRate(ticker: TTicker): number | undefined;
 }
+
+const RATES_URL = 'https://proxy.mycryptoapi.com/cc/multi';
+const POLLING_INTERRVAL = 60000;
+const buildQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
+  ${RATES_URL}/?fsyms=${assets.join(',')}&tsyms=${currencies.join(',')}
+`;
 
 export const RatesContext = createContext({} as State);
 
 export class RatesProvider extends Component {
   public readonly worker = new PollingService(
-    'https://proxy.mycryptoapi.com/cc?fsym=ETH&tsyms=USD',
-    60000,
+    buildQueryUrl(['ETH' as TTicker], ['USD', 'EUR'] as TTicker[]),
+    POLLING_INTERRVAL,
     // With this query, the API returns a single object e.g { 'USD': 276.98 }
     // @TODO: change when we accept multiple rates
-    (data: { USD: string }) => {
-      const rates = [{ from: 'ETH', to: 'USD', rate: data.USD }];
-      this.setState({ rates });
+    (data: IRates) => {
+      // const rates = [{ from: 'ETH', to: 'USD', rate: data.USD }];
+      this.setState({ rates: data });
     },
     err => console.debug('[RatesProvider]', err)
   );
 
   public readonly state: State = {
-    rates: [],
-    getRate: (name: string) => {
+    rates: {},
+    getRate: (ticker: TTicker) => {
       const { rates } = this.state;
-      const rate = rates.find(r => r.to === name);
+      // @ts-ignore until we find a solution for TS7053 error
+      const rate = rates[ticker] ? rates[ticker].USD : 1;
       return rate;
-    },
-    getAllRates: () => {
-      const { rates } = this.state;
-      return rates;
     }
   };
 

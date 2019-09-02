@@ -12,3 +12,4 @@ export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
 export { trace } from './trace';
+export { convertToFiat, weiToFloat } from './convert';

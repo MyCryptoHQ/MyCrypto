@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Panel } from '@mycrypto/ui';
-import { bigNumberify, formatEther } from 'ethers/utils';
 import styled from 'styled-components';
 
 import { translateRaw } from 'translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES, RatesContext } from 'v2/services';
 import { SettingsContext, StoreContext, AccountContext } from 'v2/services/Store';
-import { StoreAsset } from 'v2/types';
+import { StoreAsset, TTicker } from 'v2/types';
+import { convertToFiat, weiToFloat } from 'v2/utils';
 import { BREAK_POINTS } from 'v2/theme';
 
 import { Balance, Fiat } from './types';
@@ -46,6 +46,12 @@ const WalletBreakdownPanel = styled(Panel)`
   }
 `;
 
+//TODO: Get fiat symbol and text
+const fiat: Fiat = {
+  ticker: 'USD' as TTicker,
+  name: 'US Dollars',
+  symbol: '$'
+};
 const numberOfAssetsDisplayed = 4;
 let wasNumOfAccountsTracked = false;
 
@@ -54,6 +60,7 @@ export function WalletBreakdown() {
   const { totals, currentAccounts } = useContext(StoreContext);
   const { accounts } = useContext(AccountContext);
   const { settings, updateSettingsAccounts } = useContext(SettingsContext);
+  const { getRate } = useContext(RatesContext);
 
   // Track number of accounts that user has only once per session
   if (!wasNumOfAccountsTracked) {
@@ -63,24 +70,18 @@ export function WalletBreakdown() {
     });
   }
 
-  const assetValue = bigNumberify('170');
   const selectedAccounts = currentAccounts();
-  // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
 
+  // Adds/updates an asset in array of balances, which are later displayed in the chart, balance list and in the secondary view
   const balances: Balance[] = totals(selectedAccounts)
     .map((asset: StoreAsset) => ({
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
-      amount: parseFloat(formatEther(asset.balance)),
-      fiatValue: parseFloat(formatEther(asset.balance.mul(assetValue)))
+      amount: weiToFloat(asset.balance),
+      fiatValue: convertToFiat(asset.balance, getRate(asset.ticker as TTicker))
     }))
     .sort((a, b) => b.fiatValue - a.fiatValue);
 
-  //TODO: Get fiat symbol and text
-  const fiat: Fiat = {
-    name: 'US Dollars',
-    symbol: '$'
-  };
   const totalFiatValue = balances.reduce((sum, asset) => {
     return (sum += asset.fiatValue);
   }, 0);
