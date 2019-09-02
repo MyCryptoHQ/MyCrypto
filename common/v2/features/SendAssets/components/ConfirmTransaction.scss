@@ -33,31 +33,6 @@
     margin-bottom: 20px;
     background: #e3edff;
   }
-  &-detailButton {
-    width: 100%;
-    margin-bottom: 15px;
-    color: #1eb8e7;
-  }
-  &-details {
-    margin-bottom: 25px;
-
-    &-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-
-      &-column {
-        flex: 1;
-
-        &:first-child {
-          font-weight: bold;
-        }
-        &:nth-child(2) {
-          text-align: right;
-        }
-      }
-    }
-  }
   &-button {
     width: 100%;
   }

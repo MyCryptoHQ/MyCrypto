@@ -2,17 +2,17 @@ import React from 'react';
 import { OptionComponentProps } from 'react-select';
 
 import { translateRaw } from 'translations';
-import { IAsset } from 'v2/types';
+import { Asset } from 'v2/types';
 import { AssetSummary, Divider, Dropdown } from 'v2/components';
 
 class AssetOption extends React.PureComponent<OptionComponentProps> {
   public render() {
     const { option, onSelect } = this.props;
-    const { symbol, name } = option;
+    const { ticker, name } = option;
     return (
       <>
         <AssetSummary
-          symbol={symbol}
+          symbol={ticker}
           name={name}
           onClick={() => onSelect!(option, null)}
           selectable={true}
@@ -23,20 +23,20 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
   }
 }
 
-function AssetDropdown({ assets, name, value, onSelect }: Props<IAsset>) {
-  const filteredAssets: IAsset[] = assets.filter(
-    (asset, index) => assets.indexOf(asset) >= index
+function AssetDropdown({ assets, name, value, onSelect }: Props<Asset>) {
+  const filteredAssets: Asset[] = assets.filter(
+    (asset, index) => assets.map(assetObj => assetObj.uuid).indexOf(asset.uuid) >= index
   ); /* Removes duplicates */
   return (
     <Dropdown
       name={name}
       placeholder={translateRaw('SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER')}
       options={filteredAssets}
-      onChange={(option: IAsset) => onSelect(option)}
+      onChange={(option: Asset) => onSelect(option)}
       optionComponent={AssetOption}
-      value={value}
+      value={value && value.ticker ? value : undefined}
       valueComponent={({ value: option }) => (
-        <AssetSummary symbol={option.symbol} name={option.name} />
+        <AssetSummary symbol={option.ticker} name={option.name} />
       )}
     />
   );

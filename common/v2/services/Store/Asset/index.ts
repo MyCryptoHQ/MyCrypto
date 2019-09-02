@@ -1,8 +1,10 @@
 export * from './Asset';
 export { AssetContext, AssetProvider } from './AssetProvider';
 export {
+  getTotalByAsset,
   getAssetByTicker,
   getNewDefaultAssetTemplateByNetwork,
   getAssetByName,
-  getAssetByUUID
+  getAssetByUUID,
+  getAssetByContractAndNetwork
 } from './helpers';

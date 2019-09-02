@@ -8,7 +8,7 @@ import {
   makeProviderConfig
 } from 'libs/nodes';
 import { isWeb3Node, setupWeb3Node, Web3Service, Web3Wallet } from 'v2/services/EthService';
-import { CustomNodeConfig, NodeOptions, Network } from 'v2/types';
+import { CustomNodeConfig, NodeOptions, NodeType, Network } from 'v2/types';
 import {
   getNetworkByChainId,
   createNode,
@@ -21,7 +21,7 @@ let web3Added = true;
 
 export const initWeb3Node = async () => {
   const { chainId, lib } = await setupWeb3Node();
-  const network: Network | undefined = getNetworkByChainId(chainId);
+  const network: Network | undefined = getNetworkByChainId(parseInt(chainId, 10));
   if (!network) {
     throw new Error(`MyCrypto doesn’t support the network with chain ID '${chainId}'`);
   }
@@ -30,7 +30,7 @@ export const initWeb3Node = async () => {
   const config: NodeOptions = {
     name: id,
     isCustom: false,
-    type: 'web3',
+    type: NodeType.WEB3,
     url: '',
     service: Web3Service,
     hidden: true,
@@ -95,5 +95,5 @@ export const createNewWeb3Node = async (
   newNode: CustomNodeConfig,
   network: Network
 ) => {
-  createNode({ ...newNode, name: id, type: 'web3' }, network);
+  createNode({ ...newNode, name: id, type: NodeType.WEB3 }, network);
 };

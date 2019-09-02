@@ -1,45 +1,45 @@
-import { StaticNetworkIds } from 'types/network';
-import { RawNodeConfig } from 'types/node';
+import { NodeType, NodeConfig, NetworkId } from 'v2/types';
+import { INFURA_API_KEY } from './constants';
 
-export const makeNodeName = (network: string, name: string) => {
+const makeNodeName = (network: string, name: string) => {
   return `${network.toLowerCase()}_${name}`;
 };
 
-export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
-  ETH: [
+export const NODES_CONFIG: { [key in NetworkId]: NodeConfig[] } = {
+  Ethereum: [
     {
       name: makeNodeName('ETH', 'mycrypto'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'MyCrypto',
       url: 'https://api.mycryptoapi.com/eth'
     },
     {
       name: makeNodeName('ETH', 'ethscan'),
-      type: 'etherscan',
+      type: NodeType.ETHERSCAN,
       service: 'Etherscan',
       url: 'https://api.etherscan.io/api'
     },
     {
       name: makeNodeName('ETH', 'infura'),
-      type: 'infura',
+      type: NodeType.INFURA,
       service: 'Infura',
-      url: 'https://mainnet.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`
     }
   ],
 
   Ropsten: [
     {
       name: makeNodeName('Ropsten', 'infura'),
-      type: 'infura',
+      type: NodeType.INFURA,
       service: 'Infura',
-      url: 'https://ropsten.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: `https://ropsten.infura.io/v3/${INFURA_API_KEY}`
     }
   ],
 
   Kovan: [
     {
       name: makeNodeName('Kovan', 'ethscan'),
-      type: 'etherscan',
+      type: NodeType.ETHERSCAN,
       service: 'Etherscan',
       url: 'https://kovan.etherscan.io/api'
     }
@@ -48,13 +48,13 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   Rinkeby: [
     {
       name: makeNodeName('Rinkeby', 'infura'),
-      type: 'infura',
+      type: NodeType.INFURA,
       service: 'Infura',
-      url: 'https://rinkeby.infura.io/v3/c02fff6b5daa434d8422b8ece54c7286'
+      url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`
     },
     {
       name: makeNodeName('Rinkeby', 'ethscan'),
-      type: 'etherscan',
+      type: NodeType.ETHERSCAN,
       service: 'Etherscan',
       url: 'https://rinkeby.etherscan.io/api'
     }
@@ -63,13 +63,13 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   Goerli: [
     {
       name: makeNodeName('Goerli', 'mycrypto'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'MyCrypto',
       url: 'https://goerli.mycryptoapi.com'
     },
     {
       name: makeNodeName('Goerli', 'etherscan'),
-      type: 'etherscan',
+      type: NodeType.ETHERSCAN,
       service: 'Etherscan',
       url: 'https://api-goerli.etherscan.io/api'
     }
@@ -78,7 +78,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ETC: [
     {
       name: makeNodeName('ETC', 'etccooperative'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'ETC Cooperative',
       url: 'https://ethereumclassic.network'
     }
@@ -87,7 +87,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   RSK: [
     {
       name: makeNodeName('RSK', 'rsk_mainnet'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'mycrypto.rsk.co',
       url: 'https://mycrypto.rsk.co/'
     }
@@ -96,13 +96,13 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   AKA: [
     {
       name: makeNodeName('AKA', 'remote.akroma.io'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'remote.akroma.io',
       url: 'https://remote.akroma.io'
     },
     {
       name: makeNodeName('AKA', 'rpc.akroma.io'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'rpc.akroma.io',
       url: 'https://rpc.akroma.io'
     }
@@ -111,13 +111,13 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   AQUA: [
     {
       name: makeNodeName('AQUA', 'aquachain'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'aquacha.in',
       url: 'https://tx.aquacha.in/api'
     },
     {
       name: makeNodeName('AQUA', 'uncan.onical'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'uncan.onical.org',
       url: 'https://c.onical.org'
     }
@@ -126,7 +126,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ASK: [
     {
       name: makeNodeName('ASK', 'permission'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'permission.io',
       url: 'https://blockchain-api-mainnet.permission.io/rpc'
     }
@@ -135,7 +135,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ARTIS_SIGMA1: [
     {
       name: makeNodeName('ARTIS_SIGMA1', 'artis_sigma1'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'rpc.sigma1.artis.network',
       url: 'https://rpc.sigma1.artis.network'
     }
@@ -144,7 +144,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ARTIS_TAU1: [
     {
       name: makeNodeName('ARTIS_TAU1', 'artis_tau1'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'rpc.tau1.artis.network',
       url: 'https://rpc.tau1.artis.network'
     }
@@ -153,7 +153,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ATH: [
     {
       name: makeNodeName('ATH', 'wallet.atheios.com'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'wallet.atheios.com',
       url: 'https://wallet.atheios.com:8797'
     }
@@ -162,13 +162,13 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   CLO: [
     {
       name: makeNodeName('CLO', 'clo'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: '0xinfra.com',
       url: 'https://clo-geth.0xinfra.com/'
     },
     {
       name: makeNodeName('CLO', 'chainkorea'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'Chainkorea',
       url: 'https://node.clopool.net/'
     }
@@ -177,7 +177,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   DEXON: [
     {
       name: makeNodeName('DEXON', 'dexon'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'dexon.org',
       url: 'https://mainnet-rpc.dexon.org'
     }
@@ -186,7 +186,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   EGEM: [
     {
       name: makeNodeName('EGEM', 'egem'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'egem.io',
       url: 'https://jsonrpc.egem.io/custom'
     }
@@ -195,7 +195,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ELLA: [
     {
       name: makeNodeName('ELLA', 'ellaism'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'ellaism.org',
       url: 'https://jsonrpc.ellaism.org'
     }
@@ -204,7 +204,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   EOSC: [
     {
       name: makeNodeName('EOSC', 'eosc'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'eos-classic.io',
       url: 'https://node.eos-classic.io/'
     }
@@ -213,7 +213,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ESN: [
     {
       name: makeNodeName('ESN', 'esn'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'ethersocial.org',
       url: 'https://api.esn.gonspool.com'
     }
@@ -222,7 +222,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ETHO: [
     {
       name: makeNodeName('ETHO', 'ether1.org'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'ether1.org',
       url: 'https://rpc.ether1.org'
     }
@@ -231,7 +231,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ETSC: [
     {
       name: makeNodeName('ETSC', 'etsc'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'ethereumsocial.kr',
       url: 'https://node.ethereumsocial.kr'
     }
@@ -240,7 +240,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   EXP: [
     {
       name: makeNodeName('EXP', 'tech'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'expanse.tech',
       url: 'https://node.expanse.tech/'
     }
@@ -249,7 +249,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   Gangnam: [
     {
       name: makeNodeName('Gangnam', 'progtest'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'Gangnam ProgPoW',
       url: 'https://rpc.progtest.net'
     }
@@ -258,7 +258,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   GO: [
     {
       name: makeNodeName('GO', 'go'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'gochain.io',
       url: 'https://rpc.gochain.io/'
     }
@@ -267,7 +267,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   GO_TESTNET: [
     {
       name: makeNodeName('GO_TESTNET', 'go_testnet'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'testnet-rpc.gochain.io',
       url: 'https://testnet-rpc.gochain.io/'
     }
@@ -276,7 +276,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   METADIUM: [
     {
       name: makeNodeName('METADIUM', 'metadium'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'api.metadium.com',
       url: 'https://api.metadium.com/prod'
     }
@@ -285,7 +285,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   MIX: [
     {
       name: makeNodeName('MIX', 'mix-blockchain.org'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'rpc2.mix-blockchain.org',
       url: 'https://rpc2.mix-blockchain.org:8647'
     }
@@ -294,7 +294,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   MUSIC: [
     {
       name: makeNodeName('MUSIC', 'music'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'musicoin.tw',
       url: 'https://mewapi.musicoin.tw'
     }
@@ -303,7 +303,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   PIRL: [
     {
       name: makeNodeName('PIRL', 'wallrpc.pirl.io'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'wallrpc.pirl.io',
       url: 'https://wallrpc.pirl.io'
     }
@@ -312,7 +312,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   POA: [
     {
       name: makeNodeName('POA', 'core'),
-      type: 'infura',
+      type: NodeType.INFURA,
       service: 'core.poa.network',
       url: 'https://core.poa.network'
     }
@@ -321,7 +321,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   REOSC: [
     {
       name: makeNodeName('REOSC', 'reosc.io'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'remote.reosc.io',
       url: 'https://remote.reosc.io:3000'
     }
@@ -330,7 +330,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   RSK_TESTNET: [
     {
       name: makeNodeName('RSK_TESTNET', 'rsk_testnet'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'mycrypto.testnet.rsk.co',
       url: 'https://mycrypto.testnet.rsk.co/'
     }
@@ -339,7 +339,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   SOLIDUM: [
     {
       name: makeNodeName('SOLIDUM', 'rpc.solidum.network'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'rpc.solidum.network',
       url: 'https://rpc.solidum.network'
     }
@@ -348,7 +348,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   THUNDERCORE: [
     {
       name: makeNodeName('THUNDERCORE', 'thundercore'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'thundercore.com',
       url: 'https://mainnet-rpc.thundercore.com'
     }
@@ -357,7 +357,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   ETI: [
     {
       name: makeNodeName('ETI', 'eti'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'api.einc.io',
       url: 'https://api.einc.io/jsonrpc/mainnet/'
     }
@@ -365,7 +365,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   TOMO: [
     {
       name: makeNodeName('TOMO', 'tomochain'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'tomochain.com',
       url: 'https://rpc.tomochain.com'
     }
@@ -374,7 +374,7 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   UBQ: [
     {
       name: makeNodeName('UBQ', 'ubiqscan'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'ubiqscan.io',
       url: 'https://rpc1.ubiqscan.io'
     }
@@ -383,13 +383,13 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   WEB: [
     {
       name: makeNodeName('WEB', 'node1.webchain.network'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'node1.webchain.network',
       url: 'https://node1.webchain.network'
     },
     {
       name: makeNodeName('WEB', 'node2.webchain.network'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'node2.webchain.network',
       url: 'https://node2.webchain.network'
     }
@@ -398,11 +398,9 @@ export const NODES_CONFIG: { [key in StaticNetworkIds]: RawNodeConfig[] } = {
   AUX: [
     {
       name: makeNodeName('AUX', 'auxilium'),
-      type: 'rpc',
+      type: NodeType.RPC,
       service: 'auxilium.global',
       url: 'https://rpc.auxilium.global'
     }
   ]
 };
-
-export default NODES_CONFIG;

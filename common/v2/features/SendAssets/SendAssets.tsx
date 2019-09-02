@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
-import { useApi } from 'v2/services';
+import { useStateReducer } from 'v2/services';
 import { TWalletType } from 'v2/types';
 import {
   ConfirmTransaction,
@@ -20,9 +20,10 @@ function SendAssets() {
     handleConfirmAndSign,
     handleConfirmAndSend,
     handleSignedTx,
+    handleSignedWeb3Tx,
     txConfig: txConfigState,
     txReceipt: txReceiptState
-  } = useApi(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
+  } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
 
   // tslint:disable-next-line
   const goToDashoard = () => {};
@@ -31,8 +32,12 @@ function SendAssets() {
   // it has different step order, where sign and send are one panel
   const web3Steps: IPath[] = [
     { label: 'Send Assets', component: SendAssetsForm, action: handleFormSubmit },
-    { label: 'Confirm Transaction', component: ConfirmTransaction, action: handleConfirmAndSign },
-    { label: '', component: SignTransaction, action: handleSignedTx },
+    {
+      label: 'Confirm Transaction',
+      component: ConfirmTransaction,
+      action: handleConfirmAndSign
+    },
+    { label: '', component: SignTransaction, action: handleSignedWeb3Tx },
     { label: 'Transaction Complete', component: TransactionReceipt, action: goToDashoard }
   ];
 
@@ -50,6 +55,7 @@ function SendAssets() {
   };
 
   const { senderAccount } = txConfigState;
+
   const { currentPath, label, Step, stepAction } = getStep(
     senderAccount ? senderAccount.wallet : undefined,
     step

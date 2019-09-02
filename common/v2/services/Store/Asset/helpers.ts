@@ -1,5 +1,5 @@
 import { getCache } from '../LocalCache';
-import { Asset, Network } from 'v2/types';
+import { Asset, Network, StoreAsset } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 
 export const getAllAssets = () => {
@@ -12,7 +12,7 @@ export const getAssetByTicker = (symbol: string): Asset | undefined => {
 };
 
 export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => {
-  const baseAssetOfNetwork: Asset | undefined = getAssetByTicker(network.id);
+  const baseAssetOfNetwork: Asset | undefined = getAssetByUUID(network.baseAsset);
   if (!baseAssetOfNetwork) {
     return {
       uuid: generateUUID(),
@@ -24,7 +24,7 @@ export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => 
     };
   } else {
     return {
-      uuid: generateUUID(),
+      uuid: baseAssetOfNetwork.uuid,
       name: baseAssetOfNetwork.name,
       networkId: baseAssetOfNetwork.networkId,
       type: 'base',
@@ -43,3 +43,34 @@ export const getAssetByUUID = (uuid: string): Asset | undefined => {
   const allAssets = getAllAssets();
   return allAssets.find(asset => asset.uuid === uuid);
 };
+
+export const getAssetByContractAndNetwork = (
+  contractAddress: string | undefined,
+  network: Network | undefined
+): Asset | undefined => {
+  if (!network || !contractAddress) {
+    return undefined;
+  }
+  const allAssets = getAllAssets();
+  return allAssets
+    .filter(asset => asset.networkId && asset.contractAddress)
+    .filter(asset => asset.networkId === network.id)
+    .find(asset => asset.contractAddress === contractAddress);
+};
+
+export const getTotalByAsset = (assets: StoreAsset[]) =>
+  assets.reduce(
+    (dict, asset) => {
+      const prev = dict[asset.name];
+      if (prev) {
+        dict[asset.name] = {
+          ...prev,
+          balance: prev.balance.add(asset.balance)
+        };
+      } else {
+        dict[asset.name] = asset;
+      }
+      return dict;
+    },
+    {} as { [key: string]: StoreAsset }
+  );

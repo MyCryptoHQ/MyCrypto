@@ -1,6 +1,6 @@
 export * from './environment';
 export * from './error';
-export * from './formatters';
+export * from './typeGuards';
 export * from './platform';
 export * from './validators';
 export * from './constants';
@@ -11,3 +11,4 @@ export { getValues } from './getValues';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
+export { trace } from './trace';

@@ -8,6 +8,7 @@ import {
   DPathFormat,
   LocalCache,
   Network,
+  NetworkId,
   NodeOptions,
   WalletName
 } from 'v2/types';
@@ -20,12 +21,12 @@ export const getNetworkByAddress = (address: string): Network | undefined => {
   const account: Account | undefined = getAccountByAddress(address);
   if (account) {
     const networks = getAllNetworks();
-    return networks.find(network => account.network === network.name);
+    return networks.find(network => account.networkId === network.id);
   }
 };
-export const getNetworkByChainId = (chainId: string): Network | undefined => {
+export const getNetworkByChainId = (chainId: number): Network | undefined => {
   const networks = getAllNetworks() || [];
-  return networks.find((network: Network) => network.chainId === parseInt(chainId, 16));
+  return networks.find((network: Network) => network.chainId === chainId);
 };
 
 export const getNetworkByName = (name: string): Network | undefined => {
@@ -33,7 +34,7 @@ export const getNetworkByName = (name: string): Network | undefined => {
   return networks.find((network: Network) => network.name === name);
 };
 
-export const getNetworkById = (id: string): Network | undefined => {
+export const getNetworkById = (id: NetworkId): Network | undefined => {
   const networks = getAllNetworks() || [];
   return networks.find((network: Network) => network.id === id);
 };

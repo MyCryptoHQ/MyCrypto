@@ -1,8 +1,7 @@
 import React from 'react'; // For ANNOUNCEMENT_MESSAGE jsx
 
-import { makeExplorer } from 'utils/helpers';
+import { makeExplorer } from 'v2/services/EthService';
 import packageJson from '../../../package.json';
-import { GasPriceSetting } from 'types/network';
 import translate from 'translations';
 
 export const languages = require('./languages.json');
@@ -45,15 +44,10 @@ export const donationAddressMap = {
 };
 
 export const gasEstimateCacheTime = 60000;
-export const gasPriceDefaults: GasPriceSetting = {
-  min: 1,
-  max: 60,
-  initial: 20
-};
 
 export const MINIMUM_PASSWORD_LENGTH = 12;
 
-export const ETHERSCAMDB = 'https://etherscamdb.info';
+export const CRYPTOSCAMDB = 'https://cryptoscamdb.org';
 export const KNOWLEDGE_BASE_URL = 'https://support.mycrypto.com';
 export const ledgerReferralURL = 'https://www.ledgerwallet.com/r/1985?path=/products/';
 export const trezorReferralURL = 'https://shop.trezor.io/?offer_id=10&aff_id=1735';

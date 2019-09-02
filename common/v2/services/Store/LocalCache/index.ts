@@ -1,13 +1,5 @@
 export {
-  initializeCache,
   hardRefreshCache,
-  initSettings,
-  initWallets,
-  initNodeOptions,
-  initNetworks,
-  initAssets,
-  initContracts,
-  initFiatCurrencies,
   getCache,
   setCache,
   destroyCache,
@@ -21,7 +13,6 @@ export {
   read,
   update,
   destroy,
-  readAll,
-  initTestAccounts
+  readAll
 } from './LocalCache';
 export { CACHE_KEY, ENCRYPTED_CACHE_KEY, CACHE_INIT_DEV, CACHE_INIT } from './constants';

@@ -1,11 +1,24 @@
+import { bigNumberify, BigNumber } from 'ethers/utils';
 import BN from 'bn.js';
 
 import { shepherdProvider } from 'libs/nodes';
-import { Account, Asset, ExtendedAccount, Network, NodeOptions, INode } from 'v2/types';
-import { getAssetByUUID, getNetworkByName, getNodesByNetwork } from 'v2/services/Store';
+import {
+  Account,
+  Asset,
+  ExtendedAccount,
+  StoreAccount,
+  Network,
+  NodeOptions,
+  INode
+} from 'v2/types';
+import {
+  getAssetByUUID,
+  getNetworkByName,
+  getNetworkById,
+  getNodesByNetwork
+} from 'v2/services/Store';
 import { getCache } from '../LocalCache';
-import { RPCNode } from 'v2/services/EthService';
-import ProviderHandler from 'v2/config/networks/providerHandler';
+import { RPCNode, ProviderHandler } from 'v2/services/EthService';
 
 export const getCurrentsFromContext = (
   accounts: ExtendedAccount[],
@@ -23,13 +36,18 @@ export const getCurrentsFromContext = (
   return accountList;
 };
 
+export const getDashboardAccounts = (
+  accounts: StoreAccount[],
+  currentAccounts: string[]
+): StoreAccount[] => {
+  return accounts.filter(account => currentAccounts.indexOf(account.uuid) >= 0);
+};
+
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
-  const baseAsset = getBaseAssetFromAccount(account);
-  if (baseAsset) {
-    return account.balance.toString();
-  } else {
-    return '0';
-  }
+  const baseAssetUuid = getBaseAssetFromAccount(account)!.uuid;
+  const baseAsset = account.assets.find(a => a.uuid === baseAssetUuid);
+  const value = baseAsset ? baseAsset.balance : bigNumberify(0);
+  return value.toString();
 };
 
 export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset?: Asset): string => {
@@ -40,31 +58,12 @@ export const getTokenBalanceFromAccount = (account: ExtendedAccount, asset?: Ass
   return balanceFound ? balanceFound.balance.toString() : '0';
 };
 
-/* TODO: Refactor this */
-export const getAccountBalances = (
-  accounts: ExtendedAccount[],
-  updateAccount: (uuid: string, accountData: ExtendedAccount) => void
-): void => {
-  accounts.forEach(async account => {
-    const network = getNetworkByName(account.network);
-    if (network) {
-      const provider = new ProviderHandler(network);
-      const balance: string = await provider.getBalance(account.address);
-      updateAccount(account.uuid, {
-        ...account,
-        timestamp: Date.now(),
-        balance
-      });
-    }
-  });
-};
-
 export const updateTokenBalanceByAsset = (
   account: ExtendedAccount,
   asset: Asset,
   updateAccount: (uuid: string, accountData: ExtendedAccount) => void
 ): void => {
-  const network = getNetworkByName(account.network);
+  const network = getNetworkByName(account.networkId);
   if (network) {
     const provider = new ProviderHandler(network);
     provider.getTokenBalance(account.address, asset).then(data => {
@@ -85,16 +84,19 @@ export function getNodeLib(): INode {
   return shepherdProvider;
 }
 
+export const getAccountBaseBalance = (account: StoreAccount) =>
+  account.assets.find(a => a.type === 'base')!.balance;
+
 export const getAccountBalance = async (
   address: string,
   network: Network | undefined
-): Promise<BN> => {
+): Promise<BigNumber | BN> => {
   if (!network) {
-    return new BN(0);
+    return bigNumberify(0);
   } else {
     const nodeOptions: NodeOptions[] = getNodesByNetwork(network.name);
     if (!nodeOptions) {
-      return new BN(0);
+      return bigNumberify(0);
     }
     const node: INode = new RPCNode(nodeOptions[0].url);
     const num = await node.getBalance(address);
@@ -118,17 +120,8 @@ export const getAccountByAddress = (address: string): ExtendedAccount | undefine
   return undefined;
 };
 
-// Returns an account if it exists
-export const getAccountByAddressAndNetwork = (
-  address: string,
-  network: string
-): Account | undefined => {
-  const accounts: Account[] = getAllAccounts();
-  return accounts.find(account => account.address === address && account.network === network);
-};
-
 export const getBaseAssetFromAccount = (account: ExtendedAccount): Asset | undefined => {
-  const network: Network | undefined = getNetworkByName(account.network);
+  const network: Network | undefined = getNetworkById(account.networkId);
   if (network) {
     return getAssetByUUID(network.baseAsset);
   }
@@ -141,3 +134,30 @@ export const getAllAccounts = (): Account[] => {
 export const getAllAccountKeys = (): string[] => {
   return Object.keys(getCache().accounts);
 };
+
+export const getAccountByAddressAndNetworkName = (
+  address: string,
+  networkName: string
+): ExtendedAccount | undefined => {
+  const accountKeys = getAllAccountKeys();
+  const accounts = getCache().accounts;
+  accountKeys.map(key => {
+    const account: Account = accounts[key];
+    if (
+      account.address.toLowerCase() === address.toLowerCase() &&
+      account.networkId === networkName
+    ) {
+      const newAccount: ExtendedAccount = {
+        ...account,
+        uuid: key
+      };
+      return newAccount;
+    }
+  });
+  return undefined;
+};
+
+export const getAccountsByAsset = (accounts: StoreAccount[], { uuid }: Asset): StoreAccount[] =>
+  accounts.filter(account => account.assets.find(a => a.uuid === uuid));
+
+export const getBaseAsset = (account: StoreAccount) => account.assets.find(a => a.type === 'base');

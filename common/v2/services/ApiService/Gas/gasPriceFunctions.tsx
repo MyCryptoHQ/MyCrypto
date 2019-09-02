@@ -1,14 +1,14 @@
-import ProviderHandler from 'v2/config/networks/providerHandler';
-import { gasPriceDefaults } from 'v2/config/data';
-import { GasEstimates, Network, IHexStrTransaction } from 'v2/types';
+import { GAS_PRICE_DEFAULT } from 'v2/config';
+import { GasEstimates, Network, IHexStrWeb3Transaction } from 'v2/types';
 import { getNetworkByName } from 'v2/services/Store';
+import { ProviderHandler } from 'v2/services/EthService';
 import { fetchGasEstimates } from './gas';
 
 export function getDefaultEstimates(network: Network | undefined) {
   // Must yield time for testability
   const time = Date.now();
   if (!network) {
-    const gasSettings = gasPriceDefaults;
+    const gasSettings = GAS_PRICE_DEFAULT;
     return {
       safeLow: gasSettings.min,
       standard: gasSettings.initial,
@@ -19,7 +19,7 @@ export function getDefaultEstimates(network: Network | undefined) {
       time
     };
   } else {
-    const gasSettings = network.isCustom ? gasPriceDefaults : network.gasPriceSettings;
+    const gasSettings = network.isCustom ? GAS_PRICE_DEFAULT : network.gasPriceSettings;
 
     return {
       safeLow: gasSettings.min,
@@ -57,7 +57,7 @@ export async function fetchGasPriceEstimates(networkId: string): Promise<GasEsti
   }
 }
 
-export const getGasEstimate = async (network: Network, tx: IHexStrTransaction) => {
+export const getGasEstimate = async (network: Network, tx: IHexStrWeb3Transaction) => {
   const provider = new ProviderHandler(network);
   return await provider.estimateGas(tx);
 };

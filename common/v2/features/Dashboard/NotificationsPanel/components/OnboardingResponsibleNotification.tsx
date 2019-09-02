@@ -5,7 +5,7 @@ import { Button } from '@mycrypto/ui';
 import translate, { translateRaw } from 'translations';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import NotificationWrapper from './NotificationWrapper';
-import { KNOWLEDGE_BASE_URL, ETHERSCAMDB, DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
+import { KNOWLEDGE_BASE_URL, CRYPTOSCAMDB, DOWNLOAD_MYCRYPTO_LINK } from 'v2/config';
 
 import privateIcon from 'common/assets/images/onboarding/icn-key-mnemonic.svg';
 import phishingIcon from 'common/assets/images/onboarding/icn-phishing.svg';
@@ -108,7 +108,7 @@ export default function OnboardingResponsibleNotification() {
           </TipIconWrapper>
           <TipText>
             {translate('NOTIFICATIONS_ONBOARDING_RESPONSIBLE_PHISHING', {
-              $link: ETHERSCAMDB
+              $link: CRYPTOSCAMDB
             })}
           </TipText>
         </TipItem>

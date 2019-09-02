@@ -1,11 +1,11 @@
-import { FallbackProvider, TransactionReceipt, TransactionResponse } from 'ethers/providers';
+import { FallbackProvider, TransactionReceipt, TransactionResponse, Block } from 'ethers/providers';
 import { formatEther } from 'ethers/utils/units';
 
 import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
-import { EthersJS } from './globalProvider';
+import { EthersJS } from './ethersJsProvider';
 
-class ProviderHandler {
+export class ProviderHandler {
   public network: Network;
   public client: FallbackProvider;
   public requests: RPCRequests;
@@ -61,6 +61,14 @@ class ProviderHandler {
     return this.client.getTransactionReceipt(txhash);
   }
 
+  public getBlockByHash(blockHash: string): Promise<Block> {
+    return this.client.getBlock(blockHash, false);
+  }
+
+  public getBlockByNumber(blockNumber: number): Promise<Block> {
+    return this.client.getBlock(blockNumber, false);
+  }
+
   /* Tested */
   public getCurrentBlock(): Promise<string> {
     return this.client.getBlockNumber().then(data => data.toString());
@@ -75,5 +83,3 @@ class ProviderHandler {
     return EthersJS.getEthersInstance(network);
   }
 }
-
-export default ProviderHandler;
