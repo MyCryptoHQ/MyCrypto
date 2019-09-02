@@ -89,24 +89,15 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
     provider
       .sendRawTx(signedTx)
+      .then(retrievedTxReceipt => retrievedTxReceipt)
+      .catch(txHash => provider.getTransactionByHash(txHash))
       .then(retrievedTransactionReceipt => {
-        const transactionReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-        addNewTransactionToAccount(state.txConfig.senderAccount, transactionReceipt || {});
+        const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+        addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
         setState((prevState: State) => ({
           ...prevState,
-          txReceipt: transactionReceipt
+          txReceipt
         }));
-      })
-      .catch(txHash => {
-        // If rejected, data is a tx hash, not a receipt. Fetch the receipt, then save receipt for flow
-        provider.getTransactionByHash(txHash).then(retrievedTransactionReceipt => {
-          const transactionReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
-          addNewTransactionToAccount(state.txConfig.senderAccount, transactionReceipt || {});
-          setState((prevState: State) => ({
-            ...prevState,
-            txReceipt: transactionReceipt
-          }));
-        });
       })
       .finally(after);
   };
