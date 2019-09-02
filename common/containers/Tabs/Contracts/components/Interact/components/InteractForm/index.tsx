@@ -96,8 +96,10 @@ class InteractForm extends Component<Props, State> {
     console.log('test if reaches contractSetup');
     const { contracts } = this.props;
     // get contract name from url params
-    console.log('location: ' + location);
-    console.log('location.search: ' + location.search);
+    console.log('location');
+    console.log(location);
+    console.log('location.search');
+    console.log(location.search);
     const contractName = queryString.parse(location.search).name;
     console.log('test if reaches contractName: ' + contractName);
     if (this.isContractsValid()) {
@@ -126,7 +128,8 @@ class InteractForm extends Component<Props, State> {
     let options: ContractOption[] = [];
 
     const contractName = queryString.parse(location.search).name;
-    console.log('test location.search: ' + queryString.parse(location.search));
+    console.log('queryString.parse(location.search)');
+    console.log(queryString.parse(location.search));
     console.log('test if reached contractName:' + contractName);
     let item = null;
 
@@ -144,7 +147,8 @@ class InteractForm extends Component<Props, State> {
         return obj;
       });
       options = [{ name: 'Custom', value: '' }, ...contractOptions];
-      console.log('test if reached item:' + item);
+      console.log('item:');
+      console.log(item);
     }
 
     // TODO: Use common components for abi json
