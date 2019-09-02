@@ -88,7 +88,7 @@ class InteractForm extends Component<Props, State> {
           item.click();
         }
       }.bind(this),
-      100
+      5000
     );
   };
 
