@@ -7,7 +7,8 @@ export const COLORS = {
   DARK_GREY: '#e5ecf3',
   PASTEL_RED: '#ef4747',
   WHITE: '#fff',
-  SUCCESS_GREEN: '#5dba5a'
+  SUCCESS_GREEN: '#5dba5a',
+  GOLD: '#FFD166'
 };
 
 export const BREAK_POINTS = {

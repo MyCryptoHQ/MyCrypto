@@ -11,3 +11,4 @@ export { getValues } from './getValues';
 export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
+export { trace } from './trace';

@@ -15,6 +15,7 @@
     "@ledgerhq/hw-transport-node-hid-noevents": "4.48.0",
     "@ledgerhq/hw-transport-u2f": "4.46.0",
     "@ledgerhq/hw-transport-webusb": "4.56.0",
+    "@mycrypto/eth-scan": "1.0.0",
     "@mycrypto/ui": "0.16.2",
     "@parity/qr-signer": "0.3.1",
     "@types/crypto-js": "3.1.43",
@@ -185,6 +186,7 @@
     "u2f-api": "1.0.6",
     "uglifyjs-webpack-plugin": "1.2.4",
     "url-search-params-polyfill": "3.0.0",
+    "utility-types": "3.7.0",
     "webapp-webpack-plugin": "2.0.1",
     "webpack": "4.5.0",
     "webpack-cli": "2.0.13",
@@ -242,16 +244,16 @@
       "git add"
     ]
   },
-  "freezer": [
+  "frozen": [
     "package.json",
     "common/freezer.ts",
-    "common/store.ts",
     "common/libs/decrypt.ts",
     "common/libs/signing.ts"
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && yarn tscheck && yarn test"
+      "pre-commit": "lint-staged && yarn tscheck",
+      "pre-push": "yarn test"
     }
   }
 }

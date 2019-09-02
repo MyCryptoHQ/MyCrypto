@@ -36,7 +36,7 @@ export class AccountProvider extends Component {
       const { accounts } = this.state;
       return accounts.find(
         account =>
-          account.address.toLowerCase() === address.toLowerCase() && account.network === network
+          account.address.toLowerCase() === address.toLowerCase() && account.networkId === network
       );
     }
   };

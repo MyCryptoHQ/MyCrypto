@@ -1,21 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import BN from 'bn.js';
-import { Address, Button, Network } from '@mycrypto/ui';
+import { Address, Button } from '@mycrypto/ui';
 
 import feeIcon from 'common/assets/images/icn-fee.svg';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { AddressBookContext } from 'v2/services/Store';
 import { Amount } from 'v2/components';
-import {
-  fromWei,
-  Wei,
-  totalTxFeeToString,
-  totalTxFeeToWei,
-  baseToConvertedUnit
-} from 'v2/services/EthService';
+import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/EthService';
 
 import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
+import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -28,7 +23,6 @@ const truncate = (children: string) => {
 
 export default function ConfirmTransaction({ txConfig, onComplete }: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
-  const [showDetails, setShowDetails] = useState(false);
 
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
@@ -59,13 +53,6 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
   /* Calculate total base asset amount */
   const valueWei = Wei(value);
   const totalEtherEgress = parseFloat(fromWei(valueWei.add(transactionFeeWei), 'ether')).toFixed(6); // @TODO: BN math, add amount + maxCost !In same symbol
-  const networkName = network ? network.name : undefined;
-
-  /* Calculate User's Asset Balance */
-  const userAssetToSend = senderAccount.assets.find(
-    accountAsset => accountAsset.uuid === asset.uuid
-  );
-  const userAssetBalance = userAssetToSend ? userAssetToSend.balance : 'Unknown Balance';
 
   /* Determing User's Contact */
   const senderContact = getContactByAccount(senderAccount);
@@ -127,62 +114,16 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           )}
         </div>
       </div>
-      <Button
-        basic={true}
-        onClick={() => setShowDetails(!showDetails)}
-        className="ConfirmTransaction-detailButton"
-      >
-        {showDetails ? 'Hide' : 'Show'} Details
-      </Button>
-      {showDetails && (
-        <div className="ConfirmTransaction-details">
-          <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Current Account Balance:</div>
-            <div className="ConfirmTransaction-details-row-column">
-              {assetType === 'erc20' && (
-                <>
-                  {' '}
-                  {userAssetBalance} {asset.ticker} <br />{' '}
-                </>
-              )}
-              {`${senderAccount ? senderAccount.balance : 'Unknown'} ${baseAsset.ticker}`}
-            </div>
-          </div>
-          <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Network:</div>
-            <div className="ConfirmTransaction-details-row-column">
-              <Network color="blue">{networkName}</Network>
-            </div>
-          </div>
-          <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Gas Limit:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${gasLimit}`}</div>
-          </div>
-          <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Gas Price:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${baseToConvertedUnit(
-              gasPrice,
-              18
-            )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
-          </div>
-          <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Max TX Fee:</div>
-            <div className="ConfirmTransaction-details-row-column">{`${maxTransactionFeeBase} ${baseAsset.ticker}`}</div>
-          </div>
-          <div className="ConfirmTransaction-details-row">
-            <div className="ConfirmTransaction-details-row-column">Nonce:</div>
-            <div className="ConfirmTransaction-details-row-column">{nonce}</div>
-          </div>
-          {data !== '0x0' && (
-            <div className="ConfirmTransaction-details-row">
-              <div className="ConfirmTransaction-details-row-column">Data:</div>
-              <div className="ConfirmTransaction-details-row-column">
-                <span className="ConfirmTransaction-details-row-data">{data}</span>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      <TransactionDetailsDisplay
+        baseAsset={baseAsset}
+        asset={asset}
+        data={data}
+        network={network}
+        senderAccount={senderAccount}
+        gasLimit={gasLimit}
+        gasPrice={gasPrice}
+        nonce={nonce}
+      />
       <Button onClick={onComplete} className="ConfirmTransaction-button">
         Confirm and Send
       </Button>

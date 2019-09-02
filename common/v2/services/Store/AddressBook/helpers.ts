@@ -15,7 +15,7 @@ export const getLabelByAccount = (account: Account): AddressBook | undefined => 
   return addressLabels.find(
     label =>
       account.address.toLowerCase() === label.address.toLowerCase() &&
-      account.network === label.network
+      account.networkId === label.network
   );
 };
 
