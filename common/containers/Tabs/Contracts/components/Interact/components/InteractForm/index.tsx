@@ -81,33 +81,35 @@ class InteractForm extends Component<Props, State> {
     setTimeout(
       function() {
         this.contractSetup();
-        console.log('test if reached componentDidMount');
         const item = document.getElementById('accessButton');
-        console.log('test if reached item: ' + item);
-        // if (item) {
-        //   item.click();
-        // }
+        if (item) {
+          item.click();
+        }
       }.bind(this),
       1000
     );
   };
 
+  public getParamsFromUrl = () => {
+    const index = location.href.lastIndexOf('?');
+    if (index !== -1) {
+      const query = location.href.substring(index);
+      const params = queryString.parse(query);
+      return params;
+    } else {
+      return {};
+    }
+  };
+
   public contractSetup = () => {
-    console.log('test if reaches contractSetup');
     const { contracts } = this.props;
-    // get contract name from url params
-    console.log('location');
-    console.log(location);
-    console.log('location.search');
-    console.log(location.search);
-    const contractName = queryString.parse(location.search).name;
-    console.log('test if reaches contractName: ' + contractName);
+    // get contract name from url param
+    const contractName = this.getParamsFromUrl().name;
     if (this.isContractsValid()) {
       contracts.map(con => {
         const addr = con.address ? `(${con.address.substr(0, 10)}...)` : '';
         // if contract name from Url exists, then load this contract
         if (contractName && con.name.toLowerCase() === contractName.toLowerCase()) {
-          console.log('test if reaches match contract');
           this.handleSelectContract({
             name: `${con.name} ${addr}`,
             value: this.makeContractValue(con)
@@ -127,10 +129,7 @@ class InteractForm extends Component<Props, State> {
     const showContractAccessButton = validEthAddress && validAbiJson;
     let options: ContractOption[] = [];
 
-    const contractName = queryString.parse(location.search).name;
-    console.log('queryString.parse(location.search)');
-    console.log(queryString.parse(location.search));
-    console.log('test if reached contractName:' + contractName);
+    const contractName = this.getParamsFromUrl().name;
     let item = null;
 
     if (this.isContractsValid()) {
@@ -141,14 +140,11 @@ class InteractForm extends Component<Props, State> {
           value: this.makeContractValue(con)
         };
         if (contractName && con.name.toLowerCase() === contractName.toLowerCase()) {
-          console.log('test if reached inside if');
           item = obj;
         }
         return obj;
       });
       options = [{ name: 'Custom', value: '' }, ...contractOptions];
-      console.log('item:');
-      console.log(item);
     }
 
     // TODO: Use common components for abi json
