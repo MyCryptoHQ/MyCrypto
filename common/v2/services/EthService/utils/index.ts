@@ -35,3 +35,4 @@ export {
 } from './makeTransaction';
 export { hexEncodeData, hexEncodeQuantity } from './hexEncode';
 export { hexToNumber } from './hexToNumber';
+export * from './providerWrappers';

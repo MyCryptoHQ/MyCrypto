@@ -1,4 +1,5 @@
 import { FormDataAction, FormDataActionType as ActionType } from './types';
+import { DEFAULT_NETWORK } from 'v2/config';
 import {
   WalletName,
   walletNames,
@@ -9,7 +10,7 @@ import {
 } from 'v2/types';
 
 export const initialState: FormData = {
-  network: 'Ethereum', // @ADD_ACCOUNT_TODO this should have the same type as networks in NetworkContext
+  network: DEFAULT_NETWORK,
   accountType: walletNames.DEFAULT,
   account: '',
   label: 'New Account',

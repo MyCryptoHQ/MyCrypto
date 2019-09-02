@@ -1,22 +1,33 @@
+import { Overwrite } from 'utility-types';
+
 import { TWalletType } from './wallets';
 import { WalletName } from './wallet';
-import { TAssetType } from './asset';
+import { TAssetType, AssetBalanceObject, StoreAsset } from './asset';
+import { Network } from './network';
+import { NetworkId } from './networkId';
 
 export interface Account {
   label?: string;
   address: string;
-  network: string;
+  networkId: NetworkId;
   assets: AssetBalanceObject[];
   wallet: WalletName | TWalletType;
-  balance: string;
   transactions: TransactionData[];
   dPath: string;
-  timestamp: number;
+  mtime: number;
+  favorite: boolean;
 }
 
 export interface ExtendedAccount extends Account {
   uuid: string;
 }
+
+export type StoreAccount = Overwrite<
+  ExtendedAccount,
+  {
+    assets: StoreAsset[];
+  }
+> & { network: Network };
 
 export interface TransactionData {
   txHash: string;
@@ -29,10 +40,4 @@ export interface TransactionData {
   data: string;
   fiatValue: { USD: string };
   assetType: TAssetType;
-}
-
-export interface AssetBalanceObject {
-  uuid: string;
-  balance: string;
-  timestamp: number;
 }

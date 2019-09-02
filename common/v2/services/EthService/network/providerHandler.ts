@@ -1,4 +1,4 @@
-import { FallbackProvider, TransactionReceipt, TransactionResponse } from 'ethers/providers';
+import { FallbackProvider, TransactionReceipt, TransactionResponse, Block } from 'ethers/providers';
 import { formatEther } from 'ethers/utils/units';
 
 import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
@@ -59,6 +59,14 @@ export class ProviderHandler {
   /* Tested */
   public getTransactionReceipt(txhash: string): Promise<TransactionReceipt> {
     return this.client.getTransactionReceipt(txhash);
+  }
+
+  public getBlockByHash(blockHash: string): Promise<Block> {
+    return this.client.getBlock(blockHash, false);
+  }
+
+  public getBlockByNumber(blockNumber: number): Promise<Block> {
+    return this.client.getBlock(blockNumber, false);
   }
 
   /* Tested */

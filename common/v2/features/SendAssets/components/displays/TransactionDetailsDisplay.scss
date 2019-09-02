@@ -1,0 +1,33 @@
+.TransactionDetails {
+  margin-bottom: 25px;
+  display: block;
+
+  &-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    &-column {
+      flex: 1;
+
+      &:first-child {
+        font-weight: bold;
+      }
+      &:nth-child(2) {
+        text-align: right;
+      }
+    }
+
+    &-data {
+      width: 150px;
+      display: inline-block;
+      overflow-wrap: break-word;
+    }
+  }
+
+  &-detailButton {
+    width: 100%;
+    margin-bottom: 15px;
+    color: #1eb8e7;
+  }
+}

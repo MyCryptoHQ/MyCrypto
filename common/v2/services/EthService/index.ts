@@ -43,6 +43,9 @@ export {
   verifySignedMessage,
   decryptMnemonicToPrivKey,
   gasStringsToMaxGasNumber,
+  getStatusFromHash,
+  getTimestampFromBlockNum,
+  getTransactionReceiptFromHash,
   gasStringsToMaxGasBN,
   convertedToBaseUnit
 } from './utils';
