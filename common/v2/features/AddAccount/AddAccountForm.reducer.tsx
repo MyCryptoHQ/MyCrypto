@@ -1,10 +1,11 @@
-import { FormDataAction, FormData, FormDataActionType as ActionType } from './types';
+import { FormDataAction, FormDataActionType as ActionType } from './types';
 import {
   WalletName,
   walletNames,
   InsecureWalletName,
   MiscWalletName,
-  SecureWalletName
+  SecureWalletName,
+  FormData
 } from 'v2/types';
 
 export const initialState: FormData = {

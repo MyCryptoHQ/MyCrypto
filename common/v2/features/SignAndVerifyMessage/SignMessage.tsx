@@ -6,7 +6,14 @@ import { Button } from '@mycrypto/ui';
 import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
-import { ISignedMessage, WalletNameWithDefault, SecureWalletName, INode } from 'v2/types';
+import {
+  ISignedMessage,
+  WalletName,
+  SecureWalletName,
+  INode,
+  FormData,
+  walletNames
+} from 'v2/types';
 import { STORIES } from './stories';
 import { WALLET_INFO } from 'v2/config';
 import { AppState } from 'features/reducers';
@@ -18,6 +25,14 @@ import { paritySignerActions } from 'features/paritySigner';
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 const { SCREEN_XS } = BREAK_POINTS;
+
+export const defaultFormData: FormData = {
+  network: 'Ethereum',
+  accountType: walletNames.DEFAULT,
+  account: '',
+  label: 'New Account',
+  derivationPath: ''
+};
 
 const Content = styled.div`
   display: flex;
@@ -80,18 +95,21 @@ interface DispatchProps {
 interface StateProps {
   nodeLib: INode;
   sig: string;
+  setShowSubtitle(show: boolean): void;
 }
 
 type Props = DispatchProps & StateProps;
 
 function SignMessage(props: Props) {
-  const [walletName, setWalletName] = useState<WalletNameWithDefault | undefined>(undefined);
+  const [walletName, setWalletName] = useState<WalletName | undefined>(undefined);
   const [wallet, setWallet] = useState<IFullWallet | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | undefined>(undefined);
   const [signedMessage, setSignedMessage] = useState<ISignedMessage | null>(null);
+
+  const { setShowSubtitle } = props;
 
   useEffect(() => {
     if (props.sig && signedMessage && walletName === SecureWalletName.PARITY_SIGNER) {
@@ -137,8 +155,9 @@ function SignMessage(props: Props) {
     setSignedMessage(null);
   };
 
-  const onSelect = (selectedWalletName: WalletNameWithDefault) => {
+  const onSelect = (selectedWalletName: WalletName) => {
     setWalletName(selectedWalletName);
+    setShowSubtitle(false);
   };
 
   const onUnlock = (selectedWallet: any) => {
@@ -153,6 +172,7 @@ function SignMessage(props: Props) {
     setWalletName(undefined);
     setUnlocked(false);
     setIsSigned(false);
+    setShowSubtitle(true);
   };
 
   const story = STORIES.find(x => x.name === walletName);
@@ -164,9 +184,11 @@ function SignMessage(props: Props) {
         <>
           <BackButton marginBottom={unlocked} basic={true} onClick={resetWalletSelectionAndForm}>
             <img src={backArrowIcon} alt="Back arrow" />
-            Change Wallet
+            {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
-          {!unlocked && Step && <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} />}
+          {!unlocked && Step && (
+            <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} formData={defaultFormData} />
+          )}
         </>
       ) : (
         <WalletList wallets={STORIES} onSelect={onSelect} />

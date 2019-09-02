@@ -1,5 +1,5 @@
 import { TWalletType } from './wallets';
-import { Wallet, ExtendedWallet, WalletName, WalletNameWithDefault } from './wallet';
+import { Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
 import { IRate } from './rate';
 import { NodeConfig } from './node';
@@ -13,7 +13,6 @@ export type WalletName = WalletName;
 export type TSymbol = TSymbol;
 export type IRate = IRate;
 export type TWalletType = TWalletType;
-export type WalletNameWithDefault = WalletNameWithDefault;
 
 export {
   DefaultWalletName,
@@ -50,3 +49,4 @@ export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
 export { Tab } from './tab';
 export { ISignedMessage } from './signing';
 export { IStory } from './story';
+export { FormData } from './formData';

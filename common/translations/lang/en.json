@@ -455,7 +455,7 @@
     "FOOTER_PARTNERS": "Our Partners",
     "FOOTER_DONATIONS": "Donations",
     "FOOTER_OTHER_APPS": "Other Apps",
-    "ETHERSCAMDB": "EtherScamDB",
+    "CRYPTOSCAMDB": "CryptoScamDB",
     "ETHER_SECURITY_LOOKUP": "EtherSecurityLookup",
     "ETHER_ADDRESS_LOOKUP": "EtherAddressLookup",
     "OLD_MYCRYPTO": "MyCrypto (Legacy Site)",
@@ -805,7 +805,10 @@
     "NO_ACCOUNTS_HEADER":"You don't have any accounts in your wallet.",
     "NO_ACCOUNTS_DESCRIPTION":"To access your funds add one of your existing \n accounts or create a new account now.",
     "PRIVATE_KEY_HELP":"Not working? [Here's some troubleshooting tips to try.](https://support.mycrypto.com/troubleshooting/accessing-wallet/private-key-not-working)",
-    "ADD_ACCOUNT_FOOTER_LINK": "Don't have an account? [ Create a new account now.](https://MyCrypto.com/download-desktop-app)",
+    "ADD_ACCOUNT_FOOTER_LABEL": "Don't have an account?",
+    "ADD_ACCOUNT_FOOTER_LINK": "Create a new account now.",
+    "DOWNLOAD_APP_FOOTER_LABEL": "Have a private key, keystore file, or mnemonic phrase?",
+    "DOWNLOAD_APP_FOOTER_LINK": "Download our desktop application to use them.",
     "ADD_ACCOUNT_DESCRIPTION": "Select from the options below to unlock your account and manage your assets.",
     "ADD_ACCOUNT_NETWORK_TITLE": "Select Network",
     "ADD_ACCOUNT_NETWORK_SELCT":"Select the blockchain that you want to operate with and the network it connects through. Not sure what to choose? Stick with the default choices below and click next.",
@@ -965,6 +968,8 @@
     "NO_ACCOUNTS_SELECTED_HEADER":"You have no accounts selected.",
     "NO_ACCOUNTS_SELECTED_DESCRIPTION":"To view your balances, select at least one account in the dropdown above.",
     "SEND_ASSETS_ASSET_SELECTION_PLACEHOLDER": "Select an Asset",
+    "SEND_ASSETS_ENS_WILL_RESOLVE": "Will Resolve Name",
+    "SEND_ASSETS_ENS_DID_RESOLVE": "Resolved Address",
     "REQUIRED": "Required",
     "TO_FIELD_ERROR": "Enter a valid address or ENS name",
     "404_HEADER":"Page Not Found",
@@ -972,6 +977,7 @@
     "404_BUTTON": "Go Home",
     "SIGN_MESSAGE_DESCRIPTION": "To sign message, please unlock your account first. Select from the options below.",
     "VERIFY_MESSAGE_DESCRIPTION": "To verify message, please paste a signature below.",
-    "VERIFY_MESSAGE_SIGNED": "**$address** signed **$msg**"
+    "VERIFY_MESSAGE_SIGNED": "**$address** signed **$msg**",
+    "CHANGE_WALLET_BUTTON": "Change Wallet"
   }
 }

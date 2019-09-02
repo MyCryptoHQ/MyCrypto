@@ -1,5 +1,3 @@
-import { WalletName } from 'v2/types';
-
 // @ADD_ACCOUNT_TODO: move to named enum or other Set
 /*export enum WalletName {
   DEFAULT = 'WALLETLIST',
@@ -28,12 +26,4 @@ export enum FormDataActionType {
 export interface FormDataAction {
   type: FormDataActionType;
   payload: any;
-}
-
-export interface FormData {
-  network: string;
-  account: string;
-  accountType: WalletName;
-  label: string;
-  derivationPath: string;
 }

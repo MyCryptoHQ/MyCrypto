@@ -8,12 +8,14 @@ import {
   getDecimalFromEtherUnit,
   gasPriceToBase,
   hexWeiToString,
-  getAccountByAddressAndNetworkName
+  getAccountByAddressAndNetworkName,
+  getBaseAssetByNetwork
 } from 'v2/services';
 import { ProviderHandler } from 'v2/services/EthService';
 
 import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
 import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
+import { Asset, Network } from 'v2/types';
 
 const txConfigInitialState = {
   tx: {
@@ -39,15 +41,17 @@ interface State {
 const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
+    const baseAsset: Asset | undefined = getBaseAssetByNetwork(payload.network);
     setState((prevState: State) => ({
       ...prevState,
       txConfig: {
         rawTransaction,
         amount: payload.amount,
         senderAccount: payload.account,
-        receiverAddress: payload.receiverAddress,
+        receiverAddress: payload.receiverAddress.value,
         network: payload.network,
         asset: payload.asset,
+        baseAsset: baseAsset || ({} as Asset),
         from: payload.account.address,
         gasPrice: hexWeiToString(rawTransaction.gasPrice),
         gasLimit: payload.gasLimitField,
@@ -103,6 +107,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
     const decodedTx = decodeTransaction(payload);
     const networkDetected = getNetworkByChainId(decodedTx.chainId);
     const contractAsset = getAssetByContractAndNetwork(decodedTx.to || undefined, networkDetected);
+    const baseAsset = getBaseAssetByNetwork(networkDetected || ({} as Network));
 
     setState((prevState: State) => ({
       ...prevState,
@@ -119,6 +124,7 @@ const TxConfigFactory: TUseApiFactory<State> = ({ state, setState }) => {
         network: networkDetected || prevState.txConfig.network,
         value: toWei(decodedTx.value, getDecimalFromEtherUnit('ether')).toString(),
         asset: contractAsset || prevState.txConfig.asset,
+        baseAsset: baseAsset || prevState.txConfig.baseAsset,
         senderAccount:
           decodedTx.from && networkDetected
             ? getAccountByAddressAndNetworkName(decodedTx.from, networkDetected.name) ||

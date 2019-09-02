@@ -55,5 +55,3 @@ export const walletNames = getValues(
 );
 
 export type WalletName = SecureWalletName | InsecureWalletName | MiscWalletName;
-
-export type WalletNameWithDefault = WalletName | DefaultWalletName;
