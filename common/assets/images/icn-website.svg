@@ -1,0 +1,17 @@
+<svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icn-website">
+<rect id="Rectangle" x="0.8" y="0.8" width="22.4" height="21.4" rx="0.8" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
+<g id="Rectangle_2">
+<mask id="path-2-inside-1" fill="white">
+<rect x="4" y="9.51709" width="6.4" height="8.72414" rx="0.8"/>
+</mask>
+<rect x="4" y="9.51709" width="6.4" height="8.72414" rx="0.8" stroke="#163150" stroke-width="3.2" stroke-linecap="round" mask="url(#path-2-inside-1)"/>
+</g>
+<path id="Line 8" d="M1.31433 5.94831H22.0595" stroke="#163150" stroke-width="1.6" stroke-linecap="square"/>
+<g id="Group 21">
+<path id="Line 8 Copy" d="M12.8 10.8204H18.975" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
+<path id="Line 8 Copy_2" d="M12.8 13.8795H18.975" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
+<path id="Line 8 Copy_3" d="M12.8 16.9386H14.8572" stroke="#163150" stroke-width="1.6" stroke-linecap="round"/>
+</g>
+</g>
+</svg>
