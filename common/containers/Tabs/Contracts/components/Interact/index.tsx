@@ -32,6 +32,9 @@ class InteractClass extends Component<Props, State> {
     try {
       const parsedAbi = JSON.parse(contractAbi);
       const contractInstance = new Contract(parsedAbi);
+      if (!contractInstance.abi) {
+        contractInstance.abi = parsedAbi;
+      }
 
       this.setState({
         currentContract: contractInstance,

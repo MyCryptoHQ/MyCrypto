@@ -18,6 +18,7 @@ import { GenerateTransaction } from 'components/GenerateTransaction';
 import { Input, Dropdown } from 'components/ui';
 import { Fields } from './components';
 import './InteractExplorer.scss';
+import queryString from 'query-string';
 
 interface StateProps {
   nodeLib: INode;
@@ -76,15 +77,48 @@ class InteractExplorerClass extends Component<Props, State> {
   public componentDidMount() {
     this.props.setAsContractInteraction();
     this.props.resetTransactionRequested();
+    setTimeout(
+      function() {
+        const contractFunctionsOptions = this.contractOptions();
+        const item = this.getItem(contractFunctionsOptions);
+        this.handleFunctionSelect(item);
+      }.bind(this),
+      1000
+    );
   }
 
   public componentWillUnmount() {
     this.props.setAsViewAndSend();
   }
 
+  public getParamsFromUrl = () => {
+    const index = location.href.lastIndexOf('?');
+    if (index !== -1) {
+      const query = location.href.substring(index);
+      const params = queryString.parse(query);
+      return params;
+    } else {
+      return {};
+    }
+  };
+
+  public getItem(contractFunctionsOptions: any) {
+    const functionName = this.getParamsFromUrl().functionName;
+
+    let item = null;
+    contractFunctionsOptions.map((obj: any) => {
+      if (functionName && obj.name.toLowerCase() === functionName.toLowerCase()) {
+        item = obj;
+      }
+    });
+    return item;
+  }
+
   public render() {
     const { inputs, outputs, selectedFunction } = this.state;
     const contractFunctionsOptions = this.contractOptions();
+
+    const item = this.getItem(contractFunctionsOptions);
 
     const { to } = this.props;
 
@@ -110,7 +144,7 @@ class InteractExplorerClass extends Component<Props, State> {
             </div>
             <Dropdown
               name="exploreContract"
-              value={selectedFunction as any}
+              value={item}
               placeholder={translate('SELECT_A_THING', { $thing: 'function' })}
               onChange={this.handleFunctionSelect}
               options={contractFunctionsOptions}
