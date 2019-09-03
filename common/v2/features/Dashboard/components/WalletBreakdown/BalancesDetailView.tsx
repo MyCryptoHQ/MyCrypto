@@ -67,7 +67,7 @@ export default function BalancesDetailView({
     config: {
       primaryColumn: TOKEN,
       sortableColumn: TOKEN,
-      hiddenHeadings: [AMOUNT]
+      hiddenHeadings: []
     }
   };
 

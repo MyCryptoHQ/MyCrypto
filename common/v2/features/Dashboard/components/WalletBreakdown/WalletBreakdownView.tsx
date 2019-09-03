@@ -62,6 +62,7 @@ interface PanelDividerProps {
 const PanelDivider = styled.div<PanelDividerProps>`
   height: 1px;
   margin-bottom: 15px;
+  margin-top: 15px;
   background: #ddd;
   display: block;
 
@@ -150,6 +151,10 @@ const BreakDownBalanceTotal = styled.div`
   font-weight: normal;
 `;
 
+const ViewDetailsLink = styled.a`
+  color: #1eb8e7;
+`;
+
 export default function WalletBreakdownView({
   balances,
   toggleShowChart,
@@ -230,6 +235,9 @@ export default function WalletBreakdownView({
           ))}
         </BreakDownBalanceList>
         <BalanceTotalWrapper>
+          <ViewDetailsLink onClick={toggleShowChart}>
+            {translate('WALLET_BREAKDOWN_MORE')}
+          </ViewDetailsLink>
           <PanelDivider />
           <BreakDownBalanceTotal>
             <div>{translate('WALLET_BREAKDOWN_TOTAL')}</div>
