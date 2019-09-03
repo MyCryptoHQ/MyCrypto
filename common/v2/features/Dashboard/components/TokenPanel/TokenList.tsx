@@ -4,35 +4,6 @@ import styled from 'styled-components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
-// Fake Data
-const tokens = [
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'Stack',
-    value: '$3,037.95'
-  },
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'OmiseGO',
-    value: '$3,037.95'
-  },
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'OmiseGO2',
-    value: '$3,037.95'
-  },
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'OmiseGO3',
-    value: '$3,037.95'
-  },
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'OmiseGO4',
-    value: '$3,037.95'
-  }
-];
-
 const TokenListWrapper = styled.div`
   max-height: 300px;
   overflow-y: auto;
@@ -68,18 +39,36 @@ const TokenValue = styled(Typography)`
   font-size: 16px;
 `;
 
-export function TokenList() {
+const MoreIcon = styled.img`
+  cursor: pointer;
+`;
+
+interface TokenListProps {
+  tokens: any[];
+  setShowDetailsView(show: boolean): void;
+  setCurrentToken(token: any): void;
+}
+
+export function TokenList(props: TokenListProps) {
+  const { setShowDetailsView, setCurrentToken, tokens } = props;
   return (
     <TokenListWrapper>
-      {tokens.map(({ image, name, value }) => (
-        <Token key={name}>
+      {tokens.map(token => (
+        <Token key={token.name}>
           <Asset>
-            <img src={image} alt={name} />
-            <AssetName>{name}</AssetName>
+            <img src={token.image} alt={name} />
+            <AssetName>{token.name}</AssetName>
           </Asset>
           <TokenValueWrapper>
-            <TokenValue>{value}</TokenValue>
-            <img src={moreIcon} alt="More" />
+            <TokenValue>{token.value}</TokenValue>
+            <MoreIcon
+              src={moreIcon}
+              alt="More"
+              onClick={() => {
+                setShowDetailsView(true);
+                setCurrentToken(token);
+              }}
+            />
           </TokenValueWrapper>
         </Token>
       ))}
