@@ -984,6 +984,8 @@
     "WEBSITE": "Website",
     "WHITEPAPER": "Whitepaper",
     "ADD_TOKEN": "Add Token",
-    "ADD_CUSTOM_TOKEN": "Add Custom Token"
+    "ADD_CUSTOM_TOKEN": "Add Custom Token",
+    "ADD_TOKEN_ADDRESS_PLACEHOLDER": "Enter Your Token Address",
+    "SYMBOL": "Symbol"
   }
 }

@@ -39,6 +39,7 @@ const CustomInput = styled.input`
     box-shadow: ${props => props.theme.outline};
   }
   border-color: ${(props: CustomInputProps) => (props.inputError ? PASTEL_RED : '')};
+  height: 40px;
 `;
 
 const CustomTextArea = styled.textarea`
@@ -92,6 +93,7 @@ interface Props {
   inputError?: string | undefined;
   showEye?: boolean;
   textarea?: boolean;
+  placeholder?: string;
   onChange(event: any): void;
   validate?(): void | undefined;
 }
@@ -105,7 +107,7 @@ export class InputField extends Component<Props> {
   };
 
   public render() {
-    const { value, label, onChange, inputError, type, showEye, textarea } = this.props;
+    const { value, label, onChange, inputError, type, showEye, textarea, placeholder } = this.props;
     return (
       <MainWrapper>
         {label && <Label>{label}</Label>}
@@ -125,6 +127,7 @@ export class InputField extends Component<Props> {
               onKeyUp={this.handleKeyUp}
               showEye={showEye}
               type={this.state.showPassword ? 'text' : type ? type : 'text'}
+              placeholder={placeholder}
             />
           )}
 
