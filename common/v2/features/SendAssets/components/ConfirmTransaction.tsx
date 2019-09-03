@@ -101,16 +101,17 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
       <div className="ConfirmTransaction-divider" />
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={sendIcon} alt="Total" /> You'll Send:
+          <img src={sendIcon} alt="Total" /> Total:
         </div>
         <div className="ConfirmTransaction-row-column">
           {assetType === 'base' ? (
             <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
           ) : (
-            <>
-              <Amount assetValue={`${amount} ${asset.ticker}`} fiatValue="$1" />
-              <Amount assetValue={`${totalEtherEgress} ${baseAsset.ticker}`} fiatValue="$1" />
-            </>
+            <Amount
+              assetValue={`${amount} ${asset.ticker}`}
+              baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
+              fiatValue="$1"
+            />
           )}
         </div>
       </div>

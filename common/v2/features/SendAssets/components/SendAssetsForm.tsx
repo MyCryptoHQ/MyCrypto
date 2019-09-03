@@ -131,7 +131,7 @@ export default function SendAssetsForm({
               setIsEstimatingGasLimit(true);
               const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
-              setFieldValue('gasLimitField', hexToNumber(gas));
+              setFieldValue('gasLimitField', hexToNumber(gas).toString());
               setIsEstimatingGasLimit(false);
             } else {
               return;

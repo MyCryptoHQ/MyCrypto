@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Network } from '@mycrypto/ui';
-import { formatEther } from 'ethers/utils';
+import { formatEther, bigNumberify } from 'ethers/utils';
 
 import { Asset, ExtendedAccount, Network as INetwork } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
@@ -36,7 +36,10 @@ function TransactionDetailsDisplay({
   const userAssetToSend = senderAccount.assets.find(accountAsset => {
     return accountAsset.uuid === asset.uuid;
   });
-  const userAssetBalance = userAssetToSend ? userAssetToSend.balance : 'Unknown Balance';
+  const userAssetBalance = userAssetToSend
+    ? formatEther(bigNumberify(userAssetToSend.balance))
+    : 'Unknown Balance';
+
   return (
     <>
       <div className="TransactionDetails">
