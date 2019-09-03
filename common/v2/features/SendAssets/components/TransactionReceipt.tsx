@@ -45,17 +45,18 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
     if (blockNumber === 0 && txReceipt.hash) {
       const blockNumInterval = setInterval(() => {
         getTransactionReceiptFromHash(txReceipt.hash, provider).then(transactionOutcome => {
-          if (transactionOutcome) {
-            const transactionStatus =
-              transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
-            setTxStatus(prevStatusState => transactionStatus || prevStatusState);
-            setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
-            provider.getTransactionByHash(txReceipt.hash).then(transactionReceipt => {
-              const receipt = fromTxReceiptObj(transactionReceipt) as ITxReceipt;
-              addNewTransactionToAccount(senderAccount, receipt);
-              setDisplayTxReceipt(receipt);
-            });
+          if (!transactionOutcome) {
+            return;
           }
+          const transactionStatus =
+            transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+          setTxStatus(prevStatusState => transactionStatus || prevStatusState);
+          setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+          provider.getTransactionByHash(txReceipt.hash).then(transactionReceipt => {
+            const receipt = fromTxReceiptObj(transactionReceipt) as ITxReceipt;
+            addNewTransactionToAccount(senderAccount, receipt);
+            setDisplayTxReceipt(receipt);
+          });
         });
       }, 1000);
       return () => clearInterval(blockNumInterval);
