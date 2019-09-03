@@ -17,8 +17,7 @@ import {
 import { STORIES } from './stories';
 import { WALLET_INFO } from 'v2/config';
 import { AppState } from 'features/reducers';
-import { IFullWallet } from 'v2/services/EthService';
-import { configNodesSelectors } from 'features/config/nodes';
+import { IFullWallet, setupWeb3Node } from 'v2/services/EthService';
 import { messageToData } from 'features/message/sagas';
 import { paritySignerActions } from 'features/paritySigner';
 
@@ -93,7 +92,6 @@ interface DispatchProps {
 }
 
 interface StateProps {
-  nodeLib: INode;
   sig: string;
   setShowSubtitle(show: boolean): void;
 }
@@ -131,7 +129,11 @@ function SignMessage(props: Props) {
         const data = messageToData(message);
         props.requestMessageSignature(address, data);
       } else {
-        sig = await wallet.signMessage(message, props.nodeLib);
+        let lib: INode = {} as INode;
+        if (walletName === SecureWalletName.WEB3) {
+          lib = (await setupWeb3Node()).lib;
+        }
+        sig = await wallet.signMessage(message, lib);
       }
 
       const combined = {
@@ -223,7 +225,6 @@ function SignMessage(props: Props) {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  nodeLib: configNodesSelectors.getNodeLib(state),
   sig: state.paritySigner.sig
 });
 
