@@ -974,6 +974,16 @@
     "404_BUTTON": "Go Home",
     "SUCCESS": "Success",
     "PENDING": "Pending",
-    "FAILED": "Failed"
+    "FAILED": "Failed",
+    "LATEST_PRICE": "Latest Price",
+    "BALANCE": "Balance",
+    "TOKEN_ADDRESS": "Token Address",
+    "TOKEN_DECIMALS": "Token Decimals",
+    "RESOURCES": "Resources",
+    "SOCIAL": "Social",
+    "WEBSITE": "Website",
+    "WHITEPAPER": "Whitepaper",
+    "ADD_TOKEN": "Add Token",
+    "ADD_CUSTOM_TOKEN": "Add Custom Token"
   }
 }
