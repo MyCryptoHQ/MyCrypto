@@ -61,6 +61,9 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
       }, 1000);
       return () => clearInterval(blockNumInterval);
     }
+  });
+  useEffect(() => {
+    const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
     if (timestamp === 0 && blockNumber !== 0) {
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
