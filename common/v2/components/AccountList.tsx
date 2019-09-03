@@ -6,7 +6,7 @@ import { Button, CollapsibleTable, Copyable, Network, Typography, Identicon } fr
 import { translateRaw } from 'translations';
 import { ROUTE_PATHS } from 'v2/config';
 import { truncate } from 'v2/utils';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook } from 'v2/types';
 import {
   AccountContext,
@@ -91,7 +91,7 @@ export default function AccountList(props: AccountListProps) {
     >
       <TableContainer>
         <CollapsibleTable
-          breakpoint={Number(BREAK_POINTS.SCREEN_XS)}
+          breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
           {...buildAccountTable(
             currentsOnly ? currentAccounts : accounts,
             deleteAccount,
