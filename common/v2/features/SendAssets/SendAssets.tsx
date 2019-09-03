@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
 import { useStateReducer } from 'v2/services';
-import { TWalletType } from 'v2/types';
+import { TWalletType, ITxReceipt } from 'v2/types';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -11,7 +11,7 @@ import {
   TransactionReceipt
 } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
-import { IFormikFields, ITxReceipt, IPath } from './types';
+import { IFormikFields, IPath } from './types';
 
 function SendAssets() {
   const [step, setStep] = useState(0);

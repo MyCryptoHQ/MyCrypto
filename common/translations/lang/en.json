@@ -971,6 +971,9 @@
     "TO_FIELD_ERROR": "Enter a valid address or ENS name",
     "404_HEADER":"Page Not Found",
     "404_DESCRIPTION":"Looks like you got lost somewhere along the way. Don't worry, the wizard can help you get back!",
-    "404_BUTTON": "Go Home"
+    "404_BUTTON": "Go Home",
+    "SUCCESS": "Success",
+    "PENDING": "Pending",
+    "FAILED": "Failed"
   }
 }

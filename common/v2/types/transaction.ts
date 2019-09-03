@@ -37,3 +37,7 @@ export interface IHexStrWeb3Transaction {
   nonce: string;
   chainId: number;
 }
+
+export interface ITxReceipt {
+  [index: string]: any;
+}
