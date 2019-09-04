@@ -88,11 +88,11 @@ const BackButton = styled(Button)<BackButtonProps>`
 `;
 
 interface DispatchProps {
-  requestMessageSignature: paritySignerActions.TRequestMessageSignature;
+  requestParityMessageSignature: paritySignerActions.TRequestMessageSignature;
 }
 
 interface StateProps {
-  sig: string;
+  paritySig: string;
   setShowSubtitle(show: boolean): void;
 }
 
@@ -110,11 +110,11 @@ function SignMessage(props: Props) {
   const { setShowSubtitle } = props;
 
   useEffect(() => {
-    if (props.sig && signedMessage && walletName === SecureWalletName.PARITY_SIGNER) {
-      setSignedMessage({ ...signedMessage, sig: props.sig });
+    if (props.paritySig && signedMessage && walletName === SecureWalletName.PARITY_SIGNER) {
+      setSignedMessage({ ...signedMessage, sig: props.paritySig });
       setIsSigned(true);
     }
-  }, [props.sig]);
+  }, [props.paritySig]);
 
   const handleSignMessage = async () => {
     try {
@@ -127,7 +127,7 @@ function SignMessage(props: Props) {
 
       if (walletName === SecureWalletName.PARITY_SIGNER) {
         const data = messageToData(message);
-        props.requestMessageSignature(address, data);
+        props.requestParityMessageSignature(address, data);
       } else {
         let lib: INode = {} as INode;
         if (walletName === SecureWalletName.WEB3) {
@@ -225,11 +225,11 @@ function SignMessage(props: Props) {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  sig: state.paritySigner.sig
+  paritySig: state.paritySigner.sig
 });
 
 const mapDispatchToProps = {
-  requestMessageSignature: paritySignerActions.requestMessageSignature
+  requestParityMessageSignature: paritySignerActions.requestMessageSignature
 };
 
 export default connect(
