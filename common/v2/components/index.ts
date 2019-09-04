@@ -7,6 +7,7 @@ export { default as AssetIcon } from './AssetIcon';
 export { default as Button } from './Button';
 export { default as BannerAd } from './BannerAd';
 export { default as Checkbox } from './Checkbox';
+export { default as CodeBlock } from './CodeBlock';
 export { default as ContentPanel } from './ContentPanel';
 export { default as Currency } from './Currency';
 export { default as Divider } from './Divider';

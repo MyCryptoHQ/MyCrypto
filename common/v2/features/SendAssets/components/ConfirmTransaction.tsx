@@ -22,7 +22,11 @@ const truncate = (children: string) => {
   The currentPath in SendAssets determines which action should be called.
 */
 
-export default function ConfirmTransaction({ txConfig, onComplete }: IStepComponentProps) {
+export default function ConfirmTransaction({
+  txConfig,
+  onComplete,
+  signedTx
+}: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
 
   const recipientContact = getContactByAddressAndNetwork(
@@ -130,6 +134,8 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
         gasLimit={gasLimit}
         gasPrice={gasPrice}
         nonce={nonce}
+        rawTransaction={txConfig.rawTransaction}
+        signedTransaction={signedTx}
       />
       <Button onClick={onComplete} className="ConfirmTransaction-button">
         Confirm and Send

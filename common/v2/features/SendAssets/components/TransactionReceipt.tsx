@@ -167,6 +167,7 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
           gasLimit={gasLimit}
           gasPrice={gasPrice}
           nonce={nonce}
+          rawTransaction={txConfig.rawTransaction}
         />
       </div>
       <Link to="/dashboard">

@@ -7,6 +7,8 @@ import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService'
 import { getBalanceFromAccount } from 'v2/services/Store';
 
 import './TransactionDetailsDisplay.scss';
+import { ITxObject } from '../../types';
+import { CodeBlock } from 'v2/components';
 
 interface Props {
   baseAsset: Asset;
@@ -17,6 +19,8 @@ interface Props {
   gasLimit: string;
   gasPrice: string;
   senderAccount: ExtendedAccount;
+  rawTransaction: ITxObject;
+  signedTransaction?: string;
 }
 
 function TransactionDetailsDisplay({
@@ -27,7 +31,9 @@ function TransactionDetailsDisplay({
   data,
   senderAccount,
   gasLimit,
-  gasPrice
+  gasPrice,
+  rawTransaction,
+  signedTransaction
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
@@ -43,13 +49,17 @@ function TransactionDetailsDisplay({
   return (
     <>
       <div className="TransactionDetails">
-        <Button
-          basic={true}
-          onClick={() => setShowDetails(!showDetails)}
-          className="TransactionDetails-detailButton"
-        >
-          {showDetails ? 'Hide' : 'Show'} Details
-        </Button>
+        <div className="TransactionDetails-row">
+          <div className="TransactionDetails-row-column">
+            <Button
+              basic={true}
+              onClick={() => setShowDetails(!showDetails)}
+              className="TransactionDetails-detailButton"
+            >
+              {showDetails ? 'Hide' : 'Show'} Details
+            </Button>
+          </div>
+        </div>
         {showDetails && (
           <div className="TransactionDetails-content">
             <div className="TransactionDetails-row">
@@ -90,12 +100,38 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row-column">{nonce}</div>
             </div>
             {data !== '0x0' && (
-              <div className="TransactionDetails-row">
-                <div className="TransactionDetails-row-column">Data:</div>
-                <div className="TransactionDetails-row-column">
+              <>
+                <div className="TransactionDetails-row">
+                  <div className="TransactionDetails-row-column">Data:</div>
+                </div>
+                <div className="TransactionDetails-row">
                   <div className="TransactionDetails-row-data">{data}</div>
                 </div>
-              </div>
+              </>
+            )}
+            {rawTransaction && (
+              <>
+                <div className="TransactionDetails-row">
+                  <div className="TransactionDetails-row-column">Raw Transaction:</div>
+                </div>
+                <div className="TransactionDetails-row">
+                  <div className="TransactionDetails-row-data">
+                    <CodeBlock>{JSON.stringify(rawTransaction)}</CodeBlock>
+                  </div>
+                </div>
+              </>
+            )}
+            {signedTransaction && (
+              <>
+                <div className="TransactionDetails-row">
+                  <div className="TransactionDetails-row-column">Signed Transaction:</div>
+                </div>
+                <div className="TransactionDetails-row">
+                  <div className="TransactionDetails-row-data">
+                    <CodeBlock>{signedTransaction}></CodeBlock>
+                  </div>
+                </div>
+              </>
             )}
           </div>
         )}
