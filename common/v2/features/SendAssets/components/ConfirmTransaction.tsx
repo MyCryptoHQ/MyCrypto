@@ -11,6 +11,7 @@ import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/E
 import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
+import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -82,6 +83,11 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           </div>
         </div>
       </div>
+      {assetType === 'erc20' && (
+        <div className="ConfirmTransaction-row">
+          <TransactionIntermediaryDisplay asset={asset} />
+        </div>
+      )}
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
           <img src={sendIcon} alt="Send" /> Send Amount:

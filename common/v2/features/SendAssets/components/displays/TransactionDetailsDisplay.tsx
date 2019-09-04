@@ -53,16 +53,17 @@ function TransactionDetailsDisplay({
         {showDetails && (
           <div className="TransactionDetails-content">
             <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Current Account Balance:</div>
+              <div className="TransactionDetails-row-column">{`Account Balance (${baseAsset.ticker}):`}</div>
               <div className="TransactionDetails-row-column">
-                {asset.type === 'erc20' && (
-                  <>
-                    {userAssetBalance} {asset.ticker} <br />
-                  </>
-                )}
-                {`${formatEther(getBalanceFromAccount(senderAccount))} ${baseAsset.ticker}`}
+                {`${formatEther(getBalanceFromAccount(senderAccount))}`}
               </div>
             </div>
+            {asset.type === 'erc20' && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">{`Account Balance (${asset.ticker}):`}</div>
+                <div className="TransactionDetails-row-column">{`${userAssetBalance}`}</div>
+              </div>
+            )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">Network:</div>
               <div className="TransactionDetails-row-column">
