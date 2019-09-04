@@ -18,10 +18,10 @@ const IntermediaryDisplay = styled('div')`
 const IntermediaryDisplayBox = styled('div')`
   font-size: 16px;
   line-height: 21px;
-  margin-bottom: 12px;
-  margin-top: 12px;
-  margin-left: 35px;
-  margin-right: 35px;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  padding-left: 15px;
+  padding-right: 12px;
 `;
 
 const IntermediaryDisplayLabel = styled('div')`
@@ -40,7 +40,7 @@ const IntermediaryDisplayContract = styled(Copyable)`
 `;
 
 const truncate = (children: string) => {
-  return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
+  return children; //[children.substring(0, 8), '…', children.substring(children.length - 6)].join('');
 };
 
 function TransactionIntermediaryDisplay({ asset }: Props) {
