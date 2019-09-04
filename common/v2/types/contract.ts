@@ -1,6 +1,8 @@
+import { NetworkId } from './networkId';
+
 export interface Contract {
   name: string;
-  networkId: string;
+  networkId: NetworkId;
   address: string;
   abi: string;
 }

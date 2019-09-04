@@ -3,7 +3,7 @@ import { bufferToHex } from 'ethereumjs-util';
 import { utils } from 'ethers';
 
 import { IFormikFields } from 'v2/features/SendAssets/types';
-import { IHexStrTransaction, Asset, IHexStrWeb3Transaction } from 'v2/types';
+import { IHexStrTransaction, Asset, IHexStrWeb3Transaction, ITxReceipt } from 'v2/types';
 
 import {
   getNetworkByChainId,
@@ -29,7 +29,7 @@ import {
   inputGasLimitToHex
 } from 'v2/services/EthService';
 
-import { ITxObject, ITxReceipt } from './types';
+import { ITxObject } from './types';
 
 export function decodeTransaction(signedTx: string) {
   const decodedTransaction = utils.parseTransaction(signedTx);
@@ -64,6 +64,7 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined 
     const contractAsset = getAssetByContractAndNetwork(txReceipt.to, networkDetected);
     const baseAsset = getBaseAssetByNetwork(networkDetected);
     return {
+      blockNumber: txReceipt.blockNumber,
       network: networkDetected,
       hash: txReceipt.hash,
       from: txReceipt.from,

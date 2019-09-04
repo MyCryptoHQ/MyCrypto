@@ -32,6 +32,7 @@ const BackButton = styled(Button)`
 
   img {
     margin-right: 13px;
+    margin-top: 3px;
   }
 `;
 

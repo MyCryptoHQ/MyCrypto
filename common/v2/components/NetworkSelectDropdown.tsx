@@ -3,15 +3,14 @@ import { ComboBox } from '@mycrypto/ui';
 
 import { translate } from 'translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
-import { WalletName } from 'v2/types';
+import { NetworkId, WalletName } from 'v2/types';
+import { DEFAULT_NETWORK } from 'v2/config';
 
 interface Props {
   network: string;
   accountType: WalletName;
-  onChange(network: string): void;
+  onChange(network: NetworkId): void;
 }
-
-const DEFAULT_NETWORK = 'Ethereum';
 
 function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
   const { networks } = useContext(NetworkContext);
@@ -37,7 +36,7 @@ function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
         value={network}
         items={new Set(validNetworks.sort())}
         placeholder={DEFAULT_NETWORK}
-        onChange={({ target: { value } }) => onChange(value)}
+        onChange={({ target: { value } }) => onChange(value as NetworkId)}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 import * as service from './Account';
-import { Account, ExtendedAccount } from 'v2/types';
+import { Account, ExtendedAccount, ITxReceipt } from 'v2/types';
 
 export interface ProviderState {
   accounts: ExtendedAccount[];
@@ -8,6 +8,7 @@ export interface ProviderState {
   createAccountWithID(accountData: Account, uuid: string): void;
   deleteAccount(uuid: string): void;
   updateAccount(uuid: string, accountData: ExtendedAccount): void;
+  addNewTransactionToAccount(account: ExtendedAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, network: string): ExtendedAccount | undefined;
 }
 
@@ -32,11 +33,23 @@ export class AccountProvider extends Component {
       service.updateAccount(uuid, accountData);
       this.getAccounts();
     },
+    addNewTransactionToAccount: (accountData, newTransaction) => {
+      const { network, ...newTxWithoutNetwork } = newTransaction;
+      const newAccountData = {
+        ...accountData,
+        transactions: [
+          ...accountData.transactions.filter(tx => tx.hash !== newTransaction.hash),
+          newTxWithoutNetwork
+        ]
+      };
+      service.updateAccount(accountData.uuid, newAccountData);
+      this.getAccounts();
+    },
     getAccountByAddressAndNetworkName: (address, network): ExtendedAccount | undefined => {
       const { accounts } = this.state;
       return accounts.find(
         account =>
-          account.address.toLowerCase() === address.toLowerCase() && account.network === network
+          account.address.toLowerCase() === address.toLowerCase() && account.networkId === network
       );
     }
   };

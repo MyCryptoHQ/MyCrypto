@@ -1,8 +1,8 @@
-import * as contracts from 'v2/config/contracts';
-import * as tokens from 'v2/config/tokens';
-
 import { generateUUID } from 'v2/utils';
-import { Asset, Contract } from 'v2/types';
+import { Asset, Contract, NetworkId } from 'v2/types';
+
+import { Contracts } from './contracts';
+import { NetworkAssets, Token } from './tokens';
 
 export interface Fiat {
   code: string;
@@ -25,17 +25,17 @@ export const GBP = {
 export const Fiats: Fiat[] = [USD, EUR, GBP];
 
 export const ContractsData = (): Record<string, Contract> => {
-  const data: any = Object.keys(contracts.default);
+  const data: any = Object.keys(Contracts);
   const outData = {} as Record<string, Contract>;
   data.map((en: string) => {
-    const nextData: [contracts.Network] = contracts.default[en];
-    nextData.map((entry: contracts.Network) => {
+    const nextData: Contract[] = Contracts[en];
+    nextData.map((entry: Contract) => {
       const uuid: string = generateUUID();
       outData[uuid] = {
         name: entry.name,
         address: entry.address,
         abi: entry.abi,
-        networkId: en
+        networkId: en as NetworkId
       };
     });
   });
@@ -43,18 +43,18 @@ export const ContractsData = (): Record<string, Contract> => {
 };
 
 export const AssetsData = (): Record<string, Asset> => {
-  const data: any = Object.keys(tokens.default);
+  const data: any = Object.keys(NetworkAssets);
   const outData = {} as Record<string, Asset>;
   data.map((en: string) => {
-    const nextData: [tokens.Asset] = tokens.default[en];
-    nextData.map((entry: tokens.Asset) => {
+    const nextData: Token[] = NetworkAssets[en];
+    nextData.map((entry: Token) => {
       const uuid: string = entry.symbol;
       outData[uuid] = {
         uuid: '',
         name: entry.name,
         contractAddress: entry.address,
         decimal: entry.decimal,
-        networkId: en,
+        networkId: en as NetworkId,
         ticker: entry.symbol,
         type: 'erc20'
       };

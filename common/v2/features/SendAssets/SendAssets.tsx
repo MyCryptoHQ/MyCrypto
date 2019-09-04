@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
-import { useApi } from 'v2/services';
-import { TWalletType } from 'v2/types';
+import { useStateReducer } from 'v2/services';
+import { TWalletType, ITxReceipt } from 'v2/types';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -11,7 +11,7 @@ import {
   TransactionReceipt
 } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
-import { IFormikFields, ITxReceipt, IPath } from './types';
+import { IFormikFields, IPath } from './types';
 
 function SendAssets() {
   const [step, setStep] = useState(0);
@@ -23,7 +23,7 @@ function SendAssets() {
     handleSignedWeb3Tx,
     txConfig: txConfigState,
     txReceipt: txReceiptState
-  } = useApi(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
+  } = useStateReducer(TxConfigFactory, { txConfig: txConfigInitialState, txReceipt: null });
 
   // tslint:disable-next-line
   const goToDashoard = () => {};

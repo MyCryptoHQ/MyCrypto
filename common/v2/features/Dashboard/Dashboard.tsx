@@ -1,13 +1,26 @@
 import React, { useContext } from 'react';
 import { Heading } from '@mycrypto/ui';
+import styled from 'styled-components';
 
+import { ROUTE_PATHS } from 'v2/config';
 import { useDevMode } from 'v2/services';
 import { AccountContext, AddressBookContext } from 'v2/services/Store';
+import { translate, translateRaw } from 'translations';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenList, WalletBreakdown, RecentTransactionList } from './components';
 import { NotificationsPanel } from './NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
+
+import settingsIcon from 'common/assets/images/icn-settings.svg';
+
+const SettingsHeadingIcon = styled.img`
+  margin-right: 12px;
+  height: 1em;
+`;
+const AccountListFooter = styled.div`
+  color: #1eb8e7;
+`;
 
 export default function Dashboard() {
   const { isDevelopmentMode } = useDevMode();
@@ -34,7 +47,12 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="Dashboard-mobile-section">
-          <AccountList currentsOnly={true} className="Dashboard-mobile-modifiedPanel" />
+          <AccountList
+            currentsOnly={true}
+            className="Dashboard-mobile-modifiedPanel"
+            footerAction={translateRaw('SETTINGS_HEADING')}
+            footerActionLink={ROUTE_PATHS.SETTINGS.path}
+          />
         </div>
         <BannerAd />
         {isDevelopmentMode && (
@@ -65,7 +83,17 @@ export default function Dashboard() {
               <WalletBreakdown />
             </div>
             <div>
-              <AccountList currentsOnly={true} className="Dashboard-desktop-modifiedPanel" />
+              <AccountList
+                currentsOnly={true}
+                className="Dashboard-desktop-modifiedPanel"
+                footerAction={
+                  <AccountListFooter>
+                    <SettingsHeadingIcon src={settingsIcon} alt="Settings" />{' '}
+                    {translate('SETTINGS_HEADING')}
+                  </AccountListFooter>
+                }
+                footerActionLink={ROUTE_PATHS.SETTINGS.path}
+              />
             </div>
           </div>
         </div>

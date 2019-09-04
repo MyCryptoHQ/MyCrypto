@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Identicon } from '@mycrypto/ui';
+import { Icon, Identicon } from '@mycrypto/ui';
 import styled, { StyledFunction } from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { useOnClickOutside } from 'v2/utils';
 import { getLabelByAccount } from 'v2/services/Store';
+import { COLORS } from 'v2/theme';
 import { ExtendedAccount } from 'v2/types';
+
+const { BRIGHT_SKY_BLUE } = COLORS;
 
 interface AccountDropdownProps {
   accounts: ExtendedAccount[];
@@ -58,6 +61,22 @@ const SDropdown = dropdown`
     border: 1px solid #e5ecf3;
     border-top: none;
     box-shadow: 0 7px 10px 5px rgba(50, 50, 93, 0.1);
+  }
+`;
+
+const LabelRow = styled.span`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconWrapper = styled(Icon)`
+  margin: 0;
+  margin-left: 6px;
+  font-size: 0.75rem;
+
+  svg {
+    color: ${BRIGHT_SKY_BLUE};
   }
 `;
 
@@ -124,7 +143,11 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
 
   return (
     <SDropdown ref={ref as SCref} role="button" onClick={toggleOpen} isOpen={isOpen}>
-      {label}
+      <LabelRow>
+        <span>{label}</span>
+        <IconWrapper icon="navDownCaret" />
+      </LabelRow>
+
       {isOpen && (
         <div onClick={e => e.stopPropagation()}>
           <Checkbox

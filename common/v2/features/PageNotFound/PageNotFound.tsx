@@ -11,7 +11,6 @@ const PageNotFoundContainer = styled.div`
   justify-content: center;
   align-content: center;
   width: 345px;
-  height: 506px;
   border-radius: 3px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.07);
   background-color: #ffffff;
@@ -37,7 +36,6 @@ const PageNotFoundContent = styled.div`
 
   @media (min-width: 700px) {
     width: 503px;
-    margin-top: 35px;
   }
 `;
 const Header = styled.p`
@@ -63,7 +61,7 @@ const Description = styled.p`
 `;
 
 const ImgIcon = styled.img`
-  width: 150px;
+  width: 300px;
   margin: 0 0 28px 0;
 `;
 
@@ -83,7 +81,7 @@ const ButtonGroup = styled.div`
   justify-content: center;
   width: 340px;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 28px;
 
   @media (min-width: 700px) {
     width: 503px;

@@ -11,7 +11,15 @@ import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 
 import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
-import { Account, Asset, ISettings, Network, WalletName, InsecureWalletName } from 'v2/types';
+import {
+  Account,
+  Asset,
+  ISettings,
+  Network,
+  NetworkId,
+  WalletName,
+  InsecureWalletName
+} from 'v2/types';
 import { generateUUID } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
@@ -111,13 +119,13 @@ class CreateKeystore extends Component<Props, State> {
     const newUUID = generateUUID();
     const account: Account = {
       address: toChecksumAddress(addHexPrefix(keystore.address)),
-      network,
+      networkId: network as NetworkId,
       wallet: accountType,
       dPath: '',
-      assets: [{ uuid: newAssetID, balance: '0', timestamp: Date.now() }],
-      balance: '0',
+      assets: [{ uuid: newAssetID, balance: '0', mtime: Date.now() }],
       transactions: [],
-      timestamp: 0
+      favorite: false,
+      mtime: 0
     };
     createAccountWithID(account, newUUID);
     updateSettingsAccounts([...settings.dashboardAccounts, newUUID]);

@@ -9,3 +9,4 @@ export * from './ScreenLock';
 export * from './Cache';
 export * from './LocalCache';
 export * from './Notifications';
+export { StoreContext, StoreProvider } from './StoreProvider';

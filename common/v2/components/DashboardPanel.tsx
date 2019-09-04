@@ -16,7 +16,9 @@ interface Props {
   heading: any;
   children: any;
   headingRight?: string | JSX.Element;
+  footerAction?: string | JSX.Element;
   actionLink?: string;
+  footerActionLink?: string;
   className?: string;
   padChildren?: boolean;
 }
@@ -24,7 +26,9 @@ interface Props {
 export const DashboardPanel = ({
   heading,
   headingRight,
+  footerAction,
   actionLink,
+  footerActionLink,
   className = '',
   children,
   padChildren,
@@ -44,6 +48,19 @@ export const DashboardPanel = ({
           ))}
       </div>
       {padChildren ? <Content>{children}</Content> : children}
+      {footerAction && (
+        <div className="DashboardPanel-headingWrapper">
+          {footerActionLink ? (
+            <Link to={footerActionLink}>
+              <Button basic={true} className="DashboardPanel-headingWrapper-button">
+                {footerAction}
+              </Button>
+            </Link>
+          ) : (
+            footerAction
+          )}
+        </div>
+      )}
     </Panel>
   );
 };

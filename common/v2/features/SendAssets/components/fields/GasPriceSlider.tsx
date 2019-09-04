@@ -1,8 +1,9 @@
-import { gasPriceDefaults } from 'config';
+import React, { Component } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import Slider, { createSliderWithTooltip, Marks } from 'rc-slider';
-import React, { Component } from 'react';
+
 import translate, { translateRaw } from 'translations';
+import { GAS_PRICE_DEFAULT } from 'v2/config';
 import { GasEstimates } from 'v2/types';
 import { IFormikFields } from '../../types';
 import './GasPriceSlider.scss';
@@ -35,8 +36,8 @@ export default class SimpleGas extends Component<Props> {
   public render() {
     const { gasPrice, gasEstimates } = this.props;
     const bounds = {
-      max: gasEstimates ? gasEstimates.fastest : gasPriceDefaults.max,
-      min: gasEstimates ? gasEstimates.safeLow : gasPriceDefaults.min
+      max: gasEstimates ? gasEstimates.fastest : GAS_PRICE_DEFAULT.max,
+      min: gasEstimates ? gasEstimates.safeLow : GAS_PRICE_DEFAULT.min
     };
     const gasNotches = this.makeGasNotches();
 

@@ -27,6 +27,7 @@ interface MetaMaskUserState {
   network: number | undefined;
   accountMatches: boolean;
   networkMatches: boolean;
+  submitting: boolean;
   walletState: WalletSigningState;
 }
 
@@ -47,6 +48,7 @@ export default class SignTransactionMetaMask extends Component<
     network: undefined,
     accountMatches: false,
     networkMatches: false,
+    submitting: false,
     walletState: WalletSigningState.UNKNOWN
   };
 
@@ -74,7 +76,7 @@ export default class SignTransactionMetaMask extends Component<
     const { senderAccount, rawTransaction } = this.props;
     const networkName = rawTransaction.chainId; // @TODO get networkName
 
-    const { accountMatches, networkMatches, walletState } = this.state;
+    const { accountMatches, networkMatches, walletState, submitting } = this.state;
     return (
       <div className="SignTransaction-panel">
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
@@ -103,6 +105,7 @@ export default class SignTransactionMetaMask extends Component<
               <br /> in order to proceed
             </div>
           )}
+          {submitting && <div>Submitting transaction now.</div>}
           <div className="SignTransactionMetaMask-description">
             Because we never save, store, or transmit your secret, you need to sign each transaction
             in order to send it. MyCrypto puts YOU in control of your assets.
@@ -169,6 +172,7 @@ export default class SignTransactionMetaMask extends Component<
 
   private async maybeSendTransaction() {
     const { rawTransaction, onSuccess } = this.props;
+    this.setState({ submitting: true });
     if (!this.state.accountMatches || !this.state.networkMatches) {
       return;
     }
@@ -177,8 +181,12 @@ export default class SignTransactionMetaMask extends Component<
     const signerWallet = metaMaskProvider.getSigner();
 
     try {
-      const receipt = await signerWallet.sendTransaction(rawTransaction);
-      onSuccess(receipt);
+      signerWallet.sendUncheckedTransaction(rawTransaction).then(txHash => {
+        metaMaskProvider.getTransactionReceipt(txHash).then(output => {
+          this.setState({ submitting: false });
+          onSuccess(output !== null ? output : txHash);
+        });
+      });
     } catch (err) {
       console.debug(`[SignTransactionMetaMask] ${err}`);
       if (err.message.includes('User denied transaction signature')) {

@@ -1,4 +1,4 @@
-import { WalletName } from 'v2/types';
+import { NetworkId, WalletName } from 'v2/types';
 
 export enum WalletType {
   SECURE,
@@ -37,7 +37,7 @@ export interface FormDataAction {
 }
 
 export interface FormData {
-  network: string;
+  network: NetworkId;
   account: string;
   accountType: WalletName;
   label: string;

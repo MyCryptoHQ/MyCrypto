@@ -7,3 +7,9 @@ export interface GasEstimates {
   chainId: number;
   isDefault: boolean;
 }
+
+export interface GasPrice {
+  min: number;
+  max: number;
+  initial: number;
+}

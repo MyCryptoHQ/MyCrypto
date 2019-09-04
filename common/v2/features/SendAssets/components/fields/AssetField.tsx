@@ -36,7 +36,7 @@ export default class AssetField extends Component<Props> {
               {({ networks }) => {
                 // Networks of all accounts
                 const relevantNetworks: string[] = [
-                  ...new Set(accounts.map(account => account.network))
+                  ...new Set(accounts.map(account => account.networkId))
                 ];
 
                 const assetslist: string[] = [];

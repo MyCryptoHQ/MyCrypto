@@ -7,15 +7,21 @@ import { Network, NetworkId, NodeType, DPathFormat } from 'v2/types';
 type TValidEtherscanNetwork = 'homestead' | 'ropsten' | 'rinkeby' | 'kovan' | 'goerli';
 
 const getValidEthscanNetworkId = (id: NetworkId): TValidEtherscanNetwork =>
-  id === 'ETH' ? 'homestead' : (id.toLowerCase() as TValidEtherscanNetwork);
+  id === 'Ethereum' ? 'homestead' : (id.toLowerCase() as TValidEtherscanNetwork);
 
 export const createNetworkProviders = (network: Network): FallbackProvider => {
   const { id, nodes }: Partial<Network> = network;
+
   const providers: BaseProvider[] = nodes.map(({ type, url }) => {
     switch (type) {
       case NodeType.ETHERSCAN: {
         const networkName = getValidEthscanNetworkId(id);
         return new ethers.providers.EtherscanProvider(networkName);
+      }
+      case NodeType.WEB3: {
+        const ethereumProvider = window.ethereum;
+        const networkName = getValidEthscanNetworkId(id);
+        return new ethers.providers.Web3Provider(ethereumProvider, networkName);
       }
 
       // Option to use the EthersJs InfuraProvider, but need figure out the apiAcessKey

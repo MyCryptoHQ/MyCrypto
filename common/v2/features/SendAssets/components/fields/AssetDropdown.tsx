@@ -25,7 +25,7 @@ class AssetOption extends React.PureComponent<OptionComponentProps> {
 
 function AssetDropdown({ assets, name, value, onSelect }: Props<Asset>) {
   const filteredAssets: Asset[] = assets.filter(
-    (asset, index) => assets.indexOf(asset) >= index
+    (asset, index) => assets.map(assetObj => assetObj.uuid).indexOf(asset.uuid) >= index
   ); /* Removes duplicates */
   return (
     <Dropdown

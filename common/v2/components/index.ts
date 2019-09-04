@@ -24,6 +24,7 @@ export { default as Overlay } from './Overlay';
 export { default as QRCode } from './QRCode';
 export { default as RouterLink } from './RouterLink';
 export { default as Stepper } from './Stepper';
+export { default as TimeElapsedCounter } from './TimeElapsedCounter';
 export { Spinner } from './Spinner';
 export { Panel } from './Panel';
 export { DashboardPanel } from './DashboardPanel';

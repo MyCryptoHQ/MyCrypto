@@ -44,7 +44,7 @@ const SButton = styled(Button)`
   height: 100%;
   word-wrap: word-break;
   & > img {
-    width: 60px;
+    width: 50px;
     display: block;
   }
 
@@ -53,7 +53,7 @@ const SButton = styled(Button)`
     justify-content: space-between;
     text-align: left;
     & > img {
-      width: 64px;
+      width: 54px;
       order: 1;
     }
 `;
