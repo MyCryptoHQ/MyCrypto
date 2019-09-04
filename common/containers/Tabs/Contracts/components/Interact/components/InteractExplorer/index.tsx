@@ -74,6 +74,32 @@ class InteractExplorerClass extends Component<Props, State> {
     outputs: {}
   };
 
+  public setParams = () => {
+    const params = this.getParamsFromUrl();
+    Object.keys(params).map((index: any) => {
+      const item = params[index];
+      if (index.substr(0, 5) === 'param') {
+        const element: any = document.getElementById(index);
+        if (element) {
+          element.value = item;
+          const rawValue: string = item;
+          const isArr = rawValue.startsWith('[') && rawValue.endsWith(']');
+
+          const value = {
+            rawData: rawValue,
+            parsedData: isArr ? this.tryParseJSON(rawValue) : rawValue
+          };
+          this.setState({
+            inputs: {
+              ...this.state.inputs,
+              [element.name]: value
+            }
+          });
+        }
+      }
+    });
+  };
+
   public componentDidMount() {
     this.props.setAsContractInteraction();
     this.props.resetTransactionRequested();
@@ -82,6 +108,7 @@ class InteractExplorerClass extends Component<Props, State> {
         const contractFunctionsOptions = this.contractOptions();
         const item = this.getItem(contractFunctionsOptions);
         this.handleFunctionSelect(item);
+        setTimeout(this.setParams(), 1000);
       }.bind(this),
       1000
     );
@@ -196,6 +223,7 @@ class InteractExplorerClass extends Component<Props, State> {
                         name={parsedName}
                         value={(inputs[parsedName] && inputs[parsedName].rawData) || ''}
                         onChange={this.handleInputChange}
+                        id={'param' + index}
                       />
                     )}
                   </label>
