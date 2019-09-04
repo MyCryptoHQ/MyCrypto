@@ -15,15 +15,6 @@ import TrezorSVG from 'common/assets/images/wallets/trezor.svg';
 import SafeTSVG from 'common/assets/images/wallets/safe-t.png';
 import ParitySignerSVG from 'common/assets/images/wallets/parity-signer.svg';
 
-// STORIES serve the double purpose of generating the wallet options and
-// providing a declarative way to determine the flow for each wallet.
-
-// @TODO:
-// 1. Account list is displayed with DeterministicWallets component.
-// We should abstract it and add to story in order to include it in the
-// step length.
-// 2. Merge enums and names with the ones in common/v2/config/accountTypes.ts
-
 const web3ProviderInfo = getWeb3ProviderInfo();
 
 type IWalletInfo = {

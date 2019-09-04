@@ -128,11 +128,7 @@ class BroadcastTx extends Component<Props> {
 
   protected handleChange = ({ currentTarget }: React.FormEvent<HTMLInputElement>) => {
     const { value } = currentTarget;
-    this.setState({ userInput: value });
-
-    if (value === '') {
-      this.setState({ inputError: '' });
-    }
+    this.setState({ userInput: value, inputError: '' });
 
     try {
       const bufferTransaction = toBuffer(value);

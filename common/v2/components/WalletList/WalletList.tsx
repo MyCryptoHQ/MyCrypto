@@ -88,7 +88,7 @@ interface Props {
 export default class WalletList extends PureComponent<Props> {
   public render() {
     const { wallets, onSelect, showHeader } = this.props;
-    const validWallets = wallets.filter(w => !w.hideFromWalletList); // @TODO Filter here according to electronOnly
+    const validWallets = wallets.filter(w => !w.hideFromWalletList);
     return (
       <div>
         {showHeader && (
