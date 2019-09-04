@@ -6,7 +6,7 @@ import {
   WalletType,
   WalletName
 } from 'v2/types';
-import { getWeb3ProviderInfo } from 'utils/web3';
+import { getWeb3ProviderInfo } from 'v2/utils';
 
 // @ADD_ACCOUNT_TODO: Icons really belongs to the WalletButton or a WalletIcon
 // component.
