@@ -33,7 +33,7 @@ export {
   AssetBalanceObject,
   StoreAsset
 } from './asset';
-export { Account, ExtendedAccount, StoreAccount, TransactionData } from './account';
+export { Account, ExtendedAccount, StoreAccount } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
 export { ExtendedNetwork, Network, NetworkLegacy } from './network';
@@ -46,7 +46,12 @@ export { LocalCache } from './store';
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';
-export { ITransaction, IHexStrTransaction, IHexStrWeb3Transaction } from './transaction';
+export {
+  ITransaction,
+  IHexStrTransaction,
+  IHexStrWeb3Transaction,
+  ITxReceipt
+} from './transaction';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';

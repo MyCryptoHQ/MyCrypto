@@ -8,7 +8,7 @@ import './RecentTransactionList.scss';
 
 import newWindowIcon from 'common/assets/images/icn-new-window.svg';
 import { truncate } from 'v2/utils';
-import { ExtendedAccount, TransactionData, AddressBook } from 'v2/types';
+import { ExtendedAccount, AddressBook } from 'v2/types';
 
 interface Props {
   className?: string;
@@ -21,7 +21,7 @@ export default function RecentTransactionList({
   readAddressBook,
   className = ''
 }: Props) {
-  const transactions: TransactionData[] = accountsList.flatMap(account => account.transactions);
+  const transactions = accountsList.flatMap(account => account.transactions);
 
   // TODO: Sort by relevant transactions
 

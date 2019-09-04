@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { TWalletType } from 'v2/types';
-import { IStepComponentProps, ISignComponentProps, ITxReceipt, ISignedTx } from '../types';
+import { TWalletType, ITxReceipt } from 'v2/types';
+import { IStepComponentProps, ISignComponentProps, ISignedTx } from '../types';
 import {
   SignTransactionKeystore,
   SignTransactionLedger,

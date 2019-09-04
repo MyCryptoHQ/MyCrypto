@@ -2,20 +2,28 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
+import { ITxReceipt } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
-import { AddressBookContext } from 'v2/services/Store';
+import { AddressBookContext, AccountContext } from 'v2/services/Store';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
   getTransactionReceiptFromHash
 } from 'v2/services/EthService';
 
-import { IStepComponentProps, ITxReceipt } from '../types';
+import { IStepComponentProps } from '../types';
 import './TransactionReceipt.scss';
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import { fromTxReceiptObj } from '../helpers';
+import { translateRaw } from 'translations';
+
+export enum ITxStatus {
+  SUCCESS = 'SUCCESS',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING'
+}
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -23,7 +31,8 @@ const truncate = (children: string) => {
 
 export default function TransactionReceipt({ txReceipt, txConfig }: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
-  const [txStatus, setTxStatus] = useState({ status: false, known: false });
+  const { addNewTransactionToAccount } = useContext(AccountContext);
+  const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
   const [displayTxReceipt, setDisplayTxReceipt] = useState(txReceipt as ITxReceipt);
   const [blockNumber, setBlockNumber] = useState(0);
   const [timestamp, setTimestamp] = useState(0);
@@ -32,25 +41,29 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
     return <div>Tx Receipt could not be found.</div>;
   }
   useEffect(() => {
-    const provider = new ProviderHandler(
-      displayTxReceipt ? displayTxReceipt.network : txConfig.network
-    );
+    const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
     if (blockNumber === 0 && txReceipt.hash) {
       const blockNumInterval = setInterval(() => {
-        getTransactionReceiptFromHash(txReceipt.hash, provider).then(transactionReceipt => {
-          if (transactionReceipt) {
-            const transactionStatus = transactionReceipt.status === 1 ? true : false;
-            setTxStatus(prevState => ({
-              status: transactionStatus || prevState.status,
-              known: transactionStatus !== undefined ? true : false
-            }));
-            setDisplayTxReceipt(fromTxReceiptObj(transactionReceipt) as ITxReceipt);
-            setBlockNumber((prevState: number) => transactionReceipt.blockNumber || prevState);
+        getTransactionReceiptFromHash(txReceipt.hash, provider).then(transactionOutcome => {
+          if (!transactionOutcome) {
+            return;
           }
+          const transactionStatus =
+            transactionOutcome.status === 1 ? ITxStatus.SUCCESS : ITxStatus.FAILED;
+          setTxStatus(prevStatusState => transactionStatus || prevStatusState);
+          setBlockNumber((prevState: number) => transactionOutcome.blockNumber || prevState);
+          provider.getTransactionByHash(txReceipt.hash).then(transactionReceipt => {
+            const receipt = fromTxReceiptObj(transactionReceipt) as ITxReceipt;
+            addNewTransactionToAccount(senderAccount, receipt);
+            setDisplayTxReceipt(receipt);
+          });
         });
       }, 1000);
       return () => clearInterval(blockNumInterval);
     }
+  });
+  useEffect(() => {
+    const provider = new ProviderHandler(displayTxReceipt.network || txConfig.network);
     if (timestamp === 0 && blockNumber !== 0) {
       const timestampInterval = setInterval(() => {
         getTimestampFromBlockNum(blockNumber, provider).then(transactionTimestamp => {
@@ -128,9 +141,7 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
 
         <div className="TransactionReceipt-details-row">
           <div className="TransactionReceipt-details-row-column">Transaction Status:</div>
-          <div className="TransactionReceipt-details-row-column">
-            {txStatus.known ? (txStatus.status ? 'Success' : 'Fail') : 'Pending'}
-          </div>
+          <div className="TransactionReceipt-details-row-column">{translateRaw(txStatus)}</div>
         </div>
 
         <div className="TransactionReceipt-details-row">
