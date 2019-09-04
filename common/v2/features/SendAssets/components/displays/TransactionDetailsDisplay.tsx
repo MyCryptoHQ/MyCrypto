@@ -19,7 +19,7 @@ interface Props {
   gasLimit: string;
   gasPrice: string;
   senderAccount: ExtendedAccount;
-  rawTransaction: ITxObject;
+  rawTransaction?: ITxObject;
   signedTransaction?: string;
 }
 
