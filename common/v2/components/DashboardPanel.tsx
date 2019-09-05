@@ -22,10 +22,12 @@ const DHeadingWrapper = styled.div`
 `;
 
 const DHeading = styled(Heading)`
-  margin: 0;
-  font-size: 24px;
-  font-weight: bold;
-  color: #424242;
+  && {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #424242;
+  }
 `;
 
 const DButton = styled(Button)`
