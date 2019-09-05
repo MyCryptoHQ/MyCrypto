@@ -76,9 +76,11 @@ class InteractExplorerClass extends Component<Props, State> {
 
   public setParams = () => {
     const params = this.getParamsFromUrl();
+    let count = 0;
     Object.keys(params).map((index: any) => {
       const item = params[index];
       if (index.substr(0, 5) === 'param') {
+        count++;
         const element: any = document.getElementById(index);
         if (element) {
           element.value = item;
@@ -98,6 +100,16 @@ class InteractExplorerClass extends Component<Props, State> {
         }
       }
     });
+    if (count > 0) {
+      const itemToScrollTo = document.getElementById('contractRead');
+      if (itemToScrollTo) {
+        itemToScrollTo.scrollIntoView();
+      }
+      const readButton = document.getElementById('readButton');
+      if (readButton) {
+        readButton.click();
+      }
+    }
   };
 
   public componentDidMount() {
@@ -161,7 +173,7 @@ class InteractExplorerClass extends Component<Props, State> {
     );
 
     return (
-      <div className="InteractExplorer">
+      <div className="InteractExplorer" id="contractRead">
         <div className="input-group-wrapper">
           <label className="input-group">
             <div className="input-group-header">
@@ -257,6 +269,7 @@ class InteractExplorerClass extends Component<Props, State> {
             {selectedFunction.contract.constant ? (
               <button
                 className="InteractExplorer-func-submit btn btn-primary"
+                id="readButton"
                 onClick={this.handleFunctionCall}
               >
                 {translate('CONTRACT_READ')}
