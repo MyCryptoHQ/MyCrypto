@@ -1,12 +1,13 @@
+import { FormDataAction, FormDataActionType as ActionType } from './types';
 import { DEFAULT_NETWORK } from 'v2/config';
 import {
   WalletName,
   walletNames,
   InsecureWalletName,
   MiscWalletName,
-  SecureWalletName
+  SecureWalletName,
+  FormData
 } from 'v2/types';
-import { FormDataAction, FormData, FormDataActionType as ActionType } from './types';
 
 export const initialState: FormData = {
   network: DEFAULT_NETWORK,

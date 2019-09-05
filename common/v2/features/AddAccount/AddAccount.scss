@@ -30,7 +30,7 @@ $speed: 500ms;
 .Panel {
   width: 562px;
   height: 629px;
-  justify-content: center; 
+  justify-content: center;
   // display: flex;
   // flex-direction: column;
   position: relative;
@@ -39,7 +39,7 @@ $speed: 500ms;
   @media only screen and (max-width: 700px) {
     width: 375px;
     height: 500px;
-    padding: 1em; 
+    padding: 1em;
   }
 
   &-top {
@@ -50,7 +50,7 @@ $speed: 500ms;
     margin: 2em;
 
     @media (max-width: 700px) {
-      margin: 0px; 
+      margin: 0px;
     }
   }
   &-back {
@@ -67,7 +67,7 @@ $speed: 500ms;
     color: var(--dark-slate-blue);
     text-align: center;
 
-    @media (max-width: 700px){
+    @media (max-width: 700px) {
       font-size: 25px;
     }
 
@@ -99,7 +99,7 @@ $speed: 500ms;
     text-align: center;
 
     // @media (max-width: 700px) {
-    //   margin-bottom: 50px; 
+    //   margin-bottom: 50px;
     // }
 
     &-button {
@@ -438,10 +438,11 @@ $speed: 500ms;
 }
 
 .SelectNetwork-panel {
-  width: 420px; 
+  width: 420px;
 }
 
-.Mnemonic-dpath{
+.Mnemonic-dpath {
+  max-width: 100%;
   width: 935px;
   height: 757px;
 }

@@ -9,13 +9,15 @@ import {
   gasPriceToBase,
   hexWeiToString,
   getAccountByAddressAndNetworkName,
-  getBaseAssetByNetwork
+  getBaseAssetByNetwork,
+  AccountContext
 } from 'v2/services';
 import { ProviderHandler } from 'v2/services/EthService';
 
-import { ITxConfig, ITxReceipt, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
+import { ITxConfig, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
 import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
-import { Asset, Network } from 'v2/types';
+import { Asset, Network, ITxReceipt } from 'v2/types';
+import { useContext } from 'react';
 
 const txConfigInitialState = {
   tx: {
@@ -39,6 +41,7 @@ interface State {
 }
 
 const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) => {
+  const { addNewTransactionToAccount } = useContext(AccountContext);
   const handleFormSubmit: TStepAction = (payload: IFormikFields, after) => {
     const rawTransaction: ITxObject = processFormDataToTx(payload);
     const baseAsset: Asset | undefined = getBaseAssetByNetwork(payload.network);
@@ -86,20 +89,15 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
     provider
       .sendRawTx(signedTx)
-      .then(transactionReceipt => {
+      .then(retrievedTxReceipt => retrievedTxReceipt)
+      .catch(txHash => provider.getTransactionByHash(txHash))
+      .then(retrievedTransactionReceipt => {
+        const txReceipt = fromTxReceiptObj(retrievedTransactionReceipt);
+        addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
         setState((prevState: State) => ({
           ...prevState,
-          txReceipt: fromTxReceiptObj(transactionReceipt)
+          txReceipt
         }));
-      })
-      .catch(txHash => {
-        // If rejected, data is a tx hash, not a receipt. Fetch the receipt, then save receipt for flow
-        provider.getTransactionByHash(txHash).then(transactionReceipt => {
-          setState((prevState: State) => ({
-            ...prevState,
-            txReceipt: fromTxReceiptObj(transactionReceipt)
-          }));
-        });
       })
       .finally(after);
   };
@@ -144,9 +142,11 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
 
   const handleSignedWeb3Tx: TStepAction = (payload: ITxReceipt | string, after) => {
     // Payload is tx hash or receipt
+    const txReceipt = typeof payload === 'string' ? { hash: payload } : fromTxReceiptObj(payload);
+    addNewTransactionToAccount(state.txConfig.senderAccount, txReceipt || {});
     setState((prevState: State) => ({
       ...prevState,
-      txReceipt: typeof payload === 'string' ? { hash: payload } : fromTxReceiptObj(payload)
+      txReceipt
     }));
     after();
   };

@@ -1,7 +1,7 @@
 import { TWalletType } from './wallets';
 import { Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
-import { IRate } from './rate';
+import { IRates } from './rates';
 import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
 
 // Babel needs to know which types to remove when transpiling
@@ -13,11 +13,17 @@ export type Wallet = Wallet;
 export type ExtendedWallet = ExtendedWallet;
 export type WalletName = WalletName;
 export type TSymbol = TSymbol;
-export type IRate = IRate;
+export type IRates = IRates;
 export type TWalletType = TWalletType;
 
-export { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName } from './wallet';
-export { walletNames } from './wallet';
+export {
+  DefaultWalletName,
+  SecureWalletName,
+  InsecureWalletName,
+  MiscWalletName,
+  WalletType,
+  walletNames
+} from './wallet';
 export {
   Asset,
   ExtendedAsset,
@@ -27,7 +33,7 @@ export {
   AssetBalanceObject,
   StoreAsset
 } from './asset';
-export { Account, ExtendedAccount, StoreAccount, TransactionData } from './account';
+export { Account, ExtendedAccount, StoreAccount } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
 export { Contract, ExtendedContract } from './contract';
 export { ExtendedNetwork, Network, NetworkLegacy } from './network';
@@ -40,9 +46,18 @@ export { LocalCache } from './store';
 export { Notification, ExtendedNotification } from './notification';
 export { IERC20 } from './erc20';
 export { ABIFunc, ABIFuncParamless } from './abiFunc';
-export { ITransaction, IHexStrTransaction, IHexStrWeb3Transaction } from './transaction';
+export {
+  ITransaction,
+  IHexStrTransaction,
+  IHexStrWeb3Transaction,
+  ITxReceipt
+} from './transaction';
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
+export { Tab } from './tab';
+export { ISignedMessage } from './signing';
+export { IStory } from './story';
+export { FormData } from './formData';
 export { BlockExplorer } from './blockExplorer';
 export { GasPrice, GasEstimates } from './gas';

@@ -1,6 +1,6 @@
 export { decryptPrivKey, decryptMnemonicToPrivKey } from './decrypt';
 export { makeExplorer } from './makeExplorer';
-export { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from './signing';
+export { signMessageWithPrivKeyV2, signRawTxWithPrivKey, verifySignedMessage } from './signing';
 export { stripHexPrefix, stripHexPrefixAndLower } from './formatters';
 export {
   gasPriceToBase,

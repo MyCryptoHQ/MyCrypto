@@ -1,11 +1,3 @@
-import { NetworkId, WalletName } from 'v2/types';
-
-export enum WalletType {
-  SECURE,
-  INSECURE,
-  MISC
-}
-
 // @ADD_ACCOUNT_TODO: move to named enum or other Set
 /*export enum WalletName {
   DEFAULT = 'WALLETLIST',
@@ -34,12 +26,4 @@ export enum FormDataActionType {
 export interface FormDataAction {
   type: FormDataActionType;
   payload: any;
-}
-
-export interface FormData {
-  network: NetworkId;
-  account: string;
-  accountType: WalletName;
-  label: string;
-  derivationPath: string;
 }
