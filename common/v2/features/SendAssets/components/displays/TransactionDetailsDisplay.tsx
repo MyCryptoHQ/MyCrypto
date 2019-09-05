@@ -8,7 +8,7 @@ import { getBalanceFromAccount } from 'v2/services/Store';
 
 import './TransactionDetailsDisplay.scss';
 import { ITxObject } from '../../types';
-import { CodeBlock } from 'v2/components';
+import { CopyableCodeBlock } from 'v2/components';
 
 interface Props {
   baseAsset: Asset;
@@ -116,7 +116,7 @@ function TransactionDetailsDisplay({
                 </div>
                 <div className="TransactionDetails-row">
                   <div className="TransactionDetails-row-data">
-                    <CodeBlock>{JSON.stringify(rawTransaction)}</CodeBlock>
+                    <CopyableCodeBlock>{JSON.stringify(rawTransaction)}</CopyableCodeBlock>
                   </div>
                 </div>
               </>
@@ -128,7 +128,7 @@ function TransactionDetailsDisplay({
                 </div>
                 <div className="TransactionDetails-row">
                   <div className="TransactionDetails-row-data">
-                    <CodeBlock>{signedTransaction}></CodeBlock>
+                    <CopyableCodeBlock>{signedTransaction}></CopyableCodeBlock>
                   </div>
                 </div>
               </>

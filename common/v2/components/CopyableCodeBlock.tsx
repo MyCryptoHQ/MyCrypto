@@ -11,7 +11,7 @@ const truncate = (_: string) => {
   return '';
 };
 
-const CodeBlockWrapper = styled('div')`
+const CopyableCodeBlockWrapper = styled('div')`
   font-weight: 400;
   font-size: 1rem;
   margin: 0;
@@ -59,15 +59,15 @@ const CodeCopyButton = styled('div')`
   white-space: pre;
 `;
 
-const CodeBlock = ({ children }: Props) => (
-  <CodeBlockWrapper>
+const CopyableCodeBlock = ({ children }: Props) => (
+  <CopyableCodeBlockWrapper>
     <CodeDisplay>
       <code>{children}</code>
     </CodeDisplay>
     <CodeCopyButton>
       <Copyable text={`${children}`} truncate={truncate} />
     </CodeCopyButton>
-  </CodeBlockWrapper>
+  </CopyableCodeBlockWrapper>
 );
 
-export default CodeBlock;
+export default CopyableCodeBlock;
