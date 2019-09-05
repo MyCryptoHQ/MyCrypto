@@ -16,8 +16,14 @@ export type TSymbol = TSymbol;
 export type IRate = IRate;
 export type TWalletType = TWalletType;
 
-export { DefaultWalletName, SecureWalletName, InsecureWalletName, MiscWalletName } from './wallet';
-export { walletNames } from './wallet';
+export {
+  DefaultWalletName,
+  SecureWalletName,
+  InsecureWalletName,
+  MiscWalletName,
+  WalletType,
+  walletNames
+} from './wallet';
 export {
   Asset,
   ExtendedAsset,
@@ -49,5 +55,9 @@ export {
 export { JsonRPCResponse } from './jsonRPCResponse';
 export { INode, TxObj } from './INode';
 export { IAppRoute, IRoutePath, IRoutePaths } from './routes';
+export { Tab } from './tab';
+export { ISignedMessage } from './signing';
+export { IStory } from './story';
+export { FormData } from './formData';
 export { BlockExplorer } from './blockExplorer';
 export { GasPrice, GasEstimates } from './gas';

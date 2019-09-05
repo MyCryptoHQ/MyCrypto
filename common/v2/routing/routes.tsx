@@ -22,7 +22,9 @@ import {
   BuyAndExchange,
   ShapeShiftAuthorization,
   ZeroEx,
-  Home
+  Home,
+  SignAndVerifyMessage,
+  BroadcastTx
 } from 'v2/features';
 import { requiresDesktopApp } from './helpers';
 
@@ -87,9 +89,9 @@ export const APP_ROUTES: IAppRoute[] = [
     component: NoAccounts
   },
   {
-    name: ROUTE_PATHS.REQUEST_ASSEST.name,
-    title: ROUTE_PATHS.REQUEST_ASSEST.title,
-    path: ROUTE_PATHS.REQUEST_ASSEST.path,
+    name: ROUTE_PATHS.RECEIVE_ASSETS.name,
+    title: ROUTE_PATHS.RECEIVE_ASSETS.title,
+    path: ROUTE_PATHS.RECEIVE_ASSETS.path,
     exact: true,
     component: ReceiveAssets
   },
@@ -160,5 +162,25 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.SWAP_0X.title,
     path: ROUTE_PATHS.SWAP_0X.path,
     component: ZeroEx
+  },
+  {
+    name: ROUTE_PATHS.SIGN_MESSAGE.name,
+    title: ROUTE_PATHS.SIGN_MESSAGE.title,
+    path: ROUTE_PATHS.SIGN_MESSAGE.path,
+    exact: true,
+    component: SignAndVerifyMessage
+  },
+  {
+    name: ROUTE_PATHS.VERIFY_MESSAGE.name,
+    title: ROUTE_PATHS.VERIFY_MESSAGE.title,
+    path: ROUTE_PATHS.VERIFY_MESSAGE.path,
+    exact: true,
+    component: SignAndVerifyMessage
+  },
+  {
+    name: ROUTE_PATHS.BROADCAST_TX.name,
+    title: ROUTE_PATHS.BROADCAST_TX.title,
+    path: ROUTE_PATHS.BROADCAST_TX.path,
+    component: BroadcastTx
   }
 ];

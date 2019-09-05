@@ -10,7 +10,8 @@ export {
   IWallet,
   getPrivKeyWallet,
   IFullWallet,
-  Web3Wallet
+  Web3Wallet,
+  MnemonicWallet
 } from './wallet';
 export {
   makeExplorer,
@@ -39,6 +40,8 @@ export {
   inputNonceToHex,
   totalTxFeeToString,
   totalTxFeeToWei,
+  verifySignedMessage,
+  decryptMnemonicToPrivKey,
   gasStringsToMaxGasNumber,
   getStatusFromHash,
   getTimestampFromBlockNum,
