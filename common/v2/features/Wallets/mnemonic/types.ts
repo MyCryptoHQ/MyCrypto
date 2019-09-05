@@ -2,7 +2,7 @@ import { WrappedWallet } from 'libs/wallet';
 
 export interface MnemonicUnlockParams {
   phrase: string;
-  pass: string;
+  pass: string | undefined;
   path: string;
   address: string;
 }

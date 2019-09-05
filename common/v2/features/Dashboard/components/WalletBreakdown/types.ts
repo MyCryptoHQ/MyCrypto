@@ -1,3 +1,5 @@
+import { TTicker } from 'v2/types';
+
 export interface Balance {
   name: string;
   amount: number;
@@ -7,6 +9,7 @@ export interface Balance {
 }
 
 export interface Fiat {
+  ticker: TTicker;
   name: string;
   symbol: string;
 }

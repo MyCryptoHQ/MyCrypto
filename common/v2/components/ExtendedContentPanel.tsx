@@ -8,12 +8,17 @@ import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 interface ContentPanelWrapperProps {
   centered: boolean | undefined;
+  width?: string;
 }
 
 const ContentPanelWrapper = styled.div`
   text-align: ${(props: ContentPanelWrapperProps) => (props.centered ? 'center' : 'left')};
+  width: ${(props: ContentPanelWrapperProps) => (props.width ? props.width : 'auto')};
   @media (min-width: 700px) {
-    max-width: 560px;
+    max-width: ${(props: ContentPanelWrapperProps) => (props.width ? props.width : '560px')};
+  }
+  @media (max-width: 700px) {
+    max-width: 100%;
   }
 `;
 
@@ -42,10 +47,6 @@ const ContentPanelHeading = styled.p<ContentPanelHeadingProps>`
   margin-top: 0;
   margin-bottom: 15px;
   color: ${props => props.theme.headline};
-
-  @media (max-width: 700px) {
-    padding: 0 8px;
-  }
 `;
 
 const ContentPanelHeadingIcon = styled.img`
@@ -103,7 +104,7 @@ const StyledPanel = styled(Panel)`
 interface Props {
   children: any;
   className?: string;
-  heading?: string;
+  heading?: string | JSX.Element;
   icon?: string;
   image?: string;
   showImageOnTop?: boolean;
@@ -113,6 +114,7 @@ interface Props {
     total: number;
   };
   centered?: boolean;
+  width?: string;
   onBack?(): void;
 }
 
@@ -127,10 +129,11 @@ export default function ExtendedContentPanel({
   centered,
   children,
   className = '',
+  width,
   ...rest
 }: Props) {
   return (
-    <ContentPanelWrapper centered={centered}>
+    <ContentPanelWrapper centered={centered} width={width}>
       {(onBack || stepper) && (
         <ContentPanelTop stepperOnly={stepper !== undefined && !onBack}>
           {onBack && (

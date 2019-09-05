@@ -1,54 +1,55 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
+import { StoreContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
-import { IRate } from 'v2/types';
+import { IRates, TTicker } from 'v2/types';
 
 interface State {
-  rates: IRate[];
-  getRate(uuid: string): object | undefined;
-  getAllRates(): object[];
+  rates: IRates;
+  getRate(ticker: TTicker): number | undefined;
 }
+
+const DEFAULT_FIAT_PAIRS = ['USD', 'EUR'] as TTicker[];
+const DEFAULT_FIAT_RATE = 0;
+const POLLING_INTERRVAL = 60000;
+const RATES_URL = 'https://proxy.mycryptoapi.com/cc/multi';
+const buildQueryUrl = (assets: TTicker[], currencies: TTicker[]) => `
+  ${RATES_URL}/?fsyms=${assets.join(',')}&tsyms=${currencies.join(',')}
+`;
 
 export const RatesContext = createContext({} as State);
 
-export class RatesProvider extends Component {
-  public readonly worker = new PollingService(
-    'https://proxy.mycryptoapi.com/cc?fsym=ETH&tsyms=USD',
-    60000,
-    // With this query, the API returns a single object e.g { 'USD': 276.98 }
-    // @TODO: change when we accept multiple rates
-    (data: { USD: string }) => {
-      const rates = [{ from: 'ETH', to: 'USD', rate: data.USD }];
-      this.setState({ rates });
-    },
-    err => console.debug('[RatesProvider]', err)
-  );
+export function RatesProvider({ children }: { children: React.ReactNode }) {
+  const [rates, setRates] = useState({});
+  const { accounts, assetTickers } = useContext(StoreContext);
 
-  public readonly state: State = {
-    rates: [],
-    getRate: (name: string) => {
-      const { rates } = this.state;
-      const rate = rates.find(r => r.to === name);
-      return rate;
-    },
-    getAllRates: () => {
-      const { rates } = this.state;
-      return rates;
+  useEffect(() => {
+    // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
+    // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
+    const currentTickers = assetTickers();
+    const worker = new PollingService(
+      buildQueryUrl(currentTickers, DEFAULT_FIAT_PAIRS), // @TODO: figure out how to handle the conversion more elegantly then `DEFAULT_FIAT_RATE`
+      POLLING_INTERRVAL,
+      (data: IRates) => setRates(data),
+      err => console.debug('[RatesProvider]', err)
+    );
+
+    const terminateWorker = () => {
+      worker.stop();
+      worker.close();
+    };
+
+    worker.start();
+    return terminateWorker; // make sure we terminate the previous worker on teardown.
+  }, [accounts]); // only update  if accounts have changed.
+
+  const state: State = {
+    rates: {},
+    getRate: (ticker: TTicker) => {
+      // @ts-ignore until we find a solution for TS7053 error
+      return rates[ticker] ? rates[ticker].USD : DEFAULT_FIAT_RATE;
     }
   };
 
-  public componentDidMount() {
-    this.worker.start();
-  }
-
-  // Make sure to terminate the worker before the component unmounts
-  public componentWillUnmount() {
-    this.worker.stop();
-    this.worker.close();
-  }
-
-  public render() {
-    const { children } = this.props;
-    return <RatesContext.Provider value={this.state}>{children}</RatesContext.Provider>;
-  }
+  return <RatesContext.Provider value={state}>{children}</RatesContext.Provider>;
 }
