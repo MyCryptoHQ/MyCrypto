@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import unionBy from 'lodash/unionBy';
 import { bigNumberify } from 'ethers/utils';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
 
-import { getAccountBalance } from '../BalanceService';
+import { getAccountBalance, otherAccountBalance } from '../BalanceService';
 import { getStoreAccounts } from './helpers';
 import { AssetContext, getTotalByAsset } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
@@ -15,7 +14,7 @@ import { NetworkContext } from './Network';
 interface State {
   readonly accounts: StoreAccount[];
   readonly networks: Network[];
-  tokens(): StoreAsset[];
+  tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   currentAccounts(): StoreAccount[];
@@ -43,26 +42,38 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       const supportedAccounts = accounts.filter(({ network }) =>
         ETHSCAN_NETWORKS.some(supportedNetwork => network.id === supportedNetwork)
       );
-      const accountBalances = await Promise.all(supportedAccounts.map(getAccountBalance));
+      const otherAccounts = accounts.filter(({ network }) =>
+        ETHSCAN_NETWORKS.some(supportedNetwork => network.id !== supportedNetwork)
+      );
+      const balanceAccounts = [...supportedAccounts, ...otherAccounts];
+
+      const balancePromises = [
+        ...supportedAccounts.map(getAccountBalance),
+        ...otherAccounts.map(otherAccountBalance)
+      ];
+      const accountBalances = await Promise.all(balancePromises);
 
       const accountsWithBalances = accountBalances.map(([baseBalance, tokenBalances], index) => {
-        const account = supportedAccounts[index];
+        const account = balanceAccounts[index];
         return {
           ...account,
           assets: account.assets
-            // .filter(a => a.contractAddress || a.type === 'base')
             .map(asset => {
               switch (asset.type) {
-                case 'base':
+                case 'base': {
+                  const balance = baseBalance[account.address];
                   return {
                     ...asset,
-                    balance: baseBalance[account.address].toString()
+                    balance: balance ? balance.toString() : asset.balance
                   };
-                case 'erc20':
+                }
+                case 'erc20': {
+                  const balance = tokenBalances[asset.contractAddress!];
                   return {
                     ...asset,
-                    balance: tokenBalances[asset.contractAddress!].toString()
+                    balance: balance ? balance.toString() : asset.balance
                   };
+                }
                 default:
                   break;
               }
@@ -73,9 +84,11 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
             }))
         };
       });
+
       // uniqueness of `accounts` is `address` + `network`, so we use `uuid`
-      const updatedAccounts = unionBy(accountsWithBalances, accounts, 'uuid');
-      setAccounts(updatedAccounts);
+      // const updatedAccounts = unionBy(accountsWithBalances, accounts, 'uuid');
+      // setAccounts(updatedAccounts);
+      setAccounts(accountsWithBalances);
     })();
   }, [rawAccounts]); // only run if 'rawAccounts' changes
 
@@ -84,7 +97,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     networks,
     assets: (selectedAccounts = state.accounts) =>
       selectedAccounts.flatMap((account: StoreAccount) => account.assets),
-    tokens: () => state.assets().filter(asset => asset.type !== 'base'),
+    tokens: (selectedAssets = state.assets()) =>
+      selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
@@ -108,7 +122,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   // - [x] update account.asset types
   // - [ ] handle ethScan polling.
   // - [x] handle ethScan accepted networks
-  // - [ ] handle other networks...
+  // - [x] handle other networks...
   // - [x] connect to view.
   // - [ ] worry about error handling.
   // - [ ] save to local storage

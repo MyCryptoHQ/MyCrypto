@@ -1,5 +1,5 @@
 import { FallbackProvider, TransactionReceipt, TransactionResponse, Block } from 'ethers/providers';
-import { formatEther } from 'ethers/utils/units';
+import { formatEther, BigNumber } from 'ethers/utils';
 
 import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
@@ -25,6 +25,10 @@ export class ProviderHandler {
     return this.client.getBalance(address).then(data => formatEther(data));
   }
 
+  public getRawBalance(address: string): Promise<BigNumber> {
+    return this.client.getBalance(address);
+  }
+
   /* Tested*/
   public estimateGas(transaction: Partial<IHexStrTransaction>): Promise<string> {
     return this.client.estimateGas(transaction).then(data => data.toString());
@@ -38,6 +42,7 @@ export class ProviderHandler {
         data: this.requests.getTokenBalance(address, token).params[0].data
       })
       .then(data => ERC20.balanceOf.decodeOutput(data))
+      .then(({ balance }) => balance)
       .then(({ balance }) => {
         if (token.decimal) {
           return baseToConvertedUnit(balance, token.decimal);
