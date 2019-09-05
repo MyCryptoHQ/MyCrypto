@@ -1,7 +1,7 @@
 import { TWalletType } from './wallets';
 import { Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
-import { IRate } from './rate';
+import { IRates } from './rates';
 import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
 
 // Babel needs to know which types to remove when transpiling
@@ -13,7 +13,7 @@ export type Wallet = Wallet;
 export type ExtendedWallet = ExtendedWallet;
 export type WalletName = WalletName;
 export type TSymbol = TSymbol;
-export type IRate = IRate;
+export type IRates = IRates;
 export type TWalletType = TWalletType;
 
 export {

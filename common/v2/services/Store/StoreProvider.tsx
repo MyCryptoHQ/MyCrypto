@@ -3,7 +3,7 @@ import unionBy from 'lodash/unionBy';
 import { bigNumberify } from 'ethers/utils';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
-import { StoreAccount, StoreAsset, Network } from 'v2/types';
+import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
 
 import { getAccountBalance } from '../BalanceService';
 import { getStoreAccounts } from './helpers';
@@ -19,6 +19,7 @@ interface State {
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   currentAccounts(): StoreAccount[];
+  assetTickers(targetAssets?: StoreAsset[]): TTicker[];
 }
 export const StoreContext = createContext({} as State);
 
@@ -86,7 +87,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     tokens: () => state.assets().filter(asset => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
-    currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts)
+    currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
+    assetTickers: (targetAssets = state.assets()) => [
+      ...new Set(targetAssets.map(a => a.ticker as TTicker))
+    ]
   };
 
   // 1. I actually want to watch all the base and token balance for every
