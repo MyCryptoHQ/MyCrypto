@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { bigNumberify } from 'ethers/utils';
+import partition from 'lodash/partition';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
@@ -37,24 +38,23 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     Will be cleaned up once we handle other networks + polling.
   */
   useEffect(() => {
-    (async function getAccountsBalances() {
+    (async function getAssetBalances() {
       // for the moment EthScan is only deployed on Ethereum.
-      const supportedAccounts = accounts.filter(({ network }) =>
+      const [ethScanCompatibleAccounts, otherAccounts] = partition(accounts, ({ network }) =>
         ETHSCAN_NETWORKS.some(supportedNetwork => network.id === supportedNetwork)
       );
-      const otherAccounts = accounts.filter(({ network }) =>
-        ETHSCAN_NETWORKS.some(supportedNetwork => network.id !== supportedNetwork)
-      );
-      const balanceAccounts = [...supportedAccounts, ...otherAccounts];
 
-      const balancePromises = [
-        ...supportedAccounts.map(getAccountBalance),
+      const accountBalances = await Promise.all([
+        ...ethScanCompatibleAccounts.map(getAccountBalance),
         ...otherAccounts.map(otherAccountBalance)
-      ];
-      const accountBalances = await Promise.all(balancePromises);
+      ]);
+
+      // Since accountBalances is an array of resolved Promises, we create an array of
+      // accounts with the same order so we can find the account again.
+      const orderedAccounts = [...ethScanCompatibleAccounts, ...otherAccounts];
 
       const accountsWithBalances = accountBalances.map(([baseBalance, tokenBalances], index) => {
-        const account = balanceAccounts[index];
+        const account = orderedAccounts[index];
         return {
           ...account,
           assets: account.assets
@@ -85,9 +85,6 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         };
       });
 
-      // uniqueness of `accounts` is `address` + `network`, so we use `uuid`
-      // const updatedAccounts = unionBy(accountsWithBalances, accounts, 'uuid');
-      // setAccounts(updatedAccounts);
       setAccounts(accountsWithBalances);
     })();
   }, [rawAccounts]); // only run if 'rawAccounts' changes
