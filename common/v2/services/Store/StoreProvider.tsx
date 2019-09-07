@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { bigNumberify } from 'ethers/utils';
-import partition from 'lodash/partition';
 
-import { ETHSCAN_NETWORKS } from 'v2/config';
 import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
 
-import { getAccountBalance, otherAccountBalance } from '../BalanceService';
+import { getAccountsAssetsBalances } from './BalanceService';
 import { getStoreAccounts } from './helpers';
 import { AssetContext, getTotalByAsset } from './Asset';
 import { AccountContext, getDashboardAccounts } from './Account';
@@ -33,61 +30,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [accounts, setAccounts] = useState(getStoreAccounts(rawAccounts, assets, networks));
 
-  /*
-    Currently this effect only fetches the values for Ethereum address once.
-    Will be cleaned up once we handle other networks + polling.
-  */
   useEffect(() => {
-    (async function getAssetBalances() {
-      // for the moment EthScan is only deployed on Ethereum.
-      const [ethScanCompatibleAccounts, otherAccounts] = partition(accounts, ({ network }) =>
-        ETHSCAN_NETWORKS.some(supportedNetwork => network.id === supportedNetwork)
-      );
-
-      const accountBalances = await Promise.all([
-        ...ethScanCompatibleAccounts.map(getAccountBalance),
-        ...otherAccounts.map(otherAccountBalance)
-      ]);
-
-      // Since accountBalances is an array of resolved Promises, we create an array of
-      // accounts with the same order so we can find the account again.
-      const orderedAccounts = [...ethScanCompatibleAccounts, ...otherAccounts];
-
-      const accountsWithBalances = accountBalances.map(([baseBalance, tokenBalances], index) => {
-        const account = orderedAccounts[index];
-        return {
-          ...account,
-          assets: account.assets
-            .map(asset => {
-              switch (asset.type) {
-                case 'base': {
-                  const balance = baseBalance[account.address];
-                  return {
-                    ...asset,
-                    balance: balance ? balance.toString() : asset.balance
-                  };
-                }
-                case 'erc20': {
-                  const balance = tokenBalances[asset.contractAddress!];
-                  return {
-                    ...asset,
-                    balance: balance ? balance.toString() : asset.balance
-                  };
-                }
-                default:
-                  break;
-              }
-            })
-            .map(asset => ({
-              ...asset!,
-              balance: bigNumberify(asset!.balance)
-            }))
-        };
-      });
-
-      setAccounts(accountsWithBalances);
-    })();
-  }, [rawAccounts]); // only run if 'rawAccounts' changes
+    getAccountsAssetsBalances(accounts).then(setAccounts);
+  }, [rawAccounts]);
 
   const state: State = {
     accounts,
