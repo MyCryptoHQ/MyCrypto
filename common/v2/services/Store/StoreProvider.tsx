@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, { useState, useContext, useMemo, createContext } from 'react';
 
 import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
+import { isArrayEqual } from 'v2/utils';
 
+import { useInterval } from '../useInterval';
 import { getAccountsAssetsBalances } from './BalanceService';
 import { getStoreAccounts } from './helpers';
 import { AssetContext, getTotalByAsset } from './Asset';
@@ -28,14 +30,28 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const { settings } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
 
-  const [accounts, setAccounts] = useState(getStoreAccounts(rawAccounts, assets, networks));
+  // We transform rawAccounts into StoreAccount. Since the operation is exponential to the number of
+  // accounts, make sure it is done only when rawAccounts change.
+  const storeAccounts = useMemo(() => getStoreAccounts(rawAccounts, assets, networks), [
+    rawAccounts,
+    assets,
+    networks
+  ]);
+  const [accounts, setAccounts] = useState(storeAccounts);
 
-  useEffect(() => {
-    getAccountsAssetsBalances(accounts).then((accountsWithBalances: StoreAccount[]) => {
-      if (!accountsWithBalances) return;
-      setAccounts(accountsWithBalances);
-    });
-  }, [rawAccounts]);
+  // Naive polling to get the Balances of baseAsset and tokens for each account.
+  useInterval(
+    () => {
+      getAccountsAssetsBalances(accounts).then((accountsWithBalances: StoreAccount[]) => {
+        // Avoid the state change if the balances are identical.
+        if (isArrayEqual(accounts, accountsWithBalances)) return;
+        setAccounts(accountsWithBalances);
+      });
+    },
+    60000,
+    true,
+    [rawAccounts]
+  );
 
   const state: State = {
     accounts,
@@ -65,7 +81,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   // - [x] getBalances should be able to receive just address ? For AddAccount
   // - [x] getBalances network selection with fallbacks ?
   // - [x] update account.asset types
-  // - [ ] handle ethScan polling.
+  // - [x] handle ethScan polling.
   // - [x] handle ethScan accepted networks
   // - [x] handle other networks...
   // - [x] connect to view.
