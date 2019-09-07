@@ -31,7 +31,10 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [accounts, setAccounts] = useState(getStoreAccounts(rawAccounts, assets, networks));
 
   useEffect(() => {
-    getAccountsAssetsBalances(accounts).then(setAccounts);
+    getAccountsAssetsBalances(accounts).then((accountsWithBalances: StoreAccount[]) => {
+      if (!accountsWithBalances) return;
+      setAccounts(accountsWithBalances);
+    });
   }, [rawAccounts]);
 
   const state: State = {
