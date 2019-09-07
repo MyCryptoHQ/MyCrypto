@@ -69,7 +69,7 @@ const getTokenBalances = (
   return tokens.reduce(async (balances, token) => {
     return {
       ...balances,
-      [token.contractAddress as TAddress]: await provider.getTokenBalance(address, token)
+      [token.contractAddress as TAddress]: await provider.getRawTokenBalance(address, token)
     };
   }, {});
 };

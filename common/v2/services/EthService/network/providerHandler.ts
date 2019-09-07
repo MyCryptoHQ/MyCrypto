@@ -34,6 +34,16 @@ export class ProviderHandler {
     return this.client.estimateGas(transaction).then(data => data.toString());
   }
 
+  public getRawTokenBalance(address: string, token: Asset): Promise<string> {
+    return this.client
+      .call({
+        to: this.requests.getTokenBalance(address, token).params[0].to,
+        data: this.requests.getTokenBalance(address, token).params[0].data
+      })
+      .then(data => ERC20.balanceOf.decodeOutput(data))
+      .then(({ balance }) => balance);
+  }
+
   /* Tested */
   public getTokenBalance(address: string, token: Asset): Promise<string> {
     return this.client
