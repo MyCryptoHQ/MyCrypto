@@ -1,7 +1,8 @@
-import { Asset } from 'v2/types';
 import React from 'react';
 import styled from 'styled-components';
 import { Copyable } from '@mycrypto/ui';
+
+import { Asset } from 'v2/types';
 
 interface Props {
   asset: Asset;

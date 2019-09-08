@@ -5,10 +5,10 @@ import { formatEther, bigNumberify } from 'ethers/utils';
 import { Asset, ExtendedAccount, Network as INetwork } from 'v2/types';
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
 import { getBalanceFromAccount } from 'v2/services/Store';
+import { CopyableCodeBlock } from 'v2/components';
 
 import './TransactionDetailsDisplay.scss';
 import { ITxObject } from '../../types';
-import { CopyableCodeBlock } from 'v2/components';
 
 interface Props {
   baseAsset: Asset;
