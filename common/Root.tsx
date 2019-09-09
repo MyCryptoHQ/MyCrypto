@@ -37,6 +37,7 @@ import { RouteNotFound } from 'components/RouteNotFound';
 import { RedirectWithQuery } from 'components/RedirectWithQuery';
 import { Theme } from 'config';
 import 'what-input';
+import queryString from 'query-string';
 
 // v2
 import { gatherFeatureRoutes } from 'v2';
@@ -82,9 +83,28 @@ class RootClass extends Component<Props, State> {
     }
   }
 
+  public getParamsFromUrl = () => {
+    const index = location.href.lastIndexOf('?');
+    if (index !== -1) {
+      const query = location.href.substring(index);
+      const params = queryString.parse(query);
+      return params;
+    } else {
+      return {};
+    }
+  };
+
   public render() {
-    const { store, onboardingActive } = this.props;
+    const { store } = this.props;
+    let { onboardingActive } = this.props;
     const { error } = this.state;
+
+    if (
+      location.pathname.substr(0, 19).toLowerCase() === '/contracts/interact' &&
+      Object.keys(this.getParamsFromUrl()).length !== 0
+    ) {
+      onboardingActive = false;
+    }
 
     if (error) {
       // @ts-ignore
