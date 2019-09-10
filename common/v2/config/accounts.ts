@@ -37,5 +37,35 @@ export const accounts: Account[] = [
     transactions: [],
     mtime: Date.now(),
     favorite: true
+  },
+  {
+    address: '0x82d69476357a03415e92b5780c89e5e9e972ce75',
+    networkId: 'Ropsten',
+    assets: [],
+    wallet: SecureWalletName.WEB3,
+    dPath: `m/44'/60'/0'/0/0`,
+    transactions: [],
+    mtime: Date.now(),
+    favorite: true
+  },
+  {
+    address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
+    networkId: 'Rinkeby',
+    assets: [],
+    wallet: SecureWalletName.WEB3,
+    dPath: `m/44'/60'/0'/0/0`,
+    transactions: [],
+    mtime: Date.now(),
+    favorite: true
+  },
+  {
+    address: '0xd57478a81CF7DcA65996Ef0550367467cbD6309f',
+    networkId: 'Kovan',
+    assets: [],
+    wallet: SecureWalletName.WEB3,
+    dPath: `m/44'/60'/0'/0/0`,
+    transactions: [],
+    mtime: Date.now(),
+    favorite: true
   }
 ];
