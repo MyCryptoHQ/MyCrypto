@@ -40,7 +40,7 @@ export const getDashboardAccounts = (
   accounts: StoreAccount[],
   currentAccounts: string[]
 ): StoreAccount[] => {
-  return accounts.filter(account => currentAccounts.indexOf(account.uuid) >= 0);
+  return accounts.filter(({ uuid }) => currentAccounts.indexOf(uuid) >= 0);
 };
 
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
@@ -157,7 +157,10 @@ export const getAccountByAddressAndNetworkName = (
   return undefined;
 };
 
-export const getAccountsByAsset = (accounts: StoreAccount[], { uuid }: Asset): StoreAccount[] =>
-  accounts.filter(account => account.assets.find(a => a.uuid === uuid));
+export const getAccountsByAsset = (
+  accounts: StoreAccount[],
+  { uuid: targetUuid }: Asset
+): StoreAccount[] =>
+  accounts.filter(({ assets }) => assets.find(({ uuid }) => uuid === targetUuid));
 
 export const getBaseAsset = (account: StoreAccount) => account.assets.find(a => a.type === 'base');
