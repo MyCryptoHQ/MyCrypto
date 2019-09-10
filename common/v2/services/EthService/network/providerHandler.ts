@@ -22,7 +22,7 @@ export class ProviderHandler {
 
   /* Tested */
   public getBalance(address: string): Promise<string> {
-    return this.client.getBalance(address).then(data => formatEther(data));
+    return this.getRawBalance(address).then(data => formatEther(data));
   }
 
   public getRawBalance(address: string): Promise<BigNumber> {
@@ -46,19 +46,9 @@ export class ProviderHandler {
 
   /* Tested */
   public getTokenBalance(address: string, token: Asset): Promise<string> {
-    return this.client
-      .call({
-        to: this.requests.getTokenBalance(address, token).params[0].to,
-        data: this.requests.getTokenBalance(address, token).params[0].data
-      })
-      .then(data => ERC20.balanceOf.decodeOutput(data))
-      .then(({ balance }) => balance)
-      .then(({ balance }) => {
-        if (token.decimal) {
-          return baseToConvertedUnit(balance, token.decimal);
-        }
-        return baseToConvertedUnit(balance, 18);
-      });
+    return this.getRawTokenBalance(address, token).then(balance =>
+      baseToConvertedUnit(balance, token.decimal || 18)
+    );
   }
 
   /* Tested */
