@@ -14,7 +14,12 @@ import {
 import { JsonRPCResponse } from 'v2/types';
 import { stripHexPrefix } from './utils';
 
-const validNumber = (num: number) => isFinite(num) && num >= 0;
+export const isValidNumber = (value: number | string) => {
+  if (typeof value === 'string') {
+    return isFinite(Number(value)) && Number(value) >= 0;
+  }
+  return isFinite(value) && value >= 0;
+};
 
 function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address);
@@ -117,7 +122,7 @@ export function isValidPath(dPath: string) {
 export const gasLimitValidator = (gasLimit: number | string) => {
   const gasLimitFloat = typeof gasLimit === 'string' ? Number(gasLimit) : gasLimit;
   return (
-    validNumber(gasLimitFloat) &&
+    isValidNumber(gasLimitFloat) &&
     gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
     gasLimitFloat <= GAS_LIMIT_UPPER_BOUND
   );
@@ -131,7 +136,7 @@ export const gasPriceValidator = (gasPrice: number | string): boolean => {
   const gasPriceFloat: number = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
   const decimalLength: string = gasPriceFloat.toString().split('.')[1];
   return (
-    validNumber(gasPriceFloat) &&
+    isValidNumber(gasPriceFloat) &&
     gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
     gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND &&
     getLength(gasPriceFloat) <= 10 &&
@@ -247,5 +252,6 @@ export const isValidGetAccounts = (response: JsonRPCResponse) =>
 
 export const isValidGetNetVersion = (response: JsonRPCResponse) =>
   isValidEthCall(response, schema.RpcNode)(API_NAME.Net_Version);
+
 export const isValidTxHash = (hash: string) =>
   hash.substring(0, 2) === '0x' && hash.length === 66 && isValidHex(hash);

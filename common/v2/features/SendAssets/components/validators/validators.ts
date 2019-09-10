@@ -1,4 +1,9 @@
-import { isValidHex, gasPriceValidator, gasLimitValidator } from 'v2/services/EthService';
+import {
+  isValidHex,
+  isValidNumber,
+  gasPriceValidator,
+  gasLimitValidator
+} from 'v2/services/EthService';
 
 export function validateGasPriceField(value: string): string | undefined {
   if (!gasPriceValidator(value)) {
@@ -19,13 +24,13 @@ export function validateDataField(value: string): string | undefined {
 }
 
 export function validateNonceField(value: string): string | undefined {
-  if (!(parseInt(value, 10) >= 0)) {
+  if (!isValidNumber(value)) {
     return 'Nonce must be a valid number.';
   }
 }
 
 export function validateAmountField(value: string): string | undefined {
-  if (!(parseInt(value, 10) >= 0)) {
+  if (!isValidNumber(value)) {
     return 'Amount must be a valid number';
   }
 }

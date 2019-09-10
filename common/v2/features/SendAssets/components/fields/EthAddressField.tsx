@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input } from '@mycrypto/ui';
-import { FieldProps, Field } from 'formik';
+import { FieldProps, Field, FormikTouched } from 'formik';
 
 import { translateRaw } from 'translations';
 import {
@@ -10,6 +10,7 @@ import {
 } from 'v2/services/EthService';
 import { InlineErrorMsg, ENSStatus } from 'v2/components';
 import { Network } from 'v2/types';
+import { IFormikFields } from '../../types';
 
 /*
   Eth address field to be used within a Formik Form
@@ -20,7 +21,7 @@ import { Network } from 'v2/types';
 interface Props {
   error?: string;
   fieldName: string;
-  touched?: boolean;
+  touched?: FormikTouched<IFormikFields>;
   placeholder?: string;
   network?: Network;
   isLoading: boolean;
@@ -30,8 +31,8 @@ interface Props {
 
 function ETHAddressField({
   fieldName,
-  error,
   touched,
+  error,
   network,
   placeholder = 'ETH Address or ENS Name',
   isLoading,
@@ -59,8 +60,9 @@ function ETHAddressField({
       <Field
         name={fieldName}
         validate={validateEthAddress}
+        validateOnChange={false}
         render={({ field, form }: FieldProps) => (
-          <div>
+          <>
             <Input
               {...field}
               value={field.value.display}
@@ -84,6 +86,7 @@ function ETHAddressField({
                         form.setFieldValue('receiverAddress', { display: address, value: address });
                 await action(e.currentTarget.value);
                 handleGasEstimate();
+                form.setFieldTouched(fieldName);
               }}
             />
             <ENSStatus
@@ -92,13 +95,12 @@ function ETHAddressField({
               chainId={network ? network.chainId : 1}
               isLoading={isLoading}
             />
-          </div>
+            {error && touched && touched.receiverAddress ? (
+              <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
+            ) : null}
+          </>
         )}
       />
-
-      {error && touched ? (
-        <InlineErrorMsg className="SendAssetsForm-errors">{error}</InlineErrorMsg>
-      ) : null}
     </>
   );
 }

@@ -24,7 +24,8 @@ import {
   isValidETHAddress,
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
-  baseToConvertedUnit
+  baseToConvertedUnit,
+  isValidNumber
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 
@@ -55,7 +56,7 @@ const initialFormikValues: IFormikFields = {
     value: '',
     display: ''
   },
-  amount: '0',
+  amount: '',
   account: {} as ExtendedAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
   asset: {} as StoreAsset,
@@ -88,9 +89,22 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 const SendAssetsSchema = Yup.object().shape({
-  amount: Yup.string().required('Required'),
-  account: Yup.object().required('Required'),
-  receiverAddress: Yup.object().required('Required')
+  amount: Yup.number()
+    .positive(translateRaw('ERROR_0'))
+    .required(translateRaw('REQUIRED')),
+  account: Yup.object().required(translateRaw('REQUIRED')),
+  receiverAddress: Yup.object().required(translateRaw('REQUIRED')),
+  gasLimitField: Yup.number()
+    .min(21000, translateRaw('ERROR_8'))
+    .max(8000000, translateRaw('ERROR_8'))
+    .required(translateRaw('REQUIRED')),
+  gasPriceField: Yup.number()
+    .min(0.1, translateRaw('ERROR_10'))
+    .max(3000, translateRaw('ERROR_10'))
+    .required(translateRaw('REQUIRED')),
+  nonceField: Yup.number()
+    .positive(translateRaw('ERROR_11'))
+    .required(translateRaw('REQUIRED'))
 });
 
 export default function SendAssetsForm({
@@ -112,7 +126,15 @@ export default function SendAssetsForm({
         onSubmit={fields => {
           onComplete(fields);
         }}
-        render={({ errors, touched, setFieldValue, values, handleChange, submitForm }) => {
+        render={({
+          errors,
+          setFieldValue,
+          setFieldTouched,
+          touched,
+          values,
+          handleChange,
+          submitForm
+        }) => {
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
@@ -125,13 +147,15 @@ export default function SendAssetsForm({
                 !values.asset ||
                 !values.receiverAddress ||
                 !isValidETHAddress(values.receiverAddress.value) ||
-                !values.account
+                !values.account ||
+                !isValidNumber(values.amount)
               )
             ) {
               setIsEstimatingGasLimit(true);
               const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
               setFieldValue('gasLimitField', hexToNumber(gas));
+              setFieldTouched('amount');
               setIsEstimatingGasLimit(false);
             } else {
               return;
@@ -191,7 +215,6 @@ export default function SendAssetsForm({
             setFieldValue('nonceField', nonce.toString());
             setIsEstimatingNonce(false);
           };
-
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
@@ -259,8 +282,8 @@ export default function SendAssetsForm({
                 <EthAddressField
                   fieldName="receiverAddress.display"
                   handleENSResolve={handleENSResolve}
-                  error={errors && errors.receiverAddress && errors.receiverAddress.value}
-                  touched={touched && touched.receiverAddress && touched.receiverAddress.value}
+                  error={errors && errors.receiverAddress && errors.receiverAddress.display}
+                  touched={touched}
                   handleGasEstimate={handleGasEstimate}
                   network={values.network}
                   isLoading={isResolvingENSName}
@@ -275,21 +298,30 @@ export default function SendAssetsForm({
                     {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION').toLowerCase()}
                   </div>
                 </label>
-                <FastField
+                <Field
                   name="amount"
                   validate={validateAmountField}
-                  render={({ field }: FieldProps) => (
-                    <Input
-                      {...field}
-                      value={field.value}
-                      onBlur={handleGasEstimate}
-                      placeholder={'0.00'}
-                    />
-                  )}
+                  render={({ field, form }: FieldProps) => {
+                    return (
+                      <>
+                        <Input
+                          {...field}
+                          value={field.value}
+                          onBlur={() => {
+                            form.setFieldTouched('amount');
+                            handleGasEstimate();
+                          }}
+                          placeholder={'0.00'}
+                        />
+                        {errors && touched && touched.amount ? (
+                          <InlineErrorMsg className="SendAssetsForm-errors">
+                            {errors.amount}
+                          </InlineErrorMsg>
+                        ) : null}
+                      </>
+                    );
+                  }}
                 />
-                {errors.amount && errors.amount && touched.amount && touched.amount ? (
-                  <InlineErrorMsg className="SendAssetsForm-errors">{errors.amount}</InlineErrorMsg>
-                ) : null}
               </fieldset>
               {/* You'll Send */}
               {/* <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
