@@ -11,6 +11,7 @@ import { fromWei, Wei, totalTxFeeToString, totalTxFeeToWei } from 'v2/services/E
 import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
+import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
@@ -21,7 +22,11 @@ const truncate = (children: string) => {
   The currentPath in SendAssets determines which action should be called.
 */
 
-export default function ConfirmTransaction({ txConfig, onComplete }: IStepComponentProps) {
+export default function ConfirmTransaction({
+  txConfig,
+  onComplete,
+  signedTx
+}: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
 
   const recipientContact = getContactByAddressAndNetwork(
@@ -82,6 +87,11 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
           </div>
         </div>
       </div>
+      {assetType === 'erc20' && (
+        <div className="ConfirmTransaction-row">
+          <TransactionIntermediaryDisplay asset={asset} />
+        </div>
+      )}
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
           <img src={sendIcon} alt="Send" /> Send Amount:
@@ -101,16 +111,17 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
       <div className="ConfirmTransaction-divider" />
       <div className="ConfirmTransaction-row">
         <div className="ConfirmTransaction-row-column">
-          <img src={sendIcon} alt="Total" /> You'll Send:
+          <img src={sendIcon} alt="Total" /> Total:
         </div>
         <div className="ConfirmTransaction-row-column">
           {assetType === 'base' ? (
             <Amount assetValue={`${totalEtherEgress} ${asset.ticker}`} fiatValue="$1" />
           ) : (
-            <>
-              <Amount assetValue={`${amount} ${asset.ticker}`} fiatValue="$1" />
-              <Amount assetValue={`${totalEtherEgress} ${baseAsset.ticker}`} fiatValue="$1" />
-            </>
+            <Amount
+              assetValue={`${amount} ${asset.ticker}`}
+              baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
+              fiatValue="$1"
+            />
           )}
         </div>
       </div>
@@ -123,6 +134,8 @@ export default function ConfirmTransaction({ txConfig, onComplete }: IStepCompon
         gasLimit={gasLimit}
         gasPrice={gasPrice}
         nonce={nonce}
+        rawTransaction={txConfig.rawTransaction}
+        signedTransaction={signedTx}
       />
       <Button onClick={onComplete} className="ConfirmTransaction-button">
         Confirm and Send

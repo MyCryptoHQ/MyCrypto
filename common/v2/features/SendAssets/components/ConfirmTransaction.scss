@@ -2,17 +2,18 @@
   &-row {
     display: flex;
     flex-direction: column;
-
+    
     @media (min-width: 550px) {
       flex-direction: row;
       align-items: center;
       margin-bottom: 24px;
+      :not(:last-child) {
+        margin-right: 13px;
+      }
     }
     &-column {
       flex: 1;
-      margin-right: 13px;
       margin-bottom: 24px;
-
       @media (min-width: 550px) {
         margin-bottom: 0;
       }
