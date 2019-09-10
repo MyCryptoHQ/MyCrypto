@@ -220,11 +220,7 @@ export default function WalletBreakdownView({
               <div>
                 <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
                 <BreakDownBalanceAssetAmount>
-                  {!isOther ? (
-                    `${amount.toFixed(4)} ${ticker}`
-                  ) : (
-                    <a onClick={toggleShowChart}>{translate('WALLET_BREAKDOWN_MORE')}</a>
-                  )}
+                  {!isOther && `${amount.toFixed(4)} ${ticker}`}
                 </BreakDownBalanceAssetAmount>
               </div>
               <BreakDownBalanceAssetAmount>
