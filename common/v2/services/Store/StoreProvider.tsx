@@ -1,9 +1,8 @@
 import React, { useState, useContext, useMemo, createContext } from 'react';
 
 import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
-import { isArrayEqual } from 'v2/utils';
+import { isArrayEqual, useInterval } from 'v2/utils';
 
-import { useInterval } from '../useInterval';
 import { getAccountsAssetsBalances } from './BalanceService';
 import { getStoreAccounts } from './helpers';
 import { AssetContext, getTotalByAsset } from './Asset';
