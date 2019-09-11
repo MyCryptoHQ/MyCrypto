@@ -25,5 +25,29 @@ export const assets: { [key in string]: Asset } = {
     type: 'base',
     ticker: 'GoerliETH',
     decimal: 18
+  },
+  '01f2d4ec-c263-6ba8-de38-01d66c86f309': {
+    uuid: '01f2d4ec-c263-6ba8-de38-01d66c86f309',
+    name: 'RopstenETH',
+    networkId: 'Ropsten',
+    type: 'base',
+    ticker: 'RopstenETH',
+    decimal: 18
+  },
+  '89397517-5dcb-9cd1-76b5-224e3f0ace80': {
+    uuid: '89397517-5dcb-9cd1-76b5-224e3f0ace80',
+    name: 'RinkebyETH',
+    networkId: 'Rinkeby',
+    type: 'base',
+    ticker: 'RinkebyETH',
+    decimal: 18
+  },
+  '4d8b9524-e2c8-243b-cdca-c0a9f27a3b01': {
+    uuid: '4d8b9524-e2c8-243b-cdca-c0a9f27a3b01',
+    name: 'KovanETH',
+    networkId: 'Kovan',
+    type: 'base',
+    ticker: 'KovanETH',
+    decimal: 18
   }
 };

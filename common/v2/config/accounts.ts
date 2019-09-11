@@ -41,7 +41,13 @@ export const accounts: Account[] = [
   {
     address: '0x82d69476357a03415e92b5780c89e5e9e972ce75',
     networkId: 'Ropsten',
-    assets: [],
+    assets: [
+      {
+        uuid: '01f2d4ec-c263-6ba8-de38-01d66c86f309',
+        balance: '5000000000000000000',
+        mtime: Date.now()
+      }
+    ],
     wallet: SecureWalletName.WEB3,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
@@ -51,7 +57,13 @@ export const accounts: Account[] = [
   {
     address: '0x8fe684ae26557DfFF70ceE9a4Ff5ee7251a31AD5',
     networkId: 'Rinkeby',
-    assets: [],
+    assets: [
+      {
+        uuid: '89397517-5dcb-9cd1-76b5-224e3f0ace80',
+        balance: '5000000000000000000',
+        mtime: Date.now()
+      }
+    ],
     wallet: SecureWalletName.WEB3,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
@@ -61,7 +73,13 @@ export const accounts: Account[] = [
   {
     address: '0xd57478a81CF7DcA65996Ef0550367467cbD6309f',
     networkId: 'Kovan',
-    assets: [],
+    assets: [
+      {
+        uuid: '4d8b9524-e2c8-243b-cdca-c0a9f27a3b01',
+        balance: '5000000000000000000',
+        mtime: Date.now()
+      }
+    ],
     wallet: SecureWalletName.WEB3,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
