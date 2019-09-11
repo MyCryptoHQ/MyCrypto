@@ -4,4 +4,3 @@ export {
   NotificationsProvider,
   NotificationTemplates
 } from './NotificationsProvider';
-export * from './ScreenLockProvider';

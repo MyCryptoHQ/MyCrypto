@@ -4,9 +4,8 @@ import { HashRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ErrorScreen, LogOutPrompt } from 'components';
 import { BroadcastTx, Contracts, GenerateWallet, SendTransaction, SupportPage } from 'containers';
 import { Layout } from 'v2/features/Layout';
-import { Home, PageNotFound } from 'v2/features';
+import { Home, PageNotFound, ScreenLockProvider } from 'v2/features';
 import { useDevMode } from 'v2/services';
-import { ScreenLockProvider } from 'v2/providers';
 import { IS_PROD, IS_DOWNLOADABLE } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
 import {
