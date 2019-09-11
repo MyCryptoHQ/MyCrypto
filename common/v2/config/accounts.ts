@@ -80,12 +80,12 @@ export const accounts: Account[] = [
       },
       {
         uuid: 'ccafaddd-16bc-2d61-b40d-5ccaac7e9ad0',
-        balance: '43841287560000000000',
+        balance: '2889036600000000000',
         mtime: Date.now()
       },
       {
         uuid: '0e22bc58-3a71-c6f7-c649-cd32e5bfcccc',
-        balance: '2889036600000000000',
+        balance: '43841287560000000000',
         mtime: Date.now()
       },
       {
