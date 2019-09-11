@@ -1,4 +1,3 @@
-export * from './Wallets';
 export {
   DrawerContext,
   DrawerProvider,
