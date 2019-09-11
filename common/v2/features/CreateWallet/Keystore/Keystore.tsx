@@ -10,7 +10,7 @@ import { stripHexPrefix } from 'v2/services/EthService';
 import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 
-import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
+import { NotificationTemplates } from 'v2/features/NotificationsPanel';
 import {
   Account,
   Asset,

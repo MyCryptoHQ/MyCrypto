@@ -27,4 +27,5 @@ export { ReceiveAssets } from './ReceiveAssets';
 export { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchange';
 export { default as PageNotFound } from './PageNotFound';
 export { SignAndVerifyMessage } from './SignAndVerifyMessage';
+export { NotificationsProvider } from './NotificationsPanel';
 export { BroadcastTx } from './BroadcastTx';
