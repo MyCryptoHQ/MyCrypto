@@ -155,11 +155,7 @@ $speed: 500ms;
 }
 
 .MainPanel {
-  width: 700px; 
-
   @media (max-width: $screen-md) {
-    width: 300px; 
-    height: 769px;
-
+    width: 300px;
   }
 }
