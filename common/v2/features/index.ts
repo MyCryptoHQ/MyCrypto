@@ -1,5 +1,11 @@
 export * from './Wallets';
-export { Drawer, AccountScreen, UnlockScreen, SelectLanguage } from './Drawer';
+export {
+  DrawerContext,
+  DrawerProvider,
+  AccountScreen,
+  UnlockScreen,
+  SelectLanguage
+} from './Drawer';
 export { DevTools } from './DevTools';
 export { Home } from './Home';
 export { CreateWallet, Mnemonic, Keystore } from './CreateWallet';

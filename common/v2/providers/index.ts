@@ -1,4 +1,3 @@
-export { DrawerContext, default as DrawerProvider } from './DrawerProvider';
 export {
   NotificationsContext,
   NotificationsProvider,
