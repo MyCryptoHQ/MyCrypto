@@ -46,6 +46,21 @@ export const accounts: Account[] = [
         uuid: '01f2d4ec-c263-6ba8-de38-01d66c86f309',
         balance: '5000000000000000000',
         mtime: Date.now()
+      },
+      {
+        uuid: 'ffb050ad-968c-1b7a-66d1-376e1e446e2f',
+        balance: '10000000000000000000',
+        mtime: Date.now()
+      },
+      {
+        uuid: 'abd99e06-5af1-17b6-c3ea-361785b38acc',
+        balance: '1000000000000000000',
+        mtime: Date.now()
+      },
+      {
+        uuid: '0bc4af47-39a0-df9f-1001-ce46c3b91998',
+        balance: '10000000000000000000',
+        mtime: Date.now()
       }
     ],
     wallet: SecureWalletName.WEB3,
@@ -62,6 +77,21 @@ export const accounts: Account[] = [
         uuid: '89397517-5dcb-9cd1-76b5-224e3f0ace80',
         balance: '5000000000000000000',
         mtime: Date.now()
+      },
+      {
+        uuid: 'ccafaddd-16bc-2d61-b40d-5ccaac7e9ad0',
+        balance: '43841287560000000000',
+        mtime: Date.now()
+      },
+      {
+        uuid: '0e22bc58-3a71-c6f7-c649-cd32e5bfcccc',
+        balance: '2889036600000000000',
+        mtime: Date.now()
+      },
+      {
+        uuid: 'ae8388ab-fc6a-0655-9a74-2c04f438bde2',
+        balance: '16822485830000000000',
+        mtime: Date.now()
       }
     ],
     wallet: SecureWalletName.WEB3,
@@ -77,6 +107,16 @@ export const accounts: Account[] = [
       {
         uuid: '4d8b9524-e2c8-243b-cdca-c0a9f27a3b01',
         balance: '5000000000000000000',
+        mtime: Date.now()
+      },
+      {
+        uuid: '0c064d99-7912-baca-5129-e0f410a495f7',
+        balance: '1044780860000000000',
+        mtime: Date.now()
+      },
+      {
+        uuid: '9e8410c9-f470-4361-7088-487eba669a34',
+        balance: '176513630000000000',
         mtime: Date.now()
       }
     ],
