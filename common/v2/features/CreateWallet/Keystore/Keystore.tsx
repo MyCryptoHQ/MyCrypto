@@ -7,7 +7,7 @@ import { makeBlob } from 'utils/blob';
 import { N_FACTOR } from 'config';
 import { generateKeystore, fromV3 } from 'v2/workers';
 import { stripHexPrefix } from 'v2/services/EthService';
-import { getPrivKeyWallet } from 'libs/wallet/non-deterministic/wallets';
+import { getPrivKeyWallet } from 'v2/services/WalletService';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';

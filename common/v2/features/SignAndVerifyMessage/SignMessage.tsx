@@ -17,7 +17,8 @@ import {
 import { STORIES } from './stories';
 import { WALLET_INFO } from 'v2/config';
 import { AppState } from 'features/reducers';
-import { IFullWallet, setupWeb3Node } from 'v2/services/EthService';
+import { setupWeb3Node } from 'v2/services/EthService';
+import { IFullWallet } from 'v2/services/WalletService';
 import { messageToData } from 'features/message/sagas';
 import { paritySignerActions } from 'features/paritySigner';
 

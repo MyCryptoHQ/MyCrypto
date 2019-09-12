@@ -1,3 +1,3 @@
-import { Web3Wallet } from 'v2/services/EthService';
+import { Web3Wallet } from '../non-deterministic';
 
 export type TUnlockWeb3 = () => Promise<Web3Wallet | undefined>;

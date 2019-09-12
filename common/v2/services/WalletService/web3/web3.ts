@@ -7,7 +7,7 @@ import {
   shepherd,
   makeProviderConfig
 } from 'libs/nodes';
-import { isWeb3Node, setupWeb3Node, Web3Service, Web3Wallet } from 'v2/services/EthService';
+import { isWeb3Node, setupWeb3Node, Web3Service } from 'v2/services/EthService';
 import { CustomNodeConfig, NodeOptions, NodeType, Network } from 'v2/types';
 import {
   getNetworkByChainId,
@@ -16,6 +16,7 @@ import {
   updateSetting,
   readAllSettings
 } from 'v2/services/Store';
+import { Web3Wallet } from '../non-deterministic';
 
 let web3Added = true;
 

@@ -1,6 +1,7 @@
-import { IWallet, getPrivKeyWallet, IFullWallet } from 'v2/services/EthService';
 import { translateRaw } from 'translations';
 import { PrivateKeyUnlockParams } from './types';
+import { getPrivKeyWallet } from '../non-deterministic';
+import { IWallet, IFullWallet } from '../IWallet';
 
 export const unlockPrivateKey = async (
   payload: PrivateKeyUnlockParams
@@ -10,8 +11,7 @@ export const unlockPrivateKey = async (
   try {
     wallet = getPrivKeyWallet(key, password);
   } catch (e) {
-    // tslint:disable-next-line:no-console
-    console.log('Error: ' + translateRaw('INVALID_PKEY'));
+    console.debug('Error: ' + translateRaw('INVALID_PKEY'));
     return;
   }
   return wallet;

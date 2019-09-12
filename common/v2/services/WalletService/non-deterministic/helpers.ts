@@ -1,8 +1,3 @@
-import { IFullWallet } from 'ethereumjs-wallet';
-import Tx from 'ethereumjs-tx';
-
-import { signMessageWithPrivKeyV2, signRawTxWithPrivKey } from 'v2/services/EthService/utils';
-
 enum KeystoreTypes {
   presale = 'presale',
   utc = 'v2-v3-utc',
@@ -10,22 +5,6 @@ enum KeystoreTypes {
   v1Encrypted = 'v1-encrypted',
   v2Unencrypted = 'v2-unencrypted'
 }
-
-interface ISignWrapper {
-  signRawTransaction(rawTx: Tx): Buffer;
-  signMessage(msg: string): string;
-  unlock(): Promise<void>;
-}
-
-export type WrappedWallet = IFullWallet & ISignWrapper;
-
-export const signWrapper = (walletToWrap: IFullWallet): WrappedWallet =>
-  Object.assign(walletToWrap, {
-    signRawTransaction: (t: Tx) => signRawTxWithPrivKey(walletToWrap.getPrivateKey(), t),
-    signMessage: (msg: string) => signMessageWithPrivKeyV2(walletToWrap.getPrivateKey(), msg),
-    getPublicKeyString: () => walletToWrap.getPublicKeyString(),
-    unlock: () => Promise.resolve()
-  });
 
 function determineKeystoreType(file: string): string {
   const parsed = JSON.parse(file);

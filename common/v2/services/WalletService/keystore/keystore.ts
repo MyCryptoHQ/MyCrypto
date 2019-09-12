@@ -1,13 +1,13 @@
-import { KeystoreUnlockParams } from './types';
+import { translateRaw } from 'translations';
+import { signWrapper } from '../helpers';
 import {
   determineKeystoreType,
-  KeystoreTypes,
-  signWrapper,
   getKeystoreWallet,
   getUtcWallet,
-  IWallet
-} from 'v2/services/EthService';
-import { translateRaw } from 'translations';
+  KeystoreTypes
+} from '../non-deterministic';
+import { IWallet } from '../IWallet';
+import { KeystoreUnlockParams } from './types';
 
 export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
   const { file, password } = payload;
