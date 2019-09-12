@@ -25,7 +25,7 @@ import {
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
   baseToConvertedUnit,
-  isValidNumber
+  isValidPositiveNumber
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 
@@ -155,7 +155,7 @@ export default function SendAssetsForm({
                 !values.receiverAddress ||
                 !isValidETHAddress(values.receiverAddress.value) ||
                 !values.account ||
-                !isValidNumber(values.amount)
+                !isValidPositiveNumber(values.amount)
               )
             ) {
               setIsEstimatingGasLimit(true);

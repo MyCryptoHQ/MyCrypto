@@ -1,9 +1,10 @@
 import { isHexPrefixed } from 'ethjs-util';
 import {
   isValidHex,
-  isValidNumber,
   gasPriceValidator,
-  gasLimitValidator
+  gasLimitValidator,
+  isValidPositiveNumber,
+  isValidNonZeroInteger
 } from 'v2/services/EthService';
 import { translateRaw } from 'translations';
 
@@ -26,13 +27,13 @@ export function validateDataField(value: string): string | undefined {
 }
 
 export function validateNonceField(value: string): string | undefined {
-  if (!isValidNumber(value)) {
+  if (!isValidNonZeroInteger(value)) {
     return translateRaw('ERROR_11');
   }
 }
 
 export function validateAmountField(value: string): string | undefined {
-  if (!isValidNumber(value)) {
+  if (!isValidPositiveNumber(value)) {
     return translateRaw('ERROR_0');
   }
 }

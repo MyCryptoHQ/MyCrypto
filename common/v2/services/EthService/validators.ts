@@ -14,12 +14,19 @@ import {
 import { JsonRPCResponse } from 'v2/types';
 import { stripHexPrefix } from './utils';
 
-export const isValidNumber = (value: number | string) => {
-  if (typeof value === 'string') {
-    return isFinite(Number(value)) && Number(value) >= 0;
-  }
-  return isFinite(value) && value >= 0;
-};
+export const isValidInteger = (value: number | string) =>
+  isValidPositiveNumber(value) && isInteger(value);
+
+export const isValidNonZeroInteger = (value: number | string) =>
+  isValidInteger(value) && isPositiveNonZeroNumber(value);
+
+export const isValidPositiveNumber = (value: number | string) =>
+  isFinite(Number(value)) && Number(value) >= 0;
+
+const isPositiveNonZeroNumber = (value: number | string) => Number(value) > 0;
+
+const isInteger = (value: number | string) =>
+  Number.isInteger(typeof value === 'string' ? Number(value) : value);
 
 function isChecksumAddress(address: string): boolean {
   return address === toChecksumAddress(address);
@@ -120,9 +127,9 @@ export function isValidPath(dPath: string) {
 }
 
 export const gasLimitValidator = (gasLimit: number | string) => {
-  const gasLimitFloat = typeof gasLimit === 'string' ? Number(gasLimit) : gasLimit;
+  const gasLimitFloat = Number(gasLimit);
   return (
-    isValidNumber(gasLimitFloat) &&
+    isValidInteger(gasLimitFloat) &&
     gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
     gasLimitFloat <= GAS_LIMIT_UPPER_BOUND
   );
@@ -136,7 +143,7 @@ export const gasPriceValidator = (gasPrice: number | string): boolean => {
   const gasPriceFloat: number = typeof gasPrice === 'string' ? Number(gasPrice) : gasPrice;
   const decimalLength: string = gasPriceFloat.toString().split('.')[1];
   return (
-    isValidNumber(gasPriceFloat) &&
+    isValidPositiveNumber(gasPriceFloat) &&
     gasPriceFloat >= GAS_PRICE_GWEI_LOWER_BOUND &&
     gasPriceFloat <= GAS_PRICE_GWEI_UPPER_BOUND &&
     getLength(gasPriceFloat) <= 10 &&
