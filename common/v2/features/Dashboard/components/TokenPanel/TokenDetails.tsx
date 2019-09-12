@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { formatEther } from 'ethers/utils';
 
 import { translateRaw } from 'translations';
+import { AssetWithDetails } from 'v2/types';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';
@@ -69,7 +71,7 @@ const ResourceIcon = styled(Icon)`
 
 interface InfoPieceProps {
   title: string;
-  value: string | number | JSX.Element;
+  value: string | number | JSX.Element | undefined;
 }
 
 function InfoPiece(props: InfoPieceProps) {
@@ -117,50 +119,20 @@ const supportedSocialNetworks: ISocialNetwork = {
   }
 };
 
-export function TokenDetails() {
-  // TODO: Fetch real token details
-  const details = {
-    symbol: 'NRM',
-    name: 'Neuromachine Eternal',
-    type: 'ERC20',
-    address: '0x000000085824F23a070c2474442ED014c0e46B58',
-    ens_address: '',
-    decimals: 18,
-    website: 'https://nrm.world',
-    whitepaper: '',
-    logo: {
-      src: '',
-      width: '',
-      height: '',
-      ipfs_hash: ''
-    },
-    support: {
-      email: 'info@nrm.world',
-      url: ''
-    },
-    social: {
-      blog: '',
-      chat: '',
-      facebook: 'https://www.facebook.com/Neuromachine/',
-      forum: 'https://bitcointalk.org/index.php?topic=3300257',
-      github: 'https://github.com/NRM-Neuromachine',
-      gitter: '',
-      instagram: '',
-      linkedin: 'https://www.linkedin.com/company/neuromachine/',
-      reddit: '',
-      slack: '',
-      telegram: 'https://t.me/nrm_world',
-      twitter: 'https://twitter.com/nrm_cash',
-      youtube: ''
-    }
-  };
+interface Props {
+  currentToken: AssetWithDetails;
+}
+
+export function TokenDetails(props: Props) {
+  const { currentToken } = props;
+  const { details } = currentToken;
 
   interface ISocial {
     [index: string]: string;
   }
 
   // Find avaialble supported social links
-  const filteredSocial = details.social as ISocial;
+  const filteredSocial = (details.social || {}) as ISocial;
   Object.keys(filteredSocial).forEach(
     key =>
       (!filteredSocial[key] || !supportedSocialNetworks.hasOwnProperty(key)) &&
@@ -172,24 +144,27 @@ export function TokenDetails() {
     <div>
       <Section noMargin={true}>
         <TwoColumnsWrapper>
-          <InfoPiece title={translateRaw('LATEST_PRICE')} value="$3,037.95" />
-          <InfoPiece title={translateRaw('BALANCE')} value="393.239 OMG" />
+          <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + currentToken.rate} />
+          <InfoPiece
+            title={translateRaw('BALANCE')}
+            value={`${formatEther(currentToken.balance)} ${currentToken.ticker}`}
+          />
         </TwoColumnsWrapper>
       </Section>
       <Section>
-        <InfoPiece title={translateRaw('TOKEN_ADDRESS')} value={details.address} />
+        <InfoPiece title={translateRaw('TOKEN_ADDRESS')} value={currentToken.contractAddress} />
       </Section>
       <Section>
-        <InfoPiece title={translateRaw('TOKEN_DECIMALS')} value={details.decimals} />
+        <InfoPiece title={translateRaw('TOKEN_DECIMALS')} value={currentToken.decimal} />
       </Section>
       <Section>
-        <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={details.symbol} />
+        <InfoPiece title={translateRaw('TOKEN_SYMBOL')} value={currentToken.ticker} />
       </Section>
-      <Section>
-        <InfoPiece
-          title={translateRaw('RESOURCES')}
-          value={
-            (details.website || details.whitepaper) && (
+      {(details.website || details.whitepaper) && (
+        <Section>
+          <InfoPiece
+            title={translateRaw('RESOURCES')}
+            value={
               <Resources>
                 {details.website && (
                   <a href={details.website} target="_blank" rel="noreferrer">
@@ -208,22 +183,28 @@ export function TokenDetails() {
                   </a>
                 )}
               </Resources>
-            )
-          }
-        />
-      </Section>
-      <Section>
-        <InfoPiece
-          title={translateRaw('SOCIAL')}
-          value={
-            <>
-              {filteredSocialArray.map(social => {
-                return <Icon key={social} src={supportedSocialNetworks[social].icon} />;
-              })}
-            </>
-          }
-        />
-      </Section>
+            }
+          />
+        </Section>
+      )}
+      {Object.keys(filteredSocial).length > 0 && (
+        <Section>
+          <InfoPiece
+            title={translateRaw('SOCIAL')}
+            value={
+              <>
+                {filteredSocialArray.map(social => {
+                  return (
+                    <a key={social} href={details.social[social]} target="_blank" rel="noreferrer">
+                      <Icon src={supportedSocialNetworks[social].icon} />
+                    </a>
+                  );
+                })}
+              </>
+            }
+          />
+        </Section>
+      )}
     </div>
   );
 }
