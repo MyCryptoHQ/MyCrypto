@@ -50,6 +50,12 @@ import {
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
+import {
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_LIMIT_UPPER_BOUND,
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND
+} from 'v2/config';
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: {
@@ -60,7 +66,7 @@ const initialFormikValues: IFormikFields = {
   account: {} as ExtendedAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
   asset: {} as StoreAsset,
-  txDataField: '',
+  txDataField: '0x',
   gasEstimates: {
     // Not a field, move to state
     fastest: 20,
@@ -90,20 +96,21 @@ const QueryWarning: React.SFC<{}> = () => (
 
 const SendAssetsSchema = Yup.object().shape({
   amount: Yup.number()
-    .positive(translateRaw('ERROR_0'))
+    .min(0, translateRaw('ERROR_0'))
     .required(translateRaw('REQUIRED')),
   account: Yup.object().required(translateRaw('REQUIRED')),
   receiverAddress: Yup.object().required(translateRaw('REQUIRED')),
   gasLimitField: Yup.number()
-    .min(21000, translateRaw('ERROR_8'))
-    .max(8000000, translateRaw('ERROR_8'))
+    .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
+    .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
     .required(translateRaw('REQUIRED')),
   gasPriceField: Yup.number()
-    .min(0.1, translateRaw('ERROR_10'))
-    .max(3000, translateRaw('ERROR_10'))
+    .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
+    .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
     .required(translateRaw('REQUIRED')),
   nonceField: Yup.number()
-    .positive(translateRaw('ERROR_11'))
+    .integer(translateRaw('ERROR_11'))
+    .min(0, translateRaw('ERROR_11'))
     .required(translateRaw('REQUIRED'))
 });
 
@@ -389,6 +396,9 @@ export default function SendAssetsForm({
                             />
                           )}
                         />
+                        {errors && errors.gasPriceField && (
+                          <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
+                        )}
                       </div>
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
@@ -413,6 +423,9 @@ export default function SendAssetsForm({
                             />
                           )}
                         />
+                        {errors && errors.gasLimitField && (
+                          <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
+                        )}
                       </div>
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
@@ -440,19 +453,12 @@ export default function SendAssetsForm({
                             />
                           )}
                         />
+                        {errors && errors.nonceField && (
+                          <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>
+                        )}
                       </div>
                     </div>
-                    <div className="SendAssetsForm-errors">
-                      {errors && errors.gasPriceField && (
-                        <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
-                      )}
-                      {errors && errors.gasLimitField && (
-                        <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
-                      )}
-                      {errors && errors.nonceField && (
-                        <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>
-                      )}
-                    </div>
+
                     <fieldset className="SendAssetsForm-fieldset">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                         <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">
