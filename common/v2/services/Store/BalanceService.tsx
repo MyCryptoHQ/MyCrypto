@@ -103,3 +103,14 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
 
   return accountBalances;
 };
+
+export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {
+  const scanner = getScanner(account.network.nodes[0]);
+  const assetAddresses = getAssetAddresses(assets) as string[];
+
+  try {
+    return scanner.getTokensBalance(account.address, assetAddresses);
+  } catch (err) {
+    throw new Error(err);
+  }
+};

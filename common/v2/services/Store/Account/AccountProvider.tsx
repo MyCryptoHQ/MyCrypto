@@ -10,7 +10,7 @@ import {
   Asset,
   AssetBalanceObject
 } from 'v2/types';
-import { getAllTokensBalancesOfAccount } from 'v2/services/BalanceService';
+import { getAllTokensBalancesOfAccount } from 'v2/services';
 
 export interface ProviderState {
   accounts: ExtendedAccount[];
