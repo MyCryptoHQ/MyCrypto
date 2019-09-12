@@ -177,14 +177,29 @@ export const initTestAccounts = () => {
 
   newAccounts.map(accountToAdd => {
     const uuid = generateUUID();
+    // Map test UUID to actual UUID generated previously
+    Object.values(accountToAdd.assets).forEach(asset => {
+      const assetDefinition = newAssets[asset.uuid];
+      if (assetDefinition.type === 'base') {
+        const match = Object.values(newStorage.networks).find(
+          network => network.id === assetDefinition.networkId
+        );
+        asset.uuid = match ? match.baseAsset : asset.uuid;
+      } else {
+        const match = Object.values(newStorage.assets).find(
+          a =>
+            a.contractAddress &&
+            assetDefinition.contractAddress &&
+            a.contractAddress === assetDefinition.contractAddress
+        );
+        asset.uuid = match ? match.uuid : asset.uuid;
+      }
+    });
     newStorage.accounts[uuid] = accountToAdd;
     newStorage.settings.dashboardAccounts.push(uuid);
   });
   Object.keys(newLabels).map(labelId => {
     newStorage.addressBook[labelId] = newLabels[labelId];
-  });
-  Object.keys(newAssets).map(assetToAdd => {
-    newStorage.assets[assetToAdd] = newAssets[assetToAdd];
   });
   setCache(newStorage);
 };
