@@ -2,7 +2,12 @@ import React from 'react';
 import { Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
+import { convertToFiat } from 'v2/utils';
+import { AssetWithDetails } from 'v2/types/asset';
+
 import moreIcon from 'common/assets/images/icn-more.svg';
+
+const defaultTokenIcon = 'https://via.placeholder.com/28';
 
 const TokenListWrapper = styled.div`
   max-height: 300px;
@@ -43,10 +48,16 @@ const MoreIcon = styled.img`
   cursor: pointer;
 `;
 
+const TokenIcon = styled.img`
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+`;
+
 interface TokenListProps {
-  tokens: any[];
+  tokens: AssetWithDetails[];
   setShowDetailsView(show: boolean): void;
-  setCurrentToken(token: any): void;
+  setCurrentToken(token: AssetWithDetails): void;
 }
 
 export function TokenList(props: TokenListProps) {
@@ -56,11 +67,16 @@ export function TokenList(props: TokenListProps) {
       {tokens.map(token => (
         <Token key={token.name}>
           <Asset>
-            <img src={token.image} alt={name} />
+            <TokenIcon
+              src={
+                token.details.logo ? token.details.logo.src || defaultTokenIcon : defaultTokenIcon
+              }
+              alt={name}
+            />
             <AssetName>{token.name}</AssetName>
           </Asset>
           <TokenValueWrapper>
-            <TokenValue>{token.value}</TokenValue>
+            <TokenValue>${convertToFiat(token.balance, token.rate).toFixed(2)}</TokenValue>
             <MoreIcon
               src={moreIcon}
               alt="More"

@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
+import { Button } from '@mycrypto/ui';
 
 import { DashboardPanel } from 'v2/components';
 import { TokenList } from './TokenList';
 import { TokenDetails } from './TokenDetails';
 import { AddToken } from './AddToken';
+import { translateRaw } from 'translations';
+import { StoreContext, RatesContext, TokenInfoService } from 'v2/services';
+import { TTicker, AssetWithDetails } from 'v2/types';
 
 import backArrowIcon from 'common/assets/images/icn-back.svg';
 import expandIcon from 'common/assets/images/icn-expand.svg';
-import { Button } from '@mycrypto/ui';
-import { translateRaw } from 'translations';
+
+const defaultTokenIcon = 'https://via.placeholder.com/28';
 
 const Icon = styled.img`
   cursor: pointer;
@@ -22,54 +26,73 @@ const BackIcon = styled(Icon)`
 const StyledButton = styled(Button)`
   padding: 9px 16px;
   font-size: 18px;
+  margin-left: 8px;
 `;
 
-// Mock Data
-const tokens = [
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'Stack',
-    value: '$3,037.95',
-    ticker: 'STK'
-  },
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'OmiseGO',
-    value: '$3,037.95',
-    ticker: 'OMG'
-  },
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'Goerli',
-    value: '$3.33',
-    ticker: 'GRL'
-  },
-  {
-    image: 'https://placehold.it/30x30',
-    name: 'Ethereum',
-    value: '$186.99',
-    ticker: 'ETH'
-  }
-];
+const TokenIcon = styled.img`
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
+`;
 
 export function TokenPanel() {
   const [showDetailsView, setShowDetailsView] = useState(false);
   const [showAddToken, setShowAddToken] = useState(false);
-  const [currentToken, setCurrentToken] = useState();
+  const [currentToken, setCurrentToken] = useState<AssetWithDetails>();
+  const [allTokens, setAllTokens] = useState<AssetWithDetails[]>([]);
+
+  const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
+  const { getRate, rates } = useContext(RatesContext);
+
+  useEffect(() => {
+    const getTokensWithDetails = async () => {
+      const selectedAccounts = currentAccounts();
+      const tokenTotals = totals(selectedAccounts);
+
+      // Fetch details for all tokens of selected accounts
+      const tokensDetails: any[] = await TokenInfoService.instance.getTokensInfo(
+        tokenTotals.map(x => x.contractAddress!).filter(x => x)
+      );
+
+      // Add token details and token rate info to all assets that have  a contractAddress
+      const tempTokens = totals(selectedAccounts).reduce((tokens: AssetWithDetails[], asset) => {
+        if (asset.contractAddress) {
+          const existingTokenDetails = tokensDetails.find(
+            details => details.address === asset.contractAddress
+          );
+
+          tokens.push(
+            Object.assign(asset, {
+              rate: getRate(asset.ticker as TTicker) || 0,
+              details: existingTokenDetails || {}
+            })
+          );
+        }
+        return tokens;
+      }, []);
+
+      setAllTokens(tempTokens);
+    };
+
+    getTokensWithDetails();
+  }, [accounts, rates]);
 
   const TokenListPanel = () => {
     return (
       <DashboardPanel
         heading="Tokens"
         headingRight={
-          <StyledButton onClick={() => setShowAddToken(true)}>
-            + {translateRaw('ADD_TOKEN')}
-          </StyledButton>
+          <div>
+            <StyledButton onClick={scanTokens}>{translateRaw('SCAN_TOKENS')}</StyledButton>
+            <StyledButton onClick={() => setShowAddToken(true)}>
+              + {translateRaw('ADD_TOKEN')}
+            </StyledButton>
+          </div>
         }
         padChildren={true}
       >
         <TokenList
-          tokens={tokens}
+          tokens={allTokens}
           setShowDetailsView={setShowDetailsView}
           setCurrentToken={setCurrentToken}
         />
@@ -79,18 +102,30 @@ export function TokenPanel() {
 
   const DetailsPanel = () => {
     return (
-      <DashboardPanel
-        heading={
-          <div>
-            <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
-            {currentToken.name}
-          </div>
-        }
-        headingRight={<Icon src={expandIcon} />}
-        padChildren={true}
-      >
-        <TokenDetails />
-      </DashboardPanel>
+      <>
+        {currentToken && (
+          <DashboardPanel
+            heading={
+              <div>
+                <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
+                <TokenIcon
+                  src={
+                    currentToken.details.logo
+                      ? currentToken.details.logo.src || defaultTokenIcon
+                      : defaultTokenIcon
+                  }
+                  alt={currentToken.name}
+                />
+                {currentToken.name}
+              </div>
+            }
+            headingRight={<Icon src={expandIcon} />}
+            padChildren={true}
+          >
+            <TokenDetails currentToken={currentToken} />
+          </DashboardPanel>
+        )}
+      </>
     );
   };
 
@@ -111,7 +146,7 @@ export function TokenPanel() {
         }
         padChildren={true}
       >
-        <AddToken />
+        <AddToken setShowAddToken={setShowAddToken} />
       </DashboardPanel>
     );
   };
