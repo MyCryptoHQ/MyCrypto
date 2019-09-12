@@ -35,3 +35,10 @@ export interface AssetBalanceObject {
 }
 
 export type StoreAsset = Asset & { balance: BigNumber; mtime: number };
+
+export type AssetWithDetails = Asset & {
+  details: any;
+  balance: BigNumber;
+  rate: number;
+  mtime: number;
+};

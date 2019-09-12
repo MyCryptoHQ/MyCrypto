@@ -33,7 +33,8 @@ export {
   TTicker,
   TAssetType,
   AssetBalanceObject,
-  StoreAsset
+  StoreAsset,
+  AssetWithDetails
 } from './asset';
 export { Account, ExtendedAccount, StoreAccount } from './account';
 export { AddressBook, ExtendedAddressBook } from './addressBook';
