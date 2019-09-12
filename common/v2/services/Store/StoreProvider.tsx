@@ -20,13 +20,14 @@ interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
+  scanTokens(): void;
 }
 export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-  const { accounts: rawAccounts } = useContext(AccountContext);
+  const { accounts: rawAccounts, updateAccountAssets } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
   const { settings } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
@@ -90,7 +91,13 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
-    ]
+    ],
+    scanTokens: async () => {
+      // TODO: Add support for other networks
+      const ethAccounts = state.accounts.filter(account => account.networkId === 'Ethereum');
+      const slicedAssets = assets.slice(0, 100); // TODO: Fetch all balances
+      await Promise.all(ethAccounts.map(account => updateAccountAssets(account, slicedAssets)));
+    }
   };
 
   // 1. I actually want to watch all the base and token balance for every
