@@ -1,7 +1,6 @@
 import { Overwrite } from 'utility-types';
 
-import { TWalletType } from './wallets';
-import { WalletName } from './wallet';
+import { WalletName, TWalletType } from './wallet';
 import { ITxReceipt } from 'v2/types';
 import { AssetBalanceObject, StoreAsset } from './asset';
 import { Network } from './network';

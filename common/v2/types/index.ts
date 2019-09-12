@@ -1,6 +1,5 @@
 import { TAddress } from './address';
-import { TWalletType } from './wallets';
-import { Wallet, ExtendedWallet, WalletName } from './wallet';
+import { TWalletType, Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
 import { IRates } from './rates';
 import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
