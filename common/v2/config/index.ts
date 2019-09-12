@@ -5,7 +5,6 @@ export * from './helpArticles';
 export * from './links';
 export * from './tokens';
 export { DPaths, dPathRegex } from './dpaths';
-export { WALLETS_CONFIG } from './wallets';
 export {
   DEFAULT_NETWORK_FOR_FALLBACK,
   DEFAULT_NETWORK,

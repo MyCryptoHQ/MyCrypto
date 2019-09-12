@@ -38,16 +38,6 @@ export const CACHE_INIT_DEV: LocalCache = {
       mtime: Date.now()
     }
   },
-  wallets: {
-    MetaMask: {
-      name: 'MetaMask',
-      key: 'metamask',
-      secure: true,
-      web3: true,
-      hardware: false,
-      desktopOnly: false
-    }
-  },
   assets: {
     '12d3cbf2-de3a-4050-a0c6-521592e4b85a': {
       uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a',
@@ -125,7 +115,6 @@ export const CACHE_INIT: LocalCache = {
     inactivityTimer: 1800000
   },
   accounts: {},
-  wallets: {},
   assets: {},
   networks: {},
   contracts: {},

@@ -3,7 +3,6 @@ import {
   Fiats,
   ContractsData,
   AssetsData,
-  WALLETS_CONFIG,
   NODES_CONFIG,
   NETWORKS_CONFIG,
   testAccounts,
@@ -18,7 +17,6 @@ import {
   Network,
   NetworkLegacy,
   NetworkId,
-  Wallet,
   InsecureWalletName
 } from 'v2/types';
 import { hardRefreshCache, getCacheRaw, setCache } from './LocalCache';
@@ -38,7 +36,6 @@ export const initializeCache = () => {
     initFiatCurrencies();
     initNetworks();
     initNodeOptions();
-    initWallets();
     initSettings();
     initContracts();
     initAssets();
@@ -52,13 +49,6 @@ export const initializeCache = () => {
 export const initSettings = () => {
   const newStorage = getCacheRaw();
   newStorage.settings = testSettings;
-  setCache(newStorage);
-};
-
-export const initWallets = () => {
-  const newStorage = getCacheRaw();
-  const wallets: Record<string, Wallet> = WALLETS_CONFIG;
-  newStorage.wallets = wallets;
   setCache(newStorage);
 };
 

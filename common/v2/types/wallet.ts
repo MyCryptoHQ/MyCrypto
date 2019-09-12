@@ -1,18 +1,5 @@
 import { getValues } from 'v2/utils/getValues';
 
-export interface Wallet {
-  name: string;
-  key: string;
-  secure: boolean;
-  web3: boolean;
-  hardware: boolean;
-  desktopOnly: boolean;
-}
-
-export interface ExtendedWallet extends Wallet {
-  uuid: string;
-}
-
 export enum SecureWalletName {
   WEB3 = 'web3',
   LEDGER_NANO_S = 'ledgerNanoS',
@@ -42,9 +29,9 @@ export enum DefaultWalletName {
 }
 
 export enum WalletType {
-  SECURE,
-  INSECURE,
-  MISC
+  SECURE = 'SECURE',
+  INSECURE = 'INSECURE',
+  MISC = 'VIEW_ONLY'
 }
 
 export const walletNames = getValues(
