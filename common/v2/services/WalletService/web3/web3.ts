@@ -8,7 +8,7 @@ import {
   makeProviderConfig
 } from 'libs/nodes';
 import { isWeb3Node, setupWeb3Node, Web3Service } from 'v2/services/EthService';
-import { CustomNodeConfig, NodeOptions, NodeType, Network } from 'v2/types';
+import { NodeOptions, NodeType, Network } from 'v2/types';
 import {
   getNetworkByChainId,
   createNode,
@@ -90,11 +90,3 @@ export const getWeb3Node = async () => {
   return null;
 };
 export const isWeb3NodeId = (nodeId: string) => nodeId === 'web3';
-
-export const createNewWeb3Node = async (
-  id: string,
-  newNode: CustomNodeConfig,
-  network: Network
-) => {
-  createNode({ ...newNode, name: id, type: NodeType.WEB3 }, network);
-};
