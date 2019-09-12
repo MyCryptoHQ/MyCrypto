@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
-import { useStateReducer } from 'v2/services';
+import { useStateReducer } from 'v2/utils';
 import { TWalletType, ITxReceipt } from 'v2/types';
 import {
   ConfirmTransaction,

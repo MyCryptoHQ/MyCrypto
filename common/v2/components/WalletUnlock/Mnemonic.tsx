@@ -11,7 +11,7 @@ import { formatMnemonic } from 'utils/formatters';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
 import DeterministicWallets from './DeterministicWallets';
-import { unlockMnemonic } from 'v2/features/Wallets';
+import { unlockMnemonic } from 'v2/services/WalletService';
 
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import questionToolTip from 'common/assets/images/icn-question.svg';

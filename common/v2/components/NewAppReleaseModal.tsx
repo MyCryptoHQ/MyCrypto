@@ -5,9 +5,9 @@ import semver from 'semver';
 
 import Modal from './Modal';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { GITHUB_RELEASE_NOTES_URL } from 'v2/config';
+import { GITHUB_RELEASE_NOTES_URL, OS } from 'v2/config';
 import { getFeaturedOS } from 'v2/utils';
-import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService, OS } from 'v2/services/ApiService';
+import { AnalyticsService, ANALYTICS_CATEGORIES, GithubService } from 'v2/services/ApiService';
 import { VERSION as currentVersion } from 'config';
 import translate from 'translations';
 

@@ -3,12 +3,9 @@ import { Panel, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { BREAK_POINTS } from 'v2/theme';
-import {
-  NotificationsContext,
-  notificationsConfigs,
-  NotificationTemplates
-} from 'v2/providers/NotificationsProvider';
 import { ExtendedAccount } from 'v2/types';
+import { NotificationsContext } from './NotificationsProvider';
+import { notificationsConfigs, NotificationTemplates } from './constants';
 
 // Legacy
 import closeIcon from 'common/assets/images/icn-close.svg';

@@ -1,5 +1,5 @@
 import { FallbackProvider, TransactionReceipt, TransactionResponse, Block } from 'ethers/providers';
-import { formatEther } from 'ethers/utils/units';
+import { formatEther, BigNumber } from 'ethers/utils';
 
 import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
@@ -22,7 +22,11 @@ export class ProviderHandler {
 
   /* Tested */
   public getBalance(address: string): Promise<string> {
-    return this.client.getBalance(address).then(data => formatEther(data));
+    return this.getRawBalance(address).then(data => formatEther(data));
+  }
+
+  public getRawBalance(address: string): Promise<BigNumber> {
+    return this.client.getBalance(address);
   }
 
   /* Tested*/
@@ -30,20 +34,21 @@ export class ProviderHandler {
     return this.client.estimateGas(transaction).then(data => data.toString());
   }
 
-  /* Tested */
-  public getTokenBalance(address: string, token: Asset): Promise<string> {
+  public getRawTokenBalance(address: string, token: Asset): Promise<string> {
     return this.client
       .call({
         to: this.requests.getTokenBalance(address, token).params[0].to,
         data: this.requests.getTokenBalance(address, token).params[0].data
       })
       .then(data => ERC20.balanceOf.decodeOutput(data))
-      .then(({ balance }) => {
-        if (token.decimal) {
-          return baseToConvertedUnit(balance, token.decimal);
-        }
-        return baseToConvertedUnit(balance, 18);
-      });
+      .then(({ balance }) => balance);
+  }
+
+  /* Tested */
+  public getTokenBalance(address: string, token: Asset): Promise<string> {
+    return this.getRawTokenBalance(address, token).then(balance =>
+      baseToConvertedUnit(balance, token.decimal || 18)
+    );
   }
 
   /* Tested */
