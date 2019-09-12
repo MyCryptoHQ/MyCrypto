@@ -1,4 +1,4 @@
-import { OS } from 'v2/services/ApiService';
+import { OS } from 'v2/config';
 
 export const getFeaturedOS = (): string => {
   let featuredOS: string = OS.LINUX64;

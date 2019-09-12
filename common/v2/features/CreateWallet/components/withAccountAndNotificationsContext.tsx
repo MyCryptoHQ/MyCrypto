@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { NotificationsContext } from 'v2/providers';
+import { NotificationsContext } from 'v2/features/NotificationsPanel';
 import { AccountContext, SettingsContext, createAssetWithID } from 'v2/services/Store';
 
 export const withAccountAndNotificationsContext = (Component: any) => (props: any) => {
