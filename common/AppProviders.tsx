@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NotificationsProvider } from 'v2/providers';
+import { NotificationsProvider } from 'v2/features';
 import {
   AccountProvider,
   AddressBookProvider,

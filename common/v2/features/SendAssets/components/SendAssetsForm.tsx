@@ -5,6 +5,7 @@ import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
 import { BigNumber, formatEther } from 'ethers/utils';
 import BN from 'bn.js';
+import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
@@ -56,6 +57,12 @@ import {
   GAS_PRICE_GWEI_LOWER_BOUND,
   GAS_PRICE_GWEI_UPPER_BOUND
 } from 'v2/config';
+
+export const AdvancedOptionsButton = styled(Button)`
+  width: 100%;
+  color: #1eb8e7;
+  text-align: center;
+`;
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: {
@@ -371,13 +378,9 @@ export default function SendAssetsForm({
               </fieldset>
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
-                <Button
-                  basic={true}
-                  onClick={toggleAdvancedOptions}
-                  className="SendAssetsForm-advancedOptions-button"
-                >
+                <AdvancedOptionsButton basic={true} onClick={toggleAdvancedOptions}>
                   {values.advancedTransaction ? 'Hide' : 'Show'} Advanced Options
-                </Button>
+                </AdvancedOptionsButton>
                 {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">

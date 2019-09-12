@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
 import { BREAK_POINTS } from 'v2/theme';
-import { DrawerProvider, DrawerContext } from 'v2/providers';
+import { DrawerContext } from 'v2/features';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -47,18 +47,16 @@ export default function Layout({ centered = true, fluid, className = '', childre
   const { visible, toggleVisible, setScreen } = useContext(DrawerContext);
 
   return (
-    <DrawerProvider>
-      <SMain className={className}>
-        <Header
-          drawerVisible={visible}
-          toggleDrawerVisible={toggleVisible}
-          setDrawerScreen={setScreen}
-        />
-        <SContainer centered={centered} fluid={fluid}>
-          {children}
-        </SContainer>
-        <Footer />
-      </SMain>
-    </DrawerProvider>
+    <SMain className={className}>
+      <Header
+        drawerVisible={visible}
+        toggleDrawerVisible={toggleVisible}
+        setDrawerScreen={setScreen}
+      />
+      <SContainer centered={centered} fluid={fluid}>
+        {children}
+      </SContainer>
+      <Footer />
+    </SMain>
   );
 }

@@ -15,7 +15,7 @@ import {
   WalletNotAddedNotification,
   OnboardingPleaseUnderstandNotification,
   OnboardingResponsibleNotification
-} from 'v2/features/Dashboard/NotificationsPanel/components';
+} from './components';
 
 export const NotificationTemplates = {
   walletCreated: 'wallet-created',

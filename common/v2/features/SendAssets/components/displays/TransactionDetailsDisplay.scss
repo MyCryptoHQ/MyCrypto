@@ -1,7 +1,9 @@
 .TransactionDetails {
   margin-bottom: 25px;
   display: block;
-
+  @media (min-width: 700px) {
+    max-width: 560px;
+  }
   &-row {
     display: flex;
     align-items: center;
@@ -9,7 +11,6 @@
 
     &-column {
       flex: 1;
-
       &:first-child {
         font-weight: bold;
       }
@@ -19,14 +20,16 @@
     }
 
     &-data {
-      width: 150px;
+      width: 100%;
       display: inline-block;
       overflow-wrap: break-word;
+      //overflow-wrap: break-word;
     }
   }
 
   &-detailButton {
     width: 100%;
+    align-items: center;
     margin-bottom: 15px;
     color: #1eb8e7;
   }

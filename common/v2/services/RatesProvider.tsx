@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import { StoreContext } from 'v2/services/Store';
+import { StoreContext, AccountContext } from 'v2/services/Store';
 import { PollingService } from 'v2/workers';
 import { IRates, TTicker } from 'v2/types';
 
@@ -21,7 +21,8 @@ export const RatesContext = createContext({} as State);
 
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const [rates, setRates] = useState({});
-  const { accounts, assetTickers } = useContext(StoreContext);
+  const { accounts: rawAccounts } = useContext(AccountContext);
+  const { assetTickers } = useContext(StoreContext);
 
   useEffect(() => {
     // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
@@ -41,7 +42,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
     worker.start();
     return terminateWorker; // make sure we terminate the previous worker on teardown.
-  }, [accounts]); // only update  if accounts have changed.
+  }, [rawAccounts]); // only update if an account has been added or removed from LocalStorage.
 
   const state: State = {
     rates: {},

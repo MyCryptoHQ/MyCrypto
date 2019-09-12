@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { NotificationsContext, NotificationTemplates } from 'v2/providers/NotificationsProvider';
+import { NotificationsContext, NotificationTemplates } from 'v2/features/NotificationsPanel';
 
 const ToolWrapper = styled.div`
   display: flex;

@@ -1,3 +1,4 @@
+import { TAddress } from './address';
 import { TWalletType } from './wallets';
 import { Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
@@ -15,6 +16,7 @@ export type WalletName = WalletName;
 export type TSymbol = TSymbol;
 export type IRates = IRates;
 export type TWalletType = TWalletType;
+export type TAddress = TAddress;
 
 export {
   DefaultWalletName,
