@@ -11,7 +11,7 @@ export const unlockPrivateKey = async (
   try {
     wallet = getPrivKeyWallet(key, password);
   } catch (e) {
-    console.debug('Error: ' + translateRaw('INVALID_PKEY'));
+    console.error('Error: ' + translateRaw('INVALID_PKEY'));
     return;
   }
   return wallet;

@@ -23,11 +23,9 @@ export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
       password === '' &&
       e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
     ) {
-      // tslint:disable-next-line:no-console
-      console.log('Error: ' + 'Please Enter a password.');
+      console.error('Error: ' + 'Please Enter a password.');
     } else {
-      // tslint:disable-next-line:no-console
-      console.log('Error: ' + translateRaw('ERROR_6'));
+      console.error('Error: ' + translateRaw('ERROR_6'));
     }
     return;
   }
