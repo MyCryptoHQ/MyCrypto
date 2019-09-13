@@ -6,6 +6,7 @@ import {
   isValidPositiveNumber
 } from 'v2/services/EthService';
 import { translateRaw } from 'translations';
+import { isValidPositiveOrZeroInteger } from 'v2/services/EthService/validators';
 
 export function validateGasPriceField(value: string): string | undefined {
   if (!gasPriceValidator(value)) {
@@ -26,7 +27,7 @@ export function validateDataField(value: string): string | undefined {
 }
 
 export function validateNonceField(value: string): string | undefined {
-  if (!isValidPositiveNumber(value)) {
+  if (!isValidPositiveOrZeroInteger(value)) {
     return translateRaw('ERROR_11');
   }
 }

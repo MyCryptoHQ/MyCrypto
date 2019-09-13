@@ -55,7 +55,7 @@ export {
   isValidPrivKey,
   isValidETHAddress,
   isValidHex,
-  isValidInteger,
+  isValidPositiveOrZeroInteger,
   isValidPositiveNumber,
   isValidNonZeroInteger,
   gasPriceValidator,

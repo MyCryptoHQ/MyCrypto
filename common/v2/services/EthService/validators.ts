@@ -14,11 +14,11 @@ import {
 import { JsonRPCResponse } from 'v2/types';
 import { stripHexPrefix } from './utils';
 
-export const isValidInteger = (value: number | string) =>
+export const isValidPositiveOrZeroInteger = (value: number | string) =>
   isValidPositiveNumber(value) && isInteger(value);
 
 export const isValidNonZeroInteger = (value: number | string) =>
-  isValidInteger(value) && isPositiveNonZeroNumber(value);
+  isValidPositiveOrZeroInteger(value) && isPositiveNonZeroNumber(value);
 
 export const isValidPositiveNumber = (value: number | string) =>
   isFinite(Number(value)) && Number(value) >= 0;
@@ -129,7 +129,7 @@ export function isValidPath(dPath: string) {
 export const gasLimitValidator = (gasLimit: number | string) => {
   const gasLimitFloat = Number(gasLimit);
   return (
-    isValidInteger(gasLimitFloat) &&
+    isValidPositiveOrZeroInteger(gasLimitFloat) &&
     gasLimitFloat >= GAS_LIMIT_LOWER_BOUND &&
     gasLimitFloat <= GAS_LIMIT_UPPER_BOUND
   );
