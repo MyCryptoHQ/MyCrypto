@@ -65,8 +65,8 @@ interface AccountListProps {
 
 export default function AccountList(props: AccountListProps) {
   const { className, currentsOnly, deletable, favoritable, footerAction, footerActionLink } = props;
-  const { currentAccounts } = useContext(StoreContext);
-  const { accounts, deleteAccount, updateAccount } = useContext(AccountContext);
+  const { currentAccounts, accounts } = useContext(StoreContext);
+  const { deleteAccount, updateAccount } = useContext(AccountContext);
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;
@@ -98,7 +98,7 @@ export default function AccountList(props: AccountListProps) {
 }
 
 function buildAccountTable(
-  accounts: ExtendedAccount[],
+  accounts: StoreAccount[],
   deleteAccount: DeleteAccount,
   updateAccount: UpdateAccount,
   deletable?: boolean,
@@ -117,7 +117,7 @@ function buildAccountTable(
     head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
     body: accounts.map((account, index) => {
       const addressCard: AddressBook | undefined = getLabelByAccount(account);
-      const total = totalFiat([account as StoreAccount])(getRate);
+      const total = totalFiat([account])(getRate);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       const bodyContent = [
         <Label key={index}>
