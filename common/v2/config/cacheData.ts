@@ -7,19 +7,23 @@ import { NetworkAssets, Token } from './tokens';
 export interface Fiat {
   code: string;
   name: string;
+  symbol: string;
 }
 
 export const USD = {
   code: 'USD',
-  name: 'US Dollars'
+  name: 'US Dollars',
+  symbol: '$'
 };
 export const EUR = {
   code: 'EUR',
-  name: 'Euros'
+  name: 'Euros',
+  symbol: '€'
 };
 export const GBP = {
   code: 'GBP',
-  name: 'British Pounds'
+  name: 'British Pounds',
+  symbol: '£'
 };
 
 export const Fiats: Fiat[] = [USD, EUR, GBP];
