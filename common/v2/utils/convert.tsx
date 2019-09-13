@@ -1,4 +1,5 @@
 import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
+import BN from 'bn.js';
 
 // Rate is received as decimal numbers, sometimes with as many as 4 decimals
 // While the balance is a BigNumber.js
@@ -7,7 +8,7 @@ import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
 export const convertToFiat = (balance: BigNumber, rate: number = 1): number => {
   rate = parseFloat(rate.toFixed(4));
   const rateDivisor = 10000;
-  const rateBN = bigNumberify(rate * rateDivisor);
+  const rateBN = bigNumberify(new BN(rate).mul(new BN(rateDivisor)).toString());
   const convertedFloat = parseFloat(formatEther(balance.mul(rateBN)));
   return convertedFloat / rateDivisor;
 };
