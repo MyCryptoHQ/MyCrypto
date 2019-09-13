@@ -91,9 +91,7 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
   // for the moment EthScan is only deployed on Ethereum, so we use JSON_RPC to get the
   // balance for the accounts on the other networks.
   const [ethScanCompatibleAccounts, jsonRPCAccounts] = partition(accounts, account =>
-    ETHSCAN_NETWORKS.some(supportedNetwork => {
-      return account && account.networkId === supportedNetwork;
-    })
+    ETHSCAN_NETWORKS.some(supportedNetwork => account && account.networkId === supportedNetwork)
   );
 
   const accountBalances = await Promise.all(
