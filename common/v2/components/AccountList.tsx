@@ -4,10 +4,9 @@ import styled from 'styled-components';
 import { Button, CollapsibleTable, Copyable, Network, Typography, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, Fiats } from 'v2/config';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
-import { Fiats } from 'v2/config';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
 import { AccountContext, getLabelByAccount, StoreContext } from 'v2/services/Store';
 import { DashboardPanel } from './DashboardPanel';

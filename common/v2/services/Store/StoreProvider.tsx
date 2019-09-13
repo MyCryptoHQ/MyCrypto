@@ -18,7 +18,7 @@ interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totalFiat(
     selectedAccounts?: StoreAccount[]
-  ): (getRate: (ticker: TTicker) => number | undefined) => Number;
+  ): (getRate: (ticker: TTicker) => number | undefined) => number;
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
 }
