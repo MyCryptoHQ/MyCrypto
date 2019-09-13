@@ -3,8 +3,7 @@ import {
   isValidHex,
   gasPriceValidator,
   gasLimitValidator,
-  isValidPositiveNumber,
-  isValidNonZeroInteger
+  isValidPositiveNumber
 } from 'v2/services/EthService';
 import { translateRaw } from 'translations';
 
@@ -27,7 +26,7 @@ export function validateDataField(value: string): string | undefined {
 }
 
 export function validateNonceField(value: string): string | undefined {
-  if (!isValidNonZeroInteger(value)) {
+  if (!isValidPositiveNumber(value)) {
     return translateRaw('ERROR_11');
   }
 }
