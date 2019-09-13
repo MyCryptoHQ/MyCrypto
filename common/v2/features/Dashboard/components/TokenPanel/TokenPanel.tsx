@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { DashboardPanel } from 'v2/components';
+import { DashboardPanel, Spinner } from 'v2/components';
 import { TokenList } from './TokenList';
 import { TokenDetails } from './TokenDetails';
 import { AddToken } from './AddToken';
@@ -35,14 +35,32 @@ const TokenIcon = styled.img`
   margin-right: 8px;
 `;
 
+const SpinnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+`;
+
 export function TokenPanel() {
   const [showDetailsView, setShowDetailsView] = useState(false);
   const [showAddToken, setShowAddToken] = useState(false);
   const [currentToken, setCurrentToken] = useState<AssetWithDetails>();
   const [allTokens, setAllTokens] = useState<AssetWithDetails[]>([]);
+  const [isScanning, setIsScanning] = useState(false);
 
   const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
   const { getRate, rates } = useContext(RatesContext);
+
+  const handleScanTokens = async () => {
+    try {
+      setIsScanning(true);
+      await scanTokens();
+      setIsScanning(false);
+    } catch (e) {
+      setIsScanning(false);
+    }
+  };
 
   useEffect(() => {
     const getTokensWithDetails = async () => {
@@ -83,7 +101,7 @@ export function TokenPanel() {
         heading="Tokens"
         headingRight={
           <div>
-            <StyledButton onClick={scanTokens}>{translateRaw('SCAN_TOKENS')}</StyledButton>
+            <StyledButton onClick={handleScanTokens}>{translateRaw('SCAN_TOKENS')}</StyledButton>
             <StyledButton onClick={() => setShowAddToken(true)}>
               + {translateRaw('ADD_TOKEN')}
             </StyledButton>
@@ -91,11 +109,17 @@ export function TokenPanel() {
         }
         padChildren={true}
       >
-        <TokenList
-          tokens={allTokens}
-          setShowDetailsView={setShowDetailsView}
-          setCurrentToken={setCurrentToken}
-        />
+        {isScanning ? (
+          <SpinnerWrapper>
+            <Spinner size="x3" />
+          </SpinnerWrapper>
+        ) : (
+          <TokenList
+            tokens={allTokens}
+            setShowDetailsView={setShowDetailsView}
+            setCurrentToken={setCurrentToken}
+          />
+        )}
       </DashboardPanel>
     );
   };
@@ -146,7 +170,7 @@ export function TokenPanel() {
         }
         padChildren={true}
       >
-        <AddToken setShowAddToken={setShowAddToken} />
+        <AddToken setShowAddToken={setShowAddToken} scanTokens={handleScanTokens} />
       </DashboardPanel>
     );
   };
