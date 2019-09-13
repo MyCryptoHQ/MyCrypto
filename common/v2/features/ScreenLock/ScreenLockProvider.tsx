@@ -4,6 +4,7 @@ import CryptoJS, { SHA256, AES } from 'crypto-js';
 
 import { translateRaw } from 'translations';
 import { ROUTE_PATHS } from 'v2/config';
+import { default as ScreenLockLocking } from './ScreenLockLocking';
 import {
   readAllSettings,
   getCache,
@@ -11,13 +12,10 @@ import {
   destroyCache,
   getEncryptedCache,
   setCache,
-  destroyEncryptedCache
-} from 'v2/services/Store';
-import {
+  destroyEncryptedCache,
   updateScreenLockSettings,
   readScreenLockSettings
-} from 'v2/services/Store/ScreenLock/ScreenLockSettings';
-import { ScreenLockLocking } from 'v2/features';
+} from 'v2/services/Store';
 
 interface State {
   locking: boolean;
@@ -32,6 +30,9 @@ let inactivityTimer: any = null;
 let countDownTimer: any = null;
 const countDownDuration: number = 59;
 
+// Would be better to have in services/Store but circular dependencies breaks
+// Jest test. Consider adopting such as importing from a 'internal.js'
+// https://medium.com/visual-development/how-to-fix-nasty-circular-dependency-issues-once-and-for-all-in-javascript-typescript-a04c987cf0de
 class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
   public state: State = {
     locking: false,
@@ -182,14 +183,15 @@ class ScreenLockProvider extends Component<RouteComponentProps<{}>, State> {
 
     return (
       <ScreenLockContext.Provider value={this.state}>
-        {locking && (
+        {locking ? (
           <ScreenLockLocking
             onScreenLockClicked={() => this.handleCountdownEnded()}
             onCancelLockCountdown={() => this.cancelLockCountdown()}
             timeLeft={timeLeft}
           />
+        ) : (
+          children
         )}
-        {children}
       </ScreenLockContext.Provider>
     );
   }

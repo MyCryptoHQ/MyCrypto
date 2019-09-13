@@ -8,7 +8,7 @@ import { AccountContext, AddressBookContext } from 'v2/services/Store';
 import { translate, translateRaw } from 'translations';
 import { AccountList, BannerAd, Desktop, Mobile } from 'v2/components';
 import { ActionTile, TokenPanel, WalletBreakdown, RecentTransactionList } from './components';
-import { NotificationsPanel } from './NotificationsPanel';
+import { NotificationsPanel } from '../NotificationsPanel';
 import { actions } from './constants';
 import './Dashboard.scss';
 

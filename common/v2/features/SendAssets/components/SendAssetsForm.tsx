@@ -49,6 +49,13 @@ import {
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
+import styled from 'styled-components';
+
+export const AdvancedOptionsButton = styled(Button)`
+  width: 100%;
+  color: #1eb8e7;
+  text-align: center;
+`;
 
 const initialFormikValues: IFormikFields = {
   receiverAddress: {
@@ -332,13 +339,9 @@ export default function SendAssetsForm({
               </fieldset>
               {/* Advanced Options */}
               <div className="SendAssetsForm-advancedOptions">
-                <Button
-                  basic={true}
-                  onClick={toggleAdvancedOptions}
-                  className="SendAssetsForm-advancedOptions-button"
-                >
+                <AdvancedOptionsButton basic={true} onClick={toggleAdvancedOptions}>
                   {values.advancedTransaction ? 'Hide' : 'Show'} Advanced Options
-                </Button>
+                </AdvancedOptionsButton>
                 {values.advancedTransaction && (
                   <div className="SendAssetsForm-advancedOptions-content">
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">

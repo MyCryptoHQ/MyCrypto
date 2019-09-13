@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Redirect } from 'react-router';
 
-import { NotificationsContext, NotificationTemplates } from 'v2/providers';
+import { NotificationsContext, NotificationTemplates } from 'v2/features/NotificationsPanel';
 import { generateUUID } from 'v2/utils';
 import {
   AccountContext,

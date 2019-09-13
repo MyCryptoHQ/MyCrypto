@@ -3,7 +3,7 @@ import { Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
-import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services/ApiService';
 
 const MainWrapper = styled.div`
   display: flex;
