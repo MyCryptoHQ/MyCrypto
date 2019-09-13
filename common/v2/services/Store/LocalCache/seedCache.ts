@@ -184,6 +184,7 @@ export const initTestAccounts = () => {
         const match = Object.values(newStorage.networks).find(
           network => network.id === assetDefinition.networkId
         );
+        // @ts-ignore readonly
         asset.uuid = match ? match.baseAsset : asset.uuid;
       } else {
         const match = Object.values(newStorage.assets).find(
@@ -192,6 +193,7 @@ export const initTestAccounts = () => {
             assetDefinition.contractAddress &&
             a.contractAddress === assetDefinition.contractAddress
         );
+        // @ts-ignore readonly
         asset.uuid = match ? match.uuid : asset.uuid;
       }
     });
