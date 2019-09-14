@@ -40,7 +40,9 @@ export const getDashboardAccounts = (
   accounts: StoreAccount[],
   currentAccounts: string[]
 ): StoreAccount[] => {
-  return accounts.filter(({ uuid }) => currentAccounts.indexOf(uuid) >= 0);
+  return accounts
+    .filter(account => account && 'uuid' in account)
+    .filter(({ uuid }) => currentAccounts.indexOf(uuid) >= 0);
 };
 
 export const getBalanceFromAccount = (account: ExtendedAccount): string => {
