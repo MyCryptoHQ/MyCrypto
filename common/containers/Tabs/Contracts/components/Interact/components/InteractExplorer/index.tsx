@@ -105,10 +105,7 @@ class InteractExplorerClass extends Component<Props, State> {
       if (itemToScrollTo) {
         itemToScrollTo.scrollIntoView();
       }
-      const readButton = document.getElementById('readButton');
-      if (readButton) {
-        readButton.click();
-      }
+      this.handleFunctionCall(null as any);
     }
   };
 
@@ -269,7 +266,6 @@ class InteractExplorerClass extends Component<Props, State> {
             {selectedFunction.contract.constant ? (
               <button
                 className="InteractExplorer-func-submit btn btn-primary"
-                id="readButton"
                 onClick={this.handleFunctionCall}
               >
                 {translate('CONTRACT_READ')}

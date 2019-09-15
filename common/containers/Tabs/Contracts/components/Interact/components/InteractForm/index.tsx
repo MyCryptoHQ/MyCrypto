@@ -81,10 +81,6 @@ class InteractForm extends Component<Props, State> {
     setTimeout(
       function() {
         this.contractSetup();
-        const item = document.getElementById('accessButton');
-        if (item) {
-          item.click();
-        }
       }.bind(this),
       1000
     );
@@ -114,6 +110,7 @@ class InteractForm extends Component<Props, State> {
             name: `${con.name} ${addr}`,
             value: this.makeContractValue(con)
           });
+          this.props.accessContract(this.state.abiJson)(null as any);
         }
       });
     }
