@@ -26,6 +26,7 @@ const NetworkSelectorWrapper = styled.div`
 
 interface Props {
   setShowAddToken(setShowAddToken: boolean): void;
+  scanTokens(): void;
 }
 
 export function AddToken(props: Props) {
@@ -37,7 +38,7 @@ export function AddToken(props: Props) {
   const [decimalsError, setDecimalsError] = useState('');
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
 
-  const { setShowAddToken } = props;
+  const { setShowAddToken, scanTokens } = props;
 
   const validateForm = () => {
     setSymbolError('');
@@ -86,6 +87,7 @@ export function AddToken(props: Props) {
     };
 
     createAssetWithID(newAsset, uuid);
+    scanTokens();
     setShowAddToken(false);
   };
 
