@@ -27,8 +27,6 @@ export default class Contract {
       return isFunc ? { ...accu, [currContractMethodName]: currContractMethod } : accu;
     }, {});
 
-  public abi: any;
-
   constructor(abi: any, outputMappings: ContractOutputMappings = {}) {
     this.assignABIFuncs(abi, outputMappings);
   }
