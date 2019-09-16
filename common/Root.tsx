@@ -99,10 +99,9 @@ class RootClass extends Component<Props, State> {
     let { onboardingActive } = this.props;
     const { error } = this.state;
 
-    console.log(location);
+    const index = location.href.lastIndexOf('?');
     if (
-      location.pathname.substr(location.pathname.length - 19).toLowerCase() ===
-        '/contracts/interact' &&
+      location.href.substr(index - 19, 19).toLowerCase() === '/contracts/interact' &&
       Object.keys(this.getParamsFromUrl()).length !== 0
     ) {
       onboardingActive = false;
