@@ -15,7 +15,6 @@ export type TWalletType = TWalletType;
 export type TAddress = TAddress;
 
 export {
-  DefaultWalletName,
   SecureWalletName,
   InsecureWalletName,
   MiscWalletName,

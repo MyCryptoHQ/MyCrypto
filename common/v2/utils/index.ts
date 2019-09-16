@@ -16,3 +16,4 @@ export { convertToFiat, weiToFloat } from './convert';
 export { isArrayEqual } from './isArrayEqual';
 export { useInterval } from './useInterval';
 export * from './useStateReducer';
+export { filterObject } from './filterObject';
