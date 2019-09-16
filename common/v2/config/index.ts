@@ -13,6 +13,7 @@ export {
 } from './constants';
 export { NODES_CONFIG } from './nodes';
 export { ROUTE_PATHS } from './routePaths';
+export { WALLET_INFO } from './walletInfo';
 export { NETWORKS_CONFIG } from './networks';
 export { ETHSCAN_NETWORKS } from './ethScan';
 export { Fiats, AssetsData, ContractsData } from './cacheData';
@@ -27,3 +28,4 @@ export { accounts as testAccounts } from './accounts';
 export { assets as testAssets } from './assets';
 export { addressBook as testAddressBook } from './addressBook';
 export { settings as testSettings } from './settings';
+export { OS } from './operatingSystems';

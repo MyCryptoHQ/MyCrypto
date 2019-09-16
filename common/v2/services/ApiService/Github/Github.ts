@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 
-import { OS } from 'v2/services/ApiService';
+import { OS } from 'v2/config';
 import { default as ApiService } from '../ApiService';
 import { GITHUB_RELEASES_URL } from './constants';
 import { ReleaseURLs, ReleaseInfo } from './types';

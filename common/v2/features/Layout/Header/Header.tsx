@@ -10,7 +10,7 @@ import { links } from './constants';
 import { COLORS } from 'v2/theme';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
-import { KNOWLEDGE_BASE_URL } from 'v2/config';
+import { KNOWLEDGE_BASE_URL, ROUTE_PATHS } from 'v2/config';
 
 import { AppState } from 'features/reducers';
 import { configMetaSelectors } from 'features/config';
@@ -413,7 +413,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
             </li>
           </HeaderTopLeft>
           <div>
-            <Link to="/">
+            <Link to={ROUTE_PATHS.ROOT.path}>
               <CenterImg src={logo} alt="Our logo" />
             </Link>
           </div>

@@ -13,9 +13,9 @@ import {
   KeepYourAssetsSafePanel
 } from './components';
 import { getFeaturedOS } from 'v2/utils';
-import { GithubService, OS } from 'v2/services/ApiService';
+import { GithubService } from 'v2/services/ApiService';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
-import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK } from 'v2/config';
+import { GITHUB_RELEASE_NOTES_URL as DEFAULT_LINK, OS } from 'v2/config';
 
 const { SCREEN_SM } = BREAK_POINTS;
 const { SILVER, DARK_SLATE_BLUE, WHITE } = COLORS;

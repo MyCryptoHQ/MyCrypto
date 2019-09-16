@@ -2,9 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
-import translate from 'translations';
 
-import cryingWallet from 'common/assets/images/wallet-crying.svg';
+import translate from 'translations';
+import { ROUTE_PATHS } from 'v2/config';
+
+import cryingWallet from 'common/assets/images/icn-sad-wallet.svg';
 
 const PageNotFoundContainer = styled.div`
   display: flex;
@@ -95,7 +97,7 @@ const PageNotFound: React.SFC = () => (
       <Header>{translate('404_HEADER')}</Header>
       <Description>{translate('404_DESCRIPTION')}</Description>
       <ButtonGroup>
-        <Link to="/">
+        <Link to={ROUTE_PATHS.ROOT.path}>
           <PrimaryButton>{translate('404_BUTTON')}</PrimaryButton>
         </Link>
       </ButtonGroup>

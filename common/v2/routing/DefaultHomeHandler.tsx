@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { ROUTE_PATHS } from 'v2/config';
-import { ScreenLockContext } from 'v2/providers';
 import { AccountContext } from 'v2/services/Store';
+import { ScreenLockContext } from 'v2/features';
 
 export const DefaultHomeHandler = withRouter(({ history, children }) => {
   const { accounts } = useContext(AccountContext);

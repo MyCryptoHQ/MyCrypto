@@ -12,3 +12,7 @@ export { isUrl } from './isUrl';
 export { truncate } from './truncate';
 export { useOnClickOutside } from './useOnClickOutside';
 export { trace } from './trace';
+export { convertToFiat, weiToFloat } from './convert';
+export { isArrayEqual } from './isArrayEqual';
+export { useInterval } from './useInterval';
+export * from './useStateReducer';

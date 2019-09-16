@@ -1,6 +1,10 @@
-export * from './Wallets';
-export { ScreenLockLocking } from './ScreenLock';
-export { Drawer, AccountScreen, UnlockScreen, SelectLanguage } from './Drawer';
+export {
+  DrawerContext,
+  DrawerProvider,
+  AccountScreen,
+  UnlockScreen,
+  SelectLanguage
+} from './Drawer';
 export { DevTools } from './DevTools';
 export { Home } from './Home';
 export { CreateWallet, Mnemonic, Keystore } from './CreateWallet';
@@ -9,8 +13,18 @@ export { AddAccountFlow } from './AddAccount';
 export { Settings, Import, Export } from './Settings';
 export { DownloadApp } from './DownloadApp';
 export { NoAccounts } from './NoAccounts';
-export { ScreenLockNew, ScreenLockLocked, ScreenLockForgotPassword } from './ScreenLock';
+export {
+  ScreenLockNew,
+  ScreenLockLocked,
+  ScreenLockForgotPassword,
+  ScreenLockLocking,
+  ScreenLockProvider,
+  ScreenLockContext
+} from './ScreenLock';
 export { SendAssets } from './SendAssets';
 export { ReceiveAssets } from './ReceiveAssets';
 export { BuyAndExchange, ShapeShiftAuthorization, ZeroEx } from './BuyAndExchange';
 export { default as PageNotFound } from './PageNotFound';
+export { SignAndVerifyMessage } from './SignAndVerifyMessage';
+export { NotificationsProvider } from './NotificationsPanel';
+export { BroadcastTx } from './BroadcastTx';

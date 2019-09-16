@@ -7,7 +7,7 @@ import { uniq } from 'lodash';
 
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
-import { NotificationTemplates } from 'v2/providers/NotificationsProvider/constants';
+import { NotificationTemplates } from 'v2/features/NotificationsPanel';
 import {
   Account,
   Asset,

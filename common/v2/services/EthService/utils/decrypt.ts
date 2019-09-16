@@ -72,7 +72,7 @@ export function decipherBuffer(decipher: any, data: Buffer): Buffer {
 
 export function decryptMnemonicToPrivKey(
   phrase: string,
-  pass: string,
+  pass: string | undefined,
   path: string,
   address: string
 ): Buffer {

@@ -5,8 +5,8 @@ import { Button } from '@mycrypto/ui';
 
 import translate, { translateRaw } from 'translations';
 import { ExtendedContentPanel, InputField } from 'v2/components';
-import { ScreenLockContext } from 'v2/providers';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
+import { ScreenLockContext } from './ScreenLockProvider';
 
 import mainImage from 'common/assets/images/icn-unlock-wallet.svg';
 
