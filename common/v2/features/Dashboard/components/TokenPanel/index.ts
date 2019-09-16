@@ -1,1 +1,1 @@
-export { default as TokenPanel } from './TokenPanel';
+export { TokenPanel } from './TokenPanel';

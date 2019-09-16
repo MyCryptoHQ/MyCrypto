@@ -991,9 +991,13 @@
     "SOCIAL": "Social",
     "WEBSITE": "Website",
     "WHITEPAPER": "Whitepaper",
+    "TOKENS": "Tokens",
     "ADD_TOKEN": "Add Token",
     "ADD_CUSTOM_TOKEN": "Add Custom Token",
     "ADD_TOKEN_ADDRESS_PLACEHOLDER": "Enter Your Token Address",
-    "SYMBOL": "Symbol"
+    "SYMBOL": "Symbol",
+    "ADD_TOKEN_NO_SYMBOL": "Missing symbol",
+    "ADD_TOKEN_INVALID_ADDRESS": "Invalid address",
+    "ADD_TOKEN_NO_DECIMALS": "Missing decimals"
   }
 }

@@ -30,7 +30,6 @@ const InfoTitle = styled.div`
 
 const InfoValue = styled.div`
   font-size: 18px;
-  line-height: 
   font-weight: normal;
 `;
 
@@ -131,7 +130,7 @@ export function TokenDetails(props: Props) {
     [index: string]: string;
   }
 
-  // Find avaialble supported social links
+  // Find available supported social links
   const filteredSocial = (details.social || {}) as ISocial;
   Object.keys(filteredSocial).forEach(
     key =>
@@ -144,7 +143,8 @@ export function TokenDetails(props: Props) {
     <div>
       <Section noMargin={true}>
         <TwoColumnsWrapper>
-          <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + currentToken.rate} />
+          {/*TODO: Look up selected fiat currency instead of hardcoded $*/}
+          <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + currentToken.rate} />{' '}
           <InfoPiece
             title={translateRaw('BALANCE')}
             value={`${formatEther(currentToken.balance)} ${currentToken.ticker}`}
@@ -196,7 +196,10 @@ export function TokenDetails(props: Props) {
                 {filteredSocialArray.map(social => {
                   return (
                     <a key={social} href={details.social[social]} target="_blank" rel="noreferrer">
-                      <Icon src={supportedSocialNetworks[social].icon} />
+                      <Icon
+                        alt={supportedSocialNetworks[social].name}
+                        src={supportedSocialNetworks[social].icon}
+                      />
                     </a>
                   );
                 })}

@@ -26,7 +26,7 @@ const NetworkSelectorWrapper = styled.div`
 
 interface Props {
   setShowAddToken(setShowAddToken: boolean): void;
-  scanTokens(): void;
+  scanTokens(): Promise<void>;
 }
 
 export function AddToken(props: Props) {
@@ -50,23 +50,19 @@ export function AddToken(props: Props) {
     const network = getNetworkByName(networkId);
 
     if (symbol.length === 0) {
-      setSymbolError('Missing symbol');
+      setSymbolError(translateRaw('ADD_TOKEN_NO_SYMBOL'));
       isValid = false;
     }
     if (!network || !isValidAddress(address, network.chainId)) {
-      setAddressError('Invalid address');
+      setAddressError(translateRaw('ADD_TOKEN_INVALID_ADDRESS'));
       isValid = false;
     }
     if (decimals.length === 0) {
-      setDecimalsError('Missing decimals');
+      setDecimalsError(translateRaw('ADD_TOKEN_NO_DECIMALS'));
       isValid = false;
     }
 
-    if (!isValid) {
-      return false;
-    }
-
-    return true;
+    return isValid;
   };
 
   const handleAddTokenClick = () => {

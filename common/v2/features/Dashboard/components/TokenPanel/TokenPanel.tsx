@@ -14,6 +14,7 @@ import backArrowIcon from 'common/assets/images/icn-back.svg';
 import expandIcon from 'common/assets/images/icn-expand.svg';
 
 const defaultTokenIcon = 'https://via.placeholder.com/28';
+const etherscanUrl = ' https://etherscan.io/token/';
 
 const Icon = styled.img`
   cursor: pointer;
@@ -40,6 +41,11 @@ const SpinnerWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 32px 0;
+`;
+
+const DetailsHeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export function TokenPanel() {
@@ -98,7 +104,7 @@ export function TokenPanel() {
   const TokenListPanel = () => {
     return (
       <DashboardPanel
-        heading="Tokens"
+        heading={translateRaw('TOKENS')}
         headingRight={
           <div>
             <StyledButton onClick={handleScanTokens}>{translateRaw('SCAN_TOKENS')}</StyledButton>
@@ -130,7 +136,7 @@ export function TokenPanel() {
         {currentToken && (
           <DashboardPanel
             heading={
-              <div>
+              <DetailsHeadingWrapper>
                 <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
                 <TokenIcon
                   src={
@@ -141,9 +147,17 @@ export function TokenPanel() {
                   alt={currentToken.name}
                 />
                 {currentToken.name}
-              </div>
+              </DetailsHeadingWrapper>
             }
-            headingRight={<Icon src={expandIcon} />}
+            headingRight={
+              <a
+                href={`${etherscanUrl}${currentToken.contractAddress}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icon src={expandIcon} />
+              </a>
+            }
             padChildren={true}
           >
             <TokenDetails currentToken={currentToken} />

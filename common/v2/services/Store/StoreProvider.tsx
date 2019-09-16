@@ -18,7 +18,7 @@ interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
-  scanTokens(): void;
+  scanTokens(): Promise<void>;
 }
 export const StoreContext = createContext({} as State);
 
