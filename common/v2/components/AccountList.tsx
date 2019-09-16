@@ -1,17 +1,23 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, CollapsibleTable, Copyable, Network, Typography, Identicon } from '@mycrypto/ui';
+import { Button, CollapsibleTable, Copyable, Network, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
-import { AccountContext, getLabelByAccount, StoreContext } from 'v2/services/Store';
+import {
+  AccountContext,
+  getLabelByAccount,
+  StoreContext,
+  SettingsContext
+} from 'v2/services/Store';
 import { DashboardPanel } from './DashboardPanel';
 import './AccountList.scss';
 import { RatesContext } from 'v2/services';
+import { Currency } from '.';
 
 const Label = styled.span`
   display: flex;
@@ -105,6 +111,7 @@ function buildAccountTable(
 ) {
   const { totalFiat } = useContext(StoreContext);
   const { getRate } = useContext(RatesContext);
+  const { settings } = useContext(SettingsContext);
   const columns = [
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
@@ -127,10 +134,12 @@ function buildAccountTable(
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
-        <Typography key={index}>
-          {Fiats[0].symbol}
-          {total.toFixed(2)}
-        </Typography>
+        <Currency
+          key={index}
+          amount={total.toString()}
+          symbol={Fiats[settings.fiatCurrency].symbol}
+          decimals={2}
+        />
       ];
       return deletable
         ? [
