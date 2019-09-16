@@ -64,13 +64,15 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
-    totalFiat: (selectedAccounts = state.accounts) => {
-      return (getRate: (ticker: TTicker) => number | undefined) => {
-        return state.totals(selectedAccounts).reduce((sum, asset) => {
-          return (sum += convertToFiat(asset.balance, getRate(asset.ticker as TTicker)));
-        }, 0);
-      };
-    },
+    totalFiat: (selectedAccounts = state.accounts) => (
+      getRate: (ticker: TTicker) => number | undefined
+    ) =>
+      state
+        .totals(selectedAccounts)
+        .reduce(
+          (sum, asset) => (sum += convertToFiat(asset.balance, getRate(asset.ticker as TTicker))),
+          0
+        ),
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
