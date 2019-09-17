@@ -31,7 +31,7 @@ export const GBP = {
   symbol: '£' as TSymbol
 };
 
-export const Fiats: FiatObject = { USD: USD, EUR: EUR, GBP: GBP };
+export const Fiats: FiatObject = { USD, EUR, GBP };
 
 export const ContractsData = (): Record<string, Contract> => {
   const data: any = Object.keys(Contracts);

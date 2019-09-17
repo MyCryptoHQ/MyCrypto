@@ -155,7 +155,7 @@ export const initContracts = () => {
 
 export const initFiatCurrencies = () => {
   const newStorage = getCacheRaw();
-  Fiats.map(en => {
+  Object.values(Fiats).map(en => {
     const uuid = generateUUID();
     newStorage.assets[uuid] = {
       uuid,
