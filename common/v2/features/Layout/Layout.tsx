@@ -14,25 +14,34 @@ interface Props {
 }
 
 const SMain = styled('main')`
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   min-width: 350px;
   background: #f6f8fa;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 const SContainer = styled('div')`
   padding: 50px 0;
+  max-width: 1160px;
 
   // This is the moment our header becomes sticky and shrinks in
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
     padding-top: 120px;
   }
 
+  // Necessary to center the mobile layout when below the small screen breakpoint.
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    align-self: center;
+  }
+
   ${({ centered }: Props) =>
     centered &&
     css`
       display: flex;
+      flex-direction: column;
       justify-content: center;
       flex: 1;
     `} ${({ fluid }: Props) =>
