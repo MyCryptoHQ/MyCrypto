@@ -2,7 +2,7 @@ import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import { Spinner } from 'components/ui';
 import { NetworkContext } from 'v2/services/Store';
 import { getDPath, getDPaths } from 'v2/services';
-import { SecureWalletName, FormData } from 'v2/types';
+import { WalletId, FormData } from 'v2/types';
 import { TrezorWallet } from 'libs/wallet';
 import React, { PureComponent } from 'react';
 import translate, { translateRaw } from 'translations';
@@ -34,10 +34,8 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     publicKey: '',
     chainCode: '',
     dPath:
-      getDPath(
-        this.context.getNetworkByName(this.props.formData.network),
-        SecureWalletName.TREZOR
-      ) || getDPaths(this.context.networks, SecureWalletName.TREZOR)[0],
+      getDPath(this.context.getNetworkByName(this.props.formData.network), WalletId.TREZOR) ||
+      getDPaths(this.context.networks, WalletId.TREZOR)[0],
     error: null,
     isLoading: false
   };
@@ -59,7 +57,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
             publicKey={publicKey}
             chainCode={chainCode}
             dPath={dPath}
-            dPaths={getDPaths(networks, SecureWalletName.TREZOR)}
+            dPaths={getDPaths(networks, WalletId.TREZOR)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -153,9 +151,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath:
-        getDPath(network, SecureWalletName.TREZOR) ||
-        getDPaths(networks, SecureWalletName.TREZOR)[0]
+      dPath: getDPath(network, WalletId.TREZOR) || getDPaths(networks, WalletId.TREZOR)[0]
     });
   }
 }

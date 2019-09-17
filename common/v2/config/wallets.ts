@@ -1,42 +1,23 @@
-import { filterObject } from 'v2/utils';
+import { filterObjectOfObjects } from 'v2/utils/filterObjectOfObjects';
+import { EWalletType, WalletId } from 'v2/types';
 
-// For extra type safety we define the names that are valid keys
-enum WalletId {
-  METAMASK = 'METAMASK',
-  LEDGER_NANO_S = 'LEDGER_NANO_S',
-  TREZOR = 'TREZOR',
-  KEYSTORE = 'KEYSTORE',
-  MNEMONIC_PHRASE = 'MNEMONIC_PHRASE',
-  PRIVATE_KEY = 'PRIVATE_KEY',
-  PARITY_SIGNER = 'PARITY_SIGNER',
-  SAFE_T_MINI = 'SAFE_T_MINI',
-  VIEW_ONLY = 'VIEW_ONLY'
-}
-
-export enum WalletType {
-  WEB3 = 'WEB3',
-  HARDWARE = 'HARDWARE',
-  FILE = 'FILE',
-  MISC = 'MISC'
-}
-
-export interface IWallet {
+export interface IWalletConfig {
   id: WalletId;
   name: string;
   isDeterministic: boolean;
   isSecure: boolean;
   isDesktopOnly: boolean;
-  type: WalletType;
+  type: EWalletType;
 }
 
-export const WALLETS: Record<WalletId, IWallet> = {
+export const WALLETS: Record<WalletId, IWalletConfig> = {
   [WalletId.METAMASK]: {
     id: WalletId.METAMASK,
     name: 'MetaMask',
     isDeterministic: false,
     isSecure: true,
     isDesktopOnly: false,
-    type: WalletType.WEB3
+    type: EWalletType.WEB3
   },
   [WalletId.LEDGER_NANO_S]: {
     id: WalletId.LEDGER_NANO_S,
@@ -44,7 +25,7 @@ export const WALLETS: Record<WalletId, IWallet> = {
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
-    type: WalletType.HARDWARE
+    type: EWalletType.HARDWARE
   },
   [WalletId.TREZOR]: {
     id: WalletId.TREZOR,
@@ -52,7 +33,7 @@ export const WALLETS: Record<WalletId, IWallet> = {
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
-    type: WalletType.HARDWARE
+    type: EWalletType.HARDWARE
   },
   [WalletId.SAFE_T_MINI]: {
     id: WalletId.SAFE_T_MINI,
@@ -60,7 +41,7 @@ export const WALLETS: Record<WalletId, IWallet> = {
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
-    type: WalletType.HARDWARE
+    type: EWalletType.HARDWARE
   },
   [WalletId.PARITY_SIGNER]: {
     id: WalletId.PARITY_SIGNER,
@@ -68,15 +49,15 @@ export const WALLETS: Record<WalletId, IWallet> = {
     isDeterministic: false,
     isSecure: false,
     isDesktopOnly: false,
-    type: WalletType.MISC
+    type: EWalletType.MISC
   },
-  [WalletId.KEYSTORE]: {
-    id: WalletId.KEYSTORE,
+  [WalletId.KEYSTORE_FILE]: {
+    id: WalletId.KEYSTORE_FILE,
     name: 'JSON Keystore File',
     isDeterministic: false,
     isSecure: false,
     isDesktopOnly: true,
-    type: WalletType.FILE
+    type: EWalletType.FILE
   },
   [WalletId.PRIVATE_KEY]: {
     id: WalletId.PRIVATE_KEY,
@@ -84,7 +65,7 @@ export const WALLETS: Record<WalletId, IWallet> = {
     isDeterministic: false,
     isSecure: false,
     isDesktopOnly: true,
-    type: WalletType.FILE
+    type: EWalletType.FILE
   },
   [WalletId.MNEMONIC_PHRASE]: {
     id: WalletId.MNEMONIC_PHRASE,
@@ -92,7 +73,7 @@ export const WALLETS: Record<WalletId, IWallet> = {
     isDeterministic: true,
     isSecure: false,
     isDesktopOnly: true,
-    type: WalletType.FILE
+    type: EWalletType.FILE
   },
   [WalletId.VIEW_ONLY]: {
     id: WalletId.VIEW_ONLY,
@@ -100,11 +81,12 @@ export const WALLETS: Record<WalletId, IWallet> = {
     isDeterministic: false,
     isSecure: true,
     isDesktopOnly: false,
-    type: WalletType.MISC
+    type: EWalletType.MISC
   }
 };
 
-export const isSecure = filterObject(WALLETS)('isSecure');
-export const isHardware = filterObject(WALLETS)(
-  ({ type }: { type: WalletType }) => type === WalletType.HARDWARE
+export const HD_WALLETS = filterObjectOfObjects(WALLETS)('isDeterministic');
+export const SECURE_WALLETS = filterObjectOfObjects(WALLETS)('isSecure');
+export const HARDWARE_WALLETS = filterObjectOfObjects(WALLETS)(
+  ({ type }: { type: EWalletType }) => type === EWalletType.HARDWARE
 );

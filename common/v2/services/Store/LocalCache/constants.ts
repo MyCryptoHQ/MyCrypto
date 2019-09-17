@@ -1,5 +1,5 @@
 import { DPaths } from 'v2/config';
-import { LocalCache, SecureWalletName, InsecureWalletName, NodeType } from 'v2/types';
+import { LocalCache, NodeType, WalletId } from 'v2/types';
 
 export const CACHE_KEY = 'MyCryptoCache';
 export const ENCRYPTED_CACHE_KEY = 'ENCRYPTED_CACHE';
@@ -16,7 +16,7 @@ export const CACHE_INIT_DEV: LocalCache = {
       address: '0x80200997f095da94E404F7E0d581AAb1fFba9f7d',
       networkId: 'Ethereum',
       assets: [{ uuid: '12d3cbf2-de3a-4050-a0c6-521592e4b85a', balance: '0', mtime: Date.now() }],
-      wallet: SecureWalletName.WEB3,
+      wallet: WalletId.METAMASK,
       favorite: false,
       transactions: [
         {
@@ -75,7 +75,7 @@ export const CACHE_INIT_DEV: LocalCache = {
         }
       ],
       dPaths: {
-        [InsecureWalletName.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
+        [WalletId.MNEMONIC_PHRASE]: DPaths.ETH_DEFAULT
       },
       gasPriceSettings: {
         min: 1,

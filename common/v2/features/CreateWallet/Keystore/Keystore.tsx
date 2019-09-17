@@ -11,15 +11,7 @@ import { getPrivKeyWallet } from 'v2/services/WalletService';
 import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import {
-  Account,
-  Asset,
-  ISettings,
-  Network,
-  NetworkId,
-  WalletName,
-  InsecureWalletName
-} from 'v2/types';
+import { Account, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
@@ -32,7 +24,7 @@ interface State {
   filename: string;
   network: string;
   stage: KeystoreStages;
-  accountType: WalletName;
+  accountType: WalletId;
 }
 
 interface Props extends RouteComponentProps<{}> {
@@ -50,7 +42,7 @@ class CreateKeystore extends Component<Props, State> {
     filename: '',
     network: '',
     stage: KeystoreStages.GenerateKeystore,
-    accountType: InsecureWalletName.KEYSTORE_FILE
+    accountType: WalletId.KEYSTORE_FILE
   };
 
   public render() {

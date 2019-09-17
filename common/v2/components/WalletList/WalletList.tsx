@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import translate, { translateRaw } from 'translations';
 import { WalletButton } from './WalletButton';
-import { WalletName, IStory } from 'v2/types';
+import { WalletId, IStory } from 'v2/types';
 import { WALLET_INFO, ROUTE_PATHS } from 'v2/config';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { IS_ELECTRON } from 'v2/utils';
@@ -82,7 +82,7 @@ const Info = styled.div<InfoProps>`
 interface Props {
   wallets: any[];
   showHeader?: boolean;
-  onSelect(name: WalletName): void;
+  onSelect(name: WalletId): void;
 }
 
 export default class WalletList extends PureComponent<Props> {

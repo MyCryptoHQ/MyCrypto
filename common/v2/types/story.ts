@@ -1,7 +1,7 @@
-import { WalletName } from './wallet';
+import { WalletId } from './walletId';
 
 export interface IStory {
-  name: WalletName;
+  name: WalletId;
   steps: any[];
   hideFromWalletList?: string | boolean | undefined;
 }

@@ -17,7 +17,7 @@ import {
   Network,
   NetworkLegacy,
   NetworkId,
-  InsecureWalletName
+  WalletId
 } from 'v2/types';
 import { hardRefreshCache, getCacheRaw, setCache } from './LocalCache';
 import { CACHE_KEY } from './constants';
@@ -96,7 +96,7 @@ export const initNetworks = () => {
       color: network.color,
       dPaths: {
         ...network.dPaths,
-        default: network.dPaths[InsecureWalletName.MNEMONIC_PHRASE]
+        default: network.dPaths[WalletId.MNEMONIC_PHRASE]
       },
       gasPriceSettings: network.gasPriceSettings,
       shouldEstimateGasPrice: network.shouldEstimateGasPrice

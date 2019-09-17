@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { ExtendedContentPanel, InlineErrorMsg, NetworkSelectDropdown } from 'v2/components';
-import { WalletName } from 'v2/types';
+import { WalletId } from 'v2/types';
 import { getNetworkByName } from 'v2/services/Store';
 import { PanelProps } from '../CreateWallet';
 
@@ -28,7 +28,7 @@ const ErrorWrapper = styled.div`
 
 interface Props extends PanelProps {
   network: string;
-  accountType: WalletName;
+  accountType: WalletId;
   selectNetwork(network: string): void;
 }
 

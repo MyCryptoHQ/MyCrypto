@@ -1,5 +1,4 @@
 import { TAddress } from './address';
-import { TWalletType, WalletName } from './wallet';
 import { TSymbol } from './symbols';
 import { IRates } from './rates';
 import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
@@ -8,19 +7,12 @@ import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
 export type NodeConfig = NodeConfig;
 export type CustomNodeConfig = CustomNodeConfig;
 export type NodeOptions = NodeOptions;
-export type WalletName = WalletName;
 export type TSymbol = TSymbol;
 export type IRates = IRates;
-export type TWalletType = TWalletType;
 export type TAddress = TAddress;
 
-export {
-  SecureWalletName,
-  InsecureWalletName,
-  MiscWalletName,
-  WalletType,
-  walletNames
-} from './wallet';
+export { EWalletType, WalletType } from './wallet';
+export { WalletId } from './walletId';
 export {
   Asset,
   ExtendedAsset,
