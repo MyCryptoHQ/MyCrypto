@@ -2,7 +2,7 @@ import React, { useState, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
-import { ROUTE_PATHS, WALLET_INFO } from 'v2/config';
+import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
 import { WalletId } from 'v2/types';
 import { ContentPanel, WalletList } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
@@ -20,7 +20,7 @@ export const getStorySteps = (storyName: WalletId | undefined) => {
 };
 
 export const getWalletInfo = (storyName: WalletId): any => {
-  return WALLET_INFO[storyName];
+  return WALLETS_CONFIG[storyName];
 };
 
 /*

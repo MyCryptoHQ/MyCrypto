@@ -12,7 +12,7 @@ export {
 } from './constants';
 export { NODES_CONFIG } from './nodes';
 export { ROUTE_PATHS } from './routePaths';
-export { WALLET_INFO } from './wallets';
+
 export { NETWORKS_CONFIG } from './networks';
 export { ETHSCAN_NETWORKS } from './ethScan';
 export { Fiats, AssetsData, ContractsData } from './cacheData';
@@ -35,6 +35,6 @@ export {
   SECURE_WALLETS,
   INSECURE_WALLETS,
   HARDWARE_WALLETS
-} from './walletsConfig';
-import { IWalletConfig } from './walletsConfig';
+} from './wallets';
+import { IWalletConfig } from './wallets';
 export type IWalletConfig = IWalletConfig;

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
 import { WalletButton } from './WalletButton';
 import { WalletId, IStory } from 'v2/types';
-import { WALLET_INFO, ROUTE_PATHS } from 'v2/config';
+import { WALLETS_CONFIG, ROUTE_PATHS } from 'v2/config';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { IS_ELECTRON } from 'v2/utils';
 
@@ -99,7 +99,7 @@ export default class WalletList extends PureComponent<Props> {
         )}
         <WalletsContainer>
           {validWallets.map((wallet: IStory) => {
-            const walletInfo = WALLET_INFO[wallet.name];
+            const walletInfo = WALLETS_CONFIG[wallet.name];
             return (
               <WalletButton
                 key={`wallet-icon-${wallet.name}`}

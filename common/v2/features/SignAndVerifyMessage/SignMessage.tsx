@@ -8,7 +8,7 @@ import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
 import { ISignedMessage, INode, FormData, WalletId } from 'v2/types';
 import { STORIES } from './stories';
-import { WALLET_INFO } from 'v2/config';
+import { WALLETS_CONFIG } from 'v2/config';
 import { AppState } from 'features/reducers';
 import { setupWeb3Node } from 'v2/services/EthService';
 import { IFullWallet } from 'v2/services/WalletService';
@@ -183,7 +183,11 @@ function SignMessage(props: Props) {
             {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
           {!unlocked && Step && (
-            <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} formData={defaultFormData} />
+            <Step
+              wallet={WALLETS_CONFIG[walletName]}
+              onUnlock={onUnlock}
+              formData={defaultFormData}
+            />
           )}
         </>
       ) : (
