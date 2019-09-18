@@ -3,11 +3,10 @@ import { Typography } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { convertToFiat } from 'v2/utils';
-import { AssetWithDetails } from 'v2/types/asset';
+import { AssetWithDetails, TSymbol } from 'v2/types';
+import { AssetIcon } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
-
-const defaultTokenIcon = 'https://via.placeholder.com/28';
 
 const TokenListWrapper = styled.div`
   max-height: 300px;
@@ -19,6 +18,7 @@ const Token = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 15px 0;
+  margin-right: 8px;
 `;
 
 const Asset = styled.div`
@@ -48,12 +48,6 @@ const MoreIcon = styled.img`
   cursor: pointer;
 `;
 
-const TokenIcon = styled.img`
-  width: 26px;
-  height: 26px;
-  margin-right: 8px;
-`;
-
 interface TokenListProps {
   tokens: AssetWithDetails[];
   setShowDetailsView(show: boolean): void;
@@ -67,12 +61,7 @@ export function TokenList(props: TokenListProps) {
       {tokens.map(token => (
         <Token key={token.name}>
           <Asset>
-            <TokenIcon
-              src={
-                token.details.logo ? token.details.logo.src || defaultTokenIcon : defaultTokenIcon
-              }
-              alt={name}
-            />
+            <AssetIcon symbol={token.ticker as TSymbol} size={'26px'} />
             <AssetName>{token.name}</AssetName>
           </Asset>
           <TokenValueWrapper>

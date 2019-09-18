@@ -2,18 +2,17 @@ import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
-import { DashboardPanel, Spinner } from 'v2/components';
+import { DashboardPanel, Spinner, AssetIcon } from 'v2/components';
 import { TokenList } from './TokenList';
 import { TokenDetails } from './TokenDetails';
 import { AddToken } from './AddToken';
 import { translateRaw } from 'translations';
 import { StoreContext, RatesContext, TokenInfoService } from 'v2/services';
-import { TTicker, AssetWithDetails } from 'v2/types';
+import { TTicker, AssetWithDetails, TSymbol } from 'v2/types';
 
 import backArrowIcon from 'common/assets/images/icn-back.svg';
 import expandIcon from 'common/assets/images/icn-expand.svg';
 
-const defaultTokenIcon = 'https://via.placeholder.com/28';
 const etherscanUrl = ' https://etherscan.io/token/';
 
 const Icon = styled.img`
@@ -30,10 +29,9 @@ const StyledButton = styled(Button)`
   margin-left: 8px;
 `;
 
-const TokenIcon = styled.img`
-  width: 28px;
-  height: 28px;
+const TokenIcon = styled.div`
   margin-right: 8px;
+  display: flex;
 `;
 
 const SpinnerWrapper = styled.div`
@@ -138,14 +136,9 @@ export function TokenPanel() {
             heading={
               <DetailsHeadingWrapper>
                 <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
-                <TokenIcon
-                  src={
-                    currentToken.details.logo
-                      ? currentToken.details.logo.src || defaultTokenIcon
-                      : defaultTokenIcon
-                  }
-                  alt={currentToken.name}
-                />
+                <TokenIcon>
+                  <AssetIcon symbol={currentToken.ticker as TSymbol} size={'26px'} />
+                </TokenIcon>
                 {currentToken.name}
               </DetailsHeadingWrapper>
             }
