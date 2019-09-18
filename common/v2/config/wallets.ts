@@ -85,8 +85,15 @@ export const WALLETS: Record<WalletId, IWalletConfig> = {
   }
 };
 
-export const HD_WALLETS = filterObjectOfObjects(WALLETS)('isDeterministic');
-export const SECURE_WALLETS = filterObjectOfObjects(WALLETS)('isSecure');
-export const HARDWARE_WALLETS = filterObjectOfObjects(WALLETS)(
+// TODO research Pick with dynamic keys for better type saftey.
+// lead https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c
+type WalletSubType = Partial<Record<WalletId, IWalletConfig>>;
+
+export const HD_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)('isDeterministic');
+export const SECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)('isSecure');
+export const INSECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)(
+  ({ isSecure }: { isSecure: boolean }) => !isSecure
+);
+export const HARDWARE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)(
   ({ type }: { type: EWalletType }) => type === EWalletType.HARDWARE
 );

@@ -29,6 +29,6 @@ export { addressBook as testAddressBook } from './addressBook';
 export { settings as testSettings } from './settings';
 export { OS } from './operatingSystems';
 
-export { WALLETS, HD_WALLETS, SECURE_WALLETS, HARDWARE_WALLETS } from './wallets';
+export { WALLETS, HD_WALLETS, SECURE_WALLETS, INSECURE_WALLETS, HARDWARE_WALLETS } from './wallets';
 import { IWalletConfig } from './wallets';
 export type IWalletConfig = IWalletConfig;
