@@ -10,7 +10,7 @@ export interface IWalletConfig {
   type: EWalletType;
 }
 
-export const WALLETS: Record<WalletId, IWalletConfig> = {
+export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
   [WalletId.METAMASK]: {
     id: WalletId.METAMASK,
     name: 'MetaMask',
@@ -89,11 +89,11 @@ export const WALLETS: Record<WalletId, IWalletConfig> = {
 // lead https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c
 type WalletSubType = Partial<Record<WalletId, IWalletConfig>>;
 
-export const HD_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)('isDeterministic');
-export const SECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)('isSecure');
-export const INSECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)(
+export const HD_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)('isDeterministic');
+export const SECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)('isSecure');
+export const INSECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)(
   ({ isSecure }: { isSecure: boolean }) => !isSecure
 );
-export const HARDWARE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS)(
+export const HARDWARE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)(
   ({ type }: { type: EWalletType }) => type === EWalletType.HARDWARE
 );
