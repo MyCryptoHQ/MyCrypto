@@ -191,7 +191,7 @@ export const initTestAccounts = () => {
           a =>
             a.contractAddress &&
             assetDefinition.contractAddress &&
-            a.contractAddress === assetDefinition.contractAddress
+            a.contractAddress.toUpperCase() === assetDefinition.contractAddress.toUpperCase()
         );
         // @ts-ignore readonly
         asset.uuid = match ? match.uuid : asset.uuid;
