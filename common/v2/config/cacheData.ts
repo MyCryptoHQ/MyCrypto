@@ -9,6 +9,7 @@ export interface Fiat {
   code: string;
   name: string;
   symbol: TSymbol;
+  prefix?: boolean;
 }
 
 interface FiatObject {
@@ -18,7 +19,8 @@ interface FiatObject {
 export const USD = {
   code: 'USD',
   name: 'US Dollars',
-  symbol: '$' as TSymbol
+  symbol: '$' as TSymbol,
+  prefix: true
 };
 export const EUR = {
   code: 'EUR',

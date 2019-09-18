@@ -138,6 +138,7 @@ function buildAccountTable(
           key={index}
           amount={total.toString()}
           symbol={Fiats[settings.fiatCurrency].symbol}
+          prefix={Fiats[settings.fiatCurrency].prefix}
           decimals={2}
         />
       ];
