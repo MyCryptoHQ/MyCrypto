@@ -12,7 +12,7 @@ export type IRates = IRates;
 export type TAddress = TAddress;
 
 export { HardwareWallet, InsecureWallet, SecureWallet, HDWallet } from './walletSubTypes';
-export { EWalletType, WalletType } from './wallet';
+export { WalletType } from './wallet';
 export { WalletId } from './walletId';
 export {
   Asset,

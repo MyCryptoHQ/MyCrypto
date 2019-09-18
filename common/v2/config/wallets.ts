@@ -1,7 +1,7 @@
 import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
 import { filterObjectOfObjects } from 'v2/utils/filterObjectOfObjects';
 import { getWeb3ProviderInfo } from 'v2/utils/web3';
-import { EWalletType, WalletId } from 'v2/types';
+import { WalletType, WalletId } from 'v2/types';
 
 // @ADD_ACCOUNT_TODO: Icons really belongs to the WalletButton or a WalletIcon
 // component.
@@ -18,7 +18,7 @@ export interface IWalletConfig {
   isDeterministic: boolean;
   isSecure: boolean;
   isDesktopOnly: boolean;
-  type: EWalletType;
+  type: WalletType;
   lid: string;
   icon?: string;
   description: string;
@@ -32,7 +32,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: false,
     isSecure: true,
     isDesktopOnly: false,
-    type: EWalletType.WEB3,
+    type: WalletType.WEB3,
     lid: web3ProviderInfo.lid,
     icon: web3ProviderInfo.icon,
     description: 'ADD_WEB3DESC',
@@ -44,7 +44,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
-    type: EWalletType.HARDWARE,
+    type: WalletType.HARDWARE,
     lid: 'X_LEDGER',
     icon: LedgerSVG,
     description: 'ADD_HARDWAREDESC',
@@ -56,7 +56,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
-    type: EWalletType.HARDWARE,
+    type: WalletType.HARDWARE,
     lid: 'X_TREZOR',
     icon: TrezorSVG,
     description: 'ADD_HARDWAREDESC',
@@ -68,7 +68,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: true,
     isSecure: true,
     isDesktopOnly: false,
-    type: EWalletType.HARDWARE,
+    type: WalletType.HARDWARE,
     lid: 'X_SAFE_T',
     icon: SafeTSVG,
     description: 'ADD_HARDWAREDESC',
@@ -80,7 +80,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: false,
     isSecure: false,
     isDesktopOnly: false,
-    type: EWalletType.MISC,
+    type: WalletType.MISC,
     lid: 'X_PARITYSIGNER',
     icon: ParitySignerSVG,
     description: 'ADD_PARITY_DESC'
@@ -91,7 +91,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: false,
     isSecure: false,
     isDesktopOnly: true,
-    type: EWalletType.FILE,
+    type: WalletType.FILE,
     lid: 'X_KEYSTORE2',
     description: 'UTC--2017-12-15T17-35-22.547Z--6be6e49e82425a5aa56396db03512f2cc10e95e8',
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
@@ -102,7 +102,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: true,
     isSecure: false,
     isDesktopOnly: true,
-    type: EWalletType.FILE,
+    type: WalletType.FILE,
     lid: 'X_MNEMONIC',
     description: 'brain surround have swap horror cheese file distinct',
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
@@ -113,7 +113,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: false,
     isSecure: false,
     isDesktopOnly: true,
-    type: EWalletType.FILE,
+    type: WalletType.FILE,
     lid: 'X_PRIVKEY2',
     description: 'f1d0e0789c6d40f399ca90cc674b7858de4c719e0d5752a60d5d2f6baa45d4c9',
     helpLink: `${KB_URL}/general-knowledge/ethereum-blockchain/difference-between-wallet-types`
@@ -124,7 +124,7 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     isDeterministic: false,
     isSecure: true,
     isDesktopOnly: false,
-    type: EWalletType.MISC,
+    type: WalletType.MISC,
     lid: 'VIEW_ADDR',
     description: 'ADD_VIEW_ADDRESS_DESC'
   }
@@ -140,5 +140,5 @@ export const INSECURE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CON
   ({ isSecure }: { isSecure: boolean }) => !isSecure
 );
 export const HARDWARE_WALLETS: WalletSubType = filterObjectOfObjects(WALLETS_CONFIG)(
-  ({ type }: { type: EWalletType }) => type === EWalletType.HARDWARE
+  ({ type }: { type: WalletType }) => type === WalletType.HARDWARE
 );
