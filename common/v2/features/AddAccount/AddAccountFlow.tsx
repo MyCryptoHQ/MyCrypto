@@ -2,25 +2,25 @@ import React, { useState, useReducer } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router-dom';
 
+import { ROUTE_PATHS, WALLETS_CONFIG } from 'v2/config';
+import { WalletId } from 'v2/types';
 import { ContentPanel, WalletList } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
-import { WalletName, walletNames } from 'v2/types';
 import { STORIES } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
 import './AddAccount.scss';
 import './AddAccountFlow.scss';
-import { ROUTE_PATHS, WALLET_INFO } from 'v2/config';
 
-export const getStory = (storyName: WalletName): any => {
+export const getStory = (storyName: WalletId | undefined): any => {
   return STORIES.filter(selected => selected.name === storyName)[0];
 };
 
-export const getStorySteps = (storyName: WalletName) => {
+export const getStorySteps = (storyName: WalletId | undefined) => {
   return getStory(storyName).steps;
 };
 
-export const getWalletInfo = (storyName: WalletName): any => {
-  return WALLET_INFO[storyName];
+export const getWalletInfo = (storyName: WalletId): any => {
+  return WALLETS_CONFIG[storyName];
 };
 
 /*
@@ -32,21 +32,21 @@ export const getWalletInfo = (storyName: WalletName): any => {
     story.
 */
 const AddAccountFlow = withRouter(props => {
-  const [storyName, setStoryName] = useState(walletNames.DEFAULT); // The Wallet Story that we are tracking.
+  const [storyName, setStoryName] = useState<WalletId | undefined>(); // The Wallet Story that we are tracking.
   const [step, setStep] = useState(0); // The current Step inside the Wallet Story.
   const [formData, updateFormState] = useReducer(formReducer, initialState); // The data that we want to save at the end.
 
-  const isDefaultView = storyName === walletNames.DEFAULT;
+  const isDefaultView = storyName === undefined;
 
   const goToStart = () => {
     props.history.replace(ROUTE_PATHS.ADD_ACCOUNT.path);
     setStep(0);
-    setStoryName(walletNames.DEFAULT);
+    setStoryName(undefined);
     updateFormState({ type: ActionType.RESET_FORM, payload: '' });
   };
 
   const goToNextStep = () => {
-    const nextStep = Math.min(step + 1, getStorySteps(storyName).length - 1);
+    const nextStep = Math.min(step + 1, getStorySteps(storyName!).length - 1);
     setStep(nextStep);
   };
 
@@ -72,7 +72,7 @@ const AddAccountFlow = withRouter(props => {
     }
   } = props;
 
-  const onWalletSelection = (name: WalletName) => {
+  const onWalletSelection = (name: WalletId) => {
     // If wallet has been selected manually by user click, add the wallet name to the URL for consistency
     if (name) {
       props.history.replace(`${ROUTE_PATHS.ADD_ACCOUNT.path}/${name}`);
@@ -86,7 +86,7 @@ const AddAccountFlow = withRouter(props => {
 
   // If there is a valid walletName parameter in the URL, redirect to that wallet
   if (walletNameFromURL) {
-    if (!walletNames.includes(walletNameFromURL)) {
+    if (!WalletId[walletNameFromURL.toUpperCase()]) {
       props.history.replace(ROUTE_PATHS.ADD_ACCOUNT.path);
     } else {
       if (storyName !== walletNameFromURL) {
@@ -123,7 +123,7 @@ const AddAccountFlow = withRouter(props => {
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
             <Step
-              wallet={getWalletInfo(storyName)}
+              wallet={getWalletInfo(storyName!)}
               goToStart={goToStart}
               goToNextStep={goToNextStep}
               onUnlock={onUnlock}
