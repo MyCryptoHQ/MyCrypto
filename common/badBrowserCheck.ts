@@ -10,20 +10,20 @@ const features: (keyof typeof Modernizr)[] = ['flexbox', 'flexwrap', 'localstora
  * @return {boolean}
  */
 const isSupported = (feature: keyof typeof Modernizr): boolean => {
-  if (!Modernizr[feature]) {
-    const element = document.getElementsByClassName('BadBrowser')[0];
-    element.className += ' is-open';
-
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      element.className += ' is-mobile';
-    }
-
-    console.log(`Feature '${feature}' not supported.`);
-
-    return false;
+  if (Modernizr[feature]) {
+    return true;
   }
 
-  return true;
+  const element = document.getElementsByClassName('BadBrowser')[0];
+  element.className += ' is-open';
+
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    element.className += ' is-mobile';
+  }
+
+  console.warn(`Feature '${feature}' not supported.`);
+
+  return false;
 };
 
 document.addEventListener('DOMContentLoaded', () => {
