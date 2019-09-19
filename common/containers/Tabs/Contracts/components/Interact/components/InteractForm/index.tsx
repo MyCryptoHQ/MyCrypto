@@ -52,10 +52,13 @@ const abiJsonPlaceholder = [
 ];
 
 class InteractForm extends Component<Props, State> {
+  public timer: any;
+
   private abiJsonPlaceholder = JSON.stringify(abiJsonPlaceholder, null, 0);
 
   constructor(props: Props) {
     super(props);
+    this.timer = null;
     this.state = {
       abiJson: '',
       contract: null,
@@ -78,12 +81,18 @@ class InteractForm extends Component<Props, State> {
   };
 
   public componentDidMount = () => {
-    setTimeout(
+    this.timer = setTimeout(
       function() {
         this.contractSetup();
       }.bind(this),
       1000
     );
+  };
+
+  public componentWillUnmount = () => {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
   };
 
   public getParamsFromUrl = () => {

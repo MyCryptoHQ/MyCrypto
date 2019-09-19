@@ -68,6 +68,9 @@ class InteractExplorerClass extends Component<Props, State> {
     contractFunctions: {}
   };
 
+  public firstTimer: any;
+  public secondTimer: any;
+
   public state: State = {
     selectedFunction: null,
     inputs: {},
@@ -112,12 +115,12 @@ class InteractExplorerClass extends Component<Props, State> {
   public componentDidMount() {
     this.props.setAsContractInteraction();
     this.props.resetTransactionRequested();
-    setTimeout(
+    this.firstTimer = setTimeout(
       function() {
         const contractFunctionsOptions = this.contractOptions();
         const item = this.getItem(contractFunctionsOptions);
         this.handleFunctionSelect(item);
-        setTimeout(this.setParams(), 1000);
+        this.secondTimer = setTimeout(this.setParams(), 1000);
       }.bind(this),
       1000
     );
@@ -125,6 +128,12 @@ class InteractExplorerClass extends Component<Props, State> {
 
   public componentWillUnmount() {
     this.props.setAsViewAndSend();
+    if (this.firstTimer) {
+      clearTimeout(this.firstTimer);
+    }
+    if (this.secondTimer) {
+      clearTimeout(this.secondTimer);
+    }
   }
 
   public getParamsFromUrl = () => {
