@@ -14,6 +14,10 @@ const isSupported = (feature: keyof typeof Modernizr): boolean => {
     const element = document.getElementsByClassName('BadBrowser')[0];
     element.className += ' is-open';
 
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      element.className += ' is-mobile';
+    }
+
     console.log(`Feature '${feature}' not supported.`);
 
     return false;
