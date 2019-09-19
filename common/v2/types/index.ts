@@ -11,9 +11,10 @@ export type TSymbol = TSymbol;
 export type IRates = IRates;
 export type TAddress = TAddress;
 
-export { HardwareWallet, InsecureWallet, SecureWallet, HDWallet } from './walletSubTypes';
+export { HardwareWalletId, InsecureWalletId, SecureWalletId, HDWalletId } from './walletSubTypes';
 export { WalletType } from './wallet';
 export { WalletId } from './walletId';
+export { WalletService } from './walletService';
 export {
   Asset,
   ExtendedAsset,

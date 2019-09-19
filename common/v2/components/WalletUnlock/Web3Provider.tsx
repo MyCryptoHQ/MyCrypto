@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
-import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import { NewTabLink } from 'components/ui';
-import { unlockWeb3 } from 'v2/services/WalletService';
-import './Web3Provider.scss';
+import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
+import { WalletId } from 'v2/types';
 import { InlineErrorMsg } from 'v2/components';
+import { WalletFactory } from 'v2/services/WalletService';
+import './Web3Provider.scss';
+import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 
 interface Props {
   wallet: object;
@@ -16,6 +17,8 @@ interface Props {
 interface State {
   web3Unlocked: boolean | undefined;
 }
+
+const WalletService = WalletFactory(WalletId.METAMASK);
 
 class Web3ProviderDecrypt extends Component<Props, State> {
   constructor(props: Props) {
@@ -67,7 +70,7 @@ class Web3ProviderDecrypt extends Component<Props, State> {
 
   public async unlockWallet() {
     try {
-      const walletPayload = await unlockWeb3();
+      const walletPayload = await WalletService();
       if (!walletPayload) {
         throw new Error('Failed to unlock web3');
       }

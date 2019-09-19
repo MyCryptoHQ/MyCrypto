@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
+import { Button } from '@mycrypto/ui';
 
-import { NetworkContext } from 'v2/services/Store';
-import { getDPath, getDPaths } from 'v2/services';
-import { WalletId, FormData } from 'v2/types';
-import translate, { translateRaw } from 'translations';
-import { LedgerWallet } from 'libs/wallet';
 import { Spinner, NewTabLink } from 'components/ui';
+import translate, { translateRaw } from 'translations';
+import { WalletId, FormData } from 'v2/types';
+import { getDPath, getDPaths } from 'v2/services';
+import { NetworkContext } from 'v2/services/Store';
+import { WalletFactory, ChainCodeResponse } from 'v2/services/WalletService';
+
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
-import { Button } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
@@ -27,6 +28,8 @@ interface State {
 }
 
 type Props = OwnProps;
+
+const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
 
 class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public static contextType = NetworkContext;
@@ -129,15 +132,15 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       error: null
     });
 
-    LedgerWallet.getChainCode(dPath.value)
-      .then(res => {
+    WalletService.getChainCode(dPath.value)
+      .then((res: ChainCodeResponse) => {
         this.setState({
           publicKey: res.publicKey,
           chainCode: res.chainCode,
           isLoading: false
         });
       })
-      .catch(err => {
+      .catch((err: any) => {
         this.setState({
           error: translateRaw(err.message),
           isLoading: false
@@ -150,7 +153,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new LedgerWallet(address, this.state.dPath.value, index));
+    this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
     this.reset();
   };
 
