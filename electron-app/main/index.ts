@@ -1,4 +1,4 @@
-import 'idempotent-babel-polyfill';
+import '@babel/polyfill';
 import { app, ipcMain, BrowserWindow } from 'electron';
 import { registerServer } from 'shared/enclave/server';
 import getWindow from './window';
