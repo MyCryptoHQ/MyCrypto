@@ -3,26 +3,27 @@ import { FallbackProvider } from 'ethers/providers';
 import { Network } from 'v2/types';
 import { createNetworkProviders } from './helpers';
 
+interface InstancesObject {
+  [key: string]: FallbackProvider;
+}
+
 // Singleton that handles all our network requests
 // Generates FallbackProviders depending on the network.
 // Should only be used through `ProviderHandler`
 export class EthersJS {
   public static getEthersInstance(network: Network): FallbackProvider {
-    if (!EthersJS.instance || !EthersJS.networkName) {
-      EthersJS.instance = createNetworkProviders(network);
-      EthersJS.networkName = network.name;
+    if (!EthersJS.instances[network.id]) {
+      EthersJS.instances[network.id] = createNetworkProviders(network);
     }
-    return EthersJS.instance;
+    return EthersJS.instances[network.id];
   }
 
   public static updateEthersInstance(network: Network): FallbackProvider {
-    EthersJS.instance = createNetworkProviders(network);
-    EthersJS.networkName = network.name;
-    return EthersJS.instance;
+    EthersJS.instances[network.id] = createNetworkProviders(network);
+    return EthersJS.instances[network.id];
   }
 
-  private static instance: FallbackProvider;
-  private static networkName: string;
+  private static instances: InstancesObject = {};
 
   private constructor() {}
 }
