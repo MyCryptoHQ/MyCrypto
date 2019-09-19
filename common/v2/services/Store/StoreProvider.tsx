@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo, createContext } from 'react';
+import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
 import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiat } from 'v2/utils';
@@ -40,6 +40,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     networks
   ]);
   const [accounts, setAccounts] = useState(storeAccounts);
+  useEffect(() => {
+    setAccounts(storeAccounts);
+  }, [storeAccounts]);
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -52,7 +55,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     },
     60000,
     true,
-    [rawAccounts]
+    [accounts]
   );
 
   const state: State = {
