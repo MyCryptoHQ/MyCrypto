@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Button } from '@mycrypto/ui';
 
 import { generateUUID } from 'v2/utils';
-import { InputField, NetworkSelectDropdown } from 'v2/components';
+import { InputField, NetworkSelectDropdown, DashboardPanel } from 'v2/components';
 import { translateRaw } from 'translations';
-import { createAssetWithID, getNetworkByName } from 'v2/services/Store';
+import { getNetworkByName, AssetContext } from 'v2/services/Store';
 import { ExtendedAsset, NetworkId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { isValidAddress } from 'v2/services';
+
+import backArrowIcon from 'common/assets/images/icn-back.svg';
 
 const ActionsWrapper = styled.div`
   margin-top: 52px;
@@ -24,7 +26,16 @@ const NetworkSelectorWrapper = styled.div`
   }
 `;
 
+const Icon = styled.img`
+  cursor: pointer;
+`;
+
+const BackIcon = styled(Icon)`
+  margin-right: 16px;
+`;
+
 interface Props {
+  setShowDetailsView(setShowDetailsView: boolean): void;
   setShowAddToken(setShowAddToken: boolean): void;
   scanTokens(asset?: ExtendedAsset): Promise<void>;
 }
@@ -38,7 +49,9 @@ export function AddToken(props: Props) {
   const [decimalsError, setDecimalsError] = useState('');
   const [networkId, setNetworkId] = useState<NetworkId>(DEFAULT_NETWORK);
 
-  const { setShowAddToken, scanTokens } = props;
+  const { createAssetWithID } = useContext(AssetContext);
+
+  const { setShowAddToken, scanTokens, setShowDetailsView } = props;
 
   const validateForm = () => {
     setSymbolError('');
@@ -92,7 +105,21 @@ export function AddToken(props: Props) {
   };
 
   return (
-    <div>
+    <DashboardPanel
+      heading={
+        <div>
+          <BackIcon
+            src={backArrowIcon}
+            onClick={() => {
+              setShowDetailsView(false);
+              setShowAddToken(false);
+            }}
+          />
+          {translateRaw('ADD_CUSTOM_TOKEN')}
+        </div>
+      }
+      padChildren={true}
+    >
       <NetworkSelectorWrapper>
         <NetworkSelectDropdown network={networkId} onChange={setNetworkId} />
       </NetworkSelectorWrapper>
@@ -124,6 +151,6 @@ export function AddToken(props: Props) {
         </Button>
         <Button onClick={handleAddTokenClick}>{translateRaw('ADD_TOKEN')}</Button>
       </ActionsWrapper>
-    </div>
+    </DashboardPanel>
   );
 }

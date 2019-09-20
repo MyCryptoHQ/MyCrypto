@@ -1,11 +1,19 @@
 import React, { Component, createContext } from 'react';
 
 import { Asset, ExtendedAsset } from 'v2/types';
-import { readAssets, readAsset, createAsset, deleteAsset, updateAsset } from './Asset';
+import {
+  readAssets,
+  readAsset,
+  createAsset,
+  deleteAsset,
+  updateAsset,
+  createAssetWithID
+} from './Asset';
 
 export interface ProviderState {
   assets: ExtendedAsset[];
   createAsset(assetData: ExtendedAsset): void;
+  createAssetWithID(assetData: ExtendedAsset, id: string): void;
   readAsset(uuid: string): Asset;
   deleteAsset(uuid: string): void;
   updateAsset(uuid: string, assetData: ExtendedAsset): void;
@@ -18,6 +26,10 @@ export class AssetProvider extends Component {
     assets: readAssets() || [],
     createAsset: (assetData: ExtendedAsset) => {
       createAsset(assetData);
+      this.getAssets();
+    },
+    createAssetWithID: (assetData: ExtendedAsset, id: string) => {
+      createAssetWithID(assetData, id);
       this.getAssets();
     },
     readAsset: (uuid: string) => {

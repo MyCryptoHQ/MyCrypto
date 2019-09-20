@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { formatEther } from 'ethers/utils';
 
 import { translateRaw } from 'translations';
-import { AssetWithDetails } from 'v2/types';
+import { AssetWithDetails, TSymbol } from 'v2/types';
+import { DashboardPanel, AssetIcon } from 'v2/components';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';
@@ -14,6 +15,10 @@ import socialSlack from 'common/assets/images/social-icons/social-slack.svg';
 import socialCmc from 'common/assets/images/social-icons/social-cmc.svg';
 import websiteIcon from 'common/assets/images/icn-website.svg';
 import whitepaperIcon from 'common/assets/images/icn-whitepaper.svg';
+import backArrowIcon from 'common/assets/images/icn-back.svg';
+import expandIcon from 'common/assets/images/icn-expand.svg';
+
+const etherscanUrl = ' https://etherscan.io/token/';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -68,6 +73,20 @@ const ResourceIcon = styled(Icon)`
   margin-right: 10px;
 `;
 
+const BackIcon = styled(Icon)`
+  margin-right: 16px;
+`;
+
+const TokenIcon = styled.div`
+  margin-right: 8px;
+  display: flex;
+`;
+
+const DetailsHeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 interface InfoPieceProps {
   title: string;
   value: string | number | JSX.Element | undefined;
@@ -120,10 +139,11 @@ const supportedSocialNetworks: ISocialNetwork = {
 
 interface Props {
   currentToken: AssetWithDetails;
+  setShowDetailsView(setShowDetailsView: boolean): void;
 }
 
 export function TokenDetails(props: Props) {
-  const { currentToken } = props;
+  const { currentToken, setShowDetailsView } = props;
   const { details } = currentToken;
 
   interface ISocial {
@@ -140,7 +160,23 @@ export function TokenDetails(props: Props) {
   const filteredSocialArray = Object.keys(filteredSocial);
 
   return (
-    <div>
+    <DashboardPanel
+      heading={
+        <DetailsHeadingWrapper>
+          <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
+          <TokenIcon>
+            <AssetIcon symbol={currentToken.ticker as TSymbol} size={'26px'} />
+          </TokenIcon>
+          {currentToken.name}
+        </DetailsHeadingWrapper>
+      }
+      headingRight={
+        <a href={`${etherscanUrl}${currentToken.contractAddress}`} target="_blank" rel="noreferrer">
+          <Icon src={expandIcon} />
+        </a>
+      }
+      padChildren={true}
+    >
       <Section noMargin={true}>
         <TwoColumnsWrapper>
           {/*TODO: Look up selected fiat currency instead of hardcoded $*/}
@@ -208,6 +244,6 @@ export function TokenDetails(props: Props) {
           />
         </Section>
       )}
-    </div>
+    </DashboardPanel>
   );
 }
