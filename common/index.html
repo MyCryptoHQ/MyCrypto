@@ -20,6 +20,30 @@
     <meta name="twitter:creator" content="<%= htmlWebpackPlugin.options.twitter.creator %>" />
     <meta name="google-site-verification" content="dRWkvANAUNAhNyMnTyc7M7S3lnucotMY8j8R-gsZhbo" />
     <link rel="manifest" href="/manifest.json" />
+
+    <script> (function (d, s) {
+      var js = d.createElement(s),
+        sc = d.getElementsByTagName(s)[0];
+      js.src = "https://paywall.unlock-protocol.com/static/unlock.1.0.min.js";
+      sc.parentNode.insertBefore(js, sc);
+    }(document, "script"));
+    </script>
+
+    <script>
+      var unlockProtocolConfig = {
+        "icon": "https://assets.unlock-protocol.com/tmp/my-crypto.png",
+        "callToAction": {
+          "default": "Support the MyCrypto team and unlock your membership today!\n\nYou can make a donation by purchasing a key using your Ethereum wallet. The key is a non fungible token which represents your membership. ",
+          "confirmed": "Thank you for choosing to be a MyCrypto supporter! ❤️\n\n\n\nAt this time, your support is a simple donation that helps us continue working to bring you products.\n\n\n\nIn the future we'll be further developing this functionality with the Unlock Protocol team to reward supporters with things like custom themes, swag, and more.\n\n\n\n-Taylor & Team MyCrypto"
+        },
+        "locks": {
+          "0x14e81196e60b128527db03d40bdba00710777805": {
+            "name": "MyCrypto Members"
+          }
+        }
+      }
+    </script>
+
   </head>
 
   <body>
@@ -55,7 +79,7 @@
 <p class="is-desktop">
           If you're using the Brave Browser, please ensure that you are not blocking all cookies.
           You may block 3rd-party cookies, but MyCrypto will not function properly if all cookies are blocked.
-         
+
         </p>
         <p class="is-mobile">
           MyCrypto requires certain features that your browser doesn't offer. Please use your

@@ -7,6 +7,7 @@ import translate from 'translations';
 import ether from 'assets/images/ether.png';
 import bitcoin from 'assets/images/bitcoin.png';
 import Subscribe from './Subscribe';
+import UnlockButton from './UnlockButton';
 import './DonateAndSubscribe.scss';
 
 interface DonationButtonProps {
@@ -53,6 +54,9 @@ class Donate extends Component {
           <span className="check">✓</span>
           {translate('NEW_FOOTER_TEXT_2')}
         </p>
+        <section className="Donate-buttons">
+          <UnlockButton />
+        </section>
       </section>
     );
   }
