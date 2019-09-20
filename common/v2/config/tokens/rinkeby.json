@@ -1,19 +1,19 @@
 [
     {
         "address": "0x2448ee2641d78cc42d7ad76498917359d961a783",
-        "symbol": "DAI",
+        "symbol": "RinkebyDAI",
         "decimal": 18,
         "name": "Dai Stablecoin"
     },
     {
         "address": "0xda5b056cfb861282b4b59d29c9b395bcc238d29b",
-        "symbol": "BAT",
+        "symbol": "RinkebyBAT",
         "decimal": 18,
         "name": "Basic Attention Token"
     },
     {
         "address": "0x879884c3c46a24f56089f3bbbe4d5e38db5788c0",
-        "symbol": "OMG",
+        "symbol": "RinkebyOMG",
         "decimal": 18,
         "name": "OMGToken"
     }

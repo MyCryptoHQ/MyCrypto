@@ -43,7 +43,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Ropsten: {
     id: 'Ropsten',
     name: 'Ropsten',
-    unit: 'ETH',
+    unit: 'RopstenETH',
     chainId: 3,
     isCustom: false,
     color: '#adc101',
@@ -65,7 +65,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Kovan: {
     id: 'Kovan',
     name: 'Kovan',
-    unit: 'ETH',
+    unit: 'KovanETH',
     chainId: 42,
     isCustom: false,
     color: '#adc101',
@@ -87,7 +87,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Rinkeby: {
     id: 'Rinkeby',
     name: 'Rinkeby',
-    unit: 'ETH',
+    unit: 'RinkebyETH',
     chainId: 4,
     isCustom: false,
     color: '#adc101',
@@ -109,7 +109,7 @@ export const NETWORKS_CONFIG: NetworkConfig = {
   Goerli: {
     id: 'Goerli',
     name: 'Goerli',
-    unit: 'ETH',
+    unit: 'GoerliETH',
     chainId: 5,
     isCustom: false,
     color: '#adc101',
