@@ -5,7 +5,6 @@ import {
   Contract,
   ISettings,
   Network,
-  Wallet,
   ScreenLockSettings,
   Notification
 } from 'v2/types';
@@ -13,7 +12,6 @@ import {
 export interface LocalCache {
   settings: ISettings;
   accounts: Record<string, Account>;
-  wallets: Record<string, Wallet>;
   assets: Record<string, Asset>;
   networks: Record<string, Network>;
   contracts: Record<string, Contract>;

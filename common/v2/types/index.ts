@@ -1,31 +1,19 @@
 import { TAddress } from './address';
-import { TWalletType } from './wallets';
-import { Wallet, ExtendedWallet, WalletName } from './wallet';
 import { TSymbol } from './symbols';
 import { IRates } from './rates';
 import { NodeConfig, CustomNodeConfig, NodeOptions } from './node';
-
 // Babel needs to know which types to remove when transpiling
 // https://github.com/webpack/webpack/issues/7378#issuecomment-492641148
 export type NodeConfig = NodeConfig;
 export type CustomNodeConfig = CustomNodeConfig;
 export type NodeOptions = NodeOptions;
-export type Wallet = Wallet;
-export type ExtendedWallet = ExtendedWallet;
-export type WalletName = WalletName;
 export type TSymbol = TSymbol;
 export type IRates = IRates;
-export type TWalletType = TWalletType;
 export type TAddress = TAddress;
 
-export {
-  DefaultWalletName,
-  SecureWalletName,
-  InsecureWalletName,
-  MiscWalletName,
-  WalletType,
-  walletNames
-} from './wallet';
+export { HardwareWallet, InsecureWallet, SecureWallet, HDWallet } from './walletSubTypes';
+export { WalletType } from './wallet';
+export { WalletId } from './walletId';
 export {
   Asset,
   ExtendedAsset,

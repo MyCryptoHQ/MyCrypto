@@ -3,7 +3,8 @@ import { fromEtherWallet } from 'ethereumjs-wallet/thirdparty';
 
 import { fromV3 } from 'v2/workers';
 import { decryptPrivKey } from 'v2/services/EthService/utils';
-import { signWrapper, determineKeystoreType, KeystoreTypes } from './helpers';
+import { signWrapper } from '../helpers';
+import { determineKeystoreType, KeystoreTypes } from './helpers';
 import Web3Wallet from './web3';
 import AddressOnlyWallet from './address';
 import ParitySignerWallet from './parity';

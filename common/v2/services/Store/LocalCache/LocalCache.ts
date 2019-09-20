@@ -62,8 +62,7 @@ type CollectionKey =
   | 'assets'
   | 'contracts'
   | 'networks'
-  | 'notifications'
-  | 'wallets';
+  | 'notifications';
 
 export const create = <K extends CollectionKey>(key: K) => (
   value: LocalCache[K][keyof LocalCache[K]]

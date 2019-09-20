@@ -1,4 +1,4 @@
-import { SecureWalletName, InsecureWalletName, IStory } from 'v2/types';
+import { IStory, WalletId } from 'v2/types';
 import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
 import {
   LedgerNanoSDecrypt,
@@ -12,29 +12,29 @@ import {
 
 export const STORIES: IStory[] = [
   {
-    name: SecureWalletName.WEB3,
+    name: WalletId.METAMASK,
     steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt] : [Web3ProviderInstall]
   },
   {
-    name: SecureWalletName.LEDGER_NANO_S,
+    name: WalletId.LEDGER_NANO_S,
     steps: [LedgerNanoSDecrypt]
   },
   {
-    name: SecureWalletName.PARITY_SIGNER,
+    name: WalletId.PARITY_SIGNER,
     steps: [ParitySignerDecrypt]
   },
   {
-    name: InsecureWalletName.KEYSTORE_FILE,
+    name: WalletId.KEYSTORE_FILE,
     steps: [KeystoreDecrypt],
     hideFromWalletList: IS_DEV ? false : !IS_ELECTRON
   },
   {
-    name: InsecureWalletName.MNEMONIC_PHRASE,
+    name: WalletId.MNEMONIC_PHRASE,
     steps: [MnemonicDecrypt],
     hideFromWalletList: IS_DEV ? false : !IS_ELECTRON
   },
   {
-    name: InsecureWalletName.PRIVATE_KEY,
+    name: WalletId.PRIVATE_KEY,
     steps: [PrivateKeyDecrypt],
     hideFromWalletList: IS_DEV ? false : !IS_ELECTRON
   }

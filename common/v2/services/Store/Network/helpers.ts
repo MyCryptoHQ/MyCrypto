@@ -1,6 +1,3 @@
-import { SecureWalletName, InsecureWalletName } from 'config/data';
-
-import { getCache, setCache } from '../LocalCache';
 import { getAccountByAddress, getAssetByUUID } from 'v2/services/Store';
 import {
   Asset,
@@ -10,8 +7,10 @@ import {
   Network,
   NetworkId,
   NodeOptions,
-  WalletName
+  WalletId
 } from 'v2/types';
+import { HD_WALLETS } from 'v2/config';
+import { getCache, setCache } from '../LocalCache';
 
 export const getAllNetworks = () => {
   return Object.values(getCache().networks);
@@ -39,15 +38,10 @@ export const getNetworkById = (id: NetworkId): Network | undefined => {
   return networks.find((network: Network) => network.id === id);
 };
 
-export const isWalletFormatSupportedOnNetwork = (network: Network, format: WalletName): boolean => {
+export const isWalletFormatSupportedOnNetwork = (network: Network, format: WalletId): boolean => {
   const chainId = network ? network.chainId : 0;
 
-  const CHECK_FORMATS: DPathFormat[] = [
-    SecureWalletName.LEDGER_NANO_S,
-    SecureWalletName.TREZOR,
-    SecureWalletName.SAFE_T,
-    InsecureWalletName.MNEMONIC_PHRASE
-  ];
+  const CHECK_FORMATS: DPathFormat[] = Object.keys(HD_WALLETS) as DPathFormat[];
 
   const isHDFormat = (f: string): f is DPathFormat => CHECK_FORMATS.includes(f as DPathFormat);
 
@@ -61,7 +55,7 @@ export const isWalletFormatSupportedOnNetwork = (network: Network, format: Walle
   }
 
   // Parity signer on RSK
-  if ((chainId === 30 || chainId === 31) && format === SecureWalletName.PARITY_SIGNER) {
+  if ((chainId === 30 || chainId === 31) && format === WalletId.PARITY_SIGNER) {
     return false;
   }
 

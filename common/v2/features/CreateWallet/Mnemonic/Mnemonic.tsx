@@ -8,15 +8,7 @@ import { uniq } from 'lodash';
 import { MnemonicStages, mnemonicStageToComponentHash, mnemonicFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
-import {
-  Account,
-  Asset,
-  DPathFormat,
-  ISettings,
-  InsecureWalletName,
-  Network,
-  NetworkId
-} from 'v2/types';
+import { Account, Asset, DPathFormat, ISettings, WalletId, Network, NetworkId } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 import { getNewDefaultAssetTemplateByNetwork, getNetworkById } from 'v2/services/Store';
 import { DEFAULT_NETWORK, ROUTE_PATHS } from 'v2/config';
@@ -43,7 +35,7 @@ class CreateMnemonic extends Component<Props> {
     stage: MnemonicStages.SelectNetwork,
     words: [],
     network: DEFAULT_NETWORK,
-    accountType: InsecureWalletName.MNEMONIC_PHRASE,
+    accountType: WalletId.MNEMONIC_PHRASE,
     path: '',
     address: ''
   };

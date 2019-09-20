@@ -1,7 +1,7 @@
-import React, { useState, useContext, useMemo, createContext } from 'react';
+import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
 import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
-import { isArrayEqual, useInterval } from 'v2/utils';
+import { isArrayEqual, useInterval, convertToFiat } from 'v2/utils';
 
 import { getAccountsAssetsBalances } from './BalanceService';
 import { getStoreAccounts } from './helpers';
@@ -16,6 +16,9 @@ interface State {
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
+  totalFiat(
+    selectedAccounts?: StoreAccount[]
+  ): (getRate: (ticker: TTicker) => number | undefined) => number;
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
 }
@@ -37,6 +40,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     networks
   ]);
   const [accounts, setAccounts] = useState(storeAccounts);
+  useEffect(() => {
+    setAccounts(storeAccounts);
+  }, [storeAccounts]);
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -49,7 +55,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     },
     60000,
     true,
-    [rawAccounts]
+    [accounts]
   );
 
   const state: State = {
@@ -61,6 +67,15 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
+    totalFiat: (selectedAccounts = state.accounts) => (
+      getRate: (ticker: TTicker) => number | undefined
+    ) =>
+      state
+        .totals(selectedAccounts)
+        .reduce(
+          (sum, asset) => (sum += convertToFiat(asset.balance, getRate(asset.ticker as TTicker))),
+          0
+        ),
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))

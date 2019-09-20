@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { DEFAULT_NETWORK } from 'v2/config';
 import { AccountContext, getLabelByAccount } from 'v2/services/Store';
-import { Account, AddressBook, ExtendedAccount, SecureWalletName } from 'v2/types';
+import { Account, AddressBook, ExtendedAccount, WalletId } from 'v2/types';
 
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';
@@ -44,7 +44,7 @@ const DevTools = () => {
                       mtime: Date.now()
                     }
                   ],
-                  wallet: SecureWalletName.WEB3,
+                  wallet: WalletId.METAMASK,
                   mtime: Date.now(),
                   transactions: [],
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',

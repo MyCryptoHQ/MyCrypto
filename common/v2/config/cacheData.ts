@@ -3,26 +3,37 @@ import { Asset, Contract, NetworkId } from 'v2/types';
 
 import { Contracts } from './contracts';
 import { NetworkAssets, Token } from './tokens';
+import { TSymbol } from 'v2/types/symbols';
 
 export interface Fiat {
   code: string;
   name: string;
+  symbol: TSymbol;
+  prefix?: boolean;
+}
+
+interface FiatObject {
+  [key: string]: Fiat;
 }
 
 export const USD = {
   code: 'USD',
-  name: 'US Dollars'
+  name: 'US Dollars',
+  symbol: '$' as TSymbol,
+  prefix: true
 };
 export const EUR = {
   code: 'EUR',
-  name: 'Euros'
+  name: 'Euros',
+  symbol: '€' as TSymbol
 };
 export const GBP = {
   code: 'GBP',
-  name: 'British Pounds'
+  name: 'British Pounds',
+  symbol: '£' as TSymbol
 };
 
-export const Fiats: Fiat[] = [USD, EUR, GBP];
+export const Fiats: FiatObject = { USD, EUR, GBP };
 
 export const ContractsData = (): Record<string, Contract> => {
   const data: any = Object.keys(Contracts);

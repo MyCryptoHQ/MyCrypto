@@ -2,10 +2,9 @@ import React, { PureComponent } from 'react';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
-import { FormData } from 'v2/types';
+import { FormData, WalletId } from 'v2/types';
 import { getDPath, getDPaths } from 'v2/services/EthService';
 import { NetworkContext } from 'v2/services/Store';
-import { InsecureWalletName } from 'config';
 import translate, { translateRaw } from 'translations';
 import { formatMnemonic } from 'utils/formatters';
 import { TogglablePassword } from 'components';
@@ -43,8 +42,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
     selectedDPath:
       getDPath(
         this.context.getNetworkByName(this.props.formData.network),
-        InsecureWalletName.MNEMONIC_PHRASE
-      ) || getDPaths(this.context.networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
+        WalletId.MNEMONIC_PHRASE
+      ) || getDPaths(this.context.networks, WalletId.MNEMONIC_PHRASE)[0]
   };
 
   public render() {
@@ -60,7 +59,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
             network={network}
             seed={seed}
             dPath={selectedDPath}
-            dPaths={getDPaths(networks, InsecureWalletName.MNEMONIC_PHRASE)}
+            dPaths={getDPaths(networks, WalletId.MNEMONIC_PHRASE)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -175,8 +174,8 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
       formattedPhrase: undefined,
       pass: undefined,
       selectedDPath:
-        getDPath(network, InsecureWalletName.MNEMONIC_PHRASE) ||
-        getDPaths(networks, InsecureWalletName.MNEMONIC_PHRASE)[0]
+        getDPath(network, WalletId.MNEMONIC_PHRASE) ||
+        getDPaths(networks, WalletId.MNEMONIC_PHRASE)[0]
     });
 
     const wallet = await unlockMnemonic({

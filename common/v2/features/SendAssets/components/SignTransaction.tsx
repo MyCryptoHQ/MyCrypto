@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TWalletType, ITxReceipt } from 'v2/types';
+import { WalletId, ITxReceipt } from 'v2/types';
 import { IStepComponentProps, ISignComponentProps, ISignedTx } from '../types';
 import {
   SignTransactionKeystore,
@@ -14,18 +14,18 @@ import {
 import './SignTransaction.scss';
 
 type SigningComponents = {
-  readonly [k in Partial<TWalletType>]: React.ComponentType<ISignComponentProps> | null;
+  readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
 };
 const SigningComponents: SigningComponents = {
-  privateKey: SignTransactionPrivateKey,
-  web3: SignTransactionMetaMask,
-  ledgerNanoS: SignTransactionLedger,
-  trezor: SignTransactionTrezor,
-  safeTmini: SignTransactionSafeT,
-  keystoreFile: SignTransactionKeystore,
-  paritySigner: null,
-  mnemonicPhrase: SignTransactionMnemonic,
-  viewOnly: null
+  [WalletId.PRIVATE_KEY]: SignTransactionPrivateKey,
+  [WalletId.METAMASK]: SignTransactionMetaMask,
+  [WalletId.LEDGER_NANO_S]: SignTransactionLedger,
+  [WalletId.TREZOR]: SignTransactionTrezor,
+  [WalletId.SAFE_T_MINI]: SignTransactionSafeT,
+  [WalletId.KEYSTORE_FILE]: SignTransactionKeystore,
+  [WalletId.PARITY_SIGNER]: null,
+  [WalletId.MNEMONIC_PHRASE]: SignTransactionMnemonic,
+  [WalletId.VIEW_ONLY]: null
 };
 
 export default function SignTransaction({ txConfig, onComplete }: IStepComponentProps) {
@@ -47,7 +47,7 @@ export default function SignTransaction({ txConfig, onComplete }: IStepComponent
     senderAccount: { wallet: walletName }
   } = txConfig;
 
-  const getWalletComponent = (walletType: TWalletType) => {
+  const getWalletComponent = (walletType: WalletId) => {
     return SigningComponents[walletType];
   };
 

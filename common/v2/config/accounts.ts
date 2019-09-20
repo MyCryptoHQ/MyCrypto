@@ -1,4 +1,4 @@
-import { Account, SecureWalletName } from 'v2/types';
+import { Account, WalletId } from 'v2/types';
 
 export const accounts: Account[] = [
   {
@@ -16,7 +16,7 @@ export const accounts: Account[] = [
         mtime: Date.now()
       }
     ],
-    wallet: SecureWalletName.WEB3,
+    wallet: WalletId.METAMASK,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
     mtime: Date.now(),
@@ -32,7 +32,7 @@ export const accounts: Account[] = [
         mtime: Date.now()
       }
     ],
-    wallet: SecureWalletName.WEB3,
+    wallet: WalletId.METAMASK,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
     mtime: Date.now(),
@@ -63,7 +63,7 @@ export const accounts: Account[] = [
         mtime: Date.now()
       }
     ],
-    wallet: SecureWalletName.WEB3,
+    wallet: WalletId.METAMASK,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
     mtime: Date.now(),
@@ -94,7 +94,7 @@ export const accounts: Account[] = [
         mtime: Date.now()
       }
     ],
-    wallet: SecureWalletName.WEB3,
+    wallet: WalletId.METAMASK,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
     mtime: Date.now(),
@@ -120,7 +120,7 @@ export const accounts: Account[] = [
         mtime: Date.now()
       }
     ],
-    wallet: SecureWalletName.WEB3,
+    wallet: WalletId.METAMASK,
     dPath: `m/44'/60'/0'/0/0`,
     transactions: [],
     mtime: Date.now(),

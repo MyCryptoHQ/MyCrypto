@@ -39,7 +39,7 @@ function NetworkSelectPanel({ formData, formDispatch, goToNextStep }: Props) {
       <NetworkForm>
         <NetworkSelectDropdown
           network={network}
-          accountType={formData.accountType}
+          accountType={formData.accountType!}
           onChange={setNetwork}
         />
       </NetworkForm>
