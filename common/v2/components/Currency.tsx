@@ -18,9 +18,10 @@ interface Props {
   symbol: TSymbol;
   decimals?: number;
   icon?: boolean;
+  prefix?: boolean;
 }
 
-function Currency({ amount, symbol, decimals = 5, icon = false, ...props }: Props) {
+function Currency({ amount, symbol, decimals = 5, icon = false, prefix = false, ...props }: Props) {
   const format = (value: string, decimalPlaces: number) => {
     const v = parseFloat(value);
     return Number(v).toFixed(decimalPlaces);
@@ -36,8 +37,9 @@ function Currency({ amount, symbol, decimals = 5, icon = false, ...props }: Prop
         </span>
       )}
       <STypography>
+        {prefix && `${symbol}`}
         {format(amount, decimals)}
-        {` ${symbol}`}
+        {!prefix && `${symbol}`}
       </STypography>
     </SContainer>
   );

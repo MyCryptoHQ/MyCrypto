@@ -5,6 +5,7 @@ import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
 import { BigNumber, formatEther } from 'ethers/utils';
 import BN from 'bn.js';
+import styled from 'styled-components';
 
 import translate, { translateRaw } from 'translations';
 import { WhenQueryExists } from 'components/renderCbs';
@@ -24,7 +25,8 @@ import {
   isValidETHAddress,
   gasStringsToMaxGasBN,
   convertedToBaseUnit,
-  baseToConvertedUnit
+  baseToConvertedUnit,
+  isValidPositiveNumber
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 
@@ -49,7 +51,12 @@ import {
 } from './validators/validators';
 import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
-import styled from 'styled-components';
+import {
+  GAS_LIMIT_LOWER_BOUND,
+  GAS_LIMIT_UPPER_BOUND,
+  GAS_PRICE_GWEI_LOWER_BOUND,
+  GAS_PRICE_GWEI_UPPER_BOUND
+} from 'v2/config';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -62,11 +69,11 @@ const initialFormikValues: IFormikFields = {
     value: '',
     display: ''
   },
-  amount: '0',
+  amount: '',
   account: {} as ExtendedAccount, // should be renamed senderAccount
   network: {} as Network, // Not a field move to state
   asset: {} as StoreAsset,
-  txDataField: '',
+  txDataField: '0x',
   gasEstimates: {
     // Not a field, move to state
     fastest: 20,
@@ -95,9 +102,23 @@ const QueryWarning: React.SFC<{}> = () => (
 );
 
 const SendAssetsSchema = Yup.object().shape({
-  amount: Yup.string().required('Required'),
-  account: Yup.object().required('Required'),
-  receiverAddress: Yup.object().required('Required')
+  amount: Yup.number()
+    .min(0, translateRaw('ERROR_0'))
+    .required(translateRaw('REQUIRED')),
+  account: Yup.object().required(translateRaw('REQUIRED')),
+  receiverAddress: Yup.object().required(translateRaw('REQUIRED')),
+  gasLimitField: Yup.number()
+    .min(GAS_LIMIT_LOWER_BOUND, translateRaw('ERROR_8'))
+    .max(GAS_LIMIT_UPPER_BOUND, translateRaw('ERROR_8'))
+    .required(translateRaw('REQUIRED')),
+  gasPriceField: Yup.number()
+    .min(GAS_PRICE_GWEI_LOWER_BOUND, translateRaw('ERROR_10'))
+    .max(GAS_PRICE_GWEI_UPPER_BOUND, translateRaw('ERROR_10'))
+    .required(translateRaw('REQUIRED')),
+  nonceField: Yup.number()
+    .integer(translateRaw('ERROR_11'))
+    .min(0, translateRaw('ERROR_11'))
+    .required(translateRaw('REQUIRED'))
 });
 
 export default function SendAssetsForm({
@@ -119,7 +140,15 @@ export default function SendAssetsForm({
         onSubmit={fields => {
           onComplete(fields);
         }}
-        render={({ errors, touched, setFieldValue, values, handleChange, submitForm }) => {
+        render={({
+          errors,
+          setFieldValue,
+          setFieldTouched,
+          touched,
+          values,
+          handleChange,
+          submitForm
+        }) => {
           const toggleAdvancedOptions = () => {
             setFieldValue('advancedTransaction', !values.advancedTransaction);
           };
@@ -132,13 +161,15 @@ export default function SendAssetsForm({
                 !values.asset ||
                 !values.receiverAddress ||
                 !isValidETHAddress(values.receiverAddress.value) ||
-                !values.account
+                !values.account ||
+                !isValidPositiveNumber(values.amount)
               )
             ) {
               setIsEstimatingGasLimit(true);
               const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
               setFieldValue('gasLimitField', hexToNumber(gas));
+              setFieldTouched('amount');
               setIsEstimatingGasLimit(false);
             } else {
               return;
@@ -198,7 +229,6 @@ export default function SendAssetsForm({
             setFieldValue('nonceField', nonce.toString());
             setIsEstimatingNonce(false);
           };
-
           return (
             <Form className="SendAssetsForm">
               <QueryWarning />
@@ -266,8 +296,8 @@ export default function SendAssetsForm({
                 <EthAddressField
                   fieldName="receiverAddress.display"
                   handleENSResolve={handleENSResolve}
-                  error={errors && errors.receiverAddress && errors.receiverAddress.value}
-                  touched={touched && touched.receiverAddress && touched.receiverAddress.value}
+                  error={errors && errors.receiverAddress && errors.receiverAddress.display}
+                  touched={touched}
                   handleGasEstimate={handleGasEstimate}
                   network={values.network}
                   isLoading={isResolvingENSName}
@@ -282,21 +312,30 @@ export default function SendAssetsForm({
                     {translateRaw('SEND_ASSETS_AMOUNT_LABEL_ACTION').toLowerCase()}
                   </div>
                 </label>
-                <FastField
+                <Field
                   name="amount"
                   validate={validateAmountField}
-                  render={({ field }: FieldProps) => (
-                    <Input
-                      {...field}
-                      value={field.value}
-                      onBlur={handleGasEstimate}
-                      placeholder={'0.00'}
-                    />
-                  )}
+                  render={({ field, form }: FieldProps) => {
+                    return (
+                      <>
+                        <Input
+                          {...field}
+                          value={field.value}
+                          onBlur={() => {
+                            form.setFieldTouched('amount');
+                            handleGasEstimate();
+                          }}
+                          placeholder={'0.00'}
+                        />
+                        {errors && touched && touched.amount ? (
+                          <InlineErrorMsg className="SendAssetsForm-errors">
+                            {errors.amount}
+                          </InlineErrorMsg>
+                        ) : null}
+                      </>
+                    );
+                  }}
                 />
-                {errors.amount && errors.amount && touched.amount && touched.amount ? (
-                  <InlineErrorMsg className="SendAssetsForm-errors">{errors.amount}</InlineErrorMsg>
-                ) : null}
               </fieldset>
               {/* You'll Send */}
               {/* <fieldset className="SendAssetsForm-fieldset SendAssetsForm-fieldset-youllSend">
@@ -360,6 +399,9 @@ export default function SendAssetsForm({
                             />
                           )}
                         />
+                        {errors && errors.gasPriceField && (
+                          <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
+                        )}
                       </div>
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
@@ -384,6 +426,9 @@ export default function SendAssetsForm({
                             />
                           )}
                         />
+                        {errors && errors.gasLimitField && (
+                          <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
+                        )}
                       </div>
                     </div>
                     <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
@@ -411,19 +456,12 @@ export default function SendAssetsForm({
                             />
                           )}
                         />
+                        {errors && errors.nonceField && (
+                          <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>
+                        )}
                       </div>
                     </div>
-                    <div className="SendAssetsForm-errors">
-                      {errors && errors.gasPriceField && (
-                        <InlineErrorMsg>{errors.gasPriceField}</InlineErrorMsg>
-                      )}
-                      {errors && errors.gasLimitField && (
-                        <InlineErrorMsg>{errors.gasLimitField}</InlineErrorMsg>
-                      )}
-                      {errors && errors.nonceField && (
-                        <InlineErrorMsg>{errors.nonceField}</InlineErrorMsg>
-                      )}
-                    </div>
+
                     <fieldset className="SendAssetsForm-fieldset">
                       <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData">
                         <div className="SendAssetsForm-advancedOptions-content-priceLimitNonceData-data">

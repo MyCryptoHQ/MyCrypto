@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { WalletName } from 'config';
+import { WalletId } from 'v2/types';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
 
 const { SCREEN_SM } = BREAK_POINTS;
@@ -11,7 +11,7 @@ interface OwnProps {
   name: string;
   description?: string;
   example?: string;
-  walletType?: WalletName;
+  walletType?: WalletId;
   isSecure?: boolean;
   isDisabled?: boolean;
   disableReason?: string;

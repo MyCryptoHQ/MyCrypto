@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import translate, { translateRaw } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { BREAK_POINTS, COLORS } from 'v2/theme';
-import { SecureWalletName } from 'v2/types';
+import { WalletId } from 'v2/types';
 import './SliderImports.scss';
 
 import metamaskIcon from 'common/assets/images/wallets/metamask-2.svg';
@@ -240,27 +240,27 @@ export default function CompatibleWalletsPanel() {
             text={translateRaw('X_METAMASK')}
             mobileSrc={trustIcon}
             mobileText={translateRaw('X_TRUST')}
-            walletName={SecureWalletName.WEB3}
+            walletName={WalletId.METAMASK}
           />
           <WalletCardWithRouter
             src={ledgerIcon}
             text={translateRaw('X_LEDGER')}
-            walletName={SecureWalletName.LEDGER_NANO_S}
+            walletName={WalletId.LEDGER_NANO_S}
           />
           <WalletCardWithRouter
             src={trezorIcon}
             text={translateRaw('X_TREZOR')}
-            walletName={SecureWalletName.TREZOR}
+            walletName={WalletId.TREZOR}
           />
           <WalletCardWithRouter
             src={paritySignerIcon}
             text={translateRaw('X_PARITYSIGNER')}
-            walletName={SecureWalletName.PARITY_SIGNER}
+            walletName={WalletId.PARITY_SIGNER}
           />
           <WalletCardWithRouter
             src={safeTIcon}
             text={translateRaw('X_SAFE_T')}
-            walletName={SecureWalletName.SAFE_T}
+            walletName={WalletId.SAFE_T_MINI}
           />
         </Slider>
       </Wallets>

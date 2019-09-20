@@ -1,18 +1,17 @@
 import { Overwrite } from 'utility-types';
 
-import { TWalletType } from './wallets';
-import { WalletName } from './wallet';
-import { ITxReceipt } from 'v2/types';
 import { AssetBalanceObject, StoreAsset } from './asset';
 import { Network } from './network';
 import { NetworkId } from './networkId';
+import { WalletId } from './walletId';
+import { ITxReceipt } from './transaction';
 
 export interface Account {
   label?: string;
   address: string;
   networkId: NetworkId;
   assets: AssetBalanceObject[];
-  wallet: WalletName | TWalletType;
+  wallet: WalletId;
   transactions: ITxReceipt[];
   dPath: string;
   mtime: number;

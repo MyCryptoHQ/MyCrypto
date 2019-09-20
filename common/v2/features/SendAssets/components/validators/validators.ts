@@ -1,31 +1,39 @@
-import { isValidHex, gasPriceValidator, gasLimitValidator } from 'v2/services/EthService';
+import { isHexPrefixed } from 'ethjs-util';
+import {
+  isValidHex,
+  gasPriceValidator,
+  gasLimitValidator,
+  isValidPositiveNumber
+} from 'v2/services/EthService';
+import { translateRaw } from 'translations';
+import { isValidPositiveOrZeroInteger } from 'v2/services/EthService/validators';
 
 export function validateGasPriceField(value: string): string | undefined {
   if (!gasPriceValidator(value)) {
-    return 'Gas price must be a valid number.';
+    return translateRaw('ERROR_10');
   }
 }
 
 export function validateGasLimitField(value: string): string | undefined {
   if (!gasLimitValidator(value)) {
-    return 'Gas limit must be a valid number.';
+    return translateRaw('ERROR_8');
   }
 }
 
 export function validateDataField(value: string): string | undefined {
-  if (!isValidHex(value)) {
-    return 'Data field must contain valid hex.';
+  if (!isValidHex(value) || !isHexPrefixed(value)) {
+    return translateRaw('ERROR_9');
   }
 }
 
 export function validateNonceField(value: string): string | undefined {
-  if (!(parseInt(value, 10) >= 0)) {
-    return 'Nonce must be a valid number.';
+  if (!isValidPositiveOrZeroInteger(value)) {
+    return translateRaw('ERROR_11');
   }
 }
 
 export function validateAmountField(value: string): string | undefined {
-  if (!(parseInt(value, 10) >= 0)) {
-    return 'Amount must be a valid number';
+  if (!isValidPositiveNumber(value)) {
+    return translateRaw('ERROR_0');
   }
 }

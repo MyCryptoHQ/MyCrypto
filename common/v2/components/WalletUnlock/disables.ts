@@ -1,7 +1,6 @@
-import { MiscWalletName, SecureWalletName, WalletName } from 'v2/types';
-
+import { WalletId } from 'v2/types';
 export interface DisabledWallets {
-  wallets: WalletName[];
+  wallets: WalletId[];
   reasons: {
     [key: string]: string;
   };
@@ -16,17 +15,17 @@ enum WalletMode {
 // bunch of loops to format it differently
 export const DISABLE_WALLETS: { [key in WalletMode]: DisabledWallets } = {
   [WalletMode.READ_ONLY]: {
-    wallets: [MiscWalletName.VIEW_ONLY],
+    wallets: [WalletId.VIEW_ONLY],
     reasons: {
-      [MiscWalletName.VIEW_ONLY]: 'Read only is not allowed'
+      [WalletId.VIEW_ONLY]: 'Read only is not allowed'
     }
   },
   [WalletMode.UNABLE_TO_SIGN]: {
-    wallets: [SecureWalletName.TREZOR, SecureWalletName.SAFE_T, MiscWalletName.VIEW_ONLY],
+    wallets: [WalletId.TREZOR, WalletId.SAFE_T_MINI, WalletId.VIEW_ONLY],
     reasons: {
-      [SecureWalletName.TREZOR]: 'This wallet can’t sign messages',
-      [SecureWalletName.SAFE_T]: 'This wallet can’t sign messages',
-      [MiscWalletName.VIEW_ONLY]: 'This wallet can’t sign messages'
+      [WalletId.TREZOR]: 'This wallet can’t sign messages',
+      [WalletId.SAFE_T_MINI]: 'This wallet can’t sign messages',
+      [WalletId.VIEW_ONLY]: 'This wallet can’t sign messages'
     }
   }
 };

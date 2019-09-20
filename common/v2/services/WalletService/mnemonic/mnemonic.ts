@@ -1,6 +1,6 @@
-import { TUnlockMnemonic } from './types';
 import { translateRaw } from 'translations';
-import { MnemonicWallet } from 'v2/services/EthService';
+import { MnemonicWallet } from '../deterministic';
+import { TUnlockMnemonic } from './types';
 
 export const unlockMnemonic: TUnlockMnemonic = async payload => {
   let wallet;
