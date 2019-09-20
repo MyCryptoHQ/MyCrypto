@@ -11,12 +11,12 @@ describe('gasPriceValidators', () => {
   const failCases = ['0.00001', '1a', 'a1', 'a', '0', '-0.1', '3001'];
   const passCases = ['1', '0.1', '0.01', '2999', '3000'];
 
-  it('should fail gasPrice validation', () => {
+  it('must not be a non-zero, positive, floating-point number', () => {
     failCases.forEach(failCase => {
       expect(gasPriceValidator(failCase)).toEqual(false);
     });
   });
-  it('should pass gasPrice validation', () => {
+  it('must be a non-zero, positive, floating-point number', () => {
     passCases.forEach(passCase => {
       expect(gasPriceValidator(passCase)).toEqual(true);
     });
@@ -27,12 +27,12 @@ describe('gasLimitValidator', () => {
   const failCases = ['0.00001', '1a', 'a1', 'a', '0', '-0.1', '20000'];
   const passCases = ['21000', '7999999'];
 
-  it('should fail gasPrice validation', () => {
+  it('must not be a positive integer between 21000 and 8000000', () => {
     failCases.forEach(failCase => {
       expect(gasLimitValidator(failCase)).toEqual(false);
     });
   });
-  it('should pass gasPrice validation', () => {
+  it('must be a positive integer between 21000 and 8000000', () => {
     passCases.forEach(passCase => {
       expect(gasLimitValidator(passCase)).toEqual(true);
     });
@@ -43,12 +43,12 @@ describe('nonceValidator', () => {
   const failCases = ['0.00001', '1a', '0.1', 'a1', 'a', '-0.1'];
   const passCases = ['1', '0', '300'];
 
-  it('should fail nonce validation', () => {
+  it('must not be a positive integer greater than or equal to 0', () => {
     failCases.forEach(failCase => {
       expect(isValidPositiveOrZeroInteger(failCase)).toEqual(false);
     });
   });
-  it('should pass nonce validation', () => {
+  it('must be a positive integer greater than or equal to 0', () => {
     passCases.forEach(passCase => {
       expect(isValidPositiveOrZeroInteger(passCase)).toEqual(true);
     });
@@ -73,12 +73,12 @@ describe('hexDataValidator', () => {
     '0x'
   ];
 
-  it('should fail hex data validation', () => {
+  it('must not be a valid hexadecimal with "0x" prefix', () => {
     failCases.forEach(failCase => {
       expect(isValidHex(failCase) && isHexPrefixed(failCase)).toEqual(false);
     });
   });
-  it('should pass hex data validation', () => {
+  it('must be a valid hexadecimal with "0x" prefix', () => {
     passCases.forEach(passCase => {
       expect(isValidHex(passCase) && isHexPrefixed(passCase)).toEqual(true);
     });
@@ -89,12 +89,12 @@ describe('amountValidator', () => {
   const failCases = ['1a', 'a1', 'a', '-0.1'];
   const passCases = ['1', '0.00001', '0.1', '0', '300'];
 
-  it('should fail amount validation', () => {
+  it('must not be a floating-point number greater than or equal to 0', () => {
     failCases.forEach(failCase => {
       expect(isValidPositiveNumber(failCase)).toEqual(false);
     });
   });
-  it('should pass amount validation', () => {
+  it('must be a floating-point number greater than or equal to 0', () => {
     passCases.forEach(passCase => {
       expect(isValidPositiveNumber(passCase)).toEqual(true);
     });
