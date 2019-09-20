@@ -1,13 +1,14 @@
 import EthScan, { HttpProvider } from '@mycrypto/eth-scan';
 import partition from 'lodash/partition';
 import { bigNumberify, BigNumber } from 'ethers/utils';
+import { default as BN } from 'bignumber.js';
 
 import { ETHSCAN_NETWORKS } from 'v2/config';
 import { TAddress, StoreAccount, StoreAsset, Asset, NodeConfig } from 'v2/types';
 import { ProviderHandler } from 'v2/services/EthService';
 
 export interface BalanceMap {
-  [key: string]: BigNumber | bigint;
+  [key: string]: BN | BigNumber;
 }
 
 const getAssetAddresses = (assets: Asset[] = []): (string | undefined)[] => {
@@ -30,14 +31,14 @@ const addBalancesToAccount = (account: StoreAccount) => ([baseBalance, tokenBala
           const balance = baseBalance[account.address];
           return {
             ...asset,
-            balance: balance ? balance.toString() : asset.balance
+            balance: balance ? balance.toString(10) : asset.balance
           };
         }
         case 'erc20': {
           const balance = tokenBalances[asset.contractAddress!];
           return {
             ...asset,
-            balance: balance ? balance.toString() : asset.balance
+            balance: balance ? balance.toString(10) : asset.balance
           };
         }
         default:
@@ -106,7 +107,8 @@ export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
 
 export const getAllTokensBalancesOfAccount = async (account: StoreAccount, assets: Asset[]) => {
   const scanner = getScanner(account.network.nodes[0]);
-  const assetAddresses = getAssetAddresses(assets) as string[];
+  const assetsInNetwork = assets.filter(x => x.networkId === account.network.id);
+  const assetAddresses = getAssetAddresses(assetsInNetwork) as string[];
 
   try {
     return scanner.getTokensBalance(account.address, assetAddresses);

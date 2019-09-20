@@ -1,5 +1,6 @@
 import React, { Component, createContext } from 'react';
 import unionBy from 'lodash/unionBy';
+import BigNumber from 'bignumber.js';
 
 import * as service from './Account';
 import {
@@ -66,18 +67,20 @@ export class AccountProvider extends Component {
     updateAccountAssets: async (storeAccount, assets) => {
       // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
       const assetBalances = await getAllTokensBalancesOfAccount(storeAccount, assets);
-      const positiveAssetBalances = Object.entries(assetBalances).filter(([_, value]) => value);
+      const positiveAssetBalances = Object.entries(assetBalances).filter(
+        ([_, value]) => !value.isZero()
+      );
 
       const existingAccount = this.state.accounts.find(x => x.uuid === storeAccount.uuid);
 
       if (existingAccount) {
         const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
-          (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, bigint]) => {
+          (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
             const tempAsset = assets.find(x => x.contractAddress === contractAddress);
             if (tempAsset) {
               tempAssets.push({
                 uuid: tempAsset.uuid,
-                balance: balance.toString(),
+                balance: balance.toString(10),
                 mtime: Date.now()
               });
             }

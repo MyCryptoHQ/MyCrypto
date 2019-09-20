@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, createContext } from 'react';
 
-import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
+import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset } from 'v2/types';
 import { isArrayEqual, useInterval } from 'v2/utils';
 
 import { getAccountsAssetsBalances } from './BalanceService';
@@ -18,7 +18,7 @@ interface State {
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
-  scanTokens(): Promise<void>;
+  scanTokens(asset?: ExtendedAsset): Promise<void[]>;
 }
 export const StoreContext = createContext({} as State);
 
@@ -66,12 +66,12 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
     ],
-    scanTokens: async () => {
-      // TODO: Add support for other networks
-      const ethAccounts = state.accounts.filter(account => account.networkId === 'Ethereum');
-      const slicedAssets = assets.slice(0, 100); // TODO: Fetch all balances
-      await Promise.all(ethAccounts.map(account => updateAccountAssets(account, slicedAssets)));
-    }
+    scanTokens: async (asset?: ExtendedAsset) =>
+      Promise.all(
+        accounts
+          .map(account => updateAccountAssets(account, asset ? [...assets, asset] : assets))
+          .map(p => p.catch(e => console.debug(e)))
+      )
   };
 
   // 1. I actually want to watch all the base and token balance for every

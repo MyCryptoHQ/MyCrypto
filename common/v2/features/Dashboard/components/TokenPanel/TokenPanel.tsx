@@ -8,7 +8,7 @@ import { TokenDetails } from './TokenDetails';
 import { AddToken } from './AddToken';
 import { translateRaw } from 'translations';
 import { StoreContext, RatesContext, TokenInfoService } from 'v2/services';
-import { TTicker, AssetWithDetails, TSymbol } from 'v2/types';
+import { TTicker, AssetWithDetails, TSymbol, ExtendedAsset } from 'v2/types';
 
 import backArrowIcon from 'common/assets/images/icn-back.svg';
 import expandIcon from 'common/assets/images/icn-expand.svg';
@@ -56,10 +56,10 @@ export function TokenPanel() {
   const { accounts, totals, currentAccounts, scanTokens } = useContext(StoreContext);
   const { getRate, rates } = useContext(RatesContext);
 
-  const handleScanTokens = async () => {
+  const handleScanTokens = async (asset?: ExtendedAsset) => {
     try {
       setIsScanning(true);
-      await scanTokens();
+      await scanTokens(asset);
       setIsScanning(false);
     } catch (e) {
       setIsScanning(false);
@@ -105,7 +105,9 @@ export function TokenPanel() {
         heading={translateRaw('TOKENS')}
         headingRight={
           <div>
-            <StyledButton onClick={handleScanTokens}>{translateRaw('SCAN_TOKENS')}</StyledButton>
+            <StyledButton onClick={() => handleScanTokens()}>
+              {translateRaw('SCAN_TOKENS')}
+            </StyledButton>
             <StyledButton onClick={() => setShowAddToken(true)}>
               + {translateRaw('ADD_TOKEN')}
             </StyledButton>

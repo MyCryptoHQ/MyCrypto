@@ -26,7 +26,7 @@ const NetworkSelectorWrapper = styled.div`
 
 interface Props {
   setShowAddToken(setShowAddToken: boolean): void;
-  scanTokens(): Promise<void>;
+  scanTokens(asset?: ExtendedAsset): Promise<void>;
 }
 
 export function AddToken(props: Props) {
@@ -83,7 +83,7 @@ export function AddToken(props: Props) {
     };
 
     createAssetWithID(newAsset, uuid);
-    scanTokens();
+    scanTokens(newAsset);
     setShowAddToken(false);
   };
 
