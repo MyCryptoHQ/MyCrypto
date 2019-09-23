@@ -50,7 +50,9 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
           new SafeTWallet(address, dPath, index)
       };
     case WalletId.PARITY_SIGNER:
-      return ParitySignerWallet;
+      return {
+        init: (address: TAddress) => new ParitySignerWallet(address)
+      };
     case WalletId.KEYSTORE_FILE:
       return getKeystoreWallet;
     case WalletId.PRIVATE_KEY:

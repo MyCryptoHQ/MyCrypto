@@ -83,7 +83,8 @@ export const WALLETS_CONFIG: Record<WalletId, IWalletConfig> = {
     type: WalletType.MISC,
     lid: 'X_PARITYSIGNER',
     icon: ParitySignerSVG,
-    description: 'ADD_PARITY_DESC'
+    description: 'ADD_PARITY_DESC',
+    helpLink: 'https://wiki.parity.io/Parity-Signer-Mobile-App-MyCrypto-tutorial'
   },
   [WalletId.KEYSTORE_FILE]: {
     id: WalletId.KEYSTORE_FILE,
