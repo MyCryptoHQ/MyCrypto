@@ -8,7 +8,6 @@ import { ContentPanel, WalletList } from 'v2/components';
 import { FormDataActionType as ActionType } from './types';
 import { STORIES } from './stories';
 import { formReducer, initialState } from './AddAccountForm.reducer';
-import './AddAccount.scss';
 import './AddAccountFlow.scss';
 
 export const getStory = (storyName: WalletId | undefined): any => {

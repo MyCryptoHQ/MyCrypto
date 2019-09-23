@@ -1,29 +1,44 @@
 .TrustWallet-img {
-    width: 150px;
-    height: 150px;
+  width: 150px;
+  height: 150px;
 }
 
 .TrustWallet-container {
-    width: 200px;
-    height: 200px;
-    padding: 10px; 
-    text-align: center; 
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+  text-align: center;
 }
 
 .CoinbaseWallet-container {
-    width: 200px;
-    height: 200px;
-    padding: 10px; 
-    text-align: center;
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+  text-align: center;
 }
 
 .CoinbaseWallet-img {
-    width: 150px;
-    height: 150px;
+  width: 150px;
+  height: 150px;
 }
 
 .Web3-options {
-    display: flex; 
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
-    
+
+.Panel-content-img {
+  margin: 2em;
+  padding-top: 2em;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 700px) {
+    margin: 0.5em;
+    padding-top: 0.5em;
+  }
+}
+
+.MetaMaskPanel-footer {
+  text-align: center;
+}
