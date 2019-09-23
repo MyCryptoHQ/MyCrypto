@@ -64,13 +64,8 @@ class ViewOnlyDecryptClass extends PureComponent<OwnProps & StateProps, State> {
                 showInputLabel={false}
                 showIdenticon={false}
                 placeholder={translateRaw('VIEW_ONLY_ENTER')}
-                data-testid="view-only-input"
               />
-              <button
-                className="ViewOnly-submit btn btn-primary btn-block"
-                disabled={!isValid}
-                data-testid="view-only-button"
-              >
+              <button className="ViewOnly-submit btn btn-primary btn-block" disabled={!isValid}>
                 {translate('VIEW_ADDR')}
               </button>
             </section>

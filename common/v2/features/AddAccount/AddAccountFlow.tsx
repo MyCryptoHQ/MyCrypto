@@ -96,14 +96,12 @@ const AddAccountFlow = withRouter(props => {
 
   const renderDefault = () => {
     return (
-      <ContentPanel className="" data-testid="Main-panel">
-        <div className="MainPanel">
-          <TransitionGroup>
-            <CSSTransition classNames="DecryptContent" timeout={500}>
-              <WalletList wallets={STORIES} onSelect={onWalletSelection} showHeader={true} />
-            </CSSTransition>
-          </TransitionGroup>
-        </div>
+      <ContentPanel>
+        <TransitionGroup>
+          <CSSTransition classNames="DecryptContent" timeout={500}>
+            <WalletList wallets={STORIES} onSelect={onWalletSelection} showHeader={true} />
+          </CSSTransition>
+        </TransitionGroup>
       </ContentPanel>
     );
   };
@@ -113,12 +111,7 @@ const AddAccountFlow = withRouter(props => {
     const Step = steps[step];
 
     return (
-      <ContentPanel
-        className=""
-        data-testid="ContentPanelMAKEBIGGER"
-        onBack={goToPreviousStep}
-        stepper={{ current: step + 1, total: steps.length }}
-      >
+      <ContentPanel onBack={goToPreviousStep} stepper={{ current: step + 1, total: steps.length }}>
         <TransitionGroup>
           <CSSTransition classNames="DecryptContent" timeout={500}>
             <Step

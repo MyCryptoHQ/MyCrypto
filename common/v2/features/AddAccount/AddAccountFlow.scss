@@ -28,16 +28,12 @@ $speed: 500ms;
 }
 
 .Panel {
-  width: 562px;
   height: 629px;
   justify-content: center;
-  // display: flex;
-  // flex-direction: column;
   position: relative;
   padding: 2.5em;
 
   @media only screen and (max-width: 700px) {
-    width: 375px;
     height: 500px;
     padding: 1em;
   }
@@ -135,17 +131,9 @@ $speed: 500ms;
   }
 
   &-container {
-    // display: flex;
-
     @media (max-width: 700px) {
       width: 375px;
-      // flex-wrap: wrap;
     }
-  }
-
-  &-connectWallet {
-    width: 562px;
-    height: 629px;
   }
 
   &-info {

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Button, Panel, Typography } from '@mycrypto/ui';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
+import { BREAK_POINTS } from 'v2/theme';
 import Stepper from './Stepper';
-
-// Legacy
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
 interface ContentPanelProps {
@@ -13,15 +12,9 @@ interface ContentPanelProps {
 }
 
 const ContentPanelWrapper = styled.div`
-  ${(props: ContentPanelProps) =>
-    props.width &&
-    css`
-      width: ${props.width};
-    `};
-
-  @media (max-width: 700px) {
-    max-width: ${(props: ContentPanelProps) =>
-      props.mobileMaxWidth ? props.mobileMaxWidth : '450px'};
+  width: ${(props: ContentPanelProps) => props.width};
+  @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
+    max-width: ${(props: ContentPanelProps) => props.mobileMaxWidth};
     padding-left: 0px;
     margin-bottom: 1em;
   }
@@ -71,7 +64,7 @@ const ContentPanelTop = styled.div`
   margin-bottom: 10px;
   padding: 0 30px;
 
-  @media (min-width: 700px) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     padding: 0;
   }
 `;
@@ -99,8 +92,8 @@ export default function ContentPanel({
   description,
   children,
   className = '',
-  width,
-  mobileMaxWidth,
+  width = '562px',
+  mobileMaxWidth = '450px',
   ...rest
 }: Props) {
   return (
