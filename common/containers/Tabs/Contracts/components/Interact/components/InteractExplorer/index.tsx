@@ -71,6 +71,8 @@ class InteractExplorerClass extends Component<Props, State> {
   public firstTimer: any;
   public secondTimer: any;
 
+  public refScrollTo: any;
+
   public state: State = {
     selectedFunction: null,
     inputs: {},
@@ -104,10 +106,7 @@ class InteractExplorerClass extends Component<Props, State> {
       }
     });
     if (count > 0) {
-      const itemToScrollTo = document.getElementById('contractRead');
-      if (itemToScrollTo) {
-        itemToScrollTo.scrollIntoView();
-      }
+      this.refScrollTo.scrollIntoView({ behavior: 'smooth' });
       this.handleFunctionCall(null as any);
     }
   };
@@ -179,7 +178,7 @@ class InteractExplorerClass extends Component<Props, State> {
     );
 
     return (
-      <div className="InteractExplorer" id="contractRead">
+      <div className="InteractExplorer" ref={ref => (this.refScrollTo = ref)}>
         <div className="input-group-wrapper">
           <label className="input-group">
             <div className="input-group-header">
