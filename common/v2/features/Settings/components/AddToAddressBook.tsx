@@ -4,7 +4,7 @@ import { Button, Input, Textarea } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
-import { DashboardPanel } from 'v2/components';
+import { DashboardPanel, NetworkSelectDropdown } from 'v2/components';
 import { AddressBook } from 'v2/types';
 
 const AddToAddressBookPanel = styled(DashboardPanel)`
@@ -85,7 +85,18 @@ export default function AddToAddressBook({ toggleFlipped, createAddressBooks }: 
               <Field
                 name="address"
                 render={({ field }: FieldProps<AddressBook>) => (
-                  <Input {...field} placeholder="Enter Your Token Address" />
+                  <Input {...field} placeholder="Enter the Address" />
+                )}
+              />
+            </AddressFieldset>
+            <AddressFieldset>
+              <Field
+                name="network"
+                render={({ field, form }: FieldProps<AddressBook>) => (
+                  <NetworkSelectDropdown
+                    network={field.value}
+                    onChange={e => form.setFieldValue(field.name, e)}
+                  />
                 )}
               />
             </AddressFieldset>

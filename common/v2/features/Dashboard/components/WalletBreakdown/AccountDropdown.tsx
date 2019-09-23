@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Icon, Identicon } from '@mycrypto/ui';
 import styled, { StyledFunction } from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { useOnClickOutside } from 'v2/utils';
-import { getLabelByAccount } from 'v2/services/Store';
+import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
 import { ExtendedAccount } from 'v2/types';
 
@@ -84,9 +84,10 @@ const renderAccounts = (
   accounts: ExtendedAccount[],
   selected: string[],
   handleChange: (uuid: string) => void
-) =>
+) => {
+  const { addressBook } = useContext(AddressBookContext);
   accounts.map((account: ExtendedAccount) => {
-    const addressCard = getLabelByAccount(account);
+    const addressCard = getLabelByAccount(account, addressBook);
     const addressLabel = addressCard ? addressCard.address : 'Unknown Account';
 
     return (
@@ -102,6 +103,7 @@ const renderAccounts = (
       />
     );
   });
+};
 
 const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDropdownProps) => {
   const ref = useRef<HTMLElement>(null);
