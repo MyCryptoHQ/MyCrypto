@@ -1,6 +1,6 @@
 import { IStory, WalletId } from 'v2/types';
 import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
-import { NetworkSelectPanel, SaveAndRedirect, ViewOnlyDecrypt } from './components';
+import { NetworkSelectPanel, SaveAndRedirect } from './components';
 import {
   InsecureWalletWarning,
   LedgerNanoSDecrypt,
@@ -11,7 +11,8 @@ import {
   SafeTminiDecrypt,
   TrezorDecrypt,
   Web3ProviderDecrypt,
-  Web3ProviderInstall
+  Web3ProviderInstall,
+  ViewOnlyDecrypt
 } from 'v2/components';
 
 export const STORIES: IStory[] = [

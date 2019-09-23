@@ -2,17 +2,19 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import translate, { translateRaw } from 'translations';
-import { AddressOnlyWallet } from 'libs/wallet';
 import { AppState } from 'features/reducers';
 import * as selectors from 'features/selectors';
 import { ICurrentTo } from 'features/types';
 import { configSelectors } from 'features/config';
 import { ensSelectors } from 'features/ens';
 import { AddressField } from 'components';
+
+import { WalletId } from 'v2/types';
+import { WalletFactory } from 'v2/services/WalletService';
 import './ViewOnly.scss';
 
 interface OwnProps {
-  onUnlock(param: any): AddressOnlyWallet;
+  onUnlock(param: any): void;
 }
 
 interface StateProps {
@@ -21,13 +23,13 @@ interface StateProps {
   resolvedAddress: ReturnType<typeof ensSelectors.getResolvedAddress>;
 }
 
-type Props = OwnProps & StateProps;
-
 interface State {
   addressFromBook: string;
 }
 
-class ViewOnlyDecryptClass extends PureComponent<Props, State> {
+const WalletService = WalletFactory(WalletId.VIEW_ONLY);
+
+class ViewOnlyDecryptClass extends PureComponent<OwnProps & StateProps, State> {
   public state: State = {
     addressFromBook: ''
   };
@@ -101,7 +103,7 @@ class ViewOnlyDecryptClass extends PureComponent<Props, State> {
     if (wallet) {
       e.preventDefault();
       e.stopPropagation();
-      this.props.onUnlock(new AddressOnlyWallet(wallet));
+      this.props.onUnlock(new WalletService.init(wallet));
     }
   };
 }

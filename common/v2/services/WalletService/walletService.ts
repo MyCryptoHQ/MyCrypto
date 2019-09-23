@@ -60,7 +60,9 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
     case WalletId.MNEMONIC_PHRASE:
       return MnemonicWallet;
     case WalletId.VIEW_ONLY:
-      return AddressOnlyWallet;
+      return {
+        init: (address: TAddress) => new AddressOnlyWallet(address)
+      };
     default:
       throw new Error('[WalletService]: Unknown WalletId');
   }
