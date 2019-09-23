@@ -16,10 +16,10 @@ import {
   LedgerWallet,
   TrezorWallet,
   SafeTWallet,
-  MnemonicWallet,
   // HardwareWallet
   ChainCodeResponse
 } from './deterministic';
+import { unlockMnemonic, MnemonicUnlockParams } from './mnemonic';
 import { unlockWeb3 } from './web3';
 
 export const WalletFactory = (walletId: WalletId): WalletService | any => {
@@ -58,7 +58,9 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
     case WalletId.PRIVATE_KEY:
       return getPrivKeyWallet;
     case WalletId.MNEMONIC_PHRASE:
-      return MnemonicWallet;
+      return {
+        init: ({ ...params }: MnemonicUnlockParams) => unlockMnemonic(params)
+      };
     case WalletId.VIEW_ONLY:
       return {
         init: (address: TAddress) => new AddressOnlyWallet(address)
