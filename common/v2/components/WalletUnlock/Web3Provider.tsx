@@ -70,7 +70,7 @@ class Web3ProviderDecrypt extends Component<Props, State> {
 
   public async unlockWallet() {
     try {
-      const walletPayload = await WalletService();
+      const walletPayload = await WalletService.init();
       if (!walletPayload) {
         throw new Error('Failed to unlock web3');
       }

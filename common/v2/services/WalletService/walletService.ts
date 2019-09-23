@@ -25,7 +25,9 @@ import { unlockWeb3 } from './web3';
 export const WalletFactory = (walletId: WalletId): WalletService | any => {
   switch (walletId) {
     case WalletId.METAMASK:
-      return unlockWeb3;
+      return {
+        init: unlockWeb3
+      };
     case WalletId.LEDGER_NANO_S:
       return {
         getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
@@ -34,9 +36,19 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
           new LedgerWallet(address, dPath, index)
       };
     case WalletId.TREZOR:
-      return TrezorWallet;
+      return {
+        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
+          TrezorWallet.getChainCode(dPath),
+        init: (address: TAddress, dPath: string, index: number) =>
+          new TrezorWallet(address, dPath, index)
+      };
     case WalletId.SAFE_T_MINI:
-      return SafeTWallet;
+      return {
+        getChainCode: (dPath: string): Promise<ChainCodeResponse> =>
+          SafeTWallet.getChainCode(dPath),
+        init: (address: TAddress, dPath: string, index: number) =>
+          new SafeTWallet(address, dPath, index)
+      };
     case WalletId.PARITY_SIGNER:
       return ParitySignerWallet;
     case WalletId.KEYSTORE_FILE:
