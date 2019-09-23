@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { isKeystorePassRequired } from 'libs/wallet';
 import { notificationsActions } from 'features/notifications';
 import Spinner from 'components/ui/Spinner';
 import { Input } from 'components/ui';
+
+import { WalletId } from 'v2/types';
+import { WalletFactory, isKeystorePassRequired } from 'v2/services/WalletService';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { unlockKeystore } from 'v2/services/WalletService';
 import './Keystore.scss';
 
 export interface KeystoreValue {
@@ -30,6 +31,8 @@ function isValidFile(rawFile: File): boolean {
   const fileType = rawFile.type;
   return fileType === '' || fileType === 'application/json';
 }
+
+const WalletService = WalletFactory(WalletId.KEYSTORE_FILE);
 
 export class KeystoreDecrypt extends PureComponent {
   public props: {
@@ -115,7 +118,7 @@ export class KeystoreDecrypt extends PureComponent {
   private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const wallet = await unlockKeystore({
+    const wallet = await WalletService.init({
       file: this.state.file,
       password: this.state.password
     });

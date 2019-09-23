@@ -7,10 +7,10 @@ import {
   // UtcWallet,
   // Web3Wallet,
   AddressOnlyWallet,
-  ParitySignerWallet,
+  ParitySignerWallet
   // getUtcWallet,
-  getPrivKeyWallet,
-  getKeystoreWallet
+  // getPrivKeyWallet
+  // getKeystoreWallet
 } from './non-deterministic';
 import {
   LedgerWallet,
@@ -19,7 +19,9 @@ import {
   // HardwareWallet
   ChainCodeResponse
 } from './deterministic';
+import { unlockKeystore, KeystoreUnlockParams } from './keystore';
 import { unlockMnemonic, MnemonicUnlockParams } from './mnemonic';
+import { unlockPrivateKey, PrivateKeyUnlockParams } from './privatekey';
 import { unlockWeb3 } from './web3';
 
 export const WalletFactory = (walletId: WalletId): WalletService | any => {
@@ -54,9 +56,13 @@ export const WalletFactory = (walletId: WalletId): WalletService | any => {
         init: (address: TAddress) => new ParitySignerWallet(address)
       };
     case WalletId.KEYSTORE_FILE:
-      return getKeystoreWallet;
+      return {
+        init: ({ file, password }: KeystoreUnlockParams) => unlockKeystore({ file, password })
+      };
     case WalletId.PRIVATE_KEY:
-      return getPrivKeyWallet;
+      return {
+        init: ({ key, password }: PrivateKeyUnlockParams) => unlockPrivateKey({ key, password })
+      };
     case WalletId.MNEMONIC_PHRASE:
       return {
         init: ({ ...params }: MnemonicUnlockParams) => unlockMnemonic(params)
