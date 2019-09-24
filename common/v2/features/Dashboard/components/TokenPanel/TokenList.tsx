@@ -10,7 +10,7 @@ import { translateRaw } from 'translations';
 import moreIcon from 'common/assets/images/icn-more.svg';
 
 const TokenListWrapper = styled.div`
-  max-height: 300px;
+  max-height: 313px;
   overflow-y: auto;
 `;
 
@@ -25,6 +25,7 @@ const Token = styled.div`
 const Asset = styled.div`
   display: flex;
   align-items: center;
+  width: 65%;
 `;
 
 const AssetName = styled(Typography)`

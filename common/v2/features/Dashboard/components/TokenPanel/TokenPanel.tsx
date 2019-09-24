@@ -38,19 +38,16 @@ export function TokenPanel() {
 
       // Add token details and token rate info to all assets that have  a contractAddress
       const tempTokens = totals(selectedAccounts).reduce((tokens: AssetWithDetails[], asset) => {
-        if (asset.contractAddress) {
-          const existingTokenDetails = tokensDetails.find(
-            details => details.address === asset.contractAddress
-          );
-
-          tokens.push(
-            Object.assign(asset, {
-              rate: getRate(asset.ticker as TTicker) || 0,
-              details: existingTokenDetails || {}
-            })
-          );
-        }
-        return tokens;
+        return !asset.contractAddress
+          ? tokens
+          : [
+              ...tokens,
+              Object.assign(asset, {
+                rate: getRate(asset.ticker as TTicker) || 0,
+                details:
+                  tokensDetails.find(details => details.address === asset.contractAddress) || {}
+              })
+            ];
       }, []);
 
       setAllTokens(tempTokens);

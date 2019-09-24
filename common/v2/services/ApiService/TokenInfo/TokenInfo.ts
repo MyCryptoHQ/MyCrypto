@@ -1,16 +1,15 @@
 import { AxiosInstance } from 'axios';
 
 import { default as ApiService } from '../ApiService';
+import { TOKEN_INFO_URL } from 'v2/config';
 
 let instantiated: boolean = false;
-
-const apiUrl = 'https://api.mycryptoapi.com/tokens';
 
 export default class TokenInfoService {
   public static instance = new TokenInfoService();
 
   private service: AxiosInstance = ApiService.generateInstance({
-    baseURL: apiUrl
+    baseURL: TOKEN_INFO_URL
   });
 
   constructor() {

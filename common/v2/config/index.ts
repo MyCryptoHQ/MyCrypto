@@ -8,7 +8,8 @@ export { DPaths, dPathRegex } from './dpaths';
 export {
   DEFAULT_NETWORK_FOR_FALLBACK,
   DEFAULT_NETWORK,
-  GITHUB_RELEASE_NOTES_URL
+  GITHUB_RELEASE_NOTES_URL,
+  TOKEN_INFO_URL
 } from './constants';
 export { NODES_CONFIG } from './nodes';
 export { ROUTE_PATHS } from './routePaths';

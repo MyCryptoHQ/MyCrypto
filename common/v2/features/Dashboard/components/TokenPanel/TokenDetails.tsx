@@ -36,6 +36,7 @@ const InfoTitle = styled.div`
 const InfoValue = styled.div`
   font-size: 18px;
   font-weight: normal;
+  word-break: break-all;
 `;
 
 interface SectionProps {
@@ -54,6 +55,9 @@ const Icon = styled.img`
   width: 24px;
   height: auto;
   cursor: pointer;
+`;
+
+const SocialIcon = styled(Icon)`
   margin-right: 21px;
 `;
 
@@ -183,7 +187,9 @@ export function TokenDetails(props: Props) {
           <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + currentToken.rate} />{' '}
           <InfoPiece
             title={translateRaw('BALANCE')}
-            value={`${formatEther(currentToken.balance)} ${currentToken.ticker}`}
+            value={`${parseFloat(formatEther(currentToken.balance)).toFixed(6)} ${
+              currentToken.ticker
+            }`}
           />
         </TwoColumnsWrapper>
       </Section>
@@ -232,7 +238,7 @@ export function TokenDetails(props: Props) {
                 {filteredSocialArray.map(social => {
                   return (
                     <a key={social} href={details.social[social]} target="_blank" rel="noreferrer">
-                      <Icon
+                      <SocialIcon
                         alt={supportedSocialNetworks[social].name}
                         src={supportedSocialNetworks[social].icon}
                       />

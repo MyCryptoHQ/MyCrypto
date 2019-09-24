@@ -139,7 +139,7 @@ export function AddToken(props: Props) {
       />
       <InputField
         label={translateRaw('TOKEN_DEC')}
-        placeholder={'4'}
+        placeholder={'18'}
         onChange={e => setDecimals(e.target.value)}
         value={decimals}
         inputError={decimalsError}
