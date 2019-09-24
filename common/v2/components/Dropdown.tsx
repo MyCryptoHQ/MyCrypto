@@ -16,6 +16,7 @@ interface Props<T> {
   options: T[];
   value: T;
   placeholder?: string;
+  searchable?: boolean;
   name?: string;
   optionComponent?:
     | React.ComponentClass<OptionComponentProps<T>>
@@ -31,6 +32,7 @@ export default function Dropdown({
   value,
   valueComponent,
   placeholder,
+  searchable,
   name // field name for hidden input. Important for Formik
 }: Props<any>) {
   return (
@@ -43,7 +45,7 @@ export default function Dropdown({
       options={options}
       optionComponent={optionComponent}
       placeholder={placeholder}
-      searchable={false}
+      searchable={searchable}
       value={value} //!! value must be an expression or an object !?
       valueComponent={valueComponent}
     />
