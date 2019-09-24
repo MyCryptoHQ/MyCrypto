@@ -8,8 +8,12 @@ import { InlineErrorMsg } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
 import './Web3Provider.scss';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
+import { FormData } from 'v2/types';
+import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 
 interface Props {
+  formDispatch: any;
+  formData: FormData;
   wallet: object;
   onUnlock(param: any): void;
 }
@@ -73,6 +77,14 @@ class Web3ProviderDecrypt extends Component<Props, State> {
       const walletPayload = await WalletService.init();
       if (!walletPayload) {
         throw new Error('Failed to unlock web3');
+      }
+      // If accountType is defined, we are in the AddAccountFlow
+      if (this.props.formData.accountType) {
+        const network = walletPayload.network;
+        this.props.formDispatch({
+          type: ActionType.SELECT_NETWORK,
+          payload: { network }
+        });
       }
       this.props.onUnlock(walletPayload);
     } catch (e) {
