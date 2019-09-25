@@ -3,7 +3,7 @@ import EthTx from 'ethereumjs-tx';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ExtendedContentPanel } from 'v2/components';
-import { BroadcastTx } from './components';
+import { BroadcastTx, ConfirmTransaction } from './components';
 import { ROUTE_PATHS } from 'v2/config';
 
 const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
@@ -11,7 +11,7 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
   const [network, setNetwork] = useState('Ethereum');
   const [signedTransaction, setSignedTransaction] = useState('');
   const [transaction, setTransaction] = useState<EthTx | undefined>(undefined);
-  const steps = [BroadcastTx];
+  const steps = [BroadcastTx, ConfirmTransaction];
 
   const goToNextStep = () => {
     setStep(step + 1);
