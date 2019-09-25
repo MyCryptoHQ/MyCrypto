@@ -620,6 +620,7 @@
     "BROADCAST_TX_TITLE": "Broadcast Signed Transaction",
     "BROADCAST_TX_DESCRIPTION": "Paste a signed transaction and click 'send transaction'",
     "BROADCAST_TX_INPUT_ERROR": "Invalid transaction",
+    "BROADCAST_TX_INVALID_CHAIN_ID": "Network with this chain id not supported.",
     "RECENT_TX_NETWORK_EXPLORER": "an explorer for the $network_name network",
     "RECENT_TX_HELP": "Only recent transactions sent from this address via MyCrypto on the $network network are listed here. If you don't see your transaction, you can view all of them on $explorer.",
     "NO_RECENT_TX_FOUND": "No recent MyCrypto transactions found, try checking on $explorer.",

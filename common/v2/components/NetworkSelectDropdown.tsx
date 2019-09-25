@@ -8,7 +8,7 @@ import { DEFAULT_NETWORK } from 'v2/config';
 
 interface Props {
   network: string;
-  accountType: WalletName;
+  accountType?: WalletName;
   onChange(network: NetworkId): void;
 }
 
