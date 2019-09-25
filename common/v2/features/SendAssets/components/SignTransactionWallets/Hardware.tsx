@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
+import { ExtendedAccount as IExtendedAccount, ITxReceipt } from 'v2/types';
+import { makeTransaction } from 'v2/services/EthService';
+import { WalletFactory } from 'v2/services/WalletService';
+import { InlineErrorMsg } from 'v2/components/ErrorMessages';
+
 import { ITxObject, ISignedTx } from '../../types';
 import './Hardware.scss';
-import { ExtendedAccount as IExtendedAccount, ITxReceipt } from 'v2/types';
-import { WalletFactory } from 'v2/services/WalletService';
-import { makeTransaction } from 'libs/transaction/utils/ether';
-import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -14,7 +15,7 @@ export interface IDestructuredDPath {
 
 export const splitDPath = (fullDPath: string): IDestructuredDPath => {
   /* 
-    m/44'/60'/0'/0 => { dpath: "m/44'/60'/0'/"index: "0"}
+    m/44'/60'/0'/0 => { dpath: "m/44'/60'/0'", index: "0" }
   */
   const dpathArray = fullDPath.split('/');
   const length = dpathArray.length;
@@ -103,7 +104,7 @@ export default function HardwareSignTransaction({
   return (
     <div className="SignTransaction-panel">
       <div className="SignTransactionHardware-title">
-        Sign the Transaction with your Hardware Wallet
+        Sign the Transaction with your {senderAccount.wallet} Wallet
       </div>
       <div className="SignTransactionHardware-instructions">{signerDescription}</div>
       <div className="SignTransactionHardware-content">
