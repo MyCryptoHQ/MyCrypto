@@ -62,12 +62,14 @@ function TransactionDetailsDisplay({
         </div>
         {showDetails && (
           <div className="TransactionDetails-content">
-            <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">{`Account Balance (${baseAsset.ticker}):`}</div>
-              <div className="TransactionDetails-row-column">
-                {`${formatEther(getBalanceFromAccount(senderAccount))}`}
+            {baseAsset && senderAccount.uuid && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">{`Account Balance (${baseAsset.ticker}):`}</div>
+                <div className="TransactionDetails-row-column">
+                  {`${formatEther(getBalanceFromAccount(senderAccount))}`}
+                </div>
               </div>
-            </div>
+            )}
             {asset.type === 'erc20' && (
               <div className="TransactionDetails-row">
                 <div className="TransactionDetails-row-column">{`Account Balance (${asset.ticker}):`}</div>
@@ -84,13 +86,15 @@ function TransactionDetailsDisplay({
               <div className="TransactionDetails-row-column">Gas Limit:</div>
               <div className="TransactionDetails-row-column">{`${gasLimit}`}</div>
             </div>
-            <div className="TransactionDetails-row">
-              <div className="TransactionDetails-row-column">Gas Price:</div>
-              <div className="TransactionDetails-row-column">{`${baseToConvertedUnit(
-                gasPrice,
-                18
-              )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
-            </div>
+            {baseAsset && (
+              <div className="TransactionDetails-row">
+                <div className="TransactionDetails-row-column">Gas Price:</div>
+                <div className="TransactionDetails-row-column">{`${baseToConvertedUnit(
+                  gasPrice,
+                  18
+                )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
+              </div>
+            )}
             <div className="TransactionDetails-row">
               <div className="TransactionDetails-row-column">Max TX Fee:</div>
               <div className="TransactionDetails-row-column">{`${maxTransactionFeeBase} ${baseAsset.ticker}`}</div>
