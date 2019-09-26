@@ -5,6 +5,7 @@ import { formatEther } from 'ethers/utils';
 import { translateRaw } from 'translations';
 import { AssetWithDetails, TSymbol } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
+import { NETWORKS_CONFIG } from 'v2/config';
 
 import socialTelegram from 'common/assets/images/social-icons/social-telegram.svg';
 import socialTwitter from 'common/assets/images/social-icons/social-twitter.svg';
@@ -18,7 +19,7 @@ import whitepaperIcon from 'common/assets/images/icn-whitepaper.svg';
 import backArrowIcon from 'common/assets/images/icn-back.svg';
 import expandIcon from 'common/assets/images/icn-expand.svg';
 
-const etherscanUrl = ' https://etherscan.io/token/';
+const etherscanUrl = ' https://etherscan.io';
 
 const InfoWrapper = styled.div`
   display: flex;
@@ -149,6 +150,10 @@ interface Props {
 export function TokenDetails(props: Props) {
   const { currentToken, setShowDetailsView } = props;
   const { details } = currentToken;
+  const tokenContract = Object.values(NETWORKS_CONFIG).find(x => x.id === currentToken.networkId);
+  const contractUrl = `${
+    tokenContract && tokenContract.blockExplorer ? tokenContract.blockExplorer.origin : etherscanUrl
+  }/token/${currentToken.contractAddress}`;
 
   interface ISocial {
     [index: string]: string;
@@ -175,7 +180,7 @@ export function TokenDetails(props: Props) {
         </DetailsHeadingWrapper>
       }
       headingRight={
-        <a href={`${etherscanUrl}${currentToken.contractAddress}`} target="_blank" rel="noreferrer">
+        <a href={contractUrl} target="_blank" rel="noreferrer">
           <Icon src={expandIcon} />
         </a>
       }
