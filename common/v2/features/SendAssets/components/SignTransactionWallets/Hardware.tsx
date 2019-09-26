@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import { ExtendedAccount as IExtendedAccount, ITxReceipt } from 'v2/types';
 import { makeTransaction } from 'v2/services/EthService';
-import { WalletFactory } from 'v2/services/WalletService';
+import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 
 import { ITxObject, ISignedTx } from '../../types';
 import './Hardware.scss';
-import { LedgerWallet } from 'v2/services/WalletService/deterministic/ledger';
-import { TrezorWallet } from 'v2/services/WalletService/deterministic/trezor';
-import { SafeTWallet } from 'v2/services/WalletService/deterministic/safe-t';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -47,7 +44,7 @@ export default function HardwareSignTransaction({
   const [isWalletUnlocked, setIsWalletUnlocked] = useState(false);
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
   const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
-  const [wallet, setWallet] = useState<LedgerWallet | TrezorWallet | SafeTWallet | undefined>();
+  const [wallet, setWallet] = useState<HardwareWallet | undefined>();
   const SigningWalletService = WalletFactory(senderAccount.wallet);
 
   useEffect(() => {
