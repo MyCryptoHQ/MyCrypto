@@ -32,8 +32,7 @@ module.exports = function(opts = {}) {
   // ====== Entry =======
   // ====================
   const entry = {
-    badBrowserCheckA: './common/badBrowserCheckA.js',
-    badBrowserCheckB: './common/badBrowserCheckB.js',
+    badBrowserCheck: './common/badBrowserCheck.ts',
     client: './common/index.tsx'
   };
 
@@ -152,6 +151,13 @@ module.exports = function(opts = {}) {
     include: [path.resolve(config.path.assets), path.resolve(config.path.modules)],
     test: /\.(ico|eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
     loader: 'file-loader'
+  });
+
+  // Browser check
+  rules.push({
+    test: /\.modernizrrc\.js$/,
+    loader: 'webpack-modernizr-loader',
+    type: 'javascript/auto'
   });
 
   // ====================
