@@ -2,16 +2,16 @@ import React, { PureComponent } from 'react';
 import { mnemonicToSeed, validateMnemonic } from 'bip39';
 import { Tooltip } from '@mycrypto/ui';
 
-import { FormData, WalletId } from 'v2/types';
-import { getDPath, getDPaths } from 'v2/services/EthService';
-import { NetworkContext } from 'v2/services/Store';
 import translate, { translateRaw } from 'translations';
 import { formatMnemonic } from 'utils/formatters';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
-import DeterministicWallets from './DeterministicWallets';
-import { unlockMnemonic } from 'v2/services/WalletService';
 
+import { FormData, WalletId } from 'v2/types';
+import { getDPath, getDPaths } from 'v2/services/EthService';
+import { NetworkContext } from 'v2/services/Store';
+import { WalletFactory } from 'v2/services/WalletService';
+import DeterministicWallets from './DeterministicWallets';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
 import questionToolTip from 'common/assets/images/icn-question.svg';
 
@@ -22,8 +22,6 @@ interface OwnProps {
   onUnlock(param: any): void;
 }
 
-type Props = OwnProps;
-
 interface State {
   seed: string | undefined;
   phrase: string | undefined;
@@ -32,7 +30,9 @@ interface State {
   selectedDPath: DPath;
 }
 
-class MnemonicDecryptClass extends PureComponent<Props, State> {
+const WalletService = WalletFactory(WalletId.MNEMONIC_PHRASE);
+
+class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
   public static contextType = NetworkContext;
   public state: State = {
     seed: undefined,
@@ -178,7 +178,7 @@ class MnemonicDecryptClass extends PureComponent<Props, State> {
         getDPaths(networks, WalletId.MNEMONIC_PHRASE)[0]
     });
 
-    const wallet = await unlockMnemonic({
+    const wallet = await WalletService.init({
       path: `${selectedDPath.value}/${index}`,
       pass,
       phrase: formattedPhrase,

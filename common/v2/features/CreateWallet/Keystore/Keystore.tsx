@@ -6,16 +6,16 @@ import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
 import { makeBlob } from 'utils/blob';
 import { N_FACTOR } from 'config';
 import { generateKeystore, fromV3 } from 'v2/workers';
+import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
 import { stripHexPrefix } from 'v2/services/EthService';
-import { getPrivKeyWallet } from 'v2/services/WalletService';
-import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
-
+import { WalletFactory } from 'v2/services/WalletService';
 import { NotificationTemplates } from 'v2/features/NotificationsPanel';
 import { Account, Asset, ISettings, Network, NetworkId, WalletId } from 'v2/types';
 import { generateUUID } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
+
+import { KeystoreStages, keystoreStageToComponentHash, keystoreFlow } from './constants';
 import { withAccountAndNotificationsContext } from '../components/withAccountAndNotificationsContext';
-import { getNewDefaultAssetTemplateByNetwork, getNetworkByName } from 'v2/services/Store';
 
 interface State {
   password: string;
@@ -34,6 +34,8 @@ interface Props extends RouteComponentProps<{}> {
   createAssetWithID(value: Asset, id: string): void;
   displayNotification(templateName: string, templateData?: object): void;
 }
+
+const WalletService = WalletFactory(WalletId.KEYSTORE_FILE);
 
 class CreateKeystore extends Component<Props, State> {
   public state: State = {
@@ -163,7 +165,7 @@ class CreateKeystore extends Component<Props, State> {
 
   private verifyPrivateKey = (key: string, password: string): boolean => {
     try {
-      getPrivKeyWallet(key, password);
+      WalletService.init(key, password);
       return true;
     } catch (e) {
       return false;

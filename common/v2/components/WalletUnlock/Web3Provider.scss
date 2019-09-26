@@ -1,20 +1,19 @@
 .MetaMask-img {
-    width: 150px;
-    height: 150px;
+  width: 150px;
+  height: 150px;
 }
 
 .MetaMask-img-container {
-    padding-bottom: 3em; 
-    display: flex; 
-    justify-content: center; 
-    align-content: center;
+  padding-bottom: 3em;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 
-    @media (max-width: 700px) {
-        padding-bottom: 1em; 
-    }
-
+  @media (max-width: 700px) {
+    padding-bottom: 1em;
+  }
 }
 
 .MetaMask-footer {
-    text-align: center;
+  text-align: center;
 }
