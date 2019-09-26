@@ -1306,12 +1306,13 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-4.61.0.tgz#bbcba49d7a7a4e20d6584bbfc10ed93b212c804c"
   integrity sha512-AObEnA+tgzKEwY306i6FOT/hlc+zjF817Bty/IxG3f2wPJFRK9cJuD3Ijl4pfJP2pt7KubN4YbRGXREXhEsknQ==
 
-"@mycrypto/eth-scan@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-1.0.0.tgz#651eee7e0e46521b2d124015c23f0e39e2253607"
-  integrity sha512-RQkDdDauuGYzB0JeLqY4xjjIX2x9CX/uIcVCfBUxP7CQP7sn0+8A+6BkUVspnWiaef88lLarSw3ZIbdB9IcPwg==
+"@mycrypto/eth-scan@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mycrypto/eth-scan/-/eth-scan-1.1.0.tgz#2355d90fae833b67304e5ae11072dbba3420f22b"
+  integrity sha512-s4ZPmwETCKtU0Myy7YObfxRb05H8lkuSE9ynRpeSaTE03IHPbsB6/SKmCatJUhRfPawhmPDlqVKiZ8ARgfCLqg==
   dependencies:
     "@ethersproject/abi" "^5.0.0-beta.133"
+    bignumber.js "^9.0.0"
     isomorphic-fetch "^2.2.1"
 
 "@mycrypto/ui@0.16.2":
@@ -2970,6 +2971,11 @@ bigi@^1.1.0, bigi@^1.4.0, bigi@^1.4.1:
 bignumber.js@^2.1.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-2.4.0.tgz#838a992da9f9d737e0f4b2db0be62bb09dd0c5e8"
+
+bignumber.js@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
+  integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
 
 bin-build@^2.0.0, bin-build@^2.2.0:
   version "2.2.0"

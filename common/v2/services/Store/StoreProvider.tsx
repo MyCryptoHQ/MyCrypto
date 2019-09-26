@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
-import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
+import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset } from 'v2/types';
 import { isArrayEqual, useInterval, convertToFiat } from 'v2/utils';
 
 import { getAccountsAssetsBalances } from './BalanceService';
@@ -21,13 +21,14 @@ interface State {
   ): (getRate: (ticker: TTicker) => number | undefined) => number;
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
+  scanTokens(asset?: ExtendedAsset): Promise<void[]>;
 }
 export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-  const { accounts: rawAccounts } = useContext(AccountContext);
+  const { accounts: rawAccounts, updateAccountAssets } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
   const { settings } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
@@ -79,7 +80,13 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
-    ]
+    ],
+    scanTokens: async (asset?: ExtendedAsset) =>
+      Promise.all(
+        accounts
+          .map(account => updateAccountAssets(account, asset ? [...assets, asset] : assets))
+          .map(p => p.catch(e => console.debug(e)))
+      )
   };
 
   // 1. I actually want to watch all the base and token balance for every
