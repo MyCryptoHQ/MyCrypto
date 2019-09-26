@@ -12,7 +12,8 @@ import {
   AccountContext,
   getLabelByAccount,
   StoreContext,
-  SettingsContext
+  SettingsContext,
+  AddressBookContext
 } from 'v2/services/Store';
 import { DashboardPanel } from './DashboardPanel';
 import './AccountList.scss';
@@ -112,6 +113,7 @@ function buildAccountTable(
   const { totalFiat } = useContext(StoreContext);
   const { getRate } = useContext(RatesContext);
   const { settings } = useContext(SettingsContext);
+  const { addressBook } = useContext(AddressBookContext);
   const columns = [
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
@@ -122,7 +124,7 @@ function buildAccountTable(
   return {
     head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
     body: accounts.map((account, index) => {
-      const addressCard: AddressBook | undefined = getLabelByAccount(account);
+      const addressCard: AddressBook | undefined = getLabelByAccount(account, addressBook);
       const total = totalFiat([account])(getRate);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       const bodyContent = [

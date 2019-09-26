@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { Icon, Identicon } from '@mycrypto/ui';
 import styled, { StyledFunction } from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
 import { useOnClickOutside } from 'v2/utils';
-import { getLabelByAccount } from 'v2/services/Store';
+import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
-import { ExtendedAccount } from 'v2/types';
+import { ExtendedAccount, ExtendedAddressBook } from 'v2/types';
 
 const { BRIGHT_SKY_BLUE } = COLORS;
 
@@ -83,12 +83,12 @@ const IconWrapper = styled(Icon)`
 const renderAccounts = (
   accounts: ExtendedAccount[],
   selected: string[],
+  addressBook: ExtendedAddressBook[],
   handleChange: (uuid: string) => void
 ) =>
   accounts.map((account: ExtendedAccount) => {
-    const addressCard = getLabelByAccount(account);
+    const addressCard = getLabelByAccount(account, addressBook);
     const addressLabel = addressCard ? addressCard.address : 'Unknown Account';
-
     return (
       <Checkbox
         key={account.uuid}
@@ -104,6 +104,7 @@ const renderAccounts = (
   });
 
 const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDropdownProps) => {
+  const { addressBook } = useContext(AddressBookContext);
   const ref = useRef<HTMLElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [draftSelected, setDraftSelected] = useState<string[]>([]);
@@ -157,7 +158,7 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
             label={`${translateRaw('ACCOUNTS_DROPDOWN_ALL_WALLETS')}`}
           />
           <Divider />
-          {renderAccounts(accounts, draftSelected, toggleSingleAccount)}
+          {renderAccounts(accounts, draftSelected, addressBook, toggleSingleAccount)}
           <Divider />
         </div>
       )}
