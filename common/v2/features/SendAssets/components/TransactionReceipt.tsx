@@ -2,9 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
-import { ITxReceipt } from 'v2/types';
+import { ITxReceipt, TTicker } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext, AccountContext } from 'v2/services/Store';
+import { RatesContext } from 'v2/services/RatesProvider';
 import {
   ProviderHandler,
   getTimestampFromBlockNum,
@@ -29,11 +30,13 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default function TransactionReceipt({
-  txReceipt,
-  txConfig,
-  resetFlow
-}: IStepComponentProps) {
+const calculateValue = (rate: number | undefined, balance: string) => {
+  if (!rate) return 0;
+  return rate * parseFloat(balance);
+};
+
+export default function TransactionReceipt({ txReceipt, txConfig, resetFlow }: IStepComponentProps) {
+  const { getRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
@@ -93,6 +96,12 @@ export default function TransactionReceipt({
   const senderAccountLabel = senderContact ? senderContact.label : 'Unknown Account';
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
+  const assetAmount = txReceipt.amount || txConfig.amount;
+  const assetTicker = txReceipt.asset
+    ? txReceipt.asset.ticker
+    : txConfig.asset
+    ? txConfig.asset.ticker
+    : 'ETH';
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
@@ -123,14 +132,10 @@ export default function TransactionReceipt({
         </div>
         <div className="TransactionReceipt-row-column">
           <Amount
-            assetValue={`${txReceipt.amount || txConfig.amount} ${
-              txReceipt.asset
-                ? txReceipt.asset.ticker
-                : txConfig.asset
-                ? txConfig.asset.ticker
-                : 'ETH'
-            }`}
-            fiatValue="$250"
+            assetValue={`${assetAmount} ${assetTicker}`}
+            fiatValue={`$${calculateValue(getRate(assetTicker as TTicker), assetAmount).toFixed(
+              2
+            )}`}
           />
         </div>
       </div>
