@@ -7,6 +7,9 @@ import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 
 import { ITxObject, ISignedTx } from '../../types';
 import './Hardware.scss';
+import { LedgerWallet } from 'v2/services/WalletService/deterministic/ledger';
+import { TrezorWallet } from 'v2/services/WalletService/deterministic/trezor';
+import { SafeTWallet } from 'v2/services/WalletService/deterministic/safe-t';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -17,16 +20,12 @@ export const splitDPath = (fullDPath: string): IDestructuredDPath => {
   /* 
     m/44'/60'/0'/0 => { dpath: "m/44'/60'/0'", index: "0" }
   */
-  const dpathArray = fullDPath.split('/');
-  const length = dpathArray.length;
-  let dpathInit = '';
-  for (let i = 0; i < length - 1; i++) {
-    dpathInit += dpathArray[i];
-    if (i < length - 2) {
-      dpathInit += '/';
-    }
-  }
-  return { dpath: dpathInit, index: parseInt(dpathArray[length - 1], 10) };
+  const dPathArray = fullDPath.split('/');
+  const index = dPathArray.pop() as string;
+  return {
+    dpath: dPathArray.join('/'),
+    index: parseInt(index, 10)
+  };
 };
 
 export interface IProps {
@@ -48,7 +47,7 @@ export default function HardwareSignTransaction({
   const [isWalletUnlocked, setIsWalletUnlocked] = useState(false);
   const [isRequestingTxSignature, setIsRequestingTxSignature] = useState(false);
   const [isTxSignatureRequestDenied, setIsTxSignatureRequestDenied] = useState(false);
-  const [wallet, setWallet] = useState({} as any);
+  const [wallet, setWallet] = useState<LedgerWallet | TrezorWallet | SafeTWallet | undefined>();
   const SigningWalletService = WalletFactory(senderAccount.wallet);
 
   useEffect(() => {
@@ -84,7 +83,7 @@ export default function HardwareSignTransaction({
 
   useEffect(() => {
     // Wallet has been unlocked. Attempting to sign tx now.
-    if ('signRawTransaction' in wallet && !isRequestingTxSignature) {
+    if (wallet && 'signRawTransaction' in wallet && !isRequestingTxSignature) {
       setIsRequestingTxSignature(true);
       const madeTx = makeTransaction(rawTransaction);
       wallet
