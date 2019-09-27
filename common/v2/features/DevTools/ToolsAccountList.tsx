@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { List, Address, Button } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { AddressBook, ExtendedAccount } from 'v2/types';
 import { truncate } from 'v2/utils';
-import { getLabelByAccount } from 'v2/services/Store';
+import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 
 const AccountContainer = styled.div`
   display: flex;
@@ -22,9 +22,10 @@ export interface AccountListProps {
 }
 
 const ToolsAccountList: React.FC<AccountListProps> = props => {
+  const { addressBook } = useContext(AddressBookContext);
   const { accounts, deleteAccount } = props;
   const list = accounts.map((account: ExtendedAccount, index: number) => {
-    const detectedLabel: AddressBook | undefined = getLabelByAccount(account);
+    const detectedLabel: AddressBook | undefined = getLabelByAccount(account, addressBook);
     const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
     return (
       <AccountContainer key={index}>

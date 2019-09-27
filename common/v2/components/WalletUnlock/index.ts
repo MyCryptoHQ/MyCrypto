@@ -6,6 +6,7 @@ export * from './ParitySigner';
 export * from './PrivateKey';
 export * from './Trezor';
 export * from './SafeT';
+export * from './ViewOnly';
 export * from './disables';
 export { default as Web3ProviderDecrypt } from './Web3Provider';
 export { default as Web3ProviderInstall } from './Web3ProviderInstall';

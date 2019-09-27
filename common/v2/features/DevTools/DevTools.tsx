@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Field, Form, FieldProps } from 'formik';
 import { Panel, Button, Input } from '@mycrypto/ui';
 import styled from 'styled-components';
 
 import { DEFAULT_NETWORK } from 'v2/config';
-import { AccountContext, getLabelByAccount } from 'v2/services/Store';
-import { Account, AddressBook, ExtendedAccount, SecureWalletName } from 'v2/types';
+import { AccountContext, getLabelByAccount, AddressBookContext } from 'v2/services/Store';
+import { Account, AddressBook, ExtendedAccount, WalletId } from 'v2/types';
 
 import ToolsNotifications from './ToolsNotifications';
 import ToolsAccountList from './ToolsAccountList';
@@ -23,6 +23,7 @@ const DevToolsInput = styled(Input)`
 `;
 
 const DevTools = () => {
+  const { addressBook } = useContext(AddressBookContext);
   return (
     <AccountContext.Consumer>
       {({ accounts, createAccount, deleteAccount }) => (
@@ -44,7 +45,7 @@ const DevTools = () => {
                       mtime: Date.now()
                     }
                   ],
-                  wallet: SecureWalletName.WEB3,
+                  wallet: WalletId.METAMASK,
                   mtime: Date.now(),
                   transactions: [],
                   uuid: '61d84f5e-0efa-46b9-915c-aed6ebe5a4dc',
@@ -57,7 +58,10 @@ const DevTools = () => {
                 }}
               >
                 {({ values, handleChange, handleBlur, isSubmitting }) => {
-                  const detectedLabel: AddressBook | undefined = getLabelByAccount(values);
+                  const detectedLabel: AddressBook | undefined = getLabelByAccount(
+                    values,
+                    addressBook
+                  );
                   const label = detectedLabel ? detectedLabel.label : 'Unknown Account';
                   return (
                     <Form>

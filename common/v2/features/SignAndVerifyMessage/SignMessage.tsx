@@ -6,18 +6,12 @@ import { Button } from '@mycrypto/ui';
 import { InputField, CodeBlock, WalletList } from 'v2/components';
 import { BREAK_POINTS } from 'v2/theme';
 import { translate, translateRaw } from 'translations';
-import {
-  ISignedMessage,
-  WalletName,
-  SecureWalletName,
-  INode,
-  FormData,
-  walletNames
-} from 'v2/types';
+import { ISignedMessage, INode, FormData, WalletId } from 'v2/types';
 import { STORIES } from './stories';
-import { WALLET_INFO } from 'v2/config';
+import { WALLETS_CONFIG } from 'v2/config';
 import { AppState } from 'features/reducers';
-import { IFullWallet, setupWeb3Node } from 'v2/services/EthService';
+import { setupWeb3Node } from 'v2/services/EthService';
+import { IFullWallet } from 'v2/services/WalletService';
 import { messageToData } from 'features/message/sagas';
 import { paritySignerActions } from 'features/paritySigner';
 
@@ -27,7 +21,7 @@ const { SCREEN_XS } = BREAK_POINTS;
 
 export const defaultFormData: FormData = {
   network: 'Ethereum',
-  accountType: walletNames.DEFAULT,
+  accountType: undefined,
   account: '',
   label: 'New Account',
   derivationPath: ''
@@ -99,7 +93,7 @@ interface StateProps {
 type Props = DispatchProps & StateProps;
 
 function SignMessage(props: Props) {
-  const [walletName, setWalletName] = useState<WalletName | undefined>(undefined);
+  const [walletName, setWalletName] = useState<WalletId | undefined>(undefined);
   const [wallet, setWallet] = useState<IFullWallet | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
@@ -110,7 +104,7 @@ function SignMessage(props: Props) {
   const { setShowSubtitle } = props;
 
   useEffect(() => {
-    if (props.paritySig && signedMessage && walletName === SecureWalletName.PARITY_SIGNER) {
+    if (props.paritySig && signedMessage && walletName === WalletId.PARITY_SIGNER) {
       setSignedMessage({ ...signedMessage, sig: props.paritySig });
       setIsSigned(true);
     }
@@ -125,12 +119,12 @@ function SignMessage(props: Props) {
       const address = wallet.getAddressString();
       let sig = '';
 
-      if (walletName === SecureWalletName.PARITY_SIGNER) {
+      if (walletName === WalletId.PARITY_SIGNER) {
         const data = messageToData(message);
         props.requestParityMessageSignature(address, data);
       } else {
         let lib: INode = {} as INode;
-        if (walletName === SecureWalletName.WEB3) {
+        if (walletName === WalletId.METAMASK) {
           lib = (await setupWeb3Node()).lib;
         }
         sig = await wallet.signMessage(message, lib);
@@ -157,7 +151,7 @@ function SignMessage(props: Props) {
     setSignedMessage(null);
   };
 
-  const onSelect = (selectedWalletName: WalletName) => {
+  const onSelect = (selectedWalletName: WalletId) => {
     setWalletName(selectedWalletName);
     setShowSubtitle(false);
   };
@@ -189,7 +183,11 @@ function SignMessage(props: Props) {
             {translateRaw('CHANGE_WALLET_BUTTON')}
           </BackButton>
           {!unlocked && Step && (
-            <Step wallet={WALLET_INFO[walletName]} onUnlock={onUnlock} formData={defaultFormData} />
+            <Step
+              wallet={WALLETS_CONFIG[walletName]}
+              onUnlock={onUnlock}
+              formData={defaultFormData}
+            />
           )}
         </>
       ) : (

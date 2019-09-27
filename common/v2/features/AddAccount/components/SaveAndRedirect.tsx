@@ -36,7 +36,7 @@ function SaveAndRedirect(payload: { formData: FormData }) {
       const account: Account = {
         address: payload.formData.account,
         networkId: payload.formData.network,
-        wallet: payload.formData.accountType,
+        wallet: payload.formData.accountType!,
         dPath: payload.formData.derivationPath,
         assets: [{ uuid: newAsset.uuid, balance: '0', mtime: Date.now() }],
         transactions: [],

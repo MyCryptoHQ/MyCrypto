@@ -1,6 +1,6 @@
-import { SecureWalletName, InsecureWalletName, MiscWalletName, IStory } from 'v2/types';
+import { IStory, WalletId } from 'v2/types';
 import { IS_DEV, IS_ELECTRON, HAS_WEB3_PROVIDER } from 'v2/utils';
-import { NetworkSelectPanel, SaveAndRedirect, ViewOnlyDecrypt } from './components';
+import { NetworkSelectPanel, SaveAndRedirect } from './components';
 import {
   InsecureWalletWarning,
   LedgerNanoSDecrypt,
@@ -11,34 +11,35 @@ import {
   SafeTminiDecrypt,
   TrezorDecrypt,
   Web3ProviderDecrypt,
-  Web3ProviderInstall
+  Web3ProviderInstall,
+  ViewOnlyDecrypt
 } from 'v2/components';
 
 export const STORIES: IStory[] = [
   {
-    name: SecureWalletName.WEB3,
+    name: WalletId.METAMASK,
     steps: HAS_WEB3_PROVIDER
       ? [NetworkSelectPanel, Web3ProviderDecrypt, SaveAndRedirect]
       : [Web3ProviderInstall]
   },
   {
-    name: SecureWalletName.LEDGER_NANO_S,
+    name: WalletId.LEDGER_NANO_S,
     steps: [NetworkSelectPanel, LedgerNanoSDecrypt, SaveAndRedirect]
   },
   {
-    name: SecureWalletName.TREZOR,
+    name: WalletId.TREZOR,
     steps: [NetworkSelectPanel, TrezorDecrypt, SaveAndRedirect]
   },
   {
-    name: SecureWalletName.SAFE_T,
+    name: WalletId.SAFE_T_MINI,
     steps: [NetworkSelectPanel, SafeTminiDecrypt, SaveAndRedirect]
   },
   {
-    name: SecureWalletName.PARITY_SIGNER,
+    name: WalletId.PARITY_SIGNER,
     steps: [NetworkSelectPanel, ParitySignerDecrypt, SaveAndRedirect]
   },
   {
-    name: InsecureWalletName.KEYSTORE_FILE,
+    name: WalletId.KEYSTORE_FILE,
     steps: [
       NetworkSelectPanel,
       IS_DEV || IS_ELECTRON ? KeystoreDecrypt : InsecureWalletWarning,
@@ -47,7 +48,7 @@ export const STORIES: IStory[] = [
     hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
-    name: InsecureWalletName.MNEMONIC_PHRASE,
+    name: WalletId.MNEMONIC_PHRASE,
     steps: [
       NetworkSelectPanel,
       IS_DEV || IS_ELECTRON ? MnemonicDecrypt : InsecureWalletWarning,
@@ -56,7 +57,7 @@ export const STORIES: IStory[] = [
     hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
-    name: InsecureWalletName.PRIVATE_KEY,
+    name: WalletId.PRIVATE_KEY,
     steps: [
       NetworkSelectPanel,
       IS_DEV || IS_ELECTRON ? PrivateKeyDecrypt : InsecureWalletWarning,
@@ -65,7 +66,7 @@ export const STORIES: IStory[] = [
     hideFromWalletList: IS_DEV ? IS_ELECTRON : !IS_ELECTRON
   },
   {
-    name: MiscWalletName.VIEW_ONLY,
+    name: WalletId.VIEW_ONLY,
     steps: [NetworkSelectPanel, ViewOnlyDecrypt, SaveAndRedirect]
   }
 ];

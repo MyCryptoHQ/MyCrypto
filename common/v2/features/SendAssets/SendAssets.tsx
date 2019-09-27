@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
 import { useStateReducer } from 'v2/utils';
-import { TWalletType, ITxReceipt } from 'v2/types';
+import { WalletId, ITxReceipt } from 'v2/types';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -49,8 +49,8 @@ function SendAssets() {
     { label: 'Transaction Complete', component: TransactionReceipt, action: goToDashoard }
   ];
 
-  const getStep = (walletType: TWalletType, stepIndex: number) => {
-    const path = walletType === 'web3' ? web3Steps : defaultSteps;
+  const getStep = (walletId: WalletId, stepIndex: number) => {
+    const path = walletId === WalletId.METAMASK ? web3Steps : defaultSteps;
     const { label, component, action } = path[stepIndex]; // tslint:disable-line
     return { currentPath: path, label, Step: component, stepAction: action };
   };

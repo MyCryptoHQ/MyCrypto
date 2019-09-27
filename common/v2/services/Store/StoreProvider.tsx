@@ -1,7 +1,7 @@
-import React, { useState, useContext, useMemo, createContext } from 'react';
+import React, { useState, useContext, useMemo, createContext, useEffect } from 'react';
 
-import { StoreAccount, StoreAsset, Network, TTicker } from 'v2/types';
-import { isArrayEqual, useInterval } from 'v2/utils';
+import { StoreAccount, StoreAsset, Network, TTicker, ExtendedAsset } from 'v2/types';
+import { isArrayEqual, useInterval, convertToFiat } from 'v2/utils';
 
 import { getAccountsAssetsBalances } from './BalanceService';
 import { getStoreAccounts } from './helpers';
@@ -16,15 +16,19 @@ interface State {
   tokens(selectedAssets?: StoreAsset[]): StoreAsset[];
   assets(selectedAccounts?: StoreAccount[]): StoreAsset[];
   totals(selectedAccounts?: StoreAccount[]): StoreAsset[];
+  totalFiat(
+    selectedAccounts?: StoreAccount[]
+  ): (getRate: (ticker: TTicker) => number | undefined) => number;
   currentAccounts(): StoreAccount[];
   assetTickers(targetAssets?: StoreAsset[]): TTicker[];
+  scanTokens(asset?: ExtendedAsset): Promise<void[]>;
 }
 export const StoreContext = createContext({} as State);
 
 // App Store that combines all data values required by the components such
 // as accounts, currentAccount, tokens, and fiatValues etc.
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
-  const { accounts: rawAccounts } = useContext(AccountContext);
+  const { accounts: rawAccounts, updateAccountAssets } = useContext(AccountContext);
   const { assets } = useContext(AssetContext);
   const { settings } = useContext(SettingsContext);
   const { networks } = useContext(NetworkContext);
@@ -37,6 +41,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     networks
   ]);
   const [accounts, setAccounts] = useState(storeAccounts);
+  useEffect(() => {
+    setAccounts(storeAccounts);
+  }, [storeAccounts]);
 
   // Naive polling to get the Balances of baseAsset and tokens for each account.
   useInterval(
@@ -49,7 +56,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     },
     60000,
     true,
-    [rawAccounts]
+    [accounts]
   );
 
   const state: State = {
@@ -61,10 +68,25 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       selectedAssets.filter((asset: StoreAsset) => asset.type !== 'base'),
     totals: (selectedAccounts = state.accounts) =>
       Object.values(getTotalByAsset(state.assets(selectedAccounts))),
+    totalFiat: (selectedAccounts = state.accounts) => (
+      getRate: (ticker: TTicker) => number | undefined
+    ) =>
+      state
+        .totals(selectedAccounts)
+        .reduce(
+          (sum, asset) => (sum += convertToFiat(asset.balance, getRate(asset.ticker as TTicker))),
+          0
+        ),
     currentAccounts: () => getDashboardAccounts(state.accounts, settings.dashboardAccounts),
     assetTickers: (targetAssets = state.assets()) => [
       ...new Set(targetAssets.map(a => a.ticker as TTicker))
-    ]
+    ],
+    scanTokens: async (asset?: ExtendedAsset) =>
+      Promise.all(
+        accounts
+          .map(account => updateAccountAssets(account, asset ? [...assets, asset] : assets))
+          .map(p => p.catch(e => console.debug(e)))
+      )
   };
 
   // 1. I actually want to watch all the base and token balance for every

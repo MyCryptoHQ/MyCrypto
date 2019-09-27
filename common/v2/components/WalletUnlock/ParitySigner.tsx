@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 import { translate, translateRaw } from 'translations';
 import { AppState } from 'features/reducers';
 import { configSelectors } from 'features/config';
-import { ParitySignerWallet } from 'libs/wallet';
-import { wikiLink } from 'libs/wallet/non-deterministic/parity';
 import { notificationsActions } from 'features/notifications';
-import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
-import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
 import { ParityQrSigner } from 'components';
 import { NewTabLink } from 'components/ui';
+
+import { WalletFactory } from 'v2/services/WalletService';
+import { WalletId } from 'v2/types';
+import { WALLETS_CONFIG } from 'v2/config';
+
+import AppStoreBadge from 'assets/images/mobile/app-store-badge.png';
+import GooglePlayBadge from 'assets/images/mobile/google-play-badge.png';
 
 import './ParitySigner.scss';
 interface OwnProps {
@@ -22,8 +25,6 @@ interface StateProps {
   isValidAddress: ReturnType<typeof configSelectors.getIsValidAddressFn>;
 }
 
-type Props = OwnProps & StateProps;
-
 interface SignerAddress {
   address: string;
   chainId: number;
@@ -31,7 +32,10 @@ interface SignerAddress {
 
 type SignerQrContent = SignerAddress | string;
 
-class ParitySignerDecryptClass extends PureComponent<Props> {
+const WalletService = WalletFactory(WalletId.PARITY_SIGNER);
+const wikiLink = WALLETS_CONFIG[WalletId.PARITY_SIGNER].helpLink!;
+
+class ParitySignerDecryptClass extends PureComponent<OwnProps & StateProps> {
   public render() {
     return (
       <div className="ParityPanel">
@@ -67,7 +71,7 @@ class ParitySignerDecryptClass extends PureComponent<Props> {
       return;
     }
 
-    this.props.onUnlock(new ParitySignerWallet(content.address));
+    this.props.onUnlock(WalletService.init(content.address));
   };
 }
 
