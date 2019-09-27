@@ -2,4 +2,3 @@ export { default as AddressBookPanel } from './AddressBook';
 export { default as AddToAddressBook } from './AddToAddressBook';
 export { default as GeneralSettings } from './GeneralSettings';
 export { default as YourAccounts } from './YourAccounts';
-export { default as Tabs } from './Tabs';

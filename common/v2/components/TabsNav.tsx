@@ -7,14 +7,14 @@ interface Props {
   children: ReactNode;
 }
 
-export const TabsContainer = styled.ul`
+const TabsContainer = styled.ul`
   display: flex;
   text-align: center;
   margin: 0;
   background-color: #163150;
 `;
 
-export const Tab = styled.li`
+const Tab = styled.li`
   list-style: none;
   flex: 1;
   padding-top: 1.3125em;
@@ -36,7 +36,7 @@ export const Tab = styled.li`
   }
 `;
 
-export class Tabs extends Component<Props, {}> {
+export default class TabsNav extends Component<Props, {}> {
   public render() {
     const { children } = this.props;
 
@@ -51,5 +51,3 @@ export class Tabs extends Component<Props, {}> {
     );
   }
 }
-
-export default Tabs;

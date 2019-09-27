@@ -3,8 +3,8 @@ import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from 'translations';
 
-import { AccountList, FlippablePanel } from 'v2/components';
-import { AddressBookPanel, AddToAddressBook, GeneralSettings, Tabs } from './components';
+import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
+import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
 import IS_MOBILE from 'utils/isMobile';
 
 import settingsIcon from 'common/assets/images/icn-settings.svg';
@@ -34,7 +34,7 @@ const SettingsContent = styled.div`
   padding: ${IS_MOBILE ? '0 10px' : '0 80px'};
 `;
 
-const SettingsTabs = styled(Tabs)`
+const SettingsTabs = styled(TabsNav)`
   margin-top: -44px;
 `;
 
