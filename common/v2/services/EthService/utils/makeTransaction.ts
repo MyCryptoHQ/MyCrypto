@@ -1,11 +1,12 @@
 import Tx from 'ethereumjs-tx';
 import { addHexPrefix, stripHexPrefix } from 'ethereumjs-util';
+import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
 
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ITransaction, IHexStrTransaction } from 'v2/types';
 
 import { gasPriceToBase, toTokenBase, fromWei, toWei, Wei } from './units';
 import { hexEncodeQuantity } from './hexEncode';
-import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
 
 export const makeTransaction = (
   t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
@@ -19,7 +20,7 @@ export const inputGasLimitToHex = (gasLimit: string): string =>
   bigNumberify(gasLimit).toHexString();
 
 export const inputValueToHex = (valueEther: string): string =>
-  hexEncodeQuantity(toTokenBase(valueEther, 18));
+  hexEncodeQuantity(toTokenBase(valueEther, DEFAULT_ASSET_DECIMAL));
 
 export const inputNonceToHex = (nonce: string): string =>
   addHexPrefix(parseInt(nonce, 10).toString(16));

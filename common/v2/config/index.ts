@@ -13,7 +13,7 @@ export {
 } from './constants';
 export { NODES_CONFIG } from './nodes';
 export { ROUTE_PATHS } from './routePaths';
-
+export * from './constants';
 export { NETWORKS_CONFIG } from './networks';
 export { ETHSCAN_NETWORKS } from './ethScan';
 export { Fiats, AssetsData, ContractsData } from './cacheData';

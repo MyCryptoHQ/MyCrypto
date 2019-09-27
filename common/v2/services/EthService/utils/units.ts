@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import { toBuffer, addHexPrefix } from 'ethereumjs-util';
 import { stripHexPrefix } from 'v2/services/EthService';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 type UnitKey = keyof typeof Units;
 type Wei = BN;
@@ -8,8 +9,6 @@ type TokenValue = BN;
 type Address = Buffer;
 type Nonce = BN;
 type Data = Buffer;
-
-export const ETH_DECIMAL = 18;
 
 export const Units = {
   wei: '1',
@@ -124,7 +123,10 @@ const gasStringsToMaxGasBN = (gasPriceGwei: string, gasLimit: string): BN => {
 
 const gasStringsToMaxGasNumber = (gasPriceGwei: string, gasLimit: string): number => {
   return parseFloat(
-    baseToConvertedUnit(gasStringsToMaxGasBN(gasPriceGwei, gasLimit).toString(), 18)
+    baseToConvertedUnit(
+      gasStringsToMaxGasBN(gasPriceGwei, gasLimit).toString(),
+      DEFAULT_ASSET_DECIMAL
+    )
   );
 };
 
