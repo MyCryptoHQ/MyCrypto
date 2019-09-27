@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
-import { BREAK_POINTS } from 'v2/theme';
+import { BREAK_POINTS, MAX_CONTENT_WIDTH } from 'v2/theme';
 import { DrawerContext } from 'v2/features';
 import Header from './Header';
 import Footer from './Footer';
@@ -25,7 +25,7 @@ const SMain = styled('main')`
 
 const SContainer = styled('div')`
   padding: 50px 0;
-  max-width: 1160px;
+  max-width: ${MAX_CONTENT_WIDTH};
 
   // This is the moment our header becomes sticky and shrinks in
   @media (max-width: ${BREAK_POINTS.SCREEN_SM}) {
