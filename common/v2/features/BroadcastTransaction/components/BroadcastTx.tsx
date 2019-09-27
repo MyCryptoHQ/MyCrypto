@@ -40,17 +40,6 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const Heading = styled.p`
-  font-size: 36px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-  line-height: normal;
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: ${props => props.theme.headline};
-`;
 
 const Description = styled.p`
   font-size: 18px;
@@ -150,7 +139,6 @@ class BroadcastTx extends Component<Props> {
 
     return (
       <ContentWrapper>
-        <Heading>{translateRaw('BROADCAST_TX_TITLE')}</Heading>
         <Description>{translate('BROADCAST_TX_DESCRIPTION')}</Description>
         <InputWrapper>
           <InputField

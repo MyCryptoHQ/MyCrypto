@@ -1,8 +1,9 @@
 .ConfirmTransaction {
+  text-align: left;
   &-row {
     display: flex;
     flex-direction: column;
-    
+
     @media (min-width: 550px) {
       flex-direction: row;
       align-items: center;

@@ -7,6 +7,12 @@ import { BroadcastTx, ConfirmTransaction, TransactionReceipt } from './component
 import { ROUTE_PATHS } from 'v2/config';
 import { ITxConfig } from '../SendAssets/types';
 import { ITxReceipt } from 'v2/types';
+import { translateRaw } from 'translations';
+
+interface TStep {
+  title: string;
+  component: any;
+}
 
 const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
   const [step, setStep] = useState(0);
@@ -15,7 +21,12 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
   const [txConfig, setTxConfig] = useState<ITxConfig | undefined>();
   const [signedTransaction, setSignedTransaction] = useState('');
   const [transaction, setTransaction] = useState<EthTx | undefined>();
-  const steps = [BroadcastTx, ConfirmTransaction, TransactionReceipt];
+
+  const steps: TStep[] = [
+    { title: translateRaw('BROADCAST_TX_TITLE'), component: BroadcastTx },
+    { title: translateRaw('CONFIRM_TX_MODAL_TITLE'), component: ConfirmTransaction },
+    { title: translateRaw('BROADCAST_TX_RECEIPT_TITLE'), component: TransactionReceipt }
+  ];
 
   const goToNextStep = () => {
     setStep(step + 1);
@@ -30,15 +41,18 @@ const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
     }
   };
 
-  const Step = steps[step];
+  const stepObject = steps[step];
+  const StepComponent = stepObject.component;
 
   return (
     <ExtendedContentPanel
       onBack={goToPreviousStep}
       stepper={{ current: step + 1, total: steps.length }}
       width="650px"
+      heading={stepObject.title}
+      centered={true}
     >
-      <Step
+      <StepComponent
         goToNextStep={goToNextStep}
         selectNetwork={setNetwork}
         network={network}

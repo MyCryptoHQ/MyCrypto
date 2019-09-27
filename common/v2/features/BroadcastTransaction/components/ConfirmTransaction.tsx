@@ -11,18 +11,6 @@ import { translateRaw } from 'translations';
 import { ITxReceipt } from 'v2/types';
 import { ITxConfig } from 'v2/features/SendAssets/types';
 
-const Heading = styled.p`
-  font-size: 36px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-  line-height: normal;
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: ${props => props.theme.headline};
-`;
-
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;
 `;
@@ -92,7 +80,6 @@ export default function ConfirmTransaction(props: Props) {
 
   return (
     <>
-      <Heading>{translateRaw('CONFIRM_TX_MODAL_TITLE')}</Heading>
       <ConfirmTransactionForm onComplete={handleConfirmClick} txConfig={txConfig} />
       {txError && <ErrorWrapper>{txError}</ErrorWrapper>}
     </>
