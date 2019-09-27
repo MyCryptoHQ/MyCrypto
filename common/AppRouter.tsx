@@ -1,11 +1,10 @@
 import React from 'react';
 import { HashRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { ErrorScreen, LogOutPrompt } from 'components';
+import { LogOutPrompt } from 'components';
 import { BroadcastTx, Contracts, GenerateWallet, SendTransaction, SupportPage } from 'containers';
 import { Layout } from 'v2/features/Layout';
 import { Home, PageNotFound, ScreenLockProvider, DrawerProvider } from 'v2/features';
-import { useDevMode } from 'v2/services';
 import { IS_PROD, IS_DOWNLOADABLE } from 'v2/utils';
 import { ROUTE_PATHS } from 'v2/config';
 import {
@@ -16,18 +15,7 @@ import {
   PrivateRoute
 } from 'v2/routing';
 
-interface AppRouterProps {
-  error?: Error | undefined;
-}
-
-export const AppRouter = (props: AppRouterProps) => {
-  const { isDevelopmentMode } = useDevMode();
-  const { error } = props;
-
-  if (error !== undefined && !isDevelopmentMode) {
-    return <ErrorScreen error={error} />;
-  }
-
+export const AppRouter = () => {
   const Router: any = IS_DOWNLOADABLE && IS_PROD ? HashRouter : BrowserRouter;
 
   return (
