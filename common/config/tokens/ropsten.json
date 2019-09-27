@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "address": "0x95D7321EdCe519419ba1DbC60A89bAfbF55EAC0D",
+    "symbol": "*PLASMA",
+    "decimal": 6
+  },
+  {
+    "address": "0xa1bAccA0e12D4091Ec1f92e7CaE3394CC9854D3D",
+    "symbol": "dqr30",
+    "decimal": 18
+  },
+  {
+    "address": "0x6f95a3B682F8e9aacC86D057A6DF88A0E68145A8",
+    "symbol": "ILSC",
+    "decimal": 2
+  },
+  {
+    "address": "0x4C572Fbc03D4A2B683cF4f10ffdcaFD00885E108",
+    "symbol": "MEWV5",
+    "decimal": 9
+  },
+  {
+    "address": "0xFD5a69A1309595FF5121553F52C8A5B2B1B31031",
+    "symbol": "NONE",
+    "decimal": 0
+  },
+  {
+    "address": "0x7314Dc4d7794b5E7894212CA1556ae8e3De58621",
+    "symbol": "RLC",
+    "decimal": 9
+  }
+]
