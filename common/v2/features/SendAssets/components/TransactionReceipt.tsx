@@ -29,7 +29,16 @@ const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
 };
 
-export default function TransactionReceipt({ txReceipt, txConfig }: IStepComponentProps) {
+interface Props {
+  completeButtonText: string;
+}
+
+export default function TransactionReceipt({
+  txReceipt,
+  txConfig,
+  onComplete,
+  completeButtonText
+}: IStepComponentProps & Props) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
   const [txStatus, setTxStatus] = useState(ITxStatus.PENDING);
@@ -173,9 +182,11 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
       <Link to="/dashboard">
         <Button className="TransactionReceipt-back">Back to Dashboard</Button>
       </Link>
-      <Button secondary={true} className="TransactionReceipt-another">
-        Send Another Transaction
-      </Button>
+      {completeButtonText && (
+        <Button secondary={true} className="TransactionReceipt-another" onClick={onComplete}>
+          {completeButtonText}
+        </Button>
+      )}
     </div>
   );
 }

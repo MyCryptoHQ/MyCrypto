@@ -12,6 +12,7 @@ import {
 } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import { IFormikFields, IPath } from './types';
+import { translateRaw } from 'translations';
 
 function SendAssets() {
   const [step, setStep] = useState(0);
@@ -76,6 +77,7 @@ function SendAssets() {
         txReceipt={txReceiptState}
         txConfig={txConfigState}
         onComplete={(payload: IFormikFields | ITxReceipt) => stepAction(payload, goToNextStep)}
+        completeButtonText={translateRaw('SEND_ASSETS_SEND_ANOTHER')}
       />
     </ContentPanel>
   );

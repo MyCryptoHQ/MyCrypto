@@ -70,6 +70,7 @@ export interface IStepComponentProps {
   txReceipt?: ITxReceipt;
   signedTx?: string;
   children?: never;
+  completeButtonText?: string;
   onComplete(data: IFormikFields | ITxReceipt | ISignedTx | null): void;
 }
 

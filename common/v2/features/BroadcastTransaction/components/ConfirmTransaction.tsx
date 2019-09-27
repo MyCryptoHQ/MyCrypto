@@ -8,6 +8,8 @@ import { toChecksumAddressByChainId } from 'utils/formatters';
 import { fromWei, ProviderHandler } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'translations';
+import { ITxReceipt } from 'v2/types';
+import { ITxConfig } from 'v2/features/SendAssets/types';
 
 const Heading = styled.p`
   font-size: 36px;
@@ -29,13 +31,16 @@ interface Props {
   transaction: any;
   signedTransaction: string;
   network: string;
+  goToNextStep(): void;
   selectNetwork(network: string): void;
+  setTxReceipt(receipt: ITxReceipt): void;
+  setTxConfig(config: ITxConfig): void;
 }
 
 export default function ConfirmTransaction(props: Props) {
   const [txError, setTxError] = useState('');
 
-  const { transaction, signedTransaction, network } = props;
+  const { transaction, signedTransaction, network, goToNextStep } = props;
   const { from, to, value, _chainId, gasPrice, gasLimit, nonce, data } = transaction;
 
   const txNetwork = transaction._chainId
@@ -72,10 +77,14 @@ export default function ConfirmTransaction(props: Props) {
 
   const handleConfirmClick = async () => {
     const provider = new ProviderHandler(txNetwork);
+    const { setTxReceipt, setTxConfig } = props;
     setTxError('');
+
     try {
-      await provider.sendRawTx(signedTransaction);
-      //TODO: Navigate to tx receipt step
+      const receipt = await provider.sendRawTx(signedTransaction);
+      setTxReceipt(receipt);
+      setTxConfig(txConfig);
+      goToNextStep();
     } catch (e) {
       setTxError(e.toString());
     }
