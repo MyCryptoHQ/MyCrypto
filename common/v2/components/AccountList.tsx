@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, Copyable, Network, Identicon } from '@mycrypto/ui';
+import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
-import { CollapsibleTable } from 'v2/components';
+import { CollapsibleTable, Typography, Network } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
@@ -141,7 +141,7 @@ function buildAccountTable(
       const bodyContent = [
         <Label key={index}>
           <Identicon address={account.address} />
-          <span>{label}</span>
+          <Typography>{label}</Typography>
         </Label>,
         <Copyable key={index} text={account.address} truncate={truncate} />,
         <Network key={index} color="#a682ff">

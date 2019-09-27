@@ -3,12 +3,8 @@ import styled from 'styled-components';
 
 import { TSymbol } from 'v2/types';
 import { getSymbolIcon } from 'v2/utils';
+import { default as Typography } from './Typography';
 
-const STypography = styled('span')`
-  font-size: inherit;
-  line-height: 1.5;
-  vertical-align: middle;
-`;
 const SContainer = styled('div')`
   display: inline-flex;
   align-contents: center;
@@ -36,11 +32,11 @@ function Currency({ amount, symbol, decimals = 5, icon = false, prefix = false, 
           <img src={getSymbolIcon(symbol)} width={19} alt={symbol} />
         </span>
       )}
-      <STypography>
+      <Typography>
         {prefix && `${symbol}`}
         {format(amount, decimals)}
         {!prefix && `${symbol}`}
-      </STypography>
+      </Typography>
     </SContainer>
   );
 }
