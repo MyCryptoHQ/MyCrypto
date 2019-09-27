@@ -87,7 +87,9 @@ const getAccountAssetsBalancesWithJsonRPC = async (
   return Promise.all([
     provider.getRawBalance(account.address).then(balance => ({ [address]: balance })),
     getTokenBalances(provider, address as TAddress, tokens)
-  ]).then(addBalancesToAccount(account));
+  ])
+    .then(addBalancesToAccount(account))
+    .catch(_ => account);
 };
 
 export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {
