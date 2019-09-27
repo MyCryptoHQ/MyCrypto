@@ -31,3 +31,5 @@ export const BREAK_POINTS = {
   SCREEN_XL: '1440px',
   SCREEN_XXL: '1600px'
 };
+
+export const MAX_CONTENT_WIDTH = '1200px';

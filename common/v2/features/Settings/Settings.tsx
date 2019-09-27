@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { Heading, Tabs } from '@mycrypto/ui';
+import { Heading } from '@mycrypto/ui';
 import styled from 'styled-components';
 import translate from 'translations';
 
-import { AccountList, FlippablePanel } from 'v2/components';
+import { AccountList, FlippablePanel, TabsNav } from 'v2/components';
 import { AddressBookPanel, AddToAddressBook, GeneralSettings } from './components';
 import IS_MOBILE from 'utils/isMobile';
 
@@ -32,6 +32,10 @@ const StyledLayout = styled.div`
 
 const SettingsContent = styled.div`
   padding: ${IS_MOBILE ? '0 10px' : '0 80px'};
+`;
+
+const SettingsTabs = styled(TabsNav)`
+  margin-top: -44px;
 `;
 
 function renderAccountPanel() {
@@ -80,7 +84,7 @@ function renderMobile() {
   const currentTab = tabOptions[tab];
   return (
     <>
-      <Tabs>
+      <SettingsTabs>
         <a href="#" onClick={() => setTab('wallets')}>
           Your Wallets
         </a>
@@ -90,7 +94,7 @@ function renderMobile() {
         <a href="#" onClick={() => setTab('general')}>
           General
         </a>
-      </Tabs>
+      </SettingsTabs>
       <SettingsContent>
         <SettingsHeading>
           <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
