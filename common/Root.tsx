@@ -36,15 +36,7 @@ interface DispatchProps {
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-interface State {
-  error: Error | undefined;
-}
-
-class RootClass extends Component<Props, State> {
-  public state = {
-    error: undefined
-  };
-
+class RootClass extends Component<Props> {
   public componentDidMount() {
     this.props.setUnitMeta(this.props.networkUnit);
     this.addBodyClasses();
@@ -52,7 +44,7 @@ class RootClass extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error) {
-    this.setState({ error });
+    console.error(error);
   }
 
   public componentDidUpdate(prevProps: Props) {
@@ -62,7 +54,6 @@ class RootClass extends Component<Props, State> {
   }
 
   public render() {
-    const { error } = this.state;
     const { store } = this.props;
 
     return (
@@ -70,7 +61,7 @@ class RootClass extends Component<Props, State> {
         <ThemeProvider theme={GAU_THEME}>
           <Provider store={store}>
             <AppProviders>
-              <AppRouter error={error} />
+              <AppRouter />
               <QrSignerModal />
               <div id="ModalContainer" />
               {IS_ELECTRON ? <NewAppReleaseModal /> : <></>}
