@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { formatEther } from 'ethers/utils';
 
 import { translateRaw } from 'translations';
 import { AssetWithDetails, TSymbol } from 'v2/types';
@@ -18,6 +17,7 @@ import websiteIcon from 'common/assets/images/icn-website.svg';
 import whitepaperIcon from 'common/assets/images/icn-whitepaper.svg';
 import backArrowIcon from 'common/assets/images/icn-back.svg';
 import expandIcon from 'common/assets/images/icn-expand.svg';
+import { weiToFloat } from 'v2/utils';
 
 const etherscanUrl = ' https://etherscan.io';
 
@@ -192,7 +192,7 @@ export function TokenDetails(props: Props) {
           <InfoPiece title={translateRaw('LATEST_PRICE')} value={'$' + currentToken.rate} />{' '}
           <InfoPiece
             title={translateRaw('BALANCE')}
-            value={`${parseFloat(formatEther(currentToken.balance)).toFixed(6)} ${
+            value={`${weiToFloat(currentToken.balance, currentToken.decimal).toFixed(6)} ${
               currentToken.ticker
             }`}
           />
