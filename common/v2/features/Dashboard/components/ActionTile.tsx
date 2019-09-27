@@ -23,10 +23,6 @@ const SContainer = styled('div')`
     width: 110px;
   }
 
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    width: 19%;
-  }
-
   @media (min-width: ${BREAK_POINTS.SCREEN_MD}) {
     width: 100%;
     padding-left: 40px;
