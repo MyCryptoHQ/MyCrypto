@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
 
+import translate, { translateRaw } from 'translations';
+import { Spinner } from 'components/ui';
+
 import { NetworkContext } from 'v2/services/Store';
 import { getDPath, getDPaths } from 'v2/services';
+import { WalletFactory, ChainCodeResponse } from 'v2/services/WalletService';
 import { WalletId, FormData } from 'v2/types';
-import translate, { translateRaw } from 'translations';
-import { SafeTWallet } from 'libs/wallet';
-import { Spinner } from 'components/ui';
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './SafeT.scss';
@@ -26,9 +27,9 @@ interface State {
   isLoading: boolean;
 }
 
-type Props = OwnProps;
+const WalletService = WalletFactory(WalletId.SAFE_T_MINI);
 
-class SafeTminiDecryptClass extends PureComponent<Props, State> {
+class SafeTminiDecryptClass extends PureComponent<OwnProps, State> {
   public static contextType = NetworkContext;
   public state: State = {
     publicKey: '',
@@ -121,8 +122,8 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
       error: null
     });
 
-    SafeTWallet.getChainCode(dPath.value)
-      .then(res => {
+    WalletService.getChainCode(dPath.value)
+      .then((res: ChainCodeResponse) => {
         this.setState({
           dPath,
           publicKey: res.publicKey,
@@ -130,7 +131,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
           isLoading: false
         });
       })
-      .catch(err => {
+      .catch((err: any) => {
         this.setState({
           error: err.message,
           isLoading: false
@@ -143,7 +144,7 @@ class SafeTminiDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new SafeTWallet(address, this.state.dPath.value, index));
+    this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
     this.reset();
   };
 

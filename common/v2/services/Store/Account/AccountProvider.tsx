@@ -1,6 +1,17 @@
 import React, { Component, createContext } from 'react';
+import unionBy from 'lodash/unionBy';
+import BigNumber from 'bignumber.js';
+
 import * as service from './Account';
-import { Account, ExtendedAccount, ITxReceipt } from 'v2/types';
+import {
+  Account,
+  ExtendedAccount,
+  ITxReceipt,
+  StoreAccount,
+  Asset,
+  AssetBalanceObject
+} from 'v2/types';
+import { getAllTokensBalancesOfAccount } from '../BalanceService';
 
 export interface ProviderState {
   accounts: ExtendedAccount[];
@@ -10,6 +21,7 @@ export interface ProviderState {
   updateAccount(uuid: string, accountData: ExtendedAccount): void;
   addNewTransactionToAccount(account: ExtendedAccount, transaction: ITxReceipt): void;
   getAccountByAddressAndNetworkName(address: string, network: string): ExtendedAccount | undefined;
+  updateAccountAssets(account: StoreAccount, assets: Asset[]): Promise<void>;
 }
 
 export const AccountContext = createContext({} as ProviderState);
@@ -51,6 +63,35 @@ export class AccountProvider extends Component {
         account =>
           account.address.toLowerCase() === address.toLowerCase() && account.networkId === network
       );
+    },
+    updateAccountAssets: async (storeAccount, assets) => {
+      // Find all tokens with a positive balance for given account, and add those tokens to the assets array of the account
+      const assetBalances = await getAllTokensBalancesOfAccount(storeAccount, assets);
+      const positiveAssetBalances = Object.entries(assetBalances).filter(
+        ([_, value]) => !value.isZero()
+      );
+
+      const existingAccount = this.state.accounts.find(x => x.uuid === storeAccount.uuid);
+
+      if (existingAccount) {
+        const newAssets: AssetBalanceObject[] = positiveAssetBalances.reduce(
+          (tempAssets: AssetBalanceObject[], [contractAddress, balance]: [string, BigNumber]) => {
+            const tempAsset = assets.find(x => x.contractAddress === contractAddress);
+            if (tempAsset) {
+              tempAssets.push({
+                uuid: tempAsset.uuid,
+                balance: balance.toString(10),
+                mtime: Date.now()
+              });
+            }
+            return tempAssets;
+          },
+          []
+        );
+
+        existingAccount.assets = unionBy(newAssets, existingAccount.assets, 'uuid');
+        this.state.updateAccount(existingAccount.uuid, existingAccount);
+      }
     }
   };
 

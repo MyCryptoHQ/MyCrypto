@@ -1,7 +1,7 @@
 // Application styles must come first in order, to allow for overrides
 import 'font-awesome/scss/font-awesome.scss';
 import 'sass/styles.scss';
-import 'idempotent-babel-polyfill';
+import '@babel/polyfill';
 
 import 'whatwg-fetch'; // @TODO: Investigate utility of dependency
 import 'what-input'; // @TODO: Investigate utility of dependency

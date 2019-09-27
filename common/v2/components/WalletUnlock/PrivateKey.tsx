@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 
 import translate, { translateRaw } from 'translations';
-import { isValidEncryptedPrivKey, isValidPrivKey, stripHexPrefix } from 'v2/services/EthService';
 import { TogglablePassword } from 'components';
 import { Input } from 'components/ui';
+
+import { WalletId } from 'v2/types';
+import { isValidEncryptedPrivKey, isValidPrivKey, stripHexPrefix } from 'v2/services/EthService';
+import { WalletFactory } from 'v2/services/WalletService';
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { unlockPrivateKey } from 'v2/services/WalletService';
 import './PrivateKey.scss';
 
 export interface PrivateKeyValue {
@@ -49,6 +51,7 @@ interface Props {
   onUnlock(param: any): void;
 }
 
+const WalletService = WalletFactory(WalletId.PRIVATE_KEY);
 export class PrivateKeyDecrypt extends PureComponent<Props> {
   public state: PrivateKeyValue = {
     key: '',
@@ -145,7 +148,10 @@ export class PrivateKeyDecrypt extends PureComponent<Props> {
   private unlock = async (e: React.SyntheticEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    const wallet = await unlockPrivateKey({ key: this.state.key, password: this.state.password });
+    const wallet = await WalletService.init({
+      key: this.state.key,
+      password: this.state.password
+    });
     this.props.onUnlock(wallet);
   };
 }

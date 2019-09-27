@@ -1,4 +1,4 @@
-.SignTransactionTrezor-title {
+.SignTransactionHardware-title {
   height: 78px;
   font-family: Lato;
   font-size: 32px;
@@ -7,45 +7,45 @@
   margin-top: 40px;
 }
 
-.SignTransactionTrezor-instructions {
+.SignTransactionHardware-instructions {
   padding-top: 2em;
   font-size: 18px;
   line-height: 1.5;
   text-align: center;
 }
 
-.SignTransactionTrezor-without-pass {
+.SignTransactionHardware-without-pass {
   margin-top: 5em;
 }
 
-.SignTransactionTrezor-img {
+.SignTransactionHardware-img {
   display: flex;
   justify-content: center;
-  margin: 2em;
+  margin: 3em;
 }
 
-.SignTransactionTrezor-description {
+.SignTransactionLegder-description {
   font-size: 18px;
   line-height: 1.5;
   text-align: center;
   margin-bottom: 1em;
 }
 
-.SignTransactionTrezor-footer {
+.SignTransactionHardware-footer {
   width: 100%;
 }
 
-.SignTransactionTrezorr-button {
+.SignTransactionHardware-button {
   width: 100%;
 }
 
-.SignTransactionTrezor-help {
+.SignTransactionHardware-help {
   margin-top: 1em;
   text-align: center;
   font-size: 16px;
 }
 
-.SignTransactionTrezor-referal {
+.SignTransactionHardware-referal {
   text-align: center;
   font-size: 16px;
 }

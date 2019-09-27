@@ -7,8 +7,8 @@ import { NetworkId, WalletId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
 
 interface Props {
-  network: string;
-  accountType: WalletId;
+  network: string | undefined;
+  accountType?: WalletId;
   onChange(network: NetworkId): void;
 }
 
