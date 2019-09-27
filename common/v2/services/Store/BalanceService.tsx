@@ -57,7 +57,9 @@ const getAccountAssetsBalancesWithEthScan = async (
   return Promise.all([
     scanner.getEtherBalances([account.address]),
     scanner.getTokensBalance(account.address, list)
-  ]).then(addBalancesToAccount(account));
+  ])
+    .then(addBalancesToAccount(account))
+    .catch(_ => account);
 };
 
 // Return an object containing the balance of the different tokens
