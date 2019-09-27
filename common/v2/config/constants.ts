@@ -11,3 +11,5 @@ export const TOKEN_INFO_URL = 'https://api.mycryptoapi.com/tokens';
 export const DEFAULT_NETWORK_FOR_FALLBACK = 'ropsten';
 
 export const DEFAULT_NETWORK: NetworkId = 'Ethereum';
+
+export const DEFAULT_ASSET_DECIMAL = 18;

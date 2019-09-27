@@ -28,6 +28,7 @@ import {
   inputNonceToHex,
   inputGasLimitToHex
 } from 'v2/services/EthService';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 import { ITxObject } from './types';
 
@@ -73,7 +74,7 @@ export function fromTxReceiptObj(txReceipt: ITxReceipt): ITxReceipt | undefined 
       amount: contractAsset
         ? fromTokenBase(
             ERC20.transfer.decodeInput(txReceipt.data)._value,
-            contractAsset.decimal || 18
+            contractAsset.decimal || DEFAULT_ASSET_DECIMAL
           )
         : fromWei(Wei(hexWeiToString(txReceipt.value._hex)), 'ether').toString(),
       to: contractAsset ? ERC20.transfer.decodeInput(txReceipt.data)._to : txReceipt.to,
