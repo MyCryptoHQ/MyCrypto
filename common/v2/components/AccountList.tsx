@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, CollapsibleTable, Copyable, Network, Identicon } from '@mycrypto/ui';
+import { Button, Copyable, Network, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
+import { CollapsibleTable } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
@@ -18,7 +19,7 @@ import {
 import { DashboardPanel } from './DashboardPanel';
 import './AccountList.scss';
 import { RatesContext } from 'v2/services';
-import { Currency } from '.';
+import { default as Currency } from './Currency';
 
 const Label = styled.span`
   display: flex;
@@ -26,6 +27,14 @@ const Label = styled.span`
   p {
     margin-right: 27px;
   }
+`;
+
+const CurrencyContainer = styled(Currency)`
+  float: right;
+`;
+
+const HeaderAlignment = styled.div`
+  text-align: ${(props: { align?: string }) => props.align || 'inherit'};
 `;
 
 interface IFavoriteProps {
@@ -118,7 +127,9 @@ function buildAccountTable(
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
     translateRaw('ACCOUNT_LIST_NETWORK'),
-    translateRaw('ACCOUNT_LIST_VALUE')
+    <HeaderAlignment key={'ACCOUNT_LIST_VALUE'} align="center">
+      {translateRaw('ACCOUNT_LIST_VALUE')}
+    </HeaderAlignment>
   ];
 
   return {
@@ -136,7 +147,7 @@ function buildAccountTable(
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
-        <Currency
+        <CurrencyContainer
           key={index}
           amount={total.toString()}
           symbol={Fiats[settings.fiatCurrency].symbol}

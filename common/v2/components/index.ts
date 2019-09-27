@@ -37,3 +37,4 @@ export { default as CodeBlock } from './CodeBlock';
 export { default as WalletList } from './WalletList';
 export * from './WalletUnlock';
 export { default as TabsNav } from './TabsNav';
+export { default as CollapsibleTable } from './CollapsibleTable';
