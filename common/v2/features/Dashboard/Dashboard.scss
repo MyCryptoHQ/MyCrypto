@@ -52,14 +52,15 @@
   display: block;
   background: #e8eaed;
   font-weight: 300;
-
+  width: 100%;
   &-top {
     display: flex;
     align-items: flex-start;
 
     &-left {
       flex: 1;
-      min-width: 220px;
+      min-width: 287px;
+      max-width: 400px;
       margin-right: 21px;
 
       &-heading {
@@ -70,7 +71,7 @@
     }
     &-right {
       flex: 2;
-      min-width: 781px;
+      min-width: 500px;
       > div {
         margin-bottom: 18px;
       }
