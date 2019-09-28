@@ -62,11 +62,7 @@ const ContentPanelTop = styled.div`
   justify-content: ${(props: ContentPanelTopProps) =>
     props.stepperOnly ? 'flex-end' : 'space-between'};
   margin-bottom: 10px;
-  padding: 0 30px;
-
-  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
-    padding: 0;
-  }
+  padding: 0;
 `;
 
 interface Props {
