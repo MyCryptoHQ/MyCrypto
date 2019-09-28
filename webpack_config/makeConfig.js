@@ -26,7 +26,6 @@ const DEFAULT_OPTIONS = {
 module.exports = function(opts = {}) {
   const options = Object.assign({}, DEFAULT_OPTIONS, opts);
   const isDownloadable = options.isHTMLBuild || options.isElectronBuild;
-  const commitHash = process.env.npm_package_gitHead;
 
   // ====================
   // ====== Entry =======
@@ -294,7 +293,7 @@ module.exports = function(opts = {}) {
   // ====================
   const output = {
     path: path.resolve(config.path.output, options.outputDir),
-    filename: options.isProduction ? `[name].${commitHash}.js` : '[name].js',
+    filename: options.isProduction ? '[name].[hash].js' : '[name].js',
     publicPath: isDownloadable && options.isProduction ? './' : '/',
     crossOriginLoading: 'anonymous',
     // Fix workers & HMR https://github.com/webpack/webpack/issues/6642
