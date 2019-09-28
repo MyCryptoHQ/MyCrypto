@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
-import { COLORS } from 'v2/theme';
+import { BREAK_POINTS, COLORS } from 'v2/theme';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { KNOWLEDGE_BASE_URL, ROUTE_PATHS } from 'v2/config';
@@ -29,7 +29,7 @@ const Navbar = styled.nav`
   width: 100%;
   background: #163150;
 
-  @media (min-width: 850px) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     position: initial;
   }
 `;
@@ -52,7 +52,7 @@ const HeaderTop = styled.div`
   padding: 0 40px;
   border-bottom: 1px solid #3e546d;
 
-  @media (min-width: 850px) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     padding: 0;
   }
 `;
@@ -62,7 +62,7 @@ const HeaderBottom = styled.div`
   height: 77px;
   border-bottom: 1px solid #3e546d;
 
-  @media (min-width: 850px) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,7 +94,7 @@ const HeaderBottomLinks = styled.ul`
     }
   }
 
-  @media (min-width: 850px) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin: 0;
     padding: 0;
     color: #ffffff;
@@ -127,7 +127,7 @@ const HeaderBottomLinks = styled.ul`
 const HeaderTopLeft = styled.div`
   display: none;
 
-  @media (min-width: 850px) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin: 0;
     padding: 0;
     color: #ffffff;
@@ -208,7 +208,7 @@ const MobileTopLeft = styled.div`
     color: #ffffff;
   }
 
-  @media (min-width: 850px) {
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     display: none;
   }
   &:hover {
@@ -404,13 +404,8 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
           </MobileTopLeft>
           {/* Desktop Left */}
           <HeaderTopLeft>
-            <li onClick={this.openHelpSupportPage}>
-              {translate('NEW_HEADER_TEXT_1')}
-              <IconWrapper subItems={true} icon="navDownCaret" />
-            </li>
-            <li>
-              Latest News <IconWrapper subItems={true} icon="navDownCaret" />
-            </li>
+            <li onClick={this.openHelpSupportPage}>{translate('NEW_HEADER_TEXT_1')}</li>
+            <li>Latest News</li>
           </HeaderTopLeft>
           <div>
             <Link to={ROUTE_PATHS.ROOT.path}>
@@ -427,9 +422,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
             <Unlock onClick={onUnlockClick}>
               <IconWrapper icon="unlock" /> Unlock
             </Unlock>
-            <li onClick={onLanguageClick}>
-              {languages[languageSelection]} <IconWrapper subItems={true} icon="navDownCaret" />
-            </li>
+            <li onClick={onLanguageClick}>{languages[languageSelection]}</li>
           </HeaderTopLeft>
         </HeaderTop>
         <HeaderBottom>
@@ -445,7 +438,7 @@ export class Header extends Component<Props & RouteComponentProps<{}>, State> {
               return (
                 <li key={title} {...liProps}>
                   {icon && <PrefixIcon {...icon} />} {title}{' '}
-                  {!icon && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
+                  {!icon && subItems && <IconWrapper subItems={!subItems} icon="navDownCaret" />}
                   {subItems && visibleDropdowns[title] && (
                     <ul>
                       {subItems.map(({ to: innerTo, title: innerTitle }: LinkElement) => (
