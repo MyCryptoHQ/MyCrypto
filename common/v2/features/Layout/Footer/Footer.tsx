@@ -17,7 +17,7 @@ const VerticalRule = () => (
 
 const MobileFooter = () => (
   <section className="mobile-only">
-    <section className="NewFooter">
+    <section className="Footer">
       <LogoBox />
       <HorizontalRule />
       <DonateAndSubscribe />
@@ -30,7 +30,7 @@ const MobileFooter = () => (
 
 const TabletFooter = () => (
   <section className="tablet-only">
-    <section className="NewFooter">
+    <section className="Footer">
       <LogoBox />
       <VerticalRule />
       <section style={{ display: 'flex', flexDirection: 'column', flex: 5 }}>
@@ -44,7 +44,7 @@ const TabletFooter = () => (
 const DesktopFooter = () => (
   <section className="desktop-only">
     <section className="NewFooter-wrapper">
-      <section className="NewFooter">
+      <section className="Footer">
         <LogoBox />
         <VerticalRule />
         <Linkset />

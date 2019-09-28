@@ -34,3 +34,4 @@ export const BREAK_POINTS = {
 };
 
 export const MAX_CONTENT_WIDTH = '1200px';
+export const MIN_CONTENT_PADDING = '15px';

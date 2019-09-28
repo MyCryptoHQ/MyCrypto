@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import { UnlockScreen, SelectLanguage } from 'v2/features/Drawer/screens';
 import { links } from './constants';
-import { BREAK_POINTS, COLORS } from 'v2/theme';
+import { BREAK_POINTS, COLORS, MIN_CONTENT_PADDING } from 'v2/theme';
 import { translate } from 'translations';
 import { AnalyticsService, ANALYTICS_CATEGORIES } from 'v2/services';
 import { KNOWLEDGE_BASE_URL, ROUTE_PATHS } from 'v2/config';
@@ -49,7 +49,7 @@ const HeaderTop = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 77px;
-  padding: 0 40px;
+  padding: 0 ${MIN_CONTENT_PADDING};
   border-bottom: 1px solid #3e546d;
 
   @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
@@ -171,7 +171,7 @@ const MenuLinks = styled.ul`
     height: 100%;
     margin: 0;
     font-weight: 500;
-    padding: 20px 35px;
+    padding: 20px ${MIN_CONTENT_PADDING};
 
     ul {
       list-style-type: none;
@@ -192,7 +192,7 @@ const MenuLinks = styled.ul`
 `;
 
 const MenuMid = styled.div`
-  padding: 35px;
+  padding: 35px ${MIN_CONTENT_PADDING};
   border-bottom: 1px solid #3e546d;
   color: #ffffff;
   text-transform: uppercase;
