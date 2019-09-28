@@ -14,6 +14,14 @@ interface Props {
   onChange(network: NetworkId): void;
 }
 
+const DropdownContainer = styled('div')`
+  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
+    transform: translateY(0%);
+    padding: 16px 15px 16px 15px;
+    position: inherit;
+  }
+`;
+
 const SContainer = styled('div')`
   display: flex;
   flex-direction: row;
@@ -55,17 +63,17 @@ function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
   return (
     <div>
       <label>{translate('SELECT_NETWORK_LABEL')}</label>
-      <Dropdown
-        value={{ label: network }}
-        options={validNetworks.sort().map(n => ({ value: n, label: n }))}
-        placeholder={DEFAULT_NETWORK}
-        searchable={true}
-        onChange={value => onChange(value.label as NetworkId)}
-        optionComponent={NetworkOption}
-        valueComponent={({ value: option }) => (
-          <NetworkOption option={option} />
-        )}
-      />
+      <DropdownContainer>
+        <Dropdown
+          value={{ label: network }}
+          options={validNetworks.sort().map(n => ({ value: n, label: n }))}
+          placeholder={DEFAULT_NETWORK}
+          searchable={true}
+          onChange={value => onChange(value.label as NetworkId)}
+          optionComponent={NetworkOption}
+          valueComponent={({ value: option }) => <NetworkOption option={option} />}
+        />
+      </DropdownContainer>
     </div>
   );
 }
