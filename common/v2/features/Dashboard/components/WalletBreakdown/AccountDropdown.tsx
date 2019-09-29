@@ -113,7 +113,13 @@ const AccountDropdown = ({ accounts = [], selected = [], onSubmit }: AccountDrop
 
   // Only update our draft if the prop changed.
   // https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects
-  useEffect(() => setDraftSelected(selected), [selected]);
+  useEffect(() => {
+    // Filters out dashboard account uuids that have been deleted.
+    const filteredSelected = selected.filter(selectedAccountUUID => {
+      return accounts.find(account => account.uuid === selectedAccountUUID) ? true : false;
+    });
+    setDraftSelected(filteredSelected);
+  }, [selected, accounts]);
 
   const allVisible = accounts.length !== 0 && accounts.length === draftSelected.length;
 
