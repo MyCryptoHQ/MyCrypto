@@ -173,7 +173,7 @@ export default function TransactionReceipt({ txReceipt, txConfig }: IStepCompone
       <Link to="/dashboard">
         <Button className="TransactionReceipt-back">Back to Dashboard</Button>
       </Link>
-      <Link to="/send">
+      <Link to="/send" onClick={() => window.location.reload()}>
         <Button secondary={true} className="TransactionReceipt-another">
           Send Another Transaction
         </Button>

@@ -10,6 +10,7 @@ import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 import './TransactionDetailsDisplay.scss';
 import { ITxObject } from '../../types';
+import { weiToFloat } from 'v2/utils';
 
 interface Props {
   baseAsset: Asset;
@@ -44,7 +45,7 @@ function TransactionDetailsDisplay({
     return accountAsset.uuid === asset.uuid;
   });
   const userAssetBalance = userAssetToSend
-    ? formatEther(bigNumberify(userAssetToSend.balance))
+    ? weiToFloat(bigNumberify(userAssetToSend.balance), asset.decimal)
     : 'Unknown Balance';
 
   return (

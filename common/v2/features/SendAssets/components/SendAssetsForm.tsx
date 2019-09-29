@@ -167,11 +167,10 @@ export default function SendAssetsForm({
                 !isValidPositiveNumber(values.amount)
               )
             ) {
-              const isERC20 = values.asset.type === 'erc20';
               setIsEstimatingGasLimit(true);
               const finalTx = processFormForEstimateGas(values);
               const gas = await getGasEstimate(values.network, finalTx);
-              setFieldValue('gasLimitField', isERC20 ? hexToNumber(gas) * 1.1 : hexToNumber(gas));
+              setFieldValue('gasLimitField', hexToNumber(gas));
               setFieldTouched('amount');
               setIsEstimatingGasLimit(false);
             } else {
