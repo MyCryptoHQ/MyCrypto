@@ -7,6 +7,7 @@ import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 
 import { ITxObject, ISignedTx } from '../../types';
 import './Hardware.scss';
+import { WalletName } from 'v2/types/walletId';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -100,7 +101,7 @@ export default function HardwareSignTransaction({
   return (
     <div className="SignTransaction-panel">
       <div className="SignTransactionHardware-title">
-        Sign the Transaction with your {senderAccount.wallet} Wallet
+        {`Sign the Transaction with your ${WalletName[senderAccount.wallet]} Wallet`}
       </div>
       <div className="SignTransactionHardware-instructions">{signerDescription}</div>
       <div className="SignTransactionHardware-content">

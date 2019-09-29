@@ -9,3 +9,15 @@ export enum WalletId {
   MNEMONIC_PHRASE = 'MNEMONIC_PHRASE',
   VIEW_ONLY = 'VIEW_ONLY'
 }
+
+export enum WalletName {
+  METAMASK = 'Metamask',
+  LEDGER_NANO_S = 'Ledger',
+  TREZOR = 'Trezor',
+  SAFE_T_MINI = 'Safe T Mini',
+  PARITY_SIGNER = 'Parity Signer',
+  KEYSTORE_FILE = 'Keystore File',
+  PRIVATE_KEY = 'Private Key',
+  MNEMONIC_PHRASE = 'Mnemonic Phrase',
+  VIEW_ONLY = 'View Only'
+}
