@@ -37,7 +37,7 @@ import {
 } from 'v2/services/EthService';
 import { fetchGasPriceEstimates, getGasEstimate } from 'v2/services/ApiService';
 
-import TransactionFeeDisplay from './displays/TransactionFeeDisplay';
+import TransactionFeeDisplay from 'v2/components/TransactionFlow/displays/TransactionFeeDisplay';
 import {
   AccountDropdown,
   AssetDropdown,

@@ -15,7 +15,7 @@ import './TransactionReceipt.scss';
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
-import { fromTxReceiptObj } from '../helpers';
+import { fromTxReceiptObj } from './helpers';
 import { translateRaw } from 'translations';
 
 export enum ITxStatus {

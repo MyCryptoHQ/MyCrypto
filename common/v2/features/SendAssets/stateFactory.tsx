@@ -27,7 +27,8 @@ import { ProviderHandler } from 'v2/services/EthService';
 
 import { TStepAction } from './types';
 
-import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
+import { processFormDataToTx, decodeTransaction } from './helpers';
+import { fromTxReceiptObj } from 'v2/components/TransactionFlow/helpers';
 
 const txConfigInitialState = {
   tx: {
