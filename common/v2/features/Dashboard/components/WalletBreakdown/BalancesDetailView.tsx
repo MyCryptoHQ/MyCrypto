@@ -77,7 +77,7 @@ export default function BalancesDetailView({
       return [
         balance.name,
         <RowAlignment key={index} align="right">
-          {`${balance.amount.toFixed(6)} ${balance.ticker}`},
+          {`${balance.amount.toFixed(6)} ${balance.ticker}`}
         </RowAlignment>,
         <RowAlignment key={index} align="right">
           {`${fiat.symbol}${balance.fiatValue.toFixed(2)}`}
