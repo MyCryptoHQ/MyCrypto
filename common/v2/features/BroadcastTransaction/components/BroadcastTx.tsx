@@ -32,9 +32,6 @@ interface Props {
   setSignedTransaction(signedTransaction: string): void;
 }
 
-const getStringifiedTx = (serializedTx: Buffer) =>
-  JSON.stringify(getTransactionFields(makeTransaction(serializedTx)), null, 2);
-
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -84,12 +81,10 @@ const CodeBlockWrapper = styled.div`
 `;
 
 const QRCodeWrapper = styled.div`
-   {
-    max-width: 15rem;
-    margin: 1rem auto;
-    width: 100%;
-    text-align: center;
-  }
+  max-width: 15rem;
+  margin: 1rem auto;
+  width: 100%;
+  text-align: center;
 `;
 
 const IdenticonIcon = styled(Identicon)`
@@ -110,6 +105,9 @@ const StyledLabel = styled.label`
 const NetworkSelectWrapper = styled.div`
   width: 100%;
 `;
+
+const getStringifiedTx = (serializedTx: Buffer) =>
+  JSON.stringify(getTransactionFields(makeTransaction(serializedTx)), null, 2);
 
 class BroadcastTx extends Component<Props> {
   public state: State = {

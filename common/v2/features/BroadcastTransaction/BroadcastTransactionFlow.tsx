@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ReactType } from 'react';
 import EthTx from 'ethereumjs-tx';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ import { translateRaw } from 'translations';
 
 interface TStep {
   title: string;
-  component: any;
+  component: ReactType;
 }
 
 const BroadcastTransactionFlow = (props: RouteComponentProps<{}>) => {
