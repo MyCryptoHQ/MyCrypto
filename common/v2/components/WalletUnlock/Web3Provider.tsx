@@ -6,9 +6,9 @@ import { KNOWLEDGE_BASE_URL as KB_URL } from 'v2/config';
 import { WalletId, FormData } from 'v2/types';
 import { InlineErrorMsg } from 'v2/components';
 import { WalletFactory } from 'v2/services/WalletService';
+import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 import './Web3Provider.scss';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
-import { FormDataActionType as ActionType } from 'v2/features/AddAccount/types';
 
 interface Props {
   formDispatch: any;
