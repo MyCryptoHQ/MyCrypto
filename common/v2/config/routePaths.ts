@@ -92,7 +92,7 @@ const PATHS: IRoutePath[] = [
   },
   {
     name: 'SWAP',
-    title: 'Buy and Exchange | Select Exchange',
+    title: 'Buy and Exchange',
     path: '/swap'
   },
   {

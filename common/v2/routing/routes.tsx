@@ -19,7 +19,7 @@ import {
   ScreenLockForgotPassword,
   SendAssets,
   ReceiveAssets,
-  BuyAndExchange,
+  SwapAssetsFlow,
   ShapeShiftAuthorization,
   ZeroEx,
   Home,
@@ -149,7 +149,7 @@ export const APP_ROUTES: IAppRoute[] = [
     title: ROUTE_PATHS.SWAP.title,
     path: ROUTE_PATHS.SWAP.path,
     exact: true,
-    component: BuyAndExchange
+    component: SwapAssetsFlow
   },
   {
     name: ROUTE_PATHS.SWAP_SHAPESHIFT.name,
