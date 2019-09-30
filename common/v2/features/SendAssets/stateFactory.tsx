@@ -23,6 +23,7 @@ import {
   getBaseAssetByNetwork,
   AccountContext
 } from 'v2/services';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { ProviderHandler } from 'v2/services/EthService';
 
 import { TStepAction } from './types';
@@ -128,7 +129,7 @@ const TxConfigFactory: TUseStateReducerFactory<State> = ({ state, setState }) =>
         amount: contractAsset
           ? fromTokenBase(
               toWei(decodeTransfer(decodedTx.data)._value, 0),
-              contractAsset.decimal || 18
+              contractAsset.decimal || DEFAULT_ASSET_DECIMAL
             )
           : decodedTx.value,
         network: networkDetected || prevState.txConfig.network,

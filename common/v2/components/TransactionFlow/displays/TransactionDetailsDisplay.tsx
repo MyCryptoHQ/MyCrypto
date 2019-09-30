@@ -6,6 +6,7 @@ import { Asset, ExtendedAccount, Network as INetwork, ITxObject } from 'v2/types
 import { baseToConvertedUnit, totalTxFeeToString } from 'v2/services/EthService';
 import { getBalanceFromAccount } from 'v2/services/Store';
 import { CopyableCodeBlock } from 'v2/components';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 import './TransactionDetailsDisplay.scss';
 
@@ -90,7 +91,7 @@ function TransactionDetailsDisplay({
                 <div className="TransactionDetails-row-column">Gas Price:</div>
                 <div className="TransactionDetails-row-column">{`${baseToConvertedUnit(
                   gasPrice,
-                  18
+                  DEFAULT_ASSET_DECIMAL
                 )} ${baseAsset.ticker} (${baseToConvertedUnit(gasPrice, 9)} gwei)`}</div>
               </div>
             )}

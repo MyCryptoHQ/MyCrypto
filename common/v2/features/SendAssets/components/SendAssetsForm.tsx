@@ -61,7 +61,8 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND
+  GAS_PRICE_GWEI_UPPER_BOUND,
+  DEFAULT_ASSET_DECIMAL
 } from 'v2/config';
 
 export const AdvancedOptionsButton = styled(Button)`
@@ -216,10 +217,10 @@ export default function SendAssetsForm({
               const amount = isERC20 // subtract gas cost from balance when sending a base asset
                 ? (balance as BigNumber)
                 : baseToConvertedUnit(
-                    new BN(convertedToBaseUnit(balance.toString(), 18))
+                    new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
                       .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
                       .toString(),
-                    18
+                    DEFAULT_ASSET_DECIMAL
                   );
               setFieldValue('amount', amount.toString());
               handleGasEstimate();

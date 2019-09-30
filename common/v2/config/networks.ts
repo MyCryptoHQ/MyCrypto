@@ -2,7 +2,7 @@
 import { TAB } from 'components/Header/components/constants';
 
 import { WalletId, NetworkId, NetworkLegacy } from 'v2/types';
-import { makeExplorer } from 'v2/services/EthService';
+import { makeExplorer } from 'v2/services/EthService/utils/makeExplorer';
 import { GAS_PRICE_TESTNET, GAS_PRICE_DEFAULT } from './gasPrice';
 import { ethPlorer, ETHTokenExplorer } from './data';
 import { DPaths } from './dpaths';

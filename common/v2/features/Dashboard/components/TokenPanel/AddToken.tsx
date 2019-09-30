@@ -7,7 +7,7 @@ import { InputField, NetworkSelectDropdown, DashboardPanel } from 'v2/components
 import { translateRaw } from 'translations';
 import { getNetworkByName, AssetContext } from 'v2/services/Store';
 import { ExtendedAsset, NetworkId } from 'v2/types';
-import { DEFAULT_NETWORK } from 'v2/config';
+import { DEFAULT_NETWORK, DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { isValidAddress } from 'v2/services';
 
 import backArrowIcon from 'common/assets/images/icn-back.svg';
@@ -139,7 +139,7 @@ export function AddToken(props: Props) {
       />
       <InputField
         label={translateRaw('TOKEN_DEC')}
-        placeholder={'18'}
+        placeholder={`${DEFAULT_ASSET_DECIMAL}`}
         onChange={e => setDecimals(e.target.value)}
         value={decimals}
         inputError={decimalsError}

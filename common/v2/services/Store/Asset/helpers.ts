@@ -1,6 +1,7 @@
 import { getCache } from '../LocalCache';
 import { Asset, Network, StoreAsset } from 'v2/types';
 import { generateUUID } from 'v2/utils';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 
 export const getAllAssets = () => {
   return Object.values(getCache().assets);
@@ -20,7 +21,7 @@ export const getNewDefaultAssetTemplateByNetwork = (network: Network): Asset => 
       networkId: network.id,
       type: 'base',
       ticker: network.id,
-      decimal: 18
+      decimal: DEFAULT_ASSET_DECIMAL
     };
   } else {
     return {
