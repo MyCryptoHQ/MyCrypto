@@ -4,10 +4,9 @@ import { ExtendedAccount as IExtendedAccount, ITxReceipt } from 'v2/types';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
-
+import { WALLETS_CONFIG } from 'v2/config';
 import { ITxObject, ISignedTx } from '../../types';
 import './Hardware.scss';
-import { WalletName } from 'v2/types/walletId';
 
 export interface IDestructuredDPath {
   dpath: string;
@@ -101,7 +100,7 @@ export default function HardwareSignTransaction({
   return (
     <div className="SignTransaction-panel">
       <div className="SignTransactionHardware-title">
-        {`Sign the Transaction with your ${WalletName[senderAccount.wallet]} Wallet`}
+        {`Sign the Transaction with your ${WALLETS_CONFIG[senderAccount.wallet].name} Wallet`}
       </div>
       <div className="SignTransactionHardware-instructions">{signerDescription}</div>
       <div className="SignTransactionHardware-content">
