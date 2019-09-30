@@ -10,8 +10,10 @@ export const getLabelByAddress = (address: string): AddressBook | undefined => {
   return addressLabels.find(label => address.toLowerCase() === label.address.toLowerCase());
 };
 
-export const getLabelByAccount = (account: Account): AddressBook | undefined => {
-  const addressLabels: AddressBook[] = getAllAddressLabels();
+export const getLabelByAccount = (
+  account: Account,
+  addressLabels: AddressBook[]
+): AddressBook | undefined => {
   return addressLabels.find(
     label =>
       account.address.toLowerCase() === label.address.toLowerCase() &&

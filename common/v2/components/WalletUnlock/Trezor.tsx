@@ -1,15 +1,17 @@
+import React, { PureComponent } from 'react';
+import { Button } from '@mycrypto/ui';
+
+import translate, { translateRaw } from 'translations';
 import ConnectTrezor from 'common/assets/images/icn-connect-trezor-new.svg';
 import { Spinner } from 'components/ui';
+
+import { WalletId, FormData } from 'v2/types';
 import { NetworkContext } from 'v2/services/Store';
 import { getDPath, getDPaths } from 'v2/services';
-import { SecureWalletName, FormData } from 'v2/types';
-import { TrezorWallet } from 'libs/wallet';
-import React, { PureComponent } from 'react';
-import translate, { translateRaw } from 'translations';
+import { WalletFactory, ChainCodeResponse } from 'v2/services/WalletService';
 import DeterministicWallets from './DeterministicWallets';
 import './Trezor.scss';
 import UnsupportedNetwork from './UnsupportedNetwork';
-import { Button } from '@mycrypto/ui';
 
 //todo: conflicts with comment in walletDecrypt -> onUnlock method
 interface OwnProps {
@@ -26,18 +28,16 @@ interface State {
   isLoading: boolean;
 }
 
-type Props = OwnProps;
+const WalletService = WalletFactory(WalletId.TREZOR);
 
-class TrezorDecryptClass extends PureComponent<Props, State> {
+class TrezorDecryptClass extends PureComponent<OwnProps, State> {
   public static contextType = NetworkContext;
   public state: State = {
     publicKey: '',
     chainCode: '',
     dPath:
-      getDPath(
-        this.context.getNetworkByName(this.props.formData.network),
-        SecureWalletName.TREZOR
-      ) || getDPaths(this.context.networks, SecureWalletName.TREZOR)[0],
+      getDPath(this.context.getNetworkByName(this.props.formData.network), WalletId.TREZOR) ||
+      getDPaths(this.context.networks, WalletId.TREZOR)[0],
     error: null,
     isLoading: false
   };
@@ -59,7 +59,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
             publicKey={publicKey}
             chainCode={chainCode}
             dPath={dPath}
-            dPaths={getDPaths(networks, SecureWalletName.TREZOR)}
+            dPaths={getDPaths(networks, WalletId.TREZOR)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -117,8 +117,8 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
       error: null
     });
 
-    TrezorWallet.getChainCode(dPath.value)
-      .then(res => {
+    WalletService.getChainCode(dPath.value)
+      .then((res: ChainCodeResponse) => {
         this.setState({
           dPath,
           publicKey: res.publicKey,
@@ -126,7 +126,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
           isLoading: false
         });
       })
-      .catch(err => {
+      .catch((err: any) => {
         this.setState({
           error: err.message,
           isLoading: false
@@ -139,7 +139,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new TrezorWallet(address, this.state.dPath.value, index));
+    this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
     this.reset();
   };
 
@@ -153,9 +153,7 @@ class TrezorDecryptClass extends PureComponent<Props, State> {
     this.setState({
       publicKey: '',
       chainCode: '',
-      dPath:
-        getDPath(network, SecureWalletName.TREZOR) ||
-        getDPaths(networks, SecureWalletName.TREZOR)[0]
+      dPath: getDPath(network, WalletId.TREZOR) || getDPaths(networks, WalletId.TREZOR)[0]
     });
   }
 }

@@ -1,13 +1,13 @@
-import { KeystoreUnlockParams } from './types';
+import { translateRaw } from 'translations';
+import { signWrapper } from '../helpers';
 import {
   determineKeystoreType,
-  KeystoreTypes,
-  signWrapper,
   getKeystoreWallet,
   getUtcWallet,
-  IWallet
-} from 'v2/services/EthService';
-import { translateRaw } from 'translations';
+  KeystoreTypes
+} from '../non-deterministic';
+import { IWallet } from '../IWallet';
+import { KeystoreUnlockParams } from './types';
 
 export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
   const { file, password } = payload;
@@ -23,11 +23,9 @@ export const unlockKeystore = async (payload: KeystoreUnlockParams) => {
       password === '' &&
       e.message === 'Private key does not satisfy the curve requirements (ie. it is invalid)'
     ) {
-      // tslint:disable-next-line:no-console
-      console.log('Error: ' + 'Please Enter a password.');
+      console.error('Error: ' + 'Please Enter a password.');
     } else {
-      // tslint:disable-next-line:no-console
-      console.log('Error: ' + translateRaw('ERROR_6'));
+      console.error('Error: ' + translateRaw('ERROR_6'));
     }
     return;
   }

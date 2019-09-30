@@ -40,7 +40,10 @@ module.exports = {
   // File resolution
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.css', '.json', '.scss'],
-    modules: [paths.src, paths.modules, paths.root]
+    modules: [paths.src, paths.modules, paths.root],
+    alias: {
+      modernizr$: path.resolve(__dirname, '../.modernizrrc.js')
+    }
   },
 
   // Vendor modules

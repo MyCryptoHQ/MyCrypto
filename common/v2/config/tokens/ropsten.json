@@ -1,19 +1,19 @@
 [
     {
         "address": "0xad6d458402f60fd3bd25163575031acdce07538d",
-        "symbol": "DAI",
+        "symbol": "RopstenDAI",
         "decimal": 18,
         "name": "DAI"
     },
     {
         "address": "0xdb0040451f373949a4be60dcd7b6b8d6e42658b6",
-        "symbol": "BAT",
+        "symbol": "RopstenBAT",
         "decimal": 18,
         "name": "Basic Attention Token"
     },
     {
         "address": "0x4BFBa4a8F28755Cb2061c413459EE562c6B9c51b",
-        "symbol": "OMG",
+        "symbol": "RopstenOMG",
         "decimal": 18,
         "name": "OmiseGO"
     }

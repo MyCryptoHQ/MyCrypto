@@ -3,7 +3,6 @@ import {
   Fiats,
   ContractsData,
   AssetsData,
-  WALLETS_CONFIG,
   NODES_CONFIG,
   NETWORKS_CONFIG,
   testAccounts,
@@ -18,8 +17,7 @@ import {
   Network,
   NetworkLegacy,
   NetworkId,
-  Wallet,
-  InsecureWalletName
+  WalletId
 } from 'v2/types';
 import { hardRefreshCache, getCacheRaw, setCache } from './LocalCache';
 import { CACHE_KEY } from './constants';
@@ -38,7 +36,6 @@ export const initializeCache = () => {
     initFiatCurrencies();
     initNetworks();
     initNodeOptions();
-    initWallets();
     initSettings();
     initContracts();
     initAssets();
@@ -52,13 +49,6 @@ export const initializeCache = () => {
 export const initSettings = () => {
   const newStorage = getCacheRaw();
   newStorage.settings = testSettings;
-  setCache(newStorage);
-};
-
-export const initWallets = () => {
-  const newStorage = getCacheRaw();
-  const wallets: Record<string, Wallet> = WALLETS_CONFIG;
-  newStorage.wallets = wallets;
   setCache(newStorage);
 };
 
@@ -106,7 +96,7 @@ export const initNetworks = () => {
       color: network.color,
       dPaths: {
         ...network.dPaths,
-        default: network.dPaths[InsecureWalletName.MNEMONIC_PHRASE]
+        default: network.dPaths[WalletId.MNEMONIC_PHRASE]
       },
       gasPriceSettings: network.gasPriceSettings,
       shouldEstimateGasPrice: network.shouldEstimateGasPrice
@@ -155,7 +145,7 @@ export const initContracts = () => {
 
 export const initFiatCurrencies = () => {
   const newStorage = getCacheRaw();
-  Fiats.map(en => {
+  Object.values(Fiats).map(en => {
     const uuid = generateUUID();
     newStorage.assets[uuid] = {
       uuid,
@@ -177,14 +167,31 @@ export const initTestAccounts = () => {
 
   newAccounts.map(accountToAdd => {
     const uuid = generateUUID();
+    // Map test UUID to actual UUID generated previously
+    Object.values(accountToAdd.assets).forEach(asset => {
+      const assetDefinition = newAssets[asset.uuid];
+      if (assetDefinition.type === 'base') {
+        const match = Object.values(newStorage.networks).find(
+          network => network.id === assetDefinition.networkId
+        );
+        // @ts-ignore readonly
+        asset.uuid = match ? match.baseAsset : asset.uuid;
+      } else {
+        const match = Object.values(newStorage.assets).find(
+          a =>
+            a.contractAddress &&
+            assetDefinition.contractAddress &&
+            a.contractAddress.toUpperCase() === assetDefinition.contractAddress.toUpperCase()
+        );
+        // @ts-ignore readonly
+        asset.uuid = match ? match.uuid : asset.uuid;
+      }
+    });
     newStorage.accounts[uuid] = accountToAdd;
     newStorage.settings.dashboardAccounts.push(uuid);
   });
   Object.keys(newLabels).map(labelId => {
     newStorage.addressBook[labelId] = newLabels[labelId];
-  });
-  Object.keys(newAssets).map(assetToAdd => {
-    newStorage.assets[assetToAdd] = newAssets[assetToAdd];
   });
   setCache(newStorage);
 };

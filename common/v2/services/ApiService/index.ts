@@ -3,4 +3,5 @@ export { AnalyticsService, ANALYTICS_CATEGORIES, Params, CvarEntry } from './Ana
 export { subscribeToMailingList } from './emails';
 export { getDefaultEstimates, fetchGasPriceEstimates, getGasEstimate } from './Gas';
 export { GithubService } from './Github';
+export { TokenInfoService } from './TokenInfo';
 export * from './constants';

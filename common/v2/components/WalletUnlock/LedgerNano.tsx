@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
+import { Button } from '@mycrypto/ui';
 
-import { NetworkContext } from 'v2/services/Store';
-import { getDPath, getDPaths } from 'v2/services';
-import { SecureWalletName, FormData } from 'v2/types';
-import translate, { translateRaw } from 'translations';
-import { LedgerWallet } from 'libs/wallet';
 import { Spinner, NewTabLink } from 'components/ui';
+import translate, { translateRaw } from 'translations';
+import { WalletId, FormData } from 'v2/types';
+import { getDPath, getDPaths } from 'v2/services';
+import { NetworkContext } from 'v2/services/Store';
+import { WalletFactory, ChainCodeResponse } from 'v2/services/WalletService';
+
 import UnsupportedNetwork from './UnsupportedNetwork';
 import DeterministicWallets from './DeterministicWallets';
 import './LedgerNano.scss';
-import { Button } from '@mycrypto/ui';
 import ledgerIcon from 'common/assets/images/icn-ledger-nano-large.svg';
 
 interface OwnProps {
@@ -28,6 +29,8 @@ interface State {
 
 type Props = OwnProps;
 
+const WalletService = WalletFactory(WalletId.LEDGER_NANO_S);
+
 class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   public static contextType = NetworkContext;
   public state: State = {
@@ -36,8 +39,8 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
     dPath:
       getDPath(
         this.context.getNetworkByName(this.props.formData.network),
-        SecureWalletName.LEDGER_NANO_S
-      ) || getDPaths(this.context.networks, SecureWalletName.LEDGER_NANO_S)[0],
+        WalletId.LEDGER_NANO_S
+      ) || getDPaths(this.context.networks, WalletId.LEDGER_NANO_S)[0],
     error: null,
     isLoading: false
   };
@@ -70,7 +73,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
             publicKey={publicKey}
             chainCode={chainCode}
             dPath={dPath}
-            dPaths={getDPaths(networks, SecureWalletName.LEDGER_NANO_S)}
+            dPaths={getDPaths(networks, WalletId.LEDGER_NANO_S)}
             onCancel={this.handleCancel}
             onConfirmAddress={this.handleUnlock}
             onPathChange={this.handlePathChange}
@@ -129,15 +132,15 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       error: null
     });
 
-    LedgerWallet.getChainCode(dPath.value)
-      .then(res => {
+    WalletService.getChainCode(dPath.value)
+      .then((res: ChainCodeResponse) => {
         this.setState({
           publicKey: res.publicKey,
           chainCode: res.chainCode,
           isLoading: false
         });
       })
-      .catch(err => {
+      .catch((err: any) => {
         this.setState({
           error: translateRaw(err.message),
           isLoading: false
@@ -150,7 +153,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
   };
 
   private handleUnlock = (address: string, index: number) => {
-    this.props.onUnlock(new LedgerWallet(address, this.state.dPath.value, index));
+    this.props.onUnlock(WalletService.init(address, this.state.dPath.value, index));
     this.reset();
   };
 
@@ -165,8 +168,7 @@ class LedgerNanoSDecryptClass extends PureComponent<Props, State> {
       publicKey: '',
       chainCode: '',
       dPath:
-        getDPath(network, SecureWalletName.LEDGER_NANO_S) ||
-        getDPaths(networks, SecureWalletName.LEDGER_NANO_S)[0]
+        getDPath(network, WalletId.LEDGER_NANO_S) || getDPaths(networks, WalletId.LEDGER_NANO_S)[0]
     });
   }
 }

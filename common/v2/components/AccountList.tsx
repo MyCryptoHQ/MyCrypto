@@ -1,22 +1,24 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, CollapsibleTable, Copyable, Network, Typography, Identicon } from '@mycrypto/ui';
+import { Button, CollapsibleTable, Copyable, Network, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
-import { ROUTE_PATHS } from 'v2/config';
+import { ROUTE_PATHS, Fiats } from 'v2/config';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
-import { ExtendedAccount, AddressBook } from 'v2/types';
+import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
 import {
   AccountContext,
-  SettingsContext,
-  getCurrentsFromContext,
   getLabelByAccount,
-  getBalanceFromAccount
+  StoreContext,
+  SettingsContext,
+  AddressBookContext
 } from 'v2/services/Store';
 import { DashboardPanel } from './DashboardPanel';
 import './AccountList.scss';
+import { RatesContext } from 'v2/services';
+import { Currency } from '.';
 
 const Label = styled.span`
   display: flex;
@@ -69,12 +71,8 @@ interface AccountListProps {
 
 export default function AccountList(props: AccountListProps) {
   const { className, currentsOnly, deletable, favoritable, footerAction, footerActionLink } = props;
-  const { settings } = useContext(SettingsContext);
-  const { accounts, deleteAccount, updateAccount } = useContext(AccountContext);
-  const currentAccounts: ExtendedAccount[] = getCurrentsFromContext(
-    accounts,
-    settings.dashboardAccounts
-  );
+  const { currentAccounts, accounts } = useContext(StoreContext);
+  const { deleteAccount, updateAccount } = useContext(AccountContext);
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;
@@ -93,7 +91,7 @@ export default function AccountList(props: AccountListProps) {
         <CollapsibleTable
           breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
           {...buildAccountTable(
-            currentsOnly ? currentAccounts : accounts,
+            currentsOnly ? currentAccounts() : accounts,
             deleteAccount,
             updateAccount,
             deletable,
@@ -106,12 +104,16 @@ export default function AccountList(props: AccountListProps) {
 }
 
 function buildAccountTable(
-  accounts: ExtendedAccount[],
+  accounts: StoreAccount[],
   deleteAccount: DeleteAccount,
   updateAccount: UpdateAccount,
   deletable?: boolean,
   favoritable?: boolean
 ) {
+  const { totalFiat } = useContext(StoreContext);
+  const { getRate } = useContext(RatesContext);
+  const { settings } = useContext(SettingsContext);
+  const { addressBook } = useContext(AddressBookContext);
   const columns = [
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
@@ -122,7 +124,8 @@ function buildAccountTable(
   return {
     head: deletable ? [...columns, translateRaw('ACCOUNT_LIST_DELETE')] : columns,
     body: accounts.map((account, index) => {
-      const addressCard: AddressBook | undefined = getLabelByAccount(account);
+      const addressCard: AddressBook | undefined = getLabelByAccount(account, addressBook);
+      const total = totalFiat([account])(getRate);
       const label = addressCard ? addressCard.label : 'Unknown Account';
       const bodyContent = [
         <Label key={index}>
@@ -133,7 +136,13 @@ function buildAccountTable(
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
-        <Typography key={index}>{getBalanceFromAccount(account)}</Typography>
+        <Currency
+          key={index}
+          amount={total.toString()}
+          symbol={Fiats[settings.fiatCurrency].symbol}
+          prefix={Fiats[settings.fiatCurrency].prefix}
+          decimals={2}
+        />
       ];
       return deletable
         ? [

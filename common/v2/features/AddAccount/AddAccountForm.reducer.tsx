@@ -1,17 +1,10 @@
-import { FormDataAction, FormDataActionType as ActionType } from './types';
 import { DEFAULT_NETWORK } from 'v2/config';
-import {
-  WalletName,
-  walletNames,
-  InsecureWalletName,
-  MiscWalletName,
-  SecureWalletName,
-  FormData
-} from 'v2/types';
+import { FormData, WalletId } from 'v2/types';
+import { FormDataAction, FormDataActionType as ActionType } from './types';
 
 export const initialState: FormData = {
   network: DEFAULT_NETWORK,
-  accountType: walletNames.DEFAULT,
+  accountType: undefined,
   account: '',
   label: 'New Account',
   derivationPath: ''
@@ -44,25 +37,25 @@ export const formReducer = (formData: FormData, action: FormDataAction) => {
   }
 };
 
-const handleUnlock = (walletType: WalletName, payload: any) => {
+const handleUnlock = (walletType: WalletId | undefined, payload: any) => {
   switch (walletType) {
-    case MiscWalletName.VIEW_ONLY:
-    case InsecureWalletName.KEYSTORE_FILE:
-    case InsecureWalletName.PRIVATE_KEY:
-    case SecureWalletName.WEB3:
+    case WalletId.VIEW_ONLY:
+    case WalletId.KEYSTORE_FILE:
+    case WalletId.PRIVATE_KEY:
+    case WalletId.METAMASK:
       return {
         account: payload.getAddressString(),
         derivationPath: ''
       };
-    case SecureWalletName.PARITY_SIGNER:
+    case WalletId.PARITY_SIGNER:
       return {
         account: payload.address,
         derivationPath: ''
       };
-    case InsecureWalletName.MNEMONIC_PHRASE:
-    case SecureWalletName.LEDGER_NANO_S:
-    case SecureWalletName.TREZOR:
-    case SecureWalletName.SAFE_T:
+    case WalletId.MNEMONIC_PHRASE:
+    case WalletId.LEDGER_NANO_S:
+    case WalletId.TREZOR:
+    case WalletId.SAFE_T_MINI:
       return {
         account: payload.address,
         derivationPath: payload.path || payload.dPath + '/' + payload.index.toString()

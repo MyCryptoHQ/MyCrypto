@@ -3,12 +3,12 @@ import { ComboBox } from '@mycrypto/ui';
 
 import { translate } from 'translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
-import { NetworkId, WalletName } from 'v2/types';
+import { NetworkId, WalletId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
 
 interface Props {
-  network: string;
-  accountType: WalletName;
+  network: string | undefined;
+  accountType?: WalletId;
   onChange(network: NetworkId): void;
 }
 

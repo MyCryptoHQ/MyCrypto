@@ -3,6 +3,7 @@ import { formatEther, BigNumber } from 'ethers/utils';
 
 import { Asset, Network, IHexStrTransaction, TxObj } from 'v2/types';
 import { RPCRequests, baseToConvertedUnit, ERC20 } from 'v2/services/EthService';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
 import { EthersJS } from './ethersJsProvider';
 
 export class ProviderHandler {
@@ -47,7 +48,7 @@ export class ProviderHandler {
   /* Tested */
   public getTokenBalance(address: string, token: Asset): Promise<string> {
     return this.getRawTokenBalance(address, token).then(balance =>
-      baseToConvertedUnit(balance, token.decimal || 18)
+      baseToConvertedUnit(balance, token.decimal || DEFAULT_ASSET_DECIMAL)
     );
   }
 
