@@ -57,8 +57,9 @@ const FavoriteButton = styled(Button)`
 `;
 
 const DeleteButton = styled(Button)`
-  align-self: center;
+  align-self: flex-end;
   font-size: 0.7em;
+  width: 20px;
 `;
 
 const TableContainer = styled.div`

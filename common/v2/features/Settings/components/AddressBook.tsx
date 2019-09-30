@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Address, Icon, Typography, Button } from '@mycrypto/ui';
+import { Icon, Copyable, Identicon, Typography, Button } from '@mycrypto/ui';
 
 import { DashboardPanel, CollapsibleTable } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
@@ -13,8 +13,12 @@ interface Props {
 }
 
 const DeleteButton = styled(Button)`
-  align-self: flex-start;
-  margin-left: 1em;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  width: 100%;
 `;
 
 const AddAccountButton = styled(Button)`
@@ -27,14 +31,37 @@ const BottomRow = styled.div`
   text-align: center;
 `;
 
+const Label = styled.span`
+  display: flex;
+  align-items: center;
+  p {
+    margin-right: 27px;
+  }
+`;
+
+const SIdenticon = styled(Identicon)`
+  > img {
+    width: 30px;
+    height: 30px;
+  }
+`;
+
+const STypography = styled(Typography)`
+  height: 100%;
+`;
+
 export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
   const addressBookTable = {
-    head: ['Favorite', 'Address', 'Notes', 'Delete'],
+    head: ['Favorite', 'Label', 'Address', 'Notes', 'Delete'],
     body: addressBook.map(({ address, label, notes, uuid }: ExtendedAddressBook) => [
       <Icon key={0} icon="star" />,
-      <Address key={1} title={label} address={address} truncate={truncate} />,
-      <Typography key={2}>{notes}</Typography>,
-      <DeleteButton key={3} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
+      <Label key={1}>
+        <SIdenticon address={address} />
+        <STypography>{label}</STypography>
+      </Label>,
+      <Copyable key={2} text={address} truncate={truncate} />,
+      <Typography key={3}>{notes}</Typography>,
+      <DeleteButton key={4} onClick={() => deleteAddressBooks(uuid)} icon="exit" />
     ]),
     config: {
       primaryColumn: 'Address',
