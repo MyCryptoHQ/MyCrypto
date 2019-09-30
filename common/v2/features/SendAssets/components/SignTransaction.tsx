@@ -11,7 +11,6 @@ import {
   SignTransactionTrezor,
   SignTransactionMnemonic
 } from './SignTransactionWallets';
-import './SignTransaction.scss';
 
 type SigningComponents = {
   readonly [k in WalletId]: React.ComponentType<ISignComponentProps> | null;
