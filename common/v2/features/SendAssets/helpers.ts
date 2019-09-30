@@ -2,8 +2,14 @@ import BN from 'bn.js';
 import { bufferToHex } from 'ethereumjs-util';
 import { utils } from 'ethers';
 
-import { IFormikFields } from 'v2/features/SendAssets/types';
-import { IHexStrTransaction, Asset, IHexStrWeb3Transaction, ITxReceipt } from 'v2/types';
+import {
+  IFormikFields,
+  ITxObject,
+  IHexStrTransaction,
+  Asset,
+  IHexStrWeb3Transaction,
+  ITxReceipt
+} from 'v2/types';
 
 import {
   getNetworkByChainId,
@@ -28,8 +34,6 @@ import {
   inputNonceToHex,
   inputGasLimitToHex
 } from 'v2/services/EthService';
-
-import { ITxObject } from './types';
 
 export function decodeTransaction(signedTx: string) {
   const decodedTransaction = utils.parseTransaction(signedTx);

@@ -5,7 +5,7 @@ import { Web3Provider } from 'ethers/providers/web3-provider';
 import { getNetworkByChainId } from 'v2/services/Store';
 import MetamaskSVG from 'common/assets/images/wallets/metamask-2.svg';
 import './MetaMask.scss';
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 
 declare global {
   interface Window {

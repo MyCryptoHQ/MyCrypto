@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import PrivateKeyicon from 'common/assets/images/icn-privatekey-new.svg';
-import { ISignComponentProps } from '../../types';
+import { ISignComponentProps } from 'v2/types';
 import { translateRaw } from 'translations';
 import { Spinner } from 'v2/components/Spinner';
 import { Input } from 'components/ui';

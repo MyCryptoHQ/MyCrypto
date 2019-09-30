@@ -1,7 +1,15 @@
 import { useContext } from 'react';
 
 import { TUseStateReducerFactory } from 'v2/utils';
-import { Asset, Network, ITxReceipt } from 'v2/types';
+import {
+  Asset,
+  Network,
+  ITxReceipt,
+  ITxConfig,
+  IFormikFields,
+  ISignedTx,
+  ITxObject
+} from 'v2/types';
 import {
   getNetworkByChainId,
   getAssetByContractAndNetwork,
@@ -17,7 +25,8 @@ import {
 } from 'v2/services';
 import { ProviderHandler } from 'v2/services/EthService';
 
-import { ITxConfig, IFormikFields, TStepAction, ISignedTx, ITxObject } from './types';
+import { TStepAction } from './types';
+
 import { processFormDataToTx, decodeTransaction, fromTxReceiptObj } from './helpers';
 
 const txConfigInitialState = {

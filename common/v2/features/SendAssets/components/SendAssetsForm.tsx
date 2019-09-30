@@ -17,7 +17,14 @@ import {
   getAccountsByAsset,
   StoreContext
 } from 'v2/services/Store';
-import { Asset, Network, ExtendedAccount, StoreAsset } from 'v2/types';
+import {
+  Asset,
+  Network,
+  ExtendedAccount,
+  StoreAsset,
+  IFormikFields,
+  IStepComponentProps
+} from 'v2/types';
 import {
   getNonce,
   hexToNumber,
@@ -49,7 +56,6 @@ import {
   validateDataField,
   validateAmountField
 } from './validators/validators';
-import { IFormikFields, IStepComponentProps } from '../types';
 import { processFormForEstimateGas, isERC20Tx } from '../helpers';
 import {
   GAS_LIMIT_LOWER_BOUND,

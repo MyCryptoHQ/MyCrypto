@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Address, Button, Copyable } from '@mycrypto/ui';
 
-import { ITxReceipt } from 'v2/types';
+import { ITxReceipt, IStepComponentProps } from 'v2/types';
 import { Amount, TimeElapsedCounter } from 'v2/components';
 import { AddressBookContext, AccountContext } from 'v2/services/Store';
 import {
@@ -11,7 +11,6 @@ import {
   getTransactionReceiptFromHash
 } from 'v2/services/EthService';
 
-import { IStepComponentProps } from '../types';
 import './TransactionReceipt.scss';
 // Legacy
 import sentIcon from 'common/assets/images/icn-sent.svg';

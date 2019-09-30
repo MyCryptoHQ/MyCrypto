@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { TransactionReceipt as TransactionReceiptForm } from 'v2/features/SendAssets/components';
-import { ITxConfig } from 'v2/features/SendAssets/types';
+import { ITxConfig } from 'v2/types';
 import { translateRaw } from 'translations';
 
 interface Props {

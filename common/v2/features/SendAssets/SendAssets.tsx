@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
 import { useStateReducer } from 'v2/utils';
-import { WalletId, ITxReceipt } from 'v2/types';
+import { WalletId, ITxReceipt, IFormikFields } from 'v2/types';
 import {
   ConfirmTransaction,
   SendAssetsForm,
@@ -11,7 +11,7 @@ import {
   TransactionReceipt
 } from './components';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
-import { IFormikFields, IPath } from './types';
+import { IPath } from './types';
 import { translateRaw } from 'translations';
 
 function SendAssets() {

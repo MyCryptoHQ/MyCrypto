@@ -8,8 +8,7 @@ import { toChecksumAddressByChainId } from 'utils/formatters';
 import { fromWei, ProviderHandler } from 'v2/services/EthService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
 import { translateRaw } from 'translations';
-import { ITxReceipt } from 'v2/types';
-import { ITxConfig } from 'v2/features/SendAssets/types';
+import { ITxReceipt, ITxConfig } from 'v2/types';
 
 const ErrorWrapper = styled(InlineErrorMsg)`
   margin-top: 12px;
