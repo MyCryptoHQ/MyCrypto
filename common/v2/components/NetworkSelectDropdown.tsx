@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 
+import { OptionComponentProps } from 'react-select';
 import styled from 'styled-components';
 import { translate } from 'translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
 import { NetworkId, WalletId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
 import { Typography, Dropdown } from 'v2/components';
-import { OptionComponentProps } from 'react-select';
 
 interface Props {
   network: string | undefined;
@@ -36,7 +36,7 @@ class NetworkOption extends React.PureComponent<OptionComponentProps> {
   public render() {
     const { option, onSelect } = this.props;
     return (
-      <SContainer onClick={() => onSelect!(option, null)}>
+      <SContainer onClick={() => onSelect && onSelect(option, null)}>
         <Typography value={option.label} />
       </SContainer>
     );
@@ -58,7 +58,7 @@ function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
   const validNetworks = networks
     // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> TODO: FIX accountType
     .filter(options => isWalletFormatSupportedOnNetwork(options, accountType))
-    .map(n => n.name);
+    .map(n => ({ label: n.name, value: n }));
 
   return (
     <div>
@@ -66,10 +66,10 @@ function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
       <DropdownContainer>
         <Dropdown
           value={{ label: network }}
-          options={validNetworks.sort().map(n => ({ value: n, label: n }))}
+          options={validNetworks.sort()}
           placeholder={DEFAULT_NETWORK}
           searchable={true}
-          onChange={value => onChange(value.label as NetworkId)}
+          onChange={option => onChange(option.value.id)}
           optionComponent={NetworkOption}
           valueComponent={({ value: option }) => <NetworkOption option={option} />}
         />

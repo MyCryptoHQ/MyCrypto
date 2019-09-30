@@ -1,11 +1,6 @@
 import { translateRaw } from 'translations';
 
-import {
-  makeWeb3Network,
-  getShepherdManualMode,
-  shepherd,
-  makeProviderConfig
-} from 'libs/nodes';
+import { makeWeb3Network, getShepherdManualMode, shepherd, makeProviderConfig } from 'libs/nodes';
 import { isWeb3Node, setupWeb3Node, Web3Service } from 'v2/services/EthService';
 import { NodeOptions, NodeType, Network } from 'v2/types';
 import {
@@ -45,7 +40,7 @@ export const initWeb3Node = async () => {
   web3Added = true;
   createNode(config, network);
   updateSetting({ ...readAllSettings(), node: 'web3' });
-  return {nodeLib: lib, network};
+  return { nodeLib: lib, network };
 };
 
 export const unlockWeb3 = async () => {
