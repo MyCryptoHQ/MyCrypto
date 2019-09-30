@@ -9,6 +9,9 @@ import { COLORS, BREAK_POINTS } from 'v2/theme';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
+export const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
+export const NUMBER_OF_ASSETS_DISPLAYED = 4;
+
 const { BRIGHT_SKY_BLUE } = COLORS;
 const { SCREEN_MD } = BREAK_POINTS;
 
@@ -164,51 +167,9 @@ export default function WalletBreakdownView({
   const [selectedAssetIndex, setSelectedAssetIndex] = useState(0);
   const [previousBalances, setPreviousBalances] = useState<Balance[]>([]);
 
-  const SMALLEST_CHART_SHARE_SUPPORTED = 0.03; // 3%
-
-  const NUMBER_OF_ASSETS_DISPLAYED = 4;
-
-  /* Construct a finalBalances array which consists of top X assets and a otherTokensAsset
-  which combines the fiat value of all remaining tokens that are in the balances array*/
-  let finalBalances = balances;
-  if (balances.length > NUMBER_OF_ASSETS_DISPLAYED) {
-    const otherBalances = balances.slice(NUMBER_OF_ASSETS_DISPLAYED, balances.length);
-
-    const otherTokensAssets = {
-      name: translateRaw('WALLET_BREAKDOWN_OTHER'),
-      ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
-      isOther: true,
-      amount: 0,
-      fiatValue: otherBalances.reduce((sum, asset) => {
-        return (sum += asset.fiatValue);
-      }, 0)
-    };
-
-    finalBalances = balances.slice(0, NUMBER_OF_ASSETS_DISPLAYED);
-    finalBalances.push(otherTokensAssets);
-  }
-
-  /* Construct a chartBalances array which consists of assets and a otherTokensAsset
-  which combines the fiat value of all remaining tokens that are in the balances array*/
-  const chartBalances = balances.filter(
-    balanceObject => balanceObject.fiatValue / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
-  );
-
-  const otherBalance = balances.filter(
-    balanceObject => balanceObject.fiatValue / totalFiatValue <= SMALLEST_CHART_SHARE_SUPPORTED
-  );
-
-  const otherTokensAsset = {
-    name: translateRaw('WALLET_BREAKDOWN_OTHER'),
-    ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
-    isOther: true,
-    amount: 0,
-    fiatValue: otherBalance.reduce((sum, asset) => {
-      return (sum += asset.fiatValue);
-    }, 0)
-  };
-
-  chartBalances.push(otherTokensAsset);
+  const chartBalances = createChartBalances(balances, totalFiatValue);
+  const breakdownBalances =
+    balances.length > NUMBER_OF_ASSETS_DISPLAYED ? createBreakdownBalances(balances) : balances;
 
   const shownSelectedIndex = chartBalances.length > selectedAssetIndex ? selectedAssetIndex : 0;
   const balance = chartBalances[shownSelectedIndex];
@@ -261,7 +222,7 @@ export default function WalletBreakdownView({
           <BreakDownMore src={moreIcon} alt="More" onClick={toggleShowChart} />
         </BreakDownHeadingWrapper>
         <BreakDownBalanceList>
-          {finalBalances.map(({ name, amount, fiatValue, ticker, isOther }) => (
+          {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther }) => (
             <BreakDownBalance key={name}>
               <div>
                 <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
@@ -293,3 +254,37 @@ export default function WalletBreakdownView({
     </>
   );
 }
+
+const createChartBalances = (balances: Balance[], totalFiatValue: number) => {
+  /* Construct a chartBalances array which consists of assets and a otherTokensAsset
+  which combines the fiat value of all remaining tokens that are in the balances array*/
+  const chartBalances = balances.filter(
+    balanceObject => balanceObject.fiatValue / totalFiatValue >= SMALLEST_CHART_SHARE_SUPPORTED
+  );
+  const otherBalances = balances.filter(
+    balanceObject => balanceObject.fiatValue / totalFiatValue <= SMALLEST_CHART_SHARE_SUPPORTED
+  );
+  const otherTokensAsset = createOtherTokenAsset(otherBalances);
+  chartBalances.push(otherTokensAsset);
+  return chartBalances;
+};
+
+const createBreakdownBalances = (balances: Balance[]) => {
+  /* Construct a finalBalances array which consists of top X assets and a otherTokensAsset
+  which combines the fiat value of all remaining tokens that are in the balances array*/
+  const otherBalances = balances.slice(NUMBER_OF_ASSETS_DISPLAYED, balances.length);
+  const otherTokensAssets = createOtherTokenAsset(otherBalances);
+  const finalBalances = balances.slice(0, NUMBER_OF_ASSETS_DISPLAYED);
+  finalBalances.push(otherTokensAssets);
+  return finalBalances;
+};
+
+const createOtherTokenAsset = (otherBalances: Balance[]) => ({
+  name: translateRaw('WALLET_BREAKDOWN_OTHER'),
+  ticker: translateRaw('WALLET_BREAKDOWN_OTHER_TICKER'),
+  isOther: true,
+  amount: 0,
+  fiatValue: otherBalances.reduce((sum, asset) => {
+    return (sum += asset.fiatValue);
+  }, 0)
+});
