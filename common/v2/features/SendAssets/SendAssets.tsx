@@ -4,12 +4,9 @@ import sendIcon from 'common/assets/images/icn-send.svg';
 import { ContentPanel } from 'v2/components';
 import { useStateReducer } from 'v2/utils';
 import { WalletId, ITxReceipt, IFormikFields } from 'v2/types';
-import {
-  ConfirmTransaction,
-  SendAssetsForm,
-  SignTransaction,
-  TransactionReceipt
-} from './components';
+import { SendAssetsForm, SignTransaction, TransactionReceipt } from './components';
+
+import { ConfirmTransaction } from 'v2/components/TransactionFlow';
 import { txConfigInitialState, TxConfigFactory } from './stateFactory';
 import { IPath } from './types';
 import { translateRaw } from 'translations';
