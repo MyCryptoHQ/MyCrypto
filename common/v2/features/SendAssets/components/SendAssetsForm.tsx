@@ -3,7 +3,7 @@ import { Field, FieldProps, Form, Formik, FastField } from 'formik';
 import * as Yup from 'yup';
 import { Button, Input } from '@mycrypto/ui';
 import _ from 'lodash';
-import { BigNumber, formatEther } from 'ethers/utils';
+import { formatEther, bigNumberify } from 'ethers/utils';
 import BN from 'bn.js';
 import styled from 'styled-components';
 
@@ -15,7 +15,8 @@ import {
   getBaseAssetByNetwork,
   getBalanceFromAccount,
   getAccountsByAsset,
-  StoreContext
+  StoreContext,
+  getTokenBalanceFromAccount
 } from 'v2/services/Store';
 import { Asset, Network, ExtendedAccount, StoreAsset } from 'v2/types';
 import {
@@ -55,9 +56,9 @@ import {
   GAS_LIMIT_LOWER_BOUND,
   GAS_LIMIT_UPPER_BOUND,
   GAS_PRICE_GWEI_LOWER_BOUND,
-  GAS_PRICE_GWEI_UPPER_BOUND,
-  DEFAULT_ASSET_DECIMAL
+  GAS_PRICE_GWEI_UPPER_BOUND
 } from 'v2/config';
+import { weiToFloat } from 'v2/utils';
 
 export const AdvancedOptionsButton = styled(Button)`
   width: 100%;
@@ -199,24 +200,23 @@ export default function SendAssetsForm({
             if (values.asset && values.account && baseAsset) {
               const isERC20 = isERC20Tx(values.asset);
               const balance = isERC20
-                ? (
-                    values.account.assets.find(
-                      accountAsset => accountAsset.uuid === values.asset.uuid
-                    ) || { balance: '0' }
-                  ).balance
+                ? weiToFloat(
+                    bigNumberify(getTokenBalanceFromAccount(values.account, values.asset)),
+                    values.asset.decimal
+                  ).toString()
                 : formatEther(getBalanceFromAccount(values.account));
               const gasPrice = values.advancedTransaction
                 ? values.gasPriceField
                 : values.gasPriceSlider;
               const amount = isERC20 // subtract gas cost from balance when sending a base asset
-                ? (balance as BigNumber)
+                ? balance
                 : baseToConvertedUnit(
-                    new BN(convertedToBaseUnit(balance.toString(), DEFAULT_ASSET_DECIMAL))
+                    new BN(convertedToBaseUnit(balance.toString(), 18))
                       .sub(gasStringsToMaxGasBN(gasPrice, values.gasLimitField))
                       .toString(),
-                    DEFAULT_ASSET_DECIMAL
+                    18
                   );
-              setFieldValue('amount', amount.toString());
+              setFieldValue('amount', amount);
               handleGasEstimate();
             }
           };
