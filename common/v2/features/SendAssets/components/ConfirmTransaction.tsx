@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import BN from 'bn.js';
 import { Address, Button } from '@mycrypto/ui';
 
@@ -28,6 +28,11 @@ export default function ConfirmTransaction({
   signedTx
 }: IStepComponentProps) {
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
+  const [isBroadcastingTx, setIsBroadcastingTx] = useState(false);
+  const handleApprove = () => {
+    setIsBroadcastingTx(true);
+    onComplete(null);
+  };
 
   const recipientContact = getContactByAddressAndNetwork(
     txConfig.receiverAddress,
@@ -137,8 +142,12 @@ export default function ConfirmTransaction({
         rawTransaction={txConfig.rawTransaction}
         signedTransaction={signedTx}
       />
-      <Button onClick={onComplete} className="ConfirmTransaction-button">
-        Confirm and Send
+      <Button
+        onClick={handleApprove}
+        disabled={isBroadcastingTx}
+        className="ConfirmTransaction-button"
+      >
+        {isBroadcastingTx ? 'Submitting...' : 'Confirm and Send'}
       </Button>
     </div>
   );
