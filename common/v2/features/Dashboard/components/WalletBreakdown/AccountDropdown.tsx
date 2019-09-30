@@ -4,7 +4,7 @@ import styled, { StyledFunction } from 'styled-components';
 
 import { translateRaw } from 'translations';
 import { Checkbox } from 'v2/components';
-import { useOnClickOutside } from 'v2/utils';
+import { useOnClickOutside, truncate } from 'v2/utils';
 import { getLabelByAccount, AddressBookContext } from 'v2/services/Store';
 import { COLORS } from 'v2/theme';
 import { ExtendedAccount, ExtendedAddressBook } from 'v2/types';
@@ -88,14 +88,14 @@ const renderAccounts = (
 ) =>
   accounts.map((account: ExtendedAccount) => {
     const addressCard = getLabelByAccount(account, addressBook);
-    const addressLabel = addressCard ? addressCard.address : 'Unknown Account';
+    const addressLabel = addressCard ? addressCard.label : 'Unknown Account';
     return (
       <Checkbox
         key={account.uuid}
         name={`account-${account.uuid}`}
         checked={selected.includes(account.uuid)}
         onChange={() => handleChange(account.uuid)}
-        label={addressLabel}
+        label={`${truncate(account.address)} - ${addressLabel}`}
         icon={() => (
           <Identicon className="AccountDropdown-menu-identicon" address={account.address} />
         )}
