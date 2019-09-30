@@ -57,7 +57,9 @@ const getAccountAssetsBalancesWithEthScan = async (
   return Promise.all([
     scanner.getEtherBalances([account.address]),
     scanner.getTokensBalance(account.address, list)
-  ]).then(addBalancesToAccount(account));
+  ])
+    .then(addBalancesToAccount(account))
+    .catch(_ => account);
 };
 
 // Return an object containing the balance of the different tokens
@@ -85,7 +87,9 @@ const getAccountAssetsBalancesWithJsonRPC = async (
   return Promise.all([
     provider.getRawBalance(account.address).then(balance => ({ [address]: balance })),
     getTokenBalances(provider, address as TAddress, tokens)
-  ]).then(addBalancesToAccount(account));
+  ])
+    .then(addBalancesToAccount(account))
+    .catch(_ => account);
 };
 
 export const getAccountsAssetsBalances = async (accounts: StoreAccount[]) => {

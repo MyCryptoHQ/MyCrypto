@@ -60,7 +60,7 @@ export default function BalancesDetailView({
     body: balances.map(balance => {
       return [
         balance.name,
-        `${balance.amount} ${balance.ticker}`,
+        `${balance.amount.toFixed(6)} ${balance.ticker}`,
         `${fiat.symbol}${balance.fiatValue.toFixed(2)}`
       ];
     }),

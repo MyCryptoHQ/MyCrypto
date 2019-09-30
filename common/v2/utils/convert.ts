@@ -1,4 +1,7 @@
 import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
+import { fromTokenBase } from 'v2/services/EthService';
+import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
+import BN from 'bn.js';
 
 export const convertToFiat = (balance: BigNumber, rate: number = 1): number => {
   const splitRate = rate.toString().split('.');
@@ -10,4 +13,5 @@ export const convertToFiat = (balance: BigNumber, rate: number = 1): number => {
   return convertedFloat / rateDivisor;
 };
 
-export const weiToFloat = (wei: BigNumber): number => parseFloat(formatEther(wei));
+export const weiToFloat = (wei: BigNumber, decimal?: number): number =>
+  parseFloat(fromTokenBase(new BN(wei.toString()), decimal || DEFAULT_ASSET_DECIMAL));
