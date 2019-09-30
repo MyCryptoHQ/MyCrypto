@@ -78,7 +78,7 @@ export default class SignTransactionMetaMask extends Component<
 
     const { accountMatches, networkMatches, walletState, submitting } = this.state;
     return (
-      <div className="SignTransaction-panel">
+      <>
         <div className="SignTransactionMetaMask-title">Sign the Transaction with MetaMask</div>
         <div className="SignTransactionMetaMask-instructions">
           Sign into MetaMask on your computer and follow the instructions in the MetaMask window.
@@ -116,7 +116,7 @@ export default class SignTransactionMetaMask extends Component<
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
