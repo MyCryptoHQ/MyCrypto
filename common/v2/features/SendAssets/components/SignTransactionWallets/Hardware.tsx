@@ -5,7 +5,6 @@ import { WALLETS_CONFIG } from 'v2/config';
 import { makeTransaction } from 'v2/services/EthService';
 import { WalletFactory, HardwareWallet } from 'v2/services/WalletService';
 import { InlineErrorMsg } from 'v2/components/ErrorMessages';
-import { WALLETS_CONFIG } from 'v2/config';
 import { ITxObject, ISignedTx } from '../../types';
 import './Hardware.scss';
 
