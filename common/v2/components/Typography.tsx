@@ -12,11 +12,20 @@ interface Props {
 }
 
 const STypography = styled(UITypography)`
+  line-height: 1.5;
+  vertical-align: middle;
   font-weight: ${(p: Props) => (p.bold ? '600' : '400')};
-  font-size: ${(p: Props) => (p.small ? '0.8em' : 'inherit')};
+  font-size: ${(p: Props) => (p.small ? '0.8em' : '16px')};
 `;
 
-function Typography({ as = 'span', value, small, bold, children, ...props }: Props) {
+function Typography({
+  as = 'span',
+  value,
+  small = false,
+  bold = false,
+  children,
+  ...props
+}: Props) {
   return (
     <STypography as={as} bold={bold} small={small} {...props}>
       {children ? children : value}

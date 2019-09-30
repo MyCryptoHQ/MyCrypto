@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, CollapsibleTable, Copyable, Network, Identicon } from '@mycrypto/ui';
+import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
+import { CollapsibleTable, Typography, Network } from 'v2/components';
 import { truncate } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
@@ -18,7 +19,7 @@ import {
 import { DashboardPanel } from './DashboardPanel';
 import './AccountList.scss';
 import { RatesContext } from 'v2/services';
-import { Currency } from '.';
+import { default as Currency } from './Currency';
 
 const Label = styled.span`
   display: flex;
@@ -26,6 +27,14 @@ const Label = styled.span`
   p {
     margin-right: 27px;
   }
+`;
+
+const CurrencyContainer = styled(Currency)`
+  float: right;
+`;
+
+const HeaderAlignment = styled.div`
+  text-align: ${(props: { align?: string }) => props.align || 'inherit'};
 `;
 
 interface IFavoriteProps {
@@ -48,8 +57,9 @@ const FavoriteButton = styled(Button)`
 `;
 
 const DeleteButton = styled(Button)`
-  align-self: flex-start;
-  margin-left: 1em;
+  align-self: flex-end;
+  font-size: 0.7em;
+  width: 20px;
 `;
 
 const TableContainer = styled.div`
@@ -118,7 +128,9 @@ function buildAccountTable(
     translateRaw('ACCOUNT_LIST_LABEL'),
     translateRaw('ACCOUNT_LIST_ADDRESS'),
     translateRaw('ACCOUNT_LIST_NETWORK'),
-    translateRaw('ACCOUNT_LIST_VALUE')
+    <HeaderAlignment key={'ACCOUNT_LIST_VALUE'} align="center">
+      {translateRaw('ACCOUNT_LIST_VALUE')}
+    </HeaderAlignment>
   ];
 
   return {
@@ -130,13 +142,13 @@ function buildAccountTable(
       const bodyContent = [
         <Label key={index}>
           <Identicon address={account.address} />
-          <span>{label}</span>
+          <Typography>{label}</Typography>
         </Label>,
         <Copyable key={index} text={account.address} truncate={truncate} />,
         <Network key={index} color="#a682ff">
           {account.networkId}
         </Network>,
-        <Currency
+        <CurrencyContainer
           key={index}
           amount={total.toString()}
           symbol={Fiats[settings.fiatCurrency].symbol}

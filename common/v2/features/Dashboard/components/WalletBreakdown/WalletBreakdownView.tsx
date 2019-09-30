@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { translate } from 'translations';
 import BreakdownChart from './BreakdownChart';
@@ -137,6 +137,12 @@ const BreakDownBalanceAssetAmount = styled(BreakDownBalanceAssetName)`
   a {
     color: ${BRIGHT_SKY_BLUE};
   }
+  ${(props: { silent?: boolean }) =>
+    props.silent === true &&
+    css`
+      color: ${COLORS.CLOUDY_BLUE};
+      font-size: 0.8em;
+    `}
 `;
 
 const BalanceTotalWrapper = styled.div`
@@ -219,7 +225,7 @@ export default function WalletBreakdownView({
             <BreakDownBalance key={name}>
               <div>
                 <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
-                <BreakDownBalanceAssetAmount>
+                <BreakDownBalanceAssetAmount silent={true}>
                   {!isOther && `${amount.toFixed(4)} ${ticker}`}
                 </BreakDownBalanceAssetAmount>
               </div>

@@ -67,7 +67,6 @@ function SendAssets() {
   return (
     <ContentPanel
       onBack={goToPrevStep}
-      className="SendAssets"
       heading={label}
       icon={sendIcon}
       stepper={{ current: step + 1, total: currentPath.length - 1 }}
