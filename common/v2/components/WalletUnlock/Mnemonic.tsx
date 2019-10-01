@@ -96,7 +96,7 @@ class MnemonicDecryptClass extends PureComponent<OwnProps, State> {
                   <div className="Mnemonic-tool-tip">
                     {' '}
                     <Tooltip tooltip={translate('MNEMONIC_TOOL_TIP')}>
-                      {props => <img className="Tool-tip-img" src={questionToolTip} {...props} />}
+                      <img className="Tool-tip-img" src={questionToolTip} />
                     </Tooltip>
                   </div>
                 </label>
