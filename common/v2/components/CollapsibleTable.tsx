@@ -7,9 +7,10 @@ import React, { Component, DetailedHTMLProps, HTMLAttributes, ReactNode } from '
 import throttle from 'lodash.throttle';
 import styled, { StyledComponentClass } from 'styled-components';
 
-import { Theme, scale, Icon, StackedCard, StackedCardData, Typography } from '@mycrypto/ui';
+import { Theme, scale, Icon, StackedCardData, Typography } from '@mycrypto/ui';
 
 import { Table, TableData, TableConfig } from './Table';
+import { StackedCard } from './StackedCard';
 
 export enum CollapsibleTableModes {
   Mobile,

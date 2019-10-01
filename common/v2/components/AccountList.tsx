@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Button, Copyable, Identicon } from '@mycrypto/ui';
 
 import { translateRaw } from 'translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
-import { CollapsibleTable, Typography, Network } from 'v2/components';
-import { truncate } from 'v2/utils';
+import { CollapsibleTable, Network } from 'v2/components';
+import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
+import { truncate, IS_MOBILE } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
 import {
@@ -24,17 +25,38 @@ import { default as Currency } from './Currency';
 const Label = styled.span`
   display: flex;
   align-items: center;
-  p {
+`;
+
+const SIdenticon = styled(Identicon)`
+  img {
+    height: 2em;
+  }
+  margin-right: 10px;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
     margin-right: 27px;
   }
 `;
 
+const STypography = styled(Typography)`
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    font-weight: inherit;
+  }
+`;
+
+// On mobile screen the CollapisableTable becomes a Stacked card.
+// We provide better styles for desktop screens
 const CurrencyContainer = styled(Currency)`
-  float: right;
+  @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+    float: right;
+  }
 `;
 
 const HeaderAlignment = styled.div`
-  text-align: ${(props: { align?: string }) => props.align || 'inherit'};
+  ${(props: { align?: string }) => css`
+    @media (min-width: ${BREAK_POINTS.SCREEN_SM}) {
+      text-align: ${props.align || 'inherit'};
+    }
+  `};
 `;
 
 interface IFavoriteProps {
@@ -90,8 +112,10 @@ export default function AccountList(props: AccountListProps) {
 
   return (
     <DashboardPanel
-      heading={translateRaw('ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS')}
-      headingRight={'+ ' + translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
+      heading={translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}
+      headingRight={`+ ${
+        IS_MOBILE ? translateRaw('ACCOUNT_LIST_TABLE_ADD') : translateRaw('ACCOUNT_LIST_TABLE_ADD')
+      }`}
       actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}
       footerAction={footerAction}
@@ -141,8 +165,8 @@ function buildAccountTable(
       const label = addressCard ? addressCard.label : 'Unknown Account';
       const bodyContent = [
         <Label key={index}>
-          <Identicon address={account.address} />
-          <Typography>{label}</Typography>
+          <SIdenticon address={account.address} />
+          <STypography bold={true} value={label} />
         </Label>,
         <Copyable key={index} text={account.address} truncate={truncate} />,
         <Network key={index} color="#a682ff">
@@ -183,8 +207,8 @@ function buildAccountTable(
         : bodyContent;
     }),
     config: {
-      primaryColumn: translateRaw('ACCOUNT_LIST_ADDRESS'),
-      sortableColumn: translateRaw('ACCOUNT_LIST_ADDRESS'),
+      primaryColumn: translateRaw('ACCOUNT_LIST_LABEL'),
+      sortableColumn: translateRaw('ACCOUNT_LIST_LABEL'),
       sortFunction: (a: any, b: any) => {
         const aLabel = a.props.label;
         const bLabel = b.props.label;
