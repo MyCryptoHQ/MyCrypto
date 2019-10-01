@@ -8,10 +8,11 @@ import { ISwapAsset } from '../types';
 
 const FormWrapper = styled.div`
   margin-top: 20px;
+  margin-bottom: 16px;
 `;
 
 const FormItem = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   display: flex;
   width: 100%;
 `;

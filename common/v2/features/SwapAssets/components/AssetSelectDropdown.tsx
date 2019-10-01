@@ -22,6 +22,7 @@ const DropdownWrapper = styled.div<DropdownWrapperProps>`
   display: flex;
   flex-direction: column;
   width: ${props => (props.fluid ? '100%' : 'default')};
+  margin-bottom: 15px;
 `;
 
 interface Props {
