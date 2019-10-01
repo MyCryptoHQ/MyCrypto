@@ -7,7 +7,7 @@ import { translateRaw } from 'translations';
 import { ROUTE_PATHS, Fiats } from 'v2/config';
 import { CollapsibleTable, Network } from 'v2/components';
 import { default as Typography } from 'v2/components/Typography'; // @TODO solve Circular Dependency issue
-import { truncate } from 'v2/utils';
+import { truncate, IS_MOBILE } from 'v2/utils';
 import { BREAK_POINTS, COLORS, breakpointToNumber } from 'v2/theme';
 import { ExtendedAccount, AddressBook, StoreAccount } from 'v2/types';
 import {
@@ -112,8 +112,10 @@ export default function AccountList(props: AccountListProps) {
 
   return (
     <DashboardPanel
-      heading={translateRaw('ACCOUNT_LIST_TABLE_YOUR_ACCOUNTS')}
-      headingRight={'+ ' + translateRaw('ACCOUNT_LIST_TABLE_ADD_ACCOUNT')}
+      heading={translateRaw('ACCOUNT_LIST_TABLE_ACCOUNTS')}
+      headingRight={`+ ${
+        IS_MOBILE ? translateRaw('ACCOUNT_LIST_TABLE_ADD') : translateRaw('ACCOUNT_LIST_TABLE_ADD')
+      }`}
       actionLink={ROUTE_PATHS.ADD_ACCOUNT.path}
       className={`AccountList ${className}`}
       footerAction={footerAction}

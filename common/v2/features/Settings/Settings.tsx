@@ -74,9 +74,9 @@ interface TabOptions {
 }
 
 function renderMobile() {
-  const [tab, setTab] = useState('wallets');
+  const [tab, setTab] = useState('accounts');
   const tabOptions: TabOptions = {
-    ['wallets']: renderAccountPanel(),
+    ['accounts']: renderAccountPanel(),
     ['addresses']: renderAddressPanel(),
     ['general']: renderGeneralSettingsPanel()
   };
@@ -84,8 +84,8 @@ function renderMobile() {
   return (
     <>
       <SettingsTabs>
-        <a href="#" onClick={() => setTab('wallets')}>
-          Your Wallets
+        <a href="#" onClick={() => setTab('accounts')}>
+          Accounts
         </a>
         <a href="#" onClick={() => setTab('addresses')}>
           Addresses
@@ -94,13 +94,7 @@ function renderMobile() {
           General
         </a>
       </SettingsTabs>
-      <>
-        <SettingsHeading>
-          <SettingsHeadingIcon src={settingsIcon} alt="Settings" />
-          {translate('SETTINGS_HEADING')}
-        </SettingsHeading>
-        {currentTab}
-      </>
+      <>{currentTab}</>
     </>
   );
 }

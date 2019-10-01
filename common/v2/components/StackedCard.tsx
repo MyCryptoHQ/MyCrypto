@@ -21,7 +21,7 @@ const StackedCardContainer = styled.section`
 
 const StackedCardHead = styled.section`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
 `;
 
