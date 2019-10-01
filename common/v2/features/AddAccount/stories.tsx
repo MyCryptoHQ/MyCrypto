@@ -18,9 +18,7 @@ import {
 export const STORIES: IStory[] = [
   {
     name: WalletId.METAMASK,
-    steps: HAS_WEB3_PROVIDER
-      ? [NetworkSelectPanel, Web3ProviderDecrypt, SaveAndRedirect]
-      : [Web3ProviderInstall]
+    steps: HAS_WEB3_PROVIDER ? [Web3ProviderDecrypt, SaveAndRedirect] : [Web3ProviderInstall]
   },
   {
     name: WalletId.LEDGER_NANO_S,

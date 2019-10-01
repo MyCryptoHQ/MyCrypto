@@ -1,15 +1,46 @@
 import React, { useContext, useEffect } from 'react';
-import { ComboBox } from '@mycrypto/ui';
 
+import { OptionComponentProps } from 'react-select';
+import styled from 'styled-components';
 import { translate } from 'translations';
 import { NetworkContext, isWalletFormatSupportedOnNetwork } from 'v2/services/Store';
 import { NetworkId, WalletId } from 'v2/types';
 import { DEFAULT_NETWORK } from 'v2/config';
+import { Typography, Dropdown } from 'v2/components';
 
 interface Props {
   network: string | undefined;
   accountType?: WalletId;
   onChange(network: NetworkId): void;
+}
+
+const DropdownContainer = styled('div')`
+  .is-open > .Select-control > .Select-multi-value-wrapper > .Select-input:only-child {
+    transform: translateY(0%);
+    padding: 16px 15px 16px 15px;
+    position: inherit;
+  }
+`;
+
+const SContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  padding: 16px 15px 16px 15px;
+
+  &:hover {
+    background-color: var(--color-gray-lighter);
+  }
+`;
+
+class NetworkOption extends React.PureComponent<OptionComponentProps> {
+  public render() {
+    const { option, onSelect } = this.props;
+    return (
+      <SContainer onClick={() => onSelect && onSelect(option, null)}>
+        <Typography value={option.label} />
+      </SContainer>
+    );
+  }
 }
 
 function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
@@ -27,17 +58,22 @@ function NetworkSelectDropdown({ network, accountType, onChange }: Props) {
   const validNetworks = networks
     // @ts-ignore CHANGE IN WALLETYPE OBJECT CAUSING accountType to error -> TODO: FIX accountType
     .filter(options => isWalletFormatSupportedOnNetwork(options, accountType))
-    .map(n => n.name);
+    .map(n => ({ label: n.name, value: n }));
 
   return (
     <div>
       <label>{translate('SELECT_NETWORK_LABEL')}</label>
-      <ComboBox
-        value={network}
-        items={new Set(validNetworks.sort())}
-        placeholder={DEFAULT_NETWORK}
-        onChange={({ target: { value } }) => onChange(value as NetworkId)}
-      />
+      <DropdownContainer>
+        <Dropdown
+          value={{ label: network }}
+          options={validNetworks.sort()}
+          placeholder={DEFAULT_NETWORK}
+          searchable={true}
+          onChange={option => onChange(option.value.id)}
+          optionComponent={NetworkOption}
+          valueComponent={({ value: option }) => <NetworkOption option={option} />}
+        />
+      </DropdownContainer>
     </div>
   );
 }
