@@ -81,8 +81,8 @@ interface AccountListProps {
 
 export default function AccountList(props: AccountListProps) {
   const { className, currentsOnly, deletable, favoritable, footerAction, footerActionLink } = props;
-  const { currentAccounts, accounts } = useContext(StoreContext);
-  const { deleteAccount, updateAccount } = useContext(AccountContext);
+  const { currentAccounts, accounts, deleteAccountFromCache } = useContext(StoreContext);
+  const { updateAccount } = useContext(AccountContext);
   const shouldRedirect = accounts === undefined || accounts === null || accounts.length === 0;
   if (shouldRedirect) {
     return <Redirect to="/no-accounts" />;
@@ -102,7 +102,7 @@ export default function AccountList(props: AccountListProps) {
           breakpoint={breakpointToNumber(BREAK_POINTS.SCREEN_XS)}
           {...buildAccountTable(
             currentsOnly ? currentAccounts() : accounts,
-            deleteAccount,
+            deleteAccountFromCache,
             updateAccount,
             deletable,
             favoritable
