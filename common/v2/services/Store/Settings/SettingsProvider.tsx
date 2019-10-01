@@ -1,6 +1,6 @@
 import React, { Component, createContext } from 'react';
 
-import { ISettings } from 'v2/types';
+import { ISettings, IRates } from 'v2/types';
 import { updateSetting, readAllSettings, readStorage, importStorage } from './Settings';
 
 interface ProviderState {
@@ -10,6 +10,7 @@ interface ProviderState {
   readAllSettings(): void;
   getStorage(): void;
   importStorage(importedCache: string): void;
+  updateSettingsRates(rates: IRates): void;
 }
 
 export const SettingsContext = createContext({} as ProviderState);
@@ -48,6 +49,11 @@ export class SettingsProvider extends Component {
     },
     readAllSettings: () => {
       readAllSettings();
+      this.getSettings();
+    },
+    updateSettingsRates: rates => {
+      const settings = readAllSettings();
+      updateSetting({ ...settings, rates });
       this.getSettings();
     }
   };
