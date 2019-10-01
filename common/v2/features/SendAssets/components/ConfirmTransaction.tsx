@@ -14,19 +14,10 @@ import { IStepComponentProps } from '../types';
 import './ConfirmTransaction.scss';
 import TransactionDetailsDisplay from './displays/TransactionDetailsDisplay';
 import TransactionIntermediaryDisplay from './displays/TransactionIntermediaryDisplay';
+import { convertToFiat } from 'v2/utils';
 
 const truncate = (children: string) => {
   return [children.substring(0, 6), '…', children.substring(children.length - 4)].join('');
-};
-
-/*
-  Confirm should only display values! There are no data transformations.
-  The currentPath in SendAssets determines which action should be called.
-*/
-
-const calculateValue = (rate: number | undefined, balance: string) => {
-  if (!rate) return 0;
-  return rate * parseFloat(balance);
 };
 
 export default function ConfirmTransaction({
@@ -48,7 +39,6 @@ export default function ConfirmTransaction({
   );
   const recipientLabel = recipientContact ? recipientContact.label : 'Unknown Address';
 
-  /* ToDo: Figure out how to extract this */
   const {
     asset,
     gasPrice,
@@ -112,7 +102,10 @@ export default function ConfirmTransaction({
         <div className="ConfirmTransaction-row-column">
           <Amount
             assetValue={`${amount} ${asset.ticker}`}
-            fiatValue={`$${calculateValue(getRate(asset.ticker as TTicker), amount).toFixed(2)}`}
+            fiatValue={`$${convertToFiat(
+              parseFloat(amount),
+              getRate(asset.ticker as TTicker)
+            ).toFixed(2)}`}
           />
         </div>
       </div>
@@ -123,9 +116,9 @@ export default function ConfirmTransaction({
         <div className="ConfirmTransaction-row-column">
           <Amount
             assetValue={`${maxTransactionFeeBase} ${baseAsset.ticker}`}
-            fiatValue={`$${calculateValue(
-              getRate(baseAsset.ticker as TTicker),
-              maxTransactionFeeBase
+            fiatValue={`$${convertToFiat(
+              parseFloat(maxTransactionFeeBase),
+              getRate(baseAsset.ticker as TTicker)
             ).toFixed(2)}`}
           />
         </div>
@@ -139,9 +132,9 @@ export default function ConfirmTransaction({
           {assetType === 'base' ? (
             <Amount
               assetValue={`${totalEtherEgress} ${asset.ticker}`}
-              fiatValue={`$${calculateValue(
-                getRate(asset.ticker as TTicker),
-                totalEtherEgress
+              fiatValue={`$${convertToFiat(
+                parseFloat(totalEtherEgress),
+                getRate(asset.ticker as TTicker)
               ).toFixed(2)}`}
             />
           ) : (
@@ -149,8 +142,8 @@ export default function ConfirmTransaction({
               assetValue={`${amount} ${asset.ticker}`}
               baseAssetValue={`+ ${totalEtherEgress} ${baseAsset.ticker}`}
               fiatValue={`$${(
-                calculateValue(getRate(asset.ticker as TTicker), amount) +
-                calculateValue(getRate(baseAsset.ticker as TTicker), totalEtherEgress)
+                convertToFiat(parseFloat(amount), getRate(asset.ticker as TTicker)) +
+                convertToFiat(parseFloat(totalEtherEgress), getRate(baseAsset.ticker as TTicker))
               ).toFixed(2)}`}
             />
           )}

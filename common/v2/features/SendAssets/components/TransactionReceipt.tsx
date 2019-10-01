@@ -35,7 +35,11 @@ const calculateValue = (rate: number | undefined, balance: string) => {
   return rate * parseFloat(balance);
 };
 
-export default function TransactionReceipt({ txReceipt, txConfig, resetFlow }: IStepComponentProps) {
+export default function TransactionReceipt({
+  txReceipt,
+  txConfig,
+  resetFlow
+}: IStepComponentProps) {
   const { getRate } = useContext(RatesContext);
   const { getContactByAccount, getContactByAddressAndNetwork } = useContext(AddressBookContext);
   const { addNewTransactionToAccount } = useContext(AccountContext);
@@ -97,11 +101,7 @@ export default function TransactionReceipt({ txReceipt, txConfig, resetFlow }: I
 
   const localTimestamp = new Date(Math.floor(timestamp * 1000)).toLocaleString();
   const assetAmount = txReceipt.amount || txConfig.amount;
-  const assetTicker = txReceipt.asset
-    ? txReceipt.asset.ticker
-    : txConfig.asset
-    ? txConfig.asset.ticker
-    : 'ETH';
+  const assetTicker = txReceipt.asset.ticker || txConfig.asset.ticker || 'ETH';
   return (
     <div className="TransactionReceipt">
       <div className="TransactionReceipt-row">
