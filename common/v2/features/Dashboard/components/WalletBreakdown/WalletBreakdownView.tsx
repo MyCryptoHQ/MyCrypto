@@ -6,6 +6,8 @@ import BreakdownChart from './BreakdownChart';
 import NoAssets from './NoAssets';
 import { WalletBreakdownProps, Balance } from './types';
 import { COLORS, BREAK_POINTS } from 'v2/theme';
+import { TSymbol } from 'v2/types';
+import { AssetIcon } from 'v2/components';
 
 import moreIcon from 'common/assets/images/icn-more.svg';
 
@@ -126,10 +128,20 @@ const BreakDownBalance = styled.div`
   justify-content: space-between;
   margin: 11px 0;
   line-height: 1.2;
+  align-items: center;
 
   &:first-of-type {
     margin-top: 16px;
   }
+`;
+
+const BreakDownBalanceAssetIcon = styled(AssetIcon)`
+  margin-right: 10px;
+`;
+
+const BreakDownBalanceAssetInfo = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const BreakDownBalanceAssetName = styled.div`
@@ -230,12 +242,17 @@ export default function WalletBreakdownView({
         <BreakDownBalanceList>
           {breakdownBalances.map(({ name, amount, fiatValue, ticker, isOther }) => (
             <BreakDownBalance key={name}>
-              <div>
-                <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
-                <BreakDownBalanceAssetAmount silent={true}>
-                  {!isOther && `${amount.toFixed(4)} ${ticker}`}
-                </BreakDownBalanceAssetAmount>
-              </div>
+              <BreakDownBalanceAssetInfo>
+                <div>
+                  <BreakDownBalanceAssetIcon symbol={ticker as TSymbol} size={'26px'} />
+                </div>
+                <div>
+                  <BreakDownBalanceAssetName>{name}</BreakDownBalanceAssetName>
+                  <BreakDownBalanceAssetAmount silent={true}>
+                    {!isOther && `${amount.toFixed(4)} ${ticker}`}
+                  </BreakDownBalanceAssetAmount>
+                </div>
+              </BreakDownBalanceAssetInfo>
               <BreakDownBalanceAssetAmount>
                 {fiat.symbol}
                 {fiatValue.toFixed(2)}
