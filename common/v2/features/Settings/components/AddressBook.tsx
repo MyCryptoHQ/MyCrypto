@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, Copyable, Identicon, Typography, Button } from '@mycrypto/ui';
+import { Icon, Copyable, Typography, Button } from '@mycrypto/ui';
 
-import { DashboardPanel, CollapsibleTable } from 'v2/components';
+import { DashboardPanel, CollapsibleTable, Profile } from 'v2/components';
 import { ExtendedAddressBook } from 'v2/types';
 import { truncate } from 'v2/utils';
 
@@ -39,25 +39,13 @@ const Label = styled.span`
   }
 `;
 
-const SIdenticon = styled(Identicon)`
-  > img {
-    width: 30px;
-    height: 30px;
-  }
-`;
-
-const STypography = styled(Typography)`
-  height: 100%;
-`;
-
 export default function AddressBook({ addressBook, toggleFlipped, deleteAddressBooks }: Props) {
   const addressBookTable = {
     head: ['Favorite', 'Label', 'Address', 'Notes', 'Delete'],
     body: addressBook.map(({ address, label, notes, uuid }: ExtendedAddressBook) => [
       <Icon key={0} icon="star" />,
       <Label key={1}>
-        <SIdenticon address={address} />
-        <STypography>{label}</STypography>
+        <Profile address={address} label={label} />
       </Label>,
       <Copyable key={2} text={address} truncate={truncate} />,
       <Typography key={3}>{notes}</Typography>,
